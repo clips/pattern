@@ -1,0 +1,539 @@
+The gray wolf or grey wolf (Canis lupus), often known simply as the wolf, is the largest wild member of the Canidae family. Though once abundant over much of Eurasia and North America, the gray wolf inhabits a reduced portion of its former range due to widespread destruction of its territory, human encroachment, and the resulting human-wolf encounters that sparked broad extirpation. Even so, the gray wolf is regarded as being of least concern for extinction by the International Union for Conservation of Nature, when the entire gray wolf population is considered as a whole. Today, wolves are protected in some areas, hunted for sport in others, or may be subject to extermination as perceived threats to livestock and pets.
+
+Gray wolves are social predators that live in nuclear families consisting of a mated pair which monopolises food and breeding rights, followed by their biological offspring and, occasionally, adopted subordinates. They primarily feed on ungulates, which they hunt by wearing them down in short chases. Gray wolves are typically apex predators throughout their range, with only humans and tigers posing significant threats to them.
+
+DNA sequencing and genetic drift studies reaffirm that the gray wolf shares a common ancestry with the domestic dog. A number of other gray wolf subspecies have been identified, though the actual number of subspecies is still open to discussion.
+
+In areas where human cultures and wolves are sympatric, wolves frequently feature in the folklore and mythology of those cultures, both positively and negatively.
+
+Evolution
+
+The most likely ancestral candidate of the gray wolf is Canis lepophagus, a small, narrow skulled North American canid of the Miocene era, which may have also given rise to coyotes. Some larger, broader skulled C. lepophagus fossils found in northern Texas may represent the ancestral stock from which true wolves derive. The first true wolves began to appear at the end of the Blancan North American Stage and the onset of the early Irvingtonian. Among them was Canis priscolatrans, a small species closely resembling the red wolf, which colonised Eurasia by crossing the Bering land bridge. The new Eurasian C. priscolatrans population evolved into Canis etruscus, then Canis mosbachensis. [3]
+
+This primitive wolf closely resembled the modern southern wolf populations of the Arabian Peninsula and South Asia, which were once distributed in Europe in the early Quaternary glaciation until about 500,000 years ago (see Subspecies). [4] C. mosbachensis evolved in the direction of Canis lupus, and recolonised North America in the late Rancholabrean era. There, a larger canid species called Canis dirus was already established, but it became extinct 8,000 years ago after the large prey it relied on was wiped out. Competition with the newly arrived gray wolves for the smaller and swifter prey that survived may have contributed to its decline. With the extinction of dire wolves, gray wolves became the only large and widespread canid species left. [3]
+
+The North American recolonisation likely occurred in several waves, with the most distinctive populations occurring in the periphery of the range. These populations (C. l. arctos on the high arctic islands, C. l. lycaon in the eastern forests, C. l. baileyi in the far south and C. l. rufus at the continental corner opposite the point of invasion) may represent survivors of early migrations from Eurasia. C. l. baileyi, C. l. lycaon and C. l. rufus display some primitive traits and systematic affinity to one another. Fossil remains from the late Pleistocene of large bodied wolves similar to C. l. arctos and C. l. albus occur in coastal southern California, indicating that large North American gray wolf subspecies were once widespread, and may have been driven southward by glaciation, though wolves no longer reside there. Fossils of small bodied wolves similar to C. l. baileyi have been found in a range encompassing Kansas and southern California. This indicates a late Pleistocene population flux, in which large, Arctic forms of wolf moved farther south, with smaller, warmth adapted wolves expanding as the climate moderated. [5]
+
+The now extinct Japanese wolves were descended from large Siberian wolves which colonised the Korean Peninsula and Japan, prior to its separation from mainland Asia, 20,000 years ago during the Pleistocene. During the Holocene, the Tsugaru Strait widened and isolated Honshu from Hokkaidō, thus causing climactic changes leading to the extinction of most large bodied ungulates inhabiting the archipelago. Japanese wolves likely underwent a process of island dwarfism 7,000–13,000 years ago in response to these climatological and ecological pressures. C. l. hattai (formerly native to Hokkaidō) was significantly larger than it southern cousin C. l. hodophilax, as it inhabited higher elevations and had access to larger prey, as well as a continuing genetic interaction with dispersing wolves from Siberia. [6]
+
+Subspecies
+
+Main article: Subspecies of Canis lupus
+
+As of 2005 [update], [7] 39 subspecies of gray wolf are recognised, including the red wolf and two subspecies of domestic dog, Canis lupus dingo and Canis lupus familiaris. Wolf subspecies are divided into two categories:
+
+"Northern wolves": large sized, large brained wolves with strong carnassials which inhabit North America, Europe and northern Asia. [8]
+
+"Southern wolves": native to the Arabian Peninsula and South Asia. They are characterised by their short fur, [9] small brains and weak carnassials. They may represent a relic population of early wolves, as they closely resemble fossil European wolves, [4] and the rate of changes observed in their DNA sequences date them to about 800,000 years, as opposed to the American and European lineages which stretch back only 150,000. [10] The vocalisations of southern wolves have a higher proportion of short, sharp barking, [8] and they seldom howl. [11] It is likely that dogs and dingoes stem from this group. [8] [12]
+
+Wolves in Central and East Asia are intermediate in form and size to northern and southern wolves. [4] Differences in brain size are well defined in different wolf populations, with wolves in northern Eurasia having the highest values, North American wolves having slightly smaller brains, and the southern wolves having the smallest. Southern wolves have brains 5–10% smaller than northern wolves. [13] Though different in behaviour and morphology, northern and southern wolves can still interbreed: the Zoological Gardens of London for example once successfully managed to mate a male European wolf to an Indian female, resulting in a cub bearing an almost exact likeness to its sire. [14]
+
+Domestication
+
+Main article: Origin of the domestic dog
+
+Studies on the genetic distance for mitochondrial DNA on dogs and Eurasian wolves confirmed that wolves are the exclusive ancestral species to dogs. Domestic dogs possess four mtDNA lineages, suggesting four independent domestication events. [16] A later study identified mtDNA evidence suggesting a common origin from a single East Asian gene pool for all dog populations, [17] while another, using a much larger data set of nuclear markers, points to the Middle East as the source of most of the genetic diversity in the domestic dog and a more likely origin of domestication events. [18] A study by the Kunming Institute of Zoology found that the domestic dog is descended from wolves tamed less than 16,300 years ago south of the Yangtse river in China. [19] Morphological comparisons have narrowed the likely ancestral subspecies of gray wolf to wolves of the Middle Eastern and South Asian variety. [4]
+
+The actual domestication process is a source of debate. Although it is popularly assumed that dogs are the result of artificial selection, the general intractability of adult wolves to human handling has lead certain experts to theorise that the domestication process occurred through natural selection when Mesolithic human communities began building permanent settlements in which a new ecological niche (middens and landfills) was opened to wolves. These wolves would have formed a commensal relationship with humans, feeding on their waste over many generations, with natural selection favouring assertive wolves with shorter flight distances in human presence, and causing physical changes related to the redundancy of features adapted for hunting big game. [20] [21]
+
+Although dogs are the most closely related canids to gray wolves (the sequence divergence between gray wolves and dogs is only 1.8%, as opposed to over 4% between gray wolves, Ethiopian wolves and coyotes), [22] there are a number of physical and behavioural differences. Comparative studies on dog and wolf behaviour and anatomy have shown that dog physiology and most dog behaviours are comparable to those of young wolves, an example of neoteny and pedomorphism. [23]
+
+The tympanic bullae are large, confex and almost spherical in wolves, in contrast to dogs whose bullae are smaller, compressed and slightly crumpled. [24] Compared to equally sized dogs, wolves tend to have 20% larger skulls and 10% bigger brains, as well as proportionately larger teeth. [25] The premolars and molars of wolves are much less crowded, and have more complex cusp patterns. [26] Dogs lack a pre-caudal gland, and enter estrus twice yearly, unlike wolves which only do so once annually. [15]
+
+The forelegs of wolves are closer to each other than those of dogs, with the former's tracks being further apart. Their tails hang straight or in a slight curve toward the body when neutral, whereas dogs carry their tails in a slight curl. Wolf paws are generally larger than dog paws [21], though it is almost impossible to distinguish similarly sized wolf and dog prints with certainty, though most dogs tend to have rounder paw prints than wolves. [27]
+
+Physical description
+
+Anatomy
+
+Gray wolves are slender, powerfully built animals with large, deeply descending ribcages and sloping backs. Their abdomens are pulled in, and their necks heavily muscled. Their limbs are long and robust, with comparatively small paws. [28] The front paws have five toes each, while the back paws have four. The forelimbs are seemingly pressed into the chest, with the elbows pointed inward, and the feet outward. [24] Females tend to have narrower muzzles and foreheads, thinner necks, slightly shorter legs and less massive shoulders than males. [29] Wolves are very strong for their size, possessing sufficient strength to turn over a frozen horse or moose carcass. [30]
+
+They are also capable of running at speeds of 56–64 km (34–38 miles) per hour, and can continue running for more than 20 minutes, though not necessarily at that speed. [31] In cold climates, wolves can reduce the flow of blood near their skin to conserve body heat. The warmth of the footpads is regulated independently of the rest of the body, and is maintained at just above tissue-freezing point where the pads came in contact with ice and snow. [32] The intestines of adult wolves measure 460–575 cm, the ratio to body length being 4.13–4.62. [33] The stomach can hold 7–9 kg (15–20 lb) of food [24] and up to 7.5 litres (8 U.S. qt) of water. [34] The liver is relatively large, weighing 0.7–1.9 kg (1.6–4.2 lb) in males and 0.68–0.82 kg (1.5–1.8 lb) in females. [24]
+
+Wolves' heads are large and heavy, with wide foreheads, strong jaws and long, blunt muzzles. The ears are relatively small and triangular. Wolves usually carry their heads at the same level as their backs, raising their heads only when alert. [28] The sagittal and lambdoid crests are well developed, the former dividing just in front of the bregma into two ridges curving outward to form posterior border of postorbital processes. The interorbital region is moderately elevated and well defined, with distinct longitudinal concavity between raised and thickened postorbital processes. [35] The dental formula is:
+
+Dentition
+
+3.1.4.2
+3.1.4.3
+
+The teeth are heavy and large, being better suited to bone crushing than those of other extant canids, though not as specialised as those found in hyenas. [36] [37] The canine teeth are robust and relatively short (26 mm). [24] The animal can develop a crushing pressure of perhaps 1,500 lbf/in2 compared to 750 lbf/in2 for a German shepherd. This force is sufficient to break open most bones, [38] as well as cut through half inch lassos with one snap. [39]
+
+They generally resemble German shepherds or huskies in bodily configuration, but are distinguishable from them by their orbital angle of 40°–45° rather than 53°–60°, [24] and the greater size of their heads and teeth (see Domestication). [40] Compared to coyotes, wolves are larger and have broader snouts, shorter ears, and a proportionately smaller brain case [24] and lack sweat glands on their pawpads. [41] Compared to golden jackals, wolves are larger and heavier, and have proportionately longer legs, shorter torsos and longer tails. [42] The teeth are overall less trenchant than the jackal's, particularly in the upper molars, which have lower cusps, are broader, and are more terete. [43]
+
+Dimensions
+
+Gray wolves are the largest extant members of the Canidae, excepting certain large breeds of domestic dog. [24] Gray wolf weight and size can vary greatly worldwide, tending to increase proportionally with latitude as predicted by Bergmann's Rule. [44] Adult wolves are 105–160 cm (41–63 in) in length and 80–85 cm (32–34 in) in shoulder height. [45] The tail is ⅔ the length of the head and body, [46] measuring 29–50 cm (11–20 in) in length. The ears are 90–110 millimeters (3.5–4.3 in) in height, and the hind feet are 220–250 mm. [45] Wolf weight varies geographically; on average, European wolves may weigh 38.5 kilograms (85 lb), North American wolves 36 kilograms (79 lb), and Indian and Arabian wolves 25 kilograms (55 lb). [47]
+
+Females in any given wolf population typically weigh 5–10 lbs less than males. [48] Wolves weighing over 54 kg (120 lbs) are uncommon, though exceptionally large individuals have been recorded in Alaska, Canada, [48] and the former Soviet Union. [45] [49] The heaviest recorded gray wolf in North America was killed on 70 Mile River in east-central Alaska on July 12, 1939 and weighed 79 kilograms (170 lb), [48] while the heaviest recorded wolf in Eurasia was killed after World War II in the Kobelyakski Area of the Poltavskij Region, Ukrainian SSR, and weighed 86 kilograms (190 lb). [49]
+
+Fur
+
+Gray wolves have very dense and fluffy winter fur, with short underfur and long, coarse guard hairs. [28] Most of the underfur and some of the guard hairs are shed in the spring and grow back in the autumn period. [47] The longest hairs occur on the back, particularly on the front quarters and neck. Especially long hairs are found on the shoulders, and almost form a crest on the upper part of the neck. The hairs on the cheeks are elongated and form tufts. The ears are covered in short hairs which strongly project from the fur. Short, elastic and closely adjacent hairs are present on the limbs from the elbows down to the calcaneal tendons. [50]
+
+The winter fur is highly resistant to cold; wolves in northern climates can rest comfortably in open areas at −40° by placing their muzzles between the rear legs and covering their faces with their tail. Wolf fur provides better insulation than dog fur, and, as with wolverines, it does not collect ice when warm breath is condensed against it. [47] In warm climates, the fur is coarser and scarcer than in northern wolves. [28]
+
+Female wolves tend to have smoother furred limbs than males, and generally develop the smoothest overall coats as they age. Older wolves generally have more white hairs in the tip of the tail, along the nose and on the forehead. The winter fur is retained longest in lactating females, though with some hair loss around their nipples. [29] Hair length on the middle of the back is 60–70 mm. Hair length of the guard hairs on the shoulders generally does not exceed 90 mm, but can reach 110–130 mm. [51]
+
+Coat colour ranges from almost pure white through various shades of blond, cream, and ochre to grays, browns, and blacks. [52] Differences in coat colour between sexes are largely absent, [53] though females may have redder tones. [54] Fur colour does not seem to serve any camouflage purpose, with some scientists concluding that the blended colors have more to do with emphasizing certain gestures during interaction. [55] Black coloured wolves (which occur through wolf-dog hybridisation) rarely occur in Eurasia, where interactions with domestic dogs has been reduced over the past thousand years due to the depletion of wild wolf populations. [56] They are more common in North America; about half of the wolves in the reintroduced wolf population in Wyoming's Yellowstone National Park are black. [56] In southern Canada and Minnesota the black phase is more common than the white, though gray coloured wolves predominate. [52]
+
+Senses
+
+Their sense of smell is relatively weakly developed when compared to that of some hunting dog breeds, being able to detect carrion upwind no farther than 2–3 km. Because of this, they rarely capture hidden hares or birds, though they can easily follow fresh tracks. [57] Captive wolves are known to be able to detect what foods their handlers have eaten by smell. [58] Their auditory perception is very sharp, being able to hear up to a frequency of 26kH, [59] and is greater than that of foxes. Their hearing is sharp enough to register the fall of leaves in the autumn period. [57] The legend that wolves fear the sound of string instruments may have a basis in fact, as captive wolves in the Regent's Park Zoo were shown to exhibit signs of intense distress when hearing low minor chords. [60] Their eyesight is not as powerful as that of dogs, though their night vision is the most advanced of the Canidae. [57]
+
+Behaviour
+
+Social structure
+
+In popular literature, wolf packs are often portrayed as strictly hierarchical social structures with a breeding "alpha" pair which climbs the social ladder through fighting, followed by subordinate "beta" wolves and a low ranking "omega" which bears the brunt of the pack's aggression. This terminology is based heavily on the behaviour of captive wolf packs composed of unrelated animals, which will fight and compete against each other for status. Also, as dispersal is impossible in captive situations, fights become more frequent than in natural settings. In the wild, wolf packs are little more than nuclear families whose basic social unit consists of a mated pair, followed by its offspring. [61] Northern wolf packs tend not to be as compact or unified as those of African wild dogs and spotted hyenas, [62] though they are not as unstable as those of coyotes. [63] Southern wolves are more similar in social behaviour to coyotes and dingoes, living largely alone or in pairs. [64] The average pack consists of 5–11 animals; 1–2 adults, 3–6 juveniles and 1–3 yearlings, [65] though exceptionally large packs consisting of 42 wolves are known. Wolf packs rarely adopt other wolves into their fold, and typically kill them. In the rare cases where strange wolves are adopted, the adoptee is almost invariably a young animal of 1–3 years of age, while killed wolves are mostly fully grown. [66] The adoption of a new member can be a lengthy process, and can consist of weeks of exploratory, non-fatal attacks in order to establish whether or not the newcomer is trustworthy. [67] During times of ungulate abundance (migration, calving etc.), different wolf packs may temporarily join forces. [68] Wolves as young as five months and as old as five years have been recorded to leave their packs to start their own families, though the average age is 11–24 months. Triggers for dispersal include the onset of sexual maturity and competition within the pack for food and breeding. [69]
+
+Reproduction
+
+In areas with low wolf densities, wolves are generally monogamous. [70] Mated pairs usually remain together for life if one of the wolves does not die. Upon the death of one mated wolf, pairs are quickly re-established. Since males often predominate in any given wolf population, unpaired females are a rarity. [71] Polygamy does occur, but primarily in captive situations. Multiple litters are rarely successful, due to infanticide by the pack's females. [72] The age of first breeding in wolves depends largely on environmental factors; when food is abundant, or when wolf populations are heavily managed, wolves can rear pups at younger ages in order to exploit the newly available resources. Captive wolves have been known to breed as soon as they reach 9–10 months, while the youngest recorded breeding wolves in the wild were 2 years old. Females are capable of producing pups every year, with one litter annually being the average. Unlike coyotes, wolves never reach reproductive senescence before they die. [73] Incest rarely occurs, though inbreeding depression has been reported to be a problem for wolves in Saskatchewan [74] and Isle Royale. [75]
+
+Estrus typically occurs in late winter, with older, multiparous females entering estrus 2–3 weeks earlier than younger females. Before the rut ensues, wolf packs will temporarily dissolve until the end of the mating season. [71] When receptive, females will avert the base of their tails to one side, exposing the vulva. During mating, the pair is locked into a copulatory tie which may last 5–36 minutes. Because estrus in wolves only lasts a month, the males do not abandon their mates to find other females to inseminate as dogs do. During pregnancy, female wolves will remain in a den located away from periphoral zone in their territory, where violent encounters with other packs are more likely. [76] Old females usually whelp in the den of their previous litter, while younger females typically den near their birthplace. The gestation period lasts 62–75 days, with pups usually being born in the summer period. [77] The average litter consists of 5–6 pups. Litters of 14–17 occur 1% of the time. [78] Litter sizes tend to increase in areas where prey is abundant. [79] Wolves bear relatively large pups in small litters compared to other canid species. [80] Pups are born blind and deaf, and are covered in short soft grayish-brown fur. They weigh 300–500 grams at birth, and begin to see after 9–12 days. The milk canines erupt after one month. Pups first leave the den after 3 weeks. At 1.5 months of age, they are agile enough to flee from danger. Mother wolves do not leave the den for the first few weeks, relying on the fathers to provide food for them and their young. [80] [81] Unlike wolf mothers, the fathers do not regurgitate the pup's food, but carry them pieces from a kill. If the mother dies prior to the pups weaning period, they are suckled by the pack's other females. [82] Pups begin to eat solid food at the age of 3–4 weeks. Pups have a fast growth rate during their first four months of life: during this period, the pup's weight can increase nearly 30 times. [80] [81]
+
+Denning and sheltering behaviour
+
+Wolves use different places for their diurnal rest; places with cover are preferred during cold, damp and windy weather, while wolves in dry, calm and warm weather readily rest in the open. During the autumn-spring period, when wolves are more active, they willingly lie out in the open, whatever their location. Actual dens are usually constructed for pups during the summer period. When building dens, females make use of natural shelters such as fissures in rocks, cliffs overhanging riverbanks and holes thickly covered by vegetation. Sometimes, the den is the appropriated burrow of smaller animals such as foxes, badgers or marmots. An appropriated den is often widened and partly remade. On rare occasions, female wolves will dig burrows themselves, which are usually small and short with 1-3 openings. [83] Wolves do not line their denning places, a likely precaution against parasites. [84] The den is usually constructed not more than 500 metres away from a water source. Resting places, play areas for the pups and food remains are commonly found around wolf dens. The odour of urine and rotting food emanating from the denning area often attracts scavenging birds such as magpies and ravens. As there are few convenient places for burrows, wolf dens are usually occupied by animals of the same family. Though they mostly avoid areas within human sight, wolves have been known to nest near domiciles, paved roads and railways. [83]
+
+Territorial behaviours
+
+Wolves are highly territorial animals, and generally establish territories far larger than they require to survive in order to assure a steady supply of prey. Territory size depends largely on the amount of prey available: in areas with an abundance of prey, the territories of resident wolf packs are smaller. Wolf packs travel constantly in search of prey, covering roughly 9% of their territory per day (average 25 km/d or 15 mi/d). The core of their territory is on average 35 km2 (14 sq mi), in which they spend 50% of their time. [85] Prey density tends to be much higher in the territory's surrounding areas. Despite this higher abundance of prey, wolves tend to avoid hunting in the fringes of their territory unless desperate, due to the possibility of fatal encounters with neighboring packs. [86] The size of their territory may increase when the pack's pups reach the age of 6 months, and thus have the same nutritional requirements as adults. The smallest territory on record was held by a pack of six wolves in northeastern Minnesota, which occupied an estimated 33 km2. The largest was held by an Alaskan pack of ten wolves encompassing a 6,272 km2 area. In some areas, wolves may shift territories during their prey's migration season. [87]
+
+Wolves defend their territories from other packs through a combination of scent marking, direct attacks and howling (see Communication). Scent marking is used for territorial advertisement, and involves urination, defecation and ground scratching. Scent marks are generally left every 240 metres throughout the territory on regular travelways and junctions. Such markers can last for 2–3 weeks, [87] and are typically placed near rocks, boulders, trees or the skeletons of large animals. [88] When scent marking and howling fail to deter strange wolf packs from entering another's territory, violent interactions can ensue. [87] Territorial fights are among the principal causes of wolf mortality: one study on wolf mortality in Minnesota and the Denali National Park and Preserve concluded that 14–65% of wolf deaths were due to predation by other wolves. [89] In fact, 91% of wolf fatalities occur within 3.2 km (2.0 mi) of the borders between neighboring territories. [90] Because the consequences of trespassing can be fatal, such incursions are thought to be largely due to desperation or deliberate aggressiveness. [87]
+
+Diet
+
+Wolves primarily feed on medium to large sized ungulates (sometimes 10–15 times larger than themselves [91]), though they are not fussy eaters. Medium and small sized animals preyed on by wolves include marmots, hares, badgers, foxes, polecats, ground squirrels, mice, hamsters, voles and other rodents, as well as insectivores. They frequently eat waterfowl (particularly during their moulting period and winter, when their greasy and fatty meat helps wolves build up their fat reserves) and their eggs. [92] [93] When such foods are insufficient, they will prey on lizards, snakes, frogs, rarely toads and large insects. In times of scarcity, wolves will readily eat carrion, visiting cattle burial grounds and slaughter houses. [92] Wolf packs in Astrakhan will hunt Caspian seals on the Caspian Sea coastline. [94] Some wolf packs in Alaska and Western Canada have been observed to feed on salmon. [95] Cannibalism is not uncommon in wolves; during harsh winters, packs often attack weak or injured wolves, and may eat the bodies of dead pack members. [96] [97] [98] However, they are not known to eat their young as coyotes sometimes do. [82] Humans are rarely, but occasionally preyed upon (see Attacks on humans). [99] [100] [101] [102] Wolves will supplement their diet with fruit and vegetable matter; they willingly eat the berries of mountain ash, lily of the valley, bilberries, blueberries and cowberry. Other fruits include nightshade, apples and pears. They readily visit melon fields during the summer months. [96] Wolves can survive without food for long periods; two weeks without food will not weaken a wolf's muscle activity. [34]
+
+In Eurasia, many wolf populations are forced to subsist largely on livestock and garbage in areas with dense human activity, though wild ungulates such as moose, red deer, roe deer and wild boar are still important food sources in Russia and the more mountainous regions of Eastern Europe. Other prey species include reindeer, mouflon, wisent, saiga, ibex, chamois, wild goats, fallow deer and musk deer. [103] The prey animals of North American wolves have largely continued to occupy suitable habitats with low human density, and cases of wolves subsisting largely on garbage or livestock are exceptional. Animals commonly preyed on by North American wolves include moose, white-tailed deer, elk, mule deer, mountain sheep and caribou. [104]
+
+Hunting and feeding behaviours
+
+Although wolf packs do cooperate strategically in bringing down prey, they do not do so as frequently or as effectively as lionesses do; unlike lions, wolves rarely remain with their pack for more than two years, thus they have less time to learn how to hunt cooperatively. Contrary to lion prides, food acquisition per wolf decreases with pack size. [105] Overall, single wolves or mated pairs typically have higher success rates in hunting than do large packs. Single wolves have occasionally been observed to kill large prey such as moose, bison and muskoxen unaided. [106] When hunting, wolves will attempt to conceal themselves as they approach their prey. With ungulate herds, they then either attempt to break up the herd, or isolate one or two animals from it. [107] If the targeted animal stands its ground, the wolves either ignore it, or try to intimidate it into running. [108] When chasing small prey, wolves will attempt to catch up with their prey as soon as possible. With larger animals, the chase is prolonged, in order to wear the selected prey out. [106] Wolves usually give up chases after 1–2 km, though one wolf was recorded to chase a deer for 21 km. [31] Sometimes, a single wolf will distract the herd with its presence, acting as a decoy, while its pack mates attack from behind. [109] Wolf packs may also set up ambush trails; Indian wolves have been observed to chase gazelle herds through ravines where other wolves lie in wait within holes dug prior to the hunt, [110] while Russian wolves will set up ambushes near water holes, sometimes using the same site repeatedly. [107] Both Russian and North American wolves have been observed to drive prey onto crusted ice, precipices, ravines, slopes and steep banks to slow them down. [111] Mature wolves usually avoid attacking large prey frontally, instead focusing on the rear and sides of the animal. They kill large prey by biting large chunks of flesh from the soft perinium area, causing massive blood loss. Such bites can cause wounds 10–15 cm in length, with three such bites to the perinium usually being sufficient to bring down a large deer in optimum health. [111] When attacking moose, they occasionally bleed it to death by biting its soft nose. [97] With medium-sized prey such as sheep, wolves may grab the animal by the neck and stun it by jerking its head downward, hitting its nose on the ground. [9] When prey is vulnerable and abundant, wolves may occasionally surplus kill. Such incidences are common against domestic animals, but rare in the wild. In the wild, surplus killing primarily occurs during late winter or spring, when snow is unusually deep (thus impeding the movements of prey) [112] or during the denning period, when wolves require a ready supply of meat when denbound. [113] Surplus killing may also occur when adult wolves are teaching their young to hunt. [114]
+
+The breeding pair typically monopolises food in order to continue producing pups. When food is scarce, this is done at the expense of other family members, especially non-pups. [93] [115] This is in marked contrast to the feeding behaviours of dholes and African wild dogs, who give priority to their pups when feeding. [116] The breeding pair typically eats first, though as it is they who usually work the hardest in killing prey, they may rest after a long hunt and allow the rest of the family to eat unmolested. Once the breeding pair has finished eating, the rest of the family will tear off pieces of the carcass and transport them to secluded areas where they can eat in peace. Wolves typically commence feeding by consuming the larger internal organs of their prey, such as the heart, liver, lungs and stomach lining. The kidneys and spleen are eaten once they are exposed, followed by the muscles. [117]
+
+Relationships with other predators
+
+Wolves typically dominate other canid species in areas where they are sympatric. In North America, incidences of wolves killing coyotes are common, with such incidences being especially common in winter, when coyotes feed on wolf kills. Wolves may attack coyote den sites, digging out and killing the pups. They rarely eat the coyotes they kill. There are no records of coyotes killing wolves, though coyotes may chase wolves if they outnumber them. [118] [119] Near identical interactions have been observed in Eurasia between wolves and golden jackals, with the latter's numbers being comparatively small in areas with high wolf densities. [118] [120] [121] Wolves are the most important predator of raccoon dogs, killing large numbers of them in the spring and summer periods. [122] Wolves also kill red, arctic and corsac foxes, usually in disputes over carcasses. They may eat the foxes they kill. [123] [124] In Asia, they may compete with dholes. [125]
+
+Brown bears are encountered by wolves in both Eurasia and North America. Generally, the outcome of such encounters depends on context: brown bears typically prevail against wolves in disputes over carcasses, while wolves mostly prevail against bears when defending their den sites. Both species will kill each other's young. Wolves will eat the brown bears they kill, while brown bears seem to only eat young wolves. [126] American black bears occur solely in the Americas. Wolf interactions with black bears are much rarer than with brown bears, due to differences in habitat preferences. The majority of black bear encounters with wolves occur in the species' northern range, with no interactions being recorded in Mexico. Wolves have been recorded on numerous occasions to actively seek out black bears in their dens and kill them without eating them. Unlike brown bears, black bears frequently lose against wolves in disputes over kills. [127] While encounters with brown and black bears appear to be common, polar bears are rarely encountered by wolves, though there are two records of wolf packs killing polar bear cubs. [128] Wolves will also kill the cubs of Asian black bears. [129] When attacking bears in daylight, wolf packs have been known to harry their quarry and wait till nightfall before making the final assault, as wolves have better night vision than bears. [130]
+
+Wolves may encounter striped hyenas in Israel and Central Asia, usually in disputes over carcasses. Hyenas feed extensively on wolf killed carcasses in areas where the two species interact. On a one to one basis, hyenas dominate wolves, though wolf packs can drive off single hyenas. [131]
+
+Large wolf populations limit the numbers of small to medium sized felines. Wolves encounter cougars along portions of the Rocky Mountains and adjacent mountain ranges. Wolves and cougars typically avoid encountering each other by hunting on different elevations. In winter however, when snow accumulation forces their prey into valleys, interactions between the two species become more likely. Although they rarely interact, wolves and cougars will kill each other, with packs of the former sometimes usurping the latter's kills. [132] They hunt steppe cats, and may pose a threat to snow leopards. [133] Wolves may reduce Eurasian lynx populations. [134]
+
+Other than humans, tigers appear to be the only serious predators of wolves. [133] [135] [136] [137] In areas where wolves and tigers share ranges, such as the Russian Far East, the two species typically display a great deal of dietary overlap, resulting in intense competition. Wolf and tiger interactions are well documented in Sikhote-Alin, which until the beginning of the 20th century, held very few wolves. It is thought by certain experts that wolf numbers increased in the region after tigers were largely eliminated during the Russian colonization in the late 19th and early 20th centuries. This is corroborated by native inhabitants of the region claiming that they had no memory of wolves inhabiting Sikohte-Alin until the 1930s, when tiger numbers decreased. Tigers depress wolf numbers, either to the point of localized extinction or to such low numbers as to make them a functionally insignificant component of the ecosystem. Wolves appear capable of escaping competitive exclusion from tigers only when human persecution decreases the latter's numbers. Today wolves are considered scarce in tiger inhabited areas, being found in scattered pockets, and usually seen traveling as loners or in small groups. First hand accounts on interactions between the two species indicate that tigers occasionally chase wolves from their kills, while wolves will scavenge from tiger kills. Tigers are not known to prey on wolves, though there are four records of tigers killing wolves without consuming them. [138] This competitive exclusion of wolves by tigers has been used by Russian conservationists to convince hunters in the Far East to tolerate the big cats, as they limit ungulate populations less than wolves, and are effective in controlling the latter's numbers. [139]
+
+Communication
+
+Body language
+
+Postural communication in wolves is composed of a variety of facial expressions, tail positions and piloerection. [59] Aggressive or self assertive wolves are characterised by their slow and deliberate movements, high body posture and raised hackles, while submissive ones carry their bodies low, sleeken their fur and lower their ears and tail. [140] When breeding males encounter subordinate family members, they may stare at them, standing erect and still with their tails horizontal to their spine. [141] The pre-caudal scent glands may play a role in expressing aggression, as combative wolves will raise the base of their tails whilst drooping the tip, thus positioning the scent glands at the highest point. [142]
+
+Two forms of submissive behaviour are recognised: passive and active. Passive submission usually occurs as a reaction to the approach of a dominant animal, and consists of the submissive wolf lying partly on its back and allowing the dominant wolf to sniff its anogenital area. Active submission occurs often as a form of greeting, and involves the submissive wolf approaching another in a low posture, and licking the other wolf's face. [143]
+
+When wolves are together, they commonly endulge in behaviours such as nose pushing, jaw wrestling, cheek rubbing and facial licking. The mouthing of each other's muzzles is a friendly gesture, while clamping on the muzzle with bared teeth is a dominance display. Dominant wolves may assert themselves by straddling over a subordinate family member. [144] At a kill, wolves will protect the carcass from afar from other wolves by flattening their ears outwardly, thus indicating that they are covering something belonging to them. [145]
+
+Howling
+
+Wolves howl to assemble the pack (usually before and after hunts), to pass on an alarm (particularly at a den site), to locate each other during a storm or unfamiliar territory and to communicate across great distances. [146] Howling consists of a fundamental frequency which may lie between 150 and 780 Hz, and consists of up to 12 harmonically related overtones. The pitch usually remains constant or varies smoothly, and may change direction as many as four or five times. [24]
+
+Wolf howls are generally indistinguishable from those of large dogs. [147] Male wolves give voice through an octave, passing to a deep bass with a stress on "O", while females produce a modulated nasal baritone with stress on "U". Pups almost never howl, while yearling wolves produce howls ending in a series of dog-like yelps. [148] Howls used for calling pack mates to a kill are long, smooth sounds similar to the beginning of the cry of a horned owl. When pursuing prey, they emit a higher pitched howl, vibrating on two notes. When closing in on their prey, they emit a combination of a short bark and a howl. [147] When howling together, wolves harmonize rather than chorus on the same note, thus creating the illusion of there being more wolves than there actually are. [146] Lone wolves typically avoid howling in areas where other packs are present. [149] Wolves do not respond to howls in rainy weather and when satiated. [148]
+
+Other vocalisations
+
+Other vocalisations of wolves are usually divided into three categories: growls, barks and whines. [150] Barking has a fundamental frequency between 320–904 Hz, [24] and is usually emitted by startled wolves. Wolves do not bark as loudly or continuously as dogs do, but will bark a few times and retreat from perceived danger. [150] In captivity, wolves may learn to bark more often if they hear dogs doing so. [151]
+
+Growling has a fundamental frequency of 380–450 Hz, [24] and is usually emitted during food challenges. Pups commonly growl when playing. One variation of the howl is accompanied by a high pitched whine, which precedes a lunging attack. [146] Whining is associated with situations of anxiety, curiosity, inquiry and intimacy such as greeting, feeding pups and playing. [150]
+
+Hybridisation
+
+Wolf-dogs
+
+Main articles: Wolf-dog hybrid and Black wolf (animal)
+
+Although dogs and wolves are genetically very close, and have shared vast portions of their ranges for millennia, the two generally do not voluntarily interbreed in the wild. They can produce viable offspring, with all subsequent generations being fertile, [15] as opposed to coydogs and jackal-dog hybrids. [152] The captive breeding of wolf-dog hybrids has proliferated in the United States, with 300,000 such animals being present there. [15] The most commonly used dog breeds for this purpose are of the spitz group. [153] Although wolves normally kill dogs, lone wolves may fraternise with guard or herding dogs as surrogate pack members. [154] [155] Most wolf-dog matings in the wild involve female wolves soliciting male dogs. [15] Wolf-hybrids may be bolder than pure wolves, and thus more dangerous to livestock and human life. [156] In the wild, hybrids may preferentially associate and mate with dogs and other hybrids [155] and live on the periphery of human settlements more readily. [156] Although wolf-dog hybridisation in Europe has raised concern among conservation groups fearing for the wolf's purity, an analysis on the mtDNA sequences show that introgression of dog genes into European wolf populations does not pose a significant threat. Also, as wolf and dog mating seasons do not fully coincide, the likelihood of wild wolves and dogs mating and producing surviving offspring is small. [157] Like pure wolves, hybrids breed annually, though their mating season occurs 3 months earlier, with pups mostly being born in the winter period, thus lessening their chances of survival. [15] Although it is popularly believed that some Inuit tribes mate their sled dogs to wolves in order to improve their stamina, this is likely untrue, as wolf hybrids are generally unable to cooperate effectively in pulling harnesses, and their stamina is much less than that of sled dogs. [158] At least two wolf-dog breeds have been created in Europe, the Saarlooswolfhond and the Czechoslovakian Wolfdog, both by crossing wolves with German shepherds. [153]
+
+Coywolves
+
+Main article: Coywolf
+
+The offspring is generally intermediate in size to both parents, being larger than a pure coyote, but smaller than a pure wolf. A study showed that of 100 coyotes collected in Maine, 22 had half or more wolf ancestry, and one was 89 percent wolf. A theory has been proposed that the large eastern coyotes in Canada are actually hybrids of the smaller western coyotes and wolves that met and mated decades ago as the coyotes moved toward New England from their earlier western ranges. [160] These eastern coyote populations also have fewer sweat glands in their pawpads than western coyotes, but have more than wolves. [41] Researchers in the Northeast and Canada say the population of coywolf hybrids is growing in the Northeast region. [161] The red wolf is thought by certain scientists to be in fact a wolf/coyote hybrid rather than a unique species. Strong evidence for hybridization was found through genetic testing which showed that red wolves have only 5% of their alleles unique from either gray wolves or coyotes. Genetic distance calculations have indicated that red wolves are intermediate between coyotes and gray wolves, and that they bear great similarity to wolf/coyote hybrids in southern Quebec and Minnesota. Analyses of mitochondrial DNA showed that existing red wolf populations are predominantly coyote in origin. [159]
+
+Range and populations
+
+Main article: List of grey wolf populations by country
+
+See also: History of wolves in Yellowstone, Wolves in Great Britain, and Wolves in Ireland
+
+The gray wolf was once the world's most widely distributed mammal, living north of 15°N latitude in North America and 12°N in Eurasia. [162] Wolves tend to have difficulty adapting to human induced changes, and are often referred to as an indicator species; a species delineating an ecoregion or indicating an environmental condition such as a disease outbreak, pollution, species competition, or climate change. Wolves do not seem to be able to adapt as readily to expanding civilization the way coyotes do. While human expansion has seen an increase in the latter's numbers, it has caused a drop in those of the former. [163]
+
+Despite not being at risk for extinction, local populations of wolves are still threatened. One such threat is genetic bottlenecking caused by population fragmentation. [157] Human populations have isolated small pockets of animals, which then suffer the effects of inbreeding. Studies have shown that the reproduction rate in wolves is strongly related to genetic diversity. [164] Isolated wolf populations are greatly affected by the introduction of the alleles of even a single additional wolf. [157]
+
+With the exception of the Great Britain and Ireland, wolves were widespread in Europe during the 18th century. Wolves were exterminated from all central and northern European countries during the 19th century and the post WWII period. Remnant populations remain in Portugal, Spain, Italy, Greece and Finland, though Eurasian wolves have been recovering naturally in several parts of Europe; recolonising France, Germany, Sweden and Norway. The largest populations now occur in eastern Europe, primarily in Romania, the Balkans and Poland. [165]
+
+Wolf populations generally seem to be stable or increasing in most, but not all, Bern Convention nations. Limiting factors in member nations include a lack of acceptance of wolves (particularly in areas where they have made a comeback) due to concerns on livestock and dog predation and competition with hunters. Although properly regulated wolf harvests and control have been largely accepted as compatible with maintaining wolf numbers to economically acceptable levels, overhunting and poaching are recognised as the main limiting factor in European wolf populations. [166]
+
+With the exception of Israel and Saudi Arabia, there is little information available on wolves in the Middle East. The Arabian Peninsula is home to an estimated 300–600 wolves which, though hunted year round in all Middle Eastern countries except Israel, are relatively stable and protected by the inaccessibility of the northern mountains and central and northern deserts. In India, wolves are classed as endangered, and number an estimated 800-3,000 individuals scattered among several remnant populations. In China and Mongolia, wolves are not protected except in reserves. [167]
+
+Wolves once ranged over much of North America north of Mexico City, save for parts of California. Today, their status varies by country, state and province. Canadian and Alaskan wolves number in thousands and are in excellent biological condition. Wolves have expanded from Canada to the northern Rocky Mountains since the 1970s, establishing themselves southward in Montana, Washington, Idaho and Wyoming. In 1994, wolves from Alberta and British Columbia were captured and introduced into Yellowstone National Park, where they had been extinct since the 1930s. A similar introduction took place in 1998 in the Apache National Forest in Arizona. [168] A small, isolated group of wolves on Isle Royale is believed to be suffering from the effects of reduced genetic variability. In 1991, the population was reduced from 50 to 12 wolves. Studies have shown that this reduction has coincided with a 50% loss of allozyme heterozygosity. [169]
+
+Diseases and parasites
+
+Because wolves travel great distances, they may play an important role in spreading and maintaining diseases in certain areas. Infectious diseases spread by wolves include brucellosis, tularemia, listeriosis and anthrax. Wolves may also suffer from rabies: wolves are a major host for the disease in Russia, Iran, Afghanistan, Iraq and India. [170] Canine distemper seems to only pose a serious problem for wolves in Canada and Alaska. [171] Wolves also carry the Canine coronavirus, with infections being most prevalent in winter months. [172]
+
+However, gray wolf populations are remarkably resilient against disease outbreaks. Usually, a wolf displaying the first symptoms of disease will leave its pack, thus preventing the sickness from spreading to its pack mates. Wolves in the former Soviet Union have been recorded to carry over 50 different parasite species. [170] Ticks carried by wolves include Ixodes ricinus, Dermacentor pictus and Sarcoptes scabiei (or mange mite). Unlike foxes, wolves rarely develop full blown mange. Other ectoparasites include biting lice, sucking lice and the fleas Pulex irritans and Ctenocephalides canis. Endoparasites include nematodes such as Toxascaris leonina and T. canis. [173] Wolves are also carriers of Trichinella spiralis, the prelevance of which is significantly related to age. [174]
+
+Other endoparasites include cestodes such as Taenia pisiformis, T. hydatigena, Echinococcus granulosus, Mesocestoidea lineatus, Dioctophyme renale and the adult phase of Multiceps multiceps. [173] Wolves may carry Neospora caninum, which is of particular concern to farmers, as the disease can be spread to livestock; infected animals being three to thirteen times more likely to abort than those not infected. [175] Wolves suffering from tapeworms may deliberately forego eating fresh meat in favour of putrified flesh, in order to rid themselves of the parasites. [176]
+
+Wolves are highly resistant to radiation poisoning, as evidenced by wolves thriving in the zone of alienation north of Chernobyl, despite feeding extensively on highly radioactive ungulates. [177]
+
+Relationships with humans
+
+In folklore and mythology
+
+Main article: Wolves in folklore, religion and mythology
+
+See also: Asena, Capitoline Wolf, Fenris, Skinwalker, Warg, Werewolf, and Wolf of Gubbio
+
+Wolves appear prominently in the folklore and mythology of human cultures with which they are sympatric. In Norse and Japanese mythology, wolves were portrayed as almost god-like. In Japan (where wolves were known as ookami or "great god") grain farmers worshiped wolves at shrines and left food offerings near their dens, beseeching them to protect their crops from wild boars and deer, [6] while the wolf Fenrir of Norse mythology was depicted as the son of Loki. Certain cultures portrayed wolves as part of their foundation myths. In Roman mythology, the Capitoline Wolf nurses the future founders of Rome, Romulus and Remus. In the mythology of the Turks [178] and Ainu, wolves were believed to be the ancestors of their race, [6] while the Dena’ina believed wolves were once men, and viewed them as brothers. [179] Wolves were linked to the sun in some Eurasian cultures. The Ancient Greeks and Romans associated wolves with the sun god Apollo, [179] while the wolf Sköll in Norse mythology was depicted pursuing the setting sun. [180] Wolves were sometimes associated with witchcraft in both northern European and some Native American cultures. In Norse mythology, the völva (witch) Hyndla and the giantess Hyrrokin are both portrayed as using wolves as mounts. In Navajo culture, wolves were feared as witches in wolf's clothing. In the Navajo language, the word for "witch" (mai-cob) is synonymous with "wolf". [181] Similarly, the Tsilhqot'in believed that contact with wolves could cause mental illness and death. [179] According to the Pawnee creation myth, the wolf was the first animal to experience death. [182] Wolves are referenced thirteen times in the Bible as symbols of greed and destructiveness. [183]
+
+Livestock and dog predation
+
+Livestock depredation has been one of the primary reasons for hunting wolves, and can pose a severe problem for wolf conservation. As well as causing economic losses, the threat of wolf predation causes great stress on livestock producers, and no foolproof solution of preventing such attacks short of exterminating wolves has been found. Wolves typically resort to attacking livestock when wild prey is depleted: in Eurasia, a large part of the diet of some wolf populations consists of livestock, while such incidences are rare in North America, where healthy populations of wild prey have been largely restored. [184] However, certain wolves may become "addicted" to livestock, as the stomach lining of domestic ungulates has a higher fat content than that of wild herbivores. [176] The majority of losses occur during the summer grazing period. Untended livestock in remote pastures are the most vulnerable to wolf predation. [185] Some nations help offset economic losses to wolves through compensation programmes or state insurance. [186] Sheep are the most commonly taken livestock species in Europe, domestic reindeer in northern Scandinavia, cattle and turkeys in North America, goats in India and horses in Mongolia. [184] As wolves tend to attack large prey from behind, cattle may be more vulnerable to wolves than horses because the latter are better able to defend their hind quarters with powerful kicks. [187] Different subspecies of wolf may preferentially target different animals: small bodied wolves rarely molest adult cattle, while large northern wolves are able to kill fully grown steers and sometimes horses unaided. [188] The number of animals killed in single attacks varies according to species: most attacks on cattle and horses result in one death, while turkeys, sheep and domestic reindeer may be killed in surplus. [189] Wolves mainly attack livestock when the animals are grazing, though they will occasionally break into fenced enclosures. [111] Injuries caused by wolves on large bodied livestock include docked ears and tails, as well as slash wounds on the lower legs. [154] In some cases, wolves do not need to physically attack livestock in order to negatively affect them; the stress livestock experiences in being vigilant for wolves may result in miscarriages, decreased weight gain, and a decrease in meat quality. [175]
+
+Wolves will kill dogs on occasion, with some wolf populations relying on dogs as an important food source. [184] Wolves generally outmatch dogs, even large ones, in physical confrontations, because of their larger heads and teeth and stronger bites. [190] [191] Also, the fighting styles of wolves and dogs differ significantly; while dogs typically limit themselves to attacking the head, neck and shoulder, wolves will make greater use of body blocks, and attack the extremities of their opponents. [192] In Croatia, wolves kill more dogs than sheep, and wolves in Russia appear to limit stray dog populations. Wolves may display unusually bold behaviour when attacking dogs accompanied by people, sometimes ignoring nearby humans. [184] Wolf attacks on dogs may occur both in house yards and in forests. [193] On village outskirts, wolves may set up ambushes for dogs, with one wolf soliciting the dog to follow it and lead it to another wolf. [194] In some areas, livestock guardian dogs are fitted with wolf collars in order to protect themselves from wolf attacks. Wolves however may learn to avoid the spiked collars just as they do the antlers of ungulate prey, and still kill guard dogs. [195] Wolf attacks on hunting dogs are considered a major problem in Scandinavia and Wisconsin. [184] [193] The most frequently killed hunting breeds in Scandinavia are harriers, with older animals being most at risk, likely because they are less timid than younger animals, and react differently to the presence of wolves. Wolf-caused injuries on dogs are often located on the back, thighs and hind legs. The fatal wound is mostly a bite to the back of the neck. Large hunting dogs such as Swedish elkhounds are more likely to survive wolf attacks due to their better ability to defend themselves. [193]
+
+Attacks on humans
+
+Main article: Wolf attacks on humans
+
+Wolves are generally not dangerous to humans, as long as they are in low numbers, have sufficient food, have little contact with humans and are occasionally hunted. [196] The number of people attacked and killed by wolves varies geographically. Wolf attacks on humans were a rare, but occasional feature of life in pre-20th century Europe: in France alone, historical records indicate that during the period 1580–1830, 3,069 people were killed by wolves, of whom 1,857 were killed by non-rabid wolves. [197] Church and administrative accounts from Italy indicate that 440 humans were killed by wolves during the 15th and 19th centuries, occurring in the central part of the Po Valley, which once encompassed part of modern day Switzerland. [198] Prior to 1882, 94 children under the age of 12 were killed in Fennoscandia by non-rabid wolves in a 300 year period. [199] European Russia also records numerous attacks, particularly in pre-revolutionary times and after World War II. Between 1840 and 1861, 273 non-rabid attacks resulting in the deaths of 169 children and 7 adults occurred throughout Russia, [200] while between 1944 and 1950, 22 children between the ages of 3 and 17 were killed by wolves in the Kirov Oblast (see Kirov wolf attacks). [201] There are numerous documented accounts of wolf attacks in the Asian continent, with three Indian states reporting a large number of non-rabid attacks in recent decades. These attacks were well documented by trained biologists. [202] In Hazaribagh, Bihar for example, 100 children were injured and 122 killed from 1980 to 1986. [101] The North American continent has very few recorded incidences of such, [99] though the oral history of some Native American tribes confirms that wolves occasionally did kill humans. Tribes living in woodlands feared wolves more than their tundra-dwelling counterparts, as they could encounter wolves suddenly and at close quarters. [203] It is thought that the reason why so fewer attacks are recorded in North America than in Eurasia is linked to the former's historically greater availability of firearms, whose usage taught North American wolves to fear humans more than their Eurasian counterparts. [204] [205] [206] However, encounters with aggressive wolves in North America seem to be on the increase. One study revealed 80 events in Alaska and Canada where wolves closely approached or attacked people, finding 39 cases of aggression by apparently healthy wolves, and 29 cases of fearless behavior by nonaggressive wolves. [207]
+
+Recorded incidences of rabid wolves in Eurasia go far back as the 13th century. The number of cases of rabid wolves are however low when compared to other species. Wolves do not serve as primary reservoirs of the disease, but can catch it from other species such as dogs, [contradictory] jackals and foxes. Cases of rabies in wolves are very rare in North America, though numerous in the eastern Mediterranean, Middle East and Central Asia. Wolves apparently develop the "furious" phase of rabies to a very high degree. This, coupled with their size and strength, make rabid wolves perhaps the most dangerous of rabid animals, [208] with bites from rabid wolves being 15 times more dangerous than those of rabid dogs. [209] Rabid wolves usually act alone, travelling large distances and often biting large numbers of people and domestic animals. Most rabid wolf attacks occur in the spring and autumn periods. Unlike with predatory attacks, the victims of rabid wolves are not eaten, and the attack generally only lasts a day. [210] Also, the victims are chosen at random, though the majority of cases involve adult men. [211]
+
+Predatory attacks usually involve single wolves or packs that learn to exploit humans as prey. Such attacks may be preceded by a long period of habituation, in which wolves gradually lose their fear of humans. [212] The victims are generally attacked in a sustained manner around the neck and face, and are then dragged off and consumed, unless the wolves are disturbed. Such attacks tend to cluster in time and space until the offending animals are killed. [210] Predatory attacks can occur at any time of the year, with a peak in the June–August period, when the chances of people entering forested areas (for livestock grazing or berry and mushroom picking) increase [211], though cases of non-rabid wolf attacks in winter have been recorded in Belarus, the Kirovsk and Irkutsk districts, Karelia and Ukraine. [213] Also, wolves with pups experience greater food stresses during this period. The majority of victims of predatory wolf attacks are children under the age of 18 and, in the rare cases where adults are killed, the victims are almost always women. [211] Non-rabid wolves are able to distinguish between armed and unarmed people, [214] and will typically avoid investigating people who display self confident demeanors typical of being armed. [196]
+
+Wolves may react aggressively in self defense, though such attacks are mostly limited to quick bites on extremities, and the attacks are not pressed. [215]
+
+Hunting
+
+Main articles: Wolf hunting and Wolf hunting with dogs
+
+Wolves are notoriously difficult to hunt due to their elusiveness, their sharp senses, their high endurance in the chase and ability to quickly incapacitate and kill hunting dogs. [216] Historically, many methods have been devised to hunt wolves. [217] [218] In areas where wolves are a threat to livestock, the destruction of spring-born litters in their dens is a sure way of keeping wolf populations to a minimum. [219] When hunting wolves with dogs, usually combinations of sighthounds, bloodhounds and fox terriers are used. The sighthounds chase and immobilise wolves until the arrival of the heavier dogs which do most of the fighting. [220] Still hunting of wolves (alternately walking quietly and waiting concealed in the pursuit of game) is primarily practised in areas where the terrain is too rough for hunting with dogs, [221] though wolves are almost as hard to hunt with this method as cougars are. [216] Because of their sharp hearing, wolves are almost impossible to stalk, even when asleep. [57] Poisoning with strychnine was once practised, but is now generally unpopular, as it can cause the unintentional deaths of animals other than wolves, and wolves generally learn to recognise and avoid poisoned baits. [222] The ideal time for wolf poisoning was during the late summer and early autumn period, when pups were more likely to stray from their mothers and consume objects which they had yet to learn to avoid. [223] Foothold traps are effective, as long as no long lasting human odours are present on them. [224] Many Native American tribes favoured deadfall traps in capturing wolves. [225] Wolf traps are sometimes accompanied by scents (usually beaver or musk deer musk and wolf urine) or baits (venison or horse meat). [226] Traps however are not foolproof; because of their excellent vision, wolves can detect the flaws in hidden traps, even at night, [214] and wolves with prior experience of being trapped can teach their young to avoid them. [227] Hunting blinds can be effective against wolves, though they are seldom used, as their use requires much patience. [228] A popular method of wolf hunting in Russia involves trapping a pack within a small area by encircling it with flag poles carrying a human scent. This method relies heavily on the wolf's fear of human scents, though it can lose its effectiveness when wolves become accustomed to the smell. [229] Some hunters are able to lure wolves by imitating their calls, a method which is especially useful in winter and the mating season. [230] In Kazakhstan and Mongolia, wolves are traditionally hunted with eagles and falcons, though this practise is declining, as experienced falconers are becoming few in number. [231] Shooting wolves from aircraft is highly effective, as it allows greater visibility of wolves than hunting on the ground, [232] though this method is controversial, as it allows wolves little chance to escape or defend themselves. [233]
+
+Fur use
+
+Wolf pelts are primarily used for scarfs and the trimmings of women's garments, though they are occasionally used for jackets, short capes, coats, [234] mukluks and rugs. [24] The quality of wolf peltries rests on the density and strength of the fur fibre, which keeps the fur upright and gives the pelt an appealing bushy aspect. These characteristics are mostly found in northern wolf populations, but gradually lessen further south in warmer climates. North American wolf pelts are among the most valuable, as they are silkier and fluffier than Eurasian peltries. [234] The pelts of wolves killed by poison are mostly worthless. [235]
+
+In Medieval Europe, pelts were considered the only practical aspect of wolves, though they were seldom used, due to the skin's foul odour. [236] In Scandinavian folklore, wolf-skin girdles assisted in transforming the wearers into werewolves. [237] Several Native American tribes used wolf pelts for medicinal purposes, [225] though some Inuit tribes favour dog skin over wolf skin, as the latter is thinner, and more prone to tearing when sewn. [238] The Pawnee wore wolf skins as capes when exploring enemy territories. [239] The United States Army used wolf skin for parkas during the later stages of WWII and the Korean War to protect the faces of soldiers from frostbite. [234] In the Soviet Union, between 1976 and 1988, 30,000 wolf pelts were produced annually. Recent statistics from CITES indicate that 6,000–7,000 wolf skins are internationally traded each year, with Canada, the former Soviet Union, Mongolia and China being the largest exporters, and the United States and Great Britain being the largest importers. Overall, the harvesting of wolves for their fur has little impact on their population, as only the northern varieties (whose numbers are stable) are of commercial value. [240] Wolf trapping for fur remains a lucrative source of income for many Native Americans. [24]
+
+Wolves as pets
+
+Main article: Wolves as pets and working animals
+
+Keeping wolves as pets has grown in popularity. In the United States alone, there are an estimated 80,000-2 million privately owned wolves. Tame wolves tend to be less predictable and manageable than dogs. [241] While dogs typically alter their behaviours to accommodate their handlers, the opposite is true for tame wolves. [242] In contrast to dog pups, which are able to be socialised to humans at up to ten weeks of age, wolf pups are unable to do so after 19 days. [243] Because wolf milk contains more arginine than can be found in puppy milk substitutes, an arginine supplement is needed when feeding pups below the weaning age. Failure to do so can result in the pups developing cataracts. [244] Wolves lack any alteration of their predatory behaviour, and can thus not be fully trusted in situations where their prey drive can be given adequate stimulation. In contrast to dogs, which are usually accepting of strangers, treating them almost as an extension of their pack, wolves become increasingly xenophobic and intolerant of strangers not part of their immediate pack as they age. [192] While dogs readily, and actively form social bonds with humans, wolves can only do so in the absence of adult conspecifics. [245] Pups under one year of age are generally not aggressive toward strangers, though their aggression increases with age, particularly during the mating season. Males may be more aggressive and difficult to handle than females. [201] Wolves are difficult to contain in standard kennels, as they exceed dogs in observational learning and are able to quickly learn how to undo latches by simply watching their handlers do so. [246] Once wolves learn how to escape confinement, it becomes near impossible to contain them. [247]
+
+Though wolves are trainable, they lack the same degree of tractability seen in dogs. They are generally not as responsive as dogs are to coercive techniques involving fear, aversive stimuli and force. Generally, far more work is required to obtain the same degree of reliability seen in most dogs. Even then, once a certain behavior has been repeated several times, wolves may get bored and ignore subsequent commands. Wolves are most responsive toward positive conditioning and rewards, [248] though simple praise is not sufficient as in most dogs. [249] Unlike dogs, wolves tend to respond more to hand signals than voice. [249]
+
+See also
+
+* California Wolf Center
+
+References
+
+Notes
+
+* ^ Mech, L.D. & Boitani, L. (IUCN SSC Wolf Specialist Group) (2008). Canis lupus. In: IUCN 2008. IUCN Red List of Threatened Species. Downloaded on 22 March 2009. Database entry includes justification for why this species is of least concern.
+* ^ Macdonald, David; Claudio Sillero-Zubiri (2004). The Biology and Conservation of Wild Canids. Oxford: Oxford University Press. pp. 45–46. ISBN 0198515561.
+* ^ a b Mech & Boitani 2003, p. 239-45
+* ^ a b c d Hemmer 1990, p. 38-40
+* ^ Mech & Boitani 2003, p. 245-250
+* ^ a b c Walker, Brett L. (2005). The Lost Wolves Of Japan. ISBN 0295984929.
+* ^ Wozencraft, W. Christopher (16 November 2005). "Order Carnivora (pp. 532-628)". in Wilson, Don E., and Reeder, DeeAnn M., eds. Mammal Species of the World: A Taxonomic and Geographic Reference (3rd ed.). Baltimore: Johns Hopkins University Press, 2 vols. (2142 pp.). ISBN 978-0-8018-8221-0. http://www.bucknell.edu/msw3/browse.asp?id=14000738.
+* ^ a b c Hemmer 1990, p. 40
+* ^ a b Pocock 1941, p. 90
+* ^ Sharma, D. K., Maldonaldo, J. E., Jhala, Y. V., Fleischer, R. C. (2003) Ancient wolf lineages in India. Proceedings of the Royal Society, London B (Supplement) Biology Letters 271: S1–S4
+* ^ Lopez 1978, p. 15
+* ^ Corbett, L. K. The dingo in Australia and Asia (1995), Comstock/Cornell, p. 10, ISBN 080148264X
+* ^ Hemmer 1990, p. 107
+* ^ The Living Age, Littell, Son and Co., 1851
+* ^ a b c d e f Mech & Boitani 2003, p. 257
+* ^ Vila, C.; et al. (June 13, 1997). "Multiple and ancient origins of the domestic dog.". Science 276 (5319): 1687. doi:10.1126/science.276.5319.1687. PMID 9180076.
+* ^ Savolainen, Peter; Ya-ping Zhang, Jing Luo, Joakim Lundeberg, and Thomas Leitner (2002-11-22). "Genetic Evidence for an East Asian Origin of Domestic Dogs". Science 298 (5598): 1610–1613. doi:10.1126/science.1073906. PMID 12446907. http://adsabs.harvard.edu/abs/2002Sci...298.1610S.
+* ^ vonHoldt, Bridgett; et al. (2010-03-17). "Genome-wide SNP and haplotype analyses reveal a rich history underlying dog domestication". Nature 464 (7290): 898–902. doi:10.1038/nature08837. PMID 20237475.
+* ^ Pang et al (September 1, 2009). "mtDNA Data Indicate a Single Origin for Dogs South of Yangtze River, Less Than 16,300 Years Ago, from Numerous Wolves". Molecular Biology and Evolution. http://mbe.oxfordjournals.org/cgi/content/full/26/12/2849. Retrieved 2010-01-07.
+* ^ Coppinger & Coppinger 2001, p. 39-67
+* ^ a b Eckersley, Dominic Thyroxine’s Role in the Pre-Domestication of the Dog from Wild Dogs and Wolves; a Unique Opportunity to Reexamine Man’s and Dog’s Migration to the Americas, New York City, 2003.
+* ^ Mech & Boitani 2003, p. 225
+* ^ Hemmer 1990, p. 83
+* ^ a b c d e f g h i j k l m Mech 1974
+* ^ Coppinger & Coppinger 2001, p. 54-5
+* ^ Clutton-Brock 1987, p. 24
+* ^ Zimen 2003, p. 324
+* ^ a b c d Heptner & Naumov 1998, p. 166
+* ^ a b Lopez 1978, p. 23
+* ^ Graves 2007, p. 41
+* ^ a b Mech & Boitani 2003, p. 119
+* ^ Lopez 1978, p. 19-20
+* ^ Heptner & Naumov 1998, p. 172
+* ^ a b Graves 2007, p. 37
+* ^ Miller 1912, p. 309
+* ^ Therrien, F., Mandibular force profiles of extant carnivorans and implications for the feeding behaviour of extinct predators, Journal of Zoology Volume 267, Part 3, November 2005
+* ^ Mech & Boitani 2003, p. 112
+* ^ Lopez 1978, p. 26
+* ^ Seton 1909, p. 778
+* ^ Miller 1912, p. 313
+* ^ a b Coppinger & Coppinger 2001, p. 15 & 173
+* ^ Heptner & Naumov 1998, p. 129
+* ^ Miller 1912, p. 318
+* ^ Heptner & Naumov 1998, p. 197
+* ^ a b c Heptner & Naumov 1998, p. 174
+* ^ Pocock 1941, p. 80
+* ^ a b c Lopez 1978, p. 19
+* ^ a b c Lopez 1978, p. 18
+* ^ a b Graves 2007, p. 35
+* ^ Heptner & Naumov 1998, p. 167
+* ^ Heptner & Naumov 1998, p. 169
+* ^ a b Lopez 1978, p. 21
+* ^ Heptner & Naumov 1998, p. 168
+* ^ Lopez 1978, p. 22
+* ^ Lopez 1978, p. 45
+* ^ a b Anderson et al. Molecular and Evolutionary History of Melanism in North American Gray Wolves Science 6 March 2009: Vol. 323. no. 5919, pp. 1339–1343
+* ^ a b c d Heptner & Naumov 1998, p. 243
+* ^ Ellis 2010, p. 45
+* ^ a b Lopez 1978, p. 43
+* ^ Cornish et al. 1902, p. 90
+* ^ Mech, L. David Whatever happened to the term alpha wolf?, International Wolf, Winter 2008
+* ^ Kruuk, Hans (1972). The Spotted Hyena: A study of predation and social behaviour. New York: Parkwest. pp. 277–79. ISBN 0563208449.
+* ^ Bekoff, Marc Canis latrans MAMALIAN SPECIES No. 79, pp. 1–9, 6 figs. Published 15 June 1977 by The American Society of Mammologists
+* ^ Hemmer 1990, p. 96
+* ^ Heptner & Naumov 1998, p. 222
+* ^ Mech & Boitani 2003, p. 2
+* ^ Ellis 2010, p. 46
+* ^ Heptner & Naumov 1998, p. 225
+* ^ Mech & Boitani 2003, p. 12-13
+* ^ Mech & Boitani 2003, p. 38
+* ^ a b Heptner & Naumov 1998, p. 248
+* ^ Mech & Boitani 2003, p. 59
+* ^ Mech & Boitani 2003, p. 175
+* ^ "Wolves in national park becoming isolated, say biologists". CBC.news.ca. http://www.cbc.ca/health/story/2005/01/10/wolves-inbreeding050110.html. Retrieved 2008-08-30.
+* ^ "In Long Running Wolf-Moose Drama, Wolves Recover from Disaster". Michigan Technological University. http://www.admin.mtu.edu/urel/PressReleases/feature/wolves/wolf.html. Retrieved 2008-08-30.
+* ^ Mech & Boitani 2003, p. 42-46
+* ^ Heptner & Naumov 1998, p. 249
+* ^ Graves 2007, p. 42
+* ^ Mech & Boitani 2003, p. 176
+* ^ a b c Mech & Boitani 2003, p. 46-49
+* ^ a b Heptner & Naumov 1998, p. 253-54
+* ^ a b Seton 1909, p. 761-2
+* ^ a b Heptner & Naumov 1998, p. 234-39
+* ^ Seton 1909, p. 760
+* ^ W Jedrzejewski, K Schmidt, J Theuerkauf, BJ edrzejewska and R Kowalczyk. Territory size of wolves Canis lupus: linking local (Białowieża Primeval Forest, Poland) and Holarctic-scale patterns.
+* ^ Mech, David. "Wolf-pack Buffer Zones as Prey Reservoirs". Science 198.
+* ^ a b c d Mech & Boitani 2003, p. 19-26
+* ^ Heptner & Naumov 1998, p. 226
+* ^ Huber, Đuro Huber; Josip Kusak, Alojzije Frković, Goran Gužvica. "Causes of wolf mortality in Croatia in the period 1986–2001" (PDF). Veterinarski Arhiv 72 (3): 131–139. http://www.environmental-studies.de/Wolf_mortality_Croatia.pdf. Retrieved 2007-07-20.
+* ^ Mech, D, L. D. (1 February 1994). "Buffer zones of territories of gray wolves as regions of intraspecific strife". Journal of mammalogy 75 (1): 199. doi:10.2307/1382251. ISSN 00222372. http://jstor.org/stable/1382251.
+* ^ Zimen 2003, p. 9-10
+* ^ a b Heptner & Naumov 1998, p. 213
+* ^ a b Ellis 2010, p. 50
+* ^ Graves 2007, p. 75
+* ^ Woodford, Riley. "Alaska's Salmon-Eating Wolves". Wildlifenews.alaska.gov. http://www.wildlifenews.alaska.gov/index.cfm?adfg=wildlife_news.view_article&articles_id=86. Retrieved 2010-03-16.
+* ^ a b Heptner & Naumov 1998, p. 214
+* ^ a b Graves 2007, p. 46
+* ^ Klein, D. R. 1995. The introduction, increase, and demise of wolves on Coronation Island, Alaska. Pages 275–280 in L. N. Carbyn, S. H. Fritts, and D. R. Seip, editors. Ecology and conservation of wolves in a changing world. Canadian Circumpolar Institute, Occasional Publication No. 35.
+* ^ a b Linnell 2002
+* ^ Heptner & Naumov 1998, p. 267-68
+* ^ a b Rajpurohit, K.S. 1999. Child lifting: Wolves in Hazaribagh, India. Ambio 28:162–166.
+* ^ Pocock 1941, p. 94
+* ^ Mech & Boitani 2003, p. 107
+* ^ Mech & Boitani 2003, p. 109
+* ^ Mech & Boitani 2003, p. 122
+* ^ a b Mech & Boitani 2003, p. 121
+* ^ a b Graves 2007, p. 43
+* ^ Mech & Boitani 2003, p. 120
+* ^ Cornish et al. 1902, p. 85
+* ^ NATURAL HISTORY OF THE MAMMALIA OF INDIA AND CEYLON by Robert A. Sterndale, THACKER, SPINK, AND CO. BOMBAY: THACKER AND CO., LIMITED. LONDON: W. THACKER AND CO. 1884.
+* ^ a b c Graves 2007, p. 45
+* ^ Mech & Boitani 2003, p. 144
+* ^ Lopez 1978, p. 54-55
+* ^ Graves 2007, p. 67
+* ^ Mech & Boitani 2003, p. 58
+* ^ Fox, Michael W. (1984) The Whistling Hunters: Field Studies of the Indian Wild Dog (Cuon alpinus), p.86-7, State University of New York Press, ISBN 0873958624
+* ^ Mech & Boitani 2003, p. 122-5
+* ^ a b Mech & Boitani 2003, p. 266-68
+* ^ Jim Robbins (1998). "Weaving A New Web: Wolves Change An Ecosystem". Smithsonian National Zoological Park. http://nationalzoo.si.edu/Publications/ZooGoer/1998/3/weavingwolfweb.cfm. Retrieved 2007-08-10.
+* ^ Giannatos, G., 2004. Conservation Action Plan for the golden jackal Canis aureus L. in Greece. WWF Greece. pp. 47
+* ^ Heptner & Naumov 1998, p. 158
+* ^ Heptner & Naumov 1998, p. 114-115
+* ^ Mech & Boitani 2003, p. 269
+* ^ Heptner & Naumov 1998, p. 357, 455 & 545
+* ^ Heptner & Naumov 1998, p. 585
+* ^ Mech & Boitani 2003, p. 261-63
+* ^ Mech & Boitani 2003, p. 263-64
+* ^ "Wolf (Canis lupus) Predation of a Polar Bear (Ursus maritimus) Cub on the Sea Ice off Northwestern Banks Island, Northwest Territories, Canada. ARCTIC VOL. 59, NO. 3 (SEPTEMBER 2006) P. 322– 324" (PDF). http://pubs.aina.ucalgary.ca/arctic/Arctic59-3-322.pdf. Retrieved 2010-03-16.
+* ^ Heptner & Naumov 1998, p. 730
+* ^ Ellis 2010, p. 39
+* ^ Mills, Gus & Hofer, Heribert (editors) Hyaenas: status survey and conservation action plan, IUCN/SSC Hyaena Specialist Group, 1998, ISBN 2831704421, p. 24-5
+* ^ Mech & Boitani 2003, p. 264-65
+* ^ a b Heptner, V. G. & Sludskii, A. A. Mammals of the Soviet Union: Carnivora (hyaenas and cats), Volume 2 (1992), BRILL, ISBN 9004088768
+* ^ Sunquist, Melvin E. & Sunquist, Fiona Wild cats of the world p.167, University of Chicago Press, 2002, ISBN 0226779998
+* ^ Lopez 1978, p. 29
+* ^ Heptner & Naumov 1998, p. 255
+* ^ Mech & Boitani 2003, p. 265
+* ^ Miquelle, D.G., Stephens, P.A., Smirnov, E.N., Goodrich, J.M., Zaumyslova, O.Yu. & Myslenkov, A.I. 2005. Tigers and Wolves in the Russian Far East: Competitive Exclusion, Functional Redundancy and Conservation Implications. In Large Carnivores and the Conservation of Biodiversity. Ray, J.C., Berger, J., Redford, K.H. & Steneck, R. New York: Island Press. 179–207.
+* ^ Fulbright, Timothy E. & Hewitt, David G. Wildlife Science: Linking Ecological Theory and Management Applications, CRC Press, 2007, ISBN 0849374871, p.118
+* ^ Mech & Boitani 2003, p. 90
+* ^ Lopez 1978, p. 44
+* ^ Seton 1909, p. 773
+* ^ Mech & Boitani 2003, p. 93
+* ^ Lopez 1978, p. 47
+* ^ Ellis 2010, p. 51
+* ^ a b c Lopez 1978, p. 38
+* ^ a b Seton 1909, p. 770
+* ^ a b Heptner & Naumov 1998, p. 262
+* ^ Mech & Boitani 2003, p. 16
+* ^ a b c Lopez 1978, p. 39-41
+* ^ Mivart 1890, p. 5
+* ^ Feddersen-Petersen, Doris, Hundepsychologie, 4. Auflage, 2004, Franck-Kosmos-Verlag 2004
+* ^ a b Cusdin, P. A. The Keeping of Wolf-Hybrids in Great Britain, RSPCA 2000
+* ^ a b Graves 2007, p. 10
+* ^ a b Zimen 2003, p. 363-370
+* ^ a b Graves 2007, p. 32 & 52-3
+* ^ a b c Vilà, Carles & Wayne, Robert K., Hybridization between Wolves and Dogs, Conservation Biology, Pages 195–198, Vol. 13, No. 1. February 199
+* ^ Coppinger & Coppinger 2001, p. 186
+* ^ a b "The red wolf (Canis rufus) – hybrid or not?" (PDF). Montana State University. http://www.montana.edu/~wwwbi/staff/creel/bio480/The%20red%20wolf.pdf. Retrieved 2010-02-01.
+* ^ Zimmerman, David. "Eastern Coyotes Are Becoming Coywolves". Caledonian-Record. http://ncmg.blogspot.com/2005/07/coy-dogs-maybe-not.html. Retrieved 2010-02-01.
+* ^ Johnson, Edie (February 10, 2006). "Coywolf: Are they a suburban legend, or a natural fact?". The Chronicle. Straus Newspapers. http://www.strausnews.com/articles/2006/02/13/the_chronicle/news/4ch.txt. Retrieved 2010-02-01.
+* ^ ""IUCN Red List – Canis Lupus"". http://www.iucnredlist.org/apps/redlist/details/3746/0/full.
+* ^ Coppinger & Coppinger 2001, p. 23
+* ^ "Olof Liberg et al." (2005). Biology letters title="Severe inbreeding depression in a wild wolf (Canis lupus) population".
+* ^ Boitani, L., Action plan for the conservation of wolves in Europe (Canis lupus), Nature and environment, Issue 113, Council of Europe, 2000 ISBN 9287144257
+* ^ Salvatori, V. & Linnel, J., Report on the conservation status and threats for wolf (Canis lupus) in Europe, CONVENTION ON THE CONSERVATION OF EUROPEAN WILDLIFE AND NATURAL HABITATS, Strasbourg, 7 November 2005
+* ^ Mech & Boitani 2003, p. 326-8
+* ^ Mech & Boitani 2003, p. 321-4
+* ^ Wayne, R.K., et al. (1991). "Conservation Genetics of the Endangered Isle Royale Gray Wolf". Conservative Biology 5: 41. doi:10.1111/j.1523-1739.1991.tb00386.x.
+* ^ a b Graves 2007, p. 77-85
+* ^ Mech & Boitani 2003, p. 209
+* ^ "Serologic survey for canine coronavirus in wolves from Alaska, Journal of Wildlife Diseases, 37(4), 2001, pp. 740–745, Wildlife Disease Association 2001" (PDF). http://www.jwildlifedis.org/cgi/reprint/37/4/740.pdf. Retrieved 2010-03-16.
+* ^ a b Heptner & Naumov 1998, p. 254-55
+* ^ "Trichinella sp. in Wolves from Interior Alaska, Journal of Wildlife Diseases, 35(1), 1999, pp. 94–97, Wildlife Disease Association 1999" (PDF). http://www.jwildlifedis.org/cgi/reprint/35/1/94.pdf. Retrieved 2010-03-16.
+* ^ a b "Effects of Wolves and Other Predators on Farms in Wisconsin: Beyond Verified Losses" (PDF). Wisconsin Department of Natural Resources. http://dnr.wi.gov/org/land/er/publications/pdfs/wolf_impact.pdf. Retrieved 2008-10-20.
+* ^ a b Ellis 2010, p. 173-74
+* ^ Mycio, Mary Wormwood forest: a natural history of Chernobyl, p. 115, National Academies Press, 2005, ISBN 0309094305
+* ^ André Wink. Al-Hind: The Making of the Indo-Islamic World. Brill Academic Publishers, 2002. ISBN 0391041738. Page 65.
+* ^ a b c Mech & Boitani 2003, p. 292
+* ^ Lindow, John, Norse mythology: a guide to the Gods, heroes, rituals, and beliefs, Oxford University Press US, 2002, ISBN 0195153820
+* ^ Lopez 1978, p. 123
+* ^ Lopez 1978, p. 133
+* ^ Bright, Michael (2006). Beasts of the Field: The Revealing Natural History of Animals in the Bible. London: Robson Books. pp. 115–20. ISBN 1861058314.
+* ^ a b c d e Mech & Boitani 2003, p. 305
+* ^ Mech & Boitani 2003, p. 307
+* ^ Mech & Boitani 2003, p. 309
+* ^ Harding 1909, p. 38-39
+* ^ Roosevelt 1909, p. 185-86
+* ^ Mech & Boitani 2003, p. 306
+* ^ Roosevelt 1909, p. 192-3
+* ^ Coppinger 2001, p. 134-5
+* ^ a b Lindsay 2000, p. 18
+* ^ a b c Backeryd, Jessica (2007) Wolf attacks on dogs in Scandinavia 1995 – 2005: Will wolves in Scandinavia go extinct if dog owners are allowed to kill a wolf attacking a dog?, Examensarbete i ämnet naturvårdsbiologi 20 poäng
+* ^ Graves 2007, p. 36
+* ^ Ellis 2010, p. 170-71
+* ^ a b Geist, Valerius (2006) When do Wolves become Dangerous to Humans?, The University of Calgary
+* ^ (French)Moriceau, Jean-Marc (2007). Histoire du méchant loup : 3 000 attaques sur l'homme en France. Paris: Fayard. ISBN 2213628807.
+* ^ (Italian)Cagnolaro L., M. Comencini, A. Martinoli, A. Oriani, 1996. Dati storici sulla presenza e su casi di antropofagia del lupo nella Padania centrale. In F. Cecere (ed.) 1996, Atti del Convegno "Dalla parte del lupo", serie atti e studi de WWF Italia n° 10, 83:99.
+* ^ "Is the fear of wolves justified? A Fennoscandian perspective." (PDF). Linnel, John D.C.. Acta Zoologica Lituanica, 2003, Volumen 13, Numerus 1. http://www.lcie.org/Docs/Regions/Baltic/Linnell%20AZL%20Wolf%20attacks%20in%20Fennoscandia.pdf. Retrieved 2008-05-09.
+* ^ Korytin, S. A. 1997 Sex and age structure of people attacked by wolves in different seasons. Proceedings of the scientific conference [Issues of applied ecology, game management and fur farming], 27–28 May 1997, Kirov p-143-146
+* ^ a b "Pavlov, Mikhail P., "The Danger of Wolves to Humans" (pp 136–169) (Translated from Russian by Valentina and Leonid Baskin, and Patrick Valkenburg. Edited by Patrick Valkenburg and Mark McNay)" (PDF). http://wolfcrossing.org/blog/wp-content/uploads/2007/10/appendix-a-pavlov.pdf. Retrieved 2010-03-16.
+* ^ Linnell 2002, p. 26
+* ^ Lopez 1978, p. 69 & 123
+* ^ Roosevelt 1909, p. 185
+* ^ Seton 1909, p. 767
+* ^ Graves 2007, p. 8
+* ^ McNay, Mark A Case History of Wolf-Human Encounters in Alaska and Canada (2002), Alaska Department of Fish and Game Wildlife Technical Bulletin
+* ^ Linnell 2002, p. 14
+* ^ Heptner & Naumov 1998, p. 267
+* ^ a b Linnell 2002, p. 15
+* ^ a b c Linnell 2002, p. 37
+* ^ Linnell 2002, p. 36
+* ^ Heptner & Naumov 1998, p. 268
+* ^ a b Heptner & Naumov 1998, p. 244
+* ^ Linnell 2002, p. 16
+* ^ a b Roosevelt 1909, p. 182 & 192
+* ^ Harding 1909
+* ^ Graves 2007, p. 121-40
+* ^ Harding 1909, p. 65-75
+* ^ Harding 1909, p. 76-85
+* ^ Harding 1909, p. 86-98
+* ^ Harding 1909, p. 99-108
+* ^ Seton 1909, p. 766
+* ^ Harding 1909, p. 109-23
+* ^ a b Lopez 1978, p. 108
+* ^ Harding 1909, p. 124-132
+* ^ Seton 1909, p. 764
+* ^ Harding 1909, p. 189-95
+* ^ Graves 2007, p. 121
+* ^ Graves 2007, p. 122
+* ^ Graves 2007, p. 124
+* ^ Graves 2007, p. 125-36
+* ^ Lopez 1978, p. 159-60
+* ^ a b c Bachrach, M. (1953). Fur: a practical treatise. New York: Prentice-Hall,. pp. 206–13.
+* ^ Harding 1909, p. 108
+* ^ Griffin, Emma (2007). Blood sport: hunting in Britain since 1066. Yale University Press. p. 65. ISBN 0300116284.
+* ^ Woodward, Ian The Werewolf Delusion (1979) p. 121, Paddington Press Ltd. ISBN 0448231700
+* ^ Coppinger & Coppinger 2001, p. 55
+* ^ Lopez 1978, p. 111-2
+* ^ Mech & Boitani 2003, p. 329
+* ^ Mech & Boitani 2003, p. 304
+* ^ Coppinger & Coppinger 2001, p. 43
+* ^ Coppinger & Coppinger 2001, p. 42
+* ^ Mech & Boitani 2003, p. 197
+* ^ Lindsay 2000, p. 20
+* ^ Coppinger & Coppinger 2001, p. 46-7
+* ^ Lindsay 2000, p. 19
+* ^ "Are wolves and wolfdog hybrids trainable?". Wolf Park. http://www.wolfpark.org/wolfdogs/Poster_section7.html. Retrieved 2008-10-30.
+* ^ a b "Wolf Training and Socialisation: Example #1". Wolf Park. http://www.wolfpark.org/training/Example-1.html. Retrieved 2008-10-30.
+
+Bibliography
+
+* Clutton-Brock, Juliet (1987). A Natural History of Domesticated Mammals. British Museum (Natural History). ISBN 0521346975
+* Coppinger, Ray; Coppinger, Lorna (2001). Dogs: a Startling New Understanding of Canine Origin, Behavior and Evolution. Scribner. ISBN 0684855305
+* Cornish, Charles J.; Selous, Frederick C.; Johnston, Harry H.; Maxwell, Herbert (1902). The living animals of the world; a popular natural history with one thousand illustrations. Dodd, Mead and Company. http://www.archive.org/stream/livinganimalsofw01cornrich#page/n7/mode/2up
+* Ellis, Shaun (2010). The Man who lives with Wolves. HarperCollins. ISBN 0007327153
+* Graves, Will (2007). Wolves in Russia: Anxiety throughout the ages. Detselig Enterprises. ISBN 1550593323
+* Harding, Arthur Robert (1909). Wolf and coyote trapping; an up-to-date wolf hunter's guide, giving the most successful methods of experienced "wolfers" for hunting and trapping these animals, also gives their habits in detail. Columbus, Ohio, A. R. Harding pub. co. http://ia341317.us.archive.org/3/items/wolfcoyotetrappi00hard/wolfcoyotetrappi00hard.pdf
+* Hemmer, Helmut (1990). Domestication: the decline of environmental appreciation. Cambridge University Press. ISBN 0521341787
+* Heptner, V. G.; Naumov, N. P. (1998). Mammals of the Soviet Union Vol.II Part 1a, SIRENIA AND CARNIVORA (Sea cows; Wolves and Bears). Science Publishers, Inc. USA.. ISBN 1886106819. http://ia360702.us.archive.org/11/items/mammalsofsov211998gept/mammalsofsov211998gept.pdf
+* Lindsay, Steven R. (2000). Handbook of Applied Dog Behavior and Training: Adaptation and learning. Wiley-Blackwell. ISBN 0813807549
+* Linnell, John D. C. (2002). The Fear of Wolves: A Review of Wolf Attacks on Humans. NINA. ISBN 8242612927. http://www.lcie.org/Docs/Damage%20prevention/Linnell%20NINA%20OP%20731%20Fear%20of%20wolves%20eng.pdf
+* Lopez, Barry H. (1978). Of Wolves and Men. J. M. Dent and Sons Limited. ISBN 0743249364
+* Mech, L. David (2 May 1974). Canis lupus, MAMALLIAN SPECIES No. 37, pp. 1–6, 5 figs.. The American Society of Mammologists. http://www.science.smith.edu/departments/Biology/VHAYSSEN/msi/pdf/i0076-3519-037-01-0001.pdf
+* Mech, L. David; Boitani, Luigi (2003). Wolves: Behaviour, Ecology and Conservation. University of Chicago Press. ISBN 0226516962
+* Miller, Gerritt (1912). Catalogue of the mammals of Western Europe (Europe exclusive of Russia) in the collection of the British museum. William Clowes and Sons limited. ISBN 1153360837. http://ia311218.us.archive.org/3/items/catalogueofmamma00brit/catalogueofmamma00brit.pdf
+* Mivart, George (1890). "Dogs, Jackals, Wolves and Foxes: A Monograph of the Canidæ". http://www.archive.org/stream/dogsjackalswolve00mivauoft#page/n5/mode/2up
+* Pocock, R. I. (1941). Fauna of British India: Mammals Volume 2. Taylor and Francis. http://ia341313.us.archive.org/0/items/PocockMammalia2/pocock2.pdf
+* Roosevelt, Theodore (1909). Hunting the grisly and other sketches; an account of the big game of the United States and its chase with horse, hound, and rifle. New York, London, G. P. Putnam's sons. http://ia341313.us.archive.org/2/items/huntinggrislyoth00roos/huntinggrislyoth00roos.pdf
+* Seton, Ernest Thompson (1909). Life-histories of northern animals : an account of the mammals of Manitoba. New York City : Scribner. http://ia310814.us.archive.org/3/items/lifehistoriesofn02seto/lifehistoriesofn02seto.pdf
+* (German)Zimen, Erik (2003). Der Wolf, Verhalten, Ökologie und Mythos. Franckh-Kosmos Verlags-GmbH & Co, Stuttgart. ISBN 3-440-09742-0
+
+Further reading
+
+* (Italian) Apollonio, Marco; Mattioli, Luca (2006). Il Lupo in Provincia di Arezzo. Editrice Le Balze. ISBN 8875391238
+* (Russian) Bibikov, D. I. (1985). The Wolf: History, Systematics, Morphology, Ecology. Nauka, Moscow, USSR.
+* Busch, Robert H. (2009). Wolf Almanac. The Lyons Press. ISBN 159921069X
+* Dutcher, Jim; Dutcher, Jamie (2003). Wolves at Our Door: The Extraordinary Story of the Couple Who Lived with Wolves. William Andrew. ISBN 0743400496
+* Ellis, Shaun (2003). Wolf Talk. Rainbow Publishing. ISBN 189905703X
+* Harrington, Fred H.; Paquet, Paul C. (1982). Wolves of the world: perspectives of behavior, ecology, and conservation. Simon & Schuster. ISBN 0815509057
+* Mech, L. David (1981). The Wolf: The Ecology and Behaviour of an Endangered Species. University of Minnesota Press. ISBN 0816610266
+* Musiani, Marco; Boitani, Luigi; Paquet, Paul C. (2010). The World of Wolves: New Perspectives on Ecology, Behaviour, and Management. University of Calgary Press. ISBN 1552382699
+* (Russian) Pavlov, Mikhail P. (1982). The Wolf in Game Management. Agropromizdat, Moscow
+
+External links
+
+* California Wolf Center
+* The International Wolf Center
+* The IUCN Wolf Specialist Group
+* Watch Death of a Legend and Cry of the Wild by Bill Mason

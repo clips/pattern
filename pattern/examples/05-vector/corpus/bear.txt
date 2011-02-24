@@ -1,0 +1,369 @@
+Bears are mammals of the family Ursidae. Bears are classified as caniforms, or doglike carnivorans, with the pinnipeds being their closest living relatives. Although there are only eight living species of bear, they are widespread, appearing in a wide variety of habitats throughout the Northern Hemisphere and partially in the Southern Hemisphere. Bears are found in the continents of North America, South America, Europe, and Asia.
+
+Common characteristics of modern bears include a large body with stocky legs, a long snout, shaggy hair, plantigrade paws with five nonretractile claws, and a short tail. While the polar bear is mostly carnivorous and the giant panda feeds almost entirely on bamboo, the remaining six species are omnivorous, with largely varied diets including both plants and animals.
+
+With the exceptions of courting individuals and mothers with their young, bears are typically solitary animals. They are generally diurnal, but may be active during the night (nocturnal) or twilight (crepuscular), particularly around humans. Bears are aided by an excellent sense of smell, and despite their heavy build and awkward gait, they can run quickly and are adept climbers and swimmers. In autumn some bear species forage large amounts of fermented fruits which affects their behaviour. [1] Bears use shelters such as caves and burrows as their dens, which are occupied by most species during the winter for a long period of sleep similar to hibernation.
+
+Bears have been hunted since prehistoric times for their meat and fur. To this day, they play a prominent role in the arts, mythology, and other cultural aspects of various human societies. In modern times, the bear's existence has been pressured through the encroachment on its habitats and the illegal trade of bears and bear parts, including the Asian bile bear market. The IUCN lists six bear species as vulnerable or endangered, and even least concern species such as the brown bear are at risk of extirpation in certain countries. The poaching and international trade of these most threatened populations is prohibited, but still ongoing.
+
+Evolutionary history
+
+The family Ursidae is one of nine families in the suborder Caniformia, or "doglike" carnivores, within the order Carnivora. Bears' closest living relatives are the pinnipeds (seals and kin).
+
+The following synapomorphic (derived) traits set bears apart from related families:
+
+* presence of an alisphenoid canal
+* paroccipital processes that are large and not fused to the auditory bullae
+* auditory bullae are not enlarged
+* lacrimal bone is vestigial
+* cheek teeth are bunodont and hence indicative of a broad, hypocarnivorous (non-strictly meat-eating) diet (although hypercarnivorous (strictly meat-eating) taxa are known from the fossil record) [2]
+* carnassials are flattened
+
+Additionally, members of this family possess posteriorly oriented M2 postprotocrista molars, elongated m2 molars, and a reduction of the premolars.
+
+Modern bears comprise eight species in three subfamilies: Ailuropodinae (monotypic with the giant panda), Tremarctinae (monotypic with the Spectacled Bear), and Ursinae (containing six species divided into one to three genera, depending upon authority).
+
+Fossil bears
+
+The earliest members of Ursidae belong to the extinct subfamily Amphicynodontinae, including Parictis (late Eocene to early middle Miocene, 38-18 million years (Ma) ago) and the slightly younger Allocyon (early Oligocene, 34-30 Ma), both from North America. These animals looked very different from today's bears, being small and raccoon-like in overall appearance, and a diet perhaps more similar to that of a badger. Parictis does not appear in Eurasia and Africa until the Miocene. [3] It is unclear whether late Eocene ursids were also present in Eurasia, although faunal exchange across the Bering land bridge may have been possible during a major sea level low stand as early as the late Eocene (~37 Ma) and continuing into the early Oligocene. [4] European genera morphologically very similar to Allocyon, and also the much younger American Kolponomos (~18 Ma), are known from the Oligocene, including Amphicticeps and Amphicynodon.
+
+The raccoon-sized, dog-like Cephalogale is the oldest-known member of the subfamily Hemicyoninae which first appeared during the middle Oligocene in Eurasia ~30 Ma ago. The subfamily also includes the younger genera Phoberocyon (~20-15 Ma), and Plithocyon (~15-7 Ma).
+
+A Cephalogale-like species gave rise to the genus Ursavus during the early Oligocene (30-28 Ma); this genus proliferated into many species in Asia and is ancestral to all living bears. Species of Ursavus subsequently entered North America together with Amphicynodon and Cephalogale during the early Miocene (21-18 Ma).
+
+Members of living lineages of bears diverged from Ursavus ~20 Ma ago, likely via the species Ursavus elmensis. Based on genetic and morphological data, the subfamily Ailuropodinae (pandas) was the first to diverge from other living bears ~19 Ma ago, although no fossils of this group have been found pre-dating about 5 Ma. [5]
+
+The New World short-faced bears (Tremarctinae) differentiated from Ursinae following a dispersal event into North America during the mid Miocene (~13 Ma). [5] They invaded South America (~1 Ma) following formation of the Isthmus of Panama. [6] Their earliest fossil representative is Plionarctos in North America (~10-2 Ma). This genus is probably the direct ancestor to the North American short-faced bears (genus Arctodus), the South American short-faced bears (Pararctotherium and Arctotherium), and the spectacled bears, Tremarctos, represented by both an extinct North American species (T. floridanus), and the lone surviving representative of the Tremarctinae, the South American spectacled bear (T. ornatus).
+
+The subfamily Ursinae experienced a dramatic proliferation of taxa ~5.3-4.5 Ma ago coincident with major environmental changes, with the first members of the genus Ursus also appearing around this time. [5] The sloth bear is a modern survivor of one of the earliest lineages to diverge during this radiation event (~5.3 Ma); it took on its peculiar morphology related to its diet on termites and ants no later than by the early Pleistocene. By 3-4 Ma ago, the species Ursus minimus appears in the fossil record of Europe, which apart from size is nearly identical to today's Asiatic black bear. It is likely ancestral to all bears within Ursinae, perhaps aside from the sloth bear. Two lineages evolved from U. minimus, the black bears (including the sun bear, the Asiatic black bear, and the American black bear), and the brown bears. Modern brown bears evolved from U. minimus via Ursus etruscus, which itself is ancestral to both the extinct Pleistocene cave bear and the ancestor of today's brown and polar bears. Species of Ursinae have migrated repeatedly into N. America from Eurasia as early as 4 Ma ago during the early Pliocene. [7]
+
+The fossil record of bears is exceptionally good. Direct ancestor-descendent relationships between individual species are often fairly well-established, with sufficient intermediate forms known to make the precise cut-off between an ancestral and its daughter species subjective. [8]
+
+Other extinct bear genera include Agriarctos, Indarctos, and Agriotherium (sometimes placed within hemicyonids).
+
+Taxonomic revisions of living bear species
+
+The giant panda's taxonomy (subfamily Ailuropodinae) has long been debated. Its original classification by Armand David in 1869 was within the bear genus Ursus, but in 1870 it was reclassified by Alphonse Milne-Edwards to the raccoon family. [9] In recent studies, the majority of DNA analyses suggest that the giant panda has a much closer relationship to other bears and should be considered a member of the family Ursidae. [10] Estimates of divergence dates place the giant panda as the most ancient offshoot among living taxa within Ursidae, having split from other bears 17.9 to 22.1 Ma ago. [5] The red panda was included within Ursidae in the past. However, more recent research does not support such a conclusion and instead places it in its own family Ailuridae, in superfamily Musteloidea along with Mustelidae, Procyonidae, and Mephitidae. [11] [12] [13] Multiple similarities between the two pandas, including the presence of false thumbs, are thus thought to represent an example of convergent evolution for feeding primarily on bamboo.
+
+There is also evidence that, unlike their neighbors elsewhere, the brown bears of Alaska's ABC islands are more closely related to polar bears than they are to other brown bears in the world. Researchers Gerald Shields and Sandra Talbot of the University of Alaska Fairbanks Institute of Arctic Biology studied the DNA of several samples of the species and found that their DNA is different from that of other brown bears. The researchers discovered that their DNA was unique compared to brown bears anywhere else in the world. The discovery has shown that while all other brown bears share a brown bear as their closest relative, those of Alaska's ABC Islands differ and share their closest relation with the polar bear. [14] There is also the very rare Tibetan Blue Bear, which is a type of brown bear. This animal has never been photographed.
+
+Koalas are often referred to as bears due to their appearance; they are not bears, however, but marsupials.
+
+Classification
+
+* Family Ursidae * Subfamily Ailuropodinae * †Ailurarctos * †Ailurarctos lufengensis
+* †Ailurarctos yuanmouenensis
+
+* Ailuropoda (Pandas) * †Ailuropoda baconi
+* †Ailuropoda fovealis
+* Ailuropoda melanoleuca, Giant Pandas * Ailuropoda melanoleuca melanoleuca, Giant Panda
+* Ailuropoda melanoleuca qinlingensis, Qinling Panda
+
+* †Ailuropoda microta
+* †Ailuropoda wulingshanensis
+
+* Subfamily Tremarctinae * Tremarctos (Spectacled bears) * Tremarctos ornatus, Spectacled Bear
+* †Tremarctos floridanus
+
+* †Arctodus * †Arctodus simus
+* †Arctodus pristinus
+
+* †Arctotherium * †Arctotherium angustidens
+* †Arctotherium bonariense
+* †Arctotherium brasilense
+* †Arctotherium latidens
+* †Arctotherium tarijense
+* †Arctotherium vetustum
+* †Arctotherium wingei
+
+* †Plionarctos * †Plionarctos edensis
+* †Plionarctos harroldorum
+
+* Subfamily Ursinae * †Agriotherium * †Agriotherium inexpetans
+* †Agriotherium schneideri
+* †Agriotherium sivalensis
+
+* Helarctos * Helarctos malayanus, Sun Bear * Helarctos malayanus malayanus
+* Helarctos malayanus euryspilus, Borneo Sun Bear
+
+* †Indarctos * †Indarctos anthraciti
+* †Indarctos arctoides
+* †Indarctos atticus
+* †Indarctos nevadensis
+* †Indarctos oregonensis
+* †Indarctos salmontanus
+* †Indarctos vireti
+* †Indarctos zdanskyi
+
+* Melursus * Melursus ursinus, Sloth Bear * Melursus ursinus inornatus, Sri Lankan Sloth Bear
+* Melursus ursinus ursinus, Indian Sloth Bear
+
+* †Ursavus * †Ursavus brevirhinus
+* †Ursavus depereti
+* †Ursavus elmensis
+* †Ursavus pawniensis
+* †Ursavus primaevus
+
+* Ursus * †Ursus abstrusus
+* Ursus americanus, American Black Bear * Ursus americanus altifrontalis, Olympic black bear
+* Ursus americanus amblyceps, New Mexico black bear
+* Ursus americanus americanus, Eastern black bear
+* Ursus americanus californiensis, California black bear
+* Ursus americanus carlottae, Haida Gwaii black bear or Queen Charlotte black bear
+* Ursus americanus cinnamomum, Cinnamon Bear
+* Ursus americanus emmonsii, Glacier bear
+* Ursus americanus eremicus, Mexican black bear
+* Ursus americanus floridanus, Florida black bear
+* Ursus americanus hamiltoni, Newfoundland black bear
+* Ursus americanus kermodei, Kermode Bear or Spirit Bear
+* Ursus americanus luteolus, Louisiana black bear
+* Ursus americanus machetes, West Mexico black bear
+* Ursus americanus perniger, Kenai black bear
+* Ursus americanus pugnax, Dall black bear
+* Ursus americanus vancouveri, Vancouver Island black bear
+
+* Ursus arctos, Brown Bear * Ursus arctos arctos, Eurasian Brown Bear
+* Ursus arctos alascensis
+* Ursus arctos beringianus, Kamchatka Brown Bear or Far Eastern Brown Bear
+* †Ursus arctos californicus, California Golden Bear
+* †Ursus arctos crowtheri, Atlas Bear
+* †Ursus arctos dalli
+* Ursus arctos gobiensis, Gobi bear (very rare)
+* Ursus arctos horribilis, Grizzly Bear
+* Ursus arctos isabellinus, Himalayan Brown Bear or Himalayan Red Bear
+* Ursus arctos lasiotus, Ussuri brown bear or Black Grizzly
+* Ursus arctos middendorffi, Kodiak Bear
+* †Ursus arctos nelsoni, Mexican Grizzly Bear
+* Ursus arctos piscator, Bergman's Bear(extinct?)
+* Ursus arctos pruinosus, Tibetan Blue Bear or Tibetan Bear or Himalayan Blue Bear
+* Ursus arctos sitkensis
+* Ursus arctos syriacus Syrian (Brown) Bear
+
+* †Ursus deningeri
+* †Ursus etruscus
+* †Ursus inopinatus, MacFarlane's Bear (cryptid; if an authentic species, extinct)
+* †Ursus minimus
+* Ursus maritimus, Polar Bear * Ursus maritimus maritimus
+* †Ursus maritimus tyrannus
+
+* †Ursus rossicus
+* †Ursus sackdillingensis
+* †Ursus spelaeus, Cave Bear
+* Ursus thibetanus, Asian Black Bear * Ursus thibetanus formosanus, Formosan Black Bear
+* Ursus thibetanus gedrosianus
+* Ursus thibetanus japonicus
+* Ursus thibetanus laniger
+* Ursus thibetanus mupinensis
+* Ursus thibetanus thibetanus
+* Ursus thibetanus ussuricus
+
+* †Kolponomos * †Kolponomos clallamensis
+* †Kolponomos newportensis
+
+The genera Melursus and Helarctos are sometimes also included in Ursus. The Asiatic black bear and the polar bear used to be placed in their own genera, Selenarctos and Thalarctos which are now placed at subgenus rank.
+
+A number of hybrids have been bred between American black, brown, and polar bears (see Ursid hybrids).
+
+Biology
+
+Morphology
+
+Bears are generally bulky and robust animals with relatively short legs. Bears are sexually dimorphic with regard to size, with the males being larger. Larger species tend to show increased levels of sexual dimorphism in comparison to smaller species, and where a species varies in size across its distribution individuals from larger sized areas tend also to vary more. Bears are the most massive terrestrial members of the order Carnivora, with some Polar Bears and Brown Bears weighing over 750 kilograms (1,700 lb). As to which species is the largest may depend on whether the assessment is based on which species has the largest individuals (brown bears) or on the largest average size (polar bears). The smallest bears are the Sun Bears of Asia, which weigh an average of 65 kilograms (140 lb) for the males and 45 kilograms (99 lb) for the females. [15]
+
+Unlike other land carnivorans, bears are plantigrade. They distribute their weight toward the hind feet which makes then look lumbering when they walk. They are still quite fast with the brown bear reaching 30 miles per hour (48 km/h) although they are still slower than felines and canines. Bears can stand on their hind feet and sit up straight with remarkable balance. Bears have non-retractable claws which are used for digging, climbing, tearing and catching prey. Their ears are rounded.
+
+Bears have an excellent sense of smell, a better sense of smell in fact than the dogs (Canidae), or possibly any other mammal. This sense of smell is used for signalling between bears (either to warn off rivals or detect mates) and for finding food. Smell is the principal sense used by bears to find most of their diet. [15]
+
+Dentition
+
+Unlike most other members of the Carnivora, bears have relatively undeveloped carnassial teeth, and their teeth are adapted for a diet that includes a significant amount of vegetable matter. The canine teeth are large, and the molar teeth flat and crushing. There is considerable variation in dental formula even within a given species. It has been suggested that this indicates bears are still in the process of evolving from a carnivorous to a predominantly herbivorous diet. Polar bears appear to have secondarily re-evolved fully functional carnassials, as their diet has switched back towards carnivory. [16] The dental formula for living bears is: [math]
+
+Distribution and habitat
+
+The bears are mostly found in the northern hemisphere, with a single species, the spectacled bear, occurring in South America. The Atlas Bear, a subspecies of the Brown Bear, was the only bear native to Africa. It was distributed in North Africa from Morocco to Libya, but has been extinct since around the 1870s. All the other species are found in North America, Asia and Europe. The most widespread species is the Brown Bear, which occurs from Western Europe eastwards through Asia to the western areas of North America. The American Black Bear is restricted to North America, and the Polar bear is restricted to the Arctic Sea. All the remaining species are Asian. [15]
+
+With the exception of the Polar Bear the bears are mostly forest species. Some species, particularly the Brown Bear, may inhabit or seasonally use other areas such as alpine scrub or tundra.
+
+Behaviour
+
+While many people think that bears are nocturnal, they are in fact generally diurnal, active for the most part during the day. The belief that they are nocturnal apparently comes from the habits of bears that live near humans which engage in some nocturnal activities, such as raiding trash cans or crops while avoiding humans. The sloth bear of Asia is the most nocturnal of the bears, but this varies by individual and females with cubs are often diurnal in order to avoid competition with males and nocturnal predators. [15] Bears are overwhelmingly solitary and are considered to be the most asocial of all the Carnivora. Liaisons between breeding bears are brief, and the only times bears are encountered in small groups are mothers with young or occasional seasonal bounties of rich food (such as salmon runs). [15]
+
+Vocalizations
+
+Bears produce a variety of vocalizations such as:
+
+* Moaning: produced mostly as mild warnings to potential threats or in fear.
+* Barking: produced during times of alarm, excitement or to give away the animal's position.
+* Huffing: made during courtship or between mother and cubs to warn of danger.
+* Growling: produced as strong warnings to potential threats or in anger.
+* Roaring: used much for the same reasons as growls and also to proclaim territory and for intimidation.
+
+Diet and interspecific interactions
+
+Their carnivorous reputation non-withstanding, most bears have adopted a diet of more plant than animal matter and are completely opportunistic omnivores. Some bears will climb trees in order to obtain mast (edible vegatative or reproductive parts such as acorns), smaller species which are more able to climb include a greater amount of this in their diet. [17] Such masts can be very important to the diet of these species, and mast failures may result in long range movements by bears looking for alternate sources of food. [18] One exception is the Polar Bear, which has adopted a diet mainly of marine mammals to survive in the Arctic. The other exception is the Giant Panda which has adopted a diet mainly of bamboo. Stable isotope analysis of the extinct Giant Short-faced Bear (Arctodus simus) shows that it was also an exclusive meat eater, probably a scavenger. [19] The Sloth Bear, though not as specialized as the previous two species, has lost several front teeth usually seen in bears and developed a long, suctioning tongue in order to feed on the ants, termites and other burrowing insects that they favour. At certain times of the year these insects can make up 90% of their diet. [20] All bears will feed on any food source that becomes available, and the nature of that varies seasonally. A study of Asiatic Black Bears in Taiwan found that they would consume large numbers of acorns when they were most common, and switch to ungulates in other times of the year. [21]
+
+When taking warm-blooded animals, bears will typically take small or young animals, as they are easier to catch. Although (besides Polar Bears) both species of black bear and the Brown Bear can sometimes take large prey, such as ungulates. [21] [22] Often, bears will feed on other large animals when they encounter a carcass, whether or not the carcass is claimed by or is the kill of another predator. This competition is the main source of interspecies conflict. Bears are typically the apex predators in their range due to their size and power, and can defend a carcass against nearly all comers. Mother bears also can usually defend their cubs against other predators. The Tiger is the only known predator known to regularly prey on adult bears, including Sloth Bears, Asiatic Black Bears, Giant Pandas, Sun Bears and small Brown Bears.
+
+Breeding
+
+The age at which bears reach sexual maturity is highly variable, both between and within species. Sexual maturity is dependent on body condition, which is in turn dependent upon the food supply available to the growing individual. In the females of smaller species may have young in as little as two years, whereas the larger species may not rear young until they are four or even nine years old. First breeding may be even later in males, where competition for mates may leave younger males without access to females. [15]
+
+The bear's courtship period is very brief. Bears in northern climates reproduce seasonally, usually after a period of inactivity similar to hibernation, although tropical species breed all year round. Cubs are born toothless, blind, and bald. The cubs of brown bears, usually born in litters of 1–3, will typically stay with the mother for two full seasons. They feed on their mother's milk through the duration of their relationship with their mother, although as the cubs continue to grow, nursing becomes less frequent and cubs learn to begin hunting with the mother. They will remain with the mother for approximately three years, until she enters the next cycle of estrus and drives the cubs off. Bears will reach sexual maturity in five to seven years. Male bears, especially Polar and Brown Bears, will kill and sometimes devour cubs born to another father in order to induce a female to breed again. Female bears are often successful in driving off males in protection of their cubs, despite being rather smaller.
+
+Winter dormancy
+
+Many bears of northern regions are assumed to hibernate in the winter. While many bear species do go into a physiological state often colloquially called "hibernation" or "winter sleep", it is not true hibernation. In true hibernators, body temperatures drop to near ambient and heart rate slows drastically, but the animals periodically rouse themselves to urinate or defecate and to eat from stored food. The body temperature of bears, on the other hand, drops only a few degrees from normal and heart rate slows only slightly. They normally do not wake during this "hibernation", and therefore do not eat, drink, urinate or defecate the entire period. Higher body heat and being easily roused may be adaptations, because females give birth to their cubs during this winter sleep.
+
+Relationship with humans
+
+See also: Bear danger
+
+Some species, such as the polar bear, American black bear, Sloth Bear and the brown bear, are dangerous to humans, especially in areas where they have become used to people. All bears are physically powerful and are likely capable of fatally attacking a person, but they, for the most part, are shy, are easily frightened and will avoid humans. Injuries caused by bears are rare, but are often widely reported. [23] The danger that bears pose is often vastly exaggerated, in part by the human imagination. However, when a mother feels her cubs are threatened, she will behave ferociously. It is recommended to give all bears a wide berth because they are behaviorally unpredictable.
+
+Bears may also come into conflict with humans where they raid crops or attack livestock. [24] [25] These problems may be the work of only a few bears but create a climate of conflict as farmers and ranchers may perceive all losses as due to bears and advocate the preventive removal of all bears. [25] Mitigation methods may be used to reduce bear damage to crops, and reduce local antipathy towards bears. [24]
+
+Laws have been passed in many areas of the world to protect bears from hunters' habitat destruction. Public perception of bears is often very positive, as people identify with bears due to their omnivorous diet, ability to stand on two legs, and symbolic importance, [26] and there is widespread support for bear protection, at least in more affluent societies. [27] In more rural and poorer regions attitudes may be more shaped by the dangers posed by bears and the economic costs that they incur to farmers and ranchers. [25] Some populated areas with bear populations have also outlawed the feeding of bears, including allowing them access to garbage or other food waste. Bears in captivity have been trained to dance, box, or ride bicycles; however, this use of the animals became controversial in the late 20th century. Bears were kept for baiting in Europe at least since the 16th century.
+
+Bears as food and medicine
+
+Many people enjoy hunting bears and eating them. Their meat is dark and stringy, like a tough cut of beef. In Cantonese cuisine, bear paws are considered a delicacy. The peoples of China, Japan, and Korea use bears' body parts and secretions (notably their gallbladders and bile) as part of traditional Chinese medicine. It is believed more than 12,000 bile bears are kept on farms, farmed for their bile, in China, Vietnam and South Korea. [28] Bear meat must be cooked thoroughly as it can often be infected with trichinellosis. [29] [30] [31]
+
+Culture
+
+Names
+
+The English word "bear" comes from Old English bera and belongs to a family of names for the bear in Germanic languages, in origin from an adjective meaning "brown". [32] In Scandinavia the word for bear is björn (or bjørn), and is a relatively common given name for males. The use of this name is ancient and has been found mentioned in several runestone inscriptions. [33] In Germanic culture, the bear was a symbol of the warrior, as evident from the Old English term beorn which can take the meaning of both "bear" and "warrior".
+
+The reconstructed Proto-Indo-European name of the bear is *h₂ŕ̥tḱos, whence Sanskrit r̥kṣa, Avestan arša, Greek ἄρκτος, Latin ursus, Welsh arth (whence perhaps the given name "Arthur"). Also compared is Hittite ḫartagga-, the name of a monster or predator. [32] In the binomial name of the brown bear, Ursus arctos, Linné simply combined the Latin and Greek names.
+
+In addition, the Proto-Indo-European word for bear, *h₂ŕ̥tḱos (ancestral to the Greek arktos, Latin ursus, Welsh arth (cf. Arthur), Albanian ari, Armenian arj, Sanskrit ṛkṣa, Hittite ḫartagga) seems to have been subject to taboo deformation or replacement in some languages (as was the word for wolf, wlkwos), resulting in the use of numerous unrelated words with meanings like "brown one" (English bruin) and "honey-eater" (Slavic medved). [34] Thus some Indo-European language groups do not share the same PIE root. The theory of the bear taboo is taught to almost all beginning students of Indo-European and historical linguistics; the putative original PIE word for bear is itself descriptive, because a cognate word in Sanskrit is rakṣas, meaning "harm, injury". [35]
+
+The female first name "Ursula", originally derived from a Christian saint's name and common in English- and German-speaking countries, means "little she-bear" (dimunitive of Latin ursa). In Switzerland the male first name "Urs" is especially popular, whereas the name of the canton and city of Bern is derived from bär, German for bear.
+
+In Russian and other Slavic languages, the word for bear, "Medved" (медведь), and variants or derivatives such as Medvedev are common surnames.
+
+The Irish family name "McMahon" means "Son of Bear" in Irish.
+
+In East European Jewish communities, the name "Ber" (בער) — Yiddish cognate of "Bear" — has been attested as a common male first name, at least since the 18th century, and was among others the name of several prominent Rabbis. The Yiddish "Ber" is still in use among Orthodox Jewish communities in Israel, the US and other countries.
+
+With the transition from Yiddish to Hebrew under the influence of Zionism, the Hebrew word for "bear", "Dov" (דב), was taken up in contemporary Israel and is at present among the commonly used male first names in that country.
+
+"Ten Bears" (Paruasemana) was the name of a well-known 19th Century chieftain among the Comanche. Also among other Native American tribes, bear-related names are attested.
+
+Myth and legend
+
+There is evidence of prehistoric bear worship, see Arctic, Arcturus, Great Bear, Berserker, Kalevala. Anthropologists such as Joseph Campbell have regarded this as a common feature in most of the fishing and hunting-tribes. The prehistoric Finns, along with most Finno-Ugric peoples, considered the bear as the spirit of one's forefathers. This is why the bear (karhu) was a greatly respected animal, with several euphemistic names (such as otso, mesikämmen and kontio). The bear is the national animal of Finland.
+
+This kind of attitude is reflected in the traditional Russian fairy tale "Morozko", whose arrogant protagonist Ivan tries to kill a mother bear and her cubs — and is punished and humbled by having his own head turned magically into a bear's head and being subsequently shunned by human society.
+
+"The Brown Bear of Norway" is a Scottish fairy tale telling the adventures of a girl who married a prince magically turned into a bear, and who managed to get him back into a human form by the force of her love and after many trials and difficulties.
+
+There has been evidence about early bear worship in China and among the Ainu culture as well (see Iomante). Korean people in their mythology identify the bear as their ancestor and symbolic animal. According to the Korean legend, a god imposed a difficult test on a she-bear, and when she passed it the god turned her into a woman and married her.
+
+Legends of saints taming bears are common in the Alpine zone. In the arms of the bishopric of Freising (see illustration) the bear is the dangerous totem animal tamed by St. Corbinian and made to carry his civilised baggage over the mountains. A bear also features prominently in the legend of St. Romedius, who is also said to have tamed one of these animals and had the same bear carry him from his hermitage in the mountains to the city of Trento.
+
+Similar stories are told of Saint Gall and Saint Columbanus.
+
+This recurrent motif was used by the Church as a symbol of the victory of Christianity over Paganism. [36] In the Norse settlements of northern England during the tenth century a type of "hogback" grave cover of a long narrow block of stone with a shaped apex like the roof beam of a long house, is carved with a muzzled, thus Christianised, bear clasping each gable end. Though the best collection of these is in the church at Brompton, North Yorkshire, [37] their distribution ranges across northern England and southern Scotland, with a scattered few in the north Midlands and single survivals in Wales, Cornwall and Ireland; a late group is found in the Orkneys.
+
+Bears are a popular feature of many children's stories including Goldilocks and The Story of the Three Bears, the Berenstein Bears, and Winnie the Pooh.
+
+The constellations Ursa Major and Ursa Minor represent bears.
+
+Symbolic use
+
+For more details on this topic, see Bears in heraldry.
+
+The Russian bear is a common National personification for Russia (as well as the Soviet Union) and even Germany. The brown bear is Finland's national animal.
+
+In the United States, the black bear is the state animal of Louisiana, New Mexico, and West Virginia; the grizzly bear is the state animal of both Montana and California.
+
+Bears appear in the canting arms of Bern and Berlin.
+
+Also, "bear", "bruin", or specific types of bears are popular nicknames or mascots, e.g. for sports teams (Chicago Bears, California Golden Bears, UCLA Bruins, Boston Bruins); and a bear cub called Misha was mascot of the 1980 Summer Olympics in Moscow, USSR.
+
+Smokey Bear has become a part of American culture since his introduction in 1944. Known to almost all Americans, he and his message, "Only You Can Prevent Forest Fires" (updated in 2001 to "Only You Can Prevent Wildfires") has been a symbol of preserving woodlands. [38] Smokey wears a hat similar to one worn by many U.S. state police officers, giving rise to the CB slang "bear" or "Smokey" for the highway patrol.
+
+Figures of speech
+
+The physical attributes and behaviours of bears are commonly used in figures of speech in English.
+
+* In the stock market, a bear market is a period of declining prices. Pessimistic forecasting or negative activity is said to be bearish (due to the stereotypical posture of bears looking downwards), and one who expresses bearish sentiment is a bear. Its opposite is a bull market, and bullish sentiment from bulls.
+* In gay slang, the term "bear" refers to male individuals who possess physical attributes much like a bear, such as a heavy build, abundant body hair, and commonly facial hair.
+* A bear hug is typically a tight hug that involves wrapping one's arms around another person, often leaving that person's arms immobile. It was used in the Ronald Reagan political ad "Bear in the woods".
+* Bear tracking - in the old Western states of the U.S. and to this day in the former Dakota Territory, the expression, "You ain't just a bear trackin'.", is used to mean "You ain't lying" or "That's for sure" or "You're not just blowing smoke". This expression evolved as an outgrowth of the experience pioneer hunters and mountainmen had when tracking bear. Bears often lay down false tracks and are notorious for doubling back on anything tracking them. If you are not following bear tracks, you are not following false trails or leads in your thoughts, words or deeds.
+* In Korean culture a person is referred to as being "like a bear" when they are stubborn or not sensitive to what is happening around their surroundings. Used as a phrase to call a person "stubborn bear."
+* The Bible compares King David's "bitter warriors", who fight with such fury that they could overcome many times their number of opponents, with "a bear robbed of her whelps in the field" (2 Samuel 17:8 s:Bible (King James)/2 Samuel#Chapter 17). The term "a bereaved bear" (דב שכול), derived from this Biblical source, is still used in the literary Hebrew of contemporary Israel.
+
+Teddy bears
+
+Main article: Teddy bear
+
+Around the world, many children have stuffed toys in the form of bears.
+
+Scientific/Conservation Organizations
+
+The two authoritative organizations for seeking scientific information (e.g., natural history, management, conservation, etc.) on bear species of the world are the International Association for Bear Research & Management (International Bear Association- IBA) and the Bear Specialist Group of the Species Survival Commission - International Union for the Conservation of Nature.
+
+See also
+
+* Bear hunting
+* List of bears
+* List of fatal bear attacks in North America
+* List of fictional bears
+* List of mammals
+* List of non-fictional bears
+* Mammal classification
+* Sankebetsu brown bear incident
+
+References
+
+* ^ "Slovakia warns of tipsy bears". http://www.earthtimes.org/articles/show/241001,slovakia-warns-of-tipsy-bears.html. Retrieved 2008-11-11.
+* ^ Wang, Xiaoming, Malcolm C. McKenna, and Demberelyin Dashzeveg (2005). "Amphicticeps and Amphicynodon (Arctoidea, Carnivora) from Hsanda Gol Formation, Central Mongolia and Phylogeny of Basal Arctoids with Comments on Zoogeography" ( [dead link]). American Museum Novitates (3483): 57. http://www.nhm.org/expeditions/rrc/wang/documents/Wangetal2005ShandGolarctoids.pdf.
+* ^ Kemp, T.S. (2005). The Origin and Evolution of Mammals. Oxford University Press. ISBN 0198507607.
+* ^ Wang Banyue and Qiu Zhanxiang (2005). "Notes on Early Oligocene Ursids (Carnivora, Mammalia) from Saint Jacques, Nei Mongol, China" (PDF). Bulletin of the American Museum of Natural History 279 (279): 116–124. doi:10.1206/0003-0090(2003)279<0116:C>2.0.CO;2. http://digitallibrary.amnh.org/dspace/bitstream/2246/447/22/B279a05.pdf.
+* ^ a b c d Krause, J.; Unger, T.; Noçon, A.; Malaspinas, A.; Kolokotronis, S.; Stiller, M.; Soibelzon, L.; Spriggs, H.; Dear, P. H.; Briggs, A. W.; Bray, S. C. E.; O'Brien, S. J.; Rabeder, G.; Matheus, P.; Cooper, A.; Slatkin, M.; Pääbo, S.; Hofreiter, M. (2008-07-28). "Mitochondrial genomes reveal an explosive radiation of extinct and extant bears near the Miocene-Pliocene boundary". BMC Evolutionary Biology 8 (220): 220. doi:10.1186/1471-2148-8-220. PMID 18662376.
+* ^ Soibelzon, L. H.; Tonni, E. P.; Bond, M. (October 2005). "The fossil record of South American short-faced bears (Ursidae, Tremarctinae)". Journal of South American Earth Sciences 20 (1-2): 105–113. doi:10.1016/j.jsames.2005.07.005.
+* ^ Qiu Zhanxiang (2003). "Dispersals of Neogene Carnivorans between Asia and North America" (PDF). Bulletin American Museum of Natural History 279 (279): 18–31. doi:10.1206/0003-0090(2003)279<0018:C>2.0.CO;2. http://digitallibrary.amnh.org/dspace/bitstream/2246/447/25/B279a02.pdf.
+* ^ Template:Kurtén, B., 1995. The cave bear story: life and death of a vanished animal, Björn Kurtén, Columbia University Press.
+* ^ Lindburg, Donald G. (2004). Giant Pandas: Biology and Conservation, pp. 7–9. University of California Press
+* ^ Olaf R. P. Bininda-Emonds. "Phylogenetic Position of the Giant Panda". In Lindburg, Donald G. (2004) Giant Pandas: Biology and Conservation, pp. 11–35. University of California Press
+* ^ Flynn, J. J.; Nedbal, M. A.; Dragoo, J. W.; Honeycutt, R. L. (2000). "Whence the Red Panda?". Molecular Phylogenetics and Evolution 17 (2): 190–199. doi:10.1006/mpev.2000.0819. PMID 11083933. http://www.msb.unm.edu/mammals/publications/Flynn2000.pdf. Retrieved 2009-09-23.
+* ^ Flynn, J. J.; Finarelli, J. A.; Zehr, S.; Hsu, J.; Nedbal, M. A. (2005). "Molecular phylogeny of the carnivora (mammalia): assessing the impact of increased sampling on resolving enigmatic relationships". Systematic Biology 54 (2): 317–337. doi:10.1080/10635150590923326. PMID 16012099. http://sysbio.oxfordjournals.org/cgi/reprint/54/2/317. Retrieved 2009-10-08.
+* ^ Flynn, J. J.; Nedbal, M. A. (1998). "Phylogeny of the Carnivora (Mammalia): Congruence vs incompatibility among multiple data sets.". Molecular Phylogenetics and Evolution 9 (3): 414–426. doi:10.1006/mpev.1998.0504. PMID 9667990.  Abstract. Retrieved 2009-10-08.
+* ^ "The Brown Bear: Father of the Polar Bear?, Alaska Science Forum". Gi.alaska.edu. 1996-12-05. http://www.gi.alaska.edu/ScienceForum/ASF13/1314.html. Retrieved 2010-10-16.
+* ^ a b c d e f Garshelis, David L. (2009). "Family Ursidae (Bears)". In Wilson, Don; Mittermeier, Russell. Handbook of the Mammals of the World. Volume 1: Carnivores. Barcelona: Lynx Edicions. ISBN 978-84-96553-49-1.
+* ^ Bunnell, Fred (1984). Macdonald, D.. ed. The Encyclopedia of Mammals. New York: Facts on File. p. 87. ISBN 0-87196-871-1.
+* ^ Mattson, David J. (1998). "Diet and Morphology of Extant and Recently Extinct Northern Bears". Ursus, A Selection of Papers from the Tenth International Conference on Bear Research and Management, Fairbanks, Alaska, July 1995, and Mora, Sweden, September 1995 10: 479–496. http://www.jstor.org/stable/3873160.
+* ^ Ryan, Christopher; Pack, James C.; Igo, William K.; Billings, Anthony (2007). "Influence of mast production on black bear non-hunting mortalities in West Virginia". Ursus 18 (1): 46–53. doi:10.2192/1537-6176(2007)18 [46:IOMPOB]2.0.CO;2.
+* ^ Matheus, Paul E. (1995). "Diet and Co-ecology of Pleistocene Short-Faced Bears and Brown Bears in Eastern Beringia". Quaternary Research 44 (3): 447–453. doi:10.1006/qres.1995.1090.
+* ^ Joshi, Anup (1997). "Seasonal and Habitat-Related Diets of Sloth Bears in Nepal". Journal of Mammalology 1978 (2): 584–597.
+* ^ a b Hwang, Mei-Hsiu (2002). "Diets of Asiatic Black Bears in Taiwan, with Methodological and Geographical Comparisons". Ursus 13: 111–125.
+* ^ Zager, Peter; Beecham, John (2006). "The role of American black bears and brown bears as predators on ungulates in North America". Ursus 17 (2): 95–108. doi:10.2192/1537-6176(2006)17 [95:TROABB]2.0.CO;2.
+* ^ Clark, Douglas (2003). "Polar Bear-Human Interactions in Canadian National Parks, 1986-2000". Ursus 14 (1): 65–71.
+* ^ a b Fredriksson, Gabriella (2005). "Human–sun bear conflicts in East Kalimantan, Indonesian Borneo". Ursus 16 (1): 130–137. doi:10.2192/1537-6176(2005)016 [0130:HBCIEK]2.0.CO;2.
+* ^ a b c Goldstein, Issac; Paisley, Susanna; Wallace, Robert; Jorgenson, Jeffrey P.; Cuesta, Francisco; Castellanos, Armando (2006). "Andean bear–livestock conflicts: a review". Ursus 17 (1): 8–15. doi:10.2192/1537-6176(2006)17 [8:ABCAR]2.0.CO;2.
+* ^ Kellert, Stephen (1994). "Public Attitudes toward Bears and Their Conservation". Bears: Their Biology and Management 9 (1): 43–50. doi:10.2307/3872683. http://jstor.org/stable/3872683.
+* ^ Andersone, Žanete; Ozolinš, Jānis (2004). "Public perception of large carnivores in Latvia". Ursus 15 (2): 181–187. doi:10.2192/1537-6176(2004)015<0181:PPOLCI>2.0.CO;2.
+* ^ "BBC Test kit targets cruel bear trade". 2007-06-11. http://news.bbc.co.uk/2/hi/science/nature/6742671.stm. Retrieved 2010-01-01.
+* ^ "Trichinellosis Associated with Bear Meat". http://www.cdc.gov/MMWR/preview/mmwrhtml/mm5327a2.htm. Retrieved 2006-10-04.
+* ^ "BBC News - Bear meat poisoning in Siberia". 1997-12-21. http://news.bbc.co.uk/1/hi/world/europe/41529.stm. Retrieved 2006-10-04.
+* ^ "Finnish Food Safety Authority: Bear meat must be inspected before serving in restaurants". http://www.evira.fi/portal/en/food/current_issues/?id=346. Retrieved 2006-10-04.
+* ^ a b Pokorny (1959) [1]
+* ^ http://hildebrand.raa.se/arkeologi/uppland.asp
+* ^ Votruba, Martin. "Bears". Slovak Studies Program. University of Pittsburgh. http://www.pitt.edu/~votruba/qsonhist/bear.html. Retrieved 2009-03-12.
+* ^ "The Brown One, The Honey Eater, The Shaggy Coat, The Destroyer". Cloudline.org. http://www.cloudline.org/LinguisticArchaeology.html. Retrieved 2010-10-16.
+* ^ Michel Pastoreau (2007)L'ours. Historie d'un roi déchu
+* ^ Noted and illustrated in Richard Hall, Viking Age Archaeology 1995:43 and fig. 22.
+* ^ "Forest Fire Prevention - Smokey Bear (1944–Present)". Ad Council. 1944-08-09. http://www.adcouncil.org/default.aspx?id=129. Retrieved 2010-10-16.
+
+Further reading
+
+* Bears of the World, Terry Domico, Photographs by Terry Domico and Mark Newman, Facts on File, Inc, 1988, hardcover, ISBN 0-8160-1536-8
+* The Bear by William Faulkner
+* Brunner, Bernd: Bears — A Brief History. New Haven and London: Yale University Press, 2007
+
+External links
+
+* The Bears Project Information, reports and images of European brown bears and other living species
+* Grizzly Bear Outreach Project Information on the history, biology, and conservation of North American Grizzly Bears

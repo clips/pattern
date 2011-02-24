@@ -1,0 +1,395 @@
+Sharks (superorder Selachimorpha) are a type of fish with a full cartilaginous skeleton and a highly streamlined body. The earliest known sharks date from more than 420 million years ago, before the time of the dinosaurs. [1]
+
+Since that time, sharks have diversified into 440 species, ranging in size from the small dwarf lanternshark, Etmopterus perryi, a deep sea species of only 17 centimetres (6.7 in) in length, to the whale shark, Rhincodon typus, the largest fish, which reaches approximately 12 metres (39 ft 4 in) and which feeds only on plankton, squid, and small fish by filter feeding. Sharks are found in all seas and are common down to depths of 2,000 metres (6,600 ft). They generally do not live in freshwater, with a few exceptions such as the bull shark and the river shark which can live both in seawater and freshwater. [2] They breathe through five to seven gill slits. Sharks have a covering of dermal denticles that protects their skin from damage and parasites, and improves their fluid dynamics so the shark can move faster. They have several sets of replaceable teeth. [3]
+
+Well-known species such as the great white shark, tiger shark, and the hammerhead are apex predators, at the top of the underwater food chain. Their extraordinary skills as predators fascinate and frighten humans, even as their survival is under serious threat from fishing and other human activities.
+
+Etymology
+
+Until the 16th century, [4] sharks were known to mariners as "sea dogs". [5] According to the OED the name "shark" first came into use after Sir John Hawkins' sailors exhibited one in London in 1569 and used the word to refer to the large sharks of the Caribbean Sea, and later as a general term for all sharks. It has also been suggested to be derived from the Yucatec Maya word for shark, xok, pronounced 'shok'. [6]
+
+Anatomy
+
+Main article: Physical characteristics of sharks
+
+Teeth
+
+Main article: Shark teeth
+
+Shark teeth are embedded in the gums rather than directly affixed to the jaw, and are constantly replaced throughout life. Multiple rows of replacement teeth grow in a groove on the inside of the jaw and steadily move forward as in a "conveyor belt"; some sharks lose 30,000 or more teeth in their lifetime. The rate of tooth replacement varies from once every 8–10 days to several months. In most species teeth are replaced one at a time, except in cookiecutter sharks the entire row of teeth is replaced simultaneously. [7]
+
+Tooth shape depends on diet: sharks that feed on mollusks and crustaceans have dense flattened teeth for crushing, those that feed on fish have needle-like teeth for gripping, and those that feed on larger prey such as mammals have pointed lower teeth for gripping and triangular upper teeth with serrated edges for cutting. The teeth of plankton-feeders such as the basking shark are smaller and non-functional. [8]
+
+Skeleton
+
+Shark skeletons are very different from those of bony fish and terrestrial vertebrates. Sharks and other cartilaginous fish (skates and rays) have skeletons made of cartilage and connective tissue. Cartilage is flexible and durable, yet has about half the density of bone. This reduces the skeleton’s weight, saving energy. [9] Sharks have no rib cage and therefore on land a shark's own weight can crush it. [10]
+
+Jaw
+
+Like its relatives, rays and skates, the shark's jaw is not attached to the cranium. The jaw's surface, like the shark's vertebrae and gill arches, needs extra support due to its heavy exposure to physical stress and its need for strength. It has a layer of tiny hexagonal plates called "tesserae", which are crystal blocks of calcium salts arranged as a mosaic. [11] This gives these areas much of the same strength found in the bony tissue found in other animals.
+
+Generally sharks have only one layer of tesserae, but the jaws of large specimens, such as the bull shark, tiger shark, and the great white shark, have two to three layers or more, depending on body size. The jaws of a large great white shark may have up to five layers. [9] In the rostrum (snout), the cartilage can be spongy and flexible to absorb the power of impacts.
+
+Fins
+
+Fin skeletons are elongated and supported with soft and unsegmented rays named ceratotrichia, filaments of elastic protein resembling the horny keratin in hair and feathers. [12] Sharks can only drift away from objects directly in front of them because their fins do not allow them to move in the tail-first direction. [10]
+
+Dermal denticles
+
+Main article: Dermal denticle
+
+Unlike bony fish, sharks have a complex dermal corset made of flexible collagenous fibers and arranged as a helical network surrounding their body. This works as an outer skeleton, providing attachment for their swimming muscles and thus saving energy. [13] In the past, sharkskin has been used as sandpaper. Their dermal teeth give them hydrodynamic advantages as they reduce turbulence when swimming. [7]
+
+Tails
+
+Varying tail shapes have evolved in sharks adapted for different environments. Tail (caudal fins) vary considerably between species. The tail provides thrust, making speed and acceleration dependent on tail shape. Sharks possess a heterocercal caudal fin in which the dorsal portion is usually noticeably larger than the ventral portion. This is because the shark's vertebral column extends into that dorsal portion, providing a greater surface area for muscle attachment. This allows more efficient locomotion among these negatively buoyant cartilaginous fishes. By contrast, most bony fishes possess a homocercal caudal fin. [14]
+
+The tiger shark's tail has a large upper lobe which delivers maximum power for slow cruising or sudden bursts of speed. The tiger shark must be able to twist and turn in the water easily when hunting to support its varied diet, whereas the porbeagle, which hunts schooling fish such as mackerel and herring has a large lower lobe to help it keep pace with its fast-swimming prey. [15] Some tail adaptations have other purposes. The thresher feeds on fish and squid, which it herds and stuns with its powerful and elongated upper lobe.
+
+Physiology
+
+Buoyancy
+
+Unlike bony fish, sharks do not have gas-filled swim bladders for buoyancy. Instead, sharks rely on a large liver, filled with oil that contains squalene and the fact that cartilage is about half as dense as bone. [13] The liver constitutes up to 30% of their body mass. [16] The liver's effectiveness is limited, so sharks employ dynamic lift to maintain depth, sinking when they stop swimming. Sand tiger sharks store air in their stomachs, using it as a form of swim bladder. Most sharks need to constantly swim in order to breathe and cannot sleep very long, if at all, without sinking. However certain shark species, like the nurse shark, are capable of pumping water across their gills, allowing them to rest on the ocean bottom. [17]
+
+Some sharks, if inverted or stroked on the nose, enter a natural state of tonic immobility. Researchers use this condition to handle sharks safely. [18]
+
+Respiration
+
+Like other fish, sharks extract oxygen from seawater as it passes over their gills. Unlike other fish, shark gill slits are not covered, but lie in a row behind the head. A modified slit called a spiracle lies just behind the eye; the spiracle assists water intake during respiration and plays a major role in bottom–dwelling sharks. Spiracles are reduced or missing in active pelagic sharks. [8] While the shark is moving, water passes through the mouth and over the gills in a process known as "ram ventilation". While at rest, most sharks pump water over their gills to ensure a constant supply of oxygenated water. A small number of species have lost the ability to pump water through their gills and must swim without rest. These species are obligate ram ventilators and would presumably asphyxiate if unable to move. Obligate ram ventilation is also true of some pelagic bony fish species. [19]
+
+The respiration and circulation process begins when deoxygenated blood travels to the shark's two-chambered heart. Here the shark pumps blood to its gills via the ventral aorta artery where it branches into afferent brachial arteries. Reoxygenation takes place in the gills and the reoxygenated blood flows into the efferent brachial arteries, which come together to form the dorsal aorta. The blood flows from the dorsal aorta throughout the body. The deoxygenated blood from the body then flows through the posterior cardinal veins and enters the posterior cardinal sinuses. From there blood enters the heart ventricle and the cycle repeats. [20]
+
+Thermoregulation
+
+Most sharks are "cold-blooded", or more precisely poikilothermic, meaning that their internal body temperature matches that of their ambient environment. Members of the family Lamnidae, such as the shortfin mako shark and the great white shark, are homeothermic and maintain a higher body temperature than the surrounding water. In these sharks, a strip of aerobic red muscle located near the center of the body generates the heat, which the body retains via a countercurrent exchange mechanism by a system of blood vessels called the rete mirabile ("miraculous net"). The common thresher shark has a similar mechanism for maintaining an elevated body temperature, which is thought to have evolved independently. [21]
+
+Osmoregulation
+
+In contrast to bony fish, with the exception of the Coelacanth, [22] the blood and other tissue of sharks and Chondrichthyes in general is isotonic to their marine environments because of the high concentration of urea and trimethylamine N-oxide (TMAO), allowing them to be in osmotic balance with the seawater. This adaptation prevents most sharks from surviving in fresh water, and they are therefore confined to marine environments. A few exceptions to this rule exist, such as the bull shark which has developed a way to change its kidney function to excrete large amounts of urea. [16] When a shark dies the urea is broken down to ammonia by bacteria — because of this, the dead body will gradually start to smell strongly of ammonia. [23] [24]
+
+Digestion
+
+Digestion can take a long time. The food moves from the mouth to a 'J' shaped stomach, where it is stored and initial digestion occurs. [25] Unwanted items may never get past the stomach, and instead the shark either vomits or turns its stomachs inside out and ejects unwanted items from its mouth.
+
+One of the biggest differences between shark and mammalian digestion is sharks’ extremely short intestine. This short length is achieved by the spiral valve with multiple turns within a single short section instead of a long tube-like intestine. The valve provides a long surface area, requiring food to circulate inside the short gut until fully digested, when remaining waste products pass into the cloaca. [25]
+
+Senses
+
+Smell
+
+Sharks have keen olfactory senses, located in the short duct (which is not fused, unlike bony fish) between the anterior and posterior nasal openings, with some species able to detect as little as one part per million of blood in seawater. [26] They are more attracted to the chemicals found in the guts of many species, and as a result often linger near or in sewage outfalls. Some species, such as nurse sharks, have external barbels that greatly increase their ability to sense prey.
+
+Sight
+
+Shark eyes are similar to the eyes of other vertebrates, including similar lenses, corneas and retinas, though their eyesight is well adapted to the marine environment with the help of a tissue called tapetum lucidum. This means that sharks can contract and dilate their pupils, like humans, something no teleost fish can do. This tissue is behind the retina and reflects light back to it, thereby increasing visibility in the dark waters. The effectiveness of the tissue varies, with some sharks having stronger nocturnal adaptations. Sharks have eyelids, but they do not blink because the surrounding water cleans their eyes. To protect their eyes some species have nictitating membranes. This membrane covers the eyes while hunting and when the shark is being attacked. However, some species, including the great white shark (Carcharodon carcharias), do not have this membrane, but instead roll their eyes backwards to protect them when striking prey. The importance of sight in shark hunting behavior is debated. Some believe that electro- and chemoreception are more significant, while others point to the nictating membrane as evidence that sight is important. Presumably, the shark would not protect its eyes were they unimportant. The use of sight probably varies with species and water conditions. The shark's field of vision can swap between monocular and stereoscopic at any time. [27]
+
+Hearing
+
+Although it is hard to test sharks' hearing, they may have a sharp sense of hearing and can possibly hear prey many miles away. [28] A small opening on each side of their heads (not the spiracle) leads directly into the inner ear through a thin channel. The lateral line shows a similar arrangement, and is open to the environment via a series of openings called lateral line pores. This is a reminder of the common origin of these two vibration- and sound-detecting organs that are grouped together as the acoustico-lateralis system. In bony fish and tetrapods the external opening into the inner ear has been lost.
+
+Electroreception
+
+Main article: Electroreception
+
+The Ampullae of Lorenzini are the electroreceptor organs. They number in the hundreds to thousands. Sharks use the Ampullae of Lorenzini to detect the electromagnetic fields that all living things produce. [29] This helps sharks (particularly the hammerhead shark) find prey. The shark has the greatest electrical sensitivity of any animal. Sharks find prey hidden in sand by detecting the electric fields they produce. Ocean currents moving in the magnetic field of the Earth also generate electric fields that sharks can use for orientation and possibly navigation. [30]
+
+Lateral line
+
+Main article: Lateral line
+
+This system is found in most fish, including sharks. It detects motion or vibrations in water. The shark can sense frequencies in the range of 25 to 50 Hz. [31]
+
+Life history
+
+Shark lifespans vary by species. Most live 20 to 30 years. The spiny dogfish has the longest lifespan at more than 100 years. [32] Whale sharks (Rhincodon typus) may also live over 100 years. [33]
+
+Reproduction
+
+Unlike most bony fishes, sharks are K-selected reproducers, meaning that they produce a small number of well-developed young as opposed to a large number of poorly developed young. Fecundity in sharks ranges from 2 to over 100 young per reproductive cycle. [34] Sharks mature slowly relative to many other fish. For example, lemon sharks reach sexual maturity at around age 13–15. [35]
+
+Sexual
+
+Sharks practice internal fertilization. The posterior part of a male shark's pelvic fins are modified into a pair of intromittent organs called claspers, analogous to a mammalian penis, of which one is used to deliver sperm into the female. [36]
+
+Mating has rarely been observed in sharks. The smaller catsharks often mate with the male curling around the female. In less flexible species the two sharks swim parallel to each other while the male inserts a clasper into the female's oviduct. Females in many of the larger species have bite marks that appear to be a result of a male grasping them to maintain position during mating. The bite marks may also come from courtship behavior: the male may bite the female to show his interest. In some species, females have evolved thicker skin to withstand these bites. [36]
+
+Asexual
+
+There are two documented cases in which a female shark who has not been in contact with a male has conceived a pup on her own through parthenogenesis. [37] [38] The details of this process are not well understood, but genetic fingerprinting showed that the pups had no paternal genetic contribution, ruling out sperm storage. The extent of this behavior in the wild is unknown, as is whether other species have this capability. Mammals are now the only major vertebrate group in which asexual reproduction has not been observed.
+
+Scientists assert that asexual reproduction in the wild is rare, and probably a last ditch effort to reproduce when a mate is not present. Asexual reproduction diminishes genetic diversity, which helps build defenses against threats to the species. Species that rely solely on it risk extinction. Asexual reproduction may have contributed to the blue shark's decline off the Irish coast. [39]
+
+Brooding
+
+Sharks display three ways to bear their young, varying by species, oviparity, viviparity and ovoviviparity. [40]
+
+Ovoviviparity
+
+Most sharks are ovoviviparous, meaning that the eggs hatch in the oviduct within the mother's body and that the egg's yolk and fluids secreted by glands in the walls of the oviduct nourishes the embryos. The young continue to be nourished by the remnants of the yolk and the oviduct's fluids. As in viviparity, the young are born alive and fully functional. Lamniforme sharks practice oophagy, where the first embryos to hatch eat the remaining eggs. Grey nurse shark pups intrauterine cannibalistically take this a step further and consume other developing embryos. The survival strategy for ovoviviparous species is to brood the young to a comparatively large size before birth. The whale shark is now classified as ovoviviparous rather than oviparous, because extrauterine eggs are now thought to have been aborted. Most ovoviviparous sharks give birth in sheltered areas, including bays, river mouths and shallow reefs. They choose such areas for protection from predators (mainly other sharks) and the abundance of food. Dogfish have the longest known gestation period of any shark, at 18 to 24 months. Basking sharks and frilled sharks appear to have even longer gestation periods, but accurate data are lacking. [40]
+
+Oviparity
+
+Some species are oviparous like most other fish, laying their eggs in the water. In most oviparous shark species, an egg case with the consistency of leather protects the developing embryo(s). These cases may be corkscrewed into crevices for protection. Once empty, the egg case is known as the mermaid's purse, and can wash up on shore. Oviparous sharks include the horn shark, catshark, Port Jackson shark, and swellshark. [40] [41]
+
+Viviparity
+
+Finally some sharks maintain a placental link to the developing young, this method is called viviparity. This is more analogous to mammalian gestation than that of other fishes. The young are born alive and fully functional. Hammerheads, the requiem sharks (such as the bull and blue sharks), and smoothhounds are viviparous. [34] [40]
+
+Behavior
+
+The classic view describes a solitary hunter, ranging the oceans in search of food. However, this applies to only a few species. Most live far more sedentary, benthic lives. Even solitary sharks meet for breeding or at rich hunting grounds, which may lead them to cover thousands of miles in a year. [42] Shark migration patterns may be even more complex than in birds, with many sharks covering entire ocean basins.
+
+Sharks can be highly social, remaining in large schools. Sometimes more than 100 scalloped hammerheads congregate around seamounts and islands, e.g., in the Gulf of California. [16] Cross-species social hierarchies exist. For example, oceanic whitetip sharks dominate silky sharks of comparable size during feeding. [34]
+
+When approached too closely some sharks perform a threat display. This usually consists of exaggerated swimming movements, and can vary in intensity according to the threat level. [43]
+
+Speed
+
+In general, sharks swim ("cruise") at an average speed of 8 kilometres per hour (5.0 mph) but when feeding or attacking, the average shark can reach speeds upwards of 19 kilometres per hour (12 mph). The shortfin mako shark, the fastest shark and one of the fastest fish, can burst at speeds up to 50 kilometres per hour (31 mph). [44] The great white shark is also capable of speed bursts. These exceptions may be due to the warm-blooded, or homeothermic, nature of these sharks' physiology.
+
+Intelligence
+
+Contrary to the common wisdom that sharks are instinct-driven "eating machines", recent studies have indicated that many species possess powerful problem-solving skills, social skills and curiosity. The brain- to body-mass ratios of sharks are similar to mammals and birds. [45] In 1987, near Smitswinkle Bay, South Africa, a group of up to seven great white sharks worked together to move a partially beached dead whale to deeper waters to feed. [46] Sharks can engage in playful activities. Porbeagle sharks have been seen repeatedly rolling in kelp and chasing an individual who trailed a piece of kelp behind it. [47]
+
+Sleep
+
+Some sharks can lie on the bottom while actively pumping water over their gills, but their eyes remain open and actively follow divers. [48] When a shark is resting, it does not use its nares, but rather its spiracles. If a shark tried to use its nares while resting on the ocean floor, it would "inhale" sand rather than water. Many scientists believe this is one of the reasons sharks have spiracles. The spiny dogfish's spinal cord, rather than its brain, coordinates swimming, so spiny dogfish can continue to swim while sleeping. [48] It is also possible that sharks sleep in a manner similar to dolphins, [48] one cerebral hemisphere at a time, thus maintaining some consciousness and cerebral activity at all times.
+
+Ecology
+
+Feeding
+
+This section is about shark feeding. For the sport of shark feeding, see Shark baiting.
+
+Most sharks are carnivorous. [49] Some species, including tiger sharks, eat almost anything. The vast majority seek particular prey, and rarely vary their diet. [citation needed] Whale, basking and megamouth sharks filter feed. These three independently evolved plankton feeding using different strategies. Whale sharks use suction to take in plankton and small fishes. Basking sharks are ram-feeders, swimming through plankton blooms with their mouth wide open. Megamouth sharks make suction feeding more efficient, using luminescent tissue inside the mouth to attract prey in the deep ocean. This type of feeding requires gill rakers, long slender filaments that form a very efficient sieve, analogous to the baleen plates of the great whales. The shark traps the plankton in these filaments and swallows from time to time in huge mouthfuls. Teeth in these species are comparatively small because they are not needed for feeding. [49]
+
+Other highly specialized feeders include cookiecutter sharks, which feed on flesh sliced out of other larger fish and marine mammals. Cookiecutter teeth are enormous compared to the animal's size. The lower teeth are particularly sharp. Although they have never been observed feeding, they are believed to latch onto their prey and use their thick lips to make a seal, twisting their bodies to rip off flesh. [16]
+
+Some seabed–dwelling species are highly effective ambush predators. Angel sharks and wobbegongs use camouflage to lie in wait and suck prey into their mouths. [50] Many benthic sharks feed solely on crustaceans which they crush with their flat molariform teeth.
+
+Other sharks feed on squid or fish, which they swallow whole. The viper dogfish has teeth it can point outwards to strike and capture prey that it then swallows intact. The great white and other large predators either swallow small prey whole or take huge bites out of large animals. Thresher sharks use their long tails to stun shoaling fishes, and sawsharks either stir prey from the seabed or slash at swimming prey with their tooth-studded rostra.
+
+Many sharks, including the whitetip reef shark are cooperative feeders and hunt in packs to herd and capture elusive prey. These social sharks are often migratory, traveling huge distances around ocean basins in large schools. These migrations may be partly necessary to find new food sources. [51]
+
+Range and habitat
+
+Sharks are found in all seas. They generally do not live in freshwater, with a few exceptions such as the bull shark and the river shark which can swim both in seawater and freshwater. Sharks are common down to depths of 2,000 metres (7,000 ft), and some live even deeper, but they are almost entirely absent below 3,000 metres (10,000 ft). The deepest confirmed report of a shark is a Portuguese dogfish at 3,700 metres (12,100 ft). [52]
+
+Relation to humans
+
+Attacks
+
+Main article: Shark attack
+
+In 2006 the International Shark Attack File (ISAF) undertook an investigation into 96 alleged shark attacks, confirming 62 of them as unprovoked attacks and 16 as provoked attacks. The average number of fatalities worldwide per year between 2001 and 2006 from unprovoked shark attacks is 4.3. [53]
+
+Contrary to popular belief, only a few sharks are dangerous to humans. Out of more than 360 species, only four have been involved in a significant number of fatal, unprovoked attacks on humans: the great white, oceanic whitetip, tiger, and bull sharks. [54] [55] These sharks, are large, powerful predators, and may sometimes attack and kill people. Despite being responsible for attacks on humans they have all been filmed without using a protective cage. [56]
+
+The perception of sharks as dangerous animals has been popularized by publicity given to a few isolated unprovoked attacks, such as the Jersey Shore shark attacks of 1916, and through popular fictional works about shark attacks, such as the Jaws film series. Jaws author Peter Benchley in his later years attempted to dispel the image of sharks as man-eating monsters. [57]
+
+In captivity
+
+Main article: Sharks in captivity
+
+Until recently only a few benthic species of shark, such as hornsharks, leopard sharks and catsharks had survived in aquarium conditions for a year or more. This gave rise to the belief that sharks, as well as being difficult to capture and transport, were difficult to care for. More knowledge has led to more species (including the large pelagic sharks) living far longer in captivity. At the same time, safer transportation techniques have enabled long distance movement. [58] One shark that never had been successfully held in captivity for long was the great white. But in September 2004 the Monterey Bay Aquarium successfully kept a young female for 198 days before releasing her.
+
+Most species are not suitable for home aquaria and not every species sold by pet stores are appropriate. Some species can flourish in home saltwater aquaria. [59] Uninformed or unscrupulous dealers sometimes sell juvenile sharks like the nurse shark, which upon reaching adulthood is far too large for typical home aquaria. [59] Public aquaria generally do not accept donated specimens that have outgrown their housing. Some owners have been tempted to release them. [59] Species appropriate to home aquaria represent considerable spatial and financial investments as they generally approach adult lengths of 3 feet and can live up to 25 years. [59]
+
+In Hawaii
+
+Sharks figure prominently in Hawaiian mythology. Stories tell of men with shark jaws on their back who could change between shark and human form. A common theme was that a shark-man would warn beach-goers of sharks in the waters. The beach-goers would laugh and ignore the warnings and get eaten by the shark-man who warned them. Hawaiian mythology also includes many shark gods. Among a fishing people, the most popular of all aumakua, or deified ancestor guardians, are shark aumakua. Kamaku describes in detail how to offer a corpse to become a shark. The body transforms gradually until the kahuna can point the awe-struck family to the markings on the shark's body that correspond to the clothing in which the beloved's body had been wrapped. Such a shark aumakua becomes the family pet, receiving food, and driving fish into the family net and warding off danger. Like all aumakua it had evil uses such as helping kill enemies. The ruling chiefs typically forbade such sorcery. Many Native Hawaiian families claim such an aumakua, who is known by name to the whole community. [60]
+
+Kamohoali'i is the best known and revered of the shark gods, he was the older and favored brother of Pele, [61] and helped and journeyed with her to Hawaii. He was able to assume all human and fish forms. A summit cliff on the crater of K?lauea is one of his most sacred spots. At one point he had a heiau (temple or shrine) dedicated to him on every piece of land that jutted into the ocean on the island of Moloka'i. Kamohoali'i was an ancestral god, not a human who became a shark and banned the eating of humans after eating one herself. [62] [63] In Fijian mytholog, Dakuwanga was a shark god who was the eater of lost souls.
+
+Popular misconceptions
+
+A popular myth is that sharks are immune to disease and cancer; however, this remains unproven. Sharks may get cancer. [64] [65] Both diseases and parasites affect sharks. The evidence that sharks are at least resistant to cancer and disease is mostly anecdotal and there have been few, if any, scientific or statistical studies that show sharks to have heightened immunity to disease. [66] Other apparently false claims are that fins prevent cancer [67] and treat osteoarthritis. [68] No scientific proof supports these claims; at least one study has shown shark cartilage of no value in cancer treatment. [69]
+
+Conservation
+
+Fishery
+
+It is estimated that 100 million sharks are killed by people every year, due to commercial and recreational fishing. [70] [71] Sharks are a common seafood in many places, including Japan and Australia. In the Australian state of Victoria, shark is the most commonly used fish in fish and chips, in which fillets are battered and deep-fried or crumbed and grilled. In fish and chip shops, shark is called flake. In India, small sharks or baby sharks (called sora in Tamil language, Telugu language) are sold in local markets. Since the flesh is not developed, cooking the flesh breaks it into powder, which is then fried in oil and spices (called sora puttu/sora poratu). The soft bones can be easily chewed. They are considered a delicacy in coastal Tamil Nadu. Icelanders ferment Greenland sharks to produce hákarl, which is widely regarded as a national dish. [citation needed]
+
+Sharks are often killed for shark fin soup. Fishermen capture live sharks, fin them, and dump the finless animal back into the water. Finning involves removing the fin with a hot metal blade. [71] The resulting immobile shark soon dies from suffocation or predators. [72] Shark fin has become a major trade within black markets all over the world. Fins sell for about $300/lb in 2009. [73] Poachers illegally fin millions each year. Few governments enforce laws that protect them. [citation needed] In 2010 Hawaii became the first U.S. state to prohibit the possession, sale, trade or distribution of shark fins. [74]
+
+Shark fin soup is a status symbol in Asian countries, and is considered healthy and full of nutrients. Sharks are also killed for meat. European diners consume dogfishes, smoothhounds, catsharks, makos, porbeagle and also skates and rays. [75] However, the U.S. FDA lists sharks as one of four fish (with swordfish, king mackerel, and tilefish) whose high mercury content is hazardous to children and pregnant women.
+
+Sharks generally reach sexual maturity only after many years and produce few offspring in comparison to other harvested fish. Harvesting sharks before they reproduce severely impacts future populations.
+
+The majority of shark fisheries have little monitoring or management. The rise in demand for shark products increases pressure on fisheries. [18] Major declines in shark stocks have been recorded—some species have been depleted by over 90% over the past 20–30 years with population declines of 70% not unusual. [76] Many governments and the UN have acknowledged the need for shark fisheries management, but little progress has been made due to their low economic value, the small volumes of products produced and sharks' poor public image. [citation needed]
+
+Other threats
+
+Other threats include habitat alteration, damage and loss from coastal development, pollution and the impact of fisheries on the seabed and prey species. [77] Shark finning attracts much controversy and regulations are being enacted to prevent it from occurring. [citation needed] The 2007 documentary, Sharkwater exposed how sharks are being hunted to extinction. [78]
+
+Protection
+
+In 2009, the Shark Conservation Act of 2009, passed the U.S. House of Representatives. [79] A similar bill is pending in the 2010 U.S. Senate. [73] The bill would strengthen existing shark finning laws.
+
+In 2010, the Convention on International Trade in Endangered Species rejected proposals from the United States and Palau that would have required countries to strictly regulate trade in several species of scalloped hammerhead, oceanic whitetip and spiny dogfish sharks. The majority, but not the required two-thirds of voting delegates, approved the proposal. China, by far the world’s largest shark market, and Japan, which battles all attempts to extend the convention to marine species, led the opposition. [80] [81]
+
+In 2010, Greenpeace International added the school shark, shortfin mako shark, mackerel shark, tiger shark and spiny dogfish to its seafood red list, a list of common supermarket fish that are often sourced from unsustainable fisheries. [82] Advocacy group Shark Trust campaigns to limit shark fishing. Advocacy group Seafood Watch directs American consumers to not eat sharks. [83]
+
+Evolution
+
+Evidence for the existence of sharks dates from the Ordovician period, over 450–420 million years ago, before land vertebrates existed and before many plants had colonized the continents. [1] Only scales have been recovered from the first sharks and not all paleontologists agree that these are from true sharks. [84] The oldest generally accepted shark scales are from about 420 million years ago, in the Silurian period. [84] The first sharks looked very different from modern sharks. [85] The majority of modern sharks can be traced back to around 100 million years ago. [86] Most fossils are of teeth, often in large numbers. Partial skeletons and even complete fossilized remains have been discovered. Estimates suggest that sharks grow tens of thousands of teeth over a lifetime, which explains the abundant fossils. The teeth consist of easily fossilized calcium phosphate, an apatite. When a shark dies, the decomposing skeleton breaks up, scattering the apatite prisms. Preservation requires rapid burial in bottom sediments.
+
+Among the most ancient and primitive sharks is Cladoselache, from about 370 million years ago, [85] which has been found within Paleozoic strata in Ohio, Kentucky and Tennessee. At that point in Earth's history these rocks made up the soft bottom sediments of a large, shallow ocean, which stretched across much of North America. Cladoselache was only about 1 metre (3.3 ft) long with stiff triangular fins and slender jaws. [85] Its teeth had several pointed cusps, which wore down from use. From the small number of teeth found together, it is most likely that Cladoselache did not replace its teeth as regularly as modern sharks. Its caudal fins had a similar shape to the great white sharks and the pelagic shortfin and longfin makos. The presence of whole fish arranged tail-first in their stomachs suggest that they were fast swimmers with great agility.
+
+Most fossil sharks from about 300 to 150 million years ago can be assigned to one of two groups. The Xenacanthida was almost exclusive to freshwater environments. [87] [88] By the time this group became extinct about 220 million years ago, they had spread worldwide. The other group, the hybodonts, appeared about 320 million years ago and lived mostly in the oceans, but also in freshwater.
+
+Modern sharks began to appear about 100 million years ago. [86] Fossil mackerel shark teeth date to the Lower Cretaceous. One of the most recently evolved families is the hammerhead shark (family Sphyrnidae), which emerged in the Eocene. [89] The oldest white shark teeth date from 60 to 65 million years ago, around the time of the extinction of the dinosaurs. In early white shark evolution there are at least two lineages: one lineage is of white sharks with coarsely serrated teeth and it probably gave rise to the modern great white shark, and another lineage is of white sharks with finely serrated teeth. These sharks attained gigantic proportions and include the extinct megatoothed shark, C. megalodon. Like most extinct sharks, C. megalodon is also primarily known from its fossil teeth and vertebrae. This giant shark reached a total length (TL) of more than 16 metres (52 ft). [90] [91] C. megalodon may have approached a maxima of 20.3 metres (67 ft) in total length and 103 metric tons (114 short tons) in mass. [92] Paleontological evidence suggests that this shark was an active predator of large cetaceans. [92]
+
+Taxonomy
+
+Sharks belong to the superorder Selachimorpha in the subclass Elasmobranchii in the class Chondrichthyes. The Elasmobranchii also include rays and skates; the Chondrichthyes also include Chimaeras. It is currently thought that the sharks form a polyphyletic group: some sharks are more closely related to rays than they are to some other sharks. [93]
+
+The superorder Selachimorpha is divided into Galea (or Galeomorphii), and Squalea. The Galeans are the Heterodontiformes, Orectolobiformes, Lamniformes, and Carcharhiniformes. Lamnoids and Carcharhinoids are usually placed in one clade, but recent studies show the Lamnoids and Orectoloboids are a clade. Some scientists now think that Heterodontoids may be Squalean. The Squalea is divided into Hexanchoidei and Squalomorpha. The Hexanchoidei includes the Hexanchiformes and Chlamydoselachiformes. The Squalomorpha contains the Squaliformes and the Hypnosqualea. The Hypnosqualea may be invalid. It includes the Squatiniformes, and the Pristorajea, which may also be invalid, but includes the Pristiophoriformes and the Batoidea. [93] [94]
+
+More than 440 species of sharks split across eight orders, listed below in roughly their evolutionary relationship from ancient to modern: [94]
+
+* Hexanchiformes: Examples from this group include the cow sharks, frilled shark and even a shark that resembles a marine snake.
+* Squaliformes: This group includes the bramble sharks, dogfish and roughsharks, and prickly shark.
+* Pristiophoriformes: These are the sawsharks, with an elongated, toothed snout that they use for slashing their prey.
+* Squatiniformes: Also known as angel sharks, they are flattened sharks with a strong resemblance to stingrays and skates.
+* Heterodontiformes: They are generally referred to as the bullhead or horn sharks.
+* Orectolobiformes: They are commonly referred to as the carpet sharks, including zebra sharks, nurse sharks, wobbegongs and the whale shark.
+* Carcharhiniformes: Commonly known as groundsharks, the species include the blue, tiger, bull, grey reef, blacktip reef, Caribbean reef, blacktail reef, whitetip reef and oceanic whitetip sharks (collectively called the requiem sharks) along with the houndsharks, catsharks and hammerhead sharks. They are distinguished by an elongated snout and a nictitating membrane which protects the eyes during an attack.
+* Lamniformes: They are commonly known as the mackerel sharks. They include the goblin shark, basking shark, megamouth shark, the thresher sharks, shortfin and longfin mako sharks, and great white shark. They are distinguished by their large jaws and ovoviviparous reproduction. The Lamniformes include the extinct megalodon, Carcharodon megalodon.
+
+See also
+
+* List of sharks
+* List of prehistoric cartilaginous fish
+* Marine vertebrates
+* Outline of sharks
+* Shark finning
+* Shark sanctuary
+* Shark Week
+
+References
+
+* ^ a b Martin, R. Aidan. "Geologic Time". ReefQuest. http://www.elasmo-research.org/education/evolution/geologic_time.htm. Retrieved 2006-09-09.
+* ^ Allen, Thomas B. (1999). The Shark Almanac. New York: The Lyons Press. ISBN 1-55821-582-4. OCLC 39627633.
+* ^ Budker, Paul (1971). The Life of Sharks. London: Weidenfeld and Nicolson. SBN 297003070.
+* ^ "Online Etymology Dictionary". http://www.etymonline.com/index.php?search=shark&searchmode=none. Retrieved 2006-08-08.
+* ^ Marx, Robert F. (1990). The History of Underwater Exploration. Courier Dover Publications. p. 3. ISBN 0-486-26487-4.
+* ^ Jones, Tom. "The Xoc, the Sharke, and the Sea Dogs: An Historical Encounter". http://www.mesoweb.com/pari/publications/RT07/211-Xoc.html. Retrieved 2009-07-11.
+* ^ a b Martin, R. Aidan. "Skin of the Teeth". http://www.elasmo-research.org/education/white_shark/scales.htm. Retrieved 2007-08-28.
+* ^ a b Gilbertson, Lance (1999). Zoology Laboratory Manual. New York: McGraw-Hill Companies, Inc.. ISBN 0-07-237716-X.
+* ^ a b Martin, R. Aidan. "Skeleton in the Corset". ReefQuest Centre for Shark Research. http://www.elasmo-research.org/education/white_shark/skeleton.htm. Retrieved 2009-08-21.
+* ^ a b "A Shark's Skeleton & Organs". http://langonigraphix.com/skeleton.html. Retrieved August 14, 2009.
+* ^ Hamlett, W. C. (1999f). Sharks, Skates and Rays: The Biology of Elasmobranch Fishes. Johns Hopkins University Press. ISBN 0-8018-6048-2. OCLC 39217534.
+* ^ Hamlett, William C. (April 23, 1999). Sharks, skates, and rays: the biology of elasmobranch fishes (1 ed.). p 56: The Johns Hopkins University Press. p. 528. ISBN 978-0801860485. http://books.google.com/?id=ON-sPP5rowwC&pg=PA56&lpg=PA56&dq=shark+fin++ceratotrichia+supported&q=shark%20fin%20%20ceratotrichia%20supported.
+* ^ a b Martin, R. Aidan. "The Importance of Being Cartilaginous". ReefQuest Centre for Shark Research. http://www.elasmo-research.org/education/topics/p_cartilage.htm. Retrieved 2009-08-29.
+* ^ Michael, Bright. "Jaws: The Natural History of Sharks". Columbia University. http://www.fathom.com/course/21701777/session1.html. Retrieved 2009-08-29.
+* ^ Nelson, Joseph S. (1994). Fishes of the World. New York: John Wiley and Sons. ISBN 0-471-54713-1. OCLC 28965588.
+* ^ a b c d Compagno, Leonard; Dando, Marc & Fowler, Sarah (2005). Sharks of the World. Collins Field Guides. ISBN 0-00-713610-2. OCLC 183136093.
+* ^ "Do sharks sleep". Flmnh.ufl.edu. http://www.flmnh.ufl.edu/fish/education/questions/basics.html#sleep. Retrieved 2010-09-23.
+* ^ a b Pratt, H. L. Jr; Gruber,, S. H.; Taniuchi, T (1990). Elasmobranchs as living resources: Advances in the biology, ecology, systematics, and the status of the fisheries. NOAA Tech Rept..
+* ^ William J. Bennetta (1996). "Deep Breathing". http://www.textbookleague.org/73shark.htm. Retrieved 2007-08-28.
+* ^ "SHARKS & RAYS, SeaWorld/Busch Gardens ANIMALS, CIRCULATORY SYSTEM". Busch Entertainment Corporation. http://www.seaworld.org/animal-info/info-books/sharks-&-rays/anatomy.htm. Retrieved 2009-09-03.
+* ^ Martin, R. Aidan (April 1992). "Fire in the Belly of the Beast". ReefQuest Centre for Shark Research. http://elasmo-research.org/education/topics/p_warm_body_1.htm. Retrieved 2009-08-21.
+* ^ Chemistry of the body fluids of the coelacanth, Latimeria chalumnae
+* ^ John A. Musick (2005). "Management techniques for elasmobranch fisheries: 14. Shark Utilization". FAO: Fisheries and Aquaculture Department. http://www.fao.org/docrep/009/a0212e/A0212E18.htm. Retrieved 2008-03-16.
+* ^ Thomas Batten. "MAKO SHARK Isurus oxyrinchus". Delaware Sea Grant, University of Delaware. http://www.ocean.udel.edu/mas/seafood/mako.html. Retrieved 2008-03-16.
+* ^ a b Martin, R. Aidan. "No Guts, No Glory". ReefQuest Centre for Shark Research. http://elasmo-research.org/education/white_shark/digestion.htm. Retrieved 2009-08-22.
+* ^ Martin, R. Aidan. "Smell and Taste". ReefQuest Centre for Shark Research. http://elasmo-research.org/education/white_shark/smell.htm. Retrieved 2009-08-21.
+* ^ Martin, R. Aidan. "Vision and a Carpet of Light". ReefQuest Centre for Shark Research. http://elasmo-research.org/education/white_shark/vision.htm. Retrieved 2009-08-22.
+* ^ Martin, R. Aidan. "Hearing and Vibration Detection". http://www.elasmo-research.org/education/white_shark/hearing.htm. Retrieved 2008-06-01.
+* ^ Kalmijn AJ (1982). "Electric and magnetic field detection in elasmobranch fishes". Science 218 (4575): 916–8. doi:10.1126/science.7134985. PMID 7134985.
+* ^ Meyer CG, Holland KN, Papastamatiou YP (2005). "Sharks can detect changes in the geomagnetic field". Journal of the Royal Society, Interface 2 (2): 129–30. doi:10.1098/rsif.2004.0021. PMID 16849172.
+* ^ Popper, A.N.; C. Platt (1993). "Inner ear and lateral line". The Physiology of Fishes (CRC Press) (1st ed.).
+* ^ "Mote Marine Laboratory, "Shark Notes"". http://www.mote.org/index.php?src=gendocs&link=Shark+Notes&category=Aquarium.
+* ^ "Florida Museum of Natural History Ichthyology Department, "National Shark Research Consortium–Shark Basics"". http://www.flmnh.ufl.edu/fish/sharks/nsrc/Basics.htm#live.
+* ^ a b c Leonard J. V. Compagno (1984). Sharks of the World: An annotated and illustrated catalogue of shark species known to date. Food and Agriculture Organization of the United Nations. ISBN 92-5-104543-7. OCLC 156157504.
+* ^ Gruber, Samuel H. (February 21, 2000). "LIFE STYLE OF SHARKS". http://www.pacfish.org/sharkcon/documents/gruber.html. Retrieved June 20, 2010.
+* ^ a b Martin, R. Aidan. "Why Do Sharks Have Two Penises?". ReefQuest Centre for Shark Research. http://elasmo-research.org/education/topics/lh_2penises.htm. Retrieved 2009-08-22.
+* ^ Chapman DD, Shivji MS, Louis E, Sommer J, Fletcher H, Prodöhl PA (2007). "Virgin birth in a hammerhead shark". Biology letters 3 (4): 425–7. doi:10.1098/rsbl.2007.0189. PMID 17519185.
+* ^ In shark tank, an asexual birth, Boston Globe, 10 Oct. 2008
+* ^ Fountain, Henry (2007-05-23). "Female sharks reproduce without male DNA, scientists say". The New York Times, New York City. http://www.nytimes.com/2007/05/23/science/23shark.html. Retrieved 2007-11-13.
+* ^ a b c d "SHARKS & RAYS, SeaWorld/Busch Gardens ANIMALS, BIRTH & CARE OF YOUNG". Busch Entertainment Corporation. http://www.seaworld.org/animal-info/info-books/sharks-&-rays/birth-&-care.htm. Retrieved 2009-09-03.
+* ^ "Marine Biology notes". School of Life Sciences, Napier University. http://www.lifesciences.napier.ac.uk/teaching/MB/Fish02.html. Retrieved 2006-09-12.
+* ^ Ravilious, Kate (2005-10-07). "Scientists track shark's 12,000 mile round-trip". London: Guardian Unlimited. http://www.guardian.co.uk/science/story/0,3605,1586834,00.html. Retrieved 2006-09-17.
+* ^ Richard H. Johnson and Donald R. Nelson (1973-03-05). "Agonistic Display in the Gray Reef Shark, Carcharhinus menisorrah, and Its Relationship to Attacks on Man". Copeia (American Society of Ichthyologists and Herpetologists) 1973 (1): 76–84. doi:10.2307/1442360. http://jstor.org/stable/1442360.
+* ^ Reefquest Center for Shark Research. What's the Speediest Marine Creature?
+* ^ Kathreen E. Ruckstuhl, Peter Neuhaus, ed (January 23, 2006). "Sexual Segregation in Sharks". Sexual segregation in vertebrates. Cambridge University Press. p. 128. ISBN 978-0521835220.
+* ^ "Is the White Shark Intelligent". ReefQuest Centre for Shark Research. http://www.elasmo-research.org/education/white_shark/intelligence.htm. Retrieved 2006-08-07.
+* ^ "Biology of the Porbeagle". ReefQuest Centre for Shark Research. http://www.elasmo-research.org/education/shark_profiles/l_nasus.htm. Retrieved 2006-08-07.
+* ^ a b c "How Do Sharks Swim When Asleep?". ReefQuest Centre for Shark Research. http://www.elasmo-research.org/education/topics/b_sleep.htm. Retrieved 2006-08-07.
+* ^ a b Martin, R. Aidan. "Building a Better Mouth Trap". ReefQuest Centre for Shark Research. http://elasmo-research.org/education/topics/d_filter_feeding.htm. Retrieved 2009-08-22.
+* ^ Martin, R. Aidan. "Order Orectolobiformes: Carpet Sharks—39 species". ReefQuest Centre for Shark Research. http://elasmo-research.org/education/shark_profiles/orectolobiformes.htm. Retrieved 2009-08-29.
+* ^ Stevens 1987
+* ^ Priede IG, Froese R, Bailey DM, et al. (2006). "The absence of sharks from abyssal regions of the world's oceans". Proceedings. Biological sciences / the Royal Society 273 (1592): 1435–41. doi:10.1098/rspb.2005.3461. PMID 16777734.
+* ^ "Worldwide shark attack summary". International Shark Attack File. http://www.flmnh.ufl.edu/fish/sharks/statistics/2006attacksummary.htm. Retrieved 2007-08-28.
+* ^ "Statistics on Attacking Species of Shark". ISAF. http://www.flmnh.ufl.edu/fish/sharks/statistics/species2.htm. Retrieved 2006-09-12.
+* ^ "Biology of sharks and rays". ReefQuest Centre for Shark Research. http://www.elasmo-research.org/education/shark_profiles/carcharhinidae.htm. Retrieved 2007-11-21.
+* ^ BUTTIGIEG, ALEX. "The Sharkman meets Ron & Valerie Taylor". Sharkman's Graphics. http://www.sharkmans-world.com/rv.htm. Retrieved 2009-08-29.
+* ^ Handwerk, Brian (7 June 2002). "Jaws Author Peter Benchley Talks Sharks". National Geographic Society. http://news.nationalgeographic.com/news/2002/06/0606_shark5.html. Retrieved 2009-08-29.
+* ^ "Whale Sharks in Captivity". http://www.mcss.sc/MCNEWS/mcn_v3_1_art3.htm. Retrieved 2006-09-13.
+* ^ a b c d Michael, Scott W. (March 2004). "Sharks at Home". Aquarium Fish Magazine: pp. 20–29
+* ^ Beckwith, Martha (1940). "Guardian Gods". http://www.sacred-texts.com/pac/hm/hm11.htm. Retrieved August 13, 2009.
+* ^ "Pele, Goddess of Fire". http://www.mythicalrealm.com/legends/pele.html. Retrieved 2006-09-13.
+* ^ "Traditions of O'ahu: Stories of an Ancient Island". http://apdl.kcc.hawaii.edu/~oahu/stories/ewa/kaahupahau.htm. Retrieved August 14, 2009.
+* ^ Taylor, Leighton R. (November 1993). Sharks of Hawaii: Their Biology and Cultural Significance. University of Hawaii Press. ISBN 978-0824815622.
+* ^ Finkelstein JB (2005). "Sharks do get cancer: few surprises in cartilage research". Journal of the National Cancer Institute 97 (21): 1562–3. doi:10.1093/jnci/dji392. PMID 16264172.
+* ^ Ostrander GK, Cheng KC, Wolf JC, Wolfe MJ (2004). "Shark cartilage, cancer and the growing threat of pseudoscience". Cancer research 64 (23): 8485–91. doi:10.1158/0008-5472.CAN-04-2260. PMID 15574750.
+* ^ "Do Sharks Hold Secret to Human Cancer Fight?". National Geographic. http://news.nationalgeographic.com/news/2003/08/0820_030820_sharkcancer.html. Retrieved 2006-09-08.
+* ^ "Alternative approaches to prostate cancer treatment". http://www.prostatecancertreatment.co.uk/treatment-options/alternative-approaches. Retrieved 2008-06-23.
+* ^ Pollack, Andrew (3 June 2007). "Shark Cartilage, Not a Cancer Therapy". New York Times. http://www.nytimes.com/2007/06/03/health/03cancer.html. Retrieved 2009-08-29.
+* ^ The results of a study sponsored by the National Cancer Institute, and led by Dr. Charles Lu of the M.D. Anderson Cancer Center in Houston, Texas, were presented at the annual meeting of the American Society of Clinical Oncology on June 2, 2007 in Chicago. Cancer patients treated with extracts from shark cartilage had a shorter median lifespan than patients receiving a placebo. "Shark fin won’t help fight cancer, but ginseng will". http://www.pchrd.dost.gov.ph/library/index.php?option=com_content&task=view&id=338&Itemid=27. Retrieved 2008-06-23.  [dead link]
+* ^ HowStuffWorks "How many sharks are killed recreationally each year - and why?". Animals.howstuffworks.com. Retrieved on 2010-09-16.
+* ^ a b "Shark fin soup alters an ecosystem—CNN.com". CNN. 2008-12-15. http://www.cnn.com/2008/WORLD/asiapcf/12/10/pip.shark.finning/index.html. Retrieved 2010-05-23.
+* ^ http://www.sharktrust.org/content.asp?did=26881
+* ^ a b Ask your senator to support the Shark Conservation Act. Actionnetwork.org (2009-12-30). Retrieved on 2010-09-16.
+* ^ "Hawaii: Shark Fin Soup Is Off the Menu". Associated Press. New York Times. May 28, 2010. http://www.nytimes.com/2010/05/29/us/29brfs-SHARKFINSOUP_BRF.html. Retrieved June, 2010.  Research exemptions are available.
+* ^ "Shark fisheries and trade in Europe: Fact sheet on Italy". http://www.sharkalliance.org/do_download.asp?did=1090. Retrieved 2007-09-06.
+* ^ Walker, T.I. (1998). Shark Fisheries Management and Biology.
+* ^ "The Greatest Threats to Sharks". Oceana. 2007. http://www.oceana.org/sharks/threats/. Retrieved 2009-08-29.
+* ^ Sharkwater | Movies. EW.com (2007-10-31). Retrieved on 2010-09-16.
+* ^ Shark Conservation Act of 2009 | The Humane Society of the United States. Hsus.org. Retrieved on 2010-09-16.
+* ^ Jolly, David (March 23, 2010). "U.N. Group Rejects Shark Protections". The New York Times.
+* ^ "Qatar. UN body flip-flops on shark protection". Tawa News, Canwest News Service. March 26, 2010. http://www.ottawacitizen.com/business/Qatar+body+flip+flops+shark+protection/2727330/story.html.
+* ^ "Greenpeace International Seafood Red list". Greenpeace.org. 2003-03-17. http://www.greenpeace.org/international/seafood/red-list-of-species. Retrieved 2010-09-23.
+* ^ "Seafod WATCH, National Sustainable Seafood Guide July 2009". July 2009. http://www.montereybayaquarium.org/cr/cr_seafoodwatch/content/media/MBA_SeafoodWatch_NationalGuide.pdf. Retrieved 2009-08-29.
+* ^ a b Martin, R. Aidan. "The Earliest Sharks". ReefQuest. http://www.elasmo-research.org/education/evolution/earliest.htm. Retrieved 2009-02-10.
+* ^ a b c Martin, R. Aidan. "Ancient Sharks". ReefQuest. http://www.elasmo-research.org/education/evolution/ancient.htm. Retrieved 2006-09-09.
+* ^ a b Martin, R. Aidan. "The Origin of Modern Sharks". ReefQuest. http://www.elasmo-research.org/education/evolution/origin_modern.htm. Retrieved 2006-09-09.
+* ^ "Xenacanth". Hooper Virtual Natural History Museum. Retrieved on 11/26/06.
+* ^ "Biology of Sharks and Rays: 'The Earliest Sharks'". Retrieved on 11/26/06.
+* ^ Martin, R. Aidan. "The Rise of Modern Sharks". http://www.elasmo-research.org/education/evolution/rise_modern.htm. Retrieved 2007-08-28.
+* ^ Klimley, Peter; Ainley, David (1996). Great White Sharks: The Biology of Carcharodon carcharias. Academic Press. ISBN 0124150314.
+* ^ Pimiento, Catalina; Dana J. Ehret, Bruce J. MacFadden, and Gordon Hubbell (May 10, 2010). "Ancient Nursery Area for the Extinct Giant Shark Megalodon from the Miocene of Panama". PLoS One (Panama: PLoS.org) 5 (5): e10552. doi:10.1371/journal.pone.0010552. PMID 20479893.
+* ^ a b Wroe, S.; Huber, D. R. ; Lowry, M. ; McHenry, C. ; Moreno, K. ; Clausen, P. ; Ferrara, T. L. ; Cunningham, E. ; Dean, M. N. ; Summers, A. P. (2008). "Three-dimensional computer analysis of white shark jaw mechanics: how hard can a great white bite?". Journal of Zoology 276 (4): 336–342. doi:10.1111/j.1469-7998.2008.00494.x.
+* ^ a b "Sharks (Chondrichthyes)". FAO. http://www.fao.org/docrep/006/y5261e/y5261e08.htm. Retrieved 2009-09-14.
+* ^ a b "Compagno's FAO Species List - 1984". Elasmo.com. http://www.elasmo.com/frameMe.html?file=selachin/fao/shark_gn.html&menu=bin/menu_topics-alt.html. Retrieved 2009-09-14.
+
+General references * Castro, Jose (1983). The Sharks of North American Waters. College Station: Texas A&M University Press. ISBN 0-89096-143-3. OCLC 183037060.
+* Stevens, John D. (1987). Sharks. New York: NY Facts on File Publications. ISBN 0-8160-1800-6. OCLC 15163749.
+* Pough, F. H.; Janis, C. M. & Heiser, J. B. (2005). Vertebrate Life. 7th Ed.. New Jersey: Pearson Education Ltd.. ISBN 0-13-127836-3. OCLC 54822028.
+* Clover, Charles. 2004. The End of the Line: How overfishing is changing the world and what we eat. Ebury Press, London. ISBN 0-09-189780-7
+* Owen, David, Shark: In Peril in the Sea, New South Wales, Allen and Unwin, 2009. ISBN 978-1-74175-032-4
+* Moss, Jillian. 2010. "The Invention of Sharks, AKA: I Read It On the Internet". University of North Carolina Publishing, Raleigh, USA. (Publishing Pending)
+
+External links
+
+* WikiAnswers: questions and answers about Sharks
+* Oceana's International Shark Campaign
+* South African Marine Predator Lab a research institute studying marine top predators.
+* Shark Research Institute
+* Greenland Shark and Elasmobranch Education and Research Group
+* The International Shark Attack File
+* Shark Trust Organization
+* ReefQuest Centre for Shark Research
+* ECOCEAN Whale Shark Photo-identification Library
+* Updated list of all known shark species
+* Global Shark Attack File
+* Shark Research Committee
+* Shark Pictures and Elasmobranch Field Guide
+* Shark pictures on Morphbank
+* Shark pictures by Wolfgang Leander
+* Shark cartoons
+* Shark Diversity by The Smithsonian Institution: Ocean Portal
+* Sharks.org.za A detailed study

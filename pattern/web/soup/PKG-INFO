@@ -1,0 +1,19 @@
+Metadata-Version: 1.0
+Name: BeautifulSoup
+Version: 3.0.8.1
+Summary: HTML/XML parser for quick-turnaround applications like screen-scraping.
+Home-page: http://www.crummy.com/software/BeautifulSoup/
+Author: Leonard Richardson
+Author-email: leonardr@segfault.org
+License: BSD
+Download-URL: http://www.crummy.com/software/BeautifulSoup/download/
+Description: Beautiful Soup parses arbitrarily invalid SGML and provides a variety of methods and Pythonic idioms for iterating and searching the parse tree.
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Python Software Foundation License
+Classifier: Programming Language :: Python
+Classifier: Topic :: Text Processing :: Markup :: HTML
+Classifier: Topic :: Text Processing :: Markup :: XML
+Classifier: Topic :: Text Processing :: Markup :: SGML
+Classifier: Topic :: Software Development :: Libraries :: Python Modules

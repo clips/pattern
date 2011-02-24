@@ -1,0 +1,67 @@
+<!-- Sample HTML + Javascript to display a graph. -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Demonstration of Pattern:Javascript:Graph</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<!--[if lte IE 8]><script type="text/javascript" src="../../graph/js/excanvas.js"></script><![endif]-->
+		<script type="text/javascript" src="../../graph/js/graph.js"></script>
+		<script type="text/javascript">	
+			function init_graph() {
+				g = new Graph(document.getElementById("_ctx"));
+				// Random nodes.
+				for (var i=0; i < 50; i++) {
+					g.addNode(i+1);
+				}
+				// Random edges.
+				for (var i=0; i < 75; i++) {
+					var node1 = choice(g.nodes);
+					var node2 = choice(g.nodes);
+					g.addEdge(node1, node2, {weight: Math.random()});
+				}
+				// Calculate node weight (incoming traffic):
+				g.eigenvectorCentrality();
+				// Calculate node centrality (passing traffic):
+				g.betweennessCentrality();
+				// Two handy tricks to prettify the layout:
+				// 1) Nodes with a higher weight (i.e. incoming traffic) appear bigger.
+				for (var i=0; i < g.nodes.length; i++) {
+					var n = g.nodes[i];
+					n.radius = n.radius + n.radius * n.weight;
+				}
+			 	// 2) Nodes with only one connection ("leaf" nodes) have a shorter connection.
+				for (var i=0; i < g.nodes.length; i++) {
+					var e = g.nodes[i].edges();
+					if (e.length == 1) {
+						e[0].length *= 0.2;
+					}
+				}
+				g.prune(0);
+				g.layout.k = 4.0;        // Force constant (= edge length).
+				g.layout.force = 0.01;   // Repulsive strength.
+				g.layout.repulsion = 50; // Repulsive radius.
+				// Start the animation loop.
+				g.loop({frames: 500, fps:20, ipf:2, weighted: 0.5, directed: true});
+			}
+		</script>
+		<style type="text/css">
+			body { font: 11px sans-serif; }
+			a { color: dodgerblue; }
+			#graph { 
+				display: block;
+				position: relative; 
+				overflow: hidden; 
+				border: 1px solid #ccc;
+			}
+			#graph canvas { }
+			.node-label { font-size: 11px; }
+		</style>
+	</head>
+	<body onload="javascript:init_graph();">
+		<div id="graph" style="width:700px; height:500px;">
+			<canvas id="_ctx" width="700" height="500"></canvas>
+			<!-- Node label div's will be dynamically generated here. -->
+		</div>
+		<p>Generated with <a href="http://www.clips.ua.ac.be/pages/pattern">Pattern</a>.</p>
+	</body>
+</html>
