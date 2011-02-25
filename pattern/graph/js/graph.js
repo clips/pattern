@@ -312,25 +312,6 @@ var Node = Class.extend({
     contains: function(x, y) {
         return Math.abs(this.x - x) < this.radius*2 &&
                Math.abs(this.y - y) < this.radius*2
-    },
-    
-    copy: function() {
-        /* Returns a shallow copy of the node (i.e. linked nodes are not copied).
-         */
-        var args = {
-                 radius: this.radius,
-                   fill: this.fill,
-                 stroke: this.stroke,
-            strokewidth: this.strokewidth,
-                   text: this.text? this.text.style.color || true : false,
-                   font: this.text? this.text.style.fontFamily || null : null,
-               fontsize: this.text? parseInt(this.text.style.fontSize) || null : null,
-             fontweight: this.text? this.text.style.fontWeight || null : null,
-                    css: this.text? this.text.className || null : null
-        };
-        var a = this.text? this.text.getElementsByTagName("a") : null;
-        if (a && a.length > 0) args.href = a[0].href || null;
-        return new Node(this.id, args);
     }
 });
 
@@ -433,16 +414,6 @@ var Edge = Class.extend({
         ctx.lineTo(p2[0], p2[1]);
         ctx.lineTo(p3[0], p3[1]);
         ctx.fill();
-    },
-    
-    copy: function(node1, node2) {
-        return new Edge(node1, node2, {
-                 weight: this.weight, 
-                 length: this.length, 
-                   type: this.type,
-                 stroke: this.stroke,
-            strokewidth: this.strokewidth 
-        });
     }
 });
 
@@ -504,7 +475,6 @@ var Graph = Class.extend({
                 this.canvas.parentNode.appendChild(n.text);
             }
         }
-        console.log(n)
         return n;
     },
     
@@ -760,6 +730,41 @@ var Graph = Class.extend({
         }
     },
     
+    _addNodeCopy: function(n, a) {
+        var args = {
+             radius: n.radius,
+               fill: n.fill,
+             stroke: n.stroke,
+        strokewidth: n.strokewidth,
+               text: n.text? n.text.style.color || true : false,
+               font: n.text? n.text.style.fontFamily || null : null,
+           fontsize: n.text? parseInt(n.text.style.fontSize) || null : null,
+         fontweight: n.text? n.text.style.fontWeight || null : null,
+                css: n.text? n.text.className || null : null,
+               root: a && a.root || false
+        };
+        var a = n.text? n.text.getElementsByTagName("a") : null;
+        if (a && a.length > 0) args.href = a[0].href || null;
+        this.addNode(n.id, args);
+    },
+    
+    _addEdgeCopy: function(e, a) {
+        if (!((a && a["node1"] || e.node1).id in this.nodeset) ||
+            !((a && a["node2"] || e.node2).id in this.nodeset)) {
+            return;
+        }
+        this.addEdge(
+            a && a["node1"] || this.nodeset[e.node1.id],
+            a && a["node2"] || this.nodeset[e.node2.id], {
+                  weight: e.weight, 
+                  length: e.length, 
+                    type: e.type,
+                  stroke: e.stroke,
+             strokewidth: e.strokewidth 
+            }
+        );
+    },
+    
     copy: function(canvas, nodes) {
         /* Returns a copy of the graph with the given list of nodes (and connecting edges).
          *  The layout will be reset.
@@ -769,15 +774,11 @@ var Graph = Class.extend({
         g.layout = this.layout.copy(g);
         for (var i=0; i < nodes.length; i++) {
             var n = nodes[i];
-            g.append(n.copy(), n==this.root);
+            g._addNodeCopy(n, {root:this.root==n});
         }
         for (var i=0; i < this.edges.length; i++) {
             var e = this.edges[i];
-            if (g.nodeset[e.node1.id] && g.nodeset[e.node2.id]) {
-                g.append(e.copy(
-                    g.nodeset[e.node1.id], 
-                    g.nodeset[e.node2.id]));
-            }
+            g._addEdgeCopy(e);
         }
         return g;
     },

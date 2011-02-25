@@ -64,9 +64,9 @@ class Node(object):
         self._y          = 0    # Calculated by Graph.layout.update().
         self.force       = Vector(0,0)
         self.radius      = radius
-        self.fill        = kwargs.get("fill", None)
-        self.stroke      = kwargs.get("stroke", (0,0,0,1))
-        self.strokewidth = kwargs.get("strokewidth", 1)
+        self.fill        = kwargs.pop("fill", None)
+        self.stroke      = kwargs.pop("stroke", (0,0,0,1))
+        self.strokewidth = kwargs.pop("strokewidth", 1)
         self.text        = kwargs.get("text", True) and \
             Text(unicode(id), 
                    width = 85,
@@ -161,19 +161,6 @@ class Node(object):
         return isinstance(node, Node) and self.id == node.id
     def __ne__(self, node):
         return not self.__eq__(node)
-        
-    def copy(self):
-        """ Returns a shallow copy of the node (i.e. linked nodes are not copied).
-        """
-        n = Node(self.id, self.radius, 
-                 text = None,
-                 fill = _copy(self.fill),
-               stroke = _copy(self.stroke),
-          strokewidth = self.strokewidth)
-        if self.text: 
-            n.text = self.text.copy()
-        n.__class__ = self.__class__
-        return n
 
 class Links(list):
     
@@ -248,11 +235,6 @@ class Edge(object):
     
     def __repr__(self):
         return "%s(id1=%s, id2=%s)" % (self.__class__.__name__, repr(self.node1.id), repr(self.node2.id))
-    
-    def copy(self, node1, node2):
-        e = Edge(node1, node2, self.weight, self.length, self.type, _copy(self.stroke), self.strokewidth)
-        e.__class__ = self.__class__
-        return e
 
 #--- GRAPH -------------------------------------------------------------------------------------------
 
@@ -427,7 +409,32 @@ class Graph(dict):
         """
         for n in self.nodes:
             if n.contains(x, y): return n
-            
+    
+    def _add_node_copy(self, n, **kwargs):
+        self.add_node(n.id, 
+               radius = n.radius, 
+                 text = None,
+                 fill = _copy(n.fill),
+               stroke = _copy(n.stroke),  
+          strokewidth = n.strokewidth, root=kwargs.get("root", False)
+          ).__class__ = n.__class__
+        if n.text: 
+            self.nodes[-1].text = n.text.copy()
+    
+    def _add_edge_copy(self, e, **kwargs):
+        if kwargs.get("node1", e.node1).id not in self \
+        or kwargs.get("node2", e.node2).id not in self: 
+            return
+        self.add_edge(
+            kwargs.get("node1", self[e.node1.id]), 
+            kwargs.get("node2", self[e.node2.id]),
+               weight = e.weight, 
+               length = e.length, 
+                 type = e.type, 
+               stroke = _copy(e.stroke), 
+          strokewidth = e.strokewidth
+          ).__class__ = e.__class__
+    
     def copy(self, nodes=ALL):
         """ Returns a copy of the graph with the given list of nodes (and connecting edges).
             The layout will be reset.
@@ -435,12 +442,9 @@ class Graph(dict):
         g = Graph(layout=None, distance=self.distance)
         g.layout = self.layout.copy(graph=g)
         for n in (nodes==ALL and self.nodes or nodes):
-            g.append(n.copy(), root=self.root==n)
+            g._add_node_copy(n, root=self.root==n)
         for e in self.edges: 
-            if e.node1.id in g and e.node2.id in g:
-                g.append(e.copy(
-                    node1=g[e.node1.id], 
-                    node2=g[e.node2.id]))
+            g._add_edge_copy(e)
         return g
 
 #--- GRAPH LAYOUT ------------------------------------------------------------------------------------
@@ -781,10 +785,10 @@ def redirect(graph, node1, node2):
     """
     for e in graph.edges:
         if node in (e.node1, e.node2):
-            if e.node1 == node1 and e.node2 != node2: 
-                graph.append(e.copy(node2, e.node2))
+            if e.node1 == node1 and e.node2 != node2:
+                graph._add_edge_copy(e, node1=node2, node2=e.node2) 
             if e.node2 == node1 and e.node1 != node2: 
-                graph.append(e.copy(e.node1, node2))
+                graph._add_edge_copy(e, node1=e.node1, node2=node2) 
     unlink(graph, node1)
 
 def cut(graph, node):
@@ -795,9 +799,9 @@ def cut(graph, node):
         if node in (e.node1, e.node2):
             for n in node.links:
                 if e.node1 == node and e.node2 != n: 
-                    graph.append(e.copy(n, e.node2))
+                    graph._add_edge_copy(e, node1=n, node2=e.node2) 
                 if e.node2 == node and e.node1 != n: 
-                    graph.append(e.copy(e.node1, n))
+                    graph._add_edge_copy(e, node1=e.node1, node2=n) 
     unlink(graph, node)
 
 def insert(graph, node, a, b):
@@ -807,9 +811,9 @@ def insert(graph, node, a, b):
     for e in graph.edges:
         for (n1,n2) in ((a,b), (b,a)):
             if e.node1 == n1 and e.node2 == n2: 
-                graph.append(e.copy(node, n2))
+                graph._add_edge_copy(e, node1=node, node2=n2) 
             if e.node1 == n2 and e.node2 == n1: 
-                graph.append(e.copy(n2, node))
+                graph._add_edge_copy(e, node1=n2, node2=node) 
     unlink(graph, a, b)
 
 #--- HTML CANVAS RENDERER ----------------------------------------------------------------------------
