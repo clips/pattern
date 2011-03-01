@@ -183,7 +183,7 @@ TF, TFIDF = "tf", "tf-idf"
 
 class Document(object):
     
-    # Document(string="", filter, punctuation, top, threshold, stemmer, exclude, stopwords, name)
+    # Document(string="", filter, punctuation, top, threshold, stemmer, exclude, stopwords, name, type)
     def __init__(self, string="", **kwargs):
         """ A dictionary of (word, count)-items parsed from the string.
             Punctuation marks are stripped from the words.
@@ -201,6 +201,7 @@ class Document(object):
             raise TypeError, "document string is not str, unicode, Sentence or Text."
         self._id     = _uid()               # Read-only Document.id, used as dictionary key.
         self._name   = kwargs.get("name")   # Name that describes the document content.
+        self.type    = kwargs.get("type")   # Type that describes the category or class of the document.
         self.terms   = count(w, **kwargs)   # Dictionary of (word, count)-items.
         self._count  = None                 # Total number of words (minus stop words).
         self._vector = None                 # Cached tf-idf vector.
@@ -754,15 +755,17 @@ class NaiveBayes(Classifier):
             d[v] = (v in d) and d[v]+f or f
         return d
 
-    def train(self, document, type, weight=TF):
+    def train(self, document, type=None, weight=TF):
         """ Trains the classifier with the given document of the given type (i.e., class).
             A document can be a Document object or a list of words.
+            If no type is given, Document.type will be used instead.
         """
         id = self._aligned and NBid1 or NBid2
+        if isinstance(document, Document):
+            type = type is not None and type or document.type
+            document = weight==TF and document.terms or document.vector
         if isinstance(document, (list, tuple)):
             document = dict.fromkeys(document, 1)
-        if isinstance(document, Document):
-            document = weight==TF and document.terms or document.vector
         self.fc[type] = self.fc.get(type, 0) + 1
         for i, (v,f) in enumerate(document.iteritems()):
             self.ff[id(type,v,i)] = self.ff.get(id(type,v,i), 0) + f
@@ -787,10 +790,10 @@ class NaiveBayes(Classifier):
         
     def test(self, corpus=[], d=0.65):
         """ Returns the accuracy of the classifier for the given corpus.
-            The corpus is a list of (document, type)-tuples, 
-            where each document is either a Document object or a list of words.
+            The corpus is a list of documents or (wordlist, type)-tuples.
             2/3 of the data will be used as training material and tested against the other 1/3.
         """
+        corpus = [isinstance(x, Document) and (x, x.type) or x for x in corpus]
         d = int(d * len(corpus))
         train, test = corpus[:d], corpus[d:]
         classifier = NaiveBayes()
