@@ -1,4 +1,4 @@
-import os, sys; sys.path.append(os.path.join("..", "..", ".."))
+import os, sys; sys.path.insert(0, os.path.join("..", "..", ".."))
 
 from pattern.en import parse, pprint, tag
 

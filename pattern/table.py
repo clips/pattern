@@ -628,7 +628,6 @@ class Column(list):
     
     def _get_unique(self, b):
         return self._uindex is not None
-                    
 
 #--- INDEX -------------------------------------------------------------------------------------------
 

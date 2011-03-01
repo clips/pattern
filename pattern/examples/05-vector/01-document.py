@@ -1,4 +1,4 @@
-import os, sys; sys.path.append(os.path.join("..", "..", ".."))
+import os, sys; sys.path.insert(0, os.path.join("..", "..", ".."))
 import codecs
 
 from pattern.vector import Document, PORTER, LEMMA
