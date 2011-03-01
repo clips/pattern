@@ -787,17 +787,17 @@ class NaiveBayes(Classifier):
             return max((d(document, type), type) for type in self.fc)[1]
         except ValueError: # max() arg is an empty sequence
             return None
-        
-    def test(self, corpus=[], d=0.65):
-        """ Returns the accuracy of the classifier for the given corpus.
+    
+    @classmethod
+    def test(self, corpus=[], d=0.65, aligned=False):
+        """ Returns the accuracy of the Naive Bayes classifier for the given corpus.
             The corpus is a list of documents or (wordlist, type)-tuples.
             2/3 of the data will be used as training material and tested against the other 1/3.
         """
         corpus = [isinstance(x, Document) and (x, x.type) or x for x in corpus]
         d = int(d * len(corpus))
         train, test = corpus[:d], corpus[d:]
-        classifier = NaiveBayes()
-        classifier._aligned = self._aligned
+        classifier = NaiveBayes(aligned)
         n = 0
         for document, type in train:
             classifier.train(document, type)
