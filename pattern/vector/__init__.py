@@ -94,6 +94,8 @@ class readonlydict(dict):
             return self[k]
         raise ReadOnlyError
 
+#### DOCUMENT ########################################################################################
+
 #--- FREQUENCY+TERM LIST -----------------------------------------------------------------------------
 
 # List of (frequency, term)-items that prints frequency with a rounded precision.
@@ -378,6 +380,8 @@ class Vector(dict):
         # Only keys that appear in this vector will be updated (i.e. no new keys are added).
         V = self.copy(); V.update((k,v) for k,v in vector.iteritems() if k in V); return V
 
+#### CORPUS ##########################################################################################
+
 #--- CORPUS ------------------------------------------------------------------------------------------
 
 NORM, TOP300 = "norm", "top300"
@@ -488,7 +492,7 @@ class Corpus(object):
             The more occurences of the word across the corpus, the higher its df weight.
         """
         if len(self.documents) == 0:
-            return 0
+            return 0        
         if len(self._df) == 0:
             # Caching document frequency for each word gives a whopping 300x performance boost
             # (calculate all of them once). Drawback: if you need TF-IDF for just one document.
@@ -697,4 +701,103 @@ class Vectorspace:
     @classmethod
     def load(self, path):
         return cPickle.load(open(path))
+
+#### CLASSIFIER ######################################################################################
+
+#--- CLASSIFIER BASE CLASS ---------------------------------------------------------------------------
+
+class Classifier:
+    
+    def train(self, document, type):
+        pass
         
+    def classify(self, document):
+        return None
+
+    @classmethod
+    def load(self, path):
+        return cPickle.load(open(path))
+
+    def save(self, path):
+        cPickle.dump(self, open(path, "w"))
+
+#--- NAIVE BAYES CLASSIFIER --------------------------------------------------------------------------
+# Based on: Magnus Lie Hetland, http://hetland.org/coding/python/nbayes.py
+
+# We can't include these in the NaiveBayes class description,
+# because you can't pickle functions:
+# NBid1: store word index, used with aligned=True
+# NBid1: ignore word index, used with aligned=False.
+NBid1 = lambda type, v, i: (type, v, i)
+NBid2 = lambda type, v, i: (type, v, 1)
+
+class NaiveBayes(Classifier):
+    
+    def __init__(self, aligned=False):
+        """ Naive Bayes is a simple supervised learning method for text classification.
+            For example: if we have a set of documents of movie reviews (training data),
+            and we know the star rating of each document, 
+            we can predict the star rating for other movie review documents.
+            With aligned=True, the word index is taken into account
+            when training on lists of words.
+        """
+        self.fc = {}   # Frequency of each class (or type).
+        self.ff = {}   # Frequency of each feature, as (type, feature, value)-tuples.
+        self.count = 0 # Number of training instances.
+        self._aligned = aligned
+
+    @property
+    def features(self):
+        # Yields a dictionary of (word, frequency)-items.
+        d = {}
+        for (t,v,i), f in self.ff.iteritems():
+            d[v] = (v in d) and d[v]+f or f
+        return d
+
+    def train(self, document, type, weight=TF):
+        """ Trains the classifier with the given document of the given type (i.e., class).
+            A document can be a Document object or a list of words.
+        """
+        id = self._aligned and NBid1 or NBid2
+        if isinstance(document, (list, tuple)):
+            document = dict.fromkeys(document, 1)
+        if isinstance(document, Document):
+            document = weight==TF and document.terms or document.vector
+        self.fc[type] = self.fc.get(type, 0) + 1
+        for i, (v,f) in enumerate(document.iteritems()):
+            self.ff[id(type,v,i)] = self.ff.get(id(type,v,i), 0) + f
+        self.count += 1
+
+    def classify(self, document):
+        """ Returns the type with the highest probability for the given document
+            (a Document object or a list of words).
+        """
+        id = self._aligned and NBid1 or NBid2
+        def d(document, type):
+            # Bayesian discriminant, proportional to posterior probability.
+            f = 1.0 * self.fc[type] / self.count
+            for i, v in enumerate(document):
+                f *= self.ff.get(id(type,v,i), 0) 
+                f /= self.fc[type]
+            return f
+        try:
+            return max((d(document, type), type) for type in self.fc)[1]
+        except ValueError: # max() arg is an empty sequence
+            return None
+        
+    def test(self, corpus=[], d=0.65):
+        """ Returns the accuracy of the classifier for the given corpus.
+            The corpus is a list of (document, type)-tuples, 
+            where each document is either a Document object or a list of words.
+            2/3 of the data will be used as training material and tested against the other 1/3.
+        """
+        d = int(d * len(corpus))
+        train, test = corpus[:d], corpus[d:]
+        classifier = NaiveBayes()
+        classifier._aligned = self._aligned
+        n = 0
+        for document, type in train:
+            classifier.train(document, type)
+        for document, type in test:
+            n += classifier.classify(document) == type
+        return n / float(len(test))
