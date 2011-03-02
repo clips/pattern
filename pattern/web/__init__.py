@@ -455,6 +455,8 @@ BLOCK = [
     "center", "blockquote", "div", "table", "ul", "ol", "pre", "code", "form"
 ]
 
+SELF_CLOSING = ["br", "hr", "img"]
+
 # Element tag replacements for a stripped version of HTML source with strip_tags().
 # Block-level elements are followed by linebreaks,
 # list items are preceded by an asterisk ("*").
@@ -462,6 +464,8 @@ LIST_ITEM = "*"
 blocks = dict.fromkeys(BLOCK+["br","tr","td"], ("", "\n\n"))
 blocks.update({
     "li": ("%s " % LIST_ITEM, "\n"),
+   "img": ("", ""),
+    "br": ("", "\n"),
     "th": ("", "\n"),
     "tr": ("", "\n"),
     "td": ("", "\t"),
@@ -525,6 +529,8 @@ class HTMLTagstripper(SGMLParser):
             self._data.append("<%s%s>" % (tag, a))
         if tag in self._replace: 
             self._data.append(self._replace[tag][0])
+        if tag in self._replace and tag in SELF_CLOSING:
+            self._data.append(self._replace[tag][1])
             
     def unknown_endtag(self, tag):
         if tag in self._exclude and self._data and self._data[-1].startswith("<"+tag):
@@ -835,7 +841,11 @@ class Google(SearchEngine):
         data = (data.get("responseData") or {}).get("translatedText", "")
         data = decode_entities(data)
         return u(data)
-        
+
+# Needs to switch to Google Custom Search API at some point (the Google Search API is deprecated):
+# http://code.google.com/apis/customsearch/
+# https://www.googleapis.com/customsearch/v1?key=[key]&q=[query]&start=1
+
 #--- YAHOO -------------------------------------------------------------------------------------------
 # https://developer.apps.yahoo.com/wsregapp/
 
