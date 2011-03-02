@@ -757,7 +757,7 @@ class NaiveBayes(Classifier):
 
     def train(self, document, type=None, weight=TF):
         """ Trains the classifier with the given document of the given type (i.e., class).
-            A document can be a Document object or a list of words.
+            A document can be a Document object or a list of words (or other hashable items).
             If no type is given, Document.type will be used instead.
         """
         id = self._aligned and NBid1 or NBid2

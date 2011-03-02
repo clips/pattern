@@ -7,6 +7,9 @@
 ######################################################################################################
 # Python API interface for various web services (Google, Twitter, Wikipedia, ...)
 
+# smgllib.py is removed from Python 3, a warning is issued in Python 2.6+. Ignore for the moment.
+import warnings; warnings.filterwarnings(action='ignore', category=DeprecationWarning, module="sgmllib")
+
 import threading
 import time
 import os
@@ -471,11 +474,17 @@ blocks.update({
     "td": ("", "\t"),
 })
 
-class SGMLParser(sgmllib.SGMLParser):
+class HTMLParser(sgmllib.SGMLParser):
     
     def __init__(self):
         sgmllib.SGMLParser.__init__(self)
-        
+    
+    def unknown_starttag(self, tag, attrs):
+        self.handle_starttag(tag, attrs)
+    
+    def unknown_endtag(self, tag):
+        self.handle_endtag(tag)
+    
     def clean(self, html):
         html = decode_utf8(html)
         html = html.replace("/>", " />")
@@ -494,12 +503,12 @@ class SGMLParser(sgmllib.SGMLParser):
             return
         if not 0 <= n <= 127:
             return
-        return self.convert_codepoint(n)
+        return chr(n)
 
-class HTMLTagstripper(SGMLParser):
+class HTMLTagstripper(HTMLParser):
     
     def __init__(self):
-        SGMLParser.__init__(self)
+        HTMLParser.__init__(self)
 
     def strip(self, html, exclude=[], replace=blocks):
         """ Returns the HTML string with all element tags (e.g. <p>) removed.
@@ -519,7 +528,7 @@ class HTMLTagstripper(SGMLParser):
         self.reset()
         return "".join(self._data)
     
-    def unknown_starttag(self, tag, attributes):
+    def handle_starttag(self, tag, attributes):
         if tag in self._exclude:
             # Create the tag attribute string, 
             # including attributes defined in the HTMLTagStripper._exclude dict.
@@ -532,7 +541,7 @@ class HTMLTagstripper(SGMLParser):
         if tag in self._replace and tag in SELF_CLOSING:
             self._data.append(self._replace[tag][1])
             
-    def unknown_endtag(self, tag):
+    def handle_endtag(self, tag):
         if tag in self._exclude and self._data and self._data[-1].startswith("<"+tag):
             # Never keep empty elements (e.g. <a></a>).
             self._data.pop(-1); return
@@ -1647,10 +1656,10 @@ class Link:
     def __gt__(self, link):
         return self.url > link.url
 
-class HTMLLinkParser(SGMLParser):
+class HTMLLinkParser(HTMLParser):
     
     def __init__(self):
-        SGMLParser.__init__(self)
+        HTMLParser.__init__(self)
 
     def parse(self, html):
         """ Returns a list of Links parsed from the given HTML string.
@@ -1663,7 +1672,7 @@ class HTMLLinkParser(SGMLParser):
         self.reset()
         return self._data
     
-    def unknown_starttag(self, tag, attributes):
+    def handle_starttag(self, tag, attributes):
         if tag == "a":
             attributes = dict(attributes)
             if "href" in attributes:

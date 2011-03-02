@@ -322,6 +322,16 @@ class WriteOnlyCode(SoupTest):
         a['href'] = 'http://foo.com/'
         self.assertRaises(KeyError, lambda : ol['href'])
 
+    def testNewTagWithAttributes(self):
+        """Makes sure new tags can be created complete with attributes."""
+        soup = BeautifulSoup()
+        a = Tag(soup, 'a', [('href', 'foo')])
+        b = Tag(soup, 'b', {'class':'bar'})
+        soup.insert(0,a)
+        soup.insert(1,b)
+        self.assertEqual(soup.a['href'], 'foo')
+        self.assertEqual(soup.b['class'], 'bar')
+
     def testTagReplacement(self):
         # Make sure you can replace an element with itself.
         text = "<a><b></b><c>Foo<d></d></c></a><a><e></e></a>"
@@ -395,7 +405,7 @@ class WriteOnlyCode(SoupTest):
         self.assertEqual(f.previousSibling, weText)
         self.assertEqual(f.nextSibling, None)
         self.assertEqual(weText.nextSibling, f)
-    
+
     def testReplaceWithChildren(self):
         soup = BeautifulStoneSoup(
             "<top><replace><child1/><child2/></replace></top>",
