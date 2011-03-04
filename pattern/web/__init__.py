@@ -7,7 +7,7 @@
 ######################################################################################################
 # Python API interface for various web services (Google, Twitter, Wikipedia, ...)
 
-# smgllib.py is removed from Python 3, a warning is issued in Python 2.6+. Ignore for the moment.
+# smgllib.py is removed from Python 3, a warning is issued in Python 2.6+. Ignore for now.
 import warnings; warnings.filterwarnings(action='ignore', category=DeprecationWarning, module="sgmllib")
 
 import threading
@@ -478,6 +478,12 @@ class HTMLParser(sgmllib.SGMLParser):
     
     def __init__(self):
         sgmllib.SGMLParser.__init__(self)
+    
+    def handle_starttag(self, tag, attrs):
+        pass
+
+    def handle_endtag(self, tag):
+        pass
     
     def unknown_starttag(self, tag, attrs):
         self.handle_starttag(tag, attrs)

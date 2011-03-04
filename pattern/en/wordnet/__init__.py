@@ -62,7 +62,7 @@ def normalize(word):
     return word
 
 def synsets(word, pos=NOUN):
-    """ Returns a list of Synset objects.
+    """ Returns a list of Synset objects, one for each word sense.
         Each word can be understood in different "senses", each of which is a set of synonyms (=Synset).
     """
     word = normalize(word)
@@ -75,7 +75,7 @@ def synsets(word, pos=NOUN):
     elif pos == ADVERB:
         w = wn.ADV[word]
     try:
-        return [Synset(s.synset, form=w.form, sense=i+1) for i, s in enumerate(w)]
+        return [Synset(s.synset) for i, s in enumerate(w)]
     except:
         return []
 
@@ -83,12 +83,18 @@ def synsets(word, pos=NOUN):
 
 class Synset:
     
-    def __init__(self, synset=None, form="", sense=0):
+    def __init__(self, synset=None, pos=NOUN):
         """ A set of synonyms that share a common meaning.
         """
+        if isinstance(synset, basestring):
+            synset = synsets(synset)[0]
+        if isinstance(synset, int):
+            synset = wn.getSynset({NN:"n",VB:"v",JJ:"adj",RB:"adv"}[pos], synset)
         self._synset = synset
-        self._form   = form   # form + sense-index are used to build Sentiwordnet id.
-        self._sense  = sense  # Indices start at 1.
+
+    @property
+    def id(self):
+        return self._synset.offset
 
     def __len__(self):
         return len(self._synset.getSenses())
@@ -99,7 +105,7 @@ class Synset:
             yield s.form
             
     def __eq__(self, synset):
-        return isinstance(synset, Synset) and self._synset.offset == synset._synset.offset
+        return isinstance(synset, Synset) and self.id == synset.id
     def __ne__(self, synset):
         return not self.__eq__(synset)
         
@@ -132,7 +138,7 @@ class Synset:
         """ A description string, for example:
             synsets("glass")[0].gloss => "a brittle transparent solid with irregular atomic structure".
         """
-        return unicode(self._synset.gloss)
+        return str(self._synset.gloss)
         
     @property
     def lexname(self):
@@ -223,6 +229,14 @@ class Synset:
         lin = 2.0 * lcs(self, synset).ic / ((self.ic + synset.ic) or 1e-10)
         return lin
         
+    def similar(self):
+        """ For an adjective or verb, a list of similar synsets, for example:
+            synsets("almigthy",JJ)[0].similar() => Synset("powerful").
+        """
+        p = [Synset(p.getTarget()) for p in self._synset.getPointers(wn.SIMILAR)]
+        p+= [Synset(p.getTarget().synset) for p in self._synset.getPointers(wn.ALSO_SEE)]
+        return p
+        
     @property
     def weight(self):
         return sentiment.weight(self)
@@ -255,7 +269,7 @@ def lemma(word):
     return LEMMATA.get(word, word)  
 
 #--- INFORMATION CONTENT -----------------------------------------------------------------------------
-import math
+
 IC = {}
 IC_CORPUS = os.path.join(os.path.dirname(__file__), "IC-Brown-Resnik.txt")
 IC_MAX = 0
@@ -275,20 +289,38 @@ def information_content(synset):
         IC[VERB] = {}
         for s in open(IC_CORPUS).readlines()[1:]: # Skip the header.
             s = s.split()
-            offset, w, pos = (
+            id, w, pos = (
                 int(s[0][:-1]), 
                 float(s[1]), 
                 s[0][-1] == "n" and NOUN or VERB)
             if len(s) == 3 and s[2] == "ROOT":
                 IC[pos][0] = IC[pos].get(0,0) + w
             if w != 0:
-                IC[pos][offset] = w
+                IC[pos][id] = w
             if w > IC_MAX:
                 IC_MAX = w
-    return IC.get(synset.pos, {}).get(synset._synset.offset, 0.0)
+    return IC.get(synset.pos, {}).get(synset.id, 0.0)
 
 #--- SENTIWORDNET ------------------------------------------------------------------------------------
 # http://nmis.isti.cnr.it/sebastiani/Publications/LREC06.pdf
+
+_map32_pos1 = {NN:"n", VB:"v", JJ:"a", RB:"r"}
+_map32_pos2 = {"n":NN, "v":VB, "a":JJ, "r":RB}
+_map32_cache = None
+def map32(id, pos=NOUN):
+    """ Returns an (id, pos)-tuple with the WordNet2 synset id for the given WordNet3 synset id.
+        There is an error margin of 2%, returns None if no id was found.
+    """
+    global _map32_cache
+    if not _map32_cache:
+        _map32_cache = open(os.path.join(MODULE, "dict", "index.32")).readlines()
+        _map32_cache = dict(x.strip().split(" ") for x in _map32_cache)
+    k = pos in _map32_pos2 and pos or _map32_pos1.get(pos, "x")
+    k+= str(id).lstrip("0")
+    k = _map32_cache.get(k, None)
+    if k is not None:
+        return int(k[1:]), _map32_pos2[k[0]]
+    return None
 
 class Sentiwordnet(dict):
     
@@ -298,12 +330,7 @@ class Sentiwordnet(dict):
             positivity, negativity, objectivity.
             It can be acquired from: http://sentiwordnet.isti.cnr.it/ (research license).
         """
-        self._index = {} # pos + form + sense-index => (positive, negative)
-        self._keys = {
-                 NOUN: "n",
-                 VERB: "v",
-            ADJECTIVE: "a",
-               ADVERB: "r"}
+        self._index = {} # Synset.id => (positive, negative)
     
     def __getitem__(self, word):
         return dict.get(self, normalize(word), (0.0, 0.0, 1.0))
@@ -311,26 +338,27 @@ class Sentiwordnet(dict):
     def weight(self, synset):
         """ Returns a (positive, negative, objective)-tuple of values between 0.0-1.0.
         """
-        return self._index.get(self._keys[synset.pos] + synset._form + str(synset._sense), (0.0, 0.0, 1.0))
+        return self._index.get((synset.id, synset.pos), (0.0, 0.0, 1.0))
 
     def load(self, path=os.path.join(MODULE, "SentiWordNet*.txt")):
         """ Loads SentiWordNet-data from the given file.
         """
         # Sentiwordnet.weight() takes a Synset.
-        # Sentiwordnet[word] takes a plain string.
+        # Sentiwordnet[word] takes a plain string and yields values for the 1st sense.
+        e = 0
+        pp = []
+        W = {"n":wn.N,"v":wn.V,"a":wn.ADJ,"r":wn.ADV}
         for s in open(glob.glob(path)[0]).readlines():
             if not s.startswith(("#", "\t")):
                 s = s.split("\t") # pos (a/n/v/r), offset, positive, negative, senses, gloss
                 if s[2] != "0" or s[3] != "0":
-                    senses = s[4].split(" ")
-                    senses = [sense.split("#") for sense in senses]
-                    for sense, i in senses:
-                        w1 = float(s[2]) # positive
-                        w2 = float(s[3]) # negative
-                        k = s[0] + sense + i
-                        v = (w1, w2, 1-(w1+w2))                
+                    w1 = float(s[2]) # positive
+                    w2 = float(s[3]) # negative   
+                    k = map32(s[1], pos=s[0]) # wn2 id.
+                    v = (w1, w2, 1-(w1+w2))
+                    if k is not None:
                         self._index[k] = v
-                        if i == "1": # Sentiwordnet[word] yields main sense.
-                            self.setdefault(sense.replace("_", " "), v)
+                    for w in (w for w in s[4].split(" ") if w.endswith("#1")):
+                        self[w[:-2].replace("_", " ")] = v
 
 sentiment = Sentiwordnet()
