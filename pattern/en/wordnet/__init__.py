@@ -10,29 +10,31 @@
 # It groups English words into sets of synonyms called synsets, provides short, general definitions, 
 # and records the various semantic relations between these synonym sets.
 
-CORPUS = "" # Path to WordNet /dict folder.
-import os; os.environ["WNHOME"] = os.path.join(os.path.dirname(__file__), CORPUS)
-import glob
-
-from pywordnet import wordnet as wn
-from pywordnet import wntools
-# The bundled version of pywordnet contains custom fixes:
-# - line 674: added HYPONYM and HYPERNYM to the pointer table.
-# - line 915: implements "x in Dictionary" instead of Dictionary.has_key(x)
-
 try: 
     MODULE = os.path.dirname(__file__)
 except:
     MODULE = ""
 
-#--- SENSES ------------------------------------------------------------------------------------------
+CORPUS = "" # Path to WordNet /dict folder.
+import os; os.environ["WNHOME"] = os.path.join(MODULE, CORPUS)
+import glob
 
-NOUNS, VERBS, ADJECTIVES, ADVERBS = wn.N, wn.V, wn.ADJ, wn.ADV
+from pywordnet import wordnet as wn
+from pywordnet import wntools
+# The bundled version of pywordnet contains custom fixes:
+# - line 365: check if lexnames exist.
+# - line 765: check if lexnames exist + use os.path.join().
+# - line 674: add HYPONYM and HYPERNYM to the pointer table.
+# - line 916: implement "x in Dictionary" instead of Dictionary.has_key(x)
 
-NOUN = NN = "NN"
-VERB = VB = "VB"
-ADJECTIVE = ADJ = JJ = "JJ"
-ADVERB = ADV = RB = "RB"
+
+VERSION = ""
+s = open(os.path.join(MODULE, CORPUS, "dict", "index.noun")).read(2048)
+if "WordNet 2.1" in s: VERSION = "2.1"
+if "WordNet 3.0" in s: VERSION = "3.0"
+del s
+
+#-----------------------------------------------------------------------------------------------------
 
 ignore_accents = [
     ("á|ä|â|å|à", "a"), 
@@ -45,21 +47,31 @@ ignore_accents = [
     ("ç", "ç"), 
     ("ñ", "n")
 ]
+ignore_accents = [(a.split("|"), b) for a,b in ignore_accents]
 
 def normalize(word):
-    # Normalizes the word for synsets() or Sentiwordnet[].
-    # WordNet does not take unicode.
+    """ Normalizes the word for synsets() or Sentiwordnet[] by removing accents,
+        since WordNet does not take unicode.
+    """
     if not isinstance(word, basestring):
         word = str(word)
     if not isinstance(word, str):
         try: word = word.encode("utf-8")
         except:
             pass
-    # Normalize common accented letters.
     for a, b in ignore_accents: 
-        for a in a.split("|"): 
+        for a in a: 
             word = word.replace(a, b)
     return word
+
+### SYNSET ###########################################################################################
+
+NOUNS, VERBS, ADJECTIVES, ADVERBS = wn.N, wn.V, wn.ADJ, wn.ADV
+
+NOUN = NN = "NN"
+VERB = VB = "VB"
+ADJECTIVE = ADJ = JJ = "JJ"
+ADVERB = ADV = RB = "RB"
 
 def synsets(word, pos=NOUN):
     """ Returns a list of Synset objects, one for each word sense.
@@ -79,17 +91,15 @@ def synsets(word, pos=NOUN):
     except:
         return []
 
-#--- SYNSET ------------------------------------------------------------------------------------------
-
 class Synset:
     
     def __init__(self, synset=None, pos=NOUN):
         """ A set of synonyms that share a common meaning.
         """
-        if isinstance(synset, basestring):
-            synset = synsets(synset)[0]
         if isinstance(synset, int):
             synset = wn.getSynset({NN:"n",VB:"v",JJ:"adj",RB:"adv"}[pos], synset)
+        if isinstance(synset, basestring):
+            synset = synsets(synset, pos)[0]._synset
         self._synset = synset
 
     @property
@@ -144,6 +154,7 @@ class Synset:
     def lexname(self):
         return self._synset.lexname and str(self._synset.lexname) or None
 
+    @property
     def antonym(self):
         """ The semantically opposite synset, for example:
             synsets("death")[0].antonym => Synset("birth").
@@ -214,10 +225,16 @@ class Synset:
         """
         p = self._synset.getPointers(wn.HYPERNYM)
         return len(p) > 0 and Synset(p[0].getTarget()) or None
-        
-    @property
-    def ic(self):
-        return information_content(self)
+
+    def similar(self):
+        """ For an adjective or verb, a list of similar synsets, for example:
+            synsets("almigthy",JJ)[0].similar() => Synset("powerful").
+        """
+        # ALSO_SEE returns wn.Sense instead of wn.Synset in some cases:
+        s = lambda x: isinstance(x, wn.Sense) and x.synset or x
+        p = [Synset(s(p.getTarget())) for p in self._synset.getPointers(wn.SIMILAR)]
+        p+= [Synset(s(p.getTarget())) for p in self._synset.getPointers(wn.ALSO_SEE)]
+        return p
         
     def similarity(self, synset):
         """ Returns the semantic similarity of the given synsets.
@@ -229,13 +246,9 @@ class Synset:
         lin = 2.0 * lcs(self, synset).ic / ((self.ic + synset.ic) or 1e-10)
         return lin
         
-    def similar(self):
-        """ For an adjective or verb, a list of similar synsets, for example:
-            synsets("almigthy",JJ)[0].similar() => Synset("powerful").
-        """
-        p = [Synset(p.getTarget()) for p in self._synset.getPointers(wn.SIMILAR)]
-        p+= [Synset(p.getTarget().synset) for p in self._synset.getPointers(wn.ALSO_SEE)]
-        return p
+    @property
+    def ic(self):
+        return information_content(self)
         
     @property
     def weight(self):
@@ -248,27 +261,14 @@ def ancestor(synset1, synset2):
     """ Returns the common ancestor of both synsets.
         For example synsets("cat")[0].ancestor(synsets("dog")[0]) => Synset("carnivore")
     """
-    # Note: a synset can have more than one hypernym, so we should check those as well.
     h1, h2 = synset1.hypernyms(recursive=True), synset2.hypernyms(recursive=True)
     for s in h1:
         if s in h2:
             return s
             
-least_common_subsumer = lcs = ancestor
+least_common_subsumer = lcs = ancestor 
 
-#--- LEMMA -------------------------------------------------------------------------------------------
-# Guesses word lemma based on a few lookup files bundled with WordNet.
-
-LEMMATA = {}
-def lemma(word):
-    if not LEMMATA:
-        for exc in glob.glob(os.path.join(CORPUS, "dict", "*.exc")):
-            for rule in open(exc).readlines():
-                rule = rule.split(" ")
-                LEMMATA[rule[0]] = rule[1].strip()
-    return LEMMATA.get(word, word)  
-
-#--- INFORMATION CONTENT -----------------------------------------------------------------------------
+### INFORMATION CONTENT ##############################################################################
 
 IC = {}
 IC_CORPUS = os.path.join(os.path.dirname(__file__), "IC-Brown-Resnik.txt")
@@ -301,7 +301,7 @@ def information_content(synset):
                 IC_MAX = w
     return IC.get(synset.pos, {}).get(synset.id, 0.0)
 
-#--- SENTIWORDNET ------------------------------------------------------------------------------------
+### SENTIMENT ########################################################################################
 # http://nmis.isti.cnr.it/sebastiani/Publications/LREC06.pdf
 
 _map32_pos1 = {NN:"n", VB:"v", JJ:"a", RB:"r"}
@@ -322,43 +322,56 @@ def map32(id, pos=NOUN):
         return int(k[1:]), _map32_pos2[k[0]]
     return None
 
-class Sentiwordnet(dict):
+SENTIWORDNET = "SentiWordNet" 
+
+class Sentiment(dict):
     
     def __init__(self):
-        """ SentiWordNet is a lexical resource for opinion mining. 
-            SentiWordNet assigns to each synset of WordNet three sentiment scores: 
-            positivity, negativity, objectivity.
-            It can be acquired from: http://sentiwordnet.isti.cnr.it/ (research license).
+        """ Sentiment.weight() takes a Synset.
+            Sentiment[word] takes a plain string and yields values for the 1st sense.
         """
         self._index = {} # Synset.id => (positive, negative)
-    
-    def __getitem__(self, word):
-        return dict.get(self, normalize(word), (0.0, 0.0, 1.0))
     
     def weight(self, synset):
         """ Returns a (positive, negative, objective)-tuple of values between 0.0-1.0.
         """
         return self._index.get((synset.id, synset.pos), (0.0, 0.0, 1.0))
+        
+    def __getitem__(self, word):
+        return dict.get(self, normalize(word), (0.0, 0.0, 1.0))
 
-    def load(self, path=os.path.join(MODULE, "SentiWordNet*.txt")):
-        """ Loads SentiWordNet-data from the given file.
+    def clear(self):
+        dict.clear(self); self._index.clear()
+
+    def load(self, resource=SENTIWORDNET, **kwargs):
+        if resource == SENTIWORDNET:
+            self.load_sentiwordnet()
+
+    def load_sentiwordnet(self, path=os.path.join(MODULE, "SentiWordNet*.txt"), **kwargs):
+        """ SentiWordNet is a lexical resource for opinion mining. 
+            SentiWordNet assigns three sentiment scores to each WordNet synset: 
+            positivity, negativity, objectivity.
+            It can be acquired from: http://sentiwordnet.isti.cnr.it/ (research license).
         """
-        # Sentiwordnet.weight() takes a Synset.
-        # Sentiwordnet[word] takes a plain string and yields values for the 1st sense.
-        e = 0
-        pp = []
-        W = {"n":wn.N,"v":wn.V,"a":wn.ADJ,"r":wn.ADV}
+        self.clear()
+        # SentiWordNet stores WordNet 3 id's.
+        # If we are using WordNet 2, we can map the id's using map32():
+        if float(VERSION) == 2:
+            m = map32
+        else:
+            m = lambda id, pos: (int(id.lstrip("0")), _map32_pos2[pos])
         for s in open(glob.glob(path)[0]).readlines():
             if not s.startswith(("#", "\t")):
                 s = s.split("\t") # pos (a/n/v/r), offset, positive, negative, senses, gloss
                 if s[2] != "0" or s[3] != "0":
                     w1 = float(s[2]) # positive
                     w2 = float(s[3]) # negative   
-                    k = map32(s[1], pos=s[0]) # wn2 id.
+                    k = m(s[1], pos=s[0])
                     v = (w1, w2, 1-(w1+w2))
                     if k is not None:
                         self._index[k] = v
                     for w in (w for w in s[4].split(" ") if w.endswith("#1")):
                         self[w[:-2].replace("_", " ")] = v
 
-sentiment = Sentiwordnet()
+sentiment = Sentiment()
+#sentiment.load()

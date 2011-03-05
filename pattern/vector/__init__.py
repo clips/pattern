@@ -60,6 +60,20 @@ def encode_utf8(string):
             return string
     return str(string)
     
+def lreplace(a, b, string):
+    """ Replaces the head of the string.
+    """
+    if string.startswith(a): 
+        return b + string[len(a):]
+    return string
+    
+def rreplace(a, b, string):
+    """ Replaces the tail of the string.
+    """
+    if string.endswith(a): 
+        return string[:len(string)-len(a)] + b
+    return string
+    
 def filename(path, map={"_":" "}):
     """ Returns the basename of the file at the given path, without the extension.
         For example: /users/tom/desktop/corpus/aesthetics.txt => aesthetics.
@@ -122,9 +136,9 @@ def words(string, filter=lambda w: w.isalpha() and len(w)>1, punctuation=PUNCTUA
         Common punctuation marks are stripped from words.
     """
     if isinstance(string, unicode):
-        string = string.replace(u"’", u"'")    
+        string = string.replace(u"’", u"'")
     words = string.replace("\n", "\n ")
-    words = (w.strip(punctuation) for w in words.split(" "))
+    words = (rreplace("'s", "", w.strip(punctuation)) for w in words.split(" "))
     words = [w for w in words if filter(w) is True]
     return words
 
@@ -754,6 +768,11 @@ class NaiveBayes(Classifier):
         for (t,v,i), f in self.ff.iteritems():
             d[v] = (v in d) and d[v]+f or f
         return d
+    
+    @property
+    def classes(self):
+        return fc.keys()
+    types = classes
 
     def train(self, document, type=None, weight=TF):
         """ Trains the classifier with the given document of the given type (i.e., class).

@@ -362,7 +362,7 @@ class Synset:
 	tokens = string.split(line[:string.index(line, '|')])
 	self.ssType = tokens[2]
 	self.gloss = string.strip(line[string.index(line, '|') + 1:])
-        self.lexname = Lexname.lexnames[int(tokens[1])]
+        self.lexname = Lexname.lexnames and Lexname.lexnames[int(tokens[1])] or []
 	(self._senseTuples, remainder) = _partition(tokens[4:], 2, string.atoi(tokens[3], 16))
 	(self._pointerTuples, remainder) = _partition(remainder[1:], 4, int(remainder[0]))
 	if pos == VERB:
@@ -762,9 +762,10 @@ class Lexname:
        return self.name
 
 def setupLexnames():
-    for l in open(WNSEARCHDIR+'/lexnames').readlines():
-        i,name,category = string.split(l)
-        Lexname(name,PartsOfSpeech[int(category)-1])
+    if os.path.exists(os.path.join(WNSEARCHDIR, 'lexnames')):
+        for l in open(os.path.join(WNSEARCHDIR, 'lexnames')).readlines():
+            i,name,category = string.split(l)
+            Lexname(name,PartsOfSpeech[int(category)-1])
 
 setupLexnames()
 
