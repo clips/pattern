@@ -735,6 +735,34 @@ class Classifier:
 
     def save(self, path):
         cPickle.dump(self, open(path, "w"))
+        
+    @classmethod
+    def test(self, corpus=[], d=0.65, folds=1, **kwargs):
+        """ Returns the accuracy of the classifier for the given corpus.
+            The corpus is a list of documents or (wordlist, type)-tuples.
+            2/3 of the data (d) will be used as training material and tested against the other 1/3.
+            With folds > 1, K-fold cross-validation is performed.
+            For example, in 10-fold cross-validation ten accuracy tests are performed,
+            each using a different 1/10 of the corpus as testing data.
+        """
+        corpus = [isinstance(x, Document) and (x, x.type) or x for x in corpus]
+        K = max(folds, 1)
+        m = 0
+        for k in range(K):
+            classifier = self(**kwargs)
+            n = 0
+            t = len(corpus) / float(K)
+            i = int(round(k * t))
+            j = int(round(k * t + t))
+            if folds == 1:
+                i = int(len(corpus) * d)
+                j = int(len(corpus))
+            for document, type in corpus[:i] + corpus[j:]:
+                classifier.train(document, type)
+            for document, type in corpus[i:j]:
+                n += classifier.classify(document) == type
+            m += n / float(j-i)
+        return m / K
 
 #--- NAIVE BAYES CLASSIFIER --------------------------------------------------------------------------
 # Based on: Magnus Lie Hetland, http://hetland.org/coding/python/nbayes.py
@@ -807,19 +835,19 @@ class NaiveBayes(Classifier):
         except ValueError: # max() arg is an empty sequence
             return None
     
-    @classmethod
-    def test(self, corpus=[], d=0.65, aligned=False):
-        """ Returns the accuracy of the Naive Bayes classifier for the given corpus.
-            The corpus is a list of documents or (wordlist, type)-tuples.
-            2/3 of the data will be used as training material and tested against the other 1/3.
-        """
-        corpus = [isinstance(x, Document) and (x, x.type) or x for x in corpus]
-        d = int(d * len(corpus))
-        train, test = corpus[:d], corpus[d:]
-        classifier = NaiveBayes(aligned)
-        n = 0
-        for document, type in train:
-            classifier.train(document, type)
-        for document, type in test:
-            n += classifier.classify(document) == type
-        return n / float(len(test))
+    #@classmethod
+    #def test(self, corpus=[], d=0.65, aligned=False):
+    #    """ Returns the accuracy of the Naive Bayes classifier for the given corpus.
+    #        The corpus is a list of documents or (wordlist, type)-tuples.
+    #        2/3 of the data will be used as training material and tested against the other 1/3.
+    #    """
+    #    corpus = [isinstance(x, Document) and (x, x.type) or x for x in corpus]
+    #    d = int(d * len(corpus))
+    #    train, test = corpus[:d], corpus[d:]
+    #    classifier = NaiveBayes(aligned)
+    #    n = 0
+    #    for document, type in train:
+    #        classifier.train(document, type)
+    #    for document, type in test:
+    #        n += classifier.classify(document) == type
+    #    return n / float(len(test))
