@@ -273,8 +273,11 @@ epistemic_VB = { # wish => feel => believe => seem => think => know => prove + T
     -0.50: d("doubt", "question"),
     -0.25: d("hope", "want", "wish"),
      0.00: d("guess", "imagine"),
-    +0.25: d("appear", "feel", "hear", "rumor", "rumour", "seem", "sense", "suspect", "suppose"),
-    +0.50: d("anticipate", "believe", "conjecture", "expect", "indicate", "suggest", "think"),
+    +0.25: d("appear", "feel", "hear", "rumor", "rumour", "seem", "sense", "speculate", "suspect", 
+             "suppose"),
+    +0.50: d("allude", "anticipate", "assume", "believe", "conjecture", "expect", "hypothesize", 
+             "imply", "indicate", "infer", "postulate", "predict", "presume", "propose", 
+             "suggest", "think"),
     +0.75: d("know", "look", "see", "show"),
     +1.00: d("certify", "demonstrate", "prove", "verify"),
 }
@@ -288,9 +291,10 @@ epistemic_RB = { # unlikely => supposedly => maybe => probably => usually => cle
      0.00: d("barely", "hypothetically", "maybe", "occasionally", "perhaps", "possibly", "putatively", 
              "sometimes", "sporadically"),
     +0.25: d("admittedly", "apparently", "arguably", "believably", "conceivably", "feasibly", 
-             "hopefully", "likely", "ostensibly", "probably", "seemingly"),
+             "hopefully", "likely", "ostensibly", "potentially", "probably", "quite", "seemingly"),
     +0.50: d("commonly", "credibly", "defendably", "defensibly", "effectively", "frequently", 
-             "generally", "noticeably", "often", "plausibly", "reasonably", "regularly", "usually"),
+             "generally", "noticeably", "often", "plausibly", "reasonably", "regularly", 
+             "relatively", "typically", "usually"),
     +0.75: d("assuredly", "certainly", "clearly", "doubtless", "evidently", "evitably", "manifestly", 
              "necessarily", "observably", "ostensively", "patently", "plainly", "positively", 
              "really", "surely", "truly", "undoubtably", "undoubtedly", "verifiably"),
@@ -300,27 +304,32 @@ epistemic_RB = { # unlikely => supposedly => maybe => probably => usually => cle
 }
 
 epistemic_JJ = {
-    -1.00: d("impossible"),
-    -0.75: d(),
+    -1.00: d("absurd", "impossible", "prepostoreous", "ridiculous"),
+    -0.75: d("inconceivable", "unthinkable"),
     -0.50: d("unlikely"),
-    -0.25: d("doubtful"),
-     0.00: d("possible"),
+    -0.25: d("doubtful", "uncertain", "unclear", "unsure"),
+     0.00: d("possible", "unknown"),
     +0.25: d("potential", "probable"),
-    +0.50: d("likely"),
-    +0.75: d("necessary", "positive", "sure"),
-    +1.00: d("certain", "definite"),
+    +0.50: d("generally", "likely", "putative", "several"),
+    +0.75: d("credible", "necessary", "positive", "sure"),
+    +1.00: d("certain", "confirmed", "definite"),
 }
 
 epistemic_NN = {
-    -1.00: d("fiction", "myth", "nonsense"),
+    -1.00: d("fantasy", "fiction", "lie", "myth", "nonsense"),
     -0.75: d(),
     -0.50: d(),
-    -0.25: d("chance"),
-     0.00: d("possibility"),
-    +0.25: d(),
-    +0.50: d(),
+    -0.25: d("chance", "speculation"),
+     0.00: d("guess", "possibility"),
+    +0.25: d("assumption", "expectation", "hypothesis", "notion"),
+    +0.50: d("belief", "theory"),
     +0.75: d(),
     +1.00: d("fact", "truth"),
+}
+
+epistemic_CC_DT_IN = {
+     0.00: d("either", "whether"),
+    +0.25: d("some")
 }
 
 epistemic_phrase = {
@@ -328,9 +337,10 @@ epistemic_phrase = {
     -0.75: d(),
     -0.50: d(),
     -0.25: d(),
-     0.00: d("sort of"),
-    +0.25: d("at first blush", "at first sight", "at first glance"),
-    +0.50: d("all else being equal", "all in all", "all things considered"),
+     0.00: d("a number of", "sort of", "in some cases", "in some way"),
+    +0.25: d("at first blush", "at first sight", "at first glance", "many of these"),
+    +0.50: d("all else being equal", "all in all", "all things considered", "for several reasons",
+             "has been argued", "said to be"),
     +0.75: d("as a matter of fact"),
     +1.00: d("without a doubt", "of course"),
 }
@@ -351,10 +361,13 @@ def modality(sentence, type=EPISTEMIC):
         for i, w in enumerate(S):
             for type, dict, weight in (
               ("MD", epistemic_MD, 2), 
-              ("VB", epistemic_VB, 3), 
+              ("VB", epistemic_VB, 2), 
               ("RB", epistemic_RB, 1), 
               ("JJ", epistemic_JJ, 1),
-              ("NN", epistemic_JJ, 1)):
+              ("NN", epistemic_NN, 1),
+              ("CC", epistemic_CC_DT_IN, 1),
+              ("DT", epistemic_CC_DT_IN, 1),
+              ("IN", epistemic_CC_DT_IN, 1)):
                 if i < 0 and s(S[i-1]) in ("fully", "most", "much", "very"):
                     # "likely" => weight 1, "very likely" => weight 2
                     weight += 1
@@ -362,6 +375,7 @@ def modality(sentence, type=EPISTEMIC):
                     # likely" => score 0.25 (neutral inclining towards positive).
                     for k,v in dict.items():
                         if (w.lemma or s(w)) in v: # Prefer lemmata.
+                            #print w, weight, k
                             n += weight * k
                             m += weight
                             break
@@ -379,9 +393,13 @@ def modality(sentence, type=EPISTEMIC):
 #    print modality(Sentence(parse(str)))
 #    print
 
+#-----------------------------------------------------------------------------------------------------
+
 # Celle, A. (2009). Hearsay adverbs and modality, in: Modality in English, Mouton.
 # Allegedly, presumably, purportedly, ... are in the negative range because
 # they introduce a fictious point of view by referring to an unclear source.
+
+#-----------------------------------------------------------------------------------------------------
 
 # Tseronis, A. (2009). Qualifying standpoints. LOT Dissertation Series: 233.
 # Following adverbs are not epistemic but indicate the way in which things are said.
@@ -394,3 +412,14 @@ def modality(sentence, type=EPISTEMIC):
 #    happily, hopefully, illogically, interestingly, ironically, justifiably, justly, luckily, 
 #    oddly, paradoxically, preferably, regretfully, regrettably, sadly, significantly, 
 #    strangely, surprisingly, tragically, unaccountably, unfortunately, unhappily unreasonably
+
+#-----------------------------------------------------------------------------------------------------
+
+# The modality() function was tested with BioScope and Wikipedia training data from CoNLL2010 Shared Task 1.
+# See for example Morante, R., Van Asch, V., Daelemans, W. (2010): 
+# Memory-Based Resolution of In-Sentence Scopes of Hedge Cues
+# http://www.aclweb.org/anthology/W/W10/W10-3006.pdf
+# Sentences in the training corpus are labelled as "certain" or "uncertain".
+# The modality() function accuracy is:
+# - 82% for "certain" (>=0.9) and 88% for "uncertain" (<=0.5) for biomedical text, and
+# - 66% for "certain" (>=0.9) and 58% for "uncertain" (<=0.5) for Wikipedia text.
