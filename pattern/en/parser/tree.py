@@ -670,7 +670,8 @@ class Sentence:
         # Assume None for missing tags (except the word itself, which defaults to an empty string).
         token = token.split("/")
         for i in range(min(len(token), len(tags))):
-            if token[i] != OUTSIDE:
+            if token[i] != OUTSIDE \
+             or tags[i] in (WORD, LEMMA): # In "O is part of the alphabet" => "O" != OUTSIDE.
                 p[tags[i]] = decode_entities(token[i])
         # Split I/B prefix from the chunk tag:
         # B- marks the start of a new chunk, I- marks inside of a chunk.

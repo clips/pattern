@@ -10,14 +10,16 @@
 # It groups English words into sets of synonyms called synsets, provides short, general definitions, 
 # and records the various semantic relations between these synonym sets.
 
+import os
+import glob
+
 try: 
     MODULE = os.path.dirname(__file__)
 except:
     MODULE = ""
 
 CORPUS = "" # Path to WordNet /dict folder.
-import os; os.environ["WNHOME"] = os.path.join(MODULE, CORPUS)
-import glob
+os.environ["WNHOME"] = os.path.join(MODULE, CORPUS)
 
 from pywordnet import wordnet as wn
 from pywordnet import wntools
@@ -78,17 +80,17 @@ def synsets(word, pos=NOUN):
         Each word can be understood in different "senses", each of which is a set of synonyms (=Synset).
     """
     word = normalize(word)
-    if pos == NOUN:
-        w = wn.N[word]
-    elif pos == VERB:
-        w = wn.V[word]
-    elif pos == ADJECTIVE:
-        w = wn.ADJ[word]
-    elif pos == ADVERB:
-        w = wn.ADV[word]
     try:
+        if pos == NOUN:
+            w = wn.N[word]
+        elif pos == VERB:
+            w = wn.V[word]
+        elif pos == ADJECTIVE:
+            w = wn.ADJ[word]
+        elif pos == ADVERB:
+            w = wn.ADV[word]
         return [Synset(s.synset) for i, s in enumerate(w)]
-    except:
+    except KeyError:
         return []
 
 class Synset:

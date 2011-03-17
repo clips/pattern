@@ -177,7 +177,7 @@ def date(*args, **kwargs):
         # Otherwise, try to parse with a list of known formats.
         try: d = Date.fromtimestamp(mktime_tz(parsedate_tz(args[0])))
         except:
-            for f in (kwargs.get("format") or []) + formats:
+            for f in ("format" in kwargs and [kwargs["format"]] or []) + formats:
                 try: d = Date.strptime(args[0], f); break
                 except:
                     pass

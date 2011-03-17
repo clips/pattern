@@ -15,6 +15,17 @@ for e in dom.get_elements_by_tagname("div.entry")[:5]: # Top 5 reddit entries.
         print plaintext(a.content)
         print a.attributes["href"]
         print
+        
+# Some of the links can be relative, for example starting with "../".
+# We can get the absolute URL by prepending the base URL.
+# However, this might get messy with anchors, trailing slashes and redirected URL's.
+# A good way to get absolute URL's is to use the module's abs() function:
+from pattern.web import abs
+url = URL("http://nodebox.net")
+for link in Document(url.download()).by_tag("a"):
+    link = link.attributes.get("href","")
+    link = abs(link, base=url.redirect or url.string)
+    #print link
 
 # The Document object is a tree of Element and Text objects.
 # All objects inherit from Node, Document also inherits from Element.

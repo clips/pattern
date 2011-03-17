@@ -47,6 +47,3 @@ for word in ["poodle", "cat", "boat", "carrot", "rocket",
 print
 print "Similarity to %s:" % a.senses[0], sorted(s)
 print
-
-wordnet.sentiment.load()
-print wordnet.sentiment["good"]

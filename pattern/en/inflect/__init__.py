@@ -449,10 +449,10 @@ for rule in singular_rules:
 
 singular_uninflected = [
     "bison", "bream", "breeches", "britches", "carp", "chassis", "clippers", "cod", "contretemps", 
-    "corps", "debris", "diabetes", "djinn", "eland", "elk", "flounder", "gallows", "graffiti", 
-    "headquarters", "herpes", "high-jinks", "homework", "innings", "jackanapes", "mackerel", 
-    "measles", "mews", "mumps", "news", "pincers", "pliers", "proceedings", "rabies", "salmon", 
-    "scissors", "series", "shears", "species", "swine", "trout", "tuna", "whiting", "wildebeest"
+    "corps", "debris", "diabetes", "djinn", "eland", "elk", "flounder", "gallows", "georgia", 
+    "graffiti", "headquarters", "herpes", "high-jinks", "homework", "innings", "jackanapes", 
+    "mackerel", "measles", "mews", "mumps", "news", "pincers", "pliers", "proceedings", "rabies", 
+    "salmon", "scissors", "series", "shears", "species", "swine", "trout", "tuna", "whiting", "wildebeest"
 ]
 singular_uncountable = [
     "advice", "bread", "butter", "cheese", "electricity", "equipment", "fruit", "furniture", 
