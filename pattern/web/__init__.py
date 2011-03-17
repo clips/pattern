@@ -46,10 +46,11 @@ def decode_utf8(string):
     """ Returns the given string as a unicode string (if possible).
     """
     if isinstance(string, str):
-        try: 
-            return string.decode("utf-8")
+        try: return string.decode("utf-8")
         except:
-            return string
+            try: return string.decode("windows-1252")
+            except:
+                 return string
     return unicode(string)
     
 def encode_utf8(string):
@@ -312,7 +313,9 @@ class URL:
             if e.code == 301: raise HTTP301Redirect
             raise HTTPError
         except urllib2.URLError, e:
-            if e.reason[0] in (36, "timed out"): raise URLTimeout
+            if e.reason == "timed out" \
+            or e.reason[0] in (36, "timed out"): 
+                raise URLTimeout
             raise URLError
         except ValueError:
             raise URLError
@@ -333,6 +336,9 @@ class URL:
         if not cached and throttle:
             time.sleep(max(throttle-(time.time()-t), 0))
         return data
+    
+    def read(self, *args):
+        return self.open().read(*args)
             
     @property
     def exists(self, timeout=10):
@@ -450,6 +456,19 @@ def find_urls(string, unique=True):
     return matches
     
 links = find_urls
+
+RE_EMAIL = re.compile(r"[\w\-\.\+]+@(\w[\w\-]+\.)+[\w\-]+") # tom.de+smedt@clips.ua.ac.be
+
+def find_email(string, unique=True):
+    """ Returns a list of e-mail addresses parsed from the string.
+    """
+    string = u(string).replace(u"\u2024", ".")
+    matches = []
+    for m in RE_EMAIL.finditer(string):
+        s = m.group(0)
+        if not unique or s not in matches:
+            matches.append(s)
+    return matches
 
 #### PLAIN TEXT ######################################################################################
 
@@ -1697,6 +1716,8 @@ def abs(url, base=None):
     """ Returns the absolute URL:
         ../media + http://en.wikipedia.org/wiki/ => http://en.wikipedia.org/media
     """
+    if url.startswith("#") and not base is None and not base.endswith("/"):
+        base += "/"
     return urlparse.urljoin(base, url)
 
 DEPTH   = "depth"

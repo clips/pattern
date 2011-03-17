@@ -27,20 +27,22 @@ setup(
         "pattern.en.parser", 
         "pattern.en.wordnet", 
         "pattern.en.wordnet.pywordnet",
-        "pattern.vector", 
+        "pattern.vector",
+        "pattern.vector.wordlists",
         "pattern.graph"
     ],
     package_data = {
-        "pattern.web.cache" : ["tmp/*"], 
-        "pattern.web.feed"  : ["*"], 
-        "pattern.web.json"  : ["*"], 
-        "pattern.web.soup"  : ["*"],
-        "pattern.en.inflect": ["*.txt"], 
-        "pattern.en.parser" : ["*.txt"], 
-        "pattern.en.wordnet": ["*.txt", "dict/*"], 
-        "pattern.en.wordnet.pywordnet": ["*"],
-        "pattern.vector"    : ["*.txt"], 
-        "pattern.graph"     : ["js/*.js"],
+        "pattern.web.cache"            : ["tmp/*"], 
+        "pattern.web.feed"             : ["*"], 
+        "pattern.web.json"             : ["*"], 
+        "pattern.web.soup"             : ["*"],
+        "pattern.en.inflect"           : ["*.txt"], 
+        "pattern.en.parser"            : ["*.txt"], 
+        "pattern.en.wordnet"           : ["*.txt", "dict/*"], 
+        "pattern.en.wordnet.pywordnet" : ["*"],
+        "pattern.vector"               : ["*.txt"], 
+        "pattern.vector.wordlists"     : ["*.txt"], 
+        "pattern.graph"                : ["js/*.js"],
         "pattern" : [
             "*.txt", 
             "examples/*/*.py", 
@@ -48,6 +50,7 @@ setup(
         ]
     },
     py_modules = [
+        "pattern.metrics",
         "pattern.table", 
         "pattern.search"
     ],

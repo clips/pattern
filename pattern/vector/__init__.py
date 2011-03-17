@@ -1,4 +1,4 @@
-#### PATTERN | EN | RULE-BASED SHALLOW PARSER ########################################################
+#### PATTERN | VECTOR ################################################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
@@ -107,6 +107,22 @@ class readonlydict(dict):
         if k in self: 
             return self[k]
         raise ReadOnlyError
+        
+class readonlylist(list):
+    def __setitem__(self, i, v):
+        raise ReadOnlyError
+    def __delitem__(self, i):
+        raise ReadOnlyError
+    def append(self, v):
+        raise ReadOnlyError
+    def insert(self, i, v):
+        raise ReadOnlyError
+    def extend(self, v):
+        raise ReadOnlyError
+    def remove(self, v):
+        raise ReadOnlyError
+    def pop(self, i):
+        raise ReadOnlyError
 
 #### DOCUMENT ########################################################################################
 
@@ -129,7 +145,7 @@ stopwords = _stopwords = dict.fromkeys(
 
 #--- WORD COUNT --------------------------------------------------------------------------------------
 
-PUNCTUATION = "[]():;,.!?\n\r\t\f "
+PUNCTUATION = u"#[]():;,.!?\n\r\t\f ®"
 
 def words(string, filter=lambda w: w.isalpha() and len(w)>1, punctuation=PUNCTUATION, **kwargs):
     """ Returns a list of words from the given string.
@@ -162,12 +178,14 @@ def stem(word, stemmer=PORTER, **kwargs):
     return word
 
 def count(words=[], top=None, threshold=0, stemmer=PORTER, exclude=[], stopwords=False, **kwargs):
-    """ Returns a dictionary of (word, count)-items.
+    """ Returns a dictionary of (word, count)-items, in lowercase.
         Words in the exclude list and stop words are not counted.
         Words whose count falls below (or equals) the given threshold are excluded.
         Words that are not in the given top most counted are excluded.
     """
-    count = {}
+    # An optional dict-parameter can be used to specify a subclass of dict, 
+    # e.g., count(words, dict=readonlydict) as used in Document.
+    count = kwargs.get("dict", dict)()
     for word in words:
         if word.__class__.__name__ == "Word":
             w = word.string.lower()
@@ -175,14 +193,14 @@ def count(words=[], top=None, threshold=0, stemmer=PORTER, exclude=[], stopwords
             w = word.lower()
         if (stopwords or not w in _stopwords) and not w in exclude:
             if stemmer is not None:
-                w = stem(word, stemmer, **kwargs)
-            count[w] = (w in count) and count[w]+1 or 1
+                w = stem(w, stemmer, **kwargs)
+            dict.__setitem__(count, w, (w in count) and count[w]+1 or 1)
     for k in count.keys():
-        if count[k] <= threshold: 
-            del count[k]
+        if count[k] <= threshold:
+            dict.__delitem__(count, k)
     if top is not None:
         count = [(k,v) for v,k in sorted(((v,k) for k,v in count.iteritems()), reverse=True)]
-        count = dict(count[:top])
+        count = count.__class__(count[:top])
     return count
 
 #--- DOCUMENT ----------------------------------------------------------------------------------------
@@ -205,21 +223,24 @@ class Document(object):
             Only words whose count exceeds the threshold and who are in the top are included in the document.
         """
         kwargs.setdefault("threshold", 1)
+        kwargs.setdefault("dict", readonlydict)
         if isinstance(string, basestring):
             w = words(string, **kwargs)
+        elif isinstance(string, (list, tuple)):
+            w = string
         elif string.__class__.__name__ == "Sentence":
             w = string.words
         elif string.__class__.__name__ == "Text":
             w = []; [w.extend(sentence.words) for sentence in string]
         else:
-            raise TypeError, "document string is not str, unicode, Sentence or Text."
-        self._id     = _uid()               # Read-only Document.id, used as dictionary key.
-        self._name   = kwargs.get("name")   # Name that describes the document content.
-        self.type    = kwargs.get("type")   # Type that describes the category or class of the document.
-        self.terms   = count(w, **kwargs)   # Dictionary of (word, count)-items.
-        self._count  = None                 # Total number of words (minus stop words).
-        self._vector = None                 # Cached tf-idf vector.
-        self._corpus = None                 # Corpus this document belongs to.
+            raise TypeError, "document string is not str, unicode, list, Sentence or Text."
+        self._id       = _uid()             # Document ID, used when comparing objects.
+        self._name     = kwargs.get("name") # Name that describes the document content.
+        self._type     = kwargs.get("type") # Type that describes the category or class of the document.
+        self._terms    = count(w, **kwargs) # Dictionary of (word, count)-items.
+        self._count    = None               # Total number of words (minus stop words).
+        self._vector   = None               # Cached tf-idf vector.
+        self._corpus   = None               # Corpus this document belongs to.
 
     @classmethod
     def open(Document, path, *args, **kwargs):
@@ -242,7 +263,7 @@ class Document(object):
         """ Saves the terms in the document as a space-separated text file at the given path.
             The advantage is that terms no longer need to be filtered or stemmed in Document.load().
         """
-        s = [[w]*n for w, n in self.terms.items()]
+        s = [[w]*n for w, n in self._terms.items()]
         s = [" ".join(w) for w in s]
         s = encode_utf8(" ".join(s))
         f = open(path, "wb")
@@ -269,8 +290,13 @@ class Document(object):
         return self._name
         
     @property
-    def words(self):
-        return self.terms
+    def type(self):
+        return self._type
+    
+    @property
+    def terms(self):
+        return self._terms
+    words = terms
     
     @property
     def count(self):
@@ -279,23 +305,23 @@ class Document(object):
     def __len__(self):
         # Yields the number of words (excluding stop words) in the document.
         # Cache the word count so we can reuse it when calculating tf.
-        if not self._count: self._count = sum(self.terms.values())
+        if not self._count: self._count = sum(self._terms.values())
         return self._count
     def __iter__(self):
-        return iter(self.terms)
+        return iter(self._terms)
     def __contains__(self, word):
-        return word in self.terms
+        return word in self._terms
     def __getitem__(self, word):
-        return self.terms[word]
+        return self._terms.__getitem__(word)
     def get(self, word, default=None):
-        return self.terms.get(word, default)
+        return self._terms.get(word, default)
     
     def term_frequency(self, word):
         """ Returns the term frequency of a word in the document.
             tf = number of occurences of the word / number of words in document.
             The more occurences of the word, the higher its tf weight.
         """
-        return float(self.terms.get(word, 0)) / (len(self) or 1)
+        return float(self._terms.get(word, 0)) / (len(self) or 1)
         
     tf = term_frequency
     
@@ -318,7 +344,7 @@ class Document(object):
         """ Yields a dictionary of (word, relevancy)-items from the document, based on tf-idf.
         """
         # See the Vector class below. It's just a dict with some extra functionality (copy, norm, etc.)
-        if not self._vector: self._vector = Vector(((w, self.tfidf(w)) for w in self.terms))
+        if not self._vector: self._vector = Vector(((w, self.tfidf(w)) for w in self._terms))
         return self._vector
         
     def keywords(self, top=10, normalized=True):
@@ -345,7 +371,7 @@ class Document(object):
             return f
     
     def copy(self):
-        d = Document(name=self.name); d.terms.update(self); return d
+        d = Document(name=self.name); dict.update(d._terms, self._terms); return d
     
     def __eq__(self, document):
         return isinstance(document, Document) and self._id == document._id
@@ -363,14 +389,14 @@ class Document(object):
 class WeightError(Exception):
     pass
 
-class Vector(dict):
+class Vector(readonlydict):
     
     def __init__(self, *args, **kwargs):
         """ Vector is a dictionary of (word, weight)-items based on the terms in a Document.
         """
         self.weight = kwargs.pop("weight", TFIDF) # Vector weights based on tf or tf-idf?
         self._norm  = None
-        dict.__init__(self, *args, **kwargs)
+        readonlydict.__init__(self, *args, **kwargs)
         
     @property
     def frobenius_norm(self):
@@ -393,7 +419,7 @@ class Vector(dict):
             raise WeightError, "mixing %s vector with %s vector" % (self.weight, vector.weight)
         # Return a copy of the vector, updated with values from the other vector.
         # Only keys that appear in this vector will be updated (i.e. no new keys are added).
-        V = self.copy(); V.update((k,v) for k,v in vector.iteritems() if k in V); return V
+        V = self.copy(); dict.update(V, ((k,v) for k,v in vector.iteritems() if k in V)); return V
 
 #### CORPUS ##########################################################################################
 
@@ -408,13 +434,17 @@ class Corpus(object):
             where each document is a bag of (word, count)-items.
             Documents can be compared for similarity.
         """
-        self.documents   = readonlydict() # Document.id => Document
+        self._documents  = readonlylist() # List of documents (read-only).
         self._index      = {}             # Document.name => Document
         self._df         = {}             # Cache of document frequency per word.
         self._similarity = {}             # Cache of ((D1.id,D2.id), weight)-items (cosine similarity).
         self._vector     = None           # Cache of corpus vector with all the words in the corpus.
         self._update()
         self.extend(documents)
+    
+    @property
+    def documents(self):
+        return self._documents
     
     @classmethod
     def build(Corpus, path, *args, **kwargs):
@@ -423,7 +453,7 @@ class Corpus(object):
         """
         documents = []
         for f in glob.glob(path):
-            kwargs["name"] = name=filename(f)
+            kwargs["name"] = filename(f)
             documents.append(Document.open(f, *args, **kwargs))
         return Corpus(documents)
     
@@ -440,8 +470,8 @@ class Corpus(object):
             and cached vectors and similarities are stored
         """
         if update:
-            for d1 in self.documents.values():
-                for d2 in self.documents.values():
+            for d1 in self._documents:
+                for d2 in self._documents:
                     self.cosine_similarity(d1, d2) # Update the entire cache before saving.
         cPickle.dump(self, open(path, "w"))
     
@@ -451,24 +481,22 @@ class Corpus(object):
         self._vector = None
         self._df = {}
         self._similarity = {}
-        for document in self.documents.values():
+        for document in self._documents:
             document._vector = None
     
     def __len__(self):
-        return len(self.documents)
+        return len(self._documents)
     def __iter__(self):
-        return iter(self.documents.values())
-    def __getitem__(self, id):
-        return self.documents[id]
-    def __delitem__(self, id):
-        if not id in self.documents:
-            return
-        d = dict.pop(self.documents, id)
+        return iter(self._documents)
+    def __getitem__(self, i):
+        return self._documents.__getitem__(i)
+    def __delitem__(self, i):
+        d = list.pop(self._documents, i)
         d._corpus = None
         self._index.pop(d.name, None)
         self._update()
     def clear(self):
-        dict.clear(self.documents)
+        self._documents = readonlylist()
         self._update()
 
     def append(self, document):
@@ -479,7 +507,7 @@ class Corpus(object):
         document._corpus = self
         if document.name is not None:
             self._index[document.name] = document
-        dict.__setitem__(self.documents, document.id, document)
+        list.append(self._documents, document)
         self._update()
         
     def extend(self, documents):
@@ -487,18 +515,18 @@ class Corpus(object):
             document._corpus = self
             if document.name is not None:
                 self._index[document.name] = document
-            dict.__setitem__(self.documents, document.id, document)
+        list.extend(self._documents, documents)
         self._update()
         
     def remove(self, document):
-        self.__delitem__(document.id)
+        self.__delitem__(self._documents.index(document))
         
     def document(self, name):
         # This assumes document names are unique.
         if name in self._index:
             return self._index[name]
         if isinstance(name, int):
-            return self.documents.get(name)
+            return self._documents[name]
         
     def document_frequency(self, word):
         """ Returns the document frequency of a word.
@@ -506,16 +534,16 @@ class Corpus(object):
             df = number of documents containing the word / number of documents.
             The more occurences of the word across the corpus, the higher its df weight.
         """
-        if len(self.documents) == 0:
+        if len(self._documents) == 0:
             return 0        
         if len(self._df) == 0:
             # Caching document frequency for each word gives a whopping 300x performance boost
             # (calculate all of them once). Drawback: if you need TF-IDF for just one document.
-            for d in self.documents.itervalues():
+            for d in self._documents:
                 for w in d.terms:
                     self._df[w] = (w in self._df) and self._df[w]+1 or 1
             for w, f in self._df.iteritems():
-                self._df[w] /= float(len(self.documents))
+                self._df[w] /= float(len(self._documents))
         return self._df[word]
         
     df = document_frequency
@@ -539,7 +567,9 @@ class Corpus(object):
         """
         if not self._vector: 
             self._vector = Vector();
-            [[self._vector.setdefault(word, 0) for word in d] for d in self.documents.values()]
+            for d in self._documents:
+                for word in d.terms: 
+                    dict.setdefault(self._vector, word, 0)
         return self._vector
         # Note: 
         # - Corpus.vector is the dictionary of (word, 0)-items.
@@ -576,7 +606,7 @@ class Corpus(object):
         """ Returns a list of (weight, document)-tuples in the corpus, 
             sorted by similarity to the given document.
         """
-        v = ((self.similarity(document, d), d) for d in self.documents.itervalues())
+        v = ((self.similarity(document, d), d) for d in self._documents)
         # Filter the input document from the matches.
         # Filter documents that scored 0.0 and return the top.
         v = [(w, d) for w, d in v if w > 0 and d.id != document.id]
@@ -628,7 +658,7 @@ class Corpus(object):
         # The vector search space: a matrix with one row for each document, 
         # in which the word tf-idf weights are in the same order for each row.
         O = self.vector.keys()
-        D = self.documents.values()
+        D = self._documents
         sorted = lambda v, o: [v[k] for k in o]
         matrix = [sorted(self.vector(d), O) for d in D]
         matrix = numpy.array(matrix)
@@ -675,9 +705,11 @@ class Vectorspace:
         self.documents = list(documents)
         self._index1   = dict(((d.id, (i,d)) for i,d in enumerate(documents)))
         self._index2   = dict(((w,i) for i,w in enumerate(words)))
+        # index1: Document.id => Document
+        # index2: feature index => term
             
     def keywords(self, id, top=10):
-        """ Returns a list of (relevancy, word)-tuples for the given document (by id).
+        """ Returns a list of (relevancy, word)-tuples for the given document (or id).
         """
         if isinstance(id, Document):
             id = id.id
