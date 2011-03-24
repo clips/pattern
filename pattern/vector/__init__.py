@@ -199,8 +199,7 @@ def count(words=[], top=None, threshold=0, stemmer=PORTER, exclude=[], stopwords
         if count[k] <= threshold:
             dict.__delitem__(count, k)
     if top is not None:
-        count = [(k,v) for v,k in sorted(((v,k) for k,v in count.iteritems()), reverse=True)]
-        count = count.__class__(count[:top])
+        count = count.__class__(heapq.nlargest(top, count.iteritems(), key=lambda (k,v): v))
     return count
 
 #--- DOCUMENT ----------------------------------------------------------------------------------------

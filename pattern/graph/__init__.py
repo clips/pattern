@@ -195,11 +195,23 @@ class Edge(object):
         """
         self.node1       = node1
         self.node2       = node2
-        self.weight      = weight
+        self._weight     = weight
         self.length      = length
         self.type        = type
         self.stroke      = stroke
         self.strokewidth = strokewidth
+    
+    def _get_weight(self): 
+        return self._weight
+    def _set_weight(self, v):
+        self._weight = v
+        # Clear cached adjacency map in the graph, since edge weights have changed.
+        if self.node1.graph is not None: 
+            self.node1.graph._adjacency = None
+        if self.node2.graph is not None: 
+            self.node2.graph._adjacency = None
+    
+    weight = property(_get_weight, _set_weight)
         
     def draw(self, weighted=False, directed=False):
         """ Draws the edge as a line with the given stroke and strokewidth (increased with Edge.weight).
@@ -257,11 +269,12 @@ class Graph(dict):
     def __init__(self, layout=SPRING, distance=10.0):
         """ A network of nodes connected by edges that can be drawn with a given layout.
         """
-        self.nodes    = []
-        self.edges    = []
-        self.root     = None
-        self.distance = distance
-        self.layout   = layout==SPRING and GraphSpringLayout(self) or GraphLayout(self)
+        self.nodes      = []   # List of Node objects.
+        self.edges      = []   # List of Edge objects.
+        self.root       = None
+        self._adjacency = None # Cached adjacency() dict.
+        self.layout     = layout==SPRING and GraphSpringLayout(self) or GraphLayout(self)
+        self.distance   = distance
     
     def append(self, type, *args, **kwargs):
         """ Appends a Node or Edge to the graph: Graph.append(Node, id="rabbit").
@@ -279,6 +292,8 @@ class Graph(dict):
             self.nodes.append(n)
             self[n.id] = n; n.graph = self
             self.root = kwargs.get("root", False) and n or self.root
+            # Clear adjacency cache.
+            self._adjacency = None
         return n
     
     def add_edge(self, id1, id2, *args, **kwargs):
@@ -299,6 +314,8 @@ class Graph(dict):
         # B.links.edge(A) yields edge B->A
         n1.links.append(n2, edge=e2)
         n2.links.append(n1, edge=e1 or e2)
+        # Clear adjacency cache.
+        self._adjacency = None
         return e2        
             
     def remove(self, x):
@@ -316,6 +333,8 @@ class Graph(dict):
                     self.edges.remove(e) 
         if isinstance(x, Edge):
             self.edges.remove(x)
+        # Clear adjacency cache.
+        self._adjacency = None
     
     def node(self, id):
         """ Returns the node in the graph with the given id.
@@ -327,6 +346,11 @@ class Graph(dict):
         """
         return id1 in self and id2 in self and self[id1].links.edge(id2) or None
     
+    def paths(self, node1, node2, length=4, path=[]):
+        """ Returns a list of paths (shorter than given length) connecting the two nodes.
+        """
+        return [[self[id] for id in p] for p in paths(self, node1.id, node2.id, length, path)]
+    
     def shortest_path(self, node1, node2, heuristic=None, directed=False):
         """ Returns a list of nodes connecting the two nodes.
         """
@@ -336,7 +360,15 @@ class Graph(dict):
             return p
         except IndexError:
             return None
-
+            
+    def shortest_paths(self, node, heuristic=None, directed=False):
+        """ Returns a dictionary of nodes, each linked to a list of nodes (shortest path).
+        """
+        p = {}
+        for id, path in dijkstra_shortest_paths(self, node.id, heuristic, directed).iteritems():
+            p[self[id]] = path and [self[id] for id in path] or None
+        return p 
+            
     def eigenvector_centrality(self, normalized=True, reversed=True, rating={}, iterations=100, tolerance=0.0001):
         """ Calculates eigenvector centrality and returns a node => weight dictionary.
             Node.weight is updated in the process.
@@ -556,7 +588,7 @@ class GraphSpringLayout(GraphLayout):
         g.k, g.force, g.repulsion = self.k, self.force, self.repulsion
         return g
 
-#--- GRAPH THEORY ------------------------------------------------------------------------------------
+#--- GRAPH TRAVERSAL ---------------------------------------------------------------------------------
 
 def depth_first_search(node, visit=lambda node: False, traversable=lambda node, edge: True, _visited=None):
     """ Visits all the nodes connected to the given root node, depth-first.
@@ -595,6 +627,35 @@ def breadth_first_search(node, visit=lambda node: False, traversable=lambda node
         
 bfs = breadth_first_search;
 
+def paths(graph, id1, id2, length=4, path=[], _root=True):
+    """ Returns a list of paths from node with id1 to node with id2.
+        Only paths shorter than the given length are included.
+        Uses a brute-force DFS approach (performance drops exponentially for longer paths).
+    """
+    if len(path) >= length:
+        return []
+    if id1 not in graph:
+        return []
+    if id1 == id2:
+        return [path + [id1]]
+    path = path + [id1]
+    p = []
+    s = set(path) # 5% speedup.
+    for node in graph[id1].links:
+        if node.id not in s: 
+            p.extend(paths(graph, node.id, id2, length, path, False))
+    return _root and sorted(p, key=len) or p
+
+def edges(path):
+    """ Returns an iterator of Edge objects for the given list of nodes.
+        It yields None where two successive nodes are not connected.
+    """
+    # For example, the distance (i.e., edge weight sum) of a path:
+    # sum(e.weight for e in edges(path))
+    return len(path) > 1 and (n.links.edge(path[i+1]) for i,n in enumerate(path[:-1])) or iter(())
+
+#--- GRAPH THEORY ------------------------------------------------------------------------------------
+
 def adjacency(graph, directed=False, reversed=False, stochastic=False, heuristic=None):
     """ Returns a dictionary indexed by node id1's,
         in which each value is a dictionary of connected node id2's linking to the edge weight.
@@ -603,6 +664,9 @@ def adjacency(graph, directed=False, reversed=False, stochastic=False, heuristic
         A heuristic function can be given that takes two node id's and returns
         an additional cost for movement between the two nodes.
     """
+    if graph._adjacency is not None and \
+       graph._adjacency[1:] == (directed, reversed, stochastic, heuristic):
+        return graph._adjacency[0]
     map = {}
     for n in graph.nodes:
         map[n.id] = {}
@@ -618,10 +682,13 @@ def adjacency(graph, directed=False, reversed=False, stochastic=False, heuristic
             n = sum(map[id1].values())
             for id2 in map[id1]: 
                 map[id1][id2] /= n
+    # Cache the adjacency map: this makes dijkstra_shortest_path() 2x faster in repeated use.
+    graph._adjacency = (map, directed, reversed, stochastic, heuristic)
     return map
 
 def dijkstra_shortest_path(graph, id1, id2, heuristic=None, directed=False):
-    """ Dijkstra algorithm for finding shortest paths.
+    """ Dijkstra algorithm for finding the shortest path between two nodes.
+        Returns a list of node id's, starting with id1 and ending with id2.
         Raises an IndexError between nodes on unconnected graphs.
     """
     # Based on: Connelly Barnes, http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/119466
@@ -642,7 +709,36 @@ def dijkstra_shortest_path(graph, id1, id2, heuristic=None, directed=False):
         for (n2, cost2) in G[n1].iteritems():
             if n2 not in visited:
                 heappush(q, (cost1 + cost2, n2, path))
-                
+
+def dijkstra_shortest_paths(graph, id, heuristic=None, directed=False):
+    """ Dijkstra algorithm for finding the shortest paths from the given node to all other nodes.
+        Returns a dictionary of node id's, each linking to a list of node id's (i.e., the path).
+    """
+    # Based on: Dijkstra's algorithm for shortest paths modified from Eppstein.
+    # Based on: NetworkX 1.4.1: Aric Hagberg, Dan Schult and Pieter Swart.
+    # This is 5x faster than:
+    # for n in g: dijkstra_shortest_path(g, id, n.id)
+    W = adjacency(graph, directed=directed, heuristic=heuristic)
+    Q = [] # Use Q as a heap with (distance, node id)-tuples.
+    D = {} # Dictionary of final distances.
+    P = {} # Dictionary of paths.
+    P[id] = [id] 
+    seen = {id: 0} 
+    heappush(Q, (0, id))
+    while Q:
+        (dist, v) = heappop(Q)
+        if v in D: continue
+        D[v] = dist
+        for w in W[v].iterkeys():
+            vw_dist = D[v] + W[v][w]
+            if w not in D and (w not in seen or vw_dist < seen[w]):
+                seen[w] = vw_dist
+                heappush(Q, (vw_dist, w))
+                P[w] = P[v] + [w]
+    for n in graph:
+        if n not in P: P[n]=None
+    return P
+
 def brandes_betweenness_centrality(graph, normalized=True, directed=False):
     """ Betweenness centrality for nodes in the graph.
         Betweenness centrality is a measure of the number of shortests paths that pass through a node.
@@ -654,51 +750,46 @@ def brandes_betweenness_centrality(graph, normalized=True, directed=False):
     # Based on: Dijkstra's algorithm for shortest paths modified from Eppstein.
     # Based on: NetworkX 1.0.1: Aric Hagberg, Dan Schult and Pieter Swart.
     # http://python-networkx.sourcearchive.com/documentation/1.0.1/centrality_8py-source.html
-    G = graph.keys()
     W = adjacency(graph, directed=directed)
-    betweenness = dict.fromkeys(G, 0.0) # b[v]=0 for v in G
-    for s in G: 
-        S = [] 
-        P = {} 
-        for v in G: P[v] = [] 
-        sigma = dict.fromkeys(G, 0) # sigma[v]=0 for v in G 
-        D = {} 
-        sigma[s] = 1
-        seen = {s: 0}  
-        Q = [] # use Q as heap with (distance, node id) tuples 
-        heappush(Q, (0, s, s)) 
+    b = dict.fromkeys(graph, 0.0)
+    for id in graph:
+        Q = [] # Use Q as a heap with (distance, node id)-tuples.
+        D = {} # Dictionary of final distances.
+        P = {} # Dictionary of paths.
+        for n in graph: P[n]=[]
+        seen = {id: 0} 
+        heappush(Q, (0, id, id))
+        S = []
+        E = dict.fromkeys(graph, 0) # sigma
+        E[id] = 1
         while Q:    
             (dist, pred, v) = heappop(Q) 
-            if v in D: continue # already searched this node
-            sigma[v] = sigma[v] + sigma[pred] # count paths 
-            S.append(v) 
+            if v in D: continue
             D[v] = dist
-            for w in W[v].keys():
+            S.append(v)
+            E[v] = E[v] + E[pred]
+            for w in W[v].iterkeys():
                 vw_dist = D[v] + W[v][w]
                 if w not in D and (w not in seen or vw_dist < seen[w]): 
                     seen[w] = vw_dist 
                     heappush(Q, (vw_dist, v, w))
-                    sigma[w] = 0
-                    P[w] = [v] 
-                elif vw_dist == seen[w]: # handle equal paths 
-                    sigma[w] = sigma[w] + sigma[v] 
+                    P[w] = [v]
+                    E[w] = 0
+                if vw_dist == seen[w]: # Handle equal paths.
                     P[w].append(v)
-        delta = dict.fromkeys(G,0)  
+                    E[w] = E[w] + E[v] 
+        d = dict.fromkeys(graph, 0)  
         while S: 
             w = S.pop() 
             for v in P[w]: 
-                delta[v] = delta[v] + (float(sigma[v]) / float(sigma[w])) * (1.0 + delta[w]) 
-            if w != s: 
-                betweenness[w] = betweenness[w] + delta[w]
-    if normalized:
-        # Normalize between 0.0 and 1.0.
-        m = max(betweenness.values())
-        if m == 0: m = 1
-    else:
-        m = 1
-    betweenness = dict([(id, w/m) for id, w in betweenness.iteritems()])
-    return betweenness
-        
+                d[v] = d[v] + (float(E[v]) / float(E[w])) * (1.0 + d[w]) 
+            if w != id: 
+                b[w] = b[w] + d[w]
+    # Normalize between 0.0 and 1.0.
+    m = normalized and max(b.values()) or 1
+    b = dict((id, w/m) for id, w in b.iteritems())
+    return b
+
 def eigenvector_centrality(graph, normalized=True, reversed=True, rating={}, iterations=100, tolerance=0.0001):
     """ Eigenvector centrality for nodes in the graph (cfr. Google's PageRank).
         Eigenvector centrality is a measure of the importance of a node in a directed network. 
@@ -719,20 +810,19 @@ def eigenvector_centrality(graph, normalized=True, reversed=True, rating={}, ite
     # It has no guarantee of convergence.
     for i in range(iterations):
         v0 = v
-        v  = dict.fromkeys(v0.keys(), 0)
+        v  = dict.fromkeys(v0.iterkeys(), 0)
         for n1 in v:
             for n2 in G[n1]:
                 v[n1] += 0.01 + v0[n2] * G[n1][n2] * rating.get(n1, 1)
         normalize(v)
         e = sum([abs(v[n]-v0[n]) for n in v]) # Check for convergence.
         if e < len(G) * tolerance:
-            if normalized:
-                # Normalize between 0.0 and 1.0.
-                m = max(v.values()) or 1
-                v = dict([(id, w/m) for id, w in v.items()])
+            # Normalize between 0.0 and 1.0.
+            m = normalized and max(v.values()) or 1
+            v = dict((id, w/m) for id, w in v.iteritems())
             return v
     warn("node weight is 0 because eigenvector_centrality() did not converge.", Warning)
-    return dict([(n, 0) for n in G])
+    return dict((n, 0) for n in G)
 
 # a | b => all elements from a and all the elements from b. 
 # a & b => elements that appear in a as well as in b.

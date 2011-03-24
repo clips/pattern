@@ -14,6 +14,7 @@ from pattern.vector import Corpus
 # so their words can be compared to calculate TF-IDF.
 
 corpus = Corpus.build(os.path.join("corpus", "*.txt"))
+
 d = corpus.document(name="lion")
 
 print d.keywords(top=10)

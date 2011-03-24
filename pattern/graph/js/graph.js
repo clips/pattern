@@ -31,6 +31,14 @@ function values(object) {
     return v;    
 }
 
+// Emulates Python list.extend().
+function extend(array1, array2) {
+    for (var i=0; i < array2.length; i++) {
+        array1.push(array2[i]);
+    }
+    return array1;
+}
+
 function sum(array) {
     var n = 0;
     for (var i=0; i < array.length; i++) n += array[i]; 
@@ -536,7 +544,25 @@ var Graph = Class.extend({
         return (this.nodeset[id1] && this.nodeset[id2])? this.nodeset[id1].links.edge(id2) : null;
     },
 
-//  shortestPath: function(node1, node2, {heuristic:function(id1,id1){return 0;} directed:false})
+//  paths: function(node1, node2)
+    paths: function(node1, node2, length, path) {
+        /* Returns a list of paths (shorter than given length) connecting the two nodes.
+         */
+        if (length === undefined) length = 4;
+        if (path   === undefined) path   = [];
+        var p = [];
+        var P = paths(this, node1.id, node2.id, length, path, true);
+        for (var i=0; i < P.length; i++) {
+            var n = [];
+            for (var j=0; j < P[i].length; j++) {
+                n.push(this.nodeset[P[i][j]]);
+            }
+            p.push(n);
+        }
+        return p;
+    },
+
+//  shortestPath: function(node1, node2, {heuristic:function(id1,id1){return 0;}, directed:false})
     shortestPath: function(node1, node2, a) {
         /* Returns a list of nodes connecting the two nodes.
          */
@@ -549,6 +575,25 @@ var Graph = Class.extend({
             return n;
         } catch(e) {
             return null;
+        }
+    },
+
+//  shortestPaths: function(node, {heuristic:function(id1,id1){return 0;}, directed:false})
+    shortestPaths: function(node, a) {
+        /* Returns a dictionary of nodes, each linked to a list of nodes (shortest path).
+         */
+        var p = {};
+        var P = dijkstraShortestPaths(this, node.id, a);
+        for (var id in P) {
+            if (P[id]) {
+                var n = [];
+                for (var i=0; i < P[id].length; i++) {
+                    n.push(this.nodeset[P[id][i]]);
+                }
+                p[this.nodeset[id]] = n;
+            } else {
+                p[this.nodeset[id]] = null;
+            }
         }
     },
 
@@ -941,39 +986,17 @@ GraphSpringLayout = GraphLayout.extend({
     }
 });
 
-/*--- GRAPH THEORY ---------------------------------------------------------------------------------*/
-
-var Heap = Class.extend({
-    init: function() {
-        /* Items in the heap are ordered by weight (i.e. priority).
-         * Heap.pop() returns the item with the lowest weight.
-         */
-        this.k = [];
-        this.w = [];
-        this.length = 0;
-    },
-    push: function (key, weight) {
-        var i = 0; while (i <= this.w.length && weight < (this.w[i]||Infinity)) i++;
-        this.k.splice(i, 0, key);
-        this.w.splice(i, 0, weight);
-        this.length += 1;
-        return true;            
-    },
-    pop: function () {
-        this.length -= 1;
-        this.w.pop(); return this.k.pop();
-    }
-});
+/*--- GRAPH TRAVERSAL ------------------------------------------------------------------------------*/
 
 //       depthFirstSearch(node, {visit:function(node){return false;}, traversable:function(node,edge){return true;}, _visited:null}
 function depthFirstSearch(node, a) {
     /* Visits all the nodes connected to the given root node, depth-first.
-     *  The visit function is called on each node.
-     *  Recursion will stop if it returns true, and subsequently dfs() will return true.
-     *  The traversable function takes the current node and edge,
-     *  and returns true if we are allowed to follow this connection to the next node.
-     *  For example, the traversable for directed edges is follows:
-     *   function(node, edge) { return node == edge.node1; }
+     * The visit function is called on each node.
+     * Recursion will stop if it returns true, and subsequently dfs() will return true.
+     * The traversable function takes the current node and edge,
+     * and returns true if we are allowed to follow this connection to the next node.
+     * For example, the traversable for directed edges is follows:
+     *  function(node, edge) { return node == edge.node1; }
      */
     if (a === undefined) a = {};
     if (a.visit === undefined) a.visit = function(node) { return false; };
@@ -1018,6 +1041,75 @@ function breadthFirstSearch(node, a) {
 }
 
 bfs = breadthFirstSearch;
+
+function paths(graph, id1, id2, length, path, _root) {
+    /* Returns a list of paths from node with id1 to node with id2.
+     * Only paths shorter than the given length are included.
+     * Uses a brute-force DFS approach (performance drops exponentially for longer paths).
+     */
+    if (path.length >= length) {
+        return [];
+    }
+    if (!(id1 in graph.nodeset)) {
+        return [];
+    }
+    if (id1 == id2) {
+        path = path.slice(0); path.push(id1);
+        return [path];
+    }
+    path = path.slice(0); path.push(id1);
+    var p = [];
+    var n = graph.nodeset[id1].links;
+    for (var i=0; i < n.length; i++) {
+        if (path.indexOf(n[i].id) < 0) {
+            p = extend(p, paths(graph, n[i].id, id2, length, path, false));
+        }
+    }
+    if (_root != false) p.sort(function(a, b) { return a.length-b.length; });
+    return p;
+}
+
+function edges(path) {
+    /* Returns a list of Edge objects for the given list of nodes.
+     * It contains null where two successive nodes are not connected.
+     */
+    // For example, the distance (i.e., edge weight sum) of a path:
+    // var w = 0;
+    // var e = edges(path);
+    // for (var i=0; i < e.length; i++) w += e[i].weight;
+    if (path.length > 1) {
+        var e = [];
+        for (var i=0; i < path.length-1; i++) {
+            e.push(path[i].links.edge(path[i+1]));
+        }
+        return e;
+    }
+    return [];
+}
+
+/*--- GRAPH THEORY ---------------------------------------------------------------------------------*/
+
+var Heap = Class.extend({
+    init: function() {
+        /* Items in the heap are ordered by weight (i.e. priority).
+         * Heap.pop() returns the item with the lowest weight.
+         */
+        this.k = [];
+        this.w = [];
+        this.length = 0;
+    },
+    push: function (key, weight) {
+        var i = 0; while (i <= this.w.length && weight < (this.w[i]||Infinity)) i++;
+        this.k.splice(i, 0, key);
+        this.w.splice(i, 0, weight);
+        this.length += 1;
+        return true;            
+    },
+    pop: function () {
+        this.length -= 1;
+        this.w.pop(); return this.k.pop();
+    }
+});
 
 //       adjacency(graph, {directed:false, reversed:false, stochastic:false, heuristic:function(id1,id2){return 0;}})
 function adjacency(graph, a) {
@@ -1094,11 +1186,45 @@ function dijkstraShortestPath(graph, id1, id2, a) {
     }
 }
 
+//       dijkstraShortestPaths(graph, id, {heuristic:function(id1,id2){return 0;}, directed:false})
+function dijkstraShortestPaths(graph, id, a) {
+    /* Dijkstra algorithm for finding the shortest paths from the given node to all other nodes.
+     * Returns a dictionary of node id's, each linking to a list of node id's (i.e., the path).
+     */
+    // Based on: Dijkstra's algorithm for shortest paths modified from Eppstein.
+    // Based on: NetworkX 1.4.1: Aric Hagberg, Dan Schult and Pieter Swart.
+    var W = adjacency(graph, a);
+    var Q = new Heap(); // Use Q as a heap with [distance, node id] lists.
+    var D = {}; // Dictionary of final distances.
+    var P = {}; // Dictionary of paths.
+    P[id] = [id];
+    var seen = {id: 0};
+    Q.push([0, id], 0);
+    while(Q.length) {
+        var q = Q.pop(); dist=q[0]; v=q[1];
+        if (v in D) continue;
+        D[v] = dist;
+        for (var w in W[v]) {
+            var vw_dist = D[v] + W[v][w];
+            if (!(w in D) && (!(w in seen) || vw_dist < seen[w])) {
+                seen[w] = vw_dist;
+                Q.push([vw_dist, w], vw_dist);
+                P[w] = P[v].slice(0);
+                P[w].push(w);
+            }
+        }
+    }
+    for (var n in graph.nodeset) {
+        if (!(n in P)) P[n]=null;
+    }
+    return P
+}
+
 //       brandesBetweennessCentrality(graph {normalized:true, directed:false})
 function brandesBetweennessCentrality(graph, a) {
     /* Betweenness centrality for nodes in the graph.
-     *  Betweenness centrality is a measure of the number of shortests paths that pass through a node.
-     *  Nodes in high-density areas will get a good score.
+     * Betweenness centrality is a measure of the number of shortests paths that pass through a node.
+     * Nodes in high-density areas will get a good score.
      */
     // Ulrik Brandes, A Faster Algorithm for Betweenness Centrality,
     // Journal of Mathematical Sociology 25(2):163-177, 2001,
@@ -1109,74 +1235,62 @@ function brandesBetweennessCentrality(graph, a) {
     if (a === undefined) a = {};
     if (a.normalized === undefined) a.normalized = true;
     if (a.directed   === undefined) a.directed   = false;
-    var G = graph.nodeset;
     var W = adjacency(graph, a);
-    var betweenness = {};
-    for (var n in G) {
-        betweenness[n] = 0.0;
-    }
-    for (var s in G) {
+    var b = {}; for (var n in graph.nodeset) b[n]=0.0;
+    for (var id in graph.nodeset) {
+        var Q = new Heap(); // Use Q as a heap with [distance, node id] lists.
+        var D = {}; // Dictionary of final distances.
+        var P = {}; // # Dictionary of paths.
+        for (var n in graph.nodeset) P[n]=[];
+        var seen = {id: 0};
+        Q.push([0, id, id], 0);
         var S = [];
-        var P = {};
-        for (var v in G) P[v] = [];
-        var sigma = {}; for (var v in G) sigma[v] = 0;
-        var D = {};
-        sigma[s] = 1;
-        var seen = {s: 0};
-        var Q = new Heap(); // use Q as heap with [distance, node id] lists
-        Q.push([0, s, s], 0);
+        var E = {}; for (var n in graph.nodeset) E[n]=0; // sigma
+        E[id] = 1;
         while(Q.length) {
             var q = Q.pop(); dist=q[0]; pred=q[1]; v=q[2];
-            if (v in D) continue; // already searched this node
-            sigma[v] = sigma[v] + sigma[pred]; // count paths
-            S.push(v);
+            if (v in D) continue;
             D[v] = dist;
+            S.push(v);
+            E[v] = E[v] + E[pred];
             for (var w in W[v]) {
                 var vw_dist = D[v] + W[v][w];
                 if (!(w in D) && (!(w in seen) || vw_dist < seen[w])) {
                     seen[w] = vw_dist;
                     Q.push([vw_dist, v, w], vw_dist);
-                    sigma[w] = 0;
                     P[w] = [v];
-                } else if (vw_dist == seen[w]) { // handle equal paths
-                    sigma[w] = sigma[w] + sigma[v];
+                    E[w] = 0;
+                } else if (vw_dist == seen[w]) { // Handle equal paths.
                     P[w].push(v);
+                    E[w] = E[w] + E[v];
                 }
             }
         }
-        var delta = {}; for (var v in G) delta[v] = 0;
+        var d = {}; for (var v in graph.nodeset) d[v]=0;
         while (S.length) {
             var w = S.pop();
             for (var i=0; i < P[w].length; i++) {
                 v = P[w][i];
-                delta[v] = delta[v] + (sigma[v] / sigma[w]) * (1 + delta[w]);
+                d[v] = d[v] + (E[v] / E[w]) * (1 + d[w]);
             }
-            if (w != s) {
-                betweenness[w] = betweenness[w] + delta[w] ;
+            if (w != id) {
+                b[w] = b[w] + d[w];
             }
         }
     }
-    var m;
-    if (a.normalized) {
-        // Normalize between 0 and 1.
-        m = Math.max.apply(Math, values(betweenness));
-        if (m == 0) m = 1;
-    } else {
-        m = 1;
-    }
-    for (var id in betweenness) {
-        betweenness[id] = betweenness[id]/m;
-    }
-    return betweenness;
+    // Normalize between 0 and 1.
+    var m = a.normalized? Math.max.apply(Math, values(b)) || 1 : 1;
+    for (var id in b) b[id] = b[id]/m;
+    return b;
 };
 
 //       eigenvectorCentrality(graph {normalized:true, reversed:true, rating:{}, iterations:100, tolerance:0.0001})
 function eigenvectorCentrality(graph, a) {
     /* Eigenvector centrality for nodes in the graph (cfr. Google's PageRank).
-     *  Eigenvector centrality is a measure of the importance of a node in a directed network. 
-     *  It rewards nodes with a high potential of (indirectly) connecting to high-scoring nodes.
-     *  Nodes with no incoming connections have a score of zero.
-     *  If you want to measure outgoing connections, reversed should be False.        
+     * Eigenvector centrality is a measure of the importance of a node in a directed network. 
+     * It rewards nodes with a high potential of (indirectly) connecting to high-scoring nodes.
+     * Nodes with no incoming connections have a score of zero.
+     * If you want to measure outgoing connections, reversed should be False.        
      */
     // Based on: NetworkX, Aric Hagberg (hagberg@lanl.gov)
     // http://python-networkx.sourcearchive.com/documentation/1.0.1/centrality_8py-source.html
@@ -1207,11 +1321,9 @@ function eigenvectorCentrality(graph, a) {
         normalize(v);
         var e=0; for (var n in v) e += Math.abs(v[n]-v0[n]); // Check for convergence.
         if (e < graph.nodes.length * a.tolerance) {
-            if (a.normalized) {
-                // Normalize between 0.0 and 1.0.
-                var m = Math.max.apply(Math, values(v)) || 1;
-                for (var id in v) v[id] /= m;
-            }
+            // Normalize between 0 and 1.
+            var m = a.normalized? Math.max.apply(Math, values(v)) || 1 : 1;
+            for (var id in v) v[id] /= m;
             return v;
         }
     }
