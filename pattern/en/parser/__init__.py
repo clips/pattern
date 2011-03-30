@@ -25,8 +25,8 @@ replacements = {
 }
 
 # Handle common abbreviations.
-abrreviations = dict.fromkeys([
-    "a.m.", "cf.", "e.g.", "ex.", "etc.", "fig.", "i.e.", "Mr.", "p.m."
+abbreviations = dict.fromkeys([
+    "a.m.", "cf.", "e.g.", "ex.", "etc.", "fig.", "i.e.", "Mr.", "p.m.", "vs."
 ], True)
 a1 = re.compile("^[A-Za-z]\.$")                                    # single letter, "T. De Smedt"
 a2 = re.compile("^([A-Za-z]\.)+$")                                 # alternating letters, "U.S."
@@ -34,14 +34,13 @@ a3 = re.compile("^[A-Z]["+"|".join("bcdfghjklmnpqrstvwxz")+"]+.$") # capital fol
 
 # Handle common word punctuation:
 punctuation = (
-    ("(","[","\""), 
-    (":",";",",","!","?","]",")","\"", "'")
+    ("(","[","\"","'"), 
+    (":",";",",","!","?","]",")","\"","'")
 )
 
 def tokenize(string):
     """ Returns a list of sentences. Each sentence is a space-separated string of tokens (words).
-        Aside from a few common cases ("etc.") no attempt is made to disambiguate abbreviations
-        from sentence periods.
+        Handles common cases ("etc.") of abbreviations.
     """
     for a,b in replacements.items():
         string = re.sub(a, b, string)
@@ -51,31 +50,40 @@ def tokenize(string):
     for t in token.findall(string+" "):
         if len(t) > 0:
             tail = []
-            # Split leading punctuation.
-            if t.startswith(punctuation[0]):
-                tokens.append(t[0]); t=t[1:]
-            if t.startswith("'") and not t in replacements:
-                tokens.append(t[0]); t=t[1:]
-            for i in range(2):
+            while t.startswith(punctuation[0]+("'",)) and not t in replacements:
+                # Split leading punctuation.
+                if t.startswith(punctuation[0]):
+                    tokens.append(t[0]); t=t[1:]
+            while t.endswith(punctuation[1]+(".",)):
                 # Split trailing punctuation.
                 if t.endswith(punctuation[1]):
                     tail.append(t[-1]); t=t[:-1]
                 # Split ellipsis before checking for period.
                 if t.endswith("..."):
-                    tail.append("..."); t=t[:-3]
+                    tail.append("..."); t=t[:-3].rstrip(".")
                 # Split period (if not an abbreviation).
-                if t.endswith(".") and not t in abrreviations and \
-                   a1.match(t) is None and \
-                   a2.match(t) is None and \
-                   a3.match(t) is None:
-                    tail.append(t[-1]); t=t[:-1]
-            tokens.append(t)
+                if t.endswith("."):
+                    if t in abbreviations and \
+                      a1.match(t) is None and \
+                      a2.match(t) is None and \
+                      a3.match(t) is None:
+                        break
+                    else:
+                        tail.append(t[-1]); t=t[:-1]
+            if t != "":
+                tokens.append(t)
             tokens.extend(reversed(tail))
-    sentences = [[]]
-    for t in tokens:
-        sentences[-1].append(t)
+    sentences, i, j = [[]], 0, 0
+    while j < len(tokens):
         # A period token always breaks the sentence.
-        if t == ".": sentences.append([])
+        if tokens[j] in ("...",".","!","?"):
+            # But it might have a parenthesis trailing behind it.
+            while j < len(tokens) and tokens[j] in ("...",".","!","?",")","'","\""): j+=1
+            sentences[-1].extend(tokens[i:j]);
+            sentences.append([])
+            i = j
+        j += 1
+    sentences[-1].extend(tokens[i:j]);
     return [" ".join(s) for s in sentences if len(s) > 0]
 
 # MBSP's tokenizer.py is pretty fast and a lot more robust so we could try to load it.
