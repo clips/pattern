@@ -1,8 +1,32 @@
-#### PATTERN | STAT ##################################################################################
+#### PATTERN | METRICS ###############################################################################
+# coding: utf-8
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
+
+### PROFILER #########################################################################################
+  
+def profile(function, *args, **kwargs):
+    """ Returns the performance statistics (as a string) of the given Python function.
+    """
+    def run():
+        function(*args, **kwargs)
+    try: import cProfile as profile
+    except:
+         import profile
+    import pstats
+    import os
+    import sys; sys.modules["__main__"].__profile_run__ = run
+    id = function.__name__ + "()"
+    profile.run("__profile_run__()", id)
+    p = pstats.Stats(id)
+    p.stream = open(id, "w")
+    p.sort_stats("time").print_stats(20)
+    p.stream.close()
+    s = open(id).read()
+    os.remove(id)
+    return s
 
 ### AGREEMENT ########################################################################################
 # +1.0 = total agreement between voters
@@ -82,3 +106,40 @@ def similarity(string1, string2, metric=LEVENSHTEIN):
         return levenshtein_similarity(string1, string2)
     if metric == DICE:
         return dice_coefficient(string1, string2)
+
+### STRING READABILITY ###############################################################################
+# 0.9-1.0 = easily understandable by 11-year old.
+# 0.6-0.7 = easily understandable by 13- to 15-year old.
+# 0.0-0.3 = best understood by university graduates.
+
+VOWELS = "aeiouy"
+
+def _count_syllables(word):
+    """ Returns the estimated number of syllables in the word by counting vowel-groups.
+    """
+    n = 0
+    p = False # True if the previous character was a vowel.
+    for ch in word.endswith("e") and word[:-1] or word:
+        v = ch in VOWELS
+        n += int(v and not p)
+        p = v
+    return n    
+    
+def flesch_reading_ease(string):
+    """ Returns the readability of the string as a value between 0.0-1.0:
+        0.3-0.5 (difficult) => 0.6-0.7 (standard) => 0.9-1.0 (very easy).
+    """
+    string = string.strip()
+    string = string.lower()
+    string = string.replace("!", ".")
+    string = string.replace("?", ".")
+    string = string.replace(",", " ")
+    string = string.replace("\n", " ")
+    y = sum(_count_syllables(w) for w in string.split(" "))
+    w = len([w for w in string.split(" ") if w != ""])
+    s = len([s for s in string.split(".") if len(s) > 2])
+    R = 206.835 - 1.015 * w/s - 84.6 * y/w
+    R = max(0.0, min(R*0.01, 1.0))
+    return R
+
+readability = flesch_reading_ease
