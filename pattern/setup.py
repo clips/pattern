@@ -25,10 +25,10 @@ setup(
         "pattern.en", 
         "pattern.en.inflect", 
         "pattern.en.parser", 
+        "pattern.en.wordlists",
         "pattern.en.wordnet", 
         "pattern.en.wordnet.pywordnet",
         "pattern.vector",
-        "pattern.vector.wordlists",
         "pattern.graph"
     ],
     package_data = {
@@ -38,10 +38,10 @@ setup(
         "pattern.web.soup"             : ["*"],
         "pattern.en.inflect"           : ["*.txt"], 
         "pattern.en.parser"            : ["*.txt"], 
+        "pattern.en.wordlists"         : ["*.txt"], 
         "pattern.en.wordnet"           : ["*.txt", "dict/*"], 
         "pattern.en.wordnet.pywordnet" : ["*"],
         "pattern.vector"               : ["*.txt"], 
-        "pattern.vector.wordlists"     : ["*.txt"], 
         "pattern.graph"                : ["js/*.js"],
         "pattern" : [
             "*.txt", 
