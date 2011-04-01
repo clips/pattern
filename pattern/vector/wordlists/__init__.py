@@ -15,7 +15,8 @@ except:
 
 def wordlist(name): 
     return open(os.path.join(MODULE, name+".txt")).read().split(", ")
-    
+
+ACADEMIC  = wordlist("academic")  # English academic words.
 PROFANITY = wordlist("profanity") # English swear words.
 TIME      = wordlist("time")      # English time and date words.
 
