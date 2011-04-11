@@ -74,6 +74,16 @@ def unique(list):
     """
     u=[]; [u.append(item) for item in list if item not in u]
     return u
+    
+def unique2(list):
+    """ Returns a list copy in which each item occurs only once.
+        This is faster than unique(), but list items must be hashable.
+    """
+    u, s = [], {}
+    for item in list:
+        if item not in s: u.append(item)
+        s[item] = True
+    return u
 
 def find(function, list):
     """ Returns the first item in the list for which function(item) is True, None otherwise.
@@ -242,8 +252,7 @@ class Taxonomy(dict):
             If recursive=True, traverses parents up to the root.
         """
         def dfs(term, recursive=False, visited={}, **kwargs):
-            term = self._normalize(term)
-            if term in visited:
+            if term in visited: # Break on cyclic relations.
                 return []
             visited[term], a = True, []
             if dict.__contains__(self, term):
@@ -253,15 +262,14 @@ class Taxonomy(dict):
             if recursive:
                 for w in a: a += dfs(w, recursive, visited, **kwargs)
             return a
-        return dfs(term, recursive, {}, **kwargs)
+        return unique2(dfs(self._normalize(term), recursive, {}, **kwargs))
     
     def children(self, term, recursive=False, **kwargs):
         """ Returns all terms of the given semantic type: "quantity" => ["many", "lot", "few", ...]
             If recursive=True, traverses children down to the leaves.
         """
         def dfs(term, recursive=False, visited={}, **kwargs):
-            term = self._normalize(term)
-            if term in visited:
+            if term in visited: # Break on cyclic relations.
                 return []
             visited[term], a = True, []
             if dict.__contains__(self, term):
@@ -271,7 +279,7 @@ class Taxonomy(dict):
             if recursive:
                 for w in a: a += dfs(w, recursive, visited, **kwargs)
             return a
-        return unique(dfs(term, recursive, {}, **kwargs))
+        return unique2(dfs(self._normalize(term), recursive, {}, **kwargs))
     
     def value(self, term, **kwargs):
         """ Returns the value of the given term ("many" => "50-200")
