@@ -448,11 +448,12 @@ for rule in singular_rules:
     rule[0] = re.compile(rule[0])
 
 singular_uninflected = [
-    "bison", "bream", "breeches", "britches", "carp", "chassis", "clippers", "cod", "contretemps", 
-    "corps", "debris", "diabetes", "djinn", "eland", "elk", "flounder", "gallows", "georgia", 
-    "graffiti", "headquarters", "herpes", "high-jinks", "homework", "innings", "jackanapes", 
-    "mackerel", "measles", "mews", "mumps", "news", "pincers", "pliers", "proceedings", "rabies", 
-    "salmon", "scissors", "series", "shears", "species", "swine", "trout", "tuna", "whiting", "wildebeest"
+    "bison", "bream", "breeches", "britches", "carp", "chassis", "christmas", "clippers", "cod", 
+    "contretemps", "corps", "debris", "diabetes", "djinn", "eland", "elk", "flounder", "gallows", 
+    "georgia", "graffiti", "headquarters", "herpes", "high-jinks", "homework", "innings", 
+    "jackanapes", "mackerel", "measles", "mews", "mumps", "news", "pincers", "pliers", "proceedings", 
+    "rabies", "salmon", "scissors", "series", "shears", "species", "swine", "swiss", "trout", "tuna", 
+    "whiting", "wildebeest"
 ]
 singular_uncountable = [
     "advice", "bread", "butter", "cheese", "electricity", "equipment", "fruit", "furniture", 
@@ -813,7 +814,7 @@ def _count_syllables(word):
     """
     n = 0
     p = False # True if the previous character was a vowel.
-    for ch in word:
+    for ch in word.endswith("e") and word[:-1] or word:
         v = ch in VOWELS
         n += int(v and not p)
         p = v

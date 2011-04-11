@@ -243,6 +243,8 @@ AUXILLARY = {
     "will": ["will", "ll", "wo", "willing", "would", "d"]
 }
 
+MODIFIERS = ("fully", "highly", "most", "much", "strongly", "very")
+
 EPISTEMIC = "epistemic" # Expresses degree of possiblity.
 
 # -1.00 = NEGATIVE
@@ -309,8 +311,8 @@ epistemic_JJ = {
     -0.50: d("unlikely"),
     -0.25: d("doubtful", "uncertain", "unclear", "unsure"),
      0.00: d("possible", "unknown"),
-    +0.25: d("potential", "probable"),
-    +0.50: d("generally", "likely", "putative", "several"),
+    +0.25: d("potential", "probable", "some"),
+    +0.50: d("generally", "likely", "many", "putative", "several"),
     +0.75: d("credible", "necessary", "positive", "sure"),
     +1.00: d("certain", "confirmed", "definite"),
 }
@@ -337,10 +339,10 @@ epistemic_phrase = {
     -0.75: d(),
     -0.50: d(),
     -0.25: d(),
-     0.00: d("a number of", "sort of", "in some cases", "in some way"),
+     0.00: d("a number of", "sort of", "some cases", "some people", "in some way"),
     +0.25: d("at first blush", "at first sight", "at first glance", "many of these"),
     +0.50: d("all else being equal", "all in all", "all things considered", "for several reasons",
-             "has been argued", "said to be"),
+             "has been argued", "is considered", "said to be"),
     +0.75: d("as a matter of fact"),
     +1.00: d("without a doubt", "of course"),
 }
@@ -362,13 +364,13 @@ def modality(sentence, type=EPISTEMIC):
             for type, dict, weight in (
               ("MD", epistemic_MD, 2), 
               ("VB", epistemic_VB, 2), 
-              ("RB", epistemic_RB, 1), 
+              ("RB", epistemic_RB, 2), 
               ("JJ", epistemic_JJ, 1),
               ("NN", epistemic_NN, 1),
               ("CC", epistemic_CC_DT_IN, 1),
               ("DT", epistemic_CC_DT_IN, 1),
               ("IN", epistemic_CC_DT_IN, 1)):
-                if i < 0 and s(S[i-1]) in ("fully", "most", "much", "very"):
+                if i < 0 and s(S[i-1]) in MODIFIERS:
                     # "likely" => weight 1, "very likely" => weight 2
                     weight += 1
                 if w.type.startswith(type):
@@ -420,6 +422,10 @@ def modality(sentence, type=EPISTEMIC):
 # Memory-Based Resolution of In-Sentence Scopes of Hedge Cues
 # http://www.aclweb.org/anthology/W/W10/W10-3006.pdf
 # Sentences in the training corpus are labelled as "certain" or "uncertain".
-# The modality() function accuracy is:
-# - 82% for "certain" (>=0.9) and 88% for "uncertain" (<=0.5) for biomedical text, and
-# - 66% for "certain" (>=0.9) and 58% for "uncertain" (<=0.5) for Wikipedia text.
+# Precision and recall for predicting "certain" (>=0.9):
+# - 0.96 0.82 (F1 0.89) for biomedical text
+# Precision and recall for predicting "uncertain" (<=0.5):
+# - 0.68 0.89 (F1 0.77) for biomedical text, and
+# - 0.39 0.66 (F1 0.49) for Wikipedia text.
+# Random choice((True, False)) "uncertain" classifier: 
+# - 0.18 0.51 (F1 0.26)
