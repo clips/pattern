@@ -90,13 +90,19 @@ class MailNotLoggedIn(MailError):
 
 class Mail(object):
     
-    def __init__(self, username, password, service=GMAIL):
-        self._host    = service
-        self._port    = 993
-        self._imap4   = None
-        self._folders = None
+    def __init__(self, username, password, service=GMAIL, port=993):
+        self._username = username
+        self._password = password
+        self._host     = service
+        self._port     = port
+        self._imap4    = None
+        self._folders  = None
         self.login(username, password)
-        
+
+    @property
+    def _id(self):
+        return "%s:%s@%s:%s" % (self._username, self._password, self._host, self._port)
+
     @property
     def imap4(self):
         if self._imap4 is None: 
@@ -136,7 +142,7 @@ class Mail(object):
         if self._folders is None:
             status, response = self.imap4.list()
             self._folders = [f.split()[-1].strip("\"") for f in response]
-            self._folders = [(_basename(f), MailFolder(self._host, self.imap4, f)) for f in self._folders]
+            self._folders = [(_basename(f), MailFolder(self, f)) for f in self._folders]
             self._folders = [(f,o) for f,o in self._folders if f != ""]
             self._folders = dict(self._folders)
         return self._folders
@@ -169,13 +175,16 @@ def _decode(s, message):
 
 class MailFolder:
     
-    def __init__(self, host, socket, name):
+    def __init__(self, parent, name):
         """ A folder (inbox, spam, trash, ...) in a mailbox.
             E-mail messages can be searched and retrieved (including attachments) from a folder.
         """
-        self._host = host
-        self._name = name
-        self.imap4 = socket
+        self._parent = parent
+        self._name   = name
+    
+    @property
+    def parent(self):
+        return self._parent
     
     @property
     def name(self):
@@ -185,12 +194,18 @@ class MailFolder:
     def count(self):
         return len(self)
 
-    def search(self, q, field=FROM):
+    def search(self, q, field=FROM, cached=False):
         """ Returns a list of indices for the given query, latest-first.
             The search field can be FROM, DATE or SUBJECT.
         """
-        status, response = self.imap4.select(self._name, readonly=1)
-        status, response = self.imap4.search(None, field.upper(), q)
+        id = "mail-%s-%s-%s-%s" % (self.parent._id, self.name, q, field)
+        if cached and id in cache:
+            status, response = "OK", [cache[id]]
+        else:
+            status, response = self.parent.imap4.select(self.name, readonly=1)
+            status, response = self.parent.imap4.search(None, field.upper(), q)
+            if cached:
+                cache[id] = response[0]
         return sorted([int(i)-1 for i in response[0].split()], reverse=True)
 
     def read(self, i, attachments=False, cached=True):
@@ -202,16 +217,16 @@ class MailFolder:
             The attachments entry is a list of (MIME-type, str)-tuples.
         """
         i += 1
-        id = "mail-%s-%s-%s-%s" % (self._host, self._name, i, attachments) # Cache id.
+        id = "mail-%s-%s-%s-%s" % (self.parent._id, self.name, i, attachments)
         if cached and id in cache:
             m = cache[id]
         else:
             # Select the current mail folder.
             # Get the e-mail header.
             # Get the e-mail body, with or without file attachments.
-            status, response  = self.imap4.select(self._name, readonly=1)
-            status, response1 = self.imap4.fetch(str(i), '(BODY.PEEK[HEADER])')
-            status, response2 = self.imap4.fetch(str(i), '(BODY.PEEK[%s])' % (not attachments and "TEXT" or ""))
+            status, response  = self.parent.imap4.select(self.name, readonly=1)
+            status, response1 = self.parent.imap4.fetch(str(i), '(BODY.PEEK[HEADER])')
+            status, response2 = self.parent.imap4.fetch(str(i), '(BODY.PEEK[%s])' % (not attachments and "TEXT" or ""))
             time.sleep(0.1)
             m = response1[0][1] + response2[0][1]
             # Cache the raw message for faster retrieval.
@@ -244,7 +259,7 @@ class MailFolder:
             yield self[i]
 
     def __len__(self):
-        status, response = self.imap4.select(self._name, readonly=1)
+        status, response = self.parent.imap4.select(self.name, readonly=1)
         return int(response[0])
 
     def __repr__(self):
