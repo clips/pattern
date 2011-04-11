@@ -191,8 +191,8 @@ class Word:
     
     # User-defined tags are available as Word.tag attributes.
     def __getattr__(self, tag):
-        if tag in self.custom_tags:
-            return self.custom_tags[tag]
+        if tag in self.__dict__.get("custom_tags",()):
+            return self.__dict__["custom_tags"][tag]
         raise AttributeError, "Word instance has no attribute '%s'" % tag
 
     # Word.string and unicode(Word) are Unicode strings.
