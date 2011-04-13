@@ -462,19 +462,20 @@ var Graph = Class.extend({
         return this.nodeset[id];
     },
     
-    append: function(type, a) {
+    append: function(base, a) {
         /* Appends a Node or Edge to the graph.
          */
-        if (type == Node)
+        if (base == Node)
             return this.add_node(a.id, a);
-        if (type == Edge)
+        if (base == Edge)
             return this.add_edge(a.id1, a.id2, a);
     },
     
     addNode: function(id, a) {
         /* Appends a new Node to the graph.
          */
-        var n = (id instanceof Node)? id : (this.nodeset[id])? this.nodeset[id] : new Node(id, a);
+        var n = a && a.base || Node;
+            n = (id instanceof Node)? id : (this.nodeset[id])? this.nodeset[id] : new n(id, a);
         if (a && a.root) this.root = n;
         if (!this.nodeset[n.id]) {
             this.nodes.push(n);
@@ -488,6 +489,8 @@ var Graph = Class.extend({
     
     addEdge: function(id1, id2, a) {
         /* Appends a new Edge to the graph.
+         * An optional base parameter can be used to pass a subclass of Edge:
+         * Graph.addEdge("cold", "winter", {base:IsPropertyOf});
          */
         // Create nodes that are not yet part of the graph.
         var n1 = this.addNode(id1);
@@ -498,7 +501,8 @@ var Graph = Class.extend({
         if (e1 && e1.node1 == n1 && e1.node2 == n2) {
             return e1; // Shortcut to existing edge.
         }
-        e2 = new Edge(n1, n2, a);
+        e2 = a && a.base || Edge;
+        e2 = new e2(n1, n2, a);
         this.edges.push(e2);
         // Synchronizes Node.links:
         // A.links.edge(B) yields edge A->B
@@ -550,6 +554,8 @@ var Graph = Class.extend({
          */
         if (length === undefined) length = 4;
         if (path   === undefined) path   = [];
+        if (!(node1 instanceof Node)) node1 = this.nodeset(node1);
+        if (!(node2 instanceof Node)) node2 = this.nodeset(node2);
         var p = [];
         var P = paths(this, node1.id, node2.id, length, path, true);
         for (var i=0; i < P.length; i++) {
@@ -566,6 +572,8 @@ var Graph = Class.extend({
     shortestPath: function(node1, node2, a) {
         /* Returns a list of nodes connecting the two nodes.
          */
+        if (!(node1 instanceof Node)) node1 = this.nodeset(node1);
+        if (!(node2 instanceof Node)) node2 = this.nodeset(node2);
         try {
             var p = dijkstraShortestPath(this, node1.id, node2.id, a);
             var n = [];
@@ -582,6 +590,7 @@ var Graph = Class.extend({
     shortestPaths: function(node, a) {
         /* Returns a dictionary of nodes, each linked to a list of nodes (shortest path).
          */
+        if (!(node instanceof Node)) node = this.nodeset(node);
         var p = {};
         var P = dijkstraShortestPaths(this, node.id, a);
         for (var id in P) {
@@ -597,7 +606,7 @@ var Graph = Class.extend({
         }
     },
 
-//  eigenvectorCentrality: function(graph {normalized:true, reversed:true, rating:{}, iterations:100, tolerance:0.0001})
+//  eigenvectorCentrality: function(graph, {normalized:true, reversed:true, rating:{}, iterations:100, tolerance:0.0001})
     eigenvectorCentrality: function(graph, a) {
         /* Calculates eigenvector centrality and returns a node => weight dictionary.
          * Node.weight is updated in the process.
@@ -613,7 +622,7 @@ var Graph = Class.extend({
         return r;
     },
     
-//  betweennessCentrality: function(graph {normalized:true, directed:false})
+//  betweennessCentrality: function(graph, {normalized:true, directed:false})
     betweennessCentrality: function(graph, a) {
         /* Calculates betweenneess centrality and returns a node => weight dictionary.
          * Node.centrality is updated in the process.
@@ -1054,10 +1063,10 @@ function paths(graph, id1, id2, length, path, _root) {
         return [];
     }
     if (id1 == id2) {
-        path = path.slice(0); path.push(id1);
+        path = path.slice(); path.push(id1);
         return [path];
     }
-    path = path.slice(0); path.push(id1);
+    path = path.slice(); path.push(id1);
     var p = [];
     var n = graph.nodeset[id1].links;
     for (var i=0; i < n.length; i++) {
@@ -1209,7 +1218,7 @@ function dijkstraShortestPaths(graph, id, a) {
             if (!(w in D) && (!(w in seen) || vw_dist < seen[w])) {
                 seen[w] = vw_dist;
                 Q.push([vw_dist, w], vw_dist);
-                P[w] = P[v].slice(0);
+                P[w] = P[v].slice();
                 P[w].push(w);
             }
         }
@@ -1294,6 +1303,7 @@ function eigenvectorCentrality(graph, a) {
      */
     // Based on: NetworkX, Aric Hagberg (hagberg@lanl.gov)
     // http://python-networkx.sourcearchive.com/documentation/1.0.1/centrality_8py-source.html
+    // Note: much faster than betweenness centrality (which grows exponentially).
     if (a === undefined) a = {};
     if (a.normalized === undefined) a.normalized = true;
     if (a.reversed   === undefined) a.reversed   = true;
@@ -1385,4 +1395,81 @@ function partition(graph) {
     }
     g.sort(function(a, b) { return b.length-a.length; });
     return g;
+}
+
+/*--- GRAPH MAINTENANCE ----------------------------------------------------------------------------*/
+
+function unlink(graph, node1, node2) {
+    /* Removes the edges between node1 and node2.
+     * If only node1 is given, removes all edges to and from it.
+     * This does not remove node1 from the graph.
+     */
+    var e = graph.edges.slice();
+    for (var i=0; i < e.length; i++) {
+        if ((node1 == e[i].node1 || node1 == e[i].node2) &&
+            (node2 == e[i].node1 || node2 == e[i].node2 || node2 === undefined)) {
+            graph.edges.splice(graph.edges.indexOf(e[i]), 1);
+        }
+        try {
+            node1.links.remove(node1.links.indexOf(node2), 1);
+            node2.links.remove(node2.links.indexOf(node1), 1);
+        } catch(x) { // node2 === undefined
+        }
+    }
+}
+
+function redirect(graph, node1, node2) {
+    /* Connects all of node1's edges to node2 and unlinks node1.
+     */
+    for (var i=0; i < graph.edges.length; i++) {
+        var e = graph.edges[i];
+        if (node1 == e.node1 || node1 == e.node2) {
+            if (e.node1 == node1 && e.node2 != node2) {
+                graph._addEdgeCopy(e, node2, e.node2);
+            }
+            if (e.node2 == node1 && e.node1 != node2) {
+                graph._addEdgeCopy(e, e.node1, node2);
+            }
+        }
+    }
+    unlink(graph, node1);
+}
+
+function cut(graph, node) {
+    /* Unlinks the given node, but keeps edges intact by connecting the surrounding nodes.
+     * If A, B, C, D are nodes and A->B, B->C, B->D, if we then cut B: A->C, A->D.
+     */
+    for (var i=0; i < graph.edges.length; i++) {
+        var e = graph.edges[i];
+        if (node == e.node1 || node == e.node2) {
+            for (var j=0; j < node.links.length; j++) {
+                var n = node.links[j];
+                if (e.node1 == node && e.node2 != n) {
+                    graph._addEdgeCopy(e, n, e.node2);
+                }
+                if (e.node2 == node && e.node1 != n) {
+                    graph._addEdgeCopy(e, e.node1, n);
+                }
+            }
+        }
+    }
+    unlink(graph, node)
+}
+
+function insert(graph, node, a, b) {
+    /* Inserts the given node between node a and node b.
+     * If A, B, C are nodes and A->B, if we then insert C: A->C, C->B.
+     */
+    for (var i=0; i < graph.edges.length; i++) {
+        var e = graph.edges[i];
+        if (e.node1 == a && e.node2 == b) {
+            graph._addEdgeCopy(e, a, node);
+            graph._addEdgeCopy(e, node, b);
+        }
+        if (e.node1 == b && e.node2 == a) {
+            grapg._addEdgeCopy(e, b, node);
+            graph._addEdgeCopy(e, node, a);
+        }
+    }
+    unlink(graph, a, b)
 }
