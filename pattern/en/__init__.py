@@ -28,7 +28,7 @@ from inflect import \
 from inflect.quantify import \
     number, numerals, quantify, reflect
 
-from parser          import parse, tag
+from parser          import tokenize, parse, tag
 from parser.tree     import Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
 from parser.tree     import SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
 from parser.modality import mood, INDICATIVE, IMPERATIVE, CONDITIONAL, SUBJUNCTIVE
@@ -38,7 +38,7 @@ def split(s, token=[WORD, POS, CHUNK, PNP]):
     return Text(s, token)
 
 def pprint(string, token=[WORD, POS, CHUNK, PNP], column=4):
-    """ Pretty-prints the output of MBSP.parse() as a table with outlined columns.
+    """ Pretty-prints the output of parse() as a table with outlined columns.
         Alternatively, you can supply a Text or Sentence object.
     """
     if isinstance(string, basestring):
@@ -47,3 +47,25 @@ def pprint(string, token=[WORD, POS, CHUNK, PNP], column=4):
         print "\n\n".join([table(sentence, fill=column) for sentence in string])
     if isinstance(string, Sentence):
         print table(string, fill=column)
+        
+def ngrams(string, n=3):
+    """ Returns a list of n-grams (tuples of n successive words) from the given string.
+        Alternatively, you can supply a Text or Sentence object.
+        n-grams will not run over sentence markers (i.e., .!?).
+    """
+    def strip_period(s, punctuation=(".:;,!??()[]'\"")):
+        return [w for w in s if (isinstance(w, Word) and w.string or w) not in punctuation]
+    if n <= 0:
+        return []
+    if isinstance(string, basestring):
+        s = [strip_period(s.split(" ")) for s in tokenize(string)]
+    if isinstance(string, Sentence):
+        s = [strip_period(string)]
+    if isinstance(string, Text):
+        s = [strip_period(s) for s in string]
+    g = []
+    for s in s:
+        #s = [None] + s + [None]
+        g.extend([tuple(s[i:i+n]) for i in range(len(s)-n+1)])
+    return g
+    
