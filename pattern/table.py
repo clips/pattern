@@ -11,6 +11,7 @@ import csv
 from cStringIO import StringIO
 from codecs    import BOM_UTF8
 from datetime  import datetime, timedelta
+from time      import mktime
 from math      import sqrt
 
 try:
@@ -150,7 +151,9 @@ class Date(datetime):
     def __add__(self, time):
         d = datetime.__add__(self, time)
         return date(d.year, d.month, d.day, d.hour, d.minute, d.second, d.microsecond, self.format)
-            
+    @property
+    def timestamp(self):
+        return mktime(self.timetuple()) # Seconds elapsed since 1/1/1970.
 
 def date(*args, **kwargs):
     """ Returns a Date from the given parameters:
@@ -194,7 +197,7 @@ def date(*args, **kwargs):
     
 def time(days=0, seconds=0, minutes=0, hours=0):
     return timedelta(days=days, seconds=seconds, minutes=minutes, hours=hours)
-
+    
 #### TABLE ###########################################################################################
 
 ALL = "all"
