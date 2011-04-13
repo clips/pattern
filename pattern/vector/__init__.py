@@ -753,47 +753,82 @@ class Vectorspace:
 #--- CLASSIFIER BASE CLASS ---------------------------------------------------------------------------
 
 class Classifier:
+
+    @property
+    def classes(self):
+        return []
+    types = classes
+    
+    @property
+    def binary(self):
+        return sorted(self.classes) in ([False,True], [0,1])
     
     def train(self, document, type):
         pass
         
     def classify(self, document):
         return None
+    
+    def save(self, path):
+        cPickle.dump(self, open(path, "w"))
 
     @classmethod
     def load(self, path):
         return cPickle.load(open(path))
-
-    def save(self, path):
-        cPickle.dump(self, open(path, "w"))
         
     @classmethod
     def test(self, corpus=[], d=0.65, folds=1, **kwargs):
-        """ Returns the accuracy of the classifier for the given corpus.
+        """ Returns an (accuracy, precision, recall, F-score)-tuple for the given corpus.
             The corpus is a list of documents or (wordlist, type)-tuples.
             2/3 of the data will be used as training material and tested against the other 1/3.
             With folds > 1, K-fold cross-validation is performed.
-            For example: in 10-fold cross-validation ten accuracy tests are performed,
+            For example: in 10-fold cross-validation ten tests are performed,
             each using a different 1/10 of the corpus as testing data.
+            For non-binary classifiers, precision, recall and F-score are None.
         """
-        corpus = [isinstance(x, Document) and (x, x.type) or x for x in corpus]
+        corpus  = [isinstance(x, Document) and (x, x.type) or x for x in corpus]
+        classes = set(type for document, type in corpus)
+        binary  = len(classes) == 2 and sorted(classes) in ([False,True], [0,1])
+        m = [0,0,0,0] # accuracy | precision | recall | F1-score.
         K = max(folds, 1)
-        m = 0
         for k in range(K):
             classifier = self(**kwargs)
-            n = 0
-            t = len(corpus) / float(K)
-            i = int(round(k * t))
-            j = int(round(k * t + t))
+            t = len(corpus) / float(K) # Documents per fold.
+            i = int(round(k * t))      # Corpus start index.
+            j = int(round(k * t + t))  # Corpus stop index.
             if K == 1:
                 i = int(len(corpus) * d)
                 j = int(len(corpus))
             for document, type in corpus[:i] + corpus[j:]:
+                # Train with 9/10 of the corpus, using 1/10 fold for testing.
                 classifier.train(document, type)
-            for document, type in corpus[i:j]:
-                n += classifier.classify(document) == type
-            m += n / float(j-i)
-        return m / K
+            TP = TN = FP = FN = 0
+            if not binary:
+                # If the classifier predicts classes other than True/False,
+                # we can only measure accuracy.
+                for document, type in corpus[i:j]:
+                    if classifier.classify(document) == type:
+                        TP += 1
+                m[0] += TP / float(j-i)
+            else:
+                # For binary classifiers, calculate the confusion matrix
+                # to measure precision and recall.
+                for document, b1 in corpus[i:j]:
+                     b2 = classifier.classify(document)
+                     if b1 and b2:
+                         TP += 1 # true positive
+                     elif not b1 and not b2:
+                         TN += 1 # true negative
+                     elif not b1 and b2:
+                         FP += 1 # false positive (type I error)
+                     elif b1 and not b2:
+                         FN += 1 # false negative (type II error)
+                m[0] += float(TP+TN) / ((TP+TN+FP+FN) or 1)
+                m[1] += float(TP) / ((TP+FP) or 1)
+                m[2] += float(TP) / ((TP+FN) or 1)
+        m = [v/K for v in m]
+        m[3] = binary and 2 * m[1] * m[2] / ((m[1] + m[2]) or 1) or 0 # F1-score.
+        return binary and tuple(m) or (m[0], None, None, None)
 
 #--- NAIVE BAYES CLASSIFIER --------------------------------------------------------------------------
 # Based on: Magnus Lie Hetland, http://hetland.org/coding/python/nbayes.py
@@ -830,7 +865,7 @@ class NaiveBayes(Classifier):
     
     @property
     def classes(self):
-        return fc.keys()
+        return self.fc.keys()
     types = classes
 
     def train(self, document, type=None, weight=TF):
