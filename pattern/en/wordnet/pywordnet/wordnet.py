@@ -800,7 +800,7 @@ class Dictionary:
 	self.pos = pos
         """part of speech -- one of NOUN, VERB, ADJECTIVE, ADVERB"""
 	self.indexFile = _IndexFile(pos, filenameroot)
-	self.dataFile = open(_dataFilePathname(filenameroot), _FILE_OPEN_MODE)
+	self.dataFile = [(open(f, _FILE_OPEN_MODE), os.stat(f)[6]) for f in _dataFilePathname(filenameroot)] # Tom De Smedt, 2011
     
     def __repr__(self):
 	dictionaryVariables = {N: 'N', V: 'V', ADJ: 'ADJ', ADV: 'ADV'}
@@ -914,7 +914,7 @@ class Dictionary:
 	return self.indexFile.has_key(form)
 	
     def __contains__(self, form):
-        return self.indexFile.has_key(form) # 2010 Tom De Smedt
+        return self.indexFile.has_key(form) # Tom De Smedt, 2010
     
     #
     # Testing
@@ -1131,7 +1131,7 @@ def _dataFilePathname(filenameroot):
 	path = os.path.join(WNSEARCHDIR, filenameroot + ".dat")
         if os.path.exists(path):
             return path
-    return os.path.join(WNSEARCHDIR, "data." + filenameroot)
+    import glob; return glob.glob(os.path.join(WNSEARCHDIR, "data." + filenameroot + "*")) # Tom De Smedt, 2011
 
 def _indexFilePathname(filenameroot):
     if os.name in ('dos', 'nt'):
@@ -1183,7 +1183,11 @@ def binarySearchFile(file, key, cache={}, cacheDepth=-1):
             return None
     return None
 
-def _lineAt(file, offset):
+def _lineAt(files, offset):  # Tom De Smedt, 2011
+    for file, size in files: # Seek across multiple files (e.g., data.noun1 + data.noun2)
+        if offset < size:    # Purpose: Google App Engine requires filesize < 10MB.
+            break
+        offset -= size
     file.seek(offset)
     return file.readline()
 

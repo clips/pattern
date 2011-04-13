@@ -24,11 +24,13 @@ os.environ["WNHOME"] = os.path.join(MODULE, CORPUS)
 from pywordnet import wordnet as wn
 from pywordnet import wntools
 # The bundled version of pywordnet contains custom fixes:
-# - line 365: check if lexnames exist.
-# - line 765: check if lexnames exist + use os.path.join().
-# - line 674: add HYPONYM and HYPERNYM to the pointer table.
-# - line 916: implement "x in Dictionary" instead of Dictionary.has_key(x)
-
+# - line  365: check if lexnames exist.
+# - line  765: check if lexnames exist + use os.path.join().
+# - line  674: add HYPONYM and HYPERNYM to the pointer table.
+# - line  916: implement "x in Dictionary" instead of Dictionary.has_key(x)
+# - line  804: Dictionary.dataFile now stores a list of (file, size)-tuples.
+# - line 1134: _dataFilePath() returns a list (i.e., data.noun can be split into data.noun1 + data.noun2).
+# - line 1186: _lineAt() seeks in second datafile if offset > EOF first datafile.
 
 VERSION = ""
 s = open(os.path.join(MODULE, CORPUS, "dict", "index.noun")).read(2048)
@@ -139,11 +141,12 @@ class Synset:
     part_of_speech = tag = pos
 
     @property
-    def senses(self):
+    def synonyms(self):
         """ A list of word forms (i.e. synonyms), for example:
-            synsets("TV")[0].senses => ["television", "telecasting", "TV", "video"]
+            synsets("TV")[0].synonyms => ["television", "telecasting", "TV", "video"]
         """
         return [s.form for s in self._synset.getSenses()]
+    senses = synonyms # Backwards compatibility; senses = list of Synsets for a word.
         
     @property
     def gloss(self):
@@ -311,7 +314,7 @@ _map32_pos2 = {"n":NN, "v":VB, "a":JJ, "r":RB}
 _map32_cache = None
 def map32(id, pos=NOUN):
     """ Returns an (id, pos)-tuple with the WordNet2 synset id for the given WordNet3 synset id.
-        There is an error margin of 2%, returns None if no id was found.
+        There is an error margin of 2%: returns None if no id was found.
     """
     global _map32_cache
     if not _map32_cache:
