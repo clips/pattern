@@ -468,6 +468,16 @@ class Graph(dict):
         # E.g. <0.35 => sparse, >0.65 => dense, 1.0 => complete.
         return 2.0*len(self.edges) / (len(self.nodes) * (len(self.nodes)-1))
         
+    @property
+    def is_complete(self):
+        return self.density == 1.0
+    @property
+    def is_dense(self):
+        return self.density > 0.65
+    @property
+    def is_sparse(self):
+        return self.density < 0.35
+        
     def split(self):
         return partition(self)
     
@@ -936,6 +946,41 @@ def partition(graph):
     g = [graph.copy(nodes=[graph[id] for id in n]) for n in g if n]
     g.sort(lambda a, b: len(b) - len(a))
     return g
+
+#--- GRAPH THEORY | CLIQUE ---------------------------------------------------------------------------
+
+def is_clique(graph):
+    """ A clique is a set of nodes in which each node is connected to all other nodes.
+    """
+    #for n1 in graph.nodes:
+    #    for n2 in graph.nodes:
+    #        if n1 != n2 and graph.edge(n1.id, n2.id) is None:
+    #            return False
+    return graph.density == 1.0
+    
+def clique(graph, id):
+    """ Returns the largest possible clique for the node with given id.
+    """
+    clique = [id]
+    for n in graph.nodes:
+        b = True
+        for id in clique:
+            if n.id == id or graph.edge(n.id, id) is None:
+                b=False; break
+        if b: clique.append(n.id)
+    return clique
+    
+def cliques(graph, threshold=3):
+    """ Returns all the cliques in the graph of at least the given size.
+    """
+    cliques = []
+    for n in graph.nodes:
+        c = clique(graph, n.id)
+        if len(c) >= threshold: 
+            c.sort()
+            if c not in cliques: 
+                cliques.append(c)
+    return cliques
 
 #--- GRAPH MAINTENANCE -------------------------------------------------------------------------------
 # Utility commands for safe linking and unlinking of nodes,

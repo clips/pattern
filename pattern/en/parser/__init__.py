@@ -331,8 +331,8 @@ rules = [
 rules.insert(1, rules.pop(3)) # Handle ADJP before VP (RB prefers next ADJP over previous VP).
 
 def find_chunks(tagged, iob=True):
-    """ The input is a list of (token, tag)-tuples.
-        The output is a list of (token, tag, chunk)-tuples.
+    """ The input is a list of [token, tag]-items.
+        The output is a list of [token, tag, chunk]-items.
         For example:
         The/DT nice/JJ fish/NN is/VBZ dead/JJ ./. => 
         The/DT/B-NP nice/JJ/I-NP fish/NN/I-NP is/VBZ/B-VP dead/JJ/B-ADJP ././O
