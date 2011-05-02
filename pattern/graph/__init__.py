@@ -74,6 +74,7 @@ class Node(object):
         self._y          = 0    # Calculated by Graph.layout.update().
         self.force       = Vector(0,0)
         self.radius      = radius
+        self.fixed       = kwargs.pop("fixed", False)
         self.fill        = kwargs.pop("fill", None)
         self.stroke      = kwargs.pop("stroke", (0,0,0,1))
         self.strokewidth = kwargs.pop("strokewidth", 1)
@@ -632,8 +633,9 @@ class GraphSpringLayout(GraphLayout):
             self._attract(e.node1, e.node2, weight*e.weight, 1.0/(e.length or 0.01))
         # Move nodes by given force.
         for n in self.graph.nodes:
-            n._x += max(-limit, min(self.force * n.force.x, limit))
-            n._y += max(-limit, min(self.force * n.force.y, limit))
+            if not n.fixed:
+                n._x += max(-limit, min(self.force * n.force.x, limit))
+                n._y += max(-limit, min(self.force * n.force.y, limit))
             n.force.x = 0
             n.force.y = 0
             
@@ -1103,6 +1105,7 @@ class HTMLCanvasRenderer:
         # it is not passed to Javascript to save bandwidth.
         self.default = {
                 "radius": 5,
+                 "fixed": False,
                   "fill": None,
                 "stroke": (0,0,0,1),
            "strokewidth": 1,
@@ -1145,6 +1148,8 @@ class HTMLCanvasRenderer:
                 p.append("y:%i" % n._y)                           # 0
             if n.radius != self.default["radius"]:
                 p.append("radius:%.1f" % n.radius)                # 5.0
+            if n.fixed != self.default["fixed"]:
+                p.append("fixed:%s" % repr(n.fixed).lower()       # false
             if n._weight is not None:
                 p.append("weight:%.2f" % n.weight)                # 0.00
             if n._centrality is not None:

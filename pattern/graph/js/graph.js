@@ -230,6 +230,7 @@ var Node = Class.extend({
         if (a.x === undefined) a.x = 0;
         if (a.y === undefined) a.y = 0;
         if (a.radius === undefined) a.radius = 5;
+        if (a.fixed  === undefined) a.fixed  = false;
         if (a.fill   === undefined) a.fill   = "rgba(0,0,0,0)";
         if (a.stroke === undefined) a.stroke = "rgba(0,0,0,1)";
         if (a.strokewidth === undefined) a.strokewidth = 1;
@@ -243,6 +244,7 @@ var Node = Class.extend({
         this._vx = 0;
         this._vy = 0;
         this.radius      = a.radius;
+        this.fixed       = a.fixed;
         this.fill        = a.fill;
         this.stroke      = a.stroke;
         this.strokewidth = a.strokewidth;
@@ -993,10 +995,12 @@ GraphSpringLayout = GraphLayout.extend({
         // Move by the given force.
         for (var i=0; i < this.graph.nodes.length; i++) {
             var n = this.graph.nodes[i];
-            n._x += Math.max(-limit, Math.min(this.force * n._vx, limit));
-            n._y += Math.max(-limit, Math.min(this.force * n._vy, limit));
-            n.x = n._x * n.graph.distance;
-            n.y = n._y * n.graph.distance;
+            if (!n.fixed) {
+                n._x += Math.max(-limit, Math.min(this.force * n._vx, limit));
+                n._y += Math.max(-limit, Math.min(this.force * n._vy, limit));
+                n.x = n._x * n.graph.distance;
+                n.y = n._y * n.graph.distance;
+            }
             n._vx = 0;
             n._vy = 0;
         }
