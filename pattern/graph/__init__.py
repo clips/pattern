@@ -1170,6 +1170,7 @@ class HTMLCanvasRenderer:
             if n.id in self.css:
                 p.append("css:\"%s\"" % self.css[n.id])
             s.append("\t\"%s\": {%s},\n" % (self._escape(n.id), ", ".join(p)))
+        s[-1] = s[-1].rstrip(", ") # Trailing comma breaks in IE.
         s.append("};\n")
         s.append("var e = [")
         if len(self.graph.edges) > 0:
@@ -1189,6 +1190,7 @@ class HTMLCanvasRenderer:
             if e.strokewidth != self.default["strokewidth"]:
                 p.append("strokewidth:%.2f" % e.strokewidth)      # 0.5
             s.append("\t[\"%s\", \"%s\", {%s}],\n" % (id1, id2, ", ".join(p)))
+        s[-1] = s[-1].rstrip(", ") # Trailing comma breaks in IE.
         s.append("];\n")
         # Append the nodes to graph g.
         s.append("for (var id in n) {\n"

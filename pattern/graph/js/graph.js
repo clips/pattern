@@ -154,6 +154,23 @@ attachEvent(document, "mouseup", function(e) {
     mouse.dy = 0;
 });
 
+/*--- IE HACKS -------------------------------------------------------------------------------------*/
+// setInterval() on IE does not take function arguments so we patch it:
+
+/*@cc_on
+(function(f) {
+ window.setTimeout = f(window.setTimeout);
+ window.setInterval = f(window.setInterval);
+})(function(f) {
+    return function(c, t) {
+        var a = [].slice.call(arguments, 2);
+        return f(function() {
+            c.apply(this, a);
+        }, t);
+    };
+});
+@*/
+
 /*--- BASE CLASS -----------------------------------------------------------------------------------*/
 // JavaScript class inheritance, John Resig (http://ejohn.org/blog/simple-javascript-inheritance).
 //
@@ -444,9 +461,6 @@ var Graph = Class.extend({
          */
         if (distance === undefined) distance = 10;
         if (layout   === undefined) layout   = SPRING;
-        if (!(canvas instanceof HTMLCanvasElement)) {
-            throw new Error("Graph canvas is not a HTMLCanvasElement.");
-        }
         this.canvas   = canvas; unselectable(canvas);
         this._ctx     = this.canvas.getContext("2d");
         this.nodeset  = {};
@@ -1226,7 +1240,7 @@ function dijkstraShortestPaths(graph, id, a) {
     for (var n in graph.nodeset) {
         if (!(n in P)) P[n]=null;
     }
-    return P
+    return P;
 }
 
 //       brandesBetweennessCentrality(graph {normalized:true, directed:false})
@@ -1453,7 +1467,7 @@ function cut(graph, node) {
             }
         }
     }
-    unlink(graph, node)
+    unlink(graph, node);
 }
 
 function insert(graph, node, a, b) {
@@ -1471,5 +1485,5 @@ function insert(graph, node, a, b) {
             graph._addEdgeCopy(e, node, a);
         }
     }
-    unlink(graph, a, b)
+    unlink(graph, a, b);
 }
