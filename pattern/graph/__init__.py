@@ -1149,7 +1149,7 @@ class HTMLCanvasRenderer:
             if n.radius != self.default["radius"]:
                 p.append("radius:%.1f" % n.radius)                # 5.0
             if n.fixed != self.default["fixed"]:
-                p.append("fixed:%s" % repr(n.fixed).lower()       # false
+                p.append("fixed:%s" % repr(n.fixed).lower())      # false
             if n._weight is not None:
                 p.append("weight:%.2f" % n.weight)                # 0.00
             if n._centrality is not None:
