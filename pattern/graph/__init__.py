@@ -74,7 +74,6 @@ class Node(object):
         self._y          = 0    # Calculated by Graph.layout.update().
         self.force       = Vector(0,0)
         self.radius      = radius
-        self.fixed       = kwargs.pop("fixed", False)
         self.fill        = kwargs.pop("fill", None)
         self.stroke      = kwargs.pop("stroke", (0,0,0,1))
         self.strokewidth = kwargs.pop("strokewidth", 1)
@@ -83,6 +82,7 @@ class Node(object):
                    width = 85,
                     fill = kwargs.pop("text", (0,0,0,1)), 
                 fontsize = kwargs.pop("fontsize", 11), **kwargs) or None
+        self.fixed       = kwargs.pop("fixed", False)
         self._weight     = None # Calculated by Graph.eigenvector_centrality().
         self._centrality = None # Calculated by Graph.betweenness_centrality().
     
@@ -276,7 +276,7 @@ class nodedict(dict):
 def unique(list):
     u, b = [], {}
     for item in list: 
-        if item not in b: u.append(item); b[item]=1
+        if item not in b: u.append(item); b[item]=True
     return u
 
 # Graph layouts:
@@ -963,26 +963,25 @@ def is_clique(graph):
 def clique(graph, id):
     """ Returns the largest possible clique for the node with given id.
     """
-    clique = [id]
+    a = [id]
     for n in graph.nodes:
-        b = True
-        for id in clique:
-            if n.id == id or graph.edge(n.id, id) is None:
-                b=False; break
-        if b: clique.append(n.id)
-    return clique
+        try:
+            # Raises StopIteration if all nodes in the clique are connected to n:
+            (id for id in a if n.id==id or graph.edge(n.id, id) is None).next()
+        except StopIteration:
+            a.append(n.id)
+    return a
     
 def cliques(graph, threshold=3):
-    """ Returns all the cliques in the graph of at least the given size.
+    """ Returns all cliques in the graph with at least the given number of nodes.
     """
-    cliques = []
+    a = []
     for n in graph.nodes:
         c = clique(graph, n.id)
         if len(c) >= threshold: 
             c.sort()
-            if c not in cliques: 
-                cliques.append(c)
-    return cliques
+            if c not in a: a.append(c)
+    return a
 
 #--- GRAPH MAINTENANCE -------------------------------------------------------------------------------
 # Utility commands for safe linking and unlinking of nodes,
@@ -1148,12 +1147,12 @@ class HTMLCanvasRenderer:
                 p.append("y:%i" % n._y)                           # 0
             if n.radius != self.default["radius"]:
                 p.append("radius:%.1f" % n.radius)                # 5.0
-            if n.fixed != self.default["fixed"]:
-                p.append("fixed:%s" % repr(n.fixed).lower())      # false
             if n._weight is not None:
                 p.append("weight:%.2f" % n.weight)                # 0.00
             if n._centrality is not None:
                 p.append("centrality:%.2f" % n.centrality)        # 0.00
+            if n.fixed != self.default["fixed"]:
+                p.append("fixed:%s" % repr(n.fixed).lower())      # false
             if n.fill != self.default["fill"]:
                 p.append("fill:%s" % self._rgba(n.fill))          # [0,0,0,1.0]
             if n.stroke != self.default["stroke"]:
