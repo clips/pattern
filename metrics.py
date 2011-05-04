@@ -179,7 +179,7 @@ def similarity(string1, string2, metric=LEVENSHTEIN):
 
 def flesch_reading_ease(string):
     """ Returns the readability of the string as a value between 0.0-1.0:
-        0.3-0.5 (difficult) => 0.6-0.7 (standard) => 0.9-1.0 (very easy).
+        0.30-0.50 (difficult) => 0.60-0.70 (standard) => 0.90-1.00 (very easy).
     """
     def count_syllables(word, vowels="aeiouy"):
         n = 0
