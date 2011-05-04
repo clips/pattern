@@ -1,0 +1,9 @@
+# Ignore compiled Python files
+*.pyc
+
+# Ignore build folders
+build
+dist
+
+# Ignore cache folders
+web/cache/tmp
