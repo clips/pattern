@@ -188,7 +188,9 @@ def flesch_reading_ease(string):
             v = ch in vowels
             n += int(v and not p)
             p = v
-        return n  
+        return n
+    if len(string) <  3:
+        return 1.0
     string = string.strip()
     string = string.lower()
     string = string.replace("!", ".")

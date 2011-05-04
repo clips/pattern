@@ -333,7 +333,7 @@ class URL:
         data = u(data)
         if cached:
             cache[id] = data
-        if not cached and throttle:
+        if throttle:
             time.sleep(max(throttle-(time.time()-t), 0))
         return data
     
