@@ -93691,3 +93691,4 @@ problematics NNS
 expands VBZ
 footloose JJ
 jawbone NN
+crunchy JJ

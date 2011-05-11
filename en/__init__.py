@@ -1,4 +1,4 @@
-#### PATTERN | EN | ##################################################################################
+#### PATTERN | EN ####################################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).

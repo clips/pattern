@@ -7,7 +7,14 @@
 ######################################################################################################
 # Fast tagger-chunker using regular expressions.
 
+from brill import Lexicon
+
 import re
+import os
+try: 
+    MODULE = os.path.dirname(__file__)
+except:
+    MODULE = ""
 
 #### TOKENIZER #######################################################################################
 
@@ -26,7 +33,8 @@ replacements = {
 
 # Handle common abbreviations.
 abbreviations = dict.fromkeys([
-    "a.m.", "cf.", "e.g.", "ex.", "etc.", "fig.", "i.e.", "Mr.", "p.m.", "vs."
+    "a.m.", "cf.", "e.g.", "ex.", "etc.", "fig.", "i.e.", "Mr.", "p.m.", "vs.",
+    "bv.", "blz.", "e.d.", "m.a.w.", "nl."
 ], True)
 a1 = re.compile("^[A-Za-z]\.$")                                    # single letter, "T. De Smedt"
 a2 = re.compile("^([A-Za-z]\.)+$")                                 # alternating letters, "U.S."
@@ -95,63 +103,17 @@ def tokenize(string):
 #### TAGGER ##########################################################################################
 
 #--- BRILL TAGGER ------------------------------------------------------------------------------------
-# Based on Jason Wiener's implementation of a rule-based part-of-speech Brill tagger.
 
-# Original Copyright (C) Mark Watson.  All rights reserved.
-# Python port by Jason Wiener (http://www.jasonwiener.com)
-# THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
-# KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
-# PARTICULAR PURPOSE.
+LEXICON = lexicon = Lexicon() # Lazy dictionary based on Brill_lexicon.txt.
 
-import os
-try: 
-    MODULE = os.path.dirname(__file__)
-except:
-    MODULE = ""
-    
-class Lexicon:
-    
-    def __init__(self):
-        self._words = None
-    
-    def load(self):
-        # Brill's lexicon is a list of common tokens and their part-of-speech tag.
-        # It takes a while to load but this happens only once when parse() is called.
-        # Create a dictionary from the entries:
-        self._words = open(os.path.join(MODULE, "Brill_lexicon.txt")).read().splitlines()
-        self._words = dict([x.split(" ") for x in self._words])
-        self["crunchy"] = "JJ" # The lexicon can be updated easily.
-    
-    def get(self, word, default=None):
-        return word in self and self._words[word] or default
-    
-    def __contains__(self, word):
-        try:
-            return word in self._words
-        except:
-            self.load()
-            return word in self._words
-    
-    def __getitem__(self, word):
-        if self._words is None: 
-            self.load()
-        return self._words[word]      
-    
-    def __setitem__(self, word, pos):
-        if self._words is None: 
-            self.load()
-        self._words[word] = pos
-        
-lexicon = Lexicon()
-
-def find_tags(tokens, default="NN", light=False):
+def find_tags(tokens, default="NN", light=False, lexicon=LEXICON, map=None):
     """ Returns a list of [token, tag]-items for the given list of tokens.
         For example: 
         ['That', 'is', 'interesting', '.'] => 
         [['That', 'DT'], ['is', 'VBZ'], ['interesting', 'JJ'], ['.', '.']]
         With light=True uses Brill's lexical and contextual rules to improve token tags.
         With light=False uses a faster set of arbitrary rules (Jason Wiener's rules).
+        If map is a function, apply it to each tag.
     """
     tagged = []
     for token in tokens:
@@ -159,7 +121,7 @@ def find_tags(tokens, default="NN", light=False):
         # Words that start with a capital letter are tagged with NNP by default.
         # Words that are not in the lexicon are then improved with lexical rules.
         tagged.append([token, lexicon.get(token, lexicon.get(token.lower(), None))])
-    f = light and apply_default_rules or apply_lexical_rules
+    f = light and apply_default_rules or lexicon.lexical_rules.apply
     for i, (token, tag) in enumerate(tagged):
         if tag == None:
             if len(token) > 0 and token[0] == token[0].upper() and token[0].isalpha():
@@ -170,13 +132,24 @@ def find_tags(tokens, default="NN", light=False):
                     previous = i>0 and tagged[i-1] or (None, None), 
                         next = i<len(tagged)-1 and tagged[i+1] or (None, None))
     if not light:
-        apply_contextual_rules(tagged)
+        lexicon.contextual_rules.apply(tagged)
+    if map is not None:
+        tagged = [[token, map(tag, default)] for token, tag in tagged]
     return tagged
 
 def apply_default_rules(token, previous=(None,None), next=(None,None)):
     """ Returns the token with its tag updated according to a few simple rules.
         Jason Wiener's rules are less accurate than Brill's lexical rules, but they are faster (5-10x).
     """
+    # Based on Jason Wiener's implementation of a rule-based part-of-speech Brill tagger.
+    #
+    # Original Copyright (C) Mark Watson.  All rights reserved.
+    # Python port by Jason Wiener (http://www.jasonwiener.com)
+    # THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+    # KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+    # IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+    # PARTICULAR PURPOSE.
+    #
     # By comparison, WordNet has 12401 adjectives not in the Brill lexicon.
     # Brill's lexical rules corrected 11961 of them, in 1.71 seconds.
     # Jason Wiener's rules corrected 9948, in 0.19 seconds.
@@ -209,109 +182,11 @@ def apply_default_rules(token, previous=(None,None), next=(None,None)):
         pos = "JJ"
     elif pos.startswith("NN") and word.endswith("ed"):
         pos = "VBN"
-    elif i > 0 and previous[1] == "DT" and pos in ("VBD", "VBP", "VB"):
+    elif pos in ("VBD", "VBP", "VB") and previous[1] == "DT":
         pos = "NN"
-    elif i > 0 and pos.startswith("NN") and previous[0] == "would":
+    elif pos.startswith("NN") and previous[0] == "would":
         pos = "VB"
     return [word, pos]
-
-#--- BRILL RULES -------------------------------------------------------------------------------------
-
-lexical_commands = ["char", "hassuf", "deletesuf", "addsuf", "haspref", "deletepref", "addpref", "goodleft", "goodright"]
-lexical_commands.extend(["f"+x for x in lexical_commands])
-
-# Brill's lexical rules.
-# An entry looks like: ('fhassuf', ['NN', 's', 'fhassuf', '1', 'NNS', 'x']).
-# The first item is the lookup command.
-# If it is prefixed with an "f", it means that the token needs to have the first given tag (NN).
-# In this case, if the NN-word ends with an "s", it is tagged as NNS.
-lexical_rules = open(os.path.join(MODULE, "Brill_lexical_rules.txt")).read()
-lexical_rules = lexical_rules.strip().split("\n")
-for i, rule in enumerate(lexical_rules):
-    rule = rule.split()
-    for cmd in lexical_commands:
-        if cmd in rule:
-            lexical_rules[i] = (cmd, rule)
-            break
-            
-def apply_lexical_rules(token, previous=(None,None), next=(None,None)):
-    """ Applies the lexical rules to the given token.
-        A token is a [word,tag]-item whose tag might change if it matches a rule.
-        Rules are lexically based on word characters, prefixes and suffixes.
-    """
-    word, pos = token[0], token[1]
-    if word[:1].isdigit() and word.replace(".","").isdigit():
-        return [word, "CD"]
-    for cmd, rule in lexical_rules:
-        pos = rule[-2]
-        x = rule[0]
-        if cmd.startswith("f"): 
-            # Word must be tagged as the f-rule states.
-            cmd = cmd[1:]
-            if token[1] != rule[0]: continue
-            x = rule[1]
-        if (cmd == "char"       and x in word) \
-        or (cmd == "hassuf"     and word.endswith(x)) \
-        or (cmd == "deletesuf"  and word.endswith(x) and word[:-len(x)] in lexicon) \
-        or (cmd == "haspref"    and word.startswith(x)) \
-        or (cmd == "deletepref" and word.startswith(x) and word[len(x):] in lexicon) \
-        or (cmd == "addsuf"     and word+x in lexicon) \
-        or (cmd == "addpref"    and x+word in lexicon) \
-        or (cmd == "goodleft"   and x == previous[0]) \
-        or (cmd == "goodright"  and x == next[0]):
-            return [word, pos]
-        else:
-            return token
-
-# Brill's contextual rules.
-# An entry looks like: ('PREVTAG', ['VBD', 'VB', 'PREVTAG', 'TO']).
-# The first item is the lookup command.
-# The example rule reads like:
-# "If the previous word is tagged TO, change this word's tag from VBD to VB (if it is VBD)".
-contextual_rules = open(os.path.join(MODULE, "Brill_contextual_rules.txt")).read()
-contextual_rules = contextual_rules.strip().split("\n")
-for i, rule in enumerate(contextual_rules):
-    rule = rule.split()
-    cmd = rule[2]
-    contextual_rules[i] = (cmd, rule)
-
-def apply_contextual_rules(tokens):
-    """ Applies the contextual rules to the given list of tokens. 
-        Each token is a [word,tag]-item whose tag might change if it matches a rule.
-        Rules are contextually based on the token's position in the sentence.
-    """
-    b = [(None,"STAART")] * 3 # Add empty tokens so we can scan ahead and behind.
-    T = b + tokens + b
-    for i, token in enumerate(T):
-        for cmd, rule in contextual_rules:
-            # If the word is tagged differently than required by the rule, skip it.
-            if token[1] != rule[0]: 
-                continue
-            # Never allow rules to tag "be" anything but infinitive.
-            if token[0] == "be" and token[1] == "VB":
-                continue
-            # A rule involves scanning the previous/next word or tag, 
-            # and all combinations thereof.
-            x = rule[3]
-            if (cmd == "PREVTAG"        and x == T[i-1][1]) \
-            or (cmd == "NEXTTAG"        and x == T[i+1][1]) \
-            or (cmd == "PREV1OR2TAG"    and x in (T[i-1][1], T[i-2][1])) \
-            or (cmd == "NEXT1OR2TAG"    and x in (T[i+1][1], T[i+2][1])) \
-            or (cmd == "PREV1OR2OR3TAG" and x in (T[i-1][1], T[i-2][1], T[i-3][1])) \
-            or (cmd == "NEXT1OR2OR3TAG" and x in (T[i+1][1], T[i+2][1], T[i+3][1])) \
-            or (cmd == "SURROUNDTAG"    and x == T[i-1][1] and rule[4] == T[i+1][1]) \
-            or (cmd == "PREVBIGRAM"     and x == T[i-2][1] and rule[4] == T[i-1][1]) \
-            or (cmd == "NEXTBIGRAM"     and x == T[i+1][1] and rule[4] == T[i+2][1]) \
-            or (cmd == "PREV2TAG"       and x == T[i-2][1]) \
-            or (cmd == "NEXT2TAG"       and x == T[i+2][1]) \
-            or (cmd == "CURWD"          and x == T[i][0]) \
-            or (cmd == "PREVWD"         and x == T[i-1][0]) \
-            or (cmd == "NEXTWD"         and x == T[i+1][0]) \
-            or (cmd == "PREV1OR2WD"     and x in (T[i-1][0], T[i-2][0])) \
-            or (cmd == "NEXT1OR2WD"     and x in (T[i+1][0], T[i+2][0])) \
-            or (cmd == "WDPREVTAG"      and x == T[i][0] and rule[4] == T[i-1][1]) \
-            or (cmd == "WDNEXTTAG"      and x == T[i][0] and rule[4] == T[i+1][1]):
-                tokens[i-len(b)] = [tokens[i-len(b)][0], rule[1]]
 
 #### CHUNKER #########################################################################################
 
@@ -469,7 +344,7 @@ def find_lemmata(tagged):
 
 _tokenize = tokenize
 
-def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=False, encoding="utf-8", default="NN", light=False):
+def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=False, encoding="utf-8", **kwargs):
     """ Takes a string (sentences) and returns a tagged Unicode string. 
         Sentences in the output are separated by newlines.
     """
@@ -480,7 +355,11 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
         s = [s.split(" ") for s in s]
     for i in range(len(s)):
         if tags or chunks or prepositions or lemmata:
-            s[i] = find_tags(s[i], default, light)
+            s[i] = find_tags(s[i], 
+                    default = kwargs.get("default", "NN"), 
+                      light = kwargs.get("light", False), 
+                    lexicon = kwargs.get("lexicon", LEXICON),
+                        map = kwargs.get("map", None))
         if chunks or relations:
             s[i] = find_chunks(s[i])
         if chunks or relations:
@@ -505,7 +384,7 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
             s[i][j] = "/".join(s[i][j])
         s[i] = " ".join(s[i])
     s = "\n".join(s)
-    s = TaggedString(s, tags=format)
+    s = TaggedString(s, tags=format, language=kwargs.get("language","en"))
     return s
 
 #--- TAGGED STRING -----------------------------------------------------------------------------------
@@ -518,11 +397,12 @@ TOKENS = "tokens"
 
 class TaggedString(unicode):
     
-    def __new__(self, string, tags=["word"]):
+    def __new__(self, string, tags=["word"], language="en"):
         if isinstance(string, unicode) and hasattr(string, "tags"): 
-            tags = string.tags
+            tags, language = string.tags, string.language
         s = unicode.__new__(self, string)
         s.tags = list(tags)
+        s.language = language
         return s
     
     def split(self, sep=TOKENS):
