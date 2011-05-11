@@ -34,23 +34,22 @@ replacements = {
 # Handle common abbreviations.
 abbreviations = dict.fromkeys([
     "a.m.", "cf.", "e.g.", "ex.", "etc.", "fig.", "i.e.", "Mr.", "p.m.", "vs.",
-    "bv.", "blz.", "e.d.", "m.a.w.", "nl."
 ], True)
 a1 = re.compile("^[A-Za-z]\.$")                                    # single letter, "T. De Smedt"
 a2 = re.compile("^([A-Za-z]\.)+$")                                 # alternating letters, "U.S."
 a3 = re.compile("^[A-Z]["+"|".join("bcdfghjklmnpqrstvwxz")+"]+.$") # capital followed by consonants, "Mr."
 
 # Handle common word punctuation:
-punctuation = (
-    ("(","[","\"","'"), 
-    (":",";",",","!","?","]",")","\"","'")
+PUNCTUATION = punctuation = (
+    ("(","[","\"","'"),                    # leading
+    (":",";",",","!","?","]",")","\"","'") # trailing
 )
 
-def tokenize(string):
+def tokenize(string, punctuation=PUNCTUATION, abbreviations=abbreviations, replace=replacements):
     """ Returns a list of sentences. Each sentence is a space-separated string of tokens (words).
         Handles common cases ("etc.") of abbreviations.
     """
-    for a,b in replacements.items():
+    for a,b in replace.items():
         string = re.sub(a, b, string)
     # Collapse whitespace.
     string = re.sub(r"\s+", " ", string)
@@ -58,7 +57,7 @@ def tokenize(string):
     for t in token.findall(string+" "):
         if len(t) > 0:
             tail = []
-            while t.startswith(punctuation[0]+("'",)) and not t in replacements:
+            while t.startswith(punctuation[0]+("'",)) and not t in replace:
                 # Split leading punctuation.
                 if t.startswith(punctuation[0]):
                     tokens.append(t[0]); t=t[1:]
@@ -71,10 +70,10 @@ def tokenize(string):
                     tail.append("..."); t=t[:-3].rstrip(".")
                 # Split period (if not an abbreviation).
                 if t.endswith("."):
-                    if t in abbreviations and \
-                      a1.match(t) is None and \
-                      a2.match(t) is None and \
-                      a3.match(t) is None:
+                    if t in abbreviations or \
+                      a1.match(t) is not None or \
+                      a2.match(t) is not None or \
+                      a3.match(t) is not None:
                         break
                     else:
                         tail.append(t[-1]); t=t[:-1]
