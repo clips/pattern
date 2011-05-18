@@ -509,20 +509,21 @@ def _is_tokenstring(string):
 
 class Sentence:
 
-    def __init__(self, string="", token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
+    def __init__(self, string="", token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA], language="en"):
         """ A search object for sentence words, chunks and prepositions.
             The input is a tagged string from MBSP.parse(). 
             The order in which token tags appear can be specified.
         """
         # Extract token format from TokenString if possible.
-        if _is_tokenstring(string) and string.tags != token:
-            token = string.tags
+        if _is_tokenstring(string):
+            token, language = string.tags, getattr(string, "language", language)
         # Ensure Unicode.
         try: string = string.decode("utf-8")
         except:
             pass
         self.parent      = None # Slices will refer to the sentence they are part of.
         self.text        = None # Text object this sentence is part of.
+        self.language    = language
         self.id          = _uid()
         self.token       = list(token)
         self.words       = []
@@ -871,7 +872,7 @@ class Sentence:
         """ Returns a portion of the sentence from word start index to word stop index.
             The returned slice is a subclass of Sentence and a deep copy.
         """
-        s = Slice(token=self.token)
+        s = Slice(token=self.token, language=self.language)
         for i, word in enumerate(self.words[start:stop]):
             # The easiest way to copy (part of) a sentence
             # is by unpacking all of the token tags and passing them to Sentence.append().
@@ -947,7 +948,7 @@ class Sentence:
     @classmethod
     def from_xml(self, xml):
         s = parse_string(xml)
-        return Sentence(s.split("\n")[0], token=s.tags)
+        return Sentence(s.split("\n")[0], token=s.tags, language=s.language)
         
     def nltk_tree(self):
         """ The sentence as an nltk.tree object.
@@ -987,17 +988,17 @@ def chunked(sentence):
 
 class Text(list):
     
-    def __init__(self, string, token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA], encoding="utf-8"):
+    def __init__(self, string, token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA], language="en", encoding="utf-8"):
         """ A list of Sentence objects parsed from the given string.
             The string is the unicode return value from MBSP.parse().
         """
         self.encoding = encoding
         # Extract token format from TokenString if possible.
-        if _is_tokenstring(string) and string.tags != token:
-            token = string.tags
+        if _is_tokenstring(string):
+            token, language = string.tags, getattr(string, "language", language)
         if string:
             for s in string.split("\n"):
-                self.append(Sentence(s, token))
+                self.append(Sentence(s, token, language))
     
     def insert(self, index, sentence):
         list.insert(self, index, sentence)
@@ -1075,6 +1076,7 @@ XML_PNP      = "chunk"    # <chunk type="PNP">, corresponds to PNP chunk object.
 XML_WORD     = "word"     # <word>, corresponds to Word object
 
 # Attributes:
+XML_LANGUAGE = "language" # <sentence language="">, defines the language used.
 XML_TOKEN    = "token"    # <sentence token="">, defines the order of tags in a token.
 XML_TYPE     = "type"     # <word type="">, <chunk type="">
 XML_RELATION = "relation" # <chunk relation="">
@@ -1127,7 +1129,7 @@ def parse_xml(sentence, tab="\t", id=""):
         The id can be used as a unique identifier per sentence for chunk id's and anchors.
         For example: "I eat pizza with a fork." =>
         
-        <sentence token="word, part-of-speech, chunk, preposition, relation, anchor, lemma">
+        <sentence token="word, part-of-speech, chunk, preposition, relation, anchor, lemma" language="en">
             <chunk type="NP" relation="SBJ" of="1">
                 <word type="PRP" lemma="i">I</word>
             </chunk>
@@ -1158,10 +1160,11 @@ def parse_xml(sentence, tab="\t", id=""):
     xml = []
     # Start the sentence element:
     # <sentence token="word, part-of-speech, chunk, preposition, relation, anchor, lemma">
-    xml.append('<%s%s %s="%s">' % (
+    xml.append('<%s%s %s="%s" %s="%s">' % (
         XML_SENTENCE,
         XML_ID and " %s=\"%s\"" % (XML_ID, str(id)) or "",
-        XML_TOKEN, ", ".join(sentence.token)
+        XML_TOKEN, ", ".join(sentence.token),
+        XML_LANGUAGE, sentence.language
     ))
     # Collect chunks that are PNP anchors and assign id.
     anchors = {}
@@ -1249,11 +1252,12 @@ _attachments = {} # {u'A1': [[[u'with', u'IN', u'B-PP', 'B-PNP', u'PP', 'O', u'w
 # This is a fallback if for some reason we fail to import MBSP.TokenString,
 # e.g. when tree.py is part of another project.
 class TaggedString(unicode):
-    def __new__(self, string, tags=["word"]):
+    def __new__(self, string, tags=["word"], language="en"):
         if isinstance(string, unicode) and hasattr(string, "tags"): 
-            tags = string.tags
+            tags, language = string.tags, getattr(string, "language", language)
         s = unicode.__new__(self, string)
         s.tags = list(tags)
+        s.language = language
         return s
 
 def parse_string(xml):
@@ -1267,6 +1271,8 @@ def parse_string(xml):
     for sentence in dom.getElementsByTagName(XML_SENTENCE):
         _anchors.clear()     # Populated by calling _parse_tokens().
         _attachments.clear() # Populated by calling _parse_tokens().
+        # Parse the language from <sentence language="">.
+        language = attr(sentence, XML_LANGUAGE, "en")
         # Parse the token tag format from <sentence token="">.
         # This information is returned in TokenString.tags,
         # so the format and order of the token tags is retained when exporting/importing as XML.
@@ -1299,10 +1305,10 @@ def parse_string(xml):
     # Return a TokenString, which is a unicode string that transforms easily
     # into a plain str, a list of tokens, or a Sentence.
     try:
-        from mbsp import TokenString
-        return TokenString(string, tags=format)
+        if MBSP: from mbsp import TokenString
+        return TokenString(string, tags=format, language=language)
     except:
-        return TaggedString(string, tags=format)
+        return TaggedString(string, tags=format, language=language)
 
 def _parse_tokens(chunk, format=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
     """ Parses tokens from <word> elements in the given XML <chunk> element.

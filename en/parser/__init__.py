@@ -11,6 +11,7 @@ from brill import Lexicon
 
 import re
 import os
+
 try: 
     MODULE = os.path.dirname(__file__)
 except:
@@ -313,14 +314,12 @@ def find_prepositions(chunked):
 #### LEMMATIZER ######################################################################################
 # Word lemmas using singularization and verb conjugation from the inflect module.
 
-try: from pattern.en.inflect import singularize, conjugate
+try: 
+    import os, sys; sys.path.insert(0, os.path.join(MODULE, ".."))
+    from inflect import singularize, conjugate
 except:
-    try: 
-        import os, sys; sys.path.append(os.path.join(MODULE, ".."))
-        from inflect import singularize, conjugate
-    except:
-        singularize = lambda w: w
-        conjugate = lambda w,t: w
+    singularize = lambda w: w
+    conjugate = lambda w,t: w
 
 def lemma(word, pos="NN"):
     """ Returns the lemma of the given word, e.g. horses/NNS => horse, am/VBP => be.
@@ -328,12 +327,12 @@ def lemma(word, pos="NN"):
     """
     if pos == "NNS":
         return singularize(word)
-    if pos.startswith("VB"):
+    if pos.startswith(("VB","MD")):
         return conjugate(word, "infinitive") or word
     return word
 	
 def find_lemmata(tagged):
-    """ Appends the lemma to the given (token, tag)-tuple.
+    """ Appends the lemma to the given list of (token, tag)-tuples.
     """
     for token in tagged:
         token.append(lemma(token[0].lower(), pos=len(token)>1 and token[1] or None))
@@ -425,7 +424,7 @@ def tag(s, tokenize=True, encoding="utf-8", default="NN", light=False):
 # From the folder that contains the "pattern" folder:
 # python -m pattern.en.parser xml -s "Hello, my name is Dr. Sbaitso. Nice to meet you." -OTCLI
 
-def main():
+def commandline(parse=parse):
     import optparse
     import codecs
     p = optparse.OptionParser()
@@ -472,4 +471,4 @@ def main():
         print s
 
 if __name__ == "__main__":
-    main()
+    commandline(parse)

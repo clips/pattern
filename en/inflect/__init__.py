@@ -4,7 +4,7 @@
 # License: BSD (see LICENSE.txt for details).
 
 ######################################################################################################
-# A set of rule-based tools for word inflection:
+# A set of rule-based tools for English word inflection:
 # - pluralization and singularization of nouns and adjectives,
 # - conjugation of verbs,
 # - comparatives and superlatives of adjectives.
@@ -17,10 +17,13 @@ try:
 except:
     MODULE = ""
 
-VERB = "VB"
-NOUN = "NN"
-ADJECTIVE = "JJ"
-ADVERB = "RB"
+VERB, NOUN, ADJECTIVE, ADVERB = "VB", "NN", "JJ", "RB"
+
+# Accuracy (measured on CELEX English morphology word forms):
+# 95% pluralize()
+# 96% singularize()
+# 95% _parse_lemma()
+# 96% _parse_lexeme()
 
 #### ARTICLE #########################################################################################
 # Based on the Ruby Linguistics module by Michael Granger:
@@ -365,7 +368,7 @@ def pluralize(word, pos=NOUN, custom={}, classical=True):
                         return suffix.sub(inflection, word)
     
     return word
-    
+
 #print pluralize("part-of-speech")
 #print pluralize("child")
 #print pluralize("dog's")
@@ -557,43 +560,22 @@ def singularize(word, pos=NOUN, custom={}):
 # Each verb has morphs for infinitive, 3rd singular present, present participle, past and past participle.
 # Verbs like "be" have other morphs as well (i.e. I am, you are, she is, they aren't).
 # The following verbs can be negated: be, can, do, will, must, have, may, need, dare, ought.
-    
-_verb_tenses = None
-_verb_lemmas = None
-def _load_verbs():
-    # The data is lazily loaded when base() is called the first time.
-    # The verb.txt morphology is adopted from the XTAG morph_english.flat: 
-    # http://www.cis.upenn.edu/~xtag/
-    global _verb_tenses
-    global _verb_lemmas
-    _verb_tenses = {}
-    _verb_lemmas = {}
-    path = os.path.join(MODULE, "verbs.txt")
-    data = open(path).readlines()
-    for i in range(len(data)):
-        if not data[i].startswith(";;;"):
-            tenses = data[i].strip().split(",")
-            base = tenses[0]
-            _verb_tenses[base] = tenses
-            for x in tenses: 
-                if x != "":
-                    _verb_lemmas[x] = base
-    del data
 
-BASE = INFINITIVE = INF = VB      = "infinitive"
-PRESENT_1ST_PERSON_SINGULAR = VBP = "present 1st person singular"
-PRESENT_2ND_PERSON_SINGULAR       = "present 2nd person singular"
-PRESENT_3RD_PERSON_SINGULAR = VBZ = "present 3rd person singular"
-PRESENT_PLURAL                    = "present plural"
-PRESENT_PARTICIPLE = PROGRESSIVE = GERUND = VBG = "present participle"
-PAST = VBD                        = "past"
-PAST_1ST_PERSON_SINGULAR          = "past 1st person singular"
-PAST_2ND_PERSON_SINGULAR          = "past 2nd person singular"
-PAST_3RD_PERSON_SINGULAR          = "past 3rd person singular"
-PAST_PLURAL                       = "past plural"
-PAST_PARTICIPLE = VBN             = "past participle"
+INFINITIVE                  = "infinitive"
+PRESENT_1ST_PERSON_SINGULAR = "present 1st person singular"
+PRESENT_2ND_PERSON_SINGULAR = "present 2nd person singular"
+PRESENT_3RD_PERSON_SINGULAR = "present 3rd person singular"
+PRESENT_PLURAL              = "present plural"
+PRESENT_PARTICIPLE          = "present participle"
+PAST                        = "past"
+PAST_1ST_PERSON_SINGULAR    = "past 1st person singular"
+PAST_2ND_PERSON_SINGULAR    = "past 2nd person singular"
+PAST_3RD_PERSON_SINGULAR    = "past 3rd person singular"
+PAST_PLURAL                 = "past plural"
+PAST_PARTICIPLE             = "past participle"
 
-_verb_tenses_keys = {
+# Index of a tense in the source lexicon:
+tenses_index = {
     INFINITIVE                  : 0,
     PRESENT_1ST_PERSON_SINGULAR : 1,
     PRESENT_2ND_PERSON_SINGULAR : 2,
@@ -608,7 +590,8 @@ _verb_tenses_keys = {
     PAST_PARTICIPLE             : 11
 }
 
-_verb_tenses_aliases = (
+# Shorthand tenses can be passed to conjugate() and Tenses.__contains__():
+tenses_alias = (
     (INFINITIVE,                  ["inf", "VB"]),
     (PRESENT_1ST_PERSON_SINGULAR, ["1sg", "VBP"]),
     (PRESENT_2ND_PERSON_SINGULAR, ["2sg"]),
@@ -622,130 +605,128 @@ _verb_tenses_aliases = (
     (PAST_PLURAL,                 ["ppl", "pplural"]),
     (PAST_PARTICIPLE,             ["ppart", "VBN"]),    
 )
-
-# Reform the aliases to a (alias, tense)-dictionary.
 a = {}
-for key, values in _verb_tenses_aliases:
-    for v in values:
-        a[v] = key
-_verb_tenses_aliases = a
+for k,v in tenses_alias:
+    for v in v: 
+        a[v] = k
+tenses_alias = a # alias => tense
 
-def base(verb, parse=False):
-    if _verb_tenses is None:
-        _load_verbs()
-    if verb.lower() in _verb_lemmas:
-        return _verb_lemmas[verb.lower()]
-    if verb in _verb_lemmas:
-        return _verb_lemmas[verb]
-    if parse is True:
-        # Rule-based approach.
-        return _parse_lemma(verb)
-
-infinitive = lemma = base
-
-def conjugate(verb, tense=INFINITIVE, negated=False, parse=False):
-    """ Inflects the verb and returns the given tense (or None).
-        For example: be
-        - present 1sg/2sg/3sg/pl => I am, you are, she is, we are
-        - present participle => being,
-        - past => I was, you were, he was, we were
-        - past participle => been,
-        - negated present => I am not, you aren't, it isn't.
-    """
-    t = _verb_tenses_aliases.get(tense, tense) # Disambiguate aliases like "pl" => "present plural".
-    i = _verb_tenses_keys.get(t)               # Get the associated tense index.
-    b = base(verb)
-    if negated is True:
-        i += len(_verb_tenses_keys) # Negated forms are at the end of the list of tenses.
-    if b is not None:
-        x = _verb_tenses[b][i]
-        if x == "":
-            if 0<i<=5: return b                   # no morph for 1sg/2sg/3sg => return base form.
-            if 5<i<=9: return _verb_tenses[b][10] # no morph for 1sgp/2sgp/3sgp => return past form.
-        if x != "":
-            return x
-    if parse is True:
-        # Rule-based approach.
-        return _parse_lexeme(_parse_lemma(verb))[i]
-
-def conjugations(verb, parse=False):
-    """ Returns all possible inflections of the given verb.
-    """
-    b = base(verb)
-    if b is not None:
-        a = [x for x in _verb_tenses.get(b,[]) if x != ""]
-        u = []; [u.append(x) for x in a if x not in u]
-        return u
-    if parse is True:
-        # Rule-based approach.
-        a = _parse_lexeme(_parse_lemma(verb))
-        return [a[0], a[3], a[5], a[6]]
+class Verbs:
     
-lexeme = conjugations
+    def __init__(self, path=os.path.join(MODULE, "verbs.txt")):
+        self.path    = path
+        self._tenses = None # Dictionary of infinitive => list of tenses.
+        self._lemmas = None # Dictionary of tense => infinitive. 
+        self.parse_lemma  = lambda v: v
+        self.parse_lexeme = lambda v: []
+    
+    def load(self):
+        # The data is lazily loaded when lemma() is called the first time.
+        # The verb.txt morphology is adopted from the XTAG morph_english.flat: 
+        # http://www.cis.upenn.edu/~xtag/
+        self._tenses = {}
+        self._lemmas = {}
+        for v in (v for v in reversed(open(self.path).readlines()) if not v.startswith(";;;")):
+            v = v.strip().split(",")
+            self._tenses[v[0]] = v
+            for tense in (tense for tense in v if tense != ""): 
+                self._lemmas[tense] = v[0]
+
+    def lemma(self, verb, parse=True):
+        """ Returns the infinitive form of the given verb (or None).
+        """
+        if self._tenses is None:
+            self.load()
+        if verb.lower() in self._lemmas:
+            return self._lemmas[verb.lower()]
+        if verb in self._lemmas:
+            return self._lemmas[verb]
+        if parse is True:
+            # Rule-based approach.
+            return self.parse_lemma(verb)
+
+    def lexeme(self, verb, parse=True):
+        """ Returns all possible inflections of the given verb.
+        """
+        b = self.lemma(verb)
+        if b in self._tenses:
+            a = [x for x in self._tenses.get(b,[]) if x != ""]
+            u = []; [u.append(x) for x in a if x not in u]
+            return u
+        if parse is True:
+            # Rule-based approach.
+            a = self.parse_lexeme(self.parse_lemma(verb))
+            return [a[0], a[3], a[5], a[6]]
+        return []
+
+    def conjugate(self, verb, tense=INFINITIVE, negated=False, parse=True):
+        """ Inflects the verb and returns the given tense (or None).
+            For example: be
+            - present 1sg/2sg/3sg/pl => I am, you are, she is, we are
+            - present participle => being,
+            - past => I was, you were, he was, we were
+            - past participle => been,
+            - negated present => I am not, you aren't, it isn't.
+        """
+        # Disambiguate aliases: "pl" => "present plural".
+        # Get the associated tense index.
+        t = tenses_alias.get(tense, tense) 
+        i = tenses_index.get(t) + (negated and len(tenses_index) or 0)
+        b = self.lemma(verb)
+        if b in self._tenses:
+            x = self._tenses[b][i]
+            if x == "":
+                # No tense for 1sg/2sg/3sg => return base form.
+                if 0 < i <= 5: x = b
+                # No tense for 1sgp/2sgp/3sgp => return past form.
+                if 5 < i <= 9: x = self._tenses[b][10]
+            return x
+        if parse is True:
+            # Rule-based approach.
+            return self.parse_lexeme(self.parse_lemma(verb))[i]
+
+    def tenses(self, verb, parse=True):
+        """ Returns a list of tenses for the given verb inflection.
+        """
+        verb = verb.lower()
+        b = self.lemma(verb)
+        a = []
+        if b in self._tenses:
+            for tense, i in tenses_index.items():
+                t = self._tenses[b]
+                if t[i] == verb \
+                or t[i+len(tenses_index)] == verb \
+                or t[i] == "" and 0 < i <= 5 and verb == b \
+                or t[i] == "" and 5 < i <= 9 and verb == t[10]:
+                    a.append(tense)
+        elif parse is True:
+            # Rule-based approach.
+            v = self.parse_lexeme(self.parse_lemma(verb))
+            [a.append(tense) for tense, i in tenses_index.items() if i<len(v) and v[i] == verb]
+        return Tenses(sorted(a))
 
 class Tenses(list):
     def __contains__(self, tense):
         # t in tenses(verb) also works when t is an alias (e.g. "1sg").
-        return list.__contains__(self, _verb_tenses_aliases.get(tense, tense))
+        return list.__contains__(self, tenses_alias.get(tense, tense))
 
-def tenses(verb, parse=True):
-    """ Returns a list of tenses for the given verb inflection.
-    """
-    verb = verb.lower()
-    b = base(verb)
-    a = []
-    if b in _verb_tenses:
-        for tense, i in _verb_tenses_keys.items():
-            t = _verb_tenses[b]
-            if t[i] == verb \
-            or t[i+len(_verb_tenses_keys)] == verb \
-            or t[i] == "" and 0<i<=5 and verb == b \
-            or t[i] == "" and 5<i<=9 and verb == t[10]:
-                a.append(tense)
-    if parse is True:
-        # Rule-based approach.
-        v = _parse_lexeme(_parse_lemma(verb))
-        [a.append(tense) for tense, i in _verb_tenses_keys.items() if v[i] == verb]
-    return Tenses(sorted(a))
+_verbs = Verbs()
+conjugate, lemma, lexeme, tenses = \
+    _verbs.conjugate, _verbs.lemma, _verbs.lexeme, _verbs.tenses
+
+#print conjugate("is", "ppart")
+#print lemma("went")
+#print lexeme("have")
+#print tenses("have")
 
 #--- RULE-BASED VERB CONJUGATION ----------------------------------------------------------------------
 
 VOWELS = "aeiouy"
 re_vowel = re.compile(r"a|e|i|o|u|y", re.I)
 
-def _parse_lexeme(verb):
-    """ For a regular verb (base form), returns the forms using a rule-based approach.
-    """
-    v = verb.lower()
-    if len(v) > 1 and v.endswith("e") and v[-2] not in VOWELS:
-        # Verbs ending in a consonant followed by "e": dance, save, devote, evolve.
-        return [v, v, v, v+"s", v, v[:-1]+"ing"] + [v+"d"]*6
-    if len(v) > 1 and v.endswith("y") and v[-2] not in VOWELS:
-        # Verbs ending in a consonant followed by "y": comply, copy, magnify.
-        return [v, v, v, v[:-1]+"ies", v, v+"ing"] + [v[:-1]+"ied"]*6
-    if v.endswith(("ss","sh","ch","x")):
-        # Verbs ending in sibilants: kiss, bless, box, polish, preach.
-        return [v, v, v, v+"es", v, v+"ing"] + [v+"ed"]*6
-    if v.endswith("ic"):
-        # Verbs ending in -ic: panic, mimic.
-        return [v, v, v, v+"es", v, v+"king"] + [v+"ked"]*6
-    if len(v) > 1 and v[-1] not in VOWELS and v[-2] not in VOWELS:
-        # Verbs ending in a consonant cluster: delight, clamp.
-        return [v, v, v, v+"s", v, v+"ing"] + [v+"ed"]*6
-    if (len(v) > 1 and v.endswith(("y","w")) and v[-2] in VOWELS) \
-    or (len(v) > 2 and v[-1] not in VOWELS and v[-2] in VOWELS and v[-3] in VOWELS) \
-    or (len(v) > 3 and v[-1] not in VOWELS and v[-3] in VOWELS and v[-4] in VOWELS):
-        # Verbs ending in a long vowel or diphthong followed by a consonant: paint, devour, play.
-        return [v, v, v, v+"s", v, v+"ing"] + [v+"ed"]*6
-    if len(v) > 2 and v[-1] not in VOWELS and v[-2] in VOWELS and v[-3] not in VOWELS:
-        # Verbs ending in a short vowel followed by a consonant: chat, chop, or compel.
-        return [v, v, v, v+"s", v, v+v[-1]+"ing"] + [v+v[-1]+"ed"]*6
-    return [v, v, v, v+"s", v, v+"ing"] + [v+"ed"]*6
-
 def _parse_lemma(verb):
     """ Returns the base form of the given inflected verb, using a rule-based approach.
-        This is problematic if a verb ending in -e is given in the past tense or gerund
-        (error rate is about 12/100 in this case).
+        This is problematic if a verb ending in -e is given in the past tense or gerund.
     """
     v = verb.lower()
     b = False
@@ -754,6 +735,7 @@ def _parse_lemma(verb):
             return v[:-3]+"y" # complies => comply
         if v.endswith(("sses", "shes", "ches", "xes")):
             return v[:-2]     # kisses => kiss
+        return v[:-1]
     if v.endswith("ied") and re_vowel.search(v[:-3]) is not None:
         return v[:-3]+"y"     # envied => envy
     if v.endswith("ing") and re_vowel.search(v[:-3]) is not None:
@@ -786,6 +768,60 @@ def _parse_lemma(verb):
         if v.endswith(("th","ang","un","cr","vr","rs","ps","tr")):
             return v+"e"
     return v
+
+def _parse_lexeme(verb):
+    """ For a regular verb (base form), returns the forms using a rule-based approach.
+    """
+    v = verb.lower()
+    if len(v) > 1 and v.endswith("e") and v[-2] not in VOWELS:
+        # Verbs ending in a consonant followed by "e": dance, save, devote, evolve.
+        return [v, v, v, v+"s", v, v[:-1]+"ing"] + [v+"d"]*6
+    if len(v) > 1 and v.endswith("y") and v[-2] not in VOWELS:
+        # Verbs ending in a consonant followed by "y": comply, copy, magnify.
+        return [v, v, v, v[:-1]+"ies", v, v+"ing"] + [v[:-1]+"ied"]*6
+    if v.endswith(("ss","sh","ch","x")):
+        # Verbs ending in sibilants: kiss, bless, box, polish, preach.
+        return [v, v, v, v+"es", v, v+"ing"] + [v+"ed"]*6
+    if v.endswith("ic"):
+        # Verbs ending in -ic: panic, mimic.
+        return [v, v, v, v+"es", v, v+"king"] + [v+"ked"]*6
+    if len(v) > 1 and v[-1] not in VOWELS and v[-2] not in VOWELS:
+        # Verbs ending in a consonant cluster: delight, clamp.
+        return [v, v, v, v+"s", v, v+"ing"] + [v+"ed"]*6
+    if (len(v) > 1 and v.endswith(("y","w")) and v[-2] in VOWELS) \
+    or (len(v) > 2 and v[-1] not in VOWELS and v[-2] in VOWELS and v[-3] in VOWELS) \
+    or (len(v) > 3 and v[-1] not in VOWELS and v[-3] in VOWELS and v[-4] in VOWELS):
+        # Verbs ending in a long vowel or diphthong followed by a consonant: paint, devour, play.
+        return [v, v, v, v+"s", v, v+"ing"] + [v+"ed"]*6
+    if len(v) > 2 and v[-1] not in VOWELS and v[-2] in VOWELS and v[-3] not in VOWELS:
+        # Verbs ending in a short vowel followed by a consonant: chat, chop, or compel.
+        return [v, v, v, v+"s", v, v+v[-1]+"ing"] + [v+v[-1]+"ed"]*6
+    return [v, v, v, v+"s", v, v+"ing"] + [v+"ed"]*6
+
+_verbs.parse_lemma  = _parse_lemma
+_verbs.parse_lexeme = _parse_lexeme
+
+#print conjugate("imaginarify", "part", parse=True)
+#print conjugate("imaginarify", "part", parse=False)
+
+# Accuracy of _parse_lemma():
+#_verbs.load()
+#i = 0
+#for v in _verbs._tenses:
+#    for tense in ("inf","1sg","2sg","3sg","past","pl","part","ppart"):
+#        if _parse_lemma(conjugate(v, tense)) != v: i+=1
+#print float(i) / len(_verbs._tenses)*8
+
+# Accuracy of _parse_lexeme():
+#_verbs.load()
+#i = 0
+#n = 0
+#for v, x1 in _verbs._tenses.iteritems():
+#    x2 = _parse_lexeme(v)
+#    for j in range(len(x2)):
+#        if x1[j] and x1[j] != x2[j]: i+=1
+#        n += 1
+#print float(i) / n
 
 #### COMPARATIVE & SUPERLATIVE ########################################################################
 
@@ -857,3 +893,11 @@ def comparative(adjective):
 
 def superlative(adjective):
     return grade(adjective, SUPERLATIVE)
+
+#### ATTRIBUTIVE & PREDICATIVE ########################################################################
+
+def attributive(adjective):
+    return adjective
+
+def predicative(adjective):
+    return adjective

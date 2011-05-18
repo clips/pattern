@@ -7,7 +7,7 @@ if not hasattr(DistributionMetadata, 'classifiers'):
 
 setup(
             name = "Pattern",
-         version = "1.7",
+         version = "1.8",
      description = "Web mining module for Python.",
          license = "BSD",
           author = "Tom De Smedt",
@@ -28,6 +28,9 @@ setup(
         "pattern.en.wordlists",
         "pattern.en.wordnet", 
         "pattern.en.wordnet.pywordnet",
+        "pattern.nl",
+        "pattern.nl.parser",
+        "pattern.nl.inflect",
         "pattern.vector",
         "pattern.graph"
     ],
@@ -41,6 +44,8 @@ setup(
         "pattern.en.wordlists"         : ["*.txt"], 
         "pattern.en.wordnet"           : ["*.txt", "dict/*"], 
         "pattern.en.wordnet.pywordnet" : ["*"],
+        "pattern.nl.parser"            : ["*.txt"],
+        "pattern.nl.inflect"           : ["*.txt"], 
         "pattern.vector"               : ["*.txt"], 
         "pattern.graph"                : ["js/*.js"],
         "pattern" : [
@@ -66,6 +71,7 @@ setup(
         "Topic :: Scientific/Engineering :: Visualization",
         "Topic :: Text Processing :: Linguistic",
         "Topic :: Text Processing :: Markup :: HTML",
-        "Natural Language :: English"
+        "Natural Language :: English",
+        "Natural Language :: Dutch"
     ]
 )

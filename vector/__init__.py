@@ -32,7 +32,7 @@ except:
 try: from pattern.en.inflect import singularize, conjugate
 except:
     try: 
-        import sys; sys.path.append(os.path.join(MODULE, ".."))
+        import sys; sys.path.insert(0, os.path.join(MODULE, ".."))
         from en.inflect import singularize, conjugate
     except:
         singularize = lambda w: w

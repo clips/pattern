@@ -6,7 +6,7 @@ Pattern is a web mining module for the Python programming language. It bundles t
 VERSION
 =======
 
-1.7
+1.8
 
 LICENSE
 =======
@@ -16,7 +16,7 @@ BSD, see LICENSE.txt for further details.
 INSTALLATION
 ============
 
-Pattern is written for Python 2.4+ (no support for Python 3 yet). The module has no external dependencies except when using LSA in the vector module, which requires NumPy (installed by default on Mac OS X). To install it so that the module is available in all your scripts, open a terminal and do:
+Pattern is written for Python 2.4+ (no support for Python 3 yet). The module has no external dependencies except when using LSA in the vector module, which requires NumPy (installed by default on Mac OS X). To install it so that the module is available in all your scripts, from the command line do:
 > cd pattern
 > python setup.py install
 
@@ -43,5 +43,4 @@ Authors:
 - Walter Daelemans
 
 Contributing authors:
-- Frederik De Bleser
-- Thomas Crombez
+Frederik De Bleser, Jason Wiener, Jeroen Geertzen, Thomas Crombez

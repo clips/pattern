@@ -446,6 +446,7 @@ var Edge = Class.extend({
 
 /*--- GRAPH ----------------------------------------------------------------------------------------*/
 
+// Dropshadow opacity:
 var SHADOW = 0.65;
 
 // Graph layouts:

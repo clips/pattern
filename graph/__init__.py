@@ -709,7 +709,7 @@ def edges(path):
     # For example, the distance (i.e., edge weight sum) of a path:
     # sum(e.weight for e in edges(path))
     return len(path) > 1 and (n.links.edge(path[i+1]) for i,n in enumerate(path[:-1])) or iter(())
-
+    
 #--- GRAPH THEORY ------------------------------------------------------------------------------------
 
 def adjacency(graph, directed=False, reversed=False, stochastic=False, heuristic=None):
