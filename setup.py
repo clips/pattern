@@ -25,7 +25,7 @@ setup(
         "pattern.en", 
         "pattern.en.inflect", 
         "pattern.en.parser", 
-        "pattern.en.wordlists",
+        "pattern.en.wordlist",
         "pattern.en.wordnet", 
         "pattern.en.wordnet.pywordnet",
         "pattern.nl",
