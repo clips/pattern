@@ -21,7 +21,8 @@ import codecs
 import cPickle
 import stemmer; _stemmer=stemmer
 
-from math      import log
+from math      import pow, log
+from random    import random
 from itertools import izip
 
 try:
@@ -37,9 +38,9 @@ except:
     except:
         singularize = lambda w: w
         conjugate = lambda w,t: w
-        
-#-----------------------------------------------------------------------------------------------------
-    
+
+#--- STRING FUNCTIONS --------------------------------------------------------------------------------
+            
 def decode_utf8(string):
     """ Returns the given string as a unicode string (if possible).
     """
@@ -66,7 +67,7 @@ def lreplace(a, b, string):
     if string.startswith(a): 
         return b + string[len(a):]
     return string
-    
+       
 def rreplace(a, b, string):
     """ Replaces the tail of the string.
     """
@@ -88,7 +89,7 @@ def filename(path, map={"_":" "}):
 class ReadOnlyError(Exception):
     pass
 
-# Read-only dictionary, used for Document.terms and Corpus.document.
+# Read-only dictionary, used for Document.terms and Document.vector.
 # These can't be updated because it invalidates the cache.
 class readonlydict(dict):
     def __setitem__(self, k, v):
@@ -107,7 +108,8 @@ class readonlydict(dict):
         if k in self: 
             return self[k]
         raise ReadOnlyError
-        
+
+# Read-only list, used for Corpus.documents.
 class readonlylist(list):
     def __setitem__(self, i, v):
         raise ReadOnlyError
@@ -129,7 +131,7 @@ class readonlylist(list):
 #--- FREQUENCY+TERM LIST -----------------------------------------------------------------------------
 
 # List of (frequency, term)-items that prints frequency with a rounded precision.
-# This is used for the output of Document.keywords() and Corpus.related() (=easier to read).
+# This is used for the output of Document.keywords() and Corpus.similar() (=easier to read).
 class ftlist(list):
     def __repr__(self):
         return repr([("%.3f"%f, t) for f, t in self])
@@ -145,7 +147,7 @@ stopwords = _stopwords = dict.fromkeys(
 
 #--- WORD COUNT --------------------------------------------------------------------------------------
 
-PUNCTUATION = u"#[]():;,.!?\n\r\t\f ®"
+PUNCTUATION = "#[]():;,.!?\n\r\t\f "
 
 def words(string, filter=lambda w: w.isalpha() and len(w)>1, punctuation=PUNCTUATION, **kwargs):
     """ Returns a list of words from the given string.
@@ -164,6 +166,8 @@ def stem(word, stemmer=PORTER, **kwargs):
         With stemmer=PORTER, the Porter2 stemming algorithm is used.
         With stemmer=LEMMA, either uses Word.lemma or inflect.singularize().
     """
+    if stemmer is None:
+        return word
     if stemmer == PORTER:
         return _stemmer.stem(decode_utf8(word).lower(), **kwargs)
     if stemmer == LEMMA:
@@ -175,6 +179,8 @@ def stem(word, stemmer=PORTER, **kwargs):
             if word.pos.startswith("VB"):
                 return conjugate(word.string.lower(), "infinitive") or word
         return singularize(word)
+    if type(stemmer).__name__ == "function":
+        return stemmer(word)
     return word
 
 def count(words=[], top=None, threshold=0, stemmer=PORTER, exclude=[], stopwords=False, **kwargs):
@@ -210,7 +216,8 @@ __UID = 0
 def _uid():
     global __UID; __UID+=1; return __UID
 
-TF, TFIDF = "tf", "tf-idf"
+# Term relevancy weight:
+TF, TFIDF, TF_IDF = "tf", "tf-idf", "tf-idf"
 
 class Document(object):
     
@@ -324,7 +331,7 @@ class Document(object):
         
     tf = term_frequency
     
-    def relevancy(self, word, weight=TFIDF):
+    def term_frequency_inverse_document_frequency(self, word, weight=TFIDF):
         """ Returns the word relevancy as tf*idf.
             The relevancy is a measure of how frequent the word occurs in the document,
             compared to its frequency in other documents in the corpus.
@@ -336,14 +343,14 @@ class Document(object):
             w *= self._corpus and self._corpus.idf(word) or 1
         return w
         
-    tf_idf = tfidf = relevancy
+    tf_idf = tfidf = term_frequency_inverse_document_frequency
     
     @property
     def vector(self):
         """ Yields a dictionary of (word, relevancy)-items from the document, based on tf-idf.
         """
         # See the Vector class below. It's just a dict with some extra functionality (copy, norm, etc.)
-        if not self._vector: self._vector = Vector(((w, self.tfidf(w)) for w in self._terms))
+        if not self._vector: self._vector = Vector(((w, self.tf_idf(w)) for w in self._terms))
         return self._vector
         
     def keywords(self, top=10, normalized=True):
@@ -355,19 +362,18 @@ class Document(object):
         v = heapq.nsmallest(top, v, key=lambda v: (-v[0],v[1]))
         return ftlist(v)
     
-    def similarity(self, document):
+    def cosine_similarity(self, document):
         """ Returns the similarity between the two documents as a number between 0.0-1.0.
             If both documents are in the same corpus the calculations are cached for reuse.
         """
         if self._corpus: 
-            return self._corpus.similarity(self, document)
-        elif document._corpus:
-            return document._corpus.similarity(self, document)
-        else:
-            f = Corpus((self, document)).similarity(self, document)
-            # Unlink both documents from the ad-hoc corpus:
-            self._corpus = document._corpus = None
-            return f
+            return self._corpus.cosine_similarity(self, document)
+        if document._corpus:
+            return document._corpus.cosine_similarity(self, document)
+        # Use dict copies to ensure that the values are in the same order:
+        return cosine_similarity(self.vector(self).values(), self.vector(document).values())
+            
+    similarity = cosine_similarity
     
     def copy(self):
         d = Document(name=self.name); dict.update(d._terms, self._terms); return d
@@ -403,13 +409,13 @@ class Vector(readonlydict):
             n = the square root of the sum of the absolute squares of the values.
             The matrix norm is used when calculating cosine similarity between documents.
         """
-        if not self._norm: self._norm = sum(x**2 for x in self.itervalues())**0.5
+        if not self._norm: self._norm = l2_norm(self.itervalues())
         return self._norm
         
     norm = l2_norm = frobenius_norm
     
     def copy(self):
-        return Vector(self)
+        return Vector(self, weight=self.weight)
 
     def __call__(self, vector={}):
         if isinstance(vector, (Document, Corpus)):
@@ -420,11 +426,30 @@ class Vector(readonlydict):
         # Only keys that appear in this vector will be updated (i.e. no new keys are added).
         V = self.copy(); dict.update(V, ((k,v) for k,v in vector.iteritems() if k in V)); return V
 
+# These functions are useful if you work with a bare matrix instead of Document and Corpus.
+# Given vectors must be lists of values (not iterators).
+# See also k_means() and hierarchical.
+def l2_norm(vector):
+    return sum(x**2 for x in vector) ** 0.5
+
+def cosine_similarity(vector1, vector2):
+    return sum(a*b for a,b in izip(vector1, vector2)) / (l2_norm(vector1) * l2_norm(vector2) or 1)
+    
+def tf_idf(vectors):
+    for i in range(len(vectors[0])):
+        idf.append(sum(1.0 for v in vectors if v[i] > 0))
+        idf[-1] = log(len(vectors) / (idf[-1] or 1))
+    return [[v[i] * idf[i] for i in range(len(v))] for v in vectors]
+
 #### CORPUS ##########################################################################################
 
 #--- CORPUS ------------------------------------------------------------------------------------------
 
+# LSA reduction methods:
 NORM, TOP300 = "norm", "top300"
+
+# Clustering methods:
+KMEANS, HIERARCHICAL = "k-means", "hierarchical"
 
 class Corpus(object):
     
@@ -438,12 +463,17 @@ class Corpus(object):
         self._df         = {}             # Cache of document frequency per word.
         self._similarity = {}             # Cache of ((D1.id,D2.id), weight)-items (cosine similarity).
         self._vector     = None           # Cache of corpus vector with all the words in the corpus.
+        self._reduced    = False          # True when LSA is applied to the vector space.
         self._update()
         self.extend(documents)
     
     @property
     def documents(self):
         return self._documents
+
+    @property
+    def reduced(self):
+        return self._reduced
     
     @classmethod
     def build(Corpus, path, *args, **kwargs):
@@ -469,8 +499,8 @@ class Corpus(object):
             and cached vectors and similarities are stored
         """
         if update:
-            for d1 in self._documents:
-                for d2 in self._documents:
+            for d1 in self.documents:
+                for d2 in self.documents:
                     self.cosine_similarity(d1, d2) # Update the entire cache before saving.
         cPickle.dump(self, open(path, "w"))
     
@@ -480,17 +510,17 @@ class Corpus(object):
         self._vector = None
         self._df = {}
         self._similarity = {}
-        for document in self._documents:
+        for document in self.documents:
             document._vector = None
     
     def __len__(self):
-        return len(self._documents)
+        return len(self.documents)
     def __iter__(self):
-        return iter(self._documents)
+        return iter(self.documents)
     def __getitem__(self, i):
-        return self._documents.__getitem__(i)
+        return self.documents.__getitem__(i)
     def __delitem__(self, i):
-        d = list.pop(self._documents, i)
+        d = list.pop(self.documents, i)
         d._corpus = None
         self._index.pop(d.name, None)
         self._update()
@@ -506,7 +536,7 @@ class Corpus(object):
         document._corpus = self
         if document.name is not None:
             self._index[document.name] = document
-        list.append(self._documents, document)
+        list.append(self.documents, document)
         self._update()
         
     def extend(self, documents):
@@ -514,18 +544,18 @@ class Corpus(object):
             document._corpus = self
             if document.name is not None:
                 self._index[document.name] = document
-        list.extend(self._documents, documents)
+        list.extend(self.documents, documents)
         self._update()
         
     def remove(self, document):
-        self.__delitem__(self._documents.index(document))
+        self.__delitem__(self.documents.index(document))
         
     def document(self, name):
         # This assumes document names are unique.
         if name in self._index:
             return self._index[name]
         if isinstance(name, int):
-            return self._documents[name]
+            return self.documents[name]
         
     def document_frequency(self, word):
         """ Returns the document frequency of a word.
@@ -533,16 +563,16 @@ class Corpus(object):
             df = number of documents containing the word / number of documents.
             The more occurences of the word across the corpus, the higher its df weight.
         """
-        if len(self._documents) == 0:
+        if len(self.documents) == 0:
             return 0        
         if len(self._df) == 0:
             # Caching document frequency for each word gives a whopping 300x performance boost
             # (calculate all of them once). Drawback: if you need TF-IDF for just one document.
-            for d in self._documents:
+            for d in self.documents:
                 for w in d.terms:
                     self._df[w] = (w in self._df) and self._df[w]+1 or 1
             for w, f in self._df.iteritems():
-                self._df[w] /= float(len(self._documents))
+                self._df[w] /= float(len(self.documents))
         return self._df[word]
         
     df = document_frequency
@@ -566,7 +596,7 @@ class Corpus(object):
         """
         if not self._vector: 
             self._vector = Vector();
-            for d in self._documents:
+            for d in self.documents:
                 for word in d.terms: 
                     dict.setdefault(self._vector, word, 0)
         return self._vector
@@ -589,28 +619,32 @@ class Corpus(object):
         if (id1,id2) in self._similarity: return self._similarity[(id1,id2)]
         if (id2,id1) in self._similarity: return self._similarity[(id2,id1)]
         # Calculate the matrix multiplication of the document vectors.
-        v1 = self.vector(document1)
-        v2 = self.vector(document2)
-        dot = sum(a*b for a,b in izip(v1.itervalues(), v2.itervalues()))
+        #v1 = self.vector(document1)
+        #v2 = self.vector(document2)
+        #dot = cosine_similarity(v1.itervalues(), v2.itervalues())
+        # This is exponentially faster (0.25 seconds vs. 8 seconds):
+        dot = sum(document1.vector.get(w,0) * f for w, f in document2.vector.iteritems())
         # It makes no difference if we use v1.norm or document1.vector.norm,
         # so we opt for the second choice because it is cached.
-        s = float(dot) / (document1.vector.norm * document2.vector.norm)
+        s = float(dot) / (document1.vector.norm * document2.vector.norm or 1)
         # Cache the similarity weight for reuse.
         self._similarity[(id1,id2)] = s
         return s
         
     similarity = cosine_similarity
     
-    def related(self, document, top=10):
+    def nearest_neighbors(self, document, top=10):
         """ Returns a list of (weight, document)-tuples in the corpus, 
             sorted by similarity to the given document.
         """
-        v = ((self.similarity(document, d), d) for d in self._documents)
+        v = ((self.cosine_similarity(document, d), d) for d in self.documents)
         # Filter the input document from the matches.
         # Filter documents that scored 0.0 and return the top.
         v = [(w, d) for w, d in v if w > 0 and d.id != document.id]
         v = heapq.nsmallest(top, v, key=lambda v: (-v[0],v[1]))
         return ftlist(v)
+        
+    similar = related = nn = nearest_neighbors
         
     def vector_space_search(self, words=[], **kwargs):
         """ Returns related documents from the corpus, as a list of (weight, document)-tuples.
@@ -626,127 +660,240 @@ class Corpus(object):
         # have no related documents in the corpus.
         if len([w for w in words if w in self.vector]) == 0:
             return []
-        return self.related(words, top)
+        return self.nearest_neighbors(words, top)
         
     search = vector_space_search
-        
-    def latent_semantic_analysis(self, threshold=0, filter=NORM):
-        """ Returns a Vectorspace matrix with document rows and word columns, containing relevancy values.
-            Latent Semantic Analysis is a statistical machine learning method,
+    
+    def cluster(self, method=KMEANS, **kwargs):
+        """ Clustering is an unsupervised machine learning method for grouping similar documents.
+            For k-means clustering, returns a list of k clusters (each is a list of documents).
+            For hierarchical clustering, returns a list of documents and Cluster objects.
+            A Cluster is a list of documents and other clusters, with a Cluster.flatten() method.
+        """
+        # Create vectors as lists of tf-idf values, and a dictionary of vector => Document.
+        # We need the dict to map the clustered vectors back to the actual documents.
+        vectors = [with_id(self.vector(document).itervalues()) for document in self]
+        map = dict((v.id, self.documents[i]) for i, v in enumerate(vectors))
+        kw = kwargs.get
+        if method == KMEANS:
+            # def cluster(self, method=KMEANS, k=10, iterations=10, distance=COSINE)
+            clusters = k_means(vectors, kw("k", 10), kw("iterations", 10), kw("distance", "cosine"))
+            clusters = [[map[v.id] for v in cluster] for cluster in clusters]
+        if method == HIERARCHICAL:
+            # def cluster(self, method=HIERARCHICAL, k=1, iterations=1000, distance=COSINE)
+            clusters = hierarchical(vectors, kw("k", 1), kw("iterations", 1000), kw("distance", "cosine"))
+            clusters.traverse(visit=lambda cluster: \
+                [cluster.__setitem__(i, map[v.id]) for i, v in enumerate(cluster) if not isinstance(v, Cluster)])
+        return clusters
+
+    def latent_semantic_analysis(self, dimensions=NORM, threshold=0):
+        """ Latent Semantic Analysis is a statistical machine learning method 
             based on singular value decomposition (SVD).
-            The idea is to group document vectors (containing the relevancy of each word in the document) 
-            in a matrix, and then to reduce the size of the matrix, filtering out "noise".
-            The result is an approximation that brings together words with a similar co-currence pattern
-            across documents. This results in "topic" vectors with words that are semantically related.
+            Document vectors (with the relevancy of each word in the document) are grouped in a matrix.
+            The dimensionality of the matrix is then reduced to filter out noise,
+            bringing words that are semantically related closer together.
+            For each document, Document.vector is updated with the new values
+            (this results in different cosine similarity).
         """
         # Based on: Joseph Wilk, Latent Semantic Analysis in Python, 2007
         # http://blog.josephwilk.net/projects/latent-semantic-analysis-in-python.html
         import numpy
-        #def diagsvd(array, m, n):
-        #    # For array [1, 2, 3], m=4, n=5, returns an array with 4 rows and 5 columns:
-        #    # [[1, 0, 0, 0, 0],
-        #    #  [0, 2, 0, 0, 0],
-        #    #  [0, 0, 3, 0, 0],
-        #    #  [0, 0, 0, 0, 0]]
-        #    a = []
-        #    for i in range(m):
-        #        a.append([0]*n)
-        #        if i < len(array): 
-        #            a[-1][i] = array[i]
-        #    return a
-        # The vector search space: a matrix with one row for each document, 
-        # in which the word tf-idf weights are in the same order for each row.
-        O = self.vector.keys()
-        D = self._documents
-        sorted = lambda v, o: [v[k] for k in o]
-        matrix = [sorted(self.vector(d), O) for d in D]
-        matrix = numpy.array(matrix)
-        # Filter words (columns) that have a low relevancy in all documents from the matrix.
-        v = Vectorspace(self, matrix, documents=D, words=O)
-        v.filter(threshold)
+        # The vector search space: a matrix with one row (vector) for each document.
+        matrix = numpy.array([self.vector(d).values() for d in self.documents])
         # Singular value decomposition, where u * sigma * vt = svd(matrix).
         # Sigma is a diagonal matrix in decreasing order, of the same dimensions as the search space.
-        # NumPy returns it as a flat list of just the diagonal values, which we pass to diagsvd().
-        if len(v.matrix) > 0 and len(v.matrix[0]) > 0:
-            u, sigma, vt = numpy.linalg.svd(v.matrix, full_matrices=False)
+        # NumPy returns it as a flat list of just the diagonal values.
+        if len(matrix) > 0 and len(matrix[0]) > 0:
+            u, sigma, vt = numpy.linalg.svd(matrix, full_matrices=False)
             # Delete the smallest coefficients in diagonal matrix (e.g. at the end of list sigma).
             # The reduction will combine some dimensions so they are on more than one term.
-            # The real difficulty and weakness of LSA is knowing how many dimensions to remove.
-            # Generally L2-norm or Frobenius norm are used:
-            if filter == NORM:
-                filter = int(round(numpy.linalg.norm(sigma)))
-            if filter == TOP300:
-                filter = len(sigma)-300
-            if type(filter).__name__ == "function":
-                filter = int(filter(sigma))
-            for i in xrange(max(0,len(sigma)-filter), len(sigma)):
+            # The real difficulty and weakness of LSA is knowing how many dimensions to reduce.
+            # Generally L2-norm or Frobenius norm is used:
+            if dimensions == TOP300:
+                dimensions = len(sigma)-300
+            if dimensions == NORM:
+                dimensions = int(round(numpy.linalg.norm(sigma)))
+            if type(dimensions).__name__ == "function":
+                dimensions = int(dimensions(sigma))
+            for i in xrange(max(0,len(sigma)-dimensions), len(sigma)):
                 sigma[i] = 0
             # Recalculate the matrix from the reduced sigma.
-            # Return it as a Vectorspace (just some handy extra methods on top of the matrix).
-            v.matrix = numpy.dot(u, numpy.dot(numpy.diag(sigma), vt))
-        return v
+            matrix = numpy.dot(u, numpy.dot(numpy.diag(sigma), vt))
+        # Map the new values to Document.vector.
+        column = dict((k, i) for i, k in enumerate(self.vector.keys()))
+        for i, document in enumerate(self.documents):
+            document._vector = Vector((k, matrix[i][column[k]]) for k in document.vector)
+        self._similarity = {}
+        self._reduced = True
         
     reduce = lsa = latent_semantic_analysis
 
-#--- VECTOR SPACE ------------------------------------------------------------------------------------
-# A facade for the output of Corpus.latent_semantic_analysis().
+#def iter2array(iterator, typecode):
+#    a = numpy.array([iterator.next()], typecode)
+#    shape0 = a.shape[1:]
+#    for (i, item) in enumerate(iterator):
+#        a.resize((i+2,) + shape0)
+#        a[i+1] = item
+#    return a
 
-class Vectorspace:
-    
-    def __init__(self, corpus, matrix, documents, words):
-        """ A Vectorspace is a thin wrapper around a NumPy array with easy access methods.
-            Each row in the matrix has the word relevancy values for a document.
-            Each column has the relevancy values for a word in each of the documents.
-        """
-        self.corpus    = corpus
-        self.matrix    = matrix
-        self.words     = list(words)
-        self.documents = list(documents)
-        self._index1   = dict(((d.id, (i,d)) for i,d in enumerate(documents)))
-        self._index2   = dict(((w,i) for i,w in enumerate(words)))
-        # index1: Document.id => Document
-        # index2: feature index => term
-            
-    def keywords(self, id, top=10):
-        """ Returns a list of (relevancy, word)-tuples for the given document (or id).
-        """
-        if isinstance(id, Document):
-            id = id.id
-        if id not in self._index1:
-            return []
-        v = self.matrix[self._index1[id][0]]
-        v = izip(v, self.words)
-        v = heapq.nsmallest(top, v, key=lambda v: (-v[0],v[1]))
-        return ftlist(v)
-        
-    def search(self, word, top=10, stemmer=PORTER):
-        """ Returns a list of (relevancy, document)-tuples for the given word.
-        """
-        w = stem(word, stemmer)
-        if w not in self._index2:
-            return []
-        v = self.matrix[:,self._index2[w]]
-        v = izip(v, self.documents)
-        v = heapq.nsmallest(top, v, key=lambda v: (-v[0],v[1]))
-        return ftlist(v)
+#### CLUSTERING ######################################################################################
+# Clustering assigns vectors to subsets based on a distance measure, 
+# which determines how "similar" two vectors are.
+# For example, for (x,y) coordinates in 2D we could use Euclidean distance ("as the crow flies");
+# for document vectors we could use cosine similarity.
 
-    def filter(self, threshold=0):
-        """ Removes columns (words) whose relevancy is less than or equal the threshold in all documents.
-        """
-        import numpy
-        noise = numpy.max(self.matrix, axis=0) # Maximum value for each column.
-        noise = [i for i,v in enumerate(noise) if v<=threshold] # Indices where max <= threshold.
-        self.matrix = numpy.delete(self.matrix, noise, axis=1)
-        for i in reversed(noise):
-            del self._index2[self.words[i]]
-            del self.words[i]
-            
-    def save(self, path):
-        cPickle.dump(self, open(path, "w"))
+COSINE, EUCLIDEAN, MANHATTAN, HAMMING, CHEBYSHEV = \
+    "cosine", "euclidean", "manhattan", "hamming", "chebyshev"
+
+def distance(vector1, vector2, method=EUCLIDEAN):
+    """ Returns Manhattan distance, squared Euclidean distance or cosine similarity.
+    """
+    if method == COSINE:
+        return 1 - cosine_similarity(vector1, vector2)
+    if method == EUCLIDEAN: # Squared distance is 1.5x faster.
+        return sum((a-b)**2 for a, b in izip(vector1, vector2))
+    if method == MANHATTAN:
+        return sum(abs(a-b) for a, b in izip(vector1, vector2))
+    if method == HAMMING:
+        return sum( a != b  for a, b in izip(vector1, vector2))
+    if method == CHEBYSHEV:
+        return max(abs(a-b) for a, b in izip(vector1, vector2))
+
+_distance = distance
+
+def mean(vector):
+    """ Returns the arithmetic mean of the given list of numbers.
+    """
+    m, i = 0, 0 # If a generator is given, len() won't work, use i instead.
+    for i, v in enumerate(vector): 
+        m += v
+    return m / float(i+1)
+
+def centroid(vectors):
+    """ Returns the central vector from the given list of vectors.
+        For example: for a list of (x,y) points forming a polygon, returns the geometric center.
+    """
+    return [mean(v[i] for v in vectors) for i in xrange(len(vectors[0]))]
+
+class with_id(list):
+    """ Returns a list copy with a unique list.id property.
+        This is useful to cache centroids in the hierarchical clustering algorithm.
+    """
+    UID = 0
+    def __init__(self, *args, **kwargs):
+        list.__init__(self, *args, **kwargs)
+        self.id = with_id.UID; with_id.UID+=1
+
+#--- K-MEANS ----------------------------------------------------------------------------------------
+
+def k_means(vectors, k, iterations=10, distance=EUCLIDEAN):
+    """ Returns a list of k clusters, where each cluster is a list of related vectors.
+        A vector is a list of numeric values, and all vectors must be of equal length.
+    """
+    # Custom distance function must be of the form: distance(vector1, vector2, **kwargs).
+    distance, method = type(distance).__name__=="function" and (distance, None) or (_distance, distance)
+    # Randomly partition the vectors across k clusters.
+    if k < 2: 
+        return [[v for v in vectors]]
+    clusters = [[] for i in xrange(k)]
+    for i, v in enumerate(sorted(vectors, key=lambda x: random())): # shuffled
+        clusters[i%k].append(v)
+    converged = False
+    while not converged and iterations > 0 and k > 0:
+        # Calculate the center of each cluster.
+        centroids = [centroid(cluster) for cluster in clusters]
+        converged = True
+        iterations -= 1
+        # For every vector in every cluster,
+        # check if it is nearer to the center of another cluster (if so, assign it).
+        # When visualized, this produces a Voronoi diagram.
+        for i in xrange(len(clusters)):
+            for v in clusters[i]:
+                nearest = i
+                for j in xrange(len(clusters)):
+                    if distance(v, centroids[j], method=method) < \
+                       distance(v, centroids[nearest], method=method):
+                        nearest = j
+                if nearest != i: # Other cluster is nearer.
+                    clusters[nearest].append(clusters[i].pop(clusters[i].index(v)))
+                    converged = False
+    return clusters
     
-    @classmethod
-    def load(self, path):
-        return cPickle.load(open(path))
+kmeans = k_means
+
+#--- HIERARCHICAL -----------------------------------------------------------------------------------
+#  100 vectors with 6 features: 0.2 seconds.
+# 1000 vectors with 6 features: 2 minutes.
+# 3000 vectors with 6 features: 30 minutes.
+
+class Cluster(list):
+    
+    def __init__(self, *args, **kwargs):
+        list.__init__(self, *args, **kwargs)
+    
+    @property
+    def depth(self):
+        """ Yields the maximum depth of nested clusters.
+            Cluster((1, Cluster((2, Cluster((3, 4)))))).depth => 2.
+        """
+        return max([0] + [1+n.depth for n in self if isinstance(n, Cluster)])
+    
+    def flatten(self, depth=1000):
+        """ Flattens nested clusters to a list, down to the given depth.
+            Cluster((1, Cluster((2, Cluster((3, 4)))))).flatten(1) => [1, 2, Cluster(3, 4)].
+        """
+        a = []
+        for item in self:
+            if isinstance(item, Cluster) and depth > 0:
+                a.extend(item.flatten(depth-1))
+            else:
+                a.append(item)
+        return a
+    
+    def traverse(self, visit=lambda cluster: None):
+        """ Calls the visit() function on this and each nested cluster.
+        """
+        visit(self)
+        for item in self:
+            if isinstance(item, Cluster): 
+                item.traverse(visit)
+
+    def __repr__(self):
+        return "Cluster(%s)" % list.__repr__(self)[1:-1]
+
+def hierarchical(vectors, k=1, iterations=1000, distance=EUCLIDEAN):
+    """ Returns a Cluster containing k items (vectors or clusters with nested items).
+    """
+    # Custom distance function must be of the form: distance(vector1, vector2, **kwargs).
+    distance, method = type(distance).__name__=="function" and (distance, None) or (_distance, distance)
+    clusters = Cluster((v for v in sorted(vectors, key=lambda x: random())))
+    centroids = [with_id(cluster) for cluster in clusters]
+    D = {}
+    for _ in range(iterations):
+        if len(clusters) <= max(k,1): 
+            break
+        nearest, d0 = None, None
+        for i, v1 in enumerate(centroids):
+            for j, v2 in enumerate(centroids[i+1:]):
+                v12 = (v1.id, v2.id)
+                if v12 not in D: # Cache distance calculations for reuse.
+                    D[v12] = distance(v1, v2, method=method)
+                d = D[v12]
+                if d0 is None or d < d0:
+                    nearest, d0 = (i, j+i+1), d
+        # Pairs of nearest clusters are merged as we move up the hierarchy:
+        i, j = nearest
+        merged = Cluster((clusters[i], clusters[j]))
+        clusters.pop(j); centroids.pop(j)
+        clusters.pop(i); centroids.pop(i)
+        clusters.append(merged)
+        centroids.append(with_id(centroid(merged.flatten())))
+    del D
+    return clusters
+
+#k = hierarchical([(1,2),(3,4),(5,6),(7,8)], k=2)
+#print k
+#print k.depth
 
 #### CLASSIFIER ######################################################################################
 
