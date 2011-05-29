@@ -631,6 +631,11 @@ class Verbs:
             self._tenses[v[0]] = v
             for tense in (tense for tense in v if tense != ""): 
                 self._lemmas[tense] = v[0]
+                
+    def __contains__(self, verb):
+        if self._lemmas is None: 
+            self.load()
+        return verb in self._lemmas
 
     def lemma(self, verb, parse=True):
         """ Returns the infinitive form of the given verb (or None).
@@ -710,7 +715,7 @@ class Tenses(list):
         # t in tenses(verb) also works when t is an alias (e.g. "1sg").
         return list.__contains__(self, tenses_alias.get(tense, tense))
 
-_verbs = Verbs()
+_verbs = VERBS = Verbs()
 conjugate, lemma, lexeme, tenses = \
     _verbs.conjugate, _verbs.lemma, _verbs.lexeme, _verbs.tenses
 

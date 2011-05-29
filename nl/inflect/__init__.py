@@ -220,7 +220,7 @@ from en.inflect import \
 
 # Load the pattern.en.Verbs class, with a Dutch lexicon instead.
 # Lexicon was trained on CELEX and contains the top 2000 most frequent verbs.
-_verbs = Verbs(path=os.path.join(MODULE, "verbs.txt"))
+_verbs = VERBS = Verbs(path=os.path.join(MODULE, "verbs.txt"))
 conjugate, lemma, lexeme, tenses = \
     _verbs.conjugate, _verbs.lemma, _verbs.lexeme, _verbs.tenses
     
@@ -311,9 +311,19 @@ _verbs.parse_lexeme = _parse_lexeme
 #### ATTRIBUTIVE & PREDICATIVE ########################################################################
 
 adjective_attributive = {
-    "half"   : "halve",
-    "parijs" : "parijse",
-    "teer"   : "tere"
+    "civiel"  : "civiele",
+    "complex" : "complexe",
+    "grof"    : "grove",
+    "half"    : "halve",
+    "luttel"  : "luttele",
+    "mobiel"  : "mobiele",
+    "parijs"  : "parijse",
+    "ruw"     : "ruwe",
+    "simpel"  : "simpele",
+    "stabiel" : "stabiele",
+    "steriel" : "steriele",
+    "subtiel" : "subtiele",
+    "teer"    : "tere"
 }
 
 def attributive(adjective):
@@ -358,11 +368,11 @@ def predicative(adjective):
         return w[:-1]
     if w.endswith("bele"):
         return w[:-1]
-    if w.endswith(("ele","ale")):
+    if w.endswith("le") and len(w) > 2 and vowel(w[-3]) and not w.endswith(("eule","oele")):
         return w[:-2] + w[-3] + "l"
-    if w.endswith("ve") and len(w) > 3 and vowel(w[-3]) and w[-4] != "i":
+    if w.endswith("ve") and len(w) > 2 and vowel(w[-3]) and not w.endswith(("euve","oeve","ieve")):
         return w[:-2] + w[-3] + "f"
-    if w.endswith("ze") and len(w) > 2 and vowel(w[-3]) and w[-3] != "u":
+    if w.endswith("ze") and len(w) > 2 and vowel(w[-3]) and not w.endswith(("euze","oeze","ieze")):
         return w[:-2] + w[-3] + "s"
     if w.endswith("ve"):
         return w[:-2] + "f"

@@ -11,7 +11,7 @@ from parser import tokenize, parse
 
 from inflect import \
     pluralize, singularize, NOUN, VERB, ADJECTIVE, \
-    conjugate, lemma, lexeme, tenses, \
+    conjugate, lemma, lexeme, tenses, VERBS, \
     predicative, attributive, \
     INFINITIVE, \
     PRESENT_1ST_PERSON_SINGULAR, \

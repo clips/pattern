@@ -1984,7 +1984,6 @@ language = Language({
        u'ro': (u'Romanian', u'Romania', u'ro'),
     u'ro-mo': (u'Romanian', u'Republic of Moldova', u'mo'),
        u'ru': (u'Russian', u'Russia', u'ru'),
-    u'ru-mo': (u'Russian', u'Republic of Moldova', u'mo'),
        u'rw': (u'Kinyarwanda', u'Rwanda', u'rw'),
        u'sb': (u'Sorbian', u'Lusatia', u''),
        u'sk': (u'Slovak', u'Slovakia', u'sk'),

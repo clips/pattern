@@ -10,7 +10,7 @@
 from inflect import \
     article, referenced, DEFINITE, INDEFINITE, \
     pluralize, singularize, NOUN, VERB, ADJECTIVE, \
-    conjugate, lemma, lexeme, tenses, \
+    conjugate, lemma, lexeme, tenses, VERBS, \
     INFINITIVE, \
     PRESENT_1ST_PERSON_SINGULAR, \
     PRESENT_2ND_PERSON_SINGULAR, \
@@ -68,4 +68,3 @@ def ngrams(string, n=3):
         #s = [None] + s + [None]
         g.extend([tuple(s[i:i+n]) for i in range(len(s)-n+1)])
     return g
-    

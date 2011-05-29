@@ -47,7 +47,7 @@ def lemma(word, pos="NN"):
     if pos == "NNS":
         return singularize(word)
     if pos.startswith(("VB","MD")):
-        return conjugate(word, "infinitive")
+        return conjugate(word, "infinitive") or word
     if pos.startswith("JJ") and word.endswith("e"):
         return predicative(word)
     return word
@@ -106,7 +106,7 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
         "lemmata": False,
           "light": False,
         "lexicon": LEXICON,
-            "map": kwargs.get("tagset") != WOTAN and wotan2penntreebank or None,
+            "map": kwargs.get("tagset","").lower() != WOTAN and wotan2penntreebank or None,
        "language": "nl"
     })
     s = _en_parse(s, False, tags, chunks, relations, **kwargs)
