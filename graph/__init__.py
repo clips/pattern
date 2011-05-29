@@ -1159,6 +1159,8 @@ class HTMLCanvasRenderer:
                 p.append("stroke:%s" % self._rgba(n.stroke))      # [0,0,0,1.0]
             if n.strokewidth != self.default["strokewidth"]:
                 p.append("strokewidth:%.1f" % n.strokewidth)      # 0.5
+            if n.text is None:
+                p.append("text:false")
             if n.text and n.text.fill != self.default["text"]:
                 p.append("text:%s" % self._rgba(n.text.fill))     # [0,0,0,1.0]
             if n.text and "font" in n.text.__dict__:
