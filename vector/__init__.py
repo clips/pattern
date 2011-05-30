@@ -349,10 +349,13 @@ class Document(object):
     def vector(self):
         """ Yields a dictionary of (word, relevancy)-items from the document, based on tf-idf.
         """
-        # See the Vector class below. It's just a dict with some extra functionality (copy, norm, etc.)
-        if not self._vector: self._vector = Vector(((w, self.tf_idf(w)) for w in self._terms))
+        if not self._vector:
+            # Corpus.weight (TFIDF or TF) determines how the weights will be calculated.
+            f = self._corpus and self._corpus.weight == TFIDF and self.tf_idf or self.tf
+            # See the Vector class below = a dict with extra functionality (copy, norm).
+            self._vector = Vector(((w, f(w)) for w in self._terms))
         return self._vector
-        
+
     def keywords(self, top=10, normalized=True):
         """ Returns a sorted list of (relevancy, word)-tuples that are top keywords in the document.
             With normalized=True, weights are normalized between 0.0 and 1.0 (their sum will be 1.0).
@@ -429,17 +432,25 @@ class Vector(readonlydict):
 # These functions are useful if you work with a bare matrix instead of Document and Corpus.
 # Given vectors must be lists of values (not iterators).
 # See also k_means() and hierarchical.
-def l2_norm(vector):
-    return sum(x**2 for x in vector) ** 0.5
+
+def tf_idf(vectors):
+    for i in range(len(vectors[0])):
+        idf.append(log(len(vectors) / (sum(1.0 for v in vectors if v[i]) or 1)))
+    return [[v[i] * idf[i] for i in range(len(v))] for v in vectors]
 
 def cosine_similarity(vector1, vector2):
     return sum(a*b for a,b in izip(vector1, vector2)) / (l2_norm(vector1) * l2_norm(vector2) or 1)
-    
-def tf_idf(vectors):
-    for i in range(len(vectors[0])):
-        idf.append(sum(1.0 for v in vectors if v[i] > 0))
-        idf[-1] = log(len(vectors) / (idf[-1] or 1))
-    return [[v[i] * idf[i] for i in range(len(v))] for v in vectors]
+
+def l2_norm(vector):
+    return sum(x**2 for x in vector) ** 0.5
+
+def l2_norm(vector):
+    # Implementation with caching for k_means() and hierarchical() clustering.
+    if isinstance(vector, with_id):
+        if "l2_norm" not in vector.__dict__:
+            vector.l2_norm = sum(x**2 for x in vector) ** 0.5
+        return vector.l2_norm
+    return sum(x**2 for x in vector) ** 0.5
 
 #### CORPUS ##########################################################################################
 
@@ -453,7 +464,7 @@ KMEANS, HIERARCHICAL = "k-means", "hierarchical"
 
 class Corpus(object):
     
-    def __init__(self, documents=[]):
+    def __init__(self, documents=[], weight=TFIDF):
         """ A corpus is a collection of documents,
             where each document is a bag of (word, count)-items.
             Documents can be compared for similarity.
@@ -463,7 +474,8 @@ class Corpus(object):
         self._df         = {}             # Cache of document frequency per word.
         self._similarity = {}             # Cache of ((D1.id,D2.id), weight)-items (cosine similarity).
         self._vector     = None           # Cache of corpus vector with all the words in the corpus.
-        self._reduced    = False          # True when LSA is applied to the vector space.
+        self._lsa        = None           # LSA matrix with reduced dimensionality.
+        self._weight     = weight         # Weight used in Document.vector (TF-IDF or TF).
         self._update()
         self.extend(documents)
     
@@ -471,9 +483,21 @@ class Corpus(object):
     def documents(self):
         return self._documents
 
-    @property
-    def reduced(self):
-        return self._reduced
+    def _get_lsa(self):
+        return self._lsa
+    def _set_lsa(self, v):
+        self._lsa = None
+        self._update()
+        
+    lsa = property(_get_lsa, _set_lsa)
+
+    def _get_weight(self):
+        return self._weight
+    def _set_weight(self, w):
+        self._weight = w
+        self._update() # Clear the cache.
+        
+    weight = property(_get_weight, _set_weight)
     
     @classmethod
     def build(Corpus, path, *args, **kwargs):
@@ -507,9 +531,10 @@ class Corpus(object):
     def _update(self):
         # Ensures that all document relevancy vectors are recalculated
         # when a document is added or deleted in the corpus (= new words or less words).
-        self._vector = None
         self._df = {}
         self._similarity = {}
+        self._vector = None
+        self._lsa = None
         for document in self.documents:
             document._vector = None
     
@@ -606,7 +631,10 @@ class Corpus(object):
         # Words in a document that are not in the corpus vector are ignored
         # (e.g. the document was not in the corpus, this can be the case in Corpus.search() for example).
         # See Vector.__call__() why this is possible.
-        
+    
+    # Following methods rely on Document.vector:
+    # cosine similarity, nearest neighbors, search, clustering, latent semantic analysis.
+    
     def cosine_similarity(self, document1, document2):
         """ Returns the similarity between two documents in the corpus as a number between 0.0-1.0.
             The weight is based on the document relevancy vectors (i.e. tf-idf of words in the text).
@@ -621,12 +649,17 @@ class Corpus(object):
         # Calculate the matrix multiplication of the document vectors.
         #v1 = self.vector(document1)
         #v2 = self.vector(document2)
-        #dot = cosine_similarity(v1.itervalues(), v2.itervalues())
-        # This is exponentially faster (0.25 seconds vs. 8 seconds):
-        dot = sum(document1.vector.get(w,0) * f for w, f in document2.vector.iteritems())
-        # It makes no difference if we use v1.norm or document1.vector.norm,
-        # so we opt for the second choice because it is cached.
-        s = float(dot) / (document1.vector.norm * document2.vector.norm or 1)
+        #s = cosine_similarity(v1.itervalues(), v2.itervalues()) / (v1.norm * v2.norm or 1)
+        if not getattr(self, "lsa", None):
+            # This is faster for sparse vectors:
+            v1 = document1.vector
+            v2 = document2.vector
+            s = sum(v1.get(w,0) * f for w, f in v2.iteritems()) / (v1.norm * v2.norm or 1)
+        else:
+            # Using LSA concept space:         
+            v1 = id1 in self.lsa and self.lsa[id1] or self._lsa_transform(document1)
+            v2 = id2 in self.lsa and self.lsa[id2] or self._lsa_transform(document2)
+            s = sum(a*b for a,b in izip(v1.itervalues(), v2.itervalues())) / (v1.norm * v2.norm or 1)
         # Cache the similarity weight for reuse.
         self._similarity[(id1,id2)] = s
         return s
@@ -672,7 +705,12 @@ class Corpus(object):
         """
         # Create vectors as lists of tf-idf values, and a dictionary of vector => Document.
         # We need the dict to map the clustered vectors back to the actual documents.
-        vectors = [with_id(self.vector(document).itervalues()) for document in self]
+        if not getattr(self, "lsa", None):
+            # Using document vectors:
+            vectors = [with_id(self.vector(d).itervalues()) for d in self.documents]
+        else:
+            # Using LSA concept space:
+            vectors = [with_id(self.lsa[d.id].itervalues()) for d in self.documents]
         map = dict((v.id, self.documents[i]) for i, v in enumerate(vectors))
         kw = kwargs.get
         if method == KMEANS:
@@ -689,44 +727,55 @@ class Corpus(object):
     def latent_semantic_analysis(self, dimensions=NORM, threshold=0):
         """ Latent Semantic Analysis is a statistical machine learning method 
             based on singular value decomposition (SVD).
-            Document vectors (with the relevancy of each word in the document) are grouped in a matrix.
-            The dimensionality of the matrix is then reduced to filter out noise,
-            bringing words that are semantically related closer together.
-            For each document, Document.vector is updated with the new values
-            (this results in different cosine similarity).
+            Related terms in the corpus are grouped into "concepts".
+            Documents then get a concept vector that is an approximation of the original vector,
+            but with reduced dimensionality so that cosine similarity and clustering run faster.
         """
         # Based on: Joseph Wilk, Latent Semantic Analysis in Python, 2007
         # http://blog.josephwilk.net/projects/latent-semantic-analysis-in-python.html
         import numpy
-        # The vector search space: a matrix with one row (vector) for each document.
         matrix = numpy.array([self.vector(d).values() for d in self.documents])
         # Singular value decomposition, where u * sigma * vt = svd(matrix).
-        # Sigma is a diagonal matrix in decreasing order, of the same dimensions as the search space.
-        # NumPy returns it as a flat list of just the diagonal values.
-        if len(matrix) > 0 and len(matrix[0]) > 0:
-            u, sigma, vt = numpy.linalg.svd(matrix, full_matrices=False)
-            # Delete the smallest coefficients in diagonal matrix (e.g. at the end of list sigma).
-            # The reduction will combine some dimensions so they are on more than one term.
-            # The real difficulty and weakness of LSA is knowing how many dimensions to reduce.
-            # Generally L2-norm or Frobenius norm is used:
-            if dimensions == TOP300:
-                dimensions = len(sigma)-300
-            if dimensions == NORM:
-                dimensions = int(round(numpy.linalg.norm(sigma)))
-            if type(dimensions).__name__ == "function":
-                dimensions = int(dimensions(sigma))
-            for i in xrange(max(0,len(sigma)-dimensions), len(sigma)):
-                sigma[i] = 0
-            # Recalculate the matrix from the reduced sigma.
-            matrix = numpy.dot(u, numpy.dot(numpy.diag(sigma), vt))
-        # Map the new values to Document.vector.
-        column = dict((k, i) for i, k in enumerate(self.vector.keys()))
-        for i, document in enumerate(self.documents):
-            document._vector = Vector((k, matrix[i][column[k]]) for k in document.vector)
+        # Sigma is the diagonal matrix of singular values,
+        # U has document rows and concept columns, V has concept rows and term columns.
+        U, sigma, V = numpy.linalg.svd(matrix, full_matrices=False)
+        # Delete the smallest coefficients in the diagonal matrix (i.e., at the end of the list).
+        # The difficulty and weakness of LSA is knowing how many dimensions to reduce
+        # (generally L2-norm is used).
+        if dimensions == TOP300:
+            dimensions = len(sigma)-300
+        if dimensions == NORM:
+            dimensions = int(round(numpy.linalg.norm(sigma)))
+        if type(dimensions).__name__ == "function":
+            dimensions = int(dimensions(sigma))
+        for i in xrange(max(0,len(sigma)-dimensions), len(sigma)):
+            sigma[i] = 0
+        # Apply dimension reduction.
+        #matrix = numpy.dot(U, numpy.dot(numpy.diag(sigma), V))
+        tail = lambda m, i: range(len(m)-i, len(m))
+        U = numpy.delete(U, tail(U[0], dimensions), axis=1)
+        V = numpy.delete(V, tail(V, dimensions), axis=0)
+        s = numpy.delete(sigma, tail(sigma, dimensions))
+        q = numpy.dot(numpy.transpose(V), numpy.linalg.inv(numpy.diag(s)))
+        self._lsa = dict((d.id, Vector(enumerate(v))) for d, v in izip(self.documents, U))
+        self._lsa_qt = list(q) # See Corpus._lsa_transform().
         self._similarity = {}
-        self._reduced = True
         
-    reduce = lsa = latent_semantic_analysis
+    reduce = latent_semantic_analysis
+    
+    def _lsa_transform(self, document):
+        # When LSA has been performed on the corpus, Corpus.lsa will store a concept space.
+        # Of course, a query vector from Corpus.search() is not in the concept space.
+        # We need to transform it first using the transposed term-concept matrix.
+        if not document.id in _lsa_transform_cache:
+            if len(_lsa_transform_cache) > 1000:
+                _lsa.transform_cache.clear()
+            from numpy import dot
+            _lsa_transform_cache[document.id] = Vector(enumerate(dot(self.vector(document).values(), self._lsa_qt)))
+        return _lsa_transform_cache[document.id]
+
+# Cache for Corpus.search() shouldn't be stored with Corpus.save().
+_lsa_transform_cache = {}
 
 #def iter2array(iterator, typecode):
 #    a = numpy.array([iterator.next()], typecode)
@@ -735,6 +784,12 @@ class Corpus(object):
 #        a.resize((i+2,) + shape0)
 #        a[i+1] = item
 #    return a
+
+#def filter(matrix, min=0):
+#    columns = numpy.max(matrix, axis=0)
+#    columns = [i for i, v in enumerate(columns) if v <= min] # Indices of removed columns.
+#    matrix = numpy.delete(matrix, columns, axis=1)
+#    return matrix, columns
 
 #### CLUSTERING ######################################################################################
 # Clustering assigns vectors to subsets based on a distance measure, 
@@ -801,7 +856,7 @@ def k_means(vectors, k, iterations=10, distance=EUCLIDEAN):
     converged = False
     while not converged and iterations > 0 and k > 0:
         # Calculate the center of each cluster.
-        centroids = [centroid(cluster) for cluster in clusters]
+        centroids = [with_id(centroid(cluster)) for cluster in clusters]
         converged = True
         iterations -= 1
         # For every vector in every cluster,
