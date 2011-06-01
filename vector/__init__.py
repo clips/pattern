@@ -18,10 +18,11 @@ import os
 import glob
 import heapq
 import codecs
-import cPickle
+import cPickle; BINARY=1
 import stemmer; _stemmer=stemmer
 
 from math      import pow, log
+from time      import time
 from random    import random
 from itertools import izip
 
@@ -83,6 +84,15 @@ def filename(path, map={"_":" "}):
     for k in map: 
         f = f.replace(k, map[k])
     return f
+    
+def shi(i, base="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"):
+    """ Returns a short string hash for a given int.
+    """
+    s = []
+    while i > 0:
+        i, r = divmod(i, len(base))
+        s.append(base[r])
+    return "".join(reversed(s))
 
 #--- READ-ONLY DICTIONARY ----------------------------------------------------------------------------
 
@@ -92,6 +102,8 @@ class ReadOnlyError(Exception):
 # Read-only dictionary, used for Document.terms and Document.vector.
 # These can't be updated because it invalidates the cache.
 class readonlydict(dict):
+    def __init__(self, *args, **kwargs):
+        dict.__init__(self, *args, **kwargs)
     def __setitem__(self, k, v):
         raise ReadOnlyError
     def __delitem__(self, k):
@@ -111,6 +123,8 @@ class readonlydict(dict):
 
 # Read-only list, used for Corpus.documents.
 class readonlylist(list):
+    def __init__(self, *args, **kwargs):
+        list.__init__(self, *args, **kwargs)
     def __setitem__(self, i, v):
         raise ReadOnlyError
     def __delitem__(self, i):
@@ -213,8 +227,9 @@ def count(words=[], top=None, threshold=0, stemmer=PORTER, exclude=[], stopwords
 # Document is represented as a vector of weighted (TF-IDF) features.
 
 __UID = 0
+__SESSION = shi(int(time()*1000)) # Avoids collision with pickled documents.
 def _uid():
-    global __UID; __UID+=1; return __UID
+    global __UID; __UID+=1; return __SESSION+"-"+str(__UID)
 
 # Term relevancy weight:
 TF, TFIDF, TF_IDF = "tf", "tf-idf", "tf-idf"
@@ -269,7 +284,7 @@ class Document(object):
         """ Saves the terms in the document as a space-separated text file at the given path.
             The advantage is that terms no longer need to be filtered or stemmed in Document.load().
         """
-        s = [[w]*n for w, n in self._terms.items()]
+        s = [[w]*n for w, n in self.terms.items()]
         s = [" ".join(w) for w in s]
         s = encode_utf8(" ".join(s))
         f = open(path, "wb")
@@ -311,23 +326,23 @@ class Document(object):
     def __len__(self):
         # Yields the number of words (excluding stop words) in the document.
         # Cache the word count so we can reuse it when calculating tf.
-        if not self._count: self._count = sum(self._terms.values())
+        if not self._count: self._count = sum(self.terms.values())
         return self._count
     def __iter__(self):
-        return iter(self._terms)
+        return iter(self.terms)
     def __contains__(self, word):
-        return word in self._terms
+        return word in self.terms
     def __getitem__(self, word):
-        return self._terms.__getitem__(word)
+        return self.terms.__getitem__(word)
     def get(self, word, default=None):
-        return self._terms.get(word, default)
+        return self.terms.get(word, default)
     
     def term_frequency(self, word):
         """ Returns the term frequency of a word in the document.
             tf = number of occurences of the word / number of words in document.
             The more occurences of the word, the higher its tf weight.
         """
-        return float(self._terms.get(word, 0)) / (len(self) or 1)
+        return float(self.terms.get(word, 0)) / (len(self) or 1)
         
     tf = term_frequency
     
@@ -340,7 +355,7 @@ class Document(object):
         w = self.tf(word)
         if weight == TFIDF:
             # Use tf if no corpus, or idf==None (happens when the word is not in the corpus).
-            w *= self._corpus and self._corpus.idf(word) or 1
+            w *= self.corpus and self.corpus.idf(word) or 1
         return w
         
     tf_idf = tfidf = term_frequency_inverse_document_frequency
@@ -351,9 +366,9 @@ class Document(object):
         """
         if not self._vector:
             # Corpus.weight (TFIDF or TF) determines how the weights will be calculated.
-            f = self._corpus and self._corpus.weight == TFIDF and self.tf_idf or self.tf
+            f = getattr(self.corpus, "weight", TFIDF) == TFIDF and self.tf_idf or self.tf
             # See the Vector class below = a dict with extra functionality (copy, norm).
-            self._vector = Vector(((w, f(w)) for w in self._terms))
+            self._vector = Vector(((w, f(w)) for w in self.terms))
         return self._vector
 
     def keywords(self, top=10, normalized=True):
@@ -369,20 +384,20 @@ class Document(object):
         """ Returns the similarity between the two documents as a number between 0.0-1.0.
             If both documents are in the same corpus the calculations are cached for reuse.
         """
-        if self._corpus: 
-            return self._corpus.cosine_similarity(self, document)
-        if document._corpus:
-            return document._corpus.cosine_similarity(self, document)
+        if self.corpus: 
+            return self.corpus.cosine_similarity(self, document)
+        if document.corpus:
+            return document.corpus.cosine_similarity(self, document)
         # Use dict copies to ensure that the values are in the same order:
         return cosine_similarity(self.vector(self).values(), self.vector(document).values())
             
     similarity = cosine_similarity
     
     def copy(self):
-        d = Document(name=self.name); dict.update(d._terms, self._terms); return d
+        d = Document(name=self.name); dict.update(d.terms, self.terms); return d
     
     def __eq__(self, document):
-        return isinstance(document, Document) and self._id == document._id
+        return isinstance(document, Document) and self.id == document.id
     def __ne__(self, document):
         return not self.__eq__(document)
     
@@ -447,9 +462,9 @@ def l2_norm(vector):
 def l2_norm(vector):
     # Implementation with caching for k_means() and hierarchical() clustering.
     if isinstance(vector, with_id):
-        if "l2_norm" not in vector.__dict__:
-            vector.l2_norm = sum(x**2 for x in vector) ** 0.5
-        return vector.l2_norm
+        if "norm" not in vector.__dict__:
+            vector.norm = sum(x**2 for x in vector) ** 0.5
+        return vector.norm
     return sum(x**2 for x in vector) ** 0.5
 
 #### CORPUS ##########################################################################################
@@ -526,7 +541,11 @@ class Corpus(object):
             for d1 in self.documents:
                 for d2 in self.documents:
                     self.cosine_similarity(d1, d2) # Update the entire cache before saving.
-        cPickle.dump(self, open(path, "w"))
+        for id1, id2 in self._similarity.keys():
+            if id1 not in self._index \
+            or id2 not in self._index:
+                self._similarity.pop((id1, id2))   # Remove Corpus.search() query cache.
+        cPickle.dump(self, open(path, "w"), BINARY)
     
     def _update(self):
         # Ensures that all document relevancy vectors are recalculated
@@ -591,7 +610,7 @@ class Corpus(object):
         if len(self.documents) == 0:
             return 0        
         if len(self._df) == 0:
-            # Caching document frequency for each word gives a whopping 300x performance boost
+            # Caching document frequency for each word gives a 300x performance boost
             # (calculate all of them once). Drawback: if you need TF-IDF for just one document.
             for d in self.documents:
                 for w in d.terms:
@@ -651,14 +670,14 @@ class Corpus(object):
         #v2 = self.vector(document2)
         #s = cosine_similarity(v1.itervalues(), v2.itervalues()) / (v1.norm * v2.norm or 1)
         if not getattr(self, "lsa", None):
-            # This is faster for sparse vectors:
+            # This is exponentially faster for sparse vectors:
             v1 = document1.vector
             v2 = document2.vector
             s = sum(v1.get(w,0) * f for w, f in v2.iteritems()) / (v1.norm * v2.norm or 1)
         else:
-            # Using LSA concept space:         
-            v1 = id1 in self.lsa and self.lsa[id1] or self._lsa_transform(document1)
-            v2 = id2 in self.lsa and self.lsa[id2] or self._lsa_transform(document2)
+            # Using LSA concept space:
+            v1 = id1 in self.lsa and self.lsa[id1] or self._lsa.transform(document1)
+            v2 = id2 in self.lsa and self.lsa[id2] or self._lsa.transform(document2)
             s = sum(a*b for a,b in izip(v1.itervalues(), v2.itervalues())) / (v1.norm * v2.norm or 1)
         # Cache the similarity weight for reuse.
         self._similarity[(id1,id2)] = s
@@ -689,9 +708,10 @@ class Corpus(object):
         if not isinstance(words, Document):
             kwargs.setdefault("threshold", 0) # Same stemmer as other documents should be given.
             words = Document(" ".join(words), **kwargs)
+        words._corpus = self # So we can calculate tf-idf.
         # Documents that are not in the corpus consisting only of words that are not in the corpus
         # have no related documents in the corpus.
-        if len([w for w in words if w in self.vector]) == 0:
+        if len([True for w in words if w in self.vector]) == 0:
             return []
         return self.nearest_neighbors(words, top)
         
@@ -703,14 +723,15 @@ class Corpus(object):
             For hierarchical clustering, returns a list of documents and Cluster objects.
             A Cluster is a list of documents and other clusters, with a Cluster.flatten() method.
         """
-        # Create vectors as lists of tf-idf values, and a dictionary of vector => Document.
-        # We need the dict to map the clustered vectors back to the actual documents.
+        # Create vectors as lists of tf-idf values.
         if not getattr(self, "lsa", None):
             # Using document vectors:
             vectors = [with_id(self.vector(d).itervalues()) for d in self.documents]
         else:
             # Using LSA concept space:
             vectors = [with_id(self.lsa[d.id].itervalues()) for d in self.documents]
+        # Create a dictionary of vector.id => Document.
+        # We'll need it to map the clustered vectors back to the actual documents.
         map = dict((v.id, self.documents[i]) for i, v in enumerate(vectors))
         kw = kwargs.get
         if method == KMEANS:
@@ -724,57 +745,84 @@ class Corpus(object):
                 [cluster.__setitem__(i, map[v.id]) for i, v in enumerate(cluster) if not isinstance(v, Cluster)])
         return clusters
 
-    def latent_semantic_analysis(self, dimensions=NORM, threshold=0):
+    def latent_semantic_analysis(self, dimensions=NORM):
+        """ Creates LSA concept vectors by reducing dimensions.
+            The concept vectors are then used in Corpus.cosine_similarity() and Corpus.cluster().
+            The reduction can be undone by setting Corpus.lsa=False.
+        """
+        self._lsa = LSA(self, k=dimensions)
+        self._similarity = {}
+        
+    reduce = latent_semantic_analysis
+
+#### LATENT SEMANTIC ANALYSIS ########################################################################
+
+class LSA:
+    
+    def __init__(self, corpus, k=NORM):
         """ Latent Semantic Analysis is a statistical machine learning method 
             based on singular value decomposition (SVD).
             Related terms in the corpus are grouped into "concepts".
             Documents then get a concept vector that is an approximation of the original vector,
             but with reduced dimensionality so that cosine similarity and clustering run faster.
         """
-        # Based on: Joseph Wilk, Latent Semantic Analysis in Python, 2007
+        # http://en.wikipedia.org/wiki/Latent_semantic_analysis
         # http://blog.josephwilk.net/projects/latent-semantic-analysis-in-python.html
         import numpy
-        matrix = numpy.array([self.vector(d).values() for d in self.documents])
+        matrix = [corpus.vector(d).values() for d in corpus.documents]
+        matrix = numpy.array(matrix)
         # Singular value decomposition, where u * sigma * vt = svd(matrix).
         # Sigma is the diagonal matrix of singular values,
-        # U has document rows and concept columns, V has concept rows and term columns.
-        U, sigma, V = numpy.linalg.svd(matrix, full_matrices=False)
+        # u has document rows and concept columns, vt has concept rows and term columns.
+        u, sigma, vt = numpy.linalg.svd(matrix, full_matrices=False)
         # Delete the smallest coefficients in the diagonal matrix (i.e., at the end of the list).
         # The difficulty and weakness of LSA is knowing how many dimensions to reduce
         # (generally L2-norm is used).
-        if dimensions == TOP300:
-            dimensions = len(sigma)-300
-        if dimensions == NORM:
-            dimensions = int(round(numpy.linalg.norm(sigma)))
-        if type(dimensions).__name__ == "function":
-            dimensions = int(dimensions(sigma))
-        for i in xrange(max(0,len(sigma)-dimensions), len(sigma)):
-            sigma[i] = 0
-        # Apply dimension reduction.
-        #matrix = numpy.dot(U, numpy.dot(numpy.diag(sigma), V))
-        tail = lambda m, i: range(len(m)-i, len(m))
-        U = numpy.delete(U, tail(U[0], dimensions), axis=1)
-        V = numpy.delete(V, tail(V, dimensions), axis=0)
-        s = numpy.delete(sigma, tail(sigma, dimensions))
-        q = numpy.dot(numpy.transpose(V), numpy.linalg.inv(numpy.diag(s)))
-        self._lsa = dict((d.id, Vector(enumerate(v))) for d, v in izip(self.documents, U))
-        self._lsa_qt = list(q) # See Corpus._lsa_transform().
-        self._similarity = {}
+        if k == TOP300:
+            k = len(sigma)-300
+        if k == NORM:
+            k = int(round(numpy.linalg.norm(sigma)))
+        if type(k).__name__ == "function":
+            k = int(k(sigma))
+        # Apply dimension reduction.   
+        assert(k < len(corpus.documents))
+        tail = lambda list, i: range(len(list)-i, len(list))
+        u, sigma, vt = (
+            numpy.delete(u, tail(u[0], k), axis=1),
+            numpy.delete(sigma, tail(sigma, k), axis=0),
+            numpy.delete(vt, tail(vt, k), axis=0)
+        )
+        # Store as Python lists so we can cPickle it.
+        self._corpus = corpus
+        self._terms = dict(enumerate(corpus.vector().keys())) # Vt-index => word.
+        self.u, self.sigma, self.vt = (
+            dict((d.id, Vector((i, float(x)) for i, x in enumerate(v))) for d, v in izip(corpus, u)),
+            list(sigma),
+            [[float(x) for x in v] for v in vt]
+        )
         
-    reduce = latent_semantic_analysis
-    
-    def _lsa_transform(self, document):
-        # When LSA has been performed on the corpus, Corpus.lsa will store a concept space.
-        # Of course, a query vector from Corpus.search() is not in the concept space.
-        # We need to transform it first using the transposed term-concept matrix.
+    def __getitem__(self, id):
+        return self.u[id]
+    def __contains__(self, id):
+        return id in self.u
+    def __iter__(self):
+        return iter(self.u)
+    def __len__(self):
+        return len(self.u)
+        
+    def transform(self, document):
+        """ Given a document not in the corpus, returns a vector in LSA concept space.
+        """
         if not document.id in _lsa_transform_cache:
-            if len(_lsa_transform_cache) > 1000:
-                _lsa.transform_cache.clear()
-            from numpy import dot
-            _lsa_transform_cache[document.id] = Vector(enumerate(dot(self.vector(document).values(), self._lsa_qt)))
+            import numpy
+            v = self._corpus.vector(document)
+            v = [v[self._terms[i]] for i in range(len(v))]
+            v = numpy.dot(numpy.dot(numpy.linalg.inv(numpy.diag(self.sigma)), self.vt), v)
+            v = Vector(enumerate(v))
+            _lsa_transform_cache[document.id] = v
         return _lsa_transform_cache[document.id]
-
-# Cache for Corpus.search() shouldn't be stored with Corpus.save().
+        
+# LSA cache for Corpus.search() shouldn't be stored with Corpus.save().
 _lsa_transform_cache = {}
 
 #def iter2array(iterator, typecode):
@@ -972,7 +1020,7 @@ class Classifier:
         return None
     
     def save(self, path):
-        cPickle.dump(self, open(path, "w"))
+        cPickle.dump(self, open(path, "w"), BINARY)
 
     @classmethod
     def load(self, path):
