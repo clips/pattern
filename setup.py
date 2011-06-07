@@ -7,13 +7,12 @@ if not hasattr(DistributionMetadata, 'classifiers'):
 
 setup(
             name = "Pattern",
-         version = "1.8",
+         version = "1.9",
      description = "Web mining module for Python.",
          license = "BSD",
           author = "Tom De Smedt",
     author_email = "tom@organisms.be",
              url = "http://www.clips.ua.ac.be/pages/pattern",
-     package_dir = {"pattern": "../pattern"},
         packages = [
         "pattern",
         "pattern.web", 
@@ -48,11 +47,6 @@ setup(
         "pattern.nl.inflect"           : ["*.txt"], 
         "pattern.vector"               : ["*.txt"], 
         "pattern.graph"                : ["js/*.js"],
-        "pattern" : [
-            "*.txt", 
-            "examples/*/*.py", 
-            "examples/*/*/*.txt"
-        ]
     },
     py_modules = [
         "pattern.metrics",

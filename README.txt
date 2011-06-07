@@ -6,7 +6,7 @@ Pattern is a web mining module for the Python programming language. It bundles t
 VERSION
 =======
 
-1.8
+1.9
 
 LICENSE
 =======

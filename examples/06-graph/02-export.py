@@ -1,4 +1,4 @@
-import os, sys; sys.path.insert(0, os.path.join("..", "..", ".."))
+import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
 from pattern.graph import Graph
 from pattern.graph import export, WEIGHT, CENTRALITY
