@@ -94,7 +94,7 @@ class AsynchronousRequest:
         try: 
             self._response = function(*args, **kwargs)
         except Exception, e:
-            self.error = e
+            self._error = e
 
     def now(self):
         """ Waits for the function to finish and yields its return value.

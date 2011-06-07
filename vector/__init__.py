@@ -24,7 +24,7 @@ import stemmer; _stemmer=stemmer
 from math      import pow, log
 from time      import time
 from random    import random
-from itertools import izip
+from itertools import izip, chain
 
 try:
     MODULE = os.path.dirname(__file__)
@@ -402,10 +402,9 @@ class Document(object):
         return not self.__eq__(document)
     
     def __repr__(self):
-        return "Document(id=%s, %scount=%s)" % (
+        return "Document(id=%s%s)" % (
             self._id,
-            self.name and "name=%s, " % repr(self.name) or "", 
-            self.count)
+            self.name and ", name=%s" % repr(self.name) or "")
 
 #--- VECTOR ------------------------------------------------------------------------------------------
 
@@ -422,15 +421,15 @@ class Vector(readonlydict):
         readonlydict.__init__(self, *args, **kwargs)
         
     @property
-    def frobenius_norm(self):
+    def l2_norm(self):
         """ Yields the Frobenius matrix norm.
             n = the square root of the sum of the absolute squares of the values.
-            The matrix norm is used when calculating cosine similarity between documents.
+            The matrix norm is used to normalize (0.0-1.0) cosine similarity between documents.
         """
         if not self._norm: self._norm = l2_norm(self.itervalues())
         return self._norm
         
-    norm = l2_norm = frobenius_norm
+    norm = frobenius_norm = l2_norm
     
     def copy(self):
         return Vector(self, weight=self.weight)
@@ -446,7 +445,6 @@ class Vector(readonlydict):
 
 # These functions are useful if you work with a bare matrix instead of Document and Corpus.
 # Given vectors must be lists of values (not iterators).
-# See also k_means() and hierarchical.
 
 def tf_idf(vectors):
     for i in range(len(vectors[0])):
@@ -459,14 +457,6 @@ def cosine_similarity(vector1, vector2):
 def l2_norm(vector):
     return sum(x**2 for x in vector) ** 0.5
 
-def l2_norm(vector):
-    # Implementation with caching for k_means() and hierarchical() clustering.
-    if isinstance(vector, with_id):
-        if "norm" not in vector.__dict__:
-            vector.norm = sum(x**2 for x in vector) ** 0.5
-        return vector.norm
-    return sum(x**2 for x in vector) ** 0.5
-
 #### CORPUS ##########################################################################################
 
 #--- CORPUS ------------------------------------------------------------------------------------------
@@ -475,7 +465,7 @@ def l2_norm(vector):
 NORM, TOP300 = "norm", "top300"
 
 # Clustering methods:
-KMEANS, HIERARCHICAL = "k-means", "hierarchical"
+KMEANS, HIERARCHICAL, ALL = "k-means", "hierarchical", "all"
 
 class Corpus(object):
     
@@ -638,19 +628,21 @@ class Corpus(object):
             It includes all words from all documents (i.e. it is the dimension of the vector space).
             If a document is given, sets the document word relevancy values in the vector.
         """
-        if not self._vector: 
-            self._vector = Vector();
-            for d in self.documents:
-                for word in d.terms: 
-                    dict.setdefault(self._vector, word, 0)
-        return self._vector
         # Note: 
-        # - Corpus.vector is the dictionary of (word, 0)-items.
+        # - Corpus.vector is the dictionary of all (word, 0)-items.
         # - Corpus.vector(document) returns a copy with the document's word relevancy values in it.
+        # - This is the full document vector, opposed to the sparse Document.vector.
         # Words in a document that are not in the corpus vector are ignored
         # (e.g. the document was not in the corpus, this can be the case in Corpus.search() for example).
         # See Vector.__call__() why this is possible.
-    
+        if not self._vector: 
+            self._vector = Vector((w,0) for w in chain(*(d.terms for d in self.documents)))
+        return self._vector
+
+    @property
+    def density(self):
+        return float(sum(len(d.terms) for d in self.documents)) / len(self.vector)**2
+
     # Following methods rely on Document.vector:
     # cosine similarity, nearest neighbors, search, clustering, latent semantic analysis.
     
@@ -717,32 +709,33 @@ class Corpus(object):
         
     search = vector_space_search
     
-    def cluster(self, method=KMEANS, **kwargs):
+    def cluster(self, documents=ALL, method=KMEANS, **kwargs):
         """ Clustering is an unsupervised machine learning method for grouping similar documents.
             For k-means clustering, returns a list of k clusters (each is a list of documents).
             For hierarchical clustering, returns a list of documents and Cluster objects.
             A Cluster is a list of documents and other clusters, with a Cluster.flatten() method.
         """
-        # Create vectors as lists of tf-idf values.
+        if documents == ALL:
+            documents = self.documents
         if not getattr(self, "lsa", None):
             # Using document vectors:
-            vectors = [with_id(self.vector(d).itervalues()) for d in self.documents]
+            vectors, keys = [d.vector for d in documents], self.vector.keys()
         else:
             # Using LSA concept space:
-            vectors = [with_id(self.lsa[d.id].itervalues()) for d in self.documents]
+            vectors, keys = [self.lsa[d.id] for d in documents], range(len(self.lsa))
         # Create a dictionary of vector.id => Document.
         # We'll need it to map the clustered vectors back to the actual documents.
-        map = dict((v.id, self.documents[i]) for i, v in enumerate(vectors))
-        kw = kwargs.get
-        if method == KMEANS:
-            # def cluster(self, method=KMEANS, k=10, iterations=10, distance=COSINE)
-            clusters = k_means(vectors, kw("k", 10), kw("iterations", 10), kw("distance", "cosine"))
-            clusters = [[map[v.id] for v in cluster] for cluster in clusters]
+        map = dict((id(v), documents[i]) for i, v in enumerate(vectors))
+        kw = kwargs.pop
+        if method in (KMEANS, "kmeans"):
+            # def cluster(self, method=KMEANS, k=10, iterations=10)
+            clusters = k_means(vectors, kw("k", 10), kw("iterations", 10), keys=keys, **kwargs)
+            clusters = [[map[id(v)] for v in cluster] for cluster in clusters]
         if method == HIERARCHICAL:
-            # def cluster(self, method=HIERARCHICAL, k=1, iterations=1000, distance=COSINE)
-            clusters = hierarchical(vectors, kw("k", 1), kw("iterations", 1000), kw("distance", "cosine"))
+            # def cluster(self, method=HIERARCHICAL, k=1, iterations=1000)
+            clusters = hierarchical(vectors, kw("k", 1), kw("iterations", 1000), keys=keys, **kwargs)
             clusters.traverse(visit=lambda cluster: \
-                [cluster.__setitem__(i, map[v.id]) for i, v in enumerate(cluster) if not isinstance(v, Cluster)])
+                [cluster.__setitem__(i, map[id(v)]) for i, v in enumerate(cluster) if not isinstance(v, Cluster)])
         return clusters
 
     def latent_semantic_analysis(self, dimensions=NORM):
@@ -845,89 +838,85 @@ _lsa_transform_cache = {}
 # For example, for (x,y) coordinates in 2D we could use Euclidean distance ("as the crow flies");
 # for document vectors we could use cosine similarity.
 
-COSINE, EUCLIDEAN, MANHATTAN, HAMMING, CHEBYSHEV = \
-    "cosine", "euclidean", "manhattan", "hamming", "chebyshev"
+def mean(iterator, length):
+    """ Returns the arithmetic mean of the values in the given iterator.
+    """
+    return sum(iterator) / (length or 1)
 
-def distance(vector1, vector2, method=EUCLIDEAN):
-    """ Returns Manhattan distance, squared Euclidean distance or cosine similarity.
+def centroid(vectors, keys=[]):
+    """ Returns the center of the list of vectors
+        (e.g., the geometric center of a list of (x,y)-coordinates forming a polygon).
+        Since vectors are sparse, the list of all keys (=Corpus.vector) must be given.
+    """
+    v = ((k, mean((v.get(k, 0) for v in vectors), len(vectors))) for k in keys)
+    v = Vector((k, x) for k, x in v if x != 0)
+    return v
+
+COSINE, EUCLIDEAN = "cosine", "euclidean"
+
+def distance(vector1, vector2, method=COSINE):
+    """ Returns the distance between two vectors.
     """
     if method == COSINE:
-        return 1 - cosine_similarity(vector1, vector2)
+        return 1 - sum(vector1.get(w,0) * f for w, f in vector2.iteritems()) / (vector1.norm * vector2.norm or 1)
     if method == EUCLIDEAN: # Squared distance is 1.5x faster.
-        return sum((a-b)**2 for a, b in izip(vector1, vector2))
-    if method == MANHATTAN:
-        return sum(abs(a-b) for a, b in izip(vector1, vector2))
-    if method == HAMMING:
-        return sum( a != b  for a, b in izip(vector1, vector2))
-    if method == CHEBYSHEV:
-        return max(abs(a-b) for a, b in izip(vector1, vector2))
+        return sum((vector1.get(w,0) - vector2.get(w,0))**2 for w in set(chain(vector1, vector2)))
 
 _distance = distance
 
-def mean(vector):
-    """ Returns the arithmetic mean of the given list of numbers.
-    """
-    m, i = 0, 0 # If a generator is given, len() won't work, use i instead.
-    for i, v in enumerate(vector): 
-        m += v
-    return m / float(i+1)
-
-def centroid(vectors):
-    """ Returns the central vector from the given list of vectors.
-        For example: for a list of (x,y) points forming a polygon, returns the geometric center.
-    """
-    return [mean(v[i] for v in vectors) for i in xrange(len(vectors[0]))]
-
-class with_id(list):
-    """ Returns a list copy with a unique list.id property.
-        This is useful to cache centroids in the hierarchical clustering algorithm.
-    """
-    UID = 0
-    def __init__(self, *args, **kwargs):
-        list.__init__(self, *args, **kwargs)
-        self.id = with_id.UID; with_id.UID+=1
-
 #--- K-MEANS ----------------------------------------------------------------------------------------
+# Fast, no guarantee of convergence or optimal solution (random starting clusters).
+# 3000 vectors with 100 features (LSA, density 1.0):  5 minutes with k=100 (20 iterations).
+# 3000 vectors with 200 features (LSA, density 1.0): 13 minutes with k=100 (20 iterations).
 
-def k_means(vectors, k, iterations=10, distance=EUCLIDEAN):
-    """ Returns a list of k clusters, where each cluster is a list of related vectors.
-        A vector is a list of numeric values, and all vectors must be of equal length.
+def k_means(vectors, k, iterations=10, distance=COSINE, **kwargs):
+    """ Returns a list of k clusters, 
+        where each cluster is a list of similar vectors (Lloyd's algorithm).
+        There is no guarantee of convergence or optimal solution.
     """
-    # Custom distance function must be of the form: distance(vector1, vector2, **kwargs).
-    distance, method = type(distance).__name__=="function" and (distance, None) or (_distance, distance)
-    # Randomly partition the vectors across k clusters.
+    keys = kwargs.get("keys") or dict.fromkeys((k for k in chain(*vectors)), True).keys()
     if k < 2: 
         return [[v for v in vectors]]
     clusters = [[] for i in xrange(k)]
-    for i, v in enumerate(sorted(vectors, key=lambda x: random())): # shuffled
+    for i, v in enumerate(sorted(vectors, key=lambda x: random())):
+        # Randomly partition the vectors across k clusters.
         clusters[i%k].append(v)
     converged = False
     while not converged and iterations > 0 and k > 0:
         # Calculate the center of each cluster.
-        centroids = [with_id(centroid(cluster)) for cluster in clusters]
-        converged = True
-        iterations -= 1
+        centroids = [centroid(cluster, keys) for cluster in clusters]
+        # Triangle inequality: one side is shorter than the sum of the two other sides.
+        # We can exploit this to avoid costly distance() calls (up to 3x faster).
+        p = kwargs.get("p", 0.5)   
+        D = {}
+        for i in range(len(centroids)):
+            for j in range(i, len(centroids)): # center1–center2 < center1–point + point–center2 ?
+                D[(i,j)] = D[(j,i)] = _distance(centroids[i], centroids[j], method=distance)
         # For every vector in every cluster,
         # check if it is nearer to the center of another cluster (if so, assign it).
         # When visualized, this produces a Voronoi diagram.
+        converged = True
         for i in xrange(len(clusters)):
             for v in clusters[i]:
-                nearest = i
+                nearest, d1 = i, _distance(v, centroids[i], method=distance)
                 for j in xrange(len(clusters)):
-                    if distance(v, centroids[j], method=method) < \
-                       distance(v, centroids[nearest], method=method):
-                        nearest = j
+                    if p * D[(i,j)] < d1: # Relaxed triangle inequality.
+                        d2 = _distance(v, centroids[j], method=distance)
+                        if d2 < d1:
+                            nearest = j
                 if nearest != i: # Other cluster is nearer.
                     clusters[nearest].append(clusters[i].pop(clusters[i].index(v)))
                     converged = False
+        iterations -= 1; print iterations
     return clusters
     
 kmeans = k_means
 
 #--- HIERARCHICAL -----------------------------------------------------------------------------------
-#  100 vectors with 6 features: 0.2 seconds.
-# 1000 vectors with 6 features: 2 minutes.
-# 3000 vectors with 6 features: 30 minutes.
+# Slow, optimal solution guaranteed in O(len(vectors)^3).
+#  100 vectors with 6 features (density 1.0): 0.2 seconds.
+# 1000 vectors with 6 features (density 1.0): 2 minutes.
+# 3000 vectors with 6 features (density 1.0): 30 minutes.
 
 class Cluster(list):
     
@@ -964,13 +953,13 @@ class Cluster(list):
     def __repr__(self):
         return "Cluster(%s)" % list.__repr__(self)[1:-1]
 
-def hierarchical(vectors, k=1, iterations=1000, distance=EUCLIDEAN):
+def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
     """ Returns a Cluster containing k items (vectors or clusters with nested items).
+        With k=1, the top-level cluster contains a single cluster.
     """
-    # Custom distance function must be of the form: distance(vector1, vector2, **kwargs).
-    distance, method = type(distance).__name__=="function" and (distance, None) or (_distance, distance)
+    keys = kwargs.get("keys", dict.fromkeys((k for k in chain(*vectors)), True).keys())
     clusters = Cluster((v for v in sorted(vectors, key=lambda x: random())))
-    centroids = [with_id(cluster) for cluster in clusters]
+    centroids = list(clusters)
     D = {}
     for _ in range(iterations):
         if len(clusters) <= max(k,1): 
@@ -978,9 +967,9 @@ def hierarchical(vectors, k=1, iterations=1000, distance=EUCLIDEAN):
         nearest, d0 = None, None
         for i, v1 in enumerate(centroids):
             for j, v2 in enumerate(centroids[i+1:]):
-                v12 = (v1.id, v2.id)
+                v12 = (id(v1), id(v2))
                 if v12 not in D: # Cache distance calculations for reuse.
-                    D[v12] = distance(v1, v2, method=method)
+                    D[v12] = _distance(v1, v2, method=distance)
                 d = D[v12]
                 if d0 is None or d < d0:
                     nearest, d0 = (i, j+i+1), d
@@ -990,7 +979,7 @@ def hierarchical(vectors, k=1, iterations=1000, distance=EUCLIDEAN):
         clusters.pop(j); centroids.pop(j)
         clusters.pop(i); centroids.pop(i)
         clusters.append(merged)
-        centroids.append(with_id(centroid(merged.flatten())))
+        centroids.append(centroid(merged.flatten(), keys))
     del D
     return clusters
 
