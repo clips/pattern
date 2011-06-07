@@ -17,11 +17,11 @@ D4 = Document("Curiosity drives science.", threshold=0, name="science")
 corpus = Corpus([D1,D2,D3,D4])
 
 print corpus.search("curiosity")
+print
 
 corpus.reduce()
-
-print corpus.search("curiosity")
 
 # A search on the reduced concept space also yields D3 ("pet") as a result,
 # since D2 and D2 are slightly similar even though D3 does not explicitly contain "curiosity".
 # Note how the results also yield stronger similarity scores (noise was filtered out).
+print corpus.search("curiosity")

@@ -777,6 +777,7 @@ class LSA:
             k = int(round(numpy.linalg.norm(sigma)))
         if type(k).__name__ == "function":
             k = int(k(sigma))
+        #print numpy.dot(u, numpy.dot(numpy.diag(sigma), vt))
         # Apply dimension reduction.   
         assert(k < len(corpus.documents))
         tail = lambda list, i: range(len(list)-i, len(list))
@@ -786,14 +787,22 @@ class LSA:
             numpy.delete(vt, tail(vt, k), axis=0)
         )
         # Store as Python lists so we can cPickle it.
-        self._corpus = corpus
-        self._terms = dict(enumerate(corpus.vector().keys())) # Vt-index => word.
+        self.corpus = corpus
+        self.terms = dict(enumerate(corpus.vector().keys())) # Vt-index => word.
         self.u, self.sigma, self.vt = (
             dict((d.id, Vector((i, float(x)) for i, x in enumerate(v))) for d, v in izip(corpus, u)),
             list(sigma),
             [[float(x) for x in v] for v in vt]
         )
+
+    @property
+    def vectors(self):
+        return self.u
         
+    @property
+    def concepts(self):
+        return self.vt
+
     def __getitem__(self, id):
         return self.u[id]
     def __contains__(self, id):
@@ -808,8 +817,8 @@ class LSA:
         """
         if not document.id in _lsa_transform_cache:
             import numpy
-            v = self._corpus.vector(document)
-            v = [v[self._terms[i]] for i in range(len(v))]
+            v = self.corpus.vector(document)
+            v = [v[self.terms[i]] for i in range(len(v))]
             v = numpy.dot(numpy.dot(numpy.linalg.inv(numpy.diag(self.sigma)), self.vt), v)
             v = Vector(enumerate(v))
             _lsa_transform_cache[document.id] = v
@@ -907,7 +916,7 @@ def k_means(vectors, k, iterations=10, distance=COSINE, **kwargs):
                 if nearest != i: # Other cluster is nearer.
                     clusters[nearest].append(clusters[i].pop(clusters[i].index(v)))
                     converged = False
-        iterations -= 1; print iterations
+        iterations -= 1; #print iterations
     return clusters
     
 kmeans = k_means
