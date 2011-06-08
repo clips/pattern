@@ -879,25 +879,6 @@ _distance = distance
 # 3000 vectors with 100 features (LSA, density 1.0):  5 minutes with k=100 (20 iterations).
 # 3000 vectors with 200 features (LSA, density 1.0): 13 minutes with k=100 (20 iterations).
 
-import threading
-class Thread:
-    
-    def __init__(self, function, *args, **kwargs):
-        self.value    = None
-        self.function = function
-        self._thread   = threading.Thread(target=self._fetch, args=(function,)+args, kwargs=kwargs)
-        self._thread.start()
-        
-    def _fetch(self, function, *args, **kwargs):
-        self.value = function(*args, **kwargs)
-            
-    @property
-    def done(self):
-        return not self._thread.isAlive()
-
-def distances(vectors, centroid, method=COSINE):
-    return [distance(v, centroid, method) for v in vectors]
-
 def k_means(vectors, k, iterations=10, distance=COSINE, **kwargs):
     """ Returns a list of k clusters, 
         where each cluster is a list of similar vectors (Lloyd's algorithm).
