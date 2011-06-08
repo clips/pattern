@@ -403,8 +403,7 @@ class Document(object):
     
     def __repr__(self):
         return "Document(id=%s%s)" % (
-            self._id,
-            self.name and ", name=%s" % repr(self.name) or "")
+            repr(self._id), self.name and ", name=%s" % repr(self.name) or "")
 
 #--- VECTOR ------------------------------------------------------------------------------------------
 
@@ -861,15 +860,17 @@ def centroid(vectors, keys=[]):
     v = Vector((k, x) for k, x in v if x != 0)
     return v
 
-COSINE, EUCLIDEAN = "cosine", "euclidean"
+COSINE, EUCLIDEAN, HAMMING = "cosine", "euclidean", "hamming"
 
-def distance(vector1, vector2, method=COSINE):
+def distance(v1, v2, method=COSINE):
     """ Returns the distance between two vectors.
     """
     if method == COSINE:
-        return 1 - sum(vector1.get(w,0) * f for w, f in vector2.iteritems()) / (vector1.norm * vector2.norm or 1)
+        return 1 - sum(v1.get(w,0) * f for w, f in v2.iteritems()) / (v1.norm * v2.norm or 1)
     if method == EUCLIDEAN: # Squared distance is 1.5x faster.
-        return sum((vector1.get(w,0) - vector2.get(w,0))**2 for w in set(chain(vector1, vector2)))
+        return sum((v1.get(w,0) - v2.get(w,0))**2 for w in set(chain(v1, v2)))
+    if method == HAMMING:
+        return sum(w in v1 and w in v2 and v1[w] == v2[w] for w in set(chain(v1, v2)))
 
 _distance = distance
 
@@ -877,6 +878,25 @@ _distance = distance
 # Fast, no guarantee of convergence or optimal solution (random starting clusters).
 # 3000 vectors with 100 features (LSA, density 1.0):  5 minutes with k=100 (20 iterations).
 # 3000 vectors with 200 features (LSA, density 1.0): 13 minutes with k=100 (20 iterations).
+
+import threading
+class Thread:
+    
+    def __init__(self, function, *args, **kwargs):
+        self.value    = None
+        self.function = function
+        self._thread   = threading.Thread(target=self._fetch, args=(function,)+args, kwargs=kwargs)
+        self._thread.start()
+        
+    def _fetch(self, function, *args, **kwargs):
+        self.value = function(*args, **kwargs)
+            
+    @property
+    def done(self):
+        return not self._thread.isAlive()
+
+def distances(vectors, centroid, method=COSINE):
+    return [distance(v, centroid, method) for v in vectors]
 
 def k_means(vectors, k, iterations=10, distance=COSINE, **kwargs):
     """ Returns a list of k clusters, 
@@ -896,11 +916,11 @@ def k_means(vectors, k, iterations=10, distance=COSINE, **kwargs):
         centroids = [centroid(cluster, keys) for cluster in clusters]
         # Triangle inequality: one side is shorter than the sum of the two other sides.
         # We can exploit this to avoid costly distance() calls (up to 3x faster).
-        p = kwargs.get("p", 0.5)   
+        p = 0.5 * kwargs.get("p", 0.8) # "Relaxed" triangle inequality (cosine distance is a semimetric) 0.25-0.5.
         D = {}
         for i in range(len(centroids)):
-            for j in range(i, len(centroids)): # center1–center2 < center1–point + point–center2 ?
-                D[(i,j)] = D[(j,i)] = _distance(centroids[i], centroids[j], method=distance)
+            for j in range(i, len(centroids)): # center1–center2 < center1–vector + vector–center2 ?
+                D[(i,j)] = D[(j,i)] = p * _distance(centroids[i], centroids[j], method=distance)
         # For every vector in every cluster,
         # check if it is nearer to the center of another cluster (if so, assign it).
         # When visualized, this produces a Voronoi diagram.
@@ -909,7 +929,7 @@ def k_means(vectors, k, iterations=10, distance=COSINE, **kwargs):
             for v in clusters[i]:
                 nearest, d1 = i, _distance(v, centroids[i], method=distance)
                 for j in xrange(len(clusters)):
-                    if p * D[(i,j)] < d1: # Relaxed triangle inequality.
+                    if D[(i,j)] < d1: # Triangle inequality (Elkan, 2003).
                         d2 = _distance(v, centroids[j], method=distance)
                         if d2 < d1:
                             nearest = j
