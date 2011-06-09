@@ -1463,7 +1463,7 @@ def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, revers
 
 from soup import BeautifulSoup
 SOUP = (
-    BeautifulSoup.BeautifulSoup, 
+    BeautifulSoup.BeautifulSoup,
     BeautifulSoup.Tag, 
     BeautifulSoup.NavigableString,
     BeautifulSoup.Comment
@@ -1476,12 +1476,12 @@ NODE, TEXT, COMMENT, ELEMENT, DOCUMENT = \
 
 class Node:
     
-    def __init__(self, html, type=NODE):
+    def __init__(self, html, type=NODE, **kwargs):
         """ The base class for Text, Comment and Element.
             All DOM nodes can be navigated in the same way (e.g. Node.parent, Node.children, ...)
         """
         self.type = type
-        self._p = not isinstance(html, SOUP) and BeautifulSoup.BeautifulSoup(u(html)) or html
+        self._p = not isinstance(html, SOUP) and BeautifulSoup.BeautifulSoup(u(html), **kwargs) or html
 
     @property
     def _beautifulSoup(self):
@@ -1631,11 +1631,13 @@ class Element(Node):
 
 class Document(Element):
     
-    def __init__(self, html):
+    def __init__(self, html, **kwargs):
         """ Document is the top-level element in the Document Object Model.
             It contains nested Element, Text and Comment nodes.
         """
-        Node.__init__(self, html.strip(), type=DOCUMENT)
+        # Aliases for BeautifulSoup optional parameters: 
+        kwargs["selfClosingTags"] = kwargs.pop("self_closing", kwargs.get("selfClosingTags"))
+        Node.__init__(self, html.strip(), type=DOCUMENT, **kwargs)
 
     @property
     def head(self):
