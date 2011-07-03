@@ -879,18 +879,25 @@ _distance = distance
 # 3000 vectors with 100 features (LSA, density 1.0):  5 minutes with k=100 (20 iterations).
 # 3000 vectors with 200 features (LSA, density 1.0): 13 minutes with k=100 (20 iterations).
 
+# Initialization methods:
+RANDOM, KMPP = "random", "kmeans++"
+
 def k_means(vectors, k, iterations=10, distance=COSINE, **kwargs):
     """ Returns a list of k clusters, 
         where each cluster is a list of similar vectors (Lloyd's algorithm).
         There is no guarantee of convergence or optimal solution.
     """
+    init = kwargs.get("initialization", RANDOM)
     keys = kwargs.get("keys") or dict.fromkeys((k for k in chain(*vectors)), True).keys()
     if k < 2: 
         return [[v for v in vectors]]
-    clusters = [[] for i in xrange(k)]
-    for i, v in enumerate(sorted(vectors, key=lambda x: random())):
-        # Randomly partition the vectors across k clusters.
-        clusters[i%k].append(v)
+    if init == KMPP:
+        clusters = kmpp(vectors, k)
+    else:
+        clusters = [[] for i in xrange(k)]
+        for i, v in enumerate(sorted(vectors, key=lambda x: random())):
+            # Randomly partition the vectors across k clusters.
+            clusters[i%k].append(v)
     converged = False
     while not converged and iterations > 0 and k > 0:
         # Calculate the center of each cluster.
@@ -921,6 +928,44 @@ def k_means(vectors, k, iterations=10, distance=COSINE, **kwargs):
     return clusters
     
 kmeans = k_means
+
+def kmpp(vectors, k):
+    """ The k-means++ initialization algorithm, with the advantage that:
+        - it generates better clusterings than standard k-means (RANDOM) on virtually all data sets,
+        - it runs faster than standard k-means on average,
+        - it has a theoretical approximation guarantee.
+    """
+    # David Arthur, 2006, http://theory.stanford.edu/~sergei/slides/BATS-Means.pdf
+    # Choose one center at random.
+    # Calculate the distance between each vector and the nearest center.
+    centroids = [choice(vectors)]
+    d = [distance(v, centroids [0]) for v in vectors]
+    s = sum(d)
+    for _ in range(k-1):
+        # Choose a random number y between 0 and d1 + d2 + ... + dn.
+        # Find vector i so that: d1 + d2 + ... + di >= y > d1 + d2 + ... + dj.
+        # Perform a number of local tries so that y yields a small distance sum.
+        i = 0
+        for _ in range(int(2 + log(k))):
+            y = rnd() * s
+            for i1, v1 in enumerate(vectors):
+                if y <= d[i1]: 
+                    break
+                y -= d[i1]
+            s1 = sum(min(d[j], distance(v1, v2)) for j, v2 in enumerate(vectors))
+            if s1 < s:
+                s, i = s1, i1
+        # Add vector i as a new center.
+        # Repeat until we have chosen k centers.
+        centroids.append(vectors[i])
+        d = [min(d[i], distance(v, centroids[-1])) for i, v in enumerate(vectors)]
+        s = sum(d)
+    # Assign points to the nearest center.
+    clusters = [[] for i in xrange(k)]
+    for v1 in vectors:
+        d = [distance(v1, v2) for v2 in centroids]
+        clusters[d.index(min(d))].append(v1)
+    return clusters
 
 #--- HIERARCHICAL -----------------------------------------------------------------------------------
 # Slow, optimal solution guaranteed in O(len(vectors)^3).
