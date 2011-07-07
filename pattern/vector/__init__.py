@@ -949,6 +949,9 @@ def kmpp(vectors, k):
         - it has a theoretical approximation guarantee.
     """
     # David Arthur, 2006, http://theory.stanford.edu/~sergei/slides/BATS-Means.pdf
+    # Based on:
+    # http://www.stanford.edu/~darthur/kmpp.zip
+    # http://yongsun.me/2008/10/k-means-and-k-means-with-python
     # Choose one center at random.
     # Calculate the distance between each vector and the nearest center.
     centroids = [choice(vectors)]
