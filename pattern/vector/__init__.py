@@ -1062,8 +1062,8 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
 class Classifier:
 
     def __init__(self):
-        self._features = []
         self._classes  = []
+        self._features = []
 
     @property
     def features(self):
@@ -1204,7 +1204,7 @@ class NaiveBayes(Classifier):
         
     @property
     def features(self):
-        return [k[1] for k in self._features.iterkeys()]
+        return list(set(k[1] for k in self._features.iterkeys()))
 
     def train(self, document, type=None):
         """ Trains the classifier with the given document of the given type (i.e., class).
@@ -1259,7 +1259,7 @@ class NearestNeighbor(Classifier):
         
     @property
     def features(self):
-        return list(set(k for k in chain(*vectors)))
+        return list(set(k for k in chain(*(v[1] for v in self._vectors))))
     
     def train(self, document, type=None):
         self._vectors.append(self._vector(document, type=type))
@@ -1280,15 +1280,15 @@ class NearestNeighbor(Classifier):
         except IndexError:
             return None
 
-kNN = NearestNeighbor
+kNN = KNN = NearestNeighbor
 
 #d1 = Document("cats have stripes, purr and drink milk", type="cat", threshold=0, stemmer=None)
 #d2 = Document("cows are black and white, they moo and give milk", type="cow", threshold=0, stemmer=None)
 #d3 = Document("birds have wings and an fly", type="bird", threshold=0, stemmer=None)
-#knn = NearestNeighbor(k=10, distance=COSINE)
+#knn = kNN()
 #for d in (d1,d2,d3):
 #    knn.train(d)
 #print knn.binary
-#print knn.types
+#print knn.classes
 #print knn.classify(Document("something that can fly", threshold=0, stemmer=None))
 #print NearestNeighbor.test((d1,d2,d3), folds=2)
