@@ -180,6 +180,12 @@ class URLTimeout(URLError):
     pass # URL takes to long to load.
 class HTTPError(URLError):
     pass # URL causes an error on the contacted server.
+class HTTP301Redirect(HTTPError):
+    pass # Too many redirects.
+         # The site may be trying to set a cookie and waiting for you to return it,
+         # or taking other measures to discern a browser from a script.
+         # For specific purposes you should build your own urllib2.HTTPRedirectHandler
+         # and pass it to urllib2.build_opener() in URL.open()
 class HTTP400BadRequest(HTTPError):
     pass # URL contains an invalid request.
 class HTTP401Authentication(HTTPError):
@@ -190,12 +196,8 @@ class HTTP404NotFound(HTTPError):
     pass # URL doesn't exist on the internet.
 class HTTP420Error(HTTPError):
     pass # Used by Twitter for rate limiting.
-class HTTP301Redirect(HTTPError):
-    pass # Too many redirects.
-         # The site may be trying to set a cookie and waiting for you to return it,
-         # or taking other measures to discern a browser from a script.
-         # For specific purposes you should build your own urllib2.HTTPRedirectHandler
-         # and pass it to urllib2.build_opener() in URL.open()
+class HTTP500InternalServerError(HTTPError):
+    pass # Generic server error.
     
 class URL:
     
@@ -305,12 +307,13 @@ class URL:
             request = urllib2.Request(url, post, {"User-Agent": user_agent, "Referer": referrer})
             return urllib2.urlopen(request)
         except urllib2.HTTPError, e:
+            if e.code == 301: raise HTTP301Redirect
             if e.code == 400: raise HTTP400BadRequest
             if e.code == 401: raise HTTP401Authentication
             if e.code == 403: raise HTTP403Forbidden
             if e.code == 404: raise HTTP404NotFound
             if e.code == 420: raise HTTP420Error
-            if e.code == 301: raise HTTP301Redirect
+            if e.code == 500: raise HTTP500InternalServerError
             raise HTTPError
         except urllib2.URLError, e:
             if e.reason == "timed out" \
@@ -1584,13 +1587,13 @@ class Element(Node):
         """
         if isinstance(v, basestring) and "#" in v:
             v1, v2 = v.split("#")
-            v1 = v1 in ("*","") or v1
+            v1 = v1 in ("*","") or v1.lower()
             return [Element(x) for x in self._p.findAll(v1, id=v2)]
         if isinstance(v, basestring) and "." in v:
             v1, v2 = v.split(".")
-            v1 = v1 in ("*","") or v1
+            v1 = v1 in ("*","") or v1.lower()
             return [Element(x) for x in self._p.findAll(v1, v2)]
-        return [Element(x) for x in self._p.findAll(v in ("*","") or v)]
+        return [Element(x) for x in self._p.findAll(v in ("*","") or v.lower())]
     by_tag = get_elements_by_tagname
 
     def get_element_by_id(self, v):
