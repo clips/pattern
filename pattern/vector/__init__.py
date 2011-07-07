@@ -23,7 +23,7 @@ import stemmer; _stemmer=stemmer
 
 from math      import pow, log
 from time      import time
-from random    import random
+from random    import random, choice
 from itertools import izip, chain
 
 try:
@@ -687,7 +687,7 @@ class Corpus(object):
         v = heapq.nsmallest(top, v, key=lambda v: (-v[0],v[1]))
         return ftlist(v)
         
-    similar = related = nn = nearest_neighbors
+    similar = related = neighbors = nn = nearest_neighbors
         
     def vector_space_search(self, words=[], **kwargs):
         """ Returns related documents from the corpus, as a list of (weight, document)-tuples.
@@ -707,6 +707,11 @@ class Corpus(object):
         return self.nearest_neighbors(words, top)
         
     search = vector_space_search
+    
+    def distance(self, document1, document2, **kwargs):
+        """ Returns the distance (COSINE, EUCLIDEAN or HAMMING) between two document vectors (0.0-1.0).
+        """
+        return distance(document1.vector, document2.vector, **kwargs)
     
     def cluster(self, documents=ALL, method=KMEANS, **kwargs):
         """ Clustering is an unsupervised machine learning method for grouping similar documents.
@@ -787,20 +792,28 @@ class LSA:
         )
         # Store as Python lists so we can cPickle it.
         self.corpus = corpus
-        self.terms = dict(enumerate(corpus.vector().keys())) # Vt-index => word.
+        self._terms = dict(enumerate(corpus.vector().keys())) # Vt-index => word.
         self.u, self.sigma, self.vt = (
             dict((d.id, Vector((i, float(x)) for i, x in enumerate(v))) for d, v in izip(corpus, u)),
             list(sigma),
             [[float(x) for x in v] for v in vt]
         )
+    
+    @property
+    def terms(self):
+        # Yields a list of all words, identical to LSA.corpus.vector.keys()
+        return self._terms.values()
 
     @property
-    def vectors(self):
-        return self.u
-        
-    @property
     def concepts(self):
-        return self.vt
+        # Yields a list of all concepts, each a dictionary of (word, weight)-items.
+        return [dict((self._terms[i], w) for i,w in enumerate(concept)) for concept in self.vt]
+    
+    @property
+    def vectors(self):
+        # Yields a dictionary of (Document.id, concepts),
+        # where concepts is a dictionary of (concept_index, weight)-items.
+        return self.u
 
     def __getitem__(self, id):
         return self.u[id]
@@ -817,7 +830,7 @@ class LSA:
         if not document.id in _lsa_transform_cache:
             import numpy
             v = self.corpus.vector(document)
-            v = [v[self.terms[i]] for i in range(len(v))]
+            v = [v[self._terms[i]] for i in range(len(v))]
             v = numpy.dot(numpy.dot(numpy.linalg.inv(numpy.diag(self.sigma)), self.vt), v)
             v = Vector(enumerate(v))
             _lsa_transform_cache[document.id] = v
@@ -887,7 +900,7 @@ def k_means(vectors, k, iterations=10, distance=COSINE, **kwargs):
         where each cluster is a list of similar vectors (Lloyd's algorithm).
         There is no guarantee of convergence or optimal solution.
     """
-    init = kwargs.get("initialization", RANDOM)
+    init = kwargs.get("seed", kwargs.get("initialization", RANDOM))
     keys = kwargs.get("keys") or dict.fromkeys((k for k in chain(*vectors)), True).keys()
     if k < 2: 
         return [[v for v in vectors]]
@@ -1048,28 +1061,52 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
 
 class Classifier:
 
+    def __init__(self):
+        self._features = []
+        self._classes  = []
+
+    @property
+    def features(self):
+        return self._features
+    @property
+    def terms(self): 
+        return self.features
+
     @property
     def classes(self):
-        return []
-    types = classes
+        return self._classes
+    @property
+    def types(self):
+        return self.classes
     
     @property
     def binary(self):
         return sorted(self.classes) in ([False,True], [0,1])
-    
+
     def train(self, document, type):
+        # Must be implemented in a subclass.
         pass
         
     def classify(self, document):
+        # Must be implemented in a subclass.
         return None
-    
-    def save(self, path):
-        cPickle.dump(self, open(path, "w"), BINARY)
 
-    @classmethod
-    def load(self, path):
-        return cPickle.load(open(path))
-        
+    def _vector(self, document, type=None):
+        """ Returns a (type, dict)-tuple for the given document, where dict is the document vector.
+            If the document is part of a LSA-reduced corpus, returns the LSA concept vector.
+            If the given type is None, returns document.type (if a Document is given).
+        """
+        if isinstance(document, Document):
+            if type is None:
+                type = document.type
+            if document.corpus and document.corpus.lsa:
+                return type, document.corpus.lsa[document.id]
+            return type, document.vector
+        if isinstance(document, (list, tuple)):
+            return type, dict.fromkeys(document, 1.0)
+        if isinstance(document, dict):
+            return type, document
+    
     @classmethod
     def test(self, corpus=[], d=0.65, folds=1, **kwargs):
         """ Returns an (accuracy, precision, recall, F-score)-tuple for the given corpus.
@@ -1124,6 +1161,19 @@ class Classifier:
         m[3] = binary and 2 * m[1] * m[2] / ((m[1] + m[2]) or 1) or 0 # F1-score.
         return binary and tuple(m) or (m[0], None, None, None)
 
+    @classmethod
+    def k_fold_cross_validation(self, corpus=[], k=10, **kwargs):
+        return self.test(corpus, kwargs.pop(d,0.65), k, kwargs)
+    
+    crossvalidate = cross_validate = k_fold_cross_validation
+
+    def save(self, path):
+        cPickle.dump(self, open(path, "w"), BINARY)
+
+    @classmethod
+    def load(self, path):
+        return cPickle.load(open(path))
+
 #--- NAIVE BAYES CLASSIFIER --------------------------------------------------------------------------
 # Based on: Magnus Lie Hetland, http://hetland.org/coding/python/nbayes.py
 
@@ -1141,56 +1191,104 @@ class NaiveBayes(Classifier):
             For example: if we have a set of documents of movie reviews (training data),
             and we know the star rating of each document, 
             we can predict the star rating for other movie review documents.
-            With aligned=True, the word index is taken into account
-            when training on lists of words.
+            With aligned=True, the word index is taken into account when training on lists of words.
         """
-        self.fc = {}   # Frequency of each class (or type).
-        self.ff = {}   # Frequency of each feature, as (type, feature, value)-tuples.
-        self.count = 0 # Number of training instances.
-        self._aligned = aligned
-
-    @property
-    def features(self):
-        # Yields a dictionary of (word, frequency)-items.
-        d = {}
-        for (t,v,i), f in self.ff.iteritems():
-            d[v] = (v in d) and d[v]+f or f
-        return d
+        self._aligned  = aligned
+        self._classes  = {} # Frequency of each class (or type).
+        self._features = {} # Frequency of each feature, as (type, feature, value)-tuples.
+        self._count    = 0  # Number of training instances.
     
     @property
     def classes(self):
-        return self.fc.keys()
-    types = classes
+        return self._classes.keys()
+        
+    @property
+    def features(self):
+        return [k[1] for k in self._features.iterkeys()]
 
-    def train(self, document, type=None, weight=TF):
+    def train(self, document, type=None):
         """ Trains the classifier with the given document of the given type (i.e., class).
             A document can be a Document object or a list of words (or other hashable items).
             If no type is given, Document.type will be used instead.
         """
         id = self._aligned and NBid1 or NBid2
-        if isinstance(document, Document):
-            type = type is not None and type or document.type
-            document = weight==TF and document.terms or document.vector
-        if isinstance(document, (list, tuple)):
-            document = dict.fromkeys(document, 1)
-        self.fc[type] = self.fc.get(type, 0) + 1
-        for i, (v,f) in enumerate(document.iteritems()):
-            self.ff[id(type,v,i)] = self.ff.get(id(type,v,i), 0) + f
-        self.count += 1
+        type, vector = self._vector(document, type=type)
+        self._classes[type] = self._classes.get(type, 0) + 1
+        for i, (w, f) in enumerate(vector.iteritems()):
+            self._features[id(type, w, i)] = self._features.get(id(type, w, i), 0) + f
+        self._count += 1
 
     def classify(self, document):
         """ Returns the type with the highest probability for the given document
             (a Document object or a list of words).
+            If the training documents come from a LSA-reduced corpus,
+            the given document must be Corpus.lsa.transform(document).
         """
         id = self._aligned and NBid1 or NBid2
-        def d(document, type):
+        def g(document, type):
             # Bayesian discriminant, proportional to posterior probability.
-            f = 1.0 * self.fc[type] / self.count
-            for i, v in enumerate(document):
-                f *= self.ff.get(id(type,v,i), 0) 
-                f /= self.fc[type]
-            return f
+            g = 1.0 * self._classes[type] / self._count
+            for i, (w, f) in enumerate(self._vector(document)[1].iteritems()):
+                g /= self._classes[type]
+                g *= self._features.get(id(type, w, i), 0) 
+                g *= f
+            return g
         try:
-            return max((d(document, type), type) for type in self.fc)[1]
+            return max((g(document, type), type) for type in self._classes)[1]
         except ValueError: # max() arg is an empty sequence
             return None
+
+Bayes = NaiveBayes
+
+#--- K-NEAREST NEIGHBOR CLASSIFIER -------------------------------------------------------------------
+
+class NearestNeighbor(Classifier):
+    
+    def __init__(self, k=10, distance=COSINE):
+        """ k-nearest neighbor (kNN) is a simple supervised learning method for text classification.
+            Documents are classified by a majority vote of nearest neighbors (cosine distance)
+            in the training corpus.
+        """
+        self.k = k               # Number of nearest neighbors to observe.
+        self.distance = distance # COSINE, EUCLIDEAN, HAMMING.
+        self._vectors = []       # Training instances.
+    
+    @property
+    def classes(self):
+        return list(set(type for (type, v) in self._vectors))
+        
+    @property
+    def features(self):
+        return list(set(k for k in chain(*vectors)))
+    
+    def train(self, document, type=None):
+        self._vectors.append(self._vector(document, type=type))
+    
+    def classify(self, document):
+        # Basic majority voting.
+        # Distance is calculated between the document vector and all training instances.
+        # This will make NearestNeighbor.test() slow in higher dimensions.
+        classes = {}
+        v1 = self._vector(document)[1]
+        for type, v2 in self._vectors:
+            f = distance(v1, v2, method=self.distance)
+            f = 1 / (f or 0.0000000001)
+            classes[type] = type in classes and classes[type]+f or f
+        try:
+            # Pick random winner if several candidates have equal highest score.
+            return choice([k for k, v in classes.iteritems() if v == max(classes.values()) > 0])
+        except IndexError:
+            return None
+
+kNN = NearestNeighbor
+
+#d1 = Document("cats have stripes, purr and drink milk", type="cat", threshold=0, stemmer=None)
+#d2 = Document("cows are black and white, they moo and give milk", type="cow", threshold=0, stemmer=None)
+#d3 = Document("birds have wings and an fly", type="bird", threshold=0, stemmer=None)
+#knn = NearestNeighbor(k=10, distance=COSINE)
+#for d in (d1,d2,d3):
+#    knn.train(d)
+#print knn.binary
+#print knn.types
+#print knn.classify(Document("something that can fly", threshold=0, stemmer=None))
+#print NearestNeighbor.test((d1,d2,d3), folds=2)
