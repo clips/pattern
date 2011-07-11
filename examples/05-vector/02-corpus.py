@@ -39,7 +39,7 @@ print "dolphin-parakeet:", corpus.similarity(d3, d5)
 print
 
 print "Related to tiger:"
-print corpus.similar(d2, top=3)
+print corpus.neighbors(d2, top=3)
 print
 
 print "Related to water:"

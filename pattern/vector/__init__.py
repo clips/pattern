@@ -102,6 +102,9 @@ class ReadOnlyError(Exception):
 # Read-only dictionary, used for Document.terms and Document.vector.
 # These can't be updated because it invalidates the cache.
 class readonlydict(dict):
+    @classmethod
+    def fromkeys(self, k, default=None):
+        d=readonlydict((k, default) for k in k); return d
     def __init__(self, *args, **kwargs):
         dict.__init__(self, *args, **kwargs)
     def __setitem__(self, k, v):
@@ -709,7 +712,7 @@ class Corpus(object):
     search = vector_space_search
     
     def distance(self, document1, document2, **kwargs):
-        """ Returns the distance (COSINE, EUCLIDEAN or HAMMING) between two document vectors (0.0-1.0).
+        """ Returns the distance (COSINE, EUCLIDEAN, ...) between two document vectors (0.0-1.0).
         """
         return distance(document1.vector, document2.vector, **kwargs)
     
@@ -827,16 +830,19 @@ class LSA:
     def transform(self, document):
         """ Given a document not in the corpus, returns a vector in LSA concept space.
         """
-        if not document.id in _lsa_transform_cache:
-            import numpy
-            v = self.corpus.vector(document)
-            v = [v[self._terms[i]] for i in range(len(v))]
-            v = numpy.dot(numpy.dot(numpy.linalg.inv(numpy.diag(self.sigma)), self.vt), v)
-            v = Vector(enumerate(v))
-            _lsa_transform_cache[document.id] = v
-        return _lsa_transform_cache[document.id]
+        if document.id in self.u:
+            return self.u[document.id]
+        if document.id in _lsa_transform_cache:
+            return _lsa_transform_cache[document.id]
+        import numpy
+        v = self.corpus.vector(document)
+        v = [v[self._terms[i]] for i in range(len(v))]
+        v = numpy.dot(numpy.dot(numpy.linalg.inv(numpy.diag(self.sigma)), self.vt), v)
+        v = _lsa_transform_cache[document.id] = Vector(enumerate(v))
+        return v
         
-# LSA cache for Corpus.search() shouldn't be stored with Corpus.save().
+# LSA cache for Corpus.search() shouldn't be stored with Corpus.save(),
+# so it is a global variable instead of a property of the LSA class.
 _lsa_transform_cache = {}
 
 #def iter2array(iterator, typecode):
@@ -873,8 +879,9 @@ def centroid(vectors, keys=[]):
     v = Vector((k, x) for k, x in v if x != 0)
     return v
 
-COSINE, EUCLIDEAN, HAMMING = "cosine", "euclidean", "hamming"
-
+COSINE, EUCLIDEAN, MANHATTAN, HAMMING = \
+    "cosine", "euclidean", "manhattan", "hamming"
+    
 def distance(v1, v2, method=COSINE):
     """ Returns the distance between two vectors.
     """
@@ -882,8 +889,12 @@ def distance(v1, v2, method=COSINE):
         return 1 - sum(v1.get(w,0) * f for w, f in v2.iteritems()) / (v1.norm * v2.norm or 1)
     if method == EUCLIDEAN: # Squared distance is 1.5x faster.
         return sum((v1.get(w,0) - v2.get(w,0))**2 for w in set(chain(v1, v2)))
+    if method == MANHATTAN:
+        return sum(abs(v1.get(w,0) - v2.get(w,0)) for w in set(chain(v1, v2)))
     if method == HAMMING:
-        return sum(w in v1 and w in v2 and v1[w] == v2[w] for w in set(chain(v1, v2)))
+        d = sum(not (w in v1 and w in v2 and v1[w] == v2[w]) for w in set(chain(v1, v2))) 
+        d = d / float(max(len(v1), len(v2)))
+        return d
 
 _distance = distance
 
@@ -1103,12 +1114,14 @@ class Classifier:
             if type is None:
                 type = document.type
             if document.corpus and document.corpus.lsa:
-                return type, document.corpus.lsa[document.id]
+                return type, document.corpus.lsa[document.id] # LSA concept vector.
             return type, document.vector
         if isinstance(document, (list, tuple)):
-            return type, dict.fromkeys(document, 1.0)
+            return type, Vector.fromkeys(document, 1.0)
         if isinstance(document, dict):
-            return type, document
+            return type, Vector(document)
+        if isinstance(document, basestring):
+            return type, Vector(count(words(document), stemmer=None, stopwords=True))
     
     @classmethod
     def test(self, corpus=[], d=0.65, folds=1, **kwargs):
@@ -1253,7 +1266,7 @@ class NearestNeighbor(Classifier):
             in the training corpus.
         """
         self.k = k               # Number of nearest neighbors to observe.
-        self.distance = distance # COSINE, EUCLIDEAN, HAMMING.
+        self.distance = distance # COSINE, EUCLIDEAN, ...
         self._vectors = []       # Training instances.
     
     @property
@@ -1273,9 +1286,11 @@ class NearestNeighbor(Classifier):
         # This will make NearestNeighbor.test() slow in higher dimensions.
         classes = {}
         v1 = self._vector(document)[1]
-        for type, v2 in self._vectors:
-            f = distance(v1, v2, method=self.distance)
-            f = 1 / (f or 0.0000000001)
+        D = ((distance(v1, v2, method=self.distance), type) for type, v2 in self._vectors)
+        D = ((d, type) for d, type in D if d < 1) # Nothing in common if distance=1.0.
+        D = heapq.nsmallest(self.k, D)            # k-least distant.
+        for d, type in D:
+            f = 1 / (d or 0.0000000001)
             classes[type] = type in classes and classes[type]+f or f
         try:
             # Pick random winner if several candidates have equal highest score.
