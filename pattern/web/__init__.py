@@ -878,6 +878,21 @@ class Google(SearchEngine):
         data = (data.get("responseData") or {}).get("translatedText", "")
         data = decode_entities(data)
         return u(data)
+        
+    def language(self, string, **kwargs):
+        """ Returns a (language, reliability)-tuple for the given string.
+        """
+        url = URL("http://www.google.com/uds/GlangDetect", method=GET, query={
+                "v": 1.0,
+                "q": string[:1000]
+        })
+        kwargs.setdefault("cached", False)
+        kwargs.setdefault("throttle", self.throttle)
+        data = url.download(**kwargs)
+        data = json.loads(data)
+        data = data.get("responseData") or {}
+        data = u(data.get("language")), float(data.get("confidence"))
+        return data
 
 # Needs to switch to Google Custom Search API at some point (the Google Search API is deprecated):
 # http://code.google.com/apis/customsearch/
