@@ -94,6 +94,17 @@ def shi(i, base="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
         s.append(base[r])
     return "".join(reversed(s))
 
+#--- LIST FUNCTIONS ----------------------------------------------------------------------------------
+
+def chunk(list, n):
+    """ Yields n successive equal-sized chunks from the given list.
+    """
+    i = 0
+    for m in xrange(n):
+        j = i + len(list[m::n]) 
+        yield list[i:j]
+        i=j
+
 #--- READ-ONLY DICTIONARY ----------------------------------------------------------------------------
 
 class ReadOnlyError(Exception):
@@ -711,10 +722,10 @@ class Corpus(object):
         
     search = vector_space_search
     
-    def distance(self, document1, document2, **kwargs):
+    def distance(self, document1, document2, *args, **kwargs):
         """ Returns the distance (COSINE, EUCLIDEAN, ...) between two document vectors (0.0-1.0).
         """
-        return distance(document1.vector, document2.vector, **kwargs)
+        return distance(document1.vector, document2.vector, *args, **kwargs)
     
     def cluster(self, documents=ALL, method=KMEANS, **kwargs):
         """ Clustering is an unsupervised machine learning method for grouping similar documents.
@@ -895,6 +906,9 @@ def distance(v1, v2, method=COSINE):
         d = sum(not (w in v1 and w in v2 and v1[w] == v2[w]) for w in set(chain(v1, v2))) 
         d = d / float(max(len(v1), len(v2)))
         return d
+    if isinstance(method, type(distance)):
+        # Given method is a function of the form: distance(v1, v2) => float.
+        return method(v1, v2)
 
 _distance = distance
 
@@ -1310,3 +1324,82 @@ kNN = KNN = NearestNeighbor
 #print knn.classes
 #print knn.classify(Document("something that can fly", threshold=0, stemmer=None))
 #print NearestNeighbor.test((d1,d2,d3), folds=2)
+
+#### GENETIC ALGORITHM ###############################################################################
+
+class GeneticAlgorithm:
+    
+    def __init__(self, candidates=[], **kwargs):
+        """ A genetic algorithm is a stochastic search method  based on natural selection.
+            Each generation, the fittest candidates are selected and recombined into a new generation. 
+            With each new generation the system converges towards an optimal fitness.
+        """
+        self.population = candidates
+        self.generation = 0
+        # GeneticAlgorithm.fitness(), crossover(), mutate() can be given as functions:
+        for f in ("fitness", "crossover", "mutate"):
+            if f in kwargs: 
+                setattr(self, f, kwargs[f])
+    
+    def fitness(self, candidate):
+        # Must be implemented in a subclass, returns 0.0-1.0.
+        return 1.0
+    
+    def crossover(self, candidate1, candidate2, d=0.5):
+        # Must be implemented in a subclass.
+        return None
+        
+    def mutate(self, candidate, d=0.1):
+        # Must be implemented in a subclass.
+        return None or candidate
+        
+    def update(self, top=0.7, crossover=0.5, mutation=0.1):
+        """ Updates the population by selecting the top fittest candidates,
+            and recombining them into a new generation.
+        """
+        # Selection.
+        p = sorted((self.fitness(x), x) for x in self.population) # Weakest-first.
+        x = min(f for f, x in p)
+        y = max(f for f, x in p)
+        i = 0
+        while len(p) > len(self.population) * top:
+            # Weaker candidates have a higher chance of being removed,
+            # chance being equal to (1-fitness), starting with the weakest.
+            i = (i+1) % len(p)
+            if x + (y-x) * random() >= p[i][0]:
+                p.pop(i)
+        # Reproduction.
+        p = [x for f, x in p]
+        g = []
+        while len(g) < len(self.population):
+            # Choose randomly between recombination of parents or mutation.
+            # Mutation avoids local optima by maintaining genetic diversity.
+            if random() > 0.1:
+                i = int(round(random() * (len(p)-1)))
+                j = choice(range(0,i) + range(i+1, len(p)))
+                g.append(self.crossover(p[i], p[j], d=crossover))
+            else:
+                g.append(self.mutate(choice(p), d=mutation))
+        self.population = g
+        self.generation += 1
+        
+    @property
+    def average_fitness(self):
+        # The average fitness should increase with each generation.
+        return sum(self.fitness(x) for x in self.population) / len(self.population)
+
+GA = GeneticAlgorithm
+
+#class FloatGA(GeneticAlgorithm):
+#    def fitness(self, x):
+#        return x
+#    def crossover(self, x, y, d=0.5):
+#        return (x+y) / 2
+#    def mutate(self, x, d=0.1):
+#        return min(1, max(0, x + random()*0.2-0.1))
+#
+#ga = FloatGA([random() for i in range(100)])
+#for i in range(100):
+#    ga.update()
+#    print ga.average_fitness
+#print ga.population
