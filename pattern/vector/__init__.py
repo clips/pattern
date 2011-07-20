@@ -96,6 +96,11 @@ def shi(i, base="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
 #--- LIST FUNCTIONS ----------------------------------------------------------------------------------
 
+def shuffled(list):
+    """ Yields a copy of the given list with the items in random order.
+    """
+    return sorted(list, key=lambda x: random())
+
 def chunk(list, n):
     """ Yields n successive equal-sized chunks from the given list.
     """
@@ -211,7 +216,7 @@ def stem(word, stemmer=PORTER, **kwargs):
         return stemmer(word)
     return word
 
-def count(words=[], top=None, threshold=0, stemmer=PORTER, exclude=[], stopwords=False, **kwargs):
+def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=False, **kwargs):
     """ Returns a dictionary of (word, count)-items, in lowercase.
         Words in the exclude list and stop words are not counted.
         Words whose count falls below (or equals) the given threshold are excluded.
@@ -257,23 +262,45 @@ class Document(object):
             Stop words in the exclude list are excluded from the document.
             Only words whose count exceeds the threshold and who are in the top are included in the document.
         """
-        kwargs.setdefault("threshold", 1)
+        kwargs.setdefault("threshold", 0)
         kwargs.setdefault("dict", readonlydict)
+        # A string of words, map to read-only dict of (word, count)-items.
         if isinstance(string, basestring):
             w = words(string, **kwargs)
+            w = count(w, **kwargs)
+            v = None
+        # A list of words, map to read-only dict of (word, count)-items.
         elif isinstance(string, (list, tuple)):
             w = string
+            w = count(w, **kwargs)
+            v = None
+        # A dict of (word, count)-items, make read-only.
+        elif isinstance(string, dict):
+            w = string
+            w = kwargs["dict"](w)
+            v = None
+        # A Vector of (word, weight)-items, copy as document vector.
+        elif isinstance(string, Vector):
+            w = string
+            w = kwargs["dict"](w) # XXX term count is lost.
+            v = Vector(w)
+        # pattern.en.Sentence with Word objects, can use stemmer=LEMMA.
         elif string.__class__.__name__ == "Sentence":
             w = string.words
+            w = count(w, **kwargs)
+            v = None
+        # pattern.en.Text with Sentence objects, can use stemmer=LEMMA.
         elif string.__class__.__name__ == "Text":
             w = []; [w.extend(sentence.words) for sentence in string]
+            w = count(w, **kwargs)
+            v = None
         else:
-            raise TypeError, "document string is not str, unicode, list, Sentence or Text."
+            raise TypeError, "document string is not str, unicode, list, Vector, Sentence or Text."
         self._id       = _uid()             # Document ID, used when comparing objects.
         self._name     = kwargs.get("name") # Name that describes the document content.
         self._type     = kwargs.get("type") # Type that describes the category or class of the document.
-        self._terms    = count(w, **kwargs) # Dictionary of (word, count)-items.
-        self._count    = None               # Total number of words (minus stop words).
+        self._terms    = w                  # Dictionary of (word, count)-items.
+        self._count    = v                  # Total number of words (minus stop words).
         self._vector   = None               # Cached tf-idf vector.
         self._corpus   = None               # Corpus this document belongs to.
 
@@ -331,7 +358,12 @@ class Document(object):
     @property
     def terms(self):
         return self._terms
+    
     words = terms
+    
+    @property
+    def features(self):
+        return self._terms.keys()
     
     @property
     def count(self):
@@ -420,6 +452,7 @@ class Document(object):
             repr(self._id), self.name and ", name=%s" % repr(self.name) or "")
 
 #--- VECTOR ------------------------------------------------------------------------------------------
+# Document vector, using a sparse representation (i.e., dictionary with only features > 0).
 
 class WeightError(Exception):
     pass
@@ -432,7 +465,11 @@ class Vector(readonlydict):
         self.weight = kwargs.pop("weight", TFIDF) # Vector weights based on tf or tf-idf?
         self._norm  = None
         readonlydict.__init__(self, *args, **kwargs)
-        
+    
+    @property
+    def features(self):
+        return self.keys()
+    
     @property
     def l2_norm(self):
         """ Yields the Frobenius matrix norm.
@@ -474,6 +511,9 @@ def l2_norm(vector):
 
 #--- CORPUS ------------------------------------------------------------------------------------------
 
+# Export formats:
+ORANGE, WEKA = "orange", "weka"
+
 # LSA reduction methods:
 NORM, TOP300 = "norm", "top300"
 
@@ -487,9 +527,11 @@ class Corpus(object):
             where each document is a bag of (word, count)-items.
             Documents can be compared for similarity.
         """
+        self.description = ""             # Description of the dataset, author e-mail, etc.
         self._documents  = readonlylist() # List of documents (read-only).
         self._index      = {}             # Document.name => Document
         self._df         = {}             # Cache of document frequency per word.
+        self._ig         = {}             # Cache of information gain per (word1, word2).
         self._similarity = {}             # Cache of ((D1.id,D2.id), weight)-items (cosine similarity).
         self._vector     = None           # Cache of corpus vector with all the words in the corpus.
         self._lsa        = None           # LSA matrix with reduced dimensionality.
@@ -500,6 +542,12 @@ class Corpus(object):
     @property
     def documents(self):
         return self._documents
+
+    @property
+    def terms(self):
+        return self.vector.keys()
+        
+    features = words = terms
 
     def _get_lsa(self):
         return self._lsa
@@ -549,11 +597,46 @@ class Corpus(object):
             or id2 not in self._index:
                 self._similarity.pop((id1, id2))   # Remove Corpus.search() query cache.
         cPickle.dump(self, open(path, "w"), BINARY)
+        
+    def export(self, path, format=ORANGE, **kwargs):
+        """ Exports the corpus as a file for other machine learning applications,
+            e.g., Orange or Weka which both have a GUI and are faster.
+        """
+        # Note: the Document.vector space is exported without cache or LSA concept space.
+        keys = sorted(self.vector.keys())
+        s = []
+        # Orange tab format:
+        if format == ORANGE:
+            s.append("\t".join(keys + ["m#name", "c#type"]))
+            for document in self.documents:
+                v = document.vector
+                v = [v.get(k,0) for k in keys]
+                v = "\t".join(x==0 and "0" or "%.4f" % x for x in v)
+                v = "%s\t%s\t%s" % (v, document.name or "", document.type or "")
+                s.append(v)
+        # Weka ARFF format:
+        if format == WEKA:
+            s.append("@RELATION %s" % kwargs.get("name", hash(self)))
+            s.append("\n".join("@ATTRIBUTE %s NUMERIC" % k for k in keys))
+            s.append("@ATTRIBUTE class {%s}" % ",".join(set(d.type for d in self.documents)))
+            s.append("@DATA")
+            for document in self.documents:
+                v = document.vector
+                v = [v.get(k,0) for k in keys]
+                v = ",".join(x==0 and "0" or "%.4f" % x for x in v)
+                v = "%s,%s" % (v, document.type or "")
+                s.append(v)
+        s = "\n".join(s)
+        f = open(path, "w")
+        f.write(codecs.BOM_UTF8)
+        f.write(encode_utf8(s))
+        f.close()
     
     def _update(self):
         # Ensures that all document relevancy vectors are recalculated
         # when a document is added or deleted in the corpus (= new words or less words).
         self._df = {}
+        self._ig = {}
         self._similarity = {}
         self._vector = None
         self._lsa = None
@@ -765,6 +848,62 @@ class Corpus(object):
         self._similarity = {}
         
     reduce = latent_semantic_analysis
+
+    def information_gain(self, word1, word2):
+        """ Returns the difference between two given features (i.e. words from Corpus.terms),
+            on average over all document vectors, using symmetric Kullback-Leibler divergence.
+            Higher values represent more distinct features.
+        """
+        if not (word1, word2) in self._ig:
+            ig1 = 0
+            ig2 = 0
+            for d in self.documents:
+                v = d.vector
+                if word1 in v:
+                    ig1 += v[word1] * (log(v[word1], 2) - log(v.get(word2, 0.000001), 2))
+                if word2 in v: 
+                    ig2 += v[word2] * (log(v[word2], 2) - log(v.get(word1, 0.000001), 2))
+            # Cache the calculations for reuse.
+            # The measurement is symmetric, so we also know ig(word2, word1).
+            self._ig[(word1, word2)] = \
+            self._ig[(word2, word1)] = (ig1 + ig2) / 2 
+        return self._ig[(word1, word2)]
+    
+    ig = information_gain
+    
+    def feature_selection(self, top=100, verbose=False):
+        """ Returns the top most distinct (or "original") features (terms), using Information Gain.
+            This is a subset of Corpus.terms that can be used to build a Classifier
+            that is faster (less features = less matrix columns) but quite efficient.
+        """
+        # The subset will have less recall, because there are less features.
+        # Overall, F1-score drops 2.5% for 1/2 reduction, 5% for 3/4 reduction.
+        ig = {}
+        for i, w1 in enumerate(self.terms):
+            for j, w2 in enumerate(self.terms[i+1:]):
+                d = self.information_gain(w1, w2)
+                ig[w1] = w1 in ig and ig[w1]+d or d
+                ig[w2] = w2 in ig and ig[w2]+d or d
+            if verbose:
+                # IG 80.0% (550/700)
+                print "IG " + ("%.1f"%(float(i) / len(self.terms) * 100)).rjust(4) + "% " \
+                            + "(%s/%s)" % (i+1, len(self.terms))
+        subset = sorted(((d, w) for w, d in ig.iteritems()), reverse=True)
+        subset = [w for d, w in subset[:top]]
+        return subset
+        
+    def filter(self, features=[]):
+        """ Returns a new Corpus with documents only containing the given list of words,
+            for example a subset returned from Corpus.feature_selection(). 
+        """
+        features = dict.fromkeys(features, True)
+        corpus = Corpus(weight=self.weight)
+        corpus.extend([
+            Document(dict((w, f) for w, f in d.terms.iteritems() if w in features),
+                name = d.name,
+                type = d.type) for d in self.documents])
+        return corpus
+        
 
 #### LATENT SEMANTIC ANALYSIS ########################################################################
 
@@ -1148,6 +1287,7 @@ class Classifier:
             For non-binary classifiers, precision, recall and F-score are None.
         """
         corpus  = [isinstance(x, Document) and (x, x.type) or x for x in corpus]
+        corpus  = shuffled(corpus) # Avoid a list sorted by type (because we take successive chunks).
         classes = set(type for document, type in corpus)
         binary  = len(classes) == 2 and sorted(classes) in ([False,True], [0,1])
         m = [0,0,0,0] # accuracy | precision | recall | F1-score.
@@ -1175,15 +1315,15 @@ class Classifier:
                 # For binary classifiers, calculate the confusion matrix
                 # to measure precision and recall.
                 for document, b1 in corpus[i:j]:
-                     b2 = classifier.classify(document)
-                     if b1 and b2:
-                         TP += 1 # true positive
-                     elif not b1 and not b2:
-                         TN += 1 # true negative
-                     elif not b1 and b2:
-                         FP += 1 # false positive (type I error)
-                     elif b1 and not b2:
-                         FN += 1 # false negative (type II error)
+                    b2 = classifier.classify(document)
+                    if b1 and b2:
+                        TP += 1 # true positive
+                    elif not b1 and not b2:
+                        TN += 1 # true negative
+                    elif not b1 and b2:
+                        FP += 1 # false positive (type I error)
+                    elif b1 and not b2:
+                        FN += 1 # false negative (type II error)
                 m[0] += float(TP+TN) / ((TP+TN+FP+FN) or 1)
                 m[1] += float(TP) / ((TP+FP) or 1)
                 m[2] += float(TP) / ((TP+FN) or 1)
@@ -1336,6 +1476,7 @@ class GeneticAlgorithm:
         """
         self.population = candidates
         self.generation = 0
+        self._avg = None # Average fitness for this generation.
         # GeneticAlgorithm.fitness(), crossover(), mutate() can be given as functions:
         for f in ("fitness", "crossover", "mutate"):
             if f in kwargs: 
@@ -1353,44 +1494,50 @@ class GeneticAlgorithm:
         # Must be implemented in a subclass.
         return None or candidate
         
-    def update(self, top=0.7, crossover=0.5, mutation=0.1):
+    def update(self, top=0.7, crossover=0.5, mutation=0.1, d=0.9):
         """ Updates the population by selecting the top fittest candidates,
             and recombining them into a new generation.
         """
         # Selection.
         p = sorted((self.fitness(x), x) for x in self.population) # Weakest-first.
+        a = self._avg = float(sum(f for f, x in p)) / len(p)
+        print len(p), ["%.2f"%f for f,x in p][:20]
         x = min(f for f, x in p)
         y = max(f for f, x in p)
         i = 0
         while len(p) > len(self.population) * top:
             # Weaker candidates have a higher chance of being removed,
             # chance being equal to (1-fitness), starting with the weakest.
-            i = (i+1) % len(p)
             if x + (y-x) * random() >= p[i][0]:
                 p.pop(i)
+            else:
+                i = (i+1) % len(p)
         # Reproduction.
-        p = [x for f, x in p]
         g = []
         while len(g) < len(self.population):
             # Choose randomly between recombination of parents or mutation.
             # Mutation avoids local optima by maintaining genetic diversity.
-            if random() > 0.1:
+            if random() < d:
                 i = int(round(random() * (len(p)-1)))
                 j = choice(range(0,i) + range(i+1, len(p)))
-                g.append(self.crossover(p[i], p[j], d=crossover))
+                g.append(self.crossover(p[i][1], p[j][1], d=crossover))
             else:
-                g.append(self.mutate(choice(p), d=mutation))
+                g.append(self.mutate(choice(p)[1], d=mutation))
         self.population = g
         self.generation += 1
         
     @property
-    def average_fitness(self):
-        # The average fitness should increase with each generation.
-        return sum(self.fitness(x) for x in self.population) / len(self.population)
+    def avg(self):
+        # Average fitness is supposed to increase each generation.
+        if not self._avg: self._avg = float(sum(map(self.fitness, self.population))) / len(self.population)
+        return self._avg
+    
+    average_fitness = avg
 
 GA = GeneticAlgorithm
 
-#class FloatGA(GeneticAlgorithm):
+# GA for floats between 0.0-1.0 that prefers higher numbers:
+#class HighFloatGA(GeneticAlgorithm):
 #    def fitness(self, x):
 #        return x
 #    def crossover(self, x, y, d=0.5):
@@ -1398,7 +1545,7 @@ GA = GeneticAlgorithm
 #    def mutate(self, x, d=0.1):
 #        return min(1, max(0, x + random()*0.2-0.1))
 #
-#ga = FloatGA([random() for i in range(100)])
+#ga = HighFloatGA([random() for i in range(100)])
 #for i in range(100):
 #    ga.update()
 #    print ga.average_fitness
