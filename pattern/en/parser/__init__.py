@@ -133,12 +133,6 @@ def find_tags(tokens, default="NN", light=False, lexicon=LEXICON, map=None):
                         next = i<len(tagged)-1 and tagged[i+1] or (None, None))
     if not light:
         lexicon.contextual_rules.apply(tagged)
-    for i, (token, tag) in enumerate(tagged):
-        # Corrections based on user-feedback.
-        # Brill's contextual rules assign tags based on a statistical majority vote.
-        # These are not always correct in the specific.
-        if i > 0 and tagged[i-1][0] == "such" and token == "as": # such/JJ as/IN
-            tagged[i][1] = "IN"
     if map is not None:
         tagged = [[token, map(tag, default)] for token, tag in tagged]
     return tagged

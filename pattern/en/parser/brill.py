@@ -139,6 +139,10 @@ class ContextualRules(list):
                 or (cmd == "WDPREVTAG"      and x == T[i][0] and rule[4] == T[i-1][1]) \
                 or (cmd == "WDNEXTTAG"      and x == T[i][0] and rule[4] == T[i+1][1]):
                     tokens[i-len(b)] = [tokens[i-len(b)][0], rule[1]]
+            # Brill's contextual rules assign tags based on a statistical majority vote.
+            # Corrections, primarily based on user-feedback.
+            if i > 0 and T[i-1][0] == "such" and token[0] == "as": # such/JJ as/IN
+                tokens[i-len(b)][1] = "IN"
 
 #### BRILL LEXICON ###################################################################################
 
