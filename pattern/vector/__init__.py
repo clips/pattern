@@ -531,8 +531,8 @@ class Corpus(object):
         self._documents  = readonlylist() # List of documents (read-only).
         self._index      = {}             # Document.name => Document
         self._df         = {}             # Cache of document frequency per word.
-        self._ig         = {}             # Cache of information gain per (word1, word2).
         self._similarity = {}             # Cache of ((D1.id,D2.id), weight)-items (cosine similarity).
+        self._divergence = {}             # Cache of Kullback-leibler divergence per (word1, word2).
         self._vector     = None           # Cache of corpus vector with all the words in the corpus.
         self._lsa        = None           # LSA matrix with reduced dimensionality.
         self._weight     = weight         # Weight used in Document.vector (TF-IDF or TF).
@@ -636,8 +636,8 @@ class Corpus(object):
         # Ensures that all document relevancy vectors are recalculated
         # when a document is added or deleted in the corpus (= new words or less words).
         self._df = {}
-        self._ig = {}
         self._similarity = {}
+        self._divergence = {}
         self._vector = None
         self._lsa = None
         for document in self.documents:
@@ -849,46 +849,49 @@ class Corpus(object):
         
     reduce = latent_semantic_analysis
 
-    def information_gain(self, word1, word2):
+    def kullback_leibler_divergence(self, word1, word2, _vectors=[]):
         """ Returns the difference between two given features (i.e. words from Corpus.terms),
             on average over all document vectors, using symmetric Kullback-Leibler divergence.
             Higher values represent more distinct features.
         """
-        if not (word1, word2) in self._ig:
-            ig1 = 0
-            ig2 = 0
-            for d in self.documents:
-                v = d.vector
+        if not (word1, word2) in self._divergence:
+            kl1 = 0
+            kl2 = 0
+            # It is not log() that is slow here, but the document.vector attribute getter.
+            # If you use KLD in a loop, collect the vectors once and pass them to _vectors
+            # (x2 performance).
+            for v in _vectors or (d.vector for d in self.documents):
                 if word1 in v:
-                    ig1 += v[word1] * (log(v[word1], 2) - log(v.get(word2, 0.000001), 2))
+                    kl1 += v[word1] * (log(v[word1], 2) - log(v.get(word2, 0.000001), 2))
                 if word2 in v: 
-                    ig2 += v[word2] * (log(v[word2], 2) - log(v.get(word1, 0.000001), 2))
+                    kl2 += v[word2] * (log(v[word2], 2) - log(v.get(word1, 0.000001), 2))
             # Cache the calculations for reuse.
-            # The measurement is symmetric, so we also know ig(word2, word1).
-            self._ig[(word1, word2)] = \
-            self._ig[(word2, word1)] = (ig1 + ig2) / 2 
-        return self._ig[(word1, word2)]
+            # The measurement is symmetric, so we also know KL(word2, word1).
+            self._divergence[(word1, word2)] = \
+            self._divergence[(word2, word1)] = (kl1 + kl2) / 2 
+        return self._divergence[(word1, word2)]
     
-    ig = information_gain
+    relative_entropy = kl = kullback_leibler_divergence
     
     def feature_selection(self, top=100, verbose=False):
-        """ Returns the top most distinct (or "original") features (terms), using Information Gain.
+        """ Returns the top most distinct (or "original") features (terms), using Kullback-Leibler divergence.
             This is a subset of Corpus.terms that can be used to build a Classifier
             that is faster (less features = less matrix columns) but quite efficient.
         """
         # The subset will have less recall, because there are less features.
         # Overall, F1-score drops 2.5% for 1/2 reduction, 5% for 3/4 reduction.
-        ig = {}
+        v = [d.vector for d in self.documents]
+        D = {}
         for i, w1 in enumerate(self.terms):
             for j, w2 in enumerate(self.terms[i+1:]):
-                d = self.information_gain(w1, w2)
-                ig[w1] = w1 in ig and ig[w1]+d or d
-                ig[w2] = w2 in ig and ig[w2]+d or d
+                d = self.kullback_leibler_divergence(w1, w2, _vectors=v)
+                D[w1] = w1 in D and D[w1]+d or d
+                D[w2] = w2 in D and D[w2]+d or d
             if verbose:
                 # IG 80.0% (550/700)
-                print "IG " + ("%.1f"%(float(i) / len(self.terms) * 100)).rjust(4) + "% " \
-                            + "(%s/%s)" % (i+1, len(self.terms))
-        subset = sorted(((d, w) for w, d in ig.iteritems()), reverse=True)
+                print "KLD " + ("%.1f"%(float(i) / len(self.terms) * 100)).rjust(4) + "% " \
+                             + "(%s/%s)" % (i+1, len(self.terms))
+        subset = sorted(((d, w) for w, d in D.iteritems()), reverse=True)
         subset = [w for d, w in subset[:top]]
         return subset
         
@@ -903,7 +906,9 @@ class Corpus(object):
                 name = d.name,
                 type = d.type) for d in self.documents])
         return corpus
-        
+
+def filter(corpus, features=[]):
+    return corpus.filter(features)
 
 #### LATENT SEMANTIC ANALYSIS ########################################################################
 
@@ -956,6 +961,8 @@ class LSA:
     def terms(self):
         # Yields a list of all words, identical to LSA.corpus.vector.keys()
         return self._terms.values()
+        
+    features = terms
 
     @property
     def concepts(self):
@@ -1287,7 +1294,7 @@ class Classifier:
             For non-binary classifiers, precision, recall and F-score are None.
         """
         corpus  = [isinstance(x, Document) and (x, x.type) or x for x in corpus]
-        corpus  = shuffled(corpus) # Avoid a list sorted by type (because we take successive chunks).
+        corpus  = shuffled(corpus) # Avoid a list sorted by type (because we take successive folds).
         classes = set(type for document, type in corpus)
         binary  = len(classes) == 2 and sorted(classes) in ([False,True], [0,1])
         m = [0,0,0,0] # accuracy | precision | recall | F1-score.
