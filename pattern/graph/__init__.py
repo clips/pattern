@@ -1190,7 +1190,7 @@ class HTMLCanvasRenderer:
             if e.length != 1:
                 p.append("length:%.2f" % e.length)                # 1.00
             if e.type is not None:
-                p.append("type:\"%s\"" % self.type)               # "is-part-of"
+                p.append("type:\"%s\"" % e.type)                  # "is-part-of"
             if e.stroke != self.default["stroke"]:
                 p.append("stroke:%s" % self._rgba(e.stroke))      # [0,0,0,1.0]
             if e.strokewidth != self.default["strokewidth"]:
