@@ -25,6 +25,7 @@ from math      import pow, log
 from time      import time
 from random    import random, choice
 from itertools import izip, chain
+from bisect    import insort
 
 try:
     MODULE = os.path.dirname(__file__)
@@ -160,14 +161,6 @@ class readonlylist(list):
         raise ReadOnlyError
 
 #### DOCUMENT ########################################################################################
-
-#--- FREQUENCY+TERM LIST -----------------------------------------------------------------------------
-
-# List of (frequency, term)-items that prints frequency with a rounded precision.
-# This is used for the output of Document.keywords() and Corpus.similar() (=easier to read).
-class ftlist(list):
-    def __repr__(self):
-        return repr([("%.3f"%f, t) for f, t in self])
 
 #--- STOP WORDS --------------------------------------------------------------------------------------
 
@@ -424,7 +417,7 @@ class Document(object):
         n = normalized and sum(self.vector.itervalues()) or 1.0
         v = ((f/n, w) for w, f in self.vector.iteritems())
         v = heapq.nsmallest(top, v, key=lambda v: (-v[0],v[1]))
-        return ftlist(v)
+        return v
     
     def cosine_similarity(self, document):
         """ Returns the similarity between the two documents as a number between 0.0-1.0.
@@ -453,6 +446,10 @@ class Document(object):
 
 #--- VECTOR ------------------------------------------------------------------------------------------
 # Document vector, using a sparse representation (i.e., dictionary with only features > 0).
+# Sparse representation is fast, usually even faster than LSA,
+# since LSA creates a dense vector with non-zero values.
+# Average feature length: 
+# sum(len(d.vector) for d in corpus.documents) / float(len(corpus))
 
 class WeightError(Exception):
     pass
@@ -495,7 +492,7 @@ class Vector(readonlydict):
 
 # These functions are useful if you work with a bare matrix instead of Document and Corpus.
 # Given vectors must be lists of values (not iterators).
-
+    
 def tf_idf(vectors):
     for i in range(len(vectors[0])):
         idf.append(log(len(vectors) / (sum(1.0 for v in vectors if v[i]) or 1)))
@@ -551,8 +548,8 @@ class Corpus(object):
 
     def _get_lsa(self):
         return self._lsa
-    def _set_lsa(self, v):
-        self._lsa = None
+    def _set_lsa(self, v=None):
+        self._lsa = v
         self._update()
         
     lsa = property(_get_lsa, _set_lsa)
@@ -736,11 +733,15 @@ class Corpus(object):
         return self._vector
 
     @property
+    def vectors(self):
+        return [d.vector for d in self.documents]
+
+    @property
     def density(self):
         return float(sum(len(d.terms) for d in self.documents)) / len(self.vector)**2
 
     # Following methods rely on Document.vector:
-    # cosine similarity, nearest neighbors, search, clustering, latent semantic analysis.
+    # cosine similarity, nearest neighbors, search, clustering, latent semantic analysis, divergence.
     
     def cosine_similarity(self, document1, document2):
         """ Returns the similarity between two documents in the corpus as a number between 0.0-1.0.
@@ -779,10 +780,10 @@ class Corpus(object):
         """
         v = ((self.cosine_similarity(document, d), d) for d in self.documents)
         # Filter the input document from the matches.
-        # Filter documents that scored 0.0 and return the top.
+        # Filter documents that scored 0 and return the top.
         v = [(w, d) for w, d in v if w > 0 and d.id != document.id]
-        v = heapq.nsmallest(top, v, key=lambda v: (-v[0],v[1]))
-        return ftlist(v)
+        v = heapq.nsmallest(top, v, key=lambda v: (-v[0], v[1]))
+        return v
         
     similar = related = neighbors = nn = nearest_neighbors
         
@@ -849,7 +850,7 @@ class Corpus(object):
         
     reduce = latent_semantic_analysis
 
-    def kullback_leibler_divergence(self, word1, word2, _vectors=[]):
+    def kullback_leibler_divergence(self, word1, word2, _vectors=[], _map={}):
         """ Returns the difference between two given features (i.e. words from Corpus.terms),
             on average over all document vectors, using symmetric Kullback-Leibler divergence.
             Higher values represent more distinct features.
@@ -857,13 +858,14 @@ class Corpus(object):
         if not (word1, word2) in self._divergence:
             kl1 = 0
             kl2 = 0
-            # It is not log() that is slow here, but the document.vector attribute getter.
-            # If you use KLD in a loop, collect the vectors once and pass them to _vectors
-            # (x2 performance).
-            for v in _vectors or (d.vector for d in self.documents):
+            # It is not log() that is "slow", but the document.vector getter and dict.__contains__().
+            # If you use KLD in a loop, collect the vectors once and pass them to _vectors (2x faster),
+            # or pass a (word, vectors-that-contain-word) dictionary to _map (7x faster).
+            for v in _map.get(word1) or _vectors or (d.vector for d in self.documents):
                 if word1 in v:
                     kl1 += v[word1] * (log(v[word1], 2) - log(v.get(word2, 0.000001), 2))
-                if word2 in v: 
+            for v in _map.get(word2) or _vectors or (d.vector for d in self.documents):
+                if word2 in v:
                     kl2 += v[word2] * (log(v[word2], 2) - log(v.get(word1, 0.000001), 2))
             # Cache the calculations for reuse.
             # The measurement is symmetric, so we also know KL(word2, word1).
@@ -878,13 +880,14 @@ class Corpus(object):
             This is a subset of Corpus.terms that can be used to build a Classifier
             that is faster (less features = less matrix columns) but quite efficient.
         """
-        # The subset will have less recall, because there are less features.
-        # Overall, F1-score drops 2.5% for 1/2 reduction, 5% for 3/4 reduction.
+        # The subset will usually have less recall, because there are less features.
+        # Calculating KLD takes some time, but the results are cached and saved with Corpus.save().
         v = [d.vector for d in self.documents]
+        m = dict((w, filter(lambda v: w in v, v)) for w in self.terms)
         D = {}
         for i, w1 in enumerate(self.terms):
             for j, w2 in enumerate(self.terms[i+1:]):
-                d = self.kullback_leibler_divergence(w1, w2, _vectors=v)
+                d = self.kullback_leibler_divergence(w1, w2, _vectors=v, _map=m)
                 D[w1] = w1 in D and D[w1]+d or d
                 D[w2] = w2 in D and D[w2]+d or d
             if verbose:
@@ -906,9 +909,6 @@ class Corpus(object):
                 name = d.name,
                 type = d.type) for d in self.documents])
         return corpus
-
-def filter(corpus, features=[]):
-    return corpus.filter(features)
 
 #### LATENT SEMANTIC ANALYSIS ########################################################################
 
@@ -941,14 +941,15 @@ class LSA:
             k = int(k(sigma))
         #print numpy.dot(u, numpy.dot(numpy.diag(sigma), vt))
         # Apply dimension reduction.   
-        assert(k < len(corpus.documents))
+        assert k < len(corpus.documents), \
+            "can't delete more dimensions than there are documents"
         tail = lambda list, i: range(len(list)-i, len(list))
         u, sigma, vt = (
             numpy.delete(u, tail(u[0], k), axis=1),
             numpy.delete(sigma, tail(sigma, k), axis=0),
             numpy.delete(vt, tail(vt, k), axis=0)
         )
-        # Store as Python lists so we can cPickle it.
+        # Store as Python dict and lists so we can cPickle it.
         self.corpus = corpus
         self._terms = dict(enumerate(corpus.vector().keys())) # Vt-index => word.
         self.u, self.sigma, self.vt = (
@@ -1022,6 +1023,11 @@ _lsa_transform_cache = {}
 # For example, for (x,y) coordinates in 2D we could use Euclidean distance ("as the crow flies");
 # for document vectors we could use cosine similarity.
 
+def features(vectors):
+    """ Returns a set of unique keys from all the given Vectors.
+    """
+    return set(k for k in chain(*vectors))
+
 def mean(iterator, length):
     """ Returns the arithmetic mean of the values in the given iterator.
     """
@@ -1072,7 +1078,7 @@ def k_means(vectors, k, iterations=10, distance=COSINE, **kwargs):
         There is no guarantee of convergence or optimal solution.
     """
     init = kwargs.get("seed", kwargs.get("initialization", RANDOM))
-    keys = kwargs.get("keys") or dict.fromkeys((k for k in chain(*vectors)), True).keys()
+    keys = kwargs.get("keys") or list(features(vectors))
     if k < 2: 
         return [[v for v in vectors]]
     if init == KMPP:
@@ -1199,7 +1205,7 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
     """ Returns a Cluster containing k items (vectors or clusters with nested items).
         With k=1, the top-level cluster contains a single cluster.
     """
-    keys = kwargs.get("keys", dict.fromkeys((k for k in chain(*vectors)), True).keys())
+    keys = kwargs.get("keys", list(features(vectors)))
     clusters = Cluster((v for v in sorted(vectors, key=lambda x: random())))
     centroids = list(clusters)
     D = {}
@@ -1266,7 +1272,7 @@ class Classifier:
         return None
 
     def _vector(self, document, type=None):
-        """ Returns a (type, dict)-tuple for the given document, where dict is the document vector.
+        """ Returns a (type, Vector)-tuple for the given document.
             If the document is part of a LSA-reduced corpus, returns the LSA concept vector.
             If the given type is None, returns document.type (if a Document is given).
         """
@@ -1429,14 +1435,15 @@ class NearestNeighbor(Classifier):
         self.k = k               # Number of nearest neighbors to observe.
         self.distance = distance # COSINE, EUCLIDEAN, ...
         self._vectors = []       # Training instances.
+        self._kdtree  = None
     
     @property
     def classes(self):
-        return list(set(type for (type, v) in self._vectors))
+        return list(set(type for type, v in self._vectors))
         
     @property
     def features(self):
-        return list(set(k for k in chain(*(v[1] for v in self._vectors))))
+        return list(features(v for type, v in self._vectors))
     
     def train(self, document, type=None):
         self._vectors.append(self._vector(document, type=type))
@@ -1447,6 +1454,11 @@ class NearestNeighbor(Classifier):
         # This will make NearestNeighbor.test() slow in higher dimensions.
         classes = {}
         v1 = self._vector(document)[1]
+        # k-d trees are slower than brute-force for vectors with high dimensionality:
+        #if self._kdtree is None:
+        #    self._kdtree = kdtree((v for type, v in self._vectors))
+        #    self._kdtree.map = dict((id(v), type) for type, v in self._vectors)
+        #D = self._kdtree.nearest_neighbors(v1, self.k, self.distance)
         D = ((distance(v1, v2, method=self.distance), type) for type, v2 in self._vectors)
         D = ((d, type) for d, type in D if d < 1) # Nothing in common if distance=1.0.
         D = heapq.nsmallest(self.k, D)            # k-least distant.
@@ -1471,6 +1483,97 @@ kNN = KNN = NearestNeighbor
 #print knn.classes
 #print knn.classify(Document("something that can fly", threshold=0, stemmer=None))
 #print NearestNeighbor.test((d1,d2,d3), folds=2)
+
+#### K-D TREE ########################################################################################
+
+class KDTree:
+
+    _v1 = Vector({0:0})
+    _v2 = Vector({0:0})
+    
+    def __init__(self, vectors, map={}):
+        """ A partitioned vector space that is (sometimes) faster for nearest neighbor search.
+            A k-d tree is an extension of a binary tree for k-dimensional data,
+            where every vector generates a hyperplane that splits the space into two subspaces.
+        """
+        class Node:
+            def __init__(self, vector, left, right, axis):
+                self.vector, self.left, self.right, self.axis = vector, left, right, axis
+        def balance(vectors, depth=0, keys=None):
+            # Based on: http://en.wikipedia.org/wiki/Kd-tree
+            if not vectors:
+                return None
+            if not keys:
+                keys = sorted(features(vectors))
+            a = keys[depth % len(keys)] # splitting axis
+            v = sorted(vectors, key=lambda v: v.get(a, 0))
+            m = len(v) // 2 # median pivot
+            return Node(
+                vector = v[m],
+                  left = balance(v[:m], depth+1, keys), 
+                 right = balance(v[m+1:], depth+1, keys), 
+                  axis = a)
+        self.map = map
+        self.root = balance([self._vector(v) for v in vectors])
+
+    def _vector(self, v):
+        """ Returns a Vector for the given document or vector.
+        """
+        if isinstance(v, Document):
+            self.map.setdefault(id(v.vector), v); return v.vector
+        return v
+        
+    def nearest_neighbors(self, vector, k=10, distance=COSINE):
+        """ Returns a list of (distance, vector)-tuples from the search space, 
+            sorted nearest-first to the given vector.
+        """
+        class NN(list):
+            def update(self, v1, v2):
+                d = _distance(v1, v2, method=distance)
+                if len(self) < k or self[-1][0] > d:
+                    # Add nearer vectors to the sorted list.
+                    insort(self, (d, v1))
+                    
+        def search(self, vector, k, best=NN()):
+            # Based on: http://code.google.com/p/python-kdtree/
+            if self is None:
+                return best
+            if self.left is self.right is None: # leaf
+                best.update(self.vector, vector)
+                return best
+            # Compare points in current dimension to select near and far subtree.
+            # We may need to search the far subtree too (see below).
+            if vector.get(self.axis) < self.vector.get(self.axis):
+                near, far = self.left, self.right
+            else:
+                near, far = self.right, self.left
+            # Recursively search near subtree down to leaf.
+            best = search(near, vector, k, best)
+            best.update(self.vector, vector)
+            # It's faster to reuse two Vectors than to create them:
+            #dict.__setitem__(KDTree._v1, 0, self.vector.get(self.axis, 0))
+            #dict.__setitem__(KDTree._v2, 0, vector.get(self.axis, 0))
+            #KDTree._v1._norm = None # clear norm cache
+            #KDTree._v2._norm = None
+            
+            v1 = Vector(((self.axis, self.vector.get(self.axis, 0)),))
+            v2 = Vector(((self.axis, vector.get(self.axis, 0)),))
+            if _distance(v1, v2, method=distance) <= best[-1][0]:
+            
+            # If the hypersphere crosses the plane, 
+            # there could be nearer points on the far side of the plane.
+            #if _distance(KDTree._v1, KDTree._v2, method=distance) <= best[-1][0]:
+                best = search(far, vector, k, best)
+            return best
+                
+        n = search(self.root, self._vector(vector), k+1)
+        n = [(d, self.map.get(id(v),v)) for d, v in n]
+        n = [(d, v) for d, v in n if v != vector][:k]
+        return n
+        
+    nn = nearest_neighbors
+
+kdtree = KDTree
 
 #### GENETIC ALGORITHM ###############################################################################
 
@@ -1557,3 +1660,4 @@ GA = GeneticAlgorithm
 #    ga.update()
 #    print ga.average_fitness
 #print ga.population
+'
