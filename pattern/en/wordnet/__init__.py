@@ -40,18 +40,17 @@ del s
 
 #-----------------------------------------------------------------------------------------------------
 
-ignore_accents = [
-    ("á|ä|â|å|à", "a"), 
-    ("é|ë|ê|è", "e"), 
-    ("í|ï|î|ì", "i"), 
-    ("ó|ö|ô|ø|ò", "o"), 
-    ("ú|ü|û|ù", "u"), 
-    ("ÿ|ý", "y"), 
-    ("š", "s"), 
-    ("ç", "ç"), 
-    ("ñ", "n")
-]
-ignore_accents = [(a.split("|"), b) for a,b in ignore_accents]
+_diacritics = {
+    "a": ("á","ä","â","å","à"),
+    "e": ("é","ë","ê","è"),
+    "i": ("í","ï","î","ì"),
+    "o": ("ó","ö","ô","ø","ò"),
+    "u": ("ú","ü","û","ù"),
+    "y": ("ÿ","ý"),
+    "s": ("š",),
+    "c": ("ç",),
+    "n": ("ñ",)
+}
 
 def normalize(word):
     """ Normalizes the word for synsets() or Sentiwordnet[] by removing accents,
@@ -63,9 +62,9 @@ def normalize(word):
         try: word = word.encode("utf-8")
         except:
             pass
-    for a, b in ignore_accents: 
-        for a in a: 
-            word = word.replace(a, b)
+    for k, v in _diacritics.items(): 
+        for v in v: 
+            word = word.replace(v, k)
     return word
 
 ### SYNSET ###########################################################################################

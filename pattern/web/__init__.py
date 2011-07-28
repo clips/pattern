@@ -14,11 +14,13 @@ import threading
 import time
 import os
 import socket, urlparse, urllib, urllib2
+import oauth
 import htmlentitydefs
 import sgmllib
 import re
 import xml.dom.minidom
 import json
+import StringIO
 import bisect
 
 try:
@@ -270,12 +272,19 @@ class URL:
     def _set_string(self, v):
         self.__dict__["_string"] = u(v)
         self.__dict__["_parts"]  = None
+        
     string = property(_get_string, _set_string)
     
     @property
     def parts(self):
         if not self._parts: self._parse()
         return self._parts
+    
+    @property
+    def querystring(self):
+        s = dict((bytestring(k), bytestring(v)) for k, v in self.parts[QUERY].items())
+        s = urllib.urlencode(s)
+        return s
     
     def __getattr__(self, k):
         if k in self.__dict__ : return self.__dict__[k]
@@ -327,7 +336,12 @@ class URL:
         """ Downloads the content at the given URL (by default it will be cached locally).
             The content is returned as a unicode string.
         """
-        id  = (self._parts is None and self.method == GET) and self._string or repr(self.parts)
+        # Filter OAuth parameters from cache id (they will be unique for each request).
+        if self._parts is None and self.method == GET and "oauth_" not in self._string:
+            id = self._string
+        else: 
+            id = repr(self.parts)
+            id = re.sub("u{0,1}'oauth_.*?': u{0,1}'.*?', ", "", id)
         if cached and id in cache:
             return cache[id]
         t = time.time()
@@ -403,7 +417,7 @@ class URL:
         if self._parts is None and self.method == GET: 
             return self._string
         P = self._parts 
-        Q = dict([(bytestring(k), bytestring(v)) for k,v in P[QUERY].items()])
+        Q = dict((bytestring(k), bytestring(v)) for k, v in P[QUERY].items())
         u = []
         if P[PROTOCOL]: u.append("%s://" % P[PROTOCOL])
         if P[USERNAME]: u.append("%s:%s@" % (P[USERNAME], P[PASSWORD]))
@@ -662,7 +676,7 @@ def collapse_spaces(string):
 
 def collapse_linebreaks(string, threshold=1):
     """ Returns a string with consecutive linebreaks collapsed to at most the given threshold.
-        Whitespace on empty lines and at the end of each lines is removed.
+        Whitespace on empty lines and at the end of each line is removed.
     """
     n = "\n" * threshold
     p = [s.rstrip() for s in string.replace("\r", "").split("\n")]
@@ -899,65 +913,70 @@ class Google(SearchEngine):
 # https://www.googleapis.com/customsearch/v1?key=[key]&q=[query]&start=1
 
 #--- YAHOO -------------------------------------------------------------------------------------------
-# https://developer.apps.yahoo.com/wsregapp/
+# http://developer.yahoo.com/search/
 
-YAHOO = "http://search.yahooapis.com/"
-YAHOO_LICENSE = "Bsx0rSzV34HQ9sXprWCaAWCHCINnLFtRF_4wahO1tiVEPpFSltMdqkM1z6Xubg"
+YAHOO = "http://yboss.yahooapis.com/ysearch/"
+YAHOO_LICENSE = ("", "") # OAuth consumer key + consumer secret.
 
 class Yahoo(SearchEngine):
 
     def __init__(self, license=None, throttle=0.1):
         SearchEngine.__init__(self, license or YAHOO_LICENSE, throttle)
-        self.format = lambda x: decode_entities(x) # < > & are encoded in XML input.
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """ Returns a list of results from Yahoo for the given query.
             - type : SEARCH, IMAGE or NEWS,
             - start: maximum 1000 results => start 1-100 with count=10, 1000/count,
-            - count: maximum 100, or 50 for images.
-            There is a daily limit of 5000 queries.
+            - count: maximum 50, or 35 for images.
+            There is no daily limit, however Yahoo BOSS is a paid service.
         """
         url = YAHOO
-        if   type == SEARCH : url += "WebSearchService/V1/webSearch?"
-        elif type == IMAGE  : url += "ImageSearchService/V1/imageSearch?"
-        elif type == NEWS   : url += "NewsSearchService/V1/newsSearch?"
+        if   type == SEARCH : url += "web"
+        elif type == IMAGE  : url += "images"
+        elif type == NEWS   : url += "news"
         else:
             raise SearchEngineTypeError
         if not query or count < 1 or start > 1000/count: 
             return Results(YAHOO, query, type)
-        url = URL(url, method=GET, query={
-              "appid" : self.license or "",
-              "query" : query,
-              "start" : 1 + (start-1) * count,
-            "results" : min(count, type==IMAGE and 50 or 100)
+        query = {
+                 "q" : oauth.normalize(query),
+             "start" : 1 + (start-1) * count,
+             "count" : min(count, type==IMAGE and 35 or 50),
+            "format" : "json"
+        }
+        query.update({ 
+            # BOSS OAuth authorization.
+            "oauth_version": "1.0",
+            "oauth_nonce": oauth.nonce(),
+            "oauth_timestamp": oauth.timestamp(),
+            "oauth_consumer_key": self.license[0],
+            "oauth_signature_method": "HMAC-SHA1"         
         })
+        query["oauth_signature"] = oauth.sign(url, query, method=GET, secret=self.license[1])
+        url = URL(url, method=GET, query=query)
+        
         kwargs.setdefault("throttle", self.throttle)
         try: 
             data = url.download(cached=cached, **kwargs)
+        except HTTP401Authentication:
+            raise HTTP401Authentication
         except HTTP403Forbidden:
             raise SearchEngineLimitError
-        data = xml.dom.minidom.parseString(bytestring(data))
-        data = data.childNodes[0]
+        data = json.loads(data)
+        data = data.get("bossresponse") or {}
+        data = data.get({SEARCH:"web", IMAGE:"images", NEWS:"news"}[type], {})
         results = Results(YAHOO, query, type)
-        results.total = data.attributes.get("totalResultsAvailable")
-        results.total = results.total and int(results.total.value) or None
-        for x in data.getElementsByTagName("Result"):
+        results.total = int(data.get("totalresults") or 0)
+        for x in data.get("results", []):
             r = Result(url=None)
-            r.url         = self.format(self._parse(x, "Url"))
-            r.title       = self.format(self._parse(x, "Title"))
-            r.description = self.format(self._parse(x, "Summary"))
-            r.date        = self.format(self._parse(x, "ModificationDate"))
-            r.author      = self.format(self._parse(x, "Publisher"))
-            r.language    = self.format(self._parse(x, "Language"))
+            r.url         = self.format(x.get("url", x.get("clickurl")))
+            r.title       = self.format(x.get("title"))
+            r.description = self.format(x.get("abstract"))
+            r.date        = self.format(x.get("date"))
+            r.author      = self.format(x.get("source"))
+            r.language    = self.format(x.get("language"))
             results.append(r)
         return results
-            
-    def _parse(self, element, tag):
-        # Returns the value of the first child with the given XML tag name (or None).
-        tags = element.getElementsByTagName(tag)
-        if len(tags) > 0 and len(tags[0].childNodes) > 0:
-            assert tags[0].childNodes[0].nodeType == xml.dom.minidom.Element.TEXT_NODE
-            return tags[0].childNodes[0].nodeValue
 
 #--- BING --------------------------------------------------------------------------------------------
 # http://www.bing.com/developers/s/API%20Basics.pdf
@@ -1887,6 +1906,50 @@ class Spider:
 #s = Spiderling(links=["http://www.python.org/"], delay=3, queue=True)
 #while not s.done:
 #    s.crawl(method=BREADTH, cached=True)
+
+#### PDF PARSER #######################################################################################
+#  Yusuke Shinyama, PDFMiner, http://www.unixuser.org/~euske/python/pdfminer/
+
+class PDFParseError(Exception):
+    pass
+
+class PDF:
+    
+    def __init__(self, data, format=None):
+        """ Plaintext parsed from the given PDF data.
+        """
+        self.content = self._parse(data, format)
+    
+    @property
+    def string(self):
+        return self.content
+    def __unicode__(self):
+        return self.content
+        
+    def _parse(self, data, format=None):
+        # The output will be ugly: it may be useful for mining but probably not for displaying.
+        # You can also try PDF(data, format="html") to preserve some layout information.
+        from pdf.pdfinterp import PDFResourceManager, process_pdf
+        from pdf.converter import TextConverter, HTMLConverter
+        from pdf.layout    import LAParams
+        s = ""
+        m = PDFResourceManager()
+        try:
+            stream = StringIO.StringIO()
+            parser = format=="html" and HTMLConverter or TextConverter
+            parser = parser(m, stream, codec="utf-8", laparams=LAParams())
+            process_pdf(m, parser, StringIO.StringIO(data), set(), maxpages=0, password="")
+        except Exception, e:
+            raise PDFParseError, str(e)
+        s = stream.getvalue()
+        s = unicode(s, encoding="utf-8", errors="replace")
+        s = s.strip()
+        s = re.sub(r"([a-z])\-\n", "\\1", s)        # Join hyphenated words.
+        s = s.replace("\n\n", "<!-- paragraph -->") # Preserve paragraph spacing.
+        s = s.replace("\n", " ")
+        s = s.replace("<!-- paragraph -->", "\n\n")
+        s = collapse_spaces(s)
+        return s
 
 #### LANGUAGE #########################################################################################
 # ISO-639 language code => (language, region, ISO-3166 region code)
