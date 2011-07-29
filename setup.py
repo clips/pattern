@@ -7,7 +7,7 @@ if not hasattr(DistributionMetadata, 'classifiers'):
 
 setup(
             name = "Pattern",
-         version = "1.9",
+         version = "2.0",
      description = "Web mining module for Python.",
          license = "BSD",
           author = "Tom De Smedt",
@@ -20,6 +20,8 @@ setup(
         "pattern.web.feed", 
         "pattern.web.imap", 
         "pattern.web.json", 
+        "pattern.web.oauth", 
+        "pattern.web.pdf", 
         "pattern.web.soup",
         "pattern.en", 
         "pattern.en.inflect", 
