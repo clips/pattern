@@ -433,7 +433,7 @@ class Document(object):
     similarity = cosine_similarity
     
     def copy(self):
-        d = Document(name=self.name); dict.update(d.terms, self.terms); return d
+        d = Document(name=self.name, type=self.type); dict.update(d.terms, self.terms); return d
     
     def __eq__(self, document):
         return isinstance(document, Document) and self.id == document.id
@@ -1551,18 +1551,13 @@ class KDTree:
             best = search(near, vector, k, best)
             best.update(self.vector, vector)
             # It's faster to reuse two Vectors than to create them:
-            #dict.__setitem__(KDTree._v1, 0, self.vector.get(self.axis, 0))
-            #dict.__setitem__(KDTree._v2, 0, vector.get(self.axis, 0))
-            #KDTree._v1._norm = None # clear norm cache
-            #KDTree._v2._norm = None
-            
-            v1 = Vector(((self.axis, self.vector.get(self.axis, 0)),))
-            v2 = Vector(((self.axis, vector.get(self.axis, 0)),))
-            if _distance(v1, v2, method=distance) <= best[-1][0]:
-            
+            dict.__setitem__(KDTree._v1, 0, self.vector.get(self.axis, 0))
+            dict.__setitem__(KDTree._v2, 0, vector.get(self.axis, 0))
+            KDTree._v1._norm = None # clear norm cache
+            KDTree._v2._norm = None
             # If the hypersphere crosses the plane, 
             # there could be nearer points on the far side of the plane.
-            #if _distance(KDTree._v1, KDTree._v2, method=distance) <= best[-1][0]:
+            if _distance(KDTree._v1, KDTree._v2, method=distance) <= best[-1][0]:
                 best = search(far, vector, k, best)
             return best
                 
@@ -1660,4 +1655,3 @@ GA = GeneticAlgorithm
 #    ga.update()
 #    print ga.average_fitness
 #print ga.population
-'

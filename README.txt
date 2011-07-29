@@ -6,7 +6,7 @@ Pattern is a web mining module for the Python programming language. It bundles t
 VERSION
 =======
 
-1.9
+2.0
 
 LICENSE
 =======
@@ -47,4 +47,4 @@ Authors:
 - Walter Daelemans
 
 Contributing authors:
-Frederik De Bleser, Jason Wiener, Jeroen Geertzen, Thomas Crombez
+Frederik De Bleser, Jason Wiener, Jeroen Geertzen, Thomas Crombez, Ken Williams
