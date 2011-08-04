@@ -71,7 +71,6 @@ s = encode_utf8
 # For clearer source code:
 bytestring = s
 
-
 #### ASYNCHRONOUS REQUEST ############################################################################
 
 class AsynchronousRequest:
@@ -639,24 +638,24 @@ def strip_comments(html):
 def strip_forms(html): 
     return strip_between("<form.*?>", "</form>", html)
 
-RE_UNICODE   = re.compile(r'&(#?)(x?)(\w+);') # &#201;
-RE_AMPERSAND = re.compile(r"\&(?!\#)")        # & not followed by #
+RE_UNICODE   = re.compile(r'&(#?)(x|X?)(\w+);') # &#201;
+RE_AMPERSAND = re.compile(r"\&(?!\#)")          # & not followed by #
 
 def decode_entities(string):
-    # From: http://snippets.dzone.com/posts/show/4569
-    def _replace_entity(match):
-        entity = match.group(3)
-        if match.group(1) == "#"\
-        or entity.isdigit(): # Catch &39; and &160; where we'd expect &#39; and &#160;
-            if match.group(2) == '' : return unichr(int(entity))
-            if match.group(2) == 'x': return unichr(int('0x'+entity, 16))
+    # http://snippets.dzone.com/posts/show/4569
+    def replace_entity(match):
+        hash, hex, name = match.group(1), match.group(2), match.group(3)
+        if hash == "#":
+            if hex == '' : 
+                return unichr(int(name))                 # "&#38;" => "&"
+            if hex in ("x","X"):
+                return unichr(int('0x'+name, 16))        # ""&#x0026;"" = > "&"
         else:
-            cp = htmlentitydefs.name2codepoint.get(entity)
-            return cp and unichr(cp) or match.group()
-    if isinstance(string, basestring):
-        return RE_UNICODE.subn(_replace_entity, string)[0]
-    else:
-        return string
+            cp = htmlentitydefs.name2codepoint.get(name) # "&amp;" => "&"
+            return cp and unichr(cp) or match.group()    # "&foo;" => "&foo;"
+    if isinstance(string, (str, unicode)):
+        return _entities_unicode.subn(replace_entity, string)[0]
+    return string
 
 def encode_entities(string):
     string = RE_AMPERSAND.sub("&amp;", string) # & not followed by #
@@ -665,6 +664,11 @@ def encode_entities(string):
     string = string.replace('"', "&quot;")
     string = string.replace("'", "&#39;")
     return string
+
+def decode_url(string):
+    return urllib.quote_plus(string)
+def encode_url(string):
+    return urllib.unquote_plus(string) # "black/white" => "black%2Fwhite".
 
 RE_SPACES = re.compile(r" +",  re.MULTILINE) # Matches one or more spaces.
 RE_TABS   = re.compile(r"\t+", re.MULTILINE) # Matches one or more tabs.
@@ -954,7 +958,6 @@ class Yahoo(SearchEngine):
         })
         query["oauth_signature"] = oauth.sign(url, query, method=GET, secret=self.license[1])
         url = URL(url, method=GET, query=query)
-        
         kwargs.setdefault("throttle", self.throttle)
         try: 
             data = url.download(cached=cached, **kwargs)
