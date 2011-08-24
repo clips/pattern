@@ -93,6 +93,14 @@ def F1(match=lambda document:False, documents=[]):
     """
     return test(match, documents)[3]
 
+def Fvalue(beta=1, match=lambda document:False, documents=[]):
+    """ Returns the weighted harmonic mean of precision and recall
+        where recall is beta times more important than precision.
+    """
+    _, p, r, _ = test(match, documents)
+    bsq = beta * beta
+    return (bsq + 1) * p * r / ((bsq * p + r) or 1)
+
 ### AGREEMENT ########################################################################################
 # +1.0 = total agreement between voters
 # +0.0 = votes based on random chance
