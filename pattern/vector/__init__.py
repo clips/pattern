@@ -1475,7 +1475,7 @@ kNN = KNN = NearestNeighbor
 
 #d1 = Document("cats have stripes, purr and drink milk", type="cat", threshold=0, stemmer=None)
 #d2 = Document("cows are black and white, they moo and give milk", type="cow", threshold=0, stemmer=None)
-#d3 = Document("birds have wings and an fly", type="bird", threshold=0, stemmer=None)
+#d3 = Document("birds have wings and can fly", type="bird", threshold=0, stemmer=None)
 #knn = kNN()
 #for d in (d1,d2,d3):
 #    knn.train(d)

@@ -7,7 +7,7 @@ if not hasattr(DistributionMetadata, 'classifiers'):
 
 setup(
             name = "Pattern",
-         version = "2.0",
+         version = "2.1",
      description = "Web mining module for Python.",
          license = "BSD",
           author = "Tom De Smedt",
@@ -56,18 +56,21 @@ setup(
         "pattern.search"
     ],
     classifiers = [
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
+        "Intended Audience :: Science/Research",
         "License :: OSI Approved :: BSD License",
+        "Natural Language :: Dutch",
+        "Natural Language :: English",
+        "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
         "Topic :: Scientific/Engineering :: Visualization",
+        "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Text Processing :: Linguistic",
-        "Topic :: Text Processing :: Markup :: HTML",
-        "Natural Language :: English",
-        "Natural Language :: Dutch"
+        "Topic :: Text Processing :: Markup :: HTML"
     ]
 )
