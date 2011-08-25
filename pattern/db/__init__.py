@@ -7,6 +7,7 @@
 
 ######################################################################################################
 
+import sys
 import warnings
 import re
 import htmlentitydefs
@@ -16,7 +17,7 @@ import csv
 from cStringIO import StringIO
 from codecs    import BOM_UTF8
 from datetime  import datetime, timedelta
-from time      import mktime
+from time      import mktime, strftime
 from math      import sqrt
 
 try:
@@ -39,7 +40,7 @@ def _import_db(engine=SQLITE):
     if engine == SQLITE:
         try:
             # Python 2.5+
-            import sqlite3 as sqlite
+            import sqlite3.dbapi2 as sqlite
         except: 
             # Python 2.4 with pysqlite2
             import pysqlite2.dbapi2 as sqlite
@@ -70,6 +71,9 @@ class Date(datetime):
     """
     format = DEFAULT_DATE_FORMAT
     def __str__(self):
+        if self.year < 1900:
+            # Python's strftime() doesn't handle year < 1900:
+            return strftime(self.format, (1900,) + self.timetuple()[1:]).replace("1900", str(self.year), 1)
         return self.strftime(self.format)
     def __repr__(self):
         return "Date(%s)" % repr(self.__str__())
@@ -190,10 +194,23 @@ def decode_entities(string):
         return RE_UNICODE.subn(replace_entity, string)[0]
     return string
 
+class _Binary:
+    """ A wrapper for BLOB data with engine-specific encoding.
+        See also: Database.binary().
+    """
+    def __init__(self, data, type=SQLITE):
+        self.data, self.type = str(hasattr(data, "read") and data.read() or data), type
+    def escape(self):
+        if self.type == SQLITE:
+            return str(self.data.encode("string-escape")).replace("'","''")
+        if self.type == MYSQL:
+            return MySQLdb.escape_string(self.data)
+
 def _escape(value, quote=lambda string: "'%s'" % string.replace("'", "\\'")):
     """ Returns the quoted, escaped string (e.g., "'a bird\'s feathers'") for database entry.
         Anything that is not a string (e.g., an integer) is converted to string.
         Booleans are converted to "0" and "1", None is converted to "null".
+        See also: Database.escape()
     """
     # Note: use Database.escape() for MySQL/SQLITE-specific escape.
     if isinstance(value, str):
@@ -201,6 +218,9 @@ def _escape(value, quote=lambda string: "'%s'" % string.replace("'", "\\'")):
         try: value = value.encode("utf-8")
         except:
             pass
+    if value in (NOW,):
+        # Don't quote constants such as current_timestamp.
+        return value
     if isinstance(value, basestring):
         # Strings are quoted, single quotes are escaped according to the database engine.
         return quote(value)
@@ -219,6 +239,9 @@ def _escape(value, quote=lambda string: "'%s'" % string.replace("'", "\\'")):
     if isinstance(value, Query):
         # A Query is converted to "("+Query.SQL()+")" (=subquery).
         return "(%s)" % value.SQL().rstrip(";")
+    if isinstance(value, _Binary):
+        # Binary data is escaped with attention to null bytes.
+        return "'%s'" % value.escape()
     return value
 
 #### LIST FUNCTIONS ##################################################################################
@@ -288,7 +311,7 @@ def sqlite_second(datestring):
 class DatabaseConnectionError(Exception): 
     pass
 
-class Database:
+class Database(object):
     
     class Tables(dict):
         # Table objects are lazily constructed when retrieved.
@@ -347,14 +370,31 @@ class Database:
         # (have one Database object for each thread).
         if self._connection: 
             return
+        # Field converters: 
+        # Map field type BOOLEAN to bool.
+        # Map field type DATE to str, yyyy-mm-dd hh:mm:ss.
+        # Map field type INTEGER to int (not long(), e.g., 1L).
+        # You can't use UNSIGNED in this case, however.
+        if self.type == SQLITE:
+            sqlite.converters["TINYINT(1)"] = bool
+            sqlite.converters["BLOB"] = lambda data: str(data).decode("string-escape")
+            sqlite.converters["TIMESTAMP"]  = str
+        if self.type == MYSQL:
+            cv = MySQLdb.converters.conversions.copy()
+            cv[MySQLdb.constants.FIELD_TYPE.LONG]       = int
+            cv[MySQLdb.constants.FIELD_TYPE.LONGLONG]   = int
+            cv[MySQLdb.constants.FIELD_TYPE.DECIMAL]    = float
+            cv[MySQLdb.constants.FIELD_TYPE.NEWDECIMAL] = float
+            cv[MySQLdb.constants.FIELD_TYPE.TINY]       = bool
+            cv[MySQLdb.constants.FIELD_TYPE.TIMESTAMP]  = str
         try: 
             if self.type == SQLITE:
-                self._connection = sqlite.connect(self.name)
-                # Aggregate functions (for grouping rows):
+                self._connection = sqlite.connect(self.name, detect_types=sqlite.PARSE_DECLTYPES)
+                # Create functions that are not natively supported by the engine.
+                # Aggregate functions (for grouping rows) + date functions.
                 self._connection.create_aggregate("first", 1, sqlite_first)
                 self._connection.create_aggregate("last", 1, sqlite_last)
                 self._connection.create_aggregate("group_concat", 1, sqlite_group_concat)
-                # Date functions:
                 self._connection.create_function("year", 1, sqlite_year)
                 self._connection.create_function("month", 1, sqlite_month)
                 self._connection.create_function("day", 1, sqlite_day)
@@ -362,13 +402,7 @@ class Database:
                 self._connection.create_function("minute", 1, sqlite_minute)
                 self._connection.create_function("second", 1, sqlite_second)
             if self.type == MYSQL:
-                # Map field type INTEGER to int (not long(), e.g., 1L).
-                # You can't use UNSIGNED in this case, however.
-                format = MySQLdb.converters.conversions.copy()
-                format[MySQLdb.constants.FIELD_TYPE.TIMESTAMP] = str # DATE => str, yyyy-mm-dd hh:mm:ss
-                format[MySQLdb.constants.FIELD_TYPE.LONG]      = int # INTEGER => int
-                format[MySQLdb.constants.FIELD_TYPE.LONGLONG]  = int
-                self._connection = MySQLdb.connect(self.host, self.user, self.password, self.name, use_unicode=unicode, conv=format)
+                self._connection = MySQLdb.connect(self.host, self.user, self.password, self.name, use_unicode=unicode, conv=cv)
                 self._connection.autocommit(False)
                 if unicode: 
                     self._connection.set_character_set("utf8")
@@ -376,8 +410,6 @@ class Database:
             raise DatabaseConnectionError, e
             
     def disconnect(self):
-        self.tables.clear()
-        self._query = None
         if self._connection is not None:
             self._connection.commit()
             self._connection.close()
@@ -419,7 +451,7 @@ class Database:
         if not SQL:
             return # MySQL doesn't like empty queries.
         #print SQL
-        cursor = self._connection.cursor()   
+        cursor = self._connection.cursor()
         cursor.execute(SQL)
         rows = list(cursor.fetchall())
         cursor.close()
@@ -450,43 +482,67 @@ class Database:
             if self.type == SQLITE:
                 return "'%s'" % string.replace("'", "''")
         return _escape(value, quote)
+    
+    def binary(self, data):
+        return _Binary(data, self.type)
         
-    def create(self, table, fields, encoding="utf-8"):
+    blob = binary
+    
+    def _field_SQL(self, table, field):
+        # Returns a (field, index)-tuple with SQL strings for the given field().
+        # The field string can be used in a CREATE TABLE or ALTER TABLE statement.
+        # The index string is an optional CREATE INDEX statement (or None).
+        auto  = " auto%sincrement" % (self.type == MYSQL and "_" or "")
+        field = list(field) + [STRING, None, False, True][len(field)-1:]
+        field = list(_field(field[0], field[1], default=field[2], index=field[3], optional=field[4]))
+        a = b = None
+        a = "`%s` %s%s%s%s" % (
+            # '`id` integer not null primary key auto_increment'
+            field[0],
+            field[1] == STRING and field[1]() or field[1],
+            field[4] is False and " not null" or " null",
+            field[2] is not None and " default %s" % self.escape(field[2]) or "",
+            field[3] == PRIMARY and " primary key%s" % ("", auto)[field[1]==INTEGER] or "")
+        if field[3] in (UNIQUE, True):
+            b = "create %sindex `%s_%s` on `%s` (`%s`);" % (
+                field[3] == UNIQUE and "unique " or "", table, field[0], table, field[0])
+        return a, b
+    
+    def create(self, table, fields=[], encoding="utf-8", **kwargs):
         """ Creates a new table with the given fields.
             The given list of fields must contain values returned from the field() command.
         """
-        encoding = self.type == MYSQL and " default charset=" + encoding.replace("utf-8", "utf8") or ""
-        autoincr = self.type == MYSQL and " auto_increment" or " autoincrement"
-        a, b = [], []
-        for f in fields:
-            f = list(f) + [STRING, None, False, True][len(f)-1:]
-            # Table fields:
-            # ['`id` integer not null primary key auto_increment']
-            a.append("`%s` %s%s%s%s" % (
-                f[0] == STRING and f[0]() or f[0], 
-                f[1],
-                f[4] is False and " not null" or "",
-                f[2] is not None and " default "+f[2] or "",
-                f[3] == PRIMARY and " primary key%s" % ("", autoincr)[f[1]==INTEGER] or ""))
-            # Table field indices.
-            # Note: there is no MySQL "create index if not exists", so we just overwrite.
-            if f[3] in (UNIQUE, True):
-                b.append("create %sindex `%s_%s` on `%s` (`%s`);" % (
-                    f[3] == UNIQUE and "unique " or "", table, f[0], table, f[0]))
-        self.execute("create table if not exists `%s` (%s)%s;" % (table, ", ".join(a), encoding))
-        self.execute("\n".join(b), commit=True)
+        if table.startswith(XML_HEADER):
+            # From an XML-string generated with Table.xml.
+            return parse_xml(self, table, 
+                    table = kwargs.get("name"), 
+                    field = kwargs.get("field", lambda s: s.replace(".", "_")))
+        encoding  = self.type == MYSQL and " default charset=" + encoding.replace("utf-8", "utf8") or ""
+        fields, indices = zip(*[self._field_SQL(table, f) for f in fields])
+        self.execute("create table `%s` (%s)%s;" % (table, ", ".join(fields), encoding))
+        self.execute("\n".join(i for i in indices if i is not None), commit=True)
         self.tables[table] = None # lazy loading
         return self.tables[table]
         
     def drop(self, table):
         """ Removes the table with the given name.
         """
+        if isinstance(table, Table) and table.db == self:
+            table = table.name
         if table in self.tables:
             self.tables[table].database = None
             self.tables.pop(table)
             self.execute("drop table `%s`;" % table, commit=True)
+            # The SQLite version in Python 2.5 has a drop/recreate table bug.
+            # Reconnect. This means that any reference to Database.connection 
+            # is no longer valid after Database.drop(). 
+            if self.type == SQLITE and sys.version < "2.6":
+                self.disconnect()
+                self.connect()
+                
+    remove = drop
         
-    def link(self, table1, key1, table2, key2, join="left"):
+    def link(self, table1, field1, table2, field2, join="left"):
         """ Defines a relation between two tables in the database.
             When executing a table query, fields from the linked table will also be available
             (to disambiguate between field names, use table.field_name).
@@ -495,7 +551,7 @@ class Database:
             table1 = table1.name
         if isinstance(table2, Table): 
             table2 = table2.name
-        self.relations.append((table1, key1, table2, key2, join))
+        self.relations.append((table1, field1, table2, field2, join))
 
     def __repr__(self):
         return "Database(name=%s, host=%s, tables=%s)" % (
@@ -522,7 +578,7 @@ class _String(str):
 # Field type.
 # Note: SQLite string fields do not impose a string limit.
 # Unicode strings have more characters than actually displayed (e.g. "&#9829;").
-# Boolean fields are stored as tinyint(1), returns int 0 or 1. Compare using: bool(field_value) is True.
+# Boolean fields are stored as tinyint(1), int 0 or 1.
 STRING, INTEGER, FLOAT, TEXT, BLOB, BOOLEAN, DATE  = \
     _String(), "integer", "float", "text", "blob", "boolean", "date"
 
@@ -537,11 +593,17 @@ NOW = "current_timestamp"
 
 #--- FIELD- ------------------------------------------------------------------------------------------
 
-def field(name, type=STRING, default=None, index=False, null=True):
+#def field(name, type=STRING, default=None, index=False, optional=True)
+def field(name, type=STRING, **kwargs):
     """ Returns a table field definition that can be passed to Database.create().
         The column can be indexed by setting index to True, PRIMARY or UNIQUE.
         Primary key number columns are always auto-incremented.
     """
+    default, index, optional = (
+        kwargs.get("default", type == DATE and NOW or None),
+        kwargs.get("index", False),
+        kwargs.get("optional", True)
+    )
     if type == STRING:
         type = STRING()
     if type == FLOAT:
@@ -549,25 +611,27 @@ def field(name, type=STRING, default=None, index=False, null=True):
     if type == BOOLEAN:
         type = "tinyint(1)"
     if type == DATE:
-        type = "timestamp"; default=NOW
+        type = "timestamp"
     if str(index) in "01":
         index = bool(int(index))
-    if str(null) in "01":
-        null = bool(int(null))
-    return (name, type, default, index, null)
+    if str(optional) in "01":
+        optional = bool(int(optional))
+    return (name, type, default, index, optional)
+
+_field = field
 
 def primary_key(name="id"):
     """ Returns an auto-incremented integer primary key field named "id".
     """
-    return field(name, INTEGER, index=PRIMARY, null=False)
+    return field(name, INTEGER, index=PRIMARY, optional=False)
     
 pk = primary_key
 
 #--- FIELD SCHEMA ------------------------------------------------------------------------------------
 
-class Schema:
+class Schema(object):
     
-    def __init__(self, name, type, index=False, default=None, null=True, extra=None):
+    def __init__(self, name, type, default=None, index=False, optional=True, extra=None):
         """ Field info returned from a "show columns from table"-query.
             Each table object has a Table.schema{} dictionary describing the fields' structure.
         """
@@ -595,45 +659,69 @@ class Schema:
                 index = PRIMARY
             if index.lower().startswith("uni"): 
                 index = UNIQUE
-            if index in ("0", "1", ""):
-                index = index == "1"
-        self.name    = name               # Field name.
-        self.type    = type               # Field type: INTEGER | FLOAT | STRING | TEXT | BLOB | DATE.
-        self.length  = length             # Field length for STRING.
-        self.default = default or None    # Default value.
-        self.index   = index              # PRIMARY | UNIQUE | True | False.
-        self.null    = null in ("YES", 0) # True or False
-        self.extra   = extra or None
-        
+            if index.lower() in ("0", "1", "", "yes", "mul"):
+                index = index.lower() in ("1", "yes", "mul")
+        # SQLite dumps the date string with quotes around it:
+        if isinstance(default, basestring) and type == DATE:
+            default = default.strip("'")
+        self.name     = name                   # Field name.
+        self.type     = type                   # Field type: INTEGER | FLOAT | STRING | TEXT | BLOB | DATE.
+        self.length   = length                 # Field length for STRING.
+        self.default  = default or None        # Default value.
+        self.index    = index                  # PRIMARY | UNIQUE | True | False.
+        self.optional = optional in ("YES", 0) # True or False
+        self.extra    = extra or None
+    
     def __repr__(self):
-        return "Schema(name=%s, type=%s, default=%s, index=%s, null=%s)" % (
+        return "Schema(name=%s, type=%s, default=%s, index=%s, optional=%s)" % (
             repr(self.name), 
             repr(self.type),
             repr(self.default),
             repr(self.index),
-            repr(self.null))
+            repr(self.optional))
 
 #### TABLE ###########################################################################################
 
 ALL = "*"
 
-class Table:
+class Table(object):
+    
+    class Fields(list):
+        # Table.fields.append() alters the table.
+        # New field() with optional=False must have a default value (can not be NOW).
+        # New field() can have index=True, but not PRIMARY or UNIQUE. 
+        def __init__(self, table, *args, **kwargs):
+            list.__init__(self, *args, **kwargs); self.table=table
+        def append(self, field):
+            name, (field, index) = field[0], self.table.db._field_SQL(self.table.name, field)
+            self.table.db.execute("alter table `%s` add column %s;" % (self.table.name, field))
+            self.table.db.execute(index, commit=True)
+            self.table._update()
+        def extend(self, fields):
+            [self.append(f) for f in fields]
+        def __setitem__(self, *args, **kwargs):
+            raise NotImplementedError, "Table.fields only supports append()"
+        insert = remove = pop = __del__ = __setitem__
     
     def __init__(self, name, database):
         """ A collection of rows consisting of one or more fields (i.e., table columns) 
             of a certain type (i.e., strings, numbers).
         """
-        self.database = database
-        self.name     = name
-        self.fields   = [] # List of field names (i.e., column names).
-        self.schema   = {} # Dictionary of (field, Schema)-items.
-        self.default  = {} # Default values for Table.insert().
+        self.database    = database
+        self._name       = name
+        self.fields      = [] # List of field names (i.e., column names).
+        self.schema      = {} # Dictionary of (field, Schema)-items.
+        self.default     = {} # Default values for Table.insert().
         self.primary_key = None
+        self._update()
+    
+    def _update(self):
         # Retrieve table column names.
         # Table column names are available in the Table.fields list.
         # Table column names should not contain unicode because they can also be function parameters.
         # Table column names should avoid " ", ".", "(" and ")".
         # The primary key column is stored in Table.primary_key.
+        self.fields = Table.Fields(self)
         if self.db.type == MYSQL:
             q = "show columns from `%s`;" % self.name
         if self.db.type == SQLITE:
@@ -641,50 +729,61 @@ class Table:
             i = self.db.execute("pragma index_list(`%s`)" % self.name) # look up indices
             i = dict(((v[1].replace(self.name+"_", "", 1), v[2]) for v in i))
         for f in self.db.execute(q):
-            # [name, type, index, default, null, extra]
+            # [name, type, default, index, optional, extra]
             if self.db.type == MYSQL:
-                f = [f[0], f[1], f[3], f[4], f[2], f[5]] 
+                f = [f[0], f[1], f[4], f[3], f[2], f[5]] 
             if self.db.type == SQLITE:
-                f = [f[1], f[2], f[5], f[4], f[3], ""]
-                f[2] = f[2] == 1 and "pri" or (f[0] in i and ("1","uni")[int(i[f[0]])] or "")
-            name = string(f[0])
-            self.fields.append(name)
-            self.schema[name] = Schema(*f)
-            if self.schema[name].index == PRIMARY:
-                self.primary_key = name
+                f = [f[1], f[2], f[4], f[5], f[3], ""]
+                f[3] = f[3] == 1 and "pri" or (f[0] in i and ("1","uni")[int(i[f[0]])] or "")
+            list.append(self.fields, f[0])
+            self.schema[f[0]] = Schema(*f)
+            if self.schema[f[0]].index == PRIMARY:
+                self.primary_key = f[0]
+
+    def _get_name(self):
+        return self._name
+    def _set_name(self, name):
+        # Rename the table in the database and in any Database.relations.
+        # SQLite and MySQL will automatically copy indices on the new table.
+        self.db.execute("alter table `%s` rename to `%s`;" % (self._name, name))
+        self.db.tables.pop(self._name)
+        self.db.tables[name] = self
+        for i, r in enumerate(self.db.relations):
+            if r[0] == self._name:
+                self.db.relations = (name, r[1], r[2], r[3])
+            if r[2] == self.name:
+                self.db.relations = (r[0], r[1], name, r[3])
+        self._name = name
+        
+    name = property(_get_name, _set_name)
 
     @property
     def db(self):
         return self.database
-    
+
     @property
     def pk(self):
         return self.primary_key
     
-    @property
     def count(self):
         """ Yields the number of rows in the table.
         """
-        return int(self.db.execute("select count(*) from `%s`;" % self.name)[0][0])
+        return int(list(self.db.execute("select count(*) from `%s`;" % self.name))[0][0])
         
     def __len__(self):
-        return self.count
+        return self.count()
     def __iter__(self):
-        return iter(self.rows)
+        return iter(self.rows())
     def __getitem__(self, i):
-        return self.rows[i]
+        return self.rows()[i]
 
     def abs(self, field):
         return abs(self.name, field)
 
-    def all(self):
+    def rows(self):
         """ Returns a list of all the rows in the table.
         """
         return self.db.execute("select * from `%s`;" % self.name)
-    
-    @property
-    def rows(self):
-        return self.all()
 
     def filter(self, *args, **kwargs):
         """ Returns the rows that match the given constraints (using equals + AND):
@@ -711,26 +810,30 @@ class Table:
         q = "select %s from `%s`%s;" % (fields, self.name, q)
         return self.db.execute(q)         
 
-    def query(self, *args, **kwargs):
+    def search(self, *args, **kwargs):
         """ Returns a Query object that can be used to construct complex table queries.
         """
         return Query(self, *args, **kwargs)
+        
+    query = search
 
     def _insert_id(self):
         # Retrieves the primary key value of the last inserted row.
         if self.db.type == MYSQL:
-            return self.db._connection.insert_id() or None
+            return list(self.db.execute("select last_insert_id();"))[0][0] or None
         if self.db.type == SQLITE:
-            return self.db.execute("select last_insert_rowid();") or None
+            return list(self.db.execute("select last_insert_rowid();"))[0][0] or None
 
     def insert(self, *args, **kwargs):
-        """ Inserts a new row from the given field parameters.
+        """ Inserts a new row from the given field parameters, returns id.
         """
         # Table.insert(name="Taxi", age=2, type="cat")
         # Table.insert({"name":"Fricassée", "age":2, "type":"cat"})
         commit = kwargs.pop("commit", True) # As fieldname, use abs(Table.name, "commit").
-        if len(args) > 0:
-            kwargs = args[0]
+        if len(args) == 0 and len(kwargs) == 1 and isinstance(kwargs.get("values"), dict):
+            kwargs = kwargs["values"]        
+        if len(args) == 1 and isinstance(args[0], dict):
+            a=args[0]; a.update(kwargs); kwargs=a 
         if len(self.default) > 0:
             kwargs.update(self.default)
         k = ", ".join("`%s`" % k for k in kwargs.keys())
@@ -746,15 +849,17 @@ class Table:
         # Table.update(1, {"age":3})
         # Table.update(all(filter(field="name", value="Taxi")), age=3)
         commit = kwargs.pop("commit", True) # As fieldname, use abs(Table.name, "commit").
-        if len(args) > 0:
-            kwargs = args[0]
+        if len(args) == 0 and len(kwargs) == 1 and isinstance(kwargs.get("values"), dict):
+            kwargs = kwargs["values"]  
+        if len(args) == 1 and isinstance(args[0], dict):
+            a=args[0]; a.update(kwargs); kwargs=a
         kv = ", ".join("`%s`=%s" % (k, self.db.escape(v)) for k, v in kwargs.items())
         q  = "update `%s` set %s where %s;" % (self.name, kv, 
             not isinstance(id, Group) and cmp(self.primary_key, id, "=", self.db.escape) \
              or id.SQL(escape=self.db.escape))
         self.db.execute(q, commit)
-        
-    def remove(self, id, commit=True):
+
+    def delete(self, id, commit=True):
         """ Removes the row which primary key equals the given id.
         """
         # Table.delete(1)
@@ -765,22 +870,19 @@ class Table:
              or id.SQL(escape=self.db.escape))
         self.db.execute(q, commit)
     
-    append, edit, delete = insert, update, remove
-    
-    def drop(self):
-        self.db.drop(self.name)
+    append, edit, remove = insert, update, delete
         
     @property
     def xml(self):
         return xml(self)
 
     def datasheet(self):
-        return Datasheet(rows=self.rows, fields=[(f, self.schema[f].type) for f in self.fields])
+        return Datasheet(rows=self.rows(), fields=[(f, self.schema[f].type) for f in self.fields])
 
     def __repr__(self):
         return "Table(name=%s, count=%s, database=%s)" % (
             repr(self.name), 
-            repr(self.count),
+            repr(self.count()),
             repr(self.db.name))
 
 #### QUERY ###########################################################################################
@@ -791,9 +893,9 @@ BETWEEN, LIKE, IN = \
     "between", "like", "in"
 
 sql_functions = \
-    "first|last|count|min|max|sum|avg|stdev|group_concat|" \
+    "first|last|count|min|max|sum|avg|stdev|group_concat|concatenate|" \
     "year|month|day|hour|minute|second|" \
-    "length|lower|upper|substr|replace|trim|round|random|rand" \
+    "length|lower|upper|substr|substring|replace|trim|round|random|rand|" \
     "stftime|date_format"
 
 def abs(table, field):
@@ -803,7 +905,7 @@ def abs(table, field):
     def _format(s):
         if not "." in s:
             # Field could be wrapped in a function: year(date) => year(table.date).
-            p = s.endswith(")") and re.match(r"^"+sql_functions+r"\(", s) or None
+            p = s.endswith(")") and re.match(r"^"+sql_functions+r"\(", s, re.I) or None
             i = p and len(p.group(0)) or -1
             return "%s%s.%s" % (s[:i+1], table, s[i+1:])
         return s
@@ -846,7 +948,10 @@ def cmp(field, value, comparison="=", escape=lambda v: _escape(v), table=""):
             return "%s is not null" % field
     # Using a subquery:
     if isinstance(value, Query):
+        if comparison in ("=", "==", IN):
             return "%s in %s" % (field, escape(value))
+        if comparison in ("!=", "<>"):
+            return "%s not in %s" % (field, escape(value))
     return "%s%s%s" % (field, comparison, escape(value))
 
 # Functions for date fields: cmp(year("date"), 1999, ">").
@@ -862,6 +967,11 @@ def minute(date):
     return "minute(%s)" % date
 def second(date):
     return "second(%s)" % date
+    
+def count(value):
+    return "count(%s)" % value
+def sum(value):
+    return "sum(%s)" % value
 
 #--- QUERY FILTER ------------------------------------------------------------------------------------
 
@@ -925,11 +1035,9 @@ LEFT  = "left"  # All rows from this table, with field values from the related t
 RIGHT = "right" # All rows from the related table, with field values from this table when possible.
 FULL  = "full"  # All rows form both tables.
 
-def relation(table, key1, key2, join=LEFT):
-    return (table, key1, key2, join)
+def relation(field1, field2, table, join=LEFT):
+    return (field1, field2, table, join)
     
-rel = relation
-
 # Sorting:
 ASCENDING  = "asc"
 DESCENDING = "desc"
@@ -938,21 +1046,22 @@ DESCENDING = "desc"
 FIRST, LAST, COUNT, MAX, MIN, SUM, AVG, STDEV, CONCATENATE = \
     "first", "last", "count", "max", "min", "sum", "avg", "stdev", "group_concat"
 
-class Query:
+class Query(object):
     
     id, cache = 0, {}
     
     def __init__(self, table, fields=ALL, filters=[], relations=[], sort=None, order=ASCENDING, group=None, function=FIRST, range=None):
         """ A selection of rows from the given table, filtered by any() and all() constraints.
         """
-        # Table.query(ALL, filters=any(("type","cat"), ("type","dog")) => cats and dogs.
-        # Table.query(("type", "name")), group="type", function=COUNT) => all types + amount per type.
-        # Table.query(("name", "types.has_tail"), relations=[("types","type","id")]) => links type to types.id.
+        # Table.search(ALL, filters=any(("type","cat"), ("type","dog")) => cats and dogs.
+        # Table.search(("type", "name")), group="type", function=COUNT) => all types + amount per type.
+        # Table.search(("name", "types.has_tail"), relations=[("types","type","id")]) => links type to types.id.
         Query.id += 1
         filters = Group(*filters, **dict(operator=isinstance(filters, Group) and filters.operator or AND))
         self._id       = Query.id
         self._table    = table
         self.fields    = fields    # A field name, list of field names or ALL.
+        self.aliases   = {}        # A dictionary of field name aliases, used with Query.xml or Query-in-Query.
         self.filters   = filters   # A group of filter() objects.
         self.relations = relations # A list of relation() objects. 
         self.sort      = sort      # A field name, list of field names or field index for sorting.
@@ -966,23 +1075,24 @@ class Query:
         return self._table
 
     def __len__(self):
-        return len(self.rows)
+        return len(list(self.rows()))
     def __iter__(self):
-        return iter(self.rows)
+        return iter(self.rows())
     def __getitem__(self, i):
-        return self.rows[i]
+        return self.rows()[i]
 
     def SQL(self):
         """ Yields the SQL syntax of the query, which can be passed to Database.execute().
             The SQL string will be cached for faster reuse.
         """
-        if self._id in Query.cache: 
-            return Query.cache[self._id]
+        #if self._id in Query.cache: 
+        #    return Query.cache[self._id]
         # Construct the SELECT clause from Query.fields.
         # With a GROUPY BY clause, fields not used for grouping are wrapped in the given function.
         g = not isinstance(self.group, (list, tuple)) and [self.group] or self.group
         g = [abs(self._table.name, f) for f in g if f is not None]
         fields = not isinstance(self.fields, (list, tuple)) and [self.fields] or self.fields
+        fields = [f in self.aliases and "%s as %s" % (f, self.aliases[f]) or f for f in fields]
         fields = abs(self._table.name, fields)
         fields = self.function and g and [f in g and f or "%s(%s)" % (self.function, f) for f in fields] or fields
         q = []
@@ -992,7 +1102,7 @@ class Query:
         # but overridden by relations defined on the query.
         q.append("from `%s`" % self._table.name)
         relations = {}
-        for table, key1, key2, join in (rel(*r) for r in self.relations):
+        for key1, key2, table, join in (relation(*r) for r in self.relations):
             table = isinstance(table, Table) and table.name or table
             relations[table] = (key1, key2, join)
         for table1, key1, table2, key2, join in self._table.db.relations:
@@ -1000,9 +1110,13 @@ class Query:
                 relations.setdefault(table2, (key1, key2, join))
             if table2 == self._table.name:
                 relations.setdefault(table1, (key1, key2, join==LEFT and RIGHT or (join==RIGHT and LEFT or join)))
+        # Define relations only for tables whose fields are actually selected.
         for (table, (key1, key2, join)) in relations.items():
-            q.append("%sjoin `%s`" % (join and join+" " or "", table))
-            q.append("on %s=%s" % (abs(self._table.name, key1), abs(self._table.db[table].name, key2)))
+            for f in fields:
+                if table + "." in f:
+                    q.append("%sjoin `%s`" % (join and join+" " or "", table))
+                    q.append("on %s=%s" % (abs(self._table.name, key1), abs(self._table.db[table].name, key2)))
+                    break
         # Construct the WHERE clause from Query.filters.SQL().
         # Use the database's escape function and absolute field names.
         if len(self.filters) > 0:
@@ -1023,17 +1137,12 @@ class Query:
             q.append("limit %s, %s" % (str(self.range[0]), str(self.range[1])))
         q = " ".join(q) + ";"
         # Cache the SQL-string for faster retrieval.
-        if len(Query.cache) > 100: 
-            Query.cache.clear()
-        Query.cache[self._id] = q
+        #if len(Query.cache) > 100: 
+        #    Query.cache.clear()
+        #Query.cache[self._id] = q
         return q
         
     sql = SQL
-    
-    def update(self):
-        """ Clears the cached SQL string (e.g., when you change the query parameters).
-        """
-        Query.cache.pop(self._id)
     
     def execute(self):
         """ Executes the query and returns the matching rows from the table.
@@ -1041,12 +1150,8 @@ class Query:
         """
         return self._table.db.execute(self.SQL())
 
-    def all(self):
-        return self.execute()
-
-    @property
     def rows(self):
-        return self.all()
+        return self.execute()
         
     @property
     def xml(self):
@@ -1055,15 +1160,15 @@ class Query:
     def __repr__(self):
         return "Query(sql=%s)" % repr(self.SQL())
 
-#### OBJECT ###########################################################################################
+#### VIEW #############################################################################################
 # A representation of data based on a table in the database.
 # The render() method can be overridden to output data in a certain format (e.g., HTML for a web app).
 
-class Object:
+class View(object):
     
     def __init__(self, database, table, schema=[]):
         """ A representation of data.
-            Object.schema and Object.render() should be overridden in a subclass.
+            View.render() should be overridden in a subclass.
         """
         self.database = database
         self._table   = isinstance(table, Table) and table.name or table
@@ -1075,14 +1180,13 @@ class Object:
     
     @property
     def table(self):
-        # If it doesn't exist, create the table from Object.schema.
+        # If it doesn't exist, create the table from View.schema.
         if not self._table in self.db:
             self.setup() 
-        self.table = self.db[self._table]
-        return self.table
+        return self.db[self._table]
 
     def setup(self, overwrite=False):
-        """ Creates the database table from Object.schema, optionally overwriting the old table.
+        """ Creates the database table from View.schema, optionally overwriting the old table.
         """
         if overwrite:
             self.db.drop(self._table)
@@ -1100,12 +1204,34 @@ class Object:
         pass
     
     # CherryPy-specific.
-    def default(self, *args, **kwargs):
-        return self.render(*args, **kwargs)
-        
+    def default(self, *path, **query):
+        return self.render(*path, **query)
     default.exposed = True
 
 #### XML PARSER #######################################################################################
+
+XML_HEADER = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+
+def _unpack_fields(table, fields=[]):
+    """ Replaces "*" with the actual field names.
+        Fields from related tables keep the "<tablename>." prefix.
+    """
+    u = []
+    for f in fields:
+        a, b = "." in f and f.split(".", 1) or (table.name, f)
+        if a == table.name and b == ALL:
+            # <table>.*
+            u.extend(f for f in table.db.tables[a].fields) 
+        elif a != table.name and b == ALL:
+            # <related-table>.* 
+            u.extend("%s.%s" % (a, f) for f in table.db.tables[a].fields)
+        elif a != table.name:
+            # <related-table>.<field>
+            u.append("%s.%s" % (a, b))
+        else:
+            # <field>
+            u.append(b)
+    return u
 
 def xml_format(a):
     """ Returns the given attribute (string, int, float, bool, None) as a quoted unicode string.
@@ -1113,7 +1239,7 @@ def xml_format(a):
     if isinstance(a, basestring):
         return "\"%s\"" % encode_entities(a)
     if isinstance(a, bool):
-        return "\"%s\"" % int(a)
+        return "\"%s\"" % ("no","yes")[int(a)]
     if isinstance(a, (int, long)):
         return "\"%s\"" % a
     if isinstance(a, float):
@@ -1123,9 +1249,10 @@ def xml_format(a):
 
 def xml(rows):
     """ Returns the rows in the given Table or Query as an XML-string, for example:
-        <table name="pets", fields="id, name, type", count="2">
+        <?xml version="1.0" encoding="utf-8"?>
+        <table name="pets", fields="id, name, type" count="2">
             <schema>
-                <field name="id", type="integer", index="primary", null="0" />
+                <field name="id", type="integer", index="primary", optional="no" />
                 <field name="name", type="string", length="50" />
                 <field name="type", type="string", length="50" />
             </schema>
@@ -1136,26 +1263,20 @@ def xml(rows):
         </table>
     """
     if isinstance(rows, Table): 
-        root, table = "table", rows
+        root, table, rows, fields, aliases = "table", rows, rows.rows(), rows.fields, {}
     if isinstance(rows, Query): 
-        root, table = "query", rows.table
-    # Strip the table name from absolute field names.
-    # Fields from related tables will keep the table name prefix.
-    # This could cause problems when importing, we end up with a field name that has a "."
-    # (see parse_xml() below).
-    fields = [xml_format(f.replace(table.name+".", "", 1)).strip("\"") for f in rows.fields]
-    try:
-        # Replace "*" with the actual field names.
-        i = fields.index(ALL)
-        fields = fields[:i] + table.fields + fields[i+1:]
-    except:
-        pass
-    xml = []
-    xml.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
+        root, table, rows, fields, aliases, = "query", rows.table, rows.rows(), rows.fields, rows.aliases
+    fields = _unpack_fields(table, fields)
     # <table name="" fields="" count="">
     # <query table="" fields="" count="">
+    xml = []
+    xml.append(XML_HEADER)
     xml.append("<%s %s=%s fields=\"%s\" count=\"%s\">" % (
-        root, root!="table" and "table" or "name", xml_format(table.name), ", ".join(fields), len(rows)))
+        root, 
+        root != "table" and "table" or "name", 
+        xml_format(table.name), # Use Query.aliases as field names.
+        ", ".join(encode_entities(aliases.get(f,f)) for f in fields),
+        len(rows)))
     # <schema>
     # Field information is retrieved from the (related) table schema.
     # If the XML is imported as a Table, the related fields become part of it.
@@ -1166,31 +1287,33 @@ def xml(rows):
             s = table.db[s[0]].schema[s[-1]]
         else:
             s = table.schema[f]
-        # <field name="" type="" length="" default="" index="" null="" extra="" />
+        # <field name="" type="" length="" default="" index="" optional="" extra="" />
         xml.append("\t\t<field name=%s type=%s%s%s%s%s%s />" % (
-            xml_format(f),
+            xml_format(aliases.get(f,f)),
             xml_format(s.type),
             s.length is not None and " length=%s" % xml_format(s.length) or "",
             s.default is not None and " default=%s" % xml_format(s.default) or "",
             s.index is not False and " index=%s" % xml_format(s.index) or "",
-            s.null is not True and " null=%s" % xml_format(s.null) or "",
+            s.optional is not True and " optional=%s" % xml_format(s.optional) or "",
             s.extra is not None and " extra=%s" % xml_format(s.extra) or ""))
     xml.append("\t</schema>")
     xml.append("\t<rows>")
     # <rows>
     for r in rows:
         # <row field="value" />
-        xml.append("\t\t<row %s />" % " ".join("%s=%s" % (k, xml_format(v)) for k, v in zip(fields, r)))
+        xml.append("\t\t<row %s />" % " ".join("%s=%s" % (aliases.get(k,k), xml_format(v)) for k, v in zip(fields, r)))
     xml.append("\t</rows>")
     xml.append("</%s>" % root)
     xml = "\n".join(xml)
     xml = encode_utf8(xml)
     return xml
 
-def parse_xml(database, xml):
-    """ Creates a new table in the database from the given XML-string.
+def parse_xml(database, xml, table=None, field=lambda s: s.replace(".", "-")):
+    """ Creates a new table in the given database from the given XML-string.
         The XML must be in the format generated by Table.xml.
         If the table already exists, raises an ImportError.
+        The given table parameter can be used to rename the table.
+        The given field function can be used to rename field names.
     """
     def _attr(node, attribute, default=""):
         return node.getAttribute(attribute) or default
@@ -1200,19 +1323,19 @@ def parse_xml(database, xml):
     a = dom.getElementsByTagName("table")
     b = dom.getElementsByTagName("query")
     if len(a) > 0:
-        table = _attr(a[0], "name", "")
+        table = table or _attr(a[0], "name", "")
     if len(b) > 0:
-        table = _attr(b[0], "table", "")
+        table = table or _attr(b[0], "table", "")
     # Parse field information (i.e., field name, field type, etc.)
     fields, schema, rows = [], [], []
     for f in dom.getElementsByTagName("field"):
         fields.append(_attr(f, "name"))
-        schema.append(field(
-            name = _attr(f, "name"),
+        schema.append(_field(
+            name = field(_attr(f, "name")),
             type = _attr(f, "type") == STRING and STRING(int(_attr(f, "length", 255))) or _attr(f, "type"),
          default = _attr(f, "default", None),
            index = _attr(f, "index", False),
-            null = _attr(f, "null", True)
+        optional = _attr(f, "optional", True) != "no"
         ))
         # Integer primary key is always auto-increment.
         # The id's in the new table will differ from those in the XML.
@@ -1220,7 +1343,13 @@ def parse_xml(database, xml):
             fields.pop()
     # Parse row data.
     for r in dom.getElementsByTagName("row"):
-        rows.append(dict((f, _attr(r, f, None)) for f in fields))
+        rows.append({})
+        for i, f in enumerate(fields):
+            v = _attr(r, f, None)
+            if schema[i][1] == BOOLEAN:
+                rows[-1][f] = (0,1)[v!="no"]
+            else:
+                rows[-1][f] = v
     # Create table if not exists and insert rows.
     if database.connected is False:
         database.connect()
@@ -1254,7 +1383,7 @@ class CSV(list):
         self.__dict__["fields"] = fields # List of (name, type)-tuples, with type = STRING, INTEGER, etc.
         self.extend(rows)
 
-    def save(self, path, separator=",", encoder=lambda j,v:v, headers=False):
+    def save(self, path, separator=",", encoder=lambda v: v, headers=False):
         """ Exports the table to a unicode text file at the given path.
             Rows in the file are separated with a newline.
             Columns in a row are separated with the given separator (by default, comma).
@@ -1265,14 +1394,14 @@ class CSV(list):
         w = csv.writer(s, delimiter=separator)
         if headers and self.fields is not None:
             w.writerows([[csv_header_encode(name, type) for name, type in self.fields]])
-        w.writerows([[encode_utf8(encoder(j,v)) for j, v in enumerate(row)] for row in self])
+        w.writerows([[encode_utf8(encoder(v)) for v in row] for row in self])
         f = open(path, "wb")
         f.write(BOM_UTF8)
         f.write(s.getvalue())
         f.close()
 
     @classmethod
-    def load(self, path, separator=",", decoder=lambda j,v:v, headers=False):
+    def load(self, path, separator=",", decoder=lambda v: v, headers=False):
         """ Returns a table from the data in the given text file.
             Rows are expected to be separated by a newline. 
             Columns are expected to be separated by the given separator (by default, comma).
@@ -1291,14 +1420,14 @@ class CSV(list):
             fields = []
         if not fields:
             # Cast fields using the given decoder (by default, all strings).
-            data = [[decoder(j, v) for j, v in enumerate(row)] for row in data]
+            data = [[decoder(v) for v in row] for row in data]
         else:
             # Cast fields to their defined field type (STRING, INTEGER, ...)
             for i, row in enumerate(data):
                 for j, v in enumerate(row):
                     type = fields[j][1]
                     if row[j] == "None":
-                        row[j] = decoder(j, None)
+                        row[j] = decoder(None)
                     elif type in (STRING, TEXT):
                         row[j] = decode_utf8(v)
                     elif type == INTEGER:
@@ -1312,7 +1441,7 @@ class CSV(list):
                     elif type == BLOB:
                         row[j] = v
                     else:
-                        row[j] = decoder(j, v)
+                        row[j] = decoder(v)
         return self(rows=data, fields=fields)
 
 #--- DATASHEET ----------------------------------------------------------------------------------------
@@ -1386,22 +1515,29 @@ class Datasheet(CSV):
             For Datasheet[i], returns the row at the given index.
             For Datasheet[i,j], returns the value in row i and column j.
         """
-        if isinstance(index, int):
+        if isinstance(index, (int, slice)):
             # Datasheet[i] => row i.
             return list.__getitem__(self, index)
         if isinstance(index, tuple):
             i, j = index
-            if isinstance(i, slice):
-                # Datasheet[i1:i2,j1:j2] => columns j1-j2 from rows i1-i2.
-                # Datasheet[i1:i2,j] => column j from rows i1-i2.
-                return [row[j] for row in list.__getitem__(self, i)]
-            # Datasheet[i,j1:j2] => columns j1-j2 from row i.
             # Datasheet[i,j] => item from column j in row i.
-            return list.__getitem__(self, i)[j]
-        raise TypeError, "Datasheet indices must be int or tuple"
+            # Datasheet[i,j1:j2] => columns j1-j2 from row i.
+            if not isinstance(i, slice):
+                return list.__getitem__(self, i)[j]
+            # Datasheet[i1:i2,j] => column j from rows i1-i2.
+            if not isinstance(j, slice):
+                return [row[j] for row in list.__getitem__(self, i)]
+            # Datasheet[i1:i2,j1:j2] => Datasheet with columns j1-j2 from rows i1-i2.
+            return Datasheet(
+                  rows = (row[j] for row in list.__getitem__(self, i)),
+                fields = self.fields and self.fields[j] or self.fields)
+        raise TypeError, "Datasheet indices must be int, tuple or slice"
 
     def __getslice__(self, i, j):
-        return list.__getslice__(self, i, j)
+        # Datasheet[i1:i2] => Datasheet with rows i1-i2.
+        return Datasheet(
+              rows = list.__getslice__(self, i, j),
+            fields = self.fields)
             
     def __delitem__(self, index):
         self.pop(index)
@@ -1655,9 +1791,17 @@ class DatasheetColumns(list):
             # The main difficulty is modifying each row in-place,
             # since other variables might be referring to it.
             r=list(row); [row.__setitem__(i2, r[i1]) for i2, i1 in enumerate(o)]
+        # Reorder the datasheet headers.
+        if self._datasheet.fields is not None:
+            self._datasheet.fields = [self._datasheet.fields[i] for i in o]
     
     def swap(self, j1, j2):
         self[j1], self[j2] = self[j2], self[j1]
+        # Reorder the datasheet headers.
+        if self._datasheet.fields is not None:
+            self._datasheet.fields[j1], self._datasheet.fields[j2] = (
+                self._datasheet.fields[j2], 
+                self._datasheet.fields[j1])
 
 #--- DATASHEET COLUMN ---------------------------------------------------------------------------------
 
@@ -1824,5 +1968,3 @@ def pprint(datasheet, truncate=40, padding=" ", fill="."):
                 s += padding
                 print s,
             print
-
-
