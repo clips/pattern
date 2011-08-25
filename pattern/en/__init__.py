@@ -53,7 +53,7 @@ def ngrams(string, n=3):
         Alternatively, you can supply a Text or Sentence object.
         n-grams will not run over sentence markers (i.e., .!?).
     """
-    def strip_period(s, punctuation=(".:;,!??()[]'\"")):
+    def strip_period(s, punctuation=(".:;,!?()[]'\"")):
         return [w for w in s if (isinstance(w, Word) and w.string or w) not in punctuation]
     if n <= 0:
         return []

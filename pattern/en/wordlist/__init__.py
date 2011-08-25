@@ -17,6 +17,7 @@ def wordlist(name):
     return open(os.path.join(MODULE, name+".txt")).read().split(", ")
 
 ACADEMIC  = wordlist("academic")  # English academic words.
+BASIC     = wordlist("basic")     # English basic words (850) that express 90% of concepts.
 PROFANITY = wordlist("profanity") # English swear words.
 TIME      = wordlist("time")      # English time and date words.
 
