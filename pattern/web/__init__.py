@@ -638,31 +638,36 @@ def strip_comments(html):
 def strip_forms(html): 
     return strip_between("<form.*?>", "</form>", html)
 
+RE_AMPERSAND = re.compile("\&(?!\#)")           # & not followed by #
 RE_UNICODE   = re.compile(r'&(#?)(x|X?)(\w+);') # &#201;
-RE_AMPERSAND = re.compile(r"\&(?!\#)")          # & not followed by #
+
+def encode_entities(string):
+    """ Encodes HTML entities in the given string ("<" => "&lt;").
+        For example, to display "<em>hello</em>" in a browser,
+        we need to pass "&lt;em&gt;hello&lt;/em&gt;" (otherwise "hello" in italic is displayed).
+    """
+    if isinstance(string, (str, unicode)):
+        string = RE_AMPERSAND.sub("&amp;", string)
+        string = string.replace("<", "&lt;")
+        string = string.replace(">", "&gt;")
+        string = string.replace('"', "&quot;")
+        string = string.replace("'", "&#39;")
+    return string
 
 def decode_entities(string):
     # http://snippets.dzone.com/posts/show/4569
     def replace_entity(match):
         hash, hex, name = match.group(1), match.group(2), match.group(3)
-        if hash == "#":
+        if hash == "#" or name.isdigit():
             if hex == '' : 
                 return unichr(int(name))                 # "&#38;" => "&"
             if hex in ("x","X"):
-                return unichr(int('0x'+name, 16))        # ""&#x0026;"" = > "&"
+                return unichr(int('0x'+name, 16))        # "&#x0026;" = > "&"
         else:
             cp = htmlentitydefs.name2codepoint.get(name) # "&amp;" => "&"
             return cp and unichr(cp) or match.group()    # "&foo;" => "&foo;"
     if isinstance(string, (str, unicode)):
-        return _entities_unicode.subn(replace_entity, string)[0]
-    return string
-
-def encode_entities(string):
-    string = RE_AMPERSAND.sub("&amp;", string) # & not followed by #
-    string = string.replace("<", "&lt;")
-    string = string.replace(">", "&gt;")
-    string = string.replace('"', "&quot;")
-    string = string.replace("'", "&#39;")
+        return RE_UNICODE.subn(replace_entity, string)[0]
     return string
 
 def decode_url(string):
@@ -1127,11 +1132,14 @@ class Wikipedia(SearchEngine):
 
     def search(self, query, type=SEARCH, start=1, count=1, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """ Returns a WikipediaArticle for the given query.
+            The query is case-sensitive: 
+            - "tiger" = Panthera tigris,
+            - "TIGER" = Topologically Integrated Geographic Encoding and Referencing.
         """
         url = WIKIPEDIA.replace("en.", "%s." % self.language) + "?"
         url = URL(url, method=GET, query={
             "action" : "parse",
-              "page" : query.lower().replace(" ","_"),
+              "page" : query.replace(" ","_"),
          "redirects" : 1,
             "format" : "json"
         })
@@ -1149,7 +1157,7 @@ class Wikipedia(SearchEngine):
     
     def _parse_article(self, data):
         return WikipediaArticle(
-                  title = data.get("displaytitle", ""),
+                  title = plaintext(data.get("displaytitle", "")),
                  source = data.get("text", {}).get("*", ""),
          disambiguation = data.get("text", {}).get("*", "").find(WIKIPEDIA_DISAMBIGUATION) >= 0,
                   links = [x["*"] for x in data.get("links", []) if not _wikipedia_namespace.match(x["*"])],
@@ -1404,6 +1412,61 @@ class FlickrResult(Result):
 #f = open("kitten"+extension(img.url), "w")
 #f.write(data)
 #f.close()
+
+#--- PRODUCT REVIEWS ---------------------------------------------------------------------------------
+
+PRODUCTWIKI = "http://api.productwiki.com/connect/api.aspx"
+PRODUCTWIKI_LICENSE = "64819965ec784395a494a0d7ed0def32"
+
+class Products(SearchEngine):
+    
+    def __init__(self, license=None, throttle=3.0):
+        SearchEngine.__init__(self, license or PRODUCTWIKI_LICENSE, throttle)
+    
+    def search(self, query, type=SEARCH, start=1, count=20, sort=RELEVANCY, size=None, cached=True, **kwargs):
+        """ Returns a list of results from Productwiki for the given query.
+            Each Result.reviews is a list of (review, score)-items.
+            - type : SEARCH,
+            - start: maximum undefined,
+            - count: 20,
+            - sort : RELEVANCY.
+            There is no daily limit.
+        """ 
+        url = PRODUCTWIKI+"?"
+        url = URL(url, method=GET, query={ 
+               "key": self.license or "",
+                 "q": query,
+             "page" : start,
+                "op": "search",
+            "fields": "proscons", # "description,proscons" is heavy.
+            "format": "json"
+        })
+        kwargs.setdefault("throttle", self.throttle)
+        data = URL(url).download(cached=cached, **kwargs)
+        data = json.loads(data)
+        results = Results(PRODUCTWIKI, query, type)
+        results.total = None
+        for x in data.get("products", []):
+            r = Result(url=None)
+            r.__dict__["title"]       = x.get("title")
+            r.__dict__["description"] = x.get("description")
+            r.__dict__["reviews"]     = []
+            reviews = x.get("community_review") or {}
+            for p in reviews.get("pros", []):
+                r.reviews.append((p.get("text", ""), int(p.get("score")) or +1))
+            for p in reviews.get("cons", []):
+                r.reviews.append((p.get("text", ""), int(p.get("score")) or -1))
+            r.__dict__["score"] = int(sum(score for review, score in r.reviews))
+            results.append(r)
+        # Highest score first.
+        results.sort(key=lambda r: r.score, reverse=True)
+        return results  
+
+#for r in Products().search("computer"):
+#    print r.title
+#    print r.score
+#    print r.reviews
+#    print
 
 #--- NEWS FEED ---------------------------------------------------------------------------------------
 # Based on the Universal Feed Parser by Mark Pilgrim:
