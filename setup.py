@@ -23,6 +23,7 @@ setup(
         "pattern.web.oauth", 
         "pattern.web.pdf", 
         "pattern.web.soup",
+        "pattern.db", 
         "pattern.en", 
         "pattern.en.inflect", 
         "pattern.en.parser", 
