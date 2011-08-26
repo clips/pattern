@@ -7,6 +7,7 @@
 
 ######################################################################################################
 
+import os
 import sys
 import warnings
 import re
@@ -218,7 +219,7 @@ def _escape(value, quote=lambda string: "'%s'" % string.replace("'", "\\'")):
         try: value = value.encode("utf-8")
         except:
             pass
-    if value in (NOW,):
+    if value in ("current_timestamp",):
         # Don't quote constants such as current_timestamp.
         return value
     if isinstance(value, basestring):
@@ -325,7 +326,8 @@ class Database(object):
 
     def __init__(self, name, host="localhost", user="root", password="", type=SQLITE, unicode=True):
         """ A collection of tables stored in an SQLite or MySQL database.
-            If the database, host, user or password does not exist, raises DatabaseConnectionError.
+            If the database does not exist, creates it.
+            If the host, user or password is wrong, raises DatabaseConnectionError.
         """
         _import_db(type)
         self.type = type
@@ -346,68 +348,60 @@ class Database(object):
         self._query = None
         # Persistent relations between tables, stored as (table1, table2, key1, key2, join) tuples.
         self.relations = []
-
-    @classmethod
-    def new(self, name, host="localhost", user="root", password="", type=SQLITE, unicode=True):
-        """ Creates and returns a new database with the given name.
-            If the database already exists, simply returns it.
-        """
-        _import_db(type)
-        if type == MYSQL:
-            connection = MySQLdb.connect(host, user, password)
-            cursor = connection.cursor()
-            cursor.execute("create database if not exists `%s`;" % name)
-            cursor.close()
-            connection.close()
-        if type == SQLITE:
-            connection = sqlite.connect(name)
-            connection.close()
-        return self(name, host, user, password, type, unicode)
         
     def connect(self, unicode=True):
         # Connections for threaded applications work differently,
         # see http://tools.cherrypy.org/wiki/Databases 
         # (have one Database object for each thread).
-        if self._connection: 
+        if self._connection is not None: 
             return
-        # Field converters: 
+        # MySQL
+        if self.type == MYSQL:
+            try: 
+                self._connection = MySQLdb.connect(self.host, self.user, self.password, self.name, use_unicode=unicode)
+                self._connection.autocommit(False)
+            except Exception, e:
+                # Create the database if it doesn't exist yet.
+                if "unknown database" not in str(e).lower():
+                    raise DatabaseConnectionError, e[1] # Wrong host, username and/or password.
+                connection = MySQLdb.connect(self.host, self.user, self.password)
+                cursor = connection.cursor()
+                cursor.execute("create database if not exists `%s`;" % self.name)
+                cursor.close()
+                connection.close()
+                self._connection = MySQLdb.connect(self.host, self.user, self.password, self.name, use_unicode=unicode)
+                self._connection.autocommit(False)
+            if unicode: 
+                self._connection.set_character_set("utf8")
+        # SQLite
+        if self.type == SQLITE:
+            self._connection = sqlite.connect(self.name, detect_types=sqlite.PARSE_DECLTYPES)
+            # Create functions that are not natively supported by the engine.
+            # Aggregate functions (for grouping rows) + date functions.
+            self._connection.create_aggregate("first", 1, sqlite_first)
+            self._connection.create_aggregate("last", 1, sqlite_last)
+            self._connection.create_aggregate("group_concat", 1, sqlite_group_concat)
+            self._connection.create_function("year", 1, sqlite_year)
+            self._connection.create_function("month", 1, sqlite_month)
+            self._connection.create_function("day", 1, sqlite_day)
+            self._connection.create_function("hour", 1, sqlite_hour)
+            self._connection.create_function("minute", 1, sqlite_minute)
+            self._connection.create_function("second", 1, sqlite_second)
+        # Map field type INTEGER to int (not long(), e.g., 1L).
         # Map field type BOOLEAN to bool.
         # Map field type DATE to str, yyyy-mm-dd hh:mm:ss.
-        # Map field type INTEGER to int (not long(), e.g., 1L).
-        # You can't use UNSIGNED in this case, however.
-        if self.type == SQLITE:
-            sqlite.converters["TINYINT(1)"] = bool
-            sqlite.converters["BLOB"] = lambda data: str(data).decode("string-escape")
-            sqlite.converters["TIMESTAMP"]  = str
         if self.type == MYSQL:
-            cv = MySQLdb.converters.conversions.copy()
-            cv[MySQLdb.constants.FIELD_TYPE.LONG]       = int
-            cv[MySQLdb.constants.FIELD_TYPE.LONGLONG]   = int
-            cv[MySQLdb.constants.FIELD_TYPE.DECIMAL]    = float
-            cv[MySQLdb.constants.FIELD_TYPE.NEWDECIMAL] = float
-            cv[MySQLdb.constants.FIELD_TYPE.TINY]       = bool
-            cv[MySQLdb.constants.FIELD_TYPE.TIMESTAMP]  = str
-        try: 
-            if self.type == SQLITE:
-                self._connection = sqlite.connect(self.name, detect_types=sqlite.PARSE_DECLTYPES)
-                # Create functions that are not natively supported by the engine.
-                # Aggregate functions (for grouping rows) + date functions.
-                self._connection.create_aggregate("first", 1, sqlite_first)
-                self._connection.create_aggregate("last", 1, sqlite_last)
-                self._connection.create_aggregate("group_concat", 1, sqlite_group_concat)
-                self._connection.create_function("year", 1, sqlite_year)
-                self._connection.create_function("month", 1, sqlite_month)
-                self._connection.create_function("day", 1, sqlite_day)
-                self._connection.create_function("hour", 1, sqlite_hour)
-                self._connection.create_function("minute", 1, sqlite_minute)
-                self._connection.create_function("second", 1, sqlite_second)
-            if self.type == MYSQL:
-                self._connection = MySQLdb.connect(self.host, self.user, self.password, self.name, use_unicode=unicode, conv=cv)
-                self._connection.autocommit(False)
-                if unicode: 
-                    self._connection.set_character_set("utf8")
-        except Exception, e:
-            raise DatabaseConnectionError, e
+            type = MySQLdb.constants.FIELD_TYPE
+            self._connection.converter[type.LONG]       = int
+            self._connection.converter[type.LONGLONG]   = int
+            self._connection.converter[type.DECIMAL]    = float
+            self._connection.converter[type.NEWDECIMAL] = float
+            self._connection.converter[type.TINY]       = bool
+            self._connection.converter[type.TIMESTAMP]  = date
+        if self.type == SQLITE:
+            sqlite.converters["TINYINT(1)"] = bool # See Binary() why this is necessary:
+            sqlite.converters["BLOB"]       = lambda data: str(data).decode("string-escape")
+            sqlite.converters["TIMESTAMP"]  = date
             
     def disconnect(self):
         if self._connection is not None:
@@ -495,6 +489,8 @@ class Database(object):
         auto  = " auto%sincrement" % (self.type == MYSQL and "_" or "")
         field = list(field) + [STRING, None, False, True][len(field)-1:]
         field = list(_field(field[0], field[1], default=field[2], index=field[3], optional=field[4]))
+        if field[1] == "timestamp" and field[2] == "now":
+            field[2] = "current_timestamp"
         a = b = None
         a = "`%s` %s%s%s%s" % (
             # '`id` integer not null primary key auto_increment'
@@ -558,7 +554,16 @@ class Database(object):
             repr(self.name), 
             repr(self.host), 
             repr(self.tables.keys()))
-        
+    
+    def _delete(self):
+        # No warning is issued, seems a bad idea to document the method. 
+        # Anyone wanting to delete an entire database should use an editor.
+        if self.type == MYSQL:
+            self.execute("drop database `%s`" % self.name, commit=True)
+        if self.type == SQLITE:
+            os.unlink(self.name)
+            self.disconnect()
+    
     def __delete__(self):
         try: 
             self.disconnect()
@@ -589,7 +594,7 @@ PRIMARY = "primary"
 UNIQUE  = "unique"
 
 # DATE default.
-NOW = "current_timestamp"
+NOW = "now"
 
 #--- FIELD- ------------------------------------------------------------------------------------------
 
@@ -664,6 +669,8 @@ class Schema(object):
         # SQLite dumps the date string with quotes around it:
         if isinstance(default, basestring) and type == DATE:
             default = default.strip("'")
+            default = default.replace("current_timestamp", NOW)
+            default = default.replace("CURRENT_TIMESTAMP", NOW)
         self.name     = name                   # Field name.
         self.type     = type                   # Field type: INTEGER | FLOAT | STRING | TEXT | BLOB | DATE.
         self.length   = length                 # Field length for STRING.
@@ -1246,6 +1253,10 @@ def xml_format(a):
         return "\"%s\"" % round(a, 5)
     if isinstance(a, type(None)):
         return "\"\""
+    if isinstance(a, Date):
+        return "\"%s\"" % str(a)
+    if isinstance(a, datetime.datetime):
+        return "\"%s\"" % str(date(mktime(a.timetuple())))
 
 def xml(rows):
     """ Returns the rows in the given Table or Query as an XML-string, for example:
@@ -1367,13 +1378,14 @@ def parse_xml(database, xml, table=None, field=lambda s: s.replace(".", "-")):
 
 def csv_header_encode(field, type=STRING):
     # csv_header_encode("age", INTEGER) => "age (INTEGER)".
-    return "%s (%s)" % (encode_utf8(field or ""), type.upper())
+    return "%s (%s)" % (encode_utf8(field or ""), (type or "").upper())
     
 def csv_header_decode(s):
     # csv_header_decode("age (INTEGER)") => ("age", INTEGER).
     p = "STRING|INTEGER|FLOAT|TEXT|BLOB|BOOLEAN|DATE"
     p = re.match(r"(.*?) \(("+p+")\)", s)
-    return p and (string(p.group(1), default=None), p.group(2).lower()) or (None, None)
+    s = s.endswith(" ()") and s[:-3] or s
+    return p and (string(p.group(1), default=None), p.group(2).lower()) or (s or None, None)
 
 class CSV(list):
 
@@ -1734,7 +1746,7 @@ class DatasheetColumns(list):
     def __iadd__(self, column):
         self.append(column); return self
 
-    def insert(self, j, column, default=None):
+    def insert(self, j, column, default=None, field=None):
         """ Inserts the given column into the matrix.
             Missing rows at the end (bottom) will be filled with the default value.
         """
@@ -1747,12 +1759,15 @@ class DatasheetColumns(list):
         for i, row in enumerate(self._datasheet):
             row.insert(j, column[i])
         self._datasheet.__dict__["_m"] += 1 # Increase column count.
+        # Add a new header:
+        if self._datasheet.fields is not None:
+            self._datasheet.fields.insert(j, field or (None, None))
 
-    def append(self, column, default=None):
-        self.insert(len(self), column, default)
-    def extend(self, columns, default=None):
-        for column in columns: 
-            self.insert(len(self), column, default)
+    def append(self, column, default=None, field=None):
+        self.insert(len(self), column, default, field)
+    def extend(self, columns, default=None, fields=[]):
+        for j, column in enumerate(columns): 
+            self.insert(len(self), column, default, j<len(fields) and fields[j] or None)
     
     def remove(self, column):
         if isinstance(column, DatasheetColumn) and column._datasheet == self._datasheet:
@@ -1913,6 +1928,10 @@ class DatasheetColumn(list):
         return self._uindex is not None
 
 #-----------------------------------------------------------------------------------------------------
+
+_UID = 0
+def uid():
+    global _UID; _UID+=1; return _UID
 
 def truncate(string, length=100):
     """ Returns a (head, tail)-tuple, where the head string length is less than the given length.

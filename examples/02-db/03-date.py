@@ -1,10 +1,10 @@
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
-from pattern.table import date, time, NOW
-from pattern.web   import Google, NEWS
+from pattern.db  import date, time, NOW
+from pattern.web import Google, NEWS
 
 # It is often useful to keep a date stamp for each row in the table.
-# The pattern.table module's date() function can be used for this.
+# The pattern.db module's date() function can be used for this.
 # It is a simple wrapper around Python's datetime.datetime class,
 # with extra functionality to make it easy to parse or print it as a string.
 

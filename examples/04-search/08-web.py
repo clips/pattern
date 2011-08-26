@@ -3,7 +3,7 @@ import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 from pattern.web    import Bing, plaintext
 from pattern.en     import Sentence, parse
 from pattern.search import Pattern
-from pattern.table  import Table, pprint
+from pattern.db     import Datasheet, pprint
 
 # "X IS MORE IMPORTANT THAN Y"
 # Here is a rough example of how to build a web miner.
@@ -17,7 +17,7 @@ from pattern.table  import Table, pprint
 q = '"more important than"'          # Bing search query
 p = "NP (VP) more important than NP" # Search pattern.
 p = Pattern.fromstring(p)
-t = Table()
+d = Datasheet()
 
 engine = Bing(license=None)
 for i in range(1): # max=10
@@ -28,11 +28,11 @@ for i in range(1): # max=10
         for m in p.search(s):
             a = m.constituents(constraint=0)[-1] # Left NP.
             b = m.constituents(constraint=5)[ 0] # Right NP.
-            t.append((
+            d.append((
                 a.string.lower(), 
                 b.string.lower()))
 
-pprint(t)
+pprint(d)
 
 print
-print len(t), "results."
+print len(d), "results."

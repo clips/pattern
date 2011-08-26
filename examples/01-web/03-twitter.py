@@ -1,7 +1,7 @@
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
-from pattern.web   import Twitter, hashtags
-from pattern.table import Table, pprint
+from pattern.web import Twitter, hashtags
+from pattern.db  import Datasheet, pprint
 
 # This example retrieves tweets containing given keywords from Twitter (http://twitter.com).
 
@@ -9,12 +9,12 @@ try:
     # We store tweets in a Table that can be saved as a text file.
     # In the first column, we'll store a unique ID for each tweet.
     # We only want to add the latest tweets, i.e. those we haven't previously encountered.
-    # With an index() on the first column we can quickly check if an ID already exists.
+    # With an on the first column we can quickly check if an ID already exists.
     # The index becomes important once more and more rows are added to the table (speed).
-    table = Table.load("cool.txt")
-    index = table.index(table.columns[0])
+    table = Datasheet.load("cool.txt")
+    index = dict.fromkeys(table.columns[0], True)
 except:
-    table = Table()
+    table = Datasheet()
     index = {}
 
 engine = Twitter()
