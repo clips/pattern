@@ -948,7 +948,7 @@ class Yahoo(SearchEngine):
         if not query or count < 1 or start > 1000/count: 
             return Results(YAHOO, query, type)
         query = {
-                 "q" : oauth.normalize(query),
+                 "q" : oauth.normalize(query.replace(" ", "_")),
              "start" : 1 + (start-1) * count,
              "count" : min(count, type==IMAGE and 35 or 50),
             "format" : "json"
