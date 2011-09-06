@@ -143,13 +143,6 @@ def apply_default_rules(token, previous=(None,None), next=(None,None)):
     """
     # Based on Jason Wiener's implementation of a rule-based part-of-speech Brill tagger.
     #
-    # Original Copyright (C) Mark Watson.  All rights reserved.
-    # Python port by Jason Wiener (http://www.jasonwiener.com)
-    # THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
-    # KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-    # IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
-    # PARTICULAR PURPOSE.
-    #
     # By comparison, WordNet has 12401 adjectives not in the Brill lexicon.
     # Brill's lexical rules corrected 11961 of them, in 1.71 seconds.
     # Jason Wiener's rules corrected 9948, in 0.19 seconds.
@@ -162,7 +155,7 @@ def apply_default_rules(token, previous=(None,None), next=(None,None)):
     # Rule 3: if a word has been categorized as a common noun and it ends with "s",
     #         then set its type to plural common noun (NNS)
     # Rule 4: convert a noun to a number (CD) if "." appears in the word.
-    # Rule 5: convert a common noun (NN or NNS) to a adjective if it ends with "al", "ient", "ish", "less"
+    # Rule 5: convert a common noun (NN or NNS) to a adjective if it ends with "able", "al", "ient", etc.
     #         or if there is a hyphen ("-") in the word.
     # Rule 6: convert a noun to a past participle if word ends with "ed".
     # Rule 7: DT, {VBD | VBP} --> DT, NN
@@ -178,7 +171,7 @@ def apply_default_rules(token, previous=(None,None), next=(None,None)):
         pos = "CD"
     elif pos.startswith("NN") and word[:1].isdigit() and word.replace(".","").isdigit():
         pos = "CD"
-    elif pos.startswith("NN") and word.endswith(("al","ient","ish","less")) or "-" in word:
+    elif pos.startswith("NN") and word.endswith(("able","al","ful","ible","ient","ish","less","ous")) or "-" in word:
         pos = "JJ"
     elif pos.startswith("NN") and word.endswith("ed"):
         pos = "VBN"
