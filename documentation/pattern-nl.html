@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>pattern-nl</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" href="clips.css" />
+    <style>
+        /* Small fixes because we omit the online layout.css. */
+        h3 { line-height: 1.3em; }
+        #page { margin-left: auto; margin-right: auto; }
+        #header, #header-inner { height: 75px; }
+        #header { border-bottom: 1px solid #C6D4DD;  }
+        table { border-collapse: collapse; }
+    </style>
+</head>
+<body class="node-type-page one-sidebar sidebar-right section-pages">
+    <div id="page">
+    <div id="page-inner">
+    <div id="header"><div id="header-inner"></div></div>
+    <div id="content">
+    <div id="content-inner">
+    <div class="node node-type-page"
+        <div class="node-inner">
+        <div class="breadcrumb">View online at: <a href="http://www.clips.ua.ac.be/pages/pattern-nl" class="noexternal" target="_blank">http://www.clips.ua.ac.be/pages/pattern-nl</a></div>
+        <h1>pattern.nl</h1>
+        <div id="node-1418" class="node node-type-page"><div class="node-inner">
+<div class="content">
+<p><span class="big">The pattern.nl module contains a fast, regular expressions-based shallow parser for Dutch (identifies nouns, adjectives, verbs, etc. in a sentence) and tools for Dutch verb conjugation and noun singularization &amp; pluralization.</span></p>
+<p>It can be used by itself or with other&nbsp;<a href="pattern.html">pattern</a>&nbsp;modules:&nbsp;<a href="pattern-web.html">web</a>&nbsp;|&nbsp;<a href="pattern-table.html">table</a>&nbsp;| nl |&nbsp;<a href="pattern-search.html">search</a>&nbsp;|&nbsp;<a href="pattern-vector.html">vector</a>&nbsp;|&nbsp;<a href="pattern-graph.html">graph</a>.</p>
+<p><img src="g/pattern_schema_nl.gif" alt="" width="606" height="180" /></p>
+<hr />
+<h2>Documentation</h2>
+<p>The commands in this module work in exactly the same way as their counterparts in <a href="pattern-en.html">pattern.en</a>&nbsp;– detailed documentation can be found there.&nbsp;For Dutch nouns there is <span class="inline_code">singularize()</span> and <span class="inline_code">pluralize()</span>. For Dutch verbs there is <span class="inline_code">conjugate()</span>, <span class="inline_code">lemma()</span>, <span class="inline_code">lexeme()</span> and <span class="inline_code">tenses()</span>:</p>
+<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">nl</span> <span style="color: #28334f; font-weight: bold;">import</span> singularize, conjugate, INFINITIVE<br />
+<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> singularize<span style="">&#40;</span><span style="color: #657a8a;">'katten'</span><span style="">&#41;</span><br />
+<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> conjugate<span style="">&#40;</span><span style="color: #657a8a;">'zaten'</span>, tense=INFINITIVE<span style="">&#41;</span><br />
+kat<br />
+zitten </code></span></span></p>
+<p>Dutch adjectives followed by a noun&nbsp;inflect with an&nbsp;<span class="inline_code">-e</span>&nbsp;suffix (e.g., <em>braaf</em>&nbsp;→ <em>brave kat</em>). You can get the base form with the <span class="inline_code">predicative()</span> command, or vice versa with&nbsp;<span class="inline_code">attributive()</span>:</p>
+<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">nl</span> <span style="color: #28334f; font-weight: bold;">import</span> predicative<br />
+<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> predicative<span style="">&#40;</span><span style="color: #657a8a;">'brave'</span><span style="">&#41;</span><br />
+braaf </code></span></span></p>
+<p><span class="example">For parsing there is&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">parse()</span>&nbsp;and&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">split()</span>:<br /></span></p>
+<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">nl</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, split<br />
+<span style="">&gt;&gt;&gt;</span> s = parse<span style="">&#40;</span><span style="color: #657a8a;">'De kat zit op de mat.'</span><span style="">&#41;</span><br />
+<span style="">&gt;&gt;&gt;</span> s = split<span style="">&#40;</span>s<span style="">&#41;</span><br />
+<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> s.<span style="">sentences</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span><br />
+Sentence<span style="">&#40;</span><span style="color: #657a8a;">'De/DT/B-NP/O kat/NN/I-NP/O zit/VBZ/B-VP/O op/IN/B-PP/B-PNP de/DT/B-NP/I-PNP mat/NN/I-NP/I-PNP ././O/O'</span><span style="">&#41;</span></code></span></span></p>
+<p>See the <span class="inline_code">pattern.en</span> documentation on how to manipulate <span class="inline_code">Sentence</span> objects (<span class="link-maintenance"><a href="pattern-en.html#tree">here</a></span>).</p>
+<p><span class="smallcaps"><span style="font-variant: normal;"><span style="font-variant: small-caps;"><br /></span></span></span></p>
+<p><span class="smallcaps">Accuracy – parser</span></p>
+<p>The parser is built on Jeroen Geertzen's Dutch language model, see:<br /><a href="http://cosmion.net/jeroen/software/brill_pos/" target="_blank">http://cosmion.net/jeroen/software/brill_pos/</a></p>
+<p>The accuracy of the Dutch tagger is reported around 92%, but the score for the implementation in Pattern may vary slightly from Geertzen's results, since the original WOTAN tagset is mapped to <a href="/mbsp-tags">Penn Treebank</a>. If you need to work with the original tags you can use&nbsp;<span class="inline_code">parse()</span> with an optional parameter <span class="inline_code">tagset="WOTAN"</span>.</p>
+<p>&nbsp;</p>
+<p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;"><span class="smallcaps" style="font-variant: small-caps;">Accuracy – noun &amp; verb inflection</span></p>
+<p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;">Noun pluralization and singularization is less robust&nbsp;(accuracy 80% and 91% respectively)&nbsp;than the English implementation. The lexicon for verb conjugation contains 3,700 common Dutch verbs; otherwise it will fall back to a rule-based approach with an accuracy of about 80%. The parser will combine <span class="inline_code">singularize()</span>, <span class="inline_code">conjugate()</span> and <span class="inline_code">predicative()</span>&nbsp;to do word lemmatization.</p>
+</div>
+</div></div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</body>
+</html>
