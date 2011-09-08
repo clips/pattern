@@ -19,7 +19,7 @@ template = """
 <head>
     <title>%s</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link type="text/css" rel="stylesheet" href="clips.css" />
+    <link type="text/css" rel="stylesheet" href="../clips.css" />
     <style>
         /* Small fixes because we omit the online layout.css. */
         h3 { line-height: 1.3em; }
@@ -53,14 +53,13 @@ template = """
 #--- DOWNLOAD & UPDATE -------------------------------------------------------------------------------
 
 for p in ("-", "-web", "-db", "-en", "-nl", "-search", "-vector", "-graph", "-metrics", "-shell", "stop-words", "mbsp-tags"):
+    # We include some useful pages (Penn Treebank tags, stop words) referenced in the documentation.
     if p.startswith("-"):
         p = "pattern" + p.rstrip("-")
         title = p.replace("-", ".")
-    elif p == "stop-words":
+    if p == "stop-words":
         title = "Stop words"
-    elif p == "mbsp-tags":
-        # We include a useful page from the MBSP documentation, 
-        # listing Penn Treebank tags.
+    if p == "mbsp-tags":
         title = "Penn Treebank II tag set"
     # Download the online documentation pages.
     print "Retrieving", url + p
@@ -77,20 +76,20 @@ for p in ("-", "-web", "-db", "-en", "-nl", "-search", "-vector", "-graph", "-me
     html = strip_between('<a href="http://twitter.com/share"', '</a>', html)
     # Link to local pages and images.
     # Link to online media.
-    html = html.replace('href="/pages/MBSP"', 'href="%s/MBSP"' % url)
-    html = re.sub('href="/pages/pattern-examples(.*?)"', 'href="%s\\1"' % url, html)
-    html = re.sub('href="/pages/(.*?)([#|"])', 'href="\\1.html\\2', html)
-    html = html.replace('src="/media/', 'src="g/')
-    html = html.replace('src="/sites/all/themes/clips/g/', 'src="g/')
-    html = html.replace('href="/media/', 'href="%s/media/' % url)
+    html = html.replace('href="/pages/MBSP"', 'href="%s/MBSP"' % url)                # MBSP docs (online)
+    html = re.sub('href="/pages/pattern-examples(.*?)"', 'href="%s\\1"' % url, html) # examples (online)
+    html = re.sub('href="/pages/(.*?)([#|"])', 'href="\\1.html\\2', html)            # pages (offline)
+    html = html.replace('src="/media/', 'src="../g/')                                # images (offline)
+    html = html.replace('src="/sites/all/themes/clips/g/', 'src="../g/')             # images (offline)
+    html = html.replace('href="/media/', 'href="%s/media/' % url)                    # downloads (online)
     # Apply the simplified template + set page titles.
     html = template % (p, url+p, url+p, title, html)
     # Generate offline HTML file.
-    f = codecs.open("%s.html" % p, "w", encoding="utf-8")
+    f = codecs.open(os.path.join("html", "%s.html" % p), "w", encoding="utf-8")
     f.write(html)
     f.close()
 
 # Create index.html (which simply redirects to pattern.html).
 f = open("index.html", "w")
-f.write('<meta http-equiv="refresh" content="0; url=pattern.html" />')
+f.write('<meta http-equiv="refresh" content="0; url=html/pattern.html" />')
 f.close()
