@@ -218,7 +218,7 @@ dozens of carrots a​nd a score of parrots</code></span></span></p>
 <hr />
 <h2><a name="parser"></a>Parser</h2>
 <p>The core of the <span class="inline_code">pattern.en</span> module is a rule-based shallow parser. To a machine, a text document is nothing more than a string of characters. A shallow parser adds <strong>meaning</strong> by distinguishing between abbreviation periods and sentence breaks, by adding part-of-speech tags to words (is <em>can</em> in this sentence a <span class="postag">NOUN</span> or a <span class="postag">VERB</span>?) and by grouping words that belong together (chunking).</p>
-<p>The parser uses a regular expressions-based approach, which is <strong>fast</strong> but not always accurate. The <span class="inline_code">parse()</span> command and the <span class="inline_code">Text</span>, <span class="inline_code">Sentence</span>, <span class="inline_code">Chunk</span> and <span class="inline_code">Word</span> objects (discussed in the next section) are identical to those in <a href="http://www.clips.ua.ac.be/pages//MBSP" target="_blank">MBSP</a> – a shallow parser that uses a statistical machine learning approach. It is more robust, but slower. Output from both parsers can be used in the <span class="inline_code">pattern.search</span> and <span class="inline_code">pattern.vector</span> modules.</p>
+<p>The parser uses a regular expressions-based approach, which is <strong>fast</strong> but not always accurate. The <span class="inline_code">parse()</span> command and the <span class="inline_code">Text</span>, <span class="inline_code">Sentence</span>, <span class="inline_code">Chunk</span> and <span class="inline_code">Word</span> objects (discussed in the next section) are identical to those in <a href="http://www.clips.ua.ac.be/pages/MBSP" target="_blank">MBSP</a> – a shallow parser that uses a statistical machine learning approach. It is more robust, but slower. Output from both parsers can be used in the <span class="inline_code">pattern.search</span> and <span class="inline_code">pattern.vector</span> modules.</p>
 <p>The <span class="inline_code">parse()</span> command takes a string of text and returns a tagged Unicode string. <br />Sentences in the output are separated by newline characters.</p>
 <p><span class="geshifilter"><code class="python geshifilter-python">parse<span style="">&#40;</span><span style="">string</span>, <br />
 &nbsp; &nbsp;<span style="">tokenize</span> = <span style="color: #4a587c;">True</span>, &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Separate punctuation from words?</span><br />
@@ -532,7 +532,7 @@ Synset<span style="">&#40;</span><span style="color: #657a8a;">'carnivore'</span
 <hr />
 <h2>See also</h2>
 <ul>
-<li><a href="http://www.clips.ua.ac.be/pages//MBSP" target="_blank">MBSP</a> (GPL): r<span>obust parser using a memory-based learning approach, in Python.</span></li>
+<li><a href="http://www.clips.ua.ac.be/pages/MBSP" target="_blank">MBSP</a> (GPL): r<span>obust parser using a memory-based learning approach, in Python.</span></li>
 <li><span><a href="http://www.nltk.org/" target="_blank">NLTK</a> (Apache): f</span><span>ull natural language processing toolkit for Python.</span></li>
 </ul>
 </div>

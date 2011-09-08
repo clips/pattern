@@ -34,12 +34,12 @@
 <table>
 <tbody>
 <tr>
-<td><a onclick="javascript:_gaq.push(['_trackPageview', '/downloads/pattern']);" href="http://www.clips.ua.ac.be/pages//media/pattern-2.1.zip" target="_self"><img src="../g/download.gif" alt="download" align="left" /></a></td>
-<td><strong>Pattern 2.1</strong>&nbsp;| <a onclick="javascript:_gaq.push(['_trackPageview', '/downloads/pattern']);" href="http://www.clips.ua.ac.be/pages//media/pattern-2.1.zip" target="_self">download</a> (12MB)
+<td><a onclick="javascript:_gaq.push(['_trackPageview', '/downloads/pattern']);" href="http://www.clips.ua.ac.be/media/pattern-2.1.zip" target="_self"><img src="../g/download.gif" alt="download" align="left" /></a></td>
+<td><strong>Pattern 2.1</strong>&nbsp;| <a onclick="javascript:_gaq.push(['_trackPageview', '/downloads/pattern']);" href="http://www.clips.ua.ac.be/media/pattern-2.1.zip" target="_self">download</a> (12MB)
 <ul>
 <li>Requires: Python 2.4+ on Windows | Mac | Unix</li>
 <li>Licensed under <a href="http://www.linfo.org/bsdlicense.html" target="_blank">BSD</a></li>
-<li>Latest releases: <a href="http://www.clips.ua.ac.be/pages//media/pattern-2.1.zip">2.1</a> |&nbsp;<a href="http://www.clips.ua.ac.be/pages//media/pattern-2.0.zip">2.0</a> |&nbsp;<a style="color: #1e90ff; outline-style: none !important; outline-width: initial !important; outline-color: initial !important;" href="http://www.clips.ua.ac.be/pages//media/pattern-1.9.zip">1.9</a>&nbsp;|&nbsp;<a style="color: #1e90ff; outline-style: none !important; outline-width: initial !important; outline-color: initial !important;" href="http://www.clips.ua.ac.be/pages//media/pattern-1.8.zip">1.8</a>&nbsp;|&nbsp;<a href="http://www.clips.ua.ac.be/pages//media/pattern-1.7.zip">1.7</a> |&nbsp;<a href="http://www.clips.ua.ac.be/pages//media/pattern-1.6.zip">1.6</a> |&nbsp;<a href="http://www.clips.ua.ac.be/pages//media/pattern-1.5.zip">1.5</a>&nbsp;</li>
+<li>Latest releases: <a href="http://www.clips.ua.ac.be/media/pattern-2.1.zip">2.1</a> |&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-2.0.zip">2.0</a> |&nbsp;<a style="color: #1e90ff; outline-style: none !important; outline-width: initial !important; outline-color: initial !important;" href="http://www.clips.ua.ac.be/media/pattern-1.9.zip">1.9</a>&nbsp;|&nbsp;<a style="color: #1e90ff; outline-style: none !important; outline-width: initial !important; outline-color: initial !important;" href="http://www.clips.ua.ac.be/media/pattern-1.8.zip">1.8</a>&nbsp;|&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-1.7.zip">1.7</a> |&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-1.6.zip">1.6</a> |&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-1.5.zip">1.5</a>&nbsp;</li>
 <li>Author:<br />Tom De Smedt (<em>tom at organisms.be</em>)</li>
 </ul>
 <p><span class="small"><span style="text-decoration: underline;">Reference</span>: De Smedt, T. &amp; Daelemans, W. (2011)</span>.<br /><span class="small">Pattern version 2.0, retrieved July 2011, from: http://www.clips.ua.ac.be/</span></p>
@@ -114,7 +114,7 @@
 <span style="color: #657a8a;">'Imagination is more important than knowledge. - Albert Einstein'</span><br />
 ...</code></span></span></p>
 <h3>pattern.en</h3>
-<p>Module <a href="pattern-en.html">pattern.en</a> is a natural language processing (NLP) toolkit for English. It is based on regular expressions, meaning that it is fast but on occasion also prone to incorrect results (see <span class="link-maintenance"><a href="http://www.clips.ua.ac.be/pages//MBSP" target="_blank">MBSP</a></span> for a robust approach compatible with Pattern). It has functionality for word inflection (for example: verb conjugation and noun pluralization), a Python interface to the WordNet database, and a Brill-based shallow parser. A <em>shallow parser</em> analyzes a sentence and identifies the constituents (nouns, verbs, etc.).</p>
+<p>Module <a href="pattern-en.html">pattern.en</a> is a natural language processing (NLP) toolkit for English. It is based on regular expressions, meaning that it is fast but on occasion also prone to incorrect results (see <span class="link-maintenance"><a href="http://www.clips.ua.ac.be/pages/MBSP" target="_blank">MBSP</a></span> for a robust approach compatible with Pattern). It has functionality for word inflection (for example: verb conjugation and noun pluralization), a Python interface to the WordNet database, and a Brill-based shallow parser. A <em>shallow parser</em> analyzes a sentence and identifies the constituents (nouns, verbs, etc.).</p>
 <p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, <span style="">pprint</span><br />
 <span style="">&gt;&gt;&gt;</span> s = <span style="color: #657a8a;">'The mobile web is more important than mobile apps.'</span><br />
 <span style="">&gt;&gt;&gt;</span> s = parse<span style="">&#40;</span>s, relations=<span style="color: #4a587c;">True</span>, lemmata=<span style="color: #4a587c;">True</span><span style="">&#41;</span><br />
@@ -170,7 +170,7 @@ Chunk<span style="">&#40;</span><span style="color: #657a8a;">'mobile apps/NP'</
 <li>"a good blog <em>is more</em> important than a fancy facebook page", etc.</li>
 </ul>
 <h3>pattern.graph</h3>
-<p>Module <a href="pattern-graph.html">pattern.graph</a> provides a data structure to represent relationships between <em>nodes</em> (e.g. words, concepts, entities ...) The relative importance (or <em>centrality</em>) of each node can then be calculated. Graphs can be exported as an interactive web page using the HTML <span class="inline_code">&lt;canvas&gt;</span> element (<span class="link-maintenance"><a href="http://www.clips.ua.ac.be/pages//media/pattern-graph" target="_blank">demo</a></span>).&nbsp;</p>
+<p>Module <a href="pattern-graph.html">pattern.graph</a> provides a data structure to represent relationships between <em>nodes</em> (e.g. words, concepts, entities ...) The relative importance (or <em>centrality</em>) of each node can then be calculated. Graphs can be exported as an interactive web page using the HTML <span class="inline_code">&lt;canvas&gt;</span> element (<span class="link-maintenance"><a href="http://www.clips.ua.ac.be/media/pattern-graph" target="_blank">demo</a></span>).&nbsp;</p>
 <p>The screenshot shows&nbsp;an exported graph with nodes pointing to more important nodes (data mined from Yahoo). Nodes with a lot of "traffic" are marked with a shadow (<em>money</em>, <em>football</em>, <em>life</em>), important nodes are marked in blue (<em>experience</em>, <em>I</em>, <em>nothing</em>, <em>money</em>).</p>
 <p><img class="border" src="../g/pattern_graph1.jpg" alt="" width="610" height="300" /></p>
 <p><span style="font-size: 11px;"><span style="text-decoration: underline;">Note</span>: The&nbsp;<em>nothing</em>&nbsp;result could use some extra post-processing, e.g. in:&nbsp;<em>nothing is more important than life</em>, the word&nbsp;<em>life</em>&nbsp;is important, not the word&nbsp;<em>nothing</em>.</span></p>
@@ -211,17 +211,17 @@ Chunk<span style="">&#40;</span><span style="color: #657a8a;">'mobile apps/NP'</
 <table border="0">
 <tbody>
 <tr>
-<td><a href="http://www.clips.ua.ac.be/pages/-elections"><img src="../g/pattern_example_elections.jpg" alt="" width="70" height="70" /></a></td>
+<td><a href="http://www.clips.ua.ac.be/pages/pattern-examples-elections"><img src="../g/pattern_example_elections.jpg" alt="" width="70" height="70" /></a></td>
 <td>
 <p><span class="smallcaps">Belgian elections, June 13, 2010 – Twitter opinion mining</span></p>
-<p>After the fall of the previous government, the New Flemish Alliance emerged as the plurality party with 27 seats. In the week before the elections we analyzed 7,600 tweets that mentioned the name of a Belgian politician.&nbsp;<a href="http://www.clips.ua.ac.be/pages/-elections">read more</a></p>
+<p>After the fall of the previous government, the New Flemish Alliance emerged as the plurality party with 27 seats. In the week before the elections we analyzed 7,600 tweets that mentioned the name of a Belgian politician.&nbsp;<a href="http://www.clips.ua.ac.be/pages/pattern-examples-elections">read more</a></p>
 </td>
 </tr>
 <tr>
-<td><a href="http://www.clips.ua.ac.be/pages/-100days"><img src="../g/pattern_example_100days.jpg" alt="" width="70" height="70" /></a></td>
+<td><a href="http://www.clips.ua.ac.be/pages/pattern-examples-100days"><img src="../g/pattern_example_100days.jpg" alt="" width="70" height="70" /></a></td>
 <td>
 <p><span class="smallcaps">November 2010 – March 2011, 100 days of web mining</span></p>
-<p>During a 100-day period, we collected 6,400 Google News items and 70,000 tweets with the goal of finding a correlation between important news items and personal opinions on Twitter. What we got was profanity, mostly. <a href="http://www.clips.ua.ac.be/pages/-100days">read more</a></p>
+<p>During a 100-day period, we collected 6,400 Google News items and 70,000 tweets with the goal of finding a correlation between important news items and personal opinions on Twitter. What we got was profanity, mostly. <a href="http://www.clips.ua.ac.be/pages/pattern-examples-100days">read more</a></p>
 </td>
 </tr>
 </tbody>

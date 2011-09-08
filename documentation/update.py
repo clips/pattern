@@ -76,12 +76,12 @@ for p in ("-", "-web", "-db", "-en", "-nl", "-search", "-vector", "-graph", "-me
     html = strip_between('<a href="http://twitter.com/share"', '</a>', html)
     # Link to local pages and images.
     # Link to online media.
-    html = html.replace('href="/pages/MBSP"', 'href="%s/MBSP"' % url)                # MBSP docs (online)
-    html = re.sub('href="/pages/pattern-examples(.*?)"', 'href="%s\\1"' % url, html) # examples (online)
-    html = re.sub('href="/pages/(.*?)([#|"])', 'href="\\1.html\\2', html)            # pages (offline)
-    html = html.replace('src="/media/', 'src="../g/')                                # images (offline)
-    html = html.replace('src="/sites/all/themes/clips/g/', 'src="../g/')             # images (offline)
-    html = html.replace('href="/media/', 'href="%s/media/' % url)                    # downloads (online)
+    html = html.replace('href="/pages/MBSP"', 'href="%sMBSP"' % url)                   # MBSP docs (online)
+    html = re.sub('href="/pages/(pattern-examples.*?)"', 'href="%s\\1"' % url, html)   # examples (online)
+    html = re.sub('href="/pages/(.*?)([#|"])', 'href="\\1.html\\2', html)              # pages (offline)
+    html = html.replace('src="/media/', 'src="../g/')                                  # images (offline)
+    html = html.replace('src="/sites/all/themes/clips/g/', 'src="../g/')               # images (offline)
+    html = html.replace('href="/media/', 'href="%smedia/' % url.replace("pages/", "")) # downloads (online)
     # Apply the simplified template + set page titles.
     html = template % (p, url+p, url+p, title, html)
     # Generate offline HTML file.
