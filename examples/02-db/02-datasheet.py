@@ -9,6 +9,9 @@ from pattern.db import uid, pprint
 # The Datasheet class offers a useful matrix (cfr. MS Excel) in Python code.
 # It can be saved as a CSV text file that is both human/machine readable.
 # See also: examples/01-web/03-twitter.py
+
+# A Datasheet can have headers: a (name, type)-tuple for each column.
+# In this case, imported columns will automatically map values to the defined type.
 # Supported values that are imported and exported correctly:
 # str, unicode, int, float, bool, Date, None
 # For other data types, custom encoder and decoder functions can be used.
@@ -19,7 +22,7 @@ ds = Datasheet(rows=[
     [uid(), "asparagus", "vegetable"],
     [uid(), "banana",    "fruit"],
 ], fields=[
-      ("id", INTEGER),
+      ("id", INTEGER), # Define the column headers.
     ("name", STRING),
     ("type", STRING)
 ])

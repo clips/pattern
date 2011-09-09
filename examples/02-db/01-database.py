@@ -18,9 +18,13 @@ from pattern.db import relation
 db = Database("store", type=MYSQL, user="root", password="root")
 #db._delete()
 
+# PRODUCTS
 # Create the products table if it doesn't exist yet.
+# An error will be raised if the table already exists.
 # Add sample data.
 if not "products" in db:
+    # Note: in SQLite, the STRING type is mapped to TEXT (unlimited length).
+    # In MySQL, the length matters. Smaller fields have faster lookup.
     db.create("products", fields=(
         pk(), # Auto-incremental id.
         field("description", STRING(50)),
@@ -29,8 +33,8 @@ if not "products" in db:
     db.products.append(description="pizza", price=15)
     db.products.append(description="garlic bread", price=3)
 
-# Create the customers table if it doesn't exist yet.
-# Add sample data.
+# CUSTOMERS
+# Create the customers table and add data.
 if not "customers" in db:
     db.create("customers", fields=(
         pk(),
@@ -40,14 +44,14 @@ if not "customers" in db:
     db.customers.append(name=u"Schrödinger") # Unicode is supported.
     db.customers.append(name=u"Hofstadter")
 
-# Create the orders table if it doesn't exist yet.
-# Add sample data.
+# ORDERS
+# Create the orders table if it doesn't exist yet and add data.
 if not "orders" in db:
     db.create("orders", fields=(
         pk(),
         field("product_id", INTEGER),
         field("customer_id", INTEGER),
-        field("date", DATE, default=NOW)
+        field("date", DATE, default=NOW) # By default, current date/time.
     ))
     db.orders.append(product_id=1, customer_id=2) # Hofstadter orders pizza.
 
@@ -76,3 +80,6 @@ print q.sql()
 print
 print "Invoice query XML:"
 print q.xml
+
+# The XML can be passed to Database.create() to create a new table (with data).
+# This is explained in the online documentation.
