@@ -37,7 +37,7 @@ Compact encoding::
 Pretty printing::
 
     >>> import simplejson as json
-    >>> s = json.dumps({'4': 5, '6': 7}, sort_keys=True, indent=4)
+    >>> s = json.dumps({'4': 5, '6': 7}, sort_keys=True, indent='    ')
     >>> print '\n'.join([l.rstrip() for l in  s.splitlines()])
     {
         "4": 5,
@@ -68,8 +68,8 @@ Specializing JSON object decoding::
     >>> json.loads('{"__complex__": true, "real": 1, "imag": 2}',
     ...     object_hook=as_complex)
     (1+2j)
-    >>> import decimal
-    >>> json.loads('1.1', parse_float=decimal.Decimal) == decimal.Decimal('1.1')
+    >>> from decimal import Decimal
+    >>> json.loads('1.1', parse_float=Decimal) == Decimal('1.1')
     True
 
 Specializing JSON object encoding::
@@ -97,16 +97,34 @@ Using simplejson.tool from the shell to validate and pretty-print::
     $ echo '{ 1.2:3.4}' | python -m simplejson.tool
     Expecting property name: line 1 column 2 (char 2)
 """
-__version__ = '2.0.9'
+__version__ = '2.2.1'
 __all__ = [
     'dump', 'dumps', 'load', 'loads',
-    'JSONDecoder', 'JSONEncoder',
+    'JSONDecoder', 'JSONDecodeError', 'JSONEncoder',
+    'OrderedDict',
 ]
 
 __author__ = 'Bob Ippolito <bob@redivi.com>'
 
-from decoder import JSONDecoder
+from decimal import Decimal
+
+from decoder import JSONDecoder, JSONDecodeError
 from encoder import JSONEncoder
+def _import_OrderedDict():
+    import collections
+    try:
+        return collections.OrderedDict
+    except AttributeError:
+        import ordered_dict
+        return ordered_dict.OrderedDict
+OrderedDict = _import_OrderedDict()
+
+def _import_c_make_encoder():
+    try:
+        from _speedups import make_encoder
+        return make_encoder
+    except ImportError:
+        return None
 
 _default_encoder = JSONEncoder(
     skipkeys=False,
@@ -117,11 +135,16 @@ _default_encoder = JSONEncoder(
     separators=None,
     encoding='utf-8',
     default=None,
+    use_decimal=True,
+    namedtuple_as_object=True,
+    tuple_as_array=True,
 )
 
 def dump(obj, fp, skipkeys=False, ensure_ascii=True, check_circular=True,
         allow_nan=True, cls=None, indent=None, separators=None,
-        encoding='utf-8', default=None, **kw):
+        encoding='utf-8', default=None, use_decimal=True,
+        namedtuple_as_object=True, tuple_as_array=True,
+        **kw):
     """Serialize ``obj`` as a JSON formatted stream to ``fp`` (a
     ``.write()``-supporting file-like object).
 
@@ -144,9 +167,12 @@ def dump(obj, fp, skipkeys=False, ensure_ascii=True, check_circular=True,
     in strict compliance of the JSON specification, instead of using the
     JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
 
-    If ``indent`` is a non-negative integer, then JSON array elements and object
-    members will be pretty-printed with that indent level. An indent level
-    of 0 will only insert newlines. ``None`` is the most compact representation.
+    If *indent* is a string, then JSON array elements and object members
+    will be pretty-printed with a newline followed by that string repeated
+    for each level of nesting. ``None`` (the default) selects the most compact
+    representation without any newlines. For backwards compatibility with
+    versions of simplejson earlier than 2.1.0, an integer is also accepted
+    and is converted to a string with that many spaces.
 
     If ``separators`` is an ``(item_separator, dict_separator)`` tuple
     then it will be used instead of the default ``(', ', ': ')`` separators.
@@ -157,6 +183,16 @@ def dump(obj, fp, skipkeys=False, ensure_ascii=True, check_circular=True,
     ``default(obj)`` is a function that should return a serializable version
     of obj or raise TypeError. The default simply raises TypeError.
 
+    If *use_decimal* is true (default: ``True``) then decimal.Decimal
+    will be natively serialized to JSON with full precision.
+
+    If *namedtuple_as_object* is true (default: ``True``),
+    :class:`tuple` subclasses with ``_asdict()`` methods will be encoded
+    as JSON objects.
+    
+    If *tuple_as_array* is true (default: ``True``),
+    :class:`tuple` (and subclasses) will be encoded as JSON arrays.
+
     To use a custom ``JSONEncoder`` subclass (e.g. one that overrides the
     ``.default()`` method to serialize additional types), specify it with
     the ``cls`` kwarg.
@@ -166,7 +202,8 @@ def dump(obj, fp, skipkeys=False, ensure_ascii=True, check_circular=True,
     if (not skipkeys and ensure_ascii and
         check_circular and allow_nan and
         cls is None and indent is None and separators is None and
-        encoding == 'utf-8' and default is None and not kw):
+        encoding == 'utf-8' and default is None and use_decimal
+        and namedtuple_as_object and tuple_as_array and not kw):
         iterable = _default_encoder.iterencode(obj)
     else:
         if cls is None:
@@ -174,7 +211,10 @@ def dump(obj, fp, skipkeys=False, ensure_ascii=True, check_circular=True,
         iterable = cls(skipkeys=skipkeys, ensure_ascii=ensure_ascii,
             check_circular=check_circular, allow_nan=allow_nan, indent=indent,
             separators=separators, encoding=encoding,
-            default=default, **kw).iterencode(obj)
+            default=default, use_decimal=use_decimal,
+            namedtuple_as_object=namedtuple_as_object,
+            tuple_as_array=tuple_as_array,
+            **kw).iterencode(obj)
     # could accelerate with writelines in some versions of Python, at
     # a debuggability cost
     for chunk in iterable:
@@ -183,7 +223,10 @@ def dump(obj, fp, skipkeys=False, ensure_ascii=True, check_circular=True,
 
 def dumps(obj, skipkeys=False, ensure_ascii=True, check_circular=True,
         allow_nan=True, cls=None, indent=None, separators=None,
-        encoding='utf-8', default=None, **kw):
+        encoding='utf-8', default=None, use_decimal=True,
+        namedtuple_as_object=True,
+        tuple_as_array=True,
+        **kw):
     """Serialize ``obj`` to a JSON formatted ``str``.
 
     If ``skipkeys`` is false then ``dict`` keys that are not basic types
@@ -203,10 +246,12 @@ def dumps(obj, skipkeys=False, ensure_ascii=True, check_circular=True,
     strict compliance of the JSON specification, instead of using the
     JavaScript equivalents (``NaN``, ``Infinity``, ``-Infinity``).
 
-    If ``indent`` is a non-negative integer, then JSON array elements and
-    object members will be pretty-printed with that indent level. An indent
-    level of 0 will only insert newlines. ``None`` is the most compact
-    representation.
+    If ``indent`` is a string, then JSON array elements and object members
+    will be pretty-printed with a newline followed by that string repeated
+    for each level of nesting. ``None`` (the default) selects the most compact
+    representation without any newlines. For backwards compatibility with
+    versions of simplejson earlier than 2.1.0, an integer is also accepted
+    and is converted to a string with that many spaces.
 
     If ``separators`` is an ``(item_separator, dict_separator)`` tuple
     then it will be used instead of the default ``(', ', ': ')`` separators.
@@ -217,6 +262,16 @@ def dumps(obj, skipkeys=False, ensure_ascii=True, check_circular=True,
     ``default(obj)`` is a function that should return a serializable version
     of obj or raise TypeError. The default simply raises TypeError.
 
+    If *use_decimal* is true (default: ``True``) then decimal.Decimal
+    will be natively serialized to JSON with full precision.
+
+    If *namedtuple_as_object* is true (default: ``True``),
+    :class:`tuple` subclasses with ``_asdict()`` methods will be encoded
+    as JSON objects.
+    
+    If *tuple_as_array* is true (default: ``True``),
+    :class:`tuple` (and subclasses) will be encoded as JSON arrays.
+
     To use a custom ``JSONEncoder`` subclass (e.g. one that overrides the
     ``.default()`` method to serialize additional types), specify it with
     the ``cls`` kwarg.
@@ -226,7 +281,8 @@ def dumps(obj, skipkeys=False, ensure_ascii=True, check_circular=True,
     if (not skipkeys and ensure_ascii and
         check_circular and allow_nan and
         cls is None and indent is None and separators is None and
-        encoding == 'utf-8' and default is None and not kw):
+        encoding == 'utf-8' and default is None and use_decimal
+        and namedtuple_as_object and tuple_as_array and not kw):
         return _default_encoder.encode(obj)
     if cls is None:
         cls = JSONEncoder
@@ -234,28 +290,61 @@ def dumps(obj, skipkeys=False, ensure_ascii=True, check_circular=True,
         skipkeys=skipkeys, ensure_ascii=ensure_ascii,
         check_circular=check_circular, allow_nan=allow_nan, indent=indent,
         separators=separators, encoding=encoding, default=default,
+        use_decimal=use_decimal,
+        namedtuple_as_object=namedtuple_as_object,
+        tuple_as_array=tuple_as_array,
         **kw).encode(obj)
 
 
-_default_decoder = JSONDecoder(encoding=None, object_hook=None)
+_default_decoder = JSONDecoder(encoding=None, object_hook=None,
+                               object_pairs_hook=None)
 
 
 def load(fp, encoding=None, cls=None, object_hook=None, parse_float=None,
-        parse_int=None, parse_constant=None, **kw):
+        parse_int=None, parse_constant=None, object_pairs_hook=None,
+        use_decimal=False, namedtuple_as_object=True, tuple_as_array=True,
+        **kw):
     """Deserialize ``fp`` (a ``.read()``-supporting file-like object containing
     a JSON document) to a Python object.
 
-    If the contents of ``fp`` is encoded with an ASCII based encoding other
-    than utf-8 (e.g. latin-1), then an appropriate ``encoding`` name must
-    be specified. Encodings that are not ASCII based (such as UCS-2) are
-    not allowed, and should be wrapped with
-    ``codecs.getreader(fp)(encoding)``, or simply decoded to a ``unicode``
-    object and passed to ``loads()``
+    *encoding* determines the encoding used to interpret any
+    :class:`str` objects decoded by this instance (``'utf-8'`` by
+    default).  It has no effect when decoding :class:`unicode` objects.
 
-    ``object_hook`` is an optional function that will be called with the
-    result of any object literal decode (a ``dict``). The return value of
-    ``object_hook`` will be used instead of the ``dict``. This feature
-    can be used to implement custom decoders (e.g. JSON-RPC class hinting).
+    Note that currently only encodings that are a superset of ASCII work,
+    strings of other encodings should be passed in as :class:`unicode`.
+
+    *object_hook*, if specified, will be called with the result of every
+    JSON object decoded and its return value will be used in place of the
+    given :class:`dict`.  This can be used to provide custom
+    deserializations (e.g. to support JSON-RPC class hinting).
+
+    *object_pairs_hook* is an optional function that will be called with
+    the result of any object literal decode with an ordered list of pairs.
+    The return value of *object_pairs_hook* will be used instead of the
+    :class:`dict`.  This feature can be used to implement custom decoders
+    that rely on the order that the key and value pairs are decoded (for
+    example, :func:`collections.OrderedDict` will remember the order of
+    insertion). If *object_hook* is also defined, the *object_pairs_hook*
+    takes priority.
+
+    *parse_float*, if specified, will be called with the string of every
+    JSON float to be decoded.  By default, this is equivalent to
+    ``float(num_str)``. This can be used to use another datatype or parser
+    for JSON floats (e.g. :class:`decimal.Decimal`).
+
+    *parse_int*, if specified, will be called with the string of every
+    JSON int to be decoded.  By default, this is equivalent to
+    ``int(num_str)``.  This can be used to use another datatype or parser
+    for JSON integers (e.g. :class:`float`).
+
+    *parse_constant*, if specified, will be called with one of the
+    following strings: ``'-Infinity'``, ``'Infinity'``, ``'NaN'``.  This
+    can be used to raise an exception if invalid JSON numbers are
+    encountered.
+
+    If *use_decimal* is true (default: ``False``) then it implies
+    parse_float=decimal.Decimal for parity with ``dump``.
 
     To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``
     kwarg.
@@ -264,38 +353,54 @@ def load(fp, encoding=None, cls=None, object_hook=None, parse_float=None,
     return loads(fp.read(),
         encoding=encoding, cls=cls, object_hook=object_hook,
         parse_float=parse_float, parse_int=parse_int,
-        parse_constant=parse_constant, **kw)
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook,
+        use_decimal=use_decimal, **kw)
 
 
 def loads(s, encoding=None, cls=None, object_hook=None, parse_float=None,
-        parse_int=None, parse_constant=None, **kw):
+        parse_int=None, parse_constant=None, object_pairs_hook=None,
+        use_decimal=False, **kw):
     """Deserialize ``s`` (a ``str`` or ``unicode`` instance containing a JSON
     document) to a Python object.
 
-    If ``s`` is a ``str`` instance and is encoded with an ASCII based encoding
-    other than utf-8 (e.g. latin-1) then an appropriate ``encoding`` name
-    must be specified. Encodings that are not ASCII based (such as UCS-2)
-    are not allowed and should be decoded to ``unicode`` first.
+    *encoding* determines the encoding used to interpret any
+    :class:`str` objects decoded by this instance (``'utf-8'`` by
+    default).  It has no effect when decoding :class:`unicode` objects.
 
-    ``object_hook`` is an optional function that will be called with the
-    result of any object literal decode (a ``dict``). The return value of
-    ``object_hook`` will be used instead of the ``dict``. This feature
-    can be used to implement custom decoders (e.g. JSON-RPC class hinting).
+    Note that currently only encodings that are a superset of ASCII work,
+    strings of other encodings should be passed in as :class:`unicode`.
 
-    ``parse_float``, if specified, will be called with the string
-    of every JSON float to be decoded. By default this is equivalent to
-    float(num_str). This can be used to use another datatype or parser
-    for JSON floats (e.g. decimal.Decimal).
+    *object_hook*, if specified, will be called with the result of every
+    JSON object decoded and its return value will be used in place of the
+    given :class:`dict`.  This can be used to provide custom
+    deserializations (e.g. to support JSON-RPC class hinting).
 
-    ``parse_int``, if specified, will be called with the string
-    of every JSON int to be decoded. By default this is equivalent to
-    int(num_str). This can be used to use another datatype or parser
-    for JSON integers (e.g. float).
+    *object_pairs_hook* is an optional function that will be called with
+    the result of any object literal decode with an ordered list of pairs.
+    The return value of *object_pairs_hook* will be used instead of the
+    :class:`dict`.  This feature can be used to implement custom decoders
+    that rely on the order that the key and value pairs are decoded (for
+    example, :func:`collections.OrderedDict` will remember the order of
+    insertion). If *object_hook* is also defined, the *object_pairs_hook*
+    takes priority.
 
-    ``parse_constant``, if specified, will be called with one of the
-    following strings: -Infinity, Infinity, NaN, null, true, false.
-    This can be used to raise an exception if invalid JSON numbers
-    are encountered.
+    *parse_float*, if specified, will be called with the string of every
+    JSON float to be decoded.  By default, this is equivalent to
+    ``float(num_str)``. This can be used to use another datatype or parser
+    for JSON floats (e.g. :class:`decimal.Decimal`).
+
+    *parse_int*, if specified, will be called with the string of every
+    JSON int to be decoded.  By default, this is equivalent to
+    ``int(num_str)``.  This can be used to use another datatype or parser
+    for JSON integers (e.g. :class:`float`).
+
+    *parse_constant*, if specified, will be called with one of the
+    following strings: ``'-Infinity'``, ``'Infinity'``, ``'NaN'``.  This
+    can be used to raise an exception if invalid JSON numbers are
+    encountered.
+
+    If *use_decimal* is true (default: ``False``) then it implies
+    parse_float=decimal.Decimal for parity with ``dump``.
 
     To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``
     kwarg.
@@ -303,16 +408,59 @@ def loads(s, encoding=None, cls=None, object_hook=None, parse_float=None,
     """
     if (cls is None and encoding is None and object_hook is None and
             parse_int is None and parse_float is None and
-            parse_constant is None and not kw):
+            parse_constant is None and object_pairs_hook is None
+            and not use_decimal and not kw):
         return _default_decoder.decode(s)
     if cls is None:
         cls = JSONDecoder
     if object_hook is not None:
         kw['object_hook'] = object_hook
+    if object_pairs_hook is not None:
+        kw['object_pairs_hook'] = object_pairs_hook
     if parse_float is not None:
         kw['parse_float'] = parse_float
     if parse_int is not None:
         kw['parse_int'] = parse_int
     if parse_constant is not None:
         kw['parse_constant'] = parse_constant
+    if use_decimal:
+        if parse_float is not None:
+            raise TypeError("use_decimal=True implies parse_float=Decimal")
+        kw['parse_float'] = Decimal
     return cls(encoding=encoding, **kw).decode(s)
+
+
+def _toggle_speedups(enabled):
+    import json.decoder as dec
+    import json.encoder as enc
+    import json.scanner as scan
+    c_make_encoder = _import_c_make_encoder()
+    if enabled:
+        dec.scanstring = dec.c_scanstring or dec.py_scanstring
+        enc.c_make_encoder = c_make_encoder
+        enc.encode_basestring_ascii = (enc.c_encode_basestring_ascii or 
+            enc.py_encode_basestring_ascii)
+        scan.make_scanner = scan.c_make_scanner or scan.py_make_scanner
+    else:
+        dec.scanstring = dec.py_scanstring
+        enc.c_make_encoder = None
+        enc.encode_basestring_ascii = enc.py_encode_basestring_ascii
+        scan.make_scanner = scan.py_make_scanner
+    dec.make_scanner = scan.make_scanner
+    global _default_decoder
+    _default_decoder = JSONDecoder(
+        encoding=None,
+        object_hook=None,
+        object_pairs_hook=None,
+    )
+    global _default_encoder
+    _default_encoder = JSONEncoder(
+       skipkeys=False,
+       ensure_ascii=True,
+       check_circular=True,
+       allow_nan=True,
+       indent=None,
+       separators=None,
+       encoding='utf-8',
+       default=None,
+   )

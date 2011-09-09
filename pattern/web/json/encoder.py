@@ -1,17 +1,19 @@
 """Implementation of JSONEncoder
 """
 import re
+from decimal import Decimal
 
-try:
-    from _speedups import encode_basestring_ascii as c_encode_basestring_ascii
-except ImportError:
-    c_encode_basestring_ascii = None
-try:
-    from _speedups import make_encoder as c_make_encoder
-except ImportError:
-    c_make_encoder = None
+def _import_speedups():
+    try:
+        import _speedups
+        return _speedups.encode_basestring_ascii, _speedups.make_encoder
+    except ImportError:
+        return None, None
+c_encode_basestring_ascii, c_make_encoder = _import_speedups()
 
-ESCAPE = re.compile(r'[\x00-\x1f\\"\b\f\n\r\t]')
+from decoder import PosInf
+
+ESCAPE = re.compile(ur'[\x00-\x1f\\"\b\f\n\r\t\u2028\u2029]')
 ESCAPE_ASCII = re.compile(r'([\\"]|[^\ -~])')
 HAS_UTF8 = re.compile(r'[\x80-\xff]')
 ESCAPE_DCT = {
@@ -22,22 +24,24 @@ ESCAPE_DCT = {
     '\n': '\\n',
     '\r': '\\r',
     '\t': '\\t',
+    u'\u2028': '\\u2028',
+    u'\u2029': '\\u2029',
 }
 for i in range(0x20):
     #ESCAPE_DCT.setdefault(chr(i), '\\u{0:04x}'.format(i))
     ESCAPE_DCT.setdefault(chr(i), '\\u%04x' % (i,))
 
-# Assume this produces an infinity on all machines (probably not guaranteed)
-INFINITY = float('1e66666')
 FLOAT_REPR = repr
 
 def encode_basestring(s):
     """Return a JSON representation of a Python string
 
     """
+    if isinstance(s, str) and HAS_UTF8.search(s) is not None:
+        s = s.decode('utf-8')
     def replace(match):
         return ESCAPE_DCT[match.group(0)]
-    return '"' + ESCAPE.sub(replace, s) + '"'
+    return u'"' + ESCAPE.sub(replace, s) + u'"'
 
 
 def py_encode_basestring_ascii(s):
@@ -65,7 +69,8 @@ def py_encode_basestring_ascii(s):
     return '"' + str(ESCAPE_ASCII.sub(replace, s)) + '"'
 
 
-encode_basestring_ascii = c_encode_basestring_ascii or py_encode_basestring_ascii
+encode_basestring_ascii = (
+    c_encode_basestring_ascii or py_encode_basestring_ascii)
 
 class JSONEncoder(object):
     """Extensible JSON <http://json.org> encoder for Python data structures.
@@ -75,7 +80,7 @@ class JSONEncoder(object):
     +-------------------+---------------+
     | Python            | JSON          |
     +===================+===============+
-    | dict              | object        |
+    | dict, namedtuple  | object        |
     +-------------------+---------------+
     | list, tuple       | array         |
     +-------------------+---------------+
@@ -100,7 +105,9 @@ class JSONEncoder(object):
     key_separator = ': '
     def __init__(self, skipkeys=False, ensure_ascii=True,
             check_circular=True, allow_nan=True, sort_keys=False,
-            indent=None, separators=None, encoding='utf-8', default=None):
+            indent=None, separators=None, encoding='utf-8', default=None,
+            use_decimal=True, namedtuple_as_object=True,
+            tuple_as_array=True):
         """Constructor for JSONEncoder, with sensible defaults.
 
         If skipkeys is false, then it is a TypeError to attempt
@@ -125,10 +132,12 @@ class JSONEncoder(object):
         sorted by key; this is useful for regression tests to ensure
         that JSON serializations can be compared on a day-to-day basis.
 
-        If indent is a non-negative integer, then JSON array
-        elements and object members will be pretty-printed with that
-        indent level.  An indent level of 0 will only insert newlines.
-        None is the most compact representation.
+        If indent is a string, then JSON array elements and object members
+        will be pretty-printed with a newline followed by that string repeated
+        for each level of nesting. ``None`` (the default) selects the most compact
+        representation without any newlines. For backwards compatibility with
+        versions of simplejson earlier than 2.1.0, an integer is also accepted
+        and is converted to a string with that many spaces.
 
         If specified, separators should be a (item_separator, key_separator)
         tuple.  The default is (', ', ': ').  To get the most compact JSON
@@ -142,6 +151,15 @@ class JSONEncoder(object):
         transformed into unicode using that encoding prior to JSON-encoding.
         The default is UTF-8.
 
+        If use_decimal is true (not the default), ``decimal.Decimal`` will
+        be supported directly by the encoder. For the inverse, decode JSON
+        with ``parse_float=decimal.Decimal``.
+
+        If namedtuple_as_object is true (the default), tuple subclasses with
+        ``_asdict()`` methods will be encoded as JSON objects.
+        
+        If tuple_as_array is true (the default), tuple (and subclasses) will
+        be encoded as JSON arrays.
         """
 
         self.skipkeys = skipkeys
@@ -149,9 +167,16 @@ class JSONEncoder(object):
         self.check_circular = check_circular
         self.allow_nan = allow_nan
         self.sort_keys = sort_keys
+        self.use_decimal = use_decimal
+        self.namedtuple_as_object = namedtuple_as_object
+        self.tuple_as_array = tuple_as_array
+        if isinstance(indent, (int, long)):
+            indent = ' ' * indent
         self.indent = indent
         if separators is not None:
             self.item_separator, self.key_separator = separators
+        elif indent is not None:
+            self.item_separator = ','
         if default is not None:
             self.default = default
         self.encoding = encoding
@@ -179,6 +204,7 @@ class JSONEncoder(object):
     def encode(self, o):
         """Return a JSON string representation of a Python data structure.
 
+        >>> from simplejson import JSONEncoder
         >>> JSONEncoder().encode({"foo": ["bar", "baz"]})
         '{"foo": ["bar", "baz"]}'
 
@@ -200,7 +226,10 @@ class JSONEncoder(object):
         chunks = self.iterencode(o, _one_shot=True)
         if not isinstance(chunks, (list, tuple)):
             chunks = list(chunks)
-        return ''.join(chunks)
+        if self.ensure_ascii:
+            return ''.join(chunks)
+        else:
+            return u''.join(chunks)
 
     def iterencode(self, o, _one_shot=False):
         """Encode the given object and yield each string
@@ -226,9 +255,11 @@ class JSONEncoder(object):
                     o = o.decode(_encoding)
                 return _orig_encoder(o)
 
-        def floatstr(o, allow_nan=self.allow_nan, _repr=FLOAT_REPR, _inf=INFINITY, _neginf=-INFINITY):
-            # Check for specials.  Note that this type of test is processor- and/or
-            # platform-specific, so do tests which don't depend on the internals.
+        def floatstr(o, allow_nan=self.allow_nan,
+                _repr=FLOAT_REPR, _inf=PosInf, _neginf=-PosInf):
+            # Check for specials. Note that this type of test is processor
+            # and/or platform-specific, so do tests which don't depend on
+            # the internals.
 
             if o != o:
                 text = 'NaN'
@@ -247,24 +278,62 @@ class JSONEncoder(object):
             return text
 
 
-        if _one_shot and c_make_encoder is not None and not self.indent and not self.sort_keys:
+        key_memo = {}
+        if (_one_shot and c_make_encoder is not None
+                and self.indent is None):
             _iterencode = c_make_encoder(
                 markers, self.default, _encoder, self.indent,
                 self.key_separator, self.item_separator, self.sort_keys,
-                self.skipkeys, self.allow_nan)
+                self.skipkeys, self.allow_nan, key_memo, self.use_decimal,
+                self.namedtuple_as_object, self.tuple_as_array)
         else:
             _iterencode = _make_iterencode(
                 markers, self.default, _encoder, self.indent, floatstr,
                 self.key_separator, self.item_separator, self.sort_keys,
-                self.skipkeys, _one_shot)
-        return _iterencode(o, 0)
+                self.skipkeys, _one_shot, self.use_decimal,
+                self.namedtuple_as_object, self.tuple_as_array)
+        try:
+            return _iterencode(o, 0)
+        finally:
+            key_memo.clear()
 
-def _make_iterencode(markers, _default, _encoder, _indent, _floatstr, _key_separator, _item_separator, _sort_keys, _skipkeys, _one_shot,
+
+class JSONEncoderForHTML(JSONEncoder):
+    """An encoder that produces JSON safe to embed in HTML.
+
+    To embed JSON content in, say, a script tag on a web page, the
+    characters &, < and > should be escaped. They cannot be escaped
+    with the usual entities (e.g. &amp;) because they are not expanded
+    within <script> tags.
+    """
+
+    def encode(self, o):
+        # Override JSONEncoder.encode because it has hacks for
+        # performance that make things more complicated.
+        chunks = self.iterencode(o, True)
+        if self.ensure_ascii:
+            return ''.join(chunks)
+        else:
+            return u''.join(chunks)
+
+    def iterencode(self, o, _one_shot=False):
+        chunks = super(JSONEncoderForHTML, self).iterencode(o, _one_shot)
+        for chunk in chunks:
+            chunk = chunk.replace('&', '\\u0026')
+            chunk = chunk.replace('<', '\\u003c')
+            chunk = chunk.replace('>', '\\u003e')
+            yield chunk
+
+
+def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
+        _key_separator, _item_separator, _sort_keys, _skipkeys, _one_shot,
+        _use_decimal, _namedtuple_as_object, _tuple_as_array,
         ## HACK: hand-optimized bytecode; turn globals into locals
         False=False,
         True=True,
         ValueError=ValueError,
         basestring=basestring,
+        Decimal=Decimal,
         dict=dict,
         float=float,
         id=id,
@@ -288,7 +357,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr, _key_separ
         buf = '['
         if _indent is not None:
             _current_indent_level += 1
-            newline_indent = '\n' + (' ' * (_indent * _current_indent_level))
+            newline_indent = '\n' + (_indent * _current_indent_level)
             separator = _item_separator + newline_indent
             buf += newline_indent
         else:
@@ -312,9 +381,17 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr, _key_separ
                 yield buf + str(value)
             elif isinstance(value, float):
                 yield buf + _floatstr(value)
+            elif _use_decimal and isinstance(value, Decimal):
+                yield buf + str(value)
             else:
                 yield buf
-                if isinstance(value, (list, tuple)):
+                if isinstance(value, list):
+                    chunks = _iterencode_list(value, _current_indent_level)
+                elif (_namedtuple_as_object and isinstance(value, tuple) and
+                        hasattr(value, '_asdict')):
+                    chunks = _iterencode_dict(value._asdict(),
+                                              _current_indent_level)
+                elif _tuple_as_array and isinstance(value, tuple):
                     chunks = _iterencode_list(value, _current_indent_level)
                 elif isinstance(value, dict):
                     chunks = _iterencode_dict(value, _current_indent_level)
@@ -324,7 +401,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr, _key_separ
                     yield chunk
         if newline_indent is not None:
             _current_indent_level -= 1
-            yield '\n' + (' ' * (_indent * _current_indent_level))
+            yield '\n' + (_indent * _current_indent_level)
         yield ']'
         if markers is not None:
             del markers[markerid]
@@ -341,7 +418,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr, _key_separ
         yield '{'
         if _indent is not None:
             _current_indent_level += 1
-            newline_indent = '\n' + (' ' * (_indent * _current_indent_level))
+            newline_indent = '\n' + (_indent * _current_indent_level)
             item_separator = _item_separator + newline_indent
             yield newline_indent
         else:
@@ -390,8 +467,16 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr, _key_separ
                 yield str(value)
             elif isinstance(value, float):
                 yield _floatstr(value)
+            elif _use_decimal and isinstance(value, Decimal):
+                yield str(value)
             else:
-                if isinstance(value, (list, tuple)):
+                if isinstance(value, list):
+                    chunks = _iterencode_list(value, _current_indent_level)
+                elif (_namedtuple_as_object and isinstance(value, tuple) and
+                        hasattr(value, '_asdict')):
+                    chunks = _iterencode_dict(value._asdict(),
+                                              _current_indent_level)
+                elif _tuple_as_array and isinstance(value, tuple):
                     chunks = _iterencode_list(value, _current_indent_level)
                 elif isinstance(value, dict):
                     chunks = _iterencode_dict(value, _current_indent_level)
@@ -401,7 +486,7 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr, _key_separ
                     yield chunk
         if newline_indent is not None:
             _current_indent_level -= 1
-            yield '\n' + (' ' * (_indent * _current_indent_level))
+            yield '\n' + (_indent * _current_indent_level)
         yield '}'
         if markers is not None:
             del markers[markerid]
@@ -419,12 +504,21 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr, _key_separ
             yield str(o)
         elif isinstance(o, float):
             yield _floatstr(o)
-        elif isinstance(o, (list, tuple)):
+        elif isinstance(o, list):
+            for chunk in _iterencode_list(o, _current_indent_level):
+                yield chunk
+        elif (_namedtuple_as_object and isinstance(o, tuple) and
+                hasattr(o, '_asdict')):
+            for chunk in _iterencode_dict(o._asdict(), _current_indent_level):
+                yield chunk
+        elif (_tuple_as_array and isinstance(o, tuple)):
             for chunk in _iterencode_list(o, _current_indent_level):
                 yield chunk
         elif isinstance(o, dict):
             for chunk in _iterencode_dict(o, _current_indent_level):
                 yield chunk
+        elif _use_decimal and isinstance(o, Decimal):
+            yield str(o)
         else:
             if markers is not None:
                 markerid = id(o)
