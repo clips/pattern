@@ -24,7 +24,7 @@ template = """
         /* Small fixes because we omit the online layout.css. */
         h3 { line-height: 1.3em; }
         #page { margin-left: auto; margin-right: auto; }
-        #header, #header-inner { height: 75px; }
+        #header, #header-inner { height: 175px; }
         #header { border-bottom: 1px solid #C6D4DD;  }
         table { border-collapse: collapse; }
     </style>
@@ -39,6 +39,7 @@ template = """
         <div class="node-inner">
         <div class="breadcrumb">View online at: <a href="%s" class="noexternal" target="_blank">%s</a></div>
         <h1>%s</h1>
+        <!-- Parsed from the online documentation. -->
         %s
         </div>
     </div>
