@@ -514,6 +514,9 @@ ORANGE, WEKA = "orange", "weka"
 # LSA reduction methods:
 NORM, TOP300 = "norm", "top300"
 
+# Feature selection methods:
+KLD = "kullback-leibler"
+
 # Clustering methods:
 KMEANS, HIERARCHICAL, ALL = "k-means", "hierarchical", "all"
 
@@ -873,9 +876,9 @@ class Corpus(object):
             self._divergence[(word2, word1)] = (kl1 + kl2) / 2 
         return self._divergence[(word1, word2)]
     
-    relative_entropy = kl = kullback_leibler_divergence
+    relative_entropy = kl = kld = kullback_leibler_divergence
     
-    def feature_selection(self, top=100, verbose=False):
+    def feature_selection(self, top=100, method=KLD, verbose=False):
         """ Returns the top most distinct (or "original") features (terms), using Kullback-Leibler divergence.
             This is a subset of Corpus.terms that can be used to build a Classifier
             that is faster (less features = less matrix columns) but quite efficient.
