@@ -504,7 +504,7 @@ class Graph(dict):
     
     def _add_node_copy(self, n, **kwargs):
         # Magical fairy dust to copy subclasses of Node.
-        # We assumed that the subclass constructor takes an optional "text" parameter
+        # We assume that the subclass constructor takes an optional "text" parameter
         # (Text objects in NodeBox for OpenGL's implementation are expensive).
         new = self.add_node(n.id, text=False, root=kwargs.get("root",False))
         new.__class__ = n.__class__
@@ -1176,8 +1176,8 @@ class HTMLCanvasRenderer:
             if n.id in self.css:
                 p.append("css:\"%s\"" % self.css[n.id])
             s.append("\t\"%s\": {%s},\n" % (self._escape(n.id), ", ".join(p)))
-        s[-1] = s[-1].rstrip(", ") # Trailing comma breaks in IE.
-        s.append("};\n")
+        s[-1] = s[-1].rstrip(",\n") # Trailing comma breaks in IE.
+        s.append("\n};\n")
         s.append("var e = [")
         if len(self.graph.edges) > 0:
             s.append("\n")
@@ -1196,8 +1196,8 @@ class HTMLCanvasRenderer:
             if e.strokewidth != self.default["strokewidth"]:
                 p.append("strokewidth:%.2f" % e.strokewidth)      # 0.5
             s.append("\t[\"%s\", \"%s\", {%s}],\n" % (id1, id2, ", ".join(p)))
-        s[-1] = s[-1].rstrip(", ") # Trailing comma breaks in IE.
-        s.append("];\n")
+        s[-1] = s[-1].rstrip(",\n") # Trailing comma breaks in IE.
+        s.append("\n];\n")
         # Append the nodes to graph g.
         s.append("for (var id in n) {\n"
                     "\tg.addNode(id, n[id]);\n"
