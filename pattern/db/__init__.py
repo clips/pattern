@@ -1432,7 +1432,7 @@ class CSV(list):
             fields = []
         if not fields:
             # Cast fields using the given decoder (by default, all strings).
-            data = [[decoder(v) for v in row] for row in data]
+            data = [[decoder(decode_utf8(v)) for v in row] for row in data]
         else:
             # Cast fields to their defined field type (STRING, INTEGER, ...)
             for i, row in enumerate(data):
@@ -1453,7 +1453,7 @@ class CSV(list):
                     elif type == BLOB:
                         row[j] = v
                     else:
-                        row[j] = decoder(v)
+                        row[j] = decoder(decode_utf8(v))
         return self(rows=data, fields=fields)
 
 #--- DATASHEET ----------------------------------------------------------------------------------------
