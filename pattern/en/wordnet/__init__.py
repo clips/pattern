@@ -80,16 +80,18 @@ def synsets(word, pos=NOUN):
     """ Returns a list of Synset objects, one for each word sense.
         Each word can be understood in different "senses", each of which is a set of synonyms (=Synset).
     """
-    word = normalize(word)
+    word, pos = normalize(word), pos.lower()
     try:
-        if pos == NOUN:
+        if pos.startswith(NOUN.lower()): # "NNS" or "nn" will also pass. 
             w = wn.N[word]
-        elif pos == VERB:
+        elif pos.startswith(VERB.lower()):
             w = wn.V[word]
-        elif pos == ADJECTIVE:
+        elif pos.startswith(ADJECTIVE.lower()):
             w = wn.ADJ[word]
-        elif pos == ADVERB:
+        elif pos.startswith(ADVERB.lower()):
             w = wn.ADV[word]
+        else:
+            raise TypeError, "part-of-speech must be NOUN, VERB, ADJECTIVE or ADVERB, not %s" % repr(pos)
         return [Synset(s.synset) for i, s in enumerate(w)]
     except KeyError:
         return []
