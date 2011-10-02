@@ -184,7 +184,7 @@ class Word:
             elif tag == ANCHOR and ch:
                 tags[i] = ch.anchor_id or OUTSIDE
             elif tag == LEMMA:
-                tags[i] = encode_entities(self.lemma)
+                tags[i] = encode_entities(self.lemma or "")
             elif tag in self.custom_tags:
                 tags[i] = self.custom_tags.get(tag) or OUTSIDE
         return tags
