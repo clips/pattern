@@ -8,10 +8,7 @@ function attachEvent(element, name, f) {
     /* Cross-browser attachEvent().
      * Ensures that "this" inside the function f refers to the given element .
      */
-    element["_"+name] = f;
-    element[name] = function() { 
-        element["_"+name](window.event); // "this" in IE.
-    }
+    element[name] = function() { return f.apply(parent, arguments); }
     if (element.addEventListener) {
         element.addEventListener(name, f, false);
     } else if (element.attachEvent) {
@@ -34,29 +31,34 @@ document.write("<link rel='stylesheet' href='"+_path+"editor.css' />");
 
 var _SYSTEM = 
     "window|alert|console";
-var _MATH = 
+var _MATH =
     "abs|acos|asin|atan|ceil|cos|degrees|exp|floor|log|max|min|pow|radians|random|round|sin|sqrt|tan|PI";
+var _ARRAY =
+    "choice|enumerate|filter|find|map|range|shuffle|sorted|sum";
 var _ATTRIBUTE = [
-    "element|frame|mouse|parent",
-    "mouse|x|y|relative_x|relative_y|width|height",
+    "parent|element|width|height|frame|fps|dt|variables",
+    "mouse|x|y|relative_x|relativeX|relativeY|relative_y",
     "r|g|b|a",
     "id|className|src|href|style"].join("|");
-var _PYTHON = 
-    "len|sum|choice|shuffle|enumerate|range";
 var _NODEBOX = [
     "__Class__",
     "geometry|angle|distance|coordinates|reflect|lerp|smoothstep",
-    "line_line_intersection|point_in_polygon",
+    "lineIntersection|pointInPolygon",
     "Color|color",
     "Gradient|gradient",
     "background|fill|strokewidth|stroke|nofill|nostroke|shadow|noshadow", 
+    "strokeWidth|noFill|noStroke|noShadow",
     "darker|lighter|darken|lighten|complement|analog",
-    "imagesize|image|Image|Pixels|pixels",
+    "imagesize|imageSize|image|Image|Pixels|pixels",
     "fontsize|fontweight|font|lineheight",
+    "fontSize|fontWeight|lineHeight",
     "textmetrics|textwidth|textheight|text",
+    "textMetrics|textWidth|textHeight",
     "PathElement|BezierPath", 
     "drawpath|beginpath|moveto|lineto|curveto|closepath|endpath|autoclosepath",
-    "beginclip|endclip", 
+    "drawPath|beginPath|moveTo|lineTo|curveTo|closePath|endPath|autoClosePath",
+    "beginclip|endclip",
+    "beginClip|endClip", 
     "AffineTransform|Transform|Point|push|pop|translate|rotate|scale|reset",
     "line|rect|triangle|ellipse|oval|arrow|star", 
     "Mouse|Canvas|canvas|_ctx|size|print|widget|random|grid"].join("|");
@@ -91,16 +93,16 @@ function Editor(element) {
         "token": ["Math", "text", "math"],
         "regex": "(Math)(\\.)("+_MATH+")"
     });
+    // Syntax highlighting for Array functions.
+    syntax.$rules.start.splice(0, 0, {
+        "token": ["Array", "text", "array"],
+        "regex": "(Array)(\\.)("+_ARRAY+")"
+    });
     // Syntax highlighting for attributes.
     syntax.$rules.start.splice(0, 0, {
         "token": ["text", "attribute", "text"],
         "regex": "(\\.)("+_ATTRIBUTE+")("+punctuation+")",
          "next": "attribute"
-    });
-    //Syntax highlighting for Pythonic functions.
-    syntax.$rules.start.splice(0, 0, {
-        "token": ["python", "text"],
-        "regex": "("+_PYTHON+")(\\()"
     });
     // Syntax highlighting for NodeBox keywords.
     syntax.$rules.start.splice(0, 0, {
@@ -203,6 +205,5 @@ function resizable(element, handle, callback) {
     // Stop drag.
     attachEvent(window, "mouseup", function(e) {
         window._drag = null;
-        
     });
 }

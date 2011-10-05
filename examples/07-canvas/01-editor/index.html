@@ -188,8 +188,8 @@ function draw(canvas) {
 	p.curveto(100, 150, 300, 250, 250, 300);
 	drawpath(p);
 	// Calculate points along the point and draw circles at their location.
-	// The enumerate() command takes an array and a function(index, value).
-	enumerate(p.points(10), function(i, pt) { 
+	// The Array.enumerate() function takes an array and a function(index, value).
+	Array.enumerate(p.points(10), function(i, pt) { 
 		ellipse(pt.x, pt.y, 4, 4, {fill: color(1,0,0)}); 
 	});
 	// Each frame, rotate the blurred image a little more:
