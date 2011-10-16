@@ -30,21 +30,18 @@
 .editor .ace_system {
     text-decoration: underline;
 }
-.editor .ace_Math, .editor .ace_Array { 
+.editor .ace_predefined_object {
     color: rgb(110,120,220); 
 }
-.editor .ace_math, .editor .ace_array { 
+.editor .ace_predefined_function { 
     color: rgb(60,75,115); 
 }
-.editor .ace_attribute { 
+.editor .ace_predefined_attribute { 
     color: rgb(20,155,30); 
-}
-.editor .ace_python {
-    color: rgb(65,80,115); 
 }
 .editor .ace_nodebox { 
     color: rgb(0,75,150); 
 }
-.editor .ace_filter{ 
+.editor .ace_nodebox_filter{ 
     color: rgb(75,0,150); 
 }

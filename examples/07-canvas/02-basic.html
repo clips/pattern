@@ -1,23 +1,26 @@
 <!doctype html>
 <html>
 <head>
-	<title>pattern.graph.canvas</title>
+	<title>canvas.js</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<!--[if lte IE 8]><script type="text/javascript" src="../../pattern/graph/js/excanvas.js"></script><![endif]-->
-	<script type="text/javascript" src="../../pattern/graph/js/canvas.js"></script>
+	<script type="text/javascript" src="../../pattern/canvas.js"></script>
 	<script>
 		function setup(canvas) {
-			// Executed once, before the animation starts.
+			// The setup() function is executed once, before the animation starts.
+			// This is a good place to load images, or set the canvas size.
 			canvas.size(500, 500);
 		}
 		function draw(canvas) {
-			// Executed each animation frame.
+			// The draw() function is executed each animation frame.
+			// Call canvas.clear() to remove the previous frame.
 			canvas.clear();
 			translate(250, 250);
 			rotate(canvas.frame);
 			rect(-150, -150, 300, 300, {fill: color(1,0,0,1)});
 		}
 		window.onload = function() {
+			// Attach setup() and draw() to the <canvas> and start the animation.
 			canvas = new Canvas($("canvas"));
 			canvas.setup = setup;
 			canvas.draw = draw;

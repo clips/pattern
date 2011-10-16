@@ -1,13 +1,17 @@
 <!doctype html>
 <html>
 <head>
-	<title>pattern.graph.canvas</title>
+	<title>canvas.js</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<script type="text/javascript" src="../../pattern/graph/js/canvas.js"></script>
+	<script type="text/javascript" src="../../pattern/canvas.js"></script>
 </head>
 <body>
 	<script type="text/canvas">
-		// A 500 x 500 <canvas> is automatically generated for <script type="text/canvas">.
+		// For a <script type="text/canvas">, a 500 x 500 <canvas> is automatically generated.
+		// It is inserted in the document right before the <script> element.
+		// Variations include:
+		// <script type="text/canvas" canvas="[id]">
+		// <script type="text/canvas" loop="false">
 		function setup(canvas) {
 			canvas.size(500, 500);
 		}

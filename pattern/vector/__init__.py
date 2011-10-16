@@ -173,7 +173,7 @@ stopwords = _stopwords = dict.fromkeys(
 
 #--- WORD COUNT --------------------------------------------------------------------------------------
 
-PUNCTUATION = "#[]():;,.!?\n\r\t\f "
+PUNCTUATION = "*#[]():;,.!?\n\r\t\f- "
 
 def words(string, filter=lambda w: w.isalpha() and len(w)>1, punctuation=PUNCTUATION, **kwargs):
     """ Returns a list of words from the given string.

@@ -35,7 +35,14 @@ Function.closure = function(parent, f) {
     /* Returns the function f, where "this" inside the function refers to the given parent.
      */
     return function() { return f.apply(parent, arguments); };
-}
+};
+
+window.width = function() {
+    return (window.innerWidth !== undefined)? window.innerWidth : document.documentElement.clientWidth;
+};
+window.height = function() {
+    return (window.innerHeight !== undefined)? window.innerHeight : document.documentElement.clientHeight;
+};
 
 /*##################################################################################################*/
 // Custom Array functions.
@@ -62,7 +69,7 @@ Array.min = function(array) {
     return Math.min.apply(Math, array);
 };
 Array.sum = function(array) {
-    for (var i=0, sum=0; i < array.length; sum+=array[i++]); return sum;
+    for (var i=0, sum=0; i < array.length; sum+=array[i++]){}; return sum;
 };
 
 Array.find = function(array) {
@@ -206,6 +213,10 @@ Math.degrees = function(radians) {
 
 Math.radians = function(degrees) {
     return degrees / 180 * Math.PI;
+}
+
+Math.clamp = function(value, min, max) {
+    return Math.max(min, Math.min(value, max));
 }
 
 var Point = Class.extend({
@@ -364,6 +375,46 @@ var Geometry = Class.extend({
              */
             return Math.max(this.x, b.x) < Math.min(this.x + this.width, b.x + b.width)
                 && Math.max(this.y, b.y) < Math.min(this.y + this.height, b.y + b.height);
+        },
+        
+        intersection: function(b) {
+            /* Returns bounds that encompass the intersection of the two.
+             * If there is no overlap between the two, null is returned.
+             */
+            if (!this.intersects(b)) {
+                return null;
+            }
+            var mx = Math.max(this.x, b.x);
+            var my = Math.max(this.y, b.y);
+            return new Bounds(mx, my, 
+                Math.min(this.x + this.width, b.x+b.width) - mx, 
+                Math.min(this.y + this.height, b.y+b.height) - my
+            );
+        },
+
+        union: function(b) {
+            /* Returns bounds that encompass the union of the two.
+             */
+            var mx = Math.min(this.x, b.x);
+            var my = Math.min(this.y, b.y);
+            return new Bounds(mx, my, 
+                Math.max(this.x + this.width, b.x+b.width) - mx, 
+                Math.max(this.y + this.height, b.y+b.height) - my
+            );
+        },
+        
+        contains: function(pt) {
+            /* Returns True if the given point or rectangle falls within the bounds.
+             */
+            if (pt instanceof Point) {
+                return pt.x >= this.x && pt.x <= this.x + this.width
+                    && pt.y >= this.y && pt.y <= this.y + this.height                
+            }
+            if (pt instanceof Bounds) {
+                return pt.x >= this.x && pt.x + pt.width <= this.x + this.width
+                    && pt.y >= this.y && pt.y + pt.height <= this.y + this.height
+            }
+            
         }
     })
 });
@@ -376,7 +427,7 @@ var geometry = new Geometry();
 
 var RGB = "RGB";
 var HSB = "HSB";
-var HEX = "HEX"
+var HEX = "HEX";
 
 var Color = Class.extend({
 
@@ -877,7 +928,7 @@ var AffineTransform = Transform = Class.extend({
     },
     
     inverse: function() {
-        var m = self.copy(); m.invert(); return m;
+        var m = this.copy(); m.invert(); return m;
     },
     
     identity: function() {
@@ -1842,7 +1893,9 @@ var Pixels = Class.extend({
     
     init: function(img) {
         /* An array of RGBA color values (0-255) for each pixel in the given image.
+         * Pixels.update() must be called to reflect any changes to Pixels.array.
          * The Pixels object can be passed to the image() command.
+         * The original image will not be modified.
          */
         img = (img instanceof Image)? img : new Image(img);
         this._img = img;
@@ -1893,12 +1946,11 @@ var Pixels = Class.extend({
         /* Pixels.update() must be called to refresh the image.
          */
         this._ctx.putImageData(this._data, 0, 0);
-        this._img._img = _imageCache.load(this._element);
+        this._img = new Image(this._element);
     },
     
     image: function() {
-        this.update();
-        return new Image(this);
+        return this._img;
     }
 });
 
@@ -2512,6 +2564,68 @@ function blur(img, amount) {
         }
     }
     return buffer.render();
+}
+
+// function adjust(img, {hue:0, saturation:1.0, brightness:1.0, contrast:1.0})
+function adjust(img, options) {
+    /* Applies color adjustment filters to the image and returns the adjusted image.
+     *  - hue        : the shift in hue (1.0 is 360 degrees on the color wheel).
+     *  - saturation : the intensity of the colors (0.0 is a grayscale image).
+     *  - brightness : the overall lightness or darkness (0.0 is a black image).
+     *  - contrast   : the difference in brightness between regions.
+     */
+    var pixels = new Pixels(img);
+    var adjust_hue = function(pixels, m) {
+        pixels.map(function(p) {
+            var hsb = _rgb2hsb(p[0]/255, p[1]/255, p[2]/255);
+            var rgb = _hsb2rgb(Math.clamp((hsb[0] + m) % 1, 0, 1), hsb[1], hsb[2]);
+            return [rgb[0]*255, rgb[1]*255, rgb[2]*255, p[3]]; 
+        });
+    }
+    var adjust_saturation = function(pixels, m) {
+        pixels.map(function(p) {
+            var i = (0.3*p[0] + 0.59*p[1] + 0.11*p[2]) * (1-m); 
+            return [p[0]*m + i, p[1]*m + i, p[2]*m + i, p[3]]; 
+        });
+    }
+    var adjust_brightness = function(pixels, m) {
+        pixels.map(function(p) {
+            return [p[0] + m, p[1] + m, p[2] + m, p[3]]; 
+        });
+    }
+    var kernelt_contrast = function(pixels, m) {
+        pixels.map(function(p) {
+            return [(p[0]-128)*m + 128, (p[1]-128)*m + 128, (p[2]-128)*m + 128, p[3]]; 
+        });
+    }
+    var o = options || {};
+    if (o.hue !== undefined)
+        adjust_hue(pixels, o.hue);
+    if (o.saturation !== undefined && o.saturation != 1)
+        adjust_saturation(pixels, o.saturation);
+    if (o.brightness !== undefined && o.brightness != 1)
+        adjust_brightness(pixels, 255 * (o.brightness-1));
+    if (o.contrast !== undefined && o.contrast != 1)
+        adjust_contrast(pixels, o.contrast);
+    pixels.update();
+    return pixels.image();
+}
+
+function desaturate(img) {
+    /* Returns a grayscale version of the image.
+     */
+    return adjust(img, {saturation:0});
+}
+
+function invert(img) {
+    /* Returns an image with inverted colors (e.g. white becomes black).
+     */
+    var pixels = new Pixels(img);
+    pixels.map(function(p) {
+        return [255-p[0], 255-p[1], 255-p[2], p[3]];
+    });
+    pixels.update();
+    return pixels.image();
 }
 
 /*##################################################################################################*/

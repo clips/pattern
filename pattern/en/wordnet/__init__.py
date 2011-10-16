@@ -258,7 +258,9 @@ class Synset:
         
     @property
     def weight(self):
-        return sentiment.weight(self)
+        return sentiwordnet is not None \
+           and sentiwordnet.synset(self.id, self.pos)[:2] \
+            or None
 
 def similarity(synset1, synset2):
     return synset1.similarity(synset2)
@@ -307,8 +309,7 @@ def information_content(synset):
                 IC_MAX = w
     return IC.get(synset.pos, {}).get(synset.id, 0.0)
 
-### SENTIMENT ########################################################################################
-# http://nmis.isti.cnr.it/sebastiani/Publications/LREC06.pdf
+### WORDNET3 TO WORDNET2 #############################################################################
 
 _map32_pos1 = {NN:"n", VB:"v", JJ:"a", RB:"r"}
 _map32_pos2 = {"n":NN, "v":VB, "a":JJ, "r":RB}
@@ -328,56 +329,31 @@ def map32(id, pos=NOUN):
         return int(k[1:]), _map32_pos2[k[0]]
     return None
 
-SENTIWORDNET = "SentiWordNet" 
+### SENTIWORDNET #####################################################################################
+# Import the SentiWordNet dict from pattern.en.parser.sentiment.
 
-class Sentiment(dict):
-    
-    def __init__(self):
-        """ Sentiment.weight() takes a Synset.
-            Sentiment[word] takes a plain string and yields values for the 1st sense.
-        """
-        self._index = {} # Synset.id => (positive, negative)
-    
-    def weight(self, synset):
-        """ Returns a (positive, negative, objective)-tuple of values between 0.0-1.0.
-        """
-        return self._index.get((synset.id, synset.pos), (0.0, 0.0, 1.0))
+try:
+    import sys; sys.path.append(os.path.join(MODULE, "..", "parser"))
+    import sentiment
+    if int(float(VERSION)) == 2:
+        m = map32
+    else:
+        m = lambda id, pos: (int(id.lstrip("0")), _map32_pos2[pos])
+    sentiwordnet = sentiment.SentiWordNet(map=m)
+except:
+    sentiwordnet = None
+
+class _Sentiment:
+    def __getitem__(self, w):
+        # Backwards compatibility:
+        # old code may be using pattern.en.wordnet.sentiment[word].
+        # Yields a (positive, negative, objective)-tuple.
+        v = sentiwordnet.get(w, (0.0, 1.0))
+        return v[0] < 0 and (0.0, -v[0], 1-v[1]) or (v[0], 0.0, 1-v[1])
         
-    def __getitem__(self, word):
-        return dict.get(self, normalize(word), (0.0, 0.0, 1.0))
+sentiment = _Sentiment()
 
-    def clear(self):
-        dict.clear(self); self._index.clear()
-
-    def load(self, resource=SENTIWORDNET, **kwargs):
-        if resource == SENTIWORDNET:
-            self.load_sentiwordnet()
-
-    def load_sentiwordnet(self, path=os.path.join(MODULE, "SentiWordNet*.txt"), **kwargs):
-        """ SentiWordNet is a lexical resource for opinion mining. 
-            SentiWordNet assigns three sentiment scores to each WordNet synset: 
-            positivity, negativity, objectivity.
-            It can be acquired from: http://sentiwordnet.isti.cnr.it/ (research license).
-        """
-        self.clear()
-        # SentiWordNet stores WordNet 3 id's.
-        # If we are using WordNet 2, we can map the id's using map32():
-        if float(VERSION) == 2:
-            m = map32
-        else:
-            m = lambda id, pos: (int(id.lstrip("0")), _map32_pos2[pos])
-        for s in open(glob.glob(path)[0]).readlines():
-            if not s.startswith(("#", "\t")):
-                s = s.split("\t") # pos (a/n/v/r), offset, positive, negative, senses, gloss
-                if s[2] != "0" or s[3] != "0":
-                    w1 = float(s[2]) # positive
-                    w2 = float(s[3]) # negative   
-                    k = m(s[1], pos=s[0])
-                    v = (w1, w2, 1-(w1+w2))
-                    if k is not None:
-                        self._index[k] = v
-                    for w in (w for w in s[4].split(" ") if w.endswith("#1")):
-                        self[w[:-2].replace("_", " ")] = v
-
-sentiment = Sentiment()
-#sentiment.load()
+#print sentiwordnet["industry"]
+#print sentiwordnet["horrible"]
+#print sentiwordnet.synset(synsets("horrible", pos="JJ")[0].id, pos="JJ")
+#print synsets("horrible", pos="JJ")[0].weight

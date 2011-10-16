@@ -1,10 +1,10 @@
 <!doctype html>
 <html>
 <head>
-	<title>pattern.graph.canvas</title>
+	<title>canvas.js</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<!--[if lte IE 8]><script type="text/javascript" src="../../../pattern/graph/js/excanvas.js"></script><![endif]-->
-	<script type="text/javascript" src="../../../pattern/graph/js/canvas.js"></script>
+	<script type="text/javascript" src="../../../pattern/canvas.js"></script>
 	<script type="text/javascript" src="editor/editor.js"></script>
 	<script>
 		/* This example demonstrates the use of canvas.js + ACE editor.
@@ -17,7 +17,7 @@
 			canvas = new Canvas($("canvas"));
 			editor = new Editor($("editor"));
 			// The editor's menu can be dragged to resize it vertically:
-			resizable($("editor"), $("tab"), function() { editor.resize(); });
+			resizable($("editor"), $("tab"), UP, function() { editor.resize(); });
 			canvas.onerror = onerror;
 			canvas.onprint = onprint;
 			run();
@@ -52,12 +52,9 @@
 			$("spinner").style.display = "none";
 			$("traceback").innerHTML = ""; 
 		}
-		function save() {
-			// Open a popup window.
-			// Dump canvas.save() in an <img> element.
-			var w = window.open(null, null, "width="+canvas.width+",height="+canvas.height);
-			w.document.body.innerHTML ="<style>body{margin:0;}</style>";
-			w.document.body.innerHTML+="<img src='"+canvas.save()+"' />";
+		function exportPNG() {
+			// Render canvas.save() data URL in a popup window.
+			window.open(canvas.save(), null, "width="+canvas.width+",height="+canvas.height);
 		}
 		function onerror(error) {
 			// Show the error traceback.
@@ -75,6 +72,7 @@
 	<style>
 		body { margin: 0; overflow: hidden; background: #eee; }
 		#canvas { background: white; }
+		#resizable { position: absolute; bottom: 0; right: 0; width: 100%; }
 		#editor { height: 300px; }
 		#tab {
 			height: 16px;
@@ -96,7 +94,7 @@
 			color: #222;
 			cursor: pointer;
 			font-size: 11px;
-			line-height: 1em;
+			line-height: 1.0em;
 		}
 		#tab button:hover { 
 			background: #555; 
@@ -159,11 +157,12 @@
 </head>
 <body>
 	<canvas id="canvas" width="500px" height="500px"></canvas>
-	<div id="resizable" style="position:absolute; bottom:0; width:100%;">
-		<div id="tab">&nbsp;
+	<div id="resizable">
+		<div id="tab" onselectstart="javascript:return false;">
+			&nbsp;
 			<button onclick="javascript:run();">Run</button>
 			<button onclick="javascript:stop();">Stop</button>
-			<button onclick="javascript:save();">Export</button>
+			<button onclick="javascript:exportPNG();">Export PNG</button>
 		</div>
 		<!-- canvas.js script -->
 		<div id="editor">

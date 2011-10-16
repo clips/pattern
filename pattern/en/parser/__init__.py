@@ -404,11 +404,11 @@ class TaggedString(unicode):
             return unicode.split(self, sep)
         return [[token.split("/") for token in s.split(" ")] for s in unicode.split(self, "\n")]
 
-def tag(s, tokenize=True, encoding="utf-8", default="NN", light=False):
-    """ Returns a list of (token,tag)-tuples from the given string.
+def tag(s, tokenize=True, encoding="utf-8"):
+    """ Returns a list of (token, tag)-tuples from the given string.
     """
     tags = []
-    for sentence in parse(s, tokenize, True, False).split():
+    for sentence in parse(s, tokenize, True, False, False, False, encoding).split():
         for token in sentence:
             tags.append((token[0], token[1]))
     return tags

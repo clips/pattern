@@ -19,8 +19,7 @@ except:
 # http://cosmion.net/jeroen/software/brill_pos/
 # Accuracy is reported around 92%, but Pattern scores may vary from Geertzen's original
 # due to WOTAN => Penn Treebank mapping etc.
-
-import os, sys; sys.path.insert(0, os.path.join(MODULE, "..", ".."))
+import sys; sys.path.insert(0, os.path.join(MODULE, "..", ".."))
 from en.parser import Lexicon
 from en.parser import PUNCTUATION, tokenize as _en_tokenize, parse as _en_parse, TaggedString
 from en.parser import commandline
@@ -115,6 +114,15 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
         p = "\n".join([" ".join(["/".join(token) for token in sentence]) for sentence in p])
         s = TaggedString(p, tags=s.tags+["lemma"], language="nl")
     return s
+
+def tag(s, tokenize=True, encoding="utf-8"):
+    """ Returns a list of (token, tag)-tuples from the given string.
+    """
+    tags = []
+    for sentence in parse(s, tokenize, True, False, False, False, encoding).split():
+        for token in sentence:
+            tags.append((token[0], token[1]))
+    return tags
 
 #### COMMAND LINE ####################################################################################
 # From the folder that contains the "pattern" folder:
