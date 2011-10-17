@@ -347,8 +347,8 @@ class _Sentiment:
     def __getitem__(self, w):
         # Backwards compatibility:
         # old code may be using pattern.en.wordnet.sentiment[word].
-        # Yields a (positive, negative, objective)-tuple.
-        v = sentiwordnet.get(w, (0.0, 1.0))
+        # Yields a (positive, negative, neutral)-tuple.
+        v = sentiwordnet.get(normalize(w), (0.0, 1.0))
         return v[0] < 0 and (0.0, -v[0], 1-v[1]) or (v[0], 0.0, 1-v[1])
         
 sentiment = _Sentiment()

@@ -268,6 +268,7 @@ def positive(s, threshold=0.1, **kwargs):
 
 #### SENTIWORDNET ####################################################################################
 # http://nmis.isti.cnr.it/sebastiani/Publications/LREC06.pdf
+# http://nmis.isti.cnr.it/sebastiani/Publications/LREC10.pdf
 
 class SentiWordNet(Lexicon):
     
@@ -275,6 +276,7 @@ class SentiWordNet(Lexicon):
         """ A lexicon with sentiment scores from SentiWordNet (http://sentiwordnet.isti.cnr.it).
             A dictionary of words, where each word is linked to a (polarity, subjectivity)-tuple.
         """
+        # Note: words are stored without diacritics, use wordnet.normalize(word) for lookup.
         kwargs.setdefault("path", "SentiWordNet*.txt")
         Lexicon.__init__(self, **kwargs)
         # Each WordNet3 id in SentiWordNet will be passed through map().
