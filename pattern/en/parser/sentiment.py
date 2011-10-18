@@ -196,9 +196,9 @@ def sentiment(s, **kwargs):
             # Only process known words, preferably by correct part-of-speech.
             # Including unknown words (e.g. polarity=0 and subjectivity=0) lowers the average.
             if w in lexicon and pos in lexicon[w]:
-                if prev is not None and \
+                if prev is not None and ( \
                   (language == "en" and "RB" in lexicon[prev[0]] and "JJ" in lexicon[w]) or \
-                  (language == "nl" and "JJ" in lexicon[prev[0]] and "JJ" in lexicon[w]):
+                  (language == "nl" and "JJ" in lexicon[prev[0]] and "JJ" in lexicon[w])):
                     # For English, adverb + adjective uses the intensity score.
                     # For Dutch, adjective + adjective uses the intensity score.
                     # For example: "echt" + "teleurgesteld" = 1.6 * -0.4, not 0.2 + -0.4
@@ -206,12 +206,11 @@ def sentiment(s, **kwargs):
                     i = lexicon[prev[0]][prev[1]][2]
                     v[-1] = lexicon[w][pos]
                     v[-1] = tuple(v*i for v in v[-1])
-                else:
-                    v.append(lexicon[w][pos])
+                v.append(lexicon[w][pos])
                 prev = (w, pos)
             else:
                 prev = None
-
+    
     # From pattern.en.wordnet.Synset: 
     # sentiment(synsets("horrible", "JJ")[0]) => (-0.6, 1.0)
     if hasattr(s, "gloss") and lexicon.language == "en":
@@ -227,7 +226,7 @@ def sentiment(s, **kwargs):
     # From plain string: 
     # sentiment("a horrible movie") => (-0.6, 1.0)
     elif isinstance(s, basestring):
-        _score([(w.strip("*#[]():;,.!?-\t\n\r\x0b\x0c"), pos) for w in s.lower().split()])
+        _score([(w.strip("*#[]():;,.!?-\t\n\r\x0b\x0c"), pos) for w in s.lower().split()], lexicon.language)
     # From pattern.en.Text, using word lemmata and parts-of-speech when available.
     elif hasattr(s, "sentences"):
         _score([(w.lemma or w.string, w.pos) for w in chain(*(s.words for s in s))], lexicon.language)
@@ -237,6 +236,9 @@ def sentiment(s, **kwargs):
     # From pattern.en.Word.
     elif hasattr(s, "lemma"):
         _score([(s.lemma or s.string, s.pos)], lexicon.language)
+    # From a flat list of words:
+    elif isinstance(s, list):
+        _score([(w, None) for w in s], lexicon.language)
     # Return average (polarity, subjectivity).
     n = len(v) or 1
     return (sum(column(v,0))/n, sum(column(v,1))/n)
