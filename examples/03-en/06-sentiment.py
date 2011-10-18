@@ -29,9 +29,10 @@ print positive("bad")
 print
 
 # You can also do sentiment analysis in Dutch, it works exactly the same:
-from pattern.nl import sentiment as sentiment_nl
-print "In Dutch:"
-print sentiment_nl("Een onwijs spannend goed boek!")
+
+#from pattern.nl import sentiment as sentiment_nl
+#print "In Dutch:"
+#print sentiment_nl("Een onwijs spannend goed boek!")
 
 # You can also use Pattern with SentiWordNet.
 # You can get SentiWordNet at: http://sentiwordnet.isti.cnr.it/
