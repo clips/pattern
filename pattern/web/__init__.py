@@ -485,6 +485,13 @@ def find_email(string, unique=True):
         if not unique or s not in matches:
             matches.append(s)
     return matches
+    
+def find_between(a, b, string):
+    """ Returns a list of substrings between a and b in the given string.
+    """
+    p = "%s(.*?)%s" % (a, b)
+    p = re.compile(p, re.DOTALL | re.I)
+    return [m for m in p.findall(string)]
 
 #### PLAIN TEXT ######################################################################################
 
@@ -799,7 +806,7 @@ class Results(list):
 
 class SearchEngine:
     
-    def __init__(self, license=None, throttle=0.1):
+    def __init__(self, license=None, throttle=1.0, language=None):
         """ A base class for a web service.
             - license  : license key for the API,
             - throttle : delay between requests (avoid hammering the server).
@@ -807,6 +814,7 @@ class SearchEngine:
         """
         self.license  = license
         self.throttle = throttle    # Amount of sleep time after executing a query.
+        self.language = language    # Result.language restriction (e.g., "en").
         self.format   = lambda x: x # Formatter applied to each attribute of each Result.
     
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
@@ -820,76 +828,69 @@ class SearchEngineLimitError(SearchEngineError):
     pass # Raised when the query limit for a license is reached.
 
 #--- GOOGLE ------------------------------------------------------------------------------------------
-# http://code.google.com/apis/ajaxsearch/signup.html
-# http://code.google.com/apis/ajaxsearch/documentation/
+# Google Custom Search is a paid service.
+# https://code.google.com/apis/console/
+# http://code.google.com/apis/customsearch/v1/overview.html
 
-GOOGLE = "http://ajax.googleapis.com/ajax/services/"
-GOOGLE_LICENSE = "ABQIAAAAsHTxlz1n7jNlYECDj_EF1BT1NOe6bJHqZiq60f1JJ3OzEzDM5BQcAozHwWvFrwx2DDlP6xlTRnS6Cw"
+GOOGLE = "https://www.googleapis.com/customsearch/v1?"
+GOOGLE_LICENSE = "AIzaSyBxe9jC4WLr-Rry_5OUMOZ7PCsEyWpiU48"
+GOOGLE_CUSTOM_SEARCH_ENGINE = "000579440470800426354:_4qo2s0ijsi"
 
 # Search result descriptions can start with: "Jul 29, 2007 ...",
 # which is the date of the page parsed by Google from the content.
-RE_GOOGLE_DATE = re.compile("([A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4}) <b>...</b> ")
+RE_GOOGLE_DATE = re.compile("^([A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4}) {0,1}...")
 
 class Google(SearchEngine):
     
-    def __init__(self, license=None, throttle=0.1):
-        SearchEngine.__init__(self, license or GOOGLE_LICENSE, throttle)
+    def __init__(self, license=None, throttle=0.5, language=None):
+        SearchEngine.__init__(self, license or GOOGLE_LICENSE, throttle, language)
     
-    def search(self, query, type=SEARCH, start=1, count=8, sort=RELEVANCY, size=None, cached=True, **kwargs):
+    def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """ Returns a list of results from Google for the given query.
-            - type : SEARCH, IMAGE, NEWS or BLOG,
-            - start: maximum 64 results => start 1-7 with count=8,
-            - count: 8,
-            - size : for images, either TINY, SMALL, MEDIUM, LARGE or None.
-            There is no daily limit.
+            - type : SEARCH,
+            - start: maximum 100 results => start 1-10 with count=10,
+            - count: maximum 10,
+            There is a daily limit of 10,000 queries. Google Custom Search is a paid service.
         """
-        url = GOOGLE
-        if   type == SEARCH : url += "search/web?"
-        elif type == IMAGE  : url += "search/images?"
-        elif type == NEWS   : url += "search/news?"
-        elif type == BLOG   : url += "search/blogs?"
-        else:
-            raise SearchEngineTypeError
-        if not query or count < 1 or start >= 8: 
+        if not query or count < 1 or start > 10: 
             return Results(GOOGLE, query, type)
-        url = URL(url, method=GET, query={
-             "key" : self.license or "",
-               "v" : 1.0,
-               "q" : query,
-           "start" : 1 + (start-1) * 8,
-             "rsz" : "large",
-           "imgsz" : { TINY : "small", 
-                      SMALL : "medium", 
-                     MEDIUM : "large", 
-                      LARGE : "xlarge" }.get(size, "")
+        url = URL(GOOGLE, query={
+              "key" : GOOGLE_LICENSE,
+               "cx" : GOOGLE_CUSTOM_SEARCH_ENGINE,
+                "q" : query,
+            "start" : 1 + (start-1) * count,
+              "num" : min(count, 10),
+              "alt" : "json"
         })
+        if self.language is not None:
+            url.query["lr"] = "lang_" + self.language
         kwargs.setdefault("throttle", self.throttle)
         data = url.download(cached=cached, **kwargs)
         data = json.loads(data)
-        data = data.get("responseData") or {}
+        if data.get("error", {}).get("code") == 403:
+            raise SearchEngineLimitError
         results = Results(GOOGLE, query, type)
-        results.total = int(data.get("cursor", {}).get("estimatedResultCount") or 0)
-        for x in data.get("results", []):
+        results.total = int(data.get("queries", {}).get("request", [{}])[0].get("totalResults") or 0)
+        for x in data.get("items", []):
             r = Result(url=None)
-            r.url         = self.format(x.get("url", x.get("blogUrl")))
+            r.url         = self.format(x.get("link"))
             r.title       = self.format(x.get("title"))
-            r.description = self.format(x.get("content"))
-            r.date        = self.format(x.get("publishedDate"))
-            r.author      = self.format(x.get("publisher", x.get("author"))) 
-            r.author      = r.author != "unknown" and r.author or None
+            r.description = self.format(x.get("htmlSnippet").replace("<br>  ","").replace("<b>...</b>", "..."))
+            r.language    = self.language or ""
+            r.date        = ""
             if not r.date:
                 # Google Search descriptions can start with a date (parsed from the content):
                 m = RE_GOOGLE_DATE.match(r.description)
                 if m: 
                     r.date = m.group(1)
-                    r.description = r.description[len(m.group(0)):]
+                    r.description = "..." + r.description[len(m.group(0)):]
             results.append(r)
         return results
         
     def translate(self, string, input="en", output="fr", **kwargs):
         """ Returns the translation of the given string in the desired output language.
         """
-        url = URL(GOOGLE + "language/translate", method=GET, query={
+        url = URL("http://ajax.googleapis.com/ajax/services/language/translate", method=GET, query={
                 "v" : 1.0,
                 "q" : string,
          "langpair" : input+"|"+output
@@ -902,7 +903,7 @@ class Google(SearchEngine):
         data = decode_entities(data)
         return u(data)
         
-    def language(self, string, **kwargs):
+    def identify(self, string, **kwargs):
         """ Returns a (language, reliability)-tuple for the given string.
         """
         url = URL("http://www.google.com/uds/GlangDetect", method=GET, query={
@@ -917,11 +918,8 @@ class Google(SearchEngine):
         data = u(data.get("language")), float(data.get("confidence"))
         return data
 
-# Needs to switch to Google Custom Search API at some point (the Google Search API is deprecated):
-# http://code.google.com/apis/customsearch/
-# https://www.googleapis.com/customsearch/v1?key=[key]&q=[query]&start=1
-
 #--- YAHOO -------------------------------------------------------------------------------------------
+# Yahoo BOSS is a paid service.
 # http://developer.yahoo.com/search/
 
 YAHOO = "http://yboss.yahooapis.com/ysearch/"
@@ -929,8 +927,8 @@ YAHOO_LICENSE = ("", "") # OAuth consumer key + consumer secret.
 
 class Yahoo(SearchEngine):
 
-    def __init__(self, license=None, throttle=0.1):
-        SearchEngine.__init__(self, license or YAHOO_LICENSE, throttle)
+    def __init__(self, license=None, throttle=0.5, language=None):
+        SearchEngine.__init__(self, license or YAHOO_LICENSE, throttle, language)
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """ Returns a list of results from Yahoo for the given query.
@@ -995,8 +993,8 @@ BING_LICENSE = "D6F2EEA455BC0D155BB20EB857066DE85619EC3F"
 
 class Bing(SearchEngine):
 
-    def __init__(self, license=None, throttle=0.1):
-        SearchEngine.__init__(self, license or BING_LICENSE, throttle)
+    def __init__(self, license=None, throttle=1.0, language=None):
+        SearchEngine.__init__(self, license or BING_LICENSE, throttle, language)
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """" Returns a list of results from Bing for the given query.
@@ -1017,7 +1015,7 @@ class Bing(SearchEngine):
         url = URL(url, method=GET, query={
                  "Appid" : self.license or "",
                "sources" : s, 
-                 "query" : query,
+                 "query" : query + (self.language and " language:"+self.language or ""),
              s+".offset" : 1 + (start-1) * count,
               s+".count" : min(count, type==NEWS and 15 or 50),
                 "format" : "json",
@@ -1037,6 +1035,7 @@ class Bing(SearchEngine):
             r.url         = self.format(x.get("MediaUrl", x.get("Url")))
             r.title       = self.format(x.get("Title"))
             r.description = self.format(x.get("Description", x.get("Snippet")))
+            r.language    = self.language or ""
             r.date        = self.format(x.get("DateTime", x.get("Date")))
             results.append(r)
         return results
@@ -1052,8 +1051,8 @@ TWITTER_HASHTAG = re.compile(r"(\s|^)(#[a-z0-9_\-]+)", re.I)
 
 class Twitter(SearchEngine):
     
-    def __init__(self, license=None, throttle=0.4):
-        SearchEngine.__init__(self, license or TWITTER_LICENSE, throttle)
+    def __init__(self, license=None, throttle=0.5, language=None):
+        SearchEngine.__init__(self, license or TWITTER_LICENSE, throttle, language)
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=False, **kwargs):
         """ Returns a list of results from Twitter for the given query.
@@ -1068,6 +1067,7 @@ class Twitter(SearchEngine):
             url += "search.json?"
             url += urllib.urlencode((
                 ("q", bytestring(query)),
+                ("lang", self.language or ""),
                 ("page", start),
                 ("rpp", min(count, type==TRENDS and 10 or 100))
             ))
@@ -1126,9 +1126,8 @@ WIKIPEDIA_REFERENCE = r"\s*\[[0-9]{1,3}\]"
 
 class Wikipedia(SearchEngine):
     
-    def __init__(self, license=None, throttle=3.0, language="en"):
-        SearchEngine.__init__(self, license or WIKIPEDIA_LICENSE, throttle)
-        self.language = language
+    def __init__(self, license=None, throttle=5.0, language="en"):
+        SearchEngine.__init__(self, license or WIKIPEDIA_LICENSE, throttle, language)
 
     def search(self, query, type=SEARCH, start=1, count=1, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """ Returns a WikipediaArticle for the given query.
@@ -1337,7 +1336,7 @@ INTERESTING = "interesting"
 
 class Flickr(SearchEngine):
     
-    def __init__(self, license=None, throttle=1.0):
+    def __init__(self, license=None, throttle=5.0):
         SearchEngine.__init__(self, license or FLICKR_LICENSE, throttle)
 
     def search(self, query, type=IMAGE, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
@@ -1420,7 +1419,7 @@ PRODUCTWIKI_LICENSE = "64819965ec784395a494a0d7ed0def32"
 
 class Products(SearchEngine):
     
-    def __init__(self, license=None, throttle=3.0):
+    def __init__(self, license=None, throttle=5.0):
         SearchEngine.__init__(self, license or PRODUCTWIKI_LICENSE, throttle)
     
     def search(self, query, type=SEARCH, start=1, count=20, sort=RELEVANCY, size=None, cached=True, **kwargs):
@@ -1541,7 +1540,7 @@ def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, revers
         - license : web service license id,
         - strict  : when True the query constructed from term + context is wrapped in quotes.
     """
-    service = SERVICES.get(service, SearchEngine)(license)
+    service = SERVICES.get(service, SearchEngine)(license, language=kwargs.pop("language"))
     R = []
     for word in terms:
         q = reverse and context+" "+word or word+" "+context
@@ -1830,7 +1829,7 @@ BREADTH = "breadth"
 
 class Spider:
     
-    def __init__(self, links=[], delay=20, queue=False, parser=HTMLLinkParser().parse):
+    def __init__(self, links=[], delay=20.0, queue=False, parser=HTMLLinkParser().parse):
         """ A spider can be used to browse the web in an automated manner.
             It visits the list of starting URLs, parses links from their content, visits those, etc.
             - Links can be prioritized by overriding Spider.rank().
