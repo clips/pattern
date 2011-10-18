@@ -14,6 +14,7 @@ from pattern.web import SEARCH, IMAGE, NEWS, BLOG
 
 # Google's "Custom Search API" is a paid service.
 # The web module uses a test account with a 100 free queries per day, shared with all users.
+# If the limit is exceeded, SearchEngineLimitError is raised.
 # You can obtain your own license key at: https://code.google.com/apis/console/
 # Activate "Custom Search API" under "Services" and get the key under "API Access".
 # Then use Google(license=[YOUR_KEY]).search().
