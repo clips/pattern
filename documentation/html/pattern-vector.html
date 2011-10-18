@@ -109,7 +109,7 @@ spy</code></span></span></p>
 </tr>
 </tbody>
 </table>
-<p>The list of all relevancy values (i.e. <span class="inline_code">tf-idf</span>) of the words in a document is called the <em>document vector</em>. Multiple documents bundled in a corpus form a <em>vector space</em>. By  calculating the matrix dot product (angle) of two document vectors, the  similarity of the two documents can be measured. This is called <em>cosine similarity</em>. For <span class="inline_code">v = Corpus.vector()</span>:<span class="inline_code"> <br /></span></p>
+<p>The list of all relevancy values (i.e. <span class="inline_code">tf-idf</span>) of the words in a document is called the <em>document vector</em>. Multiple documents bundled in a <em>corpus</em> form a <em>vector space</em>. By  calculating the matrix dot product (= angle) of two document vectors, the  similarity of the two documents can be measured. This is called <em>cosine similarity</em>. For <span class="inline_code">v = Corpus.vector()</span>:<span class="inline_code"> <br /></span></p>
 <p><span class="inline_code">cos = dot(v(doc1), v(doc2)) / (v(doc1).norm * v(doc2).norm)</span></p>
 <p>&nbsp;</p>
 <hr />
@@ -158,7 +158,7 @@ document.<span style="">keywords</span><span style="">&#40;</span>top=<span styl
 <span style="">&#91;</span><span style="">&#40;</span><span style="color: #666;">0.15</span>, u<span style="color: #657a8a;">'flight'</span><span style="">&#41;</span>, <br />
 &nbsp;<span style="">&#40;</span><span style="color: #666;">0.15</span>, u<span style="color: #657a8a;">'monday'</span><span style="">&#41;</span>, <br />
 &nbsp;<span style="">&#40;</span><span style="color: #666;">0.10</span>, u<span style="color: #657a8a;">'delay'</span><span style="">&#41;</span>, <br />
-&nbsp;<span style="">&#40;</span><span style="color: #666;">0.10</span>, u<span style="color: #657a8a;">'discoveri'</span><span style="">&#41;</span>, <br />
+&nbsp;<span style="">&#40;</span><span style="color: #666;">0.10</span>, u<span style="color: #657a8a;">'discovery'</span><span style="">&#41;</span>, <br />
 &nbsp;<span style="">&#40;</span><span style="color: #666;">0.10</span>, u<span style="color: #657a8a;">'friday'</span><span style="">&#41;</span>,<br />
 &nbsp;<span style="">&#40;</span><span style="color: #666;">0.10</span>, u<span style="color: #657a8a;">'hydrogen'</span><span style="">&#41;</span><br />
 <span style="">&#93;</span></code></span></span></p>
@@ -240,8 +240,8 @@ corpus.<span style="">export</span><span style="">&#40;</span>path, format=ORANG
 <p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="color: #28334f; font-weight: bold;">from</span> numpy <span style="color: #28334f; font-weight: bold;">import</span> diag, dot<br />
 <span style="color: #28334f; font-weight: bold;">from</span> numpy.<span style="">linalg</span> <span style="color: #28334f; font-weight: bold;">import</span> svd<br />
 u, sigma, vt = svd<span style="">&#40;</span>matrix, full_matrices=<span style="color: #4a587c;">False</span><span style="">&#41;</span><br />
-<span style="color: #28334f; font-weight: bold;">for</span> i <span style="color: #28334f; font-weight: bold;">in</span> <span style="color: #4a587c;">xrange</span><span style="">&#40;</span>-n,<span style="color: #666;">0</span><span style="">&#41;</span>:<br />
-&nbsp; &nbsp; s<span style="">&#91;</span>i<span style="">&#93;</span> = <span style="color: #666;">0</span> <span style="color: grey;"># Reduce n smallest singular values.</span><br />
+<span style="color: #28334f; font-weight: bold;">for</span> i <span style="color: #28334f; font-weight: bold;">in</span> <span style="color: #4a587c;">range</span><span style="">&#40;</span>-k,<span style="color: #666;">0</span><span style="">&#41;</span>:<br />
+&nbsp; &nbsp; sigma<span style="">&#91;</span>i<span style="">&#93;</span> = <span style="color: #666;">0</span> <span style="color: grey;"># Reduce k smallest singular values.</span><br />
 matrix = dot<span style="">&#40;</span>u, dot<span style="">&#40;</span>diag<span style="">&#40;</span>sigma<span style="">&#41;</span>, vt<span style="">&#41;</span><span style="">&#41;</span></code></span></span></p>
 <p><span style="font-size: 11px;"><span style="text-decoration: underline;">Reference</span>: Wilk J. (2007). http://blog.josephwilk.net/projects/latent-semantic-analysis-in-python.html</span></p>
 <p><span class="example"><br />The figure below outlines LSA for a <em>nice</em>-document with a vector of nouns that occur after "nice":</span></p>
@@ -420,8 +420,8 @@ lsa.<span style="">vectors</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbs
 <p>&nbsp;</p>
 <hr />
 <h2><a name="cluster"></a>Clustering</h2>
-<p>If you know the <span class="inline_code">Document.type</span> of each document in the corpus you can do many interesting things with it, for example build a <a href="#classification">classifier</a> for other, uncategorized documents. If the type is unknown, you can cluster documents into semantically related groups using unsupervised machine learning methods.</p>
-<p>As a simple metaphor, assume you have a number of points with (<span class="inline_code">x</span>, <span class="inline_code">y</span>) coordinates (horizontal and vertical position). You could group the points into two sets according to their distance to two arbitrary points (or <em>centroids</em>).&nbsp;More centroids create more sets. The principle holds for points in three dimensions (<span class="inline_code">x</span>,&nbsp;<span class="inline_code">y</span>,&nbsp;<span class="inline_code">z</span>) or even points in&nbsp;<span class="inline_code">n</span>&nbsp;dimensions (<span class="inline_code">x</span>,&nbsp;<span class="inline_code">y</span>,&nbsp;<span class="inline_code">z</span>,&nbsp;<span class="inline_code">u</span>,&nbsp;<span class="inline_code">v</span>, ...).&nbsp;</p>
+<p>If the <span class="inline_code">Document.type</span> of each document in the corpus is known, you can do interesting things with it – for example, build a <a href="#classification">classifier</a> for uncategorized documents. If the type is unknown, you can cluster documents into semantically related categories using unsupervised machine learning methods.</p>
+<p>As a metaphor, suppose you have a number of points with (<span class="inline_code">x</span>, <span class="inline_code">y</span>) coordinates (horizontal and vertical position). You could group the points into two sets according to their distance to two arbitrary points (or <em>centroids</em>).&nbsp;More centroids create more sets. The principle holds for points in three dimensions (<span class="inline_code">x</span>,&nbsp;<span class="inline_code">y</span>,&nbsp;<span class="inline_code">z</span>) or even points in&nbsp;<span class="inline_code">n</span>&nbsp;dimensions (<span class="inline_code">x</span>,&nbsp;<span class="inline_code">y</span>,&nbsp;<span class="inline_code">z</span>,&nbsp;<span class="inline_code">u</span>,&nbsp;<span class="inline_code">v</span>, ...).&nbsp;</p>
 <table class="border">
 <tbody>
 <tr>
@@ -430,12 +430,12 @@ lsa.<span style="">vectors</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbs
 </tr>
 </tbody>
 </table>
-<p>A <span class="inline_code">Document.vector</span> is an n-dimensional point. Only for vectors we'll use cosine similarity as a distance metric, so that similar documents are grouped closer together.&nbsp;The <span class="inline_code">pattern.vector</span> module implements two simple clustering algorithms:</p>
+<p>A <span class="inline_code">Document.vector</span> is an n-dimensional point. For vectors we'll use cosine similarity as a distance metric, so that similar documents are grouped closer together.&nbsp;The <span class="inline_code">pattern.vector</span> module implements two simple clustering algorithms based on this principle:</p>
 <ul>
-<li><span class="inline_code">K-MEANS</span>: clusters the corpus into <em>k</em> groups. It is quite fast (e.g., 3000 vectors with&nbsp;<span class="inline_code">n=200</span> and <span class="inline_code">k=100</span> in about 10 minutes), but it has no guarantee to find the optimal solution, since it starts with random clusters and optimizes from there.</li>
+<li><span class="inline_code">K-MEANS</span>: clusters the corpus into <em>k</em> groups. It is quite fast (e.g., 3000 vectors with&nbsp;<span class="inline_code">n=200</span> and <span class="inline_code">k=100</span> in about 10 minutes), but it has no guarantee to find the optimal solution, since it starts with random clusters and optimizes (read: swaps elements between clusters) from there.</li>
 </ul>
 <ul>
-<li><span class="inline_code">HIERARCHICAL</span>: clusters the corpus in a tree: the top level item is a <span class="inline_code">Cluster</span> containing <span class="inline_code">Documents</span> and other <span class="inline_code">Clusters</span>. It is very slow (e.g., 3000 vectors with&nbsp;<span class="inline_code">n=6</span> in about 30 minutes), but the optimal solution is guaranteed since it starts from the bottom up.</li>
+<li><span class="inline_code">HIERARCHICAL</span>: clusters the corpus in a tree: the top level item is a <span class="inline_code">Cluster</span> containing <span class="inline_code">Documents</span> and other <span class="inline_code">Clusters</span>. It is slow (e.g., 3000 vectors with&nbsp;<span class="inline_code">n=6</span> in about 30 minutes), but the optimal solution is guaranteed since it starts from the bottom up, by clustering the two nearest documents step-by-step.</li>
 </ul>
 <p><span class="geshifilter"><code class="python geshifilter-python">clusters = Corpus.<span style="">cluster</span><span style="">&#40;</span>documents=ALL, method=KMEANS, k=<span style="color: #666;">10</span>, iterations=<span style="color: #666;">10</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">clusters = Corpus.<span style="">cluster</span><span style="">&#40;</span>documents=ALL, method=HIERARCHICAL, k=<span style="color: #666;">1</span>, iterations=<span style="color: #666;">1000</span><span style="">&#41;</span></code></span></p>
 <p>For example:</p>
@@ -453,7 +453,7 @@ Cluster<span style="">&#40;</span><br />
 <p><span class="inline_code">Corpus.cluster()</span> has an optional parameter <span class="inline_code">documents</span>&nbsp;that is a list of documents in the corpus, so you can intermingle <em>k</em>-means and hierarchical clustering on subsets. An optional parameter <span class="inline_code">distance</span> can be <span class="inline_code">EUCLIDEAN</span>, <span class="inline_code">MANHATTAN</span> or&nbsp;<span class="inline_code">COSINE</span> (default).</p>
 <h3>Faster clustering: <em>k</em>-means++ &amp; triangle inequality</h3>
 <p>For <span class="inline_code">KMEANS</span>, an optional parameter <span class="inline_code">seed=RANDOM</span> can also be set to <span class="inline_code">KMPP</span>. A weakness of <em>k</em>-means clustering is that it starts out with random clusters. The <em>k</em>-means++ or <span class="inline_code">KMPP</span> algorithm uses a specialized technique to find better starting points. It is also faster.</p>
-<p>For <span class="inline_code">KMEANS</span>, an optional parameter <span class="inline_code">p=0.8</span> sets the relaxation for <em>triangle inequality</em>. This is a speed optimization where&nbsp;<span class="inline_code">p=0.5</span> is stable but slow, and where&nbsp;<span class="inline_code">p=1.0</span> may yield small errors but runs a lot faster, especially for higher <span class="inline_code">k</span> and dimensionality. If all of this is still too slow you need to reduce the corpus with LSA (<span class="link-maintenance"><a href="#lsa">see above</a></span>).&nbsp;</p>
+<p>For <span class="inline_code">KMEANS</span>, an optional parameter <span class="inline_code">p=0.8</span> sets the relaxation for <em>triangle inequality</em>. This is a speed optimization where&nbsp;<span class="inline_code">p=0.5</span> is stable but slow, and where&nbsp;<span class="inline_code">p=1.0</span> may yield small errors but runs a lot faster, especially for higher <span class="inline_code">k</span> and dimensionality. If all of this is still too slow you couls reduce the corpus with LSA (<span class="link-maintenance"><a href="#lsa">see above</a></span>).&nbsp;</p>
 <p><span class="small"><span style="text-decoration: underline;">References</span>:&nbsp;<br />Arthur, D. (2007). <em>k-means++: the advantage of careful seeding.</em><br />Elkan, C. (2007). <em>Using the Triangle Inequality to Accelerate k-Means.</em></span></p>
 <h3>Hierarchical clusters</h3>
 <p>The <span class="inline_code">KMEANS</span> method returns a list in which each item is a list of semantically related <span class="inline_code">Documents</span>. The <span class="inline_code">HIERARCHICAL</span> method returns a <span class="inline_code">Cluster</span> object, which is a list of <span class="inline_code">Documents</span> and <span class="inline_code">Clusters</span> with some additional properties:</p>
@@ -471,7 +471,7 @@ cluster.<span style="">traverse</span><span style="">&#40;</span>visit=<span sty
 <p>&nbsp;</p>
 <hr />
 <h2><a name="classification"></a>Classification</h2>
-<p>Classification is a supervised machine learning method for assigning a <span class="inline_code">Document</span> to one of a given number of categories (or <em>classes</em>).&nbsp;If you have a corpus in which the <span class="inline_code">Document.type</span> for each document is known, you can use it to predict the type of other ("unknown") documents.&nbsp;For example: a corpus of product reviews (<em>training data</em>), for which the star rating (e.g., <span class="inline_code">***</span>) of each review is known, can be used to predict the star rating for other product reviews (this is a form of <em>opinion mining</em>).</p>
+<p>Classification is a supervised machine learning method for assigning a <span class="inline_code">Document</span> to one of a given number of categories (or <em>classes</em>).&nbsp;If you have a corpus in which the <span class="inline_code">Document.type</span> for each document is known, you can use it to predict the type of other ("unknown") documents.&nbsp;For example: a corpus of product reviews (<em>training data</em>), for which the star rating (e.g., <span class="inline_code">****</span>) of each review is known, can be used to predict the star rating for other product reviews (this is a form of <em>opinion mining</em>).</p>
 <p>The <span class="inline_code">pattern.vector</span> module implements two simple classifiers:</p>
 <ul>
 <li><span class="inline_code">BAYES</span>: Naive Bayes classifier, based on Bayes' theorem of posterior probability.&nbsp;</li>
@@ -548,7 +548,7 @@ classifier.<span style="">binary</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style=
 <br />
 <span style="">&#40;</span><span style="color: #666;">0.83</span>, <span style="color: #666;">0.84</span>, <span style="color: #666;">0.96</span>, <span style="color: #666;">0.90</span><span style="">&#41;</span> </code></span></span></p>
 <p><span class="smallcaps">k-fold cross-validation</span></p>
-<p>With the <span class="inline_code">folds</span> parameter &gt; 1,&nbsp;K-fold cross-validation is performed.&nbsp;For example: in 10-fold cross-validation ten separate tests are taken,&nbsp;each using a different 1/10 of the corpus as testing data. This produces more reliable results.</p>
+<p>With the <span class="inline_code">folds</span> parameter &gt; 1,&nbsp;K-fold cross-validation is performed.&nbsp;For example: in 10-fold cross-validation ten separate tests are taken,&nbsp;each using a different 1/10 of the corpus as testing data. This produces reliable results.</p>
 <p><span class="smallcaps">Precision &amp; recall</span></p>
 <p>Accuracy is&nbsp;the percentage of correctly classified documents in the test set. Precision &amp; recall are more reliable because they take into account false positives and false negatives – see <a href="pattern-metrics.html#accuracy">pattern.metrics</a> for more information.&nbsp;Note: precision, recall and F1-score will be <span class="inline_code">None</span> unless the classifier is binary.</p>
 <h3>Feature selection</h3>
@@ -575,6 +575,7 @@ corpus2 = corpus1.<span style="color: #4a587c;">filter</span><span style="">&#40
 <ul>
 <li><a href="http://orange.biolab.si/" target="_blank">Orange</a> (GPL): d<span>ata mining &amp; machine learning in Python, with a node-based GUI.</span></li>
 <li><span><a href="http://pybrain.org/" target="_blank">PyBrain</a> (BSD): p</span><span>owerful machine learning algorithms in Python + C.</span></li>
+<li><a href="http://www.scipy.org/" target="_blank">SciPy</a><span> (BSD): scientific computing tools for Python.</span></li>
 </ul>
 </div>
 </div></div>

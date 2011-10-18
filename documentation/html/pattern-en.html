@@ -40,6 +40,7 @@
 <li><a href="#ngram">n-grams</a></li>
 <li><a href="#parser">Parser</a>&nbsp;<span class="smallcaps link-maintenance">(tokenizer, tagger, chunker)</span></li>
 <li><a href="#tree">Parse trees</a></li>
+<li><a href="#sentiment">Sentiment</a></li>
 <li><a href="#modality">Mood &amp; modality</a></li>
 <li><a href="#wordnet">WordNet</a></li>
 <li><a href="#wordlist">Wordlists</a></li>
@@ -379,6 +380,22 @@ pnp.<span style="">preposition</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<
 <p>Words and chunks that are part of a <span class="postag">PNP</span> will have their <span class="inline_code">Word.pnp</span> and <span class="inline_code">Chunk.pnp</span> attribute set.<br />All the prepositional noun phrases in a sentence can be retrieved with <span class="inline_code">Sentence.pnp</span>.</p>
 <p>&nbsp;</p>
 <h2>
+<hr /><a name="sentiment"></a>Sentiment</h2>
+<p>Text can be broadly categorized into two types: facts and opinions. Opinions carry people's sentiments, appraisals and feelings toward the world. The module bundles a lexicon of adjectives that occur frequently in product reviews, tagged with scores for sentiment polarity (positive/negative) and subjectivity.&nbsp;</p>
+<p>The <span class="inline_code">sentiment()</span> command returns a (<span class="inline_code">polarity</span>, <span class="inline_code">subjectivity</span>)-tuple for the given sentence (based on the adjectives in it),&nbsp;with polarity between <span class="inline_code">-1.0</span> and <span class="inline_code">1.0</span> and subjectivity between <span class="inline_code">0.0</span> and <span class="inline_code">1.0</span>.&nbsp;The sentence can be a string, <span class="inline_code">Text</span>, <span class="inline_code">Sentence</span>, <span class="inline_code">Chunk</span>,&nbsp;<span class="inline_code">Word</span> or a&nbsp;<span class="inline_code">Synset</span> (see further).</p>
+<p><span class="geshifilter"><code class="python geshifilter-python">sentiment<span style="">&#40;</span>sentence<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">polarity<span style="">&#40;</span>sentence<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">subjectivity<span style="">&#40;</span>sentence<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">positive<span style="">&#40;</span>s, threshold=<span style="color: #666;">0.1</span><span style="">&#41;</span></code></span></p>
+<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> sentiment<br />
+<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> sentiment<span style="">&#40;</span><br />
+<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #657a8a;">&quot;The movie attempts to be surreal by incorporating various time paradoxes,&quot;</span><br />
+<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #657a8a;">&quot;but it's presented in such a ridiculous way it's seriously boring.&quot;</span><span style="">&#41;</span> <br />
+<br />
+<span style="">&#40;</span>-<span style="color: #666;">0.34</span>, <span style="color: #666;">1.0</span><span style="">&#41;</span> </code></span></span></p>
+<p>In the example above,&nbsp;<span class="inline_code">-0.34</span> is a compromise between <em>surreal</em>, <em>various</em>, <em>ridiculous</em> and <em>seriously boring</em>.</p>
+<p>The <span class="inline_code">polarity()</span> command returns&nbsp;the sentence polarity (positive/negative sentiment).&nbsp;</p>
+<p>The <span class="inline_code">subjectivity()</span> command returns the sentence subjectivity (objective/subjective).</p>
+<p>The <span class="inline_code">positive()</span> command returns&nbsp;<span class="inline_code">True</span> if the given sentence's polarity is above the threshold. The threshold can be lowered or raised, but overall&nbsp;<span class="inline_code">+0.1</span> gives the best results for product reviews. Accuracy is 72% (P 0.72, R 0.71) for movie reviews.</p>
+<p>&nbsp;</p>
+<h2>
 <hr /></h2>
 <h2><a name="modality"></a>Mood &amp; modality</h2>
 <p>Linguistic modality deals with necessity, permissibility and probability. This area is beyond the scope of the module, but we offer three interesting commands that are capable of making an educated guess:</p>
@@ -430,7 +447,7 @@ synset.<span style="">synonyms</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
 synset.<span style="">gloss</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Definition string.</span><br />
 synset.<span style="">lexname</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Category string, or None.</span><br />
 synset.<span style="">ic</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Information Content value.</span><br />
-synset.<span style="">weight</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Tuple of (positive, negative, objective).</span></code></span><span class="geshifilter"><code class="python geshifilter-python">synset.<span style="">antonym</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># A Synset (semantical opposite).</span><br />
+synset.<span style="">weight</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Tuple of (polarity, subjectivity), using SentiWordNet.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">synset.<span style="">antonym</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># A Synset (semantical opposite).</span><br />
 synset.<span style="">hypernym</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># A Synset (semantical parent).</span></code></span></p>
 <p><span class="geshifilter"><code class="python geshifilter-python">synset.<span style="">hypernyms</span><span style="">&#40;</span>recursive=<span style="color: #4a587c;">False</span>, depth=<span style="color: #4a587c;">None</span><span style="">&#41;</span><br />
 synset.<span style="">hyponyms</span><span style="">&#40;</span>recursive=<span style="color: #4a587c;">False</span>, depth=<span style="color: #4a587c;">None</span><span style="">&#41;</span><br />
@@ -476,18 +493,17 @@ Synset<span style="">&#40;</span><span style="color: #657a8a;">'carnivore'</span
 <span style="color: #666;">4152.56</span></code></span></span></p>
 <p>The similarity weight is based on Lin-similarity and Information Content (IC). IC values for each synset are derived from the word's occurence in a given corpus (e.g. Brown). The idea is that less frequent words convey more information. Lower values indicate higher similarity:</p>
 <p><span class="inline_code">lin = 2.0 * ancestor(synset1, synset2).ic / (synset1.ic + synset2.ic)</span></p>
-<h3>Synset sentiment weight</h3>
-<p><a href="http://sentiwordnet.isti.cnr.it/" target="_blank">SentiWordNet</a> is a third-party lexical resource for opinion mining. It assigns three sentiment scores (<span class="inline_code">0.0-1.0</span>) to each <span class="inline_code">Synset</span>: <em>positivity</em>, <em>negativity</em>, <em>objectivity</em>. SentiWordNet is free for non-commercial research purposes. To enable SentiWordNet, request a download from the authors and place the file <span class="inline_code">SentiWordNet*.txt</span> in the folder <span class="inline_code">pattern/en/wordnet/</span> and then call <span class="inline_code">wordnet.sentiment.load()</span> in your script:</p>
+<h3>Synset sentiment</h3>
+<p><a href="http://sentiwordnet.isti.cnr.it/" target="_blank">SentiWordNet</a> is a third-party lexical resource for opinion mining, with polarity and subjectivity scores for all WordNet synsets. SentiWordNet is free for non-commercial research purposes. To enable SentiWordNet, request a download from the authors and place the file <span class="inline_code">SentiWordNet*.txt</span> in&nbsp;<span class="inline_code">pattern/en/wordnet/</span>.&nbsp;You can then use&nbsp;<span class="inline_code">wordnet.sentiwordnet</span>&nbsp;and <span class="inline_code">Synset.weight()</span> in your script:</p>
 <p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> wordnet<br />
 <span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> ADJECTIVE<br />
-<span style="">&gt;&gt;&gt;</span> wordnet.<span style="">sentiment</span>.<span style="">load</span><span style="">&#40;</span><span style="">&#41;</span> <span style="color: grey;"># weight = (positive, negative, objective)</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> wordnet.<span style="">sentiment</span><span style="">&#91;</span><span style="color: #657a8a;">'lamp'</span><span style="">&#93;</span><br />
+<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> wordnet.<span style="">sentiwordnet</span><span style="">&#91;</span><span style="color: #657a8a;">'lamp'</span><span style="">&#93;</span><br />
 <span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> wordnet.<span style="">synsets</span><span style="">&#40;</span><span style="color: #657a8a;">'happy'</span>, ADJECTIVE<span style="">&#41;</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span>.<span style="">weight</span><br />
 <span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> wordnet.<span style="">synsets</span><span style="">&#40;</span><span style="color: #657a8a;">'sad'</span>, ADJECTIVE<span style="">&#41;</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span>.<span style="">weight</span><br />
 <br />
-<span style="">&#40;</span><span style="color: #666;">0.0</span>, <span style="color: #666;">0.0</span>, <span style="color: #666;">1.0</span><span style="">&#41;</span><br />
-<span style="">&#40;</span><span style="color: #666;">0.625</span>, <span style="color: #666;">0.25</span>, <span style="color: #666;">0.125</span><span style="">&#41;</span><br />
-<span style="">&#40;</span><span style="color: #666;">0.125</span>, <span style="color: #666;">0.75</span>, <span style="color: #666;">0.125</span><span style="">&#41;</span></code></span></span></p>
+<span style="">&#40;</span><span style="color: #666;">0.0</span>, <span style="color: #666;">0.0</span><span style="">&#41;</span><br />
+<span style="">&#40;</span><span style="color: #666;">0.375</span>, <span style="color: #666;">0.875</span><span style="">&#41;</span><br />
+<span style="">&#40;</span>-<span style="color: #666;">0.625</span>, <span style="color: #666;">0.875</span><span style="">&#41;</span></code></span></span></p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="wordlist"></a>Wordlists</h2>

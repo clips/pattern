@@ -41,7 +41,11 @@ zitten </code></span></span></p>
 <p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">nl</span> <span style="color: #28334f; font-weight: bold;">import</span> predicative<br />
 <span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> predicative<span style="">&#40;</span><span style="color: #657a8a;">'brave'</span><span style="">&#41;</span><br />
 braaf </code></span></span></p>
-<p><span class="example">For parsing there is&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">parse()</span>&nbsp;and&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">split()</span>:<br /></span></p>
+<p><span class="example">For opinion mining there is <span class="inline_code">sentiment()</span>, which returns a (polarity, subjectivity)-tuple. Accuracy is 75% (P 0.72, R 0.82) for book and music reviews:</span></p>
+<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">nl</span> <span style="color: #28334f; font-weight: bold;">import</span> sentiment<br />
+<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> sentiment<span style="">&#40;</span><span style="color: #657a8a;">'Een onwijs spannend goed boek!'</span><span style="">&#41;</span><br />
+<span style="">&#40;</span><span style="color: #666;">0.27</span>, <span style="color: #666;">0.88</span><span style="">&#41;</span> </code></span></span></p>
+<p>For parsing there is <span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">parse()</span>&nbsp;and&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">split()</span>:</p>
 <p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">nl</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, split<br />
 <span style="">&gt;&gt;&gt;</span> s = parse<span style="">&#40;</span><span style="color: #657a8a;">'De kat zit op de mat.'</span><span style="">&#41;</span><br />
 <span style="">&gt;&gt;&gt;</span> s = split<span style="">&#40;</span>s<span style="">&#41;</span><br />
@@ -55,6 +59,7 @@ Sentence<span style="">&#40;</span><span style="color: #657a8a;">'De/DT/B-NP/O k
 <p>&nbsp;</p>
 <p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;"><span class="smallcaps" style="font-variant: small-caps;">Accuracy – noun &amp; verb inflection</span></p>
 <p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;">Noun pluralization and singularization is less robust&nbsp;(accuracy 80% and 91% respectively)&nbsp;than the English implementation. The lexicon for verb conjugation contains 3,700 common Dutch verbs; otherwise it will fall back to a rule-based approach with an accuracy of about 80%. The parser will combine <span class="inline_code">singularize()</span>, <span class="inline_code">conjugate()</span> and <span class="inline_code">predicative()</span>&nbsp;to do word lemmatization.</p>
+<p>&nbsp;</p>
 </div>
 </div></div>
         </div>

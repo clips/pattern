@@ -74,9 +74,9 @@ url.<span style="">copy</span><span style="">&#40;</span><span style="">&#41;</s
 <li><span class="inline_code">URL.download()</span> will cache the retrieved data locally by default (faster next time). <br />Raises a <span class="inline_code">URLTimeoutError</span> if the download takes longer than the given <span class="inline_code">timeout</span>.<br />Sleeps for <span class="inline_code">throttle</span> seconds after the download is complete.<br />A proxy server can be given as a <span class="inline_code">(host, protocol)</span>-tuple.</li>
 </ul>
 <p>The following example downloads an image. <br />The helper function <span class="inline_code">extension()</span> parses the file extension from a file name:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">web</span> <span style="color: #28334f; font-weight: bold;">import</span> URL<br />
+<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">web</span> <span style="color: #28334f; font-weight: bold;">import</span> URL, extension<br />
 <span style="">&gt;&gt;&gt;</span> url = URL<span style="">&#40;</span><span style="color: #657a8a;">'http://www.clips.ua.ac.be/media/pattern_schema.gif'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> f = <span style="color: #4a587c;">open</span><span style="">&#40;</span><span style="color: #657a8a;">'test'</span>+extension<span style="">&#40;</span>url.<span style="">page</span><span style="">&#41;</span>, <span style="color: #657a8a;">'w'</span><span style="">&#41;</span> <span style="color: grey;"># save as test.gif</span><br />
+<span style="">&gt;&gt;&gt;</span> f = <span style="color: #4a587c;">open</span><span style="">&#40;</span><span style="color: #657a8a;">'test'</span> + extension<span style="">&#40;</span>url.<span style="">page</span><span style="">&#41;</span>, <span style="color: #657a8a;">'w'</span><span style="">&#41;</span> <span style="color: grey;"># save as test.gif</span><br />
 <span style="">&gt;&gt;&gt;</span> f.<span style="">write</span><span style="">&#40;</span>url.<span style="">download</span><span style="">&#40;</span><span style="">&#41;</span><span style="">&#41;</span><br />
 <span style="">&gt;&gt;&gt;</span> f.<span style="">close</span><span style="">&#40;</span><span style="">&#41;</span></code></span></span></p>
 <h3>URL exceptions</h3>
@@ -198,9 +198,10 @@ request.<span style="">error</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &n
 <hr />
 <h2><a name="services"></a>Search engine + web services</h2>
 <p>The <span class="inline_code">SearchEngine</span> object offers a uniform way to address different web services, such as Google and Wikipedia. The <span class="inline_code">SearchEngine.search()</span> method returns a list of <span class="inline_code">Result</span> objects for a given query string – similar to a search field in a browser.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine = SearchEngine<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">1.0</span><span style="">&#41;</span></code></span></p>
+<p><span class="geshifilter"><code class="python geshifilter-python">engine = SearchEngine<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">1.0</span>, language=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
 <p><span class="geshifilter"><code class="python geshifilter-python">engine.<span style="">license</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Service license key.</span><br />
-engine.<span style="">throttle</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Time between requests (being nice to server).</span></code></span></p>
+engine.<span style="">throttle</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Time between requests (being nice to server).</span><br />
+engine.<span style="">language</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Restriction for Result.language (e.g., 'en').</span></code></span></p>
 <p><span class="geshifilter"><code class="python geshifilter-python">engine.<span style="">search</span><span style="">&#40;</span>query, <br />
 &nbsp; &nbsp; type = SEARCH, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># SEARCH | IMAGE | NEWS | BLOG | TRENDS</span><br />
 &nbsp; &nbsp;start = <span style="color: #666;">1</span>, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Starting page.</span><br />
@@ -209,16 +210,16 @@ engine.<span style="">throttle</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
 &nbsp; &nbsp; size = <span style="color: #4a587c;">None</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Image size: TINY | SMALL | MEDIUM | LARGE</span><br />
 &nbsp; cached = <span style="color: #4a587c;">True</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Cache locally?</span></code></span></p>
 <p><span class="small"><span style="text-decoration: underline;">Note</span>: <span class="inline_code">SearchEngine.search()</span> also takes the same optional parameters as <span class="inline_code">URL.download()</span>.</span></p>
-<h3>Google | Bing | Yahoo | Twitter | Wikipedia | Flickr</h3>
+<h3>Google | Yahoo | Bing | Twitter | Wikipedia | Flickr</h3>
 <p><span class="inline_code">SearchEngine</span> is subclassed by <span class="inline_code">Google</span>, <span class="inline_code">Yahoo</span>, <span class="inline_code">Bing</span>, <span class="inline_code">Twitter</span>, <span class="inline_code">Wikipedia</span>, <span class="inline_code">Flickr</span>, <span class="inline_code">Newsfeed</span>:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine = Google<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">0.1</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine = Bing<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">0.1</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine = Yahoo<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">0.1</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine = Twitter<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">0.4</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine = Wikipedia<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">3.0</span>, language=<span style="color: #657a8a;">&quot;en&quot;</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine = Flickr<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">1.0</span><span style="">&#41;</span></code></span></p>
+<p><span class="geshifilter"><code class="python geshifilter-python">engine = Google<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">1.0</span>, language=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
+<p><span class="geshifilter"><code class="python geshifilter-python">engine = Yahoo<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">1.0</span><span style="">&#41;</span></code></span></p>
+<p><span class="geshifilter"><code class="python geshifilter-python">engine = Bing<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">1.0</span>, language=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
+<p><span class="geshifilter"><code class="python geshifilter-python">engine = Twitter<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">0.5</span>, language=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
+<p><span class="geshifilter"><code class="python geshifilter-python">engine = Wikipedia<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">5.0</span>, language=<span style="color: #657a8a;">&quot;en&quot;</span><span style="">&#41;</span></code></span></p>
+<p><span class="geshifilter"><code class="python geshifilter-python">engine = Flickr<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">5.0</span><span style="">&#41;</span></code></span></p>
 <p><span class="geshifilter"><code class="python geshifilter-python">engine = Newsfeed<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">1.0</span><span style="">&#41;</span></code></span></p>
-<p>Each of these has different settings for <span class="inline_code">search()</span>. For example: <span class="inline_code">Google.search()</span> has no daily limit but it only returns up to 64 results. <span class="inline_code">Yahoo.search()</span> returns up to a 1000 results but it has a daily limit of 5000 queries (each call to <span class="inline_code">search()</span> counts as one query).</p>
+<p>Each of these has different settings for <span class="inline_code">search()</span>. For example,&nbsp;<span class="inline_code">Twitter.search()</span> returns up to a 1500 results for a search term (15 queries with 100 results each, or 150 queries with 10 results each). It has an hourly limit of 150 queries (each call to <span class="inline_code">search()</span> counts as one query).</p>
 <table class="border">
 <tbody>
 <tr>
@@ -232,39 +233,39 @@ engine.<span style="">throttle</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
 </tr>
 <tr>
 <td><span class="inline_code">Google</span></td>
-<td><span class="inline_code">SEARCH|IMAGE|NEWS</span></td>
-<td>1-7</td>
-<td>8</td>
+<td><span class="inline_code">SEARCH<sup>1</sup></span></td>
+<td>1-100/<span class="inline_code">count</span></td>
+<td>1-10</td>
 <td><span class="inline_code">RELEVANCY</span></td>
-<td>-</td>
-<td>0.1</td>
-</tr>
-<tr>
-<td><span class="inline_code">Bing</span></td>
-<td><span class="inline_code">SEARCH|IMAGE|NEWS<sup>1</sup></span></td>
-<td>1-1000/<span class="inline_code">count</span></td>
-<td>1-50</td>
-<td><span class="inline_code">RELEVANCY</span></td>
-<td>-</td>
-<td>0.1</td>
+<td><span class="smallcaps">paid</span></td>
+<td>0.5</td>
 </tr>
 <tr>
 <td><span class="inline_code">Yahoo</span></td>
-<td><span class="inline_code">SEARCH|IMAGE|NEWS<sup style="color: #666666;">2</sup><br /></span></td>
-<td>1-1000/<span class="inline_code">count</span></td>
+<td><span class="inline_code">SEARCH|IMAGE|NEWS<sup>12</sup></span></td>
+<td>1-1000/count</td>
 <td>1-50</td>
 <td><span class="inline_code">RELEVANCY</span></td>
 <td><span class="smallcaps">paid</span></td>
-<td>0.1</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td><span class="inline_code">Bing</span></td>
+<td><span class="inline_code">SEARCH|IMAGE|NEWS<sup>3</sup></span></td>
+<td>1-1000/<span class="inline_code">count</span></td>
+<td>1-50</td>
+<td><span class="inline_code">RELEVANCY</span></td>
+<td>-</td>
+<td>1.0</td>
 </tr>
 <tr>
 <td><span class="inline_code">Twitter</span></td>
-<td><span class="inline_code">SEARCH|TRENDS<sup>3</sup></span></td>
+<td><span class="inline_code">SEARCH|TRENDS<sup>4</sup></span></td>
 <td>1-1500/<span class="inline_code">count</span></td>
 <td>1-100</td>
 <td><span class="inline_code">RELEVANCY</span></td>
 <td>150/hour</td>
-<td>0.4</td>
+<td>0.5</td>
 </tr>
 <tr>
 <td><span style="font-family: Courier,monospace; font-size: small;"><span style="font-size: 12px;">Wikipedia</span></span></td>
@@ -273,7 +274,7 @@ engine.<span style="">throttle</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
 <td>1</td>
 <td><span style="font-family: Courier,monospace; font-size: small;"><span style="font-size: 12px;">RELEVANCY</span></span></td>
 <td>-</td>
-<td>3.0</td>
+<td>5.0</td>
 </tr>
 <tr>
 <td><span style="font-family: Courier,monospace; font-size: small;"><span style="font-size: 12px;">Flickr<br /></span></span></td>
@@ -282,7 +283,7 @@ engine.<span style="">throttle</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
 <td>1-500</td>
 <td><span style="font-family: Courier,monospace; font-size: 12px;">RELEVANCY|LATEST</span></td>
 <td>-</td>
-<td>1.0</td>
+<td>5.0</td>
 </tr>
 <tr>
 <td><span class="inline_code">Newsfeed</span></td>
@@ -295,7 +296,7 @@ engine.<span style="">throttle</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
 </tr>
 </tbody>
 </table>
-<p><span class="small"><sup>1&nbsp;</sup><span style="font-family: Courier,monospace; font-size: 12px;">Bing.search(type=NEWS)</span>&nbsp;has a <span class="inline_code">count</span> of 1-15.<br /></span><span style="font-size: 11px;"><sup style="color: #666666;">2&nbsp;</sup><span style="font-family: Courier,monospace; font-size: 12px;">Yahoo.search(type=IMAGES)</span></span><span style="font-size: 11px;">&nbsp;has a&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">count</span>&nbsp;of 1-35. The Yahoo API is a paid service.</span><br /><span class="small"><sup>3&nbsp;</sup><span style="font-family: Courier,monospace; font-size: 12px;">Twitter.search(type=TRENDS)</span>&nbsp;yields a maximum 0f 10 results.</span></p>
+<p><span class="small"><sup>1&nbsp;</sup><span class="inline_code">Google</span> and <span class="inline_code">Yahoo</span> are paid services – see further how to obtain a license key.<span style="color: #666666; font-size: x-small;"><span style="font-size: 10px;"><br /></span></span></span><span style="font-size: 11px;"><sup style="color: #666666;">2&nbsp;</sup><span style="font-family: Courier,monospace; font-size: 12px;">Yahoo.search(type=IMAGES)</span></span><span style="font-size: 11px;">&nbsp;has a&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">count</span>&nbsp;of 1-35.<br /></span><span style="font-size: 11px;"><sup style="color: #666666;">3&nbsp;</sup><span style="font-family: Courier,monospace; font-size: 12px;">Bing.search(type=NEWS)</span></span><span style="font-size: 11px;">&nbsp;has a&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">count</span>&nbsp;of 1-15.</span><br /><span class="small"><sup>4&nbsp;</sup><span style="font-family: Courier,monospace; font-size: 12px;">Twitter.search(type=TRENDS)</span>&nbsp;yields a maximum 0f 10 results.</span></p>
 <h3>Results</h3>
 <p><span class="inline_code">SearchEngine.search()</span> returns a list of <span class="inline_code">Result</span> objects. The list has an additional <span class="inline_code">total</span> attribute, an estimate of the total number of results available for the given query. Each <span class="inline_code">Result</span> holds useful information:</p>
 <p><span class="geshifilter"><code class="python geshifilter-python">result = Result<span style="">&#40;</span>url<span style="">&#41;</span></code></span></p>
@@ -310,8 +311,8 @@ result.<span style="">date</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbs
 <li>The <span class="inline_code">Result.download()</span> method uses the <span class="inline_code">URL</span> object internally.<br />It takes the same optional parameters as <span class="inline_code">URL.download()</span>.</li>
 </ul>
 <p>For example:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> engine = Google<span style="">&#40;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> i <span style="color: #28334f; font-weight: bold;">in</span> <span style="color: #4a587c;">range</span><span style="">&#40;</span><span style="color: #666;">1</span>,<span style="color: #666;">8</span><span style="">&#41;</span>:<br />
+<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> engine = Bing<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span><span style="">&#41;</span><br />
+<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> i <span style="color: #28334f; font-weight: bold;">in</span> <span style="color: #4a587c;">range</span><span style="">&#40;</span><span style="color: #666;">1</span>,<span style="color: #666;">5</span><span style="">&#41;</span>:<br />
 <span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">for</span> result <span style="color: #28334f; font-weight: bold;">in</span> engine.<span style="">search</span><span style="">&#40;</span><span style="color: #657a8a;">'holy handgrenade'</span>, type=SEARCH, start=i<span style="">&#41;</span>:<br />
 <span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #4a587c;">repr</span><span style="">&#40;</span>plaintext<span style="">&#40;</span>result.<span style="">description</span><span style="">&#41;</span><span style="">&#41;</span><br />
 <span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">print</span><br />
@@ -322,13 +323,14 @@ u<span style="color: #657a8a;">'Once the number three, being the third number, b
 </code></span></span></p>
 <p>&nbsp;</p>
 <p><span class="smallcaps">Image search<br /></span></p>
-<p>For <span class="inline_code">Google</span>, <span class="inline_code">Bing</span> and <span class="inline_code">Flickr</span>, image links retrieved with <span class="inline_code">search(type=IMAGE)</span> can be filtered by setting the <span class="inline_code">size</span> parameter to <span style="font-family: Courier, monospace; font-size: 12px;">TINY<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>SMALL<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>MEDIUM<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>LARGE</span> (or&nbsp;<span style="font-family: Courier, monospace; font-size: 12px;">None</span>&nbsp;for any size).&nbsp;Note that <span class="inline_code">Yahoo</span> image search has a <span class="inline_code">count</span> of 1-35.</p>
+<p>For <span class="inline_code">Yahoo</span>, <span class="inline_code">Bing</span> and <span class="inline_code">Flickr</span>, image links retrieved with <span class="inline_code">search(type=IMAGE)</span> can be filtered by setting the <span class="inline_code">size</span> parameter to <span style="font-family: Courier, monospace; font-size: 12px;">TINY<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>SMALL<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>MEDIUM<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>LARGE</span> (or&nbsp;<span style="font-family: Courier, monospace; font-size: 12px;">None</span>&nbsp;for any size).&nbsp;Note that <span class="inline_code">Yahoo</span> image search has a <span class="inline_code">count</span> of 1-35.</p>
 <p>The use of downloaded images may be restricted by authorship.&nbsp;<span class="inline_code">Flickr.search()</span> can be used with an optional <span class="inline_code">copyright=False</span>. This will only retrieve results with no copyright restrictions (either under Creative Commons license <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_blank">by-sa</a>&nbsp;or in the public domain).</p>
 <p>&nbsp;</p>
 <p><span class="smallcaps">Service license key</span></p>
 <p>Some services require a license key. They may work without one, but this implies that you share a public license key (and query limit) with all other users of the web module. If you reach the query limit, <span class="inline_code">SearchEngine.search()</span> will raise an <span class="inline_code">SearchEngineLimitError</span>.</p>
-<p><span class="inline_code">Yahoo</span>&nbsp;is a paid service (&lt;1$ per 1000 queries) that requires an OAuth key + secret, which you can pass as a tuple to <span class="inline_code">Yahoo(license=(key, secret))</span>.</p>
-<p>Obtain a license key for: <a href="http://code.google.com/apis/loader/signup.html" target="_blank">Google</a>, <a href="http://www.bing.com/developers/createapp.aspx" target="_blank">Bing</a>, <a href="http://developer.yahoo.com/search/boss/" target="_blank">Yahoo</a>, <a href="http://www.flickr.com/services/api/keys/" target="_blank">Flickr</a>.</p>
+<p><span class="inline_code">Google</span> is a paid service (5$ per 1o00 queries). If you have a license key you get 100 free queries per day. To get a key, follow the link below, activate "Custom Search API" under "Services" and look up your key under "API Access".</p>
+<p><span class="inline_code">Yahoo</span>&nbsp;is a paid service (0.8$ per 1000 queries) that requires an OAuth key + secret, which you can pass as a tuple to <span class="inline_code">Yahoo(license=(key, secret))</span>.</p>
+<p>Obtain a license key for: <a href="https://code.google.com/apis/console/" target="_blank">Google</a>,&nbsp;<a href="http://www.bing.com/developers/createapp.aspx" target="_blank">Bing</a>, <a href="http://developer.yahoo.com/search/boss/" target="_blank">Yahoo</a>, <a href="http://www.flickr.com/services/api/keys/" target="_blank">Flickr</a>.</p>
 <p>&nbsp;</p>
 <p><span class="smallcaps">Service request throttle</span></p>
 <p>A <span class="inline_code">SearchEngine.search()</span> request takes a minimum amount of time to complete, as outlined in the table above. This is intended as etiquette towards the servers providing the service. Be polite and raise the throttle value when you plan to run a lot of queries in batch.</p>
@@ -349,11 +351,11 @@ u<span style="color: #657a8a;">'Cell biology: Lung lipid hurts breathing'</span>
 <p>&nbsp;</p>
 <hr />
 <h2>Google translate</h2>
-<p>The <span class="inline_code">Google.translate()</span> method returns the translation of a string in the given language.<br />The <span class="inline_code">Google.language()</span> method returns a (<span class="inline_code">language code</span>, <span class="inline_code">reliability</span>)-tuple for a given string.&nbsp;</p>
+<p>The <span class="inline_code">Google.translate()</span> method returns the translation of a string in the given language.<br />The <span class="inline_code">Google.identify()</span> method returns a (<span class="inline_code">language code</span>, <span class="inline_code">reliability</span>)-tuple for a given string.&nbsp;</p>
 <p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> s = <span style="color: #657a8a;">&quot;C'est un lapin, lapin de bois. Quoi? Un cadeau.&quot;</span><br />
 <span style="">&gt;&gt;&gt;</span> g = Google<span style="">&#40;</span><span style="">&#41;</span><br />
 <span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> g.<span style="">translate</span><span style="">&#40;</span>s, <span style="color: #4a587c;">input</span>=<span style="color: #657a8a;">'fr'</span>, output=<span style="color: #657a8a;">'en'</span>, cached=<span style="color: #4a587c;">False</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> g.<span style="">language</span><span style="">&#40;</span>s<span style="">&#41;</span><br />
+<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> g.<span style="">identify</span><span style="">&#40;</span>s<span style="">&#41;</span><br />
 <br />
 u<span style="color: #657a8a;">&quot;It's a bunny, rabbit wood. What? A gift.&quot;</span><br />
 <span style="">&#40;</span>u<span style="color: #657a8a;">'fr'</span>, <span style="color: #666;">0.76</span><span style="">&#41;</span> </code></span></span></p>
@@ -526,7 +528,7 @@ Computational Linguistics <span style="">&amp;</span> Psycholinguistics Research
 <h2><a name="spider"></a>Spider</h2>
 <p>A <em>web crawler</em> or <em>web spider</em> is used to browse the web in an automatter manner. The <span class="inline_code">Spider</span> class is initialized with a list of URLs. These are then visited by the spider. If they lead to a web page (i.e. HTML), the content is parsed for new links. These are added to the list of links scheduled for a visit.</p>
 <p>The given <span class="inline_code">delay</span> defines the amount of seconds to wait before revisiting the same (sub)domain. This is a politeness policy: continually hammering a server with a robot disrupts requests from the website's regular visitors (this is called a <em>denial-of-service attack</em>). With <span class="inline_code">queue=False</span>, the spider will skip the link for now, until the delay has passed. With <span class="inline_code">queue=True</span>, the spider remains idle until the delay has passed.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">spider = Spider<span style="">&#40;</span>links=<span style="">&#91;</span><span style="">&#93;</span>, delay=<span style="color: #666;">20</span>, queue=<span style="color: #4a587c;">False</span>, <span style="">parser</span>=HTMLLinkParser<span style="">&#40;</span><span style="">&#41;</span>.<span style="">parse</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">spider.<span style="">delay</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Delay between visits to the same (sub)domain.</span><br />
+<p><span class="geshifilter"><code class="python geshifilter-python">spider = Spider<span style="">&#40;</span>links=<span style="">&#91;</span><span style="">&#93;</span>, delay=<span style="color: #666;">20.0</span>, queue=<span style="color: #4a587c;">False</span>, <span style="">parser</span>=HTMLLinkParser<span style="">&#40;</span><span style="">&#41;</span>.<span style="">parse</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">spider.<span style="">delay</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Delay between visits to the same (sub)domain.</span><br />
 spider.<span style="">queue</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Wait for delay or parse other links in the meantime?</span><br />
 spider.<span style="">visited</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Dictionary of URLs already visited.</span><br />
 spider.<span style="">parse</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Function, returns list of Links from a HTML string.</span><br />

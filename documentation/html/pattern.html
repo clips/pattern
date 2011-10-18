@@ -35,21 +35,22 @@
 <table>
 <tbody>
 <tr>
-<td><a onclick="javascript:_gaq.push(['_trackPageview', '/downloads/pattern']);" href="http://www.clips.ua.ac.be/media/pattern-2.1.zip" target="_self"><img src="../g/download.gif" alt="download" align="left" /></a></td>
-<td><strong>Pattern 2.1</strong>&nbsp;| <a onclick="javascript:_gaq.push(['_trackPageview', '/downloads/pattern']);" href="http://www.clips.ua.ac.be/media/pattern-2.1.zip" target="_self">download</a> (12MB)
+<td><a onclick="javascript:_gaq.push(['_trackPageview', '/downloads/pattern']);" href="http://www.clips.ua.ac.be/media/pattern-2.2.zip" target="_self"><img src="../g/download.gif" alt="download" align="left" /></a></td>
+<td><strong>Pattern 2.2</strong>&nbsp;| <a onclick="javascript:_gaq.push(['_trackPageview', '/downloads/pattern']);" href="http://www.clips.ua.ac.be/media/pattern-2.2.zip" target="_self">download</a> (12MB)
 <ul>
 <li>Requires: Python 2.4+ on Windows | Mac | Unix</li>
 <li>Licensed under <a href="http://www.linfo.org/bsdlicense.html" target="_blank">BSD</a></li>
-<li>Latest releases: <a href="http://www.clips.ua.ac.be/media/pattern-2.1.zip">2.1</a> |&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-2.0.zip">2.0</a> |&nbsp;<a style="color: #1e90ff; outline-style: none !important; outline-width: initial !important; outline-color: initial !important;" href="http://www.clips.ua.ac.be/media/pattern-1.9.zip">1.9</a>&nbsp;|&nbsp;<a style="color: #1e90ff; outline-style: none !important; outline-width: initial !important; outline-color: initial !important;" href="http://www.clips.ua.ac.be/media/pattern-1.8.zip">1.8</a>&nbsp;|&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-1.7.zip">1.7</a> |&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-1.6.zip">1.6</a> |&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-1.5.zip">1.5</a>&nbsp;</li>
+<li>Latest releases: <a href="http://www.clips.ua.ac.be/media/pattern-2.2.zip">2.2</a> |&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-2.1.zip">2.1</a> |&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-2.0.zip">2.0</a> |&nbsp;<a style="color: #1e90ff; outline-style: none !important; outline-width: initial !important; outline-color: initial !important;" href="http://www.clips.ua.ac.be/media/pattern-1.9.zip">1.9</a>&nbsp;|&nbsp;<a style="color: #1e90ff; outline-style: none !important; outline-width: initial !important; outline-color: initial !important;" href="http://www.clips.ua.ac.be/media/pattern-1.8.zip">1.8</a></li>
 <li>Author:<br />Tom De Smedt (<em>tom at organisms.be</em>)</li>
 </ul>
-<p><span class="small"><span style="text-decoration: underline;">Reference</span>: De Smedt, T. &amp; Daelemans, W. (2011)</span>.<br /><span class="small">Pattern version 2.0, retrieved July 2011, from: http://www.clips.ua.ac.be/</span></p>
+<p><span class="small"><span style="text-decoration: underline;">Reference</span>: De Smedt, T. &amp; Daelemans, W. (2011)</span>.<br /><span class="small">Pattern version 2.2, retrieved October 2011, from: http://www.clips.ua.ac.be/</span></p>
 </td>
 <td>
 </td>
 </tr>
 </tbody>
 </table>
+<p>&nbsp;</p>
 <hr />
 <table border="0">
 <tbody>
@@ -172,18 +173,18 @@ Chunk<span style="">&#40;</span><span style="color: #657a8a;">'mobile apps/NP'</
 </ul>
 <h3>pattern.graph</h3>
 <p>Module <a href="pattern-graph.html">pattern.graph</a> provides a data structure to represent relationships between <em>nodes</em> (e.g. words, concepts, entities ...) The relative importance (or <em>centrality</em>) of each node can then be calculated. Graphs can be exported as an interactive web page using the HTML <span class="inline_code">&lt;canvas&gt;</span> element (<span class="link-maintenance"><a href="http://www.clips.ua.ac.be/media/pattern-graph" target="_blank">demo</a></span>).&nbsp;</p>
-<p>The screenshot shows&nbsp;an exported graph with nodes pointing to more important nodes (data mined from Yahoo). Nodes with a lot of "traffic" are marked with a shadow (<em>money</em>, <em>football</em>, <em>life</em>), important nodes are marked in blue (<em>experience</em>, <em>I</em>, <em>nothing</em>, <em>money</em>).</p>
+<p>The screenshot shows&nbsp;an exported graph with nodes pointing to more important nodes (data mined from Bing). Nodes with a lot of "traffic" are marked with a shadow (<em>money</em>, <em>football</em>, <em>life</em>), important nodes are marked in blue (<em>experience</em>, <em>I</em>, <em>nothing</em>, <em>money</em>).</p>
 <p><img class="border" src="../g/pattern_graph1.jpg" alt="" width="610" height="300" /></p>
 <p><span style="font-size: 11px;"><span style="text-decoration: underline;">Note</span>: The&nbsp;<em>nothing</em>&nbsp;result could use some extra post-processing, e.g. in:&nbsp;<em>nothing is more important than life</em>, the word&nbsp;<em>life</em>&nbsp;is important, not the word&nbsp;<em>nothing</em>.</span></p>
 <p>Source code:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">web</span> &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">import</span> Yahoo, plaintext<br />
+<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">web</span> &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">import</span> Bing, plaintext<br />
 <span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">import</span> Sentence, Chunk, parse<br />
 <span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">search</span> <span style="color: #28334f; font-weight: bold;">import</span> Pattern<br />
 <span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">graph</span> &nbsp;<span style="color: #28334f; font-weight: bold;">import</span> Graph, Node, Edge, export<br />
 <span style="">&gt;&gt;&gt;</span> &nbsp;<br />
 <span style="">&gt;&gt;&gt;</span> g = Graph<span style="">&#40;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> i <span style="color: #28334f; font-weight: bold;">in</span> <span style="color: #4a587c;">range</span><span style="">&#40;</span><span style="color: #666;">5</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">for</span> r <span style="color: #28334f; font-weight: bold;">in</span> Yahoo<span style="">&#40;</span><span style="">&#41;</span>.<span style="">search</span><span style="">&#40;</span><span style="color: #657a8a;">'&quot;more important than&quot;'</span>, start=i+<span style="color: #666;">1</span>, count=<span style="color: #666;">100</span><span style="">&#41;</span>:<br />
+<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> i <span style="color: #28334f; font-weight: bold;">in</span> <span style="color: #4a587c;">range</span><span style="">&#40;</span><span style="color: #666;">10</span><span style="">&#41;</span>:<br />
+<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">for</span> r <span style="color: #28334f; font-weight: bold;">in</span> Bing<span style="">&#40;</span><span style="">&#41;</span>.<span style="">search</span><span style="">&#40;</span><span style="color: #657a8a;">'&quot;more important than&quot;'</span>, start=i+<span style="color: #666;">1</span>, count=<span style="color: #666;">50</span><span style="">&#41;</span>:<br />
 <span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; s = plaintext<span style="">&#40;</span>r.<span style="">description</span>.<span style="">lower</span><span style="">&#40;</span><span style="">&#41;</span><span style="">&#41;</span><br />
 <span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; s = Sentence<span style="">&#40;</span>parse<span style="">&#40;</span>s<span style="">&#41;</span><span style="">&#41;</span><br />
 <span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; p = Pattern.<span style="">fromstring</span><span style="">&#40;</span><span style="color: #657a8a;">'NP (VP) more important than NP'</span><span style="">&#41;</span><br />
