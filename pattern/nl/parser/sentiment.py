@@ -18,6 +18,8 @@ import sys; sys.path.insert(0, os.path.join(MODULE, "..", ".."))
 from en.parser.sentiment import Lexicon as _Lexicon, sentiment as _sentiment
 from en.parser.sentiment import NOUN, VERB, ADJECTIVE, ADVERB
 
+from nl.inflect import attributive
+
 #### SUBJECTIVITY LEXICON ############################################################################
 
 class Lexicon(_Lexicon):
@@ -27,6 +29,15 @@ class Lexicon(_Lexicon):
         # Use synset id's from Cornetto instead of WordNet. 
         kwargs.setdefault("synsets", "cornetto_synset_id")
         _Lexicon.__init__(self, path, **kwargs)
+        # Map "verschrikkelijk" to adverbial "verschrikkelijke".
+        # Combined with negation, this increases accuracy to 78%.
+        # A 0.78, P 0.76, R 0.83, F1 0.79, instead of:
+        # A 0.75, P 0.72, R 0.82, F1 0.77.
+        for w, pos in self.items():
+            if "JJ" in pos:
+                a = attributive(w)
+                if a not in self: 
+                    self[a] = { "JJ": pos["JJ"], None: pos["JJ"] }
     
     def synset(self, id, pos=None):
         if not self._parsed:
@@ -40,13 +51,6 @@ lexicon = _lexicon = Lexicon(path=os.path.join(MODULE, "sentiment.xml"))
 def sentiment(s, **kwargs):
     kwargs.setdefault("lexicon", _lexicon)
     kwargs.setdefault("negation", True)
-    # Following is a neat trick that catches more adjectives.
-    # Combined with negation: A 0.78 P 0.76  R 0.83 F1 0.79.
-    #from pattern.nl.inflect import predicative
-    #s = [w.strip("*#[]():;,.!?-\t\n\r\x0b\x0c") for w in s.lower().split()]
-    #for i, w in enumerate(s):
-    #    if w not in lexicon and predicative(w) in lexicon:
-    #        s[i] = predicative(w)
     return _sentiment(s, **kwargs)
     
 def polarity(s, **kwargs):
@@ -57,10 +61,11 @@ def subjectivity(s, **kwargs):
     
 def positive(s, threshold=0.1, **kwargs):
     return polarity(s, **kwargs) >= threshold
-    
+
 
 # Evaluation.
 
+#import sys; sys.path.append(os.path.join("..","..",".."))
 #from pattern.db import Datasheet
 #from pattern.metrics import test
 #from random import shuffle

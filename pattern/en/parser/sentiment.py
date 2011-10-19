@@ -108,7 +108,7 @@ class Lexicon:
         return self._synsets.get(id, None)
 
     # Implement dict methods to first call Lexicon._parse().
-    # dict.copy() and iteritems|keys|values() is not implemented.
+    # dict.copy() is not implemented.
     def __setitem__(self, k, v):
         if not self._parsed:
             self._parse()
@@ -175,6 +175,21 @@ class Lexicon:
         if not self._parsed:
             self._parse()
         self._words.update(*args)
+
+    def iterkeys(self):
+        if not self._parsed:
+            self._parse()
+        return self._words.iterkeys()
+        
+    def itervalues(self):
+        if not self._parsed:
+            self._parse()
+        return self._words.itervalues()
+        
+    def iteritems(self):
+        if not self._parsed:
+            self._parse()
+        return self._words.iteritems()
 
 lexicon = _lexicon = Lexicon()
 
