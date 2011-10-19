@@ -185,31 +185,37 @@ def sentiment(s, **kwargs):
         with polarity between -1.0 and 1.0 and subjectivity between 0.0 and 1.0.
         The sentence can be a string, Synset, Text, Sentence, Chunk or Word.
     """
-    lexicon, pos = (
+    lexicon, negation, pos = (
         kwargs.get("lexicon", _lexicon), 
+        kwargs.get("negation", False),
         kwargs.get("pos", None))
     v = []
     
-    def _score(words, language="en"):
-        prev = None
+    def _score(words, language="en", negation=False):
+        negated = 1
+        modifier = None # Preceding adverb/adjective.
         for w, pos in words:
             # Only process known words, preferably by correct part-of-speech.
             # Including unknown words (e.g. polarity=0 and subjectivity=0) lowers the average.
             if w in lexicon and pos in lexicon[w]:
-                if prev is not None and ( \
-                  (language == "en" and "RB" in lexicon[prev[0]] and "JJ" in lexicon[w]) or \
-                  (language == "nl" and "JJ" in lexicon[prev[0]] and "JJ" in lexicon[w])):
+                if modifier is not None and ( \
+                  (language == "en" and "RB" in lexicon[modifier[0]] and "JJ" in lexicon[w]) or \
+                  (language == "nl" and "JJ" in lexicon[modifier[0]] and "JJ" in lexicon[w])):
                     # For English, adverb + adjective uses the intensity score.
                     # For Dutch, adjective + adjective uses the intensity score.
                     # For example: "echt" + "teleurgesteld" = 1.6 * -0.4, not 0.2 + -0.4
                     # ("hopeloos voorspelbaar", "ontzettend spannend", "verschrikkelijk goed", ...)
-                    i = lexicon[prev[0]][prev[1]][2]
+                    i = lexicon[modifier[0]][modifier[1]][2]
                     v[-1] = lexicon[w][pos]
-                    v[-1] = tuple(v*i for v in v[-1])
-                v.append(lexicon[w][pos])
-                prev = (w, pos)
+                    v[-1] = [x*i for x in v[-1]]
+                v.append(list(lexicon[w][pos]))
+                v[-1][0] *= negated
+                modifier = (w, pos)
             else:
-                prev = None
+                modifier = None
+            # Simple negation increases precision.
+            # For Dutch, negation=True is beneficial: A 0.77 P 0.75  R 0.81 F1 0.78.
+            negated = negation and w in ("not", "never", "niet", "nooit") and -1 or 1
     
     # From pattern.en.wordnet.Synset: 
     # sentiment(synsets("horrible", "JJ")[0]) => (-0.6, 1.0)
@@ -226,19 +232,19 @@ def sentiment(s, **kwargs):
     # From plain string: 
     # sentiment("a horrible movie") => (-0.6, 1.0)
     elif isinstance(s, basestring):
-        _score([(w.strip("*#[]():;,.!?-\t\n\r\x0b\x0c"), pos) for w in s.lower().split()], lexicon.language)
+        _score([(w.strip("*#[]():;,.!?-\t\n\r\x0b\x0c"), pos) for w in s.lower().split()], lexicon.language, negation)
     # From pattern.en.Text, using word lemmata and parts-of-speech when available.
     elif hasattr(s, "sentences"):
-        _score([(w.lemma or w.string, w.pos) for w in chain(*(s.words for s in s))], lexicon.language)
+        _score([(w.lemma or w.string, w.pos) for w in chain(*(s.words for s in s))], lexicon.language, negation)
     # From pattern.en.Sentence or pattern.en.Chunk.
     elif hasattr(s, "words"):
-        _score([(w.lemma or w.string, w.pos) for w in s.words], lexicon.language)
+        _score([(w.lemma or w.string, w.pos) for w in s.words], lexicon.language, negation)
     # From pattern.en.Word.
     elif hasattr(s, "lemma"):
-        _score([(s.lemma or s.string, s.pos)], lexicon.language)
+        _score([(s.lemma or s.string, s.pos)], lexicon.language, negation)
     # From a flat list of words:
     elif isinstance(s, list):
-        _score([(w, None) for w in s], lexicon.language)
+        _score([(w, None) for w in s], lexicon.language, negation)
     # Return average (polarity, subjectivity).
     n = len(v) or 1
     return (sum(column(v,0))/n, sum(column(v,1))/n)
