@@ -29,9 +29,12 @@ class Lexicon(_Lexicon):
         # Use synset id's from Cornetto instead of WordNet. 
         kwargs.setdefault("synsets", "cornetto_synset_id")
         _Lexicon.__init__(self, path, **kwargs)
+        
+    def _parse(self):
+        _Lexicon._parse(self)
         # Map "verschrikkelijk" to adverbial "verschrikkelijke".
-        # Combined with negation, this increases accuracy to 78%.
-        # A 0.78, P 0.76, R 0.83, F1 0.79, instead of:
+        # Combined with negation, this increases accuracy to 79%.
+        # A 0.79, P 0.77, R 0.83, F1 0.80, instead of:
         # A 0.75, P 0.72, R 0.82, F1 0.77.
         for w, pos in self.items():
             if "JJ" in pos:

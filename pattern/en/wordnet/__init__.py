@@ -350,6 +350,10 @@ class _Sentiment:
         # Yields a (positive, negative, neutral)-tuple.
         v = sentiwordnet.get(normalize(w), (0.0, 1.0))
         return v[0] < 0 and (0.0, -v[0], 1-v[1]) or (v[0], 0.0, 1-v[1])
+    def __contains__(self, w):
+        return w in sentiwordnet
+    def load(self, **kwargs):
+        sentiwordnet.load(**kwargs)
         
 sentiment = _Sentiment()
 

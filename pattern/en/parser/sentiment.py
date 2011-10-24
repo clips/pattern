@@ -207,7 +207,7 @@ def sentiment(s, **kwargs):
     v = []
     
     def _score(words, language="en", negation=False):
-        negated = 1
+        negated  = None # Preceding negation (e.g., "not beautiful").
         modifier = None # Preceding adverb/adjective.
         for w, pos in words:
             # Only process known words, preferably by correct part-of-speech.
@@ -223,14 +223,16 @@ def sentiment(s, **kwargs):
                     i = lexicon[modifier[0]][modifier[1]][2]
                     v[-1] = lexicon[w][pos]
                     v[-1] = [x*i for x in v[-1]]
-                v.append(list(lexicon[w][pos]))
-                v[-1][0] *= negated
+                else:
+                    v.append(list(lexicon[w][pos]))
+                v[-1][0] *= negated is not None and -1 or 1
                 modifier = (w, pos)
             else:
                 modifier = None
             # Simple negation increases precision.
             # For Dutch, negation=True is beneficial: A 0.77 P 0.75  R 0.81 F1 0.78.
-            negated = negation and w in ("not", "never", "niet", "nooit") and -1 or 1
+            negated = negation and w in ("no", "not", "never", "niet", "nooit", "geen") \
+                               and w or None
     
     # From pattern.en.wordnet.Synset: 
     # sentiment(synsets("horrible", "JJ")[0]) => (-0.6, 1.0)
@@ -262,7 +264,8 @@ def sentiment(s, **kwargs):
         _score([(w, None) for w in s], lexicon.language, negation)
     # Return average (polarity, subjectivity).
     n = len(v) or 1
-    return (sum(column(v,0))/n, sum(column(v,1))/n)
+    return (max(-1.0, min(+1.0, sum(column(v,0)) / n)), 
+            max(+0.0, min(+1.0, sum(column(v,1)) / n)))
     
 def polarity(s, **kwargs):
     """ Returns the sentence polarity (positive/negative sentiment) between -1.0 and 1.0.
