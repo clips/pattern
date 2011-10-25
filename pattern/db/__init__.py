@@ -149,9 +149,10 @@ def encode_utf8(string):
     """ Returns the given string as a Python byte string (if possible).
     """
     if isinstance(string, unicode):
-        try: return string.encode("utf-8")
+        try: 
+            return string.encode("utf-8")
         except:
-             return string
+            return string
     return str(string)
 
 def decode_utf8(string):
@@ -160,7 +161,9 @@ def decode_utf8(string):
     if isinstance(string, str):
         try: return string.decode("utf-8")
         except:
-             return string
+            try: return string.decode("windows-1252")
+            except:
+                 return string
     return unicode(string)
 
 RE_AMPERSAND = re.compile("\&(?!\#)")           # & not followed by #
