@@ -65,7 +65,12 @@ def subjectivity(s, **kwargs):
 def positive(s, threshold=0.1, **kwargs):
     return polarity(s, **kwargs) >= threshold
 
-
+#print sentiment("goed")               # (+0.6, 0.9)
+#print sentiment("niet goed")          # (-0.6, 0.9)
+#print sentiment("volkomen goed")      # (+1.0, 1.0)
+#print sentiment("volkomen niet goed") # (-1.0, 1.0)
+#print sentiment("niet volkomen goed") # (-0.3, 0.5)
+#
 # Evaluation.
 
 #import sys; sys.path.append(os.path.join("..","..",".."))
