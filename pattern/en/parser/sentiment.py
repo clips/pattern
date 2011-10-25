@@ -238,7 +238,7 @@ def sentiment(s, **kwargs):
         for w, pos in words:
             # Only assess known words, preferably by correct part-of-speech.
             # Including unknown words (e.g. polarity=0 and subjectivity=0) lowers the average.
-            if w in lexicon and pos[:2] in lexicon[w]:
+            if w in lexicon and pos in lexicon[w]:
                 if modifier is not None and ( \
                   (language == "en" and "RB" in lexicon[modifier[0]] and "JJ" in lexicon[w]) or \
                   (language == "nl" and "JJ" in lexicon[modifier[0]] and "JJ" in lexicon[w])):
@@ -295,13 +295,13 @@ def sentiment(s, **kwargs):
         _score([(w.strip("*#[]():;,.!?-\t\n\r\x0b\x0c"), pos) for w in s.lower().split()], lexicon.language, negation)
     # From pattern.en.Text, using word lemmata and parts-of-speech when available.
     elif hasattr(s, "sentences"):
-        _score([(w.lemma or w.string.lower(), w.pos) for w in chain(*(s.words for s in s))], lexicon.language, negation)
+        _score([(w.lemma or w.string.lower(), w.pos[:2]) for w in chain(*(s.words for s in s))], lexicon.language, negation)
     # From pattern.en.Sentence or pattern.en.Chunk.
     elif hasattr(s, "words"):
-        _score([(w.lemma or w.string.lower(), w.pos) for w in s.words], lexicon.language, negation)
+        _score([(w.lemma or w.string.lower(), w.pos[:2]) for w in s.words], lexicon.language, negation)
     # From pattern.en.Word.
     elif hasattr(s, "lemma"):
-        _score([(s.lemma or s.string.lower(), s.pos)], lexicon.language, negation)
+        _score([(s.lemma or s.string.lower(), s.pos[:2])], lexicon.language, negation)
     # From a flat list of words:
     elif isinstance(s, list):
         _score([(w, None) for w in s], lexicon.language, negation)
