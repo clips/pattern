@@ -519,7 +519,9 @@ class Database(object):
         encoding  = self.type == MYSQL and " default charset=" + encoding.replace("utf-8", "utf8") or ""
         fields, indices = zip(*[self._field_SQL(table, f) for f in fields])
         self.execute("create table `%s` (%s)%s;" % (table, ", ".join(fields), encoding))
-        self.execute("\n".join(i for i in indices if i is not None), commit=True)
+        for index in indices:
+            if index is not None:
+                self.execute(index, commit=True)
         self.tables[table] = None # lazy loading
         return self.tables[table]
         
