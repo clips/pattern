@@ -313,6 +313,7 @@ _verbs.parse_lexeme = _parse_lexeme
 adjective_attributive = {
     "civiel"  : "civiele",
     "complex" : "complexe",
+    "enkel"  : "enkele",
     "grof"    : "grove",
     "half"    : "halve",
     "luttel"  : "luttele",
@@ -353,6 +354,11 @@ def attributive(adjective):
     return w + "e"
 
 adjective_predicative = dict((v,k) for k,v in adjective_attributive.iteritems())
+adjective_predicative.update({
+    "moe"       : "moe",
+    "taboe"     : "taboe",
+    "voldoende" : "voldoende"
+})
 
 def predicative(adjective):
     """ Returns the predicative adjective (lowercase).
