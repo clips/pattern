@@ -1394,11 +1394,16 @@ def csv_header_decode(s):
 
 class CSV(list):
 
-    def __init__(self, rows=[], fields=None):
+    def __init__(self, rows=[], fields=None, **kwargs):
         """ A list of lists that can be exported as a comma-separated text file.
         """
+        fields = fields or kwargs.get("headers", None)
         self.__dict__["fields"] = fields # List of (name, type)-tuples, with type = STRING, INTEGER, etc.
         self.extend(rows)
+        
+    @property
+    def headers(self):
+        return self.__dict__["fields"]
 
     def save(self, path, separator=",", encoder=lambda v: v, headers=False):
         """ Exports the table to a unicode text file at the given path.
@@ -1414,7 +1419,7 @@ class CSV(list):
         w.writerows([[encode_utf8(encoder(v)) for v in row] for row in self])
         f = open(path, "wb")
         f.write(BOM_UTF8)
-        f.write(s.getvalue())
+        f.write(s.getvalue().strip())
         f.close()
 
     @classmethod
@@ -1465,14 +1470,14 @@ class CSV(list):
 
 class Datasheet(CSV):
     
-    def __init__(self, rows=[], fields=None):
+    def __init__(self, rows=[], fields=None, **kwargs):
         """ A matrix of rows and columns, where each row and column can be retrieved as a list.
             Values can be any kind of Python object.
         """
         self.__dict__["_rows"] = DatasheetRows(self)
         self.__dict__["_columns"] = DatasheetColumns(self)
         self.__dict__["_m"] = 0 # Number of columns per row, see Datasheet.insert().
-        CSV.__init__(self, rows, fields)
+        CSV.__init__(self, rows, fields, **kwargs)
     
     def _get_rows(self):
         return self._rows
@@ -1992,3 +1997,7 @@ def pprint(datasheet, truncate=40, padding=" ", fill="."):
                 s += padding
                 print s,
             print
+
+from random import random
+from pattern.web import json
+print repr(json.dumps(2.26))
