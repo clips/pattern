@@ -56,6 +56,19 @@
 			// Render canvas.save() data URL in a popup window.
 			window.open(canvas.save(), null, "width="+canvas.width+",height="+canvas.height);
 		}
+		
+		function saveFile() {
+			$("save").style.display = "";
+			$("open").style.display = "none";
+			stop();
+		}
+		
+		function openFile() {
+			$("save").style.display = "none";
+			$("open").style.display = "";
+			stop();
+		}
+		
 		function onerror(error) {
 			// Show the error traceback.
 			// Stop the spinner.
@@ -68,6 +81,9 @@
 			// Show the output of the print() command.
 			$("traceback").innerHTML = "<span class='stdout'>"+string+"</span>";
 		}
+		function hide(id) {
+			$(id).style.display = "none";
+		}
 	</script>
 	<style>
 		body { margin: 0; overflow: hidden; background: #eee; }
@@ -75,21 +91,19 @@
 		#resizable { position: absolute; bottom: 0; right: 0; width: 100%; }
 		#editor { height: 300px; }
 		#tab {
-			height: 16px;
+			height: 24px;
 			border-top: 1px solid #888; 
 			border-bottom: 1px solid #666;
 			background-color: #aaa; 
 			background-image: url("data:image/gif;base64,R0lGODlhAQAYAMQAAKOjo6CgoLa2trq6up2dnaampre3t5qamrS0tJeXl66urp6enqioqKWlpbKysr+/v6Kiory8vLm5uZycnKurq7CwsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAABABgAAAUU4BMNkiEgTlUpFMUUDQAFCzEdSQgAOw==");
 			background-attachment: repeat-x; 
-			height: 24px; 
 			cursor: row-resize;
 		}
 		#tab button { 
-			height: 16px;
-			margin: 4px 0 0 0;
+			height: 24px;
+			margin: 0;
 			padding: 0 6px 0 6px;
 			border: 0;
-			border-radius: 8px; 
 			background: none;
 			color: #222;
 			cursor: pointer;
@@ -97,12 +111,17 @@
 			line-height: 1.0em;
 		}
 		#tab button:hover { 
-			background: #555; 
+			background: #555;
 			color: white; 
 		}
 		#tab #width, .tab #height {
 			width: 35px;
 			text-align: center;
+		}
+		#save,
+		#open {
+			padding: 4px;
+			background: rgb(245,250,250);
 		}
 		#traceback {
 			height: 20px;
@@ -160,9 +179,31 @@
 	<div id="resizable">
 		<div id="tab" onselectstart="javascript:return false;">
 			&nbsp;
+			<button onclick="javascript:openFile();">Open</button>
+			<button onclick="javascript:saveFile();">Save</button>
 			<button onclick="javascript:run();">Run</button>
 			<button onclick="javascript:stop();">Stop</button>
 			<button onclick="javascript:exportPNG();">Export PNG</button>
+		</div>
+		<div id="open" style="display:none;">
+			<!-- Until FileReader support, the only way to open a file is via a server. -->
+			<form action="http://www.clips.ua.ac.be/media/pattern-canvas/file.php?upload" method="post" enctype="multipart/form-data" target="_response">
+				<input type="file" name="source" onchange="this.form.submit(); hide('open');" />
+				<iframe name="_response" style="display:none;"></iframe>
+				<script>
+					attachEvent(window, "message", function(e) { 
+						if (e.origin != "file://") editor.source(String.decodeEntities(e.data)); 
+					});
+				</script>
+			</form>
+		</div>
+		<div id="save" style="display:none;">
+			<!-- Until FileWriter support, the only way to save a file is via a server. -->
+			<form action="http://www.clips.ua.ac.be/media/pattern-canvas/file.php?download" method="post">
+				<input type="text" name="filename" placeholder="script.html" />
+				<input type="hidden" name="source" />
+				<input type="submit" onclick="this.form.source.value=editor.source(); hide('close');" value="Download">
+			</form>
 		</div>
 		<!-- canvas.js script -->
 		<div id="editor">

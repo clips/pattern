@@ -24,6 +24,32 @@ Function.closure = function(parent, f) {
     return function() { return f.apply(parent, arguments); };
 }
 
+String.dedent = function(s) {
+    /* Remove leading tabs from the string, but maintaining code indentation.
+     */
+    s = s.split("\n");
+    var t = 1000000000;
+    for (var i=0; i < s.length; i++) {
+        // Find the minimum amount of tabs on each line (excluding whitespace lines).
+        t = (s[i].trim())? Math.min((s[i].match(/^\t+/)||[""])[0].length, t) : t;
+    }
+    var p = new RegExp("^\t{" + t + "}");
+    for (var i=0; i < s.length; i++) {
+        s[i] = s[i].replace(p, "");
+    }
+    return s.join("\n");
+}
+
+String.decodeEntities = function(s) {
+    /* Decodes a string encoded with PHP htmlspecialchars().
+     */
+    s = s.replace(/&lt;/g, "<");
+    s = s.replace(/&gt;/g, ">");
+    s = s.replace(/&quot;/g, "\"");
+    s = s.replace(/&amp;/g, "&");
+    return s;
+}
+
 /*##################################################################################################*/
 
 /*--- EDITOR ---------------------------------------------------------------------------------------*/
@@ -159,7 +185,7 @@ function Editor(element) {
     this._ace.setShowInvisibles(true);
     this._ace.getSession().setUseSoftTabs(false);
     this._ace.getSession().setMode(mode);
-    
+ 
     this.resize = function() {
         this._ace.resize();
     };
@@ -169,11 +195,24 @@ function Editor(element) {
          * If a string is given, sets the source code in the console.
          */
         if (s !== undefined) {
+            // Try to parse the string as HTML, 
+            // search for the first <script type="text/canvas">.
+            var e;
+            e = document.createElement("code"); e.innerHTML=s; 
+            e = e.getElementsByTagName("script");
+            for (var i=0; i < e.length; i++) {
+                if (e[i].type == "text/canvas") {
+                    s = e[i].innerHTML;
+                    s = String.dedent(s);
+                    s = s.trim();
+                    break;
+                }
+            }
             this._ace.getSession().setValue(s);
         }
         return this._ace.getSession().getValue();
     };
-
+    
 };
 
 /*--- RESIZABLE ------------------------------------------------------------------------------------*/
