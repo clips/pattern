@@ -207,6 +207,15 @@ Array.range = function(i, j) {
 
 /*--- GEOMETRY -------------------------------------------------------------------------------------*/
 
+Math._round = Math.round;
+Math.round = function(x, decimals) {
+    if (!decimals) {
+        return Math._round(x);
+    } else {
+        return Math._round(x * Math.pow(10, decimals)) / Math.pow(10, decimals);
+    }
+}
+
 Math.degrees = function(radians) {
     return radians * 180 / Math.PI;
 }
@@ -770,13 +779,13 @@ function _colorMixin(options) {
 /*--------------------------------------------------------------------------------------------------*/
 // Wrappers for _ctx.fill() and _ctx.stroke(), only calling them when necessary.
 
-function _ctx_fill(fill, text) {
+function _ctx_fill(fill) {
     if (fill && (fill.a > 0 || fill.clr1)) {
         // Ignore transparent colors.
         // Avoid switching _ctx.fillStyle() - we can gain up to 5fps:
         var f = fill._get();
-        if (_ctx.state._f != f) {
-            _ctx.fillStyle = _ctx.state._f = f;
+        if (_ctx.state._fill != f) {
+            _ctx.fillStyle = _ctx.state._fill = f;
         }
         _ctx.fill();
     }
@@ -785,8 +794,8 @@ function _ctx_fill(fill, text) {
 function _ctx_stroke(stroke, strokewidth) {
     if (stroke && stroke.a > 0 && strokewidth > 0) {
         var s = stroke._get();
-        if (_ctx.state._s != s) {
-            _ctx.strokeStyle = _ctx.state._s = s;
+        if (_ctx.state._stroke != s) {
+            _ctx.strokeStyle = _ctx.state._stroke = s;
         }
         _ctx.lineWidth = strokewidth;
         _ctx.stroke();
@@ -1033,11 +1042,11 @@ function pop() {
      */
     _ctx.restore();
     // Do not reset the color state:
-    if (_ctx.state.fill) {
-        _ctx.fillStyle = _ctx.state.fill._get();
+    if (_ctx.state._fill) {
+        _ctx.fillStyle = _ctx.state._fill;
     }
-    if (_ctx.state.stroke) {
-        _ctx.strokeStyle = _ctx.state.stroke._get();
+    if (_ctx.state._stroke) {
+        _ctx.strokeStyle = _ctx.state._stroke;
     }
 }
 
@@ -1374,7 +1383,7 @@ var BezierPath = Path = Class.extend({
          */
         x -= 0.5 * width; // Center origin.
         y -= 0.5 * height;
-        var k = 0.5522847498; // kappa = (-1 + sqrt(2)) / 3 * 4 
+        var k = 0.55; // kappa = (-1 + sqrt(2)) / 3 * 4 
         var dx = k * 0.5 * width;
         var dy = k * 0.5 * height;
         var x0 = x + 0.5 * width;
@@ -1447,16 +1456,17 @@ var BezierPath = Path = Class.extend({
         return bezier.point(this, t, this._segments);
     },
     
-    points: function(amount, start, end) {
+    points: function(amount, options) {
         /* Returns an array of DynamicPathElements along the path.
-         * To omit the last point on closed paths: end=1-1.0/amount
+         * To omit the last point on closed paths: {end: 1-1.0/amount}
          */
-        if (start === undefined) start = 0.0;
-        if (end === undefined) end = 1.0;
+        var start = (options && options.start !== undefined)? options.start : 0.0;
+        var end = (options && options.end !== undefined)? options.end : 1.0;
         if (this.array.length == 0) {
             // Otherwise bezier.point() will raise an error for empty paths.
             return [];
         }
+        amount = Math.round(amount);
         // The delta value is divided by amount-1, because we also want the last point (t=1.0)
         // If we don't use amount-1, we fall one point short of the end.
         // If amount=4, we want the point at t 0.0, 0.33, 0.66 and 1.0.
@@ -1752,7 +1762,9 @@ var ImageCache = Class.extend({
         /* Returns an ImageConstructor for the given URL path, Canvas, or Buffer object.
          * Images from URL are cached for reuse.
          */
-        if (this.cache[url]) {
+        if (url === undefined) {
+            throw "Can't load image: " + url;
+        } else if (this.cache[url]) {
             return this.cache[url]; 
         } else if (url && url.substr && url.substr(0,5) == "http:") {
             // URL path ("http://").
@@ -1776,7 +1788,7 @@ var ImageCache = Class.extend({
             // ImageConstructor.
             var src = url.src; url=null;
         } else {
-            throw "Can't load image " + url;
+            throw "Can't load image: " + url;
         }
         // Cache images from a http:// source.
         // Procedural images are not cached.
@@ -2236,6 +2248,12 @@ var Mouse = Class.extend({
 
 /*--- CANVAS ---------------------------------------------------------------------------------------*/
 
+function _uid() {
+    // Returns a unique number.
+    if (_uid.i === undefined) _uid.i=0;
+    return ++this.i;
+}
+
 window._requestFrame = function(callback, canvas, fps) {
     //var f = window.requestAnimationFrame
     //     || window.webkitRequestAnimationFrame
@@ -2287,6 +2305,7 @@ var Canvas = Class.extend({
         if (height !== undefined) {
             element.height = height;
         }
+        this.id = _uid();
         this.element = element; 
         this.element.style["-webkit-tap-highlight-color"] = "rgba(0,0,0,0)";
         this.element._canvas = this;
@@ -2430,7 +2449,9 @@ var Canvas = Class.extend({
     pause: function() {
         /* Pauses the animation at the current frame.
          */
-        window._clearFrame(this._scheduled);
+        if (this._scheduled !== undefined) {
+            window._clearFrame(this._scheduled);
+        }
         this._active = false;
     },
 
@@ -2498,7 +2519,6 @@ var OffscreenBuffer = Buffer = Canvas.extend({
         this.pop();
     },
     _draw: function() {
-        
         this.push();
         this._super();
         this.pop();
@@ -2732,8 +2752,10 @@ attachEvent(window, "load", function() {
     /* Initializes <script type="text/canvas"> elements during window.onload().
      * Optional arguments include: canvas="id" (<canvas> to use), and loop="false" (single frame).
      */
-    var e = document.getElementsByTagName("script");
-    for (var i=0; i < e.length; i++) {
+    this.e = document.getElementsByTagName("script");
+    for (this.i=0; this.i < this.e.length; this.i++) {
+        var i = this.i; // e and i may not be set by globals in eval().
+        var e = this.e;
         if (e[i].type == "text/canvas") {
             var canvas = e[i].getAttribute("canvas");
             if (canvas) {
