@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+	<title>canvas.js | basics (2)</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="../../pattern/canvas.js"></script>
+</head>
+<body>
+	<script type="text/canvas" loop="true">
+		function setup(canvas) {
+			canvas.size(500, 500);
+		}
+		function draw(canvas) {
+			canvas.clear();
+			nofill();
+			stroke(0);
+			
+			// 1) Draw a curve.
+			var p1 = new BezierPath();
+			p1.moveto(20, 20);
+			p1.curveto(100, 20, 100, 150, 200, 100);
+			drawpath(p1);
+			// A BezierPath contains a list of points along the path.
+			// Each point pt has a property pt.cmd: MOVETO, LINETO, CURVETO or CLOSE.
+			// Each point pt has pt.x and pt.y that define its location.
+			for (var i=0; i < p1.array.length; i++) {
+				var pt = p1.array[i];
+				ellipse(pt.x, pt.y, 4, 4);
+				text(pt.cmd, pt.x+4, pt.y-4, {fill: color(0)});
+				// Each point has pt.ctrl1 and pt.ctrl2, its control handles.
+				// pt.ctrl1 defines how the curve from the previous point started.
+				// pt.ctrl2 defines how the curve from the previous point 
+				// arrives in this point.
+				line(pt.x, pt.y, pt.ctrl2.x, pt.ctrl2.y);
+				if (i > 0) {
+					line(p1.array[i-1].x, 
+						 p1.array[i-1].y, 
+						 pt.ctrl1.x, 
+						 pt.ctrl1.y, {stroke: color(1,0,0)}); // ctrl1 = red
+				}
+			}
+			
+			// 2) Draw a curve.
+			var p2 = new BezierPath();
+			p2.moveto(20, 120);
+			p2.curveto(100, 120, 100, 250, 200, 200);
+			drawpath(p2);
+			// The method BezierPath.point() calculates a "dynamic" point,
+			// located at a given time (0.0-1.0) on the path.
+			var t = canvas.frame % 100 * 0.01; // from 0 to 1 in 100 frames...
+			var pt = p2.point(t);
+			ellipse(pt.x, pt.y, 4, 4);
+			text(Math.round(t,2), pt.x, pt.y, {fill: color(0)});
+			// With a dynamic point the handles are interpreted differently:
+			// pt.ctrl1 defines how the curve arrives, and 
+			// pt.ctrl2 defines how it continues to the next point.
+			line(pt.x, pt.y, pt.ctrl1.x, pt.ctrl1.y, {stroke: color(1,0,0)});
+			line(pt.x, pt.y, pt.ctrl2.x, pt.ctrl2.y);
+			
+			// 3) Draw an ellipse.
+			var p3 = new BezierPath();
+			p3.ellipse(350, 200, 150, 150);
+			drawpath(p3);
+			// directed() takes a list of points and a function(angle, pt).
+			// It loops over each point and its "direction" along the path.
+			directed(p3.points(20, {start: 0.001, end: 1-1/20}), 
+				function(angle, pt) { 
+					push();
+					translate(pt.x, pt.y);
+					rotate(angle - 90); // angle-90 = perpendicular
+					line(0, 0, 20, 0);
+					pop();
+				}
+			);
+			// Note the optional parameters "start" and "end" in BezierPath.points().
+			// With start=0.0 and end=1.0 (default), 
+			// the points are spread out equally from the start of the path to the end. 
+			// If the path is closed (e.g., ellipse), the first and last point overlap.
+			// end = 1 - (1 / amount) omits the last (overlapping) point.
+			// start = 0.001 skips the initial moveto() in the path.
+			// This ensures that the generated point has control handles, 
+			// which are used to calculate its angle in directed().
+		}
+	</script>
+</body>
+</html>

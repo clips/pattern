@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+	<title>canvas.js | paths</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="../../pattern/canvas.js"></script>
+</head>
+<body>
+	<script type="text/canvas">
+		function setup(canvas) {
+			canvas.size(500, 500);
+		}
+		function draw(canvas) {
+			canvas.clear();
+			// A Bézier path can be used to draw complex shapes (e.g., curve, star, ...)
+			// The BezierPath object has moveto(), lineto(), curveto() and close() methods.
+			// moveto() and lineto() take two parameters: x, y.
+			// curveto() takes six parameters: x1, y1, x2, y2, x3, y3,
+			// where (x1,y1) describes the direction in which the curve starts,
+			// and (x2,y2) describes the direction in which it ends in point (x3,y3).
+			var x = canvas.mouse.x;
+			var y = canvas.mouse.y;
+			var p = new BezierPath();
+			p.moveto(0, 0);
+			p.curveto(100, 100, x, y, 200, 200);
+			// drawpath() draws the given BezierPath.
+			// Notice how we set fill and stroke as optional parameters.
+			// You can do this with line(), rect(), ellipse() and text() too.
+			drawpath(p, {fill:null, stroke:[0,0,0,1]});
+			line(0, 0, 100, 100, {stroke:[0,0,0,0.5]}); // show handle (x1,y1)
+			line(200, 200, x, y, {stroke:[0,0,0,0.5]}); // show handle (x2,y2)
+			// Create a leaf shape.
+			var leaf = new BezierPath();
+			leaf.moveto(0, 0);
+			leaf.curveto(50, 50, 0, 150, 0, 200);
+			leaf.curveto(0, 150, -50, 50, 0, 0);
+			// Actually, we should have done this in setup().
+			// This way the path is calculated only once, instead of every frame.
+			// Draw copies of the leaf to create a flower-shape.
+			translate(250, 250);
+			fill(0.25, 0.15, 0.75, 0.25) // transparent purple-blue
+			stroke(0); // black
+			strokewidth(0.25);
+			// The Array.range() command generates an array of numbers.
+			// This is handy to use in a loop:
+			for (var i in Array.range(40)) {
+				rotate(9);
+				drawpath(leaf);
+			}
+		}
+	</script>
+</body>
+</html>

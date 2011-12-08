@@ -1,9 +1,8 @@
 <!doctype html>
 <html>
 <head>
-	<title>canvas.js</title>
+	<title>canvas.js | basics (1)</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<!--[if lte IE 8]><script type="text/javascript" src="../../pattern/graph/js/excanvas.js"></script><![endif]-->
 	<script type="text/javascript" src="../../pattern/canvas.js"></script>
 	<script>
 		function setup(canvas) {
@@ -21,7 +20,7 @@
 		}
 		window.onload = function() {
 			// Attach setup() and draw() to the <canvas> and start the animation.
-			canvas = new Canvas($("canvas"));
+			canvas = new Canvas(document.getElementById("canvas1"));
 			canvas.setup = setup;
 			canvas.draw = draw;
 			canvas.run();
@@ -29,6 +28,6 @@
 	</script>
 </head>
 <body>
-	<canvas id="canvas" width="500px" height="500px"></canvas>
+	<canvas id="canvas1" width="500px" height="500px"></canvas>
 </body>
 </html>
