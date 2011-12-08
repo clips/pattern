@@ -456,9 +456,12 @@ class WeightError(Exception):
 
 class Vector(readonlydict):
     
+    id = 1
+    
     def __init__(self, *args, **kwargs):
         """ Vector is a dictionary of (word, weight)-items based on the terms in a Document.
         """
+        self.id     = Vector.id; Vector.id+=1
         self.weight = kwargs.pop("weight", TFIDF) # Vector weights based on tf or tf-idf?
         self._norm  = None
         readonlydict.__init__(self, *args, **kwargs)
@@ -830,17 +833,17 @@ class Corpus(object):
             vectors, keys = [self.lsa[d.id] for d in documents], range(len(self.lsa))
         # Create a dictionary of vector.id => Document.
         # We'll need it to map the clustered vectors back to the actual documents.
-        map = dict((id(v), documents[i]) for i, v in enumerate(vectors))
+        map = dict((v.id, documents[i]) for i, v in enumerate(vectors))
         kw = kwargs.pop
         if method in (KMEANS, "kmeans"):
             # def cluster(self, method=KMEANS, k=10, iterations=10)
             clusters = k_means(vectors, kw("k", 10), kw("iterations", 10), keys=keys, **kwargs)
-            clusters = [[map[id(v)] for v in cluster] for cluster in clusters]
+            clusters = [[map[v.id] for v in cluster] for cluster in clusters]
         if method == HIERARCHICAL:
             # def cluster(self, method=HIERARCHICAL, k=1, iterations=1000)
             clusters = hierarchical(vectors, kw("k", 1), kw("iterations", 1000), keys=keys, **kwargs)
             clusters.traverse(visit=lambda cluster: \
-                [cluster.__setitem__(i, map[id(v)]) for i, v in enumerate(cluster) if not isinstance(v, Cluster)])
+                [cluster.__setitem__(i, map[v.id]) for i, v in enumerate(cluster) if not isinstance(v, Cluster)])
         return clusters
 
     def latent_semantic_analysis(self, dimensions=NORM):
@@ -1218,7 +1221,7 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
         nearest, d0 = None, None
         for i, v1 in enumerate(centroids):
             for j, v2 in enumerate(centroids[i+1:]):
-                v12 = (id(v1), id(v2))
+                v12 = (v1.id, v2.id)
                 if v12 not in D: # Cache distance calculations for reuse.
                     D[v12] = _distance(v1, v2, method=distance)
                 d = D[v12]
@@ -1234,9 +1237,10 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
     del D
     return clusters
 
-#k = hierarchical([(1,2),(3,4),(5,6),(7,8)], k=2)
-#print k
-#print k.depth
+#v1 = Vector(wings=0, beak=0, claws=1, paws=1, fur=1) # cat
+#v2 = Vector(wings=0, beak=0, claws=0, paws=1, fur=1) # dog
+#v3 = Vector(wings=1, beak=1, claws=1, paws=0, fur=0) # bird
+#print hierarchical([v1, v2, v3])
 
 #### CLASSIFIER ######################################################################################
 
@@ -1460,7 +1464,7 @@ class NearestNeighbor(Classifier):
         # k-d trees are slower than brute-force for vectors with high dimensionality:
         #if self._kdtree is None:
         #    self._kdtree = kdtree((v for type, v in self._vectors))
-        #    self._kdtree.map = dict((id(v), type) for type, v in self._vectors)
+        #    self._kdtree.map = dict((v.id, type) for type, v in self._vectors)
         #D = self._kdtree.nearest_neighbors(v1, self.k, self.distance)
         D = ((distance(v1, v2, method=self.distance), type) for type, v2 in self._vectors)
         D = ((d, type) for d, type in D if d < 1) # Nothing in common if distance=1.0.
@@ -1523,7 +1527,7 @@ class KDTree:
         """ Returns a Vector for the given document or vector.
         """
         if isinstance(v, Document):
-            self.map.setdefault(id(v.vector), v); return v.vector
+            self.map.setdefault(v.vector.id, v); return v.vector
         return v
         
     def nearest_neighbors(self, vector, k=10, distance=COSINE):
@@ -1565,7 +1569,7 @@ class KDTree:
             return best
                 
         n = search(self.root, self._vector(vector), k+1)
-        n = [(d, self.map.get(id(v),v)) for d, v in n]
+        n = [(d, self.map.get(v.id, v)) for d, v in n]
         n = [(d, v) for d, v in n if v != vector][:k]
         return n
         
