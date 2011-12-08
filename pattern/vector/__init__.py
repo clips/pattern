@@ -1213,27 +1213,31 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
     """
     keys = kwargs.get("keys", list(features(vectors)))
     clusters = Cluster((v for v in sorted(vectors, key=lambda x: random())))
-    centroids = list(clusters)
+    centroids = [(v.id, v) for v in clusters]
     D = {}
     for _ in range(iterations):
         if len(clusters) <= max(k,1): 
             break
         nearest, d0 = None, None
-        for i, v1 in enumerate(centroids):
-            for j, v2 in enumerate(centroids[i+1:]):
-                v12 = (v1.id, v2.id)
-                if v12 not in D: # Cache distance calculations for reuse.
-                    D[v12] = _distance(v1, v2, method=distance)
-                d = D[v12]
+        for i, (id1, v1) in enumerate(centroids):
+            for j, (id2, v2) in enumerate(centroids[i+1:]):
+                try:
+                    d = D[(id1, id2)]
+                except KeyError: # Cache distance calculations for reuse.
+                    d = D[(id1, id2)] = _distance(v1, v2, method=distance)
                 if d0 is None or d < d0:
                     nearest, d0 = (i, j+i+1), d
         # Pairs of nearest clusters are merged as we move up the hierarchy:
         i, j = nearest
         merged = Cluster((clusters[i], clusters[j]))
-        clusters.pop(j); centroids.pop(j)
-        clusters.pop(i); centroids.pop(i)
+        clusters.pop(j)
+        clusters.pop(i)
         clusters.append(merged)
-        centroids.append(centroid(merged.flatten(), keys))
+        # Cache the center of the new cluster.
+        v = centroid(merged.flatten(), keys)
+        centroids.pop(j)
+        centroids.pop(i)
+        centroids.append((v.id, v))
     del D
     return clusters
 
