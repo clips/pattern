@@ -20,11 +20,17 @@ from codecs    import BOM_UTF8
 from datetime  import datetime, timedelta
 from time      import mktime, strftime
 from math      import sqrt
+from types     import GeneratorType
 
 try:
     from email.utils import parsedate_tz, mktime_tz
 except:
     from email.Utils import parsedate_tz, mktime_tz
+    
+try: 
+    MODULE = os.path.dirname(__file__)
+except:
+    MODULE = ""
 
 MYSQL  = "mysql"
 SQLITE = "sqlite"
@@ -1377,6 +1383,37 @@ def parse_xml(database, xml, table=None, field=lambda s: s.replace(".", "-")):
     database.commit()
     return database[table]
 
+#### JSON PARSER ######################################################################################
+
+class JSON:
+    
+    def __init__(self):
+        self.float = lambda f: ("%.3f" % f).rstrip("0")
+
+    def __call__(self, obj, *args, **kwargs):
+        """ Returns a JSON string from the given data.
+            The data can be a nested structure of dict, list, str, unicode, bool, int, float and None.
+        """
+        def _str(obj):
+            if isinstance(obj, type(None)):
+                return "null"
+            if isinstance(obj, bool):
+                return obj and "true" or "false"
+            if isinstance(obj, (int, long)): # Also validates bools, so those are handled first.
+                return str(obj)
+            if isinstance(obj, float):
+                return str(self.float(obj))
+            if isinstance(obj, (str, unicode)):
+                return '"%s"' % obj.replace('"', '\\"')
+            if isinstance(obj, dict):
+                return "{%s}" % ", ".join(['"%s": %s' % (k.replace('"', '\\"'), _str(v)) for k, v in obj.items()])
+            if isinstance(obj, (list, tuple, GeneratorType)):
+                return "[%s]" % ", ".join(_str(v) for v in obj)
+            raise TypeError, "can't process %s." % type(obj)
+        return "%s" % _str(obj)
+
+json = JSON()
+
 #### DATASHEET ########################################################################################
 
 #--- CSV ----------------------------------------------------------------------------------------------
@@ -1423,7 +1460,7 @@ class CSV(list):
         f.close()
 
     @classmethod
-    def load(self, path, separator=",", decoder=lambda v: v, headers=False):
+    def load(self, path, separator=",", decoder=lambda v: v, headers=False, preprocess=lambda s: s):
         """ Returns a table from the data in the given text file.
             Rows are expected to be separated by a newline. 
             Columns are expected to be separated by the given separator (by default, comma).
@@ -1434,6 +1471,8 @@ class CSV(list):
         # - set a DATE field type for the column,
         # - or do Table.columns[x].map(lambda s: date(s))
         data = open(path, "rb").read().lstrip(BOM_UTF8)
+        data = preprocess(data)
+        data = "\n".join(line for line in data.splitlines()) # Excel \r => \n
         data = StringIO(data)
         data = [row for row in csv.reader(data, delimiter=separator)]
         if headers:
@@ -1673,6 +1712,16 @@ class Datasheet(CSV):
             return Datasheet(rows=(self.rows[i] for i in rows))
         z = zip(*(self.columns[j] for j in columns))
         return Datasheet(rows=(z[i] for i in rows))
+    
+    @property
+    def json(self):
+        """ Returns a JSON-string, as a list of dictionaries (if fields are defined) or as a list of lists.
+            This is useful for sending a Datasheet to JavaScript, for example.
+        """
+        if self.fields is not None:
+            return json([dict((f[0], row[i]) for i, f in enumerate(self.fields)) for row in self])
+        else:
+            return json(datasheet)
 
 def flip(datasheet):
     return Datasheet(rows=datasheet.columns)
@@ -1997,7 +2046,3 @@ def pprint(datasheet, truncate=40, padding=" ", fill="."):
                 s += padding
                 print s,
             print
-
-from random import random
-from pattern.web import json
-print repr(json.dumps(2.26))
