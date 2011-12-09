@@ -1068,12 +1068,27 @@ def distance(v1, v2, method=COSINE):
         # Given method is a function of the form: distance(v1, v2) => float.
         return method(v1, v2)
 
-_distance = __distance = distance
+_distance  = distance
+
+class DistanceMap:
+    
+    def __init__(self, method=COSINE):
+        """ A lazy map of cached distances between vectors.
+        """
+        self.method = method
+        self._cache = {}
+        
+    def distance(self, v1, v2):
+        try:
+            d = self._cache[(v1.id, v2.id)]
+        except KeyError:
+            d = self._cache[(v1.id, v2.id)] = distance(v1, v2, method=self.method)
+        return d
 
 #--- K-MEANS ----------------------------------------------------------------------------------------
 # Fast, no guarantee of convergence or optimal solution (random starting clusters).
-# 3000 vectors with 100 features (LSA, density 1.0):  5 minutes with k=100 (20 iterations).
-# 3000 vectors with 200 features (LSA, density 1.0): 13 minutes with k=100 (20 iterations).
+# 3000 vectors with 100 features (LSA, density 1.0): 1 minute with k=100 (20 iterations).
+# 3000 vectors with 200 features (LSA, density 1.0): 3 minutes with k=100 (20 iterations).
 
 # Initialization methods:
 RANDOM, KMPP = "random", "kmeans++"
@@ -1094,6 +1109,8 @@ def k_means(vectors, k, iterations=10, distance=COSINE, **kwargs):
         for i, v in enumerate(sorted(vectors, key=lambda x: random())):
             # Randomly partition the vectors across k clusters.
             clusters[i%k].append(v)
+    # Cache the distance calculations between vectors (4x faster).
+    map = DistanceMap(method=distance); distance = map.distance
     converged = False
     while not converged and iterations > 0 and k > 0:
         # Calculate the center of each cluster.
@@ -1104,17 +1121,17 @@ def k_means(vectors, k, iterations=10, distance=COSINE, **kwargs):
         D = {}
         for i in range(len(centroids)):
             for j in range(i, len(centroids)): # center1–center2 < center1–vector + vector–center2 ?
-                D[(i,j)] = D[(j,i)] = p * _distance(centroids[i], centroids[j], method=distance)
+                D[(i,j)] = D[(j,i)] = p * distance(centroids[i], centroids[j])
         # For every vector in every cluster,
         # check if it is nearer to the center of another cluster (if so, assign it).
         # When visualized, this produces a Voronoi diagram.
         converged = True
         for i in xrange(len(clusters)):
             for v in clusters[i]:
-                nearest, d1 = i, _distance(v, centroids[i], method=distance)
+                nearest, d1 = i, distance(v, centroids[i])
                 for j in xrange(len(clusters)):
                     if D[(i,j)] < d1: # Triangle inequality (Elkan, 2003).
-                        d2 = _distance(v, centroids[j], method=distance)
+                        d2 = distance(v, centroids[j])
                         if d2 < d1:
                             nearest = j
                 if nearest != i: # Other cluster is nearer.
@@ -1131,14 +1148,8 @@ def kmpp(vectors, k, distance=COSINE):
         - it runs faster than standard k-means on average,
         - it has a theoretical approximation guarantee.
     """
-    # Cache the distance between vectors (4x faster).
-    D = {}
-    def _distance(v1, v2):
-        try:
-            d = D[(v1.id, v2.id)]
-        except KeyError:
-            d = D[(v1.id, v2.id)] = __distance(v1, v2, method=distance)
-        return d
+    # Cache the distance calculations between vectors (4x faster).
+    map = DistanceMap(method=distance); distance = map.distance
     # David Arthur, 2006, http://theory.stanford.edu/~sergei/slides/BATS-Means.pdf
     # Based on:
     # http://www.stanford.edu/~darthur/kmpp.zip
@@ -1146,7 +1157,7 @@ def kmpp(vectors, k, distance=COSINE):
     # Choose one center at random.
     # Calculate the distance between each vector and the nearest center.
     centroids = [choice(vectors)]
-    d = [_distance(v, centroids [0]) for v in vectors]
+    d = [distance(v, centroids [0]) for v in vectors]
     s = sum(d)
     for _ in range(k-1):
         # Choose a random number y between 0 and d1 + d2 + ... + dn.
@@ -1159,26 +1170,26 @@ def kmpp(vectors, k, distance=COSINE):
                 if y <= d[i1]: 
                     break
                 y -= d[i1]
-            s1 = sum(min(d[j], _distance(v1, v2)) for j, v2 in enumerate(vectors))
+            s1 = sum(min(d[j], distance(v1, v2)) for j, v2 in enumerate(vectors))
             if s1 < s:
                 s, i = s1, i1
         # Add vector i as a new center.
         # Repeat until we have chosen k centers.
         centroids.append(vectors[i])
-        d = [min(d[i], _distance(v, centroids[-1])) for i, v in enumerate(vectors)]
+        d = [min(d[i], distance(v, centroids[-1])) for i, v in enumerate(vectors)]
         s = sum(d)
     # Assign points to the nearest center.
     clusters = [[] for i in xrange(k)]
     for v1 in vectors:
-        d = [_distance(v1, v2) for v2 in centroids]
+        d = [distance(v1, v2) for v2 in centroids]
         clusters[d.index(min(d))].append(v1)
     return clusters
 
 #--- HIERARCHICAL -----------------------------------------------------------------------------------
 # Slow, optimal solution guaranteed in O(len(vectors)^3).
-#  100 vectors with 6 features (density 1.0): 0.2 seconds.
-# 1000 vectors with 6 features (density 1.0): 2 minutes.
-# 3000 vectors with 6 features (density 1.0): 30 minutes.
+#  100 vectors with 6 features (density 1.0): 0.1 seconds.
+# 1000 vectors with 6 features (density 1.0): 1 minute.
+# 3000 vectors with 6 features (density 1.0): 15 minutes.
 
 class Cluster(list):
     
@@ -1222,17 +1233,20 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
     keys = kwargs.get("keys", list(features(vectors)))
     clusters = Cluster((v for v in sorted(vectors, key=lambda x: random())))
     centroids = [(v.id, v) for v in clusters]
-    D = {}
+    map = {}
     for _ in range(iterations):
         if len(clusters) <= max(k,1): 
             break
         nearest, d0 = None, None
         for i, (id1, v1) in enumerate(centroids):
             for j, (id2, v2) in enumerate(centroids[i+1:]):
+                # Cache the distance calculations between vectors.
+                # Code is identical to DistanceMap.distance(),
+                # but it is faster in the inner loop to use it directly.
                 try:
-                    d = D[(id1, id2)]
-                except KeyError: # Cache distance calculations for reuse.
-                    d = D[(id1, id2)] = _distance(v1, v2, method=distance)
+                    d = map[(id1, id2)]
+                except KeyError:
+                    d = map[(id1, id2)] = _distance(v1, v2, method=distance)
                 if d0 is None or d < d0:
                     nearest, d0 = (i, j+i+1), d
         # Pairs of nearest clusters are merged as we move up the hierarchy:
@@ -1246,7 +1260,6 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
         centroids.pop(j)
         centroids.pop(i)
         centroids.append((v.id, v))
-    del D
     return clusters
 
 #v1 = Vector(wings=0, beak=0, claws=1, paws=1, fur=1) # cat
