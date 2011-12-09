@@ -1068,7 +1068,7 @@ def distance(v1, v2, method=COSINE):
         # Given method is a function of the form: distance(v1, v2) => float.
         return method(v1, v2)
 
-_distance = distance
+_distance = __distance = distance
 
 #--- K-MEANS ----------------------------------------------------------------------------------------
 # Fast, no guarantee of convergence or optimal solution (random starting clusters).
@@ -1088,7 +1088,7 @@ def k_means(vectors, k, iterations=10, distance=COSINE, **kwargs):
     if k < 2: 
         return [[v for v in vectors]]
     if init == KMPP:
-        clusters = kmpp(vectors, k)
+        clusters = kmpp(vectors, k, distance)
     else:
         clusters = [[] for i in xrange(k)]
         for i, v in enumerate(sorted(vectors, key=lambda x: random())):
@@ -1125,12 +1125,20 @@ def k_means(vectors, k, iterations=10, distance=COSINE, **kwargs):
     
 kmeans = k_means
 
-def kmpp(vectors, k):
+def kmpp(vectors, k, distance=COSINE):
     """ The k-means++ initialization algorithm, with the advantage that:
         - it generates better clusterings than standard k-means (RANDOM) on virtually all data sets,
         - it runs faster than standard k-means on average,
         - it has a theoretical approximation guarantee.
     """
+    # Cache the distance between vectors (4x faster).
+    D = {}
+    def _distance(v1, v2):
+        try:
+            d = D[(v1.id, v2.id)]
+        except KeyError:
+            d = D[(v1.id, v2.id)] = __distance(v1, v2, method=distance)
+        return d
     # David Arthur, 2006, http://theory.stanford.edu/~sergei/slides/BATS-Means.pdf
     # Based on:
     # http://www.stanford.edu/~darthur/kmpp.zip
@@ -1138,7 +1146,7 @@ def kmpp(vectors, k):
     # Choose one center at random.
     # Calculate the distance between each vector and the nearest center.
     centroids = [choice(vectors)]
-    d = [distance(v, centroids [0]) for v in vectors]
+    d = [_distance(v, centroids [0]) for v in vectors]
     s = sum(d)
     for _ in range(k-1):
         # Choose a random number y between 0 and d1 + d2 + ... + dn.
@@ -1146,23 +1154,23 @@ def kmpp(vectors, k):
         # Perform a number of local tries so that y yields a small distance sum.
         i = 0
         for _ in range(int(2 + log(k))):
-            y = rnd() * s
+            y = random() * s
             for i1, v1 in enumerate(vectors):
                 if y <= d[i1]: 
                     break
                 y -= d[i1]
-            s1 = sum(min(d[j], distance(v1, v2)) for j, v2 in enumerate(vectors))
+            s1 = sum(min(d[j], _distance(v1, v2)) for j, v2 in enumerate(vectors))
             if s1 < s:
                 s, i = s1, i1
         # Add vector i as a new center.
         # Repeat until we have chosen k centers.
         centroids.append(vectors[i])
-        d = [min(d[i], distance(v, centroids[-1])) for i, v in enumerate(vectors)]
+        d = [min(d[i], _distance(v, centroids[-1])) for i, v in enumerate(vectors)]
         s = sum(d)
     # Assign points to the nearest center.
     clusters = [[] for i in xrange(k)]
     for v1 in vectors:
-        d = [distance(v1, v2) for v2 in centroids]
+        d = [_distance(v1, v2) for v2 in centroids]
         clusters[d.index(min(d))].append(v1)
     return clusters
 
@@ -1617,7 +1625,6 @@ class GeneticAlgorithm:
         # Selection.
         p = sorted((self.fitness(x), x) for x in self.population) # Weakest-first.
         a = self._avg = float(sum(f for f, x in p)) / len(p)
-        print len(p), ["%.2f"%f for f,x in p][:20]
         x = min(f for f, x in p)
         y = max(f for f, x in p)
         i = 0
