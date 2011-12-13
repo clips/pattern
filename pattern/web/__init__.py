@@ -126,7 +126,7 @@ send = asynchronous
 
 # User agent and referrer.
 # Used to identify the application accessing the web.
-USER_AGENT = "Pattern/1.0 +http://www.clips.ua.ac.be/pages/pattern"
+USER_AGENT = "Pattern/2.0 +http://www.clips.ua.ac.be/pages/pattern"
 REFERRER   = "http://www.clips.ua.ac.be/pages/pattern"
 
 # Mozilla user agent.
@@ -855,7 +855,7 @@ class Google(SearchEngine):
         if not query or count < 1 or start > 10: 
             return Results(GOOGLE, query, type)
         url = URL(GOOGLE, query={
-              "key" : GOOGLE_LICENSE,
+              "key" : self.license or GOOGLE_LICENSE,
                "cx" : GOOGLE_CUSTOM_SEARCH_ENGINE,
                 "q" : query,
             "start" : 1 + (start-1) * count,
