@@ -282,7 +282,7 @@ def variance(list):
     a = avg(list)
     return _sum([(x-a)**2 for x in list]) / (len(list)-1)
     
-def stdev(self):
+def stdev(list):
     return sqrt(variance(list))
 
 #### SQLITE FUNCTIONS ################################################################################
