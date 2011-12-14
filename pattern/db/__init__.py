@@ -52,6 +52,8 @@ def _import_db(engine=SQLITE):
             # Python 2.4 with pysqlite2
             import pysqlite2.dbapi2 as sqlite
 
+_sum = sum
+
 #### DATE FUNCTIONS ##################################################################################
 
 NOW, YEAR = "now", datetime.now().year
@@ -274,11 +276,11 @@ def order(list, cmp=None, key=None, reverse=False):
 _order = order
 
 def avg(list):
-    return float(sum(list)) / (len(list) or 1)
+    return float(_sum(list)) / (len(list) or 1)
     
 def variance(list):
     a = avg(list)
-    return sum([(x-a)**2 for x in list]) / (len(list)-1)
+    return _sum([(x-a)**2 for x in list]) / (len(list)-1)
     
 def stdev(self):
     return sqrt(variance(list))
@@ -1665,7 +1667,7 @@ class Datasheet(CSV):
             if f == MIN:
                 function[i] = lambda a: min(a)
             if f == SUM:
-                function[i] = lambda a: sum([x for x in a if x is not None])
+                function[i] = lambda a: _sum([x for x in a if x is not None])
             if f == AVG: 
                 function[i] = lambda a: avg([x for x in a if x is not None])
             if f == STDEV:
