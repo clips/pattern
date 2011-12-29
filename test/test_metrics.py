@@ -106,8 +106,6 @@ class TestMetrics(unittest.TestCase):
         v = metrics.readability(s)
         self.assertTrue(v < 0.30)        
         # Dr. Seuss should be in the "easy" range: > 0.70
-        s = """Reader's Digest magazine has a readability index of about 65, Time magazine scores about 52, an average 6th grade student's (an 11-year-old) written assignment has a readability test of 60-70 (and a reading grade level of 6-7), and the Harvard Law Review has a general readability score in the low 30s. The highest (easiest) readability score possible is around 120 (e.g. every sentence consisting of only two one-syllable words). The score does not have a theoretical lower bound. It is possible to make the score as low as you want by including words with arbitrarily many syllables. This sentence, for example, taken as a reading passage unto itself, has a readability score of about 18.5. This paragraph has a readability score of 19.1. The sentence, "The Australian platypus is seemingly a hybrid of a mammal and reptilian creature" is a 24.4. This article has a readability score of around 42.0."""
-        s = """The Flesch Reading Ease Score is very easy to interpret. If you receive a score of 0.0 - 30.0, your work is best understood by higher education graduates. If you receive a score of 90.0 - 100.0, your work is easily understood by an 11-year old student. If you receive a score of 60.0 - 70.0, your work is best and more easily understood by students ranging in age from 13 to 15 years old."""
         s = "'I know some good games we could play,' said the cat." + \
             "'I know some new tricks,' said the cat in the hat." + \
             "'A lot of good tricks. I will show them to you.'" + \
