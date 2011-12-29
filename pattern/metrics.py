@@ -6,6 +6,7 @@
 # http://www.clips.ua.ac.be/pages/pattern
 
 from time import time
+from math import sqrt, floor, modf
 
 ### PROFILER #########################################################################################
 
@@ -199,16 +200,151 @@ def flesch_reading_ease(string):
     if len(string) <  3:
         return 1.0
     string = string.strip()
+    string = string.strip("\"'().")
     string = string.lower()
     string = string.replace("!", ".")
     string = string.replace("?", ".")
     string = string.replace(",", " ")
     string = string.replace("\n", " ")
-    y = sum(count_syllables(w) for w in string.split(" "))
+    y = [count_syllables(w) for w in string.split(" ") if w != ""]
     w = len([w for w in string.split(" ") if w != ""])
     s = len([s for s in string.split(".") if len(s) > 2])
-    R = 206.835 - 1.015 * w/s - 84.6 * y/w
+    #R = 206.835 - 1.015 * w/s - 84.6 * sum(y)/w
+    # Use the Farr-Jenkins-Patterson formula,
+    # which uses a simpler syllable formula (the main weakness of the algorithm).
+    R = 1.599 * sum(1 for v in y if v == 1) * 100 / w - 1.015*w/s - 31.517
     R = max(0.0, min(R*0.01, 1.0))
     return R
 
 readability = flesch_reading_ease
+
+### STATISTICS #######################################################################################
+
+def mean(list):
+    """ Returns the arithmetic mean of the given list of values.
+        For example: mean([1,2,3,4]) = 10/4 = 2.5.
+    """
+    return float(sum(list)) / (len(list) or 1)
+
+avg = mean
+
+def median(list):
+    """ Returns the value that separates the lower half from the higher half of values in the list.
+    """
+    s = sorted(list)
+    n = len(list)
+    if n == 0:
+        raise ValueError, "median() arg is an empty sequence"
+    if n % 2 == 0:
+        return float(s[(n/2)-1] + s[n/2]) / 2
+    return s[n/2]
+
+def variance(list, sample=True):
+    """ Returns the variance of the given list of values.
+        The variance is the average of squared deviations from the mean.
+    """
+    # Sample variance = E((xi-m)^2) / (n-1)
+    # Population variance = E((xi-m)^2) / n
+    m = mean(list)
+    return sum((x-m)**2 for x in list) / (len(list)-int(sample) or 1)
+    
+def standard_deviation(list, *args, **kwargs):
+    """ Returns the standard deviation of the given list of values.
+        Low standard deviation => values are close to the mean.
+        High standard deviation => values are spread out over a large range.
+    """
+    return sqrt(variance(list, *args, **kwargs))
+    
+stdev = standard_deviation
+
+def histogram(list, k=10, range=None):
+    """ Returns a dictionary with k items: {(start, stop): [values], ...},
+        with equal (start, stop) intervals between min(list) => max(list).
+    """
+    # To loop through the intervals in sorted order, use:
+    # for (i,j), values in sorted(histogram(list).items()):
+    #     m = i + (j-i)/2 # midpoint
+    #     print i, j, m, values
+    if range is None:
+        range = (min(list), max(list))
+    k = max(int(k), 1)
+    w = float(range[1] - range[0] + 0.000001) / k # interval (bin width)
+    h = [[] for i in xrange(k)]
+    for x in list:
+        i = int(floor((x-range[0]) / w))
+        if 0 <= i < len(h): 
+            #print x, i, "(%.2f, %.2f)" % (range[0]+w*i, range[0]+w+w*i)
+            h[i].append(x)
+    return dict(((range[0]+w*i, range[0]+w+w*i), v) for i, v in enumerate(h))
+    
+def moment(list, k=1):
+    """ Returns the kth central moment of the given list of values
+        (2nd central moment = variance, 3rd and 4th are used to define skewness and kurtosis).
+    """
+    if k == 1:
+        return 0.0
+    m = mean(list)
+    return sum([(x-m)**k for x in list]) / (len(list) or 1)
+    
+def skewness(list):
+    """ Returns the degree of asymmetry of the given list of values:
+        > 0.0 => relatively few values are higher than mean(list),
+        < 0.0 => relatively few values are lower than mean(list),
+        = 0.0 => evenly distributed on both sides of the mean (= normal distribution).
+    """
+    # Distributions with skew and kurtosis between -1 and +1 
+    # can be considered normal by approximation.
+    return moment(list, 3) / (moment(list, 2) ** 1.5 or 1)
+
+skew = skewness
+
+def kurtosis(list):
+    """ Returns the degree of peakedness of the given list of values:
+        > 0.0 => sharper peak around mean(list) = more infrequent, extreme values,
+        < 0.0 => wider peak around mean(list),
+        = 0.0 => normal distribution,
+        =  -3 => flat
+    """
+    return moment(list, 4) / (moment(list, 2) ** 2.0 or 1) - 3
+
+#a = 1
+#b = 1000
+#U = [float(i-a)/(b-a) for i in range(a,b)] # uniform distribution
+#print abs(-1.2 - kurtosis(U)) < 0.0001
+
+def quantile(list, p=0.5, sort=True, a=1, b=-1, c=0, d=1):
+    """ Returns the value from the sorted list at point p (0.0-1.0).
+        If p falls between two items in the list, the return value is interpolated.
+        For example, quantile(list, p=0.5) = median(list)
+    """
+    # Based on: Ernesto P. Adorio, http://adorio-research.org/wordpress/?p=125
+    # Parameters a, b, c, d refer to the algorithm by Hyndman and Fan (1996):
+    # http://stat.ethz.ch/R-manual/R-patched/library/stats/html/quantile.html
+    s = sort is True and sorted(list) or list
+    n = len(list)
+    f, i = modf(a + (b+n) * p - 1)
+    if n == 0:
+        raise ValueError, "quantile() arg is an empty sequence"
+    if f == 0: 
+        return float(s[int(i)])
+    if i < 0: 
+        return float(s[int(i)])
+    if i >= n: 
+        return float(s[-1])
+    i = int(floor(i))
+    return s[i] + (s[i+1] - s[i]) * (c + d * f)
+
+#print quantile(range(10), p=0.5) == median(range(10))
+
+def boxplot(list, **kwargs):
+    """ Returns a tuple (min(list), Q1, Q2, Q3, max(list)) for the given list of values.
+        Q1, Q2, Q3 are the quantiles at 0.25, 0.5, 0.75 respectively.
+    """
+    # http://en.wikipedia.org/wiki/Box_plot
+    kwargs.pop("p", None)
+    kwargs.pop("sort", None)
+    s = sorted(list)
+    Q1 = quantile(s, p=0.25, sort=False, **kwargs)
+    Q2 = quantile(s, p=0.50, sort=False, **kwargs)
+    Q3 = quantile(s, p=0.75, sort=False, **kwargs)
+    return min(s), Q1, Q2, Q3, max(s)
