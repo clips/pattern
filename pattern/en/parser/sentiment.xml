@@ -9,7 +9,7 @@ The WordNet id refers to the WordNet3 lexical database for English.
 The part-of-speech tags (pos) use the Penn Treebank || tag set: NN = noun, JJ = adjective, ...
 For English movie reviews, the accuracy is 72% (P 0.72, R 0.71, F1 0.72).
 -->
-<sentiment language="en" version="1.0" author="Tom De Smedt, Walter Daelemans">
+<sentiment language="en" version="1.0" author="Tom De Smedt, Walter Daelemans" license="PDDL">
 <word form="really" cornetto_id="" cornetto_synset_id="" wordnet_id="r-00037226" pos="RB" sense="in accordance with truth or fact or reality" polarity="0.0" subjectivity="1.0" intensity="2.0" reliability="0.9" />
 <word form="definitely" cornetto_id="" cornetto_synset_id="" wordnet_id="r-00036935" pos="RB" sense="without question and beyond doubt" polarity="0.0" subjectivity="1.0" intensity="2.0" reliability="0.9" />
 <word form="especially" cornetto_id="" cornetto_synset_id="" wordnet_id="r-00084223" pos="RB" sense="to a distinctly greater extent or degree than is common" polarity="0.0" subjectivity="1.0" intensity="2.0" reliability="0.9" />
