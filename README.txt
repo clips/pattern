@@ -47,4 +47,4 @@ Authors:
 - Walter Daelemans
 
 Contributing authors:
-Frederik De Bleser, Jason Wiener, Jeroen Geertzen, Thomas Crombez, Ken Williams, Peteris Erins
+Frederik De Bleser, Jason Wiener, Daniel Friesen, Jeroen Geertzen, Thomas Crombez, Ken Williams, Peteris Erins

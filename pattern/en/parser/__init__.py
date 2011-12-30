@@ -7,8 +7,6 @@
 ######################################################################################################
 # Fast tagger-chunker using regular expressions.
 
-from brill import Lexicon
-
 import re
 import os
 
@@ -16,6 +14,11 @@ try:
     MODULE = os.path.dirname(__file__)
 except:
     MODULE = ""
+
+# Make pattern.en.parser.brill available from the command line:
+import sys; sys.path.append(MODULE)
+
+from brill import Lexicon
 
 #### TOKENIZER #######################################################################################
 
