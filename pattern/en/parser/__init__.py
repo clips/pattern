@@ -135,7 +135,7 @@ def find_tags(tokens, default="NN", light=False, lexicon=LEXICON, map=None):
                     previous = i>0 and tagged[i-1] or (None, None), 
                         next = i<len(tagged)-1 and tagged[i+1] or (None, None))
     if not light:
-        lexicon.contextual_rules.apply(tagged)
+        tagged = lexicon.contextual_rules.apply(tagged)
     if map is not None:
         tagged = [[token, map(tag, default)] for token, tag in tagged]
     return tagged
@@ -145,14 +145,6 @@ def apply_default_rules(token, previous=(None,None), next=(None,None)):
         Jason Wiener's rules are less accurate than Brill's lexical rules, but they are faster (5-10x).
     """
     # Based on Jason Wiener's implementation of a rule-based part-of-speech Brill tagger.
-    #
-    # By comparison, WordNet has 12401 adjectives not in the Brill lexicon.
-    # Brill's lexical rules corrected 11961 of them, in 1.71 seconds.
-    # Jason Wiener's rules corrected 9948, in 0.19 seconds.
-    #              errors   fixed: Brill   Wiener
-    #      verbs    26197          15983    13525
-    # adjectives    12401          11986     9948
-    #
     # Rule 1: convert a common noun ending with "ing" to a present participle verb (i.e., a gerund).
     # Rule 2: convert any type to adverb if it ends in "ly".
     # Rule 3: if a word has been categorized as a common noun and it ends with "s",
@@ -162,24 +154,27 @@ def apply_default_rules(token, previous=(None,None), next=(None,None)):
     #         or if there is a hyphen ("-") in the word.
     # Rule 6: convert a noun to a past participle if word ends with "ed".
     # Rule 7: DT, {VBD | VBP} --> DT, NN
-    # Rule 8: convert a noun to a verb if the preceeding word is "would".
+    # Rule 8: convert a noun to a verb if it ends with "ate", "ify", "ise", "ize", etc.
+    # Rule 9: convert a noun to a verb if the preceeding word is "would".
     word, pos = token
     if pos.startswith("NN") and word.endswith("ing"):
         pos = "VBG"
     elif word.endswith("ly"):
         pos = "RB"
-    elif pos == "NN" and word.endswith("s") and not word.endswith("ss"):
+    elif pos == "NN" and word.endswith("s") and not word.endswith(("ous","ss")):
         pos = "NNS"
     elif pos.startswith("NN") and word.isdigit():
         pos = "CD"
     elif pos.startswith("NN") and word[:1].isdigit() and word.replace(".","").isdigit():
         pos = "CD"
-    elif pos.startswith("NN") and word.endswith(("able","al","ful","ible","ient","ish","less","ous")) or "-" in word:
+    elif pos.startswith("NN") and word.endswith(("able","al","ful","ible","ient","ish","ive","less","tic","ous")) or "-" in word:
         pos = "JJ"
     elif pos.startswith("NN") and word.endswith("ed"):
         pos = "VBN"
     elif pos in ("VBD", "VBP", "VB") and previous[1] == "DT":
         pos = "NN"
+    elif pos.startswith("NN") and word.endswith(("ate", "ify", "ise", "ize")):
+        pos = "VBP"
     elif pos.startswith("NN") and previous[0] == "would":
         pos = "VB"
     return [word, pos]
@@ -189,7 +184,7 @@ def apply_default_rules(token, previous=(None,None), next=(None,None)):
 SEPARATOR = "/"
 VB = "VB|VBD|VBG|VBN|VBP|VBZ"
 JJ = "JJ|JJR|JJS"
-RB = "[^W]RB|RBR|RBS"
+RB = "(?<!W)RB|RBR|RBS"
 NN = "NN|NNS|NNP|NNPS|PRP|PRP\$"
 rules = [
     ("NP",   re.compile(r"(("+NN+")/)*((DT|CD|CC)/)*(("+RB+"|"+JJ+")/)*(("+NN+")/)+")),
@@ -218,6 +213,8 @@ def find_chunks(tagged, iob=True):
             j = tags[:i].count(SEPARATOR)
             n = m.group(0).count(SEPARATOR)
             for k in range(j, j+n):
+                if len(chunked[k]) == 3:
+                    continue
                 # Don't overwrite tokens already chunked.
                 if len(chunked[k]) < 3:
                     if k == j and chunked[k][1] == "CC":
@@ -323,7 +320,8 @@ def lemma(word, pos="NN"):
     """
     if pos == "NNS":
         return singularize(word)
-    if pos.startswith(("VB","MD")):
+    if pos is not None and \
+       pos.startswith(("VB","MD")):
         return conjugate(word, "infinitive") or word
     return word
 	

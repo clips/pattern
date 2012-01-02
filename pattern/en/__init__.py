@@ -36,6 +36,8 @@ from parser.modality  import modality, EPISTEMIC
 from parser.sentiment import sentiment, polarity, subjectivity, positive
 from parser.sentiment import NOUN, VERB, ADJECTIVE, ADVERB
 
+import wordnet
+
 def split(s, token=[WORD, POS, CHUNK, PNP]):
     return Text(s, token)
 
