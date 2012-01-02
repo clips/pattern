@@ -206,7 +206,9 @@ def subjunctive(sentence, classical=True, **kwargs):
 #    print
 
 def negated(sentence, negative=("not", "n't", "never")):
-    S = " %s " % (sentence).strip(".?!")
+    if hasattr(sentence, "string"): # Sentence object.
+        sentence = sentence.string
+    S = " %s " % (sentence).strip(".?!").lower()
     for w in negative:
         if " %s " % w in S: 
             return True
