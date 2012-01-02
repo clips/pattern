@@ -210,8 +210,8 @@ def flesch_reading_ease(string):
     w = len([w for w in string.split(" ") if w != ""])
     s = len([s for s in string.split(".") if len(s) > 2])
     #R = 206.835 - 1.015 * w/s - 84.6 * sum(y)/w
-    # Use the Farr-Jenkins-Patterson formula,
-    # which uses a simpler syllable formula (the main weakness of the algorithm).
+    # Use the Farr, Jenkins & Patterson algorithm,
+    # which uses simpler syllable counting (count_syllables() is the weak point here). 
     R = 1.599 * sum(1 for v in y if v == 1) * 100 / w - 1.015*w/s - 31.517
     R = max(0.0, min(R*0.01, 1.0))
     return R
