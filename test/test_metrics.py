@@ -4,6 +4,8 @@ import time
 
 from pattern import metrics
 
+#-----------------------------------------------------------------------------------------------------
+
 class TestMetrics(unittest.TestCase):
     
     def setUp(self):
@@ -57,6 +59,7 @@ class TestMetrics(unittest.TestCase):
         # Returns 0.8 (F1 for precision=2/3 and recall=1).
         v = metrics.F1(lambda document: True, self.documents)
         self.assertEqual(v, 0.8)
+        self.assertEqual(v, metrics.F(lambda document: True, self.documents, beta=1))
         print "pattern.metrics.F1()"
         
     def test_agreement(self):
@@ -212,7 +215,7 @@ class TestMetrics(unittest.TestCase):
         # Returns 3.0 (discontinuous sample).
         v = metrics.quantile([1,2,3,4], p=0.5, a=0.5, b=0, c=1, d=0)
         self.assertEqual(v, 3.0)
-        print "pattern.metrics.quantile()"
+        return "pattern.metrics.quantile()"
     
     def test_boxplot(self):
         # Different a,b,c,d quantile parameters produce different results.
@@ -225,6 +228,13 @@ class TestMetrics(unittest.TestCase):
         self.assertTrue(abs(v[3] - 92.0) <= 0.5)
         self.assertEqual(v[4], max(a))
         print "pattern.metrics.boxplot()"
-        
+
+#-----------------------------------------------------------------------------------------------------
+
+def suite():
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMetrics))
+    return suite
+
 if __name__ == '__main__':
-    unittest.main()
+    unittest.TextTestRunner(verbosity=1).run(suite())
