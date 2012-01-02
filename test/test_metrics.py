@@ -18,6 +18,7 @@ class TestMetrics(unittest.TestCase):
         # Returns 0.1 or slightly higher.
         v = metrics.duration(time.sleep, 0.1)
         self.assertTrue(v > 0.1)
+        print "pattern.metrics.duration()"
 
     def test_confustion_matrix(self):
         # Returns 2 true positives (TP) and 1 false positive (FP).
@@ -25,12 +26,14 @@ class TestMetrics(unittest.TestCase):
         self.assertEqual(v, (2,0,1,0))  
         # Returns 1 true negative (TN) and 2 false negatives (FN).
         v = metrics.confusion_matrix(lambda document: False, self.documents)
-        self.assertEqual(v, (0,1,0,2))        
+        self.assertEqual(v, (0,1,0,2))  
+        print "pattern.metrics.confusion_matrix()"      
     
     def test_accuracy(self):
         # Returns 2.0/3.0 (two out of three correct predictions).
         v = metrics.accuracy(lambda document: True, self.documents)
         self.assertEqual(v, 2.0/3.0)
+        print "pattern.metrics.accuracy()"
 
     def test_precision(self):
         # Returns 2.0/3.0 (2 TP, 1 FP).
@@ -39,6 +42,7 @@ class TestMetrics(unittest.TestCase):
         # Returns 0.0 (no TP).
         v = metrics.precision(lambda document: False, self.documents)
         self.assertEqual(v, 0.0)
+        print "pattern.metrics.precision()"
 
     def test_recall(self):
         # Returns 1.0 (no FN).
@@ -47,11 +51,13 @@ class TestMetrics(unittest.TestCase):
         # Returns 0.0 (no TP).
         v = metrics.recall(lambda document: False, self.documents)
         self.assertEqual(v, 0.0)
+        print "pattern.metrics.recall()"
         
     def test_F1(self):
         # Returns 0.8 (F1 for precision=2/3 and recall=1).
         v = metrics.F1(lambda document: True, self.documents)
         self.assertEqual(v, 0.8)
+        print "pattern.metrics.F1()"
         
     def test_agreement(self):
         # Returns 0.210 (example from http://en.wikipedia.org/wiki/Fleiss'_kappa).
@@ -67,6 +73,7 @@ class TestMetrics(unittest.TestCase):
              [0, 2, 2, 3, 7 ]]
         v = metrics.agreement(m)
         self.assertAlmostEqual(v, 0.210, places=3)
+        print "pattern.metrics.agreement()"
 
     def test_levenshtein(self):
         # Returns 0 (identical strings).
@@ -75,6 +82,7 @@ class TestMetrics(unittest.TestCase):
         # Returns 3 (1 insert, 1 delete, 1 replace).
         v = metrics.levenshtein("gallahad", "_g_llaha")
         self.assertEqual(v, 3)
+        print "pattern.metrics.levenshtein()"
 
     def test_levenshtein_similarity(self):
         # Returns 1.0 (identical strings).
@@ -83,6 +91,7 @@ class TestMetrics(unittest.TestCase):
         # Returns 0.75 (2 out of 8 characters differ).
         v = metrics.levenshtein_similarity("gallahad", "g_ll_had")
         self.assertEqual(v, 0.75)
+        print "pattern.metrics.levenshtein_similarity()"
         
     def test_dice_coefficient(self):
         # Returns 1.0 (identical strings).
@@ -91,6 +100,7 @@ class TestMetrics(unittest.TestCase):
         # Returns 0.25 (example from http://en.wikipedia.org/wiki/Dice_coefficient).
         v = metrics.dice_coefficient("night", "nacht")
         self.assertEqual(v, 0.25)
+        print "pattern.metrics.dice_coefficient()"
         
     def test_similarity(self):
         self.assertEqual(
@@ -99,6 +109,7 @@ class TestMetrics(unittest.TestCase):
         self.assertEqual(
             metrics.dice_coefficient("night", "nacht"), 
             metrics.similarity("night", "nacht", metrics.DICE))
+        print "pattern.metrics.similarity()"
             
     def test_readability(self):
         # Technical jargon should be in the "difficult" range: < 0.30
@@ -112,11 +123,13 @@ class TestMetrics(unittest.TestCase):
             "'Your mother will not mind at all if I do.'"
         v = metrics.readability(s)
         self.assertTrue(v > 0.70)
+        print "pattern.metrics.readability()"
         
     def test_mean(self):
         # Returns (1+2+3+4) / 4 = 2.5.
         v = metrics.mean([1,2,3,4])
         self.assertEqual(v, 2.5)
+        print "pattern.metrics.mean()"
         
     def test_median(self):
         # Returns 2.5 (between 2 and 3).
@@ -127,6 +140,7 @@ class TestMetrics(unittest.TestCase):
         self.assertEqual(v, 3)
         # Raises ValueError (empty list).
         self.assertRaises(ValueError, metrics.median, [])
+        print "pattern.metrics.median()"
         
     def test_variance(self):
         # Returns 2.5.
@@ -135,6 +149,7 @@ class TestMetrics(unittest.TestCase):
         # Returns 2.0 (population variance).
         v = metrics.variance([1,2,3,4,5], sample=False)
         self.assertEqual(v, 2.0)
+        print "pattern.metrics.variance()"
         
     def test_standard_deviation(self):
         # Returns 2.429 (sample).
@@ -143,6 +158,7 @@ class TestMetrics(unittest.TestCase):
         # Returns 2.217 (population).
         v = metrics.standard_deviation([1,5,6,7,6,8], sample=False)
         self.assertAlmostEqual(v, 2.217, places=3)
+        print "pattern.metrics.standard_deviation()"
     
     def test_histogram(self):
         # Returns 1 bin.
@@ -153,11 +169,12 @@ class TestMetrics(unittest.TestCase):
         for i, ((start, stop), v) in enumerate(sorted(v.items())):
             self.assertTrue(i+1 == v[0])
             self.assertAlmostEqual(start + (stop-start)/2, i+1, places=3)
-        # Returns two bins, one with all the low numbers, one with the high number.
+        # Returns 2 bins, one with all the low numbers, one with the high number.
         v = metrics.histogram([1,2,3,4,100], k=2)
         v = sorted(v.values(), key=lambda item: len(item))
         self.assertTrue(v[0] == [100])
         self.assertTrue(v[1] == [1,2,3,4])
+        print "pattern.metrics.histogram()"
     
     def test_moment(self):
         # Returns 0.0 (1st central moment = 0.0).
@@ -166,6 +183,7 @@ class TestMetrics(unittest.TestCase):
         # Returns 2.0 (2nd central moment = population variance).
         v = metrics.moment([1,2,3,4,5], k=2)
         self.assertEqual(v, 2.0)
+        print "pattern.metrics.moment()"
     
     def test_skewness(self):
         # Returns < 0.0 (few low values).
@@ -177,6 +195,7 @@ class TestMetrics(unittest.TestCase):
         # Returns 0.0 (evenly distributed).
         v = metrics.skewness([1,2,3,4])
         self.assertTrue(v == 0.0)
+        print "pattern.metrics.skewness()"
         
     def test_kurtosis(self):
         # Returns -1.2 for the uniform distribution.
@@ -184,6 +203,7 @@ class TestMetrics(unittest.TestCase):
         b = 1000
         v = metrics.kurtosis([float(i-a)/(b-a) for i in range(a,b)])
         self.assertAlmostEqual(v, -1.2, places=3)
+        print "pattern.metrics.kurtosis()"
         
     def test_quantile(self):
         # Returns 2.5 (quantile with p=0.5 == median).
@@ -192,6 +212,7 @@ class TestMetrics(unittest.TestCase):
         # Returns 3.0 (discontinuous sample).
         v = metrics.quantile([1,2,3,4], p=0.5, a=0.5, b=0, c=1, d=0)
         self.assertEqual(v, 3.0)
+        print "pattern.metrics.quantile()"
     
     def test_boxplot(self):
         # Different a,b,c,d quantile parameters produce different results.
@@ -203,6 +224,7 @@ class TestMetrics(unittest.TestCase):
         self.assertTrue(abs(v[2] - metrics.median(a)) <= 0.5)
         self.assertTrue(abs(v[3] - 92.0) <= 0.5)
         self.assertEqual(v[4], max(a))
+        print "pattern.metrics.boxplot()"
         
 if __name__ == '__main__':
     unittest.main()
