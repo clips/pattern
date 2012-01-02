@@ -64,18 +64,17 @@ class LexicalRules(list):
             or (cmd == "deletesuf"  and word.endswith(x) and word[:-len(x)] in self.lexicon) \
             or (cmd == "haspref"    and word.startswith(x)) \
             or (cmd == "deletepref" and word.startswith(x) and word[len(x):] in self.lexicon) \
-            or (cmd == "addsuf"     and word+x in lexicon) \
-            or (cmd == "addpref"    and x+word in lexicon) \
+            or (cmd == "addsuf"     and word+x in self.lexicon) \
+            or (cmd == "addpref"    and x+word in self.lexicon) \
             or (cmd == "goodleft"   and x == previous[0]) \
             or (cmd == "goodright"  and x == next[0]):
                 return [word, pos]
-            else:
-                return token
+        return token
 
 #### BRILL CONTEXTUAL RULES ##########################################################################
 
 CONTEXTUAL  = ["PREVTAG", "NEXTTAG", "PREV1OR2TAG", "NEXT1OR2TAG", "PREV1OR2OR3TAG", "NEXT1OR2OR3TAG"]
-CONTEXTUAL += ["SURROUNDTAG", "PREVBIGRAM", "NEXTBIGRAM", "PREV2TAG", "NEXT2TAG"]
+CONTEXTUAL += ["SURROUNDTAG", "PREVBIGRAM", "NEXTBIGRAM", "LBIGRAM", "RBIGRAM", "PREV2TAG", "NEXT2TAG"]
 CONTEXTUAL += ["CURWD", "PREVWD", "NEXTWD", "PREV1OR2WD", "NEXT1OR2WD", "WDPREVTAG"]
 CONTEXTUAL  = dict.fromkeys(CONTEXTUAL, True)
 
@@ -119,7 +118,7 @@ class ContextualRules(list):
                     continue
                 # A rule involves scanning the previous/next word or tag, 
                 # and all combinations thereof.
-                x = rule[3]                
+                x = rule[3]  
                 if (cmd == "PREVTAG"        and x == T[i-1][1]) \
                 or (cmd == "NEXTTAG"        and x == T[i+1][1]) \
                 or (cmd == "PREV1OR2TAG"    and x in (T[i-1][1], T[i-2][1])) \
@@ -129,6 +128,8 @@ class ContextualRules(list):
                 or (cmd == "SURROUNDTAG"    and x == T[i-1][1] and rule[4] == T[i+1][1]) \
                 or (cmd == "PREVBIGRAM"     and x == T[i-2][1] and rule[4] == T[i-1][1]) \
                 or (cmd == "NEXTBIGRAM"     and x == T[i+1][1] and rule[4] == T[i+2][1]) \
+                or (cmd == "LBIGRAM"        and x == T[i-1][0] and rule[4] == T[i][0]) \
+                or (cmd == "RBIGRAM"        and x == T[i][0] and rule[4] == T[i+1][0]) \
                 or (cmd == "PREV2TAG"       and x == T[i-2][1]) \
                 or (cmd == "NEXT2TAG"       and x == T[i+2][1]) \
                 or (cmd == "CURWD"          and x == T[i][0]) \
@@ -142,7 +143,9 @@ class ContextualRules(list):
             # Brill's contextual rules assign tags based on a statistical majority vote.
             # Corrections, primarily based on user-feedback.
             if i > 0 and T[i-1][0] == "such" and token[0] == "as": # such/JJ as/IN
-                tokens[i-len(b)][1] = "IN"
+                tokens[i-1-len(b)][1] = "JJ"
+                tokens[i-0-len(b)][1] = "IN"
+        return tokens
 
 #### BRILL LEXICON ###################################################################################
 
@@ -176,3 +179,18 @@ class Lexicon(dict):
         if len(self) == 0:
             self.load()
         return dict.__setitem__(self, word, pos)
+
+    def keys(self):
+        if len(self) == 0:
+            self.load()
+        return dict.keys(self)
+
+    def values(self):
+        if len(self) == 0:
+            self.load()
+        return dict.values(self)
+
+    def items(self):
+        if len(self) == 0:
+            self.load()
+        return dict.items(self)
