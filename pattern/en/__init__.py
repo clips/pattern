@@ -33,6 +33,7 @@ from parser.tree      import Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word
 from parser.tree      import SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
 from parser.modality  import mood, INDICATIVE, IMPERATIVE, CONDITIONAL, SUBJUNCTIVE
 from parser.modality  import modality, EPISTEMIC
+from parser.modality  import negated
 from parser.sentiment import sentiment, polarity, subjectivity, positive
 from parser.sentiment import NOUN, VERB, ADJECTIVE, ADVERB
 
