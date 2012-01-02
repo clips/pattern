@@ -20,7 +20,7 @@ def column(list, i):
     return [row[i] for row in list]
 
 def avg(list):
-    return sum(list) / (len(list) or 1)
+    return sum(list) / float(len(list) or 1)
 
 #### SUBJECTIVITY LEXICON ############################################################################
 
@@ -205,7 +205,20 @@ class Assessment:
         self.s = s # subjectivity
         self.i = i # intensity
         self.n = n # negation
-        
+    
+    @property
+    def polarity(self):
+        return self.p
+    @property
+    def subjectivity(self):
+        return self.s
+    @property
+    def intensity(self):
+        return self.i
+    @property
+    def negation(self):
+        return self.n
+    
     def __repr__(self):
         return "Assessment(chunk=%s, p=%s, s=%s, i=%s, n=%s)" % (
             repr(self.chunk), self.p, self.s, self.i, self.n)
