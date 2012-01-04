@@ -206,7 +206,8 @@ def subjunctive(sentence, classical=True, **kwargs):
 #    print
 
 def negated(sentence, negative=("not", "n't", "never")):
-    if hasattr(sentence, "string"): # Sentence object.
+    if hasattr(sentence, "string"):
+        # Sentence object => string.
         sentence = sentence.string
     S = " %s " % (sentence).strip(".?!").lower()
     for w in negative:
@@ -424,10 +425,5 @@ def modality(sentence, type=EPISTEMIC):
 # Memory-Based Resolution of In-Sentence Scopes of Hedge Cues
 # http://www.aclweb.org/anthology/W/W10/W10-3006.pdf
 # Sentences in the training corpus are labelled as "certain" or "uncertain".
-# Precision and recall for predicting "certain" (>=0.9):
-# - 0.96 0.82 (F1 0.89) for biomedical text
-# Precision and recall for predicting "uncertain" (<=0.5):
-# - 0.68 0.89 (F1 0.77) for biomedical text, and
-# - 0.39 0.66 (F1 0.49) for Wikipedia text.
-# Random choice((True, False)) "uncertain" classifier: 
-# - 0.18 0.51 (F1 0.26)
+# For Wikipedia sentences, 2000 "certain" and 2000 "uncertain":
+# modality(sentence) > 0.5 => A 0.67 P 0.70 R 0.63 F1 0.66
