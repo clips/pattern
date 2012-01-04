@@ -211,6 +211,182 @@ class TestParser(unittest.TestCase):
 
 #-----------------------------------------------------------------------------------------------------
 
+class TestParseTree(unittest.TestCase):
+    
+    def setUp(self):
+        # Parse sentences to test on.
+        # Creating a Text creates Sentence, Chunk, PNP and Word.
+        # Creating a Sentence tests Sentence.append() and Sentence.parse_token().
+        self.text = "I'm eating pizza with a fork. What a tasty pizza!"
+        self.text = en.Text(en.parse(self.text, relations=True, lemmata=True))
+    
+    def test_copy(self):
+        # Test deepcopy of Text, Sentence, Chunk, PNP and Word.
+        self.text = self.text.copy()
+        print "pattern.en.parser.Text.copy()"
+        
+    def test_xml(self):
+        # Test XML export and import.
+        self.text = en.Text.from_xml(self.text.xml)
+        print "pattern.en.parser.Text.xml"
+        print "pattern.en.parser.Text.from_xml()"
+    
+    def test_text(self):
+        # Test text.
+        self.assertEqual(self.text.sentences[0].string, "I 'm eating pizza with a fork .")
+        self.assertEqual(self.text.sentences[1].string, "What a tasty pizza !")
+        print "pattern.en.parser.tree.Text"
+    
+    def test_sentence(self):
+        # Test sentence.
+        v = self.text[0]
+        self.assertTrue(v.start    == 0)
+        self.assertTrue(v.stop     == 8)
+        self.assertTrue(v.string   == "I 'm eating pizza with a fork .")
+        self.assertTrue(v.subjects == [self.text[0].chunks[0]])
+        self.assertTrue(v.verbs    == [self.text[0].chunks[1]])
+        self.assertTrue(v.objects  == [self.text[0].chunks[2]])
+        self.assertTrue(v.nouns    == [self.text[0].words[3], self.text[0].words[6]])
+        # Sentence.string must be unicode.
+        self.assertTrue(isinstance(v.string, unicode) == True)
+        self.assertTrue(isinstance(unicode(v), unicode) == True)
+        self.assertTrue(isinstance(str(v), str) == True)
+        print "pattern.en.parser.tree.Sentence"
+    
+    def test_sentence_constituents(self):
+        # Returns an in-order list of Chunk, PNP and Word.
+        v = self.text[0].constituents(pnp=True)
+        self.assertEqual(v, [
+            self.text[0].chunks[0],
+            self.text[0].chunks[1],
+            self.text[0].chunks[2],
+            self.text[0].pnp[0],
+            self.text[0].words[7],
+        ])
+        print "pattern.en.parser.tree.Sentence.constituents()"
+        
+    def test_slice(self):
+        # Test sentence slice.
+        v = self.text[0].slice(start=4, stop=6)
+        self.assertTrue(v.parent == self.text[0])
+        self.assertTrue(v.string == "with a")
+        # Test sentence slice tag integrity.
+        self.assertTrue(v.words[0].type  == "IN")
+        self.assertTrue(v.words[1].chunk == None)
+        print "pattern.en.parser.tree.Slice"
+    
+    def test_chunk(self):
+        # Test chunk with multiple words ("a fork").
+        v = self.text[0].chunks[4]
+        self.assertTrue(v.start   == 5)
+        self.assertTrue(v.stop    == 7)
+        self.assertTrue(v.string  == "a fork")
+        self.assertTrue(v.lemmata == ["a", "fork"])
+        self.assertTrue(v.words   == [self.text[0].words[5], self.text[0].words[6]])
+        self.assertTrue(v.head    ==  self.text[0].words[6])
+        self.assertTrue(v.type    == "NP")
+        self.assertTrue(v.role    == None)
+        self.assertTrue(v.pnp     != None)
+        # Test chunk that is subject/object of the sentence ("pizza").
+        v = self.text[0].chunks[2]
+        self.assertTrue(v.role     == "OBJ")
+        self.assertTrue(v.relation == 1)
+        self.assertTrue(v.related  == [self.text[0].chunks[0], self.text[0].chunks[1]])
+        self.assertTrue(v.subject  ==  self.text[0].chunks[0])
+        self.assertTrue(v.verb     ==  self.text[0].chunks[1])
+        self.assertTrue(v.object   == None)
+        # Test chunk traversal.
+        self.assertEqual(v.nearest("VP"), self.text[0].chunks[1])
+        self.assertEqual(v.previous(), self.text[0].chunks[1])
+        self.assertEqual(v.next(), self.text[0].chunks[3])
+        print "pattern.en.parser.tree.Chunk"
+
+    def test_chunk_conjunctions(self):
+        # Returns a list of conjunct/disjunct chunks ("black cat" AND "white cat").
+        v = en.Sentence(en.parse("black cat and white cat"))
+        self.assertEqual(v.chunk[0].conjunctions, [(v.chunk[1], en.AND)])
+        print "pattern.en.parser.tree.Chunk.conjunctions()"
+
+    def test_chunk_modifiers(self):
+        # Returns a list of nearby adjectives and adverbs with no role, for VP.
+        v = en.Sentence(en.parse("Perhaps you should go."))
+        self.assertEqual(v.chunk[2].modifiers, [v.chunk[0]]) # should <=> perhaps
+        print "pattern.en.parser.tree.Chunk.modifiers"
+
+    def test_pnp(self):
+        # Test PNP chunk ("with a fork").
+        v = self.text[0].pnp[0]
+        self.assertTrue(v.string == "with a fork")
+        self.assertTrue(v.chunks == [self.text[0].chunks[3], self.text[0].chunks[4]])
+        self.assertTrue(v.pp     ==  self.text[0].chunks[3])
+        print "pattern.en.parser.tree.PNP"
+    
+    def test_word(self):
+        # Test word tags ("fork" => NN).
+        v = self.text[0].words[6]
+        self.assertTrue(v.index  == 6)
+        self.assertTrue(v.string == "fork")
+        self.assertTrue(v.lemma  == "fork")
+        self.assertTrue(v.type   == "NN")
+        self.assertTrue(v.chunk  == self.text[0].chunks[4])
+        self.assertTrue(v.pnp    != None)
+        for i, tags in enumerate([
+          ["I", "PRP", "B-NP", "O", "NP-SBJ-1", "i"],
+          ["'m", "VBP", "B-VP", "O", "VP-1", "'m"],
+          ["eating", "VBG", "I-VP", "O", "VP-1", "eat"],
+          ["pizza", "NN", "B-NP", "O", "NP-OBJ-1", "pizza"],
+          ["with", "IN", "B-PP", "B-PNP", "O", "with"],
+          ["a", "DT", "B-NP", "I-PNP", "O", "a"],
+          ["fork", "NN", "I-NP", "I-PNP", "O", "fork"],
+          [".", ".", "O", "O", "O", "."]]):
+            self.assertEqual(self.text[0].words[i].tags, tags)
+        print "pattern.en.parser.tree.Word"
+        
+    def test_word_custom_tags(self):
+        # Test word custom tags ("word/part-of-speech/.../some-custom-tag").
+        s = en.Sentence("onion/NN/FOOD", token=[en.WORD, en.POS, "semantic_type"])
+        v = s.words[0]
+        self.assertEqual(v.semantic_type, "FOOD")
+        self.assertEqual(v.custom_tags["semantic_type"], "FOOD")
+        self.assertEqual(v.copy().custom_tags["semantic_type"], "FOOD")
+        # Test adding new custom tags.
+        v.custom_tags["taste"] = "pungent"
+        self.assertEqual(s.token, [en.WORD, en.POS, "semantic_type", "taste"])
+        print "pattern.en.parser.tree.Word.custom_tags"
+    
+    def test_find(self):
+        # Returns the first item for which given function is True.
+        v = en.parser.tree.find(lambda x: x>10, [1,2,3,11,12])
+        self.assertEqual(v, 11)
+        print "pattern.en.parser.tree.find()"
+        
+    def test_zip(self):
+        # Returns a list of zipped tuples, using default to balance uneven lists.
+        v = en.parser.tree.zip([1,2,3], [4,5,6,7], default=0)
+        self.assertEqual(v, [(1,4), (2,5), (3,6), (0,7)])
+        print "pattern.en.parser.tree.zip()"
+        
+    def test_unzip(self):
+        v = en.parser.tree.unzip(1, [(1,4), (2,5), (3,6)])
+        self.assertEqual(v, [4,5,6])
+        print "pattern.en.parser.tree.unzip()"
+    
+    def test_unique(self):
+        # Returns a list copy with unique items.
+        v = en.parser.tree.unique([1,1,1])
+        self.assertEqual(len(v), 1)
+        self.assertEqual(v[0], 1)
+        print "pattern.en.parser.tree.unique()"
+    
+    def test_dynamic_map(self):
+        # Returns an iterator map().
+        v = en.parser.tree.dynamic_map(lambda x: x+1, [1,2,3])
+        self.assertEqual(list(v), [2,3,4])
+        self.assertEqual(v.set[0], 1)
+        print "pattern.en.parser.tree.dynamic_map()"
+        
+#-----------------------------------------------------------------------------------------------------
+
 class TestModality(unittest.TestCase):
     
     def setUp(self):
@@ -271,8 +447,8 @@ class TestModality(unittest.TestCase):
           (True,  "Not true?"),
           (True,  "Never true."),
           (True,  "Isn't true."),):
-            self.assertEqual(en.parser.modality.negated(en.Sentence(en.parse(s))), b)
-        print "en.parser.modality.negated()"
+            self.assertEqual(en.negated(en.Sentence(en.parse(s))), b)
+        print "en.negated()"
         
     def test_mood(self):
         # Test imperative mood.
@@ -287,7 +463,32 @@ class TestModality(unittest.TestCase):
         # Test indicative mood.
         v = en.mood(en.Sentence(en.parse("The weather is nice today.")))
         self.assertEqual(v, en.INDICATIVE)
-        print "en.parser.modality.mood()"
+        print "en.mood()"
+        
+    def test_modality(self):
+        # Returns -1.0 => +1.0 representing the degree of certainty.
+        v = en.modality(en.Sentence(en.parse("I wish it would stop raining.")))
+        self.assertTrue(v < 0)
+        v = en.modality(en.Sentence(en.parse("It will surely stop raining soon.")))
+        self.assertTrue(v > 0)
+        # Test the accuracy of the modality algorithm.
+        # Given are the scores for the CoNLL-2010 Shared Task 1 Wikipedia uncertainty data:
+        # http://www.inf.u-szeged.hu/rgai/conll2010st/tasks.html#task1
+        # The baseline should increase (not decrease) when the algorithm is modified.
+        from pattern.db import Datasheet
+        from pattern.metrics import test
+        sentences = []
+        from time import time
+        for certain, sentence in Datasheet.load(os.path.join("corpora", "conll2010-uncertainty.txt")):
+            sentence = en.parse(sentence, chunks=False, light=True)
+            sentence = en.Sentence(sentence)
+            sentences.append((sentence, int(certain) > 0))
+        A, P, R, F = test(lambda sentence: en.modality(sentence) > 0.5, sentences)
+        self.assertTrue(A > 0.67)
+        self.assertTrue(P > 0.69)
+        self.assertTrue(R > 0.62)
+        self.assertTrue(F > 0.65)
+        print "en.modality()"
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -324,10 +525,10 @@ class TestSentiment(unittest.TestCase):
         for score, review in Datasheet.load(os.path.join("corpora", "pang&lee-polarity.txt")):
             reviews.append((review, int(score) > 0))
         A, P, R, F = test(lambda review: en.positive(review), reviews)
-        self.assertTrue(A > 0.715)
-        self.assertTrue(P > 0.720)
-        self.assertTrue(R > 0.705)
-        self.assertTrue(F > 0.710)
+        self.assertTrue(A > 0.71)
+        self.assertTrue(P > 0.72)
+        self.assertTrue(R > 0.70)
+        self.assertTrue(F > 0.71)
         print "pattern.en.sentiment()"
         
     def test_sentiment_assessment(self):
@@ -343,7 +544,7 @@ class TestSentiment(unittest.TestCase):
             lexicon = en.parser.sentiment.SentiWordNet()
             lexicon.load()
         except ImportError:
-            # SentiWordNet data file is not installed in default location.
+            # SentiWordNet data file is not installed in default location, stop test.
             return
         self.assertTrue(lexicon["wonderful"][0] > 0)
         self.assertTrue(lexicon["horrible"][0] < 0)
@@ -354,6 +555,7 @@ class TestSentiment(unittest.TestCase):
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParser))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParseTree))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestModality))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSentiment))
     return suite
