@@ -1444,15 +1444,19 @@ class CSV(list):
     def headers(self):
         return self.__dict__["fields"]
 
-    def save(self, path, separator=",", encoder=lambda v: v, headers=False):
+    def save(self, path, separator=",", encoder=lambda v: v, headers=False, **kwargs):
         """ Exports the table to a unicode text file at the given path.
             Rows in the file are separated with a newline.
             Columns in a row are separated with the given separator (by default, comma).
             For data types other than string, int, float, bool or None, a custom string encoder can be given.
         """
+        # Optional parameters include all arguments for csv.writer(), see:
+        # http://docs.python.org/library/csv.html#csv.writer
+        kwargs.setdefault("delimiter", separator)
+        kwargs.setdefault("quoting", csv.QUOTE_ALL)
         # csv.writer will handle str, int, float and bool:
         s = StringIO()
-        w = csv.writer(s, delimiter=separator)
+        w = csv.writer(s, **kwargs)
         if headers and self.fields is not None:
             w.writerows([[csv_header_encode(name, type) for name, type in self.fields]])
         w.writerows([[encode_utf8(encoder(v)) for v in row] for row in self])
