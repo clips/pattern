@@ -518,9 +518,11 @@ class Sentence:
         if _is_tokenstring(string):
             token, language = string.tags, getattr(string, "language", language)
         # Ensure Unicode.
-        try: string = string.decode("utf-8")
-        except:
-            pass
+        if isinstance(string, str):
+            for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
+                try: string = string.decode(*encoding)
+                except:
+                    pass
         self.parent      = None # Slices will refer to the sentence they are part of.
         self.text        = None # Text object this sentence is part of.
         self.language    = language
@@ -814,7 +816,7 @@ class Sentence:
         """
         if len(self.words) > 2 and self.words[-2].type == "CC":
             if self.words[-2].chunk is None:
-                cc  = str(self.words[-2]).lower() == "and" and AND or OR
+                cc  = self.words[-2].string.lower() == "and" and AND or OR
                 ch1 = self.words[-3].chunk
                 ch2 = self.words[-1].chunk
                 if ch1 is not None and ch2 is not None:
@@ -930,7 +932,7 @@ class Sentence:
     def string(self):
         return u" ".join([word.string for word in self])
     def __unicode__(self):
-        return self.string    
+        return self.string
     def __repr__(self):
         return "Sentence(%s)" % repr(" ".join(["/".join(word.tags) for word in self.words]).encode("utf-8"))
         
