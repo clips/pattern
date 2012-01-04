@@ -228,6 +228,15 @@ def find_chunks(tagged, iob=True):
     # Chinks are tokens outside of a chunk, we add the O-tag.
     for chink in filter(lambda x: len(x)<3, chunked):
         chink.append("O")
+    # Corrections.
+    for i, (word, tag, chunk) in enumerate(chunked):
+        if tag.startswith("PRP") and chunk == "I-NP" \
+         and i > 0 \
+         and chunked[i-1][1] == "RB" \
+         and chunked[i-1][2] == "B-NP":
+            # "Perhaps you" (NP) => "Perhaps" (ADVP) + "you" (NP).
+            chunked[i-0][2] = "B-NP"
+            chunked[i-1][2] = "B-ADVP"
     return chunked
 
 #### RELATION FINDER #################################################################################
