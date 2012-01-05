@@ -230,13 +230,11 @@ def find_chunks(tagged, iob=True):
         chink.append("O")
     # Corrections.
     for i, (word, tag, chunk) in enumerate(chunked):
-        if tag.startswith("PRP") and chunk == "I-NP" \
-         and i > 0 \
-         and chunked[i-1][1] == "RB" \
-         and chunked[i-1][2] == "B-NP":
-            # "Perhaps you" (NP) => "Perhaps" (ADVP) + "you" (NP).
-            chunked[i-0][2] = "B-NP"
-            chunked[i-1][2] = "B-ADVP"
+        if tag.startswith("RB") and chunk == "B-NP":
+            if i < len(chunked)-1 and not chunked[i+1][1].startswith("JJ"):
+                # "Very nice work" (NP) <=> "Perhaps" (ADVP) + "you" (NP).
+                chunked[i+0][2] = "B-ADVP"
+                chunked[i+1][2] = "B-NP"
     return chunked
 
 #### RELATION FINDER #################################################################################
