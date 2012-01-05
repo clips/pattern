@@ -619,6 +619,31 @@ class Verbs:
         self._lemmas = None # Dictionary of tense => infinitive. 
         self.parse_lemma  = lambda v: v
         self.parse_lexeme = lambda v: []
+
+    @property
+    def infinitives(self):
+        if not self._tenses: self.load()
+        return self._tenses
+    @property
+    def inflections(self):
+        if not self._lemmas: self.load()
+        return self._lemmas
+    @property
+    def TENSES(self):
+        return tenses_index.keys()
+
+    def __iter__(self):
+        if not self._tenses: self.load(); return iter(self._tenses)
+    def __len__(self):
+        if not self._tenses: self.load(); return len(self._tenses)
+    def __contains__(self, k):
+        if not self._tenses: self.load(); return self._tenses.__contains__(k)
+    def __setitem__(self, k, v):
+        if not self._tenses: self.load(); self._tenses[k] = v
+    def __getitem__(self, k):
+        if not self._tenses: self.load(); return self._tenses[k]
+    def get(self, k, default=None):
+        if not self._tenses: self.load(); return self._tenses.get(k, default)
     
     def load(self):
         # The data is lazily loaded when lemma() is called the first time.
@@ -810,11 +835,10 @@ _verbs.parse_lexeme = _parse_lexeme
 #print conjugate("imaginarify", "part", parse=False)
 
 # Accuracy of _parse_lemma():
-#_verbs.load()
 #i = 0
-#for v in _verbs._tenses:
-#    for tense in ("inf","1sg","2sg","3sg","past","pl","part","ppart"):
-#        if _parse_lemma(conjugate(v, tense)) != v: i+=1
+#for v in VERBS.infinitives:
+#    for tense in VERBS.TENSES:
+#        if _parse_lemma(conjugate(v, tense)) == v: i+=1
 #print float(i) / len(_verbs._tenses)*8
 
 # Accuracy of _parse_lexeme():
@@ -824,7 +848,7 @@ _verbs.parse_lexeme = _parse_lexeme
 #for v, x1 in _verbs._tenses.iteritems():
 #    x2 = _parse_lexeme(v)
 #    for j in range(len(x2)):
-#        if x1[j] and x1[j] != x2[j]: i+=1
+#        if x1[j] and x1[j] == x2[j] or x1[j] == "" and x1[j>5 and 10 or 0] == x2[j]: i+=1
 #        n += 1
 #print float(i) / n
 
