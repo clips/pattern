@@ -8,7 +8,7 @@
 # Approximates quantities of objects ("dozens of chickens" etc.)
 
 import re
-from math import log
+from math import log, ceil
 
 try: from pattern.en.inflect import pluralize, referenced
 except:
@@ -187,7 +187,6 @@ def numerals(n, round=2):
         numerals(2.25) => two point twenty-five
         numerals(2.249) => two point twenty-five
         numerals(2.249, round=3) => two point two hundred and forty-nine
-        numerals("2.249", round=None) => two point two hundred and forty-nine
         Note: due to rounding of float values, float(number(x)) == x is not always True.
     """
     if isinstance(n, basestring):
@@ -298,7 +297,7 @@ def approximate(word, amount=1, plural={}):
         return "%s %s" % (COUNTLESS, p)
     # Hundreds and thousands.
     thousands = int(log(amount, 10) / 3)
-    hundreds  = round(log(amount, 10) % 3) - 1
+    hundreds  = ceil(log(amount, 10) % 3) - 1
     h = hundreds==2 and "hundreds of " or (hundreds==1 and "tens of " or "")
     t = thousands>0 and pluralize(ORDER[thousands])+" of " or ""
     return "%s%s%s" % (h, t, p)
