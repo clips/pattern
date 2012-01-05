@@ -1,9 +1,14 @@
 TESTING CORPORA
 ===============
 
-The purpose of the corpora is for testing and evaluating the functionality in the Pattern module. These are not the original corpora, they may have been reduced in size or balanced. The original corpora can be found by following the links below.
+The purpose of the corpora is for testing and evaluating the functionality in the Pattern module. These are not the original corpora, they are samples that have been reduced in size and/or balanced. The original corpora can be found by following the links below.
 
 The corpora are meant for personal use, they are not part of the module's BSD license.
+
+1) Celex 2.5 English Wordforms
+- celex-wordforms.text
+- http://celex.mpi.nl/
+- 4000 singular nouns and their plural form.
 
 1) CoNLL 2010 Shared Task 1 - Wikipedia uncertainty
 - conll2010-uncertainty.txt
