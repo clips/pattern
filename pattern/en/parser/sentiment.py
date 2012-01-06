@@ -388,6 +388,9 @@ class SentiWordNet(Lexicon):
                     float(s[2]) + float(s[3]))
                 if k is not None:
                     # Apply the score to the first synonym in the synset.
-                    self._synsets["%s-%s" % (s[0], str(k[0]).zfill(8))] = v # "a-00193480"
+                    # Several WordNet 3.0 entries may point to the same WordNet 2.1 entry.
+                    k = "%s-%s" % (s[0], str(k[0]).zfill(8)) # "a-00193480"
+                    if not k in self._synsets or s[4].split(" ")[0].endswith("#1"):
+                        self._synsets[k] = v
                 for w in (w for w in s[4].split(" ") if w.endswith("#1")):
                     self._words[w[:-2].replace("_", " ")] = v
