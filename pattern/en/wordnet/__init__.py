@@ -41,15 +41,16 @@ del s
 #-----------------------------------------------------------------------------------------------------
 
 _diacritics = {
-    "a": ("á","ä","â","å","à"),
+    "a": ("á","ä","â","à","å"),
     "e": ("é","ë","ê","è"),
     "i": ("í","ï","î","ì"),
-    "o": ("ó","ö","ô","ø","ò"),
-    "u": ("ú","ü","û","ù"),
-    "y": ("ÿ","ý"),
+    "o": ("ó","ö","ô","ò","ō","ø"),
+    "u": ("ú","ü","û","ù","ů"),
+    "y": ("ý","ÿ","ý"),
     "s": ("š",),
-    "c": ("ç",),
-    "n": ("ñ",)
+    "c": ("ç","č"),
+    "n": ("ñ",),
+    "z": ("ž",)
 }
 
 def normalize(word):
@@ -59,7 +60,7 @@ def normalize(word):
     if not isinstance(word, basestring):
         word = str(word)
     if not isinstance(word, str):
-        try: word = word.encode("utf-8")
+        try: word = word.encode("utf-8", "ignore")
         except:
             pass
     for k, v in _diacritics.items(): 
@@ -95,6 +96,7 @@ def synsets(word, pos=NOUN):
         return [Synset(s.synset) for i, s in enumerate(w)]
     except KeyError:
         return []
+    return []
 
 class Synset:
     
@@ -278,8 +280,8 @@ least_common_subsumer = lcs = ancestor
 
 ### INFORMATION CONTENT ##############################################################################
 
-IC = {}
-IC_CORPUS = os.path.join(os.path.dirname(__file__), "IC-Brown-Resnik.txt")
+IC = {} # Switch data file according to WordNet version:
+IC_CORPUS = os.path.join(os.path.dirname(__file__), "IC-Brown-Resnik"+VERSION[0]+".txt")
 IC_MAX = 0
 def information_content(synset):
     """ Returns the IC value for the given Synset, based on the Brown corpus.
@@ -316,11 +318,12 @@ _map32_pos2 = {"n":NN, "v":VB, "a":JJ, "r":RB}
 _map32_cache = None
 def map32(id, pos=NOUN):
     """ Returns an (id, pos)-tuple with the WordNet2 synset id for the given WordNet3 synset id.
-        There is an error margin of 2%: returns None if no id was found.
+        Returns None if no id was found.
     """
     global _map32_cache
     if not _map32_cache:
         _map32_cache = open(os.path.join(MODULE, "dict", "index.32")).readlines()
+        _map32_cache = (x for x in _map32_cache if x[0] != ";") # comments
         _map32_cache = dict(x.strip().split(" ") for x in _map32_cache)
     k = pos in _map32_pos2 and pos or _map32_pos1.get(pos, "x")
     k+= str(id).lstrip("0")
