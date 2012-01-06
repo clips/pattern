@@ -236,5 +236,5 @@ def suite():
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMetrics))
     return suite
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.TextTestRunner(verbosity=1).run(suite())
