@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 import unittest
 import random
@@ -28,7 +29,7 @@ class TestInflection(unittest.TestCase):
             self.assertEqual(en.inflect.indefinite_article(word), article)
         self.assertEqual(en.article("heir", function=en.INDEFINITE), "an")
         self.assertEqual(en.referenced("ewe"), "a ewe")
-        print "en.article()"
+        print "pattern.en.article()"
         
     def test_pluralize(self):
         # Assert "octopodes" for classical plural of "octopus".
@@ -43,7 +44,7 @@ class TestInflection(unittest.TestCase):
                 i +=1
             n += 1
         self.assertTrue(float(i) / n > 0.95)
-        print "en.pluralize()"
+        print "pattern.en.pluralize()"
         
     def test_singularize(self):
         # Assert the accuracy of the singularization algorithm.
@@ -54,7 +55,7 @@ class TestInflection(unittest.TestCase):
                 i +=1
             n += 1
         self.assertTrue(float(i) / n > 0.95)
-        print "en.singularize()"
+        print "pattern.en.singularize()"
 
     def test_parse_lemma(self):
         # Assert the accuracy of the verb lemmatization algorithm.
@@ -67,7 +68,7 @@ class TestInflection(unittest.TestCase):
                     i += 1
                 n += 1
         self.assertTrue(float(i) / n > 0.88)
-        print "en.inflect._parse_lemma()"
+        print "pattern.en.inflect._parse_lemma()"
         
     def test_parse_lexeme(self):
         # Assert the accuracy of the verb conjugation algorithm.
@@ -81,7 +82,7 @@ class TestInflection(unittest.TestCase):
                     i += 1
                 n += 1
         self.assertTrue(float(i) / n > 0.90)
-        print "en.inflect._parse_lexeme()"
+        print "pattern.en.inflect._parse_lexeme()"
 
     def test_conjugate(self):
         # Assert different tenses with differen conjugations.
@@ -112,11 +113,13 @@ class TestInflection(unittest.TestCase):
           ("has", "had",    "ppart"),
           ("imaginerify", "imaginerified", "3sgp")):
             self.assertTrue(en.conjugate(v1, tense), v2)
+        print "pattern.en.conjugate()"
     
     def test_lemma(self):
         # Assert the infinitive of "weren't".
         v = en.lemma("weren't")
         self.assertEqual(v, "be")
+        print "pattern.en.inflect.lemma()"
     
     def test_lexeme(self):
         # Assert all inflections of "be".
@@ -126,21 +129,25 @@ class TestInflection(unittest.TestCase):
             "was", "were", "been", 
             "am not", "aren't", "isn't", "wasn't", "weren't"
         ])
+        print "pattern.en.inflect.lexeme()"
         
     def test_tenses(self):
         # Assert tense of "am".
         self.assertTrue(en.PRESENT_1ST_PERSON_SINGULAR in en.tenses("am"))
         self.assertTrue("1sg" in en.tenses("am"))
+        print "pattern.en.tenses()"
     
     def test_comparative(self):
         # Assert "nice" => "nicer".
         self.assertEqual(en.comparative("nice"), "nicer")
+        print "pattern.en.comparative()"
 
     def test_superlative(self):
         # Assert "nice" => "nicest"
         self.assertEqual(en.superlative("nice"), "nicest")
         # Assert "important" => "most important"
         self.assertEqual(en.superlative("important"), "most important")
+        print "pattern.en.superlative()"
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -155,6 +162,7 @@ class TestQuantification(unittest.TestCase):
         self.assertEqual(v, ("one", 2))
         v = en.inflect.quantify._extract_leading_zeros("0 0 one")
         self.assertEqual(v, ("one", 2))
+        print "pattern.en.inflect.quantify._extract_leading_zeros()"
         
     def test_numerals(self):
         # Assert number to numerals.
@@ -168,6 +176,7 @@ class TestQuantification(unittest.TestCase):
           ( 150101, "one hundred and fifty thousand one hundred and one"),
           (1500101, "one million, five hundred thousand one hundred and one")):
             self.assertEqual(en.numerals(x), s)
+        print "pattern.en.numerals()"
         
     def test_number(self):
         # Assert numeric string = actual number (after rounding).
@@ -175,6 +184,7 @@ class TestQuantification(unittest.TestCase):
             x = random.random()
             y = en.number(en.numerals(x, round=10))
             self.assertAlmostEqual(x, y, places=10)
+        print "pattern.en.number()"
             
     def test_quantify(self):
         # Assert quantification algorithm.
@@ -188,11 +198,13 @@ class TestQuantification(unittest.TestCase):
           (1001 * ["carrot"], "thousands of carrots"),
           ({"carrot": 4, "parrot": 2}, "several carrots and a pair of parrots")):
             self.assertEqual(en.quantify(a), s)
+        print "pattern.en.quantify()"
     
     def test_reflect(self):
         self.assertEqual(en.reflect(""), "a string")
         self.assertEqual(en.reflect(["","",""]), "several strings")
         self.assertEqual(en.reflect(en.reflect), "a function")
+        print "pattern.en.reflect()"
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -604,7 +616,7 @@ class TestModality(unittest.TestCase):
           (False, "I can help you."),
           (False, "I can help you if you let me.")):
             self.assertEqual(en.parser.modality.imperative(en.Sentence(en.parse(s))), b)
-        print "en.parser.modality.imperative()"
+        print "pattern.en.parser.modality.imperative()"
         
     def test_conditional(self):
         # Assert True for sentences that contain possible or imaginary situations.
@@ -625,7 +637,7 @@ class TestModality(unittest.TestCase):
         s = "I will help you if you pay me."
         v = en.parser.modality.conditional(en.Sentence(en.parse(s)), predictive=False)
         self.assertEqual(v, True)
-        print "en.parser.modality.conditional()"
+        print "pattern.en.parser.modality.conditional()"
 
     def test_subjunctive(self):
         # Assert True for sentences that contain wishes, judgments or opinions.
@@ -636,7 +648,7 @@ class TestModality(unittest.TestCase):
           (True,  "It is a bad idea to be late."),
           (False, "I will be late.")):
             self.assertEqual(en.parser.modality.subjunctive(en.Sentence(en.parse(s))), b)
-        print "en.parser.modality.subjunctive()"
+        print "pattern.en.parser.modality.subjunctive()"
         
     def test_negated(self):
         # Assert True for sentences that contain "not", "n't" or "never".
@@ -645,7 +657,7 @@ class TestModality(unittest.TestCase):
           (True,  "Never true."),
           (True,  "Isn't true."),):
             self.assertEqual(en.negated(en.Sentence(en.parse(s))), b)
-        print "en.negated()"
+        print "pattern.en.negated()"
         
     def test_mood(self):
         # Assert imperative mood.
@@ -660,7 +672,7 @@ class TestModality(unittest.TestCase):
         # Assert indicative mood.
         v = en.mood(en.Sentence(en.parse("The weather is nice today.")))
         self.assertEqual(v, en.INDICATIVE)
-        print "en.mood()"
+        print "pattern.en.mood()"
         
     def test_modality(self):
         # Assert -1.0 => +1.0 representing the degree of certainty.
@@ -684,7 +696,7 @@ class TestModality(unittest.TestCase):
         self.assertTrue(P > 0.69)
         self.assertTrue(R > 0.62)
         self.assertTrue(F > 0.65)
-        print "en.modality()"
+        print "pattern.en.modality()"
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -748,6 +760,103 @@ class TestSentiment(unittest.TestCase):
 
 #-----------------------------------------------------------------------------------------------------
 
+class TestWordNet(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+        
+    def test_normalize(self):
+        # Assert normalization of simple diacritics (WordNet does not store diacritics).
+        self.assertEqual(en.wordnet.normalize(u"cliché"), "cliche")
+        self.assertEqual(en.wordnet.normalize(u"façade"), "facade")
+        print "pattern.en.wordnet.normalize()"
+    
+    def test_version(self):
+        print "WordNet " + en.wordnet.VERSION
+    
+    def test_synsets(self):
+        # Assert synsets by part-of-speech.
+        for word, pos in (
+             ("cat", en.wordnet.NOUN),
+            ("purr", en.wordnet.VERB),            
+            ("nice", en.wordnet.ADJECTIVE),
+          ("nicely", en.wordnet.ADVERB),
+             ("cat", "nn"),
+             ("cat", "NNS")):
+            self.assertTrue(en.wordnet.synsets(word, pos) != [])
+        # Assert TypeError when part-of-speech is not NOUN, VERB, ADJECTIVE or ADVERB.
+        self.assertRaises(TypeError, en.wordnet.synsets, "cat", "unknown_pos")
+        print "pattern.en.wordnet.synsets()"
+        
+    def test_synset(self):
+        v = en.wordnet.synsets("puma")[0]
+        # Assert Synset(id).
+        self.assertEqual(v, en.wordnet.Synset(v.id))        
+        self.assertEqual(v.pos, en.wordnet.NOUN)
+        self.assertAlmostEqual(v.ic, 9.7, places=1)
+        self.assertTrue("cougar" in v.synonyms) # ["cougar", "puma", "catamount", ...]
+        self.assertTrue("feline" in v.gloss)    # "large American feline resembling a lion"
+        # Assert WordNet relations.
+        s = en.wordnet.synsets
+        v = s("tree")[0]
+        self.assertTrue(v.hypernym          in v.hypernyms())
+        self.assertTrue(s("woody plant")[0] in v.hypernyms())
+        self.assertTrue(s("entity")[0]      in v.hypernyms(recursive=True))
+        self.assertTrue(s("beech")[0]       in v.hyponyms())
+        self.assertTrue(s("red beech")[0]   in v.hyponyms(recursive=True))
+        self.assertTrue(s("trunk")[0]       in v.meronyms())
+        self.assertTrue(s("forest")[0]      in v.holonyms())
+        # Assert Lin-similarity.
+        self.assertTrue(
+            v.similarity(s("flower")[0]) < 
+            v.similarity(s("teapot")[0]))
+        print "pattern.en.wordnet.Synset"
+
+    def test_ancenstor(self):
+        # Assert least-common-subsumer algorithm.
+        v1 = en.wordnet.synsets("cat")[0]
+        v2 = en.wordnet.synsets("dog")[0]
+        self.assertTrue(en.wordnet.ancestor(v1,v2) == en.wordnet.synsets("carnivore")[0])
+        print "pattern.en.wordnet.ancestor()"
+
+    def test_map32(self):
+        # Assert sense mapping from WN 3.0 to 2.1.
+        self.assertEqual(en.wordnet.map32(18850, "JJ"), (19556, "JJ"))
+        self.assertEqual(en.wordnet.map32(1382437, "VB"), (1370230, "VB"))
+        print "pattern.en.wordnet.map32"
+        
+    def test_sentiwordnet(self):
+        # Assert SentiWordNet is loaded correctly.
+        if en.wordnet.sentiwordnet is None:
+            return
+        v = en.wordnet.synsets("anguish")[0]
+        self.assertEqual(v.weight, (-0.625, 0.625))
+        v = en.wordnet.synsets("enzymology")[0]
+        self.assertEqual(v.weight, (0.125, 0.125))
+        print "pattern.en.wordnet.sentiwordnet"
+
+#-----------------------------------------------------------------------------------------------------
+
+class TestWordlists(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+        
+    def test_wordlist(self):
+        # Assert lazy loading Wordlist.
+        v = en.wordlist.STOPWORDS
+        self.assertTrue("the" in v)
+        # Assert Wordlist to dict.
+        v = dict.fromkeys(en.wordlist.STOPWORDS, True)
+        self.assertTrue("the" in v)
+        # Assert new Wordlist by adding other Wordlists.
+        v = en.wordlist.STOPWORDS + en.wordlist.ACADEMIC
+        self.assertTrue("the" in v)
+        self.assertTrue("dr." in v)
+        print "pattern.en.wordlist.Wordlist"
+
+#-----------------------------------------------------------------------------------------------------
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestInflection))
@@ -756,7 +865,9 @@ def suite():
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParseTree))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestModality))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSentiment))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestWordNet))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestWordlists))
     return suite
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.TextTestRunner(verbosity=1).run(suite())
