@@ -38,6 +38,7 @@ from parser.sentiment import sentiment, polarity, subjectivity, positive
 from parser.sentiment import NOUN, VERB, ADJECTIVE, ADVERB
 
 import wordnet
+import wordlist
 
 def split(s, token=[WORD, POS, CHUNK, PNP]):
     return Text(s, token)
