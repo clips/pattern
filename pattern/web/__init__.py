@@ -43,16 +43,17 @@ except:
     MODULE = ""
 
 #### UNICODE #########################################################################################
-    
+
 def decode_utf8(string):
     """ Returns the given string as a unicode string (if possible).
     """
     if isinstance(string, str):
-        try: return string.decode("utf-8")
-        except:
-            try: return string.decode("windows-1252")
+        for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
+            try: 
+                return string.decode(*encoding)
             except:
-                 return string
+                pass
+        return string
     return unicode(string)
     
 def encode_utf8(string):
@@ -148,10 +149,11 @@ MIMETYPE_STYLESHEET = ["text/css"]
 MIMETYPE_PLAINTEXT  = ["text/plain"]
 MIMETYPE_PDF        = ["application/pdf"]
 MIMETYPE_NEWSFEED   = ["application/rss+xml", "application/atom+xml"]
-MIMETYPE_IMAGE      = ["image/gif", "image/jpeg", "image/x-png"]
-MIMETYPE_AUDIO      = ["audio/mpeg", "audio/x-aiff", "audio/x-wav"]
-MIMETYPE_VIDEO      = ["video/mpeg", "video/quicktime"]
+MIMETYPE_IMAGE      = ["image/gif", "image/jpeg", "image/png", "image/tiff"]
+MIMETYPE_AUDIO      = ["audio/mpeg", "audio/mp4", "audio/x-aiff", "audio/x-wav"]
+MIMETYPE_VIDEO      = ["video/mpeg", "video/mp4", "video/quicktime"]
 MIMETYPE_ARCHIVE    = ["application/x-stuffit", "application/x-tar", "application/zip"]
+MIMETYPE_SCRIPT     = ["application/javascript", "application/ecmascript"]
 
 def extension(filename):
     return os.path.splitext(filename)[1]
@@ -160,10 +162,16 @@ def urldecode(query):
     """ Inverse operation of urllib.urlencode.
         Returns a dictionary of (name, value)-items from a URL query string.
     """
-    query = [(kv.split("=")+[None])[:2] for kv in query.split("&")]
+    def _parse_number(s):
+        if s.isdigit(): 
+             return int(s)
+        try: return float(s)
+        except:
+             return s
+    query = [(kv.split("=")+[None])[:2] for kv in query.lstrip("?").split("&")]
     query = [(urllib.unquote_plus(bytestring(k)), urllib.unquote_plus(bytestring(v))) for k,v in query]
     query = [(u(k), u(v)) for k,v in query]
-    query = [(k, v.isdigit() and int(v) or v) for k,v in query]
+    query = [(k, _parse_number(v) or None) for k,v in query]
     query = dict([(k,v) for k,v in query if k!=""])
     return query
     
@@ -226,7 +234,7 @@ class URL:
             self.query.update(string.query)
         if len(query) > 0:
             # Requires that we parse the string first (see URL.__setattr__).
-            self.query.update(dict([(u(k),u(v)) for k,v in query.items()]))
+            self.query.update(query)
         
     def _parse(self):
         """ Parses all the parts of the URL string to a dictionary.
@@ -234,6 +242,7 @@ class URL:
             For example: http://user:pass@example.com:992/animal/bird?species=seagull&q#wings
             This is a cached method that is only invoked when necessary, and only once.
         """
+        
         p = urlparse.urlsplit(self._string)
         P = {PROTOCOL : p[0],            # http
              USERNAME : u"",             # user
@@ -281,7 +290,7 @@ class URL:
     
     @property
     def querystring(self):
-        s = dict((bytestring(k), bytestring(v)) for k, v in self.parts[QUERY].items())
+        s = dict((bytestring(k), bytestring(v or "")) for k, v in self.parts[QUERY].items())
         s = urllib.urlencode(s)
         return s
     
@@ -292,6 +301,8 @@ class URL:
     
     def __setattr__(self, k, v):
         if k in self.__dict__ : self.__dict__[k] = u(v); return
+        if k == "string"      : self._set_string(v); return
+        if k == "query"       : self.__dict__["_parts"][k] = v; return
         if k in self.parts    : self.__dict__["_parts"][k] = u(v); return
         raise AttributeError, "'URL' object has no attribute '%s'" % k
         
@@ -305,7 +316,7 @@ class URL:
         if os.path.exists(url):
             return urllib.urlopen(url)
         # Get the query string as a separate parameter if method=POST.          
-        post = self.method == POST and urllib.urlencode(bytestring(self.query)) or None
+        post = self.method == POST and self.querystring or None
         socket.setdefaulttimeout(timeout)
         if proxy:
             proxy = urllib2.ProxyHandler({proxy[1]: proxy[0]})
@@ -416,7 +427,6 @@ class URL:
         if self._parts is None and self.method == GET: 
             return self._string
         P = self._parts 
-        Q = dict((bytestring(k), bytestring(v)) for k, v in P[QUERY].items())
         u = []
         if P[PROTOCOL]: u.append("%s://" % P[PROTOCOL])
         if P[USERNAME]: u.append("%s:%s@" % (P[USERNAME], P[PASSWORD]))
@@ -424,7 +434,7 @@ class URL:
         if P[PORT]    : u.append(":%s" % P[PORT])
         if P[PATH]    : u.append("/%s/" % "/".join(P[PATH]))
         if P[PAGE]    : u.append("/%s" % P[PAGE]); u[-2]=u[-2].rstrip("/")
-        if self.method == GET: u.append("?%s" % urllib.urlencode(Q))
+        if self.method == GET: u.append("?%s" % self.querystring)
         if P[ANCHOR]  : u.append("#%s" % P[ANCHOR])
         return u"".join(u)
 
@@ -1046,8 +1056,10 @@ class Bing(SearchEngine):
 TWITTER = "http://search.twitter.com/"
 TWITTER_LICENSE = None
 
-# Words starting with a # and with punctuation at the tail stripped.
+# Hashtag = word starting with #, for example: #OccupyWallstreet
+# Retweet = word starting with @ preceded by RT: RT @nathan
 TWITTER_HASHTAG = re.compile(r"(\s|^)(#[a-z0-9_\-]+)", re.I)
+TWITTER_RETWEET = re.compile(r"(\s|^RT )(@[a-z0-9_\-]+)", re.I)
 
 class Twitter(SearchEngine):
     
@@ -1071,6 +1083,11 @@ class Twitter(SearchEngine):
                 ("page", start),
                 ("rpp", min(count, type==TRENDS and 10 or 100))
             ))
+            if "geo" in kwargs:
+                # Filter by geo=(latitude, longitude, radius).
+                geo = list(str(v) for v in kwargs.pop("geo")) + ["10km"]
+                geo = ",".join(geo[:3])
+                url += "&geocode=" + geo
         else:
             raise SearchEngineTypeError
         if not query or count < 1 or start > 1500/count: 
@@ -1104,6 +1121,11 @@ def hashtags(string):
     """ Returns a list of hashtags (words starting with a #hash) from a tweet.
     """
     return [b for a,b in TWITTER_HASHTAG.findall(string)]
+    
+def retweets(string):
+    """ Returns a list of retweets (words starting with a RT @author) from a tweet.
+    """
+    return [b for a,b in TWITTER_RETWEET.findall(string)]
 
 #--- WIKIPEDIA ---------------------------------------------------------------------------------------
 # http://en.wikipedia.org/w/api.php
@@ -2136,9 +2158,11 @@ language = Language({
        u'sb': (u'Sorbian', u'Lusatia', u''),
        u'sk': (u'Slovak', u'Slovakia', u'sk'),
        u'sl': (u'Slovenian', u'Slovenia', u'si'),
+       u'sm': (u'Samoan', u'Samoa', 'sm'),
        u'sq': (u'Albanian', u'Albania', u'al'),
        u'sr': (u'Serbian', u'Serbia', u'rs'),
        u'sv': (u'Swedish', u'Sweden', u'se'),
+       u'sw': (u'Swahili', u'Tanzania', u'sw'),
     u'sv-fi': (u'Swedish', u'Finland', u'fi'),
        u'so': (u'Somali', u'Somalia', u'so'),
        u'sx': (u'Sotho', u'South Africa', u'za'),
@@ -2160,6 +2184,160 @@ language = Language({
     u'zh-sg': (u'Chinese', u'Singapore', u'sg'),
     u'zh-tw': (u'Chinese', u'Taiwan', u'tw'),
        u'zu': (u'Zulu', u'South Africa', u'za')
+})
+
+### GEOCODE ###########################################################################################
+
+class Geocode(dict):
+    def __call__(self, address):
+        return self.get(address.capitalize(), None)
+        
+geocode = Geocode({
+         u'Abu Dhabi': ( 24.467,  54.367, "ar"),
+             u'Abuja': (  9.083,   7.533, "en"),
+             u'Accra': (  5.550,  -0.217, "en"),
+           u'Algiers': ( 36.750,   3.050, "ar"),
+             u'Amman': ( 31.950,  35.933, "ar"),
+         u'Amsterdam': ( 52.383,   4.900, "nl"),
+            u'Ankara': ( 39.933,  32.867, "tr"),
+            u'Astana': ( 51.167,  71.417, "ru"),
+          u'Asuncion': (-25.267, -57.667, "es"),
+            u'Athens': ( 37.983,  23.733, "el"),
+           u'Baghdad': ( 33.333,  44.383, "ar"),
+            u'Bamako': ( 12.650,  -8.000, "fr"),
+           u'Bangkok': ( 13.750, 100.517, "th"),
+            u'Bangui': (  4.367,  18.583, "fr"),
+           u'Beijing': ( 39.917, 116.383, "zh-ch"),
+            u'Beirut': ( 33.867,  35.500, "ar"),
+          u'Belgrade': ( 44.833,  20.500, "sr"),
+            u'Berlin': ( 52.517,  13.400, "de"),
+              u'Bern': ( 46.950,   7.433, "de"),
+            u'Bissau': ( 11.850, -15.583, "pt"),
+            u'Bogota': (  4.600, -74.083, "es"),
+          u'Brasilia': (-15.783, -47.917, "pt"),
+        u'Bratislava': ( 48.150,  17.117, "sk"),
+       u'Brazzaville': ( -4.250,  15.283, "fr"),
+          u'Brussels': ( 50.833,   4.333, "nl"),
+         u'Bucharest': ( 44.433,  26.100, "ro"),
+          u'Budapest': ( 47.500,  19.083, "hu"),
+      u'Buenos Aires': (-34.600, -58.667, "es"),
+         u'Bujumbura': ( -3.367,  29.350, ""),
+             u'Cairo': ( 30.050,  31.250, "ar"),
+          u'Canberra': (-35.283, 149.217, "en"),
+           u'Caracas': ( 10.500, -66.933, "es"),
+          u'Chisinau': ( 47.000,  28.850, "ro"),
+           u'Colombo': (  6.933,  79.850, ""),
+           u'Conakry': (  9.550, -13.700, "fr"),
+        u'Copenhagen': ( 55.667,  12.583, "da"),
+             u'Dakar': ( 24.633,  46.717, "fr"),
+          u'Damascus': ( 33.500,  36.300, "ar"),
+     u'Dar es Salaam': ( -6.800,  39.283, "sw"),
+             u'Dhaka': ( 23.717,  90.400, ""),
+            u'Dublin': ( 53.317,  -6.233, "en"),
+          u'Freetown': (  8.500, -13.250, "en"),
+       u'George Town': ( 19.300, -81.383, "en"),
+        u'Georgetown': (  6.800, -58.167, "en"),
+         u'Gibraltar': ( 36.133,  -5.350, "en"),
+    u'Guatemala City': ( 14.617, -90.517, "es"),
+             u'Hanoi': ( 21.033, 105.850, "vi"),
+            u'Harare': (-17.833,  31.050, "en"),
+            u'Havana': ( 23.117, -82.350, "es"),
+          u'Helsinki': ( 60.167,  24.933, "fi"),
+         u'Islamabad': ( 33.700,  73.167, "ur"),
+           u'Jakarta': ( -6.167, 106.817, "ms"),
+         u'Jamestown': (-15.933,  -5.733, "en"),
+         u'Jerusalem': ( 31.767,  35.233, "he"),
+              u'Juba': (  4.850,  31.617, "en"),
+             u'Kabul': ( 34.517,  69.183, "fa"),
+           u'Kampala': (  0.317,  32.417, "en"),
+         u'Kathmandu': ( 27.717,  85.317, ""),
+          u'Khartoum': ( 15.600,  32.533, "ar"),
+            u'Kigali': ( -1.950,  30.067, "rw"),
+          u'Kingston': ( 18.000, -76.800, "en"),
+          u'Kinshasa': ( -4.317,  15.300, "fr"),
+      u'Kuala Lumpur': (  3.167, 101.700, ""),
+       u'Kuwait City': ( 29.367,  47.967, "ar"),
+              u'Kiev': ( 50.433,  30.517, "uk"),
+            u'La Paz': (-16.500, -68.150, "es"),
+              u'Lima': (-12.050, -77.050, "es"),
+            u'Lisbon': ( 38.717,  -9.133, "pt"),
+         u'Ljubljana': ( 46.050,  14.517, "sl"),
+              u'Lome': (  6.133,   1.217, "fr"),
+            u'London': ( 51.500,  -0.167, "en"),
+            u'Luanda': ( -8.833,  13.233, "pt"),
+            u'Lusaka': (-15.417,  28.283, ""),
+        u'Luxembourg': ( 49.600,   6.117, ""),
+            u'Madrid': ( 40.400,  -3.683, "es"),
+           u'Managua': ( 12.150, -86.283, "es"),
+            u'Manila': ( 14.583, 121.000, ""),
+            u'Maputo': (-25.950,  32.583, "pt"),
+       u'Mexico City': ( 19.433, -99.133, "es"),
+             u'Minsk': ( 53.900,  27.567, "be"),
+         u'Mogadishu': (  2.067,  45.367, "so"),
+            u'Monaco': ( 43.733,   7.417, "fr"),
+          u'Monrovia': (  6.300, -10.800, "en"),
+        u'Montevideo': (-34.883, -56.183, "es"),
+            u'Moscow': ( 55.750,  37.583, "ru"),
+            u'Muscat': ( 23.617,  58.583, "ar"),
+           u'Nairobi': ( -1.283,  36.817, "en"),
+            u'Nassau': ( 25.083, -77.350, "en"),
+         u'New Delhi': ( 28.600,  77.200, "hi"),
+            u'Niamey': ( 13.517,   2.117, "fr"),
+              u'Oslo': ( 59.917,  10.750, ""),
+            u'Ottawa': ( 45.417, -75.700, "en"),
+       u'Panama City': (  8.967, -79.533, "es"),
+             u'Paris': ( 48.867,   2.333, "fr"),
+       u'Philipsburg': ( 18.017, -63.033, "en"),
+        u'Phnom Penh': ( 11.550, 104.917, ""),
+          u'Plymouth': ( 16.700, -62.217, "en"),
+        u'Port Louis': (-20.150,  57.483, "en"),
+    u'Port-au-Prince': ( 18.533, -72.333, "fr"),
+        u'Porto-Novo': (  6.483,   2.617, "fr"),
+            u'Prague': ( 50.083,  14.467, "cs"),
+          u'Pretoria': (-25.700,  28.217, "xh"),
+         u'Pyongyang': ( 39.017, 125.750, "ko"),
+             u'Quito': ( -0.217, -78.500, "es"),
+             u'Rabat': ( 34.017,  -6.817, "ar"),
+           u'Rangoon': ( 16.800,  96.150, ""),
+         u'Reykjavik': ( 64.150, -21.950, "is"),
+              u'Riga': ( 56.950,  24.100, "lv"),
+            u'Riyadh': ( 24.633,  46.717, "ar"),
+              u'Rome': ( 41.900,  12.483, "it"),
+            u'Saipan': ( 15.200, 145.750, "en"),
+          u'San Jose': (  9.933, -84.083, "es"),
+          u'San Juan': ( 18.467, -66.117, "es"),
+        u'San Marino': ( 43.933,  12.417, "it"),
+      u'San Salvador': ( 13.700, -89.200, "es"),
+             u'Sanaa': ( 15.350,  44.200, "ar"),
+          u'Santiago': (-33.450, -70.667, "es"),
+     u'Santo Domingo': ( 18.467, -69.900, "es"),
+          u'Sarajevo': ( 43.867,  18.417, ""),
+             u'Seoul': ( 37.550, 126.983, "ko"),
+         u'Singapore': (  1.283, 103.850, ""),
+            u'Skopje': ( 42.000,  21.433, "mk"),
+             u'Sofia': ( 42.683,  23.317, "bg"),
+         u'Stockholm': ( 59.333,  18.050, "sv"),
+            u'Taipei': ( 25.050, 121.500, "zh-ch"),
+           u'Tallinn': ( 59.433,  24.717, "et"),
+          u'Tashkent': ( 41.333,  69.300, "uz"),
+       u'Tegucigalpa': ( 14.100, -87.217, "es"),
+            u'Tehran': ( 35.667,  51.417, "fa"),
+            u'Tirana': ( 41.317,  19.817, "sq"),
+             u'Tokyo': ( 35.683, 139.750, "ja"),
+          u'Torshavn': ( 62.017,  -6.767, "fo"),
+           u'Tripoli': ( 32.883,  13.167, "ar"),
+             u'Tunis': ( 36.800,  10.183, "ar"),
+             u'Vaduz': ( 47.133,   9.517, "de"),
+      u'Vatican City': ( 41.900,  12.450, "it"),
+            u'Vienna': ( 48.200,  16.367, "de"),
+         u'Vientiane': ( 17.967, 102.600, "lo"),
+           u'Vilnius': ( 54.683,  25.317, "lt"),
+            u'Warsaw': ( 52.250,  21.000, "pl"),
+       u'Washington.': ( 38.883, -77.033, "en"),
+        u'Wellington': (-41.467, 174.850, "en"),
+      u'Yamoussoukro': (  6.817,  -5.283, "fr"),
+           u'Yaounde': (  3.867,  11.517, "en"),
+            u'Zagreb': ( 45.800,  16.000, "hr")
 })
 
 #######################################################################################################
