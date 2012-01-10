@@ -7,12 +7,38 @@ from pattern import web
 
 #-----------------------------------------------------------------------------------------------------
 
+class TestUnicode(unittest.TestCase):
+    
+    def setUp(self):
+        self.strings = (
+            u"ünîcøde",
+            u"ünîcøde".encode("utf-16"),
+            u"ünîcøde".encode("latin-1"),
+            u"ünîcøde".encode("windows-1252"),
+             "ünîcøde",
+            u"אוניקאָד"
+        )
+        
+    def test_decode_utf8(self):
+        # Assert unicode.
+        for s in self.strings:
+            self.assertTrue(isinstance(web.decode_utf8(s), unicode))
+        print "pattern.web.decode_utf8()"
+
+    def test_encode_utf8(self):
+        # Assert Python bytestring.
+        for s in self.strings:
+            self.assertTrue(isinstance(web.encode_utf8(s), str))
+        print "pattern.web.encode_utf8()"
+
+#-----------------------------------------------------------------------------------------------------
+
 class TestURL(unittest.TestCase):
     
     def setUp(self):
-        # Set up a URL with fast response time for live testing.
+        # Test a live URL that has fast response time
         self.live = "http://www.google.com/"
-        # Set up a (fake) URL with all the different parts for testing the URL parser.
+        # Test a fake URL with the URL parser.
         self.url = "https://username:password@www.domain.com:8080/path/path/page.html?q=1#anchor"
         self.parts = {
             "protocol": "https",
@@ -25,6 +51,14 @@ class TestURL(unittest.TestCase):
                "query": {"q": 1},
               "anchor": "anchor"
         }
+    
+    def test_asynchrous(self):
+        # Assert asynchronous function call (returns 1).
+        v = web.asynchronous(lambda t: time.sleep(t) or 1, 0.2)
+        while not v.done:
+            time.sleep(0.1)
+        self.assertEqual(v.value, 1)
+        print "pattern.web.asynchronous()"
     
     def test_extension(self):
         # Assert filename extension.
@@ -152,12 +186,145 @@ class TestURL(unittest.TestCase):
         # In Belgium, it yields "http://www.google.be/".
         v = web.URL(self.live).redirect
         print "pattern.web.URL.redirect: " + self.live + " => " + v
+
+#-----------------------------------------------------------------------------------------------------
+
+class TestPlaintext(unittest.TestCase):
+    
+    def setUp(self):
+        pass
         
+    def test_find_urls(self):
+        # Assert URL finder with common URL notations.
+        for url in (
+          "http://domain.co.uk",
+          "https://domain.co.uk",
+          "www.domain.cu.uk",
+          "domain.com",
+          "domain.org",
+          "domain.net"):
+            self.assertEqual(web.find_urls("("+url+".")[0], url)
+        # Assert case-insensitive and <a href="">.
+        # Assert several matches in string.
+        self.assertEqual(web.find_urls("<a href=\"HTTP://domain.net\">")[0], "HTTP://domain.net")
+        self.assertEqual(web.find_urls("domain.com, domain.net"), ["domain.com", "domain.net"])
+        print "pattern.web.find_urls()"
+        
+    def test_find_email(self):
+        # Assert e-mail finder with common e-mail notations.
+        s = "firstname.last+name@domain.ac.co.uk"
+        v = web.find_email("("+s+".")
+        self.assertEqual(v[0], s)
+        # Assert several matches in string.
+        s = ["me@site1.com", "me@site2.com"]
+        v = web.find_email("("+",".join(s)+")")
+        self.assertEqual(v, s)
+        print "pattern.web.find_email()"
+        
+    def test_find_between(self):
+        s = "<script type='text/javascript'>alert(0);</script>"
+        v = web.find_between("<script","</script>", s)
+        self.assertEqual(v[0], " type='text/javascript'>alert(0);")
+        # Assert several matches in string.
+        s = "a0ba1b"
+        v = web.find_between("a", "b", s)
+        self.assertEqual(v, ["0", "1"])
+        print "pattern.web.find_between()"
+        
+    def test_strip_tags(self):
+        # Assert HTML parser and tag stripper.
+        for html, plain in (
+          (u"<b>ünîcøde</b>", u"ünîcøde"),
+          ( "<img src=""/>",   ""),
+          ( "<p>text</p>",     "text\n\n"),
+          ( "<li>text</li>",   "* text\n"),
+          ( "<td>text</td>",   "text\t"),
+          ( "<br /><br/><br>", "\n\n\n")):
+            self.assertEqual(web.strip_tags(html), plain)
+        # Assert exclude tags and attributes
+        v = web.strip_tags("<a href=\"\" onclick=\"\">text</a>", exclude={"a": ["href"]})
+        self.assertEqual(v, "<a href=\"\">text</a>")
+        print "pattern.web.strip_tags()"
+    
+    def test_strip_element(self):
+        v = web.strip_element(" <p><p></p>text</p> <b><P></P></b>", "p")
+        self.assertEqual(v, "  <b></b>")
+        
+    def test_strip_between(self):
+        v = web.strip_between("<p", "</p>", " <p><p></p>text</p> <b><P></P></b>")
+        self.assertEqual(v, " text</p> <b></b>")
+        
+    def test_strip_javascript(self):
+        v = web.strip_javascript(" <script type=\"text/javascript\">text</script> ")
+        self.assertEqual(v, "  ")
+
+    def test_strip_inline_css(self):
+        v = web.strip_inline_css(" <style type=\"text/css\">text</style> ")
+        self.assertEqual(v, "  ")
+        
+    def test_strip_comments(self):
+        v = web.strip_comments(" <!-- text --> ")
+        self.assertEqual(v, "  ")
+
+    def test_strip_forms(self):
+        v = web.strip_forms(" <form method=\"get\">text</form> ")
+        self.assertEqual(v, "  ")
+        
+    def test_encode_entities(self):
+        for a, b in (
+          ("&#201;", "&#201;"), 
+          ("&", "&amp;"), 
+          ("<", "&lt;"), 
+          (">", "&gt;"), 
+          ('"', "&quot;"),
+          ("'", "&#39;")):
+            self.assertEqual(web.encode_entities(a), b)
+            
+    def test_decode_entities(self):
+        for a, b in (
+          ("&#38;", "&"),
+          ("&amp;", "&"),
+          ("&#x0026;", "&"),
+          ("&foo;", "&foo;")):
+            self.assertEqual(web.decode_entities(a), b)
+            
+    def test_collapse_spaces(self):
+        for a, b in (
+          ("    ", ""),
+          (" .. ", ".."),
+          (".  .", ". ."),
+          (". \n", ".")):
+            self.assertEqual(web.collapse_spaces(a), b)
+        # Assert preserve indendation.
+        self.assertEqual(web.collapse_spaces("  . \n", indentation=True), "  .")
+        
+    def test_collapse_tabs(self):
+        for a, b in (
+          ("\t\t\t", ""),
+          ("\t..\t", ".."),
+          (".\t\t.", ". ."),
+          (".\t\n", ".")):
+            self.assertEqual(web.collapse_tabs(a), b)
+        # Assert preserve indendation.
+        self.assertEqual(web.collapse_tabs("\t\t .\t\n", indentation=True), "\t\t .")
+        
+    def collapse_linebreaks(self):
+        for a, b in (
+          ("\n\n\n", "\n"),
+          (".\n\n.", ".\n."),
+          (".\r\n.", ".\n."),
+          (".\n  .", ".\n.")):
+            self.assertEqual(web.collapse_linebreaks(a), b)
+    
+        
+
 #-----------------------------------------------------------------------------------------------------
 
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestURL))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestURL))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPlaintext))
     return suite
 
 if __name__ == "__main__":
