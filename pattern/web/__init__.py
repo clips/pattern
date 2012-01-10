@@ -1455,6 +1455,46 @@ class FlickrResult(Result):
 #f.write(data)
 #f.close()
 
+#--- Facebook Public Status--------------------------------------------------
+FACEBOOK="https://graph.facebook.com/"
+FACEBOOK_SEARCH=FACEBOOK+"search?"
+
+class Facebook(SearchEngine):
+    """docstring for Facebook"""
+    def __init__(self, license=None, throttle=0.5, language=None):
+        SearchEngine.__init__(self, license, throttle, language)
+        
+    """
+    Searches Public Facebook Status updates for querystring 
+    """
+    def search(self, query,count=25,cached=False,**kwargs):
+        url = FACEBOOK_SEARCH
+        url += urllib.urlencode((
+            ("q", bytestring(query)),
+            ("type", "post"),
+#           ("access_token", self.license),
+            ("limit", count),
+            ("fields","from,message") #Only get what you need
+            ))
+        
+        if not query: 
+            return Results(FACEBOOK, query)
+        kwargs.setdefault("throttle", self.throttle)
+        try: 
+            data = URL(url).download(cached=cached,**kwargs)
+        except HTTP420Error:
+            raise SearchEngineLimitError
+        data = json.loads(data)
+        results = Results(FACEBOOK_SEARCH, query, type)
+        results.total = None
+        for x in data.get("data",[]):
+            r = Result(url=None)
+            r.author = self.format(x.get("from",x.get("name")))
+            r.description  = self.format(x.get("message"))
+            r.url =  FACEBOOK + x.get("id")
+            r.date = x.get("created_time")
+            results.append(r)
+        return results
 #--- PRODUCT REVIEWS ---------------------------------------------------------------------------------
 
 PRODUCTWIKI = "http://api.productwiki.com/connect/api.aspx"
@@ -1563,12 +1603,13 @@ feeds = {
 #--- WEB SORT ----------------------------------------------------------------------------------------
 
 SERVICES = {
-    GOOGLE : Google,
-     YAHOO : Yahoo,
-      BING : Bing,   
-   TWITTER : Twitter,
- WIKIPEDIA : Wikipedia,
-    FLICKR : Flickr
+    GOOGLE    : Google,
+    YAHOO     : Yahoo,
+    BING      : Bing,
+    TWITTER   : Twitter,
+    WIKIPEDIA : Wikipedia,
+    FLICKR    : Flickr,
+    FACEBOOK  : Facebook
 }
 
 def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, reverse=False, **kwargs):
