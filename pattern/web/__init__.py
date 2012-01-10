@@ -457,7 +457,7 @@ RE_URL2 = RE_URL_HEAD + r"(www\..*?\..*?)" + RE_URL_TAIL           # Starts with
 RE_URL3 = RE_URL_HEAD + r"([\w|-]*?\.(com|net|org))" + RE_URL_TAIL # Ends with .com, .net, .org
 
 RE_URL1, RE_URL2, RE_URL3 = \
-    re.compile(RE_URL1), re.compile(RE_URL2), re.compile(RE_URL3)
+    re.compile(RE_URL1, re.I), re.compile(RE_URL2, re.I), re.compile(RE_URL3, re.I)
 
 def find_urls(string, unique=True):
     """ Returns a list of URLs parsed from the string.
@@ -465,7 +465,9 @@ def find_urls(string, unique=True):
         Links can be preceded by leading punctuation (open parens)
         and followed by trailing punctuation (period, comma, close parens).
     """
-    string = u(string).replace(u"\u2024", ".")
+    string = u(string)
+    string = string.replace(u"\u2024", ".")
+    string = string.replace(" ", "  ")
     matches = []
     for p in (RE_URL1, RE_URL2, RE_URL3):
         for m in p.finditer(" %s " % string):
@@ -574,7 +576,6 @@ class HTMLTagstripper(HTMLParser):
                            To preserve attributes a dict of (tag name, [attribute])-items can be given.
             - replace    : a dictionary of (tag name, (replace_before, replace_after))-items.
                            By default, block-level elements are separated with linebreaks.
-            - whitespace : keep the original whitespace from the input string?
         """
         if html is None:
             return None
@@ -614,6 +615,11 @@ class HTMLTagstripper(HTMLParser):
         self._data.append("&%s;" % ref)
     def handle_charref(self, ref):
         self._data.append("&%s;" % ref)
+        
+    def handle_comment(self, comment):
+        if "comment" in self._exclude or \
+               "!--" in self._exclude:
+            self._data.append("<!--%s-->" % comment)
 
 # As a function:
 strip_tags = HTMLTagstripper().strip
@@ -624,19 +630,23 @@ def strip_element(string, tag, attributes=""):
         No HTML parser is used: strip_element(s, "a", "href='foo' class='bar'")
         matches "<a href='foo' class='bar'" but not "<a class='bar' href='foo'".
     """
-    t, i, j = tag.strip("</>"), 0, 0
+    s = string.lower() # Case-insensitive.
+    t = tag.strip("</>")
+    a = (" " + attributes.lower().strip()).rstrip()
+    i = 0
+    j = 0
     while j >= 0:
-        i = string.find("<%s%s" % (t, (" "+attributes.strip()).rstrip()), i)
-        j = string.find("</%s>" % t, i+1)
-        opened, closed = string[i:j].count("<%s" % t), 1
+        i = s.find("<%s%s" % (t, a), i)
+        j = s.find("</%s>" % t, i+1)
+        opened, closed = s[i:j].count("<%s" % t), 1
         while opened > closed and j >= 0:
-            k = string.find("</%s>" % t, j+1)
-            opened += string[j:k].count("<%s" % t)
+            k = s.find("</%s>" % t, j+1)
+            opened += s[j:k].count("<%s" % t)
             closed += 1
             j = k
         if i < 0: return string
         if j < 0: return string[:i]
-        string = string[:i] + string[j+len(t)+3:]
+        string = string[:i] + string[j+len(t)+3:]; s=string.lower()
     return string
 
 def strip_between(a, b, string):
@@ -695,31 +705,38 @@ def encode_url(string):
 RE_SPACES = re.compile(r" +",  re.MULTILINE) # Matches one or more spaces.
 RE_TABS   = re.compile(r"\t+", re.MULTILINE) # Matches one or more tabs.
 
-def collapse_spaces(string):
+def collapse_spaces(string, indentation=False, replace=" "):
     """ Returns a string with consecutive spaces collapsed to a single space.
+        Whitespace on empty lines and at the end of each line is removed.
+        With indentation=True, retains leading whitespace on each line.
     """
-    return RE_SPACES.sub(" ", string).strip(" ")
+    p = []
+    for x in string.splitlines():
+        n = indentation and len(x) - len(x.lstrip()) or 0
+        p.append(x[:n] + RE_SPACES.sub(replace, x[n:]).strip())
+    return "\n".join(p)
+
+def collapse_tabs(string, indentation=False, replace=" "):
+    """ Returns a string with (consecutive) tabs replaced by a single space.
+        Whitespace on empty lines and at the end of each line is removed.
+        With indentation=True, retains leading whitespace on each line.
+    """
+    p = []
+    for x in string.splitlines():
+        n = indentation and len(x) - len(x.lstrip()) or 0
+        p.append(x[:n] + RE_TABS.sub(replace, x[n:]).strip())
+    return "\n".join(p)
 
 def collapse_linebreaks(string, threshold=1):
     """ Returns a string with consecutive linebreaks collapsed to at most the given threshold.
         Whitespace on empty lines and at the end of each line is removed.
     """
     n = "\n" * threshold
-    p = [s.rstrip() for s in string.replace("\r", "").split("\n")]
+    p = [s.rstrip() for s in string.splitlines()]
     string = "\n".join(p)
     string = re.sub(n+r"+", n, string)
     return string
 
-def collapse_tabs(string, indentation=False):
-    """ Returns a string with (consecutive) tabs replaced by a single space.
-        With indentation=True, retains leading tabs on each line.
-    """
-    p = []
-    for x in string.splitlines():
-        n = indentation and len(x) - len(x.lstrip("\t")) or 0
-        p.append("\t"*n + RE_TABS.sub(" ", x).strip(" "))
-    return "\n".join(p)
-    
 def plaintext(html, keep=[], replace=blocks, linebreaks=2, indentation=False):
     """ Returns a string with all HTML tags removed.
         Content inside HTML comments, the <style> tag and the <script> tags is removed.
@@ -728,18 +745,22 @@ def plaintext(html, keep=[], replace=blocks, linebreaks=2, indentation=False):
         - replace     : a dictionary of (tag name, (replace_before, replace_after))-items.
                         By default, block-level elements are followed by linebreaks.
         - linebreaks  : the maximum amount of consecutive linebreaks,
-        - indentation : keep tabs?
+        - indentation : keep left line indentation (tabs and spaces)?
     """
+    if not keep.get("script"):
+        html = strip_javascript(html)
+    if not keep.get("style"):
+        html = strip_inline_css(html)
+    if not keep.get("form"):
+        html = strip_forms(html)
+    if not keep.get("comment") and not keep.get("!--"):
+        html = strip_comments(html)
     html = html.replace("\r", "\n")
-    html = strip_javascript(html)
-    html = strip_inline_css(html)
-    html = strip_comments(html)
-    html = strip_forms(html)
     html = strip_tags(html, exclude=keep, replace=replace)
     html = decode_entities(html)
-    html = collapse_spaces(html)
-    html = collapse_linebreaks(html, linebreaks)
+    html = collapse_spaces(html, indentation)
     html = collapse_tabs(html, indentation)
+    html = collapse_linebreaks(html, linebreaks)
     html = html.strip()
     return html
 
