@@ -8,7 +8,7 @@ from pattern.db  import Datasheet, pprint
 try: 
     # We store status in a Table that can be saved as a text file.
     # In the first column, we'll store a unique ID for each tweet.
-    # We only want to add the latest facebook status, i.e. those we haven't previously encountered.
+    # We only want to add the latest Facebook status, i.e. those we haven't previously encountered.
     # With an index on the first column we can quickly check if an ID already exists.
     # The index becomes important once more and more rows are added to the table (speed).
     table = Datasheet.load("travel.txt")
@@ -27,7 +27,7 @@ for status in engine.search("Travelling to", count=25, cached=False):
     print status.date
     print
     id = status.url
-    # Only add the tweet to the table if it doesn't already contain this ID.
+    # Only add the status update to the table if it doesn't already contain this ID.
     if len(table) == 0 or id not in index:
         table.append([id, status.description])
         index[id] = True
