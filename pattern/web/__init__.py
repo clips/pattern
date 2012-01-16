@@ -1151,7 +1151,7 @@ class Twitter(SearchEngine):
                 # It can also be a (latitude, longitude)-tuple with default radius "10km".
                 url.query["geocode"] = ",".join((map(str, kwargs.pop("geo")) + ["10km"])[:3])
         # 2) Restrict language.
-        #url.query["lang"] = self.language or ""
+        url.query["lang"] = self.language or ""
         # 3) Parse JSON response.
         kwargs.setdefault("throttle", self.throttle)
         try: 
@@ -1594,7 +1594,6 @@ class Facebook(SearchEngine):
         kwargs.setdefault("throttle", self.throttle)
         data = URL(url).download(cached=cached,**kwargs)
         data = json.loads(data)
-        print data
         results = Results(FACEBOOK, query, SEARCH)
         results.total = None
         for x in data.get("data", []):
