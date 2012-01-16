@@ -46,5 +46,12 @@ Authors:
 - Tom De Smedt (tom@organisms.be)
 - Walter Daelemans
 
-Contributing authors:
-Frederik De Bleser, Jason Wiener, Daniel Friesen, Jeroen Geertzen, Thomas Crombez, Ken Williams, Peteris Erins
+Contributing authors (chronological):
+- Frederik De Bleser
+- Jason Wiener
+- Daniel Friesen
+- Jeroen Geertzen
+- Thomas Crombez
+- Ken Williams
+- Peteris Erins
+- Rajesh Nair
