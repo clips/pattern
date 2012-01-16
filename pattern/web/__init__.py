@@ -14,14 +14,21 @@ import threading
 import time
 import os
 import socket, urlparse, urllib, urllib2
-import oauth
 import htmlentitydefs
 import sgmllib
 import re
 import xml.dom.minidom
-import json
 import StringIO
 import bisect
+
+import api
+import feed
+import oauth
+import json
+import locale
+
+from feed import feedparser
+from soup import BeautifulSoup
 
 try:
     # Import persistent Cache.
@@ -244,15 +251,15 @@ class URL:
         """
         
         p = urlparse.urlsplit(self._string)
-        P = {PROTOCOL : p[0],            # http
-             USERNAME : u"",             # user
-             PASSWORD : u"",             # pass
-               DOMAIN : p[1],            # example.com
-                 PORT : u"",             # 992
-                 PATH : p[2],            # [animal]
-                 PAGE : u"",             # bird
-                QUERY : urldecode(p[3]), # {"species": "seagull", "q": None}
-               ANCHOR : p[4]             # wings
+        P = {PROTOCOL: p[0],            # http
+             USERNAME: u"",             # user
+             PASSWORD: u"",             # pass
+               DOMAIN: p[1],            # example.com
+                 PORT: u"",             # 992
+                 PATH: p[2],            # [animal]
+                 PAGE: u"",             # bird
+                QUERY: urldecode(p[3]), # {"species": "seagull", "q": None}
+               ANCHOR: p[4]             # wings
         }
         # Split the username and password from the domain.
         if "@" in P[DOMAIN]:
@@ -302,7 +309,7 @@ class URL:
     def __setattr__(self, k, v):
         if k in self.__dict__ : self.__dict__[k] = u(v); return
         if k == "string"      : self._set_string(v); return
-        if k == "query"       : self.__dict__["_parts"][k] = v; return
+        if k == "query"       : self.parts[k] = v; return
         if k in self.parts    : self.__dict__["_parts"][k] = u(v); return
         raise AttributeError, "'URL' object has no attribute '%s'" % k
         
@@ -702,8 +709,8 @@ def decode_url(string):
 def encode_url(string):
     return urllib.unquote_plus(string) # "black/white" => "black%2Fwhite".
 
-RE_SPACES = re.compile(r" +",  re.MULTILINE) # Matches one or more spaces.
-RE_TABS   = re.compile(r"\t+", re.MULTILINE) # Matches one or more tabs.
+RE_SPACES = re.compile("( |\xa0)+", re.M) # Matches one or more spaces.
+RE_TABS   = re.compile(r"\t+", re.M)      # Matches one or more tabs.
 
 def collapse_spaces(string, indentation=False, replace=" "):
     """ Returns a string with consecutive spaces collapsed to a single space.
@@ -747,13 +754,14 @@ def plaintext(html, keep=[], replace=blocks, linebreaks=2, indentation=False):
         - linebreaks  : the maximum amount of consecutive linebreaks,
         - indentation : keep left line indentation (tabs and spaces)?
     """
-    if not keep.get("script"):
+    if not keep.__contains__("script"):
         html = strip_javascript(html)
-    if not keep.get("style"):
+    if not keep.__contains__("style"):
         html = strip_inline_css(html)
-    if not keep.get("form"):
+    if not keep.__contains__("form"):
         html = strip_forms(html)
-    if not keep.get("comment") and not keep.get("!--"):
+    if not keep.__contains__("comment") and \
+       not keep.__contains__("!--"):
         html = strip_comments(html)
     html = html.replace("\r", "\n")
     html = strip_tags(html, exclude=keep, replace=replace)
@@ -769,8 +777,6 @@ def plaintext(html, keep=[], replace=blocks, linebreaks=2, indentation=False):
 SEARCH    = "search"    # Query for pages (i.e. links to websites).
 IMAGE     = "image"     # Query for images.
 NEWS      = "news"      # Query for news items.
-BLOG      = "blog"      # Query for blog posts.
-TRENDS    = "trend"     # Query for trend words (in use on Twitter).
 
 TINY      = "tiny"      # Image size around 100x100.
 SMALL     = "small"     # Image size around 200x200.
@@ -826,7 +832,7 @@ class Results(list):
         """ A list of results returned from SearchEngine.search().
             - source: the service that yields the results (e.g. GOOGLE, TWITTER).
             - query : the query that yields the results.
-            - type  : the query type (SEARCH, IMAGE, NEWS, BLOG, TREND).
+            - type  : the query type (SEARCH, IMAGE, NEWS).
             - total : the total result count.
                       This is not the length of the list, but the total number of matches for the given query.
         """
@@ -864,7 +870,7 @@ class SearchEngineLimitError(SearchEngineError):
 # http://code.google.com/apis/customsearch/v1/overview.html
 
 GOOGLE = "https://www.googleapis.com/customsearch/v1?"
-GOOGLE_LICENSE = "AIzaSyBxe9jC4WLr-Rry_5OUMOZ7PCsEyWpiU48"
+GOOGLE_LICENSE = api.license["Google"]
 GOOGLE_CUSTOM_SEARCH_ENGINE = "000579440470800426354:_4qo2s0ijsi"
 
 # Search result descriptions can start with: "Jul 29, 2007 ...",
@@ -883,18 +889,23 @@ class Google(SearchEngine):
             - count: maximum 10,
             There is a daily limit of 10,000 queries. Google Custom Search is a paid service.
         """
-        if not query or count < 1 or start > 10: 
+        if type != SEARCH:
+            raise SearchEngineTypeError
+        if not query or count < 1 or start < 1 or start > (100 / count): 
             return Results(GOOGLE, query, type)
+        # 1) Create request URL.
         url = URL(GOOGLE, query={
-              "key" : self.license or GOOGLE_LICENSE,
-               "cx" : GOOGLE_CUSTOM_SEARCH_ENGINE,
-                "q" : query,
-            "start" : 1 + (start-1) * count,
-              "num" : min(count, 10),
-              "alt" : "json"
+              "key": self.license or GOOGLE_LICENSE,
+               "cx": GOOGLE_CUSTOM_SEARCH_ENGINE,
+                "q": query,
+            "start": 1 + (start-1) * count,
+              "num": min(count, 10),
+              "alt": "json"
         })
+        # 2) Restrict language.
         if self.language is not None:
             url.query["lr"] = "lang_" + self.language
+        # 3) Parse JSON response.
         kwargs.setdefault("throttle", self.throttle)
         data = url.download(cached=cached, **kwargs)
         data = json.loads(data)
@@ -920,32 +931,41 @@ class Google(SearchEngine):
         
     def translate(self, string, input="en", output="fr", **kwargs):
         """ Returns the translation of the given string in the desired output language.
+            Google Translate is a paid service, license without billing raises HTTP401Authentication.
         """
-        url = URL("http://ajax.googleapis.com/ajax/services/language/translate", method=GET, query={
-                "v" : 1.0,
-                "q" : string,
-         "langpair" : input+"|"+output
+        url = URL("https://www.googleapis.com/language/translate/v2?", method=GET, query={
+               "key": GOOGLE_LICENSE,
+                 "q": string,
+            "source": input,
+            "target": output
         })
         kwargs.setdefault("cached", False)
         kwargs.setdefault("throttle", self.throttle)
-        data = url.download(**kwargs)
+        try:
+            data = url.download(**kwargs)
+        except HTTP403Forbidden:
+            raise HTTP401Authentication
         data = json.loads(data)
-        data = (data.get("responseData") or {}).get("translatedText", "")
+        data = data.get("data", {}).get("translations", [{}])[0].get("translatedText", "")
         data = decode_entities(data)
         return u(data)
         
     def identify(self, string, **kwargs):
         """ Returns a (language, reliability)-tuple for the given string.
+            Google Translate is a paid service, license without billing raises HTTP401Authentication.
         """
-        url = URL("http://www.google.com/uds/GlangDetect", method=GET, query={
-                "v": 1.0,
-                "q": string[:1000]
+        url = URL("https://www.googleapis.com/language/translate/v2/detect?", method=GET, query={
+               "key": GOOGLE_LICENSE,
+                 "q": string[:1000]
         })
         kwargs.setdefault("cached", False)
         kwargs.setdefault("throttle", self.throttle)
-        data = url.download(**kwargs)
+        try:
+            data = url.download(**kwargs)
+        except HTTP403Forbidden:
+            raise HTTP401Authentication
         data = json.loads(data)
-        data = data.get("responseData") or {}
+        data = data.get("data", {}).get("detections", [[{}]])[0][0]
         data = u(data.get("language")), float(data.get("confidence"))
         return data
 
@@ -954,7 +974,7 @@ class Google(SearchEngine):
 # http://developer.yahoo.com/search/
 
 YAHOO = "http://yboss.yahooapis.com/ysearch/"
-YAHOO_LICENSE = ("", "") # OAuth consumer key + consumer secret.
+YAHOO_LICENSE = api.license["Yahoo"] 
 
 class Yahoo(SearchEngine):
 
@@ -968,30 +988,38 @@ class Yahoo(SearchEngine):
             - count: maximum 50, or 35 for images.
             There is no daily limit, however Yahoo BOSS is a paid service.
         """
-        url = YAHOO
-        if   type == SEARCH : url += "web"
-        elif type == IMAGE  : url += "images"
-        elif type == NEWS   : url += "news"
-        else:
+        if type not in (SEARCH, IMAGE, NEWS):
             raise SearchEngineTypeError
-        if not query or count < 1 or start > 1000/count: 
+        if type == SEARCH: 
+            url = YAHOO + "web"
+        if type == IMAGE: 
+            url = YAHOO + "images"
+        if type == NEWS: 
+            url = YAHOO + "news"
+        if not query or count < 1 or start < 1 or start > 1000/count: 
             return Results(YAHOO, query, type)
-        query = {
-                 "q" : oauth.normalize(query.replace(" ", "_")),
-             "start" : 1 + (start-1) * count,
-             "count" : min(count, type==IMAGE and 35 or 50),
-            "format" : "json"
-        }
-        query.update({ 
-            # BOSS OAuth authorization.
+        # 1) Create request URL.
+        url = URL(url, method=GET, query={
+                 "q": oauth.normalize(query.replace(" ", "_")),
+             "start": 1 + (start-1) * count,
+             "count": min(count, type==IMAGE and 35 or 50),
+            "format": "json"
+        })
+        # 2) Restrict language.
+        if self.language is not None:
+            market = locale.market(self.language)
+            if market:
+                url.query["market"] = market.lower()
+        # 3) BOSS OAuth authentication.
+        url.query.update({ 
             "oauth_version": "1.0",
             "oauth_nonce": oauth.nonce(),
             "oauth_timestamp": oauth.timestamp(),
             "oauth_consumer_key": self.license[0],
             "oauth_signature_method": "HMAC-SHA1"         
         })
-        query["oauth_signature"] = oauth.sign(url, query, method=GET, secret=self.license[1])
-        url = URL(url, method=GET, query=query)
+        url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query, method=GET, secret=self.license[1])
+        # 3) Parse JSON response.
         kwargs.setdefault("throttle", self.throttle)
         try: 
             data = url.download(cached=cached, **kwargs)
@@ -1011,16 +1039,17 @@ class Yahoo(SearchEngine):
             r.description = self.format(x.get("abstract"))
             r.date        = self.format(x.get("date"))
             r.author      = self.format(x.get("source"))
-            r.language    = self.format(x.get("language"))
+            r.language    = self.format(x.get("language") and \
+                                        x.get("language").split(" ")[0] or self.language or "")
             results.append(r)
         return results
 
 #--- BING --------------------------------------------------------------------------------------------
-# http://www.bing.com/developers/s/API%20Basics.pdf
+# http://www.bing.com/developers/s/APIBasics.html
 # http://www.bing.com/developers/createapp.aspx
 
 BING = "http://api.search.live.net/json.aspx"
-BING_LICENSE = "D6F2EEA455BC0D155BB20EB857066DE85619EC3F"
+BING_LICENSE = api.license["Bing"] 
 
 class Bing(SearchEngine):
 
@@ -1035,30 +1064,40 @@ class Bing(SearchEngine):
             - size : for images, either SMALL, MEDIUM or LARGE.
             There is no daily query limit.
         """
-        url = BING+"?"
-        if   type == SEARCH : s = "web"
-        elif type == IMAGE  : s = "image"
-        elif type == NEWS   : s = "news"
-        else:
+        if type not in (SEARCH, IMAGE, NEWS):
             raise SearchEngineTypeError
-        if not query or count < 1 or start > 1000/count: 
-            return Results(BING, query, type)
-        url = URL(url, method=GET, query={
-                 "Appid" : self.license or "",
-               "sources" : s, 
-                 "query" : query + (self.language and " language:"+self.language or ""),
-             s+".offset" : 1 + (start-1) * count,
-              s+".count" : min(count, type==NEWS and 15 or 50),
-                "format" : "json",
-         "Image.Filters" : { TINY : "Size:Small", 
-                            SMALL : "Size:Small", 
-                           MEDIUM : "Size:Medium", 
-                            LARGE : "Size:Large" }.get(size,"")
+        if type == SEARCH: 
+            src = "web"
+        if type == IMAGE: 
+            src = "image"
+        if type == NEWS:
+            src = "news"
+        if not query or count < 1 or start < 1 or start > 1000/count: 
+            return Results(BING + "?" + src, query, type)
+        # 1) Construct request URL.
+        url = URL(BING, method=GET, query={
+                 "Appid": self.license or "",
+               "sources": src, 
+                 "query": query,
+           src+".offset": 1 + (start-1) * count,
+            src+".count": min(count, type==NEWS and 15 or 50),
+                "format": "json",
+         "Image.Filters": { TINY: "Size:Small", 
+                           SMALL: "Size:Small", 
+                          MEDIUM: "Size:Medium", 
+                           LARGE: "Size:Large" }.get(size,"")
         })
+        # 2) Restrict language.
+        #url.query["query"] +=  (self.language and " language:" + self.language or "")
+        if self.language is not None:
+            market = locale.market(self.language)
+            if market:
+                url.query["market"] = market
+        # 3) Parse JSON response.
         kwargs.setdefault("throttle", self.throttle)
         data = url.download(cached=cached, **kwargs)
         data = json.loads(data)
-        data = data.get("SearchResponse", {}).get(s.capitalize(), {})
+        data = data.get("SearchResponse", {}).get(src.capitalize(), {})
         results = Results(BING, query, type)
         results.total = int(data.get("Total", 0))
         for x in data.get("Results", []):
@@ -1075,10 +1114,11 @@ class Bing(SearchEngine):
 # http://apiwiki.twitter.com/
 
 TWITTER = "http://search.twitter.com/"
-TWITTER_LICENSE = None
+TWITTER_LICENSE = api.license["Twitter"] 
 
 # Hashtag = word starting with #, for example: #OccupyWallstreet
 # Retweet = word starting with @ preceded by RT: RT @nathan
+TWITTER_SOURCE  = re.compile(r"href=&quot;(.*?)&quot;")
 TWITTER_HASHTAG = re.compile(r"(\s|^)(#[a-z0-9_\-]+)", re.I)
 TWITTER_RETWEET = re.compile(r"(\s|^RT )(@[a-z0-9_\-]+)", re.I)
 
@@ -1089,30 +1129,30 @@ class Twitter(SearchEngine):
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=False, **kwargs):
         """ Returns a list of results from Twitter for the given query.
-            - type : SEARCH or TRENDS,
+            - type : SEARCH,
             - start: maximum 1500 results (10 for trends) => start 1-15 with count=100, 1500/count,
             - count: maximum 100, or 10 for trends.
             There is an hourly limit of 150+ queries (actual amount undisclosed).
         """
-        url = TWITTER
-        if   type == TRENDS: url += "trends.json"
-        elif type == SEARCH: 
-            url += "search.json?"
-            url += urllib.urlencode((
-                ("q", bytestring(query)),
-                ("lang", self.language or ""),
-                ("page", start),
-                ("rpp", min(count, type==TRENDS and 10 or 100))
-            ))
-            if "geo" in kwargs:
-                # Filter by geo=(latitude, longitude, radius).
-                geo = list(str(v) for v in kwargs.pop("geo")) + ["10km"]
-                geo = ",".join(geo[:3])
-                url += "&geocode=" + geo
-        else:
+        if type != SEARCH:
             raise SearchEngineTypeError
-        if not query or count < 1 or start > 1500/count: 
+        if not query or count < 1 or start < 1 or start > 1500/count: 
             return Results(TWITTER, query, type)
+        # 1) Construct request URL.
+        url = URL(TWITTER + "search.json?", method=GET)
+        if type == SEARCH:
+            url.query = {
+                   "q": query,
+                "page": start,
+                 "rpp": min(count, 100) 
+            }
+            if "geo" in kwargs:
+                # Filter by location with geo=(latitude, longitude, radius).
+                # It can also be a (latitude, longitude)-tuple with default radius "10km".
+                url.query["geocode"] = ",".join((map(str, kwargs.pop("geo")) + ["10km"])[:3])
+        # 2) Restrict language.
+        #url.query["lang"] = self.language or ""
+        # 3) Parse JSON response.
         kwargs.setdefault("throttle", self.throttle)
         try: 
             data = URL(url).download(cached=cached, **kwargs)
@@ -1123,7 +1163,7 @@ class Twitter(SearchEngine):
         results.total = None
         for x in data.get("results", data.get("trends", [])):
             r = Result(url=None)
-            r.url         = self.format(x.get("source", x.get("url")))
+            r.url         = self.format(TWITTER_SOURCE.search(x.get("source", x.get("url"))).group(1))
             r.description = self.format(x.get("text", x.get("name")))
             r.date        = self.format(x.get("created_at", data.get("as_of")))
             r.author      = self.format(x.get("from_user"))
@@ -1152,7 +1192,7 @@ def retweets(string):
 # http://en.wikipedia.org/w/api.php
 
 WIKIPEDIA = "http://en.wikipedia.org/w/api.php"
-WIKIPEDIA_LICENSE = None
+WIKIPEDIA_LICENSE = api.license["Wikipedia"] 
 
 # Pattern for meta links (e.g. Special:RecentChanges).
 # http://en.wikipedia.org/wiki/Main_namespace
@@ -1178,26 +1218,32 @@ class Wikipedia(SearchEngine):
             - "tiger" = Panthera tigris,
             - "TIGER" = Topologically Integrated Geographic Encoding and Referencing.
         """
+        if type != SEARCH:
+            raise SearchEngineTypeError
+        if count < 1:
+            return None
+        # 1) Construct request URL for the Wikipedia in the given language.
         url = WIKIPEDIA.replace("en.", "%s." % self.language) + "?"
         url = URL(url, method=GET, query={
-            "action" : "parse",
-              "page" : query.replace(" ","_"),
-         "redirects" : 1,
-            "format" : "json"
+            "action": "parse",
+              "page": query.replace(" ","_"),
+         "redirects": 1,
+            "format": "json"
         })
-        kwargs.setdefault("timeout", 30) # Parsing the article can take some time.
+        # 2) Parse JSON response.
+        kwargs.setdefault("timeout", 30) # Parsing the article takes some time.
         kwargs.setdefault("throttle", self.throttle)
         data = url.download(cached=cached, **kwargs)
         data = json.loads(data)
         data = data.get("parse", {})
-        a = self._parse_article(data)
+        a = self._parse_article(data, query=query)
         a = self._parse_article_sections(a, data)
         a = self._parse_article_section_structure(a)
         if not a.html or "id=\"noarticletext\"" in a.html:
             return None
         return a
     
-    def _parse_article(self, data):
+    def _parse_article(self, data, **kwargs):
         return WikipediaArticle(
                   title = plaintext(data.get("displaytitle", "")),
                  source = data.get("text", {}).get("*", ""),
@@ -1207,13 +1253,14 @@ class Wikipedia(SearchEngine):
                external = [x for x in data.get("externallinks", [])],
                   media = [x for x in data.get("images", [])],
               languages = dict([(x["lang"], x["*"]) for x in data.get("langlinks", [])]),
-              language  = self.language)
+              language  = self.language, **kwargs)
     
     def _parse_article_sections(self, article, data):
         # If "References" is a section in the article,
         # the HTML will contain a marker <h*><span class="mw-headline" id="References">.
         # http://en.wikipedia.org/wiki/Section_editing
         t = article.title
+        d = 0
         i = 0
         for x in data.get("sections", {}):
             a = x.get("anchor")
@@ -1227,8 +1274,9 @@ class Wikipedia(SearchEngine):
                         title = t,
                         start = i, 
                          stop = j,
-                        level = int(x.get("level", 2))-1))
+                        level = d))
                     t = x.get("line", "")
+                    d = int(x.get("level", 2)) - 1
                     i = j
         return article
     
@@ -1256,7 +1304,7 @@ class WikipediaArticle:
         self.external       = []             # List of external links.
         self.media          = []             # List of linked media (images, sounds, ...)
         self.languages      = languages      # Dictionary of (language, article)-items, e.g. Cat => ("nl", "Kat")
-        self.language       = "en"           # Article language.
+        self.language       = kwargs.get("language", "en")
         self.disambiguation = disambiguation # True when the article is a disambiguation page.
         for k,v in kwargs.items():
             setattr(self, k, v)
@@ -1283,15 +1331,16 @@ class WikipediaArticle:
             This is called internally from WikipediaArticle.string.
         """
         s = string
-        s = strip_between("<table class=\"metadata", "</table>", s) # Metadata.
-        s = strip_between("<table id=\"toc", "</table>", s)         # Table of contents.
-        s = strip_between("<table class=\"infobox", "</table>", s)  # Infobox.
-        s = strip_element(s, "table", "class=\"navbox")             # Navbox.
-        s = strip_between("<div id=\"annotation", "</div>", s)      # Annotations.
-        s = strip_between("<div class=\"dablink", "</div>", s)      # Disambiguation message.
-        s = strip_between("<div class=\"magnify", "</div>", s)      # Thumbnails.
-        s = strip_between("<div class=\"thumbcaption", "</div>", s) # Thumbnail captions.
-        s = re.sub(r"<img class=\"tex\".*?/>", "[math]", s)         # LaTex math images.
+        s = strip_between("<table class=\"metadata", "</table>", s)   # Metadata.
+        s = strip_between("<table id=\"toc", "</table>", s)           # Table of contents.
+        s = strip_between("<table class=\"infobox", "</table>", s)    # Infobox.
+        s = strip_between("<table class=\"wikitable", "</table>", s)  # Table.
+        s = strip_element(s, "table", "class=\"navbox")               # Navbox.
+        s = strip_between("<div id=\"annotation", "</div>", s)        # Annotations.
+        s = strip_between("<div class=\"dablink", "</div>", s)        # Disambiguation message.
+        s = strip_between("<div class=\"magnify", "</div>", s)        # Thumbnails.
+        s = strip_between("<div class=\"thumbcaption", "</div>", s)   # Thumbnail captions.
+        s = re.sub(r"<img class=\"tex\".*?/>", "[math]", s)           # LaTex math images.
         s = plaintext(s, **kwargs)
         s = re.sub(r"\[edit\]\s*", "", s) # [edit] is language dependent (e.g. nl => "[bewerken]")
         s = s.replace("[", " [").replace("  [", " [") # Space before inline references.
@@ -1323,7 +1372,8 @@ class WikipediaSection:
         self.title    = title   # Section title.
         self._start   = start   # Section start index in WikipediaArticle.string.
         self._stop    = stop    # Section stop index in WikipediaArticle.string.
-        self._level   = level   # Section depth.
+        self._level   = level   # Section depth (main title + intro = level 0).
+        self._tables  = None
 
     def plaintext(self, **kwargs):
         return self.article._plaintext(self.source, **kwargs)
@@ -1347,6 +1397,35 @@ class WikipediaSection:
         if s == self.title or s.startswith(self.title+"\n"):
             return s[len(self.title):].lstrip()
         return s
+    
+    @property
+    def tables(self):
+        """ Yields a list of WikipediaTable objects in the section.
+        """
+        if self._tables is None:
+            self._tables = []
+            b = "<table class=\"wikitable\"", "</table>"
+            p = self.article._plaintext
+            f = find_between
+            for s in f(b[0], b[1], self.source):
+                t = WikipediaTable(self,
+                     title = p((f(r"<caption.*?>", "</caption>", s) + [""])[0]),
+                    source = b[0] + s + b[1]
+                )
+                for i, row in enumerate(f(r"<tr", "</tr>", s)):
+                    # 1) Parse <td> and <th> content and format it as plain text.
+                    # 2) Parse <td colspan=""> attribute, duplicate spanning cells.
+                    # 3) For <th> in the first row, update WikipediaTable.headers.
+                    r1 = f(r"<t[d|h]", r"</t[d|h]>", row)
+                    r1 = (((f(r'colspan="', r'"', v)+[1])[0], v[v.find(">")+1:]) for v in r1)
+                    r1 = ((int(n), v) for n, v in r1)
+                    r2 = []; [[r2.append(p(v)) for j in range(n)] for n, v in r1]
+                    if i == 0 and "</th>" in row:
+                        t.headers = r2
+                    else:
+                        t.rows.append(r2)
+                self._tables.append(t)
+        return self._tables
 
     @property
     def level(self):
@@ -1355,7 +1434,25 @@ class WikipediaSection:
     depth = level
 
     def __repr__(self):
-        return "Section(title='%s')" % bytestring(self.title)
+        return "WikipediaSection(title='%s')" % bytestring(self.title)
+
+class WikipediaTable:
+    
+    def __init__(self, section, title=u"", headers=[], rows=[], source=u""):
+        """ A <table class="wikitable> in a WikipediaSection.
+        """
+        self.section = section # WikipediaSection the table is part of.
+        self.source  = source  # Table HTML.
+        self.title   = title   # Table title.
+        self.headers = headers # List of table headers.
+        self.rows    = rows    # List of table rows, each a list of cells.
+        
+    @property
+    def html(self):
+        return self.source
+        
+    def __repr__(self):
+        return "WikipediaTable(title='%s')" % bytestring(self.title)
 
 #article = Wikipedia().search("nodebox")
 #for section in article.sections:
@@ -1373,44 +1470,51 @@ class WikipediaSection:
 # http://www.flickr.com/services/api/
 
 FLICKR = "http://api.flickr.com/services/rest/"
-FLICKR_LICENSE = "787081027f43b0412ba41142d4540480"
+FLICKR_LICENSE = api.license["Flickr"] 
 
 INTERESTING = "interesting"
 
 class Flickr(SearchEngine):
     
-    def __init__(self, license=None, throttle=5.0):
-        SearchEngine.__init__(self, license or FLICKR_LICENSE, throttle)
+    def __init__(self, license=None, throttle=5.0, language=None):
+        SearchEngine.__init__(self, license or FLICKR_LICENSE, throttle, language)
 
     def search(self, query, type=IMAGE, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """ Returns a list of results from Flickr for the given query.
             Retrieving the URL of a result (i.e. image) requires an additional query.
-            - type : SEARCH,
+            - type : SEARCH, IMAGE,
             - start: maximum undefined,
             - count: maximum 500,
             - sort : RELEVANCY, LATEST or INTERESTING.
             There is no daily limit.
         """
+        if type not in (SEARCH, IMAGE):
+            raise SearchEngineTypeError
+        if not query or count < 1 or start < 1 or start > 500/count:
+            return Results(FLICKR, query, IMAGE)
+        # 1) Construct request URL.
         url = FLICKR+"?"
         url = URL(url, method=GET, query={        
-           "api_key" : self.license or "",
-            "method" : "flickr.photos.search",
-              "text" : query.replace(" ", "_"),
-              "page" : start,
-          "per_page" : min(count, 500),
-              "sort" : { RELEVANCY : "relevance", 
-                            LATEST : "date-posted-desc", 
-                       INTERESTING : "interestingness-desc" }.get(sort)
+           "api_key": self.license or "",
+            "method": "flickr.photos.search",
+              "text": query.replace(" ", "_"),
+              "page": start,
+          "per_page": min(count, 500),
+              "sort": { RELEVANCY: "relevance", 
+                           LATEST: "date-posted-desc", 
+                      INTERESTING: "interestingness-desc" }.get(sort)
         })
         if kwargs.get("copyright", True) is False:
+            # With copyright=False, only returns Public Domain and Creative Commons images.
             # http://www.flickr.com/services/api/flickr.photos.licenses.getInfo.html
             # 5: "Attribution-ShareAlike License"
             # 7: "No known copyright restriction"
             url.query["license"] = "5,7"
+        # 2) Parse XML response.
         kwargs.setdefault("throttle", self.throttle)
         data = url.download(cached=cached, **kwargs)
         data = xml.dom.minidom.parseString(bytestring(data))
-        results = Results(FLICKR, query, type)
+        results = Results(FLICKR, query, IMAGE)
         results.total = int(data.getElementsByTagName("photos")[0].getAttribute("total"))
         for x in data.getElementsByTagName("photo"):
             r = FlickrResult(url=None)
@@ -1433,10 +1537,10 @@ class FlickrResult(Result):
         url = FLICKR + "?method=flickr.photos.getSizes&photo_id=%s&api_key=%s" % (self._id, self._license)
         data = URL(url).download(throttle=self._throttle)
         data = xml.dom.minidom.parseString(bytestring(data))
-        size = { TINY : "Thumbnail", 
-                SMALL : "Small", 
-               MEDIUM : "Medium", 
-                LARGE : "Original" }.get(self._size, MEDIUM)
+        size = { TINY: "Thumbnail", 
+                SMALL: "Small", 
+               MEDIUM: "Medium", 
+                LARGE: "Original" }.get(self._size, "Medium")
         for x in data.getElementsByTagName("size"):
             if size == x.getAttribute("label"):
                 return x.getAttribute("source")
@@ -1455,57 +1559,64 @@ class FlickrResult(Result):
 #f.write(data)
 #f.close()
 
-#--- Facebook Public Status--------------------------------------------------
-FACEBOOK="https://graph.facebook.com/"
-FACEBOOK_SEARCH=FACEBOOK+"search?"
+#--- FACEBOOK ----------------------------------------------------------------------------------------
+# Facebook public status updates.
+# Author: Rajesh Nair, 2012.
+# https://developers.facebook.com/docs/reference/api/
+
+FACEBOOK = "https://graph.facebook.com/"
+FACEBOOK_LICENSE = api.license["Facebook"] 
 
 class Facebook(SearchEngine):
-    """docstring for Facebook"""
-    def __init__(self, license=None, throttle=0.5, language=None):
+
+    def __init__(self, license=None, throttle=1.0, language=None):
         SearchEngine.__init__(self, license, throttle, language)
         
-    """
-    Searches Public Facebook Status updates for querystring 
-    """
-    def search(self, query,count=25,cached=False,**kwargs):
-        url = FACEBOOK_SEARCH
-        url += urllib.urlencode((
-            ("q", bytestring(query)),
-            ("type", "post"),
-#           ("access_token", self.license),
-            ("limit", count),
-            ("fields","from,message") #Only get what you need
-            ))
-        
-        if not query: 
-            return Results(FACEBOOK, query)
+    def search(self, query, type=SEARCH, start=1, count=10, cached=False, **kwargs):
+        """ Returns a list of results from Facebook public status updates for the given query.
+            - type : SEARCH,
+            - start: 1,
+            - count: maximum 100.
+            There is an hourly limit of +-600 queries (actual amount undisclosed).
+        """
+        if type != SEARCH:
+            raise SearchEngineTypeError
+        if not query or start < 1 or count < 1: 
+            return Results(FACEBOOK, query, SEARCH)
+        # 1) Construct request URL.
+        url = FACEBOOK + "search?"
+        url = URL(url, method=GET, query={
+                 "q": query,
+              "type": "post",
+             "limit": min(count, 100),
+            "fields": "link,message,from"
+        })
         kwargs.setdefault("throttle", self.throttle)
-        try: 
-            data = URL(url).download(cached=cached,**kwargs)
-        except HTTP420Error:
-            raise SearchEngineLimitError
+        data = URL(url).download(cached=cached,**kwargs)
         data = json.loads(data)
-        results = Results(FACEBOOK_SEARCH, query, type)
+        print data
+        results = Results(FACEBOOK, query, SEARCH)
         results.total = None
-        for x in data.get("data",[]):
+        for x in data.get("data", []):
             r = Result(url=None)
-            r.author = self.format(x.get("from",x.get("name")))
+            r.url          = self.format(x.get("link"))
             r.description  = self.format(x.get("message"))
-            r.url =  FACEBOOK + x.get("id")
-            r.date = x.get("created_time")
+            r.date         = self.format(x.get("created_time"))
+            r.author       = self.format(x.get("from", {}).get("name"))
             results.append(r)
         return results
+
 #--- PRODUCT REVIEWS ---------------------------------------------------------------------------------
 
 PRODUCTWIKI = "http://api.productwiki.com/connect/api.aspx"
-PRODUCTWIKI_LICENSE = "64819965ec784395a494a0d7ed0def32"
+PRODUCTWIKI_LICENSE = api.license["Products"] 
 
 class Products(SearchEngine):
     
-    def __init__(self, license=None, throttle=5.0):
-        SearchEngine.__init__(self, license or PRODUCTWIKI_LICENSE, throttle)
+    def __init__(self, license=None, throttle=5.0, language=None):
+        SearchEngine.__init__(self, license or PRODUCTWIKI_LICENSE, throttle, language)
     
-    def search(self, query, type=SEARCH, start=1, count=20, sort=RELEVANCY, size=None, cached=True, **kwargs):
+    def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """ Returns a list of results from Productwiki for the given query.
             Each Result.reviews is a list of (review, score)-items.
             - type : SEARCH,
@@ -1514,6 +1625,11 @@ class Products(SearchEngine):
             - sort : RELEVANCY.
             There is no daily limit.
         """ 
+        if type != SEARCH:
+            raise SearchEngineTypeError
+        if not query or start < 1 or count < 1: 
+            return Results(PRODUCTWIKI, query, type)
+        # 1) Construct request URL.
         url = PRODUCTWIKI+"?"
         url = URL(url, method=GET, query={ 
                "key": self.license or "",
@@ -1523,15 +1639,16 @@ class Products(SearchEngine):
             "fields": "proscons", # "description,proscons" is heavy.
             "format": "json"
         })
+        # 2) Parse JSON response.
         kwargs.setdefault("throttle", self.throttle)
         data = URL(url).download(cached=cached, **kwargs)
         data = json.loads(data)
         results = Results(PRODUCTWIKI, query, type)
         results.total = None
-        for x in data.get("products", []):
+        for x in data.get("products", [])[:count]:
             r = Result(url=None)
-            r.__dict__["title"]       = x.get("title")
-            r.__dict__["description"] = x.get("description")
+            r.__dict__["title"]       = u(x.get("title"))
+            r.__dict__["description"] = u(x.get("description"))
             r.__dict__["reviews"]     = []
             reviews = x.get("community_review") or {}
             for p in reviews.get("pros", []):
@@ -1554,22 +1671,26 @@ class Products(SearchEngine):
 # Based on the Universal Feed Parser by Mark Pilgrim:
 # http://www.feedparser.org/
 
-from feed import feedparser
-
 class Newsfeed(SearchEngine):
     
-    def __init__(self, license=None, throttle=1.0):
-        SearchEngine.__init__(self, license, throttle)
+    def __init__(self, license=None, throttle=1.0, language=None):
+        SearchEngine.__init__(self, license, throttle, language)
     
     def search(self, query, type=NEWS, start=1, count=10, sort=LATEST, size=SMALL, cached=True, **kwargs):
         """ Returns a list of results from the given RSS or Atom newsfeed URL.
         """ 
+        if type != NEWS:
+            raise SearchEngineTypeError
+        if not query or start < 1 or count < 1:
+            return Results(query, query, NEWS)
+        # 1) Construct request URL.
+        # 2) Parse RSS/Atom response.
         kwargs.setdefault("throttle", self.throttle)
         data = URL(query).download(cached=cached, **kwargs)
         data = feedparser.parse(bytestring(data))
         results = Results(query, query, NEWS)
         results.total = None
-        for x in data["entries"]:
+        for x in data["entries"][:count]:
             s = "\n\n".join([v.get("value") for v in x.get("content", [])]) or x.get("summary")
             r = Result(url=None)
             r.url         = self.format(x.get("link"))
@@ -1584,13 +1705,11 @@ class Newsfeed(SearchEngine):
         return results           
 
 feeds = {
-    "Nature": "http://www.nature.com/nature/current_issue/rss/index.html",
-    "Science": "http://www.sciencemag.org/rss/podcast.xml",
-    "Herald Tribune": "http://www.iht.com/rss/frontpage.xml",
-    "TIME": "http://feeds.feedburner.com/time/topstories",
-    "CNN": "http://rss.cnn.com/rss/edition.rss",
-    "Processing": "http://www.processingblogs.org/feed/atom/"
-
+          "Nature": "http://www.nature.com/nature/current_issue/rss/index.html",
+         "Science": "http://www.sciencemag.org/rss/podcast.xml",
+  "Herald Tribune": "http://www.iht.com/rss/frontpage.xml",
+            "TIME": "http://feeds.feedburner.com/time/topstories",
+             "CNN": "http://rss.cnn.com/rss/edition.rss",
 }
 
 #for r in Newsfeed().search(feeds["Nature"]):
@@ -1632,8 +1751,8 @@ def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, revers
         q = strict and "\"%s\"" % q or q
         r = service.search(q, count=1, **kwargs)
         R.append(r)        
-    s = float(sum([r.total for r in R])) or 1.0
-    R = [(r.total/s, r.query) for r in R]
+    s = float(sum([r.total or 1 for r in R])) or 1.0
+    R = [((r.total or 1)/s, r.query) for r in R]
     R = sorted(R, reverse=True)    
     return R
 
@@ -1647,7 +1766,6 @@ def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, revers
 # BeautifulSoup can of course be used directly since it is imported here.
 # http://www.crummy.com/software/BeautifulSoup/
 
-from soup import BeautifulSoup
 SOUP = (
     BeautifulSoup.BeautifulSoup,
     BeautifulSoup.Tag, 
@@ -2099,308 +2217,6 @@ class PDF:
         s = s.replace("<!-- paragraph -->", "\n\n")
         s = collapse_spaces(s)
         return s
-
-#### LANGUAGE #########################################################################################
-# ISO-639 language code => (language, region, ISO-3166 region code)
-# Note that the list is incomplete.
-
-class Language(dict):
-    def code(self, region):
-        """ Returns a tuple with the country code and a list of language codes for the given region.
-            For example: Language.code("belgium") => ("be", ["fr-be", "nl-be"])
-        """
-        r, a, c = region.capitalize(), [], None
-        for iso639, (language, region, iso3166) in self.iteritems():
-            if region == r:
-                a.append(iso639); c=iso3166
-        return c, a
-
-language = Language({
-       u'af': (u'Afrikaans', u'South Africa', u'za'),
-       u'ar': (u'Arabic', u'Middle East', u''),
-    u'ar-ae': (u'Arabic', u'United Arab Emirates', u'ae'),
-    u'ar-bh': (u'Arabic', u'Bahrain', u'bh'),
-    u'ar-dz': (u'Arabic', u'Algeria', u'dz'),
-    u'ar-eg': (u'Arabic', u'Egypt', u'eg'),
-    u'ar-iq': (u'Arabic', u'Iraq', u'iq'),
-    u'ar-jo': (u'Arabic', u'Jordan', u'jo'),
-    u'ar-kw': (u'Arabic', u'Kuwait', u'kw'),
-    u'ar-lb': (u'Arabic', u'Lebanon', u'lb'),
-    u'ar-ly': (u'Arabic', u'Libya', u'ly'),
-    u'ar-ma': (u'Arabic', u'Morocco', u'ma'),
-    u'ar-om': (u'Arabic', u'Oman', u'om'),
-    u'ar-qa': (u'Arabic', u'Qatar', u'qa'),
-    u'ar-sa': (u'Arabic', u'Saudi Arabia', u'sa'),
-    u'ar-sy': (u'Arabic', u'Syria', u'sy'),
-    u'ar-tn': (u'Arabic', u'Tunisia', u'tn'),
-    u'ar-ye': (u'Arabic', u'Yemen', u'ye'),
-       u'be': (u'Belarusian', u'Belarus', u'by'),
-       u'bg': (u'Bulgarian', u'Bulgaria', u'bg'),
-       u'ca': (u'Catalan', u'Andorra', u'ad'),
-       u'cs': (u'Czech', u'Czech Republic', u'cz'),
-       u'da': (u'Danish', u'Denmark', u'dk'),
-       u'de': (u'German', u'Germany', u'de'),
-    u'de-at': (u'German', u'Austria', u'at'),
-    u'de-ch': (u'German', u'Switzerland', u'ch'),
-    u'de-li': (u'German', u'Liechtenstein', u'li'),
-    u'de-lu': (u'German', u'Luxembourg', u'lu'),
-       u'el': (u'Greek', u'Greece', u'gr'),
-       u'en': (u'English', u'Caribbean', u''),
-    u'en-au': (u'English', u'Australia', u'au'),
-    u'en-bz': (u'English', u'Belize', u'bz'),
-    u'en-ca': (u'English', u'Canada', u'ca'),
-    u'en-gb': (u'English', u'United Kingdom', u'gb'),
-    u'en-ie': (u'English', u'Ireland', u'ie'),
-    u'en-jm': (u'English', u'Jamaica', u'jm'),
-    u'en-nz': (u'English', u'New Zealand', u'nz'),
-    u'en-tt': (u'English', u'Trinidad', u'tt'),
-    u'en-us': (u'English', u'United States', u'us'),
-    u'en-za': (u'English', u'South Africa', u'za'),
-       u'es': (u'Spanish', u'Spain', u'es'),
-    u'es-ar': (u'Spanish', u'Argentina', u'aq'),
-    u'es-bo': (u'Spanish', u'Bolivia', u'bo'),
-    u'es-cl': (u'Spanish', u'Chile', u'cl'),
-    u'es-co': (u'Spanish', u'Colombia', u'co'),
-    u'es-cr': (u'Spanish', u'Costa Rica', u'cr'),
-    u'es-do': (u'Spanish', u'Dominican Republic', u'do'),
-    u'es-ec': (u'Spanish', u'Ecuador', u'ec'),
-    u'es-gt': (u'Spanish', u'Guatemala', u'gt'),
-    u'es-hn': (u'Spanish', u'Honduras', u'hn'),
-    u'es-mx': (u'Spanish', u'Mexico', u'mx'),
-    u'es-ni': (u'Spanish', u'Nicaragua', u'ni'),
-    u'es-pa': (u'Spanish', u'Panama', u'pa'),
-    u'es-pe': (u'Spanish', u'Peru', u'pe'),
-    u'es-pr': (u'Spanish', u'Puerto Rico', u'pr'),
-    u'es-py': (u'Spanish', u'Paraguay', u'py'),
-    u'es-sv': (u'Spanish', u'El Salvador', u'sv'),
-    u'es-uy': (u'Spanish', u'Uruguay', u'uy'),
-    u'es-ve': (u'Spanish', u'Venezuela', u've'),
-       u'et': (u'Estonian', u'Estonia', u'ee'),
-       u'eu': (u'Basque', u'Basque Country', u''),
-       u'fa': (u'Farsi', u'Iran', u'ir'),
-       u'fi': (u'Finnish', u'Finland', u'fi'),
-       u'fo': (u'Faeroese', u'Faroe Islands', u'fo'),
-       u'fr': (u'French', u'France', u'fr'),
-    u'fr-be': (u'French', u'Belgium', u'be'),
-    u'fr-ca': (u'French', u'Canada', u'ca'),
-    u'fr-ch': (u'French', u'Switzerland', u'ch'),
-    u'fr-lu': (u'French', u'Luxembourg', u'lu'),
-       u'ga': (u'Irish' , u'Ireland', u'ie'),
-       u'gd': (u'Gaelic', u'Scotland', u''),
-       u'he': (u'Hebrew', 'Israel', u'il'),
-       u'hi': (u'Hindi', u'India', u'in'),
-       u'hr': (u'Croatian', u'Croatia', u'hr'),
-       u'hu': (u'Hungarian', u'Hungary', u'hu'),
-       u'id': (u'Indonesian', u'Indonesia', u'id'),
-       u'is': (u'Icelandic', u'Iceland', u'is'),
-       u'it': (u'Italian', u'Italy', u'it'),
-    u'it-ch': (u'Italian', u'Switzerland', u'ch'),
-       u'ja': (u'Japanese', u'Japan', u'ja'),
-       u'ji': (u'Yiddish', u'', u''),
-       u'ka': (u'Georgian', u'Georgia', u'ge'),
-       u'kl': (u'Kalaallisut', u'Greenland', u'gl'),
-       u'ko': (u'Korean', u'Johab', u''),
-       u'lo': (u'Lao', u'Lao', u'la'),
-       u'lt': (u'Lithuanian', u'Lithuania', u'lt'),
-       u'lv': (u'Latvian', u'Latvia', u'lv'),
-       u'mk': (u'Macedonian', u'Macedonia', u'mk'),
-       u'ms': (u'Malaysian', u'Malaysia', u'my'),
-       u'mt': (u'Maltese', u'Malta', u'mt'),
-       u'nl': (u'Dutch', u'Netherlands', u'nl'),
-    u'nl-be': (u'Dutch', u'Belgium', u'be'),
-       u'no': (u'Norwegian', u'Nynorsk', u''),
-       u'pl': (u'Polish', u'Poland', u'pl'),
-       u'pt': (u'Portuguese', u'Portugal', u'pt'),
-    u'pt-br': (u'Portuguese', u'Brazil', u'br'),
-       u'rm': (u'Rhaeto-Romanic', u'Italy', u'it'),
-       u'ro': (u'Romanian', u'Romania', u'ro'),
-    u'ro-mo': (u'Romanian', u'Republic of Moldova', u'mo'),
-       u'ru': (u'Russian', u'Russia', u'ru'),
-       u'rw': (u'Kinyarwanda', u'Rwanda', u'rw'),
-       u'sb': (u'Sorbian', u'Lusatia', u''),
-       u'sk': (u'Slovak', u'Slovakia', u'sk'),
-       u'sl': (u'Slovenian', u'Slovenia', u'si'),
-       u'sm': (u'Samoan', u'Samoa', 'sm'),
-       u'sq': (u'Albanian', u'Albania', u'al'),
-       u'sr': (u'Serbian', u'Serbia', u'rs'),
-       u'sv': (u'Swedish', u'Sweden', u'se'),
-       u'sw': (u'Swahili', u'Tanzania', u'sw'),
-    u'sv-fi': (u'Swedish', u'Finland', u'fi'),
-       u'so': (u'Somali', u'Somalia', u'so'),
-       u'sx': (u'Sotho', u'South Africa', u'za'),
-       u'sz': (u'Sami', u'Sapmi', u''),
-       u'th': (u'Thai', u'Thailand', u'th'),
-       u'tn': (u'Tswana', u'Botswana', u'bw'),
-       u'to': (u'Tonga', u'Tonga', u'to'),
-       u'tr': (u'Turkish', u'Turkey', u'tr'),
-       u'ts': (u'Tsonga', u'South Africa', u'za'),
-       u'uk': (u'Ukrainian', u'Ukraine', u'ua'),
-       u'ur': (u'Urdu', u'Pakistan', u'pk'),
-       u'uz': (u'Uzbek', u'Uzbekistan', u'uz'),
-       u've': (u'Venda', u'South Africa', u'za'),
-       u'vi': (u'Vietnamese', u'Vietnam', u'vn'),
-       u'xh': (u'Xhosa', u'South Africa', u'za'),
-       u'zh': (u'Chinese', u'China', u'cn'),
-    u'zh-cn': (u'Chinese', u'China', u'cn'),
-    u'zh-hk': (u'Chinese', u'Hong Kong', u'hk'),
-    u'zh-sg': (u'Chinese', u'Singapore', u'sg'),
-    u'zh-tw': (u'Chinese', u'Taiwan', u'tw'),
-       u'zu': (u'Zulu', u'South Africa', u'za')
-})
-
-### GEOCODE ###########################################################################################
-
-class Geocode(dict):
-    def __call__(self, address):
-        return self.get(address.capitalize(), None)
-        
-geocode = Geocode({
-         u'Abu Dhabi': ( 24.467,  54.367, "ar"),
-             u'Abuja': (  9.083,   7.533, "en"),
-             u'Accra': (  5.550,  -0.217, "en"),
-           u'Algiers': ( 36.750,   3.050, "ar"),
-             u'Amman': ( 31.950,  35.933, "ar"),
-         u'Amsterdam': ( 52.383,   4.900, "nl"),
-            u'Ankara': ( 39.933,  32.867, "tr"),
-            u'Astana': ( 51.167,  71.417, "ru"),
-          u'Asuncion': (-25.267, -57.667, "es"),
-            u'Athens': ( 37.983,  23.733, "el"),
-           u'Baghdad': ( 33.333,  44.383, "ar"),
-            u'Bamako': ( 12.650,  -8.000, "fr"),
-           u'Bangkok': ( 13.750, 100.517, "th"),
-            u'Bangui': (  4.367,  18.583, "fr"),
-           u'Beijing': ( 39.917, 116.383, "zh-ch"),
-            u'Beirut': ( 33.867,  35.500, "ar"),
-          u'Belgrade': ( 44.833,  20.500, "sr"),
-            u'Berlin': ( 52.517,  13.400, "de"),
-              u'Bern': ( 46.950,   7.433, "de"),
-            u'Bissau': ( 11.850, -15.583, "pt"),
-            u'Bogota': (  4.600, -74.083, "es"),
-          u'Brasilia': (-15.783, -47.917, "pt"),
-        u'Bratislava': ( 48.150,  17.117, "sk"),
-       u'Brazzaville': ( -4.250,  15.283, "fr"),
-          u'Brussels': ( 50.833,   4.333, "nl"),
-         u'Bucharest': ( 44.433,  26.100, "ro"),
-          u'Budapest': ( 47.500,  19.083, "hu"),
-      u'Buenos Aires': (-34.600, -58.667, "es"),
-         u'Bujumbura': ( -3.367,  29.350, ""),
-             u'Cairo': ( 30.050,  31.250, "ar"),
-          u'Canberra': (-35.283, 149.217, "en"),
-           u'Caracas': ( 10.500, -66.933, "es"),
-          u'Chisinau': ( 47.000,  28.850, "ro"),
-           u'Colombo': (  6.933,  79.850, ""),
-           u'Conakry': (  9.550, -13.700, "fr"),
-        u'Copenhagen': ( 55.667,  12.583, "da"),
-             u'Dakar': ( 24.633,  46.717, "fr"),
-          u'Damascus': ( 33.500,  36.300, "ar"),
-     u'Dar es Salaam': ( -6.800,  39.283, "sw"),
-             u'Dhaka': ( 23.717,  90.400, ""),
-            u'Dublin': ( 53.317,  -6.233, "en"),
-          u'Freetown': (  8.500, -13.250, "en"),
-       u'George Town': ( 19.300, -81.383, "en"),
-        u'Georgetown': (  6.800, -58.167, "en"),
-         u'Gibraltar': ( 36.133,  -5.350, "en"),
-    u'Guatemala City': ( 14.617, -90.517, "es"),
-             u'Hanoi': ( 21.033, 105.850, "vi"),
-            u'Harare': (-17.833,  31.050, "en"),
-            u'Havana': ( 23.117, -82.350, "es"),
-          u'Helsinki': ( 60.167,  24.933, "fi"),
-         u'Islamabad': ( 33.700,  73.167, "ur"),
-           u'Jakarta': ( -6.167, 106.817, "ms"),
-         u'Jamestown': (-15.933,  -5.733, "en"),
-         u'Jerusalem': ( 31.767,  35.233, "he"),
-              u'Juba': (  4.850,  31.617, "en"),
-             u'Kabul': ( 34.517,  69.183, "fa"),
-           u'Kampala': (  0.317,  32.417, "en"),
-         u'Kathmandu': ( 27.717,  85.317, ""),
-          u'Khartoum': ( 15.600,  32.533, "ar"),
-            u'Kigali': ( -1.950,  30.067, "rw"),
-          u'Kingston': ( 18.000, -76.800, "en"),
-          u'Kinshasa': ( -4.317,  15.300, "fr"),
-      u'Kuala Lumpur': (  3.167, 101.700, ""),
-       u'Kuwait City': ( 29.367,  47.967, "ar"),
-              u'Kiev': ( 50.433,  30.517, "uk"),
-            u'La Paz': (-16.500, -68.150, "es"),
-              u'Lima': (-12.050, -77.050, "es"),
-            u'Lisbon': ( 38.717,  -9.133, "pt"),
-         u'Ljubljana': ( 46.050,  14.517, "sl"),
-              u'Lome': (  6.133,   1.217, "fr"),
-            u'London': ( 51.500,  -0.167, "en"),
-            u'Luanda': ( -8.833,  13.233, "pt"),
-            u'Lusaka': (-15.417,  28.283, ""),
-        u'Luxembourg': ( 49.600,   6.117, ""),
-            u'Madrid': ( 40.400,  -3.683, "es"),
-           u'Managua': ( 12.150, -86.283, "es"),
-            u'Manila': ( 14.583, 121.000, ""),
-            u'Maputo': (-25.950,  32.583, "pt"),
-       u'Mexico City': ( 19.433, -99.133, "es"),
-             u'Minsk': ( 53.900,  27.567, "be"),
-         u'Mogadishu': (  2.067,  45.367, "so"),
-            u'Monaco': ( 43.733,   7.417, "fr"),
-          u'Monrovia': (  6.300, -10.800, "en"),
-        u'Montevideo': (-34.883, -56.183, "es"),
-            u'Moscow': ( 55.750,  37.583, "ru"),
-            u'Muscat': ( 23.617,  58.583, "ar"),
-           u'Nairobi': ( -1.283,  36.817, "en"),
-            u'Nassau': ( 25.083, -77.350, "en"),
-         u'New Delhi': ( 28.600,  77.200, "hi"),
-            u'Niamey': ( 13.517,   2.117, "fr"),
-              u'Oslo': ( 59.917,  10.750, ""),
-            u'Ottawa': ( 45.417, -75.700, "en"),
-       u'Panama City': (  8.967, -79.533, "es"),
-             u'Paris': ( 48.867,   2.333, "fr"),
-       u'Philipsburg': ( 18.017, -63.033, "en"),
-        u'Phnom Penh': ( 11.550, 104.917, ""),
-          u'Plymouth': ( 16.700, -62.217, "en"),
-        u'Port Louis': (-20.150,  57.483, "en"),
-    u'Port-au-Prince': ( 18.533, -72.333, "fr"),
-        u'Porto-Novo': (  6.483,   2.617, "fr"),
-            u'Prague': ( 50.083,  14.467, "cs"),
-          u'Pretoria': (-25.700,  28.217, "xh"),
-         u'Pyongyang': ( 39.017, 125.750, "ko"),
-             u'Quito': ( -0.217, -78.500, "es"),
-             u'Rabat': ( 34.017,  -6.817, "ar"),
-           u'Rangoon': ( 16.800,  96.150, ""),
-         u'Reykjavik': ( 64.150, -21.950, "is"),
-              u'Riga': ( 56.950,  24.100, "lv"),
-            u'Riyadh': ( 24.633,  46.717, "ar"),
-              u'Rome': ( 41.900,  12.483, "it"),
-            u'Saipan': ( 15.200, 145.750, "en"),
-          u'San Jose': (  9.933, -84.083, "es"),
-          u'San Juan': ( 18.467, -66.117, "es"),
-        u'San Marino': ( 43.933,  12.417, "it"),
-      u'San Salvador': ( 13.700, -89.200, "es"),
-             u'Sanaa': ( 15.350,  44.200, "ar"),
-          u'Santiago': (-33.450, -70.667, "es"),
-     u'Santo Domingo': ( 18.467, -69.900, "es"),
-          u'Sarajevo': ( 43.867,  18.417, ""),
-             u'Seoul': ( 37.550, 126.983, "ko"),
-         u'Singapore': (  1.283, 103.850, ""),
-            u'Skopje': ( 42.000,  21.433, "mk"),
-             u'Sofia': ( 42.683,  23.317, "bg"),
-         u'Stockholm': ( 59.333,  18.050, "sv"),
-            u'Taipei': ( 25.050, 121.500, "zh-ch"),
-           u'Tallinn': ( 59.433,  24.717, "et"),
-          u'Tashkent': ( 41.333,  69.300, "uz"),
-       u'Tegucigalpa': ( 14.100, -87.217, "es"),
-            u'Tehran': ( 35.667,  51.417, "fa"),
-            u'Tirana': ( 41.317,  19.817, "sq"),
-             u'Tokyo': ( 35.683, 139.750, "ja"),
-          u'Torshavn': ( 62.017,  -6.767, "fo"),
-           u'Tripoli': ( 32.883,  13.167, "ar"),
-             u'Tunis': ( 36.800,  10.183, "ar"),
-             u'Vaduz': ( 47.133,   9.517, "de"),
-      u'Vatican City': ( 41.900,  12.450, "it"),
-            u'Vienna': ( 48.200,  16.367, "de"),
-         u'Vientiane': ( 17.967, 102.600, "lo"),
-           u'Vilnius': ( 54.683,  25.317, "lt"),
-            u'Warsaw': ( 52.250,  21.000, "pl"),
-       u'Washington.': ( 38.883, -77.033, "en"),
-        u'Wellington': (-41.467, 174.850, "en"),
-      u'Yamoussoukro': (  6.817,  -5.283, "fr"),
-           u'Yaounde': (  3.867,  11.517, "en"),
-            u'Zagreb': ( 45.800,  16.000, "hr")
-})
 
 #######################################################################################################
 
