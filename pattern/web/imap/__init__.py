@@ -32,12 +32,14 @@ def decode_utf8(string):
     """ Returns the given string as a unicode string (if possible).
     """
     if isinstance(string, str):
-        try: 
-            return string.decode("utf-8")
-        except:
-            return string
+        for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
+            try: 
+                return string.decode(*encoding)
+            except:
+                pass
+        return string
     return unicode(string)
-
+    
 def encode_utf8(string):
     """ Returns the given string as a Python byte string (if possible).
     """
@@ -51,6 +53,9 @@ def encode_utf8(string):
 #### IMAP4 SSL #######################################################################################
 # Fixes an issue in Python 2.5- with memory allocation.
 # See: http://bugs.python.org/issue1389051
+
+class IMAP4(imaplib.IMAP4):
+    pass
 
 class IMAP4_SSL(imaplib.IMAP4_SSL):
     def read(self, size):
@@ -75,8 +80,10 @@ def _basename(folder):
     # [Gmail]/INBOX => inbox
     f = folder.replace("[Gmail]/","")
     f = f.replace("[Gmail]","")
-    f = f.replace("Mail", "")
+    f = f.replace("Mail", "")   # "Sent Mail" alias = "sent".
+    f = f.replace("INBOX.", "") # "inbox.sent" alias = "sent".
     f = f.lower()
+    f = f.strip()
     return f
 
 class MailError(Exception):
@@ -90,11 +97,16 @@ class MailNotLoggedIn(MailError):
 
 class Mail(object):
     
-    def __init__(self, username, password, service=GMAIL, port=993):
+    def __init__(self, username, password, service=GMAIL, port=993, secure=True):
+        """ IMAP4 connection to a mailbox. With secure=True, SSL is used. 
+            The standard port for SSL is 993.
+            The standard port without SSL is 143.
+        """
         self._username = username
         self._password = password
         self._host     = service
         self._port     = port
+        self._secure   = secure
         self._imap4    = None
         self._folders  = None
         self.login(username, password)
@@ -109,11 +121,13 @@ class Mail(object):
             raise MailNotLoggedIn
         return self._imap4
  
-    def login(self, username, password):
+    def login(self, username, password, **kwargs):
         """ Signs in to the mail account with the given username and password,
             raises a MailLoginError otherwise.
         """
-        self._imap4 = IMAP4_SSL(self._host, self._port)
+        self.logout()
+        self._secure = kwargs.get("secure", self._secure)
+        self._imap4 = (self._secure and IMAP4_SSL or IMAP4)(self._host, self._port)
         try:
             status, response = self._imap4.login(username, password)
         except:
@@ -141,7 +155,7 @@ class Mail(object):
         """
         if self._folders is None:
             status, response = self.imap4.list()
-            self._folders = [f.split()[-1].strip("\"") for f in response]
+            self._folders = [f.split(" \"")[-1].strip(" \"") for f in response]
             self._folders = [(_basename(f), MailFolder(self, f)) for f in self._folders]
             self._folders = [(f,o) for f,o in self._folders if f != ""]
             self._folders = dict(self._folders)
@@ -202,7 +216,7 @@ class MailFolder:
         if cached and id in cache:
             status, response = "OK", [cache[id]]
         else:
-            status, response = self.parent.imap4.select(self.name, readonly=1)
+            status, response = self.parent.imap4.select(self._name, readonly=1)
             status, response = self.parent.imap4.search(None, field.upper(), q)
             if cached:
                 cache[id] = response[0]
@@ -224,7 +238,7 @@ class MailFolder:
             # Select the current mail folder.
             # Get the e-mail header.
             # Get the e-mail body, with or without file attachments.
-            status, response  = self.parent.imap4.select(self.name, readonly=1)
+            status, response  = self.parent.imap4.select(self._name, readonly=1)
             status, response1 = self.parent.imap4.fetch(str(i), '(BODY.PEEK[HEADER])')
             status, response2 = self.parent.imap4.fetch(str(i), '(BODY.PEEK[%s])' % (not attachments and "TEXT" or ""))
             time.sleep(0.1)
