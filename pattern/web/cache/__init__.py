@@ -15,10 +15,12 @@ def decode_utf8(string):
     """ Returns the given string as a unicode string (if possible).
     """
     if isinstance(string, str):
-        try: 
-            return string.decode("utf-8")
-        except:
-            return string
+        for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
+            try: 
+                return string.decode(*encoding)
+            except:
+                pass
+        return string
     return unicode(string)
     
 def encode_utf8(string):
