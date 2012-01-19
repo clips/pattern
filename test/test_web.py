@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# These tests require a working internet connection.
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 import unittest
 import time
@@ -6,6 +7,23 @@ import warnings
 
 from pattern import web
 
+#-----------------------------------------------------------------------------------------------------
+
+class TestCache(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+    
+    def test_cache(self):
+        # Assert cache unicode.
+        k, v = "test", u"ünîcødé"
+        web.cache[k] = v
+        self.assertTrue(isinstance(web.cache[k], unicode))
+        self.assertEqual(web.cache[k], v)
+        self.assertEqual(web.cache.age(k), 0)
+        del web.cache[k]
+        print "pattern.web.Cache"
+        
 #-----------------------------------------------------------------------------------------------------
 
 class TestUnicode(unittest.TestCase):
@@ -188,6 +206,26 @@ class TestURL(unittest.TestCase):
         # In Belgium, it yields "http://www.google.be/".
         v = web.URL(self.live).redirect
         print "pattern.web.URL.redirect: " + self.live + " => " + v
+
+    def test_abs(self):
+        # Assert absolute URL (special attention for anchors).
+        for a, b in (
+          ("../page.html", "http://domain.com/path/"),
+          (   "page.html", "http://domain.com/home.html")):
+            v = web.abs(a, base=b)
+            self.assertEqual(v, "http://domain.com/page.html")
+        for a, b, c in (
+          (     "#anchor", "http://domain.com", "/"),
+          (     "#anchor", "http://domain.com/", ""),
+          (     "#anchor", "http://domain.com/page", "")):
+            v = web.abs(a, base=b)
+            self.assertEqual(v, b+c+a) # http://domain.com/#anchor
+        print "pattern.web.abs()"
+        
+    def test_base(self):
+        # Assert base URL domain name.
+        self.assertEqual(web.base("http://domain.com/home.html"), "domain.com")
+        print "pattern.web.base()"
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -620,15 +658,263 @@ class TestSearchEngine(unittest.TestCase):
         self.assertTrue(isinstance(v[0].score, int))
         print "pattern.web.Products.Result.reviews"
         print "pattern.web.Products.Result.score"
-            
+
+#-----------------------------------------------------------------------------------------------------
+
+class TestDOM(unittest.TestCase):
+    
+    def setUp(self):
+        # Test HTML document.
+        self.html = """
+            <!doctype html>
+            <html lang="en">
+            <head>
+                <title>title</title>
+                <meta charset="utf-8" />
+            </head>
+            <body id="front" class="comments">
+                <script type="text/javascript">alert(0);</script>
+                <div id="navigation">
+                    <a href="nav1.html">nav1</a> | 
+                    <a href="nav2.html">nav2</a> | 
+                    <a href="nav3.html">nav3</a>
+                </div>
+                <div id="content">
+                    <P class="comment">
+                        <span class="date">today</span>
+                        <span class="author">me</span>
+                        Blah blah
+                    </P>
+                    <p>Read more</p>
+                </div>
+            </body>
+            </html>
+        """
+    
+    def test_node_document(self):
+        # Assert Node properties.
+        v1 = web.Document(self.html)
+        self.assertEqual(v1.type, web.DOCUMENT)
+        self.assertEqual(v1.source[:10], "<!doctype ") # Note: BeautifulSoup strips whitespace.
+        self.assertEqual(v1.parent, None)
+        # Assert Node traversal.
+        v2 = v1.children[0].next
+        self.assertEqual(v2.type, web.TEXT)
+        self.assertEqual(v2.previous, v1.children[0])
+        # Assert Document properties.
+        v3 = v1.declaration
+        self.assertEqual(v3, v1.children[0])
+        self.assertEqual(v3.parent, v1)
+        self.assertEqual(v3.source, "<!doctype html>")
+        self.assertEqual(v1.head.type, web.ELEMENT)
+        self.assertEqual(v1.body.type, web.ELEMENT)
+        self.assertTrue(v1.head.source.startswith("<head"))
+        self.assertTrue(v1.body.source.startswith("<body"))
+        print "pattern.web.Node"
+        print "pattern.web.Document"
+    
+    def test_node_traverse(self):
+        # Assert Node.traverse() (must visit all child nodes recursively).
+        self.b = False
+        def visit(node):
+            if node.type == web.ELEMENT and node.tag == "span":
+                self.b = True
+        v = web.Document(self.html)
+        v.traverse(visit)
+        self.assertEqual(self.b, True)
+        print "pattern.web.Node.traverse()"
+        
+    def test_element(self):
+        # Assert Element properties (test <body>).
+        v = web.Document(self.html).body
+        self.assertEqual(v.tag, "body")
+        self.assertEqual(v.attributes["id"], "front")
+        self.assertEqual(v.attributes["class"], "comments")
+        self.assertTrue(v.content.startswith("\n<script"))
+        # Assert Element.getElementsByTagname() (test navigation links).
+        a = v.by_tag("a")
+        self.assertEqual(len(a), 3)
+        self.assertEqual(a[0].content, "nav1")
+        self.assertEqual(a[1].content, "nav2")
+        self.assertEqual(a[2].content, "nav3")
+        # Assert Element.getElementsByClassname() (test <p class="comment">).
+        a = v.by_class("comment")
+        self.assertEqual(a[0].tag, "p")
+        self.assertEqual(a[0].by_tag("span")[0].attributes["class"], "date")
+        self.assertEqual(a[0].by_tag("span")[1].attributes["class"], "author")
+        for selector in (".comment", "p.comment", "*.comment"):
+            self.assertEqual(v.by_tag(selector)[0], a[0])
+        # Assert Element.getElementById() (test <div id="content">).
+        e = v.by_id("content")
+        self.assertEqual(e.tag, "div")
+        self.assertEqual(e, a[0].parent)
+        for selector in ("#content", "div#content", "*#content"):
+            self.assertEqual(v.by_tag(selector)[0], e)
+        # Assert Element.getElementByAttribute() (test on <a href="">).
+        a = v.by_attribute(href="nav1.html")
+        self.assertEqual(a[0].content, "nav1")
+        print "pattern.web.Node.Element"
+        print "pattern.web.Node.Element.by_tag()"
+        print "pattern.web.Node.Element.by_class()"
+        print "pattern.web.Node.Element.by_id()"
+        print "pattern.web.Node.Element.by_attribute()"
+
+#-----------------------------------------------------------------------------------------------------
+
+class TestPDF(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+        
+    def test_pdf(self):
+        # Assert PDF to string parser.
+        v = web.PDF(open("corpora/carroll-alice.pdf").read())
+        self.assertTrue("Curiouser and curiouser!" in v.string)
+        self.assertTrue(isinstance(v.string, unicode))
+        print "pattern.web.PDF.string"
+        
+#-----------------------------------------------------------------------------------------------------
+
+class TestLocale(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+
+    def test_encode_language(self):
+        # Assert "Dutch" => "nl".
+        self.assertEqual(web.locale.encode_language("dutch"), "nl")
+        self.assertEqual(web.locale.encode_language("?????"), None)
+        print "pattern.web.locale.encode_language()"
+        
+    def test_decode_language(self):
+        # Assert "nl" => "Dutch".
+        self.assertEqual(web.locale.decode_language("nl"), "Dutch")
+        self.assertEqual(web.locale.decode_language("NL"), "Dutch")
+        self.assertEqual(web.locale.decode_language("??"), None)
+        print "pattern.web.locale.decode_language()"
+        
+    def test_encode_region(self):
+        # Assert "Belgium" => "BE".
+        self.assertEqual(web.locale.encode_region("belgium"), "BE")
+        self.assertEqual(web.locale.encode_region("???????"), None)
+        print "pattern.web.locale.encode_region()"
+        
+    def test_decode_region(self):
+        # Assert "BE" => "Belgium".
+        self.assertEqual(web.locale.decode_region("be"), "Belgium")
+        self.assertEqual(web.locale.decode_region("BE"), "Belgium")
+        self.assertEqual(web.locale.decode_region("??"), None)
+        print "pattern.web.locale.decode_region()"
+        
+    def test_languages(self):
+        # Assert "BE" => "fr" + "nl".
+        self.assertEqual(web.locale.languages("be"), ["fr", "nl"])
+        print "pattern.web.locale.languages()"
+        
+    def test_regions(self):
+        # Assert "nl" => "NL" + "BE".
+        self.assertEqual(web.locale.regions("nl"), ["NL", "BE"])
+        print "pattern.web.locale.regions()"
+        
+    def test_regionalize(self):
+        # Assert "nl" => "nl-NL" + "nl-BE".
+        self.assertEqual(web.locale.regionalize("nl"), ["nl-NL", "nl-BE"])
+        print "pattern.web.locale.regionalize()"
+
+    def test_geocode(self):
+        # Assert region geocode.
+        v = web.locale.geocode("brussels")
+        self.assertAlmostEqual(v[0], 50.83, places=2)
+        self.assertAlmostEqual(v[1],  4.33, places=2)
+        self.assertEqual(v[2], "nl")
+        self.assertEqual(v[3], "Belgium")
+        print "pattern.web.locale.geocode()"
+        
+    def test_correlation(self):
+        # Test the correlation between locale.LANGUAGE_REGION and locale.GEOCODE.
+        # It should increase as new languages and locations are added.
+        i = 0
+        n = len(web.locale.GEOCODE)
+        for city, (latitude, longitude, language, region) in web.locale.GEOCODE.items():
+            if web.locale.encode_region(region) is not None:
+                i += 1
+        self.assertTrue(float(i) / n > 0.60)
+
+#-----------------------------------------------------------------------------------------------------
+# You need to define a username, password and mailbox to test on.
+
+class TestMail(unittest.TestCase):
+    
+    def setUp(self):
+        self.username = ""
+        self.password = ""
+        self.service  = web.GMAIL
+        self.port     = 993
+        self.SSL      = True
+        self.query1   = "google" # FROM-field query in Inbox.
+        self.query2   = "viagra" # SUBJECT-field query in Spam.
+    
+    def test_mail(self):
+        if not self.username or not self.password:
+            return
+        # Assert web.imap.Mail.
+        m = web.Mail(self.username, self.password, service=self.service, port=self.port, secure=self.SSL)
+        # Assert web.imap.MailFolder (assuming GMail folders).
+        print m.folders
+        self.assertTrue(len(m.folders) > 0)
+        self.assertTrue(len(m.inbox) > 0)
+        print "pattern.web.Mail"
+        
+    def test_mail_message1(self):
+        if not self.username or not self.password or not self.query1:
+            return
+        # Assert web.imap.Mailfolder.search().
+        m = web.Mail(self.username, self.password, service=self.service, port=self.port, secure=self.SSL)
+        a = m.inbox.search(self.query1, field=web.FROM)
+        self.assertTrue(isinstance(a[0], int))
+        # Assert web.imap.Mailfolder.read().
+        e = m.inbox.read(a[0], attachments=False, cached=False)
+        # Assert web.imap.Message.
+        self.assertTrue(isinstance(e, web.imap.Message))
+        self.assertTrue(isinstance(e.author,        unicode))
+        self.assertTrue(isinstance(e.email_address, unicode))
+        self.assertTrue(isinstance(e.date,          unicode))
+        self.assertTrue(isinstance(e.subject,       unicode))
+        self.assertTrue(isinstance(e.body,          unicode))
+        self.assertTrue(self.query1 in e.author.lower())
+        self.assertTrue("@" in e.email_address)
+        print "pattern.web.Mail.search(field=FROM)"
+        print "pattern.web.Mail.read()"
+
+    def test_mail_message2(self):
+        if not self.username or not self.password or not self.query2:
+            return
+        # Test if we can download some mail attachments.
+        # Set query2 to a mail subject of a spam e-mail you know contains an attachment.
+        m = web.Mail(self.username, self.password, service=self.service, port=self.port, secure=self.SSL)
+        if "spam" in m.folders:
+            for id in m.spam.search(self.query2, field=web.SUBJECT):
+                e = m.spam.read(id, attachments=True, cached=False)
+                if len(e.attachments) > 0:
+                    self.assertTrue(isinstance(e.attachments[0][1], str))
+                    self.assertTrue(len(e.attachments[0][1]) > 0)
+                    print "pattern.web.Message.attachments (MIME-type: %s)" % e.attachments[0][0]
+        print "pattern.web.Mail.search(field=SUBJECT)"
+        print "pattern.web.Mail.read()"
+
 #-----------------------------------------------------------------------------------------------------
 
 def suite():
     suite = unittest.TestSuite()
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCache))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestURL))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPlaintext))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSearchEngine))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDOM))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPDF))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLocale))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMail))
     return suite
 
 if __name__ == "__main__":
