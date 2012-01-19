@@ -1738,11 +1738,11 @@ def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, revers
         yields "black" as the best candidate, because "black Darth Vader" is more common in search results.
         - terms   : list of search terms,
         - context : term used for sorting,
-        - service : web service name (GOOGLE, YAHOO, BING, ...)
+        - service : web service name (GOOGLE, YAHOO, BING),
         - license : web service license id,
         - strict  : when True the query constructed from term + context is wrapped in quotes.
     """
-    service = SERVICES.get(service, SearchEngine)(license, language=kwargs.pop("language"))
+    service = SERVICES.get(service, SearchEngine)(license, language=kwargs.pop("language", None))
     R = []
     for word in terms:
         q = reverse and context+" "+word or word+" "+context
@@ -1799,6 +1799,8 @@ class Node:
         # Navigating to other nodes yields either Text, Element or None.
         if isinstance(x, BeautifulSoup.Comment):
             return Comment(x)
+        if isinstance(x, BeautifulSoup.Declaration):
+            return Text(x)
         if isinstance(x, BeautifulSoup.NavigableString):
             return Text(x)
         if isinstance(x, BeautifulSoup.Tag):
@@ -1810,6 +1812,12 @@ class Node:
     @property
     def children(self):
         return hasattr(self._p, "contents") and [self._wrap(x) for x in self._p.contents] or []
+    @property
+    def html(self):
+        return self.__unicode__()
+    @property
+    def source(self):
+        return self.__unicode__()
     @property
     def next_sibling(self):
         return self._wrap(self._p.nextSibling)
@@ -1836,7 +1844,6 @@ class Node:
         return bytestring(self.__unicode__())
     def __unicode__(self):
         return u(self._p)
-    html = source = __unicode__
 
 #--- TEXT --------------------------------------------------------------------------------------------
 
@@ -1894,25 +1901,25 @@ class Element(Node):
             v1 = v1 in ("*","") or v1.lower()
             return [Element(x) for x in self._p.findAll(v1, v2)]
         return [Element(x) for x in self._p.findAll(v in ("*","") or v.lower())]
-    by_tag = get_elements_by_tagname
+    by_tag = getElementsByTagname = get_elements_by_tagname
 
     def get_element_by_id(self, v):
         """ Returns the first nested Element with the given id attribute value.
         """
         return ([Element(x) for x in self._p.findAll(id=v, limit=1) or []]+[None])[0]
-    by_id = get_element_by_id
+    by_id = getElementById = get_element_by_id
     
     def get_elements_by_classname(self, v):
         """ Returns a list of nested Elements with the given class attribute value.
         """
         return [Element(x) for x in (self._p.findAll(True, v))]
-    by_class = get_elements_by_classname
+    by_class = getElementsByClassname = get_elements_by_classname
 
     def get_elements_by_attribute(self, **kwargs):
         """ Returns a list of nested Elements with the given attribute value.
         """
         return [Element(x) for x in (self._p.findAll(True, attrs=kwargs))]
-    by_attribute = get_elements_by_attribute
+    by_attribute = getElementsByAttribute = get_elements_by_attribute
     
     @property
     def content(self):
@@ -1942,6 +1949,14 @@ class Document(Element):
         kwargs["selfClosingTags"] = kwargs.pop("self_closing", kwargs.get("selfClosingTags"))
         Node.__init__(self, html.strip(), type=DOCUMENT, **kwargs)
 
+    @property
+    def declaration(self):
+        """ Yields the <!doctype> declaration, as a TEXT Node or None.
+        """
+        for child in self.children:
+            if isinstance(child._p, BeautifulSoup.Declaration):
+                return child
+    
     @property
     def head(self):
         return self._wrap(self._p.head)
@@ -2022,7 +2037,8 @@ def abs(url, base=None):
         ../media + http://en.wikipedia.org/wiki/ => http://en.wikipedia.org/media
     """
     if url.startswith("#") and not base is None and not base.endswith("/"):
-        base += "/"
+        if not re.search("[^/]/[^/]", base):
+            base += "/"
     return urlparse.urljoin(base, url)
 
 DEPTH   = "depth"
@@ -2201,14 +2217,20 @@ class PDF:
         s = ""
         m = PDFResourceManager()
         try:
+            # Given data is a PDF file path.
+            data = os.path.exists(data) and open(data) or StringIO.StringIO(data)
+        except TypeError:
+            # Given data is a PDF string.
+            data = StringIO.StringIO(data)
+        try:
             stream = StringIO.StringIO()
             parser = format=="html" and HTMLConverter or TextConverter
             parser = parser(m, stream, codec="utf-8", laparams=LAParams())
-            process_pdf(m, parser, StringIO.StringIO(data), set(), maxpages=0, password="")
+            process_pdf(m, parser, data, set(), maxpages=0, password="")
         except Exception, e:
             raise PDFParseError, str(e)
         s = stream.getvalue()
-        s = unicode(s, encoding="utf-8", errors="replace")
+        s = decode_utf8(s)
         s = s.strip()
         s = re.sub(r"([a-z])\-\n", "\\1", s)        # Join hyphenated words.
         s = s.replace("\n\n", "<!-- paragraph -->") # Preserve paragraph spacing.
