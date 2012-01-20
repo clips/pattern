@@ -904,6 +904,68 @@ class TestMail(unittest.TestCase):
 
 #-----------------------------------------------------------------------------------------------------
 
+class TestSpider(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+        
+    def test_link(self):
+        # Assert web.Link parser and properties.
+        v = web.HTMLLinkParser().parse("""
+            <html>
+            <head>
+                <title>title</title>
+            </head>
+            <body>
+                <div id="navigation">
+                    <a href="http://www.domain1.com/?p=1" title="1" rel="a">nav1</a>
+                    <a href="http://www.domain2.com/?p=2" title="2" rel="b">nav1</a>
+                </div>
+            </body>
+            </html>
+        """)
+        self.assertTrue(v[0].url, "http://www.domain1.com/?p=1")
+        self.assertTrue(v[1].url, "http://www.domain1.com/?p=2")
+        self.assertTrue(v[0].description, "1")
+        self.assertTrue(v[1].description, "2")
+        self.assertTrue(v[0].relation, "a")
+        self.assertTrue(v[1].relation, "b")
+        self.assertTrue(v[0] < v[1])
+        print "pattern.web.HTMLLinkParser"
+    
+    def test_spider_crawl(self):
+        # Assert domain filter.
+        v = web.Spider(links=["http://www.clips.ua.ac.be/"], domains=["clips.ua.ac.be"], delay=0.5)
+        while len(v.visited) < 4:
+            v.crawl(throttle=0.1, cached=False)
+        for url in v.visited:
+            self.assertTrue("clips.ua.ac.be" in url)
+        self.assertTrue(len(v.history) == 1)
+        print "pattern.web.Spider.crawl()"
+    
+    def test_spider_delay(self):
+        # Assert delay for several crawls to a single domain.
+        v = web.Spider(links=["http://www.clips.ua.ac.be/"], domains=["clips.ua.ac.be"], delay=1.0)
+        v.crawl()
+        t = time.time()
+        while not v.crawl(throttle=0.1, cached=False):
+            pass
+        t = time.time() - t
+        self.assertTrue(t > 1.0)
+        print "pattern.web.Spider.delay"
+        
+    def test_spider_breadth(self):
+        # Assert BREADTH cross-domain preference.
+        v = web.Spider(links=["http://www.clips.ua.ac.be/"], delay=10)
+        while len(v.visited) < 4:
+            v.crawl(throttle=0.1, cached=False, method=web.BREADTH)
+        self.assertTrue(v.history.keys()[0] != v.history.keys()[1])
+        self.assertTrue(v.history.keys()[0] != v.history.keys()[2])
+        self.assertTrue(v.history.keys()[1] != v.history.keys()[2])
+        print "pattern.web.Spider.crawl(method=BREADTH)"
+
+#-----------------------------------------------------------------------------------------------------
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCache))
@@ -915,6 +977,7 @@ def suite():
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPDF))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLocale))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMail))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSpider))
     return suite
 
 if __name__ == "__main__":
