@@ -561,11 +561,20 @@ class HTMLParser(sgmllib.SGMLParser):
         html = html.replace("&lt;!doctype", "<!doctype")
         html = html.replace("&lt;!--", "<!--")
         return html
-    
+
+        
+    def parse_declaration(self, i):
+        # We can live without sgmllib's parse_declaration().
+        try: 
+            return sgmllib.SGMLParser.parse_declaration(self, i)
+        except sgmllib.SGMLParseError:
+            return i + 1
+        
     def convert_charref(self, name):
         # This fixes a bug in older versions of sgmllib when working with Unicode.
         # Fix: ASCII ends at 127, not 255
-        try: n = int(name)
+        try:
+            n = int(name)
         except ValueError:
             return
         if not 0 <= n <= 127:
@@ -1129,7 +1138,7 @@ class Twitter(SearchEngine):
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=False, **kwargs):
         """ Returns a list of results from Twitter for the given query.
-            - type : SEARCH,
+            - type : SEARCH or TRENDS,
             - start: maximum 1500 results (10 for trends) => start 1-15 with count=100, 1500/count,
             - count: maximum 100, or 10 for trends.
             There is an hourly limit of 150+ queries (actual amount undisclosed).
@@ -1140,16 +1149,15 @@ class Twitter(SearchEngine):
             return Results(TWITTER, query, type)
         # 1) Construct request URL.
         url = URL(TWITTER + "search.json?", method=GET)
-        if type == SEARCH:
-            url.query = {
-                   "q": query,
-                "page": start,
-                 "rpp": min(count, 100) 
-            }
-            if "geo" in kwargs:
-                # Filter by location with geo=(latitude, longitude, radius).
-                # It can also be a (latitude, longitude)-tuple with default radius "10km".
-                url.query["geocode"] = ",".join((map(str, kwargs.pop("geo")) + ["10km"])[:3])
+        url.query = {
+               "q": query,
+            "page": start,
+             "rpp": min(count, 100) 
+        }
+        if "geo" in kwargs:
+            # Filter by location with geo=(latitude, longitude, radius).
+            # It can also be a (latitude, longitude)-tuple with default radius "10km".
+            url.query["geocode"] = ",".join((map(str, kwargs.pop("geo")) + ["10km"])[:3])
         # 2) Restrict language.
         url.query["lang"] = self.language or ""
         # 3) Parse JSON response.
@@ -1163,14 +1171,24 @@ class Twitter(SearchEngine):
         results.total = None
         for x in data.get("results", data.get("trends", [])):
             r = Result(url=None)
-            r.url         = self.format(TWITTER_SOURCE.search(x.get("source", x.get("url"))).group(1))
-            r.description = self.format(x.get("text", x.get("name")))
+            r.url         = self.format(TWITTER_SOURCE.search(x.get("source", "href=&quot;&quot;")).group(1))
+            r.description = self.format(x.get("text"))
             r.date        = self.format(x.get("created_at", data.get("as_of")))
             r.author      = self.format(x.get("from_user"))
             r.profile     = self.format(x.get("profile_image_url")) # Profile picture URL.
             r.language    = self.format(x.get("iso_language_code"))
             results.append(r)
         return results
+        
+    def trends(self, **kwargs):
+        """ Returns a list with 10 trending topics on Twitter.
+        """
+        url = URL("https://api.twitter.com/1/trends/1.json")
+        kwargs.setdefault("cached", False)
+        kwargs.setdefault("throttle", self.throttle)
+        data = url.download(**kwargs)
+        data = json.loads(data)
+        return [u(x.get("name")) for x in data[0].get("trends", [])]
 
 def author(name):
     """ Returns a Twitter query-by-author-name that can be passed to Twitter.search().
@@ -1979,6 +1997,7 @@ class Document(Element):
 #print
 
 #### WEB CRAWLER #####################################################################################
+# Tested with a crawl across 1,000 domain so far.
 
 class Link:
     
@@ -2031,7 +2050,7 @@ def base(url):
         http://en.wikipedia.org/wiki/Web_crawler => en.wikipedia.org
     """
     return urlparse.urlparse(url).netloc
-    
+
 def abs(url, base=None):
     """ Returns the absolute URL:
         ../media + http://en.wikipedia.org/wiki/ => http://en.wikipedia.org/media
@@ -2046,138 +2065,141 @@ BREADTH = "breadth"
 
 class Spider:
     
-    def __init__(self, links=[], delay=20.0, queue=False, parser=HTMLLinkParser().parse):
+    def __init__(self, links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse):
         """ A spider can be used to browse the web in an automated manner.
             It visits the list of starting URLs, parses links from their content, visits those, etc.
             - Links can be prioritized by overriding Spider.rank().
             - Links can be ignored by overriding Spider.follow().
             - Each visited link is passed to Spider.visit(), which can be overridden.
         """
-        self.parse   = parser
-        self.delay   = delay # Delay between visits to the same (sub)domain.
-        self.queue   = queue # Wait for delay or parse other links in the meantime?
-        self.__queue = {}    # Domain name => time last visited.
-        self.visited = {}    # URLs already visited => backlink count.
-        self._links  = []    # URLs scheduled for a visit: (priority, time, Link, referrer).
+        self.parse    = parser
+        self.delay    = delay   # Delay between visits to the same (sub)domain.
+        self.domains  = domains # Domains the spider is allowed to visit.
+        self.history  = {}      # Domain name => time last visited.
+        self.visited  = {}      # URLs visited => backlink count (0 = scheduled).
+        self._queue   = []      # URLs scheduled for a visit: (priority, time, Link, referrer).
+        self._queued  = {}      # URLs scheduled so far, lookup dictionary.
+        self.QUEUE    = 10000   # Increase or decrease according to available memory.
+        # Queue given links:
         for link in links:
             if not isinstance(link, Link):
                 link = Link(url=link)
-            self._links.append((-1.0, 0.0, link, None)) # -1.0 = highest priority.
-            self.visited[link.url] = 0
-    
-    @property
-    def links(self):
-        return [link for priority, t, link, referrer in self._links]
-    
-    def _elapsed(self, url):
-        # Elapsed time since last visit to this (sub)domain.
-        return time.time() - self.__queue.get(base(url), 0)
-        
-    def _queue(self, url):
-        # Log the url + time visited.
-        self.__queue[base(url)] = time.time()
-    
-    def normalize(self, url):
-        """ Called from Spider.crawl() to normalize URLs.
-            This can involve stripping the query-string, for example.
-        """
-        return url
-    
+            self._queue.append((0.0, 0.0, link, None)) # 0.0, 0.0 = highest priority.
+
     @property
     def done(self):
-        return len(self._links) == 0
+        return len(self._queue) == 0
+
+    @property
+    def next(self):
+        return self._pop_queue()
+
+    def _pop_queue(self):
+        """ Returns the next (link, referrer) queued to visit.
+            Links on a recently visited (sub)domain are skipped until Spider.delay has elapsed.
+        """
+        now = time.time()
+        for i, (priority, dt, link, referrer) in enumerate(self._queue):
+            if self.delay <= now - self.history.get(base(link.url), 0):
+                self._queue.pop(i)
+                self._queued.pop(link.url, None)
+                return link, referrer
     
     def crawl(self, method=DEPTH, **kwargs):
-        """ Visits the next link in the Spider.links list.
-            If the link is on a domain recently visited (< Spider.delay), skips it.
-            Parses the content at the link for new links and adds them to the list,
+        """ Visits the next link in Spider.queue.
+            If the link is on a domain recently visited (< Spider.delay) it is skipped.
+            Parses the content at the link for new links and adds them to the queue,
             according to their Spider.rank().
             Visited links (and content) are passed to Spider.visit().
         """
-        b = False
-        for i, (priority, t, link, referrer) in enumerate(self._links):
-            # Find the highest priority link to visit,
-            # on a (sub)domain which we haven't visited in 10 seconds (politeness).
-            if self._elapsed(link.url) > self.delay:
-                b = True
-            if b or self.queue is True:
-                break
-        if b is True:
-            priority, t, link, referrer = self._links.pop(i)
-            url  = URL(link.url)
-            mime = url.mimetype
-            html = None
-            #link.url = url.redirect or link.url
-            if mime == "text/html":
-                # Parse new links from HTML web pages.
-                # They are scheduled for a visit according to their Spider.rank() score.
+        try:
+            link, referrer = self._pop_queue()
+        except TypeError:
+            # Spider._pop_queue() == None (empty or delayed).
+            return False
+        url = URL(link.url)
+        if link.url not in self.visited:
+            if url.mimetype == "text/html":
                 try:
                     html = url.download(**kwargs)
                     for new in self.parse(html):
                         new.url = abs(new.url, base=url.redirect or link.url)
                         new.url = self.normalize(new.url)
-                        # Only visit new links for which Spider.follow() is True.
-                        # If the link was visited already, increase its backlink count
-                        # (but don't reschedule it).
-                        if self.visited.get(new.url) is not None and base(new.url) != base(link.url):
-                            self.visited[new.url] += 1
-                        if self.visited.get(new.url) is None and self.follow(new, referrer=link):
-                            self.visited[new.url] = 0
-                            bisect.insort(self._links, # Keep priority sort order.
-                                (1-self.rank(new, referrer=link, method=method), time.time(), new, link))
-                except URLError: # Raised in URL.download().
-                    mime = None
-            if mime is None:
-                self.fail(link, referrer)
+                        # 1) Parse new links from HTML web pages.
+                        # 2) Schedule unknown links for a visit.
+                        # 3) Only links that are not already queued are queued.
+                        # 4) Only links for which Spider.follow() is True are queued.
+                        # 5) Only links on Spider.domains are queued.
+                        if new.url in self.visited:
+                            continue
+                        if new.url in self._queued:
+                            continue
+                        if self.follow(new, referrer=link) is False:
+                            continue
+                        if self.domains and not base(new.url).endswith(tuple(self.domains)):
+                            continue
+                        # 6) Limit the queue (remove tail), unless you are Google.
+                        # 7) Position in the queue is determined by Spider.rank().
+                        if len(self._queue) > self.QUEUE * 2:
+                            self._queue = self._queue[:self.QUEUE]
+                            self._queued.clear()
+                            self._queued.update(dict((q[2].url, True) for q in self._queue))
+                        bisect.insort(self._queue, 
+                            (1 - self.rank(new, referrer=link, method=method), time.time(), new, link))
+                        self._queued[new.url] = True
+                    self.visit(link, referrer, source=html)
+                except URLError:
+                    # URL can not be reached (HTTP404NotFound, URLTimeout).
+                    self.fail(link, referrer)
             else:
-                self.visit(link, referrer, source=html)
-            self.visited[link.url] = 1
-            self._queue(link.url)
-        time.sleep(0.01)
-        
+                # URL MIME-type is not HTML, don't know how to handle.
+                self.fail(link, referrer)
+            # Log the current time visited for the domain (see Spider._pop_queue()).
+            # Log the URL as visited.
+            self.history[base(link.url)] = time.time()
+            self.visited[link.url] = True
+            return True
+        # Nothing happened, we already visited this link.
+        return False
+
+    def normalize(self, url):
+        """ Called from Spider.crawl() to normalize URLs.
+            This can involve stripping the query-string, for example.
+        """
+        # All referrer => URL tuples pass through here (visited or not).
+        # This can be a place to count backlinks.
+        return url
+
+    def follow(self, link, referrer=None):
+        """ Called from Spider.crawl() to determine if it should follow this link.
+        """
+        return True
+
+    def rank(self, link, referrer=None, method=DEPTH):
+        """ Called from Spider.crawl() to determine the priority of this link,
+            as a number between 0.0-1.0. Links with higher priority are visited first.
+        """
+        # Depth-first search dislikes external links to other (sub)domains.
+        external = base(link.url) != base(referrer.url)
+        if external is True:
+            if method == DEPTH: 
+                return 0.75
+            if method == BREADTH:
+                return 0.85
+        return 0.80
+
     def visit(self, link, referrer=None, source=None):
         """ Called from Spider.crawl() when the link is crawled.
-            When html=None, this means that the link is not a web page (and was not parsed),
-            or possibly that a URLTimeout occured (content size too big).
+            When source=None, the link is not a web page (and was not parsed),
+            or possibly a URLTimeout occured (content size too big).
         """
-        #print "visited", link.url, "from", referrer.url
         pass
         
     def fail(self, link, referrer=None):
         """ Called from Spider.crawl() for link whose MIME-type could not be determined,
             or which raised a URLError on download.
         """
-        #print "failed:", link.url
         pass
-    
-    def follow(self, link, referrer=None):
-        """ Called from Spider.crawl() to determine if it should follow this link.
-        """
-        return True
-        
-    def rank(self, link, referrer=None, **kwargs):
-        """ Called from Spider.crawl() to determine the priority of this link,
-            as a number between 0.0-1.0. Links with higher priority are visited first.
-        """
-        # URLs with a query string scores lower, 
-        # could just be a different sort order for example.
-        # It is essential we don't spend too much time exploring these.
-        if "?" in link.url: 
-            return 0.7
-        # Breadth-first search prefers external links to other (sub)domains.
-        method = kwargs.get("method", DEPTH)
-        external = base(link.url) != base(referrer.url)
-        if not external:
-            if method == BREADTH: 
-                return 0.8
-            if method == DEPTH:
-                return 1.0
-        return 0.9
-        
-    def backlinks(self, url):
-        """ Returns the number of inbound links to the given URL (so far).
-        """
-        return self.visited.get(url, 0)
 
 #class Spiderling(Spider):
 #    def visit(self, link, referrer=None, source=None):
@@ -2185,9 +2207,9 @@ class Spider:
 #    def fail(self, link, referrer=None):
 #        print "failed:", link.url
 #
-#s = Spiderling(links=["http://www.python.org/"], delay=3, queue=True)
+#s = Spiderling(links=["http://nodebox.net/"], domains=["nodebox.net"], delay=5)
 #while not s.done:
-#    s.crawl(method=BREADTH, cached=True)
+#    s.crawl(method=BREADTH, cached=True, throttle=5)
 
 #### PDF PARSER #######################################################################################
 #  Yusuke Shinyama, PDFMiner, http://www.unixuser.org/~euske/python/pdfminer/
