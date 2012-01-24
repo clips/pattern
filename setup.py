@@ -34,6 +34,7 @@ setup(
         "pattern.nl.parser",
         "pattern.nl.inflect",
         "pattern.vector",
+        "pattern.vector.svm",
         "pattern.graph"
     ],
     package_data = {
@@ -51,6 +52,7 @@ setup(
         "pattern.nl.parser"            : ["*", "*.xml"],
         "pattern.nl.inflect"           : ["*.txt"],
         "pattern.vector"               : ["*.txt"],
+        "pattern.vector.svm"           : ["*"],
         "pattern.graph"                : ["js/*.js"],
     },
     py_modules = [
