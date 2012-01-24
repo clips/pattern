@@ -234,17 +234,87 @@ class TestDocument(unittest.TestCase):
         print "pattern.vector.count()"
 
     def test_document(self):
+        # Assert Document properties.
+        # Test with different input types.
         for w in (
           "The cats sat on the mat.",
-          ["The", "cats", "sat", "on", "the", "mat", "."],
-          {"the":2, "cats":1, "sat":1, "on":1, "mat":1, ".":1},
+          ["The", "cats", "sat", "on", "the", "mat"],
+          {"cat":1, "sat":1, "mat":1},
           Text(parse("The cats sat on the mat.")),
           Sentence(parse("The cats sat on the mat."))):
-            v = vector.Document(w, stemmer=vector.LEMMA, stopwords=False, name="cat", type="cat")
+            # Test copy.
+            v = vector.Document(w, stemmer=vector.LEMMA, stopwords=False, name="Cat", type="CAT")
             v = v.copy()
-            self.assertEqual(v.name, "cat")
-            self.assertEqual(v.type, "cat")
-            print v.terms
+            # Test properties.
+            self.assertEqual(v.name, "Cat")
+            self.assertEqual(v.type, "CAT")
+            self.assertEqual(v.count, 3)
+            self.assertEqual(v.terms, {"cat":1, "sat":1, "mat":1})
+            # Test iterator decoration.
+            self.assertEqual(sorted(v.features), ["cat", "mat", "sat"])
+            self.assertEqual(sorted(v), ["cat", "mat", "sat"])
+            self.assertEqual(len(v), 3)
+            self.assertEqual(v["cat"], 1)
+            self.assertEqual("cat" in v, True)
+        print "pattern.vector.Document"
+        
+    def test_document_vector(self):
+        # Assert Vector properties.
+        # Test copy.
+        v = vector.Document("the cat sat on the mat").vector
+        v = v.copy()
+        # Test properties.
+        self.assertTrue(isinstance(v, dict))
+        self.assertTrue(isinstance(v, vector.Vector))
+        self.assertTrue(isinstance(v.id, int))
+        self.assertEqual(sorted(v.features), ["cat", "mat", "sat"])
+        self.assertEqual(v.weight, vector.TF)
+        self.assertAlmostEqual(v.norm,   0.58, places=2)
+        self.assertAlmostEqual(v["cat"], 0.33, places=2)
+        self.assertAlmostEqual(v["sat"], 0.33, places=2)
+        self.assertAlmostEqual(v["mat"], 0.33, places=2)
+        # Test copy + update.
+        v = v({"cat":1, "sat":1, "mat":1})
+        self.assertEqual(sorted(v.features), ["cat", "mat", "sat"])
+        self.assertAlmostEqual(v["cat"], 1.00, places=2)
+        self.assertAlmostEqual(v["sat"], 1.00, places=2)
+        self.assertAlmostEqual(v["mat"], 1.00, places=2)
+        print "pattern.vector.Document.vector"
+
+    def test_keywords(self):
+        # Assert Document.keywords() based on term frequency.
+        v = vector.Document(["cat", "cat", "cat", "sat", "sat", "mat"]).keywords(top=2)
+        self.assertEqual(len(v), 2)
+        self.assertEqual(v[0][1], "cat")
+        self.assertEqual(v[1][1], "sat")
+        self.assertAlmostEqual(v[0][0], 0.50, places=2)
+        self.assertAlmostEqual(v[1][0], 0.33, places=2)
+        print "pattern.vector.Document.keywords()"
+    
+    def test_tf(self):
+        # Assert Document.term_frequency() (= weights used in Vector for orphaned documents).
+        v = vector.Document("the cat sat on the mat")
+        for feature, weight in v.vector.items():
+            self.assertEqual(v.term_frequency(feature), weight)
+            self.assertAlmostEqual(v.term_frequency(feature), 0.33, places=2)
+        print "pattern.vector.Document.tf()"
+        
+    def test_tfidf(self):
+        # Assert tf-idf for documents not in a corpus.
+        v = [[0.0,0.1,0.2], [0.2,0.1,0.0]]
+        v = vector.tf_idf(v)
+        self.assertAlmostEqual(v[0][2], 0.14, places=2)
+        self.assertAlmostEqual(v[1][0], 0.14, places=2)
+        print "pattern.vector.tf_idf()"
+
+    def test_cosine_similarity(self):
+        # Test cosine similarity for documents not in a corpus.
+        v1 = vector.Document("the cat sat on the mat")
+        v2 = vector.Document("a cat with a hat")
+        self.assertAlmostEqual(v1.cosine_similarity(v2), 0.41, places=2)
+        print "pattern.vector.Document.similarity()"
+        print "pattern.vector.cosine_similarity()"
+        print "pattern.vector.l2_norm()"
 
 #-----------------------------------------------------------------------------------------------------
 
