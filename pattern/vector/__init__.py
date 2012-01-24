@@ -261,6 +261,7 @@ class Document(object):
             Stop words in the exclude list are excluded from the document.
             Only words whose count exceeds the threshold and who are in the top are included in the document.
         """
+        kwargs.setdefault("filter", lambda w: w.isalpha() and len(w)>1)
         kwargs.setdefault("threshold", 0)
         kwargs.setdefault("dict", readonlydict)
         # A string of words, map to read-only dict of (word, count)-items.
@@ -286,11 +287,13 @@ class Document(object):
         # pattern.en.Sentence with Word objects, can use stemmer=LEMMA.
         elif string.__class__.__name__ == "Sentence":
             w = string.words
+            w = [w for w in w if kwargs["filter"](w.string)]
             w = count(w, **kwargs)
             v = None
         # pattern.en.Text with Sentence objects, can use stemmer=LEMMA.
         elif string.__class__.__name__ == "Text":
             w = []; [w.extend(sentence.words) for sentence in string]
+            w = [w for w in w if kwargs["filter"](w.string)]
             w = count(w, **kwargs)
             v = None
         else:
@@ -410,10 +413,14 @@ class Document(object):
         """ Yields a dictionary of (word, relevancy)-items from the document, based on tf-idf.
         """
         if not self._vector:
-            # Corpus.weight (TFIDF or TF) determines how the weights will be calculated.
-            f = getattr(self.corpus, "weight", TFIDF) == TFIDF and self.tf_idf or self.tf
             # See the Vector class below = a dict with extra functionality (copy, norm).
-            self._vector = Vector(((w, f(w)) for w in self.terms))
+            # Corpus.weight (TFIDF or TF) determines how the weights will be calculated.
+            # When a document is added/deleted from a corpus, the cached vector is deleted.
+            if getattr(self.corpus, "weight", TF) == TFIDF:
+                w, f = TFIDF, self.tf_idf
+            else:
+                w, f = TF, self.tf
+            self._vector = Vector(((w, f(w)) for w in self.terms), weight=w)
         return self._vector
 
     def keywords(self, top=10, normalized=True):
@@ -433,8 +440,11 @@ class Document(object):
             return self.corpus.cosine_similarity(self, document)
         if document.corpus:
             return document.corpus.cosine_similarity(self, document)
-        # Use dict copies to ensure that the values are in the same order:
-        return cosine_similarity(self.vector(self).values(), self.vector(document).values())
+        # Merge terms to ensure that the values are in the same order:
+        W  = set(self.terms.keys()) | set(document.terms.keys())
+        v1 = [self.terms.get(w, 0) for w in W]
+        v2 = [document.terms.get(w, 0) for w in W]
+        return cosine_similarity(v1, v2)
             
     similarity = cosine_similarity
     
@@ -503,6 +513,7 @@ class Vector(readonlydict):
 # Given vectors must be lists of values (not iterators).
     
 def tf_idf(vectors):
+    idf = []
     for i in range(len(vectors[0])):
         idf.append(log(len(vectors) / (sum(1.0 for v in vectors if v[i]) or 1)))
     return [[v[i] * idf[i] for i in range(len(v))] for v in vectors]
@@ -1574,7 +1585,7 @@ Bayes = NaiveBayes
 # pattern.vector comes bundled with LIBSVM: 
 # http://www.csie.ntu.edu.tw/~cjlin/libsvm/
 #
-# Precompiled binaries for Win32 and Mac OS X are included.
+# Precompiled binaries for 32-bit Windows and Mac OS X, and 64-bit Ubuntu are included.
 # - If these don't work, you need to download and compile LIBSVM from source.
 # - Mac OS X may complain, if so, rename "-soname" to "-install_name" in libsvm/Makefile.
 # - Put the shared library (i.e., "libsvm.dll", "libsvm.so") in pattern/vector/svm/.
@@ -1593,7 +1604,8 @@ class SVM(Classifier):
             training documents are represented as points in an n-dimensional space.
             The SVM constructs a number of "hyperplanes" that subdivide the space.
             Optional parameters include:
-            type=SVC, kernel=RADIAL, degree=3, cost=1, nu=0.5, epsilon=0.01, cache=100, debug=False
+            type=SVC, kernel=RADIAL, degree=3, gamma=1/len(SVM.features), 
+            cost=1, nu=0.5, epsilon=0.01, cache=100, debug=False
         """
         import svm
         self._libsvm  = svm
@@ -1608,7 +1620,15 @@ class SVM(Classifier):
             ("epsilon", 0.01),
             (  "cache", 100),
             (  "debug", False)): self.__dict__[k] = kwargs.get(k, v)
-    
+
+    @property
+    def classes(self):
+        return list(set(type for type, v in self._vectors))
+        
+    @property
+    def features(self):
+        return list(features(v for type, v in self._vectors))
+
     def _libsvm_train(self):
         """ Calls libsvm.svmutil.svm_train() to create a model.
             Vector classes and features (i.e., words) are mapped to integers.
@@ -1617,8 +1637,8 @@ class SVM(Classifier):
         H = dict((w, i) for i, w in enumerate(features(M)))    # Feature => integer hash.
         x = [dict((H[k], v) for k, v in v.items()) for v in M] # Hashed vectors.
         y = range(len(M))                                      # Hashed classes.
-        o = "-s %s -t %s -d %s -c %s -n %s -e %s -m %s %s" % ( # Command-line options.
-            self.type, self.kernel, self.degree, self.cost, self.nu, self.epsilon,
+        o = "-s %s -t %s -d %s -c %s -n %s -e %s -m %s %s" % (
+            self.type, self.kernel, self.degree, self.cost, self.nu, self.epsilon, 
             self.cache,
             self.debug is False and "-q" or ""
         )
@@ -1644,13 +1664,26 @@ class SVM(Classifier):
         return self._vectors[int(p[0][0])][0]
         
     def train(self, document, type=None):
+        """ Trains the classifier with the given document of the given type (i.e., class).
+            A document can be a Document object or a list of words (or other hashable items).
+            If no type is given, Document.type will be used instead.
+        """
         self._model = None
         self._vectors.append(self._vector(document, type=type))
             
     def classify(self, document):
+        """ Returns the type with the highest probability for the given document
+            (a Document object or a list of words).
+        """
         if self._model is None:
             self._libsvm_train()
         return self._libsvm_predict(document)
+        
+    def __del__(self):
+        try:
+            if self._model: self._model.__del__()
+        except:
+            pass
 
 #--- K-NEAREST NEIGHBOR CLASSIFIER -------------------------------------------------------------------
 
@@ -1675,6 +1708,10 @@ class NearestNeighbor(Classifier):
         return list(features(v for type, v in self._vectors))
     
     def train(self, document, type=None):
+        """ Trains the classifier with the given document of the given type (i.e., class).
+            A document can be a Document object or a list of words (or other hashable items).
+            If no type is given, Document.type will be used instead.
+        """
         self._vectors.append(self._vector(document, type=type))
     
     def classify(self, document):
