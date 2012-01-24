@@ -281,15 +281,14 @@ uninflected = dict.fromkeys([
 
 #--- STEMMER -----------------------------------------------------------------------------------------
 
-def case_sensitivity(stem, word):
+def case_sensitive(stem, word):
     """ Applies the letter case of the word to the stem:
         Ponies => Poni
     """
-    lower = word.lower()
     ch = []
     for i in xrange(len(stem)):
-        if lower[i] == stem[i]:
-            ch.append(word[i])
+        if word[i] == word[i].upper():
+            ch.append(stem[i].upper())
         else:
             ch.append(stem[i])
     return "".join(ch)
@@ -321,67 +320,24 @@ def stem(word, cached=True, history=10000, **kwargs):
     """
     stem = word.lower()
     if cached and stem in cache:
-        return cache[stem]
+        return case_sensitive(cache[stem], word)
     if cached and len(cache) > history: # Empty cache every now and then.
         cache.clear()
     if len(stem) <= 2:
         # If the word has two letters or less, leave it as it is. 
-        return stem
+        return case_sensitive(stem, word)
     if stem in exceptions:
-        return exceptions[stem]
+        return case_sensitive(exceptions[stem], word)
     if stem in uninflected:
-        return stem
+        return case_sensitive(stem, word)
     # Mark y treated as a consonant as Y.
     stem = upper_consonant_y(stem)
     for f in (step_1a, step_1b, step_1c, step_2, step_3, step_4, step_5a, step_5b):
         stem = f(stem)
     # Turn any remaining Y letters in the stem back into lower case.
     # Apply the case of the original word to the stem. 
-    stem = case_sensitivity(stem.lower(), word)
+    stem = stem.lower()
+    stem = case_sensitive(stem, word)
     if cached:
-        cache[word.lower()] = stem
+        cache[word.lower()] = stem.lower()
     return stem
-
-#-----------------------------------------------------------------------------------------------------
-# Test data from http://snowball.tartarus.org/algorithms/english/stemmer.html
-
-'''
-input = [
-    'consign', 'consigned', 'consigning', 'consignment', 'consist', 'consisted', 'consistency', 
-    'consistent', 'consistently', 'consisting', 'consists', 'consolation', 'consolations', 
-    'consolatory', 'console', 'consoled', 'consoles', 'consolidate', 'consolidated', 'consolidating', 
-    'consoling', 'consolingly', 'consols', 'consonant', 'consort', 'consorted', 'consorting', 
-    'conspicuous', 'conspicuously', 'conspiracy', 'conspirator', 'conspirators', 'conspire', 
-    'conspired', 'conspiring', 'constable', 'constables', 'constance', 'constancy', 'constant',
-    'generate', 'generates', 'generated', 'generating', 'general', 'generally', 'generic', 
-    'generically', 'generous', 'generously', 'knack', 'knackeries', 'knacks', 'knag', 'knave', 
-    'knaves', 'knavish', 'kneaded', 'kneading', 'knee', 'kneel', 'kneeled', 'kneeling', 'kneels', 
-    'knees', 'knell', 'knelt', 'knew', 'knick', 'knif', 'knife', 'knight', 'knightly', 'knights', 
-    'knit', 'knits', 'knitted', 'knitting', 'knives', 'knob', 'knobs', 'knock', 'knocked', 'knocker', 
-    'knockers', 'knocking', 'knocks', 'knopp', 'knot', 'knots', 'skies', 'spy'
-]
-output = [
-    'consign', 'consign', 'consign', 'consign', 'consist', 'consist', 'consist', 'consist', 'consist', 
-    'consist', 'consist', 'consol', 'consol', 'consolatori', 'consol', 'consol', 'consol', 'consolid', 
-    'consolid', 'consolid', 'consol', 'consol', 'consol', 'conson', 'consort', 'consort', 'consort', 
-    'conspicu', 'conspicu', 'conspiraci', 'conspir', 'conspir', 'conspir', 'conspir', 'conspir', 
-    'constabl', 'constabl', 'constanc', 'constanc', 'constant', 'generat', 'generat', 'generat', 
-    'generat', 'general', 'general', 'generic', 'generic', 'generous', 'generous', 'knack', 'knackeri', 
-    'knack', 'knag', 'knave', 'knave', 'knavish', 'knead', 'knead', 'knee', 'kneel', 'kneel', 'kneel', 
-    'kneel', 'knee', 'knell', 'knelt', 'knew', 'knick', 'knif', 'knife', 'knight', 'knight', 'knight', 
-    'knit', 'knit', 'knit', 'knit', 'knive', 'knob', 'knob', 'knock', 'knock', 'knocker', 'knocker', 
-    'knock', 'knock', 'knopp', 'knot', 'knot', 'sky', 'spi'
-]
-
-from time import time
-
-t = time()
-for i in range(500):
-    e = 0
-    for x,y in zip([stem(w, cached=True) for w in input], output):
-        if x != y: 
-            e += 1
-            #print "wrong:", x, y
-print "error rate:", float(e) / len(output)
-print "time:", time()-t
-'''
