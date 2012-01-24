@@ -232,7 +232,7 @@ class TestDocument(unittest.TestCase):
         # Assert custom dict class.
         self.assertTrue(isinstance(v7, vector.readonlydict))
         print "pattern.vector.count()"
-        
+
     def test_document(self):
         for w in (
           "The cats sat on the mat.",
