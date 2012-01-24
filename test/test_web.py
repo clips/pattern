@@ -923,13 +923,15 @@ class TestSpider(unittest.TestCase):
                 </div>
             </body>
             </html>
-        """)
+        """, "http://www.domain.com/")
         self.assertTrue(v[0].url, "http://www.domain1.com/?p=1")
         self.assertTrue(v[1].url, "http://www.domain1.com/?p=2")
         self.assertTrue(v[0].description, "1")
         self.assertTrue(v[1].description, "2")
         self.assertTrue(v[0].relation, "a")
         self.assertTrue(v[1].relation, "b")
+        self.assertTrue(v[0].referrer, "http://www.domain.com/")
+        self.assertTrue(v[1].referrer, "http://www.domain.com/")
         self.assertTrue(v[0] < v[1])
         print "pattern.web.HTMLLinkParser"
     
