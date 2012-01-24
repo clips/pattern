@@ -14,6 +14,7 @@
 # Variations of the tf–idf weighting scheme are often used by search engines 
 # as a central tool in scoring and ranking a document's relevance given a user query.
 
+import sys
 import os
 import glob
 import heapq
@@ -26,6 +27,7 @@ from time      import time
 from random    import random, choice
 from itertools import izip, chain
 from bisect    import insort
+from StringIO  import StringIO
 
 try:
     MODULE = os.path.dirname(__file__)
@@ -47,10 +49,12 @@ def decode_utf8(string):
     """ Returns the given string as a unicode string (if possible).
     """
     if isinstance(string, str):
-        try: 
-            return string.decode("utf-8")
-        except:
-            return string
+        for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
+            try: 
+                return string.decode(*encoding)
+            except:
+                pass
+        return string
     return unicode(string)
     
 def encode_utf8(string):
@@ -183,7 +187,7 @@ def words(string, filter=lambda w: w.isalpha() and len(w)>1, punctuation=PUNCTUA
         string = string.replace(u"’", u"'")
     words = string.replace("\n", "\n ")
     words = (rreplace("'s", "", w.strip(punctuation)) for w in words.split(" "))
-    words = [w for w in words if filter(w) is True]
+    words = [w for w in words if filter(w) is not False]
     return words
 
 PORTER, LEMMA = "porter", "lemma"
@@ -192,10 +196,12 @@ def stem(word, stemmer=PORTER, **kwargs):
         With stemmer=PORTER, the Porter2 stemming algorithm is used.
         With stemmer=LEMMA, either uses Word.lemma or inflect.singularize().
     """
+    if isinstance(word, basestring):
+        word = decode_utf8(word.lower())
     if stemmer is None:
         return word
     if stemmer == PORTER:
-        return _stemmer.stem(decode_utf8(word).lower(), **kwargs)
+        return _stemmer.stem(word, **kwargs)
     if stemmer == LEMMA:
         if word.__class__.__name__ == "Word":
             if word.lemma is not None:
@@ -206,7 +212,7 @@ def stem(word, stemmer=PORTER, **kwargs):
                 return conjugate(word.string.lower(), "infinitive") or word
         return singularize(word)
     if type(stemmer).__name__ == "function":
-        return stemmer(word)
+        return decode_utf8(stemmer(word))
     return word
 
 def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=False, **kwargs):
@@ -231,7 +237,7 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
         if count[k] <= threshold:
             dict.__delitem__(count, k)
     if top is not None:
-        count = count.__class__(heapq.nlargest(top, count.iteritems(), key=lambda (k,v): v))
+        count = count.__class__(heapq.nsmallest(top, count.iteritems(), key=lambda (k,v): (-v,k)))
     return count
 
 #--- DOCUMENT ----------------------------------------------------------------------------------------
@@ -263,7 +269,7 @@ class Document(object):
             w = count(w, **kwargs)
             v = None
         # A list of words, map to read-only dict of (word, count)-items.
-        elif isinstance(string, (list, tuple)):
+        elif isinstance(string, (list, tuple)) and not string.__class__.__name__ == "Text":
             w = string
             w = count(w, **kwargs)
             v = None
@@ -747,7 +753,21 @@ class Corpus(object):
         return float(sum(len(d.terms) for d in self.documents)) / len(self.vector)**2
 
     # Following methods rely on Document.vector:
-    # cosine similarity, nearest neighbors, search, clustering, latent semantic analysis, divergence.
+    # frequent sets, cosine similarity, nearest neighbors, search, clustering, 
+    # latent semantic analysis, divergence.
+    
+    def frequency(self, word):
+        """ Returns the frequency (0.0-1.0) of the word across documents.
+        """
+        return len([1 for d in self.documents if word in d.terms]) / float(len(self) or 1)
+    
+    def frequent_concept_sets(self, threshold=0.5):
+        """ Returns a dictionary of (set(words), frequency) 
+            of word combinations with a frequency above the given threshold.
+        """
+        return apriori([d.terms for d in self.documents], support=threshold)
+        
+    frequent = frequent_concept_sets
     
     def cosine_similarity(self, document1, document2):
         """ Returns the similarity between two documents in the corpus as a number between 0.0-1.0.
@@ -916,7 +936,68 @@ class Corpus(object):
                 type = d.type) for d in self.documents])
         return corpus
 
+#### FREQUENT CONCEPT SETS ###########################################################################
+# Agrawal R. & Srikant R. (1994), Fast algorithms for mining association rules in large databases.
+# Based on: https://gist.github.com/1423287
+
+class Apriori:
+    
+    def __init__(self):
+        self._candidates = []
+        self._support = {}
+    
+    def C1(self, sets):
+        """ Returns the unique words from all sets as a list of (hashable) frozensets.
+        """
+        return [frozenset([v]) for v in set(chain(*sets))]
+
+    def Ck(self, sets):
+        """ For the given sets of length k, returns combined candidate sets of length k+1.
+        """
+        Ck = []
+        for i, s1 in enumerate(sets):
+            for j, s2 in enumerate(sets[i+1:]):
+                if set(list(s1)[:-1]) == set(list(s2)[:-1]):
+                    Ck.append(s1 | s2)
+        return Ck
+        
+    def Lk(self, sets, candidates, support=0.0):
+        """ Prunes candidate sets whose frequency < support threshold.
+            Returns a dictionary of (candidate set, frequency)-items.
+        """
+        Lk, x = {}, 1.0 / (len(sets) or 1) # relative count
+        for s1 in candidates:
+            for s2 in sets:
+                if s1.issubset(s2):
+                    Lk[s1] = s1 in Lk and Lk[s1]+x or x
+        return dict((s, f) for s, f in Lk.items() if f >= support)
+
+    def __call__(self, sets, support=0.5):
+        """ Returns a dictionary of (set(features), frequency)-items.
+            The given support (0.0-1.0) is the relative amount of documents
+            in which a combination of word must appear.
+        """
+        C1 = self.C1(sets)
+        L1 = self.Lk(sets, C1, support)
+        self._candidates = [L1.keys()]
+        self._support = L1
+        while True:
+            # Terminate when no further extensions are found.
+            if len(self._candidates[-1]) == 0:
+                break
+            # Extend frequent subsets one item at a time.
+            Ck = self.Ck(self._candidates[-1])
+            Lk = self.Lk(sets, Ck, support)
+            self._candidates.append(Lk.keys())
+            self._support.update(Lk)
+        return self._support
+        
+apriori = Apriori()
+
 #### LATENT SEMANTIC ANALYSIS ########################################################################
+# Based on:
+# http://en.wikipedia.org/wiki/Latent_semantic_analysis
+# http://blog.josephwilk.net/projects/latent-semantic-analysis-in-python.html
 
 class LSA:
     
@@ -927,8 +1008,6 @@ class LSA:
             Documents then get a concept vector that is an approximation of the original vector,
             but with reduced dimensionality so that cosine similarity and clustering run faster.
         """
-        # http://en.wikipedia.org/wiki/Latent_semantic_analysis
-        # http://blog.josephwilk.net/projects/latent-semantic-analysis-in-python.html
         import numpy
         matrix = [corpus.vector(d).values() for d in corpus.documents]
         matrix = numpy.array(matrix)
@@ -1293,9 +1372,11 @@ class Classifier:
     
     @property
     def binary(self):
+        """ Yields True if the classifier has exactly two prediction classes.
+        """
         return sorted(self.classes) in ([False,True], [0,1])
 
-    def train(self, document, type):
+    def train(self, document, type=None):
         # Must be implemented in a subclass.
         pass
         
@@ -1389,6 +1470,40 @@ class Classifier:
     def load(self, path):
         return cPickle.load(open(path))
 
+#--- ENSEMBLE ----------------------------------------------------------------------------------------
+
+class Ensemble:
+    
+    def __init__(self, classifiers=[]):
+        """ An ensemble of (trained) classifiers that use a majority vote to classify documents.
+        """
+        self.classifiers = classifiers
+    
+    @property
+    def features(self):
+        return list(set(chain(*(classifier.features for classifier in self.classifiers))))
+        
+    @property
+    def classes(self):
+        return list(set(chain(*(classifier.classes for classifier in self.classifiers))))
+        
+    def train(self, document, type=None):
+        """ Trains all classifiers in the ensemble with the given document.
+        """
+        for classifier in self.classifiers:
+            classifier.train(document, type)
+            
+    def classify(self, document):
+        """ Returns the type with the majority vote of all classifiers.
+        """
+        classes = {}
+        for classifier in self.classifiers:
+            type = classifier.classify(document)
+            classes.setdefault(type, 0)
+            classes[type] += 1
+        # Pick random winner if several candidates have equal highest score.
+        return choice([k for k, v in classes.iteritems() if v == max(classes.values())])
+
 #--- NAIVE BAYES CLASSIFIER --------------------------------------------------------------------------
 # Based on: Magnus Lie Hetland, http://hetland.org/coding/python/nbayes.py
 
@@ -1455,6 +1570,88 @@ class NaiveBayes(Classifier):
 
 Bayes = NaiveBayes
 
+#--- SUPPORT VECTOR MACHINE --------------------------------------------------------------------------
+# pattern.vector comes bundled with LIBSVM: 
+# http://www.csie.ntu.edu.tw/~cjlin/libsvm/
+#
+# Precompiled binaries for Win32 and Mac OS X are included.
+# - If these don't work, you need to download and compile LIBSVM from source.
+# - Mac OS X may complain, if so, rename "-soname" to "-install_name" in libsvm/Makefile.
+# - Put the shared library (i.e., "libsvm.dll", "libsvm.so") in pattern/vector/svm/.
+# - If the shared library is named "libsvm.so.2", strip the ".2".
+
+# SVM classification (SVC, NU_SVC) or regression (SVR, NU_SVR).
+SVC, SVR, NU_SVC, NU_SVR, ONE_CLASS = 0, 3, 1, 4, 2
+
+# SVM kernel function.
+LINEAR, POLYNOMIAL, RADIAL, SIGMOID = 0, 1, 2, 3
+
+class SVM(Classifier):
+    
+    def __init__(self, **kwargs):
+        """ Support Vector Machine is a supervised learning method, where
+            training documents are represented as points in an n-dimensional space.
+            The SVM constructs a number of "hyperplanes" that subdivide the space.
+            Optional parameters include:
+            type=SVC, kernel=RADIAL, degree=3, cost=1, nu=0.5, epsilon=0.01, cache=100, debug=False
+        """
+        import svm
+        self._libsvm  = svm
+        self._vectors = []
+        self._model = None
+        for k, v in (
+            (   "type", SVC),
+            ( "kernel", RADIAL),
+            ( "degree", 3),
+            (   "cost", 1),
+            (     "nu", 0.5),
+            ("epsilon", 0.01),
+            (  "cache", 100),
+            (  "debug", False)): self.__dict__[k] = kwargs.get(k, v)
+    
+    def _libsvm_train(self):
+        """ Calls libsvm.svmutil.svm_train() to create a model.
+            Vector classes and features (i.e., words) are mapped to integers.
+        """
+        M = [v for type, v in self._vectors]                   # List of vectors.
+        H = dict((w, i) for i, w in enumerate(features(M)))    # Feature => integer hash.
+        x = [dict((H[k], v) for k, v in v.items()) for v in M] # Hashed vectors.
+        y = range(len(M))                                      # Hashed classes.
+        o = "-s %s -t %s -d %s -c %s -n %s -e %s -m %s %s" % ( # Command-line options.
+            self.type, self.kernel, self.degree, self.cost, self.nu, self.epsilon,
+            self.cache,
+            self.debug is False and "-q" or ""
+        )
+        # Cache the model and the feature hash.
+        # SVM.train() will remove the cached model (since it needs to be retrained).
+        self._model = (self._libsvm.svmutil.svm_train(y, x, o), H)
+  
+    def _libsvm_predict(self, document):
+        """ Calls libsvm.svmutil.svm_predict() with the cached model.
+        """
+        if self._model is None:
+            return None
+        if self.debug is False:
+            # Redirect stdout to a file stream.
+            so, sys.stdout = sys.stdout, StringIO()
+        M = self._model[0]
+        H = self._model[1]
+        v = self._vector(document)[1]
+        v = dict((H.get(k, -i), v) for i, (k,v) in enumerate(v.items()))
+        p = self._libsvm.svmutil.svm_predict([0], [v], M)
+        if self.debug is False:
+            sys.stdout = so
+        return self._vectors[int(p[0][0])][0]
+        
+    def train(self, document, type=None):
+        self._model = None
+        self._vectors.append(self._vector(document, type=type))
+            
+    def classify(self, document):
+        if self._model is None:
+            self._libsvm_train()
+        return self._libsvm_predict(document)
+
 #--- K-NEAREST NEIGHBOR CLASSIFIER -------------------------------------------------------------------
 
 class NearestNeighbor(Classifier):
@@ -1481,6 +1678,9 @@ class NearestNeighbor(Classifier):
         self._vectors.append(self._vector(document, type=type))
     
     def classify(self, document):
+        """ Returns the type with the highest probability for the given document
+            (a Document object or a list of words).
+        """
         # Basic majority voting.
         # Distance is calculated between the document vector and all training instances.
         # This will make NearestNeighbor.test() slow in higher dimensions.
@@ -1495,8 +1695,8 @@ class NearestNeighbor(Classifier):
         D = ((d, type) for d, type in D if d < 1) # Nothing in common if distance=1.0.
         D = heapq.nsmallest(self.k, D)            # k-least distant.
         for d, type in D:
-            f = 1 / (d or 0.0000000001)
-            classes[type] = type in classes and classes[type]+f or f
+            classes.setdefault(type, 0)
+            classes[type] += 1 / (d or 0.0000000001)
         try:
             # Pick random winner if several candidates have equal highest score.
             return choice([k for k, v in classes.iteritems() if v == max(classes.values()) > 0])
