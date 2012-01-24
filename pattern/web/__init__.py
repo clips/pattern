@@ -2001,11 +2001,12 @@ class Document(Element):
 
 class Link:
     
-    def __init__(self, url, description="", relation=""):
+    def __init__(self, url, description="", relation="", referrer=""):
         """ A hyperlink parsed from a HTML document, in the form:
             <a href="url"", title="description", rel="relation">xxx</a>.
         """
-        self.url, self.description, self.relation = u(url), u(description), u(relation)
+        self.url, self.description, self.relation, self.referrer = \
+            u(url), u(description), u(relation), u(referrer), 
     
     def __repr__(self):
         return "Link(url=%s)" % repr(self.url)
@@ -2025,11 +2026,12 @@ class HTMLLinkParser(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self)
 
-    def parse(self, html):
+    def parse(self, html, url=""):
         """ Returns a list of Links parsed from the given HTML string.
         """
         if html is None:
             return None
+        self._url  = url
         self._data = []
         self.feed(self.clean(html))
         self.close()
@@ -2042,7 +2044,8 @@ class HTMLLinkParser(HTMLParser):
             if "href" in attributes:
                 link = Link(url = attributes.get("href"),
                     description = attributes.get("title"),
-                       relation = attributes.get("rel", ""))
+                       relation = attributes.get("rel", ""),
+                       referrer = self._url)
                 self._data.append(link)
 
 def base(url):
@@ -2063,12 +2066,16 @@ def abs(url, base=None):
 DEPTH   = "depth"
 BREADTH = "breadth"
 
+FIFO = "fifo" # First In, First Out.
+FILO = "filo" # First In, Last Out.
+LIFO = "lifo" # Last In, First Out (= FILO).
+
 class Spider:
     
-    def __init__(self, links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse):
+    def __init__(self, links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse, sort=FIFO):
         """ A spider can be used to browse the web in an automated manner.
             It visits the list of starting URLs, parses links from their content, visits those, etc.
-            - Links can be prioritized by overriding Spider.rank().
+            - Links can be prioritized by overriding Spider.priority().
             - Links can be ignored by overriding Spider.follow().
             - Each visited link is passed to Spider.visit(), which can be overridden.
         """
@@ -2077,14 +2084,15 @@ class Spider:
         self.domains  = domains # Domains the spider is allowed to visit.
         self.history  = {}      # Domain name => time last visited.
         self.visited  = {}      # URLs visited => backlink count (0 = scheduled).
-        self._queue   = []      # URLs scheduled for a visit: (priority, time, Link, referrer).
+        self._queue   = []      # URLs scheduled for a visit: (priority, time, Link).
         self._queued  = {}      # URLs scheduled so far, lookup dictionary.
         self.QUEUE    = 10000   # Increase or decrease according to available memory.
+        self.sort     = sort
         # Queue given links:
         for link in links:
             if not isinstance(link, Link):
                 link = Link(url=link)
-            self._queue.append((0.0, 0.0, link, None)) # 0.0, 0.0 = highest priority.
+            self._queue.append((0.0, 0.0, link)) # 0.0, 0.0 = highest priority.
 
     @property
     def done(self):
@@ -2095,34 +2103,32 @@ class Spider:
         return self._pop_queue()
 
     def _pop_queue(self):
-        """ Returns the next (link, referrer) queued to visit.
+        """ Returns the next Link queued to visit.
             Links on a recently visited (sub)domain are skipped until Spider.delay has elapsed.
         """
         now = time.time()
-        for i, (priority, dt, link, referrer) in enumerate(self._queue):
+        for i, (priority, dt, link) in enumerate(self._queue):
             if self.delay <= now - self.history.get(base(link.url), 0):
                 self._queue.pop(i)
                 self._queued.pop(link.url, None)
-                return link, referrer
+                return link
     
     def crawl(self, method=DEPTH, **kwargs):
         """ Visits the next link in Spider.queue.
             If the link is on a domain recently visited (< Spider.delay) it is skipped.
             Parses the content at the link for new links and adds them to the queue,
-            according to their Spider.rank().
+            according to their Spider.priority().
             Visited links (and content) are passed to Spider.visit().
         """
-        try:
-            link, referrer = self._pop_queue()
-        except TypeError:
-            # Spider._pop_queue() == None (empty or delayed).
+        link = self._pop_queue()
+        if link is None:
             return False
-        url = URL(link.url)
         if link.url not in self.visited:
+            url = URL(link.url)
             if url.mimetype == "text/html":
                 try:
                     html = url.download(**kwargs)
-                    for new in self.parse(html):
+                    for new in self.parse(html, url=link.url):
                         new.url = abs(new.url, base=url.redirect or link.url)
                         new.url = self.normalize(new.url)
                         # 1) Parse new links from HTML web pages.
@@ -2134,26 +2140,29 @@ class Spider:
                             continue
                         if new.url in self._queued:
                             continue
-                        if self.follow(new, referrer=link) is False:
+                        if self.follow(new) is False:
                             continue
                         if self.domains and not base(new.url).endswith(tuple(self.domains)):
                             continue
                         # 6) Limit the queue (remove tail), unless you are Google.
-                        # 7) Position in the queue is determined by Spider.rank().
-                        if len(self._queue) > self.QUEUE * 2:
+                        if self.QUEUE is not None and \
+                           self.QUEUE * 1.25 < len(self._queue):
                             self._queue = self._queue[:self.QUEUE]
                             self._queued.clear()
                             self._queued.update(dict((q[2].url, True) for q in self._queue))
+                        # 7) Position in the queue is determined by Spider.priority().
+                        # 8) Equal ranks are sorted FIFO or FILO.
+                        dt = self.sort == FIFO and time.time() or 1/time.time()
                         bisect.insort(self._queue, 
-                            (1 - self.rank(new, referrer=link, method=method), time.time(), new, link))
+                            (1 - self.priority(new, method=method), dt, new))
                         self._queued[new.url] = True
-                    self.visit(link, referrer, source=html)
+                    self.visit(link, source=html)
                 except URLError:
                     # URL can not be reached (HTTP404NotFound, URLTimeout).
-                    self.fail(link, referrer)
+                    self.fail(link)
             else:
                 # URL MIME-type is not HTML, don't know how to handle.
-                self.fail(link, referrer)
+                self.fail(link)
             # Log the current time visited for the domain (see Spider._pop_queue()).
             # Log the URL as visited.
             self.history[base(link.url)] = time.time()
@@ -2164,23 +2173,24 @@ class Spider:
 
     def normalize(self, url):
         """ Called from Spider.crawl() to normalize URLs.
-            This can involve stripping the query-string, for example.
+            For example: return url.split("?")[0]
         """
-        # All referrer => URL tuples pass through here (visited or not).
+        # All links pass through here (visited or not).
         # This can be a place to count backlinks.
         return url
 
-    def follow(self, link, referrer=None):
+    def follow(self, link):
         """ Called from Spider.crawl() to determine if it should follow this link.
+            For example: return "nofollow" not in link.relation
         """
         return True
 
-    def rank(self, link, referrer=None, method=DEPTH):
+    def priority(self, link, method=DEPTH):
         """ Called from Spider.crawl() to determine the priority of this link,
             as a number between 0.0-1.0. Links with higher priority are visited first.
         """
         # Depth-first search dislikes external links to other (sub)domains.
-        external = base(link.url) != base(referrer.url)
+        external = base(link.url) != base(link.referrer)
         if external is True:
             if method == DEPTH: 
                 return 0.75
@@ -2188,28 +2198,28 @@ class Spider:
                 return 0.85
         return 0.80
 
-    def visit(self, link, referrer=None, source=None):
+    def visit(self, link, source=None):
         """ Called from Spider.crawl() when the link is crawled.
             When source=None, the link is not a web page (and was not parsed),
             or possibly a URLTimeout occured (content size too big).
         """
         pass
         
-    def fail(self, link, referrer=None):
+    def fail(self, link):
         """ Called from Spider.crawl() for link whose MIME-type could not be determined,
             or which raised a URLError on download.
         """
         pass
 
 #class Spiderling(Spider):
-#    def visit(self, link, referrer=None, source=None):
-#        print "visited:", repr(link.url), "from:", referrer
-#    def fail(self, link, referrer=None):
+#    def visit(self, link, source=None):
+#        print "visited:", link.url, "from:", link.referrer
+#    def fail(self, link):
 #        print "failed:", link.url
 #
 #s = Spiderling(links=["http://nodebox.net/"], domains=["nodebox.net"], delay=5)
 #while not s.done:
-#    s.crawl(method=BREADTH, cached=True, throttle=5)
+#    s.crawl(method=DEPTH, cached=True, throttle=5)
 
 #### PDF PARSER #######################################################################################
 #  Yusuke Shinyama, PDFMiner, http://www.unixuser.org/~euske/python/pdfminer/
