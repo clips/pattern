@@ -11,12 +11,14 @@ if find_library('svm'):
 elif find_library('libsvm'):
 	libsvm = CDLL(find_library('libsvm'))
 else:
-	if sys.platform == 'win32':
-		libsvm = CDLL(os.path.join(os.path.dirname(__file__),\
-				'libsvm.dll'))
-	else:
-		libsvm = CDLL(os.path.join(os.path.dirname(__file__),\
-				'libsvm.so'))
+	for i, binary in enumerate(("libsvm-win32.dll", "libsvm-mac32.so", "libsvm-ubuntu64.so")):
+		try:
+			libsvm = CDLL(os.path.join(os.path.dirname(__file__), binary)); break
+		except OSError:
+			if i == 2:
+				raise ImportError, "unable to import libsvm (%sbit-%s)" % (
+					sizeof(c_voidp) * 8, 
+					sys.platform)
 
 # Construct constants
 SVM_TYPE = ['C_SVC', 'NU_SVC', 'ONE_CLASS', 'EPSILON_SVR', 'NU_SVR' ]
@@ -214,7 +216,9 @@ class svm_model(Structure):
 	def __del__(self):
 		# free memory created by C to avoid memory leak
 		if hasattr(self, '__createfrom__') and self.__createfrom__ == 'C':
-			libsvm.svm_free_and_destroy_model(pointer(self))
+			try: libsvm.svm_free_and_destroy_model(pointer(self))
+			except:
+				pass
 
 	def get_svm_type(self):
 		return libsvm.svm_get_svm_type(self)
