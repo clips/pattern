@@ -1548,7 +1548,7 @@ class Datasheet(CSV):
         #print "Datasheet.__getattr__", k
         if k in self.__dict__:
             return self.__dict__[k]
-        for i, f in enumerate(f[0] for f in self.__dict__["fields"]):
+        for i, f in enumerate(f[0] for f in self.__dict__["fields"] or []):
             if f == k: 
                 return self.__dict__["_columns"][i]
         raise AttributeError, "'Datasheet' object has no attribute '%s'" % k
@@ -1559,7 +1559,7 @@ class Datasheet(CSV):
         #print "Datasheet.__setattr__", k
         if k in self.__dict__:
             self.__dict__[k] = v; return
-        for i, f in enumerate(f[0] for f in self.__dict__["fields"]):
+        for i, f in enumerate(f[0] for f in self.__dict__["fields"] or []):
             if f == k: 
                 self.__dict__["_columns"].__setitem__(i, v); return
         raise AttributeError, "'Datasheet' object has no attribute '%s'" % k
