@@ -11,12 +11,16 @@ if find_library('svm'):
 elif find_library('libsvm'):
 	libsvm = CDLL(find_library('libsvm'))
 else:
-	for i, binary in enumerate(("libsvm-win32.dll", "libsvm-mac32.so", "libsvm-ubuntu64.so")):
+	for i, binary in enumerate((
+	  "libsvm-win32.dll",     # 1) 32-bit Windows
+	  "libsvm-mac32.so",      # 2) 32-bit Mac OS X
+	  "libsvm-mac64.so",      # 3) 64-bit Mac OS X
+	  "libsvm-ubuntu64.so")): # 4) 64-bit Linux Ubuntu
 		try:
 			libsvm = CDLL(os.path.join(os.path.dirname(__file__), binary)); break
 		except OSError:
-			if i == 2:
-				raise ImportError, "unable to import libsvm (%sbit-%s)" % (
+			if i == 4-1: # <= Adjust according to available binaries.
+				raise ImportError, "can't import libsvm (%sbit-%s)" % (
 					sizeof(c_voidp) * 8, 
 					sys.platform)
 
@@ -55,7 +59,7 @@ def gen_svm_nodearray(xi, feature_max=None, issparse=None):
 		index_range = filter(lambda j: j <= feature_max, index_range)
 	if issparse: 
 		index_range = filter(lambda j:xi[j] != 0, index_range)
-
+	
 	index_range = sorted(index_range)
 	ret = (svm_node * (len(index_range)+1))()
 	ret[-1].index = -1

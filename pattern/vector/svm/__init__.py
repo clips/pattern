@@ -1,2 +1,2 @@
-import svm
-import svmutil
+from svm import *
+from svmutil import *
