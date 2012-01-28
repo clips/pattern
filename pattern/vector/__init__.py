@@ -279,8 +279,13 @@ class Document(object):
             w = string
             w = kwargs["dict"](w)
             v = None
-        # A Vector of (word, weight)-items, copy as document vector.
-        elif isinstance(string, Vector):
+        # A Vector of (word, TF weight)-items, copy as document vector.
+        elif isinstance(string, Vector) and string.weight == TF:
+            w = string
+            w = kwargs["dict"](w)
+            v = Vector(w)
+        # A Vector of (word, TF-IDF weight)-items, copy as document vector.
+        elif isinstance(string, Vector) and string.weight == TF-IDF:
             w = string
             w = kwargs["dict"](w) # XXX term count is lost.
             v = Vector(w)
@@ -316,20 +321,50 @@ class Document(object):
     @classmethod
     def load(Document, path):
         """ Returns a new Document from the given text file path.
-            The text file assumed to be generated with Document.save(), 
-            so no filtering and stemming will be carried out (=faster).
+            The given text file must be generated with Document.save().
         """
+        # Open unicode file.
         s = open(path, "rb").read()
         s = s.lstrip(codecs.BOM_UTF8)
-        return Document(s, name=filename(path), stemmer=None, punctuation="", filter=lambda w:True, threshold=0)
+        s = decode_utf8(s)
+        a = {}
+        v = {}
+        # Parse document name and type.
+        # Parse document terms and frequency.
+        for s in s.splitlines():
+            if s.startswith("#"): # comment
+                pass
+            elif s.startswith("@name:"):
+                a["name"] = s[len("@name:")+1:].replace("\\n", "\n")
+            elif s.startswith("@type:"):
+                a["type"] = s[len("@type:")+1:].replace("\\n", "\n")
+            else:
+                s = s.split(" ")
+                w, f = " ".join(s[:-1]), s[-1]
+                if f.isdigit():
+                    v[w] = int(f)
+                else:
+                    v[w] = float(f)
+        return Document(v, name=a.get("name"), type=a.get("type"))
     
     def save(self, path):
-        """ Saves the terms in the document as a space-separated text file at the given path.
+        """ Saves the terms in the document as a text file at the given path.
             The advantage is that terms no longer need to be filtered or stemmed in Document.load().
         """
-        s = [[w]*n for w, n in self.terms.items()]
-        s = [" ".join(w) for w in s]
-        s = encode_utf8(" ".join(s))
+        s = []
+        # Parse document name and type.
+        for k, v in (("@name:", self.name), ("@type:", self.type)):
+            if v is not None:
+                s.append("%s %s" % (k, v.replace("\n", "\\n")))
+        # Parse document terms and frequency.
+        for w, f in sorted(self.terms.items()):
+            if isinstance(f, int):
+                s.append("%s %i" % (w, f))
+            if isinstance(f, float):
+                s.append("%s %.3f" % (w, f))
+        s = "\n".join(s)
+        s = encode_utf8(s)
+        # Save unicode file.
         f = open(path, "wb")
         f.write(codecs.BOM_UTF8)
         f.write(s)
@@ -1036,7 +1071,8 @@ class LSA:
         if type(k).__name__ == "function":
             k = int(k(sigma))
         #print numpy.dot(u, numpy.dot(numpy.diag(sigma), vt))
-        # Apply dimension reduction.   
+        # Apply dimension reduction.
+        # The maximum length of a concept vector = the number of documents.
         assert k < len(corpus.documents), \
             "can't delete more dimensions than there are documents"
         tail = lambda list, i: range(len(list)-i, len(list))
@@ -1127,7 +1163,7 @@ def features(vectors):
 def mean(iterator, length):
     """ Returns the arithmetic mean of the values in the given iterator.
     """
-    return sum(iterator) / (length or 1)
+    return sum(iterator) / float(length or 1)
 
 def centroid(vectors, keys=[]):
     """ Returns the center of the list of vectors
@@ -1145,7 +1181,7 @@ def distance(v1, v2, method=COSINE):
     """ Returns the distance between two vectors.
     """
     if method == COSINE:
-        return 1 - sum(v1.get(w,0) * f for w, f in v2.iteritems()) / (v1.norm * v2.norm or 1)
+        return 1 - sum(v1.get(w,0) * f for w, f in v2.iteritems()) / (v1.norm * v2.norm or 1.0)
     if method == EUCLIDEAN: # Squared distance is 1.5x faster.
         return sum((v1.get(w,0) - v2.get(w,0))**2 for w in set(chain(v1, v2)))
     if method == MANHATTAN:
@@ -1406,12 +1442,12 @@ class Classifier:
             if document.corpus and document.corpus.lsa:
                 return type, document.corpus.lsa[document.id] # LSA concept vector.
             return type, document.vector
-        if isinstance(document, (list, tuple)):
-            return type, Vector.fromkeys(document, 1.0)
         if isinstance(document, dict):
             return type, Vector(document)
+        if isinstance(document, (list, tuple)):
+            return type, Document(document, stopwords=True).vector
         if isinstance(document, basestring):
-            return type, Vector(count(words(document), stemmer=None, stopwords=True))
+            return type, Document(document, stopwords=True).vector
     
     @classmethod
     def test(self, corpus=[], d=0.65, folds=1, **kwargs):
@@ -1480,40 +1516,6 @@ class Classifier:
     @classmethod
     def load(self, path):
         return cPickle.load(open(path))
-
-#--- ENSEMBLE ----------------------------------------------------------------------------------------
-
-class Ensemble:
-    
-    def __init__(self, classifiers=[]):
-        """ An ensemble of (trained) classifiers that use a majority vote to classify documents.
-        """
-        self.classifiers = classifiers
-    
-    @property
-    def features(self):
-        return list(set(chain(*(classifier.features for classifier in self.classifiers))))
-        
-    @property
-    def classes(self):
-        return list(set(chain(*(classifier.classes for classifier in self.classifiers))))
-        
-    def train(self, document, type=None):
-        """ Trains all classifiers in the ensemble with the given document.
-        """
-        for classifier in self.classifiers:
-            classifier.train(document, type)
-            
-    def classify(self, document):
-        """ Returns the type with the majority vote of all classifiers.
-        """
-        classes = {}
-        for classifier in self.classifiers:
-            type = classifier.classify(document)
-            classes.setdefault(type, 0)
-            classes[type] += 1
-        # Pick random winner if several candidates have equal highest score.
-        return choice([k for k, v in classes.iteritems() if v == max(classes.values())])
 
 #--- NAIVE BAYES CLASSIFIER --------------------------------------------------------------------------
 # Based on: Magnus Lie Hetland, http://hetland.org/coding/python/nbayes.py
@@ -1591,11 +1593,19 @@ Bayes = NaiveBayes
 # - Put the shared library (i.e., "libsvm.dll", "libsvm.so") in pattern/vector/svm/.
 # - If the shared library is named "libsvm.so.2", strip the ".2".
 
-# SVM classification (SVC, NU_SVC) or regression (SVR, NU_SVR).
-SVC, SVR, NU_SVC, NU_SVR, ONE_CLASS = 0, 3, 1, 4, 2
+# SVM type.
+SVC = CLASSIFICATION = 0
+SVR = REGRESSION     = 3
+SVO = DETECTION      = 2 # One-class SVM: X belongs to the class or not?
 
-# SVM kernel function.
-LINEAR, POLYNOMIAL, RADIAL, SIGMOID = 0, 1, 2, 3
+# SVM kernel functions.
+# The simplest way to divide two clusters is a straight line.
+# If the clusters are separated by a curved line,
+# separation may be easier in higher dimensions (using a kernel).
+
+LINEAR       = 0 # Straight line  => u' * v
+POLYNOMIAL   = 1 # Curved line    => (gamma * u' * v + coef0) ** degree
+RADIAL = RBF = 2 # Curved path    => exp(-gamma * |u-v| ** 2)
 
 class SVM(Classifier):
     
@@ -1604,20 +1614,24 @@ class SVM(Classifier):
             training documents are represented as points in an n-dimensional space.
             The SVM constructs a number of "hyperplanes" that subdivide the space.
             Optional parameters include:
-            type=SVC, kernel=RADIAL, degree=3, gamma=1/len(SVM.features), 
-            cost=1, nu=0.5, epsilon=0.01, cache=100, debug=False
+            type=CLASSIFICATION, kernel=LINEAR, 
+            degree=3, gamma=1/len(SVM.features), coeff0=0,
+            cost=1, epsilon=0.01, 
+            cache=100, debug=False
         """
         import svm
         self._libsvm  = svm
         self._vectors = []
         self._model = None
         for k, v in (
-            (   "type", SVC),
-            ( "kernel", RADIAL),
-            ( "degree", 3),
+            (   "type", CLASSIFICATION),
+            ( "kernel", LINEAR),
+            ( "degree", 1),
+            (  "gamma", 0),
+            ( "coeff0", 0),
             (   "cost", 1),
+            ("epsilon", 0.1),
             (     "nu", 0.5),
-            ("epsilon", 0.01),
             (  "cache", 100),
             (  "debug", False)): self.__dict__[k] = kwargs.get(k, v)
 
@@ -1630,38 +1644,44 @@ class SVM(Classifier):
         return list(features(v for type, v in self._vectors))
 
     def _libsvm_train(self):
-        """ Calls libsvm.svmutil.svm_train() to create a model.
+        """ Calls libsvm.svm_train() to create a model.
             Vector classes and features (i.e., words) are mapped to integers.
         """
-        M = [v for type, v in self._vectors]                   # List of vectors.
-        H = dict((w, i) for i, w in enumerate(features(M)))    # Feature => integer hash.
-        x = [dict((H[k], v) for k, v in v.items()) for v in M] # Hashed vectors.
-        y = range(len(M))                                      # Hashed classes.
-        o = "-s %s -t %s -d %s -c %s -n %s -e %s -m %s %s" % (
-            self.type, self.kernel, self.degree, self.cost, self.nu, self.epsilon, 
+        M  = [v for type, v in self._vectors]                    # List of vectors.
+        H1 = dict((w, i) for i, w in enumerate(self.features))   # Feature => integer hash.
+        H2 = dict((w, i) for i, w in enumerate(self.classes))    # Class => integer hash.
+        H3 = dict((i, w) for i, w in enumerate(self.classes))    # Class reversed hash.
+        x  = [dict((H1[k], v) for k, v in v.items()) for v in M] # Hashed vectors.
+        y  = [H2[type] for  type, v in self._vectors]            # Hashed classes.
+        o  = "-s %s -t %s -d %s -g %s -r %s -c %s -p %s -n %s -m %s %s" % (
+            self.type, self.kernel, self.degree, self.gamma, self.coeff0, self.cost, self.epsilon, self.nu,
             self.cache,
             self.debug is False and "-q" or ""
         )
         # Cache the model and the feature hash.
         # SVM.train() will remove the cached model (since it needs to be retrained).
-        self._model = (self._libsvm.svmutil.svm_train(y, x, o), H)
+        self._model = (self._libsvm.svm_train(y, x, o), H1, H2, H3)
   
     def _libsvm_predict(self, document):
-        """ Calls libsvm.svmutil.svm_predict() with the cached model.
+        """ Calls libsvm.svm_predict() with the cached model.
         """
         if self._model is None:
             return None
         if self.debug is False:
             # Redirect stdout to a file stream.
             so, sys.stdout = sys.stdout, StringIO()
-        M = self._model[0]
-        H = self._model[1]
-        v = self._vector(document)[1]
-        v = dict((H.get(k, -i), v) for i, (k,v) in enumerate(v.items()))
-        p = self._libsvm.svmutil.svm_predict([0], [v], M)
+        M  = self._model[0]
+        H1 = self._model[1]
+        H2 = self._model[2]
+        H3 = self._model[3]
+        v  = self._vector(document)[1]
+        v  = dict((H1.get(k, len(H1)+i), v) for i, (k,v) in enumerate(v.items()))
+        p  = self._libsvm.svm_predict([0], [v], M)
         if self.debug is False:
             sys.stdout = so
-        return self._vectors[int(p[0][0])][0]
+        if M.get_svm_type() == DETECTION:
+            return p[0][0] > 0 # -1 = outlier => return False
+        return H3.get(int(p[0][0]))
         
     def train(self, document, type=None):
         """ Trains the classifier with the given document of the given type (i.e., class).
@@ -1684,6 +1704,19 @@ class SVM(Classifier):
             if self._model: self._model.__del__()
         except:
             pass
+            
+    def save(self, path):
+        self._libsvm = None
+        self._model  = None # Retrains after Classifier.load().
+        Classifier.save(self, path)
+        
+    @classmethod
+    def load(self, path):
+        import svm
+        classifier = cPickle.load(open(path))
+        classifier._libsvm = svm
+        classifier._libsvm_train()
+        return classifier
 
 #--- K-NEAREST NEIGHBOR CLASSIFIER -------------------------------------------------------------------
 
@@ -1764,6 +1797,7 @@ class KDTree:
         """ A partitioned vector space that is (sometimes) faster for nearest neighbor search.
             A k-d tree is an extension of a binary tree for k-dimensional data,
             where every vector generates a hyperplane that splits the space into two subspaces.
+            The given list can contain Document or Vector objects.stu
         """
         class Node:
             def __init__(self, vector, left, right, axis):
@@ -1829,7 +1863,7 @@ class KDTree:
             if _distance(KDTree._v1, KDTree._v2, method=distance) <= best[-1][0]:
                 best = search(far, vector, k, best)
             return best
-                
+            
         n = search(self.root, self._vector(vector), k+1)
         n = [(d, self.map.get(v.id, v)) for d, v in n]
         n = [(d, v) for d, v in n if v != vector][:k]
