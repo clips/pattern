@@ -1,9 +1,23 @@
 # -*- coding: utf-8 -*-
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
+import time
 import unittest
 
 from pattern import vector
+
 from pattern.en import Text, Sentence, Word, parse
+from pattern.db import Datasheet
+
+def corpus(top=None):
+    """ Returns a Corpus of e-mail messages.
+        Document type=True => HAM, False => SPAM.
+        Documents are mostly of a technical nature (developer forum posts).
+    """
+    documents = []
+    for score, message in Datasheet.load("corpora/ham+spam.csv"):
+        document = vector.Document(message, stemmer="porter", top=top, type=int(score) > 0)
+        documents.append(document)
+    return vector.Corpus(documents)
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -24,13 +38,13 @@ class TestUnicode(unittest.TestCase):
         # Assert unicode.
         for s in self.strings:
             self.assertTrue(isinstance(vector.decode_utf8(s), unicode))
-        print "pattern.web.decode_utf8()"
+        print "pattern.vector.decode_utf8()"
 
     def test_encode_utf8(self):
         # Assert Python bytestring.
         for s in self.strings:
             self.assertTrue(isinstance(vector.encode_utf8(s), str))
-        print "pattern.web.encode_utf8()"
+        print "pattern.vector.encode_utf8()"
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -171,7 +185,16 @@ class TestStemmer(unittest.TestCase):
 class TestDocument(unittest.TestCase):
     
     def setUp(self):
-        pass
+        # Test files for loading and saving documents.
+        self.path1 = "test_document1.txt"
+        self.path2 = "test_document2.txt"
+        open(self.path1, "w").write("The cats sat on the mat.")
+        
+    def tearDown(self):
+        if os.path.exists(self.path1):
+            os.remove(self.path1)
+        if os.path.exists(self.path2):
+            os.remove(self.path2)
     
     def test_stopwords(self):
         # Assert common stop words.
@@ -236,14 +259,15 @@ class TestDocument(unittest.TestCase):
     def test_document(self):
         # Assert Document properties.
         # Test with different input types.
-        for w in (
-          "The cats sat on the mat.",
-          ["The", "cats", "sat", "on", "the", "mat"],
-          {"cat":1, "sat":1, "mat":1},
-          Text(parse("The cats sat on the mat.")),
-          Sentence(parse("The cats sat on the mat."))):
+        for constructor, w in (
+          (vector.Document, "The cats sat on the mat."),
+          (vector.Document, ["The", "cats", "sat", "on", "the", "mat"]),
+          (vector.Document, {"cat":1, "sat":1, "mat":1}),
+          (vector.Document, Text(parse("The cats sat on the mat."))),
+          (vector.Document, Sentence(parse("The cats sat on the mat."))),
+          (vector.Document.open, self.path1)):
             # Test copy.
-            v = vector.Document(w, stemmer=vector.LEMMA, stopwords=False, name="Cat", type="CAT")
+            v = constructor(w, stemmer=vector.LEMMA, stopwords=False, name="Cat", type="CAT")
             v = v.copy()
             # Test properties.
             self.assertEqual(v.name, "Cat")
@@ -257,7 +281,19 @@ class TestDocument(unittest.TestCase):
             self.assertEqual(v["cat"], 1)
             self.assertEqual("cat" in v, True)
         print "pattern.vector.Document"
-        
+    
+    def test_document_load(self):
+        # Assert save + load document integrity.
+        v1 = "The cats are purring on the mat."
+        v1 = vector.Document(v1, stemmer=vector.PORTER, stopwords=True, name="Cat", type="CAT")
+        v1.save(self.path2)
+        v2 = vector.Document.load(self.path2)
+        self.assertEqual(v1.name,   v2.name)
+        self.assertEqual(v1.type,   v2.type)
+        self.assertEqual(v1.vector, v2.vector)
+        print "pattern.vector.Document.save()"
+        print "pattern.vector.Document.load()"
+    
     def test_document_vector(self):
         # Assert Vector properties.
         # Test copy.
@@ -279,9 +315,11 @@ class TestDocument(unittest.TestCase):
         self.assertAlmostEqual(v["cat"], 1.00, places=2)
         self.assertAlmostEqual(v["sat"], 1.00, places=2)
         self.assertAlmostEqual(v["mat"], 1.00, places=2)
+        # Test WeightError (when trying to combine TF and TFIDF vectors).
+        self.assertRaises(vector.WeightError, v, vector.Vector(weight=vector.TFIDF))
         print "pattern.vector.Document.vector"
 
-    def test_keywords(self):
+    def test_document_keywords(self):
         # Assert Document.keywords() based on term frequency.
         v = vector.Document(["cat", "cat", "cat", "sat", "sat", "mat"]).keywords(top=2)
         self.assertEqual(len(v), 2)
@@ -318,12 +356,343 @@ class TestDocument(unittest.TestCase):
 
 #-----------------------------------------------------------------------------------------------------
 
+class TestApriori(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+        
+    def test_apriori(self):
+        # Assert frequent sets frequency.
+        v = vector.apriori((
+            [1, 2, 4],
+            [1, 2, 5],
+            [1, 3, 6],
+            [1, 3, 7]
+        ), support=0.5)
+        self.assertTrue(len(v), 3)
+        self.assertEqual(v[frozenset((1, ))], 1.0)
+        self.assertEqual(v[frozenset((1,2))], 0.5)
+        self.assertEqual(v[frozenset((2, ))], 0.5)
+        self.assertEqual(v[frozenset((3, ))], 0.5)
+
+#-----------------------------------------------------------------------------------------------------
+
+class TestLSA(unittest.TestCase):
+    
+    corpus = None
+    
+    def setUp(self):
+        # Test spam corpus for reduction.
+        if self.__class__.corpus is None:
+            self.__class__.corpus = corpus(top=250)
+        self.corpus = self.__class__.corpus
+    
+    def test_lsa(self):
+        try:
+            import numpy
+        except ImportError, e:
+            print e
+            return
+        # Assert LSA properties.
+        k = 100
+        lsa = vector.LSA(self.corpus, k)
+        self.assertEqual(lsa.corpus, self.corpus)
+        self.assertEqual(lsa.vectors, lsa.u)
+        self.assertEqual(set(lsa.terms), set(self.corpus.vector.keys()))
+        self.assertTrue(isinstance(lsa.u,     dict))
+        self.assertTrue(isinstance(lsa.sigma, list))
+        self.assertTrue(isinstance(lsa.vt,    list))
+        self.assertTrue(len(lsa.u),     len(self.corpus))
+        self.assertTrue(len(lsa.sigma), len(self.corpus)-k)
+        self.assertTrue(len(lsa.vt),    len(self.corpus)-k)
+        for document in self.corpus:
+            v = lsa.vectors[document.id]
+            self.assertTrue(isinstance(v, vector.Vector))
+            self.assertTrue(len(v) == len(self.corpus)-k)
+        print "pattern.vector.LSA"
+        
+    def test_lsa_concepts(self):
+        try:
+            import numpy
+        except ImportError:
+            return
+        # Assert LSA concept space.
+        corpus = vector.Corpus((
+            vector.Document("cats purr"),
+            vector.Document("cats meow"),
+            vector.Document("dogs howl"),
+            vector.Document("dogs bark")
+        ))
+        corpus.reduce(2)
+        for concept in corpus.lsa.concepts:
+            # Intuitively, we'd expect two concepts:
+            # 1) with cats + purr + meow grouped together,
+            # 2) with dogs + howl + bark grouped together.
+            self.assertTrue(isinstance(concept, dict))
+            if concept["cats"] > 0.5:
+                self.assertTrue(concept["purr"] > 0.5)
+                self.assertTrue(concept["meow"] > 0.5)
+                self.assertTrue(concept["howl"] < 0.01)
+                self.assertTrue(concept["bark"] < 0.01)
+            if concept["dogs"] > 0.5:
+                self.assertTrue(concept["howl"] > 0.5)
+                self.assertTrue(concept["bark"] > 0.5)
+                self.assertTrue(concept["purr"] < 0.01)
+                self.assertTrue(concept["meow"] < 0.01)
+        print "pattern.vector.LSA.concepts"
+    
+    def test_corpus_reduce(self):
+        try:
+            import numpy
+        except ImportError:
+            return
+        # Test time and accuracy of corpus with sparse vectors of maximum 250 features.
+        t1 = time.time()
+        A1, P1, R1, F1 = vector.KNN().test(self.corpus, folds=10)
+        t1 = time.time() - t1
+        # Test time and accuracy of corpus with reduced vectors of 20 features.
+        self.corpus.reduce(dimensions=230)
+        t2 = time.time()
+        A2, P2, R2, F2 = vector.KNN().test(self.corpus, folds=10)
+        t2 = time.time() - t2
+        self.assertTrue(len(self.corpus.lsa[self.corpus.documents[0].id]) == 20)
+        self.assertTrue(t2 * 2 < t1)        # KNN over 2x faster.
+        self.assertTrue(abs(F1-F2) < 0.1) # Difference in F-score = 1-6%.
+        self.corpus.lsa = None
+        print "pattern.vector.Corpus.reduce()"
+          
+#-----------------------------------------------------------------------------------------------------
+
+class TestClustering(unittest.TestCase):
+    
+    corpus = None
+    
+    def setUp(self):
+        # Test spam corpus for clustering.
+        if self.__class__.corpus is None:
+            self.__class__.corpus = corpus(top=10)
+        self.corpus = self.__class__.corpus
+        
+    def test_features(self):
+        # Assert unique list of vector keys.
+        v = vector.features(vectors=[{"cat":1}, {"dog":1}])
+        self.assertEqual(sorted(v), ["cat", "dog"])
+        print "pattern.vector.features()"
+    
+    def test_mean(self):
+        # Assert iterator mean.
+        self.assertEqual(vector.mean([], 0), 0)
+        self.assertEqual(vector.mean([1,1.5,2], 3), 1.5)
+        self.assertEqual(vector.mean(xrange(4), 4), 1.5)
+        print "pattern.vector.mean()"
+        
+    def test_centroid(self):
+        # Assert center of list of vectors.
+        v = vector.centroid([{"cat":1}, {"cat":0.5, "dog":1}], keys=["cat", "dog"])
+        self.assertEqual(v, {"cat":0.75, "dog":0.5})
+        print "pattern.vector.centroid()"
+        
+    def test_distance(self):
+        # Assert distance metrics.
+        v1 = vector.Vector({"cat":1})
+        v2 = vector.Vector({"cat":0.5, "dog":1})
+        for d, method in (
+          (0.55, vector.COSINE),    # 1 - ((1*0.5 + 0*1) / (sqrt(1**2 + 0**2) * sqrt(0.5**2 + 1**2)))
+          (1.25, vector.EUCLIDEAN), # (1-0.5)**2 + (0-1)**2
+          (1.50, vector.MANHATTAN), # abs(1-0.5) + abs(0-1)
+          (1.00, vector.HAMMING),   # (True + True) / 2
+          (1.11, lambda v1, v2: 1.11)):
+            self.assertAlmostEqual(vector.distance(v1, v2, method), d, places=2)
+        print "pattern.vector.distance()"
+        
+    def test_distancemap(self):
+        # Assert distance caching mechanism.
+        v1 = vector.Vector({"cat":1})
+        v2 = vector.Vector({"cat":0.5, "dog":1})
+        m  = vector.DistanceMap(method=vector.COSINE)
+        for i in range(100):
+            self.assertAlmostEqual(m.distance(v1, v2), 0.55, places=2)
+            self.assertAlmostEqual(m._cache[(v1.id, v2.id)], 0.55, places=2)
+        print "pattern.vector.DistanceMap"
+        
+    def _test_k_means(self, seed):
+        # Assert k-means clustering accuracy.
+        A = []
+        n = 100
+        m = dict((d.vector.id, d.type) for d in self.corpus[:n])
+        for i in range(30):
+            # Create two clusters of vectors.
+            k = vector.kmeans([d.vector for d in self.corpus[:n]], k=2, seed=seed)
+            # Measure the number of spam in each clusters.
+            # Ideally, we have a cluster without spam and one with only spam.
+            i = len([1 for v in k[0] if m[v.id] == False])
+            j = len([1 for v in k[1] if m[v.id] == False])
+            A.append(max(i,j) * 2.0 / n)
+        # Return average accuracy after 10 tests.
+        return sum(A) / 30.0
+    
+    def test_k_means_random(self):
+        # Assert k-means with random initialization.
+        v = self._test_k_means(seed=vector.RANDOM)
+        self.assertTrue(v >= 0.5)
+        print "pattern.vector.kmeans(seed=RANDOM)"
+        
+    def test_k_means_kmpp(self):
+        # Assert k-means with k-means++ initialization.
+        # Note: vectors contain the top 10 features - see setUp().
+        # If you include more features (more noise?) accuracy and performance will drop.
+        v = self._test_k_means(seed=vector.KMPP)
+        self.assertTrue(v >= 0.7)
+        print "pattern.vector.kmeans(seed=KMPP)"
+    
+    def test_hierarchical(self):
+        # Assert cluster contains nested clusters and/or vectors.
+        def _test_cluster(cluster):
+            for nested in cluster:
+                if isinstance(nested, vector.Cluster):
+                    v1 = set((v.id for v in nested.flatten()))
+                    v2 = set((v.id for v in cluster.flatten()))
+                    self.assertTrue(nested.depth < cluster.depth)
+                    self.assertTrue(v1.issubset(v2))
+                else:
+                    self.assertTrue(isinstance(nested, vector.Vector))
+            self.assertTrue(isinstance(cluster, list))
+            self.assertTrue(isinstance(cluster.depth, int))
+            self.assertTrue(isinstance(cluster.flatten(), list))
+        n = 50
+        m = dict((d.vector.id, d.type) for d in self.corpus[:n])
+        h = vector.hierarchical([d.vector for d in self.corpus[:n]], k=2)
+        h.traverse(_test_cluster)
+        # Assert the accuracy of hierarchical clustering (shallow test).
+        # Assert that cats are separated from dogs.
+        v = (
+            vector.Vector({"feline":1, " lion":1,   "mane":1}),
+            vector.Vector({"feline":1, "tiger":1, "stripe":1}),
+            vector.Vector({"canine":1,  "wolf":1,   "howl":1}),
+            vector.Vector({"canine":1,   "dog":1,   "bark":1})
+        )
+        h = vector.hierarchical(v)
+        self.assertTrue(len(h[0][0]) == 2)
+        self.assertTrue(len(h[0][1]) == 2)
+        self.assertTrue(v[0] in h[0][0] and v[1] in h[0][0] or v[0] in h[0][1] and v[1] in h[0][1])
+        self.assertTrue(v[2] in h[0][0] and v[3] in h[0][0] or v[2] in h[0][1] and v[3] in h[0][1])
+        print "pattern.vector.Cluster()"
+        print "pattern.vector.hierarchical()"        
+    
+#-----------------------------------------------------------------------------------------------------
+
+class TestClassifier(unittest.TestCase):
+    
+    corpus = None
+    
+    def setUp(self):
+        # Test corpus for training classifiers.
+        if self.__class__.corpus is None:
+            self.__class__.corpus = corpus()
+        self.corpus = self.__class__.corpus
+
+    def _test_classifier(self, Classifier, **kwargs):
+        # Assert classifier training + prediction for trivial cases.
+        v = Classifier(**kwargs)
+        for document in self.corpus:
+            v.train(document)
+        for type, message in (
+          (False, "win money"),
+          (False, "buy viagra"),
+          ( True, "fix bug"),
+          ( True, "loop array")):
+            self.assertEqual(v.classify(message), type)
+        # Assert classifier properties.
+        self.assertEqual(v.binary, True)
+        self.assertEqual(sorted(v.classes), [False, True])
+        self.assertTrue(isinstance(v.features, list))
+        self.assertTrue("postgresql" in v.features)
+        # Assert saving + loading.
+        v.save(Classifier.__name__)
+        v = Classifier.load(Classifier.__name__)
+        self.assertEqual(v.classify("win money"), False)
+        self.assertEqual(v.classify("fix bug"),   True)
+        os.remove(Classifier.__name__)
+        # Assert untrained classifier returns None.
+        v = Classifier(**kwargs)
+        self.assertEqual(v.classify("herring"), None)
+        print "pattern.vector.%s.train()"    % Classifier.__name__
+        print "pattern.vector.%s.classify()" % Classifier.__name__
+        print "pattern.vector.%s.save()"     % Classifier.__name__
+    
+    def test_classifier_vector(self):
+        # Assert Classifier._vector() (translates input from train() and classify() to a Vector).
+        v = vector.Classifier()._vector
+        self.assertEqual(("cat", {"cat":0.5, "purs":0.5}), v(vector.Document("the cat purs", type="cat")))
+        self.assertEqual(("cat", {"cat":0.5, "purs":0.5}), v({"cat":0.5, "purs":0.5}, type="cat"))
+        self.assertEqual(("cat", {"cat":0.5, "purs":0.5}), v(["cat", "purs"], type="cat"))
+        self.assertEqual(("cat", {"cat":0.5, "purs":0.5}), v("cat purs", type="cat"))
+        print "pattern.Classifier._vector()"
+    
+    def test_bayes(self):
+        # Assert Bayesian probability classification.
+        self._test_classifier(vector.Bayes, aligned=False)
+        # Assert the accuracy of the classifier.
+        A, P, R, F = vector.Bayes.test(self.corpus, folds=10, aligned=False)
+        self.assertTrue(A > 0.70)
+        self.assertTrue(P > 0.60)
+        self.assertTrue(R > 0.95)
+        self.assertTrue(F > 0.75)
+    
+    def test_knn(self):
+        # Assert nearest-neighbor classification.
+        self._test_classifier(vector.KNN, k=10, distance=vector.COSINE)
+        # Assert the accuracy of the classifier.
+        A, P, R, F = vector.KNN.test(self.corpus, folds=10, k=3, distance=vector.COSINE)
+        self.assertTrue(A >= 0.90)
+        self.assertTrue(P >= 0.95)
+        self.assertTrue(R >= 0.85)
+        self.assertTrue(F >= 0.90)
+        
+    def test_svm(self):
+        try:
+            from pattern.vector import svm
+        except ImportError, e:
+            print e
+            return
+        # Assert support vector classification.
+        self._test_classifier(vector.SVM, type=vector.SVC, kernel=vector.LINEAR)
+        # Assert the accuracy of the classifier.
+        A, P, R, F = vector.SVM.test(self.corpus, folds=10, type=vector.SVC, kernel=vector.LINEAR)
+        self.assertTrue(A >= 0.90)
+        self.assertTrue(P >= 0.90)
+        self.assertTrue(R >= 0.90)
+        self.assertTrue(F >= 0.90)
+
+    def test_kd_tree(self):
+        # Assert KDTree nearest neighbor search.
+        v = [
+            {"cat": 0, "hat":0},
+            {"cat": 0, "hat":1},
+            {"cat": 1, "hat":1},
+            {"cat": 1, "hat":0}
+        ]
+        v = [vector.Vector(v) for v in v]
+        v = vector.KDTree(v).nearest_neighbors
+        self.assertEqual(v(vector.Vector({"cat":1}))[0][1], {"cat": 1, "hat": 0})
+        self.assertEqual(v(vector.Vector({"cat":1}))[1][1], {"cat": 1, "hat": 1})
+        self.assertEqual(v(vector.Vector({"hat":1}))[0][1], {"cat": 0, "hat": 1})
+        self.assertEqual(v(vector.Vector({"hat":1}))[1][1], {"cat": 1, "hat": 1})
+        self.assertEqual(v(vector.Vector({"dog":1}))[0][0], 1.0)
+        print "pattern.vector.KDTree.nearest_neighbors()"
+
+#-----------------------------------------------------------------------------------------------------
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUtilityFunctions))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestStemmer))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDocument))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestApriori))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLSA))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestClustering))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestClassifier))
     return suite
 
 if __name__ == "__main__":
