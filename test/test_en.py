@@ -39,7 +39,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the pluralization algorithm.
         from pattern.db import Datasheet
         i, n = 0, 0
-        for sg, pl in Datasheet.load(os.path.join("corpora", "celex-wordforms.txt")):
+        for sg, pl in Datasheet.load(os.path.join("corpora", "celex-wordforms.csv")):
             if en.pluralize(sg) == pl:
                 i +=1
             n += 1
@@ -50,7 +50,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the singularization algorithm.
         from pattern.db import Datasheet
         i, n = 0, 0
-        for sg, pl in Datasheet.load(os.path.join("corpora", "celex-wordforms.txt")):
+        for sg, pl in Datasheet.load(os.path.join("corpora", "celex-wordforms.csv")):
             if en.singularize(pl) == sg:
                 i +=1
             n += 1
@@ -687,7 +687,7 @@ class TestModality(unittest.TestCase):
         from pattern.db import Datasheet
         from pattern.metrics import test
         sentences = []
-        for certain, sentence in Datasheet.load(os.path.join("corpora", "conll2010-uncertainty.txt")):
+        for certain, sentence in Datasheet.load(os.path.join("corpora", "conll2010-uncertainty.csv")):
             sentence = en.parse(sentence, chunks=False, light=True)
             sentence = en.Sentence(sentence)
             sentences.append((sentence, int(certain) > 0))
@@ -730,7 +730,7 @@ class TestSentiment(unittest.TestCase):
         from pattern.db import Datasheet
         from pattern.metrics import test
         reviews = []
-        for score, review in Datasheet.load(os.path.join("corpora", "pang&lee-polarity.txt")):
+        for score, review in Datasheet.load(os.path.join("corpora", "pang&lee-polarity.csv")):
             reviews.append((review, int(score) > 0))
         A, P, R, F = test(lambda review: en.positive(review), reviews)
         self.assertTrue(A > 0.71)

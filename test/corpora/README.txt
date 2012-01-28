@@ -20,7 +20,12 @@ The corpora are meant for personal use, they are not part of the module's BSD li
 - http://www.inf.u-szeged.hu/rgai/conll2010st/tasks.html#task1
 - 1500 "certain" and 1500 "uncertain" Wikipedia sentences.
 
-4) Pang & Lee's polarity dataset v2.0
+4) SpamAssassin public mail corpus
+- ham+spam.txt
+- http://spamassassin.apache.org/publiccorpus/
+- 125 "spam" and 125 (mostly technical) "ham" messages.
+
+5) Pang & Lee's polarity dataset v2.0
 - pang&lee-polarity.txt
 - http://www.cs.cornell.edu/people/pabo/movie-review-data/
 - 750 "positive" and 750 "negative" movie reviews.
