@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 import time
+import random
+import codecs
 import unittest
 
 from pattern import vector
@@ -315,8 +317,6 @@ class TestDocument(unittest.TestCase):
         self.assertAlmostEqual(v["cat"], 1.00, places=2)
         self.assertAlmostEqual(v["sat"], 1.00, places=2)
         self.assertAlmostEqual(v["mat"], 1.00, places=2)
-        # Test WeightError (when trying to combine TF and TFIDF vectors).
-        self.assertRaises(vector.WeightError, v, vector.Vector(weight=vector.TFIDF))
         print "pattern.vector.Document.vector"
 
     def test_document_keywords(self):
@@ -356,6 +356,217 @@ class TestDocument(unittest.TestCase):
 
 #-----------------------------------------------------------------------------------------------------
 
+class TestCorpus(unittest.TestCase):
+    
+    def setUp(self):
+        # Test corpus.
+        self.corpus = vector.Corpus(documents=(
+            vector.Document("cats purr", name="cat1", type=u"cåt"),
+            vector.Document("cats meow", name="cat2", type=u"cåt"),
+            vector.Document("dogs howl", name="dog1", type=u"døg"),
+            vector.Document("dogs bark", name="dog2", type=u"døg")
+        ))
+        
+    def test_corpus(self):
+        # Assert Corpus properties.
+        v = self.corpus
+        self.assertEqual(list(v), v.documents)
+        self.assertEqual(len(v), 4)
+        self.assertEqual(sorted(v.terms), ["bark", "cats", "dogs", "howl", "meow", "purr"])
+        self.assertEqual(sorted(v.terms), sorted(v.vector.keys()))
+        self.assertEqual(v.weight, vector.TFIDF)
+        self.assertEqual(v.lsa, None)
+        self.assertEqual(v.vectors, [d.vector for d in v.documents])
+        self.assertAlmostEqual(v.density, 0.22, places=2)
+        print "pattern.vector.Corpus"
+        
+    def test_corpus_append(self):
+        # Assert Corpus.append().
+        self.assertRaises(vector.ReadOnlyError, self.corpus.documents.append, None)
+        self.corpus.append(vector.Document("birds chirp", name="bird"))
+        self.assertEqual(self.corpus[0]._vector, None)
+        self.assertEqual(len(self.corpus), 5)
+        self.corpus.remove(self.corpus.document("bird"))
+        print "pattern.vector.Corpus.append()"
+        
+    def test_corpus_save(self):
+        # Assert Corpus save & load.
+        self.corpus.save("test_corpus.pickle", update=True)
+        self.corpus._update()
+        corpus = vector.Corpus.load("test_corpus.pickle")
+        # Assert that the precious cache is saved and reloaded.
+        self.assertTrue(len(corpus._df) > 0)
+        self.assertTrue(len(corpus._similarity) > 0)
+        self.assertTrue(len(corpus.vectors) > 0)
+        os.remove("test_corpus.pickle")
+        print "pattern.vector.Corpus.save()"
+        print "pattern.vector.Corpus.load()"
+    
+    def test_corpus_export(self):
+        # Assert Orange and Weka ARFF export formats.
+        for format, src in (
+            (vector.ORANGE, 
+                u"bark\tcats\tdogs\thowl\tmeow\tpurr\tm#name\tc#type\n"
+                u"0\t0.3466\t0\t0\t0\t0.6931\tcat1\tcåt\n"
+                u"0\t0.3466\t0\t0\t0.6931\t0\tcat2\tcåt\n"
+                u"0\t0\t0.3466\t0.6931\t0\t0\tdog1\tdøg\n"
+                u"0.6931\t0\t0.3466\t0\t0\t0\tdog2\tdøg"),
+            (vector.WEKA,
+                u"@RELATION 5885744\n"
+                u"@ATTRIBUTE bark NUMERIC\n"
+                u"@ATTRIBUTE cats NUMERIC\n"
+                u"@ATTRIBUTE dogs NUMERIC\n"
+                u"@ATTRIBUTE howl NUMERIC\n"
+                u"@ATTRIBUTE meow NUMERIC\n"
+                u"@ATTRIBUTE purr NUMERIC\n"
+                u"@ATTRIBUTE class {døg,cåt}\n"
+                u"@DATA\n0,0.3466,0,0,0,0.6931,cåt\n"
+                u"0,0.3466,0,0,0.6931,0,cåt\n"
+                u"0,0,0.3466,0.6931,0,0,døg\n"
+                u"0.6931,0,0.3466,0,0,0,døg")):
+            self.corpus.export("test_%s.txt" % format, format=format)
+            v = codecs.open("test_%s.txt" % format, encoding="utf-8").read()
+            v = v.replace("\r\n", "\n")
+            for line in src.split("\n"):
+                self.assertTrue(line in src)
+            os.remove("test_%s.txt" % format)
+        print "pattern.vector.Corpus.export()"
+        
+    def test_df(self):
+        # Assert document frequency: "cats" appears in 1/2 documents,"purr" in 1/4.
+        self.assertEqual(self.corpus.df("cats"), 0.50)
+        self.assertEqual(self.corpus.df("purr"), 0.25)
+        self.assertEqual(self.corpus.df("????"), 0.00)
+        print "pattern.vector.Corpus.df()"
+    
+    def test_idf(self):
+        # Assert inverse document frequency: log(1/df).
+        self.assertAlmostEqual(self.corpus.idf("cats"), 0.69, places=2)
+        self.assertAlmostEqual(self.corpus.idf("purr"), 1.39, places=2)
+        self.assertEqual(      self.corpus.idf("????"), None)
+        print "pattern.vector.Corpus.idf()"
+        
+    def test_tfidf(self):
+        # Assert term frequency - inverse document frequency: tf * idf.
+        self.assertAlmostEqual(self.corpus[0].tfidf("cats"), 0.35, places=2) # 0.50 * 0.69
+        self.assertAlmostEqual(self.corpus[0].tfidf("purr"), 0.69, places=2) # 0.50 * 1.39
+        self.assertAlmostEqual(self.corpus[0].tfidf("????"), 0.00, places=2)
+        print "pattern.vector.Document.tfidf()"
+        
+    def test_frequent_concept_sets(self):
+        # Assert Apriori algorithm.
+        v = self.corpus.frequent(threshold=0.5)
+        self.assertEqual(sorted(v.keys()), [frozenset(["dogs"]), frozenset(["cats"])])
+        print "pattern.vector.Corpus.frequent()"
+        
+    def test_cosine_similarity(self):
+        # Assert document cosine similarity.
+        v1 = self.corpus.similarity(self.corpus[0], self.corpus[1])
+        v2 = self.corpus.similarity(self.corpus[0], self.corpus[2])
+        v3 = self.corpus.similarity(self.corpus[0], vector.Document("cats cats"))
+        self.assertAlmostEqual(v1, 0.20, places=2)
+        self.assertAlmostEqual(v2, 0.00, places=2)
+        self.assertAlmostEqual(v3, 0.45, places=2)
+        # Assert that Corpus.similarity() is aware of LSA reduction.
+        self.corpus.reduce(3)
+        v1 = self.corpus.similarity(self.corpus[0], self.corpus[1])
+        v2 = self.corpus.similarity(self.corpus[0], self.corpus[2])
+        self.assertAlmostEqual(v1, 1.00, places=2)
+        self.assertAlmostEqual(v2, 0.00, places=2)
+        self.corpus.lsa = None
+        print "pattern.vector.Corpus.similarity()"
+        
+    def test_nearest_neighbors(self):
+        # Assert document nearest-neighbor search.
+        v1 = self.corpus.neighbors(self.corpus[0])
+        v2 = self.corpus.neighbors(vector.Document("cats meow"))
+        v3 = self.corpus.neighbors(vector.Document("????"))
+        self.assertEqual(v1[0][1], self.corpus[1])
+        self.assertEqual(v2[0][1], self.corpus[1])
+        self.assertEqual(v2[1][1], self.corpus[0])
+        self.assertAlmostEqual(v1[0][0], 0.20, places=2)
+        self.assertAlmostEqual(v2[0][0], 0.95, places=2)
+        self.assertAlmostEqual(v2[1][0], 0.32, places=2)
+        self.assertTrue(len(v3) == 0)
+        print "pattern.vector.Corpus.neighbors()"
+        
+    def test_search(self):
+        # Assert document vector space search.
+        v1 = self.corpus.search(self.corpus[0])
+        v2 = self.corpus.search(vector.Document("cats meow"))
+        v3 = self.corpus.search(vector.Document("????"))
+        v4 = self.corpus.search("meow")
+        v5 = self.corpus.search(["cats", "meow"])
+        self.assertEqual(v1, self.corpus.neighbors(self.corpus[0]))
+        self.assertEqual(v2[0][1], self.corpus[1])
+        self.assertEqual(v3, [])
+        self.assertEqual(v4[0][1], self.corpus[1])
+        self.assertEqual(v5[0][1], self.corpus[1])
+        self.assertAlmostEqual(v4[0][0], 0.89, places=2)
+        self.assertAlmostEqual(v5[0][0], 1.00, places=2)
+        print "pattern.vector.Corpus.search()"
+    
+    def test_distance(self):
+        # Assert Corpus document distance.
+        v1 = self.corpus.distance(self.corpus[0], self.corpus[1], method=vector.COSINE)
+        v2 = self.corpus.distance(self.corpus[0], self.corpus[2], method=vector.COSINE)
+        v3 = self.corpus.distance(self.corpus[0], self.corpus[2], method=vector.EUCLIDEAN)
+        self.assertAlmostEqual(v1, 0.8, places=1)
+        self.assertAlmostEqual(v2, 1.0, places=1)
+        self.assertAlmostEqual(v3, 1.2, places=1)
+        print "pattern.vector.Corpus.distance()"
+    
+    def test_cluster(self):
+        # Assert Corpus document clustering.
+        v1 = self.corpus.cluster(method=vector.KMEANS, k=10)
+        v2 = self.corpus.cluster(method=vector.HIERARCHICAL, k=1)
+        self.assertTrue(isinstance(v1, list) and len(v1) == 10)
+        self.assertTrue(isinstance(v2, vector.Cluster))
+        def _test_clustered_documents(cluster):
+            if self.corpus[0] in cluster:
+                self.assertTrue(self.corpus[1] in cluster \
+                        and not self.corpus[2] in cluster)
+            if self.corpus[2] in cluster:
+                self.assertTrue(self.corpus[3] in cluster \
+                        and not self.corpus[1] in cluster)
+        v2.traverse(_test_clustered_documents)
+        print "pattern.vector.Corpus.cluster()"
+    
+    def test_lsa(self):
+        # Assert Corpus.reduce() LSA reduction.
+        try:
+            import numpy
+        except ImportError, e:
+            return
+        self.corpus.reduce(2)
+        self.assertTrue(isinstance(self.corpus.lsa, vector.LSA))
+        self.corpus.lsa = None
+        print "pattern.vector.Corpus.reduce()"
+    
+    def test_relative_entropy(self):
+        # Assert relative entropy weights.
+        v1 = self.corpus.relative_entropy("cats", "dogs")
+        v2 = self.corpus.relative_entropy("purr", "bark")
+        self.assertTrue(v1 < v2)
+        self.assertAlmostEqual(v1, 12.76, places=2)
+        self.assertAlmostEqual(v2, 13.45, places=2)
+        # Assert relative entropy feature selection.
+        v = self.corpus.feature_selection(top=4)
+        self.assertEqual(v, ["purr", "meow", "howl", "bark"])
+        # Assert Corpus.filter().
+        v = self.corpus.filter(v)
+        self.assertTrue("purr" in v.terms)
+        self.assertTrue("meow" in v.terms)
+        self.assertTrue("howl" in v.terms)
+        self.assertTrue("bark" in v.terms)
+        self.assertTrue("cats" not in v.terms)
+        self.assertTrue("dogs" not in v.terms)
+        print "pattern.vector.Corpus.relative_entropy()"
+        print "pattern.vector.Corpus.feature_selection()"
+        print "pattern.vector.Corpus.filter()"
+
+#-----------------------------------------------------------------------------------------------------
+
 class TestApriori(unittest.TestCase):
     
     def setUp(self):
@@ -386,6 +597,10 @@ class TestLSA(unittest.TestCase):
         if self.__class__.corpus is None:
             self.__class__.corpus = corpus(top=250)
         self.corpus = self.__class__.corpus
+        random.seed(0)
+        
+    def tearDown(self):
+        random.seed()
     
     def test_lsa(self):
         try:
@@ -424,22 +639,35 @@ class TestLSA(unittest.TestCase):
             vector.Document("dogs bark")
         ))
         corpus.reduce(2)
+        # Intuitively, we'd expect two concepts:
+        # 1) with cats + purr + meow grouped together,
+        # 2) with dogs + howl + bark grouped together.
         for concept in corpus.lsa.concepts:
-            # Intuitively, we'd expect two concepts:
-            # 1) with cats + purr + meow grouped together,
-            # 2) with dogs + howl + bark grouped together.
             self.assertTrue(isinstance(concept, dict))
             if concept["cats"] > 0.5:
-                self.assertTrue(concept["purr"] > 0.5)
-                self.assertTrue(concept["meow"] > 0.5)
-                self.assertTrue(concept["howl"] < 0.01)
-                self.assertTrue(concept["bark"] < 0.01)
+                self.assertTrue(concept["purr"] >  0.5)
+                self.assertTrue(concept["meow"] >  0.5)
+                self.assertTrue(concept["howl"] == 0.0)
+                self.assertTrue(concept["bark"] == 0.0)
             if concept["dogs"] > 0.5:
-                self.assertTrue(concept["howl"] > 0.5)
-                self.assertTrue(concept["bark"] > 0.5)
-                self.assertTrue(concept["purr"] < 0.01)
-                self.assertTrue(concept["meow"] < 0.01)
+                self.assertTrue(concept["howl"] >  0.5)
+                self.assertTrue(concept["bark"] >  0.5)
+                self.assertTrue(concept["purr"] == 0.0)
+                self.assertTrue(concept["meow"] == 0.0)
+        # We'd expect the "cat" documents to score high on the "cat" concept vector.
+        # We'd expect the "dog" documents to score high on the "dog" concept vector.
+        v1 = corpus.lsa[corpus.documents[0].id]
+        v2 = corpus.lsa[corpus.documents[2].id]
+        self.assertTrue(v1[0]  > 0.7)
+        self.assertTrue(v1[1] == 0.0)
+        self.assertTrue(v2[0] == 0.0)
+        self.assertTrue(v2[1]  > 0.7)
+        # Assert LSA.transform() for unknown documents.
+        v = corpus.lsa.transform(vector.Document("cats dogs"))
+        self.assertAlmostEqual(v[0], 0.34, places=2)
+        self.assertAlmostEqual(v[1], 0.34, places=2)
         print "pattern.vector.LSA.concepts"
+        print "pattern.vector.LSA.transform()"
     
     def test_corpus_reduce(self):
         try:
@@ -457,7 +685,7 @@ class TestLSA(unittest.TestCase):
         t2 = time.time() - t2
         self.assertTrue(len(self.corpus.lsa[self.corpus.documents[0].id]) == 20)
         self.assertTrue(t2 * 2 < t1)        # KNN over 2x faster.
-        self.assertTrue(abs(F1-F2) < 0.1) # Difference in F-score = 1-6%.
+        self.assertTrue(abs(F1-F2) < 0.05) # Difference in F-score = 1-6%.
         self.corpus.lsa = None
         print "pattern.vector.Corpus.reduce()"
           
@@ -472,6 +700,10 @@ class TestClustering(unittest.TestCase):
         if self.__class__.corpus is None:
             self.__class__.corpus = corpus(top=10)
         self.corpus = self.__class__.corpus
+        random.seed(0)
+        
+    def tearDown(self):
+        random.seed()
         
     def test_features(self):
         # Assert unique list of vector keys.
@@ -534,7 +766,7 @@ class TestClustering(unittest.TestCase):
     def test_k_means_random(self):
         # Assert k-means with random initialization.
         v = self._test_k_means(seed=vector.RANDOM)
-        self.assertTrue(v >= 0.5)
+        self.assertTrue(v >= 0.6)
         print "pattern.vector.kmeans(seed=RANDOM)"
         
     def test_k_means_kmpp(self):
@@ -542,7 +774,7 @@ class TestClustering(unittest.TestCase):
         # Note: vectors contain the top 10 features - see setUp().
         # If you include more features (more noise?) accuracy and performance will drop.
         v = self._test_k_means(seed=vector.KMPP)
-        self.assertTrue(v >= 0.7)
+        self.assertTrue(v >= 0.8)
         print "pattern.vector.kmeans(seed=KMPP)"
     
     def test_hierarchical(self):
@@ -689,6 +921,7 @@ def suite():
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUtilityFunctions))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestStemmer))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDocument))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCorpus))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestApriori))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLSA))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestClustering))
