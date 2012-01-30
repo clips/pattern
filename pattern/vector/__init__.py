@@ -28,6 +28,7 @@ from random    import random, choice
 from itertools import izip, chain
 from bisect    import insort
 from StringIO  import StringIO
+from codecs    import open
 
 try:
     MODULE = os.path.dirname(__file__)
@@ -502,9 +503,6 @@ class Document(object):
 # Average feature length: 
 # sum(len(d.vector) for d in corpus.documents) / float(len(corpus))
 
-class WeightError(Exception):
-    pass
-
 class Vector(readonlydict):
     
     id = 1
@@ -538,8 +536,6 @@ class Vector(readonlydict):
     def __call__(self, vector={}):
         if isinstance(vector, (Document, Corpus)):
             vector = vector.vector
-        if isinstance(vector, Vector) and self.weight != vector.weight:
-            raise WeightError, "mixing %s vector with %s vector" % (self.weight, vector.weight)
         # Return a copy of the vector, updated with values from the other vector.
         # Only keys that appear in this vector will be updated (i.e. no new keys are added).
         V = self.copy(); dict.update(V, ((k,v) for k,v in vector.iteritems() if k in V)); return V
@@ -627,7 +623,6 @@ class Corpus(object):
         """
         documents = []
         for f in glob.glob(path):
-            kwargs["name"] = filename(f)
             documents.append(Document.open(f, *args, **kwargs))
         return Corpus(documents)
     
@@ -647,9 +642,10 @@ class Corpus(object):
             for d1 in self.documents:
                 for d2 in self.documents:
                     self.cosine_similarity(d1, d2) # Update the entire cache before saving.
+        m = dict.fromkeys((d.id for d in self.documents), True)
         for id1, id2 in self._similarity.keys():
-            if id1 not in self._index \
-            or id2 not in self._index:
+            if id1 not in m \
+            or id2 not in m:
                 self._similarity.pop((id1, id2))   # Remove Corpus.search() query cache.
         cPickle.dump(self, open(path, "w"), BINARY)
         
@@ -682,9 +678,8 @@ class Corpus(object):
                 v = "%s,%s" % (v, document.type or "")
                 s.append(v)
         s = "\n".join(s)
-        f = open(path, "w")
-        f.write(codecs.BOM_UTF8)
-        f.write(encode_utf8(s))
+        f = open(path, "w", encoding="utf-8")
+        f.write(decode_utf8(s))
         f.close()
     
     def _update(self):
@@ -718,6 +713,8 @@ class Corpus(object):
             The corpus is updated, meaning that the cache of vectors and similarities is cleared
             (relevancy and similarity weights will be different now that there is a new document).
         """
+        if not isinstance(document, Document):
+            raise TypeError, "Corpus.append() expects a Document."
         document._corpus = self
         if document.name is not None:
             self._index[document.name] = document
@@ -758,7 +755,7 @@ class Corpus(object):
                     self._df[w] = (w in self._df) and self._df[w]+1 or 1
             for w, f in self._df.iteritems():
                 self._df[w] /= float(len(self.documents))
-        return self._df[word]
+        return self._df.get(word, 0.0)
         
     df = document_frequency
     
@@ -801,11 +798,6 @@ class Corpus(object):
     # Following methods rely on Document.vector:
     # frequent sets, cosine similarity, nearest neighbors, search, clustering, 
     # latent semantic analysis, divergence.
-    
-    def frequency(self, word):
-        """ Returns the frequency (0.0-1.0) of the word across documents.
-        """
-        return len([1 for d in self.documents if word in d.terms]) / float(len(self) or 1)
     
     def frequent_concept_sets(self, threshold=0.5):
         """ Returns a dictionary of (set(words), frequency) 
@@ -864,7 +856,7 @@ class Corpus(object):
             The given words can be a string (one word), a list or tuple of words, or a Document.
         """
         top = kwargs.pop("top", 10)
-        if not isinstance(words, (list, tuple)):
+        if not isinstance(words, (list, tuple, Document)):
             words = [words]
         if not isinstance(words, Document):
             kwargs.setdefault("threshold", 0) # Same stemmer as other documents should be given.
@@ -1100,7 +1092,8 @@ class LSA:
     @property
     def concepts(self):
         # Yields a list of all concepts, each a dictionary of (word, weight)-items.
-        return [dict((self._terms[i], w) for i,w in enumerate(concept)) for concept in self.vt]
+        # Round the weight so 9.0649330400000009e-17 becomes a more meaningful 0.0.
+        return [dict((self._terms[i], round(w,15)) for i,w in enumerate(concept)) for concept in self.vt]
     
     @property
     def vectors(self):
