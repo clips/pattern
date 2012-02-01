@@ -1577,7 +1577,7 @@ class NaiveBayes(Classifier):
 Bayes = NaiveBayes
 
 #--- SUPPORT VECTOR MACHINE --------------------------------------------------------------------------
-# pattern.vector comes bundled with LIBSVM: 
+# pattern.vector comes bundled with LIBSVM 3.11.
 # http://www.csie.ntu.edu.tw/~cjlin/libsvm/
 #
 # Precompiled binaries for 32-bit Windows and Mac OS X, and 64-bit Ubuntu are included.
@@ -1635,6 +1635,12 @@ class SVM(Classifier):
     @property
     def features(self):
         return list(features(v for type, v in self._vectors))
+        
+    @property
+    def support_vectors(self):
+        return self._model and self._model[0].get_SV() or []
+        
+    sv = support_vectors
 
     def _libsvm_train(self):
         """ Calls libsvm.svm_train() to create a model.
@@ -1670,11 +1676,16 @@ class SVM(Classifier):
         v  = self._vector(document)[1]
         v  = dict((H1.get(k, len(H1)+i), v) for i, (k,v) in enumerate(v.items()))
         p  = self._libsvm.svm_predict([0], [v], M)
+        t  = M.get_svm_type()
         if self.debug is False:
             sys.stdout = so
-        if M.get_svm_type() == DETECTION:
+        if t == CLASSIFICATION:
+            return H3.get(int(p[0][0]))
+        if t == REGRESSION:
+            return p[0][0]
+        if t == DETECTION:
             return p[0][0] > 0 # -1 = outlier => return False
-        return H3.get(int(p[0][0]))
+        return p[0][0]
         
     def train(self, document, type=None):
         """ Trains the classifier with the given document of the given type (i.e., class).
