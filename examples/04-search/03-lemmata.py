@@ -9,7 +9,7 @@ from pattern.en     import Sentence, parse
 # these will also be matched. Using "be" then matches "is", "being", "are", ...
 # and if underspecification is used "could be", "will be", "definitely was", ...
 
-p = Pattern.fromstring("NP be (more) ADJP|ADVP than NP")
+p = Pattern.fromstring("NP be ADJP|ADVP than NP")
 
 for s in (
   "the turtle was faster than the hare",
@@ -24,13 +24,13 @@ for s in (
         print m[0].constituents()                   # Words grouped by chunk whenever possible.
         print m[0].constraints(chunk=s.chunks[0])   # The constraints that match the given chunk.
         print m[0].constituents(constraint=p[0])    # Constituents for the given constraint.
-        print m[0].constituents(constraint=[0,3,5]) # Constituents for the given constraint indices.
+        print m[0].constituents(constraint=[0,2,4]) # Constituents for the given constraint indices.
         print
         print
         print
         
         
-p = Pattern.fromstring("NP be (more) ADJP|ADVP than NP")
+p = Pattern.fromstring("NP be ADJP|ADVP than NP")
 s = Sentence(parse("the turtle was faster than the hare", lemmata=True))
 m = p.match(s)
 print s

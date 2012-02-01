@@ -36,6 +36,7 @@ taxonomy.append("bird", type="animal")
 print taxonomy.parents("chicken")
 print taxonomy.children("animal", recursive=True)
 print search("FOOD", "I'm eating chicken.")
+print
 
 # The advantage is that the taxonomy can hold an entire hierarchy.
 # For example, "flower" could be classified as "organism".
@@ -48,7 +49,7 @@ print search("FOOD", "I'm eating chicken.")
 taxonomy.append("windows vista", type="operating system")
 taxonomy.append("ubuntu", type="operating system")
 
-s = Sentence(parse("Which do you like more, Windows Vista or Ubuntu?"))
+s = Sentence(parse("Which do you like more, Windows Vista, or Ubuntu?"))
 p = Pattern.fromstring("OPERATING_SYSTEM")
 m = p.search(s)
 print s
@@ -60,7 +61,7 @@ print
 # but you can use a classifier to simulate this.
 # Classifiers are quite slow but useful in many ways.
 # For example, a classifier could be written to dynamically 
-# retrieve word types from WordNet.
+# retrieve word categories from WordNet.
 
 def find_parents(word):
     if word.startswith(("mac os", "windows", "ubuntu")):
@@ -74,4 +75,5 @@ m = p.search(s)
 print s
 print m
 print m[0].constituents()
+print m[1].constituents()
 print

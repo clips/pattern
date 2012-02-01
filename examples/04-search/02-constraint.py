@@ -25,7 +25,7 @@ print
 # This works for NN*, VB*, JJ*, RB*.
 
 s = Sentence(parse("When I sleep the big white rabbit will stare at my feet."))
-m = search("rabbit stare at my", s)
+m = search("rabbit stare at feet", s)
 print s
 print m
 print
@@ -35,11 +35,11 @@ print
 # It works because "will stare" is one verb chunk.
 # The "stare" constraint matches the head word of the chunk ("stare"),
 # so "will stare" is considered an overspecified version of "stare".
-# The same happens with the "rabbit" constraint: 
-# this matches the overspecified chunk "the big white rabbit".
+# The same happens with "my feet" and the "rabbit" constraint,
+# which matches the overspecified chunk "the big white rabbit".
 
-p = Pattern.fromstring("rabbit stare at my", s)
-p.strict = True # Now it matches only what the pattern explicitly defines.
+p = Pattern.fromstring("rabbit stare at feet", s)
+p.strict = True # Now it matches only what the pattern explicitly defines (=no match).
 m = p.search(s)
 print m
 print
