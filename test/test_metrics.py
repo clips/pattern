@@ -6,7 +6,7 @@ from pattern import metrics
 
 #-----------------------------------------------------------------------------------------------------
 
-class TestMetrics(unittest.TestCase):
+class TestProfiling(unittest.TestCase):
     
     def setUp(self):
         # Test set for accuracy, precision and recall:
@@ -78,6 +78,11 @@ class TestMetrics(unittest.TestCase):
         self.assertAlmostEqual(v, 0.210, places=3)
         print "pattern.metrics.agreement()"
 
+class TestStringFunctions(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+
     def test_levenshtein(self):
         # Assert 0 (identical strings).
         v = metrics.levenshtein("gallahad", "gallahad")
@@ -127,7 +132,12 @@ class TestMetrics(unittest.TestCase):
         v = metrics.readability(s)
         self.assertTrue(v > 0.70)
         print "pattern.metrics.readability()"
-        
+
+class TestStatistics(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+
     def test_mean(self):
         # Assert (1+2+3+4) / 4 = 2.5.
         v = metrics.mean([1,2,3,4])
@@ -233,7 +243,9 @@ class TestMetrics(unittest.TestCase):
 
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMetrics))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestProfiling))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestStringFunctions))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestStatistics))
     return suite
 
 if __name__ == "__main__":
