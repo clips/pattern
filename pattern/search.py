@@ -95,7 +95,7 @@ def find(function, list):
 def combinations(list, n):
     """ Returns all possible combinations of length n of the given items in the list.
     """
-    if n == 0: yield []
+    if n == 0: yield [] # Only one possibility, the empty list.
     else:
         for i in xrange(len(list)):
             for c in combinations(list, n-1):
@@ -369,7 +369,7 @@ has_alpha = lambda string: ALPHA.match(string) is not None
 
 class Constraint:
     
-    def __init__(self, words=[], tags=[], chunks=[], roles=[], taxa=[], optional=False, multiple=False, first=False,  taxonomy=TAXONOMY):
+    def __init__(self, words=[], tags=[], chunks=[], roles=[], taxa=[], optional=False, multiple=False, first=False, taxonomy=TAXONOMY, exclude=None):
         """ A range of words, tags and taxonomy terms that matches certain words in a sentence.        
             For example: 
             Constraint.fromstring("with|of") matches either "with" or "of".
@@ -387,7 +387,7 @@ class Constraint:
         self.optional = optional
         self.multiple = multiple
         self.first    = first
-        self.exclude  = None         # Constraint of words that are *not* allowed.
+        self.exclude  = exclude      # Constraint of words that are *not* allowed, or None.
         
     @classmethod
     def fromstring(self, s, **kwargs):
@@ -414,6 +414,8 @@ class Constraint:
             s = s[1:-1]; C.optional = True
         if s.startswith("[") and s.endswith("]"):
             s = s[1:-1]
+        s = re.sub(r"^\\\^", "^", s)
+        s = re.sub(r"\\\+$", "+", s)
         s = s.replace("\_", "&underscore;")
         s = s.replace("_"," ")
         s = s.replace("&underscore;", "_")
@@ -447,7 +449,7 @@ class Constraint:
             self.chunks.append(v)
         elif v in ROLES:
             self.roles.append(v)
-        elif v in taxonomy or has_alpha(v):
+        elif v in self.taxonomy or has_alpha(v):
             self.taxa.append(v.lower())
         else:
             # Uppercase words indicate tags or taxonomy terms.
@@ -558,14 +560,21 @@ class Constraint:
 #--- PATTERN -----------------------------------------------------------------------------------------
 
 STRICT = "strict"
+GREEDY = "greedy"
 
 class Pattern:
     
-    def __init__(self, sequence=[], *args):
+    def __init__(self, sequence=[], *args, **kwargs):
         """ A sequence of constraints that matches certain phrases in a sentence.
         """
         self.sequence = list(sequence) # List of constraints.
-        self.strict = STRICT in args
+        # There are two search modes: STRICT and GREEDY.
+        # - In STRICT, "rabbit" matches only the string "rabbit".
+        # - In GREEDY, "rabbit|NN" matches the string "rabbit" tagged "NN".
+        # - In GREEDY, "rabbit" matches "the big white rabbit" (the entire chunk is a match).
+        # - Pattern.greedy(chunk, constraint) determines (True/False) if a chunk is a match.
+        self.strict = kwargs.get("strict", STRICT in args and not GREEDY in args)
+        self.greedy = kwargs.get("greedy", lambda chunk, constraint: True)
         
     def __iter__(self):
         return iter(self.sequence)
@@ -593,11 +602,13 @@ class Pattern:
             p.append(s[m.start():m.end()].replace(" ", "&space;")); i=m.end()
         p.append(s[i:])
         s = "".join(p) 
+        s = s.replace("][", "] [")
+        s = s.replace(")(", ") (")
         s = s.replace("\|", "&dash;")
         s = re.sub("\s+\|\s+", "|", s)       
         s = s.split(" ")
         s = [v.replace("&space;"," ") for v in s]
-        P = self([], *args)
+        P = self([], *args, **kwargs)
         for s in s:
             P.sequence.append(Constraint.fromstring(s, taxonomy=kwargs.get("taxonomy", TAXONOMY)))
         return P
@@ -622,10 +633,19 @@ class Pattern:
             return find(lambda (m,s): m!=None, ((self.match(s, start, _v), s) for s in sentence))[0]
         if isinstance(sentence, basestring):
             sentence = Sentence(sentence)
+        # Variations further down the list may match words more to the front than previous matches.
+        # Sort all matches by position and length. Return the leftmost-longest.
+        matches = []
         for sequence in (_v is not None and _v or self._variations()):
             m = self._match(sequence, sentence, start)
             if m:
+                matches.append((m.words[0].index, -len(m.words), m))
+            if m and m.words[0].index == 0:
                 return m
+            #if m:
+            #    return m
+        if len(matches) > 0:
+            return sorted(matches)[0][-1]
 
     def _variations(self):
         v = variations(self.sequence, optional=lambda constraint: constraint.optional)
@@ -650,22 +670,24 @@ class Pattern:
         if i == len(sequence):
             if w0 is not None:
                 w1 = sentence.words[start-1]
-                # Consider Pattern.fromstring("[*big_cat]"):
-                # - If it stops on "the", include the successive "big" and "cat" in the chunk.
-                # - If it starts on "big", include the preceding "the" in the chunk.
-                # - Rule is ignored for POS-tag constraints (can only match single word).
-                if w0.chunk is not None and not sequence[0].tags:
-                    if self.strict is False:
-                        w0 = w0.chunk.words[0]
-                    for w in reversed(w0.chunk.words[:w0.index-w0.chunk.start]):
-                        if sequence[0].match(w): w0=w 
-                        else: 
-                            break
-                if w1.chunk is not None and not sequence[-1].tags:
-                    for w in w1.chunk.words[w1.index-w1.chunk.start+1:]:
-                        if sequence[-1].match(w): w1=w
-                        else:
-                            break
+                # Greedy algorithm: 
+                # 1) "cat" matches "the big cat" if "cat" is head of the chunk.
+                # 2) "Tom" matches "Tom the cat" if "Tom" is head of the chunk.
+                # 3) This behavior is ignored with POS-tag constraints:
+                #    "Tom|NN" can only match single words, not chunks.
+                # 4) This is also True for negated POS-tags (e.g. !NN).
+                w = [w0, w1]
+                for j in (0, -1):
+                    if self.strict is False and w[j].chunk is not None:
+                        if len(sequence[j].tags) == 0:
+                            if sequence[j].exclude is None or len(sequence[j].exclude.tags) == 0:
+                                if sequence[j].match(w[j].chunk.head):
+                                    w[j] = w[j].chunk.words[j]
+                                if sequence[j].exclude and sequence[j].exclude.match(w[j].chunk.head):
+                                    return None
+                                if self.greedy(w[j].chunk, sequence[j]) is False:
+                                    return None
+                w0, w1 = w
                 # Update map for optional chunk words (see below).
                 words = sentence.words[w0.index:w1.index+1]
                 for w in words:
@@ -694,11 +716,14 @@ class Pattern:
             # - Pattern.fromstring("cat") matches "cat" but also "the big cat" (overspecification).
             # - Pattern.fromstring("cat|NN") does not match "the big cat" (explicit POS-tag).
             if w0 and len(sequence[i].tags) == 0:
-                if self.strict is False and w.chunk is not None and w.chunk.head != w :
-                    continue
+                if sequence[i].exclude is None or len(sequence[i].exclude.tags) == 0:
+                    if self.strict is False and w.chunk is not None and w.chunk.head != w:
+                        continue
                 break
             # Part-of-speech tags match one single word.
             if w0 and len(sequence[i].tags) > 0:
+                break
+            if w0 and sequence[i].exclude and len(sequence[i].exclude.tags) > 0:
                 break
 
 _cache = {}
@@ -710,17 +735,22 @@ def compile(pattern, *args, **kwargs):
     if isinstance(pattern, basestring):
         p = Pattern.fromstring(pattern, *args, **kwargs)
     if isinstance(pattern, regexp):
-        p = Pattern([Constraint(words=[pattern], taxonomy=kwargs.get("taxonomy", TAXONOMY))], *args)
+        p = Pattern([Constraint(words=[pattern], taxonomy=kwargs.get("taxonomy", TAXONOMY))], *args, **kwargs)
     if len(_cache) > _CACHE_SIZE:
         _cache.clear()
     _cache[id] = p
     return p
 
 def match(pattern, sentence, *args, **kwargs):
-    return compile(pattern, *args).match(sentence) 
+    return compile(pattern, *args, **kwargs).match(sentence) 
 
 def search(pattern, sentence, *args, **kwargs):
-    return compile(pattern, *args).search(sentence)
+    return compile(pattern, *args, **kwargs).search(sentence)
+
+def escape(string):
+    for ch in ("[","]","(",")","_","|","!","*","+","^"):
+        string = string.replace(ch, "\\"+ch)
+    return string
 
 #--- PATTERN MATCH -----------------------------------------------------------------------------------
 
@@ -800,6 +830,10 @@ class Match:
                 a.append(w)
             i += 1
         return a
+    
+    @property
+    def string(self):
+        return " ".join(w.string for w in self.words)
     
     def __repr__(self):
         return "Match(words=%s)" % repr(self.words)
