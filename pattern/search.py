@@ -7,6 +7,7 @@
 ######################################################################################################
 
 import re
+import itertools
 
 # Following classes emulate those in en.parser.tree:
 
@@ -333,16 +334,20 @@ class Classifier:
 class WordNetClassifier(Classifier):
     
     def __init__(self, wordnet=None):
+        if wordnet is None:
+            try: from en import wordnet
+            except:
+                pass
         Classifier.__init__(self, self._parents, self._children)
         self.wordnet = wordnet
 
     def _children(self, word, pos="NN"):
-        try: return [w.senses[0] for w in self.wordnet.synsets(word, pos)[0].hyponyms]
+        try: return [w.senses[0] for w in self.wordnet.synsets(word, pos)[0].hyponyms()]
         except KeyError:
             pass
         
     def _parents(self, word, pos="NN"):
-        try: return [w.senses[0] for w in self.wordnet.synsets(word, pos)[0].hypernyms]
+        try: return [w.senses[0] for w in self.wordnet.synsets(word, pos)[0].hypernyms()]
         except KeyError:
             pass
 
@@ -486,17 +491,17 @@ class Constraint:
                 return False
         # If the constraint defines allowed role, Word.chunk.tag needs to match one of these.
         if self.roles:
-            R = word.chunk and [r2 for r1,r2 in word.chunk.relations] or []
+            R = word.chunk and [r2 for r1, r2 in word.chunk.relations] or []
             if find(lambda w: w in R, self.roles) is None:
                 return False
         # If the constraint defines allowed words,
         # Word.string.lower() OR Word.lemma needs to match one of these.
         b = True # b==True when word in constraint (or Constraints.words=[]).
-        if self.words + self.taxa:
+        if len(self.words) + len(self.taxa) > 0:
             s1 = word.string.lower()
             s2 = word.lemma
             b = False
-            for w in self.words + self.taxa:
+            for w in itertools.chain(self.words, self.taxa):
                 # If the constraint has a word with spaces (e.g. a proper noun),
                 # compare it to the entire chunk.
                 try:
@@ -547,15 +552,13 @@ class Constraint:
     @property
     def string(self):
         a = self.words + self.tags + self.chunks + self.roles + [w.upper() for w in self.taxa]
-        for i, s in enumerate(a):
-            a[i] = s.replace(" ", "_")
-            a[i] = s.replace("+", "\+")
-            a[i] = s.replace("|", "\|")
-            a[i] = s.replace("(", "\(")
-            a[i] = s.replace(")", "\)")
-            a[i] = s.replace("[", "\[")
-            a[i] = s.replace("]", "\]")
-        return (self.optional and "(%s)" or "[%s]") % "|".join(a)
+        a = (escape(s) for s in a)
+        a = (s.replace("\\*", "*") for s in a)
+        a = [s.replace(" ", "_") for s in a]
+        if self.exclude:
+            a.extend("!"+s for s in self.exclude.string[1:-1].split("|"))
+        return (self.optional and "%s(%s)%s" or "%s[%s]%s") % (
+            self.first and "^" or "", "|".join(a), self.multiple and "+" or "")
 
 #--- PATTERN -----------------------------------------------------------------------------------------
 
@@ -605,7 +608,8 @@ class Pattern:
         s = s.replace("][", "] [")
         s = s.replace(")(", ") (")
         s = s.replace("\|", "&dash;")
-        s = re.sub("\s+\|\s+", "|", s)       
+        s = re.sub(r"\s+\|\s+", "|", s)  
+        s = re.sub(r"\s+", " ", s)
         s = s.split(" ")
         s = [v.replace("&space;"," ") for v in s]
         P = self([], *args, **kwargs)
@@ -620,32 +624,37 @@ class Pattern:
             a=[]; [a.extend(self.search(s)) for s in sentence]; return a
         a = []
         v = self._variations()
+        u = {}
         m = self.match(sentence, _v=v)
         while m:
             a.append(m)
-            m = self.match(sentence, start=m.words[-1].index+1, _v=v)
+            m = self.match(sentence, start=m.words[-1].index+1, _v=v, _u=u)
         return a
         
-    def match(self, sentence, start=0, _v=None):
+    def match(self, sentence, start=0, _v=None, _u=None):
         """ Returns the first match found in the given sentence, or None.
         """
         if sentence.__class__.__name__ == "Text":
             return find(lambda (m,s): m!=None, ((self.match(s, start, _v), s) for s in sentence))[0]
         if isinstance(sentence, basestring):
             sentence = Sentence(sentence)
-        # Variations further down the list may match words more to the front than previous matches.
-        # Sort all matches by position and length. Return the leftmost-longest.
-        matches = []
+        # Variations (_v) further down the list may match words more to the front.
+        # We need to check all of them. Unmatched variations are blacklisted (_u).
+        # Pattern.search() calls Pattern.match() with a persistent blacklist (1.5x faster).
+        a = []
         for sequence in (_v is not None and _v or self._variations()):
+            if _u is not None and id(sequence) in _u:
+                continue
             m = self._match(sequence, sentence, start)
-            if m:
-                matches.append((m.words[0].index, -len(m.words), m))
-            if m and m.words[0].index == 0:
+            if m is not None:
+                a.append((m.words[0].index, len(m.words), m))
+            if m is not None and m.words[0].index == start:
                 return m
-            #if m:
-            #    return m
-        if len(matches) > 0:
-            return sorted(matches)[0][-1]
+            if m is None and _u is not None:
+                _u[id(sequence)] = False
+        # Return the leftmost-longest.
+        if len(a) > 0:
+            return sorted(a)[0][-1]
 
     def _variations(self):
         v = variations(self.sequence, optional=lambda constraint: constraint.optional)
@@ -671,23 +680,24 @@ class Pattern:
             if w0 is not None:
                 w1 = sentence.words[start-1]
                 # Greedy algorithm: 
-                # 1) "cat" matches "the big cat" if "cat" is head of the chunk.
-                # 2) "Tom" matches "Tom the cat" if "Tom" is head of the chunk.
-                # 3) This behavior is ignored with POS-tag constraints:
-                #    "Tom|NN" can only match single words, not chunks.
-                # 4) This is also True for negated POS-tags (e.g. !NN).
-                w = [w0, w1]
+                # - "cat" matches "the big cat" if "cat" is head of the chunk.
+                # - "Tom" matches "Tom the cat" if "Tom" is head of the chunk.
+                # - This behavior is ignored with POS-tag constraints:
+                #   "Tom|NN" can only match single words, not chunks.
+                # - This is also True for negated POS-tags (e.g. !NN).
+                w01 = [w0, w1]
                 for j in (0, -1):
-                    if self.strict is False and w[j].chunk is not None:
-                        if len(sequence[j].tags) == 0:
-                            if sequence[j].exclude is None or len(sequence[j].exclude.tags) == 0:
-                                if sequence[j].match(w[j].chunk.head):
-                                    w[j] = w[j].chunk.words[j]
-                                if sequence[j].exclude and sequence[j].exclude.match(w[j].chunk.head):
+                    constraint, w = sequence[j], w01[j]
+                    if self.strict is False and w.chunk is not None:
+                        if len(constraint.tags) == 0:
+                            if constraint.exclude is None or len(constraint.exclude.tags) == 0:
+                                if constraint.match(w.chunk.head):
+                                    w01[j] = w.chunk.words[j]
+                                if constraint.exclude and constraint.exclude.match(w.chunk.head):
                                     return None
-                                if self.greedy(w[j].chunk, sequence[j]) is False:
+                                if self.greedy(w.chunk, constraint) is False: # User-defined.
                                     return None
-                w0, w1 = w
+                w0, w1 = w01
                 # Update map for optional chunk words (see below).
                 words = sentence.words[w0.index:w1.index+1]
                 for w in words:
@@ -700,12 +710,13 @@ class Pattern:
             return None
 
         # RECURSION
+        constraint = sequence[i]
         for w in sentence.words[start:]:
             #print " "*d, "match?", w, sequence[i].string # DEBUG
-            if i < len(sequence) and sequence[i].match(w):
+            if i < len(sequence) and constraint.match(w):
                 #print " "*d, "match!", w, sequence[i].string # DEBUG
-                map[w.index] = sequence[i]
-                if sequence[i].multiple:
+                map[w.index] = constraint
+                if constraint.multiple:
                     # Next word vs. same constraint if Constraint.multiple=True.
                     m = self._match(sequence, sentence, w.index+1, i, w0 or w, map, d+1)
                     if m: return m
@@ -715,21 +726,25 @@ class Pattern:
             # Chunk words other than the head are optional:
             # - Pattern.fromstring("cat") matches "cat" but also "the big cat" (overspecification).
             # - Pattern.fromstring("cat|NN") does not match "the big cat" (explicit POS-tag).
-            if w0 and len(sequence[i].tags) == 0:
-                if sequence[i].exclude is None or len(sequence[i].exclude.tags) == 0:
+            if w0 is not None and len(constraint.tags) == 0:
+                if constraint.exclude is None or len(constraint.exclude.tags) == 0:
                     if self.strict is False and w.chunk is not None and w.chunk.head != w:
                         continue
                 break
             # Part-of-speech tags match one single word.
-            if w0 and len(sequence[i].tags) > 0:
+            if w0 is not None and len(constraint.tags) > 0:
                 break
-            if w0 and sequence[i].exclude and len(sequence[i].exclude.tags) > 0:
+            if w0 is not None and constraint.exclude and len(constraint.exclude.tags) > 0:
                 break
+                
+    @property
+    def string(self):
+        return " ".join(constraint.string for constraint in self.sequence)
 
 _cache = {}
 _CACHE_SIZE = 100 # Number of dynamic Pattern objects to keep in cache.
 def compile(pattern, *args, **kwargs):
-    id = repr(pattern)+repr(args)
+    id, p = repr(pattern)+repr(args), None
     if id in _cache:
         return _cache[id]
     if isinstance(pattern, basestring):
@@ -738,8 +753,11 @@ def compile(pattern, *args, **kwargs):
         p = Pattern([Constraint(words=[pattern], taxonomy=kwargs.get("taxonomy", TAXONOMY))], *args, **kwargs)
     if len(_cache) > _CACHE_SIZE:
         _cache.clear()
-    _cache[id] = p
-    return p
+    if isinstance(p, Pattern):
+        _cache[id] = p
+        return p
+    else:
+        raise TypeError, "can't compile '%s' object" % pattern.__class__.__name__
 
 def match(pattern, sentence, *args, **kwargs):
     return compile(pattern, *args, **kwargs).match(sentence) 
