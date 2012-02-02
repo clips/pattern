@@ -2,6 +2,7 @@ import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 import unittest
 import time
 import re
+import random
 
 from pattern    import search
 from pattern.en import Sentence, parse
@@ -13,7 +14,29 @@ class TestUtilityFunctions(unittest.TestCase):
     def setUp(self):
         pass
         
+    def test_match(self):
+        # Assert search._match() wildcard matching.
+        for s, p, b in (
+          ("rabbit",  "rabbit",  True),
+          ("rabbits", "rabbit*", True),
+          ("rabbits", "*abbits", True),
+          ("rabbits", "*abbit*", True),
+          ("rabbits", "rab*its", True),
+          ("rabbits", re.compile(r"ra.*?"), True)):
+            self.assertEqual(search._match(s, p), b)
+        print "pattern.search._match()"
+        
+    def test_unique(self):
+        self.assertEqual(search.unique([1,1,2,2]), [1,2])
+        
+    def test_unique2(self):
+        self.assertEqual(search.unique2([1,1,2,2]), [1,2])
+        
+    def test_find(self):
+        self.assertEqual(search.find(lambda v: v>2, [1,2,3,4,5]), 3)
+        
     def test_combinations(self):
+        # Assert combinations of list items.
         self.assertEqual(list(search.combinations([ ], 2)), [])   # No possibilities.
         self.assertEqual(list(search.combinations([1], 0)), [[]]) # One possibility: the empty list.
         self.assertEqual(list(search.combinations([1,2,3], 2)), 
@@ -24,7 +47,7 @@ class TestUtilityFunctions(unittest.TestCase):
         print "pattern.search.combinations()"
             
     def test_variations(self):
-        # Assert Variations include the original input (the empty list has one variation = itself).
+        # Assert variations include the original input (the empty list has one variation = itself).
         v = search.variations([])
         self.assertEqual(v, [[]])
         # Assert variations = [1] and [].
@@ -38,6 +61,82 @@ class TestUtilityFunctions(unittest.TestCase):
         self.assertEqual(v, [[1,2,3,4], [2,3,4], [1,3,4], [3,4]])
         self.assertTrue(len(v[0]) >= len(v[1]) >= len(v[2]), len(v[3]))
         print "pattern.search.variations()"
+        
+    def test_odict(self):
+        # Assert odict.append() which must be order-preserving.
+        v = search.odict()
+        v.append(("a", 1))
+        v.append(("b", 2))
+        v.append(("c", 3))
+        v.append(("a", 0))
+        v = v.copy()
+        self.assertTrue(isinstance(v, dict))
+        self.assertEqual(v.keys(), ["a", "c","b"])
+        print "pattern.search.odict()"
+
+#-----------------------------------------------------------------------------------------------------
+
+class TestTaxonomy(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+        
+    def test_taxonomy(self):
+        # Assert Taxonomy search.
+        t = search.Taxonomy()
+        t.append("King Arthur",  type="knight", value=1)
+        t.append("Sir Bedevere", type="knight", value=2)
+        t.append("Sir Lancelot", type="knight", value=3)
+        t.append("Sir Gallahad", type="knight", value=4)
+        t.append("Sir Robin",    type="knight", value=5)
+        t.append("John Cleese",  type="Sir Lancelot")
+        t.append("John Cleese",  type="Basil Fawlty")
+        # Matching is case-insensitive, results are lowercase.
+        self.assertTrue("John Cleese" in t)
+        self.assertTrue("john cleese" in t)
+        self.assertEqual(t.classify("King Arthur"), "knight")
+        self.assertEqual(t.value("King Arthur"), 1)
+        self.assertEqual(t.parents("John Cleese"), ["basil fawlty", "sir lancelot"])
+        self.assertEqual(t.parents("John Cleese", recursive=True), [
+            "basil fawlty", 
+            "sir lancelot", 
+            "knight"])
+        self.assertEqual(t.children("knight"), [
+            "sir robin", 
+            "sir gallahad", 
+            "sir lancelot", 
+            "sir bedevere", 
+            "king arthur"])
+        self.assertEqual(t.children("knight", recursive=True), [
+            "sir robin", 
+            "sir gallahad", 
+            "sir lancelot", 
+            "sir bedevere", 
+            "king arthur",
+            "john cleese"])
+        print "pattern.search.Taxonomy"
+    
+    def test_classifier(self):
+        # Assert taxonomy classifier + keyword arguments.
+        c1 = search.Classifier(parents=lambda word, chunk=None: word.endswith("ness") and ["quality"] or [])
+        c2 = search.Classifier(parents=lambda word, chunk=None: chunk=="VP" and ["action"] or [])
+        t = search.Taxonomy()
+        t.classifiers.append(c1)
+        t.classifiers.append(c2)
+        self.assertEqual(t.classify("fuzziness"), "quality")
+        self.assertEqual(t.classify("run", chunk="VP"), "action")
+        print "pattern.search.Classifier"
+        
+    def test_wordnet_classifier(self):
+        # Assert WordNet classifier parents & children.
+        c = search.WordNetClassifier()
+        t = search.Taxonomy()
+        t.classifiers.append(c)
+        self.assertEqual(t.classify("cat"), "feline")
+        self.assertEqual(t.classify("dog"), "canine")
+        self.assertTrue("domestic cat" in t.children("cat"))
+        self.assertTrue("puppy" in t.children("dog"))
+        print "pattern.search.WordNetClassifier"
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -135,6 +234,19 @@ class TestConstraint(unittest.TestCase):
         self.assertTrue(v.match(S("tweeties")[0]))
         self.assertTrue(v.match(W("Steven")))
         print "pattern.search.Constraint.match()"
+        
+    def test_string(self):
+        # Assert Constraint.string.
+        v = search.Constraint()
+        v.words    = ["Steven\\*"]
+        v.tags     = ["NN*"]
+        v.roles    = ["SBJ"]
+        v.taxa     = ["(associate) professor"]
+        v.exclude  = search.Constraint(["bird"])
+        v.multiple = True
+        v.first    = True
+        self.assertEqual(v.string, "^[Steven\\*|NN*|SBJ|\(ASSOCIATE\)_PROFESSOR|!bird]+")
+        print "pattern.search.Constraint.string"
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -230,6 +342,17 @@ class TestPattern(unittest.TestCase):
         g = lambda chunk, constraint: len([w for w in chunk if not constraint.match(w)]) == 0
         self.assertEqual(P("!white").match(s).string, "the big white rabbit") # a rabbit != white
         self.assertEqual(P("!white", greedy=g).match(s), None)                # a white rabbit == white
+        # Assert taxonomy items with spaces.
+        s = S("Bugs Bunny is a giant talking rabbit.")
+        t = search.Taxonomy()
+        t.append("rabbit", type="rodent")
+        t.append("Bugs Bunny", type="rabbit")
+        self.assertEqual(P("RABBIT", taxonomy=t).match(s).string, "Bugs Bunny")
+        # Assert None, the syntax cannot handle taxonomy items that span multiple chunks.
+        s = S("Elmer Fudd fires a cannon")
+        t = search.Taxonomy()
+        t.append("fire cannon", type="violence")
+        self.assertEqual(P("VIOLENCE").match(s), None)
         # Assert regular expressions.
         s = S("a sack with 3.5 rabbits")
         p = search.Pattern.fromstring("[] NNS")
@@ -248,21 +371,107 @@ class TestPattern(unittest.TestCase):
         self.assertEqual(v[0].string, "one")
         self.assertEqual(v[1].string, "two")
         self.assertEqual(v[2].string, "three")
-        # Assert all variations are matched.
+        # Assert all variations are matched (sentence starts with a NN* which must be caught).
         v = search.Pattern.fromstring("(DT) (JJ)+ NN*")
         v = v.search(Sentence(parse("dogs, black cats and a big white rabbit")))
         self.assertEqual(v[0].string, "dogs")
         self.assertEqual(v[1].string, "black cats")
         self.assertEqual(v[2].string, "a big white rabbit")
+        v = search.Pattern.fromstring("NN*")
         print "pattern.search.Pattern.search()"
+        
+    def test_convergence(self):
+        # Test with random sentences and random patterns to see if it crashes.
+        w = ("big", "white", "rabbit", "black", "cats", "is", "was", "going", "to", "sleep", "sleepy", "very", "or")
+        x = ("(DT)", "(JJ)+", "NN*", "(VP)", "cat", "[*]")
+        for i in range(100):
+            s = " ".join(random.choice(w) for i in range(20))
+            s = Sentence(parse(s, lemmata=True))
+            p = " ".join(random.choice(x) for i in range(5))
+            p = search.Pattern.fromstring(p)
+            p.search(s)
+            
+    def test_compile_function(self):
+        # Assert creating and caching Pattern with compile().
+        t = search.Taxonomy()
+        p = search.compile("(JJ)+ NN*", search.STRICT, taxonomy=t)
+        self.assertEqual(p.strict,      True)
+        self.assertEqual(p[0].optional, True)
+        self.assertEqual(p[0].tags,     ["JJ"])
+        self.assertEqual(p[1].tags,     ["NN*"])
+        self.assertEqual(p[1].taxonomy, t)
+        # Assert regular expression input.
+        p = search.compile(re.compile(r"[0-9|\.]+"))
+        self.assertTrue(isinstance(p[0].words[0], search.regexp))
+        # Assert TypeError for other input.
+        self.assertRaises(TypeError, search.compile, 1)
+        print "pattern.search.compile()"
+        
+    def test_match_function(self):
+        # Assert match() function.
+        s = Sentence(parse("Go on Bors, chop his head off!"))
+        m1 = search.match("chop NP off", s, strict=False)
+        m2 = search.match("chop NP+ off", s, strict=True)
+        self.assertEqual(m1.constituents()[1].string, "his head")
+        self.assertEqual(m2.constituents()[1].string, "his head")
+        print "pattern.search.match()"
+        
+    def test_search_function(self):
+        # Assert search() function.
+        s = Sentence(parse("Go on Bors, chop his head off!"))
+        m = search.search("(PRP*) NN*", s)
+        self.assertEqual(m[0].string, "Bors")
+        self.assertEqual(m[1].string, "his head")
+        print "pattern.search.search()"
+        
+    def test_escape(self):
+        # Assert escape() function.
+        self.assertEqual(search.escape("[]()_|!*+^."), "\\[\\]\\(\\)\\_\\|\\!\\*\\+\\^.")
+        print "pattern.search.escape()"
+
+#-----------------------------------------------------------------------------------------------------
+
+class TestMatch(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+        
+    def test_match(self):
+        # Assert Match properties.
+        s = Sentence(parse("Death awaits you all with nasty, big, pointy teeth."))
+        p = search.Pattern(sequence=[
+            search.Constraint(tags=["JJ"], optional=True),
+            search.Constraint(tags=["NN*"])])
+        m = p.search(s)
+        self.assertTrue(isinstance(m, list))
+        self.assertEqual(m[0].pattern, p)
+        self.assertEqual(m[1].pattern, p)
+        self.assertEqual(m[0].words, [s.words[0]])
+        self.assertEqual(m[1].words, [s.words[-3], s.words[-2]])
+        # Assert contraint "NN*" links to "Death" and "teeth", and "JJ" to "pointy".
+        self.assertEqual(m[0].constraint(s.words[ 0]), p[1])
+        self.assertEqual(m[1].constraint(s.words[-3]), p[0])
+        self.assertEqual(m[1].constraint(s.words[-2]), p[1])
+        # Assert constraints "JJ NN*" links to chunk "pointy teeth".
+        self.assertEqual(m[1].constraints(s.chunks[6]), [p[0], p[1]])
+        # Assert Match.constituents() by constraint, constraint index and list of indices.
+        self.assertEqual(m[1].constituents(), [s.chunks[6]])
+        self.assertEqual(m[1].constituents(constraint=p[0]), [s.words[-3]])
+        self.assertEqual(m[1].constituents(constraint=1), [s.words[-2]])
+        self.assertEqual(m[1].constituents(constraint=(0,1)), [s.chunks[6]])
+        # Assert Match.string.
+        self.assertEqual(m[1].string, "pointy teeth")
+        print "pattern.search.Match"
 
 #-----------------------------------------------------------------------------------------------------
 
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUtilityFunctions))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestTaxonomy))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestConstraint))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPattern))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMatch))
     return suite
 
 if __name__ == "__main__":
