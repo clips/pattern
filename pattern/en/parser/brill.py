@@ -142,6 +142,8 @@ class ContextualRules(list):
                     tokens[i-len(b)] = [tokens[i-len(b)][0], rule[1]]
             # Brill's contextual rules assign tags based on a statistical majority vote.
             # Corrections, primarily based on user-feedback.
+            if token[0] == "with": # with/IN
+                tokens[i-len(b)][1] = "IN"
             if i > 0 and T[i-1][0] == "such" and token[0] == "as": # such/JJ as/IN
                 tokens[i-1-len(b)][1] = "JJ"
                 tokens[i-0-len(b)][1] = "IN"
