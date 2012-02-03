@@ -68,7 +68,7 @@ lexicon.contextual_rules.path = os.path.join(MODULE, "Brill_contextual_rules.txt
 WOTAN, PENN_TREEBANK = "wotan", "penntreebank"
 wotan = {
        "N(": [("eigen,ev","NNP"), ("eigen,mv","NNPS"), ("ev","NN"), ("mv","NNS")],
-       "V(": [("ott,3","VBZ"), ("ott","VBP"), ("ovt","VBD"), ("verl_dw","VBN"), ("teg_dw","VBG"), ("inf","VB"), ("hulp","MD")],
+       "V(": [("hulp","MD"), ("ott,3","VBZ"), ("ott","VBP"), ("ovt","VBD"), ("verl_dw","VBN"), ("teg_dw","VBG"), ("inf","VB")],
      "Adj(": [("stell","JJ"), ("vergr","JJR"), ("overtr","JJS")],
      "Adv(": [("deel_v","RP"), ("gew","RB")],
      "Art(": "DT",
