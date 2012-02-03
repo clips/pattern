@@ -39,7 +39,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the pluralization algorithm.
         from pattern.db import Datasheet
         i, n = 0, 0
-        for sg, pl in Datasheet.load(os.path.join("corpora", "celex-wordforms.csv")):
+        for sg, pl in Datasheet.load(os.path.join("corpora", "celex-wordforms-en.csv")):
             if en.pluralize(sg) == pl:
                 i +=1
             n += 1
@@ -50,7 +50,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the singularization algorithm.
         from pattern.db import Datasheet
         i, n = 0, 0
-        for sg, pl in Datasheet.load(os.path.join("corpora", "celex-wordforms.csv")):
+        for sg, pl in Datasheet.load(os.path.join("corpora", "celex-wordforms-en.csv")):
             if en.singularize(pl) == sg:
                 i +=1
             n += 1
@@ -85,7 +85,7 @@ class TestInflection(unittest.TestCase):
         print "pattern.en.inflect._parse_lexeme()"
 
     def test_conjugate(self):
-        # Assert different tenses with differen conjugations.
+        # Assert different tenses with different conjugations.
         for (v1, v2, tense) in (
           ("be", "be",    en.INFINITIVE),
           ("be", "am",    en.PRESENT_1ST_PERSON_SINGULAR),
@@ -112,7 +112,7 @@ class TestInflection(unittest.TestCase):
           ("has", "had",    "p"),
           ("has", "had",    "ppart"),
           ("imaginerify", "imaginerified", "3sgp")):
-            self.assertTrue(en.conjugate(v1, tense), v2)
+            self.assertEqual(en.conjugate(v1, tense), v2)
         print "pattern.en.conjugate()"
     
     def test_lemma(self):
