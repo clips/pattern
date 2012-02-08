@@ -52,7 +52,12 @@ def _import_db(engine=SQLITE):
             # Python 2.4 with pysqlite2
             import pysqlite2.dbapi2 as sqlite
 
-_sum = sum
+def find(match=lambda item: False, list=[]):
+    for item in list:
+        if match(item) is True: 
+            return item
+
+_sum = sum # pattern.db.sum() is also a column aggregate function.
 
 #### DATE FUNCTIONS ##################################################################################
 
@@ -62,14 +67,15 @@ NOW, YEAR = "now", datetime.now().year
 # http://docs.python.org/library/time.html#time.strftime
 DEFAULT_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 date_formats = [
-    DEFAULT_DATE_FORMAT,  # 2010-09-21 09:27:01  => SQLite + MySQL
-    "%Y-%m-%dT%H:%M:%SZ", # 2010-09-20T09:27:01Z => Bing
-    "%Y-%m-%d %H:%M",     # 2010-09-21 09:27
-    "%Y-%m-%d",           # 2010-09-21
-    "%d/%m/%Y",           # 2010/09/21
-    "%d %B %Y",           # 21 September 2010
-    "%B %d %Y",           # September 21 2010
-    "%B %d, %Y",          # September 21, 2010
+    DEFAULT_DATE_FORMAT,      # 2010-09-21 09:27:01  => SQLite + MySQL
+    "%Y-%m-%dT%H:%M:%SZ",     # 2010-09-20T09:27:01Z => Bing
+    "%Y-%m-%dT%H:%M:%S+0000", # 2010-09-20T09:27:01+0000 => Facebook
+    "%Y-%m-%d %H:%M",         # 2010-09-21 09:27
+    "%Y-%m-%d",               # 2010-09-21
+    "%d/%m/%Y",               # 21/09/2010
+    "%d %B %Y",               # 21 September 2010
+    "%B %d %Y",               # September 21 2010
+    "%B %d, %Y",              # September 21, 2010
 ]
 
 class DateError(Exception):
@@ -79,19 +85,28 @@ class Date(datetime):
     """ A convenience wrapper for datetime.datetime with a default string format.
     """
     format = DEFAULT_DATE_FORMAT
-    def __str__(self):
+    @property
+    def timestamp(self):
+        return int(mktime(self.timetuple())) # Seconds elapsed since 1/1/1970.
+    def strftime(self, format):
         if self.year < 1900:
             # Python's strftime() doesn't handle year < 1900:
-            return strftime(self.format, (1900,) + self.timetuple()[1:]).replace("1900", str(self.year), 1)
+            return strftime(format, (1900,) + self.timetuple()[1:]).replace("1900", str(self.year), 1)
+        return datetime.strftime(self, format)
+    def __str__(self):
         return self.strftime(self.format)
     def __repr__(self):
         return "Date(%s)" % repr(self.__str__())
     def __add__(self, time):
         d = datetime.__add__(self, time)
         return date(d.year, d.month, d.day, d.hour, d.minute, d.second, d.microsecond, self.format)
-    @property
-    def timestamp(self):
-        return mktime(self.timetuple()) # Seconds elapsed since 1/1/1970.
+    def __sub__(self, time):
+        d = datetime.__sub__(self, time)
+        return date(d.year, d.month, d.day, d.hour, d.minute, d.second, d.microsecond, self.format)
+    def __iadd__(self, time):
+        return self.__add__(time)
+    def __isub__(self, time):
+        return self.__sub__(time)
 
 def date(*args, **kwargs):
     """ Returns a Date from the given parameters:
@@ -105,6 +120,7 @@ def date(*args, **kwargs):
         If a string is given without an explicit input format, all known formats will be tried.
     """
     d = None
+    f = None
     if len(args) == 0 or args[0] == NOW:
         # No parameters or one parameter NOW.
         d = Date.now()
@@ -117,8 +133,8 @@ def date(*args, **kwargs):
         # One parameter, a date string for which we guess the input format (RFC2822 or known formats).
         try: d = Date.fromtimestamp(mktime_tz(parsedate_tz(args[0])))
         except:
-            for f in ("format" in kwargs and [kwargs["format"]] or []) + date_formats:
-                try: d = Date.strptime(args[0], f); break
+            for format in ("format" in kwargs and [kwargs["format"]] or []) + date_formats:
+                try: d = Date.strptime(args[0], format); break
                 except:
                     pass
         if d is None:
@@ -128,10 +144,11 @@ def date(*args, **kwargs):
         d = Date.strptime(args[0], args[1])
     elif len(args) >= 3:
         # 3-6 parameters: year, month, day, hours, minutes, seconds.
+        f = kwargs.pop("format", None)
         d = Date(*args[:7], **kwargs)
     else:
         raise DateError, "unknown date format"
-    d.format = kwargs.get("format") or len(args)>7 and args[7] or Date.format
+    d.format = kwargs.get("format") or len(args)>7 and args[7] or f or Date.format
     return d
 
 def time(days=0, seconds=0, minutes=0, hours=0, **kwargs):
@@ -153,6 +170,18 @@ def string(value, default=""):
         return default
     return decode_utf8(value)
 
+def decode_utf8(string):
+    """ Returns the given string as a unicode string (if possible).
+    """
+    if isinstance(string, str):
+        for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
+            try: 
+                return string.decode(*encoding)
+            except:
+                pass
+        return string
+    return unicode(string)
+    
 def encode_utf8(string):
     """ Returns the given string as a Python byte string (if possible).
     """
@@ -162,17 +191,6 @@ def encode_utf8(string):
         except:
             return string
     return str(string)
-
-def decode_utf8(string):
-    """ Returns the given string as a unicode string (if possible).
-    """
-    if isinstance(string, str):
-        try: return string.decode("utf-8")
-        except:
-            try: return string.decode("windows-1252")
-            except:
-                 return string
-    return unicode(string)
 
 RE_AMPERSAND = re.compile("\&(?!\#)")           # & not followed by #
 RE_UNICODE   = re.compile(r'&(#?)(x|X?)(\w+);') # &#201;
@@ -194,7 +212,7 @@ def decode_entities(string):
     # http://snippets.dzone.com/posts/show/4569
     def replace_entity(match):
         hash, hex, name = match.group(1), match.group(2), match.group(3)
-        if hash == "#":
+        if hash == "#" or name.isdigit():
             if hex == '' : 
                 return unichr(int(name))                 # "&#38;" => "&"
             if hex in ("x","X"):
@@ -280,7 +298,7 @@ def avg(list):
     
 def variance(list):
     a = avg(list)
-    return _sum([(x-a)**2 for x in list]) / (len(list)-1)
+    return _sum([(x-a)**2 for x in list]) / (len(list)-1 or 1)
     
 def stdev(list):
     return sqrt(variance(list))
@@ -301,7 +319,7 @@ class sqlite_last(list):
 class sqlite_group_concat(list):
     def step(self, value): self.append(value)
     def finalize(self):
-        return ", ".join(v for v in self if isinstance(v, basestring))
+        return ",".join(string(v) for v in self if v is not None)
 
 # SQLite (and MySQL) date string format: 
 # yyyy-mm-dd hh:mm:ss
@@ -335,7 +353,7 @@ class Database(object):
                 dict.__setitem__(self, k, Table(name=k, database=self.db))
             return dict.__getitem__(self, k)
 
-    def __init__(self, name, host="localhost", user="root", password="", type=SQLITE, unicode=True):
+    def __init__(self, name, host="localhost", port=3306, username="root", password="", type=SQLITE, unicode=True, **kwargs):
         """ A collection of tables stored in an SQLite or MySQL database.
             If the database does not exist, creates it.
             If the host, user or password is wrong, raises DatabaseConnectionError.
@@ -344,7 +362,8 @@ class Database(object):
         self.type = type
         self.name = name
         self.host = host
-        self.user = user
+        self.port = port
+        self.username = kwargs.get("user", username)
         self.password = password
         self._connection = None
         self.connect(unicode)
@@ -369,18 +388,18 @@ class Database(object):
         # MySQL
         if self.type == MYSQL:
             try: 
-                self._connection = MySQLdb.connect(self.host, self.user, self.password, self.name, use_unicode=unicode)
+                self._connection = MySQLdb.connect(self.host, self.username, self.password, self.name, port=self.port, use_unicode=unicode)
                 self._connection.autocommit(False)
             except Exception, e:
                 # Create the database if it doesn't exist yet.
                 if "unknown database" not in str(e).lower():
                     raise DatabaseConnectionError, e[1] # Wrong host, username and/or password.
-                connection = MySQLdb.connect(self.host, self.user, self.password)
+                connection = MySQLdb.connect(self.host, self.username, self.password)
                 cursor = connection.cursor()
                 cursor.execute("create database if not exists `%s`;" % self.name)
                 cursor.close()
                 connection.close()
-                self._connection = MySQLdb.connect(self.host, self.user, self.password, self.name, use_unicode=unicode)
+                self._connection = MySQLdb.connect(self.host, self.username, self.password, self.name, port=self.port, use_unicode=unicode)
                 self._connection.autocommit(False)
             if unicode: 
                 self._connection.set_character_set("utf8")
@@ -440,9 +459,18 @@ class Database(object):
     def __len__(self):
         return len(self.tables)
     def __iter__(self):
-        return iter(self.tables)
+        return iter(self.tables.keys())
     def __getitem__(self, k):
         return self.tables[k]
+    def __nonzero__(self):
+        return True
+    
+    # Backwards compatibility.
+    def _get_user(self):
+        return self.username
+    def _set_user(self, v):
+        self.username = v
+    user = property(_get_user, _set_user)
     
     @property
     def query(self):
@@ -519,6 +547,8 @@ class Database(object):
         """ Creates a new table with the given fields.
             The given list of fields must contain values returned from the field() command.
         """
+        if table in self.tables:
+            raise TableError, "table '%s' already exists" % (self.name + "." + table)
         if table.startswith(XML_HEADER):
             # From an XML-string generated with Table.xml.
             return parse_xml(self, table, 
@@ -573,9 +603,10 @@ class Database(object):
         # Anyone wanting to delete an entire database should use an editor.
         if self.type == MYSQL:
             self.execute("drop database `%s`" % self.name, commit=True)
-        if self.type == SQLITE:
-            os.unlink(self.name)
             self.disconnect()
+        if self.type == SQLITE:
+            self.disconnect()
+            os.unlink(self.name)
     
     def __delete__(self):
         try: 
@@ -684,12 +715,18 @@ class Schema(object):
             default = default.strip("'")
             default = default.replace("current_timestamp", NOW)
             default = default.replace("CURRENT_TIMESTAMP", NOW)
+        if default is not None and type == INTEGER:
+            default = int(default)
+        if default is not None and type == FLOAT:
+            default = float(default)
+        if not default and default != 0:
+            default = None
         self.name     = name                   # Field name.
         self.type     = type                   # Field type: INTEGER | FLOAT | STRING | TEXT | BLOB | DATE.
         self.length   = length                 # Field length for STRING.
-        self.default  = default or None        # Default value.
+        self.default  = default                # Default value.
         self.index    = index                  # PRIMARY | UNIQUE | True | False.
-        self.optional = optional in ("YES", 0) # True or False
+        self.optional = optional in (True, "YES") or str(optional) == "0"
         self.extra    = extra or None
     
     def __repr__(self):
@@ -703,6 +740,9 @@ class Schema(object):
 #### TABLE ###########################################################################################
 
 ALL = "*"
+
+class TableError(Exception):
+    pass
 
 class Table(object):
     
@@ -721,7 +761,7 @@ class Table(object):
             [self.append(f) for f in fields]
         def __setitem__(self, *args, **kwargs):
             raise NotImplementedError, "Table.fields only supports append()"
-        insert = remove = pop = __del__ = __setitem__
+        insert = remove = pop = __setitem__
     
     def __init__(self, name, database):
         """ A collection of rows consisting of one or more fields (i.e., table columns) 
@@ -742,6 +782,8 @@ class Table(object):
         # Table column names should avoid " ", ".", "(" and ")".
         # The primary key column is stored in Table.primary_key.
         self.fields = Table.Fields(self)
+        if self.name not in self.database.tables:
+            raise TableError, "table '%s' does not exist" % (self.database.name + "." + self.name)
         if self.db.type == MYSQL:
             q = "show columns from `%s`;" % self.name
         if self.db.type == SQLITE:
@@ -852,8 +894,8 @@ class Table(object):
         commit = kwargs.pop("commit", True) # As fieldname, use abs(Table.name, "commit").
         if len(args) == 0 and len(kwargs) == 1 and isinstance(kwargs.get("values"), dict):
             kwargs = kwargs["values"]        
-        if len(args) == 1 and isinstance(args[0], dict):
-            a=args[0]; a.update(kwargs); kwargs=a 
+        elif len(args) == 1 and isinstance(args[0], dict):
+            a=args[0]; a.update(kwargs); kwargs=a
         if len(self.default) > 0:
             kwargs.update(self.default)
         k = ", ".join("`%s`" % k for k in kwargs.keys())
@@ -916,7 +958,7 @@ sql_functions = \
     "first|last|count|min|max|sum|avg|stdev|group_concat|concatenate|" \
     "year|month|day|hour|minute|second|" \
     "length|lower|upper|substr|substring|replace|trim|round|random|rand|" \
-    "stftime|date_format"
+    "strftime|date_format"
 
 def abs(table, field):
     """ For a given <fieldname>, returns the absolute <tablename>.<fieldname>.
@@ -925,9 +967,9 @@ def abs(table, field):
     def _format(s):
         if not "." in s:
             # Field could be wrapped in a function: year(date) => year(table.date).
-            p = s.endswith(")") and re.match(r"^"+sql_functions+r"\(", s, re.I) or None
-            i = p and len(p.group(0)) or -1
-            return "%s%s.%s" % (s[:i+1], table, s[i+1:])
+            p = s.endswith(")") and re.match(r"^("+sql_functions+r")\(", s, re.I) or None
+            i = p and len(p.group(0)) or 0
+            return "%s%s.%s" % (s[:i], table, s[i:])
         return s
     if isinstance(field, (list, tuple)):
         return [_format(f) for f in field]
@@ -954,6 +996,8 @@ def cmp(field, value, comparison="=", escape=lambda v: _escape(v), table=""):
     # cmp("type", ("cat", "dog"), "!=") => "type not in ('cat','dog')".
     # cmp("amount", (10, 100), ":") => "amount between 10 and 100".
     if isinstance(value, (list, tuple)):
+        if find(lambda v: isinstance(v, basestring) and (v.startswith("*") or v.endswith("*")), value):
+            return "(%s)" % any(*[(field, v) for v in value]).sql(escape=escape)
         if comparison in ("=", "==", IN):
             return "%s in (%s)" % (field, ",".join(escape(v) for v in value))
         if comparison in ("!=", "<>"):
@@ -987,7 +1031,17 @@ def minute(date):
     return "minute(%s)" % date
 def second(date):
     return "second(%s)" % date
-    
+
+#FIRST, LAST, COUNT, MAX, MIN, SUM, AVG, STDEV or CONCATENATE
+# Aggregate functions.
+def count(value):
+    return "count(%s)" % value
+def count(value):
+    return "count(%s)" % value
+def count(value):
+    return "count(%s)" % value
+def count(value):
+    return "count(%s)" % value
 def count(value):
     return "count(%s)" % value
 def sum(value):
@@ -1108,13 +1162,17 @@ class Query(object):
         #if self._id in Query.cache: 
         #    return Query.cache[self._id]
         # Construct the SELECT clause from Query.fields.
-        # With a GROUPY BY clause, fields not used for grouping are wrapped in the given function.
         g = not isinstance(self.group, (list, tuple)) and [self.group] or self.group
         g = [abs(self._table.name, f) for f in g if f is not None]
         fields = not isinstance(self.fields, (list, tuple)) and [self.fields] or self.fields
         fields = [f in self.aliases and "%s as %s" % (f, self.aliases[f]) or f for f in fields]
         fields = abs(self._table.name, fields)
-        fields = self.function and g and [f in g and f or "%s(%s)" % (self.function, f) for f in fields] or fields
+        # With a GROUPY BY clause, fields not used for grouping are wrapped in the given function.
+        # The function can also be a list of functions for each field (FIRST by default).
+        if g and isinstance(self.function, basestring):
+            fields = [f in g and f or "%s(%s)" % (self.function, f) for f in fields]
+        if g and isinstance(self.function, (list, tuple)):
+            fields = [f in g and f or "%s(%s)" % (F,f) for F,f in zip(self.function+[FIRST]*len(fields), fields)]
         q = []
         q.append("select %s" % ", ".join(fields))
         # Construct the FROM clause from Query.relations.
@@ -1151,7 +1209,10 @@ class Query(object):
             elif isinstance(value, int):
                 q.append("%s by %s" % (clause, abs(self._table.name, self._table.fields[value])))
             if self.sort and clause == "order":
-                q.append("%s" % self.order or ASCENDING)
+                if self.order in (ASCENDING, DESCENDING):
+                    q.append("%s" % self.order)
+                elif isinstance(self.order, (list, tuple)):
+                    q[-1] = ",".join(" ".join(v) for v in zip(q[-1].split(","), self.order))
         # Construct the LIMIT clause from Query.range.
         if self.range:
             q.append("limit %s, %s" % (str(self.range[0]), str(self.range[1])))
@@ -1159,19 +1220,25 @@ class Query(object):
         # Cache the SQL-string for faster retrieval.
         #if len(Query.cache) > 100: 
         #    Query.cache.clear()
-        #Query.cache[self._id] = q
+        #Query.cache[self._id] = q # XXX cache is not updated when properties change.
         return q
         
     sql = SQL
     
     def execute(self):
         """ Executes the query and returns the matching rows from the table.
-            Each field is handled by Table.format (e.g. by default entities are encoded).
         """
         return self._table.db.execute(self.SQL())
 
     def rows(self):
+        """ Executes the query and returns the matching rows from the table.
+        """
         return self.execute()
+        
+    def record(self, row):
+        """ Returns the given row as a dictionary of (field or alias, value)-items.
+        """
+        return dict(zip((self.aliases.get(f,f) for f in self.fields), row))
         
     @property
     def xml(self):
