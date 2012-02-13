@@ -34,7 +34,7 @@ class TestInflection(unittest.TestCase):
                 i +=1
             n += 1
         self.assertTrue(float(i) / n > 0.88)
-        print "pattern.en.singularize()"
+        print "pattern.nl.singularize()"
 
     def test_attributive(self):
         # Assert the accuracy of the attributive algorithm ("fel" => "felle").
@@ -45,7 +45,7 @@ class TestInflection(unittest.TestCase):
                 i +=1
             n += 1
         self.assertTrue(float(i) / n > 0.96)
-        print "pattern.en.attributive()"
+        print "pattern.nl.attributive()"
         
     def test_predicative(self):
         # Assert the accuracy of the predicative algorithm ("felle" => "fel").
@@ -56,7 +56,7 @@ class TestInflection(unittest.TestCase):
                 i +=1
             n += 1
         self.assertTrue(float(i) / n > 0.96)
-        print "pattern.en.predicative()"
+        print "pattern.nl.predicative()"
 
     def test_parse_lemma(self):
         # Assert the accuracy of the verb lemmatization algorithm.
@@ -225,7 +225,7 @@ class TestSentiment(unittest.TestCase):
         self.assertTrue(P > 0.77)
         self.assertTrue(R > 0.82)
         self.assertTrue(F > 0.79)
-        print "pattern.en.sentiment()"
+        print "pattern.nl.sentiment()"
 
 #-----------------------------------------------------------------------------------------------------
 
