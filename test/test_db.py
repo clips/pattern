@@ -14,30 +14,35 @@ HOST, PORT, USERNAME, PASSWORD = \
 DB_MYSQL  = DB_MYSQL_EXCEPTION  = None
 DB_SQLITE = DB_SQLITE_EXCEPTION = None
 
-try:
-    DB_MYSQL = db.Database(
-            type = db.MYSQL,
-            name = "pattern_unittest_db", 
-            host = HOST,
-            port = PORT,
-        username = USERNAME,
-        password = PASSWORD)
-except ImportError, e: 
-    # "No module named MySQLdb"
-    DB_MYSQL_EXCEPTION = None
-except Exception, e:
-    DB_MYSQL_EXCEPTION = e
-    
-try:
-    DB_SQLITE = db.Database(
-            type = db.SQLITE,
-            name = "pattern_unittest_db",
-            host = HOST,
-            port = PORT,
-        username = USERNAME,
-        password = PASSWORD)
-except Exception, e:
-    DB_SQLITE_EXCEPTION = e
+def create_db_mysql():
+    global DB_MYSQL
+    global DB_MYSQL_EXCEPTION
+    try:
+        DB_MYSQL = db.Database(
+                type = db.MYSQL,
+                name = "pattern_unittest_db", 
+                host = HOST,
+                port = PORT,
+            username = USERNAME,
+            password = PASSWORD)
+    except ImportError, e: 
+        DB_MYSQL_EXCEPTION = None # "No module named MySQLdb"
+    except Exception, e:
+        DB_MYSQL_EXCEPTION = e
+
+def create_db_sqlite():
+    global DB_SQLITE
+    global DB_SQLITE_EXCEPTION
+    try:
+        DB_SQLITE = db.Database(
+                type = db.SQLITE,
+                name = "pattern_unittest_db",
+                host = HOST,
+                port = PORT,
+            username = USERNAME,
+            password = PASSWORD)
+    except Exception, e:
+        DB_SQLITE_EXCEPTION = e
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -335,11 +340,13 @@ class TestDatabase(unittest.TestCase):
 
 class TestCreateMySQLDatabase(unittest.TestCase):
     def runTest(self):
+        create_db_mysql()
         if DB_MYSQL_EXCEPTION: 
             raise DB_MYSQL_EXCEPTION
             
 class TestCreateSQLiteDatabase(unittest.TestCase):
     def runTest(self):
+        create_db_sqlite()
         if DB_SQLITE_EXCEPTION: 
             raise DB_SQLITE_EXCEPTION
 
@@ -1028,7 +1035,12 @@ class TestDatasheet(unittest.TestCase):
 
 #-----------------------------------------------------------------------------------------------------
 
-def suite():
+def suite(**kwargs):
+    global HOST, PORT, USERNAME, PASSWORD
+    HOST     = kwargs.get("host", "localhost")
+    PORT     = kwargs.get("port", 3306)
+    USERNAME = kwargs.get("username", "root")
+    PASSWORD = kwargs.get("password", "root")
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestEntities))
