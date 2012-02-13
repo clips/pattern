@@ -97,7 +97,7 @@ class TestInflection(unittest.TestCase):
           ("be", "were",  en.PAST_2ND_PERSON_SINGULAR),
           ("be", "was",   en.PAST_3RD_PERSON_SINGULAR),
           ("be", "were",  en.PAST_PLURAL),
-          ("be", "was",   en.PAST),
+          ("be", "were",  en.PAST),
           ("be", "been",  en.PAST_PARTICIPLE),
           ("had", "have",   "inf"),
           ("had", "have",   "1sg"),
