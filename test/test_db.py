@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 import datetime
+import codecs
+import random
 import unittest
 
 from pattern import db
 
 # To test MySQL, you need MySQLdb and a username + password with rights to create a database.
 HOST, PORT, USERNAME, PASSWORD = \
-    "localhost", 3306, "root", "root"
+    "localhost", 3306, "root", ""
 
 DB_MYSQL  = DB_MYSQL_EXCEPTION  = None
 DB_SQLITE = DB_SQLITE_EXCEPTION = None
@@ -550,9 +552,18 @@ class TestTable(unittest.TestCase):
         print "pattern.db.Table.filter()"
         
     def test_search(self):
-        pass
+        # Assert Table.search => Query object.
+        v = self.db.persons.search()
+        self.assertTrue(isinstance(v, db.Query))
+        self.assertTrue(v.table == self.db.persons)
         
-
+    def test_datasheet(self):
+        # Assert Table.datasheet() => Datasheet object.
+        v = self.db.persons.datasheet()
+        self.assertTrue(isinstance(v, db.Datasheet))
+        self.assertTrue(v.fields[0] == ("id", db.INTEGER))
+        print "pattern.db.Table.datasheet()"
+        
 class TestMySQLTable(TestTable):
     db = DB_MYSQL
     
@@ -705,19 +716,27 @@ class TestQuery(unittest.TestCase):
             [(1, u"jack", 20), 
              (2, u"john,jane", 30)])):
             v = self.db.persons.search(**kwargs)
+            v.xml
             self.assertEqual(v.SQL(), sql)
             self.assertEqual(v.rows(), rows)
         # Assert Database.link() permanent relations.
-        self.db.link("persons", "gender", "gender", "id", join=db.LEFT)
         v = self.db.persons.search(fields=["name", "gender.name"])
         v.aliases["gender.name"] = "gender"
+        self.db.link("persons", "gender", "gender", "id", join=db.LEFT)
         self.assertEqual(v.SQL(), 
             "select persons.name, gender.name as gender from `persons` left join `gender` on persons.gender=gender.id;")
         self.assertEqual(v.rows(),
             [(u'john', u'male'), 
              (u'jack', u'male'), 
              (u'jane', u'female')])
+        print "pattern.db.Table.search()"
+        print "pattern.db.Table.Query"
+             
+    def test_xml(self):
         # Assert Query.xml dump.
+        v = self.db.persons.search(fields=["name", "gender.name"])
+        v.aliases["gender.name"] = "gender"
+        self.db.link("persons", "gender", "gender", "id", join=db.LEFT)
         self.assertEqual(v.xml,
             '<?xml version="1.0" encoding="utf-8"?>\n'
             '<query table="persons" fields="name, gender" count="3">\n'
@@ -732,14 +751,280 @@ class TestQuery(unittest.TestCase):
             '\t</rows>\n'
             '</query>'
         )
-        print "pattern.db.Table.search()"
-        print "pattern.db.Table.Query"
+        # Assert Database.create() from XML.
+        self.assertRaises(db.TableError, self.db.create, v.xml) # table 'persons' already exists
+        self.db.create(v.xml, name="persons2")
+        self.assertTrue("persons2" in self.db)
+        self.assertTrue(self.db.persons2.fields == ["name", "gender"])
+        self.assertTrue(len(self.db.persons2)   == 3)
+        print "pattern.db.Query.xml"
+
 
 class TestMySQLQuery(TestQuery):
     db = DB_MYSQL
     
 class TestSQLiteQuery(TestQuery):
     db = DB_SQLITE
+
+#-----------------------------------------------------------------------------------------------------
+
+class TestView(unittest.TestCase):
+
+    db = None
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        # Drop test tables.
+        for table in self.db:
+            self.db.drop(table)
+            
+    def test_view(self):
+        
+        class Products(db.View):
+            def __init__(self, database):
+                db.View.__init__(self, database, "products", schema=[
+                    db.pk(),
+                    db.field("name", db.STRING),
+                    db.field("price", db.FLOAT)
+                ])
+                self.setup()
+                self.table.insert(name="pizza", price=15.0)
+            def render(self, query, **kwargs):
+                q = self.table.search(fields=["name", "price"], filters=[("name", "*%s*" % query)])
+                s = []
+                for row in q.rows():
+                    s.append("<tr>%s</tr>" % "".join(
+                        ["<td class=\"%s\">%s</td>" % f for f in zip(q.fields, row)]))
+                return "<table>" + "".join(s) + "</table>"
+        
+        # Assert View with automatic Table creation.
+        v = Products(self.db)
+        self.assertEqual(v.render("iz"),
+            "<table>"
+            "<tr>"
+            "<td class=\"name\">pizza</td>"
+            "<td class=\"price\">15.0</td>"
+            "</tr>"
+            "</table>"
+        )
+
+class TestMySQLView(TestView):
+    db = DB_MYSQL
+    
+class TestSQLiteView(TestView):
+    db = DB_SQLITE
+
+#-----------------------------------------------------------------------------------------------------
+
+class TestCSV(unittest.TestCase):
+
+    def setUp(self):
+        # Create test table.
+        self.csv = db.CSV(
+            rows=[
+                [u"Schrödinger", "cat", True, 3, db.date(2009, 11, 3)],
+                [u"Hofstadter", "labrador", True, 5, db.date(2007, 8, 4)]
+            ],
+            fields=[
+                ["name", db.STRING],
+                ["type", db.STRING],
+                ["tail", db.BOOLEAN],
+                [ "age", db.INTEGER],
+                ["date", db.DATE],
+            ])
+        
+    def test_csv_header(self):
+        # Assert field headers parser.
+        v1 = db.csv_header_encode("age", db.INTEGER)
+        v2 = db.csv_header_decode("age (INTEGER)")
+        self.assertEqual(v1, "age (INTEGER)")
+        self.assertEqual(v2, ("age", db.INTEGER))
+        print "pattern.db.csv_header_encode()"
+        print "pattern.db.csv_header_decode()"
+        
+    def test_csv(self):
+        # Assert saving and loading data (field types are preserved).
+        v = self.csv
+        v.save("test.csv", headers=True)
+        v = db.CSV.load("test.csv", headers=True)
+        self.assertTrue(isinstance(v, list))
+        self.assertTrue(v.headers[0] == (u"name", db.STRING))
+        self.assertTrue(v[0] == [u"Schrödinger", "cat", True, 3, db.date(2009, 11, 3)])
+        os.unlink("test.csv")
+        print "pattern.db.CSV"
+        print "pattern.db.CSV.save()"
+        print "pattern.db.CSV.load()"
+        
+    def test_file(self):
+        # Assert CSV file contents.
+        v = self.csv
+        v.save("test.csv", headers=True)
+        v = open("test.csv", "rb").read()
+        v = db.decode_utf8(v.lstrip(codecs.BOM_UTF8))
+        v = v.replace("\r\n", "\n")
+        self.assertEqual(v, 
+            u'"name (STRING)","type (STRING)","tail (BOOLEAN)","age (INTEGER)","date (DATE)"\n'
+            u'"Schrödinger","cat","True","3","2009-11-03 00:00:00"\n'
+            u'"Hofstadter","labrador","True","5","2007-08-04 00:00:00"'
+        )
+        os.unlink("test.csv")
+
+#-----------------------------------------------------------------------------------------------------
+
+class TestDatasheet(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+        
+    def test_rows(self):
+        # Assert Datasheet.rows DatasheetRows object.
+        v = db.Datasheet(rows=[[1,2],[3,4]])
+        v.rows += [5,6]
+        v.rows[0] = [0,0]
+        v.rows.swap(0,1)
+        v.rows.insert(1, [1,1])
+        v.rows.pop(1)
+        self.assertTrue(isinstance(v.rows, db.DatasheetRows))
+        self.assertEqual(v.rows, [[3,4],[0,0],[5,6]])
+        self.assertEqual(v.rows[0], [3,4])
+        self.assertEqual(v.rows[-1], [5,6])
+        self.assertEqual(v.rows.count([3,4]), 1)
+        self.assertEqual(v.rows.index([3,4]), 0)
+        self.assertEqual(sorted(v.rows, reverse=True), [[5,6],[3,4],[0,0]])
+        self.assertRaises(AttributeError, v._set_rows, [])
+        # Assert default for new rows with missing columns.
+        v.rows.extend([[7],[9]], default=0)
+        self.assertEqual(v.rows, [[3,4],[0,0],[5,6],[7,0],[9,0]])
+        print "pattern.db.Datasheet.rows"
+        
+    def test_columns(self):
+        # Assert Datasheet.columns DatasheetColumns object.
+        v = db.Datasheet(rows=[[1,3],[2,4]])
+        v.columns += [5,6]
+        v.columns[0] = [0,0]
+        v.columns.swap(0,1)
+        v.columns.insert(1, [1,1])
+        v.columns.pop(1)
+        self.assertTrue(isinstance(v.columns, db.DatasheetColumns))
+        self.assertEqual(v.columns, [[3,4],[0,0],[5,6]])
+        self.assertEqual(v.columns[0], [3,4])
+        self.assertEqual(v.columns[-1], [5,6])
+        self.assertEqual(v.columns.count([3,4]), 1)
+        self.assertEqual(v.columns.index([3,4]), 0)
+        self.assertEqual(sorted(v.columns, reverse=True), [[5,6],[3,4],[0,0]])
+        self.assertRaises(AttributeError, v._set_columns, [])
+        # Assert default for new columns with missing rows.
+        v.columns.extend([[7],[9]], default=0)
+        self.assertEqual(v.columns, [[3,4],[0,0],[5,6],[7,0],[9,0]])
+        print "pattern.db.Datasheet.columns"
+        
+    def test_column(self):
+        # Assert DatasheetColumn object.
+        # It has a reference to the parent Datasheet, as long as it is not deleted from the datasheet.
+        v = db.Datasheet(rows=[[1,3],[2,4]])
+        column = v.columns[0]
+        column.insert(1, 0, default=None)
+        self.assertEqual(v, [[1,3], [0,None], [2,4]])
+        del v.columns[0]
+        self.assertTrue(column._datasheet, None)
+        print "pattern.db.DatasheetColumn"
+    
+    def test_fields(self):
+        # Assert Datasheet with incomplete headers.
+        v = db.Datasheet(rows=[[u"Schrödinger", "cat"]], fields=[("name", db.STRING)])
+        self.assertEqual(v.fields, [("name", db.STRING)])
+        # Assert (None, None) for missing headers.
+        v.columns.swap(0,1)
+        self.assertEqual(v.fields, [(None, None), ("name", db.STRING)])
+        v.columns[0] = ["dog"]
+        self.assertEqual(v.fields, [(None, None), ("name", db.STRING)])
+        # Assert removing a column removes the header.
+        v.columns.pop(0)
+        self.assertEqual(v.fields, [("name",db.STRING)])
+        # Assert new columns with header description.
+        v.columns.append(["cat"])
+        v.columns.append([3], field=("age", db.INTEGER))
+        self.assertEqual(v.fields, [("name", db.STRING), (None, None), ("age", db.INTEGER)])
+        # Assert column by name.
+        self.assertEqual(v.name, [u"Schrödinger"])
+        print "pattern.db.Datasheet.fields"
+    
+    def test_group(self):
+        # Assert Datasheet.group().
+        v1 = db.Datasheet(rows=[[1,2,"a"],[1,3,"b"],[1,4,"c"],[0,0,"d"]])
+        v2 = v1.group(0)
+        v3 = v1.group(0, function=db.LAST)
+        v4 = v1.group(0, function=(db.FIRST, db.COUNT, db.CONCATENATE))
+        v5 = v1.group(0, function=db.CONCATENATE, key=lambda j: j>0)
+        self.assertEqual(v2, [[1,2,"a"], [0,0,"d"]])
+        self.assertEqual(v3, [[1,4,"c"], [0,0,"d"]])
+        self.assertEqual(v4, [[1,3,u"a,b,c"], [0,1,u"d"]])
+        self.assertEqual(v5, [[True,u"2,3,4",u"a,b,c"], [False,u"0",u"d"]])
+        print "pattern.db.Datasheet.group()"
+        
+    def test_slice(self):
+        # Assert Datasheet slices.
+        v = db.Datasheet([[1,2,3], [4,5,6], [7,8,9]])
+        v = v.copy()
+        self.assertEqual(v.slice(0,1,3,2), [[2,3], [5,6], [8,9]])
+        self.assertEqual(v[2],       [7,8,9])
+        self.assertEqual(v[2,2],     9)
+        self.assertEqual(v[2,1:],    [8,9])
+        self.assertEqual(v[0:2],     [[1,2,3], [4,5,6]])
+        self.assertEqual(v[0:2,1],   [2,5])
+        self.assertEqual(v[0:2,0:2], [[1,2], [4,5]])
+        # Assert new Datasheet for i:j slices.
+        self.assertTrue(isinstance(v[0:2],     db.Datasheet))
+        self.assertTrue(isinstance(v[0:2,0:2], db.Datasheet))
+        print "pattern.db.Datasheet.slice()"
+        
+    def test_copy(self):
+        # Assert Datasheet.copy().
+        v = db.Datasheet([[1,2,3], [4,5,6], [7,8,9]])
+        self.assertTrue(v.copy(), [[1,2,3], [4,5,6], [7,8,9]])
+        self.assertTrue(v.copy(rows=[0]), [[1,2,3]])
+        self.assertTrue(v.copy(rows=[0], columns=[0]), [[1]])
+        self.assertTrue(v.copy(columns=[0]), [[1], [4], [7]])
+        print "pattern.db.Datasheet.copy()"
+        
+    def test_map(self):
+        # Assert Datasheet.map() (in-place).
+        v = db.Datasheet(rows=[[1,2],[3,4]])
+        v.map(lambda x: x+1)
+        self.assertEqual(v, [[2,3],[4,5]])
+        print "pattern.db.Datasheet.map()"
+        
+    def test_json(self):
+        # Assert JSON output.
+        v = db.Datasheet(rows=[[u"Schrödinger", 3], [u"Hofstadter", 5]])
+        self.assertEqual(v.json, u'[["Schrödinger", 3], ["Hofstadter", 5]]')
+        # Assert JSON output with headers.
+        v = db.Datasheet(rows=[[u"Schrödinger", 3], [u"Hofstadter",  5]], 
+                       fields=[("name", db.STRING), ("age", db.INT)])
+        random.seed(0)
+        self.assertEqual(v.json, u'[{"age": 3, "name": "Schrödinger"}, {"age": 5, "name": "Hofstadter"}]')
+        print "pattern.db.Datasheet.json"
+        
+    def test_flip(self):
+        # Assert flip matrix.
+        v = db.flip(db.Datasheet([[1,2], [3,4]]))
+        self.assertEqual(v, [[1,3], [2,4]])
+        print "pattern.db.flip()"
+        
+    def test_truncate(self):
+        # Assert string truncate().
+        v1 = "a" * 50
+        v2 = "a" * 150
+        v3 = "aaa " * 50
+        self.assertEqual(db.truncate(v1), (v1, ""))
+        self.assertEqual(db.truncate(v2), ("a"*99+"-", "a"*51))
+        self.assertEqual(db.truncate(v3), (("aaa "*25).strip(), "aaa "*25))
+        print "db.truncate()"
+        
+    def test_pprint(self):
+        pass
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -756,12 +1041,16 @@ def suite():
         suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMySQLDatabase))
         suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMySQLTable))
         suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMySQLQuery))
+        suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMySQLView))
         suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDeleteMySQLDatabase))
     if DB_SQLITE:
         suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSQLiteDatabase))
         suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSQLiteTable))
         suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSQLiteQuery))
+        suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSQLiteView))
         suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDeleteSQLiteDatabase))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCSV))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDatasheet))
     return suite
 
 if __name__ == "__main__":
