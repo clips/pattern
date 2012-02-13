@@ -1,7 +1,7 @@
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
 from pattern.db  import date, time, NOW
-from pattern.web import Google, NEWS
+from pattern.web import Bing, NEWS
 
 # It is often useful to keep a date stamp for each row in the table.
 # The pattern.db module's date() function can be used for this.
@@ -18,7 +18,7 @@ print
 # All possible formatting options:
 # http://docs.python.org/library/time.html#time.strftime
 
-for r in Google(license=None).search("today", type=NEWS):
+for r in Bing(license=None).search("today", type=NEWS):
     print r.title
     print repr(r.date) # Result.date is a string (e.g. we can't > <= += with the date).
     print date(r.date) # date() can parse any Result.date in the web module.
