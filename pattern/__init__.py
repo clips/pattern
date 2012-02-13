@@ -43,3 +43,6 @@ __copyright__ = "Copyright (c) 2010 University of Antwerp (BE)"
 __license__   = "BSD"
 
 ######################################################################################################
+
+import os
+__path__.append(os.path.join(__path__[0], "text"))

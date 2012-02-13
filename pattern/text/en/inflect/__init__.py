@@ -339,7 +339,7 @@ def pluralize(word, pos=NOUN, custom={}, classical=True):
     words = word.replace("-", " ").split(" ")
     if len(words) > 1:
         if words[1] == "general" or words[1] == "General" and \
-            words[0] not in categories["general-generals"]:
+            words[0] not in plural_categories["general-generals"]:
             return word.replace(words[0], pluralize(words[0], pos, custom, classical))
         elif words[1] in plural_prepositions:
             return word.replace(words[0], pluralize(words[0], pos, custom, classical))
