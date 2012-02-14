@@ -78,7 +78,7 @@ wotan = {
     "Pron(": [("bez","PRP$"), ("","PRP")],
     "Punc(": [("komma",","), ("haak_open","("), ("haak_sluit",")"), ("",".")],
       "Int": "UH",
-     "Misc": [("symbool","SYM")]
+     "Misc": [("symbool","SYM"), ("vreemd","FW")]
 }
 
 def wotan2penntreebank(tag, default="NN"):
@@ -106,7 +106,8 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
           "light": False,
         "lexicon": LEXICON,
             "map": kwargs.get("tagset","").lower() != WOTAN and wotan2penntreebank or None,
-       "language": "nl"
+       "language": "nl",
+        "default": "N(soort,ev,neut)"
     })
     s = _en_parse(s, False, tags, chunks, relations, **kwargs)
     if lemmata:
