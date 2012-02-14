@@ -142,11 +142,21 @@ class ContextualRules(list):
                     tokens[i-len(b)] = [tokens[i-len(b)][0], rule[1]]
             # Brill's contextual rules assign tags based on a statistical majority vote.
             # Corrections, primarily based on user-feedback.
-            if token[0] == "with": # with/IN
+            # with/IN
+            if token[0] == "with":
                 tokens[i-len(b)][1] = "IN"
-            if i > 0 and T[i-1][0] == "such" and token[0] == "as": # such/JJ as/IN
+            # such/JJ as/IN
+            if i > 0 and T[i-1][0] == "such" and token[0] == "as":
                 tokens[i-1-len(b)][1] = "JJ"
                 tokens[i-0-len(b)][1] = "IN"
+            # a/DT burning/VBG candle/NN => a/DT burning/JJ candle/NN
+            if token[1] == "VBG":
+                if T[i-1][1] == "DT" and T[i+1][1].startswith("NN"):
+                    tokens[i-len(b)][1] = "JJ"
+            # een/DT brandende/VBG kaars/NN => een/DT brandende/JJ kaars/NN
+            if token[1].startswith("V(") and "teg_dw" in token[1]:
+                if T[i-1][1].startswith("Art(") and T[i+1][1].startswith("N("):
+                    tokens[i-len(b)][1] = "JJ"
         return tokens
 
 #### BRILL LEXICON ###################################################################################
