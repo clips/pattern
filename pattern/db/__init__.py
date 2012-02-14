@@ -53,6 +53,8 @@ def _import_db(engine=SQLITE):
             import pysqlite2.dbapi2 as sqlite
 
 def find(match=lambda item: False, list=[]):
+    """ Returns the first item in the list for which match(item) is True.
+    """
     for item in list:
         if match(item) is True: 
             return item
