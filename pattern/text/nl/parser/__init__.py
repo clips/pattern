@@ -28,7 +28,11 @@ from en.parser import commandline
 
 def tokenize(s, punctuation=PUNCTUATION, abbreviations=["bv.", "blz.", "e.d.", "m.a.w.", "nl."], replace={}):
     # 's in Dutch preceded by a vowel indicates plural ("auto's"): don't replace.
-    return _en_tokenize(s, punctuation, abbreviations, replace)
+    s = _en_tokenize(s, punctuation, abbreviations, replace)
+    s = [s.replace("' s morgens", "'s morgens") for s in s]
+    s = [s.replace("' s middags", "'s middags") for s in s]
+    s = [s.replace("' s avonds" , "'s avonds" ) for s in s]
+    return s
     
 _tokenize = tokenize
 
@@ -68,15 +72,15 @@ lexicon.contextual_rules.path = os.path.join(MODULE, "Brill_contextual_rules.txt
 WOTAN, PENN_TREEBANK = "wotan", "penntreebank"
 wotan = {
        "N(": [("eigen,ev","NNP"), ("eigen,mv","NNPS"), ("ev","NN"), ("mv","NNS")],
-       "V(": [("hulp","MD"), ("ott,3","VBZ"), ("ott","VBP"), ("ovt","VBD"), ("verl_dw","VBN"), ("teg_dw","VBG"), ("inf","VB")],
+       "V(": [("hulp","MD"), ("ott,3","VBZ"), ("ott","VBP"), ("ovt","VBD"), ("verldw","VBN"), ("tegdw","VBG"), ("imp","VB"), ("inf","VB")],
      "Adj(": [("stell","JJ"), ("vergr","JJR"), ("overtr","JJS")],
-     "Adv(": [("deel_v","RP"), ("gew","RB")],
+     "Adv(": [("deel","RP"), ("gew","RB"), ("pro","RB")],
      "Art(": "DT",
     "Conj(": "CC",
      "Num(": "CD",
-    "Prep(": [("voor_inf","TO"), ("", "IN")],
+    "Prep(": [("voorinf","TO"), ("", "IN")],
     "Pron(": [("bez","PRP$"), ("","PRP")],
-    "Punc(": [("komma",","), ("haak_open","("), ("haak_sluit",")"), ("",".")],
+    "Punc(": [("komma",","), ("haakopen","("), ("haaksluit",")"), ("",".")],
       "Int": "UH",
      "Misc": [("symbool","SYM"), ("vreemd","FW")]
 }
@@ -90,7 +94,7 @@ def wotan2penntreebank(tag, default="NN"):
             if not isinstance(v, list):
                 return v
             for a,b in v:
-                if a in tag: return b
+                if a in tag.replace("_",""): return b
             return tag
     return tag
 
@@ -99,7 +103,7 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
         Sentences in the output are separated by newlines.
     """
     if tokenize:
-        s = [s.split(" ") for s in _tokenize(s)]
+        s = _tokenize(s)
     # Reuse the English parser:
     kwargs.update({
         "lemmata": False,
