@@ -39,9 +39,6 @@ class Vector(object):
     def __init__(self, x=0, y=0):
         self.x = x
         self.y = y
-        
-class Base(object):
-    pass
 
 #--- NODE --------------------------------------------------------------------------------------------
 
@@ -70,19 +67,19 @@ class Node(object):
         self.graph       = None
         self.links       = Links()
         self.id          = id
-        self._x          = 0    # Calculated by Graph.layout.update().
-        self._y          = 0    # Calculated by Graph.layout.update().
-        self.force       = Vector(0,0)
+        self._x          = 0.0 # Calculated by Graph.layout.update().
+        self._y          = 0.0 # Calculated by Graph.layout.update().
+        self.force       = Vector(0.0, 0.0)
         self.radius      = radius
+        self.fixed       = kwargs.pop("fixed", False)
         self.fill        = kwargs.pop("fill", None)
         self.stroke      = kwargs.pop("stroke", (0,0,0,1))
         self.strokewidth = kwargs.pop("strokewidth", 1)
         self.text        = kwargs.get("text", True) and \
-            Text(unicode(id), 
+            Text(isinstance(id, unicode) and id or str(id).decode("utf-8", "ignore"), 
                    width = 85,
                     fill = kwargs.pop("text", (0,0,0,1)), 
                 fontsize = kwargs.pop("fontsize", 11), **kwargs) or None
-        self.fixed       = kwargs.pop("fixed", False)
         self._weight     = None # Calculated by Graph.eigenvector_centrality().
         self._centrality = None # Calculated by Graph.betweenness_centrality().
     
@@ -106,7 +103,7 @@ class Node(object):
     @property
     def edges(self):
         return self.graph is not None \
-           and [e for e in self.graph.edges if self.id in (e.node1, e.node2)] \
+           and [e for e in self.graph.edges if self.id in (e.node1.id, e.node2.id)] \
             or []
     
     @property
@@ -218,9 +215,9 @@ class Edge(object):
         self._weight = v
         # Clear cached adjacency map in the graph, since edge weights have changed.
         if self.node1.graph is not None: 
-            self.node1.graph._adjacency, self.node1.graph._paths = None, {}
+            self.node1.graph._adjacency = None
         if self.node2.graph is not None: 
-            self.node2.graph._adjacency, self.node1.graph._paths = None, {}
+            self.node2.graph._adjacency = None
     
     weight = property(_get_weight, _set_weight)
         
@@ -296,7 +293,6 @@ class Graph(dict):
         self.edges      = []   # List of Edge objects.
         self.root       = None
         self._adjacency = None # Cached adjacency() dict.
-        self._paths     = {}   # Cached shortest paths.
         self.layout     = layout==SPRING and GraphSpringLayout(self) or GraphLayout(self)
         self.distance   = distance
     
@@ -326,7 +322,7 @@ class Graph(dict):
             self[n.id] = n; n.graph = self
             self.root = kwargs.get("root", False) and n or self.root
             # Clear adjacency cache.
-            self._adjacency, self._paths = None, {}
+            self._adjacency = None
         return n
     
     def add_edge(self, id1, id2, *args, **kwargs):
@@ -351,7 +347,7 @@ class Graph(dict):
         n1.links.append(n2, edge=e2)
         n2.links.append(n1, edge=e1 or e2)
         # Clear adjacency cache.
-        self._adjacency, self._paths = None, {}
+        self._adjacency = None
         return e2        
             
     def remove(self, x):
@@ -370,7 +366,7 @@ class Graph(dict):
         if isinstance(x, Edge):
             self.edges.remove(x)
         # Clear adjacency cache.
-        self._adjacency, self._paths = None, {}
+        self._adjacency = None
     
     def node(self, id):
         """ Returns the node in the graph with the given id.
@@ -383,7 +379,7 @@ class Graph(dict):
         return id1 in self and id2 in self and self[id1].links.edge(id2) or None
     
     def paths(self, node1, node2, length=4, path=[]):
-        """ Returns a list of paths (shorter than given length) connecting the two nodes.
+        """ Returns a list of paths (shorter than or equal to given length) connecting the two nodes.
         """
         if not isinstance(node1, Node): 
             node1 = self[node1]
@@ -398,13 +394,9 @@ class Graph(dict):
             node1 = self[node1]
         if not isinstance(node2, Node): 
             node2 = self[node2]
-        if not len(self._paths) < 1000:
-            self._paths = {}
-        if node2.id in self._paths.setdefault(node1.id,{}):
-            return self._paths[node1.id][node2.id]
         try: 
             p = dijkstra_shortest_path(self, node1.id, node2.id, heuristic, directed)
-            p = self._paths[node1.id][node2.id] = [self[id] for id in p]
+            p = [self[id] for id in p]
             return p
         except IndexError:
             return None
@@ -506,7 +498,10 @@ class Graph(dict):
         # Magical fairy dust to copy subclasses of Node.
         # We assume that the subclass constructor takes an optional "text" parameter
         # (Text objects in NodeBox for OpenGL's implementation are expensive).
-        new = self.add_node(n.id, text=False, root=kwargs.get("root",False))
+        try:
+            new = self.add_node(n.id, root=kwargs.get("root",False), text=False)
+        except TypeError:
+            new = self.add_node(n.id, root=kwargs.get("root",False))
         new.__class__ = n.__class__
         new.__dict__.update((k, deepcopy(v)) for k,v in n.__dict__.iteritems() 
             if k not in ("graph", "links", "_x", "_y", "force", "_weight", "_centrality"))
@@ -528,7 +523,7 @@ class Graph(dict):
         """
         g = Graph(layout=None, distance=self.distance)
         g.layout = self.layout.copy(graph=g)
-        for n in (nodes==ALL and self.nodes or nodes):
+        for n in (nodes==ALL and self.nodes or (isinstance(n, Node) and n or self[n] for n in nodes)):
             g._add_node_copy(n, root=self.root==n)
         for e in self.edges: 
             g._add_edge_copy(e)
@@ -685,7 +680,7 @@ bfs = breadth_first_search;
 
 def paths(graph, id1, id2, length=4, path=[], _root=True):
     """ Returns a list of paths from node with id1 to node with id2.
-        Only paths shorter than the given length are included.
+        Only paths shorter than or equal to the given length are included.
         Uses a brute-force DFS approach (performance drops exponentially for longer paths).
     """
     if len(path) >= length:
