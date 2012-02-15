@@ -36,7 +36,7 @@ replacements = {
 }
 
 # Handle common abbreviations.
-abbreviations = dict.fromkeys([
+ABBREVIATIONS = abbreviations = dict.fromkeys([
     "a.m.", "cf.", "e.g.", "ex.", "etc.", "fig.", "i.e.", "Mr.", "p.m.", "vs.",
 ], True)
 a1 = re.compile("^[A-Za-z]\.$")                                    # single letter, "T. De Smedt"
@@ -347,12 +347,15 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
     """ Takes a string (sentences) and returns a tagged Unicode string. 
         Sentences in the output are separated by newlines.
     """
-    if isinstance(s, str):
-        s = s.decode(encoding)
     if tokenize:
         s = _tokenize(s)
+    if isinstance(s, (list, tuple)):
         s = [s.split(" ") for s in s]
+    if isinstance(s, basestring):
+        s = [s.split(" ")]
     for i in range(len(s)):
+        if isinstance(s[i], str):
+            s[i] = s[i].decode(encoding)
         if tags or chunks or prepositions or lemmata:
             s[i] = find_tags(s[i], 
                     default = kwargs.get("default", "NN"), 
