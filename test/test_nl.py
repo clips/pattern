@@ -174,7 +174,7 @@ class TestParser(unittest.TestCase):
         self.assertEqual(v,
             "De/DT/B-NP/O zwarte/JJ/I-NP/O kat/NN/I-NP/O " + \
             "zat/VBD/B-VP/O " + \
-            "op/IN/B-PP/O de/DT/O/O mat/VBZ/B-VP/O ././O/O"
+            "op/IN/B-PP/O de/DT/O/O mat/JJ/B-ADJP/O ././O/O"
         )
         # 2) "jaagt" and "vogels" lemmata are "jagen" and "vogel".
         v = nl.parser.parse("De zwarte kat jaagt op vogels.", lemmata=True)
