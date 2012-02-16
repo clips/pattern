@@ -5,7 +5,7 @@
 # http://www.clips.ua.ac.be/pages/pattern
 
 ######################################################################################################
-# This module can benefit greatly from loading psyco.
+# This module can benefit from loading psyco when iterating a GraphLayout.
 
 from math     import sqrt, pow
 from math     import sin, cos, atan2, degrees, radians, pi
@@ -47,14 +47,14 @@ def deepcopy(o):
     # in which case it needs to be copied by invoking Color.copy().
     if o is None:
         return o
+    if hasattr(o, "copy"):
+        return o.copy()
     if isinstance(o, (basestring, bool, int, float, long, complex)):
         return o
     if isinstance(o, (list, tuple, set)):
         return o.__class__(deepcopy(v) for v in o)
     if isinstance(o, dict):
         return dict((deepcopy(k), deepcopy(v)) for k,v in o.iteritems())
-    if hasattr(o, "copy"):
-        return o.copy()
     raise Exception, "don't know how to copy %s" % o.__class__.__name__
 
 class Node(object):
@@ -261,7 +261,8 @@ class Edge(object):
 # Return value of Graph.shortest_paths().
 # Dictionary values can be accessed by Node as well as by node id.
 class nodedict(dict):
-    def __init__(self, graph):
+    def __init__(self, graph, *args, **kwargs):
+        dict.__init__(self, *args, **kwargs)
         self.graph = graph
     def __contains__(self, node):
         return dict.__contains__(self, self.graph.get(node, node))
@@ -417,7 +418,7 @@ class Graph(dict):
             Node.weight is higher for nodes with a lot of (indirect) incoming traffic.
         """
         ec = eigenvector_centrality(self, normalized, reversed, rating, iterations, tolerance)
-        ec = dict((self[id], w) for id, w in ec.iteritems())
+        ec = nodedict(self, ((self[id], w) for id, w in ec.iteritems()))
         for n, w in ec.iteritems(): 
             n._weight = w
         return ec
@@ -428,7 +429,7 @@ class Graph(dict):
             Node.centrality is higher for nodes with a lot of passing traffic.
         """
         bc = brandes_betweenness_centrality(self, normalized, directed)
-        bc = dict((self[id], w) for id, w in bc.iteritems())
+        bc = nodedict(self, ((self[id], w) for id, w in bc.iteritems()))
         for n, w in bc.iteritems(): 
             n._centrality = w
         return bc
@@ -438,7 +439,7 @@ class Graph(dict):
             Nodes with a lot of traffic will be at the start of the list.
         """
         o = lambda node: getattr(node, order)
-        nodes = ((o(n), n) for n in self.nodes if o(n) > threshold)
+        nodes = ((o(n), n) for n in self.nodes if o(n) >= threshold)
         nodes = reversed(sorted(nodes))
         return [n for w, n in nodes]
         
@@ -655,7 +656,7 @@ def depth_first_search(node, visit=lambda node: False, traversable=lambda node, 
     _visited[node.id] = True
     for n in node.links:
         if stop: return True
-        if not traversable(node, node.links.edge(n)): continue
+        if traversable(node, node.links.edge(n)) is False: continue
         if not n.id in _visited:
             stop = depth_first_search(n, visit, traversable, _visited)
     return stop
@@ -672,7 +673,7 @@ def breadth_first_search(node, visit=lambda node: False, traversable=lambda node
         if not node.id in _visited:
             if visit(node):
                 return True
-            q.extend((n for n in node.links if traversable(node, node.links.edge(n))))
+            q.extend((n for n in node.links if traversable(node, node.links.edge(n)) is not False))
             _visited[node.id] = True
     return False
         
@@ -820,7 +821,11 @@ def floyd_warshall_all_pairs_distance(graph, heuristic=None, directed=False):
                 if du[v] > duw and du[v] > duw + dw[v]:
                     d[u][v] = duw + dw[v]
                     p[u][v] = p[w][v]
-    return dict((u, dict((v, w) for v,w in d[u].iteritems() if w < 1e30)) for u in d)
+    class pdict(dict):
+        def __init__(self, predecessors, *args, **kwargs):
+            dict.__init__(self, *args, **kwargs)
+            self.predecessors = predecessors
+    return pdict(p, ((u, dict((v, w) for v,w in d[u].iteritems() if w < 1e30)) for u in d))
 
 def predecessor_path(tree, u, v):
     def _traverse(u, v):
@@ -920,18 +925,17 @@ def eigenvector_centrality(graph, normalized=True, reversed=True, rating={}, ite
 # a & b => elements that appear in a as well as in b.
 # a - b => elements that appear in a but not in b.
 def union(a, b):
-    return [x for x in a] + [x for x in b if x not in a]
+    return list(set(a) | set(b))
 def intersection(a, b):
-    return [x for x in a if x in b]
+    return list(set(a) & set(b))
 def difference(a, b):
-    return [x for x in a if x not in b]
+    return list(set(a) - set(b))
 
 def partition(graph):
     """ Returns a list of unconnected subgraphs.
     """
     # Creates clusters of nodes and directly connected nodes.
     # Iteratively merges two clusters if they overlap.
-    # Optimized: about 2x faster than original implementation.
     g = []
     for n in graph.nodes:
         g.append(dict.fromkeys((n.id for n in n.flatten()), True))
@@ -958,6 +962,8 @@ def is_clique(graph):
 def clique(graph, id):
     """ Returns the largest possible clique for the node with given id.
     """
+    if isinstance(id, Node):
+        id = id.id
     a = [id]
     for n in graph.nodes:
         try:
@@ -987,6 +993,10 @@ def unlink(graph, node1, node2=None):
         If only node1 is given, removes all edges to and from it.
         This does not remove node1 from the graph.
     """
+    if not isinstance(node1, Node):
+        node1 = graph[node1]
+    if not isinstance(node2, Node) and node2 is not None:
+        node2 = graph[node2]
     for e in list(graph.edges):
         if node1 in (e.node1, e.node2) and node2 in (e.node1, e.node2, None):
             graph.edges.remove(e)
@@ -999,6 +1009,10 @@ def unlink(graph, node1, node2=None):
 def redirect(graph, node1, node2):
     """ Connects all of node1's edges to node2 and unlinks node1.
     """
+    if not isinstance(node1, Node):
+        node1 = graph[node1]
+    if not isinstance(node2, Node):
+        node2 = graph[node2]
     for e in graph.edges:
         if node1 in (e.node1, e.node2):
             if e.node1 == node1 and e.node2 != node2:
@@ -1011,6 +1025,8 @@ def cut(graph, node):
     """ Unlinks the given node, but keeps edges intact by connecting the surrounding nodes.
         If A, B, C, D are nodes and A->B, B->C, B->D, if we then cut B: A->C, A->D.
     """
+    if not isinstance(node, Node):
+        node = graph[node]
     for e in graph.edges:
         if node in (e.node1, e.node2):
             for n in node.links:
@@ -1024,6 +1040,12 @@ def insert(graph, node, a, b):
     """ Inserts the given node between node a and node b.
         If A, B, C are nodes and A->B, if we then insert C: A->C, C->B.
     """
+    if not isinstance(node, Node):
+        node = graph[node]
+    if not isinstance(a, Node): 
+        a = graph[a]
+    if not isinstance(b, Node): 
+        b = graph[b]
     for e in graph.edges:
         if e.node1 == a and e.node2 == b: 
             graph._add_edge_copy(e, node1=a, node2=node) 
