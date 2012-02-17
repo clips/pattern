@@ -6,7 +6,7 @@ import subprocess
 
 from pattern import en
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestInflection(unittest.TestCase):
 
@@ -149,7 +149,7 @@ class TestInflection(unittest.TestCase):
         self.assertEqual(en.superlative("important"), "most important")
         print "pattern.en.superlative()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestQuantification(unittest.TestCase):
     
@@ -206,7 +206,7 @@ class TestQuantification(unittest.TestCase):
         self.assertEqual(en.reflect(en.reflect), "a function")
         print "pattern.en.reflect()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestParser(unittest.TestCase):
     
@@ -418,7 +418,7 @@ class TestParser(unittest.TestCase):
         self.assertEqual(v, "Nice/JJ/B-NP/O/O/nice cat/NN/I-NP/O/O/cat ././O/O/O/.")
         print "python -m pattern.en.parser"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestParseTree(unittest.TestCase):
     
@@ -594,7 +594,7 @@ class TestParseTree(unittest.TestCase):
         self.assertEqual(v.set[0], 1)
         print "pattern.en.parser.tree.dynamic_map()"
         
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestModality(unittest.TestCase):
     
@@ -698,7 +698,7 @@ class TestModality(unittest.TestCase):
         self.assertTrue(F > 0.65)
         print "pattern.en.modality()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestSentiment(unittest.TestCase):
     
@@ -758,7 +758,7 @@ class TestSentiment(unittest.TestCase):
         self.assertTrue(lexicon["horrible"][0] < 0)
         print "pattern.en.parser.sentiment.SentiWordNet"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestWordNet(unittest.TestCase):
     
@@ -835,7 +835,7 @@ class TestWordNet(unittest.TestCase):
         self.assertEqual(v.weight, (0.125, 0.125))
         print "pattern.en.wordnet.sentiwordnet"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestWordlists(unittest.TestCase):
     
@@ -855,7 +855,7 @@ class TestWordlists(unittest.TestCase):
         self.assertTrue("dr." in v)
         print "pattern.en.wordlist.Wordlist"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 def suite():
     suite = unittest.TestSuite()

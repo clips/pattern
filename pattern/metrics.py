@@ -1,4 +1,4 @@
-#### PATTERN | METRICS ###############################################################################
+#### PATTERN | METRICS #############################################################################
 # coding: utf-8
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
@@ -8,7 +8,7 @@
 from time import time
 from math import sqrt, floor, modf
 
-### PROFILER #########################################################################################
+### PROFILER #######################################################################################
 
 def duration(function, *args, **kwargs):
     """ Returns the running time of the given function, in seconds.
@@ -22,9 +22,10 @@ def profile(function, *args, **kwargs):
     """
     def run():
         function(*args, **kwargs)
-    try: import cProfile as profile
+    try:
+        import cProfile as profile
     except:
-         import profile
+        import profile
     import pstats
     import os
     import sys; sys.modules["__main__"].__profile_run__ = run
@@ -38,7 +39,7 @@ def profile(function, *args, **kwargs):
     os.remove(id)
     return s
 
-### PRECISION & RECALL ###############################################################################
+### PRECISION & RECALL #############################################################################
 # - recall: how good a system is at retrieving relevant results.
 # - precision: how good it is at filtering out irrelevant results (e.g., bad web search results).
 
@@ -101,7 +102,7 @@ def F(match=lambda document:False, documents=[], beta=1):
     a, p, r, f = test(match, documents)
     return (beta**2 + 1) * p * r / ((beta**2 * p + r) or 1)
 
-### AGREEMENT ########################################################################################
+### AGREEMENT ######################################################################################
 # +1.0 = total agreement between voters
 # +0.0 = votes based on random chance
 # -1.0 = total disagreement
@@ -133,7 +134,7 @@ def fleiss_kappa(m):
     
 agreement = fleiss_kappa
 
-### STRING SIMILARITY ################################################################################
+### STRING SIMILARITY ##############################################################################
 
 def levenshtein(string1, string2):
     """ Measures the amount of difference between two strings.
@@ -175,12 +176,15 @@ def dice_coefficient(string1, string2):
 
 LEVENSHTEIN, DICE = "levenshtein", "dice"
 def similarity(string1, string2, metric=LEVENSHTEIN):
+    """ Returns the similarity of string1 and string2 as a number between 0.0 and 1.0,
+        using LEVENSHTEIN edit distance or DICE coefficient.
+    """
     if metric == LEVENSHTEIN:
         return levenshtein_similarity(string1, string2)
     if metric == DICE:
         return dice_coefficient(string1, string2)
 
-### STRING READABILITY ###############################################################################
+### STRING READABILITY #############################################################################
 # 0.9-1.0 = easily understandable by 11-year old.
 # 0.6-0.7 = easily understandable by 13- to 15-year old.
 # 0.0-0.3 = best understood by university graduates.
@@ -218,7 +222,7 @@ def flesch_reading_ease(string):
 
 readability = flesch_reading_ease
 
-### STATISTICS #######################################################################################
+### STATISTICS #####################################################################################
 
 def mean(list):
     """ Returns the arithmetic mean of the given list of values.

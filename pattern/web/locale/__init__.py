@@ -1,11 +1,11 @@
-#### PATTERN | WEB | LOCALE ###########################################################################
+#### PATTERN | WEB | LOCALE ########################################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-#### LANGUAGE & REGION ################################################################################
+#### LANGUAGE & REGION #############################################################################
 # IETF BCP 47 language-region code => (language, region, ISO-639 language code, ISO-3166 region code).
 # Note: the list is incomplete (especially for African languages).
 # Please help out by correcting errors and omissions.
@@ -232,7 +232,7 @@ def market(language):
 #print regions("nl")            # ["NL", "BE"]
 #print regionalize("nl")        # ["nl-NL", "nl-BE"]
 
-### GEOCODE ###########################################################################################
+### GEOCODE ########################################################################################
 # capital => (latitude, longitude, ISO-639 language code, region)
 
 GEOCODE = {

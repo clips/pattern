@@ -1,10 +1,10 @@
-#### PATTERN | EN | MOOD & MODALITY ##################################################################
+#### PATTERN | EN | MOOD & MODALITY ################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-### LIST FUNCTIONS ###################################################################################
+### LIST FUNCTIONS #################################################################################
 
 def find(function, list):
     """ Returns the first item in the list for which function(item) is True, None otherwise.
@@ -13,7 +13,7 @@ def find(function, list):
         if function(item) == True:
             return item
 
-### MOOD #############################################################################################
+### MOOD ###########################################################################################
 
 INDICATIVE  = "indicative"  # They went for a walk.
 IMPERATIVE  = "imperative"  # Let's go for a walk!
@@ -227,7 +227,7 @@ def mood(sentence, **kwargs):
     else:
         return INDICATIVE
 
-### MODALITY #########################################################################################
+### MODALITY #######################################################################################
 
 def d(*args):
     return dict.fromkeys(args, True)
@@ -398,13 +398,13 @@ def modality(sentence, type=EPISTEMIC):
 #    print modality(Sentence(parse(str)))
 #    print
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 # Celle, A. (2009). Hearsay adverbs and modality, in: Modality in English, Mouton.
 # Allegedly, presumably, purportedly, ... are in the negative range because
 # they introduce a fictious point of view by referring to an unclear source.
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 # Tseronis, A. (2009). Qualifying standpoints. LOT Dissertation Series: 233.
 # Following adverbs are not epistemic but indicate the way in which things are said.
@@ -418,7 +418,7 @@ def modality(sentence, type=EPISTEMIC):
 #    oddly, paradoxically, preferably, regretfully, regrettably, sadly, significantly, 
 #    strangely, surprisingly, tragically, unaccountably, unfortunately, unhappily unreasonably
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 # The modality() function was tested with BioScope and Wikipedia training data from CoNLL2010 Shared Task 1.
 # See for example Morante, R., Van Asch, V., Daelemans, W. (2010): 

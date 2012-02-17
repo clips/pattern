@@ -1,11 +1,11 @@
-#### PATTERN | WEB | OAUTH ###########################################################################
+#### PATTERN | WEB | OAUTH #########################################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-######################################################################################################
+####################################################################################################
 # Naive OAuth implementation for pattern.web.Yahoo and Yahoo! BOSS v2.
 
 import urllib
@@ -34,7 +34,7 @@ _diacritics = {
     "z": ("ž",)
 }
 
-######################################################################################################
+####################################################################################################
 
 def HMAC_SHA1(key, text):
     return hmac.new(key, text, sha1).digest()

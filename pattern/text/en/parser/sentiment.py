@@ -1,4 +1,4 @@
-#### PATTERN | EN | SENTIMENT ########################################################################
+#### PATTERN | EN | SENTIMENT ######################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
@@ -14,7 +14,7 @@ try:
 except:
     MODULE = ""
 
-### LIST FUNCTIONS ###################################################################################
+### LIST FUNCTIONS #################################################################################
 
 def column(list, i):
     return [row[i] for row in list]
@@ -22,7 +22,7 @@ def column(list, i):
 def avg(list):
     return sum(list) / float(len(list) or 1)
 
-#### SUBJECTIVITY LEXICON ############################################################################
+#### SUBJECTIVITY LEXICON ##########################################################################
 
 NOUN, VERB, ADJECTIVE, ADVERB = \
     "NN", "VB", "JJ", "RB"
@@ -193,7 +193,7 @@ class Lexicon:
 
 lexicon = _lexicon = Lexicon()
 
-#### SENTIMENT #######################################################################################
+#### SENTIMENT #####################################################################################
 
 class Assessment:
     
@@ -347,7 +347,7 @@ def positive(s, threshold=0.1, **kwargs):
 #print sentiment("A really bad, horrible book.")
 #print sentiment(Text(parse("A bad book. Really horrible.")))
 
-#### SENTIWORDNET ####################################################################################
+#### SENTIWORDNET ##################################################################################
 # http://nmis.isti.cnr.it/sebastiani/Publications/LREC06.pdf
 # http://nmis.isti.cnr.it/sebastiani/Publications/LREC10.pdf
 

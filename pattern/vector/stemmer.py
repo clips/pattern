@@ -1,10 +1,10 @@
-##### PATTERN | VECTOR | PORTER STEMMER ##############################################################
+##### PATTERN | VECTOR | PORTER STEMMER ############################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-######################################################################################################
+####################################################################################################
 # The Porter2 stemming algorithm (or "Porter stemmer") is a process for removing the commoner 
 # morphological and inflexional endings from words in English. 
 # Its main use is as part of a term normalisation process that is usually done 
@@ -22,7 +22,7 @@
 
 import re
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 # Note: this module is optimized for performance.
 # There is little gain in using more regular expressions.
 
@@ -107,7 +107,7 @@ def vowel_consonant_pairs(w, max=None):
             if m == max: break
     return m
 
-#--- REPLACEMENT RULES -------------------------------------------------------------------------------
+#--- REPLACEMENT RULES -----------------------------------------------------------------------------
 
 def step_1a(w):
     """ Step 1a handles -s suffixes.
@@ -247,7 +247,7 @@ def step_5b(w):
         return w[:-1]
     return w
 
-#--- EXCEPTIONS --------------------------------------------------------------------------------------
+#--- EXCEPTIONS ------------------------------------------------------------------------------------
 
 # Exceptions:
 # - in, out and can stems could be seen as stop words later on.
@@ -279,7 +279,7 @@ uninflected = dict.fromkeys([
     "atlas", "cosmos", "bias", "andes" # not plural forms
 ], True)
 
-#--- STEMMER -----------------------------------------------------------------------------------------
+#--- STEMMER ---------------------------------------------------------------------------------------
 
 def case_sensitive(stem, word):
     """ Applies the letter case of the word to the stem:

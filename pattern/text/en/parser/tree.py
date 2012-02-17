@@ -1,10 +1,10 @@
-#### PATTERN | EN | PARSE TREE #######################################################################
+#### PATTERN | EN | PARSE TREE #####################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-######################################################################################################
+####################################################################################################
 # Implements a Sentence object to traverse sentence words, chunks and prepositions.
 # This is probably what you will be working with when processing the output of the parser in Python.
 # It is used internally in the PP-attacher and to generate XML and NLTK trees.
@@ -44,7 +44,7 @@ BEGIN   = "B"  # Start of chunk, as in B-NP.
 INSIDE  = "I"  # Inside a chunk, as in I-NP.
 OUTSIDE = "O"  # Outside a chunk (punctuation etc.)
 
-### LIST FUNCTIONS ###################################################################################
+### LIST FUNCTIONS #################################################################################
 
 def find(function, list):
     """ Returns the first item in the list for which function(item) is True, None otherwise.
@@ -101,12 +101,12 @@ class dynamic_map(list):
             yield self.function(self.set[i])
             i+=1
 
-### SENTENCE #########################################################################################
+### SENTENCE #######################################################################################
 
 encode_entities = lambda string: string.replace("/", SLASH)
 decode_entities = lambda string: string.replace(SLASH, "/")
 
-#--- WORD --------------------------------------------------------------------------------------------
+#--- WORD ------------------------------------------------------------------------------------------
 
 class Word:
 
@@ -226,7 +226,7 @@ class Tags(dict):
     def setdefault(self, k, v):
         if k not in self: self.__setitem__(k,v); return self[k]
 
-#--- CHUNK -------------------------------------------------------------------------------------------
+#--- CHUNK -----------------------------------------------------------------------------------------
 
 class Chunk:
     
@@ -432,7 +432,7 @@ class Chink(Chunk):
     def __repr__(self):
         return Chunk.__repr__(self).replace("Chunk(", "Chink(", 1)
 
-#--- PNP CHUNK ---------------------------------------------------------------------------------------
+#--- PNP CHUNK -------------------------------------------------------------------------------------
 
 class PNPChunk(Chunk):
 
@@ -477,7 +477,7 @@ class PNPChunk(Chunk):
         """
         return self.nearest("VP")
 
-#--- CONJUNCTION -------------------------------------------------------------------------------------
+#--- CONJUNCTION -----------------------------------------------------------------------------------
 
 CONJUNCT = AND = "AND"
 DISJUNCT = OR  = "OR"
@@ -495,7 +495,7 @@ class Conjunctions(list):
     def append(self, chunk, type=CONJUNCT):
         list.append(self, (chunk, type))
 
-#--- SENTENCE ----------------------------------------------------------------------------------------
+#--- SENTENCE --------------------------------------------------------------------------------------
 
 _UID = 0
 def _uid():
@@ -948,7 +948,7 @@ class Sentence:
         return parse_xml(self, tab="\t", id=self.id or "")
         
     @classmethod
-    def from_xml(self, xml):
+    def from_xml(cls, xml):
         s = parse_string(xml)
         return Sentence(s.split("\n")[0], token=s.tags, language=s.language)
         
@@ -960,7 +960,7 @@ class Sentence:
 class Slice(Sentence):
     pass
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 # s = split(parse("black cats and white dogs"))
 # s.words           => [Word('black/JJ'), Word('cats/NNS'), Word('and/CC'), Word('white/JJ'), Word('dogs/NNS')]
 # s.chunks          => [Chunk('black cats/NP'), Chunk('white dogs/NP')]
@@ -986,7 +986,7 @@ def chunked(sentence):
             chunks.append(ch)
     return chunks
 
-#--- TEXT --------------------------------------------------------------------------------------------
+#--- TEXT ------------------------------------------------------------------------------------------
 
 class Text(list):
     
@@ -1052,7 +1052,7 @@ class Text(list):
         return "\n".join(xml)
         
     @classmethod
-    def from_xml(self, xml):
+    def from_xml(cls, xml):
         return Text(parse_string(xml))
 
 def split(string, token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
@@ -1067,7 +1067,7 @@ def xml(string, token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
     """
     return Text(string, token).xml
 
-### XML ##############################################################################################
+### XML ############################################################################################
 
 # Elements:
 XML_TEXT     = "text"     # <text>, corresponds to Text object.
@@ -1119,7 +1119,7 @@ def xml_decode(string):
     string = string.replace("/", SLASH)
     return string
 
-#--- SENTENCE TO XML ---------------------------------------------------------------------------------
+#--- SENTENCE TO XML -------------------------------------------------------------------------------
 
 # Relation id's in the XML output are relative to the sentence id,
 # so relation 1 in sentence 2 = "2.1".
@@ -1232,7 +1232,7 @@ def parse_xml(sentence, tab="\t", id=""):
     # Return as a plain str.
     return "\n".join(xml).encode("utf-8")
 
-#--- XML TO SENTENCE(S) ------------------------------------------------------------------------------
+#--- XML TO SENTENCE(S) ----------------------------------------------------------------------------
 
 # Helper functions for parsing XML:
 def children(node):
@@ -1391,7 +1391,7 @@ def _parse_token(word, chunk="O", pnp="O", relation="O", anchor="O",
             tags.append(xml_decode(attr(word, tag, "O")))
     return tags
 
-### NLTK TREE ########################################################################################
+### NLTK TREE ######################################################################################
 
 def nltk_tree(sentence):
     """ Returns an NLTK nltk.tree.Tree object from the given Sentence.
@@ -1424,7 +1424,7 @@ def nltk_tree(sentence):
     T.append(')')
     return tree.bracket_parse(' '.join(T))
 
-### GRAPHVIZ DOT #####################################################################################
+### GRAPHVIZ DOT ###################################################################################
 
 BLUE = {
        '' : ("#f0f5ff", "#000000"),
@@ -1497,7 +1497,7 @@ def graphviz_dot(sentence, font="Arial", colors=BLUE):
     s += "}"
     return s
 
-### STDOUT TABLE #####################################################################################
+### STDOUT TABLE ###################################################################################
 
 def table(sentence, fill=1, placeholder="-"):
     """ Returns a string where the tags of tokens in the sentence are organized in outlined columns.

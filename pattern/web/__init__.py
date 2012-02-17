@@ -33,7 +33,7 @@ from soup import BeautifulSoup
 try:
     # Import persistent Cache.
     # If this module is used separately, a dict is used (i.e. for this Python session only).
-    from cache import Cache, cache
+    from cache import Cache, cache, TMP
 except:
     cache = {}
 
@@ -698,6 +698,8 @@ def encode_entities(string):
     return string
 
 def decode_entities(string):
+    """ Decodes HTML entities in the given string ("&lt;" => "<").
+    """
     # http://snippets.dzone.com/posts/show/4569
     def replace_entity(match):
         hash, hex, name = match.group(1), match.group(2), match.group(3)

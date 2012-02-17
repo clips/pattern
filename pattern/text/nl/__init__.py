@@ -1,10 +1,10 @@
-#### PATTERN | NL ####################################################################################
+#### PATTERN | NL ##################################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-######################################################################################################
+####################################################################################################
 # Dutch linguistical tools using fast regular expressions.
 
 from parser           import tokenize, parse, tag

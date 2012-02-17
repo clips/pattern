@@ -1,10 +1,10 @@
-#### PATTERN | EN ####################################################################################
+#### PATTERN | EN ##################################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-######################################################################################################
+####################################################################################################
 # English linguistical tools using fast regular expressions.
 
 from inflect import \
@@ -41,6 +41,8 @@ import wordnet
 import wordlist
 
 def split(s, token=[WORD, POS, CHUNK, PNP]):
+    """ Returns a parsed Text from the given string.
+    """
     return Text(s, token)
 
 def pprint(string, token=[WORD, POS, CHUNK, PNP], column=4):

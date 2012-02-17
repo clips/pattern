@@ -1,10 +1,10 @@
-#### PATTERN | EN | RULE-BASED SHALLOW PARSER ########################################################
+#### PATTERN | EN | RULE-BASED SHALLOW PARSER ######################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-######################################################################################################
+####################################################################################################
 # Fast tagger-chunker using regular expressions.
 
 import re
@@ -20,7 +20,7 @@ import sys; sys.path.append(MODULE)
 
 from brill import Lexicon
 
-#### TOKENIZER #######################################################################################
+#### TOKENIZER #####################################################################################
 
 token = re.compile(r"(\S+)\s")
 
@@ -103,9 +103,9 @@ def tokenize(string, punctuation=PUNCTUATION, abbreviations=abbreviations, repla
 #except:
 #    pass
 
-#### TAGGER ##########################################################################################
+#### TAGGER ########################################################################################
 
-#--- BRILL TAGGER ------------------------------------------------------------------------------------
+#--- BRILL TAGGER ----------------------------------------------------------------------------------
 
 LEXICON = lexicon = Lexicon() # Lazy dictionary based on Brill_lexicon.txt.
 
@@ -179,7 +179,7 @@ def apply_default_rules(token, previous=(None,None), next=(None,None)):
         pos = "VB"
     return [word, pos]
 
-#### CHUNKER #########################################################################################
+#### CHUNKER #######################################################################################
 
 SEPARATOR = "/"
 VB = "VB|VBD|VBG|VBN|VBP|VBZ"
@@ -237,7 +237,7 @@ def find_chunks(tagged, iob=True):
                 chunked[i+1][2] = "B-NP"
     return chunked
 
-#### RELATION FINDER #################################################################################
+#### RELATION FINDER ###############################################################################
 # Naive approach.
 
 BE = dict.fromkeys(("be", "am", "are", "is", "being", "was", "were", "been"), True)
@@ -291,7 +291,7 @@ def find_relations(chunked):
     related = []; [related.extend(chunk) for chunk in chunks]
     return related
 
-#### PNP FINDER ######################################################################################
+#### PNP FINDER ####################################################################################
 
 def find_prepositions(chunked):
     """ The input is a list of (token, tag, chunk)-tuples.
@@ -311,7 +311,7 @@ def find_prepositions(chunked):
         chunk.append("O")
     return chunked
 
-#### LEMMATIZER ######################################################################################
+#### LEMMATIZER ####################################################################################
 # Word lemmas using singularization and verb conjugation from the inflect module.
 
 try: 
@@ -339,7 +339,7 @@ def find_lemmata(tagged):
         token.append(lemma(token[0].lower(), pos=len(token)>1 and token[1] or None))
     return tagged
 
-#### PARSER ##########################################################################################
+#### PARSER ########################################################################################
 
 _tokenize = tokenize
 
@@ -356,7 +356,7 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
     for i in range(len(s)):
         if isinstance(s[i], str):
             s[i] = s[i].decode(encoding)
-        if tags or chunks or prepositions or lemmata:
+        if tags or chunks or relations or lemmata:
             s[i] = find_tags(s[i], 
                     default = kwargs.get("default", "NN"), 
                       light = kwargs.get("light", False), 
@@ -389,7 +389,7 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
     s = TaggedString(s, tags=format, language=kwargs.get("language","en"))
     return s
 
-#--- TAGGED STRING -----------------------------------------------------------------------------------
+#--- TAGGED STRING ---------------------------------------------------------------------------------
 # The parse() command returns a unicode string with an extra "tags" attribute.
 # The Sentence tree object uses this attribute to determine the token format.
 # The TaggedString class emulates the TokenString class in the MBSP module,
@@ -424,7 +424,7 @@ def tag(s, tokenize=True, encoding="utf-8"):
             tags.append((token[0], token[1]))
     return tags
 
-#### COMMAND LINE ####################################################################################
+#### COMMAND LINE ##################################################################################
 # From the folder that contains the "pattern" folder:
 # python -m pattern.en.parser xml -s "Hello, my name is Dr. Sbaitso. Nice to meet you." -OTCLI
 

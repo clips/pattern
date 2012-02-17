@@ -1,9 +1,9 @@
-#### PATTERN | EN | INFLECT ##########################################################################
+#### PATTERN | EN | INFLECT ########################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 
-######################################################################################################
+####################################################################################################
 # A set of rule-based tools for English word inflection:
 # - pluralization and singularization of nouns and adjectives,
 # - conjugation of verbs,
@@ -25,7 +25,7 @@ VERB, NOUN, ADJECTIVE, ADVERB = "VB", "NN", "JJ", "RB"
 # 95% _parse_lemma()
 # 96% _parse_lexeme()
 
-#### ARTICLE #########################################################################################
+#### ARTICLE #######################################################################################
 # Based on the Ruby Linguistics module by Michael Granger:
 # http://www.deveiate.org/projects/Linguistics/wiki/English
 
@@ -88,7 +88,7 @@ def referenced(word, article=INDEFINITE):
 #print referenced("yclept")
 #print referenced("year")
 
-#### PLURALIZE ########################################################################################
+#### PLURALIZE #####################################################################################
 # Based on "An Algorithmic Approach to English Pluralization" by Damian Conway:
 # http://www.csse.monash.edu.au/~damian/papers/HTML/Plurals.html
 
@@ -380,7 +380,7 @@ def pluralize(word, pos=NOUN, custom={}, classical=True):
 #print pluralize("matrix", classical=False)
 #print pluralize("my", pos=ADJECTIVE)
 
-#### SINGULARIZE ######################################################################################
+#### SINGULARIZE ###################################################################################
 # Adapted from Bermi Ferrer's Inflector for Python:
 # http://www.bermi.org/inflector/
 
@@ -472,48 +472,48 @@ singular_ie = [
     "^tie", "toughie", "valkyrie", "veggie", "weenie", "yuppie", "zombie"
 ]
 singular_irregular = {
-            "men" : "man",
-         "people" : "person",
-       "children" : "child",
-          "sexes" : "sex",
-           "axes" : "axe",
-          "moves" : "move",
-          "teeth" : "tooth",
-          "geese" : "goose",
-           "feet" : "foot",
-            "zoa" : "zoon",
-       "atlantes" : "atlas", 
-        "atlases" : "atlas", 
-         "beeves" : "beef", 
-       "brethren" : "brother", 
-       "children" : "child", 
-        "corpora" : "corpus", 
-       "corpuses" : "corpus", 
-           "kine" : "cow", 
-    "ephemerides" : "ephemeris", 
-        "ganglia" : "ganglion", 
-          "genii" : "genie", 
-         "genera" : "genus", 
-       "graffiti" : "graffito", 
-         "helves" : "helve",
-         "leaves" : "leaf",
-         "loaves" : "loaf", 
-         "monies" : "money", 
-      "mongooses" : "mongoose", 
-         "mythoi" : "mythos", 
-      "octopodes" : "octopus", 
-          "opera" : "opus", 
-         "opuses" : "opus", 
-           "oxen" : "ox", 
-          "penes" : "penis", 
-        "penises" : "penis", 
-    "soliloquies" : "soliloquy", 
-         "testes" : "testis", 
-        "trilbys" : "trilby", 
-         "turves" : "turf", 
-         "numena" : "numen", 
-       "occipita" : "occiput", 
-            "our" : "my",
+            "men": "man",
+         "people": "person",
+       "children": "child",
+          "sexes": "sex",
+           "axes": "axe",
+          "moves": "move",
+          "teeth": "tooth",
+          "geese": "goose",
+           "feet": "foot",
+            "zoa": "zoon",
+       "atlantes": "atlas", 
+        "atlases": "atlas", 
+         "beeves": "beef", 
+       "brethren": "brother", 
+       "children": "child", 
+        "corpora": "corpus", 
+       "corpuses": "corpus", 
+           "kine": "cow", 
+    "ephemerides": "ephemeris", 
+        "ganglia": "ganglion", 
+          "genii": "genie", 
+         "genera": "genus", 
+       "graffiti": "graffito", 
+         "helves": "helve",
+         "leaves": "leaf",
+         "loaves": "loaf", 
+         "monies": "money", 
+      "mongooses": "mongoose", 
+         "mythoi": "mythos", 
+      "octopodes": "octopus", 
+          "opera": "opus", 
+         "opuses": "opus", 
+           "oxen": "ox", 
+          "penes": "penis", 
+        "penises": "penis", 
+    "soliloquies": "soliloquy", 
+         "testes": "testis", 
+        "trilbys": "trilby", 
+         "turves": "turf", 
+         "numena": "numen", 
+       "occipita": "occiput", 
+            "our": "my",
 }
 
 def singularize(word, pos=NOUN, custom={}):
@@ -556,7 +556,7 @@ def singularize(word, pos=NOUN, custom={}):
 
     return word
 
-#### VERB CONJUGATION #################################################################################
+#### VERB CONJUGATION ##############################################################################
 # Each verb has morphs for infinitive, 3rd singular present, present participle, past and past participle.
 # Verbs like "be" have other morphs as well (i.e. I am, you are, she is, they aren't).
 # The following verbs can be negated: be, can, do, will, must, have, may, need, dare, ought.
@@ -749,7 +749,7 @@ conjugate, lemma, lexeme, tenses = \
 #print lexeme("have")
 #print tenses("have")
 
-#--- RULE-BASED VERB CONJUGATION ----------------------------------------------------------------------
+#--- RULE-BASED VERB CONJUGATION -------------------------------------------------------------------
 
 VOWELS = "aeiouy"
 re_vowel = re.compile(r"a|e|i|o|u|y", re.I)
@@ -776,18 +776,18 @@ def _parse_lemma(verb):
         # Doubled consonant after short vowel: chopp => chop.
         if len(v) > 3 and v[-1] == v[-2] and v[-3] in VOWELS and v[-4] not in VOWELS and not v.endswith("ss"):
             return v[:-1]
-        if v.endswith(("ick","ack")):
+        if v.endswith(("ick", "ack")):
             return v[:-1]     # panick => panic
         # Guess common cases where the base form ends in -e:
-        if v.endswith(("v","z","c","i")):
+        if v.endswith(("v", "z", "c", "i")):
             return v+"e"      # danc => dance
-        if v.endswith("g") and v.endswith(("dg","lg,","ng","rg")):
+        if v.endswith("g") and v.endswith(("dg", "lg", "ng", "rg")):
             return v+"e"      # indulg => indulge
-        if v.endswith(("b","d","g","k","l","m","r","s","t")) \
+        if v.endswith(("b", "d", "g", "k", "l", "m", "r", "s", "t")) \
           and len(v) > 2 and v[-2] in VOWELS and not v[-3] in VOWELS \
           and not v.endswith("er"): 
             return v+"e"      # generat => generate
-        if v.endswith("n") and v.endswith(("an","in")) and not v.endswith(("ain","oin","oan")):
+        if v.endswith("n") and v.endswith(("an", "in")) and not v.endswith(("ain", "oin", "oan")):
             return v+"e"      # imagin => imagine
         if v.endswith("l") and len(v) > 1 and v[-2] not in VOWELS:
             return v+"e"      # squabbl => squabble
@@ -795,7 +795,7 @@ def _parse_lemma(verb):
             return v+"e"      # chaf => chafed
         if v.endswith("e"):
             return v+"e"      # decre => decree
-        if v.endswith(("th","ang","un","cr","vr","rs","ps","tr")):
+        if v.endswith(("th", "ang", "un", "cr", "vr", "rs", "ps", "tr")):
             return v+"e"
     return v
 
@@ -809,7 +809,7 @@ def _parse_lexeme(verb):
     if len(v) > 1 and v.endswith("y") and v[-2] not in VOWELS:
         # Verbs ending in a consonant followed by "y": comply, copy, magnify.
         return [v, v, v, v[:-1]+"ies", v, v+"ing"] + [v[:-1]+"ied"]*6
-    if v.endswith(("ss","sh","ch","x")):
+    if v.endswith(("ss", "sh", "ch", "x")):
         # Verbs ending in sibilants: kiss, bless, box, polish, preach.
         return [v, v, v, v+"es", v, v+"ing"] + [v+"ed"]*6
     if v.endswith("ic"):
@@ -818,7 +818,7 @@ def _parse_lexeme(verb):
     if len(v) > 1 and v[-1] not in VOWELS and v[-2] not in VOWELS:
         # Verbs ending in a consonant cluster: delight, clamp.
         return [v, v, v, v+"s", v, v+"ing"] + [v+"ed"]*6
-    if (len(v) > 1 and v.endswith(("y","w")) and v[-2] in VOWELS) \
+    if (len(v) > 1 and v.endswith(("y", "w")) and v[-2] in VOWELS) \
     or (len(v) > 2 and v[-1] not in VOWELS and v[-2] in VOWELS and v[-3] in VOWELS) \
     or (len(v) > 3 and v[-1] not in VOWELS and v[-3] in VOWELS and v[-4] in VOWELS):
         # Verbs ending in a long vowel or diphthong followed by a consonant: paint, devour, play.
@@ -852,21 +852,21 @@ _verbs.parse_lexeme = _parse_lexeme
 #        n += 1
 #print float(i) / n
 
-#### COMPARATIVE & SUPERLATIVE ########################################################################
+#### COMPARATIVE & SUPERLATIVE #####################################################################
 
 VOWELS = "aeiouy"
 
 grade_irregular = {
-       "bad" : ("worse", "worst"),
-       "far" : ("further", "farthest"),
-      "good" : ("better", "best"), 
-      "hind" : ("hinder", "hindmost"),
-       "ill" : ("worse", "worst"),
-      "less" : ("lesser", "least"),
-    "little" : ("less", "least"),
-      "many" : ("more", "most"),
-      "much" : ("more", "most"),
-      "well" : ("better", "best")
+       "bad": ("worse", "worst"),
+       "far": ("further", "farthest"),
+      "good": ("better", "best"), 
+      "hind": ("hinder", "hindmost"),
+       "ill": ("worse", "worst"),
+      "less": ("lesser", "least"),
+    "little": ("less", "least"),
+      "many": ("more", "most"),
+      "much": ("more", "most"),
+      "well": ("better", "best")
 }
 
 grade_uninflected = ["giant", "glib", "hurt", "known", "madly"]
@@ -923,7 +923,7 @@ def comparative(adjective):
 def superlative(adjective):
     return grade(adjective, SUPERLATIVE)
 
-#### ATTRIBUTIVE & PREDICATIVE ########################################################################
+#### ATTRIBUTIVE & PREDICATIVE #####################################################################
 
 def attributive(adjective):
     return adjective

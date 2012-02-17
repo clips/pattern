@@ -1,10 +1,10 @@
-#### PATTERN | WEB | IMAP ############################################################################
+#### PATTERN | WEB | IMAP ##########################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-######################################################################################################
+####################################################################################################
 
 import os
 import imaplib
@@ -26,7 +26,7 @@ except:
     except:
         cache = {}
 
-#### STRING FUNCTIONS ################################################################################
+#### STRING FUNCTIONS ##############################################################################
 
 def decode_utf8(string):
     """ Returns the given string as a unicode string (if possible).
@@ -50,7 +50,7 @@ def encode_utf8(string):
             return string
     return str(string)
 
-#### IMAP4 SSL #######################################################################################
+#### IMAP4 SSL #####################################################################################
 # Fixes an issue in Python 2.5- with memory allocation.
 # See: http://bugs.python.org/issue1389051
 
@@ -69,7 +69,7 @@ class IMAP4_SSL(imaplib.IMAP4_SSL):
             chunks.append(data)
         return ''.join(chunks)
 
-#### MAIL ############################################################################################
+#### MAIL ##########################################################################################
 
 GMAIL = "imap.gmail.com"
 
@@ -170,7 +170,7 @@ class Mail(object):
             return self.folders[k]
         raise AttributeError, "'Mail' object has no attribute '%s'" % k
 
-#--- MAIL FOLDER -------------------------------------------------------------------------------------
+#--- MAIL FOLDER -----------------------------------------------------------------------------------
 
 def _decode(s, message):
     try:
@@ -279,7 +279,7 @@ class MailFolder:
     def __repr__(self):
         return "MailFolder(name=%s)" % repr(self.name)
 
-#--- MAIL MESSAGE ------------------------------------------------------------------------------------
+#--- MAIL MESSAGE ----------------------------------------------------------------------------------
 
 class Message(dict):
     

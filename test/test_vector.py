@@ -21,7 +21,7 @@ def corpus(top=None):
         documents.append(document)
     return vector.Corpus(documents)
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestUnicode(unittest.TestCase):
     
@@ -48,7 +48,7 @@ class TestUnicode(unittest.TestCase):
             self.assertTrue(isinstance(vector.encode_utf8(s), str))
         print "pattern.vector.encode_utf8()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestUtilityFunctions(unittest.TestCase):
 
@@ -129,7 +129,7 @@ class TestUtilityFunctions(unittest.TestCase):
         self.assertRaises(vector.ReadOnlyError, v.pop, 0)
         print "pattern.vector.readonlylist"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestStemmer(unittest.TestCase):
 
@@ -182,7 +182,7 @@ class TestStemmer(unittest.TestCase):
             self.assertEqual(vector.stemmer.stem(a), b)
         print "pattern.vector.stemmer.case_sensitive()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestDocument(unittest.TestCase):
     
@@ -354,7 +354,7 @@ class TestDocument(unittest.TestCase):
         print "pattern.vector.cosine_similarity()"
         print "pattern.vector.l2_norm()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestCorpus(unittest.TestCase):
     
@@ -565,7 +565,7 @@ class TestCorpus(unittest.TestCase):
         print "pattern.vector.Corpus.feature_selection()"
         print "pattern.vector.Corpus.filter()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestApriori(unittest.TestCase):
     
@@ -586,7 +586,7 @@ class TestApriori(unittest.TestCase):
         self.assertEqual(v[frozenset((2, ))], 0.5)
         self.assertEqual(v[frozenset((3, ))], 0.5)
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestLSA(unittest.TestCase):
     
@@ -689,7 +689,7 @@ class TestLSA(unittest.TestCase):
         self.corpus.lsa = None
         print "pattern.vector.Corpus.reduce()"
           
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestClustering(unittest.TestCase):
     
@@ -811,7 +811,7 @@ class TestClustering(unittest.TestCase):
         print "pattern.vector.Cluster()"
         print "pattern.vector.hierarchical()"        
     
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestClassifier(unittest.TestCase):
     
@@ -913,7 +913,7 @@ class TestClassifier(unittest.TestCase):
         self.assertEqual(v(vector.Vector({"dog":1}))[0][0], 1.0)
         print "pattern.vector.KDTree.nearest_neighbors()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 def suite():
     suite = unittest.TestSuite()

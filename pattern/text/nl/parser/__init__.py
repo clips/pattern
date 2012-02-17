@@ -1,10 +1,10 @@
-#### PATTERN | NL | RULE-BASED SHALLOW PARSER ########################################################
+#### PATTERN | NL | RULE-BASED SHALLOW PARSER ######################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Authors: Jeroen Geertzen (for Brill-NL), Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-######################################################################################################
+####################################################################################################
 
 import re
 import os
@@ -24,7 +24,7 @@ from en.parser import Lexicon
 from en.parser import PUNCTUATION, tokenize as _en_tokenize, parse as _en_parse, TaggedString
 from en.parser import commandline
 
-#### TOKENIZER #######################################################################################
+#### TOKENIZER #####################################################################################
 
 def tokenize(s, punctuation=PUNCTUATION, abbreviations=["bv.", "blz.", "e.d.", "m.a.w.", "nl."], replace={}):
     # 's in Dutch preceded by a vowel indicates plural ("auto's"): don't replace.
@@ -36,7 +36,7 @@ def tokenize(s, punctuation=PUNCTUATION, abbreviations=["bv.", "blz.", "e.d.", "
     
 _tokenize = tokenize
 
-#### LEMMATIZER ######################################################################################
+#### LEMMATIZER ####################################################################################
 # Word lemmas using singularization and verb conjugation from the inflect module.
 
 try:
@@ -60,7 +60,7 @@ def find_lemmata(tagged):
         token.append(lemma(token[0].lower(), pos=len(token)>1 and token[1] or None))
     return tagged
 
-#### PARSER ##########################################################################################
+#### PARSER ########################################################################################
 
 # pattern.en.find_tags() has an optional "lexicon" parameter.
 # We'll pass the Dutch lexicon to it instead of the default English lexicon:
@@ -129,7 +129,7 @@ def tag(s, tokenize=True, encoding="utf-8"):
             tags.append((token[0], token[1]))
     return tags
 
-#### COMMAND LINE ####################################################################################
+#### COMMAND LINE ##################################################################################
 # From the folder that contains the "pattern" folder:
 # python -m pattern.nl.parser xml -s "De kat wil wel vis eten maar geen poot nat maken." -OTCLI
 

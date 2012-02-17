@@ -1,11 +1,11 @@
-#### PATTERN | WORDNET ###############################################################################
+#### PATTERN | WORDNET #############################################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-######################################################################################################
+####################################################################################################
 # WordNet is a lexical database for the English language. 
 # It groups English words into sets of synonyms called synsets, provides short, general definitions, 
 # and records the various semantic relations between these synonym sets.
@@ -38,7 +38,7 @@ if "WordNet 2.1" in s: VERSION = "2.1"
 if "WordNet 3.0" in s: VERSION = "3.0"
 del s
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 _diacritics = {
     "a": ("á","ä","â","à","å"),
@@ -68,7 +68,7 @@ def normalize(word):
             word = word.replace(v, k)
     return word
 
-### SYNSET ###########################################################################################
+### SYNSET #########################################################################################
 
 NOUNS, VERBS, ADJECTIVES, ADVERBS = wn.N, wn.V, wn.ADJ, wn.ADV
 
@@ -278,7 +278,7 @@ def ancestor(synset1, synset2):
             
 least_common_subsumer = lcs = ancestor 
 
-### INFORMATION CONTENT ##############################################################################
+### INFORMATION CONTENT ############################################################################
 
 IC = {} # Switch data file according to WordNet version:
 IC_CORPUS = os.path.join(os.path.dirname(__file__), "IC-Brown-Resnik"+VERSION[0]+".txt")
@@ -311,7 +311,7 @@ def information_content(synset):
                 IC_MAX = w
     return IC.get(synset.pos, {}).get(synset.id, 0.0)
 
-### WORDNET3 TO WORDNET2 #############################################################################
+### WORDNET3 TO WORDNET2 ###########################################################################
 
 _map32_pos1 = {NN:"n", VB:"v", JJ:"a", RB:"r"}
 _map32_pos2 = {"n":NN, "v":VB, "a":JJ, "r":RB}
@@ -332,7 +332,7 @@ def map32(id, pos=NOUN):
         return int(k[1:]), _map32_pos2[k[0]]
     return None
 
-### SENTIWORDNET #####################################################################################
+### SENTIWORDNET ###################################################################################
 # Import the SentiWordNet dict from pattern.en.parser.sentiment.
 
 try:

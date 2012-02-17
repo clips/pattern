@@ -5,7 +5,7 @@ import subprocess
 
 from pattern import nl
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestInflection(unittest.TestCase):
 
@@ -116,7 +116,7 @@ class TestInflection(unittest.TestCase):
             self.assertEqual(nl.conjugate(v1, tense), v2)
         print "pattern.nl.conjugate()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestParser(unittest.TestCase):
     
@@ -201,7 +201,7 @@ class TestParser(unittest.TestCase):
         self.assertEqual(v, "Leuke/JJ/B-NP/O/O/leuk kat/NN/I-NP/O/O/kat ././O/O/O/.")
         print "python -m pattern.nl.parser"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestSentiment(unittest.TestCase):
     
@@ -227,7 +227,7 @@ class TestSentiment(unittest.TestCase):
         self.assertTrue(F > 0.79)
         print "pattern.nl.sentiment()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 def suite():
     suite = unittest.TestSuite()

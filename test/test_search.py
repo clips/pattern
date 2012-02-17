@@ -7,7 +7,7 @@ import random
 from pattern    import search
 from pattern.en import Sentence, parse
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestUtilityFunctions(unittest.TestCase):
     
@@ -74,7 +74,7 @@ class TestUtilityFunctions(unittest.TestCase):
         self.assertEqual(v.keys(), ["a", "c","b"])
         print "pattern.search.odict()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestTaxonomy(unittest.TestCase):
     
@@ -138,7 +138,7 @@ class TestTaxonomy(unittest.TestCase):
         self.assertTrue("puppy" in t.children("dog"))
         print "pattern.search.WordNetClassifier"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestConstraint(unittest.TestCase):
     
@@ -248,7 +248,7 @@ class TestConstraint(unittest.TestCase):
         self.assertEqual(v.string, "^[Steven\\*|NN*|SBJ|\(ASSOCIATE\)_PROFESSOR|!bird]+")
         print "pattern.search.Constraint.string"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestPattern(unittest.TestCase):
     
@@ -429,7 +429,7 @@ class TestPattern(unittest.TestCase):
         self.assertEqual(search.escape("[]()_|!*+^."), "\\[\\]\\(\\)\\_\\|\\!\\*\\+\\^.")
         print "pattern.search.escape()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestMatch(unittest.TestCase):
     
@@ -463,7 +463,7 @@ class TestMatch(unittest.TestCase):
         self.assertEqual(m[1].string, "pointy teeth")
         print "pattern.search.Match"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 def suite():
     suite = unittest.TestSuite()

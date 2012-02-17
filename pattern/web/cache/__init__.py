@@ -1,4 +1,4 @@
-#### PATTERN | CACHE #################################################################################
+#### PATTERN | CACHE ###############################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
@@ -9,7 +9,7 @@ try:
 except:
     import md5; md5=md5.new
 
-#### UNICODE #########################################################################################
+#### UNICODE #######################################################################################
     
 def decode_utf8(string):
     """ Returns the given string as a unicode string (if possible).
@@ -33,7 +33,7 @@ def encode_utf8(string):
             return string
     return str(string)
 
-#### CACHE ###########################################################################################
+#### CACHE #########################################################################################
 # Caching is implemented in URL.download(), which is used by all other downloaders.
 
 import os

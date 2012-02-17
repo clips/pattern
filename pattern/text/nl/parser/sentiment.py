@@ -1,10 +1,10 @@
-#### PATTERN | NL | SENTIMENT ########################################################################
+#### PATTERN | NL | SENTIMENT ######################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-######################################################################################################
+####################################################################################################
 
 import os
 
@@ -20,7 +20,7 @@ from en.parser.sentiment import NOUN, VERB, ADJECTIVE, ADVERB
 
 from nl.inflect import attributive
 
-#### SUBJECTIVITY LEXICON ############################################################################
+#### SUBJECTIVITY LEXICON ##########################################################################
 
 class Lexicon(_Lexicon):
     
@@ -49,7 +49,7 @@ class Lexicon(_Lexicon):
 
 lexicon = _lexicon = Lexicon(path=os.path.join(MODULE, "sentiment.xml"))
 
-#### SENTIMENT #######################################################################################
+#### SENTIMENT #####################################################################################
 
 def sentiment(s, **kwargs):
     kwargs.setdefault("lexicon", _lexicon)

@@ -1,10 +1,10 @@
-#### PATTERN | EN | PARSER | BRILL LEXICON ###########################################################
+#### PATTERN | EN | PARSER | BRILL LEXICON #########################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-######################################################################################################
+####################################################################################################
 # Brill lexicon with lexical and contextual rules, using lazy-laoding.
 
 import os
@@ -13,7 +13,7 @@ try:
 except:
     MODULE = ""
 
-#### BRILL LEXICAL RULES #############################################################################
+#### BRILL LEXICAL RULES ###########################################################################
 
 LEXICAL  = ["char", "hassuf", "deletesuf", "addsuf", "haspref", "deletepref", "addpref"]
 LEXICAL += ["goodleft", "goodright"]
@@ -71,7 +71,7 @@ class LexicalRules(list):
                 return [word, pos]
         return token
 
-#### BRILL CONTEXTUAL RULES ##########################################################################
+#### BRILL CONTEXTUAL RULES ########################################################################
 
 CONTEXTUAL  = ["PREVTAG", "NEXTTAG", "PREV1OR2TAG", "NEXT1OR2TAG", "PREV1OR2OR3TAG", "NEXT1OR2OR3TAG"]
 CONTEXTUAL += ["SURROUNDTAG", "PREVBIGRAM", "NEXTBIGRAM", "LBIGRAM", "RBIGRAM", "PREV2TAG", "NEXT2TAG"]
@@ -159,7 +159,7 @@ class ContextualRules(list):
                     tokens[i-len(b)][1] = "JJ"
         return tokens
 
-#### BRILL LEXICON ###################################################################################
+#### BRILL LEXICON #################################################################################
 
 class Lexicon(dict):
     

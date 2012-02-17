@@ -1,9 +1,9 @@
-#### PATTERN | EN | QUANTIFY #########################################################################
+#### PATTERN | EN | QUANTIFY #######################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 
-######################################################################################################
+####################################################################################################
 # Transforms numeral strings to numbers, and numbers (int, float) to numeral strings.
 # Approximates quantities of objects ("dozens of chickens" etc.)
 
@@ -114,7 +114,7 @@ def _extract_leading_zeros(string):
             break
     return string.lstrip(), i
 
-#--- STRING TO NUMBER --------------------------------------------------------------------------------
+#--- STRING TO NUMBER ------------------------------------------------------------------------------
 
 def number(string):
     """ Returns the given numeric string as a float or an int.
@@ -177,7 +177,7 @@ def number(string):
 #print number("1.2 million point two")
 #print number("nothing")
 
-#--- NUMBER TO STRING --------------------------------------------------------------------------------
+#--- NUMBER TO STRING ------------------------------------------------------------------------------
 
 def numerals(n, round=2):
     """ Returns the given int or float as a string of numerals.
@@ -252,7 +252,7 @@ def numerals(n, round=2):
     else:
         return "%s %s" % (s, numerals(r)+f)
 
-#--- APPROXIMATE -------------------------------------------------------------------------------------
+#--- APPROXIMATE -----------------------------------------------------------------------------------
 # Based on the Ruby Linguistics module by Michael Granger:
 # http://www.deveiate.org/projects/Linguistics/wiki/English
 
@@ -316,7 +316,7 @@ def approximate(word, amount=1, plural={}):
 #print approximate("chicken", 100000000)
 #print approximate("chicken", 10000000000)
 
-#--- COUNT -------------------------------------------------------------------------------------------
+#--- COUNT -----------------------------------------------------------------------------------------
 
 # count(word, amount, plural={})
 # count([word1, word2, ...], plural={})
@@ -357,7 +357,7 @@ quantify = count
 #print count(["penguin", "polar bear"])
 #print count(["whale"])
 
-#--- REFLECT -----------------------------------------------------------------------------------------
+#--- REFLECT ---------------------------------------------------------------------------------------
 
 readable_types = (
     ("^<type '"        , ""),

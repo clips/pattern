@@ -7,7 +7,7 @@ import warnings
 
 from pattern import web
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestCache(unittest.TestCase):
     
@@ -24,7 +24,7 @@ class TestCache(unittest.TestCase):
         del web.cache[k]
         print "pattern.web.Cache"
         
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestUnicode(unittest.TestCase):
     
@@ -51,7 +51,7 @@ class TestUnicode(unittest.TestCase):
             self.assertTrue(isinstance(web.encode_utf8(s), str))
         print "pattern.web.encode_utf8()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestURL(unittest.TestCase):
     
@@ -227,7 +227,7 @@ class TestURL(unittest.TestCase):
         self.assertEqual(web.base("http://domain.com/home.html"), "domain.com")
         print "pattern.web.base()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestPlaintext(unittest.TestCase):
     
@@ -416,7 +416,7 @@ class TestPlaintext(unittest.TestCase):
             u"<a href=\"http://www.domain.com\">link</a>\n\n* item1 xxx\n* item2")
         print "pattern.web.plaintext()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestSearchEngine(unittest.TestCase):
     
@@ -659,7 +659,7 @@ class TestSearchEngine(unittest.TestCase):
         print "pattern.web.Products.Result.reviews"
         print "pattern.web.Products.Result.score"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestDOM(unittest.TestCase):
     
@@ -759,7 +759,7 @@ class TestDOM(unittest.TestCase):
         print "pattern.web.Node.Element.by_id()"
         print "pattern.web.Node.Element.by_attribute()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestPDF(unittest.TestCase):
     
@@ -773,7 +773,7 @@ class TestPDF(unittest.TestCase):
         self.assertTrue(isinstance(v.string, unicode))
         print "pattern.web.PDF.string"
         
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestLocale(unittest.TestCase):
     
@@ -840,7 +840,7 @@ class TestLocale(unittest.TestCase):
                 i += 1
         self.assertTrue(float(i) / n > 0.60)
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 # You need to define a username, password and mailbox to test on.
 
 class TestMail(unittest.TestCase):
@@ -902,7 +902,7 @@ class TestMail(unittest.TestCase):
         print "pattern.web.Mail.search(field=SUBJECT)"
         print "pattern.web.Mail.read()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestSpider(unittest.TestCase):
     
@@ -966,7 +966,7 @@ class TestSpider(unittest.TestCase):
         self.assertTrue(v.history.keys()[1] != v.history.keys()[2])
         print "pattern.web.Spider.crawl(method=BREADTH)"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 def suite():
     suite = unittest.TestSuite()

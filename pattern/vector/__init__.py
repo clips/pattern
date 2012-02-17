@@ -1,11 +1,11 @@
-#### PATTERN | VECTOR ################################################################################
+#### PATTERN | VECTOR ##############################################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-######################################################################################################
+####################################################################################################
 # Vector space search, based on cosine similarity using tf-idf.
 # Term frequency – inverse document frequency is a statistical measure used to evaluate 
 # how important a word is to a document in a collection or corpus. 
@@ -44,7 +44,7 @@ except:
         singularize = lambda w: w
         conjugate = lambda w,t: w
 
-#--- STRING FUNCTIONS --------------------------------------------------------------------------------
+#--- STRING FUNCTIONS ------------------------------------------------------------------------------
             
 def decode_utf8(string):
     """ Returns the given string as a unicode string (if possible).
@@ -100,7 +100,7 @@ def shi(i, base="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
         s.append(base[r])
     return "".join(reversed(s))
 
-#--- LIST FUNCTIONS ----------------------------------------------------------------------------------
+#--- LIST FUNCTIONS --------------------------------------------------------------------------------
 
 def shuffled(list):
     """ Yields a copy of the given list with the items in random order.
@@ -116,7 +116,7 @@ def chunk(list, n):
         yield list[i:j]
         i=j
 
-#--- READ-ONLY DICTIONARY ----------------------------------------------------------------------------
+#--- READ-ONLY DICTIONARY --------------------------------------------------------------------------
 
 class ReadOnlyError(Exception):
     pass
@@ -125,7 +125,7 @@ class ReadOnlyError(Exception):
 # These can't be updated because it invalidates the cache.
 class readonlydict(dict):
     @classmethod
-    def fromkeys(self, k, default=None):
+    def fromkeys(cls, k, default=None):
         d=readonlydict((k, default) for k in k); return d
     def __init__(self, *args, **kwargs):
         dict.__init__(self, *args, **kwargs)
@@ -165,9 +165,9 @@ class readonlylist(list):
     def pop(self, i):
         raise ReadOnlyError
 
-#### DOCUMENT ########################################################################################
+#### DOCUMENT ######################################################################################
 
-#--- STOP WORDS --------------------------------------------------------------------------------------
+#--- STOP WORDS ------------------------------------------------------------------------------------
 
 stopwords = _stopwords = dict.fromkeys(
     open(os.path.join(MODULE, "stopwords.txt")).read().split(", "), True)
@@ -176,7 +176,7 @@ stopwords = _stopwords = dict.fromkeys(
 #for w in ["mine", "us", "will", "can", "may", "might"]:
 #    stopwords.pop(w)
 
-#--- WORD COUNT --------------------------------------------------------------------------------------
+#--- WORD COUNT ------------------------------------------------------------------------------------
 
 PUNCTUATION = "*#[]():;,.!?\n\r\t\f- "
 
@@ -241,7 +241,7 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
         count = count.__class__(heapq.nsmallest(top, count.iteritems(), key=lambda (k,v): (-v,k)))
     return count
 
-#--- DOCUMENT ----------------------------------------------------------------------------------------
+#--- DOCUMENT --------------------------------------------------------------------------------------
 # Document is a bag of words in which each word is a feature.
 # Document is represented as a vector of weighted (TF-IDF) features.
 
@@ -286,7 +286,7 @@ class Document(object):
             w = kwargs["dict"](w)
             v = Vector(w)
         # A Vector of (word, TF-IDF weight)-items, copy as document vector.
-        elif isinstance(string, Vector) and string.weight == TF-IDF:
+        elif isinstance(string, Vector) and string.weight == TF_IDF:
             w = string
             w = kwargs["dict"](w) # XXX term count is lost.
             v = Vector(w)
@@ -313,14 +313,14 @@ class Document(object):
         self._corpus   = None               # Corpus this document belongs to.
 
     @classmethod
-    def open(Document, path, *args, **kwargs):
+    def open(cls, path, *args, **kwargs):
         """ Creates and returns a new document from the given text file path.
         """
         s = codecs.open(path, encoding=kwargs.get("encoding", "utf-8")).read()
-        return Document(s, *args, **kwargs)
+        return cls(s, *args, **kwargs)
         
     @classmethod
-    def load(Document, path):
+    def load(cls, path):
         """ Returns a new Document from the given text file path.
             The given text file must be generated with Document.save().
         """
@@ -346,7 +346,7 @@ class Document(object):
                     v[w] = int(f)
                 else:
                     v[w] = float(f)
-        return Document(v, name=a.get("name"), type=a.get("type"))
+        return cls(v, name=a.get("name"), type=a.get("type"))
     
     def save(self, path):
         """ Saves the terms in the document as a text file at the given path.
@@ -465,7 +465,7 @@ class Document(object):
         """
         n = normalized and sum(self.vector.itervalues()) or 1.0
         v = ((f/n, w) for w, f in self.vector.iteritems())
-        v = heapq.nsmallest(top, v, key=lambda v: (-v[0],v[1]))
+        v = heapq.nsmallest(top, v, key=lambda v: (-v[0], v[1]))
         return v
     
     def cosine_similarity(self, document):
@@ -496,7 +496,7 @@ class Document(object):
         return "Document(id=%s%s)" % (
             repr(self._id), self.name and ", name=%s" % repr(self.name) or "")
 
-#--- VECTOR ------------------------------------------------------------------------------------------
+#--- VECTOR ----------------------------------------------------------------------------------------
 # Document vector, using a sparse representation (i.e., dictionary with only features > 0).
 # Sparse representation is fast, usually even faster than LSA,
 # since LSA creates a dense vector with non-zero values.
@@ -538,7 +538,7 @@ class Vector(readonlydict):
             vector = vector.vector
         # Return a copy of the vector, updated with values from the other vector.
         # Only keys that appear in this vector will be updated (i.e. no new keys are added).
-        V = self.copy(); dict.update(V, ((k,v) for k,v in vector.iteritems() if k in V)); return V
+        V = self.copy(); dict.update(V, ((k, v) for k, v in vector.iteritems() if k in V)); return V
 
 # These functions are useful if you work with a bare matrix instead of Document and Corpus.
 # Given vectors must be lists of values (not iterators).
@@ -550,14 +550,14 @@ def tf_idf(vectors):
     return [[v[i] * idf[i] for i in range(len(v))] for v in vectors]
 
 def cosine_similarity(vector1, vector2):
-    return sum(a*b for a,b in izip(vector1, vector2)) / (l2_norm(vector1) * l2_norm(vector2) or 1)
+    return sum(a*b for a, b in izip(vector1, vector2)) / (l2_norm(vector1) * l2_norm(vector2) or 1)
 
 def l2_norm(vector):
     return sum(x**2 for x in vector) ** 0.5
 
-#### CORPUS ##########################################################################################
+#### CORPUS ########################################################################################
 
-#--- CORPUS ------------------------------------------------------------------------------------------
+#--- CORPUS ----------------------------------------------------------------------------------------
 
 # Export formats:
 ORANGE, WEKA = "orange", "weka"
@@ -617,17 +617,17 @@ class Corpus(object):
     weight = property(_get_weight, _set_weight)
     
     @classmethod
-    def build(Corpus, path, *args, **kwargs):
+    def build(cls, path, *args, **kwargs):
         """ Builds the corpus from a folder of text documents (e.g. path="folder/*.txt").
             Each file is split into words and the words are counted.
         """
         documents = []
         for f in glob.glob(path):
             documents.append(Document.open(f, *args, **kwargs))
-        return Corpus(documents)
+        return cls(documents)
     
     @classmethod
-    def load(Corpus, path):
+    def load(cls, path):
         """ Loads the corpus from a pickle file created with Corpus.save().
         """
         return cPickle.load(open(path))
@@ -661,7 +661,7 @@ class Corpus(object):
             s.append("\t".join(keys + ["m#name", "c#type"]))
             for document in self.documents:
                 v = document.vector
-                v = [v.get(k,0) for k in keys]
+                v = [v.get(k, 0) for k in keys]
                 v = "\t".join(x==0 and "0" or "%.4f" % x for x in v)
                 v = "%s\t%s\t%s" % (v, document.name or "", document.type or "")
                 s.append(v)
@@ -673,7 +673,7 @@ class Corpus(object):
             s.append("@DATA")
             for document in self.documents:
                 v = document.vector
-                v = [v.get(k,0) for k in keys]
+                v = [v.get(k, 0) for k in keys]
                 v = ",".join(x==0 and "0" or "%.4f" % x for x in v)
                 v = "%s,%s" % (v, document.type or "")
                 s.append(v)
@@ -753,7 +753,7 @@ class Corpus(object):
             for d in self.documents:
                 for w in d.terms:
                     self._df[w] = (w in self._df) and self._df[w]+1 or 1
-            for w, f in self._df.iteritems():
+            for w in self._df:
                 self._df[w] /= float(len(self.documents))
         return self._df.get(word, 0.0)
         
@@ -784,7 +784,7 @@ class Corpus(object):
         # (e.g. the document was not in the corpus, this can be the case in Corpus.search() for example).
         # See Vector.__call__() why this is possible.
         if not self._vector: 
-            self._vector = Vector((w,0) for w in chain(*(d.terms for d in self.documents)))
+            self._vector = Vector((w, 0) for w in chain(*(d.terms for d in self.documents)))
         return self._vector
 
     @property
@@ -816,8 +816,8 @@ class Corpus(object):
         # it is available in cache for reuse.
         id1 = document1.id
         id2 = document2.id
-        if (id1,id2) in self._similarity: return self._similarity[(id1,id2)]
-        if (id2,id1) in self._similarity: return self._similarity[(id2,id1)]
+        if (id1, id2) in self._similarity: return self._similarity[(id1, id2)]
+        if (id2, id1) in self._similarity: return self._similarity[(id2, id1)]
         # Calculate the matrix multiplication of the document vectors.
         #v1 = self.vector(document1)
         #v2 = self.vector(document2)
@@ -826,14 +826,14 @@ class Corpus(object):
             # This is exponentially faster for sparse vectors:
             v1 = document1.vector
             v2 = document2.vector
-            s = sum(v1.get(w,0) * f for w, f in v2.iteritems()) / (v1.norm * v2.norm or 1)
+            s = sum(v1.get(w, 0) * f for w, f in v2.iteritems()) / (v1.norm * v2.norm or 1)
         else:
             # Using LSA concept space:
             v1 = id1 in self.lsa and self.lsa[id1] or self._lsa.transform(document1)
             v2 = id2 in self.lsa and self.lsa[id2] or self._lsa.transform(document2)
-            s = sum(a*b for a,b in izip(v1.itervalues(), v2.itervalues())) / (v1.norm * v2.norm or 1)
+            s = sum(a*b for a, b in izip(v1.itervalues(), v2.itervalues())) / (v1.norm * v2.norm or 1)
         # Cache the similarity weight for reuse.
-        self._similarity[(id1,id2)] = s
+        self._similarity[(id1, id2)] = s
         return s
         
     similarity = cosine_similarity
@@ -846,7 +846,7 @@ class Corpus(object):
         # Filter the input document from the matches.
         # Filter documents that scored 0 and return the top.
         v = [(w, d) for w, d in v if w > 0 and d.id != document.id]
-        v = heapq.nsmallest(top, v, key=lambda v: (-v[0], v[1]))
+        v = heapq.nsmallest(top, v, key=lambda v: (-v[0],v[1]))
         return v
         
     similar = related = neighbors = nn = nearest_neighbors
@@ -974,7 +974,7 @@ class Corpus(object):
                 type = d.type) for d in self.documents])
         return corpus
 
-#### FREQUENT CONCEPT SETS ###########################################################################
+#### FREQUENT CONCEPT SETS #########################################################################
 # Agrawal R. & Srikant R. (1994), Fast algorithms for mining association rules in large databases.
 # Based on: https://gist.github.com/1423287
 
@@ -1032,7 +1032,7 @@ class Apriori:
         
 apriori = Apriori()
 
-#### LATENT SEMANTIC ANALYSIS ########################################################################
+#### LATENT SEMANTIC ANALYSIS ######################################################################
 # Based on:
 # http://en.wikipedia.org/wiki/Latent_semantic_analysis
 # http://blog.josephwilk.net/projects/latent-semantic-analysis-in-python.html
@@ -1093,7 +1093,7 @@ class LSA:
     def concepts(self):
         # Yields a list of all concepts, each a dictionary of (word, weight)-items.
         # Round the weight so 9.0649330400000009e-17 becomes a more meaningful 0.0.
-        return [dict((self._terms[i], round(w,15)) for i,w in enumerate(concept)) for concept in self.vt]
+        return [dict((self._terms[i], round(w, 15)) for i, w in enumerate(concept)) for concept in self.vt]
     
     @property
     def vectors(self):
@@ -1142,7 +1142,7 @@ _lsa_transform_cache = {}
 #    matrix = numpy.delete(matrix, columns, axis=1)
 #    return matrix, columns
 
-#### CLUSTERING ######################################################################################
+#### CLUSTERING ####################################################################################
 # Clustering assigns vectors to subsets based on a distance measure, 
 # which determines how "similar" two vectors are.
 # For example, for (x,y) coordinates in 2D we could use Euclidean distance ("as the crow flies");
@@ -1204,7 +1204,7 @@ class DistanceMap:
             d = self._cache[(v1.id, v2.id)] = distance(v1, v2, method=self.method)
         return d
 
-#--- K-MEANS ----------------------------------------------------------------------------------------
+#--- K-MEANS ---------------------------------------------------------------------------------------
 # Fast, no guarantee of convergence or optimal solution (random starting clusters).
 # 3000 vectors with 100 features (LSA, density 1.0): 1 minute with k=100 (20 iterations).
 # 3000 vectors with 200 features (LSA, density 1.0): 3 minutes with k=100 (20 iterations).
@@ -1276,7 +1276,7 @@ def kmpp(vectors, k, distance=COSINE):
     # Choose one center at random.
     # Calculate the distance between each vector and the nearest center.
     centroids = [choice(vectors)]
-    d = [distance(v, centroids [0]) for v in vectors]
+    d = [distance(v, centroids[0]) for v in vectors]
     s = sum(d)
     for _ in range(k-1):
         # Choose a random number y between 0 and d1 + d2 + ... + dn.
@@ -1304,7 +1304,7 @@ def kmpp(vectors, k, distance=COSINE):
         clusters[d.index(min(d))].append(v1)
     return clusters
 
-#--- HIERARCHICAL -----------------------------------------------------------------------------------
+#--- HIERARCHICAL ----------------------------------------------------------------------------------
 # Slow, optimal solution guaranteed in O(len(vectors)^3).
 #  100 vectors with 6 features (density 1.0): 0.1 seconds.
 # 1000 vectors with 6 features (density 1.0): 1 minute.
@@ -1386,9 +1386,9 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
 #v3 = Vector(wings=1, beak=1, claws=1, paws=0, fur=0) # bird
 #print hierarchical([v1, v2, v3])
 
-#### CLASSIFIER ######################################################################################
+#### CLASSIFIER ####################################################################################
 
-#--- CLASSIFIER BASE CLASS ---------------------------------------------------------------------------
+#--- CLASSIFIER BASE CLASS -------------------------------------------------------------------------
 
 class Classifier:
 
@@ -1443,7 +1443,7 @@ class Classifier:
             return type, Document(document, stopwords=True).vector
     
     @classmethod
-    def test(self, corpus=[], d=0.65, folds=1, **kwargs):
+    def test(cls, corpus=[], d=0.65, folds=1, **kwargs):
         """ Returns an (accuracy, precision, recall, F-score)-tuple for the given corpus.
             The corpus is a list of documents or (wordlist, type)-tuples.
             2/3 of the data will be used as training material and tested against the other 1/3.
@@ -1456,10 +1456,10 @@ class Classifier:
         corpus  = shuffled(corpus) # Avoid a list sorted by type (because we take successive folds).
         classes = set(type for document, type in corpus)
         binary  = len(classes) == 2 and sorted(classes) in ([False,True], [0,1])
-        m = [0,0,0,0] # accuracy | precision | recall | F1-score.
+        m = [0, 0, 0, 0] # accuracy | precision | recall | F1-score.
         K = max(folds, 1)
         for k in range(K):
-            classifier = self(**kwargs)
+            classifier = cls(**kwargs)
             t = len(corpus) / float(K) # Documents per fold.
             i = int(round(k * t))      # Corpus start index.
             j = int(round(k * t + t))  # Corpus stop index.
@@ -1498,8 +1498,8 @@ class Classifier:
         return binary and tuple(m) or (m[0], None, None, None)
 
     @classmethod
-    def k_fold_cross_validation(self, corpus=[], k=10, **kwargs):
-        return self.test(corpus, kwargs.pop(d,0.65), k, kwargs)
+    def k_fold_cross_validation(cls, corpus=[], k=10, **kwargs):
+        return cls.test(corpus, kwargs.pop("d", 0.65), k, **kwargs)
     
     crossvalidate = cross_validate = k_fold_cross_validation
 
@@ -1507,10 +1507,10 @@ class Classifier:
         cPickle.dump(self, open(path, "w"), BINARY)
 
     @classmethod
-    def load(self, path):
+    def load(cls, path):
         return cPickle.load(open(path))
 
-#--- NAIVE BAYES CLASSIFIER --------------------------------------------------------------------------
+#--- NAIVE BAYES CLASSIFIER ------------------------------------------------------------------------
 # Based on: Magnus Lie Hetland, http://hetland.org/coding/python/nbayes.py
 
 # We can't include these in the NaiveBayes class description,
@@ -1576,7 +1576,7 @@ class NaiveBayes(Classifier):
 
 Bayes = NaiveBayes
 
-#--- SUPPORT VECTOR MACHINE --------------------------------------------------------------------------
+#--- SUPPORT VECTOR MACHINE ------------------------------------------------------------------------
 # pattern.vector comes bundled with LIBSVM 3.11.
 # http://www.csie.ntu.edu.tw/~cjlin/libsvm/
 #
@@ -1626,7 +1626,7 @@ class SVM(Classifier):
             ("epsilon", 0.1),
             (     "nu", 0.5),
             (  "cache", 100),
-            (  "debug", False)): self.__dict__[k] = kwargs.get(k, v)
+            (  "debug", False)): setattr(self, k, kwargs.get(k, v))
 
     @property
     def classes(self):
@@ -1705,7 +1705,7 @@ class SVM(Classifier):
         
     def __del__(self):
         try:
-            if self._model: self._model.__del__()
+            if self._model: self._model[0].__del__()
         except:
             pass
             
@@ -1715,14 +1715,14 @@ class SVM(Classifier):
         Classifier.save(self, path)
         
     @classmethod
-    def load(self, path):
+    def load(cls, path):
         import svm
         classifier = cPickle.load(open(path))
         classifier._libsvm = svm
         classifier._libsvm_train()
         return classifier
 
-#--- K-NEAREST NEIGHBOR CLASSIFIER -------------------------------------------------------------------
+#--- K-NEAREST NEIGHBOR CLASSIFIER -----------------------------------------------------------------
 
 class NearestNeighbor(Classifier):
     
@@ -1790,7 +1790,7 @@ kNN = KNN = NearestNeighbor
 #print knn.classify(Document("something that can fly", threshold=0, stemmer=None))
 #print NearestNeighbor.test((d1,d2,d3), folds=2)
 
-#### K-D TREE ########################################################################################
+#### K-D TREE ######################################################################################
 
 class KDTree:
 
@@ -1877,7 +1877,7 @@ class KDTree:
 
 kdtree = KDTree
 
-#### GENETIC ALGORITHM ###############################################################################
+#### GENETIC ALGORITHM #############################################################################
 
 class GeneticAlgorithm:
     

@@ -1,11 +1,11 @@
-#### PATTERN | DB ####################################################################################
+#### PATTERN | DB ##################################################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-######################################################################################################
+####################################################################################################
 
 import os
 import sys
@@ -35,10 +35,11 @@ except:
 MYSQL  = "mysql"
 SQLITE = "sqlite"
 
-# Lazy import called from Database() or Database.new().
-# Depending on the type of database we either import MySQLdb or SQLite.
-# Note: 64-bit Python needs 64-bit MySQL, 32-bit the 32-bit version.
 def _import_db(engine=SQLITE):
+    """ Lazy import called from Database() or Database.new().
+        Depending on the type of database we either import MySQLdb or SQLite.
+        Note: 64-bit Python needs 64-bit MySQL, 32-bit the 32-bit version.
+    """
     global MySQLdb
     global sqlite
     if engine == MYSQL:
@@ -61,7 +62,7 @@ def find(match=lambda item: False, list=[]):
 
 _sum = sum # pattern.db.sum() is also a column aggregate function.
 
-#### DATE FUNCTIONS ##################################################################################
+#### DATE FUNCTIONS ################################################################################
 
 NOW, YEAR = "now", datetime.now().year
 
@@ -162,7 +163,7 @@ def time(days=0, seconds=0, minutes=0, hours=0, **kwargs):
     # Date(date.year, date.month+1, date.day, format=date.format)
     return timedelta(days=days, seconds=seconds, minutes=minutes, hours=hours, **kwargs)
 
-#### STRING FUNCTIONS ################################################################################
+#### STRING FUNCTIONS ##############################################################################
 
 def string(value, default=""):
     """ Returns the value cast to unicode, or default if it is None/empty.
@@ -211,6 +212,8 @@ def encode_entities(string):
     return string
 
 def decode_entities(string):
+    """ Decodes HTML entities in the given string ("&lt;" => "<").
+    """
     # http://snippets.dzone.com/posts/show/4569
     def replace_entity(match):
         hash, hex, name = match.group(1), match.group(2), match.group(3)
@@ -276,7 +279,7 @@ def _escape(value, quote=lambda string: "'%s'" % string.replace("'", "\\'")):
         return "'%s'" % value.escape()
     return value
 
-#### LIST FUNCTIONS ##################################################################################
+#### LIST FUNCTIONS ################################################################################
 
 def order(list, cmp=None, key=None, reverse=False):
     """ Returns a list of indices in the order as when the given list is sorted.
@@ -296,16 +299,26 @@ def order(list, cmp=None, key=None, reverse=False):
 _order = order
 
 def avg(list):
+    """ Returns the arithmetic mean of the given list of values.
+        For example: mean([1,2,3,4]) = 10/4 = 2.5.
+    """
     return float(_sum(list)) / (len(list) or 1)
     
 def variance(list):
+    """ Returns the variance of the given list of values.
+        The variance is the average of squared deviations from the mean.
+    """
     a = avg(list)
     return _sum([(x-a)**2 for x in list]) / (len(list)-1 or 1)
     
 def stdev(list):
+    """ Returns the standard deviation of the given list of values.
+        Low standard deviation => values are close to the mean.
+        High standard deviation => values are spread out over a large range.
+    """
     return sqrt(variance(list))
 
-#### SQLITE FUNCTIONS ################################################################################
+#### SQLITE FUNCTIONS ##############################################################################
 # Convenient MySQL functions not in in pysqlite2. These are created at each Database.connect().
         
 class sqlite_first(list):
@@ -338,7 +351,7 @@ def sqlite_minute(datestring):
 def sqlite_second(datestring):
     return int(datestring.split(" ")[1].split(":")[2])
         
-#### DATABASE ########################################################################################
+#### DATABASE ######################################################################################
 
 
 
@@ -478,6 +491,8 @@ class Database(object):
     
     @property
     def query(self):
+        """ Yields the last executed SQL query as a string.
+        """
         return self._query
     
     def execute(self, SQL, commit=False):
@@ -521,6 +536,8 @@ class Database(object):
         return _escape(value, quote)
     
     def binary(self, data):
+        """ Returns the string of binary data as a value that can be inserted in a BLOB field.
+        """
         return _Binary(data, self.type)
         
     blob = binary
@@ -618,7 +635,7 @@ class Database(object):
         except:
             pass
 
-#### FIELD ###########################################################################################
+#### FIELD #########################################################################################
 
 class _String(str):
     # The STRING constant can be called with a length when passed to field(),
@@ -644,7 +661,7 @@ UNIQUE  = "unique"
 # DATE default.
 NOW = "now"
 
-#--- FIELD- ------------------------------------------------------------------------------------------
+#--- FIELD- ----------------------------------------------------------------------------------------
 
 #def field(name, type=STRING, default=None, index=False, optional=True)
 def field(name, type=STRING, **kwargs):
@@ -680,7 +697,7 @@ def primary_key(name="id"):
     
 pk = primary_key
 
-#--- FIELD SCHEMA ------------------------------------------------------------------------------------
+#--- FIELD SCHEMA ----------------------------------------------------------------------------------
 
 class Schema(object):
     
@@ -741,7 +758,7 @@ class Schema(object):
             repr(self.index),
             repr(self.optional))
 
-#### TABLE ###########################################################################################
+#### TABLE #########################################################################################
 
 ALL = "*"
 
@@ -844,6 +861,8 @@ class Table(object):
         return self.rows()[i]
 
     def abs(self, field):
+        """ Returns the absolute field name (e.g., "name" => ""persons.name").
+        """
         return abs(self.name, field)
 
     def rows(self):
@@ -951,9 +970,9 @@ class Table(object):
             repr(self.count()),
             repr(self.db.name))
 
-#### QUERY ###########################################################################################
+#### QUERY #########################################################################################
 
-#--- QUERY SYNTAX -----------------------------------------------------------------------------------
+#--- QUERY SYNTAX ----------------------------------------------------------------------------------
 
 BETWEEN, LIKE, IN = \
     "between", "like", "in"
@@ -1036,22 +1055,13 @@ def minute(date):
 def second(date):
     return "second(%s)" % date
 
-#FIRST, LAST, COUNT, MAX, MIN, SUM, AVG, STDEV or CONCATENATE
 # Aggregate functions.
-def count(value):
-    return "count(%s)" % value
-def count(value):
-    return "count(%s)" % value
-def count(value):
-    return "count(%s)" % value
-def count(value):
-    return "count(%s)" % value
 def count(value):
     return "count(%s)" % value
 def sum(value):
     return "sum(%s)" % value
 
-#--- QUERY FILTER ------------------------------------------------------------------------------------
+#--- QUERY FILTER ----------------------------------------------------------------------------------
 
 AND, OR = "and", "or"
 
@@ -1094,10 +1104,14 @@ class Group(list):
         
     sql = SQL
 
-def all(*args): # AND
+def all(*args):
+    """ Returns a group of filters combined with AND.
+    """
     return Group(*args, **dict(operator=AND))
     
-def any(*args): # OR
+def any(*args):
+    """ Returns a group of filters combined with OR.
+    """
     return Group(*args, **dict(operator=OR))
     
 # From a GET-query dict:
@@ -1105,7 +1119,7 @@ def any(*args): # OR
 
 # filter() value can also be a Query with comparison=IN.
 
-#--- QUERY -------------------------------------------------------------------------------------------
+#--- QUERY -----------------------------------------------------------------------------------------
 
 # Relations:
 INNER = "inner" # The rows for which there is a match in both tables (same as join=None).
@@ -1251,7 +1265,7 @@ class Query(object):
     def __repr__(self):
         return "Query(sql=%s)" % repr(self.SQL())
 
-#### VIEW #############################################################################################
+#### VIEW ##########################################################################################
 # A representation of data based on a table in the database.
 # The render() method can be overridden to output data in a certain format (e.g., HTML for a web app).
 
@@ -1299,7 +1313,7 @@ class View(object):
         return self.render(*path, **query)
     default.exposed = True
 
-#### XML PARSER #######################################################################################
+#### XML PARSER ####################################################################################
 
 XML_HEADER = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
 
@@ -1456,7 +1470,7 @@ def parse_xml(database, xml, table=None, field=lambda s: s.replace(".", "-")):
     database.commit()
     return database[table]
 
-#### JSON PARSER ######################################################################################
+#### JSON PARSER ###################################################################################
 
 class JSON:
     
@@ -1487,9 +1501,9 @@ class JSON:
 
 json = JSON()
 
-#### DATASHEET ########################################################################################
+#### DATASHEET #####################################################################################
 
-#--- CSV ----------------------------------------------------------------------------------------------
+#--- CSV -------------------------------------------------------------------------------------------
 
 def csv_header_encode(field, type=STRING):
     # csv_header_encode("age", INTEGER) => "age (INTEGER)".
@@ -1540,7 +1554,7 @@ class CSV(list):
         f.close()
 
     @classmethod
-    def load(self, path, separator=",", decoder=lambda v: v, headers=False, preprocess=lambda s: s):
+    def load(cls, path, separator=",", decoder=lambda v: v, headers=False, preprocess=lambda s: s):
         """ Returns a table from the data in the given text file.
             Rows are expected to be separated by a newline. 
             Columns are expected to be separated by the given separator (by default, comma).
@@ -1584,9 +1598,9 @@ class CSV(list):
                         row[j] = v
                     else:
                         row[j] = decoder(decode_utf8(v))
-        return self(rows=data, fields=fields)
+        return cls(rows=data, fields=fields)
 
-#--- DATASHEET ----------------------------------------------------------------------------------------
+#--- DATASHEET -------------------------------------------------------------------------------------
 
 class Datasheet(CSV):
     
@@ -1816,9 +1830,11 @@ class Datasheet(CSV):
             return json(self)
 
 def flip(datasheet):
+    """ Returns a new datasheet with rows for columns and columns for rows.
+    """
     return Datasheet(rows=datasheet.columns)
 
-#--- DATASHEET ROWS -----------------------------------------------------------------------------------
+#--- DATASHEET ROWS --------------------------------------------------------------------------------
 # Datasheet.rows mimics the operations on Datasheet:
 
 class DatasheetRows(list):
@@ -1871,7 +1887,7 @@ class DatasheetRows(list):
     def swap(self, i1, i2):
         self[i1], self[i2] = self[i2], self[i1]
 
-#--- DATASHEET COLUMNS --------------------------------------------------------------------------------
+#--- DATASHEET COLUMNS -----------------------------------------------------------------------------
 
 class DatasheetColumns(list):
     
@@ -1986,7 +2002,7 @@ class DatasheetColumns(list):
                 self._datasheet.fields[j2], 
                 self._datasheet.fields[j1])
 
-#--- DATASHEET COLUMN ---------------------------------------------------------------------------------
+#--- DATASHEET COLUMN ------------------------------------------------------------------------------
 
 class DatasheetColumn(list):
     
@@ -2021,7 +2037,7 @@ class DatasheetColumn(list):
     def __ne__(self, column):
         return not self.__eq__(column)
     def __add__(self, value):
-        raise TypeError, "unsupported operand type(s) for +: 'Datasheet.columns[x]' and '%s'" % column.__class__.__name__
+        raise TypeError, "unsupported operand type(s) for +: 'Datasheet.columns[x]' and '%s'" % value.__class__.__name__
     def __iadd__(self, value):
         self.append(value); return self
     def __contains__(self, value):
@@ -2080,7 +2096,7 @@ class DatasheetColumn(list):
     def swap(self, i1, i2):
         self._datasheet.swap(i1, i2)
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 _UID = 0
 def uid():

@@ -1,10 +1,10 @@
-#### PATTERN | EN | TABLE ############################################################################
+#### PATTERN | EN | TABLE ##########################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-######################################################################################################
+####################################################################################################
 
 # This module is deprecated.
 # Since version 2.1, Table is renamed to Datasheet as part of pattern.db.

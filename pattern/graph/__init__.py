@@ -1,10 +1,10 @@
-#### PATTERN | GRAPH #################################################################################
+#### PATTERN | GRAPH ###############################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-######################################################################################################
+####################################################################################################
 # This module can benefit from loading psyco when iterating a GraphLayout.
 
 from math     import sqrt, pow
@@ -17,11 +17,17 @@ from codecs   import open
 # float("inf") doesn't work on windows.
 INFINITE = 1e20
 
-# This module is standalone, line(), ellipse() and Text.draw() 
-# must be either implemented or patched:
+# This module is standalone.
+# For drawing, line(), ellipse() and Text.draw() must be either implemented or patched.
+
 def line(x1, y1, x2, y2, stroke=(0,0,0,1), strokewidth=1):
+    """ Draws a line from (x1, y1) to (x2, y2) using the given strok color and stroke width.
+    """
     pass
+    
 def ellipse(x, y, width, height, fill=(0,0,0,1), stroke=None, strokewidth=1):
+    """ Draws an ellipse at (x, y) with given fill and stroke color and stroke width.
+    """
     pass
 
 class Text:
@@ -33,6 +39,9 @@ class Text:
         k.pop("string")
         return Text(self.string, **k)
     def draw(self):
+        """ Draws the node label.
+            Optional properties include width, fill and fontsize.
+        """
         pass
         
 class Vector(object):
@@ -40,7 +49,7 @@ class Vector(object):
         self.x = x
         self.y = y
 
-#--- NODE --------------------------------------------------------------------------------------------
+#--- NODE ------------------------------------------------------------------------------------------
 
 def deepcopy(o):
     # A color can be represented as a tuple or as a nodebox.graphics.Color object,
@@ -102,18 +111,24 @@ class Node(object):
 
     @property
     def edges(self):
+        """ Yields a list of edges from/to the node.
+        """
         return self.graph is not None \
            and [e for e in self.graph.edges if self.id in (e.node1.id, e.node2.id)] \
             or []
     
     @property
     def weight(self):
+        """ Yields eigenvector centrality as a number between 0.0-1.0.
+        """
         if self.graph and self._weight is None:
             self.graph.eigenvector_centrality()
         return self._weight
         
     @property
     def centrality(self):
+        """ Yields betweenness centrality as a number between 0.0-1.0.
+        """
         if self.graph and self._centrality is None:
             self.graph.betweenness_centrality()
         return self._centrality
@@ -159,6 +174,8 @@ class Node(object):
                 self.y + self.radius)
         
     def contains(self, x, y):
+        """ Returns True if the given coordinates (x, y) are inside the node radius.
+        """
         return abs(self.x - x) < self.radius*2 and \
                abs(self.y - y) < self.radius*2
                
@@ -190,7 +207,7 @@ class Links(list):
     def edge(self, node): 
         return self.edges.get(isinstance(node, Node) and node.id or node)
 
-#--- EDGE --------------------------------------------------------------------------------------------
+#--- EDGE ------------------------------------------------------------------------------------------
 
 coordinates = lambda x, y, d, a: (x + d*cos(radians(a)), y + d*sin(radians(a)))
 
@@ -256,7 +273,7 @@ class Edge(object):
     def __repr__(self):
         return "%s(id1=%s, id2=%s)" % (self.__class__.__name__, repr(self.node1.id), repr(self.node2.id))
 
-#--- GRAPH -------------------------------------------------------------------------------------------
+#--- GRAPH -----------------------------------------------------------------------------------------
 
 # Return value of Graph.shortest_paths().
 # Dictionary values can be accessed by Node as well as by node id.
@@ -458,8 +475,9 @@ class Graph(dict):
         
     @property
     def density(self):
-        # Number of edges vs. maximum number of possible edges.
-        # E.g. <0.35 => sparse, >0.65 => dense, 1.0 => complete.
+        """ Yields the number of edges vs. the maximum number of possible edges.
+            For example, <0.35 => sparse, >0.65 => dense, 1.0 => complete.
+        """
         return 2.0*len(self.edges) / (len(self.nodes) * (len(self.nodes)-1))
         
     @property
@@ -473,6 +491,8 @@ class Graph(dict):
         return self.density < 0.35
         
     def split(self):
+        """ Returns the list of unconnected subgraphs.
+        """
         return partition(self)
     
     def update(self, iterations=10, **kwargs):
@@ -530,7 +550,7 @@ class Graph(dict):
             g._add_edge_copy(e)
         return g
 
-#--- GRAPH LAYOUT ------------------------------------------------------------------------------------
+#--- GRAPH LAYOUT ----------------------------------------------------------------------------------
 # Graph drawing or graph layout, as a branch of graph theory, 
 # applies topology and geometry to derive two-dimensional representations of graphs.
 
@@ -640,7 +660,7 @@ class GraphSpringLayout(GraphLayout):
         g.k, g.force, g.repulsion = self.k, self.force, self.repulsion
         return g
 
-#--- GRAPH TRAVERSAL ---------------------------------------------------------------------------------
+#--- GRAPH TRAVERSAL -------------------------------------------------------------------------------
 
 def depth_first_search(node, visit=lambda node: False, traversable=lambda node, edge: True, _visited=None):
     """ Visits all the nodes connected to the given root node, depth-first.
@@ -706,7 +726,7 @@ def edges(path):
     # sum(e.weight for e in edges(path))
     return len(path) > 1 and (n.links.edge(path[i+1]) for i,n in enumerate(path[:-1])) or iter(())
     
-#--- GRAPH THEORY ------------------------------------------------------------------------------------
+#--- GRAPH THEORY ----------------------------------------------------------------------------------
 
 def adjacency(graph, directed=False, reversed=False, stochastic=False, heuristic=None):
     """ Returns a dictionary indexed by node id1's,
@@ -828,6 +848,9 @@ def floyd_warshall_all_pairs_distance(graph, heuristic=None, directed=False):
     return pdict(p, ((u, dict((v, w) for v,w in d[u].iteritems() if w < 1e30)) for u in d))
 
 def predecessor_path(tree, u, v):
+    """ Returns the path between node u and node v as a list of node id's.
+        The given tree is the return value of floyd_warshall_all_pairs_distance().predecessors.
+    """
     def _traverse(u, v):
         w = tree[u][v]
         if w == u:
@@ -948,7 +971,7 @@ def partition(graph):
     g.sort(lambda a, b: len(b) - len(a))
     return g
 
-#--- GRAPH THEORY | CLIQUE ---------------------------------------------------------------------------
+#--- GRAPH THEORY | CLIQUE -------------------------------------------------------------------------
 
 def is_clique(graph):
     """ A clique is a set of nodes in which each node is connected to all other nodes.
@@ -984,7 +1007,7 @@ def cliques(graph, threshold=3):
             if c not in a: a.append(c)
     return a
 
-#--- GRAPH MAINTENANCE -------------------------------------------------------------------------------
+#--- GRAPH MAINTENANCE -----------------------------------------------------------------------------
 # Utility commands for safe linking and unlinking of nodes,
 # with respect for the surrounding nodes.
 
@@ -1055,7 +1078,7 @@ def insert(graph, node, a, b):
             graph._add_edge_copy(e, node1=node, node2=a) 
     unlink(graph, a, b)
 
-#--- HTML CANVAS GRAPH RENDERER ----------------------------------------------------------------------
+#--- HTML CANVAS GRAPH RENDERER --------------------------------------------------------------------
 
 import os, shutil, glob
 
@@ -1395,8 +1418,3 @@ def export(graph, path, overwrite=False, encoding="utf-8", **kwargs):
         if k in renderer.__dict__: 
             renderer.__dict__[k] = v
     return renderer.export(path, overwrite)
-
-#--- HTML CANVAS WORLD MAP RENDERER ------------------------------------------------------------------
-
-def worldmap(region, type=SCRIPT, detail={}, zoom=[], fill=(0,0,0,1), stroke=(0,0,0,1), strokewidth=1, padding=0):
-    pass

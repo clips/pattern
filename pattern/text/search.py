@@ -1,10 +1,10 @@
-#### PATTERN | EN | PATTERN MATCHING #################################################################
+#### PATTERN | EN | PATTERN MATCHING ###############################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-######################################################################################################
+####################################################################################################
 
 import re
 import itertools
@@ -41,7 +41,7 @@ class Word:
     def lemma(self):
         return None
 
-#--- STRING MATCHING ---------------------------------------------------------------------------------
+#--- STRING MATCHING -------------------------------------------------------------------------------
 
 WILDCARD = "*"
 regexp = type(re.compile(r"."))
@@ -68,7 +68,7 @@ def _match(string, pattern):
             return p.search(string) is not None
     return False
 
-#--- LIST FUNCTIONS ----------------------------------------------------------------------------------
+#--- LIST FUNCTIONS --------------------------------------------------------------------------------
 
 def unique(list):
     """ Returns a list copy in which each item occurs only once.
@@ -124,9 +124,9 @@ def variations(list, optional=lambda item: False):
     V.sort(lambda a, b: len(b) - len(a))
     return V
 
-#### TAXONOMY ########################################################################################
+#### TAXONOMY ######################################################################################
 
-#--- ORDERED DICTIONARY ------------------------------------------------------------------------------
+#--- ORDERED DICTIONARY ----------------------------------------------------------------------------
 
 class odict(dict):
     """ Dictionary with ordered keys.
@@ -143,8 +143,8 @@ class odict(dict):
     def reversed(self):
         return self._f == self._insertkey
     @classmethod
-    def fromkeys(odict, k, v=None, reversed=True):
-        d = odict(reversed=reversed)
+    def fromkeys(cls, k, v=None, reversed=True):
+        d = cls(reversed=reversed)
         for k in k: d.__setitem__(k,v)
         return d
     def _insertkey(self, k):
@@ -185,7 +185,7 @@ class odict(dict):
     def __repr__(self):
         return "{%s}" % ", ".join(["%s: %s" % (repr(k), repr(v)) for k, v in self.items()])
 
-#--- TAXONOMY ----------------------------------------------------------------------------------------
+#--- TAXONOMY --------------------------------------------------------------------------------------
 
 class Taxonomy(dict):
     
@@ -312,7 +312,7 @@ TAXONOMY = taxonomy = Taxonomy()
 #taxonomy.classifiers.append(c)
 #print taxonomy.classify("roughness")
 
-#--- TAXONOMY CLASSIFIER -----------------------------------------------------------------------------
+#--- TAXONOMY CLASSIFIER ---------------------------------------------------------------------------
 
 class Classifier:
     
@@ -356,9 +356,9 @@ class WordNetClassifier(Classifier):
 #print taxonomy.parents("ponder", pos="VB")
 #print taxonomy.children("computer")
 
-#### PATTERN #########################################################################################
+#### PATTERN #######################################################################################
 
-#--- PATTERN CONSTRAINT ------------------------------------------------------------------------------
+#--- PATTERN CONSTRAINT ----------------------------------------------------------------------------
 
 # Allowed chunk, role and part-of-speech tags (Penn Treebank II):
 CHUNKS = dict.fromkeys(["NP", "PP", "VP", "ADVP", "ADJP", "SBAR", "PRT", "INTJ"], True)
@@ -395,7 +395,7 @@ class Constraint:
         self.exclude  = exclude      # Constraint of words that are *not* allowed, or None.
         
     @classmethod
-    def fromstring(self, s, **kwargs):
+    def fromstring(cls, s, **kwargs):
         """ Returns a new Constraint from the given string.
             Uppercase words indicate either a tag ("NN", "JJ", "VP")
             or a taxonomy term (e.g. "PRODUCT", "PERSON").
@@ -410,7 +410,7 @@ class Constraint:
             ^ as a prefix defines a constraint that can only match the first word.
             These characters need to be escaped if used as content: "\(".
         """
-        C = self(**kwargs)
+        C = cls(**kwargs)
         if s.startswith("^"):
             s = s[1:  ]; C.first = True
         if s.endswith("+") and not s.endswith("\+"):
@@ -560,7 +560,7 @@ class Constraint:
         return (self.optional and "%s(%s)%s" or "%s[%s]%s") % (
             self.first and "^" or "", "|".join(a), self.multiple and "+" or "")
 
-#--- PATTERN -----------------------------------------------------------------------------------------
+#--- PATTERN ---------------------------------------------------------------------------------------
 
 STRICT = "strict"
 GREEDY = "greedy"
@@ -587,7 +587,7 @@ class Pattern:
         return self.sequence[i]
         
     @classmethod
-    def fromstring(self, s, *args, **kwargs):
+    def fromstring(cls, s, *args, **kwargs):
         """ Returns a new Pattern from the given string.
             Constraints are separated by a space.
             If a constraint contains a space, it must be wrapped in [].
@@ -612,7 +612,7 @@ class Pattern:
         s = re.sub(r"\s+", " ", s)
         s = s.split(" ")
         s = [v.replace("&space;"," ") for v in s]
-        P = self([], *args, **kwargs)
+        P = cls([], *args, **kwargs)
         for s in s:
             P.sequence.append(Constraint.fromstring(s, taxonomy=kwargs.get("taxonomy", TAXONOMY)))
         return P
@@ -744,6 +744,9 @@ class Pattern:
 _cache = {}
 _CACHE_SIZE = 100 # Number of dynamic Pattern objects to keep in cache.
 def compile(pattern, *args, **kwargs):
+    """ Returns a Pattern from the given string or regular expression.
+        Recently compiled patterns are kept in cache.
+    """
     id, p = repr(pattern)+repr(args), None
     if id in _cache:
         return _cache[id]
@@ -760,17 +763,24 @@ def compile(pattern, *args, **kwargs):
         raise TypeError, "can't compile '%s' object" % pattern.__class__.__name__
 
 def match(pattern, sentence, *args, **kwargs):
+    """ Returns the first match found in the given sentence, or None.
+    """
     return compile(pattern, *args, **kwargs).match(sentence) 
 
 def search(pattern, sentence, *args, **kwargs):
+    """ Returns a list of all matches found in the given sentence.
+    """
     return compile(pattern, *args, **kwargs).search(sentence)
 
 def escape(string):
+    """ Returns the string with control characters for Pattern syntax escaped.
+        For example: "hello!" => "hello\!".
+    """
     for ch in ("[","]","(",")","_","|","!","*","+","^"):
         string = string.replace(ch, "\\"+ch)
     return string
 
-#--- PATTERN MATCH -----------------------------------------------------------------------------------
+#--- PATTERN MATCH ---------------------------------------------------------------------------------
 
 class Match:
     

@@ -4,7 +4,7 @@ import unittest
 
 from pattern import graph
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestUtilityFunctions(unittest.TestCase):
     
@@ -45,7 +45,7 @@ class TestUtilityFunctions(unittest.TestCase):
         self.assertAlmostEqual(y, 60.00, places=2)
         print "pattern.graph.coordinates()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestNode(unittest.TestCase):
     
@@ -110,7 +110,7 @@ class TestNode(unittest.TestCase):
         self.assertTrue(n.text == None)
         print "pattern.graph.Node.text"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestEdge(unittest.TestCase):
     
@@ -134,7 +134,7 @@ class TestEdge(unittest.TestCase):
         self.assertTrue(e.strokewidth == 1)
         print "pattern.graph.Edge"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestGraph(unittest.TestCase):
     
@@ -320,7 +320,7 @@ class TestGraph(unittest.TestCase):
         self.assertTrue(isinstance(g4.edges[0], MyEdge))
         print "pattern.graph.Graph.copy()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestGraphLayout(unittest.TestCase):
     
@@ -393,7 +393,7 @@ class TestGraphSpringLayout(TestGraphLayout):
         self.assertTrue(d2 < d1)
         print "pattern.graph.GraphSpringLayout._attract()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestGraphTraversal(unittest.TestCase):
     
@@ -553,7 +553,7 @@ class TestGraphTraversal(unittest.TestCase):
         self.assertEqual(graph.predecessor_path(p1.predecessors, "a", "d"), ["a", "b", "d"])
         print "pattern.graph.floyd_warshall_all_pairs_distance()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestGraphPartitioning(unittest.TestCase):
     
@@ -596,7 +596,7 @@ class TestGraphPartitioning(unittest.TestCase):
         print "pattern.graph.clique()"
         print "pattern.graph.cliques()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 class TestGraphMaintenance(unittest.TestCase):
     
@@ -652,7 +652,7 @@ class TestGraphMaintenance(unittest.TestCase):
         self.assertTrue(g.edge("c","b") is not None)
         print "pattern.graph.insert()"
 
-#-----------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 
 def suite():
     suite = unittest.TestSuite()
