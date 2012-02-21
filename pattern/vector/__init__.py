@@ -22,7 +22,7 @@ import codecs
 import cPickle; BINARY=1
 import stemmer; _stemmer=stemmer
 
-from math      import pow, log
+from math      import log
 from time      import time
 from random    import random, choice
 from itertools import izip, chain
@@ -248,10 +248,15 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
 __UID = 0
 __SESSION = shi(int(time()*1000)) # Avoids collision with pickled documents.
 def _uid():
+    """ Returns a string id, for example: "NPIJYaS-1", "NPIJYaS-2", ...
+        The string part is based on the current time, the number suffix is auto-incremental.
+    """
     global __UID; __UID+=1; return __SESSION+"-"+str(__UID)
 
 # Term relevancy weight:
 TF, TFIDF, TF_IDF = "tf", "tf-idf", "tf-idf"
+
+print _uid()
 
 class Document(object):
     
@@ -722,6 +727,9 @@ class Corpus(object):
         self._update()
         
     def extend(self, documents):
+        """ Extends the corpus with the given list of documents.
+            Clears the cache of vectors and similarities.
+        """
         for document in documents:
             document._corpus = self
             if document.name is not None:
@@ -730,14 +738,16 @@ class Corpus(object):
         self._update()
         
     def remove(self, document):
+        """ Removes the given Document from the corpus (sets Document.corpus=None).
+        """
         self.__delitem__(self.documents.index(document))
         
     def document(self, name):
+        """ Returns the Document with the given name.
+        """
         # This assumes document names are unique.
         if name in self._index:
             return self._index[name]
-        if isinstance(name, int):
-            return self.documents[name]
         
     def document_frequency(self, word):
         """ Returns the document frequency of a word.
@@ -789,11 +799,15 @@ class Corpus(object):
 
     @property
     def vectors(self):
+        """ Yields a list of all document vectors.
+        """
         return [d.vector for d in self.documents]
 
     @property
     def density(self):
-        return float(sum(len(d.terms) for d in self.documents)) / len(self.vector)**2
+        """ Yields the overall word coverage as a number between 0.0-1.0.
+        """
+        return float(sum(len(d.vector) for d in self.documents)) / len(self.vector)**2
 
     # Following methods rely on Document.vector:
     # frequent sets, cosine similarity, nearest neighbors, search, clustering, 
@@ -1091,14 +1105,16 @@ class LSA:
 
     @property
     def concepts(self):
-        # Yields a list of all concepts, each a dictionary of (word, weight)-items.
+        """ Yields a list of all concepts, each a dictionary of (word, weight)-items.
+        """
         # Round the weight so 9.0649330400000009e-17 becomes a more meaningful 0.0.
         return [dict((self._terms[i], round(w, 15)) for i, w in enumerate(concept)) for concept in self.vt]
     
     @property
     def vectors(self):
-        # Yields a dictionary of (Document.id, concepts),
-        # where concepts is a dictionary of (concept_index, weight)-items.
+        """ Yields a dictionary of (Document.id, concepts),
+            where each concept is a dictionary of (concept_index, weight)-items.
+        """
         return self.u
 
     def __getitem__(self, id):
@@ -1198,6 +1214,8 @@ class DistanceMap:
         self._cache = {}
         
     def distance(self, v1, v2):
+        """ Returns the cached distance between two vectors.
+        """
         try:
             d = self._cache[(v1.id, v2.id)]
         except KeyError:
@@ -1414,7 +1432,7 @@ class Classifier:
     def binary(self):
         """ Yields True if the classifier has exactly two prediction classes.
         """
-        return sorted(self.classes) in ([False,True], [0,1])
+        return sorted(self.classes) in ([False, True], [0, 1])
 
     def train(self, document, type=None):
         # Must be implemented in a subclass.

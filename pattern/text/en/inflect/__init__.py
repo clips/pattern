@@ -69,7 +69,7 @@ INDEFINITE = "indefinite"
 def article(word, function=INDEFINITE):
     """ Returns the indefinite (a/an) or definite (the) article for the given word.
     """
-    return function==DEFINITE and definite_article(word) or indefinite_article(word)
+    return function == DEFINITE and definite_article(word) or indefinite_article(word)
 _article = article
 
 def referenced(word, article=INDEFINITE):
@@ -549,7 +549,7 @@ def singularize(word, pos=NOUN, custom={}):
         match = suffix.search(word)
         if match:
             groups = match.groups()
-            for k in range(0,len(groups)):
+            for k in range(0, len(groups)):
                 if groups[k] == None:
                     inflection = inflection.replace('\\'+str(k+1), '')
             return suffix.sub(inflection, word)
@@ -606,7 +606,7 @@ tenses_alias = (
     (PAST_PARTICIPLE,             ["ppart", "VBN"]),    
 )
 a = {}
-for k,v in tenses_alias:
+for k, v in tenses_alias:
     for v in v: 
         a[v] = k
 tenses_alias = a # alias => tense
@@ -680,7 +680,7 @@ class Verbs:
         """
         b = self.lemma(verb)
         if b in self._tenses:
-            a = [x for x in self._tenses.get(b,[]) if x != ""]
+            a = [x for x in self._tenses.get(b, []) if x != ""]
             u = []; [u.append(x) for x in a if x not in u]
             return u
         if parse is True:
@@ -891,10 +891,10 @@ def grade(adjective, suffix=COMPARATIVE):
     n = _count_syllables(adjective)	
     if adjective in grade_irregular:
         # A number of adjectives inflect irregularly.
-        return grade_irregular[adjective][suffix!=COMPARATIVE]
+        return grade_irregular[adjective][suffix != COMPARATIVE]
     elif adjective in grade_uninflected:
         # A number of adjectives don't inflect at all.
-        return "%s %s" % (suffix==COMPARATIVE and "more" or "most", adjective)
+        return "%s %s" % (suffix == COMPARATIVE and "more" or "most", adjective)
     elif n <= 2 and adjective.endswith("e"):
         # With one syllable and ending with an e: larger, wiser.
         suffix = suffix.lstrip("e")

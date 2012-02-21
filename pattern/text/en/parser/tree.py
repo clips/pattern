@@ -224,7 +224,7 @@ class Tags(dict):
             self.word.sentence.token.append(k)
             
     def setdefault(self, k, v):
-        if k not in self: self.__setitem__(k,v); return self[k]
+        if k not in self: self.__setitem__(k, v); return self[k]
 
 #--- CHUNK -----------------------------------------------------------------------------------------
 
@@ -239,10 +239,10 @@ class Chunk:
         # A chunk can have multiple roles and/or relations in the sentence.
         # Role and relation can therefore also be passed as a list.
         a, b = relation, role
-        if not isinstance(a, (list,tuple)):
-            a = isinstance(b,(list,tuple)) and [a for x in b] or [a]
-        if not isinstance(b, (list,tuple)):
-            b = isinstance(a,(list,tuple)) and [b for x in a] or [b]
+        if not isinstance(a, (list, tuple)):
+            a = isinstance(b, (list, tuple)) and [a for x in b] or [a]
+        if not isinstance(b, (list, tuple)):
+            b = isinstance(a, (list, tuple)) and [b for x in a] or [b]
         relations = [x for x in zip(a,b) if x[0] is not None or x[1] is not None]
         self.sentence     = sentence
         self.words        = []
@@ -1254,7 +1254,7 @@ _attachments = {} # {u'A1': [[[u'with', u'IN', u'B-PP', 'B-PNP', u'PP', 'O', u'w
 # This is a fallback if for some reason we fail to import MBSP.TokenString,
 # e.g. when tree.py is part of another project.
 class TaggedString(unicode):
-    def __new__(self, string, tags=["word"], language="en"):
+    def __new__(cls, string, tags=["word"], language="en"):
         if isinstance(string, unicode) and hasattr(string, "tags"): 
             tags, language = string.tags, getattr(string, "language", language)
         s = unicode.__new__(self, string)
@@ -1370,7 +1370,7 @@ def _parse_relation(chunk, type="O"):
     r2 = [x is not None and x.split(_UID_SEPARATOR )[-1] or x for x in r2]
     if len(r1) < len(r2): r1 = r1 + r1 * (len(r2)-len(r1)) # [1] ["SBJ", "OBJ"] => "SBJ-1;OBJ-1"
     if len(r2) < len(r1): r2 = r2 + r2 * (len(r1)-len(r2)) # [2,4] ["OBJ"] => "OBJ-2;OBJ-4"
-    return ";".join(["-".join([x for x in (type,r1,r2) if x]) for r1,r2 in zip(r1,r2)])    
+    return ";".join(["-".join([x for x in (type, r1, r2) if x]) for r1, r2 in zip(r1, r2)])    
 
 def _parse_token(word, chunk="O", pnp="O", relation="O", anchor="O", 
                  format=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):

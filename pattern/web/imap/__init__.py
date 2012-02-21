@@ -157,7 +157,7 @@ class Mail(object):
             status, response = self.imap4.list()
             self._folders = [f.split(" \"")[-1].strip(" \"") for f in response]
             self._folders = [(_basename(f), MailFolder(self, f)) for f in self._folders]
-            self._folders = [(f,o) for f,o in self._folders if f != ""]
+            self._folders = [(f, o) for f, o in self._folders if f != ""]
             self._folders = dict(self._folders)
         return self._folders
     
