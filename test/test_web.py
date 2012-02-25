@@ -181,7 +181,7 @@ class TestURL(unittest.TestCase):
         
     def test_url_download(self):
         t = time.time()
-        v = web.URL(self.live).download(cached=False, throttle=0.25)
+        v = web.URL(self.live).download(cached=False, throttle=0.25, unicode=True)
         t = time.time() - t
         # Assert unicode content.
         self.assertTrue(isinstance(v, unicode))
@@ -582,7 +582,7 @@ class TestSearchEngine(unittest.TestCase):
             return
         e = Engine(license, throttle=0.25)
         for size in (web.TINY, web.SMALL, web.MEDIUM, web.LARGE):
-            v = e.search("cat", type=web.IMAGE, count=1, size=size, cached=False)
+            v = e.search("cats", type=web.IMAGE, count=1, size=size, cached=False)
             self.assertEqual(web.URL(v[0].url).exists, True)
             print "pattern.web.%s.search(type=IMAGE, size=%s)" % (api, size.upper())
 

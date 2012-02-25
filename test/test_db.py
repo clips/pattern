@@ -1039,7 +1039,7 @@ class TestDatasheet(unittest.TestCase):
         self.assertEqual(db.truncate(v1), (v1, ""))
         self.assertEqual(db.truncate(v2), ("a"*99+"-", "a"*51))
         self.assertEqual(db.truncate(v3), (("aaa "*25).strip(), "aaa "*25))
-        print "db.truncate()"
+        print "pattern.db.truncate()"
         
     def test_pprint(self):
         pass
