@@ -15,7 +15,7 @@ from pattern.db import relation
 # MySQL databases require a username and a password.
 # MySQL also requires that you install MySQLdb, see the installation instructions at:
 # http://www.clips.ua.ac.be/pages/pattern-db
-db = Database("store", type=MYSQL, user="root", password="root")
+db = Database("store", type=SQLITE)
 #db._delete()
 
 # PRODUCTS

@@ -3,10 +3,10 @@ import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 from pattern.web import Facebook
 from pattern.db  import Datasheet, pprint
 
-# This example retrieves facebook publis status updates containing given keyword.
+# This example retrieves Facebook public status updates containing given keyword.
 
 try: 
-    # We store status in a Table that can be saved as a text file.
+    # We store status in a Datasheet that can be saved as a text file.
     # In the first column, we'll store a unique ID for each tweet.
     # We only want to add the latest Facebook status, i.e. those we haven't previously encountered.
     # With an index on the first column we can quickly check if an ID already exists.

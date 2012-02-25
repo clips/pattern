@@ -24,8 +24,9 @@ print sentiment(
 # positive() returns True if the string's polarity >= threshold.
 # The threshold can be lowered or raised, 
 # but overall for strings with multiple words +0.1 yields the best results.
-print positive("good", threshold=0.1)
-print positive("bad")
+print
+print "good:", positive("good", threshold=0.1)
+print " bad:", positive("bad")
 print
 
 # You can also do sentiment analysis in Dutch, it works exactly the same:

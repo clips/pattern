@@ -13,8 +13,8 @@ s = parse(s,
      tokenize = True,  # Tokenize the input, i.e. split punctuation from words.
          tags = True,  # Find part-of-speech tags.
        chunks = True,  # Find chunk tags, e.g. "the black cat" = NP = noun phrase.
-    relations = False, # Find relations between chunks.
-      lemmata = False, # Find word lemmata.
+    relations = True,  # Find relations between chunks.
+      lemmata = True,  # Find word lemmata.
         light = False)
 
 # The light parameter determines how unknown words are handled.
@@ -43,7 +43,7 @@ print
 # With light=True, this is the fastest and simplest way to get an idea 
 # of a sentence's constituents:
 s = "I eat pizza with a fork."
-s = tag(s, light=True)
+s = tag(s)
 print s
 for word, tag in s:
     if tag == "NN": # Find all nouns in the input string.

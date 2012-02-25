@@ -28,6 +28,9 @@ for img in results:
 # Download and save the image:
 img = results[0]
 data = img.download()
-f = open(q.replace(" ","_") + extension(img.url), "w")
+path = q.replace(" ","_") + extension(img.url)
+f = open(path, "wb")
 f.write(data)
 f.close()
+print "Download:", img.url
+print "Saved as:", path

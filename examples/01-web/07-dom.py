@@ -10,6 +10,7 @@ from pattern.web import NODE, TEXT, COMMENT, ELEMENT, DOCUMENT
 # For example:
 url = URL("http://www.reddit.com/top/")
 dom = Document(url.download(cached=True))
+print dom.body.content.__class__
 for e in dom.get_elements_by_tagname("div.entry")[:5]: # Top 5 reddit entries.
     for a in e.get_elements_by_tagname("a.title")[:1]: # First <a class="title"> in entry.
         print plaintext(a.content)

@@ -19,7 +19,7 @@ results = sort(
         "mickey mouse",
         ],
     context = "dangerous", # Term used for sorting.
-    service = GOOGLE,      # GOOGLE, YAHOO, BING, ...
+    service = BING,        # GOOGLE, YAHOO, BING, ...
     license = None,        # You should supply your own API license key for the given service.
      strict = True,        # Wraps the query in quotes, i.e. 'mac sweet'. 
     reverse = True,        # Reverses term and context: 'sweet mac' <=> 'mac sweet'.

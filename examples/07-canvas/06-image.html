@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+	<title>canvas.js | image</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="../../pattern/canvas.js"></script>
+</head>
+<body>
+	<!-- With loop="false", only a single frame will be drawn. 
+	     There is no need to keep redrawing static images frame after frame.
+	     To refresh the image, reload the page (CTRL-R).
+	  -->
+	<script type="text/canvas" loop="false">
+		function setup(canvas) {
+			// Images are preloaded during setup().
+			// Depending on the image size, it might take a moment to download.
+			// The animation will start once all images are available.
+			// The given URL can not be file:// (e.g., a local image),
+			// because of JavaScript security restrictions.
+			images = [];
+			images.push(new Image("http://www.clips.ua.ac.be/media/pattern-canvas-particle1.png"));
+			images.push(new Image("http://www.clips.ua.ac.be/media/pattern-canvas-particle2.png"));
+			images.push(new Image("http://www.clips.ua.ac.be/media/pattern-canvas-particle3.png"));
+			canvas.size(500, 500);
+		}
+		function draw(canvas) {
+			// Note the Array.range() and Array.choice() functions.
+			// They mimic the Python range() and choice() functions:
+			// - range(n) yields an array of numbers from 0-n.
+			// - choice() returns a random item from the given array.
+			canvas.clear();
+			background(0.15, 0.14, 0.13);
+			shadow(10, 10, 10, 0.75);
+			for (var i in Array.range(50)) {
+				var img = Array.choice(images);
+				var x = random(500);
+				var y = random(500);
+				push();
+				translate(x, y);
+				rotate(random(360));
+				scale(random(0.5, 2.0));
+				image(img, 0, 0, {alpha: random(0.75, 1.0)});
+				pop();
+			}
+		}
+	</script>
+</body>
+</html>

@@ -2,7 +2,9 @@ import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
 from pattern.graph import Graph, CENTRALITY
 
-# Simple Graph demonstration.
+# Simple graph demonstration.
+# A graph is a collection of nodes (or concepts)
+# connected to each other with edges (or links).
 
 g = Graph()
 for n in ("tree", "nest", "bird", "fly", "insect", "ant"):

@@ -6,10 +6,10 @@ from pattern.db  import Datasheet, pprint
 # This example retrieves tweets containing given keywords from Twitter (http://twitter.com).
 
 try: 
-    # We store tweets in a Table that can be saved as a text file.
+    # We store tweets in a Datasheet that can be saved as a text file (comma-separated).
     # In the first column, we'll store a unique ID for each tweet.
-    # We only want to add the latest tweets, i.e. those we haven't previously encountered.
-    # With an on the first column we can quickly check if an ID already exists.
+    # We only want to add the latest tweets, i.e., those we haven't previously encountered.
+    # With an index on the first column we can quickly check if an ID already exists.
     # The index becomes important once more and more rows are added to the table (speed).
     table = Datasheet.load("cool.txt")
     index = dict.fromkeys(table.columns[0], True)
@@ -17,7 +17,7 @@ except:
     table = Datasheet()
     index = {}
 
-engine = Twitter()
+engine = Twitter(language="en")
 
 # With cached=False, a live request is sent to Twitter,
 # so we get the latest results for the query instead of those in the local cache.

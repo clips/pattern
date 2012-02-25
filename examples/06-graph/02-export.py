@@ -29,7 +29,7 @@ for node in g.sorted()[:20]:
     node.fill = (0.6, 0.8, 1.0, 0.8 * node.weight)
 
 # This node's label is different from its id.
-# We'll also make it a link, see the href attribute at the bottom.
+# We'll make it a hyperlink, see the href attribute at the bottom.
 g["1"].text.string = "home"
 
 # The export() command generates a folder with an index.html,
@@ -42,7 +42,7 @@ export(g, "test",
         width = 700,       # <canvas> width.
        height = 500,       # <canvas> height.
        frames = 500,       # Number of frames of animation.
-          fps = 20,        # Nubmer of frames per second.
+          fps = 30,        # Nubmer of frames per second.
        weight = [WEIGHT, CENTRALITY], # Calculate eigenvector & betweenness centrality (in Python).
      weighted = 0.5,       # Indicate nodes with a higher centrality with a shadow?
      directed = True,      # Indicate connection direction with an arrow?

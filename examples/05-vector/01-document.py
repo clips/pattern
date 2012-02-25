@@ -45,7 +45,7 @@ print
 #    f.write(s)
 #    f.close()
 
-# A document can be loaded from a textfile path:
+# A document can be loaded from a text file path:
 f = os.path.join("corpus", "wolf.txt")
 document = Document.open(f, encoding="utf-8", name="wolf", stemmer=PORTER)
 print document

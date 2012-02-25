@@ -11,7 +11,7 @@ import time
 # You should obtain your own license key at:
 # https://developer.apps.yahoo.com/wsregapp/
 # Otherwise you will be sharing the default license with all users of this module.
-engine = Bing(license=None)
+engine = Bing(license=None, language="en")
 
 # Quote a query to match it exactly:
 q = "\"is more important than\""

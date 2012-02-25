@@ -1,16 +1,16 @@
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
 from pattern.web import Google, plaintext
-from pattern.web import SEARCH, IMAGE, NEWS, BLOG
+from pattern.web import SEARCH
 
 # The web module has a SearchEngine class with a search() method 
 # that yields a list of Result objects.
 # Each Result has url, title, description, language, author and date and properties.
 # Subclasses of SearchEngine include: 
-# Google, Yahoo, Bing, Twitter, Wikipedia, Flickr.
+# Google, Yahoo, Bing, Twitter, Facebook, Wikipedia, Flickr.
 
 # This example retrieves results from Google based on a given query.
-# The Google search engine can handle SEARCH, IMAGE, NEWS and BLOG type searches.
+# The Google search engine can handle SEARCH type searches.
 
 # Google's "Custom Search API" is a paid service.
 # The web module uses a test account with a 100 free queries per day, shared with all users.

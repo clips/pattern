@@ -1,67 +1,87 @@
-<!-- Sample HTML + Javascript to display a graph. -->
+<!-- This example demonstrates the JavaScript source code of a graph.
+     It is a combination of canvas.js and graph.js.
+     canvas.js is a simple API for the HTML <canvas> element, to generate 2D animated graphics.
+     graph.js is a near-complete JavaScript implementation of the pattern.graph module,
+     with some differences in syntax (e.g., Graph.add_node is Graph.addNode).
+     
+  -->
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Demonstration of Pattern:Javascript:Graph</title>
+		<title>graph.js example</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<!--[if lte IE 8]><script type="text/javascript" src="../../pattern/graph/js/excanvas.js"></script><![endif]-->
-		<script type="text/javascript" src="../../pattern/graph/js/graph.js"></script>
-		<script type="text/javascript">	
-			function init_graph() {
-				g = new Graph(document.getElementById("_ctx"));
-				// Random nodes.
-				for (var i=0; i < 50; i++) {
-					g.addNode(i+1);
-				}
-				// Random edges.
-				for (var i=0; i < 75; i++) {
-					var node1 = choice(g.nodes);
-					var node2 = choice(g.nodes);
-					g.addEdge(node1, node2, {weight: Math.random()});
-				}
-				// Calculate node weight (incoming traffic):
-				g.eigenvectorCentrality();
-				// Calculate node centrality (passing traffic):
-				g.betweennessCentrality();
-				// Two handy tricks to prettify the layout:
-				// 1) Nodes with a higher weight (i.e. incoming traffic) appear bigger.
-				for (var i=0; i < g.nodes.length; i++) {
-					var n = g.nodes[i];
-					n.radius = n.radius + n.radius * n.weight;
-				}
-			 	// 2) Nodes with only one connection ("leaf" nodes) have a shorter connection.
-				for (var i=0; i < g.nodes.length; i++) {
-					var e = g.nodes[i].edges();
-					if (e.length == 1) {
-						e[0].length *= 0.2;
-					}
-				}
-				g.prune(0);
-				g.layout.k = 4.0;        // Force constant (= edge length).
-				g.layout.force = 0.01;   // Repulsive strength.
-				g.layout.repulsion = 50; // Repulsive radius.
-				// Start the animation loop.
-				g.loop({frames: 500, fps:20, ipf:2, weighted: 0.5, directed: true});
-			}
-		</script>
+		<script type="text/javascript" src="../../pattern/canvas.js"></script>
+		<script type="text/javascript" src="../../pattern/graph/graph.js"></script>
 		<style type="text/css">
 			body { font: 11px sans-serif; }
-			a { color: dodgerblue; }
+			#graph canvas { }
+			#graph .node-label { font-size: 11px; }
 			#graph { 
-				display: block;
+				display: inline-block;
 				position: relative; 
 				overflow: hidden; 
 				border: 1px solid #ccc;
 			}
-			#graph canvas { }
-			.node-label { font-size: 11px; }
+			a { color: dodgerblue; }
 		</style>
 	</head>
-	<body onload="javascript:init_graph();">
+	<body>
 		<div id="graph" style="width:700px; height:500px;">
-			<canvas id="_ctx" width="700" height="500"></canvas>
-			<!-- Node label div's will be dynamically generated here. -->
+			<!-- A canvas.js animation consists of a <script type="text/canvas">
+			     containing JavaScript code, notably a setup() and a draw() function.
+			  -->
+			<script type="text/canvas">
+				function setup(canvas) {
+					/* The canvas setup() function is called once before the animation starts.
+					 * Set the canvas size and initialize the graph.
+					 */
+					canvas.size(700, 500);
+					// Add random nodes and edges.
+					g = new Graph(canvas.element);
+					for (var i=0; i < 50; i++) {
+						g.addNode(i+1);
+					}
+					for (var i=0; i < 75; i++) {
+						var node1 = choice(g.nodes);
+						var node2 = choice(g.nodes);
+						g.addEdge(node1, node2, {weight: Math.random()});
+					}
+					// Calculate node weight (incoming traffic).
+					// Calculate node centrality (passing traffic).
+					g.eigenvectorCentrality();
+					g.betweennessCentrality();
+					// Two handy tricks to prettify the layout:
+					// 1) Nodes with a higher weight (i.e. incoming traffic) appear bigger.
+					// 2) Nodes with only one connection ("leaf" nodes) have a shorter connection.
+					for (var i=0; i < g.nodes.length; i++) {
+						var n = g.nodes[i];
+						n.radius = n.radius + n.radius * n.weight;
+					}
+					for (var i=0; i < g.nodes.length; i++) {
+						var e = g.nodes[i].edges();
+						if (e.length == 1) {
+							e[0].length *= 0.2;
+						}
+					}
+					g.prune(0);
+					g.layout.k = 4.0;        // Force constant (= edge length).
+					g.layout.force = 0.01;   // Repulsive strength.
+					g.layout.repulsion = 50; // Repulsive radius.
+				}
+				function draw(canvas) {
+					/* The canvas draw() function is called each animation frame.
+					 * Update the graph and draw nodes and edges to the canvas.
+					 * Enable node dragging.
+					 */
+					if (g.layout.iterations <= 500) {
+						canvas.clear();
+						shadow();
+						g.update(2);
+						g.draw(weighted=0.5, directed=true);
+					}
+					g.drag(canvas.mouse);
+				}
+			</script>
 		</div>
-		<p>Generated with <a href="http://www.clips.ua.ac.be/pages/pattern">Pattern</a>.</p>
 	</body>
 </html>

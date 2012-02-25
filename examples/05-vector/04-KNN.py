@@ -16,10 +16,10 @@ from pattern.vector import Document, Corpus, KNN
 
 corpus = Corpus()
 
-# First, we mine a corpus of tweets.
+# First, we mine a corpus of a 1000 tweets.
 # We'll use hashtags as type.
-for page in range(1,6):
-    for tweet in Twitter().search('#win OR #fail', start=page, count=100, cached=False):
+for page in range(1, 10):
+    for tweet in Twitter().search('#win OR #fail', start=page, count=100, cached=True):
         # If the tweet contains #win hashtag, we'll set its type to 'WIN':
         p = '#win' in tweet.description.lower() and 'WIN' or 'FAIL'
         s = tweet.description.lower()        # tweet in lowercase
@@ -28,7 +28,7 @@ for page in range(1,6):
         s = [match[0].string for match in s] # adjectives as a list of strings
         s = " ".join(s)                      # adjectives as string
         if len(s) > 0:
-            corpus.append(Document(s, type=p, threshold=0, stemmer=None))
+            corpus.append(Document(s, type=p, stemmer=None))
 
 # Train k-nearest neighbor on the corpus.
 # Note that this is a only simple example: to build a robust classifier
@@ -40,8 +40,8 @@ classifier = KNN()
 for document in corpus:
     classifier.train(document)
 
-# These are the words the classifier has learned:
-print classifier.terms
+# These are the adjectives the classifier has learned:
+print sorted(classifier.terms)
 print
 
 # We can ask it to classify texts containing those words.
@@ -53,9 +53,13 @@ print classifier.classify('stupid') # yields 'FAIL'
 
 # "What can I do with it?"
 # In the scientific community, classifiers have been used to predict
-# the author of medieval poems,
-# the opinion (positive/negative) in product reviews on blogs,
-# the age of users posting on teen social networks,
-# spam e-mail messages,
-# search engine query results (e.g., where "jeans" queries also yield "denim" results),
-# and so on.
+# - the author of medieval poems,
+# - the opinion (positive/negative) in product reviews on blogs,
+# - the age of users posting on social networks,
+# - predict spam e-mail messages,
+# - predict lies in text,
+# - predict doubt and uncertainty in text,
+# - improve search engine query results (e.g., where "jeans" queries also yield "denim" results),
+# - to win at jeopardy,
+# - to win at rock-paper-scissors,
+# and so on...

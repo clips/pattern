@@ -12,10 +12,12 @@ from pattern.vector import Corpus
 
 # The Corpus object groups a number of documents
 # so that their words can be compared to calculate TF-IDF.
-# You can build a corpus from a folder of text files:
-corpus = Corpus.build(os.path.join("corpus", "*.txt"))
 
-d = corpus.document(name="lion") # Filename is used as document name.
+# You can build a corpus from a folder of text files.
+# We supply a naming function that names individual documents based on the file path.
+corpus = Corpus.build(os.path.join("corpus", "*.txt"), name=lambda path: os.path.basename(path)[:-4])
+
+d = corpus.document(name="lion") # Filename is now used as document name.
 
 print d.keywords(top=10)
 print

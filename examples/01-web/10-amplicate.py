@@ -8,7 +8,7 @@ from pattern.web import Document, plaintext
 # and http://amplicate.com for opinion mining.
 # (let's hope we get a real Amplicate API soon!)
 
-query = "smurf"
+query = "chicken"
 
 # An example result, containing all the information we need:
 #   URL: http://amplicate.com/love/george-w-bush
@@ -27,7 +27,7 @@ for r in Google().search(query+" site:amplicate.com"):
                 b=False; break
         if b:
             love = "love" in u.path
-            f = int(re.search("- ([0-9]{1,3})%", r.title).group(1)) * 0.01
+            f = int(re.search("([0-9]{1,3})%", r.title).group(1)) * 0.01
             n = int(re.search("\(([0-9]+) opinions", r.title).group(1))
             print r.title
             print r.url

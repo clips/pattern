@@ -18,7 +18,7 @@ print
 # All possible formatting options:
 # http://docs.python.org/library/time.html#time.strftime
 
-for r in Bing(license=None).search("today", type=NEWS):
+for r in Bing(license=None, language="en").search("today", type=NEWS):
     print r.title
     print repr(r.date) # Result.date is a string (e.g. we can't > <= += with the date).
     print date(r.date) # date() can parse any Result.date in the web module.
