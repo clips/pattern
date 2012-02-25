@@ -256,8 +256,6 @@ def _uid():
 # Term relevancy weight:
 TF, TFIDF, TF_IDF = "tf", "tf-idf", "tf-idf"
 
-print _uid()
-
 class Document(object):
     
     # Document(string="", filter, punctuation, top, threshold, stemmer, exclude, stopwords, name, type)
@@ -626,9 +624,11 @@ class Corpus(object):
         """ Builds the corpus from a folder of text documents (e.g. path="folder/*.txt").
             Each file is split into words and the words are counted.
         """
+        name = kwargs.pop("name", lambda path: None)
         documents = []
         for f in glob.glob(path):
             documents.append(Document.open(f, *args, **kwargs))
+            documents[-1]._name = name(f)
         return cls(documents)
     
     @classmethod
@@ -819,7 +819,7 @@ class Corpus(object):
         """
         return apriori([d.terms for d in self.documents], support=threshold)
         
-    frequent = frequent_concept_sets
+    sets = frequent = frequent_concept_sets
     
     def cosine_similarity(self, document1, document2):
         """ Returns the similarity between two documents in the corpus as a number between 0.0-1.0.
@@ -1070,17 +1070,19 @@ class LSA:
         # Delete the smallest coefficients in the diagonal matrix (i.e., at the end of the list).
         # The difficulty and weakness of LSA is knowing how many dimensions to reduce
         # (generally L2-norm is used).
-        if k == TOP300:
-            k = len(sigma)-300
         if k == NORM:
             k = int(round(numpy.linalg.norm(sigma)))
+        if k == TOP300:
+            k = max(0, len(sigma) - 300)
+        if isinstance(k, int):
+            k = max(0, len(sigma) - k)
         if type(k).__name__ == "function":
-            k = int(k(sigma))
+            k = max(0, int(k(sigma)))
         #print numpy.dot(u, numpy.dot(numpy.diag(sigma), vt))
         # Apply dimension reduction.
         # The maximum length of a concept vector = the number of documents.
         assert k < len(corpus.documents), \
-            "can't delete more dimensions than there are documents"
+            "can't create more dimensions than there are documents"
         tail = lambda list, i: range(len(list)-i, len(list))
         u, sigma, vt = (
             numpy.delete(u, tail(u[0], k), axis=1),
@@ -1637,7 +1639,7 @@ class SVM(Classifier):
         for k, v in (
             (   "type", CLASSIFICATION),
             ( "kernel", LINEAR),
-            ( "degree", 1),
+            ( "degree", 3),
             (  "gamma", 0),
             ( "coeff0", 0),
             (   "cost", 1),
@@ -1720,12 +1722,6 @@ class SVM(Classifier):
         if self._model is None:
             self._libsvm_train()
         return self._libsvm_predict(document)
-        
-    def __del__(self):
-        try:
-            if self._model: self._model[0].__del__()
-        except:
-            pass
             
     def save(self, path):
         self._libsvm = None

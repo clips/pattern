@@ -1,0 +1,12 @@
+The pattern.vector module comes bundled with precompiled binaries for libsvm. These should work on Windows and Mac OS X 32-bit and Mac OS X and Ubuntu 64-bit architectures. If not, you need to compile a binary from source.
+
+To install from source, download the latest version of libsvm:
+http://www.csie.ntu.edu.tw/~cjlin/libsvm/
+
+- From the command line, do "make" in /libsvm. 
+- Now do "make" in /libsvm/python. 
+- You should see a file "libsvm.so.2", which is the binary you need.
+
+Note: on Mac OS X, you may need to rename option "-soname" to "-install_name" in the Makefile.
+
+Modify pattern/vector/libsvm/svm.py around line 15 to import the new binary. Please send us a copy too so we can include it in the next release.

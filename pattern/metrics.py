@@ -280,7 +280,7 @@ def histogram(list, k=10, range=None):
             #print x, i, "(%.2f, %.2f)" % (range[0]+w*i, range[0]+w+w*i)
             h[i].append(x)
     return dict(((range[0]+w*i, range[0]+w+w*i), v) for i, v in enumerate(h))
-    
+
 def moment(list, k=1):
     """ Returns the kth central moment of the given list of values
         (2nd central moment = variance, 3rd and 4th are used to define skewness and kurtosis).
@@ -351,4 +351,4 @@ def boxplot(list, **kwargs):
     Q1 = quantile(s, p=0.25, sort=False, **kwargs)
     Q2 = quantile(s, p=0.50, sort=False, **kwargs)
     Q3 = quantile(s, p=0.75, sort=False, **kwargs)
-    return min(s), Q1, Q2, Q3, max(s)
+    return float(min(s)), Q1, Q2, Q3, float(max(s))

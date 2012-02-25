@@ -1081,11 +1081,29 @@ def insert(graph, node, a, b):
 #--- HTML CANVAS GRAPH RENDERER --------------------------------------------------------------------
 
 import os, shutil, glob
+import re
 
 try:
     MODULE = os.path.dirname(__file__)
 except:
     MODULE = ""
+
+def minify(js):
+    """ Returns a compressed Javascript string with comments and whitespace removed.
+    """
+    W = (
+        "\(\[\{\,\;\=\-\+\*\/",
+        "\)\]\}\,\;\=\-\+\*\/"
+    )
+    for a, b in (
+      (re.compile(r"\/\*.*?\*\/", re.S), ""),    # multi-line comments /**/
+      (re.compile(r"\/\/.*"), ""),               # singe line comments //
+      (re.compile(r";\n"), "; "),                # statements (correctly) terminated with ;
+      (re.compile(r"[ \t]+"), " "),              # spacing and indentation
+      (re.compile(r"[ \t]([\(\[\{\,\;\=\-\+\*\/])"), "\\1"),
+      (re.compile(r"([\)\]\}\,\;\=\-\+\*\/])[ \t]"), "\\1")):
+        js = a.sub(b, js)
+    return js.strip()
 
 DEFAULT, INLINE = "default", "inline"
 HTML, CANVAS, STYLE, SCRIPT, DATA = "html", "canvas", "style", "script", "data"
@@ -1101,36 +1119,34 @@ class HTMLCanvasRenderer:
                 "\t<title>%s</title>\n" \
                 "\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n" \
                 "\t%s\n" \
-                "\t<!--[if lte IE 8]><script type=\"text/javascript\" src=\"%sexcanvas.js\"></script><![endif]-->\n" \
+                "\t<script type=\"text/javascript\" src=\"%scanvas.js\"></script>\n" \
                 "\t<script type=\"text/javascript\" src=\"%sgraph.js\"></script>\n" \
-                "\t%s\n" \
             "</head>\n" \
-            "<body onload=\"javascript:init_%s();\">\n" \
+            "<body>\n" \
                 "\t<div id=\"%s\" style=\"width:%spx; height:%spx;\">\n" \
-                    "\t\t<canvas id=\"%s\" width=\"%s\" height=\"%s\">\n" \
-                    "\t\t</canvas>\n" \
+                    "\t\t<script type=\"text/canvas\">\n" \
+                        "\t\t%s\n" \
+                    "\t\t</script>\n" \
                 "\t</div>\n" \
-                "\t<p>Generated with " \
-                "<a href=\"http://www.clips.ua.ac.be/pages/pattern\">Pattern</a>.</p>\n" \
             "</body>\n" \
             "</html>"
         # HTML
         self.title      = "Graph" # <title>Graph</title>
-        self.javascript = "js/"   # Path to excanvas.js + graph.js.
-        self.stylesheet = INLINE  # Either None, INLINE, DEFAULT (screen.css) or a custom path.
+        self.javascript = "js/"   # Path to canvas.js + graph.js.
+        self.stylesheet = INLINE  # Either None, INLINE, DEFAULT (style.css) or a custom path.
         self.id         = "graph" # <div id="graph">
-        self.ctx        = "_ctx"  # <canvas id="_ctx" width=700 height=500>
+        self.ctx        = "canvas.element"
         self.width      = 700     # Canvas width in pixels.
         self.height     = 500     # Canvas height in pixels.
-        # Javascript:Graph
+        # JS Graph
         self.frames     = 500     # Number of frames of animation.
-        self.fps        = 20      # Frames per second.
+        self.fps        = 30      # Frames per second.
         self.ipf        = 2       # Iterations per frame.
         self.weighted   = False   # Indicate betweenness centrality as a shadow?
         self.directed   = False   # Indicate edge direction with an arrow?
         self.prune      = None    # None or int, calls Graph.prune() in Javascript.
         self.pack       = True    # Shortens leaf edges, adds eigenvector weight to node radius.
-        # Javascript:GraphLayout
+        # JS GraphLayout
         self.distance   = 10      # Node spacing.
         self.k          = 4.0     # Force constant.
         self.force      = 0.01    # Force dampener.
@@ -1163,7 +1179,7 @@ class HTMLCanvasRenderer:
     def data(self):
         """ Yields a string of Javascript code that loads the nodes and edges into variable g,
             which is a Javascript Graph object (see graph.js).
-            This can be the response to a XMLHttpRequest, after wich you move g into your own variable.
+            This can be the response of an XMLHttpRequest, after wich you move g into your own variable.
         """
         return "".join(self._data())
     
@@ -1174,7 +1190,7 @@ class HTMLCanvasRenderer:
             if CENTRALITY in self.weight and self.graph.nodes[-1]._centrality is None:
                 self.graph.betweenness_centrality()
         s = []
-        s.append("var g = new Graph(document.getElementById(\"%s\"), %s);\n" % (self.ctx, self.distance))
+        s.append("g = new Graph(%s, %s);\n" % (self.ctx, self.distance))
         s.append("var n = {")
         if len(self.graph.nodes) > 0:
             s.append("\n")
@@ -1252,67 +1268,81 @@ class HTMLCanvasRenderer:
 
     @property
     def script(self):
-        """ Yields a string of Javascript code that loads the nodes and edges into variable g (Graph),
-            and starts the animation of the visualization by calling g.loop().
+        """ Yields a string of canvas.js code.
+            A setup() function loads the nodes and edges into variable g (Graph),
+            A draw() function starts the animation and updates the layout of g.
         """
         return "".join(self._script())
 
     def _script(self):
-        s = self._data()
-        s.append("\n")
+        s = [];
+        s.append("function setup(canvas) {\n")
+        s.append(   "\tcanvas.size(%s, %s);\n" % (self.width, self.height))
+        s.append(   "\tcanvas.fps = %s;\n" % (self.fps))
+        s.append(   "\t" + "".join(self._data()).replace("\n", "\n\t"))
+        s.append(   "\n")
         # Apply node weight to node radius.
-        if self.pack: 
-            s.append(
-                 "for (var i=0; i < g.nodes.length; i++) {\n"
-                     "\tvar n = g.nodes[i];\n"
-                     "\tn.radius = n.radius + n.radius * n.weight;\n"
-                 "}\n")
+        if self.pack: s.append(
+                    "\tfor (var i=0; i < g.nodes.length; i++) {\n"
+                        "\t\tvar n = g.nodes[i];\n"
+                        "\t\tn.radius = n.radius + n.radius * n.weight;\n"
+                    "\t}\n")
         # Apply edge length (leaves get shorter edges).
-        if self.pack: 
-            s.append(
-                 "for (var i=0; i < g.nodes.length; i++) {\n"
-                     "\tvar e = g.nodes[i].edges();\n"
-                     "\tif (e.length == 1) {\n"
-                     "\t\te[0].length *= 0.2;\n"
-                     "\t}\n"
-                 "}\n")
+        if self.pack: s.append(
+                    "\tfor (var i=0; i < g.nodes.length; i++) {\n"
+                        "\t\tvar e = g.nodes[i].edges();\n"
+                        "\t\tif (e.length == 1) {\n"
+                        "\t\t\te[0].length *= 0.2;\n"
+                        "\t\t}\n"
+                    "\t}\n")
         # Apply eigenvector and betweenness centrality.
-        if self.weight is True:
-            s.append(
-                 "g.eigenvectorCentrality();\n"
-                 "g.betweennessCentrality();\n")
+        if self.weight is True: s.append(
+                    "\tg.eigenvectorCentrality();\n"
+                    "\tg.betweennessCentrality();\n")
+        if isinstance(self.weight, (list, tuple)):
+            if WEIGHT in self.weight: s.append(
+                    "\tg.eigenvectorCentrality();\n")
+            if CENTRALITY in self.weight: s.append(
+                    "\tg.betweennessCentrality();\n")
         # Apply pruning.
-        if self.prune is not None: 
-            s.append(
-                 "g.prune(%s);\n" % self.prune)
-        # Include the layout settings (for clarity).
-        s.append("g.layout.k = %s; // Force constant (= edge length).\n"
-                 "g.layout.force = %s; // Repulsive strength.\n"
-                 "g.layout.repulsion = %s; // Repulsive radius.\n" % (
-                    self.k, self.force, self.repulsion))
-        # Start the graph animation loop.
-        s.append("// Start the animation loop.\n")
-        s.append("g.loop({frames:%s, fps:%s, ipf:%s, weighted:%s, directed:%s});" % (
-            int(self.frames), 
-            int(self.fps), 
+        if self.prune is not None: s.append(
+                    "\tg.prune(%s);\n" % self.prune)
+        # Apply the layout settings.
+        s.append(   "\tg.layout.k = %s; // Force constant (= edge length).\n"
+                    "\tg.layout.force = %s; // Repulsive strength.\n"
+                    "\tg.layout.repulsion = %s; // Repulsive radius.\n" % (
+                        self.k, 
+                        self.force, 
+                        self.repulsion))
+        # Implement <canvas> draw().
+        s.append("}\n")
+        s.append("function draw(canvas) {\n"
+                    "\tif (g.layout.iterations <= %s) {\n"
+                        "\t\tcanvas.clear();\n"
+                        "\t\tshadow();\n"
+                        "\t\tg.update(%s);\n"
+                        "\t\tg.draw(%s, %s);\n"
+                    "\t}\n"
+                    "\tg.drag(canvas.mouse);\n"
+                 "}" % (
+            int(self.frames),
             int(self.ipf), 
-            str(self.weighted).lower(), 
+            str(self.weighted).lower(),
             str(self.directed).lower()))
         return s
     
     @property
     def canvas(self):
-        """ Yields a string of HTML with a <div id="graph"> containing a HTML5 <canvas> element.
+        """ Yields a string of HTML with a <div id="graph"> containing a <script type="text/canvas">.
+            The <div id="graph"> wrapper is required as a container for the node labels.
         """
         s = [
             "<div id=\"%s\" style=\"width:%spx; height:%spx;\">\n" % (self.id, self.width, self.height),
-                "\t<canvas id=\"%s\" width=\"%s\" height=\"%s\">\n" % (self.ctx, self.width, self.height),
-                "\t</canvas>\n",
+                "\t<script type=\"text/canvas\">\n",
+                "\t\t%s\n" % self.script.replace("\n", "\n\t\t"),
+                "\t</script>\n",
             "</div>"
         ]
-        #s.append("\n<script type=\"text/javascript\">\n")
-        #s.append("".join(self._script()).replace("\n", "\n\t"))
-        #s.append("\n</script>")
         return "".join(s)
     
     @property
@@ -1322,14 +1352,14 @@ class HTMLCanvasRenderer:
         return \
             "body { font: 11px sans-serif; }\n" \
             "a { color: dodgerblue; }\n" \
+            "#%s canvas { }\n" \
+            "#%s .node-label { font-size: 11px; }\n" \
             "#%s {\n" \
-                "\tdisplay: block;\n" \
+                "\tdisplay: inline-block;\n" \
                 "\tposition: relative;\n" \
                 "\toverflow: hidden;\n" \
                 "\tborder: 1px solid #ccc;\n" \
-            "}\n" \
-            "#%s canvas { }\n" \
-            ".node-label { font-size: 11px; }" % (self.id, self.id)
+            "}" % (self.id, self.id, self.id)
     
     @property
     def html(self):
@@ -1342,27 +1372,24 @@ class HTMLCanvasRenderer:
             css = self.style.replace("\n","\n\t\t").rstrip("\t")
             css = "<style type=\"text/css\">\n\t\t%s\n\t</style>" % css
         elif self.stylesheet == DEFAULT:
-            css = "<link rel=\"stylesheet\" href=\"screen.css\" type=\"text/css\" media=\"screen\" />"
+            css = "<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" media=\"screen\" />"
         elif self.stylesheet is not None:
             css = "<link rel=\"stylesheet\" href=\"%s\" type=\"text/css\" media=\"screen\" />" % self.stylesheet
+        else:
+            css = ""
         s = self._script()
         s = "".join(s)
-        s = s.replace("\n", "\n\t\t")
-        s = "<script type=\"text/javascript\">\n\tfunction init_%s() {\n\t\t%s\n\t}\n\t</script>" % (self.id, s)
+        s = "\t" + s.replace("\n", "\n\t\t\t")
         s = s.rstrip()
         s = self._source % (
             self.title, 
             css, 
             js, 
             js, 
-            s, 
-            self.id, 
             self.id, 
             self.width, 
             self.height, 
-            self.ctx, 
-            self.width, 
-            self.height)
+            s)
         return s
 
     def render(self, type=HTML):
@@ -1385,13 +1412,16 @@ class HTMLCanvasRenderer:
             shutil.rmtree(path)
         os.mkdir(path) # With overwrite=False, raises OSError if the path already exists.
         os.mkdir(os.path.join(path, "js"))
-        # Copy js/graph.js + js/excanvas.js (unless a custom path is given.)
+        # Copy compressed graph.js + canvas.js (unless a custom path is given.)
         if self.javascript == "js/":
-            for f in glob.glob(os.path.join(MODULE, "js", "*.js")):
-                shutil.copy(f, os.path.join(path, "js", os.path.basename(f)))
-        # Create screen.css.
+            for p, f in (("..", "canvas.js"), (".", "graph.js")):
+                a = open(os.path.join(MODULE, p, f), "r")
+                b = open(os.path.join(path, "js", f), "w")
+                b.write(minify(a.read()))
+                b.close()
+        # Create style.css.
         if self.stylesheet == DEFAULT:
-            f = open(os.path.join(path, "screen.css"), "w")
+            f = open(os.path.join(path, "style.css"), "w")
             f.write(self.style)
             f.close()
         # Create index.html.
@@ -1417,4 +1447,4 @@ def export(graph, path, overwrite=False, encoding="utf-8", **kwargs):
     for k,v in kwargs.items():
         if k in renderer.__dict__: 
             renderer.__dict__[k] = v
-    return renderer.export(path, overwrite)
+    return renderer.export(path, overwrite, encoding)

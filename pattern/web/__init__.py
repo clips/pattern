@@ -139,7 +139,7 @@ send = asynchronous
 
 # User agent and referrer.
 # Used to identify the application accessing the web.
-USER_AGENT = "Pattern/2.0 +http://www.clips.ua.ac.be/pages/pattern"
+USER_AGENT = "Pattern/2.3 +http://www.clips.ua.ac.be/pages/pattern"
 REFERRER   = "http://www.clips.ua.ac.be/pages/pattern"
 
 # Mozilla user agent.
@@ -176,7 +176,9 @@ def urldecode(query):
     """ Inverse operation of urllib.urlencode.
         Returns a dictionary of (name, value)-items from a URL query string.
     """
-    def _parse_number(s):
+    def _format(s):
+        if s == "None":
+             return None
         if s.isdigit(): 
              return int(s)
         try: return float(s)
@@ -185,7 +187,7 @@ def urldecode(query):
     query = [(kv.split("=")+[None])[:2] for kv in query.lstrip("?").split("&")]
     query = [(urllib.unquote_plus(bytestring(k)), urllib.unquote_plus(bytestring(v))) for k, v in query]
     query = [(u(k), u(v)) for k, v in query]
-    query = [(k, _parse_number(v) or None) for k, v in query]
+    query = [(k, _format(v) or None) for k, v in query]
     query = dict([(k,v) for k, v in query if k != ""])
     return query
     
@@ -256,7 +258,6 @@ class URL:
             For example: http://user:pass@example.com:992/animal/bird?species=seagull&q#wings
             This is a cached method that is only invoked when necessary, and only once.
         """
-        
         p = urlparse.urlsplit(self._string)
         P = {PROTOCOL: p[0],            # http
              USERNAME: u"",             # user
@@ -360,9 +361,9 @@ class URL:
         except ValueError:
             raise URLError
             
-    def download(self, timeout=10, cached=True, throttle=0, proxy=None, user_agent=USER_AGENT, referrer=REFERRER):
+    def download(self, timeout=10, cached=True, throttle=0, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, unicode=False):
         """ Downloads the content at the given URL (by default it will be cached locally).
-            The content is returned as a unicode string.
+            Unless unicode=False, the content is returned as a unicode string.
         """
         # Filter OAuth parameters from cache id (they will be unique for each request).
         if self._parts is None and self.method == GET and "oauth_" not in self._string:
@@ -370,12 +371,19 @@ class URL:
         else: 
             id = repr(self.parts)
             id = re.sub("u{0,1}'oauth_.*?': u{0,1}'.*?', ", "", id)
+        # Keep a separate cache of unicode and raw download for same URL.
+        if unicode is True:
+            id = "u" + id
         if cached and id in cache:
-            return cache[id]
+            if unicode is True:
+                return cache[id]
+            if unicode is False:
+                return cache.get(id, unicode=False)
         t = time.time()
         # Open a connection with the given settings, read it and (by default) cache the data.
         data = self.open(timeout, proxy, user_agent, referrer).read()
-        data = u(data)
+        if unicode is True:
+            data = u(data)
         if cached:
             cache[id] = data
         if throttle:
@@ -464,6 +472,7 @@ class URL:
 
 #url = URL("http://user:pass@example.com:992/animal/bird?species#wings")
 #print url.parts
+#print url.query
 #print url.string
 
 #--- FIND URLs -------------------------------------------------------------------------------------
@@ -928,6 +937,7 @@ class Google(SearchEngine):
         if self.language is not None:
             url.query["lr"] = "lang_" + self.language
         # 3) Parse JSON response.
+        kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         data = url.download(cached=cached, **kwargs)
         data = json.loads(data)
@@ -962,18 +972,19 @@ class Google(SearchEngine):
             "target": output
         })
         kwargs.setdefault("cached", False)
+        kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         try:
             data = url.download(**kwargs)
         except HTTP403Forbidden:
-            raise HTTP401Authentication
+            raise HTTP401Authentication, "Google translate API is a paid service"
         data = json.loads(data)
         data = data.get("data", {}).get("translations", [{}])[0].get("translatedText", "")
         data = decode_entities(data)
         return u(data)
         
     def identify(self, string, **kwargs):
-        """ Returns a (language, reliability)-tuple for the given string.
+        """ Returns a (language, confidence)-tuple for the given string.
             Google Translate is a paid service, license without billing raises HTTP401Authentication.
         """
         url = URL("https://www.googleapis.com/language/translate/v2/detect?", method=GET, query={
@@ -981,11 +992,12 @@ class Google(SearchEngine):
                  "q": string[:1000]
         })
         kwargs.setdefault("cached", False)
+        kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         try:
             data = url.download(**kwargs)
         except HTTP403Forbidden:
-            raise HTTP401Authentication
+            raise HTTP401Authentication, "Google translate API is a paid service"
         data = json.loads(data)
         data = data.get("data", {}).get("detections", [[{}]])[0][0]
         data = u(data.get("language")), float(data.get("confidence"))
@@ -1042,11 +1054,12 @@ class Yahoo(SearchEngine):
         })
         url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query, method=GET, secret=self.license[1])
         # 3) Parse JSON response.
+        kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         try: 
             data = url.download(cached=cached, **kwargs)
         except HTTP401Authentication:
-            raise HTTP401Authentication
+            raise HTTP401Authentication, "Yahoo search API is a paid service"
         except HTTP403Forbidden:
             raise SearchEngineLimitError
         data = json.loads(data)
@@ -1116,6 +1129,7 @@ class Bing(SearchEngine):
             if market:
                 url.query["market"] = market
         # 3) Parse JSON response.
+        kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         data = url.download(cached=cached, **kwargs)
         data = json.loads(data)
@@ -1174,6 +1188,7 @@ class Twitter(SearchEngine):
         # 2) Restrict language.
         url.query["lang"] = self.language or ""
         # 3) Parse JSON response.
+        kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         try: 
             data = URL(url).download(cached=cached, **kwargs)
@@ -1198,6 +1213,7 @@ class Twitter(SearchEngine):
         """
         url = URL("https://api.twitter.com/1/trends/1.json")
         kwargs.setdefault("cached", False)
+        kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         data = url.download(**kwargs)
         data = json.loads(data)
@@ -1262,6 +1278,7 @@ class Wikipedia(SearchEngine):
             "format": "json"
         })
         # 2) Parse JSON response.
+        kwargs.setdefault("unicode", True)
         kwargs.setdefault("timeout", 30) # Parsing the article takes some time.
         kwargs.setdefault("throttle", self.throttle)
         data = url.download(cached=cached, **kwargs)
@@ -1542,6 +1559,7 @@ class Flickr(SearchEngine):
             # 7: "No known copyright restriction"
             url.query["license"] = "5,7"
         # 2) Parse XML response.
+        kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         data = url.download(cached=cached, **kwargs)
         data = xml.dom.minidom.parseString(bytestring(data))
@@ -1566,7 +1584,7 @@ class FlickrResult(Result):
         # Note: the "Original" size no longer appears in the response,
         # so Flickr might not like it if we download it.
         url = FLICKR + "?method=flickr.photos.getSizes&photo_id=%s&api_key=%s" % (self._id, self._license)
-        data = URL(url).download(throttle=self._throttle)
+        data = URL(url).download(throttle=self._throttle, unicode=True)
         data = xml.dom.minidom.parseString(bytestring(data))
         size = { TINY: "Thumbnail", 
                 SMALL: "Small", 
@@ -1622,6 +1640,7 @@ class Facebook(SearchEngine):
              "limit": min(count, 100),
             "fields": "link,message,from"
         })
+        kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         data = URL(url).download(cached=cached, **kwargs)
         data = json.loads(data)
@@ -1670,6 +1689,7 @@ class Products(SearchEngine):
             "format": "json"
         })
         # 2) Parse JSON response.
+        kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         data = URL(url).download(cached=cached, **kwargs)
         data = json.loads(data)
@@ -1715,6 +1735,7 @@ class Newsfeed(SearchEngine):
             return Results(query, query, NEWS)
         # 1) Construct request URL.
         # 2) Parse RSS/Atom response.
+        kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         data = URL(query).download(cached=cached, **kwargs)
         data = feedparser.parse(bytestring(data))
@@ -1978,7 +1999,7 @@ class Document(Element):
         """
         # Aliases for BeautifulSoup optional parameters: 
         kwargs["selfClosingTags"] = kwargs.pop("self_closing", kwargs.get("selfClosingTags"))
-        Node.__init__(self, html.strip(), type=DOCUMENT, **kwargs)
+        Node.__init__(self, u(html).strip(), type=DOCUMENT, **kwargs)
 
     @property
     def declaration(self):
@@ -2096,7 +2117,7 @@ class Spider:
         self.delay    = delay   # Delay between visits to the same (sub)domain.
         self.domains  = domains # Domains the spider is allowed to visit.
         self.history  = {}      # Domain name => time last visited.
-        self.visited  = {}      # URLs visited => backlink count (0 = scheduled).
+        self.visited  = {}      # URLs visited.
         self._queue   = []      # URLs scheduled for a visit: (priority, time, Link).
         self._queued  = {}      # URLs scheduled so far, lookup dictionary.
         self.QUEUE    = 10000   # Increase or decrease according to available memory.
@@ -2127,7 +2148,7 @@ class Spider:
                 return link
     
     def crawl(self, method=DEPTH, **kwargs):
-        """ Visits the next link in Spider.queue.
+        """ Visits the next link in Spider._queue.
             If the link is on a domain recently visited (< Spider.delay) it is skipped.
             Parses the content at the link for new links and adds them to the queue,
             according to their Spider.priority().
@@ -2140,6 +2161,7 @@ class Spider:
             url = URL(link.url)
             if url.mimetype == "text/html":
                 try:
+                    kwargs.setdefault("unicode", True)
                     html = url.download(**kwargs)
                     for new in self.parse(html, url=link.url):
                         new.url = abs(new.url, base=url.redirect or link.url)

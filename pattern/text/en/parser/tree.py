@@ -1257,7 +1257,7 @@ class TaggedString(unicode):
     def __new__(cls, string, tags=["word"], language="en"):
         if isinstance(string, unicode) and hasattr(string, "tags"): 
             tags, language = string.tags, getattr(string, "language", language)
-        s = unicode.__new__(self, string)
+        s = unicode.__new__(cls, string)
         s.tags = list(tags)
         s.language = language
         return s
