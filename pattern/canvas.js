@@ -216,19 +216,19 @@ Math.round = function(x, decimals) {
     } else {
         return Math._round(x * Math.pow(10, decimals)) / Math.pow(10, decimals);
     }
-}
+};
 
 Math.degrees = function(radians) {
     return radians * 180 / Math.PI;
-}
+};
 
 Math.radians = function(degrees) {
     return degrees / 180 * Math.PI;
-}
+};
 
 Math.clamp = function(value, min, max) {
     return Math.max(min, Math.min(value, max));
-}
+};
 
 var Point = Class.extend({
     init: function(x, y) {
@@ -1378,7 +1378,7 @@ var Path = BezierPath = Class.extend({
     rect: function(x, y, width, height, options) {
         /* Adds a rectangle to the path.
          */
-        if (options.roundness === undefined) {
+        if (!options || options.roundness === undefined) {
             this.moveto(x, y);
             this.lineto(x+width, y);
             this.lineto(x+width, y+height);
@@ -1688,7 +1688,7 @@ function rect(x, y, width, height, options) {
     // It is faster to do it directly without creating a Path:
     var a = _colorMixin(options);
     if (a[0] && a[0].a > 0 || a[1] && a[1].a > 0) {
-        if (options.roundness === undefined) {
+        if (!options || options.roundness === undefined) {
             _ctx.beginPath();
             _ctx.rect(x, y, width, height);
             _ctx_fill(a[0]);
@@ -2215,8 +2215,14 @@ var Mouse = Class.extend({
             "x": 0,
             "y": 0,
         };
+        this._away = function() {
+            // Returns true if not inside Mouse.parent.
+            return !(0 <= this.x && this.x <= this.parent.offsetWidth && 
+                     0 <= this.y && this.y <= this.parent.offsetHeight);
+        }
         var eventDown = function(e) {
             // Create parent onmousedown event (set Mouse.pressed).
+            // Fire Mouse.onpress().
             var m = this._mouse;
             m.pressed = true;
             m._x0 = m.x;
@@ -2225,15 +2231,20 @@ var Mouse = Class.extend({
         };
         var eventUp = function(e) {
             // Create parent onmouseup event (reset Mouse state).
+            // Fire Mouse.onrelease() if inside parent bounds.
             var m = this._mouse;
             m.pressed = false;
             m.dragged = false;
             m.drag.x = 0;
             m.drag.y = 0;
-            m.onrelease(m);
+            if (!m._away()) {
+                m.onrelease(m);
+            }
         };
         var eventMove = function(e) {
             // Create parent onmousemove event (set Mouse position & drag).
+            // Fire Mouse.onmove() if mouse pressed and inside parent bounds.
+            // Fire Mouse.ondrag() if mouse pressed.
             var m = this._mouse;
             var o1 = document.documentElement || document.body;
             var o2 = absOffset(this);
@@ -2256,17 +2267,17 @@ var Mouse = Class.extend({
             m.relative_y = m.relativeY = m.y / m.parent.offsetHeight;
             if (m.pressed) {
                 m.ondrag(m);
-            } else {
+            } else if (!m._away()) {
                 m.onmove(m);
             }
         };
         // Bind mouse and multi-touch events:
         attachEvent(element, "mousedown" , eventDown);
         attachEvent(element, "touchstart", eventDown);
-        attachEvent(element, "mouseup"   , eventUp); 
-        attachEvent(element, "touchend"  , eventUp);
-        attachEvent(element, "mousemove" , eventMove);
-        attachEvent(element, "touchmove" , eventMove);
+        attachEvent(window,  "mouseup"   , Function.closure(this.parent, eventUp)); 
+        attachEvent(window,  "touchend"  , Function.closure(this.parent, eventUp));
+        attachEvent(window,  "mousemove" , Function.closure(this.parent, eventMove));
+        attachEvent(window,  "touchmove" , Function.closure(this.parent, eventMove));
     },
     
     // These can be patched with a custom function:
@@ -2369,6 +2380,7 @@ var Canvas = Class.extend({
         this.fps = 0;
         this.dt = 0;
         this._time = {start: null, current: null};
+        this._step = 0;
         this._active = false;
         this._widgets = [];
         this.variables = [];
@@ -2445,7 +2457,9 @@ var Canvas = Class.extend({
     },
     
     _draw: function() {
-        if (!this._active) {
+        if (this._active == false && !(this._step > this.frame)) {
+            // Drawing halts after stop(), pause() or step() is called.
+            // If step() is called, we need to draw one more frame first.
             return;
         }
         var t = new Date;
@@ -2453,6 +2467,7 @@ var Canvas = Class.extend({
         this.fps = Math.round(this.fps * 100) / 100;
         this.dt = (t - this._time.current) / 1000;
         this._time.current = t;
+        this._step = 0;
         this.frame++;
         this.focus()
         push();
@@ -2463,7 +2478,6 @@ var Canvas = Class.extend({
             this.onerror(e); throw e;
         }
         pop();
-        // Schedule the next frame and store its process id:
         this._scheduled = window._requestFrame(this._draw, this);
     },
     
@@ -2513,6 +2527,7 @@ var Canvas = Class.extend({
     step: function() {
         /* Draws one frame and pauses.
          */
+        this._step = this.frame+1;
         this.run();
         this.pause();
     },
