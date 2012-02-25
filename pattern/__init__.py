@@ -38,7 +38,7 @@
 ### CREDITS ########################################################################################
 
 __author__    = "Tom De Smedt"
-__version__   = "2.2"
+__version__   = "2.3"
 __copyright__ = "Copyright (c) 2010 University of Antwerp (BE)"
 __license__   = "BSD"
 

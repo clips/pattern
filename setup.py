@@ -7,7 +7,7 @@ if not hasattr(DistributionMetadata, 'classifiers'):
 
 setup(
             name = "Pattern",
-         version = "2.2",
+         version = "2.3",
      description = "Web mining module for Python.",
          license = "BSD",
           author = "Tom De Smedt",
@@ -54,7 +54,7 @@ setup(
         "pattern.text.nl.inflect"   : ["*.txt"],
         "pattern.vector"            : ["*.txt"],
         "pattern.vector.svm"        : ["*"],
-        "pattern.graph"             : ["js/*.js"],
+        "pattern.graph"             : ["*.js"],
     },
     py_modules = [
         "pattern.metrics",
