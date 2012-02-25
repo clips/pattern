@@ -27,7 +27,7 @@
         <div id="node-1400" class="node node-type-page"><div class="node-inner">
 <div class="content">
 <h2>pattern.en parser</h2>
-<p>You can run the parser from inside the folder that contains the <a href="pattern.html">pattern</a> module:</p>
+<p>You can run the parser from the command-line. The&nbsp;<a href="pattern.html">pattern</a> module should be installed (i.e., located in <span class="inline_code">/site-packages</span>, see installation instructions), or the current working directory should be the one that contains the <span class="inline_code">pattern</span> folder.</p>
 <p><span class="install"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;</span> python -m pattern.<span style="">en</span>.<span style="">parser</span> -f lewiscarroll.<span style="">txt</span></code></span></span></p>
 <p><span>If no options are given a full parse is executed (i.e. tokenization, tagging, chunking, relations and lemmata). Otherwise, you need to explicitly list every required option:</span></p>
 <table class="border">
@@ -86,7 +86,7 @@
 </table>
 <p>Short options can be concatenated:&nbsp;<span class="inline_code">python -m pattern.en.parser -OTLI -f lewiscarroll.txt</span></p>
 <h2><span>pattern.nl parser</span></h2>
-<p><span>The Dutch parser works in the same way:</span></p>
+<p><span>The Dutch parser works in the same way. Note the <span class="inline_code">xml</span> option (which produces XML output):</span></p>
 <p><span class="example"><span class="geshifilter"><code class="text geshifilter-text">&gt; python -m pattern.nl.parser xml -s &quot;Het wordt steeds vreemder.&quot;</code></span></span></p>
 <p><span><br /></span></p>
 </div>

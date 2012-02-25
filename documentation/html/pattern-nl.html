@@ -28,7 +28,7 @@
 <div class="content">
 <p><span class="big">The pattern.nl module contains a fast, regular expressions-based shallow parser for Dutch (identifies nouns, adjectives, verbs, etc. in a sentence) and tools for Dutch verb conjugation and noun singularization &amp; pluralization.</span></p>
 <p>It can be used by itself or with other&nbsp;<a href="pattern.html">pattern</a>&nbsp;modules:&nbsp;<a href="pattern-web.html">web</a>&nbsp;|&nbsp;<a href="pattern-table.html">table</a>&nbsp;| nl |&nbsp;<a href="pattern-search.html">search</a>&nbsp;|&nbsp;<a href="pattern-vector.html">vector</a>&nbsp;|&nbsp;<a href="pattern-graph.html">graph</a>.</p>
-<p><img src="../g/pattern_schema_nl.gif" alt="" width="606" height="180" /></p>
+<p><img src="../g/pattern_schema_nl.gif" alt="" width="620" height="180" /></p>
 <hr />
 <h2>Documentation</h2>
 <p>The commands in this module work in exactly the same way as their counterparts in <a href="pattern-en.html">pattern.en</a>&nbsp;– detailed documentation can be found there.&nbsp;For Dutch nouns there is <span class="inline_code">singularize()</span> and <span class="inline_code">pluralize()</span>. For Dutch verbs there is <span class="inline_code">conjugate()</span>, <span class="inline_code">lemma()</span>, <span class="inline_code">lexeme()</span> and <span class="inline_code">tenses()</span>:</p>
@@ -41,10 +41,10 @@ zitten </code></span></span></p>
 <p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">nl</span> <span style="color: #28334f; font-weight: bold;">import</span> predicative<br />
 <span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> predicative<span style="">&#40;</span><span style="color: #657a8a;">'brave'</span><span style="">&#41;</span><br />
 braaf </code></span></span></p>
-<p><span class="example">For opinion mining there is <span class="inline_code">sentiment()</span>, which returns a (polarity, subjectivity)-tuple. Accuracy is 75% (P 0.72, R 0.82) for book and music reviews:</span></p>
+<p><span class="example">For opinion mining there is <span class="inline_code">sentiment()</span>, which returns a (<span class="inline_code">polarity</span>, <span class="inline_code">subjectivity</span>)-tuple, based on a lexicon of adjectives. It has an accuracy of 79% (P 0.77, R 0.83) for book reviews:</span></p>
 <p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">nl</span> <span style="color: #28334f; font-weight: bold;">import</span> sentiment<br />
 <span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> sentiment<span style="">&#40;</span><span style="color: #657a8a;">'Een onwijs spannend goed boek!'</span><span style="">&#41;</span><br />
-<span style="">&#40;</span><span style="color: #666;">0.27</span>, <span style="color: #666;">0.88</span><span style="">&#41;</span> </code></span></span></p>
+<span style="">&#40;</span><span style="color: #666;">0.55</span>, <span style="color: #666;">0.90</span><span style="">&#41;</span> </code></span></span></p>
 <p>For parsing there is <span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">parse()</span>&nbsp;and&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">split()</span>:</p>
 <p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">nl</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, split<br />
 <span style="">&gt;&gt;&gt;</span> s = parse<span style="">&#40;</span><span style="color: #657a8a;">'De kat zit op de mat.'</span><span style="">&#41;</span><br />
@@ -59,7 +59,6 @@ Sentence<span style="">&#40;</span><span style="color: #657a8a;">'De/DT/B-NP/O k
 <p>&nbsp;</p>
 <p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;"><span class="smallcaps" style="font-variant: small-caps;">Accuracy – noun &amp; verb inflection</span></p>
 <p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;">Noun pluralization and singularization is less robust&nbsp;(accuracy 80% and 91% respectively)&nbsp;than the English implementation. The lexicon for verb conjugation contains 3,700 common Dutch verbs; otherwise it will fall back to a rule-based approach with an accuracy of about 80%. The parser will combine <span class="inline_code">singularize()</span>, <span class="inline_code">conjugate()</span> and <span class="inline_code">predicative()</span>&nbsp;to do word lemmatization.</p>
-<p>&nbsp;</p>
 </div>
 </div></div>
         </div>

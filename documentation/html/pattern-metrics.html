@@ -26,9 +26,9 @@
         <!-- Parsed from the online documentation. -->
         <div id="node-1405" class="node node-type-page"><div class="node-inner">
 <div class="content">
-<p><span class="big">The pattern.metrics module is a loose collection of performance and accuracy measurements, including tools for profiling the speed of Python functions, precision and recall for classifiers, agreement across different voters (Fleiss), string similarity (Levenshtein + Dice), string readability (Flesch).</span></p>
+<p><span class="big">The pattern.metrics module is a loose collection of performance and accuracy measurements, including tools for profiling the speed of Python functions, precision and recall for classifiers, agreement across different voters (Fleiss), string similarity (Levenshtein + Dice), string readability (Flesch), descriptive statistics.</span></p>
 <p>It can be used by itself or with other&nbsp;<a href="pattern.html">pattern</a>&nbsp;modules:&nbsp;<a href="pattern-web.html">web</a>&nbsp;|&nbsp;<a href="pattern-table.html">table</a>&nbsp;|&nbsp;<a href="pattern-en.html">en</a>&nbsp;|&nbsp;<a href="pattern-search.html">search</a>&nbsp;<span class="blue">&nbsp;</span>| <a href="pattern-vector.html">vector</a> |&nbsp;<a href="pattern-graph.html">graph</a>.</p>
-<p><img src="../g/pattern_schema.gif" alt="" width="606" height="180" /></p>
+<p><img src="../g/pattern_schema.gif" alt="" width="620" height="180" /></p>
 <hr />
 <h2>Documentation</h2>
 <ul>
@@ -37,6 +37,7 @@
 <li><a href="#agreement">Agreement</a></li>
 <li><a href="#similarity">String similarity</a></li>
 <li><a href="#readability">String readability</a></li>
+<li><a href="#statistics">Statistics</a><span class="link-maintenance small"> (mean, histogram, quantile, ...)</span></li>
 </ul>
 <p>&nbsp;</p>
 <hr />
@@ -117,6 +118,7 @@
 <p>In this example, <span class="inline_code">is_spam()</span> correctly classifies 5 out of 6 messages (83% accuracy). It identifies all spam messages (100% recall), which is good. However, it also promotes a<em>&nbsp;</em>message that is not spam to the junk folder, which is bad. Only 2 out of 3 messages tagged as spam are in reality spam (67% precision). Here is room for improvement. Notice how there is a trade-off between recall (no spam in inbox) and precision (real e-mails in junk folder).</p>
 <p>The following helper functions simply call <span class="inline_code">test()</span> internally and return a single metric:</p>
 <p><span class="geshifilter"><code class="python geshifilter-python">accuracy<span style="">&#40;</span>match=<span style="color: #28334f; font-weight: bold;">lambda</span> document:<span style="color: #4a587c;">False</span>, documents=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">precision<span style="">&#40;</span>match=<span style="color: #28334f; font-weight: bold;">lambda</span> document:<span style="color: #4a587c;">False</span>, documents=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">recall<span style="">&#40;</span>match=<span style="color: #28334f; font-weight: bold;">lambda</span> document:<span style="color: #4a587c;">False</span>, documents=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">F1<span style="">&#40;</span>match=<span style="color: #28334f; font-weight: bold;">lambda</span> document:<span style="color: #4a587c;">False</span>, documents=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span></code></span></p>
+<p><span class="geshifilter"><code class="python geshifilter-python">F<span style="">&#40;</span>match=<span style="color: #28334f; font-weight: bold;">lambda</span> document:<span style="color: #4a587c;">False</span>, documents=<span style="">&#91;</span><span style="">&#93;</span>, beta=<span style="color: #666;">1</span><span style="">&#41;</span></code></span></p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="agreement"></a>Agreement</h2>
@@ -152,18 +154,54 @@
 </tr>
 <tr>
 <td><span class="inline_code">0.9-1.0</span></td>
-<td>easily understandable by 11-year old</td>
+<td>easily understandable by 11-year olds</td>
 </tr>
 <tr>
 <td><span class="inline_code">0.6-0.7</span></td>
-<td>easily understandable by 13- to 15-year old</td>
+<td>easily understandable by 13- to 15-year olds</td>
 </tr>
 <tr>
-<td><span class="inline_code">0.0-0.3</span></td>
+<td><span class="inline_code">0.3-0.5</span></td>
 <td>best understood by university graduates</td>
 </tr>
 </tbody>
 </table>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="statistics"></a>Statistics</h2>
+<p>In mathematics, an&nbsp;<em>average</em> is a measure of the "middle" of a data set (or <em>sample</em>, usually a list of numbers). An average can be calculated in different ways, but commonly the&nbsp;<em>mean</em> is used. The arithmetic mean is the sum of the values divided by the sample size: [<span class="inline_code">1,2,4] → 1+2+4 / 3 = 2.3</span>.&nbsp;Another average measure is the <em>median</em>, found by sorting the values from lowest to highest value and picking the middle one: <span class="inline_code">[1,2,4] → 2</span>.&nbsp;</p>
+<p>The <em>standard deviation</em> measures the amount of variation in a sample. Low standard deviation means the values tend to be close to the mean. If you draw it, you get a steep, narrow curve. High standard deviation means the values are spread out over a large range. If you draw it you get a flat, wide curve.</p>
+<p><span class="geshifilter"><code class="python geshifilter-python">mean<span style="">&#40;</span><span style="color: #4a587c;">list</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># [1, 2, 4] =&gt; 2.33</span></code></span><span class="geshifilter"><code class="python geshifilter-python">median<span style="">&#40;</span><span style="color: #4a587c;">list</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># [1, 2, 4] =&gt; 2</span></code></span><span class="geshifilter"><code class="python geshifilter-python">variance<span style="">&#40;</span><span style="color: #4a587c;">list</span>, sample=<span style="color: #4a587c;">True</span><span style="">&#41;</span> &nbsp; <span style="color: grey;"># Use sample=False for population variance.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">stdev<span style="">&#40;</span><span style="color: #4a587c;">list</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># [1, 2, 4] =&gt; 1.53</span></code></span></p>
+<p><span class="smallcaps"><br />Histogram</span></p>
+<p>A <em>histogram</em> divides a list of numbers into intervals. This gives an idea of the distribution of the data: which interval has the most values? Are there more values in lower intervals? The <span class="inline_code">histogram()</span> command returns a dictionary with <span class="inline_code">k</span> items: <span class="inline_code">{(start, stop): [values], ...}</span>, with equal <span class="inline_code">(start, stop)</span> intervals between <span class="inline_code">min(list)</span> and <span class="inline_code">max(list)</span>.</p>
+<p><span class="geshifilter"><code class="python geshifilter-python">histogram<span style="">&#40;</span><span style="color: #4a587c;">list</span>, k=<span style="color: #666;">10</span>, <span style="color: #4a587c;">range</span>=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
+<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> s = <span style="">&#91;</span><span style="color: #666;">1</span>, <span style="color: #666;">1</span>, <span style="color: #666;">1</span>, <span style="color: #666;">1</span>, <span style="color: #666;">2</span>, <span style="color: #666;">2</span>, <span style="color: #666;">2</span>, <span style="color: #666;">3</span>, <span style="color: #666;">3</span>, <span style="color: #666;">4</span>, <span style="color: #666;">5</span>, <span style="color: #666;">6</span>, <span style="color: #666;">7</span>, <span style="color: #666;">8</span>, <span style="color: #666;">9</span><span style="">&#93;</span><br />
+<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> <span style="">&#40;</span>i,j<span style="">&#41;</span>, values <span style="color: #28334f; font-weight: bold;">in</span> <span style="color: #4a587c;">sorted</span><span style="">&#40;</span>histogram<span style="">&#40;</span>s, k=<span style="color: #666;">4</span><span style="">&#41;</span>.<span style="">items</span><span style="">&#40;</span><span style="">&#41;</span><span style="">&#41;</span>:<br />
+<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; m = i + <span style="">&#40;</span>j-i<span style="">&#41;</span>/<span style="color: #666;">2</span> <span style="color: grey;"># midpoint</span><br />
+<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">print</span> i, j, m, values<br />
+<br />
+<span style="color: #666;">1.0</span> <span style="color: #666;">3.0</span> <span style="color: #666;">2.0</span> <span style="">&#91;</span><span style="color: #666;">1</span>, <span style="color: #666;">1</span>, <span style="color: #666;">1</span>, <span style="color: #666;">1</span>, <span style="color: #666;">2</span>, <span style="color: #666;">2</span>, <span style="color: #666;">2</span>, <span style="color: #666;">3</span>, <span style="color: #666;">3</span><span style="">&#93;</span><br />
+<span style="color: #666;">3.0</span> <span style="color: #666;">5.0</span> <span style="color: #666;">4.0</span> <span style="">&#91;</span><span style="color: #666;">4</span>, <span style="color: #666;">5</span><span style="">&#93;</span><br />
+<span style="color: #666;">5.0</span> <span style="color: #666;">7.0</span> <span style="color: #666;">6.0</span> <span style="">&#91;</span><span style="color: #666;">6</span>, <span style="color: #666;">7</span><span style="">&#93;</span><br />
+<span style="color: #666;">7.0</span> <span style="color: #666;">9.0</span> <span style="color: #666;">8.0</span> <span style="">&#91;</span><span style="color: #666;">8</span>, <span style="color: #666;">9</span><span style="">&#93;</span> </code></span></span></p>
+<p><span class="smallcaps"><br />Moment</span></p>
+<p>A <em>moment</em> is a measure of the "shape" of a list of numbers. For example, the 2nd moment (which is the <em>variance</em>) measures the width.&nbsp;The 3rd moment measures&nbsp;<em>skewness</em>&nbsp;or asymmetry of the sample. If &gt; 0.0, relatively few values are higher than the mean. If &lt; 0.0, relatively few values are lower than the mean.&nbsp;The 4th moment measures&nbsp;<em>kurtosis</em> or peakedness of the sample. If &gt; 0.0, there is a sharp peak around the mean (more infrequent / extreme values). If &lt; 0.0 there is a wide peak around the mean.</p>
+<p><span class="geshifilter"><code class="python geshifilter-python">moment<span style="">&#40;</span><span style="color: #4a587c;">list</span>, k=<span style="color: #666;">1</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">skewness<span style="">&#40;</span><span style="color: #4a587c;">list</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">kurtosis<span style="">&#40;</span><span style="color: #4a587c;">list</span><span style="">&#41;</span></code></span></p>
+<p><span class="smallcaps"><br />Quantile</span></p>
+<p>The <span class="inline_code">quantile()</span> command returns the interpolated value from a sorted list of numbers at point <span class="inline_code">p</span> (0.0-1.0). The optional parameters <span class="inline_code">a</span>, <span class="inline_code">b</span>, <span class="inline_code">c</span>, <span class="inline_code">d</span> refer to the algorithm by Hyndman and Fan <a href="http://stat.ethz.ch/R-manual/R-patched/library/stats/html/quantile.html" target="_blank">[1]</a>. Quantiles can be used to create&nbsp;a <em>box plot</em>, useful for identifying&nbsp;<em>outliers</em>.&nbsp;For example: if a sample of temperature in your household comprises you (37°C), the cat (38°C),&nbsp;the refrigerator (5°C) and the oven (220°C) then the average temperature is 75°C, which of course is incorrect since the oven is an outlier.&nbsp;The <span class="inline_code">boxplot()</span> command returns a <span class="inline_code">(min, Q1, Q2, Q3, max)</span>-tuple for a given list of numbers, where <span class="inline_code">Q2</span> is the median, <span class="inline_code">Q1</span> is the lower 25-50% and <span class="inline_code">Q3</span> is the upper 50-75%.</p>
+<p><span class="geshifilter"><code class="python geshifilter-python">quantile<span style="">&#40;</span><span style="color: #4a587c;">list</span>, p=<span style="color: #666;">0.5</span>, sort=<span style="color: #4a587c;">True</span>, a=<span style="color: #666;">1</span>, b=-<span style="color: #666;">1</span>, c=<span style="color: #666;">0</span>, d=<span style="color: #666;">1</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">boxplot<span style="">&#40;</span><span style="color: #4a587c;">list</span><span style="">&#41;</span></code></span></p>
+<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> s = <span style="">&#91;</span><span style="color: #666;">5</span>, <span style="color: #666;">37</span>, <span style="color: #666;">38</span>, <span style="color: #666;">220</span><span style="">&#41;</span><br />
+<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> boxplot<span style="">&#40;</span>s<span style="">&#41;</span><br />
+<br />
+<span style="">&#40;</span><span style="color: #666;">5.0</span>, <span style="color: #666;">29.0</span>, <span style="color: #666;">37.5</span>, &nbsp;<span style="color: #666;">83.5</span>, <span style="color: #666;">220.0</span><span style="">&#41;</span></code></span></span></p>
+<table class="border">
+<tbody>
+<tr>
+<td style="text-align: center;"><img style="display: block; margin-left: auto; margin-right: auto;" src="../g/pattern-metrics-boxplot.jpg" alt="" width="398" height="137" /><span class="smallcaps">you, the cat, the fridge and the oven</span></td>
+</tr>
+</tbody>
+</table>
+<p><span class="small"><span style="text-decoration: underline;">Reference</span>: Adorio E. (2008)&nbsp;http://adorio-research.org/wordpress/?p=125</span></p>
 </div>
 </div></div>
         </div>

@@ -26,9 +26,9 @@
         <!-- Parsed from the online documentation. -->
         <div id="node-1392" class="node node-type-page"><div class="node-inner">
 <div class="content">
-<p><span style="font-size: 16px;">The pattern.graph module offers a way to represent and analyze networks of linked data. It can be used to (for example) model semantic relationships between words. It comes bundled with a Javascript generator to create an aesthetically pleasing visualization of a network in a web page.</span></p>
+<p><span style="font-size: 16px;">The pattern.graph module offers a way to represent and analyze networks of linked data. It can be used to (for example) model semantic relationships between words. It comes bundled with a JavaScript generator to create an aesthetically pleasing visualization of a network in a web page.</span></p>
 <p>It can be used by itself or with other&nbsp;<a href="pattern.html">pattern</a>&nbsp;modules:&nbsp;<a href="pattern-web.html">web</a>&nbsp;|&nbsp;<a href="pattern-db.html">db</a>&nbsp;|&nbsp;<a href="pattern-en.html">en</a>&nbsp;|&nbsp;<a href="pattern-search.html">search</a>&nbsp;<span class="blue">&nbsp;</span>| <a href="pattern-vector.html">vector</a> |&nbsp;graph.</p>
-<p><img style="border: 0px initial initial;" src="../g/pattern_schema.gif" alt="" width="606" height="180" /></p>
+<p><img style="border: 0px initial initial;" src="../g/pattern_schema.gif" alt="" width="620" height="180" /></p>
 <hr />
 <h2>Documentation</h2>
 <ul>
@@ -187,13 +187,13 @@ layout.<span style="">copy</span><span style="">&#40;</span>graph<span style="">
 <h2><a name="canvas"></a>HTML &lt;canvas&gt; renderer</h2>
 <p>To visualize a graph, we need a drawing engine (e.g. Flash). The&nbsp;<span class="inline_code">Graph</span>, <span class="inline_code">Node</span> and <span class="inline_code">Edge</span> classes are&nbsp;identical to those in <a href="http://cityinabottle.org/nodebox" target="_blank">NodeBox for OpenGL</a>, a cross-platform Python animation toolkit, so graphs can be rendered in NodeBox without effort.&nbsp;Another option is to export the graph to a web page: the <span class="inline_code">&lt;canvas&gt;</span> element is part of HTML5 and allows for dynamic, scriptable rendering of 2D shapes and bitmap images.</p>
 <h3>Exporting as a web page</h3>
-<p>The <span class="inline_code">export(</span>) command creates a folder at the given <span class="inline_code">path</span> containing an <span class="inline_code">index.html</span>&nbsp;that visualizes the graph using &lt;canvas&gt;. The folder also has a <span class="inline_code">screen.css</span> stylesheet and a <span class="inline_code">js/</span> subfolder with <span class="inline_code">graph.js</span> (full Javascript implementation of <span class="inline_code">pattern.graph</span>) and <span class="inline_code">excanvas.js</span>&nbsp;(support for IE8-). If an optional parameter <span class="inline_code">js</span> is given, it is expected to be a URL path to&nbsp;<span class="inline_code">graph.js</span> + <span class="inline_code">excanvas.js</span>&nbsp;(subfolder will not be included in this case).</p>
+<p>The <span class="inline_code">export(</span>) command creates a folder at the given <span class="inline_code">path</span> containing an <span class="inline_code">index.html</span>&nbsp;that visualizes the graph using <a href="pattern-canvas.html" target="_blank">canvas.js</a>. The folder also has a <span class="inline_code">style.css</span> stylesheet and a <span class="inline_code">js/</span> subfolder with a compressed&nbsp;<span class="inline_code">graph.js</span> (full JavaScript implementation of <span class="inline_code">pattern.graph</span>) and&nbsp;<span class="inline_code">canvas.js</span>. If an optional parameter <span class="inline_code">js</span> is given, it is expected to be a URL path to&nbsp;<span class="inline_code">graph.js</span> +&nbsp;<span class="inline_code">canvas.js</span>&nbsp;(subfolder will not be included in this case).</p>
 <p><span class="geshifilter"><code class="python geshifilter-python">export<span style="">&#40;</span>graph, path, overwrite=<span style="color: #4a587c;">False</span>, encoding=<span style="color: #657a8a;">'utf-8'</span>, <span style="">**</span>kwargs<span style="">&#41;</span></code></span></p>
 <p>For example:</p>
 <p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">graph</span> <span style="color: #28334f; font-weight: bold;">import</span> Graph, export<br />
 <span style="">&gt;&gt;&gt;</span> g = Graph<span style="">&#40;</span><span style="">&#41;</span><br />
 <span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> n1, n2 <span style="color: #28334f; font-weight: bold;">in</span> <span style="">&#40;</span><span style="">&#40;</span><span style="color: #657a8a;">'cat'</span>,<span style="color: #657a8a;">'tail'</span><span style="">&#41;</span>, <span style="">&#40;</span><span style="color: #657a8a;">'cat'</span>,<span style="color: #657a8a;">'purr'</span><span style="">&#41;</span>, <span style="">&#40;</span><span style="color: #657a8a;">'purr'</span>,<span style="color: #657a8a;">'sound'</span><span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="">&#40;</span><span style="color: #657a8a;">'dog'</span>,<span style="color: #657a8a;">'tail'</span><span style="">&#41;</span>, <span style="">&#40;</span><span style="color: #657a8a;">&quot;dog&quot;</span>,<span style="color: #657a8a;">&quot;bark&quot;</span><span style="">&#41;</span>, <span style="">&#40;</span><span style="color: #657a8a;">&quot;bark&quot;</span>,<span style="color: #657a8a;">&quot;sound&quot;</span><span style="">&#41;</span><span style="">&#41;</span>:<br />
+<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="">&#40;</span><span style="color: #657a8a;">'dog'</span>,<span style="color: #657a8a;">'tail'</span><span style="">&#41;</span>, <span style="">&#40;</span><span style="color: #657a8a;">&quot;dog&quot;</span>,<span style="color: #657a8a;">&quot;bark&quot;</span><span style="">&#41;</span>, <span style="">&#40;</span><span style="color: #657a8a;">&quot;bark&quot;</span>,<span style="color: #657a8a;">&quot;sound&quot;</span><span style="">&#41;</span><span style="">&#41;</span>:<br />
 <span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp;g.<span style="">add_node</span><span style="">&#40;</span>n1<span style="">&#41;</span><br />
 <span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp;g.<span style="">add_node</span><span style="">&#40;</span>n2<span style="">&#41;</span><br />
 <span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp;g.<span style="">add_edge</span><span style="">&#40;</span>n1, n2, weight=<span style="color: #666;">0.0</span>, type=<span style="color: #657a8a;">'is-related-to'</span><span style="">&#41;</span><br />
@@ -209,12 +209,12 @@ layout.<span style="">copy</span><span style="">&#40;</span>graph<span style="">
 <tr>
 <td><span class="inline_code">javascript</span></td>
 <td><span class="inline_code">'js/'</span></td>
-<td>Path to <span class="inline_code">excanvas.js</span> + <span class="inline_code">graph.js</span>.</td>
+<td>Path to <span class="inline_code">canvas.js</span> + <span class="inline_code">graph.js</span>.</td>
 </tr>
 <tr>
 <td><span class="inline_code">stylesheet</span></td>
 <td><span style="font-family: Courier, monospace; font-size: small;"><span style="font-size: 12px;">INLINE</span></span></td>
-<td><span class="inline_code">None</span>, <span class="inline_code">INLINE</span>, <span class="inline_code">DEFAULT</span> (screen.css) or custom path.</td>
+<td><span class="inline_code">None</span>, <span class="inline_code">INLINE</span>, <span class="inline_code">DEFAULT</span> (style.css) or custom path.</td>
 </tr>
 <tr>
 <td><span class="inline_code">title</span></td>
@@ -228,8 +228,8 @@ layout.<span style="">copy</span><span style="">&#40;</span>graph<span style="">
 </tr>
 <tr>
 <td><span class="inline_code">ctx</span></td>
-<td><span class="inline_code">'_ctx'</span></td>
-<td>Generates <span class="inline_code">&lt;canvas id="_ctx" width=700 height=500&gt;</span>.</td>
+<td><span class="inline_code">'canvas.element'</span></td>
+<td>HTML &lt;canvas&gt; element used for drawing.</td>
 </tr>
 <tr>
 <td><span class="inline_code">width</span></td>
@@ -248,7 +248,7 @@ layout.<span style="">copy</span><span style="">&#40;</span>graph<span style="">
 </tr>
 <tr>
 <td><span class="inline_code">fps</span></td>
-<td><span class="inline_code">20</span></td>
+<td><span class="inline_code">30</span></td>
 <td>Frames per second.</td>
 </tr>
 <tr>
@@ -271,7 +271,7 @@ layout.<span style="">copy</span><span style="">&#40;</span>graph<span style="">
 <tr>
 <td><span class="inline_code">prune</span></td>
 <td><span class="inline_code">None</span></td>
-<td><span class="inline_code">None</span> or <span class="inline_code">int</span>, calls <span class="inline_code">Graph.prune()</span> in Javascript.</td>
+<td><span class="inline_code">None</span> or <span class="inline_code">int</span>, calls <span class="inline_code">Graph.prune()</span> in JavaScript.</td>
 </tr>
 <tr>
 <td><span class="inline_code">pack</span></td>
@@ -301,7 +301,7 @@ layout.<span style="">copy</span><span style="">&#40;</span>graph<span style="">
 <tr>
 <td><span class="inline_code">weight</span></td>
 <td><span class="inline_code">[WEIGHT,CENTRALITY]</span></td>
-<td>Calculate these in Python, or <span class="inline_code">True</span> (in Javascript), or <span class="inline_code">False</span>.</td>
+<td>Calculate these in Python, or <span class="inline_code">True</span> (in JavaScript), or <span class="inline_code">False</span>.</td>
 </tr>
 <tr>
 <td><span class="inline_code">href</span></td>
@@ -315,8 +315,8 @@ layout.<span style="">copy</span><span style="">&#40;</span>graph<span style="">
 </tr>
 <tr>
 <td><span class="inline_code">default</span></td>
-<td style="white-space: nowrap;"><span class="inline_code">{'radius': 5,<br />&nbsp;'fill': None,<br />&nbsp;'stroke': (0,0,0,1),<br />&nbsp;'strokewidth': 1,<br />&nbsp;'text': (0,0,0,1),<br />&nbsp;'fontsize': 11<br />}&nbsp;</span></td>
-<td><span class="inline_code"><span style="font-family: Georgia, Times, serif; font-size: small;"><span style="font-size: 13px;">To save bandwidth,</span></span></span>&nbsp;<span class="inline_code">Node</span> and <span class="inline_code">Edge</span>&nbsp;attributes are only passed to Javascript if they differ from the default.</td>
+<td style="white-space: nowrap;"><span class="inline_code">{'radius': 5,<br />&nbsp;'fixed': False,<br />&nbsp;'fill': None,<br />&nbsp;'stroke': (0,0,0,1),<br />&nbsp;'strokewidth': 1,<br />&nbsp;'text': (0,0,0,1),<br />&nbsp;'fontsize': 11<br />}&nbsp;</span></td>
+<td><span class="inline_code"><span style="font-family: Georgia, Times, serif; font-size: small;"><span style="font-size: 13px;">To save bandwidth,</span></span></span>&nbsp;<span class="inline_code">Node</span> and <span class="inline_code">Edge</span>&nbsp;attributes are only passed to JavaScript if they differ from the default.</td>
 </tr>
 </tbody>
 </table>
@@ -331,11 +331,11 @@ layout.<span style="">copy</span><span style="">&#40;</span>graph<span style="">
 </tr>
 <tr>
 <td><span class="inline_code">DATA</span></td>
-<td>Javascript string that loads the&nbsp;<span class="inline_code">Graph</span>&nbsp;in&nbsp;<span class="inline_code">var g</span>&nbsp;to be used in&nbsp;<span class="inline_code">&lt;canvas id="_ctx"&gt;</span>.</td>
+<td>JavaScript string that loads the&nbsp;<span class="inline_code">Graph</span>&nbsp;into&nbsp;<span class="inline_code">var g</span>.</td>
 </tr>
 <tr>
 <td><span class="inline_code">SCRIPT</span></td>
-<td><span class="inline_code">DATA</span>&nbsp;+ prune + pack + weights + a call to&nbsp;<span class="inline_code">g.loop()</span>&nbsp;to start the animation.</td>
+<td><span class="inline_code">DATA</span>&nbsp;+ prune + pack + weights + a call to&nbsp;<span class="inline_code">draw()</span>&nbsp;to start the animation.</td>
 </tr>
 <tr>
 <td><span class="inline_code">STYLE</span></td>
@@ -343,7 +343,7 @@ layout.<span style="">copy</span><span style="">&#40;</span>graph<span style="">
 </tr>
 <tr>
 <td><span class="inline_code">CANVAS</span></td>
-<td>HTML string with a&nbsp;<span class="inline_code">&lt;div id="graph"&gt;</span>&nbsp;containing&nbsp;<span class="inline_code">&lt;canvas id="_ctx"&gt;</span>.</td>
+<td>HTML string with a&nbsp;<span class="inline_code">&lt;div id="graph"&gt;</span>&nbsp;containing&nbsp;<span class="inline_code">&lt;script type="text/canvas"&gt;</span>.</td>
 </tr>
 <tr>
 <td><span class="inline_code">HTML</span></td>
@@ -353,18 +353,19 @@ layout.<span style="">copy</span><span style="">&#40;</span>graph<span style="">
 </tbody>
 </table>
 <p><span class="smallcaps">Static vs. dynamic</span></p>
-<p>The most exhaustive graph operations are the spring layout, &nbsp;<span class="inline_code">GraphSpringLayout.update()</span>, and calculating weights:&nbsp;<span class="inline_code">Graph.betweenness_centrality()</span>&nbsp;and&nbsp;<span class="inline_code">Graph.eigenvector_centrality()</span>.&nbsp;The latter two are called automatically the first time you fetch&nbsp;<span class="inline_code">Node.weight</span> or <span class="inline_code">Node.centrality</span>.&nbsp;You can opt to do some or all of the calculations in Python (i.e. server-side) or in Javascript (i.e. client-side).&nbsp;</p>
+<p>The most exhaustive graph operations are the spring layout, <span class="inline_code">GraphSpringLayout.update()</span>, and calculating weights: <span class="inline_code">Graph.betweenness_centrality()</span> and <span class="inline_code">Graph.eigenvector_centrality()</span>. The latter two are called automatically the first time you fetch&nbsp;<span class="inline_code">Node.weight</span> or <span class="inline_code">Node.centrality</span>.&nbsp;You can opt to do some or all of the calculations in Python (i.e. server-side) or in JavaScript (i.e. client-side).&nbsp;</p>
 <ul>
 <li>If the nodes and edges are updated dynamically, calculate the weights client-side.&nbsp;</li>
 <li>If the nodes and edges never change, calculate the weights in Python and export once:&nbsp;<br /><span class="inline_code">export(graph, path, weights=[WEIGHT, CENTRALITY])</span>.&nbsp;</li>
 <li>If you don't need fancy animation, calculate node positions in Python and export as a single frame:<span class="inline_code"> <br />export(graph, path, frames=1, ipf=0)</span>.</li>
-<li>Choose good&nbsp;<span class="inline_code">default</span>&nbsp;values to minimize data passed from Python to Javascript.</li>
+<li>Choose good&nbsp;<span class="inline_code">default</span>&nbsp;values to minimize data passed from Python to JavaScript.</li>
 </ul>
 <p>&nbsp;</p>
 <h3>
 <hr /></h3>
-<h2><a name="javascript"></a>Javascript library: graph.js</h2>
-<p>Below is a concise demonstration of <span class="inline_code">graph.js</span>&nbsp;(co-authored by Daniel Friesen). &nbsp;<br />Its implementation is identical to the Python module, except for some naming conventions (e.g. <span class="inline_code">Graph.eigenvector_centrality()</span> is written as&nbsp;<span class="inline_code">Graph.eigenvectorCentrality()</span>&nbsp;in Javascript), optional parameters, and the addition of the&nbsp;<span class="inline_code">Graph.loop()</span> method which starts the interactive animation (<span class="link-maintenance"><a href="http://www.clips.ua.ac.be/media/pattern-graph/random" target="_blank">view live demo</a></span>):</p>
+<h2><a name="javascript"></a>JavaScript library: graph.js</h2>
+<p>Below is a concise standalone demonstration of <span class="inline_code">graph.js</span>&nbsp;(co-authored by Daniel Friesen). &nbsp;With standalone we mean that it is not generated with <span class="inline_code">export()</span> and does not rely on <span class="inline_code">canvas.js</span>. Only <span class="inline_code">graph.js</span> is required.&nbsp;</p>
+<p>The implementation of <span class="inline_code">graph.js</span> is identical to the Python module, except for some naming conventions (e.g. <span class="inline_code">Graph.eigenvector_centrality()</span> is written as&nbsp;<span class="inline_code">Graph.eigenvectorCentrality()</span>&nbsp;in JavaScript), optional parameters, and the addition of the&nbsp;<span class="inline_code">Graph.loop()</span> method which starts the interactive animation (<span class="link-maintenance"><a href="http://www.clips.ua.ac.be/media/pattern-graph/random" target="_blank">view live demo</a></span>):</p>
 <p><span class="example"><span class="geshifilter"><code class="html4strict geshifilter-html4strict">&lt;!DOCTYPE html&gt; <br />
 &lt;<span style="color: #28334f; font-weight: bold;">html</span>&gt;</code></span></span></p>
 <p><span class="example"><span class="geshifilter"><code class="html4strict geshifilter-html4strict">&lt;<span style="color: #28334f; font-weight: bold;">head</span>&gt; <br />

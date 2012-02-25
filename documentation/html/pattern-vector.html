@@ -28,7 +28,7 @@
 <div class="content">
 <p><span class="big">The pattern.vector module contains tools to count words in a "document"&nbsp;</span><span class="big">(e.g., a paragraph or a web page)</span><span class="big"> and compute <em>tf-idf</em>, <em>cosine similarity</em> and&nbsp;<em>latent semantic analysis</em> to discover keywords, search &amp; compare similar documents, cluster documents into groups, or to make predictions about other documents.</span></p>
 <p>It can be used by itself or with other <a href="pattern.html">pattern</a> modules: <a href="pattern-web.html">web</a> | <a href="pattern-db.html">db</a> | <a href="pattern-en.html">en</a> | <a href="pattern-search.html">search</a> <span class="blue">&nbsp;</span>| vector | <a href="pattern-graph.html">graph</a>.</p>
-<p><img src="../g/pattern_schema.gif" alt="" width="606" height="180" /></p>
+<p><img src="../g/pattern_schema.gif" alt="" width="620" height="180" /></p>
 <hr />
 <h2>Documentation</h2>
 <ul>
@@ -38,7 +38,7 @@
 <li><a href="#corpus">Corpus</a></li>
 <li><a href="#lsa">Latent Semantic Analysis</a></li>
 <li><a href="#cluster">Clustering</a>&nbsp;<span class="smallcaps link-maintenance">(k-means, hierarchical)</span></li>
-<li><a href="#classification">Classification</a>&nbsp;<span class="smallcaps link-maintenance">(naive bayes, k-nearest neighbor)</span></li>
+<li><a href="#classification">Classification</a>&nbsp;<span class="smallcaps link-maintenance">(naive bayes, knn, svm)</span></li>
 </ul>
 <p>&nbsp;</p>
 <hr />
@@ -114,7 +114,7 @@ spy</code></span></span></p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="document"></a>Document</h2>
-<p>A <span class="inline_code">Document</span> bundles the <span class="inline_code">words()</span>, <span class="inline_code">stem()</span> and <span class="inline_code">count()</span> functions with methods to determine which words are more important. The given string can also be a <span class="inline_code">Text</span>, a&nbsp;<span class="inline_code">Sentence</span>, or a list of words. Documents can be grouped in a <span class="inline_code">Corpus</span> to compute <span class="inline_code">tf-idf</span> and similarity.</p>
+<p>A <span class="inline_code">Document</span> bundles the <span class="inline_code">words()</span>, <span class="inline_code">stem()</span> and <span class="inline_code">count()</span> functions with methods to determine which words are more important. The given string can also be a <span class="inline_code">Text</span>, a&nbsp;<span class="inline_code">Sentence</span>, a list of words, or a dictionary of (<span class="inline_code">word</span>, <span class="inline_code">count</span>)-items. Documents can be grouped in a <span class="inline_code">Corpus</span> to compute <span class="inline_code">tf-idf</span> and similarity.</p>
 <p><span class="geshifilter"><code class="python geshifilter-python">document = Document<span style="">&#40;</span><span style="">string</span>, <br />
 &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #4a587c;">filter</span> = <span style="color: #28334f; font-weight: bold;">lambda</span> w: w.<span style="">isalpha</span><span style="">&#40;</span><span style="">&#41;</span> <span style="color: #28334f; font-weight: bold;">and</span> <span style="color: #4a587c;">len</span><span style="">&#40;</span>w<span style="">&#41;</span> <span style="">&gt;</span> <span style="color: #666;">1</span>, <br />
 &nbsp; punctuation = <span style="color: #657a8a;">'[]():;,.!?<span style="">\n</span><span style="">\r</span><span style="">\t</span><span style="">\f</span> '</span>, <br />
@@ -187,8 +187,9 @@ corpus.<span style="">distance</span><span style="">&#40;</span>document1, docum
 corpus.<span style="">cluster</span><span style="">&#40;</span>documents=ALL, method=KMEANS<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># KMEANS | HIERARCHICAL</span><br />
 corpus.<span style="color: #4a587c;">reduce</span><span style="">&#40;</span>dimensions=NORM<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># NORM | TOP300 | int</span></code></span></p>
 <p><span class="geshifilter"><code class="python geshifilter-python">corpus.<span style="">relative_entropy</span><span style="">&#40;</span>word1, word2<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Kullback-Leibler divergence.</span><br />
-corpus.<span style="">feature_selection</span><span style="">&#40;</span>top=<span style="color: #666;">100</span>, method=KLD<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Top &quot;original&quot; features (terms).</span><br />
-corpus.<span style="color: #4a587c;">filter</span><span style="">&#40;</span>features=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Corpus with selected features .</span></code></span><span class="geshifilter"><code class="python geshifilter-python">corpus.<span style="">save</span><span style="">&#40;</span>path, update=<span style="color: #4a587c;">False</span><span style="">&#41;</span><br />
+corpus.<span style="">feature_selection</span><span style="">&#40;</span>top=<span style="color: #666;">100</span>, method=KLD<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Top original features (terms).</span><br />
+corpus.<span style="color: #4a587c;">filter</span><span style="">&#40;</span>features=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Corpus with selected features.</span></code></span></p>
+<p><span class="geshifilter"><code class="python geshifilter-python">corpus.<span style="">sets</span><span style="">&#40;</span>threshold=<span style="color: #666;">0.5</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Frequent word sets.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">corpus.<span style="">save</span><span style="">&#40;</span>path, update=<span style="color: #4a587c;">False</span><span style="">&#41;</span><br />
 corpus.<span style="">export</span><span style="">&#40;</span>path, format=ORANGE<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># ORANGE | WEKA </span></code></span></p>
 <ul>
 <li><span class="inline_code">Corpus.vector()</span> returns a <span class="inline_code">Vector</span> for the given document.<br />Vector contains all words in the corpus, with <span class="inline_code">tf-idf</span>&nbsp;&gt; 0 for words that appear in the document.<span><span><br /></span></span></li>
@@ -197,6 +198,7 @@ corpus.<span style="">export</span><span style="">&#40;</span>path, format=ORANG
 <li><span class="inline_code">Corpus.similarity()</span> returns the cosine similarity of two <span class="inline_code">Documents</span> between <span class="inline_code">0.0-1.0</span>.<span class="inline_code"><br /></span></li>
 <li><span class="inline_code">Corpus.neighbors()</span> returns a sorted list of <span class="inline_code">(similarity, Document)</span>-tuples.</li>
 <li><span class="inline_code">Corpus.search()</span> returns a sorted list of <span class="inline_code">(similarity, Document)</span>-tuples, based on a list of query words. A <span class="inline_code">Document</span> is created on-the-fly for the given words, using the given optional arguments. </li>
+<li><span class="inline_code">Corpus.sets()</span> returns a dictionary of <span class="inline_code">(set(words), frequency)</span>-items of word combinations with a relative frequency above the given threshold (<span class="inline_code">0.0-1.0</span>).</li>
 </ul>
 <p>The example below demonstrates the use of <span class="inline_code">tf-idf</span> and cosine similarity:&nbsp;</p>
 <p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">vector</span> <span style="color: #28334f; font-weight: bold;">import</span> Document, Corpus<br />
@@ -220,10 +222,10 @@ corpus.<span style="">export</span><span style="">&#40;</span>path, format=ORANG
 <p>When we compare <em>tiger</em> to <em>lion</em> and&nbsp;<em>elephant</em>, the values indicate that <em>tiger</em> is more similar to <em>lion</em>. Their similarity is still quite low, only 12%. This is because in this (theoretical) example two-thirds of the documents (<em>tiger</em> and <em>lion</em>) share most of their keywords. If we continue to add documents for other animals (e.g. "<em>A squirrel is a small rodent with a tail.</em>") the similarity will rise. In many experiments you will need lots of documents, for example 10,000 – often with a 1,000 or more relevant words per document. More data processed = more accurate similarity.</p>
 <h3>Corpus import, export, cache</h3>
 <ul>
-<li><span class="inline_code">Corpus.build()</span> returns a new <span class="inline_code">Corpus</span> from the text files at the given path (e.g. <span class="inline_code">path='folder/*.txt"</span>). Each file is one <span class="inline_code">Document</span>, using the filename (without extension) as the document <span class="inline_code">name</span>. The command takes the same optional arguments as the <span class="inline_code">Document</span> constructor.</li>
+<li><span class="inline_code">Corpus.build()</span> returns a new <span class="inline_code">Corpus</span> from the text files at the given path (e.g. <span class="inline_code">path='folder/*.txt"</span>). Each file is one <span class="inline_code">Document.</span>&nbsp;The <span class="inline_code">Document.name</span> can be set using the optional <span class="inline_code">name</span> parameter, which is a function that takes the filename and returns a document name. The command furthermore takes the same optional arguments as the <span class="inline_code">Document</span> constructor.</li>
 </ul>
 <ul>
-<li><span class="inline_code">Corpus.save()</span> exports the corpus as a binary file using the Python <span class="inline_code">cPickle</span> module – including the cache of document <span class="inline_code">&nbsp;</span>vectors and cosine similarity values. Whenever <span class="inline_code">Document.vector</span> or <span class="inline_code">Corpus.similarity()</span> is called the calculations are cached for performance. With <span class="inline_code">update=True</span>, caches all possible vectors and similarities before exporting.</li>
+<li><span class="inline_code">Corpus.save()</span> exports the corpus as a binary file using the Python <span class="inline_code">cPickle</span> module – including the cache of document<span class="inline_code">&nbsp;</span>vectors and cosine similarity values. Whenever <span class="inline_code">Document.vector</span> or <span class="inline_code">Corpus.similarity()</span> is called the calculations are cached for performance. With <span class="inline_code">update=True</span>, caches all possible vectors and similarities before exporting.</li>
 </ul>
 <ul>
 <li><span class="inline_code">Corpus.load()</span> returns a <span class="inline_code">Corpus</span> from the given file created with <span class="inline_code">Corpus.save()</span>. Since words are already stemmed, and previously cached calculations can be reused, this is faster than <span class="inline_code">Corpus.build()</span>.</li>
@@ -232,6 +234,7 @@ corpus.<span style="">export</span><span style="">&#40;</span>path, format=ORANG
 <li><span class="inline_code">Corpus.export(</span>) exports the corpus as a file that can be used as input for popular machine learning software. With <span class="inline_code">ORANGE</span> it generates a tab-separated text file for <a href="http://orange.biolab.si/">Orange</a>, with <span class="inline_code">WEKA</span> it generates an ARFF text file for <a href="http://www.cs.waikato.ac.nz/ml/weka/">Weka</a>.</li>
 </ul>
 <p>Note that when a document is added to or removed from the corpus, the entire cache is cleared (since new words will change the <span class="inline_code">tf-idf</span> values).</p>
+<p>If you need to add a lot of documents (e.g., 10,000+), use <span class="inline_code">Document.extend()</span>&nbsp;for performance. Collect the documents in batch lists of, say, a 1,000, and then extend the corpus.</p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="lsa"></a>Latent semantic analysis</h2>
@@ -255,8 +258,8 @@ matrix = dot<span style="">&#40;</span>u, dot<span style="">&#40;</span>diag<spa
 </tbody>
 </table>
 <h3>LSA concept space</h3>
-<p>The <span class="inline_code">Corpus.reduce()</span> method calculates SVD and stores the concept space as <span class="inline_code">Corpus.lsa</span>. Its parameter <span class="inline_code">dimensions</span> sets the number of dimensions to remove (see further).</p>
-<p>The <span class="inline_code">Corpus.similarity()</span>, <span class="inline_code">Corpus.neighbors()</span>, <span class="inline_code">Corpus.search()</span> and <span class="inline_code">Corpus.cluster()</span> methods will then compute in LSA concept space. Set <span class="inline_code">Corpus.lsa</span> to <span class="inline_code">None</span>&nbsp;at any time to undo the reduction.</p>
+<p>The <span class="inline_code">Corpus.reduce()</span> method calculates SVD and stores the concept space as <span class="inline_code">Corpus.lsa</span>. Its parameter <span class="inline_code">dimensions</span> sets the number of dimensions in the concept space (see further).</p>
+<p>The <span class="inline_code">Corpus.similarity()</span>, <span class="inline_code">Corpus.neighbors()</span>, <span class="inline_code">Corpus.search()</span> and <span class="inline_code">Corpus.cluster()</span> methods will then compute in LSA concept space. Set <span class="inline_code">Corpus.lsa</span> to <span class="inline_code">None</span>&nbsp;at any time to undo the reduction. Adding or removing documents in the corpus will undo the reduction as well.</p>
 <p><span class="geshifilter"><code class="python geshifilter-python">lsa = LSA<span style="">&#40;</span>corpus, k=NORM<span style="">&#41;</span></code></span></p>
 <p><span class="geshifilter"><code class="python geshifilter-python">lsa.<span style="">corpus</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Parent Corpus.</span><br />
 lsa.<span style="">terms</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of words, same as Corpus.vector.keys().</span><br />
@@ -264,157 +267,92 @@ lsa.<span style="">concepts</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nb
 lsa.<span style="">vectors</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Dictionary {Document.id: {concept_index: weight}}</span></code></span></p>
 <p><span class="geshifilter"><code class="python geshifilter-python">lsa.<span style="">transform</span><span style="">&#40;</span>document<span style="">&#41;</span></code></span></p>
 <p><span class="inline_code">LSA.transform()</span> takes a <span class="inline_code">Document</span> and returns its&nbsp;<span class="inline_code">Vector</span> in concept space. This is useful for loose documents that are not in the corpus – see <span class="inline_code">kNN.classify()</span>.</p>
-<p>The example below shows how distinct (search-)terms become semantically related after LSA:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> D1 = Document<span style="">&#40;</span><span style="color: #657a8a;">'The dog wags his tail.'</span>, name=<span style="color: #657a8a;">'dog'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> D2 = Document<span style="">&#40;</span><span style="color: #657a8a;">'Curiosity killed the cat.'</span>, name=<span style="color: #657a8a;">'cat'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> D3 = Document<span style="">&#40;</span><span style="color: #657a8a;">'Cats and dogs make good pets.'</span>, name=<span style="color: #657a8a;">'pet'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> D4 = Document<span style="">&#40;</span><span style="color: #657a8a;">'Curiosity drives science.'</span>, name=<span style="color: #657a8a;">'science'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> corpus = Corpus<span style="">&#40;</span><span style="">&#91;</span>D1,D2,D3,D4<span style="">&#93;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> corpus.<span style="color: #4a587c;">reduce</span><span style="">&#40;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> corpus.<span style="">search</span><span style="">&#40;</span><span style="color: #657a8a;">'curiosity'</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span><span style="">&#40;</span> <span style="color: #657a8a;">'0.773'</span>, Document<span style="">&#40;</span><span style="color: #4a587c;">id</span>=<span style="color: #666;">4</span>, name=<span style="color: #657a8a;">'science'</span>, count=<span style="color: #666;">3</span><span style="">&#41;</span><span style="">&#41;</span>, <br />
-&nbsp;<span style="">&#40;</span> <span style="color: #657a8a;">'0.747'</span>, Document<span style="">&#40;</span><span style="color: #4a587c;">id</span>=<span style="color: #666;">2</span>, name=<span style="color: #657a8a;">'cat'</span>, count=<span style="color: #666;">3</span><span style="">&#41;</span><span style="">&#41;</span>, <br />
-&nbsp;<span style="">&#40;</span> <span style="color: #657a8a;">'0.466'</span>, Document<span style="">&#40;</span><span style="color: #4a587c;">id</span>=<span style="color: #666;">3</span>, name=<span style="color: #657a8a;">'pet'</span>, count=<span style="color: #666;">3</span><span style="">&#41;</span><span style="">&#41;</span><span style="">&#93;</span></code></span></span></p>
-<p>Only document <span class="inline_code">D2</span> and <span class="inline_code">D4</span> share <em>curiosity</em> as a keyword, but&nbsp;a search now also yields document <span class="inline_code">D3</span> as a result, since in concept space it is slightly similar to <span class="inline_code">D2</span> (they both contain <em>cat</em>). Documents about cats now pertain to curiosity even when curiosity is not explicitly mentioned.</p>
-<p>To illustrate this, here is a comparison of <span class="inline_code">tf-idf</span> and <span class="inline_code">LSA</span> weights under the hood:</p>
+<p>The example below shows how terms become semantically related after LSA:</p>
+<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> D1 = Document<span style="">&#40;</span><span style="color: #657a8a;">&quot;The cat purrs.&quot;</span>, name=<span style="color: #657a8a;">&quot;cat1&quot;</span><span style="">&#41;</span><br />
+<span style="">&gt;&gt;&gt;</span> D2 = Document<span style="">&#40;</span><span style="color: #657a8a;">&quot;Curiosity killed the cat.&quot;</span>, name=<span style="color: #657a8a;">&quot;cat2&quot;</span><span style="">&#41;</span><br />
+<span style="">&gt;&gt;&gt;</span> D3 = Document<span style="">&#40;</span><span style="color: #657a8a;">&quot;The dog wags his tail.&quot;</span>, name=<span style="color: #657a8a;">&quot;dog1&quot;</span><span style="">&#41;</span><br />
+<span style="">&gt;&gt;&gt;</span> D4 = Document<span style="">&#40;</span><span style="color: #657a8a;">&quot;The dog is happy.&quot;</span>, name=<span style="color: #657a8a;">&quot;dog2&quot;</span><span style="">&#41;</span><br />
+<span style="">&gt;&gt;&gt;</span> corpus = Corpus<span style="">&#40;</span><span style="">&#91;</span>D1, D2, D3, D4<span style="">&#93;</span><span style="">&#41;</span><br />
+<span style="">&gt;&gt;&gt;</span> corpus.<span style="color: #4a587c;">reduce</span><span style="">&#40;</span><span style="color: #666;">2</span><span style="">&#41;</span><br />
+<span style="">&gt;&gt;&gt;</span> <br />
+<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> document <span style="color: #28334f; font-weight: bold;">in</span> corpus:<br />
+<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">print</span><br />
+<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">print</span> document.<span style="">name</span><br />
+<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">for</span> concept, w1 <span style="color: #28334f; font-weight: bold;">in</span> corpus.<span style="">lsa</span>.<span style="">vectors</span><span style="">&#91;</span>document.<span style="color: #4a587c;">id</span><span style="">&#93;</span>.<span style="">items</span><span style="">&#40;</span><span style="">&#41;</span>:<br />
+<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">for</span> word, w2 <span style="color: #28334f; font-weight: bold;">in</span> corpus.<span style="">lsa</span>.<span style="">concepts</span><span style="">&#91;</span>concept<span style="">&#93;</span>.<span style="">items</span><span style="">&#40;</span><span style="">&#41;</span>:<br />
+<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">if</span> w1 <span style="">!</span>= <span style="color: #666;">0</span> <span style="color: #28334f; font-weight: bold;">and</span> w2 <span style="">!</span>= <span style="color: #666;">0</span>:<br />
+<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">print</span> <span style="">&#40;</span>word, w1 <span style="">*</span> w2<span style="">&#41;</span></code></span></span></p>
+<p>The corpus is reduced to two dimensions, so there are two concepts in the concept space and each document has a weight for each concept. As illustrated below, the <em>cat</em> features have been grouped together and the <em>dog</em> features have been grouped together.</p>
 <table class="border">
 <tbody>
 <tr>
-<td style="text-align: center;"><strong><span class="smallcaps">tfidf</span></strong></td>
-<td style="text-align: center;"><span class="smallcaps">curiosity</span></td>
-<td style="text-align: center;"><span class="smallcaps">wags</span></td>
-<td style="text-align: center;"><span class="smallcaps">dog</span></td>
-<td style="text-align: center;"><span class="smallcaps">drives</span></td>
-<td style="text-align: center;"><span class="smallcaps">pets</span></td>
-<td style="text-align: center;"><span class="smallcaps">tail</span></td>
-<td style="text-align: center;"><span class="smallcaps">killed</span></td>
+<td style="width: 12%; text-align: center;"><strong><span class="smallcaps">concept</span></strong></td>
 <td style="text-align: center;"><span class="smallcaps">cat</span></td>
-<td style="text-align: center;"><span class="smallcaps">science</span></td>
+<td style="text-align: center;"><span class="smallcaps">curiosity</span></td>
+<td style="text-align: center;"><span class="smallcaps">dog</span></td>
+<td style="text-align: center;"><span class="smallcaps">happy</span></td>
+<td style="text-align: center;"><span class="smallcaps">killed</span></td>
+<td style="text-align: center;"><span class="smallcaps">purrs</span></td>
+<td style="text-align: center;"><span class="smallcaps">tail</span></td>
+<td style="text-align: center;"><span class="smallcaps">wags</span></td>
 </tr>
 <tr>
-<td style="text-align: center;"><span class="inline_code">D1</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.46</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.23</span></td>
+<td style="text-align: center;"><span class="inline_code">0</span></td>
 <td style="text-align: center;"><span class="inline_code">+0.00</span></td>
 <td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.46</span></td>
+<td style="text-align: center;"><span class="inline_code">+0.52</span></td>
+<td style="text-align: center;"><span class="inline_code">+0.78</span></td>
 <td style="text-align: center;"><span class="inline_code">+0.00</span></td>
 <td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
+<td style="text-align: center;"><span class="inline_code">+0.26</span></td>
+<td style="text-align: center;"><span class="inline_code">+0.26</span></td>
 </tr>
 <tr>
-<td style="text-align: center;"><span class="inline_code">D2</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.23</span></td>
+<td style="text-align: center;"><span class="inline_code">1</span></td>
+<td style="text-align: center;"><span class="inline_code">-0.52</span></td>
+<td style="text-align: center;"><span class="inline_code">-0.26</span></td>
 <td style="text-align: center;"><span class="inline_code">+0.00</span></td>
 <td style="text-align: center;"><span class="inline_code">+0.00</span></td>
+<td style="text-align: center;"><span class="inline_code">-0.26</span></td>
+<td style="text-align: center;"><span class="inline_code">-0.78</span></td>
 <td style="text-align: center;"><span class="inline_code">+0.00</span></td>
 <td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.46</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.23</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-</tr>
-<tr>
-<td style="text-align: center;"><span class="inline_code">D3</span></td>
-<td style="text-align: center;"><strong><span class="inline_code">+0.00</span></strong></td>
-<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.23</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.46</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.23</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-</tr>
-<tr>
-<td style="text-align: center;"><span class="inline_code">D4</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.23</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.46</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.46</span></td>
 </tr>
 </tbody>
 </table>
-<p>Different weights have increased or decreased across documents after LSA:</p>
 <table class="border">
 <tbody>
 <tr>
-<td style="text-align: center;"><strong><span class="smallcaps">&nbsp; lsa&nbsp; <br /></span></strong></td>
-<td style="text-align: center;"><span class="smallcaps">curiosity</span></td>
-<td style="text-align: center;"><span class="smallcaps">wags</span></td>
-<td style="text-align: center;"><span class="smallcaps">dog</span></td>
-<td style="text-align: center;"><span class="smallcaps">drives</span></td>
-<td style="text-align: center;"><span class="smallcaps">pets</span></td>
-<td style="text-align: center;"><span class="smallcaps">tail</span></td>
-<td style="text-align: center;"><span class="smallcaps">killed</span></td>
-<td style="text-align: center;"><span class="smallcaps">cat</span></td>
-<td style="text-align: center;"><span class="smallcaps">science</span></td>
+<td style="width: 12%; text-align: center;"><strong><span class="smallcaps">concept</span></strong></td>
+<td style="text-align: center;"><span class="smallcaps">d1</span></td>
+<td style="text-align: center;"><span class="smallcaps">d2</span></td>
+<td style="text-align: center;"><span class="smallcaps">d3</span></td>
+<td style="text-align: center;"><span class="smallcaps">d4</span></td>
 </tr>
 <tr>
-<td style="text-align: center;"><span class="inline_code">D1</span></td>
-<td style="text-align: center;"><span class="inline_code">-0.02</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.45</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.25</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.01</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.05</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.45</span></td>
-<td style="text-align: center;"><span class="inline_code">-0.05</span></td>
+<td style="text-align: center;"><span class="inline_code">0</span></td>
 <td style="text-align: center;"><span class="inline_code">+0.00</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.01</span></td>
-</tr>
-<tr>
-<td style="text-align: center;"><span class="inline_code">D2</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.15</span></td>
-<td style="text-align: center;"><span class="inline_code">-0.05</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.08</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.05</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.22</span></td>
-<td style="text-align: center;"><span class="inline_code">-0.05</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.24</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.23</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.05</span></td>
-</tr>
-<tr>
-<td style="text-align: center;"><span class="inline_code">D3</span></td>
-<td style="text-align: center;"><strong><span class="inline_code">+0.08</span></strong></td>
-<td style="text-align: center;"><span class="inline_code">+0.05</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.15</span></td>
-<td style="text-align: center;"><span class="inline_code">-0.05</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.24</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.05</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.22</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.23</span></td>
-<td style="text-align: center;"><span class="inline_code">-0.05</span></td>
-</tr>
-<tr>
-<td style="text-align: center;"><span class="inline_code">D4</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.25</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.02</span></td>
-<td style="text-align: center;"><span class="inline_code">-0.02</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.45</span></td>
-<td style="text-align: center;"><span class="inline_code">-0.05</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.01</span></td>
-<td style="text-align: center;"><span class="inline_code">+0.05</span></td>
 <td style="text-align: center;"><span class="inline_code">+0.00</span></td>
 <td style="text-align: center;"><span class="inline_code">+0.45</span></td>
+<td style="text-align: center;"><span class="inline_code">+0.90</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">1</span></td>
+<td style="text-align: center;"><span class="inline_code">-0.90</span></td>
+<td style="text-align: center;"><span class="inline_code">-0.45</span></td>
+<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
+<td style="text-align: center;"><span class="inline_code">+0.00</span></td>
 </tr>
 </tbody>
 </table>
 <h3>LSA dimension reduction</h3>
-<p>Dimension reduction is useful for <strong>clustering</strong>: 3,000 documents with 1,000-term vectors are intractable <span class="small"><a class="noexternal" href="http://en.wikipedia.org/wiki/Curse_of_dimensionality" target="_blank">[3]</a></span> in a pure-Python clustering algorithm. However, reducing the corpus to 100-concept vectors allows you to run through <em>k</em>-means clustering in a couple of minutes.&nbsp;The main difficulty is tweaking the <span class="inline_code">dimensions</span>&nbsp;parameter in <span class="inline_code">Corpus.reduce()</span>. Different values produce different results. A value that is too low results in noise. A value that is too high removes important semantical meaning.</p>
+<p>Dimension reduction is useful for <strong>clustering</strong>: 3,000 documents with 1,000-term vectors are intractable <span class="small"><a class="noexternal" href="http://en.wikipedia.org/wiki/Curse_of_dimensionality" target="_blank">[3]</a></span> in a pure-Python clustering algorithm. However, reducing the corpus to 100-concept vectors allows you to run through <em>k</em>-means clustering in a couple of minutes.&nbsp;The main difficulty is tweaking the <span class="inline_code">dimensions</span>&nbsp;parameter in <span class="inline_code">Corpus.reduce()</span>. Different values produce different results. A value that is too high results in noise. A value that is too low removes important semantical meaning.</p>
 <p>Possible options for parameter <span class="inline_code">dimensions</span>:</p>
 <ul>
 <li> <span class="inline_code">NORM</span>: uses L2-norm of the singular values as the number of dimensions to remove, </li>
 <li><span class="inline_code">TOP300</span>: keeps the top 300 dimensions,</li>
 <li><span class="inline_code">function</span>: user-defined function, takes the list of singular values and returns an <span class="inline_code">int</span>,</li>
-<li><span class="inline_code">int</span>: the number of dimensions to remove.</li>
+<li><span class="inline_code">int</span>: the number of dimensions in the concept space.</li>
 </ul>
 <p><span style="text-decoration: underline;">Note</span>: document vectors are stored in a sparse format (i.e., terms for which a document scores 0 are excluded). This means that even if the corpus has a 1,000 terms, each document may have no more than 5-10 terms (= a&nbsp;<em>sparse</em>&nbsp;corpus). A sparse corpus usually clusters faster than a reduced corpus. To get an idea of the average vector length:<br /><span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">sum(len(d.vector) for d in corpus.documents) / float(len(corpus))&nbsp;</span></p>
 <p>&nbsp;</p>
@@ -472,15 +410,17 @@ cluster.<span style="">traverse</span><span style="">&#40;</span>visit=<span sty
 <hr />
 <h2><a name="classification"></a>Classification</h2>
 <p>Classification is a supervised machine learning method for assigning a <span class="inline_code">Document</span> to one of a given number of categories (or <em>classes</em>).&nbsp;If you have a corpus in which the <span class="inline_code">Document.type</span> for each document is known, you can use it to predict the type of other ("unknown") documents.&nbsp;For example: a corpus of product reviews (<em>training data</em>), for which the star rating (e.g., <span class="inline_code">****</span>) of each review is known, can be used to predict the star rating for other product reviews (this is a form of <em>opinion mining</em>).</p>
-<p>The <span class="inline_code">pattern.vector</span> module implements two simple classifiers:</p>
+<p>The <span class="inline_code">pattern.vector</span> module implements three classifiers:</p>
 <ul>
 <li><span class="inline_code">BAYES</span>: Naive Bayes classifier, based on Bayes' theorem of posterior probability.&nbsp;</li>
 <li><span class="inline_code">KNN</span>: <em>k</em>-nearest neighbor classifier, predicts a document's type based on the type of its nearest neighbors, i.e., the <em>k</em> top results from <span class="inline_code">Corpus.neighbors()</span>.</li>
+<li><span class="inline_code">SVM</span>: support vector machine, represents documents as points in a high-dimensional space separated by hyperplanes.</li>
 </ul>
 <p><span class="geshifilter"><code class="python geshifilter-python">classifier = Bayes<span style="">&#40;</span>aligned=<span style="color: #4a587c;">False</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">classifier = kNN<span style="">&#40;</span>k=<span style="color: #666;">10</span>, distance=COSINE<span style="">&#41;</span> <span style="color: grey;"># COSINE | EUCLIDEAN | MANHATTAN</span></code></span></p>
+<p><span class="geshifilter"><code class="python geshifilter-python">classifier = SVM<span style="">&#40;</span>type=CLASSIFICATION, kernel=LINEAR<span style="">&#41;</span></code></span></p>
 <p><span class="small"><span style="text-decoration: underline;">Reference</span>: Magnus Lie Hetland, http://hetland.org/coding/python/nbayes.p</span>y</p>
 <h3>Classifier</h3>
-<p>The <span class="inline_code">Bayes</span> and <span class="inline_code">kNN</span> classifiers inherit from the <span class="inline_code">Classifier</span> base class:</p>
+<p>The <span class="inline_code">Bayes</span>, <span class="inline_code">kNN</span>&nbsp;and <span class="inline_code">SVM</span> classifiers inherit from the <span class="inline_code">Classifier</span> base class:</p>
 <p><span class="geshifilter"><code class="python geshifilter-python">classifier = Classifier<span style="">&#40;</span><span style="">&#41;</span></code></span></p>
 <p><span class="geshifilter"><code class="python geshifilter-python">classifier = Classifier.<span style="">load</span><span style="">&#40;</span>path<span style="">&#41;</span></code></span></p>
 <p><span class="geshifilter"><code class="python geshifilter-python">classifier.<span style="">train</span><span style="">&#40;</span>document, type=<span style="color: #4a587c;">None</span><span style="">&#41;</span><br />
@@ -537,6 +477,7 @@ classifier.<span style="">binary</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style=
 <p>You can test the accuracy with the classmethod&nbsp;<span class="inline_code">Classifier.test()</span>.&nbsp;It creates a new classifier that uses 65% of the documents in the given corpus as training data and 35% as testing data. You can supply a list of&nbsp;<span class="inline_code">Document</span>&nbsp;objects or (<span class="inline_code">wordlist</span>,&nbsp;<span class="small">type</span>)-tuples. The method returns an (<span class="inline_code">accuracy</span>,&nbsp;<span class="inline_code">precision</span>,&nbsp;<span class="inline_code">recall</span>,&nbsp;<span class="inline_code">F1-score</span>)-tuple with values between&nbsp;<span class="inline_code">0.0</span>-<span class="inline_code">1.0</span>.</p>
 <p><span class="geshifilter"><code class="python geshifilter-python">Bayes.<span style="">test</span><span style="">&#40;</span>corpus=<span style="">&#91;</span><span style="">&#93;</span>, d=<span style="color: #666;">0.65</span>, folds=<span style="color: #666;">1</span>, aligned=<span style="color: #4a587c;">False</span><span style="">&#41;</span></code></span></p>
 <p><span class="geshifilter"><code class="python geshifilter-python">kNN.<span style="">test</span><span style="">&#40;</span>corpus=<span style="">&#91;</span><span style="">&#93;</span>, d=<span style="color: #666;">0.65</span>, folds=<span style="color: #666;">1</span>, k=<span style="color: #666;">10</span>, distance=COSINE<span style="">&#41;</span></code></span></p>
+<p><span class="geshifilter"><code class="python geshifilter-python">SVM.<span style="">test</span><span style="">&#40;</span>corpus=<span style="">&#91;</span><span style="">&#93;</span>, d=<span style="color: #666;">0.65</span>, folds=<span style="color: #666;">1</span>, type=CLASSIFICATION, kernel=LINEAR<span style="">&#41;</span></code></span></p>
 <p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">vector</span> <span style="color: #28334f; font-weight: bold;">import</span> Document, Corpus, Bayes<br />
 <span style="">&gt;&gt;&gt;</span><br />
 <span style="">&gt;&gt;&gt;</span> corpus = Corpus<span style="">&#40;</span><span style="">&#41;</span><br />
@@ -562,13 +503,99 @@ classifier.<span style="">binary</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style=
 <li>Use&nbsp;<a href="pattern-en.html#parser">part-of-speech tagging</a> to filter for specific types of words,</li>
 <li>Use&nbsp;<span class="inline_code">aligned=True</span> with <span class="inline_code">Bayes</span>. This will take into account the word index when training on lists of words (i.e., words need to occur at the same position when comparing documents).</li>
 </ul>
-<p>You can also supply custom dictionaries of (<span class="inline_code">word</span>, <span class="inline_code">weight</span>)-items to <span class="inline_code">Classifier.train()</span>. The weight can be word frequency + an additional rating,&nbsp;for example to emphasize words in the review title or the e-mail subject.&nbsp;</p>
+<p>You can also supply dictionaries of (<span class="inline_code">word</span>, <span class="inline_code">weight</span>)-items to <span class="inline_code">Classifier.train()</span>. The weight can be word frequency + an additional rating,&nbsp;for example to emphasize words in the review title or the e-mail subject.&nbsp;</p>
 <p><span class="smallcaps"><br />Unsupervised</span></p>
 <p>Features (i.e., terms/words) can also be selected automatically using a statistical method. Pattern uses Kullback-Leibler distance (or <em>relative entropy)</em>.&nbsp;<span class="inline_code">Corpus.relative_entropy()</span>&nbsp;yields a value indicating how distinct two given features are in the corpus. This value is used in <span class="inline_code">Corpus.feature_selection()</span>&nbsp;to compute a list of the most distinct (or "original") features. Calculating entropy takes some time, but the results are cached and stored with <span class="inline_code">Corpus.save()</span>.&nbsp;</p>
 <p><span class="inline_code">Corpus.filter()</span>&nbsp;returns a corpus with only the given features. If you pass the return value from <span class="inline_code">Corpus.feature_selection()</span>&nbsp;you get a new corpus with the top original terms (e.g., 100 vs. 2,500).</p>
 <p><span class="example"><span class="geshifilter"><code class="python geshifilter-python">f = corpus1.<span style="">feature_selection</span><span style="">&#40;</span>top=<span style="color: #666;">100</span><span style="">&#41;</span><br />
 corpus2 = corpus1.<span style="color: #4a587c;">filter</span><span style="">&#40;</span>features=f<span style="">&#41;</span> </code></span></span></p>
-<p>Less terms means less computation and faster classifiers. However, there can be a drop in recall (there are less features). On the other hand, accuracy scores can also increase since the "noisy" features were removed.</p>
+<p>Less terms means less computation time. However, there can be a drop in recall (there are less features). However, accuracy scores can also increase since the "noisy" features were removed.</p>
+<h3>Support vector machine</h3>
+<p>The most robust classifier is <span class="inline_code">SVM</span>. It relies on the fast&nbsp;<a href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/" target="_blank">libsvm</a>&nbsp;C++ library. Precompiled bindings are included for Windows and Mac OS X 32-bit, and Mac OS X and Ubuntu 64-bit. These may not work on your system. In this case you need to compile the bindings from source (see the instructions in&nbsp;<span class="inline_code">pattern/vector/svm/INSTALL.txt</span>).&nbsp;</p>
+<p>The SVM classifier uses&nbsp;<em>kernel</em> functions. The simplest way to divide two clusters of points in 2D is a straight line. If that is not possible, moving the points to a higher dimension (using a kernel function) may make separation easier (using <em>hyperplanes</em>).</p>
+<table class="border">
+<tbody>
+<tr>
+<td style="text-align: center;"><img style="display: block; margin-left: auto; margin-right: auto;" src="../g/pattern-vector-svm1.jpg" alt="" width="178" height="148" /><span class="smallcaps">complex in low dimension</span></td>
+<td style="text-align: center;"><img style="display: block; margin-left: auto; margin-right: auto;" src="../g/pattern-vector-svm2.jpg" alt="" width="190" height="148" /><span class="smallcaps">simple in higher dimension</span></td>
+</tr>
+</tbody>
+</table>
+<p><span class="geshifilter"><code class="python geshifilter-python">classifier = SVM<span style="">&#40;</span>type=CLASSIFICATION, kernel=LINEAR, <span style="">**</span>kwargs<span style="">&#41;</span></code></span></p>
+<p>The <span class="inline_code">SVM</span> constructor has a number of optional parameters:</p>
+<table class="border">
+<tbody>
+<tr>
+<td><span class="smallcaps">Parameter</span></td>
+<td><span class="smallcaps">Value</span></td>
+<td><span class="smallcaps">Description</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">type</span></td>
+<td><span class="inline_code">CLASSIFICATION</span>, <span class="inline_code">REGRESSION</span></td>
+<td><span class="inline_code">REGRESSION</span> returns a float value.</td>
+</tr>
+<tr>
+<td><span class="inline_code">kernel</span></td>
+<td><span class="inline_code">LINEAR</span>, <span class="inline_code">POLYNOMIAL</span>, <span class="inline_code">RADIAL</span></td>
+<td>Kernel function to use.&nbsp;</td>
+</tr>
+<tr>
+<td><span class="inline_code">degree</span></td>
+<td><span class="inline_code">3</span></td>
+<td>Used in <span class="inline_code">POLYNOMIAL</span> kernel.&nbsp;</td>
+</tr>
+<tr>
+<td><span class="inline_code">gamma</span></td>
+<td><span class="inline_code">1 / len(SVM.features)</span></td>
+<td>Used in <span class="inline_code">POLYNOMIAL</span> and <span class="inline_code">RADIAL</span> kernel.&nbsp;</td>
+</tr>
+<tr>
+<td><span class="inline_code">coeff0</span></td>
+<td><span class="inline_code">0</span></td>
+<td>Used in <span class="inline_code">POLYNOMIAL</span> kernel.&nbsp;</td>
+</tr>
+<tr>
+<td><span class="inline_code">cost</span></td>
+<td><span class="inline_code">1</span></td>
+<td>Soft margin for training errors.</td>
+</tr>
+<tr>
+<td><span class="inline_code">epsilon</span></td>
+<td>o.1</td>
+<td>Tolerance for termination criterion.</td>
+</tr>
+<tr>
+<td><span class="inline_code">cache</span></td>
+<td>100</td>
+<td>Cache memory size in MB.&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<table class="border">
+<tbody>
+<tr>
+<td><span class="smallcaps">Kernel</span></td>
+<td><span class="smallcaps">Separation</span></td>
+<td><span class="smallcaps">Function</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">LINEAR</span></td>
+<td>straight line</td>
+<td><span class="inline_code">u' * v</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">POLYNOMIAL</span></td>
+<td>curved line</td>
+<td><span class="inline_code">(gamma * u' * v + coef0) ** degree</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">RADIAL</span></td>
+<td>curved path</td>
+<td><span class="inline_code">exp(-gamma * |u-v| ** 2)</span></td>
+</tr>
+</tbody>
+</table>
 <p>&nbsp;</p>
 <hr />
 <h2>See also</h2>

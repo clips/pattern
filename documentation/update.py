@@ -53,7 +53,8 @@ template = """
 
 #--- DOWNLOAD & UPDATE -------------------------------------------------------------------------------
 
-for p in ("-", "-web", "-db", "-en", "-nl", "-search", "-vector", "-graph", "-metrics", "-shell", "stop-words", "mbsp-tags"):
+for p in ("-", "-web", "-db", "-en", "-nl", "-search", "-vector", "-graph", "-canvas", "-metrics", 
+          "-shell", "stop-words", "mbsp-tags", "-dev"):
     # We include some useful pages (Penn Treebank tags, stop words) referenced in the documentation.
     if p.startswith("-"):
         p = "pattern" + p.rstrip("-")
