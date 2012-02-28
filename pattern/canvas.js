@@ -1,9 +1,9 @@
-/*### PATTERN | JAVASCRIPT:CANVAS ###################################################################*/
+/*### PATTERN | CANVAS.JS ###########################################################################*/
 // Copyright (c) 2010 University of Antwerp, Belgium
 // Authors: Tom De Smedt <tom@organisms.be>
 // License: BSD (see LICENSE.txt for details).
 // Version: 1.0.
-// http://www.clips.ua.ac.be/pages/pattern
+// http://www.clips.ua.ac.be/pages/pattern-canvas
 
 // The NodeBox drawing API for the HTML5 <canvas> element.
 // The commands are adopted from NodeBox for OpenGL,
@@ -30,6 +30,7 @@ function attachEvent(element, name, f) {
     } else {
         element["on"+name] = f;
     }
+    element[name] = f; // So we can do element.name(), see widget().
 }
 
 Function.closure = function(parent, f) {
@@ -1838,6 +1839,11 @@ var ImageCache = Class.extend({
         if (url) {
             this.cache[url] = img;
         }
+        // A canvas with remote (cross-domain) images becomes "tainted":
+        // ctx.toDataURL() or ctx.getImageData() won't work,
+        // so neither will Pixels or OffscreenBuffer.
+        // https://developer.mozilla.org/en/CORS_Enabled_Image
+        //img.crossOrigin = "";
         img.src = src;
         return img;
     }
@@ -1934,6 +1940,7 @@ var Pixels = Class.extend({
          * Pixels.update() must be called to reflect any changes to Pixels.array.
          * The Pixels object can be passed to the image() command.
          * The original image will not be modified.
+         * Throws a security error for remote (cross-domain) images.
          */
         img = (img instanceof Image)? img : new Image(img);
         this._img = img;
@@ -2458,8 +2465,8 @@ var Canvas = Class.extend({
     
     _draw: function() {
         if (this._active == false && !(this._step > this.frame)) {
-            // Drawing halts after stop(), pause() or step() is called.
-            // If step() is called, we need to draw one more frame first.
+            // Drawing halts after stop(), pause() or step().
+            // If step() is called, we first need to draw one more frame.
             return;
         }
         var t = new Date;
@@ -2533,10 +2540,16 @@ var Canvas = Class.extend({
     },
 
     image: function() {
+        /* Returns a new Image with the contents of the canvas.
+         * Throws a security error if the canvas contains remote (cross-domain) images.
+         */
         return new Image(this.element, {width: this.width, height: this.height});
     },
     
     save: function() {
+        /* Returns a data:image/png base64-encoded string.
+         * Throws a security error if the canvas contains remote (cross-domain) images.
+         */
         //var w = window.open();
         //w.document.body.innerHTML = "<img src=\"" + Canvas.save() + "\" />";
         return this.element.toDataURL("image/png");
@@ -2734,12 +2747,14 @@ var FUNCTION = "function";
 function widget(canvas, variable, type, options) {
     /* Creates a widget linked to the given canvas.
      * The type of the widget can be STRING or NUMBER (field), BOOLEAN (checkbox),
-     * RANGE (slider), LIST (dropdown list), or FUNCTION (bottom)
+     * RANGE (slider), LIST (dropdown list), or FUNCTION (button).
      * The value of the widget can be retrieved as canvas.variables[variable] (or canvas.variables.variable).
      * Optionally, a default value can be given. 
      * For lists, this is an array.
      * For sliders, you can also set min, max and step.
      * For functions, an optional callback(event){} must be given.
+     * To get at the current canvas from inside the callback, use event.target.canvas.
+     * Use event.target.canvas.focus() if drawing occurs in the callback.
      */
     var v = variable;
     var o = options || {};
