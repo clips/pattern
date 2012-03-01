@@ -26,12 +26,29 @@
         <!-- Parsed from the online documentation. -->
         <div id="node-1481" class="node node-type-page"><div class="node-inner">
 <div class="content">
-<p><span class="big">The canvas.js module is a simple and robust JavaScript API for the HTML &lt;canvas&gt; element to generate interactive 2D graphics in a web browser, using lines, shapes, paths, images and text. It can be used to visualize data mined with other pattern modules – online, no plugins needed.</span></p>
-<p>It can be used by itself or with other <a href="pattern.html">pattern</a> modules: <a href="pattern-web.html">web</a> | <a href="pattern-db.html">db</a>&nbsp;| <a href="pattern-en.html">en</a> | <a href="pattern-search.html">search</a> | <a href="pattern-vector.html">vector</a> | <a href="pattern-graph.html">graph</a>.</p>
+<p><span class="big">The canvas.js module is a simple and robust JavaScript API for the HTML5 &lt;canvas&gt; element, which can be used to generate interactive 2D graphics in a web browser, using lines, shapes, paths, images and text.</span></p>
+<p>The&nbsp;module is part of the&nbsp;<a href="pattern.html">pattern</a>&nbsp;package: <a href="pattern-web.html">web</a> | <a href="pattern-db.html">db</a>&nbsp;| <a href="pattern-en.html">en</a> | <a href="pattern-search.html">search</a> | <a href="pattern-vector.html">vector</a> | <a href="pattern-graph.html">graph</a>.</p>
+<table border="0">
+<tbody>
+<tr>
+<td style="width: 30px;">
+<p><img src="../g/download3.gif" alt="" width="30" height="30" /></p>
+</td>
+<td valign="bottom">
+<p><strong>Standalone download:<br /></strong><a href="https://raw.github.com/clips/pattern/master/pattern/canvas.js" target="_blank">canvas.js</a> (110KB)</p>
+</td>
+</tr>
+</tbody>
+</table>
 <p>&nbsp;</p>
 <h2>
-<hr />Documentation</h2>
-<ul>
+<hr /></h2>
+<h2>Documentation</h2>
+<table border="0">
+<tbody>
+<tr>
+<td style="width: 180px;">
+<p><span class="smallcaps">Drawing</span></p>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#coordinates">Coordinate system</a></li>
 <li><a href="#color">Color</a></li>
@@ -42,7 +59,14 @@
 <li><a href="#text">Text</a></li>
 <li><a href="#mouse">Mouse &amp; keyboard</a></li>
 <li><a href="#canvas">Canvas</a></li>
-</ul>
+</td>
+<td>
+<p><span style="font-variant: small-caps;">Data</span></p>
+<li><a href="#widget">Widgets</a></li>
+</td>
+</tr>
+</tbody>
+</table>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="introduction"></a>Introduction</h2>
@@ -73,7 +97,7 @@
 <p>If you want to set <span class="inline_code">roundness</span>, you must supply it by name and enclosed in curly braces. If the documentation mentions other optional arguments you can supply these as well inside the curly braces, in any order. For example:</p>
 <p><span class="inline_code">rect(50, 50, 100, 100 {roundness: 0.2, fill: new Color(1,0,0)});</span></p>
 <h3>Editor</h3>
-<p>You can use the <a href="http://www.clips.ua.ac.be/media/canvas/" target="_blank">online editor</a> (with syntax coloring) for testing small scripts. It is experimental but it should run in Chrome, FireFox and Safari. You can import example scripts from <span class="inline_code">pattern/examples/07-canvas/</span> or export new scripts (remember to change the <span class="inline_code">&lt;script&gt;</span> link to <span class="inline_code">canvas.js</span> in the HTML source).</p>
+<p>You can use the <a href="http://www.clips.ua.ac.be/media/canvas/" target="_blank">online editor</a> (with syntax coloring) for testing small scripts. It is experimental but it should run in Chrome, FireFox and Safari. You can import example scripts from <span class="inline_code">pattern/examples/07-canvas/</span> or export new scripts (remember to change the <span class="inline_code">&lt;script&gt;</span> link to <span class="inline_code">canvas.js</span> in the HTML source). The editor will provide a hint when an error occurs, but the best way to track errors is to use the browser's developer tools (e.g., FireBug).</p>
 <p><a title="Open canvas.js editor" href="http://www.clips.ua.ac.be/media/canvas/" target="_blank"><img src="../g/pattern-canvas-editor.jpg" alt="" /></a></p>
 <p style="text-align: center;"><span class="small">pattern/examples/07-canvas/06-image.html</span></p>
 <p style="text-align: left;">&nbsp;</p>
@@ -236,7 +260,7 @@ path.<span style="">points</span><span style="">&#40;</span>amount<span style=""
 <p>&nbsp;</p>
 <hr />
 <h2><a name="image"></a>Image</h2>
-<p>The <span class="inline_code">image()</span> function draws an image to the canvas. It can load JPEG, PNG and GIF from a given URL. However, images are loaded asynchronously – i.e., the browser is idle while the image downloads from another URL in the background. The safe way is to <strong>preload</strong> an <span class="inline_code">Image</span> object in&nbsp;<span class="inline_code">setup()</span>:</p>
+<p>The <span class="inline_code">image()</span> function draws an image to the canvas. It can load JPEG, PNG and GIF from a given URL. However, images are loaded asynchronously – i.e., the browser is idle while the image downloads in the background. The safe way is to <strong>preload</strong> an <span class="inline_code">Image</span> object in&nbsp;<span class="inline_code">setup()</span>:</p>
 <p><span class="example"><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">setup</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
 &nbsp; &nbsp; images <span style="">=</span> <span style="">&#91;</span><span style="">&#93;</span><span style="">;</span><br />
 &nbsp; &nbsp; images.<span style="">push</span><span style="">&#40;</span><span style="color: #28334f; font-weight: bold;">new</span> Image<span style="">&#40;</span><span style="color: #657a8a;">'http://www.clips.ua.ac.be/media/pattern_schema.gif'</span><span style="">&#41;</span><span style="">&#41;</span><span style="">;</span><br />
@@ -245,7 +269,7 @@ path.<span style="">points</span><span style="">&#40;</span>amount<span style=""
 &nbsp; &nbsp; canvas.<span style="">clear</span><span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
 &nbsp; &nbsp; image<span style="">&#40;</span>images<span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span><span style="">,</span> <span style="color: #666;">0</span><span style="">,</span> <span style="color: #666;">0</span><span style="">&#41;</span><span style="">;</span><br />
 <span style="">&#125;</span></code></span></span></p>
-<p>The <span class="inline_code">Image</span> object can be used to load an image from a <span class="inline_code">http://</span> location (<span class="inline_code">file://</span> will not work), from another <span class="inline_code">Image</span>, and from <span class="inline_code">Pixels</span>, <span class="inline_code">OffscreenBuffer</span> or <span class="inline_code">Canvas</span>. Optionally, it will be rescaled to the given width and height.</p>
+<p>The <span class="inline_code">Image</span> object can be used to load an image from a <span class="inline_code">http://</span> location (<span class="inline_code">file://</span> will not work), a <span class="inline_code">data:</span>&nbsp;string, from another <span class="inline_code">Image</span>, and from <span class="inline_code">Pixels</span>, <span class="inline_code">OffscreenBuffer</span> or <span class="inline_code">Canvas</span>. Optionally, it will be rescaled to the given width and height. Note that for security reasons you cannot get <span class="inline_code">Pixels</span>&nbsp;of remote images (i.e., from a URL on another server).</p>
 <p><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">var</span> img <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> Image<span style="">&#40;</span>path<span style="">,</span> x<span style="">=</span><span style="color: #666;">0</span><span style="">,</span> y<span style="">=</span><span style="color: #666;">0</span><span style="">,</span> width<span style="">=</span><span style="color: #4a587c;">null</span><span style="">,</span> height<span style="">=</span><span style="color: #4a587c;">null</span><span style="">,</span> alpha<span style="">=</span><span style="color: #666;">1.0</span><span style="">&#41;</span><span style="">;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">img.<span style="">x</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Horizontal offset.</span><br />
 img.<span style="">y</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Vertical offset.</span><br />
 img.<span style="">width</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Image width in pixels.</span><br />
@@ -363,7 +387,8 @@ mouse.<span style="">ondrag</span><span style="">&#40;</span><span style="">&#41
 <span style="">&lt;/</span>html<span style="">&gt;</span></code></span></span></p>
 <p>The <span class="inline_code">Canvas</span> object takes a <span class="inline_code">&lt;canvas&gt;</span> element:</p>
 <p><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">var</span> canvas <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> Canvas<span style="">&#40;</span>element<span style="">&#41;</span><span style="">;</span></code></span></p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">canvas.<span style="">element</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// HTML &lt;canvas&gt; element.</span><br />
+<p><span class="geshifilter"><code class="javascript geshifilter-javascript">canvas.<span style="">id</span><br />
+canvas.<span style="">element</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// HTML &lt;canvas&gt; element.</span><br />
 canvas.<span style="">width</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Element width.</span><br />
 canvas.<span style="">height</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Element height.</span><br />
 canvas.<span style="">frame</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Current animation frame (start = 1).</span><br />
@@ -381,7 +406,37 @@ canvas.<span style="">save</span><span style="">&#40;</span><span style="">&#41;
 <ul>
 <li><span class="inline_code">Canvas.setup()</span> is meant to be overridden. It runs once at the start of the animation.</li>
 <li><span class="inline_code">Canvas.draw()</span> is meant be overridden. It runs each frame.</li>
+<li><span class="inline_code">Canvas.save()</span> and <span class="inline_code">Canvas.image()</span> will throw an error if the canvas contains remote images<br />(i.e., from a URL on a different server). This is for security reasons, see <span class="link-maintenance"><a href="https://developer.mozilla.org/en/CORS_Enabled_Image" target="_blank">CORS</a></span>.&nbsp;</li>
 </ul>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="widget"></a>Widgets</h2>
+<p>Widgets (e.g., buttons, sliders) give you the possibility to create apps that users can interact with without diving into the JavaScript code.&nbsp;The <span class="inline_code">widget()</span> function creates a widget linked to the given&nbsp;<span class="inline_code">Canvas</span>. The value of the widget can be retrieved as <span class="inline_code">Canvas.variables[variable]</span>. The <span class="inline_code">type</span>&nbsp;can be <span class="inline_code">STRING</span> or <span class="inline_code">NUMBER</span> (a field), <span class="inline_code">BOOLEAN</span> (a checkbox), <span class="inline_code">RANGE</span> (a slider), <span class="inline_code">LIST</span> (a dropdown list) or <span class="inline_code">FUNCTION</span> (a button).</p>
+<p>Optionally, a default <span class="inline_code">value</span> can be given. For lists, this is an <span class="inline_code">Array</span>. For sliders, you can also set <span class="inline_code">min</span>, <span class="inline_code">max</span> and <span class="inline_code">step</span>.&nbsp;For functions, a <span class="inline_code">callback(event)</span> must be given. To get the canvas inside the callback function, use <span class="inline_code">event.target.canvas</span>. If the function does drawing, call <span class="inline_code">event.target.canvas.focus()</span> first.</p>
+<p>The <span class="inline_code">widget()</span> function will generate a <span class="inline_code">&lt;div id="[canvas.id]_widgets" class="widgets"&gt;</span>, if it does not yet exist. The <span class="inline_code">&lt;div&gt;</span> is added to the page below the canvas. Optionally, a different&nbsp;<span class="inline_code">parent</span> HTML element can be given. The parent contains all canvas widgets, each wrapped in a <span class="inline_code">&lt;span class="widget"&gt;</span>.</p>
+<p><span class="geshifilter"><code class="javascript geshifilter-javascript">widget<span style="">&#40;</span>canvas<span style="">,</span> variable<span style="">,</span> type<span style="">,</span> <span style="">&#123;</span><br />
+&nbsp; &nbsp; parent<span style="">:</span> <span style="color: #4a587c;">null</span><span style="">,</span><br />
+&nbsp; &nbsp; &nbsp;value<span style="">:</span> <span style="color: #4a587c;">null</span><span style="">,</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp;min<span style="">:</span> <span style="color: #666;">0</span><span style="">,</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp;max<span style="">:</span> <span style="color: #666;">1</span><span style="">,</span><br />
+&nbsp; &nbsp; &nbsp; step<span style="">:</span> <span style="color: #666;">0.01</span><span style="">,</span><br />
+&nbsp; callback<span style="">:</span> <span style="color: #28334f; font-weight: bold;">function</span><span style="">&#40;</span>event<span style="">&#41;</span> <span style="">&#123;</span> <span style="">&#125;</span><br />
+<span style="">&#125;</span><span style="">&#41;</span></code></span></p>
+<p>For example, the following script comes with buttons to start and pause the animation:</p>
+<p><span class="example"><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">setup</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
+&nbsp; &nbsp; widget<span style="">&#40;</span>canvas<span style="">,</span> <span style="color: #657a8a;">&quot;start&quot;</span><span style="">,</span> <span style="color: #28334f; font-weight: bold;">FUNCTION</span><span style="">,</span> <span style="">&#123;</span>callback<span style="">:</span> <span style="color: #28334f; font-weight: bold;">function</span><span style="">&#40;</span>e<span style="">&#41;</span> <span style="">&#123;</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; e.<span style="">target</span>.<span style="">canvas</span>.<span style="">run</span><span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
+&nbsp; &nbsp; <span style="">&#125;</span><span style="">&#125;</span><span style="">&#41;</span><span style="">;</span><br />
+&nbsp; &nbsp; widget<span style="">&#40;</span>canvas<span style="">,</span> <span style="color: #657a8a;">&quot;pause&quot;</span><span style="">,</span> <span style="color: #28334f; font-weight: bold;">FUNCTION</span><span style="">,</span> <span style="">&#123;</span>callback<span style="">:</span> <span style="color: #28334f; font-weight: bold;">function</span><span style="">&#40;</span>e<span style="">&#41;</span> <span style="">&#123;</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; e.<span style="">target</span>.<span style="">canvas</span>.<span style="">pause</span><span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
+&nbsp; &nbsp; <span style="">&#125;</span><span style="">&#125;</span><span style="">&#41;</span><span style="">;</span><br />
+<span style="">&#125;</span><br />
+<span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">draw</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
+&nbsp; &nbsp; canvas.<span style="">clear</span><span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
+&nbsp; &nbsp; translate<span style="">&#40;</span><span style="color: #666;">200</span><span style="">,</span> <span style="color: #666;">200</span><span style="">&#41;</span><span style="">;</span><br />
+&nbsp; &nbsp; rotate<span style="">&#40;</span>canvas.<span style="">frame</span><span style="">&#41;</span><span style="">;</span><br />
+&nbsp; &nbsp; rect<span style="">&#40;</span><span style="">-</span><span style="color: #666;">75</span><span style="">,</span> <span style="">-</span><span style="color: #666;">75</span><span style="">,</span> <span style="color: #666;">150</span><span style="">,</span> <span style="color: #666;">150</span><span style="">&#41;</span><span style="">;</span><br />
+<span style="">&#125;</span></code></span></span></p>
 </div>
 </div></div>
         </div>

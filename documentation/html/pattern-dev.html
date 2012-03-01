@@ -95,7 +95,7 @@
 <p>If it is non-trivial and it already exists, don't rewrite it. Many Python projects are BSD-licensed and can be included in Pattern without restriction. Do not include GPL-licensed projects. Do not include big projects (e.g., NLTK, Django). Instead provide tools for mapping data structures from/to Pattern.</p>
 <h3>Base classes</h3>
 <ul>
-<li><strong>pattern.web</strong>: the idea is to wrap existing tools (e.g., Beautiful Soup, simplejson, PDFMiner) instead of writing code from scratch – the code in this module requires a lot of maintenance since the web changes constantly. New search engines inherit from <span class="inline_code">SearchEngine</span> to provide a uniform API.</li>
+<li><strong>pattern.web</strong>: the idea is to wrap existing tools (e.g., Beautiful Soup, PDFMiner) instead of writing code from scratch – the code in this module requires a lot of maintenance since the web changes constantly. New search engines inherit from <span class="inline_code">SearchEngine</span> to provide a uniform API.</li>
 </ul>
 <ul>
 <li><strong>pattern.db</strong>: there is no strategy to include new database engines next to MySQL and SQLite. If you think this is a challenge you can start by inspecting <span class="inline_code">Database.connect()</span>, <span class="inline_code">Database.escape()</span>, <span class="inline_code">Database._field_SQL()</span>&nbsp;and&nbsp;<span class="inline_code">Table._update()</span>.</li>
@@ -256,7 +256,7 @@ words = <span style="">&#91;</span>w <span style="color: #28334f; font-weight: b
 <h2>
 <hr /></h2>
 <h2><a name="quality"></a>Code quality</h2>
-<p>You can use <a href="http://www.logilab.org/857" target="_blank">pylint</a>&nbsp;from the shell to check the quality of the source code and look for possible bugs:</p>
+<p>The source code numbers about 25,000 lines of Python code + 20,000 lines of bundled external projects (Universal Feed Parser, simplejson, PDFminer, Beautiful Soup, PyWordNet, LIBSVM). You can use <a href="http://www.logilab.org/857" target="_blank">pylint</a>&nbsp;from the shell to check the quality of the source code and look for possible bugs:</p>
 <p><span class="install"><span class="geshifilter"><code class="text geshifilter-text">&gt; cd pattern<br />
 &gt; pylint pattern --rcfile=.pylintrc </code></span></span></p>
 <p>The configuration file <span class="inline_code">.pylintrc</span> defines a number of customized settings:</p>
