@@ -2793,9 +2793,9 @@ function widget(canvas, variable, type, options) {
         // <select id="id"><option value="value[i]">value[i]</option>...</select>
         } else if (type == LIST || type == ARRAY) {
             var s = "";
-            var a = o.value || [];
+            var a = o.value || [""];
             for (var i=0; i < a.length; i++) {
-                s += "<option value='"+a[i]+"'>"+a[i]+"</option>";
+                s += "<option "+(o.index==i?"selected ":"")+"value='"+a[i]+"'>"+a[i]+"</option>";
             }
             s = "<select id='"+v+"'>"+s+"</select>";
             f = function(e) { canvas.variables[this.id] = this.options[this.selectedIndex].value; cb(e); };
