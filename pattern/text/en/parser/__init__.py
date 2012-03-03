@@ -347,21 +347,26 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
     """ Takes a string (sentences) and returns a tagged Unicode string. 
         Sentences in the output are separated by newlines.
     """
-    if tokenize:
+    if tokenize is True:
         s = _tokenize(s)
     if isinstance(s, (list, tuple)):
         s = [s.split(" ") for s in s]
     if isinstance(s, basestring):
         s = [s.split(" ")]
     for i in range(len(s)):
-        if isinstance(s[i], str):
-            s[i] = s[i].decode(encoding)
+        for j in range(len(s[i])):
+            # Convert tokens to Unicode.
+            if isinstance(s[i][j], str):
+                s[i][j] = s[i][j].decode(encoding)
         if tags or chunks or relations or lemmata:
+            # Tagger is required by chunker, relation finder and lemmatizer.
             s[i] = find_tags(s[i], 
                     default = kwargs.get("default", "NN"), 
                       light = kwargs.get("light", False), 
                     lexicon = kwargs.get("lexicon", LEXICON),
                         map = kwargs.get("map", None))
+        else:
+            s[i] = [[w] for w in s[i]]
         if chunks or relations:
             s[i] = find_chunks(s[i])
         if chunks or relations:
