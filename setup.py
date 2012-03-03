@@ -73,6 +73,7 @@ setup(
         "Programming Language :: Python",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
+        "Topic :: Multimedia :: Graphics",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
         "Topic :: Scientific/Engineering :: Visualization",
         "Topic :: Software Development :: Libraries :: Python Modules",
