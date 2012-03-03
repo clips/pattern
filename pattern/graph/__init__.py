@@ -232,9 +232,9 @@ class Edge(object):
         self._weight = v
         # Clear cached adjacency map in the graph, since edge weights have changed.
         if self.node1.graph is not None: 
-            self.node1.graph._adjacency = None
+            self.node1.graph._adjacency = self.node1.graph._paths = None
         if self.node2.graph is not None: 
-            self.node2.graph._adjacency = None
+            self.node2.graph._adjacency = self.node2.graph._paths = None
     
     weight = property(_get_weight, _set_weight)
         
@@ -311,6 +311,7 @@ class Graph(dict):
         self.edges      = []   # List of Edge objects.
         self.root       = None
         self._adjacency = None # Cached adjacency() dict.
+        self._paths     = None # Cached shortest paths dict.
         self.layout     = layout==SPRING and GraphSpringLayout(self) or GraphLayout(self)
         self.distance   = distance
     
@@ -340,7 +341,7 @@ class Graph(dict):
             self[n.id] = n; n.graph = self
             self.root = kwargs.get("root", False) and n or self.root
             # Clear adjacency cache.
-            self._adjacency = None
+            self._adjacency = self._paths = None
         return n
     
     def add_edge(self, id1, id2, *args, **kwargs):
@@ -365,7 +366,7 @@ class Graph(dict):
         n1.links.append(n2, edge=e2)
         n2.links.append(n1, edge=e1 or e2)
         # Clear adjacency cache.
-        self._adjacency = None
+        self._adjacency = self._paths = None
         return e2        
             
     def remove(self, x):
@@ -384,7 +385,7 @@ class Graph(dict):
         if isinstance(x, Edge):
             self.edges.remove(x)
         # Clear adjacency cache.
-        self._adjacency = None
+        self._adjacency = self._paths = None
     
     def node(self, id):
         """ Returns the node in the graph with the given id.
@@ -412,9 +413,21 @@ class Graph(dict):
             node1 = self[node1]
         if not isinstance(node2, Node): 
             node2 = self[node2]
+        # Cache reversed path if directed=False.
+        id1 = (node1.id, node2.id, heuristic, directed)
+        id2 = (node2.id, node1.id, heuristic, directed)
+        if self._paths is not None and id1 in self._paths:
+            return self._paths[id1]
         try: 
             p = dijkstra_shortest_path(self, node1.id, node2.id, heuristic, directed)
             p = [self[id] for id in p]
+            if self._paths is None or len(self._paths) > 1000:
+                self._paths = {}
+            if directed is True:
+                self._paths[id1] = p
+            if directed is False:
+                self._paths[id1] = p
+                self._paths[id2] = list(reversed(p))
             return p
         except IndexError:
             return None
