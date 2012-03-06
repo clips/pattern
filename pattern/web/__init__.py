@@ -1737,6 +1737,7 @@ class Newsfeed(SearchEngine):
         # 2) Parse RSS/Atom response.
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
+        tags = kwargs.pop("tags", [])
         data = URL(query).download(cached=cached, **kwargs)
         data = feedparser.parse(bytestring(data))
         results = Results(query, query, NEWS)
@@ -1744,6 +1745,7 @@ class Newsfeed(SearchEngine):
         for x in data["entries"][:count]:
             s = "\n\n".join([v.get("value") for v in x.get("content", [])]) or x.get("summary")
             r = Result(url=None)
+            r.id          = self.format(x.get("id"))
             r.url         = self.format(x.get("link"))
             r.title       = self.format(x.get("title"))
             r.description = self.format(s)
@@ -1752,6 +1754,11 @@ class Newsfeed(SearchEngine):
             r.language    = self.format(x.get("content") and \
                                 x.get("content")[0].get("language") or \
                                                data.get("language"))
+            for tag in tags:
+                # Parse custom tags.
+                # Newsfeed.search(tags=["dc:identifier"]) => Result.dc_identifier.
+                tag = tag.replace(":", "_")
+                r[tag] = self.format(x.get(tag))
             results.append(r) 
         return results           
 
@@ -2158,6 +2165,7 @@ class Spider:
         if link is None:
             return False
         if link.url not in self.visited:
+            t = time.time()
             url = URL(link.url)
             if url.mimetype == "text/html":
                 try:
