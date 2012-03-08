@@ -1622,7 +1622,7 @@ RADIAL = RBF = 2 # Curved path    => exp(-gamma * |u-v| ** 2)
 
 class SVM(Classifier):
     
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
         """ Support Vector Machine is a supervised learning method, where
             training documents are represented as points in an n-dimensional space.
             The SVM constructs a number of "hyperplanes" that subdivide the space.
@@ -1630,23 +1630,30 @@ class SVM(Classifier):
             type=CLASSIFICATION, kernel=LINEAR, 
             degree=3, gamma=1/len(SVM.features), coeff0=0,
             cost=1, epsilon=0.01, 
-            cache=100, debug=False
+            cache=100, 
+            probability=False,
+            debug=False
         """
         import svm
         self._libsvm  = svm
         self._vectors = []
         self._model = None
+        if len(args) > 0: 
+            kwargs.setdefault("type", args[0])
+        if len(args) > 1: 
+            kwargs.setdefault("kernel", args[1])
         for k, v in (
-            (   "type", CLASSIFICATION),
-            ( "kernel", LINEAR),
-            ( "degree", 3),
-            (  "gamma", 0),
-            ( "coeff0", 0),
-            (   "cost", 1),
-            ("epsilon", 0.1),
-            (     "nu", 0.5),
-            (  "cache", 100),
-            (  "debug", False)): setattr(self, k, kwargs.get(k, v))
+            (       "type", CLASSIFICATION),
+            (     "kernel", LINEAR),
+            (     "degree", 3),
+            (      "gamma", 0),
+            (     "coeff0", 0),
+            (       "cost", 1),
+            (    "epsilon", 0.1),
+            (         "nu", 0.5),
+            (      "cache", 100),
+            ("probability", False),
+            (      "debug", False)): setattr(self, k, kwargs.get(k, v))
 
     @property
     def classes(self):
@@ -1672,9 +1679,10 @@ class SVM(Classifier):
         H3 = dict((i, w) for i, w in enumerate(self.classes))    # Class reversed hash.
         x  = [dict((H1[k], v) for k, v in v.items()) for v in M] # Hashed vectors.
         y  = [H2[type] for  type, v in self._vectors]            # Hashed classes.
-        o  = "-s %s -t %s -d %s -g %s -r %s -c %s -p %s -n %s -m %s %s" % (
+        o  = "-s %s -t %s -d %s -g %s -r %s -c %s -p %s -n %s -m %s -b %s %s" % (
             self.type, self.kernel, self.degree, self.gamma, self.coeff0, self.cost, self.epsilon, self.nu,
             self.cache,
+            self.probability is True and 1 or 0,
             self.debug is False and "-q" or ""
         )
         # Cache the model and the feature hash.
@@ -1683,6 +1691,9 @@ class SVM(Classifier):
   
     def _libsvm_predict(self, document):
         """ Calls libsvm.svm_predict() with the cached model.
+            For CLASSIFICATION, returns a predicted class.
+            For CLASSIFICATION with probability=True, returns a list of (weight, class)-tuples.
+            For REGRESSION, returns a float.
         """
         if self._model is None:
             return None
@@ -1695,10 +1706,12 @@ class SVM(Classifier):
         H3 = self._model[3]
         v  = self._vector(document)[1]
         v  = dict((H1.get(k, len(H1)+i), v) for i, (k,v) in enumerate(v.items()))
-        p  = self._libsvm.svm_predict([0], [v], M)
+        p  = self._libsvm.svm_predict([0], [v], M, "-b %s" % int(self.probability))
         t  = M.get_svm_type()
         if self.debug is False:
             sys.stdout = so
+        if t == CLASSIFICATION and self.probability is True:
+            return [(H3[i], w) for i, w in enumerate(p[2][0])]
         if t == CLASSIFICATION:
             return H3.get(int(p[0][0]))
         if t == REGRESSION:
