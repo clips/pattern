@@ -17,7 +17,7 @@ INSTALLATION
 ============
 
 Pattern is written for Python 2.4+ (no support for Python 3 yet). The module has no external dependencies except when using LSA in the vector module, which requires NumPy (installed by default on Mac OS X). To install Pattern so that the module is available in all your scripts, unzip the download and from the command line do:
-> cd pattern-2.0
+> cd pattern-2.3
 > python setup.py install
 
 If you have pip, you can automatically download and install from the PyPi repository:
