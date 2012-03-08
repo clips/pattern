@@ -49,9 +49,11 @@ def escape(string):
     return urllib.quote(string, "~")
     
 def utf8(string):
-    return isinstance(string, unicode) and string.encode("utf-8") or string
+    return isinstance(string, unicode) and string.encode("utf-8") or str(string)
 
 def normalize(string):
+    # Normalize accents (é => e) for services that have problems with utf-8
+    # (used to be the case with Yahoo BOSS but this appears to be fixed now).
     string = utf8(string)
     for k, v in _diacritics.items():
         for v in v: 
@@ -62,7 +64,9 @@ def base(url, data={}, method="GET"):
     # Signature base string: http://tools.ietf.org/html/rfc5849#section-3.4.1
     base  = escape(utf8(method.upper())) + "&"
     base += escape(utf8(url.rstrip("?"))) + "&"
-    base += escape(utf8("&".join(["%s=%s" % (k, v) for k, v in sorted(data.items())])))
+    base += escape(utf8("&".join(["%s=%s" % (
+            escape(utf8(k)), 
+            escape(utf8(v))) for k, v in sorted(data.items())])))
     return base
 
 def sign(url, data={}, method="GET", secret="", token="", hash=HMAC_SHA1):
@@ -78,15 +82,15 @@ def sign(url, data={}, method="GET", secret="", token="", hash=HMAC_SHA1):
 #q = "cats"
 #url = "http://yboss.yahooapis.com/ysearch/web"
 #data = {
-#    "q": normalize(q), # Can't get utf-8 to work with BOSS, normalize accents instead.
+#    "q": normalize(q),
 #    "start": 0,
 #    "count": 50,
 #    "format": "json",
 #    "oauth_version": "1.0",
-#    "oauth_nonce" : nonce(),
-#    "oauth_timestamp" : timestamp(),
-#    "oauth_consumer_key" : CONSUMER_KEY,
-#    "oauth_signature_method" : "HMAC-SHA1" 
+#    "oauth_nonce": nonce(),
+#    "oauth_timestamp": timestamp(),
+#    "oauth_consumer_key": CONSUMER_KEY,
+#    "oauth_signature_method": "HMAC-SHA1" 
 #}
 #data["oauth_signature"] = sign(url, data, secret=CONSUMER_SECRET)
 #data = dict((k, utf8(v)) for k, v in data.items())

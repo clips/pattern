@@ -226,6 +226,20 @@ class TestURL(unittest.TestCase):
         # Assert base URL domain name.
         self.assertEqual(web.base("http://domain.com/home.html"), "domain.com")
         print "pattern.web.base()"
+        
+    def test_oauth(self):
+        # Assert OAuth algorithm.
+        data = {
+            "q": u'"cåts, døgs & chîckéns = fün+"',
+            "oauth_version": "1.0",
+            "oauth_nonce": "0",
+            "oauth_timestamp": 0,
+            "oauth_consumer_key": "key",
+            "oauth_signature_method": "HMAC-SHA1" 
+        }
+        v = web.oauth.sign("http://yboss.yahooapis.com/ysearch/web", data, secret="secret")
+        self.assertEqual(v, "RtTu8dxSp3uBzSbsuLAXIWOKfyI=")
+        print "pattern.web.oauth.sign()"
 
 #---------------------------------------------------------------------------------------------------
 
