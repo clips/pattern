@@ -2802,7 +2802,16 @@ function widget(canvas, variable, type, options) {
         // <button id="id" onclick="javascript:options.callback(event)">variable</button>
         } else if (type == FUNCTION) {
             var s = "<button id='"+v+"'>"+v.replace("_"," ")+"</button>";
-            var f = cb;
+            var f = function(e) {
+                // Fix callback event and event.target on IE8- and Safari2-.
+                if (!e)
+                    e = window.event;
+                if (!e.target)
+                    e.target = e.srcElement || document;
+                if (e.target.nodeType === 3)
+                    e.target = e.target.parentNode;
+                cb(e);
+            }
         } else {
             throw "Variable type can be STRING, NUMBER, BOOLEAN, RANGE, LIST or FUNCTION, not '"+type+"'";
         }
