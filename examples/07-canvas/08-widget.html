@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+	<title>canvas.js | basics (2)</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="../../pattern/canvas.js"></script>
+	<style>
+		/* Minimal CSS for <div class="widgets">.
+		 * This <div> is automatically generated, 
+		 * you can inspect it with the browser developer tools.
+		 */
+		.widgets { }
+		.widget { 
+			margin-bottom: 2px;
+			display: block; 
+		}
+		.widget .label { 
+			display: inline-block; 
+			text-align: right; 
+			margin-right: 10px; 
+			width: 80px; 
+		}
+		.widget input,
+		.widget select { 
+			width: 125px; 
+		}
+		.widget input[type="checkbox"] { 
+			width: auto; 
+		}
+	</style>
+</head>
+<body>
+	<script type="text/canvas">
+		function setup(canvas) {
+			canvas.size(500, 250);
+			// Attach widgets to the canvas.
+			// The available types are STRING, NUMBER, LIST, BOOLEAN, RANGE and FUNCTION.
+			widget(canvas, "text",  STRING,   {value: "hi!"});
+			widget(canvas, "size",  NUMBER,   {value: 100});
+			widget(canvas, "font",  LIST,     {value: ["sans-serif", "serif", "monospace"], index:1}); // XXX index not documented
+			widget(canvas, "bold",  BOOLEAN,  {value: true});
+			widget(canvas, "alpha", RANGE,    {value: 0.8, min: 0.0, max: 1.0, step: 0.1});
+			widget(canvas, "reset", FUNCTION, {
+				callback: function(event) {
+					event.target.canvas.stop();
+					event.target.canvas.run();
+				}
+			});
+		}
+		function draw(canvas) {
+			// The current value for each widget can be retrieved from canvas.variables.
+			canvas.clear();
+			text(canvas.variables.text, 100, 150, {
+				      font: canvas.variables.font,
+				  fontsize: canvas.variables.size,
+				fontweight: canvas.variables.bold? BOLD : NORMAL,
+				      fill: new Color(0,0,0, canvas.variables.alpha)
+			});
+		}
+	</script>
+</body>
+</html>
