@@ -45,4 +45,9 @@ __license__   = "BSD"
 ####################################################################################################
 
 import os
+try:
+    # prevent en.parser from shadowing the stdlib module parser
+    import compiler, parser
+except ImportError:
+    pass
 __path__.append(os.path.join(__path__[0], "text"))
