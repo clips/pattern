@@ -12,6 +12,12 @@
         #header { border-bottom: 1px solid #C6D4DD;  }
         table { border-collapse: collapse; }
     </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
 </head>
 <body class="node-type-page one-sidebar sidebar-right section-pages">
     <div id="page">
@@ -45,41 +51,41 @@
 <li><a href="#cache">Cache</a></li>
 </ul>
 <p>&nbsp;</p>
-<h2>
-<hr /></h2>
+<hr />
 <h2><a name="URL"></a>URL downloads</h2>
 <p>The <span class="inline_code">URL</span> object is based on Python's <span class="inline_code">urllib2.Request</span> and offers a robust way of working with online content. It has a <span class="inline_code">URL.download()</span> method that retrieves the content associated with a web address. The <span class="inline_code">method</span> parameter determines how <span class="inline_code">query</span> data is encoded:</p>
 <ul>
 <li><span class="inline_code">GET</span>: query is encoded in the URL string (typically used for retrieving data).</li>
 <li><span class="inline_code">POST</span>: query is encoded in the message body (used for posting data).</li>
 </ul>
-<p><span class="geshifilter"><code class="python geshifilter-python">url = URL<span style="">&#40;</span><span style="">string</span>=<span style="color: #657a8a;">''</span>, method=GET, query=<span style="">&#123;</span><span style="">&#125;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">url.<span style="">string</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># u'http://user:pw@domain.com:30/path/page?p=1#anchor'</span><br />
-url.<span style="">parts</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Dictionary of attributes:</span></code></span><span class="geshifilter"><code class="python geshifilter-python">url.<span style="">protocol</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># u'http'</span><br />
-url.<span style="">username</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># u'user'</span><br />
-url.<span style="">password</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># u'pw'</span><br />
-url.<span style="">domain</span>  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># u'domain.com'</span><br />
-url.<span style="">port</span>  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># 30</span><br />
-url.<span style="">path</span>  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># [u'path']</span><br />
-url.<span style="">page</span>  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># u'page'</span><br />
-url.<span style="">query</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># {u'p': 1}</span><br />
-url.<span style="">querystring</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># u'p=1'</span><br />
-url.<span style="">anchor</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># u'anchor'</span></code></span><span class="geshifilter"><code class="python geshifilter-python">url.<span style="">exists</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># False if URL.open() raises a HTTP404NotFound.</span><br />
-url.<span style="">redirect</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Actual URL after redirection, or None.</span><br />
-url.<span style="">headers</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Dictionary of HTTP response headers.</span><br />
-url.<span style="">mimetype</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Document MIME-type.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">url.<span style="color: #4a587c;">open</span><span style="">&#40;</span>timeout=<span style="color: #666;">10</span>, proxy=<span style="color: #4a587c;">None</span><span style="">&#41;</span><br />
-url.<span style="">download</span><span style="">&#40;</span>timeout=<span style="color: #666;">10</span>, cached=<span style="color: #4a587c;">True</span>, throttle=<span style="color: #666;">0</span>, proxy=<span style="color: #4a587c;">None</span>, <span style="color: #4a587c;">unicode</span>=<span style="color: #4a587c;">False</span><span style="">&#41;</span><br />
-url.<span style="">copy</span><span style="">&#40;</span><span style="">&#41;</span> </code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">url = URL(string=&#39;&#39;, method=GET, query={})
+</pre><pre class="brush:python; gutter:false; light:true;">url.string                  # u&#39;http://user:pw@domain.com:30/path/page?p=1#anchor&#39;
+url.parts                   # Dictionary of attributes:</pre><pre class="brush:python; gutter:false; light:true;">url.protocol                # u&#39;http&#39;
+url.username                # u&#39;user&#39;
+url.password                # u&#39;pw&#39;
+url.domain                   # u&#39;domain.com&#39;
+url.port                     # 30
+url.path                     # [u&#39;path&#39;]
+url.page                     # u&#39;page&#39;
+url.query                   # {u&#39;p&#39;: 1}
+url.querystring             # u&#39;p=1&#39;
+url.anchor                  # u&#39;anchor&#39;</pre><pre class="brush:python; gutter:false; light:true;">url.exists                  # False if URL.open() raises a HTTP404NotFound.
+url.redirect                # Actual URL after redirection, or None.
+url.headers                 # Dictionary of HTTP response headers.
+url.mimetype                # Document MIME-type.</pre><pre class="brush:python; gutter:false; light:true;">url.open(timeout=10, proxy=None)
+url.download(timeout=10, cached=True, throttle=0, proxy=None, unicode=False)
+url.copy() </pre><ul>
 <li><span class="inline_code">URL()</span> expects a string starting with a valid protocol (e.g. <span class="inline_code">http://</span>).<span class="inline_code">&nbsp;</span></li>
 <li><span class="inline_code">URL.open()</span> returns a connection from which data can be retrieved with <span class="inline_code">connection.read()</span>.</li>
 <li><span class="inline_code">URL.download()</span> will cache the retrieved data locally by default (faster next time). <br />Raises a <span class="inline_code">URLTimeoutError</span> if the download takes longer than the given <span class="inline_code">timeout</span>.<br />Sleeps for <span class="inline_code">throttle</span> seconds after the download is complete.<br />A proxy server can be given as a <span class="inline_code">(host, protocol)</span>-tuple.<br />With <span class="inline_code">unicode=True</span>, returns the data as a Unicode string. By default it is <span class="inline_code">False</span> (data can be an image, for example) but&nbsp;<span class="inline_code">unicode=True</span> is advised for HTML.</li>
 </ul>
 <p>The following example downloads an image. <br />The helper function <span class="inline_code">extension()</span> parses the file extension from a file name:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">web</span> <span style="color: #28334f; font-weight: bold;">import</span> URL, extension<br />
-<span style="">&gt;&gt;&gt;</span> url = URL<span style="">&#40;</span><span style="color: #657a8a;">'http://www.clips.ua.ac.be/media/pattern_schema.gif'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> f = <span style="color: #4a587c;">open</span><span style="">&#40;</span><span style="color: #657a8a;">'test'</span> + extension<span style="">&#40;</span>url.<span style="">page</span><span style="">&#41;</span>, <span style="color: #657a8a;">'w'</span><span style="">&#41;</span> <span style="color: grey;"># save as test.gif</span><br />
-<span style="">&gt;&gt;&gt;</span> f.<span style="">write</span><span style="">&#40;</span>url.<span style="">download</span><span style="">&#40;</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> f.<span style="">close</span><span style="">&#40;</span><span style="">&#41;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import URL, extension
+&gt;&gt;&gt; url = URL(&#39;http://www.clips.ua.ac.be/media/pattern_schema.gif&#39;)
+&gt;&gt;&gt; f = open(&#39;test&#39; + extension(url.page), &#39;w&#39;) # save as test.gif
+&gt;&gt;&gt; f.write(url.download())
+&gt;&gt;&gt; f.close()</pre></div>
 <h3>URL exceptions</h3>
 <p><span class="inline_code">URL.open()</span> and <span class="inline_code">URL.download()</span> raise a <span class="inline_code">URLError</span> if something goes wrong. This is quite common since a lot of things can fail – no internet connection, server is down, etc.&nbsp; <span class="inline_code">URLError</span> has a number of subclasses that can help you figure out the error:</p>
 <table class="border">
@@ -120,10 +126,11 @@ url.<span style="">copy</span><span style="">&#40;</span><span style="">&#41;</s
 </table>
 <h3>URL mime-type</h3>
 <p><span class="inline_code">URL.mimetype</span> can be used to check the type of content at the given address, which is more reliable than simply looking at the filename extension (which may be missing).</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> url = URL<span style="">&#40;</span><span style="color: #657a8a;">'http://www.clips.ua.ac.be/media/pattern_schema.gif'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> url.<span style="">mimetype</span> <span style="color: #28334f; font-weight: bold;">in</span> MIMETYPE_IMAGE<br />
-<br />
-<span style="color: #4a587c;">True</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; url = URL(&#39;http://www.clips.ua.ac.be/media/pattern_schema.gif&#39;)
+&gt;&gt;&gt; print url.mimetype in MIMETYPE_IMAGE
+
+True</pre></div>
 <table class="border">
 <tbody>
 <tr>
@@ -175,57 +182,51 @@ url.<span style="">copy</span><span style="">&#40;</span><span style="">&#41;</s
 <h3>User-agent and referrer</h3>
 <p><span class="inline_code">URL.open()</span> and <span class="inline_code">URL.download()</span> have two optional parameters: <span class="inline_code">user_agent</span> and <span class="inline_code">referrer</span>, used to identify the application accessing the web. Some websites include code to block out any application except browsers. By setting a <span class="inline_code">user_agent</span> you can make the application appear as a browser. This is called <em>spoofing</em> and it is not encouraged, though sometimes necessary.</p>
 <p>For example, to pose as a Firefox browser:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> URL<span style="">&#40;</span><span style="color: #657a8a;">'http://www.clips.ua.ac.be'</span><span style="">&#41;</span>.<span style="">download</span><span style="">&#40;</span>user_agent=<span style="color: #657a8a;">'Mozilla/5.0'</span><span style="">&#41;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; URL(&#39;http://www.clips.ua.ac.be&#39;).download(user_agent=&#39;Mozilla/5.0&#39;)
+</pre></div>
 <h3>Find URLs</h3>
 <p>The <span class="inline_code">find_urls()</span> command can be used to parse URLs from a text string. This will work on links starting with <span class="inline_code">http://</span>, <span class="inline_code">https://</span>, <span class="inline_code">www.</span> or domain names ending in <span class="inline_code">.com</span>, <span class="inline_code">.org</span>. <span class="inline_code">.net</span>. The parser will detect and strip leading punctuation (open parens) and trailing punctuation (period, comma, close parens). Comparably, the <span class="inline_code">find_email()</span> command can be used to parse e-mail addresses from a string.</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> find_urls<span style="">&#40;</span><span style="color: #657a8a;">'Visit our website (www․clips.ua.ac.be)'</span>, unique=<span style="color: #4a587c;">True</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span><span style="color: #657a8a;">'www.clips.ua.ac.be'</span><span style="">&#93;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print find_urls(&#39;Visit our website (www․clips.ua.ac.be)&#39;, unique=True)
+
+[&#39;www.clips.ua.ac.be&#39;]
+</pre></div>
 <p>&nbsp;</p>
-<h2>
-<hr /></h2>
+<hr />
 <h2><a name="asynchronous"></a>Asynchronous requests</h2>
-<p>The <span class="inline_code">asynchronous()</span> command can be used to execute a function in the background. It takes  the function, its arguments and optional keyword arguments. It returns  an <span class="inline_code">AsynchronousRequest</span> object that stores the given function's return value – once it is done. The main program can continue to run in the meantime.</p>
-<p><span style="font-family: Courier,monospace; font-size: small;"><span style="font-size: 12px;"><span class="geshifilter"><code class="python geshifilter-python">request = asynchronous<span style="">&#40;</span>function, <span style="">*</span>args, <span style="">**</span>kwargs<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">request.<span style="">done</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># True when the function is done.</span><br />
-request.<span style="">elapsed</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Time running, in seconds.</span><br />
-request.<span style="">value</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Function return value when done (or None).</span><br />
-request.<span style="">error</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Function Exception (if any).</span></code></span></span></span></p>
-<p><span style="font-family: Courier,monospace; font-size: small;"><span style="font-size: 12px;"><span class="geshifilter"><code class="python geshifilter-python">request.<span style="">now</span><span style="">&#40;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Waits for function and returns its value.</span></code></span></span></span></p>
-<p>This  is useful to execute a web query without hanging the user interface of  your application, but instead display a progress bar (for example). The  example below illustrates this. In a real-world setup you would poll <span class="inline_code">request.done</span> in the application's event loop:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">import</span> <span style="">time</span><br />
-<span style="">&gt;&gt;&gt;</span> request = asynchronous<span style="">&#40;</span>Google<span style="">&#40;</span><span style="">&#41;</span>.<span style="">search</span>, <span style="color: #657a8a;">'holy grail'</span>, timeout=<span style="color: #666;">4</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">while</span> <span style="color: #28334f; font-weight: bold;">not</span> request.<span style="">done</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp;<span style="">time</span>.<span style="">sleep</span><span style="">&#40;</span><span style="color: #666;">0.1</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #657a8a;">'busy...'</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> request.<span style="">value</span></code></span></span></p>
-<p>For  a number of good reasons, there is no way to interrupt or "kill" a  background process (i.e. a Python thread). You are responsible for  ensuring that the given function doesn't hang.</p>
+<p>The <span class="inline_code">asynchronous()</span> command can be used to execute a function in the background. It takes the function, its arguments and optional keyword arguments. It returns an <span class="inline_code">AsynchronousRequest</span> object that stores the given function's return value – once it is done. The main program can continue to run in the meantime.</p>
+<pre class="brush:python; gutter:false; light:true;">request = asynchronous(function, *args, **kwargs)</pre><pre class="brush:python; gutter:false; light:true;">request.done                # True when the function is done.
+request.elapsed             # Time running, in seconds.
+request.value               # Function return value when done (or None).
+request.error               # Function Exception (if any).
+</pre><pre class="brush:python; gutter:false; light:true;">request.now()               # Waits for function and returns its value.
+</pre><p>This is useful to execute a web query without hanging the user interface of your application, but instead display a progress bar (for example). The example below illustrates this. In a real-world setup you would poll <span class="inline_code">request.done</span> in the application's event loop:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; import time
+&gt;&gt;&gt; request = asynchronous(Google().search, &#39;holy grail&#39;, timeout=4)
+&gt;&gt;&gt; while not request.done:
+&gt;&gt;&gt;    time.sleep(0.1)
+&gt;&gt;&gt;    print &#39;busy...&#39;
+&gt;&gt;&gt; print request.value
+</pre></div>
+<p>For a number of good reasons, there is no way to interrupt or "kill" a background process (i.e. a Python thread). You are responsible for ensuring that the given function doesn't hang.</p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="services"></a>Search engine + web services</h2>
 <p>The <span class="inline_code">SearchEngine</span> object offers a uniform way to address different web services, such as Google and Wikipedia. The <span class="inline_code">SearchEngine.search()</span> method returns a list of <span class="inline_code">Result</span> objects for a given query string – similar to a search field in a browser.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine = SearchEngine<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">1.0</span>, language=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine.<span style="">license</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Service license key.</span><br />
-engine.<span style="">throttle</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Time between requests (being nice to server).</span><br />
-engine.<span style="">language</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Restriction for Result.language (e.g., 'en').</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine.<span style="">search</span><span style="">&#40;</span>query, <br />
-&nbsp; &nbsp; type = SEARCH, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># SEARCH | IMAGE | NEWS</span><br />
-&nbsp; &nbsp;start = <span style="color: #666;">1</span>, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Starting page.</span><br />
-&nbsp; &nbsp;count = <span style="color: #666;">10</span>, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Results per page.</span><br />
-&nbsp; &nbsp; sort = RELEVANCY, &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Results sort order: RELEVANCY | LATEST</span><br />
-&nbsp; &nbsp; size = <span style="color: #4a587c;">None</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Image size: TINY | SMALL | MEDIUM | LARGE</span><br />
-&nbsp; cached = <span style="color: #4a587c;">True</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Cache locally?</span></code></span></p>
-<p><span class="small"><span style="text-decoration: underline;">Note</span>: <span class="inline_code">SearchEngine.search()</span> also takes the same optional parameters as <span class="inline_code">URL.download()</span>.</span></p>
+<pre class="brush:python; gutter:false; light:true;">engine = SearchEngine(license=None, throttle=1.0, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine.license              # Service license key.
+engine.throttle             # Time between requests (being nice to server).
+engine.language             # Restriction for Result.language (e.g., &#39;en&#39;).</pre><pre class="brush:python; gutter:false; light:true;">engine.search(query, 
+    type = SEARCH,          # SEARCH | IMAGE | NEWS
+   start = 1,               # Starting page.
+   count = 10,              # Results per page.
+    sort = RELEVANCY,       # Results sort order: RELEVANCY | LATEST
+    size = None             # Image size: TINY | SMALL | MEDIUM | LARGE
+  cached = True)            # Cache locally?</pre><p><span class="small"><span style="text-decoration: underline;">Note</span>: <span class="inline_code">SearchEngine.search()</span> also takes the same optional parameters as <span class="inline_code">URL.download()</span>.</span></p>
 <h3>Google | Yahoo | Bing | Twitter | Wikipedia | Flickr</h3>
 <p><span class="inline_code">SearchEngine</span> is subclassed by <span class="inline_code">Google</span>, <span class="inline_code">Yahoo</span>, <span class="inline_code">Bing</span>, <span class="inline_code">Twitter</span>, <span class="inline_code">Wikipedia</span>, <span class="inline_code">Flickr</span>, <span class="inline_code">Newsfeed</span>:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine = Google<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">0.5</span>, language=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine = Yahoo<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">0.5</span>, language=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine = Bing<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">1.0</span>, language=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine = Twitter<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">0.5</span>, language=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine = Wikipedia<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">5.0</span>, language=<span style="color: #657a8a;">&quot;en&quot;</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine = Flickr<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">5.0</span>, language=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine = Facebook<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">1.0</span>, language=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">engine = Newsfeed<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span>, throttle=<span style="color: #666;">1.0</span>, language=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
-<p>Each of these has different settings for <span class="inline_code">search()</span>. For example,&nbsp;<span class="inline_code">Twitter.search()</span> returns up to 1500 results for a search term (15 queries with 100 results each, or 150 queries with 10 results each). It has an hourly limit of 150 queries (each call to <span class="inline_code">search()</span> counts as one query).</p>
+<pre class="brush:python; gutter:false; light:true;">engine = Google(license=None, throttle=0.5, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Yahoo(license=None, throttle=0.5, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Bing(license=None, throttle=1.0, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Twitter(license=None, throttle=0.5, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Wikipedia(license=None, throttle=5.0, language=&#39;en&#39;)</pre><pre class="brush:python; gutter:false; light:true;">engine = Flickr(license=None, throttle=5.0, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Facebook(license=None, throttle=1.0, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Newsfeed(license=None, throttle=1.0, language=None)</pre><p>Each of these has different settings for <span class="inline_code">search()</span>. For example,&nbsp;<span class="inline_code">Twitter.search()</span> returns up to 1500 results for a search term (15 queries with 100 results each, or 150 queries with 10 results each). It has an hourly limit of 150 queries (each call to <span class="inline_code">search()</span> counts as one query).</p>
 <table class="border">
 <tbody>
 <tr>
@@ -305,28 +306,27 @@ engine.<span style="">language</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
 <p><span class="small"><sup>1&nbsp;</sup><span class="inline_code">Google</span> and <span class="inline_code">Yahoo</span> are paid services – see further how to obtain a license key.<span style="color: #666666; font-size: x-small;"><span style="font-size: 10px;"><br /></span></span></span><span style="font-size: 11px;"><sup style="color: #666666;">2&nbsp;</sup><span style="font-family: Courier,monospace; font-size: 12px;">Yahoo.search(type=IMAGES)</span></span><span style="font-size: 11px;">&nbsp;has a&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">count</span>&nbsp;of 1-35.<br /></span><span style="font-size: 11px;"><sup style="color: #666666;">3&nbsp;</sup><span style="font-family: Courier,monospace; font-size: 12px;">Bing.search(type=NEWS)</span></span><span style="font-size: 11px;">&nbsp;has a&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">count</span>&nbsp;of 1-15.</span><span style="color: #666666; font-size: x-small;"><span style="font-size: 10px;"><br /></span></span></p>
 <h3>Results</h3>
 <p><span class="inline_code">SearchEngine.search()</span> returns a list of <span class="inline_code">Result</span> objects. The list has an additional <span class="inline_code">total</span> attribute, an estimate of the total number of results available for the given query. Each <span class="inline_code">Result</span> holds useful information:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">result = Result<span style="">&#40;</span>url<span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">result.<span style="">url</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># URL of content associated with the given query.</span><br />
-result.<span style="">title</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Content title.</span><br />
-result.<span style="">description</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Content summary.</span><br />
-result.<span style="">language</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Content language.</span><br />
-result.<span style="">author</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># For news items and images.</span><br />
-result.<span style="">date</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># For news items.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">result.<span style="">download</span><span style="">&#40;</span>timeout=<span style="color: #666;">10</span>, cached=<span style="color: #4a587c;">True</span>, proxy=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">result = Result(url)</pre><pre class="brush:python; gutter:false; light:true;">result.url                  # URL of content associated with the given query.
+result.title                # Content title.
+result.description          # Content summary.
+result.language             # Content language.
+result.author               # For news items and images.
+result.date                 # For news items.</pre><pre class="brush:python; gutter:false; light:true;">result.download(timeout=10, cached=True, proxy=None)
+</pre><ul>
 <li>All attributes are Unicode strings.</li>
 <li>The <span class="inline_code">Result.download()</span> method uses the <span class="inline_code">URL</span> object internally.<br />It takes the same optional parameters as <span class="inline_code">URL.download()</span>.</li>
 </ul>
 <p>For example:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> engine = Bing<span style="">&#40;</span>license=<span style="color: #4a587c;">None</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> i <span style="color: #28334f; font-weight: bold;">in</span> <span style="color: #4a587c;">range</span><span style="">&#40;</span><span style="color: #666;">1</span>,<span style="color: #666;">5</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">for</span> result <span style="color: #28334f; font-weight: bold;">in</span> engine.<span style="">search</span><span style="">&#40;</span><span style="color: #657a8a;">'holy handgrenade'</span>, type=SEARCH, start=i<span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #4a587c;">repr</span><span style="">&#40;</span>plaintext<span style="">&#40;</span>result.<span style="">description</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">print</span><br />
-<br />
-u<span style="color: #657a8a;">&quot;The Holy Hand Grenade of Antioch is a fictional weapon from the movie Monty Python and the Holy Grail. It bears a striking resemblance to the Sovereign's ...&quot;</span><br />
-<br />
-u<span style="color: #657a8a;">'Once the number three, being the third number, be reached, then lobbest thou thy Holy Hand Grenade of Antioch towards thy foe, who, being naughty in my ...'</span><br />
-</code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; engine = Bing(license=None)
+&gt;&gt;&gt; for i in range(1,5):
+&gt;&gt;&gt;    for result in engine.search(&#39;holy handgrenade&#39;, type=SEARCH, start=i):
+&gt;&gt;&gt;        print repr(plaintext(result.description))
+&gt;&gt;&gt;        print
+
+u&quot;The Holy Hand Grenade of Antioch is a fictional weapon from ...&quot;
+u&#39;Once the number three, being the third number, be reached, then ...&#39;
+</pre></div>
 <p>&nbsp;</p>
 <p><span class="smallcaps">Image search<br /></span></p>
 <p>For <span class="inline_code">Yahoo</span>, <span class="inline_code">Bing</span> and <span class="inline_code">Flickr</span>, image links retrieved with <span class="inline_code">search(type=IMAGE)</span> can be filtered by setting the <span class="inline_code">size</span> parameter to <span style="font-family: Courier, monospace; font-size: 12px;">TINY<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>SMALL<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>MEDIUM<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>LARGE</span> (or&nbsp;<span style="font-family: Courier, monospace; font-size: 12px;">None</span>&nbsp;for any size).&nbsp;Note that <span class="inline_code">Yahoo</span> image search has a <span class="inline_code">count</span> of 1-35.</p>
@@ -345,118 +345,121 @@ u<span style="color: #657a8a;">'Once the number three, being the third number, b
 <hr />
 <h2>RSS + Atom newsfeeds</h2>
 <p>The <span class="inline_code">Newsfeed</span> object is a wrapper around Mark Pilgrim's <a href="http://www.feedparser.org/" target="_blank">Universal Feed Parser</a>. <span class="inline_code">Newsfeed.search()</span> takes the web address of an RSS or Atom news feed and returns a list of <span class="inline_code">Result</span> objects. For example:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> NATURE = <span style="color: #657a8a;">'http://www.nature.com/nature/current_issue/rss/index.html'</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> result <span style="color: #28334f; font-weight: bold;">in</span> Newsfeed<span style="">&#40;</span><span style="">&#41;</span>.<span style="">search</span><span style="">&#40;</span>NATURE<span style="">&#41;</span><span style="">&#91;</span>:<span style="color: #666;">5</span><span style="">&#93;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #4a587c;">repr</span><span style="">&#40;</span>result.<span style="">title</span><span style="">&#41;</span><br />
-<br />
-u<span style="color: #657a8a;">'Biopiracy rules should not block biological control'</span><br />
-u<span style="color: #657a8a;">'Animal behaviour: Same-shaped shoals'</span><br />
-u<span style="color: #657a8a;">'Genetics: Fast disease factor'</span><br />
-u<span style="color: #657a8a;">'Biomimetics: Material monitors mugginess'</span><br />
-u<span style="color: #657a8a;">'Cell biology: Lung lipid hurts breathing'</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; NATURE = &#39;http://www.nature.com/nature/current_issue/rss/index.html&#39;
+&gt;&gt;&gt; for result in Newsfeed().search(NATURE)[:5]:
+&gt;&gt;&gt;    print repr(result.title)
+
+u&#39;Biopiracy rules should not block biological control&#39;
+u&#39;Animal behaviour: Same-shaped shoals&#39;
+u&#39;Genetics: Fast disease factor&#39;
+u&#39;Biomimetics: Material monitors mugginess&#39;
+u&#39;Cell biology: Lung lipid hurts breathing&#39;
+</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2>Google translate</h2>
 <p>The <span class="inline_code">Google.translate()</span> method returns the translation of a string in the given language.<br />The <span class="inline_code">Google.identify()</span> method returns a (<span class="inline_code">language code</span>, <span class="inline_code">confidence</span>)-tuple for a given string.&nbsp;</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> s = <span style="color: #657a8a;">&quot;C'est un lapin, lapin de bois. Quoi? Un cadeau.&quot;</span><br />
-<span style="">&gt;&gt;&gt;</span> g = Google<span style="">&#40;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> g.<span style="">translate</span><span style="">&#40;</span>s, <span style="color: #4a587c;">input</span>=<span style="color: #657a8a;">'fr'</span>, output=<span style="color: #657a8a;">'en'</span>, cached=<span style="color: #4a587c;">False</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> g.<span style="">identify</span><span style="">&#40;</span>s<span style="">&#41;</span><br />
-<br />
-u<span style="color: #657a8a;">&quot;It's a bunny, rabbit wood. What? A gift.&quot;</span><br />
-<span style="">&#40;</span>u<span style="color: #657a8a;">'fr'</span>, <span style="color: #666;">0.76</span><span style="">&#41;</span> </code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; s = &quot;C&#39;est un lapin, lapin de bois. Quoi? Un cadeau.&quot;
+&gt;&gt;&gt; g = Google()
+&gt;&gt;&gt; print g.translate(s, input=&#39;fr&#39;, output=&#39;en&#39;, cached=False)
+&gt;&gt;&gt; print g.identify(s)
+
+u&quot;It&#39;s a bunny, rabbit wood. What? A gift.&quot;
+(u&#39;fr&#39;, 0.76) </pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2>Twitter trends</h2>
 <p>The <span class="inline_code">Twitter.trends()</span> method returns a list of 10 "trending topics":&nbsp;</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> Twitter<span style="">&#40;</span><span style="">&#41;</span>.<span style="">trends</span><span style="">&#40;</span>cached=<span style="color: #4a587c;">False</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span>u<span style="color: #657a8a;">'#neverunderstood'</span>, u<span style="color: #657a8a;">'Not Top 10'</span>, ...<span style="">&#93;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print Twitter().trends(cached=False)
+
+[u&#39;#neverunderstood&#39;, u&#39;Not Top 10&#39;, ...]</pre></div>
 <p>&nbsp;</p>
-<h2>
-<hr />Wikipedia articles</h2>
+<hr />
+<h2>Wikipedia articles</h2>
 <p><span class="inline_code">Wikipedia.search()</span> does not return a list of <span class="inline_code">Result</span> objects. Instead, it returns a single <span class="inline_code">WikipediaArticle</span> for the given (case-sensitive) query. The <span class="inline_code">Wikipedia</span> constructor has an additional <span class="inline_code">language</span> parameter (by default, <span class="inline_code">"en"</span>) that determines the language of the returned articles.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">article = WikipediaArticle<span style="">&#40;</span>title=u<span style="color: #657a8a;">''</span>, source=u<span style="color: #657a8a;">''</span>, links=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">article.<span style="">source</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Article HTML source.</span><br />
-article.<span style="">string</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Article plaintext unicode string.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">article.<span style="">title</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Article title.</span><br />
-article.<span style="">sections</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Article sections.</span><br />
-article.<span style="">links</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of titles of linked articles.</span><br />
-article.<span style="">external</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of external links.</span><br />
-article.<span style="">categories</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of categories.</span><br />
-article.<span style="">media</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of linked media (images, sounds, ...)</span><br />
-article.<span style="">languages</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Dictionary of (language, article)-items.</span><br />
-article.<span style="">language</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Article language (i.e. 'en').</span><br />
-article.<span style="">disambiguation</span> &nbsp; &nbsp; &nbsp;<span style="color: grey;"># True if it is a disambiguation page</span></code></span><span class="geshifilter"><code class="python geshifilter-python">article.<span style="">plaintext</span><span style="">&#40;</span><span style="">**</span>kwargs<span style="">&#41;</span> <span style="color: grey;"># See plaintext() for parameter overview.</span><br />
-article.<span style="">download</span><span style="">&#40;</span>media, <span style="">**</span>kwargs<span style="">&#41;</span></code></span></p>
-<p><span class="inline_code">WikipediaArticle.plaintext()</span> is similar to the <span class="inline_code">plaintext()</span> command, but with extra attention for Wikipedia markup. It will remove metadata, infobox, table of contents, annotations, thumbnails and disambiguation links.</p>
+<pre class="brush:python; gutter:false; light:true;">article = WikipediaArticle(title=&#39;&#39;, source=&#39;&#39;, links=[])</pre><pre class="brush:python; gutter:false; light:true;">article.source              # Article HTML source.
+article.string              # Article plaintext unicode string.</pre><pre class="brush:python; gutter:false; light:true;">article.title               # Article title.
+article.sections            # Article sections.
+article.links               # List of titles of linked articles.
+article.external            # List of external links.
+article.categories          # List of categories.
+article.media               # List of linked media (images, sounds, ...)
+article.languages           # Dictionary of (language, article)-items.
+article.language            # Article language (i.e. &#39;en&#39;).
+article.disambiguation      # True if it is a disambiguation page</pre><pre class="brush:python; gutter:false; light:true;">article.plaintext(**kwargs) # See plaintext() for parameter overview.
+article.download(media, **kwargs)
+</pre><p><span class="inline_code">WikipediaArticle.plaintext()</span> is similar to the <span class="inline_code">plaintext()</span> command, but with extra attention for Wikipedia markup. It will remove metadata, infobox, table of contents, annotations, thumbnails and disambiguation links.</p>
 <h3>Wikipedia article sections</h3>
 <p><span class="inline_code">WikipediaArticle.sections</span> is a list of <span class="inline_code">WikipediaSection</span> objects. A section has a title and a number of paragraphs that belong together.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">section = WikipediaSection<span style="">&#40;</span>article, title=u<span style="color: #657a8a;">''</span>, start=<span style="color: #666;">0</span>, stop=<span style="color: #666;">0</span>, level=<span style="color: #666;">1</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">section.<span style="">article</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># WikipediaArticle parent.</span><br />
-section.<span style="">parent</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># WikipediaSection this section is part of.</span><br />
-section.<span style="">children</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># WikipediaSections belonging to this section.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">section.<span style="">title</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Section title.</span><br />
-section.<span style="">source</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Section HTML source.</span><br />
-section.<span style="">string</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Section plaintext unicode string.</span><br />
-section.<span style="">content</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Section string minus title.</span><br />
-section.<span style="">level</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Section nested depth.</span><br />
-section.<span style="">tables</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of WikipediaTable objects.</span></code></span></p>
-<p>The following example downloads a Wikipedia article and prints the title of each section, indented according to the section level:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> article = Wikipedia<span style="">&#40;</span><span style="">&#41;</span>.<span style="">search</span><span style="">&#40;</span><span style="color: #657a8a;">'nodebox'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> section <span style="color: #28334f; font-weight: bold;">in</span> article.<span style="">sections</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #4a587c;">repr</span><span style="">&#40;</span><span style="color: #657a8a;">' &nbsp;'</span><span style="">*</span><span style="">&#40;</span>section.<span style="">level</span>-<span style="color: #666;">1</span><span style="">&#41;</span> + section.<span style="">title</span><span style="">&#41;</span><br />
-<br />
-u<span style="color: #657a8a;">'NodeBox'</span><br />
-u<span style="color: #657a8a;">' &nbsp;Features'</span><br />
-u<span style="color: #657a8a;">' &nbsp;Supported Primitives'</span><br />
-u<span style="color: #657a8a;">' &nbsp;Output'</span><br />
-u<span style="color: #657a8a;">'Libraries'</span><br />
-u<span style="color: #657a8a;">'NodeBox 2'</span><br />
-u<span style="color: #657a8a;">'NodeBox for OpenGL'</span><br />
-u<span style="color: #657a8a;">'Applications'</span><br />
-u<span style="color: #657a8a;">'See also'</span></code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">section = WikipediaSection(article, title=&#39;&#39;, start=0, stop=0, level=1)</pre><pre class="brush:python; gutter:false; light:true;">section.article             # WikipediaArticle parent.
+section.parent              # WikipediaSection this section is part of.
+section.children            # WikipediaSections belonging to this section.</pre><pre class="brush:python; gutter:false; light:true;">section.title               # Section title.
+section.source              # Section HTML source.
+section.string              # Section plaintext unicode string.
+section.content             # Section string minus title.
+section.level               # Section nested depth.
+section.tables              # List of WikipediaTable objects.</pre><p>The following example downloads a Wikipedia article and prints the title of each section, indented according to the section level:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; article = Wikipedia().search(&#39;nodebox&#39;)
+&gt;&gt;&gt; for section in article.sections:
+&gt;&gt;&gt;    print repr(&#39;  &#39;*(section.level-1) + section.title)
+
+u&#39;NodeBox&#39;
+u&#39;  Features&#39;
+u&#39;  Supported Primitives&#39;
+u&#39;  Output&#39;
+u&#39;Libraries&#39;
+u&#39;NodeBox 2&#39;
+u&#39;NodeBox for OpenGL&#39;
+u&#39;Applications&#39;
+u&#39;See also&#39;</pre></div>
 <h3>Wikipedia article tables</h3>
 <p><span class="inline_code">WikipediaSection.tables</span> is a list of <span class="inline_code">WikipediaTable</span> objects.&nbsp;A table can have a title, column headers, and rows.&nbsp;</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">table = WikipediaTable<span style="">&#40;</span>section, title=u<span style="color: #657a8a;">''</span>, headers=<span style="">&#91;</span><span style="">&#93;</span>, rows=<span style="">&#91;</span><span style="">&#93;</span>, source=u<span style="color: #657a8a;">''</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">table.<span style="">section</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># WikipediaSection parent.</span><br />
-table.<span style="">source</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Table HTML source.</span><br />
-table.<span style="">title</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Table title.</span><br />
-table.<span style="">headers</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of table column headers.</span><br />
-table.<span style="">rows</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of table rows, each a list of column values.</span></code></span></p>
-<p>&nbsp;</p>
+<pre class="brush:python; gutter:false; light:true;">table = WikipediaTable(section, title=&#39;&#39;, headers=[], rows=[], source=&#39;&#39;)</pre><pre class="brush:python; gutter:false; light:true;">table.section               # WikipediaSection parent.
+table.source                # Table HTML source.
+table.title                 # Table title.
+table.headers               # List of table column headers.
+table.rows                  # List of table rows, each a list of column values.</pre><p>&nbsp;</p>
 <hr />
 <h2><a name="sort"></a>Web sort</h2>
 <p>Interestingly, each list of results returned from <span class="inline_code">SearchEngine.search()</span> has a <span class="inline_code">total</span> property by which we can compare lists. The <span class="inline_code">sort()</span> command sorts the given terms according to search result count.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">sort<span style="">&#40;</span><br />
-&nbsp; &nbsp; terms = <span style="">&#91;</span><span style="">&#93;</span>, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of search terms.</span><br />
-&nbsp; context = <span style="color: #657a8a;">''</span>, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Term used for sorting.</span><br />
-&nbsp; service = GOOGLE, &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># GOOGLE | BING | YAHOO | FLICKR</span><br />
-&nbsp; license = <span style="color: #4a587c;">None</span>, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Service license key.</span><br />
-&nbsp; &nbsp;strict = <span style="color: #4a587c;">True</span>, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Wrap query in quotes?</span><br />
-&nbsp; reverse = <span style="color: #4a587c;">False</span>,<br />
-&nbsp; &nbsp;cached = <span style="color: #4a587c;">True</span><span style="">&#41;</span></code></span></p>
-<p>It returns a list of <span class="inline_code">(percentage, term)</span>-tuples for the given list of terms. When a <span class="inline_code">context</span> is defined, sorts according to relevancy to the context: <span class="inline_code">sort(["black", "white"], context="Darth Vader")</span> yields <em>black</em> as the best candidate, because <span class="inline_code">"black Darth Vader"</span> is more common in search results.</p>
+<pre class="brush:python; gutter:false; light:true;">sort(
+    terms = [],             # List of search terms.
+  context = &#39;&#39;,             # Term used for sorting.
+  service = GOOGLE,         # GOOGLE | BING | YAHOO | FLICKR
+  license = None,           # Service license key.
+   strict = True,           # Wrap query in quotes?
+  reverse = False,
+   cached = True)</pre><p>It returns a list of <span class="inline_code">(percentage, term)</span>-tuples for the given list of terms. When a <span class="inline_code">context</span> is defined, sorts according to relevancy to the context: <span class="inline_code">sort(["black", "white"], context="Darth Vader")</span> yields <em>black</em> as the best candidate, because <span class="inline_code">"black Darth Vader"</span> is more common in search results.</p>
 <p>Now let's see who is more dangerous:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> results = sort<span style="">&#40;</span>terms=<span style="">&#91;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; <span style="color: #657a8a;">'arnold schwarzenegger'</span>, <br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; <span style="color: #657a8a;">'chuck norris'</span>, <br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; <span style="color: #657a8a;">'dolph lundgren'</span>, <br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; <span style="color: #657a8a;">'steven seagal'</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; <span style="color: #657a8a;">'sylvester stallone'</span>, <br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; <span style="color: #657a8a;">'mickey mouse'</span><span style="">&#93;</span>, context=<span style="color: #657a8a;">'dangerous'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> weight, term <span style="color: #28334f; font-weight: bold;">in</span> results:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #657a8a;">&quot;%5.2f&quot;</span> <span style="">%</span> <span style="">&#40;</span>weight<span style="">*</span><span style="color: #666;">100</span><span style="">&#41;</span> + <span style="color: #657a8a;">'%'</span>, term<br />
-<br />
-<span style="color: #666;">43.75</span><span style="">%</span> <span style="color: #657a8a;">'dangerous chuck norris'</span><br />
-<span style="color: #666;">25.00</span><span style="">%</span> <span style="color: #657a8a;">'dangerous arnold schwarzenegger'</span><br />
-<span style="color: #666;">12.50</span><span style="">%</span> <span style="color: #657a8a;">'dangerous steven seagal'</span><br />
-<span style="color: #666;">12.50</span><span style="">%</span> <span style="color: #657a8a;">'dangerous mickey mouse'</span><br />
-&nbsp;<span style="color: #666;">6.25</span><span style="">%</span> <span style="color: #657a8a;">'dangerous sylvester stallone'</span><br />
-&nbsp;<span style="color: #666;">0.00</span><span style="">%</span> <span style="color: #657a8a;">'dangerous dolph lundgren'</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; results = sort(terms=[
+&gt;&gt;&gt;   &#39;arnold schwarzenegger&#39;, 
+&gt;&gt;&gt;   &#39;chuck norris&#39;, 
+&gt;&gt;&gt;   &#39;dolph lundgren&#39;, 
+&gt;&gt;&gt;   &#39;steven seagal&#39;,
+&gt;&gt;&gt;   &#39;sylvester stallone&#39;, 
+&gt;&gt;&gt;   &#39;mickey mouse&#39;], context=&#39;dangerous&#39;)
+&gt;&gt;&gt;
+&gt;&gt;&gt; for weight, term in results:
+&gt;&gt;&gt;     print &quot;%5.2f&quot; % (weight*100) + &#39;%&#39;, term
+
+43.75% &#39;dangerous chuck norris&#39;
+25.00% &#39;dangerous arnold schwarzenegger&#39;
+12.50% &#39;dangerous steven seagal&#39;
+12.50% &#39;dangerous mickey mouse&#39;
+ 6.25% &#39;dangerous sylvester stallone&#39;
+ 0.00% &#39;dangerous dolph lundgren&#39;
+</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="plaintext"></a>HTML to plaintext</h2>
 <p>Typically, <span class="inline_code">URL.download()</span> is used to retrieve HTML documents. HTML is a markup language that uses <em>tags</em> to define the text formatting. For example: <span class="inline_code">&lt;b&gt;hello&lt;/b&gt;</span> displays <strong>hello</strong> in bold. Usually, we just want the text without the formatting so we can analyze (e.g. <a href="pattern-en.html#parser">parse</a>) it.</p>
 <p>The <span class="inline_code">plaintext()</span> command removes HTML formatting from a string.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">plaintext<span style="">&#40;</span>html, keep=<span style="">&#91;</span><span style="">&#93;</span>, replace=blocks, linebreaks=<span style="color: #666;">2</span>, indentation=<span style="color: #4a587c;">False</span><span style="">&#41;</span></code></span></p>
-<p>It will perform the following steps to clean up the given string:</p>
+<pre class="brush:python; gutter:false; light:true;">plaintext(html, keep=[], replace=blocks, linebreaks=2, indentation=False)</pre><p>It will perform the following steps to clean up the given string:</p>
 <ul>
 <li><strong>Strip javascript:</strong> remove all <span class="inline_code">&lt;script&gt;</span> elements.</li>
 <li><strong>Strip CSS: </strong>remove all <span class="inline_code">&lt;style&gt;</span> elements.</li>
@@ -473,97 +476,100 @@ table.<span style="">rows</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp
 <p>The <span class="inline_code">replace</span> parameter defines how HTML elements are replaced with other characters to improve plain text layout. It is a dictionary of <span class="inline_code">tag</span> → <span class="inline_code">(before, after)</span> items. The default <span class="inline_code">blocks</span> dictionary replaces block elements (<span class="inline_code">&lt;h1&gt;</span>, <span class="inline_code">&nbsp;</span><span class="inline_code">&lt;h2&gt;</span>, <span class="inline_code">&nbsp;</span><span class="inline_code">&lt;p&gt;</span>, <span class="inline_code">&nbsp;</span><span class="inline_code">&lt;div&gt;</span>, <span class="inline_code">&nbsp;</span><span class="inline_code">&lt;table&gt;</span>, ...) with two linebreaks after, <span class="inline_code">&lt;th&gt;</span> and <span class="inline_code">&lt;tr&gt;</span> with one linebreak after, <span class="inline_code">&lt;td&gt;</span> with one tab after, <span class="inline_code">&lt;li&gt;</span> with an asterisk (<span class="inline_code">*</span>) before and a linebreak after.</p>
 <p>The <span class="inline_code">linebreaks</span> parameter defines the maximum amount of consecutive linebreaks to keep.</p>
 <p>The <span class="inline_code">indentation</span> parameter defines whether or not to keep tab indentation.</p>
-<p>For  example, the following script downloads a HTML document and keeps only a  minimal amount of formatting (headings, bold, links).</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> s = URL<span style="">&#40;</span><span style="color: #657a8a;">'http://www.clips.ua.ac.be'</span><span style="">&#41;</span>.<span style="">download</span><span style="">&#40;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> s = plaintext<span style="">&#40;</span>s, keep=<span style="">&#123;</span><span style="color: #657a8a;">'h1'</span>:<span style="">&#91;</span><span style="">&#93;</span>, <span style="color: #657a8a;">'h2'</span>:<span style="">&#91;</span><span style="">&#93;</span>, <span style="color: #657a8a;">'strong'</span>:<span style="">&#91;</span><span style="">&#93;</span>, <span style="color: #657a8a;">'a'</span>:<span style="">&#91;</span><span style="color: #657a8a;">'href'</span><span style="">&#93;</span><span style="">&#125;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> s</code></span></span></p>
+<p>For example, the following script downloads a HTML document and keeps only a minimal amount of formatting (headings, bold, links).</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; s = URL(&#39;http://www.clips.ua.ac.be&#39;).download()
+&gt;&gt;&gt; s = plaintext(s, keep={&#39;h1&#39;:[], &#39;h2&#39;:[], &#39;strong&#39;:[], &#39;a&#39;:[&#39;href&#39;]})
+&gt;&gt;&gt; print s
+</pre></div>
 <p style="margin-top: 1.3em;"><span class="smallcaps">plaintext = strip + decode + collapse</span></p>
 <p>The different steps in <span class="inline_code">plaintext()</span> are also available as separate commands:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">decode_utf8<span style="">&#40;</span><span style="">string</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Byte string to Unicode string.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">encode_utf8<span style="">&#40;</span><span style="">string</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Unicode string to byte string.</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">strip_tags<span style="">&#40;</span>html, keep=<span style="">&#91;</span><span style="">&#93;</span>, replace=blocks<span style="">&#41;</span> <span style="color: grey;"># Non-trivial, using SGML parser.</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">strip_between<span style="">&#40;</span>a, b, <span style="">string</span><span style="">&#41;</span> <span style="color: grey;"># Remove anything between (and including) a and b.</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">strip_javascript<span style="">&#40;</span>html<span style="">&#41;</span> &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Strips between '&lt;script*&gt;' and '&lt;/script'.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">strip_inline_css<span style="">&#40;</span>html<span style="">&#41;</span> &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Strips between '&lt;style*&gt;' and '&lt;/style&gt;'.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">strip_comments<span style="">&#40;</span>html<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Strips between '&lt;!--' and '--&gt;'.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">strip_forms<span style="">&#40;</span>html<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Strips between '&lt;form*&gt;' and '&lt;/form&gt;'.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">decode_entities<span style="">&#40;</span><span style="">string</span><span style="">&#41;</span> &nbsp; &nbsp; <span style="color: grey;"># '&amp;lt;' =&gt; '&lt;'</span></code></span><span class="geshifilter"><code class="python geshifilter-python">encode_entities<span style="">&#40;</span><span style="">string</span><span style="">&#41;</span> &nbsp; &nbsp; <span style="color: grey;"># '&lt;' =&gt; '&amp;lt;'</span></code></span><span class="geshifilter"><code class="python geshifilter-python">collapse_spaces<span style="">&#40;</span><span style="">string</span>, indentation=<span style="color: #4a587c;">False</span>, replace=<span style="color: #657a8a;">' '</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">collapse_tabs<span style="">&#40;</span><span style="">string</span>, indentation=<span style="color: #4a587c;">False</span>, replace=<span style="color: #657a8a;">' '</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">collapse_linebreaks<span style="">&#40;</span><span style="">string</span>, threshold=<span style="color: #666;">1</span><span style="">&#41;</span></code></span></p>
-<p>&nbsp;</p>
+<pre class="brush:python; gutter:false; light:true;">decode_utf8(string)         # Byte string to Unicode string.</pre><pre class="brush:python; gutter:false; light:true;">encode_utf8(string)         # Unicode string to byte string.
+</pre><pre class="brush:python; gutter:false; light:true;">strip_tags(html, keep=[], replace=blocks) # Non-trivial, using SGML parser.
+</pre><pre class="brush:python; gutter:false; light:true;">strip_between(a, b, string) # Remove anything between (and including) a and b.
+</pre><pre class="brush:python; gutter:false; light:true;">strip_javascript(html)      # Strips between &#39;&lt;script*&gt;&#39; and &#39;&lt;/script&#39;.</pre><pre class="brush:python; gutter:false; light:true;">strip_inline_css(html)      # Strips between &#39;&lt;style*&gt;&#39; and &#39;&lt;/style&gt;&#39;.</pre><pre class="brush:python; gutter:false; light:true;">strip_comments(html)        # Strips between &#39;&lt;!--&#39; and &#39;--&gt;&#39;.</pre><pre class="brush:python; gutter:false; light:true;">strip_forms(html)           # Strips between &#39;&lt;form*&gt;&#39; and &#39;&lt;/form&gt;&#39;.</pre><pre class="brush:python; gutter:false; light:true;">decode_entities(string)     # &#39;&amp;lt;&#39; =&gt; &#39;&lt;&#39;</pre><pre class="brush:python; gutter:false; light:true;">encode_entities(string)     # &#39;&lt;&#39; =&gt; &#39;&amp;lt;&#39;</pre><pre class="brush:python; gutter:false; light:true;">collapse_spaces(string, indentation=False, replace=&#39; &#39;)</pre><pre class="brush:python; gutter:false; light:true;">collapse_tabs(string, indentation=False, replace=&#39; &#39;)</pre><pre class="brush:python; gutter:false; light:true;">collapse_linebreaks(string, threshold=1)</pre><p>&nbsp;</p>
 <hr />
-<h2><span class="example"><a name="DOM"></a>HTML DOM parser<br /></span></h2>
+<div class="example"><a name="DOM"></a>HTML DOM parser</div>
 <p>The <em>Document Object Model</em> (DOM) is a cross-platform and language-independent convention for representing and interacting with objects in HTML, XHTML and XML documents. The web module includes a HTML DOM parser (Leonard Richardson's <a href="http://www.crummy.com/software/BeautifulSoup/" target="_blank">BeautifulSoup</a>), that allows you to traverse a HTML document as a tree of linked Python objects. This is useful to extract specific portions from a HTML string retrieved with <span class="inline_code">URL.download()</span>.</p>
 <h3>Node</h3>
 <p>The DOM consists of a <span class="inline_code">Document</span> object that contains <span class="inline_code">Text</span>, <span class="inline_code">Comment</span> and <span class="inline_code">Element</span> objects.<br />All of these are subclasses of <span class="inline_code">Node</span>.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">node = Node<span style="">&#40;</span>html, type=NODE<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">node.<span style="">type</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># NODE | TEXT | COMMENT | ELEMENT | DOCUMENT</span><br />
-node.<span style="">source</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># HTML source.</span><br />
-node.<span style="">parent</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Parent node.</span><br />
-node.<span style="">children</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of child nodes.</span><br />
-node.<span style="">next</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Next child in node.parent (or None).</span><br />
-node.<span style="">previous</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Previous child in node.parent (or None).</span></code></span><span class="geshifilter"><code class="python geshifilter-python">node.<span style="">traverse</span><span style="">&#40;</span>visit=<span style="color: #28334f; font-weight: bold;">lambda</span> node: <span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
-<h3>Element</h3>
+<pre class="brush:python; gutter:false; light:true;">node = Node(html, type=NODE)</pre><pre class="brush:python; gutter:false; light:true;">node.type                   # NODE | TEXT | COMMENT | ELEMENT | DOCUMENT
+node.source                 # HTML source.
+node.parent                 # Parent node.
+node.children               # List of child nodes.
+node.next                   # Next child in node.parent (or None).
+node.previous               # Previous child in node.parent (or None).</pre><pre class="brush:python; gutter:false; light:true;">node.traverse(visit=lambda node: None)</pre><h3>Element</h3>
 <p><span class="inline_code">Text</span>, <span class="inline_code">Comment</span> and <span class="inline_code">Element</span> are subclasses of <span class="inline_code">Node</span>. For example: <span class="inline_code">'the &lt;b&gt;cat&lt;/b&gt;'</span> is parsed to <span class="inline_code">Text('the')</span> + <span class="inline_code">Element('cat', tag='b')</span>. The <span class="inline_code">Element</span> object has a number of additional properties:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">element = Element<span style="">&#40;</span>html<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">element.<span style="">tag</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Tag name.</span><br />
-element.<span style="">attributes</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Dictionary of attributes, e.g. {'class':'menu'}.</span><br />
-element.<span style="color: #4a587c;">id</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Value for id attribute (or None).</span></code></span><span class="geshifilter"><code class="python geshifilter-python">element.<span style="">source</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># HTML source.</span><br />
-element.<span style="">content</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># HTML source minus open and close tag.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">element.<span style="">by_id</span><span style="">&#40;</span><span style="color: #4a587c;">str</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># First nested Element with given id.</span><br />
-element.<span style="">by_tag</span><span style="">&#40;</span><span style="color: #4a587c;">str</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of nested Elements with given tag name.</span><br />
-element.<span style="">by_class</span><span style="">&#40;</span><span style="color: #4a587c;">str</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of nested Elements with given class.</span><br />
-element.<span style="">by_attribute</span><span style="">&#40;</span><span style="">**</span>kwargs<span style="">&#41;</span></code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">element = Element(html)</pre><pre class="brush:python; gutter:false; light:true;">element.tag                 # Tag name.
+element.attributes          # Dictionary of attributes, e.g. {&#39;class&#39;:&#39;menu&#39;}.
+element.id                  # Value for id attribute (or None).</pre><pre class="brush:python; gutter:false; light:true;">element.source              # HTML source.
+element.content             # HTML source minus open and close tag.</pre><pre class="brush:python; gutter:false; light:true;">element.by_id(str)          # First nested Element with given id.
+element.by_tag(str)         # List of nested Elements with given tag name.
+element.by_class(str)       # List of nested Elements with given class.
+element.by_attribute(**kwargs)
+</pre><ul>
 <li><span class="inline_code">Element.by_tag()</span> values can include a class (e.g. <span class="inline_code">"div.header"</span>) or an id (e.g. <span class="inline_code">"div#content"</span>). <br />A wildcard can be used to match any tag. (e.g. <span class="inline_code">"*.even"</span>).<br />The element is searched recursively (children in children, etc.)</li>
 <li><span class="inline_code">Element.by_attribute()</span> takes one or more keyword arguments (e.g. <span class="inline_code">name="keywords"</span>).</li>
 </ul>
 <h3>Document</h3>
 <p>The top-level element in the DOM.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">dom = Document<span style="">&#40;</span>html<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">dom.<span style="">declaration</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># &lt;!doctype&gt; TEXT Node.</span><br />
-dom.<span style="">head</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># &lt;head&gt; Element.</span><br />
-dom.<span style="">body</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># &lt;body&gt; Element.</span></code></span></p>
-<p>For example, the following script retrieves the last three entries from <a href="http://www.reddit.com/" target="_blank">reddit</a>. The web module does not include a reddit search engine, but we can parse entries directly from the HTML source. This is called <em>screen scraping</em>, and many websites will strongly dislike it (server pressure).</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> url = URL<span style="">&#40;</span><span style="color: #657a8a;">'http://www.reddit.com/top/'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> dom = Document<span style="">&#40;</span>url.<span style="">download</span><span style="">&#40;</span>cached=<span style="color: #4a587c;">True</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> e <span style="color: #28334f; font-weight: bold;">in</span> dom.<span style="">by_tag</span><span style="">&#40;</span><span style="color: #657a8a;">'div.entry'</span><span style="">&#41;</span><span style="">&#91;</span>:<span style="color: #666;">3</span><span style="">&#93;</span>: <span style="color: grey;"># Top 3 reddit entries.</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">for</span> a <span style="color: #28334f; font-weight: bold;">in</span> e.<span style="">by_tag</span><span style="">&#40;</span><span style="color: #657a8a;">'a.title'</span><span style="">&#41;</span><span style="">&#91;</span>:<span style="color: #666;">1</span><span style="">&#93;</span>: <span style="color: grey;"># First &lt;a class=&quot;title&quot;&gt;.</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #4a587c;">repr</span><span style="">&#40;</span>plaintext<span style="">&#40;</span>a.<span style="">content</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<br />
-u<span style="color: #657a8a;">'Invisible Kitty'</span><br />
-u<span style="color: #657a8a;">'Naturally, he said yes.'</span><br />
-u<span style="color: #657a8a;">&quot;I'd just like to remind everyone that /r/minecraft exists and not everyone wants to have 10 Minecraft posts a day on their front page.&quot;</span></code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">dom = Document(html)</pre><pre class="brush:python; gutter:false; light:true;">dom.declaration             # &lt;!doctype&gt; TEXT Node.
+dom.head                    # &lt;head&gt; Element.
+dom.body                    # &lt;body&gt; Element.</pre><p>For example, the following script retrieves the last three entries from <a href="http://www.reddit.com/" target="_blank">reddit</a>. The web module does not include a reddit search engine, but we can parse entries directly from the HTML source. This is called <em>screen scraping</em>, and many websites will strongly dislike it (server pressure).</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; url = URL(&#39;http://www.reddit.com/top/&#39;)
+&gt;&gt;&gt; dom = Document(url.download(cached=True))
+&gt;&gt;&gt; for e in dom.by_tag(&#39;div.entry&#39;)[:3]: # Top 3 reddit entries.
+&gt;&gt;&gt;     for a in e.by_tag(&#39;a.title&#39;)[:1]: # First &lt;a class=&quot;title&quot;&gt;.
+&gt;&gt;&gt;         print repr(plaintext(a.content))
+
+u&#39;Invisible Kitty&#39;
+u&#39;Naturally, he said yes.&#39;
+u&quot;I&#39;d just like to remind everyone that /r/minecraft exists and not everyone wants 
+  to have 10 Minecraft posts a day on their front page.&quot;</pre></div>
 <p><span class="smallcaps"><br />Absolute url's</span></p>
 <p>Links parsed from the <span class="inline_code">Document</span> may be relative (e.g., starting with <span class="inline_code">"../"</span> instead of <span class="inline_code">"http://"</span>. <br />To get the absolute URL, you can use the <span class="inline_code">abs()</span> function in combination with <span class="inline_code">URL.redirect</span>:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">web</span> <span style="color: #28334f; font-weight: bold;">import</span> <span style="color: #4a587c;">abs</span><br />
-<span style="">&gt;&gt;&gt;</span> url = URL<span style="">&#40;</span><span style="color: #657a8a;">'http://nodebox.net'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> dom = Document<span style="">&#40;</span>url.<span style="">download</span><span style="">&#40;</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> link <span style="color: #28334f; font-weight: bold;">in</span> dom.<span style="">by_tag</span><span style="">&#40;</span><span style="color: #657a8a;">'a'</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #4a587c;">abs</span><span style="">&#40;</span>link.<span style="">attributes</span>.<span style="">get</span><span style="">&#40;</span><span style="color: #657a8a;">'href'</span>,<span style="color: #657a8a;">''</span><span style="">&#41;</span>, base=url.<span style="">redirect</span> <span style="color: #28334f; font-weight: bold;">or</span> url.<span style="">string</span><span style="">&#41;</span> </code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import abs
+&gt;&gt;&gt; url = URL(&#39;http://nodebox.net&#39;)
+&gt;&gt;&gt; dom = Document(url.download())
+&gt;&gt;&gt; for link in dom.by_tag(&#39;a&#39;):
+&gt;&gt;&gt;     print abs(link.attributes.get(&#39;href&#39;,&#39;&#39;), base=url.redirect or url.string) </pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="pdf"></a>PDF Parser</h2>
 <p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;"><em>Portable Document Format</em>&nbsp;(PDF) is a popular open standard for document exchange. The text, fonts, images and layout are contained in a single document that displays the same across systems. However, extracting the source text from a PDF is a non-trivial matter.</p>
 <p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;">The <span class="inline_code">PDF</span> object (based on <a href="http://www.unixuser.org/~euske/python/pdfminer/" target="_self">PDFMiner</a>) parses the source text from a PDF file. This is useful for mining the text, not so much for displaying it (i.e., formatting is lost and some passages may have become garbled).</p>
-<p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;"><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">web</span> <span style="color: #28334f; font-weight: bold;">import</span> URL, PDF<br />
-<span style="">&gt;&gt;&gt;</span> url = URL<span style="">&#40;</span><span style="color: #657a8a;">'http://www.clips.ua.ac.be/sites/default/files/ctrs-002_0.pdf'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> pdf = PDF<span style="">&#40;</span>url.<span style="">download</span><span style="">&#40;</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> pdf.<span style="">string</span><br />
-<br />
-CLiPS Technical Report series 002 September <span style="color: #666;">7</span>, <span style="color: #666;">2010</span><br />
-Tom De Smedt, Vincent Van Asch, Walter Daelemans <br />
-Computational Linguistics <span style="">&amp;</span> Psycholinguistics Research Center<br />
-... </code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import URL, PDF
+&gt;&gt;&gt; url = URL(&#39;http://www.clips.ua.ac.be/sites/default/files/ctrs-002_0.pdf&#39;)
+&gt;&gt;&gt; pdf = PDF(url.download())
+&gt;&gt;&gt; print pdf.string
+
+CLiPS Technical Report series 002 September 7, 2010
+Tom De Smedt, Vincent Van Asch, Walter Daelemans 
+Computational Linguistics &amp; Psycholinguistics Research Center
+... </pre></div>
 <p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;">URL's linking to a PDF document can be identified with&nbsp;<span class="inline_code">URL.mimetype in MIMETYPE_PDF</span>.</p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="spider"></a>Spider</h2>
 <p>A <em>web crawler</em> or <em>web spider</em> is used to browse the web in an automatter manner. The <span class="inline_code">Spider</span> class is initialized with a list of URLs. These are then visited by the spider. If they lead to a web page (i.e. HTML), the content is parsed for new links. These are added to a list of links scheduled for a visit.</p>
 <p>The given <span class="inline_code">domains</span> is a list of allowed domain names. An empty list means the spider can visit the entire web. The given <span class="inline_code">delay</span> defines the amount of seconds to wait before revisiting the same (sub)domain. This is a politeness policy: continually hammering a server with a robot disrupts requests from the website's regular visitors (this is called a <em>denial-of-service attack</em>).</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">spider = Spider<span style="">&#40;</span>links=<span style="">&#91;</span><span style="">&#93;</span>, domains=<span style="">&#91;</span><span style="">&#93;</span>, delay=<span style="color: #666;">20.0</span>, <span style="">parser</span>=HTMLLinkParser<span style="">&#40;</span><span style="">&#41;</span>.<span style="">parse</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">spider.<span style="">domains</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Domains allowed to visit (e.g., ['clips.ua.ac.be']).</span><br />
-spider.<span style="">delay</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Delay between visits to the same (sub)domain.</span><br />
-spider.<span style="">history</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Dictionary of (domain, time last visited).</span><br />
-spider.<span style="">visited</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Dictionary of URLs visited.</span><br />
-spider.<span style="">parse</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Function, returns list of Links from a HTML string.</span><br />
-spider.<span style="">sort</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># FIFO | LIFO (how new links are queued).</span><br />
-spider.<span style="">done</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># True when all links have been visited.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">spider.<span style="">crawl</span><span style="">&#40;</span>method=DEPTH<span style="">&#41;</span> &nbsp;<span style="color: grey;"># DEPTH | BREADTH | None.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">spider.<span style="">priority</span><span style="">&#40;</span>link<span style="">&#41;</span><br />
-spider.<span style="">follow</span><span style="">&#40;</span>link<span style="">&#41;</span><br />
-spider.<span style="">visit</span><span style="">&#40;</span>link, source=<span style="color: #4a587c;">None</span><span style="">&#41;</span><br />
-spider.<span style="">fail</span><span style="">&#40;</span>link<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">spider.<span style="">normalize</span><span style="">&#40;</span>url<span style="">&#41;</span></code></span></p>
-<p><span class="smallcaps">Crawling process</span></p>
+<pre class="brush:python; gutter:false; light:true;">spider = Spider(links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse)</pre><pre class="brush:python; gutter:false; light:true;">spider.domains              # Domains allowed to visit (e.g., [&#39;clips.ua.ac.be&#39;]).
+spider.delay                # Delay between visits to the same (sub)domain.
+spider.history              # Dictionary of (domain, time last visited).
+spider.visited              # Dictionary of URLs visited.
+spider.parse                # Function, returns list of Links from a HTML string.
+spider.sort                 # FIFO | LIFO (how new links are queued).
+spider.done                 # True when all links have been visited.</pre><pre class="brush:python; gutter:false; light:true;">spider.crawl(method=DEPTH)  # DEPTH | BREADTH | None.</pre><pre class="brush:python; gutter:false; light:true;">spider.priority(link, method=DEPTH)
+spider.follow(link)
+spider.visit(link, source=None)
+spider.fail(link)
+</pre><pre class="brush:python; gutter:false; light:true;">spider.normalize(url)
+</pre><p><span class="smallcaps">Crawling process</span></p>
 <ul>
-<li><span class="inline_code">Spider.crawl()</span>&nbsp;is meant to be called continuously in a loop.&nbsp;&nbsp;It&nbsp;selects a link to visit, and parses its content for new links. The default parser is a robust <span class="inline_code">HTMLLinkParser</span> based on Python's <span class="inline_code">sgmllib.SGMLParser</span>. The method parameter specifies whether the spider prefers to visit internal links (<span class="inline_code">DEPTH</span>) or external links to other domains (<span class="inline_code">BREADTH</span>).<br />&nbsp;<br />If the link is on a domain recently visited (elapsed time &lt; <span class="inline_code">Spider.delay</span>) it is temporarily skipped. If this is undesired, set an optional <span class="inline_code">throttle</span> parameter to the same value as <span class="inline_code">Spider.delay</span>.</li>
+<li><span class="inline_code">Spider.crawl()</span>&nbsp;is meant to be called continuously in a loop.&nbsp;&nbsp;It&nbsp;selects a link to visit, and parses its content for new links. The default parser is a robust <span class="inline_code">HTMLLinkParser</span> based on Python's <span class="inline_code">sgmllib.SGMLParser</span>. The method parameter specifies whether the spider prefers to visit internal links (<span class="inline_code">DEPTH</span>) or external links to other domains (<span class="inline_code">BREADTH</span>).<br />&nbsp;<br />If the link is on a domain recently visited (elapsed time &lt; <span class="inline_code">Spider.delay</span>) it is temporarily skipped. If this is undesired, set an optional <span class="inline_code">throttle</span> parameter of <span class="inline_code">Spider.crawl()</span> to the same value as <span class="inline_code">Spider.delay</span>.</li>
 </ul>
 <ul>
 <li><span class="inline_code">Spider.priority()</span> is called from <span class="inline_code">Spider.crawl()</span> to determine the priority of a new <span class="inline_code">Link</span>, as a number between <span class="inline_code">0.0-1.0</span>. Links with higher priority are visited first.&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">Spider.priority()</span>&nbsp;can be overridden in a subclass, for example to demote URLs with a query string (which could just be another sort order).&nbsp;Each URL is passed through&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">Spider.normalize()</span>which can also be overridden (for example, to strip the query string entirely).</li>
@@ -572,32 +578,33 @@ spider.<span style="">fail</span><span style="">&#40;</span>link<span style="">&
 <li><span class="inline_code">Spider.follow()</span> is called from <span class="inline_code">Spider.crawl()</span> to determine if it should visit the given <span class="inline_code">Link</span>. By default it yields <span class="inline_code">True</span>, but it can be overridden to disallow selected links.</li>
 </ul>
 <ul>
-<li><span class="inline_code">Spider.visit()</span> is called from <span class="inline_code">Spider.crawl()</span> once a <span class="inline_code">Link</span> is visited. When <span class="inline_code">source=None</span>, this means that the link is not a web page (and no HTML was parsed), or possibly that a <span class="inline_code">URLTimeout</span> error occured (content size too big). Otherwise it is the HTML source string. By default this method does nothing, but it can be overridden.</li>
+<li><span class="inline_code">Spider.visit()</span> is called from <span class="inline_code">Spider.crawl()</span> once a <span class="inline_code">Link</span> is visited. The&nbsp;<span class="inline_code">source</span>&nbsp;will be an HTML string with the content.&nbsp;By default this method does nothing, but it can be overridden.</li>
 </ul>
 <ul>
 <li><span class="inline_code">Spider.fail()</span> is called from <span class="inline_code">Spider.crawl()</span> for links whose MIME-type could not be determined or which raised a <span class="inline_code">URLError</span> on download.</li>
 </ul>
 <p>The spider uses <span class="inline_code">Link</span> objects internally, which hold additional information besides the URL string:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">link = Link<span style="">&#40;</span>url, description=<span style="color: #657a8a;">''</span>, relation=<span style="color: #657a8a;">''</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">link.<span style="">url</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Parsed from &lt;a href=''&gt; attribute.</span><br />
-link.<span style="">description</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Parsed from &lt;a title=''&gt; attribute.</span><br />
-link.<span style="">relation</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Parsed from &lt;a rel=''&gt; attribute.</span><br />
-link.<span style="">referrer</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Parent web page URL.</span></code></span></p>
-<p>For example, here is a subclass of <span class="inline_code">Spider</span> that simply prints each link it visits. Since it uses <span class="inline_code">DEPTH</span> for crawling, it will prefer website internal links.</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">class</span> <span style="color:rgb(90, 150, 200)">Spiderling</span><span style="">&#40;</span>Spider<span style="">&#41;</span>: <br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">def</span> <span style="color:rgb(90, 150, 200)">visit</span><span style="">&#40;</span><span style="color: #4a587c;">self</span>, link, source=<span style="color: #4a587c;">None</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #657a8a;">'visited:'</span>, <span style="color: #4a587c;">repr</span><span style="">&#40;</span>link.<span style="">url</span><span style="">&#41;</span>, <span style="color: #657a8a;">'from:'</span>, link.<span style="">referrer</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">def</span> <span style="color:rgb(90, 150, 200)">fail</span><span style="">&#40;</span><span style="color: #4a587c;">self</span>, link<span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #657a8a;">'failed:'</span>, <span style="color: #4a587c;">repr</span><span style="">&#40;</span>link.<span style="">url</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span><br />
-<span style="">&gt;&gt;&gt;</span> s = Spiderling<span style="">&#40;</span>links=<span style="">&#91;</span><span style="color: #657a8a;">'http://www.clips.ua.ac.be/'</span><span style="">&#93;</span>, delay=<span style="color: #666;">5</span>, queue=<span style="color: #4a587c;">True</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">while</span> <span style="color: #28334f; font-weight: bold;">not</span> s.<span style="">done</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; s.<span style="">crawl</span><span style="">&#40;</span>method=DEPTH, cached=<span style="color: #4a587c;">False</span>, throttle=<span style="color: #666;">5</span><span style="">&#41;</span><br />
-<br />
-visited: u<span style="color: #657a8a;">'http://www.clips.ua.ac.be/'</span><br />
-visited: u<span style="color: #657a8a;">'http://www.clips.ua.ac.be/#navigation'</span><br />
-visited: u<span style="color: #657a8a;">'http://www.clips.ua.ac.be/colloquia'</span><br />
-visited: u<span style="color: #657a8a;">'http://www.clips.ua.ac.be/computational-linguistics'</span><br />
-visited: u<span style="color: #657a8a;">'http://www.clips.ua.ac.be/contact'</span></code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">link = Link(url, description=&#39;&#39;, relation=&#39;&#39;)</pre><pre class="brush:python; gutter:false; light:true;">link.url                    # Parsed from &lt;a href=&#39;&#39;&gt; attribute.
+link.description            # Parsed from &lt;a title=&#39;&#39;&gt; attribute.
+link.relation               # Parsed from &lt;a rel=&#39;&#39;&gt; attribute.
+link.referrer               # Parent web page URL.</pre><p>For example, here is a subclass of <span class="inline_code">Spider</span> that simply prints each link it visits. Since it uses <span class="inline_code">DEPTH</span> for crawling, it will prefer website internal links.</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; class Spiderling(Spider): 
+&gt;&gt;&gt;     def visit(self, link, source=None):
+&gt;&gt;&gt;         print &#39;visited:&#39;, repr(link.url), &#39;from:&#39;, link.referrer
+&gt;&gt;&gt;     def fail(self, link):
+&gt;&gt;&gt;         print &#39;failed:&#39;, repr(link.url)
+&gt;&gt;&gt;
+&gt;&gt;&gt; s = Spiderling(links=[&#39;http://www.clips.ua.ac.be/&#39;], delay=5, queue=True)
+&gt;&gt;&gt; while not s.done:
+&gt;&gt;&gt;     s.crawl(method=DEPTH, cached=False, throttle=5)
+
+visited: u&#39;http://www.clips.ua.ac.be/&#39;
+visited: u&#39;http://www.clips.ua.ac.be/#navigation&#39;
+visited: u&#39;http://www.clips.ua.ac.be/colloquia&#39;
+visited: u&#39;http://www.clips.ua.ac.be/computational-linguistics&#39;
+visited: u&#39;http://www.clips.ua.ac.be/contact&#39;
+</pre></div>
 <p><span class="small"><span style="text-decoration: underline;">Note</span>: <span class="inline_code">Spider.crawl()</span> takes the same parameters as <span class="inline_code">URL.download()</span>, e.g. </span><span class="small"><span class="inline_code">cached=False</span> or <span class="inline_code">throttle=10</span>.</span></p>
 <p>&nbsp;</p>
 <hr />
@@ -605,59 +612,61 @@ visited: u<span style="color: #657a8a;">'http://www.clips.ua.ac.be/contact'</spa
 <p>The <em>Internet Message Access Protocol </em>(IMAP) is a protocol for retrieving e-mail messages from a mail server or webmail service.<em> </em>The <span class="inline_code">Mail</span> object is a wrapper for the Python <span class="inline_code">imaplib</span>. It can be used to search + read e-mail messages from your webmail.</p>
 <p>Currently, it supports one service: <span class="inline_code">GMAIL</span>. However, it may work with other services by passing the server address to the <span class="inline_code">service</span> parameter (e.g. <span class="inline_code">service="imap.gmail.com"</span>). Note that you need to <a href="http://mail.google.com/support/bin/answer.py?answer=77695" target="_blank">enable IMAP</a> from your Gmail account if you want to access it.</p>
 <p>With <span class="inline_code">secure=False</span> (no SSL) the default <span class="inline_code">port</span> is 143.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">mail = Mail<span style="">&#40;</span>username, password, service=GMAIL, port=<span style="color: #666;">993</span>, secure=<span style="color: #4a587c;">True</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">mail.<span style="">folders</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Dictionary of name =&gt; MailFolder.</span><br />
-mail.<span style="">&#91;</span>folder<span style="">&#93;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># For example: Mail.inbox.read(i)</span><br />
-mail.<span style="">&#91;</span>folder<span style="">&#93;</span>.<span style="">count</span> &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Number of messages in folder.</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">mail.<span style="">&#91;</span>folder<span style="">&#93;</span>.<span style="">search</span><span style="">&#40;</span>query, field=FROM<span style="">&#41;</span> <span style="color: grey;"># FROM | SUBJECT | DATE</span><br />
-mail.<span style="">&#91;</span>folder<span style="">&#93;</span>.<span style="">read</span><span style="">&#40;</span>index, attachments=<span style="color: #4a587c;">False</span>, cached=<span style="color: #4a587c;">True</span><span style="">&#41;</span></code></span></p>
-<p>E-mail messages are organized in folders. The Mail.folders is a <span class="inline_code">name</span> → <span class="inline_code">MailFolder</span> dictionary. Folders can also be accessed directly by name, as an attribute. Common names include: <span class="inline_code">inbox</span>, <span class="inline_code">spam</span>, <span class="inline_code">trash</span>.<span class="inline_code">&nbsp;</span></p>
+<pre class="brush:python; gutter:false; light:true;">mail = Mail(username, password, service=GMAIL, port=993, secure=True)</pre><pre class="brush:python; gutter:false; light:true;">mail.folders               # Dictionary of name =&gt; MailFolder.
+mail.[folder]              # For example: Mail.inbox.read(i)
+mail.[folder].count        # Number of messages in folder.
+</pre><pre class="brush:python; gutter:false; light:true;">mail.[folder].search(query, field=FROM) # FROM | SUBJECT | DATE
+mail.[folder].read(index, attachments=False, cached=True)</pre><p>E-mail messages are organized in folders. The Mail.folders is a <span class="inline_code">name</span> → <span class="inline_code">MailFolder</span> dictionary. Folders can also be accessed directly by name, as an attribute. Common names include: <span class="inline_code">inbox</span>, <span class="inline_code">spam</span>, <span class="inline_code">trash</span>.<span class="inline_code">&nbsp;</span></p>
 <p><span class="inline_code">MailFolder.search()</span> returns a list of e-mail indices, latest-first.<span class="inline_code"><br />MailFolder.read()</span> retrieves the e-mail with given index as a <span class="inline_code">Message</span>:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">message = Mail.<span style="">&#91;</span>folder<span style="">&#93;</span>.<span style="">read</span><span style="">&#40;</span>i<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">message.<span style="">author</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Unicode string, sender name + e-mail address.</span><br />
-message.<span style="">email_address</span> &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Unicode string, sender e-mail address.</span><br />
-message.<span style="">date</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Unicode string, date received.</span><br />
-message.<span style="">subject</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Unicode string, message subject.</span><br />
-message.<span style="">body</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Unicode string, message body.</span><br />
-message.<span style="">attachments</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of (MIME-type, str)-tuples.</span></code></span></p>
-<p>For example:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">web</span> <span style="color: #28334f; font-weight: bold;">import</span> Mail, GMAIL, SUBJECT<br />
-<span style="">&gt;&gt;&gt;</span> gmail = Mail<span style="">&#40;</span>username=<span style="color: #657a8a;">'me'</span>, password=<span style="color: #657a8a;">'secret'</span>, service=GMAIL<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> gmail.<span style="">folders</span>.<span style="">keys</span><span style="">&#40;</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span><span style="color: #657a8a;">'drafts'</span>, <span style="color: #657a8a;">'spam'</span>, <span style="color: #657a8a;">'personal'</span>, <span style="color: #657a8a;">'work'</span>, <span style="color: #657a8a;">'inbox'</span>, <span style="color: #657a8a;">'mail'</span>, <span style="color: #657a8a;">'starred'</span>, <span style="color: #657a8a;">'trash'</span><span style="">&#93;</span></code></span></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> i = gmail.<span style="">spam</span>.<span style="">search</span><span style="">&#40;</span><span style="color: #657a8a;">'wish'</span>, field=SUBJECT<span style="">&#41;</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span> <span style="color: grey;"># What riches await...</span><br />
-<span style="">&gt;&gt;&gt;</span> m = gmail.<span style="">spam</span>.<span style="">read</span><span style="">&#40;</span>i<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #657a8a;">' &nbsp; From:'</span>, m.<span style="">author</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #657a8a;">'Subject:'</span>, m.<span style="">subject</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #657a8a;">'Message:'</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> m.<span style="">body</span><br />
-<br />
-&nbsp; &nbsp;From: Vegas VIP Clib <span style="">&lt;</span>amllhbmjb@acciongeoda.<span style="">org</span><span style="">&gt;</span><br />
-Subject: Your wish has been granted<br />
-Message:<br />
-No one has claimed our jackpot<span style="">!</span> This i​s your chance to t​ry<span style="">!</span> <br />
-http://www.<span style="">top</span>-hot-casino.<span style="">ru</span></code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">message = Mail.[folder].read(i)</pre><pre class="brush:python; gutter:false; light:true;">message.author              # Unicode string, sender name + e-mail address.
+message.email_address       # Unicode string, sender e-mail address.
+message.date                # Unicode string, date received.
+message.subject             # Unicode string, message subject.
+message.body                # Unicode string, message body.
+message.attachments         # List of (MIME-type, str)-tuples.
+</pre><p>For example:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import Mail, GMAIL, SUBJECT
+&gt;&gt;&gt; gmail = Mail(username=&#39;me&#39;, password=&#39;secret&#39;, service=GMAIL)
+&gt;&gt;&gt; print gmail.folders.keys()
+
+[&#39;drafts&#39;, &#39;spam&#39;, &#39;personal&#39;, &#39;work&#39;, &#39;inbox&#39;, &#39;mail&#39;, &#39;starred&#39;, &#39;trash&#39;]</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; i = gmail.spam.search(&#39;wish&#39;, field=SUBJECT)[0] # What riches await...
+&gt;&gt;&gt; m = gmail.spam.read(i)
+&gt;&gt;&gt; print &#39;   From:&#39;, m.author
+&gt;&gt;&gt; print &#39;Subject:&#39;, m.subject
+&gt;&gt;&gt; print &#39;Message:&#39;
+&gt;&gt;&gt; print m.body
+
+   From: Vegas VIP Clib &lt;amllhbmjb@acciongeoda.org&gt;
+Subject: Your wish has been granted
+Message:
+No one has claimed our jackpot! This is your chance to try! 
+http://www.top-hot-casino.ru</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="locale"></a>Locale</h2>
 <p>The helper module&nbsp;<span class="inline_code">pattern.web.locale</span>&nbsp;contains functions for region and language codes, based on the ISO-639 language code (e.g., <span class="inline_code">en</span>), the ISO-3166 region code (e.g., <span class="inline_code">US</span>) and the IETF BCP 47 language-region specification (<span class="inline_code">en-US</span>):</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">encode_language<span style="">&#40;</span>name<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; <span style="color: grey;"># 'English' =&gt; 'en'</span></code></span><span class="geshifilter"><code class="python geshifilter-python">decode_language<span style="">&#40;</span><span style="">code</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; <span style="color: grey;"># 'en' =&gt; 'English'</span></code></span><span class="geshifilter"><code class="python geshifilter-python">encode_region<span style="">&#40;</span>name<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># 'United States' =&gt; 'US'</span></code></span><span class="geshifilter"><code class="python geshifilter-python">decode_region<span style="">&#40;</span><span style="">code</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># 'US' =&gt; 'United States'</span></code></span><span class="geshifilter"><code class="python geshifilter-python">languages<span style="">&#40;</span>region<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># 'US' =&gt; ['en']</span></code></span><span class="geshifilter"><code class="python geshifilter-python">regions<span style="">&#40;</span>language<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># 'en' =&gt; ['GB', 'NZ', 'TT', ...]</span></code></span><span class="geshifilter"><code class="python geshifilter-python">regionalize<span style="">&#40;</span>language<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; <span style="color: grey;"># 'en' =&gt; ['en-US', 'en-GB', ...]</span></code></span><span class="geshifilter"><code class="python geshifilter-python">market<span style="">&#40;</span>language<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># 'en' =&gt; 'en-US'</span></code></span></p>
-<p>The <span class="inline_code">geocode()</span> command recognizes a number of world capital cities and returns a tuple&nbsp;(<span class="inline_code">latitude</span>, <span class="inline_code">longitude</span>, <span class="inline_code">ISO-639</span>, <span class="inline_code">region</span>).</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">geocode<span style="">&#40;</span>location<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># 'Brussels' =&gt; (50.83, 4.33, u'nl', u'Belgium')</span></code></span></p>
-<p>This is useful in combination with the&nbsp;<span class="inline_code">geo</span> parameter for <span class="inline_code">Twitter.search()</span> to obtain regional tweets:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">web</span> <span style="color: #28334f; font-weight: bold;">import</span> Twitter<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">web</span>.<span style="">locale</span> <span style="color: #28334f; font-weight: bold;">import</span> geocode <br />
-<span style="">&gt;&gt;&gt;</span> twitter = Twitter<span style="">&#40;</span>language=<span style="color: #657a8a;">'en'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> tweet <span style="color: #28334f; font-weight: bold;">in</span> twitter.<span style="">search</span><span style="">&#40;</span><span style="color: #657a8a;">'restaurant'</span>, geo=geocode<span style="">&#40;</span><span style="color: #657a8a;">'Brussels'</span><span style="">&#41;</span><span style="">&#91;</span>:<span style="color: #666;">2</span><span style="">&#93;</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">print</span> tweet.<span style="">description</span><br />
-<br />
-u<span style="color: #657a8a;">'Did you know: every McDonalds restaurant has free internet in Belgium...'</span></code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">encode_language(name)       # &#39;English&#39; =&gt; &#39;en&#39;</pre><pre class="brush:python; gutter:false; light:true;">decode_language(code)       # &#39;en&#39; =&gt; &#39;English&#39;</pre><pre class="brush:python; gutter:false; light:true;">encode_region(name)         # &#39;United States&#39; =&gt; &#39;US&#39;</pre><pre class="brush:python; gutter:false; light:true;">decode_region(code)         # &#39;US&#39; =&gt; &#39;United States&#39;</pre><pre class="brush:python; gutter:false; light:true;">languages(region)           # &#39;US&#39; =&gt; [&#39;en&#39;]</pre><pre class="brush:python; gutter:false; light:true;">regions(language)           # &#39;en&#39; =&gt; [&#39;GB&#39;, &#39;NZ&#39;, &#39;TT&#39;, ...]</pre><pre class="brush:python; gutter:false; light:true;">regionalize(language)       # &#39;en&#39; =&gt; [&#39;en-US&#39;, &#39;en-GB&#39;, ...]</pre><pre class="brush:python; gutter:false; light:true;">market(language)            # &#39;en&#39; =&gt; &#39;en-US&#39;</pre><p>The <span class="inline_code">geocode()</span> command recognizes a number of world capital cities and returns a tuple&nbsp;(<span class="inline_code">latitude</span>, <span class="inline_code">longitude</span>, <span class="inline_code">ISO-639</span>, <span class="inline_code">region</span>).</p>
+<pre class="brush:python; gutter:false; light:true;">geocode(location)           # &#39;Brussels&#39; =&gt; (50.83, 4.33, u&#39;nl&#39;, u&#39;Belgium&#39;)</pre><p>This is useful in combination with the&nbsp;<span class="inline_code">geo</span> parameter for <span class="inline_code">Twitter.search()</span> to obtain regional tweets:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import Twitter
+&gt;&gt;&gt; from pattern.web.locale import geocode 
+&gt;&gt;&gt; twitter = Twitter(language=&#39;en&#39;)
+&gt;&gt;&gt; for tweet in twitter.search(&#39;restaurant&#39;, geo=geocode(&#39;Brussels&#39;)[:2]):
+&gt;&gt;&gt;      print tweet.description
+
+u&#39;Did you know: every McDonalds restaurant has free internet in Belgium...&#39;</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="cache"></a>Cache</h2>
 <p>By, default, <span class="inline_code">URL.download()</span> and <span class="inline_code">SearchEngine.search()</span> will cache results locally. This way, there is no need to connect to the internet once a query has been cached. Over time the cache can grow quite large, filled with whatever was downloaded – from Wikipedia pages to zip archives.</p>
 <p>Emptying it is easy (and permanent):</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">web</span> <span style="color: #28334f; font-weight: bold;">import</span> cache<br />
-<span style="">&gt;&gt;&gt;</span> cache.<span style="">clear</span><span style="">&#40;</span><span style="">&#41;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import cache
+&gt;&gt;&gt; cache.clear()
+</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2>See also</h2>
@@ -673,5 +682,8 @@ u<span style="color: #657a8a;">'Did you know: every McDonalds restaurant has fre
     </div>
     </div>
     </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
 </body>
 </html>

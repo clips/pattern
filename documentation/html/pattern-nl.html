@@ -12,6 +12,12 @@
         #header { border-bottom: 1px solid #C6D4DD;  }
         table { border-collapse: collapse; }
     </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
 </head>
 <body class="node-type-page one-sidebar sidebar-right section-pages">
     <div id="page">
@@ -32,25 +38,34 @@
 <hr />
 <h2>Documentation</h2>
 <p>The commands in this module work in exactly the same way as their counterparts in <a href="pattern-en.html">pattern.en</a>&nbsp;– detailed documentation can be found there.&nbsp;For Dutch nouns there is <span class="inline_code">singularize()</span> and <span class="inline_code">pluralize()</span>. For Dutch verbs there is <span class="inline_code">conjugate()</span>, <span class="inline_code">lemma()</span>, <span class="inline_code">lexeme()</span> and <span class="inline_code">tenses()</span>:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">nl</span> <span style="color: #28334f; font-weight: bold;">import</span> singularize, conjugate, INFINITIVE<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> singularize<span style="">&#40;</span><span style="color: #657a8a;">'katten'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> conjugate<span style="">&#40;</span><span style="color: #657a8a;">'zaten'</span>, tense=INFINITIVE<span style="">&#41;</span><br />
-kat<br />
-zitten </code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.nl import singularize, conjugate, INFINITIVE
+&gt;&gt;&gt; print singularize(&#39;katten&#39;)
+&gt;&gt;&gt; print conjugate(&#39;zaten&#39;, tense=INFINITIVE)
+
+kat
+zitten </pre></div>
 <p>Dutch adjectives followed by a noun&nbsp;inflect with an&nbsp;<span class="inline_code">-e</span>&nbsp;suffix (e.g., <em>braaf</em>&nbsp;→ <em>brave kat</em>). You can get the base form with the <span class="inline_code">predicative()</span> command, or vice versa with&nbsp;<span class="inline_code">attributive()</span>:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">nl</span> <span style="color: #28334f; font-weight: bold;">import</span> predicative<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> predicative<span style="">&#40;</span><span style="color: #657a8a;">'brave'</span><span style="">&#41;</span><br />
-braaf </code></span></span></p>
-<p><span class="example">For opinion mining there is <span class="inline_code">sentiment()</span>, which returns a (<span class="inline_code">polarity</span>, <span class="inline_code">subjectivity</span>)-tuple, based on a lexicon of adjectives. It has an accuracy of 79% (P 0.77, R 0.83) for book reviews:</span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">nl</span> <span style="color: #28334f; font-weight: bold;">import</span> sentiment<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> sentiment<span style="">&#40;</span><span style="color: #657a8a;">'Een onwijs spannend goed boek!'</span><span style="">&#41;</span><br />
-<span style="">&#40;</span><span style="color: #666;">0.55</span>, <span style="color: #666;">0.90</span><span style="">&#41;</span> </code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.nl import predicative
+&gt;&gt;&gt; print predicative(&#39;brave&#39;)
+
+braaf </pre></div>
+<div class="example">For opinion mining there is <span class="inline_code">sentiment()</span>, which returns a (<span class="inline_code">polarity</span>, <span class="inline_code">subjectivity</span>)-tuple, based on a lexicon of adjectives. It has an accuracy of 79% (P 0.77, R 0.83) for book reviews:</div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.nl import sentiment
+&gt;&gt;&gt; print sentiment(&#39;Een onwijs spannend goed boek!&#39;)
+
+(0.55, 0.90) </pre></div>
 <p>For parsing there is <span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">parse()</span>&nbsp;and&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">split()</span>:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">nl</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, split<br />
-<span style="">&gt;&gt;&gt;</span> s = parse<span style="">&#40;</span><span style="color: #657a8a;">'De kat zit op de mat.'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> s = split<span style="">&#40;</span>s<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> s.<span style="">sentences</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span><br />
-Sentence<span style="">&#40;</span><span style="color: #657a8a;">'De/DT/B-NP/O kat/NN/I-NP/O zit/VBZ/B-VP/O op/IN/B-PP/B-PNP de/DT/B-NP/I-PNP mat/NN/I-NP/I-PNP ././O/O'</span><span style="">&#41;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.nl import parse, split
+&gt;&gt;&gt; s = parse(&#39;De kat zit op de mat.&#39;)
+&gt;&gt;&gt; s = split(s)
+&gt;&gt;&gt; print s.sentences[0]
+
+Sentence(&#39;De/DT/B-NP/O kat/NN/I-NP/O zit/VBZ/B-VP/O op/IN/B-PP/B-PNP&#39;
+         &#39;de/DT/B-NP/I-PNP mat/NN/I-NP/I-PNP ././O/O&#39;)</pre></div>
 <p>See the <span class="inline_code">pattern.en</span> documentation on how to manipulate <span class="inline_code">Sentence</span> objects (<span class="link-maintenance"><a href="pattern-en.html#tree">here</a></span>).</p>
 <p><span class="smallcaps"><span style="font-variant: normal;"><span style="font-variant: small-caps;"><br /></span></span></span></p>
 <p><span class="smallcaps">Accuracy – parser</span></p>
@@ -67,5 +82,8 @@ Sentence<span style="">&#40;</span><span style="color: #657a8a;">'De/DT/B-NP/O k
     </div>
     </div>
     </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
 </body>
 </html>

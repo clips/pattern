@@ -28,6 +28,12 @@ template = """
         #header { border-bottom: 1px solid #C6D4DD;  }
         table { border-collapse: collapse; }
     </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
 </head>
 <body class="node-type-page one-sidebar sidebar-right section-pages">
     <div id="page">
@@ -47,6 +53,9 @@ template = """
     </div>
     </div>
     </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
 </body>
 </html>
 """.strip()

@@ -12,6 +12,12 @@
         #header { border-bottom: 1px solid #C6D4DD;  }
         table { border-collapse: collapse; }
     </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
 </head>
 <body class="node-type-page one-sidebar sidebar-right section-pages">
     <div id="page">
@@ -29,8 +35,7 @@
 <h3>The pattern.search module offers a pattern matching system similar to regular expressions, that can be used to search a string syntactically (word <em>function</em>), or semantically (word <em>meaning</em>) using a taxonomy.<span class="blue">&nbsp;</span></h3>
 <p>It can be used by itself or with other <a href="pattern.html">pattern</a> modules: <a href="pattern-web.html">web</a> | <a href="pattern-db.html">db</a> | <a href="pattern-en.html">en</a> | search <span class="blue">&nbsp;</span>| <a href="pattern-vector.html">vector</a> | <a href="pattern-graph.html">graph</a>.</p>
 <p><img src="../g/pattern_schema.gif" alt="" width="620" height="180" /></p>
-<h2>
-<hr /></h2>
+<hr />
 <h2>Documentation</h2>
 <ul>
 <li><a href="#introduction">Searching + matching in a nutshell</a></li>
@@ -44,56 +49,62 @@
 <hr />
 <h2><a name="introduction"></a>Searching + matching in a nutshell</h2>
 <p>The <span class="inline_code">search()</span> command takes a word (or a sequence of words) that you want to retrieve from a string. It returns a list of non-overlapping matches. The <span class="inline_code">match()</span> command returns the first match (or <span class="inline_code">None</span>). The <span class="inline_code">compile()</span> command returns a <span class="inline_code">Pattern</span> object with a <span class="inline_code">search()</span> and <span class="inline_code">match()</span> method.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">search<span style="">&#40;</span>pattern, sentence<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">match<span style="">&#40;</span>pattern, sentence<span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python"><span style="color: #4a587c;">compile</span><span style="">&#40;</span>pattern<span style="">&#41;</span></code></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">search</span> <span style="color: #28334f; font-weight: bold;">import</span> search<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> search<span style="">&#40;</span><span style="color: #657a8a;">'rabbit'</span>, <span style="color: #657a8a;">'big white rabbit'</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span>Match<span style="">&#40;</span>words=<span style="">&#91;</span>Word<span style="">&#40;</span><span style="color: #657a8a;">'rabbit'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span><span style="">&#93;</span></code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">search(pattern, sentence)</pre><pre class="brush:python; gutter:false; light:true;">match(pattern, sentence)</pre><pre class="brush:python; gutter:false; light:true;">compile(pattern)</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import search
+&gt;&gt;&gt; print search(&#39;rabbit&#39;, &#39;big white rabbit&#39;)
+
+[Match(words=[Word(&#39;rabbit&#39;)])]</pre></div>
 <p>Search words can contain a wildcard character at the <span class="inline_code">*start</span>, <span class="inline_code">end*</span>, <span class="inline_code">*both*</span> or <span class="inline_code">in*between</span>:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> search<span style="">&#40;</span><span style="color: #657a8a;">'rabbit*'</span>, <span style="color: #657a8a;">'big white rabbit'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> search<span style="">&#40;</span><span style="color: #657a8a;">'rabbit*'</span>, <span style="color: #657a8a;">'big white rabbits'</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span>Match<span style="">&#40;</span>words=<span style="">&#91;</span>Word<span style="">&#40;</span><span style="color: #657a8a;">'rabbit'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span><span style="">&#93;</span><br />
-<span style="">&#91;</span>Match<span style="">&#40;</span>words=<span style="">&#91;</span>Word<span style="">&#40;</span><span style="color: #657a8a;">'rabbits'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span><span style="">&#93;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print search(&#39;rabbit*&#39;, &#39;big white rabbit&#39;)
+&gt;&gt;&gt; print search(&#39;rabbit*&#39;, &#39;big white rabbits&#39;)
+
+[Match(words=[Word(&#39;rabbit&#39;)])]
+[Match(words=[Word(&#39;rabbits&#39;)])]
+</pre></div>
 <p>Search words can be composed of different options separated by a vertical bar:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> search<span style="">&#40;</span><span style="color: #657a8a;">'rabbit|cony|bunny'</span>, <span style="color: #657a8a;">'big black bunny'</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span>Match<span style="">&#40;</span>words=<span style="">&#91;</span>Word<span style="">&#40;</span><span style="color: #657a8a;">'bunny'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span><span style="">&#93;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print search(&#39;rabbit|cony|bunny&#39;, &#39;big black bunny&#39;)
+
+[Match(words=[Word(&#39;bunny&#39;)])]</pre></div>
 <p>&nbsp;</p>
 <p><span class="smallcaps">Syntactical pattern matching</span></p>
 <p>The above can also be accomplished with regular expressions (which is faster). It is more interesting if we involve the <a href="pattern-en.html#parser">parser</a> from the <span class="inline_code">pattern.en</span> module. The parser takes a string, identifies words and sentences, and assigns a part-of-speech tag to each word. For example: <span class="postag">NN</span> (noun), <span class="postag">VB</span> (verb) or <span class="postag">JJ</span> (adjective). It groups words into chunks, for example: <span class="postag">NP</span> (noun phrase) consists of successive <span class="postag">NN</span>, <span class="postag">JJ</span>, <span class="postag">DT</span> (determiner), ...</p>
 <p>A parsed <span class="inline_code">Sentence</span> can be searched for part-of-speech tags:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">search</span> <span style="color: #28334f; font-weight: bold;">import</span> search<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, Sentence<br />
-<span style="">&gt;&gt;&gt;</span> s = Sentence<span style="">&#40;</span>parse<span style="">&#40;</span><span style="color: #657a8a;">&quot;big white rabbit&quot;</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> s<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> search<span style="">&#40;</span><span style="color: #657a8a;">'JJ'</span>, s<span style="">&#41;</span> <span style="color: grey;"># all adjectives</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> search<span style="">&#40;</span><span style="color: #657a8a;">'NN'</span>, s<span style="">&#41;</span> <span style="color: grey;"># all nouns</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> search<span style="">&#40;</span><span style="color: #657a8a;">'NP'</span>, s<span style="">&#41;</span> <span style="color: grey;"># all noun phrases</span><br />
-<br />
-Sentence<span style="">&#40;</span><span style="color: #657a8a;">'big/JJ/B-NP/O white/JJ/I-NP/O rabbit/NN/I-NP/O'</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span>Match<span style="">&#40;</span>words=<span style="">&#91;</span>Word<span style="">&#40;</span>u<span style="color: #657a8a;">'big/JJ'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span>, Match<span style="">&#40;</span>words=<span style="">&#91;</span>Word<span style="">&#40;</span>u<span style="color: #657a8a;">'white/JJ'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span><span style="">&#93;</span><br />
-<span style="">&#91;</span>Match<span style="">&#40;</span>words=<span style="">&#91;</span>Word<span style="">&#40;</span>u<span style="color: #657a8a;">'rabbit/NN'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span><span style="">&#93;</span><br />
-<span style="">&#91;</span>Match<span style="">&#40;</span>words=<span style="">&#91;</span>Word<span style="">&#40;</span>u<span style="color: #657a8a;">'big/JJ'</span><span style="">&#41;</span>, Word<span style="">&#40;</span>u<span style="color: #657a8a;">'white/JJ'</span><span style="">&#41;</span>, Word<span style="">&#40;</span>u<span style="color: #657a8a;">'rabbit/NN'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span><span style="">&#93;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import search
+&gt;&gt;&gt; from pattern.en import parse, Sentence
+&gt;&gt;&gt; s = Sentence(parse(&quot;big white rabbit&quot;))
+&gt;&gt;&gt; print s
+&gt;&gt;&gt; print
+&gt;&gt;&gt; print search(&#39;JJ&#39;, s) # all adjectives
+&gt;&gt;&gt; print search(&#39;NN&#39;, s) # all nouns
+&gt;&gt;&gt; print search(&#39;NP&#39;, s) # all noun phrases
+
+Sentence(&#39;big/JJ/B-NP/O white/JJ/I-NP/O rabbit/NN/I-NP/O&#39;)
+
+[Match(words=[Word(u&#39;big/JJ&#39;)]), Match(words=[Word(u&#39;white/JJ&#39;)])]
+[Match(words=[Word(u&#39;rabbit/NN&#39;)])]
+[Match(words=[Word(u&#39;big/JJ&#39;), Word(u&#39;white/JJ&#39;), Word(u&#39;rabbit/NN&#39;)])]</pre></div>
 <p>&nbsp;</p>
 <p><span class="smallcaps">Semantical pattern matching</span></p>
 <p>The <span class="inline_code">pattern.search</span> module includes a <span class="inline_code">Taxonomy</span> class that can be used to define semantic categories for words. Assume that you wanted to extract flower names from a text. This can make patterns long and clumsy, e.g.: <span class="inline_code">compile("rose|lily|daisy|daffodil|begonia")</span>.</p>
 <p>A more robust approach is to work with the taxonomy:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">search</span> <span style="color: #28334f; font-weight: bold;">import</span> taxonomy, search<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, Sentence<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> f <span style="color: #28334f; font-weight: bold;">in</span> <span style="">&#40;</span><span style="color: #657a8a;">'rose'</span>, <span style="color: #657a8a;">'lily'</span>, <span style="color: #657a8a;">'daisy'</span>, <span style="color: #657a8a;">'daffodil'</span>, <span style="color: #657a8a;">'begonia'</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; taxonomy.<span style="">append</span><span style="">&#40;</span>f, type=<span style="color: #657a8a;">'flower'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> s = Sentence<span style="">&#40;</span>parse<span style="">&#40;</span><span style="color: #657a8a;">'A field of white daffodils.'</span>, lemmata=<span style="color: #4a587c;">True</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> s<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> search<span style="">&#40;</span><span style="color: #657a8a;">'FLOWER'</span>, s<span style="">&#41;</span><br />
-<br />
-Sentence<span style="">&#40;</span><span style="color: #657a8a;">'A/DT/B-NP/O/a field/NN/I-NP/O/field of/IN/B-PP/B-PNP/of white/JJ/B-NP/I-PNP/white daffodils/NNS/I-NP/I-PNP/daffodil ././O/O/.'</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span>Match<span style="">&#40;</span>words=<span style="">&#91;</span>Word<span style="">&#40;</span>u<span style="color: #657a8a;">'white/JJ'</span><span style="">&#41;</span>, Word<span style="">&#40;</span>u<span style="color: #657a8a;">'daffodils/NNS'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span><span style="">&#93;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import taxonomy, search
+&gt;&gt;&gt; from pattern.en import parse, Sentence
+&gt;&gt;&gt; for f in (&#39;rose&#39;, &#39;lily&#39;, &#39;daisy&#39;, &#39;daffodil&#39;, &#39;begonia&#39;):
+&gt;&gt;&gt;     taxonomy.append(f, type=&#39;flower&#39;)
+&gt;&gt;&gt; s = Sentence(parse(&#39;A field of white daffodils.&#39;, lemmata=True))
+&gt;&gt;&gt; print s
+&gt;&gt;&gt; print
+&gt;&gt;&gt; print search(&#39;FLOWER&#39;, s)
+
+Sentence(&#39;A/DT/B-NP/O/a field/NN/I-NP/O/field of/IN/B-PP/B-PNP/of&#39; 
+         &#39;white/JJ/B-NP/I-PNP/white daffodils/NNS/I-NP/I-PNP/daffodil ././O/O/.&#39;)
+
+[Match(words=[Word(u&#39;white/JJ&#39;), Word(u&#39;daffodils/NNS&#39;)])]
+</pre></div>
 <p>Since the pattern has <span class="inline_code">"FLOWER"</span> in uppercase, it is recognized as the taxonomic category (<em>rose</em> + <em>lily</em> + <em>daisy</em> + <em>daffodil</em> + <em>begonia</em>) instead of the word <em>flower</em>. The parser will compute word lemmata, so that <em>daffodils</em> is recognized as the plural form of <em>daffodil</em> (the lemma), and therefore part of <span class="postag">FLOWER</span>.</p>
 <p>Note that the returned match is actually <em>white daffodils</em>. This is because (by default) the system assumes that you are underspecifying: <em>white daffodils</em> is a more specified version of <em>daffodil</em>, so the whole chunk is returned.</p>
 <p>&nbsp;</p>
@@ -101,11 +112,10 @@ Sentence<span style="">&#40;</span><span style="color: #657a8a;">'A/DT/B-NP/O/a 
 <h2><a name="pattern"></a>Pattern</h2>
 <p>A <span class="inline_code">Pattern</span> is a sequence of constraints that matches certain phrases in a (parsed) sentence. Each <span class="inline_code">Constraint</span> can match a word in the sentence. If&nbsp; a number of successive words corresponds to the entire sequence, the phrase is a match.</p>
 <p>Constraints can be constructed for grammatical syntax (e.g. <em>any adjective</em>) and semantics (e.g. <em>any product</em>). For example: <span class="inline_code">Pattern.fromstring("NP be * than NP")</span>, where <span class="postag">NP</span> means <em>any noun phrase</em>, matches phrases such as <em>a cat is faster than a dog</em> and <em>G. I. Joe was cooler than He-Man</em>.<em>&nbsp;</em></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">pattern = Pattern<span style="">&#40;</span>sequence=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">pattern = Pattern.<span style="">fromstring</span><span style="">&#40;</span><span style="">string</span>, taxonomy=TAXONOMY<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">pattern.<span style="">sequence</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of Constraint objects.</span><br />
-pattern.<span style="">strict</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Disable underspecification (chunk head matching)?</span><br />
-pattern.<span style="">greedy</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># lambda chunk, constraint: True </span></code></span><span class="geshifilter"><code class="python geshifilter-python">pattern.<span style="">search</span><span style="">&#40;</span>sentence<span style="">&#41;</span><br />
-pattern.<span style="">match</span><span style="">&#40;</span>sentence, start=<span style="color: #666;">0</span><span style="">&#41;</span></code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">pattern = Pattern(sequence=[])</pre><pre class="brush:python; gutter:false; light:true;">pattern = Pattern.fromstring(string, taxonomy=TAXONOMY)</pre><pre class="brush:python; gutter:false; light:true;">pattern.sequence            # List of Constraint objects.
+pattern.strict              # Disable underspecification (chunk head matching)?
+pattern.greedy              # lambda chunk, constraint: True </pre><pre class="brush:python; gutter:false; light:true;">pattern.search(sentence)
+pattern.match(sentence, start=0)</pre><ul>
 <li><span class="inline_code">Pattern.search()</span> returns a list of <span class="inline_code">Match</span> objects from the given sentence.</li>
 <li><span class="inline_code">Pattern.match()</span> returns the first <span class="inline_code">Match</span> found in the given sentence, or <span class="inline_code">None</span>.</li>
 </ul>
@@ -119,29 +129,28 @@ pattern.<span style="">match</span><span style="">&#40;</span>sentence, start=<s
 <li><span class="inline_code">Constraint.fromstring('NP|SBJ')</span> matches subject noun phrases.</li>
 <li><span class="inline_code">Constraint.fromstring('QUANTITY|QUALITY')</span> matches quantity-type and quality-type taxa.</li>
 </ul>
-<p><span class="geshifilter"><code class="python geshifilter-python">constraint = Constraint<span style="">&#40;</span><br />
-&nbsp; &nbsp; &nbsp;words = <span style="">&#91;</span><span style="">&#93;</span>, <br />
-&nbsp; &nbsp; &nbsp; tags = <span style="">&#91;</span><span style="">&#93;</span>, <br />
-&nbsp; &nbsp; chunks = <span style="">&#91;</span><span style="">&#93;</span>, <br />
-&nbsp; &nbsp; &nbsp;roles = <span style="">&#91;</span><span style="">&#93;</span>, <br />
-&nbsp; &nbsp; &nbsp; taxa = <span style="">&#91;</span><span style="">&#93;</span>, <br />
-&nbsp; optional = <span style="color: #4a587c;">False</span>, <br />
-&nbsp; multiple = <span style="color: #4a587c;">False</span>, <br />
-&nbsp; &nbsp; &nbsp;first = <span style="color: #4a587c;">False</span>,<br />
-&nbsp; taxonomy = TAXONOMY,<br />
-&nbsp; &nbsp;exclude = <span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">constraint = Constraint.<span style="">fromstring</span><span style="">&#40;</span><span style="">string</span>, <span style="">**</span>kwargs<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">constraint.<span style="">index</span><br />
-constraint.<span style="">string</span><br />
-constraint.<span style="">words</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of allowed words/lemmata (of, with, ...)</span><br />
-constraint.<span style="">tags</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of allowed parts-of-speech (NN, JJ, ...)</span><br />
-constraint.<span style="">chunks</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of allowed chunk types (NP, VP, ...)</span><br />
-constraint.<span style="">roles</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of allowed chunk roles (SBJ, OBJ, ...)</span><br />
-constraint.<span style="">taxa</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of allowed word categories.</span><br />
-constraint.<span style="">taxonomy</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Taxonomy used for lookup.</span><br />
-constraint.<span style="">optional</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># True =&gt; matches zero or one word.</span><br />
-constraint.<span style="">multiple</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># True =&gt; matches one or more words.</span><br />
-constraint.<span style="">first</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># True =&gt; can only match first word.</span><br />
-constraint.<span style="">exclude</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># None, or Constraint of disallowed options.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">constraint.<span style="">match</span><span style="">&#40;</span>word<span style="">&#41;</span></code></span></p>
-<h3>Constraint string syntax</h3>
+<pre class="brush:python; gutter:false; light:true;">constraint = Constraint(
+     words = [], 
+      tags = [], 
+    chunks = [], 
+     roles = [], 
+      taxa = [], 
+  optional = False, 
+  multiple = False, 
+     first = False,
+  taxonomy = TAXONOMY,
+   exclude = None)</pre><pre class="brush:python; gutter:false; light:true;">constraint = Constraint.fromstring(string, **kwargs)</pre><pre class="brush:python; gutter:false; light:true;">constraint.index
+constraint.string
+constraint.words            # List of allowed words/lemmata (of, with, ...)
+constraint.tags             # List of allowed parts-of-speech (NN, JJ, ...)
+constraint.chunks           # List of allowed chunk types (NP, VP, ...)
+constraint.roles            # List of allowed chunk roles (SBJ, OBJ, ...)
+constraint.taxa             # List of allowed word categories.
+constraint.taxonomy         # Taxonomy used for lookup.
+constraint.optional         # True =&gt; matches zero or one word.
+constraint.multiple         # True =&gt; matches one or more words.
+constraint.first            # True =&gt; can only match first word.
+constraint.exclude          # None, or Constraint of disallowed options.</pre><pre class="brush:python; gutter:false; light:true;">constraint.match(word)</pre><h3>Constraint string syntax</h3>
 <p><span class="inline_code">Constraint.fromstring()</span> returns a new <span class="inline_code">Constraint</span> from the given string. It takes the same optional parameters as the constructor. Uppercase words in the given string indicate either a part-of-speech tag (e.g. <span class="postag">NN</span>, <span class="postag">JJ</span>, <span class="postag">VP</span>) or a taxonomy term (e.g. <span class="postag">PRODUCT</span>, <span class="postag">PERSON</span>). <a href="MBSP-tags.html" target="_blank">Here</a> is an overview of all part-of-speech tags. The search itself is case-insensitive.</p>
 <p>Some characters like <span class="inline_code">|</span> or <span class="inline_code">(</span> are special. They affect how the regular expressions around them are interpreted:</p>
 <table class="border">
@@ -203,137 +212,148 @@ constraint.<span style="">exclude</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span
 </ul>
 <p>The search is case-insensitive. Individual terms in <span class="inline_code">Constraint.words</span> can contain wildcards (<span class="inline_code">*</span>). Some part-of-speech-tags can also contain wildcards: <span class="postag">NN*</span>, <span class="postag">VB*</span>, <span class="postag">JJ*</span>, <span class="postag">RB*</span>.</p>
 <p>The following example demonstrates the use of optional and multiple constraints:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">search</span> <span style="color: #28334f; font-weight: bold;">import</span> Pattern<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, Sentence<br />
-<span style="">&gt;&gt;&gt;</span> s = Sentence<span style="">&#40;</span>parse<span style="">&#40;</span><span style="color: #657a8a;">'tasty cat food'</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> p = Pattern.<span style="">fromstring</span><span style="">&#40;</span><span style="color: #657a8a;">'(DT) (RB) (JJ) NN+'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> s<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> p.<span style="">search</span><span style="">&#40;</span>s<span style="">&#41;</span><br />
-<br />
-Sentence<span style="">&#40;</span><span style="color: #657a8a;">'tasty/JJ/B-NP/O cat/NN/I-NP/O food/NN/I-NP/O'</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span>Match<span style="">&#40;</span>words=<span style="">&#91;</span>Word<span style="">&#40;</span>u<span style="color: #657a8a;">'tasty/JJ'</span><span style="">&#41;</span>, Word<span style="">&#40;</span>u<span style="color: #657a8a;">'cat/NN'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span>, Match<span style="">&#40;</span>words=<span style="">&#91;</span>Word<span style="">&#40;</span>u<span style="color: #657a8a;">'food/NN'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span><span style="">&#93;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import Pattern
+&gt;&gt;&gt; from pattern.en import parse, Sentence
+&gt;&gt;&gt; s = Sentence(parse(&#39;tasty cat food&#39;))
+&gt;&gt;&gt; p = Pattern.fromstring(&#39;(DT) (RB) (JJ) NN+&#39;)
+&gt;&gt;&gt; print s
+&gt;&gt;&gt; print
+&gt;&gt;&gt; print p.search(s)
+
+Sentence(&#39;tasty/JJ/B-NP/O cat/NN/I-NP/O food/NN/I-NP/O&#39;)
+
+[Match(words=[Word(u&#39;tasty/JJ&#39;), Word(u&#39;cat/NN&#39;)]), Match(words=[Word(u&#39;food/NN&#39;)])]</pre></div>
 <p>The pattern looks for successive nouns (<span class="postag">NN</span>), but it will also include a preceding determiner (<span class="postag">DT</span>), adverb (<span class="postag">RB</span>) and adjective (<span class="postag">JJ</span>). It matches anything from <em>food</em> to<em>&nbsp;</em> <em>cat food</em>, <em>tasty food</em>, <em>the tasty cat food</em>, etc.</p>
 <h3>Constraint underspecification</h3>
 <p>The <a href="pattern-en.html#parser">parser</a> in <span class="inline_code">pattern.en</span> groups words that belong together into chunks. For example, <em>the black cat</em> is one chunk, tagged <span class="postag">NP</span> (noun phrase). The head of the chunk is <em>cat</em>. By default, the pattern matching algorithm will compare a <span class="inline_code">Sentence</span> on the chunk head. Thus, if you look for <em>cat</em> and the sentence has <em>a big black cat</em>, the entire chunk will be returned. The extra words in the chunk contain important information about how the cat looks and feels, a personal opinion (<em>that darn cat</em>), etc. You can tweak which chunks are matched with a custom <span class="inline_code">Pattern.greedy</span> function.</p>
 <p>This behavior can be disabled by passing a <span class="inline_code">STRICT</span> flag to <span class="inline_code">Pattern</span>, <span class="inline_code">compile()</span>, <span class="inline_code">search()</span> or <span class="inline_code">match()</span>.</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">search</span> <span style="color: #28334f; font-weight: bold;">import</span> Pattern<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, Sentence<br />
-<span style="">&gt;&gt;&gt;</span> s = Sentence<span style="">&#40;</span>parse<span style="">&#40;</span><span style="color: #657a8a;">'The black cat is lurking in the tree.'</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> p = Pattern.<span style="">fromstring</span><span style="">&#40;</span><span style="color: #657a8a;">'cat'</span>, s<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> s<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> p.<span style="">search</span><span style="">&#40;</span>s<span style="">&#41;</span><br />
-<br />
-Sentence<span style="">&#40;</span><span style="color: #657a8a;">'The/DT/B-NP/O black/JJ/I-NP/O cat/NN/I-NP/O is/VBZ/B-VP/O lurking/VBG/I-VP/O in/IN/B-PP/B-PNP the/DT/B-NP/I-PNP tree/NN/I-NP/I-PNP ././O/O'</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span>Match<span style="">&#40;</span>words=<span style="">&#91;</span>Word<span style="">&#40;</span>u<span style="color: #657a8a;">'The/DT'</span><span style="">&#41;</span>, Word<span style="">&#40;</span>u<span style="color: #657a8a;">'black/JJ'</span><span style="">&#41;</span>, Word<span style="">&#40;</span>u<span style="color: #657a8a;">'cat/NN/)])]<br />
-</span></code></span></span><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">search</span> <span style="color: #28334f; font-weight: bold;">import</span> STRICT<br />
-<span style="">&gt;&gt;&gt;</span> p = Pattern.<span style="">fromstring</span><span style="">&#40;</span><span style="color: #657a8a;">'cat'</span>, s, STRICT<span style="">&#41;</span> <span style="color: grey;"># Or: compile('cat', s, STRICT)</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> p.<span style="">search</span><span style="">&#40;</span>s<span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span>Match<span style="">&#40;</span>words=<span style="">&#91;</span>Word<span style="">&#40;</span>u<span style="color: #657a8a;">'cat/NN'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span><span style="">&#93;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import Pattern
+&gt;&gt;&gt; from pattern.en import parse, Sentence
+&gt;&gt;&gt; s = Sentence(parse(&#39;The black cat is lurking in the tree.&#39;))
+&gt;&gt;&gt; p = Pattern.fromstring(&#39;cat&#39;, s)
+&gt;&gt;&gt; print s
+&gt;&gt;&gt; print
+&gt;&gt;&gt; print p.search(s)
+
+Sentence(&#39;The/DT/B-NP/O black/JJ/I-NP/O cat/NN/I-NP/O is/VBZ/B-VP/O&#39;
+         &#39;lurking/VBG/I-VP/O in/IN/B-PP/B-PNP the/DT/B-NP/I-PNP&#39; 
+         &#39;tree/NN/I-NP/I-PNP ././O/O&#39;)
+
+[Match(words=[Word(u&#39;The/DT&#39;), Word(u&#39;black/JJ&#39;), Word(u&#39;cat/NN/)])]
+</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import STRICT
+&gt;&gt;&gt; p = Pattern.fromstring(&#39;cat&#39;, s, STRICT) # Or: compile(&#39;cat&#39;, s, STRICT)
+&gt;&gt;&gt; print p.search(s)
+
+[Match(words=[Word(u&#39;cat/NN&#39;)])]
+</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="match"></a>Pattern matching</h2>
 <p><span class="inline_code">Pattern.search()</span> returns a list of <span class="inline_code">Match</span> objects, where each match is a list of successive <span class="inline_code">Word</span> objects.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">match = Match<span style="">&#40;</span>pattern, words=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">match.<span style="">pattern</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Pattern source.</span><br />
-match.<span style="">words</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of Word objects.</span><br />
-match.<span style="">string</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># String of words separated with a space.</span><br />
-match.<span style="">start</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Index of first word in sentence.</span><br />
-match.<span style="">stop</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Index of last word in sentence + 1.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">match.<span style="">constraint</span><span style="">&#40;</span>word<span style="">&#41;</span><br />
-match.<span style="">constraints</span><span style="">&#40;</span><span style="">chunk</span><span style="">&#41;</span><br />
-match.<span style="">constituents</span><span style="">&#40;</span>constraint=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">match = Match(pattern, words=[])</pre><pre class="brush:python; gutter:false; light:true;">match.pattern               # Pattern source.
+match.words                 # List of Word objects.
+match.string                # String of words separated with a space.
+match.start                 # Index of first word in sentence.
+match.stop                  # Index of last word in sentence + 1.</pre><pre class="brush:python; gutter:false; light:true;">match.constraint(word)
+match.constraints(chunk)
+match.constituents(constraint=None)</pre><ul>
 <li><span class="inline_code">Match.constraint()</span> returns the <span class="inline_code">Constraint</span> that matched the given <span class="inline_code">Word</span>, or None.</li>
 <li><span class="inline_code">Match.constraints()</span> returns the list of constraints that matched the given <span class="inline_code">Chunk</span>.</li>
 <li><span class="inline_code">Match.constituents()</span> returns a list of <span class="inline_code">Word</span> and <span class="inline_code">Chunk</span> objects, with successive words grouped into their chunks whenever possible. Optionally, returns only chunks/words that matched the given <span class="inline_code">Constraint</span>, (or list of constraints or constraint index). Chunks are only available if a <span class="inline_code">Sentence</span> was searched (i.e. not for plain string).</li>
 </ul>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> p = Pattern.<span style="">fromstring</span><span style="">&#40;</span><span style="color: #657a8a;">'NP be (more) ADJP|ADVP than NP'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> s = Sentence<span style="">&#40;</span>parse<span style="">&#40;</span><span style="color: #657a8a;">'the turtle was faster than the hare'</span>, lemmata=<span style="color: #4a587c;">True</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> m = p.<span style="">match</span><span style="">&#40;</span>s<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> s<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> w <span style="color: #28334f; font-weight: bold;">in</span> m.<span style="">words</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">print</span> w, <span style="color: #657a8a;">' <span style="">\t</span>=&gt;'</span>, m.<span style="">constraint</span><span style="">&#40;</span>w<span style="">&#41;</span><br />
-<br />
-Sentence<span style="">&#40;</span><span style="color: #657a8a;">'the/DT/B-NP/O/the turtle/NN/I-NP/O/turtle was/VBD/B-VP/O/be faster/RBR/B-ADVP/O/faster than/IN/B-PP/B-PNP/than the/DT/B-NP/I-PNP/the hare/NN/I-NP/I-PNP/hare'</span><span style="">&#41;</span><br />
-<br />
-Word<span style="">&#40;</span>u<span style="color: #657a8a;">'the/DT'</span><span style="">&#41;</span> &nbsp; &nbsp; =<span style="">&gt;</span> Constraint<span style="">&#40;</span>chunks=<span style="">&#91;</span><span style="color: #657a8a;">'NP'</span><span style="">&#93;</span><span style="">&#41;</span><br />
-Word<span style="">&#40;</span>u<span style="color: #657a8a;">'turtle/NN'</span><span style="">&#41;</span> &nbsp;=<span style="">&gt;</span> Constraint<span style="">&#40;</span>chunks=<span style="">&#91;</span><span style="color: #657a8a;">'NP'</span><span style="">&#93;</span><span style="">&#41;</span><br />
-Word<span style="">&#40;</span>u<span style="color: #657a8a;">'was/VBD'</span><span style="">&#41;</span> &nbsp; &nbsp;=<span style="">&gt;</span> Constraint<span style="">&#40;</span>words=<span style="">&#91;</span><span style="color: #657a8a;">'be'</span><span style="">&#93;</span><span style="">&#41;</span><br />
-Word<span style="">&#40;</span>u<span style="color: #657a8a;">'faster/RBR'</span><span style="">&#41;</span> =<span style="">&gt;</span> Constraint<span style="">&#40;</span>chunks=<span style="">&#91;</span><span style="color: #657a8a;">'ADJP'</span>, <span style="color: #657a8a;">'ADVP'</span><span style="">&#93;</span><span style="">&#41;</span><br />
-Word<span style="">&#40;</span>u<span style="color: #657a8a;">'than/IN'</span><span style="">&#41;</span> &nbsp; &nbsp;=<span style="">&gt;</span> Constraint<span style="">&#40;</span>words=<span style="">&#91;</span><span style="color: #657a8a;">'than'</span><span style="">&#93;</span><span style="">&#41;</span><br />
-Word<span style="">&#40;</span>u<span style="color: #657a8a;">'the/DT'</span><span style="">&#41;</span> &nbsp; &nbsp; =<span style="">&gt;</span> Constraint<span style="">&#40;</span>chunks=<span style="">&#91;</span><span style="color: #657a8a;">'NP'</span><span style="">&#93;</span><span style="">&#41;</span><br />
-Word<span style="">&#40;</span>u<span style="color: #657a8a;">'hare/NN'</span><span style="">&#41;</span> &nbsp; &nbsp;=<span style="">&gt;</span> Constraint<span style="">&#40;</span>chunks=<span style="">&#91;</span><span style="color: #657a8a;">'NP'</span><span style="">&#93;</span><span style="">&#41;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; p = Pattern.fromstring(&#39;NP be (more) ADJP|ADVP than NP&#39;)
+&gt;&gt;&gt; s = Sentence(parse(&#39;the turtle was faster than the hare&#39;, lemmata=True))
+&gt;&gt;&gt; m = p.match(s)
+&gt;&gt;&gt; print s
+&gt;&gt;&gt; print
+&gt;&gt;&gt; for w in m.words:
+&gt;&gt;&gt;    print w, &#39; 	=&gt;&#39;, m.constraint(w)
+
+Sentence(&#39;the/DT/B-NP/O/the turtle/NN/I-NP/O/turtle was/VBD/B-VP/O/be&#39;
+         &#39;faster/RBR/B-ADVP/O/faster than/IN/B-PP/B-PNP/than the/DT/B-NP/I-PNP/the&#39;
+         &#39;hare/NN/I-NP/I-PNP/hare&#39;)
+
+Word(u&#39;the/DT&#39;)     =&gt; Constraint(chunks=[&#39;NP&#39;])
+Word(u&#39;turtle/NN&#39;)  =&gt; Constraint(chunks=[&#39;NP&#39;])
+Word(u&#39;was/VBD&#39;)    =&gt; Constraint(words=[&#39;be&#39;])
+Word(u&#39;faster/RBR&#39;) =&gt; Constraint(chunks=[&#39;ADJP&#39;, &#39;ADVP&#39;])
+Word(u&#39;than/IN&#39;)    =&gt; Constraint(words=[&#39;than&#39;])
+Word(u&#39;the/DT&#39;)     =&gt; Constraint(chunks=[&#39;NP&#39;])
+Word(u&#39;hare/NN&#39;)    =&gt; Constraint(chunks=[&#39;NP&#39;])
+</pre></div>
 <p>Each <span class="inline_code">Word</span> in a <span class="inline_code">Match</span> has the following attributes:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">word = Word<span style="">&#40;</span>sentence, <span style="">string</span>, tag=<span style="color: #4a587c;">None</span>, index=<span style="color: #666;">0</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">word.<span style="">string</span><br />
-word.<span style="">tag</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Part-of-speech tag (e.g. NN, JJ).</span><br />
-word.<span style="">sentence</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Sentence (a list of successive Words).</span><br />
-word.<span style="">index</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Sentence index.</span></code></span></p>
-<p>If <span class="inline_code">search()</span> or <span class="inline_code">match()</span> is called with a string, <span class="inline_code">Word</span> objects are created when the <span class="inline_code">Match</span> is returned. When called with a parsed <span class="inline_code">Sentence</span>, <span class="inline_code">Word</span> objects are linked from the sentence. These have extra attributes. For an overview of what is possible with <span class="inline_code">Sentence</span>, <span class="inline_code">Chunk</span> and <span class="inline_code">Word</span>, see the <a href="pattern-en.html#parser">parser</a> documentation.</p>
+<pre class="brush:python; gutter:false; light:true;">word = Word(sentence, string, tag=None, index=0)</pre><pre class="brush:python; gutter:false; light:true;">word.string
+word.tag                    # Part-of-speech tag (e.g. NN, JJ).
+word.sentence               # Sentence (a list of successive Words).
+word.index                  # Sentence index.
+</pre><p>If <span class="inline_code">search()</span> or <span class="inline_code">match()</span> is called with a string, <span class="inline_code">Word</span> objects are created when the <span class="inline_code">Match</span> is returned. When called with a parsed <span class="inline_code">Sentence</span>, <span class="inline_code">Word</span> objects are linked from the sentence. These have extra attributes. For an overview of what is possible with <span class="inline_code">Sentence</span>, <span class="inline_code">Chunk</span> and <span class="inline_code">Word</span>, see the <a href="pattern-en.html#parser">parser</a> documentation.</p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="taxonomy"></a>Taxonomy</h2>
 <p>A taxonomy is a hierarchical tree of words classified by semantic type. For example: <em>begonia</em> is a <em>flower</em>, <em>flower</em> is a <em>plant</em>. Taxonomy terms can be used in a constraint: <span class="inline_code">"FLOWER"</span> will match <em>flower</em> as well as <em>begonia</em>, or any other flower that has been defined in the taxonomy. By default, constraints will look up terms in the global <span class="inline_code">taxonomy</span>.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">taxonomy = Taxonomy<span style="">&#40;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">taxonomy.<span style="">case_sensitive</span> &nbsp; &nbsp; <span style="color: grey;"># False by default.</span><br />
-taxonomy.<span style="">classifiers</span> &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of Classifier objects.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">taxonomy.<span style="">append</span><span style="">&#40;</span>term, type=<span style="color: #4a587c;">None</span>, value=<span style="color: #4a587c;">None</span><span style="">&#41;</span><br />
-taxonomy.<span style="">remove</span><span style="">&#40;</span>term<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">taxonomy.<span style="">classify</span><span style="">&#40;</span>term<span style="">&#41;</span><br />
-taxonomy.<span style="">parents</span><span style="">&#40;</span>term, recursive=<span style="color: #4a587c;">False</span><span style="">&#41;</span><br />
-taxonomy.<span style="">children</span><span style="">&#40;</span>term, recursive=<span style="color: #4a587c;">False</span><span style="">&#41;</span><br />
-taxonomy.<span style="">value</span><span style="">&#40;</span>term<span style="">&#41;</span></code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">taxonomy = Taxonomy()</pre><pre class="brush:python; gutter:false; light:true;">taxonomy.case_sensitive     # False by default.
+taxonomy.classifiers        # List of Classifier objects.</pre><pre class="brush:python; gutter:false; light:true;">taxonomy.append(term, type=None, value=None)
+taxonomy.remove(term)</pre><pre class="brush:python; gutter:false; light:true;">taxonomy.classify(term)
+taxonomy.parents(term, recursive=False)
+taxonomy.children(term, recursive=False)
+taxonomy.value(term)</pre><ul>
 <li><span class="inline_code">Taxonomy.classify()</span> returns the (most recently added) semantic type for a given term.<br />If the term is not in the dictionary, tries <span class="inline_code">Taxonomy.classifiers</span>.</li>
 <li><span class="inline_code">Taxonomy.parents()</span> returns a list of all semantic types for the given term.<br /><span class="inline_code">Taxonomy.children()</span> returns a list of all terms of the given semantic type.<br />With <span class="inline_code">recursive=True</span>, traverses the entire branch.</li>
 </ul>
 <p>For example:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">search</span> <span style="color: #28334f; font-weight: bold;">import</span> taxonomy, search<br />
-<span style="">&gt;&gt;&gt;</span> taxonomy.<span style="">append</span><span style="">&#40;</span><span style="color: #657a8a;">'chicken'</span>, type=<span style="color: #657a8a;">'food'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> taxonomy.<span style="">append</span><span style="">&#40;</span><span style="color: #657a8a;">'chicken'</span>, type=<span style="color: #657a8a;">'bird'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> taxonomy.<span style="">append</span><span style="">&#40;</span><span style="color: #657a8a;">'penguin'</span>, type=<span style="color: #657a8a;">'bird'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> taxonomy.<span style="">append</span><span style="">&#40;</span><span style="color: #657a8a;">'bird'</span>, type=<span style="color: #657a8a;">'animal'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> taxonomy.<span style="">parents</span><span style="">&#40;</span><span style="color: #657a8a;">'chicken'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> taxonomy.<span style="">children</span><span style="">&#40;</span><span style="color: #657a8a;">'animal'</span>, recursive=<span style="color: #4a587c;">True</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> search<span style="">&#40;</span><span style="color: #657a8a;">'FOOD'</span>, <span style="color: #657a8a;">'I<span style="">\'</span>m eating chicken.'</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span><span style="color: #657a8a;">'bird'</span>, <span style="color: #657a8a;">'food'</span><span style="">&#93;</span><br />
-<span style="">&#91;</span><span style="color: #657a8a;">'bird'</span>, <span style="color: #657a8a;">'penguin'</span>, <span style="color: #657a8a;">'chicken'</span><span style="">&#93;</span><br />
-<br />
-<span style="">&#91;</span>Match<span style="">&#40;</span>words=<span style="">&#91;</span>Word<span style="">&#40;</span><span style="color: #657a8a;">'chicken'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span><span style="">&#93;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import taxonomy, search
+&gt;&gt;&gt; taxonomy.append(&#39;chicken&#39;, type=&#39;food&#39;)
+&gt;&gt;&gt; taxonomy.append(&#39;chicken&#39;, type=&#39;bird&#39;)
+&gt;&gt;&gt; taxonomy.append(&#39;penguin&#39;, type=&#39;bird&#39;)
+&gt;&gt;&gt; taxonomy.append(&#39;bird&#39;, type=&#39;animal&#39;)
+&gt;&gt;&gt; print taxonomy.parents(&#39;chicken&#39;)
+&gt;&gt;&gt; print taxonomy.children(&#39;animal&#39;, recursive=True)
+&gt;&gt;&gt; print
+&gt;&gt;&gt; print search(&#39;FOOD&#39;, &#39;I&#39;m eating chicken.&#39;)
+
+[&#39;bird&#39;, &#39;food&#39;]
+[&#39;bird&#39;, &#39;penguin&#39;, &#39;chicken&#39;]
+
+[Match(words=[Word(&#39;chicken&#39;)])]</pre></div>
 <h3>Taxonomy classifiers</h3>
 <p>A <span class="inline_code">Classifier</span> offers a rule-based approach to enrich the taxonomy. If a term is not in the taxonomy, the taxonomy will go over the list of its classifiers. Each classifier is a group of functions that can be customized to yield the semantic type for a given set of terms.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">classifier = Classifier<span style="">&#40;</span><br />
-&nbsp; &nbsp; &nbsp;parents = <span style="color: #28334f; font-weight: bold;">lambda</span> term: <span style="">&#91;</span><span style="">&#93;</span>, <br />
-&nbsp; &nbsp; children = <span style="color: #28334f; font-weight: bold;">lambda</span> term: <span style="">&#91;</span><span style="">&#93;</span>, <br />
-&nbsp; &nbsp; &nbsp; &nbsp;value = <span style="color: #28334f; font-weight: bold;">lambda</span> term: <span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">classifier.<span style="">parents</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Returns list of parents for a term.</span><br />
-classifier.<span style="">children</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Returns list of children for a term.</span><br />
-classifier.<span style="">value</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Returns value for a term, or None.</span></code></span></p>
-<p>This is useful since taxonomy terms can't include wildcards (the <span class="inline_code">*</span> character is taken literally). The example below creates a classifier that tags any word ending in <em>-ness</em> as <span class="postag">QUALITY</span>. This is more concise than manually adding <em>roughness</em>, <em>sharpness</em>, ... to the taxonomy.</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">search</span> <span style="color: #28334f; font-weight: bold;">import</span> Classifier, taxonomy, search<br />
-<span style="">&gt;&gt;&gt;</span> c = Classifier<span style="">&#40;</span>parents=<span style="color: #28334f; font-weight: bold;">lambda</span> s: s.<span style="">endswith</span><span style="">&#40;</span><span style="color: #657a8a;">'ness'</span><span style="">&#41;</span> <span style="color: #28334f; font-weight: bold;">and</span> <span style="">&#91;</span><span style="color: #657a8a;">'quality'</span><span style="">&#93;</span> <span style="color: #28334f; font-weight: bold;">or</span> <span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> taxonomy.<span style="">classifiers</span>.<span style="">append</span><span style="">&#40;</span>c<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> taxonomy.<span style="">append</span><span style="">&#40;</span><span style="color: #657a8a;">'chicken'</span>, type=<span style="color: #657a8a;">'animal'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> search<span style="">&#40;</span><span style="color: #657a8a;">'QUALITY of a|an|the ANIMAL'</span>, <span style="color: #657a8a;">'the spryness of a chicken'</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span>Match<span style="">&#40;</span>words=<span style="">&#91;</span>Word<span style="">&#40;</span><span style="color: #657a8a;">'spryness'</span><span style="">&#41;</span>, Word<span style="">&#40;</span><span style="color: #657a8a;">'of'</span><span style="">&#41;</span>, Word<span style="">&#40;</span><span style="color: #657a8a;">'a'</span><span style="">&#41;</span>, Word<span style="">&#40;</span><span style="color: #657a8a;">'chicken'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span><span style="">&#93;</span></code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">classifier = Classifier(
+     parents = lambda term: [], 
+    children = lambda term: [], 
+       value = lambda term: None)</pre><pre class="brush:python; gutter:false; light:true;">classifier.parents          # Returns list of parents for a term.
+classifier.children         # Returns list of children for a term.
+classifier.value            # Returns value for a term, or None.
+</pre><p>This is useful since taxonomy terms can't include wildcards (the <span class="inline_code">*</span> character is taken literally). The example below creates a classifier that tags any word ending in <em>-ness</em> as <span class="postag">QUALITY</span>. This is more concise than manually adding <em>roughness</em>, <em>sharpness</em>, ... to the taxonomy.</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import Classifier, taxonomy, search
+&gt;&gt;&gt; c = Classifier(parents=lambda s: s.endswith(&#39;ness&#39;) and [&#39;quality&#39;] or [])
+&gt;&gt;&gt; taxonomy.classifiers.append(c)
+&gt;&gt;&gt; taxonomy.append(&#39;chicken&#39;, type=&#39;animal&#39;)
+&gt;&gt;&gt; print search(&#39;QUALITY of a|an|the ANIMAL&#39;, &#39;the spryness of a chicken&#39;)
+
+[Match(words=[Word(&#39;spryness&#39;), Word(&#39;of&#39;), Word(&#39;a&#39;), Word(&#39;chicken&#39;)])]</pre></div>
 <p>If you plan to use classifiers for pattern matching you need to implement <span class="inline_code">Classifier.parents()</span> (<span class="inline_code">Classifier.children()</span> is not called in <span class="inline_code">Constraint.match()</span> for performance).</p>
-<p><span class="example">Finally, this example creates a rule-based taxonomy from the <span class="inline_code">pattern.en.wordnet</span> module:</span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">search</span> <span style="color: #28334f; font-weight: bold;">import</span> taxonomy, WordNetClassifier<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> wordnet<br />
-<span style="">&gt;&gt;&gt;</span> taxonomy.<span style="">classifiers</span>.<span style="">append</span><span style="">&#40;</span>WordNetClassifier<span style="">&#40;</span>wordnet<span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> taxonomy.<span style="">parents</span><span style="">&#40;</span><span style="color: #657a8a;">'duck'</span>, pos=<span style="color: #657a8a;">'NN'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> taxonomy.<span style="">parents</span><span style="">&#40;</span><span style="color: #657a8a;">'duck'</span>, pos=<span style="color: #657a8a;">'VB'</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span><span style="color: #657a8a;">'anseriform bird'</span><span style="">&#93;</span><br />
-<span style="">&#91;</span><span style="color: #657a8a;">'move'</span><span style="">&#93;</span></code></span></span></p>
+<div class="example">Finally, this example creates a rule-based taxonomy from the <span class="inline_code">pattern.en.wordnet</span>&nbsp;module:</div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import taxonomy, WordNetClassifier
+&gt;&gt;&gt; from pattern.en import wordnet
+&gt;&gt;&gt; taxonomy.classifiers.append(WordNetClassifier(wordnet))
+&gt;&gt;&gt; print taxonomy.parents(&#39;duck&#39;, pos=&#39;NN&#39;)
+&gt;&gt;&gt; print taxonomy.parents(&#39;duck&#39;, pos=&#39;VB&#39;)
+
+[&#39;anseriform bird&#39;]
+[&#39;move&#39;]</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="utility"></a>Useful list functions</h2>
 <p>The <span class="inline_code">pattern.search</span> module has a number of interesting list functions:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">unique<span style="">&#40;</span><span style="color: #4a587c;">list</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Returns a new list with unique items.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">find<span style="">&#40;</span>function, <span style="color: #4a587c;">list</span><span style="">&#41;</span> &nbsp;<span style="color: grey;"># Returns first item for which function(item) is True.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">combinations<span style="">&#40;</span><span style="color: #4a587c;">list</span>, n<span style="">&#41;</span> <span style="color: grey;"># Returns a generator of all combinations of length n.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">variations<span style="">&#40;</span><span style="color: #4a587c;">list</span>, optional=<span style="color: #28334f; font-weight: bold;">lambda</span> item: <span style="color: #4a587c;">False</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">odict<span style="">&#40;</span>data, <span style="color: #4a587c;">reversed</span>=<span style="color: #4a587c;">False</span><span style="">&#41;</span></code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">unique(list)          # Returns a new list with unique items.</pre><pre class="brush:python; gutter:false; light:true;">find(function, list)  # Returns first item for which function(item) is True.</pre><pre class="brush:python; gutter:false; light:true;">combinations(list, n) # Returns a generator of all combinations of length n.</pre><pre class="brush:python; gutter:false; light:true;">variations(list, optional=lambda item: False)</pre><pre class="brush:python; gutter:false; light:true;">odict(data, reversed=False)</pre><ul>
 <li><span class="inline_code">combinations()</span> returns a generator of all combinations of length <span class="inline_code">n</span> of the items in the list. <br />For example: <span class="inline_code">list(combinations([1,2,3), n=2))</span> yields:<br /><span class="inline_code">[[1,1], [1,2], [1,3], [2,1], [2,2], [2,3], [3,1], [3,2], [3,3]]</span>.</li>
 <li><span class="inline_code">variations()</span> returns all variations of a list containing optional items (in-order).</li>
 <li><span class="inline_code">odict()</span> is a dictionary with ordered keys – like a stack.<br />With <span class="inline_code">reversed=True</span>, the latest keys will be returned first when traversing the dictionary.<br /><span class="inline_code">odict.append()</span> takes a <span class="inline_code">(key,value)</span>-tuple and sets the given key to the given value. If the key exists, pushes the updated item to the head (or tail) of the dictionary.</li>
@@ -346,5 +366,8 @@ classifier.<span style="">value</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
     </div>
     </div>
     </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
 </body>
 </html>

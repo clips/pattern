@@ -12,6 +12,12 @@
         #header { border-bottom: 1px solid #C6D4DD;  }
         table { border-collapse: collapse; }
     </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
 </head>
 <body class="node-type-page one-sidebar sidebar-right section-pages">
     <div id="page">
@@ -29,8 +35,7 @@
 <h3>The pattern.db module includes wrappers for popular databases (SQLite + MySQL) and Unicode CSV files. It offers a convenient way to work with tabular data, for example retrieved with the pattern.web module.</h3>
 <p>It can be used by itself or with other <a href="pattern.html">pattern</a> modules: <a href="pattern-web.html">web</a> | db | <a href="pattern-en.html">en</a> | <a href="pattern-search.html">search</a> <span class="blue">&nbsp;</span>| <a href="pattern-vector.html">vector</a> | <a href="pattern-graph.html">graph</a>.</p>
 <p><img src="../g/pattern_schema.gif" alt="" width="620" height="180" /></p>
-<h2>
-<hr /></h2>
+<hr />
 <h2>Documentation</h2>
 <ul style="margin-top: 0;">
 <li><a href="#database">Database</a>&nbsp;<span class="smallcaps link-maintenance">(sqlite + mysql)</span></li>
@@ -46,40 +51,36 @@
 <p>A <span class="inline_code">Database</span> is a collection tables. A <span class="inline_code">Table</span> contains rows of data, with a specific data type (e.g., string, integer) for each field (column).&nbsp;A database is typically managed by a robust engine such as MySQL. Statements written in SQL (<em>Structured Query Language</em>) are used to interact with the engine.&nbsp;The <span class="inline_code">pattern.db</span> module is a wrapper for SQL. It&nbsp;supports the <span class="inline_code">SQLITE</span>&nbsp;and&nbsp;<span class="inline_code">MYSQL</span> engines.&nbsp;</p>
 <p>SQLite is already included with Python 2.5+. With older versions you need to install <a href="http://code.google.com/p/pysqlite/downloads/list" target="_blank">PySQLite</a>. To use MySQL, you need to install <a href="http://www.mysql.com/" target="_blank">MySQL</a> and <a href="http://sourceforge.net/projects/mysql-python/" target="_blank">MySQL-Python</a>. If you have a 64-bit Python you'll need a 64-bit MySQL and MySQLdb.</p>
 <p><span class="inline_code">Database()</span> creates (if necessary) and returns a database. With <span class="inline_code">SQLITE</span>, this will generate a file with the given name in the current folder.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">db = Database<span style="">&#40;</span><br />
-&nbsp; &nbsp; &nbsp; name, <br />
-&nbsp; &nbsp; &nbsp; host = <span style="color: #657a8a;">'localhost'</span>, <br />
-&nbsp; &nbsp; &nbsp; port = <span style="color: #666;">3306</span>, <br />
-&nbsp; username = <span style="color: #657a8a;">'root'</span>, <br />
-&nbsp; password = <span style="color: #657a8a;">''</span>, <br />
-&nbsp; &nbsp; &nbsp; type = SQLITE<br />
-<span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">db.<span style="">type</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># SQLITE | MYSQL</span><br />
-db.<span style="">name</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Database name.</span><br />
-db.<span style="">host</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Database host.</span><br />
-db.<span style="">port</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Database port.</span><br />
-db.<span style="">username</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Database username (MySQL).</span><br />
-db.<span style="">password</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Database password (MySQL).</span><br />
-db.<span style="">tables</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Dictionary of (name, Table)-items.</span><br />
-db.<span style="">relations</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of relations, see Database.link().</span><br />
-db.<span style="">query</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Last SQL query string.</span><br />
-db.<span style="">connected</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># True after Database.connect(). </span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">db.<span style="">connect</span><span style="">&#40;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Happens automatically.</span><br />
-db.<span style="">disconnect</span><span style="">&#40;</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">db.<span style="">create</span><span style="">&#40;</span>table, fields=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span><br />
-db.<span style="">remove</span><span style="">&#40;</span>table<span style="">&#41;</span><br />
-db.<span style="">link</span><span style="">&#40;</span>table1, field1, table2, field2, join=LEFT<span style="">&#41;</span> </code></span><span class="geshifilter"><code class="python geshifilter-python">db.<span style="">execute</span><span style="">&#40;</span>SQL, commit=<span style="color: #4a587c;">False</span><span style="">&#41;</span><br />
-db.<span style="">commit</span><span style="">&#40;</span><span style="">&#41;</span><br />
-db.<span style="">escape</span><span style="">&#40;</span>value<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># &quot;a cat's tail&quot; =&gt; &quot;'a cat\'s tail'&quot;</span></code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">db = Database(
+      name, 
+      host = &#39;localhost&#39;, 
+      port = 3306, 
+  username = &#39;root&#39;, 
+  password = &#39;&#39;, 
+      type = SQLITE
+)
+</pre><pre class="brush:python; gutter:false; light:true;">db.type                     # SQLITE | MYSQL
+db.name                     # Database name.
+db.host                     # Database host.
+db.port                     # Database port.
+db.username                 # Database username (MySQL).
+db.password                 # Database password (MySQL).
+db.tables                   # Dictionary of (name, Table)-items.
+db.relations                # List of relations, see Database.link().
+db.query                    # Last SQL query string.
+db.connected                # True after Database.connect(). </pre><pre class="brush:python; gutter:false; light:true;">db.connect()                # Happens automatically.
+db.disconnect()</pre><pre class="brush:python; gutter:false; light:true;">db.create(table, fields=[])
+db.remove(table)
+db.link(table1, field1, table2, field2, join=LEFT) </pre><pre class="brush:python; gutter:false; light:true;">db.execute(SQL, commit=False)
+db.commit()
+db.escape(value)            # &quot;a cat&#39;s tail&quot; =&gt; &quot;&#39;a cat&#39;s tail&#39;&quot;</pre><ul>
 <li><span class="inline_code">Database.execute()</span> returns the results from a raw SQL query.</li>
 <li><span class="inline_code">Database.commit()</span> commits the changes after a&nbsp;<span class="inline_code">INSERT</span>, <span class="inline_code">UPDATE</span>, <span class="inline_code">DELETE</span>&nbsp;SQL query.</li>
 <li><span class="inline_code">Database.escape()</span>&nbsp;safely quotes and escapes a field value.<br />Also see the source code for <span class="inline_code">abs()</span> and <span class="inline_code">cmp()</span>&nbsp;when constructing a raw SQL query.</li>
 </ul>
 <h3>Creating a table</h3>
 <p><span class="inline_code">Database.create()</span> creates a new table in the database, from a given table name and a list of row fields, defined with the <span class="inline_code">field()</span> function:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">field<span style="">&#40;</span>name, type=STRING, default=<span style="color: #4a587c;">None</span>, index=<span style="color: #4a587c;">False</span>, optional=<span style="color: #4a587c;">True</span><span style="">&#41;</span></code></span></p>
-<p>Each field has a <span class="inline_code">name</span> and a&nbsp;<span class="inline_code">type</span>, with an optional <span class="inline_code">default</span> value for new rows. Field names should contain only characters (a-z) and underscores. The default value for a&nbsp;<span class="inline_code">DATE</span> field is <span class="inline_code">NOW</span> (current date &amp; time). With <span class="inline_code">optional=True</span>, the field is allowed to contain <span class="inline_code">None</span>.</p>
+<pre class="brush:python; gutter:false; light:true;">field(name, type=STRING, default=None, index=False, optional=True)</pre><p>Each field has a <span class="inline_code">name</span> and a&nbsp;<span class="inline_code">type</span>, with an optional <span class="inline_code">default</span> value for new rows. Field names should contain only characters (a-z) and underscores. The default value for a&nbsp;<span class="inline_code">DATE</span> field is <span class="inline_code">NOW</span> (current date &amp; time). With <span class="inline_code">optional=True</span>, the field is allowed to contain <span class="inline_code">None</span>.</p>
 <table class="border">
 <tbody>
 <tr>
@@ -126,22 +127,23 @@ db.<span style="">escape</span><span style="">&#40;</span>value<span style="">&#
 </table>
 <p>By default, a&nbsp;<span class="inline_code">STRING</span> field can hold up to a 100 characters, but the length (1-255) can be changed by calling <span class="inline_code">STRING</span> like a function: e.g., <span class="inline_code">STRING(255)</span>. For longer strings, use <span class="inline_code">TEXT</span>.</p>
 <p>With&nbsp;<span class="inline_code">index=True</span>, the field is indexed for faster search. The index can also be set to <span class="inline_code">UNIQUE</span>&nbsp;(no duplicates allowed in this column) or&nbsp;<span class="inline_code">PRIMARY</span>. A table should have a primary key field that uniquely identifies each row (i.e., an id). You can use the <span class="inline_code">pk()</span> function, which creates an <span class="inline_code">INTEGER</span> primary key field named <span class="inline_code">id</span>. Integer primary keys are auto-numbered – no need to set the value manually in a new row.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">pk<span style="">&#40;</span>name=<span style="color: #657a8a;">'id'</span><span style="">&#41;</span> <span style="color: grey;"># type=INTEGER + index=PRIMARY + optional=False </span></code></span></p>
-<p>For example:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">db</span> <span style="color: #28334f; font-weight: bold;">import</span> Database, field, pk, STRING, BOOLEAN, DATE, NOW, date<br />
-<span style="">&gt;&gt;&gt;</span> db = Database<span style="">&#40;</span><span style="color: #657a8a;">'my_stuff'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> db.<span style="">create</span><span style="">&#40;</span><span style="color: #657a8a;">'pets'</span>, fields=<span style="">&#91;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; pk<span style="">&#40;</span><span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; field<span style="">&#40;</span><span style="color: #657a8a;">'name'</span>, STRING<span style="">&#40;</span><span style="color: #666;">80</span><span style="">&#41;</span>, index=<span style="color: #4a587c;">True</span><span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; field<span style="">&#40;</span><span style="color: #657a8a;">'type'</span>, STRING<span style="">&#40;</span><span style="color: #666;">20</span><span style="">&#41;</span><span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; field<span style="">&#40;</span><span style="color: #657a8a;">'tail'</span>, BOOLEAN<span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; field<span style="">&#40;</span><span style="color: #657a8a;">'date_birth'</span>, DATE, default=<span style="color: #4a587c;">None</span><span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; field<span style="">&#40;</span><span style="color: #657a8a;">'date_created'</span>, DATE, default=NOW<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="">&#93;</span><span style="">&#41;</span></code></span></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="">append</span><span style="">&#40;</span>name=u<span style="color: #657a8a;">'Schrödinger'</span>, type=<span style="color: #657a8a;">'cat'</span>, tail=<span style="color: #4a587c;">True</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> db.<span style="">pets</span>.<span style="">rows</span><span style="">&#40;</span><span style="">&#41;</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span><br />
-<br />
-<span style="">&#91;</span>u<span style="color: #657a8a;">'Schrödinger'</span>, u<span style="color: #657a8a;">'cat'</span>, <span style="color: #4a587c;">True</span>, <span style="color: #4a587c;">None</span>, <span style="color: #657a8a;">'2011-08-17 19:16:46'</span><span style="">&#93;</span></code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">pk(name=&#39;id&#39;) # type=INTEGER + index=PRIMARY + optional=False </pre><p>For example:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import Database, field, pk, STRING, BOOLEAN, DATE, NOW, date
+&gt;&gt;&gt; db = Database(&#39;my_stuff&#39;)
+&gt;&gt;&gt; db.create(&#39;pets&#39;, fields=[
+&gt;&gt;&gt;     pk(),
+&gt;&gt;&gt;     field(&#39;name&#39;, STRING(80), index=True),
+&gt;&gt;&gt;     field(&#39;type&#39;, STRING(20)),
+&gt;&gt;&gt;     field(&#39;tail&#39;, BOOLEAN),
+&gt;&gt;&gt;     field(&#39;date_birth&#39;, DATE, default=None),
+&gt;&gt;&gt;     field(&#39;date_created&#39;, DATE, default=NOW)
+&gt;&gt;&gt; ])</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.append(name=u&#39;Schrödinger&#39;, type=&#39;cat&#39;, tail=True)
+&gt;&gt;&gt; print db.pets.rows()[0]
+
+[u&#39;Schrödinger&#39;, u&#39;cat&#39;, True, None, &#39;2011-08-17 19:16:46&#39;]</pre></div>
 <h3>Creating a table from XML</h3>
 <p>You can also pass&nbsp;<span class="inline_code">Table.xml</span>&nbsp;or <span class="inline_code">Query.xml</span> (see below) to <span class="inline_code">Database.create()</span>. An optional <span class="inline_code">name</span> parameter can then be used to give the new table a different name.</p>
 <p>The optional <span class="inline_code">field</span> parameter is a function that takes each field name from the XML and returns a new field name to be used in the table. This is useful for <span class="inline_code">Query.xml</span>, where field names may contain a period (e.g., <span class="inline_code">pets.name</span>), which is not allowed in a table.&nbsp;</p>
@@ -150,96 +152,101 @@ db.<span style="">escape</span><span style="">&#40;</span>value<span style="">&#
 <hr />
 <h2><a name="table"></a>Table</h2>
 <p>A <span class="inline_code">Table</span> is a list of rows, consisting of one or more fields (i.e., table columns) of a certain type (i.e., strings or numbers). New tables can be created with the <span class="inline_code">Database.create()</span> method. An error is raised if a table with the given name already exists. Existing tables can be retrieved with <span class="inline_code">Database.tables[name]</span>, or <span class="inline_code">Database.&lt;name&gt;</span>.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">table = Database.<span style="">tables</span><span style="">&#91;</span>name<span style="">&#93;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">table.<span style="">db</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Parent Database.</span><br />
-table.<span style="">name</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Table name (characters a-z + underscore).</span><br />
-table.<span style="">fields</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of field names (i.e., columns).</span><br />
-table.<span style="">schema</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Dictionary of (field, Schema)-items.</span><br />
-table.<span style="">default</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Dictionary of (field, value)-items for new rows.</span><br />
-table.<span style="">pk</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Primary key field.</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">table.<span style="">count</span><span style="">&#40;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Total number of rows.</span><br />
-table.<span style="">rows</span><span style="">&#40;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of rows, each a list of fields.</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">table.<span style="">append</span><span style="">&#40;</span>values=<span style="">&#123;</span><span style="">&#125;</span>, commit=<span style="color: #4a587c;">True</span><span style="">&#41;</span><br />
-table.<span style="">update</span><span style="">&#40;</span><span style="color: #4a587c;">id</span>, values=<span style="">&#123;</span><span style="">&#125;</span>, commit=<span style="color: #4a587c;">True</span><span style="">&#41;</span><br />
-table.<span style="">remove</span><span style="">&#40;</span><span style="color: #4a587c;">id</span>, commit=<span style="color: #4a587c;">True</span><span style="">&#41;</span><br />
-table.<span style="color: #4a587c;">filter</span><span style="">&#40;</span>fields, filters<span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">table.<span style="">search</span><span style="">&#40;</span><span style="">*</span>args, <span style="">**</span>kwargs<span style="">&#41;</span> </code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">table.<span style="">xml</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># XML-string with the table schema and rows. </span><br />
-table.<span style="">datasheet</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Datasheet object (see below).</span></code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">table = Database.tables[name]</pre><pre class="brush:python; gutter:false; light:true;">table.db                    # Parent Database.
+table.name                  # Table name (characters a-z + underscore).
+table.fields                # List of field names (i.e., columns).
+table.schema                # Dictionary of (field, Schema)-items.
+table.default               # Dictionary of (field, value)-items for new rows.
+table.pk                    # Primary key field.</pre><pre class="brush:python; gutter:false; light:true;">table.count()               # Total number of rows.
+table.rows()                # List of rows, each a list of fields.</pre><pre class="brush:python; gutter:false; light:true;">table.append(values={}, commit=True)
+table.update(id, values={}, commit=True)
+table.remove(id, commit=True)
+table.filter(fields, filters)</pre><pre class="brush:python; gutter:false; light:true;">table.search(*args, **kwargs) </pre><pre class="brush:python; gutter:false; light:true;">table.xml                   # XML-string with the table schema and rows. 
+table.datasheet             # Datasheet object (see below).</pre><ul>
 <li><span class="inline_code">Table.append()</span>, <span class="inline_code">update()</span>,&nbsp;<span class="inline_code">remove()</span>&nbsp;modify the table contents – see further.</li>
 <li>With <span class="inline_code">commit=False</span>, changes are only reflected after a&nbsp;<span class="inline_code">Database.commit()</span> (= faster in batch).&nbsp;</li>
 <li><span class="inline_code">Table.filter()</span> returns a subset of rows with a subset of fields – see further.<br />For example: <span class="inline_code">table.filter('name', type='cat')</span>.</li>
 </ul>
 <h3>Table schema</h3>
 <p>The <span class="inline_code">Table.schema</span> dictionary has a <span class="inline_code">Schema</span> object for each field name, containing field information:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">schema = Table.<span style="">schema</span><span style="">&#91;</span>fieldname<span style="">&#93;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">schema.<span style="">name</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Field name.</span><br />
-schema.<span style="">type</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># STRING, INTEGER, FLOAT, TEXT, BLOB, BOOLEAN, DATE </span><br />
-schema.<span style="">length</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># STRING field length.</span><br />
-schema.<span style="">default</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Default value.</span><br />
-schema.<span style="">index</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># PRIMARY | UNIQUE | True | False</span><br />
-schema.<span style="">optional</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># True or False. </span></code></span></p>
-<p>For example:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> db.<span style="">pets</span>.<span style="">fields</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> db.<span style="">pets</span>.<span style="">schema</span><span style="">&#91;</span><span style="color: #657a8a;">'name'</span><span style="">&#93;</span>.<span style="">type</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> db.<span style="">pets</span>.<span style="">schema</span><span style="">&#91;</span><span style="color: #657a8a;">'name'</span><span style="">&#93;</span>.<span style="">length</span><br />
-<br />
-<span style="">&#91;</span><span style="color: #657a8a;">'id'</span>, <span style="color: #657a8a;">'name'</span>, <span style="color: #657a8a;">'tail'</span>, <span style="color: #657a8a;">'date_birth'</span>, <span style="color: #657a8a;">'date_created'</span><span style="">&#93;</span><br />
-<span style="color: #657a8a;">'string'</span><br />
-<span style="color: #666;">80</span> </code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">schema = Table.schema[fieldname]</pre><pre class="brush:python; gutter:false; light:true;">schema.name                 # Field name.
+schema.type                 # STRING, INTEGER, FLOAT, TEXT, BLOB, BOOLEAN, DATE 
+schema.length               # STRING field length.
+schema.default              # Default value.
+schema.index                # PRIMARY | UNIQUE | True | False
+schema.optional             # True or False. </pre><p>For example:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print db.pets.fields
+&gt;&gt;&gt; print db.pets.schema[&#39;name&#39;].type
+&gt;&gt;&gt; print db.pets.schema[&#39;name&#39;].length
+
+[&#39;id&#39;, &#39;name&#39;, &#39;tail&#39;, &#39;date_birth&#39;, &#39;date_created&#39;]
+&#39;string&#39;
+80 </pre></div>
 <h3>Append, update and remove rows</h3>
 <p><span class="inline_code">Table.append()</span>&nbsp;adds a new row with the given field values.&nbsp;If the table has a primary key generated with <span class="inline_code">pk()</span>, returns the row's id (<span class="inline_code">None</span> otherwise).</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="">append</span><span style="">&#40;</span>name=u<span style="color: #657a8a;">'Schrödinger'</span>, date_birth=date<span style="">&#40;</span><span style="color: #657a8a;">'2009-08-12'</span><span style="">&#41;</span><span style="">&#41;</span></code></span></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="">append</span><span style="">&#40;</span><span style="">&#123;</span><span style="color: #657a8a;">'name'</span>: u<span style="color: #657a8a;">'Schrödinger'</span>, <span style="color: #657a8a;">'date_birth'</span>: date<span style="">&#40;</span><span style="color: #657a8a;">'2009-08-12'</span><span style="">&#41;</span><span style="">&#125;</span><span style="">&#41;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.append(name=u&#39;Schrödinger&#39;, date_birth=date(&#39;2009-08-12&#39;))</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.append({&#39;name&#39;: u&#39;Schrödinger&#39;, &#39;date_birth&#39;: date(&#39;2009-08-12&#39;)})</pre></div>
 <p>If a field name does not allow it to be used as a function parameter, the field values can also be passed as a dictionary (e.g., Unicode strings like&nbsp;<em>data_de_creació</em>).</p>
 <p><span class="inline_code">Table.update()</span>&nbsp;updates the values in the row with the given primary key. Instead of a primary key value, a selection of rows can also be updated using <span class="inline_code">any()</span>&nbsp;or <span class="inline_code">all()</span>&nbsp;(see further). In the third example, all rows with&nbsp;<span class="inline_code">type='cat'</span>&nbsp;will have their <span class="inline_code">tail</span> field set to&nbsp;<span class="inline_code">True</span>.</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="">update</span><span style="">&#40;</span><span style="color: #666;">1</span>, type=<span style="color: #657a8a;">'cat'</span><span style="">&#41;</span> <span style="color: grey;"># set type='cat' in row with id=1.</span></code></span></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="">update</span><span style="">&#40;</span><span style="color: #666;">1</span>, <span style="">&#123;</span><span style="color: #657a8a;">'type'</span>: <span style="color: #657a8a;">'cat'</span><span style="">&#125;</span><span style="">&#41;</span></code></span></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="">update</span><span style="">&#40;</span>all<span style="">&#40;</span><span style="color: #4a587c;">filter</span><span style="">&#40;</span><span style="color: #657a8a;">'type'</span>, <span style="color: #657a8a;">'cat'</span><span style="">&#41;</span><span style="">&#41;</span>, tail=<span style="color: #4a587c;">True</span><span style="">&#41;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.update(1, type=&#39;cat&#39;) # set type=&#39;cat&#39; in row with id=1.</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.update(1, {&#39;type&#39;: &#39;cat&#39;})</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.update(all(filter(&#39;type&#39;, &#39;cat&#39;)), tail=True)</pre></div>
 <p><span class="inline_code">Table.remove()</span>&nbsp;removes the row with the given primary key:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="">remove</span><span style="">&#40;</span><span style="color: #666;">1</span><span style="">&#41;</span></code></span></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="">remove</span><span style="">&#40;</span>ALL<span style="">&#41;</span></code></span></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="">remove</span><span style="">&#40;</span>all<span style="">&#40;</span><span style="color: #4a587c;">filter</span><span style="">&#40;</span><span style="color: #657a8a;">'type'</span>, <span style="color: #657a8a;">'cat'</span><span style="">&#41;</span>, <span style="color: #4a587c;">filter</span><span style="">&#40;</span>year<span style="">&#40;</span><span style="color: #657a8a;">'date_birth'</span><span style="">&#41;</span>, <span style="color: #666;">1990</span>, <span style="color: #657a8a;">'&lt;'</span><span style="">&#41;</span><span style="">&#41;</span><span style="">&#41;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.remove(1)</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.remove(ALL)</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.remove(all(filter(&#39;type&#39;, &#39;cat&#39;), filter(year(&#39;date_birth&#39;), 1990, &#39;&lt;&#39;)))</pre></div>
 <p>The last example removes all rows with <span class="inline_code">type='cat'</span>&nbsp;and year of birth before 1990.</p>
 <p><span style="text-decoration: underline;">Note</span>: to insert binary data into a <span class="inline_code">BLOB</span> field, wrap it in <span class="inline_code">Database.binary()</span>.&nbsp;<br />For example: <span class="inline_code">db.images.append(src=db.binary(open('cat.png').read())))&nbsp;</span></p>
 <h3><span>Filter rows</span></h3>
 <p><span class="inline_code">Table.filter()</span> returns a list of rows filtered by field value(s), where each row is a list of fields.&nbsp;Its first argument defines which fields to yield for each row – either <span class="inline_code">ALL</span>, a field name or a list of field names. The second argument is a dictionary of field constraints. These can also be given as optional keyword parameters:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="color: #4a587c;">filter</span><span style="">&#40;</span><span style="color: #657a8a;">'name'</span><span style="">&#41;</span></code></span></span><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="color: #4a587c;">filter</span><span style="">&#40;</span><span style="">&#40;</span><span style="color: #657a8a;">'id'</span>, <span style="color: #657a8a;">'name'</span><span style="">&#41;</span><span style="">&#41;</span></code></span></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="color: #4a587c;">filter</span><span style="">&#40;</span>ALL, type=<span style="color: #657a8a;">'cat'</span><span style="">&#41;</span></code></span></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="color: #4a587c;">filter</span><span style="">&#40;</span>ALL, type=<span style="">&#40;</span><span style="color: #657a8a;">'cat'</span>, <span style="color: #657a8a;">'dog'</span><span style="">&#41;</span><span style="">&#41;</span> &nbsp; <span style="color: grey;"># type='cat' OR type='dog'</span></code></span></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="color: #4a587c;">filter</span><span style="">&#40;</span>ALL, type=<span style="color: #657a8a;">'cat'</span>, tail=<span style="color: #4a587c;">True</span><span style="">&#41;</span> <span style="color: grey;"># type='cat' AND tail=True </span></code></span></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="color: #4a587c;">filter</span><span style="">&#40;</span><span style="color: #657a8a;">'id'</span>, <span style="">&#123;</span><span style="color: #657a8a;">'type'</span>: <span style="color: #657a8a;">'cat'</span>, <span style="color: #657a8a;">'tail'</span>: <span style="color: #4a587c;">True</span><span style="">&#125;</span><span style="">&#41;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.filter(&#39;name&#39;)</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.filter((&#39;id&#39;, &#39;name&#39;))</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.filter(ALL, type=&#39;cat&#39;)</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.filter(ALL, type=(&#39;cat&#39;, &#39;dog&#39;))   # type=&#39;cat&#39; OR type=&#39;dog&#39;</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.filter(ALL, type=&#39;cat&#39;, tail=True) # type=&#39;cat&#39; AND tail=True </pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.filter(&#39;id&#39;, {&#39;type&#39;: &#39;cat&#39;, &#39;tail&#39;: True})
+</pre></div>
 <p>For more intricate queries a <span class="inline_code">Query</span> object can be used.</p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="query"></a>Query</h2>
 <p><span class="inline_code">Table.search()</span> returns a <span class="inline_code">Query</span> object with options for filtering, sorting and ordering rows by field value(s). It can also include fields from other, related tables.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">query = Table.<span style="">search</span><span style="">&#40;</span> <br />
-&nbsp; &nbsp; &nbsp;fields = ALL,<br />
-&nbsp; &nbsp; filters = <span style="">&#91;</span><span style="">&#93;</span>,<br />
-&nbsp; relations = <span style="">&#91;</span><span style="">&#93;</span>,<br />
-&nbsp; &nbsp; &nbsp; &nbsp;sort = <span style="color: #4a587c;">None</span>,<br />
-&nbsp; &nbsp; &nbsp; order = ASCENDING,<br />
-&nbsp; &nbsp; &nbsp; group = <span style="color: #4a587c;">None</span>,<br />
-&nbsp; &nbsp;function = FIRST,<br />
-&nbsp; &nbsp; &nbsp; <span style="color: #4a587c;">range</span> = <span style="color: #4a587c;">None</span><br />
-<span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">query.<span style="">table</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Parent Table.</span><br />
-query.<span style="">fields</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Field name, list of field names or ALL.</span><br />
-query.<span style="">aliases</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Dictionary of (field name, alias)-items.</span><br />
-query.<span style="">filters</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of filter() items.</span><br />
-query.<span style="">relations</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of relation() items.</span><br />
-query.<span style="">sort</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Field name or list of field names.</span><br />
-query.<span style="">order</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># ASCENDING | DESCENDING</span><br />
-query.<span style="">group</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Field name or list of field names.</span><br />
-query.<span style="">function</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># FIRST, LAST, COUNT, MIN, MAX, SUM, AVG, CONCATENATE</span><br />
-query.<span style="color: #4a587c;">range</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># (start, stop)-tuple, e.g. rows 11-20.</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">query.<span style="">rows</span><span style="">&#40;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of rows, each a list of fields.</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">query.<span style="">record</span><span style="">&#40;</span>row<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Dictionary of (field, value)-items for given row.</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">query.<span style="">xml</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># XML-string with the query schema and rows.</span></code></span></p>
-<h3>Query filters</h3>
+<pre class="brush:python; gutter:false; light:true;">query = Table.search( 
+     fields = ALL,
+    filters = [],
+  relations = [],
+       sort = None,
+      order = ASCENDING,
+      group = None,
+   function = FIRST,
+      range = None
+)</pre><pre class="brush:python; gutter:false; light:true;">query.table                 # Parent Table.
+query.fields                # Field name, list of field names or ALL.
+query.aliases               # Dictionary of (field name, alias)-items.
+query.filters               # List of filter() items.
+query.relations             # List of relation() items.
+query.sort                  # Field name or list of field names.
+query.order                 # ASCENDING | DESCENDING
+query.group                 # Field name or list of field names.
+query.function              # FIRST, LAST, COUNT, MIN, MAX, SUM, AVG, CONCATENATE
+query.range                 # (start, stop)-tuple, e.g. rows 11-20.</pre><pre class="brush:python; gutter:false; light:true;">query.rows()                # List of rows, each a list of fields.</pre><pre class="brush:python; gutter:false; light:true;">query.record(row)           # Dictionary of (field, value)-items for given row.</pre><pre class="brush:python; gutter:false; light:true;">query.xml                   # XML-string with the query schema and rows.</pre><h3>Query filters</h3>
 <p>The <span class="inline_code">filter()</span> function creates a field-value constraint that will match certain rows in a table. A list of such filters can be passed to the <span class="inline_code">filters</span> parameter of the Query object.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python"><span style="color: #4a587c;">filter</span><span style="">&#40;</span>field, value, comparison=<span style="color: #657a8a;">'='</span><span style="">&#41;</span></code></span></p>
-<table class="border">
+<pre class="brush:python; gutter:false; light:true;">filter(field, value, comparison=&#39;=&#39;)</pre><table class="border">
 <tbody>
 <tr>
 <td style="text-align: center;"><span class="smallcaps">Comparison</span></td>
@@ -290,23 +297,23 @@ query.<span style="color: #4a587c;">range</span> &nbsp; &nbsp; &nbsp; &nbsp; &nb
 </table>
 <p>To work with a specific part of a <span class="inline_code">DATE</span> field (e.g., the year), wrap it in a&nbsp;<span class="inline_code">year()</span>, <span class="inline_code">month()</span>, <span class="inline_code">day()</span>, <span class="inline_code">hour()</span>, <span class="inline_code">minute()</span> or <span class="inline_code">second()</span> function.&nbsp;</p>
 <p>Multiple filters can be chained together in an&nbsp;<span class="inline_code">all()</span> or <span class="inline_code">any()</span>&nbsp;list, using <span class="inline_code">AND</span> or <span class="inline_code">OR</span> logic respectively:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">all<span style="">&#40;</span>filter1, filter2, ...<span style="">&#41;</span> <span style="color: grey;"># Rows must match all of the filters.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">any<span style="">&#40;</span>filter1, filter2, ...<span style="">&#41;</span> <span style="color: grey;"># Rows must match one of the filters.</span></code></span></p>
-<p>For example:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">db</span> <span style="color: #28334f; font-weight: bold;">import</span> Database, <span style="color: #4a587c;">filter</span>, all, any<br />
-<span style="">&gt;&gt;&gt;</span> db = Database<span style="">&#40;</span><span style="color: #657a8a;">'my_stuff'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="">search</span><span style="">&#40;</span>filters=all<span style="">&#40;</span><span style="color: #4a587c;">filter</span><span style="">&#40;</span><span style="color: #657a8a;">'name'</span>, <span style="color: #657a8a;">'Taxi'</span><span style="">&#41;</span>, <span style="color: #4a587c;">filter</span><span style="">&#40;</span><span style="color: #657a8a;">'type'</span>, <span style="color: #657a8a;">'cat'</span><span style="">&#41;</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="">search</span><span style="">&#40;</span>filters=any<span style="">&#40;</span><span style="color: #4a587c;">filter</span><span style="">&#40;</span><span style="color: #657a8a;">'name'</span>, <span style="color: #657a8a;">'Taxi'</span><span style="">&#41;</span>, <span style="color: #4a587c;">filter</span><span style="">&#40;</span><span style="color: #657a8a;">'type'</span>, <span style="color: #657a8a;">'cat'</span><span style="">&#41;</span><span style="">&#41;</span><span style="">&#41;</span></code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">all(filter1, filter2, ...) # Rows must match all of the filters.</pre><pre class="brush:python; gutter:false; light:true;">any(filter1, filter2, ...) # Rows must match one of the filters.</pre><p>For example:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import Database, filter, all, any
+&gt;&gt;&gt; db = Database(&#39;my_stuff&#39;)
+&gt;&gt;&gt; db.pets.search(filters=all(filter(&#39;name&#39;, &#39;Taxi&#39;), filter(&#39;type&#39;, &#39;cat&#39;)))
+&gt;&gt;&gt; db.pets.search(filters=any(filter(&#39;name&#39;, &#39;Taxi&#39;), filter(&#39;type&#39;, &#39;cat&#39;)))</pre></div>
 <p>The first query matches all cats named Taxi (i.e., <span class="inline_code">name='Taxi'</span>&nbsp;AND&nbsp;<span class="inline_code">type='cat'</span>). The second query matches any pet that is a cat or that is named 'Taxi' (i.e., <span class="inline_code">name='Taxi'</span> OR <span class="inline_code">type='cat'</span>).&nbsp;</p>
 <p>Furthmore, <span class="inline_code">all()</span> and <span class="inline_code">any()</span> can be nested to create complex search criteria.&nbsp;The example below matches all pets that are cats, and whose name starts with an K- or ends with a -y:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> f = all<span style="">&#40;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> f.<span style="">append</span><span style="">&#40;</span><span style="color: #4a587c;">filter</span><span style="">&#40;</span><span style="color: #657a8a;">'type'</span>, <span style="color: #657a8a;">'cat'</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> f.<span style="">append</span><span style="">&#40;</span>any<span style="">&#40;</span><span style="color: #4a587c;">filter</span><span style="">&#40;</span><span style="color: #657a8a;">'name'</span>, <span style="color: #657a8a;">'K*'</span><span style="">&#41;</span>, <span style="color: #4a587c;">filter</span><span style="">&#40;</span><span style="color: #657a8a;">'name'</span>, <span style="color: #657a8a;">'*y'</span><span style="">&#41;</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> db.<span style="">pets</span>.<span style="">search</span><span style="">&#40;</span>filters=f<span style="">&#41;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; f = all()
+&gt;&gt;&gt; f.append(filter(&#39;type&#39;, &#39;cat&#39;))
+&gt;&gt;&gt; f.append(any(filter(&#39;name&#39;, &#39;K*&#39;), filter(&#39;name&#39;, &#39;*y&#39;)))
+&gt;&gt;&gt; db.pets.search(filters=f)</pre></div>
 <h3>Query relations</h3>
 <p>Relations are used to include fields from other tables. Say we have a <em>products</em> table and an <em>orders</em> table. We don't want all the product data in the <em>orders</em> table – this belongs in the <em>products</em> table so duplicate data is avoided (this is called <em>database normalization</em>). Each order contains the product id. Each product id can occur in multiple orders. When we run an <em>invoice</em> query for an order, we fetch the product description, price, etc. using a relation.</p>
 <p>The <span class="inline_code">relation()</span> function defines a relation to another table, between two fields in the tables (usually id's):</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">relation<span style="">&#40;</span>field1, field2, table, join=LEFT<span style="">&#41;</span> <span style="color: grey;"># INNER | LEFT | RIGHT | FULL</span></code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">relation(field1, field2, table, join=LEFT) # INNER | LEFT | RIGHT | FULL</pre><ul>
 <li><span class="inline_code">LEFT</span>&nbsp;selects all rows from the base table, with additional fields from the related table (if found). <br />If there is no link between <span class="inline_code">field1</span> and <span class="inline_code">field2</span>, the fields from the related table contain <span class="inline_code">None</span>.</li>
 <li><span class="inline_code">RIGHT</span>&nbsp;is the reverse of <span class="inline_code">LEFT</span>.</li>
 <li><span class="inline_code">FULL</span>&nbsp;means <span class="inline_code">LEFT</span> + <span class="inline_code">RIGHT</span>.</li>
@@ -388,33 +395,38 @@ query.<span style="color: #4a587c;">range</span> &nbsp; &nbsp; &nbsp; &nbsp; &nb
 </tr>
 </tbody>
 </table>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">db</span> <span style="color: #28334f; font-weight: bold;">import</span> Database, field, pk, INT<br />
-<span style="">&gt;&gt;&gt;</span> db = Database<span style="">&#40;</span><span style="color: #657a8a;">'pizza_delivery'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> db.<span style="">create</span><span style="">&#40;</span><span style="color: #657a8a;">'products'</span>, <span style="">&#40;</span>pk<span style="">&#40;</span><span style="">&#41;</span>, field<span style="">&#40;</span><span style="color: #657a8a;">'description'</span><span style="">&#41;</span>, field<span style="">&#40;</span><span style="color: #657a8a;">'price'</span>, INT<span style="">&#41;</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> db.<span style="">create</span><span style="">&#40;</span><span style="color: #657a8a;">'customers'</span>, <span style="">&#40;</span>pk<span style="">&#40;</span><span style="">&#41;</span>, field<span style="">&#40;</span><span style="color: #657a8a;">'name'</span><span style="">&#41;</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> db.<span style="">create</span><span style="">&#40;</span><span style="color: #657a8a;">'orders'</span>, <span style="">&#40;</span>pk<span style="">&#40;</span><span style="">&#41;</span>, field<span style="">&#40;</span><span style="color: #657a8a;">'product_id'</span>, INT<span style="">&#41;</span>, field<span style="">&#40;</span><span style="color: #657a8a;">'customer_id'</span>, INT<span style="">&#41;</span><span style="">&#41;</span><span style="">&#41;</span></code></span></span></p>
-<p><span class="example">Add data:</span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">products</span>.<span style="">append</span><span style="">&#40;</span>description=<span style="color: #657a8a;">'pizza'</span>, price=<span style="color: #666;">15</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> db.<span style="">products</span>.<span style="">append</span><span style="">&#40;</span>description=<span style="color: #657a8a;">'garlic bread'</span>, price=<span style="color: #666;">3</span><span style="">&#41;</span></code></span></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">customers</span>.<span style="">append</span><span style="">&#40;</span>name=u<span style="color: #657a8a;">'Schrödinger'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> db.<span style="">customers</span>.<span style="">append</span><span style="">&#40;</span>name=u<span style="color: #657a8a;">'Hofstadter'</span><span style="">&#41;</span></code></span></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> db.<span style="">orders</span>.<span style="">append</span><span style="">&#40;</span>product_id=<span style="color: #666;">1</span>, customer_id=<span style="color: #666;">2</span><span style="">&#41;</span></code></span></span></p>
-<p><span class="example">Hofstadter orders a pizza. We use a query with relations between the tables to display the order:</span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">db</span> <span style="color: #28334f; font-weight: bold;">import</span> Database, relation, LEFT<br />
-<span style="">&gt;&gt;&gt;</span> db = Database<span style="">&#40;</span><span style="color: #657a8a;">'pizza_delivery'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> q = db.<span style="">orders</span>.<span style="">search</span><span style="">&#40;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp;fields = <span style="">&#40;</span><span style="color: #657a8a;">'id'</span>, <span style="color: #657a8a;">'customers.name'</span>, <span style="color: #657a8a;">'products.description'</span>, <span style="color: #657a8a;">'products.price'</span><span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; relations = <span style="">&#40;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; relation<span style="">&#40;</span><span style="color: #657a8a;">'customer_id'</span>, <span style="color: #657a8a;">'id'</span>, <span style="color: #657a8a;">'customers'</span>, join=LEFT<span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; relation<span style="">&#40;</span><span style="color: #657a8a;">'product_id'</span>, <span style="color: #657a8a;">'id'</span>, <span style="color: #657a8a;">'products'</span>, join=LEFT<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> q.<span style="">fields</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> q.<span style="">rows</span><span style="">&#40;</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span><span style="color: #657a8a;">'id'</span>, <span style="color: #657a8a;">'customers.name'</span>, <span style="color: #657a8a;">'products.description'</span>, <span style="color: #657a8a;">'products.price'</span><span style="">&#93;</span><br />
-<span style="">&#91;</span><span style="">&#91;</span><span style="color: #666;">1</span>, u<span style="color: #657a8a;">'Hofstadter'</span>, u<span style="color: #657a8a;">'pizza'</span>, <span style="color: #666;">15</span><span style="">&#93;</span><span style="">&#93;</span> </code></span></span></p>
-<p><span class="example">Note: if a relation is used often, you can define it once with <span class="inline_code">Database.link()</span>. It will then be available in every <span class="inline_code">Query</span>.</span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import Database, field, pk, INT
+&gt;&gt;&gt; db = Database(&#39;pizza_delivery&#39;)
+&gt;&gt;&gt; db.create(&#39;products&#39;, (pk(), field(&#39;description&#39;), field(&#39;price&#39;, INT)))
+&gt;&gt;&gt; db.create(&#39;customers&#39;, (pk(), field(&#39;name&#39;)))
+&gt;&gt;&gt; db.create(&#39;orders&#39;, (pk(), field(&#39;product_id&#39;, INT), field(&#39;customer_id&#39;, INT)))</pre></div>
+<div class="example">Add data:</div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.products.append(description=&#39;pizza&#39;, price=15)
+&gt;&gt;&gt; db.products.append(description=&#39;garlic bread&#39;, price=3)</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.customers.append(name=u&#39;Schrödinger&#39;)
+&gt;&gt;&gt; db.customers.append(name=u&#39;Hofstadter&#39;)</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.orders.append(product_id=1, customer_id=2)</pre></div>
+<div class="example">Hofstadter orders a pizza. We use a query with relations between the tables to display the order:</div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import Database, relation, LEFT
+&gt;&gt;&gt; db = Database(&#39;pizza_delivery&#39;)
+&gt;&gt;&gt; q = db.orders.search(
+&gt;&gt;&gt;      fields = (&#39;id&#39;, &#39;customers.name&#39;, &#39;products.description&#39;, &#39;products.price&#39;),
+&gt;&gt;&gt;   relations = (
+&gt;&gt;&gt;         relation(&#39;customer_id&#39;, &#39;id&#39;, &#39;customers&#39;, join=LEFT),
+&gt;&gt;&gt;         relation(&#39;product_id&#39;, &#39;id&#39;, &#39;products&#39;, join=LEFT)
+&gt;&gt;&gt;     )
+&gt;&gt;&gt; )
+&gt;&gt;&gt; print q.fields
+&gt;&gt;&gt; print q.rows()
+
+[&#39;id&#39;, &#39;customers.name&#39;, &#39;products.description&#39;, &#39;products.price&#39;]
+[[1, u&#39;Hofstadter&#39;, u&#39;pizza&#39;, 15]] </pre></div>
+<div class="example">Note: if a relation is used often, you can define it once with <span class="inline_code">Database.link()</span>. It will then be available in every <span class="inline_code">Query</span>.</div>
 <h3>Grouping rows</h3>
 <p>Rows in a <span class="inline_code">Query</span> are folded on duplicate values in the given <span class="inline_code">group</span> field. The given&nbsp;<span class="inline_code">function</span>&nbsp;is applied to the other fields. It can also be a list with a separate function for each field.</p>
 <table class="border">
@@ -472,71 +484,70 @@ query.<span style="color: #4a587c;">range</span> &nbsp; &nbsp; &nbsp; &nbsp; &nb
 </tbody>
 </table>
 <p>For example, to get the total revenue per ordered product:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> db.<span style="">orders</span>.<span style="">search</span><span style="">&#40;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp;fields = <span style="">&#40;</span><span style="color: #657a8a;">'products.description'</span>, <span style="color: #657a8a;">'products.price'</span><span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; relations = <span style="">&#40;</span>relation<span style="">&#40;</span><span style="color: #657a8a;">'product_id'</span>, <span style="color: #657a8a;">'id'</span>, <span style="color: #657a8a;">'products'</span><span style="">&#41;</span><span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; group = <span style="color: #657a8a;">'products.description'</span>, <span style="color: grey;"># Fold products with same description.</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp;function = SUM<br />
-<span style="">&gt;&gt;&gt;</span> <span style="">&#41;</span>.<span style="">rows</span><span style="">&#40;</span><span style="">&#41;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print db.orders.search(
+&gt;&gt;&gt;        fields = (&#39;products.description&#39;, &#39;products.price&#39;),
+&gt;&gt;&gt;     relations = (relation(&#39;product_id&#39;, &#39;id&#39;, &#39;products&#39;)),
+&gt;&gt;&gt;         group = &#39;products.description&#39;, # Fold products with same description.
+&gt;&gt;&gt;      function = SUM
+&gt;&gt;&gt; ).rows()</pre></div>
 <p>To get the sum of a column for all rows in a table or query, simply use <span class="inline_code">sum()</span>:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> db.<span style="">products</span>.<span style="color: #4a587c;">filter</span><span style="">&#40;</span><span style="color: #4a587c;">sum</span><span style="">&#40;</span><span style="color: #657a8a;">'price'</span><span style="">&#41;</span><span style="">&#41;</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print db.products.filter(sum(&#39;price&#39;))[0][0]</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="view"></a>View</h2>
 <p><span class="inline_code">View</span>&nbsp;is a thin interface between a <span class="inline_code">Table</span> and an app. The <span class="inline_code">View.render()</span> method must be overridden in a subclass to yield rows in a certain output format (e.g., HTML). The outside world does not need to know about <span class="inline_code">Table</span> or <span class="inline_code">Query</span>&nbsp;– only what parameters can be fed to <span class="inline_code">render()</span>.</p>
 <p>If the given table does not exist, the constructor will call&nbsp;<span class="inline_code">View.setup()</span> with the given schema&nbsp;of <span class="inline_code">field()</span> items to create it.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">view = View<span style="">&#40;</span>database, table_name, schema=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">view.<span style="">db</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Parent Database.</span><br />
-view.<span style="">table</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Parent Table.</span><br />
-view.<span style="">schema</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of field()-items to create the table.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">view.<span style="">setup</span><span style="">&#40;</span>overwrite=<span style="color: #4a587c;">False</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">view.<span style="">render</span><span style="">&#40;</span><span style="">*</span>args, <span style="">**</span>kwargs<span style="">&#41;</span> </code></span></p>
-<p>For example, the following view renders a HTML <span class="inline_code">&lt;table&gt;</span>&nbsp;with products that match a search query:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">db</span> <span style="color: #28334f; font-weight: bold;">import</span> Database, View<br />
-<span style="">&gt;&gt;&gt;</span> db = Database<span style="">&#40;</span><span style="color: #657a8a;">'pizza_delivery'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">class</span> <span style="color:rgb(90, 150, 200)">Products</span><span style="">&#40;</span>View<span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">def</span> <span style="color: #4a587c;">__init__</span><span style="">&#40;</span><span style="color: #4a587c;">self</span>, database<span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; View.<span style="color: #4a587c;">__init__</span><span style="">&#40;</span><span style="color: #4a587c;">self</span>, database, <span style="color: #657a8a;">'products'</span>, schema=<span style="">&#91;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; pk<span style="">&#40;</span><span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; field<span style="">&#40;</span><span style="color: #657a8a;">'name'</span>, STRING<span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; field<span style="">&#40;</span><span style="color: #657a8a;">'price'</span>, FLOAT<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="">&#93;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp;<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">def</span> <span style="color:rgb(90, 150, 200)">render</span><span style="">&#40;</span><span style="color: #4a587c;">self</span>, query, <span style="">**</span>kwargs<span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; q = <span style="color: #4a587c;">self</span>.<span style="">table</span>.<span style="">search</span><span style="">&#40;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;fields = <span style="">&#91;</span><span style="color: #657a8a;">'description'</span>, <span style="color: #657a8a;">'price'</span><span style="">&#93;</span>, <br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; filters = <span style="">&#91;</span><span style="color: #4a587c;">filter</span><span style="">&#40;</span><span style="color: #657a8a;">'description'</span>, <span style="color: #657a8a;">'*'</span>+q+<span style="color: #657a8a;">'*'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; html = <span style="">&#91;</span><span style="">&#93;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">for</span> row <span style="color: #28334f; font-weight: bold;">in</span> q.<span style="">rows</span><span style="">&#40;</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; r = <span style="">&#91;</span><span style="">&#93;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">for</span> i, field <span style="color: #28334f; font-weight: bold;">in</span> <span style="color: #4a587c;">enumerate</span><span style="">&#40;</span>q.<span style="">fields</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; r.<span style="">append</span><span style="">&#40;</span><span style="color: #657a8a;">'&lt;td class=&quot;%s&quot;&gt;%s&lt;/td&gt;'</span> <span style="">%</span> <span style="">&#40;</span>field, <span style="">string</span><span style="">&#40;</span>row<span style="">&#91;</span>i<span style="">&#93;</span><span style="">&#41;</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; html.<span style="">append</span><span style="">&#40;</span><span style="color: #657a8a;">'&lt;tr&gt;%s&lt;/tr&gt;'</span> <span style="">%</span> <span style="color: #657a8a;">''</span>.<span style="">join</span><span style="">&#40;</span>r<span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">return</span> <span style="color: #657a8a;">'&lt;table&gt;'</span> + <span style="color: #657a8a;">''</span>.<span style="">join</span><span style="">&#40;</span>html<span style="">&#41;</span> + <span style="color: #657a8a;">'&lt;/table&gt;'</span><br />
-<span style="">&gt;&gt;&gt;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> Products<span style="">&#40;</span><span style="">&#41;</span>.<span style="">render</span><span style="">&#40;</span>q=<span style="color: #657a8a;">'bread'</span><span style="">&#41;</span><br />
-<br />
-<span style="color: #657a8a;">'&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;description&quot;&gt;garlic bread&lt;/td&gt;&lt;td class=&quot;price&quot;&gt;3&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;'</span> </code></span></span></p>
-<p><span class="example">When <span class="inline_code">View</span>&nbsp;is used as a </span><a href="http://www.cherrypy.org/" target="_blank">CherryPy</a> web page, <span class="inline_code">render()</span> will be called with&nbsp;<span class="inline_code">args</span>&nbsp;as a list of parts in the relative URL, and <span class="inline_code">kwargs</span> as a dictionary of all <span class="inline_code">POST</span> and <span class="inline_code">GET</span> variables sent from the client. For example, <span class="inline_code">http://pizzadelivery.com/products/search?q=bread</span>&nbsp;→ <span class="inline_code">['products', 'search']</span> +<span class="inline_code"> {'q': 'bread'}</span>.</p>
+<pre class="brush:python; gutter:false; light:true;">view = View(database, table_name, schema=[])</pre><pre class="brush:python; gutter:false; light:true;">view.db                     # Parent Database.
+view.table                  # Parent Table.
+view.schema                 # List of field()-items to create the table.</pre><pre class="brush:python; gutter:false; light:true;">view.setup(overwrite=False)</pre><pre class="brush:python; gutter:false; light:true;">view.render(*args, **kwargs) </pre><p>For example, the following view renders a HTML <span class="inline_code">&lt;table&gt;</span>&nbsp;with products that match a search query:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import Database, View
+&gt;&gt;&gt; db = Database(&#39;pizza_delivery&#39;)
+&gt;&gt;&gt;
+&gt;&gt;&gt; class Products(View):
+&gt;&gt;&gt;     def __init__(self, database):
+&gt;&gt;&gt;         View.__init__(self, database, &#39;products&#39;, schema=[
+&gt;&gt;&gt;             pk(),
+&gt;&gt;&gt;             field(&#39;name&#39;, STRING),
+&gt;&gt;&gt;             field(&#39;price&#39;, FLOAT)
+&gt;&gt;&gt;         ])
+&gt;&gt;&gt;        
+&gt;&gt;&gt;     def render(self, query, **kwargs):
+&gt;&gt;&gt;         q = self.table.search(
+&gt;&gt;&gt;              fields = [&#39;description&#39;, &#39;price&#39;], 
+&gt;&gt;&gt;             filters = [filter(&#39;description&#39;, &#39;*&#39;+q+&#39;*&#39;)])
+&gt;&gt;&gt;         html = []
+&gt;&gt;&gt;         for row in q.rows():
+&gt;&gt;&gt;             r = []
+&gt;&gt;&gt;             for i, field in enumerate(q.fields):
+&gt;&gt;&gt;&gt;                 r.append(&#39;&lt;td class=&quot;%s&quot;&gt;%s&lt;/td&gt;&#39; % (field, string(row[i])))
+&gt;&gt;&gt;             html.append(&#39;&lt;tr&gt;%s&lt;/tr&gt;&#39; % &#39;&#39;.join(r))
+&gt;&gt;&gt;         return &#39;&lt;table&gt;&#39; + &#39;&#39;.join(html) + &#39;&lt;/table&gt;&#39;
+&gt;&gt;&gt;
+&gt;&gt;&gt; print Products().render(q=&#39;bread&#39;)
+
+&#39;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;description&quot;&gt;garlic bread&lt;/td&gt;&lt;td class=&quot;price&quot;&gt;3&lt;/td&gt;
+ &lt;/tr&gt;&lt;/table&gt;&#39; </pre></div>
+<div class="example">When <span class="inline_code">View</span>&nbsp;is used as a <a href="http://www.cherrypy.org/" target="_blank">CherryPy</a> web page, <span class="inline_code">render()</span> will be called with&nbsp;<span class="inline_code">args</span>&nbsp;as a list of parts in the relative URL, and <span class="inline_code">kwargs</span> as a dictionary of all <span class="inline_code">POST</span> and <span class="inline_code">GET</span> variables sent from the client. For example, <span class="inline_code">http://pizzadelivery.com/products/search?q=bread</span>&nbsp;→ <span class="inline_code">['products', 'search']</span> +<span class="inline_code"> {'q': 'bread'}</span>.</div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="datasheet"></a>Datasheet</h2>
-<p><span class="inline_code">Datasheet</span> is a matrix of rows and columns, where each row and column can be retrieved as a Python list. The data is not stored in a database but can be imported / exported as a CSV-file. Optionally, the given&nbsp;<span class="inline_code">fields</span> is a list of (<span class="inline_code">name</span>, <span class="inline_code">type</span>)-items where <span class="inline_code">type</span> can be <span class="inline_code">STRING</span>, <span class="inline_code">TEXT</span>, <span class="inline_code">INTEGER</span>, <span class="inline_code">FLOAT</span>, <span class="inline_code">BOOLEAN</span>, <span class="inline_code">BLOB</span> or <span class="inline_code">DATE</span>.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">datasheet = Datasheet<span style="">&#40;</span>rows=<span style="">&#91;</span><span style="">&#93;</span>, fields=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">datasheet = Datasheet.<span style="">load</span><span style="">&#40;</span>path, separator=<span style="color: #657a8a;">','</span>, decoder=<span style="color: #28334f; font-weight: bold;">lambda</span> v: v, headers=<span style="color: #4a587c;">False</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">datasheet.<span style="">rows</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of rows (each row = list of values).</span><br />
-datasheet.<span style="">columns</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of columns (each column = list of values).</span><br />
-datasheet.<span style="">fields</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of (name, type) column headers.</span><br />
-datasheet.<span style="">&lt;</span>field<span style="">&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of column values. </span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">datasheet<span style="">&#91;</span>i<span style="">&#93;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Row with index i.</span><br />
-datasheet<span style="">&#91;</span>i, j<span style="">&#93;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Value in row i at column j.</span><br />
-datasheet<span style="">&#91;</span>i1:i2, j<span style="">&#93;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Slice of column j from rows i1-i2.</span><br />
-datasheet<span style="">&#91;</span>i, j1:j2<span style="">&#93;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Slice of columns j1-j2 from row i.</span><br />
-datasheet<span style="">&#91;</span>i1:i2, j1:j2<span style="">&#93;</span> &nbsp; &nbsp; <span style="color: grey;"># Datasheet with columns j1-j2 from rows i1-i2.</span><br />
-datasheet<span style="">&#91;</span>:<span style="">&#93;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Datasheet copy. </span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">datasheet.<span style="">insert</span><span style="">&#40;</span>i, row, default=<span style="color: #4a587c;">None</span><span style="">&#41;</span><br />
-datasheet.<span style="">append</span><span style="">&#40;</span>row, default=<span style="color: #4a587c;">None</span><span style="">&#41;</span><br />
-datasheet.<span style="">extend</span><span style="">&#40;</span>rows, default=<span style="color: #4a587c;">None</span><span style="">&#41;</span><br />
-datasheet.<span style="">copy</span><span style="">&#40;</span>rows=ALL, columns=ALL<span style="">&#41;</span> </code></span><span class="geshifilter"><code class="python geshifilter-python">datasheet.<span style="">group</span><span style="">&#40;</span>j, function=FIRST, key=<span style="color: #28334f; font-weight: bold;">lambda</span> value: value<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">datasheet.<span style="">save</span><span style="">&#40;</span>path, separator=<span style="color: #657a8a;">','</span>, encoder=<span style="color: #28334f; font-weight: bold;">lambda</span> v: v, headers=<span style="color: #4a587c;">False</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">datasheet.<span style="">json</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># JSON-formatted string.</span></code></span></p>
-<ul>
+<p><span class="inline_code">Datasheet</span> is a matrix of rows and columns, where each row and column can be retrieved as a Python list. The data is not stored in a database but can be imported / exported as a CSV-file. Optionally, the given <span class="inline_code">fields</span> is a list of (<span class="inline_code">name</span>, <span class="inline_code">type</span>)-items where <span class="inline_code">type</span> can be <span class="inline_code">STRING</span>, <span class="inline_code">TEXT</span>, <span class="inline_code">INTEGER</span>, <span class="inline_code">FLOAT</span>, <span class="inline_code">BOOLEAN</span>, <span class="inline_code">BLOB</span> or <span class="inline_code">DATE</span>.</p>
+<pre class="brush:python; gutter:false; light:true;">datasheet = Datasheet(rows=[], fields=None)</pre><pre class="brush:python; gutter:false; light:true;">datasheet = Datasheet.load(path, separator=&#39;,&#39;, decoder=lambda v: v, headers=False)
+</pre><pre class="brush:python; gutter:false; light:true;">datasheet.rows              # List of rows (each row = list of values).
+datasheet.columns           # List of columns (each column = list of values).
+datasheet.fields            # List of (name, type) column headers.
+datasheet.&lt;field&gt;           # List of column values. </pre><pre class="brush:python; gutter:false; light:true;">datasheet[i]                # Row with index i.
+datasheet[i, j]             # Value in row i at column j.
+datasheet[i1:i2, j]         # Slice of column j from rows i1-i2.
+datasheet[i, j1:j2]         # Slice of columns j1-j2 from row i.
+datasheet[i1:i2, j1:j2]     # Datasheet with columns j1-j2 from rows i1-i2.
+datasheet[:]                # Datasheet copy. </pre><pre class="brush:python; gutter:false; light:true;">datasheet.insert(i, row, default=None)
+datasheet.append(row, default=None)
+datasheet.extend(rows, default=None)
+datasheet.copy(rows=ALL, columns=ALL) </pre><pre class="brush:python; gutter:false; light:true;">datasheet.group(j, function=FIRST, key=lambda value: value)</pre><pre class="brush:python; gutter:false; light:true;">datasheet.save(path, separator=&#39;,&#39;, encoder=lambda v: v, headers=False)</pre><pre class="brush:python; gutter:false; light:true;">datasheet.json              # JSON-formatted string.</pre><ul>
 <li><span class="inline_code">Datasheet.insert()</span> and <span class="inline_code">append()</span> fill missing columns (at the right) with a <span class="inline_code">default</span> value.</li>
 <li><span class="inline_code">Datasheet.columns.insert()</span> and <span class="inline_code">append()</span> fill missing rows (bottom) with the default.<br />An optional <span class="inline_code">field</span> parameter can be used to supply a (<span class="inline_code">name</span>, <span class="inline_code">type</span>) column header.&nbsp;</li>
 <li><span class="inline_code">Datasheet.copy()</span> returns a new <span class="inline_code">Datasheet</span>&nbsp;from a selective list of row and/or column indices.<br />To flip a datasheet, do: <span class="inline_code">datasheet.copy(rows=datasheet.columns)</span>.</li>
@@ -544,66 +555,66 @@ datasheet.<span style="">copy</span><span style="">&#40;</span>rows=ALL, columns
 <h3>Grouping rows</h3>
 <p><span class="inline_code">Datasheet.group()</span> returns a new&nbsp;<span class="inline_code">Datasheet</span>&nbsp;with unique values in column <span class="inline_code">j</span>, by grouping rows with the given function.&nbsp;The <span class="inline_code">function</span> takes a list of column values and returns a single value. Predefined functions are:&nbsp;<span class="inline_code">FIRST</span>, <span class="inline_code">LAST</span>, <span class="inline_code">COUNT</span>, <span class="inline_code">MIN</span>, <span class="inline_code">MAX</span>, <span class="inline_code">SUM</span>, <span class="inline_code">AVG</span>, <span class="inline_code">STDEV</span>,&nbsp;<span class="inline_code">CONCATENATE</span>. It can also be a list of functions, one for each column. A <span class="inline_code">TypeError</span>&nbsp;is raised when a function cannot handle the data in its column.&nbsp;</p>
 <p>The <span class="inline_code">key</span> argument can be used to prepare the values in column <span class="inline_code">j</span> for comparison, for example: <span class="inline_code">key=lambda date: date.year</span> groups a column of <span class="inline_code">Date</span> objects by year.&nbsp;</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">db</span> <span style="color: #28334f; font-weight: bold;">import</span> Datasheet, uid, <span style="">pprint</span><br />
-<span style="">&gt;&gt;&gt;</span> ds = Datasheet<span style="">&#40;</span>rows=<span style="">&#91;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="">&#91;</span>uid<span style="">&#40;</span><span style="">&#41;</span>, u<span style="color: #657a8a;">'Schrödinger'</span>, <span style="color: #657a8a;">'cat'</span><span style="">&#93;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="">&#91;</span>uid<span style="">&#40;</span><span style="">&#41;</span>, u<span style="color: #657a8a;">'Hofstadter'</span>, &nbsp;<span style="color: #657a8a;">'cat'</span><span style="">&#93;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="">&#91;</span>uid<span style="">&#40;</span><span style="">&#41;</span>, u<span style="color: #657a8a;">'Taxi'</span>, &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #657a8a;">'dog'</span><span style="">&#93;</span><span style="">&#93;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> g = ds.<span style="">copy</span><span style="">&#40;</span>columns=<span style="">&#91;</span><span style="color: #666;">2</span>,<span style="color: #666;">0</span><span style="">&#93;</span><span style="">&#41;</span> <span style="color: grey;"># A copy with the type and id columns.</span><br />
-<span style="">&gt;&gt;&gt;</span> g = g.<span style="">group</span><span style="">&#40;</span><span style="color: #666;">0</span>, COUNT<span style="">&#41;</span> &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Group by type, count rows per type.</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="">pprint</span><span style="">&#40;</span>g, fill=<span style="color: #657a8a;">''</span><span style="">&#41;</span><br />
-<br />
-cat &nbsp;<span style="color: #666;">2</span> <br />
-dog &nbsp;<span style="color: #666;">1</span></code></span></span></p>
-<p><span class="example">The example below uses a custom concatenate function:</span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> g = ds.<span style="">copy</span><span style="">&#40;</span>columns=<span style="">&#91;</span><span style="color: #666;">2</span>,<span style="color: #666;">1</span><span style="">&#93;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> g = g.<span style="">group</span><span style="">&#40;</span><span style="color: #666;">0</span>, function=<span style="color: #28334f; font-weight: bold;">lambda</span> <span style="color: #4a587c;">list</span>: <span style="color: #657a8a;">'+'</span>.<span style="">join</span><span style="">&#40;</span><span style="color: #4a587c;">list</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="">pprint</span><span style="">&#40;</span>g, fill=<span style="color: #657a8a;">''</span><span style="">&#41;</span><br />
-<br />
-cat &nbsp;Schrödinger+Hofstadter<br />
-dog &nbsp;Taxi &nbsp; &nbsp; </code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import Datasheet, uid, pprint
+&gt;&gt;&gt; ds = Datasheet(rows=[
+&gt;&gt;&gt;     [uid(), u&#39;Schrödinger&#39;, &#39;cat&#39;],
+&gt;&gt;&gt;     [uid(), u&#39;Hofstadter&#39;,  &#39;cat&#39;],
+&gt;&gt;&gt;     [uid(), u&#39;Taxi&#39;,        &#39;dog&#39;]])
+&gt;&gt;&gt; g = ds.copy(columns=[2,0]) # A copy with the type and id columns.
+&gt;&gt;&gt; g = g.group(0, COUNT)      # Group by type, count rows per type.
+&gt;&gt;&gt; pprint(g, fill=&#39;&#39;)
+
+cat  2 
+dog  1</pre></div>
+<div class="example">The example below uses a custom concatenate function:</div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; g = ds.copy(columns=[2,1])
+&gt;&gt;&gt; g = g.group(0, function=lambda list: &#39;+&#39;.join(list))
+&gt;&gt;&gt; pprint(g, fill=&#39;&#39;)
+
+cat  Schrödinger+Hofstadter
+dog  Taxi     </pre></div>
 <h3>Sorting rows &amp; columns</h3>
 <p><span class="inline_code">Datasheet.columns[j].sort()</span> sorts the rows in the matrix according to the values in column <span class="inline_code">j</span>.&nbsp;<br /><span class="inline_code">Datasheet.columns.sort()</span>&nbsp;is useful when you set its&nbsp;<span class="inline_code">order</span>&nbsp;parameter, which is a list of columns indices:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> ds.<span style="">columns</span>.<span style="">sort</span><span style="">&#40;</span>order=<span style="">&#91;</span><span style="color: #666;">0</span>,<span style="color: #666;">2</span>,<span style="color: #666;">1</span><span style="">&#93;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="">pprint</span><span style="">&#40;</span>ds, fill=<span style="color: #657a8a;">''</span><span style="">&#41;</span><br />
-<br />
-<span style="color: #666;">1</span> &nbsp;cat &nbsp;Schrödinger<br />
-<span style="color: #666;">2</span> &nbsp;cat &nbsp;Hofstadter<br />
-<span style="color: #666;">3</span> &nbsp;dog Taxi</code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; ds.columns.sort(order=[0,2,1])
+&gt;&gt;&gt; pprint(ds, fill=&#39;&#39;)
+
+1  cat  Schrödinger
+2  cat  Hofstadter
+3  dog Taxi</pre></div>
 <p><span class="inline_code">Datasheet.columns.swap()</span> swaps two individual columns with given indices.</p>
 <h3>Helper commands: uid &amp; pprint</h3>
 <p>The <span class="inline_code">pattern.table</span> module has two commands that are useful in combination with a <span class="inline_code">Datasheet</span>:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">uid<span style="">&#40;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python"><span style="">pprint</span><span style="">&#40;</span>datasheet, truncate=<span style="color: #666;">40</span>, padding=<span style="color: #657a8a;">&quot; &quot;</span>, fill=<span style="color: #657a8a;">&quot;.&quot;</span><span style="">&#41;</span></code></span></p>
-<p>The <span class="inline_code">uid()</span> command returns a unique number, starting from 1, useful for a column index.</p>
+<pre class="brush:python; gutter:false; light:true;">uid()</pre><pre class="brush:python; gutter:false; light:true;">pprint(datasheet, truncate=40, padding=&quot; &quot;, fill=&quot;.&quot;)</pre><p>The <span class="inline_code">uid()</span> command returns a unique number, starting from 1, useful for a column index.</p>
 <p>The <span class="inline_code">pprint()</span> command pretty-prints the table, with columns aligned vertically. The <span class="inline_code">truncate</span> parameter defines the maximum column width, <span class="inline_code">padding</span> the spacing between columns and <span class="inline_code">fill</span> the character used for spacing.</p>
 <h3>CSV import &amp; export</h3>
 <p>CSV (c<em>omma-separated values</em>) is a simple text format for tabular data, where each row is a new line and each value is separated by a comma.</p>
 <p><span class="inline_code">Datasheet.save()</span> exports the table as a CSV file.<br /><span class="inline_code">Datasheet.load()</span> returns a&nbsp;<span class="inline_code">Datasheet</span> from a given CSV file.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">datasheet = Datasheet.<span style="">load</span><span style="">&#40;</span>path, separator=<span style="color: #657a8a;">','</span>, decoder=<span style="color: #28334f; font-weight: bold;">lambda</span> v: v, headers=<span style="color: #4a587c;">False</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">datasheet.<span style="">save</span><span style="">&#40;</span>path, separator=<span style="color: #657a8a;">','</span>, encoder=<span style="color: #28334f; font-weight: bold;">lambda</span> v: v, headers=<span style="color: #4a587c;">False</span><span style="">&#41;</span></code></span></p>
-<p>When saving a CSV file, <span class="inline_code">str</span>, <span class="inline_code">int</span>, <span class="inline_code">float</span>, <span class="inline_code">bool</span> and <span class="inline_code">Date</span> are converted to <span class="inline_code">unicode</span>. For other data types a custom <span class="inline_code">encoder</span> must be given.&nbsp;When loading a CSV file, all values in the datasheet will be <span class="inline_code">unicode</span>&nbsp;unless a custom <span class="inline_code">decoder</span> is given.</p>
+<pre class="brush:python; gutter:false; light:true;">datasheet = Datasheet.load(path, separator=&#39;,&#39;, decoder=lambda v: v, headers=False)</pre><pre class="brush:python; gutter:false; light:true;">datasheet.save(path, separator=&#39;,&#39;, encoder=lambda v: v, headers=False)</pre><p>When saving a CSV file, <span class="inline_code">str</span>, <span class="inline_code">int</span>, <span class="inline_code">float</span>, <span class="inline_code">bool</span> and <span class="inline_code">Date</span> are converted to <span class="inline_code">unicode</span>. For other data types a custom <span class="inline_code">encoder</span> must be given.&nbsp;When loading a CSV file, all values in the datasheet will be <span class="inline_code">unicode</span>&nbsp;unless a custom <span class="inline_code">decoder</span> is given.</p>
 <p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;">With <span class="inline_code">headers=True</span>, the headers in&nbsp;<span class="inline_code">Datasheet.fields</span>&nbsp;are saved to + loaded from CSV. In this case, the data type for each column is explicitly known and no <span class="inline_code">encoder</span> or <span class="inline_code">decoder</span> is necessary.</p>
-<p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;"><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">db</span> <span style="color: #28334f; font-weight: bold;">import</span> Datasheet, STRING, DATE, date<br />
-<span style="">&gt;&gt;&gt;</span> ds1 = Datasheet<span style="">&#40;</span>fields=<span style="">&#91;</span><span style="">&#40;</span><span style="color: #657a8a;">'name'</span>, STRING<span style="">&#41;</span>, <span style="">&#40;</span><span style="color: #657a8a;">'date'</span>, DATE<span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> ds1.<span style="">append</span><span style="">&#40;</span><span style="">&#91;</span>u<span style="color: #657a8a;">'Schrödinger'</span>, date<span style="">&#40;</span><span style="color: #657a8a;">'August 12, 1887'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> ds1.<span style="">append</span><span style="">&#40;</span><span style="">&#91;</span>u<span style="color: #657a8a;">'Hofstadter'</span>, date<span style="">&#40;</span><span style="color: #657a8a;">'February 15, 1945'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> ds1.<span style="">save</span><span style="">&#40;</span><span style="color: #657a8a;">'test.txt'</span>, headers=<span style="color: #4a587c;">True</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> ds2 = Datasheet.<span style="">load</span><span style="">&#40;</span><span style="color: #657a8a;">'test.txt'</span>, headers=<span style="color: #4a587c;">True</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> ds2.<span style="">fields</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> ds2<span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> type<span style="">&#40;</span>ds2<span style="">&#91;</span><span style="color: #666;">0</span>,<span style="color: #666;">1</span><span style="">&#93;</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span><span style="">&#40;</span>u<span style="color: #657a8a;">'name'</span>, <span style="color: #657a8a;">'string'</span><span style="">&#41;</span>, <span style="">&#40;</span>u<span style="color: #657a8a;">'date'</span>, <span style="color: #657a8a;">'date'</span><span style="">&#41;</span><span style="">&#93;</span><br />
-<span style="">&#91;</span>u<span style="color: #657a8a;">'Schrödinger'</span>, Date<span style="">&#40;</span><span style="color: #657a8a;">'1887-08-12 00:00:00'</span><span style="">&#41;</span><span style="">&#93;</span><br />
-<span style="">&lt;</span>class <span style="color: #657a8a;">'pattern.db.Date'</span><span style="">&gt;</span> </code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import Datasheet, STRING, DATE, date
+&gt;&gt;&gt; ds1 = Datasheet(fields=[(&#39;name&#39;, STRING), (&#39;date&#39;, DATE)])
+&gt;&gt;&gt; ds1.append([u&#39;Schrödinger&#39;, date(&#39;August 12, 1887&#39;)])
+&gt;&gt;&gt; ds1.append([u&#39;Hofstadter&#39;, date(&#39;February 15, 1945&#39;)])
+&gt;&gt;&gt; ds1.save(&#39;test.txt&#39;, headers=True)
+&gt;&gt;&gt; ds2 = Datasheet.load(&#39;test.txt&#39;, headers=True)
+&gt;&gt;&gt;
+&gt;&gt;&gt; print ds2.fields
+&gt;&gt;&gt; print ds2[0]
+&gt;&gt;&gt; print type(ds2[0,1])
+
+[(u&#39;name&#39;, &#39;string&#39;), (u&#39;date&#39;, &#39;date&#39;)]
+[u&#39;Schrödinger&#39;, Date(&#39;1887-08-12 00:00:00&#39;)]
+&lt;class &#39;pattern.db.Date&#39;&gt; </pre></div>
 <p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;">&nbsp;</p>
 <hr />
 <h2><a name="date"></a>Date</h2>
 <p>The <span class="inline_code">Date</span> object is a convenient subclass of Python's <span class="inline_code">datetime.datetime</span>.&nbsp;The <span class="inline_code">date()</span> command returns a <span class="inline_code">Date</span> object. A date can be generated from an integer (Unix timestamp), a string or <span class="inline_code">NOW</span>. Optionally, an input format (e.g. <span class="inline_code">"%d/%m/%Y"</span>) and an output format for <span class="inline_code">str()</span> can be given. The default format is <span class="inline_code">"YYYY-MM-DD hh:mm:ss"</span>. Use&nbsp;<span class="inline_code">Date.timestamp</span>&nbsp;to get a Unix timestamp.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">date<span style="">&#40;</span><span style="color: #4a587c;">int</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">date<span style="">&#40;</span>NOW, format=DEFAULT<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">date<span style="">&#40;</span><span style="">string</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">date<span style="">&#40;</span><span style="">string</span>, format=DEFAULT<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">date<span style="">&#40;</span><span style="">string</span>, inputformat, format=DEFAULT<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">date<span style="">&#40;</span>year, month, day, format=DEFAULT<span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">date<span style="">&#40;</span>year, month, day, hours, minutes, seconds, format=DEFAULT<span style="">&#41;</span></code></span></p>
-<p>If no input format is given, a number of common formats will be tried:</p>
+<pre class="brush:python; gutter:false; light:true;">date(int)</pre><pre class="brush:python; gutter:false; light:true;">date(NOW, format=DEFAULT)
+</pre><pre class="brush:python; gutter:false; light:true;">date(string)</pre><pre class="brush:python; gutter:false; light:true;">date(string, format=DEFAULT)</pre><pre class="brush:python; gutter:false; light:true;">date(string, inputformat, format=DEFAULT)</pre><pre class="brush:python; gutter:false; light:true;">date(year, month, day, format=DEFAULT)</pre><pre class="brush:python; gutter:false; light:true;">date(year, month, day, hours, minutes, seconds, format=DEFAULT)</pre><p>If no input format is given, a number of common formats will be tried:</p>
 <table class="border">
 <tbody>
 <tr>
@@ -655,17 +666,17 @@ dog &nbsp;Taxi &nbsp; &nbsp; </code></span></span></p>
 <p>All date formats used in <span class="inline_code">pattern.web</span>&nbsp;(e.g., a Bing search result) are automatically detected.<br />For a full overview of date format syntax, see: <a href="http://docs.python.org/library/time.html#time.strftime" target="_blank">http://docs.python.org/library/time.html#time.strftime</a>.</p>
 <p><span style="font-variant: small-caps;"><br />Date calculations</span></p>
 <p>The <span class="inline_code">time()</span> command can be used to add (or subtract) time to a <span class="inline_code">Date</span>:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python"><span style="">time</span><span style="">&#40;</span>days=<span style="color: #666;">0</span>, seconds=<span style="color: #666;">0</span>, minutes=<span style="color: #666;">0</span>, hours=<span style="color: #666;">0</span><span style="">&#41;</span></code></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">db</span> <span style="color: #28334f; font-weight: bold;">import</span> date, <span style="">time</span><br />
-<span style="">&gt;&gt;&gt;</span> d &nbsp;= date<span style="">&#40;</span><span style="color: #657a8a;">'23 august 2011'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> d += <span style="">time</span><span style="">&#40;</span>days=<span style="color: #666;">2</span>, hours=<span style="color: #666;">5</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> type<span style="">&#40;</span>d<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> d<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> d.<span style="">year</span>, d.<span style="">month</span>, d.<span style="">day</span><br />
-<br />
-<span style="">&lt;</span>class <span style="color: #657a8a;">'pattern.db.Date'</span><span style="">&gt;</span><br />
-<span style="color: #666;">2011</span>-08-<span style="color: #666;">25</span> 05:00:00<br />
-<span style="color: #666;">2011</span>, <span style="color: #666;">8</span>, <span style="color: #666;">25</span> </code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">time(days=0, seconds=0, minutes=0, hours=0)</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import date, time
+&gt;&gt;&gt; d  = date(&#39;23 august 2011&#39;)
+&gt;&gt;&gt; d += time(days=2, hours=5)
+&gt;&gt;&gt; print type(d)
+&gt;&gt;&gt; print d
+&gt;&gt;&gt; print d.year, d.month, d.day
+
+&lt;class &#39;pattern.db.Date&#39;&gt;
+2011-08-25 05:00:00
+2011, 8, 25 </pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2>See also</h2>
@@ -681,5 +692,8 @@ dog &nbsp;Taxi &nbsp; &nbsp; </code></span></span></p>
     </div>
     </div>
     </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
 </body>
 </html>

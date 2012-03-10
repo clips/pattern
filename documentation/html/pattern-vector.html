@@ -12,6 +12,12 @@
         #header { border-bottom: 1px solid #C6D4DD;  }
         table { border-collapse: collapse; }
     </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
 </head>
 <body class="node-type-page one-sidebar sidebar-right section-pages">
     <div id="page">
@@ -45,45 +51,48 @@
 <h2><a name="wordcount"></a>Word count</h2>
 <p>One way to measure the importance of a word in a text is by counting the number of times each word appears in the text (called <em>term frequency</em>). Different texts can then be compared. If a word appears frequently in many texts (<em>document frequency</em>) its importance diminishes. For example, if the word <em>important</em> occurs in many texts, it is not particularly important / unique / relevant.</p>
 <p>The <span class="inline_code">words()</span> and <span class="inline_code">count()</span> functions can be used to count words in a given string:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">words<span style="">&#40;</span><span style="">string</span>, <br />
-&nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #4a587c;">filter</span> = <span style="color: #28334f; font-weight: bold;">lambda</span> w: w.<span style="">isalpha</span><span style="">&#40;</span><span style="">&#41;</span> <span style="color: #28334f; font-weight: bold;">and</span> <span style="color: #4a587c;">len</span><span style="">&#40;</span>w<span style="">&#41;</span> <span style="">&gt;</span> <span style="color: #666;">1</span>,<br />
-&nbsp; punctuation = <span style="color: #657a8a;">'[]():;,.!?<span style="">\n</span><span style="">\r</span><span style="">\t</span><span style="">\f</span> '</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">count<span style="">&#40;</span><br />
-&nbsp; &nbsp; &nbsp; words = <span style="">&#91;</span><span style="">&#93;</span>, <br />
-&nbsp; &nbsp; &nbsp; &nbsp; top = <span style="color: #4a587c;">None</span>, &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Filter words not in the top most frequent.</span><br />
-&nbsp; threshold = <span style="color: #666;">0</span>, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Filter words whose count falls below threshold.</span><br />
-&nbsp; &nbsp; stemmer = <span style="color: #4a587c;">None</span>, &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># PORTER | LEMMA | function | None</span><br />
-&nbsp; &nbsp; exclude = <span style="">&#91;</span><span style="">&#93;</span>, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Filter words in the exclude list.</span><br />
-&nbsp; stopwords = <span style="color: #4a587c;">False</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Include stop words?</span></code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">words(string, 
+       filter = lambda w: w.isalpha() and len(w) &gt; 1,
+  punctuation = &#39;[]():;,.!?\n\r\t\f &#39;)
+</pre><pre class="brush:python; gutter:false; light:true;">count(
+      words = [], 
+        top = None,         # Filter words not in the top most frequent.
+  threshold = 0,            # Filter words whose count falls below threshold.
+    stemmer = None,         # PORTER | LEMMA | function | None
+    exclude = [],           # Filter words in the exclude list.
+  stopwords = False)        # Include stop words?
+</pre><ul>
 <li><span class="inline_code">words()</span> returns a list of words by splitting the string on spaces.<br />Punctuation is stripped from words. If <span class="inline_code">filter(word)</span> yields <span class="inline_code">False</span>, the word is excluded.</li>
 <li><span class="inline_code">count()</span> takes a list of words and returns a dictionary of <span class="inline_code">(word, count)</span>-items.</li>
 </ul>
 <h3>Stop words &amp; stemming</h3>
 <p><a href="stop-words.html">Stop words</a> (see <span class="inline_code">pattern/vector/stopwords.txt</span>) are words that are so common (e.g. <em>each</em>, <em>his</em>, <em>very</em>) that they are ignored in <span class="inline_code">count()</span> unless parameter <span class="inline_code">stopwords</span> is set to <span class="inline_code">True</span>. There is no definite list of stop words, so you may need to tweak it to your own needs.</p>
 <p>The <span class="inline_code">count()</span> function calls <span class="inline_code">stem()</span> to normalize words. For example with <span class="inline_code">PORTER</span> (<a href="http://tartarus.org/%7Emartin/PorterStemmer/">Porter2 stemming algorithm</a>),&nbsp;<em>consisted</em> and <em>consistently</em> are stemmed to <em>consist</em>. This may not always leave a real word, for example: <em>spies</em> is stemmed to <em>spi</em>. The <span class="inline_code">stemmer</span> can also be set to <span class="inline_code">LEMMA</span>. It will then call <span class="inline_code">pattern.en.singularize()</span> to guess the base form of a word, or use the word's lemma if a <span class="inline_code">Word</span> object is given. <span class="inline_code">Word</span> objects can be retrieved from a parser (<a href="pattern-en.html#parser">pattern.en.parser</a> or <a href="http://www.clips.ua.ac.be/pages/MBSP" target="_blank">MBSP</a>). This is slower than using <span class="inline_code">PORTER</span>.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">stem<span style="">&#40;</span>word, stemmer=PORTER<span style="">&#41;</span></code></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">vector</span> <span style="color: #28334f; font-weight: bold;">import</span> stem<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> stem<span style="">&#40;</span><span style="color: #657a8a;">'spies'</span>, stemmer=PORTER<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> stem<span style="">&#40;</span><span style="color: #657a8a;">'spies'</span>, stemmer=LEMMA<span style="">&#41;</span><br />
-<br />
-spi<br />
-spy</code></span></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">vector</span> <span style="color: #28334f; font-weight: bold;">import</span> words, count, PORTER<br />
-<span style="">&gt;&gt;&gt;</span> s = <span style="color: #657a8a;">'The black cat was spying on the white cat.'</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> count<span style="">&#40;</span>words<span style="">&#40;</span>s<span style="">&#41;</span>, stemmer=PORTER<span style="">&#41;</span><br />
-<br />
-<span style="">&#123;</span>u<span style="color: #657a8a;">'spi'</span>: <span style="color: #666;">1</span>, u<span style="color: #657a8a;">'white'</span>: <span style="color: #666;">1</span>, u<span style="color: #657a8a;">'black'</span>: <span style="color: #666;">1</span>, u<span style="color: #657a8a;">'cat'</span>: <span style="color: #666;">2</span><span style="">&#125;</span></code></span></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">vector</span> <span style="color: #28334f; font-weight: bold;">import</span> count, LEMMA<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, Sentence<br />
-<span style="">&gt;&gt;&gt;</span> s = <span style="color: #657a8a;">'The black cat was spying on the white cat.'</span><br />
-<span style="">&gt;&gt;&gt;</span> s = Sentence<span style="">&#40;</span>parse<span style="">&#40;</span>s, lemmata=<span style="color: #4a587c;">True</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> count<span style="">&#40;</span>s, stemmer=LEMMA<span style="">&#41;</span><br />
-<br />
-<span style="">&#123;</span>u<span style="color: #657a8a;">'spy'</span>: <span style="color: #666;">1</span>, u<span style="color: #657a8a;">'white'</span>: <span style="color: #666;">1</span>, u<span style="color: #657a8a;">'black'</span>: <span style="color: #666;">1</span>, u<span style="color: #657a8a;">'cat'</span>: <span style="color: #666;">2</span><span style="">&#125;</span></code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">stem(word, stemmer=PORTER)</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import stem
+&gt;&gt;&gt; print stem(&#39;spies&#39;, stemmer=PORTER)
+&gt;&gt;&gt; print stem(&#39;spies&#39;, stemmer=LEMMA)
+
+spi
+spy</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import words, count, PORTER
+&gt;&gt;&gt; s = &#39;The black cat was spying on the white cat.&#39;
+&gt;&gt;&gt; print count(words(s), stemmer=PORTER)
+
+{u&#39;spi&#39;: 1, u&#39;white&#39;: 1, u&#39;black&#39;: 1, u&#39;cat&#39;: 2}</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import count, LEMMA
+&gt;&gt;&gt; from pattern.en import parse, Sentence
+&gt;&gt;&gt; s = &#39;The black cat was spying on the white cat.&#39;
+&gt;&gt;&gt; s = Sentence(parse(s, lemmata=True))
+&gt;&gt;&gt; print count(s, stemmer=LEMMA)
+
+{u&#39;spy&#39;: 1, u&#39;white&#39;: 1, u&#39;black&#39;: 1, u&#39;cat&#39;: 2}
+</pre></div>
 <p>&nbsp;</p>
-<h2>
-<hr /><a name="tf-idf"></a>Term frequency – inverse document frequency</h2>
+<hr />
+<h2><a name="tf-idf"></a>Term frequency – inverse document frequency</h2>
 <p>Term frequency (<span class="inline_code">tf</span>) measures a word's relevancy in a single text. Document frequency (<span class="inline_code">df</span>) measures a word's overall relevancy across documents. Dividing <span class="inline_code">tf</span> by <span class="inline_code">df</span> yields <span class="inline_code">tf-idf</span>, a simple and elegant measurement of a word's uniqueness in a text when compared to other texts. For example, this can be used in a search engine to rank documents given a user query.</p>
 <table class="border">
 <tbody>
@@ -109,59 +118,61 @@ spy</code></span></span></p>
 </tr>
 </tbody>
 </table>
-<p>The list of all relevancy values (i.e. <span class="inline_code">tf-idf</span>) of the words in a document is called the <em>document vector</em>. Multiple documents bundled in a <em>corpus</em> form a <em>vector space</em>. By  calculating the matrix dot product (= angle) of two document vectors, the  similarity of the two documents can be measured. This is called <em>cosine similarity</em>. For <span class="inline_code">v = Corpus.vector()</span>:<span class="inline_code"> <br /></span></p>
+<p>The list of all relevancy values (i.e. <span class="inline_code">tf-idf</span>) of the words in a document is called the <em>document vector</em>. Multiple documents bundled in a <em>corpus</em> form a <em>vector space</em>. By calculating the matrix dot product (= angle) of two document vectors, the similarity of the two documents can be measured. This is called <em>cosine similarity</em>. For <span class="inline_code">v = Corpus.vector()</span>:<span class="inline_code"> <br /></span></p>
 <p><span class="inline_code">cos = dot(v(doc1), v(doc2)) / (v(doc1).norm * v(doc2).norm)</span></p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="document"></a>Document</h2>
 <p>A <span class="inline_code">Document</span> bundles the <span class="inline_code">words()</span>, <span class="inline_code">stem()</span> and <span class="inline_code">count()</span> functions with methods to determine which words are more important. The given string can also be a <span class="inline_code">Text</span>, a&nbsp;<span class="inline_code">Sentence</span>, a list of words, or a dictionary of (<span class="inline_code">word</span>, <span class="inline_code">count</span>)-items. Documents can be grouped in a <span class="inline_code">Corpus</span> to compute <span class="inline_code">tf-idf</span> and similarity.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">document = Document<span style="">&#40;</span><span style="">string</span>, <br />
-&nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #4a587c;">filter</span> = <span style="color: #28334f; font-weight: bold;">lambda</span> w: w.<span style="">isalpha</span><span style="">&#40;</span><span style="">&#41;</span> <span style="color: #28334f; font-weight: bold;">and</span> <span style="color: #4a587c;">len</span><span style="">&#40;</span>w<span style="">&#41;</span> <span style="">&gt;</span> <span style="color: #666;">1</span>, <br />
-&nbsp; punctuation = <span style="color: #657a8a;">'[]():;,.!?<span style="">\n</span><span style="">\r</span><span style="">\t</span><span style="">\f</span> '</span>, <br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; top = <span style="color: #4a587c;">None</span>, &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Filter words not in the top most frequent.</span><br />
-&nbsp; &nbsp; threshold = <span style="color: #666;">0</span>, &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Filter words whose count falls below threshold.</span><br />
-&nbsp; &nbsp; &nbsp; stemmer = <span style="color: #4a587c;">None</span>, &nbsp; &nbsp; &nbsp; <span style="color: grey;"># STEMMER | LEMMA | function | None.</span><br />
-&nbsp; &nbsp; &nbsp; exclude = <span style="">&#91;</span><span style="">&#93;</span>, &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Filter words in the exclude list.</span><br />
-&nbsp; &nbsp; stopwords = <span style="color: #4a587c;">False</span>, &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Include stop words?</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;name = <span style="color: #4a587c;">None</span>,<br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;type = <span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">document = Document.<span style="color: #4a587c;">open</span><span style="">&#40;</span>path, <span style="">*</span>args, <span style="">**</span>kwargs, encoding=<span style="color: #657a8a;">'utf-8'</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">document.<span style="color: #4a587c;">id</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Unique number (read-only).</span><br />
-document.<span style="">name</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Unique name, or None, used in Corpus.document().</span><br />
-document.<span style="">type</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Document type, used with classifiers.</span><br />
-document.<span style="">corpus</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># The parent Corpus, or None.</span><br />
-document.<span style="">terms</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Dictionary of (word, count)-items (read-only).</span><br />
-document.<span style="">count</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Total word count.</span><br />
-document.<span style="">vector</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Cached tf-idf vector (read-only dict).</span></code></span><span class="geshifilter"><code class="python geshifilter-python">document.<span style="">tf</span><span style="">&#40;</span>word<span style="">&#41;</span><br />
-document.<span style="">tfidf</span><span style="">&#40;</span>word<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Note: simply yields tf if corpus is None.</span><br />
-document.<span style="">keywords</span><span style="">&#40;</span>top=<span style="color: #666;">10</span>, normalized=<span style="color: #4a587c;">True</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">document.<span style="">copy</span><span style="">&#40;</span><span style="">&#41;</span></code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">document = Document(string, 
+       filter = lambda w: w.isalpha() and len(w) &gt; 1, 
+  punctuation = &#39;[]():;,.!?\n\r\t\f &#39;, 
+          top = None,       # Filter words not in the top most frequent.
+    threshold = 0,          # Filter words whose count falls below threshold.
+      stemmer = None,       # STEMMER | LEMMA | function | None.
+      exclude = [],         # Filter words in the exclude list.
+    stopwords = False,      # Include stop words?
+         name = None,
+         type = None)</pre><pre class="brush:python; gutter:false; light:true;">document = Document.open(path, *args, **kwargs, encoding=&#39;utf-8&#39;)</pre><pre class="brush:python; gutter:false; light:true;">document.id                 # Unique number (read-only).
+document.name               # Unique name, or None, used in Corpus.document().
+document.type               # Document type, used with classifiers.
+document.corpus             # The parent Corpus, or None.
+document.terms              # Dictionary of (word, count)-items (read-only).
+document.count              # Total word count.
+document.vector             # Cached tf-idf vector (read-only dict).</pre><pre class="brush:python; gutter:false; light:true;">document.tf(word)
+document.tfidf(word)        # Note: simply yields tf if corpus is None.
+document.keywords(top=10, normalized=True)
+</pre><pre class="brush:python; gutter:false; light:true;">document.copy()</pre><ul>
 <li><span class="inline_code">Document.open()</span> reads the given text file. It takes the same arguments as the constructor.<span class="inline_code"><br /></span></li>
 <li><span class="inline_code">Document.tf()</span> returns the frequency of a word as a number between <span class="inline_code">0.0-1.0</span>.</li>
 <li><span class="inline_code">Document.tfidf()</span> returns the word's relevancy as <span class="inline_code">tf-idf</span>.<span class="inline_code">&nbsp;</span></li>
 <li><span class="inline_code">Document.keywords()</span> returns a sorted list of <span class="inline_code">(tf-idf, word)</span>-tuples.<br />With <span class="inline_code">normalized=True</span> relevancy values will be between <span class="inline_code">0.0-1.0</span> (their sum is <span class="inline_code">1.0</span>).</li>
 </ul>
 <p>For example:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">vector</span> <span style="color: #28334f; font-weight: bold;">import</span> Document<br />
-<span style="">&gt;&gt;&gt;</span> s = <span style="color: #657a8a;">''</span><span style="color: #657a8a;">'<br />
-&gt;&gt;&gt; The shuttle Discovery, already delayed three times by technical problems <br />
-&gt;&gt;&gt; and bad weather, was grounded again Friday, this time by a potentially <br />
-&gt;&gt;&gt; dangerous gaseous hydrogen leak in a vent line attached to the shipʼs <br />
-&gt;&gt;&gt; external tank. The Discovery was initially scheduled to make its 39th <br />
-&gt;&gt;&gt; and final flight last Monday, bearing fresh supplies and an intelligent <br />
-&gt;&gt;&gt; robot for the International Space Station. But complications delayed the <br />
-&gt;&gt;&gt; flight from Monday to Friday, &nbsp;when the hydrogen leak led NASA to conclude <br />
-&gt;&gt;&gt; that the shuttle would not be ready to launch before its flight window <br />
-&gt;&gt;&gt; closed this Monday.<br />
-&gt;&gt;&gt; '</span><span style="color: #657a8a;">''</span><br />
-<span style="">&gt;&gt;&gt;</span> d = Document<span style="">&#40;</span>s<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> d.<span style="">keywords</span><span style="">&#40;</span>top=<span style="color: #666;">6</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span><span style="">&#40;</span><span style="color: #666;">0.15</span>, u<span style="color: #657a8a;">'flight'</span><span style="">&#41;</span>, <br />
-&nbsp;<span style="">&#40;</span><span style="color: #666;">0.15</span>, u<span style="color: #657a8a;">'monday'</span><span style="">&#41;</span>, <br />
-&nbsp;<span style="">&#40;</span><span style="color: #666;">0.10</span>, u<span style="color: #657a8a;">'delay'</span><span style="">&#41;</span>, <br />
-&nbsp;<span style="">&#40;</span><span style="color: #666;">0.10</span>, u<span style="color: #657a8a;">'discovery'</span><span style="">&#41;</span>, <br />
-&nbsp;<span style="">&#40;</span><span style="color: #666;">0.10</span>, u<span style="color: #657a8a;">'friday'</span><span style="">&#41;</span>,<br />
-&nbsp;<span style="">&#40;</span><span style="color: #666;">0.10</span>, u<span style="color: #657a8a;">'hydrogen'</span><span style="">&#41;</span><br />
-<span style="">&#93;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import Document
+&gt;&gt;&gt; s = &#39;&#39;&#39;
+&gt;&gt;&gt; The shuttle Discovery, already delayed three times by technical problems 
+&gt;&gt;&gt; and bad weather, was grounded again Friday, this time by a potentially 
+&gt;&gt;&gt; dangerous gaseous hydrogen leak in a vent line attached to the shipʼs 
+&gt;&gt;&gt; external tank. The Discovery was initially scheduled to make its 39th 
+&gt;&gt;&gt; and final flight last Monday, bearing fresh supplies and an intelligent 
+&gt;&gt;&gt; robot for the International Space Station. But complications delayed the 
+&gt;&gt;&gt; flight from Monday to Friday,  when the hydrogen leak led NASA to conclude 
+&gt;&gt;&gt; that the shuttle would not be ready to launch before its flight window 
+&gt;&gt;&gt; closed this Monday.
+&gt;&gt;&gt; &#39;&#39;&#39;
+&gt;&gt;&gt; d = Document(s)
+&gt;&gt;&gt; print d.keywords(top=6)
+
+[(0.15, u&#39;flight&#39;), 
+ (0.15, u&#39;monday&#39;), 
+ (0.10, u&#39;delay&#39;), 
+ (0.10, u&#39;discovery&#39;), 
+ (0.10, u&#39;friday&#39;),
+ (0.10, u&#39;hydrogen&#39;)
+]
+</pre></div>
 <p><span class="smallcaps">Document vector</span></p>
 <p><span class="inline_code">Document.vector</span> is a sparse dictionary of <span class="inline_code">(word, tf-idf)</span>-items cached for performance. It has a <span class="inline_code">Vector.norm</span> attribute that yields the L2-norm, used when calculating cosine similarity between documents:</p>
 <p><span class="inline_code">l2 = sum([w**2 for w in Document.vector.values()])**0.5</span></p>
@@ -169,55 +180,54 @@ document.<span style="">keywords</span><span style="">&#40;</span>top=<span styl
 <hr />
 <h2><a name="corpus"></a>Corpus</h2>
 <p>A <span class="inline_code">Corpus</span> is a collection of <span class="inline_code">Document</span> objects:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">corpus = Corpus<span style="">&#40;</span>documents=<span style="">&#91;</span><span style="">&#93;</span>, weight=TFIDF<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">corpus = Corpus.<span style="">build</span><span style="">&#40;</span>path, <span style="">*</span>args, <span style="">**</span>kwargs<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">corpus = Corpus.<span style="">load</span><span style="">&#40;</span>path<span style="">&#41;</span> &nbsp;<span style="color: grey;"># Imports file created with Corpus.save().</span></code></span><span class="geshifilter"><code class="python geshifilter-python">corpus.<span style="">documents</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of Documents (read-only).</span><br />
-corpus.<span style="">document</span><span style="">&#40;</span>name<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Yields document with given name (unique).</span><br />
-corpus.<span style="">vector</span><span style="">&#40;</span>document<span style="">&#41;</span> &nbsp; &nbsp; <span style="color: grey;"># Vector with all words from all documents.</span><br />
-corpus.<span style="">vectors</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of all document vectors.</span><br />
-corpus.<span style="">weight</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># TF-IDF | TF (weight used for vectors).</span><br />
-corpus.<span style="">density</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Overall word coverage (0.0-1.0).</span><br />
-corpus.<span style="">lsa</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Concept space, set with Corpus.reduce().</span></code></span><span class="geshifilter"><code class="python geshifilter-python">corpus.<span style="">append</span><span style="">&#40;</span>document<span style="">&#41;</span><br />
-corpus.<span style="">remove</span><span style="">&#40;</span>document<span style="">&#41;</span><br />
-corpus.<span style="">extend</span><span style="">&#40;</span>documents<span style="">&#41;</span><br />
-corpus.<span style="">clear</span><span style="">&#40;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">corpus.<span style="">df</span><span style="">&#40;</span>document<span style="">&#41;</span><br />
-corpus.<span style="">idf</span><span style="">&#40;</span>document<span style="">&#41;</span><br />
-corpus.<span style="">similarity</span><span style="">&#40;</span>document1, document2<span style="">&#41;</span><br />
-corpus.<span style="">neighbors</span><span style="">&#40;</span>document, top=<span style="color: #666;">10</span><span style="">&#41;</span><br />
-corpus.<span style="">search</span><span style="">&#40;</span>words=<span style="">&#91;</span><span style="">&#93;</span>, <span style="">**</span>kwargs<span style="">&#41;</span><br />
-corpus.<span style="">distance</span><span style="">&#40;</span>document1, document2, method=COSINE<span style="">&#41;</span> <span style="color: grey;"># COSINE | EUCLIDEAN | MANHATTAN</span><br />
-corpus.<span style="">cluster</span><span style="">&#40;</span>documents=ALL, method=KMEANS<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># KMEANS | HIERARCHICAL</span><br />
-corpus.<span style="color: #4a587c;">reduce</span><span style="">&#40;</span>dimensions=NORM<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># NORM | TOP300 | int</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">corpus.<span style="">relative_entropy</span><span style="">&#40;</span>word1, word2<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Kullback-Leibler divergence.</span><br />
-corpus.<span style="">feature_selection</span><span style="">&#40;</span>top=<span style="color: #666;">100</span>, method=KLD<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Top original features (terms).</span><br />
-corpus.<span style="color: #4a587c;">filter</span><span style="">&#40;</span>features=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Corpus with selected features.</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">corpus.<span style="">sets</span><span style="">&#40;</span>threshold=<span style="color: #666;">0.5</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Frequent word sets.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">corpus.<span style="">save</span><span style="">&#40;</span>path, update=<span style="color: #4a587c;">False</span><span style="">&#41;</span><br />
-corpus.<span style="">export</span><span style="">&#40;</span>path, format=ORANGE<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># ORANGE | WEKA </span></code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">corpus = Corpus(documents=[], weight=TFIDF)</pre><pre class="brush:python; gutter:false; light:true;">corpus = Corpus.build(path, *args, **kwargs)</pre><pre class="brush:python; gutter:false; light:true;">corpus = Corpus.load(path)  # Imports file created with Corpus.save().</pre><pre class="brush:python; gutter:false; light:true;">corpus.documents            # List of Documents (read-only).
+corpus.document(name)       # Yields document with given name (unique).
+corpus.vector(document)     # Vector with all words from all documents.
+corpus.vectors              # List of all document vectors.
+corpus.weight               # TF-IDF | TF (weight used for vectors).
+corpus.density              # Overall word coverage (0.0-1.0).
+corpus.lsa                  # Concept space, set with Corpus.reduce().</pre><pre class="brush:python; gutter:false; light:true;">corpus.append(document)
+corpus.remove(document)
+corpus.extend(documents)
+corpus.clear()</pre><pre class="brush:python; gutter:false; light:true;">corpus.df(document)
+corpus.idf(document)
+corpus.similarity(document1, document2)
+corpus.neighbors(document, top=10)
+corpus.search(words=[], **kwargs)
+corpus.distance(document1, document2, method=COSINE) # COSINE | EUCLIDEAN | MANHATTAN
+corpus.cluster(documents=ALL, method=KMEANS)         # KMEANS | HIERARCHICAL
+corpus.reduce(dimensions=NORM)                       # NORM | TOP300 | int</pre><pre class="brush:python; gutter:false; light:true;">corpus.relative_entropy(word1, word2)                # Kullback-Leibler divergence.
+corpus.feature_selection(top=100, method=KLD)        # Top original features (terms).
+corpus.filter(features=[])                           # Corpus with selected features.</pre><pre class="brush:python; gutter:false; light:true;">corpus.sets(threshold=0.5)                           # Frequent word sets.</pre><pre class="brush:python; gutter:false; light:true;">corpus.save(path, update=False)
+corpus.export(path, format=ORANGE)                   # ORANGE | WEKA </pre><ul>
 <li><span class="inline_code">Corpus.vector()</span> returns a <span class="inline_code">Vector</span> for the given document.<br />Vector contains all words in the corpus, with <span class="inline_code">tf-idf</span>&nbsp;&gt; 0 for words that appear in the document.<span><span><br /></span></span></li>
 <li><span class="inline_code">Corpus.df()</span> returns document frequency of a word as a value between <span class="inline_code">0.0-1.0</span>.</li>
 <li><span class="inline_code">Corpus.idf()</span> returns the inverse document frequency (or <span class="inline_code">None</span> if the word is not in the corpus).</li>
 <li><span class="inline_code">Corpus.similarity()</span> returns the cosine similarity of two <span class="inline_code">Documents</span> between <span class="inline_code">0.0-1.0</span>.<span class="inline_code"><br /></span></li>
 <li><span class="inline_code">Corpus.neighbors()</span> returns a sorted list of <span class="inline_code">(similarity, Document)</span>-tuples.</li>
-<li><span class="inline_code">Corpus.search()</span> returns a sorted list of <span class="inline_code">(similarity, Document)</span>-tuples, based on a list of query words. A <span class="inline_code">Document</span> is created on-the-fly for the given words, using the given optional arguments. </li>
+<li><span class="inline_code">Corpus.search()</span> returns a sorted list of <span class="inline_code">(similarity, Document)</span>-tuples, based on a list of query words. A <span class="inline_code">Document</span> is created on-the-fly for the given words, using the given optional arguments.</li>
 <li><span class="inline_code">Corpus.sets()</span> returns a dictionary of <span class="inline_code">(set(words), frequency)</span>-items of word combinations with a relative frequency above the given threshold (<span class="inline_code">0.0-1.0</span>).</li>
 </ul>
 <p>The example below demonstrates the use of <span class="inline_code">tf-idf</span> and cosine similarity:&nbsp;</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">vector</span> <span style="color: #28334f; font-weight: bold;">import</span> Document, Corpus<br />
-<span style="">&gt;&gt;&gt;</span> d1 = Document<span style="">&#40;</span><span style="color: #657a8a;">'A tiger is a big yellow cat with stripes.'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> d2 = Document<span style="">&#40;</span><span style="color: #657a8a;">'A lion is a big yellow cat with manes.'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> d3 = Document<span style="">&#40;</span><span style="color: #657a8a;">'An elephant is a big grey animal with a slurf.'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> d1.<span style="">vector</span><br />
-<span style="">&gt;&gt;&gt;</span><br />
-<span style="">&gt;&gt;&gt;</span> corpus = Corpus<span style="">&#40;</span>documents=<span style="">&#91;</span>d1,d2,d3<span style="">&#93;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> d1.<span style="">vector</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> corpus.<span style="">similarity</span><span style="">&#40;</span>d1,d2<span style="">&#41;</span> <span style="color: grey;"># tiger vs. lion</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> corpus.<span style="">similarity</span><span style="">&#40;</span>d1,d3<span style="">&#41;</span> <span style="color: grey;"># tiger vs. elephant</span><br />
-<br />
-<span style="">&#123;</span>u<span style="color: #657a8a;">'tiger'</span>: <span style="color: #666;">0.25</span>, u<span style="color: #657a8a;">'stripes'</span>: <span style="color: #666;">0.25</span>, u<span style="color: #657a8a;">'yellow'</span>: <span style="color: #666;">0.25</span>, u<span style="color: #657a8a;">'cat'</span>: <span style="color: #666;">0.25</span><span style="">&#125;</span><br />
-<span style="">&#123;</span>u<span style="color: #657a8a;">'tiger'</span>: <span style="color: #666;">0.27</span>, u<span style="color: #657a8a;">'stripes'</span>: <span style="color: #666;">0.27</span>, u<span style="color: #657a8a;">'yellow'</span>: <span style="color: #666;">0.10</span>, u<span style="color: #657a8a;">'cat'</span>: <span style="color: #666;">0.10</span><span style="">&#125;</span><br />
-<br />
-<span style="color: #666;">0.12</span><br />
-<span style="color: #666;">0.0</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import Document, Corpus
+&gt;&gt;&gt; d1 = Document(&#39;A tiger is a big yellow cat with stripes.&#39;)
+&gt;&gt;&gt; d2 = Document(&#39;A lion is a big yellow cat with manes.&#39;)
+&gt;&gt;&gt; d3 = Document(&#39;An elephant is a big grey animal with a slurf.&#39;)
+&gt;&gt;&gt; print d1.vector
+&gt;&gt;&gt;
+&gt;&gt;&gt; corpus = Corpus(documents=[d1,d2,d3])
+&gt;&gt;&gt; print d1.vector
+&gt;&gt;&gt; print
+&gt;&gt;&gt; print corpus.similarity(d1,d2) # tiger vs. lion
+&gt;&gt;&gt; print corpus.similarity(d1,d3) # tiger vs. elephant
+
+{u&#39;tiger&#39;: 0.25, u&#39;stripes&#39;: 0.25, u&#39;yellow&#39;: 0.25, u&#39;cat&#39;: 0.25}
+{u&#39;tiger&#39;: 0.27, u&#39;stripes&#39;: 0.27, u&#39;yellow&#39;: 0.10, u&#39;cat&#39;: 0.10}
+
+0.12
+0.0
+</pre></div>
 <p>We create documents for <em>tiger</em>, <em>lion</em> and <em>elephant</em>. The first time <em>tiger</em>'s vector is printed, all the values are equal (each keyword has the same frequency, <span class="inline_code">tf</span>). However, when we group the documents in a corpus the values of keywords <em>yellow</em> and <em>cat</em> diminish because they also appear in the <em>lion</em> document (<span class="inline_code">tf-idf</span>).</p>
 <p>When we compare <em>tiger</em> to <em>lion</em> and&nbsp;<em>elephant</em>, the values indicate that <em>tiger</em> is more similar to <em>lion</em>. Their similarity is still quite low, only 12%. This is because in this (theoretical) example two-thirds of the documents (<em>tiger</em> and <em>lion</em>) share most of their keywords. If we continue to add documents for other animals (e.g. "<em>A squirrel is a small rodent with a tail.</em>") the similarity will rise. In many experiments you will need lots of documents, for example 10,000 – often with a 1,000 or more relevant words per document. More data processed = more accurate similarity.</p>
 <h3>Corpus import, export, cache</h3>
@@ -240,14 +250,15 @@ corpus.<span style="">export</span><span style="">&#40;</span>path, format=ORANG
 <h2><a name="lsa"></a>Latent semantic analysis</h2>
 <p>Latent Semantic Analysis (LSA) is a statistical machine learning method based on singular value decomposition (SVD). <span class="small"><a class="noexternal" href="http://en.wikipedia.org/wiki/Singular_value_decomposition" target="_blank">[1]</a> <a class="noexternal" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.svd.html" target="_blank">[2]</a></span> Related terms in the corpus are grouped into "concepts".&nbsp;Documents then get a concept vector that is an approximation of their original vector – with reduced dimensionality so that cosine similarity, clustering and classification can run faster.</p>
 <p>SVD requires the Python <a href="http://numpy.scipy.org/" target="_blank">NumPy</a> package (installed by default on Mac OS X). Given a matrix with document rows and term columns, SVD yields matrix <span class="inline_code">U</span>&nbsp;with document rows and concept columns, diagonal matrix <span class="inline_code">Σ</span>&nbsp;with singular values, and matrix <span class="inline_code">Vt</span> with concept rows and term columns:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="color: #28334f; font-weight: bold;">from</span> numpy <span style="color: #28334f; font-weight: bold;">import</span> diag, dot<br />
-<span style="color: #28334f; font-weight: bold;">from</span> numpy.<span style="">linalg</span> <span style="color: #28334f; font-weight: bold;">import</span> svd<br />
-u, sigma, vt = svd<span style="">&#40;</span>matrix, full_matrices=<span style="color: #4a587c;">False</span><span style="">&#41;</span><br />
-<span style="color: #28334f; font-weight: bold;">for</span> i <span style="color: #28334f; font-weight: bold;">in</span> <span style="color: #4a587c;">range</span><span style="">&#40;</span>-k,<span style="color: #666;">0</span><span style="">&#41;</span>:<br />
-&nbsp; &nbsp; sigma<span style="">&#91;</span>i<span style="">&#93;</span> = <span style="color: #666;">0</span> <span style="color: grey;"># Reduce k smallest singular values.</span><br />
-matrix = dot<span style="">&#40;</span>u, dot<span style="">&#40;</span>diag<span style="">&#40;</span>sigma<span style="">&#41;</span>, vt<span style="">&#41;</span><span style="">&#41;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">from numpy import diag, dot
+from numpy.linalg import svd
+u, sigma, vt = svd(matrix, full_matrices=False)
+for i in range(-k,0):
+    sigma[i] = 0 # Reduce k smallest singular values.
+matrix = dot(u, dot(diag(sigma), vt))</pre></div>
 <p><span style="font-size: 11px;"><span style="text-decoration: underline;">Reference</span>: Wilk J. (2007). http://blog.josephwilk.net/projects/latent-semantic-analysis-in-python.html</span></p>
-<p><span class="example"><br />The figure below outlines LSA for a <em>nice</em>-document with a vector of nouns that occur after "nice":</span></p>
+<div class="example">The figure below outlines LSA for a <em>nice</em>-document with a vector of nouns that occur after "nice":</div>
 <table class="border" border="0">
 <tbody>
 <tr>
@@ -260,28 +271,27 @@ matrix = dot<span style="">&#40;</span>u, dot<span style="">&#40;</span>diag<spa
 <h3>LSA concept space</h3>
 <p>The <span class="inline_code">Corpus.reduce()</span> method calculates SVD and stores the concept space as <span class="inline_code">Corpus.lsa</span>. Its parameter <span class="inline_code">dimensions</span> sets the number of dimensions in the concept space (see further).</p>
 <p>The <span class="inline_code">Corpus.similarity()</span>, <span class="inline_code">Corpus.neighbors()</span>, <span class="inline_code">Corpus.search()</span> and <span class="inline_code">Corpus.cluster()</span> methods will then compute in LSA concept space. Set <span class="inline_code">Corpus.lsa</span> to <span class="inline_code">None</span>&nbsp;at any time to undo the reduction. Adding or removing documents in the corpus will undo the reduction as well.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">lsa = LSA<span style="">&#40;</span>corpus, k=NORM<span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">lsa.<span style="">corpus</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Parent Corpus.</span><br />
-lsa.<span style="">terms</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of words, same as Corpus.vector.keys().</span><br />
-lsa.<span style="">concepts</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of concepts, each a dictionary {word: weight}</span><br />
-lsa.<span style="">vectors</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Dictionary {Document.id: {concept_index: weight}}</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">lsa.<span style="">transform</span><span style="">&#40;</span>document<span style="">&#41;</span></code></span></p>
-<p><span class="inline_code">LSA.transform()</span> takes a <span class="inline_code">Document</span> and returns its&nbsp;<span class="inline_code">Vector</span> in concept space. This is useful for loose documents that are not in the corpus – see <span class="inline_code">kNN.classify()</span>.</p>
+<pre class="brush:python; gutter:false; light:true;">lsa = LSA(corpus, k=NORM)</pre><pre class="brush:python; gutter:false; light:true;">lsa.corpus                  # Parent Corpus.
+lsa.terms                   # List of words, same as Corpus.vector.keys().
+lsa.concepts                # List of concepts, each a dictionary {word: weight}
+lsa.vectors                 # Dictionary {Document.id: {concept_index: weight}}</pre><pre class="brush:python; gutter:false; light:true;">lsa.transform(document)</pre><p><span class="inline_code">LSA.transform()</span> takes a <span class="inline_code">Document</span> and returns its&nbsp;<span class="inline_code">Vector</span> in concept space. This is useful for loose documents that are not in the corpus – see <span class="inline_code">kNN.classify()</span>.</p>
 <p>The example below shows how terms become semantically related after LSA:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> D1 = Document<span style="">&#40;</span><span style="color: #657a8a;">&quot;The cat purrs.&quot;</span>, name=<span style="color: #657a8a;">&quot;cat1&quot;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> D2 = Document<span style="">&#40;</span><span style="color: #657a8a;">&quot;Curiosity killed the cat.&quot;</span>, name=<span style="color: #657a8a;">&quot;cat2&quot;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> D3 = Document<span style="">&#40;</span><span style="color: #657a8a;">&quot;The dog wags his tail.&quot;</span>, name=<span style="color: #657a8a;">&quot;dog1&quot;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> D4 = Document<span style="">&#40;</span><span style="color: #657a8a;">&quot;The dog is happy.&quot;</span>, name=<span style="color: #657a8a;">&quot;dog2&quot;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> corpus = Corpus<span style="">&#40;</span><span style="">&#91;</span>D1, D2, D3, D4<span style="">&#93;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> corpus.<span style="color: #4a587c;">reduce</span><span style="">&#40;</span><span style="color: #666;">2</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> document <span style="color: #28334f; font-weight: bold;">in</span> corpus:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">print</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">print</span> document.<span style="">name</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">for</span> concept, w1 <span style="color: #28334f; font-weight: bold;">in</span> corpus.<span style="">lsa</span>.<span style="">vectors</span><span style="">&#91;</span>document.<span style="color: #4a587c;">id</span><span style="">&#93;</span>.<span style="">items</span><span style="">&#40;</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">for</span> word, w2 <span style="color: #28334f; font-weight: bold;">in</span> corpus.<span style="">lsa</span>.<span style="">concepts</span><span style="">&#91;</span>concept<span style="">&#93;</span>.<span style="">items</span><span style="">&#40;</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">if</span> w1 <span style="">!</span>= <span style="color: #666;">0</span> <span style="color: #28334f; font-weight: bold;">and</span> w2 <span style="">!</span>= <span style="color: #666;">0</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">print</span> <span style="">&#40;</span>word, w1 <span style="">*</span> w2<span style="">&#41;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; D1 = Document(&quot;The cat purrs.&quot;, name=&quot;cat1&quot;)
+&gt;&gt;&gt; D2 = Document(&quot;Curiosity killed the cat.&quot;, name=&quot;cat2&quot;)
+&gt;&gt;&gt; D3 = Document(&quot;The dog wags his tail.&quot;, name=&quot;dog1&quot;)
+&gt;&gt;&gt; D4 = Document(&quot;The dog is happy.&quot;, name=&quot;dog2&quot;)
+&gt;&gt;&gt; corpus = Corpus([D1, D2, D3, D4])
+&gt;&gt;&gt; corpus.reduce(2)
+&gt;&gt;&gt; 
+&gt;&gt;&gt; for document in corpus:
+&gt;&gt;&gt;     print
+&gt;&gt;&gt;     print document.name
+&gt;&gt;&gt;     for concept, w1 in corpus.lsa.vectors[document.id].items():
+&gt;&gt;&gt;         for word, w2 in corpus.lsa.concepts[concept].items():
+&gt;&gt;&gt;             if w1 != 0 and w2 != 0:
+&gt;&gt;&gt;                 print (word, w1 * w2)
+</pre></div>
 <p>The corpus is reduced to two dimensions, so there are two concepts in the concept space and each document has a weight for each concept. As illustrated below, the <em>cat</em> features have been grouped together and the <em>dog</em> features have been grouped together.</p>
 <table class="border">
 <tbody>
@@ -349,7 +359,7 @@ lsa.<span style="">vectors</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbs
 <p>Dimension reduction is useful for <strong>clustering</strong>: 3,000 documents with 1,000-term vectors are intractable <span class="small"><a class="noexternal" href="http://en.wikipedia.org/wiki/Curse_of_dimensionality" target="_blank">[3]</a></span> in a pure-Python clustering algorithm. However, reducing the corpus to 100-concept vectors allows you to run through <em>k</em>-means clustering in a couple of minutes.&nbsp;The main difficulty is tweaking the <span class="inline_code">dimensions</span>&nbsp;parameter in <span class="inline_code">Corpus.reduce()</span>. Different values produce different results. A value that is too high results in noise. A value that is too low removes important semantical meaning.</p>
 <p>Possible options for parameter <span class="inline_code">dimensions</span>:</p>
 <ul>
-<li> <span class="inline_code">NORM</span>: uses L2-norm of the singular values as the number of dimensions to remove, </li>
+<li><span class="inline_code">NORM</span>: uses L2-norm of the singular values as the number of dimensions to remove,</li>
 <li><span class="inline_code">TOP300</span>: keeps the top 300 dimensions,</li>
 <li><span class="inline_code">function</span>: user-defined function, takes the list of singular values and returns an <span class="inline_code">int</span>,</li>
 <li><span class="inline_code">int</span>: the number of dimensions in the concept space.</li>
@@ -375,19 +385,19 @@ lsa.<span style="">vectors</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbs
 <ul>
 <li><span class="inline_code">HIERARCHICAL</span>: clusters the corpus in a tree: the top level item is a <span class="inline_code">Cluster</span> containing <span class="inline_code">Documents</span> and other <span class="inline_code">Clusters</span>. It is slow (e.g., 3000 vectors with&nbsp;<span class="inline_code">n=6</span> in about 30 minutes), but the optimal solution is guaranteed since it starts from the bottom up, by clustering the two nearest documents step-by-step.</li>
 </ul>
-<p><span class="geshifilter"><code class="python geshifilter-python">clusters = Corpus.<span style="">cluster</span><span style="">&#40;</span>documents=ALL, method=KMEANS, k=<span style="color: #666;">10</span>, iterations=<span style="color: #666;">10</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">clusters = Corpus.<span style="">cluster</span><span style="">&#40;</span>documents=ALL, method=HIERARCHICAL, k=<span style="color: #666;">1</span>, iterations=<span style="color: #666;">1000</span><span style="">&#41;</span></code></span></p>
-<p>For example:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">vector</span> <span style="color: #28334f; font-weight: bold;">import</span> Document, Corpus, HIERARCHICAL<br />
-<span style="">&gt;&gt;&gt;</span> d1 = Document<span style="">&#40;</span><span style="color: #657a8a;">'Cats are independent pets.'</span>, name=<span style="color: #657a8a;">'cat'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> d2 = Document<span style="">&#40;</span><span style="color: #657a8a;">'Dogs are trustworthy pets.'</span>, name=<span style="color: #657a8a;">'dog'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> d3 = Document<span style="">&#40;</span><span style="color: #657a8a;">'Boxes are made of cardboard.'</span>, name=<span style="color: #657a8a;">'box'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> corpus = Corpus<span style="">&#40;</span><span style="">&#40;</span>d1, d2, d3<span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> corpus.<span style="">cluster</span><span style="">&#40;</span>method=HIERARCHICAL, k=<span style="color: #666;">2</span><span style="">&#41;</span><br />
-<br />
-Cluster<span style="">&#40;</span><br />
-&nbsp; Document<span style="">&#40;</span><span style="color: #4a587c;">id</span>=<span style="color: #666;">3</span>, name=<span style="color: #657a8a;">'box'</span><span style="">&#41;</span>, Cluster<span style="">&#40;</span><br />
-&nbsp; &nbsp; Document<span style="">&#40;</span><span style="color: #4a587c;">id</span>=<span style="color: #666;">2</span>, name=<span style="color: #657a8a;">'dog'</span><span style="">&#41;</span>, <br />
-&nbsp; &nbsp; Document<span style="">&#40;</span><span style="color: #4a587c;">id</span>=<span style="color: #666;">1</span>, name=<span style="color: #657a8a;">'cat'</span><span style="">&#41;</span><span style="">&#41;</span><span style="">&#41;</span></code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">clusters = Corpus.cluster(documents=ALL, method=KMEANS, k=10, iterations=10)</pre><pre class="brush:python; gutter:false; light:true;">clusters = Corpus.cluster(documents=ALL, method=HIERARCHICAL, k=1, iterations=1000)</pre><p>For example:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import Document, Corpus, HIERARCHICAL
+&gt;&gt;&gt; d1 = Document(&#39;Cats are independent pets.&#39;, name=&#39;cat&#39;)
+&gt;&gt;&gt; d2 = Document(&#39;Dogs are trustworthy pets.&#39;, name=&#39;dog&#39;)
+&gt;&gt;&gt; d3 = Document(&#39;Boxes are made of cardboard.&#39;, name=&#39;box&#39;)
+&gt;&gt;&gt; corpus = Corpus((d1, d2, d3))
+&gt;&gt;&gt; print corpus.cluster(method=HIERARCHICAL, k=2)
+
+Cluster(
+  Document(id=3, name=&#39;box&#39;), Cluster(
+    Document(id=2, name=&#39;dog&#39;), 
+    Document(id=1, name=&#39;cat&#39;)))</pre></div>
 <p><span class="inline_code">Corpus.cluster()</span> has an optional parameter <span class="inline_code">documents</span>&nbsp;that is a list of documents in the corpus, so you can intermingle <em>k</em>-means and hierarchical clustering on subsets. An optional parameter <span class="inline_code">distance</span> can be <span class="inline_code">EUCLIDEAN</span>, <span class="inline_code">MANHATTAN</span> or&nbsp;<span class="inline_code">COSINE</span> (default).</p>
 <h3>Faster clustering: <em>k</em>-means++ &amp; triangle inequality</h3>
 <p>For <span class="inline_code">KMEANS</span>, an optional parameter <span class="inline_code">seed=RANDOM</span> can also be set to <span class="inline_code">KMPP</span>. A weakness of <em>k</em>-means clustering is that it starts out with random clusters. The <em>k</em>-means++ or <span class="inline_code">KMPP</span> algorithm uses a specialized technique to find better starting points. It is also faster.</p>
@@ -395,17 +405,16 @@ Cluster<span style="">&#40;</span><br />
 <p><span class="small"><span style="text-decoration: underline;">References</span>:&nbsp;<br />Arthur, D. (2007). <em>k-means++: the advantage of careful seeding.</em><br />Elkan, C. (2007). <em>Using the Triangle Inequality to Accelerate k-Means.</em></span></p>
 <h3>Hierarchical clusters</h3>
 <p>The <span class="inline_code">KMEANS</span> method returns a list in which each item is a list of semantically related <span class="inline_code">Documents</span>. The <span class="inline_code">HIERARCHICAL</span> method returns a <span class="inline_code">Cluster</span> object, which is a list of <span class="inline_code">Documents</span> and <span class="inline_code">Clusters</span> with some additional properties:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">cluster = Cluster<span style="">&#40;</span><span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">cluster.<span style="">depth</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Returns the maximum depth of nested clusters.</span><br />
-cluster.<span style="">flatten</span><span style="">&#40;</span>depth=<span style="color: #666;">1000</span><span style="">&#41;</span> <span style="color: grey;"># Returns a flat list, down to the given depth.</span><br />
-cluster.<span style="">traverse</span><span style="">&#40;</span>visit=<span style="color: #28334f; font-weight: bold;">lambda</span> cluster: <span style="color: #4a587c;">None</span><span style="">&#41;</span> </code></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">vector</span> <span style="color: #28334f; font-weight: bold;">import</span> Cluster<br />
-<span style="">&gt;&gt;&gt;</span> cluster = Cluster<span style="">&#40;</span><span style="">&#40;</span><span style="color: #666;">1</span>, Cluster<span style="">&#40;</span><span style="">&#40;</span><span style="color: #666;">2</span>, Cluster<span style="">&#40;</span><span style="">&#40;</span><span style="color: #666;">3</span>, <span style="color: #666;">4</span><span style="">&#41;</span><span style="">&#41;</span><span style="">&#41;</span><span style="">&#41;</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> cluster.<span style="">depth</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> cluster.<span style="">flatten</span><span style="">&#40;</span><span style="color: #666;">1</span><span style="">&#41;</span> <br />
-<br />
-<span style="color: #666;">2</span><br />
-<span style="">&#91;</span><span style="color: #666;">1</span>, <span style="color: #666;">2</span>, Cluster<span style="">&#40;</span><span style="color: #666;">3</span>, <span style="color: #666;">4</span><span style="">&#41;</span><span style="">&#93;</span> </code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">cluster = Cluster([])</pre><pre class="brush:python; gutter:false; light:true;">cluster.depth               # Returns the maximum depth of nested clusters.
+cluster.flatten(depth=1000) # Returns a flat list, down to the given depth.
+cluster.traverse(visit=lambda cluster: None) </pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import Cluster
+&gt;&gt;&gt; cluster = Cluster((1, Cluster((2, Cluster((3, 4))))))
+&gt;&gt;&gt; print cluster.depth
+&gt;&gt;&gt; print cluster.flatten(1) 
+
+2
+[1, 2, Cluster(3, 4)] </pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="classification"></a>Classification</h2>
@@ -416,20 +425,15 @@ cluster.<span style="">traverse</span><span style="">&#40;</span>visit=<span sty
 <li><span class="inline_code">KNN</span>: <em>k</em>-nearest neighbor classifier, predicts a document's type based on the type of its nearest neighbors, i.e., the <em>k</em> top results from <span class="inline_code">Corpus.neighbors()</span>.</li>
 <li><span class="inline_code">SVM</span>: support vector machine, represents documents as points in a high-dimensional space separated by hyperplanes.</li>
 </ul>
-<p><span class="geshifilter"><code class="python geshifilter-python">classifier = Bayes<span style="">&#40;</span>aligned=<span style="color: #4a587c;">False</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">classifier = kNN<span style="">&#40;</span>k=<span style="color: #666;">10</span>, distance=COSINE<span style="">&#41;</span> <span style="color: grey;"># COSINE | EUCLIDEAN | MANHATTAN</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">classifier = SVM<span style="">&#40;</span>type=CLASSIFICATION, kernel=LINEAR<span style="">&#41;</span></code></span></p>
-<p><span class="small"><span style="text-decoration: underline;">Reference</span>: Magnus Lie Hetland, http://hetland.org/coding/python/nbayes.p</span>y</p>
+<pre class="brush:python; gutter:false; light:true;">classifier = Bayes(aligned=False)</pre><pre class="brush:python; gutter:false; light:true;">classifier = kNN(k=10, distance=COSINE) # COSINE | EUCLIDEAN | MANHATTAN</pre><pre class="brush:python; gutter:false; light:true;">classifier = SVM(type=CLASSIFICATION, kernel=LINEAR)</pre><p><span class="small"><span style="text-decoration: underline;">Reference</span>: Magnus Lie Hetland, http://hetland.org/coding/python/nbayes.p</span>y</p>
 <h3>Classifier</h3>
 <p>The <span class="inline_code">Bayes</span>, <span class="inline_code">kNN</span>&nbsp;and <span class="inline_code">SVM</span> classifiers inherit from the <span class="inline_code">Classifier</span> base class:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">classifier = Classifier<span style="">&#40;</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">classifier = Classifier.<span style="">load</span><span style="">&#40;</span>path<span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">classifier.<span style="">train</span><span style="">&#40;</span>document, type=<span style="color: #4a587c;">None</span><span style="">&#41;</span><br />
-classifier.<span style="">classify</span><span style="">&#40;</span>document<span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">classifier.<span style="">classes</span> &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of trained types.</span><br />
-classifier.<span style="">features</span> &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of words.</span><br />
-classifier.<span style="">binary</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Classifier.classes == [True,False]?</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">classifier.<span style="">save</span><span style="">&#40;</span>path<span style="">&#41;</span> &nbsp; &nbsp; <span style="color: grey;"># Pickle file, loads fast with Classifier.load() </span></code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">classifier = Classifier()</pre><pre class="brush:python; gutter:false; light:true;">classifier = Classifier.load(path)</pre><pre class="brush:python; gutter:false; light:true;">classifier.train(document, type=None)
+classifier.classify(document)
+</pre><pre class="brush:python; gutter:false; light:true;">classifier.classes        # List of trained types.
+classifier.features       # List of words.
+classifier.binary         # Classifier.classes == [True,False]?
+</pre><pre class="brush:python; gutter:false; light:true;">classifier.save(path)     # Pickle file, loads fast with Classifier.load() </pre><ul>
 <li><span class="inline_code">Classifier.train()</span> trains the classifier with the given document of the given type.<br />A document can be a <span class="inline_code">Document</span>&nbsp;or a list of words (strings or other hashable items).<br />If no <span class="inline_code">type</span> is given, <span class="inline_code">Document.type</span> will be used instead.</li>
 <li><span class="inline_code">Classifier.classify()</span> returns the predicted type for the given document&nbsp;(a <span class="inline_code">Document</span> or a list of words). If the classifier is trained on an LSA-corpus, you need to supply the return value from <span class="inline_code">Corpus.lsa.transform()</span>.</li>
 </ul>
@@ -459,35 +463,34 @@ classifier.<span style="">binary</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style=
 </tbody>
 </table>
 <p>We can use it to create a classifier that predicts the rating of other reviews, based on word similarity:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">vector</span> <span style="color: #28334f; font-weight: bold;">import</span> Document, Bayes<br />
-<span style="">&gt;&gt;&gt;</span><br />
-<span style="">&gt;&gt;&gt;</span> b = Bayes<span style="">&#40;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> r = <span style="color: #4a587c;">open</span><span style="">&#40;</span><span style="color: #657a8a;">'reviews.txt'</span><span style="">&#41;</span>.<span style="">readlines</span><span style="">&#40;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> r = <span style="">&#91;</span>x.<span style="">split</span><span style="">&#40;</span><span style="color: #657a8a;">'<span style="">\t</span>'</span><span style="">&#41;</span> <span style="color: #28334f; font-weight: bold;">for</span> x <span style="color: #28334f; font-weight: bold;">in</span> r<span style="">&#93;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> review, rating <span style="color: #28334f; font-weight: bold;">in</span> r<span style="">&#91;</span>:<span style="color: #666;">10000</span><span style="">&#93;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp;b.<span style="">train</span><span style="">&#40;</span>Document<span style="">&#40;</span>review, type=rating<span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> b.<span style="">classes</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> b.<span style="">classify</span><span style="">&#40;</span>Document<span style="">&#40;</span><span style="color: #657a8a;">'An intriguing movie!'</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span><span style="color: #657a8a;">'1'</span>, <span style="color: #657a8a;">'2'</span>, <span style="color: #657a8a;">'3'</span>, <span style="color: #657a8a;">'4'</span>, <span style="color: #657a8a;">'5'</span><span style="">&#93;</span><br />
-<span style="color: #666;">5</span> </code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import Document, Bayes
+&gt;&gt;&gt;
+&gt;&gt;&gt; b = Bayes()
+&gt;&gt;&gt; r = open(&#39;reviews.txt&#39;).readlines()
+&gt;&gt;&gt; r = [x.split(&#39;	&#39;) for x in r]
+&gt;&gt;&gt; for review, rating in r[:10000]:
+&gt;&gt;&gt;    b.train(Document(review, type=rating))
+&gt;&gt;&gt;
+&gt;&gt;&gt; print b.classes
+&gt;&gt;&gt; print b.classify(Document(&#39;An intriguing movie!&#39;))
+
+[&#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;, &#39;5&#39;]
+5 </pre></div>
 <h3>Accuracy, precision &amp; recall</h3>
 <p>Naive Bayes can be quite effective despite its simple implementation. In the above example it has an accuracy of 60%. A random guess between the five possible star ratings would only have a 20% accuracy. Moreover, 25% of the errors are off by only one (e.g., guessed&nbsp;<span class="inline_code">**</span>&nbsp;instead of <span class="inline_code">***</span>, or&nbsp;<span class="inline_code">***</span>&nbsp;instead of&nbsp;<span class="inline_code">**</span>). This results in 75% accuracy for discerning positive (4-5) from negative reviews (1-2). Not bad.</p>
 <p>You can test the accuracy with the classmethod&nbsp;<span class="inline_code">Classifier.test()</span>.&nbsp;It creates a new classifier that uses 65% of the documents in the given corpus as training data and 35% as testing data. You can supply a list of&nbsp;<span class="inline_code">Document</span>&nbsp;objects or (<span class="inline_code">wordlist</span>,&nbsp;<span class="small">type</span>)-tuples. The method returns an (<span class="inline_code">accuracy</span>,&nbsp;<span class="inline_code">precision</span>,&nbsp;<span class="inline_code">recall</span>,&nbsp;<span class="inline_code">F1-score</span>)-tuple with values between&nbsp;<span class="inline_code">0.0</span>-<span class="inline_code">1.0</span>.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">Bayes.<span style="">test</span><span style="">&#40;</span>corpus=<span style="">&#91;</span><span style="">&#93;</span>, d=<span style="color: #666;">0.65</span>, folds=<span style="color: #666;">1</span>, aligned=<span style="color: #4a587c;">False</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">kNN.<span style="">test</span><span style="">&#40;</span>corpus=<span style="">&#91;</span><span style="">&#93;</span>, d=<span style="color: #666;">0.65</span>, folds=<span style="color: #666;">1</span>, k=<span style="color: #666;">10</span>, distance=COSINE<span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">SVM.<span style="">test</span><span style="">&#40;</span>corpus=<span style="">&#91;</span><span style="">&#93;</span>, d=<span style="color: #666;">0.65</span>, folds=<span style="color: #666;">1</span>, type=CLASSIFICATION, kernel=LINEAR<span style="">&#41;</span></code></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">vector</span> <span style="color: #28334f; font-weight: bold;">import</span> Document, Corpus, Bayes<br />
-<span style="">&gt;&gt;&gt;</span><br />
-<span style="">&gt;&gt;&gt;</span> corpus = Corpus<span style="">&#40;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> review <span style="color: #28334f; font-weight: bold;">in</span> <span style="color: #4a587c;">open</span><span style="">&#40;</span><span style="color: #657a8a;">&quot;reviews.txt&quot;</span><span style="">&#41;</span>.<span style="">readlines</span><span style="">&#40;</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; review, rating = review.<span style="">split</span><span style="">&#40;</span><span style="color: #657a8a;">'<span style="">\t</span>'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; corpus.<span style="">append</span><span style="">&#40;</span>Document<span style="">&#40;</span>review, type=rating<span style="">&gt;</span>=<span style="color: #666;">4</span>, stemmer=<span style="color: #4a587c;">None</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> Bayes.<span style="">test</span><span style="">&#40;</span>corpus, folds=<span style="color: #666;">10</span><span style="">&#41;</span> <br />
-<br />
-<span style="">&#40;</span><span style="color: #666;">0.83</span>, <span style="color: #666;">0.84</span>, <span style="color: #666;">0.96</span>, <span style="color: #666;">0.90</span><span style="">&#41;</span> </code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">Bayes.test(corpus=[], d=0.65, folds=1, aligned=False)</pre><pre class="brush:python; gutter:false; light:true;">kNN.test(corpus=[], d=0.65, folds=1, k=10, distance=COSINE)</pre><pre class="brush:python; gutter:false; light:true;">SVM.test(corpus=[], d=0.65, folds=1, type=CLASSIFICATION, kernel=LINEAR)</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import Document, Corpus, Bayes
+&gt;&gt;&gt;
+&gt;&gt;&gt; corpus = Corpus()
+&gt;&gt;&gt; for review in open(&quot;reviews.txt&quot;).readlines():
+&gt;&gt;&gt;     review, rating = review.split(&#39;	&#39;)
+&gt;&gt;&gt;     corpus.append(Document(review, type=rating&gt;=4, stemmer=None))
+&gt;&gt;&gt;
+&gt;&gt;&gt; print Bayes.test(corpus, folds=10) 
+
+(0.83, 0.84, 0.96, 0.90) </pre></div>
 <p><span class="smallcaps">k-fold cross-validation</span></p>
 <p>With the <span class="inline_code">folds</span> parameter &gt; 1,&nbsp;K-fold cross-validation is performed.&nbsp;For example: in 10-fold cross-validation ten separate tests are taken,&nbsp;each using a different 1/10 of the corpus as testing data. This produces reliable results.</p>
 <p><span class="smallcaps">Precision &amp; recall</span></p>
@@ -507,8 +510,10 @@ classifier.<span style="">binary</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style=
 <p><span class="smallcaps"><br />Unsupervised</span></p>
 <p>Features (i.e., terms/words) can also be selected automatically using a statistical method. Pattern uses Kullback-Leibler distance (or <em>relative entropy)</em>.&nbsp;<span class="inline_code">Corpus.relative_entropy()</span>&nbsp;yields a value indicating how distinct two given features are in the corpus. This value is used in <span class="inline_code">Corpus.feature_selection()</span>&nbsp;to compute a list of the most distinct (or "original") features. Calculating entropy takes some time, but the results are cached and stored with <span class="inline_code">Corpus.save()</span>.&nbsp;</p>
 <p><span class="inline_code">Corpus.filter()</span>&nbsp;returns a corpus with only the given features. If you pass the return value from <span class="inline_code">Corpus.feature_selection()</span>&nbsp;you get a new corpus with the top original terms (e.g., 100 vs. 2,500).</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python">f = corpus1.<span style="">feature_selection</span><span style="">&#40;</span>top=<span style="color: #666;">100</span><span style="">&#41;</span><br />
-corpus2 = corpus1.<span style="color: #4a587c;">filter</span><span style="">&#40;</span>features=f<span style="">&#41;</span> </code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">f = corpus1.feature_selection(top=100)
+corpus2 = corpus1.filter(features=f) 
+</pre></div>
 <p>Less terms means less computation time. However, there can be a drop in recall (there are less features). However, accuracy scores can also increase since the "noisy" features were removed.</p>
 <h3>Support vector machine</h3>
 <p>The most robust classifier is <span class="inline_code">SVM</span>. It relies on the fast&nbsp;<a href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/" target="_blank">libsvm</a>&nbsp;C++ library. Precompiled bindings are included for Windows and Mac OS X 32-bit, and Mac OS X and Ubuntu 64-bit. These may not work on your system. In this case you need to compile the bindings from source (see the instructions in&nbsp;<span class="inline_code">pattern/vector/svm/INSTALL.txt</span>).&nbsp;</p>
@@ -521,8 +526,7 @@ corpus2 = corpus1.<span style="color: #4a587c;">filter</span><span style="">&#40
 </tr>
 </tbody>
 </table>
-<p><span class="geshifilter"><code class="python geshifilter-python">classifier = SVM<span style="">&#40;</span>type=CLASSIFICATION, kernel=LINEAR, <span style="">**</span>kwargs<span style="">&#41;</span></code></span></p>
-<p>The <span class="inline_code">SVM</span> constructor has a number of optional parameters:</p>
+<pre class="brush:python; gutter:false; light:true;">classifier = SVM(type=CLASSIFICATION, kernel=LINEAR, **kwargs)</pre><p>The <span class="inline_code">SVM</span> constructor has a number of optional parameters:</p>
 <table class="border">
 <tbody>
 <tr>
@@ -612,5 +616,8 @@ corpus2 = corpus1.<span style="color: #4a587c;">filter</span><span style="">&#40
     </div>
     </div>
     </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
 </body>
 </html>

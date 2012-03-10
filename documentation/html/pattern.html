@@ -12,6 +12,12 @@
         #header { border-bottom: 1px solid #C6D4DD;  }
         table { border-collapse: collapse; }
     </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
 </head>
 <body class="node-type-page one-sidebar sidebar-right section-pages">
     <div id="page">
@@ -91,81 +97,91 @@
 <h2>Installation</h2>
 <p>Pattern is written for Python 2.4+ (no support for Python 3 yet). The module has no external dependencies except when using LSA in the vector module, which requires <a href="http://numpy.scipy.org/" target="_blank">NumPy</a> (installed by default on Mac OS X).</p>
 <p>To install it so that the module is available in all your scripts, open a terminal and do:</p>
-<p><span class="install"><span class="geshifilter"><code class="text geshifilter-text">&gt; cd pattern-2.3<br />
-&gt; python setup.py install </code></span></span></p>
+<div class="install">
+<pre class="gutter:false; light:true;">&gt; cd pattern-2.3
+&gt; python setup.py install </pre></div>
 <p>If you have pip, you can automatically download and install from the PyPi repository:</p>
-<p><span class="install"><span class="geshifilter"><code class="text geshifilter-text">&gt; pip install pattern</code></span></span></p>
+<div class="install">
+<pre class="gutter:false; light:true;">&gt; pip install pattern</pre></div>
 <p>If none of the above works, you can make Python aware of the module in three ways:</p>
 <ul>
 <li>Put the <span class="inline_code">pattern</span>&nbsp;subfolder in the same folder as your script.</li>
 <li>Put the <span class="inline_code">pattern</span>&nbsp;subfolder in the standard location for modules so it is available to all scripts:<br /><span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">c:\python25\Lib\site-packages\</span>&nbsp;(Windows),<br /><span class="inline_code"> /Library/Python/2.5/site-packages/</span>&nbsp;(Mac OS X), <br /><span class="inline_code">/usr/lib/python2.5/site-packages/</span>&nbsp;(Unix).<span style="font-family: Courier, monospace; font-size: small;"><span style="font-size: 12px;"><br /></span></span></li>
 <li>Add the location of the module to&nbsp;<span class="inline_code">sys.path</span>&nbsp;in your script, before importing it:</li>
 </ul>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> MODULE = <span style="color: #657a8a;">'/users/tom/desktop/pattern'</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">import</span> <span style="">sys</span><span style="">;</span> <span style="color: #28334f; font-weight: bold;">if</span> MODULE <span style="color: #28334f; font-weight: bold;">not</span> <span style="color: #28334f; font-weight: bold;">in</span> <span style="">sys</span>.<span style="">path</span>: <span style="">sys</span>.<span style="">path</span>.<span style="">append</span><span style="">&#40;</span>MODULE<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, Sentence </code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; MODULE = &#39;/users/tom/desktop/pattern&#39;
+&gt;&gt;&gt; import sys; if MODULE not in sys.path: sys.path.append(MODULE)
+&gt;&gt;&gt; from pattern.en import parse, Sentence </pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2>Quick overview</h2>
 <h3>pattern.web</h3>
 <p>Module <a href="pattern-web.html">pattern.web</a> is a web toolkit that bundles various API's (Google, Gmail, Bing, Twitter, Wikipedia, Flickr) with a robust HTML parser and web spider. Its purpose is to retrieve online content in an easy-to-use, uniform way.</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">web</span> <span style="color: #28334f; font-weight: bold;">import</span> Twitter, plaintext<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> tweet <span style="color: #28334f; font-weight: bold;">in</span> Twitter<span style="">&#40;</span><span style="">&#41;</span>.<span style="">search</span><span style="">&#40;</span><span style="color: #657a8a;">'&quot;more important than&quot;'</span>, cached=<span style="color: #4a587c;">False</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">print</span> plaintext<span style="">&#40;</span>tweet.<span style="">description</span><span style="">&#41;</span><br />
-<br />
-<span style="color: #657a8a;">'HINT: The mobile web is more important than mobile apps.'</span><br />
-<span style="color: #657a8a;">'Start slowly, direction is more important than speed.'</span><br />
-<span style="color: #657a8a;">'Imagination is more important than knowledge. - Albert Einstein'</span><br />
-...</code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import Twitter, plaintext
+&gt;&gt;&gt; for tweet in Twitter().search(&#39;&quot;more important than&quot;&#39;, cached=False):
+&gt;&gt;&gt;    print plaintext(tweet.description)
+
+&#39;HINT: The mobile web is more important than mobile apps.&#39;
+&#39;Start slowly, direction is more important than speed.&#39;
+&#39;Imagination is more important than knowledge. - Albert Einstein&#39;
+...</pre></div>
 <h3>pattern.en</h3>
 <p>Module <a href="pattern-en.html">pattern.en</a> is a natural language processing (NLP) toolkit for English. It is based on regular expressions, meaning that it is fast but on occasion also prone to incorrect results (see <span class="link-maintenance"><a href="http://www.clips.ua.ac.be/pages/MBSP" target="_blank">MBSP</a></span> for a robust approach compatible with Pattern). It has functionality for word inflection (for example: verb conjugation and noun pluralization), a Python interface to the WordNet database, and a Brill-based shallow parser. A <em>shallow parser</em> analyzes a sentence and identifies the constituents (nouns, verbs, etc.).</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, <span style="">pprint</span><br />
-<span style="">&gt;&gt;&gt;</span> s = <span style="color: #657a8a;">'The mobile web is more important than mobile apps.'</span><br />
-<span style="">&gt;&gt;&gt;</span> s = parse<span style="">&#40;</span>s, relations=<span style="color: #4a587c;">True</span>, lemmata=<span style="color: #4a587c;">True</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="">pprint</span><span style="">&#40;</span>s<span style="">&#41;</span><br />
-<br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; WORD &nbsp; TAG &nbsp; &nbsp;CHUNK &nbsp; &nbsp;ROLE &nbsp; ID &nbsp; &nbsp; PNP &nbsp; &nbsp;LEMMA &nbsp; &nbsp; &nbsp; <br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;The &nbsp; DT &nbsp; &nbsp; NP &nbsp; &nbsp; &nbsp; SBJ &nbsp; &nbsp;<span style="color: #666;">1</span> &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;the &nbsp; &nbsp; &nbsp; &nbsp; <br />
-&nbsp; &nbsp; &nbsp; &nbsp; mobile &nbsp; JJ &nbsp; &nbsp; NP ^ &nbsp; &nbsp; SBJ &nbsp; &nbsp;<span style="color: #666;">1</span> &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;mobile &nbsp; &nbsp; &nbsp;<br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;web &nbsp; NN &nbsp; &nbsp; NP ^ &nbsp; &nbsp; SBJ &nbsp; &nbsp;<span style="color: #666;">1</span> &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;web &nbsp; &nbsp; &nbsp; &nbsp; <br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">is</span> &nbsp; VBZ &nbsp; &nbsp;VP &nbsp; &nbsp; &nbsp; - &nbsp; &nbsp; &nbsp;<span style="color: #666;">1</span> &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;be &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; more &nbsp; RBR &nbsp; &nbsp;ADJP &nbsp; &nbsp; - &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;more &nbsp; &nbsp; &nbsp; &nbsp;<br />
-&nbsp; &nbsp; &nbsp;important &nbsp; JJ &nbsp; &nbsp; ADJP ^ &nbsp; - &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;important &nbsp; <br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; than &nbsp; IN &nbsp; &nbsp; PP &nbsp; &nbsp; &nbsp; - &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;PNP &nbsp; &nbsp;than &nbsp; &nbsp; &nbsp; &nbsp;<br />
-&nbsp; &nbsp; &nbsp; &nbsp; mobile &nbsp; JJ &nbsp; &nbsp; NP &nbsp; &nbsp; &nbsp; - &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;PNP &nbsp; &nbsp;mobile &nbsp; &nbsp; &nbsp;<br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; apps &nbsp; NNS &nbsp; &nbsp;NP ^ &nbsp; &nbsp; - &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;PNP &nbsp; &nbsp;app &nbsp; &nbsp; <br />
-<br />
-</code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parse, pprint
+&gt;&gt;&gt; s = &#39;The mobile web is more important than mobile apps.&#39;
+&gt;&gt;&gt; s = parse(s, relations=True, lemmata=True)
+&gt;&gt;&gt; pprint(s)
+
+          WORD   TAG    CHUNK    ROLE   ID     PNP    LEMMA       
+                                                                  
+           The   DT     NP       SBJ    1      -      the         
+        mobile   JJ     NP ^     SBJ    1      -      mobile      
+           web   NN     NP ^     SBJ    1      -      web         
+            is   VBZ    VP       -      1      -      be          
+          more   RBR    ADJP     -      -      -      more        
+     important   JJ     ADJP ^   -      -      -      important   
+          than   IN     PP       -      -      PNP    than        
+        mobile   JJ     NP       -      -      PNP    mobile      
+          apps   NNS    NP ^     -      -      PNP    app     
+
+
+</pre></div>
 <p>Note how the sentence has been annotated with various tags, discerning for example nouns (<span class="postag">NN</span>), adjectives (<span class="postag">JJ</span>), determiners (<span class="postag">DT</span>), verbs (<span class="postag">VB</span>), noun phrases (<span class="postag">NP</span>), sentence subject (<span class="postag">SBJ</span>), and a prepositional noun phrase (<span class="postag">PNP</span>). The parsed sentence can then be used to create a <em>parse tree</em>: a Python structure of related objects that is easy to traverse and inspect.</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, split<br />
-<span style="">&gt;&gt;&gt;</span> s = <span style="color: #657a8a;">'The mobile web is more important than mobile apps.'</span><br />
-<span style="">&gt;&gt;&gt;</span> s = parse<span style="">&#40;</span>s<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> s = split<span style="">&#40;</span>s<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> <span style="">chunk</span> <span style="color: #28334f; font-weight: bold;">in</span> s.<span style="">sentences</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span>.<span style="">chunks</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">for</span> word <span style="color: #28334f; font-weight: bold;">in</span> <span style="">chunk</span>.<span style="">words</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">print</span> word,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">print</span><br />
-<br />
-Word<span style="">&#40;</span>u<span style="color: #657a8a;">'The/DT'</span><span style="">&#41;</span> Word<span style="">&#40;</span>u<span style="color: #657a8a;">'mobile/JJ'</span><span style="">&#41;</span> Word<span style="">&#40;</span>u<span style="color: #657a8a;">'web/NN'</span><span style="">&#41;</span><br />
-Word<span style="">&#40;</span>u<span style="color: #657a8a;">'is/VBZ'</span><span style="">&#41;</span><br />
-Word<span style="">&#40;</span>u<span style="color: #657a8a;">'more/RBR'</span><span style="">&#41;</span> Word<span style="">&#40;</span>u<span style="color: #657a8a;">'important/JJ'</span><span style="">&#41;</span><br />
-Word<span style="">&#40;</span>u<span style="color: #657a8a;">'than/IN'</span><span style="">&#41;</span><br />
-Word<span style="">&#40;</span>u<span style="color: #657a8a;">'mobile/JJ'</span><span style="">&#41;</span> Word<span style="">&#40;</span>u<span style="color: #657a8a;">'apps/NNS'</span><span style="">&#41;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parse, split
+&gt;&gt;&gt; s = &#39;The mobile web is more important than mobile apps.&#39;
+&gt;&gt;&gt; s = parse(s)
+&gt;&gt;&gt; s = split(s)
+&gt;&gt;&gt; for chunk in s.sentences[0].chunks:
+&gt;&gt;&gt;     for word in chunk.words:
+&gt;&gt;&gt;         print word,
+&gt;&gt;&gt;     print
+
+Word(u&#39;The/DT&#39;) Word(u&#39;mobile/JJ&#39;) Word(u&#39;web/NN&#39;)
+Word(u&#39;is/VBZ&#39;)
+Word(u&#39;more/RBR&#39;) Word(u&#39;important/JJ&#39;)
+Word(u&#39;than/IN&#39;)
+Word(u&#39;mobile/JJ&#39;) Word(u&#39;apps/NNS&#39;)
+</pre></div>
 <p>A parser for Dutch (based on Jeroen Geertzen's language model) is also available:&nbsp;<span class="link-maintenance"><a href="pattern-nl.html">pattern.nl</a></span>.</p>
 <h3>pattern.search</h3>
 <p>Module <a href="pattern-search.html">pattern.search</a> contains an elegant search algorithm to retrieve sequences of words (called <em>n-grams</em>) from a parsed sentence.</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, split<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">search</span> <span style="color: #28334f; font-weight: bold;">import</span> search<br />
-<span style="">&gt;&gt;&gt;</span> s = <span style="color: #657a8a;">'The mobile web is more important than mobile apps.'</span><br />
-<span style="">&gt;&gt;&gt;</span> s = parse<span style="">&#40;</span>s, relations=<span style="color: #4a587c;">True</span>, lemmata=<span style="color: #4a587c;">True</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> s = split<span style="">&#40;</span>s<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> match <span style="color: #28334f; font-weight: bold;">in</span> search<span style="">&#40;</span><span style="color: #657a8a;">'NP be (RB)+ important than NP'</span>, s<span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">print</span> match.<span style="">constituents</span><span style="">&#40;</span><span style="">&#41;</span><span style="">&#91;</span>-<span style="color: #666;">1</span><span style="">&#93;</span>, <span style="color: #657a8a;">&quot;=&gt;&quot;</span>, \<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;match.<span style="">constituents</span><span style="">&#40;</span><span style="">&#41;</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span><br />
-<br />
-Chunk<span style="">&#40;</span><span style="color: #657a8a;">'mobile apps/NP'</span><span style="">&#41;</span> =<span style="">&gt;</span> Chunk<span style="">&#40;</span><span style="color: #657a8a;">'The mobile web/NP-SBJ-1'</span><span style="">&#41;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parse, split
+&gt;&gt;&gt; from pattern.search import search
+&gt;&gt;&gt; s = &#39;The mobile web is more important than mobile apps.&#39;
+&gt;&gt;&gt; s = parse(s, relations=True, lemmata=True)
+&gt;&gt;&gt; s = split(s)
+&gt;&gt;&gt;
+&gt;&gt;&gt; for match in search(&#39;NP be (RB)+ important than NP&#39;, s):
+&gt;&gt;&gt;     print match.constituents()[-1], &quot;=&gt;&quot;, \
+&gt;&gt;&gt;           match.constituents()[0]
+
+Chunk(&#39;mobile apps/NP&#39;) =&gt; Chunk(&#39;The mobile web/NP-SBJ-1&#39;)
+</pre></div>
 <p>Observe the given search pattern: <span class="inline_code">"NP be (RB)+ important than NP"</span>.</p>
 <p>It means: any noun phrase followed by the verb <em>to be</em> (<em>is</em>, <em>was</em>, ...), followed by zero or more adverbs (e.g. <em>much</em>, <em>more</em>), followed by the words <em>important than</em>, followed by any noun phrase. It will match any of the following variations:</p>
 <ul>
@@ -176,39 +192,40 @@ Chunk<span style="">&#40;</span><span style="color: #657a8a;">'mobile apps/NP'</
 <h3>pattern.graph</h3>
 <p>Module <a href="pattern-graph.html">pattern.graph</a> provides a data structure to represent relationships between <em>nodes</em> (e.g. words, concepts, entities ...) The relative importance (or <em>centrality</em>) of each node can then be calculated. Graphs can be exported as an interactive web page using the HTML <span class="inline_code">&lt;canvas&gt;</span> element (<span class="link-maintenance"><a href="http://www.clips.ua.ac.be/media/pattern-graph" target="_blank">demo</a></span>).&nbsp;</p>
 <p>The screenshot shows&nbsp;an exported graph with nodes pointing to more important nodes (data mined from Bing). Nodes with a lot of "traffic" are marked with a shadow (<em>money</em>, <em>football</em>, <em>life</em>), important nodes are marked in blue (<em>experience</em>, <em>I</em>, <em>nothing</em>, <em>money</em>).</p>
-<p><img class="border" src="../g/pattern_graph1.jpg" alt="" width="610" height="300" /></p>
+<p><img class="border" src="../g/pattern_graph5.jpg" alt="" width="610" height="198" /></p>
 <p><span style="font-size: 11px;"><span style="text-decoration: underline;">Note</span>: The&nbsp;<em>nothing</em>&nbsp;result could use some extra post-processing, e.g. in:&nbsp;<em>nothing is more important than life</em>, the word&nbsp;<em>life</em>&nbsp;is important, not the word&nbsp;<em>nothing</em>.</span></p>
 <p>Source code:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">web</span> &nbsp; &nbsp;<span style="color: #28334f; font-weight: bold;">import</span> Bing, plaintext<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">import</span> Sentence, Chunk, parse<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">search</span> <span style="color: #28334f; font-weight: bold;">import</span> Pattern<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">graph</span> &nbsp;<span style="color: #28334f; font-weight: bold;">import</span> Graph, Node, Edge, export<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp;<br />
-<span style="">&gt;&gt;&gt;</span> g = Graph<span style="">&#40;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> i <span style="color: #28334f; font-weight: bold;">in</span> <span style="color: #4a587c;">range</span><span style="">&#40;</span><span style="color: #666;">10</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">for</span> r <span style="color: #28334f; font-weight: bold;">in</span> Bing<span style="">&#40;</span><span style="">&#41;</span>.<span style="">search</span><span style="">&#40;</span><span style="color: #657a8a;">'&quot;more important than&quot;'</span>, start=i+<span style="color: #666;">1</span>, count=<span style="color: #666;">50</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; s = plaintext<span style="">&#40;</span>r.<span style="">description</span>.<span style="">lower</span><span style="">&#40;</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; s = Sentence<span style="">&#40;</span>parse<span style="">&#40;</span>s<span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; p = Pattern.<span style="">fromstring</span><span style="">&#40;</span><span style="color: #657a8a;">'NP (VP) more important than NP'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">for</span> m <span style="color: #28334f; font-weight: bold;">in</span> p.<span style="">search</span><span style="">&#40;</span>s<span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; a = m.<span style="">constituents</span><span style="">&#40;</span>p<span style="">&#91;</span>+<span style="color: #666;">0</span><span style="">&#93;</span><span style="">&#41;</span><span style="">&#91;</span>-<span style="color: #666;">1</span><span style="">&#93;</span> <span style="color: grey;"># Left NP.</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; b = m.<span style="">constituents</span><span style="">&#40;</span>p<span style="">&#91;</span>-<span style="color: #666;">1</span><span style="">&#93;</span><span style="">&#41;</span><span style="">&#91;</span>+<span style="color: #666;">0</span><span style="">&#93;</span> <span style="color: grey;"># Right NP.</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; a = <span style="">&#40;</span><span style="color: #4a587c;">isinstance</span><span style="">&#40;</span>a, Chunk<span style="">&#41;</span> <span style="color: #28334f; font-weight: bold;">and</span> a.<span style="">head</span> <span style="color: #28334f; font-weight: bold;">or</span> a<span style="">&#41;</span>.<span style="">string</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; b = <span style="">&#40;</span><span style="color: #4a587c;">isinstance</span><span style="">&#40;</span>b, Chunk<span style="">&#41;</span> <span style="color: #28334f; font-weight: bold;">and</span> b.<span style="">head</span> <span style="color: #28334f; font-weight: bold;">or</span> b<span style="">&#41;</span>.<span style="">string</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">if</span> a <span style="color: #28334f; font-weight: bold;">and</span> b:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">if</span> a <span style="color: #28334f; font-weight: bold;">not</span> <span style="color: #28334f; font-weight: bold;">in</span> g:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; g.<span style="">add_node</span><span style="">&#40;</span>a, radius=<span style="color: #666;">4</span>, stroke=<span style="">&#40;</span><span style="color: #666;">0</span>,<span style="color: #666;">0</span>,<span style="color: #666;">0</span>,<span style="color: #666;">0.8</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">if</span> b <span style="color: #28334f; font-weight: bold;">not</span> <span style="color: #28334f; font-weight: bold;">in</span> g:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; g.<span style="">add_node</span><span style="">&#40;</span>b, radius=<span style="color: #666;">4</span>, stroke=<span style="">&#40;</span><span style="color: #666;">0</span>,<span style="color: #666;">0</span>,<span style="color: #666;">0</span>,<span style="color: #666;">0.8</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; g.<span style="">add_edge</span><span style="">&#40;</span>g<span style="">&#91;</span>a<span style="">&#93;</span>, g<span style="">&#91;</span>b<span style="">&#93;</span>, stroke=<span style="">&#40;</span><span style="color: #666;">0</span>,<span style="color: #666;">0</span>,<span style="color: #666;">0</span>,<span style="color: #666;">0.6</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp;<br />
-<span style="">&gt;&gt;&gt;</span> g = g.<span style="">split</span><span style="">&#40;</span><span style="">&#41;</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span> <span style="color: grey;"># Largest subgraph.</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp;<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> n <span style="color: #28334f; font-weight: bold;">in</span> g.<span style="color: #4a587c;">sorted</span><span style="">&#40;</span><span style="">&#41;</span><span style="">&#91;</span>:<span style="color: #666;">40</span><span style="">&#93;</span>: <span style="color: grey;"># Sorted by Node.weight.</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; n.<span style="">fill</span> = <span style="">&#40;</span><span style="color: #666;">0.0</span>, <span style="color: #666;">0.5</span>, <span style="color: #666;">1.0</span>, <span style="color: #666;">0.7</span> <span style="">*</span> n.<span style="">weight</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp;<br />
-<span style="">&gt;&gt;&gt;</span> export<span style="">&#40;</span>g, <span style="color: #657a8a;">'test'</span>, directed=<span style="color: #4a587c;">True</span>, weighted=<span style="color: #666;">0.6</span>, distance=<span style="color: #666;">5</span>, force=<span style="color: #666;">0.05</span>, repulsion=<span style="color: #666;">150</span><span style="">&#41;</span></code></span></span></p>
-<p>&nbsp;</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web    import Bing, plaintext
+&gt;&gt;&gt; from pattern.en     import Sentence, Chunk, parse
+&gt;&gt;&gt; from pattern.search import Pattern
+&gt;&gt;&gt; from pattern.graph  import Graph, Node, Edge, export
+&gt;&gt;&gt;  
+&gt;&gt;&gt; g = Graph()
+&gt;&gt;&gt; for i in range(10):
+&gt;&gt;&gt;     for r in Bing().search(&#39;&quot;more important than&quot;&#39;, start=i+1, count=50):
+&gt;&gt;&gt;         s = plaintext(r.description.lower())
+&gt;&gt;&gt;         s = Sentence(parse(s))
+&gt;&gt;&gt;         p = Pattern.fromstring(&#39;NP (VP) more important than NP&#39;)
+&gt;&gt;&gt;         for m in p.search(s):
+&gt;&gt;&gt;             a = m.constituents(p[+0])[-1] # Left NP.
+&gt;&gt;&gt;             b = m.constituents(p[-1])[+0] # Right NP.
+&gt;&gt;&gt;             a = (isinstance(a, Chunk) and a.head or a).string
+&gt;&gt;&gt;             b = (isinstance(b, Chunk) and b.head or b).string
+&gt;&gt;&gt;             if a and b:
+&gt;&gt;&gt;                 if a not in g:
+&gt;&gt;&gt;                     g.add_node(a, radius=5, stroke=(0,0,0,0.8))
+&gt;&gt;&gt;                 if b not in g:
+&gt;&gt;&gt;                     g.add_node(b, radius=5, stroke=(0,0,0,0.8))
+&gt;&gt;&gt;                 g.add_edge(g[b], g[a], stroke=(0,0,0,0.6))
+&gt;&gt;&gt;  
+&gt;&gt;&gt; g = g.split()[0] # Largest subgraph.
+&gt;&gt;&gt;  
+&gt;&gt;&gt; for n in g.sorted()[:40]: # Sorted by Node.weight.
+&gt;&gt;&gt;     n.fill = (0.0, 0.5, 1.0, 0.7 * n.weight)
+&gt;&gt;&gt;  
+&gt;&gt;&gt; export(g, &#39;test&#39;, directed=True, weighted=0.6, distance=6, force=0.05,
+     repulsion=150) </pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2>Examples &amp; experiments</h2>
@@ -230,7 +247,6 @@ Chunk<span style="">&#40;</span><span style="color: #657a8a;">'mobile apps/NP'</
 </tr>
 </tbody>
 </table>
-<p><span class="example"><br /></span></p>
 </div>
 </div></div>
         </div>
@@ -239,5 +255,8 @@ Chunk<span style="">&#40;</span><span style="color: #657a8a;">'mobile apps/NP'</
     </div>
     </div>
     </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
 </body>
 </html>

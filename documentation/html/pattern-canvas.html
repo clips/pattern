@@ -12,6 +12,12 @@
         #header { border-bottom: 1px solid #C6D4DD;  }
         table { border-collapse: collapse; }
     </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
 </head>
 <body class="node-type-page one-sidebar sidebar-right section-pages">
     <div id="page">
@@ -41,14 +47,14 @@
 </tbody>
 </table>
 <p>&nbsp;</p>
-<h2>
-<hr /></h2>
+<hr />
 <h2>Documentation</h2>
 <table border="0">
 <tbody>
 <tr>
 <td style="width: 180px;">
 <p><span class="smallcaps">Drawing</span></p>
+<ul>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#coordinates">Coordinate system</a></li>
 <li><a href="#color">Color</a></li>
@@ -59,10 +65,14 @@
 <li><a href="#text">Text</a></li>
 <li><a href="#mouse">Mouse &amp; keyboard</a></li>
 <li><a href="#canvas">Canvas</a></li>
+</ul>
 </td>
 <td>
 <p><span style="font-variant: small-caps;">Data</span></p>
+<ul>
 <li><a href="#widget">Widgets</a></li>
+<li><a href="#json">JSON</a></li>
+</ul>
 </td>
 </tr>
 </tbody>
@@ -73,26 +83,27 @@
 <p>A <span class="inline_code">canvas.js</span> animation is written in JavaScript code as part of&nbsp;a HTML file. It will run in all modern web browsers (Chrome, Firefox, IE7+, Safari, Opera). Performance may vary &nbsp;from browser to browser. Animations on mobile devices are (currently) quite slow.</p>
 <h3>Quick overview</h3>
 <p>Below is an example&nbsp;script. The HTML source imports the JavaScript <span class="inline_code">canvas.js</span>&nbsp;module with the standard set of drawing commands. Note the <span class="inline_code">&lt;script type="text/canvas"&gt;</span>&nbsp;that defines the animation. It has a <span class="inline_code">setup()</span> function that will be executed once when the animation starts, and a&nbsp;<span class="inline_code">draw()</span> function that will be executed each animation frame.</p>
-<p><span class="example"><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="">&lt;!</span>doctype html<span style="">&gt;</span><br />
-<span style="">&lt;</span>html<span style="">&gt;</span><br />
-<span style="">&lt;</span>head<span style="">&gt;</span><br />
-&nbsp; &nbsp; <span style="">&lt;</span>script type<span style="">=</span><span style="color: #657a8a;">&quot;text/javascript&quot;</span> src<span style="">=</span><span style="color: #657a8a;">&quot;canvas.js&quot;</span><span style="">&gt;&lt;/</span>script<span style="">&gt;</span> &nbsp; <br />
-<span style="">&lt;/</span>head<span style="">&gt;</span><br />
-<span style="">&lt;</span>body<span style="">&gt;</span><br />
-&nbsp; &nbsp; <span style="">&lt;</span>script type<span style="">=</span><span style="color: #657a8a;">&quot;text/canvas&quot;</span><span style="">&gt;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">setup</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; canvas.<span style="">size</span><span style="">&#40;</span><span style="color: #666;">500</span><span style="">,</span> <span style="color: #666;">500</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span style="">&#125;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">draw</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; canvas.<span style="">clear</span><span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; translate<span style="">&#40;</span><span style="color: #666;">250</span><span style="">,</span> <span style="color: #666;">250</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; rotate<span style="">&#40;</span>canvas.<span style="">frame</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; rect<span style="">&#40;</span><span style="">-</span><span style="color: #666;">150</span><span style="">,</span> <span style="">-</span><span style="color: #666;">150</span><span style="">,</span> <span style="color: #666;">300</span><span style="">,</span> <span style="color: #666;">300</span><span style="">,</span> <span style="">&#123;</span>fill<span style="">:</span> color<span style="">&#40;</span><span style="color: #666;">1</span><span style="">,</span><span style="color: #666;">0</span><span style="">,</span><span style="color: #666;">0</span><span style="">,</span><span style="color: #666;">1</span><span style="">&#41;</span><span style="">&#125;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span style="">&#125;</span><br />
-&nbsp; &nbsp; <span style="">&lt;/</span>script<span style="">&gt;</span><br />
-<span style="">&lt;/</span>body<span style="">&gt;</span><br />
-<span style="">&lt;/</span>html<span style="">&gt;</span></code></span></span></p>
-<h3><span class="example">Syntax</span></h3>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;canvas.js&quot;&gt;&lt;/script&gt;   
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script type=&quot;text/canvas&quot;&gt;
+        function setup(canvas) {
+            canvas.size(500, 500);
+        }
+        function draw(canvas) {
+            canvas.clear();
+            translate(250, 250);
+            rotate(canvas.frame);
+            rect(-150, -150, 300, 300, {fill: color(1,0,0,1)});
+        }
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<h3 class="example">Syntax</h3>
 <p>Functions can have parameters with default values. For example, the <span class="inline_code">star()</span> function takes two to five parameters in the right order (<span class="inline_code">x</span>, <span class="inline_code">y</span>, <span class="inline_code">points</span>, <span class="inline_code">outer</span>, <span class="inline_code">inner</span>). If you supply four parameters, the last parameter assumes a default value (<span class="inline_code">inner=50</span>). If you need to define the last parameter, you must define all parameters preceding it. Contrarily, some functions have optional, named parameters. For example, the <span class="inline_code">rect()</span> command takes four parameters and an optional <span class="inline_code">roundness</span>.</p>
 <p>If you want to set <span class="inline_code">roundness</span>, you must supply it by name and enclosed in curly braces. If the documentation mentions other optional arguments you can supply these as well inside the curly braces, in any order. For example:</p>
 <p><span class="inline_code">rect(50, 50, 100, 100 {roundness: 0.2, fill: new Color(1,0,0)});</span></p>
@@ -121,41 +132,30 @@
 <h2><a name="color"></a>Color</h2>
 <p>The <span class="inline_code">Color</span> object can be used to store a color in terms of R,G,B,A channel values. It can be passed to <span class="inline_code">background()</span>, <span class="inline_code">fill()</span> and <span class="inline_code">stroke()</span> to set the current drawing color for primitives.</p>
 <p>A color can be initialized with either four values (R,G,B,A), three values (R,G,B), two values (grayscale + alpha) or one value (grayscale, a&nbsp;<span class="inline_code">Color</span>, or an array). An optional <span class="inline_code">base</span> parameter defines the range of the given values (e.g. 0-255 instead of 0.0-1.0). An optional <span class="inline_code">colorspace</span> defines the color space of the given parameters: <span class="inline_code">HSB</span>&nbsp;expects hue, saturation, brightness, alpha instead of red, green, blue, alpha, and <span class="inline_code">HEX</span> expects a hexidecimal string, e.g., <span class="inline_code">"#FF0000"</span>.</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">var</span> clr <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> Color<span style="">&#40;</span>r<span style="">,</span> g<span style="">,</span> b<span style="">,</span> a<span style="">,</span> <span style="">&#123;</span>base<span style="">:</span> <span style="color: #666;">1.0</span><span style="">,</span> colorspace<span style="">:</span> RGB<span style="">&#125;</span><span style="">&#41;</span><span style="">;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">var</span> clr <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> Color<span style="">&#40;</span>r<span style="">,</span> g<span style="">,</span> b<span style="">,</span> <span style="">&#123;</span>base<span style="">:</span> <span style="color: #666;">1.0</span><span style="">,</span> colorspace<span style="">:</span> RGB<span style="">&#125;</span><span style="">&#41;</span><span style="">;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">var</span> clr <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> Color<span style="">&#40;</span>grayscale<span style="">,</span> a<span style="">,</span> <span style="">&#123;</span>base<span style="">:</span> <span style="color: #666;">1.0</span><span style="">,</span> colorspace<span style="">:</span> RGB<span style="">&#125;</span><span style="">&#41;</span><span style="">;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">var</span> clr <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> Color<span style="">&#40;</span>grayscale<span style="">,</span> <span style="">&#123;</span>base<span style="">:</span> <span style="color: #666;">1.0</span><span style="">,</span> colorspace<span style="">:</span> RGB<span style="">&#125;</span><span style="">&#41;</span><span style="">;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">var</span> clr <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> Color<span style="">&#40;</span>clr<span style="">,</span> <span style="">&#123;</span>base<span style="">:</span> <span style="color: #666;">1.0</span><span style="">,</span> colorspace<span style="">:</span> RGB<span style="">&#125;</span><span style="">&#41;</span><span style="">;</span></code></span></p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">clr.<span style="">r</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Red value between 0.0-1.0. &nbsp; </span><br />
-clr.<span style="">g</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Green value between 0.0-1.0.</span><br />
-clr.<span style="">b</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Blue value between 0.0-1.0.</span><br />
-clr.<span style="">a</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Alpha value between 0.0-1.0.</span></code></span></p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">clr.<span style="">rgba</span><span style="">&#40;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Returns an array of [R,G,B,A]-values.</span><br />
-clr.<span style="">map</span><span style="">&#40;</span><span style="">&#123;</span>base<span style="">:</span> <span style="color: #666;">1.0</span><span style="">,</span> colorspace<span style="">:</span> RGB<span style="">&#41;</span> <span style="color: grey;">// Returns an array of [R,G,B,A]-values. &nbsp;</span><br />
-clr.<span style="">rotate</span><span style="">&#40;</span>angle<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Returns a new Color. </span></code></span></p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">clr.<span style="">copy</span><span style="">&#40;</span><span style="">&#41;</span> &nbsp; </code></span></p>
-<ul>
+<pre class="brush:javascript; gutter:false; light:true;">var clr = new Color(r, g, b, a, {base: 1.0, colorspace: RGB});</pre><pre class="brush:javascript; gutter:false; light:true;">var clr = new Color(r, g, b, {base: 1.0, colorspace: RGB});</pre><pre class="brush:javascript; gutter:false; light:true;">var clr = new Color(grayscale, a, {base: 1.0, colorspace: RGB});</pre><pre class="brush:javascript; gutter:false; light:true;">var clr = new Color(grayscale, {base: 1.0, colorspace: RGB});</pre><pre class="brush:javascript; gutter:false; light:true;">var clr = new Color(clr, {base: 1.0, colorspace: RGB});</pre><pre class="brush:javascript; gutter:false; light:true;">clr.r                                // Red value between 0.0-1.0.   
+clr.g                                // Green value between 0.0-1.0.
+clr.b                                // Blue value between 0.0-1.0.
+clr.a                                // Alpha value between 0.0-1.0.</pre><pre class="brush:javascript; gutter:false; light:true;">clr.rgba()                           // Returns an array of [R,G,B,A]-values.
+clr.map({base: 1.0, colorspace: RGB) // Returns an array of [R,G,B,A]-values.  
+clr.rotate(angle)                    // Returns a new Color. </pre><pre class="brush:javascript; gutter:false; light:true;">clr.copy()   </pre><ul>
 <li><span class="inline_code">Color.map()</span> returns an array of channel values mapped to the given base and colorspace. <br />For example: <span class="inline_code">clr.map({base: 255, colorspace: HSB})</span> <br />yields an <span class="inline_code">[H,S,B,A]</span> array of values between 0-255.</li>
 <li><span class="inline_code">Color.rotate()</span> returns a color with hue rotated on the <a href="http://kuler.adobe.com/#create/fromacolor" target="_blank">RYB color wheel</a> by the given angle.</li>
 </ul>
 <h3>Color state functions</h3>
 <p>The <span class="inline_code">background()</span>, <span class="inline_code">fill()</span> and <span class="inline_code">stroke()</span> functions set the current canvas background, shape fill and shape outline color respectively. All subsequently drawn primitives (e.g. lines, ellipses) will use the current fill and outline color. Each function takes the same parameters as a <span class="inline_code">Color</span> object (R,G,B,A | R,G,B | grayscale + alpha | <span class="inline_code">Color</span>). Each function also returns its current setting.&nbsp;</p>
 <p>The <span class="inline_code">strokewidth()</span> function sets the width of the outline.</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">background<span style="">&#40;</span>r<span style="">,</span> g<span style="">,</span> b<span style="">,</span> a<span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">fill<span style="">&#40;</span>r<span style="">,</span> g<span style="">,</span> b<span style="">,</span> a<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">stroke<span style="">&#40;</span>r<span style="">,</span> g<span style="">,</span> b<span style="">,</span> a<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">nofill<span style="">&#40;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">nostroke<span style="">&#40;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">strokewidth<span style="">&#40;</span>width<span style="">&#41;</span></code></span></p>
-<h3>Color filters</h3>
+<pre class="brush:javascript; gutter:false; light:true;">background(r, g, b, a)</pre><pre class="brush:javascript; gutter:false; light:true;">fill(r, g, b, a)</pre><pre class="brush:javascript; gutter:false; light:true;">stroke(r, g, b, a)</pre><pre class="brush:javascript; gutter:false; light:true;">nofill()</pre><pre class="brush:javascript; gutter:false; light:true;">nostroke()</pre><pre class="brush:javascript; gutter:false; light:true;">strokewidth(width)</pre><h3>Color filters</h3>
 <p>A color filter returns a new <span class="inline_code">Color</span> that is a variation on the given color, useful for constructing a set of colors that look aesthetically pleasing together. The <span class="inline_code">darker()</span> and <span class="inline_code">lighter()</span> functions modify the color's brightness in HSB, <span class="inline_code">complement()</span> returns the color that is opposite on the RYB color wheel, <span class="inline_code">analog()</span> returns a random adjacent color on the color wheel.</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">darker<span style="">&#40;</span>clr<span style="">,</span> step<span style="">=</span><span style="color: #666;">0.2</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Returns a new Color.</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">lighter<span style="">&#40;</span>clr<span style="">,</span> step<span style="">=</span><span style="color: #666;">0.2</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Returns a new Color. </span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">complement<span style="">&#40;</span>clr<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Returns a new Color. </span></code></span></p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">analog<span style="">&#40;</span>clr<span style="">,</span> angle<span style="">=</span><span style="color: #666;">20</span><span style="">,</span> d<span style="">=</span><span style="color: #666;">0.1</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// d = random saturation &amp; brightness.</span></code></span></p>
-<h3>Color gradient</h3>
+<pre class="brush:javascript; gutter:false; light:true;">darker(clr, step=0.2)                // Returns a new Color.</pre><pre class="brush:javascript; gutter:false; light:true;">lighter(clr, step=0.2)               // Returns a new Color. </pre><pre class="brush:javascript; gutter:false; light:true;">complement(clr)                      // Returns a new Color. </pre><pre class="brush:javascript; gutter:false; light:true;">analog(clr, angle=20, d=0.1)         // d = random saturation &amp; brightness.</pre><h3>Color gradient</h3>
 <p>The <span class="inline_code">Gradient</span> object can be used to create smooth <span class="inline_code">LINEAR</span> or <span class="inline_code">RADIAL</span> transition between two <span class="inline_code">Color</span> objects. It can be passed to <span class="inline_code">fill()</span> instead of a solid color.</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">var</span> g <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> Gradient<span style="">&#40;</span>clr1<span style="">,</span> clr2<span style="">,</span> <span style="">&#123;</span>type<span style="">:</span> LINEAR<span style="">,</span> x<span style="">:</span> <span style="color: #666;">0</span><span style="">,</span> y<span style="">:</span> <span style="color: #666;">0</span><span style="">,</span> spread<span style="">:</span> <span style="color: #666;">100</span><span style="">,</span> angle<span style="">:</span> <span style="color: #666;">0</span><span style="">&#125;</span><span style="">&#41;</span><span style="">;</span></code></span></p>
-<h3>Shadows</h3>
+<pre class="brush:javascript; gutter:false; light:true;">var g = new Gradient(clr1, clr2, {type: LINEAR, x: 0, y: 0, spread: 100, angle: 0});</pre><h3>Shadows</h3>
 <p>The <span class="inline_code">shadow()</span> function enables drop shadows for all subsequently drawn shapes:</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">shadow<span style="">&#40;</span>dx<span style="">=</span><span style="color: #666;">6</span><span style="">,</span> dy<span style="">=</span><span style="color: #666;">6</span><span style="">,</span> <span style="color: #4a587c;">blur</span><span style="">=</span><span style="color: #666;">5</span><span style="">,</span> alpha<span style="">=</span><span style="color: #666;">0.5</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">noshadow<span style="">&#40;</span><span style="">&#41;</span></code></span></p>
-<p>&nbsp;</p>
+<pre class="brush:javascript; gutter:false; light:true;">shadow(dx=6, dy=6, blur=5, alpha=0.5)</pre><pre class="brush:javascript; gutter:false; light:true;">noshadow()</pre><p>&nbsp;</p>
 <hr />
 <h2><a name="transformation"></a>Transformation</h2>
 <p>The <span class="inline_code">translate()</span> function sets the current origin point for primitives, paths, images and text. By default the origin is (0,0), the <strong>upper left</strong> corner of the canvas. With <span class="inline_code">translate(100,100)</span>, the current origin becomes (100,100). If <span class="inline_code">translate(-50,0)</span> is then called, the current origin becomes (50,100). In the same way, <span class="inline_code">rotate(30)</span> followed by <span class="inline_code">rotate(60)</span> sets the current rotation for all subsequent shapes to 90.</p>
 <p>The <span class="inline_code">push()</span> and <span class="inline_code">pop()</span> functions create a branch in the current transformation state. The effect of <span class="inline_code">translate()</span>, <span class="inline_code">rotate()</span> and <span class="inline_code">scale()</span> after a <span class="inline_code">push()</span> only lasts until <span class="inline_code">pop()</span> is called. The <span class="inline_code">reset()</span> function resets all transformations (origin is (0,0), rotation is zero, scale is 100%).</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">translate<span style="">&#40;</span>x<span style="">,</span> y<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Push horizontal and vertical offset.</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">rotate<span style="">&#40;</span>degrees<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Push angle in degrees.</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">scale<span style="">&#40;</span>x<span style="">,</span> y<span style="">=</span>None<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Push relative scale: 1.0 = 100%</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">push<span style="">&#40;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">pop<span style="">&#40;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">reset<span style="">&#40;</span><span style="">&#41;</span></code></span></p>
-<p>&nbsp;</p>
+<pre class="brush:javascript; gutter:false; light:true;">translate(x, y)                     // Push horizontal and vertical offset.</pre><pre class="brush:javascript; gutter:false; light:true;">rotate(degrees)                     // Push angle in degrees.</pre><pre class="brush:javascript; gutter:false; light:true;">scale(x, y=None)                    // Push relative scale: 1.0 = 100%</pre><pre class="brush:javascript; gutter:false; light:true;">push()</pre><pre class="brush:javascript; gutter:false; light:true;">pop()</pre><pre class="brush:javascript; gutter:false; light:true;">reset()</pre><p>&nbsp;</p>
 <hr />
 <h2><a name="primitives"></a>Primitives</h2>
 <p>Geometric primitives are the simplest shapes that can be drawn to the canvas: <em>line</em>, <em>rectangle</em>, <em>triangle</em>, <em>ellipse</em>, and two additional shapes, <em>arrow</em> and <em>star</em>.</p>
@@ -171,17 +171,17 @@ clr.<span style="">rotate</span><span style="">&#40;</span>angle<span style="">&
 </tr>
 </tbody>
 </table>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">line<span style="">&#40;</span>x0<span style="">,</span> y0<span style="">,</span> x1<span style="">,</span> y1<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">rect<span style="">&#40;</span>x<span style="">,</span> y<span style="">,</span> width<span style="">,</span> height<span style="">,</span> <span style="">&#123;</span>roundness<span style="">:</span> <span style="color: #666;">0.0</span><span style="">&#125;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">triangle<span style="">&#40;</span>x1<span style="">,</span> y1<span style="">,</span> x2<span style="">,</span> y2<span style="">,</span> x3<span style="">,</span> y3<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">ellipse<span style="">&#40;</span>x<span style="">,</span> y<span style="">,</span> width<span style="">,</span> height<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">arrow<span style="">&#40;</span>x<span style="">,</span> y<span style="">,</span> width<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">star<span style="">&#40;</span>x<span style="">,</span> y<span style="">,</span> points<span style="">=</span><span style="color: #666;">20</span><span style="">,</span> outer<span style="">=</span><span style="color: #666;">100</span><span style="">,</span> inner<span style="">=</span><span style="color: #666;">50</span><span style="">&#41;</span></code></span></p>
-<p>Drawn primitives will adhere to the current color and transformation state. The color state can be overridden by passing an optional <span class="inline_code">fill</span>, <span class="inline_code">stroke</span>, <span class="inline_code">strokewidth</span>&nbsp;to the function, for example:</p>
-<p><span class="example"><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">draw</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; canvas.<span style="">clear</span><span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; nofill<span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; stroke<span style="">&#40;</span><span style="color: #666;">0</span><span style="">,</span> <span style="color: #666;">0.25</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; strokewidth<span style="">&#40;</span><span style="color: #666;">1</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; rect<span style="">&#40;</span> <span style="color: #666;">50</span><span style="">,</span> <span style="color: #666;">50</span><span style="">,</span> <span style="color: #666;">50</span><span style="">,</span> <span style="color: #666;">50</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; rect<span style="">&#40;</span><span style="color: #666;">110</span><span style="">,</span> <span style="color: #666;">50</span><span style="">,</span> <span style="color: #666;">50</span><span style="">,</span> <span style="color: #666;">50</span><span style="">,</span> <span style="">&#123;</span>stroke<span style="">:</span> <span style="color: #28334f; font-weight: bold;">new</span> Color<span style="">&#40;</span><span style="color: #666;">0</span><span style="">&#41;</span><span style="">&#125;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; rect<span style="">&#40;</span><span style="color: #666;">170</span><span style="">,</span> <span style="color: #666;">50</span><span style="">,</span> <span style="color: #666;">50</span><span style="">,</span> <span style="color: #666;">50</span><span style="">&#41;</span><span style="">;</span><br />
-<span style="">&#125;</span> </code></span></span></p>
+<pre class="brush:javascript; gutter:false; light:true;">line(x0, y0, x1, y1)</pre><pre class="brush:javascript; gutter:false; light:true;">rect(x, y, width, height, {roundness: 0.0})</pre><pre class="brush:javascript; gutter:false; light:true;">triangle(x1, y1, x2, y2, x3, y3)</pre><pre class="brush:javascript; gutter:false; light:true;">ellipse(x, y, width, height)</pre><pre class="brush:javascript; gutter:false; light:true;">arrow(x, y, width)</pre><pre class="brush:javascript; gutter:false; light:true;">star(x, y, points=20, outer=100, inner=50)</pre><p>Drawn primitives will adhere to the current color and transformation state. The color state can be overridden by passing an optional <span class="inline_code">fill</span>, <span class="inline_code">stroke</span>, <span class="inline_code">strokewidth</span>&nbsp;to the function, for example:</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">function draw(canvas) {
+    canvas.clear();
+    nofill();
+    stroke(0, 0.25);
+    strokewidth(1);
+    rect( 50, 50, 50, 50);
+    rect(110, 50, 50, 50, {stroke: new Color(0)});
+    rect(170, 50, 50, 50);
+} </pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="path"></a>Path</h2>
@@ -191,62 +191,60 @@ clr.<span style="">rotate</span><span style="">&#40;</span>angle<span style="">&
 <li><span class="inline_code">ctrl1</span> describes the direction and magnitude of the curve starting from the previous point,</li>
 <li><span class="inline_code">ctrl2</span> describes the direction and magnitude of the curve ending in this point.</li>
 </ul>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">var</span> pt <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> PathElement<span style="">&#40;</span>x<span style="">,</span> y<span style="">,</span> cmd<span style="">&#41;</span><span style="">;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">pt.<span style="">cmd</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// MOVETO, LINETO, CURVETO, CLOSE</span><br />
-pt.<span style="">x</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Horizontal offset.</span><br />
-pt.<span style="">y</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Vertical offset.</span><br />
-pt.<span style="">ctrl1</span>.<span style="">x</span><br />
-pt.<span style="">ctrl1</span>.<span style="">y</span><br />
-pt.<span style="">ctrl2</span>.<span style="">x</span><br />
-pt.<span style="">ctrl2</span>.<span style="">y</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">pt.<span style="">copy</span><span style="">&#40;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Returns a copy of the point.</span></code></span></p>
-<h3>Bézier Path</h3>
+<pre class="brush:javascript; gutter:false; light:true;">var pt = new PathElement(x, y, cmd);</pre><pre class="brush:javascript; gutter:false; light:true;">pt.cmd                             // MOVETO, LINETO, CURVETO, CLOSE
+pt.x                               // Horizontal offset.
+pt.y                               // Vertical offset.
+pt.ctrl1.x
+pt.ctrl1.y
+pt.ctrl2.x
+pt.ctrl2.y</pre><pre class="brush:javascript; gutter:false; light:true;">pt.copy()                          // Returns a copy of the point.</pre><h3>Bézier Path</h3>
 <p>The <span class="inline_code">Path</span> object contains an array of <span class="inline_code">PathElement</span> objects. The points in a path can easily be traversed in a <span class="inline_code">for</span>-loop. New points can be added to the path with the <span class="inline_code">moveto()</span>, <span class="inline_code">lineto(</span>), <span class="inline_code">curveto()</span> methods.</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">var</span> path <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> Path<span style="">&#40;</span>path<span style="">=</span><span style="color: #4a587c;">null</span><span style="">&#41;</span><span style="">;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">path.<span style="">array</span><br />
-path.<span style="">array</span>.<span style="">push</span><span style="">&#40;</span>pathelement<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">path.<span style="">moveto</span><span style="">&#40;</span>x<span style="">,</span> y<span style="">&#41;</span><br />
-path.<span style="">lineto</span><span style="">&#40;</span>x<span style="">,</span> y<span style="">&#41;</span><br />
-path.<span style="">curveto</span><span style="">&#40;</span>x1<span style="">,</span> y1<span style="">,</span> x2<span style="">,</span> y2<span style="">,</span> x3<span style="">,</span> y3<span style="">&#41;</span><br />
-path.<span style="">closepath</span><span style="">&#40;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">path.<span style="">rect</span><span style="">&#40;</span>x<span style="">,</span> y<span style="">,</span> width<span style="">,</span> height<span style="">,</span> <span style="">&#123;</span>roundness<span style="">:</span> <span style="color: #666;">0.0</span><span style="">&#125;</span><span style="">&#41;</span><br />
-path.<span style="">ellipse</span><span style="">&#40;</span>x<span style="">,</span> y<span style="">,</span> width<span style="">,</span> height<span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">path.<span style="">length</span><span style="">&#40;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Returns the length of the path.</span><br />
-path.<span style="">contains</span><span style="">&#40;</span>x<span style="">,</span> y<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Returns true if (x,y) in path. </span><br />
-path.<span style="">angle</span><span style="">&#40;</span>t<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Returns tangent angle at t.</span><br />
-path.<span style="">point</span><span style="">&#40;</span>t<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Returns PathElement at t.</span><br />
-path.<span style="">points</span><span style="">&#40;</span>amount<span style="">,</span> <span style="">&#123;</span>start<span style="">:</span> <span style="color: #666;">0.0</span><span style="">,</span> end<span style="">:</span> <span style="color: #666;">1.0</span><span style="">&#125;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">path.<span style="">draw</span><span style="">&#40;</span><span style="">&#123;</span>fill<span style="">:</span> Color<span style="">,</span> stroke<span style="">:</span> Color<span style="">,</span> strokewidth<span style="">:</span> <span style="color: #666;">1.0</span><span style="">&#125;</span><span style="">&#41;</span> </code></span></p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">path.<span style="">copy</span><span style="">&#40;</span><span style="">&#41;</span></code></span></p>
-<ul>
+<pre class="brush:javascript; gutter:false; light:true;">var path = new Path(path=null);</pre><pre class="brush:javascript; gutter:false; light:true;">path.array
+path.array.push(pathelement)
+</pre><pre class="brush:javascript; gutter:false; light:true;">path.moveto(x, y)
+path.lineto(x, y)
+path.curveto(x1, y1, x2, y2, x3, y3)
+path.closepath()</pre><pre class="brush:javascript; gutter:false; light:true;">path.rect(x, y, width, height, {roundness: 0.0})
+path.ellipse(x, y, width, height)</pre><pre class="brush:javascript; gutter:false; light:true;">path.length()                      // Returns the length of the path.
+path.contains(x, y)                // Returns true if (x,y) in path. 
+path.angle(t)                      // Returns tangent angle at t.
+path.point(t)                      // Returns PathElement at t.
+path.points(amount, {start: 0.0, end: 1.0})
+</pre><pre class="brush:javascript; gutter:false; light:true;">path.draw({fill: Color, stroke: Color, strokewidth: 1.0}) </pre><pre class="brush:javascript; gutter:false; light:true;">path.copy()</pre><ul>
 <li><span class="inline_code">Path.points()</span> and <span class="inline_code">Path.point(</span>) return <span class="inline_code">DynamicPathElement</span> objects.&nbsp;<br />These are dynamically calculated using linear interpolation math based on a given time <span class="inline_code">t</span>&nbsp;<br />(where <span class="inline_code">t=0.0</span> is the start of the path and <span class="inline_code">t=1.0</span> is the end of the path).</li>
 <li><span class="inline_code">Path.draw()</span> draws the path to the canvas with a given precision for curves.<br />Optional parameters include <span class="inline_code">fill</span>, <span class="inline_code">stroke</span>&nbsp;and&nbsp;<span class="inline_code">strokewidth</span>.</li>
 </ul>
 <h3>Path state functions</h3>
 <p>The&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">beginpath(</span>) function starts a new path at (x,y). Points can be added to it with <span class="inline_code">moveto()</span>, <span class="inline_code">lineto()</span>, <span class="inline_code">curveto()</span>&nbsp;until <span class="inline_code">endpath()</span>&nbsp;is called and the path is drawn/returned.&nbsp;</p>
 <p>The <span class="inline_code">drawpath()</span> function draws a <span class="inline_code">Path</span> using the current color and transformation state. The color state can be overridden by passing an optional <span class="inline_code">fill</span>, <span class="inline_code">stroke</span>&nbsp;and/or <span class="inline_code">strokewidth</span> to the function.&nbsp;</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">autoclosepath<span style="">&#40;</span><span style="color: #4a587c;">close</span><span style="">=</span><span style="color: #4a587c;">true</span><span style="">&#41;</span> </code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">beginpath<span style="">&#40;</span>x<span style="">,</span> y<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">moveto<span style="">&#40;</span>x<span style="">,</span> y<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">lineto<span style="">&#40;</span>x<span style="">,</span> y<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">curveto<span style="">&#40;</span>x1<span style="">,</span> y1<span style="">,</span> x2<span style="">,</span> y2<span style="">,</span> x3<span style="">,</span> y3<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">closepath<span style="">&#40;</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">endpath<span style="">&#40;</span><span style="">&#123;</span>draw<span style="">:</span> <span style="color: #4a587c;">true</span><span style="">&#125;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Returns a Path. </span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">drawpath<span style="">&#40;</span>path<span style="">,</span> <span style="">&#123;</span>fill<span style="">:</span> Color<span style="">,</span> stroke<span style="">:</span> Color<span style="">,</span> strokewidth<span style="">:</span> <span style="color: #666;">1.0</span><span style="">&#125;</span><span style="">&#41;</span> </code></span></p>
-<h3>Path iteration</h3>
+<pre class="brush:javascript; gutter:false; light:true;">autoclosepath(close=true) 
+</pre><pre class="brush:javascript; gutter:false; light:true;">beginpath(x, y)</pre><pre class="brush:javascript; gutter:false; light:true;">moveto(x, y)</pre><pre class="brush:javascript; gutter:false; light:true;">lineto(x, y)</pre><pre class="brush:javascript; gutter:false; light:true;">curveto(x1, y1, x2, y2, x3, y3)</pre><pre class="brush:javascript; gutter:false; light:true;">closepath()</pre><pre class="brush:javascript; gutter:false; light:true;">endpath({draw: true})              // Returns a Path. </pre><pre class="brush:javascript; gutter:false; light:true;">drawpath(path, {fill: Color, stroke: Color, strokewidth: 1.0}) </pre><h3>Path iteration</h3>
 <p>The <span class="inline_code">directed()</span> function iterates over the points in a path (<span class="inline_code">Path</span> or array of <span class="inline_code">PathElement</span> objects) and passes the current angle and point to a given callback function. The angle represents the direction of a point in the path. To get the normal (i.e. perpendicular) of a point, rotate its angle by +90 or -90.</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">directed<span style="">&#40;</span>points<span style="">,</span> callback<span style="">&#41;</span></code></span></p>
-<p>This is useful if you want to have shapes following a path, for example, to fit text on a path:</p>
-<p><span class="example"><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">setup</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; path <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> Path<span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; path.<span style="">moveto</span><span style="">&#40;</span><span style="color: #666;">100</span><span style="">,</span> <span style="color: #666;">50</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; path.<span style="">curveto</span><span style="">&#40;</span><span style="color: #666;">200</span><span style="">,</span> <span style="color: #666;">100</span><span style="">,</span> <span style="color: #666;">300</span><span style="">,</span> <span style="color: #666;">0</span><span style="">,</span> <span style="color: #666;">400</span><span style="">,</span> <span style="color: #666;">50</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; txt <span style="">=</span> <span style="color: #657a8a;">'pattern canvas.js'</span><span style="">;</span> <span style="color: grey;">// We'll draw each character separately.</span><br />
-<span style="">&#125;</span><br />
-<span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">draw</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; canvas.<span style="">clear</span><span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; fill<span style="">&#40;</span><span style="color: #666;">0</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; fontsize<span style="">&#40;</span><span style="color: #666;">16</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">var</span> i <span style="">=</span> <span style="color: #666;">0</span><span style="">;</span><br />
-&nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">var</span> points <span style="">=</span> path.<span style="">points</span><span style="">&#40;</span>txt.<span style="">length</span><span style="">,</span> <span style="">&#123;</span>start<span style="">:</span> <span style="color: #666;">0.05</span><span style="">,</span> end<span style="">:</span> <span style="color: #666;">0.95</span><span style="">&#125;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; directed<span style="">&#40;</span>points<span style="">,</span> <span style="color: #28334f; font-weight: bold;">function</span><span style="">&#40;</span>angle<span style="">,</span> pt<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; push<span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; translate<span style="">&#40;</span>pt.<span style="">x</span><span style="">,</span> pt.<span style="">y</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; rotate<span style="">&#40;</span>angle<span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; text<span style="">&#40;</span>txt<span style="">&#91;</span>i<span style="">&#93;</span><span style="">,</span> <span style="">-</span>textwidth<span style="">&#40;</span>txt<span style="">&#91;</span>i<span style="">&#93;</span><span style="">&#41;</span><span style="">/</span><span style="color: #666;">2</span><span style="">,</span> <span style="color: #666;">0</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; pop<span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; i<span style="">++;</span><br />
-&nbsp; &nbsp; <span style="">&#125;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; drawpath<span style="">&#40;</span>path<span style="">,</span> <span style="">&#123;</span>fill<span style="">:</span> <span style="color: #4a587c;">null</span><span style="">,</span> stroke<span style="">:</span> <span style="">&#91;</span><span style="color: #666;">0</span><span style="">,</span><span style="color: #666;">0</span><span style="">,</span><span style="color: #666;">0</span><span style="">,</span><span style="color: #666;">0.5</span><span style="">&#93;</span><span style="">&#125;</span><span style="">&#41;</span><span style="">;</span><br />
-<span style="">&#125;</span></code></span></span></p>
+<pre class="brush:javascript; gutter:false; light:true;">directed(points, callback)
+</pre><p>This is useful if you want to have shapes following a path, for example, to fit text on a path:</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">function setup(canvas) {
+    path = new Path();
+    path.moveto(100, 50);
+    path.curveto(200, 100, 300, 0, 400, 50);
+    txt = &#39;pattern canvas.js&#39;; // We&#39;ll draw each character separately.
+}
+function draw(canvas) {
+    canvas.clear();
+    fill(0);
+    fontsize(16);
+    var i = 0;
+    var points = path.points(txt.length, {start: 0.05, end: 0.95});
+    directed(points, function(angle, pt) {
+        push();
+        translate(pt.x, pt.y);
+        rotate(angle);
+        text(txt[i], -textwidth(txt[i])/2, 0);
+        pop();
+        i++;
+    });
+    drawpath(path, {fill: null, stroke: [0,0,0,0.5]});
+}</pre></div>
 <table class="border">
 <tbody>
 <tr>
@@ -254,156 +252,149 @@ path.<span style="">points</span><span style="">&#40;</span>amount<span style=""
 </tr>
 </tbody>
 </table>
-<p><span class="example"><span style="font-size: 16px;">Clipping mask</span><br /></span></p>
+<h3>Clipping mask</h3>
 <p>Drawing functions between <span class="inline_code">beginclip()</span> and <span class="inline_code">endclip()</span> are constrained to the shape of the given path.</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">beginclip<span style="">&#40;</span>path<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">endclip<span style="">&#40;</span><span style="">&#41;</span></code></span></p>
-<p>&nbsp;</p>
+<pre class="brush:javascript; gutter:false; light:true;">beginclip(path)</pre><pre class="brush:javascript; gutter:false; light:true;">endclip()</pre><p>&nbsp;</p>
 <hr />
 <h2><a name="image"></a>Image</h2>
 <p>The <span class="inline_code">image()</span> function draws an image to the canvas. It can load JPEG, PNG and GIF from a given URL. However, images are loaded asynchronously – i.e., the browser is idle while the image downloads in the background. The safe way is to <strong>preload</strong> an <span class="inline_code">Image</span> object in&nbsp;<span class="inline_code">setup()</span>:</p>
-<p><span class="example"><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">setup</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; images <span style="">=</span> <span style="">&#91;</span><span style="">&#93;</span><span style="">;</span><br />
-&nbsp; &nbsp; images.<span style="">push</span><span style="">&#40;</span><span style="color: #28334f; font-weight: bold;">new</span> Image<span style="">&#40;</span><span style="color: #657a8a;">'http://www.clips.ua.ac.be/media/pattern_schema.gif'</span><span style="">&#41;</span><span style="">&#41;</span><span style="">;</span><br />
-<span style="">&#125;</span><br />
-<span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">draw</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; canvas.<span style="">clear</span><span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; image<span style="">&#40;</span>images<span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span><span style="">,</span> <span style="color: #666;">0</span><span style="">,</span> <span style="color: #666;">0</span><span style="">&#41;</span><span style="">;</span><br />
-<span style="">&#125;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">function setup(canvas) {
+    images = [];
+    images.push(new Image(&#39;http://www.clips.ua.ac.be/media/pattern_schema.gif&#39;));
+}
+function draw(canvas) {
+    canvas.clear();
+    image(images[0], 0, 0);
+}</pre></div>
 <p>The <span class="inline_code">Image</span> object can be used to load an image from a <span class="inline_code">http://</span> location (<span class="inline_code">file://</span> will not work), a <span class="inline_code">data:</span>&nbsp;string, from another <span class="inline_code">Image</span>, and from <span class="inline_code">Pixels</span>, <span class="inline_code">OffscreenBuffer</span> or <span class="inline_code">Canvas</span>. Optionally, it will be rescaled to the given width and height. Note that for security reasons you cannot get <span class="inline_code">Pixels</span>&nbsp;of remote images (i.e., from a URL on another server).</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">var</span> img <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> Image<span style="">&#40;</span>path<span style="">,</span> x<span style="">=</span><span style="color: #666;">0</span><span style="">,</span> y<span style="">=</span><span style="color: #666;">0</span><span style="">,</span> width<span style="">=</span><span style="color: #4a587c;">null</span><span style="">,</span> height<span style="">=</span><span style="color: #4a587c;">null</span><span style="">,</span> alpha<span style="">=</span><span style="color: #666;">1.0</span><span style="">&#41;</span><span style="">;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">img.<span style="">x</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Horizontal offset.</span><br />
-img.<span style="">y</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Vertical offset.</span><br />
-img.<span style="">width</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Image width in pixels.</span><br />
-img.<span style="">height</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Image height in pixels.</span><br />
-img.<span style="">alpha</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Image opacity (0.0-1.0).</span></code></span></p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">img.<span style="">busy</span><span style="">&#40;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Still preloading? (true|false)</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">img.<span style="">copy</span><span style="">&#40;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">img.<span style="">draw</span><span style="">&#40;</span>x<span style="">=</span><span style="color: #666;">0</span><span style="">,</span> y<span style="">=</span><span style="color: #666;">0</span><span style="">,</span> <span style="">&#123;</span>width<span style="">:</span> <span style="color: #4a587c;">null</span><span style="">,</span> height<span style="">:</span> <span style="color: #4a587c;">null</span><span style="">,</span> alpha<span style="">:</span> <span style="color: #666;">1.0</span><span style="">&#125;</span><span style="">&#41;</span></code></span></p>
-<h3>Image state functions</h3>
+<pre class="brush:javascript; gutter:false; light:true;">var img = new Image(path, x=0, y=0, width=null, height=null, alpha=1.0);</pre><pre class="brush:javascript; gutter:false; light:true;">img.x                              // Horizontal offset.
+img.y                              // Vertical offset.
+img.width                          // Image width in pixels.
+img.height                         // Image height in pixels.
+img.alpha                          // Image opacity (0.0-1.0).</pre><pre class="brush:javascript; gutter:false; light:true;">img.busy()                         // Still preloading? (true|false)</pre><pre class="brush:javascript; gutter:false; light:true;">img.copy()</pre><pre class="brush:javascript; gutter:false; light:true;">img.draw(x=0, y=0, {width: null, height: null, alpha: 1.0})</pre><h3>Image state functions</h3>
 <p>The <span class="inline_code">image()</span> function draws an image to the screen. If optional parameters are given, they will take precedence over any property in the given Image.</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">image<span style="">&#40;</span>img<span style="">,</span> x<span style="">,</span> y<span style="">,</span> <span style="">&#123;</span>width<span style="">:</span> <span style="color: #4a587c;">null</span><span style="">,</span> height<span style="">:</span> <span style="color: #4a587c;">null</span><span style="">,</span> alpha<span style="">:</span> <span style="color: #666;">1.0</span><span style="">&#125;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">imagesize<span style="">&#40;</span>img<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Returns a [width, height]-array.</span></code></span></p>
-<h3>Image pixels</h3>
+<pre class="brush:javascript; gutter:false; light:true;">image(img, x, y, {width: null, height: null, alpha: 1.0})</pre><pre class="brush:javascript; gutter:false; light:true;">imagesize(img)                     // Returns a [width, height]-array.</pre><h3>Image pixels</h3>
 <p>The <span class="inline_code">Pixels</span> object can be used to retrieve an array of channel values (0-255) for each pixel in an image. Values can be modified, after which <span class="inline_code">Pixels.update()</span> must be called to reflect any changes to <span class="inline_code">Pixels.array</span>. The original image is not modified. A <span class="inline_code">Pixels</span> object can be passed to the <span class="inline_code">image()</span> function to draw it to the canvas.</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">var</span> pixels <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> Pixels<span style="">&#40;</span>img<span style="">&#41;</span><span style="">;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">pixels.<span style="">width</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Image width in pixels.</span><br />
-pixels.<span style="">height</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Image height in pixels.</span><br />
-pixels.<span style="">array</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Array of width * height * 4 values (0-255).</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">pixels.<span style="">get</span><span style="">&#40;</span>i<span style="">,</span> rgba<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Returns an [R,G,B,A]-array.</span><br />
-pixels.<span style="">set</span><span style="">&#40;</span>i<span style="">,</span> rgba<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br />
-pixels.<span style="">map</span><span style="">&#40;</span>callback<span style="">&#41;</span><br />
-pixels.<span style="">update</span><span style="">&#40;</span><span style="">&#41;</span><br />
-pixels.<span style="">image</span><span style="">&#40;</span><span style="">&#41;</span><br />
-pixels.<span style="">copy</span><span style="">&#40;</span><span style="">&#41;</span></code></span></p>
-<ul>
+<pre class="brush:javascript; gutter:false; light:true;">var pixels = new Pixels(img);</pre><pre class="brush:javascript; gutter:false; light:true;">pixels.width                       // Image width in pixels.
+pixels.height                      // Image height in pixels.
+pixels.array                       // Array of width * height * 4 values (0-255).</pre><pre class="brush:javascript; gutter:false; light:true;">pixels.get(i, rgba)                // Returns an [R,G,B,A]-array.
+pixels.set(i, rgba)            
+pixels.map(callback)
+pixels.update()
+pixels.image()
+pixels.copy()</pre><ul>
 <li><span class="inline_code">Pixels.map()</span> applies a function to each pixel. Function takes (and returns) an [R,G,B,A]-array.</li>
 <li><span class="inline_code">Pixels.get()</span> returns pixel <span class="inline_code">i</span> as an [R,G,B,A]-array with values between 0-255.</li>
 <li><span class="inline_code">Pixels.set()</span> sets pixel <span class="inline_code">i</span> from an [R,G,B,A]-array.</li>
 </ul>
 <p>To iterate the pixels row by row:</p>
-<p><span class="example"><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">var</span> p <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> Pixels<span style="">&#40;</span>img<span style="">&#41;</span><span style="">;</span><br />
-<span style="color: #28334f; font-weight: bold;">for</span> <span style="">&#40;</span><span style="color: #28334f; font-weight: bold;">var</span> i<span style="">=</span><span style="color: #666;">0</span><span style="">;</span> i <span style="">&lt;</span> p.<span style="">height</span><span style="">;</span> i<span style="">++</span><span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">for</span> <span style="">&#40;</span><span style="color: #28334f; font-weight: bold;">var</span> j<span style="">=</span><span style="color: #666;">0</span><span style="">;</span> j <span style="">&lt;</span> p.<span style="">width</span><span style="">;</span> j<span style="">++</span><span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">var</span> rgba <span style="">=</span> p.<span style="">get</span><span style="">&#40;</span>i <span style="">*</span> p.<span style="">width</span> <span style="">+</span> j<span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; <span style="">&#125;</span><br />
-<span style="">&#125;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">var p = new Pixels(img);
+for (var i=0; i &lt; p.height; i++) {
+    for (var j=0; j &lt; p.width; j++) {
+        var rgba = p.get(i * p.width + j);
+    }
+}</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="text"></a>Text</h2>
 <p>The <span class="inline_code">text()</span> function can be used to draw a string of text to the canvas. The <span class="inline_code">font()</span>, <span class="inline_code">fontsize()</span>, <span class="inline_code">fontweight()</span> and <span class="inline_code">lineheight()</span> functions set the current text state. Each function also returns its current setting. The default font is 12px normal sans-serif with 1.2em line height.</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">font<span style="">&#40;</span>fontname<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">fontsize<span style="">&#40;</span>fontsize<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">fontweight<span style="">&#40;</span>fontweight<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// NORMAL, BOLD, ITALIC, BOLD+ITALIC</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">lineheight<span style="">&#40;</span>lineheight<span style="">&#41;</span></code></span></p>
-<p>The <span class="inline_code">text()</span> command draws a string using the current color, transformation and text state:</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">text<span style="">&#40;</span>str<span style="">,</span> x<span style="">,</span> y<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">textwidth<span style="">&#40;</span>str<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">textheight<span style="">&#40;</span>str<span style="">&#41;</span></code></span></p>
-<p>The state can be overridden by passing an optional <span class="inline_code">font</span>, <span class="inline_code">fontsize</span>, <span class="inline_code">fontweight</span>, <span class="inline_code">lineheight</span> and/or <span class="inline_code">fill</span> to the functions:</p>
-<p><span class="example"><span class="geshifilter"><code class="javascript geshifilter-javascript">text<span style="">&#40;</span><span style="color: #657a8a;">&quot;Hello world&quot;</span><span style="">,</span> <span style="color: #666;">0</span><span style="">,</span> <span style="color: #666;">0</span><span style="">,</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; fill<span style="">:</span> <span style="color: #28334f; font-weight: bold;">new</span> Color<span style="">&#40;</span><span style="color: #666;">1</span><span style="">,</span><span style="color: #666;">0</span><span style="">,</span><span style="color: #666;">0</span><span style="">&#41;</span><span style="">,</span><br />
-&nbsp; &nbsp; font<span style="">:</span> <span style="color: #657a8a;">&quot;Georgia&quot;</span><span style="">,</span> <br />
-&nbsp; &nbsp; fontweight<span style="">:</span> BOLD<br />
-<span style="">&#125;</span><span style="">&#41;</span><span style="">;</span></code></span></span></p>
+<pre class="brush:javascript; gutter:false; light:true;">font(fontname)</pre><pre class="brush:javascript; gutter:false; light:true;">fontsize(fontsize)</pre><pre class="brush:javascript; gutter:false; light:true;">fontweight(fontweight)            // NORMAL, BOLD, ITALIC, BOLD+ITALIC</pre><pre class="brush:javascript; gutter:false; light:true;">lineheight(lineheight)</pre><p>The <span class="inline_code">text()</span> command draws a string using the current color, transformation and text state:</p>
+<pre class="brush:javascript; gutter:false; light:true;">text(str, x, y)</pre><pre class="brush:javascript; gutter:false; light:true;">textwidth(str)</pre><pre class="brush:javascript; gutter:false; light:true;">textheight(str)</pre><p>The state can be overridden by passing an optional <span class="inline_code">font</span>, <span class="inline_code">fontsize</span>, <span class="inline_code">fontweight</span>, <span class="inline_code">lineheight</span> and/or <span class="inline_code">fill</span> to the functions:</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">text(&quot;Hello world&quot;, 0, 0, {
+    fill: new Color(1,0,0),
+    font: &quot;Georgia&quot;, 
+    fontweight: BOLD
+});</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="mouse"></a>Mouse &amp; keyboard</h2>
 <p>The <span class="inline_code">Mouse</span> object stores the current state of the mouse input device (or touch event). It can be retrieved with the <span class="inline_code">canvas.mouse</span> property in the main <span class="inline_code">draw()</span> loop.</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">var</span> mouse <span style="">=</span> canvas.<span style="">mouse</span><span style="">;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">var</span> mouse <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> Mouse<span style="">&#40;</span>element<span style="">&#41;</span><span style="">;</span></code></span></p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">mouse.<span style="">parent</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Element to track.</span><br />
-mouse.<span style="">x</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Horizontal position.</span><br />
-mouse.<span style="">y</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Vertical position.</span><br />
-mouse.<span style="">relative_x</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Relative (0.0-1.0) to Canvas.width.</span><br />
-mouse.<span style="">relative_y</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Relative (0.0-1.0) to Canvas.height.</span><br />
-mouse.<span style="">pressed</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Mouse is pressed? (true|false)</span><br />
-mouse.<span style="">dragged</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Mouse is dragged? (true|false)</span><br />
-mouse.<span style="">drag</span>.<span style="">x</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Drag distance from previous x.</span><br />
-mouse.<span style="">drag</span>.<span style="">y</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Drag distance from previous y.</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">mouse.<span style="">cursor</span><span style="">&#40;</span>mode<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// DEFAULT, CROSS, HAND, HIDDEN, TEXT, WAIT</span></code></span></p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">mouse.<span style="color: #4a587c;">onmove</span><span style="">&#40;</span><span style="">&#41;</span><br />
-mouse.<span style="">onpress</span><span style="">&#40;</span><span style="">&#41;</span><br />
-mouse.<span style="">onrelease</span><span style="">&#40;</span><span style="">&#41;</span><br />
-mouse.<span style="">ondrag</span><span style="">&#40;</span><span style="">&#41;</span></code></span></p>
-<p>Custom event handlers can be attached to <span class="inline_code">Mouse</span>. The function takes a parameter <span class="inline_code">mouse</span>, which is the <span class="inline_code">Mouse</span> receving the event. The canvas can be accessed with <span class="inline_code">mouse.parent.canvas</span>. To draw to this canvas during the event, first call its <span class="inline_code">focus()</span> method.</p>
-<p><span class="example"><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">setup</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; canvas.<span style="">mouse</span>.<span style="">ondrag</span> <span style="">=</span> <span style="color: #28334f; font-weight: bold;">function</span><span style="">&#40;</span>mouse<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; mouse.<span style="">parent</span>.<span style="">canvas</span>.<span style="color: #4a587c;">focus</span><span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; ellipse<span style="">&#40;</span>mouse.<span style="">x</span><span style="">,</span> mouse.<span style="">y</span><span style="">,</span> <span style="color: #666;">2</span><span style="">,</span> <span style="color: #666;">2</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; <span style="">&#125;</span><span style="">;</span><br />
-<span style="">&#125;</span> </code></span></span></p>
+<pre class="brush:javascript; gutter:false; light:true;">var mouse = canvas.mouse;</pre><pre class="brush:javascript; gutter:false; light:true;">var mouse = new Mouse(element);</pre><pre class="brush:javascript; gutter:false; light:true;">mouse.parent                      // Element to track.
+mouse.x                           // Horizontal position.
+mouse.y                           // Vertical position.
+mouse.relative_x                  // Relative (0.0-1.0) to Canvas.width.
+mouse.relative_y                  // Relative (0.0-1.0) to Canvas.height.
+mouse.pressed                     // Mouse is pressed? (true|false)
+mouse.dragged                     // Mouse is dragged? (true|false)
+mouse.drag.x                      // Drag distance from previous x.
+mouse.drag.y                      // Drag distance from previous y.</pre><pre class="brush:javascript; gutter:false; light:true;">mouse.cursor(mode)                // DEFAULT, CROSS, HAND, HIDDEN, TEXT, WAIT</pre><pre class="brush:javascript; gutter:false; light:true;">mouse.onmove()
+mouse.onpress()
+mouse.onrelease()
+mouse.ondrag()</pre><p>Custom event handlers can be attached to <span class="inline_code">Mouse</span>. The function takes a parameter <span class="inline_code">mouse</span>, which is the <span class="inline_code">Mouse</span> receving the event. The canvas can be accessed with <span class="inline_code">mouse.parent.canvas</span>. To draw to this canvas during the event, first call its <span class="inline_code">focus()</span> method.</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">function setup(canvas) {
+    canvas.mouse.ondrag = function(mouse) {
+        mouse.parent.canvas.focus();
+        ellipse(mouse.x, mouse.y, 2, 2);
+    };
+} </pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="canvas"></a>Canvas</h2>
 <p>The <span class="inline_code">Canvas</span> object manages the animation container.&nbsp;With <span class="inline_code">&lt;script type="text/canvas"&gt;</span>, there is no explicit need to initialize a new canvas in your script. It will be created for you and passed as a&nbsp;parameter <span class="inline_code">canvas</span> to the&nbsp;<span class="inline_code">draw()</span> and <span class="inline_code">setup()</span>&nbsp;functions in your script:</p>
-<p><span class="example"><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="">&lt;!</span>doctype html<span style="">&gt;</span><br />
-<span style="">&lt;</span>html<span style="">&gt;</span><br />
-<span style="">&lt;</span>head<span style="">&gt;</span><br />
-&nbsp; &nbsp; <span style="">&lt;</span>script type<span style="">=</span><span style="color: #657a8a;">&quot;text/javascript&quot;</span> src<span style="">=</span><span style="color: #657a8a;">&quot;canvas.js&quot;</span><span style="">&gt;&lt;/</span>script<span style="">&gt;</span> &nbsp; <br />
-<span style="">&lt;/</span>head<span style="">&gt;</span><br />
-<span style="">&lt;</span>body<span style="">&gt;</span><br />
-&nbsp; &nbsp; <span style="">&lt;</span>script type<span style="">=</span><span style="color: #657a8a;">&quot;text/canvas&quot;</span> loop<span style="">=</span><span style="color: #657a8a;">&quot;true&quot;</span><span style="">&gt;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">setup</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; canvas.<span style="">size</span><span style="">&#40;</span><span style="color: #666;">500</span><span style="">,</span> <span style="color: #666;">500</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span style="">&#125;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">draw</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; canvas.<span style="">clear</span><span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Add drawing code here.</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span style="">&#125;</span><br />
-&nbsp; &nbsp; <span style="">&lt;/</span>script<span style="">&gt;</span><br />
-<span style="">&lt;/</span>body<span style="">&gt;</span><br />
-<span style="">&lt;/</span>html<span style="">&gt;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;canvas.js&quot;&gt;&lt;/script&gt;   
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script type=&quot;text/canvas&quot; loop=&quot;true&quot;&gt;
+        function setup(canvas) {
+            canvas.size(500, 500);
+        }
+        function draw(canvas) {
+            canvas.clear();
+            // Add drawing code here.
+        }
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
 <p>Custom animations require a HTML&nbsp;<span class="inline_code">&lt;canvas&gt;</span> element and a <span class="inline_code">window.onload()</span>&nbsp;that binds the element to a <span class="inline_code">Canvas</span> object and assigns a <span class="inline_code">draw()</span> and a <span class="inline_code">setup()</span> function to the canvas:</p>
-<p><span class="example"><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="">&lt;!</span>doctype html<span style="">&gt;</span><br />
-<span style="">&lt;</span>html<span style="">&gt;</span><br />
-<span style="">&lt;</span>head<span style="">&gt;</span><br />
-&nbsp; &nbsp; <span style="">&lt;</span>script type<span style="">=</span><span style="color: #657a8a;">&quot;text/javascript&quot;</span> src<span style="">=</span><span style="color: #657a8a;">&quot;canvas.js&quot;</span><span style="">&gt;&lt;/</span>script<span style="">&gt;</span><br />
-&nbsp; &nbsp; <span style="">&lt;</span>script<span style="">&gt;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">setup</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; canvas.<span style="">size</span><span style="">&#40;</span><span style="color: #666;">500</span><span style="">,</span> <span style="color: #666;">500</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span style="">&#125;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">draw</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; canvas.<span style="">clear</span><span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Add drawing code here.</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span style="">&#125;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; window.<span style="color: #4a587c;">onload</span> <span style="">=</span> <span style="color: #28334f; font-weight: bold;">function</span><span style="">&#40;</span><span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; canvas <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> Canvas<span style="">&#40;</span>document.<span style="">getElementById</span><span style="">&#40;</span><span style="color: #657a8a;">&quot;canvas1&quot;</span><span style="">&#41;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; canvas.<span style="">setup</span> <span style="">=</span> setup<span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; canvas.<span style="">draw</span> <span style="">=</span> draw<span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; canvas.<span style="">run</span><span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; <span style="">&#125;</span><br />
-&nbsp; &nbsp; <span style="">&lt;/</span>script<span style="">&gt;</span><br />
-<span style="">&lt;/</span>head<span style="">&gt;</span><br />
-<span style="">&lt;</span>body<span style="">&gt;</span><br />
-&nbsp; &nbsp; <span style="">&lt;</span>canvas id<span style="">=</span><span style="color: #657a8a;">&quot;canvas1&quot;</span> width<span style="">=</span><span style="color: #657a8a;">&quot;500px&quot;</span> height<span style="">=</span><span style="color: #657a8a;">&quot;500px&quot;</span><span style="">&gt;&lt;/</span>canvas<span style="">&gt;</span><br />
-<span style="">&lt;/</span>body<span style="">&gt;</span><br />
-<span style="">&lt;/</span>html<span style="">&gt;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;canvas.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        function setup(canvas) {
+            canvas.size(500, 500);
+        }
+        function draw(canvas) {
+            canvas.clear();
+            // Add drawing code here.
+        }
+        window.onload = function() {
+            canvas = new Canvas(document.getElementById(&quot;canvas1&quot;));
+            canvas.setup = setup;
+            canvas.draw = draw;
+            canvas.run();
+        }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;canvas id=&quot;canvas1&quot; width=&quot;500px&quot; height=&quot;500px&quot;&gt;&lt;/canvas&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
 <p>The <span class="inline_code">Canvas</span> object takes a <span class="inline_code">&lt;canvas&gt;</span> element:</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">var</span> canvas <span style="">=</span> <span style="color: #28334f; font-weight: bold;">new</span> Canvas<span style="">&#40;</span>element<span style="">&#41;</span><span style="">;</span></code></span></p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">canvas.<span style="">id</span><br />
-canvas.<span style="">element</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// HTML &lt;canvas&gt; element.</span><br />
-canvas.<span style="">width</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Element width.</span><br />
-canvas.<span style="">height</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Element height.</span><br />
-canvas.<span style="">frame</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Current animation frame (start = 1).</span><br />
-canvas.<span style="">fps</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Frames per second.</span><br />
-canvas.<span style="">mouse</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Mouse object.</span><br />
-canvas.<span style="">variables</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Widget variables.</span></code></span></p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">canvas.<span style="">size</span><span style="">&#40;</span>width<span style="">,</span> height<span style="">&#41;</span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">canvas.<span style="">setup</span><span style="">&#40;</span><span style="">&#41;</span><br />
-canvas.<span style="">draw</span><span style="">&#40;</span><span style="">&#41;</span><br />
-canvas.<span style="">clear</span><span style="">&#40;</span><span style="">&#41;</span><br />
-canvas.<span style="">run</span><span style="">&#40;</span>fps<span style="">&#41;</span><br />
-canvas.<span style="">pause</span><span style="">&#40;</span><span style="">&#41;</span><br />
-canvas.<span style="color: #4a587c;">stop</span><span style="">&#40;</span><span style="">&#41;</span><br />
-canvas.<span style="color: #4a587c;">focus</span><span style="">&#40;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Sets the canvas as current drawing context. </span></code></span><span class="geshifilter"><code class="javascript geshifilter-javascript">canvas.<span style="">image</span><span style="">&#40;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;">// Returns the canvas as an Image.</span><br />
-canvas.<span style="">save</span><span style="">&#40;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;">// Returns the canvas as PNG data.</span></code></span></p>
-<ul>
+<pre class="brush:javascript; gutter:false; light:true;">var canvas = new Canvas(element);</pre><pre class="brush:javascript; gutter:false; light:true;">canvas.id
+canvas.element                    // HTML &lt;canvas&gt; element.
+canvas.width                      // Element width.
+canvas.height                     // Element height.
+canvas.frame                      // Current animation frame (start = 1).
+canvas.fps                        // Frames per second.
+canvas.mouse                      // Mouse object.
+canvas.variables                  // Widget variables.</pre><pre class="brush:javascript; gutter:false; light:true;">canvas.size(width, height)</pre><pre class="brush:javascript; gutter:false; light:true;">canvas.setup()
+canvas.draw()
+canvas.clear()
+canvas.run(fps)
+canvas.pause()
+canvas.stop()
+canvas.focus()                    // Sets the canvas as current drawing context. </pre><pre class="brush:javascript; gutter:false; light:true;">canvas.image()                    // Returns the canvas as an Image.
+canvas.save()                     // Returns the canvas as PNG data.</pre><ul>
 <li><span class="inline_code">Canvas.setup()</span> is meant to be overridden. It runs once at the start of the animation.</li>
 <li><span class="inline_code">Canvas.draw()</span> is meant be overridden. It runs each frame.</li>
 <li><span class="inline_code">Canvas.save()</span> and <span class="inline_code">Canvas.image()</span> will throw an error if the canvas contains remote images<br />(i.e., from a URL on a different server). This is for security reasons, see <span class="link-maintenance"><a href="https://developer.mozilla.org/en/CORS_Enabled_Image" target="_blank">CORS</a></span>.&nbsp;</li>
@@ -412,31 +403,77 @@ canvas.<span style="">save</span><span style="">&#40;</span><span style="">&#41;
 <hr />
 <h2><a name="widget"></a>Widgets</h2>
 <p>Widgets (e.g., buttons, sliders) give you the possibility to create apps that users can interact with without diving into the JavaScript code.&nbsp;The <span class="inline_code">widget()</span> function creates a widget linked to the given&nbsp;<span class="inline_code">Canvas</span>. The value of the widget can be retrieved as <span class="inline_code">Canvas.variables[variable]</span>. The <span class="inline_code">type</span>&nbsp;can be <span class="inline_code">STRING</span> or <span class="inline_code">NUMBER</span> (a field), <span class="inline_code">BOOLEAN</span> (a checkbox), <span class="inline_code">RANGE</span> (a slider), <span class="inline_code">LIST</span> (a dropdown list) or <span class="inline_code">FUNCTION</span> (a button).</p>
-<p>Optionally, a default <span class="inline_code">value</span> can be given. For lists, this is an <span class="inline_code">Array</span>. For sliders, you can also set <span class="inline_code">min</span>, <span class="inline_code">max</span> and <span class="inline_code">step</span>.&nbsp;For functions, a <span class="inline_code">callback(event)</span> must be given. To get the canvas inside the callback function, use <span class="inline_code">event.target.canvas</span>. If the function does drawing, call <span class="inline_code">event.target.canvas.focus()</span> first.</p>
+<p>Optionally, a default <span class="inline_code">value</span> can be given. For lists, this is an <span class="inline_code">Array</span>. For sliders, you can also set <span class="inline_code">min</span>, <span class="inline_code">max</span> and <span class="inline_code">step</span>.&nbsp;For functions, a <span class="inline_code">callback(event)</span> must be given. To get the canvas in the callback function, use <span class="inline_code">event.target.canvas</span>. If the function does drawing, call <span class="inline_code">event.target.canvas.focus()</span> first.</p>
 <p>The <span class="inline_code">widget()</span> function will generate a <span class="inline_code">&lt;div id="[canvas.id]_widgets" class="widgets"&gt;</span>, if it does not yet exist. The <span class="inline_code">&lt;div&gt;</span> is added to the page below the canvas. Optionally, a different&nbsp;<span class="inline_code">parent</span> HTML element can be given. The parent contains all canvas widgets, each wrapped in a <span class="inline_code">&lt;span class="widget"&gt;</span>.</p>
-<p><span class="geshifilter"><code class="javascript geshifilter-javascript">widget<span style="">&#40;</span>canvas<span style="">,</span> variable<span style="">,</span> type<span style="">,</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; parent<span style="">:</span> <span style="color: #4a587c;">null</span><span style="">,</span><br />
-&nbsp; &nbsp; &nbsp;value<span style="">:</span> <span style="color: #4a587c;">null</span><span style="">,</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp;min<span style="">:</span> <span style="color: #666;">0</span><span style="">,</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp;max<span style="">:</span> <span style="color: #666;">1</span><span style="">,</span><br />
-&nbsp; &nbsp; &nbsp; step<span style="">:</span> <span style="color: #666;">0.01</span><span style="">,</span><br />
-&nbsp; callback<span style="">:</span> <span style="color: #28334f; font-weight: bold;">function</span><span style="">&#40;</span>event<span style="">&#41;</span> <span style="">&#123;</span> <span style="">&#125;</span><br />
-<span style="">&#125;</span><span style="">&#41;</span></code></span></p>
-<p>For example, the following script comes with buttons to start and pause the animation:</p>
-<p><span class="example"><span class="geshifilter"><code class="javascript geshifilter-javascript"><span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">setup</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; widget<span style="">&#40;</span>canvas<span style="">,</span> <span style="color: #657a8a;">&quot;start&quot;</span><span style="">,</span> <span style="color: #28334f; font-weight: bold;">FUNCTION</span><span style="">,</span> <span style="">&#123;</span>callback<span style="">:</span> <span style="color: #28334f; font-weight: bold;">function</span><span style="">&#40;</span>e<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; e.<span style="">target</span>.<span style="">canvas</span>.<span style="">run</span><span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; <span style="">&#125;</span><span style="">&#125;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; widget<span style="">&#40;</span>canvas<span style="">,</span> <span style="color: #657a8a;">&quot;pause&quot;</span><span style="">,</span> <span style="color: #28334f; font-weight: bold;">FUNCTION</span><span style="">,</span> <span style="">&#123;</span>callback<span style="">:</span> <span style="color: #28334f; font-weight: bold;">function</span><span style="">&#40;</span>e<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; e.<span style="">target</span>.<span style="">canvas</span>.<span style="">pause</span><span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; <span style="">&#125;</span><span style="">&#125;</span><span style="">&#41;</span><span style="">;</span><br />
-<span style="">&#125;</span><br />
-<span style="color: #28334f; font-weight: bold;">function</span> <span style="color:rgb(90, 150, 200)">draw</span><span style="">&#40;</span>canvas<span style="">&#41;</span> <span style="">&#123;</span><br />
-&nbsp; &nbsp; canvas.<span style="">clear</span><span style="">&#40;</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; translate<span style="">&#40;</span><span style="color: #666;">200</span><span style="">,</span> <span style="color: #666;">200</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; rotate<span style="">&#40;</span>canvas.<span style="">frame</span><span style="">&#41;</span><span style="">;</span><br />
-&nbsp; &nbsp; rect<span style="">&#40;</span><span style="">-</span><span style="color: #666;">75</span><span style="">,</span> <span style="">-</span><span style="color: #666;">75</span><span style="">,</span> <span style="color: #666;">150</span><span style="">,</span> <span style="color: #666;">150</span><span style="">&#41;</span><span style="">;</span><br />
-<span style="">&#125;</span></code></span></span></p>
+<pre class="brush:javascript; gutter:false; light:true;">widget(canvas, variable, type, {
+    parent: null,
+     value: null,
+       min: 0,
+       max: 1,
+      step: 0.01,
+  callback: function(event) { }
+})</pre><p>For example, the following script comes with buttons to start and pause the animation:</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">function setup(canvas) {
+    widget(canvas, &quot;start&quot;, FUNCTION, {callback: function(e) {
+        e.target.canvas.run();
+    }});
+    widget(canvas, &quot;pause&quot;, FUNCTION, {callback: function(e) {
+        e.target.canvas.pause();
+    }});
+}
+function draw(canvas) {
+    canvas.clear();
+    translate(200, 200);
+    rotate(canvas.frame);
+    rect(-75, -75, 150, 150);
+}</pre></div>
+<div class="example">&nbsp;</div>
+<hr />
+<h2 class="example"><a name="json"></a>JSON</h2>
+<div class="example">The easiest way to incorporate data sets in an animation is by using&nbsp;<a href="http://www.json.org/" target="_blank">JSON</a>, a lightweight data-interchange format based on associative arrays (i.e., like a&nbsp;<span class="inline_code">dict</span>&nbsp;in Python).&nbsp;For example, you can use the <span class="inline_code">Datasheet</span> object in <a href="pattern.db.html">pattern.db</a> to generate JSON from Python:</div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import Datasheet, STRING, INTEGER
+&gt;&gt;&gt; ds = Datasheet(fields=[(&#39;name&#39;, STRING), (&#39;count&#39;, INTEGER)])
+&gt;&gt;&gt; ds.append(( &#39;chickens&#39;, 12))
+&gt;&gt;&gt; ds.append(( &#39;penguins&#39;, 26))
+&gt;&gt;&gt; ds.append((&#39;sombreros&#39;, 9))
+&gt;&gt;&gt; open(&#39;data.js&#39;, &#39;w&#39;).write(&#39;var data = &#39; + ds.json + &#39;;&#39;)</pre></div>
+<p>This generates a <span class="inline_code">data.js</span> file that defines a <span class="inline_code">data</span> variable:</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">var data = [
+    {&#39;name&#39;: &#39;chickens&#39;,  &#39;count&#39;: 12}, 
+    {&#39;name&#39;: &#39;penguins&#39;,  &#39;count&#39;: 26}, 
+    {&#39;name&#39;: &#39;sombreros&#39;, &#39;count&#39;: 9}
+];</pre></div>
+<p>We can load <span class="inline_code">data.js</span> in the HTML <span class="inline_code">&lt;head&gt;</span> section so <span class="inline_code">data</span> becomes available in the animation:</p>
+<div class="example">
+<pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">&lt;html&gt;
+&lt;head&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;canvas.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;data.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script type=&quot;text/canvas&quot;&gt;
+        function draw(canvas) {
+            // Draw the data as a bar chart.
+            var dx = 10; 
+            var dy = 10; 
+            for (var i=0; i &lt; data.length; i++) {
+                rect(dx, dy, data[i][&#39;count&#39;] * 10, 30); 
+                text(data[i][&#39;name&#39;], dx+10, dy+20, {fill:1}); dy += 40; 
+            }
+        }
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2>See also</h2>
+<ul>
+<li><a href="http://processingjs.org/" target="_blank">processing.js</a></li>
+<li><a href="http://paperjs.org/" target="_blank">paper.js</a></li>
+</ul>
 </div>
 </div></div>
         </div>
@@ -445,5 +482,8 @@ canvas.<span style="">save</span><span style="">&#40;</span><span style="">&#41;
     </div>
     </div>
     </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
 </body>
 </html>

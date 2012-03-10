@@ -12,6 +12,12 @@
         #header { border-bottom: 1px solid #C6D4DD;  }
         table { border-collapse: collapse; }
     </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
 </head>
 <body class="node-type-page one-sidebar sidebar-right section-pages">
     <div id="page">
@@ -45,15 +51,14 @@
 <p>In general, Python is highly optimized with C extensions (e.g., string manipulation, dictionary access, regular expressions). The Pattern module is optimized with a number of caching mechanisms.&nbsp;To test if your own code is fast or slow you need to profile it. You can then optimize the slowest parts, typically the three slowest functions.&nbsp;You should do this&nbsp;<em>after</em>&nbsp;all the code has been written, since you can only measure speed if the program first gives the correct results.</p>
 <p><span class="inline_code">duration()</span> takes a function + its (optional) arguments and returns the running time in seconds.</p>
 <p><span class="inline_code">profile()&nbsp;</span>takes a function and returns a string of performance statistics for the top 20 slowest parts.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">duration<span style="">&#40;</span>function, <span style="">*</span>args, <span style="">**</span>kwargs<span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python"><span style="">profile</span><span style="">&#40;</span>function, <span style="">*</span>args, <span style="">**</span>kwargs<span style="">&#41;</span></code></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">metrics</span> <span style="color: #28334f; font-weight: bold;">import</span> <span style="">profile</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, Sentence<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">def</span> <span style="color:rgb(90, 150, 200)">main</span><span style="">&#40;</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">for</span> i <span style="color: #28334f; font-weight: bold;">in</span> <span style="color: #4a587c;">range</span><span style="">&#40;</span><span style="color: #666;">100</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; s = Sentence<span style="">&#40;</span>parse<span style="">&#40;</span><span style="color: #657a8a;">&quot;the cat sat on the mat&quot;</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> <span style="">profile</span><span style="">&#40;</span>main<span style="">&#41;</span></code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">duration(function, *args, **kwargs)</pre><pre class="brush:python; gutter:false; light:true;">profile(function, *args, **kwargs)</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.metrics import profile
+&gt;&gt;&gt; from pattern.en import parse, Sentence
+&gt;&gt;&gt; def main():
+&gt;&gt;&gt;     for i in range(100):
+&gt;&gt;&gt;         s = Sentence(parse(&quot;the cat sat on the mat&quot;))
+&gt;&gt;&gt;
+&gt;&gt;&gt; print profile(main)</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="accuracy"></a>Accuracy, precision and recall</h2>
@@ -65,8 +70,7 @@
 </ul>
 <p><span class="inline_code">confusion_matrix()</span>&nbsp;takes a function&nbsp;that returns&nbsp;<span class="inline_code">True</span> or <span class="inline_code">False</span> for a given document (e.g., a string), and a list (<span class="inline_code">document</span>, <span class="inline_code">bool</span>)-tuples for testing; where <span class="inline_code">bool=True</span> marks documents that should be selected by your function. It&nbsp;returns a (<span class="inline_code">TP</span>, <span class="inline_code">TN</span>, <span class="inline_code">FP</span>, <span class="inline_code">FN</span>)-tuple with the amount of true positives, true negatives, false positives and false negatives.</p>
 <p><span class="inline_code">test()</span>&nbsp;takes a&nbsp;function and a list of (<span class="inline_code">document</span>,&nbsp;<span class="inline_code">bool</span>)-tuples and returns a tuple with (<span class="inline_code">accuracy</span>,&nbsp;<span class="inline_code">precision</span>,&nbsp;<span class="inline_code">recall</span>,&nbsp;<span class="inline_code">F1-score</span>), based on the confusion matrix.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">confusion_matrix<span style="">&#40;</span>match=<span style="color: #28334f; font-weight: bold;">lambda</span> document:<span style="color: #4a587c;">False</span>, documents=<span style="">&#91;</span><span style="">&#40;</span><span style="color: #4a587c;">None</span>,<span style="color: #4a587c;">False</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python"><span style="">test</span><span style="">&#40;</span>match=<span style="color: #28334f; font-weight: bold;">lambda</span> document:<span style="color: #4a587c;">False</span>, documents=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span></code></span></p>
-<table class="border">
+<pre class="brush:python; gutter:false; light:true;">confusion_matrix(match=lambda document:False, documents=[(None,False)])</pre><pre class="brush:python; gutter:false; light:true;">test(match=lambda document:False, documents=[])</pre><table class="border">
 <tbody>
 <tr>
 <td><span class="smallcaps">Metric</span></td>
@@ -96,57 +100,54 @@
 </tbody>
 </table>
 <p>For example:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">metrics</span> <span style="color: #28334f; font-weight: bold;">import</span> confusion_matrix, <span style="">test</span><br />
-<span style="">&gt;&gt;&gt;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">def</span> <span style="color:rgb(90, 150, 200)">is_spam</span><span style="">&#40;</span><span style="">string</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; words = <span style="">&#40;</span>w.<span style="">strip</span><span style="">&#40;</span><span style="color: #657a8a;">',.?!&quot;'</span><span style="">&#41;</span> <span style="color: #28334f; font-weight: bold;">for</span> w <span style="color: #28334f; font-weight: bold;">in</span> <span style="">string</span>.<span style="">lower</span><span style="">&#40;</span><span style="">&#41;</span>.<span style="">split</span><span style="">&#40;</span><span style="color: #657a8a;">' '</span><span style="">&#41;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">return</span> <span style="color: #4a587c;">len</span><span style="">&#40;</span><span style="">&#91;</span>w <span style="color: #28334f; font-weight: bold;">for</span> w <span style="color: #28334f; font-weight: bold;">in</span> words <span style="color: #28334f; font-weight: bold;">if</span> w <span style="color: #28334f; font-weight: bold;">in</span> <span style="">&#40;</span><span style="color: #657a8a;">'lottery'</span>, <span style="color: #657a8a;">'viagra'</span><span style="">&#41;</span><span style="">&#93;</span><span style="">&#41;</span> <span style="">&gt;</span> <span style="color: #666;">0</span><br />
-<span style="">&gt;&gt;&gt;</span><br />
-<span style="">&gt;&gt;&gt;</span> documents = <span style="">&#91;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="">&#40;</span><span style="color: #657a8a;">'Want to go for coffee?'</span>, <span style="color: #4a587c;">False</span><span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="">&#40;</span><span style="color: #657a8a;">'In attachment is the latest report.'</span>, <span style="color: #4a587c;">False</span><span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="">&#40;</span><span style="color: #657a8a;">'Here is the website I was talking about.'</span>, <span style="color: #4a587c;">False</span><span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="">&#40;</span><span style="color: #657a8a;">'We can improve our classifier by excluding &quot;Viagra&quot;.'</span>, <span style="color: #4a587c;">False</span><span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="">&#40;</span><span style="color: #657a8a;">'Buy Viagra online!'</span>, <span style="color: #4a587c;">True</span><span style="">&#41;</span>,<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="">&#40;</span><span style="color: #657a8a;">'Your e-mail address was selected in our lottery!'</span>, <span style="color: #4a587c;">True</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="">&#93;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> confusion_matrix<span style="">&#40;</span>is_spam, documents<span style="">&#41;</span> <br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> <span style="">test</span><span style="">&#40;</span>is_spam, documents<span style="">&#41;</span><br />
-&nbsp;<br />
-<span style="">&#40;</span><span style="color: #666;">2</span>, <span style="color: #666;">3</span>, <span style="color: #666;">1</span>, <span style="color: #666;">0</span><span style="">&#41;</span><br />
-<span style="">&#40;</span><span style="color: #666;">0.83</span>, <span style="color: #666;">0.67</span>, <span style="color: #666;">1.00</span>, <span style="color: #666;">0.80</span><span style="">&#41;</span> </code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.metrics import confusion_matrix, test
+&gt;&gt;&gt;
+&gt;&gt;&gt; def is_spam(string):
+&gt;&gt;&gt;     words = (w.strip(&#39;,.?!&quot;&#39;) for w in string.lower().split(&#39; &#39;))
+&gt;&gt;&gt;     return len([w for w in words if w in (&#39;lottery&#39;, &#39;viagra&#39;)]) &gt; 0
+&gt;&gt;&gt;
+&gt;&gt;&gt; documents = [
+&gt;&gt;&gt;     (&#39;Want to go for coffee?&#39;, False),
+&gt;&gt;&gt;     (&#39;In attachment is the latest report.&#39;, False),
+&gt;&gt;&gt;     (&#39;Here is the website I was talking about.&#39;, False),
+&gt;&gt;&gt;     (&#39;We can improve our classifier by excluding &quot;Viagra&quot;.&#39;, False),
+&gt;&gt;&gt;     (&#39;Buy Viagra online!&#39;, True),
+&gt;&gt;&gt;     (&#39;Your e-mail address was selected in our lottery!&#39;, True)
+&gt;&gt;&gt; ]
+&gt;&gt;&gt; print confusion_matrix(is_spam, documents) 
+&gt;&gt;&gt; print test(is_spam, documents)
+ 
+(2, 3, 1, 0)
+(0.83, 0.67, 1.00, 0.80) </pre></div>
 <p>In this example, <span class="inline_code">is_spam()</span> correctly classifies 5 out of 6 messages (83% accuracy). It identifies all spam messages (100% recall), which is good. However, it also promotes a<em>&nbsp;</em>message that is not spam to the junk folder, which is bad. Only 2 out of 3 messages tagged as spam are in reality spam (67% precision). Here is room for improvement. Notice how there is a trade-off between recall (no spam in inbox) and precision (real e-mails in junk folder).</p>
 <p>The following helper functions simply call <span class="inline_code">test()</span> internally and return a single metric:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">accuracy<span style="">&#40;</span>match=<span style="color: #28334f; font-weight: bold;">lambda</span> document:<span style="color: #4a587c;">False</span>, documents=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">precision<span style="">&#40;</span>match=<span style="color: #28334f; font-weight: bold;">lambda</span> document:<span style="color: #4a587c;">False</span>, documents=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">recall<span style="">&#40;</span>match=<span style="color: #28334f; font-weight: bold;">lambda</span> document:<span style="color: #4a587c;">False</span>, documents=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">F1<span style="">&#40;</span>match=<span style="color: #28334f; font-weight: bold;">lambda</span> document:<span style="color: #4a587c;">False</span>, documents=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">F<span style="">&#40;</span>match=<span style="color: #28334f; font-weight: bold;">lambda</span> document:<span style="color: #4a587c;">False</span>, documents=<span style="">&#91;</span><span style="">&#93;</span>, beta=<span style="color: #666;">1</span><span style="">&#41;</span></code></span></p>
-<p>&nbsp;</p>
+<pre class="brush:python; gutter:false; light:true;">accuracy(match=lambda document:False, documents=[])</pre><pre class="brush:python; gutter:false; light:true;">precision(match=lambda document:False, documents=[])</pre><pre class="brush:python; gutter:false; light:true;">recall(match=lambda document:False, documents=[])</pre><pre class="brush:python; gutter:false; light:true;">F1(match=lambda document:False, documents=[])</pre><pre class="brush:python; gutter:false; light:true;">F(match=lambda document:False, documents=[], beta=1)</pre><p>&nbsp;</p>
 <hr />
 <h2><a name="agreement"></a>Agreement</h2>
 <p>Fleiss' kappa agreement measures reliability or consensus in ratings given by different voters. Say you and a colleague are writing an <span class="inline_code">is_subjective()</span> algorithm to detect opinions, sentiments, customer feedback, etc. It uses a list of adjectives (e.g., fantastic, disappointing) tagged&nbsp;with values between 0.0-1.0 (subjectivity). To avoid bias, you both&nbsp;tag the list and take the average of the two values for each adjective.&nbsp;However, say that each word you tagged 0.0 your colleague tagged 1.0. This results in low agreement, indicating that the function won't work properly because you didn't reach a consensus of what is subjective and what is not.</p>
 <p><span class="inline_code">agreement()</span> returns the reliability as a number between -1.0 and +1.0 (where <span class="inline_code">+0.7</span> is reliable). The given <span class="inline_code">matrix</span> is a list in which each row represents a task. Each task is a list with the number of votes per category. Each column represents a category.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">agreement<span style="">&#40;</span>matrix<span style="">&#41;</span></code></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> m = <span style="">&#91;</span> <span style="color: grey;"># 0.0 0.5 1.0 SUBJ</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; <span style="">&#91;</span> &nbsp;<span style="color: #666;">1</span>, &nbsp;<span style="color: #666;">1</span>, &nbsp;<span style="color: #666;">0</span> &nbsp;<span style="">&#93;</span>, <span style="color: grey;"># important</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; <span style="">&#91;</span> &nbsp;<span style="color: #666;">0</span> &nbsp; <span style="color: #666;">0</span>, &nbsp;<span style="color: #666;">2</span> &nbsp;<span style="">&#93;</span>, <span style="color: grey;"># fantastic</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; <span style="">&#91;</span> &nbsp;<span style="color: #666;">0</span>, &nbsp;<span style="color: #666;">1</span>, &nbsp;<span style="color: #666;">1</span> &nbsp;<span style="">&#93;</span>, <span style="color: grey;"># disappointing</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; <span style="">&#91;</span> &nbsp;<span style="color: #666;">2</span>, &nbsp;<span style="color: #666;">0</span>, &nbsp;<span style="color: #666;">0</span> &nbsp;<span style="">&#93;</span>, <span style="color: grey;"># scientific</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="">&#93;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">metrics</span> <span style="color: #28334f; font-weight: bold;">import</span> agreement<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> agreement<span style="">&#40;</span>m<span style="">&#41;</span><br />
-<br />
-<span style="color: #666;">0.24</span> </code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">agreement(matrix)</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; m = [ # 0.0 0.5 1.0 SUBJ
+&gt;&gt;&gt;       [  1,  1,  0  ], # important
+&gt;&gt;&gt;       [  0   0,  2  ], # fantastic
+&gt;&gt;&gt;       [  0,  1,  1  ], # disappointing
+&gt;&gt;&gt;       [  2,  0,  0  ], # scientific
+&gt;&gt;&gt; ]
+&gt;&gt;&gt; from pattern.metrics import agreement
+&gt;&gt;&gt; print agreement(m)
+
+0.24 </pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="similarity"></a>String similarity</h2>
 <p>Levenshtein edit distance measures the difference between two strings, as the number of operations (insert, delete, replace) required to transform one string into the other. Another similarity measure is Dice's coefficient, based on the number of shared bigrams – e.g., <em>night</em> and <em>nacht</em> have one common bigram <em>ht</em>.</p>
 <p><span class="inline_code">similarity()</span> returns the similarity of <span class="inline_code">string1</span> and <span class="inline_code">string2</span> as a number between <span class="inline_code">0.0</span> and <span class="inline_code">1.0</span>.<br />The given <span class="inline_code">metric</span> can be <span class="inline_code">LEVENSHTEIN</span> or <span class="inline_code">DICE</span>.&nbsp;</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">levenshtein<span style="">&#40;</span>string1, string2<span style="">&#41;</span> <span style="color: grey;"># Returns the edit distance.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">similarity<span style="">&#40;</span>string1, string2, metric=LEVENSHTEIN<span style="">&#41;</span></code></span></p>
-<p>&nbsp;</p>
-<h2>
-<hr /><a name="readability"></a>String readability</h2>
+<pre class="brush:python; gutter:false; light:true;">levenshtein(string1, string2) # Returns the edit distance.</pre><pre class="brush:python; gutter:false; light:true;">similarity(string1, string2, metric=LEVENSHTEIN)</pre><p>&nbsp;</p>
+<hr />
+<h2><a name="readability"></a>String readability</h2>
 <p>Flesch reading ease measures the readability of a string based on word count and word length (number of syllables). The <span class="inline_code">readability()</span> function returns the readability as a number between <span class="inline_code">0.0</span> and <span class="inline_code">1.0</span>:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">readibility<span style="">&#40;</span><span style="">string</span><span style="">&#41;</span></code></span></p>
-<table class="border">
+<pre class="brush:python; gutter:false; light:true;">readibility(string)</pre><table class="border">
 <tbody>
 <tr>
 <td><span class="smallcaps">Readability</span></td>
@@ -171,29 +172,27 @@
 <h2><a name="statistics"></a>Statistics</h2>
 <p>In mathematics, an&nbsp;<em>average</em> is a measure of the "middle" of a data set (or <em>sample</em>, usually a list of numbers). An average can be calculated in different ways, but commonly the&nbsp;<em>mean</em> is used. The arithmetic mean is the sum of the values divided by the sample size: [<span class="inline_code">1,2,4] → 1+2+4 / 3 = 2.3</span>.&nbsp;Another average measure is the <em>median</em>, found by sorting the values from lowest to highest value and picking the middle one: <span class="inline_code">[1,2,4] → 2</span>.&nbsp;</p>
 <p>The <em>standard deviation</em> measures the amount of variation in a sample. Low standard deviation means the values tend to be close to the mean. If you draw it, you get a steep, narrow curve. High standard deviation means the values are spread out over a large range. If you draw it you get a flat, wide curve.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">mean<span style="">&#40;</span><span style="color: #4a587c;">list</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># [1, 2, 4] =&gt; 2.33</span></code></span><span class="geshifilter"><code class="python geshifilter-python">median<span style="">&#40;</span><span style="color: #4a587c;">list</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># [1, 2, 4] =&gt; 2</span></code></span><span class="geshifilter"><code class="python geshifilter-python">variance<span style="">&#40;</span><span style="color: #4a587c;">list</span>, sample=<span style="color: #4a587c;">True</span><span style="">&#41;</span> &nbsp; <span style="color: grey;"># Use sample=False for population variance.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">stdev<span style="">&#40;</span><span style="color: #4a587c;">list</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># [1, 2, 4] =&gt; 1.53</span></code></span></p>
-<p><span class="smallcaps"><br />Histogram</span></p>
+<pre class="brush:python; gutter:false; light:true;">mean(list)                    # [1, 2, 4] =&gt; 2.33</pre><pre class="brush:python; gutter:false; light:true;">median(list)                  # [1, 2, 4] =&gt; 2</pre><pre class="brush:python; gutter:false; light:true;">variance(list, sample=True)   # Use sample=False for population variance.</pre><pre class="brush:python; gutter:false; light:true;">stdev(list)                   # [1, 2, 4] =&gt; 1.53</pre><p><span class="smallcaps"><br />Histogram</span></p>
 <p>A <em>histogram</em> divides a list of numbers into intervals. This gives an idea of the distribution of the data: which interval has the most values? Are there more values in lower intervals? The <span class="inline_code">histogram()</span> command returns a dictionary with <span class="inline_code">k</span> items: <span class="inline_code">{(start, stop): [values], ...}</span>, with equal <span class="inline_code">(start, stop)</span> intervals between <span class="inline_code">min(list)</span> and <span class="inline_code">max(list)</span>.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">histogram<span style="">&#40;</span><span style="color: #4a587c;">list</span>, k=<span style="color: #666;">10</span>, <span style="color: #4a587c;">range</span>=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> s = <span style="">&#91;</span><span style="color: #666;">1</span>, <span style="color: #666;">1</span>, <span style="color: #666;">1</span>, <span style="color: #666;">1</span>, <span style="color: #666;">2</span>, <span style="color: #666;">2</span>, <span style="color: #666;">2</span>, <span style="color: #666;">3</span>, <span style="color: #666;">3</span>, <span style="color: #666;">4</span>, <span style="color: #666;">5</span>, <span style="color: #666;">6</span>, <span style="color: #666;">7</span>, <span style="color: #666;">8</span>, <span style="color: #666;">9</span><span style="">&#93;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> <span style="">&#40;</span>i,j<span style="">&#41;</span>, values <span style="color: #28334f; font-weight: bold;">in</span> <span style="color: #4a587c;">sorted</span><span style="">&#40;</span>histogram<span style="">&#40;</span>s, k=<span style="color: #666;">4</span><span style="">&#41;</span>.<span style="">items</span><span style="">&#40;</span><span style="">&#41;</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; m = i + <span style="">&#40;</span>j-i<span style="">&#41;</span>/<span style="color: #666;">2</span> <span style="color: grey;"># midpoint</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">print</span> i, j, m, values<br />
-<br />
-<span style="color: #666;">1.0</span> <span style="color: #666;">3.0</span> <span style="color: #666;">2.0</span> <span style="">&#91;</span><span style="color: #666;">1</span>, <span style="color: #666;">1</span>, <span style="color: #666;">1</span>, <span style="color: #666;">1</span>, <span style="color: #666;">2</span>, <span style="color: #666;">2</span>, <span style="color: #666;">2</span>, <span style="color: #666;">3</span>, <span style="color: #666;">3</span><span style="">&#93;</span><br />
-<span style="color: #666;">3.0</span> <span style="color: #666;">5.0</span> <span style="color: #666;">4.0</span> <span style="">&#91;</span><span style="color: #666;">4</span>, <span style="color: #666;">5</span><span style="">&#93;</span><br />
-<span style="color: #666;">5.0</span> <span style="color: #666;">7.0</span> <span style="color: #666;">6.0</span> <span style="">&#91;</span><span style="color: #666;">6</span>, <span style="color: #666;">7</span><span style="">&#93;</span><br />
-<span style="color: #666;">7.0</span> <span style="color: #666;">9.0</span> <span style="color: #666;">8.0</span> <span style="">&#91;</span><span style="color: #666;">8</span>, <span style="color: #666;">9</span><span style="">&#93;</span> </code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">histogram(list, k=10, range=None)</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; s = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9]
+&gt;&gt;&gt; for (i,j), values in sorted(histogram(s, k=4).items()):
+&gt;&gt;&gt;     m = i + (j-i)/2 # midpoint
+&gt;&gt;&gt;     print i, j, m, values
+
+1.0 3.0 2.0 [1, 1, 1, 1, 2, 2, 2, 3, 3]
+3.0 5.0 4.0 [4, 5]
+5.0 7.0 6.0 [6, 7]
+7.0 9.0 8.0 [8, 9] </pre></div>
 <p><span class="smallcaps"><br />Moment</span></p>
 <p>A <em>moment</em> is a measure of the "shape" of a list of numbers. For example, the 2nd moment (which is the <em>variance</em>) measures the width.&nbsp;The 3rd moment measures&nbsp;<em>skewness</em>&nbsp;or asymmetry of the sample. If &gt; 0.0, relatively few values are higher than the mean. If &lt; 0.0, relatively few values are lower than the mean.&nbsp;The 4th moment measures&nbsp;<em>kurtosis</em> or peakedness of the sample. If &gt; 0.0, there is a sharp peak around the mean (more infrequent / extreme values). If &lt; 0.0 there is a wide peak around the mean.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">moment<span style="">&#40;</span><span style="color: #4a587c;">list</span>, k=<span style="color: #666;">1</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">skewness<span style="">&#40;</span><span style="color: #4a587c;">list</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">kurtosis<span style="">&#40;</span><span style="color: #4a587c;">list</span><span style="">&#41;</span></code></span></p>
-<p><span class="smallcaps"><br />Quantile</span></p>
+<pre class="brush:python; gutter:false; light:true;">moment(list, k=1)</pre><pre class="brush:python; gutter:false; light:true;">skewness(list)</pre><pre class="brush:python; gutter:false; light:true;">kurtosis(list)</pre><p><span class="smallcaps"><br />Quantile</span></p>
 <p>The <span class="inline_code">quantile()</span> command returns the interpolated value from a sorted list of numbers at point <span class="inline_code">p</span> (0.0-1.0). The optional parameters <span class="inline_code">a</span>, <span class="inline_code">b</span>, <span class="inline_code">c</span>, <span class="inline_code">d</span> refer to the algorithm by Hyndman and Fan <a href="http://stat.ethz.ch/R-manual/R-patched/library/stats/html/quantile.html" target="_blank">[1]</a>. Quantiles can be used to create&nbsp;a <em>box plot</em>, useful for identifying&nbsp;<em>outliers</em>.&nbsp;For example: if a sample of temperature in your household comprises you (37°C), the cat (38°C),&nbsp;the refrigerator (5°C) and the oven (220°C) then the average temperature is 75°C, which of course is incorrect since the oven is an outlier.&nbsp;The <span class="inline_code">boxplot()</span> command returns a <span class="inline_code">(min, Q1, Q2, Q3, max)</span>-tuple for a given list of numbers, where <span class="inline_code">Q2</span> is the median, <span class="inline_code">Q1</span> is the lower 25-50% and <span class="inline_code">Q3</span> is the upper 50-75%.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">quantile<span style="">&#40;</span><span style="color: #4a587c;">list</span>, p=<span style="color: #666;">0.5</span>, sort=<span style="color: #4a587c;">True</span>, a=<span style="color: #666;">1</span>, b=-<span style="color: #666;">1</span>, c=<span style="color: #666;">0</span>, d=<span style="color: #666;">1</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">boxplot<span style="">&#40;</span><span style="color: #4a587c;">list</span><span style="">&#41;</span></code></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> s = <span style="">&#91;</span><span style="color: #666;">5</span>, <span style="color: #666;">37</span>, <span style="color: #666;">38</span>, <span style="color: #666;">220</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> boxplot<span style="">&#40;</span>s<span style="">&#41;</span><br />
-<br />
-<span style="">&#40;</span><span style="color: #666;">5.0</span>, <span style="color: #666;">29.0</span>, <span style="color: #666;">37.5</span>, &nbsp;<span style="color: #666;">83.5</span>, <span style="color: #666;">220.0</span><span style="">&#41;</span></code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">quantile(list, p=0.5, sort=True, a=1, b=-1, c=0, d=1)</pre><pre class="brush:python; gutter:false; light:true;">boxplot(list)</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; s = [5, 37, 38, 220)
+&gt;&gt;&gt; print boxplot(s)
+
+(5.0, 29.0, 37.5,  83.5, 220.0)</pre></div>
 <table class="border">
 <tbody>
 <tr>
@@ -210,5 +209,8 @@
     </div>
     </div>
     </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
 </body>
 </html>

@@ -9,7 +9,7 @@ fieldset.group-info .field-item a,
 
 sup { color: #666; }
 
-table {}
+table { margin: 1em 0; }
 tr, tr.even, tr.odd { background: none; }
 td { padding: 0.2em 1em 0.2em 0; vertical-align: top; }
 
@@ -119,13 +119,13 @@ div.resizable-textarea .grippie { display: none; }
 .section-search-pages .search-info a { color: #888; font-size: 0.95em; }
 .section-search a[href^="http"],
 .section-search-pages a[href^="http"] { background: none; }
-.section-search-pages #sidebar-left { _display: none; }
+.section-search-pages #sidebar-left { }
 .section-search #sidebar-right li a { color: rgb(140,170,255); }
 
 /* --- CONTENT FLAT PAGES --------------------------------------------------------------------------------------- */
 /* Flat pages generated with the Page content type (e.g. Home). */
 
-body.node-type-page div.tabs { display: none; }
+body.node-type-page div.tabs {  }
 body.node-type-page .meta { margin-top: -1.5em; margin-bottom: 1.5em; }
 
 /* --- CONTENT TAGS (TAXONOMY TERMS) ---------------------------------------------------------------------------- */
@@ -357,7 +357,7 @@ div.node-type-biblio .terms a,
 /* Project publications. */
 .project-publications { margin-top: 2em; }
 /* Project date. */
-.date-display-start, .date-display-separator, .date-display-end { font-family: Courier, monospace; font-size: 0.9em; }
+.date-display-start, .date-display-separator, .date-display-end { font-family: Courier, "Courier New", monospace; font-size: 0.9em; }
 
 .section-projects .field-field-subtitle { font-size: 1.0em; font-weight: bold; }
 .section-projects #sidebar-left .pager { display: none; }
@@ -376,7 +376,7 @@ div.node-type-biblio .terms a,
 .section-og table.views-table th.views-field-subscribe,
 .section-og table.views-table td.views-field-subscribe { }
 .section-og #content table { width: 100%; }
-.section-og #content table caption { text-align: left; font: 1.25em Georgia, Times, serif; margin: 1em 0 1em 0; }
+.section-og #content table caption { text-align: left; font: 1.25em Georgia, Times, serif; margin: 1em 0 0 0; padding-top: 1em; }
 .section-og #content th { white-space: nowrap; }
 .section-og #content th a { text-decoration: none; }
 .section-og #content th,
@@ -431,7 +431,8 @@ fieldset.group-info p { line-height: 1.3em !important; }
 .page-demos #content tr { border: 0; }
 .page-demos #content td { display: block; float: left; width: 100%; }
 .page-demos #content td.views-field-title { background: none; padding-top: 0.5em; border-top: 1px solid #ccc; }
-.page-demos #content td.views-field-field-link-url { 
+.page-demos #content td.views-field-field-link-url,
+.page-public-scripts td.views-field-upload-fid li { 
     background: url(g/download4.gif) no-repeat;
     padding-left: 23px;
     padding-top: 1px;
@@ -439,11 +440,54 @@ fieldset.group-info p { line-height: 1.3em !important; }
     min-height: 20px;
 }
 
-.node-type-demo #content .tabs { display: none; }
+.node-type-demo #content .tabs { }
 .node-type-demo .field-type-link { border-bottom: 1px solid #ccc; margin-bottom: 0.5em; padding-bottom: 1em;  }
 .node-type-demo .field-type-link + p { }
 .node-type-demo .submitted { display: none; }
 .node-type-demo #content .content { }
+
+/* --- CONTENT TYPE: SCRIPTS ------------------------------------------------------------------------------------- */
+/* Shared programming scripts repository. */
+
+body .syntaxhighlighter div.toolbar { background-color: transparent !important; }
+body .syntaxhighlighter div.toolbar .command_help { display: none !important; }
+.node-type-script h1.title { margin-bottom: 0.5em !important; }
+.node-type-script .field { border-bottom: 1px solid #ccc; padding-bottom: 0.4em; margin: 0.4em 0; }
+.node-type-script .field-label,
+.node-type-script .field-items,
+.node-type-script .field-item { display: inline; border: 0; }
+.node-type-script .field-field-script-version .field-item div { font-variant: small-caps; font-weight: normal; }
+.node-type-script .field-field-script-language .field-item { font-family: Courier, "Courier New", monospace; font-size: 9.5pt; }
+.node-type-script .field-field-script-description {}
+.node-type-script .field-field-script-description .field-items { display: inline-block; width: 400px; vertical-align: top; }
+.node-type-script .field-field-script-authors { margin-bottom: 1.2em; }
+.node-type-script .field-field-script-authors .field-item { display: inline; padding-right: 4px; }
+.node-type-script .field-field-script-authors a { }
+.node-type-script .submitted { display: none; }
+.node-type-script #content table { border-collapse: collapse; }
+.node-type-script #content table td { border: 1px solid #ccc; }
+.node-type-script #content table#attachments td { border: 0; }
+
+.section-public-scripts h1.title { margin-bottom: 0.5em !important; }
+.section-public-scripts table { width: 600px; margin-top: 2em; }
+.section-public-scripts th { font-variant: small-caps; }
+.section-public-scripts th { padding: 0.7em; }
+.section-public-scripts td { padding: 0.7em; }
+.section-public-scripts #content td a:hover { color: dodgerblue !important; }
+.section-public-scripts td.views-field-title { white-space: nowrap; }
+.section-public-scripts td.views-field-field-script-version-value { 
+    text-align: center; 
+}
+.section-public-scripts td.views-field-field-script-language-value { 
+    text-align: center; 
+    font-family: Courier, "Courier New", monospace;
+    font-size: 9.5pt;
+}
+.section-public-scripts td { font-size: 0.95em; }
+.section-public-scripts td.views-field-upload-fid ul { padding: 0 !important; margin: 0 !important; }
+.section-public-scripts td.views-field-upload-fid li {
+    list-style: none; margin: 0;
+}
 
 /* --- CONTENT TYPE: STORIES, STORY NEWS ------------------------------------------------------------------------- */
 /* Global stories, either as news item teaser or as full pages. */
@@ -525,7 +569,7 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 
 .page-biblio .breadcrumb { margin: 0 !important; }
 .section-biblio h1.title { margin-bottom: 0.5em !important; }
-.section-biblio .tabs { display: none; }
+.section-biblio .tabs { }
 #biblio-search-form .biblio-search { margin-bottom: 0.5em; }
 .biblio-export-buttons { margin: 0; font-size: 0.75em; text-transform: uppercase; font-weight: bold; display: inline; }
 .biblio-export-buttons li { margin: 0; }
@@ -709,7 +753,7 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 }
 .node-type-ctrs .field-label-inline { display: none !important; }
 .section-ctrs .date-display-single,
-.node-type-ctrs .date-display-single { font-family: Courier, monospace; }
+.node-type-ctrs .date-display-single { font-family: Courier, "Courier New", monospace; }
 .section-ctrs #content { }
 .section-ctrs .image { margin-right: 1em; }
 .section-ctrs .image,
@@ -718,6 +762,18 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 .image-preview { border: 1px solid #ccc;  }
 .image_size_larger { display: none !important; }
 .image-attach-body { float: left; }
+
+/* --- ARCHIVE OF CORPORA ON THE CLIPS SERVERS ------------------------------------------------------------------ */
+
+.section-corpora-overview table { width: 100%; }
+.section-corpora-overview th { font-variant: small-caps; padding-bottom: 0.5em; }
+.section-corpora-overview th a { color: #333; }
+.section-corpora-overview tr.odd { background: #F0F5FA; }
+.section-corpora-overview td { border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; padding: 5px 0 5px 0; }
+.section-corpora-overview td.active { background: none; }
+.section-corpora-overview .views-field-field-corpus-version-value { text-align: center; }
+.section-corpora-overview td.views-field-field-corpus-path-value { font-family: Courier, "Courier New", monospace; }
+.field-field-corpus-path .field-items { font-family: Courier, "Courier New", monospace; }
 
 /* --- ARCHIVE OF PUBLICATIONS ---------------------------------------------------------------------------------- */
 
@@ -842,7 +898,7 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 #navbar .block { border-top: 1px solid #c6d4dd; margin: 0; }
 #navbar .block ul { margin: 0 !important; }
 #navbar .block li:first-child { border-left: 1px solid #c6d4dd; }
-#navbar #block-block-3 ul { margin-left: 515px !important; }
+#navbar #block-block-3 ul { margin-left: 600px !important; }
 #navbar .block li { list-style: none; padding: 3px; border-right: 1px solid #c6d4dd; }
 #navbar .block li:hover { background: #dbe6ec; }
 #navbar .block li a { color: #0e5682; font-size: 0.95em; text-decoration: none; padding: 0 10px 0 10px; }
@@ -1064,7 +1120,7 @@ form thead th { text-align: left; padding-right: 1em; border-bottom: 3px solid #
 #user-login li.openid-link,
 #user-login li.user-link { margin-left: -2em; }
 
-.advanced-help-topic { font-family: Courier, monospace; }
+.advanced-help-topic { font-family: Courier, "Courier New", monospace; }
 
 /* --- DRUPAL TABS ---------------------------------------------------------------------------------------------- */
 /* Some stuff like tabs and contextual edit menus seeple through to the front-end. */
@@ -1090,11 +1146,21 @@ div.tabs .primary li.active a {
 .section-news div.tabs,
 .section-projects div.tabs,
 .section-software div.tabs,
-.section-bibliography div.tabs {
-    display: none;
-}
+.section-bibliography div.tabs { }
 
 .section-biblio .breadcrumb { margin-bottom: 1em; }
+
+/* The admin tabs with view/edit/revisions. */
+body.node-type-page div.tabs,
+.node-type-demo #content .tabs,
+.section-biblio .tabs,
+.section-news div.tabs,
+.section-projects div.tabs,
+.section-software div.tabs,
+.section-bibliography div.tabs {
+    font-family: Arial;
+    font-size: 11px;
+}
 
 /* --- ADMIN EDITOR --------------------------------------------------------------------------------------------- */
 /* The Edit / Export / Clone links when you hover over a view. */
@@ -1137,7 +1203,18 @@ div.tabs .primary li.active a {
 /* --- ADMIN USER EDITOR ---------------------------------------------------------------------------------------- */
 /*  Integrates the Admin back-end style with the Clips front-end style for the Blocks Editor. */
 
-code { font-family: Courier, monospace; font-size: 12px; }
+code,
+.syntaxhighlighter table .plain, 
+.syntaxhighlighter code,
+.syntaxhighlighter .line,
+.syntaxhighlighter code a,
+pre.wysiwyg-syntaxhl, 
+pre,
+ .install pre { 
+    font-family: Courier, "Courier New", monospace !important; 
+    font-size: 12px !important; 
+    line-height: 1.3em !important;
+}
 
 fieldset { 
     padding: 0.5em;
@@ -1264,6 +1341,11 @@ fieldset input, fieldset select {
 /* --- PAGE STYLES ---------------------------------------------------------------------------------------------- */
 /* These are made available through the TinyMCE editor. */
 
+body.mceContentBody { 
+    background: white !important;
+    background-image: none;
+}
+
 .big { font-size: 1.2em; line-height: 1.3em; }
 .small { font-size: 0.9em; }
 .caption { 
@@ -1285,24 +1367,143 @@ fieldset input, fieldset select {
 .link-maintenance  { color: rgb(120,170,255); }
 a.link-maintenance, .link-maintenance a { color: rgb(140,170,255); }
 .link-colorless { color: #333; }
-.box, code { 
-    padding: 0.2em 0.4em 0.2em 0.4em;
-    background: rgb(230,230,255);
-    border: 1px solid rgb(210,210,235);
-    border-radius: 0.5em; -moz-border-radius: 0.5em; -webkit-border-radius: 0.5em;
-}
+
 .postag { font: bold 0.85em Arial; padding: 0px 1px 0px 1px; }
-.inline_code { font-family: Courier, monospace; font-size: 12px; }
+.inline_code { font-family: Courier, "Courier New", monospace; font-size: 12px; }
 .smallcaps { font-variant: small-caps; }
 .blue { color: #0e5682 !important; }
 table.border td, td.border, img.border { border: 1px solid #ccc; }
 
 /* Syntax coloring. */
-code { display: block; margin: 0.7em 0 0.7em 0; }
-code { color: #555; }
-.example code { border: 1px solid rgb(225,220,235); background: rgb(245,240,255); }
-.install code { border: 1px solid rgb(225,220,235); background: rgb(245,240,255); color: #555; }
-.install code span { color: #555 !important; }
+code, pre, .box, 
+body .syntaxhighlighter,
+body pre.wysiwyg-syntaxhl { 
+    padding: 0.2em 0.4em 0.2em 0.4em !important;
+    background: rgb(220,235,250) !important;
+    border: 1px solid rgb(200,215,230) !important;
+    border-radius: 0.5em; -moz-border-radius: 0.5em; -webkit-border-radius: 0.5em;
+}
+body .syntaxhighlighter code.plain a,
+body .syntaxhighlighter code.string a,
+body .syntaxhighlighter code.comments a,
+body .syntaxhighlighter code.comments1 a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+body .syntaxhighlighter code.plain a:hover,
+body .syntaxhighlighter code.string a:hover,
+body .syntaxhighlighter code.comments a:hover,
+body .syntaxhighlighter code.comments1 a:hover { 
+    text-decoration: underline !important; 
+}
+body .syntaxhighlighter {
+    width: auto !important;
+}
+body .syntaxhighlighter div code {
+    border-width: 0px !important;
+    font: inherit !important;
+}
+body .syntaxhighlighter div.line.alt1,
+body .syntaxhighlighter div.line.alt2 {
+    background: transparent !important;
+    padding: 0 0 0 0 !important;
+}
+body .syntaxhighlighter .gutter .line.alt1,
+body .syntaxhighlighter .gutter .line.alt2 {
+    border-right: 1px solid #adc7d9 !important;
+    padding-right: 0.5em !important;
+    margin-right: 0.5em !important;
+    color: #a3bccc !important;
+}
+code, body .syntaxhighlighter, pre.wysiwyg-syntaxhl { 
+    margin: 0.7em 0 0.7em 0 !important; 
+}
+code, body .syntaxhighlighter table .plain, pre.wysiwyg-syntaxhl { 
+    color: #555 !important; 
+}
+.example code,
+.example .syntaxhighlighter,
+.example pre.wysiwyg-syntaxhl,
+.node-type-script .syntaxhighlighter.nogutter,
+.node-type-script pre.wysiwyg-syntaxhl,
+pre { 
+    background: rgb(239,246,252) !important;
+    border: 1px solid rgb(220,223,233) !important;
+}
+body .node-type-page .syntaxhighlighter {
+    overflow: hidden !important;
+}
+
+.install code span,
+.install pre { color: #555 !important; }
+.install code,
+.install pre,
+.install .syntaxhighlighter,
+.install pre.wysiwyg-syntaxhl { 
+    background: rgb(239,246,252) !important;
+    border: 1px solid rgb(220,223,233) !important;
+    color: #555 !important;
+}
+/* Javascript syntax */
+body .syntaxhighlighter .jscript.keyword1, 
+body .syntaxhighlighter .javascript.keyword1 { 
+    color: #28334f !important; font-weight: bold !important; 
+}
+body .syntaxhighlighter .jscript.keyword2, 
+body .syntaxhighlighter .javascript.keyword2,
+body .syntaxhighlighter .jscript.keyword3, 
+body .syntaxhighlighter .javascript.keyword3 { 
+    color: #4a587c !important; 
+}
+body .syntaxhighlighter .jcript.name,
+body .syntaxhighlighter .javascript.name {
+    color: rgb(70, 140, 200) !important;
+}
+body .syntaxhighlighter .jscript.string,
+body .syntaxhighlighter .javascript.string { 
+    color: #657a8a !important; 
+}
+body .syntaxhighlighter .jscript.comments1,
+body .syntaxhighlighter .javascript.comments1 { 
+    color: grey !important; 
+}
+body .syntaxhighlighter .jscript.comments2,
+body .syntaxhighlighter .javascript.comments2 { 
+    color: #657a8a !important; 
+}
+/* Python syntax */
+body .syntaxhighlighter .python.keyword {
+    color: #28334f !important; font-weight: bold !important;
+}
+body .syntaxhighlighter .python.name {
+    color: rgb(70, 140, 200) !important;
+}
+body .syntaxhighlighter .python.string {
+    color: #657a8a !important; 
+}
+body .syntaxhighlighter .python.comments1 { 
+    color: grey !important; 
+}
+body .syntaxhighlighter .python.comments2 { 
+    color: #657a8a !important; 
+}
+body .syntaxhighlighter .python.functions,
+body .syntaxhighlighter .python.color1 { 
+    color: #4a587c !important; 
+}
+body .syntaxhighlighter .python.value { 
+    color: #666 !important; 
+}
+/* XML syntax */
+body .syntaxhighlighter .xml.keyword {
+    color: #28334f !important; font-weight: bold !important;
+}
+body .syntaxhighlighter .xml.string {
+    color: #657a8a !important;
+}
+body .syntaxhighlighter .xml.color1 {
+    color: inherit !important;
+}
 
 /* Page formatting. */
 .node-type-page #content { width: 700px !important; }
@@ -1326,7 +1527,7 @@ code { color: #555; }
 .page-reservations td.views-field-edit-node { text-align: right; font-size: 0.9em; }
 .page-reservations a { background: none; text-transform: lowercase; }
 
-.page-reservations .date-display-single { font-family: Courier, monospace; font-size: 0.9em; }
+.page-reservations .date-display-single { font-family: Courier, "Courier New", monospace; font-size: 0.9em; }
 .page-reservations .date-display-start { }
 .page-reservations .date-display-end { }
 
@@ -1340,7 +1541,7 @@ code { color: #555; }
 .page-colloquia #content td strong { font-weight: normal; }
 .page-colloquia #content td a:hover { color: dodgerblue; }
 .page-colloquia #content td.views-field-field-date-value,
-.node-type-colloquium .date-display-single { background: none; font-family: Courier, monospace; font-size: 0.9em; white-space: nowrap; line-height: 1.5em; }
+.node-type-colloquium .date-display-single { background: none; font-family: Courier, "Courier New", monospace; font-size: 0.9em; white-space: nowrap; line-height: 1.5em; }
 
 .node-type-colloquium .submitted { display: none; }
 .node-type-colloquium .node .content { margin-top: 1em; }

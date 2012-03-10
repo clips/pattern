@@ -12,6 +12,12 @@
         #header { border-bottom: 1px solid #C6D4DD;  }
         table { border-collapse: collapse; }
     </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
 </head>
 <body class="node-type-page one-sidebar sidebar-right section-pages">
     <div id="page">
@@ -28,8 +34,7 @@
 <div class="content">
 <h2>pattern.en parser</h2>
 <p>You can run the parser from the command-line. The&nbsp;<a href="pattern.html">pattern</a> module should be installed (i.e., located in <span class="inline_code">/site-packages</span>, see installation instructions), or the current working directory should be the one that contains the <span class="inline_code">pattern</span> folder.</p>
-<p><span class="install"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;</span> python -m pattern.<span style="">en</span>.<span style="">parser</span> -f lewiscarroll.<span style="">txt</span></code></span></span></p>
-<p><span>If no options are given a full parse is executed (i.e. tokenization, tagging, chunking, relations and lemmata). Otherwise, you need to explicitly list every required option:</span></p>
+<pre class="brush:python; gutter:false; light:true;">&gt; python -m pattern.en.parser -f lewiscarroll.txt</pre><p><span>If no options are given a full parse is executed (i.e. tokenization, tagging, chunking, relations and lemmata). Otherwise, you need to explicitly list every required option:</span></p>
 <table class="border">
 <tbody>
 <tr>
@@ -87,7 +92,8 @@
 <p>Short options can be concatenated:&nbsp;<span class="inline_code">python -m pattern.en.parser -OTLI -f lewiscarroll.txt</span></p>
 <h2><span>pattern.nl parser</span></h2>
 <p><span>The Dutch parser works in the same way. Note the <span class="inline_code">xml</span> option (which produces XML output):</span></p>
-<p><span class="example"><span class="geshifilter"><code class="text geshifilter-text">&gt; python -m pattern.nl.parser xml -s &quot;Het wordt steeds vreemder.&quot;</code></span></span></p>
+<div class="example">
+<pre class="gutter:false; light:true;">&gt; python -m pattern.nl.parser xml -s &quot;Het wordt steeds vreemder.&quot;</pre></div>
 <p><span><br /></span></p>
 </div>
 </div></div>
@@ -97,5 +103,8 @@
     </div>
     </div>
     </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
 </body>
 </html>

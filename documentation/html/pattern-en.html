@@ -12,6 +12,12 @@
         #header { border-bottom: 1px solid #C6D4DD;  }
         table { border-collapse: collapse; }
     </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
 </head>
 <body class="node-type-page one-sidebar sidebar-right section-pages">
     <div id="page">
@@ -46,45 +52,49 @@
 <li><a href="#wordlist">Wordlists</a></li>
 </ul>
 <p>&nbsp;</p>
-<h2>
-<hr /><a name="article"></a>Indefinite article</h2>
+<hr />
+<h2><a name="article"></a>Indefinite article</h2>
 <p>The article is the most common determiner (<span class="postag">DT</span>) in English. It defines whether the noun following it is definite (<em><span style="text-decoration: underline;">the</span> cat</em>) or indefinite (<em><span style="text-decoration: underline;">a</span> cat</em>). The definite article is always <em>the</em>. The indefinite article can be either <em>a</em> or <em>an</em> – depending on how the successive noun is pronounced.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">article<span style="">&#40;</span>word, function=INDEFINITE<span style="">&#41;</span> &nbsp; <span style="color: grey;"># DEFINITE | INDEFINITE</span></code></span><span class="geshifilter"><code class="python geshifilter-python">referenced<span style="">&#40;</span>word, article=INDEFINITE<span style="">&#41;</span> <span style="color: grey;"># Returns article + word.</span></code></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> referenced<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> referenced<span style="">&#40;</span><span style="color: #657a8a;">'university'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> referenced<span style="">&#40;</span><span style="color: #657a8a;">'hour'</span><span style="">&#41;</span><br />
-<br />
-a university<br />
-an hour</code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">article(word, function=INDEFINITE)   # DEFINITE | INDEFINITE</pre><pre class="brush:python; gutter:false; light:true;">referenced(word, article=INDEFINITE) # Returns article + word.
+</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import referenced
+&gt;&gt;&gt; print referenced(&#39;university&#39;)
+&gt;&gt;&gt; print referenced(&#39;hour&#39;)
+
+a university
+an hour</pre></div>
 <p><span class="small"><span style="text-decoration: underline;">Reference</span>: Granger, M. (2006). <em>Ruby Linguistics Framework</em>, </span><span class="small">http://deveiate.org/projects/Linguistics</span></p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="pluralization"></a>Pluralization + singularization</h2>
 <p>The <span class="inline_code">pluralize()</span> command returns the singular form of a plural noun. It handles 96% of exceptions correctly. The <span class="inline_code">singularize()</span> command returns the plural form of a singular noun. The <span class="inline_code">pos</span> parameter (part-of-speech) can be set to <span class="inline_code">NOUN</span> or <span class="inline_code">ADJECTIVE</span>, but only a small number of possessive adjectives inflect (e.g. <em>my</em> → <em>our</em>). The <span class="inline_code">custom</span> dictionary is for user-defined replacements.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">pluralize<span style="">&#40;</span>word, pos=NOUN, custom=<span style="">&#123;</span><span style="">&#125;</span>, classical=<span style="color: #4a587c;">True</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">singularize<span style="">&#40;</span>word, pos=NOUN, custom=<span style="">&#123;</span><span style="">&#125;</span><span style="">&#41;</span></code></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> pluralize, singularize<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> pluralize<span style="">&#40;</span><span style="color: #657a8a;">'child'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> singularize<span style="">&#40;</span><span style="color: #657a8a;">'wolves'</span><span style="">&#41;</span><br />
-<br />
-children<br />
-wolves</code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">pluralize(word, pos=NOUN, custom={}, classical=True)</pre><pre class="brush:python; gutter:false; light:true;">singularize(word, pos=NOUN, custom={})</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import pluralize, singularize
+&gt;&gt;&gt; print pluralize(&#39;child&#39;)
+&gt;&gt;&gt; print singularize(&#39;wolves&#39;)
+
+children
+wolves
+</pre></div>
 <p><span class="small"><span style="text-decoration: underline;">Reference</span>: <br />Conway, D. (1998). <em>An Algorithmic Approach to English Pluralization</em>.<br />Ferrer, B. (2005). <em>Inflector for Python</em>, http://www.bermi.org/projects/inflector</span></p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="comparative"></a>Comparative + superlative</h2>
 <p>The <span class="inline_code">comparative()</span> and <span class="inline_code">superlative()</span> commands give the comparative or superlative form of an adjective. Words with three or more syllables are simply preceded by <em>more</em> or <em>most</em>.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">comparative<span style="">&#40;</span>adjective<span style="">&#41;</span> &nbsp; &nbsp; &nbsp;<span style="color: grey;"># big =&gt; bigger</span></code></span><span class="geshifilter"><code class="python geshifilter-python">superlative<span style="">&#40;</span>adjective<span style="">&#41;</span> &nbsp; &nbsp; &nbsp;<span style="color: grey;"># big =&gt; biggest</span></code></span><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> comparative, superlative<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> comparative<span style="">&#40;</span><span style="color: #657a8a;">'bad'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> superlative<span style="">&#40;</span><span style="color: #657a8a;">'bad'</span><span style="">&#41;</span><br />
-<br />
-worse<br />
-worst</code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">comparative(adjective)      # big =&gt; bigger</pre><pre class="brush:python; gutter:false; light:true;">superlative(adjective)      # big =&gt; biggest</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import comparative, superlative
+&gt;&gt;&gt; print comparative(&#39;bad&#39;)
+&gt;&gt;&gt; print superlative(&#39;bad&#39;)
+
+worse
+worst
+</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="conjugation"></a>Verb conjugation</h2>
 <p>The <span class="inline_code">pattern.en</span> module has a lexicon of 8,500 common English verbs and their conjugated forms (infinitive, 3rd singular present, present participle, past and past participle – verbs such as <em>be</em> have other forms as well). The following verbs can be negated: <em>be</em>, <em>can</em>, <em>do</em>, <em>will</em>, <em>must</em>, <em>have</em>, <em>may</em>, <em>need</em>, <em>dare</em>, <em>ought</em>.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">conjugate<span style="">&#40;</span>verb, tense=INFINITIVE, negated=<span style="color: #4a587c;">False</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">lemma<span style="">&#40;</span>verb<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Base form, e.g. are =&gt; be.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">lexeme<span style="">&#40;</span>verb<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of possible forms: be =&gt; is, was, ...</span></code></span><span class="geshifilter"><code class="python geshifilter-python">tenses<span style="">&#40;</span>verb<span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of possible tenses of the given form.</span></code></span></p>
-<p>The <span class="inline_code">tense</span> parameter of the <span class="inline_code">conjugate()</span> command can be set to the following values:</p>
+<pre class="brush:python; gutter:false; light:true;">conjugate(verb, tense=INFINITIVE, negated=False)</pre><pre class="brush:python; gutter:false; light:true;">lemma(verb)                 # Base form, e.g. are =&gt; be.</pre><pre class="brush:python; gutter:false; light:true;">lexeme(verb)                # List of possible forms: be =&gt; is, was, ...</pre><pre class="brush:python; gutter:false; light:true;">tenses(verb)                # List of possible tenses of the given form.
+</pre><p>The <span class="inline_code">tense</span> parameter of the <span class="inline_code">conjugate()</span> command can be set to the following values:</p>
 <table class="border">
 <tbody>
 <tr>
@@ -168,74 +178,82 @@ worst</code></span></span></p>
 </tbody>
 </table>
 <p>For example:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> conjugate, lemma, lexeme, tenses, PAST<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> lexeme<span style="">&#40;</span><span style="color: #657a8a;">'purr'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> lemma<span style="">&#40;</span><span style="color: #657a8a;">'purring'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> conjugate<span style="">&#40;</span><span style="color: #657a8a;">'purred'</span>, tense=<span style="color: #657a8a;">'3sg'</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> PAST <span style="color: #28334f; font-weight: bold;">in</span> tenses<span style="">&#40;</span><span style="color: #657a8a;">&quot;purred&quot;</span><span style="">&#41;</span> <span style="color: grey;"># 'p' in tenses() will also work.</span><br />
-<br />
-<span style="">&#91;</span><span style="color: #657a8a;">'purr'</span>, <span style="color: #657a8a;">'purrs'</span>, <span style="color: #657a8a;">'purring'</span>, <span style="color: #657a8a;">'purred'</span><span style="">&#93;</span><br />
-purr<br />
-purrs<br />
-<span style="color: #4a587c;">True</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import conjugate, lemma, lexeme, tenses, PAST
+&gt;&gt;&gt; print lexeme(&#39;purr&#39;)
+&gt;&gt;&gt; print lemma(&#39;purring&#39;)
+&gt;&gt;&gt; print conjugate(&#39;purred&#39;, tense=&#39;3sg&#39;)
+&gt;&gt;&gt; print PAST in tenses(&quot;purred&quot;) # &#39;p&#39; in tenses() will also work.
+
+[&#39;purr&#39;, &#39;purrs&#39;, &#39;purring&#39;, &#39;purred&#39;]
+purr
+purrs
+True
+</pre></div>
 <p><span class="small"><span style="text-decoration: underline;">Reference</span>: <em>XTAG English morphology</em> (1999), University of Pennsylvania, http://www.cis.upenn.edu/~xtag</span></p>
 <p>&nbsp;</p>
 <p><span class="smallcaps">Rule-based conjugation</span></p>
 <p>All of the verb commands have an optional <span class="inline_code">parse=True</span> parameter that enables a rule-based parser for unknown verbs. This will not work for irregular verbs however, and it is fragile for verbs ending in -e in the past tense or as present participle (overall accuracy 91%).</p>
 <p>With <span class="inline_code">parse=False</span>,&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">conjugate()</span>&nbsp;and&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">lemma()</span>&nbsp;yield&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">None</span>.</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> conjugate, VERBS<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #657a8a;">'facebooked'</span> <span style="color: #28334f; font-weight: bold;">in</span> VERBS<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> conjugate<span style="">&#40;</span><span style="color: #657a8a;">'facebooked'</span>, tense=<span style="color: #657a8a;">'part'</span>, parse=<span style="color: #4a587c;">False</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> conjugate<span style="">&#40;</span><span style="color: #657a8a;">'facebooked'</span>, tense=<span style="color: #657a8a;">'part'</span>, parse=<span style="color: #4a587c;">True</span><span style="">&#41;</span><br />
-<br />
-<span style="color: #4a587c;">False</span><br />
-<span style="color: #4a587c;">None</span><br />
-facebooking</code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import conjugate, VERBS
+&gt;&gt;&gt; print &#39;facebooked&#39; in VERBS
+&gt;&gt;&gt; print conjugate(&#39;facebooked&#39;, tense=&#39;part&#39;, parse=False)
+&gt;&gt;&gt; print conjugate(&#39;facebooked&#39;, tense=&#39;part&#39;, parse=True)
+
+False
+None
+facebooking
+</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="quantify"></a>Quantification</h2>
 <p>The <span class="inline_code">number()</span> command returns a <span class="inline_code">float</span> or <span class="inline_code">int</span> parsed from the given (numeric) string. If no number can be parsed from the string, it returns <span class="inline_code">0</span>.</p>
-<p>The <span class="inline_code">numerals()</span> command returns the given <span class="inline_code">int</span> or <span class="inline_code">float</span> as a string of numerals. By default, the fractional part is rounded to two decimals. Because of rounding <span class="inline_code">float(number(x)) == x</span> is not always <span class="inline_code">True</span>.</p>
+<p>The <span class="inline_code">numerals()</span> command returns the given <span class="inline_code">int</span> or <span class="inline_code">float</span> as a string of numerals. By default, the fraction is rounded to two decimals. Because of rounding <span class="inline_code">float(number(x)) == x</span> is not always <span class="inline_code">True</span>.</p>
 <p>The <span class="inline_code">quantify()</span> command returns a wordcount approximation. Two similar words are a <em>pair</em>, three to eight <em>several</em>, and so on. Words can be given as a list, a word → count dictionary, or a string + amount.</p>
 <p>The <span class="inline_code">reflect()</span> command quantifies Python objects – see the examples bundled with the module.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">number<span style="">&#40;</span><span style="">string</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># &quot;seventy-five point two&quot; =&gt; 75.2</span></code></span><span class="geshifilter"><code class="python geshifilter-python">numerals<span style="">&#40;</span>n, <span style="color: #4a587c;">round</span>=<span style="color: #666;">2</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># 2.245 =&gt; &quot;two point twenty-five&quot;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">quantify<span style="">&#40;</span><span style="">&#91;</span>word1, word2, ...<span style="">&#93;</span>, plural=<span style="">&#123;</span><span style="">&#125;</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">reflect<span style="">&#40;</span><span style="color: #4a587c;">object</span>, quantify=<span style="color: #4a587c;">True</span>, replace=<span style="">&#91;</span><span style="">&#93;</span><span style="">&#41;</span></code></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> quantify<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> quantify<span style="">&#40;</span><span style="">&#91;</span><span style="color: #657a8a;">'goose'</span>, <span style="color: #657a8a;">'goose'</span>, <span style="color: #657a8a;">'duck'</span>, <span style="color: #657a8a;">'chicken'</span>, <span style="color: #657a8a;">'chicken'</span>, <span style="color: #657a8a;">'chicken'</span><span style="">&#93;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> quantify<span style="">&#40;</span><span style="color: #657a8a;">'carrot'</span>, amount=<span style="color: #666;">1000</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> quantify<span style="">&#40;</span><span style="">&#123;</span><span style="color: #657a8a;">'carrot'</span>: <span style="color: #666;">100</span>, <span style="color: #657a8a;">'parrot'</span>: <span style="color: #666;">20</span><span style="">&#125;</span><span style="">&#41;</span><br />
-<br />
-several chickens, a pair of geese a​nd a duck<br />
-hundreds of carrots<br />
-dozens of carrots a​nd a score of parrots</code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">number(string)              # &quot;seventy-five point two&quot; =&gt; 75.2</pre><pre class="brush:python; gutter:false; light:true;">numerals(n, round=2)        # 2.245 =&gt; &quot;two point twenty-five&quot;</pre><pre class="brush:python; gutter:false; light:true;">quantify([word1, word2, ...], plural={})</pre><pre class="brush:python; gutter:false; light:true;">reflect(object, quantify=True, replace=[])
+</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import quantify
+&gt;&gt;&gt; print quantify([&#39;goose&#39;, &#39;goose&#39;, &#39;duck&#39;, &#39;chicken&#39;, &#39;chicken&#39;, &#39;chicken&#39;])
+&gt;&gt;&gt; print quantify(&#39;carrot&#39;, amount=1000)
+&gt;&gt;&gt; print quantify({&#39;carrot&#39;: 100, &#39;parrot&#39;: 20})
+
+several chickens, a pair of geese an⁣d a duck
+hundreds of carrots
+dozens of carrots an⁣d a score of parrots
+</pre></div>
 <p>&nbsp;</p>
-<h2>
-<hr /><em><a name="ngram"></a>n</em>-grams</h2>
+<hr />
+<h2><em><a name="ngram"></a>n</em>-grams</h2>
 <p>The <span class="inline_code">ngrams()</span> command returns&nbsp;a list of <em>n</em>-grams (i.e., tuples of <em>n</em> successive words) from the given string.&nbsp;Alternatively, you can supply a <span class="inline_code">Text</span> or <span class="inline_code">Sentence</span> object (see further).&nbsp;<em>n</em>-grams will not run over sentence markers (i.e., .!?).</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">ngrams<span style="">&#40;</span><span style="">string</span>, n=<span style="color: #666;">3</span><span style="">&#41;</span></code></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> ngrams<span style="">&#40;</span><span style="color: #657a8a;">&quot;I am eating a pizza.&quot;</span>, n=<span style="color: #666;">3</span><span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span><span style="">&#40;</span><span style="color: #657a8a;">'I'</span>, <span style="color: #657a8a;">'am'</span>, <span style="color: #657a8a;">'eating'</span><span style="">&#41;</span>, <span style="">&#40;</span><span style="color: #657a8a;">'am'</span>, <span style="color: #657a8a;">'eating'</span>, <span style="color: #657a8a;">'a'</span><span style="">&#41;</span>, <span style="">&#40;</span><span style="color: #657a8a;">'eating'</span>, <span style="color: #657a8a;">'a'</span>, <span style="color: #657a8a;">'pizza'</span><span style="">&#41;</span><span style="">&#93;</span> </code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">ngrams(string, n=3)</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print ngrams(&quot;I am eating a pizza.&quot;, n=3)
+
+[(&#39;I&#39;, &#39;am&#39;, &#39;eating&#39;), (&#39;am&#39;, &#39;eating&#39;, &#39;a&#39;), (&#39;eating&#39;, &#39;a&#39;, &#39;pizza&#39;)] </pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="parser"></a>Parser</h2>
 <p>The core of the <span class="inline_code">pattern.en</span> module is a rule-based shallow parser. To a machine, a text document is nothing more than a string of characters. A shallow parser adds <strong>meaning</strong> by distinguishing between abbreviation periods and sentence breaks, by adding part-of-speech tags to words (is <em>can</em> in this sentence a <span class="postag">NOUN</span> or a <span class="postag">VERB</span>?) and by grouping words that belong together (chunking).</p>
 <p>The parser uses a regular expressions-based approach, which is <strong>fast</strong> but not always accurate. The <span class="inline_code">parse()</span> command and the <span class="inline_code">Text</span>, <span class="inline_code">Sentence</span>, <span class="inline_code">Chunk</span> and <span class="inline_code">Word</span> objects (discussed in the next section) are identical to those in <a href="http://www.clips.ua.ac.be/pages/MBSP" target="_blank">MBSP</a> – a shallow parser that uses a statistical machine learning approach. It is more robust, but slower. Output from both parsers can be used in the <span class="inline_code">pattern.search</span> and <span class="inline_code">pattern.vector</span> modules.</p>
 <p>The <span class="inline_code">parse()</span> command takes a string of text and returns a tagged Unicode string. <br />Sentences in the output are separated by newline characters.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">parse<span style="">&#40;</span><span style="">string</span>, <br />
-&nbsp; &nbsp;<span style="">tokenize</span> = <span style="color: #4a587c;">True</span>, &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Separate punctuation from words?</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp;tags = <span style="color: #4a587c;">True</span>, &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Parse part-of-speech tags? (NN, JJ, ...)</span><br />
-&nbsp; &nbsp; &nbsp;chunks = <span style="color: #4a587c;">True</span>, &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Parse chunks? (NP, VP, PNP, ...)</span><br />
-&nbsp; relations = <span style="color: #4a587c;">False</span>, &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Find relations? (SBJ, OBJ, ...)</span><br />
-&nbsp; &nbsp; lemmata = <span style="color: #4a587c;">False</span>, &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Find word lemmata? (ate =&gt; eat)</span><br />
-&nbsp; &nbsp;encoding = <span style="color: #657a8a;">'utf-8'</span>, &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Default string encoding?</span><br />
-&nbsp; &nbsp; default = <span style="color: #657a8a;">'NN'</span>, &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Default part-of-speech tag.</span><br />
-&nbsp; &nbsp; &nbsp; light = <span style="color: #4a587c;">False</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># True =&gt; disables contextual rules.</span></code></span></p>
-<p>For example:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> parse<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> parse<span style="">&#40;</span><span style="color: #657a8a;">'I eat pizza with a fork.'</span><span style="">&#41;</span><br />
-<br />
-I/PRP/B-NP/O eat/VBD/B-VP pizza/NN/B-NP/O with/IN/B-PP/B-PNP a/DT/B-NP/I-PNP fork/NN/I-NP/I-PNP ././O/O</code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">parse(string, 
+   tokenize = True,         # Separate punctuation from words?
+       tags = True,         # Parse part-of-speech tags? (NN, JJ, ...)
+     chunks = True,         # Parse chunks? (NP, VP, PNP, ...)
+  relations = False,        # Find relations? (SBJ, OBJ, ...)
+    lemmata = False,        # Find word lemmata? (ate =&gt; eat)
+   encoding = &#39;utf-8&#39;,      # Default string encoding?
+    default = &#39;NN&#39;,         # Default part-of-speech tag.
+      light = False)        # True =&gt; disables contextual rules.
+</pre><p>For example:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parse
+&gt;&gt;&gt; print parse(&#39;I eat pizza with a fork.&#39;)
+
+I/PRP/B-NP/O eat/VBD/B-VP pizza/NN/B-NP/O with/IN/B-PP/B-PNP a/DT/B-NP/I-PNP
+fork/NN/I-NP/I-PNP ././O/O
+</pre></div>
 <p>Each token (i.e. tagged word) in a sentence has a number of annotations: <span class="inline_code">tags</span><span class="inline_code">=True</span> includes the word part-of-speech tag, <span class="inline_code">chunks=True</span> the chunk tag + <span class="postag">PNP</span> tag (prepositional noun phrase). With <span class="inline_code">tokenize</span> set to <span class="inline_code">False</span>, no tokenization is carried out (the input string is expected to be tokenized). The <span class="inline_code">encoding</span> parameter defines the character encoding of the input string.</p>
 <p>The parser is built on a Brill lexicon of tagged words and rules to improve the tags context-wise. With <span class="inline_code">light=False</span>, it uses Brill's contextual rules. With <span class="inline_code">light=True</span> it uses Jason Wiener's simpler ruleset. This ruleset is 5-10x faster but also 25% less accurate.</p>
 <p><span class="small"><span style="text-decoration: underline;">Reference</span>: Brill, E. (1992). <em>A simple rule-based part of speech tagger.</em> ANLC '92 Proceedings.</span></p>
@@ -262,145 +280,143 @@ I/PRP/B-NP/O eat/VBD/B-VP pizza/NN/B-NP/O with/IN/B-PP/B-PNP a/DT/B-NP/I-PNP for
 <p>The <a href="MBSP-tags.html" target="_blank">Penn Treebank II tags</a> page gives an overview of all the possible tags generated by the parser.</p>
 <h3>Parser shortcuts</h3>
 <p>The <span class="inline_code">tag()</span> command returns a list of <span class="inline_code">(word, POStag)</span>-tuples. With <span class="inline_code">light=True</span>, this is the fastest and simplest way to get an idea of a sentence's constituents.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">tag<span style="">&#40;</span><span style="">string</span>, <span style="">tokenize</span>=<span style="color: #4a587c;">True</span>, encoding=<span style="color: #657a8a;">'utf-8'</span><span style="">&#41;</span></code></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> tag<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">for</span> word, tag <span style="color: #28334f; font-weight: bold;">in</span> tag<span style="">&#40;</span><span style="color: #657a8a;">'The cat felt happy.'</span>, light=<span style="color: #4a587c;">True</span><span style="">&#41;</span>:<br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">if</span> tag == <span style="color: #657a8a;">&quot;JJ&quot;</span>: <span style="color: grey;"># Retrieve all adjectives from the input string.</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #28334f; font-weight: bold;">print</span> word<br />
-<br />
-happy</code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">tag(string, tokenize=True, encoding=&#39;utf-8&#39;)</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import tag
+&gt;&gt;&gt; for word, tag in tag(&#39;The cat felt happy.&#39;, light=True):
+&gt;&gt;&gt;     if tag == &quot;JJ&quot;: # Retrieve all adjectives from the input string.
+&gt;&gt;&gt;         print word
+
+happy</pre></div>
 <h3>Parser output</h3>
 <p>The output of the <span class="inline_code">parse()</span> command is a string of sentences in which each token has been annotated with the requested tags. The <span class="inline_code">pprint()</span> command (extra <em>p</em> is for <em>pretty</em>) gives a good overview of the tags:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, <span style="">pprint</span><br />
-<span style="">&gt;&gt;&gt;</span> s = parse<span style="">&#40;</span><span style="color: #657a8a;">'I ate pizza.'</span>, relations=<span style="color: #4a587c;">True</span>, lemmata=<span style="color: #4a587c;">True</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="">pprint</span><span style="">&#40;</span>s<span style="">&#41;</span> <br />
-<br />
-&nbsp; &nbsp; WORD &nbsp; TAG &nbsp; &nbsp;CHUNK &nbsp; ROLE &nbsp; ID &nbsp; &nbsp; PNP &nbsp; &nbsp;LEMMA<br />
-&nbsp; &nbsp; &nbsp; &nbsp;I &nbsp; PRP &nbsp; &nbsp;NP &nbsp; &nbsp; &nbsp;SBJ &nbsp; &nbsp;<span style="color: #666;">1</span> &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;i &nbsp; <br />
-&nbsp; &nbsp; &nbsp;ate &nbsp; VBP &nbsp; &nbsp;VP &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;<span style="color: #666;">1</span> &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;eat &nbsp; &nbsp; &nbsp; &nbsp; <br />
-&nbsp; &nbsp;pizza &nbsp; NN &nbsp; &nbsp; NP &nbsp; &nbsp; &nbsp;OBJ &nbsp; &nbsp;<span style="color: #666;">1</span> &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;pizza &nbsp; &nbsp; &nbsp; &nbsp; <br />
-&nbsp; &nbsp; &nbsp; &nbsp;. &nbsp; . &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp; - &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;- &nbsp; &nbsp; &nbsp;. &nbsp; &nbsp; &nbsp; &nbsp;</code></span></span></p>
-<p>The output string is a <span class="inline_code">TaggedString</span> object that behaves as a Python string, but with a <span class="inline_code">TaggedString.split()</span> method that yields (without parameters) a list of sentences, where each sentence is a list of tokens,  in which each token is a list of the word + its tags.</p>
-<p>If  you want to analyze the output (i.e. examine the relations between  words and groups of words), the most convenient way is to construct a <a href="#tree" target="_self">parse tree</a> from the output.</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parse, pprint
+&gt;&gt;&gt; s = parse(&#39;I ate pizza.&#39;, relations=True, lemmata=True)
+&gt;&gt;&gt; pprint(s) 
+
+    WORD   TAG    CHUNK   ROLE   ID     PNP    LEMMA
+       I   PRP    NP      SBJ    1      -      i   
+     ate   VBP    VP      -      1      -      eat         
+   pizza   NN     NP      OBJ    1      -      pizza         
+       .   .      -       -      -      -      .        </pre></div>
+<p>The output string is a <span class="inline_code">TaggedString</span> object that behaves as a Python string, but with a <span class="inline_code">TaggedString.split()</span> method that yields (without parameters) a list of sentences, where each sentence is a list of tokens, in which each token is a list of the word + its tags.</p>
+<p>If you want to analyze the output (i.e. examine the relations between words and groups of words), the most convenient way is to construct a <a href="#tree" target="_self">parse tree</a> from the output.</p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="tree"></a>Parse trees</h2>
-<p>A parse tree stores a tagged string as a network of linked Python  objects that can be traversed to analyze the constituents in the text.  The output of the <a href="#parser" target="_self">parser</a> can be passed to the <span class="inline_code">split()</span> command, which produces a <span class="inline_code">Text</span> object. Essentially, a <span class="inline_code">Text</span> is a list of <span class="inline_code">Sentence</span> objects. Each <span class="inline_code">Sentence</span> consists of <span class="inline_code">Word</span> objects. <span class="inline_code">Word</span> objects are also grouped in <span class="inline_code">Chunk</span> objects, which are related to other <span class="inline_code">Chunk</span> objects in various ways.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">split<span style="">&#40;</span>taggedstring, <span style="">token</span>=<span style="">&#91;</span>WORD, POS, CHUNK, PNP<span style="">&#93;</span><span style="">&#41;</span></code></span></p>
-<p>We'll run the sentence "<em>The cat sat on the mat.</em>" through the parse tree:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> parse, split<br />
-<span style="">&gt;&gt;&gt;</span> s = parse<span style="">&#40;</span><span style="color: #657a8a;">'The cat sat on the mat.'</span>, relations=<span style="color: #4a587c;">True</span>, lemmata=<span style="color: #4a587c;">True</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> s = split<span style="">&#40;</span>s<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #4a587c;">repr</span><span style="">&#40;</span>s<span style="">&#41;</span><br />
-<br />
-<span style="">&#91;</span>Sentence<span style="">&#40;</span><br />
-&nbsp;<span style="color: #657a8a;">'The/DT/B-NP/O/NP-SBJ-1/the <br />
-&nbsp; cat/NN/I-NP/O/NP-SBJ-1/cat <br />
-&nbsp; sat/VBD/B-VP/O/VP-1/sit <br />
-&nbsp; on/IN/B-PP/B-PNP/O/on <br />
-&nbsp; the/DT/B-NP/I-PNP/O/the <br />
-&nbsp; mat/NN/I-NP/I-PNP/O/mat <br />
-&nbsp; ././O/O/O/O/.'</span><span style="">&#41;</span><span style="">&#93;</span></code></span><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> s<span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span>.<span style="">chunks</span><br />
-<br />
-<span style="">&#91;</span>Chunk<span style="">&#40;</span><span style="color: #657a8a;">'The cat/NP-SBJ-1'</span><span style="">&#41;</span>, <br />
-&nbsp;Chunk<span style="">&#40;</span><span style="color: #657a8a;">'sat/VP-1'</span><span style="">&#41;</span>, <br />
-&nbsp;Chunk<span style="">&#40;</span><span style="color: #657a8a;">'on/PP'</span><span style="">&#41;</span>, <br />
-&nbsp;Chunk<span style="">&#40;</span><span style="color: #657a8a;">'the mat/NP'</span><span style="">&#41;</span><span style="">&#93;</span></code></span></span></p>
+<p>A parse tree stores a tagged string as a network of linked Python objects that can be traversed to analyze the constituents in the text. The output of the <a href="#parser" target="_self">parser</a> can be passed to the <span class="inline_code">split()</span> command, which produces a <span class="inline_code">Text</span> object. Essentially, a <span class="inline_code">Text</span> is a list of <span class="inline_code">Sentence</span> objects. Each <span class="inline_code">Sentence</span> consists of <span class="inline_code">Word</span> objects. <span class="inline_code">Word</span> objects are also grouped in <span class="inline_code">Chunk</span> objects, which are related to other <span class="inline_code">Chunk</span> objects in various ways.</p>
+<pre class="brush:python; gutter:false; light:true;">split(taggedstring, token=[WORD, POS, CHUNK, PNP])</pre><p>We'll run the sentence "<em>The cat sat on the mat.</em>" through the parse tree:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parse, split
+&gt;&gt;&gt; s = parse(&#39;The cat sat on the mat.&#39;, relations=True, lemmata=True)
+&gt;&gt;&gt; s = split(s)
+&gt;&gt;&gt; print repr(s)
+
+[Sentence(
+ &#39;The/DT/B-NP/O/NP-SBJ-1/the 
+  cat/NN/I-NP/O/NP-SBJ-1/cat 
+  sat/VBD/B-VP/O/VP-1/sit 
+  on/IN/B-PP/B-PNP/O/on 
+  the/DT/B-NP/I-PNP/O/the 
+  mat/NN/I-NP/I-PNP/O/mat 
+  ././O/O/O/O/.&#39;)]</pre><pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print s[0].chunks
+
+[Chunk(&#39;The cat/NP-SBJ-1&#39;), 
+ Chunk(&#39;sat/VP-1&#39;), 
+ Chunk(&#39;on/PP&#39;), 
+ Chunk(&#39;the mat/NP&#39;)]</pre></div>
 <h3>Text</h3>
 <p>A <span class="inline_code">Text</span> is a list of <span class="inline_code">Sentence</span> objects (i.e. you can do: <span class="inline_code">for sentence in text</span>).</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">text = Text<span style="">&#40;</span>taggedstring<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">text = Text.<span style="">from_xml</span><span style="">&#40;</span><span style="">xml</span><span style="">&#41;</span> &nbsp;<span style="color: grey;"># Reads an XML-string generated with Text.xml.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">text.<span style="">string</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># 'The cat sat on the mat .'</span><br />
-text.<span style="">sentences</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># [Sentence('The cat sat on the mat .')]</span><br />
-text.<span style="">copy</span><span style="">&#40;</span><span style="">&#41;</span><br />
-text.<span style="">xml</span></code></span></p>
-<h3>Sentence</h3>
+<pre class="brush:python; gutter:false; light:true;">text = Text(taggedstring)</pre><pre class="brush:python; gutter:false; light:true;">text = Text.from_xml(xml)  # Reads an XML-string generated with Text.xml.
+</pre><pre class="brush:python; gutter:false; light:true;">text.string                # &#39;The cat sat on the mat .&#39;
+text.sentences             # [Sentence(&#39;The cat sat on the mat .&#39;)]
+text.copy()
+text.xml</pre><h3>Sentence</h3>
 <p>A <span class="inline_code">Sentence</span> is a list of <span class="inline_code">Word</span> objects, with attributes + methods that organize words in <span class="inline_code">Chunk</span> objects.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">sentence = Sentence<span style="">&#40;</span>taggedstring<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">sentence = Sentence.<span style="">from_xml</span><span style="">&#40;</span><span style="">xml</span><span style="">&#41;</span> </code></span><span class="geshifilter"><code class="python geshifilter-python">sentence.<span style="">parent</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Sentence parent (for a Slice), or None.</span><br />
-sentence.<span style="color: #4a587c;">id</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Unique for each sentence.</span><br />
-sentence.<span style="">start</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># 0</span><br />
-sentence.<span style="">stop</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Sentence length.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">sentence.<span style="">string</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Tokenized string, without tags.</span><br />
-sentence.<span style="">words</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of Word objects.</span><br />
-sentence.<span style="">chunks</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of Chunk objects.</span><br />
-sentence.<span style="">subjects</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of NP-SBJ chunks.</span><br />
-sentence.<span style="">objects</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of NP-OBJ chunks.</span><br />
-sentence.<span style="">verbs</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of VP chunks.</span><br />
-sentence.<span style="">relations</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># {'SBJ': {1: Chunk('the cat/NP-SBJ-1')},</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># &nbsp; 'VP': {1: Chunk('sat/VP-1')},</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># &nbsp;'OBJ': {}}</span><br />
-sentence.<span style="">pnp</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of PNPChunks: [Chunk('on the mat/PNP')]</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">sentence.<span style="">constituents</span><span style="">&#40;</span>pnp=<span style="color: #4a587c;">False</span><span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">sentence.<span style="color: #4a587c;">slice</span><span style="">&#40;</span>start, stop<span style="">&#41;</span><br />
-sentence.<span style="">copy</span><span style="">&#40;</span><span style="">&#41;</span><br />
-sentence.<span style="">xml</span></code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">sentence = Sentence(taggedstring)</pre><pre class="brush:python; gutter:false; light:true;">sentence = Sentence.from_xml(xml) 
+</pre><pre class="brush:python; gutter:false; light:true;">sentence.parent            # Sentence parent (for a Slice), or None.
+sentence.id                # Unique for each sentence.
+sentence.start             # 0
+sentence.stop              # Sentence length.
+</pre><pre class="brush:python; gutter:false; light:true;">sentence.string            # Tokenized string, without tags.
+sentence.words             # List of Word objects.
+sentence.chunks            # List of Chunk objects.
+sentence.subjects          # List of NP-SBJ chunks.
+sentence.objects           # List of NP-OBJ chunks.
+sentence.verbs             # List of VP chunks.
+sentence.relations         # {&#39;SBJ&#39;: {1: Chunk(&#39;the cat/NP-SBJ-1&#39;)},
+                           #   &#39;VP&#39;: {1: Chunk(&#39;sat/VP-1&#39;)},
+                           #  &#39;OBJ&#39;: {}}
+sentence.pnp               # List of PNPChunks: [Chunk(&#39;on the mat/PNP&#39;)]
+</pre><pre class="brush:python; gutter:false; light:true;">sentence.constituents(pnp=False)</pre><pre class="brush:python; gutter:false; light:true;">sentence.slice(start, stop)
+sentence.copy()
+sentence.xml
+</pre><ul>
 <li><span class="inline_code">Sentence.constituents()</span> returns an in-order list of <span class="inline_code">Word</span> and <span class="inline_code">Chunk</span> objects.<br />With <span class="inline_code">pnp=True</span>, also groups into&nbsp;<span class="inline_code">PNPChunk</span> objects whenever possible.</li>
 <li><span class="inline_code">Sentence.slice() </span>returns a <span class="inline_code">Slice</span> (subclass of <span class="inline_code">Sentence</span>) starting with the word at index <span class="inline_code">start</span> and containing all the words up to (before) index <span class="inline_code">stop</span>.</li>
 </ul>
 <h3>Sentence words</h3>
 <p>A <span class="inline_code">Sentence</span> is made up of <span class="inline_code">Word</span> objects, which are also grouped in <span class="inline_code">Chunk</span> objects:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">word = Word<span style="">&#40;</span>sentence, <span style="">string</span>, lemma=<span style="color: #4a587c;">None</span>, type=<span style="color: #4a587c;">None</span>, index=<span style="color: #666;">0</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">word.<span style="">sentence</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Sentence parent.</span><br />
-word.<span style="">index</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Sentence index of word.</span><br />
-word.<span style="">string</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># String (Unicode).</span><br />
-word.<span style="">lemma</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># String lemma, e.g. 'sat' =&gt; 'sit',</span><br />
-word.<span style="">type</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Part-of-speech tag (NN, JJ, VBD, ...)</span><br />
-word.<span style="">chunk</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Chunk parent, or None.</span><br />
-word.<span style="">pnp</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># PNPChunk parent, or None.</span></code></span></p>
-<h3>Sentence chunks</h3>
+<pre class="brush:python; gutter:false; light:true;">word = Word(sentence, string, lemma=None, type=None, index=0)</pre><pre class="brush:python; gutter:false; light:true;">word.sentence              # Sentence parent.
+word.index                 # Sentence index of word.
+word.string                # String (Unicode).
+word.lemma                 # String lemma, e.g. &#39;sat&#39; =&gt; &#39;sit&#39;,
+word.type                  # Part-of-speech tag (NN, JJ, VBD, ...)
+word.chunk                 # Chunk parent, or None.
+word.pnp                   # PNPChunk parent, or None.</pre><h3>Sentence chunks</h3>
 <p>A <span class="inline_code">Chunk</span> is a list of <span class="inline_code">Word</span> objects that belong together. <br />Chunks can be part of a <span class="inline_code">PNPChunk</span>, which starts with a <span class="postag">PP</span> chunk followed by <span class="postag">NP</span> chunks.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python"><span style="">chunk</span> = Chunk<span style="">&#40;</span>sentence, words=<span style="">&#91;</span><span style="">&#93;</span>, type=<span style="color: #4a587c;">None</span>, role=<span style="color: #4a587c;">None</span>, relation=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python"><span style="">chunk</span>.<span style="">sentence</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Sentence parent.</span><br />
-<span style="">chunk</span>.<span style="">start</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Sentence index of first word.</span><br />
-<span style="">chunk</span>.<span style="">stop</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Sentence index of last word + 1.</span><br />
-<span style="">chunk</span>.<span style="">string</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># String of words (Unicode).</span><br />
-<span style="">chunk</span>.<span style="">words</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of Word objects.</span><br />
-<span style="">chunk</span>.<span style="">head</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Primary Word in the chunk.</span><br />
-<span style="">chunk</span>.<span style="">type</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Chunk tag (NP, VP, PP, ...)</span><br />
-<span style="">chunk</span>.<span style="">role</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Role tag (SBJ, OBJ, ...)</span><br />
-<span style="">chunk</span>.<span style="">relation</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Relation id, e.g. NP-SBJ-1 =&gt; 1.</span><br />
-<span style="">chunk</span>.<span style="">relations</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of (id, role)-tuples.</span><br />
-<span style="">chunk</span>.<span style="">related</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of Chunks with same relation id.</span><br />
-<span style="">chunk</span>.<span style="">subject</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># NP-SBJ chunk with same id.</span><br />
-<span style="">chunk</span>.<span style="color: #4a587c;">object</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># NP-OBJ chunk with same id.</span><br />
-<span style="">chunk</span>.<span style="">verb</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># VP chunk with same id.</span><br />
-<span style="">chunk</span>.<span style="">modifiers</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># []</span><br />
-<span style="">chunk</span>.<span style="">conjunctions</span> &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># []</span><br />
-<span style="">chunk</span>.<span style="">pnp</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># PNPChunk parent, or None.</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python"><span style="">chunk</span>.<span style="">previous</span><span style="">&#40;</span>type=<span style="color: #4a587c;">None</span><span style="">&#41;</span><br />
-<span style="">chunk</span>.<span style="">next</span><span style="">&#40;</span>type=<span style="color: #4a587c;">None</span><span style="">&#41;</span><br />
-<span style="">chunk</span>.<span style="">nearest</span><span style="">&#40;</span>type=<span style="color: #657a8a;">'VP'</span><span style="">&#41;</span></code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">chunk = Chunk(sentence, words=[], type=None, role=None, relation=None)</pre><pre class="brush:python; gutter:false; light:true;">chunk.sentence             # Sentence parent.
+chunk.start                # Sentence index of first word.
+chunk.stop                 # Sentence index of last word + 1.
+chunk.string               # String of words (Unicode).
+chunk.words                # List of Word objects.
+chunk.head                 # Primary Word in the chunk.
+chunk.type                 # Chunk tag (NP, VP, PP, ...)
+chunk.role                 # Role tag (SBJ, OBJ, ...)
+chunk.relation             # Relation id, e.g. NP-SBJ-1 =&gt; 1.
+chunk.relations            # List of (id, role)-tuples.
+chunk.related              # List of Chunks with same relation id.
+chunk.subject              # NP-SBJ chunk with same id.
+chunk.object               # NP-OBJ chunk with same id.
+chunk.verb                 # VP chunk with same id.
+chunk.modifiers            # []
+chunk.conjunctions         # []
+chunk.pnp                  # PNPChunk parent, or None.
+</pre><pre class="brush:python; gutter:false; light:true;">chunk.previous(type=None)
+chunk.next(type=None)
+chunk.nearest(type=&#39;VP&#39;)</pre><ul>
 <li><span class="inline_code">Chunk.head</span> yields the last (i.e. primary) <span class="inline_code">Word</span> in the chunk: <em>the big cat</em> → <em>cat</em>.</li>
-<li><span class="inline_code">Chunk.relations</span><span class="inline_code">&nbsp;</span> contains <em>all</em> relations the chunk is involved in. <br />Some chunks have multiple relations, for example functioning as both <span class="postag">SBJ</span> and <span class="postag">OBJ</span>, or being the <span class="postag">OBJ</span> of multiple <span class="postag">VP</span> chunks. </li>
+<li><span class="inline_code">Chunk.relations</span><span class="inline_code">&nbsp;</span> contains <em>all</em> relations the chunk is involved in. <br />Some chunks have multiple relations, for example functioning as both <span class="postag">SBJ</span> and <span class="postag">OBJ</span>, or being the <span class="postag">OBJ</span> of multiple <span class="postag">VP</span> chunks.</li>
 <li>For <span class="postag">VP</span> chunks, <span class="inline_code">Chunk.modifiers</span> is a list of nearby adjectives and adverbs with no relations. <br />For example in <em>the cat really wants out</em>: <em>really</em> and <em>out</em> are <span class="postag">ADVP</span> with no relations. <br />The parse tree will assume that they have something to do with the <span class="postag">VP</span> <em>wants</em>. <br />What does the cat want? → <em>out</em>. <br />How badly does the cat want out? → <em>really</em>.</li>
 <li><span class="inline_code">Chunk.conjunctions</span> is a list of chunks linked by <em>and</em> &amp; <em>or</em> to this chunk. <br />For example in <em>going up and down</em>: the <em>up</em> chunk has conjunctions: <span class="inline_code">[(Chunk('down'), AND)] </span></li>
 </ul>
 <h3>Prepositional noun phrases</h3>
 <p><span class="inline_code">PNPChunk</span> is a subclass of <span class="inline_code">Chunk</span>. It has the same attributes and methods. <br />It groups <span class="postag">PP</span> + <span class="postag">NP</span> chunks in a prepositional noun phrase (<span class="postag">PNP</span>).</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">pnp = PNPChunk<span style="">&#40;</span>sentence, words=<span style="">&#91;</span><span style="">&#93;</span>, type=<span style="color: #4a587c;">None</span>, role=<span style="color: #4a587c;">None</span>, relation=<span style="color: #4a587c;">None</span><span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">pnp.<span style="">string</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># String of words (Unicode).</span><br />
-pnp.<span style="">chunks</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of Chunk objects.</span><br />
-pnp.<span style="">preposition</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># First PP-chunk in the PNP.</span></code></span></p>
-<p>Words and chunks that are part of a <span class="postag">PNP</span> will have their <span class="inline_code">Word.pnp</span> and <span class="inline_code">Chunk.pnp</span> attribute set.<br />All the prepositional noun phrases in a sentence can be retrieved with <span class="inline_code">Sentence.pnp</span>.</p>
+<pre class="brush:python; gutter:false; light:true;">pnp = PNPChunk(sentence, words=[], type=None, role=None, relation=None)</pre><pre class="brush:python; gutter:false; light:true;">pnp.string                 # String of words (Unicode).
+pnp.chunks                 # List of Chunk objects.
+pnp.preposition            # First PP-chunk in the PNP.
+</pre><p>Words and chunks that are part of a <span class="postag">PNP</span> will have their <span class="inline_code">Word.pnp</span> and <span class="inline_code">Chunk.pnp</span> attribute set.<br />All the prepositional noun phrases in a sentence can be retrieved with <span class="inline_code">Sentence.pnp</span>.</p>
 <p>&nbsp;</p>
-<h2>
-<hr /><a name="sentiment"></a>Sentiment</h2>
+<hr />
+<h2><a name="sentiment"></a>Sentiment</h2>
 <p>Text can be broadly categorized into two types: facts and opinions. Opinions carry people's sentiments, appraisals and feelings toward the world. The module bundles a lexicon of adjectives that occur frequently in product reviews, tagged with scores for sentiment polarity (positive/negative) and subjectivity.&nbsp;</p>
 <p>The <span class="inline_code">sentiment()</span> command returns a (<span class="inline_code">polarity</span>, <span class="inline_code">subjectivity</span>)-tuple for the given sentence (based on the adjectives in it),&nbsp;with polarity between <span class="inline_code">-1.0</span> and <span class="inline_code">1.0</span> and subjectivity between <span class="inline_code">0.0</span> and <span class="inline_code">1.0</span>.&nbsp;The sentence can be a string, <span class="inline_code">Text</span>, <span class="inline_code">Sentence</span>, <span class="inline_code">Chunk</span>,&nbsp;<span class="inline_code">Word</span> or a&nbsp;<span class="inline_code">Synset</span> (see further).</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">sentiment<span style="">&#40;</span>sentence<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">polarity<span style="">&#40;</span>sentence<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">subjectivity<span style="">&#40;</span>sentence<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">positive<span style="">&#40;</span>s, threshold=<span style="color: #666;">0.1</span><span style="">&#41;</span></code></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> sentiment<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> sentiment<span style="">&#40;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #657a8a;">&quot;The movie attempts to be surreal by incorporating various time paradoxes,&quot;</span><br />
-<span style="">&gt;&gt;&gt;</span> &nbsp; &nbsp; <span style="color: #657a8a;">&quot;but it's presented in such a ridiculous way it's seriously boring.&quot;</span><span style="">&#41;</span> <br />
-<br />
-<span style="">&#40;</span>-<span style="color: #666;">0.34</span>, <span style="color: #666;">1.0</span><span style="">&#41;</span> </code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">sentiment(sentence)</pre><pre class="brush:python; gutter:false; light:true;">polarity(sentence)</pre><pre class="brush:python; gutter:false; light:true;">subjectivity(sentence)</pre><pre class="brush:python; gutter:false; light:true;">positive(s, threshold=0.1)</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import sentiment
+&gt;&gt;&gt; print sentiment(
+&gt;&gt;&gt;     &quot;The movie attempts to be surreal by incorporating various time paradoxes,&quot;
+&gt;&gt;&gt;     &quot;but it&#39;s presented in such a ridiculous way it&#39;s seriously boring.&quot;) 
+
+(-0.34, 1.0) </pre></div>
 <p>In the example above,&nbsp;<span class="inline_code">-0.34</span> is a compromise between <em>surreal</em>, <em>various</em>, <em>ridiculous</em> and <em>seriously boring</em>.</p>
 <p>The <span class="inline_code">polarity()</span> command returns&nbsp;the sentence polarity (positive/negative sentiment).&nbsp;</p>
 <p>The <span class="inline_code">subjectivity()</span> command returns the sentence subjectivity (objective/subjective).</p>
 <p>The <span class="inline_code">positive()</span> command returns&nbsp;<span class="inline_code">True</span> if the given sentence's polarity is above the threshold. The threshold can be lowered or raised, but overall&nbsp;<span class="inline_code">+0.1</span> gives the best results for product reviews. Accuracy is 72% (P 0.72, R 0.71) for movie reviews.</p>
 <p>&nbsp;</p>
-<h2>
-<hr /></h2>
+<hr />
 <h2><a name="modality"></a>Mood &amp; modality</h2>
 <p>Linguistic modality deals with necessity, permissibility and probability.&nbsp;</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">mood<span style="">&#40;</span>sentence<span style="">&#41;</span> <span style="color: grey;"># INDICATIVE | IMPERATIVE | CONDITIONAL | SUBJUNCTIVE</span></code></span><span class="geshifilter"><code class="python geshifilter-python">modality<span style="">&#40;</span>sentence, type=EPISTEMIC<span style="">&#41;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">negated<span style="">&#40;</span>sentence<span style="">&#41;</span></code></span></p>
-<p>The <span class="inline_code">mood()</span> command tries to identify a parsed&nbsp;<span class="inline_code">Sentence</span> as indicative, imperative, conditional or subjunctive:</p>
+<pre class="brush:python; gutter:false; light:true;">mood(sentence) # INDICATIVE | IMPERATIVE | CONDITIONAL | SUBJUNCTIVE</pre><pre class="brush:python; gutter:false; light:true;">modality(sentence, type=EPISTEMIC)</pre><pre class="brush:python; gutter:false; light:true;">negated(sentence)</pre><p>The <span class="inline_code">mood()</span> command tries to identify a parsed&nbsp;<span class="inline_code">Sentence</span> as indicative, imperative, conditional or subjunctive:</p>
 <table class="border">
 <tbody>
 <tr>
@@ -442,68 +458,71 @@ pnp.<span style="">preposition</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<
 <hr />
 <h2><a name="wordnet"></a>WordNet</h2>
 <p>The <span class="inline_code">pattern.en</span> module comes bundled with WordNet 3.0 and Oliver Steele's PyWordNet module. <a href="http://wordnet.princeton.edu/" target="_blank">WordNet</a> is a lexical database for the English language, that groups words into <span class="inline_code">Synset</span> objects (= sets of synonyms). Each synset provides a short definition and various semantic relations to other synsets:</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">synset = synsets<span style="">&#40;</span>word, pos=NOUN<span style="">&#41;</span><span style="">&#91;</span>i<span style="">&#93;</span></code></span><span class="geshifilter"><code class="python geshifilter-python">synset.<span style="">pos</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Part-of-speech: NOUN | VERB | ADJECTIVE | ADVERB.</span><br />
-synset.<span style="">synonyms</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of word forms (i.e. synonyms).</span><br />
-synset.<span style="">gloss</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Definition string.</span><br />
-synset.<span style="">lexname</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># Category string, or None.</span><br />
-synset.<span style="">ic</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Information Content value.</span><br />
-synset.<span style="">weight</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># Tuple of (polarity, subjectivity), using SentiWordNet.</span></code></span><span class="geshifilter"><code class="python geshifilter-python">synset.<span style="">antonym</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># A Synset (semantical opposite).</span><br />
-synset.<span style="">hypernym</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># A Synset (semantical parent).</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">synset.<span style="">hypernyms</span><span style="">&#40;</span>recursive=<span style="color: #4a587c;">False</span>, depth=<span style="color: #4a587c;">None</span><span style="">&#41;</span><br />
-synset.<span style="">hyponyms</span><span style="">&#40;</span>recursive=<span style="color: #4a587c;">False</span>, depth=<span style="color: #4a587c;">None</span><span style="">&#41;</span><br />
-synset.<span style="">meronyms</span><span style="">&#40;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of synsets (members/parts).</span><br />
-synset.<span style="">holonyms</span><span style="">&#40;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: grey;"># List of synsets (of which this is a member).</span><br />
-synset.<span style="">similar</span><span style="">&#40;</span><span style="">&#41;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: grey;"># List of synsets (similar adjectives/verbs) </span></code></span></p>
-<ul>
+<pre class="brush:python; gutter:false; light:true;">synset = synsets(word, pos=NOUN)[i]</pre><pre class="brush:python; gutter:false; light:true;">synset.pos                  # Part-of-speech: NOUN | VERB | ADJECTIVE | ADVERB.
+synset.synonyms             # List of word forms (i.e. synonyms).
+synset.gloss                # Definition string.
+synset.lexname              # Category string, or None.
+synset.ic                   # Information Content value.
+synset.weight               # Tuple of (polarity, subjectivity), using SentiWordNet.</pre><pre class="brush:python; gutter:false; light:true;">synset.antonym              # A Synset (semantical opposite).
+synset.hypernym             # A Synset (semantical parent).</pre><pre class="brush:python; gutter:false; light:true;">synset.hypernyms(recursive=False, depth=None)
+synset.hyponyms(recursive=False, depth=None)
+synset.meronyms()           # List of synsets (members/parts).
+synset.holonyms()           # List of synsets (of which this is a member).
+synset.similar()            # List of synsets (similar adjectives/verbs) </pre><ul>
 <li><span class="inline_code">Synset.hypernyms()</span> returns a list of <em>&nbsp;</em>parent synsets (i.e. more general).</li>
 <li><span class="inline_code">Synset.hyponyms()</span> returns a list child synsets (i.e. more specific).<br />With <span class="inline_code">recursive=True</span>, returns all parents of all parents / all children of all children.<br />Optionally returns parents / children recursively up to the given <span class="inline_code">depth</span>.</li>
 </ul>
 <p>For example:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> wordnet<br />
-<span style="">&gt;&gt;&gt;</span> s = wordnet.<span style="">synsets</span><span style="">&#40;</span><span style="color: #657a8a;">'bird'</span><span style="">&#41;</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #657a8a;">'Definition:'</span>, s.<span style="">gloss</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #657a8a;">' &nbsp;Synonyms:'</span>, s.<span style="">synonyms</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #657a8a;">' Hypernyms:'</span>, s.<span style="">hypernyms</span><span style="">&#40;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #657a8a;">' &nbsp;Hyponyms:'</span>, s.<span style="">hyponyms</span><span style="">&#40;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #657a8a;">' &nbsp;Holonyms:'</span>, s.<span style="">holonyms</span><span style="">&#40;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> <span style="color: #657a8a;">' &nbsp;Meronyms:'</span>, s.<span style="">meronyms</span><span style="">&#40;</span><span style="">&#41;</span><br />
-<br />
-Definition: u<span style="color: #657a8a;">'warm-blooded egg-laying vertebrates characterized <br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; by feathers and forelimbs modified as wings'</span><br />
-&nbsp; Synonyms: <span style="">&#91;</span><span style="color: #657a8a;">'bird'</span><span style="">&#93;</span><br />
-&nbsp;Hypernyms: <span style="">&#91;</span>Synset<span style="">&#40;</span><span style="color: #657a8a;">'vertebrate'</span><span style="">&#41;</span><span style="">&#93;</span><br />
-&nbsp; Hyponyms: <span style="">&#91;</span>Synset<span style="">&#40;</span><span style="color: #657a8a;">'dickeybird'</span><span style="">&#41;</span>, Synset<span style="">&#40;</span><span style="color: #657a8a;">'cock'</span><span style="">&#41;</span>, Synset<span style="">&#40;</span><span style="color: #657a8a;">'hen'</span><span style="">&#41;</span>, ...<span style="">&#93;</span><br />
-&nbsp; Holonyms: <span style="">&#91;</span>Synset<span style="">&#40;</span><span style="color: #657a8a;">'Aves'</span><span style="">&#41;</span>, Synset<span style="">&#40;</span><span style="color: #657a8a;">'flock'</span><span style="">&#41;</span><span style="">&#93;</span><br />
-&nbsp; Meronyms: <span style="">&#91;</span>Synset<span style="">&#40;</span><span style="color: #657a8a;">'beak'</span><span style="">&#41;</span>, Synset<span style="">&#40;</span><span style="color: #657a8a;">'furcula'</span><span style="">&#41;</span>, Synset<span style="">&#40;</span><span style="color: #657a8a;">'feather'</span><span style="">&#41;</span>, ...<span style="">&#93;</span></code></span></span></p>
-<p><span class="example"><span class="small"><span style="text-decoration: underline;">Reference</span>: Fellbaum, C. (1998). <em>WordNet: An Electronic Lexical Database</em>. Cambridge, MIT Press.</span><br /></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import wordnet
+&gt;&gt;&gt; s = wordnet.synsets(&#39;bird&#39;)[0]
+&gt;&gt;&gt; print &#39;Definition:&#39;, s.gloss
+&gt;&gt;&gt; print &#39;  Synonyms:&#39;, s.synonyms
+&gt;&gt;&gt; print &#39; Hypernyms:&#39;, s.hypernyms()
+&gt;&gt;&gt; print &#39;  Hyponyms:&#39;, s.hyponyms()
+&gt;&gt;&gt; print &#39;  Holonyms:&#39;, s.holonyms()
+&gt;&gt;&gt; print &#39;  Meronyms:&#39;, s.meronyms()
+
+Definition: u&#39;warm-blooded egg-laying vertebrates characterized 
+              by feathers and forelimbs modified as wings&#39;
+  Synonyms: [&#39;bird&#39;]
+ Hypernyms: [Synset(&#39;vertebrate&#39;)]
+  Hyponyms: [Synset(&#39;dickeybird&#39;), Synset(&#39;cock&#39;), Synset(&#39;hen&#39;), ...]
+  Holonyms: [Synset(&#39;Aves&#39;), Synset(&#39;flock&#39;)]
+  Meronyms: [Synset(&#39;beak&#39;), Synset(&#39;furcula&#39;), Synset(&#39;feather&#39;), ...]</pre></div>
+<div class="example"><span class="small"><span style="text-decoration: underline;">Reference</span>: Fellbaum, C. (1998). </span><em class="small">WordNet: An Electronic Lexical Database</em><span class="small">. Cambridge, MIT Press.</span></div>
 <h3>Synset similarity</h3>
 <p>The <span class="inline_code">ancestor()</span> command returns the common ancestor (or <em>least common subsumer</em>) of two synsets.<br />The <span class="inline_code">similarity()</span> command returns the semantic similarity of two synsets, as a number.</p>
-<p><span class="geshifilter"><code class="python geshifilter-python">ancestor<span style="">&#40;</span>synset1, synset2<span style="">&#41;</span></code></span></p>
-<p><span class="geshifilter"><code class="python geshifilter-python">similarity<span style="">&#40;</span>synset1, synset2<span style="">&#41;</span> <span style="color: grey;"># Lower value = higher similarity.</span></code></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> a = wordnet.<span style="">synsets</span><span style="">&#40;</span><span style="color: #657a8a;">'cat'</span><span style="">&#41;</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span><br />
-<span style="">&gt;&gt;&gt;</span> b = wordnet.<span style="">synsets</span><span style="">&#40;</span><span style="color: #657a8a;">'dog'</span><span style="">&#41;</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> wordnet.<span style="">ancestor</span><span style="">&#40;</span>a, b<span style="">&#41;</span><br />
-<br />
-Synset<span style="">&#40;</span><span style="color: #657a8a;">'carnivore'</span><span style="">&#41;</span></code></span></span></p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> c = wordnet.<span style="">synsets</span><span style="">&#40;</span><span style="color: #657a8a;">'teapot'</span><span style="">&#41;</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> wordnet.<span style="">similarity</span><span style="">&#40;</span>a, b<span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> wordnet.<span style="">similarity</span><span style="">&#40;</span>a, c<span style="">&#41;</span><br />
-<br />
-<span style="color: #666;">3.29</span><br />
-<span style="color: #666;">4152.56</span></code></span></span></p>
+<pre class="brush:python; gutter:false; light:true;">ancestor(synset1, synset2)</pre><pre class="brush:python; gutter:false; light:true;">similarity(synset1, synset2) # Lower value = higher similarity.
+</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; a = wordnet.synsets(&#39;cat&#39;)[0]
+&gt;&gt;&gt; b = wordnet.synsets(&#39;dog&#39;)[0]
+&gt;&gt;&gt; print wordnet.ancestor(a, b)
+
+Synset(&#39;carnivore&#39;)
+</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; c = wordnet.synsets(&#39;teapot&#39;)[0]
+&gt;&gt;&gt; print wordnet.similarity(a, b)
+&gt;&gt;&gt; print wordnet.similarity(a, c)
+
+3.29
+4152.56</pre></div>
 <p>The similarity weight is based on Lin-similarity and Information Content (IC). IC values for each synset are derived from the word's occurence in a given corpus (e.g. Brown). The idea is that less frequent words convey more information. Lower values indicate higher similarity:</p>
 <p><span class="inline_code">lin = 2.0 * ancestor(synset1, synset2).ic / (synset1.ic + synset2.ic)</span></p>
 <h3>Synset sentiment</h3>
 <p><a href="http://sentiwordnet.isti.cnr.it/" target="_blank">SentiWordNet</a> is a third-party lexical resource for opinion mining, with polarity and subjectivity scores for all WordNet synsets. SentiWordNet is free for non-commercial research purposes. To enable SentiWordNet, request a download from the authors and place the file <span class="inline_code">SentiWordNet*.txt</span> in&nbsp;<span class="inline_code">pattern/en/wordnet/</span>.&nbsp;You can then use&nbsp;<span class="inline_code">wordnet.sentiwordnet</span>&nbsp;and <span class="inline_code">Synset.weight()</span> in your script:</p>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> wordnet<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span> <span style="color: #28334f; font-weight: bold;">import</span> ADJECTIVE<br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> wordnet.<span style="">sentiwordnet</span><span style="">&#91;</span><span style="color: #657a8a;">'lamp'</span><span style="">&#93;</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> wordnet.<span style="">synsets</span><span style="">&#40;</span><span style="color: #657a8a;">'happy'</span>, ADJECTIVE<span style="">&#41;</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span>.<span style="">weight</span><br />
-<span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">print</span> wordnet.<span style="">synsets</span><span style="">&#40;</span><span style="color: #657a8a;">'sad'</span>, ADJECTIVE<span style="">&#41;</span><span style="">&#91;</span><span style="color: #666;">0</span><span style="">&#93;</span>.<span style="">weight</span><br />
-<br />
-<span style="">&#40;</span><span style="color: #666;">0.0</span>, <span style="color: #666;">0.0</span><span style="">&#41;</span><br />
-<span style="">&#40;</span><span style="color: #666;">0.375</span>, <span style="color: #666;">0.875</span><span style="">&#41;</span><br />
-<span style="">&#40;</span>-<span style="color: #666;">0.625</span>, <span style="color: #666;">0.875</span><span style="">&#41;</span></code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import wordnet
+&gt;&gt;&gt; from pattern.en import ADJECTIVE
+&gt;&gt;&gt; print wordnet.sentiwordnet[&#39;lamp&#39;]
+&gt;&gt;&gt; print wordnet.synsets(&#39;happy&#39;, ADJECTIVE)[0].weight
+&gt;&gt;&gt; print wordnet.synsets(&#39;sad&#39;, ADJECTIVE)[0].weight
+
+(0.0, 0.0)
+(0.375, 0.875)
+(-0.625, 0.875)
+</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="wordlist"></a>Wordlists</h2>
@@ -542,9 +561,10 @@ Synset<span style="">&#40;</span><span style="color: #657a8a;">'carnivore'</span
 </tr>
 </tbody>
 </table>
-<p><span class="example"><span class="geshifilter"><code class="python geshifilter-python"><span style="">&gt;&gt;&gt;</span> <span style="color: #28334f; font-weight: bold;">from</span> pattern.<span style="">en</span>.<span style="">wordlist</span> <span style="color: #28334f; font-weight: bold;">import</span> ACADEMIC<br />
-<span style="">&gt;&gt;&gt;</span> words = <span style="color: #4a587c;">open</span><span style="">&#40;</span><span style="color: #657a8a;">&quot;paper.txt&quot;</span><span style="">&#41;</span>.<span style="">read</span><span style="">&#40;</span><span style="">&#41;</span>.<span style="">split</span><span style="">&#40;</span><span style="color: #657a8a;">&quot; &quot;</span><span style="">&#41;</span><br />
-<span style="">&gt;&gt;&gt;</span> words = <span style="">&#91;</span>w <span style="color: #28334f; font-weight: bold;">for</span> w <span style="color: #28334f; font-weight: bold;">in</span> words <span style="color: #28334f; font-weight: bold;">if</span> w <span style="color: #28334f; font-weight: bold;">not</span> <span style="color: #28334f; font-weight: bold;">in</span> ACADEMIC<span style="">&#93;</span> </code></span></span></p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en.wordlist import ACADEMIC
+&gt;&gt;&gt; words = open(&quot;paper.txt&quot;).read().split(&quot; &quot;)
+&gt;&gt;&gt; words = [w for w in words if w not in ACADEMIC] </pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2>See also</h2>
@@ -560,5 +580,8 @@ Synset<span style="">&#40;</span><span style="color: #657a8a;">'carnivore'</span
     </div>
     </div>
     </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
 </body>
 </html>
