@@ -375,6 +375,12 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
             s[i] = find_relations(s[i])
         if lemmata:
             s[i] = find_lemmata(s[i])
+    
+    # If the user explicitly passed `collapse=False`, returned the uncollapsed
+    # sentence-token-value nested lists.
+    if not kwargs.get('collapse', True):
+        return s
+        
     # Include the format of a token in the parsed output string.
     # This allows a Sentence (see tree.py) to figure out the order of the tags.
     format = ["word"]
