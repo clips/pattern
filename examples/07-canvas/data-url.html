@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+	<!-- Export an image to a data url. -->
+	<title>canvas.js | data url</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript">
+		function data_url(file) {
+			// Returns the file contents as a data url string
+			// (i.e, "data:image/jpeg;base64,...").
+			var f = new FileReader();
+			f.onload = function(e) {
+				document.getElementById("data").value = e.target.result;
+			}
+			f.readAsDataURL(file.files[0]);
+		}
+		function wrap(str, width) {
+			// Returns the string as a JavaScript value,
+			// quoted and broken into lines of the given width.
+			if (width === undefined) {
+				return str;
+			}
+			var js = "";
+			while (str.length > 0) {
+				js += "'" + str.substring(0, width) + "' +\n";
+				str = str.substring(width);
+			}
+			return js.replace(/[ \+\n]+$/, "");
+		}
+		function img(str) {
+			// Returns a canvas.js Image assignment.
+			return "var img = new Image(\n" + str + ");"
+		}
+	</script>
+	<style>
+		a { color: dodgerblue; }
+	</style>
+</head>
+<body style="font:13px Georgia serif;line-height:1.3em;">
+	<p>For <a href="https://developer.mozilla.org/en/CORS_Enabled_Image">security reasons</a>, <code>Canvas</code> does not allow you to retrieve the <code>Pixels</code> of remote images (i.e., from a URL not on your own server). Neither can you export a canvas rendering such images (no <code>Canvas.image()</code> or <code>Canvas.save()</code>). During testing, you may opt to include (small) images in your script as data URLs. This script can be used to generate the data URL of an image, provided that your browser supports <code>FileReader</code> (it <span id="support"></span><script>document.getElementById("support").innerHTML = window.FileReader? "does" : "doesn't"</script>).</p>
+	<input type="file" id="file" onchange="data_url(this);" />
+	<br />
+	<textarea id="data" style="width:500px;height:250px;font:11px monospace;">
+	</textarea>
+	<br />
+	<a href="#" onclick="document.getElementById('data').value = img(wrap(document.getElementById('data').value, 65));">convert to canvas.js code block</a>
+</body>
+</html>
