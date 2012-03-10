@@ -674,7 +674,7 @@ class Corpus(object):
         if format == WEKA:
             s.append("@RELATION %s" % kwargs.get("name", hash(self)))
             s.append("\n".join("@ATTRIBUTE %s NUMERIC" % k for k in keys))
-            s.append("@ATTRIBUTE class {%s}" % ",".join(set(d.type for d in self.documents)))
+            s.append("@ATTRIBUTE class {%s}" % ",".join(set(d.type or "" for d in self.documents)))
             s.append("@DATA")
             for document in self.documents:
                 v = document.vector
