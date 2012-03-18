@@ -64,17 +64,17 @@ window.height = function() {
 
 // Additional array functions are invoked with Array.[function].
 
-Array.max = function(array) {
-    return Math.max.apply(Math, array);
-};
 Array.min = function(array) {
     return Math.min.apply(Math, array);
+};
+Array.max = function(array) {
+    return Math.max.apply(Math, array);
 };
 Array.sum = function(array) {
     for (var i=0, sum=0; i < array.length; sum+=array[i++]){}; return sum;
 };
 
-Array.find = function(array) {
+Array.find = function(array, match) {
     for (var i=0; i < array.length; i++) { if (match(array[i])) return i; }
 };
 
@@ -106,10 +106,23 @@ Array.enumerate = function(array, f) {
     }
 };
 
+Array.eq = function(array1, array2) {
+    /* Returns true if both arrays contain the same values.
+     */
+    if (!(array1 instanceof Array) || 
+        !(array2 instanceof Array) ||  array1.length != array2.length) {
+        return false;
+    }
+	for (var i=0; i < array1.length; i++) {
+		if (array1[i] !== array2[i]) return false;
+	}
+	return true;
+}
+
 Array.sorted = function(array, reversed) {
     /* Returns a sorted copy of the given array.
      */
-    array = array.copy();
+    array = array.slice();
     array = array.sort();
     if (reversed) array = array.reverse();
     return array;
@@ -460,13 +473,13 @@ var Color = Class.extend({
         } else if (r === undefined || r == null) {
             r=0; g=0; b=0; a=0;
         // One value, grayscale.
-        } else if (g === undefined) {
+        } else if (g === undefined || g == null) {
              a=1; g=r; b=r;
         // Two values, grayscale and alpha.
-        } else if (b === undefined) {
+        } else if (b === undefined || b == null) {
              a=g; g=r; b=r;
         // R, G and B.
-        } else if (a === undefined) {
+        } else if (a === undefined || a == null) {
             a=1;
         }
         if (options) {
@@ -480,7 +493,7 @@ var Color = Class.extend({
             }
             // Transform to color space HEX:
             if (options.colorspace == HEX) {
-                var rgb = _hex2rgb(r); r=rgb[0]; g=rgb[1]; b=rgb[2];
+                var rgb = _hex2rgb(r); r=rgb[0]; g=rgb[1]; b=rgb[2]; a=1;
             }            
         }
         this.r = r;
@@ -2887,6 +2900,20 @@ attachEvent(window, "load", function() {
         }
     }
 });
+
+/*--- REQUIRE --------------------------------------------------------------------------------------*/
+
+function require(src) {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = src;
+    script.onload = script.onreadystatechange = function() {
+        this.busy = !(this.readyState && 
+                      this.readyState != "complete" && 
+                      this.readyState != "loaded");
+    }
+    document.body.appendChild(script);
+}
 
 /*##################################################################################################*/
 
