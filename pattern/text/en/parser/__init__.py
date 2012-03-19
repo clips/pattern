@@ -352,7 +352,7 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
     if isinstance(s, (list, tuple)):
         s = [s.split(" ") for s in s]
     if isinstance(s, basestring):
-        s = [s.split(" ")]
+        s = [s.split(" ") for s in s.split("\n")]
     for i in range(len(s)):
         for j in range(len(s[i])):
             # Convert tokens to Unicode.
@@ -375,12 +375,6 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
             s[i] = find_relations(s[i])
         if lemmata:
             s[i] = find_lemmata(s[i])
-    
-    # If the user explicitly passed `collapse=False`, returned the uncollapsed
-    # sentence-token-value nested lists.
-    if not kwargs.get('collapse', True):
-        return s
-        
     # Include the format of a token in the parsed output string.
     # This allows a Sentence (see tree.py) to figure out the order of the tags.
     format = ["word"]
@@ -388,6 +382,10 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
     if chunks    : format.extend(("chunk", "preposition"))
     if relations : format.append("relation")
     if lemmata   : format.append("lemma")
+    # With collapse=False, returns the raw [[[token, tag], [token, tag]], ...].
+    # Note that we can't pass this output to Sentence (format is not stored).
+    if not kwargs.get("collapse", True) or kwargs.get("split", False):
+        return s
     # Collapse the output.
     # Sentences are separated by newlines, tokens by spaces, tags by slashes.
     # Slashes in words are encoded with &slash;
