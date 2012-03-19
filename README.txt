@@ -56,3 +56,4 @@ Contributing authors (chronological):
 - Peteris Erins
 - Rajesh Nair
 - F. De Smedt
+- Radim Řehůřek
