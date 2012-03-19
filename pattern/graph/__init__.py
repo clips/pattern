@@ -133,7 +133,7 @@ class Node(object):
             self.graph.betweenness_centrality()
         return self._centrality
         
-    def flatten(self, depth=1, _visited=None):
+    def flatten(self, depth=1, traversable=lambda node, edge: True, _visited=None):
         """ Recursively lists the node and nodes linked to it.
             Depth 0 returns a list with the node.
             Depth 1 returns a list with the node and all the directly linked nodes.
@@ -144,7 +144,8 @@ class Node(object):
         if depth >= 1:
             for n in self.links: 
                 if n.id not in _visited or _visited[n.id][1] < depth-1:
-                    n.flatten(depth-1, _visited)
+                    if traversable(self, self.links.edges[n.id]):
+                        n.flatten(depth-1, traversable, _visited)
         return [n for n,d in _visited.values()] # Fast, but not order-preserving.
     
     def draw(self, weighted=False):
@@ -736,7 +737,7 @@ def adjacency(graph, directed=False, reversed=False, stochastic=False, heuristic
         A heuristic function can be given that takes two node id's and returns
         an additional cost for movement between the two nodes.
     """
-    # Note: caching a heuristic that is a method won't work.
+    # Caching a heuristic from a method won't work.
     # Bound method objects are transient, 
     # i.e., id(object.method) returns a new value each time.
     if graph._adjacency is not None and \
@@ -902,7 +903,7 @@ def brandes_betweenness_centrality(graph, normalized=True, directed=False):
                     P[w].append(v)
                     E[w] += E[v] 
         d = dict.fromkeys(graph, 0.0)  
-        for w in S:
+        for w in reversed(S):
             for v in P[w]:
                 d[v] += (1.0 + d[w]) * E[v] / E[w]
             if w != id: 
