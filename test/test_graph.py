@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import os, sys; sys.path.insert(0, os.path.join("..", ".."))
+import os, sys; sys.path.insert(0, os.path.join(".."))
 import unittest
 
 from pattern import graph
@@ -249,11 +249,12 @@ class TestGraph(unittest.TestCase):
         # Assert betweenness centrality.
         self.assertEqual(self.g["a"]._centrality, None)
         v = self.g.betweenness_centrality()
+        print v
         self.assertTrue(isinstance(v["a"], float))
         self.assertTrue(v["a"] == v[self.g.node("a")])
         self.assertTrue(v["a"] < v["b"])
         self.assertTrue(v["c"] < v["b"])
-        print "pattern.graph.Graph.eigenvector_centrality()"
+        print "pattern.graph.Graph.betweenness_centrality()"
 
     def test_sorted(self):
         # Assert graph node sorting
