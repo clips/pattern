@@ -314,8 +314,8 @@ def find_prepositions(chunked):
 #### LEMMATIZER ####################################################################################
 # Word lemmas using singularization and verb conjugation from the inflect module.
 
-try: 
-    import os, sys; sys.path.insert(0, os.path.join(MODULE, ".."))
+try:
+    import os, sys; sys.path.append(os.path.join(MODULE, ".."))
     from inflect import singularize, conjugate
 except:
     singularize = lambda w: w
