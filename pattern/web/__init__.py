@@ -353,6 +353,8 @@ class URL:
             if e.code == 420: raise HTTP420Error
             if e.code == 500: raise HTTP500InternalServerError
             raise HTTPError
+        except socket.timeout:
+            raise URLTimeout
         except urllib2.URLError, e:
             if e.reason == "timed out" \
             or e.reason[0] in (36, "timed out"): 
@@ -1132,6 +1134,7 @@ class Bing(SearchEngine):
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         data = url.download(cached=cached, **kwargs)
+        print data
         data = json.loads(data)
         data = data.get("SearchResponse", {}).get(src.capitalize(), {})
         results = Results(BING, query, type)
@@ -1143,6 +1146,7 @@ class Bing(SearchEngine):
             r.description = self.format(x.get("Description", x.get("Snippet")))
             r.language    = self.language or ""
             r.date        = self.format(x.get("DateTime", x.get("Date")))
+            r.author      = self.format(x.get("Source"))
             results.append(r)
         return results
 
