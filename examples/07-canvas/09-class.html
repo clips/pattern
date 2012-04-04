@@ -1,0 +1,230 @@
+<!doctype html>
+<html>
+<head>
+	<title>canvas.js | basics (2)</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="../../pattern/canvas.js"></script>
+</head>
+<body>
+	<script type="text/canvas">
+		/* canvas.js includes a Class object useful for OO-style programming.
+		 * This example demonstrates classes (Food, Pheromone, Ant, Colony)
+		 * for building an ant colony simulation.
+		 * The class syntax is as follows:
+		 *
+		 * var Person = Class.extend({
+		 *     init: function(name) {
+		 *         this.name = name;
+		 *     },
+		 *     greet: function() {
+		 *         return "Hello, my name is " + this.name;
+		 *     }
+		 * });
+		 *
+		 * var p = new Person("Aunt Hillary");
+		 *
+		 * Note the comma between class methods.
+		 */
+		
+		function distance(v1, v2) {
+			return Math.sqrt(Math.pow(v1.x-v2.x, 2) + Math.pow(v1.y-v2.y, 2));
+		}
+
+		var Food = Class.extend({
+			init: function(x, y, amount) {
+				this.x = x;
+				this.y = y;
+				this.amount = amount;
+			}
+		});
+		
+		var Pheromone = Class.extend({
+			init: function(x, y) {
+				this.x = x;
+				this.y = y;
+				this.strength = 1.0;
+			},
+			evaporate: function(m) {
+				this.strength *= (this.strength > 0.01)? (m || 0.995) : 0;
+			}
+		});
+		
+		var Ant = Class.extend({
+			init: function(colony, x, y) {
+				this.colony = colony;
+				this.x = x;
+				this.y = y;
+				this.v = {x:0, y:0};
+				this.food = false;
+				this.trail = [];
+				this.roaming = random(100);
+			},
+			goal: function(x, y) {
+				/* Sets the current position to move towards.
+				 */
+				var d = distance(this, {x:x,y:y}) + 0.0001;
+				this.v.x = (x - this.x) / d;
+				this.v.y = (y - this.y) / d;
+				this.roaming = 0;
+			},
+			roam: function(m) {
+				/* Roam around freely.
+				 * Eventually, the ant returns to the colony to start a new roaming cycle.
+				 */
+				this.v.x += random(-m, m);
+				this.v.y += random(-m, m);
+				this.roaming += 1;
+				if (this.roaming > this.colony.radius) {
+					this.goal(this.colony.x, this.colony.y);
+				}
+				if (distance(this, this.colony) < 10) {
+					this.roaming = 0;
+				}
+			},
+			track: function() {
+				/* Follow nearby trails, from pheromone to pheromone.
+				 * If the trail has evaporated too much, the ant may lose interest.
+				 */
+				for (var i=0; i < this.colony.ants.length; i ++) {
+					for (var j=0; j < this.colony.ants[i].trail.length; j++) {
+						var pheromone = this.colony.ants[i].trail[j];
+						if (distance(this, pheromone) < pheromone.strength * 30) {
+							if (random() < pheromone.strength) {
+								this.goal(pheromone.x, pheromone.y);
+							}
+							return;
+						}
+
+					}
+				}
+			},
+			harvest: function() {
+				/* Collect nearby food.
+				 * Mark the food source with pheromones for other ants.
+				 */
+				for (var i=0; i < this.colony.foodsources.length; i++) {
+					var food = this.colony.foodsources[i];
+					if (distance(this, food) < Math.max(1, food.amount/2)) {
+						food.amount -= 1;
+						if (food.amount <= 0) {
+							this.colony.foodsources.splice(i, 1);
+						}
+						this.trail = [];
+						this.trail.push(new Pheromone(food.x, food.y));
+						this.trail.push(new Pheromone(this.x, this.y));
+						this.food = true;
+					}
+				}
+			},
+			hoard: function(m) {
+				/* Return home with food.
+				 * Mark the trail with pheromones for other ants.
+				 */
+				this.goal(this.colony.x, this.colony.y);
+				if (random() < (m || 0.5)) {
+					this.trail.push(new Pheromone(this.x, this.y));
+				}
+				if (distance(this, this.colony) < 5) {
+					this.food = false;
+					this.colony.food += 1;
+				}
+			},
+			forage: function() {
+				if (this.food == false) {
+					this.roam(0.3); // 1) Roam around.
+					this.track();   // 2) Follow trails to food.
+					this.harvest(); // 3) Pick up food and mark source.
+				} else {            // 4) Bring food home + mark trail.
+					this.hoard();
+				}
+				this.v.x = Math.clamp(this.v.x, -1, +1);
+				this.v.y = Math.clamp(this.v.y, -1, +1);
+				this.x += this.v.x;
+				this.y += this.v.y;
+				// Evaporate trail.
+				for (var i=0; i < this.trail.length; i++) {
+					var pheromone = this.trail[i];
+					pheromone.evaporate();
+					if (pheromone.strength == 0) {
+						this.trail.splice(i, 1);
+					}
+				}
+			}
+		});
+		
+		var Colony = Class.extend({
+			init: function(x, y, radius, size) {
+				this.x = x;
+				this.y = y;
+				this.radius = radius;
+				this.foodsources = []
+				this.food = 0;
+				this.ants = [];
+				for (var i=0; i < size; i++) {
+					this.ants.push(new Ant(this, x, y));
+				}
+			}
+		});
+
+		function setup(canvas) {
+			canvas.size(600, 300);
+			// Create a fancy gradient background image.
+			terrain = render(function() {
+				rect(0, 0, 600, 300, {
+					fill: new Gradient(new Color(0.25,0.35,0.10), new Color(0.10,0.15,0.05), {
+						     x: 300,
+						     y: 150,
+						spread: 250,
+						  type: RADIAL
+					})
+				});
+			}, 600, 300);
+			// Create a colony with 20 ants and 10 food sources.
+			colony = new Colony(300, 150, 200, 20);
+			for (var i=0; i < 10; i++) {
+				colony.foodsources.push(
+					new Food(random(30,-30 + canvas.width), 
+							 random(30,-30 + canvas.height), 
+							 random(20, 50)));
+			}
+		}
+		
+		function draw(canvas) {
+			canvas.clear();
+			// 1) Draw pre-rendered terrain.
+			image(terrain);
+			// 2) Draw the hoarded food in the colony.
+			fill(1, 0.1);
+			ellipse(colony.x, colony.y, colony.food, colony.food);
+			// 3) Draw food sources.
+			fill(0, 0.4);
+			Array.enumerate(colony.foodsources, function(i, food) {
+				ellipse(food.x, food.y, food.amount, food.amount);
+			});
+			// 4) Draw ant trails.
+			var p = new BezierPath();
+			Array.enumerate(colony.ants, function(i, ant) {
+				Array.enumerate(ant.trail, function(i, pheromone) {
+					if (i == 0) {
+						p.moveto(pheromone.x, pheromone.y);
+					} else {
+						p.lineto(pheromone.x, pheromone.y);
+					}
+				});
+			});
+			drawpath(p, {stroke: new Color(1, 0.2), strokewidth: 0.5, fill: null});
+			// 5) Draw ants: roaming = white, hoarding = green.
+			Array.enumerate(colony.ants, function(i, ant) {
+				ant.forage();
+				if (ant.food) {
+					fill(0.5, 1, 0);
+				} else {
+					fill(1, 0.4);
+				}
+				ellipse(ant.x, ant.y, 3, 3);
+			});
+			
+		}
+	</script>
+</body>
+</html>
