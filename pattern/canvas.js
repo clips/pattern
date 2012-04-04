@@ -78,31 +78,32 @@ Array.find = function(array, match) {
     for (var i=0; i < array.length; i++) { if (match(array[i])) return i; }
 };
 
-Array.map = function(array, f) {
-    /* Returns a new array with f(value) for each value in the given array.
+Array.map = function(array, callback) {
+    /* Returns a new array with callback(value) for each value in the given array.
      */
     var a = []; 
     for (var i=0; i < array.length; i++) { 
-        a.push(f(array[i])); 
+        a.push(callback(array[i])); 
     } 
     return a;
 };
 
-Array.filter = function(array, f) {
-    /* Returns a new array with values for which f(value)==true.
+Array.filter = function(array, callback) {
+    /* Returns a new array with values for which callback(value)==true.
      */
     var a = []; 
     for (var i=0; i < array.length; i++) { 
-        if (f(array[i])) a.push(array[i]); 
+        if (callback(array[i])) a.push(array[i]); 
     } 
     return a;
 };
 
-Array.enumerate = function(array, f) {
-    /* Calls f(index, value) for each value in the given array.
+Array.enumerate = function(array, callback, that) {
+    /* Calls callback(index, value) for each value in the given array.
      */
+    callback = Function.closure(that || this, callback);
     for (var i=0; i < array.length; i++) {
-        f(i, array[i]);
+        if (callback(i, array[i]) == false) return;
     }
 };
 
@@ -2386,7 +2387,7 @@ var Canvas = Class.extend({
             element.height = height;
         }
         _unselectable(element);
-        this.id = _uid();
+        this.id = "canvas" + _uid();
         this.element = element; 
         this.element.style["-webkit-tap-highlight-color"] = "rgba(0,0,0,0)";
         this.element.canvas = this;
@@ -2435,7 +2436,7 @@ var Canvas = Class.extend({
             e.parentNode.removeChild(e);
             delete this[w.name];
         }
-        var p = $(this.element.id + "_widgets");
+        var p = $(this.id + "_widgets");
         if (p) p.parentNode.removeChild(p);
         this._widgets = [];
         this.variables = [];
@@ -2772,19 +2773,19 @@ function widget(canvas, variable, type, options) {
     var v = variable;
     var o = options || {};
     if (canvas.variables[v] === undefined) {
-        var parent = (o && o.parent)? o.parent : $(canvas.element.id + "_widgets");
+        var parent = (o && o.parent)? o.parent : $(canvas.id + "_widgets");
         if (!parent) {
             // No widget container is given, or exists.
             // Insert a <div id="[canvas.id]_widgets" class="widgets"> after the <canvas> element.
             parent = document.createElement("div");
-            parent.id = (canvas.element.id + "_widgets");
+            parent.id = (canvas.id + "_widgets");
             parent.className = "widgets";
             canvas.element.parentNode.insertBefore(parent, canvas.element.nextSibling);
         }
         // Create <input> element with id [canvas.id]_[variable].
         // Create an onchange() that will set the variable to the value of the widget.
         // For FUNCTION, it is an onclick() that will call options.callback(e).
-        var id = canvas.element.id + "_" + v;
+        var id = canvas.id + "_" + v;
         var cb = o.callback || function(e) {};
         // <input type="text" id="id" value="" />
         if (type == STRING || type == TEXT) {
