@@ -2336,26 +2336,28 @@ function _unselectable(element) {
 }
 
 window._requestFrame = function(callback, canvas, fps) {
-    //var f = window.requestAnimationFrame
-    //     || window.webkitRequestAnimationFrame
-    //     || window.mozRequestAnimationFrame
-    //     || window.oRequestAnimationFrame
-    //     || window.msRequestAnimationFrame
-    //     || function(callback, element) { return window.setTimeout(callback, 1000 / (fps||100)); };
-    var f = function(callback, element) { return window.setTimeout(callback, 1000 / (fps||100)); };
+    var f = window.requestAnimationFrame
+         || window.webkitRequestAnimationFrame
+         || window.mozRequestAnimationFrame
+         || window.msRequestAnimationFrame
+         || window.oRequestAnimationFrame
+         || function(callback, element) { return window.setTimeout(callback, 1000 / (fps || 60)); };
     // When requestFrame() calls Canvas._draw() directly, the "this" keyword will be detached.
     // Make "this" available inside Canvas._draw() by binding it:
     return f(Function.closure(canvas, callback), canvas.element);
 };
 
 window._clearFrame = function(id) {
-    //var f = window.cancelAnimationFrame
-    //     || window.webkitCancelRequestAnimationFrame
-    //     || window.mozCancelRequestAnimationFrame
-    //     || window.oCancelRequestAnimationFrame
-    //     || window.msCancelRequestAnimationFrame
-    //     || window.clearTimeout;
-    var f = window.clearTimeout;
+    var f = window.cancelAnimationFrame
+         || window.webkitCancelAnimationFrame
+         || window.webkitCancelRequestAnimationFrame
+         || window.mozCancelAnimationFrame
+         || window.mozCancelRequestAnimationFrame
+         || window.msCancelAnimationFrame
+         || window.msCancelRequestAnimationFrame
+         || window.oCancelAnimationFrame
+         || window.oCancelRequestAnimationFrame
+         || window.clearTimeout;
     return f(id);
 };
 
@@ -2380,10 +2382,12 @@ var Canvas = Class.extend({
         if (!element.getContext && typeof(G_vmlCanvasManager) != "undefined") {
             element = G_vmlCanvasManager.initElement(element);
         }
-        if (width !== undefined) {
+        if (width !== undefined && 
+            width !== null) {
             element.width = width;
         }
-        if (height !== undefined) {
+        if (height !== undefined && 
+            height !== null) {
             element.height = height;
         }
         _unselectable(element);
@@ -2502,7 +2506,7 @@ var Canvas = Class.extend({
         this._scheduled = window._requestFrame(this._draw, this);
     },
     
-    run: function(fps) {
+    run: function() {
         /* Starts drawing the canvas.
          * Canvas.setup() will be called once during initialization.
          * Canvas.draw() will be called each frame. 

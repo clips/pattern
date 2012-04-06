@@ -130,7 +130,7 @@
 				}
 			},
 			forage: function() {
-				if (this.food == false) {
+				if (this.food === false) {
 					this.roam(0.3); // 1) Roam around.
 					this.track();   // 2) Follow trails to food.
 					this.harvest(); // 3) Pick up food and mark source.
@@ -145,7 +145,7 @@
 				for (var i=0; i < this.trail.length; i++) {
 					var pheromone = this.trail[i];
 					pheromone.evaporate();
-					if (pheromone.strength == 0) {
+					if (pheromone.strength === 0) {
 						this.trail.splice(i, 1);
 					}
 				}
@@ -157,7 +157,7 @@
 				this.x = x;
 				this.y = y;
 				this.radius = radius;
-				this.foodsources = []
+				this.foodsources = [];
 				this.food = 0;
 				this.ants = [];
 				for (var i=0; i < size; i++) {
@@ -205,7 +205,7 @@
 			var p = new BezierPath();
 			Array.enumerate(colony.ants, function(i, ant) {
 				Array.enumerate(ant.trail, function(i, pheromone) {
-					if (i == 0) {
+					if (i === 0) {
 						p.moveto(pheromone.x, pheromone.y);
 					} else {
 						p.lineto(pheromone.x, pheromone.y);
@@ -223,7 +223,6 @@
 				}
 				ellipse(ant.x, ant.y, 3, 3);
 			});
-			
 		}
 	</script>
 </body>
