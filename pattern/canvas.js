@@ -2,7 +2,7 @@
 // Copyright (c) 2010 University of Antwerp, Belgium
 // Authors: Tom De Smedt <tom@organisms.be>
 // License: BSD (see LICENSE.txt for details).
-// Version: 1.0.
+// Version: 1.1.
 // http://www.clips.ua.ac.be/pages/pattern-canvas
 
 // The NodeBox drawing API for the HTML5 <canvas> element.
@@ -243,6 +243,13 @@ Math.radians = function(degrees) {
 
 Math.clamp = function(value, min, max) {
     return Math.max(min, Math.min(value, max));
+};
+
+Math.dot = function(a, b) {
+    var m = Math.min(a.length, b.length);
+    var n = 0;
+    for (var i = 0; i < m; i++) n += a[i] * b[i];
+    return n;
 };
 
 var Point = Class.extend({
@@ -1996,7 +2003,7 @@ var Pixels = Class.extend({
         /* Applies a function to each pixel.
          * Function takes a list of R,G,B,A channel values and must return a similar list.
          */
-        for (var i=0; i<this.width*this.height; i++) {
+        for (var i=0; i < this.width * this.height; i++) {
             this.set(i, callback(this.get(i)))
         }
     },
@@ -2665,26 +2672,49 @@ function render(callback, width, height) {
     return buffer.render();
 }
 
+function filter(img, callback) {
+    /* Returns a new Image object with the given pixel function applied to it.
+     * The function that takes an array of RGBA-values (base 255) and returns a new array.
+     */
+    var pixels = new Pixels(img);
+    pixels.map(callback);
+    pixels.update();
+    return pixels.image();
+}
+
 /*--- FILTERS --------------------------------------------------------------------------------------*/
 
-function blur(img, amount) {
-    /* Applies a blur filter to the image and returns the blurred image.
+function solid(width, height, clr) { 
+    /* Returns an image with a solid fill color.
      */
-    // Source: https://github.com/flother/examples/blob/gh-pages/canvas-blur/v3/canvas-image.js
-    if (amount === undefined) amount = 1;
-    var buffer = new OffscreenBuffer(img._img.width, img._img.height);
-    buffer.draw = function(buffer) {
-        buffer._ctx.drawImage(img._img, 0, 0);
-        buffer._ctx.globalAlpha = 0.1;
-        for (var i=1; i<=amount; i++) {
-            for (var y=-1; y<2; y++) {
-                for (var x=-1; x<2; x++) {
-                    buffer._ctx.drawImage(buffer.element, x, y);
-                }
-            }
-        }
-    }
-    return buffer.render();
+    return render(function(canvas) { 
+        rect(0, 0, width, height, {fill: clr}); 
+    }, width, height);
+}
+
+function invert(img) {
+    /* Returns an image with inverted colors (e.g. white becomes black).
+     */
+    return filter(img, function(p) {
+        return [255-p[0], 255-p[1], 255-p[2], p[3]];
+    });
+}
+
+function colorize(img, color, bias) {
+    /* Returns a colorized image.
+     *  - color: a Color (or array) of RGBA-values to multiply with each image pixel.
+     *  - bias : a Color (or array) of RGBA-values to add to each image pixel.
+     */
+    var m1 = new Color(color || [1,1,1,1]).rgba();
+    var m2 = new Color(bias || [0,0,0,0]).map({base: 255});
+    return filter(img, function(p) {
+        return [
+            p[0] * m1[0] + m2[0],
+            p[1] * m1[1] + m2[1],
+            p[2] * m1[2] + m2[2],
+            p[3] * m1[3] + m2[3]
+        ];
+    });
 }
 
 // function adjust(img, {hue:0, saturation:1.0, brightness:1.0, contrast:1.0})
@@ -2714,7 +2744,7 @@ function adjust(img, options) {
             return [p[0] + m, p[1] + m, p[2] + m, p[3]]; 
         });
     }
-    var kernelt_contrast = function(pixels, m) {
+    var adjust_contrast = function(pixels, m) {
         pixels.map(function(p) {
             return [(p[0]-128)*m + 128, (p[1]-128)*m + 128, (p[2]-128)*m + 128, p[3]]; 
         });
@@ -2738,15 +2768,131 @@ function desaturate(img) {
     return adjust(img, {saturation:0});
 }
 
-function invert(img) {
-    /* Returns an image with inverted colors (e.g. white becomes black).
+function brightpass(img, threshold) {
+    /* Returns a new image where pixels whose luminance fall below the threshold are black.
      */
-    var pixels = new Pixels(img);
-    pixels.map(function(p) {
-        return [255-p[0], 255-p[1], 255-p[2], p[3]];
+    var L = [0.2125 / 255, 0.7154 / 255, 0.072 / 255];
+    return filter(img, function(p) {
+        return (Math.dot(p, L) > (threshold || 0.5))? p : [0, 0, 0, p[3]];
+    });    
+}
+
+function blur(img, amount) {
+    /* Applies a blur filter to the image and returns the blurred image.
+     */
+    // Source: https://github.com/flother/examples/blob/gh-pages/canvas-blur/v3/canvas-image.js
+    if (amount === undefined) amount = 1;
+    var buffer = new OffscreenBuffer(img._img.width, img._img.height);
+    buffer.draw = function(buffer) {
+        buffer._ctx.drawImage(img._img, 0, 0);
+        buffer._ctx.globalAlpha = 0.1;
+        for (var i=1; i<=amount; i++) {
+            for (var y=-1; y<2; y++) {
+                for (var x=-1; x<2; x++) {
+                    buffer._ctx.drawImage(buffer.element, x, y);
+                }
+            }
+        }
+    }
+    return buffer.render();
+}
+
+function composite(img1, img2, dx, dy, operator) {
+    /* Returns a new Image by mixing img1 (the destination) with blend image img2 (the source).
+     * The given operator is a function(pixel1, pixel2) that returns a new pixel (RGBA-array).
+     * This is used to implement alpha compositing and blend modes.
+     * - dx: horizontal offset (in pixels) of the blend layer.
+     * - dy: vertical offset (in pixels) of the blend layer.
+     */
+    //var t = new Date().getTime();
+    dx = dx || 0;
+    dy = dy || 0;
+    var pixels1 = new Pixels(img1);
+    var pixels2 = new Pixels(img2);    
+    for (var j=0; j < pixels1.height; j++) {
+        for (var i=0; i < pixels1.width; i++) {
+            if (0 <= i-dx && i-dx < pixels2.width) {
+                if (0 <= j-dy && j-dy < pixels2.height) {
+                    var p1 = pixels1.get(i + j * pixels1.width);
+                    var p2 = pixels2.get((i-dx) + (j-dy) * pixels2.width);
+                    pixels1.set(i + j * pixels1.width, operator(p1, p2));
+                }
+            }
+        }
+    }
+    pixels1.update();
+    //console.log(new Date().getTime() - t);
+    return pixels1.image();
+}
+
+function mask(img1, img2, dx, dy, alpha) {
+    /* Applies the second image as an alpha mask to the first image.
+     *  The second image must be a grayscale image, where the black areas
+     *  make the first image transparent (e.g. punch holes in it).
+     * - dx: horizontal offset (in pixels) of the blend layer.
+     * - dy: vertical offset (in pixels) of the blend layer.
+     */
+    alpha = (alpha || alpha == 0)? alpha : 1;
+    return composite(img1, img2, dx, dy, function(p1, p2) {
+        p1[3] = p1[3] * p2[0]/255 * p2[3]/255 * alpha;
+        return p1;
     });
-    pixels.update();
-    return pixels.image();
+}
+
+var ADD      = "add";      // Pixels are added.
+var SUBTRACT = "subtract"; // Pixels are subtracted.
+var LIGHTEN  = "lighten";  // Lightest value for each pixel.
+var DARKEN   = "darken";   // Darkest value for each pixel.
+var MULTIPLY = "multiply"; // Pixels are multiplied, resulting in a darker image.
+var SCREEN   = "screen";   // Pixels are inverted/multiplied/inverted, resulting in a brighter picture.
+
+function blend(mode, img1, img2, dx, dy, alpha) {
+    /* Applies the second image as a blend layer with the first image.
+     * - dx: horizontal offset (in pixels) of the blend layer.
+     * - dy: vertical offset (in pixels) of the blend layer.
+     */
+    alpha = (alpha || alpha == 0)? alpha : 1;
+    switch(mode) {
+        case ADD      : op = function(x, y) { return x + y;          }; break;
+        case SUBTRACT : op = function(x, y) { return x + y - 255;    }; break;
+        case LIGHTEN  : op = function(x, y) { return Math.max(x, y); }; break;
+        case DARKEN   : op = function(x, y) { return Math.min(x, y); }; break;
+        case MULTIPLY : op = function(x, y) { return x * y / 255;    }; break;
+        case SCREEN   : op = function(x, y) { return 255 - (255-x) * (255-y) / 255; }; break;
+        default       : op = function(x, y) { return 0; };
+    }
+    return composite(img1, img2, dx, dy, function(p1, p2) {
+        if (p2[3] == 255 && (mode==LIGHTEN || mode==DARKEN || mode==MULTIPLY || mode==SCREEN)) {
+            // Swap opaque blend (alpha=255) with base to mimic Photoshop.
+            var tmp=p1; p1=p2; p2=tmp;
+        }
+        var p = [0,0,0,0];
+        var a = p2[3] / 255 * alpha;
+        p[0] = geometry.lerp(p1[0], op(p1[0], p2[0]), a);
+        p[1] = geometry.lerp(p1[1], op(p1[1], p2[1]), a);
+        p[2] = geometry.lerp(p1[2], op(p1[2], p2[2]), a);
+        p[3] = geometry.lerp(p1[3], 255, a);
+        return p;
+    });
+}
+
+function glow(img, intensity, amount) {
+    /* Returns the image blended with a blurred version, yielding a glowing effect.
+     *  - intensity: the opacity of the blur (0.0-1.0).
+     *  - amount   : the number of times to blur. 
+     */
+    var b = blur(img, amount || 1);
+    return blend(ADD, img, b, 0, 0, intensity || 0.5);
+}
+
+function bloom(img, intensity, amount, threshold) {
+    /* Returns the image blended with a blurred brightpass version, yielding a "magic glow" effect.
+     *  - intensity: the opacity of the blur (0.0-1.0).
+     *  - amount   : the number of times to blur.
+     *  - threshold: the luminance threshold of pixels that light up.
+     */
+    var b = blur(brightpass(img, threshold || 0.3), amount || 1);
+    return blend(ADD, img, b, 0, 0, intensity || 0.5);
 }
 
 /*##################################################################################################*/
