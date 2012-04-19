@@ -2682,15 +2682,19 @@ function filter(img, callback) {
     return pixels.image();
 }
 
-/*--- FILTERS --------------------------------------------------------------------------------------*/
+/*##################################################################################################*/
+
+/*--- IMAGE FILTERS | GENERATORS -------------------------------------------------------------------*/
 
 function solid(width, height, clr) { 
     /* Returns an image with a solid fill color.
      */
     return render(function(canvas) { 
-        rect(0, 0, width, height, {fill: clr}); 
+        rect(0, 0, width, height, {fill: clr || [0,0,0,0]}); 
     }, width, height);
 }
+
+/*--- IMAGE FILTERS | COLOR ------------------------------------------------------------------------*/
 
 function invert(img) {
     /* Returns an image with inverted colors (e.g. white becomes black).
@@ -2765,7 +2769,7 @@ function adjust(img, options) {
 function desaturate(img) {
     /* Returns a grayscale version of the image.
      */
-    return adjust(img, {saturation:0});
+    return adjust(img, {saturation: 0});
 }
 
 function brightpass(img, threshold) {
@@ -2773,29 +2777,22 @@ function brightpass(img, threshold) {
      */
     var L = [0.2125 / 255, 0.7154 / 255, 0.072 / 255];
     return filter(img, function(p) {
-        return (Math.dot(p, L) > (threshold || 0.5))? p : [0, 0, 0, p[3]];
+        return (Math.dot(p, L) > ((threshold || threshold == 0)? threshold : 0.5))? p : [0,0,0, p[3]];
     });    
 }
 
-function blur(img, amount) {
-    /* Applies a blur filter to the image and returns the blurred image.
+function blur(img, radius) {
+    /* Applies a stack blur filter to the image and returns the blurred image.
      */
-    // Source: https://github.com/flother/examples/blob/gh-pages/canvas-blur/v3/canvas-image.js
-    if (amount === undefined) amount = 1;
+    if (radius === undefined) radius = 0.25;
+    radius = (radius == undefined)? 0.25 : radius;
+    radius = Math.min(radius, 1.0);
+    radius = radius * 0.5 * Math.max(img._img.width, img._img.height);
     var buffer = new OffscreenBuffer(img._img.width, img._img.height);
-    buffer.draw = function(buffer) {
-        buffer._ctx.drawImage(img._img, 0, 0);
-        buffer._ctx.globalAlpha = 0.1;
-        for (var i=1; i<=amount; i++) {
-            for (var y=-1; y<2; y++) {
-                for (var x=-1; x<2; x++) {
-                    buffer._ctx.drawImage(buffer.element, x, y);
-                }
-            }
-        }
-    }
-    return buffer.render();
+    return stackblur(img, buffer, radius);
 }
+
+/*--- IMAGE FILTERS | ALPHA COMPOSITING ------------------------------------------------------------*/
 
 function composite(img1, img2, dx, dy, operator) {
     /* Returns a new Image by mixing img1 (the destination) with blend image img2 (the source).
@@ -2825,10 +2822,18 @@ function composite(img1, img2, dx, dy, operator) {
     return pixels1.image();
 }
 
+function transparent(img, alpha) {
+    /* Returns a transparent version of the image.
+     */
+    return render(function(canvas) {
+        image(img, {alpha: alpha});
+    }, img.width, img.height);
+}
+
 function mask(img1, img2, dx, dy, alpha) {
     /* Applies the second image as an alpha mask to the first image.
-     *  The second image must be a grayscale image, where the black areas
-     *  make the first image transparent (e.g. punch holes in it).
+     * The second image must be a grayscale image, where the black areas
+     * make the first image transparent (e.g. punch holes in it).
      * - dx: horizontal offset (in pixels) of the blend layer.
      * - dy: vertical offset (in pixels) of the blend layer.
      */
@@ -2861,9 +2866,10 @@ function blend(mode, img1, img2, dx, dy, alpha) {
         case SCREEN   : op = function(x, y) { return 255 - (255-x) * (255-y) / 255; }; break;
         default       : op = function(x, y) { return 0; };
     }
+    var swap = (mode==LIGHTEN || mode==DARKEN || mode==MULTIPLY || mode==SCREEN);
     return composite(img1, img2, dx, dy, function(p1, p2) {
-        if (p2[3] == 255 && (mode==LIGHTEN || mode==DARKEN || mode==MULTIPLY || mode==SCREEN)) {
-            // Swap opaque blend (alpha=255) with base to mimic Photoshop.
+        // Swap opaque blend (alpha=255) with base to mimic Photoshop.
+        if (swap && p2[3] == 255) {
             var tmp=p1; p1=p2; p2=tmp;
         }
         var p = [0,0,0,0];
@@ -2876,13 +2882,36 @@ function blend(mode, img1, img2, dx, dy, alpha) {
     });
 }
 
+function add(img1, img2, dx, dy, alpha) {
+    return blend(ADD, img1, img2, dx, dy, alpha);
+}
+function subtract(img1, img2, dx, dy, alpha) {
+    return blend(SUBTRACT, img1, img2, dx, dy, alpha);
+}
+function lighten(img1, img2, dx, dy, alpha) {
+    return blend(LIGHTEN, img1, img2, dx, dy, alpha);
+}
+function darken(img1, img2, dx, dy, alpha) {
+    return blend(DARKEN, img1, img2, dx, dy, alpha);
+}
+function multiply(img1, img2, dx, dy, alpha) {
+    return blend(MULTIPLY, img1, img2, dx, dy, alpha);
+}
+function screen(img1, img2, dx, dy, alpha) {
+    return blend(SCREEN, img1, img2, dx, dy, alpha);
+}
+
+/*--- IMAGE FILTERS | LIGHT ------------------------------------------------------------------------*/
+
 function glow(img, intensity, amount) {
     /* Returns the image blended with a blurred version, yielding a glowing effect.
      *  - intensity: the opacity of the blur (0.0-1.0).
      *  - amount   : the number of times to blur. 
      */
-    var b = blur(img, amount || 1);
-    return blend(ADD, img, b, 0, 0, intensity || 0.5);
+    if (amount === undefined) amount = 1;
+    if (intensity === undefined) intensity = 0.5;
+    var b = blur(img, amount);
+    return blend(ADD, img, b, 0, 0, intensity);
 }
 
 function bloom(img, intensity, amount, threshold) {
@@ -2891,8 +2920,11 @@ function bloom(img, intensity, amount, threshold) {
      *  - amount   : the number of times to blur.
      *  - threshold: the luminance threshold of pixels that light up.
      */
-    var b = blur(brightpass(img, threshold || 0.3), amount || 1);
-    return blend(ADD, img, b, 0, 0, intensity || 0.5);
+    if (amount === undefined) amount = 1;
+    if (intensity === undefined) intensity = 0.5;
+    if (threshold === undefined) intensity = 0.3;
+    var b = blur(brightpass(img, threshold), amount);
+    return blend(ADD, img, b, 0, 0, intensity);
 }
 
 /*##################################################################################################*/
@@ -3065,6 +3097,22 @@ function require(src) {
     }
     document.body.appendChild(script);
 }
+
+/*##################################################################################################*/
+
+/*--- FAST STACK BLUR ------------------------------------------------------------------------------*/
+// Mario Klingemann (2010), http://www.quasimondo.com/StackBlurForCanvas/StackBlur.js
+
+var mul_table=[512,512,456,512,328,456,335,512,405,328,271,456,388,335,292,512,454,405,364,328,298,271,496,456,420,388,360,335,312,292,273,512,482,454,428,405,383,364,345,328,312,298,284,271,259,496,475,456,437,420,404,388,374,360,347,335,323,312,302,292,282,273,265,512,497,482,468,454,441,428,417,405,394,383,373,364,354,345,337,328,320,312,305,298,291,284,278,271,265,259,507,496,485,475,465,456,446,437,428,420,412,404,396,388,381,374,367,360,354,347,341,335,329,323,318,312,307,302,297,292,287,282,278,273,269,265,261,512,505,497,489,482,475,468,461,454,447,441,435,428,422,417,411,405,399,394,389,383,378,373,368,364,359,354,350,345,341,337,332,328,324,320,316,312,309,305,301,298,294,291,287,284,281,278,274,271,268,265,262,259,257,507,501,496,491,485,480,475,470,465,460,456,451,446,442,437,433,428,424,420,416,412,408,404,400,396,392,388,385,381,377,374,370,367,363,360,357,354,350,347,344,341,338,335,332,329,326,323,320,318,315,312,310,307,304,302,299,297,294,292,289,287,285,282,280,278,275,273,271,269,267,265,263,261,259];
+var shg_table=[9,11,12,13,13,14,14,15,15,15,15,16,16,16,16,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18,19,19,19,19,19,19,19,19,19,19,19,19,19,19,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,21,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,22,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24];
+
+function stackblur(img, buffer, radius) {
+
+function BlurStack(){this.r=0;this.g=0;this.b=0;this.a=0;this.next=null}function stackBlurCanvasRGBA(a,b,c,d,e,f){if(isNaN(f)||f<1)return;f|=0;var g=a.element;var h=g.getContext("2d");var i;try{try{i=h.getImageData(b,c,d,e)}catch(j){try{netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");i=h.getImageData(b,c,d,e)}catch(j){alert("Cannot access local image");throw new Error("unable to access local image data: "+j);return}}}catch(j){alert("Cannot access image");throw new Error("unable to access image data: "+j)}var k=i.data;var l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I;var J=f+f+1;var K=d<<2;var L=d-1;var M=e-1;var N=f+1;var O=N*(N+1)/2;var P=new BlurStack;var Q=P;for(n=1;n<J;n++){Q=Q.next=new BlurStack;if(n==N)var R=Q}Q.next=P;var S=null;var T=null;r=q=0;var U=mul_table[f];var V=shg_table[f];for(m=0;m<e;m++){A=B=C=D=s=t=u=v=0;w=N*(E=k[q]);x=N*(F=k[q+1]);y=N*(G=k[q+2]);z=N*(H=k[q+3]);s+=O*E;t+=O*F;u+=O*G;v+=O*H;Q=P;for(n=0;n<N;n++){Q.r=E;Q.g=F;Q.b=G;Q.a=H;Q=Q.next}for(n=1;n<N;n++){o=q+((L<n?L:n)<<2);s+=(Q.r=E=k[o])*(I=N-n);t+=(Q.g=F=k[o+1])*I;u+=(Q.b=G=k[o+2])*I;v+=(Q.a=H=k[o+3])*I;A+=E;B+=F;C+=G;D+=H;Q=Q.next}S=P;T=R;for(l=0;l<d;l++){k[q+3]=H=v*U>>V;if(H!=0){H=255/H;k[q]=(s*U>>V)*H;k[q+1]=(t*U>>V)*H;k[q+2]=(u*U>>V)*H}else{k[q]=k[q+1]=k[q+2]=0}s-=w;t-=x;u-=y;v-=z;w-=S.r;x-=S.g;y-=S.b;z-=S.a;o=r+((o=l+f+1)<L?o:L)<<2;A+=S.r=k[o];B+=S.g=k[o+1];C+=S.b=k[o+2];D+=S.a=k[o+3];s+=A;t+=B;u+=C;v+=D;S=S.next;w+=E=T.r;x+=F=T.g;y+=G=T.b;z+=H=T.a;A-=E;B-=F;C-=G;D-=H;T=T.next;q+=4}r+=d}for(l=0;l<d;l++){B=C=D=A=t=u=v=s=0;q=l<<2;w=N*(E=k[q]);x=N*(F=k[q+1]);y=N*(G=k[q+2]);z=N*(H=k[q+3]);s+=O*E;t+=O*F;u+=O*G;v+=O*H;Q=P;for(n=0;n<N;n++){Q.r=E;Q.g=F;Q.b=G;Q.a=H;Q=Q.next}p=d;for(n=1;n<=f;n++){q=p+l<<2;s+=(Q.r=E=k[q])*(I=N-n);t+=(Q.g=F=k[q+1])*I;u+=(Q.b=G=k[q+2])*I;v+=(Q.a=H=k[q+3])*I;A+=E;B+=F;C+=G;D+=H;Q=Q.next;if(n<M){p+=d}}q=l;S=P;T=R;for(m=0;m<e;m++){o=q<<2;k[o+3]=H=v*U>>V;if(H>0){H=255/H;k[o]=(s*U>>V)*H;k[o+1]=(t*U>>V)*H;k[o+2]=(u*U>>V)*H}else{k[o]=k[o+1]=k[o+2]=0}s-=w;t-=x;u-=y;v-=z;w-=S.r;x-=S.g;y-=S.b;z-=S.a;o=l+((o=m+N)<M?o:M)*d<<2;s+=A+=S.r=k[o];t+=B+=S.g=k[o+1];u+=C+=S.b=k[o+2];v+=D+=S.a=k[o+3];S=S.next;w+=E=T.r;x+=F=T.g;y+=G=T.b;z+=H=T.a;A-=E;B-=F;C-=G;D-=H;T=T.next;q+=d}}h.putImageData(i,b,c)}function stackBlurImage(a,b,c,d){var e=a._img;var f=e.naturalWidth;var g=e.naturalHeight;var h=b.element;h.style.width=f+"px";h.style.height=g+"px";h.width=f;h.height=g;var i=h.getContext("2d");i.clearRect(0,0,f,g);i.drawImage(e,0,0);if(isNaN(c)||c<1)return;if(d)stackBlurCanvasRGBA(b,0,0,f,g,c);else stackBlurCanvasRGB(b,0,0,f,g,c)}
+
+stackBlurImage(img, buffer, radius, true);
+return buffer.image();
+};
 
 /*##################################################################################################*/
 
