@@ -225,11 +225,11 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
     # An optional dict-parameter can be used to specify a subclass of dict, 
     # e.g., count(words, dict=readonlydict) as used in Document.
     count = kwargs.get("dict", dict)()
-    for word in words:
-        if word.__class__.__name__ == "Word":
-            w = word.string.lower()
-        else:
-            w = word.lower()
+    for w in words:
+        if w.__class__.__name__ == "Word":
+            w = w.string.lower()
+        if isinstance(w, basestring):
+            w = w.lower()
         if (stopwords or not w in _stopwords) and not w in exclude:
             if stemmer is not None:
                 w = stem(w, stemmer, **kwargs)
@@ -557,7 +557,11 @@ def cosine_similarity(vector1, vector2):
 
 def l2_norm(vector):
     return sum(x**2 for x in vector) ** 0.5
-
+    
+def entropy(vector):
+    s = float(sum(vector)) or 1
+    return -sum(x/s * log(x/s, 2) for x in vector if x != 0)
+    
 #### CORPUS ########################################################################################
 
 #--- CORPUS ----------------------------------------------------------------------------------------
@@ -569,6 +573,7 @@ ORANGE, WEKA = "orange", "weka"
 NORM, TOP300 = "norm", "top300"
 
 # Feature selection methods:
+IG  = "infogain"
 KLD = "kullback-leibler"
 
 # Clustering methods:
@@ -587,6 +592,7 @@ class Corpus(object):
         self._df         = {}             # Cache of document frequency per word.
         self._similarity = {}             # Cache of ((D1.id,D2.id), weight)-items (cosine similarity).
         self._divergence = {}             # Cache of Kullback-leibler divergence per (word1, word2).
+        self._ig         = {}             # Cache of (word, information gain)-items.
         self._vector     = None           # Cache of corpus vector with all the words in the corpus.
         self._lsa        = None           # LSA matrix with reduced dimensionality.
         self._weight     = weight         # Weight used in Document.vector (TF-IDF or TF).
@@ -602,6 +608,10 @@ class Corpus(object):
         return self.vector.keys()
         
     features = words = terms
+    
+    @property
+    def classes(self):
+        return list(set(d.type for d in self.documents))
 
     def _get_lsa(self):
         return self._lsa
@@ -693,6 +703,7 @@ class Corpus(object):
         self._df = {}
         self._similarity = {}
         self._divergence = {}
+        self._ig = {}
         self._vector = None
         self._lsa = None
         for document in self.documents:
@@ -927,8 +938,51 @@ class Corpus(object):
         self._similarity = {}
         
     reduce = latent_semantic_analysis
+    
+    def information_gain(self, word):
+        """ Returns the information gain for the given feature, 
+            by looking at how much it contributes to each document type (class).
+            High IG means low entropy (predictability), e.g., interesting for feature selection.
+        """
+        if not self._ig:
+            # For classes {xi...xn} and features {yi...yn}:
+            # IG(X,Y)  = H(X) - H(X|Y)
+            # H(X)     = -sum(p(x) * log2(x) for x in X)
+            # H(X|Y)   =  sum(p(y) * H(X|Y=y) for y in Y)
+            # H(X|Y=y) = -sum(p(x) * log2(x) for x in X if y in x)
+            # H is the entropy for a list of probabilities.
+            # Lower entropy indicates predictability, i.e., some values are more probable.
+            # H([0.50,0.50]) = 1.00
+            # H([0.75,0.25]) = 0.81
+            H = entropy
+            # X = document type (class) distribution.
+            # "How many documents have class xi?"
+            X = dict.fromkeys(self.classes, 0)
+            for d in self.documents:
+                X[d.type] += 1
+            # Y = document feature distribution.
+            # "How many documents have feature yi?"
+            Y = dict.fromkeys(self.features, 0)
+            for d in self.documents:
+                for y, v in d.vector.items():
+                    if v > 0:
+                        Y[y] += 1 # Discrete: feature is present (1) or not (0).
+            Y = dict((y, Y[y] / float(len(self.documents))) for y in Y)
+            # XY = features by class distribution.
+            # "How many documents of class xi have feature yi?"
+            XY = dict.fromkeys(self.features, {})
+            for d in self.documents:
+                for y, v in d.vector.items():
+                    if v != 0:
+                        XY[y][d.type] = XY[y].get(d.type, 0) + 1
+            # IG.
+            for y in self.features:
+                self._ig[y] = H(X.values()) - Y[y] * H(XY[y].values())
+        return self._ig[word]
+            
+    IG = ig = infogain = gain = information_gain
 
-    def kullback_leibler_divergence(self, word1, word2, _vectors=[], _map={}):
+    def kullback_leibler_divergence(self, word1, word2, cached=True, _vectors=[], _map={}):
         """ Returns the difference between two given features (i.e. words from Corpus.terms),
             on average over all document vectors, using symmetric Kullback-Leibler divergence.
             Higher values represent more distinct features.
@@ -946,35 +1000,40 @@ class Corpus(object):
                 if word2 in v:
                     kl2 += v[word2] * (log(v[word2], 2) - log(v.get(word1, 0.000001), 2))
             # Cache the calculations for reuse.
+            # This is not always possible, e.g., 10,000 features = 5GB cache.
             # The measurement is symmetric, so we also know KL(word2, word1).
-            self._divergence[(word1, word2)] = \
-            self._divergence[(word2, word1)] = (kl1 + kl2) / 2 
+            if cached is True:
+                self._divergence[(word1, word2)] = \
+                self._divergence[(word2, word1)] = (kl1 + kl2) / 2 
         return self._divergence[(word1, word2)]
     
     relative_entropy = kl = kld = kullback_leibler_divergence
     
-    def feature_selection(self, top=100, method=KLD, verbose=False):
+    def feature_selection(self, top=100, method=IG, verbose=False):
         """ Returns the top most distinct (or "original") features (terms), using Kullback-Leibler divergence.
             This is a subset of Corpus.terms that can be used to build a Classifier
             that is faster (less features = less matrix columns) but quite efficient.
         """
-        # The subset will usually have less recall, because there are less features.
-        # Calculating KLD takes some time, but the results are cached and saved with Corpus.save().
-        v = [d.vector for d in self.documents]
-        m = dict((w, filter(lambda v: w in v, v)) for w in self.terms)
-        D = {}
-        for i, w1 in enumerate(self.terms):
-            for j, w2 in enumerate(self.terms[i+1:]):
-                d = self.kullback_leibler_divergence(w1, w2, _vectors=v, _map=m)
-                D[w1] = w1 in D and D[w1]+d or d
-                D[w2] = w2 in D and D[w2]+d or d
-            if verbose:
-                # IG 80.0% (550/700)
-                print "KLD " + ("%.1f"%(float(i) / len(self.terms) * 100)).rjust(4) + "% " \
-                             + "(%s/%s)" % (i+1, len(self.terms))
-        subset = sorted(((d, w) for w, d in D.iteritems()), reverse=True)
-        subset = [w for d, w in subset[:top]]
-        return subset
+        if method == IG:
+            subset = sorted(((self.information_gain(w), w) for w in self.terms), reverse=True)
+            subset = [w for ig, w in subset[:top]]
+            return subset
+        if method == KLD:
+            v = [d.vector for d in self.documents]
+            m = dict((w, filter(lambda v: w in v, v)) for w in self.terms)
+            D = {}
+            for i, w1 in enumerate(self.terms):
+                for j, w2 in enumerate(self.terms[i+1:]):
+                    d = self.kullback_leibler_divergence(w1, w2, _vectors=v, _map=m)
+                    D[w1] = w1 in D and D[w1]+d or d
+                    D[w2] = w2 in D and D[w2]+d or d
+                if verbose:
+                    # kullback-leibler 80.0% (550/700)
+                    print method + " " + ("%.1f"%(float(i) / len(self.terms) * 100)).rjust(4) + "% " \
+                                       + "(%s/%s)" % (i+1, len(self.terms))
+            subset = sorted(((d, w) for w, d in D.iteritems()), reverse=True)
+            subset = [w for d, w in subset[:top]]
+            return subset
         
     def filter(self, features=[]):
         """ Returns a new Corpus with documents only containing the given list of words,
@@ -1510,6 +1569,7 @@ class Classifier:
                         FP += 1 # false positive (type I error)
                     elif b1 and not b2:
                         FN += 1 # false negative (type II error)
+                    #print "%s\t%s\t%s\t%s\t%s\t%s" % (b1, b2, TP, TN, FP, FN)
                 m[0] += float(TP+TN) / ((TP+TN+FP+FN) or 1)
                 m[1] += float(TP) / ((TP+FP) or 1)
                 m[2] += float(TP) / ((TP+FN) or 1)

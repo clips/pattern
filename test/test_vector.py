@@ -551,7 +551,7 @@ class TestCorpus(unittest.TestCase):
         self.assertAlmostEqual(v1, 12.76, places=2)
         self.assertAlmostEqual(v2, 13.45, places=2)
         # Assert relative entropy feature selection.
-        v = self.corpus.feature_selection(top=4)
+        v = self.corpus.feature_selection(top=4, method=vector.KLD)
         self.assertEqual(v, ["purr", "meow", "howl", "bark"])
         # Assert Corpus.filter().
         v = self.corpus.filter(v)
@@ -564,6 +564,21 @@ class TestCorpus(unittest.TestCase):
         print "pattern.vector.Corpus.relative_entropy()"
         print "pattern.vector.Corpus.feature_selection()"
         print "pattern.vector.Corpus.filter()"
+        
+    def test_information_gain(self):
+        # Assert information gain weights.
+        # Example from http://www.comp.lancs.ac.uk/~kc/Lecturing/csc355/DecisionTrees_given.pdf
+        v = vector.Corpus([
+            vector.Document({"wind":1}, type=False),
+            vector.Document({"wind":0}, type=True),
+            vector.Document({"wind":0}, type=True),
+            vector.Document({"wind":0}, type=True),
+            vector.Document({"wind":1}, type=True),
+            vector.Document({"wind":1}, type=False),
+            vector.Document({"wind":1}, type=False)
+        ])
+        self.assertAlmostEqual(v.information_gain("wind"), 0.52, places=2)
+        print "patten.vector.Corpus.information_gain()"
 
 #---------------------------------------------------------------------------------------------------
 
