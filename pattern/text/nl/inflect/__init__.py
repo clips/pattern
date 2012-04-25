@@ -37,6 +37,7 @@ plural_irregular_eren = dict.fromkeys(("blad", "ei", "gelid", "gemoed", "kalf", 
 plural_irregular_deren = dict.fromkeys(("hoen", "been"), True)
 
 plural_irregular = {
+     "centrum": "centra",
     "escargot": "escargots",
       "gedrag": "gedragingen",
        "gelid": "gelederen",
