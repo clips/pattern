@@ -1105,7 +1105,9 @@ def minify(js):
       (re.compile(r";\n"), "; "),                # statements (correctly) terminated with ;
       (re.compile(r"[ \t]+"), " "),              # spacing and indentation
       (re.compile(r"[ \t]([\(\[\{\,\;\=\-\+\*\/])"), "\\1"),
-      (re.compile(r"([\)\]\}\,\;\=\-\+\*\/])[ \t]"), "\\1")):
+      (re.compile(r"([\)\]\}\,\;\=\-\+\*\/])[ \t]"), "\\1"),
+      (re.compile(r"\s+\n"), "\n"),
+      (re.compile(r"\n+"), "\n")):
         js = a.sub(b, js)
     return js.strip()
 
