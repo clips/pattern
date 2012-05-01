@@ -268,6 +268,8 @@ var Node = Class.extend({
     },
     
     edges: function() {
+        /* Yields a list of edges from/to the node.
+         */
         var a = [];
         for (var i=0; i < this.graph.edges.length; i++) {
             var e = this.graph.edges[i];
@@ -278,20 +280,23 @@ var Node = Class.extend({
         return a;
     },
 
-    flatten: function(depth, _visited) {
+    flatten: function(depth, traversable, _visited) {
         /* Recursively lists the node and nodes linked to it.
          *  Depth 0 returns a list with the node.
          *  Depth 1 returns a list with the node and all the directly linked nodes.
          *  Depth 2 includes the linked nodes' links, and so on.
          */
         if (depth === undefined) depth = 1;
+        if (traversable === undefined) traversable = function(node, edge) { return true; };
         _visited = _visited || {};
         _visited[this.id] = [this, depth];
         if (depth >= 1) {
             for (var i=0; i < this.links.length; i++) {
                 var n = this.links[i];
                 if (!_visited[n.id] || _visited[n.id][1] < depth-1) {
-                    n.flatten(depth-1, _visited);
+                    if (traversable(this, this.links.edges[n.id])) {
+                        n.flatten(depth-1, traversable, _visited);
+                    }
                 }
             }
         }
@@ -337,6 +342,8 @@ var Node = Class.extend({
     },
 
     contains: function(x, y) {
+        /* Returns True if the given coordinates (x, y) are inside the node radius.
+         */
         return Math.abs(this.x - x) < this.radius*2 &&
                Math.abs(this.y - y) < this.radius*2
     }
@@ -370,7 +377,7 @@ var Links = Class.extend({
     },
     
     edge: function(node) {
-        return this.edges[(node instanceof Node)?node.id:node] || null;
+        return this.edges[(node instanceof Node)? node.id : node] || null;
     }
 });
 
@@ -567,7 +574,7 @@ var Graph = Class.extend({
 
 //  paths: function(node1, node2)
     paths: function(node1, node2, length, path) {
-        /* Returns a list of paths (shorter than given length) connecting the two nodes.
+        /* Returns a list of paths (shorter than or equal to given length) connecting the two nodes.
          */
         if (length === undefined) length = 4;
         if (path   === undefined) path   = [];
@@ -663,7 +670,7 @@ var Graph = Class.extend({
         if (threshold === undefined) threshold = 0.0;
         var a = [];
         for (var i=0; i < this.nodes.length; i++) {
-            if (this.nodes[i][order] > threshold) {
+            if (this.nodes[i][order] >= threshold) {
                 a.push([this.nodes[i][order], this.nodes[i]]);
             }
         }
@@ -709,12 +716,15 @@ var Graph = Class.extend({
     },
     
     density: function() {
-        // Number of edges vs. maximum number of possible edges.
-        // E.g. <0.35 => sparse, >0.65 => dense, 1.0 => complete.
+        /* Yields the number of edges vs. the maximum number of possible edges.
+         * For example, <0.35 => sparse, >0.65 => dense, 1.0 => complete.
+         */
         return 2.0*this.edges.length / (this.nodes.length * (this.nodes.length-1));
     },
     
     split: function() {
+        /* Returns the list of unconnected subgraphs.
+         */
         return partition(this);
     },
     
@@ -854,6 +864,7 @@ var Graph = Class.extend({
         g.layout = this.layout.copy(g);
         for (var i=0; i < nodes.length; i++) {
             var n = nodes[i];
+            if (!(n instanceof Node)) n = this.nodeset(n);
             g._addNodeCopy(n, {root:this.root==n});
         }
         for (var i=0; i < this.edges.length; i++) {
@@ -1044,7 +1055,7 @@ function depthFirstSearch(node, a) {
     for (var i=0; i < node.links.length; i++) {
         var n = node.links[i];
         if (stop) return true;
-        if (!a.traversable(node, node.links.edge(n))) continue;
+        if (a.traversable(node, node.links.edge(n) == false)) continue;
         if (!a._visited[n.id]) {
             stop = depthFirstSearch(n, a);
         }
@@ -1069,7 +1080,7 @@ function breadthFirstSearch(node, a) {
                 return true;
             for (var i=0; i < node.links.length; i++) {
                 var n = node.links[i];
-                if (a.traversable(node, node.links.edge(n))) q.push(n);
+                if (a.traversable(node, node.links.edge(n)) != false) q.push(n);
             }
             _visited[node.id] = true;
         }
@@ -1283,20 +1294,20 @@ function brandesBetweennessCentrality(graph, a) {
         Q.push([0, id, id], 0);
         var S = [];
         var E = {}; for (var n in graph.nodeset) E[n]=0; // sigma
-        E[id] = 1;
+        E[id] = 1.0;
         while(Q.length) {
             var q = Q.pop(); dist=q[0]; pred=q[1]; v=q[2];
             if (v in D) continue;
             D[v] = dist;
             S.push(v);
-            E[v] = E[v] + E[pred];
+            E[v] += E[pred];
             for (var w in W[v]) {
                 var vw_dist = D[v] + W[v][w];
                 if (!(w in D) && (!(w in seen) || vw_dist < seen[w])) {
                     seen[w] = vw_dist;
                     Q.push([vw_dist, v, w], vw_dist);
                     P[w] = [v];
-                    E[w] = 0;
+                    E[w] = 0.0;
                 } else if (vw_dist == seen[w]) { // Handle equal paths.
                     P[w].push(v);
                     E[w] = E[w] + E[v];
@@ -1308,10 +1319,10 @@ function brandesBetweennessCentrality(graph, a) {
             var w = S.pop();
             for (var i=0; i < P[w].length; i++) {
                 v = P[w][i];
-                d[v] = d[v] + (E[v] / E[w]) * (1 + d[w]);
+                d[v] += (1 + d[w]) * E[v] / E[w];
             }
             if (w != id) {
-                b[w] = b[w] + d[w];
+                b[w] += d[w];
             }
         }
     }
@@ -1425,6 +1436,54 @@ function partition(graph) {
     return g;
 }
 
+/*--- GRAPH THEORY | CLIQUE ------------------------------------------------------------------------*/
+
+function isClique(graph) {
+    /* A clique is a set of nodes in which each node is connected to all other nodes.
+     */
+    return (graph.density() == 1.0);
+}
+
+function clique(graph, id) {
+    /* Returns the largest possible clique for the node with given id.
+     */
+    if (id instanceof Node) {
+        id = id.id;
+    }
+    var a = [id];
+    for (var i=0; i < graph.nodes.length; i++) {
+        var n = graph.nodes[i];
+        var b = true;
+        for (var j=0; j < a.length; j++) {
+            if (n.id != a[i].id && graph.edge(n.id, a[i].id) == null) {
+                b = false;
+                break;
+            }
+        }
+        if (b && n.id != a[i].id) {
+            a.push(n.id);
+        }
+        return a;
+    }
+}
+    
+function cliques(graph, threshold) {
+    /* Returns all cliques in the graph with at least the given number of nodes.
+     */
+    if (threshold === undefined) threshold = 3;
+    var a = [];
+    for (var i=0; i < graph.nodes.length; i++) {
+        var n = graph.nodes[i];
+        var c = clique(graph, n.id);
+        if (c.length >= threshold) {
+            c.sort();
+            if (a.indexOf(c) < 0) {
+                a.push(c);
+            }
+        }
+    }
+}
+
 /*--- GRAPH MAINTENANCE ----------------------------------------------------------------------------*/
 
 function unlink(graph, node1, node2) {
@@ -1432,6 +1491,8 @@ function unlink(graph, node1, node2) {
      * If only node1 is given, removes all edges to and from it.
      * This does not remove node1 from the graph.
      */
+    if (!(node1 instanceof Node)) node1 = graph.nodeset[node1];
+    if (!(node2 instanceof Node)) node2 = graph.nodeset[node2];
     var e = graph.edges.slice();
     for (var i=0; i < e.length; i++) {
         if ((node1 == e[i].node1 || node1 == e[i].node2) &&
@@ -1449,6 +1510,8 @@ function unlink(graph, node1, node2) {
 function redirect(graph, node1, node2) {
     /* Connects all of node1's edges to node2 and unlinks node1.
      */
+    if (!(node1 instanceof Node)) node1 = graph.nodeset[node1];
+    if (!(node2 instanceof Node)) node2 = graph.nodeset[node2];
     for (var i=0; i < graph.edges.length; i++) {
         var e = graph.edges[i];
         if (node1 == e.node1 || node1 == e.node2) {
@@ -1467,6 +1530,7 @@ function cut(graph, node) {
     /* Unlinks the given node, but keeps edges intact by connecting the surrounding nodes.
      * If A, B, C, D are nodes and A->B, B->C, B->D, if we then cut B: A->C, A->D.
      */
+    if (!(node instanceof Node)) node = graph.nodeset[node];
     for (var i=0; i < graph.edges.length; i++) {
         var e = graph.edges[i];
         if (node == e.node1 || node == e.node2) {
@@ -1488,6 +1552,9 @@ function insert(graph, node, a, b) {
     /* Inserts the given node between node a and node b.
      * If A, B, C are nodes and A->B, if we then insert C: A->C, C->B.
      */
+    if (!(node instanceof Node)) node = graph.nodeset[node];
+    if (!(a instanceof Node)) a = graph.nodeset[a];
+    if (!(b instanceof Node)) b = graph.nodeset[b];
     for (var i=0; i < graph.edges.length; i++) {
         var e = graph.edges[i];
         if (e.node1 == a && e.node2 == b) {
