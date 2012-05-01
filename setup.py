@@ -54,7 +54,7 @@ setup(
         "pattern.text.nl.inflect"   : ["*.txt"],
         "pattern.vector"            : ["*.txt"],
         "pattern.vector.svm"        : ["*"],
-        "pattern.graph"             : ["*.js"],
+        "pattern.graph"             : ["*.js", "*.csv"],
     },
     py_modules = [
         "pattern.metrics",
