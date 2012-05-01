@@ -1517,7 +1517,7 @@ def csv_header_decode(s):
     p = r"STRING|INTEGER|FLOAT|TEXT|BLOB|BOOLEAN|DATE|"
     p = re.match(r"(.*?) \(("+p+")\)", s)
     s = s.endswith(" ()") and s[:-3] or s
-    return p and (string(p.group(1), default=None), p.group(2).lower()) or (s or None, None)
+    return p and (string(p.group(1), default=None), p.group(2).lower()) or (string(s) or None, None)
 
 class CSV(list):
 
@@ -1584,6 +1584,8 @@ class CSV(list):
                     type = fields[j][1]
                     if row[j] == "None":
                         row[j] = decoder(None)
+                    elif type is None:
+                        row[j] = decoder(decode_utf8(v))
                     elif type in (STRING, TEXT):
                         row[j] = decode_utf8(v)
                     elif type == INTEGER:
