@@ -124,7 +124,7 @@ class TestStringFunctions(unittest.TestCase):
         s = "The Australian platypus is seemingly a hybrid of a mammal and reptilian creature"
         v = metrics.readability(s)
         self.assertTrue(v < 0.30)        
-        # Assert that Dr. Seuss isin the "easy" range (> 0.70).
+        # Assert that Dr. Seuss is in the "easy" range (> 0.70).
         s = "'I know some good games we could play,' said the cat." + \
             "'I know some new tricks,' said the cat in the hat." + \
             "'A lot of good tricks. I will show them to you.'" + \
@@ -238,6 +238,14 @@ class TestStatistics(unittest.TestCase):
         self.assertTrue(abs(v[3] - 92.0) <= 0.5)
         self.assertEqual(v[4], max(a))
         print "pattern.metrics.boxplot()"
+        
+    def test_fisher_test(self):
+        # Assert Fisher exact test significance.
+        v = metrics.fisher_exact_test(a=1, b=9, c=11, d=3)
+        self.assertAlmostEqual(v, 0.0028, places=4)
+        v = metrics.fisher_exact_test(a=45, b=15, c=75, d=45)
+        self.assertAlmostEqual(v, 0.1307, places=4)
+        print "pattern.mettrics.fisher_test()"
 
 #---------------------------------------------------------------------------------------------------
 

@@ -8,7 +8,7 @@
 from time import time
 from math import sqrt, floor, modf
 
-### PROFILER #######################################################################################
+#### PROFILER ######################################################################################
 
 def duration(function, *args, **kwargs):
     """ Returns the running time of the given function, in seconds.
@@ -39,7 +39,7 @@ def profile(function, *args, **kwargs):
     os.remove(id)
     return s
 
-### PRECISION & RECALL #############################################################################
+#### PRECISION & RECALL ############################################################################
 # - recall: how good a system is at retrieving relevant results.
 # - precision: how good it is at filtering out irrelevant results (e.g., bad web search results).
 
@@ -102,7 +102,7 @@ def F(match=lambda document:False, documents=[], beta=1):
     a, p, r, f = test(match, documents)
     return (beta**2 + 1) * p * r / ((beta**2 * p + r) or 1)
 
-### AGREEMENT ######################################################################################
+#### AGREEMENT #####################################################################################
 # +1.0 = total agreement between voters
 # +0.0 = votes based on random chance
 # -1.0 = total disagreement
@@ -134,7 +134,7 @@ def fleiss_kappa(m):
     
 agreement = fleiss_kappa
 
-### STRING SIMILARITY ##############################################################################
+#### STRING SIMILARITY #############################################################################
 
 def levenshtein(string1, string2):
     """ Measures the amount of difference between two strings.
@@ -184,7 +184,7 @@ def similarity(string1, string2, metric=LEVENSHTEIN):
     if metric == DICE:
         return dice_coefficient(string1, string2)
 
-### STRING READABILITY #############################################################################
+#### STRING READABILITY ############################################################################
 # 0.9-1.0 = easily understandable by 11-year old.
 # 0.6-0.7 = easily understandable by 13- to 15-year old.
 # 0.0-0.3 = best understood by university graduates.
@@ -222,7 +222,9 @@ def flesch_reading_ease(string):
 
 readability = flesch_reading_ease
 
-### STATISTICS #####################################################################################
+#### STATISTICS ####################################################################################
+
+#--- MEAN ------------------------------------------------------------------------------------------
 
 def mean(list):
     """ Returns the arithmetic mean of the given list of values.
@@ -281,6 +283,8 @@ def histogram(list, k=10, range=None):
             h[i].append(x)
     return dict(((range[0]+w*i, range[0]+w+w*i), v) for i, v in enumerate(h))
 
+#--- MOMENT ----------------------------------------------------------------------------------------
+
 def moment(list, k=1):
     """ Returns the kth central moment of the given list of values
         (2nd central moment = variance, 3rd and 4th are used to define skewness and kurtosis).
@@ -315,6 +319,8 @@ def kurtosis(list):
 #b = 1000
 #U = [float(i-a)/(b-a) for i in range(a,b)] # uniform distribution
 #print abs(-1.2 - kurtosis(U)) < 0.0001
+
+#--- QUANTILE --------------------------------------------------------------------------------------
 
 def quantile(list, p=0.5, sort=True, a=1, b=-1, c=0, d=1):
     """ Returns the value from the sorted list at point p (0.0-1.0).
@@ -352,3 +358,55 @@ def boxplot(list, **kwargs):
     Q2 = quantile(s, p=0.50, sort=False, **kwargs)
     Q3 = quantile(s, p=0.75, sort=False, **kwargs)
     return float(min(s)), Q1, Q2, Q3, float(max(s))
+
+#--- FISHER EXACT TEST -----------------------------------------------------------------------------
+
+def fisher_exact_test(a, b, c, d, **kwargs):
+    """ Fast implementation of Fisher's exact test.
+        Returns the significance for the given 2x2 contingency table:
+        < 0.05: significant
+        < 0.01: very significant
+        For example, the following test shows a significant correlation between gender & dieting:
+        -----------------------------
+        |             | men | women |
+        |     dieting |  1  |   9   |
+        | non-dieting | 11  |   3   |
+        -----------------------------
+        fisher_exact_test(a=1, b=9, c=11, d=3) => 0.0028
+    """
+    _cache = {}
+    # Hypergeometric distribution.
+    # (a+b)!(c+d)!(a+c)!(b+d)! / a!b!c!d!n! for n=a+b+c+d
+    def p(a, b, c, d):
+        return C(a + b, a) * C(c + d, c) / C(a + b + c + d, a + c)
+    # Binomial coefficient.
+    # n! / k!(n-k)! for 0 <= k <= n
+    def C(n, k):
+        if len(_cache) > 10000:
+            _cache.clear()
+        if k > n - k: # 2x speedup.
+            k = n - k
+        if 0 <= k <= n and (n, k) not in _cache:
+            c = 1.0
+            for i in range(1, int(k + 1)):
+                c *= n - k + i
+                c /= i
+            _cache[(n, k)] = c # 3x speedup.
+        return _cache.get((n, k), 0.0)
+    # Probability of the given data.
+    cutoff = p(a, b, c, d)
+    # Probabilities of "more extreme" data.
+    # Based on: http://www.koders.com/java/fid868948AD5196B75C4C39FEA15A0D6EAF34920B55.aspx?s=252
+    s = [cutoff] + \
+        [p(a+i, b-i, c-i, d+i) for i in range(1, min(b, c) + 1)] + \
+        [p(a-i, b+i, c+i, d-i) for i in range(1, min(a, d) + 1)]
+    return sum(v for v in s if v <= cutoff) or 0.0
+    
+fisher_test = fisher_exact_test
+
+FISHER = "fisher"
+def signifance(*args, **kwargs):
+    """ Returns the significance for the given test (test=FISHER).
+    """
+    if kwargs.get("test", FISHER):
+        return fisher_exact_test(*args, **kwargs)
