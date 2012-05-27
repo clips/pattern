@@ -359,14 +359,14 @@ def boxplot(list, **kwargs):
     Q3 = quantile(s, p=0.75, sort=False, **kwargs)
     return float(min(s)), Q1, Q2, Q3, float(max(s))
 
-#--- FISHER EXACT TEST -----------------------------------------------------------------------------
+#--- FISHER'S EXACT TEST ---------------------------------------------------------------------------
 
 def fisher_exact_test(a, b, c, d, **kwargs):
-    """ Fast implementation of Fisher's exact test.
+    """ Fast implementation of Fisher's exact test (two-tailed).
         Returns the significance for the given 2x2 contingency table:
         < 0.05: significant
         < 0.01: very significant
-        For example, the following test shows a significant correlation between gender & dieting:
+        The following test shows a very significant correlation between gender & dieting:
         -----------------------------
         |             | men | women |
         |     dieting |  1  |   9   |
@@ -395,7 +395,7 @@ def fisher_exact_test(a, b, c, d, **kwargs):
         return _cache.get((n, k), 0.0)
     # Probability of the given data.
     cutoff = p(a, b, c, d)
-    # Probabilities of "more extreme" data.
+    # Probabilities of "more extreme" data, in both directions (two-tailed).
     # Based on: http://www.koders.com/java/fid868948AD5196B75C4C39FEA15A0D6EAF34920B55.aspx?s=252
     s = [cutoff] + \
         [p(a+i, b-i, c-i, d+i) for i in range(1, min(b, c) + 1)] + \
@@ -405,8 +405,8 @@ def fisher_exact_test(a, b, c, d, **kwargs):
 fisher_test = fisher_exact_test
 
 FISHER = "fisher"
-def signifance(*args, **kwargs):
-    """ Returns the significance for the given test (test=FISHER).
+def significance(*args, **kwargs):
+    """ Returns the significance for the given test (FISHER).
     """
-    if kwargs.get("test", FISHER):
+    if kwargs.get("test", FISHER) == FISHER:
         return fisher_exact_test(*args, **kwargs)
