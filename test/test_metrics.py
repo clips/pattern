@@ -245,7 +245,53 @@ class TestStatistics(unittest.TestCase):
         self.assertAlmostEqual(v, 0.0028, places=4)
         v = metrics.fisher_exact_test(a=45, b=15, c=75, d=45)
         self.assertAlmostEqual(v, 0.1307, places=4)
-        print "pattern.mettrics.fisher_test()"
+        print "pattern.metrics.fisher_test()"
+    
+    def test_chi_squared(self):
+        # Assert chi-squared test (upper tail).
+        o1, e1 = [44,56], [50,50]
+        o2, e2 = [20,20,0,0], [10,10,10,10]
+        v1 = metrics.chi2(o1, e1)
+        v2 = metrics.chi2(o2, e2)
+        self.assertAlmostEqual(v1[0], 1.4400, places=4)
+        self.assertAlmostEqual(v1[1], 0.2301, places=4)     # Tests gammai.gs().
+        self.assertAlmostEqual(v2[0], 40.0000, places=4)
+        self.assertAlmostEqual(v2[1], 1.0655e-08, places=4) # Tests gammai.gcf().
+        print "pattern.metrics.chi2()"
+    
+    def test_chi_squared_p(self):
+        # Assert chi-squared P-value (upper tail).
+        for df, X2 in [
+          (1, ( 3.85,  5.05,  6.65,  7.90)), 
+          (2, ( 6.00,  7.40,  9.25, 10.65)),
+          (3, ( 7.85,  9.40, 11.35, 12.85)),
+          (4, ( 9.50, 11.15, 13.30, 14.90)),
+          (5, (11.10, 12.85, 15.10, 16.80))]:
+            for i, x2 in enumerate(X2):
+                v = metrics.chi2p(x2, df, tail=metrics.UPPER)
+                self.assertTrue(v < (0.05, 0.025, 0.01, 0.005)[i])
+        print "pattern.metrics.chi2p()"
+
+class TestSpecialFunctions(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+        
+    def test_erfc(self):
+        # Assert complementary error function.
+        for x, y in [
+          (-3.00, 2.000),
+          (-2.00, 1.995),
+          (-1.00, 1.843),
+          (-0.50, 1.520),
+          (-0.25, 1.276),
+          ( 0.00, 1.000),
+          ( 0.25, 0.724),
+          ( 0.50, 0.480),
+          ( 1.00, 0.157),
+          ( 2.00, 0.005),
+          ( 3.00, 0.000)]:
+            self.assertAlmostEqual(metrics.erfc(x), y, places=3)
 
 #---------------------------------------------------------------------------------------------------
 
@@ -254,6 +300,7 @@ def suite():
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestProfiling))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestStringFunctions))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestStatistics))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSpecialFunctions))
     return suite
 
 if __name__ == "__main__":

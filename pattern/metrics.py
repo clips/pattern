@@ -6,7 +6,7 @@
 # http://www.clips.ua.ac.be/pages/pattern
 
 from time import time
-from math import sqrt, floor, modf
+from math import sqrt, floor, modf, exp, pi, log
 
 #### PROFILER ######################################################################################
 
@@ -404,9 +404,158 @@ def fisher_exact_test(a, b, c, d, **kwargs):
     
 fisher_test = fisher_exact_test
 
-FISHER = "fisher"
+FISHER, CHI2 = "fisher", "chi2"
 def significance(*args, **kwargs):
-    """ Returns the significance for the given test (FISHER).
+    """ Returns the significance for the given test (FISHER, CHI2).
     """
-    if kwargs.get("test", FISHER) == FISHER:
+    test = kwargs.pop("test", FISHER)
+    if test == FISHER:
         return fisher_exact_test(*args, **kwargs)
+    if test == CHI2:
+        return pearson_chi_squared_test(*args, **kwargs)[1]
+
+#--- PEARSON'S CHI-SQUARED TEST --------------------------------------------------------------------
+
+LOWER = "lower"
+UPPER = "upper" 
+
+def pearson_chi_squared_test(observed=[], expected=[], df=None, tail=UPPER):
+    """ Returns (X2, P) for the given observed and expected data, containing absolute frequencies.
+        If expected is None, an equal distribution over all classes is assumed.
+        P < 0.05: significant
+    """
+    # The P-value (upper tail area) is obtained from the incomplete gamma integral:
+    # P(X2 | v) = igf(v/2, x/2) with v degrees of freedom.
+    # See: Cephes, https://github.com/scipy/scipy/blob/master/scipy/special/cephes/chdtr.c
+    O = observed
+    E = expected
+    if not df:
+        df = len(O) - 1
+    if not E:
+        s = float(sum(O))
+        E = [s / (len(O) or 1)] * len(O)
+    X2 = sum((O[i] - E[i]) ** 2.0 / E[i] for i in range(len(O)))
+    P = gammai(df * 0.5, X2 * 0.5, tail)
+    return (X2, P)
+    
+chi2 = chi_squared = pearson_chi_squared_test
+
+def chi2p(X2, df=1, tail=UPPER):
+    """ Returns P-value for given X2 and degrees of freedom.
+    """
+    return gammai(df * 0.5, X2 * 0.5, tail)
+
+#o1, e1 = [44,56], [50,50]
+#o2, e2 = [20,20,0,0], [10,10,10,10]
+#assert round(chi_squared(o1, e1)[0], 4)  == 1.4400
+#assert round(chi_squared(o1, e1)[1], 4)  == 0.2301
+#assert round(chi_squared(o2, e2)[0], 4)  == 40.0000
+#assert round(chi_squared(o2, e2)[1], 12) == 1.0655e-08
+
+#### SPECIAL FUNCTIONS #############################################################################
+
+#--- INCOMPLETE GAMMA FUNCTION ---------------------------------------------------------------------
+# Based on: http://www.johnkerl.org/python/sp_funcs_m.py.txt, Tom Loredo (2009)
+# See also: http://www.mhtl.uwaterloo.ca/courses/me755/web_chap1.pdf
+
+def gammaln(x):
+    """ Returns the logarithm of the gamma function.
+    """
+    x = x - 1.0
+    y = x + 5.5
+    y = (x + 0.5) * log(y) - y
+    n = 1.0
+    for i in range(6):
+        x += 1
+        n += (76.18009173, -86.50532033, 24.01409822, -1.231739516e0, 0.120858003e-2, -0.536382e-5)[i] / x
+    return y + log(2.50662827465 * n)
+    
+def gamma(x):
+    return exp(gammaln(x))
+
+def gammai(a, x, tail=UPPER):
+    """ Returns the incomplete gamma function for LOWER or UPPER tail.
+    """
+    
+    # Series approximation to the incomplete gamma function.
+    def gs(a, x, epsilon=3.e-7, iterations=700):
+        ln = gammaln(a)
+        s = 1.0 / a
+        d = 1.0 / a
+        for i in range(1, iterations):
+            d = d * x / (a + i)
+            s = s + d
+            if abs(d) < abs(s) * epsilon:
+                return (s * exp(-x + a * log(x) - ln), ln)
+        raise StopIteration, (abs(d), abs(s) * epsilon)
+    
+    # Continued fraction approximation of the incomplete gamma function.
+    def gcf(a, x, epsilon=3.e-7, iterations=200):
+        ln = gammaln(a)
+        g0 = 0.0
+        a0 = 1.0
+        b0 = 0.0
+        a1 = x
+        b1 = 1.0
+        fac = 1.0
+        for i in range(1, iterations):
+            a0 = (a1 + a0 * (i - a)) * fac
+            b0 = (b1 + b0 * (i - a)) * fac
+            a1 = x * a0 + a1 * i * fac
+            b1 = x * b0 + b1 * i * fac
+            if a1 != 0.0:
+                fac = 1.0 / a1
+                g = b1 * fac
+                if abs((g - g0) / g) < epsilon:
+                    return (g * exp(-x + a * log(x) - ln), ln)
+                g0 = g
+        raise StopIteration, (abs((g-g0) / g))
+    
+    if x < 0.0:
+        raise ValueError, "x < 0.0"
+    if a <= 0.0:
+        raise ValueError, "a <= 0.0"
+    if x < a + 1:
+        if tail == LOWER:
+            return gs(a, x)[0]
+        return 1 - gs(a, x)[0]
+    else:
+        if tail == UPPER:
+            return gcf(a, x)[0]
+        return 1 - gcf(a, x)[0]
+
+#--- COMPLEMENTARY ERROR FUNCTION ------------------------------------------------------------------
+
+def erfc(x):
+    """ Complementary error function.
+    """
+    z = abs(x)
+    t = 1 / (1 + 0.5 * z)
+    r = 0
+    for y in [
+      0.17087277, 
+     -0.82215223, 
+      1.48851587, 
+     -1.13520398, 
+      0.27886807, 
+     -0.18628806, 
+      0.09678418, 
+      0.37409196, 
+      1.00002368, 
+     -1.26551223]:
+        r = y + t * r
+    r = t * exp(-z*z + r)
+    if x >= 0:
+        return r
+    return 2 - r
+
+def cdf(x, mu=0, sigma=1):
+    """ Cumulative distribution function.
+    """
+    return min(1.0, 0.5 * erfc((-x + mu) / (sigma * 2**0.5)))
+
+def pdf(x, mu=0, sigma=1):
+    """ Probability density function.
+    """
+    u = (x - mu) / abs(sigma)
+    return (1 / sqrt(2*pi) * abs(sigma)) * exp(-u*u / 2)
