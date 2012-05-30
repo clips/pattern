@@ -1,6 +1,7 @@
 import os, sys; sys.path.insert(0, os.path.join(".."))
 import unittest
 import time
+import math
 
 from pattern import metrics
 
@@ -249,14 +250,23 @@ class TestStatistics(unittest.TestCase):
     
     def test_chi_squared(self):
         # Assert chi-squared test (upper tail).
-        o1, e1 = [44,56], [50,50]
-        o2, e2 = [20,20,0,0], [10,10,10,10]
+        o1, e1 = [[44, 56]], [[50, 50]]
+        o2, e2 = [[22, 21, 22, 27, 22, 36]], []
+        o3, e3 = [[48, 35, 15, 3]], [[58, 34.5, 7, 0.5]]
+        o4, e4 = [[36, 14], [30, 25]], []
+        o5, e5 = [[46, 71], [37, 83]], [[40.97, 76.02], [42.03, 77.97]]
         v1 = metrics.chi2(o1, e1)
         v2 = metrics.chi2(o2, e2)
-        self.assertAlmostEqual(v1[0], 1.4400, places=4)
-        self.assertAlmostEqual(v1[1], 0.2301, places=4)     # Tests gammai.gs().
-        self.assertAlmostEqual(v2[0], 40.0000, places=4)
-        self.assertAlmostEqual(v2[1], 1.0655e-08, places=4) # Tests gammai.gcf().
+        v3 = metrics.chi2(o3, e3)
+        v4 = metrics.chi2(o4, e4)
+        v5 = metrics.chi2(o5, e5)
+        self.assertAlmostEqual(v1[0],  1.4400, places=4)
+        self.assertAlmostEqual(v1[1],  0.2301, places=4)
+        self.assertAlmostEqual(v2[0],  6.7200, places=4)
+        self.assertAlmostEqual(v2[1],  0.2423, places=4)
+        self.assertAlmostEqual(v3[0], 23.3742, places=4)
+        self.assertAlmostEqual(v4[0],  3.4177, places=4)
+        self.assertAlmostEqual(v5[0],  1.8755, places=4)
         print "pattern.metrics.chi2()"
     
     def test_chi_squared_p(self):
@@ -276,7 +286,19 @@ class TestSpecialFunctions(unittest.TestCase):
     
     def setUp(self):
         pass
-        
+    
+    def test_gamma(self):
+        # Assert complete gamma function.
+        v = metrics.gamma(0.5)
+        self.assertAlmostEqual(v, math.sqrt(math.pi), places=4)
+        print "pattern.metrics.gamma()"
+    
+    def test_gammai(self):
+        # Assert incomplete gamma function.
+        v = metrics.gammai(a=1, x=2)
+        self.assertAlmostEqual(v, 0.1353, places=4)
+        print "pattern.metrics.gammai()"
+    
     def test_erfc(self):
         # Assert complementary error function.
         for x, y in [
@@ -292,6 +314,7 @@ class TestSpecialFunctions(unittest.TestCase):
           ( 2.00, 0.005),
           ( 3.00, 0.000)]:
             self.assertAlmostEqual(metrics.erfc(x), y, places=3)
+        print "pattern.metrics.erfc"
 
 #---------------------------------------------------------------------------------------------------
 

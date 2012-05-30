@@ -404,37 +404,63 @@ def fisher_exact_test(a, b, c, d, **kwargs):
     
 fisher_test = fisher_exact_test
 
-FISHER, CHI2 = "fisher", "chi2"
+FISHER, CHI2, LLR = "fisher", "chi2", "llr"
 def significance(*args, **kwargs):
-    """ Returns the significance for the given test (FISHER, CHI2).
+    """ Returns the significance for the given test (FISHER, CHI2, LLR).
     """
     test = kwargs.pop("test", FISHER)
     if test == FISHER:
         return fisher_exact_test(*args, **kwargs)
     if test == CHI2:
         return pearson_chi_squared_test(*args, **kwargs)[1]
+    if test == LLR:
+        return pearson_log_likelihood_ratio(*args, **kwargs)[1]
 
 #--- PEARSON'S CHI-SQUARED TEST --------------------------------------------------------------------
 
 LOWER = "lower"
 UPPER = "upper" 
 
+def _expected(observed):
+    """ Returns the table of (absolute) expected frequencies
+        from the given table of observed frequencies.
+    """
+    O = observed
+    if len(O) == 0:
+        return []
+    if len(O) == 1:
+        return [[sum(O[0]) / float(len(O[0]))] * len(O[0])]
+    n = [sum(O[i]) for i in range(len(O))]
+    m = [sum(O[i][j] for i in range(len(O))) for j in range(len(O[0]))]
+    s = float(sum(n))
+    # Each cell = row sum * column sum / total.
+    return [[n[i] * m[j] / s for j in range(len(O[i]))] for i in range(len(O))]
+
 def pearson_chi_squared_test(observed=[], expected=[], df=None, tail=UPPER):
-    """ Returns (X2, P) for the given observed and expected data, containing absolute frequencies.
+    """ Returns (X2, P) for the n x m observed and expected data (containing absolute frequencies).
         If expected is None, an equal distribution over all classes is assumed.
+        If df is None, it is the number of classes-1 (i.e., len(observed[0]) - 1).
         P < 0.05: significant
+        P < 0.01: very significant
+        This means that if P < 5%, the data is unevenly distributed (e.g., biased).
+        The following test shows that the die is fair:
+        ---------------------------------------
+        |       | 1  | 2  | 3  | 4  | 5  | 6  | 
+        | rolls | 22 | 21 | 22 | 27 | 22 | 36 |
+        ---------------------------------------
+        chi2([[22, 21, 22, 27, 22, 36]]) => (6.72, 0.24)
     """
     # The P-value (upper tail area) is obtained from the incomplete gamma integral:
-    # P(X2 | v) = igf(v/2, x/2) with v degrees of freedom.
+    # P(X2 | v) = gammai(v/2, x/2) with v degrees of freedom.
     # See: Cephes, https://github.com/scipy/scipy/blob/master/scipy/special/cephes/chdtr.c
-    O = observed
-    E = expected
-    if not df:
-        df = len(O) - 1
-    if not E:
-        s = float(sum(O))
-        E = [s / (len(O) or 1)] * len(O)
-    X2 = sum((O[i] - E[i]) ** 2.0 / E[i] for i in range(len(O)))
+    O  = observed
+    E  = expected or _expected(observed)
+    df = df or (len(O) > 0 and len(O[0])-1 or 0)
+    X2 = 0.0
+    for i in range(len(O)):
+        for j in range(len(O[i])):
+            if O[i][j] != 0 and E[i][j] != 0:
+                X2 += (O[i][j] - E[i][j]) ** 2.0 / E[i][j]
     P = gammai(df * 0.5, X2 * 0.5, tail)
     return (X2, P)
     
@@ -445,17 +471,37 @@ def chi2p(X2, df=1, tail=UPPER):
     """
     return gammai(df * 0.5, X2 * 0.5, tail)
 
-#o1, e1 = [44,56], [50,50]
-#o2, e2 = [20,20,0,0], [10,10,10,10]
-#assert round(chi_squared(o1, e1)[0], 4)  == 1.4400
-#assert round(chi_squared(o1, e1)[1], 4)  == 0.2301
-#assert round(chi_squared(o2, e2)[0], 4)  == 40.0000
-#assert round(chi_squared(o2, e2)[1], 12) == 1.0655e-08
+#o, e = [[44,56]], [[50,50]]
+#assert round(chi_squared(o, e)[0], 4)  == 1.4400
+#assert round(chi_squared(o, e)[1], 4)  == 0.2301
+
+#--- PEARSON'S LOG LIKELIHOOD RATIO APPROXIMATION --------------------------------------------------
+
+def pearson_log_likelihood_ratio(observed=[], expected=[], df=None, tail=UPPER):
+    """ Returns (G, P) for the n x m observed and expected data (containing absolute frequencies).
+        If expected is None, an equal distribution over all classes is assumed.
+        If df is None, it is the number of classes-1 (i.e., len(observed[0]) - 1).
+        P < 0.05: significant
+        P < 0.01: very significant
+    """
+    O  = observed
+    E  = expected or _expected(observed)
+    df = df or (len(O) > 0 and len(O[0])-1 or 0)
+    G  = 0.0
+    for i in range(len(O)):
+        for j in range(len(O[i])):
+            if O[i][j] != 0 and E[i][j] != 0:
+                G += O[i][j] * log(O[i][j] / E[i][j])
+    G = G * 2
+    P = gammai(df * 0.5, G * 0.5, tail)
+    return (G, P)
+    
+llr = likelihood = pearson_log_likelihood_ratio
 
 #### SPECIAL FUNCTIONS #############################################################################
 
 #--- INCOMPLETE GAMMA FUNCTION ---------------------------------------------------------------------
-# Based on: http://www.johnkerl.org/python/sp_funcs_m.py.txt, Tom Loredo (2009)
+# Based on: http://www.johnkerl.org/python/sp_funcs_m.py.txt, Tom Loredo
 # See also: http://www.mhtl.uwaterloo.ca/courses/me755/web_chap1.pdf
 
 def gammaln(x):
@@ -490,41 +536,42 @@ def gammai(a, x, tail=UPPER):
         raise StopIteration, (abs(d), abs(s) * epsilon)
     
     # Continued fraction approximation of the incomplete gamma function.
-    def gcf(a, x, epsilon=3.e-7, iterations=200):
+    def gf(a, x, epsilon=3.e-7, iterations=200):
         ln = gammaln(a)
         g0 = 0.0
         a0 = 1.0
         b0 = 0.0
         a1 = x
         b1 = 1.0
-        fac = 1.0
+        f  = 1.0
         for i in range(1, iterations):
-            a0 = (a1 + a0 * (i - a)) * fac
-            b0 = (b1 + b0 * (i - a)) * fac
-            a1 = x * a0 + a1 * i * fac
-            b1 = x * b0 + b1 * i * fac
+            a0 = (a1 + a0 * (i - a)) * f
+            b0 = (b1 + b0 * (i - a)) * f
+            a1 = x * a0 + a1 * i * f
+            b1 = x * b0 + b1 * i * f
             if a1 != 0.0:
-                fac = 1.0 / a1
-                g = b1 * fac
+                f = 1.0 / a1
+                g = b1 * f
                 if abs((g - g0) / g) < epsilon:
                     return (g * exp(-x + a * log(x) - ln), ln)
                 g0 = g
         raise StopIteration, (abs((g-g0) / g))
-    
-    if x < 0.0:
-        raise ValueError, "x < 0.0"
+
     if a <= 0.0:
-        raise ValueError, "a <= 0.0"
+        return 1.0
+    if x <= 0.0:
+        return 1.0
     if x < a + 1:
         if tail == LOWER:
             return gs(a, x)[0]
         return 1 - gs(a, x)[0]
     else:
         if tail == UPPER:
-            return gcf(a, x)[0]
-        return 1 - gcf(a, x)[0]
+            return gf(a, x)[0]
+        return 1 - gf(a, x)[0]
 
 #--- COMPLEMENTARY ERROR FUNCTION ------------------------------------------------------------------
+# Based on: http://www.johnkerl.org/python/sp_funcs_m.py.txt, Tom Loredo
 
 def erfc(x):
     """ Complementary error function.
