@@ -57,3 +57,4 @@ Contributing authors (chronological):
 - Rajesh Nair
 - F. De Smedt
 - Radim Řehůřek
+- Tom Loredo
