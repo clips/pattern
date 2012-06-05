@@ -34,8 +34,10 @@ class Lexicon(_Lexicon):
         _Lexicon._parse(self)
         # Map "verschrikkelijk" to adverbial "verschrikkelijke".
         # Combined with negation, this increases accuracy to 79%.
-        # A 0.79, P 0.77, R 0.83, F1 0.80, instead of:
-        # A 0.75, P 0.72, R 0.82, F1 0.77.
+        # A 0.75, P 0.72, R 0.82, F1 0.77 becomes:
+        # A 0.79, P 0.77, R 0.83, F1 0.80.
+        # Accuracy also increases by using exclamation marks as intensifier:
+        # A 0.80, P 0.77, R 0.84, F1 0.81.
         for w, pos in self.items():
             if "JJ" in pos:
                 a = attributive(w)
