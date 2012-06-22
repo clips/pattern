@@ -294,7 +294,7 @@ def _parse_lexeme(verb):
     # Present tense gets -t:
     sg = not b.endswith("t") and b + "t" or b
     # Past tense ending in a consonant in "xtc-koffieshop" gets -t, otherwise -d:
-    dt = b0[-1] in "xtckfshp" and "t" or (not b.endswith("d") and "d" or "")
+    dt = b0 and b0[-1] in "xtckfshp" and "t" or (not b.endswith("d") and "d" or "")
     # Past tense -e and handle common irregular inflections:
     p = b + dt + "e"
     for suffix, irregular in (("erfde", "ierf"), ("ijfde", "eef"), ("ingde", "ong"), ("inkte", "onk")):
