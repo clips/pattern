@@ -558,6 +558,17 @@ var Color = Class.extend({
         var hsb = _rgb2hsb(this.r, this.g, this.b);
         var hsb = _rotateRYB(hsb[0], hsb[1], hsb[2], angle);
         return new Color(hsb[0], hsb[1], hsb[2], this.a, {"colorspace":HSB});
+    },
+    
+    adjust: function(options) {
+        /* Returns a new color transformed in HSB colorspace.
+         * Hue is added, saturation and brightness are multiplied.
+         */
+        var hsb = _rgb2hsb(this.r, this.g, this.b);
+        hsb[0] += options.hue || 0;
+        hsb[1] *= options.saturation || 1;
+        hsb[2] *= options.brightness || 1;
+        return new Color(hsb[0]%1, hsb[1], hsb[2], this.a, {"colorspace":HSB});
     }
 });
 
