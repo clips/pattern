@@ -208,6 +208,22 @@ class TestQuantification(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+class TestSpelling(unittest.TestCase):
+    
+    def test_spelling(self):
+        # Assert spelling suggestion accuracy.
+        i = j = 0.0
+        from pattern.db import Datasheet
+        for correct, wrong in Datasheet.load(os.path.join("corpora", "birkbeck-spelling.csv")):
+            for w in wrong.split(" "):
+                if en.spelling(w)[0][0] == correct:
+                    i += 1
+                else:
+                    j += 1
+        self.assertTrue(i / (i+j) > 0.70)
+
+#---------------------------------------------------------------------------------------------------
+
 class TestParser(unittest.TestCase):
     
     def setUp(self):
@@ -296,7 +312,7 @@ class TestParser(unittest.TestCase):
         v = en.parser.find_chunks([["black", "JJ"], ["cat", "NN"]])
         self.assertEqual(v, [['black', 'JJ', 'B-NP'], ['cat', 'NN', 'I-NP']])
         # Assert the accuracy of the chunker.
-        # For example, in "That very black cat must be really meowing really loud in the yard.":
+        # For example, in "The very black cat must be really meowing really loud in the yard.":
         # - "The very black" (NP)
         # - "must be really meowing" (VP)
         # - "really loud" (ADJP)
@@ -869,6 +885,7 @@ def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestInflection))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestQuantification))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSpelling))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParser))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParseTree))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestModality))

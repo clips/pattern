@@ -10,6 +10,11 @@ The corpora are meant for personal use, they are not part of the module's BSD li
 - http://spamassassin.apache.org/publiccorpus/
 - 125 "spam" and 125 (mostly technical) "ham" messages.
 
+2) Birkbeck spelling error corpus
+- birkbeck-spelling.csv
+- http://www.ota.ox.ac.uk/headers/0643.xml
+- 500 words and how they are commonly misspelled.
+
 2) bol.com Dutch book reviews
 - bol.com-polarity.csv
 - http://www.bol.com/nl/m/nederlandse-boeken/literatuur/
