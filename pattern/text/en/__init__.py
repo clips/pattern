@@ -27,6 +27,9 @@ from inflect import \
 
 from inflect.quantify import \
     number, numerals, quantify, reflect
+    
+from inflect.spelling import \
+    suggest as spelling
 
 from parser           import tokenize, parse, tag
 from parser.tree      import Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
