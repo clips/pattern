@@ -88,6 +88,8 @@ class Date(datetime):
     """ A convenience wrapper for datetime.datetime with a default string format.
     """
     format = DEFAULT_DATE_FORMAT
+    def copy(self):
+        return date(self.timestamp)
     @property
     def timestamp(self):
         return int(mktime(self.timetuple())) # Seconds elapsed since 1/1/1970.
@@ -100,16 +102,19 @@ class Date(datetime):
         return self.strftime(self.format)
     def __repr__(self):
         return "Date(%s)" % repr(self.__str__())
+    def __iadd__(self, time):
+        return self.__add__(time)
+    def __isub__(self, time):
+        return self.__sub__(time)
     def __add__(self, time):
         d = datetime.__add__(self, time)
         return date(d.year, d.month, d.day, d.hour, d.minute, d.second, d.microsecond, self.format)
     def __sub__(self, time):
         d = datetime.__sub__(self, time)
+        if isinstance(d, timedelta):
+            # Subtracting two dates returns a time().
+            return d
         return date(d.year, d.month, d.day, d.hour, d.minute, d.second, d.microsecond, self.format)
-    def __iadd__(self, time):
-        return self.__add__(time)
-    def __isub__(self, time):
-        return self.__sub__(time)
 
 def date(*args, **kwargs):
     """ Returns a Date from the given parameters:
