@@ -1240,6 +1240,9 @@ def centroid(vectors, keys=[]):
         (e.g., the geometric center of a list of (x,y)-coordinates forming a polygon).
         Since vectors are sparse, the list of all keys (=Corpus.vector) must be given.
     """
+    if not keys:
+        keys = features(vectors)
+    v = (isinstance(v, Document) and v.vector or v for v in vectors)
     v = ((k, mean((v.get(k, 0) for v in vectors), len(vectors))) for k in keys)
     v = Vector((k, x) for k, x in v if x != 0)
     return v
@@ -1258,7 +1261,7 @@ def distance(v1, v2, method=COSINE):
         return sum(abs(v1.get(w,0) - v2.get(w,0)) for w in set(chain(v1, v2)))
     if method == HAMMING:
         d = sum(not (w in v1 and w in v2 and v1[w] == v2[w]) for w in set(chain(v1, v2))) 
-        d = d / float(max(len(v1), len(v2)))
+        d = d / float(max(len(v1), len(v2)) or 1)
         return d
     if isinstance(method, type(distance)):
         # Given method is a function of the form: distance(v1, v2) => float.
