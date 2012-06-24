@@ -1158,7 +1158,6 @@ TWITTER_LICENSE = api.license["Twitter"]
 
 # Hashtag = word starting with #, for example: #OccupyWallstreet
 # Retweet = word starting with @ preceded by RT: RT @nathan
-TWITTER_SOURCE  = re.compile(r"href=&quot;(.*?)&quot;")
 TWITTER_HASHTAG = re.compile(r"(\s|^)(#[a-z0-9_\-]+)", re.I)
 TWITTER_RETWEET = re.compile(r"(\s|^RT )(@[a-z0-9_\-]+)", re.I)
 
@@ -1203,7 +1202,7 @@ class Twitter(SearchEngine):
         results.total = None
         for x in data.get("results", data.get("trends", [])):
             r = Result(url=None)
-            r.url         = self.format(TWITTER_SOURCE.search(x.get("source", "href=&quot;&quot;")).group(1))
+            r.url         = self.format("https://twitter.com/" + x.get("from_user") + "/status/" + x.get("id_str"))
             r.description = self.format(x.get("text"))
             r.date        = self.format(x.get("created_at", data.get("as_of")))
             r.author      = self.format(x.get("from_user"))
