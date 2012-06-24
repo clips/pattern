@@ -454,7 +454,9 @@ class NavigableString(unicode, PageElement):
         if encoding:
             return self.encode(encoding)
         else:
-            return self
+            #return self
+            # Return actual Unicode string, not NavigableString object. Tom De Smedt, 2012.
+            return u"" + self
 
 class CData(NavigableString):
 
