@@ -10,13 +10,18 @@ from pattern import vector
 from pattern.en import Text, Sentence, Word, parse
 from pattern.db import Datasheet
 
+try:
+    PATH = os.path.dirname(os.path.abspath(__file__))
+except:
+    PATH = ""
+
 def corpus(top=None):
     """ Returns a Corpus of e-mail messages.
         Document type=True => HAM, False => SPAM.
         Documents are mostly of a technical nature (developer forum posts).
     """
     documents = []
-    for score, message in Datasheet.load(os.path.join("corpora", "apache-spam.csv")):
+    for score, message in Datasheet.load(os.path.join(PATH, "corpora", "apache-spam.csv")):
         document = vector.Document(message, stemmer="porter", top=top, type=int(score) > 0)
         documents.append(document)
     return vector.Corpus(documents)
@@ -468,12 +473,16 @@ class TestCorpus(unittest.TestCase):
         self.assertAlmostEqual(v2, 0.00, places=2)
         self.assertAlmostEqual(v3, 0.45, places=2)
         # Assert that Corpus.similarity() is aware of LSA reduction.
-        self.corpus.reduce(1)
-        v1 = self.corpus.similarity(self.corpus[0], self.corpus[1])
-        v2 = self.corpus.similarity(self.corpus[0], self.corpus[2])
-        self.assertAlmostEqual(v1, 1.00, places=2)
-        self.assertAlmostEqual(v2, 0.00, places=2)
-        self.corpus.lsa = None
+        try:
+            import numpy
+            self.corpus.reduce(1)
+            v1 = self.corpus.similarity(self.corpus[0], self.corpus[1])
+            v2 = self.corpus.similarity(self.corpus[0], self.corpus[2])
+            self.assertAlmostEqual(v1, 1.00, places=2)
+            self.assertAlmostEqual(v2, 0.00, places=2)
+            self.corpus.lsa = None
+        except ImportError, e:
+            pass
         print "pattern.vector.Corpus.similarity()"
         
     def test_nearest_neighbors(self):

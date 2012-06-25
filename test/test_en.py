@@ -6,6 +6,11 @@ import subprocess
 
 from pattern import en
 
+try:
+    PATH = os.path.dirname(os.path.abspath(__file__))
+except:
+    PATH = ""
+
 #---------------------------------------------------------------------------------------------------
 
 class TestInflection(unittest.TestCase):
@@ -39,7 +44,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the pluralization algorithm.
         from pattern.db import Datasheet
         i, n = 0, 0
-        for sg, pl in Datasheet.load(os.path.join("corpora", "celex-wordforms-en.csv")):
+        for sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "celex-wordforms-en.csv")):
             if en.pluralize(sg) == pl:
                 i +=1
             n += 1
@@ -50,7 +55,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the singularization algorithm.
         from pattern.db import Datasheet
         i, n = 0, 0
-        for sg, pl in Datasheet.load(os.path.join("corpora", "celex-wordforms-en.csv")):
+        for sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "celex-wordforms-en.csv")):
             if en.singularize(pl) == sg:
                 i +=1
             n += 1
@@ -214,7 +219,7 @@ class TestSpelling(unittest.TestCase):
         # Assert spelling suggestion accuracy.
         i = j = 0.0
         from pattern.db import Datasheet
-        for correct, wrong in Datasheet.load(os.path.join("corpora", "birkbeck-spelling.csv")):
+        for correct, wrong in Datasheet.load(os.path.join(PATH, "corpora", "birkbeck-spelling.csv")):
             for w in wrong.split(" "):
                 if en.spelling(w)[0][0] == correct:
                     i += 1
@@ -711,7 +716,7 @@ class TestModality(unittest.TestCase):
         from pattern.db import Datasheet
         from pattern.metrics import test
         sentences = []
-        for certain, sentence in Datasheet.load(os.path.join("corpora", "conll2010-uncertainty.csv")):
+        for certain, sentence in Datasheet.load(os.path.join(PATH, "corpora", "conll2010-uncertainty.csv")):
             sentence = en.parse(sentence, chunks=False, light=True)
             sentence = en.Sentence(sentence)
             sentences.append((sentence, int(certain) > 0))
@@ -754,7 +759,7 @@ class TestSentiment(unittest.TestCase):
         from pattern.db import Datasheet
         from pattern.metrics import test
         reviews = []
-        for score, review in Datasheet.load(os.path.join("corpora", "pang&lee-polarity.csv")):
+        for score, review in Datasheet.load(os.path.join(PATH, "corpora", "pang&lee-polarity.csv")):
             reviews.append((review, int(score) > 0))
         A, P, R, F = test(lambda review: en.positive(review), reviews)
         self.assertTrue(A > 0.71)

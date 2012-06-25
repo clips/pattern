@@ -5,6 +5,11 @@ import subprocess
 
 from pattern import nl
 
+try:
+    PATH = os.path.dirname(os.path.abspath(__file__))
+except:
+    PATH = ""
+
 #---------------------------------------------------------------------------------------------------
 
 class TestInflection(unittest.TestCase):
@@ -18,7 +23,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the pluralization algorithm.
         from pattern.db import Datasheet
         i, n = 0, 0
-        for pred, attr, sg, pl in Datasheet.load(os.path.join("corpora", "celex-wordforms-nl.csv")):
+        for pred, attr, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "celex-wordforms-nl.csv")):
             if nl.pluralize(sg) == pl:
                 i +=1
             n += 1
@@ -29,7 +34,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the singularization algorithm.
         from pattern.db import Datasheet
         i, n = 0, 0
-        for pred, attr, sg, pl in Datasheet.load(os.path.join("corpora", "celex-wordforms-nl.csv")):
+        for pred, attr, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "celex-wordforms-nl.csv")):
             if nl.singularize(pl) == sg:
                 i +=1
             n += 1
@@ -40,7 +45,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the attributive algorithm ("fel" => "felle").
         from pattern.db import Datasheet
         i, n = 0, 0
-        for pred, attr, sg, pl in Datasheet.load(os.path.join("corpora", "celex-wordforms-nl.csv")):
+        for pred, attr, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "celex-wordforms-nl.csv")):
             if nl.attributive(pred) == attr:
                 i +=1
             n += 1
@@ -51,7 +56,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the predicative algorithm ("felle" => "fel").
         from pattern.db import Datasheet
         i, n = 0, 0
-        for pred, attr, sg, pl in Datasheet.load(os.path.join("corpora", "celex-wordforms-nl.csv")):
+        for pred, attr, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "celex-wordforms-nl.csv")):
             if nl.predicative(attr) == pred:
                 i +=1
             n += 1
@@ -218,7 +223,7 @@ class TestSentiment(unittest.TestCase):
         from pattern.db import Datasheet
         from pattern.metrics import test
         reviews = []
-        for score, review in Datasheet.load(os.path.join("corpora", "bol.com-polarity.csv")):
+        for score, review in Datasheet.load(os.path.join(PATH, "corpora", "bol.com-polarity.csv")):
             reviews.append((review, int(score) > 0))
         A, P, R, F = test(lambda review: nl.positive(review), reviews)
         self.assertTrue(A > 0.79)

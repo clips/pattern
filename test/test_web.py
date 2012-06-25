@@ -7,6 +7,11 @@ import warnings
 
 from pattern import web
 
+try:
+    PATH = os.path.dirname(os.path.abspath(__file__))
+except:
+    PATH = ""
+
 #---------------------------------------------------------------------------------------------------
 
 class TestCache(unittest.TestCase):
@@ -782,7 +787,7 @@ class TestPDF(unittest.TestCase):
         
     def test_pdf(self):
         # Assert PDF to string parser.
-        v = web.PDF(open("corpora/carroll-alice.pdf").read())
+        v = web.PDF(open(os.path.join(PATH, "corpora", "carroll-alice.pdf")).read())
         self.assertTrue("Curiouser and curiouser!" in v.string)
         self.assertTrue(isinstance(v.string, unicode))
         print "pattern.web.PDF.string"
