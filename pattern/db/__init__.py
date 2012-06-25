@@ -358,8 +358,6 @@ def sqlite_second(datestring):
         
 #### DATABASE ######################################################################################
 
-
-
 class DatabaseConnectionError(Exception): 
     pass
 
@@ -752,7 +750,7 @@ class Schema(object):
         self.length   = length                 # Field length for STRING.
         self.default  = default                # Default value.
         self.index    = index                  # PRIMARY | UNIQUE | True | False.
-        self.optional = optional in (True, "YES") or str(optional) == "0"
+        self.optional = str(optional) in ("0", "True", "YES")
         self.extra    = extra or None
     
     def __repr__(self):

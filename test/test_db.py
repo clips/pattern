@@ -1048,10 +1048,10 @@ class TestDatasheet(unittest.TestCase):
 
 def suite(**kwargs):
     global HOST, PORT, USERNAME, PASSWORD
-    HOST     = kwargs.get("host", "localhost")
-    PORT     = kwargs.get("port", 3306)
-    USERNAME = kwargs.get("username", "root")
-    PASSWORD = kwargs.get("password", "")
+    HOST     = kwargs.get("host", HOST)
+    PORT     = kwargs.get("port", PORT)
+    USERNAME = kwargs.get("username", USERNAME)
+    PASSWORD = kwargs.get("password", PASSWORD)
     create_db_mysql()
     create_db_sqlite()
     suite = unittest.TestSuite()
