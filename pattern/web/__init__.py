@@ -14,6 +14,7 @@ import threading
 import time
 import os
 import socket, urlparse, urllib, urllib2
+import base64
 import htmlentitydefs
 import sgmllib
 import re
@@ -325,7 +326,7 @@ class URL:
         if k in self.parts    : self.__dict__["_parts"][k] = u(v); return
         raise AttributeError, "'URL' object has no attribute '%s'" % k
         
-    def open(self, timeout=10, proxy=None, user_agent=USER_AGENT, referrer=REFERRER):
+    def open(self, timeout=10, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None):
         """ Returns a connection to the url from which data can be retrieved with connection.read().
             When the timeout amount of seconds is exceeded, raises a URLTimeout.
             When an error occurs, raises a URLError (e.g. HTTP404NotFound).
@@ -343,6 +344,10 @@ class URL:
             urllib2.install_opener(proxy)
         try:
             request = urllib2.Request(url, post, {"User-Agent": user_agent, "Referer": referrer})
+            # Basic authentication is established with authentication=(username, password).
+            if authentication is not None:
+                request.add_header("Authorization", "Basic %s" % 
+                    base64.encodestring('%s:%s' % authentication))
             return urllib2.urlopen(request)
         except urllib2.HTTPError, e:
             if e.code == 301: raise HTTP301Redirect
@@ -363,7 +368,7 @@ class URL:
         except ValueError:
             raise URLError
             
-    def download(self, timeout=10, cached=True, throttle=0, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, unicode=False):
+    def download(self, timeout=10, cached=True, throttle=0, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None, unicode=False):
         """ Downloads the content at the given URL (by default it will be cached locally).
             Unless unicode=False, the content is returned as a unicode string.
         """
@@ -383,7 +388,7 @@ class URL:
                 return cache.get(id, unicode=False)
         t = time.time()
         # Open a connection with the given settings, read it and (by default) cache the data.
-        data = self.open(timeout, proxy, user_agent, referrer).read()
+        data = self.open(timeout, proxy, user_agent, referrer, authentication).read()
         if unicode is True:
             data = u(data)
         if cached:
@@ -1061,7 +1066,7 @@ class Yahoo(SearchEngine):
         try: 
             data = url.download(cached=cached, **kwargs)
         except HTTP401Authentication:
-            raise HTTP401Authentication, "Yahoo search API is a paid service"
+            raise HTTP401Authentication, "Yahoo %s API is a paid service" % type
         except HTTP403Forbidden:
             raise SearchEngineLimitError
         data = json.loads(data)
@@ -1082,10 +1087,10 @@ class Yahoo(SearchEngine):
         return results
 
 #--- BING ------------------------------------------------------------------------------------------
-# http://www.bing.com/developers/s/APIBasics.html
-# http://www.bing.com/developers/createapp.aspx
+# https://datamarket.azure.com/dataset/5BA839F1-12CE-4CCE-BF57-A49D98D29A44
+# https://datamarket.azure.com/account/info
 
-BING = "http://api.search.live.net/json.aspx"
+BING = "https://api.datamarket.azure.com/Bing/Search/"
 BING_LICENSE = api.license["Bing"] 
 
 class Bing(SearchEngine):
@@ -1104,42 +1109,48 @@ class Bing(SearchEngine):
         if type not in (SEARCH, IMAGE, NEWS):
             raise SearchEngineTypeError
         if type == SEARCH: 
-            src = "web"
+            src = "Web"
         if type == IMAGE: 
-            src = "image"
+            src = "Image"
         if type == NEWS:
-            src = "news"
+            src = "News"
         if not query or count < 1 or start < 1 or start > 1000/count: 
-            return Results(BING + "?" + src, query, type)
+            return Results(BING + src + "?", query, type)
         # 1) Construct request URL.
-        url = URL(BING, method=GET, query={
-                 "Appid": self.license or "",
-               "sources": src, 
-                 "query": query,
-           src+".offset": 1 + (start-1) * count,
-            src+".count": min(count, type==NEWS and 15 or 50),
-                "format": "json",
-         "Image.Filters": { TINY: "Size:Small", 
-                           SMALL: "Size:Small", 
-                          MEDIUM: "Size:Medium", 
-                           LARGE: "Size:Large" }.get(size,"")
+        url = URL(BING + src, method=GET, query={
+                 "Query": "'" + query + "'",
+                 "$skip": 1 + (start-1) * count,
+                  "$top": min(count, type==NEWS and 15 or 50),
+               "$format": "json",
         })
-        # 2) Restrict language.
-        #url.query["query"] +=  (self.language and " language:" + self.language or "")
-        if self.language is not None:
-            market = locale.market(self.language)
-            if market:
-                url.query["market"] = market
-        # 3) Parse JSON response.
+        # 2) Restrict image size.
+        if size in (TINY, SMALL, MEDIUM, LARGE):
+            url.query["ImageFilters"] = {
+                    TINY: "'Size:Small'", 
+                   SMALL: "'Size:Small'", 
+                  MEDIUM: "'Size:Medium'", 
+                   LARGE: "'Size:Large'" }[size]
+        # 3) Restrict language.
+        if type in (SEARCH, IMAGE) and self.language is not None:
+            url.query["Query"] = url.query["Query"][:-1] + " language: %s'" % self.language
+        #if self.language is not None:
+        #    market = locale.market(self.language)
+        #    if market:
+        #        url.query["market"] = market
+        # 4) Parse JSON response.
+        print self.license
+        kwargs["authentication"] = ("", self.license)
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
-        data = url.download(cached=cached, **kwargs)
-        print data
+        try: 
+            data = url.download(cached=cached, **kwargs)
+        except HTTP401Authentication:
+            raise HTTP401Authentication, "Bing %s API is a paid service" % type
         data = json.loads(data)
-        data = data.get("SearchResponse", {}).get(src.capitalize(), {})
+        data = data.get("d", {})
         results = Results(BING, query, type)
-        results.total = int(data.get("Total", 0))
-        for x in data.get("Results", []):
+        results.total = None
+        for x in data.get("results", []):
             r = Result(url=None)
             r.url         = self.format(x.get("MediaUrl", x.get("Url")))
             r.title       = self.format(x.get("Title"))
@@ -1202,8 +1213,9 @@ class Twitter(SearchEngine):
         results = Results(TWITTER, query, type)
         results.total = None
         for x in data.get("results", data.get("trends", [])):
+            s = TWITTER_SOURCE.search(x.get("source", "href=&quot;&quot;"))
             r = Result(url=None)
-            r.url         = self.format(TWITTER_SOURCE.search(x.get("source", "href=&quot;&quot;")).group(1))
+            r.url         = self.format(s and s.group(1) or "")
             r.description = self.format(x.get("text"))
             r.date        = self.format(x.get("created_at", data.get("as_of")))
             r.author      = self.format(x.get("from_user"))

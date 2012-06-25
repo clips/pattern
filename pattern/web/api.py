@@ -8,7 +8,7 @@
 license = {
        "Google": "AIzaSyBxe9jC4WLr-Rry_5OUMOZ7PCsEyWpiU48",
         "Yahoo": ("", ""), # OAuth consumer key + consumer secret.
-         "Bing": "D6F2EEA455BC0D155BB20EB857066DE85619EC3F",
+         "Bing": "VnJEK4HTlntE3SyF58QLkUCLp/78tkYjV1Fl3J7lHa0=",
       "Twitter": None,
     "Wikipedia": None,
        "Flickr": "787081027f43b0412ba41142d4540480",
