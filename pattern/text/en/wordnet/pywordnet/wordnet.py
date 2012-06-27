@@ -1130,8 +1130,11 @@ def _dataFilePathname(filenameroot):
     if os.name in ('dos', 'nt'):
 	path = os.path.join(WNSEARCHDIR, filenameroot + ".dat")
         if os.path.exists(path):
-            return path
-    import glob; return glob.glob(os.path.join(WNSEARCHDIR, "data." + filenameroot + "*")) # Tom De Smedt, 2011
+            return [path]
+    # Tom De Smedt, 2011
+    # Return a list of consecutive data files.
+    import glob
+    return sorted(glob.glob(os.path.join(WNSEARCHDIR, "data." + filenameroot + "*")))
 
 def _indexFilePathname(filenameroot):
     if os.name in ('dos', 'nt'):
@@ -1183,12 +1186,9 @@ def binarySearchFile(file, key, cache={}, cacheDepth=-1):
             return None
     return None
 
-def _lineAt(files, offset):
-    # Tom De Smedt, 2011
-    # Seek across multiple ordered files (i.e., data.noun1 + data.noun2).
-    # Purpose: Google App Engine requires filesize < 10MB.
-    for file, size in sorted(files, reverse=True):
-        if offset < size:
+def _lineAt(files, offset):  # Tom De Smedt, 2011
+    for file, size in files: # Seek across multiple files (i.e., data.noun1 + data.noun2).
+        if offset < size:    # Purpose: Google App Engine requires filesize < 10MB.
             break
         offset -= size
     file.seek(offset)
