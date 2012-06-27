@@ -1183,9 +1183,12 @@ def binarySearchFile(file, key, cache={}, cacheDepth=-1):
             return None
     return None
 
-def _lineAt(files, offset):  # Tom De Smedt, 2011
-    for file, size in files: # Seek across multiple files (e.g., data.noun1 + data.noun2)
-        if offset < size:    # Purpose: Google App Engine requires filesize < 10MB.
+def _lineAt(files, offset):
+    # Tom De Smedt, 2011
+    # Seek across multiple ordered files (i.e., data.noun1 + data.noun2).
+    # Purpose: Google App Engine requires filesize < 10MB.
+    for file, size in sorted(files, reverse=True):
+        if offset < size:
             break
         offset -= size
     file.seek(offset)
