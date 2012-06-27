@@ -46,7 +46,7 @@ Authors:
 - Tom De Smedt (tom@organisms.be)
 - Walter Daelemans
 
-Contributing authors (chronological):
+Acknowledgements (chronological):
 - Frederik De Bleser
 - Jason Wiener
 - Daniel Friesen
@@ -58,3 +58,5 @@ Contributing authors (chronological):
 - F. De Smedt
 - Radim Řehůřek
 - Tom Loredo
+- John DeBovis
+- Thomas Sileo
