@@ -1213,9 +1213,8 @@ class Twitter(SearchEngine):
         results = Results(TWITTER, query, type)
         results.total = None
         for x in data.get("results", data.get("trends", [])):
-            s = TWITTER_SOURCE.search(x.get("source", "href=&quot;&quot;"))
             r = Result(url=None)
-            r.url         = self.format(s and s.group(1) or "")
+            r.url         = self.format("https://twitter.com/%s/status/%s" % (x.get("from_user"), x.get("id_str")))
             r.description = self.format(x.get("text"))
             r.date        = self.format(x.get("created_at", data.get("as_of")))
             r.author      = self.format(x.get("from_user"))
