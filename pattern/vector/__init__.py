@@ -1240,12 +1240,19 @@ def centroid(vectors, keys=[]):
         (e.g., the geometric center of a list of (x,y)-coordinates forming a polygon).
         Since vectors are sparse, the list of all keys (=Corpus.vector) must be given.
     """
+    c = []
+    for v in vectors:
+        if isinstance(v, Cluster):
+            c.extend(v.flatten())
+        elif isinstance(v, Document):
+            c.append(v.vector)
+        else:
+            c.append(v)
     if not keys:
-        keys = features(vectors)
-    v = (isinstance(v, Document) and v.vector or v for v in vectors)
-    v = ((k, mean((v.get(k, 0) for v in vectors), len(vectors))) for k in keys)
-    v = Vector((k, x) for k, x in v if x != 0)
-    return v
+        keys = features(c)
+    c = [(k, mean((v.get(k, 0) for v in c), len(c))) for k in keys]
+    c = Vector((k, v) for k, v in c if v != 0)
+    return c
 
 COSINE, EUCLIDEAN, MANHATTAN, HAMMING = \
     "cosine", "euclidean", "manhattan", "hamming"

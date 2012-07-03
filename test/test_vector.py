@@ -541,6 +541,12 @@ class TestCorpus(unittest.TestCase):
         v2.traverse(_test_clustered_documents)
         print "pattern.vector.Corpus.cluster()"
     
+    def test_centroid(self):
+        # Assert centroid of recursive Cluster.
+        v = vector.Cluster(({"a": 1}, vector.Cluster(({"a": 2}, {"a": 4}))))
+        self.assertAlmostEqual(vector.centroid(v)["a"], 2.33, places=2)
+        print "pattern.vector.centroid()"
+    
     def test_lsa(self):
         # Assert Corpus.reduce() LSA reduction.
         try:
