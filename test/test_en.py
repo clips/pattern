@@ -217,6 +217,7 @@ class TestSpelling(unittest.TestCase):
     
     def test_spelling(self):
         # Assert spelling suggestion accuracy.
+        # Note: simply training on more text will not improve accuracy.
         i = j = 0.0
         from pattern.db import Datasheet
         for correct, wrong in Datasheet.load(os.path.join(PATH, "corpora", "birkbeck-spelling.csv")):
@@ -888,15 +889,15 @@ class TestWordlists(unittest.TestCase):
 
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestInflection))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestQuantification))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestInflection))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestQuantification))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSpelling))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParser))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParseTree))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestModality))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSentiment))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestWordNet))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestWordlists))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParser))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParseTree))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestModality))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSentiment))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestWordNet))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestWordlists))
     return suite
 
 if __name__ == "__main__":
