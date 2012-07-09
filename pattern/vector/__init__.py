@@ -783,6 +783,7 @@ class Corpus(object):
     def inverse_document_frequency(self, word):
         """ Returns the inverse document frequency of a word.
             Returns None if the word is not in the corpus, or if there are no documents in the corpus.
+            Using the natural logarithm:
             idf = log(1/df)
             The more occurences of the word, the lower its idf weight (log() makes it grow slowly).
         """
