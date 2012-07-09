@@ -467,11 +467,11 @@ class Graph(dict):
         for n in (n for n in self.nodes if len(n.links) <= depth):
             self.remove(n)
             
-    def fringe(self, depth=0):
+    def fringe(self, depth=0, traversable=lambda node, edge: True):
         """ For depth=0, returns the list of leaf nodes (nodes with only one connection).
             For depth=1, returns the list of leaf nodes and their connected nodes, and so on.
         """
-        u = []; [u.extend(n.flatten(depth)) for n in self.nodes if len(n.links) == 1]
+        u = []; [u.extend(n.flatten(depth, traversable)) for n in self.nodes if len(n.links) == 1]
         return unique(u)
         
     @property
@@ -741,7 +741,7 @@ def adjacency(graph, directed=False, reversed=False, stochastic=False, heuristic
     # Bound method objects are transient, 
     # i.e., id(object.method) returns a new value each time.
     if graph._adjacency is not None and \
-       graph._adjacency[1:] == (directed, reversed, stochastic, heuristic and id(heuristic)):
+       graph._adjacency[1:] == (directed, reversed, stochastic, heuristic and heuristic.func_code):
         return graph._adjacency[0]
     map = {}
     for n in graph.nodes:
@@ -759,7 +759,7 @@ def adjacency(graph, directed=False, reversed=False, stochastic=False, heuristic
             for id2 in map[id1]: 
                 map[id1][id2] /= n
     # Cache the adjacency map: this makes dijkstra_shortest_path() 2x faster in repeated use.
-    graph._adjacency = (map, directed, reversed, stochastic, heuristic and id(heuristic))
+    graph._adjacency = (map, directed, reversed, stochastic, heuristic and heuristic.func_code)
     return map
 
 def dijkstra_shortest_path(graph, id1, id2, heuristic=None, directed=False):
