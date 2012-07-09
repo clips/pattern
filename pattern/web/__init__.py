@@ -1138,7 +1138,6 @@ class Bing(SearchEngine):
         #    if market:
         #        url.query["market"] = market
         # 4) Parse JSON response.
-        print self.license
         kwargs["authentication"] = ("", self.license)
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
