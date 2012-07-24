@@ -65,7 +65,7 @@ class TestInflection(unittest.TestCase):
     def test_parse_lemma(self):
         # Assert the accuracy of the verb lemmatization algorithm.
         # Note: the accuracy is higher (95%) when measured on CELEX word forms
-        # (presumably because en.inflect.VERBS has high percentage irregular verbs).
+        # (probably because en.inflect.VERBS has high percentage irregular verbs).
         i, n = 0, 0
         for v in en.inflect.VERBS.infinitives:
             for tense in en.inflect.VERBS.TENSES:
@@ -92,31 +92,68 @@ class TestInflection(unittest.TestCase):
     def test_conjugate(self):
         # Assert different tenses with different conjugations.
         for (v1, v2, tense) in (
-          ("be", "be",    en.INFINITIVE),
-          ("be", "am",    en.PRESENT_1ST_PERSON_SINGULAR),
-          ("be", "are",   en.PRESENT_2ND_PERSON_SINGULAR),
-          ("be", "is",    en.PRESENT_3RD_PERSON_SINGULAR),
-          ("be", "are",   en.PRESENT_PLURAL),
-          ("be", "being", en.PRESENT_PARTICIPLE),
-          ("be", "was",   en.PAST_1ST_PERSON_SINGULAR),
-          ("be", "were",  en.PAST_2ND_PERSON_SINGULAR),
-          ("be", "was",   en.PAST_3RD_PERSON_SINGULAR),
-          ("be", "were",  en.PAST_PLURAL),
-          ("be", "were",  en.PAST),
-          ("be", "been",  en.PAST_PARTICIPLE),
-          ("had", "have",   "inf"),
-          ("had", "have",   "1sg"),
-          ("had", "have",   "2sg"),
-          ("had", "has",    "3sg"),
-          ("had", "have",   "pl"),
-          ("had", "having", "part"),
-          ("has", "had",    "1sgp"),
-          ("has", "had",    "2sgp"),
-          ("has", "had",    "3sgp"),
-          ("has", "had",    "ppl"),
-          ("has", "had",    "p"),
-          ("has", "had",    "ppart"),
-          ("imaginerify", "imaginerified", "3sgp")):
+          ("be",   "be",      en.INFINITIVE),
+          ("be",   "am",      en.PRESENT_1ST_PERSON_SINGULAR),
+          ("be",   "are",     en.PRESENT_2ND_PERSON_SINGULAR),
+          ("be",   "is",      en.PRESENT_3RD_PERSON_SINGULAR),
+          ("be",   "are",     en.PRESENT_PLURAL),
+          ("be",   "being",   en.PRESENT_PARTICIPLE),
+          ("be",   "was",     en.PAST_1ST_PERSON_SINGULAR),
+          ("be",   "were",    en.PAST_2ND_PERSON_SINGULAR),
+          ("be",   "was",     en.PAST_3RD_PERSON_SINGULAR),
+          ("be",   "were",    en.PAST_PLURAL),
+          ("be",   "were",    en.PAST),
+          ("be",   "been",    en.PAST_PARTICIPLE),
+          ("be",   "am",      "1sg"),
+          ("be",   "are",     "2sg"),
+          ("be",   "is",      "3sg"),
+          ("be",   "are",     "1pl"),
+          ("be",   "are",     "2pl"),
+          ("be",   "are",     "3pl"),
+          ("be",   "are",     "pl"),
+          ("be",   "being",   "g"),
+          ("be",   "was",     "1sgp"),
+          ("be",   "were",    "2sgp"),
+          ("be",   "was",     "3sgp"),
+          ("be",   "were",    "1ppl"),
+          ("be",   "were",    "2ppl"),
+          ("be",   "were",    "3ppl"),
+          ("be",   "were",    "p"),
+          ("be",   "were",    "ppl"),
+          ("be",   "been",    "pg"),
+          ("be",   "am not",  "1sg-"),
+          ("be",   "aren't",  "2sg-"),
+          ("be",   "isn't",   "3sg-"),
+          ("be",   "aren't",  "1pl-"),
+          ("be",   "aren't",  "2pl-"),
+          ("be",   "aren't",  "3pl-"),
+          ("be",   "aren't",  "pl-"),
+          ("be",   "wasn't",  "1sgp-"),
+          ("be",   "weren't", "2sgp-"),
+          ("be",   "wasn't",  "3sgp-"),
+          ("be",   "weren't", "1plp-"),
+          ("be",   "weren't", "2plp-"),
+          ("be",   "weren't", "3plp-"),
+          ("be",   "weren't", "ppl-"),
+          ("had",  "have",    "inf"),
+          ("had",  "have",    "1sg"),
+          ("had",  "have",    "2sg"),
+          ("had",  "has",     "3sg"),
+          ("had",  "have",    "pl"),
+          ("had",  "having",  "part"),
+          ("has",  "had",     "1sgp"),
+          ("has",  "had",     "2sgp"),
+          ("has",  "had",     "3sgp"),
+          ("has",  "had",     "ppl"),
+          ("has",  "had",     "p"),
+          ("has",  "had",     "ppart"),
+          ("will", "will",    "1sg"),
+          ("will", "will",    "2sg"),
+          ("will", "will",    "3sg"),
+          ("will", "will",    "1pl"),
+          ("imaginerify", "imaginerifying", "g"),
+          ("imaginerify", "imaginerified", "3sgp"),
+          ("imaginerify", None, "1sg-")):
             self.assertEqual(en.conjugate(v1, tense), v2)
         print "pattern.en.conjugate()"
     
@@ -134,12 +171,19 @@ class TestInflection(unittest.TestCase):
             "was", "were", "been", 
             "am not", "aren't", "isn't", "wasn't", "weren't"
         ])
+        v = en.lexeme("imaginerify")
+        self.assertEqual(v, [
+            "imaginerify", "imaginerifies", "imaginerifying", "imaginerified"
+        ])
         print "pattern.en.inflect.lexeme()"
         
     def test_tenses(self):
         # Assert tense of "am".
         self.assertTrue(en.PRESENT_1ST_PERSON_SINGULAR in en.tenses("am"))
-        self.assertTrue("1sg" in en.tenses("am"))
+        self.assertTrue("1sg"  in en.tenses("am"))
+        self.assertTrue("1sg"  in en.tenses("will"))
+        self.assertTrue("2sg-" in en.tenses("won't"))
+        self.assertTrue("g"    in en.tenses("imaginarifying"))
         print "pattern.en.tenses()"
     
     def test_comparative(self):
@@ -889,15 +933,15 @@ class TestWordlists(unittest.TestCase):
 
 def suite():
     suite = unittest.TestSuite()
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestInflection))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestQuantification))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestInflection))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestQuantification))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSpelling))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParser))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParseTree))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestModality))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSentiment))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestWordNet))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestWordlists))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParser))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParseTree))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestModality))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSentiment))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestWordNet))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestWordlists))
     return suite
 
 if __name__ == "__main__":

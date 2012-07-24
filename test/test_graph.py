@@ -249,7 +249,6 @@ class TestGraph(unittest.TestCase):
         # Assert betweenness centrality.
         self.assertEqual(self.g["a"]._centrality, None)
         v = self.g.betweenness_centrality()
-        print v
         self.assertTrue(isinstance(v["a"], float))
         self.assertTrue(v["a"] == v[self.g.node("a")])
         self.assertTrue(v["a"] < v["b"])

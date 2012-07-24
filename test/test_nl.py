@@ -121,6 +121,20 @@ class TestInflection(unittest.TestCase):
             self.assertEqual(nl.conjugate(v1, tense), v2)
         print "pattern.nl.conjugate()"
 
+    def test_lexeme(self):
+        # Assert all inflections of "zijn".
+        v = nl.lexeme("zijn")
+        self.assertEqual(v, [
+            "zijn", "ben", "bent", "is", "zijnd", "waren", "was", "geweest"
+        ])
+        print "pattern.nl.inflect.lexeme()"
+
+    def test_tenses(self):
+        # Assert tense of "is".
+        self.assertTrue(nl.PRESENT_3RD_PERSON_SINGULAR in nl.tenses("is"))
+        self.assertTrue("3sg" in nl.tenses("is"))
+        print "pattern.nl.tenses()"
+
 #---------------------------------------------------------------------------------------------------
 
 class TestParser(unittest.TestCase):
