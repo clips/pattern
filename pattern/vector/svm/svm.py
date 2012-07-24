@@ -12,13 +12,17 @@ elif find_library('libsvm'):
 	libsvm = CDLL(find_library('libsvm'))
 else:
 	for i, binary in enumerate((
+	  # If you have OS X 32-bit, you need a 32-bit Python and libsvm-mac32.so.
+	  # If you have OS X 32-bit with 64-bit Python, 
+	  # it will try to load	libsvm-mac64.so which fails since OS X is 32-bit.
+	  # It won't load libsvm-mac32.so since Python is 64-bit.
 	  "libsvm-win32.dll",     # 1) 32-bit Windows
 	  "libsvm-mac32.so",      # 2) 32-bit Mac OS X
 	  "libsvm-mac64.so",      # 3) 64-bit Mac OS X
 	  "libsvm-ubuntu64.so")): # 4) 64-bit Linux Ubuntu
 		try:
 			libsvm = CDLL(os.path.join(os.path.dirname(__file__), binary)); break
-		except OSError:
+		except OSError, e:
 			if i == 4-1: # <= Adjust according to available binaries.
 				raise ImportError, "can't import libsvm (%sbit-%s)" % (
 					sizeof(c_voidp) * 8, 
