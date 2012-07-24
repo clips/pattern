@@ -7,7 +7,8 @@
 ####################################################################################################
 # A set of rule-based tools for Dutch word inflection:
 # - pluralization and singularization of nouns,
-# - conjugation of verbs
+# - conjugation of verbs,
+# - predicative and attributive of adjectives.
 
 import re
 import os
@@ -221,7 +222,8 @@ from en.inflect import \
 
 # Load the pattern.en.Verbs class, with a Dutch lexicon instead.
 # Lexicon was trained on CELEX and contains the top 2000 most frequent verbs.
-_verbs = VERBS = Verbs(path=os.path.join(MODULE, "verbs.txt"))
+_verbs = VERBS = Verbs(os.path.join(MODULE, "verbs.txt"), language="nl")
+
 conjugate, lemma, lexeme, tenses = \
     _verbs.conjugate, _verbs.lemma, _verbs.lexeme, _verbs.tenses
     

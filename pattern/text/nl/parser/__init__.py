@@ -1,6 +1,6 @@
 #### PATTERN | NL | RULE-BASED SHALLOW PARSER ######################################################
-# Copyright (c) 2010 University of Antwerp, Belgium
-# Authors: Jeroen Geertzen (for Brill-NL), Tom De Smedt <tom@organisms.be>
+# Copyright (c) 2010 Jeroen Geertzen and University of Antwerp, Belgium
+# Authors: Jeroen Geertzen (Dutch language model), Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
@@ -15,7 +15,8 @@ except:
     MODULE = ""
 
 # The tokenizer, chunker and relation finder are inherited from pattern.en.parser.
-# The tagger is based on Jeroen Geertzen's Dutch language model:
+# The tagger is based on Jeroen Geertzen's Dutch language model Brill-NL
+# (brill-bigrams.txt, brill-contextual.txt, brill-lexical.txt, brill-lexicon.txt):
 # http://cosmion.net/jeroen/software/brill_pos/
 # Accuracy is reported around 92%, but Pattern scores may vary from Geertzen's original
 # due to WOTAN => Penn Treebank mapping etc.
@@ -33,7 +34,7 @@ def tokenize(s, punctuation=PUNCTUATION, abbreviations=["bv.", "blz.", "e.d.", "
     s = [s.replace("' s middags", "'s middags") for s in s]
     s = [s.replace("' s avonds" , "'s avonds" ) for s in s]
     return s
-    
+
 _tokenize = tokenize
 
 #### LEMMATIZER ####################################################################################
@@ -57,7 +58,7 @@ def lemma(word, pos="NN"):
 
 def find_lemmata(tagged):
     for token in tagged:
-        token.append(lemma(token[0].lower(), pos=len(token)>1 and token[1] or None))
+        token.append(lemma(token[0].lower(), pos=len(token) > 1 and token[1] or None))
     return tagged
 
 #### PARSER ########################################################################################
@@ -65,11 +66,14 @@ def find_lemmata(tagged):
 # pattern.en.find_tags() has an optional "lexicon" parameter.
 # We'll pass the Dutch lexicon to it instead of the default English lexicon:
 lexicon = LEXICON = Lexicon()
-lexicon.path = os.path.join(MODULE, "Brill_lexicon.txt")
-lexicon.lexical_rules.path = os.path.join(MODULE, "Brill_lexical_rules.txt")
-lexicon.contextual_rules.path = os.path.join(MODULE, "Brill_contextual_rules.txt")
+lexicon.path = os.path.join(MODULE, "brill-lexicon.txt")
+lexicon.lexical_rules.path = os.path.join(MODULE, "brill-lexical.txt")
+lexicon.contextual_rules.path = os.path.join(MODULE, "brill-contextual.txt")
 
-WOTAN, PENN_TREEBANK = "wotan", "penntreebank"
+# WOTAN tagset:
+# http://lands.let.ru.nl/literature/hvh.1999.2.ps
+PENN  = PENNTREEBANK = TREEBANK = "penntreebank"
+WOTAN = "wotan"
 wotan = {
        "N(": [("eigen,ev","NNP"), ("eigen,mv","NNPS"), ("ev","NN"), ("mv","NNS")],
        "V(": [("hulp","MD"), ("ott,3","VBZ"), ("ott","VBP"), ("ovt","VBD"), ("verldw","VBN"), ("tegdw","VBG"), ("imp","VB"), ("inf","VB")],
@@ -85,7 +89,7 @@ wotan = {
      "Misc": [("symbool","SYM"), ("vreemd","FW")]
 }
 
-def wotan2penntreebank(tag, default="NN"):
+def wotan2penntreebank(tag):
     """ Converts a WOTAN tag to Penn Treebank II tag.
         For example: bokkenrijders N(soort,mv,neut) => bokkenrijders/NNS
     """
@@ -109,11 +113,12 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
         "lemmata": False,
           "light": False,
         "lexicon": LEXICON,
-            "map": kwargs.get("tagset","").lower() != WOTAN and wotan2penntreebank or None,
        "language": "nl",
-        "default": "N(soort,ev,neut)"
+        "default": "N(soort,ev,neut)",
+            "map": kwargs.get("tagset", "") != WOTAN and wotan2penntreebank or None,
     })
     s = _en_parse(s, False, tags, chunks, relations, **kwargs)
+    # Use pattern.nl.inflect for lemmatization:
     if lemmata:
         p = [find_lemmata(sentence) for sentence in s.split()]
         p = "\n".join([" ".join(["/".join(token) for token in sentence]) for sentence in p])
