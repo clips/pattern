@@ -281,7 +281,7 @@ least_common_subsumer = lcs = ancestor
 ### INFORMATION CONTENT ############################################################################
 
 IC = {} # Switch data file according to WordNet version:
-IC_CORPUS = os.path.join(os.path.dirname(__file__), "IC-Brown-Resnik"+VERSION[0]+".txt")
+IC_CORPUS = os.path.join(os.path.dirname(__file__), "resnik-ic"+VERSION[0]+".txt")
 IC_MAX = 0
 def information_content(synset):
     """ Returns the IC value for the given Synset, based on the Brown corpus.
