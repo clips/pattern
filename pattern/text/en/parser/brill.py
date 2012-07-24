@@ -1,4 +1,5 @@
 #### PATTERN | EN | PARSER | BRILL LEXICON #########################################################
+# -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
@@ -22,7 +23,7 @@ LEXCIAL  = dict.fromkeys(LEXICAL, True)
 
 class LexicalRules(list):
         
-    def __init__(self, lexicon, path=os.path.join(MODULE, "Brill_lexical_rules.txt")):
+    def __init__(self, lexicon, path=os.path.join(MODULE, "brill-lexical.txt")):
         # Brill's lexical rules.
         # An entry looks like: ('fhassuf', ['NN', 's', 'fhassuf', '1', 'NNS', 'x']).
         # The first item is the lookup command.
@@ -32,7 +33,7 @@ class LexicalRules(list):
         self.path = path
 
     def load(self):
-        for i, rule in enumerate(open(self.path).read().strip().split("\n")):
+        for i, rule in enumerate(open(self.path).read().decode("utf8").strip().split("\n")):
             rule = rule.split()
             for cmd in rule:
                 if cmd in LEXICAL:
@@ -80,7 +81,7 @@ CONTEXTUAL  = dict.fromkeys(CONTEXTUAL, True)
 
 class ContextualRules(list):
     
-    def __init__(self, lexicon, path=os.path.join(MODULE, "Brill_contextual_rules.txt")):
+    def __init__(self, lexicon, path=os.path.join(MODULE, "brill-contextual.txt")):
         # Brill's contextual rules.
         # An entry looks like: ('PREVTAG', ['VBD', 'VB', 'PREVTAG', 'TO']).
         # The first item is the lookup command.
@@ -90,7 +91,7 @@ class ContextualRules(list):
         self.path = path
 
     def load(self):
-        for i, rule in enumerate(open(self.path).read().strip().split("\n")):
+        for i, rule in enumerate(open(self.path).read().decode("utf8").strip().split("\n")):
             rule = rule.split()
             for cmd in rule:
                 if cmd in CONTEXTUAL:
@@ -157,13 +158,16 @@ class ContextualRules(list):
             if token[1].startswith("V(") and "teg_dw" in token[1]:
                 if T[i-1][1].startswith("Art(") and T[i+1][1].startswith("N("):
                     tokens[i-len(b)][1] = "JJ"
+            # durch den Sturm zerstört worden/VAPP => zerstört/VVPP worden/VAPP (passiv)
+            if i > 0 and token[0] == "worden" and token[1] == "VAPP":
+                tokens[i-1-len(b)][1] = "VVPP"
         return tokens
 
 #### BRILL LEXICON #################################################################################
 
 class Lexicon(dict):
     
-    def __init__(self, path=os.path.join(MODULE, "Brill_lexicon.txt")):
+    def __init__(self, path=os.path.join(MODULE, "brill-lexicon.txt")):
         self.path = path
         self.lexical_rules = LexicalRules(self)
         self.contextual_rules = ContextualRules(self)
@@ -172,7 +176,7 @@ class Lexicon(dict):
         # Brill's lexicon is a list of common tokens and their part-of-speech tag.
         # It takes a while to load but this happens only once when pattern.en.parser.parse() is called.
         # Create a dictionary from the entries:
-        dict.__init__(self, (x.split(" ")[:2] for x in open(self.path).read().splitlines()))
+        dict.__init__(self, (x.split(" ")[:2] for x in open(self.path).read().decode("utf8").splitlines()))
     
     def get(self, word, default=None):
         return word in self and dict.__getitem__(self, word) or default

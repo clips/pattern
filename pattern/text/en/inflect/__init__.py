@@ -1,4 +1,5 @@
 #### PATTERN | EN | INFLECT ########################################################################
+# -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
@@ -7,7 +8,7 @@
 # A set of rule-based tools for English word inflection:
 # - pluralization and singularization of nouns and adjectives,
 # - conjugation of verbs,
-# - comparatives and superlatives of adjectives.
+# - comparative and superlative of adjectives.
 
 import re
 import os
@@ -560,77 +561,223 @@ def singularize(word, pos=NOUN, custom={}):
 # Each verb has morphs for infinitive, 3rd singular present, present participle, past and past participle.
 # Verbs like "be" have other morphs as well (i.e. I am, you are, she is, they aren't).
 # The following verbs can be negated: be, can, do, will, must, have, may, need, dare, ought.
+# Languages other than English may have more tenses or moods.
 
-INFINITIVE                  = "infinitive"
-PRESENT_1ST_PERSON_SINGULAR = "present 1st person singular"
-PRESENT_2ND_PERSON_SINGULAR = "present 2nd person singular"
-PRESENT_3RD_PERSON_SINGULAR = "present 3rd person singular"
-PRESENT_PLURAL              = "present plural"
-PRESENT_PARTICIPLE          = "present participle"
-PAST                        = "past"
-PAST_1ST_PERSON_SINGULAR    = "past 1st person singular"
-PAST_2ND_PERSON_SINGULAR    = "past 2nd person singular"
-PAST_3RD_PERSON_SINGULAR    = "past 3rd person singular"
-PAST_PLURAL                 = "past plural"
-PAST_PARTICIPLE             = "past participle"
+# en: to be
+# nl: zijn
+# de: sein
+INFINITIVE = \
+    "infinitive"
 
-# Index of a tense in the source lexicon:
-tenses_index = {
-    INFINITIVE                  : 0,
-    PRESENT_1ST_PERSON_SINGULAR : 1,
-    PRESENT_2ND_PERSON_SINGULAR : 2,
-    PRESENT_3RD_PERSON_SINGULAR : 3,
-    PRESENT_PLURAL              : 4,
-    PRESENT_PARTICIPLE          : 5,
-    PAST_1ST_PERSON_SINGULAR    : 6,
-    PAST_2ND_PERSON_SINGULAR    : 7,
-    PAST_3RD_PERSON_SINGULAR    : 8,
-    PAST_PLURAL                 : 9,
-    PAST                        : 10,
-    PAST_PARTICIPLE             : 11
+# en: I am, you are, he is, we are, you are, they are, being
+# nl: ik ben, jij bent, hij is, wij zijn, jullie zijn, zij zijn, zijnd
+# de: ich bin, du bist, er ist, wir sind, ihr seid, sie sind
+PRESENT_1ST_PERSON_SINGULAR, PRESENT_1ST_PERSON_PLURAL, \
+PRESENT_2ND_PERSON_SINGULAR, PRESENT_2ND_PERSON_PLURAL, \
+PRESENT_3RD_PERSON_SINGULAR, PRESENT_3RD_PERSON_PLURAL, PRESENT_PLURAL, PRESENT_PARTICIPLE = (
+    "present 1st person singular", "present 1st person plural",
+    "present 2nd person singular", "present 2nd person plural",
+    "present 3rd person singular", "present 3rd person plural", 
+    "present plural", 
+    "present participle"
+)
+
+# en: I was, you were, he was, we were, you were, they were, been
+# nl: ik was, jij was, he was, wij waren, jullie waren, zij waren, geweest
+# de: ich war, du warst, er war, wir waren, ihr wart, sie waren, gewesen
+PAST_1ST_PERSON_SINGULAR, PAST_1ST_PERSON_PLURAL, \
+PAST_2ND_PERSON_SINGULAR, PAST_2ND_PERSON_PLURAL, \
+PAST_3RD_PERSON_SINGULAR, PAST_3RD_PERSON_PLURAL, PAST_PLURAL, PAST_PARTICIPLE, PAST = (
+    "past 1st person singular", "past 1st person plural",
+    "past 2nd person singular", "past 2nd person plural",
+    "past 3rd person singular", "past 3rd person plural", 
+    "past plural",
+    "past participle",
+    "past"
+)
+
+# de: du sei, ihr seid, seien wir
+IMPERATIVE_1ST_PERSON_SINGULAR, IMPERATIVE_1ST_PERSON_PLURAL, \
+IMPERATIVE_2ND_PERSON_SINGULAR, IMPERATIVE_2ND_PERSON_PLURAL, \
+IMPERATIVE_3RD_PERSON_SINGULAR, IMPERATIVE_3RD_PERSON_PLURAL = (
+    "imperative 1st person singular", "imperative 1st person plural",
+    "imperative 2nd person singular", "imperative 2nd person plural",
+    "imperative 3rd person singular", "imperative 3rd person plural"
+)
+
+# de: ich sei, du seist, er sei, wir seien, ihr seiet, sie seien
+PRESENT_SUBJUNCTIVE_1ST_PERSON_SINGULAR, PRESENT_SUBJUNCTIVE_1ST_PERSON_PLURAL, \
+PRESENT_SUBJUNCTIVE_2ND_PERSON_SINGULAR, PRESENT_SUBJUNCTIVE_2ND_PERSON_PLURAL, \
+PRESENT_SUBJUNCTIVE_3RD_PERSON_SINGULAR, PRESENT_SUBJUNCTIVE_3RD_PERSON_PLURAL = (
+    "present subjunctive 1st person singular", "present subjunctive 1st person plural",
+    "present subjunctive 2nd person singular", "present subjunctive 2nd person plural",
+    "present subjunctive 3rd person singular", "present subjunctive 3rd person plural"
+
+)
+
+# de: ich wäre, du wärest, er wäre, wir wären, ihr wäret, sie wären
+PAST_SUBJUNCTIVE_1ST_PERSON_SINGULAR, PAST_SUBJUNCTIVE_1ST_PERSON_PLURAL, \
+PAST_SUBJUNCTIVE_2ND_PERSON_SINGULAR, PAST_SUBJUNCTIVE_2ND_PERSON_PLURAL, \
+PAST_SUBJUNCTIVE_3RD_PERSON_SINGULAR, PAST_SUBJUNCTIVE_3RD_PERSON_PLURAL = (
+    "past subjunctive 1st person singular", "past subjunctive 1st person plural",
+    "past subjunctive 2nd person singular", "past subjunctive 2nd person plural", 
+    "past subjunctive 3rd person singular", "past subjunctive 3rd person plural"
+)
+
+# en: I am no, you aren't, he isn't, we aren't, you aren't, they aren't
+PRESENT_NEGATED_1ST_PERSON_SINGULAR, PRESENT_NEGATED_1ST_PERSON_PLURAL, \
+PRESENT_NEGATED_2ND_PERSON_SINGULAR, PRESENT_NEGATED_2ND_PERSON_PLURAL, \
+PRESENT_NEGATED_3RD_PERSON_SINGULAR, PRESENT_NEGATED_3RD_PERSON_PLURAL, \
+PRESENT_NEGATED_PLURAL, \
+PRESENT_NEGATED = (
+    "present negated 1st person singular", "present negated 1st person plural",
+    "present negated 2nd person singular", "present negated 2nd person plural",
+    "present negated 3rd person singular", "present negated 3rd person plural",
+    "present negated plural",
+    "present negated"
+
+)
+
+# en: I wasn't, you weren't, he wasn't, we weren't, you weren't, they weren't
+PAST_NEGATED_1ST_PERSON_SINGULAR, PAST_NEGATED_1ST_PERSON_PLURAL, \
+PAST_NEGATED_2ND_PERSON_SINGULAR, PAST_NEGATED_2ND_PERSON_PLURAL, \
+PAST_NEGATED_3RD_PERSON_SINGULAR, PAST_NEGATED_3RD_PERSON_PLURAL, \
+PAST_NEGATED_PLURAL, \
+PAST_NEGATED = (
+    "past negated 1st person singular", "past negated 1st person plural",
+    "past negated 2nd person singular", "past negated 2nd person plural", 
+    "past negated 3rd person singular", "past negated 3rd person plural",
+    "past negated plural",
+    "past negated"
+)
+
+# Tensed by unique index.
+# The index can be used in the format and default parameters of the Verb constructor.
+# The aliases can be passed to conjugate() and Tenses.__contains__().
+TENSES = {
+  None: (None,                                    (None,)),
+     0: (INFINITIVE,                              ("i", "inf", "VB")),
+     1: (PRESENT_1ST_PERSON_SINGULAR,             ("1sg", "VBP")),
+     2: (PRESENT_2ND_PERSON_SINGULAR,             ("2sg",)),
+     3: (PRESENT_3RD_PERSON_SINGULAR,             ("3sg", "VBZ")),
+     4: (PRESENT_1ST_PERSON_PLURAL,               ("1pl",)),
+     5: (PRESENT_2ND_PERSON_PLURAL,               ("2pl",)),
+     6: (PRESENT_3RD_PERSON_PLURAL,               ("3pl",)),
+     7: (PRESENT_PLURAL,                          ("pl", "plural")),
+     8: (PRESENT_PARTICIPLE,                      ("g", "gerund", "part", "prog", "progressive", "VBG")),
+     9: (PAST_1ST_PERSON_SINGULAR,                ("1sgp",)),
+    10: (PAST_2ND_PERSON_SINGULAR,                ("2sgp",)),
+    11: (PAST_3RD_PERSON_SINGULAR,                ("3sgp",)),
+    12: (PAST_1ST_PERSON_PLURAL,                  ("1ppl", "1plp")),
+    13: (PAST_2ND_PERSON_PLURAL,                  ("2ppl", "2plp")),
+    14: (PAST_3RD_PERSON_PLURAL,                  ("3ppl", "3plp")),
+    15: (PAST_PLURAL,                             ("ppl", "plp", "pplural")),
+    16: (PAST_PARTICIPLE,                         ("gp", "pg", "ppart", "VBN")),
+    17: (PAST,                                    ("p", "past", "VBD")),
+    18: (IMPERATIVE_1ST_PERSON_SINGULAR,          ("1sg!",)),
+    19: (IMPERATIVE_2ND_PERSON_SINGULAR,          ("2sg!",)),
+    20: (IMPERATIVE_3RD_PERSON_SINGULAR,          ("3sg!",)),
+    21: (IMPERATIVE_1ST_PERSON_PLURAL,            ("1pl!",)),
+    22: (IMPERATIVE_2ND_PERSON_PLURAL,            ("2pl!",)),
+    23: (IMPERATIVE_3RD_PERSON_PLURAL,            ("3pl!",)),
+    24: (PRESENT_SUBJUNCTIVE_1ST_PERSON_SINGULAR, ("1sg?",)),
+    25: (PRESENT_SUBJUNCTIVE_2ND_PERSON_SINGULAR, ("2sg?",)),
+    26: (PRESENT_SUBJUNCTIVE_3RD_PERSON_SINGULAR, ("3sg?",)),
+    27: (PRESENT_SUBJUNCTIVE_1ST_PERSON_PLURAL,   ("1pl?",)),
+    28: (PRESENT_SUBJUNCTIVE_2ND_PERSON_PLURAL,   ("2pl?",)),
+    29: (PRESENT_SUBJUNCTIVE_3RD_PERSON_PLURAL,   ("3pl?",)),
+    30: (PAST_SUBJUNCTIVE_1ST_PERSON_SINGULAR,    ("1sgp?",)),
+    31: (PAST_SUBJUNCTIVE_2ND_PERSON_SINGULAR,    ("2sgp?",)),
+    32: (PAST_SUBJUNCTIVE_3RD_PERSON_SINGULAR,    ("3sgp?",)),
+    33: (PAST_SUBJUNCTIVE_1ST_PERSON_PLURAL,      ("1ppl?", "1plp?")),
+    34: (PAST_SUBJUNCTIVE_2ND_PERSON_PLURAL,      ("2ppl?", "2plp?")),
+    35: (PAST_SUBJUNCTIVE_3RD_PERSON_PLURAL,      ("3ppl?", "3plp?")),
+    36: (PRESENT_NEGATED_1ST_PERSON_SINGULAR,     ("1sg-",)),
+    37: (PRESENT_NEGATED_2ND_PERSON_SINGULAR,     ("2sg-",)),
+    38: (PRESENT_NEGATED_3RD_PERSON_SINGULAR,     ("3sg-",)),
+    39: (PRESENT_NEGATED_1ST_PERSON_PLURAL,       ("1pl-",)),
+    40: (PRESENT_NEGATED_2ND_PERSON_PLURAL,       ("2pl-",)),
+    41: (PRESENT_NEGATED_3RD_PERSON_PLURAL,       ("3pl-",)),
+    42: (PRESENT_NEGATED_PLURAL,                  ("pl-", "plural-")),
+    43: (PRESENT_NEGATED,                         ("i-", "-")),
+    44: (PAST_NEGATED_1ST_PERSON_SINGULAR,        ("1sgp-",)),
+    45: (PAST_NEGATED_2ND_PERSON_SINGULAR,        ("2sgp-",)),
+    46: (PAST_NEGATED_3RD_PERSON_SINGULAR,        ("3sgp-",)),
+    47: (PAST_NEGATED_1ST_PERSON_PLURAL,          ("1ppl-", "1plp-")),
+    48: (PAST_NEGATED_2ND_PERSON_PLURAL,          ("2ppl-", "2plp-")),
+    49: (PAST_NEGATED_3RD_PERSON_PLURAL,          ("3ppl-", "3plp-")),
+    50: (PAST_NEGATED_PLURAL,                     ("ppl-", "plp-", "pplural-")),
+    51: (PAST_NEGATED,                            ("p-", "past-",)),
 }
 
-# Shorthand tenses can be passed to conjugate() and Tenses.__contains__():
-tenses_alias = (
-    (INFINITIVE,                  ["inf", "VB"]),
-    (PRESENT_1ST_PERSON_SINGULAR, ["1sg", "VBP"]),
-    (PRESENT_2ND_PERSON_SINGULAR, ["2sg"]),
-    (PRESENT_3RD_PERSON_SINGULAR, ["3sg", "VBZ"]),
-    (PRESENT_PLURAL,              ["pl", "plural"]),
-    (PRESENT_PARTICIPLE,          ["part", "prog", "progressive", "gerund", "VBG"]),
-    (PAST,                        ["p", "VBD"]),
-    (PAST_1ST_PERSON_SINGULAR,    ["1sgp"]),
-    (PAST_2ND_PERSON_SINGULAR,    ["2sgp"]),
-    (PAST_3RD_PERSON_SINGULAR,    ["3sgp"]),
-    (PAST_PLURAL,                 ["ppl", "pplural"]),
-    (PAST_PARTICIPLE,             ["ppart", "VBN"]),    
-)
-a = {}
-for k, v in tenses_alias:
-    for v in v: 
-        a[v] = k
-tenses_alias = a # alias => tense
+# tense => id
+# alias => id
+tense_id = {}
+for id, (tense, aliases) in TENSES.items():
+    for a in aliases:
+        tense_id[id] = tense_id[tense] = tense_id[a] = id
+        
+tense_id_negated = {
+    0:43, 1:36, 2:37, 3:38, 4:39, 5:40, 6:41, 7:42, 
+    9:44, 10:45, 11:46, 12:47, 13:48, 14:49, 15:50, 17:51
+}
+
+# Defines the tenses on each line in verbs.txt.
+# For English, plural is the same for all persons.
+FORMAT  = [0, 1, 2, 3, 7, 8, 9, 10, 11, 15, 17, 16, 43, 36, 37, 38, 42, 51, 44, 45, 46, 50]
+
+# Defines tenses in verbs.txt that can be used for other tenses too.
+# For English, imperative is always infinitive.
+DEFAULT = {
+     1:0,   2:0,   3:0,   7:0,  # present singular => infinitive ("I walk")
+     4:7,   5:7,   6:7,         # present plural
+     9:17, 10:17, 11:17, 15:17, # past singular
+    12:15, 13:15, 14:15,        # past plural
+    36:43, 37:43, 38:43, 42:43, # present singular negated
+    39:42, 40:42, 41:42,        # present plural negated
+    44:51, 45:51, 46:51,        # past singular negated
+    47:50, 48:50, 49:50, 50:51  # past plural negated
+}
 
 class Verbs:
     
-    def __init__(self, path=os.path.join(MODULE, "verbs.txt")):
-        self.path    = path
-        self._tenses = None # Dictionary of infinitive => list of tenses.
-        self._lemmas = None # Dictionary of tense => infinitive. 
+    def __init__(self, path=os.path.join(MODULE, "verbs.txt"), format=FORMAT, default=DEFAULT, language="en"):
+        """ Loads the given verb inflection corpus (lazy).
+            Each new line is a verb with the tenses separated by a comma.
+            The format list defines the order of tenses (see TENSES and FORMAT).
+            The default dict defines a default index for missing tenses (see DEFAULT).
+        """
+        self._path    = path
+        self._format  = dict((tense_id[id], i) for i, id in enumerate(format))
+        self._default = default
+        self._tenses  = None # Dictionary of infinitive => list of tenses.
+        self._lemmas  = None # Dictionary of tense => infinitive. 
         self.parse_lemma  = lambda v: v
         self.parse_lexeme = lambda v: []
 
     @property
     def infinitives(self):
+        """ Yields a dictionary of (infinitive, [inflections])-items.
+        """
         if not self._tenses: self.load()
         return self._tenses
+        
     @property
     def inflections(self):
+        """ Yields a dictionary of (inflected, infinitive)-items.
+        """
         if not self._lemmas: self.load()
         return self._lemmas
+        
     @property
     def TENSES(self):
-        return tenses_index.keys()
+        """ Yields a list of tenses/moods for this language, excluding negation.
+        """
+        a = set(TENSES[id][0] for id in self._format)
+        a = a.union(set(TENSES[id][0] for id in self._default.keys()))
+        a = a.union(set(TENSES[id][0] for id in self._default.values()))
+        a = sorted(x for x in a if not "negated" in x)
+        return a
 
     def __iter__(self):
         if not self._tenses: self.load(); return iter(self._tenses)
@@ -651,11 +798,13 @@ class Verbs:
         # http://www.cis.upenn.edu/~xtag/
         self._tenses = {}
         self._lemmas = {}
-        for v in (v for v in reversed(open(self.path).readlines()) if not v.startswith(";;;")):
-            v = v.strip().split(",")
-            self._tenses[v[0]] = v
-            for tense in (tense for tense in v if tense != ""): 
-                self._lemmas[tense] = v[0]
+        i = tense_id[INFINITIVE]
+        for v in reversed(open(self._path).read().decode("utf8").splitlines()): 
+            if not v.startswith(";;;"):
+                v = v.strip().split(",")
+                self._tenses[v[i]] = v
+                for tense in (tense for tense in v if tense != ""): 
+                    self._lemmas[tense] = v[i]
                 
     def __contains__(self, verb):
         if self._lemmas is None: 
@@ -671,23 +820,20 @@ class Verbs:
             return self._lemmas[verb.lower()]
         if verb in self._lemmas:
             return self._lemmas[verb]
-        if parse is True:
-            # Rule-based approach.
+        if parse is True: # rule-based
             return self.parse_lemma(verb)
 
     def lexeme(self, verb, parse=True):
         """ Returns all possible inflections of the given verb.
         """
-        b = self.lemma(verb)
+        a = []
+        b = self.lemma(verb, parse=parse)
         if b in self._tenses:
-            a = [x for x in self._tenses.get(b, []) if x != ""]
-            u = []; [u.append(x) for x in a if x not in u]
-            return u
-        if parse is True:
-            # Rule-based approach.
-            a = self.parse_lexeme(self.parse_lemma(verb))
-            return [a[0], a[3], a[5], a[6]]
-        return []
+            a = [x for x in self._tenses[b] if x != ""]
+        elif parse is True: # rule-based
+            a = self.parse_lexeme(b)
+        u = []; [u.append(x) for x in a if x not in u]
+        return u
 
     def conjugate(self, verb, tense=INFINITIVE, negated=False, parse=True):
         """ Inflects the verb and returns the given tense (or None).
@@ -699,46 +845,60 @@ class Verbs:
             - negated present => I am not, you aren't, it isn't.
         """
         # Disambiguate aliases: "pl" => "present plural".
-        # Get the associated tense index.
-        t = tenses_alias.get(tense, tense) 
-        i = tenses_index.get(t) + (negated and len(tenses_index) or 0)
-        b = self.lemma(verb)
+        # Get the associated tense index from the format description.
+        # If that particular field is empty in verbs.txt, try a default.
+        # Or another default for an empty default.
+        id = tense_id.get(tense.lower(), None)
+        id = (id, tense_id_negated.get(id))[int(negated)]
+        i1 = self._format.get(id)
+        i2 = self._format.get(self._default.get(id))
+        i3 = self._format.get(self._default.get(self._default.get(id)))
+        b = self.lemma(verb, parse=parse)
+        v = []
         if b in self._tenses:
-            x = self._tenses[b][i]
-            if x == "":
-                # No tense for 1sg/2sg/3sg => return base form.
-                if 0 < i <= 5: x = b
-                # No tense for 1sgp/2sgp/3sgp => return past form.
-                if 5 < i <= 9: x = self._tenses[b][10]
-            return x
-        if parse is True:
-            # Rule-based approach.
-            return self.parse_lexeme(self.parse_lemma(verb))[i]
+            v = self._tenses[b]
+            for i in (i1, i2, i3):
+                if i is not None and 0 <= i < len(v) and v[i]:
+                    return v[i]
+        if parse is True: # rule-based
+            v = self.parse_lexeme(b)
+            for i in (i1, i2, i3):
+                if i is not None and 0 <= i < len(v) and v[i]:
+                    return v[i]
 
     def tenses(self, verb, parse=True):
         """ Returns a list of tenses for the given verb inflection.
         """
         verb = verb.lower()
-        b = self.lemma(verb)
-        a = []
+        a = set()
+        b = self.lemma(verb, parse=parse)
+        v = []
         if b in self._tenses:
-            for tense, i in tenses_index.items():
-                t = self._tenses[b]
-                if t[i] == verb \
-                or t[i+len(tenses_index)] == verb \
-                or t[i] == "" and 0 < i <= 5 and verb == b \
-                or t[i] == "" and 5 < i <= 9 and verb == t[10]:
-                    a.append(tense)
-        elif parse is True:
-            # Rule-based approach.
-            v = self.parse_lexeme(self.parse_lemma(verb))
-            [a.append(tense) for tense, i in tenses_index.items() if i<len(v) and v[i] == verb]
-        return Tenses(sorted(a))
+            v = self._tenses[b]
+        elif parse is True: # rule-based
+            v = self.parse_lexeme(b)
+        # For each tense in the verb lexeme that matches the given tense,
+        # retrieve the tense name,
+        # retrieve the tense names for which that tense is a default.
+        for i, tense in enumerate(v):
+            if tense == verb:
+                for id, index in self._format.items():
+                    if i == index:
+                        a.add(id)
+                for id1, id2 in self._default.items():
+                    if id2 in a:
+                        a.add(id1)
+                for id1, id2 in self._default.items():
+                    if id2 in a:
+                        a.add(id1)
+        a = (TENSES[id][0] for id in a)
+        a = Tenses(sorted(a))
+        return a
 
 class Tenses(list):
     def __contains__(self, tense):
         # t in tenses(verb) also works when t is an alias (e.g. "1sg").
-        return list.__contains__(self, tenses_alias.get(tense, tense))
+        return list.__contains__(self, TENSES[tense_id.get(tense)][0])
 
 _verbs = VERBS = Verbs()
 conjugate, lemma, lexeme, tenses = \

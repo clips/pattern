@@ -107,25 +107,26 @@ def tokenize(string, punctuation=PUNCTUATION, abbreviations=abbreviations, repla
 
 LEXICON = lexicon = Lexicon() # Lazy dictionary based on Brill_lexicon.txt.
 
-def find_tags(tokens, default="NN", light=False, lexicon=LEXICON, map=None):
+def find_tags(tokens, default="NN", light=False, lexicon=LEXICON, language="en", map=None):
     """ Returns a list of [token, tag]-items for the given list of tokens.
         For example: 
-        ['That', 'is', 'interesting', '.'] => 
-        [['That', 'DT'], ['is', 'VBZ'], ['interesting', 'JJ'], ['.', '.']]
+         ['That', 'is', 'interesting', '.'] => 
+         [['That', 'DT'], ['is', 'VBZ'], ['interesting', 'JJ'], ['.', '.']]
         With light=True uses Brill's lexical and contextual rules to improve token tags.
         With light=False uses a faster set of arbitrary rules (Jason Wiener's rules).
-        If map is a function, apply it to each tag.
+        If map is a function, apply it to each tag after lexical and contextual rules.
     """
     tagged = []
     for token in tokens:
         # By default, all tokens are tagged NN unless we find an entry in the lexicon.
-        # Words that start with a capital letter are tagged with NNP by default.
         # Words that are not in the lexicon are then improved with lexical rules.
+        # Words that start with a capital letter are tagged with NNP by default,
+        # unless the language is German (which capitalizes all nouns).
         tagged.append([token, lexicon.get(token, lexicon.get(token.lower(), None))])
     f = light and apply_default_rules or lexicon.lexical_rules.apply
     for i, (token, tag) in enumerate(tagged):
         if tag == None:
-            if len(token) > 0 and token[0] == token[0].upper() and token[0].isalpha():
+            if len(token) > 0 and token[0].isupper() and token[0].isalpha() and language != "de":
                 tagged[i] = [token, "NNP"]
             else:
                 tagged[i] = [token, default]
@@ -135,7 +136,7 @@ def find_tags(tokens, default="NN", light=False, lexicon=LEXICON, map=None):
     if not light:
         tagged = lexicon.contextual_rules.apply(tagged)
     if map is not None:
-        tagged = [[token, map(tag, default)] for token, tag in tagged]
+        tagged = [[token, map(tag) or default] for token, tag in tagged]
     return tagged
 
 def apply_default_rules(token, previous=(None,None), next=(None,None)):
@@ -313,8 +314,7 @@ def find_prepositions(chunked):
 # Word lemmas using singularization and verb conjugation from the inflect module.
 
 try:
-    import os, sys; sys.path.append(os.path.join(MODULE, ".."))
-    from inflect import singularize, conjugate
+    from ..inflect import singularize, conjugate
 except:
     singularize = lambda w: w
     conjugate = lambda w,t: w
@@ -348,7 +348,7 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
     if tokenize is True:
         s = _tokenize(s)
     if isinstance(s, (list, tuple)):
-        s = [s.split(" ") for s in s]
+        s = [isinstance(s, basestring) and s.split(" ") or s for s in s]
     if isinstance(s, basestring):
         s = [s.split(" ") for s in s.split("\n")]
     for i in range(len(s)):
@@ -362,6 +362,7 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
                     default = kwargs.get("default", "NN"), 
                       light = kwargs.get("light", False), 
                     lexicon = kwargs.get("lexicon", LEXICON),
+                   language = kwargs.get("language", "en"),
                         map = kwargs.get("map", None))
         else:
             s[i] = [[w] for w in s[i]]
