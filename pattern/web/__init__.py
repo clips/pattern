@@ -343,7 +343,10 @@ class URL:
             proxy = urllib2.build_opener(proxy, urllib2.HTTPHandler)
             urllib2.install_opener(proxy)
         try:
-            request = urllib2.Request(url, post, {"User-Agent": user_agent, "Referer": referrer})
+            request = urllib2.Request(bytestring(url), post, {
+                        "User-Agent": user_agent, 
+                           "Referer": referrer
+                         })
             # Basic authentication is established with authentication=(username, password).
             if authentication is not None:
                 request.add_header("Authorization", "Basic %s" % 
@@ -364,9 +367,9 @@ class URL:
             if e.reason == "timed out" \
             or e.reason[0] in (36, "timed out"): 
                 raise URLTimeout
-            raise URLError
-        except ValueError:
-            raise URLError
+            raise URLError, e.reason
+        except ValueError, e:
+            raise URLError, e
             
     def download(self, timeout=10, cached=True, throttle=0, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None, unicode=False):
         """ Downloads the content at the given URL (by default it will be cached locally).
@@ -1117,7 +1120,8 @@ class Bing(SearchEngine):
         if not query or count < 1 or start < 1 or start > 1000/count: 
             return Results(BING + src + "?", query, type)
         # 1) Construct request URL.
-        url = URL(BING + src, method=GET, query={
+        url = URL(BING + "Composite", method=GET, query={
+               "Sources": "'" + src.lower() + "'",
                  "Query": "'" + query + "'",
                  "$skip": 1 + (start-1) * count,
                   "$top": min(count, type==NEWS and 15 or 50),
@@ -1147,9 +1151,10 @@ class Bing(SearchEngine):
             raise HTTP401Authentication, "Bing %s API is a paid service" % type
         data = json.loads(data)
         data = data.get("d", {})
+        data = data.get("results", [{}])[0]
         results = Results(BING, query, type)
-        results.total = None
-        for x in data.get("results", []):
+        results.total = int(data.get(src+"Total", 0))
+        for x in data.get(src, []):
             r = Result(url=None)
             r.url         = self.format(x.get("MediaUrl", x.get("Url")))
             r.title       = self.format(x.get("Title"))
@@ -1777,7 +1782,7 @@ class Newsfeed(SearchEngine):
         return results           
 
 feeds = {
-          "Nature": "http://www.nature.com/nature/current_issue/rss/index.html",
+          "Nature": "http://feeds.nature.com/nature/rss/current",
          "Science": "http://www.sciencemag.org/rss/podcast.xml",
   "Herald Tribune": "http://www.iht.com/rss/frontpage.xml",
             "TIME": "http://feeds.feedburner.com/time/topstories",
