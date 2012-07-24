@@ -11,6 +11,8 @@ from inflect import \
     article, referenced, DEFINITE, INDEFINITE, \
     pluralize, singularize, NOUN, VERB, ADJECTIVE, \
     conjugate, lemma, lexeme, tenses, VERBS, \
+    grade, comparative, superlative, COMPARATIVE, SUPERLATIVE, \
+    predicative, attributive, \
     INFINITIVE, \
     PRESENT_1ST_PERSON_SINGULAR, \
     PRESENT_2ND_PERSON_SINGULAR, \
@@ -22,8 +24,7 @@ from inflect import \
     PAST_2ND_PERSON_SINGULAR, \
     PAST_3RD_PERSON_SINGULAR, \
     PAST_PLURAL, \
-    PAST_PARTICIPLE, \
-    grade, comparative, superlative, COMPARATIVE, SUPERLATIVE
+    PAST_PARTICIPLE
 
 from inflect.quantify import \
     number, numerals, quantify, reflect
