@@ -5,7 +5,7 @@ from pattern.db  import date
 
 # This example reads a given RSS or Atom newsfeed channel.
 # Some sample newsfeeds to try out:
-NATURE  = "http://www.nature.com/nature/current_issue/rss/index.html"
+NATURE  = "http://feeds.nature.com/nature/rss/current"
 SCIENCE = "http://www.sciencemag.org/rss/podcast.xml"
 HERALD  = "http://www.iht.com/rss/frontpage.xml"
 TIME    = "http://feeds.feedburner.com/time/topstories"

@@ -11,7 +11,7 @@ try:
     # We only want to add the latest tweets, i.e., those we haven't previously encountered.
     # With an index on the first column we can quickly check if an ID already exists.
     # The index becomes important once more and more rows are added to the table (speed).
-    table = Datasheet.load("cool.txt")
+    table = Datasheet.load("cool.csv")
     index = dict.fromkeys(table.columns[0], True)
 except:
     table = Datasheet()
@@ -34,7 +34,7 @@ for tweet in engine.search("is cooler than", count=25, cached=False):
         table.append([id, tweet.description])
         index[id] = True
 
-table.save("cool.txt")
+table.save("cool.csv")
 
 print "Total results:", len(table)
 print
