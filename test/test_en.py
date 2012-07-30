@@ -426,6 +426,14 @@ class TestParser(unittest.TestCase):
             ["wearing", "VBG", "wear"], 
             ["hats", "NNS", "hat"]])
         print "pattern.en.parser.find_lemmata()"
+        
+    def test_named_entity_recognition(self):
+        # Assert named entities.
+        v = en.parser.parse("Arnold Schwarzenegger is cool.", chunks=False)
+        self.assertEqual(v, 
+            "Arnold/NNP Schwarzenegger/NNP is/VBZ cool/JJ ./."
+        )
+        print "pattern.en.parser.brill.NamedEntities"
     
     def test_parse(self):
         # Assert parsed output with Penn Treebank II tags (slash-formatted).
@@ -902,6 +910,10 @@ class TestWordNet(unittest.TestCase):
     def test_sentiwordnet(self):
         # Assert SentiWordNet is loaded correctly.
         if en.wordnet.sentiwordnet is None:
+            return
+        try: 
+            en.wordnet.sentiwordnet.load()
+        except ImportError:
             return
         v = en.wordnet.synsets("anguish")[0]
         self.assertEqual(v.weight, (-0.625, 0.625))

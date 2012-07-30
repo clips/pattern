@@ -475,7 +475,7 @@ class TestCorpus(unittest.TestCase):
         # Assert that Corpus.similarity() is aware of LSA reduction.
         try:
             import numpy
-            self.corpus.reduce(1)
+            self.corpus.reduce(2)
             v1 = self.corpus.similarity(self.corpus[0], self.corpus[1])
             v2 = self.corpus.similarity(self.corpus[0], self.corpus[2])
             self.assertAlmostEqual(v1, 1.00, places=2)
@@ -672,26 +672,29 @@ class TestLSA(unittest.TestCase):
         # Intuitively, we'd expect two concepts:
         # 1) with cats + purr + meow grouped together,
         # 2) with dogs + howl + bark grouped together.
-        for concept in corpus.lsa.concepts:
+        i1, i2 = 0, 0
+        for i, concept in enumerate(corpus.lsa.concepts):
             self.assertTrue(isinstance(concept, dict))
             if concept["cats"] > 0.5:
                 self.assertTrue(concept["purr"] >  0.5)
                 self.assertTrue(concept["meow"] >  0.5)
                 self.assertTrue(concept["howl"] == 0.0)
                 self.assertTrue(concept["bark"] == 0.0)
+                i1 = i
             if concept["dogs"] > 0.5:
                 self.assertTrue(concept["howl"] >  0.5)
                 self.assertTrue(concept["bark"] >  0.5)
                 self.assertTrue(concept["purr"] == 0.0)
                 self.assertTrue(concept["meow"] == 0.0)
+                i2 = i
         # We'd expect the "cat" documents to score high on the "cat" concept vector.
         # We'd expect the "dog" documents to score high on the "dog" concept vector.
         v1 = corpus.lsa[corpus.documents[0].id]
         v2 = corpus.lsa[corpus.documents[2].id]
-        self.assertTrue(v1[0]  > 0.7)
-        self.assertTrue(v1[1] == 0.0)
-        self.assertTrue(v2[0] == 0.0)
-        self.assertTrue(v2[1]  > 0.7)
+        self.assertTrue(v1[i1]  > 0.7)
+        self.assertTrue(v1[i2] == 0.0)
+        self.assertTrue(v2[i1] == 0.0)
+        self.assertTrue(v2[i2]  > 0.7)
         # Assert LSA.transform() for unknown documents.
         v = corpus.lsa.transform(vector.Document("cats dogs"))
         self.assertAlmostEqual(v[0], 0.34, places=2)
@@ -715,7 +718,7 @@ class TestLSA(unittest.TestCase):
         t2 = time.time() - t2
         self.assertTrue(len(self.corpus.lsa[self.corpus.documents[0].id]) == 20)
         self.assertTrue(t2 * 2 < t1)        # KNN over 2x faster.
-        self.assertTrue(abs(F1-F2) < 0.05) # Difference in F-score = 1-6%.
+        self.assertTrue(abs(F1-F2) < 0.06) # Difference in F-score = 1-6%.
         self.corpus.lsa = None
         print "pattern.vector.Corpus.reduce()"
           

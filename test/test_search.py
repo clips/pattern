@@ -172,18 +172,32 @@ class TestConstraint(unittest.TestCase):
           (          "NP", dict(chunks = ["NP"])),
           (         "SBJ", dict( roles = ["SBJ"])),
           (        "CATS", dict(  taxa = ["cats"])),
+          (       "cats?", dict( words = ["cats"], optional=True)),
           (      "(cats)", dict( words = ["cats"], optional=True)),
           (  "\\(cats\\)", dict( words = ["(cats)"])),
           (       "cats+", dict( words = ["cats"], multiple=True)),
           (     "cats\\+", dict( words = ["cats+"])),
           (   "cats+dogs", dict( words = ["cats+dogs"])),
-          (     "(cats+)", dict( words = ["cats+"], optional=True)),
+          (     "(cats+)", dict( words = ["cats"], optional=True, multiple=True)),
+          (     "(cats)+", dict( words = ["cats"], optional=True, multiple=True)),
+          (      "cats+?", dict( words = ["cats"], optional=True, multiple=True)),
+          (      "cats?+", dict( words = ["cats"], optional=True, multiple=True)),
+          ( "^[fat cat]?", dict( words = ["fat cat"], first=True, optional=True)),
+          ( "[^fat cat?]", dict( words = ["fat cat"], first=True, optional=True)),
           ( "cats\\|dogs", dict( words = ["cats|dogs"])),
           (   "cats|dogs", dict( words = ["cats", "dogs"])),
           (        "^cat", dict( words = ["cat"], first=True)),
           (      "\\^cat", dict( words = ["^cat"])),
           (     "(cat*)+", dict( words = ["cat*"], optional=True, multiple=True)),
           ( "^black_cat+", dict( words = ["black cat"], multiple=True, first=True)),
+          (  "black\[cat", dict( words = ["black[cat"])),
+          (  "black\(cat", dict( words = ["black(cat"])),
+          (  "black\{cat", dict( words = ["black{cat"])),
+          (  "black\|cat", dict( words = ["black|cat"])),
+          (  "black\!cat", dict( words = ["black!cat"])),
+          (  "black\^cat", dict( words = ["black^cat"])),
+          (  "black\+cat", dict( words = ["black+cat"])),
+          (  "black\?cat", dict( words = ["black?cat"])),
           (    "cats|NN*", dict( words = ["cats"], tags=["NN*"]))):
             self._test_constraint(search.Constraint.fromstring(s), **kwargs)
         # Assert non-alpha taxonomy items.
@@ -267,7 +281,7 @@ class TestPattern(unittest.TestCase):
         
     def test_fromstring(self):
         # Assert Pattern string syntax.
-        v = search.Pattern.fromstring("a|an|the (JJ*) cat*")
+        v = search.Pattern.fromstring("a|an|the JJ*? cat*")
         self.assertEqual(v[0].words,    ["a", "an", "the"])
         self.assertEqual(v[1].tags,     ["JJ*"])
         self.assertEqual(v[1].optional, True)
@@ -298,17 +312,17 @@ class TestPattern(unittest.TestCase):
           (P("JJ+ NN*"),            S("big white rabbits"),   "big white rabbits"),   #  6
           (P("JJ black|white NN*"), S("big white rabbits"),   "big white rabbits"),   #  7
           (P("NP"),                 S("big white rabbit"),    "big white rabbit"),    #  8
-          (P("(big) rabbit", X),    S("big white rabbit"),    "rabbit"),              #  9 strict
-          (P("(big) rabbit|NN"),    S("big white rabbit"),    "rabbit"),              # 10 explicit
-          (P("(big) rabbit"),       S("big white rabbit"),    "big white rabbit"),    # 11 greedy
+          (P("big? rabbit", X),     S("big white rabbit"),    "rabbit"),              #  9 strict
+          (P("big? rabbit|NN"),     S("big white rabbit"),    "rabbit"),              # 10 explicit
+          (P("big? rabbit"),        S("big white rabbit"),    "big white rabbit"),    # 11 greedy
           (P("rabbit VP JJ"),       S("the rabbit was huge"), "the rabbit was huge"), # 12
           (P("rabbit be JJ"),       S("the rabbit was huge"), "the rabbit was huge"), # 13 lemma
           (P("rabbit be JJ", X),    S("the rabbit was huge"), "rabbit was huge"),     # 14
           (P("rabbit is JJ"),       S("the rabbit was huge"), None),                  # 15
           (P("the NP"),             S("the rabid rodents"),   "the rabid rodents"),   # 16 overlap
           (P("t*|r*+"),             S("the rabid rodents"),   "the rabid rodents"),   # 17
-          (P("(DT) (JJ) NN*"),      S("the rabid rodents"),   "the rabid rodents"),   # 18
-          (P("(DT) (JJ) NN*"),      S("the rabbit"),          "the rabbit"),          # 19
+          (P("(DT) JJ? NN*"),       S("the rabid rodents"),   "the rabid rodents"),   # 18
+          (P("(DT) JJ? NN*"),       S("the rabbit"),          "the rabbit"),          # 19
           (P("rabbit"),             S("the big rabbit"),      "the big rabbit"),      # 20 greedy
           (P("eat carrot"),         S("is eating a carrot"),  "is eating a carrot"),  # 21
           (P("eat carrot|NP"),      S("is eating a carrot"),  "is eating a carrot"),  # 22
@@ -372,7 +386,7 @@ class TestPattern(unittest.TestCase):
         self.assertEqual(v[1].string, "two")
         self.assertEqual(v[2].string, "three")
         # Assert all variations are matched (sentence starts with a NN* which must be caught).
-        v = search.Pattern.fromstring("(DT) (JJ)+ NN*")
+        v = search.Pattern.fromstring("(DT) JJ?+ NN*")
         v = v.search(Sentence(parse("dogs, black cats and a big white rabbit")))
         self.assertEqual(v[0].string, "dogs")
         self.assertEqual(v[1].string, "black cats")
@@ -383,7 +397,7 @@ class TestPattern(unittest.TestCase):
     def test_convergence(self):
         # Test with random sentences and random patterns to see if it crashes.
         w = ("big", "white", "rabbit", "black", "cats", "is", "was", "going", "to", "sleep", "sleepy", "very", "or")
-        x = ("(DT)", "(JJ)+", "NN*", "(VP)", "cat", "[*]")
+        x = ("DT?", "JJ?+", "NN*", "VP?", "cat", "[*]")
         for i in range(100):
             s = " ".join(random.choice(w) for i in range(20))
             s = Sentence(parse(s, lemmata=True))
@@ -394,7 +408,7 @@ class TestPattern(unittest.TestCase):
     def test_compile_function(self):
         # Assert creating and caching Pattern with compile().
         t = search.Taxonomy()
-        p = search.compile("(JJ)+ NN*", search.STRICT, taxonomy=t)
+        p = search.compile("JJ?+ NN*", search.STRICT, taxonomy=t)
         self.assertEqual(p.strict,      True)
         self.assertEqual(p[0].optional, True)
         self.assertEqual(p[0].tags,     ["JJ"])
@@ -419,14 +433,14 @@ class TestPattern(unittest.TestCase):
     def test_search_function(self):
         # Assert search() function.
         s = Sentence(parse("Go on Bors, chop his head off!"))
-        m = search.search("(PRP*) NN*", s)
+        m = search.search("PRP*? NN*", s)
         self.assertEqual(m[0].string, "Bors")
         self.assertEqual(m[1].string, "his head")
         print "pattern.search.search()"
         
     def test_escape(self):
         # Assert escape() function.
-        self.assertEqual(search.escape("[]()_|!*+^."), "\\[\\]\\(\\)\\_\\|\\!\\*\\+\\^.")
+        self.assertEqual(search.escape("{}[]()_|!*+^."), "\\{\\}\\[\\]\\(\\)\\_\\|\\!\\*\\+\\^.")
         print "pattern.search.escape()"
 
 #---------------------------------------------------------------------------------------------------
@@ -462,6 +476,44 @@ class TestMatch(unittest.TestCase):
         # Assert Match.string.
         self.assertEqual(m[1].string, "pointy teeth")
         print "pattern.search.Match"
+        
+    def test_group(self):
+        # Assert Match groups.
+        s = Sentence(parse("the big black cat eats a tasty fish"))
+        m = search.search("DT {JJ+} NN", s)
+        self.assertEqual(m[0].group(1).string, "big black")
+        self.assertEqual(m[1].group(1).string, "tasty")
+        # Assert nested groups (and syntax with additional spaces).
+        m = search.search("DT { JJ { JJ { NN }}}", s)
+        self.assertEqual(m[0].group(1).string, "big black cat")
+        self.assertEqual(m[0].group(2).string, "black cat")
+        self.assertEqual(m[0].group(3).string, "cat")
+        # Assert chunked groups.
+        m = search.search("NP {VP NP}", s)
+        v = m[0].group(1, chunked=True)
+        self.assertEqual(v[0].string, "eats")
+        self.assertEqual(v[1].string, "a tasty fish")
+        print "pattern.search.Match.group()"
+        
+    def test_group_ordering(self):
+        # Assert group parser ordering (opened-first).
+        c1 = search.Constraint("1")
+        c2 = search.Constraint("2")
+        c3 = search.Constraint("3")
+        p = search.Pattern([c1, [[c2], c3]])
+        self.assertEqual(p.groups[0][0].words[0], "2")
+        self.assertEqual(p.groups[0][1].words[0], "3")
+        self.assertEqual(p.groups[1][0].words[0], "2")
+        p = search.Pattern.fromstring("1 {2 {{3} 4}}")
+        self.assertEqual(p.groups[0][0].words[0], "2")
+        self.assertEqual(p.groups[0][1].words[0], "3")
+        self.assertEqual(p.groups[0][2].words[0], "4")
+        self.assertEqual(p.groups[1][0].words[0], "3")
+        self.assertEqual(p.groups[1][1].words[0], "4")
+        self.assertEqual(p.groups[2][0].words[0], "3")
+        p = search.Pattern.fromstring("1 {2} {3} 4")
+        self.assertEqual(p.groups[0][0].words[0], "2")
+        self.assertEqual(p.groups[1][0].words[0], "3")
 
 #---------------------------------------------------------------------------------------------------
 

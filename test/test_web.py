@@ -458,7 +458,7 @@ class TestSearchEngine(unittest.TestCase):
         # Google, Yahoo, Bing, Twitter, Wikipedia, Flickr, Facebook, Products, Newsfeed.
         # SearchEngine.search() returns a list of Result objects with unicode fields, 
         # except Wikipedia which returns a WikipediaArticle.
-        if api == web.YAHOO and license == ("",""): 
+        if api == "Yahoo" and license == ("",""): 
             return
         t = time.time()
         e = Engine(license, throttle=0.25, language="en")
@@ -518,7 +518,7 @@ class TestSearchEngine(unittest.TestCase):
     def _test_results(self, api, source, license, Engine, type=web.SEARCH, query="today", baseline=[6,6,6,0]):
         # Assert SearchEngine result content.
         # We expect to find http:// URL's and descriptions containing the search query.
-        if api == web.YAHOO and license == ("",""): 
+        if api == "Yahoo" and license == ("",""): 
             return
         i1 = 0
         i2 = 0
@@ -597,7 +597,7 @@ class TestSearchEngine(unittest.TestCase):
         
     def _test_search_image_size(self, api, source, license, Engine):
         # Assert image URL's for different sizes actually exist.
-        if api == web.YAHOO and license == ("",""): 
+        if api == "Yahoo" and license == ("",""): 
             return
         e = Engine(license, throttle=0.25)
         for size in (web.TINY, web.SMALL, web.MEDIUM, web.LARGE):
