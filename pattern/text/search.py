@@ -398,43 +398,60 @@ class Constraint:
     def fromstring(cls, s, **kwargs):
         """ Returns a new Constraint from the given string.
             Uppercase words indicate either a tag ("NN", "JJ", "VP")
-            or a taxonomy term (e.g. "PRODUCT", "PERSON").
+            or a taxonomy term (e.g., "PRODUCT", "PERSON").
             Syntax:
-            ( defines an optional constraint, e.g. "(JJ)".
-            [ defines a constraint with spaces, e.g. "[Mac OS X | Windows Vista]".
-            _ is converted to spaces, e.g. "Windows_Vista".
-            | separates different options, e.g. "ADJP|ADVP".
+            ( defines an optional constraint, e.g., "(JJ)".
+            [ defines a constraint with spaces, e.g., "[Mac OS X | Windows Vista]".
+            _ is converted to spaces, e.g., "Windows_Vista".
+            | separates different options, e.g., "ADJP|ADVP".
             ! can be used as a word prefix to disallow it.
-            * can be used as a wildcard character, e.g. "soft*|JJ*".
-            + as a suffix defines a constraint that can span multiple words, e.g. "*+".
+            * can be used as a wildcard character, e.g., "soft*|JJ*".
+            ? as a suffix defines a constraint that is optional, e.g., "JJ?".
+            + as a suffix defines a constraint that can span multiple words, e.g., "JJ+".
             ^ as a prefix defines a constraint that can only match the first word.
             These characters need to be escaped if used as content: "\(".
         """
         C = cls(**kwargs)
-        if s.startswith("^"):
-            s = s[1:  ]; C.first = True
-        if s.endswith("+") and not s.endswith("\+"):
-            s = s[0:-1]; C.multiple = True
-        if s.startswith("(") and s.endswith(")"):
-            s = s[1:-1]; C.optional = True
-        if s.startswith("[") and s.endswith("]"):
-            s = s[1:-1]
+        s = s.strip()
+        s = s.strip("{}")
+        s = s.strip()
+        for i in range(3):
+            # Wrapping order of control characters is ignored:
+            # (NN+) == (NN)+ == NN?+ == NN+? == [NN+?] == [NN]+?
+            if s.startswith("^"):
+                s = s[1:  ]; C.first = True
+            if s.endswith("+") and not s.endswith("\+"):
+                s = s[0:-1]; C.multiple = True
+            if s.endswith("?") and not s.endswith("\?"):
+                s = s[0:-1]; C.optional = True
+            if s.startswith("(") and s.endswith(")"):
+                s = s[1:-1]; C.optional = True
+            if s.startswith("[") and s.endswith("]"):
+                s = s[1:-1]
         s = re.sub(r"^\\\^", "^", s)
         s = re.sub(r"\\\+$", "+", s)
-        s = s.replace("\_", "&underscore;")
+        s = s.replace("\_", "&uscore;")
         s = s.replace("_"," ")
-        s = s.replace("&underscore;", "_")
-        s = s.replace("&lbracket;", "(")
-        s = s.replace("&rbracket;", ")")
-        s = s.replace("&lsqbracket;", "[")
-        s = s.replace("&rsqbracket;", "]")
+        s = s.replace("&uscore;", "_")
+        s = s.replace("&lparen;", "(")
+        s = s.replace("&rparen;", ")")
+        s = s.replace("&lbrack;", "[")
+        s = s.replace("&rbrack;", "]")
+        s = s.replace("&lcurly;", "{")
+        s = s.replace("&rcurly;", "}")
         s = s.replace("\(", "(")
-        s = s.replace("\)", ")")
+        s = s.replace("\)", ")") 
         s = s.replace("\[", "[")
-        s = s.replace("\]", "]")
-        s = s.replace("\|", "&dash;")
+        s = s.replace("\]", "]") 
+        s = s.replace("\{", "{")
+        s = s.replace("\}", "}") 
+        s = s.replace("\*", "*")
+        s = s.replace("\?", "?")    
+        s = s.replace("\+", "+")
+        s = s.replace("\^", "^")
+        s = s.replace("\|", "&vdash;")
         s = s.split("|")
-        s = [v.replace("&dash;", "|").strip() for v in s]
+        s = [v.replace("&vdash;", "|").strip() for v in s]
         for v in s:
             C._append(v)
         return C
@@ -469,7 +486,7 @@ class Constraint:
             - the word and/or chunk tags match those defined in the constraint.
             Individual terms in Constraint.words or the taxonomy can contain wildcards (*).
             Some part-of-speech-tags can also contain wildcards: NN*, VB*, JJ*, RB*
-            If the given word contains spaces (e.g. proper noun),
+            If the given word contains spaces (e.g., proper noun),
             the entire chunk will also be compared.
             For example: Constraint(words=["Mac OS X*"]) 
             matches the word "Mac" if the word occurs in a Chunk("Mac OS X 10.5").
@@ -502,7 +519,7 @@ class Constraint:
             s2 = word.lemma
             b = False
             for w in itertools.chain(self.words, self.taxa):
-                # If the constraint has a word with spaces (e.g. a proper noun),
+                # If the constraint has a word with spaces (e.g., a proper noun),
                 # compare it to the entire chunk.
                 try:
                     if " " in w and (s1 in w or s2 and s2 in w or "*" in w):
@@ -514,7 +531,7 @@ class Constraint:
                 # Compare the word to the allowed words (which can contain wildcards).
                 if _match(s1, w):
                     b=True; break
-                # Compare the word lemma to the allowed words, e.g.
+                # Compare the word lemma to the allowed words, e.g.,
                 # if "was" is not in the constraint, perhaps "be" is, which is a good match.
                 if s2 and _match(s2, w):
                     b=True; break
@@ -569,8 +586,25 @@ class Pattern:
     
     def __init__(self, sequence=[], *args, **kwargs):
         """ A sequence of constraints that matches certain phrases in a sentence.
+            The given list of Constraint objects can contain nested lists (groups).
         """
-        self.sequence = list(sequence) # List of constraints.
+        # Parse nested lists and tuples from the sequence into groups.
+        # [DT [JJ NN]] => Match.group(1) will yield the JJ NN sequences.
+        def _ungroup(sequence, groups=None):
+            for v in sequence:
+                if isinstance(v, (list, tuple)):
+                    if groups is not None:
+                        groups.append(list(_ungroup(v, groups=None)))
+                    for v in _ungroup(v, groups):
+                        yield v
+                else: 
+                    yield v
+        self.groups = []
+        self.sequence = list(_ungroup(sequence, groups=self.groups))
+        # Assign Constraint.index:
+        i = 0
+        for constraint in self.sequence:
+            constraint.index = i; i+=1
         # There are two search modes: STRICT and GREEDY.
         # - In STRICT, "rabbit" matches only the string "rabbit".
         # - In GREEDY, "rabbit|NN" matches the string "rabbit" tagged "NN".
@@ -592,10 +626,12 @@ class Pattern:
             Constraints are separated by a space.
             If a constraint contains a space, it must be wrapped in [].
         """
-        s = s.replace("\(","&lbracket;")
-        s = s.replace("\)","&rbracket;")
-        s = s.replace("\[","&lsqbracket;")
-        s = s.replace("\]","&rsqbracket;")
+        s = s.replace("\(", "&lparen;")
+        s = s.replace("\)", "&rparen;")
+        s = s.replace("\[", "&lbrack;")
+        s = s.replace("\]", "&rbrack;")
+        s = s.replace("\{", "&lcurly;")
+        s = s.replace("\}", "&rcurly;")
         p = []
         i = 0
         for m in re.finditer(r"\[.*?\]|\(.*?\)", s):
@@ -607,14 +643,33 @@ class Pattern:
         s = "".join(p) 
         s = s.replace("][", "] [")
         s = s.replace(")(", ") (")
-        s = s.replace("\|", "&dash;")
+        s = s.replace("\|", "&vdash;")
         s = re.sub(r"\s+\|\s+", "|", s)  
         s = re.sub(r"\s+", " ", s)
+        s = re.sub(r"\{\s+", "{", s)
+        s = re.sub(r"\s+\}", "}", s)
         s = s.split(" ")
         s = [v.replace("&space;"," ") for v in s]
         P = cls([], *args, **kwargs)
+        G, O, i = [], [], 0
         for s in s:
-            P.sequence.append(Constraint.fromstring(s, taxonomy=kwargs.get("taxonomy", TAXONOMY)))
+            constraint = Constraint.fromstring(s.strip("{}"), taxonomy=kwargs.get("taxonomy", TAXONOMY))
+            constraint.index = len(P.sequence)
+            P.sequence.append(constraint)
+            # Push a new group on the stack if string starts with "{".
+            # Parse constraint from string, add it to all open groups.
+            # Pop latest group from stack if string ends with "}".
+            # Insert it opened-first.
+            while s.startswith("{"):
+                s = s[1:]
+                G.append((i, [])); i+=1
+                O.append([])
+            for g in G:
+                g[1].append(constraint)
+            while s.endswith("}"):
+                s = s[:-1]
+                if G: O[G[-1][0]] = G[-1][1]; G.pop()
+        P.groups = [g for g in O if g]
         return P
 
     def search(self, sentence):
@@ -684,7 +739,7 @@ class Pattern:
                 # - "Tom" matches "Tom the cat" if "Tom" is head of the chunk.
                 # - This behavior is ignored with POS-tag constraints:
                 #   "Tom|NN" can only match single words, not chunks.
-                # - This is also True for negated POS-tags (e.g. !NN).
+                # - This is also True for negated POS-tags (e.g., !NN).
                 w01 = [w0, w1]
                 for j in (0, -1):
                     constraint, w = sequence[j], w01[j]
@@ -776,7 +831,7 @@ def escape(string):
     """ Returns the string with control characters for Pattern syntax escaped.
         For example: "hello!" => "hello\!".
     """
-    for ch in ("[","]","(",")","_","|","!","*","+","^"):
+    for ch in ("{","}","[","]","(",")","_","|","!","*","+","^"):
         string = string.replace(ch, "\\"+ch)
     return string
 
@@ -858,6 +913,22 @@ class Match:
                 a.append(w)
             i += 1
         return a
+        
+    def group(self, index, chunked=False):
+        """ Returns a list of Word objects that match the given group.
+            With chunked=True, returns a list of Word + Chunk objects - see Match.constituents().
+            A group consists of consecutive constraints wrapped in { }, e.g.,
+            search("{JJ JJ} NN", Sentence(parse("big black cat"))).group(1) => big black.
+        """
+        if index < 0 or index > len(self.pattern.groups):
+            raise IndexError, "no such group"
+        if index > 0 and index <= len(self.pattern.groups):
+            g = self.pattern.groups[index-1]
+        if index == 0:
+            g = self.pattern.sequence
+        if chunked is True:
+            return Group(self, self.constituents(constraint=[self.pattern.sequence.index(x) for x in g]))
+        return Group(self, [w for w in self.words if self.constraint(w) in g])
     
     @property
     def string(self):
@@ -865,6 +936,29 @@ class Match:
     
     def __repr__(self):
         return "Match(words=%s)" % repr(self.words)
+
+#--- PATTERN MATCH GROUP ---------------------------------------------------------------------------
+
+class Group(list):
+
+    def __init__(self, match, words):
+        list.__init__(self, words)
+        self.match = match
+
+    @property
+    def words(self):
+        return list(self)
+
+    @property
+    def start(self):
+        return self and self[0].index or None
+    @property
+    def stop(self):
+        return self and self[-1].index+1 or None
+    
+    @property
+    def string(self):
+        return " ".join(w.string for w in self)
 
 #from en import Sentence, parse
 #s = Sentence(parse("I was looking at the big cat, and the big cat was staring back", lemmata=True))
