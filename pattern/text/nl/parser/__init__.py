@@ -69,6 +69,7 @@ lexicon = LEXICON = Lexicon()
 lexicon.path = os.path.join(MODULE, "brill-lexicon.txt")
 lexicon.lexical_rules.path = os.path.join(MODULE, "brill-lexical.txt")
 lexicon.contextual_rules.path = os.path.join(MODULE, "brill-contextual.txt")
+lexicon.named_entities.tag = "N(eigen,ev)"
 
 # WOTAN tagset:
 # http://lands.let.ru.nl/literature/hvh.1999.2.ps
