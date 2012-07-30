@@ -659,7 +659,7 @@ class Pattern:
             # Push a new group on the stack if string starts with "{".
             # Parse constraint from string, add it to all open groups.
             # Pop latest group from stack if string ends with "}".
-            # Insert it opened-first.
+            # Insert groups in opened-first order (i).
             while s.startswith("{"):
                 s = s[1:]
                 G.append((i, [])); i+=1
