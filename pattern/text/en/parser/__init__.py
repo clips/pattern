@@ -135,6 +135,7 @@ def find_tags(tokens, default="NN", light=False, lexicon=LEXICON, language="en",
                         next = i<len(tagged)-1 and tagged[i+1] or (None, None))
     if not light:
         tagged = lexicon.contextual_rules.apply(tagged)
+        tagged = lexicon.named_entities.apply(tagged)
     if map is not None:
         tagged = [[token, map(tag) or default] for token, tag in tagged]
     return tagged
@@ -421,7 +422,11 @@ class TaggedString(unicode):
         """
         if sep != TOKENS:
             return unicode.split(self, sep)
-        return [[token.split("/") for token in s.split(" ")] for s in unicode.split(self, "\n")]
+        if len(self) == 0:
+            return []
+        return [[[x.replace("&slash;", "/") for x in token.split("/")] 
+            for token in sentence.split(" ")] 
+                for sentence in unicode.split(self, "\n")]
 
 def tag(s, tokenize=True, encoding="utf-8"):
     """ Returns a list of (token, tag)-tuples from the given string.
