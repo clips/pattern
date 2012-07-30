@@ -15,7 +15,7 @@ from pattern.db     import Datasheet, pprint
 #from MBSP import Sentence, parse
 
 q = '"more important than"'          # Bing search query
-p = "NP (VP) more important than NP" # Search pattern.
+p = "NP VP? more important than NP" # Search pattern.
 p = Pattern.fromstring(p)
 d = Datasheet()
 

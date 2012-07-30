@@ -3,7 +3,7 @@ import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 from pattern.search import Pattern
 from pattern.en     import Sentence, parse
 
-# Constraints ending in + match one or more words.
+# Constraints ending in "+" match one or more words.
 # Pattern.search() uses a "greedy" approach: 
 # it will attempt to match as many words as possible.
 

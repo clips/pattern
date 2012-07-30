@@ -17,7 +17,7 @@ print search("JJ NN", s)
 print
 
 # Or a noun preceded by any number of adjectives:
-print search("(JJ)+ NN", s)
+print search("JJ?+ NN", s)
 print
 
 # Note: NN marks singular nouns, NNS marks plural nouns.
