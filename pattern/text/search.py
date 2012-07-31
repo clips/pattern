@@ -550,7 +550,7 @@ class Constraint:
               word.chunk and " ".join([x or "" for x in word.chunk.lemmata]) or None): # "army ant"
                 if s is not None:
                     # Compare ancestors of the word to each term in Constraint.taxa.
-                    for p in self.taxonomy.parents(s.lower(), recursive=True):
+                    for p in self.taxonomy.parents(s, recursive=True):
                         if find(lambda s: p==s, self.taxa): # No wildcards.
                             return True
         return b
