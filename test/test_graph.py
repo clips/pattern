@@ -3,6 +3,7 @@ import os, sys; sys.path.insert(0, os.path.join(".."))
 import unittest
 
 from pattern import graph
+from pattern.graph import commonsense
 
 #---------------------------------------------------------------------------------------------------
 
@@ -654,6 +655,44 @@ class TestGraphMaintenance(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+class TestGraphCommonsense(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+    
+    def test_halo(self):
+        # Assert concept halo (e.g., latent related concepts).
+        g = commonsense.Commonsense()
+        v = [concept.id for concept in g["rose"].halo]
+        self.assertTrue("red" in v)
+        self.assertTrue("romance" in v)
+        # Concept.properties is the list of properties (adjectives) in the halo.
+        v = g["rose"].properties
+        self.assertTrue("red" in v)
+        self.assertTrue("romance" not in v)
+        print "pattern.graph.commonsense.Concept.halo"
+        print "pattern.graph.commonsense.Concept.properties"
+    
+    def test_field(self):
+        # Assert semantic field (e.g., concept taxonomy).
+        g = commonsense.Commonsense()
+        v = [concept.id for concept in g.field("color")]
+        self.assertTrue("red" in v)
+        self.assertTrue("green" in v)
+        self.assertTrue("blue" in v)
+        print "pattern.graph.commonsense.Commonsense.field()"
+    
+    def test_similarity(self):
+        # Assert that tiger is more similar to lion than to spoon
+        # (which is common sense).
+        g = commonsense.Commonsense()
+        w1 = g.similarity("tiger", "lion")
+        w2 = g.similarity("tiger", "spoon")
+        self.assertTrue(w1 > w2)
+        print "pattern.graph.commonsense.Commonsense.similarity()"
+
+#---------------------------------------------------------------------------------------------------
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUtilityFunctions))
@@ -665,6 +704,7 @@ def suite():
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestGraphTraversal))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestGraphPartitioning))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestGraphMaintenance))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestGraphCommonsense))
     return suite
 
 if __name__ == "__main__":

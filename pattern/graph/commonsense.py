@@ -10,8 +10,15 @@ from codecs    import BOM_UTF8
 from urllib    import urlopen
 from itertools import chain
 
-from pattern.graph import Graph, Node, Edge, bfs
-from pattern.graph import WEIGHT, CENTRALITY
+from __init__ import Graph, Node, Edge, bfs
+from __init__ import WEIGHT, CENTRALITY
+
+import os
+
+try:
+    MODULE = os.path.dirname(__file__)
+except:
+    MODULE = ""
 
 #### COMMON SENSE SEMANTIC NETWORK #################################################################
 
@@ -35,7 +42,8 @@ class Concept(Node):
         
     @property
     def properties(self):
-        """ Returns the top properties in the concept halo, sorted by centrality.
+        """ Returns the top properties in the concept halo, sorted by betweenness centrality.
+            The return value is a list of concept id's instead of Concepts (for performance).
         """
         if self._properties is None:
             g = self.graph.copy(nodes=self.halo)
@@ -45,7 +53,7 @@ class Concept(Node):
         return self._properties
         
 #--- RELATION --------------------------------------------------------------------------------------
-    
+
 class Relation(Edge):
     
     def __init__(self, *args, **kwargs):
@@ -55,11 +63,25 @@ class Relation(Edge):
         self.context = kwargs.pop("context", None)
         Edge.__init__(self, *args, **kwargs)
 
+#--- HEURISTICS ------------------------------------------------------------------------------------
+# Similarity between concepts is measured using a featural approach:
+# a comparison of the features/properties that are salient in each concept's halo.
+# Commonsense.similarity() takes an optional "heuristic" parameter to tweak this behavior.
+# It is a tuple of two functions:
+# 1) function(concept) returns a list of salient properties (or other),
+# 2) function(concept1, concept2) returns the cost to traverse this edge (0.0-1.0).
+
+COMMONALITY = (
+    # Similarity heuristic that only traverses relations between properties.
+    lambda concept: concept.properties,
+    lambda edge: 1 - int(edge.context == "properties" and \
+                         edge.type != "is-opposite-of"))
+
 #--- COMMON SENSE ----------------------------------------------------------------------------------
 
 class Commonsense(Graph):
     
-    def __init__(self, data="commonsense.csv", **kwargs):
+    def __init__(self, data=os.path.join(MODULE, "commonsense.csv"), **kwargs):
         """ A semantic network of common sense, using different relation types:
             - is-a,
             - is-part-of,
@@ -121,31 +143,31 @@ class Commonsense(Graph):
         self._properties = None
         Graph.remove(self, x)
 
-    def similarity(self, concept1, concept2, k=3):
+    def similarity(self, concept1, concept2, k=3, heuristic=COMMONALITY):
         """ Returns the similarity of the given concepts,
             by cross-comparing shortest path distance between k concept properties.
             A given concept can also be a flat list of properties, e.g. ["creepy"].
+            The given heuristic is a tuple of two functions:
+            1) function(concept) returns a list of salient properties,
+            2) function(edge) returns the cost for traversing this edge (0.0-1.0).
         """
-        def heuristic(id1, id2):
-            # Follow edges between properties (except opposite properties).
-            e = self.edge(id1, id2)
-            return int(e.context != "properties" or e.type == "is-opposite-of")
         if isinstance(concept1, basestring):
             concept1 = self[concept1]
         if isinstance(concept2, basestring):
             concept2 = self[concept2]
         if isinstance(concept1, Node):
-            concept1 = concept1.properties
+            concept1 = heuristic[0](concept1)
         if isinstance(concept2, Node):
-            concept2 = concept2.properties
+            concept2 = heuristic[0](concept2)
         if isinstance(concept1, list):
             concept1 = [isinstance(n, Node) and n or self[n] for n in concept1]
         if isinstance(concept2, list):
             concept2 = [isinstance(n, Node) and n or self[n] for n in concept2]
-        w = 0
+        h = lambda id1, id2: heuristic[1](self.edge(id1, id2))
+        w = 0.0
         for p1 in concept1[:k]:
             for p2 in concept2[:k]:
-                p = self.shortest_path(p1, p2, heuristic)
+                p = self.shortest_path(p1, p2, heuristic=h)
                 w += 1.0 / (p is None and 1e10 or len(p))
         return w / k
         
@@ -156,7 +178,7 @@ class Commonsense(Graph):
         
     similar = neighbors = nn = nearest_neighbors
 
-    def taxonomy(self, concept, depth=2, fringe=1):
+    def taxonomy(self, concept, depth=3, fringe=2):
         """ Returns a list of concepts that are descendants of the given concept, using "is-a" relations.
             Creates a subgraph of "is-a" related concepts up to the given depth,
             then takes the fringe (i.e., leaves) of the subgraph.
@@ -168,18 +190,25 @@ class Commonsense(Graph):
             concept = self[concept]
         g = self.copy(nodes=concept.flatten(depth, traversable))
         g = g.fringe(depth=fringe)
-        g = [self[n.id] for n in g]
+        g = [self[n.id] for n in g if n != concept]
         return g
+        
+    field = semantic_field = taxonomy
+
+#g = Commonsense()
+#print g.nn("party", g.field("animal"))
+#print g.nn("creepy", g.field("animal"))
 
 #### COMMON SENSE DATA #############################################################################
 
 #--- NODEBOX.NET/PERCEPTION ------------------------------------------------------------------------
 
-def download(path="commonsense.csv", threshold=50):
+def download(path=os.path.join(MODULE, "commonsense.csv"), threshold=50):
     """ Downloads common sense data from http://nodebox.net/perception.
         Saves the data as commonsense.csv which can be the input for Commonsense.load().
     """
-    s = urlopen("http://nodebox.net/perception?format=txt&robots=1").read()
+    s = "http://nodebox.net/perception?format=txt&robots=1"
+    s = urlopen(s).read()
     s = s.decode("utf-8")
     # Group relations by author.
     a = {}
@@ -222,19 +251,3 @@ def download(path="commonsense.csv", threshold=50):
     f.close()
 
 #download("commonsense.csv", threshold=50)
-
-
-#g = Commonsense()
-#print g["creepy"].properties
-#print
-
-#from time import time
-#t = time()
-#a = []
-#for w in ("crow", "zombie", "kiss", "diamond", "Earth", "cave", "night", "summer", "sea", "river"):
-#    a.append((g.similarity("death", g[w]), w))
-#print sorted(a)
-#print time()-t
-
-#print g.nearest_neighbors("party", g.taxonomy("animal", 2, 1))     # grasshopper, dog, crocodile, pig
-#print g.nearest_neighbors("professor", g.taxonomy("animal", 2, 1)) # weasel, bee, termite, locust
