@@ -1098,7 +1098,7 @@ BING_LICENSE = api.license["Bing"]
 
 class Bing(SearchEngine):
 
-    def __init__(self, license=None, throttle=1.0, language=None):
+    def __init__(self, license=None, throttle=0.5, language=None):
         SearchEngine.__init__(self, license or BING_LICENSE, throttle, language)
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
