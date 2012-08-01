@@ -1011,7 +1011,7 @@ class Corpus(object):
     relative_entropy = kl = kld = kullback_leibler_divergence
     
     def feature_selection(self, top=100, method=IG, verbose=False):
-        """ Returns the top most distinct (or "original") features (terms), using Kullback-Leibler divergence.
+        """ Returns the top unpredictable ("original") features (terms), using information gain.
             This is a subset of Corpus.terms that can be used to build a Classifier
             that is faster (less features = less matrix columns) but quite efficient.
         """
