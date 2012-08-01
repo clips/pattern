@@ -2685,7 +2685,7 @@ function render(callback, width, height) {
 
 function filter(img, callback) {
     /* Returns a new Image object with the given pixel function applied to it.
-     * The function that takes an array of RGBA-values (base 255) and returns a new array.
+     * The function takes an array of RGBA-values (base 255) and returns a new array.
      */
     var pixels = new Pixels(img);
     pixels.map(callback);
@@ -2913,27 +2913,25 @@ function screen(img1, img2, dx, dy, alpha) {
 
 /*--- IMAGE FILTERS | LIGHT ------------------------------------------------------------------------*/
 
-function glow(img, intensity, amount) {
+function glow(img, intensity, radius) {
     /* Returns the image blended with a blurred version, yielding a glowing effect.
      *  - intensity: the opacity of the blur (0.0-1.0).
-     *  - amount   : the number of times to blur. 
+     *  - radius   : the blur radius. 
      */
-    if (amount === undefined) amount = 1;
     if (intensity === undefined) intensity = 0.5;
-    var b = blur(img, amount);
+    var b = blur(img, radius);
     return blend(ADD, img, b, 0, 0, intensity);
 }
 
-function bloom(img, intensity, amount, threshold) {
+function bloom(img, intensity, radius, threshold) {
     /* Returns the image blended with a blurred brightpass version, yielding a "magic glow" effect.
      *  - intensity: the opacity of the blur (0.0-1.0).
-     *  - amount   : the number of times to blur.
+     *  - radius   : the blur radius.
      *  - threshold: the luminance threshold of pixels that light up.
      */
-    if (amount === undefined) amount = 1;
     if (intensity === undefined) intensity = 0.5;
-    if (threshold === undefined) intensity = 0.3;
-    var b = blur(brightpass(img, threshold), amount);
+    if (threshold === undefined) threshold = 0.3;
+    var b = blur(brightpass(img, threshold), radius);
     return blend(ADD, img, b, 0, 0, intensity);
 }
 
