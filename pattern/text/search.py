@@ -549,6 +549,8 @@ class Constraint:
               word.chunk and word.chunk.string or None, # "army ants"
               word.chunk and " ".join([x or "" for x in word.chunk.lemmata]) or None): # "army ant"
                 if s is not None:
+                    if self.taxonomy.case_sensitive is False:
+                        s = s.lower()
                     # Compare ancestors of the word to each term in Constraint.taxa.
                     for p in self.taxonomy.parents(s, recursive=True):
                         if find(lambda s: p==s, self.taxa): # No wildcards.
@@ -980,3 +982,10 @@ class Group(list):
 #p.stream.close()
 #s = open("_profile").read()
 #print s
+
+from pattern.en import Sentence, parse
+s = Sentence(parse('the big black dog'))
+p = Pattern.fromstring('DT {JJ?+} NN')
+m = p.match(s)
+print m.group(0)
+print m.group(1)
