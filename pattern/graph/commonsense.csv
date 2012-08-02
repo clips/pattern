@@ -38,6 +38,7 @@
 "revolution","is-opposite-of","election","culture",1
 "thick","is-property-of","fog","nature",2
 "expensive","is-property-of","university","science",1
+"scared","is-effect-of","scary","properties",1
 "smooth","is-property-of","dolphin","nature",1
 "diamond","is-related-to","civil war","culture",1
 "expensive","is-property-of","petroleum","culture",1
@@ -158,6 +159,7 @@
 "Colorado","is-a","state","geography",1
 "strong","is-property-of","The Terminator","media",1
 "unpleasant","is-property-of","stench","nature",1
+"shoes","is-part-of","clothing","people",1
 "miracle","is-related-to","Christmas","culture",1
 "Poland","is-part-of","Central Europe","geography",1
 "lonely","is-related-to","nostalgic","properties",1
@@ -317,7 +319,7 @@
 "horse","is-a","mammal","nature",1
 "detailed","is-property-of","explanation","science",1
 "fishing","is-a","water sport","culture",1
-"leaf","is-part-of","plant","nature",1
+"clothing","is-related-to","fashion","people",1
 "Islip","is-part-of","New York","geography",1
 "mother","is-a","female","culture",1
 "Fort Worth","is-a","city","geography",1
@@ -488,6 +490,7 @@
 "fall","is-same-as","autumn","nature",1
 "careful","is-related-to","danger","nature",1
 "ugly","is-property-of","witch","culture",1
+"coward","is-related-to","war","culture",1
 "kitchen","is-part-of","house","culture",1
 "yellow","is-property-of","sunflower","nature",2
 "injured","is-effect-of","injury","nature",1
@@ -678,6 +681,7 @@
 "2Rebels","is-related-to","Un","graphics",1
 "geology","is-part-of","nature","nature",1
 "fluid","is-property-of","school","nature",1
+"striped","is-property-of","bee","nature",1
 "happy","is-property-of","freedom","culture",1
 "Louisiana","is-part-of","Bible Belt","culture",1
 "funny","is-related-to","walrus","nature",1
@@ -947,6 +951,7 @@
 "precise","is-property-of","science","science",1
 "peaceful","is-property-of","New Age","culture",1
 "elegant","is-related-to","natural","properties",1
+"comfortable","is-property-of","clothing","people",1
 "dynamic","is-property-of","perspective","graphics",1
 "unifying","is-property-of","integrator","culture",1
 "loud","is-property-of","pink","graphics",1
@@ -1005,6 +1010,7 @@
 "slow","is-related-to","grassland","nature",1
 "Tulsa","is-a","city","geography",1
 "repetitive","is-property-of","army","culture",1
+"gondola","is-a","boat","culture",1
 "sonar","is-part-of","submarine","culture",1
 "Goa Trance","is-related-to","mushroom","culture",1
 "Pennsylvania","is-part-of","The North-East","geography",1
@@ -1468,6 +1474,7 @@
 "fast","is-opposite-of","slow","properties",1
 "text","is-related-to","verbal communication","culture",1
 "perspective tile","is-a","distortion","graphics",1
+"Osama Bin Laden","is-a","person","people",1
 "lock","is-part-of","door","culture",1
 "loud","is-property-of","cry","nature",1
 "lazy","is-related-to","king","culture",1
@@ -1736,6 +1743,7 @@
 "green","is-related-to","left","culture",1
 "rolling","is-property-of","circle","graphics",1
 "expensive","is-property-of","Mac OS X","culture",1
+"confident","is-property-of","determined","properties",1
 "HAL 9000","is-a","computer","media",1
 "coffee","is-a","fruit","nature",1
 "pillar","is-part-of","church","culture",1
@@ -1956,6 +1964,7 @@
 "wood","is-part-of","tree","nature",1
 "KITT","is-a","car","culture",1
 "trombone","is-a","horn","culture",1
+"9/11","is-related-to","World Trade Center","history",1
 "heavy","is-property-of","barrel","culture",1
 "bra","is-related-to","breast","culture",1
 "dotted","is-property-of","giraffe","nature",1
@@ -1966,6 +1975,7 @@
 "Darwin","is-same-as","Charles Darwin","people",1
 "damaged","is-property-of","battered","properties",1
 "s19","is-a","s51","people",3
+"canal","is-related-to","river","culture",1
 "tundra","is-a","arctic","nature",1
 "green","is-property-of","martian","media",2
 "bank","is-related-to","stock exchange","culture",1
@@ -1993,6 +2003,7 @@
 "beautiful","is-property-of","Cleopatra","history",1
 "Omaha","is-a","city","geography",1
 "confrontation","is-part-of","conflict","emotion",1
+"scared","is-property-of","hostage","culture",1
 "quark","is-part-of","neutron","nature",1
 "basilisk","is-a","lizard","nature",1
 "classy","is-property-of","Sheba","culture",1
@@ -2084,6 +2095,8 @@
 "meat","is-a","animal","nature",1
 "5","is-same-as","five","culture",1
 "Lada","is-a","car","culture",1
+"leaf","is-part-of","plant","nature",1
+"mask","is-related-to","Venice","media",1
 "sister","is-part-of","family","culture",1
 "lonely","is-property-of","grief","emotion",1
 "Surfstation","is-related-to","Fango","graphics",1
@@ -2103,6 +2116,7 @@
 "silent","is-property-of","peek","nature",1
 "bamboo","is-a","plant","nature",1
 "elevator","is-part-of","hotel","culture",1
+"scared","is-same-as","frightened","properties",1
 "cattle","is-related-to","plain","nature",1
 "Leonardo da Vinci","is-a","inventor","history",1
 "11pt","is-same-as","normal","graphics",1
@@ -2149,6 +2163,7 @@
 "wolf","is-related-to","full moon","culture",1
 "punctual","is-related-to","meeting","culture",1
 "protein","is-part-of","cell","nature",1
+"mask","is-related-to","hijacking","properties",1
 "disco","is-part-of","electronica","sound",1
 "Snow White","is-a","fairytale","media",1
 "direct","is-property-of","frank","properties",1
@@ -2333,6 +2348,7 @@
 "dangerous","is-property-of","scary","properties",1
 "stallion","is-a","horse","nature",1
 "Italy","is-related-to","Western Europe","culture",1
+"shoes","is-related-to","woman","people",1
 "intelligent","is-property-of","astronaut","people",1
 "solution","is-effect-of","creativity","culture",1
 "coup","is-opposite-of","election","culture",1
@@ -2528,6 +2544,7 @@
 "Christianity","is-related-to","Bible Belt","culture",1
 "uniform","is-property-of","suit","culture",1
 "silent","is-property-of","sly","properties",1
+"amoeba","is-related-to","cell","nature",1
 "deep","is-opposite-of","shallow","properties",1
 "wait","is-effect-of","queue","culture",1
 "Czech Republic","is-a","country","geography",1
@@ -2786,6 +2803,7 @@
 "problem solving","is-related-to","The Wolf","media",1
 "crime","is-related-to","detective","culture",1
 "rigid","is-property-of","army","culture",1
+"crusade","is-related-to","Christianity","history",1
 "artificial","is-property-of","geography","geography",1
 "warm","is-property-of","cosy","properties",1
 "intimate","is-property-of","dinner","culture",1
@@ -2841,6 +2859,7 @@
 "Donald Duck","is-a","duck","media",1
 "cacao","is-a","fruit","nature",1
 "breakfast","is-related-to","kitchen","culture",1
+"hostage","is-part-of","hijacking","culture",1
 "brunch","is-a","meal","culture",1
 "tourism","is-related-to","Paris","culture",1
 "chaotic","is-property-of","insane","properties",1
@@ -3186,6 +3205,7 @@
 "cooperative","is-property-of","beehive","nature",1
 "big","is-property-of","San Antonio","geography",1
 "painful","is-property-of","shame","properties",1
+"shirt","is-part-of","clothing","people",1
 "economics","is-a","social science","culture",1
 "intense","is-property-of","passionate","properties",1
 "marsupial","is-a","mammal","nature",1
@@ -3319,6 +3339,7 @@
 "oat","is-a","cereal","nature",1
 "asylum","is-related-to","insanity","culture",1
 "dark","is-property-of","Middle Ages","culture",1
+"gondola","is-part-of","Venice","media",1
 "boat","is-a","vehicle","culture",1
 "naughty","is-property-of","paradox","culture",1
 "dirty","is-related-to","sick","properties",1
@@ -3356,6 +3377,7 @@
 "Baton Rouge","is-part-of","Louisiana","geography",1
 "puss","is-same-as","cat","nature",1
 "vagina","is-related-to","reproduction","nature",1
+"vicious","is-property-of","violent","properties",1
 "negative","is-property-of","critical","properties",1
 "sundown","is-same-as","sunset","nature",1
 "sympathy","is-part-of","funeral","culture",1
@@ -3484,9 +3506,11 @@
 "fjord","is-related-to","Norway","geography",1
 "fuel","is-related-to","rocket","science",1
 "high-visibility clothing","is-related-to","construction","culture",1
+"9/11","is-related-to","hijacking","history",1
 "cliché","is-property-of","twirl","graphics",1
 "kinkajou","is-a","raccoon","nature",1
 "The Hitchhikers Guide to the Galaxy","is-part-of","science fiction","media",1
+"World Trade Center","is-a","skyscraper","culture",1
 "bread","is-a","food","culture",1
 "irritating","is-related-to","boring","properties",1
 "green","is-related-to","tank","culture",1
@@ -3616,6 +3640,7 @@
 "complex","is-property-of","chess","culture",1
 "fresh","is-opposite-of","stale","properties",1
 "Arkansas","is-part-of","The South","geography",1
+"Islam","is-related-to","Jihad","history",1
 "airplane","is-related-to","bird","culture",1
 "labyrinth","is-related-to","maze","culture",1
 "creepy","is-property-of","ghost","culture",1
@@ -3851,6 +3876,7 @@
 "knee","is-part-of","leg","nature",1
 "s67","is-a","s100","culture",1
 "s100","is-a","s101b","people",1
+"gondola","is-related-to","romance","emotion",1
 "sled","is-related-to","snow","culture",1
 "Pontiac","is-a","car","culture",1
 "structured","is-property-of","web","nature",1
@@ -3893,6 +3919,7 @@
 "Rome","is-related-to","Classical Antiquity","history",1
 "size","is-related-to","format","graphics",1
 "Twitter","is-related-to","Facebook","media",1
+"knight","is-part-of","crusade","history",1
 "powerful","is-property-of","deity","culture",1
 "robust","is-property-of","BMW","culture",1
 "nervous","is-opposite-of","calm","properties",1
@@ -4016,6 +4043,7 @@
 "A3","is-a","format","graphics",1
 "intelligence","is-property-of","dolphin","culture",1
 "White Rabbit","is-part-of","Alice in Wonderland","media",1
+"suicide attack","is-related-to","terrorism","culture",1
 "All Saint\'s Day","is-a","celebration","culture",1
 "gale","is-a","wind","nature",1
 "rough","is-property-of","wrinkly","properties",1
@@ -4199,6 +4227,7 @@
 "Akzidenz-Grotesk","is-a","sans serif","graphics",1
 "wounded","is-related-to","soldier","culture",1
 "stupid","is-a","negative","properties",1
+"bloody","is-property-of","violent","properties",1
 "bush","is-a","plant","nature",1
 "sharp","is-property-of","reef","nature",1
 "mental illness","is-related-to","psychology","culture",1
@@ -4283,6 +4312,7 @@
 "Nihongo","is-same-as","Japanese","culture",1
 "transparent","is-property-of","gem","nature",1
 "angry","is-property-of","glare","emotion",1
+"violent","is-property-of","Al-Qaeda","culture",1
 "advertisement","is-part-of","Times Square","culture",1
 "blue","is-property-of","RGB","graphics",1
 "s4","is-a","s31a","people",1
@@ -4291,6 +4321,7 @@
 "tusk","is-related-to","boar","nature",1
 "memory","is-part-of","cognition","nature",1
 "technical","is-related-to","publishing","culture",1
+"Al-Qaeda","is-related-to","terrorism","media",1
 "green","is-related-to","venom","nature",1
 "Jack in the Green","is-part-of","paganism","culture",1
 "death","is-related-to","war","culture",1
@@ -4298,6 +4329,7 @@
 "hard","is-property-of","gourd","nature",1
 "Virginia","is-part-of","The South","geography",1
 "interesting","is-property-of","research","culture",1
+"holy","is-property-of","Jihad","history",1
 "Edda","is-a","book","culture",1
 "facial expression","is-part-of","communication","emotion",1
 "Fort Wayne","is-part-of","Indiana","geography",1
@@ -4385,6 +4417,7 @@
 "classy","is-property-of","architecture","culture",1
 "baby","is-part-of","family","culture",1
 "shallow","is-property-of","grave","culture",2
+"s9","is-a","s19","culture",2
 "Rhode Island","is-part-of","The North-East","geography",1
 "white space","is-same-as","whitespace","graphics",1
 "Nebraska","is-part-of","The Midwest","geography",1
@@ -4527,6 +4560,7 @@
 "litchi","is-a","stone fruit","nature",1
 "school","is-related-to","boring","culture",1
 "boxer","is-related-to","knock out","media",1
+"Osama Bin Laden","is-related-to","9/11","culture",1
 "atheism","is-opposite-of","religion","culture",1
 "dogwood","is-a","deciduous","nature",1
 "Akron","is-part-of","Ohio","geography",1
@@ -4646,6 +4680,7 @@
 "dragon","is-a","mythical creature","culture",1
 "cosmos","is-a","system","nature",1
 "fast","is-property-of","kung fu","culture",1
+"cowardly","is-property-of","coward","properties",1
 "eagle","is-related-to","United States","culture",1
 "tragic","is-property-of","murder","culture",1
 "peaceful","is-property-of","dawn","nature",1
@@ -4671,6 +4706,7 @@
 "quick","is-property-of","jump","nature",2
 "organism","is-a","system","nature",1
 "okapi","is-a","mammal","nature",1
+"vicious","is-property-of","crusade","history",1
 "slow","is-property-of","loiter","culture",1
 "alcohol","is-a","drug","culture",1
 "magenta","is-opposite-of","green","graphics",1
@@ -4725,6 +4761,7 @@
 "petal","is-part-of","flower","nature",1
 "round","is-property-of","pillar","culture",1
 "cannon ball","is-related-to","cannon","history",1
+"airplane","is-related-to","hijacking","culture",1
 "Google","is-a","website","media",1
 "Pierre Bézier","is-a","person","people",1
 "flower","is-part-of","plant","nature",1
@@ -4933,6 +4970,7 @@
 "cathedral","is-related-to","Middle Ages","culture",1
 "queen","is-part-of","chess","culture",1
 "Jonathan Barnbrook","is-a","person","people",1
+"suit","is-part-of","clothing","people",1
 "Baltimore","is-part-of","Maryland","geography",1
 "blues","is-a","music","sound",1
 "Trade Gothic","is-a","sans serif","graphics",1
@@ -5043,6 +5081,7 @@
 "odd","is-property-of","triangle","properties",1
 "clash","is-effect-of","cymbal","sound",1
 "creative","is-property-of","art","culture",1
+"bomb","is-related-to","hijacking","culture",1
 "red","is-property-of","infrared","culture",1
 "structured","is-property-of","research","culture",2
 "consciousness","is-related-to","mirror","nature",1
@@ -5091,10 +5130,12 @@
 "pixelated","is-a","display","graphics",1
 "rolling","is-property-of","wave","nature",1
 "spy","is-related-to","sunglasses","media",1
+"WTC","is-same-as","World Trade Center","culture",1
 "azure","is-a","blue","graphics",2
 "clumsy","is-property-of","nerdy","properties",1
 "Alfred Hitchcock","is-a","person","people",1
 "Times Square","is-part-of","New York","geography",1
+"Osama Bin Laden","is-part-of","Al-Qaeda","history",1
 "advertising","is-related-to","dog and pony show","culture",1
 "Marcel Duchamp","is-part-of","Dada","history",1
 "faith","is-opposite-of","reason","culture",1
@@ -5111,6 +5152,7 @@
 "long","is-related-to","slow","properties",1
 "wet","is-related-to","juicy","properties",1
 "Ukraine","is-a","country","geography",1
+"striped","is-property-of","tiger","nature",1
 "eagle","is-related-to","Ancient Rome","history",1
 "head","is-part-of","skeleton","nature",1
 "fat","is-property-of","whale","nature",1
@@ -5195,6 +5237,7 @@
 "annoying","is-related-to","stubborn","properties",1
 "slow","is-property-of","lazy","properties",1
 "Airwolf","is-a","helicopter","media",1
+"jeans","is-part-of","clothing","people",1
 "evil","is-property-of","Satan","culture",1
 "hot","is-property-of","microwave","culture",1
 "artificial","is-property-of","experiment","culture",1
@@ -5773,6 +5816,7 @@
 "hunt","is-related-to","predator","nature",1
 "trot","is-a","gait","nature",1
 "small talk","is-a","conversation","people",1
+"painful","is-related-to","violent","properties",1
 "cat","is-related-to","fish","culture",1
 "disease","is-related-to","hospital","people",1
 "Atlanta","is-a","city","geography",1
@@ -5917,6 +5961,7 @@
 "18pt","is-same-as","large","graphics",1
 "Times","is-a","serif","graphics",1
 "iceberg","is-a","vehicle","culture",1
+"striped","is-property-of","shirt","culture",1
 "Digitus Camel","is-property-of","Salena Larsen","people",2
 "2Rebels","is-a","type foundry","graphics",1
 "blue","is-opposite-of","yellow","graphics",1
@@ -5944,6 +5989,7 @@
 "playful","is-property-of","pink","graphics",1
 "hectic","is-related-to","steam engine","culture",1
 "Islam","is-related-to","Middle East","culture",1
+"Venice","is-a","city","geography",1
 "Vulcan","is-part-of","Star Trek","media",1
 "American","is-property-of","pickup truck","culture",1
 "dark","is-property-of","brown","graphics",2
@@ -6288,6 +6334,7 @@
 "Nicola Tesla","is-a","inventor","people",1
 "rain","is-part-of","weather","nature",1
 "crop","is-related-to","farm","culture",1
+"9/11","is-related-to","suicide attack","history",1
 "dangerous","is-property-of","ridge","nature",1
 "passionate","is-property-of","orchid","nature",1
 "history","is-a","social science","culture",1
@@ -6501,7 +6548,7 @@
 "stiff","is-property-of","John Cleese","media",1
 "Cairo","is-part-of","Egypt","geography",1
 "police","is-related-to","security","culture",1
-"s9","is-a","s19","culture",2
+"Jihad","is-related-to","Al-Qaeda","history",1
 "orchid","is-a","flower","nature",1
 "Trixie","is-a","typewriter","graphics",1
 "loud","is-property-of","heavy metal","sound",1
@@ -6613,6 +6660,7 @@
 "January","is-part-of","winter","culture",1
 "natural science","is-a","science","culture",1
 "Herzegovina","is-part-of","Southern Europe","geography",1
+"clothing","is-related-to","society","people",1
 "START","is-a","s5","culture",1
 "mathematics","is-a","formal science","culture",1
 "quick","is-property-of","breakfast","culture",1
@@ -6709,6 +6757,7 @@
 "intense","is-property-of","fierce","properties",1
 "disgust","is-a","emotion","emotion",1
 "monkey","is-a","primate","nature",2
+"menacing","is-property-of","coyote","nature",1
 "protein","is-part-of","chromosome","nature",1
 "electromagnetic radiation","is-a","radiation","nature",1
 "autumn","is-related-to","deciduous","nature",1
@@ -6787,6 +6836,7 @@
 "flying saucer","is-same-as","UFO","culture",1
 "Denmark","is-part-of","Nordic region","geography",1
 "leather","is-a","skin","nature",1
+"menacing","is-property-of","hijacking","culture",1
 "Calvin & Hobbes","is-a","comic strip","media",1
 "camel","is-a","mammal","nature",1
 "wet","is-property-of","paint","culture",2
@@ -6843,6 +6893,7 @@
 "Little Red Riding Hood","is-related-to","wolf","culture",1
 "Ku Klux Klan","is-related-to","racism","culture",1
 "mammal","is-a","animal","nature",1
+"shoes","is-related-to","fashion","people",1
 "Iceland","is-a","country","geography",1
 "black","is-related-to","boot","culture",1
 "Moldova","is-part-of","Eastern Europe","geography",1
@@ -6886,6 +6937,7 @@
 "comet","is-part-of","galaxy","nature",1
 "Scottsdale","is-part-of","Arizona","geography",1
 "game theory","is-related-to","economics","culture",1
+"determined","is-related-to","menacing","properties",1
 "shoal","is-a","fish","nature",1
 "structured","is-property-of","grid","graphics",1
 "mistake","is-related-to","doubt","emotion",1
@@ -6909,6 +6961,7 @@
 "Red Square","is-part-of","Moscow","geography",1
 "leaf","is-part-of","tree","nature",1
 "Earth","is-a","planet","nature",2
+"hijacking","is-related-to","terrorism","culture",1
 "crop","is-part-of","field","culture",1
 "colorful","is-property-of","Goa Trance","sound",1
 "Andorra","is-part-of","Southern Europe","geography",1
@@ -7074,6 +7127,7 @@
 "ink","is-related-to","newspaper","media",1
 "clean","is-related-to","clear","properties",1
 "difficult","is-property-of","challenge","culture",1
+"canal","is-part-of","Venice","geography",1
 "brightness","is-property-of","HSB","graphics",1
 "big","is-property-of","dinosaur","nature",1
 "concrete","is-related-to","structure","culture",1
@@ -7388,6 +7442,7 @@
 "physics","is-a","natural science","culture",1
 "Darwin","is-related-to","evolution","people",1
 "repetitive","is-same-as","monotonous","properties",1
+"calm","is-property-of","determined","properties",1
 "white","is-property-of","cow","nature",1
 "Slovenia","is-a","country","geography",1
 "slow","is-related-to","dinosaur","nature",1
@@ -7435,6 +7490,7 @@
 "feminine","is-property-of","girl","nature",1
 "menstrual cycle","is-related-to","reproduction","culture",1
 "sky","is-part-of","landscape","nature",1
+"hat","is-part-of","clothing","people",1
 "Svalbard","is-part-of","Norway","geography",1
 "delicate","is-property-of","Garamond","graphics",1
 "s66","is-a","s68","people",3
@@ -7479,6 +7535,7 @@
 "chartreuse","is-related-to","high-visibility clothing","culture",1
 "soft","is-property-of","social science","culture",1
 "fast","is-property-of","Duracell Bunny","media",1
+"clothing","is-related-to","hygiene","people",1
 "cliché","is-property-of","geranium","nature",1
 "s102","is-a","s200","people",2
 "cold","is-property-of","blue","graphics",1
@@ -7649,6 +7706,7 @@
 "organic","is-opposite-of","structured","properties",1
 "sharp","is-property-of","pungent","properties",1
 "Arkansas","is-a","state","geography",1
+"crusade","is-related-to","Jihad","history",1
 "angular","is-property-of","Cubism","culture",1
 "network","is-related-to","web","culture",1
 "shopping","is-related-to","mall","culture",1
@@ -7755,6 +7813,7 @@
 "Bakersfield","is-part-of","California","geography",1
 "software","is-related-to","computer","media",1
 "cold","is-related-to","swamp","nature",1
+"mask","is-a","carnival","culture",1
 "deep","is-related-to","lake","nature",1
 "corner","is-part-of","rectangle","graphics",1
 "colorful","is-property-of","nebula","nature",1
@@ -7799,6 +7858,7 @@
 "swarm","is-related-to","flock","nature",1
 "Portugal","is-part-of","Southern Europe","geography",1
 "big","is-property-of","Houston","geography",1
+"beautiful","is-property-of","Venice","culture",1
 "proud","is-property-of","rugby","culture",1
 "aspirin","is-a","medication","science",1
 "West Virginia","is-a","state","geography",1
@@ -7817,6 +7877,7 @@
 "dull","is-property-of","grey","graphics",7
 "beautiful","is-related-to","pretty","properties",1
 "shopping","is-related-to","shoes","culture",1
+"mask","is-related-to","face","culture",1
 "dull","is-property-of","predictable","properties",1
 "sun","is-related-to","time","nature",1
 "solid","is-property-of","rectangle","culture",1
@@ -7835,6 +7896,7 @@
 "creepy","is-related-to","spooky","properties",1
 "blue","is-property-of","sapphire","nature",1
 "mysterious","is-property-of","UFO","culture",1
+"Jerusalem","is-related-to","crusade","history",1
 "chipmunk","is-a","rodent","nature",1
 "cave","is-related-to","dragon","culture",1
 "big","is-property-of","massive","properties",1
@@ -8401,10 +8463,12 @@
 "lily","is-a","flower","nature",1
 "Wingdings","is-a","symbol","graphics",1
 "rigid","is-related-to","slow","properties",1
+"scared","is-related-to","fear","nature",1
 "naive","is-related-to","optimistic","properties",1
 "mysterious","is-related-to","old","properties",1
 "passionate","is-property-of","Norse mythology","culture",1
 "BDSM","is-part-of","sex","culture",1
+"Jihad","is-a","war","history",1
 "white","is-property-of","Christmas","culture",1
 "cable","is-part-of","clutter","culture",1
 "pecan","is-a","walnut","nature",1
@@ -8522,6 +8586,7 @@
 "risky","is-related-to","dangerous","properties",1
 "s70","is-a","s69b","people",1
 "big","is-property-of","Phoenix","geography",1
+"scared","is-property-of","coward","culture",1
 "horse","is-related-to","carousel","culture",1
 "s51","is-a","s57","people",3
 "Pan","is-a","satyr","culture",1
@@ -8640,6 +8705,7 @@
 "negative","is-property-of","gossip","people",1
 "fawn","is-a","baby","nature",1
 "3","is-a","number","culture",1
+"simple","is-property-of","amoeba","nature",1
 "Sparta","is-related-to","Ancient Greece","history",1
 "egg","is-related-to","chicken","nature",1
 "white","is-property-of","wine","culture",1
