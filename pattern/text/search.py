@@ -982,10 +982,3 @@ class Group(list):
 #p.stream.close()
 #s = open("_profile").read()
 #print s
-
-from pattern.en import Sentence, parse
-s = Sentence(parse('the big black dog'))
-p = Pattern.fromstring('DT {JJ?+} NN')
-m = p.match(s)
-print m.group(0)
-print m.group(1)
