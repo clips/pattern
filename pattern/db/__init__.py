@@ -1554,9 +1554,12 @@ class CSV(list):
         if headers and self.fields is not None:
             w.writerows([[csv_header_encode(name, type) for name, type in self.fields]])
         w.writerows([[encode_utf8(encoder(v)) for v in row] for row in self])
+        s = s.getvalue()
+        s = s.strip()
+        s = re.sub("([^\"]|^)\"None\"", "\\1None", s)
         f = open(path, "wb")
         f.write(BOM_UTF8)
-        f.write(s.getvalue().strip())
+        f.write(s)
         f.close()
 
     @classmethod
@@ -1581,8 +1584,8 @@ class CSV(list):
         else:
             fields = []
         if not fields:
-            # Cast fields using the given decoder (by default, all strings).
-            data = [[decoder(decode_utf8(v)) for v in row] for row in data]
+            # Cast fields using the given decoder (by default, all strings + None).
+            data = [[decoder(decode_utf8(v) if v != "None" else None) for v in row] for row in data]
         else:
             # Cast fields to their defined field type (STRING, INTEGER, ...)
             for i, row in enumerate(data):
