@@ -1531,9 +1531,12 @@ class CSV(list):
         self.__dict__["fields"] = fields # List of (name, type)-tuples, with type = STRING, INTEGER, etc.
         self.extend(rows)
         
-    @property
-    def headers(self):
+    def _set_headers(self, v):
+        self.__dict__["fields"] = v
+    def _get_headers(self):
         return self.__dict__["fields"]
+        
+    headers = property(_get_headers, _set_headers)
 
     def save(self, path, separator=",", encoder=lambda v: v, headers=False, **kwargs):
         """ Exports the table to a unicode text file at the given path.
@@ -1613,6 +1616,9 @@ class Datasheet(CSV):
         """ A matrix of rows and columns, where each row and column can be retrieved as a list.
             Values can be any kind of Python object.
         """
+        # NumPy array, convert to list of int/float/str/bool.
+        if rows.__class__.__name__ == "ndarray":
+            rows = rows.tolist()
         self.__dict__["_rows"] = DatasheetRows(self)
         self.__dict__["_columns"] = DatasheetColumns(self)
         self.__dict__["_m"] = 0 # Number of columns per row, see Datasheet.insert().
@@ -1659,6 +1665,9 @@ class Datasheet(CSV):
             return
         if k == "columns":
             self._set_columns(v)
+            return
+        if k == "headers":
+            self._set_headers(v)
             return
         for i, f in enumerate(f[0] for f in self.__dict__["fields"] or []):
             if f == k: 
@@ -1833,6 +1842,15 @@ class Datasheet(CSV):
             return json([dict((f[0], row[i]) for i, f in enumerate(self.fields)) for row in self])
         else:
             return json(self)
+            
+    @property
+    def array(self):
+        """ Returns a NumPy array. 
+            Arrays must have elements of the same type, and rows of equal size.
+        """
+        import numpy
+        return numpy.array(self)
+        
 
 def flip(datasheet):
     """ Returns a new datasheet with rows for columns and columns for rows.
