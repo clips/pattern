@@ -68,6 +68,8 @@ def instance(review):                     # "Great book!"
 print "training..."
 for score, review in data[:1000]:
     classifier.train(instance(review), type=int(score) > 0)
+#classifier.save("sentiment-nl-svm.p")
+#classifier = SVM.load("sentiment-nl-svm.p")
 
 # Use 500 random instances as test.
 
@@ -79,7 +81,10 @@ for score, review in data[1000:1500]:
     n += 1
 
 # The overall accuracy is around 82%.
-# Careful: to get a reliable score you need to calculate precision and recall:
+# A Naieve Bayes classifier has about 65% accuracy.
+# A KNN classifier has about 79% accuracy.
+# Careful: to get a reliable score you need to calculate precision and recall,
+# study the documentation at:
 # http://www.clips.ua.ac.be/pages/pattern-metrics#accuracy
 
 print float(i) / n
