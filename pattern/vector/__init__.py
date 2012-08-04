@@ -1808,9 +1808,12 @@ class SVM(Classifier):
         return self._libsvm_predict(document)
             
     def save(self, path):
+        tmp = (self._libsvm, self._model)
         self._libsvm = None
         self._model  = None # Retrains after Classifier.load().
         Classifier.save(self, path)
+        self._libsvm, \
+        self._model = tmp
         
     @classmethod
     def load(cls, path):
