@@ -790,8 +790,8 @@ var Graph = Class.extend({
             // until the given number of frames has elapsed.
             // Nodes can be dragged around (this resets the frame counter).
             // Transparent background, shadows enabled.
-            g._ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            g._ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            g._ctx.clearRect(0, 0, g.canvas.width, g.canvas.height);
+            g._ctx.clearRect(0, 0, g.canvas.width, g.canvas.height);
             g._ctx.shadowColor = "rgba(0,0,0,"+SHADOW+")";
             g._ctx.shadowBlur = 8;
             g._ctx.shadowOffsetX = 6;
