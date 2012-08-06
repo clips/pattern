@@ -1,4 +1,4 @@
-#### PATTERN | COMMON SENSE ########################################################################
+#### PATTERN | COMMONSENSE #########################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
@@ -20,7 +20,7 @@ try:
 except:
     MODULE = ""
 
-#### COMMON SENSE SEMANTIC NETWORK #################################################################
+#### COMMONSENSE SEMANTIC NETWORK ##################################################################
 
 #--- CONCEPT ---------------------------------------------------------------------------------------
 
@@ -77,12 +77,12 @@ COMMONALITY = (
     lambda edge: 1 - int(edge.context == "properties" and \
                          edge.type != "is-opposite-of"))
 
-#--- COMMON SENSE ----------------------------------------------------------------------------------
+#--- COMMONSENSE -----------------------------------------------------------------------------------
 
 class Commonsense(Graph):
     
     def __init__(self, data=os.path.join(MODULE, "commonsense.csv"), **kwargs):
-        """ A semantic network of common sense, using different relation types:
+        """ A semantic network of commonsense, using different relation types:
             - is-a,
             - is-part-of,
             - is-opposite-of,
@@ -199,12 +199,12 @@ class Commonsense(Graph):
 #print g.nn("party", g.field("animal"))
 #print g.nn("creepy", g.field("animal"))
 
-#### COMMON SENSE DATA #############################################################################
+#### COMMONSENSE DATA ##############################################################################
 
 #--- NODEBOX.NET/PERCEPTION ------------------------------------------------------------------------
 
 def download(path=os.path.join(MODULE, "commonsense.csv"), threshold=50):
-    """ Downloads common sense data from http://nodebox.net/perception.
+    """ Downloads commonsense data from http://nodebox.net/perception.
         Saves the data as commonsense.csv which can be the input for Commonsense.load().
     """
     s = "http://nodebox.net/perception?format=txt&robots=1"
