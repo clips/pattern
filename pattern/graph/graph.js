@@ -790,18 +790,17 @@ var Graph = Class.extend({
             // until the given number of frames has elapsed.
             // Nodes can be dragged around (this resets the frame counter).
             // Transparent background, shadows enabled.
-            g._ctx.clearRect(0, 0, g.canvas.width, g.canvas.height);
-            g._ctx.clearRect(0, 0, g.canvas.width, g.canvas.height);
-            g._ctx.shadowColor = "rgba(0,0,0,"+SHADOW+")";
-            g._ctx.shadowBlur = 8;
-            g._ctx.shadowOffsetX = 6;
-            g._ctx.shadowOffsetY = 6;
-            g.drag(mouse);
             if (g._i < g._frames) {
-                g._i += 1;
+                g._ctx.clearRect(0, 0, g.canvas.width, g.canvas.height);
+                g._ctx.shadowColor = "rgba(0,0,0,"+SHADOW+")";
+                g._ctx.shadowBlur = 8;
+                g._ctx.shadowOffsetX = 6;
+                g._ctx.shadowOffsetY = 6;
                 g.update(a.ipf);
                 g.draw(a.weighted, a.directed);
+                g._i += 1;
             }
+            g.drag(mouse);
         }, 1000/a.fps, this);
     },
     stop: function() {
