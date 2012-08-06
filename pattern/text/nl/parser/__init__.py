@@ -43,9 +43,13 @@ _tokenize = tokenize
 try:
     from nl.inflect import singularize, conjugate, predicative
 except:
-    singularize = lambda w: w
-    conjugate = lambda w,t: w
-    predicative = lambda w: w
+    try:
+        sys.path.append(os.path.join(MODULE, ".."))
+        from inflect import singularize, conjugate, predicative
+    except:
+        singularize = lambda w: w
+        conjugate   = lambda w, t: w
+        predicative = lambda w: w
 
 def lemma(word, pos="NN"):
     if pos == "NNS":
@@ -141,3 +145,4 @@ def tag(s, tokenize=True, encoding="utf-8"):
 
 if __name__ == "__main__":
     commandline(parse)
+    
