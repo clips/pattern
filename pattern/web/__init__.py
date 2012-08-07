@@ -509,13 +509,7 @@ def find_urls(string, unique=True):
     for p in (RE_URL1, RE_URL2, RE_URL3):
         for m in p.finditer(" %s " % string):
             s = m.group(1)
-            i = m.start()
-            if s.endswith(("'", "\"", ">")) and i >= 7 and string[i-7:i-2].lower() == "href=":
-                # For <a href="http://google.com">,
-                # the link is http://google.com and not http://google.com">
-                s = s.rstrip("\"'>")
-            #if not s.lower().startswith("http"):
-            #    s = "http://" + s
+            s = s.split("\">")[0].split("'>")[0] # google.com">Google => google.com
             if not unique or s not in matches:
                 matches.append(s)
     return matches

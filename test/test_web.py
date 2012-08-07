@@ -265,7 +265,7 @@ class TestPlaintext(unittest.TestCase):
             self.assertEqual(web.find_urls("("+url+".")[0], url)
         # Assert case-insensitive and <a href="">.
         # Assert several matches in string.
-        self.assertEqual(web.find_urls("<a href=\"HTTP://domain.net\">")[0], "HTTP://domain.net")
+        self.assertEqual(web.find_urls("http://domain.net\">domain")[0], "http://domain.net")
         self.assertEqual(web.find_urls("domain.com, domain.net"), ["domain.com", "domain.net"])
         print "pattern.web.find_urls()"
         
