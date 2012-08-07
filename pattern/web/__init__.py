@@ -487,14 +487,17 @@ class URL:
 
 #--- FIND URLs -------------------------------------------------------------------------------------
 
-RE_URL_HEAD = r"[\s|\(\>]"                                         # Preceded by space, parenthesis or HTML tag.
-RE_URL_TAIL = r"[%s]*[\s|\<]" % "|".join(".,)")                    # Followed by space, punctuation or HTML tag.
+RE_URL_PUNCTUATION = ("\"'{(>", "\"'.,;)}")
+RE_URL_HEAD = r"[%s|\[|\s]" % "|".join(RE_URL_PUNCTUATION[0])      # Preceded by space, parenthesis or HTML tag.
+RE_URL_TAIL = r"[%s|\]]*[\s|\<]" % "|".join(RE_URL_PUNCTUATION[1]) # Followed by space, punctuation or HTML tag.
 RE_URL1 = r"(https?://.*?)" + RE_URL_TAIL                          # Starts with http:// or https://
 RE_URL2 = RE_URL_HEAD + r"(www\..*?\..*?)" + RE_URL_TAIL           # Starts with www.
 RE_URL3 = RE_URL_HEAD + r"([\w|-]*?\.(com|net|org))" + RE_URL_TAIL # Ends with .com, .net, .org
 
-RE_URL1, RE_URL2, RE_URL3 = \
-    re.compile(RE_URL1, re.I), re.compile(RE_URL2, re.I), re.compile(RE_URL3, re.I)
+RE_URL1, RE_URL2, RE_URL3 = (
+    re.compile(RE_URL1, re.I), 
+    re.compile(RE_URL2, re.I), 
+    re.compile(RE_URL3, re.I))
 
 def find_urls(string, unique=True):
     """ Returns a list of URLs parsed from the string.

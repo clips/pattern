@@ -263,8 +263,10 @@ class TestPlaintext(unittest.TestCase):
           "domain.org",
           "domain.net"):
             self.assertEqual(web.find_urls("("+url+".")[0], url)
-        # Assert case-insensitive and <a href="">.
+        # Assert case-insensitive, punctuation and <a href="">.
         # Assert several matches in string.
+        self.assertEqual(web.find_urls("HTTP://domain.net")[0], "HTTP://domain.net")
+        self.assertEqual(web.find_urls("http://domain.net),};")[0], "http://domain.net")
         self.assertEqual(web.find_urls("http://domain.net\">domain")[0], "http://domain.net")
         self.assertEqual(web.find_urls("domain.com, domain.net"), ["domain.com", "domain.net"])
         print "pattern.web.find_urls()"
@@ -989,7 +991,7 @@ class TestSpider(unittest.TestCase):
 
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCache))
+    uite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCache))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestURL))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPlaintext))
