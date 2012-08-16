@@ -44,11 +44,9 @@ typedef int Py_ssize_t;
 #define PyScanner_CheckExact(op) (Py_TYPE(op) == &PyScannerType)
 #define PyEncoder_Check(op) PyObject_TypeCheck(op, &PyEncoderType)
 #define PyEncoder_CheckExact(op) (Py_TYPE(op) == &PyEncoderType)
-#define Decimal_Check(op) (PyObject_TypeCheck(op, DecimalTypePtr))
 
 static PyTypeObject PyScannerType;
 static PyTypeObject PyEncoderType;
-static PyTypeObject *DecimalTypePtr;
 
 typedef struct _PyScannerObject {
     PyObject_HEAD
@@ -84,11 +82,14 @@ typedef struct _PyEncoderObject {
     PyObject *sort_keys;
     PyObject *skipkeys;
     PyObject *key_memo;
+    PyObject *Decimal;
     int fast_encode;
     int allow_nan;
     int use_decimal;
     int namedtuple_as_object;
     int tuple_as_array;
+    int bigint_as_string;
+    PyObject *item_sort_key;
 } PyEncoderObject;
 
 static PyMemberDef encoder_members[] = {
@@ -101,8 +102,12 @@ static PyMemberDef encoder_members[] = {
     {"sort_keys", T_OBJECT, offsetof(PyEncoderObject, sort_keys), READONLY, "sort_keys"},
     {"skipkeys", T_OBJECT, offsetof(PyEncoderObject, skipkeys), READONLY, "skipkeys"},
     {"key_memo", T_OBJECT, offsetof(PyEncoderObject, key_memo), READONLY, "key_memo"},
+    {"item_sort_key", T_OBJECT, offsetof(PyEncoderObject, item_sort_key), READONLY, "item_sort_key"},
     {NULL}
 };
+
+static PyObject *
+maybe_quote_bigint(PyObject *encoded, PyObject *obj);
 
 static Py_ssize_t
 ascii_escape_char(Py_UNICODE c, char *output, Py_ssize_t chars);
@@ -166,10 +171,47 @@ _is_namedtuple(PyObject *obj);
 #define MAX_EXPANSION MIN_EXPANSION
 #endif
 
+static PyObject *
+maybe_quote_bigint(PyObject *encoded, PyObject *obj)
+{
+    static PyObject *big_long = NULL;
+    static PyObject *small_long = NULL;
+    if (big_long == NULL) {
+        big_long = PyLong_FromLongLong(1LL << 53);
+        if (big_long == NULL) {
+            Py_DECREF(encoded);
+            return NULL;
+        }
+    }
+    if (small_long == NULL) {
+        small_long = PyLong_FromLongLong(-1LL << 53);
+        if (small_long == NULL) {
+            Py_DECREF(encoded);
+            return NULL;
+        }
+    }
+    if (PyObject_RichCompareBool(obj, big_long, Py_GE) ||
+        PyObject_RichCompareBool(obj, small_long, Py_LE)) {
+        PyObject* quoted = PyString_FromFormat("\"%s\"",
+                                               PyString_AsString(encoded));
+        Py_DECREF(encoded);
+        encoded = quoted;
+    }
+    return encoded;
+}
+
 static int
 _is_namedtuple(PyObject *obj)
 {
-    return PyTuple_Check(obj) && PyObject_HasAttrString(obj, "_asdict");
+    int rval = 0;
+    PyObject *_asdict = PyObject_GetAttrString(obj, "_asdict");
+    if (_asdict == NULL) {
+        PyErr_Clear();
+        return 0;
+    }
+    rval = PyCallable_Check(_asdict);
+    Py_DECREF(_asdict);
+    return rval;
 }
 
 static int
@@ -380,7 +422,7 @@ raise_errmsg(char *msg, PyObject *s, Py_ssize_t end)
     static PyObject *JSONDecodeError = NULL;
     PyObject *exc;
     if (JSONDecodeError == NULL) {
-        PyObject *decoder = PyImport_ImportModule("simplejson.decoder");
+        PyObject *decoder = PyImport_ImportModule("decoder");
         if (decoder == NULL)
             return;
         JSONDecodeError = PyObject_GetAttrString(decoder, "JSONDecodeError");
@@ -1016,7 +1058,9 @@ _parse_object_str(PyScannerObject *s, PyObject *pystr, Py_ssize_t idx, Py_ssize_
 
             /* read key */
             if (str[idx] != '"') {
-                raise_errmsg("Expecting property name", pystr, idx);
+                raise_errmsg(
+                    "Expecting property name enclosed in double quotes",
+                    pystr, idx);
                 goto bail;
             }
             key = scanstring_str(pystr, idx + 1, encoding, strict, &next_idx);
@@ -1037,7 +1081,7 @@ _parse_object_str(PyScannerObject *s, PyObject *pystr, Py_ssize_t idx, Py_ssize_
             /* skip whitespace between key and : delimiter, read :, skip whitespace */
             while (idx <= end_idx && IS_WHITESPACE(str[idx])) idx++;
             if (idx > end_idx || str[idx] != ':') {
-                raise_errmsg("Expecting : delimiter", pystr, idx);
+                raise_errmsg("Expecting ':' delimiter", pystr, idx);
                 goto bail;
             }
             idx++;
@@ -1077,7 +1121,7 @@ _parse_object_str(PyScannerObject *s, PyObject *pystr, Py_ssize_t idx, Py_ssize_
                 break;
             }
             else if (str[idx] != ',') {
-                raise_errmsg("Expecting , delimiter", pystr, idx);
+                raise_errmsg("Expecting ',' delimiter", pystr, idx);
                 goto bail;
             }
             idx++;
@@ -1151,7 +1195,7 @@ _parse_object_unicode(PyScannerObject *s, PyObject *pystr, Py_ssize_t idx, Py_ss
         if (rval == NULL)
             return NULL;
     }
-    
+
     /* skip whitespace after { */
     while (idx <= end_idx && IS_WHITESPACE(str[idx])) idx++;
 
@@ -1162,7 +1206,9 @@ _parse_object_unicode(PyScannerObject *s, PyObject *pystr, Py_ssize_t idx, Py_ss
 
             /* read key */
             if (str[idx] != '"') {
-                raise_errmsg("Expecting property name", pystr, idx);
+                raise_errmsg(
+                    "Expecting property name enclosed in double quotes",
+                    pystr, idx);
                 goto bail;
             }
             key = scanstring_unicode(pystr, idx + 1, strict, &next_idx);
@@ -1180,10 +1226,11 @@ _parse_object_unicode(PyScannerObject *s, PyObject *pystr, Py_ssize_t idx, Py_ss
             }
             idx = next_idx;
 
-            /* skip whitespace between key and : delimiter, read :, skip whitespace */
+            /* skip whitespace between key and : delimiter, read :, skip
+               whitespace */
             while (idx <= end_idx && IS_WHITESPACE(str[idx])) idx++;
             if (idx > end_idx || str[idx] != ':') {
-                raise_errmsg("Expecting : delimiter", pystr, idx);
+                raise_errmsg("Expecting ':' delimiter", pystr, idx);
                 goto bail;
             }
             idx++;
@@ -1217,13 +1264,14 @@ _parse_object_unicode(PyScannerObject *s, PyObject *pystr, Py_ssize_t idx, Py_ss
             /* skip whitespace before } or , */
             while (idx <= end_idx && IS_WHITESPACE(str[idx])) idx++;
 
-            /* bail if the object is closed or we didn't get the , delimiter */
+            /* bail if the object is closed or we didn't get the ,
+               delimiter */
             if (idx > end_idx) break;
             if (str[idx] == '}') {
                 break;
             }
             else if (str[idx] != ',') {
-                raise_errmsg("Expecting , delimiter", pystr, idx);
+                raise_errmsg("Expecting ',' delimiter", pystr, idx);
                 goto bail;
             }
             idx++;
@@ -1317,7 +1365,7 @@ _parse_array_str(PyScannerObject *s, PyObject *pystr, Py_ssize_t idx, Py_ssize_t
                 break;
             }
             else if (str[idx] != ',') {
-                raise_errmsg("Expecting , delimiter", pystr, idx);
+                raise_errmsg("Expecting ',' delimiter", pystr, idx);
                 goto bail;
             }
             idx++;
@@ -1389,7 +1437,7 @@ _parse_array_unicode(PyScannerObject *s, PyObject *pystr, Py_ssize_t idx, Py_ssi
                 break;
             }
             else if (str[idx] != ',') {
-                raise_errmsg("Expecting , delimiter", pystr, idx);
+                raise_errmsg("Expecting ',' delimiter", pystr, idx);
                 goto bail;
             }
             idx++;
@@ -1892,7 +1940,7 @@ scanner_init(PyObject *self, PyObject *args, PyObject *kwds)
 
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "O:make_scanner", kwlist, &ctx))
         return -1;
-    
+
     if (s->memo == NULL) {
         s->memo = PyDict_New();
         if (s->memo == NULL)
@@ -1954,7 +2002,7 @@ static
 PyTypeObject PyScannerType = {
     PyObject_HEAD_INIT(NULL)
     0,                    /* tp_internal */
-    "simplejson._speedups.Scanner",       /* tp_name */
+    "_speedups.Scanner",       /* tp_name */
     sizeof(PyScannerObject), /* tp_basicsize */
     0,                    /* tp_itemsize */
     scanner_dealloc, /* tp_dealloc */
@@ -2009,6 +2057,8 @@ encoder_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
         s->sort_keys = NULL;
         s->skipkeys = NULL;
         s->key_memo = NULL;
+        s->item_sort_key = NULL;
+        s->Decimal = NULL;
     }
     return (PyObject *)s;
 }
@@ -2017,19 +2067,22 @@ static int
 encoder_init(PyObject *self, PyObject *args, PyObject *kwds)
 {
     /* initialize Encoder object */
-    static char *kwlist[] = {"markers", "default", "encoder", "indent", "key_separator", "item_separator", "sort_keys", "skipkeys", "allow_nan", "key_memo", "use_decimal", "namedtuple_as_object", "tuple_as_array", NULL};
+    static char *kwlist[] = {"markers", "default", "encoder", "indent", "key_separator", "item_separator", "sort_keys", "skipkeys", "allow_nan", "key_memo", "use_decimal", "namedtuple_as_object", "tuple_as_array", "bigint_as_string", "item_sort_key", "Decimal", NULL};
 
     PyEncoderObject *s;
     PyObject *markers, *defaultfn, *encoder, *indent, *key_separator;
-    PyObject *item_separator, *sort_keys, *skipkeys, *allow_nan, *key_memo, *use_decimal, *namedtuple_as_object, *tuple_as_array;
+    PyObject *item_separator, *sort_keys, *skipkeys, *allow_nan, *key_memo;
+    PyObject *use_decimal, *namedtuple_as_object, *tuple_as_array;
+    PyObject *bigint_as_string, *item_sort_key, *Decimal;
 
     assert(PyEncoder_Check(self));
     s = (PyEncoderObject *)self;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "OOOOOOOOOOOOO:make_encoder", kwlist,
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "OOOOOOOOOOOOOOOO:make_encoder", kwlist,
         &markers, &defaultfn, &encoder, &indent, &key_separator, &item_separator,
         &sort_keys, &skipkeys, &allow_nan, &key_memo, &use_decimal,
-        &namedtuple_as_object, &tuple_as_array))
+        &namedtuple_as_object, &tuple_as_array, &bigint_as_string,
+        &item_sort_key, &Decimal))
         return -1;
 
     s->markers = markers;
@@ -2046,6 +2099,9 @@ encoder_init(PyObject *self, PyObject *args, PyObject *kwds)
     s->use_decimal = PyObject_IsTrue(use_decimal);
     s->namedtuple_as_object = PyObject_IsTrue(namedtuple_as_object);
     s->tuple_as_array = PyObject_IsTrue(tuple_as_array);
+    s->bigint_as_string = PyObject_IsTrue(bigint_as_string);
+    s->item_sort_key = item_sort_key;
+    s->Decimal = Decimal;
 
     Py_INCREF(s->markers);
     Py_INCREF(s->defaultfn);
@@ -2056,6 +2112,8 @@ encoder_init(PyObject *self, PyObject *args, PyObject *kwds)
     Py_INCREF(s->sort_keys);
     Py_INCREF(s->skipkeys);
     Py_INCREF(s->key_memo);
+    Py_INCREF(s->item_sort_key);
+    Py_INCREF(s->Decimal);
     return 0;
 }
 
@@ -2181,8 +2239,14 @@ encoder_listencode_obj(PyEncoderObject *s, PyObject *rval, PyObject *obj, Py_ssi
         }
         else if (PyInt_Check(obj) || PyLong_Check(obj)) {
             PyObject *encoded = PyObject_Str(obj);
-            if (encoded != NULL)
+            if (encoded != NULL) {
+                if (s->bigint_as_string) {
+                    encoded = maybe_quote_bigint(encoded, obj);
+                    if (encoded == NULL)
+                        break;
+                }
                 rv = _steal_list_append(rval, encoded);
+            }
         }
         else if (PyFloat_Check(obj)) {
             PyObject *encoded = encoder_encode_float(s, obj);
@@ -2202,7 +2266,7 @@ encoder_listencode_obj(PyEncoderObject *s, PyObject *rval, PyObject *obj, Py_ssi
         else if (PyDict_Check(obj)) {
             rv = encoder_listencode_dict(s, rval, obj, indent_level);
         }
-        else if (s->use_decimal && Decimal_Check(obj)) {
+        else if (s->use_decimal && PyObject_TypeCheck(obj, s->Decimal)) {
             PyObject *encoded = PyObject_Str(obj);
             if (encoded != NULL)
                 rv = _steal_list_append(rval, encoded);
@@ -2308,7 +2372,14 @@ encoder_listencode_dict(PyEncoderObject *s, PyObject *rval, PyObject *dct, Py_ss
         */
     }
 
-    if (PyObject_IsTrue(s->sort_keys)) {
+    if (PyCallable_Check(s->item_sort_key)) {
+        if (PyDict_CheckExact(dct))
+            items = PyDict_Items(dct);
+        else
+            items = PyMapping_Items(dct);
+        PyObject_CallMethod(items, "sort", "OO", Py_None, s->item_sort_key);
+    }
+    else if (PyObject_IsTrue(s->sort_keys)) {
         /* First sort the keys then replace them with (key, value) tuples. */
         Py_ssize_t i, nitems;
         if (PyDict_CheckExact(dct))
@@ -2568,6 +2639,7 @@ encoder_traverse(PyObject *self, visitproc visit, void *arg)
     Py_VISIT(s->sort_keys);
     Py_VISIT(s->skipkeys);
     Py_VISIT(s->key_memo);
+    Py_VISIT(s->item_sort_key);
     return 0;
 }
 
@@ -2587,6 +2659,8 @@ encoder_clear(PyObject *self)
     Py_CLEAR(s->sort_keys);
     Py_CLEAR(s->skipkeys);
     Py_CLEAR(s->key_memo);
+    Py_CLEAR(s->item_sort_key);
+    Py_CLEAR(s->Decimal);
     return 0;
 }
 
@@ -2596,7 +2670,7 @@ static
 PyTypeObject PyEncoderType = {
     PyObject_HEAD_INIT(NULL)
     0,                    /* tp_internal */
-    "simplejson._speedups.Encoder",       /* tp_name */
+    "_speedups.Encoder",       /* tp_name */
     sizeof(PyEncoderObject), /* tp_basicsize */
     0,                    /* tp_itemsize */
     encoder_dealloc, /* tp_dealloc */
@@ -2654,7 +2728,7 @@ PyDoc_STRVAR(module_doc,
 void
 init_speedups(void)
 {
-    PyObject *m, *decimal;
+    PyObject *m;
     PyScannerType.tp_new = PyType_GenericNew;
     if (PyType_Ready(&PyScannerType) < 0)
         return;
@@ -2662,13 +2736,6 @@ init_speedups(void)
     if (PyType_Ready(&PyEncoderType) < 0)
         return;
 
-    decimal = PyImport_ImportModule("decimal");
-    if (decimal == NULL)
-        return;
-    DecimalTypePtr = (PyTypeObject*)PyObject_GetAttrString(decimal, "Decimal");
-    Py_DECREF(decimal);
-    if (DecimalTypePtr == NULL)
-        return;
 
     m = Py_InitModule3("_speedups", speedups_methods, module_doc);
     Py_INCREF((PyObject*)&PyScannerType);

@@ -512,7 +512,7 @@ class QuoteMeOnThat(SoupTest):
         # SGMLParser generates bogus parse events when attribute values
         # contain embedded brackets, but at least Beautiful Soup fixes
         # it up a little.
-        self.assertSoupEquals('<a b="<a>">', '<a b="&lt;a&gt;"></a><a>"></a>')
+        self.assertSoupEquals('<a b="<a>">', '<a b="&lt;a&gt;"></a><a>"&gt;</a>')
         self.assertSoupEquals('<a href="http://foo.com/<a> and blah and blah',
                               """<a href='"http://foo.com/'></a><a> and blah and blah</a>""")
 
@@ -649,30 +649,34 @@ class CleanupOnAisleFour(SoupTest):
         xhtmlEnt = BeautifulStoneSoup.XHTML_ENTITIES
 
         soup = BeautifulStoneSoup(text, convertEntities=xmlEnt)
-        self.assertEquals(str(soup), "<<sacr&eacute; bleu!>>")
-
-        soup = BeautifulStoneSoup(text, convertEntities=xmlEnt)
-        self.assertEquals(str(soup), "<<sacr&eacute; bleu!>>")
+        self.assertEquals(str(soup), "&lt;&lt;sacr&eacute; bleu!&gt;&gt;")
 
         soup = BeautifulStoneSoup(text, convertEntities=htmlEnt)
-        self.assertEquals(unicode(soup), u"<<sacr\xe9 bleu!>>")
+        self.assertEquals(unicode(soup), u"&lt;&lt;sacr\xe9 bleu!&gt;&gt;")
 
         # Make sure the "XML", "HTML", and "XHTML" settings work.
         text = "&lt;&trade;&apos;"
         soup = BeautifulStoneSoup(text, convertEntities=xmlEnt)
-        self.assertEquals(unicode(soup), u"<&trade;'")
+        self.assertEquals(unicode(soup), u"&lt;&trade;'")
 
         soup = BeautifulStoneSoup(text, convertEntities=htmlEnt)
-        self.assertEquals(unicode(soup), u"<\u2122&apos;")
+        self.assertEquals(unicode(soup), u"&lt;\u2122&apos;")
 
         soup = BeautifulStoneSoup(text, convertEntities=xhtmlEnt)
-        self.assertEquals(unicode(soup), u"<\u2122'")
+        self.assertEquals(unicode(soup), u"&lt;\u2122'")
 
         invalidEntity = "foo&#bar;baz"
         soup = BeautifulStoneSoup\
                (invalidEntity,
                 convertEntities=htmlEnt)
-        self.assertEquals(str(soup), invalidEntity)
+        self.assertEquals(str(soup), "foo&amp;#bar;baz")
+
+        nonexistentEntity = "foo&bar;baz"
+        soup = BeautifulStoneSoup\
+               (nonexistentEntity,
+                convertEntities="xml")
+        self.assertEquals(str(soup), nonexistentEntity)
+
 
     def testNonBreakingSpaces(self):
         soup = BeautifulSoup("<a>&nbsp;&nbsp;</a>",
@@ -683,10 +687,10 @@ class CleanupOnAisleFour(SoupTest):
         self.assertSoupEquals('<! DOCTYPE>', '<!DOCTYPE>')
 
     def testJunkInDeclaration(self):
-        self.assertSoupEquals('<! Foo = -8>a', '<!Foo = -8>a')
+        self.assertSoupEquals('<! Foo = -8>a', '&lt;!Foo = -8&gt;a')
 
     def testIncompleteDeclaration(self):
-        self.assertSoupEquals('a<!b <p>c')
+        self.assertSoupEquals('a<!b <p>c', 'a&lt;!b &lt;p&gt;c')
 
     def testEntityReplacement(self):
         self.assertSoupEquals('<b>hello&nbsp;there</b>')

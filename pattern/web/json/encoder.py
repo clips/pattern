@@ -107,7 +107,8 @@ class JSONEncoder(object):
             check_circular=True, allow_nan=True, sort_keys=False,
             indent=None, separators=None, encoding='utf-8', default=None,
             use_decimal=True, namedtuple_as_object=True,
-            tuple_as_array=True):
+            tuple_as_array=True, bigint_as_string=False,
+            item_sort_key=None):
         """Constructor for JSONEncoder, with sensible defaults.
 
         If skipkeys is false, then it is a TypeError to attempt
@@ -155,11 +156,19 @@ class JSONEncoder(object):
         be supported directly by the encoder. For the inverse, decode JSON
         with ``parse_float=decimal.Decimal``.
 
-        If namedtuple_as_object is true (the default), tuple subclasses with
+        If namedtuple_as_object is true (the default), objects with
         ``_asdict()`` methods will be encoded as JSON objects.
-        
+
         If tuple_as_array is true (the default), tuple (and subclasses) will
         be encoded as JSON arrays.
+
+        If bigint_as_string is true (not the default), ints 2**53 and higher
+        or lower than -2**53 will be encoded as strings. This is to avoid the
+        rounding that happens in Javascript otherwise.
+
+        If specified, item_sort_key is a callable used to sort the items in
+        each dictionary. This is useful if you want to sort items other than
+        in alphabetical order by key.
         """
 
         self.skipkeys = skipkeys
@@ -170,8 +179,10 @@ class JSONEncoder(object):
         self.use_decimal = use_decimal
         self.namedtuple_as_object = namedtuple_as_object
         self.tuple_as_array = tuple_as_array
-        if isinstance(indent, (int, long)):
-            indent = ' ' * indent
+        self.bigint_as_string = bigint_as_string
+        self.item_sort_key = item_sort_key
+        if indent is not None and not isinstance(indent, basestring):
+            indent = indent * ' '
         self.indent = indent
         if separators is not None:
             self.item_separator, self.key_separator = separators
@@ -285,13 +296,17 @@ class JSONEncoder(object):
                 markers, self.default, _encoder, self.indent,
                 self.key_separator, self.item_separator, self.sort_keys,
                 self.skipkeys, self.allow_nan, key_memo, self.use_decimal,
-                self.namedtuple_as_object, self.tuple_as_array)
+                self.namedtuple_as_object, self.tuple_as_array,
+                self.bigint_as_string, self.item_sort_key,
+                Decimal)
         else:
             _iterencode = _make_iterencode(
                 markers, self.default, _encoder, self.indent, floatstr,
                 self.key_separator, self.item_separator, self.sort_keys,
                 self.skipkeys, _one_shot, self.use_decimal,
-                self.namedtuple_as_object, self.tuple_as_array)
+                self.namedtuple_as_object, self.tuple_as_array,
+                self.bigint_as_string, self.item_sort_key,
+                Decimal=Decimal)
         try:
             return _iterencode(o, 0)
         finally:
@@ -328,6 +343,7 @@ class JSONEncoderForHTML(JSONEncoder):
 def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         _key_separator, _item_separator, _sort_keys, _skipkeys, _one_shot,
         _use_decimal, _namedtuple_as_object, _tuple_as_array,
+        _bigint_as_string, _item_sort_key,
         ## HACK: hand-optimized bytecode; turn globals into locals
         False=False,
         True=True,
@@ -344,6 +360,8 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         str=str,
         tuple=tuple,
     ):
+    if _item_sort_key and not callable(_item_sort_key):
+        raise TypeError("item_sort_key must be None or callable")
 
     def _iterencode_list(lst, _current_indent_level):
         if not lst:
@@ -378,7 +396,10 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             elif value is False:
                 yield buf + 'false'
             elif isinstance(value, (int, long)):
-                yield buf + str(value)
+                yield ((buf + str(value))
+                       if (not _bigint_as_string or
+                           (-1 << 53) < value < (1 << 53))
+                           else (buf + '"' + str(value) + '"'))
             elif isinstance(value, float):
                 yield buf + _floatstr(value)
             elif _use_decimal and isinstance(value, Decimal):
@@ -387,16 +408,17 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
                 yield buf
                 if isinstance(value, list):
                     chunks = _iterencode_list(value, _current_indent_level)
-                elif (_namedtuple_as_object and isinstance(value, tuple) and
-                        hasattr(value, '_asdict')):
-                    chunks = _iterencode_dict(value._asdict(),
-                                              _current_indent_level)
-                elif _tuple_as_array and isinstance(value, tuple):
-                    chunks = _iterencode_list(value, _current_indent_level)
-                elif isinstance(value, dict):
-                    chunks = _iterencode_dict(value, _current_indent_level)
                 else:
-                    chunks = _iterencode(value, _current_indent_level)
+                    _asdict = _namedtuple_as_object and getattr(value, '_asdict', None)
+                    if _asdict and callable(_asdict):
+                        chunks = _iterencode_dict(_asdict(),
+                                                  _current_indent_level)
+                    elif _tuple_as_array and isinstance(value, tuple):
+                        chunks = _iterencode_list(value, _current_indent_level)
+                    elif isinstance(value, dict):
+                        chunks = _iterencode_dict(value, _current_indent_level)
+                    else:
+                        chunks = _iterencode(value, _current_indent_level)
                 for chunk in chunks:
                     yield chunk
         if newline_indent is not None:
@@ -425,7 +447,10 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             newline_indent = None
             item_separator = _item_separator
         first = True
-        if _sort_keys:
+        if _item_sort_key:
+            items = dct.items()
+            items.sort(key=_item_sort_key)
+        elif _sort_keys:
             items = dct.items()
             items.sort(key=lambda kv: kv[0])
         else:
@@ -464,7 +489,10 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             elif value is False:
                 yield 'false'
             elif isinstance(value, (int, long)):
-                yield str(value)
+                yield (str(value)
+                       if (not _bigint_as_string or
+                           (-1 << 53) < value < (1 << 53))
+                           else ('"' + str(value) + '"'))
             elif isinstance(value, float):
                 yield _floatstr(value)
             elif _use_decimal and isinstance(value, Decimal):
@@ -472,16 +500,17 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
             else:
                 if isinstance(value, list):
                     chunks = _iterencode_list(value, _current_indent_level)
-                elif (_namedtuple_as_object and isinstance(value, tuple) and
-                        hasattr(value, '_asdict')):
-                    chunks = _iterencode_dict(value._asdict(),
-                                              _current_indent_level)
-                elif _tuple_as_array and isinstance(value, tuple):
-                    chunks = _iterencode_list(value, _current_indent_level)
-                elif isinstance(value, dict):
-                    chunks = _iterencode_dict(value, _current_indent_level)
                 else:
-                    chunks = _iterencode(value, _current_indent_level)
+                    _asdict = _namedtuple_as_object and getattr(value, '_asdict', None)
+                    if _asdict and callable(_asdict):
+                        chunks = _iterencode_dict(_asdict(),
+                                                  _current_indent_level)
+                    elif _tuple_as_array and isinstance(value, tuple):
+                        chunks = _iterencode_list(value, _current_indent_level)
+                    elif isinstance(value, dict):
+                        chunks = _iterencode_dict(value, _current_indent_level)
+                    else:
+                        chunks = _iterencode(value, _current_indent_level)
                 for chunk in chunks:
                     yield chunk
         if newline_indent is not None:
@@ -501,34 +530,38 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         elif o is False:
             yield 'false'
         elif isinstance(o, (int, long)):
-            yield str(o)
+            yield (str(o)
+                   if (not _bigint_as_string or
+                       (-1 << 53) < o < (1 << 53))
+                       else ('"' + str(o) + '"'))
         elif isinstance(o, float):
             yield _floatstr(o)
         elif isinstance(o, list):
             for chunk in _iterencode_list(o, _current_indent_level):
                 yield chunk
-        elif (_namedtuple_as_object and isinstance(o, tuple) and
-                hasattr(o, '_asdict')):
-            for chunk in _iterencode_dict(o._asdict(), _current_indent_level):
-                yield chunk
-        elif (_tuple_as_array and isinstance(o, tuple)):
-            for chunk in _iterencode_list(o, _current_indent_level):
-                yield chunk
-        elif isinstance(o, dict):
-            for chunk in _iterencode_dict(o, _current_indent_level):
-                yield chunk
-        elif _use_decimal and isinstance(o, Decimal):
-            yield str(o)
         else:
-            if markers is not None:
-                markerid = id(o)
-                if markerid in markers:
-                    raise ValueError("Circular reference detected")
-                markers[markerid] = o
-            o = _default(o)
-            for chunk in _iterencode(o, _current_indent_level):
-                yield chunk
-            if markers is not None:
-                del markers[markerid]
+            _asdict = _namedtuple_as_object and getattr(o, '_asdict', None)
+            if _asdict and callable(_asdict):
+                for chunk in _iterencode_dict(_asdict(), _current_indent_level):
+                    yield chunk
+            elif (_tuple_as_array and isinstance(o, tuple)):
+                for chunk in _iterencode_list(o, _current_indent_level):
+                    yield chunk
+            elif isinstance(o, dict):
+                for chunk in _iterencode_dict(o, _current_indent_level):
+                    yield chunk
+            elif _use_decimal and isinstance(o, Decimal):
+                yield str(o)
+            else:
+                if markers is not None:
+                    markerid = id(o)
+                    if markerid in markers:
+                        raise ValueError("Circular reference detected")
+                    markers[markerid] = o
+                o = _default(o)
+                for chunk in _iterencode(o, _current_indent_level):
+                    yield chunk
+                if markers is not None:
+                    del markers[markerid]
 
     return _iterencode

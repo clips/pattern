@@ -10,7 +10,7 @@ Usage::
     Expecting property name: line 1 column 2 (char 2)
 
 """
-import sys; sys.path.insert(0, os.path.join(".."))
+import sys
 import json
 
 def main():
