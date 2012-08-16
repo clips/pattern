@@ -188,7 +188,7 @@ def words(string, filter=lambda w: w.isalpha() and len(w)>1, punctuation=PUNCTUA
         string = string.replace(u"’", u"'")
     words = string.replace("\n", "\n ")
     words = (rreplace("'s", "", w.strip(punctuation)) for w in words.split(" "))
-    words = [w for w in words if filter(w) is not False]
+    words = [w for w in words if filter is None or filter(w) is not False]
     return words
 
 PORTER, LEMMA = "porter", "lemma"
@@ -278,11 +278,6 @@ class Document(object):
             w = string
             w = count(w, **kwargs)
             v = None
-        # A dict of (word, count)-items, make read-only.
-        elif isinstance(string, dict):
-            w = string
-            w = kwargs["dict"](w)
-            v = None
         # A Vector of (word, TF weight)-items, copy as document vector.
         elif isinstance(string, Vector) and string.weight == TF:
             w = string
@@ -293,6 +288,11 @@ class Document(object):
             w = string
             w = kwargs["dict"](w) # XXX term count is lost.
             v = Vector(w)
+        # A dict of (word, count)-items, make read-only.
+        elif isinstance(string, dict):
+            w = string
+            w = kwargs["dict"](w)
+            v = None
         # pattern.en.Sentence with Word objects, can use stemmer=LEMMA.
         elif string.__class__.__name__ == "Sentence":
             w = string.words
@@ -561,7 +561,7 @@ def l2_norm(vector):
 def entropy(vector):
     s = float(sum(vector)) or 1
     return -sum(x/s * log(x/s, 2) for x in vector if x != 0)
-    
+
 #### CORPUS ########################################################################################
 
 #--- CORPUS ----------------------------------------------------------------------------------------
@@ -1528,9 +1528,9 @@ class Classifier:
         if isinstance(document, dict):
             return type, Vector(document)
         if isinstance(document, (list, tuple)):
-            return type, Document(document, stopwords=True).vector
+            return type, Document(document, filter=None, stopwords=True).vector
         if isinstance(document, basestring):
-            return type, Document(document, stopwords=True).vector
+            return type, Document(document, filter=None, stopwords=True).vector
     
     @classmethod
     def test(cls, corpus=[], d=0.65, folds=1, **kwargs):
@@ -1671,7 +1671,7 @@ Bayes = NaiveBayes
 # pattern.vector comes bundled with LIBSVM 3.11.
 # http://www.csie.ntu.edu.tw/~cjlin/libsvm/
 #
-# Precompiled binaries for 32-bit Windows and Mac OS X, and 64-bit Ubuntu are included.
+# Precompiled binaries for 32-bit Windows and Mac OS X, and 64-bit Mac OS X and Ubuntu are included.
 # - If these don't work, you need to download and compile LIBSVM from source.
 # - Mac OS X may complain, if so, rename "-soname" to "-install_name" in libsvm/Makefile.
 # - Put the shared library (i.e., "libsvm.dll", "libsvm.so") in pattern/vector/svm/.
