@@ -1,6 +1,6 @@
 /* --- GENERAL STYLES ------------------------------------------------------------------------------------------- */
 
-body { margin: 0; padding: 0; background: #808080 url(g/gradient.jpg); background-repeat: repeat-x; }
+body { margin: 0; padding: 0; background: rgb(128,128,128) url(g/gradient.jpg); background-repeat: repeat-x; }
 body, table, th, td, fieldset, legend, 
 fieldset.group-info,
 fieldset.group-info .field-item a,
@@ -469,7 +469,7 @@ body .syntaxhighlighter div.toolbar .command_help { display: none !important; }
 .node-type-script #content table#attachments td { border: 0; }
 
 .section-public-scripts h1.title { margin-bottom: 0.5em !important; }
-.section-public-scripts table { width: 600px; margin-top: 2em; }
+.section-public-scripts table { width: 575px; margin-top: 2em; }
 .section-public-scripts th { font-variant: small-caps; }
 .section-public-scripts th { padding: 0.7em; }
 .section-public-scripts td { padding: 0.7em; }
@@ -488,6 +488,10 @@ body .syntaxhighlighter div.toolbar .command_help { display: none !important; }
 .section-public-scripts td.views-field-upload-fid li {
     list-style: none; margin: 0;
 }
+.section-public-scripts table#tutorials { border-bottom: 1px solid #ccc; margin-top: 1em; }
+.section-public-scripts table#tutorials td:first-child { width: 10%; white-space: nowrap; }
+.section-public-scripts table#tutorials td { }
+.section-public-scripts table#tutorials td ul { margin-top: 0; }
 
 /* --- CONTENT TYPE: STORIES, STORY NEWS ------------------------------------------------------------------------- */
 /* Global stories, either as news item teaser or as full pages. */
@@ -1121,6 +1125,9 @@ form thead th { text-align: left; padding-right: 1em; border-bottom: 3px solid #
 #user-login li.user-link { margin-left: -2em; }
 
 .advanced-help-topic { font-family: Courier, "Courier New", monospace; }
+
+/* --- ISI Journal List --- */
+#node-1501 div.textcell { overflow-y:auto; height: 150px; }
 
 /* --- DRUPAL TABS ---------------------------------------------------------------------------------------------- */
 /* Some stuff like tabs and contextual edit menus seeple through to the front-end. */
