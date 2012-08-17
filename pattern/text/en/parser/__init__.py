@@ -126,7 +126,10 @@ def find_tags(tokens, default="NN", light=False, lexicon=LEXICON, language="en",
     f = light and apply_default_rules or lexicon.lexical_rules.apply
     for i, (token, tag) in enumerate(tagged):
         if tag == None:
-            if len(token) > 0 and token[0].isupper() and token[0].isalpha() and language != "de":
+            if len(token) > 0 \
+            and token[0].isupper() \
+            and token[0].isalpha() \
+            and language != "de":
                 tagged[i] = [token, "NNP"]
             else:
                 tagged[i] = [token, default]

@@ -44,8 +44,13 @@ from parser.sentiment import NOUN, VERB, ADJECTIVE, ADVERB
 import wordnet
 import wordlist
 
-def split(s, token=[WORD, POS, CHUNK, PNP]):
+def parsetree(s, *args, **kwargs):
     """ Returns a parsed Text from the given string.
+    """
+    return Text(parse(s, *args, **kwargs))
+
+def split(s, token=[WORD, POS, CHUNK, PNP]):
+    """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
 

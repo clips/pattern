@@ -284,3 +284,6 @@ Num(hoofd,onbep,zelfst,stell,onverv) Num(hoofd,onbep,attr,stell,onverv) NEXTTAG 
 Art(bep,zijd_of_mv,gen) N(eigen,ev,neut) PREVTAG N(eigen,ev,neut)
 N(eigen,ev,neut) N(soort,ev,neut) PREVTAG Adj(attr,overtr,verv_neut)
 Adj(attr,stell,onverv) N(soort,ev,neut) SURROUNDTAG Art(bep,zijd_of_mv,neut) Punc(punt)
+Adj(attr,stell,onverv) N(soort,ev,neut) NEXTTAG STAART
+Adj(attr,stell,onverv) N(soort,ev,neut) NEXTTAG V(intrans,ott,3,ev)
+Adj(attr,stell,onverv) N(soort,ev,neut) NEXTTAG V(hulp_of_kopp,ott,3,ev)
