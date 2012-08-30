@@ -512,7 +512,7 @@ class TestSearchEngine(unittest.TestCase):
     def test_search_facebook(self):
         self._test_search_engine("Facebook",  *self.api["Facebook"])
     def test_search_products(self):
-        self._test_search_engine("Products",  *self.api["Products"])
+        self._test_search_engine("Products",  *self.api["Products"], **{"query": "computer"})
     def test_search_newsfeed(self):
         for feed, url in web.feeds.items():
             self._test_search_engine("Newsfeed", url, None, web.Newsfeed, query=url, type=web.NEWS)
@@ -991,7 +991,7 @@ class TestSpider(unittest.TestCase):
 
 def suite():
     suite = unittest.TestSuite()
-    uite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCache))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCache))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestURL))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPlaintext))

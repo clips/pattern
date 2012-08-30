@@ -132,6 +132,10 @@ var test_canvas = {
             assert(Array.eq(Array.sorted([2,3,1]), [1,2,3]));
             console.log("Array.sorted()");
         };
+        this.test_reversed = function() {
+            assert(Array.eq(Array.reversed([1,2,3]), [3,2,1]));
+            console.log("Array.reversed()");
+        };
         this.test_range = function() {
             assert(Array.eq(Array.range(3), [0,1,2]));
             assert(Array.eq(Array.range(1,4), [1,2,3]));

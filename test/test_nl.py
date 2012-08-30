@@ -242,8 +242,8 @@ class TestSentiment(unittest.TestCase):
         A, P, R, F = test(lambda review: nl.positive(review), reviews)
         self.assertTrue(A > 0.79)
         self.assertTrue(P > 0.77)
-        self.assertTrue(R > 0.82)
-        self.assertTrue(F > 0.79)
+        self.assertTrue(R > 0.83)
+        self.assertTrue(F > 0.80)
         print "pattern.nl.sentiment()"
 
 #---------------------------------------------------------------------------------------------------

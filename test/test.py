@@ -4,6 +4,7 @@ import unittest
 import test_metrics
 import test_web
 import test_db
+import test_de
 import test_en
 import test_nl
 import test_search
@@ -21,6 +22,7 @@ def suite():
     suite.addTest(test_metrics.suite())
     suite.addTest(test_web.suite())
     suite.addTest(test_db.suite(host="localhost", port=3306, username="root", password="root"))
+    suite.addTest(test_de.suite())
     suite.addTest(test_en.suite())
     suite.addTest(test_nl.suite())
     suite.addTest(test_search.suite())
