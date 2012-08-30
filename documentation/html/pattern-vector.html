@@ -110,20 +110,20 @@ spy</pre></div>
 </tr>
 <tr>
 <td><span class="inline_code">idf</span></td>
-<td><span class="inline_code">log(1/df)</span></td>
+<td><span class="inline_code">ln(1/df)</span></td>
 </tr>
 <tr>
 <td><span class="inline_code">tf-idf</span></td>
-<td><span class="inline_code">tf</span> * <span class="inline_code">idf</span></td>
+<td><span class="inline_code">tf</span> <span class="inline_code">*</span> <span class="inline_code">idf</span></td>
 </tr>
 </tbody>
 </table>
-<p>The list of all relevancy values (i.e. <span class="inline_code">tf-idf</span>) of the words in a document is called the <em>document vector</em>. Multiple documents bundled in a <em>corpus</em> form a <em>vector space</em>. By calculating the matrix dot product (= angle) of two document vectors, the similarity of the two documents can be measured. This is called <em>cosine similarity</em>. For <span class="inline_code">v = Corpus.vector()</span>:<span class="inline_code"> <br /></span></p>
-<p><span class="inline_code">cos = dot(v(doc1), v(doc2)) / (v(doc1).norm * v(doc2).norm)</span></p>
+<p>The <em>document vector</em> is a list with the&nbsp;<span class="inline_code">tf-idf</span>&nbsp;value for each word in this document. Multiple documents bundled in a <em>corpus</em> form a <em>vector space</em>. By calculating the matrix dot product (= angle) of two document vectors, the similarity of the two documents can be measured. This is called <em>cosine similarity</em>.&nbsp;Let <span class="inline_code">v1</span>, <span class="inline_code">v2</span> be <span class="inline_code">Document.vector</span> objects:</p>
+<p><span class="inline_code">cosθ = dot(v1, v2) / (v1.norm * v2.norm)&nbsp;</span></p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="document"></a>Document</h2>
-<p>A <span class="inline_code">Document</span> bundles the <span class="inline_code">words()</span>, <span class="inline_code">stem()</span> and <span class="inline_code">count()</span> functions with methods to determine which words are more important. The given string can also be a <span class="inline_code">Text</span>, a&nbsp;<span class="inline_code">Sentence</span>, a list of words, or a dictionary of (<span class="inline_code">word</span>, <span class="inline_code">count</span>)-items. Documents can be grouped in a <span class="inline_code">Corpus</span> to compute <span class="inline_code">tf-idf</span> and similarity.</p>
+<p>A <span class="inline_code">Document</span> bundles the <span class="inline_code">words()</span>, <span class="inline_code">stem()</span> and <span class="inline_code">count()</span> functions with methods to determine which words are more important. The given string can also be a <span class="inline_code">Text</span>, a&nbsp;<span class="inline_code">Sentence</span>, a list of words, or a dictionary of <span class="inline_code">(word, count)</span>-items. Documents can be grouped in a <span class="inline_code">Corpus</span> to compute <span class="inline_code">tf-idf</span> and similarity.</p>
 <pre class="brush:python; gutter:false; light:true;">document = Document(string, 
        filter = lambda w: w.isalpha() and len(w) &gt; 1, 
   punctuation = &#39;[]():;,.!?\n\r\t\f &#39;, 
@@ -138,6 +138,7 @@ document.name               # Unique name, or None, used in Corpus.document().
 document.type               # Document type, used with classifiers.
 document.corpus             # The parent Corpus, or None.
 document.terms              # Dictionary of (word, count)-items (read-only).
+document.features           # List of words from Document.terms.keys(). 
 document.count              # Total word count.
 document.vector             # Cached tf-idf vector (read-only dict).</pre><pre class="brush:python; gutter:false; light:true;">document.tf(word)
 document.tfidf(word)        # Note: simply yields tf if corpus is None.
@@ -174,16 +175,19 @@ document.keywords(top=10, normalized=True)
 ]
 </pre></div>
 <p><span class="smallcaps">Document vector</span></p>
-<p><span class="inline_code">Document.vector</span> is a sparse dictionary of <span class="inline_code">(word, tf-idf)</span>-items cached for performance. It has a <span class="inline_code">Vector.norm</span> attribute that yields the L2-norm, used when calculating cosine similarity between documents:</p>
-<p><span class="inline_code">l2 = sum([w**2 for w in Document.vector.values()])**0.5</span></p>
+<p><span class="inline_code">Document.vector</span> is a sparse dictionary of <span class="inline_code">(word, tf-idf)</span>-items cached for performance. <br />It has a <span class="inline_code">Vector.norm</span> attribute that yields the L2-norm, used when calculating cosine similarity between documents:</p>
+<p><span class="inline_code">l2 = sqrt(sum(w**2 for w in Document.vector.values()))</span></p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="corpus"></a>Corpus</h2>
 <p>A <span class="inline_code">Corpus</span> is a collection of <span class="inline_code">Document</span> objects:</p>
 <pre class="brush:python; gutter:false; light:true;">corpus = Corpus(documents=[], weight=TFIDF)</pre><pre class="brush:python; gutter:false; light:true;">corpus = Corpus.build(path, *args, **kwargs)</pre><pre class="brush:python; gutter:false; light:true;">corpus = Corpus.load(path)  # Imports file created with Corpus.save().</pre><pre class="brush:python; gutter:false; light:true;">corpus.documents            # List of Documents (read-only).
 corpus.document(name)       # Yields document with given name (unique).
+corpus.features             # List of all Document.features. 
 corpus.vector(document)     # Vector with all words from all documents.
 corpus.vectors              # List of all document vectors.
+corpus.features             # List of all Document.vector.keys(). 
+corpus.classes              # List of all Document.type values.  
 corpus.weight               # TF-IDF | TF (weight used for vectors).
 corpus.density              # Overall word coverage (0.0-1.0).
 corpus.lsa                  # Concept space, set with Corpus.reduce().</pre><pre class="brush:python; gutter:false; light:true;">corpus.append(document)
@@ -196,8 +200,8 @@ corpus.neighbors(document, top=10)
 corpus.search(words=[], **kwargs)
 corpus.distance(document1, document2, method=COSINE) # COSINE | EUCLIDEAN | MANHATTAN
 corpus.cluster(documents=ALL, method=KMEANS)         # KMEANS | HIERARCHICAL
-corpus.reduce(dimensions=NORM)                       # NORM | TOP300 | int</pre><pre class="brush:python; gutter:false; light:true;">corpus.relative_entropy(word1, word2)                # Kullback-Leibler divergence.
-corpus.feature_selection(top=100, method=KLD)        # Top original features (terms).
+corpus.reduce(dimensions=NORM)                       # NORM | TOP300 | int</pre><pre class="brush:python; gutter:false; light:true;">corpus.information_gain(word)                        # Entropy (predictability).
+corpus.feature_selection(top=100, method=IG)         # Top original features (terms).
 corpus.filter(features=[])                           # Corpus with selected features.</pre><pre class="brush:python; gutter:false; light:true;">corpus.sets(threshold=0.5)                           # Frequent word sets.</pre><pre class="brush:python; gutter:false; light:true;">corpus.save(path, update=False)
 corpus.export(path, format=ORANGE)                   # ORANGE | WEKA </pre><ul>
 <li><span class="inline_code">Corpus.vector()</span> returns a <span class="inline_code">Vector</span> for the given document.<br />Vector contains all words in the corpus, with <span class="inline_code">tf-idf</span>&nbsp;&gt; 0 for words that appear in the document.<span><span><br /></span></span></li>
@@ -232,7 +236,7 @@ corpus.export(path, format=ORANGE)                   # ORANGE | WEKA </pre><ul>
 <p>When we compare <em>tiger</em> to <em>lion</em> and&nbsp;<em>elephant</em>, the values indicate that <em>tiger</em> is more similar to <em>lion</em>. Their similarity is still quite low, only 12%. This is because in this (theoretical) example two-thirds of the documents (<em>tiger</em> and <em>lion</em>) share most of their keywords. If we continue to add documents for other animals (e.g. "<em>A squirrel is a small rodent with a tail.</em>") the similarity will rise. In many experiments you will need lots of documents, for example 10,000 – often with a 1,000 or more relevant words per document. More data processed = more accurate similarity.</p>
 <h3>Corpus import, export, cache</h3>
 <ul>
-<li><span class="inline_code">Corpus.build()</span> returns a new <span class="inline_code">Corpus</span> from the text files at the given path (e.g. <span class="inline_code">path='folder/*.txt"</span>). Each file is one <span class="inline_code">Document.</span>&nbsp;The <span class="inline_code">Document.name</span> can be set using the optional <span class="inline_code">name</span> parameter, which is a function that takes the filename and returns a document name. The command furthermore takes the same optional arguments as the <span class="inline_code">Document</span> constructor.</li>
+<li><span class="inline_code">Corpus.build()</span> returns a new <span class="inline_code">Corpus</span> from the text files at the given path (e.g. <span class="inline_code">path='folder/*.txt"</span>). Each file is one <span class="inline_code">Document.</span>&nbsp;The <span class="inline_code">Document.name</span> can be set using the optional <span class="inline_code">name</span> parameter, which is a function that takes the filename and returns a document name. The function furthermore takes the same optional arguments as the <span class="inline_code">Document</span> constructor.</li>
 </ul>
 <ul>
 <li><span class="inline_code">Corpus.save()</span> exports the corpus as a binary file using the Python <span class="inline_code">cPickle</span> module – including the cache of document<span class="inline_code">&nbsp;</span>vectors and cosine similarity values. Whenever <span class="inline_code">Document.vector</span> or <span class="inline_code">Corpus.similarity()</span> is called the calculations are cached for performance. With <span class="inline_code">update=True</span>, caches all possible vectors and similarities before exporting.</li>
@@ -356,7 +360,7 @@ lsa.vectors                 # Dictionary {Document.id: {concept_index: weight}}<
 </tbody>
 </table>
 <h3>LSA dimension reduction</h3>
-<p>Dimension reduction is useful for <strong>clustering</strong>: 3,000 documents with 1,000-term vectors are intractable <span class="small"><a class="noexternal" href="http://en.wikipedia.org/wiki/Curse_of_dimensionality" target="_blank">[3]</a></span> in a pure-Python clustering algorithm. However, reducing the corpus to 100-concept vectors allows you to run through <em>k</em>-means clustering in a couple of minutes.&nbsp;The main difficulty is tweaking the <span class="inline_code">dimensions</span>&nbsp;parameter in <span class="inline_code">Corpus.reduce()</span>. Different values produce different results. A value that is too high results in noise. A value that is too low removes important semantical meaning.</p>
+<p>Dimension reduction is useful for <strong>clustering</strong>: 3,000 documents with 1,000-term vectors are intractable <span class="small"><a class="noexternal" href="http://en.wikipedia.org/wiki/Curse_of_dimensionality" target="_blank">[3]</a></span> in a pure-Python clustering algorithm. However, reducing the corpus to 100-concept vectors allows you to run through <em>k</em>-means clustering in a couple of minutes.&nbsp;The main difficulty is tweaking the <span class="inline_code">dimensions</span> parameter in <span class="inline_code">Corpus.reduce()</span>. Different values produce different results. A value that is too high results in noise. A value that is too low removes important semantical meaning.</p>
 <p>Possible options for parameter <span class="inline_code">dimensions</span>:</p>
 <ul>
 <li><span class="inline_code">NORM</span>: uses L2-norm of the singular values as the number of dimensions to remove,</li>
@@ -402,7 +406,7 @@ Cluster(
 <h3>Faster clustering: <em>k</em>-means++ &amp; triangle inequality</h3>
 <p>For <span class="inline_code">KMEANS</span>, an optional parameter <span class="inline_code">seed=RANDOM</span> can also be set to <span class="inline_code">KMPP</span>. A weakness of <em>k</em>-means clustering is that it starts out with random clusters. The <em>k</em>-means++ or <span class="inline_code">KMPP</span> algorithm uses a specialized technique to find better starting points. It is also faster.</p>
 <p>For <span class="inline_code">KMEANS</span>, an optional parameter <span class="inline_code">p=0.8</span> sets the relaxation for <em>triangle inequality</em>. This is a speed optimization where&nbsp;<span class="inline_code">p=0.5</span> is stable but slow, and where&nbsp;<span class="inline_code">p=1.0</span> may yield small errors but runs a lot faster, especially for higher <span class="inline_code">k</span> and dimensionality. If all of this is still too slow you couls reduce the corpus with LSA (<span class="link-maintenance"><a href="#lsa">see above</a></span>).&nbsp;</p>
-<p><span class="small"><span style="text-decoration: underline;">References</span>:&nbsp;<br />Arthur, D. (2007). <em>k-means++: the advantage of careful seeding.</em><br />Elkan, C. (2007). <em>Using the Triangle Inequality to Accelerate k-Means.</em></span></p>
+<p><span class="small"><span style="text-decoration: underline;">References</span>:&nbsp;<br />Arthur, D. (2007). <em>k-means++: the advantages of careful seeding.&nbsp;</em>SODA'07 Proceedings.<br />Elkan, C. (2003). <em>Using the Triangle Inequality to Accelerate k-Means. </em>ICML'03 Proceedings.</span></p>
 <h3>Hierarchical clusters</h3>
 <p>The <span class="inline_code">KMEANS</span> method returns a list in which each item is a list of semantically related <span class="inline_code">Documents</span>. The <span class="inline_code">HIERARCHICAL</span> method returns a <span class="inline_code">Cluster</span> object, which is a list of <span class="inline_code">Documents</span> and <span class="inline_code">Clusters</span> with some additional properties:</p>
 <pre class="brush:python; gutter:false; light:true;">cluster = Cluster([])</pre><pre class="brush:python; gutter:false; light:true;">cluster.depth               # Returns the maximum depth of nested clusters.
@@ -415,7 +419,9 @@ cluster.traverse(visit=lambda cluster: None) </pre><div class="example">
 
 2
 [1, 2, Cluster(3, 4)] </pre></div>
-<p>&nbsp;</p>
+<h3>Centroid</h3>
+<p>To get the centroid of a list of vectors you can use the <span class="inline_code">centroid()</span> function. It returns the mean <span class="inline_code">Vector</span>. It takes a <span class="inline_code">Cluster</span>, or a list of <span class="inline_code">Cluster</span>, <span class="inline_code">Vector</span> and/or <span class="inline_code">Document</span> objects. To compute the distance between any two vectors you can use the <span class="inline_code">distance()</span> function. A common problem with clustered vectors is that the cluster is <em>unlabeled</em> (it has no decisive type like <span class="inline_code">Document.type</span>). One solution is to calculate its <span class="inline_code">centroid()</span> and assign the type of the nearest document vector(s) to the cluster, using <span class="inline_code">distance()</span>.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">centroid(vectors)               # Returns the mean Vector. </pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">features(vectors)               # Returns the set of unique keys from all vectors.</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">distance(v1, v2, method=COSINE) # COSINE | EUCLIDEAN | MANHATTAN | HAMMING</pre><p>&nbsp;</p>
 <hr />
 <h2><a name="classification"></a>Classification</h2>
 <p>Classification is a supervised machine learning method for assigning a <span class="inline_code">Document</span> to one of a given number of categories (or <em>classes</em>).&nbsp;If you have a corpus in which the <span class="inline_code">Document.type</span> for each document is known, you can use it to predict the type of other ("unknown") documents.&nbsp;For example: a corpus of product reviews (<em>training data</em>), for which the star rating (e.g., <span class="inline_code">****</span>) of each review is known, can be used to predict the star rating for other product reviews (this is a form of <em>opinion mining</em>).</p>
@@ -425,7 +431,7 @@ cluster.traverse(visit=lambda cluster: None) </pre><div class="example">
 <li><span class="inline_code">KNN</span>: <em>k</em>-nearest neighbor classifier, predicts a document's type based on the type of its nearest neighbors, i.e., the <em>k</em> top results from <span class="inline_code">Corpus.neighbors()</span>.</li>
 <li><span class="inline_code">SVM</span>: support vector machine, represents documents as points in a high-dimensional space separated by hyperplanes.</li>
 </ul>
-<pre class="brush:python; gutter:false; light:true;">classifier = Bayes(aligned=False)</pre><pre class="brush:python; gutter:false; light:true;">classifier = kNN(k=10, distance=COSINE) # COSINE | EUCLIDEAN | MANHATTAN</pre><pre class="brush:python; gutter:false; light:true;">classifier = SVM(type=CLASSIFICATION, kernel=LINEAR)</pre><p><span class="small"><span style="text-decoration: underline;">Reference</span>: Magnus Lie Hetland, http://hetland.org/coding/python/nbayes.p</span>y</p>
+<pre class="brush:python; gutter:false; light:true;">classifier = Bayes(aligned=False)</pre><pre class="brush:python; gutter:false; light:true;">classifier = kNN(k=10, distance=COSINE) # COSINE | EUCLIDEAN | MANHATTAN</pre><pre class="brush:python; gutter:false; light:true;">classifier = SVM(type=CLASSIFICATION, kernel=LINEAR)</pre><p><span class="small"><span style="text-decoration: underline;">Reference</span>: Hetland, M. L. http://hetland.org/coding/python/nbayes.py</span></p>
 <h3>Classifier</h3>
 <p>The <span class="inline_code">Bayes</span>, <span class="inline_code">kNN</span>&nbsp;and <span class="inline_code">SVM</span> classifiers inherit from the <span class="inline_code">Classifier</span> base class:</p>
 <pre class="brush:python; gutter:false; light:true;">classifier = Classifier()</pre><pre class="brush:python; gutter:false; light:true;">classifier = Classifier.load(path)</pre><pre class="brush:python; gutter:false; light:true;">classifier.train(document, type=None)
@@ -479,7 +485,7 @@ classifier.binary         # Classifier.classes == [True,False]?
 5 </pre></div>
 <h3>Accuracy, precision &amp; recall</h3>
 <p>Naive Bayes can be quite effective despite its simple implementation. In the above example it has an accuracy of 60%. A random guess between the five possible star ratings would only have a 20% accuracy. Moreover, 25% of the errors are off by only one (e.g., guessed&nbsp;<span class="inline_code">**</span>&nbsp;instead of <span class="inline_code">***</span>, or&nbsp;<span class="inline_code">***</span>&nbsp;instead of&nbsp;<span class="inline_code">**</span>). This results in 75% accuracy for discerning positive (4-5) from negative reviews (1-2). Not bad.</p>
-<p>You can test the accuracy with the classmethod&nbsp;<span class="inline_code">Classifier.test()</span>.&nbsp;It creates a new classifier that uses 65% of the documents in the given corpus as training data and 35% as testing data. You can supply a list of&nbsp;<span class="inline_code">Document</span>&nbsp;objects or (<span class="inline_code">wordlist</span>,&nbsp;<span class="small">type</span>)-tuples. The method returns an (<span class="inline_code">accuracy</span>,&nbsp;<span class="inline_code">precision</span>,&nbsp;<span class="inline_code">recall</span>,&nbsp;<span class="inline_code">F1-score</span>)-tuple with values between&nbsp;<span class="inline_code">0.0</span>-<span class="inline_code">1.0</span>.</p>
+<p>You can test the accuracy with the classmethod&nbsp;<span class="inline_code">Classifier.test()</span>.&nbsp;It creates a new classifier that uses 65% of the documents in the given corpus as training data and 35% as testing data. You can supply a list of&nbsp;<span class="inline_code">Document</span>&nbsp;objects or<span class="inline_code"> (wordlist,&nbsp;</span><span class="small inline_code">type</span><span class="inline_code">)</span>-tuples. The method returns an <span class="inline_code">(accuracy,&nbsp;precision,&nbsp;recall,&nbsp;F1-score)</span>-tuple with values between&nbsp;<span class="inline_code">0.0</span>-<span class="inline_code">1.0</span>.</p>
 <pre class="brush:python; gutter:false; light:true;">Bayes.test(corpus=[], d=0.65, folds=1, aligned=False)</pre><pre class="brush:python; gutter:false; light:true;">kNN.test(corpus=[], d=0.65, folds=1, k=10, distance=COSINE)</pre><pre class="brush:python; gutter:false; light:true;">SVM.test(corpus=[], d=0.65, folds=1, type=CLASSIFICATION, kernel=LINEAR)</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import Document, Corpus, Bayes
 &gt;&gt;&gt;
@@ -506,17 +512,17 @@ classifier.binary         # Classifier.classes == [True,False]?
 <li>Use&nbsp;<a href="pattern-en.html#parser">part-of-speech tagging</a> to filter for specific types of words,</li>
 <li>Use&nbsp;<span class="inline_code">aligned=True</span> with <span class="inline_code">Bayes</span>. This will take into account the word index when training on lists of words (i.e., words need to occur at the same position when comparing documents).</li>
 </ul>
-<p>You can also supply dictionaries of (<span class="inline_code">word</span>, <span class="inline_code">weight</span>)-items to <span class="inline_code">Classifier.train()</span>. The weight can be word frequency + an additional rating,&nbsp;for example to emphasize words in the review title or the e-mail subject.&nbsp;</p>
+<p>You can also supply dictionaries of <span class="inline_code">(word, weight)</span>-items to <span class="inline_code">Classifier.train()</span>. The weight can be word frequency + an additional rating,&nbsp;for example to emphasize words in the review title or the e-mail subject.&nbsp;</p>
 <p><span class="smallcaps"><br />Unsupervised</span></p>
-<p>Features (i.e., terms/words) can also be selected automatically using a statistical method. Pattern uses Kullback-Leibler distance (or <em>relative entropy)</em>.&nbsp;<span class="inline_code">Corpus.relative_entropy()</span>&nbsp;yields a value indicating how distinct two given features are in the corpus. This value is used in <span class="inline_code">Corpus.feature_selection()</span>&nbsp;to compute a list of the most distinct (or "original") features. Calculating entropy takes some time, but the results are cached and stored with <span class="inline_code">Corpus.save()</span>.&nbsp;</p>
+<p>Features (i.e., terms/words) can also be selected automatically using a statistical method. Pattern uses information gain (i.e.,&nbsp;entropy<em>)</em>.&nbsp;<span class="inline_code">Corpus.information_gain()</span>&nbsp;yields a value indicating how predictable a feature is in the corpus. This value is used in <span class="inline_code">Corpus.feature_selection()</span>&nbsp;to compute a list of the most unpredictable (or "original") features.&nbsp;</p>
 <p><span class="inline_code">Corpus.filter()</span>&nbsp;returns a corpus with only the given features. If you pass the return value from <span class="inline_code">Corpus.feature_selection()</span>&nbsp;you get a new corpus with the top original terms (e.g., 100 vs. 2,500).</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">f = corpus1.feature_selection(top=100)
 corpus2 = corpus1.filter(features=f) 
 </pre></div>
 <p>Less terms means less computation time. However, there can be a drop in recall (there are less features). However, accuracy scores can also increase since the "noisy" features were removed.</p>
-<h3>Support vector machine</h3>
-<p>The most robust classifier is <span class="inline_code">SVM</span>. It relies on the fast&nbsp;<a href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/" target="_blank">libsvm</a>&nbsp;C++ library. Precompiled bindings are included for Windows and Mac OS X 32-bit, and Mac OS X and Ubuntu 64-bit. These may not work on your system. In this case you need to compile the bindings from source (see the instructions in&nbsp;<span class="inline_code">pattern/vector/svm/INSTALL.txt</span>).&nbsp;</p>
+<h3><a name="svm"></a>Support vector machine</h3>
+<p>The most robust classifier is <span class="inline_code">SVM</span>. It relies on the fast&nbsp;<a href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/" target="_blank">libsvm</a>&nbsp;C++ library. Precompiled bindings are included for 32-bit Windows and Mac OS X, and 64-bit Mac OS X and Ubuntu. These may not work on your system. In this case you need to compile the bindings from source (see the instructions in&nbsp;<span class="inline_code">pattern/vector/svm/INSTALL.txt</span>).&nbsp;</p>
 <p>The SVM classifier uses&nbsp;<em>kernel</em> functions. The simplest way to divide two clusters of points in 2D is a straight line. If that is not possible, moving the points to a higher dimension (using a kernel function) may make separation easier (using <em>hyperplanes</em>).</p>
 <table class="border">
 <tbody>
@@ -574,6 +580,11 @@ corpus2 = corpus1.filter(features=f)
 <td>100</td>
 <td>Cache memory size in MB.&nbsp;</td>
 </tr>
+<tr>
+<td><span class="inline_code"><span class="inline_code">probability</span></span></td>
+<td class="inline_code">False</td>
+<td><span class="inline_code">CLASSIFICATION</span> yields&nbsp;<span class="inline_code">(weight, class)</span>&nbsp;values.</td>
+</tr>
 </tbody>
 </table>
 <table class="border">
@@ -596,7 +607,7 @@ corpus2 = corpus1.filter(features=f)
 <tr>
 <td><span class="inline_code">RADIAL</span></td>
 <td>curved path</td>
-<td><span class="inline_code">exp(-gamma * |u-v| ** 2)</span></td>
+<td><span class="inline_code">exp(-gamma * abs(u-v) ** 2)</span></td>
 </tr>
 </tbody>
 </table>
@@ -607,6 +618,7 @@ corpus2 = corpus1.filter(features=f)
 <li><a href="http://orange.biolab.si/" target="_blank">Orange</a> (GPL): d<span>ata mining &amp; machine learning in Python, with a node-based GUI.</span></li>
 <li><span><a href="http://pybrain.org/" target="_blank">PyBrain</a> (BSD): p</span><span>owerful machine learning algorithms in Python + C.</span></li>
 <li><a href="http://www.scipy.org/" target="_blank">SciPy</a><span> (BSD): scientific computing tools for Python.</span></li>
+<li><span><a href="http://scikit-learn.org/" target="_blank">scikit-learn</a> (BSD): machine learning algorithms tightly knit with numpy, scipy, matplotlib.</span></li>
 </ul>
 </div>
 </div></div>

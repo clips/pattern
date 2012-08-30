@@ -48,7 +48,7 @@
 <p>&nbsp;</p>
 <hr />
 <h2><a name="introduction"></a>Searching + matching in a nutshell</h2>
-<p>The <span class="inline_code">search()</span> command takes a word (or a sequence of words) that you want to retrieve from a string. It returns a list of non-overlapping matches. The <span class="inline_code">match()</span> command returns the first match (or <span class="inline_code">None</span>). The <span class="inline_code">compile()</span> command returns a <span class="inline_code">Pattern</span> object with a <span class="inline_code">search()</span> and <span class="inline_code">match()</span> method.</p>
+<p>The <span class="inline_code">search()</span> function takes a word (or a sequence of words) that you want to retrieve from a string. It returns a list of non-overlapping matches. The <span class="inline_code">match()</span> function returns the first match (or <span class="inline_code">None</span>). The <span class="inline_code">compile()</span> function returns a <span class="inline_code">Pattern</span> object with a <span class="inline_code">Pattern.search()</span> and <span class="inline_code">Pattern.match()</span> method.</p>
 <pre class="brush:python; gutter:false; light:true;">search(pattern, sentence)</pre><pre class="brush:python; gutter:false; light:true;">match(pattern, sentence)</pre><pre class="brush:python; gutter:false; light:true;">compile(pattern)</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import search
 &gt;&gt;&gt; print search(&#39;rabbit&#39;, &#39;big white rabbit&#39;)
@@ -105,14 +105,15 @@ Sentence(&#39;A/DT/B-NP/O/a field/NN/I-NP/O/field of/IN/B-PP/B-PNP/of&#39;
 
 [Match(words=[Word(u&#39;white/JJ&#39;), Word(u&#39;daffodils/NNS&#39;)])]
 </pre></div>
-<p>Since the pattern has <span class="inline_code">"FLOWER"</span> in uppercase, it is recognized as the taxonomic category (<em>rose</em> + <em>lily</em> + <em>daisy</em> + <em>daffodil</em> + <em>begonia</em>) instead of the word <em>flower</em>. The parser will compute word lemmata, so that <em>daffodils</em> is recognized as the plural form of <em>daffodil</em> (the lemma), and therefore part of <span class="postag">FLOWER</span>.</p>
-<p>Note that the returned match is actually <em>white daffodils</em>. This is because (by default) the system assumes that you are underspecifying: <em>white daffodils</em> is a more specified version of <em>daffodil</em>, so the whole chunk is returned.</p>
+<p>Since the pattern has <span class="inline_code">"FLOWER"</span> in uppercase, it is recognized as the taxonomic category (rose + lily + daisy + daffodil + begonia) instead of the word "flower". The parser will compute word lemmata, so that "daffodils" is recognized as the plural form of "daffodil" (the lemma), and therefore part of <span class="postag">FLOWER</span>.</p>
+<p>Note that the returned match is actually "white daffodils". This is because (by default) the system assumes that you are underspecifying: <em>white daffodils</em> is a more specified version of <em>daffodil</em>, so the whole chunk is returned.</p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="pattern"></a>Pattern</h2>
 <p>A <span class="inline_code">Pattern</span> is a sequence of constraints that matches certain phrases in a (parsed) sentence. Each <span class="inline_code">Constraint</span> can match a word in the sentence. If&nbsp; a number of successive words corresponds to the entire sequence, the phrase is a match.</p>
-<p>Constraints can be constructed for grammatical syntax (e.g. <em>any adjective</em>) and semantics (e.g. <em>any product</em>). For example: <span class="inline_code">Pattern.fromstring("NP be * than NP")</span>, where <span class="postag">NP</span> means <em>any noun phrase</em>, matches phrases such as <em>a cat is faster than a dog</em> and <em>G. I. Joe was cooler than He-Man</em>.<em>&nbsp;</em></p>
+<p>Constraints can be constructed for grammatical syntax (e.g., any adjective) and semantics (e.g.,&nbsp;any product). For example: <span class="inline_code">Pattern.fromstring("NP be * than NP")</span>, where <span class="postag">NP</span> means <em>any noun phrase</em>, matches phrases such as "a cat is faster than a dog" and "G. I. Joe was cooler than He-Man".<em>&nbsp;</em></p>
 <pre class="brush:python; gutter:false; light:true;">pattern = Pattern(sequence=[])</pre><pre class="brush:python; gutter:false; light:true;">pattern = Pattern.fromstring(string, taxonomy=TAXONOMY)</pre><pre class="brush:python; gutter:false; light:true;">pattern.sequence            # List of Constraint objects.
+pattern.groups              # List of groups, each a list of Constraint objects.
 pattern.strict              # Disable underspecification (chunk head matching)?
 pattern.greedy              # lambda chunk, constraint: True </pre><pre class="brush:python; gutter:false; light:true;">pattern.search(sentence)
 pattern.match(sentence, start=0)</pre><ul>
@@ -125,7 +126,7 @@ pattern.match(sentence, start=0)</pre><ul>
 <p>A constraint matches a range of (tagged) words and taxonomy terms. For example:</p>
 <ul>
 <li><span class="inline_code">Constraint.fromstring('with|of')</span> matches either "with" or "of".</li>
-<li><span class="inline_code">Constraint.fromstring('(JJ)')</span> matches any adjective, but it is optional.</li>
+<li><span class="inline_code">Constraint.fromstring('JJ?')</span> matches any adjective tagged <span class="postag">JJ</span>, but it is optional.</li>
 <li><span class="inline_code">Constraint.fromstring('NP|SBJ')</span> matches subject noun phrases.</li>
 <li><span class="inline_code">Constraint.fromstring('QUANTITY|QUALITY')</span> matches quantity-type and quality-type taxa.</li>
 </ul>
@@ -152,7 +153,7 @@ constraint.multiple         # True =&gt; matches one or more words.
 constraint.first            # True =&gt; can only match first word.
 constraint.exclude          # None, or Constraint of disallowed options.</pre><pre class="brush:python; gutter:false; light:true;">constraint.match(word)</pre><h3>Constraint string syntax</h3>
 <p><span class="inline_code">Constraint.fromstring()</span> returns a new <span class="inline_code">Constraint</span> from the given string. It takes the same optional parameters as the constructor. Uppercase words in the given string indicate either a part-of-speech tag (e.g. <span class="postag">NN</span>, <span class="postag">JJ</span>, <span class="postag">VP</span>) or a taxonomy term (e.g. <span class="postag">PRODUCT</span>, <span class="postag">PERSON</span>). <a href="MBSP-tags.html" target="_blank">Here</a> is an overview of all part-of-speech tags. The search itself is case-insensitive.</p>
-<p>Some characters like <span class="inline_code">|</span> or <span class="inline_code">(</span> are special. They affect how the regular expressions around them are interpreted:</p>
+<p>Some characters like <span class="inline_code">|</span> or <span class="inline_code">?</span> are special. They affect how the regular expressions around them are interpreted:</p>
 <table class="border">
 <tbody>
 <tr>
@@ -163,12 +164,17 @@ constraint.exclude          # None, or Constraint of disallowed options.</pre><p
 <tr>
 <td style="text-align: center;"><span class="inline_code">(</span></td>
 <td><span class="inline_code">(JJ)</span></td>
-<td>Wrapper for an optional constraint.</td>
+<td>Wrapper for an optional constraint (deprecated).</td>
 </tr>
 <tr>
 <td style="text-align: center;"><span class="inline_code">[</span></td>
 <td><span class="inline_code">[Mac OS X | Windows Vista]</span></td>
 <td>Wrapper for a constraint that has spaces.<span class="inline_code">&nbsp;</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">{</span></td>
+<td><span class="inline_code">DT {JJ?+} NN</span></td>
+<td>Wrapper for match&nbsp;groups, e.g., <span class="inline_code">Match.group(1)</span>.</td>
 </tr>
 <tr>
 <td style="text-align: center;"><span class="inline_code">_</span></td>
@@ -188,11 +194,16 @@ constraint.exclude          # None, or Constraint of disallowed options.</pre><p
 <tr>
 <td style="text-align: center;"><span class="inline_code">!</span></td>
 <td><span class="inline_code">!be|VB*</span></td>
-<td>Used in front of options that are <span style="text-decoration: underline;">not</span> allowed.</td>
+<td>Used in front of words/tags that are <span style="text-decoration: underline;">not</span> allowed.</td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">?</span></td>
+<td><span class="inline_code">JJ?</span></td>
+<td>Used as a suffix: constraint is optional.</td>
 </tr>
 <tr>
 <td style="text-align: center;"><span class="inline_code">+</span></td>
-<td><span class="inline_code">RB|JJ+</span> or <span class="inline_code">(JJ)+</span> or <span class="inline_code">*+</span></td>
+<td><span class="inline_code">RB|JJ+</span> or <span class="inline_code">JJ?+</span> or <span class="inline_code">*+</span></td>
 <td>Used as a suffix: constraint can span multiple words.<span class="inline_code">&nbsp;</span></td>
 </tr>
 <tr>
@@ -202,7 +213,7 @@ constraint.exclude          # None, or Constraint of disallowed options.</pre><p
 </tr>
 </tbody>
 </table>
-<p>These characters need to be escaped if used as content: <span class="inline_code">"\("</span>.<br />You can use the module's <span class="inline_code">escape()</span> function: <span class="inline_code">escape("hi!")</span> =&gt; <span class="inline_code">"hi\!"</span>.&nbsp;</p>
+<p>These characters need to be escaped if used as content: <span class="inline_code">"\?"</span>.<br />You can use the module's <span class="inline_code">escape()</span> function: <span class="inline_code">escape("hello?")</span> =&gt; <span class="inline_code">"hello\?"</span>.&nbsp;</p>
 <h3>Constraint matching</h3>
 <p><span class="inline_code">Constraint.match()</span> returns <span class="inline_code">True</span> if the given string or <span class="inline_code">Word</span> is part of the constraint:</p>
 <ul>
@@ -216,18 +227,19 @@ constraint.exclude          # None, or Constraint of disallowed options.</pre><p
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import Pattern
 &gt;&gt;&gt; from pattern.en import parse, Sentence
 &gt;&gt;&gt; s = Sentence(parse(&#39;tasty cat food&#39;))
-&gt;&gt;&gt; p = Pattern.fromstring(&#39;(DT) (RB) (JJ) NN+&#39;)
+&gt;&gt;&gt; p = Pattern.fromstring(&#39;DT? RB? JJ? NN+&#39;)
 &gt;&gt;&gt; print s
 &gt;&gt;&gt; print
 &gt;&gt;&gt; print p.search(s)
 
 Sentence(&#39;tasty/JJ/B-NP/O cat/NN/I-NP/O food/NN/I-NP/O&#39;)
 
-[Match(words=[Word(u&#39;tasty/JJ&#39;), Word(u&#39;cat/NN&#39;)]), Match(words=[Word(u&#39;food/NN&#39;)])]</pre></div>
-<p>The pattern looks for successive nouns (<span class="postag">NN</span>), but it will also include a preceding determiner (<span class="postag">DT</span>), adverb (<span class="postag">RB</span>) and adjective (<span class="postag">JJ</span>). It matches anything from <em>food</em> to<em>&nbsp;</em> <em>cat food</em>, <em>tasty food</em>, <em>the tasty cat food</em>, etc.</p>
+[Match(words=[Word(u&#39;tasty/JJ&#39;), Word(u&#39;cat/NN&#39;)]), 
+ Match(words=[Word(u&#39;food/NN&#39;)])]</pre></div>
+<p>The pattern looks for successive nouns (<span class="postag">NN</span>), but it will also include a preceding determiner (<span class="postag">DT</span>), adverb (<span class="postag">RB</span>) and adjective (<span class="postag">JJ</span>). It matches anything from <em>food</em> to&nbsp;<em>cat food</em>, <em>tasty food</em>, <em>the tasty cat food</em>, etc.</p>
 <h3>Constraint underspecification</h3>
-<p>The <a href="pattern-en.html#parser">parser</a> in <span class="inline_code">pattern.en</span> groups words that belong together into chunks. For example, <em>the black cat</em> is one chunk, tagged <span class="postag">NP</span> (noun phrase). The head of the chunk is <em>cat</em>. By default, the pattern matching algorithm will compare a <span class="inline_code">Sentence</span> on the chunk head. Thus, if you look for <em>cat</em> and the sentence has <em>a big black cat</em>, the entire chunk will be returned. The extra words in the chunk contain important information about how the cat looks and feels, a personal opinion (<em>that darn cat</em>), etc. You can tweak which chunks are matched with a custom <span class="inline_code">Pattern.greedy</span> function.</p>
-<p>This behavior can be disabled by passing a <span class="inline_code">STRICT</span> flag to <span class="inline_code">Pattern</span>, <span class="inline_code">compile()</span>, <span class="inline_code">search()</span> or <span class="inline_code">match()</span>.</p>
+<p>The <a href="pattern-en.html#parser">parser</a> in <span class="inline_code">pattern.en</span> groups words that belong together into chunks. For example, <em>the black cat</em> is one chunk, tagged <span class="postag">NP</span> (noun phrase). The head of the chunk is <em>cat</em>. By default, the pattern matching algorithm will compare a <span class="inline_code">Sentence</span> on the chunk head. Thus, if you look for <em>cat</em> and the sentence has <em>a big black cat</em>, the entire chunk will be returned. The extra words in the chunk contain important information about how the cat looks and feels, an opinion (<em>my silly cat</em>), etc. Expert users can tweak which chunks are matched with a custom <span class="inline_code">Pattern.greedy</span> function.</p>
+<p>The behavior can be disabled by passing a <span class="inline_code">STRICT</span> flag to <span class="inline_code">Pattern</span>, <span class="inline_code">compile()</span>, <span class="inline_code">search()</span> or <span class="inline_code">match()</span>:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import Pattern
 &gt;&gt;&gt; from pattern.en import parse, Sentence
@@ -258,21 +270,23 @@ Sentence(&#39;The/DT/B-NP/O black/JJ/I-NP/O cat/NN/I-NP/O is/VBZ/B-VP/O&#39;
 match.words                 # List of Word objects.
 match.string                # String of words separated with a space.
 match.start                 # Index of first word in sentence.
-match.stop                  # Index of last word in sentence + 1.</pre><pre class="brush:python; gutter:false; light:true;">match.constraint(word)
+match.stop                  # Index of last word in sentence + 1.</pre><pre class="brush:python; gutter:false; light:true;">match.group(index, chunked=False)
+match.constraint(word)
 match.constraints(chunk)
 match.constituents(constraint=None)</pre><ul>
+<li><span class="inline_code">Match.group()</span>&nbsp;returns a list of <span class="inline_code">Words</span> matching the constraints in a <span class="inline_code">{</span> <span class="inline_code">}</span> group.</li>
 <li><span class="inline_code">Match.constraint()</span> returns the <span class="inline_code">Constraint</span> that matched the given <span class="inline_code">Word</span>, or None.</li>
 <li><span class="inline_code">Match.constraints()</span> returns the list of constraints that matched the given <span class="inline_code">Chunk</span>.</li>
-<li><span class="inline_code">Match.constituents()</span> returns a list of <span class="inline_code">Word</span> and <span class="inline_code">Chunk</span> objects, with successive words grouped into their chunks whenever possible. Optionally, returns only chunks/words that matched the given <span class="inline_code">Constraint</span>, (or list of constraints or constraint index). Chunks are only available if a <span class="inline_code">Sentence</span> was searched (i.e. not for plain string).</li>
+<li><span class="inline_code">Match.constituents()</span> returns a list of <span class="inline_code">Word</span> and <span class="inline_code">Chunk</span> objects, with successive words grouped into their chunks whenever possible. Optionally, returns only chunks/words that matched the given <span class="inline_code">Constraint</span>, (or list of constraints or constraint index). Chunks are only available if a <span class="inline_code">Sentence</span> was given (i.e., not for plain strings).</li>
 </ul>
 <div class="example">
-<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; p = Pattern.fromstring(&#39;NP be (more) ADJP|ADVP than NP&#39;)
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; p = Pattern.fromstring(&#39;NP be more? ADJP|ADVP than NP&#39;)
 &gt;&gt;&gt; s = Sentence(parse(&#39;the turtle was faster than the hare&#39;, lemmata=True))
 &gt;&gt;&gt; m = p.match(s)
 &gt;&gt;&gt; print s
 &gt;&gt;&gt; print
 &gt;&gt;&gt; for w in m.words:
-&gt;&gt;&gt;    print w, &#39; 	=&gt;&#39;, m.constraint(w)
+&gt;&gt;&gt;    print w, &#39;\t =&gt;&#39;, m.constraint(w)
 
 Sentence(&#39;the/DT/B-NP/O/the turtle/NN/I-NP/O/turtle was/VBD/B-VP/O/be&#39;
          &#39;faster/RBR/B-ADVP/O/faster than/IN/B-PP/B-PNP/than the/DT/B-NP/I-PNP/the&#39;
@@ -286,7 +300,19 @@ Word(u&#39;than/IN&#39;)    =&gt; Constraint(words=[&#39;than&#39;])
 Word(u&#39;the/DT&#39;)     =&gt; Constraint(chunks=[&#39;NP&#39;])
 Word(u&#39;hare/NN&#39;)    =&gt; Constraint(chunks=[&#39;NP&#39;])
 </pre></div>
-<p>Each <span class="inline_code">Word</span> in a <span class="inline_code">Match</span> has the following attributes:</p>
+<p>Match groups offer a convenient way to retrieve what you need from a <span class="inline_code">Match</span>:</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; s = Sentence(parse(&#39;the big black dog&#39;))
+&gt;&gt;&gt; p = Pattern.fromstring(&#39;DT {JJ?+ NN}&#39;)
+&gt;&gt;&gt; m = p.match(s)
+&gt;&gt;&gt; print m.group(0) # full pattern
+&gt;&gt;&gt; print m.group(1) # {JJ?+ NN}
+&gt;&gt;&gt; print m.group(1).string
+
+[Word(u&#39;the/DT&#39;), Word(u&#39;big/JJ&#39;), Word(u&#39;black/JJ&#39;), Word(u&#39;dog/NN&#39;)]
+[Word(u&#39;big/JJ&#39;), Word(u&#39;black/JJ&#39;), Word(u&#39;dog/NN&#39;)]
+&#39;big black dog&#39;</pre></div>
+<p>Each <span class="inline_code">Word</span> in a <span class="inline_code">Match</span>&nbsp;or <span class="inline_code">Match.group()</span> has the following attributes:</p>
 <pre class="brush:python; gutter:false; light:true;">word = Word(sentence, string, tag=None, index=0)</pre><pre class="brush:python; gutter:false; light:true;">word.string
 word.tag                    # Part-of-speech tag (e.g. NN, JJ).
 word.sentence               # Sentence (a list of successive Words).
@@ -295,7 +321,7 @@ word.index                  # Sentence index.
 <p>&nbsp;</p>
 <hr />
 <h2><a name="taxonomy"></a>Taxonomy</h2>
-<p>A taxonomy is a hierarchical tree of words classified by semantic type. For example: <em>begonia</em> is a <em>flower</em>, <em>flower</em> is a <em>plant</em>. Taxonomy terms can be used in a constraint: <span class="inline_code">"FLOWER"</span> will match <em>flower</em> as well as <em>begonia</em>, or any other flower that has been defined in the taxonomy. By default, constraints will look up terms in the global <span class="inline_code">taxonomy</span>.</p>
+<p>A taxonomy is a hierarchical tree of words classified by semantic type. For example: <em>begonia</em> is a <em>flower</em>, a&nbsp;<em>flower</em> is a <em>plant</em>. Taxonomy terms can be used in a constraint: <span class="inline_code">"FLOWER"</span> will match "flower" as well as "begonia", or any other flower that has been defined in the taxonomy. By default, constraints will look up terms in the global <span class="inline_code">taxonomy</span>.</p>
 <pre class="brush:python; gutter:false; light:true;">taxonomy = Taxonomy()</pre><pre class="brush:python; gutter:false; light:true;">taxonomy.case_sensitive     # False by default.
 taxonomy.classifiers        # List of Classifier objects.</pre><pre class="brush:python; gutter:false; light:true;">taxonomy.append(term, type=None, value=None)
 taxonomy.remove(term)</pre><pre class="brush:python; gutter:false; light:true;">taxonomy.classify(term)
@@ -356,7 +382,7 @@ classifier.value            # Returns value for a term, or None.
 <pre class="brush:python; gutter:false; light:true;">unique(list)          # Returns a new list with unique items.</pre><pre class="brush:python; gutter:false; light:true;">find(function, list)  # Returns first item for which function(item) is True.</pre><pre class="brush:python; gutter:false; light:true;">combinations(list, n) # Returns a generator of all combinations of length n.</pre><pre class="brush:python; gutter:false; light:true;">variations(list, optional=lambda item: False)</pre><pre class="brush:python; gutter:false; light:true;">odict(data, reversed=False)</pre><ul>
 <li><span class="inline_code">combinations()</span> returns a generator of all combinations of length <span class="inline_code">n</span> of the items in the list. <br />For example: <span class="inline_code">list(combinations([1,2,3), n=2))</span> yields:<br /><span class="inline_code">[[1,1], [1,2], [1,3], [2,1], [2,2], [2,3], [3,1], [3,2], [3,3]]</span>.</li>
 <li><span class="inline_code">variations()</span> returns all variations of a list containing optional items (in-order).</li>
-<li><span class="inline_code">odict()</span> is a dictionary with ordered keys – like a stack.<br />With <span class="inline_code">reversed=True</span>, the latest keys will be returned first when traversing the dictionary.<br /><span class="inline_code">odict.append()</span> takes a <span class="inline_code">(key,value)</span>-tuple and sets the given key to the given value. If the key exists, pushes the updated item to the head (or tail) of the dictionary.</li>
+<li><span class="inline_code">odict()</span> is a dictionary with ordered keys – like a stack.<br />With <span class="inline_code">reversed=True</span>, the latest keys will be returned first when traversing the dictionary.<br /><span class="inline_code">odict.append()</span> takes a <span class="inline_code">(key, value)</span>-tuple and sets the given key to the given value. If the key exists, pushes the updated item to the head (or tail) of the dictionary.</li>
 </ul>
 </div>
 </div></div>

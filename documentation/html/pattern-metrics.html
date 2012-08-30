@@ -33,7 +33,7 @@
         <div id="node-1405" class="node node-type-page"><div class="node-inner">
 <div class="content">
 <p><span class="big">The pattern.metrics module is a loose collection of performance and accuracy measurements, including tools for profiling the speed of Python functions, precision and recall for classifiers, agreement across different voters (Fleiss), string similarity (Levenshtein + Dice), string readability (Flesch), descriptive statistics.</span></p>
-<p>It can be used by itself or with other&nbsp;<a href="pattern.html">pattern</a>&nbsp;modules:&nbsp;<a href="pattern-web.html">web</a>&nbsp;|&nbsp;<a href="pattern-table.html">table</a>&nbsp;|&nbsp;<a href="pattern-en.html">en</a>&nbsp;|&nbsp;<a href="pattern-search.html">search</a>&nbsp;<span class="blue">&nbsp;</span>| <a href="pattern-vector.html">vector</a> |&nbsp;<a href="pattern-graph.html">graph</a>.</p>
+<p>It can be used by itself or with other&nbsp;<a href="pattern.html">pattern</a>&nbsp;modules:&nbsp;<a href="pattern-web.html">web</a>&nbsp;|&nbsp;<a href="pattern-db.html">db</a>&nbsp;|&nbsp;<a href="pattern-en.html">en</a>&nbsp;|&nbsp;<a href="pattern-search.html">search</a>&nbsp;<span class="blue">&nbsp;</span>| <a href="pattern-vector.html">vector</a> |&nbsp;<a href="pattern-graph.html">graph</a>.</p>
 <p><img src="../g/pattern_schema.gif" alt="" width="620" height="180" /></p>
 <hr />
 <h2>Documentation</h2>
@@ -173,7 +173,7 @@
 <p>In mathematics, an&nbsp;<em>average</em> is a measure of the "middle" of a data set (or <em>sample</em>, usually a list of numbers). An average can be calculated in different ways, but commonly the&nbsp;<em>mean</em> is used. The arithmetic mean is the sum of the values divided by the sample size: [<span class="inline_code">1,2,4] → 1+2+4 / 3 = 2.3</span>.&nbsp;Another average measure is the <em>median</em>, found by sorting the values from lowest to highest value and picking the middle one: <span class="inline_code">[1,2,4] → 2</span>.&nbsp;</p>
 <p>The <em>standard deviation</em> measures the amount of variation in a sample. Low standard deviation means the values tend to be close to the mean. If you draw it, you get a steep, narrow curve. High standard deviation means the values are spread out over a large range. If you draw it you get a flat, wide curve.</p>
 <pre class="brush:python; gutter:false; light:true;">mean(list)                    # [1, 2, 4] =&gt; 2.33</pre><pre class="brush:python; gutter:false; light:true;">median(list)                  # [1, 2, 4] =&gt; 2</pre><pre class="brush:python; gutter:false; light:true;">variance(list, sample=True)   # Use sample=False for population variance.</pre><pre class="brush:python; gutter:false; light:true;">stdev(list)                   # [1, 2, 4] =&gt; 1.53</pre><p><span class="smallcaps"><br />Histogram</span></p>
-<p>A <em>histogram</em> divides a list of numbers into intervals. This gives an idea of the distribution of the data: which interval has the most values? Are there more values in lower intervals? The <span class="inline_code">histogram()</span> command returns a dictionary with <span class="inline_code">k</span> items: <span class="inline_code">{(start, stop): [values], ...}</span>, with equal <span class="inline_code">(start, stop)</span> intervals between <span class="inline_code">min(list)</span> and <span class="inline_code">max(list)</span>.</p>
+<p>A <em>histogram</em> divides a list of numbers into intervals. This gives an idea of the distribution of the data: which interval has the most values? Are there more values in lower intervals? The <span class="inline_code">histogram()</span> function returns a dictionary with <span class="inline_code">k</span> items: <span class="inline_code">{(start, stop): [values], ...}</span>, with equal <span class="inline_code">(start, stop)</span> intervals between <span class="inline_code">min(list)</span> and <span class="inline_code">max(list)</span>.</p>
 <pre class="brush:python; gutter:false; light:true;">histogram(list, k=10, range=None)</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; s = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9]
 &gt;&gt;&gt; for (i,j), values in sorted(histogram(s, k=4).items()):
@@ -187,7 +187,7 @@
 <p><span class="smallcaps"><br />Moment</span></p>
 <p>A <em>moment</em> is a measure of the "shape" of a list of numbers. For example, the 2nd moment (which is the <em>variance</em>) measures the width.&nbsp;The 3rd moment measures&nbsp;<em>skewness</em>&nbsp;or asymmetry of the sample. If &gt; 0.0, relatively few values are higher than the mean. If &lt; 0.0, relatively few values are lower than the mean.&nbsp;The 4th moment measures&nbsp;<em>kurtosis</em> or peakedness of the sample. If &gt; 0.0, there is a sharp peak around the mean (more infrequent / extreme values). If &lt; 0.0 there is a wide peak around the mean.</p>
 <pre class="brush:python; gutter:false; light:true;">moment(list, k=1)</pre><pre class="brush:python; gutter:false; light:true;">skewness(list)</pre><pre class="brush:python; gutter:false; light:true;">kurtosis(list)</pre><p><span class="smallcaps"><br />Quantile</span></p>
-<p>The <span class="inline_code">quantile()</span> command returns the interpolated value from a sorted list of numbers at point <span class="inline_code">p</span> (0.0-1.0). The optional parameters <span class="inline_code">a</span>, <span class="inline_code">b</span>, <span class="inline_code">c</span>, <span class="inline_code">d</span> refer to the algorithm by Hyndman and Fan <a href="http://stat.ethz.ch/R-manual/R-patched/library/stats/html/quantile.html" target="_blank">[1]</a>. Quantiles can be used to create&nbsp;a <em>box plot</em>, useful for identifying&nbsp;<em>outliers</em>.&nbsp;For example: if a sample of temperature in your household comprises you (37°C), the cat (38°C),&nbsp;the refrigerator (5°C) and the oven (220°C) then the average temperature is 75°C, which of course is incorrect since the oven is an outlier.&nbsp;The <span class="inline_code">boxplot()</span> command returns a <span class="inline_code">(min, Q1, Q2, Q3, max)</span>-tuple for a given list of numbers, where <span class="inline_code">Q2</span> is the median, <span class="inline_code">Q1</span> is the lower 25-50% and <span class="inline_code">Q3</span> is the upper 50-75%.</p>
+<p>The <span class="inline_code">quantile()</span> function returns the interpolated value from a sorted list of numbers at point <span class="inline_code">p</span> (0.0-1.0). The optional parameters <span class="inline_code">a</span>, <span class="inline_code">b</span>, <span class="inline_code">c</span>, <span class="inline_code">d</span> refer to the algorithm by Hyndman and Fan <a href="http://stat.ethz.ch/R-manual/R-patched/library/stats/html/quantile.html" target="_blank">[1]</a>. Quantiles can be used to create&nbsp;a <em>box plot</em>, useful for identifying&nbsp;<em>outliers</em>.&nbsp;For example: if a sample of temperature in your household comprises you (37°C), the cat (38°C),&nbsp;the refrigerator (5°C) and the oven (220°C) then the average temperature is 75°C, which of course is incorrect since the oven is an outlier.&nbsp;The <span class="inline_code">boxplot()</span>&nbsp;function returns a <span class="inline_code">(min, Q1, Q2, Q3, max)</span>-tuple for a given list of numbers, where <span class="inline_code">Q2</span> is the median, <span class="inline_code">Q1</span> is the lower 25-50% and <span class="inline_code">Q3</span> is the upper 50-75%.</p>
 <pre class="brush:python; gutter:false; light:true;">quantile(list, p=0.5, sort=True, a=1, b=-1, c=0, d=1)</pre><pre class="brush:python; gutter:false; light:true;">boxplot(list)</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; s = [5, 37, 38, 220)
 &gt;&gt;&gt; print boxplot(s)
@@ -201,6 +201,69 @@
 </tbody>
 </table>
 <p><span class="small"><span style="text-decoration: underline;">Reference</span>: Adorio E. (2008)&nbsp;http://adorio-research.org/wordpress/?p=125</span></p>
+<p>&nbsp;</p>
+<hr />
+<h2>Statistical tests&nbsp;</h2>
+<p>A statistical hypothesis test is a method used to verify if sample data is evenly distributed (= the <em>null hypothesis</em>). For example: 96 subjects were asked about their pet. 29/46 men reported owning a dog, while 30/50 women reported owning a cat (fictious). Is gender correlated to pet ownership, in other words should we reject the null hypothesis?</p>
+<p><span class="smallcaps">&nbsp;<br />Fisher's exact test</span></p>
+<p>The <span class="inline_code">fisher_test()</span> function is a fast implementation of Fisher's exact test (two-tailed), using the hypergeometric distribution. It returns significance <span class="inline_code">P</span> for the 2 x 2 contingency table, where <span class="inline_code">P</span> <span class="inline_code">&lt;</span> <span class="inline_code">0.05</span>&nbsp;is significant and&nbsp;<span class="inline_code">P</span> <span class="inline_code">&lt;</span> <span class="inline_code">0.01</span>&nbsp;is very significant.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">fisher_test(a, b, c, d)</pre><div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; print fisher_test(a=17, b=30, c=29, d=20)
+
+0.027</pre></div>
+<p>Suppose the data represents pet ownership:</p>
+<table class="border" style="width: 50%;">
+<tbody>
+<tr>
+<td>&nbsp;</td>
+<td class="smallcaps" style="text-align: center;">Men</td>
+<td class="smallcaps" style="text-align: center;">Women</td>
+</tr>
+<tr>
+<td class="smallcaps" style="text-align: right;">cat owner</td>
+<td style="text-align: center;">17</td>
+<td style="text-align: center;">30</td>
+</tr>
+<tr>
+<td class="smallcaps" style="text-align: right;">dog owner</td>
+<td style="text-align: center;">29</td>
+<td style="text-align: center;">20</td>
+</tr>
+</tbody>
+</table>
+<p>Since <span class="inline_code">P=0.027</span>&nbsp;<span class="inline_code">&lt;</span> <span class="inline_code">0.05</span>, the test shows a significant correlation between gender and pet ownership.</p>
+<p><span class="smallcaps">&nbsp;<br />Chi-squared test</span></p>
+<p>The <span class="inline_code">chi2()</span> function is a fast implementation of Pearson's chi-squared test. It returns an<span class="inline_code"> (X2, P)</span>-tuple for the <span class="inline_code">n</span> x <span class="inline_code">m</span> observed and expected data (containing absolute frequencies). Likewise, the <span class="inline_code">llr()</span> function returns the log-likelihood ratio as a <span class="inline_code">(G, P)</span>-tuple. With <span class="inline_code">expected=None</span>, an even distribution over all classes is assumed. If <span class="inline_code">df=None</span>, it is the number of classes-1 (i.e., <span class="inline_code">len(observed)[0] - 1</span>).</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">chi2(observed=[], expected=[], df=None, tail=UPPER) # UPPER | LOWER</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">llr(observed=[], expected=[], df=None, tail=UPPER)  # UPPER | LOWER</pre><div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; observed = [[22, 21, 22, 27, 22, 36]]
+&gt;&gt;&gt; expected = [[25, 25, 25, 25, 25, 25]] # Even distribution.
+&gt;&gt;&gt; print chi2(observed, expected)
+
+(6.72, 0.24)</pre></div>
+<p>Suppose the data represents die rolls:</p>
+<table class="border" style="width: 50%;">
+<tbody>
+<tr>
+<td>&nbsp;</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">6</td>
+</tr>
+<tr>
+<td class="smallcaps">Die rolls</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: center;">27</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: center;">36</td>
+</tr>
+</tbody>
+</table>
+<p>Intuitively, the die appears to roll 6 more often.&nbsp;But&nbsp;<span class="inline_code">P=0.24</span> <span class="inline_code">&gt;</span> <span class="inline_code">0.05</span> is not significant, so there is no reason to reject the null hypothesis that the die is fair.</p>
 </div>
 </div></div>
         </div>

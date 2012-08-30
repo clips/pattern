@@ -534,7 +534,7 @@ view.schema                 # List of field()-items to create the table.</pre><p
 <p>&nbsp;</p>
 <hr />
 <h2><a name="datasheet"></a>Datasheet</h2>
-<p><span class="inline_code">Datasheet</span> is a matrix of rows and columns, where each row and column can be retrieved as a Python list. The data is not stored in a database but can be imported / exported as a CSV-file. Optionally, the given <span class="inline_code">fields</span> is a list of (<span class="inline_code">name</span>, <span class="inline_code">type</span>)-items where <span class="inline_code">type</span> can be <span class="inline_code">STRING</span>, <span class="inline_code">TEXT</span>, <span class="inline_code">INTEGER</span>, <span class="inline_code">FLOAT</span>, <span class="inline_code">BOOLEAN</span>, <span class="inline_code">BLOB</span> or <span class="inline_code">DATE</span>.</p>
+<p><span class="inline_code">Datasheet</span> is a matrix of rows and columns, where each row and column can be retrieved as a Python list. The data is not stored in a database but can be imported / exported as a CSV-file. Optionally, the given <span class="inline_code">fields</span> is a list of <span class="inline_code">(name, type)</span>-items where <span class="inline_code">type</span> can be <span class="inline_code">STRING</span>, <span class="inline_code">TEXT</span>, <span class="inline_code">INTEGER</span>, <span class="inline_code">FLOAT</span>, <span class="inline_code">BOOLEAN</span>, <span class="inline_code">BLOB</span> or <span class="inline_code">DATE</span>.</p>
 <pre class="brush:python; gutter:false; light:true;">datasheet = Datasheet(rows=[], fields=None)</pre><pre class="brush:python; gutter:false; light:true;">datasheet = Datasheet.load(path, separator=&#39;,&#39;, decoder=lambda v: v, headers=False)
 </pre><pre class="brush:python; gutter:false; light:true;">datasheet.rows              # List of rows (each row = list of values).
 datasheet.columns           # List of columns (each column = list of values).
@@ -585,10 +585,10 @@ dog  Taxi     </pre></div>
 2  cat  Hofstadter
 3  dog Taxi</pre></div>
 <p><span class="inline_code">Datasheet.columns.swap()</span> swaps two individual columns with given indices.</p>
-<h3>Helper commands: uid &amp; pprint</h3>
-<p>The <span class="inline_code">pattern.table</span> module has two commands that are useful in combination with a <span class="inline_code">Datasheet</span>:</p>
-<pre class="brush:python; gutter:false; light:true;">uid()</pre><pre class="brush:python; gutter:false; light:true;">pprint(datasheet, truncate=40, padding=&quot; &quot;, fill=&quot;.&quot;)</pre><p>The <span class="inline_code">uid()</span> command returns a unique number, starting from 1, useful for a column index.</p>
-<p>The <span class="inline_code">pprint()</span> command pretty-prints the table, with columns aligned vertically. The <span class="inline_code">truncate</span> parameter defines the maximum column width, <span class="inline_code">padding</span> the spacing between columns and <span class="inline_code">fill</span> the character used for spacing.</p>
+<h3>Helper functions: uid &amp; pprint</h3>
+<p>The <span class="inline_code">pattern.table</span> module has two functions that are useful in combination with a <span class="inline_code">Datasheet</span>:</p>
+<pre class="brush:python; gutter:false; light:true;">uid()</pre><pre class="brush:python; gutter:false; light:true;">pprint(datasheet, truncate=40, padding=&quot; &quot;, fill=&quot;.&quot;)</pre><p>The <span class="inline_code">uid()</span> function returns a unique number, starting from 1, useful for a column index.</p>
+<p>The <span class="inline_code">pprint()</span> function pretty-prints the table, with columns aligned vertically. The <span class="inline_code">truncate</span> parameter defines the maximum column width, <span class="inline_code">padding</span> the spacing between columns and <span class="inline_code">fill</span> the character used for spacing.</p>
 <h3>CSV import &amp; export</h3>
 <p>CSV (c<em>omma-separated values</em>) is a simple text format for tabular data, where each row is a new line and each value is separated by a comma.</p>
 <p><span class="inline_code">Datasheet.save()</span> exports the table as a CSV file.<br /><span class="inline_code">Datasheet.load()</span> returns a&nbsp;<span class="inline_code">Datasheet</span> from a given CSV file.</p>
@@ -612,7 +612,7 @@ dog  Taxi     </pre></div>
 <p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;">&nbsp;</p>
 <hr />
 <h2><a name="date"></a>Date</h2>
-<p>The <span class="inline_code">Date</span> object is a convenient subclass of Python's <span class="inline_code">datetime.datetime</span>.&nbsp;The <span class="inline_code">date()</span> command returns a <span class="inline_code">Date</span> object. A date can be generated from an integer (Unix timestamp), a string or <span class="inline_code">NOW</span>. Optionally, an input format (e.g. <span class="inline_code">"%d/%m/%Y"</span>) and an output format for <span class="inline_code">str()</span> can be given. The default format is <span class="inline_code">"YYYY-MM-DD hh:mm:ss"</span>. Use&nbsp;<span class="inline_code">Date.timestamp</span>&nbsp;to get a Unix timestamp.</p>
+<p>The <span class="inline_code">Date</span> object is a convenient subclass of Python's <span class="inline_code">datetime.datetime</span>.&nbsp;The <span class="inline_code">date()</span> function returns a <span class="inline_code">Date</span> object. A date can be generated from an integer (Unix timestamp), a string or <span class="inline_code">NOW</span>. Optionally, an input format (e.g. <span class="inline_code">"%d/%m/%Y"</span>) and an output format for <span class="inline_code">str()</span> can be given. The default format is <span class="inline_code">"YYYY-MM-DD hh:mm:ss"</span>. Use&nbsp;<span class="inline_code">Date.timestamp</span>&nbsp;to get a Unix timestamp.</p>
 <pre class="brush:python; gutter:false; light:true;">date(int)</pre><pre class="brush:python; gutter:false; light:true;">date(NOW, format=DEFAULT)
 </pre><pre class="brush:python; gutter:false; light:true;">date(string)</pre><pre class="brush:python; gutter:false; light:true;">date(string, format=DEFAULT)</pre><pre class="brush:python; gutter:false; light:true;">date(string, inputformat, format=DEFAULT)</pre><pre class="brush:python; gutter:false; light:true;">date(year, month, day, format=DEFAULT)</pre><pre class="brush:python; gutter:false; light:true;">date(year, month, day, hours, minutes, seconds, format=DEFAULT)</pre><p>If no input format is given, a number of common formats will be tried:</p>
 <table class="border">
@@ -665,7 +665,7 @@ dog  Taxi     </pre></div>
 </table>
 <p>All date formats used in <span class="inline_code">pattern.web</span>&nbsp;(e.g., a Bing search result) are automatically detected.<br />For a full overview of date format syntax, see: <a href="http://docs.python.org/library/time.html#time.strftime" target="_blank">http://docs.python.org/library/time.html#time.strftime</a>.</p>
 <p><span style="font-variant: small-caps;"><br />Date calculations</span></p>
-<p>The <span class="inline_code">time()</span> command can be used to add (or subtract) time to a <span class="inline_code">Date</span>:</p>
+<p>The <span class="inline_code">time()</span> function can be used to add (or subtract) time to a <span class="inline_code">Date</span>:</p>
 <pre class="brush:python; gutter:false; light:true;">time(days=0, seconds=0, minutes=0, hours=0)</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import date, time
 &gt;&gt;&gt; d  = date(&#39;23 august 2011&#39;)

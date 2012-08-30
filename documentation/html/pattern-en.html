@@ -32,7 +32,7 @@
         <!-- Parsed from the online documentation. -->
         <div id="node-1383" class="node node-type-page"><div class="node-inner">
 <div class="content">
-<h3>The pattern.en module contains a fast, regular expressions-based shallow parser (identifies nouns, adjectives, verbs, etc. in a sentence), a WordNet interface and tools for verb conjugation and noun singularization &amp; pluralization.</h3>
+<h3>The pattern.en module contains a fast, regular expressions-based tagger/chunker (identifies nouns, adjectives, verbs, etc. in a sentence), a WordNet interface and tools for sentiment analysis, verb conjugation and noun singularization &amp; pluralization.</h3>
 <p>It can be used by itself or with other <a href="pattern.html">pattern</a> modules: <a href="pattern-web.html">web</a> | <a href="pattern-db.html">db</a>&nbsp;| en | <a href="pattern-search.html">search</a> | <a href="pattern-vector.html">vector</a> | <a href="pattern-graph.html">graph</a>.</p>
 <p><img src="../g/pattern_schema.gif" alt="" width="620" height="180" /></p>
 <hr />
@@ -43,6 +43,7 @@
 <li><a href="#comparative">Comparative + superlative</a></li>
 <li><a href="#conjugation">Verb conjugation</a></li>
 <li><a href="#quantify">Quantification</a></li>
+<li><a href="#spelling">Spelling</a></li>
 <li><a href="#ngram">n-grams</a></li>
 <li><a href="#parser">Parser</a>&nbsp;<span class="smallcaps link-maintenance">(tokenizer, tagger, chunker)</span></li>
 <li><a href="#tree">Parse trees</a></li>
@@ -67,7 +68,7 @@ an hour</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="pluralization"></a>Pluralization + singularization</h2>
-<p>The <span class="inline_code">pluralize()</span> command returns the singular form of a plural noun. It handles 96% of exceptions correctly. The <span class="inline_code">singularize()</span> command returns the plural form of a singular noun. The <span class="inline_code">pos</span> parameter (part-of-speech) can be set to <span class="inline_code">NOUN</span> or <span class="inline_code">ADJECTIVE</span>, but only a small number of possessive adjectives inflect (e.g. <em>my</em> → <em>our</em>). The <span class="inline_code">custom</span> dictionary is for user-defined replacements.</p>
+<p>The <span class="inline_code">pluralize()</span> function returns the singular form of a plural noun. It handles 96% of exceptions correctly. The <span class="inline_code">singularize()</span> function returns the plural form of a singular noun. The <span class="inline_code">pos</span> parameter (part-of-speech) can be set to <span class="inline_code">NOUN</span> or <span class="inline_code">ADJECTIVE</span>, but only a small number of possessive adjectives inflect (e.g. <em>my</em> → <em>our</em>). The <span class="inline_code">custom</span> dictionary is for user-defined replacements.</p>
 <pre class="brush:python; gutter:false; light:true;">pluralize(word, pos=NOUN, custom={}, classical=True)</pre><pre class="brush:python; gutter:false; light:true;">singularize(word, pos=NOUN, custom={})</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import pluralize, singularize
 &gt;&gt;&gt; print pluralize(&#39;child&#39;)
@@ -80,7 +81,7 @@ wolves
 <p>&nbsp;</p>
 <hr />
 <h2><a name="comparative"></a>Comparative + superlative</h2>
-<p>The <span class="inline_code">comparative()</span> and <span class="inline_code">superlative()</span> commands give the comparative or superlative form of an adjective. Words with three or more syllables are simply preceded by <em>more</em> or <em>most</em>.</p>
+<p>The <span class="inline_code">comparative()</span> and <span class="inline_code">superlative()</span> function give the comparative or superlative form of an adjective. Words with three or more syllables are simply preceded by <em>more</em> or <em>most</em>.</p>
 <pre class="brush:python; gutter:false; light:true;">comparative(adjective)      # big =&gt; bigger</pre><pre class="brush:python; gutter:false; light:true;">superlative(adjective)      # big =&gt; biggest</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import comparative, superlative
 &gt;&gt;&gt; print comparative(&#39;bad&#39;)
@@ -94,7 +95,7 @@ worst
 <h2><a name="conjugation"></a>Verb conjugation</h2>
 <p>The <span class="inline_code">pattern.en</span> module has a lexicon of 8,500 common English verbs and their conjugated forms (infinitive, 3rd singular present, present participle, past and past participle – verbs such as <em>be</em> have other forms as well). The following verbs can be negated: <em>be</em>, <em>can</em>, <em>do</em>, <em>will</em>, <em>must</em>, <em>have</em>, <em>may</em>, <em>need</em>, <em>dare</em>, <em>ought</em>.</p>
 <pre class="brush:python; gutter:false; light:true;">conjugate(verb, tense=INFINITIVE, negated=False)</pre><pre class="brush:python; gutter:false; light:true;">lemma(verb)                 # Base form, e.g. are =&gt; be.</pre><pre class="brush:python; gutter:false; light:true;">lexeme(verb)                # List of possible forms: be =&gt; is, was, ...</pre><pre class="brush:python; gutter:false; light:true;">tenses(verb)                # List of possible tenses of the given form.
-</pre><p>The <span class="inline_code">tense</span> parameter of the <span class="inline_code">conjugate()</span> command can be set to the following values:</p>
+</pre><p>The <span class="inline_code">tense</span> parameter of the <span class="inline_code">conjugate()</span> function can be set to the following values:</p>
 <table class="border">
 <tbody>
 <tr>
@@ -193,7 +194,7 @@ True
 <p><span class="small"><span style="text-decoration: underline;">Reference</span>: <em>XTAG English morphology</em> (1999), University of Pennsylvania, http://www.cis.upenn.edu/~xtag</span></p>
 <p>&nbsp;</p>
 <p><span class="smallcaps">Rule-based conjugation</span></p>
-<p>All of the verb commands have an optional <span class="inline_code">parse=True</span> parameter that enables a rule-based parser for unknown verbs. This will not work for irregular verbs however, and it is fragile for verbs ending in -e in the past tense or as present participle (overall accuracy 91%).</p>
+<p>All of the verb functions have an optional <span class="inline_code">parse=True</span> parameter that enables a rule-based parser for unknown verbs. This will not work for irregular verbs however, and it is fragile for verbs ending in -e in the past tense or as present participle (overall accuracy 91%).</p>
 <p>With <span class="inline_code">parse=False</span>,&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">conjugate()</span>&nbsp;and&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">lemma()</span>&nbsp;yield&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">None</span>.</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import conjugate, VERBS
@@ -208,10 +209,10 @@ facebooking
 <p>&nbsp;</p>
 <hr />
 <h2><a name="quantify"></a>Quantification</h2>
-<p>The <span class="inline_code">number()</span> command returns a <span class="inline_code">float</span> or <span class="inline_code">int</span> parsed from the given (numeric) string. If no number can be parsed from the string, it returns <span class="inline_code">0</span>.</p>
-<p>The <span class="inline_code">numerals()</span> command returns the given <span class="inline_code">int</span> or <span class="inline_code">float</span> as a string of numerals. By default, the fraction is rounded to two decimals. Because of rounding <span class="inline_code">float(number(x)) == x</span> is not always <span class="inline_code">True</span>.</p>
-<p>The <span class="inline_code">quantify()</span> command returns a wordcount approximation. Two similar words are a <em>pair</em>, three to eight <em>several</em>, and so on. Words can be given as a list, a word → count dictionary, or a string + amount.</p>
-<p>The <span class="inline_code">reflect()</span> command quantifies Python objects – see the examples bundled with the module.</p>
+<p>The <span class="inline_code">number()</span> function returns a <span class="inline_code">float</span> or <span class="inline_code">int</span> parsed from the given (numeric) string. If no number can be parsed from the string, it returns <span class="inline_code">0</span>.</p>
+<p>The <span class="inline_code">numerals()</span> function returns the given <span class="inline_code">int</span> or <span class="inline_code">float</span> as a string of numerals. By default, the fraction is rounded to two decimals. Because of rounding <span class="inline_code">float(number(x)) == x</span> is not always <span class="inline_code">True</span>.</p>
+<p>The <span class="inline_code">quantify()</span> function returns a wordcount approximation. Two similar words are a <em>pair</em>, three to eight <em>several</em>, and so on. Words can be given as a list, a word → count dictionary, or a string + amount.</p>
+<p>The <span class="inline_code">reflect()</span> function quantifies Python objects – see the examples bundled with the module.</p>
 <pre class="brush:python; gutter:false; light:true;">number(string)              # &quot;seventy-five point two&quot; =&gt; 75.2</pre><pre class="brush:python; gutter:false; light:true;">numerals(n, round=2)        # 2.245 =&gt; &quot;two point twenty-five&quot;</pre><pre class="brush:python; gutter:false; light:true;">quantify([word1, word2, ...], plural={})</pre><pre class="brush:python; gutter:false; light:true;">reflect(object, quantify=True, replace=[])
 </pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import quantify
@@ -225,8 +226,16 @@ dozens of carrots an⁣d a score of parrots
 </pre></div>
 <p>&nbsp;</p>
 <hr />
+<h2><a name="spelling"></a>Spelling</h2>
+<p>The <span class="inline_code">spelling()</span> function returns a list of spelling suggestions for a given word. Each suggestion is a <span class="inline_code">(word, confidence)</span>-tuple. It is about 70% accurate.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">spelling(string)</pre><div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; print spelling(&quot;adress&quot;)
+
+[(&quot;dress&quot;, 0.64), (&quot;address&quot;, 0.36)]</pre><p><span class="small"><span style="text-decoration: underline;">Reference</span>: Norvig, P. (2007). <em>How to Write a Spelling Corrector</em>. http://norvig.com/spell-correct.html</span>&nbsp;</p>
+<p>&nbsp;</p>
+<hr />
 <h2><em><a name="ngram"></a>n</em>-grams</h2>
-<p>The <span class="inline_code">ngrams()</span> command returns&nbsp;a list of <em>n</em>-grams (i.e., tuples of <em>n</em> successive words) from the given string.&nbsp;Alternatively, you can supply a <span class="inline_code">Text</span> or <span class="inline_code">Sentence</span> object (see further).&nbsp;<em>n</em>-grams will not run over sentence markers (i.e., .!?).</p>
+<p>The <span class="inline_code">ngrams()</span> function returns&nbsp;a list of <em>n</em>-grams (i.e., tuples of <em>n</em> successive words) from the given string.&nbsp;Alternatively, you can supply a <span class="inline_code">Text</span> or <span class="inline_code">Sentence</span> object (see further).&nbsp;<em>n</em>-grams will not run over sentence markers (i.e., .!?).</p>
 <pre class="brush:python; gutter:false; light:true;">ngrams(string, n=3)</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print ngrams(&quot;I am eating a pizza.&quot;, n=3)
 
@@ -235,8 +244,8 @@ dozens of carrots an⁣d a score of parrots
 <hr />
 <h2><a name="parser"></a>Parser</h2>
 <p>The core of the <span class="inline_code">pattern.en</span> module is a rule-based shallow parser. To a machine, a text document is nothing more than a string of characters. A shallow parser adds <strong>meaning</strong> by distinguishing between abbreviation periods and sentence breaks, by adding part-of-speech tags to words (is <em>can</em> in this sentence a <span class="postag">NOUN</span> or a <span class="postag">VERB</span>?) and by grouping words that belong together (chunking).</p>
-<p>The parser uses a regular expressions-based approach, which is <strong>fast</strong> but not always accurate. The <span class="inline_code">parse()</span> command and the <span class="inline_code">Text</span>, <span class="inline_code">Sentence</span>, <span class="inline_code">Chunk</span> and <span class="inline_code">Word</span> objects (discussed in the next section) are identical to those in <a href="http://www.clips.ua.ac.be/pages/MBSP" target="_blank">MBSP</a> – a shallow parser that uses a statistical machine learning approach. It is more robust, but slower. Output from both parsers can be used in the <span class="inline_code">pattern.search</span> and <span class="inline_code">pattern.vector</span> modules.</p>
-<p>The <span class="inline_code">parse()</span> command takes a string of text and returns a tagged Unicode string. <br />Sentences in the output are separated by newline characters.</p>
+<p>The parser uses a regular expressions-based approach, which is <strong>fast</strong> but not always accurate. The <span class="inline_code">parse()</span> function and the <span class="inline_code">Text</span>, <span class="inline_code">Sentence</span>, <span class="inline_code">Chunk</span> and <span class="inline_code">Word</span> objects (discussed in the next section) are identical to those in <a href="http://www.clips.ua.ac.be/pages/MBSP" target="_blank">MBSP</a> – a shallow parser that uses a statistical machine learning approach. It is more robust, but slower. Output from both parsers can be used in the <span class="inline_code">pattern.search</span> and <span class="inline_code">pattern.vector</span> modules.</p>
+<p>The <span class="inline_code">parse()</span> function takes a string of text and returns a tagged Unicode string. <br />Sentences in the output are separated by newline characters.</p>
 <pre class="brush:python; gutter:false; light:true;">parse(string, 
    tokenize = True,         # Separate punctuation from words?
        tags = True,         # Parse part-of-speech tags? (NN, JJ, ...)
@@ -279,7 +288,7 @@ fork/NN/I-NP/I-PNP ././O/O
 <p>Common part-of-speech tags include <span class="postag">NN</span> (noun), <span class="postag">JJ</span> (adjective) and <span class="postag">VB</span> (verb).<br />Common chunk tags include <span class="postag">NP</span> (noun phrase) and <span class="postag">VP</span> (verb phrase).<br />Common relations include <span class="postag">SBJ</span> (subject) and <span class="postag">OBJ</span> (object).</p>
 <p>The <a href="MBSP-tags.html" target="_blank">Penn Treebank II tags</a> page gives an overview of all the possible tags generated by the parser.</p>
 <h3>Parser shortcuts</h3>
-<p>The <span class="inline_code">tag()</span> command returns a list of <span class="inline_code">(word, POStag)</span>-tuples. With <span class="inline_code">light=True</span>, this is the fastest and simplest way to get an idea of a sentence's constituents.</p>
+<p>The <span class="inline_code">tag()</span> function returns a list of <span class="inline_code">(word, POStag)</span>-tuples. With <span class="inline_code">light=True</span>, this is the fastest and simplest way to get an idea of a sentence's constituents.</p>
 <pre class="brush:python; gutter:false; light:true;">tag(string, tokenize=True, encoding=&#39;utf-8&#39;)</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import tag
 &gt;&gt;&gt; for word, tag in tag(&#39;The cat felt happy.&#39;, light=True):
@@ -288,7 +297,7 @@ fork/NN/I-NP/I-PNP ././O/O
 
 happy</pre></div>
 <h3>Parser output</h3>
-<p>The output of the <span class="inline_code">parse()</span> command is a string of sentences in which each token has been annotated with the requested tags. The <span class="inline_code">pprint()</span> command (extra <em>p</em> is for <em>pretty</em>) gives a good overview of the tags:</p>
+<p>The output of the <span class="inline_code">parse()</span> function is a string of sentences in which each token has been annotated with the requested tags. The <span class="inline_code">pprint()</span> function (extra <em>p</em> is for <em>pretty</em>) gives a good overview of the tags:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parse, pprint
 &gt;&gt;&gt; s = parse(&#39;I ate pizza.&#39;, relations=True, lemmata=True)
@@ -304,7 +313,7 @@ happy</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="tree"></a>Parse trees</h2>
-<p>A parse tree stores a tagged string as a network of linked Python objects that can be traversed to analyze the constituents in the text. The output of the <a href="#parser" target="_self">parser</a> can be passed to the <span class="inline_code">split()</span> command, which produces a <span class="inline_code">Text</span> object. Essentially, a <span class="inline_code">Text</span> is a list of <span class="inline_code">Sentence</span> objects. Each <span class="inline_code">Sentence</span> consists of <span class="inline_code">Word</span> objects. <span class="inline_code">Word</span> objects are also grouped in <span class="inline_code">Chunk</span> objects, which are related to other <span class="inline_code">Chunk</span> objects in various ways.</p>
+<p>A parse tree stores a tagged string as a network of linked Python objects that can be traversed to analyze the constituents in the text. The output of the <a href="#parser" target="_self">parser</a> can be passed to the <span class="inline_code">split()</span> function, which produces a <span class="inline_code">Text</span> object. Essentially, a <span class="inline_code">Text</span> is a list of <span class="inline_code">Sentence</span> objects. Each <span class="inline_code">Sentence</span> consists of <span class="inline_code">Word</span> objects. <span class="inline_code">Word</span> objects are also grouped in <span class="inline_code">Chunk</span> objects, which are related to other <span class="inline_code">Chunk</span> objects in various ways.</p>
 <pre class="brush:python; gutter:false; light:true;">split(taggedstring, token=[WORD, POS, CHUNK, PNP])</pre><p>We'll run the sentence "<em>The cat sat on the mat.</em>" through the parse tree:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parse, split
@@ -400,7 +409,7 @@ pnp.preposition            # First PP-chunk in the PNP.
 <hr />
 <h2><a name="sentiment"></a>Sentiment</h2>
 <p>Text can be broadly categorized into two types: facts and opinions. Opinions carry people's sentiments, appraisals and feelings toward the world. The module bundles a lexicon of adjectives that occur frequently in product reviews, tagged with scores for sentiment polarity (positive/negative) and subjectivity.&nbsp;</p>
-<p>The <span class="inline_code">sentiment()</span> command returns a (<span class="inline_code">polarity</span>, <span class="inline_code">subjectivity</span>)-tuple for the given sentence (based on the adjectives in it),&nbsp;with polarity between <span class="inline_code">-1.0</span> and <span class="inline_code">1.0</span> and subjectivity between <span class="inline_code">0.0</span> and <span class="inline_code">1.0</span>.&nbsp;The sentence can be a string, <span class="inline_code">Text</span>, <span class="inline_code">Sentence</span>, <span class="inline_code">Chunk</span>,&nbsp;<span class="inline_code">Word</span> or a&nbsp;<span class="inline_code">Synset</span> (see further).</p>
+<p>The <span class="inline_code">sentiment()</span> function returns a <span class="inline_code">(polarity, subjectivity)</span>-tuple for the given sentence (based on the adjectives in it),&nbsp;with polarity between <span class="inline_code">-1.0</span> and <span class="inline_code">1.0</span> and subjectivity between <span class="inline_code">0.0</span> and <span class="inline_code">1.0</span>.&nbsp;The sentence can be a string, <span class="inline_code">Text</span>, <span class="inline_code">Sentence</span>, <span class="inline_code">Chunk</span>,&nbsp;<span class="inline_code">Word</span> or a&nbsp;<span class="inline_code">Synset</span> (see further).</p>
 <pre class="brush:python; gutter:false; light:true;">sentiment(sentence)</pre><pre class="brush:python; gutter:false; light:true;">polarity(sentence)</pre><pre class="brush:python; gutter:false; light:true;">subjectivity(sentence)</pre><pre class="brush:python; gutter:false; light:true;">positive(s, threshold=0.1)</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import sentiment
 &gt;&gt;&gt; print sentiment(
@@ -409,14 +418,14 @@ pnp.preposition            # First PP-chunk in the PNP.
 
 (-0.34, 1.0) </pre></div>
 <p>In the example above,&nbsp;<span class="inline_code">-0.34</span> is a compromise between <em>surreal</em>, <em>various</em>, <em>ridiculous</em> and <em>seriously boring</em>.</p>
-<p>The <span class="inline_code">polarity()</span> command returns&nbsp;the sentence polarity (positive/negative sentiment).&nbsp;</p>
-<p>The <span class="inline_code">subjectivity()</span> command returns the sentence subjectivity (objective/subjective).</p>
-<p>The <span class="inline_code">positive()</span> command returns&nbsp;<span class="inline_code">True</span> if the given sentence's polarity is above the threshold. The threshold can be lowered or raised, but overall&nbsp;<span class="inline_code">+0.1</span> gives the best results for product reviews. Accuracy is 72% (P 0.72, R 0.71) for movie reviews.</p>
+<p>The <span class="inline_code">polarity()</span> function returns&nbsp;the sentence polarity (positive/negative sentiment).&nbsp;</p>
+<p>The <span class="inline_code">subjectivity()</span> function returns the sentence subjectivity (objective/subjective).</p>
+<p>The <span class="inline_code">positive()</span> function returns&nbsp;<span class="inline_code">True</span> if the given sentence's polarity is above the threshold. The threshold can be lowered or raised, but overall&nbsp;<span class="inline_code">+0.1</span> gives the best results for product reviews. Accuracy is 72% (P 0.72, R 0.71) for movie reviews.</p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="modality"></a>Mood &amp; modality</h2>
 <p>Linguistic modality deals with necessity, permissibility and probability.&nbsp;</p>
-<pre class="brush:python; gutter:false; light:true;">mood(sentence) # INDICATIVE | IMPERATIVE | CONDITIONAL | SUBJUNCTIVE</pre><pre class="brush:python; gutter:false; light:true;">modality(sentence, type=EPISTEMIC)</pre><pre class="brush:python; gutter:false; light:true;">negated(sentence)</pre><p>The <span class="inline_code">mood()</span> command tries to identify a parsed&nbsp;<span class="inline_code">Sentence</span> as indicative, imperative, conditional or subjunctive:</p>
+<pre class="brush:python; gutter:false; light:true;">mood(sentence) # INDICATIVE | IMPERATIVE | CONDITIONAL | SUBJUNCTIVE</pre><pre class="brush:python; gutter:false; light:true;">modality(sentence, type=EPISTEMIC)</pre><pre class="brush:python; gutter:false; light:true;">negated(sentence)</pre><p>The <span class="inline_code">mood()</span> function tries to identify a parsed&nbsp;<span class="inline_code">Sentence</span> as indicative, imperative, conditional or subjunctive:</p>
 <table class="border">
 <tbody>
 <tr>
@@ -451,9 +460,9 @@ pnp.preposition            # First PP-chunk in the PNP.
 </tr>
 </tbody>
 </table>
-<p>The <span class="inline_code">mood()</span> command has an optional&nbsp;<span style="font-family: Courier, monospace; font-size: 12px;">predictive=True</span>&nbsp;parameter that determines how conditional sentences are handled.&nbsp;When&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">False</span>, sentences with will/shall&nbsp;must have&nbsp;an explicit if/when/once clause in order to be identified as conditional. For example:&nbsp;while&nbsp;<em>"You will help me"</em>&nbsp;is imperative,&nbsp;<em>"I will help you"</em>&nbsp;is predictive conditional and "<em>I will help you when I get back"</em>&nbsp;is speculative conditional.&nbsp;Sentences with can/may always need an explicit if-clause.</p>
-<p>The <span class="inline_code">modality()</span> command returns a value between <span class="inline_code">-1.0</span> and +<span class="inline_code">1.0</span>, expressing the degree of possibility:&nbsp;<em>"I wish it would stop raining"</em> scores <span class="inline_code">-0.35</span> whereas <em>"It will surely stop raining"</em> scores <span class="inline_code">+0.75</span>. Roughly,&nbsp;<span class="inline_code">&gt;0.5</span>&nbsp;can be seen as certain. Accuracy (F1-score) when predicting certain vs. uncertain is around 67% for Wikipedia texts.</p>
-<p>The <span class="inline_code">negated()</span> command returns <span class="inline_code">True</span> if the <span class="inline_code">Sentence</span> contains <em>never</em>, <em>not</em> or <em>n't</em> (as in <em>would<span style="text-decoration: underline;">n't</span></em>).</p>
+<p>The <span class="inline_code">mood()</span> function has an optional&nbsp;<span style="font-family: Courier, monospace; font-size: 12px;">predictive=True</span>&nbsp;parameter that determines how conditional sentences are handled.&nbsp;When&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">False</span>, sentences with will/shall&nbsp;must have&nbsp;an explicit if/when/once clause in order to be identified as conditional. For example:&nbsp;while&nbsp;<em>"You will help me"</em>&nbsp;is imperative,&nbsp;<em>"I will help you"</em>&nbsp;is predictive conditional and "<em>I will help you when I get back"</em>&nbsp;is speculative conditional.&nbsp;Sentences with can/may always need an explicit if-clause.</p>
+<p>The <span class="inline_code">modality()</span> function returns a value between <span class="inline_code">-1.0</span> and +<span class="inline_code">1.0</span>, expressing the degree of possibility:&nbsp;<em>"I wish it would stop raining"</em> scores <span class="inline_code">-0.35</span> whereas <em>"It will surely stop raining"</em> scores <span class="inline_code">+0.75</span>. Roughly,&nbsp;<span class="inline_code">&gt;0.5</span>&nbsp;can be seen as certain. Accuracy (F1-score) when predicting certain vs. uncertain is around 67% for Wikipedia texts.</p>
+<p>The <span class="inline_code">negated()</span> function returns <span class="inline_code">True</span> if the <span class="inline_code">Sentence</span> contains <em>never</em>, <em>not</em> or <em>n't</em> (as in <em>would<span style="text-decoration: underline;">n't</span></em>).</p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="wordnet"></a>WordNet</h2>
@@ -492,7 +501,7 @@ Definition: u&#39;warm-blooded egg-laying vertebrates characterized
   Meronyms: [Synset(&#39;beak&#39;), Synset(&#39;furcula&#39;), Synset(&#39;feather&#39;), ...]</pre></div>
 <div class="example"><span class="small"><span style="text-decoration: underline;">Reference</span>: Fellbaum, C. (1998). </span><em class="small">WordNet: An Electronic Lexical Database</em><span class="small">. Cambridge, MIT Press.</span></div>
 <h3>Synset similarity</h3>
-<p>The <span class="inline_code">ancestor()</span> command returns the common ancestor (or <em>least common subsumer</em>) of two synsets.<br />The <span class="inline_code">similarity()</span> command returns the semantic similarity of two synsets, as a number.</p>
+<p>The <span class="inline_code">ancestor()</span> function returns the common ancestor (or <em>least common subsumer</em>) of two synsets.<br />The <span class="inline_code">similarity()</span> function returns the semantic similarity of two synsets, as a number.</p>
 <pre class="brush:python; gutter:false; light:true;">ancestor(synset1, synset2)</pre><pre class="brush:python; gutter:false; light:true;">similarity(synset1, synset2) # Lower value = higher similarity.
 </pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; a = wordnet.synsets(&#39;cat&#39;)[0]
@@ -572,6 +581,7 @@ Synset(&#39;carnivore&#39;)
 <li><a href="http://www.clips.ua.ac.be/pages/MBSP" target="_blank">MBSP</a> (GPL): r<span>obust parser using a memory-based learning approach, in Python.</span></li>
 <li><span><a href="http://www.nltk.org/" target="_blank">NLTK</a> (Apache): f</span><span>ull natural language processing toolkit for Python.</span></li>
 </ul>
+</div>
 </div>
 </div></div>
         </div>

@@ -41,15 +41,15 @@
 <table>
 <tbody>
 <tr>
-<td><a onclick="javascript:_gaq.push(['_trackPageview', '/downloads/pattern']);" href="http://www.clips.ua.ac.be/media/pattern-2.3.zip" target="_self"><img src="../g/download.gif" alt="download" align="left" /></a></td>
-<td><strong>Pattern 2.3</strong>&nbsp;| <a onclick="javascript:_gaq.push(['_trackPageview', '/downloads/pattern']);" href="http://www.clips.ua.ac.be/media/pattern-2.3.zip" target="_self">download</a> (16MB)
+<td><a onclick="javascript:_gaq.push(['_trackPageview', '/downloads/pattern']);" href="http://www.clips.ua.ac.be/media/pattern-2.4.zip" target="_self"><img src="../g/download.gif" alt="download" align="left" /></a></td>
+<td><strong>Pattern 2.4</strong>&nbsp;| <a onclick="javascript:_gaq.push(['_trackPageview', '/downloads/pattern']);" href="http://www.clips.ua.ac.be/media/pattern-2.4.zip" target="_self">download</a> (19MB)
 <ul>
-<li>Requires: Python 2.4+ on Windows | Mac | Unix</li>
+<li>Requires: Python 2.5+ on Windows | Mac | Unix</li>
 <li>Licensed under <a href="http://www.linfo.org/bsdlicense.html" target="_blank">BSD</a></li>
-<li>Latest releases:&nbsp;<a style="color: #1e90ff; outline-style: none !important; outline-width: initial !important; outline-color: initial !important;" href="http://www.clips.ua.ac.be/media/pattern-2.3.zip">2.3</a>&nbsp;|&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-2.2.zip">2.2</a> |&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-2.1.zip">2.1</a> |&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-2.0.zip">2.0</a> |&nbsp;<a style="color: #1e90ff; outline-style: none !important; outline-width: initial !important; outline-color: initial !important;" href="http://www.clips.ua.ac.be/media/pattern-1.9.zip">1.9</a></li>
+<li>Latest releases: <a href="http://www.clips.ua.ac.be/media/pattern-2.4.zip">2.4</a> |&nbsp;<a style="color: #1e90ff; outline-style: none !important; outline-width: initial !important; outline-color: initial !important;" href="http://www.clips.ua.ac.be/media/pattern-2.3.zip">2.3</a>&nbsp;|&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-2.2.zip">2.2</a> |&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-2.1.zip">2.1</a> |&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-2.0.zip">2.0</a></li>
 <li>Author:<br />Tom De Smedt (<em>tom at organisms.be</em>)</li>
 </ul>
-<p><span class="small"><span style="text-decoration: underline;">Reference</span>: De Smedt, T. &amp; Daelemans, W. (2011)</span>.<br /><span class="small">Pattern version 2.3, retrieved October 2011, from: http://www.clips.ua.ac.be/</span></p>
+<p><span class="small"><span style="text-decoration: underline;">Reference</span>: De Smedt, T. &amp; Daelemans, W. (2012)</span>.<br /><span class="small">Pattern for Python. In: Journal of Machine Learning Research, 13: 2031–2035.</span></p>
 </td>
 <td>
 </td>
@@ -66,7 +66,7 @@
 <ul>
 <li><a href="pattern-web.html">pattern.web</a></li>
 <li><a href="pattern-db.html">pattern.db</a></li>
-<li><a href="pattern-en.html">pattern.en</a>&nbsp;| <a href="pattern-nl.html">nl</a></li>
+<li><a href="pattern-en.html">pattern.en</a>&nbsp;| <a href="pattern-de.html">de</a> |&nbsp;<a href="pattern-nl.html">nl</a></li>
 <li><a href="pattern-search.html">pattern.search</a></li>
 <li><a href="pattern-vector.html">pattern.vector</a></li>
 <li><a href="pattern-graph.html">pattern.graph</a>&nbsp;</li>
@@ -95,10 +95,10 @@
 <p>&nbsp;</p>
 <hr />
 <h2>Installation</h2>
-<p>Pattern is written for Python 2.4+ (no support for Python 3 yet). The module has no external dependencies except when using LSA in the vector module, which requires <a href="http://numpy.scipy.org/" target="_blank">NumPy</a> (installed by default on Mac OS X).</p>
+<p>Pattern is written for Python 2.5+ (no support for Python 3 yet). The module has no external dependencies except when using LSA in the vector module, which requires <a href="http://numpy.scipy.org/" target="_blank">NumPy</a> (installed by default on Mac OS X).</p>
 <p>To install it so that the module is available in all your scripts, open a terminal and do:</p>
 <div class="install">
-<pre class="gutter:false; light:true;">&gt; cd pattern-2.3
+<pre class="gutter:false; light:true;">&gt; cd pattern-2.4
 &gt; python setup.py install </pre></div>
 <p>If you have pip, you can automatically download and install from the PyPi repository:</p>
 <div class="install">
@@ -189,6 +189,32 @@ Chunk(&#39;mobile apps/NP&#39;) =&gt; Chunk(&#39;The mobile web/NP-SBJ-1&#39;)
 <li>"mobile apps <em>are less</em> important than the mobile web"</li>
 <li>"a good blog <em>is more</em> important than a fancy facebook page", etc.</li>
 </ul>
+<h3>pattern.vector</h3>
+<div>Module <a href="pattern-vector.html">pattern.vector</a> is a toolkit for machine learning. It contains functionality to implement a vector space model&nbsp;of bag-of-words documents with TF-IDF weighted features, cosine similarity, information gain, Latent Semantic Analysis (LSA), <em>k</em>-means and hierarchical clustering algorithms and Naive Bayes, <em>k</em>NN and SVM classifiers.</div>
+<div>
+<div class="example">
+<pre class="brush: python;gutter: false; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.web    import Twitter
+&gt;&gt;&gt; from pattern.en     import tag
+&gt;&gt;&gt; from pattern.vector import Document, Corpus, KNN
+&gt;&gt;&gt; 
+&gt;&gt;&gt; corpus = Corpus()
+&gt;&gt;&gt; 
+&gt;&gt;&gt; for i in range(1, 5):
+&gt;&gt;&gt;     for tweet in Twitter().search(&#39;#win OR #fail&#39;, start=i, count=100):
+&gt;&gt;&gt;         p = &#39;#win&#39; in tweet.description.lower() and &#39;WIN&#39; or &#39;FAIL&#39;
+&gt;&gt;&gt;         s = tweet.description.lower()
+&gt;&gt;&gt;         s = tag(s)
+&gt;&gt;&gt;         s = [word for word, type in s if type == &#39;JJ&#39;] # JJ = adjective
+&gt;&gt;&gt;         if len(s) &gt; 0:
+&gt;&gt;&gt;             corpus.append(Document(s, type=p))
+&gt;&gt;&gt; 
+&gt;&gt;&gt; classifier = KNN()
+&gt;&gt;&gt; for document in corpus:
+&gt;&gt;&gt;     classifier.train(document)
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print classifier.classify(&#39;sweet&#39;)  # yields &#39;WIN&#39;
+&gt;&gt;&gt; print classifier.classify(&#39;stupid&#39;) # yields &#39;FAIL&#39;</pre></div>
+<p>In this example, we chain together three Pattern modules to train a <em>k</em>-NN classiﬁer on adjectives mined from Twitter. First, we mine a 1,000 tweets with the hashtag #win or #fail (our labels), for example: “$20 tip off a <span style="text-decoration: underline;">sweet</span> <span style="text-decoration: underline;">little</span> <span style="text-decoration: underline;">old</span> lady today #win”. We parse the part-of-speech tags for each tweet, keeping adjectives. We group the adjective vectors in a corpus and use it to train the classiﬁer. It predicts “sweet” as <span class="inline_code">WIN</span> and “stupid” as <span class="inline_code">FAIL</span>&nbsp;(results may vary depending on what is buzzing on Twitter).</p></div>
 <h3>pattern.graph</h3>
 <p>Module <a href="pattern-graph.html">pattern.graph</a> provides a data structure to represent relationships between <em>nodes</em> (e.g. words, concepts, entities ...) The relative importance (or <em>centrality</em>) of each node can then be calculated. Graphs can be exported as an interactive web page using the HTML <span class="inline_code">&lt;canvas&gt;</span> element (<span class="link-maintenance"><a href="http://www.clips.ua.ac.be/media/pattern-graph" target="_blank">demo</a></span>).&nbsp;</p>
 <p>The screenshot shows&nbsp;an exported graph with nodes pointing to more important nodes (data mined from Bing). Nodes with a lot of "traffic" are marked with a shadow (<em>money</em>, <em>football</em>, <em>life</em>), important nodes are marked in blue (<em>experience</em>, <em>I</em>, <em>nothing</em>, <em>money</em>).</p>

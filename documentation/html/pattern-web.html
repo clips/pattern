@@ -77,7 +77,7 @@ url.download(timeout=10, cached=True, throttle=0, proxy=None, unicode=False)
 url.copy() </pre><ul>
 <li><span class="inline_code">URL()</span> expects a string starting with a valid protocol (e.g. <span class="inline_code">http://</span>).<span class="inline_code">&nbsp;</span></li>
 <li><span class="inline_code">URL.open()</span> returns a connection from which data can be retrieved with <span class="inline_code">connection.read()</span>.</li>
-<li><span class="inline_code">URL.download()</span> will cache the retrieved data locally by default (faster next time). <br />Raises a <span class="inline_code">URLTimeoutError</span> if the download takes longer than the given <span class="inline_code">timeout</span>.<br />Sleeps for <span class="inline_code">throttle</span> seconds after the download is complete.<br />A proxy server can be given as a <span class="inline_code">(host, protocol)</span>-tuple.<br />With <span class="inline_code">unicode=True</span>, returns the data as a Unicode string. By default it is <span class="inline_code">False</span> (data can be an image, for example) but&nbsp;<span class="inline_code">unicode=True</span> is advised for HTML.</li>
+<li><span class="inline_code">URL.download()</span> will cache the retrieved data locally by default (faster next time). <br />Raises a <span class="inline_code">URLTimeoutError</span> if the download takes longer than the given <span class="inline_code">timeout</span>.<br />Sleeps for <span class="inline_code">throttle</span> seconds after the download is complete.<br />A proxy server can be given as a <span class="inline_code">(host, protocol)</span>-tuple, e.g., <span class="inline_code">("proxy.com", "https")</span>.<br />With <span class="inline_code">unicode=True</span>, returns the data as a Unicode string. By default it is <span class="inline_code">False</span> (data can be an image, for example) but&nbsp;<span class="inline_code">unicode=True</span> is advised for HTML.</li>
 </ul>
 <p>The following example downloads an image. <br />The helper function <span class="inline_code">extension()</span> parses the file extension from a file name:</p>
 <div class="example">
@@ -186,7 +186,7 @@ True</pre></div>
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; URL(&#39;http://www.clips.ua.ac.be&#39;).download(user_agent=&#39;Mozilla/5.0&#39;)
 </pre></div>
 <h3>Find URLs</h3>
-<p>The <span class="inline_code">find_urls()</span> command can be used to parse URLs from a text string. This will work on links starting with <span class="inline_code">http://</span>, <span class="inline_code">https://</span>, <span class="inline_code">www.</span> or domain names ending in <span class="inline_code">.com</span>, <span class="inline_code">.org</span>. <span class="inline_code">.net</span>. The parser will detect and strip leading punctuation (open parens) and trailing punctuation (period, comma, close parens). Comparably, the <span class="inline_code">find_email()</span> command can be used to parse e-mail addresses from a string.</p>
+<p>The <span class="inline_code">find_urls()</span> function can be used to parse URLs from a text string. This will work on links starting with <span class="inline_code">http://</span>, <span class="inline_code">https://</span>, <span class="inline_code">www.</span> or domain names ending in <span class="inline_code">.com</span>, <span class="inline_code">.org</span>. <span class="inline_code">.net</span>. The parser will detect and strip leading punctuation (open parens) and trailing punctuation (period, comma, close parens). Comparably, the <span class="inline_code">find_email()</span> function can be used to parse e-mail addresses from a string.</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print find_urls(&#39;Visit our website (www․clips.ua.ac.be)&#39;, unique=True)
 
@@ -195,7 +195,7 @@ True</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="asynchronous"></a>Asynchronous requests</h2>
-<p>The <span class="inline_code">asynchronous()</span> command can be used to execute a function in the background. It takes the function, its arguments and optional keyword arguments. It returns an <span class="inline_code">AsynchronousRequest</span> object that stores the given function's return value – once it is done. The main program can continue to run in the meantime.</p>
+<p>The <span class="inline_code">asynchronous()</span> function can be used to execute a function in the background. It takes the function, its arguments and optional keyword arguments. It returns an <span class="inline_code">AsynchronousRequest</span> object that stores the given function's return value – once it is done. The main program can continue to run in the meantime.</p>
 <pre class="brush:python; gutter:false; light:true;">request = asynchronous(function, *args, **kwargs)</pre><pre class="brush:python; gutter:false; light:true;">request.done                # True when the function is done.
 request.elapsed             # Time running, in seconds.
 request.value               # Function return value when done (or None).
@@ -224,9 +224,9 @@ engine.language             # Restriction for Result.language (e.g., &#39;en&#39
     sort = RELEVANCY,       # Results sort order: RELEVANCY | LATEST
     size = None             # Image size: TINY | SMALL | MEDIUM | LARGE
   cached = True)            # Cache locally?</pre><p><span class="small"><span style="text-decoration: underline;">Note</span>: <span class="inline_code">SearchEngine.search()</span> also takes the same optional parameters as <span class="inline_code">URL.download()</span>.</span></p>
-<h3>Google | Yahoo | Bing | Twitter | Wikipedia | Flickr</h3>
-<p><span class="inline_code">SearchEngine</span> is subclassed by <span class="inline_code">Google</span>, <span class="inline_code">Yahoo</span>, <span class="inline_code">Bing</span>, <span class="inline_code">Twitter</span>, <span class="inline_code">Wikipedia</span>, <span class="inline_code">Flickr</span>, <span class="inline_code">Newsfeed</span>:</p>
-<pre class="brush:python; gutter:false; light:true;">engine = Google(license=None, throttle=0.5, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Yahoo(license=None, throttle=0.5, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Bing(license=None, throttle=1.0, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Twitter(license=None, throttle=0.5, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Wikipedia(license=None, throttle=5.0, language=&#39;en&#39;)</pre><pre class="brush:python; gutter:false; light:true;">engine = Flickr(license=None, throttle=5.0, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Facebook(license=None, throttle=1.0, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Newsfeed(license=None, throttle=1.0, language=None)</pre><p>Each of these has different settings for <span class="inline_code">search()</span>. For example,&nbsp;<span class="inline_code">Twitter.search()</span> returns up to 1500 results for a search term (15 queries with 100 results each, or 150 queries with 10 results each). It has an hourly limit of 150 queries (each call to <span class="inline_code">search()</span> counts as one query).</p>
+<h3>Google | Yahoo | Bing | Twitter | Facebook | Wikipedia | Flickr</h3>
+<p><span class="inline_code">SearchEngine</span> is subclassed by <span class="inline_code">Google</span>, <span class="inline_code">Yahoo</span>, <span class="inline_code">Bing</span>, <span class="inline_code">Twitter</span>, <span class="inline_code">Facebook</span>,&nbsp;<span class="inline_code">Wikipedia</span>, <span class="inline_code">Flickr</span>,&nbsp; <span class="inline_code">Newsfeed</span>:</p>
+<pre class="brush:python; gutter:false; light:true;">engine = Google(license=None, throttle=0.5, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Yahoo(license=None, throttle=0.5, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Bing(license=None, throttle=0.5, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Twitter(license=None, throttle=0.5, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Facebook(license=None, throttle=1.0, language=&#39;en&#39;)</pre><pre class="brush:python; gutter:false; light:true;">engine = Wikipedia(license=None, throttle=5.0, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Flickr(license=None, throttle=5.0, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Newsfeed(license=None, throttle=1.0, language=None)</pre><p>Each of these has different settings for <span class="inline_code">search()</span>. For example,&nbsp;<span class="inline_code">Twitter.search()</span> returns up to 1500 results for a search term (15 queries with 100 results each, or 150 queries with 10 results each). It has an hourly limit of 150 queries (each call to <span class="inline_code">search()</span> counts as one query).</p>
 <table class="border">
 <tbody>
 <tr>
@@ -262,8 +262,8 @@ engine.language             # Restriction for Result.language (e.g., &#39;en&#39
 <td>1-1000/<span class="inline_code">count</span></td>
 <td>1-50</td>
 <td><span class="inline_code">RELEVANCY</span></td>
-<td>-</td>
-<td>1.0</td>
+<td class="smallcaps">paid</td>
+<td>0.5</td>
 </tr>
 <tr>
 <td><span class="inline_code">Twitter</span></td>
@@ -273,6 +273,15 @@ engine.language             # Restriction for Result.language (e.g., &#39;en&#39
 <td><span class="inline_code">RELEVANCY</span></td>
 <td>150/hour</td>
 <td>0.5</td>
+</tr>
+<tr>
+<td><span class="inline_code">Facebook</span></td>
+<td><span class="inline_code">SEARCH</span></td>
+<td>1</td>
+<td>1-100</td>
+<td><span class="inline_code">RELEVANCT</span></td>
+<td>500/hour</td>
+<td>1.0</td>
 </tr>
 <tr>
 <td><span style="font-family: Courier,monospace; font-size: small;"><span style="font-size: 12px;">Wikipedia</span></span></td>
@@ -330,13 +339,15 @@ u&#39;Once the number three, being the third number, be reached, then ...&#39;
 <p>&nbsp;</p>
 <p><span class="smallcaps">Image search<br /></span></p>
 <p>For <span class="inline_code">Yahoo</span>, <span class="inline_code">Bing</span> and <span class="inline_code">Flickr</span>, image links retrieved with <span class="inline_code">search(type=IMAGE)</span> can be filtered by setting the <span class="inline_code">size</span> parameter to <span style="font-family: Courier, monospace; font-size: 12px;">TINY<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>SMALL<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>MEDIUM<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>LARGE</span> (or&nbsp;<span style="font-family: Courier, monospace; font-size: 12px;">None</span>&nbsp;for any size).&nbsp;Note that <span class="inline_code">Yahoo</span> image search has a <span class="inline_code">count</span> of 1-35.</p>
+<p>For <span class="inline_code">Twitter</span>, each result has a <span class="inline_code">Result.profile</span> property with the URL to the user's profile picture.</p>
 <p>The use of downloaded images may be restricted by authorship.&nbsp;<span class="inline_code">Flickr.search()</span> can be used with an optional <span class="inline_code">copyright=False</span>. This will only retrieve results with no copyright restrictions (either under Creative Commons license <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_blank">by-sa</a>&nbsp;or in the public domain).</p>
 <p>&nbsp;</p>
 <p><span class="smallcaps">Service license key</span></p>
 <p>Some services require a license key. They may work without one, but this implies that you share a public license key (and query limit) with all other users of the web module. If you reach the query limit, <span class="inline_code">SearchEngine.search()</span> will raise an <span class="inline_code">SearchEngineLimitError</span>.</p>
 <p><span class="inline_code">Google</span> is a paid service (5$ per 1o00 queries). If you have a license key you get 100 free queries per day. To get a key, follow the link below, activate "Custom Search API" and "Translate API" under "Services" and look up your key under "API Access".</p>
+<p>Bing is a paid service (20$ per 10,000 queries). If you have a license key you get 5,000 free queries per month. To get a key, follow the link below.</p>
 <p><span class="inline_code">Yahoo</span>&nbsp;is a paid service (0.8$ per 1000 queries) that requires an OAuth key + secret, which you can pass as a tuple to:&nbsp;<span class="inline_code">Yahoo(license=(key, secret))</span>.</p>
-<p>Obtain a license key for: <a href="https://code.google.com/apis/console/" target="_blank">Google</a>,&nbsp;<a href="http://www.bing.com/developers/createapp.aspx" target="_blank">Bing</a>, <a href="http://developer.yahoo.com/search/boss/" target="_blank">Yahoo</a>, <a href="http://www.flickr.com/services/api/keys/" target="_blank">Flickr</a>.</p>
+<p>Obtain a license key for: <a href="https://code.google.com/apis/console/" target="_blank">Google</a>,&nbsp;<a href="https://datamarket.azure.com/dataset/5BA839F1-12CE-4CCE-BF57-A49D98D29A44" target="_blank">Bing</a>, <a href="http://developer.yahoo.com/search/boss/" target="_blank">Yahoo</a>, <a href="http://www.flickr.com/services/api/keys/" target="_blank">Flickr</a>.</p>
 <p>&nbsp;</p>
 <p><span class="smallcaps">Service request throttle</span></p>
 <p>A <span class="inline_code">SearchEngine.search()</span> request takes a minimum amount of time to complete, as outlined in the table above. This is intended as etiquette towards the servers providing the service. Be polite and raise the throttle value when you plan to run a lot of queries in batch.</p>
@@ -348,7 +359,7 @@ u&#39;Once the number three, being the third number, be reached, then ...&#39;
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; NATURE = &#39;http://www.nature.com/nature/current_issue/rss/index.html&#39;
 &gt;&gt;&gt; for result in Newsfeed().search(NATURE)[:5]:
-&gt;&gt;&gt;    print repr(result.title)
+&gt;&gt;&gt;     print repr(result.title)
 
 u&#39;Biopiracy rules should not block biological control&#39;
 u&#39;Animal behaviour: Same-shaped shoals&#39;
@@ -356,10 +367,14 @@ u&#39;Genetics: Fast disease factor&#39;
 u&#39;Biomimetics: Material monitors mugginess&#39;
 u&#39;Cell biology: Lung lipid hurts breathing&#39;
 </pre></div>
+<p><span class="inline_code">Newsfeed.search()</span> has an optional&nbsp;parameter <span class="inline_code">tags</span>, which is a list of custom tags to parse:</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; for result in Newsfeed().search(NATURE, tags=[&quot;dc:identifier&quot;]):
+&gt;&gt;&gt;     print result.dc_identifier</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2>Google translate</h2>
-<p>The <span class="inline_code">Google.translate()</span> method returns the translation of a string in the given language.<br />The <span class="inline_code">Google.identify()</span> method returns a (<span class="inline_code">language code</span>, <span class="inline_code">confidence</span>)-tuple for a given string.&nbsp;</p>
+<p>The <span class="inline_code">Google.translate()</span> method returns the translation of a string in the given language.<br />The <span class="inline_code">Google.identify()</span> method returns a <span class="inline_code">(language code, confidence)</span>-tuple for a given string.&nbsp;</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; s = &quot;C&#39;est un lapin, lapin de bois. Quoi? Un cadeau.&quot;
 &gt;&gt;&gt; g = Google()
@@ -378,7 +393,7 @@ u&quot;It&#39;s a bunny, rabbit wood. What? A gift.&quot;
 [u&#39;#neverunderstood&#39;, u&#39;Not Top 10&#39;, ...]</pre></div>
 <p>&nbsp;</p>
 <hr />
-<h2>Wikipedia articles</h2>
+<h2><a name="wikipedia"></a>Wikipedia articles</h2>
 <p><span class="inline_code">Wikipedia.search()</span> does not return a list of <span class="inline_code">Result</span> objects. Instead, it returns a single <span class="inline_code">WikipediaArticle</span> for the given (case-sensitive) query. The <span class="inline_code">Wikipedia</span> constructor has an additional <span class="inline_code">language</span> parameter (by default, <span class="inline_code">"en"</span>) that determines the language of the returned articles.</p>
 <pre class="brush:python; gutter:false; light:true;">article = WikipediaArticle(title=&#39;&#39;, source=&#39;&#39;, links=[])</pre><pre class="brush:python; gutter:false; light:true;">article.source              # Article HTML source.
 article.string              # Article plaintext unicode string.</pre><pre class="brush:python; gutter:false; light:true;">article.title               # Article title.
@@ -391,7 +406,7 @@ article.languages           # Dictionary of (language, article)-items.
 article.language            # Article language (i.e. &#39;en&#39;).
 article.disambiguation      # True if it is a disambiguation page</pre><pre class="brush:python; gutter:false; light:true;">article.plaintext(**kwargs) # See plaintext() for parameter overview.
 article.download(media, **kwargs)
-</pre><p><span class="inline_code">WikipediaArticle.plaintext()</span> is similar to the <span class="inline_code">plaintext()</span> command, but with extra attention for Wikipedia markup. It will remove metadata, infobox, table of contents, annotations, thumbnails and disambiguation links.</p>
+</pre><p><span class="inline_code">WikipediaArticle.plaintext()</span> is similar to the <span class="inline_code">plaintext()</span> function, but with extra attention for Wikipedia markup. It will remove metadata, infobox, table of contents, annotations, thumbnails and disambiguation links.</p>
 <h3>Wikipedia article sections</h3>
 <p><span class="inline_code">WikipediaArticle.sections</span> is a list of <span class="inline_code">WikipediaSection</span> objects. A section has a title and a number of paragraphs that belong together.</p>
 <pre class="brush:python; gutter:false; light:true;">section = WikipediaSection(article, title=&#39;&#39;, start=0, stop=0, level=1)</pre><pre class="brush:python; gutter:false; light:true;">section.article             # WikipediaArticle parent.
@@ -425,7 +440,7 @@ table.headers               # List of table column headers.
 table.rows                  # List of table rows, each a list of column values.</pre><p>&nbsp;</p>
 <hr />
 <h2><a name="sort"></a>Web sort</h2>
-<p>Interestingly, each list of results returned from <span class="inline_code">SearchEngine.search()</span> has a <span class="inline_code">total</span> property by which we can compare lists. The <span class="inline_code">sort()</span> command sorts the given terms according to search result count.</p>
+<p>Interestingly, each list of results returned from <span class="inline_code">SearchEngine.search()</span> has a <span class="inline_code">total</span> property by which we can compare lists. The <span class="inline_code">sort()</span> function sorts the given terms according to search result count.</p>
 <pre class="brush:python; gutter:false; light:true;">sort(
     terms = [],             # List of search terms.
   context = &#39;&#39;,             # Term used for sorting.
@@ -458,7 +473,7 @@ table.rows                  # List of table rows, each a list of column values.<
 <hr />
 <h2><a name="plaintext"></a>HTML to plaintext</h2>
 <p>Typically, <span class="inline_code">URL.download()</span> is used to retrieve HTML documents. HTML is a markup language that uses <em>tags</em> to define the text formatting. For example: <span class="inline_code">&lt;b&gt;hello&lt;/b&gt;</span> displays <strong>hello</strong> in bold. Usually, we just want the text without the formatting so we can analyze (e.g. <a href="pattern-en.html#parser">parse</a>) it.</p>
-<p>The <span class="inline_code">plaintext()</span> command removes HTML formatting from a string.</p>
+<p>The <span class="inline_code">plaintext()</span> function removes HTML formatting from a string.</p>
 <pre class="brush:python; gutter:false; light:true;">plaintext(html, keep=[], replace=blocks, linebreaks=2, indentation=False)</pre><p>It will perform the following steps to clean up the given string:</p>
 <ul>
 <li><strong>Strip javascript:</strong> remove all <span class="inline_code">&lt;script&gt;</span> elements.</li>
@@ -483,16 +498,16 @@ table.rows                  # List of table rows, each a list of column values.<
 &gt;&gt;&gt; print s
 </pre></div>
 <p style="margin-top: 1.3em;"><span class="smallcaps">plaintext = strip + decode + collapse</span></p>
-<p>The different steps in <span class="inline_code">plaintext()</span> are also available as separate commands:</p>
+<p>The different steps in <span class="inline_code">plaintext()</span> are also available as separate functions:</p>
 <pre class="brush:python; gutter:false; light:true;">decode_utf8(string)         # Byte string to Unicode string.</pre><pre class="brush:python; gutter:false; light:true;">encode_utf8(string)         # Unicode string to byte string.
 </pre><pre class="brush:python; gutter:false; light:true;">strip_tags(html, keep=[], replace=blocks) # Non-trivial, using SGML parser.
 </pre><pre class="brush:python; gutter:false; light:true;">strip_between(a, b, string) # Remove anything between (and including) a and b.
 </pre><pre class="brush:python; gutter:false; light:true;">strip_javascript(html)      # Strips between &#39;&lt;script*&gt;&#39; and &#39;&lt;/script&#39;.</pre><pre class="brush:python; gutter:false; light:true;">strip_inline_css(html)      # Strips between &#39;&lt;style*&gt;&#39; and &#39;&lt;/style&gt;&#39;.</pre><pre class="brush:python; gutter:false; light:true;">strip_comments(html)        # Strips between &#39;&lt;!--&#39; and &#39;--&gt;&#39;.</pre><pre class="brush:python; gutter:false; light:true;">strip_forms(html)           # Strips between &#39;&lt;form*&gt;&#39; and &#39;&lt;/form&gt;&#39;.</pre><pre class="brush:python; gutter:false; light:true;">decode_entities(string)     # &#39;&amp;lt;&#39; =&gt; &#39;&lt;&#39;</pre><pre class="brush:python; gutter:false; light:true;">encode_entities(string)     # &#39;&lt;&#39; =&gt; &#39;&amp;lt;&#39;</pre><pre class="brush:python; gutter:false; light:true;">collapse_spaces(string, indentation=False, replace=&#39; &#39;)</pre><pre class="brush:python; gutter:false; light:true;">collapse_tabs(string, indentation=False, replace=&#39; &#39;)</pre><pre class="brush:python; gutter:false; light:true;">collapse_linebreaks(string, threshold=1)</pre><p>&nbsp;</p>
 <hr />
-<div class="example"><a name="DOM"></a>HTML DOM parser</div>
+<h2 class="example"><a name="DOM"></a>HTML DOM parser</h2>
 <p>The <em>Document Object Model</em> (DOM) is a cross-platform and language-independent convention for representing and interacting with objects in HTML, XHTML and XML documents. The web module includes a HTML DOM parser (Leonard Richardson's <a href="http://www.crummy.com/software/BeautifulSoup/" target="_blank">BeautifulSoup</a>), that allows you to traverse a HTML document as a tree of linked Python objects. This is useful to extract specific portions from a HTML string retrieved with <span class="inline_code">URL.download()</span>.</p>
 <h3>Node</h3>
-<p>The DOM consists of a <span class="inline_code">Document</span> object that contains <span class="inline_code">Text</span>, <span class="inline_code">Comment</span> and <span class="inline_code">Element</span> objects.<br />All of these are subclasses of <span class="inline_code">Node</span>.</p>
+<p>The DOM consists of a <span class="inline_code">DOM</span>&nbsp;object that contains <span class="inline_code">Text</span>, <span class="inline_code">Comment</span> and <span class="inline_code">Element</span> objects.<br />All of these are subclasses of <span class="inline_code">Node</span>.</p>
 <pre class="brush:python; gutter:false; light:true;">node = Node(html, type=NODE)</pre><pre class="brush:python; gutter:false; light:true;">node.type                   # NODE | TEXT | COMMENT | ELEMENT | DOCUMENT
 node.source                 # HTML source.
 node.parent                 # Parent node.
@@ -511,28 +526,28 @@ element.by_attribute(**kwargs)
 <li><span class="inline_code">Element.by_tag()</span> values can include a class (e.g. <span class="inline_code">"div.header"</span>) or an id (e.g. <span class="inline_code">"div#content"</span>). <br />A wildcard can be used to match any tag. (e.g. <span class="inline_code">"*.even"</span>).<br />The element is searched recursively (children in children, etc.)</li>
 <li><span class="inline_code">Element.by_attribute()</span> takes one or more keyword arguments (e.g. <span class="inline_code">name="keywords"</span>).</li>
 </ul>
-<h3>Document</h3>
-<p>The top-level element in the DOM.</p>
-<pre class="brush:python; gutter:false; light:true;">dom = Document(html)</pre><pre class="brush:python; gutter:false; light:true;">dom.declaration             # &lt;!doctype&gt; TEXT Node.
+<h3>DOM</h3>
+<p>The top-level element in the Document Object Model.</p>
+<pre class="brush:python; gutter:false; light:true;">dom = DOM(html)</pre><pre class="brush:python; gutter:false; light:true;">dom.declaration             # &lt;!doctype&gt; TEXT Node.
 dom.head                    # &lt;head&gt; Element.
 dom.body                    # &lt;body&gt; Element.</pre><p>For example, the following script retrieves the last three entries from <a href="http://www.reddit.com/" target="_blank">reddit</a>. The web module does not include a reddit search engine, but we can parse entries directly from the HTML source. This is called <em>screen scraping</em>, and many websites will strongly dislike it (server pressure).</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; url = URL(&#39;http://www.reddit.com/top/&#39;)
-&gt;&gt;&gt; dom = Document(url.download(cached=True))
+&gt;&gt;&gt; dom = DOM(url.download(cached=True))
 &gt;&gt;&gt; for e in dom.by_tag(&#39;div.entry&#39;)[:3]: # Top 3 reddit entries.
 &gt;&gt;&gt;     for a in e.by_tag(&#39;a.title&#39;)[:1]: # First &lt;a class=&quot;title&quot;&gt;.
 &gt;&gt;&gt;         print repr(plaintext(a.content))
 
 u&#39;Invisible Kitty&#39;
 u&#39;Naturally, he said yes.&#39;
-u&quot;I&#39;d just like to remind everyone that /r/minecraft exists and not everyone wants 
-  to have 10 Minecraft posts a day on their front page.&quot;</pre></div>
+u&quot;I&#39;d just like to remind everyone that /r/minecraft exists and not everyone wants&quot; 
+ &quot;to have 10 Minecraft posts a day on their front page.&quot;</pre></div>
 <p><span class="smallcaps"><br />Absolute url's</span></p>
-<p>Links parsed from the <span class="inline_code">Document</span> may be relative (e.g., starting with <span class="inline_code">"../"</span> instead of <span class="inline_code">"http://"</span>. <br />To get the absolute URL, you can use the <span class="inline_code">abs()</span> function in combination with <span class="inline_code">URL.redirect</span>:</p>
+<p>Links parsed from the <span class="inline_code">DOM</span> may be relative (e.g., starting with <span class="inline_code">"../"</span> instead of <span class="inline_code">"http://"</span>. <br />To get the absolute URL, you can use the <span class="inline_code">abs()</span> function in combination with <span class="inline_code">URL.redirect</span>:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import abs
 &gt;&gt;&gt; url = URL(&#39;http://nodebox.net&#39;)
-&gt;&gt;&gt; dom = Document(url.download())
+&gt;&gt;&gt; dom = DOM(url.download())
 &gt;&gt;&gt; for link in dom.by_tag(&#39;a&#39;):
 &gt;&gt;&gt;     print abs(link.attributes.get(&#39;href&#39;,&#39;&#39;), base=url.redirect or url.string) </pre></div>
 <p>&nbsp;</p>
@@ -648,7 +663,7 @@ http://www.top-hot-casino.ru</pre></div>
 <hr />
 <h2><a name="locale"></a>Locale</h2>
 <p>The helper module&nbsp;<span class="inline_code">pattern.web.locale</span>&nbsp;contains functions for region and language codes, based on the ISO-639 language code (e.g., <span class="inline_code">en</span>), the ISO-3166 region code (e.g., <span class="inline_code">US</span>) and the IETF BCP 47 language-region specification (<span class="inline_code">en-US</span>):</p>
-<pre class="brush:python; gutter:false; light:true;">encode_language(name)       # &#39;English&#39; =&gt; &#39;en&#39;</pre><pre class="brush:python; gutter:false; light:true;">decode_language(code)       # &#39;en&#39; =&gt; &#39;English&#39;</pre><pre class="brush:python; gutter:false; light:true;">encode_region(name)         # &#39;United States&#39; =&gt; &#39;US&#39;</pre><pre class="brush:python; gutter:false; light:true;">decode_region(code)         # &#39;US&#39; =&gt; &#39;United States&#39;</pre><pre class="brush:python; gutter:false; light:true;">languages(region)           # &#39;US&#39; =&gt; [&#39;en&#39;]</pre><pre class="brush:python; gutter:false; light:true;">regions(language)           # &#39;en&#39; =&gt; [&#39;GB&#39;, &#39;NZ&#39;, &#39;TT&#39;, ...]</pre><pre class="brush:python; gutter:false; light:true;">regionalize(language)       # &#39;en&#39; =&gt; [&#39;en-US&#39;, &#39;en-GB&#39;, ...]</pre><pre class="brush:python; gutter:false; light:true;">market(language)            # &#39;en&#39; =&gt; &#39;en-US&#39;</pre><p>The <span class="inline_code">geocode()</span> command recognizes a number of world capital cities and returns a tuple&nbsp;(<span class="inline_code">latitude</span>, <span class="inline_code">longitude</span>, <span class="inline_code">ISO-639</span>, <span class="inline_code">region</span>).</p>
+<pre class="brush:python; gutter:false; light:true;">encode_language(name)       # &#39;English&#39; =&gt; &#39;en&#39;</pre><pre class="brush:python; gutter:false; light:true;">decode_language(code)       # &#39;en&#39; =&gt; &#39;English&#39;</pre><pre class="brush:python; gutter:false; light:true;">encode_region(name)         # &#39;United States&#39; =&gt; &#39;US&#39;</pre><pre class="brush:python; gutter:false; light:true;">decode_region(code)         # &#39;US&#39; =&gt; &#39;United States&#39;</pre><pre class="brush:python; gutter:false; light:true;">languages(region)           # &#39;US&#39; =&gt; [&#39;en&#39;]</pre><pre class="brush:python; gutter:false; light:true;">regions(language)           # &#39;en&#39; =&gt; [&#39;GB&#39;, &#39;NZ&#39;, &#39;TT&#39;, ...]</pre><pre class="brush:python; gutter:false; light:true;">regionalize(language)       # &#39;en&#39; =&gt; [&#39;en-US&#39;, &#39;en-GB&#39;, ...]</pre><pre class="brush:python; gutter:false; light:true;">market(language)            # &#39;en&#39; =&gt; &#39;en-US&#39;</pre><p>The <span class="inline_code">geocode()</span> function recognizes a number of world capital cities and returns a tuple&nbsp;(<span class="inline_code">latitude</span>, <span class="inline_code">longitude</span>, <span class="inline_code">ISO-639</span>, <span class="inline_code">region</span>).</p>
 <pre class="brush:python; gutter:false; light:true;">geocode(location)           # &#39;Brussels&#39; =&gt; (50.83, 4.33, u&#39;nl&#39;, u&#39;Belgium&#39;)</pre><p>This is useful in combination with the&nbsp;<span class="inline_code">geo</span> parameter for <span class="inline_code">Twitter.search()</span> to obtain regional tweets:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import Twitter
