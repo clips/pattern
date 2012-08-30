@@ -1,6 +1,6 @@
 #### PATTERN #######################################################################################
 
-# Author: Tom De Smedt <tom@organisms.be>
+# Authors: Tom De Smedt <tom@organisms.be>, Walter Daelemans <walter.daelemans@ua.ac.be>
 # License: BSD License, see LICENSE.txt
 # Copyright (c) 2010 University of Antwerp, Belgium
 # All rights reserved.
@@ -38,7 +38,8 @@
 ### CREDITS ########################################################################################
 
 __author__    = "Tom De Smedt"
-__version__   = "2.3"
+__credits__   = "Tom De Smedt, Walter Daelemans"
+__version__   = "2.4"
 __copyright__ = "Copyright (c) 2010 University of Antwerp (BE)"
 __license__   = "BSD"
 
