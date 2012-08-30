@@ -85,7 +85,7 @@
 				/* Follow nearby trails, from pheromone to pheromone.
 				 * If the trail has evaporated too much, the ant may lose interest.
 				 */
-				for (var i=0; i < this.colony.ants.length; i ++) {
+				for (var i=0; i < this.colony.ants.length; i++) {
 					for (var j=0; j < this.colony.ants[i].trail.length; j++) {
 						var pheromone = this.colony.ants[i].trail[j];
 						if (distance(this, pheromone) < pheromone.strength * 30) {
