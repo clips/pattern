@@ -22,7 +22,7 @@ import codecs
 import cPickle; BINARY=1
 import stemmer; _stemmer=stemmer
 
-from math      import log
+from math      import log, sqrt
 from time      import time
 from random    import random, choice
 from itertools import izip, chain
@@ -1302,13 +1302,15 @@ class DistanceMap:
 # Initialization methods:
 RANDOM, KMPP = "random", "kmeans++"
 
-def k_means(vectors, k, iterations=10, distance=COSINE, **kwargs):
+def k_means(vectors, k=None, iterations=10, distance=COSINE, **kwargs):
     """ Returns a list of k clusters, 
         where each cluster is a list of similar vectors (Lloyd's algorithm).
         There is no guarantee of convergence or optimal solution.
     """
     init = kwargs.get("seed", kwargs.get("initialization", RANDOM))
     keys = kwargs.get("keys") or list(features(vectors))
+    if k is None:
+        k = sqrt(len(vectors) / 2)
     if k < 2: 
         return [[v for v in vectors]]
     if init == KMPP:
