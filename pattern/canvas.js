@@ -2,7 +2,7 @@
 // Copyright (c) 2010 University of Antwerp, Belgium
 // Authors: Tom De Smedt <tom@organisms.be>
 // License: BSD (see LICENSE.txt for details).
-// Version: 1.1.
+// Version: 1.2.
 // http://www.clips.ua.ac.be/pages/pattern-canvas
 
 // The NodeBox drawing API for the HTML5 <canvas> element.
@@ -120,14 +120,22 @@ Array.eq = function(array1, array2) {
 	return true;
 }
 
-Array.sorted = function(array, reversed) {
+Array.sorted = function(array, reverse) {
     /* Returns a sorted copy of the given array.
      */
     array = array.slice();
     array = array.sort();
-    if (reversed) array = array.reverse();
+    if (reverse) array = array.reverse();
     return array;
 };
+
+Array.reversed = function(array) {
+    /* Returns a reversed copy of the given array.
+     */
+    array = array.slice();
+    array = array.reverse();
+    return array;
+}
 
 Array.choice = function(array) {
     /* Returns a random value from the given array (undefined if empty).
@@ -580,8 +588,12 @@ function background(r, g, b, a) {
     /* Sets the current background color.
      */
     if (r !== undefined) {
+        var tf = _ctx.currentTransform;
         _ctx.state.background = (r instanceof Color)? new Color(r) : new Color(r, g, b, a);
-        _ctx._canvas.element.style.backgroundColor = _ctx.state.background._get();
+        _ctx_fill(_ctx.state.background);
+        _ctx.setTransform(1, 0, 0, 1, 0, 0); // Identity matrix.
+        _ctx.fillRect(0, 0, _ctx._canvas.width, _ctx._canvas.height);
+        _ctx.currenTransform = tf;
     }
     return _ctx.state.background;
 }
@@ -933,22 +945,20 @@ var AffineTransform = Transform = Class.extend({
         if (transform instanceof AffineTransform) {
             this.matrix = transform.matrix.copy();
         } else {
-            this.matrix = this.identity();
+            this.matrix = [1, 0, 0, 0, 1, 0, 0, 0, 1]; // Identity matrix.
         }
+    },
+    
+    copy: function() {
+        return new AffineTransform(this);
     },
     
     prepend: function(transform) {
         this.matrix = this._mmult(this.matrix, transform.matrix);
     },
+    
     append: function(transform) {
         this.matrix = this._mmult(transform.matrix, this.matrix);
-    },
-    concat: function(transform) {
-        this.append(transform);
-    },
-    
-    copy: function() {
-        return new AffineTransform(this);
     },
     
     _mmult: function(a, b) {
@@ -957,10 +967,12 @@ var AffineTransform = Transform = Class.extend({
          * e.g. the matrix A followed by B = BA and not AB.
          */
         return [
-            a[0]*b[0] + a[1]*b[3], a[0]*b[1] + a[1]*b[4], 0,
-            a[3]*b[0] + a[4]*b[3], a[3]*b[1] + a[4]*b[4], 0,
-            a[6]*b[0] + a[7]*b[3] + b[6], 
-            a[6]*b[1] + a[7]*b[4] + b[7], 1
+            a[0] * b[0] + a[1] * b[3], 
+            a[0] * b[1] + a[1] * b[4], 0,
+            a[3] * b[0] + a[4] * b[3], 
+            a[3] * b[1] + a[4] * b[4], 0,
+            a[6] * b[0] + a[7] * b[3] + b[6], 
+            a[6] * b[1] + a[7] * b[4] + b[7], 1
         ];
     },
     
@@ -968,11 +980,14 @@ var AffineTransform = Transform = Class.extend({
         /* Multiplying a matrix by its inverse produces the identity matrix.
          */
         var m = this.matrix;
-        var d = m[0]*m[4] - m[1]*m[3]
+        var d = m[0] * m[4] - m[1] * m[3];
         this.matrix = [
-             +m[4]/d, -m[1]/d, 0, 
-             -m[3]/d, +m[0]/d, 0,
-             (m[3]*m[7] - m[4]*m[6]) / d, -(m[0]*m[7] - m[1]*m[6]) / d, 1
+               m[4] / d, 
+              -m[1] / d, 0, 
+              -m[3] / d, 
+               m[0] / d, 0,
+              (m[3] * m[7] - m[4] * m[6]) / d, 
+             -(m[0] * m[7] - m[1] * m[6]) / d, 1
         ];
     },
     
@@ -980,24 +995,19 @@ var AffineTransform = Transform = Class.extend({
         var m = this.copy(); m.invert(); return m;
     },
     
-    identity: function() {
-        return [1,0,0, 0,1,0, 0,0,1];
-    },
-    
     scale: function(x, y) {
         if (y === undefined) y = x;
-        this.matrix = this._mmult([x,0,0, 0,y,0, 0,0,1], this.matrix);
+        this.matrix = this._mmult([x, 0, 0, 0, y, 0, 0, 0, 1], this.matrix);
     },
     
     translate: function(x, y) {
-        this.matrix = this._mmult([1,0,0, 0,1,0, x,y,1], this.matrix);
+        this.matrix = this._mmult([1, 0, 0, 0, 1, 0, x, y, 1], this.matrix);
     },
     
     rotate: function(angle) {
-        var r = Math.radians(angle);
-        var c = Math.cos(r);
-        var s = Math.sin(r);
-        this.matrix = this._mmult([c,s,0, -s,c,0, 0,0,1], this.matrix);
+        var c = Math.cos(Math.radians(angle));
+        var s = Math.sin(Math.radians(angle));
+        this.matrix = this._mmult([c, s, 0, -s, c, 0, 0, 0, 1], this.matrix);
     },
     
     rotation: function() {
@@ -1015,8 +1025,8 @@ var AffineTransform = Transform = Class.extend({
         if (y === undefined) { y=x.y; x=x.x; } // One parameter, Point object.
         var m = this.matrix;
         return new Point(
-            x*m[0] + y*m[3] + m[6], 
-            x*m[1] + y*m[4] + m[7]
+            x * m[0] + y * m[3] + m[6], 
+            x * m[1] + y * m[4] + m[7]
         );
     },
     
@@ -1026,7 +1036,7 @@ var AffineTransform = Transform = Class.extend({
         var p = new Path();
         for (var i=0; i < path.array.length; i++) {
             var pt = path.array[i];
-            if (pt.cmd == "closeto") {
+            if (pt.cmd == CLOSE) {
                 p.closepath();
             } else if (pt.cmd == MOVETO) {
                 pt = this.apply(pt);
@@ -1035,10 +1045,10 @@ var AffineTransform = Transform = Class.extend({
                 pt = this.apply(pt);
                 p.lineto(pt.x, pt.y);
             } else if (pt.cmd == CURVETO) {
-                var h1 = this.apply(pt.ctrl1);
-                var h2 = this.apply(pt.ctrl2);
+                var ctrl1 = this.apply(pt.ctrl1);
+                var ctrl2 = this.apply(pt.ctrl2);
                 pt = this.apply(pt);
-                p.curveto(h1.x, h1.y, h2.x, h2.y, pt.x, pt.y);
+                p.curveto(ctrl1.x, ctrl1.y, ctrl2.x, ctrl2.y, pt.x, pt.y);
             }
         }
         return p;
@@ -1052,17 +1062,13 @@ var AffineTransform = Transform = Class.extend({
     },
     
     map: function(points) {
-        var a = [];
-        for (var i=0; i < points.length; i++) {
-            var pt = points[i];
+        return Array.map(points, function(pt) {
             if (pt instanceof Array) {
-                pt = this.apply(pt[0], pt[1]);
+                return this.apply(pt[0], pt[1]);
             } else {
-                pt = this.apply(pt.x, pt.y);
-            }
-            a.push(pt);
-        }
-        return a;
+                return this.apply(pt.x, pt.y);
+            }            
+        });
     }
 });
 
@@ -1800,9 +1806,9 @@ function star(x, y, points, outer, inner, options) {
 /*##################################################################################################*/
 
 /*--- IMAGE ----------------------------------------------------------------------------------------*/
-// A significant amount of the code here is concerned with preloading and caching images.
-// This happens asynchronously. Since there is no wait() or sleep() in JavaScript,
-// we set an onload() callback for each image to refine Image properties once it is loaded.
+// Images are loaded asynchronously. Since there is no wait() or sleep() in JavaScript,
+// we set an onload() callback for each image to redefine Image width and height once it is loaded.
+// The ImageCache is a collection of objects that are preloading.
 
 var ImageConstructor = Image;
 
@@ -2397,6 +2403,9 @@ var Canvas = Class.extend({
         if (options === undefined) {
             options = {};
         }
+        if (!element) {
+            element = document.createElement("canvas");
+        }
         if (!element.getContext && typeof(G_vmlCanvasManager) != "undefined") {
             element = G_vmlCanvasManager.initElement(element);
         }
@@ -2573,6 +2582,12 @@ var Canvas = Class.extend({
         this._step = this.frame+1;
         this.run();
         this.pause();
+    },
+    
+    active: function() {
+        /* Returns true if the animation is running.
+         */
+        return this._active;
     },
 
     image: function() {
