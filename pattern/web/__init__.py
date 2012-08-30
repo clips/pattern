@@ -2046,8 +2046,10 @@ class Document(Element):
     def __repr__(self):
         return "Document()"
 
+DOM = Document
+
 #article = Wikipedia().search("Document Object Model")
-#dom = Document(article.html)
+#dom = DOM(article.html)
 #print dom.get_element_by_id("References").source
 #print [element.attributes["href"] for element in dom.get_elements_by_tagname("a")]
 #print dom.get_elements_by_tagname("p")[0].next.previous.children[0].parent.__class__
