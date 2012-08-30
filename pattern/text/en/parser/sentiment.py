@@ -22,6 +22,18 @@ def column(list, i):
 def avg(list):
     return sum(list) / float(len(list) or 1)
 
+### STRING FUNCTIONS ###############################################################################
+
+def encode_emoticons(string):
+    """ Returns the string with emoticons encoded as entities, e.g., :-) => &happy;
+    """
+    for (smileys, entity) in (
+      ((":)", ":-)"), "&happy;"),
+      ((":(", ":-("), "&sad;")):
+        for smiley in smileys:
+            string = string.replace(" %s " % smiley, " %s " % entity)
+    return string
+
 #### SUBJECTIVITY LEXICON ##########################################################################
 
 NOUN, VERB, ADJECTIVE, ADVERB = \
@@ -294,6 +306,12 @@ def sentiment(s, **kwargs):
                     # For Dutch, exclamation marks as intensifiers is beneficial: 
                     # A 0.80 P 0.77 R 0.84 F1 0.81.
                     for w in a: w.p *= 1.25
+                if w in ("&happy;", "&happy"):
+                    # Emoticon :-)
+                    a.append(Assessment([w], +1.0))
+                if w in ("&sad;", "&sad"):
+                    # Emoticon :-(
+                    a.append(Assessment([w], -1.0))
     
     # From pattern.en.wordnet.Synset: 
     # sentiment(synsets("horrible", "JJ")[0]) => (-0.6, 1.0)
@@ -312,6 +330,7 @@ def sentiment(s, **kwargs):
     elif isinstance(s, basestring):
         s = s.lower()
         s = s.replace("!", " !")
+        s = encode_emoticons(s)
         _score([(w.strip("*#[]():;,.?-\t\n\r\x0b\x0c"), pos) for w in s.split()], lexicon.language, negation)
     # From pattern.en.Text, using word lemmata and parts-of-speech when available.
     elif hasattr(s, "sentences"):
