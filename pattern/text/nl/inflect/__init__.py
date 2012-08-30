@@ -235,7 +235,7 @@ def _parse_lemma(verb):
     """
     v = verb.lower()
     # Common prefixes: op-bouwen and ver-bouwen inflect like bouwen.
-    for prefix in ("aan", "be", "her", "in", "ont", "op", "over", "uit", "ver"):
+    for prefix in ("aan", "be", "her", "in", "mee", "ont", "op", "over", "uit", "ver"):
         if v.startswith(prefix) and v[len(prefix):] in _verbs._lemmas:
             return prefix + _verbs._lemmas[v[len(prefix):]]
     # Present participle -end: hengelend, knippend.
