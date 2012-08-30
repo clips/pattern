@@ -732,7 +732,7 @@ class TestDOM(unittest.TestCase):
         self.assertTrue(v1.head.source.startswith("<head"))
         self.assertTrue(v1.body.source.startswith("<body"))
         print "pattern.web.Node"
-        print "pattern.web.Document"
+        print "pattern.web.DOM"
     
     def test_node_traverse(self):
         # Assert Node.traverse() (must visit all child nodes recursively).
@@ -740,14 +740,14 @@ class TestDOM(unittest.TestCase):
         def visit(node):
             if node.type == web.ELEMENT and node.tag == "span":
                 self.b = True
-        v = web.Document(self.html)
+        v = web.DOM(self.html)
         v.traverse(visit)
         self.assertEqual(self.b, True)
         print "pattern.web.Node.traverse()"
         
     def test_element(self):
         # Assert Element properties (test <body>).
-        v = web.Document(self.html).body
+        v = web.DOM(self.html).body
         self.assertEqual(v.tag, "body")
         self.assertEqual(v.attributes["id"], "front")
         self.assertEqual(v.attributes["class"], "comments")

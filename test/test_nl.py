@@ -190,10 +190,11 @@ class TestParser(unittest.TestCase):
         # Assert parsed output with Penn Treebank II tags (slash-formatted).
         # 1) "de zwarte kat" is a noun phrase, "op de mat" is a prepositional noun phrase.
         v = nl.parser.parse("De zwarte kat zat op de mat.")
+        print v
         self.assertEqual(v,
             "De/DT/B-NP/O zwarte/JJ/I-NP/O kat/NN/I-NP/O " + \
             "zat/VBD/B-VP/O " + \
-            "op/IN/B-PP/O de/DT/O/O mat/JJ/B-ADJP/O ././O/O"
+            "op/IN/B-PP/B-PNP de/DT/B-NP/I-PNP mat/NN/I-NP/I-PNP ././O/O"
         )
         # 2) "jaagt" and "vogels" lemmata are "jagen" and "vogel".
         v = nl.parser.parse("De zwarte kat jaagt op vogels.", lemmata=True)

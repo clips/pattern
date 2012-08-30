@@ -145,4 +145,3 @@ def tag(s, tokenize=True, encoding="utf-8"):
 
 if __name__ == "__main__":
     commandline(parse)
-    
