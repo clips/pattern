@@ -2,6 +2,7 @@
 // Copyright (c) 2010 University of Antwerp, Belgium
 // Authors: Tom De Smedt <tom@organisms.be>, Daniel Friesen (daniel@nadir-seen-fire.com)
 // License: BSD (see LICENSE.txt for details).
+// Version: 1.1.
 // http://www.clips.ua.ac.be/pages/pattern
 
 /*--- ARRAY ----------------------------------------------------------------------------------------*/
