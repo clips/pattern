@@ -160,6 +160,9 @@ def singularize(word, pos=NOUN, custom={}):
         # chinezen => chinees
         if w.endswith("ezen"):
             return w[:-4] + "ees"
+        # neven => neef
+        if w.endswith("even") and len(w) > 4 and not vowel(w[-5]):
+            return w[:-4] + "eef"
         if w.endswith("en"):
             w = w[:-2]
             # ogen => oog
