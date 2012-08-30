@@ -1,0 +1,288 @@
+XX e fchar ADJA 926.737301587302
+ADJA t fhassuf 1 VVPP 245.959523809524
+XX e fchar ADJA 968.372222222222
+ADJA t fhassuf 1 VVPP 244.85
+XX 1 fchar CARDNUM 130.4
+ADJA . fgoodleft VVINF 112.697421269564
+- hassuf 1 TRUNC 91
+XX i fchar ADJD 60
+XX 0 fchar CARDNUM 58.9333333333333
+sich goodleft VVFIN 46.8139830308869
+sche hassuf 4 ADJA 45
+NN Dr. fgoodright NE 40
+ADJA e faddsuf 1 ADJD 37.75
+XX 2 fchar CARDNUM 32
+XX t fchar VVFIN 30
+ADJA die fgoodleft VVFIN 29.3333333333333
+VVPP die fgoodleft VVFIN 24.2666666666667
+ig hassuf 2 ADJD 24
+. hassuf 1 ADJA 20.2
+XX 5 fchar CARDNUM 20
+lich hassuf 4 ADJD 19
+ADJA zu fgoodright VVINF 18.0166666666667
+) char LINUM 18
+< char SGML 16.0041666666667
+Ü char NN 16
+ADJA werden fgoodleft VVPP 15.5
+XX 3 fchar CARDNUM 15
+ist goodright ADV 14.2858158208037
+einem goodleft APPR 13.9597235705344
+worden goodleft VVPP 13.5
+ADJD t fhassuf 1 VVFIN 13
+ADJA der fgoodleft VVFIN 12
+asse hassuf 4 NE 12
+da haspref 2 PAV 11.9545454545455
+NN chen fhassuf 4 ADJA 11
+end hassuf 3 ADJD 11
+VVINF en faddsuf 2 VVPP 10.9874686716792
+bar hassuf 3 ADJD 10
+isch hassuf 4 ADJD 10
+XX 4 fchar CARDNUM 10
+Prof. goodright NE 9.99583333333333
+XX a fchar ADV 9.33333333333333
+Ä char NN 8
+ADJA im fgoodleft VVFIN 8
+ADJA ns fhassuf 2 ADV 7.85714285714286
+ADJA - fhaspref 1 NN 7
+S hassuf 1 NE 7
+NN Hans fgoodright NE 7
+VVINF werden fgoodleft VVPP 6.44444444444444
+VVFIN werden fgoodright VMFIN 6.43508771929825
+er addpref 2 VVFIN 6.4
+VVINF en fdeletesuf 2 ADJA 7
+VVINF z fchar VVIZU 7
+VVIZU zu fgoodright VVINF 11
+VVPP der fgoodleft VVFIN 6.4
+ADJA . fgoodleft VVFIN 6.07142857142857
+ADJA l fhassuf 1 ADJD 6
+dem addsuf 3 APPR 6
+s addpref 1 ARTIND 5.84673984272608
+VVPP auch fgoodleft VVFIN 5.27777777777778
+wir goodleft VVFIN 5.26041666666667
+s deletepref 1 PPOSAT 5.15789473684211
+Ö char NN 5
+NN r fdeletesuf 1 ADJA 5
+ADJA sie fgoodleft VVFIN 5
+ADJA fen fhassuf 3 VVPP 5
+VVPP l fhaspref 1 VVFIN 5
+NN ann fhassuf 3 NE 5
+rich hassuf 4 NE 5
+ADJA nicht fgoodleft ADV 5
+ADJA ken fhassuf 3 VVINF 5
+abzu haspref 4 VVIZU 5
+Da deletepref 2 PAV 5
+ih haspref 2 PPOSAT 5
+uns haspref 3 PPOSAT 5
+VVFIN " fgoodleft ARTDEF 4.84444430354394
+VVINF e fhassuf 1 VVFIN 4.71372549019608
+VVFIN werden fgoodright VMFIN 5.84199584199584
+I hassuf 1 NE 4.5
+VVFIN r fhassuf 1 ADV 4.44444444444444
+ADJA der fgoodleft NN 4
+hes hassuf 3 ADJA 4
+alen hassuf 4 ADJA 4
+iche hassuf 4 ADJA 4
+eht hassuf 3 VVFIN 4
+ADJA insgesamt fgoodleft VVFIN 4
+VVPP man fgoodleft VVFIN 4
+ADJA Wir fgoodright VVFIN 4
+VVINF ang fhaspref 3 VVPP 4
+H hassuf 1 NE 4
+T hassuf 1 NE 4
+V hassuf 1 NE 4
+Z hassuf 1 NE 4
+rg hassuf 2 NE 4
+ADJA immer fgoodright ADJD 4
+XX 9 fchar CARDNUM 4
+eb haspref 2 ADV 4
+VVFIN sen fhassuf 3 VVINF 4
+gabe addsuf 4 APPR 4
+XX o fchar FM 4
+anz haspref 3 VVIZU 4
+dem deletesuf 3 PAV 4
+VVFIN des fgoodleft APPR 3.68518518518519
+VVPP it fhassuf 2 ADJD 3.66666666666667
+je deletepref 2 PIAT 3.66666666666667
+VVPP ver fdeletepref 3 VVFIN 3.33333333333333
+ADJD des fgoodleft APPR 3.25
+CARDNUM . fchar LINUM 3.15804002760524
+gewählt goodright VAFIN 3.08424815695397
+ADJA F fchar NN 3
+ADV A fchar NN 3
+ADV ein fgoodright NN 3
+VVFIN de fhassuf 2 ADJA 3
+äre hassuf 3 ADJA 3
+VVFIN die fgoodright ADJA 3
+erl haspref 3 VVFIN 3
+ADJA mmen fhassuf 4 VVFIN 3
+ADJA wiederum fgoodleft VVFIN 3
+VVPP das fgoodleft VVFIN 3
+ADJD en fhassuf 2 VVPP 3
+NN gt fhassuf 2 VVPP 3
+ADJA esen fhassuf 4 VVPP 3
+A hassuf 1 NE 3
+K hassuf 1 NE 3
+tein hassuf 4 NE 3
+NN iger fhassuf 4 NE 3
+nn deletesuf 2 ADV 3
+ADJA hr fhassuf 2 ADV 3
+mal deletesuf 3 ADV 3
+lls hassuf 3 ADV 3
+ADJA in fgoodleft ADV 3
+VVFIN hat fgoodright ADV 3
+VMFIN die fgoodright ADV 3
+ADJA kann fgoodleft VVINF 3
+ADJA wird fgoodleft VVINF 3
+c hassuf 1 FM 3
+nige hassuf 4 PIAT 3
+kö haspref 2 VMFIN 3
+S deletepref 1 PPOSAT 3
+ADV Studium fgoodleft APPRART 3
+ADV en faddsuf 2 VVFIN 2.9469696969697
+ADV e faddsuf 1 ADJD 3.33333333333333
+VVFIN em faddsuf 2 ADJD 2.9047619047619
+iben hassuf 4 VVFIN 2.83333333333333
+da addpref 2 APPR 2.80864197530864
+VVINF der fgoodright ADJA 2.73333333333333
+ADJA mal faddsuf 3 CARD 3
+NN Hochschulen fgoodleft ADJA 2.70652173913043
+ADV di fhaspref 2 PDAT 2.54365079365079
+VVIZU o fchar VVPP 2.5
+VVPP ein fgoodleft ADV 2.5
+vorz haspref 4 VVIZU 3
+wo deletepref 2 PWAV 2.5
+welc haspref 4 PRELS 2.4078431372549
+VVINF im fgoodleft VVFIN 2.2952380952381
+VVFIN Irchel fgoodright VAFIN 3.14748265433197
+VVFIN sind fgoodleft VVPP 2.25
+lich hassuf 4 ADJD 2.25
+bei deletepref 3 PIAT 2.15
+wenn goodleft KON 2.05813439434129
+VVFIN W fchar NN 2
+- deletepref 1 NN 2
+ADJA sich fgoodleft NN 2
+NE der fgoodleft NN 2
+ADJA Franken fgoodleft NN 2
+VVINF m fdeletesuf 1 ADJA 2
+PAV e fhassuf 1 ADJA 2
+Wic haspref 3 ADJA 2
+bare hassuf 4 ADJA 2
+iale hassuf 4 ADJA 2
+Allg haspref 4 ADJA 2
+XX c fchar VVFIN 2
+FM g fchar VVFIN 2
+VVPP t fdeletesuf 1 VVFIN 2
+ADJA er fdeletepref 2 VVFIN 2
+ADJA rn fhassuf 2 VVFIN 2
+VVPP sc fhaspref 2 VVFIN 2
+ADJA hme fhassuf 3 VVFIN 2
+tes haspref 3 VVFIN 2
+exi haspref 3 VVFIN 2
+dau haspref 3 VVFIN 2
+VVPP bed fhaspref 3 VVFIN 2
+ADJA res fhaspref 3 VVFIN 2
+elen hassuf 4 VVFIN 2
+ADJA ehen fhassuf 4 VVFIN 2
+begi haspref 4 VVFIN 2
+ADJA de faddsuf 2 VVFIN 2
+ADJA ver faddpref 3 VVFIN 2
+VVFIN h faddpref 1 ADJA 2
+ADJA folgende fgoodleft VVFIN 2
+ADJA er fgoodleft VVFIN 2
+ADJA den fgoodleft VVFIN 2
+VVPP nicht fgoodleft VVFIN 2
+ADJA Er fgoodright VVFIN 2
+VVINF eben fhassuf 4 VVPP 2
+darg haspref 4 VVPP 2
+beig haspref 4 VVPP 2
+NN Universität fgoodright NE 2.33333333333333
+ung hassuf 3 NN 3
+O hassuf 1 NE 2
+P hassuf 1 NE 2
+W hassuf 1 NE 2
+NN y fhassuf 1 NE 2
+zi hassuf 2 NE 2
+lm hassuf 2 NE 2
+sh hassuf 2 NE 2
+NN rd fhassuf 2 NE 2
+NN dt fhassuf 2 NE 2
+Gi haspref 2 NE 2
+NN art fhassuf 3 NE 2
+Bus haspref 3 NE 2
+Gal haspref 3 NE 2
+Bas haspref 3 NE 2
+NN ener fhassuf 4 NE 2
+Schn haspref 4 NE 2
+NN Gebäude fgoodright NE 2
+ADJA v fhassuf 1 ADJD 2
+am hassuf 2 ADJD 2
+ig hassuf 2 ADJD 2
+wer hassuf 3 ADJD 2
+VVFIN ant fhassuf 3 ADJD 2
+ADV sch fhassuf 3 ADJD 2
+VVPP ent fhassuf 3 ADJD 2
+ADJA hter fhassuf 4 ADJD 2
+VVFIN echt fhassuf 4 ADJD 2
+land addsuf 4 ADJD 2
+XX 6 fchar CARDNUM 2
+NN Fakultät fgoodright CARDNUM 2
+XX n fchar ADV 2
+st deletesuf 2 ADV 2
+hl deletesuf 2 ADV 2
+so hassuf 2 ADV 2
+ADJA ts fhassuf 2 ADV 2
+VVFIN se fhassuf 2 ADV 2
+VVFIN ei fhaspref 2 ADV 2
+NN Je fhaspref 2 ADV 2
+ies hassuf 3 ADV 2
+upt hassuf 3 ADV 2
+och hassuf 3 ADV 2
+nig hassuf 3 ADV 2
+ADJD frü fhaspref 3 ADV 2
+Viel deletepref 4 ADV 2
+mals hassuf 4 ADV 2
+nsam hassuf 4 ADV 2
+natü haspref 4 ADV 2
+ADJD sondern fgoodright ADV 2
+VVFIN sehr fgoodright ADV 2
+ADJA ühen fhassuf 4 VVINF 2
+ADJD A fchar APPR 2
+XX . fchar APPR 2
+ADJA ls fhassuf 2 APPR 2
+äss hassuf 3 APPR 2
+ink haspref 3 APPR 2
+ADV des fgoodleft APPR 2
+VVFIN einer fgoodleft APPR 2
+NN é fchar FM 2
+ty hassuf 2 FM 2
+ADJA ur fhassuf 2 FM 2
+ADJA ce fhassuf 2 FM 2
+cus hassuf 3 FM 2
+ing hassuf 3 FM 2
+ling hassuf 4 NN 2
+ces hassuf 3 FM 2
+put hassuf 3 FM 2
+ions hassuf 4 FM 2
+arch hassuf 4 FM 2
+Public goodleft FM 2
+Dar deletepref 3 PAV 2
+manc haspref 4 PIAT 2
+eini haspref 4 PIAT 2
+wol haspref 3 VMFIN 2
+möc haspref 3 VMFIN 2
+müs haspref 3 VMFIN 2
+ss deletesuf 2 KOUS 2
+fern deletesuf 4 KOUS 2
+PAV hdem fhassuf 4 KOUS 2
+VVFIN als fgoodright KOUS 2
+D addpref 1 PPER 2
+ADJD dass fgoodright PPER 2
+ohl hassuf 3 KON 2
+wür deletepref 3 VAFIN 2
+ches addsuf 4 PIS 2
+eses hassuf 4 PDAT 2
+im hassuf 2 APPRART 2
+NN anderen fgoodleft APPRART 2
+XX S fchar XY 2
+wiev haspref 4 PWAT 2
+KON c fchar ADV 1.99358974358974
