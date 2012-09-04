@@ -52,7 +52,7 @@ setup(
         "pattern.text.de.inflect"   : ["*.txt"],
         "pattern.text.en.inflect"   : ["*.txt"],
         "pattern.text.en.parser"    : ["*.txt", "*.xml"],
-        "pattern.text.en.wordlists" : ["*.txt"],
+        "pattern.text.en.wordlist"  : ["*.txt"],
         "pattern.text.en.wordnet"   : ["*.txt", "dict/*"],
         "pattern.text.en.wordnet.pywordnet" : ["*"],
         "pattern.text.nl.parser"    : ["*.txt", "*.xml"],
