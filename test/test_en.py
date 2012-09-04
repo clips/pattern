@@ -805,6 +805,9 @@ class TestSentiment(unittest.TestCase):
         self.assertTrue(en.sentiment("horrible")[0] < 0)
         self.assertTrue(en.sentiment(en.wordnet.synsets("horrible", pos="JJ")[0])[0] < 0)
         self.assertTrue(en.sentiment(en.Text(en.parse("A bad book. Really horrible.")))[0] < 0)
+        # Assert that :) and :( are recognized.
+        self.assertTrue(en.sentiment(":)")[0] > 0)
+        self.assertTrue(en.sentiment(":(")[0] < 0)
         # Assert the accuracy of the sentiment analysis.
         # Given are the scores for Pang & Lee's polarity dataset v2.0:
         # http://www.cs.cornell.edu/people/pabo/movie-review-data/
@@ -827,7 +830,7 @@ class TestSentiment(unittest.TestCase):
         self.assertTrue(v[1][0] == "pleasant")
         self.assertTrue(v[1][1] > 0)
         print "pattern.en.sentiment().assessments"
-    
+        
     def test_sentiwordnet(self):
         # Assert < 0 for negative words and > 0 for positive words.
         try:
