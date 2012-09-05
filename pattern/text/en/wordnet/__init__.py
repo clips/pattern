@@ -336,8 +336,14 @@ def map32(id, pos=NOUN):
 # Import the SentiWordNet dict from pattern.en.parser.sentiment.
 
 try:
-    import sys; sys.path.append(os.path.join(MODULE, "..", "parser"))
-    import sentiment
+    try:
+        from ..parser import sentiment
+    except:
+        try:
+            import sys; sys.path.append(os.path.join(MODULE, "..", "parser"))
+            import sentiment
+        except:
+            from pattern.en.parser import sentiment
     if int(float(VERSION)) == 2:
         m = map32
     else:

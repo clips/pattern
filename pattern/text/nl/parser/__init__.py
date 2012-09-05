@@ -40,16 +40,19 @@ _tokenize = tokenize
 #### LEMMATIZER ####################################################################################
 # Word lemmas using singularization and verb conjugation from the inflect module.
 
-try:
-    from nl.inflect import singularize, conjugate, predicative
+try: 
+    from ..inflect import singularize, conjugate, predicative
 except:
     try:
         sys.path.append(os.path.join(MODULE, ".."))
         from inflect import singularize, conjugate, predicative
     except:
-        singularize = lambda w: w
-        conjugate   = lambda w, t: w
-        predicative = lambda w: w
+        try: 
+            from pattern.nl.inflect import singularize, conjugate, predicative
+        except:
+            singularize = lambda w: w
+            conjugate   = lambda w, t: w
+            predicative = lambda w: w
 
 def lemma(word, pos="NN"):
     if pos == "NNS":

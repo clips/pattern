@@ -18,13 +18,16 @@ except:
     MODULE = ""
 
 # Import the Cache class from pattern.web so e-mails can be cached locally (faster):
-try: from pattern.web.cache import cache
+try: from ..cache import cache
 except:
     try: 
         import os, sys; sys.path.append(os.path.join(MODULE, ".."))
         from cache import cache
     except:
-        cache = {}
+        try:
+            from pattern.web.cache import cache
+        except:
+            cache = {}
 
 #### STRING FUNCTIONS ##############################################################################
 

@@ -317,15 +317,18 @@ def find_prepositions(chunked):
 #### LEMMATIZER ####################################################################################
 # Word lemmas using singularization and verb conjugation from the inflect module.
 
-try:
-    from en.inflect import singularize, conjugate
+try: 
+    from ..inflect import singularize, conjugate
 except:
     try:
         sys.path.append(os.path.join(MODULE, ".."))
         from inflect import singularize, conjugate
     except:
-        singularize = lambda w: w
-        conjugate = lambda w,t: w
+        try: 
+            from pattern.en.inflect import singularize, conjugate
+        except:
+            singularize = lambda w: w
+            conjugate = lambda w,t: w
 
 def lemma(word, pos="NN"):
     """ Returns the lemma of the given word, e.g. horses/NNS => horse, am/VBP => be.
