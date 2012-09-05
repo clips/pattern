@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+<head>
+	<title>pack</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="../../pattern/canvas.js"></script>
+</head>
+<body>
+	<script type="text/canvas">
+		var Circle = Class.extend({
+			init: function(x, y, radius, image) {
+				/* An object that can be passed to pack(),
+				 * with a repulsion radius and an image to draw inside the radius.
+				 */
+				this.x = x;
+				this.y = y;
+				this.radius = radius;
+				this.image = image;
+				this.goal = new Point(x,y);
+			},
+			contains: function(x, y) {
+				return geometry.distance(this.x, this.y, x, y) <= this.radius;
+			},
+			draw: function() {
+				var a = geometry.angle(this.x, this.y, this.goal.x, this.goal.y);
+				var r = this.radius * 1.25; // The cells can overlap a little bit.
+				var w = this.image.width;
+				var h = this.image.height;
+				push();
+				translate(this.x, this.y);
+				scale(r * 2 / Math.min(w, h));
+				rotate(a);
+				image(this.image, -w/2, -h/2); // Rotate from image center.
+				pop();
+			}
+		});
+		
+		function pack(circles, x, y, padding, exclude) {
+			/* Circle-packing algorithm.
+			 * Groups the given list of Circle objects around (x,y) in an organic way.
+			 */
+			// Ported from Sean McCullough's Processing code:
+			// http://www.cricketschirping.com/processing/CirclePacking1/
+			// See also: http://en.wiki.mcneel.com/default.aspx/McNeel/2DCirclePacking
+		
+			// Repulsive force: move away from intersecting circles.
+			for (var i=0; i < circles.length; i++) {
+				for (var j=i+1; j < circles.length; j++) {
+					var circle1 = circles[i];
+					var circle2 = circles[j];
+					var d = geometry.distance(circle1.x, circle1.y, circle2.x, circle2.y);
+					var r = circle1.radius + circle2.radius + padding;
+					if (d < r - 0.01) {
+						var dx = circle2.x - circle1.x;
+						var dy = circle2.y - circle1.y;
+						var vx = (dx / d) * (r-d) * 0.5;
+						var vy = (dy / d) * (r-d) * 0.5;
+						if (!Array.contains(exclude, circle1)) {
+							circle1.x -= vx;
+							circle1.y -= vy;
+						}
+						if (!Array.contains(exclude, circle2)) {
+							circle2.x += vx;
+							circle2.y += vy;
+						}
+					}
+				}
+			}
+		
+			// Attractive force: move all circles to center.
+			Array.enumerate(circles, function(i, circle) {
+				circle.goal.x = x;
+				circle.goal.y = y;
+				if (!Array.contains(exclude, circle)) {
+					var damping = Math.pow(circle.radius, 3) * 0.000001; // Big ones in the middle.
+					var vx = (circle.x - x) * damping;
+					var vy = (circle.y - y) * damping;
+					circle.x -= vx;
+					circle.y -= vy;
+				}		
+			});
+		}
+		
+		function cell(t) {
+			// Returns a random PNG-image (artwork © Ludivine Lechat).
+			// Some cells occur more frequently than others:
+			// t is a number between 0.0 and 1.0 that determines which image to pick.
+			// This is handy when combined with smoothstep(), 
+			// then we can put a preference on empty blue cells,
+			// while still ensuring that some of each cell appear.
+			var url = "http://www.clips.ua.ac.be/media/canvas/examples/g/";
+			if (t < 0.4) { 
+				url += Array.choice([
+					"green-empty1.png", 
+					"green-empty2.png", 
+					"green-empty3.png",
+					"green-block1.png", 
+					"green-block2.png"]);
+			} else if (t < 0.5) { 
+				url += Array.choice([
+					"green-circle1.png", 
+					"green-circle2.png"]);
+			} else if (t < 0.6) { 
+				url += Array.choice([
+					"green-star1.png", 
+					"green-star2.png"]);
+			} else { 
+				url += Array.choice([
+					"blue-block.png",
+					"blue-circle.png",
+					"blue-star.png",
+					"blue-empty1.png",
+					"blue-empty1.png", 
+					"blue-empty2.png",
+					"blue-empty2.png",
+					"blue-empty2.png"]);
+			}
+			return new Image(url);
+		}
+		
+		function setup(canvas) {
+			circles = [];
+			dragged = null;
+			size(500, 500);
+			var n = 60;
+			for (var i in Array.range(n)) {
+				// Create a group of n cells.
+				// Smoothstep yields more numbers near 1.0 than near 0.0,
+				// so we'll got mostly empty blue cells.
+				var t = geometry.smoothstep(0, n, i);
+				circles.push(
+					new Circle(
+						random(-100), // Start offscreen to the left.
+						random(canvas.height),
+						10 + 0.5 * t * i, // Make the blue cells bigger.
+						cell(t)
+					)
+				);
+			}
+		}
+		
+		function draw(canvas) {
+			background(1);
+			// Cells can be dragged.
+			if (dragged) {
+				dragged.x = canvas.mouse.x;
+				dragged.y = canvas.mouse.y;
+			}
+			if (!canvas.mouse.pressed) {
+				dragged = null;
+			} else if (!dragged) {
+				for (var i=0; i < circles.length; i++) {
+					if (circles[i].contains(canvas.mouse.x, canvas.mouse.y)) {
+						dragged = circles[i];
+						break;
+					}
+				}
+			}
+			// Draw all cells.
+			Array.enumerate(circles, function(i, circle) {
+				circle.draw();
+			});
+			// Circle packing.
+			pack(circles, 250, 250, 2, [dragged]);
+		}
+	</script>
+</body>
+</html>
