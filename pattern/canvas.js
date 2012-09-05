@@ -74,6 +74,10 @@ Array.sum = function(array) {
     for (var i=0, sum=0; i < array.length; sum+=array[i++]){}; return sum;
 };
 
+Array.contains = function(array, v) {
+    for (var i=0; i < array.length; i++) { if (array[i] == v) return true; }
+};
+
 Array.find = function(array, match) {
     for (var i=0; i < array.length; i++) { if (match(array[i])) return i; }
 };
