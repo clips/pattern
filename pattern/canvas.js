@@ -1908,7 +1908,6 @@ var Image = Class.extend({
         var o = options || {};
         this._url = url;
         this._img = _imageCache.load(url);
-        this._img._owners.push(this);
         this.x = o.x || 0;
         this.y = o.y || 0;
         this.width = (o.width !== undefined)? o.width : null;
@@ -1917,6 +1916,9 @@ var Image = Class.extend({
         // If no width or height is given (undefined | null),
         // use the dimensions of the source ImageConstructor.
         // If the ImageConstructor is still loading, this happens with a delay (see Images.load()).
+        if (this._img._owners && !this._img.complete) {
+            this._img._owners.push(this);
+        }
         if (this.width == null && this._img.complete) {
             this.width = this._img.width;
         }
@@ -2971,14 +2973,14 @@ var LIST     = "list";
 var ARRAY    = "array";
 var FUNCTION = "function";
 
-// function widget(canvas, variable, type, {parent: null, value: null, min: 0, max: 1, step: 0.01, callback: function(e){}})
+// function widget(canvas, variable, type, {parent: null, value: null, min: 0, max: 1, step: 0.01, index: 1, callback: function(e){}})
 function widget(canvas, variable, type, options) {
     /* Creates a widget linked to the given canvas.
      * The type of the widget can be STRING or NUMBER (field), BOOLEAN (checkbox),
      * RANGE (slider), LIST (dropdown list), or FUNCTION (button).
      * The value of the widget can be retrieved as canvas.variables[variable] (or canvas.variables.variable).
      * Optionally, a default value can be given. 
-     * For lists, this is an array.
+     * For lists, this is an array and optionally an index of the selected value.
      * For sliders, you can also set min, max and step.
      * For functions, an optional callback(event){} must be given.
      * To get at the current canvas from inside the callback, use event.target.canvas.
