@@ -1,7 +1,7 @@
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
 from pattern.search import match
-from pattern.en     import Sentence, parse
+from pattern.en     import parsetree
 
 # This example demonstrates how to create match groups.
 # A match group is a number of consecutive constraints,
@@ -14,8 +14,8 @@ from pattern.en     import Sentence, parse
 # to fetch the adjectives from a Match. This can be achieved with a group:
 
 s = "The big black cat"
-s = Sentence(parse(s))
-print match("{JJ?+} NN", s).group(1)
+t = parsetree(s)
+print match("{JJ?+} NN", t).group(1)
 print
 
 # Note the { } wrapper, indicating a group.
@@ -30,8 +30,8 @@ print
 # Normally, we would do it like this:
 
 s = "The big black cat sat on the mat."
-s = Sentence(parse(s))
-m = match("NP VP PP NP", s)
+t = parsetree(s)
+m = match("NP VP PP NP", t)
 for w in m:
     if m.constraint(w).index == 2:
         print "This is the PP:", w
@@ -43,7 +43,7 @@ for w in m:
 
 # It is easier with a group:
 
-m = match("NP VP {PP} {NP}", s)
+m = match("NP VP {PP} {NP}", t)
 print
 print "This is the PP:", m.group(1)
 print "This is the NP:", m.group(2)

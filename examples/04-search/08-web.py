@@ -1,7 +1,7 @@
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
 from pattern.web    import Bing, plaintext
-from pattern.en     import Sentence, parse
+from pattern.en     import parsetree
 from pattern.search import Pattern
 from pattern.db     import Datasheet, pprint
 
@@ -14,7 +14,7 @@ from pattern.db     import Datasheet, pprint
 # MBSP's parser is much more robust (but also slower).
 #from MBSP import Sentence, parse
 
-q = '"more important than"'          # Bing search query
+q = '"more important than"'         # Bing search query
 p = "NP VP? more important than NP" # Search pattern.
 p = Pattern.fromstring(p)
 d = Datasheet()
@@ -24,8 +24,8 @@ for i in range(1): # max=10
     for result in engine.search(q, start=i+1, count=100, cached=True):
         s = result.description
         s = plaintext(s)
-        s = Sentence(parse(s))
-        for m in p.search(s):
+        t = parsetree(s)
+        for m in p.search(t):
             a = m.constituents(constraint=0)[-1] # Left NP.
             b = m.constituents(constraint=5)[ 0] # Right NP.
             d.append((

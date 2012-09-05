@@ -1,7 +1,7 @@
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
 from pattern.search import search
-from pattern.en     import Sentence, parse
+from pattern.en     import parsetree
 
 # The pattern.search module contains a number of pattern matching tools
 # to search a string syntactically (word function) or semantically (word meaning).
@@ -27,7 +27,7 @@ print
 # The parser takes a string, identifies words, and assigns a part-of-speech tag
 # to each word, for example NN (noun) or JJ (adjective).
 # A parsed sentence can be scanned for part-of-speech tags:
-s = Sentence(parse("big white rabbit"))
+s = parsetree("big white rabbit")
 print search("JJ", s) # all adjectives
 print search("NN", s) # all nouns
 print search("NP", s) # all noun phrases

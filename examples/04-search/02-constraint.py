@@ -1,13 +1,13 @@
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
 from pattern.search import search, Pattern, Constraint
-from pattern.en     import Sentence, parse
+from pattern.en     import parsetree
 
 # What we call a "search word" in example 01-search.py
 # is actually called a constraint, because it can contain different options.
 # Options are separated by "|".
 # The next search pattern retrieves words that are a noun OR an adjective:
-s = Sentence(parse("big white rabbit"))
+s = parsetree("big white rabbit")
 print search("NN|JJ", s)
 print
 
@@ -24,7 +24,7 @@ print
 # If you want to include both, use "NN*" as a constraint.
 # This works for NN*, VB*, JJ*, RB*.
 
-s = Sentence(parse("When I sleep the big white rabbit will stare at my feet."))
+s = parsetree("When I sleep the big white rabbit will stare at my feet.")
 m = search("rabbit stare at feet", s)
 print s
 print m

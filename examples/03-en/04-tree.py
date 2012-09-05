@@ -11,6 +11,9 @@ s = "I eat pizza with a silver fork."
 s = parse(s)
 s = Text(s)
 
+# You can also use the parsetree() function,
+# which is the equivalent of Text(parse()).
+
 print s[0].words  # A list of all the words in the first sentence.
 print s[0].chunks # A list of all the chunks in the first sentence.
 print s[0].chunks[-1].words
