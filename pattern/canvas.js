@@ -1864,6 +1864,7 @@ var ImageCache = Class.extend({
         // However, they do get the onload() method & increment ImageCache.busy.
         // Canvas.draw() will fire once ImageCache.busy==0 (i.e., all images are ready).
         var img = new ImageConstructor();
+        img._owners = [];
         img.onerror = function(cache, img) { 
             return function() { 
                 cache.busy--;
@@ -1872,11 +1873,15 @@ var ImageCache = Class.extend({
         img.onload = function(cache, img) { 
             return function() { 
                 cache.busy--;
-                // Set parent Image size:
-                var p = img._parent;
-                if (p && p.width == null) p.width = img.width;
-                if (p && p.height == null) p.height = img.height;
-            }}(this, img);        
+                // Set owner Image size. 
+                // There can be multiple owners displaying the same image.
+                for (var i=0; i < img._owners.length; i++) {
+                    var o = img._owners[i];
+                    if (o && o.width == null) o.width = img.width;
+                    if (o && o.height == null) o.height = img.height;
+                }
+                img._owners = []; // Remove reference.
+            }}(this, img);
         this.busy++;
         if (url) {
             this.cache[url] = img;
@@ -1903,7 +1908,7 @@ var Image = Class.extend({
         var o = options || {};
         this._url = url;
         this._img = _imageCache.load(url);
-        this._img._parent = this;
+        this._img._owners.push(this);
         this.x = o.x || 0;
         this.y = o.y || 0;
         this.width = (o.width !== undefined)? o.width : null;
