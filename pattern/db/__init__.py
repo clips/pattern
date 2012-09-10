@@ -1854,7 +1854,6 @@ class Datasheet(CSV):
         import numpy
         return numpy.array(self)
         
-
 def flip(datasheet):
     """ Returns a new datasheet with rows for columns and columns for rows.
     """
