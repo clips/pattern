@@ -139,12 +139,14 @@
 			}
 		}
 		
+		var iterations = 0;
 		function draw(canvas) {
 			background(1);
 			// Cells can be dragged.
 			if (dragged) {
 				dragged.x = canvas.mouse.x;
 				dragged.y = canvas.mouse.y;
+				iterations = 0;
 			}
 			if (!canvas.mouse.pressed) {
 				dragged = null;
@@ -161,7 +163,10 @@
 				circle.draw();
 			});
 			// Circle packing.
-			pack(circles, 250, 250, 2, [dragged]);
+			if (iterations < 1000) {
+				pack(circles, 250, 250, 2, [dragged]);
+			}
+			iterations++;
 		}
 	</script>
 </body>
