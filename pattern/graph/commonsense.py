@@ -210,6 +210,7 @@ def download(path=os.path.join(MODULE, "commonsense.csv"), threshold=50):
     s = "http://nodebox.net/perception?format=txt&robots=1"
     s = urlopen(s).read()
     s = s.decode("utf-8")
+    s = s.replace("\\'", "'")
     # Group relations by author.
     a = {}
     for r in ([v.strip("'") for v in r.split(", ")] for r in s.split("\n")):
