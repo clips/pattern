@@ -2961,6 +2961,127 @@ function bloom(img, intensity, radius, threshold) {
     return blend(ADD, img, b, 0, 0, intensity);
 }
 
+/*--- IMAGE FILTERS | DISTORTION -------------------------------------------------------------------*/
+
+function polar(img, x0, y0, operator) {
+    /* Returns a new Image based on a polar coordinates filter.
+     * The given operator is a function(distance, angle) that returns new [distance, angle].
+     */
+    x0 = img.width / 2 + x0 || 0;
+    y0 = img.height / 2 + y0 || 0;
+    var p1 = new Pixels(img);
+    var p2 = new Pixels(img);
+    for (var y1=0; y1 < p1.height; y1++) {
+        for (var x1=0; x1 < p1.width; x1++) {
+            var x = x1 - x0;
+            var y = y1 - y0;
+            var d = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+            var a = Math.atan2(y, x);
+            var v = operator(d, a); d=v[0]; a=v[1];
+            p2.set(x1 + y1 * p1.width, p1.get(
+                Math.round(x0 + Math.cos(a) * d) +
+                Math.round(y0 + Math.sin(a) * d) * p1.width
+            ));
+        }
+    }
+    p2.update();
+    return p2.image();
+}
+
+function bump(img, dx, dy, radius, zoom) {
+    /* Returns the image with a dent distortion applied to it.
+     *  - dx: horizontal offset (in pixels) of the effect.
+     *  - dy: vertical offset (in pixels) of the effect.
+     *  - radius: the radius of the effect in pixels.
+     *  - zoom: the amount of bulge (0.0-1.0).
+     */
+    var m1 = radius || 0;
+    var m2 = Math.clamp(zoom || 0, 0, 1);
+    return polar(img, dx, dy, function(d, a) { 
+        return [d * geometry.smoothstep(0, m2, d/m1), a]; 
+    });
+}
+
+function dent(img, dx, dy, radius, zoom) {
+    /* Returns the image with a dent distortion applied to it.
+     *  - dx: horizontal offset (in pixels) of the effect.
+     *  - dy: vertical offset (in pixels) of the effect.
+     *  - radius: the radius of the effect in pixels.
+     *  - zoom: the amount of pinch (0.0-1.0).
+     */
+    var m1 = radius || 0;
+    var m2 = Math.clamp(zoom || 0, 0, 1);
+    return polar(img, dx, dy, function(d, a) { 
+        return [2 * d - d * geometry.smoothstep(0, m2, d/m1), a]; 
+    });
+}
+
+function pinch(img, dx, dy, zoom) {
+    /* Returns the image with a pinch distortion applied to it.
+     *  - dx: horizontal offset (in pixels) of the effect.
+     *  - dy: vertical offset (in pixels) of the effect.
+     *  - zoom: the amount of bulge or pinch (-1.0-1.0):
+     */
+    var m1 = geometry.distance(0, 0, img.width, img.height);
+    var m2 = Math.clamp(zoom || 0 * 0.75, -0.75, 0.75);
+    return polar(img, dx, dy, function(d, a) { 
+        return [d * Math.pow(m1/d, m2) * (1-m2), a]; 
+    });
+}
+
+function splash(img, dx, dy, radius) {
+    /* Returns the image with a light-tunnel distortion applied to it.
+     *  - dx: horizontal offset (in pixels) of the effect.
+     *  - dy: vertical offset (in pixels) of the effect.
+     *  - radius: the radius of the unaffected area in pixels.
+     */
+    var m = radius || 0;
+    return polar(img, dx, dy, function(d, a) { 
+        return [(d > m)? m : d, a]; 
+    });
+}
+
+function twirl(img, dx, dy, radius, angle) {
+    /* Returns the image with a twirl distortion applied to it.
+     *  - dx: horizontal offset (in pixels) of the effect.
+     *  - dy: vertical offset (in pixels) of the effect.
+     *  - radius: the radius of the effect in pixels.
+     *  - angle: the amount of rotation in degrees.
+     */
+    var m1 = Math.radians(angle || 0);
+    var m2 = radius || 0;
+    return polar(img, dx, dy, function(d, a) { 
+        return [d, a + (1 - geometry.smoothstep(-m2, m2, d)) * m1]; 
+    });
+}
+
+var BUMP    = "bump";
+var DENT    = "dent";
+var PINCH   = "pinch";
+var SPLASH  = "splash";
+var TWIRL   = "twirl";
+
+function distort(mode, img, options) {
+    /* Applies the given distortion and returns a new image.
+     * Optional parameters are dx, dy, radius, zoom and angle.
+     */
+    var o = options || {};
+    switch (mode) {
+        case BUMP: 
+            return bump(img, o.dx, o.dy, o.radius, o.zoom);
+        case DENT:
+            return dent(img, o.dx, o.dy, o.radius, o.zoom);
+        case PINCH:
+            return pinch(img, o.dx, o.dy, o.zoom);
+        case SPLASH:
+            return splash(img, o.dx, o.dy, o.radius);
+        case TWIRL:
+            return twirl(img, o.dx, o.dy, o.radius, o.angle);
+        default:
+            return img;
+    }
+}
+
 /*##################################################################################################*/
 
 /*--- WIDGET ---------------------------------------------------------------------------------------*/
