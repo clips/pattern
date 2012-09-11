@@ -40,10 +40,17 @@ DOCUMENTATION
 
 http://www.clips.ua.ac.be/pages/pattern
 
+DEPENDENCIES
+============
+
+Pattern is bundled with the following algorithms and Python packages: 
+
+Beautiful Soup (Leonard Richardson), Brill tagger (Eric Brill), Brill tagger for Dutch (Jeroen Geertzen), Brill tagger for German (Gerold Schneider & Martin Volk), English pluralization (Damian Conway), Graph JavaScript framework (Aslak Hellesoy & Dave Hoover), LIBSVM (Chih-Chung Chang and Chih-Jen Lin), PDFMiner (Yusuke Shinyama), PyWordNet (Oliver Steel), simplejson (Bob Ippolito), spelling corrector (Peter Norvig), Universal Feed Parser (Mark Pilgrim) and WordNet (Christiane Fellbaum et al.).
+
 REFERENCE
 =========
 
-De Smedt, T., Daelemans, W. (2012). Pattern for Python. In: Journal of Machine Learning Research, 13: 2031–2035.
+De Smedt, T., Daelemans, W. (2012). Pattern for Python. Journal of Machine Learning Research, 13, 2031–2035.
 
 ACKNOWLEDGEMENTS
 ================
