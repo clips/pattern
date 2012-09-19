@@ -175,6 +175,10 @@ Array.range = function(i, j) {
     return a;
 };
 
+function len(array) {
+    return array.length;
+}
+
 /*##################################################################################################*/
 
 /*--- BASE CLASS -----------------------------------------------------------------------------------*/
@@ -1809,95 +1813,184 @@ function star(x, y, points, outer, inner, options) {
 
 /*##################################################################################################*/
 
-/*--- IMAGE ----------------------------------------------------------------------------------------*/
-// Images are loaded asynchronously. Since there is no wait() or sleep() in JavaScript,
-// we set an onload() callback for each image to redefine Image width and height once it is loaded.
-// The ImageCache is a collection of objects that are preloading.
+/*--- CACHE ----------------------------------------------------------------------------------------*/
+// The global cache is a collection of objects that are preloading asynchronously.
 
-var ImageConstructor = Image;
-
-var ImageCache = Class.extend({
+var Cache = Class.extend({
     
     init: function() {
-        /* Images must be preloaded using "new ImageConstructor()".
-         * We take advantage of this to cache the image for reuse at the same time.
-         * Image.draw() will do nothing as long as Image.busy() == true.
-         */
-        this.cache = {};
-        this.busy = 0; // Amount of images still loading.
+        /* A collection of objects (images, scripts, data) that are preloading asynchronously.
+         * The Canvas.draw() method is delayed until all objects in the global cache are ready.
+         */ 
+        this.objects = {};             // Objects in cache, by id.
+        this.busy = 0;                 // Objects still loading.
     },
     
-    load: function(url) {
-        /* Returns an ImageConstructor for the given URL path, Canvas, or Buffer object.
-         * Images from URL are cached for reuse.
+    preload: function(id, object, callback) {
+        /* Attaches an onload() event to the object and caches it under id.
          */
-        if (url === undefined) {
-            throw "Can't load image: " + url;
-        } else if (this.cache[url]) {
-            return this.cache[url]; 
-        } else if (url && url.substr && url.substr(0,5) == "http:") {
-            // URL path ("http://").
-            var src = url;
-        } else if (url && url.substr && url.substr(0,5) == "data:") {
-            // Data URL ("data:image/png"), for example from Canvas.save().
-            var src = url; url=null;
-        } else if (url instanceof Canvas || url instanceof OffscreenBuffer) {
-            // Canvas + OffscreenBuffer.
-            var src = url.save(); url=null;
-        } else if (url instanceof HTMLCanvasElement) {
-            // <canvas> element.
-            url.complete=true; return url;
-        } else if (url instanceof Pixels) {
-            // Pixels.
-            return url._img._img;
-        } else if (url instanceof Image) {
-            // Image.
-            return this.load(url._img);
-        } else if (url.src && url.complete) {
-            // ImageConstructor.
-            var src = url.src; url=null;
-        } else {
-            throw "Can't load image: " + url;
+        object._preload = [id, cache, callback];
+        object.onreadystatechange = function() { if (this.readyState == "complete") { // IE
+            if (this._preload) {
+                this._preload[1].busy--;
+                this._preload[2](this);
+                this._preload = null;
+            }
+        }};
+        object.onload = function() {
+            if (this._preload) {
+                this._preload[1].busy--;
+                this._preload[2](this);
+                this._preload = null;
+            }
+        };
+        object.onerror = function() {
+            _ctx && _ctx._canvas.onerror("Can't load: " + this._preload[0]);
+            if (this._preload) {
+                this._preload[1].busy--;
+            }
+        };
+        if (id) {
+            this.objects[id] = object;
         }
-        // Cache images from a http:// source.
-        // Procedural images are not cached.
-        // However, they do get the onload() method & increment ImageCache.busy.
-        // Canvas.draw() will fire once ImageCache.busy==0 (i.e., all images are ready).
-        var img = new ImageConstructor();
-        img._owners = [];
-        img.onerror = function(cache, img) { 
-            return function() { 
-                cache.busy--;
-                _ctx && _ctx._canvas.onerror("Can't load image " + url);
-            }}(this, img);
-        img.onload = function(cache, img) { 
-            return function() { 
-                cache.busy--;
-                // Set owner Image size. 
-                // There can be multiple owners displaying the same image.
-                for (var i=0; i < img._owners.length; i++) {
-                    var o = img._owners[i];
-                    if (o && o.width == null) o.width = img.width;
-                    if (o && o.height == null) o.height = img.height;
-                }
-                img._owners = []; // Remove reference.
-            }}(this, img);
         this.busy++;
-        if (url) {
-            this.cache[url] = img;
+    },
+    
+    script: function(js) {
+        /* Caches the given JavaScript file.
+         */
+        if (this.objects[js]) {
+            return;
+        } else if (js && !js.substr) {
+            throw "Can't load script: " + js;
+        } else if (js === undefined) {
+            throw "Can't load script: " + js;
         }
-        // A canvas with remote (cross-domain) images becomes "tainted":
-        // ctx.toDataURL() or ctx.getImageData() won't work,
-        // so neither will Pixels or OffscreenBuffer.
+        try {
+            var script = document.createElement("script");
+            script.async = true;
+            script.type = "text/javascript";
+            script.src = js;
+            this.preload(js, script, function(){});
+            document.body.appendChild(script);
+        } catch(e) {
+            throw "Can't load script: " + js + e;
+        }
+    },
+    
+    image: function(img) {
+        /* Returns a cached <img> element,
+         * for the given URL path, URL data, Image, Pixels, Canvas or Buffer.
+         */
+        if (img === undefined) {
+            throw "Can't load image: " + img;
+        // Cached.
+        } else if (this.objects[img]) {
+            return this.objects[img]; 
+        // From URL path ("http://").
+        } else if (img && img.substr && img.substr(0,5) == "http:") {
+            var url = img;
+            var src = img;
+        // From URL data ("data:image/png"), e.g., Canvas.save().
+        } else if (img && img.substr && img.substr(0,5) == "data:") {
+            var url = null
+            var src = img;
+        // From <img>.
+        } else if (img.src && img.complete) {
+            var url = null;
+            var src = img.src;
+        // From Canvas + Buffer.
+        } else if (img instanceof Canvas || img instanceof Buffer) {
+            var url = null;
+            var src = img.save();
+        // From HTML <canvas> element.
+        } else if (img .getContext) {
+            img.complete = true; 
+            return img;
+        // From Image.
+        } else if (img instanceof Image) {
+            return this.image(img._img);
+        // From Pixels.
+        } else if (img instanceof Pixels) {
+            return img._img._img;
+        } else {
+            throw "Can't load image: " + img;
+        }
+        // Cache image source.
+        // URL paths, URL data, Canvas and Buffer get an onload() event.
+        img = document.createElement("img");
+        img._owners = [];
+        this.preload(url, img, function(img) {
+            // Set Image owner size. 
+            // There can be multiple owners displaying the same image.
+            for (var i=0; i < img._owners.length; i++) {
+                var o = img._owners[i];
+                if (o && o.width  == null) o.width  = img.width;
+                if (o && o.height == null) o.height = img.height;
+            }
+            img._owners = []; // Remove reference.            
+        });
+        // A canvas with cross-domain images becomes tainted:
         // https://developer.mozilla.org/en/CORS_Enabled_Image
+        // This disables ctx.toDataURL() and ctx.getImageData().
+        // This disables Pixels and Buffer.
         //img.crossOrigin = "";
         img.src = src;
         return img;
     }
 });
 
-// Global image cache:
-var _imageCache = new ImageCache();
+// Global cache:
+cache = new Cache();
+
+/*--- INCLUDE --------------------------------------------------------------------------------------*/
+
+function include(url) {
+    /* Imports the given JavaScript library,
+     * from a local path (e.g., "graph.js") or a remote URL (e.g., "http://domain.com/graph.js").
+     */
+    cache.script(url);
+}
+
+/*--- ASYNCHRONOUS REQUEST -------------------------------------------------------------------------*/
+
+var AsynchronousRequest = Class.extend({
+    
+    init: function(url, data) {
+        /* Loads the given URL in the background using XMLHTTPRequest.
+         * AsynchronousRequest.done is False as long as it is busy.
+         * AsynchronousRequest.value contains the response value once done.
+         */
+        if (window.XMLHttpRequest) var q = new XMLHttpRequest();
+        if (window.ActiveXObject)  var q = new ActiveXObject("Microsoft.XMLHTTP");
+        q.onreadystatechange = function() {
+            if (q.readyState == 4 && q.status == 200) this._fetch(q);
+        }
+        if (data) {
+            q.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            q.open("POST", url, true);
+            q.send(data);
+        } else {
+            q.open("GET", url, true);
+            q.send();            
+        }
+        this.value = null;
+        this.done = false;
+    },
+    
+    _fetch: function(q) {
+        this.value = q.responseText;
+        this.done = true;
+    }
+});
+
+function asynchronous(url, data) {
+    return new AsynchronousRequest(url, data);
+}
+
+/*##################################################################################################*/
+
+/*--- IMAGE ----------------------------------------------------------------------------------------*/
 
 var Image = Class.extend({
 
@@ -1907,15 +2000,15 @@ var Image = Class.extend({
          */
         var o = options || {};
         this._url = url;
-        this._img = _imageCache.load(url);
+        this._img = cache.image(url);
         this.x = o.x || 0;
         this.y = o.y || 0;
         this.width = (o.width !== undefined)? o.width : null;
         this.height = (o.height !== undefined)? o.height : null;
         this.alpha = (o.alpha !== undefined)? o.alpha : 1.0;
         // If no width or height is given (undefined | null),
-        // use the dimensions of the source ImageConstructor.
-        // If the ImageConstructor is still loading, this happens with a delay (see Images.load()).
+        // use the dimensions of the source <img>.
+        // If the <img> is still loading, this happens with a delay (see Images.load()).
         if (this._img._owners && !this._img.complete) {
             this._img._owners.push(this);
         }
@@ -2269,7 +2362,7 @@ var Mouse = Class.extend({
         this.dragged = false;
         this.drag = {
             "x": 0,
-            "y": 0,
+            "y": 0
         };
         this._away = function() {
             // Returns true if not inside Mouse.parent.
@@ -2560,7 +2653,7 @@ var Canvas = Class.extend({
         // Delay Canvas.draw() until the cached images are done loading
         // (for example, Image objects created during Canvas.setup()).
         var _preload = function() {
-            if (_imageCache.busy > 0) { setTimeout(Function.closure(this, _preload), 10); return; }
+            if (cache.busy > 0) { setTimeout(Function.closure(this, _preload), 10); return; }
             this._draw(); 
         }
         _preload.apply(this);
@@ -3239,20 +3332,6 @@ attachEvent(window, "load", function() {
     }
 });
 
-/*--- REQUIRE --------------------------------------------------------------------------------------*/
-
-function require(src) {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = src;
-    script.onload = script.onreadystatechange = function() {
-        this.busy = !(this.readyState && 
-                      this.readyState != "complete" && 
-                      this.readyState != "loaded");
-    }
-    document.body.appendChild(script);
-}
-
 /*##################################################################################################*/
 
 /*--- FAST STACK BLUR ------------------------------------------------------------------------------*/
@@ -3302,8 +3381,8 @@ if (ie && ie < 9) {
 
 document.createElement("canvas").getContext||(function(){var s=Math,j=s.round,F=s.sin,G=s.cos,V=s.abs,W=s.sqrt,k=10,v=k/2;function X(){return this.context_||(this.context_=new H(this))}var L=Array.prototype.slice;function Y(b,a){var c=L.call(arguments,2);return function(){return b.apply(a,c.concat(L.call(arguments)))}}var M={init:function(b){if(/MSIE/.test(navigator.userAgent)&&!window.opera){var a=b||document;a.createElement("canvas");a.attachEvent("onreadystatechange",Y(this.init_,this,a))}},init_:function(b){b.namespaces.g_vml_||
 b.namespaces.add("g_vml_","urn:schemas-microsoft-com:vml","#default#VML");b.namespaces.g_o_||b.namespaces.add("g_o_","urn:schemas-microsoft-com:office:office","#default#VML");if(!b.styleSheets.ex_canvas_){var a=b.createStyleSheet();a.owningElement.id="ex_canvas_";a.cssText="canvas{display:inline-block;overflow:hidden;text-align:left;width:300px;height:150px}g_vml_\\:*{behavior:url(#default#VML)}g_o_\\:*{behavior:url(#default#VML)}"}var c=b.getElementsByTagName("canvas"),d=0;for(;d<c.length;d++)this.initElement(c[d])},
-initElement:function(b){if(!b.getContext){b.getContext=X;b.innerHTML="";b.attachEvent("onpropertychange",Z);b.attachEvent("onresize",$);var a=b.attributes;if(a.width&&a.width.specified)b.style.width=a.width.nodeValue+"px";else b.width=b.clientWidth;if(a.height&&a.height.specified)b.style.height=a.height.nodeValue+"px";else b.height=b.clientHeight}return b}};function Z(b){var a=b.srcElement;switch(b.propertyName){case "width":a.style.width=a.attributes.width.nodeValue+"px";a.getContext().clearRect();
-break;case "height":a.style.height=a.attributes.height.nodeValue+"px";a.getContext().clearRect();break}}function $(b){var a=b.srcElement;if(a.firstChild){a.firstChild.style.width=a.clientWidth+"px";a.firstChild.style.height=a.clientHeight+"px"}}M.init();var N=[],B=0;for(;B<16;B++){var C=0;for(;C<16;C++)N[B*16+C]=B.toString(16)+C.toString(16)}function I(){return[[1,0,0],[0,1,0],[0,0,1]]}function y(b,a){var c=I(),d=0;for(;d<3;d++){var f=0;for(;f<3;f++){var h=0,g=0;for(;g<3;g++)h+=b[d][g]*a[g][f];c[d][f]=
+initElement:function(b){if(!b.getContext){b.getContext=X;b.innerHTML="";b.attachEvent("onpropertychange",Z);b.attachEvent("onresize",$);var a=b.attributes;if(a.width&&a.width.specified)b.style.width=a.width.nodeValue.replace("px","")+"px";else b.width=b.clientWidth;if(a.height&&a.height.specified)b.style.height=a.height.nodeValue.replace("px","")+"px";else b.height=b.clientHeight}return b}};function Z(b){var a=b.srcElement;switch(b.propertyName){case "width":a.style.width=a.attributes.width.nodeValue.replace("px","")+"px";a.getContext().clearRect();
+break;case "height":a.style.height=a.attributes.height.nodeValue.replace("px","")+"px";a.getContext().clearRect();break}}function $(b){var a=b.srcElement;if(a.firstChild){a.firstChild.style.width=a.clientWidth+"px";a.firstChild.style.height=a.clientHeight+"px"}}M.init();var N=[],B=0;for(;B<16;B++){var C=0;for(;C<16;C++)N[B*16+C]=B.toString(16)+C.toString(16)}function I(){return[[1,0,0],[0,1,0],[0,0,1]]}function y(b,a){var c=I(),d=0;for(;d<3;d++){var f=0;for(;f<3;f++){var h=0,g=0;for(;g<3;g++)h+=b[d][g]*a[g][f];c[d][f]=
 h}}return c}function O(b,a){a.fillStyle=b.fillStyle;a.lineCap=b.lineCap;a.lineJoin=b.lineJoin;a.lineWidth=b.lineWidth;a.miterLimit=b.miterLimit;a.shadowBlur=b.shadowBlur;a.shadowColor=b.shadowColor;a.shadowOffsetX=b.shadowOffsetX;a.shadowOffsetY=b.shadowOffsetY;a.strokeStyle=b.strokeStyle;a.globalAlpha=b.globalAlpha;a.arcScaleX_=b.arcScaleX_;a.arcScaleY_=b.arcScaleY_;a.lineScale_=b.lineScale_}function P(b){var a,c=1;b=String(b);if(b.substring(0,3)=="rgb"){var d=b.indexOf("(",3),f=b.indexOf(")",d+
 1),h=b.substring(d+1,f).split(",");a="#";var g=0;for(;g<3;g++)a+=N[Number(h[g])];if(h.length==4&&b.substr(3,1)=="a")c=h[3]}else a=b;return{color:a,alpha:c}}function aa(b){switch(b){case "butt":return"flat";case "round":return"round";case "square":default:return"square"}}function H(b){this.m_=I();this.mStack_=[];this.aStack_=[];this.currentPath_=[];this.fillStyle=this.strokeStyle="#000";this.lineWidth=1;this.lineJoin="miter";this.lineCap="butt";this.miterLimit=k*1;this.globalAlpha=1;this.canvas=b;
 var a=b.ownerDocument.createElement("div");a.style.width=b.clientWidth+"px";a.style.height=b.clientHeight+"px";a.style.overflow="hidden";a.style.position="absolute";b.appendChild(a);this.element_=a;this.lineScale_=this.arcScaleY_=this.arcScaleX_=1}var i=H.prototype;i.clearRect=function(){this.element_.innerHTML=""};i.beginPath=function(){this.currentPath_=[]};i.moveTo=function(b,a){var c=this.getCoords_(b,a);this.currentPath_.push({type:"moveTo",x:c.x,y:c.y});this.currentX_=c.x;this.currentY_=c.y};
