@@ -82,10 +82,12 @@ function coordinates(x, y, distance, angle) {
 function unselectable(element) {
     /* Disables text selection on the given element (interferes with node dragging).
      */
-    element.onselectstart = function() { return false; };
-    element.unselectable = "on";
-    element.style.MozUserSelect = "none";
-    element.style.cursor = "default";
+    if (element) {
+        element.onselectstart = function() { return false; };
+        element.unselectable = "on";
+        element.style.MozUserSelect = "none";
+        element.style.cursor = "default";
+    }
 }
 
 function absOffset(element) {
@@ -263,7 +265,7 @@ var Node = Class.extend({
             div.style.fontSize   = (a.fontsize)? a.fontsize+"px" : "";
             div.style.fontWeight = (a.fontweight)? a.fontweight : ""; // XXX doesn't work for "italic" (=fontStyle).
             div.style.color      = (typeof(a.text) == "string")? a.text : "";
-            this.text = div; 
+            this.text = div;
             unselectable(div);
         }
     },
@@ -473,7 +475,7 @@ var Graph = Class.extend({
         if (distance === undefined) distance = 10;
         if (layout   === undefined) layout   = SPRING;
         this.canvas   = canvas; unselectable(canvas);
-        this._ctx     = this.canvas.getContext("2d");
+        this._ctx     = this.canvas? this.canvas.getContext("2d") : null;
         this.nodeset  = {};
         this.nodes    = [];
         this.edges    = [];
@@ -505,7 +507,7 @@ var Graph = Class.extend({
         if (!this.nodeset[n.id]) {
             this.nodes.push(n);
             this.nodeset[n.id] = n; n.graph = this;
-            if (n.text && this.canvas.parentNode) {
+            if (n.text && this.canvas && this.canvas.parentNode) {
                 this.canvas.parentNode.appendChild(n.text);
             }
         }
@@ -548,7 +550,10 @@ var Graph = Class.extend({
             var a = [];
             for (var i=0; i < this.edges.length; i++) {
                 var e = this.edges[i];
-                if (x != e.node1 && x != e.node2) {
+                if (x == e.node1 || x == e.node2) {
+                    if (x == e.node2) e.node1.links.remove(x);
+                    if (x == e.node1) e.node2.links.remove(x);
+                } else {
                     a.push(e);
                 }
             }
