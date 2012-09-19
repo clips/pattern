@@ -250,5 +250,24 @@ def download(path=os.path.join(MODULE, "commonsense.csv"), threshold=50):
     f.write(BOM_UTF8)
     f.write("\n".join(s).encode("utf-8"))
     f.close()
+    
+def json():
+    """ Returns a JSON-string with the data from commonsense.csv.
+        Each relation is encoded as a [concept1, relation, concept2, context, weight] list.
+    """
+    f = lambda s: s.replace("'", "\\'").encode("utf-8")
+    s = []
+    g = Commonsense()
+    for e in g.edges:
+        s.append("\n\t['%s', '%s', '%s', '%s', %.2f]" % (
+            f(e.node1.id),
+            f(e.type),
+            f(e.node2.id),
+            f(e.context),
+              e.weight
+        ))
+    return "commonsense = [%s];" % ", ".join(s)
 
 #download("commonsense.csv", threshold=50)
+
+#open("commonsense.js", "w").write(json());
