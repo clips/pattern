@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../pattern/canvas.js"></script>  
+</head>
+<body>
+    <script type="text/canvas">
+        function setup(canvas) {
+			// Note: this is a trial script. It won't work yet with canvas.js in Pattern 2.4.
+            canvas.size(800, 600);
+			// Import the graph.js module asynchronously.
+			// Import the commonsense.js data asynchronously.
+			require("../../pattern/graph/graph.js");
+			require("../../pattern/graph/commonsense.js");
+			// Using require() in the setup() function ensures that 
+			// everything will be done loading at the first draw().
+			// We can think of many interesting ways to import extra JavaScript modules.
+        }
+        function draw(canvas) {
+			if (canvas.frame == 1) {
+				// The first frame is a good time to initialize the graph.
+				// At this point we are certain that the module has finished loading.
+				// Create a new Graph object:
+				g = new Graph();
+				// Traverse the relations in the common sense dataset.
+				// Each relation has the form: [concept1, relation, concept2, context].
+				// For example, ["red", "is-property-of", "rose", "nature"].
+				// Add each relation as an edge (connection) to the graph.
+				Array.enumerate(commonsense, function(i, r) {
+					g.addEdge(r[0], r[2], {type:r[1], context:r[3]});
+				});
+				// Graph.node() retrieves a Node object by id.
+				// Node.flatten() returns a list with the Node (depth=0), 
+				// each node connected to it (depth=1), and so on.
+				// We call this the concept "halo":
+				// the latent concepts that reinforce the concept itself.
+				// Create a subgraph of the node's halo:
+				halo = g.copy(canvas.element, g.node('rocket').flatten(2));
+				// Note how we pass Canvas.element, the drawing context.
+				// Calculcate Graph.eigenvectorCentrality().
+				// This is a measure of each node's importance,
+				// based on the (indirect) incoming connections.
+				// Once calculated we can then use Node.weight.
+				halo.eigenvectorCentrality();
+				// Traverse all the nodes in the halo.
+				// Each node will have an associated text label displaying its id.
+				// The text label is stored in a <div> element, 
+				// for which we can define CSS styles.
+				Array.enumerate(halo.nodes, function(i, n) {
+					n.radius = 4 + 6 * n.weight;
+					n.text.style.marginLeft =  n.radius + 2 + "px";
+					n.text.style.marginTop  = -n.radius - 2 + "px";
+					n.text.style.fontFamily = "Arial";
+					n.text.style.fontSize   = "9px";
+					n.text.style.textTransform = "uppercase";
+				});
+				// Some nodes have a lot of "leaf" nodes, that is,
+				// nodes that only connect to this node.
+				// We want to prune some of them to avoid cluttering the visualization.
+				Array.enumerate(halo.nodes, function(i, n1) {
+					Array.enumerate(n1.links, function(j, n2) {
+						if (n1.links.length > 10 && n2.links.length == 1) {
+							halo.remove(n2);
+						}
+					});
+				});
+			}
+			// The Graph.layout.iterations increments each time Graph.update() is called.
+			// Graph.update() calculates the attractive and repulsive forces between nodes.
+			// We set a limit to the number of updates and redraws,
+			// so the CPU doesn't start overheating.
+			if (halo.layout.iterations < 1000) {
+				canvas.clear();
+				halo.update();
+				halo.draw(weighted=false, directed=true); // Draw arrowheads.
+			}
+			// When the user drags the mouse on a node,
+			// Graph.layout.iterations is reset to 0, so the graph is redrawn.
+			halo.drag(canvas.mouse);
+        }
+    </script>
+</body>
+</html>
