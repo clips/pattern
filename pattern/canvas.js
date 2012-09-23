@@ -249,6 +249,12 @@ Math.round = function(x, decimals) {
     }
 };
 
+Math.sign = function(x) {
+    if (x < 0) { return -1; }
+    if (x > 0) { return +1; }
+    return 0;
+}
+
 Math.degrees = function(radians) {
     return radians * 180 / Math.PI;
 };
@@ -3060,8 +3066,8 @@ function polar(img, x0, y0, operator) {
     /* Returns a new Image based on a polar coordinates filter.
      * The given operator is a function(distance, angle) that returns new [distance, angle].
      */
-    x0 = img.width / 2 + x0 || 0;
-    y0 = img.height / 2 + y0 || 0;
+    x0 = img.width / 2 + (x0 || 0);
+    y0 = img.height / 2 + (y0 || 0);
     var p1 = new Pixels(img);
     var p2 = new Pixels(img);
     for (var y1=0; y1 < p1.height; y1++) {
