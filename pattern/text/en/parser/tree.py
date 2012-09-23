@@ -108,7 +108,7 @@ decode_entities = lambda string: string.replace(SLASH, "/")
 
 #--- WORD ------------------------------------------------------------------------------------------
 
-class Word:
+class Word(object):
 
     def __init__(self, sentence, string, lemma=None, type=None, index=0):
         """ A word in the sentence.
@@ -142,11 +142,12 @@ class Word:
         w.pnp = pnp
         w.custom_tags = Tags(w, items=self.custom_tags)
         return w
-    
-    @property
-    def tag(self):
-        return self.type
-    pos = part_of_speech = tag
+
+    def _get_tag(self):
+        return self.type    
+    def _set_tag(self, v):
+        self.type = v
+    tag = pos = part_of_speech = property(_get_tag, _set_tag)
     
     @property
     def phrase(self):
@@ -228,7 +229,7 @@ class Tags(dict):
 
 #--- CHUNK -----------------------------------------------------------------------------------------
 
-class Chunk:
+class Chunk(object):
     
     def __init__(self, sentence, words=[], type=None, role=None, relation=None):
         """ A list of words that make up a phrase in the sentence.
@@ -269,6 +270,12 @@ class Chunk:
     def __iter__(self):
         return self.words.__iter__()
 
+    def _get_tag(self):
+        return self.type
+    def _set_tag(self, v):
+        self.type = v
+    tag = pos = part_of_speech = property(_get_tag, _set_tag)
+
     @property
     def start(self):
         return self.words[0].index
@@ -289,11 +296,6 @@ class Chunk:
     @property
     def tagged(self):
         return [(word.string, word.type) for word in self.words]
-
-    @property
-    def tag(self):
-        return self.type
-    pos = part_of_speech = tag
     
     @property
     def head(self):
