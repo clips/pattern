@@ -12,31 +12,45 @@ import itertools
 # Following classes emulate those in en.parser.tree:
 
 class Text(list):
+
     def __init__(self, string="", token=["word"]):
         list.__init__(self, [Sentence(s+".", token) for s in string.split(".")])
+    
     @property
     def sentences(self):
         return self
 
 class Sentence:
+    
     def __init__(self, string="", token=["word"]):
         for punctuation in ".,;?!:": # Naive tokenization.
             string = string.replace(punctuation, " "+punctuation)
         string = re.sub(r"\s+", " ", string)
         string = string.split(" ")
         self.words = [Word(self, w, index=i) for i,w in enumerate(string)]
+    
     @property
     def chunks(self):
         return []
 
-class Word:
+class Word(object):
+    
     def __init__(self, sentence, string, tag=None, index=0):
         self.sentence, self.string, self.tag, self.index = sentence, string, tag, index
+    
     def __repr__(self):
         return "Word(%s)" % repr(self.string)
+    
+    def _get_type(self):
+        return self.tag
+    def _set_type(self, v):
+        self.tag = v
+    type = property(_get_type, _set_type)
+    
     @property
     def chunk(self): 
         return None
+    
     @property
     def lemma(self):
         return None
