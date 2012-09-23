@@ -480,10 +480,65 @@ class URL:
     def copy(self):
         return URL(self.string, self.method, self.query)
 
+def download(url=u"", method=GET, query={}, timeout=10, cached=True, throttle=0, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None, unicode=False):
+    """ Downloads the content at the given URL (by default it will be cached locally).
+        Unless unicode=False, the content is returned as a unicode string.
+    """
+    return URL(url, method, query).download(timeout, cached, throttle, proxy, user_agent, referrer, authentication, unicode)
+
 #url = URL("http://user:pass@example.com:992/animal/bird?species#wings")
 #print url.parts
 #print url.query
 #print url.string
+
+#--- STREAMING URL BUFFER --------------------------------------------------------------------------
+
+def bind(object, method, function):
+    """ Attaches the function as a method with the given name to the given object.
+    """
+    from new import instancemethod
+    setattr(object, method, instancemethod(function, object))
+
+class Stream(list):
+    
+    def __init__(self, url, delimiter="\n", **kwargs):
+        """ Buffered stream of data from a given URL.
+        """
+        self.socket = URL(url).open(**kwargs)
+        self.buffer = ""
+        self.delimiter = delimiter
+        
+    def update(self, bytes=1024):
+        """ Reads a number of bytes from the stream.
+            If a delimiter is encountered, calls Stream.parse() on the packet.
+        """
+        packets = []
+        self.buffer += self.socket.read(bytes)
+        self.buffer  = self.buffer.split(self.delimiter, 1)
+        while len(self.buffer) > 1:
+            data = self.buffer[0]
+            data = self.parse(data)
+            packets.append(data)
+            self.buffer = self.buffer[-1]
+            self.buffer = self.buffer.split(self.delimiter, 1)
+        self.buffer = self.buffer[-1]
+        self.extend(packets)
+        return packets
+        
+    def parse(self, data):
+        """ Must be overridden in a subclass.
+        """
+        return data
+        
+    def clear(self):
+        list.__init__(self, [])
+
+def stream(url, delimiter="\n", parse=lambda data: data, **kwargs):
+    """ Returns a new Stream with the given parse method.
+    """
+    stream = Stream(url, delimiter, **kwargs)
+    bind(stream, "parse", lambda stream, data: parse(data))
+    return stream
 
 #--- FIND URLs -------------------------------------------------------------------------------------
 
@@ -1165,14 +1220,12 @@ class Bing(SearchEngine):
 #--- TWITTER ---------------------------------------------------------------------------------------
 # http://apiwiki.twitter.com/
 
-TWITTER = "http://search.twitter.com/"
-TWITTER_LICENSE = api.license["Twitter"] 
-
-# Hashtag = word starting with #, for example: #OccupyWallstreet
-# Retweet = word starting with @ preceded by RT: RT @nathan
+TWITTER         = "http://search.twitter.com/"
+TWITTER_STREAM  = "https://stream.twitter.com/1/statuses/filter.json"
+TWITTER_LICENSE = api.license["Twitter"]  
 TWITTER_SOURCE  = re.compile(r"href=&quot;(.*?)&quot;")
-TWITTER_HASHTAG = re.compile(r"(\s|^)(#[a-z0-9_\-]+)", re.I)
-TWITTER_RETWEET = re.compile(r"(\s|^RT )(@[a-z0-9_\-]+)", re.I)
+TWITTER_HASHTAG = re.compile(r"(\s|^)(#[a-z0-9_\-]+)", re.I)    # Word starts with "#".
+TWITTER_RETWEET = re.compile(r"(\s|^RT )(@[a-z0-9_\-]+)", re.I) # Word starts with "RT @".
 
 class Twitter(SearchEngine):
     
@@ -1234,6 +1287,44 @@ class Twitter(SearchEngine):
         data = url.download(**kwargs)
         data = json.loads(data)
         return [u(x.get("name")) for x in data[0].get("trends", [])]
+        
+    def stream(self, query):
+        """ Returns a live stream of Result objects for the given query.
+        """
+        url = URL(TWITTER_STREAM)
+        url.query.update({ 
+            "track": query,
+            "oauth_version": "1.0",
+            "oauth_nonce": oauth.nonce(),
+            "oauth_timestamp": oauth.timestamp(),
+            "oauth_consumer_key": self.license[0],
+            "oauth_token": self.license[2][0],
+            "oauth_signature_method": "HMAC-SHA1"         
+        })
+        url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query, GET, 
+            self.license[1], 
+            self.license[2][1])
+        return TwitterStream(url, delimiter="\n", format=self.format)
+
+class TwitterStream(Stream):
+    
+    def __init__(self, socket, delimiter="\n", format=lambda s: s):
+        Stream.__init__(self, socket, delimiter)
+        self.format = format
+    
+    def parse(self, data):
+        """ TwitterStream.queue will populate with Result objects as
+            TwitterStream.update() is called iteratively.
+        """
+        x = json.loads(data)
+        r = Result(url=None)
+        r.url         = self.format("https://twitter.com/%s/status/%s" % (x.get("user", {}).get("screen_name"), x.get("id_str")))
+        r.description = self.format(x.get("text"))
+        r.date        = self.format(x.get("created_at"))
+        r.author      = self.format(x.get("user", {}).get("screen_name"))
+        r.profile     = self.format(x.get("profile_image_url"))
+        r.language    = self.format(x.get("iso_language_code"))
+        return r
 
 def author(name):
     """ Returns a Twitter query-by-author-name that can be passed to Twitter.search().
@@ -1250,6 +1341,15 @@ def retweets(string):
     """ Returns a list of retweets (words starting with a RT @author) from a tweet.
     """
     return [b for a, b in TWITTER_RETWEET.findall(string)]
+
+#stream = Twitter().stream("cat")
+#for i in range(10):
+#    stream.update()
+#    for tweet in reversed(stream):
+#        print tweet.description
+#        print tweet.url
+#    print
+#stream.clear()
 
 #--- WIKIPEDIA -------------------------------------------------------------------------------------
 # http://en.wikipedia.org/w/api.php
