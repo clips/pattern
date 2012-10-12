@@ -311,8 +311,8 @@ class Document(object):
         self._name     = kwargs.get("name") # Name that describes the document content.
         self._type     = kwargs.get("type") # Type that describes the category or class of the document.
         self._terms    = w                  # Dictionary of (word, count)-items.
-        self._count    = v                  # Total number of words (minus stop words).
-        self._vector   = None               # Cached tf-idf vector.
+        self._vector   = v                  # Cached tf-idf vector.
+        self._count    = None               # Total number of words (minus stop words).
         self._corpus   = None               # Corpus this document belongs to.
 
     @classmethod
@@ -408,13 +408,13 @@ class Document(object):
     
     @property
     def count(self):
-        return self.__len__()
-
-    def __len__(self):
         # Yields the number of words (excluding stop words) in the document.
         # Cache the word count so we can reuse it when calculating tf.
         if not self._count: self._count = sum(self.terms.values())
         return self._count
+
+    def __len__(self):
+        return len(self.terms)
     def __iter__(self):
         return iter(self.terms)
     def __contains__(self, word):
@@ -429,7 +429,7 @@ class Document(object):
             tf = number of occurences of the word / number of words in document.
             The more occurences of the word, the higher its tf weight.
         """
-        return float(self.terms.get(word, 0)) / (len(self) or 1)
+        return float(self.terms.get(word, 0)) / (self.count or 1)
         
     tf = term_frequency
     
@@ -573,7 +573,7 @@ ORANGE, WEKA = "orange", "weka"
 NORM, TOP300 = "norm", "top300"
 
 # Feature selection methods:
-IG  = "infogain"
+IG = INFOGAIN = "infogain"
 KLD = "kullback-leibler"
 
 # Clustering methods:
@@ -946,6 +946,7 @@ class Corpus(object):
             High IG means low entropy (predictability), e.g., interesting for feature selection.
         """
         if not self._ig:
+            # Based on Vincent Van Asch, http://www.clips.ua.ac.be/~vincent/scripts/textgain.py
             # For classes {xi...xn} and features {yi...yn}:
             # IG(X,Y)  = H(X) - H(X|Y)
             # H(X)     = -sum(p(x) * log2(x) for x in X)
@@ -1010,7 +1011,7 @@ class Corpus(object):
     
     relative_entropy = kl = kld = kullback_leibler_divergence
     
-    def feature_selection(self, top=100, method=IG, verbose=False):
+    def feature_selection(self, top=100, method=INFOGAIN, verbose=False):
         """ Returns the top unpredictable ("original") features (terms), using information gain.
             This is a subset of Corpus.terms that can be used to build a Classifier
             that is faster (less features = less matrix columns) but quite efficient.
@@ -1316,10 +1317,10 @@ def k_means(vectors, k=None, iterations=10, distance=COSINE, **kwargs):
     if init == KMPP:
         clusters = kmpp(vectors, k, distance)
     else:
-        clusters = [[] for i in xrange(k)]
+        clusters = [[] for i in xrange(int(k))]
         for i, v in enumerate(sorted(vectors, key=lambda x: random())):
             # Randomly partition the vectors across k clusters.
-            clusters[i%k].append(v)
+            clusters[i % int(k)].append(v)
     # Cache the distance calculations between vectors (4x faster).
     map = DistanceMap(method=distance); distance = map.distance
     converged = False
@@ -1370,7 +1371,7 @@ def kmpp(vectors, k, distance=COSINE):
     centroids = [choice(vectors)]
     d = [distance(v, centroids[0]) for v in vectors]
     s = sum(d)
-    for _ in range(k-1):
+    for _ in range(int(k) - 1):
         # Choose a random number y between 0 and d1 + d2 + ... + dn.
         # Find vector i so that: d1 + d2 + ... + di >= y > d1 + d2 + ... + dj.
         # Perform a number of local tries so that y yields a small distance sum.
@@ -1390,7 +1391,7 @@ def kmpp(vectors, k, distance=COSINE):
         d = [min(d[i], distance(v, centroids[-1])) for i, v in enumerate(vectors)]
         s = sum(d)
     # Assign points to the nearest center.
-    clusters = [[] for i in xrange(k)]
+    clusters = [[] for i in xrange(int(k))]
     for v1 in vectors:
         d = [distance(v1, v2) for v2 in centroids]
         clusters[d.index(min(d))].append(v1)
@@ -1446,7 +1447,7 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
     centroids = [(v.id, v) for v in clusters]
     map = {}
     for _ in range(iterations):
-        if len(clusters) <= max(k,1): 
+        if len(clusters) <= max(k, 1): 
             break
         nearest, d0 = None, None
         for i, (id1, v1) in enumerate(centroids):
