@@ -182,9 +182,10 @@ attachEvent(document, "mouseup", function(e) {
 //         this.name = name;
 //     }
 // });
+//
 // var Employee = Person.extend({
 //     init: function(name, salary) {
-//         this.base(name);
+//         this._super(name); // Call Person.init().
 //         this.salary = salary;
 //     }
 // });
@@ -192,31 +193,79 @@ attachEvent(document, "mouseup", function(e) {
 // var e = new Employee("tom", 10);
 
 (function() {
-    var init = false, has_base = /xyz/.test(function() { xyz; }) ? /\bbase\b/ : /.*/;
-    this.Class = function() { };
-    Class.extend = function(args) {
-        var base = this.prototype;
-        init = true; var p = new this(); 
-        init = false;
-        for (var k in args) {
-            p[k] = typeof args[k] == "function" 
-                && typeof base[k] == "function" 
-                && has_base.test(args[k]) ? (function(k, f) { return function() {
-                    var b = this.base; this.base=base[k];
-                    var r = f.apply(this, arguments); this.base=b;
+    var initialized = false;
+    var has_super = /xyz/.test(function() { xyz; }) ? /\b_super\b/ : /.*/;
+    this.Class = function(){};
+    Class.extend = function(properties) {
+        // Instantiate base class (create the instance, don't run the init constructor).
+        var _super = this.prototype;
+        initialized = true; var p = new this(); 
+        initialized = false;
+        // Copy the properties onto the new prototype.
+        for (var k in properties) {
+            p[k] = typeof properties[k] == "function" 
+                && typeof _super[k] == "function" 
+                && has_super.test(properties[k]) ? (function(k, f) { return function() {
+                    // If properties[k] is actually a method,
+                    // add a _super() method (= same method but on the superclass).
+                    var s, r;
+                    s = this._super; 
+                    this._super = _super[k]; r = f.apply(this, arguments); 
+                    this._super = s;
                     return r;
                 }; 
-            })(k, args[k]) : args[k];
+            })(k, properties[k]) : properties[k];
         }
         function Class() {
-            if (!init && this.init) this.init.apply(this, arguments);
+            if (!initialized && this.init) {
+                this.init.apply(this, arguments);
+            }
         }
-        Class.prototype = p;
         Class.constructor = Class;
+        Class.prototype = p;
+        // Make the class extendable.
         Class.extend = arguments.callee;
         return Class;
     };
 })();
+
+/*--- COLOR ----------------------------------------------------------------------------------------*/
+// Edge.stroke, Node.stroke, Node.fill can be a string, an Array or a canvas.js Color.
+
+function _rgba(clr) {
+    if (clr.rgba && clr._get) { // canvas.js Color
+        return clr._get();
+    }
+    if (clr instanceof Array) {
+        var r = Math.round(clr[0] * 255);
+        var g = Math.round(clr[1] * 255);
+        var b = Math.round(clr[2] * 255);
+        return "rgba("+r+", "+g+", "+b+", "+clr[3]+")";    
+    }
+    return clr;
+}
+
+var _FILL1 = null;
+var _FILL2 = null;
+function ctx_fillStyle(clr, ctx) {
+    clr = _rgba(clr);
+    if (_FILL1 != clr) {
+        _FILL1 = clr; 
+        _FILL2 = _rgba(clr);
+        ctx.fillStyle = clr;
+    }
+}
+
+var _STROKE1 = null;
+var _STROKE2 = null;
+function ctx_strokeStyle(clr, ctx) {
+    clr = _rgba(clr);
+    if (_STROKE1 != clr) {
+        _STROKE1 = clr; 
+        _STROKE2 = _rgba(clr);
+        ctx.strokeStyle = clr;
+    }
+}
 
 /*--- GRAPH NODE -----------------------------------------------------------------------------------*/
 
@@ -320,16 +369,16 @@ var Node = Class.extend({
         // Draw the node weight as a shadow (based on node betweenness centrality).
         if (weighted && weighted != false && this.centrality > ((weighted==true)?-1:weighted)) {
             var w = this.centrality * 35;
-            ctx.fillStyle = "rgba(0,0,0,0.1)";
+            ctx_fillStyle("rgba(0,0,0,0.1)", ctx);
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius+w, 0, Math.PI*2, true);
             ctx.closePath();
             ctx.fill();
         }
         // Draw the node.
-        ctx.lineWidth   = this.strokewidth;
-        ctx.strokeStyle = this.stroke;
-        ctx.fillStyle   = this.fill;
+        ctx.lineWidth = this.strokewidth;
+        ctx_strokeStyle(this.stroke, ctx);
+        ctx_fillStyle(this.fill, ctx);
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
         ctx.closePath();
@@ -417,9 +466,8 @@ var Edge = Class.extend({
          */
         var w = weighted && this.weight || 0;
         var ctx = this.node1.graph._ctx;
-        ctx.lineWidth   = this.strokewidth + w;
-        ctx.strokeStyle = this.stroke;
-        ctx.fillStyle   = this.stroke;
+        ctx.lineWidth = this.strokewidth + w;
+        ctx_strokeStyle(this.stroke, ctx);
         ctx.beginPath();
         ctx.moveTo(this.node1.x, this.node1.y);
         ctx.lineTo(this.node2.x, this.node2.y);
@@ -446,6 +494,7 @@ var Edge = Class.extend({
         var p2 = coordinates(p1[0], p1[1], -r, a-20);
         var p3 = coordinates(p1[0], p1[1], -r, a+20);
         var ctx = this.node1.graph._ctx;
+        ctx_fillStyle(this.stroke, ctx);
         ctx.beginPath();
         ctx.moveTo(p1[0], p1[1]);
         ctx.lineTo(p2[0], p2[1]);
@@ -501,7 +550,7 @@ var Graph = Class.extend({
     addNode: function(id, a) {
         /* Appends a new Node to the graph.
          */
-        var n = a && a.base || Node;
+        var n = a && a._super || Node;
             n = (id instanceof Node)? id : (this.nodeset[id])? this.nodeset[id] : new n(id, a);
         if (a && a.root) this.root = n;
         if (!this.nodeset[n.id]) {
@@ -528,7 +577,7 @@ var Graph = Class.extend({
         if (e1 && e1.node1 == n1 && e1.node2 == n2) {
             return e1; // Shortcut to existing edge.
         }
-        e2 = a && a.base || Edge;
+        e2 = a && a._super || Edge;
         e2 = new e2(n1, n2, a);
         this.edges.push(e2);
         // Synchronizes Node.links:
@@ -882,14 +931,22 @@ var Graph = Class.extend({
     clear: function() {
         // Removes the graph from the canvas.
         // Removes the <div> node labels from the DOM.
-        this._ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        // Removes nodes and edges from memory.
+        if (this.canvas && this._ctx) {
+            this._ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        }
         for (var i=0; i < this.nodes.length; i++) {
             var n = this.nodes[i];
-            if (n.text) n.text.parentNode.removeChild(n.text);
+            if (n.text && n.text.parentNode) {
+                n.text.parentNode.removeChild(n.text);
+                n.text = null;
+            }
         }
-        this.nodeset = null;
-        this.nodes   = null;
-        this.edges   = null;
+        this.nodeset = {};
+        this.nodes   = [];
+        this.edges   = [];
+        this.root    = null;
+        this.layout  = null;
         this.canvas  = null;
     }
 });
@@ -948,7 +1005,7 @@ GraphSpringLayout = GraphLayout.extend({
         /* A force-based layout in which edges are regarded as springs.
          * The forces are applied to the nodes, pulling them closer or pushing them apart.
          */
-        this.base(graph);
+        this._super(graph);
         this.k         = 4.0;  // Force constant.
         this.force     = 0.01; // Force multiplier.
         this.repulsion = 50;   // Maximum repulsive force radius.
@@ -1004,7 +1061,7 @@ GraphSpringLayout = GraphLayout.extend({
         if (weight === undefined) weight = 10.0;
         if (limit  === undefined) limit  = 0.5;
         // Call GraphLayout.update().
-        this.base();
+        this._super();
         // Forces on all nodes due to node-node repulsions.
         for (var i=0; i < this.graph.nodes.length; i++) {
             var n1 = this.graph.nodes[i];

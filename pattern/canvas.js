@@ -64,6 +64,10 @@ window.height = function() {
 
 // Additional array functions are invoked with Array.[function].
 
+Array.instanceof = function(array) {
+    return Object.prototype.toString.call(Array) === "[object Array]";
+};
+
 Array.min = function(array) {
     return Math.min.apply(Math, array);
 };
@@ -2456,7 +2460,7 @@ var Mouse = Class.extend({
 function _uid() {
     // Returns a unique number.
     if (_uid.i === undefined) _uid.i=0;
-    return ++this.i;
+    return ++_uid.i;
 }
 
 function _unselectable(element) {
@@ -2600,6 +2604,10 @@ var Canvas = Class.extend({
         this.clear();
     },
     
+    stop: function() {
+        this._stop();
+    },
+    
     clear: function() {
         /* Clears the previous frame from the canvas.
          */
@@ -2642,7 +2650,19 @@ var Canvas = Class.extend({
         pop();
         this._scheduled = window._requestFrame(this._draw, this);
     },
-    
+
+    _stop: function() {
+        /* Stops the animation.
+           When run() is called subsequently, the animation will restart from the first frame.
+         */
+        if (this._scheduled !== undefined) {
+            window._clearFrame(this._scheduled);
+        }
+        this._active = false;
+        this._resetWidgets();
+        this.frame = 0;
+    },
+
     run: function() {
         /* Starts drawing the canvas.
          * Canvas.setup() will be called once during initialization.
@@ -2663,18 +2683,6 @@ var Canvas = Class.extend({
             this._draw(); 
         }
         _preload.apply(this);
-    },
-    
-    stop: function() {
-        /* Stops the animation.
-           When run() is called subsequently, the animation will restart from the first frame.
-         */
-        if (this._scheduled !== undefined) {
-            window._clearFrame(this._scheduled);
-        }
-        this._active = false;
-        this._resetWidgets();
-        this.frame = 0;
     },
     
     pause: function() {
@@ -2787,7 +2795,7 @@ var OffscreenBuffer = Buffer = Canvas.extend({
         /* Executes the drawing commands in OffscreenBuffer.draw() offscreen and returns image.
          */
         this.run();
-        this.stop();
+        this._stop();
         return this.image();
     },
     
@@ -3222,24 +3230,35 @@ function widget(canvas, variable, type, options) {
         // Create an onchange() that will set the variable to the value of the widget.
         // For FUNCTION, it is an onclick() that will call options.callback(e).
         var id = canvas.id + "_" + v;
-        var cb = o.callback || function(e) {};
+        // Fix callback event and event.target on IE8 and Safari2.
+        // Function does nothing when propagate=false.
+        var cb = function(e, propagate) {
+            if (!e)
+                e = window.event;
+            if (!e.target)
+                e.target = e.srcElement || document;
+            if (e.target.nodeType === 3)
+                e.target = e.target.parentNode;
+            if (o.callback && propagate != false)
+                o.callback(e);
+        }
         // <input type="text" id="id" value="" />
         if (type == STRING || type == TEXT) {
-            var s = "<input type='text' id='"+v+"' value='"+(o.value||"")+"' />";
-            var f = function(e) { canvas.variables[this.id] = this.value; cb(e); };
+            var s = "<input type='text' id='"+v+"' value='"+(o.value||"").replace(/'/g,"&#39;")+"' />";
+            var f = function(e,p) { canvas.variables[this.id] = this.value; cb(e,p); };
         // <input type="text" id="id" value="0" />
         } else if (type == NUMBER) {
             var s = "<input type='text' id='"+v+"' value='"+(o.value||0)+"' />";
-            var f = function(e) { canvas.variables[this.id] = parseFloat(this.value); cb(e); };
+            var f = function(e,p) { canvas.variables[this.id] = parseFloat(this.value); cb(e,p); };
         // <input type="checkbox" id="variable" />
         } else if (type == BOOLEAN) {
             var s = "<input type='checkbox' id='"+v+"'"+((o.value==true)?" checked":"")+" />";
-            var f = function(e) { canvas.variables[this.id] = this.checked; cb(e); };
+            var f = function(e,p) { canvas.variables[this.id] = this.checked; cb(e,p); };
         // <input type="range" id="id" value="0" min="0" max="0" step="0.01" />
         } else if (type == RANGE) {
             var s = "<input type='range' id='"+v+"' value='"+(o.value||0)+"'"
                   + " min='"+(o.min||0)+"' max='"+(o.max||1)+"' step='"+(o.step||0.01)+"' />";
-            var f = function(e) { canvas.variables[this.id] = parseFloat(this.value); cb(e); };
+            var f = function(e,p) { canvas.variables[this.id] = parseFloat(this.value); cb(e,p); };
         // <select id="id"><option value="value[i]">value[i]</option>...</select>
         } else if (type == LIST || type == ARRAY) {
             var s = "";
@@ -3248,20 +3267,11 @@ function widget(canvas, variable, type, options) {
                 s += "<option "+(o.index==i?"selected ":"")+"value='"+a[i]+"'>"+a[i]+"</option>";
             }
             s = "<select id='"+v+"'>"+s+"</select>";
-            f = function(e) { canvas.variables[this.id] = this.options[this.selectedIndex].value; cb(e); };
+            f = function(e,p) { canvas.variables[this.id] = this.options[this.selectedIndex].value; cb(e,p); };
         // <button id="id" onclick="javascript:options.callback(event)">variable</button>
         } else if (type == FUNCTION) {
             var s = "<button id='"+v+"'>"+v.replace("_"," ")+"</button>";
-            var f = function(e) {
-                // Fix callback event and event.target on IE8- and Safari2-.
-                if (!e)
-                    e = window.event;
-                if (!e.target)
-                    e.target = e.srcElement || document;
-                if (e.target.nodeType === 3)
-                    e.target = e.target.parentNode;
-                cb(e);
-            }
+            var f = function(e,p) { cb(e,p); };
         } else {
             throw "Variable type can be STRING, NUMBER, BOOLEAN, RANGE, LIST or FUNCTION, not '"+type+"'";
         }
@@ -3275,7 +3285,7 @@ function widget(canvas, variable, type, options) {
         e.className = "widget"
         e.lastChild.canvas = canvas;
         if (type != FUNCTION) {
-            attachEvent(e.lastChild, "change", f); e.lastChild.change();
+            attachEvent(e.lastChild, "change", f); e.lastChild.change(null, false);
         } else {
             attachEvent(e.lastChild, "click", f);
         }
@@ -3324,10 +3334,14 @@ attachEvent(window, "load", function() {
             // Evaluate the script and bind setup() and draw() to the canvas.
             var setup = function(){};
             var draw = function(){};
+            var stop = function(){};
             eval(e[i].innerHTML);
             canvas = new Canvas(canvas);
-            canvas.draw = draw;
+            canvas.draw  = draw;
             canvas.setup = setup;
+            canvas.stop  = function() { 
+                stop(this); this._stop();
+            }
             // <script type="text/canvas" loop="false"> renders a single frame.
             if (e[i].getAttribute("loop") == "false") {
                 canvas.step();
