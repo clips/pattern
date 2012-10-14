@@ -394,8 +394,8 @@ u&quot;It&#39;s a bunny, rabbit wood. What? A gift.&quot;
 <p>&nbsp;</p>
 <hr />
 <h2><a name="wikipedia"></a>Wikipedia articles</h2>
-<p><span class="inline_code">Wikipedia.search()</span> does not return a list of <span class="inline_code">Result</span> objects. Instead, it returns a single <span class="inline_code">WikipediaArticle</span> for the given (case-sensitive) query. The <span class="inline_code">Wikipedia</span> constructor has an additional <span class="inline_code">language</span> parameter (by default, <span class="inline_code">"en"</span>) that determines the language of the returned articles.</p>
-<pre class="brush:python; gutter:false; light:true;">article = WikipediaArticle(title=&#39;&#39;, source=&#39;&#39;, links=[])</pre><pre class="brush:python; gutter:false; light:true;">article.source              # Article HTML source.
+<p><span class="inline_code">Wikipedia.search()</span> does not return a list of <span class="inline_code">Result</span> objects. Instead, it returns a single <span class="inline_code">MediaWikiArticle</span> for the given (case-sensitive) query. The <span class="inline_code">Wikipedia</span> constructor has an additional <span class="inline_code">language</span> parameter (by default, <span class="inline_code">"en"</span>) that determines the language of the returned articles.</p>
+<pre class="brush:python; gutter:false; light:true;">article = MediaWikiArticle(title=&#39;&#39;, source=&#39;&#39;, links=[])</pre><pre class="brush:python; gutter:false; light:true;">article.source              # Article HTML source.
 article.string              # Article plaintext unicode string.</pre><pre class="brush:python; gutter:false; light:true;">article.title               # Article title.
 article.sections            # Article sections.
 article.links               # List of titles of linked articles.
@@ -406,17 +406,17 @@ article.languages           # Dictionary of (language, article)-items.
 article.language            # Article language (i.e. &#39;en&#39;).
 article.disambiguation      # True if it is a disambiguation page</pre><pre class="brush:python; gutter:false; light:true;">article.plaintext(**kwargs) # See plaintext() for parameter overview.
 article.download(media, **kwargs)
-</pre><p><span class="inline_code">WikipediaArticle.plaintext()</span> is similar to the <span class="inline_code">plaintext()</span> function, but with extra attention for Wikipedia markup. It will remove metadata, infobox, table of contents, annotations, thumbnails and disambiguation links.</p>
+</pre><p><span class="inline_code">MediaWikiArticle.plaintext()</span> is similar to the <span class="inline_code">plaintext()</span> function, but with extra attention for Wikipedia markup. It will remove metadata, infobox, table of contents, annotations, thumbnails and disambiguation links.</p>
 <h3>Wikipedia article sections</h3>
-<p><span class="inline_code">WikipediaArticle.sections</span> is a list of <span class="inline_code">WikipediaSection</span> objects. A section has a title and a number of paragraphs that belong together.</p>
-<pre class="brush:python; gutter:false; light:true;">section = WikipediaSection(article, title=&#39;&#39;, start=0, stop=0, level=1)</pre><pre class="brush:python; gutter:false; light:true;">section.article             # WikipediaArticle parent.
-section.parent              # WikipediaSection this section is part of.
-section.children            # WikipediaSections belonging to this section.</pre><pre class="brush:python; gutter:false; light:true;">section.title               # Section title.
+<p><span class="inline_code">MediaWikiArticle.sections</span> is a list of <span class="inline_code">MediaWikiSection</span> objects. A section has a title and a number of paragraphs that belong together.</p>
+<pre class="brush:python; gutter:false; light:true;">section = MediaWikiSection(article, title=&#39;&#39;, start=0, stop=0, level=1)</pre><pre class="brush:python; gutter:false; light:true;">section.article             # MediaWikiArticle parent.
+section.parent              # MediaWikiSection this section is part of.
+section.children            # MediaWikiSections belonging to this section.</pre><pre class="brush:python; gutter:false; light:true;">section.title               # Section title.
 section.source              # Section HTML source.
 section.string              # Section plaintext unicode string.
 section.content             # Section string minus title.
 section.level               # Section nested depth.
-section.tables              # List of WikipediaTable objects.</pre><p>The following example downloads a Wikipedia article and prints the title of each section, indented according to the section level:</p>
+section.tables              # List of MediaWikiTable objects.</pre><p>The following example downloads a Wikipedia article and prints the title of each section, indented according to the section level:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; article = Wikipedia().search(&#39;nodebox&#39;)
 &gt;&gt;&gt; for section in article.sections:
@@ -432,8 +432,8 @@ u&#39;NodeBox for OpenGL&#39;
 u&#39;Applications&#39;
 u&#39;See also&#39;</pre></div>
 <h3>Wikipedia article tables</h3>
-<p><span class="inline_code">WikipediaSection.tables</span> is a list of <span class="inline_code">WikipediaTable</span> objects.&nbsp;A table can have a title, column headers, and rows.&nbsp;</p>
-<pre class="brush:python; gutter:false; light:true;">table = WikipediaTable(section, title=&#39;&#39;, headers=[], rows=[], source=&#39;&#39;)</pre><pre class="brush:python; gutter:false; light:true;">table.section               # WikipediaSection parent.
+<p><span class="inline_code">MediaWikiSection.tables</span> is a list of <span class="inline_code">MediaWikiTable</span> objects.&nbsp;A table can have a title, column headers, and rows.&nbsp;</p>
+<pre class="brush:python; gutter:false; light:true;">table = MediaWikiTable(section, title=&#39;&#39;, headers=[], rows=[], source=&#39;&#39;)</pre><pre class="brush:python; gutter:false; light:true;">table.section               # MediaWikiSection parent.
 table.source                # Table HTML source.
 table.title                 # Table title.
 table.headers               # List of table column headers.

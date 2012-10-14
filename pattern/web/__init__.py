@@ -21,6 +21,7 @@ import re
 import xml.dom.minidom
 import StringIO
 import bisect
+import abc
 
 import api
 import feed
@@ -935,7 +936,7 @@ class Results(list):
         self.total  = total
 
 class SearchEngine:
-    
+    __metaclass__ = abc.ABCMeta
     def __init__(self, license=None, throttle=1.0, language=None):
         """ A base class for a web service.
             - license  : license key for the API,
@@ -1354,29 +1355,34 @@ def retweets(string):
 #--- WIKIPEDIA -------------------------------------------------------------------------------------
 # http://en.wikipedia.org/w/api.php
 
-WIKIPEDIA = "http://en.wikipedia.org/w/api.php"
-WIKIPEDIA_LICENSE = api.license["Wikipedia"] 
+MEDIAWIKI = "http://{SUBDOMAIN}.{DOMAIN}{APIPATH}"
+MEDIAWIKI_LICENSE = api.license["Wikipedia"] 
 
 # Pattern for meta links (e.g. Special:RecentChanges).
 # http://en.wikipedia.org/wiki/Main_namespace
-WIKIPEDIA_NAMESPACE  = ["Main", "User", "Wikipedia", "File", "MediaWiki", "Template", "Help", "Category", "Portal", "Book"]
-WIKIPEDIA_NAMESPACE += [s+" talk" for s in WIKIPEDIA_NAMESPACE] + ["Talk", "Special", "Media"]
-WIKIPEDIA_NAMESPACE += ["WP", "WT", "MOS", "C", "CAT", "Cat", "P", "T", "H", "MP", "MoS", "Mos"]
-_wikipedia_namespace = re.compile(r"^"+"|".join(WIKIPEDIA_NAMESPACE)+":", re.I)
+MEDIAWIKI_NAMESPACE  = ["Main", "User", "Wikipedia", "File", "MediaWiki", "Template", "Help", "Category", "Portal", "Book"]
+MEDIAWIKI_NAMESPACE += [s+" talk" for s in MEDIAWIKI_NAMESPACE] + ["Talk", "Special", "Media"]
+MEDIAWIKI_NAMESPACE += ["WP", "WT", "MOS", "C", "CAT", "Cat", "P", "T", "H", "MP", "MoS", "Mos"]
+_wikipedia_namespace = re.compile(r"^"+"|".join(MEDIAWIKI_NAMESPACE)+":", re.I)
 
 # Pattern to identify disambiguation pages.
-WIKIPEDIA_DISAMBIGUATION = "<a href=\"/wiki/Help:Disambiguation\" title=\"Help:Disambiguation\">disambiguation</a> page"
+MEDIAWIKI_DISAMBIGUATION = "<a href=\"/wiki/Help:Disambiguation\" title=\"Help:Disambiguation\">disambiguation</a> page"
 
 # Pattern to identify references, e.g. [12]
-WIKIPEDIA_REFERENCE = r"\s*\[[0-9]{1,3}\]"
+MEDIAWIKI_REFERENCE = r"\s*\[[0-9]{1,3}\]"
 
-class Wikipedia(SearchEngine):
-    
+class MediaWiki(SearchEngine):
+    __metaclass__ = abc.ABCMeta
+
     def __init__(self, license=None, throttle=5.0, language="en"):
-        SearchEngine.__init__(self, license or WIKIPEDIA_LICENSE, throttle, language)
+        SearchEngine.__init__(self, license or MEDIAWIKI_LICENSE, throttle, language)
+
+    @abc.abstractmethod
+    def _get_url(self):
+        return None
 
     def search(self, query, type=SEARCH, start=1, count=1, sort=RELEVANCY, size=None, cached=True, **kwargs):
-        """ Returns a WikipediaArticle for the given query.
+        """ Returns a MediaWikiArticle for the given query.
             The query is case-sensitive: 
             - "tiger" = Panthera tigris,
             - "TIGER" = Topologically Integrated Geographic Encoding and Referencing.
@@ -1386,7 +1392,7 @@ class Wikipedia(SearchEngine):
         if count < 1:
             return None
         # 1) Construct request URL for the Wikipedia in the given language.
-        url = WIKIPEDIA.replace("en.", "%s." % self.language) + "?"
+        url = self._get_url()
         url = URL(url, method=GET, query={
             "action": "parse",
               "page": query.replace(" ","_"),
@@ -1408,10 +1414,10 @@ class Wikipedia(SearchEngine):
         return a
     
     def _parse_article(self, data, **kwargs):
-        return WikipediaArticle(
+        return MediaWikiArticle(
                   title = plaintext(data.get("displaytitle", "")),
                  source = data.get("text", {}).get("*", ""),
-         disambiguation = data.get("text", {}).get("*", "").find(WIKIPEDIA_DISAMBIGUATION) >= 0,
+         disambiguation = data.get("text", {}).get("*", "").find(MEDIAWIKI_DISAMBIGUATION) >= 0,
                   links = [x["*"] for x in data.get("links", []) if not _wikipedia_namespace.match(x["*"])],
              categories = [x["*"] for x in data.get("categories", [])],
                external = [x for x in data.get("externallinks", [])],
@@ -1434,7 +1440,7 @@ class Wikipedia(SearchEngine):
                 m = p.search(article.source, i)
                 if m:
                     j = m.start()
-                    article.sections.append(WikipediaSection(article, 
+                    article.sections.append(MediaWikiSection(article, 
                         title = t,
                         start = i, 
                          stop = j,
@@ -1454,11 +1460,31 @@ class Wikipedia(SearchEngine):
                     break
         return article
 
-class WikipediaArticle:
+class Wikipedia(MediaWiki):
+    def __init__(self, license=None, throttle=5.0, language="en"):
+        SearchEngine.__init__(self, license or MEDIAWIKI_LICENSE, throttle, language)
+        self.subdomain=language
+
+    def _get_url(self):
+        return MEDIAWIKI.replace("{SUBDOMAIN}", self.subdomain)\
+            .replace("{DOMAIN}", "wikipedia.org")\
+            .replace("{APIPATH}", '/w/api.php')
+
+class Wikia(MediaWiki):
+    def __init__(self, license=None, throttle=5.0, subdomain="www", language="en"):
+        SearchEngine.__init__(self, license or MEDIAWIKI_LICENSE, throttle, language)
+        self.subdomain=subdomain
+
+    def _get_url(self):
+        return MEDIAWIKI.replace("{SUBDOMAIN}", self.subdomain)\
+            .replace("{DOMAIN}", "wikia.com")\
+            .replace("{APIPATH}", '/api.php')
+
+class MediaWikiArticle:
     
     def __init__(self, title=u"", source=u"", links=[], categories=[], languages={}, disambiguation=False, **kwargs):
         """ An article on Wikipedia returned from Wikipedia.search().
-            WikipediaArticle.string contains the HTML content.
+            MediaWikiArticle.string contains the HTML content.
         """
         self.title          = title          # Article title.
         self.source         = source         # Article HTML content.
@@ -1474,7 +1500,7 @@ class WikipediaArticle:
             setattr(self, k, v)
     
     def download(self, media, **kwargs):
-        """ Downloads an item from WikipediaArticle.media and returns the content.
+        """ Downloads an item from MediaWikiArticle.media and returns the content.
             Note: images on Wikipedia can be quite large, and this method uses screen-scraping,
                   so Wikipedia might not like it that you download media in this way.
             To save the media in a file: 
@@ -1492,7 +1518,7 @@ class WikipediaArticle:
     def _plaintext(self, string, **kwargs):
         """ Strips HTML tags, whitespace and Wikipedia markup from the HTML source, including:
             metadata, info box, table of contents, annotations, thumbnails, disambiguation link.
-            This is called internally from WikipediaArticle.string.
+            This is called internally from MediaWikiArticle.string.
         """
         s = string
         s = strip_between("<table class=\"metadata", "</table>", s)   # Metadata.
@@ -1508,7 +1534,6 @@ class WikipediaArticle:
         s = plaintext(s, **kwargs)
         s = re.sub(r"\[edit\]\s*", "", s) # [edit] is language dependent (e.g. nl => "[bewerken]")
         s = s.replace("[", " [").replace("  [", " [") # Space before inline references.
-        #s = re.sub(WIKIPEDIA_REFERENCE, " ", s)      # Remove inline references.
         return s
         
     def plaintext(self, **kwargs):
@@ -1523,19 +1548,19 @@ class WikipediaArticle:
         return self.plaintext()
         
     def __repr__(self):
-        return "WikipediaArticle(title=%s)" % repr(self.title)
+        return "MediaWikiArticle(title=%s)" % repr(self.title)
 
-class WikipediaSection:
+class MediaWikiSection:
     
     def __init__(self, article, title=u"", start=0, stop=0, level=1):
-        """ A (nested) section in the content of a WikipediaArticle.
+        """ A (nested) section in the content of a MediaWikiArticle.
         """
-        self.article  = article # WikipediaArticle the section is part of.
-        self.parent   = None    # WikipediaSection the section is part of.
-        self.children = []      # WikipediaSections belonging to this section.
+        self.article  = article # MediaWikiArticle the section is part of.
+        self.parent   = None    # MediaWikiSection the section is part of.
+        self.children = []      # MediaWikiSections belonging to this section.
         self.title    = title   # Section title.
-        self._start   = start   # Section start index in WikipediaArticle.string.
-        self._stop    = stop    # Section stop index in WikipediaArticle.string.
+        self._start   = start   # Section start index in MediaWikiArticle.string.
+        self._stop    = stop    # Section stop index in MediaWikiArticle.string.
         self._level   = level   # Section depth (main title + intro = level 0).
         self._tables  = None
 
@@ -1564,7 +1589,7 @@ class WikipediaSection:
     
     @property
     def tables(self):
-        """ Yields a list of WikipediaTable objects in the section.
+        """ Yields a list of MediaWikiTable objects in the section.
         """
         if self._tables is None:
             self._tables = []
@@ -1572,14 +1597,14 @@ class WikipediaSection:
             p = self.article._plaintext
             f = find_between
             for s in f(b[0], b[1], self.source):
-                t = WikipediaTable(self,
+                t = MediaWikiTable(self,
                      title = p((f(r"<caption.*?>", "</caption>", s) + [""])[0]),
                     source = b[0] + s + b[1]
                 )
                 for i, row in enumerate(f(r"<tr", "</tr>", s)):
                     # 1) Parse <td> and <th> content and format it as plain text.
                     # 2) Parse <td colspan=""> attribute, duplicate spanning cells.
-                    # 3) For <th> in the first row, update WikipediaTable.headers.
+                    # 3) For <th> in the first row, update MediaWikiTable.headers.
                     r1 = f(r"<t[d|h]", r"</t[d|h]>", row)
                     r1 = (((f(r'colspan="', r'"', v)+[1])[0], v[v.find(">")+1:]) for v in r1)
                     r1 = ((int(n), v) for n, v in r1)
@@ -1598,14 +1623,14 @@ class WikipediaSection:
     depth = level
 
     def __repr__(self):
-        return "WikipediaSection(title='%s')" % bytestring(self.title)
+        return "MediaWikiSection(title='%s')" % bytestring(self.title)
 
-class WikipediaTable:
+class MediaWikiTable:
     
     def __init__(self, section, title=u"", headers=[], rows=[], source=u""):
-        """ A <table class="wikitable> in a WikipediaSection.
+        """ A <table class="wikitable> in a MediaWikiSection.
         """
-        self.section = section # WikipediaSection the table is part of.
+        self.section = section # MediaWikiSection the table is part of.
         self.source  = source  # Table HTML.
         self.title   = title   # Table title.
         self.headers = headers # List of table headers.
@@ -1616,7 +1641,7 @@ class WikipediaTable:
         return self.source
         
     def __repr__(self):
-        return "WikipediaTable(title='%s')" % bytestring(self.title)
+        return "MediaWikiTable(title='%s')" % bytestring(self.title)
 
 #article = Wikipedia().search("nodebox")
 #for section in article.sections:
@@ -1900,7 +1925,7 @@ SERVICES = {
     YAHOO     : Yahoo,
     BING      : Bing,
     TWITTER   : Twitter,
-    WIKIPEDIA : Wikipedia,
+    MEDIAWIKI : Wikipedia,
     FLICKR    : Flickr,
     FACEBOOK  : Facebook
 }

@@ -10,7 +10,7 @@ from pattern.web import Wikipedia
 engine = Wikipedia(language="en")
 
 # Contrary to other search engines in the module,
-# Wikipedia simply returns one WikipediaArticle object (or None) instead of a list of results.
+# Wikipedia simply returns one MediaWikiArticle object (or None) instead of a list of results.
 article = engine.search("alice in wonderland", cached=True, timeout=30)
 
 print article.title               # Article title (may differ from the search query).
@@ -24,7 +24,7 @@ print
 #print article.string # The full article content, plain text with HTML tags stripped.
 
 # An article is made up of different sections with a title.
-# WikipediaArticle.sections is a list of WikipediaSection objects.
+# MediaWikiArticle.sections is a list of MediaWikiSection objects.
 # Each section has a title + content and can have a linked parent section or child sections.
 for s in article.sections:
     print s.title.upper()
