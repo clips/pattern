@@ -9,6 +9,8 @@ Pattern is a web mining module for the Python programming language. It bundles t
 
 It is well documented and bundled with *30+ examples* and *350+ unit tests*. The source code is licensed under BSD and available from *http://www.clips.ua.ac.be/pages/pattern*.
 
+![Pattern Schema](http://www.clips.ua.ac.be/media/pattern_schema.gif)
+
 
 VERSION
 =======
