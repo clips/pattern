@@ -1217,6 +1217,78 @@ class Bing(SearchEngine):
             results.append(r)
         return results
 
+#--- DUCKDUCKGO ------------------------------------------------------------------------------------
+# https://duckduckgo.com/api.html
+# Some of these parameters may work as well: https://duckduckgo.com/params.html
+
+DUCKDUCKGO         = "http://api.duckduckgo.com/"
+DUCKDUCKGO_LICENSE = api.license["DuckDuckGo"]
+
+class DuckDuckGo(SearchEngine):
+
+    def __init__(self, license=None, throttle=0.5, language=None):
+        SearchEngine.__init__(self, license or DUCKDUCKGO_LICENSE, throttle, language)
+
+    def search(self, query, type=SEARCH, start=1, count=1, sort=RELEVANCY, size=None, cached=True,
+               skip_disambig=1, **kwargs):
+        if type != SEARCH:
+            raise SearchEngineTypeError
+        # 1) Construct request URL.
+        # Parameters seem to be order sensitive: if this is fixed we can set url.query as params
+        params = {
+               "q": query,
+               "o": "json",
+               "kp": -1,  # safesearch off! if you really want it on, set this to 1
+               "no_redirect": 1,
+               "skip_disambig": skip_disambig
+        }
+        url = URL(DUCKDUCKGO + "?" + urllib.urlencode(params), method=GET)
+        # 2) Restrict language - PLACEHOLDER, DuckDuckGo Zeroclick seems to be English only for now
+        # 3) Parse JSON response.
+        kwargs.setdefault("unicode", True)
+        kwargs.setdefault("throttle", self.throttle)
+        data = url.download(cached=cached, **kwargs)
+        data = json.loads(data)
+        return DuckDuckGoZC(
+              abstract = data.get("Abstract"),
+              abstract_text = data.get("AbstractText"),
+              abstract_source = data.get("AbstractSource"),
+              abstractURL = data.get("AbstractURL"),
+              image = data.get("Image"),
+              heading = data.get("Heading"),
+              answer = data.get("Answer"),
+              answer_type = data.get("AnswerType"),
+              definition = data.get("Definition"),
+              definition_source = data.get("DefinitionSource"),
+              definitionURL = data.get("DefinitionURL"),
+              related_topics = data.get("RelatedTopics"),
+              results = data.get("Results"))
+
+class DuckDuckGoZC:
+    """Zero-Click results from a DuckDuckGo query."""
+
+    def __init__(self, abstract=u"", abstract_text=u"", abstract_source=u"", abstractURL=u"",
+                 image=u"", heading=u"", answer=u"", redirect=u"", answer_type=u"", definition=u"",
+                 definition_source=u"", definitionURL=u"", related_topics=[], results=[],
+                 **kwargs):
+        self.abstract          = abstract           # Topic summary, may include HTML markup
+        self.abstract_text     = abstract_text      # Abstract without HTML
+        self.abstract_source   = abstract_source    # Name of abstract source
+        self.abstractURL       = abstractURL        # URL of abstract source
+        self.image             = image              # Image URL that goes with abstract
+        self.heading           = heading            # Topic name going with abstract
+        self.answer            = answer             # Response category (article, disambig, etc.)
+        self.redirect          = redirect           # !bang query redirect (duckduckgo.com/bang.html)
+        self.answer_type       = answer_type        # Type of answer (api.duckduckgo.com) 
+        self.definition        = definition         # Dictionary definition
+        self.definition_source = definition_source  # Name of definition source
+        self.definitionURL     = definitionURL      # URL of definition source
+        self.related_topics    = related_topics     # Array of DDG links to related topics
+        self.results           = results            # Array of non-DDG links relatd to abstract
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+
 #--- TWITTER ---------------------------------------------------------------------------------------
 # http://apiwiki.twitter.com/
 
