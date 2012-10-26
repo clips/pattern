@@ -1,27 +1,27 @@
-PATTERN
+Pattern
 =======
 
-![Pattern example workflow](http://www.clips.ua.ac.be/media/pattern_schema.gif "Pattern example workflow")
-
 Pattern is a web mining module for the Python programming language. It bundles tools for:
- * **Data Mining** – Google + Twitter + Wikipedia API, web spider, HTML DOM parser
- * **Natural Language Processing** – tagger/chunker, n-gram search, sentiment analysis, WordNet
- * **Machine Learning** – vector space model, *k*-means clustering, Naive Bayes + *k*NN + SVM classiﬁers
- * **Network Analysis** – graph centrality and visualization.
+ * Data Mining – Google + Twitter + Wikipedia API, web spider, HTML DOM parser
+ * Natural Language Processing – tagger/chunker, n-gram search, sentiment analysis, WordNet
+ * Machine Learning – vector space model, *k*-means clustering, Naive Bayes + *k*NN + SVM classiﬁers
+ * Network Analysis – graph centrality and visualization.
 
 It is well documented and bundled with 30+ examples and 350+ unit tests. The source code is licensed under BSD and available from http://www.clips.ua.ac.be/pages/pattern.
 
-VERSION
+![Pattern example workflow](http://www.clips.ua.ac.be/media/pattern_schema.gif)
+
+Version
 =======
 
 2.4
 
-LICENSE
+License
 =======
 
 **BSD**, see `LICENSE.txt` for further details.
 
-INSTALLATION
+Installation
 ============
 
 Pattern is written for Python 2.5+ (no support for Python 3 yet). The module has no external dependencies except when using LSA in the pattern.vector module, which requires NumPy (installed by default on Mac OS X). To install Pattern so that it is available in all your scripts, unzip the download and from the command line do:
@@ -49,17 +49,17 @@ If none of the above works, you can make Python aware of the module in three way
   from pattern.en import parse, Sentence
 ```
 
-DOCUMENTATION
+Documentation
 =============
 
 http://www.clips.ua.ac.be/pages/pattern
 
-REFERENCE
+Reference
 =========
 
 De Smedt, T., Daelemans, W. (2012). Pattern for Python. *Journal of Machine Learning Research, 13*, 2031–2035.
 
-BUNDLED DEPENDENCIES
+Bundled dependencies
 ====================
 
 Pattern is bundled with the following algorithms and Python packages: 
@@ -79,7 +79,7 @@ Pattern is bundled with the following algorithms and Python packages:
 - **Universal Feed Parser**, Mark Pilgrim
 - **WordNet**, Christiane Fellbaum et al.
 
-ACKNOWLEDGEMENTS
+Acknowledgements
 ================
 
 Authors:
