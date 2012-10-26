@@ -21,6 +21,7 @@ import re
 import xml.dom.minidom
 import StringIO
 import bisect
+import new
 
 import api
 import feed
@@ -496,8 +497,7 @@ def download(url=u"", method=GET, query={}, timeout=10, cached=True, throttle=0,
 def bind(object, method, function):
     """ Attaches the function as a method with the given name to the given object.
     """
-    from new import instancemethod
-    setattr(object, method, instancemethod(function, object))
+    setattr(object, method, new.instancemethod(function, object))
 
 class Stream(list):
     
@@ -1222,8 +1222,8 @@ class Bing(SearchEngine):
 
 TWITTER         = "http://search.twitter.com/"
 TWITTER_STREAM  = "https://stream.twitter.com/1/statuses/filter.json"
+TWITTER_STATUS  = "https://twitter.com/%s/status/%s"
 TWITTER_LICENSE = api.license["Twitter"]  
-TWITTER_SOURCE  = re.compile(r"href=&quot;(.*?)&quot;")
 TWITTER_HASHTAG = re.compile(r"(\s|^)(#[a-z0-9_\-]+)", re.I)    # Word starts with "#".
 TWITTER_RETWEET = re.compile(r"(\s|^RT )(@[a-z0-9_\-]+)", re.I) # Word starts with "RT @".
 
@@ -1268,7 +1268,7 @@ class Twitter(SearchEngine):
         results.total = None
         for x in data.get("results", data.get("trends", [])):
             r = Result(url=None)
-            r.url         = self.format("https://twitter.com/%s/status/%s" % (x.get("from_user"), x.get("id_str")))
+            r.url         = self.format(TWITTER_STATUS % (x.get("from_user"), x.get("id_str")))
             r.description = self.format(x.get("text"))
             r.date        = self.format(x.get("created_at", data.get("as_of")))
             r.author      = self.format(x.get("from_user"))
@@ -1318,7 +1318,7 @@ class TwitterStream(Stream):
         """
         x = json.loads(data)
         r = Result(url=None)
-        r.url         = self.format("https://twitter.com/%s/status/%s" % (x.get("user", {}).get("screen_name"), x.get("id_str")))
+        r.url         = self.format(TWITTER_STATUS % (x.get("user", {}).get("screen_name"), x.get("id_str")))
         r.description = self.format(x.get("text"))
         r.date        = self.format(x.get("created_at"))
         r.author      = self.format(x.get("user", {}).get("screen_name"))
@@ -1893,6 +1893,36 @@ feeds = {
 #    print plaintext(r.description)
 #    print
 
+#--- QUERY -----------------------------------------------------------------------------------------
+
+def query(string, service=GOOGLE, **kwargs):
+    """ Returns the list of search query results from the given service.
+        For service=WIKIPEDIA, this is a single WikipediaArticle or None.
+    """
+    service = service.lower()
+    if service in (GOOGLE, "google", "g"):
+        engine = Google
+    if service in (YAHOO, "yahoo", "y!"):
+        engine = Yahoo
+    if service in (BING, "bing"):
+        engine = Bing
+    if service in (TWITTER, "twitter"):
+        engine = Twitter
+    if service in (FACEBOOK, "facebook", "fb"):
+        engine = Facebook
+    if service in (WIKIPEDIA, "wikipedia", "wp"):
+        engine = Wikipedia
+    if service in (FLICKR, "flickr"):
+        engine = Flickr
+    try:
+        kw = {}
+        for a in ("license", "throttle", "language"):
+            if a in kwargs:
+                kw[a] = kwargs.pop(a)
+        return engine(kw).search(string, **kwargs)
+    except UnboundLocalError:
+        raise SearchEngineError, "unknown search engine '%s'" % service
+
 #--- WEB SORT --------------------------------------------------------------------------------------
 
 SERVICES = {
@@ -2247,30 +2277,47 @@ class Spider:
         self._queued  = {}      # URLs scheduled so far, lookup dictionary.
         self.QUEUE    = 10000   # Increase or decrease according to available memory.
         self.sort     = sort
-        # Queue given links:
-        for link in links:
-            if not isinstance(link, Link):
-                link = Link(url=link)
-            self._queue.append((0.0, 0.0, link)) # 0.0, 0.0 = highest priority.
+        # Queue given links in given order:
+        for link in (isinstance(links, basestring) and [links] or links):
+            self.push(link, priority=1.0, sort=FIFO)
 
     @property
     def done(self):
+        """ Yields True if no further links are scheduled to visit.
+        """
         return len(self._queue) == 0
 
-    @property
-    def next(self):
-        return self._pop_queue()
-
-    def _pop_queue(self):
-        """ Returns the next Link queued to visit.
+    def push(self, link, priority=1.0, sort=FILO):
+        """ Pushes the given link to the queue.
+            Position in the queue is determined by priority.
+            Equal ranks are sorted FIFO or FILO.
+            With priority=1.0 and FILO, the link is inserted to the queue.
+            With priority=0.0 and FIFO, the link is appended to the queue.
+        """
+        if not isinstance(link, Link):
+            link = Link(url=link)
+        dt = time.time()
+        dt = sort == FIFO and dt or 1 / dt
+        bisect.insort(self._queue, (1 - priority, dt, link))
+        self._queued[link.url] = True
+    
+    def pop(self, remove=True):
+        """ Returns the next Link queued to visit and removes it from the queue.
             Links on a recently visited (sub)domain are skipped until Spider.delay has elapsed.
         """
         now = time.time()
         for i, (priority, dt, link) in enumerate(self._queue):
             if self.delay <= now - self.history.get(base(link.url), 0):
-                self._queue.pop(i)
-                self._queued.pop(link.url, None)
+                if remove is True:
+                    self._queue.pop(i)
+                    self._queued.pop(link.url, None)
                 return link
+
+    @property
+    def next(self):
+        """ Returns the next Link queued to visit (without removing it).
+        """
+        return self.pop(remove=False)
     
     def crawl(self, method=DEPTH, **kwargs):
         """ Visits the next link in Spider._queue.
@@ -2279,7 +2326,7 @@ class Spider:
             according to their Spider.priority().
             Visited links (and content) are passed to Spider.visit().
         """
-        link = self._pop_queue()
+        link = self.pop()
         if link is None:
             return False
         if link.url not in self.visited:
@@ -2313,10 +2360,7 @@ class Spider:
                             self._queued.update(dict((q[2].url, True) for q in self._queue))
                         # 7) Position in the queue is determined by Spider.priority().
                         # 8) Equal ranks are sorted FIFO or FILO.
-                        dt = self.sort == FIFO and time.time() or 1/time.time()
-                        bisect.insort(self._queue, 
-                            (1 - self.priority(new, method=method), dt, new))
-                        self._queued[new.url] = True
+                        self.push(new, priority=self.priority(new, method=method), sort=self.sort)
                     self.visit(link, source=html)
                 except URLError:
                     # URL can not be reached (HTTP404NotFound, URLTimeout).
@@ -2324,7 +2368,7 @@ class Spider:
             else:
                 # URL MIME-type is not HTML, don't know how to handle.
                 self.fail(link)
-            # Log the current time visited for the domain (see Spider._pop_queue()).
+            # Log the current time visited for the domain (see Spider.pop()).
             # Log the URL as visited.
             self.history[base(link.url)] = time.time()
             self.visited[link.url] = True
@@ -2382,6 +2426,49 @@ class Spider:
 #while not s.done:
 #    s.crawl(method=DEPTH, cached=True, throttle=5)
 
+#--- CRAWL FUNCTION --------------------------------------------------------------------------------
+# Functional approach to crawling.
+
+Crawler = Spider
+
+def crawl(links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse, sort=FIFO, method=DEPTH, **kwargs):
+    """ Returns a generator that yields (Link, source)-tuples of visited pages.
+        When the crawler is busy, it yields (None, None).
+        When the crawler is done, it yields None.
+    """
+    # The scenarios below defines "busy":
+    # - crawl(delay=10, throttle=0)
+    #   The crawler will wait 10 seconds before visiting the same subdomain.
+    #   The crawler will not throttle downloads, so the next link is visited instantly.
+    #   So sometimes (None, None) is returned while it waits for an available subdomain.
+    # - crawl(delay=0, throttle=10)
+    #   The crawler will halt 10 seconds after each visit.
+    #   The crawler will not delay before visiting the same subdomain.
+    #   So usually a result is returned each crawl.next(), but each call takes 10 seconds.
+    # - asynchronous(crawl().next)
+    #   AsynchronousRequest.value is set to (Link, source) once AsynchronousRequest.done=True.
+    #   The program will not halt in the meantime (i.e., the next crawl is threaded).
+    crawler = Crawler(links, domains, delay, parser, sort)
+    bind(crawler, "visit", \
+        lambda crawler, link, source=None: \
+            setattr(crawler, "crawled", (link, source))) # Define Crawler.visit() on-the-fly.
+    while not crawler.done:
+        crawler.crawled = (None, None)
+        crawler.crawl(method, **kwargs)
+        yield crawler.crawled
+
+#for link, source in crawl("http://www.nodebox.net/", delay=0, throttle=10):
+#    print link
+
+#g = crawl("http://www.nodebox.net/")    
+#for i in range(10):
+#    p = asynchronous(g.next)
+#    while not p.done:
+#        print "zzz..."
+#        time.sleep(0.1)
+#    link, source = p.value
+#    print link
+
 #### PDF PARSER ####################################################################################
 #  Yusuke Shinyama, PDFMiner, http://www.unixuser.org/~euske/python/pdfminer/
 
@@ -2431,20 +2518,3 @@ class PDF:
         s = s.replace("<!-- paragraph -->", "\n\n")
         s = collapse_spaces(s)
         return s
-
-####################################################################################################
-
-def test():
-    # A shallow test to see if all the services can be reached.
-    p = cache.path
-    cache.path = TMP
-    cache.clear()
-    for engine in (Google, Yahoo, Bing, Twitter, Wikipedia, Flickr):
-        try: 
-            engine().search("tiger")
-            print engine.__name__, "ok."
-        except:
-            print engine.__name__, "error."
-    cache.path = p
-    
-#test()
