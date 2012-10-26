@@ -28,7 +28,7 @@ for tweet in engine.search("is cooler than", count=25, cached=False):
     print hashtags(tweet.description) # Keywords in tweets start with a #.
     print
     # Create a unique ID based on the tweet content and author.
-    id = hash(tweet.author + tweet.description)
+    id = str(hash(tweet.author + tweet.description))
     # Only add the tweet to the table if it doesn't already contain this ID.
     if len(table) == 0 or id not in index:
         table.append([id, tweet.description])
