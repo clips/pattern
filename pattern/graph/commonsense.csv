@@ -3209,6 +3209,7 @@
 "popstar","is-same-as","celebrity","media",1
 "interesting","is-property-of","sensational","properties",1
 "idealistic","is-property-of","romantic","properties",1
+"hot","is-property-of","jungle","nature",1
 "peaceful","is-related-to","pleasant","properties",1
 "Vicks","is-part-of","Procter & Gamble","culture",1
 "interesting","is-property-of","idea","culture",1
@@ -6949,6 +6950,7 @@
 "bouncer","is-a","obstacle","culture",1
 "Colosseum","is-related-to","Ancient Rome","history",1
 "wild","is-property-of","waterfall","nature",1
+"jungle","is-related-to","maze","culture",1
 "s90","is-a","s91a","people",1
 "deep","is-property-of","trombone","culture",1
 "cold","is-related-to","lake","nature",1
@@ -8550,6 +8552,7 @@
 "fuzzy","is-property-of","feather","nature",1
 "ape","is-a","primate","nature",2
 "airplane","is-part-of","technology","science",1
+"wild","is-property-of","jungle","nature",1
 "crane","is-a","bird","nature",1
 "raw","is-property-of","trash","graphics",1
 "soul music","is-a","music","sound",1
@@ -8715,6 +8718,7 @@
 "Finance","is-a","ministry","culture",1
 "emergence","is-related-to","self-organization","nature",1
 "sharp","is-property-of","attention","nature",1
+"dense","is-property-of","jungle","nature",1
 "thigh","is-part-of","leg","nature",1
 "clever","is-same-as","intelligent","properties",1
 "fast","is-property-of","UFO","culture",1

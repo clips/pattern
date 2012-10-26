@@ -132,6 +132,9 @@ class Node(object):
         if self.graph and self._centrality is None:
             self.graph.betweenness_centrality()
         return self._centrality
+    
+    eigenvector = eigenvector_centrality = weight
+    betweenness = betweenness_centrality = centrality
         
     def flatten(self, depth=1, traversable=lambda node, edge: True, _visited=None):
         """ Recursively lists the node and nodes linked to it.
@@ -297,6 +300,10 @@ def unique(list):
 
 # Graph layouts:
 SPRING = "spring"
+
+# Graph node centrality:
+EIGENVECTOR = "eigenvector"
+BETWEENNESS = "betweenness"
 
 # Graph node sort order:
 WEIGHT, CENTRALITY = "weight", "centrality"

@@ -11,7 +11,7 @@ from urllib    import urlopen
 from itertools import chain
 
 from __init__ import Graph, Node, Edge, bfs
-from __init__ import WEIGHT, CENTRALITY
+from __init__ import WEIGHT, CENTRALITY, EIGENVECTOR, BETWEENNESS
 
 import os
 
@@ -51,7 +51,16 @@ class Concept(Node):
             p = [n.id for n in reversed(sorted(p, key=lambda n: n.centrality))]
             self._properties = p
         return self._properties
-        
+
+def halo(concept, depth=2):
+    return concept.flatten(depth=depth)
+
+def properties(concept, depth=2, centrality=BETWEENNESS):
+    g = concept.graph.copy(nodes=halo(concept, depth))
+    p = (n for n in g.nodes if n.id in concept.graph.properties)
+    p = [n.id for n in reversed(sorted(p, key=lambda n: getattr(n, centrality)))]
+    return p
+
 #--- RELATION --------------------------------------------------------------------------------------
 
 class Relation(Edge):
@@ -269,5 +278,4 @@ def json():
     return "commonsense = [%s];" % ", ".join(s)
 
 #download("commonsense.csv", threshold=50)
-
-#open("commonsense.js", "w").write(json());
+#open("commonsense.js", "w").write(json())
