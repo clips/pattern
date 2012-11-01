@@ -511,6 +511,10 @@ var SHADOW = 0.65;
 // Graph layouts:
 var SPRING = "spring";
 
+// Graph node centrality:
+var EIGENVECTOR = "eigenvector";
+var BETWEENNESS = "betweenness";
+
 // Graph node sort order:
 var WEIGHT = "weight"
 var CENTRALITY = "centrality"
