@@ -463,17 +463,29 @@ class URL:
         # when no separate query attributes were given (e.g. all info is in URL._string):
         if self._parts is None and self.method == GET: 
             return self._string
-        P = self._parts 
+        P = self._parts
         u = []
-        if P[PROTOCOL]: u.append("%s://" % P[PROTOCOL])
-        if P[USERNAME]: u.append("%s:%s@" % (P[USERNAME], P[PASSWORD]))
-        if P[DOMAIN]  : u.append(P[DOMAIN])
-        if P[PORT]    : u.append(":%s" % P[PORT])
-        if P[PATH]    : u.append("/%s/" % "/".join(P[PATH]))
-        if P[PAGE]    : u.append("/%s" % P[PAGE]); u[-2]=u[-2].rstrip("/")
-        if self.method == GET: u.append("?%s" % self.querystring)
-        if P[ANCHOR]  : u.append("#%s" % P[ANCHOR])
-        return u"".join(u)
+        if P[PROTOCOL]: 
+            u.append("%s://" % P[PROTOCOL])
+        if P[USERNAME]: 
+            u.append("%s:%s@" % (P[USERNAME], P[PASSWORD]))
+        if P[DOMAIN]:
+            u.append(P[DOMAIN])
+        if P[PORT]: 
+            u.append(":%s" % P[PORT])
+        if P[PATH]: 
+            u.append("/%s/" % "/".join(P[PATH]))
+        if P[PAGE] and len(u) > 0: 
+            u[-1] = u[-1].rstrip("/")
+        if P[PAGE]: 
+            u.append("/%s" % P[PAGE])
+        if P[QUERY] and self.method == GET:
+            u.append("?%s" % self.querystring)
+        if P[ANCHOR]: 
+            u.append("#%s" % P[ANCHOR])
+        u = u"".join(u)
+        u = u.lstrip("/")
+        return u
 
     def __repr__(self):
         return "URL('%s', method='%s')" % (str(self), str(self.method))
@@ -797,9 +809,9 @@ def decode_entities(string):
         return RE_UNICODE.subn(replace_entity, string)[0]
     return string
 
-def decode_url(string):
-    return urllib.quote_plus(string)
 def encode_url(string):
+    return urllib.quote_plus(bytestring(string))
+def decode_url(string):
     return urllib.unquote_plus(string) # "black/white" => "black%2Fwhite".
 
 RE_SPACES = re.compile("( |\xa0)+", re.M) # Matches one or more spaces.
@@ -1092,11 +1104,11 @@ class Yahoo(SearchEngine):
             url = YAHOO + "images"
         if type == NEWS: 
             url = YAHOO + "news"
-        if not query or count < 1 or start < 1 or start > 1000/count: 
+        if not query or count < 1 or start < 1 or start > 1000 / count: 
             return Results(YAHOO, query, type)
         # 1) Create request URL.
         url = URL(url, method=GET, query={
-                 "q": oauth.normalize(query.replace(" ", "_")),
+                 "q": encode_url(query),
              "start": 1 + (start-1) * count,
              "count": min(count, type==IMAGE and 35 or 50),
             "format": "json"
@@ -1169,7 +1181,7 @@ class Bing(SearchEngine):
             src = "Image"
         if type == NEWS:
             src = "News"
-        if not query or count < 1 or start < 1 or start > 1000/count: 
+        if not query or count < 1 or start < 1 or start > 1000 / count: 
             return Results(BING + src + "?", query, type)
         # 1) Construct request URL.
         url = URL(BING + "Composite", method=GET, query={
@@ -1241,7 +1253,7 @@ class Twitter(SearchEngine):
         """
         if type != SEARCH:
             raise SearchEngineTypeError
-        if not query or count < 1 or start < 1 or start > 1500/count: 
+        if not query or count < 1 or start < 1 or start > 1500 / count: 
             return Results(TWITTER, query, type)
         # 1) Construct request URL.
         url = URL(TWITTER + "search.json?", method=GET)
