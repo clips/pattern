@@ -1906,7 +1906,7 @@ class Products(SearchEngine):
             results.append(r)
         # Highest score first.
         results.sort(key=lambda r: r.score, reverse=True)
-        return results  
+        return results
 
 #for r in Products().search("iphone"):
 #    print r.title
