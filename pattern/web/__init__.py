@@ -1363,9 +1363,11 @@ def retweets(string):
 #    print
 #stream.clear()
 
-#--- WIKIPEDIA | WIKIA | MEDIAWIKI -----------------------------------------------------------------
+#--- MEDIAWIKI -------------------------------------------------------------------------------------
 # http://en.wikipedia.org/w/api.php
 
+WIKIA = "http://wikia.com"
+WIKIPEDIA = "http://wikipedia.com"
 WIKIPEDIA_LICENSE = api.license["Wikipedia"]
 MEDIAWIKI_LICENSE = None
 MEDIAWIKI = "http://{SUBDOMAIN}.{DOMAIN}{API}"
@@ -1630,6 +1632,8 @@ class MediaWikiTable:
     def __repr__(self):
         return "MediaWikiTable(title='%s')" % bytestring(self.title)
 
+#--- MEDIAWIKI: WIKIPEDIA --------------------------------------------------------------------------
+
 class Wikipedia(MediaWiki):
     
     def __init__(self, license=None, throttle=5.0, language="en"):
@@ -1637,12 +1641,24 @@ class Wikipedia(MediaWiki):
         """
         SearchEngine.__init__(self, license or WIKIPEDIA_LICENSE, throttle, language)
         self._subdomain = language
-    
+
     @property
     def _url(self):
-        return MEDIAWIKI.replace("{SUBDOMAIN}", self._subdomain) \
-                        .replace("{DOMAIN}", "wikipedia.org") \
-                        .replace("{API}", "/w/api.php")
+        s = MEDIAWIKI
+        s = s.replace("{SUBDOMAIN}", self._subdomain)
+        s = s.replace("{DOMAIN}", "wikipedia.org")
+        s = s.replace("{API}", '/w/api.php')
+        return s
+
+    @property
+    def MediaWikiArticle(self):
+        return WikipediaArticle
+    @property
+    def MediaWikiSection(self):
+        return WikipediaSection
+    @property
+    def MediaWikiTable(self):
+        return WikipediaTable
 
 class WikipediaArticle(MediaWikiArticle):
 
@@ -1658,8 +1674,8 @@ class WikipediaArticle(MediaWikiArticle):
         if url not in cache:
             time.sleep(1)
         data = URL(url).download(**kwargs)
-        data = re.search(r"http://upload.wikimedia.org/.*?/%s" % media, data)
-        data = data and URL(data.group(0)).download(**kwargs) or None
+        data = re.search(r"upload.wikimedia.org/.*?/%s" % media, data)
+        data = data and URL("http://" + data.group(0)).download(**kwargs) or None
         return data
         
     def __repr__(self):
@@ -1673,6 +1689,20 @@ class WikipediaTable(MediaWikiTable):
     def __repr__(self):
         return "WikipediaTable(title='%s')" % bytestring(self.title)
 
+#article = Wikipedia().search("cat")
+#for section in article.sections:
+#    print "  "*(section.level-1) + section.title
+#if article.media:
+#    data = article.download(article.media[2])
+#    f = open(article.media[2], "w")
+#    f.write(data)
+#    f.close()
+#    
+#article = Wikipedia(language="nl").search("borrelnootje")
+#print article.string
+
+#--- MEDIAWIKI: WIKIA ------------------------------------------------------------------------------
+
 class Wikia(MediaWiki):
     
     def __init__(self, license=None, throttle=5.0, domain="www", language="en"):
@@ -1683,9 +1713,22 @@ class Wikia(MediaWiki):
 
     @property
     def _url(self):
-        return MEDIAWIKI.replace("{SUBDOMAIN}", self._subdomain) \
-                        .replace("{DOMAIN}", "wikia.com") \
-                        .replace("{API}", '/api.php')
+        s = MEDIAWIKI
+        s = s.replace("{SUBDOMAIN}", self._subdomain)
+        s = s.replace("{DOMAIN}", "wikia.com")
+        s = s.replace("{API}", '/api.php')
+        return s
+
+    @property
+    def MediaWikiArticle(self):
+        return WikiaArticle
+    @property
+    def MediaWikiSection(self):
+        return WikiaSection
+    @property
+    def MediaWikiTable(self):
+        return WikiaTable
+
 
 class WikiaArticle(MediaWikiArticle):
     def __repr__(self):
@@ -1698,18 +1741,6 @@ class WikiaSection(MediaWikiSection):
 class WikiaTable(MediaWikiTable):
     def __repr__(self):
         return "WikiaTable(title='%s')" % bytestring(self.title)
-
-#article = Wikipedia().search("nodebox")
-#for section in article.sections:
-#    print "  "*(section.level-1) + section.title
-#if article.media:
-#    data = article.download(article.media[0])
-#    f = open(article.media[0], "w")
-#    f.write(data)
-#    f.close()
-#    
-#article = Wikipedia(language="nl").search("borrelnootje")
-#print article.string
 
 #--- FLICKR ----------------------------------------------------------------------------------------
 # http://www.flickr.com/services/api/
@@ -1908,7 +1939,7 @@ class Products(SearchEngine):
         results.sort(key=lambda r: r.score, reverse=True)
         return results
 
-#for r in Products().search("iphone"):
+#for r in Products().search("tablet"):
 #    print r.title
 #    print r.score
 #    print r.reviews
@@ -1991,6 +2022,8 @@ def query(string, service=GOOGLE, **kwargs):
         engine = Twitter
     if service in (FACEBOOK, "facebook", "fb"):
         engine = Facebook
+    if service in (WIKIA, "wikia"):
+        engine = Wikia
     if service in (WIKIPEDIA, "wikipedia", "wp"):
         engine = Wikipedia
     if service in (FLICKR, "flickr"):
@@ -2011,7 +2044,8 @@ SERVICES = {
     YAHOO     : Yahoo,
     BING      : Bing,
     TWITTER   : Twitter,
-    MEDIAWIKI : Wikipedia,
+    WIKIPEDIA : Wikipedia,
+    WIKIA     : Wikia,
     FLICKR    : Flickr,
     FACEBOOK  : Facebook
 }
