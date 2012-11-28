@@ -8,6 +8,8 @@
 from time import time
 from math import sqrt, floor, modf, exp, pi, log
 
+from collections import defaultdict
+
 #### PROFILER ######################################################################################
 
 def duration(function, *args, **kwargs):
@@ -221,6 +223,70 @@ def flesch_reading_ease(string):
     return R
 
 readability = flesch_reading_ease
+
+#### STRING INTERTEXTUALITY ########################################################################
+# Intertextuality may be useful for plagiarism detection.
+# For example, on the Corpus of Plagiarised Short Answers (Clough & Stevenson, 2009),
+# accuracy (F1) is 94.5% with n=3 and intertextuality threshold > 0.1.
+
+def ngrams(string, n=3, **kwargs):
+    """ Returns a list of n-grams (tuples of n successive words) from the given string.
+    """
+    s = [w.strip(".:;,!?()[]'\"") for w in string.replace("\n", " ").split(" ")]
+    s = [w.strip() for w in s if w.strip()]
+    return [tuple(s[i:i+n]) for i in range(len(s)-n+1)]
+
+try:
+    # Attempt to import the more robust ngrams() function with tokenization.
+    from pattern.en import ngrams
+except:
+    pass
+
+class Weight(float):
+    """ A float with a magic "assessments" property,
+        which is the set of all n-grams contributing to the weight.
+    """
+    def __new__(self, value=0.0, assessments=[]):
+        return float.__new__(self, value)
+    def __init__(self, value=0.0, assessments=[]):
+        self.assessments = set(assessments)
+    def __iadd__(self, value):
+        return Weight(self + value, self.assessments)
+    def __isub__(self, value):
+        return Weight(self - value, self.assessments)
+    def __imul__(self, value):
+        return Weight(self * value, self.assessments)
+    def __idiv__(self, value):
+        return Weight(self / value, self.assessments)
+
+def intertextuality(texts=[], n=5, continuous=False, weight=lambda ngram: 1):
+    """ Returns a dictionary of (i, j) => float.
+        For indices i and j in the given list of texts,
+        the corresponding float is the percentage of text i that is also in text j.
+        Overlap is measured by matching n-grams (by default, 5 successive words).
+        An optional weight function can be used to supply the weight of each n-gram.
+    """
+    map = {} # n-gram => text id's
+    sum = {} # text id => sum of weight(n-gram)
+    for i, txt in enumerate(texts):
+        for j, ngram in enumerate(ngrams(txt, n, continuous=continuous)):
+            if ngram not in map:
+                map[ngram] = []
+            map[ngram].append(i)
+            sum[i] = sum.get(i, 0) + weight(ngram)
+    w = defaultdict(Weight) # (id1, id2) => percentage of id1 that overlaps with id2
+    for ngram in map:
+        for i in map[ngram]:
+            for j in map[ngram]:
+                if i != j:
+                    if (i,j) not in w:
+                        w[i,j] = Weight(0.0)
+                    w[i,j] += weight(ngram)
+                    w[i,j].assessments.add(ngram)
+    for i, j in w:
+        w[i,j] /= float(sum[i])
+        w[i,j]  = min(w[i,j], 1.0)
+    return w
 
 #### STATISTICS ####################################################################################
 

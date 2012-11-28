@@ -42,12 +42,17 @@ The corpora are meant for personal use, they are not part of the module's BSD li
 - 1000 singular nouns and their plural form.
 - 1000 predicative adjectives and their attributive form.
 
-7) CoNLL 2010 Shared Task 1 - Wikipedia uncertainty
+7) Clough & Stevenson's plagiarism corpus
+- clough&stevenson-plagiarism.csv
+- http://ir.shef.ac.uk/cloughie/resources/plagiarism_corpus.html
+- 100 texts: authentic (0), heavy (1) or light revision (2), cut & paste (3).
+
+8) CoNLL 2010 Shared Task 1 - Wikipedia uncertainty
 - conll2010-uncertainty.csv
 - http://www.inf.u-szeged.hu/rgai/conll2010st/tasks.html#task1
 - 1500 "certain" and 1500 "uncertain" Wikipedia sentences.
 
-8) Pang & Lee's polarity dataset v2.0
+9) Pang & Lee's polarity dataset v2.0
 - pang&lee-polarity.csv
 - http://www.cs.cornell.edu/people/pabo/movie-review-data/
 - 750 "positive" and 750 "negative" movie reviews.

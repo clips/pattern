@@ -5,6 +5,11 @@ import math
 
 from pattern import metrics
 
+try:
+    PATH = os.path.dirname(os.path.abspath(__file__))
+except:
+    PATH = ""
+
 #---------------------------------------------------------------------------------------------------
 
 class TestProfiling(unittest.TestCase):
@@ -121,7 +126,7 @@ class TestStringFunctions(unittest.TestCase):
         print "pattern.metrics.similarity()"
             
     def test_readability(self):
-        # Assert technical jargon in the "difficult" range (< 0.30).
+        # Assert that technical jargon is in the "difficult" range (< 0.30).
         s = "The Australian platypus is seemingly a hybrid of a mammal and reptilian creature"
         v = metrics.readability(s)
         self.assertTrue(v < 0.30)        
@@ -133,6 +138,18 @@ class TestStringFunctions(unittest.TestCase):
         v = metrics.readability(s)
         self.assertTrue(v > 0.70)
         print "pattern.metrics.readability()"
+        
+    def test_intertextuality(self):
+        # Evaluate accuracy for plagiarism detection.
+        from pattern.db import Datasheet
+        data = Datasheet.load(os.path.join(PATH, "corpora", "clough&stevenson-plagiarism.csv"))
+        data = [((txt, src), int(plagiarism) > 0) for txt, src, plagiarism in data]
+        def plagiarism(txt, src):
+            return metrics.intertextuality([txt, src], n=3)[0,1] > 0.1
+        A, P, R, F = metrics.test(lambda x: plagiarism(*x), data)
+        self.assertTrue(P > 0.98)
+        self.assertTrue(R > 0.91)
+        print "pattern.metrics.intertextuality()"
 
 class TestStatistics(unittest.TestCase):
     
