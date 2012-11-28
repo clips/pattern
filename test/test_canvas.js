@@ -31,6 +31,11 @@ var test_canvas = {
             assert(Math.round(3.445, 2) == 3.45);
             console.log("Math.round()");
         };
+        this.test_sign = function() {
+            assert(Math.sign(+10) == +1);
+            assert(Math.sign(-10) == -1);
+            console.log("Math.sign()");
+        };
         this.test_degrees = function() {
             assert(Math.degrees(Math.PI) == 180);
             console.log("Math.round()");
@@ -116,9 +121,14 @@ var test_canvas = {
             assert(Array.sum([1,2,3]) == 6);
             console.log("Array.sum()");
         };
+        this.test_contains = function() {
+            assert(Array.contains([1,2,3], 0) == false);
+            assert(Array.contains([1,2,3], 1) == true);
+            console.log("Array.contains()");
+        };
         this.test_find = function() {
             assert(Array.find([1,2,3], function(x) { return x==2; }) == 1);
-            console.log("Array.sum()");
+            console.log("Array.find()");
         };
         this.test_map = function() {
             assert(Array.eq(Array.map([1,2,3], function(x) { return x-1; }), [0,1,2]));
