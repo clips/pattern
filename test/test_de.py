@@ -29,7 +29,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the pluralization algorithm.
         from pattern.db import Datasheet
         i, n = 0, 0
-        for tag, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "celex-wordforms-de.csv")):
+        for tag, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-de-celex.csv")):
             if tag == "n":
                 if de.pluralize(sg) == pl:
                     i +=1
@@ -41,7 +41,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the singularization algorithm.
         from pattern.db import Datasheet
         i, n = 0, 0
-        for tag, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "celex-wordforms-de.csv")):
+        for tag, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-de-celex.csv")):
             if tag == "n":
                 if de.singularize(pl) == sg:
                     i +=1
@@ -74,7 +74,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the predicative algorithm ("großer" => "groß").
         from pattern.db import Datasheet
         i, n = 0, 0
-        for tag, pred, attr in Datasheet.load(os.path.join(PATH, "corpora", "celex-wordforms-de.csv")):
+        for tag, pred, attr in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-de-celex.csv")):
             if tag == "a":
                 if de.predicative(attr) == pred:
                     i +=1
@@ -115,36 +115,35 @@ class TestInflection(unittest.TestCase):
         # Assert different tenses with different conjugations.
         for (v1, v2, tense) in (
           ("sein",  "sein",     de.INFINITIVE),
-          ("sein",  "bin",      de.PRESENT_1ST_PERSON_SINGULAR),
-          ("sein",  "bist",     de.PRESENT_2ND_PERSON_SINGULAR),
-          ("sein",  "ist",      de.PRESENT_3RD_PERSON_SINGULAR),
-          ("sein",  "sind",     de.PRESENT_1ST_PERSON_PLURAL),
-          ("sein",  "seid",     de.PRESENT_2ND_PERSON_PLURAL),
-          ("sein",  "sind",     de.PRESENT_3RD_PERSON_PLURAL),
-          ("sein",  "seiend",   de.PRESENT_PARTICIPLE),
-          ("sein",  "war",      de.PAST_1ST_PERSON_SINGULAR),
-          ("sein",  "warst",    de.PAST_2ND_PERSON_SINGULAR),
-          ("sein",  "war",      de.PAST_3RD_PERSON_SINGULAR),
-          ("sein",  "waren",    de.PAST_1ST_PERSON_PLURAL),
-          ("sein",  "wart",     de.PAST_2ND_PERSON_PLURAL),
-          ("sein",  "waren",    de.PAST_3RD_PERSON_PLURAL),
-          ("sein",  "gewesen",  de.PAST_PARTICIPLE),
-          ("sein",  "sei",      de.IMPERATIVE_2ND_PERSON_SINGULAR),
-          ("sein",  "seien",    de.IMPERATIVE_1ST_PERSON_PLURAL),
-          ("sein",  "seid",     de.IMPERATIVE_2ND_PERSON_PLURAL),
-          ("sein",  "seien",    de.IMPERATIVE_3RD_PERSON_PLURAL),
-          ("sein", u"sei",      de.PRESENT_SUBJUNCTIVE_1ST_PERSON_SINGULAR),
-          ("sein", u"seiest",   de.PRESENT_SUBJUNCTIVE_2ND_PERSON_SINGULAR),
-          ("sein", u"sei",      de.PRESENT_SUBJUNCTIVE_3RD_PERSON_SINGULAR),
-          ("sein", u"seien",    de.PRESENT_SUBJUNCTIVE_1ST_PERSON_PLURAL),
-          ("sein", u"seiet",    de.PRESENT_SUBJUNCTIVE_2ND_PERSON_PLURAL),
-          ("sein", u"seien",    de.PRESENT_SUBJUNCTIVE_3RD_PERSON_PLURAL),
-          ("sein", u"wäre",     de.PAST_SUBJUNCTIVE_1ST_PERSON_SINGULAR),
-          ("sein", u"wärest",   de.PAST_SUBJUNCTIVE_2ND_PERSON_SINGULAR),
-          ("sein", u"wäre",     de.PAST_SUBJUNCTIVE_3RD_PERSON_SINGULAR),
-          ("sein", u"wären",    de.PAST_SUBJUNCTIVE_1ST_PERSON_PLURAL),
-          ("sein", u"wäret",    de.PAST_SUBJUNCTIVE_2ND_PERSON_PLURAL),
-          ("sein", u"wären",    de.PAST_SUBJUNCTIVE_3RD_PERSON_PLURAL)):
+          ("sein",  "bin",     (de.PRESENT, 1, de.SINGULAR)),
+          ("sein",  "bist",    (de.PRESENT, 2, de.SINGULAR)),
+          ("sein",  "ist",     (de.PRESENT, 3, de.SINGULAR)),
+          ("sein",  "sind",    (de.PRESENT, 1, de.PLURAL)),
+          ("sein",  "seid",    (de.PRESENT, 2, de.PLURAL)),
+          ("sein",  "sind",    (de.PRESENT, 3, de.PLURAL)),
+          ("sein",  "seiend",  (de.PRESENT + de.PARTICIPLE)),
+          ("sein",  "war",     (de.PAST, 1, de.SINGULAR)),
+          ("sein",  "warst",   (de.PAST, 2, de.SINGULAR)),
+          ("sein",  "war",     (de.PAST, 3, de.SINGULAR)),
+          ("sein",  "waren",   (de.PAST, 1, de.PLURAL)),
+          ("sein",  "wart",    (de.PAST, 2, de.PLURAL)),
+          ("sein",  "waren",   (de.PAST, 3, de.PLURAL)),
+          ("sein",  "gewesen", (de.PAST + de.PARTICIPLE)),
+          ("sein",  "sei",     (de.PRESENT, 2, de.SINGULAR, de.IMPERATIVE)),
+          ("sein",  "seien",   (de.PRESENT, 1, de.PLURAL, de.IMPERATIVE)),
+          ("sein",  "seid",    (de.PRESENT, 2, de.PLURAL, de.IMPERATIVE)),
+          ("sein", u"sei",     (de.PRESENT, 1, de.SINGULAR, de.SUBJUNCTIVE)),
+          ("sein", u"seiest",  (de.PRESENT, 2, de.SINGULAR, de.SUBJUNCTIVE)),
+          ("sein", u"sei",     (de.PRESENT, 3, de.SINGULAR, de.SUBJUNCTIVE)),
+          ("sein", u"seien",   (de.PRESENT, 1, de.PLURAL, de.SUBJUNCTIVE)),
+          ("sein", u"seiet",   (de.PRESENT, 2, de.PLURAL, de.SUBJUNCTIVE)),
+          ("sein", u"seien",   (de.PRESENT, 3, de.PLURAL, de.SUBJUNCTIVE)),
+          ("sein", u"wäre",    (de.PAST, 1, de.SINGULAR, de.SUBJUNCTIVE)),
+          ("sein", u"wärest",  (de.PAST, 2, de.SINGULAR, de.SUBJUNCTIVE)),
+          ("sein", u"wäre",    (de.PAST, 3, de.SINGULAR, de.SUBJUNCTIVE)),
+          ("sein", u"wären",   (de.PAST, 1, de.PLURAL, de.SUBJUNCTIVE)),
+          ("sein", u"wäret",   (de.PAST, 2, de.PLURAL, de.SUBJUNCTIVE)),
+          ("sein", u"wären",   (de.PAST, 3, de.PLURAL, de.SUBJUNCTIVE))):
             self.assertEqual(de.conjugate(v1, tense), v2)
         print "pattern.de.conjugate()"
 
@@ -161,7 +160,7 @@ class TestInflection(unittest.TestCase):
 
     def test_tenses(self):
         # Assert tense of "is".
-        self.assertTrue(de.PRESENT_3RD_PERSON_SINGULAR in de.tenses("ist"))
+        self.assertTrue((de.PRESENT, 3, de.SG) in de.tenses("ist"))
         self.assertTrue("2sg" in de.tenses("bist"))
         print "pattern.de.tenses()"
 

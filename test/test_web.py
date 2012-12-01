@@ -792,7 +792,7 @@ class TestPDF(unittest.TestCase):
         
     def test_pdf(self):
         # Assert PDF to string parser.
-        v = web.PDF(open(os.path.join(PATH, "corpora", "carroll-alice.pdf")).read())
+        v = web.PDF(open(os.path.join(PATH, "corpora", "wonderland-carroll.pdf")).read())
         self.assertTrue("Curiouser and curiouser!" in v.string)
         self.assertTrue(isinstance(v.string, unicode))
         print "pattern.web.PDF.string"

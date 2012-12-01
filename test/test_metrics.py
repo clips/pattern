@@ -142,7 +142,7 @@ class TestStringFunctions(unittest.TestCase):
     def test_intertextuality(self):
         # Evaluate accuracy for plagiarism detection.
         from pattern.db import Datasheet
-        data = Datasheet.load(os.path.join(PATH, "corpora", "clough&stevenson-plagiarism.csv"))
+        data = Datasheet.load(os.path.join(PATH, "corpora", "plagiarism-clough&stevenson.csv"))
         data = [((txt, src), int(plagiarism) > 0) for txt, src, plagiarism in data]
         def plagiarism(txt, src):
             return metrics.intertextuality([txt, src], n=3)[0,1] > 0.1

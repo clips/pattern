@@ -44,7 +44,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the pluralization algorithm.
         from pattern.db import Datasheet
         i, n = 0, 0
-        for sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "celex-wordforms-en.csv")):
+        for sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-en-celex.csv")):
             if en.pluralize(sg) == pl:
                 i +=1
             n += 1
@@ -55,7 +55,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the singularization algorithm.
         from pattern.db import Datasheet
         i, n = 0, 0
-        for sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "celex-wordforms-en.csv")):
+        for sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-en-celex.csv")):
             if en.singularize(pl) == sg:
                 i +=1
             n += 1
@@ -93,17 +93,17 @@ class TestInflection(unittest.TestCase):
         # Assert different tenses with different conjugations.
         for (v1, v2, tense) in (
           ("be",   "be",      en.INFINITIVE),
-          ("be",   "am",      en.PRESENT_1ST_PERSON_SINGULAR),
-          ("be",   "are",     en.PRESENT_2ND_PERSON_SINGULAR),
-          ("be",   "is",      en.PRESENT_3RD_PERSON_SINGULAR),
-          ("be",   "are",     en.PRESENT_PLURAL),
-          ("be",   "being",   en.PRESENT_PARTICIPLE),
-          ("be",   "was",     en.PAST_1ST_PERSON_SINGULAR),
-          ("be",   "were",    en.PAST_2ND_PERSON_SINGULAR),
-          ("be",   "was",     en.PAST_3RD_PERSON_SINGULAR),
-          ("be",   "were",    en.PAST_PLURAL),
-          ("be",   "were",    en.PAST),
-          ("be",   "been",    en.PAST_PARTICIPLE),
+          ("be",   "am",     (en.PRESENT, 1, en.SINGULAR)),
+          ("be",   "are",    (en.PRESENT, 2, en.SINGULAR)),
+          ("be",   "is",     (en.PRESENT, 3, en.SINGULAR)),
+          ("be",   "are",    (en.PRESENT, 0, en.PLURAL)),
+          ("be",   "being",  (en.PRESENT + en.PARTICIPLE,)),
+          ("be",   "was",    (en.PAST, 1, en.SINGULAR)),
+          ("be",   "were",   (en.PAST, 2, en.SINGULAR)),
+          ("be",   "was",    (en.PAST, 3, en.SINGULAR)),
+          ("be",   "were",   (en.PAST, 0, en.PLURAL)),
+          ("be",   "were",   (en.PAST, 0, None)),
+          ("be",   "been",   (en.PAST + en.PARTICIPLE,)),
           ("be",   "am",      "1sg"),
           ("be",   "are",     "2sg"),
           ("be",   "is",      "3sg"),
@@ -111,7 +111,7 @@ class TestInflection(unittest.TestCase):
           ("be",   "are",     "2pl"),
           ("be",   "are",     "3pl"),
           ("be",   "are",     "pl"),
-          ("be",   "being",   "g"),
+          ("be",   "being",   "part"),
           ("be",   "was",     "1sgp"),
           ("be",   "were",    "2sgp"),
           ("be",   "was",     "3sgp"),
@@ -120,7 +120,7 @@ class TestInflection(unittest.TestCase):
           ("be",   "were",    "3ppl"),
           ("be",   "were",    "p"),
           ("be",   "were",    "ppl"),
-          ("be",   "been",    "pg"),
+          ("be",   "been",    "ppart"),
           ("be",   "am not",  "1sg-"),
           ("be",   "aren't",  "2sg-"),
           ("be",   "isn't",   "3sg-"),
@@ -131,9 +131,9 @@ class TestInflection(unittest.TestCase):
           ("be",   "wasn't",  "1sgp-"),
           ("be",   "weren't", "2sgp-"),
           ("be",   "wasn't",  "3sgp-"),
-          ("be",   "weren't", "1plp-"),
-          ("be",   "weren't", "2plp-"),
-          ("be",   "weren't", "3plp-"),
+          ("be",   "weren't", "1ppl-"),
+          ("be",   "weren't", "2ppl-"),
+          ("be",   "weren't", "3ppl-"),
           ("be",   "weren't", "ppl-"),
           ("had",  "have",    "inf"),
           ("had",  "have",    "1sg"),
@@ -151,7 +151,7 @@ class TestInflection(unittest.TestCase):
           ("will", "will",    "2sg"),
           ("will", "will",    "3sg"),
           ("will", "will",    "1pl"),
-          ("imaginerify", "imaginerifying", "g"),
+          ("imaginerify", "imaginerifying", "part"),
           ("imaginerify", "imaginerified", "3sgp"),
           ("imaginerify", None, "1sg-")):
             self.assertEqual(en.conjugate(v1, tense), v2)
@@ -179,11 +179,11 @@ class TestInflection(unittest.TestCase):
         
     def test_tenses(self):
         # Assert tense of "am".
-        self.assertTrue(en.PRESENT_1ST_PERSON_SINGULAR in en.tenses("am"))
+        self.assertTrue((en.PRESENT, 1, en.SINGULAR) in en.tenses("am"))
         self.assertTrue("1sg"  in en.tenses("am"))
         self.assertTrue("1sg"  in en.tenses("will"))
         self.assertTrue("2sg-" in en.tenses("won't"))
-        self.assertTrue("g"    in en.tenses("imaginarifying"))
+        self.assertTrue("part" in en.tenses("imaginarifying"))
         print "pattern.en.tenses()"
     
     def test_comparative(self):
@@ -264,7 +264,7 @@ class TestSpelling(unittest.TestCase):
         # Note: simply training on more text will not improve accuracy.
         i = j = 0.0
         from pattern.db import Datasheet
-        for correct, wrong in Datasheet.load(os.path.join(PATH, "corpora", "birkbeck-spelling.csv")):
+        for correct, wrong in Datasheet.load(os.path.join(PATH, "corpora", "spelling-birkbeck.csv")):
             for w in wrong.split(" "):
                 if en.spelling(w)[0][0] == correct:
                     i += 1
@@ -769,7 +769,7 @@ class TestModality(unittest.TestCase):
         from pattern.db import Datasheet
         from pattern.metrics import test
         sentences = []
-        for certain, sentence in Datasheet.load(os.path.join(PATH, "corpora", "conll2010-uncertainty.csv")):
+        for certain, sentence in Datasheet.load(os.path.join(PATH, "corpora", "uncertainty-conll2010.csv")):
             sentence = en.parse(sentence, chunks=False, light=True)
             sentence = en.Sentence(sentence)
             sentences.append((sentence, int(certain) > 0))
@@ -815,7 +815,7 @@ class TestSentiment(unittest.TestCase):
         from pattern.db import Datasheet
         from pattern.metrics import test
         reviews = []
-        for score, review in Datasheet.load(os.path.join(PATH, "corpora", "pang&lee-polarity.csv")):
+        for score, review in Datasheet.load(os.path.join(PATH, "corpora", "polarity-en-pang&lee.csv")):
             reviews.append((review, int(score) > 0))
         A, P, R, F = test(lambda review: en.positive(review), reviews)
         self.assertTrue(A > 0.71)

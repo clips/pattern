@@ -21,7 +21,7 @@ def corpus(top=None):
         Documents are mostly of a technical nature (developer forum posts).
     """
     documents = []
-    for score, message in Datasheet.load(os.path.join(PATH, "corpora", "apache-spam.csv")):
+    for score, message in Datasheet.load(os.path.join(PATH, "corpora", "spam-apache.csv")):
         document = vector.Document(message, stemmer="porter", top=top, type=int(score) > 0)
         documents.append(document)
     return vector.Corpus(documents)

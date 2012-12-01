@@ -23,7 +23,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the pluralization algorithm.
         from pattern.db import Datasheet
         i, n = 0, 0
-        for pred, attr, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "celex-wordforms-nl.csv")):
+        for pred, attr, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-nl-celex.csv")):
             if nl.pluralize(sg) == pl:
                 i +=1
             n += 1
@@ -34,7 +34,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the singularization algorithm.
         from pattern.db import Datasheet
         i, n = 0, 0
-        for pred, attr, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "celex-wordforms-nl.csv")):
+        for pred, attr, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-nl-celex.csv")):
             if nl.singularize(pl) == sg:
                 i +=1
             n += 1
@@ -45,7 +45,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the attributive algorithm ("fel" => "felle").
         from pattern.db import Datasheet
         i, n = 0, 0
-        for pred, attr, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "celex-wordforms-nl.csv")):
+        for pred, attr, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-nl-celex.csv")):
             if nl.attributive(pred) == attr:
                 i +=1
             n += 1
@@ -56,7 +56,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the predicative algorithm ("felle" => "fel").
         from pattern.db import Datasheet
         i, n = 0, 0
-        for pred, attr, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "celex-wordforms-nl.csv")):
+        for pred, attr, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-nl-celex.csv")):
             if nl.predicative(attr) == pred:
                 i +=1
             n += 1
@@ -94,17 +94,17 @@ class TestInflection(unittest.TestCase):
         # Assert different tenses with different conjugations.
         for (v1, v2, tense) in (
           ("zijn",  "zijn",     nl.INFINITIVE),
-          ("zijn",  "ben",      nl.PRESENT_1ST_PERSON_SINGULAR),
-          ("zijn",  "bent",     nl.PRESENT_2ND_PERSON_SINGULAR),
-          ("zijn",  "is",       nl.PRESENT_3RD_PERSON_SINGULAR),
-          ("zijn",  "zijn",     nl.PRESENT_PLURAL),
-          ("zijn",  "zijnd",    nl.PRESENT_PARTICIPLE),
-          ("zijn",  "was",      nl.PAST_1ST_PERSON_SINGULAR),
-          ("zijn",  "was",      nl.PAST_2ND_PERSON_SINGULAR),
-          ("zijn",  "was",      nl.PAST_3RD_PERSON_SINGULAR),
-          ("zijn",  "waren",    nl.PAST_PLURAL),
-          ("zijn",  "was",      nl.PAST),
-          ("zijn",  "geweest",  nl.PAST_PARTICIPLE),
+          ("zijn",  "ben",     (nl.PRESENT, 1, nl.SINGULAR)),
+          ("zijn",  "bent",    (nl.PRESENT, 2, nl.SINGULAR)),
+          ("zijn",  "is",      (nl.PRESENT, 3, nl.SINGULAR)),
+          ("zijn",  "zijn",    (nl.PRESENT, 0, nl.PLURAL)),
+          ("zijn",  "zijnd",   (nl.PRESENT + nl.PARTICIPLE,)),
+          ("zijn",  "was",     (nl.PAST, 1, nl.SINGULAR)),
+          ("zijn",  "was",     (nl.PAST, 2, nl.SINGULAR)),
+          ("zijn",  "was",     (nl.PAST, 3, nl.SINGULAR)),
+          ("zijn",  "waren",   (nl.PAST, 0, nl.PLURAL)),
+          ("zijn",  "was",     (nl.PAST, 0, None)),
+          ("zijn",  "geweest", (nl.PAST + nl.PARTICIPLE,)),
           ("had",   "hebben",   "inf"),
           ("had",   "heb",      "1sg"),
           ("had",   "hebt",     "2sg"),
@@ -131,7 +131,7 @@ class TestInflection(unittest.TestCase):
 
     def test_tenses(self):
         # Assert tense of "is".
-        self.assertTrue(nl.PRESENT_3RD_PERSON_SINGULAR in nl.tenses("is"))
+        self.assertTrue((nl.PRESENT, 3, "sg") in nl.tenses("is"))
         self.assertTrue("3sg" in nl.tenses("is"))
         print "pattern.nl.tenses()"
 
@@ -190,7 +190,6 @@ class TestParser(unittest.TestCase):
         # Assert parsed output with Penn Treebank II tags (slash-formatted).
         # 1) "de zwarte kat" is a noun phrase, "op de mat" is a prepositional noun phrase.
         v = nl.parser.parse("De zwarte kat zat op de mat.")
-        print v
         self.assertEqual(v,
             "De/DT/B-NP/O zwarte/JJ/I-NP/O kat/NN/I-NP/O " + \
             "zat/VBD/B-VP/O " + \
@@ -238,7 +237,7 @@ class TestSentiment(unittest.TestCase):
         from pattern.db import Datasheet
         from pattern.metrics import test
         reviews = []
-        for score, review in Datasheet.load(os.path.join(PATH, "corpora", "bol.com-polarity.csv")):
+        for score, review in Datasheet.load(os.path.join(PATH, "corpora", "polarity-nl-bol.com.csv")):
             reviews.append((review, int(score) > 0))
         A, P, R, F = test(lambda review: nl.positive(review), reviews)
         self.assertTrue(A > 0.79)
