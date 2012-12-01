@@ -1,4 +1,5 @@
 #### PATTERN | EN | RULE-BASED SHALLOW PARSER ######################################################
+# -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
@@ -130,7 +131,7 @@ def find_tags(tokens, default="NN", light=False, lexicon=LEXICON, language="en",
             and token[0].isupper() \
             and token[0].isalpha() \
             and language != "de":
-                tagged[i] = [token, "NNP"]
+                tagged[i] = [token, lexicon.named_entities.tag]
             else:
                 tagged[i] = [token, default]
                 tagged[i] = f(tagged[i],
@@ -189,17 +190,27 @@ VB = "VB|VBD|VBG|VBN|VBP|VBZ"
 JJ = "JJ|JJR|JJS"
 RB = "(?<!W)RB|RBR|RBS"
 NN = "NN|NNS|NNP|NNPS|PRP|PRP\$"
-rules = [
+rules = [[ 
+    # Germanic: RB + JJ precedes NN: "the round table".
     ("NP",   re.compile(r"(("+NN+")/)*((DT|CD|CC)/)*(("+RB+"|"+JJ+")/)*(("+NN+")/)+")),
     ("VP",   re.compile(r"(((MD|"+RB+")/)*(("+VB+")/)+)+")),
     ("VP",   re.compile(r"((MD)/)")),
     ("PP",   re.compile(r"((IN|TO)/)")),
     ("ADJP", re.compile(r"((CC|"+RB+"|"+JJ+")/)*(("+JJ+")/)+")),
     ("ADVP", re.compile(r"(("+RB+"|WRB)/)+")),
-]
-rules.insert(1, rules.pop(3)) # Handle ADJP before VP (RB prefers next ADJP over previous VP).
+], [ 
+    # Romance: RB + JJ precedes or follows NN: "la table ronde", "une jolie fille".
+    ("NP",   re.compile(r"(("+NN+")/)*((DT|CD|CC)/)*(("+RB+"|"+JJ+")/)*(("+NN+")/)+(("+RB+"|"+JJ+")/)*")),
+    ("VP",   re.compile(r"(((MD|"+RB+")/)*(("+VB+")/)+(("+RB+")/)*)+")),
+    ("VP",   re.compile(r"((MD)/)")),
+    ("PP",   re.compile(r"((IN|TO)/)")),
+    ("ADJP", re.compile(r"((CC|"+RB+"|"+JJ+")/)*(("+JJ+")/)+")),
+    ("ADVP", re.compile(r"(("+RB+"|WRB)/)+")),
+]]
+rules[0].insert(1, rules[0].pop(3)) # Handle ADJP before VP (RB prefers next ADJP over previous VP).
+rules[1].insert(1, rules[1].pop(3))
 
-def find_chunks(tagged, iob=True):
+def find_chunks(tagged, iob=True, language="en"):
     """ The input is a list of [token, tag]-items.
         The output is a list of [token, tag, chunk]-items.
         For example:
@@ -208,7 +219,8 @@ def find_chunks(tagged, iob=True):
     """
     chunked = [x for x in tagged]
     tags = "".join("%s%s"%(tag,SEPARATOR) for token, tag in tagged)
-    for tag, rule in rules:
+    # Use Germanic (en/de/nl) or Romance (es/fr) rules according to given language.
+    for tag, rule in rules[int(language in ("es", "fr"))]:
         for m in rule.finditer(tags):
             # Find the start of the pattern inside the tag-string.
             # The number of preceding separators = the number of preceding tokens.
@@ -378,7 +390,7 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
         else:
             s[i] = [[w] for w in s[i]]
         if chunks or relations:
-            s[i] = find_chunks(s[i])
+            s[i] = find_chunks(s[i], language=kwargs.get("language", "en"))
         if chunks or relations:
             s[i] = find_prepositions(s[i])
         if relations:
@@ -388,10 +400,14 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
     # Include the format of a token in the parsed output string.
     # This allows a Sentence (see tree.py) to figure out the order of the tags.
     format = ["word"]
-    if tags      : format.append("part-of-speech")
-    if chunks    : format.extend(("chunk", "preposition"))
-    if relations : format.append("relation")
-    if lemmata   : format.append("lemma")
+    if tags:
+        format.append("part-of-speech")
+    if chunks:
+        format.extend(("chunk", "preposition"))
+    if relations:
+        format.append("relation")
+    if lemmata:
+        format.append("lemma")
     # With collapse=False, returns the raw [[[token, tag], [token, tag]], ...].
     # Note that we can't pass this output to Sentence (format is not stored).
     if not kwargs.get("collapse", True) or kwargs.get("split", False):
