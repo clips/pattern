@@ -26,49 +26,53 @@ The corpora are meant for personal use, they are not part of the module's BSD li
 - 1500 "positive" and 1500 "negative" book reviews.
 
 4) Spanish portion of Wikicorpus v.1.0 (Reese & Boleda et al.)
-- pos-es-wikicorpus.txt
+- tagged-es-wikicorpus.txt
 - http://www.lsi.upc.edu/~nlp/wikicorpus/
 - 1000 Spanish sentences with Parole part-of-speech tags.
 
-5) Apache SpamAssassin public mail corpus
+5) Dutch portion of Twente Nieuws Corpus (Ordelman et al.)
+- tagged-nl-twnc.txt
+- http://hmi.ewi.utwente.nl/TwNC
+- 1000 Dutch sentences with Wotan part-of-speech tags.
+
+6) Apache SpamAssassin public mail corpus
 - spam-apache.csv
 - http://spamassassin.apache.org/publiccorpus/
 - 125 "spam" and 125 (mostly technical) "ham" messages.
 
-6) Birkbeck spelling error corpus
+7) Birkbeck spelling error corpus
 - spelling-birkbeck.csv
 - http://www.ota.ox.ac.uk/headers/0643.xml
 - 500 words and how they are commonly misspelled.
 
-7) CoNLL 2010 Shared Task 1 - Wikipedia uncertainty
+8) CoNLL 2010 Shared Task 1 - Wikipedia uncertainty
 - uncertainty-conll2010.csv
 - http://www.inf.u-szeged.hu/rgai/conll2010st/tasks.html#task1
 - 1500 "certain" and 1500 "uncertain" Wikipedia sentences.
 
-8) Alice in Wonderland, written by Lewis Carroll
+9) Alice in Wonderland, written by Lewis Carroll
 - wonderland-carroll.pdf
 - http://www.gutenberg.org/
 - Full text of Alice in Wonderland in PDF format.
 
-9) Celex 2.5 German Wordforms
+10) Celex 2.5 German Wordforms
 - wordforms-de-celex.csv
 - http://celex.mpi.nl/
 - 250 singular nouns and their plural form.
 - 250 predicative adjectives and their attributive form.
 
-10) Celex 2.5 English Wordforms
+11) Celex 2.5 English Wordforms
 - wordforms-en-celex.csv
 - http://celex.mpi.nl/
 - 4000 singular nouns and their plural form.
 
-11) Celex 2.5 Dutch Wordforms
+12) Celex 2.5 Dutch Wordforms
 - wordforms-nl-celex.csv
 - http://celex.mpi.nl/
 - 1000 singular nouns and their plural form.
 - 1000 predicative adjectives and their attributive form.
 
-12) Davies Corpus del Espa–ol lemma sample
+13) Davies Corpus del Espa–ol lemma sample
 - wordforms-es-davies.csv
 - http://www.wordfrequency.info/files/spanish/spanish_lemmas20k.txt
 - 3000 wordforms with lemma, part-of-speech and frequency.
-
