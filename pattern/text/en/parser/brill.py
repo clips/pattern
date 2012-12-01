@@ -36,10 +36,11 @@ class LexicalRules(list):
 
     def load(self):
         for i, rule in enumerate(open(self.path).read().decode("utf8").strip().split("\n")):
-            rule = rule.split()
-            for cmd in rule:
-                if cmd in LEXICAL:
-                    list.append(self, (cmd, rule)); break
+            if not rule.startswith(";;;   "): # comment
+                rule = rule.split()
+                for cmd in rule:
+                    if cmd in LEXICAL:
+                        list.append(self, (cmd, rule)); break
         
     def __iter__(self):
         if len(self) == 0:
@@ -94,10 +95,11 @@ class ContextualRules(list):
 
     def load(self):
         for i, rule in enumerate(open(self.path).read().decode("utf8").strip().split("\n")):
-            rule = rule.split()
-            for cmd in rule:
-                if cmd in CONTEXTUAL:
-                    list.append(self, (cmd, rule)); break
+            if not rule.startswith(";;;   "): # comment
+                rule = rule.split()
+                for cmd in rule:
+                    if cmd in CONTEXTUAL:
+                        list.append(self, (cmd, rule)); break
         
     def __iter__(self):
         if len(self) == 0:
@@ -186,11 +188,12 @@ class NamedEntities(dict):
 
     def load(self):
         for entity in open(self.path).read().decode("utf8").strip().split("\n"):
-            entity = entity.split() # ["George", "Washington"]
-            entity = [v.lower() for v in entity]
-            if entity[0] not in self:
-                self[entity[0]] = []
-            self[entity[0]].append(entity)
+            if not entity.startswith(";;;   "): # comment
+                entity = entity.split() # ["George", "Washington"]
+                entity = [v.lower() for v in entity]
+                if entity[0] not in self:
+                    self[entity[0]] = []
+                self[entity[0]].append(entity)
         self = dict((k, sorted(v, key=len, reverse=True)) for k, v in self.items())
 
     def apply(self, tokens):
@@ -241,7 +244,12 @@ class Lexicon(dict):
         # Brill's lexicon is a list of common tokens and their part-of-speech tag.
         # It takes a while to load but this happens only once when pattern.en.parser.parse() is called.
         # Create a dictionary from the entries:
-        dict.__init__(self, (x.split(" ")[:2] for x in open(self.path).read().decode("utf8").splitlines()))
+        for x in open(self.path).read().decode("utf8").splitlines():
+            if not x.startswith(";;;   "): # comment
+                x = x.split(" ")[:2]
+                dict.__setitem__(self, x[0], x[1])
+        
+        #dict.__init__(self, (x.split(" ")[:2] for x in open(self.path).read().decode("utf8").splitlines()))
     
     def get(self, word, default=None):
         return word in self and dict.__getitem__(self, word) or default
