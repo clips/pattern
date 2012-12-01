@@ -16,7 +16,7 @@ except:
     MODULE = ""
 
 # The tokenizer, chunker and relation finder are inherited from pattern.en.parser.
-# The tagger is trained on the Spanish portion of Wikicorpus v.1.0,
+# The tagger is trained on the Spanish portion of Wikicorpus v.1.0 (FDL license),
 # using 1.5M words from the tagged sections 10000-15000.
 # Reference:
 # Samuel Reese, Gemma Boleda, Montse Cuadros, Lluís Padró, German Rigau. 
