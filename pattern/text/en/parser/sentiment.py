@@ -27,12 +27,13 @@ def avg(list):
 def encode_emoticons(string):
     """ Returns the string with emoticons encoded as entities, e.g., :-) => &happy;
     """
+    string = " " + string + " "
     for (smileys, entity) in (
       ((":)", ":-)"), "&happy;"),
       ((":(", ":-("), "&sad;")):
         for smiley in smileys:
             string = string.replace(" %s " % smiley, " %s " % entity)
-    return string
+    return string[1:-1]
 
 #### SUBJECTIVITY LEXICON ##########################################################################
 
