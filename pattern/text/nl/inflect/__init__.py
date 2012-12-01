@@ -54,7 +54,7 @@ plural_irregular = {
 
 def pluralize(word, pos=NOUN, custom={}):
     """ Returns the plural of a given word.
-        For example: stad -> steden.
+        For example: stad => steden.
         The custom dictionary is for user-defined replacements.
     """
 
@@ -210,18 +210,11 @@ def singularize(word, pos=NOUN, custom={}):
 import sys; sys.path.insert(0, os.path.join(MODULE, "..", ".."))
 from en.inflect import Verbs
 from en.inflect import \
-    INFINITIVE, \
-    PRESENT_1ST_PERSON_SINGULAR, \
-    PRESENT_2ND_PERSON_SINGULAR, \
-    PRESENT_3RD_PERSON_SINGULAR, \
-    PRESENT_PLURAL, \
-    PRESENT_PARTICIPLE, \
-    PAST, \
-    PAST_1ST_PERSON_SINGULAR, \
-    PAST_2ND_PERSON_SINGULAR, \
-    PAST_3RD_PERSON_SINGULAR, \
-    PAST_PLURAL, \
-    PAST_PARTICIPLE
+    INFINITIVE, PRESENT, PAST, FUTURE, \
+    FIRST, SECOND, THIRD, \
+    SINGULAR, PLURAL, SG, PL, \
+    PROGRESSIVE, \
+    PARTICIPLE
 
 # Load the pattern.en.Verbs class, with a Dutch lexicon instead.
 # Lexicon was trained on CELEX and contains the top 2000 most frequent verbs.
@@ -319,7 +312,7 @@ _verbs.parse_lexeme = _parse_lexeme
 adjective_attributive = {
     "civiel"  : "civiele",
     "complex" : "complexe",
-    "enkel"  : "enkele",
+    "enkel"   : "enkele",
     "grof"    : "grove",
     "half"    : "halve",
     "luttel"  : "luttele",

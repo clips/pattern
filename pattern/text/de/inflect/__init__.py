@@ -37,7 +37,7 @@ vowel = lambda ch: ch in VOWELS
 # Inflection gender.
 # Masculine is the most common, so it is the default for all functions.
 MASCULINE, FEMININE, NEUTER, PLURAL = MALE, FEMALE, NEUTRAL, PLURAL = \
-    "m", "f", "n", "p"
+    "masculine", "feminine", "neuter", "plural"
 
 # Inflection role.
 # - nom = subject, "Der Hund bellt" (the dog barks).
@@ -45,7 +45,7 @@ MASCULINE, FEMININE, NEUTER, PLURAL = MALE, FEMALE, NEUTRAL, PLURAL = \
 # - dat = object (indirect), "Der Mann gibt einen Knochen zum Hund" (the man gives the dog a bone).
 # - gen = property, "die Knochen des Hundes" (the dog's bone).
 NOMINATIVE, ACCUSATIVE, DATIVE, GENITIVE = SUBJECT, OBJECT, INDIRECT, PROPERTY = \
-    "nom", "acc", "dat", "gen"
+    "nominative", "accusative", "dative", "genitive"
 
 article_definite = {
     ("m", "nom"): "der", ("f", "nom"): "die", ("n", "nom"): "das", ("p", "nom"): "die",
@@ -64,12 +64,12 @@ article_indefinite = {
 def definite_article(word, gender=MALE, role=SUBJECT):
     """ Returns the definite article (der/die/das/die) for a given word.
     """
-    return article_definite.get((gender, role))
+    return article_definite.get((gender[:1].lower(), role[:3].lower()))
 
 def indefinite_article(word):
     """ Returns the indefinite article (ein) for a given word.
     """
-    return article_indefinite.get((gender, role))
+    return article_indefinite.get((gender[:1].lower(), role[:1].lower()))
 
 DEFINITE   = "definite"
 INDEFINITE = "indefinite"
@@ -77,13 +77,15 @@ INDEFINITE = "indefinite"
 def article(word, function=INDEFINITE, gender=MALE, role=SUBJECT):
     """ Returns the indefinite (ein) or definite (der/die/das/die) article for the given word.
     """
-    return function == DEFINITE and definite_article(word) or indefinite_article(word)
+    return function == DEFINITE \
+       and definite_article(word, gender, role) \
+        or indefinite_article(word, gender, role)
 _article = article
 
 def referenced(word, article=INDEFINITE, gender=MALE, role=SUBJECT):
     """ Returns a string with the article + the word.
     """
-    return "%s %s" % (_article(word, article), word)
+    return "%s %s" % (_article(word, article, gender, role), word)
 
 #### GENDER #########################################################################################
 
@@ -304,29 +306,16 @@ def singularize(word, pos=NOUN, gender=MALE, role=SUBJECT, custom={}):
 import sys; sys.path.insert(0, os.path.join(MODULE, "..", ".."))
 from en.inflect import Verbs
 from en.inflect import \
-    INFINITIVE, \
-    PRESENT_1ST_PERSON_SINGULAR, PRESENT_1ST_PERSON_PLURAL, \
-    PRESENT_2ND_PERSON_SINGULAR, PRESENT_2ND_PERSON_PLURAL, \
-    PRESENT_3RD_PERSON_SINGULAR, PRESENT_3RD_PERSON_PLURAL, \
-    PRESENT_PARTICIPLE, \
-    PAST_1ST_PERSON_SINGULAR, PAST_1ST_PERSON_PLURAL, \
-    PAST_2ND_PERSON_SINGULAR, PAST_2ND_PERSON_PLURAL, \
-    PAST_3RD_PERSON_SINGULAR, PAST_3RD_PERSON_PLURAL, \
-    PAST_PARTICIPLE, \
-    IMPERATIVE_2ND_PERSON_SINGULAR, \
-    IMPERATIVE_1ST_PERSON_PLURAL, \
-    IMPERATIVE_2ND_PERSON_PLURAL, \
-    IMPERATIVE_3RD_PERSON_PLURAL, \
-    PRESENT_SUBJUNCTIVE_1ST_PERSON_SINGULAR, PRESENT_SUBJUNCTIVE_1ST_PERSON_PLURAL, \
-    PRESENT_SUBJUNCTIVE_2ND_PERSON_SINGULAR, PRESENT_SUBJUNCTIVE_2ND_PERSON_PLURAL, \
-    PRESENT_SUBJUNCTIVE_3RD_PERSON_SINGULAR, PRESENT_SUBJUNCTIVE_3RD_PERSON_PLURAL, \
-    PAST_SUBJUNCTIVE_1ST_PERSON_SINGULAR, PAST_SUBJUNCTIVE_1ST_PERSON_PLURAL, \
-    PAST_SUBJUNCTIVE_2ND_PERSON_SINGULAR, PAST_SUBJUNCTIVE_2ND_PERSON_PLURAL, \
-    PAST_SUBJUNCTIVE_3RD_PERSON_SINGULAR, PAST_SUBJUNCTIVE_3RD_PERSON_PLURAL
+    INFINITIVE, PRESENT, PAST, FUTURE, \
+    FIRST, SECOND, THIRD, \
+    SINGULAR, PLURAL, SG, PL, \
+    INDICATIVE, IMPERATIVE, SUBJUNCTIVE, \
+    PROGRESSIVE, \
+    PARTICIPLE, GERUND
 
 # Defines the tenses on each line in verbs.txt (see pattern.en.inflect.TENSES).
 FORMAT  = [0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13, 16, 19, 22, 21, 24, 25, 27, 28, 30, 31, 33, 34]
-DEFAULT = {6:4, 14:12, 23:21, 26:24, 29:27, 32:30, 35:33}
+DEFAULT = {6:4, 14:12, 26:24, 29:27, 32:30, 35:33}
 
 # Load the pattern.en.Verbs class, with a German lexicon instead.
 # Lexicon was trained on CELEX and contains the top 2000 most frequent verbs.
@@ -491,7 +480,7 @@ def attributive(adjective, gender=MALE, role=SUBJECT, article=None):
         (nominative, accusative, dative, genitive).
     """
     w, g, c, a = \
-        adjective.lower(), gender.lower(), role.lower(), article and article.lower() or None
+        adjective.lower(), gender[:1].lower(), role[:3].lower(), article and article.lower() or None
     if w in adjective_attributive:
         return adjective_attributive[w]
     if a is None \

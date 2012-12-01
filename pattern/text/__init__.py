@@ -10,19 +10,15 @@
 
 from en import Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
 from en import SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
-from en import \
-    INFINITIVE, \
-    PRESENT_1ST_PERSON_SINGULAR, \
-    PRESENT_2ND_PERSON_SINGULAR, \
-    PRESENT_3RD_PERSON_SINGULAR, \
-    PRESENT_PLURAL, \
-    PRESENT_PARTICIPLE, \
-    PAST, \
-    PAST_1ST_PERSON_SINGULAR, \
-    PAST_2ND_PERSON_SINGULAR, \
-    PAST_3RD_PERSON_SINGULAR, \
-    PAST_PLURAL, \
-    PAST_PARTICIPLE
+
+from en.inflect import \
+    INFINITIVE, PRESENT, PAST, FUTURE, CONDITIONAL, \
+    FIRST, SECOND, THIRD, \
+    SINGULAR, PLURAL, SG, PL, \
+    INDICATIVE, IMPERATIVE, SUBJUNCTIVE, \
+    IMPERFECTIVE, PERFECTIVE, PROGRESSIVE, \
+    IMPERFECT, PRETERITE, \
+    PARTICIPLE, GERUND
 
 def _multilingual(function, *args, **kwargs):
     """ Returns the value from the function with the given name in the given language module.

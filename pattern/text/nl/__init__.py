@@ -15,18 +15,11 @@ from inflect import \
     pluralize, singularize, NOUN, VERB, ADJECTIVE, \
     conjugate, lemma, lexeme, tenses, VERBS, \
     predicative, attributive, \
-    INFINITIVE, \
-    PRESENT_1ST_PERSON_SINGULAR, \
-    PRESENT_2ND_PERSON_SINGULAR, \
-    PRESENT_3RD_PERSON_SINGULAR, \
-    PRESENT_PLURAL, \
-    PRESENT_PARTICIPLE, \
-    PAST, \
-    PAST_1ST_PERSON_SINGULAR, \
-    PAST_2ND_PERSON_SINGULAR, \
-    PAST_3RD_PERSON_SINGULAR, \
-    PAST_PLURAL, \
-    PAST_PARTICIPLE
+    INFINITIVE, PRESENT, PAST, FUTURE, \
+    FIRST, SECOND, THIRD, \
+    SINGULAR, PLURAL, SG, PL, \
+    PROGRESSIVE, \
+    PARTICIPLE
 
 # Language-independent functionality is inherited from pattern.en:
 # Submodules pattern.nl.inflect and pattern.nl.parser import from pattern.en.

@@ -13,18 +13,11 @@ from inflect import \
     conjugate, lemma, lexeme, tenses, VERBS, \
     grade, comparative, superlative, COMPARATIVE, SUPERLATIVE, \
     predicative, attributive, \
-    INFINITIVE, \
-    PRESENT_1ST_PERSON_SINGULAR, \
-    PRESENT_2ND_PERSON_SINGULAR, \
-    PRESENT_3RD_PERSON_SINGULAR, \
-    PRESENT_PLURAL, \
-    PRESENT_PARTICIPLE, \
-    PAST, \
-    PAST_1ST_PERSON_SINGULAR, \
-    PAST_2ND_PERSON_SINGULAR, \
-    PAST_3RD_PERSON_SINGULAR, \
-    PAST_PLURAL, \
-    PAST_PARTICIPLE
+    INFINITIVE, PRESENT, PAST, FUTURE, \
+    FIRST, SECOND, THIRD, \
+    SINGULAR, PLURAL, SG, PL, \
+    PROGRESSIVE, \
+    PARTICIPLE
 
 from inflect.quantify import \
     number, numerals, quantify, reflect
@@ -65,12 +58,12 @@ def pprint(string, token=[WORD, POS, CHUNK, PNP], column=4):
     if isinstance(string, Sentence):
         print table(string, fill=column)
         
-def ngrams(string, n=3):
+def ngrams(string, n=3, continuous=False):
     """ Returns a list of n-grams (tuples of n successive words) from the given string.
         Alternatively, you can supply a Text or Sentence object.
-        n-grams will not run over sentence markers (i.e., .!?).
+        With continuous=False, n-grams will not run over sentence markers (i.e., .!?).
     """
-    def strip_period(s, punctuation=(".:;,!?()[]'\"")):
+    def strip_period(s, punctuation=set(".:;,!?()[]'\"")):
         return [w for w in s if (isinstance(w, Word) and w.string or w) not in punctuation]
     if n <= 0:
         return []
@@ -80,8 +73,10 @@ def ngrams(string, n=3):
         s = [strip_period(string)]
     if isinstance(string, Text):
         s = [strip_period(s) for s in string]
+    if continuous:
+        s = [sum(s, [])]
     g = []
     for s in s:
         #s = [None] + s + [None]
-        g.extend([tuple(s[i:i+n]) for i in range(len(s)-n+1)])
-    return g
+        g.extend([tuple(s[i:i+n]) for i in range(len(s)-n+1)])        
+    return g    

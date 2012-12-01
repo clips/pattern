@@ -321,7 +321,7 @@ def pluralize(word, pos=NOUN, custom={}, classical=True):
         The custom dictionary is for user-defined replacements.
     """
 
-    if word in custom.keys():
+    if word in custom:
         return custom[word]
 
     # Recursion of genitives.
@@ -558,169 +558,205 @@ def singularize(word, pos=NOUN, custom={}):
     return word
 
 #### VERB CONJUGATION ##############################################################################
-# Each verb has morphs for infinitive, 3rd singular present, present participle, past and past participle.
-# Verbs like "be" have other morphs as well (i.e. I am, you are, she is, they aren't).
-# The following verbs can be negated: be, can, do, will, must, have, may, need, dare, ought.
-# Languages other than English may have more tenses or moods.
+# Conjugation is the inflection of verbs by tense, person, number, mood, aspect.
+# English verbs have inflections 3rd singular present, present participle, past and past participle.
+# Verbs like "to be" have more inflections (i.e. I am, you are, she is, they aren't).
+# The following English verbs can be negated: be, can, do, will, must, have, may, need, dare, ought.
+# Languages other than English may have more tenses, moods and aspects.
 
-# en: to be
-# nl: zijn
-# de: sein
-INFINITIVE = \
-    "infinitive"
+# Verb tense:
+INFINITIVE, PRESENT, PAST, FUTURE = INF, PRES, PST, FUT = \
+    "infinitive", "present", "past", "future"
 
-# en: I am, you are, he is, we are, you are, they are, being
-# nl: ik ben, jij bent, hij is, wij zijn, jullie zijn, zij zijn, zijnd
-# de: ich bin, du bist, er ist, wir sind, ihr seid, sie sind
-PRESENT_1ST_PERSON_SINGULAR, PRESENT_1ST_PERSON_PLURAL, \
-PRESENT_2ND_PERSON_SINGULAR, PRESENT_2ND_PERSON_PLURAL, \
-PRESENT_3RD_PERSON_SINGULAR, PRESENT_3RD_PERSON_PLURAL, PRESENT_PLURAL, PRESENT_PARTICIPLE = (
-    "present 1st person singular", "present 1st person plural",
-    "present 2nd person singular", "present 2nd person plural",
-    "present 3rd person singular", "present 3rd person plural", 
-    "present plural", 
-    "present participle"
-)
+# Verb person:
+# 1st (I, we), 2nd (you) or 3rd person (he, she, it, they).
+FIRST, SECOND, THIRD = \
+    1, 2, 3
 
-# en: I was, you were, he was, we were, you were, they were, been
-# nl: ik was, jij was, he was, wij waren, jullie waren, zij waren, geweest
-# de: ich war, du warst, er war, wir waren, ihr wart, sie waren, gewesen
-PAST_1ST_PERSON_SINGULAR, PAST_1ST_PERSON_PLURAL, \
-PAST_2ND_PERSON_SINGULAR, PAST_2ND_PERSON_PLURAL, \
-PAST_3RD_PERSON_SINGULAR, PAST_3RD_PERSON_PLURAL, PAST_PLURAL, PAST_PARTICIPLE, PAST = (
-    "past 1st person singular", "past 1st person plural",
-    "past 2nd person singular", "past 2nd person plural",
-    "past 3rd person singular", "past 3rd person plural", 
-    "past plural",
-    "past participle",
-    "past"
-)
+# Verb number: 
+# singular (I, you, he/she/it) or plural (we, you, they).
+SINGULAR, PLURAL = SG, PL = \
+    "singular", "plural"
 
-# de: du sei, ihr seid, seien wir
-IMPERATIVE_1ST_PERSON_SINGULAR, IMPERATIVE_1ST_PERSON_PLURAL, \
-IMPERATIVE_2ND_PERSON_SINGULAR, IMPERATIVE_2ND_PERSON_PLURAL, \
-IMPERATIVE_3RD_PERSON_SINGULAR, IMPERATIVE_3RD_PERSON_PLURAL = (
-    "imperative 1st person singular", "imperative 1st person plural",
-    "imperative 2nd person singular", "imperative 2nd person plural",
-    "imperative 3rd person singular", "imperative 3rd person plural"
-)
+# Verb mood:
+# indicative  = fact ("they waited"),
+# imperative  = command ("wait!"),
+# conditional = hypothesis ("will you wait if I am late?")
+# subjunctive = wish, possibility, necessity ("will you wait?").
+INDICATIVE, IMPERATIVE, CONDITIONAL, SUBJUNCTIVE = IND, IMP, COND, SJV = \
+    "indicative", "imperative", "conditional", "subjunctive"
 
-# de: ich sei, du seist, er sei, wir seien, ihr seiet, sie seien
-PRESENT_SUBJUNCTIVE_1ST_PERSON_SINGULAR, PRESENT_SUBJUNCTIVE_1ST_PERSON_PLURAL, \
-PRESENT_SUBJUNCTIVE_2ND_PERSON_SINGULAR, PRESENT_SUBJUNCTIVE_2ND_PERSON_PLURAL, \
-PRESENT_SUBJUNCTIVE_3RD_PERSON_SINGULAR, PRESENT_SUBJUNCTIVE_3RD_PERSON_PLURAL = (
-    "present subjunctive 1st person singular", "present subjunctive 1st person plural",
-    "present subjunctive 2nd person singular", "present subjunctive 2nd person plural",
-    "present subjunctive 3rd person singular", "present subjunctive 3rd person plural"
+# Verb aspect:
+# imperfective = ongoing habitual action ("I used to play"),
+# perfective   = momentary or completed action (Spanish "saber": IPFV "supe" = "I knew" vs. PFV "sabia" = "I found out"),
+# progressive  = incomplete action in progress ("it is raining").
+# In Spanish, the conditional is regarded as an indicative tense.
+IMPERFECTIVE, PERFECTIVE, PROGRESSIVE = IPFV, PFV, PROG = \
+    "imperfective", "perfective", "progressive"
 
-)
+# Participle = present tense  + progressive aspect.
+PARTICIPLE, GERUND = "participle", "gerund"
 
-# de: ich wäre, du wärest, er wäre, wir wären, ihr wäret, sie wären
-PAST_SUBJUNCTIVE_1ST_PERSON_SINGULAR, PAST_SUBJUNCTIVE_1ST_PERSON_PLURAL, \
-PAST_SUBJUNCTIVE_2ND_PERSON_SINGULAR, PAST_SUBJUNCTIVE_2ND_PERSON_PLURAL, \
-PAST_SUBJUNCTIVE_3RD_PERSON_SINGULAR, PAST_SUBJUNCTIVE_3RD_PERSON_PLURAL = (
-    "past subjunctive 1st person singular", "past subjunctive 1st person plural",
-    "past subjunctive 2nd person singular", "past subjunctive 2nd person plural", 
-    "past subjunctive 3rd person singular", "past subjunctive 3rd person plural"
-)
+# Imperfect = past tense + imperfective aspect.
+# Preterite = past tense + perfective aspect.
+IMPERFECT = "imperfect"
+PRETERITE = "preterite"
 
-# en: I am no, you aren't, he isn't, we aren't, you aren't, they aren't
-PRESENT_NEGATED_1ST_PERSON_SINGULAR, PRESENT_NEGATED_1ST_PERSON_PLURAL, \
-PRESENT_NEGATED_2ND_PERSON_SINGULAR, PRESENT_NEGATED_2ND_PERSON_PLURAL, \
-PRESENT_NEGATED_3RD_PERSON_SINGULAR, PRESENT_NEGATED_3RD_PERSON_PLURAL, \
-PRESENT_NEGATED_PLURAL, \
-PRESENT_NEGATED = (
-    "present negated 1st person singular", "present negated 1st person plural",
-    "present negated 2nd person singular", "present negated 2nd person plural",
-    "present negated 3rd person singular", "present negated 3rd person plural",
-    "present negated plural",
-    "present negated"
+# Continuous aspect ≈ progressive aspect.
+CONTINUOUS = CONT = "continuous"
 
-)
+N = None
 
-# en: I wasn't, you weren't, he wasn't, we weren't, you weren't, they weren't
-PAST_NEGATED_1ST_PERSON_SINGULAR, PAST_NEGATED_1ST_PERSON_PLURAL, \
-PAST_NEGATED_2ND_PERSON_SINGULAR, PAST_NEGATED_2ND_PERSON_PLURAL, \
-PAST_NEGATED_3RD_PERSON_SINGULAR, PAST_NEGATED_3RD_PERSON_PLURAL, \
-PAST_NEGATED_PLURAL, \
-PAST_NEGATED = (
-    "past negated 1st person singular", "past negated 1st person plural",
-    "past negated 2nd person singular", "past negated 2nd person plural", 
-    "past negated 3rd person singular", "past negated 3rd person plural",
-    "past negated plural",
-    "past negated"
-)
-
-# Tensed by unique index.
+# Tenses (tense + person + number + mood + aspect + negated + aliases) by unique index.
 # The index can be used in the format and default parameters of the Verb constructor.
 # The aliases can be passed to conjugate() and Tenses.__contains__().
 TENSES = {
-  None: (None,                                    (None,)),
-     0: (INFINITIVE,                              ("i", "inf", "vb")),
-     1: (PRESENT_1ST_PERSON_SINGULAR,             ("1sg", "vbp")),
-     2: (PRESENT_2ND_PERSON_SINGULAR,             ("2sg",)),
-     3: (PRESENT_3RD_PERSON_SINGULAR,             ("3sg", "vbz")),
-     4: (PRESENT_1ST_PERSON_PLURAL,               ("1pl",)),
-     5: (PRESENT_2ND_PERSON_PLURAL,               ("2pl",)),
-     6: (PRESENT_3RD_PERSON_PLURAL,               ("3pl",)),
-     7: (PRESENT_PLURAL,                          ("pl", "plural")),
-     8: (PRESENT_PARTICIPLE,                      ("g", "gerund", "part", "prog", "progressive", "vbg")),
-     9: (PAST_1ST_PERSON_SINGULAR,                ("1sgp",)),
-    10: (PAST_2ND_PERSON_SINGULAR,                ("2sgp",)),
-    11: (PAST_3RD_PERSON_SINGULAR,                ("3sgp",)),
-    12: (PAST_1ST_PERSON_PLURAL,                  ("1ppl", "1plp")),
-    13: (PAST_2ND_PERSON_PLURAL,                  ("2ppl", "2plp")),
-    14: (PAST_3RD_PERSON_PLURAL,                  ("3ppl", "3plp")),
-    15: (PAST_PLURAL,                             ("ppl", "plp", "pplural")),
-    16: (PAST_PARTICIPLE,                         ("gp", "pg", "ppart", "vbn")),
-    17: (PAST,                                    ("p", "past", "vbd")),
-    18: (IMPERATIVE_1ST_PERSON_SINGULAR,          ("1sg!", "i1sg")),
-    19: (IMPERATIVE_2ND_PERSON_SINGULAR,          ("2sg!", "i2sg")),
-    20: (IMPERATIVE_3RD_PERSON_SINGULAR,          ("3sg!", "i3sg")),
-    21: (IMPERATIVE_1ST_PERSON_PLURAL,            ("1pl!", "i1pl")),
-    22: (IMPERATIVE_2ND_PERSON_PLURAL,            ("2pl!", "i2pl")),
-    23: (IMPERATIVE_3RD_PERSON_PLURAL,            ("3pl!", "i3pl")),
-    24: (PRESENT_SUBJUNCTIVE_1ST_PERSON_SINGULAR, ("1sg?", "s1sg")),
-    25: (PRESENT_SUBJUNCTIVE_2ND_PERSON_SINGULAR, ("2sg?", "s2sg")),
-    26: (PRESENT_SUBJUNCTIVE_3RD_PERSON_SINGULAR, ("3sg?", "s3sg")),
-    27: (PRESENT_SUBJUNCTIVE_1ST_PERSON_PLURAL,   ("1pl?", "s1pl")),
-    28: (PRESENT_SUBJUNCTIVE_2ND_PERSON_PLURAL,   ("2pl?", "s2pl")),
-    29: (PRESENT_SUBJUNCTIVE_3RD_PERSON_PLURAL,   ("3pl?", "s3pl")),
-    30: (PAST_SUBJUNCTIVE_1ST_PERSON_SINGULAR,    ("1sgp?", "s1sgp", "sp1sg")),
-    31: (PAST_SUBJUNCTIVE_2ND_PERSON_SINGULAR,    ("2sgp?", "s2sgp", "sp2sg")),
-    32: (PAST_SUBJUNCTIVE_3RD_PERSON_SINGULAR,    ("3sgp?", "s3sgp", "sp3sg")),
-    33: (PAST_SUBJUNCTIVE_1ST_PERSON_PLURAL,      ("1ppl?", "1plp?", "s1ppl", "s1plp")),
-    34: (PAST_SUBJUNCTIVE_2ND_PERSON_PLURAL,      ("2ppl?", "2plp?", "s2ppl", "s2plp")),
-    35: (PAST_SUBJUNCTIVE_3RD_PERSON_PLURAL,      ("3ppl?", "3plp?", "s3ppl", "s3plp")),
-    36: (PRESENT_NEGATED_1ST_PERSON_SINGULAR,     ("1sg-",)),
-    37: (PRESENT_NEGATED_2ND_PERSON_SINGULAR,     ("2sg-",)),
-    38: (PRESENT_NEGATED_3RD_PERSON_SINGULAR,     ("3sg-",)),
-    39: (PRESENT_NEGATED_1ST_PERSON_PLURAL,       ("1pl-",)),
-    40: (PRESENT_NEGATED_2ND_PERSON_PLURAL,       ("2pl-",)),
-    41: (PRESENT_NEGATED_3RD_PERSON_PLURAL,       ("3pl-",)),
-    42: (PRESENT_NEGATED_PLURAL,                  ("pl-", "plural-")),
-    43: (PRESENT_NEGATED,                         ("i-", "-")),
-    44: (PAST_NEGATED_1ST_PERSON_SINGULAR,        ("1sgp-",)),
-    45: (PAST_NEGATED_2ND_PERSON_SINGULAR,        ("2sgp-",)),
-    46: (PAST_NEGATED_3RD_PERSON_SINGULAR,        ("3sgp-",)),
-    47: (PAST_NEGATED_1ST_PERSON_PLURAL,          ("1ppl-", "1plp-")),
-    48: (PAST_NEGATED_2ND_PERSON_PLURAL,          ("2ppl-", "2plp-")),
-    49: (PAST_NEGATED_3RD_PERSON_PLURAL,          ("3ppl-", "3plp-")),
-    50: (PAST_NEGATED_PLURAL,                     ("ppl-", "plp-", "pplural-")),
-    51: (PAST_NEGATED,                            ("p-", "past-",)),
+  None: (None, N, N,  N,   N,    False, (None,)),
+     0: (INF,  N, N,  N,   N,    False, ("inf",  )), # TO BE         # SER               # SEIN       # ZIJN
+     1: (PRES, 1, SG, IND, IPFV, False, ("1sg",  )), # I am          # yo soy            # ich bin    # ik ben
+     2: (PRES, 2, SG, IND, IPFV, False, ("2sg",  )), # you are       # tú eres           # du bist    # jij bent
+     3: (PRES, 3, SG, IND, IPFV, False, ("3sg",  )), # he is         # él es             # er ist     # hij is
+     4: (PRES, 1, PL, IND, IPFV, False, ("1pl",  )), # we are        # nosotros somos    # wir sind   # wij zijn
+     5: (PRES, 2, PL, IND, IPFV, False, ("2pl",  )), # you are       # vosotros sois     # ihr seid   # jullie zijn
+     6: (PRES, 3, PL, IND, IPFV, False, ("3pl",  )), # they are      # ellos son         # sie sind   # zij zijn
+     7: (PRES, N, PL, IND, IPFV, False, ( "pl",  )), # are           #                   #            #
+     8: (PRES, N, N,  IND, PROG, False, ("part", )), # being         # siendo            #            # zijnd
+    36: (PRES, 1, SG, IND, IPFV, True,  ("1sg-", )), # I am not      #                   #            #
+    37: (PRES, 2, SG, IND, IPFV, True,  ("2sg-", )), # you aren't    #                   #            #
+    38: (PRES, 3, SG, IND, IPFV, True,  ("3sg-", )), # he isn't      #                   #            #
+    39: (PRES, 1, PL, IND, IPFV, True,  ("1pl-", )), # we aren't     #                   #            #
+    40: (PRES, 2, PL, IND, IPFV, True,  ("2pl-", )), # you aren't    #                   #            #
+    41: (PRES, 3, PL, IND, IPFV, True,  ("3pl-", )), # they aren't   #                   #            #
+    42: (PRES, N, PL, IND, IPFV, True,  ( "pl-", )), # aren't        #                   #            #
+    43: (PRES, N, N,  IND, IPFV, True,  (   "-", )), # isn't         #                   #            #
+     9: (PST,  1, SG, IND, IPFV, False, ("1sgp", )), # I was         # yo era            # ich war    # ik was
+    10: (PST,  2, SG, IND, IPFV, False, ("2sgp", )), # you were      # tú eras           # du warst   # jij was
+    11: (PST,  3, SG, IND, IPFV, False, ("3sgp", )), # he was        # él era            # er war     # hij was
+    12: (PST,  1, PL, IND, IPFV, False, ("1ppl", )), # we were       # nosotros éramos   # wir waren  # wij waren
+    13: (PST,  2, PL, IND, IPFV, False, ("2ppl", )), # you were      # vosotros erais    # ihr wart   # jullie waren
+    14: (PST,  3, PL, IND, IPFV, False, ("3ppl", )), # they were     # ellos eran        # sie waren  # wij waren
+    15: (PST,  N, PL, IND, IPFV, False, ( "ppl", )), # were          #                   #            #
+    16: (PST,  N, N,  IND, PROG, False, ("ppart",)), # been          # sido              # gewesen    # geweest
+    17: (PST,  N, N,  IND, IPFV, False, (   "p", )), # was           #                   #            #
+    44: (PST,  1, SG, IND, IPFV, True,  ("1sgp-",)), # I wasn't      #                   #            #
+    45: (PST,  2, SG, IND, IPFV, True,  ("2sgp-",)), # you weren't   #                   #            #
+    46: (PST,  3, SG, IND, IPFV, True,  ("3sgp-",)), # he wasn't     #                   #            #
+    47: (PST,  1, PL, IND, IPFV, True,  ("1ppl-",)), # we weren't    #                   #            #
+    48: (PST,  2, PL, IND, IPFV, True,  ("2ppl-",)), # you weren't   #                   #            #
+    49: (PST,  3, PL, IND, IPFV, True,  ("3ppl-",)), # they weren't  #                   #            #
+    50: (PST,  N, PL, IND, IPFV, True,  ( "ppl-",)), # weren't       #                   #            #
+    51: (PST,  N, N,  IND, IPFV, True,  ( "p-",  )), # wasn't        #                   #            #
+    58: (PST,  1, SG, IND,  PFV, False, ("1sg+", )), #               # yo fui            #            #
+    59: (PST,  2, SG, IND,  PFV, False, ("2sg+", )), #               # tú fuiste         #            #
+    60: (PST,  3, SG, IND,  PFV, False, ("3sg+", )), #               # él fue            #            #
+    61: (PST,  1, PL, IND,  PFV, False, ("1pl+", )), #               # nosotros fuimos   #            #
+    62: (PST,  2, PL, IND,  PFV, False, ("2pl+", )), #               # vosotros fuisteis #            #
+    63: (PST,  3, PL, IND,  PFV, False, ("3pl+", )), #               # ellos fueron      #            #
+    52: (FUT,  1, SG, IND, IPFV, False, ("1sgf", )), #               # yo seré           #            #
+    53: (FUT,  2, SG, IND, IPFV, False, ("2sgf", )), #               # tú serás          #            #
+    54: (FUT,  3, SG, IND, IPFV, False, ("3sgf", )), #               # él será           #            #
+    55: (FUT,  1, PL, IND, IPFV, False, ("1plf", )), #               # nosotros seremos  #            #
+    56: (FUT,  2, PL, IND, IPFV, False, ("2plf", )), #               # vosotros seréis   #            #
+    57: (FUT,  3, PL, IND, IPFV, False, ("3plf", )), #               # ellos serán       #            #
+    70: (COND, 1, SG, IND, IPFV, False, ()),         #               # yo sería          #            #
+    71: (COND, 2, SG, IND, IPFV, False, ()),         #               # tú serías         #            #
+    72: (COND, 3, SG, IND, IPFV, False, ()),         #               # él sería          #            #
+    73: (COND, 1, PL, IND, IPFV, False, ()),         #               # nosotros seríamos #            #
+    74: (COND, 2, PL, IND, IPFV, False, ()),         #               # vosotros seríais  #            #
+    75: (COND, 3, PL, IND, IPFV, False, ()),         #               # ellos serían      #            #
+    19: (PRES, 2, SG, IMP, IPFV, False, ("2sg!", )), #               # tú sé             # du sei     #
+    21: (PRES, 1, PL, IMP, IPFV, False, ("1pl!", )), #               #                   # seien wir  #
+    22: (PRES, 2, PL, IMP, IPFV, False, ("2pl!", )), #               # vosotros sed      # ihr seid   #
+    24: (PRES, 1, SG, SJV, IPFV, False, ("1sg?", )), #               # yo sea            # ich sei    #
+    25: (PRES, 2, SG, SJV, IPFV, False, ("2sg?", )), #               # tú seas           # du seist   #
+    26: (PRES, 3, SG, SJV, IPFV, False, ("3sg?", )), #               # él sea            # er sei     #
+    27: (PRES, 1, PL, SJV, IPFV, False, ("1pl?", )), #               # nosotros seamos   # wir seien  #
+    28: (PRES, 2, PL, SJV, IPFV, False, ("2pl?", )), #               # vosotros seáis    # ihr seiet  #
+    29: (PRES, 3, PL, SJV, IPFV, False, ("3pl?", )), #               # ellos sean        # sie seien  #
+    64: (PRES, 1, SG, SJV,  PFV, False, ("1sg?+",)), #               #                   #            #
+    65: (PRES, 2, SG, SJV,  PFV, False, ("2sg?+",)), #               #                   #            #
+    66: (PRES, 3, SG, SJV,  PFV, False, ("3sg?+",)), #               #                   #            #
+    67: (PRES, 1, PL, SJV,  PFV, False, ("1pl?+",)), #               #                   #            #
+    68: (PRES, 2, PL, SJV,  PFV, False, ("2pl?+",)), #               #                   #            #
+    69: (PRES, 3, PL, SJV,  PFV, False, ("3pl?+",)), #               #                   #            #
+    30: (PST,  1, SG, SJV, IPFV, False, ("1sgp?",)), #               # yo fuera          # ich wäre   #
+    31: (PST,  2, SG, SJV, IPFV, False, ("2sgp?",)), #               # tú fueras         # du wärest  #
+    32: (PST,  3, SG, SJV, IPFV, False, ("3sgp?",)), #               # él fuera          # er wäre    #
+    33: (PST,  1, PL, SJV, IPFV, False, ("1ppl?",)), #               # nosotros fuéramos # wir wären  #
+    34: (PST,  2, PL, SJV, IPFV, False, ("2ppl?",)), #               # vosotros fuerais  # ihr wäret  #
+    35: (PST,  3, PL, SJV, IPFV, False, ("3ppl?",)), #               # ellos fueran      # sie wären  #
 }
 
+# Map tenses and aliases to index.
 # tense => id
 # alias => id
-tense_id = {}
-for id, (tense, aliases) in TENSES.items():
-    for a in aliases:
-        tense_id[id] = tense_id[tense] = tense_id[a] = id
-        
-tense_id_negated = {
-    0:43, 1:36, 2:37, 3:38, 4:39, 5:40, 6:41, 7:42, 
-    9:44, 10:45, 11:46, 12:47, 13:48, 14:49, 15:50, 17:51
-}
+TENSES_ID = {}
+TENSES_ID[INFINITIVE] = 0
+for i, (tense, person, number, mood, aspect, negated, aliases) in TENSES.items():
+    for a in aliases + (i,):
+        TENSES_ID[i] = \
+        TENSES_ID[a] = \
+        TENSES_ID[(tense, person, number, mood, aspect, negated)] = i
+    if number == SG:
+        TENSES_ID[(tense, person, "sg", mood, aspect, negated)] = i
+    if number == PL:
+        TENSES_ID[(tense, person, "pl", mood, aspect, negated)] = i
+
+# Penn Treebank tag => id
+for tag, tense in (
+  ("vb",  0),   # infinitive
+  ("vbp", 1),   # present 1 sg
+  ("vbz", 3),   # present 3 sg
+  ("vbg", 8),   # present participle
+  ("vbn", 16),  # past participle
+  ("vbd", 17)): # past
+    TENSES_ID[tag] = tense
+
+#   tense(tense=INFINITIVE)
+#   tense(tense=PRESENT, person=3, number=SINGULAR, mood=INDICATIVE, aspect=IMPERFECTIVE, negated=False, parse=True)
+def tense_id(*args, **kwargs):
+    """ Returns the tense id for a given (tense, person, number, mood, aspect, negated).
+        Aliases and compound forms (e.g., IMPERFECT) are disambiguated.
+    """
+    # Unpack tense given as a tuple, e.g., tense_id((PRESENT, 1, SG)):
+    if len(args) == 1 and isinstance(args[0], (list, tuple)):
+         if args[0] not in ((PRESENT, PARTICIPLE), (PAST, PARTICIPLE)):
+             args = args[0]
+    # No parameters defaults to tense=INFINITIVE, tense=PRESENT otherwise.
+    if len(args) == 0 and len(kwargs) == 0:
+        t = INFINITIVE
+    else:
+        t = PRESENT
+    # Set default values.
+    tense   = kwargs.get("tense"  , args[0] if len(args) > 0 else t)
+    person  = kwargs.get("person" , args[1] if len(args) > 1 else 3) or None
+    number  = kwargs.get("number" , args[2] if len(args) > 2 else SINGULAR)
+    mood    = kwargs.get("mood"   , args[3] if len(args) > 3 else INDICATIVE)
+    aspect  = kwargs.get("aspect" , args[4] if len(args) > 4 else IMPERFECTIVE)
+    negated = kwargs.get("negated", args[5] if len(args) > 5 else False)
+    # Disambiguate INFINITIVE.
+    # Disambiguate PARTICIPLE, IMPERFECT, PRETERITE.
+    # These are often considered to be tenses but are in fact tense + aspect.
+    if tense == INFINITIVE:
+        person = number = mood = aspect = None; negated=False
+    if tense in ((PRESENT, PARTICIPLE), PRESENT+PARTICIPLE, PARTICIPLE, GERUND):
+        tense, aspect = PRESENT, PROGRESSIVE
+    if tense in ((PAST, PARTICIPLE), PAST+PARTICIPLE):
+        tense, aspect = PAST, PROGRESSIVE
+    if tense == IMPERFECT:
+        tense, aspect = PAST, IMPERFECTIVE
+    if tense == PRETERITE:
+        tense, aspect = PAST, PERFECTIVE
+    if aspect in (CONTINUOUS, PARTICIPLE, GERUND):
+        aspect = PROGRESSIVE
+    if aspect == PROGRESSIVE:
+        person = number = None
+    # Disambiguate aliases: "pl" => 
+    # (PRESENT, None, PLURAL, INDICATIVE, IMPERFECTIVE, False).
+    return TENSES_ID.get(tense.lower(), 
+           TENSES_ID.get((tense, person, number, mood, aspect, negated)))
+
+tense = tense_id
 
 # Defines the tenses on each line in verbs.txt.
 # For English, plural is the same for all persons.
@@ -748,7 +784,7 @@ class Verbs:
             The default dict defines a default index for missing tenses (see DEFAULT).
         """
         self._path    = path
-        self._format  = dict((tense_id[id], i) for i, id in enumerate(format))
+        self._format  = dict((TENSES_ID[id], i) for i, id in enumerate(format))
         self._default = default
         self._tenses  = None # Dictionary of infinitive => list of tenses.
         self._lemmas  = None # Dictionary of tense => infinitive. 
@@ -771,26 +807,27 @@ class Verbs:
         
     @property
     def TENSES(self):
-        """ Yields a list of tenses/moods for this language, excluding negation.
+        """ Yields a list of tenses for this language, excluding negations.
+            Each tense is a (tense, person, number, mood, aspect)-tuple.
         """
-        a = set(TENSES[id][0] for id in self._format)
-        a = a.union(set(TENSES[id][0] for id in self._default.keys()))
-        a = a.union(set(TENSES[id][0] for id in self._default.values()))
-        a = sorted(x for x in a if not "negated" in x)
+        a = set(TENSES[id] for id in self._format)
+        a = a.union(set(TENSES[id] for id in self._default.keys()))
+        a = a.union(set(TENSES[id] for id in self._default.values()))
+        a = sorted(x[:-2] for x in a if x[-2] is False) # Exclude negation.
         return a
 
     def __iter__(self):
-        if not self._tenses: self.load(); return iter(self._tenses)
+        self._tenses is None and self.load(); return iter(self._tenses)
     def __len__(self):
-        if not self._tenses: self.load(); return len(self._tenses)
+        self._tenses is None and self.load(); return len(self._tenses)
     def __contains__(self, k):
-        if not self._tenses: self.load(); return self._tenses.__contains__(k)
+        self._tenses is None and self.load(); return self._tenses.__contains__(k)
     def __setitem__(self, k, v):
-        if not self._tenses: self.load(); self._tenses[k] = v
+        self._tenses is None and self.load(); self._tenses[k] = v
     def __getitem__(self, k):
-        if not self._tenses: self.load(); return self._tenses[k]
+        self._tenses is None and self.load(); return self._tenses[k]
     def get(self, k, default=None):
-        if not self._tenses: self.load(); return self._tenses.get(k, default)
+        self._tenses is None and self.load(); return self._tenses.get(k, default)
     
     def load(self):
         # The data is lazily loaded when lemma() is called the first time.
@@ -798,13 +835,13 @@ class Verbs:
         # http://www.cis.upenn.edu/~xtag/
         self._tenses = {}
         self._lemmas = {}
-        i = tense_id[INFINITIVE]
+        id = TENSES_ID[INFINITIVE]
         for v in reversed(open(self._path).read().decode("utf8").splitlines()): 
             if not v.startswith(";;;"):
                 v = v.strip().split(",")
-                self._tenses[v[i]] = v
+                self._tenses[v[id]] = v
                 for tense in (tense for tense in v if tense != ""): 
-                    self._lemmas[tense] = v[i]
+                    self._lemmas[tense] = v[id]
                 
     def __contains__(self, verb):
         if self._lemmas is None: 
@@ -835,32 +872,31 @@ class Verbs:
         u = []; [u.append(x) for x in a if x not in u]
         return u
 
-    def conjugate(self, verb, tense=INFINITIVE, negated=False, parse=True):
-        """ Inflects the verb and returns the given tense (or None).
+    def conjugate(self, verb, *args, **kwargs):
+        """ Inflects the verb and returns it in the given tense (or None).
             For example: be
-            - present 1sg/2sg/3sg/pl => I am, you are, she is, we are
-            - present participle => being,
-            - past => I was, you were, he was, we were
-            - past participle => been,
-            - negated present => I am not, you aren't, it isn't.
+            - Verbs.conjugate("be", PRESENT, 1, SINGULAR) => I am
+            - Verbs.conjugate("be", PRESENT, 1, PLURAL) => we are
+            - Verbs.conjugate("be", PAST, 3, SINGULAR) => he was
+            - Verbs.conjugate("be", PAST, aspect=PROGRESSIVE) => been
+            - Verbs.conjugate("be", PAST, person=1, negated=True) => I wasn't
         """
-        # Disambiguate aliases: "pl" => "present plural".
+        id = tense_id(*args, **kwargs)
         # Get the associated tense index from the format description.
         # If that particular field is empty in verbs.txt, try a default.
         # Or another default for an empty default.
-        id = tense_id.get(tense.lower(), None)
-        id = (id, tense_id_negated.get(id))[int(negated)]
         i1 = self._format.get(id)
         i2 = self._format.get(self._default.get(id))
         i3 = self._format.get(self._default.get(self._default.get(id)))
-        b = self.lemma(verb, parse=parse)
+        b = self.lemma(verb, parse=kwargs.get("parse", True))
         v = []
+        # Get the verb lexeme and return the right field.
         if b in self._tenses:
             v = self._tenses[b]
             for i in (i1, i2, i3):
                 if i is not None and 0 <= i < len(v) and v[i]:
                     return v[i]
-        if parse is True: # rule-based
+        if kwargs.get("parse", True) is True: # rule-based
             v = self.parse_lexeme(b)
             for i in (i1, i2, i3):
                 if i is not None and 0 <= i < len(v) and v[i]:
@@ -878,8 +914,8 @@ class Verbs:
         elif parse is True: # rule-based
             v = self.parse_lexeme(b)
         # For each tense in the verb lexeme that matches the given tense,
-        # retrieve the tense name,
-        # retrieve the tense names for which that tense is a default.
+        # retrieve the tense tuple,
+        # retrieve the tense tuples for which that tense is a default.
         for i, tense in enumerate(v):
             if tense == verb:
                 for id, index in self._format.items():
@@ -891,23 +927,18 @@ class Verbs:
                 for id1, id2 in self._default.items():
                     if id2 in a:
                         a.add(id1)
-        a = (TENSES[id][0] for id in a)
+        a = (TENSES[id][:-2] for id in a)
         a = Tenses(sorted(a))
         return a
 
 class Tenses(list):
     def __contains__(self, tense):
         # t in tenses(verb) also works when t is an alias (e.g. "1sg").
-        return list.__contains__(self, TENSES[tense_id.get(tense)][0])
+        return list.__contains__(self, TENSES[tense_id(tense)][:-2])
 
 _verbs = VERBS = Verbs()
 conjugate, lemma, lexeme, tenses = \
     _verbs.conjugate, _verbs.lemma, _verbs.lexeme, _verbs.tenses
-
-#print conjugate("is", "ppart")
-#print lemma("went")
-#print lexeme("have")
-#print tenses("have")
 
 #--- RULE-BASED VERB CONJUGATION -------------------------------------------------------------------
 
@@ -1005,7 +1036,7 @@ _verbs.parse_lexeme = _parse_lexeme
 #_verbs.load()
 #i = 0
 #n = 0
-#for v, x1 in _verbs._tenses.iteritems():
+#for v, x1 in _verbs._tenses.items():
 #    x2 = _parse_lexeme(v)
 #    for j in range(len(x2)):
 #        if x1[j] and x1[j] == x2[j] or x1[j] == "" and x1[j>5 and 10 or 0] == x2[j]: i+=1
