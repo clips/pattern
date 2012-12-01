@@ -55,6 +55,8 @@ setup(
         "pattern.text.en.wordlist"  : ["*.txt"],
         "pattern.text.en.wordnet"   : ["*.txt", "dict/*"],
         "pattern.text.en.wordnet.pywordnet" : ["*"],
+        "pattern.text.es.parser"    : ["*.txt", "*.xml"],
+        "pattern.text.es.inflect"   : ["*.txt"],
         "pattern.text.nl.parser"    : ["*.txt", "*.xml"],
         "pattern.text.nl.inflect"   : ["*.txt"],
         "pattern.vector"            : ["*.txt"],

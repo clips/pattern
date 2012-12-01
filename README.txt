@@ -54,7 +54,9 @@ Pattern is bundled with the following algorithms and Python packages:
 - Brill tagger, Eric Brill
 - Brill tagger for Dutch, Jeroen Geertzen,
 - Brill tagger for German, Gerold Schneider & Martin Volk
+- Brill tagger for Spanish, trained on Wikicorpus (Samuel Reese & Gemma Boleda et al.)
 - English pluralization, Damian Conway
+- Spanish verb inflection, Fred Jehle
 - Graph JavaScript framework, Aslak Hellesoy & Dave Hoover
 - LIBSVM, Chih-Chung Chang & Chih-Jen Lin
 - NetworkX centrality, Aric Hagberg, Dan Schult & Pieter Swart
@@ -70,7 +72,7 @@ ACKNOWLEDGEMENTS
 
 Authors: 
 - Tom De Smedt (tom@organisms.be)
-- Walter Daelemans
+- Walter Daelemans (walter.daelemans@ua.ac.be)
 
 Contributors (chronological):
 - Frederik De Bleser
@@ -90,3 +92,5 @@ Contributors (chronological):
 - Martin Volk
 - Samuel Joseph
 - Shubhanshu Mishra
+- Robert Elwell
+- Fred Jehle
