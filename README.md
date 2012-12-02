@@ -46,7 +46,7 @@ If none of the above works, you can make Python aware of the module in three way
 ```python
   MODULE = '/users/tom/desktop/pattern'
   import sys; if MODULE not in sys.path: sys.path.append(MODULE)
-  from pattern.en import parse, Sentence
+  from pattern.en import parsetree
 ```
 
 Documentation
@@ -59,14 +59,19 @@ Reference
 
 De Smedt, T., Daelemans, W. (2012). Pattern for Python. *Journal of Machine Learning Research, 13*, 2031–2035.
 
+Contribute
+----------
+
+The source code is hosted on GitHub and contributions are welcomed. See the developer page in the documentation. There is also a donate button (PayPal) on the main documentation page. If you use Pattern in your work, please cite our reference paper.
+
 Bundled dependencies
 --------------------
 
-Pattern is bundled with the following algorithms and Python packages: 
+Pattern is bundled with the following data sets, algorithms and Python packages:
 
 - **Beautiful Soup**, Leonard Richardson
 - **Brill tagger**, Eric Brill
-- **Brill tagger for Dutch**, Jeroen Geertzen,
+- **Brill tagger for Dutch**, Jeroen Geertzen
 - **Brill tagger for German**, Gerold Schneider & Martin Volk
 - **Brill tagger for Spanish**, trained on Wikicorpus (Samuel Reese & Gemma Boleda et al.)
 - **English pluralization**, Damian Conway
