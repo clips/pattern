@@ -296,7 +296,12 @@ def mean(list):
     """ Returns the arithmetic mean of the given list of values.
         For example: mean([1,2,3,4]) = 10/4 = 2.5.
     """
-    return float(sum(list)) / (len(list) or 1)
+    s = 0
+    n = 0
+    for x in list:
+        s += x
+        n += 1
+    return float(s) / (n or 1)
 
 avg = mean
 
