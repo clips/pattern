@@ -205,7 +205,7 @@ DEFAULT = {}
 
 # Load the pattern.en.Verbs class, with a Spanish lexicon instead.
 # Lexicon was mined from the Web and contains 570 frequent verbs (290 regular -ar, -er, -ir):
-# Spanish Verb Forms, F. F. Jehle (2012).
+# Spanish Verb Forms, Fred F. Jehle (2012).
 # http://users.ipfw.edu/jehle/verblist.htm
 _verbs = VERBS = Verbs(os.path.join(MODULE, "verbs.txt"), FORMAT, DEFAULT, language="es")
 
