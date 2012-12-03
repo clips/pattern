@@ -1,3 +1,4 @@
+;;;   
 ;;;   The lexicon was trained with NLTK on the Spanish portion of Wikicorpus v.1.0,
 ;;;   using 1.5M words from the tagged sections 10000-15000.
 ;;;   

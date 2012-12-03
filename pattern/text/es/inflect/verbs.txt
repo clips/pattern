@@ -1,3 +1,9 @@
+;;;   
+;;;   The lexicon was mined from the Web:
+;;;   Spanish Verb Forms, Fred F. Jehle (2012)
+;;;   http://users.ipfw.edu/jehle/verblist.htm
+;;;   Used with permission.
+;;;   
 abandonar,abandono,abandonas,abandona,abandonamos,abandonáis,abandonan,abandonando,abandoné,abandonaste,abandonó,abandonamos,abandonasteis,abandonaron,abandonado,abandonaba,abandonabas,abandonaba,abandonábamos,abandonabais,abandonaban,abandonaré,abandonarás,abandonará,abandonaremos,abandonaréis,abandonarán,abandonaría,abandonarías,abandonaría,abandonaríamos,abandonaríais,abandonarían,abandona,abandonad,abandone,abandones,abandone,abandonemos,abandonéis,abandonen,abandonara,abandonaras,abandonara,abandonáramos,abandonarais,abandonaran
 abordar,abordo,abordas,aborda,abordamos,abordáis,abordan,abordando,abordé,abordaste,abordó,abordamos,abordasteis,abordaron,abordado,abordaba,abordabas,abordaba,abordábamos,abordabais,abordaban,abordaré,abordarás,abordará,abordaremos,abordaréis,abordarán,abordaría,abordarías,abordaría,abordaríamos,abordaríais,abordarían,aborda,abordad,aborde,abordes,aborde,abordemos,abordéis,aborden,abordara,abordaras,abordara,abordáramos,abordarais,abordaran
 abortar,aborto,abortas,aborta,abortamos,abortáis,abortan,abortando,aborté,abortaste,abortó,abortamos,abortasteis,abortaron,abortado,abortaba,abortabas,abortaba,abortábamos,abortabais,abortaban,abortaré,abortarás,abortará,abortaremos,abortaréis,abortarán,abortaría,abortarías,abortaría,abortaríamos,abortaríais,abortarían,aborta,abortad,aborte,abortes,aborte,abortemos,abortéis,aborten,abortara,abortaras,abortara,abortáramos,abortarais,abortaran
