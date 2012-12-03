@@ -34,6 +34,8 @@ setup(
         "pattern.text.en.wordlist",
         "pattern.text.en.wordnet", 
         "pattern.text.en.wordnet.pywordnet",
+        "pattern.text.es.inflect", 
+        "pattern.text.es.parser", 
         "pattern.text.nl",
         "pattern.text.nl.parser",
         "pattern.text.nl.inflect",
@@ -65,7 +67,6 @@ setup(
     },
     py_modules = [
         "pattern.metrics",
-        "pattern.table", 
         "pattern.text.search"
     ],
     classifiers = [
@@ -77,6 +78,7 @@ setup(
         "Natural Language :: Dutch",
         "Natural Language :: English",
         "Natural Language :: German",
+        "Natural Language :: Spanish",
         "Operating System :: OS Independent",
         "Programming Language :: JavaScript",
         "Programming Language :: Python",
