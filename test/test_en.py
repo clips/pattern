@@ -10,7 +10,7 @@ try:
     PATH = os.path.dirname(os.path.abspath(__file__))
 except:
     PATH = ""
-
+    
 #---------------------------------------------------------------------------------------------------
 
 class TestInflection(unittest.TestCase):
@@ -813,15 +813,15 @@ class TestSentiment(unittest.TestCase):
         # http://www.cs.cornell.edu/people/pabo/movie-review-data/
         # The baseline should increase (not decrease) when the algorithm is modified.
         from pattern.db import Datasheet
-        from pattern.metrics import test
+        from pattern.metrics import test        
         reviews = []
         for score, review in Datasheet.load(os.path.join(PATH, "corpora", "polarity-en-pang&lee.csv")):
             reviews.append((review, int(score) > 0))
         A, P, R, F = test(lambda review: en.positive(review), reviews)
-        self.assertTrue(A > 0.71)
-        self.assertTrue(P > 0.72)
-        self.assertTrue(R > 0.70)
-        self.assertTrue(F > 0.71)
+        self.assertTrue(A > 0.73)
+        self.assertTrue(P > 0.73)
+        self.assertTrue(R > 0.73)
+        self.assertTrue(F > 0.73)
         print "pattern.en.sentiment()"
         
     def test_sentiment_assessment(self):
