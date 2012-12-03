@@ -72,35 +72,3 @@ def positive(s, threshold=0.1, **kwargs):
 #print sentiment("volkomen goed")      # (+1.0, 1.0)
 #print sentiment("volkomen niet goed") # (-1.0, 1.0)
 #print sentiment("niet volkomen goed") # (-0.3, 0.5)
-#
-# Evaluation.
-
-#import sys; sys.path.append(os.path.join("..","..",".."))
-#from pattern.db import Datasheet
-#from pattern.metrics import test
-#from random import shuffle
-#from time import time
-#
-#def shuffled(list):
-#    shuffle(list); return list
-#
-#reviews = {}
-#for row in Datasheet.load("reviews.txt")[14000:]:
-#    # (id, book_title, score, review_title, review)
-#    score, title, review = int(row[2]), row[3], row[4]
-#    reviews.setdefault(score, []).append(title+" "+review)
-## Divide evenly between positive (4,5) and negative (1,2).
-#m = min(len(a) for a in reviews.values())
-#
-#F = []
-#for i in range(10):
-#    t = time()
-#    subset = []
-#    for score, r in reviews.items():
-#        subset.extend((score, review) for review in shuffled(r)[:m] if score != 3)
-#    documents = [(review, score > 3) for score, review in subset]
-#    F.append([f for f in test(lambda document: positive(document), documents)]) # A P R F1
-#    print i, time()-t
-#    
-#F = [float(sum(row[i] for row in F)) / len(F) for i in range(len(F[0]))]
-#print ["%.3f" % v for v in F]
