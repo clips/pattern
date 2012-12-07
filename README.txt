@@ -48,7 +48,7 @@ De Smedt, T., Daelemans, W. (2012). Pattern for Python. Journal of Machine Learn
 CONTRIBUTE
 ==========
 
-The source code is hosted on GitHub and contributions are welcomed. See the developer page in the documentation. There is also a donate button (PayPal) on the main documentation page. If you use Pattern in your work, please cite our reference paper.
+The source code is hosted on GitHub and contributions or donations are welcomed, see the developer documentation (http://www.clips.ua.ac.be/pages/pattern#contribute). If you use Pattern in your work, please cite our reference paper.
 
 BUNDLED DEPENDENCIES
 ====================

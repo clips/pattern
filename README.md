@@ -2,12 +2,13 @@ Pattern
 =======
 
 Pattern is a web mining module for the Python programming language. It bundles tools for:
+
  * Data Mining: Google + Twitter + Wikipedia API, web spider, HTML DOM parser
  * Natural Language Processing: tagger/chunker, n-gram search, sentiment analysis, WordNet
  * Machine Learning: vector space model, *k*-means clustering, Naive Bayes + *k*-NN + SVM classiﬁers
  * Network Analysis: graph centrality and visualization.
 
-It is well documented and bundled with 30+ examples and 350+ unit tests. The source code is licensed under BSD and available from http://www.clips.ua.ac.be/pages/pattern.
+It is well documented and bundled with 30+ examples and 350+ unit tests. The source code is licensed under BSD and available from <http://www.clips.ua.ac.be/pages/pattern>.
 
 ![Pattern example workflow](http://www.clips.ua.ac.be/media/pattern_schema.gif)
 
@@ -52,7 +53,7 @@ If none of the above works, you can make Python aware of the module in three way
 Documentation
 -------------
 
-http://www.clips.ua.ac.be/pages/pattern
+<http://www.clips.ua.ac.be/pages/pattern>
 
 Reference
 ---------
@@ -62,7 +63,7 @@ De Smedt, T., Daelemans, W. (2012). Pattern for Python. *Journal of Machine Lear
 Contribute
 ----------
 
-The source code is hosted on GitHub and contributions are welcomed. See the developer page in the documentation. There is also a donate button (PayPal) on the main documentation page. If you use Pattern in your work, please cite our reference paper.
+The source code is hosted on GitHub and contributions or donations are welcomed, see the [developer documentation](http://www.clips.ua.ac.be/pages/pattern#contribute). If you use Pattern in your work, please cite our reference paper.
 
 Bundled dependencies
 --------------------
