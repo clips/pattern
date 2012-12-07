@@ -243,8 +243,8 @@ class Score(tuple):
         """
         self.assessments = a = [(" ".join(a.chunk), a.p*a.n, a.s) for a in assessments] # (chunk, polarity, subjectivity)
         return tuple.__new__(self, [
-            max(-1.0, min(+1.0, sum(column(a,1)) / (len(a) or 1))), 
-            max(-1.0, min(+1.0, sum(column(a,2)) / (len(a) or 1)))])
+            max(-1.0, min(+1.0, sum(column(a,1)) / (len(a) or 1.0))), 
+            max(-1.0, min(+1.0, sum(column(a,2)) / (len(a) or 1.0)))])
 
 def sentiment(s, **kwargs):
     """ Returns a (polarity, subjectivity)-tuple for the given sentence, 

@@ -172,6 +172,7 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="apposite" cornetto_id="" cornetto_synset_id="n_a-530917" wordnet_id="a-00138314" pos="JJ" sense="being of striking appropriateness and pertinence" polarity="0.4" subjectivity="0.8" intensity="1.0" reliability="0.8" />
 <word form="apposite" cornetto_id="" cornetto_synset_id="n_a-531221" wordnet_id="a-00138314" pos="JJ" sense="being of striking appropriateness and pertinence" polarity="0.4" subjectivity="0.8" intensity="1.0" reliability="0.8" />
 <word form="apposite" cornetto_id="" cornetto_synset_id="n_a-531221" wordnet_id="a-00138314" pos="JJ" sense="being of striking appropriateness and pertinence" polarity="0.4" subjectivity="0.9" intensity="1.0" reliability="0.8" />
+<word form="appreciated" cornetto_id="" cornetto_synset_id="" wordnet_id="a-1378429" pos="JJ" sense="fully understood or grasped" polarity="0.2" subjectivity="0.1" intensity="1.0" reliability="0.9" />
 <word form="appreciative" cornetto_id="" cornetto_synset_id="n_a-506396" wordnet_id="a-00774676" pos="JJ" sense="having or showing appreciation or a favorable critical judgment or opinion" polarity="0.6" subjectivity="0.9" intensity="1.0" reliability="0.8" />
 <word form="approaching" cornetto_id="" cornetto_synset_id="n_a-501802" wordnet_id="a-01732601" pos="JJ" sense="of the relatively near future" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.8" />
 <word form="appropriate" cornetto_id="" cornetto_synset_id="n_a-510404" wordnet_id="a-00134701" pos="JJ" sense="suitable for a particular person or place or condition etc" polarity="0.5" subjectivity="0.5" intensity="1.0" reliability="0.9" />
@@ -536,6 +537,8 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="competent" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00051571" pos="JJ" sense="adequate for the purpose" polarity="0.5" subjectivity="0.5" intensity="1.0" reliability="0.9" />
 <word form="competent" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00510050" pos="JJ" sense="properly or sufficiently qualified or capable or efficient" polarity="0.5" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="competent" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00512130" pos="JJ" sense="legally qualified or sufficient" polarity="0.5" subjectivity="0.5" intensity="1.0" reliability="0.9" />
+<word form="complained" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="VB" sense="" polarity="-0.3" subjectivity="0.2" intensity="1.0" reliability="0.9" />
+<word form="complaint" cornetto_id="" cornetto_synset_id="" wordnet_id="n-7208708" pos="NN" sense="an expression of grievance or resentment" polarity="-0.3" subjectivity="0.2" intensity="1.0" reliability="0.9" />
 <word form="complete" cornetto_id="" cornetto_synset_id="n_a-533538" wordnet_id="a-00520214" pos="JJ" sense="having every necessary or normal part or component or step" polarity="0.1" subjectivity="0.4" intensity="1.0" reliability="0.8" />
 <word form="complete" cornetto_id="" cornetto_synset_id="n_a-533538" wordnet_id="a-00520214" pos="JJ" sense="having every necessary or normal part or component or step" polarity="0.1" subjectivity="0.4" intensity="1.0" reliability="0.8" />
 <word form="complete" cornetto_id="" cornetto_synset_id="n_a-533538" wordnet_id="a-00520214" pos="JJ" sense="having every necessary or normal part or component or step" polarity="0.1" subjectivity="0.4" intensity="1.0" reliability="0.8" />
@@ -647,6 +650,7 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="cozy" cornetto_id="" cornetto_synset_id="n_a-527962" wordnet_id="a-00477284" pos="JJ" sense="enjoying or affording comforting warmth and shelter especially in a small space" polarity="-0.6" subjectivity="0.7" intensity="1.0" reliability="0.8" />
 <word form="crafty" cornetto_id="" cornetto_synset_id="n_a-510849" wordnet_id="a-00148078" pos="JJ" sense="marked by skill in deception" polarity="0.4" subjectivity="0.9" intensity="1.0" reliability="0.8" />
 <word form="crafty" cornetto_id="" cornetto_synset_id="n_a-520935" wordnet_id="a-00148078" pos="JJ" sense="marked by skill in deception" polarity="0.4" subjectivity="0.9" intensity="1.0" reliability="0.8" />
+<word form="crap" cornetto_id="" cornetto_synset_id="" wordnet_id="n-14854581" pos="NN" sense="obscene terms for feces" polarity="-0.8" subjectivity="0.8" intensity="1.0" reliability="0.9" />
 <word form="crazy" cornetto_id="" cornetto_synset_id="n_a-509995" wordnet_id="a-01836766" pos="JJ" sense="foolish" polarity="-0.2" subjectivity="0.9" intensity="1.0" reliability="0.8" />
 <word form="crazy" cornetto_id="" cornetto_synset_id="n_a-509995" wordnet_id="a-01836766" pos="JJ" sense="foolish" polarity="-0.8" subjectivity="1.0" intensity="1.0" reliability="0.8" />
 <word form="crazy" cornetto_id="" cornetto_synset_id="n_a-509995" wordnet_id="a-01836766" pos="JJ" sense="foolish" polarity="0.1" subjectivity="1.0" intensity="1.0" reliability="0.8" />
@@ -676,6 +680,7 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="crude" cornetto_id="" cornetto_synset_id="n_a-523583" wordnet_id="a-00683531" pos="JJ" sense="conspicuously and tastelessly indecent" polarity="-0.5" subjectivity="0.9" intensity="1.0" reliability="0.8" />
 <word form="crude" cornetto_id="" cornetto_synset_id="n_a-523583" wordnet_id="a-00683531" pos="JJ" sense="conspicuously and tastelessly indecent" polarity="-0.7" subjectivity="1.0" intensity="1.0" reliability="0.8" />
 <word form="cruel" cornetto_id="" cornetto_synset_id="c_182" wordnet_id="a-01263013" pos="JJ" sense="(of persons or their actions) able or disposed to inflict pain or suffering" polarity="-1.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
+<word form="crushed" cornetto_id="" cornetto_synset_id="" wordnet_id="a-2240668" pos="JJ" sense="treated so as to have a permanently wrinkled appearance" polarity="-0.1" subjectivity="0.1" intensity="1.0" reliability="0.9" />
 <word form="crushing" cornetto_id="" cornetto_synset_id="n_a-522429" wordnet_id="a-00587697" pos="JJ" sense="physically or spiritually devastating" polarity="0.4" subjectivity="0.9" intensity="1.0" reliability="0.8" />
 <word form="crying" cornetto_id="" cornetto_synset_id="n_a-511570" wordnet_id="a-00580039" pos="JJ" sense="conspicuously and outrageously bad or reprehensible" polarity="-0.2" subjectivity="0.6" intensity="1.0" reliability="0.8" />
 <word form="culinary" cornetto_id="" cornetto_synset_id="n_a-506204" wordnet_id="a-02707659" pos="JJ" sense="of or relating to or used in cooking" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.8" />
@@ -753,6 +758,7 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="deserving" cornetto_id="" cornetto_synset_id="n_a-534093" wordnet_id="a-02586206" pos="JJ" sense="worthy of being treated in a particular way" polarity="0.6" subjectivity="0.8" intensity="1.0" reliability="0.8" />
 <word form="desperate" cornetto_id="" cornetto_synset_id="d_a-9340" wordnet_id="a-00263463" pos="JJ" sense="showing extreme courage" polarity="-0.6" subjectivity="1.0" intensity="1.0" reliability="0.8" />
 <word form="desperate" cornetto_id="" cornetto_synset_id="d_a-9340" wordnet_id="a-00263463" pos="JJ" sense="showing extreme courage" polarity="-0.6" subjectivity="1.0" intensity="1.0" reliability="0.8" />
+<word form="destroying" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="VB" sense="" polarity="-0.2" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="destructive" cornetto_id="" cornetto_synset_id="n_a-520118" wordnet_id="a-00586183" pos="JJ" sense="causing destruction or much damage" polarity="-0.6" subjectivity="0.6" intensity="1.0" reliability="0.8" />
 <word form="destructive" cornetto_id="" cornetto_synset_id="n_a-520118" wordnet_id="a-00586183" pos="JJ" sense="causing destruction or much damage" polarity="-0.6" subjectivity="0.8" intensity="1.0" reliability="0.8" />
 <word form="destructive" cornetto_id="" cornetto_synset_id="n_a-520118" wordnet_id="a-00586183" pos="JJ" sense="causing destruction or much damage" polarity="-0.6" subjectivity="0.8" intensity="1.0" reliability="0.8" />
@@ -788,8 +794,10 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="dirty" cornetto_id="" cornetto_synset_id="d_a-9604" wordnet_id="a-00419289" pos="JJ" sense="soiled or likely to soil with dirt or grime" polarity="-0.8" subjectivity="0.9" intensity="1.0" reliability="0.8" />
 <word form="disabled" cornetto_id="" cornetto_synset_id="n_a-509936" wordnet_id="a-01019283" pos="JJ" sense="incapable of functioning as a consequence of injury or illness" polarity="-0.2" subjectivity="0.3" intensity="1.0" reliability="0.8" />
 <word form="disabled" cornetto_id="" cornetto_synset_id="n_a-509936" wordnet_id="a-01019283" pos="JJ" sense="incapable of functioning as a consequence of injury or illness" polarity="-0.4" subjectivity="0.7" intensity="1.0" reliability="0.8" />
+<word form="disappointed" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="JJ" sense="" polarity="-0.5" subjectivity="0.5" intensity="1.0" reliability="0.9" />
 <word form="disappointed" cornetto_id="" cornetto_synset_id="" wordnet_id="a-02333976" pos="JJ" sense="disappointingly unsuccessful" polarity="-1.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="disappointing" cornetto_id="" cornetto_synset_id="n_a-520738" wordnet_id="a-02082611" pos="JJ" sense="not up to expectations" polarity="-0.6" subjectivity="0.7" intensity="1.0" reliability="0.9" />
+<word form="disappointment" cornetto_id="" cornetto_synset_id="" wordnet_id="n-7540602" pos="NN" sense="a feeling of dissatisfaction that results when your expectations are not realized" polarity="-0.5" subjectivity="0.4" intensity="1.0" reliability="0.9" />
 <word form="disbelieving" cornetto_id="" cornetto_synset_id="n_a-526640" wordnet_id="a-00647247" pos="JJ" sense="denying or questioning the tenets of especially a religion" polarity="-0.1" subjectivity="0.8" intensity="1.0" reliability="0.8" />
 <word form="discourteous" cornetto_id="" cornetto_synset_id="c_340" wordnet_id="a-00640283" pos="JJ" sense="showing no courtesy" polarity="-0.7" subjectivity="1.0" intensity="1.0" reliability="0.8" />
 <word form="discourteous" cornetto_id="" cornetto_synset_id="n_a-521675" wordnet_id="a-00640283" pos="JJ" sense="showing no courtesy" polarity="-0.6" subjectivity="0.9" intensity="1.0" reliability="0.8" />
@@ -899,6 +907,7 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="effective" cornetto_id="" cornetto_synset_id="n_a-507125" wordnet_id="a-00834198" pos="JJ" sense="producing or capable of producing an intended result or having a striking effect" polarity="0.6" subjectivity="0.8" intensity="1.0" reliability="0.8" />
 <word form="effective" cornetto_id="" cornetto_synset_id="n_a-507125" wordnet_id="a-00834198" pos="JJ" sense="producing or capable of producing an intended result or having a striking effect" polarity="0.6" subjectivity="0.8" intensity="1.0" reliability="0.8" />
 <word form="effective" cornetto_id="" cornetto_synset_id="n_a-507125" wordnet_id="a-00834198" pos="JJ" sense="producing or capable of producing an intended result or having a striking effect" polarity="0.6" subjectivity="0.9" intensity="1.0" reliability="0.8" />
+<word form="effing" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="JJ" sense="" polarity="-0.5" subjectivity="0.7" intensity="1.0" reliability="0.9" />
 <word form="egoistic" cornetto_id="" cornetto_synset_id="d_a-9625" wordnet_id="a-00101800" pos="JJ" sense="limited to or caring only about yourself and your own needs" polarity="-0.9" subjectivity="1.0" intensity="1.0" reliability="0.8" />
 <word form="egoistic" cornetto_id="" cornetto_synset_id="n_a-508087" wordnet_id="a-00101800" pos="JJ" sense="limited to or caring only about yourself and your own needs" polarity="-0.7" subjectivity="1.0" intensity="1.0" reliability="0.8" />
 <word form="elaborate" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01795933" pos="JJ" sense="marked by complexity and richness of detail" polarity="0.5" subjectivity="1.0" intensity="1.0" reliability="0.9" />
@@ -1171,8 +1180,12 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="fringy" cornetto_id="" cornetto_synset_id="c_373" wordnet_id="a-00331889" pos="JJ" sense="at or constituting a border or edge" polarity="0.3" subjectivity="0.9" intensity="1.0" reliability="0.8" />
 <word form="frostbitten" cornetto_id="" cornetto_synset_id="n_a-513334" wordnet_id="a-01078673" pos="JJ" sense="injured by freezing or partial freezing" polarity="-0.4" subjectivity="0.7" intensity="1.0" reliability="0.8" />
 <word form="frostbitten" cornetto_id="" cornetto_synset_id="n_a-513334" wordnet_id="a-01078673" pos="JJ" sense="injured by freezing or partial freezing" polarity="-0.5" subjectivity="0.6" intensity="1.0" reliability="0.8" />
+<word form="frustrated" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="JJ" sense="" polarity="-0.7" subjectivity="0.2" intensity="1.0" reliability="0.9" />
 <word form="frustrating" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00867758" pos="JJ" sense="discouraging by hindering" polarity="-0.4" subjectivity="0.9" intensity="1.0" reliability="0.9" />
 <word form="frustrating" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01764745" pos="JJ" sense="preventing realization or attainment of a desire" polarity="-0.4" subjectivity="0.9" intensity="1.0" reliability="0.9" />
+<word form="fuck" cornetto_id="" cornetto_synset_id="" wordnet_id="n-846021" pos="NN" sense="slang for sexual intercourse" polarity="-0.4" subjectivity="0.6" intensity="1.0" reliability="0.9" />
+<word form="fucked" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="JJ" sense="" polarity="-0.6" subjectivity="0.7" intensity="1.0" reliability="0.9" />
+<word form="fucking" cornetto_id="" cornetto_synset_id="" wordnet_id="r-32705" pos="RB" sense="intensifier, very colloquial" polarity="-0.6" subjectivity="0.8" intensity="1.0" reliability="0.9" />
 <word form="full of life" cornetto_id="" cornetto_synset_id="c_384" wordnet_id="a-00119006" pos="JJ" sense="full of spirit" polarity="-0.2" subjectivity="0.9" intensity="1.0" reliability="0.8" />
 <word form="full" cornetto_id="" cornetto_synset_id="c_181" wordnet_id="a-01456710" pos="JJ" sense="(of sound) having marked deepness and body" polarity="0.4" subjectivity="0.7" intensity="1.0" reliability="0.8" />
 <word form="full" cornetto_id="" cornetto_synset_id="d_a-9588" wordnet_id="a-01083157" pos="JJ" sense="containing as much or as many as is possible or normal" polarity="0.3" subjectivity="0.4" intensity="1.0" reliability="0.8" />
@@ -1193,6 +1206,7 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="future" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01884353" pos="JJ" sense="effective in or looking toward the future" polarity="0.0" subjectivity="0.5" intensity="1.0" reliability="0.9" />
 <word form="future" cornetto_id="" cornetto_synset_id="" wordnet_id="a-02992914" pos="JJ" sense="a verb tense or other formation referring to events or states that have not yet happened" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="game" cornetto_id="" cornetto_synset_id="n_a-518167" wordnet_id="a-00263994" pos="JJ" sense="willing to face danger" polarity="-0.4" subjectivity="0.4" intensity="1.0" reliability="0.8" />
+<word form="gamechanger" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="0.3" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="gawky" cornetto_id="" cornetto_synset_id="d_a-9390" wordnet_id="a-01140896" pos="JJ" sense="lacking grace in movement or posture" polarity="-0.6" subjectivity="1.0" intensity="1.0" reliability="0.8" />
 <word form="gawky" cornetto_id="" cornetto_synset_id="d_a-9454" wordnet_id="a-01140896" pos="JJ" sense="lacking grace in movement or posture" polarity="-0.5" subjectivity="0.9" intensity="1.0" reliability="0.8" />
 <word form="gawky" cornetto_id="" cornetto_synset_id="d_a-9454" wordnet_id="a-01140896" pos="JJ" sense="lacking grace in movement or posture" polarity="-0.5" subjectivity="0.9" intensity="1.0" reliability="0.8" />
@@ -1285,11 +1299,18 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="grotesque" cornetto_id="" cornetto_synset_id="n_a-503484" wordnet_id="a-00221627" pos="JJ" sense="distorted and unnatural in shape or size" polarity="-1.0" subjectivity="1.0" intensity="1.0" reliability="0.8" />
 <word form="grotesque" cornetto_id="" cornetto_synset_id="n_a-503484" wordnet_id="a-00221627" pos="JJ" sense="distorted and unnatural in shape or size" polarity="-1.0" subjectivity="1.0" intensity="1.0" reliability="0.8" />
 <word form="grotesque" cornetto_id="" cornetto_synset_id="n_a-535905" wordnet_id="a-00221627" pos="JJ" sense="distorted and unnatural in shape or size" polarity="-0.1" subjectivity="1.0" intensity="1.0" reliability="0.8" />
+<word form="grr" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="UH" sense="" polarity="-0.7" subjectivity="0.8" intensity="1.0" reliability="0.9" />
+<word form="grrr" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="UH" sense="" polarity="-0.7" subjectivity="0.8" intensity="1.0" reliability="0.9" />
+<word form="grrrr" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="UH" sense="" polarity="-0.7" subjectivity="0.8" intensity="1.0" reliability="0.9" />
 <word form="grudging" cornetto_id="" cornetto_synset_id="d_a-9356" wordnet_id="a-01113636" pos="JJ" sense="petty or reluctant in giving or spending" polarity="-0.6" subjectivity="1.0" intensity="1.0" reliability="0.8" />
 <word form="gruesome" cornetto_id="" cornetto_synset_id="n_a-521565" wordnet_id="a-00195684" pos="JJ" sense="shockingly repellent" polarity="-1.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="guarded" cornetto_id="" cornetto_synset_id="n_a-533736" wordnet_id="a-00326202" pos="JJ" sense="prudent" polarity="0.4" subjectivity="0.6" intensity="1.0" reliability="0.8" />
 <word form="guilty" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00154583" pos="JJ" sense="showing a sense of guilt" polarity="-0.5" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="guilty" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01320988" pos="JJ" sense="responsible for or chargeable with a reprehensible act" polarity="-0.5" subjectivity="1.0" intensity="1.0" reliability="0.9" />
+<word form="haha" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="UH" sense="" polarity="0.2" subjectivity="0.3" intensity="1.0" reliability="0.9" />
+<word form="hahaha" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="UH" sense="" polarity="0.2" subjectivity="0.4" intensity="1.0" reliability="0.9" />
+<word form="hahahaha" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="UH" sense="" polarity="0.2" subjectivity="0.5" intensity="1.0" reliability="0.9" />
+<word form="hahahahaha" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="UH" sense="" polarity="0.2" subjectivity="0.6" intensity="1.0" reliability="0.9" />
 <word form="half" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00517554" pos="JJ" sense="consisting of one of two equivalent parts in value or quantity" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="half" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00518035" pos="JJ" sense="(of siblings) related through one parent only" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="half" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00524496" pos="JJ" sense="partial" polarity="-0.5" subjectivity="0.5" intensity="1.0" reliability="0.9" />
@@ -1315,6 +1336,7 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="hard" cornetto_id="" cornetto_synset_id="n_a-513802" wordnet_id="a-00836544" pos="JJ" sense="characterized by effort to the point of exhaustion" polarity="-0.5" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="hard" cornetto_id="" cornetto_synset_id="n_a-528549" wordnet_id="a-01069715" pos="JJ" sense="dried out" polarity="-0.5" subjectivity="0.5" intensity="1.0" reliability="0.9" />
 <word form="hard" cornetto_id="" cornetto_synset_id="n_a-529210" wordnet_id="a-02286294" pos="JJ" sense="produced without vibration of the vocal cords" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
+<word form="harder" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="JJ" sense="" polarity="-0.1" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="harsh" cornetto_id="" cornetto_synset_id="n_a-508890" wordnet_id="a-01803792" pos="JJ" sense="disagreeable to the senses" polarity="-0.2" subjectivity="0.7" intensity="1.0" reliability="0.8" />
 <word form="hate" cornetto_id="" cornetto_synset_id="" wordnet_id="v-1774136" pos="VB" sense="dislike intensely" polarity="-0.8" subjectivity="0.9" intensity="1.0" reliability="0.9" />
 <word form="hated" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="VB" sense="" polarity="-0.9" subjectivity="0.7" intensity="1.0" reliability="0.9" />
@@ -1513,6 +1535,8 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="irritating" cornetto_id="" cornetto_synset_id="" wordnet_id="a-478685" pos="JJ" sense="causing physical discomfort" polarity="-0.4" subjectivity="0.8" intensity="1.0" reliability="0.9" />
 <word form="isn't" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="VB" sense="" polarity="-0.2" subjectivity="0.1" intensity="1.0" reliability="0.9" />
 <word form="italian" cornetto_id="" cornetto_synset_id="" wordnet_id="a-02957066" pos="JJ" sense="of or pertaining to or characteristic of Italy or its people or culture or language" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
+<word form="jackass" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.5" subjectivity="0.9" intensity="1.0" reliability="0.9" />
+<word form="jackasses" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NNS" sense="" polarity="-0.5" subjectivity="0.9" intensity="1.0" reliability="0.9" />
 <word form="jammed" cornetto_id="" cornetto_synset_id="n_a-529021" wordnet_id="a-00560100" pos="JJ" sense="filled to capacity" polarity="-0.1" subjectivity="0.6" intensity="1.0" reliability="0.8" />
 <word form="japanese" cornetto_id="" cornetto_synset_id="n_a-500510" wordnet_id="a-02965043" pos="JJ" sense="of or relating to or characteristic of Japan or its people or their culture or language" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="jewish" cornetto_id="" cornetto_synset_id="n_a-500503" wordnet_id="a-02922263" pos="JJ" sense="of or relating to Jews or their culture or religion" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
@@ -1618,6 +1642,7 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="lively" cornetto_id="" cornetto_synset_id="d_a-9285" wordnet_id="a-00804371" pos="JJ" sense="filled with events or activity" polarity="0.6" subjectivity="1.0" intensity="1.0" reliability="0.8" />
 <word form="lively" cornetto_id="" cornetto_synset_id="d_a-9285" wordnet_id="a-00804371" pos="JJ" sense="filled with events or activity" polarity="0.8" subjectivity="0.9" intensity="1.0" reliability="0.8" />
 <word form="lively" cornetto_id="" cornetto_synset_id="n_a-528047" wordnet_id="a-00804371" pos="JJ" sense="filled with events or activity" polarity="0.6" subjectivity="0.9" intensity="1.0" reliability="0.8" />
+<word form="lmao" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="UH" sense="" polarity="0.6" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="local" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01106405" pos="JJ" sense="relating to or applicable to or concerned with the administration of a city or town or district rather than a larger area" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="local" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01425529" pos="JJ" sense="affecting only a restricted part or area of the body" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="local" cornetto_id="" cornetto_synset_id="" wordnet_id="a-02756346" pos="JJ" sense="of or belonging to or characteristic of a particular locality or neighborhood" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
@@ -1625,6 +1650,8 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="logical" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01925708" pos="JJ" sense="capable of thinking and expressing yourself in a clear and consistent manner" polarity="0.5" subjectivity="0.5" intensity="1.0" reliability="0.9" />
 <word form="logical" cornetto_id="" cornetto_synset_id="" wordnet_id="a-02499301" pos="JJ" sense="based on known statements or events or conditions" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="logical" cornetto_id="" cornetto_synset_id="n_a-524375" wordnet_id="a-00464513" pos="JJ" sense="marked by an orderly, logical, and aesthetically consistent relation of parts" polarity="0.5" subjectivity="0.5" intensity="1.0" reliability="0.9" />
+<word form="lol" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="UH" sense="" polarity="0.8" subjectivity="0.7" intensity="1.0" reliability="0.9" />
+<word form="lolol" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="UH" sense="" polarity="0.8" subjectivity="0.8" intensity="1.0" reliability="0.9" />
 <word form="lonely" cornetto_id="" cornetto_synset_id="n_a-508013" wordnet_id="a-00704360" pos="JJ" sense="marked by dejection from being alone" polarity="-0.6" subjectivity="0.8" intensity="1.0" reliability="0.8" />
 <word form="lonely" cornetto_id="" cornetto_synset_id="n_a-536020" wordnet_id="a-01313649" pos="JJ" sense="devoid of creatures" polarity="0.4" subjectivity="0.6" intensity="1.0" reliability="0.8" />
 <word form="long" cornetto_id="" cornetto_synset_id="d_a-9377" wordnet_id="a-01433493" pos="JJ" sense="primarily spatial sense" polarity="0.0" subjectivity="0.6" intensity="1.0" reliability="0.8" />
@@ -1789,6 +1816,7 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="miserable" cornetto_id="" cornetto_synset_id="" wordnet_id="a-02347086" pos="JJ" sense="of very poor quality or condition" polarity="-1.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="miserable" cornetto_id="" cornetto_synset_id="n_a-520627" wordnet_id="a-00107384" pos="JJ" sense="contemptibly small in amount" polarity="-1.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="miserable" cornetto_id="" cornetto_synset_id="n_a-535670" wordnet_id="a-01050890" pos="JJ" sense="deserving or inciting pity" polarity="-1.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
+<word form="missing" cornetto_id="" cornetto_synset_id="" wordnet_id="a-1450178" pos="JJ" sense="not able to be found" polarity="-0.2" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="missing" cornetto_id="" cornetto_synset_id="" wordnet_id="a-1450178" pos="JJ" sense="not able to be found" polarity="-0.2" subjectivity="0.1" intensity="1.0" reliability="0.9" />
 <word form="mixed" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01199083" pos="JJ" sense="consisting of a haphazard assortment of different kinds" polarity="0.0" subjectivity="0.5" intensity="1.0" reliability="0.9" />
 <word form="mixed" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01326652" pos="JJ" sense="involving or composed of different races" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
@@ -2098,6 +2126,7 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="professional" cornetto_id="" cornetto_synset_id="" wordnet_id="a-02556402" pos="JJ" sense="engaged in by members of a profession" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="professional" cornetto_id="" cornetto_synset_id="" wordnet_id="a-02839505" pos="JJ" sense="of or relating to a profession" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="professional" cornetto_id="" cornetto_synset_id="" wordnet_id="a-02839695" pos="JJ" sense="of or relating to or suitable as a profession" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
+<word form="profitering" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="VB" sense="" polarity="-0.3" subjectivity="0.2" intensity="1.0" reliability="0.9" />
 <word form="profound" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00693020" pos="JJ" sense="(of sleep) deep and complete" polarity="0.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="profound" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00693237" pos="JJ" sense="coming from deep within one" polarity="0.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="profound" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01512645" pos="JJ" sense="of the greatest intensity" polarity="0.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
@@ -2272,6 +2301,7 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="rightist" cornetto_id="" cornetto_synset_id="n_a-525199" wordnet_id="a-02030793" pos="JJ" sense="believing in or supporting tenets of the political right" polarity="-0.2" subjectivity="0.4" intensity="1.0" reliability="0.8" />
 <word form="risk-free" cornetto_id="" cornetto_synset_id="n_a-532179" wordnet_id="a-02058529" pos="JJ" sense="thought to be devoid of risk" polarity="0.4" subjectivity="0.6" intensity="1.0" reliability="0.8" />
 <word form="riveting" cornetto_id="" cornetto_synset_id="n_a-501243" wordnet_id="a-01344171" pos="JJ" sense="capable of arousing and holding the attention" polarity="0.5" subjectivity="1.0" intensity="1.0" reliability="0.9" />
+<word form="rofl" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="UH" sense="" polarity="0.8" subjectivity="0.9" intensity="1.0" reliability="0.9" />
 <word form="romantic" cornetto_id="" cornetto_synset_id="" wordnet_id="a-02789151" pos="JJ" sense="belonging to or characteristic of Romanticism or the Romantic Movement in the arts" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="romantic" cornetto_id="" cornetto_synset_id="n_a-502212" wordnet_id="a-01465214" pos="JJ" sense="expressive of or exciting sexual love or romance" polarity="0.5" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="romantic" cornetto_id="" cornetto_synset_id="n_a-526106" wordnet_id="a-01837182" pos="JJ" sense="not sensible about practical matters" polarity="-0.5" subjectivity="0.5" intensity="1.0" reliability="0.9" />
@@ -2372,6 +2402,7 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="sheer" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01907103" pos="JJ" sense="not mixed with extraneous elements" polarity="0.0" subjectivity="0.5" intensity="1.0" reliability="0.9" />
 <word form="sheer" cornetto_id="" cornetto_synset_id="n_a-509141" wordnet_id="a-02413390" pos="JJ" sense="so thin as to transmit light" polarity="0.0" subjectivity="0.5" intensity="1.0" reliability="0.9" />
 <word form="sheer" cornetto_id="" cornetto_synset_id="n_a-525079" wordnet_id="a-00520892" pos="JJ" sense="complete and without restriction or qualification" polarity="0.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
+<word form="shit" cornetto_id="" cornetto_synset_id="" wordnet_id="n-13555775" pos="NN" sense="a coarse term for defecation" polarity="-0.2" subjectivity="0.8" intensity="1.0" reliability="0.9" />
 <word form="shocked" cornetto_id="" cornetto_synset_id="n_a-530609" wordnet_id="a-00078576" pos="JJ" sense="struck with fear, dread, or consternation" polarity="-0.7" subjectivity="0.8" intensity="1.0" reliability="0.9" />
 <word form="shocking" cornetto_id="" cornetto_synset_id="" wordnet_id="a-02101757" pos="JJ" sense="glaringly vivid and graphic" polarity="-1.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="shocking" cornetto_id="" cornetto_synset_id="n_a-501305" wordnet_id="a-01549964" pos="JJ" sense="giving offense to moral sensibilities and injurious to reputation" polarity="-1.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
@@ -2590,9 +2621,15 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="subtle" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01745846" pos="JJ" sense="able to make fine distinctions" polarity="0.0" subjectivity="0.5" intensity="1.0" reliability="0.9" />
 <word form="suburban" cornetto_id="" cornetto_synset_id="" wordnet_id="a-02804590" pos="JJ" sense="relating to or characteristic of or situated in suburbs" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="succeeds" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="VB" sense="" polarity="0.7" subjectivity="0.1" intensity="1.0" reliability="0.9" />
+<word form="success" cornetto_id="" cornetto_synset_id="" wordnet_id="n-14474894" pos="NN" sense="a state of prosperity or fame" polarity="0.3" subjectivity="0.0" intensity="1.0" reliability="0.9" />
+<word form="success" cornetto_id="" cornetto_synset_id="" wordnet_id="n-63652" pos="NN" sense="an attainment that is successful" polarity="0.3" subjectivity="0.0" intensity="1.0" reliability="0.9" />
+<word form="success" cornetto_id="" cornetto_synset_id="" wordnet_id="n-7319103" pos="NN" sense="an event that accomplishes its intended purpose" polarity="0.3" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="successful" cornetto_id="" cornetto_synset_id="n_a-510582" wordnet_id="a-02331262" pos="JJ" sense="having succeeded or being marked by a favorable outcome" polarity="0.7" subjectivity="0.9" intensity="1.0" reliability="0.8" />
 <word form="successful" cornetto_id="" cornetto_synset_id="n_a-510582" wordnet_id="a-02331262" pos="JJ" sense="having succeeded or being marked by a favorable outcome" polarity="0.8" subjectivity="1.0" intensity="1.0" reliability="0.8" />
 <word form="such" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01554230" pos="JJ" sense="of so extreme a degree or extent" polarity="0.0" subjectivity="0.5" intensity="1.0" reliability="0.9" />
+<word form="sucker" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.3" subjectivity="0.8" intensity="1.0" reliability="0.9" />
+<word form="suckers" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NNS" sense="" polarity="-0.3" subjectivity="0.8" intensity="1.0" reliability="0.9" />
+<word form="sucks" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="VB" sense="" polarity="-0.3" subjectivity="0.3" intensity="1.0" reliability="0.9" />
 <word form="sudden" cornetto_id="" cornetto_synset_id="n_a-526962" wordnet_id="a-01143279" pos="JJ" sense="happening without warning or in a short space of time" polarity="0.0" subjectivity="0.5" intensity="1.0" reliability="0.9" />
 <word form="suffers" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="VB" sense="" polarity="-0.6" subjectivity="0.7" intensity="1.0" reliability="0.9" />
 <word form="suitable" cornetto_id="" cornetto_synset_id="d_a-9306" wordnet_id="a-01020885" pos="JJ" sense="meant or adapted for an occasion or use" polarity="0.5" subjectivity="0.7" intensity="1.0" reliability="0.8" />
@@ -2661,6 +2698,7 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="terrific" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01513619" pos="JJ" sense="very great or intense" polarity="0.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="terrific" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01676517" pos="JJ" sense="extraordinarily good or great " polarity="1.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="terrifying" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00196449" pos="JJ" sense="causing extreme terror" polarity="-1.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
+<word form="thanks" cornetto_id="" cornetto_synset_id="" wordnet_id="n-7228971" pos="NN" sense="an acknowledgment of appreciation" polarity="0.2" subjectivity="0.2" intensity="1.0" reliability="0.9" />
 <word form="theatrical" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00796047" pos="JJ" sense="suited to or characteristic of the stage or theater" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="theatrical" cornetto_id="" cornetto_synset_id="" wordnet_id="a-02813315" pos="JJ" sense="of or relating to the theater" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="thematic" cornetto_id="" cornetto_synset_id="" wordnet_id="a-02813680" pos="JJ" sense="relating to or constituting a topic of discourse" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
@@ -2868,6 +2906,8 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="urban" cornetto_id="" cornetto_synset_id="d_a-9532" wordnet_id="a-02052333" pos="JJ" sense="located in or characteristic of a city or city life" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="urban" cornetto_id="" cornetto_synset_id="n_a-528928" wordnet_id="a-02821071" pos="JJ" sense="relating to or concerned with a city or densely populated area" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="used to" cornetto_id="" cornetto_synset_id="n_a-510831" wordnet_id="a-00024619" pos="JJ" sense="in the habit" polarity="-0.1" subjectivity="0.7" intensity="1.0" reliability="0.8" />
+<word form="useful" cornetto_id="" cornetto_synset_id="" wordnet_id="a-2495922" pos="JJ" sense="being of use or service" polarity="0.3" subjectivity="0.0" intensity="1.0" reliability="0.9" />
+<word form="useless" cornetto_id="" cornetto_synset_id="" wordnet_id="a-2497141" pos="JJ" sense="having no beneficial use or incapable of functioning usefully" polarity="-0.5" subjectivity="0.2" intensity="1.0" reliability="0.9" />
 <word form="usual" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00489108" pos="JJ" sense="occurring or encountered or experienced or observed frequently or in accordance with regular practice or procedure" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="usual" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00970610" pos="JJ" sense="commonly encountered" polarity="-0.5" subjectivity="0.5" intensity="1.0" reliability="0.9" />
 <word form="utter" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00522349" pos="JJ" sense="complete" polarity="0.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
@@ -2936,6 +2976,7 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="western" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00825970" pos="JJ" sense="of or characteristic of regions of the United States west of the Mississippi River" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="western" cornetto_id="" cornetto_synset_id="n_a-500616" wordnet_id="a-00825089" pos="JJ" sense="relating to or characteristic of the western parts of the world or the West as opposed to the eastern or oriental parts" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="wet" cornetto_id="" cornetto_synset_id="d_a-9416" wordnet_id="a-02547317" pos="JJ" sense="covered or soaked with a liquid such as water" polarity="-0.1" subjectivity="0.4" intensity="1.0" reliability="0.8" />
+<word form="whaddupwitdat" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="UH" sense="" polarity="-0.1" subjectivity="0.3" intensity="1.0" reliability="0.9" />
 <word form="whimsical" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00719442" pos="JJ" sense="determined by chance or impulse or whim rather than by necessity or reason" polarity="-0.5" subjectivity="0.5" intensity="1.0" reliability="0.9" />
 <word form="white" cornetto_id="" cornetto_synset_id="n_a-535039" wordnet_id="a-00393105" pos="JJ" sense="being of the achromatic color of maximum lightness" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.8" />
 <word form="whole" cornetto_id="" cornetto_synset_id="d_a-9327" wordnet_id="a-00514884" pos="JJ" sense="including all components without exception" polarity="0.2" subjectivity="0.4" intensity="1.0" reliability="0.8" />
@@ -2953,6 +2994,7 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="womanly" cornetto_id="" cornetto_synset_id="d_a-9602" wordnet_id="a-01484987" pos="JJ" sense="befitting or characteristic of a woman especially a mature woman" polarity="0.0" subjectivity="0.6" intensity="1.0" reliability="0.8" />
 <word form="won't" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="VB" sense="" polarity="-0.1" subjectivity="0.2" intensity="1.0" reliability="0.9" />
 <word form="wonderful" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01676517" pos="JJ" sense="extraordinarily good or great " polarity="1.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
+<word form="wonky" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="JJ" sense="" polarity="-0.3" subjectivity="0.3" intensity="1.0" reliability="0.9" />
 <word form="wooden" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01141595" pos="JJ" sense="lacking ease or grace" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="wooden" cornetto_id="" cornetto_synset_id="" wordnet_id="a-02576489" pos="JJ" sense="made or consisting of (entirely or in part) or employing wood" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="workmanlike" cornetto_id="" cornetto_synset_id="n_a-532002" wordnet_id="a-00511037" pos="JJ" sense="worthy of a good workman" polarity="0.5" subjectivity="0.7" intensity="1.0" reliability="0.8" />
@@ -2965,7 +3007,9 @@ For English movie reviews, the accuracy is 73% (P 0.74, R 0.73, F1 0.73).
 <word form="worthy" cornetto_id="" cornetto_synset_id="" wordnet_id="a-00852197" pos="JJ" sense="worthy of being chosen especially as a spouse" polarity="0.0" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="worthy" cornetto_id="" cornetto_synset_id="" wordnet_id="a-01021120" pos="JJ" sense="having qualities or abilities that merit recognition in some way" polarity="0.5" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="worthy" cornetto_id="" cornetto_synset_id="" wordnet_id="a-02584981" pos="JJ" sense="having worth or merit or value" polarity="0.5" subjectivity="1.0" intensity="1.0" reliability="0.9" />
+<word form="wow" cornetto_id="" cornetto_synset_id="" wordnet_id="v-1770252" pos="VB" sense="impress greatly" polarity="0.1" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="wrong" cornetto_id="" cornetto_synset_id="c_577" wordnet_id="a-01881478" pos="JJ" sense="not in accord with established usage or procedure" polarity="-0.5" subjectivity="0.9" intensity="1.0" reliability="0.8" />
+<word form="wtf" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="UH" sense="" polarity="-0.5" subjectivity="1.0" intensity="1.0" reliability="0.9" />
 <word form="yellow" cornetto_id="" cornetto_synset_id="n_a-509864" wordnet_id="a-00385756" pos="JJ" sense="of the color intermediate between green and orange in the color spectrum" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.8" />
 <word form="young" cornetto_id="" cornetto_synset_id="d_a-9357" wordnet_id="a-01646941" pos="JJ" sense="(used of living things especially persons) in an early period of life or development or growth" polarity="0.1" subjectivity="0.4" intensity="1.0" reliability="0.8" />
 <word form="young" cornetto_id="" cornetto_synset_id="d_a-9357" wordnet_id="a-01646941" pos="JJ" sense="(used of living things especially persons) in an early period of life or development or growth" polarity="0.1" subjectivity="0.4" intensity="1.0" reliability="0.8" />
