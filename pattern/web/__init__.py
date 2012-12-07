@@ -2253,6 +2253,13 @@ class Element(Node):
         """
         return u(self._p)
     html = source
+    
+    def __getattr__(self, k):
+        if k in self.__dict__: 
+            return self.__dict__[k]
+        if k in self.attributes:
+            return self.attributes[k]
+        raise AttributeError, "'Element' object has no attribute '%s'" % k
 
     def __repr__(self):
         return "Element(tag='%s')" % bytestring(self.tagname)
