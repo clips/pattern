@@ -271,8 +271,8 @@ def intertextuality(texts=[], n=5, continuous=False, weight=lambda ngram: 1):
     for i, txt in enumerate(texts):
         for j, ngram in enumerate(ngrams(txt, n, continuous=continuous)):
             if ngram not in map:
-                map[ngram] = []
-            map[ngram].append(i)
+                map[ngram] = set()
+            map[ngram].add(i)
             sum[i] = sum.get(i, 0) + weight(ngram)
     w = defaultdict(Weight) # (id1, id2) => percentage of id1 that overlaps with id2
     for ngram in map:
@@ -285,7 +285,7 @@ def intertextuality(texts=[], n=5, continuous=False, weight=lambda ngram: 1):
                     w[i,j].assessments.add(ngram)
     for i, j in w:
         w[i,j] /= float(sum[i])
-        w[i,j]  = min(w[i,j], 1.0)
+        w[i,j]  = min(w[i,j], Weight(1.0))
     return w
 
 #### STATISTICS ####################################################################################

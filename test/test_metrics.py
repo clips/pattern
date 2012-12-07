@@ -145,10 +145,10 @@ class TestStringFunctions(unittest.TestCase):
         data = Datasheet.load(os.path.join(PATH, "corpora", "plagiarism-clough&stevenson.csv"))
         data = [((txt, src), int(plagiarism) > 0) for txt, src, plagiarism in data]
         def plagiarism(txt, src):
-            return metrics.intertextuality([txt, src], n=3)[0,1] > 0.1
+            return metrics.intertextuality([txt, src], n=3)[0,1] > 0.05
         A, P, R, F = metrics.test(lambda x: plagiarism(*x), data)
-        self.assertTrue(P > 0.98)
-        self.assertTrue(R > 0.91)
+        self.assertTrue(P > 0.96)
+        self.assertTrue(R > 0.94)
         print "pattern.metrics.intertextuality()"
 
 class TestStatistics(unittest.TestCase):
