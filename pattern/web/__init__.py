@@ -1436,29 +1436,30 @@ class MediaWiki(SearchEngine):
             return None
         return a
 
-    def list(self, namespace=0, limit=10, fromval="", **kwargs):
+    def list(self, namespace=0, limit=10, continue_query=False, **kwargs):
         """Allows you to iterate over all articles for a given namespace.
            This will be the best way to grab all data from a wiki, assuming
            you already know what the content namespaces are.
         """
-        if fromval != "":
-            limit = limit + 1
-
-        url = URL(self._url, method=GET, query={
+        params = {
             "action": "query",
               "list": "allpages",
          "namespace": namespace,
            "aplimit": limit,
-            "apfrom": fromval
-        })
+            "format": "json"
+        }
+        if continue_query:
+            params["apfrom"] = self.query_continue
+        url = URL(self._url, method=GET, query=params)
         data = url.download(cached=True, **kwargs)
         data = json.loads(data)
         listings = []
         for listing in data.get("query", {}).get("allpages", {}):
             title = listing.get("title", False)
             if title != False:
-                listings.push(title)
+                listings.append(title)
 
+        self.query_continue = data.get('query-continue', {}).get('allpages', {}).get('apfrom', '')
         return listings
 
 
@@ -1512,23 +1513,27 @@ class MediaWiki(SearchEngine):
 
 class MediaWikiArticleSet(object):
 
-    def __init__(self, mwSearchEngine, namespace=0, limit=10):
+    def __init__(self, mwSearchEngine, namespace=0, limit=10, iterationLimit=0):
         self.MediaWiki = mwSearchEngine
         self.namespace = namespace
         self.current = 0
         self.total = 0
         self.listings = []
         self.limit = limit
+        self.iterationLimit = iterationLimit
         self.page = None
-        self.listings = self.MediaWiki.list(self.namespace, '', self.total)
+        self.listings = self.MediaWiki.list(namespace=self.namespace, limit=self.limit)
 
     def __iter__(self):
         return self
 
     def next(self):
+        if self.total == self.iterationLimit and self.iterationLimit > 0:
+            raise StopIteration()
+
         if len(self.listings) == self.current:
             self.current = 0
-            self.listings = self.MediaWiki.list(self.namespace, self.page.title, self.total)
+            self.listings = self.MediaWiki.list(namespace=self.namespace, limit=self.limit, continue_query=True)
             if len(self.listings) == 0:
                 raise StopIteration()
 
