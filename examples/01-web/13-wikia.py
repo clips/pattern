@@ -1,7 +1,7 @@
 # -*- coding: utf-8 *-*
-import os, sys; sys.path.insert(0, os.path.join("..", ".."))
+import os, sys, pprint; sys.path.insert(0, os.path.join("..", ".."))
 
-from pattern.web import Wikia, MediaWikiArticleSet
+from pattern.web import Wikia, WikiaArticleSet, URLTimeout
 
 # This example retrieves an article from Wikipedia (http://en.wikipedia.org).
 # A query requests the article's HTML source from the server, which can be quite slow.
@@ -14,8 +14,11 @@ if len(sys.argv) > 1:
 
 engine = Wikia(language="en",domain=domain)
 
-set = MediaWikiArticleSet( engine, iterationLimit=200 )
+ArticleSet = WikiaArticleSet( engine, iterationLimit=200 )
 
-for page in set:
-    print page.title
-    print page.source
+counter = 0
+try:
+    for page in ArticleSet:
+        print counter, page.title
+except URLTimeout:
+    print "Timeout error."

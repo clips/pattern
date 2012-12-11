@@ -1537,9 +1537,12 @@ class MediaWikiArticleSet(object):
             if len(self.listings) == 0:
                 raise StopIteration()
 
-        self.page = self.MediaWiki.search(self.listings[self.current])
+        self.page = self.getPage()
         self.current, self.total = self.current + 1, self.total + 1
         return self.page
+
+    def getPage(self):
+        return self.MediaWiki.search(self.listings[self.current])
 
 
 class MediaWikiArticle:
@@ -1778,6 +1781,14 @@ class Wikia(MediaWiki):
         return s
 
     @property
+    def _wikiaUrl(self):
+        s = MEDIAWIKI
+        s = s.replace("{SUBDOMAIN}", self._subdomain)
+        s = s.replace("{DOMAIN}", "wikia.com")
+        s = s.replace("{API}", '/wikia.php')
+        return s
+
+    @property
     def MediaWikiArticle(self):
         return WikiaArticle
     @property
@@ -1787,6 +1798,57 @@ class Wikia(MediaWiki):
     def MediaWikiTable(self):
         return WikiaTable
 
+    def list(self, namespace=0, limit=10, continue_query=False, **kwargs):
+        """Allows you to iterate over all articles for a given namespace.
+           This will be the best way to grab all data from a wiki, assuming
+           you already know what the content namespaces are.
+           The Wikia version uses our search indexing API to provide multiple articles
+           at once to reduce bandwidth
+        """
+        params = {
+            "action": "query",
+              "list": "allpages",
+         "namespace": namespace,
+           "aplimit": limit,
+            "format": "json"
+        }
+        if continue_query:
+            params["apfrom"] = self.query_continue
+        url = URL(self._url, method=GET, query=params)
+        data = url.download(cached=True, **kwargs)
+        data = json.loads(data)
+        listings = []
+        for listing in data.get("query", {}).get("allpages", {}):
+            pageid = listing.get("pageid", False)
+            if pageid != False:
+                listings.append(pageid)
+
+        self.query_continue = data.get('query-continue', {}).get('allpages', {}).get('apfrom', '')
+
+        params = {
+        "controller": "WikiaSearch",
+            "method": "getPages",
+               "ids": '|'.join([str(listing) for listing in listings]),
+            "format": "json"
+        }
+
+        url = URL(self._wikiaUrl, method=GET, query=params)
+        # i know it's two minutes, but it's also ten pages
+        data = url.download(cached=True, timeout=120, **kwargs)
+        data = json.loads(data)
+
+        articles = []
+
+        for page in data.get("pages", {}).values():
+            if page.get('title', False) and page.get('html', False):
+                articles.append(WikiaArticle(title=page['title'], source=page['html']))
+
+        return articles
+
+
+class WikiaArticleSet(MediaWikiArticleSet):
+    def getPage(self):
+        return self.listings[self.current]
 
 class WikiaArticle(MediaWikiArticle):
     def __repr__(self):
