@@ -569,7 +569,7 @@ class Database(object):
     
     def create(self, table, fields=[], encoding="utf-8", **kwargs):
         """ Creates a new table with the given fields.
-            The given list of fields must contain values returned from the field() command.
+            The given list of fields must contain values returned from the field() function.
         """
         if table in self.tables:
             raise TableError, "table '%s' already exists" % (self.name + "." + table)
