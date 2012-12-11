@@ -18,40 +18,39 @@ if (!Array.prototype.indexOf) {
 }
 
 // Emulates Python dict.keys().
-function keys(object) {
+function _keys(object) {
     var v = [];
-    for (var k in object) 
-        v.push(k);
+    for (var k in object) { 
+        v.push(k); 
+    }
     return v;    
 }
 // Emulates Python dict.values().
-function values(object) {
+function _values(object) {
     var v = [];
-    for (var k in object) 
-        v.push(object[k]);
+    for (var k in object) { 
+        v.push(object[k]); 
+    }
     return v;    
 }
 
 // Emulates Python list.extend().
-function extend(array1, array2) {
+function _extend(array1, array2) {
     for (var i=0; i < array2.length; i++) {
         array1.push(array2[i]);
     }
     return array1;
 }
 
-function sum(array) {
+// Emulates Python sum(list).
+function _sum(array) {
     var n = 0;
     for (var i=0; i < array.length; i++) n += array[i]; 
     return n;
 }
 
-function choice(array) {
-    var i = Math.round(Math.random() * (array.length-1));
-    return array[i];
-}
-
-function unique(array) {
+// Returns a new array with unique items.
+function _unique(array) {
     array = array.slice();
     for (var i=array.length-1; i > 0; --i) {
         var v = array[i];
@@ -66,20 +65,20 @@ function unique(array) {
 
 /*--- MATH -----------------------------------------------------------------------------------------*/
 
-function degrees(radians) {
+function _degrees(radians) {
     return radians / Math.PI * 180;
 }
-function radians(degrees) {
+function _radians(degrees) {
     return degrees * Math.PI / 180;
 }
-function coordinates(x, y, distance, angle) {
-    return [x + distance * Math.cos(radians(angle)), 
-            y + distance * Math.sin(radians(angle))];
+function _coordinates(x, y, distance, angle) {
+    return [x + distance * Math.cos(_radians(angle)), 
+            y + distance * Math.sin(_radians(angle))];
 }
 
 /*--- MOUSE ----------------------------------------------------------------------------------------*/
 
-function unselectable(element) {
+function _unselectable(element) {
     /* Disables text selection on the given element (interferes with node dragging).
      */
     if (element) {
@@ -90,7 +89,7 @@ function unselectable(element) {
     }
 }
 
-function absOffset(element) {
+function _absOffset(element) {
     /* Returns the absolute position of the given element in the browser.
      */
     var x = y = 0;
@@ -103,9 +102,9 @@ function absOffset(element) {
     return [x,y];
 }
 
-var mouse = { 
+var _MOUSE = { 
     /* Global object that stores the mouse state.
-     * mouse.relative() returns the position from the top-left corner of the given element.
+     * _MOUSE.relative() returns the position from the top-left corner of the given element.
      */
            x: 0,
            y: 0,
@@ -116,15 +115,18 @@ var mouse = {
      pressed: false, 
      dragged: false, 
     relative: function(element) {
-        p = absOffset(element);
+        p = _absOffset(element);
         return {
-            x: mouse.x - p[0], 
-            y: mouse.y - p[1]
+            x: _MOUSE.x - p[0], 
+            y: _MOUSE.y - p[1]
         }
     }
 };
 
-function attachEvent(element, name, f) {
+function _attachEvent(element, name, f) {
+    /* Cross-browser event listener: 
+     * _attachEvent(window, "load", function(event) { ... });
+     */
     if (element.addEventListener) {
         element.addEventListener(name, f, false);
     } else if (element.attachEvent) {
@@ -134,27 +136,27 @@ function attachEvent(element, name, f) {
     }
 }
 
-attachEvent(document, "mousemove", function(e) {
-    mouse.x = e.pageX || (e.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft));
-    mouse.y = e.pageY || (e.clientY + (document.documentElement.scrollTop || document.body.scrollTop));
-    if (mouse.pressed) {
-        mouse.dragged = true;
-        mouse.dx = mouse.x - mouse._x0;
-        mouse.dy = mouse.y - mouse._y0;
+_attachEvent(document, "mousemove", function(e) {
+    _MOUSE.x = e.pageX || (e.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft));
+    _MOUSE.y = e.pageY || (e.clientY + (document.documentElement.scrollTop || document.body.scrollTop));
+    if (_MOUSE.pressed) {
+        _MOUSE.dragged = true;
+        _MOUSE.dx = _MOUSE.x - _MOUSE._x0;
+        _MOUSE.dy = _MOUSE.y - _MOUSE._y0;
     }
 });
 
-attachEvent(document, "mousedown", function(e) {
-    mouse.pressed = true;
-    mouse._x0 = mouse.x;
-    mouse._y0 = mouse.y;
+_attachEvent(document, "mousedown", function(e) {
+    _MOUSE.pressed = true;
+    _MOUSE._x0 = _MOUSE.x;
+    _MOUSE._y0 = _MOUSE.y;
 });
 
-attachEvent(document, "mouseup", function(e) {
-    mouse.pressed = false;
-    mouse.dragged = false;
-    mouse.dx = 0;
-    mouse.dy = 0;
+_attachEvent(document, "mouseup", function(e) {
+    _MOUSE.pressed = false;
+    _MOUSE.dragged = false;
+    _MOUSE.dx = 0;
+    _MOUSE.dy = 0;
 });
 
 /*--- IE HACKS -------------------------------------------------------------------------------------*/
@@ -247,7 +249,7 @@ function _rgba(clr) {
 
 var _FILL1 = null;
 var _FILL2 = null;
-function ctx_fillStyle(clr, ctx) {
+function _ctx_fillStyle(clr, ctx) {
     clr = _rgba(clr);
     if (_FILL1 != clr) {
         _FILL1 = clr; 
@@ -258,7 +260,7 @@ function ctx_fillStyle(clr, ctx) {
 
 var _STROKE1 = null;
 var _STROKE2 = null;
-function ctx_strokeStyle(clr, ctx) {
+function _ctx_strokeStyle(clr, ctx) {
     clr = _rgba(clr);
     if (_STROKE1 != clr) {
         _STROKE1 = clr; 
@@ -315,7 +317,7 @@ var Node = Class.extend({
             div.style.fontWeight = (a.fontweight)? a.fontweight : ""; // XXX doesn't work for "italic" (=fontStyle).
             div.style.color      = (typeof(a.text) == "string")? a.text : "";
             this.text = div;
-            unselectable(div);
+            _unselectable(div);
         }
     },
     
@@ -352,7 +354,7 @@ var Node = Class.extend({
                 }
             }
         }
-        var a = values(_visited); // Fast, but not order-preserving.
+        var a = _values(_visited); // Fast, but not order-preserving.
         for (var i=0; i < a.length; i++) {
             a[i] = a[i][0];
         }
@@ -369,7 +371,7 @@ var Node = Class.extend({
         // Draw the node weight as a shadow (based on node betweenness centrality).
         if (weighted && weighted != false && this.centrality > ((weighted==true)?-1:weighted)) {
             var w = this.centrality * 35;
-            ctx_fillStyle("rgba(0,0,0,0.1)", ctx);
+           _ctx_fillStyle("rgba(0,0,0,0.1)", ctx);
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius+w, 0, Math.PI*2, true);
             ctx.closePath();
@@ -377,8 +379,8 @@ var Node = Class.extend({
         }
         // Draw the node.
         ctx.lineWidth = this.strokewidth;
-        ctx_strokeStyle(this.stroke, ctx);
-        ctx_fillStyle(this.fill, ctx);
+       _ctx_strokeStyle(this.stroke, ctx);
+       _ctx_fillStyle(this.fill, ctx);
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
         ctx.closePath();
@@ -467,7 +469,7 @@ var Edge = Class.extend({
         var w = weighted && this.weight || 0;
         var ctx = this.node1.graph._ctx;
         ctx.lineWidth = this.strokewidth + w;
-        ctx_strokeStyle(this.stroke, ctx);
+       _ctx_strokeStyle(this.stroke, ctx);
         ctx.beginPath();
         ctx.moveTo(this.node1.x, this.node1.y);
         ctx.lineTo(this.node2.x, this.node2.y);
@@ -485,16 +487,16 @@ var Edge = Class.extend({
         var x1 = this.node2.x;
         var y1 = this.node2.y;
         // Find the edge's angle based on node1 and node2 position.
-        var a = degrees(Math.atan2(y1-y0, x1-x0));
+        var a = _degrees(Math.atan2(y1-y0, x1-x0));
         // The arrow points to node2's rim instead of it's center.
         // Find the two other arrow corners under the given angle.
         var d = Math.sqrt(Math.pow(x1-x0, 2) + Math.pow(y1-y0, 2));
         var r = Math.max(strokewidth * 4, 8)
-        var p1 = coordinates(x0, y0, d-this.node2.radius-1, a);
-        var p2 = coordinates(p1[0], p1[1], -r, a-20);
-        var p3 = coordinates(p1[0], p1[1], -r, a+20);
+        var p1 = _coordinates(x0, y0, d-this.node2.radius-1, a);
+        var p2 = _coordinates(p1[0], p1[1], -r, a-20);
+        var p3 = _coordinates(p1[0], p1[1], -r, a+20);
         var ctx = this.node1.graph._ctx;
-        ctx_fillStyle(this.stroke, ctx);
+       _ctx_fillStyle(this.stroke, ctx);
         ctx.beginPath();
         ctx.moveTo(p1[0], p1[1]);
         ctx.lineTo(p2[0], p2[1]);
@@ -527,12 +529,13 @@ var Graph = Class.extend({
          */
         if (distance === undefined) distance = 10;
         if (layout   === undefined) layout   = SPRING;
-        this.canvas   = canvas; unselectable(canvas);
+        this.canvas   = canvas; _unselectable(canvas);
         this._ctx     = this.canvas? this.canvas.getContext("2d") : null;
         this.nodeset  = {};
         this.nodes    = [];
         this.edges    = [];
         this.root     = null;
+        this.mouse    = _MOUSE;
         this.distance = distance;
         this.layout   = (layout==SPRING)? new GraphSpringLayout(this) : 
                                           new GraphLayout(this);
@@ -771,7 +774,7 @@ var Graph = Class.extend({
                 u.push.apply(u, this.nodes[i].flatten(depth));
             }
         }
-        return unique(u);
+        return _unique(u);
     },
     
     density: function() {
@@ -812,7 +815,7 @@ var Graph = Class.extend({
 
     drag: function(mouse) {
         /* Node drag behavior (resets the frame counter).
-         * The given mouse is either the graph.js built-in mouse or canvas.js Mouse.
+         * The given mouse is either the graph.js built-in _MOUSE or canvas.js Mouse.
          */
         var pt = null;
         if (mouse.pressed) {
@@ -859,7 +862,7 @@ var Graph = Class.extend({
                 g.draw(a.weighted, a.directed);
                 g._i += 1;
             }
-            g.drag(mouse);
+            g.drag(this.mouse);
         }, 1000/a.fps, this);
     },
     stop: function() {
@@ -1176,7 +1179,7 @@ function paths(graph, id1, id2, length, path, _root) {
     var n = graph.nodeset[id1].links;
     for (var i=0; i < n.length; i++) {
         if (path.indexOf(n[i].id) < 0) {
-            p = extend(p, paths(graph, n[i].id, id2, length, path, false));
+            p = _extend(p, paths(graph, n[i].id, id2, length, path, false));
         }
     }
     if (_root != false) p.sort(function(a, b) { return a.length-b.length; });
@@ -1256,7 +1259,7 @@ function adjacency(graph, a) {
     }
     if (a.stochastic) {
         for (var id1 in map) {
-            var n = sum(values(map[id1]));
+            var n = _sum(_values(map[id1]));
             for (var id2 in map[id1]) {
                 map[id1][id2] /= n;
             }
@@ -1393,7 +1396,7 @@ function brandesBetweennessCentrality(graph, a) {
         }
     }
     // Normalize between 0 and 1.
-    var m = a.normalized? Math.max.apply(Math, values(b)) || 1 : 1;
+    var m = a.normalized? Math.max.apply(Math, _values(b)) || 1 : 1;
     for (var id in b) b[id] = b[id]/m;
     return b;
 };
@@ -1416,7 +1419,7 @@ function eigenvectorCentrality(graph, a) {
     if (a.iterations === undefined) a.iterations = 100;
     if (a.tolerance  === undefined) a.tolerance  = 0.0001;
     function normalize(vector) {
-        var w = 1.0 / (sum(values(vector)) || 1);
+        var w = 1.0 / (_sum(_values(vector)) || 1);
         for (var node in vector) {
             vector[node] *= w;
         }
@@ -1437,7 +1440,7 @@ function eigenvectorCentrality(graph, a) {
         var e=0; for (var n in v) e += Math.abs(v[n]-v0[n]); // Check for convergence.
         if (e < graph.nodes.length * a.tolerance) {
             // Normalize between 0 and 1.
-            var m = a.normalized? Math.max.apply(Math, values(v)) || 1 : 1;
+            var m = a.normalized? Math.max.apply(Math, _values(v)) || 1 : 1;
             for (var id in v) v[id] /= m;
             return v;
         }
@@ -1453,7 +1456,7 @@ function eigenvectorCentrality(graph, a) {
 // a & b => elements that appear in a as well as in b.
 // a - b => elements that appear in a but not in b.
 function union(a, b) {
-    return unique(a.concat(b));
+    return _unique(a.concat(b));
 }
 function intersection(a, b) {
     var r=[], m={}, i;
@@ -1481,7 +1484,7 @@ function partition(graph) {
     for (var i=0; i < graph.nodes.length; i++) {
         var n = graph.nodes[i]; n=n.flatten();
         var d = {}; for(var j=0; j < n.length; j++) d[n[j].id] = true;
-        g.push(keys(d));
+        g.push(_keys(d));
     }
     for (var i=g.length-1; i >= 0; i--) {
         for(var j=g.length-1; j >= i+1; j--) {
