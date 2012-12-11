@@ -6,7 +6,7 @@
 // http://www.clips.ua.ac.be/pages/pattern-canvas
 
 // The NodeBox drawing API for the HTML5 <canvas> element.
-// The commands are adopted from NodeBox for OpenGL,
+// The commands are adopted from NodeBox for OpenGL (http://www.cityinabottle.org/nodebox),
 // including a (partial) port from nodebox.graphic.bezier, 
 // nodebox.graphics.geometry and nodebox.graphics.shader.
 
@@ -1323,7 +1323,7 @@ var Bezier = Class.extend({
 bezier = new Bezier();
 
 /*--- BEZIER PATH ----------------------------------------------------------------------------------*/
-// A Path class with lineto(), curveto() and moveto() commands.
+// A Path class with lineto(), curveto() and moveto() methods.
 
 var MOVETO  = "moveto";
 var LINETO  = "lineto";
@@ -1594,7 +1594,7 @@ function autoclosepath(close) {
 
 function beginpath(x, y) { 
     /* Starts a new path at (x,y).
-     * The commands moveto(), lineto(), curveto() and closepath() 
+     * Functions moveto(), lineto(), curveto() and closepath() 
      * can then be used between beginpath() and endpath() calls.
      */
     _ctx.state.path = new Path();
@@ -2090,7 +2090,7 @@ var Pixels = Class.extend({
     init: function(img) {
         /* An array of RGBA color values (0-255) for each pixel in the given image.
          * Pixels.update() must be called to reflect any changes to Pixels.array.
-         * The Pixels object can be passed to the image() command.
+         * The Pixels object can be passed to the image() function.
          * The original image will not be modified.
          * Throws a security error for remote (cross-domain) images.
          */
@@ -2199,7 +2199,7 @@ var fontWeight = fontweight;
 var lineHeight = lineheight;
 
 /*--- FONT MIXIN -----------------------------------------------------------------------------------*/
-// The text() command has optional parameters font, fontsize, fontweight, bold, italic, lineheight and align.
+// The text() function has optional parameters font, fontsize, fontweight, bold, italic, lineheight and align.
 
 function _fontMixin(options) {
     var s = _ctx.state;
@@ -2733,7 +2733,7 @@ var Canvas = Class.extend({
     },
     
     onprint: function(string) {
-        // Called when the print() command is called.
+        // Called when the print() function is called.
     }
 });
 
@@ -3070,9 +3070,9 @@ function bloom(img, intensity, radius, threshold) {
 
 /*--- IMAGE FILTERS | DISTORTION -------------------------------------------------------------------*/
 
-function polar(img, x0, y0, operator) {
+function polar(img, x0, y0, callback) {
     /* Returns a new Image based on a polar coordinates filter.
-     * The given operator is a function(distance, angle) that returns new [distance, angle].
+     * The given callback is a function(distance, angle) that returns new [distance, angle].
      */
     x0 = img.width / 2 + (x0 || 0);
     y0 = img.height / 2 + (y0 || 0);
@@ -3084,7 +3084,7 @@ function polar(img, x0, y0, operator) {
             var y = y1 - y0;
             var d = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
             var a = Math.atan2(y, x);
-            var v = operator(d, a); d=v[0]; a=v[1];
+            var v = callback(d, a); d=v[0]; a=v[1];
             p2.set(x1 + y1 * p1.width, p1.get(
                 Math.round(x0 + Math.cos(a) * d) +
                 Math.round(y0 + Math.sin(a) * d) * p1.width
