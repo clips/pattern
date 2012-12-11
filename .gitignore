@@ -1,6 +1,9 @@
 # Ignore compiled Python files
 *.pyc
 
+# Ignore Ninja files
+*.nja
+
 # Ignore build folders
 build
 dist
