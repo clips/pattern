@@ -658,12 +658,12 @@ TENSES = {
     55: (FUT,  1, PL, IND, IPFV, False, ("1plf", )), #               # nosotros seremos  #            #
     56: (FUT,  2, PL, IND, IPFV, False, ("2plf", )), #               # vosotros seréis   #            #
     57: (FUT,  3, PL, IND, IPFV, False, ("3plf", )), #               # ellos serán       #            #
-    70: (COND, 1, SG, IND, IPFV, False, ()),         #               # yo sería          #            #
-    71: (COND, 2, SG, IND, IPFV, False, ()),         #               # tú serías         #            #
-    72: (COND, 3, SG, IND, IPFV, False, ()),         #               # él sería          #            #
-    73: (COND, 1, PL, IND, IPFV, False, ()),         #               # nosotros seríamos #            #
-    74: (COND, 2, PL, IND, IPFV, False, ()),         #               # vosotros seríais  #            #
-    75: (COND, 3, PL, IND, IPFV, False, ()),         #               # ellos serían      #            #
+    70: (COND, 1, SG, IND, IPFV, False, ("1sgc", )), #               # yo sería          #            #
+    71: (COND, 2, SG, IND, IPFV, False, ("2sgc", )), #               # tú serías         #            #
+    72: (COND, 3, SG, IND, IPFV, False, ("3sgc", )), #               # él sería          #            #
+    73: (COND, 1, PL, IND, IPFV, False, ("1plc", )), #               # nosotros seríamos #            #
+    74: (COND, 2, PL, IND, IPFV, False, ("2plc", )), #               # vosotros seríais  #            #
+    75: (COND, 3, PL, IND, IPFV, False, ("3plc", )), #               # ellos serían      #            #
     19: (PRES, 2, SG, IMP, IPFV, False, ("2sg!", )), #               # tú sé             # du sei     #
     21: (PRES, 1, PL, IMP, IPFV, False, ("1pl!", )), #               #                   # seien wir  #
     22: (PRES, 2, PL, IMP, IPFV, False, ("2pl!", )), #               # vosotros sed      # ihr seid   #
@@ -1024,24 +1024,6 @@ _verbs.parse_lexeme = _parse_lexeme
 
 #print conjugate("imaginarify", "part", parse=True)
 #print conjugate("imaginarify", "part", parse=False)
-
-# Accuracy of _parse_lemma():
-#i = 0
-#for v in VERBS.infinitives:
-#    for tense in VERBS.TENSES:
-#        if _parse_lemma(conjugate(v, tense)) == v: i+=1
-#print float(i) / len(_verbs._tenses)*8
-
-# Accuracy of _parse_lexeme():
-#_verbs.load()
-#i = 0
-#n = 0
-#for v, x1 in _verbs._tenses.items():
-#    x2 = _parse_lexeme(v)
-#    for j in range(len(x2)):
-#        if x1[j] and x1[j] == x2[j] or x1[j] == "" and x1[j>5 and 10 or 0] == x2[j]: i+=1
-#        n += 1
-#print float(i) / n
 
 #### COMPARATIVE & SUPERLATIVE #####################################################################
 

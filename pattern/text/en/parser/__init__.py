@@ -425,7 +425,7 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
     return s
 
 #--- TAGGED STRING ---------------------------------------------------------------------------------
-# The parse() command returns a unicode string with an extra "tags" attribute.
+# The parse() function returns a unicode string with an extra "tags" attribute.
 # The Sentence tree object uses this attribute to determine the token format.
 # The TaggedString class emulates the TokenString class in the MBSP module,
 # which has additional functionality besides a "tags" attribute.
