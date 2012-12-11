@@ -9,4 +9,5 @@ build
 dist
 
 # Ignore cache folders
-web/cache/tmp
+pattern/web/cache/tmp/
+web/cache/tmp/
