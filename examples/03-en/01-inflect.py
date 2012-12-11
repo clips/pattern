@@ -12,13 +12,13 @@ from pattern.en import NOUN, VERB, ADJECTIVE
 
 # INDEFINITE ARTICLE
 # ------------------
-# The article() command returns the indefinite article (a/an) for a given noun.
+# The article() function returns the indefinite article (a/an) for a given noun.
 # The definitive article is always "the". The plural indefinite is "some".
 print article("bear"), "bear"
 print
 
-# The referenced() command returns a string with article() prepended to the given word.
-# The referenced() command is non-trivial, as demonstrated with the exception words below:
+# The referenced() function returns a string with article() prepended to the given word.
+# The referenced() funtion is non-trivial, as demonstrated with the exception words below:
 for word in ["hour", "one-liner", "European", "university", "owl", "yclept", "year"]:
     print referenced(word)
 print
@@ -26,7 +26,7 @@ print
 
 # PLURALIZATION
 # -------------
-# The pluralize() command returns the plural form of a singular noun (or adjective).
+# The pluralize() function returns the plural form of a singular noun (or adjective).
 # The algorithm is robust and handles about 98% of exceptions correctly:
 for word in ["part-of-speech", "child", "dog's", "wolf", "bear", "kitchen knife"]:
     print pluralize(word)
@@ -38,8 +38,8 @@ print
 
 # SINGULARIZATION
 # ---------------
-# The singularize() command returns the singular form of a plural noun (or adjective).
-# It is slightly less robust than the pluralize() command.
+# The singularize() function returns the singular form of a plural noun (or adjective).
+# It is slightly less robust than the pluralize() function.
 for word in ["parts-of-speech", "children", "dogs'", "wolves", "bears", "kitchen knives", 
              "octopodes", "matrices", "matrixes"]:
     print singularize(word)
@@ -49,7 +49,7 @@ print
 
 # COMPARATIVE & SUPERLATIVE ADJECTIVES
 # ------------------------------------
-# The comparative() and superlative() commands give the comparative/superlative form of an adjective.
+# The comparative() and superlative() functions give the comparative/superlative form of an adjective.
 # Words with three or more syllables are simply preceded by "more" or "most".
 for word in ["gentle", "big", "pretty", "hurt", "important", "bad"]:
     print word, "=>", comparative(word), "=>", superlative(word)
@@ -58,24 +58,34 @@ print
 
 # VERB CONJUGATION
 # ----------------
-# The lexeme() command returns a list of all possible verb inflections.
-# The lemma() command returns the base form (infinitive) of a verb.
+# The lexeme() function returns a list of all possible verb inflections.
+# The lemma() function returns the base form (infinitive) of a verb.
 print "lexeme:", lexeme("be")
 print "lemma:", lemma("was")
+print
 
-# The conjugate() command inflects a verb to another tense.
-# The tense can be given as a constant, e.g. 
-# INFINITIVE, PRESENT_1ST_PERSON_SINGULAR PRESENT_PLURAL, PAST_PARTICIPLE, ...
-# or as an abbreviated alias: inf, 1sg, 2sg, 3sg, pl, part, 1sgp, 2sgp, 3sgp, ppl, ppart.
+# The conjugate() function inflects a verb to another tense.
+# You can supply: 
+# - tense : INFINITIVE, PRESENT, PAST, 
+# - person: 1, 2, 3 or None, 
+# - number: SINGULAR, PLURAL,
+# - mood  : INDICATIVE, IMPERATIVE,
+# - aspect: IMPERFECTIVE, PROGRESSIVE.
+# The tense can also be given as an abbreviated alias, e.g., 
+# inf, 1sg, 2sg, 3sg, pl, part, 1sgp, 2sgp, 3sgp, ppl, ppart.
+from pattern.en import PRESENT, SINGULAR
+print conjugate("being", tense=PRESENT, person=1, number=SINGULAR, negated=False)
 print conjugate("being", tense="1sg", negated=False)
+print
 
 # Prefer the full constants for code that will be reused/shared.
 
-# The tenses() command returns a list of all tenses for the given verb form.
-# For example: tenses("are") => ['present 2nd person singular', 'present plural']
+# The tenses() function returns a list of all tenses for the given verb form.
+# Each tense is a tuple of (tense, person, number, mood, aspect).
+# For example: tenses("are") => [('present', 2, 'plural', 'indicative', 'imperfective'), ...]
 # You can then check if a tense constant is in the list.
 # This will also work with aliases, even though they are not explicitly in the list.
-from pattern.en import PRESENT_PLURAL
+from pattern.en import PRESENT, PLURAL
 print tenses("are")
-print PRESENT_PLURAL in tenses("are")
+print (PRESENT, 1, PLURAL) in tenses("are")
 print "pl" in tenses("are")
