@@ -1019,7 +1019,7 @@ def cliques(graph, threshold=3):
     return a
 
 #--- GRAPH MAINTENANCE -----------------------------------------------------------------------------
-# Utility commands for safe linking and unlinking of nodes,
+# Utility functions for safe linking and unlinking of nodes,
 # with respect for the surrounding nodes.
 
 def unlink(graph, node1, node2=None):
