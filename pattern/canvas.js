@@ -2,7 +2,7 @@
 // Copyright (c) 2010 University of Antwerp, Belgium
 // Authors: Tom De Smedt <tom@organisms.be>
 // License: BSD (see LICENSE.txt for details).
-// Version: 1.2.
+// Version: 1.3
 // http://www.clips.ua.ac.be/pages/pattern-canvas
 
 // The NodeBox drawing API for the HTML5 <canvas> element.
@@ -71,15 +71,22 @@ Array.instanceof = function(array) {
 Array.min = function(array) {
     return Math.min.apply(Math, array);
 };
+
 Array.max = function(array) {
     return Math.max.apply(Math, array);
 };
+
 Array.sum = function(array) {
     for (var i=0, sum=0; i < array.length; sum+=array[i++]){}; return sum;
 };
 
+Array.index = function(array, v) {
+    for (var i=0; i < array.length; i++) { if (array[i] === v) return i; }
+    return -1;
+};
+
 Array.contains = function(array, v) {
-    for (var i=0; i < array.length; i++) { if (array[i] == v) return true; }
+    for (var i=0; i < array.length; i++) { if (array[i] === v) return true; }
 };
 
 Array.find = function(array, match) {
@@ -143,6 +150,19 @@ Array.reversed = function(array) {
     array = array.slice();
     array = array.reverse();
     return array;
+}
+
+Array.unique = function(array) {
+    /* Returns a new array with unique items.
+     */
+    var a = array.slice();
+    for (var i=a.length-1; i > 0; --i) {
+        var v = a[i];
+        for (var j=i-1; j >= 0; --j) {
+            if (a[j] === v) a.splice(j, 1); i--;
+        }
+    }
+    return a;
 }
 
 Array.choice = function(array) {
