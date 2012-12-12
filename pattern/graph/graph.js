@@ -2,81 +2,136 @@
 // Copyright (c) 2010 University of Antwerp, Belgium
 // Authors: Tom De Smedt <tom@organisms.be>, Daniel Friesen (daniel@nadir-seen-fire.com)
 // License: BSD (see LICENSE.txt for details).
-// Version: 1.1.
+// Version: 1.2
 // http://www.clips.ua.ac.be/pages/pattern
+
+/*##################################################################################################*/
+
+function attachEvent(element, name, f) {
+    /* Cross-browser attachEvent().
+     * Ensures that "this" inside the function f refers to the given element .
+     */
+    f = Function.closure(element, f);
+    if (element.addEventListener) {
+        element.addEventListener(name, f, false);
+    } else if (element.attachEvent) {
+        element.attachEvent("on"+name, f);
+    } else {
+        element["on"+name] = f;
+    }
+    element[name] = f;
+}
+
+Function.closure = function(parent, f) {
+    /* Returns the function f, where "this" inside the function refers to the given parent.
+     */
+    return function() { return f.apply(parent, arguments); };
+};
+
+/*--- OBJECT ---------------------------------------------------------------------------------------*/
+
+Object.keys = function(object) {
+    var a = [];
+    for (var k in object) a.push(k);
+    return a;
+};
+
+Object.values = function(object) {
+    var a = [];
+    for (var k in object) a.push(object[k]);
+    return a;
+};
 
 /*--- ARRAY ----------------------------------------------------------------------------------------*/
 
-// Array.indexOf doesn't exist in IE7-.
-if (!Array.prototype.indexOf) {
-    Array.prototype.indexOf = function(item) {
-        for (var i=0; i < this.length; i++) {
-            if (this[i] === item) return i;
-        }
-        return -1;
-    };
-}
+Array.sum = function(array) {
+    for (var i=0, sum=0; i < array.length; sum+=array[i++]){}; return sum;
+};
 
-// Emulates Python dict.keys().
-function _keys(object) {
-    var v = [];
-    for (var k in object) { 
-        v.push(k); 
-    }
-    return v;    
-}
-// Emulates Python dict.values().
-function _values(object) {
-    var v = [];
-    for (var k in object) { 
-        v.push(object[k]); 
-    }
-    return v;    
-}
+Array.index = function(array, v) {
+    for (var i=0; i < array.length; i++) { if (array[i] === v) return i; }
+    return -1;
+};
 
-// Emulates Python list.extend().
-function _extend(array1, array2) {
-    for (var i=0; i < array2.length; i++) {
-        array1.push(array2[i]);
-    }
-    return array1;
-}
-
-// Emulates Python sum(list).
-function _sum(array) {
-    var n = 0;
-    for (var i=0; i < array.length; i++) n += array[i]; 
-    return n;
-}
-
-// Returns a new array with unique items.
-function _unique(array) {
-    array = array.slice();
-    for (var i=array.length-1; i > 0; --i) {
-        var v = array[i];
+Array.unique = function(array) {
+    /* Returns a new array with unique items.
+     */
+    var a = array.slice();
+    for (var i=a.length-1; i > 0; --i) {
+        var v = a[i];
         for (var j=i-1; j >= 0; --j) {
-            if (array[j] === v) {
-                array.splice(j, 1); i--;
-            }
+            if (a[j] === v) a.splice(j, 1); i--;
         }
     }
-    return array;
-}
+    return a;
+};
 
 /*--- MATH -----------------------------------------------------------------------------------------*/
 
-function _degrees(radians) {
-    return radians / Math.PI * 180;
-}
-function _radians(degrees) {
-    return degrees * Math.PI / 180;
-}
-function _coordinates(x, y, distance, angle) {
-    return [x + distance * Math.cos(_radians(angle)), 
-            y + distance * Math.sin(_radians(angle))];
-}
+Math.degrees = function(radians) {
+    return radians * 180 / Math.PI;
+};
+
+Math.radians = function(degrees) {
+    return degrees / 180 * Math.PI;
+};
+
+Math.coordinates = function(x, y, distance, angle) {
+    return [x + distance * Math.cos(Math.radians(angle)), 
+            y + distance * Math.sin(Math.radians(angle))];
+};
 
 /*--- MOUSE ----------------------------------------------------------------------------------------*/
+
+var __MOUSE__ = { 
+           x: 0,
+           y: 0,
+         _x0: 0,
+         _y0: 0,
+          dx: 0, // Drag distance from x0.
+          dy: 0, // Drag distance from y0.
+     pressed: false, 
+     dragged: false, 
+    relative: function(element) {
+        /* Returns position from the top-left corner of the given element.
+         */
+        var dx = 0;
+        var dy = 0;
+        if (element.offsetParent) {
+            do {
+                dx += element.offsetLeft;
+                dy += element.offsetTop;
+            } while (element = element.offsetParent);
+        }
+        return {
+            x: __MOUSE__.x - dx, 
+            y: __MOUSE__.y - dy
+        }
+    }
+};
+
+attachEvent(document, "mousemove", function(e) {
+    __MOUSE__.x = e.pageX || (e.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft));
+    __MOUSE__.y = e.pageY || (e.clientY + (document.documentElement.scrollTop || document.body.scrollTop));
+    if (__MOUSE__.pressed) {
+        __MOUSE__.dragged = true;
+        __MOUSE__.dx = __MOUSE__.x - __MOUSE__._x0;
+        __MOUSE__.dy = __MOUSE__.y - __MOUSE__._y0;
+    }
+});
+
+attachEvent(document, "mousedown", function(e) {
+    __MOUSE__.pressed = true;
+    __MOUSE__._x0 = __MOUSE__.x;
+    __MOUSE__._y0 = __MOUSE__.y;
+});
+
+attachEvent(document, "mouseup", function(e) {
+    __MOUSE__.pressed = false;
+    __MOUSE__.dragged = false;
+    __MOUSE__.dx = 0;
+    __MOUSE__.dy = 0;
+});
 
 function _unselectable(element) {
     /* Disables text selection on the given element (interferes with node dragging).
@@ -88,76 +143,6 @@ function _unselectable(element) {
         element.style.cursor = "default";
     }
 }
-
-function _absOffset(element) {
-    /* Returns the absolute position of the given element in the browser.
-     */
-    var x = y = 0;
-    if (element.offsetParent) {
-        do {
-            x += element.offsetLeft;
-            y += element.offsetTop;
-        } while (element = element.offsetParent);
-    }
-    return [x,y];
-}
-
-var _MOUSE = { 
-    /* Global object that stores the mouse state.
-     * _MOUSE.relative() returns the position from the top-left corner of the given element.
-     */
-           x: 0,
-           y: 0,
-         _x0: 0,
-         _y0: 0,
-          dx: 0, // Drag distance from x0.
-          dy: 0, // Drag distance from y0.
-     pressed: false, 
-     dragged: false, 
-    relative: function(element) {
-        p = _absOffset(element);
-        return {
-            x: _MOUSE.x - p[0], 
-            y: _MOUSE.y - p[1]
-        }
-    }
-};
-
-function _attachEvent(element, name, f) {
-    /* Cross-browser event listener: 
-     * _attachEvent(window, "load", function(event) { ... });
-     */
-    if (element.addEventListener) {
-        element.addEventListener(name, f, false);
-    } else if (element.attachEvent) {
-        element.attachEvent ("on"+name, f);
-    } else {
-        element["on"+name] = f;
-    }
-}
-
-_attachEvent(document, "mousemove", function(e) {
-    _MOUSE.x = e.pageX || (e.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft));
-    _MOUSE.y = e.pageY || (e.clientY + (document.documentElement.scrollTop || document.body.scrollTop));
-    if (_MOUSE.pressed) {
-        _MOUSE.dragged = true;
-        _MOUSE.dx = _MOUSE.x - _MOUSE._x0;
-        _MOUSE.dy = _MOUSE.y - _MOUSE._y0;
-    }
-});
-
-_attachEvent(document, "mousedown", function(e) {
-    _MOUSE.pressed = true;
-    _MOUSE._x0 = _MOUSE.x;
-    _MOUSE._y0 = _MOUSE.y;
-});
-
-_attachEvent(document, "mouseup", function(e) {
-    _MOUSE.pressed = false;
-    _MOUSE.dragged = false;
-    _MOUSE.dx = 0;
-    _MOUSE.dy = 0;
-});
 
 /*--- IE HACKS -------------------------------------------------------------------------------------*/
 // setInterval() on IE does not take function arguments so we patch it:
@@ -232,10 +217,12 @@ _attachEvent(document, "mouseup", function(e) {
 })();
 
 /*--- COLOR ----------------------------------------------------------------------------------------*/
-// Edge.stroke, Node.stroke, Node.fill can be a string, an Array or a canvas.js Color.
+// Edge.stroke, Node.stroke, Node.fill can be an rgba() string, an [R,G,B,A]-array, a canvas.js Color 
+// or null (transparent). If the color is undefined, either the canvas.js Canvas state color is used,
+// or black for edges and transparent for nodes if graph.js is used without canvas.js.
 
-function _rgba(clr) {
-    if (clr.rgba && clr._get) { // canvas.js Color
+function _parseRGBA(clr) {
+    if (clr && clr.rgba && clr._get) { // canvas.js Color
         return clr._get();
     }
     if (clr instanceof Array) {
@@ -244,29 +231,51 @@ function _rgba(clr) {
         var b = Math.round(clr[2] * 255);
         return "rgba("+r+", "+g+", "+b+", "+clr[3]+")";    
     }
+    if (clr === null) {
+        return "rgba(0,0,0,0)";
+    }
     return clr;
 }
 
-var _FILL1 = null;
-var _FILL2 = null;
-function _ctx_fillStyle(clr, ctx) {
-    clr = _rgba(clr);
-    if (_FILL1 != clr) {
-        _FILL1 = clr; 
-        _FILL2 = _rgba(clr);
-        ctx.fillStyle = clr;
+var _GRAPH_FILL1 = null;
+var _GRAPH_FILL2 = null;
+function _ctx_graph_fillStyle(clr, ctx) {
+    clr = _parseRGBA(clr);
+    if (clr === undefined) {
+        if (_ctx && _ctx.state && _ctx.state.fill !== undefined) {
+            clr = _parseRGBA(_ctx.state.fill);
+        } else {
+            clr = "rgba(0,0,0,0)";
+        }
+    }
+    if (_GRAPH_FILL1 != clr || _GRAPH_FILL2 != ctx.fillStyle) {
+        _GRAPH_FILL1 = ctx.fillStyle = clr;
+        _GRAPH_FILL2 = ctx.fillStyle;
     }
 }
 
-var _STROKE1 = null;
-var _STROKE2 = null;
-function _ctx_strokeStyle(clr, ctx) {
-    clr = _rgba(clr);
-    if (_STROKE1 != clr) {
-        _STROKE1 = clr; 
-        _STROKE2 = _rgba(clr);
-        ctx.strokeStyle = clr;
+var _GRAPH_STROKE1 = null;
+var _GRAPH_STROKE2 = null;
+function _ctx_graph_strokeStyle(clr, ctx) {
+    clr = _parseRGBA(clr);
+    if (clr === undefined) {
+        if (_ctx && _ctx.state && _ctx.state.stroke !== undefined) {
+            clr = _parseRGBA(_ctx.state.stroke);
+        } else {
+            clr = "rgba(0,0,0,1)";
+        }
     }
+    if (_GRAPH_STROKE1 != clr || _GRAPH_STROKE2 != ctx.strokeStyle) {
+        _GRAPH_STROKE1 = ctx.strokeStyle = clr;
+        _GRAPH_STROKE2 = ctx.strokeStyle;
+    }
+}
+
+function _ctx_graph_lineWidth(w1, w2, ctx) {
+    if (w1 === undefined) {
+        w1 = _ctx && _ctx.state && _ctx.state.strokewidth || 1.0;
+    }
+    ctx.lineWidth = w1 + w2 || 0;
 }
 
 /*--- GRAPH NODE -----------------------------------------------------------------------------------*/
@@ -285,11 +294,11 @@ var Node = Class.extend({
         if (a.y === undefined) a.y = 0;
         if (a.radius === undefined) a.radius = 5;
         if (a.fixed  === undefined) a.fixed  = false;
-        if (a.fill   === undefined) a.fill   = "rgba(0,0,0,0)";
-        if (a.stroke === undefined) a.stroke = "rgba(0,0,0,1)";
-        if (a.strokewidth === undefined) a.strokewidth = 1;
+        //if (a.fill   === undefined) a.fill   = "rgba(0,0,0,0)";
+        //if (a.stroke === undefined) a.stroke = "rgba(0,0,0,1)";
+        //if (a.strokewidth === undefined) a.strokewidth = 1;
         this.graph = null;
-        this.links = new Links();
+        this.links = new NodeLinks();
         this.id  = id;
         this.x   = 0; // Calculated by Graph.layout.update().
         this.y   = 0; // Calculated by Graph.layout.update().
@@ -354,7 +363,7 @@ var Node = Class.extend({
                 }
             }
         }
-        var a = _values(_visited); // Fast, but not order-preserving.
+        var a = Object.values(_visited); // Fast, but not order-preserving.
         for (var i=0; i < a.length; i++) {
             a[i] = a[i][0];
         }
@@ -371,16 +380,16 @@ var Node = Class.extend({
         // Draw the node weight as a shadow (based on node betweenness centrality).
         if (weighted && weighted != false && this.centrality > ((weighted==true)?-1:weighted)) {
             var w = this.centrality * 35;
-           _ctx_fillStyle("rgba(0,0,0,0.1)", ctx);
+           _ctx_graph_fillStyle("rgba(0,0,0,0.1)", ctx);
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius+w, 0, Math.PI*2, true);
             ctx.closePath();
             ctx.fill();
         }
         // Draw the node.
-        ctx.lineWidth = this.strokewidth;
-       _ctx_strokeStyle(this.stroke, ctx);
-       _ctx_fillStyle(this.fill, ctx);
+       _ctx_graph_lineWidth(this.strokewidth, 0, ctx);
+       _ctx_graph_strokeStyle(this.stroke, ctx);
+       _ctx_graph_fillStyle(this.fill, ctx);
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
         ctx.closePath();
@@ -403,7 +412,7 @@ var Node = Class.extend({
     }
 });
 
-var Links = Class.extend({
+var NodeLinks = Class.extend({
     
     init: function() {
         /* A list in which each node has an associated edge.
@@ -422,7 +431,7 @@ var Links = Class.extend({
     },
 
     remove: function(node) {
-        var i = this.indexOf(node);
+        var i = Array.index(this, node);
         if (i >= 0) {
             for (var j=i; j < this.length; j++) this[j] = this[j+1];
             this.length -= 1;
@@ -435,13 +444,11 @@ var Links = Class.extend({
     }
 });
 
-Links.prototype.indexOf = Array.prototype.indexOf
-
 /*--- GRAPH EDGE -----------------------------------------------------------------------------------*/
 
 var Edge = Class.extend({
 
-//  init: function(node1, node2, {weight:0, length:1, type:null, stroke:"rgba(0,0,0,1)", strokewidth:0.5})
+//  init: function(node1, node2, {weight:0, length:1, type:null, stroke:"rgba(0,0,0,1)", strokewidth:1})
     init: function(node1, node2, a) {
         /* A connection between two nodes.
          * Its weight indicates the importance (not the cost) of the connection.
@@ -451,8 +458,8 @@ var Edge = Class.extend({
         if (a.weight === undefined) a.weight = 0.0;
         if (a.length === undefined) a.length = 1.0;
         if (a.type   === undefined) a.type   = null;
-        if (a.stroke === undefined) a.stroke = "rgba(0,0,0,1)";
-        if (a.strokewidth === undefined) a.strokewidth = 0.5;
+        //if (a.stroke === undefined) a.stroke = "rgba(0,0,0,1)";
+        //if (a.strokewidth === undefined) a.strokewidth = 1;
         this.node1 = node1;
         this.node2 = node2;
         this.weight      = a.weight;
@@ -468,8 +475,8 @@ var Edge = Class.extend({
          */
         var w = weighted && this.weight || 0;
         var ctx = this.node1.graph._ctx;
-        ctx.lineWidth = this.strokewidth + w;
-       _ctx_strokeStyle(this.stroke, ctx);
+       _ctx_graph_lineWidth(this.strokewidth, w, ctx);
+       _ctx_graph_strokeStyle(this.stroke, ctx);
         ctx.beginPath();
         ctx.moveTo(this.node1.x, this.node1.y);
         ctx.lineTo(this.node2.x, this.node2.y);
@@ -482,21 +489,22 @@ var Edge = Class.extend({
     drawArrow: function(strokewidth) {
         /* Draws the direction of the edge as an arrow on the rim of the receiving node.
          */
+        var s = (strokewidth !== undefined)? strokewidth : _ctx && _ctx.state && _ctx.state.strokewidth || 1;
         var x0 = this.node1.x;
         var y0 = this.node1.y;
         var x1 = this.node2.x;
         var y1 = this.node2.y;
         // Find the edge's angle based on node1 and node2 position.
-        var a = _degrees(Math.atan2(y1-y0, x1-x0));
+        var a = Math.degrees(Math.atan2(y1-y0, x1-x0));
         // The arrow points to node2's rim instead of it's center.
         // Find the two other arrow corners under the given angle.
-        var d = Math.sqrt(Math.pow(x1-x0, 2) + Math.pow(y1-y0, 2));
-        var r = Math.max(strokewidth * 4, 8)
-        var p1 = _coordinates(x0, y0, d-this.node2.radius-1, a);
-        var p2 = _coordinates(p1[0], p1[1], -r, a-20);
-        var p3 = _coordinates(p1[0], p1[1], -r, a+20);
+        var d  = Math.sqrt(Math.pow(x1-x0, 2) + Math.pow(y1-y0, 2));
+        var r  = Math.max(s * 4, 8);
+        var p1 = Math.coordinates(x0, y0, d-this.node2.radius-1, a);
+        var p2 = Math.coordinates(p1[0], p1[1], -r, a-20);
+        var p3 = Math.coordinates(p1[0], p1[1], -r, a+20);
         var ctx = this.node1.graph._ctx;
-       _ctx_fillStyle(this.stroke, ctx);
+       _ctx_graph_fillStyle(ctx.strokeStyle, ctx);
         ctx.beginPath();
         ctx.moveTo(p1[0], p1[1]);
         ctx.lineTo(p2[0], p2[1]);
@@ -535,7 +543,7 @@ var Graph = Class.extend({
         this.nodes    = [];
         this.edges    = [];
         this.root     = null;
-        this.mouse    = _MOUSE;
+        this.mouse    = __MOUSE__;
         this.distance = distance;
         this.layout   = (layout==SPRING)? new GraphSpringLayout(this) : 
                                           new GraphLayout(this);
@@ -601,7 +609,7 @@ var Graph = Class.extend({
          */
         if (x instanceof Node && this.nodeset[x.id]) {
             delete this.nodeset[x.id];
-            this.nodes.splice(this.nodes.indexOf(x), 1); x.graph = null;
+            this.nodes.splice(Array.index(this.nodes, x), 1); x.graph = null;
             // Remove all edges involving the given node.
             var a = [];
             for (var i=0; i < this.edges.length; i++) {
@@ -618,7 +626,7 @@ var Graph = Class.extend({
             if (x.text) x.text.parentNode.removeChild(x.text);
         }
         if (x instanceof Edge) {
-            this.edges.splice(this.edges.indexOf(x), 1);
+            this.edges.splice(Array.index(this.edges, x), 1);
         }
     },
 
@@ -643,7 +651,7 @@ var Graph = Class.extend({
         if (!(node1 instanceof Node)) node1 = this.nodeset(node1);
         if (!(node2 instanceof Node)) node2 = this.nodeset(node2);
         var p = [];
-        var P = paths(this, node1.id, node2.id, length, path, true);
+        var P = Graph.paths(this, node1.id, node2.id, length, path, true);
         for (var i=0; i < P.length; i++) {
             var n = [];
             for (var j=0; j < P[i].length; j++) {
@@ -658,10 +666,10 @@ var Graph = Class.extend({
     shortestPath: function(node1, node2, a) {
         /* Returns a list of nodes connecting the two nodes.
          */
-        if (!(node1 instanceof Node)) node1 = this.nodeset(node1);
-        if (!(node2 instanceof Node)) node2 = this.nodeset(node2);
+        if (!(node1 instanceof Node)) node1 = this.nodeset[node1];
+        if (!(node2 instanceof Node)) node2 = this.nodeset[node2];
         try {
-            var p = dijkstraShortestPath(this, node1.id, node2.id, a);
+            var p = Graph.dijkstraShortestPath(this, node1.id, node2.id, a);
             var n = [];
             for (var i=0; i < p.length; i++) {
                 n.push(this.nodeset[p[i]]);
@@ -676,9 +684,9 @@ var Graph = Class.extend({
     shortestPaths: function(node, a) {
         /* Returns a dictionary of nodes, each linked to a list of nodes (shortest path).
          */
-        if (!(node instanceof Node)) node = this.nodeset(node);
+        if (!(node instanceof Node)) node = this.nodeset[node];
         var p = {};
-        var P = dijkstraShortestPaths(this, node.id, a);
+        var P = Graph.dijkstraShortestPaths(this, node.id, a);
         for (var id in P) {
             if (P[id]) {
                 var n = [];
@@ -698,7 +706,7 @@ var Graph = Class.extend({
          * Node.weight is updated in the process.
          * Node.weight is higher for nodes with a lot of (indirect) incoming traffic.
          */
-        var ec = eigenvectorCentrality(this, a);
+        var ec = Graph.eigenvectorCentrality(this, a);
         var r = {};
         for (var id in ec) {
             var n = this.nodeset[id];
@@ -714,7 +722,7 @@ var Graph = Class.extend({
          * Node.centrality is updated in the process.
          * Node.centrality is higher for nodes with a lot of passing traffic.
          */
-        var bc = brandesBetweennessCentrality(this, a);
+        var bc = Graph.brandesBetweennessCentrality(this, a);
         var r = {};
         for (var id in bc) {
             var n = this.nodeset[id];
@@ -774,7 +782,7 @@ var Graph = Class.extend({
                 u.push.apply(u, this.nodes[i].flatten(depth));
             }
         }
-        return _unique(u);
+        return Array.unique(u);
     },
     
     density: function() {
@@ -787,7 +795,7 @@ var Graph = Class.extend({
     split: function() {
         /* Returns the list of unconnected subgraphs.
          */
-        return partition(this);
+        return Graph.partition(this);
     },
     
     update: function(iterations, weight, limit) {
@@ -815,7 +823,7 @@ var Graph = Class.extend({
 
     drag: function(mouse) {
         /* Node drag behavior (resets the frame counter).
-         * The given mouse is either the graph.js built-in _MOUSE or canvas.js Mouse.
+         * The given mouse is either the graph.js built-in __MOUSE__ or canvas.js Mouse.
          */
         var pt = null;
         if (mouse.pressed) {
@@ -862,7 +870,7 @@ var Graph = Class.extend({
                 g.draw(a.weighted, a.directed);
                 g._i += 1;
             }
-            g.drag(this.mouse);
+            g.drag(g.mouse);
         }, 1000/a.fps, this);
     },
     stop: function() {
@@ -925,7 +933,7 @@ var Graph = Class.extend({
         g.layout = this.layout.copy(g);
         for (var i=0; i < nodes.length; i++) {
             var n = nodes[i];
-            if (!(n instanceof Node)) n = this.nodeset(n);
+            if (!(n instanceof Node)) n = this.nodeset[n];
             g._addNodeCopy(n, {root:this.root==n});
         }
         for (var i=0; i < this.edges.length; i++) {
@@ -1105,8 +1113,8 @@ GraphSpringLayout = GraphLayout.extend({
 
 /*--- GRAPH TRAVERSAL ------------------------------------------------------------------------------*/
 
-//       depthFirstSearch(node, {visit:function(node){return false;}, traversable:function(node,edge){return true;}, _visited:null}
-function depthFirstSearch(node, a) {
+//    depthFirstSearch(node, {visit:function(node){return false;}, traversable:function(node,edge){return true;}, _visited:null}
+Graph.depthFirstSearch = function(node, a) {
     /* Visits all the nodes connected to the given root node, depth-first.
      * The visit function is called on each node.
      * Recursion will stop if it returns true, and subsequently dfs() will return true.
@@ -1126,15 +1134,15 @@ function depthFirstSearch(node, a) {
         if (stop) return true;
         if (a.traversable(node, node.links.edge(n) == false)) continue;
         if (!a._visited[n.id]) {
-            stop = depthFirstSearch(n, a);
+            stop = Graph.depthFirstSearch(n, a);
         }
     }
     return stop;
-}
+};
 
-dfs = depthFirstSearch;
+dfs = Graph.depthFirstSearch;
 
-function breadthFirstSearch(node, a) {
+Graph.breadthFirstSearch = function(node, a) {
     /* Visits all the nodes connected to the given root node, breadth-first.
      */
     if (a === undefined) a = {};
@@ -1155,11 +1163,11 @@ function breadthFirstSearch(node, a) {
         }
     }
     return false;
-}
+};
 
-bfs = breadthFirstSearch;
+bfs = Graph.breadthFirstSearch;
 
-function paths(graph, id1, id2, length, path, _root) {
+Graph.paths = function(graph, id1, id2, length, path, _root) {
     /* Returns a list of paths from node with id1 to node with id2.
      * Only paths shorter than the given length are included.
      * Uses a brute-force DFS approach (performance drops exponentially for longer paths).
@@ -1178,13 +1186,13 @@ function paths(graph, id1, id2, length, path, _root) {
     var p = [];
     var n = graph.nodeset[id1].links;
     for (var i=0; i < n.length; i++) {
-        if (path.indexOf(n[i].id) < 0) {
-            p = _extend(p, paths(graph, n[i].id, id2, length, path, false));
+        if (Array.index(path, n[i].id) < 0) {
+            p = p.push.apply(Graph.paths(graph, n[i].id, id2, length, path, false));
         }
     }
     if (_root != false) p.sort(function(a, b) { return a.length-b.length; });
     return p;
-}
+};
 
 function edges(path) {
     /* Returns a list of Edge objects for the given list of nodes.
@@ -1192,9 +1200,9 @@ function edges(path) {
      */
     // For example, the distance (i.e., edge weight sum) of a path:
     // var w = 0;
-    // var e = edges(path);
+    // var e = Graph.edges(path);
     // for (var i=0; i < e.length; i++) w += e[i].weight;
-    if (path.length > 1) {
+    if (path && path.length > 1) {
         var e = [];
         for (var i=0; i < path.length-1; i++) {
             e.push(path[i].links.edge(path[i+1]));
@@ -1202,7 +1210,7 @@ function edges(path) {
         return e;
     }
     return [];
-}
+};
 
 /*--- GRAPH THEORY ---------------------------------------------------------------------------------*/
 
@@ -1228,8 +1236,8 @@ var Heap = Class.extend({
     }
 });
 
-//       adjacency(graph, {directed:false, reversed:false, stochastic:false, heuristic:function(id1,id2){return 0;}})
-function adjacency(graph, a) {
+//    adjacency(graph, {directed:false, reversed:false, stochastic:false, heuristic:function(id1,id2){return 0;}})
+Graph.adjacency = function(graph, a) {
     /* Returns a dictionary indexed by node id1's,
      * in which each value is a dictionary of connected node id2's linking to the edge weight.
      * If directed=true, edges go from id1 to id2, but not the other way.
@@ -1259,17 +1267,17 @@ function adjacency(graph, a) {
     }
     if (a.stochastic) {
         for (var id1 in map) {
-            var n = _sum(_values(map[id1]));
+            var n = Array.sum(Object.values(map[id1]));
             for (var id2 in map[id1]) {
                 map[id1][id2] /= n;
             }
         }
     }
     return map;
-}
+};
 
-//       dijkstraShortestPath(graph, id1, id2, {heuristic:function(id1,id2){return 0;}, directed:false})
-function dijkstraShortestPath(graph, id1, id2, a) {
+//    dijkstraShortestPath(graph, id1, id2, {heuristic:function(id1,id2){return 0;}, directed:false})
+Graph.dijkstraShortestPath = function(graph, id1, id2, a) {
     /* Dijkstra algorithm for finding shortest paths.
      * Raises an IndexError between nodes on unconnected graphs.
      */
@@ -1282,7 +1290,7 @@ function dijkstraShortestPath(graph, id1, id2, a) {
         }
         return a;
     }
-    var G = adjacency(graph, a);
+    var G = Graph.adjacency(graph, a);
     var q = new Heap(); q.push([0, id1, []], 0);
     var visited = {};
     for(;;) {
@@ -1301,16 +1309,16 @@ function dijkstraShortestPath(graph, id1, id2, a) {
             }
         }
     }
-}
+};
 
-//       dijkstraShortestPaths(graph, id, {heuristic:function(id1,id2){return 0;}, directed:false})
-function dijkstraShortestPaths(graph, id, a) {
+//    dijkstraShortestPaths(graph, id, {heuristic:function(id1,id2){return 0;}, directed:false})
+Graph.dijkstraShortestPaths = function(graph, id, a) {
     /* Dijkstra algorithm for finding the shortest paths from the given node to all other nodes.
      * Returns a dictionary of node id's, each linking to a list of node id's (i.e., the path).
      */
     // Based on: Dijkstra's algorithm for shortest paths modified from Eppstein.
     // Based on: NetworkX 1.4.1: Aric Hagberg, Dan Schult and Pieter Swart.
-    var W = adjacency(graph, a);
+    var W = Graph.adjacency(graph, a);
     var Q = new Heap(); // Use Q as a heap with [distance, node id] lists.
     var D = {}; // Dictionary of final distances.
     var P = {}; // Dictionary of paths.
@@ -1335,10 +1343,10 @@ function dijkstraShortestPaths(graph, id, a) {
         if (!(n in P)) P[n]=null;
     }
     return P;
-}
+};
 
-//       brandesBetweennessCentrality(graph {normalized:true, directed:false})
-function brandesBetweennessCentrality(graph, a) {
+//    brandesBetweennessCentrality(graph {normalized:true, directed:false})
+Graph.brandesBetweennessCentrality = function(graph, a) {
     /* Betweenness centrality for nodes in the graph.
      * Betweenness centrality is a measure of the number of shortests paths that pass through a node.
      * Nodes in high-density areas will get a good score.
@@ -1352,7 +1360,7 @@ function brandesBetweennessCentrality(graph, a) {
     if (a === undefined) a = {};
     if (a.normalized === undefined) a.normalized = true;
     if (a.directed   === undefined) a.directed   = false;
-    var W = adjacency(graph, a);
+    var W = Graph.adjacency(graph, a);
     var b = {}; for (var n in graph.nodeset) b[n]=0.0;
     for (var id in graph.nodeset) {
         var Q = new Heap(); // Use Q as a heap with [distance, node id] lists.
@@ -1396,13 +1404,13 @@ function brandesBetweennessCentrality(graph, a) {
         }
     }
     // Normalize between 0 and 1.
-    var m = a.normalized? Math.max.apply(Math, _values(b)) || 1 : 1;
+    var m = a.normalized? Math.max.apply(Math, Object.values(b)) || 1 : 1;
     for (var id in b) b[id] = b[id]/m;
     return b;
 };
 
-//       eigenvectorCentrality(graph {normalized:true, reversed:true, rating:{}, iterations:100, tolerance:0.0001})
-function eigenvectorCentrality(graph, a) {
+//    eigenvectorCentrality(graph {normalized:true, reversed:true, rating:{}, iterations:100, tolerance:0.0001})
+Graph.eigenvectorCentrality = function(graph, a) {
     /* Eigenvector centrality for nodes in the graph (cfr. Google's PageRank).
      * Eigenvector centrality is a measure of the importance of a node in a directed network. 
      * It rewards nodes with a high potential of (indirectly) connecting to high-scoring nodes.
@@ -1419,12 +1427,12 @@ function eigenvectorCentrality(graph, a) {
     if (a.iterations === undefined) a.iterations = 100;
     if (a.tolerance  === undefined) a.tolerance  = 0.0001;
     function normalize(vector) {
-        var w = 1.0 / (_sum(_values(vector)) || 1);
+        var w = 1.0 / (Array.sum(Object.values(vector)) || 1);
         for (var node in vector) {
             vector[node] *= w;
         }
     }
-    var G = adjacency(graph, a);
+    var G = Graph.adjacency(graph, a);
     var v = {}; for(var n in graph.nodeset) v[n] = Math.random(); normalize(v);
     // Eigenvector calculation using the power iteration method: y = Ax.
     // It has no guarantee of convergence.
@@ -1440,13 +1448,13 @@ function eigenvectorCentrality(graph, a) {
         var e=0; for (var n in v) e += Math.abs(v[n]-v0[n]); // Check for convergence.
         if (e < graph.nodes.length * a.tolerance) {
             // Normalize between 0 and 1.
-            var m = a.normalized? Math.max.apply(Math, _values(v)) || 1 : 1;
+            var m = a.normalized? Math.max.apply(Math, Object.values(v)) || 1 : 1;
             for (var id in v) v[id] /= m;
             return v;
         }
     }
     if (window.console) {
-        console.warn("node weight is 0 because eigenvectorCentrality() did not converge.");
+        console.warn("node weight is 0 because Graph.eigenvectorCentrality() did not converge.");
     }
     var x={}; for (var n in graph.nodeset) x[n]=0;
     return x;
@@ -1455,27 +1463,29 @@ function eigenvectorCentrality(graph, a) {
 // a | b => all elements from a and all the elements from b. 
 // a & b => elements that appear in a as well as in b.
 // a - b => elements that appear in a but not in b.
-function union(a, b) {
-    return _unique(a.concat(b));
-}
-function intersection(a, b) {
+Array.union = function(a, b) {
+    return Array.unique(a.concat(b));
+};
+
+Array.intersection = function(a, b) {
     var r=[], m={}, i;
     for (i=0; i < b.length; i++) m[b[i]] = true;
     for (i=0; i < a.length; i++) {
         if (a[i] in m) r.push(a[i]); 
     }
     return r;
-}
-function difference(a, b) {
+};
+
+Array.difference = function(a, b) {
     var r=[],  m={}, i;
     for (i=0; i < b.length; i++) m[b[i]] = true;
     for (i=0; i < a.length; i++) {
         if (!(a[i] in m)) r.push(a[i]);
     }
     return r;
-}
+};
 
-function partition(graph) {
+Graph.partition = function(graph) {
     /* Returns a list of unconnected subgraphs.
      */
     // Creates clusters of nodes and directly connected nodes.
@@ -1484,12 +1494,12 @@ function partition(graph) {
     for (var i=0; i < graph.nodes.length; i++) {
         var n = graph.nodes[i]; n=n.flatten();
         var d = {}; for(var j=0; j < n.length; j++) d[n[j].id] = true;
-        g.push(_keys(d));
+        g.push(Object.keys(d));
     }
     for (var i=g.length-1; i >= 0; i--) {
         for(var j=g.length-1; j >= i+1; j--) {
-            if (g[i].length > 0 && g[j].length > 0 && intersection(g[i], g[j]).length > 0) {
-                g[i] = union(g[i], g[j]);
+            if (g[i].length > 0 && g[j].length > 0 && Array.intersection(g[i], g[j]).length > 0) {
+                g[i] = Array.union(g[i], g[j]);
                 g[j] = [];
             }
         }
@@ -1503,17 +1513,17 @@ function partition(graph) {
     }
     g.sort(function(a, b) { return b.length-a.length; });
     return g;
-}
+};
 
 /*--- GRAPH THEORY | CLIQUE ------------------------------------------------------------------------*/
 
-function isClique(graph) {
+Graph.isClique = function(graph) {
     /* A clique is a set of nodes in which each node is connected to all other nodes.
      */
     return (graph.density() == 1.0);
-}
+};
 
-function clique(graph, id) {
+Graph.clique = function(graph, id) {
     /* Returns the largest possible clique for the node with given id.
      */
     if (id instanceof Node) {
@@ -1534,28 +1544,28 @@ function clique(graph, id) {
         }
         return a;
     }
-}
+};
     
-function cliques(graph, threshold) {
+Graph.cliques = function(graph, threshold) {
     /* Returns all cliques in the graph with at least the given number of nodes.
      */
     if (threshold === undefined) threshold = 3;
     var a = [];
     for (var i=0; i < graph.nodes.length; i++) {
         var n = graph.nodes[i];
-        var c = clique(graph, n.id);
+        var c = Graph.clique(graph, n.id);
         if (c.length >= threshold) {
             c.sort();
-            if (a.indexOf(c) < 0) {
+            if (Array.index(a, c) < 0) {
                 a.push(c);
             }
         }
     }
-}
+};
 
 /*--- GRAPH MAINTENANCE ----------------------------------------------------------------------------*/
 
-function unlink(graph, node1, node2) {
+Graph.unlink = function(graph, node1, node2) {
     /* Removes the edges between node1 and node2.
      * If only node1 is given, removes all edges to and from it.
      * This does not remove node1 from the graph.
@@ -1566,17 +1576,17 @@ function unlink(graph, node1, node2) {
     for (var i=0; i < e.length; i++) {
         if ((node1 == e[i].node1 || node1 == e[i].node2) &&
             (node2 == e[i].node1 || node2 == e[i].node2 || node2 === undefined)) {
-            graph.edges.splice(graph.edges.indexOf(e[i]), 1);
+            graph.edges.splice(Array.index(graph.edges, e[i]), 1);
         }
         try {
-            node1.links.remove(node1.links.indexOf(node2), 1);
-            node2.links.remove(node2.links.indexOf(node1), 1);
+            node1.links.remove(Array.index(node1.links, node2), 1);
+            node2.links.remove(Array.index(node2.links, node1), 1);
         } catch(x) { // node2 === undefined
         }
     }
-}
+};
 
-function redirect(graph, node1, node2) {
+Graph.redirect = function(graph, node1, node2) {
     /* Connects all of node1's edges to node2 and unlinks node1.
      */
     if (!(node1 instanceof Node)) node1 = graph.nodeset[node1];
@@ -1592,10 +1602,10 @@ function redirect(graph, node1, node2) {
             }
         }
     }
-    unlink(graph, node1);
-}
+    Graph.unlink(graph, node1);
+};
 
-function cut(graph, node) {
+Graph.cut = function(graph, node) {
     /* Unlinks the given node, but keeps edges intact by connecting the surrounding nodes.
      * If A, B, C, D are nodes and A->B, B->C, B->D, if we then cut B: A->C, A->D.
      */
@@ -1614,10 +1624,10 @@ function cut(graph, node) {
             }
         }
     }
-    unlink(graph, node);
-}
+    Graph.unlink(graph, node);
+};
 
-function insert(graph, node, a, b) {
+Graph.insert = function(graph, node, a, b) {
     /* Inserts the given node between node a and node b.
      * If A, B, C are nodes and A->B, if we then insert C: A->C, C->B.
      */
@@ -1635,5 +1645,5 @@ function insert(graph, node, a, b) {
             graph._addEdgeCopy(e, node, a);
         }
     }
-    unlink(graph, a, b);
-}
+    Graph.unlink(graph, a, b);
+};
