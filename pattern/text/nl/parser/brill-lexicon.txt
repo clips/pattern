@@ -1,3 +1,7 @@
+;;;   
+;;;   Brill-NL, Jeroen Geertzen.
+;;;   http://cosmion.net/jeroen/software/brill_pos/
+;;;   
 ! Punc(uitroep) N(soort,mv,neut)
 " Punc(aanhaal_dubb) 
 % N(soort,ev,neut) 
