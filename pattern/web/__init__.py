@@ -45,7 +45,7 @@ try:
     from imap import FROM, SUBJECT, DATE, BODY, ATTACHMENTS
 except:
     pass
-    
+
 try:
     MODULE = os.path.dirname(os.path.abspath(__file__))
 except:
@@ -58,18 +58,18 @@ def decode_utf8(string):
     """
     if isinstance(string, str):
         for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
-            try: 
+            try:
                 return string.decode(*encoding)
             except:
                 pass
         return string
     return unicode(string)
-    
+
 def encode_utf8(string):
     """ Returns the given string as a Python byte string (if possible).
     """
     if isinstance(string, unicode):
-        try: 
+        try:
             return string.encode("utf-8")
         except:
             return string
@@ -84,7 +84,7 @@ bytestring = s
 #### ASYNCHRONOUS REQUEST ##########################################################################
 
 class AsynchronousRequest:
-    
+
     def __init__(self, function, *args, **kwargs):
         """ Executes the function in the background.
             AsynchronousRequest.done is False as long as it is busy, but the program will not halt in the meantime.
@@ -100,11 +100,11 @@ class AsynchronousRequest:
         self._function = function
         self._thread   = threading.Thread(target=self._fetch, args=(function,)+args, kwargs=kwargs)
         self._thread.start()
-        
+
     def _fetch(self, function, *args, **kwargs):
         """ Executes the function and sets AsynchronousRequest.response.
         """
-        try: 
+        try:
             self._response = function(*args, **kwargs)
         except Exception, e:
             self._error = e
@@ -126,7 +126,7 @@ class AsynchronousRequest:
     @property
     def error(self):
         return self._error
-        
+
     def __repr__(self):
         return "AsynchronousRequest(function='%s')" % self._function.__name__
 
@@ -134,7 +134,7 @@ def asynchronous(function, *args, **kwargs):
     """ Returns an AsynchronousRequest object for the given function.
     """
     return AsynchronousRequest(function, *args, **kwargs)
-    
+
 send = asynchronous
 
 #### URL ###########################################################################################
@@ -181,7 +181,7 @@ def urldecode(query):
     def _format(s):
         if s == "None":
              return None
-        if s.isdigit(): 
+        if s.isdigit():
              return int(s)
         try: return float(s)
         except:
@@ -192,7 +192,7 @@ def urldecode(query):
     query = [(k, _format(v) or None) for k, v in query]
     query = dict([(k,v) for k, v in query if k != ""])
     return query
-    
+
 url_decode = urldecode
 
 def proxy(host, protocol="https"):
@@ -225,9 +225,9 @@ class HTTP420Error(HTTPError):
     pass # Used by Twitter for rate limiting.
 class HTTP500InternalServerError(HTTPError):
     pass # Generic server error.
-    
+
 class URL:
-    
+
     def __init__(self, string=u"", method=GET, query={}):
         """ URL object with the individual parts available as attributes:
             For protocol://username:password@domain:port/path/page?query_string#anchor:
@@ -253,7 +253,7 @@ class URL:
         if len(query) > 0:
             # Requires that we parse the string first (see URL.__setattr__).
             self.query.update(query)
-        
+
     def _parse(self):
         """ Parses all the parts of the URL string to a dictionary.
             URL format: protocal://username:password@domain:port/path/page?querystring#anchor
@@ -290,23 +290,23 @@ class URL:
             P[PAGE] = p[2].strip("/")
             P[PATH] = []
         self.__dict__["_parts"] = P
-    
+
     # URL.string yields unicode(URL) by joining the different parts,
     # if the URL parts have been modified.
     def _get_string(self): return unicode(self)
     def _set_string(self, v):
         self.__dict__["_string"] = u(v)
         self.__dict__["_parts"]  = None
-        
+
     string = property(_get_string, _set_string)
-    
+
     @property
     def parts(self):
         """ Yields a dictionary with the URL parts.
         """
         if not self._parts: self._parse()
         return self._parts
-    
+
     @property
     def querystring(self):
         """ Yields the URL querystring: "www.example.com?page=1" => "page=1"
@@ -314,19 +314,19 @@ class URL:
         s = dict((bytestring(k), bytestring(v or "")) for k, v in self.parts[QUERY].items())
         s = urllib.urlencode(s)
         return s
-    
+
     def __getattr__(self, k):
         if k in self.__dict__ : return self.__dict__[k]
         if k in self.parts    : return self.__dict__["_parts"][k]
         raise AttributeError, "'URL' object has no attribute '%s'" % k
-    
+
     def __setattr__(self, k, v):
         if k in self.__dict__ : self.__dict__[k] = u(v); return
         if k == "string"      : self._set_string(v); return
         if k == "query"       : self.parts[k] = v; return
         if k in self.parts    : self.__dict__["_parts"][k] = u(v); return
         raise AttributeError, "'URL' object has no attribute '%s'" % k
-        
+
     def open(self, timeout=10, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None):
         """ Returns a connection to the url from which data can be retrieved with connection.read().
             When the timeout amount of seconds is exceeded, raises a URLTimeout.
@@ -336,7 +336,7 @@ class URL:
         # Use basic urllib.urlopen() instead of urllib2.urlopen() for local files.
         if os.path.exists(url):
             return urllib.urlopen(url)
-        # Get the query string as a separate parameter if method=POST.          
+        # Get the query string as a separate parameter if method=POST.
         post = self.method == POST and self.querystring or None
         socket.setdefaulttimeout(timeout)
         if proxy:
@@ -345,12 +345,12 @@ class URL:
             urllib2.install_opener(proxy)
         try:
             request = urllib2.Request(bytestring(url), post, {
-                        "User-Agent": user_agent, 
+                        "User-Agent": user_agent,
                            "Referer": referrer
                          })
             # Basic authentication is established with authentication=(username, password).
             if authentication is not None:
-                request.add_header("Authorization", "Basic %s" % 
+                request.add_header("Authorization", "Basic %s" %
                     base64.encodestring('%s:%s' % authentication))
             return urllib2.urlopen(request)
         except urllib2.HTTPError, e:
@@ -366,12 +366,12 @@ class URL:
             raise URLTimeout
         except urllib2.URLError, e:
             if e.reason == "timed out" \
-            or e.reason[0] in (36, "timed out"): 
+            or e.reason[0] in (36, "timed out"):
                 raise URLTimeout
             raise URLError, e.reason
         except ValueError, e:
             raise URLError, e
-            
+
     def download(self, timeout=10, cached=True, throttle=0, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None, unicode=False):
         """ Downloads the content at the given URL (by default it will be cached locally).
             Unless unicode=False, the content is returned as a unicode string.
@@ -379,7 +379,7 @@ class URL:
         # Filter OAuth parameters from cache id (they will be unique for each request).
         if self._parts is None and self.method == GET and "oauth_" not in self._string:
             id = self._string
-        else: 
+        else:
             id = repr(self.parts)
             id = re.sub("u{0,1}'oauth_.*?': u{0,1}'.*?', ", "", id)
         # Keep a separate cache of unicode and raw download for same URL.
@@ -400,10 +400,10 @@ class URL:
         if throttle:
             time.sleep(max(throttle-(time.time()-t), 0))
         return data
-    
+
     def read(self, *args):
         return self.open().read(*args)
-            
+
     @property
     def exists(self, timeout=10):
         """ Yields False if the URL generates a HTTP404NotFound error.
@@ -418,18 +418,18 @@ class URL:
         except:
             return True
         return True
-    
+
     @property
     def mimetype(self, timeout=10):
         """ Yields the MIME-type of the document at the URL, or None.
             MIME is more reliable than simply checking the document extension.
             You can then do: URL.mimetype in MIMETYPE_IMAGE.
         """
-        try: 
+        try:
             return self.headers["content-type"].split(";")[0]
         except KeyError:
             return None
-            
+
     @property
     def headers(self, timeout=10):
         """ Yields a dictionary with the HTTP response headers.
@@ -441,7 +441,7 @@ class URL:
                 h = {}
             self.__dict__["_headers"] = h
         return self.__dict__["_headers"]
-            
+
     @property
     def redirect(self, timeout=10):
         """ Yields the redirected URL, or None.
@@ -456,32 +456,32 @@ class URL:
 
     def __str__(self):
         return bytestring(self.string)
-            
+
     def __unicode__(self):
         # The string representation includes the query attributes with HTTP GET.
         # This gives us the advantage of not having to parse the URL
         # when no separate query attributes were given (e.g. all info is in URL._string):
-        if self._parts is None and self.method == GET: 
+        if self._parts is None and self.method == GET:
             return self._string
         P = self._parts
         u = []
-        if P[PROTOCOL]: 
+        if P[PROTOCOL]:
             u.append("%s://" % P[PROTOCOL])
-        if P[USERNAME]: 
+        if P[USERNAME]:
             u.append("%s:%s@" % (P[USERNAME], P[PASSWORD]))
         if P[DOMAIN]:
             u.append(P[DOMAIN])
-        if P[PORT]: 
+        if P[PORT]:
             u.append(":%s" % P[PORT])
-        if P[PATH]: 
+        if P[PATH]:
             u.append("/%s/" % "/".join(P[PATH]))
-        if P[PAGE] and len(u) > 0: 
+        if P[PAGE] and len(u) > 0:
             u[-1] = u[-1].rstrip("/")
-        if P[PAGE]: 
+        if P[PAGE]:
             u.append("/%s" % P[PAGE])
         if P[QUERY] and self.method == GET:
             u.append("?%s" % self.querystring)
-        if P[ANCHOR]: 
+        if P[ANCHOR]:
             u.append("#%s" % P[ANCHOR])
         u = u"".join(u)
         u = u.lstrip("/")
@@ -512,14 +512,14 @@ def bind(object, method, function):
     setattr(object, method, new.instancemethod(function, object))
 
 class Stream(list):
-    
+
     def __init__(self, url, delimiter="\n", **kwargs):
         """ Buffered stream of data from a given URL.
         """
         self.socket = URL(url).open(**kwargs)
         self.buffer = ""
         self.delimiter = delimiter
-        
+
     def update(self, bytes=1024):
         """ Reads a number of bytes from the stream.
             If a delimiter is encountered, calls Stream.parse() on the packet.
@@ -536,12 +536,12 @@ class Stream(list):
         self.buffer = self.buffer[-1]
         self.extend(packets)
         return packets
-        
+
     def parse(self, data):
         """ Must be overridden in a subclass.
         """
         return data
-        
+
     def clear(self):
         list.__init__(self, [])
 
@@ -562,8 +562,8 @@ RE_URL2 = RE_URL_HEAD + r"(www\..*?\..*?)" + RE_URL_TAIL           # Starts with
 RE_URL3 = RE_URL_HEAD + r"([\w|-]*?\.(com|net|org))" + RE_URL_TAIL # Ends with .com, .net, .org
 
 RE_URL1, RE_URL2, RE_URL3 = (
-    re.compile(RE_URL1, re.I), 
-    re.compile(RE_URL2, re.I), 
+    re.compile(RE_URL1, re.I),
+    re.compile(RE_URL2, re.I),
     re.compile(RE_URL3, re.I))
 
 def find_urls(string, unique=True):
@@ -583,7 +583,7 @@ def find_urls(string, unique=True):
             if not unique or s not in matches:
                 matches.append(s)
     return matches
-    
+
 links = find_urls
 
 RE_EMAIL = re.compile(r"[\w\-\.\+]+@(\w[\w\-]+\.)+[\w\-]+") # tom.de+smedt@clips.ua.ac.be
@@ -598,7 +598,7 @@ def find_email(string, unique=True):
         if not unique or s not in matches:
             matches.append(s)
     return matches
-    
+
 def find_between(a, b, string):
     """ Returns a list of substrings between a and b in the given string.
     """
@@ -609,7 +609,7 @@ def find_between(a, b, string):
 #### PLAIN TEXT ####################################################################################
 
 BLOCK = [
-    "title", "h1", "h2", "h3", "h4", "h5", "h6", "p", 
+    "title", "h1", "h2", "h3", "h4", "h5", "h6", "p",
     "center", "blockquote", "div", "table", "ul", "ol", "pre", "code", "form"
 ]
 
@@ -630,22 +630,22 @@ blocks.update({
 })
 
 class HTMLParser(sgmllib.SGMLParser):
-    
+
     def __init__(self):
         sgmllib.SGMLParser.__init__(self)
-    
+
     def handle_starttag(self, tag, attrs):
         pass
 
     def handle_endtag(self, tag):
         pass
-    
+
     def unknown_starttag(self, tag, attrs):
         self.handle_starttag(tag, attrs)
-    
+
     def unknown_endtag(self, tag):
         self.handle_endtag(tag)
-    
+
     def clean(self, html):
         html = decode_utf8(html)
         html = html.replace("/>", " />")
@@ -656,14 +656,14 @@ class HTMLParser(sgmllib.SGMLParser):
         html = html.replace("&lt;!--", "<!--")
         return html
 
-        
+
     def parse_declaration(self, i):
         # We can live without sgmllib's parse_declaration().
-        try: 
+        try:
             return sgmllib.SGMLParser.parse_declaration(self, i)
         except sgmllib.SGMLParseError:
             return i + 1
-        
+
     def convert_charref(self, name):
         # This fixes a bug in older versions of sgmllib when working with Unicode.
         # Fix: ASCII ends at 127, not 255
@@ -676,7 +676,7 @@ class HTMLParser(sgmllib.SGMLParser):
         return chr(n)
 
 class HTMLTagstripper(HTMLParser):
-    
+
     def __init__(self):
         HTMLParser.__init__(self)
 
@@ -696,27 +696,27 @@ class HTMLTagstripper(HTMLParser):
         self.close()
         self.reset()
         return "".join(self._data)
-    
+
     def handle_starttag(self, tag, attributes):
         if tag in self._exclude:
-            # Create the tag attribute string, 
+            # Create the tag attribute string,
             # including attributes defined in the HTMLTagStripper._exclude dict.
             a = len(self._exclude[tag]) > 0 and attributes or []
             a = ["%s=\"%s\"" % (k,v) for k, v in a if k in self._exclude[tag]]
             a = (" "+" ".join(a)).rstrip()
             self._data.append("<%s%s>" % (tag, a))
-        if tag in self._replace: 
+        if tag in self._replace:
             self._data.append(self._replace[tag][0])
         if tag in self._replace and tag in SELF_CLOSING:
             self._data.append(self._replace[tag][1])
-            
+
     def handle_endtag(self, tag):
         if tag in self._exclude and self._data and self._data[-1].startswith("<"+tag):
             # Never keep empty elements (e.g. <a></a>).
             self._data.pop(-1); return
         if tag in self._exclude:
             self._data.append("</%s>" % tag)
-        if tag in self._replace: 
+        if tag in self._replace:
             self._data.append(self._replace[tag][1])
 
     def handle_data(self, data):
@@ -725,7 +725,7 @@ class HTMLTagstripper(HTMLParser):
         self._data.append("&%s;" % ref)
     def handle_charref(self, ref):
         self._data.append("&%s;" % ref)
-        
+
     def handle_comment(self, comment):
         if "comment" in self._exclude or \
                "!--" in self._exclude:
@@ -765,14 +765,14 @@ def strip_between(a, b, string):
     p = "%s.*?%s" % (a, b)
     p = re.compile(p, re.DOTALL | re.I)
     return re.sub(p, "", string)
-    
-def strip_javascript(html): 
+
+def strip_javascript(html):
     return strip_between("<script.*?>", "</script>", html)
-def strip_inline_css(html): 
+def strip_inline_css(html):
     return strip_between("<style.*?>", "</style>", html)
-def strip_comments(html): 
+def strip_comments(html):
     return strip_between("<!--", "-->", html)
-def strip_forms(html): 
+def strip_forms(html):
     return strip_between("<form.*?>", "</form>", html)
 
 RE_AMPERSAND = re.compile("\&(?!\#)")           # & not followed by #
@@ -798,7 +798,7 @@ def decode_entities(string):
     def replace_entity(match):
         hash, hex, name = match.group(1), match.group(2), match.group(3)
         if hash == "#" or name.isdigit():
-            if hex == '' : 
+            if hex == '' :
                 return unichr(int(name))                 # "&#38;" => "&"
             if hex in ("x","X"):
                 return unichr(int('0x'+name, 16))        # "&#x0026;" = > "&"
@@ -892,7 +892,7 @@ RELEVANCY = "relevancy" # Sort results by most relevant.
 LATEST    = "latest"    # Sort results by most recent.
 
 class Result(dict):
-    
+
     def __init__(self, url):
         """ An item in a list of results returned by SearchEngine.search().
             All dictionary entries are available as unicode string attributes.
@@ -907,7 +907,7 @@ class Result(dict):
         self.url   = url
 
     def download(self, *args, **kwargs):
-        """ Download the content at the given URL. 
+        """ Download the content at the given URL.
             By default it will be cached - see URL.download().
         """
         return URL(self.url).download(*args, **kwargs)
@@ -920,7 +920,7 @@ class Result(dict):
         dict.__setitem__(self, u(k), v is not None and u(v) or u"") # Store strings as unicode.
     def __setitem__(self, k, v):
         dict.__setitem__(self, u(k), v is not None and u(v) or u"")
-        
+
     def setdefault(self, k, v):
         dict.setdefault(self, u(k), u(v))
     def update(self, *args, **kwargs):
@@ -932,7 +932,7 @@ class Result(dict):
         return "Result(url=%s)" % repr(self.url)
 
 class Results(list):
-    
+
     def __init__(self, source=None, query=None, type=SEARCH, total=0):
         """ A list of results returned from SearchEngine.search().
             - source: the service that yields the results (e.g. GOOGLE, TWITTER).
@@ -958,7 +958,7 @@ class SearchEngine:
         self.throttle = throttle    # Amount of sleep time after executing a query.
         self.language = language    # Result.language restriction (e.g., "en").
         self.format   = lambda x: x # Formatter applied to each attribute of each Result.
-    
+
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         return Results(source=None, query=query, type=type)
 
@@ -983,10 +983,10 @@ GOOGLE_CUSTOM_SEARCH_ENGINE = "000579440470800426354:_4qo2s0ijsi"
 RE_GOOGLE_DATE = re.compile("^([A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4}) {0,1}...")
 
 class Google(SearchEngine):
-    
+
     def __init__(self, license=None, throttle=0.5, language=None):
         SearchEngine.__init__(self, license or GOOGLE_LICENSE, throttle, language)
-    
+
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """ Returns a list of results from Google for the given query.
             - type : SEARCH,
@@ -996,7 +996,7 @@ class Google(SearchEngine):
         """
         if type != SEARCH:
             raise SearchEngineTypeError
-        if not query or count < 1 or start < 1 or start > (100 / count): 
+        if not query or count < 1 or start < 1 or start > (100 / count):
             return Results(GOOGLE, query, type)
         # 1) Create request URL.
         url = URL(GOOGLE, query={
@@ -1029,12 +1029,12 @@ class Google(SearchEngine):
             if not r.date:
                 # Google Search descriptions can start with a date (parsed from the content):
                 m = RE_GOOGLE_DATE.match(r.description)
-                if m: 
+                if m:
                     r.date = m.group(1)
                     r.description = "..." + r.description[len(m.group(0)):]
             results.append(r)
         return results
-        
+
     def translate(self, string, input="en", output="fr", **kwargs):
         """ Returns the translation of the given string in the desired output language.
             Google Translate is a paid service, license without billing raises HTTP401Authentication.
@@ -1056,7 +1056,7 @@ class Google(SearchEngine):
         data = data.get("data", {}).get("translations", [{}])[0].get("translatedText", "")
         data = decode_entities(data)
         return u(data)
-        
+
     def identify(self, string, **kwargs):
         """ Returns a (language, confidence)-tuple for the given string.
             Google Translate is a paid service, license without billing raises HTTP401Authentication.
@@ -1082,7 +1082,7 @@ class Google(SearchEngine):
 # http://developer.yahoo.com/search/
 
 YAHOO = "http://yboss.yahooapis.com/ysearch/"
-YAHOO_LICENSE = api.license["Yahoo"] 
+YAHOO_LICENSE = api.license["Yahoo"]
 
 class Yahoo(SearchEngine):
 
@@ -1098,13 +1098,13 @@ class Yahoo(SearchEngine):
         """
         if type not in (SEARCH, IMAGE, NEWS):
             raise SearchEngineTypeError
-        if type == SEARCH: 
+        if type == SEARCH:
             url = YAHOO + "web"
-        if type == IMAGE: 
+        if type == IMAGE:
             url = YAHOO + "images"
-        if type == NEWS: 
+        if type == NEWS:
             url = YAHOO + "news"
-        if not query or count < 1 or start < 1 or start > 1000 / count: 
+        if not query or count < 1 or start < 1 or start > 1000 / count:
             return Results(YAHOO, query, type)
         # 1) Create request URL.
         url = URL(url, method=GET, query={
@@ -1119,18 +1119,18 @@ class Yahoo(SearchEngine):
             if market:
                 url.query["market"] = market.lower()
         # 3) BOSS OAuth authentication.
-        url.query.update({ 
+        url.query.update({
             "oauth_version": "1.0",
             "oauth_nonce": oauth.nonce(),
             "oauth_timestamp": oauth.timestamp(),
             "oauth_consumer_key": self.license[0],
-            "oauth_signature_method": "HMAC-SHA1"         
+            "oauth_signature_method": "HMAC-SHA1"
         })
         url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query, method=GET, secret=self.license[1])
         # 3) Parse JSON response.
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
-        try: 
+        try:
             data = url.download(cached=cached, **kwargs)
         except HTTP401Authentication:
             raise HTTP401Authentication, "Yahoo %s API is a paid service" % type
@@ -1158,7 +1158,7 @@ class Yahoo(SearchEngine):
 # https://datamarket.azure.com/account/info
 
 BING = "https://api.datamarket.azure.com/Bing/Search/"
-BING_LICENSE = api.license["Bing"] 
+BING_LICENSE = api.license["Bing"]
 
 class Bing(SearchEngine):
 
@@ -1175,13 +1175,13 @@ class Bing(SearchEngine):
         """
         if type not in (SEARCH, IMAGE, NEWS):
             raise SearchEngineTypeError
-        if type == SEARCH: 
+        if type == SEARCH:
             src = "Web"
-        if type == IMAGE: 
+        if type == IMAGE:
             src = "Image"
         if type == NEWS:
             src = "News"
-        if not query or count < 1 or start < 1 or start > 1000 / count: 
+        if not query or count < 1 or start < 1 or start > 1000 / count:
             return Results(BING + src + "?", query, type)
         # 1) Construct request URL.
         url = URL(BING + "Composite", method=GET, query={
@@ -1194,9 +1194,9 @@ class Bing(SearchEngine):
         # 2) Restrict image size.
         if size in (TINY, SMALL, MEDIUM, LARGE):
             url.query["ImageFilters"] = {
-                    TINY: "'Size:Small'", 
-                   SMALL: "'Size:Small'", 
-                  MEDIUM: "'Size:Medium'", 
+                    TINY: "'Size:Small'",
+                   SMALL: "'Size:Small'",
+                  MEDIUM: "'Size:Medium'",
                    LARGE: "'Size:Large'" }[size]
         # 3) Restrict language.
         if type in (SEARCH, IMAGE) and self.language is not None:
@@ -1209,7 +1209,7 @@ class Bing(SearchEngine):
         kwargs["authentication"] = ("", self.license)
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
-        try: 
+        try:
             data = url.download(cached=cached, **kwargs)
         except HTTP401Authentication:
             raise HTTP401Authentication, "Bing %s API is a paid service" % type
@@ -1235,12 +1235,12 @@ class Bing(SearchEngine):
 TWITTER         = "http://search.twitter.com/"
 TWITTER_STREAM  = "https://stream.twitter.com/1/statuses/filter.json"
 TWITTER_STATUS  = "https://twitter.com/%s/status/%s"
-TWITTER_LICENSE = api.license["Twitter"]  
+TWITTER_LICENSE = api.license["Twitter"]
 TWITTER_HASHTAG = re.compile(r"(\s|^)(#[a-z0-9_\-]+)", re.I)    # Word starts with "#".
 TWITTER_RETWEET = re.compile(r"(\s|^RT )(@[a-z0-9_\-]+)", re.I) # Word starts with "RT @".
 
 class Twitter(SearchEngine):
-    
+
     def __init__(self, license=None, throttle=0.5, language=None):
         SearchEngine.__init__(self, license or TWITTER_LICENSE, throttle, language)
 
@@ -1253,14 +1253,14 @@ class Twitter(SearchEngine):
         """
         if type != SEARCH:
             raise SearchEngineTypeError
-        if not query or count < 1 or start < 1 or start > 1500 / count: 
+        if not query or count < 1 or start < 1 or start > 1500 / count:
             return Results(TWITTER, query, type)
         # 1) Construct request URL.
         url = URL(TWITTER + "search.json?", method=GET)
         url.query = {
                "q": query,
             "page": start,
-             "rpp": min(count, 100) 
+             "rpp": min(count, 100)
         }
         if "geo" in kwargs:
             # Filter by location with geo=(latitude, longitude, radius).
@@ -1271,7 +1271,7 @@ class Twitter(SearchEngine):
         # 3) Parse JSON response.
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
-        try: 
+        try:
             data = URL(url).download(cached=cached, **kwargs)
         except HTTP420Error:
             raise SearchEngineLimitError
@@ -1288,7 +1288,7 @@ class Twitter(SearchEngine):
             r.language    = self.format(x.get("iso_language_code"))
             results.append(r)
         return results
-        
+
     def trends(self, **kwargs):
         """ Returns a list with 10 trending topics on Twitter.
         """
@@ -1299,31 +1299,31 @@ class Twitter(SearchEngine):
         data = url.download(**kwargs)
         data = json.loads(data)
         return [u(x.get("name")) for x in data[0].get("trends", [])]
-        
+
     def stream(self, query):
         """ Returns a live stream of Result objects for the given query.
         """
         url = URL(TWITTER_STREAM)
-        url.query.update({ 
+        url.query.update({
             "track": query,
             "oauth_version": "1.0",
             "oauth_nonce": oauth.nonce(),
             "oauth_timestamp": oauth.timestamp(),
             "oauth_consumer_key": self.license[0],
             "oauth_token": self.license[2][0],
-            "oauth_signature_method": "HMAC-SHA1"         
+            "oauth_signature_method": "HMAC-SHA1"
         })
-        url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query, GET, 
-            self.license[1], 
+        url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query, GET,
+            self.license[1],
             self.license[2][1])
         return TwitterStream(url, delimiter="\n", format=self.format)
 
 class TwitterStream(Stream):
-    
+
     def __init__(self, socket, delimiter="\n", format=lambda s: s):
         Stream.__init__(self, socket, delimiter)
         self.format = format
-    
+
     def parse(self, data):
         """ TwitterStream.queue will populate with Result objects as
             TwitterStream.update() is called iteratively.
@@ -1348,7 +1348,7 @@ def hashtags(string):
     """ Returns a list of hashtags (words starting with a #hash) from a tweet.
     """
     return [b for a, b in TWITTER_HASHTAG.findall(string)]
-    
+
 def retweets(string):
     """ Returns a list of retweets (words starting with a RT @author) from a tweet.
     """
@@ -1394,7 +1394,7 @@ class MediaWiki(SearchEngine):
     def _url(self):
         # Must be overridden in a subclass; see Wikia and Wikipedia.
         return None
-        
+
     @property
     def MediaWikiArticle(self):
         return MediaWikiArticle
@@ -1407,7 +1407,7 @@ class MediaWiki(SearchEngine):
 
     def search(self, query, type=SEARCH, start=1, count=1, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """ Returns a MediaWikiArticle for the given query.
-            The query is case-sensitive, for example on Wikipedia: 
+            The query is case-sensitive, for example on Wikipedia:
             - "tiger" = Panthera tigris,
             - "TIGER" = Topologically Integrated Geographic Encoding and Referencing.
         """
@@ -1435,7 +1435,34 @@ class MediaWiki(SearchEngine):
         if not a.html or "id=\"noarticletext\"" in a.html:
             return None
         return a
-    
+
+    def list(self, namespace=0, limit=10, continue_query=False, **kwargs):
+        """Allows you to iterate over all articles for a given namespace.
+           This will be the best way to grab all data from a wiki, assuming
+           you already know what the content namespaces are.
+        """
+        params = {
+            "action": "query",
+              "list": "allpages",
+         "namespace": namespace,
+           "aplimit": limit,
+            "format": "json"
+        }
+        if continue_query:
+            params["apfrom"] = self.query_continue
+        url = URL(self._url, method=GET, query=params)
+        data = url.download(cached=True, **kwargs)
+        data = json.loads(data)
+        listings = []
+        for listing in data.get("query", {}).get("allpages", {}):
+            title = listing.get("title", False)
+            if title != False:
+                listings.append(title)
+
+        self.query_continue = data.get('query-continue', {}).get('allpages', {}).get('apfrom', '')
+        return listings
+
+
     def _parse_article(self, data, **kwargs):
         return self.MediaWikiArticle(
                   title = plaintext(data.get("displaytitle", "")),
@@ -1448,7 +1475,7 @@ class MediaWiki(SearchEngine):
               languages = dict([(x["lang"], x["*"]) for x in data.get("langlinks", [])]),
               language  = self.language,
                  parser = self, **kwargs)
-    
+
     def _parse_article_sections(self, article, data):
         # If "References" is a section in the article,
         # the HTML will contain a marker <h*><span class="mw-headline" id="References">.
@@ -1464,16 +1491,16 @@ class MediaWiki(SearchEngine):
                 m = p.search(article.source, i)
                 if m:
                     j = m.start()
-                    article.sections.append(self.MediaWikiSection(article, 
+                    article.sections.append(self.MediaWikiSection(article,
                         title = t,
-                        start = i, 
+                        start = i,
                          stop = j,
                         level = d))
                     t = x.get("line", "")
                     d = int(x.get("level", 2)) - 1
                     i = j
         return article
-    
+
     def _parse_article_section_structure(self, article):
         # Sections with higher level are children of previous sections with lower level.
         for i, s2 in enumerate(article.sections):
@@ -1484,8 +1511,42 @@ class MediaWiki(SearchEngine):
                     break
         return article
 
+class MediaWikiArticleSet(object):
+
+    def __init__(self, mwSearchEngine, namespace=0, limit=10, iterationLimit=0):
+        self.MediaWiki = mwSearchEngine
+        self.namespace = namespace
+        self.current = 0
+        self.total = 0
+        self.listings = []
+        self.limit = limit
+        self.iterationLimit = iterationLimit
+        self.page = None
+        self.listings = self.MediaWiki.list(namespace=self.namespace, limit=self.limit)
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        if self.total == self.iterationLimit and self.iterationLimit > 0:
+            raise StopIteration()
+
+        if len(self.listings) == self.current:
+            self.current = 0
+            self.listings = self.MediaWiki.list(namespace=self.namespace, limit=self.limit, continue_query=True)
+            if len(self.listings) == 0:
+                raise StopIteration()
+
+        self.page = self.getPage()
+        self.current, self.total = self.current + 1, self.total + 1
+        return self.page
+
+    def getPage(self):
+        return self.MediaWiki.search(self.listings[self.current])
+
+
 class MediaWikiArticle:
-    
+
     def __init__(self, title=u"", source=u"", links=[], categories=[], languages={}, disambiguation=False, **kwargs):
         """ A MediaWiki article returned from MediaWiki.search().
             MediaWikiArticle.string contains the HTML content.
@@ -1503,7 +1564,7 @@ class MediaWikiArticle:
         self.parser         = kwargs.get("parser", MediaWiki())
         for k, v in kwargs.items():
             setattr(self, k, v)
-    
+
     def _plaintext(self, string, **kwargs):
         """ Strips HTML tags, whitespace and wiki markup from the HTML source, including:
             metadata, info box, table of contents, annotations, thumbnails, disambiguation link.
@@ -1524,23 +1585,23 @@ class MediaWikiArticle:
         s = re.sub(r"\[edit\]\s*", "", s) # [edit] is language dependent (e.g. nl => "[bewerken]")
         s = s.replace("[", " [").replace("  [", " [") # Space before inline references.
         return s
-        
+
     def plaintext(self, **kwargs):
         return self._plaintext(self.source, **kwargs)
-    
+
     @property
     def html(self):
         return self.source
-        
+
     @property
     def string(self):
         return self.plaintext()
-        
+
     def __repr__(self):
         return "MediaWikiArticle(title=%s)" % repr(self.title)
 
 class MediaWikiSection:
-    
+
     def __init__(self, article, title=u"", start=0, stop=0, level=1):
         """ A (nested) section in the content of a MediaWikiArticle.
         """
@@ -1559,15 +1620,15 @@ class MediaWikiSection:
     @property
     def source(self):
         return self.article.source[self._start:self._stop]
-        
+
     @property
     def html(self):
         return self.source
-        
+
     @property
     def string(self):
         return self.plaintext()
-        
+
     @property
     def content(self):
         # ArticleSection.string, minus the title.
@@ -1575,7 +1636,7 @@ class MediaWikiSection:
         if s == self.title or s.startswith(self.title+"\n"):
             return s[len(self.title):].lstrip()
         return s
-    
+
     @property
     def tables(self):
         """ Yields a list of MediaWikiTable objects in the section.
@@ -1608,14 +1669,14 @@ class MediaWikiSection:
     @property
     def level(self):
         return self._level
-        
+
     depth = level
 
     def __repr__(self):
         return "MediaWikiSection(title='%s')" % bytestring(self.title)
 
 class MediaWikiTable:
-    
+
     def __init__(self, section, title=u"", headers=[], rows=[], source=u""):
         """ A <table class="wikitable> in a MediaWikiSection.
         """
@@ -1624,18 +1685,18 @@ class MediaWikiTable:
         self.title   = title   # Table title.
         self.headers = headers # List of table headers.
         self.rows    = rows    # List of table rows, each a list of cells.
-        
+
     @property
     def html(self):
         return self.source
-        
+
     def __repr__(self):
         return "MediaWikiTable(title='%s')" % bytestring(self.title)
 
 #--- MEDIAWIKI: WIKIPEDIA --------------------------------------------------------------------------
 
 class Wikipedia(MediaWiki):
-    
+
     def __init__(self, license=None, throttle=5.0, language="en"):
         """ Mediawiki search engine for http://[language].wikipedia.org.
         """
@@ -1666,7 +1727,7 @@ class WikipediaArticle(MediaWikiArticle):
         """ Downloads an item from MediaWikiArticle.media and returns the content.
             Note: images on Wikipedia can be quite large, and this method uses screen-scraping,
                   so Wikipedia might not like it that you download media in this way.
-            To save the media in a file: 
+            To save the media in a file:
             data = article.download(media)
             open(filename+extension(media),"w").write(data)
         """
@@ -1677,7 +1738,7 @@ class WikipediaArticle(MediaWikiArticle):
         data = re.search(r"upload.wikimedia.org/.*?/%s" % media, data)
         data = data and URL("http://" + data.group(0)).download(**kwargs) or None
         return data
-        
+
     def __repr__(self):
         return "WikipediaArticle(title=%s)" % repr(self.title)
 
@@ -1697,14 +1758,14 @@ class WikipediaTable(MediaWikiTable):
 #    f = open(article.media[2], "w")
 #    f.write(data)
 #    f.close()
-#    
+#
 #article = Wikipedia(language="nl").search("borrelnootje")
 #print article.string
 
 #--- MEDIAWIKI: WIKIA ------------------------------------------------------------------------------
 
 class Wikia(MediaWiki):
-    
+
     def __init__(self, license=None, throttle=5.0, domain="www", language="en"):
         """ Mediawiki search engine for http://[domain].wikia.com.
         """
@@ -1720,6 +1781,14 @@ class Wikia(MediaWiki):
         return s
 
     @property
+    def _wikiaUrl(self):
+        s = MEDIAWIKI
+        s = s.replace("{SUBDOMAIN}", self._subdomain)
+        s = s.replace("{DOMAIN}", "wikia.com")
+        s = s.replace("{API}", '/wikia.php')
+        return s
+
+    @property
     def MediaWikiArticle(self):
         return WikiaArticle
     @property
@@ -1729,6 +1798,57 @@ class Wikia(MediaWiki):
     def MediaWikiTable(self):
         return WikiaTable
 
+    def list(self, namespace=0, limit=10, continue_query=False, **kwargs):
+        """Allows you to iterate over all articles for a given namespace.
+           This will be the best way to grab all data from a wiki, assuming
+           you already know what the content namespaces are.
+           The Wikia version uses our search indexing API to provide multiple articles
+           at once to reduce bandwidth
+        """
+        params = {
+            "action": "query",
+              "list": "allpages",
+         "namespace": namespace,
+           "aplimit": limit,
+            "format": "json"
+        }
+        if continue_query:
+            params["apfrom"] = self.query_continue
+        url = URL(self._url, method=GET, query=params)
+        data = url.download(cached=True, **kwargs)
+        data = json.loads(data)
+        listings = []
+        for listing in data.get("query", {}).get("allpages", {}):
+            pageid = listing.get("pageid", False)
+            if pageid != False:
+                listings.append(pageid)
+
+        self.query_continue = data.get('query-continue', {}).get('allpages', {}).get('apfrom', '')
+
+        params = {
+        "controller": "WikiaSearch",
+            "method": "getPages",
+               "ids": '|'.join([str(listing) for listing in listings]),
+            "format": "json"
+        }
+
+        url = URL(self._wikiaUrl, method=GET, query=params)
+        # i know it's two minutes, but it's also ten pages
+        data = url.download(cached=True, timeout=120, **kwargs)
+        data = json.loads(data)
+
+        articles = []
+
+        for page in data.get("pages", {}).values():
+            if page.get('title', False) and page.get('html', False):
+                articles.append(WikiaArticle(title=page['title'], source=page['html']))
+
+        return articles
+
+
+class WikiaArticleSet(MediaWikiArticleSet):
+    def getPage(self):
+        return self.listings[self.current]
 
 class WikiaArticle(MediaWikiArticle):
     def __repr__(self):
@@ -1746,12 +1866,12 @@ class WikiaTable(MediaWikiTable):
 # http://www.flickr.com/services/api/
 
 FLICKR = "http://api.flickr.com/services/rest/"
-FLICKR_LICENSE = api.license["Flickr"] 
+FLICKR_LICENSE = api.license["Flickr"]
 
 INTERESTING = "interesting"
 
 class Flickr(SearchEngine):
-    
+
     def __init__(self, license=None, throttle=5.0, language=None):
         SearchEngine.__init__(self, license or FLICKR_LICENSE, throttle, language)
 
@@ -1770,14 +1890,14 @@ class Flickr(SearchEngine):
             return Results(FLICKR, query, IMAGE)
         # 1) Construct request URL.
         url = FLICKR+"?"
-        url = URL(url, method=GET, query={        
+        url = URL(url, method=GET, query={
            "api_key": self.license or "",
             "method": "flickr.photos.search",
               "text": query.replace(" ", "_"),
               "page": start,
           "per_page": min(count, 500),
-              "sort": { RELEVANCY: "relevance", 
-                           LATEST: "date-posted-desc", 
+              "sort": { RELEVANCY: "relevance",
+                           LATEST: "date-posted-desc",
                       INTERESTING: "interestingness-desc" }.get(sort)
         })
         if kwargs.get("copyright", True) is False:
@@ -1803,9 +1923,9 @@ class Flickr(SearchEngine):
             r.author      = self.format(x.getAttribute("owner"))
             results.append(r)
         return results
-        
+
 class FlickrResult(Result):
-    
+
     @property
     def url(self):
         # Retrieving the url of a FlickrResult (i.e. image location) requires another query.
@@ -1814,9 +1934,9 @@ class FlickrResult(Result):
         url = FLICKR + "?method=flickr.photos.getSizes&photo_id=%s&api_key=%s" % (self._id, self._license)
         data = URL(url).download(throttle=self._throttle, unicode=True)
         data = xml.dom.minidom.parseString(bytestring(data))
-        size = { TINY: "Thumbnail", 
-                SMALL: "Small", 
-               MEDIUM: "Medium", 
+        size = { TINY: "Thumbnail",
+                SMALL: "Small",
+               MEDIUM: "Medium",
                 LARGE: "Original" }.get(self._size, "Medium")
         for x in data.getElementsByTagName("size"):
             if size == x.getAttribute("label"):
@@ -1842,13 +1962,13 @@ class FlickrResult(Result):
 # https://developers.facebook.com/docs/reference/api/
 
 FACEBOOK = "https://graph.facebook.com/"
-FACEBOOK_LICENSE = api.license["Facebook"] 
+FACEBOOK_LICENSE = api.license["Facebook"]
 
 class Facebook(SearchEngine):
 
     def __init__(self, license=None, throttle=1.0, language=None):
         SearchEngine.__init__(self, license, throttle, language)
-        
+
     def search(self, query, type=SEARCH, start=1, count=10, cached=False, **kwargs):
         """ Returns a list of results from Facebook public status updates for the given query.
             - type : SEARCH,
@@ -1858,7 +1978,7 @@ class Facebook(SearchEngine):
         """
         if type != SEARCH:
             raise SearchEngineTypeError
-        if not query or start < 1 or count < 1: 
+        if not query or start < 1 or count < 1:
             return Results(FACEBOOK, query, SEARCH)
         # 1) Construct request URL.
         url = FACEBOOK + "search?"
@@ -1886,13 +2006,13 @@ class Facebook(SearchEngine):
 #--- PRODUCT REVIEWS -------------------------------------------------------------------------------
 
 PRODUCTWIKI = "http://api.productwiki.com/connect/api.aspx"
-PRODUCTWIKI_LICENSE = api.license["Products"] 
+PRODUCTWIKI_LICENSE = api.license["Products"]
 
 class Products(SearchEngine):
-    
+
     def __init__(self, license=None, throttle=5.0, language=None):
         SearchEngine.__init__(self, license or PRODUCTWIKI_LICENSE, throttle, language)
-    
+
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """ Returns a list of results from Productwiki for the given query.
             Each Result.reviews is a list of (review, score)-items.
@@ -1901,14 +2021,14 @@ class Products(SearchEngine):
             - count: 20,
             - sort : RELEVANCY.
             There is no daily limit.
-        """ 
+        """
         if type != SEARCH:
             raise SearchEngineTypeError
-        if not query or start < 1 or count < 1: 
+        if not query or start < 1 or count < 1:
             return Results(PRODUCTWIKI, query, type)
         # 1) Construct request URL.
         url = PRODUCTWIKI+"?"
-        url = URL(url, method=GET, query={ 
+        url = URL(url, method=GET, query={
                "key": self.license or "",
                  "q": query,
              "page" : start,
@@ -1950,13 +2070,13 @@ class Products(SearchEngine):
 # http://www.feedparser.org/
 
 class Newsfeed(SearchEngine):
-    
+
     def __init__(self, license=None, throttle=1.0, language=None):
         SearchEngine.__init__(self, license, throttle, language)
-    
+
     def search(self, query, type=NEWS, start=1, count=10, sort=LATEST, size=SMALL, cached=True, **kwargs):
         """ Returns a list of results from the given RSS or Atom newsfeed URL.
-        """ 
+        """
         if type != NEWS:
             raise SearchEngineTypeError
         if not query or start < 1 or count < 1:
@@ -1987,8 +2107,8 @@ class Newsfeed(SearchEngine):
                 # Newsfeed.search(tags=["dc:identifier"]) => Result.dc_identifier.
                 tag = tag.replace(":", "_")
                 r[tag] = self.format(x.get(tag))
-            results.append(r) 
-        return results           
+            results.append(r)
+        return results
 
 feeds = {
           "Nature": "http://feeds.nature.com/nature/rss/current",
@@ -2069,17 +2189,17 @@ def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, revers
         q.strip()
         q = strict and "\"%s\"" % q or q
         r = service.search(q, count=1, **kwargs)
-        R.append(r)        
+        R.append(r)
     s = float(sum([r.total or 1 for r in R])) or 1.0
     R = [((r.total or 1)/s, r.query) for r in R]
-    R = sorted(R, reverse=True)    
+    R = sorted(R, reverse=True)
     return R
 
 #print sort(["black", "happy"], "darth vader", GOOGLE)
 
 #### DOCUMENT OBJECT MODEL #########################################################################
 # Tree traversal of HTML source code.
-# The Document Object Model (DOM) is a cross-platform and language-independent convention 
+# The Document Object Model (DOM) is a cross-platform and language-independent convention
 # for representing and interacting with objects in HTML, XHTML and XML documents.
 # BeautifulSoup is wrapped in Document, Element and Text classes that resemble the Javascript DOM.
 # BeautifulSoup can of course be used directly since it is imported here.
@@ -2087,7 +2207,7 @@ def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, revers
 
 SOUP = (
     BeautifulSoup.BeautifulSoup,
-    BeautifulSoup.Tag, 
+    BeautifulSoup.Tag,
     BeautifulSoup.NavigableString,
     BeautifulSoup.Comment
 )
@@ -2098,7 +2218,7 @@ NODE, TEXT, COMMENT, ELEMENT, DOCUMENT = \
 #--- NODE ------------------------------------------------------------------------------------------
 
 class Node:
-    
+
     def __init__(self, html, type=NODE, **kwargs):
         """ The base class for Text, Comment and Element.
             All DOM nodes can be navigated in the same way (e.g. Node.parent, Node.children, ...)
@@ -2114,7 +2234,7 @@ class Node:
     def __eq__(self, other):
         # Two Node objects containing the same BeautifulSoup object, are the same.
         return isinstance(other, Node) and hash(self._p) == hash(other._p)
-    
+
     def _wrap(self, x):
         # Navigating to other nodes yields either Text, Element or None.
         if isinstance(x, BeautifulSoup.Comment):
@@ -2125,7 +2245,7 @@ class Node:
             return Text(x)
         if isinstance(x, BeautifulSoup.Tag):
             return Element(x)
-    
+
     @property
     def parent(self):
         return self._wrap(self._p.parent)
@@ -2150,7 +2270,7 @@ class Node:
         """ Executes the visit function on this node and each of its child nodes.
         """
         visit(self); [node.traverse(visit) for node in self.children]
-        
+
     def __len__(self):
         return len(self.children)
     def __iter__(self):
@@ -2170,12 +2290,12 @@ class Node:
 class Text(Node):
     """ Text represents a chunk of text without formatting in a HTML document.
         For example: "the <b>cat</b>" is parsed to [Text("the"), Element("cat")].
-    """    
+    """
     def __init__(self, string):
         Node.__init__(self, string, type=TEXT)
     def __repr__(self):
         return "Text(%s)" % repr(self._p)
-    
+
 class Comment(Text):
     """ Comment represents a comment in the HTML source code.
         For example: "<!-- comment -->".
@@ -2188,7 +2308,7 @@ class Comment(Text):
 #--- ELEMENT ---------------------------------------------------------------------------------------
 
 class Element(Node):
-    
+
     def __init__(self, html):
         """ Element represents an element or tag in the HTML source code.
             For example: "<b>hello</b>" is a "b"-Element containing a child Text("hello").
@@ -2199,7 +2319,7 @@ class Element(Node):
     def tagname(self):
         return self._p.name
     tag = tagName = tagname
-    
+
     @property
     def attributes(self):
         return self._p._getAttrMap()
@@ -2207,7 +2327,7 @@ class Element(Node):
     @property
     def id(self):
         return self.attributes.get("id")
-        
+
     def get_elements_by_tagname(self, v):
         """ Returns a list of nested Elements with the given tag name.
             The tag name can include a class (e.g. div.header) or an id (e.g. div#content).
@@ -2228,7 +2348,7 @@ class Element(Node):
         """
         return ([Element(x) for x in self._p.findAll(id=v, limit=1) or []]+[None])[0]
     by_id = getElementById = get_element_by_id
-    
+
     def get_elements_by_classname(self, v):
         """ Returns a list of nested Elements with the given class attribute value.
         """
@@ -2240,22 +2360,22 @@ class Element(Node):
         """
         return [Element(x) for x in (self._p.findAll(True, attrs=kwargs))]
     by_attribute = getElementsByAttribute = get_elements_by_attribute
-    
+
     @property
     def content(self):
         """ Yields the element content as a unicode string.
         """
         return u"".join([u(x) for x in self._p.contents])
-    
+
     @property
     def source(self):
         """ Yields the HTML source as a unicode string (tag + content).
         """
         return u(self._p)
     html = source
-    
+
     def __getattr__(self, k):
-        if k in self.__dict__: 
+        if k in self.__dict__:
             return self.__dict__[k]
         if k in self.attributes:
             return self.attributes[k]
@@ -2267,12 +2387,12 @@ class Element(Node):
 #--- DOCUMENT --------------------------------------------------------------------------------------
 
 class Document(Element):
-    
+
     def __init__(self, html, **kwargs):
         """ Document is the top-level element in the Document Object Model.
             It contains nested Element, Text and Comment nodes.
         """
-        # Aliases for BeautifulSoup optional parameters: 
+        # Aliases for BeautifulSoup optional parameters:
         kwargs["selfClosingTags"] = kwargs.pop("self_closing", kwargs.get("selfClosingTags"))
         Node.__init__(self, u(html).strip(), type=DOCUMENT, **kwargs)
 
@@ -2283,7 +2403,7 @@ class Document(Element):
         for child in self.children:
             if isinstance(child._p, BeautifulSoup.Declaration):
                 return child
-    
+
     @property
     def head(self):
         return self._wrap(self._p.head)
@@ -2294,7 +2414,7 @@ class Document(Element):
     def tagname(self):
         return None
     tag = tagname
-    
+
     def __repr__(self):
         return "Document()"
 
@@ -2311,14 +2431,14 @@ DOM = Document
 # Tested with a crawl across 1,000 domain so far.
 
 class Link:
-    
+
     def __init__(self, url, description="", relation="", referrer=""):
         """ A hyperlink parsed from a HTML document, in the form:
             <a href="url"", title="description", rel="relation">xxx</a>.
         """
         self.url, self.description, self.relation, self.referrer = \
-            u(url), u(description), u(relation), u(referrer), 
-    
+            u(url), u(description), u(relation), u(referrer),
+
     def __repr__(self):
         return "Link(url=%s)" % repr(self.url)
 
@@ -2333,7 +2453,7 @@ class Link:
         return self.url > link.url
 
 class HTMLLinkParser(HTMLParser):
-    
+
     def __init__(self):
         HTMLParser.__init__(self)
 
@@ -2348,7 +2468,7 @@ class HTMLLinkParser(HTMLParser):
         self.close()
         self.reset()
         return self._data
-    
+
     def handle_starttag(self, tag, attributes):
         if tag == "a":
             attributes = dict(attributes)
@@ -2360,7 +2480,7 @@ class HTMLLinkParser(HTMLParser):
                 self._data.append(link)
 
 def base(url):
-    """ Returns the URL domain name: 
+    """ Returns the URL domain name:
         http://en.wikipedia.org/wiki/Web_crawler => en.wikipedia.org
     """
     return urlparse.urlparse(url).netloc
@@ -2382,7 +2502,7 @@ FILO = "filo" # First In, Last Out.
 LIFO = "lifo" # Last In, First Out (= FILO).
 
 class Spider:
-    
+
     def __init__(self, links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse, sort=FIFO):
         """ A spider can be used to browse the web in an automated manner.
             It visits the list of starting URLs, parses links from their content, visits those, etc.
@@ -2422,7 +2542,7 @@ class Spider:
         dt = sort == FIFO and dt or 1 / dt
         bisect.insort(self._queue, (1 - priority, dt, link))
         self._queued[link.url] = True
-    
+
     def pop(self, remove=True):
         """ Returns the next Link queued to visit and removes it from the queue.
             Links on a recently visited (sub)domain are skipped until Spider.delay has elapsed.
@@ -2440,7 +2560,7 @@ class Spider:
         """ Returns the next Link queued to visit (without removing it).
         """
         return self.pop(remove=False)
-    
+
     def crawl(self, method=DEPTH, **kwargs):
         """ Visits the next link in Spider._queue.
             If the link is on a domain recently visited (< Spider.delay) it is skipped.
@@ -2519,7 +2639,7 @@ class Spider:
         # Depth-first search dislikes external links to other (sub)domains.
         external = base(link.url) != base(link.referrer)
         if external is True:
-            if method == DEPTH: 
+            if method == DEPTH:
                 return 0.75
             if method == BREADTH:
                 return 0.85
@@ -2531,7 +2651,7 @@ class Spider:
             or possibly a URLTimeout occured (content size too big).
         """
         pass
-        
+
     def fail(self, link):
         """ Called from Spider.crawl() for link whose MIME-type could not be determined,
             or which raised a URLError on download.
@@ -2582,7 +2702,7 @@ def crawl(links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse, sort=
 #for link, source in crawl("http://www.nodebox.net/", delay=0, throttle=10):
 #    print link
 
-#g = crawl("http://www.nodebox.net/")    
+#g = crawl("http://www.nodebox.net/")
 #for i in range(10):
 #    p = asynchronous(g.next)
 #    while not p.done:
@@ -2598,18 +2718,18 @@ class PDFParseError(Exception):
     pass
 
 class PDF:
-    
+
     def __init__(self, data, format=None):
         """ Plaintext parsed from the given PDF data.
         """
         self.content = self._parse(data, format)
-    
+
     @property
     def string(self):
         return self.content
     def __unicode__(self):
         return self.content
-        
+
     def _parse(self, data, format=None):
         # The output will be ugly: it may be useful for mining but probably not for displaying.
         # You can also try PDF(data, format="html") to preserve some layout information.
