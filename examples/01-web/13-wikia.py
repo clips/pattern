@@ -20,5 +20,6 @@ counter = 0
 try:
     for page in ArticleSet:
         print counter, page.title
+        counter = counter + 1
 except URLTimeout:
     print "Timeout error."
