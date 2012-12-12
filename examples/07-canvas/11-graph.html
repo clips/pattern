@@ -6,7 +6,6 @@
 <body>
     <script type="text/canvas">
 		function setup(canvas) {
-			// Note: this is a trial script. It won't work yet with canvas.js in Pattern 2.4.
 			canvas.size(800, 500);
 			// Import the graph.js module asynchronously.
 			// Import the commonsense.js data asynchronously.
@@ -67,6 +66,13 @@
 						}
 					});
 				});
+				// Graph.shortestPath() takes two nodes and returns 
+				// the shortest path between them as a list of nodes.
+				// To get the edges connecting these nodes, we can use the edges() function.
+				var p = halo.shortestPath("expensive", "rocket");
+				Array.enumerate(edges(p), function(i, e) {
+					e.stroke = color(1,0,0);
+				});
 			}
 			// The Graph.layout.iterations increments each time Graph.update() is called.
 			// Graph.update() calculates the attractive and repulsive forces between nodes.
@@ -74,6 +80,8 @@
 			// so the CPU doesn't start overheating.
 			if (halo.layout.iterations < 1000) {
 				canvas.clear();
+				fill(0,0,0,0);
+				stroke(0,0,0,1);
 				halo.update();
 				halo.draw(weighted=false, directed=true); // Draw arrowheads.
 			}
