@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <script type="text/javascript" src="../../pattern/canvas.js"></script>  
+    <script type="text/javascript" src="../../pattern/canvas.js"></script>
 </head>
 <body>
     <script type="text/canvas">
@@ -25,6 +25,7 @@
 				// Create a new Graph object:
 				g = new Graph();
 				// Traverse the relations in the common sense dataset.
+				// Loading commonsense.js defines a list of relations named "commonsense".
 				// Each relation has the form: [concept1, relation, concept2, context].
 				// For example, ["red", "is-property-of", "rose", "nature"].
 				// Add each relation as an edge (connection) to the graph.
@@ -44,9 +45,13 @@
 				// based on the (indirect) incoming connections.
 				// Once calculated we can then use Node.weight.
 				halo.eigenvectorCentrality();
+				// Similarly, Graph.betweennessCentrality() is a
+				// measure of node importance based on passing traffic.
+				// Once calculted we can use Node.centrality.
+				halo.betweennessCentrality();
 				// Traverse all the nodes in the halo.
 				// Each node will have an associated text label displaying its id.
-				// The text label is stored in a <div> element, 
+				// The text label is stored in a <div class="node-label"> element, 
 				// for which we can define CSS styles.
 				Array.enumerate(halo.nodes, function(i, n) {
 					n.radius = 4 + 6 * n.weight;
@@ -71,17 +76,27 @@
 				// To get the edges connecting these nodes, we can use the edges() function.
 				var p = halo.shortestPath("expensive", "rocket");
 				Array.enumerate(edges(p), function(i, e) {
-					e.stroke = color(1,0,0);
+					e.stroke = color(0, 0.2, 1);
+					e.strokewidth = 1.25;
+				});
+				// We could also highlight the nodes along the path:
+				Array.enumerate(p, function(i, n) {
+					n.fill = color(0, 0.2, 1, 0.5);
+					n.text.style.background = "#000";
+					n.text.style.color = "#fff";
 				});
 			}
 			// The Graph.layout.iterations increments each time Graph.update() is called.
 			// Graph.update() calculates the attractive and repulsive forces between nodes.
-			// We set a limit to the number of updates and redraws,
+			// We set a limit to the number of updates + redraws,
 			// so the CPU doesn't start overheating.
 			if (halo.layout.iterations < 1000) {
 				canvas.clear();
-				fill(0,0,0,0);
-				stroke(0,0,0,1);
+				//shadow(); // Looks nice but slow.
+				background(1);
+				fill(0, 0.2, 1, 0.2);
+				stroke(0);
+				strokewidth(1);
 				halo.update();
 				halo.draw(weighted=false, directed=true); // Draw arrowheads.
 			}
