@@ -397,11 +397,17 @@ class Graph(dict):
     def node(self, id):
         """ Returns the node in the graph with the given id.
         """
-        return self.get(id)
+        if isinstance(id, Node) and id.graph == self:
+            return id
+        return self.get(id, None)
     
     def edge(self, id1, id2):
         """ Returns the edge between the nodes with given id1 and id2.
         """
+        if isinstance(id1, Node) and id1.graph == self: 
+            id1 = id1.id
+        if isinstance(id2, Node) and id2.graph == self: 
+            id2 = id2.id
         return id1 in self and id2 in self and self[id1].links.edge(id2) or None
     
     def paths(self, node1, node2, length=4, path=[]):
@@ -1182,7 +1188,9 @@ class HTMLCanvasRenderer:
         }
     
     def _escape(self, s):
-        return s.replace("\"", "\\\"")
+        if isinstance(s, basestring):
+            return "\"%s\"" % s.replace("\"", "\\\"")
+        return s
     
     def _rgba(self, clr):
         # Color or tuple to a CSS "rgba(255,255,255,1.0)" string.
@@ -1244,7 +1252,7 @@ class HTMLCanvasRenderer:
                 p.append("href:\"%s\"" % self.href[n.id])
             if n.id in self.css:
                 p.append("css:\"%s\"" % self.css[n.id])
-            s.append("\t\"%s\": {%s},\n" % (self._escape(n.id), ", ".join(p)))
+            s.append("\t%s: {%s},\n" % (self._escape(n.id), ", ".join(p)))
         s[-1] = s[-1].rstrip(",\n") # Trailing comma breaks in IE.
         s.append("\n};\n")
         s.append("var e = [")
@@ -1264,7 +1272,7 @@ class HTMLCanvasRenderer:
                 p.append("stroke:%s" % self._rgba(e.stroke))      # [0,0,0,1.0]
             if e.strokewidth != self.default["strokewidth"]:
                 p.append("strokewidth:%.2f" % e.strokewidth)      # 0.5
-            s.append("\t[\"%s\", \"%s\", {%s}],\n" % (id1, id2, ", ".join(p)))
+            s.append("\t[%s, %s, {%s}],\n" % (id1, id2, ", ".join(p)))
         s[-1] = s[-1].rstrip(",\n") # Trailing comma breaks in IE.
         s.append("\n];\n")
         # Append the nodes to graph g.
@@ -1332,7 +1340,9 @@ class HTMLCanvasRenderer:
         s.append("function draw(canvas) {\n"
                     "\tif (g.layout.iterations <= %s) {\n"
                         "\t\tcanvas.clear();\n"
-                        "\t\tshadow();\n"
+                        "\t\t//shadow();\n"
+                        "\t\tstroke(0);\n"
+                        "\t\tfill(0,0);\n"
                         "\t\tg.update(%s);\n"
                         "\t\tg.draw(%s, %s);\n"
                     "\t}\n"
