@@ -633,12 +633,15 @@ var Graph = Class.extend({
     node: function(id) {
         /* Returns the node in the graph with the given id.
          */
+        if (id instanceof Node && id.graph == this) return id;
         return this.nodeset[id] || null;
     },
     
     edge: function(id1, id2) {
         /* Returns the edge between the nodes with given id1 and id2.
          */
+        if (id1 instanceof Node && id1.graph == this) id1 = id1.id;
+        if (id2 instanceof Node && id2.graph == this) id2 = id2.id;
         return (this.nodeset[id1] && this.nodeset[id2])? this.nodeset[id1].links.edge(id2) : null;
     },
 
