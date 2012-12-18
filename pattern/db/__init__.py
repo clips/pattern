@@ -1573,7 +1573,7 @@ class CSV(list):
         # Date objects are saved and loaded as strings, but it is easy to convert these back to dates:
         # - set a DATE field type for the column,
         # - or do Table.columns[x].map(lambda s: date(s))
-        data = open(path, "rb").read().lstrip(BOM_UTF8)
+        data = open(path, "rb").read().replace(BOM_UTF8, "")
         data = preprocess(data)
         data = "\n".join(line for line in data.splitlines()) # Excel \r => \n
         data = StringIO(data)
