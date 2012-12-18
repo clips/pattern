@@ -53,6 +53,10 @@ Array.index = function(array, v) {
     return -1;
 };
 
+Array.choice = function(array) {
+    return array[Math.round(Math.random() * (array.length-1))];
+};
+
 Array.unique = function(array) {
     /* Returns a new array with unique items.
      */
@@ -516,7 +520,7 @@ var Edge = Class.extend({
 /*--- GRAPH ----------------------------------------------------------------------------------------*/
 
 // Dropshadow opacity:
-var SHADOW = 0.65;
+var SHADOW = 0.0;
 
 // Graph layouts:
 var SPRING = "spring";
@@ -665,7 +669,7 @@ var Graph = Class.extend({
         return p;
     },
 
-//  shortestPath: function(node1, node2, {heuristic:function(id1,id1){return 0;}, directed:false})
+//  shortestPath: function(node1, node2, {heuristic:function(id1,id2){return 0;}, directed:false})
     shortestPath: function(node1, node2, a) {
         /* Returns a list of nodes connecting the two nodes.
          */
@@ -683,7 +687,7 @@ var Graph = Class.extend({
         }
     },
 
-//  shortestPaths: function(node, {heuristic:function(id1,id1){return 0;}, directed:false})
+//  shortestPaths: function(node, {heuristic:function(id1,id2){return 0;}, directed:false})
     shortestPaths: function(node, a) {
         /* Returns a dictionary of nodes, each linked to a list of nodes (shortest path).
          */
@@ -865,10 +869,12 @@ var Graph = Class.extend({
             // Transparent background, shadows enabled.
             if (g._i < g._frames) {
                 g._ctx.clearRect(0, 0, g.canvas.width, g.canvas.height);
-                g._ctx.shadowColor = "rgba(0,0,0,"+SHADOW+")";
-                g._ctx.shadowBlur = 8;
-                g._ctx.shadowOffsetX = 6;
-                g._ctx.shadowOffsetY = 6;
+                if (SHADOW) {
+                    g._ctx.shadowColor = "rgba(0,0,0,"+SHADOW+")";
+                    g._ctx.shadowBlur = 8;
+                    g._ctx.shadowOffsetX = 6;
+                    g._ctx.shadowOffsetY = 6;
+                }
                 g.update(a.ipf);
                 g.draw(a.weighted, a.directed);
                 g._i += 1;
