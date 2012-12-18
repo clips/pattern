@@ -123,6 +123,8 @@ def fleiss_kappa(m):
     N = len(m)    # Total number of tasks.
     n = sum(m[0]) # The number of votes per task.
     k = len(m[0]) # The number of categories.
+    if n == 1:
+        return 1.0
     assert all(sum(row) == n for row in m[1:]), "numer of votes for each task differs"
     # p[j] = the proportion of all assignments which were to the j-th category.
     p = [sum(m[i][j] for i in xrange(N)) / float(N*n) for j in xrange(k)]
