@@ -95,14 +95,17 @@
 				//shadow(); // Looks nice but slow.
 				background(1);
 				fill(0, 0.2, 1, 0.2);
-				stroke(0);
+				stroke(0, 0.5);
 				strokewidth(1);
 				halo.update();
-				halo.draw(weighted=false, directed=true); // Draw arrowheads.
+				halo.draw(false, true); // weighted=false, directed=true (arrowheads)
 			}
 			// When the user drags the mouse on a node,
 			// Graph.layout.iterations is reset to 0, so the graph is redrawn.
 			halo.drag(canvas.mouse);
+		}
+		function stop(canvas) {
+			halo.clear();
 		}
     </script>
 </body>
