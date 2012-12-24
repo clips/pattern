@@ -1,3 +1,43 @@
+This repository contains an extension on the Pattern web mining module. It adds support for the DuckDuckGo Zero-click Info API (http://api.duckduckgo.com/).
+
+DuckDuckGo is a search engine with a focus on privacy and simplicity. It draws information from a variety of sources, and for many of these sources attempts to deliver the most relevant single result in an instant summary format. These formats can be abstracts (such as Wikipedia summaries), definitions (i.e. dictionary), disambiguations (lists of related topics), and more. This information is returned via the API, and a query can have multiple elements in the response (e.g. both an abstract and related topics).
+
+This API does *not* return full search results, as DuckDuckGo does not have rights to re-share those via API (they are themselves largely licensed from other sources such as Bing). It also lacks at least some of the instant results, such as Wolfram Alpha calculations and news. Obviously this is all subject to change as DuckDuckGo itself develops, and this interface to it should be updated accordingly.
+
+Here is an example usage:
+>>> from pattern.web import DuckDuckGo
+>>> ddg = DuckDuckGo()
+>>> res1 = ddg.search("Barack Obama")
+
+The result "res1" is an object of class DuckDuckGoZC, and has all the fields corresponding to zero-click information from the DuckDuckGo API. These fields are mainly strings and a few lists. For meaning and usage, refer to: http://api.duckduckgo.com/
+
+If you want to hit the ground running there are a few "convenience" methods included. One is "describe", which returns the most relevant short snippet describing the result:
+>>> res1.describe()
+u'Barack Hussein Obama II is the 44th and current President of the United States.'
+
+You can also do simple calculations (those that are not escalated to Wolfram Alpha) and get the result:
+>>> res2 = ddg.search("2 + 2")
+>>> res2.describe()
+u'4'
+
+The "describe" method returns the first field it finds (e.g. with content) in this order: abstract_text (usually Wikipedia), definition, answer, or the text summary of the first related topic (if only a disambiguation list is returned). An example of this last one is:
+>>> res3.describe()
+u'The apple is the  pomaceous fruit of the apple tree, species Malus domestica in the rose family (Rosaceae).'
+
+If none of these fields are found then "describe" returns None.
+
+Another method is "getImage", which returns a (temporary) file object for the corresponding thumbnail image, if any. For instance:
+>>> obama = res1.getImage()
+
+This file is appropriate for saving, or can be processed with a library such as PIL.
+>>> from PIL import Image
+>>> im1 = Image.open(obama[0])
+
+More methods may be added, but the core functionality of retrieving DuckDuckGo information is fully functional and should be relatively easy for a developer to extend and reuse. Enjoy!
+
+
+Following is the original Pattern readme:
+-----------------------------------------
 PATTERN
 =======
 

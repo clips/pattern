@@ -1277,7 +1277,7 @@ class DuckDuckGoZC:
         self.abstractURL       = abstractURL        # URL of abstract source
         self.image             = image              # Image URL that goes with abstract
         self.heading           = heading            # Topic name going with abstract
-        self.answer            = answer             # Response category (article, disambig, etc.)
+        self.answer            = answer             # Instant answer (math from WolframAlpha, etc.)
         self.redirect          = redirect           # !bang query redirect (duckduckgo.com/bang.html)
         self.answer_type       = answer_type        # Type of answer (api.duckduckgo.com) 
         self.definition        = definition         # Dictionary definition
@@ -1289,13 +1289,28 @@ class DuckDuckGoZC:
             setattr(self, k, v)
 
     def describe(self):
-        """Return the abstract text if it exists, else dictionary definition, else None."""
+        """Return the best short description of the result if it exists, else None."""
         if len(self.abstract_text):
             return self.abstract_text
         elif len(self.definition):
             return self.definition
+        elif len(self.answer):
+            if self.answer_type == u'calc':
+                result = re.search(';">.*<\/a>', self.answer)
+                return self.answer[result.start() + 3:result.end() - 4]
+            else:
+                return self.answer
+        elif len(self.related_topics):
+            return self.related_topics[0]['Text']
         else:
-            return None 
+            return None
+
+    def getImage(self):
+        """Return a file object (default made in /tmp) of the corresponding image, else None."""
+        if len(self.image):
+            return urllib.urlretrieve(self.image)
+        else:
+            return None
 
 
 #--- TWITTER ---------------------------------------------------------------------------------------
