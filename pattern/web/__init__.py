@@ -1251,18 +1251,18 @@ class DuckDuckGo(SearchEngine):
         data = json.loads(data)
         return DuckDuckGoZC(
               abstract = data.get("Abstract"),
-              abstract_text = data.get("AbstractText"),
-              abstract_source = data.get("AbstractSource"),
-              abstractURL = data.get("AbstractURL"),
-              image = data.get("Image"),
-              heading = data.get("Heading"),
-              answer = data.get("Answer"),
-              answer_type = data.get("AnswerType"),
-              definition = data.get("Definition"),
-              definition_source = data.get("DefinitionSource"),
-              definitionURL = data.get("DefinitionURL"),
-              related_topics = data.get("RelatedTopics"),
-              results = data.get("Results"))
+         abstract_text = data.get("AbstractText"),
+       abstract_source = data.get("AbstractSource"),
+           abstractURL = data.get("AbstractURL"),
+                 image = data.get("Image"),
+               heading = data.get("Heading"),
+                answer = data.get("Answer"),
+           answer_type = data.get("AnswerType"),
+            definition = data.get("Definition"),
+     definition_source = data.get("DefinitionSource"),
+         definitionURL = data.get("DefinitionURL"),
+        related_topics = data.get("RelatedTopics"),
+               results = data.get("Results"))
 
 class DuckDuckGoZC:
     """Zero-Click results from a DuckDuckGo query."""
@@ -1287,6 +1287,15 @@ class DuckDuckGoZC:
         self.results           = results            # Array of non-DDG links relatd to abstract
         for k, v in kwargs.items():
             setattr(self, k, v)
+
+    def describe(self):
+        """Return the abstract text if it exists, else dictionary definition, else None."""
+        if len(self.abstract_text):
+            return self.abstract_text
+        elif len(self.definition):
+            return self.definition
+        else:
+            return None 
 
 
 #--- TWITTER ---------------------------------------------------------------------------------------
