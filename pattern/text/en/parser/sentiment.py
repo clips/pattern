@@ -59,6 +59,10 @@ class Lexicon:
         if not self._parsed:
             self._parse()
         return self._language
+        
+    @property
+    def negation(self):
+        return ("no", "not", "never")
     
     def _parse_xml(self, reliability=None):
         """ Returns a (language, words)-tuple, where each word is a list of
@@ -257,7 +261,7 @@ def sentiment(s, **kwargs):
         kwargs.get("pos", None))
         
     a = [] # Assesments as chunks of words (negation + modifier + adjective).
-    
+
     def _score(words, language="en", negation=False):
         negated  = None  # Preceding negation (e.g., "not beautiful").
         modifier = None  # Preceding adverb/adjective.
@@ -267,6 +271,7 @@ def sentiment(s, **kwargs):
             if w in lexicon and pos in lexicon[w]:
                 if modifier is not None and ( \
                   (language == "en" and "RB" in lexicon[modifier[0]] and "JJ" in lexicon[w]) or \
+                  (language == "fr" and "RB" in lexicon[modifier[0]] and "JJ" in lexicon[w]) or \
                   (language == "nl" and "JJ" in lexicon[modifier[0]] and "JJ" in lexicon[w])):
                     # Known word preceded by a modifier.
                     # For English, adverb + adjective uses the intensity score.
@@ -275,26 +280,29 @@ def sentiment(s, **kwargs):
                     # ("hopeloos voorspelbaar", "ontzettend spannend", "verschrikkelijk goed", ...)
                     (p, s, i), i0 = lexicon[w][pos], a[-1].i
                     a[-1].chunk.append(w)
-                    a[-1].p, a[-1].s, a[-1].i = p*i0, s*i0, i*i0
+                    a[-1].p = min(p * i0, 1.0)
+                    a[-1].s = min(s * i0, 1.0)
+                    a[-1].i = min(i * i0, 1.0)
                 else:
                     # Known word not preceded by a modifier.
                     a.append(Assessment([w], *lexicon[w][pos]))
                 if negated is not None:
                     # Known word (or modifier + word) preceded by a negation:
                     # "not really good" (reduced intensity for "really").
-                    # For Dutch, negation=True is beneficial: 
-                    # A 0.77 P 0.75  R 0.81 F1 0.78.
                     a[-1].chunk.insert(0, negated)
-                    a[-1].i = a[-1]!= 0 and (1.0 / a[-1].i) or 0
+                    #a[-1].i = a[-1]!= 0 and (1.0 / a[-1].i) or 0
                     a[-1].n = -1
                 modifier = (w, pos) # Word may be a modifier, check next word.
                 negated = None
             else:
-                negated = negation \
-                    and w.startswith(("n","g")) \
-                    and w in ("no", "not", "never", "niet", "nooit", "geen") \
-                    and w or None
-                if negated is not None and modifier is not None:
+                if negation and w in lexicon.negation:
+                    negated = w
+                else:
+                    negated = None
+                if negated is not None and modifier is not None and (
+                  (language == "en" and pos == "RB" or modifier[0].endswith("ly")) or \
+                  (language == "fr" and pos == "RB" or modifier[0].endswith("ment")) or \
+                  (language == "nl")):
                     # Unknown word is a negation preceded by a modifier:
                     # "really not good" (full intensity for "really").
                     a[-1].chunk.append(negated)
@@ -303,10 +311,9 @@ def sentiment(s, **kwargs):
                 else:
                     # Unknown word, ignore.
                     modifier = None
-                if w == "!" and language == "nl":
-                    # For Dutch, exclamation marks as intensifiers is beneficial: 
-                    # A 0.80 P 0.77 R 0.84 F1 0.81.
-                    for w in a: w.p *= 1.25
+                if w == "!" and len(a) > 0:
+                    # Exclamation marks as intensifiers can be beneficial.
+                    for w in a[-3:]: w.p = min(w.p * 1.25, 1.0)
                 if w in ("&happy;", "&happy"):
                     # Emoticon :-)
                     a.append(Assessment([w], +1.0))
