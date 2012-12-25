@@ -29,7 +29,11 @@ class Lexicon(_Lexicon):
         # Use synset id's from Cornetto instead of WordNet. 
         kwargs.setdefault("synsets", "cornetto_synset_id")
         _Lexicon.__init__(self, path, **kwargs)
-        
+
+    @property
+    def negation(self):
+        return ("geen", "niet", "nooit")
+
     def _parse(self):
         _Lexicon._parse(self)
         # Map "verschrikkelijk" to adverbial "verschrikkelijke".
