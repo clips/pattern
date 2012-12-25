@@ -9,7 +9,7 @@ The WordNet id refers to the WordNet3 lexical database for English.
 The part-of-speech tags (pos) use the Penn Treebank || tag set: NN = noun, JJ = adjective, ...
 For English movie reviews, the accuracy is 74% (P 0.74, R 0.73, F1 0.74).
 -->
-<sentiment language="en" version="1.0" author="Tom De Smedt, Walter Daelemans" license="PDDL">
+<sentiment language="en" version="1.1" author="Tom De Smedt, Walter Daelemans" license="PDDL">
 <word form="13th" wordnet_id="a-02203763" pos="JJ" sense="coming next after the twelfth in position" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="20th" cornetto_synset_id="n_a-531612" wordnet_id="a-02204716" pos="JJ" sense="coming next after the nineteenth in position" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="21st" wordnet_id="a-02204823" pos="JJ" sense="coming next after the twentieth in position" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
