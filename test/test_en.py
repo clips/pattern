@@ -818,10 +818,10 @@ class TestSentiment(unittest.TestCase):
         for score, review in Datasheet.load(os.path.join(PATH, "corpora", "polarity-en-pang&lee.csv")):
             reviews.append((review, int(score) > 0))
         A, P, R, F = test(lambda review: en.positive(review), reviews)
-        self.assertTrue(A > 0.73)
-        self.assertTrue(P > 0.73)
-        self.assertTrue(R > 0.73)
-        self.assertTrue(F > 0.73)
+        self.assertTrue(A > 0.74)
+        self.assertTrue(P > 0.74)
+        self.assertTrue(R > 0.74)
+        self.assertTrue(F > 0.74)
         print "pattern.en.sentiment()"
         
     def test_sentiment_assessment(self):

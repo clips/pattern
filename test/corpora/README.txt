@@ -10,10 +10,15 @@ The corpora are meant for personal use, they are not part of the module's BSD li
 - http://ir.shef.ac.uk/cloughie/resources/plagiarism_corpus.html
 - 100 texts: authentic (0), heavy (1) or light revision (2), cut & paste (3).
 
-2) Amazon.com German book reviews
-- polarity-de-amazon.com
+2) Amazon.de German book reviews
+- polarity-de-amazon.csv
 - http://www.amazon.de/gp/bestsellers/books/
 - 100 "positive" and 100 "negative" book reviews.
+
+3) Amazon.fr French book reviews
+- polarity-fr-amazon.csv
+- http://www.amazon.fr/
+- 750 "positive" and 750 "negative" movie reviews.
 
 2) Pang & Lee's polarity dataset v2.0
 - polarity-en-pang&lee.csv

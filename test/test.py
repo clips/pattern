@@ -6,6 +6,8 @@ import test_web
 import test_db
 import test_de
 import test_en
+import test_es
+import test_fr
 import test_nl
 import test_search
 import test_vector
@@ -24,6 +26,8 @@ def suite():
     suite.addTest(test_db.suite(host="localhost", port=3306, username="root", password="root"))
     suite.addTest(test_de.suite())
     suite.addTest(test_en.suite())
+    suite.addTest(test_es.suite())
+    suite.addTest(test_fr.suite())
     suite.addTest(test_nl.suite())
     suite.addTest(test_search.suite())
     suite.addTest(test_vector.suite())
