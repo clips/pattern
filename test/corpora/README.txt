@@ -81,3 +81,8 @@ The corpora are meant for personal use, they are not part of the module's BSD li
 - wordforms-es-davies.csv
 - http://www.wordfrequency.info/files/spanish/spanish_lemmas20k.txt
 - 3000 wordforms with lemma, part-of-speech and frequency.
+
+14) Lexique 3 lemma sample
+- wordforms-fr-lexique.csv
+- http://www.lexique.org/
+- 2000 wordforms with lemma and part-of-speech.

@@ -12,6 +12,25 @@ except:
 
 #---------------------------------------------------------------------------------------------------
 
+class TestInflection(unittest.TestCase):
+
+    def setUp(self):
+        pass
+        
+    def test_predicative(self):
+        # Assert the accuracy of the predicative algorithm ("belles" => "beau").
+        from pattern.db import Datasheet
+        i, n = 0, 0
+        for pred, attr, tag in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-fr-lexique.csv")):
+            if tag == "a":
+                if fr.predicative(attr) == pred:
+                    i +=1
+                n += 1
+        self.assertTrue(float(i) / n > 0.95)
+        print "pattern.fr.attributive()"
+
+#---------------------------------------------------------------------------------------------------
+
 class TestSentiment(unittest.TestCase):
     
     def setUp(self):
@@ -22,7 +41,7 @@ class TestSentiment(unittest.TestCase):
         self.assertTrue(fr.sentiment("fabuleux")[0] > 0)
         self.assertTrue(fr.sentiment("terrible")[0] < 0)
         # Assert the accuracy of the sentiment analysis.
-        # Given are the scores for 3,000 book reviews.
+        # Given are the scores for 1,500 book reviews.
         # The baseline should increase (not decrease) when the algorithm is modified.
         from pattern.db import Datasheet
         from pattern.metrics import test
@@ -40,6 +59,7 @@ class TestSentiment(unittest.TestCase):
 
 def suite():
     suite = unittest.TestSuite()
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestInflection))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSentiment))
     return suite
 
