@@ -7,7 +7,8 @@ Words are tagged per sense, e.g., ridiculous (pitiful) = negative, ridiculous (h
 The Cornetto id (lexical unit id) and Cornetto synset id refer to the Cornetto lexical database for Dutch.
 The WordNet id refers to the WordNet3 lexical database for English.
 The part-of-speech tags (pos) use the Penn Treebank || tag set: NN = noun, JJ = adjective, ...
-For English movie reviews, the accuracy is 74% (P 0.74, R 0.73, F1 0.74).
+For English movie reviews (Pang & Lee polarity dataset v2.0), the accuracy is 74% (P 0.74, R 0.73, F1 0.74).
+For tweets (Sanders Twitter Sentiment Corpus), the accuracy is 89% (P 0.88, R 0.91, F1 0.89).
 -->
 <sentiment language="en" version="1.1" author="Tom De Smedt, Walter Daelemans" license="PDDL">
 <word form="13th" wordnet_id="a-02203763" pos="JJ" sense="coming next after the twelfth in position" polarity="0.0" subjectivity="0.0" intensity="1.0" reliability="0.9" />
