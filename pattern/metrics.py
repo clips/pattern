@@ -9,6 +9,51 @@ from time import time
 from math import sqrt, floor, modf, exp, pi, log
 
 from collections import defaultdict
+from operator import itemgetter
+from heapq import nlargest
+
+####################################################################################################
+
+class Counter(dict):
+    
+    def __init__(self, iterable=None, **kwargs):
+        """ Simple implementation of Counter for Python 2.5 and 2.6.
+        """
+        # See also: http://code.activestate.com/recipes/576611/
+        self.update(iterable, **kwargs)
+
+    def __missing__(self, k):
+        return 0
+
+    def most_common(self, n=None):
+        """ Returns a list of the n most common (element, count)-tuples.
+        """
+        if n is None:
+            return sorted(self.items(), key=itemgetter(1), reverse=True)
+        return nlargest(n, self.items(), key=itemgetter(1))
+
+    def update(self, iterable=None, **kwargs):
+        """ Updates counter with the tallies from the given iterable, dictionary or Counter.
+        """
+        if kwargs:
+            self.update(kwargs)
+        if hasattr(iterable, "items"):
+            for k, v in iterable.items(): 
+                self[k] = k in self and self[k] + v or v
+        elif hasattr(iterable, "__getitem__") \
+          or hasattr(iterable, "__iter__"):
+            for k in iterable: 
+                self[k] = k in self and self[k] + 1 or 1
+
+    def copy(self):
+        return Counter(self)
+    
+    def __delitem__(self, k):
+        if k in self: 
+            dict.__delitem__(self, k)
+    
+    def __repr__(self):
+        return "Counter({%s})" % ", ".join("%r: %r" % e for e in self.most_common())
 
 #### PROFILER ######################################################################################
 
@@ -42,8 +87,8 @@ def profile(function, *args, **kwargs):
     return s
 
 #### PRECISION & RECALL ############################################################################
-# - recall: how good a system is at retrieving relevant results.
-# - precision: how good it is at filtering out irrelevant results (e.g., bad web search results).
+# Recall: how good a system is at retrieving relevant results.
+# Precision: how good it is at filtering out irrelevant results (e.g., bad web search results).
 
 ACCURACY, PRECISION, RECALL, F1_SCORE = "accuracy", "precision", "recall", "F1-score"
 
