@@ -387,6 +387,8 @@ class URL:
         if unicode is True:
             id = "u" + id
         if cached and id in cache:
+            if isinstance(cache, dict): # Not a Cache object.
+                return cache[id]
             if unicode is True:
                 return cache[id]
             if unicode is False:
