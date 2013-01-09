@@ -13,7 +13,7 @@ license["Twitter"]   = ("p7HUdPLlkKaqlPn6TzKkA", # OAuth (key, secret, token)
                         "R7I1LRuLY27EKjzulutov74lKB0FjqcI2DYRUmsu7DQ", (
                         "14898655-TE9dXQLrzrNd0Zwf4zhK7koR5Ahqt40Ftt35Y2qY",
                         "q1lSRDOguxQrfgeWWSJgnMHsO67bqTd5dTElBsyTM"))
-license["Facebook"]  = None
+license["Facebook"]  = "332061826907464|jdHvL3lslFvN-s_sphK1ypCwNaY"
 license["Wikipedia"] = None
 license["Flickr"]    = "787081027f43b0412ba41142d4540480"
 license["Products"]  = "64819965ec784395a494a0d7ed0def32"

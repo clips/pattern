@@ -311,7 +311,8 @@ class URL:
     def querystring(self):
         """ Yields the URL querystring: "www.example.com?page=1" => "page=1"
         """
-        s = dict((bytestring(k), bytestring(v or "")) for k, v in self.parts[QUERY].items())
+        s = self.parts[QUERY].items()
+        s = dict((bytestring(k), bytestring(v if v is not None else "")) for k, v in s)
         s = urllib.urlencode(s)
         return s
     
@@ -896,15 +897,19 @@ class Result(dict):
     def __init__(self, url):
         """ An item in a list of results returned by SearchEngine.search().
             All dictionary entries are available as unicode string attributes.
-            - url        : the URL of the referred web content,
-            - title      : the title of the content at the URL,
-            - description: the content description,
-            - language   : the content language,
-            - author     : for news items and images, the author,
-            - date       : for news items, the publication date.
+            - url     : the URL of the referred web content,
+            - title   : the title of the content at the URL,
+            - text    : the content text,
+            - language: the content language,
+            - author  : for news items and images, the author,
+            - date    : for news items, the publication date.
         """
         dict.__init__(self)
         self.url   = url
+
+    @property
+    def description(self):
+        return self.text # Backwards compatibility.
 
     def download(self, *args, **kwargs):
         """ Download the content at the given URL. 
@@ -978,7 +983,7 @@ GOOGLE = "https://www.googleapis.com/customsearch/v1?"
 GOOGLE_LICENSE = api.license["Google"]
 GOOGLE_CUSTOM_SEARCH_ENGINE = "000579440470800426354:_4qo2s0ijsi"
 
-# Search result descriptions can start with: "Jul 29, 2007 ...",
+# Search results can start with: "Jul 29, 2007 ...",
 # which is the date of the page parsed by Google from the content.
 RE_GOOGLE_DATE = re.compile("^([A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4}) {0,1}...")
 
@@ -1021,17 +1026,17 @@ class Google(SearchEngine):
         results.total = int(data.get("queries", {}).get("request", [{}])[0].get("totalResults") or 0)
         for x in data.get("items", []):
             r = Result(url=None)
-            r.url         = self.format(x.get("link"))
-            r.title       = self.format(x.get("title"))
-            r.description = self.format(x.get("htmlSnippet").replace("<br>  ","").replace("<b>...</b>", "..."))
-            r.language    = self.language or ""
-            r.date        = ""
+            r.url      = self.format(x.get("link"))
+            r.title    = self.format(x.get("title"))
+            r.text     = self.format(x.get("htmlSnippet").replace("<br>  ","").replace("<b>...</b>", "..."))
+            r.language = self.language or ""
+            r.date     = ""
             if not r.date:
-                # Google Search descriptions can start with a date (parsed from the content):
-                m = RE_GOOGLE_DATE.match(r.description)
+                # Google Search results can start with a date (parsed from the content):
+                m = RE_GOOGLE_DATE.match(r.text)
                 if m: 
                     r.date = m.group(1)
-                    r.description = "..." + r.description[len(m.group(0)):]
+                    r.text = "..." + r.text[len(m.group(0)):]
             results.append(r)
         return results
         
@@ -1143,13 +1148,13 @@ class Yahoo(SearchEngine):
         results.total = int(data.get("totalresults") or 0)
         for x in data.get("results", []):
             r = Result(url=None)
-            r.url         = self.format(x.get("url", x.get("clickurl")))
-            r.title       = self.format(x.get("title"))
-            r.description = self.format(x.get("abstract"))
-            r.date        = self.format(x.get("date"))
-            r.author      = self.format(x.get("source"))
-            r.language    = self.format(x.get("language") and \
-                                        x.get("language").split(" ")[0] or self.language or "")
+            r.url      = self.format(x.get("url", x.get("clickurl")))
+            r.title    = self.format(x.get("title"))
+            r.text     = self.format(x.get("abstract"))
+            r.date     = self.format(x.get("date"))
+            r.author   = self.format(x.get("source"))
+            r.language = self.format(x.get("language") and \
+                                     x.get("language").split(" ")[0] or self.language or "")
             results.append(r)
         return results
 
@@ -1220,12 +1225,12 @@ class Bing(SearchEngine):
         results.total = int(data.get(src+"Total", 0))
         for x in data.get(src, []):
             r = Result(url=None)
-            r.url         = self.format(x.get("MediaUrl", x.get("Url")))
-            r.title       = self.format(x.get("Title"))
-            r.description = self.format(x.get("Description", x.get("Snippet")))
-            r.language    = self.language or ""
-            r.date        = self.format(x.get("DateTime", x.get("Date")))
-            r.author      = self.format(x.get("Source"))
+            r.url      = self.format(x.get("MediaUrl", x.get("Url")))
+            r.title    = self.format(x.get("Title"))
+            r.text     = self.format(x.get("Description", x.get("Snippet")))
+            r.language = self.language or ""
+            r.date     = self.format(x.get("DateTime", x.get("Date")))
+            r.author   = self.format(x.get("Source"))
             results.append(r)
         return results
 
@@ -1280,12 +1285,12 @@ class Twitter(SearchEngine):
         results.total = None
         for x in data.get("results", data.get("trends", [])):
             r = Result(url=None)
-            r.url         = self.format(TWITTER_STATUS % (x.get("from_user"), x.get("id_str")))
-            r.description = self.format(x.get("text"))
-            r.date        = self.format(x.get("created_at", data.get("as_of")))
-            r.author      = self.format(x.get("from_user"))
-            r.profile     = self.format(x.get("profile_image_url")) # Profile picture URL.
-            r.language    = self.format(x.get("iso_language_code"))
+            r.url      = self.format(TWITTER_STATUS % (x.get("from_user"), x.get("id_str")))
+            r.text     = self.format(x.get("text"))
+            r.date     = self.format(x.get("created_at", data.get("as_of")))
+            r.author   = self.format(x.get("from_user"))
+            r.profile  = self.format(x.get("profile_image_url")) # Profile picture URL.
+            r.language = self.format(x.get("iso_language_code"))
             results.append(r)
         return results
         
@@ -1330,12 +1335,12 @@ class TwitterStream(Stream):
         """
         x = json.loads(data)
         r = Result(url=None)
-        r.url         = self.format(TWITTER_STATUS % (x.get("user", {}).get("screen_name"), x.get("id_str")))
-        r.description = self.format(x.get("text"))
-        r.date        = self.format(x.get("created_at"))
-        r.author      = self.format(x.get("user", {}).get("screen_name"))
-        r.profile     = self.format(x.get("profile_image_url"))
-        r.language    = self.format(x.get("iso_language_code"))
+        r.url      = self.format(TWITTER_STATUS % (x.get("user", {}).get("screen_name"), x.get("id_str")))
+        r.text     = self.format(x.get("text"))
+        r.date     = self.format(x.get("created_at"))
+        r.author   = self.format(x.get("user", {}).get("screen_name"))
+        r.profile  = self.format(x.get("profile_image_url"))
+        r.language = self.format(x.get("iso_language_code"))
         return r
 
 def author(name):
@@ -1358,7 +1363,7 @@ def retweets(string):
 #for i in range(10):
 #    stream.update()
 #    for tweet in reversed(stream):
-#        print tweet.description
+#        print tweet.text
 #        print tweet.url
 #    print
 #stream.clear()
@@ -1799,8 +1804,8 @@ class Flickr(SearchEngine):
             r.__dict__["_size"]     = size
             r.__dict__["_license"]  = self.license
             r.__dict__["_throttle"] = self.throttle
-            r.description = self.format(x.getAttribute("title"))
-            r.author      = self.format(x.getAttribute("owner"))
+            r.text   = self.format(x.getAttribute("title"))
+            r.author = self.format(x.getAttribute("owner"))
             results.append(r)
         return results
         
@@ -1838,50 +1843,166 @@ class FlickrResult(Result):
 
 #--- FACEBOOK --------------------------------------------------------------------------------------
 # Facebook public status updates.
-# Author: Rajesh Nair, 2012.
 # https://developers.facebook.com/docs/reference/api/
 
 FACEBOOK = "https://graph.facebook.com/"
 FACEBOOK_LICENSE = api.license["Facebook"] 
 
+FEED     = "feed"      # Facebook timeline.
+COMMENTS = "comments"  # Facebook comments (for a given news feed post).
+LIKES    = "likes"     # Facebook likes (for a given post or comment).
+FRIENDS  = "friends"   # Facebook friends (for a given profile id).
+
+class FacebookResult(Result):
+    def __repr__(self):
+        return "Result(id=%s)" % repr(self.id)
+
 class Facebook(SearchEngine):
 
     def __init__(self, license=None, throttle=1.0, language=None):
         SearchEngine.__init__(self, license, throttle, language)
-        
+    
+    @property
+    def _token(self):
+        # Yields the "application access token" (stored in api.license["Facebook"]).
+        # With this license, we can view public content.
+        # To view more information, we need a "user access token" as license key.
+        # This token can be retrieved manually from:
+        #  http://www.clips.ua.ac.be/media/pattern-fb.html
+        # Or parsed from this URL:
+        #  https://graph.facebook.com/oauth/authorize?type=user_agent
+        #   &client_id=332061826907464
+        #   &redirect_uri=http%3A%2F%2Fwww.clips.ua.ac.be/media/pattern-facebook-token.html
+        #   &scope=read_stream,user_birthday,user_likes,user_photos,friends_birthday,friends_likes
+        # The token is valid for a limited duration.
+        return URL(FACEBOOK + "oauth/access_token?", query={
+               "grant_type": "client_credentials",
+                "client_id": "332061826907464",
+            "client_secret": "81ff4204e73ecafcd87635a3a3683fbe"
+        }).download().split("=")[1]
+    
     def search(self, query, type=SEARCH, start=1, count=10, cached=False, **kwargs):
         """ Returns a list of results from Facebook public status updates for the given query.
+            - query: string, or Result.id for NEWS and COMMENTS,
             - type : SEARCH,
             - start: 1,
-            - count: maximum 100.
+            - count: maximum 100 for SEARCH and NEWS, 1000 for COMMENTS and LIKES.
             There is an hourly limit of +-600 queries (actual amount undisclosed).
         """
-        if type != SEARCH:
+        # Facebook.search(type=SEARCH) returns public posts + author.
+        # Facebook.search(type=NEWS) returns posts for the given author (id | alias | "me").
+        # Facebook.search(type=COMMENTS) returns comments for the given post id.
+        # Facebook.search(type=LIKES) returns authors for the given author, post or comments.
+        # An author is a Facebook user or other entity (e.g., a product page).
+        if type not in (SEARCH, NEWS, COMMENTS, LIKES, FRIENDS):
             raise SearchEngineTypeError
+        if type in (SEARCH, NEWS):
+            max = 100
+        if type in (COMMENTS, LIKES):
+            max = 1000
+        if type in (FRIENDS,):
+            max = 10000
         if not query or start < 1 or count < 1: 
             return Results(FACEBOOK, query, SEARCH)
+        if isinstance(query, FacebookResult):
+            query = query.id
         # 1) Construct request URL.
-        url = FACEBOOK + "search?"
-        url = URL(url, method=GET, query={
-                 "q": query,
-              "type": "post",
-             "limit": min(count, 100),
-            "fields": "link,message,from"
-        })
+        if type == SEARCH:
+            url = FACEBOOK + type
+            url = URL(url, method=GET, query={
+                         "q": query,
+                      "type": "post",
+                    "fields": ",".join(("id", "link", "message", "created_time", "from")),
+                    "offset": (start-1) * min(count, max),
+                     "limit": (start-0) * min(count, max)
+            })
+        if type in (NEWS, FEED, COMMENTS, LIKES, FRIENDS):
+            url = FACEBOOK + (u(query) or "me").replace(FACEBOOK, "") + "/" + type.replace("news", "feed")
+            url = URL(url, method=GET, query={
+              "access_token": self.license,
+                    "offset": (start-1) * min(count, max),
+                     "limit": (start-0) * min(count, max)
+            })
+        # 2) Parse JSON response.
+        kwargs.setdefault("cached", cached)
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
-        data = URL(url).download(cached=cached, **kwargs)
+        try:
+            data = URL(url).download(**kwargs)
+        except HTTP400BadRequest:
+            raise HTTP401Authentication
         data = json.loads(data)
         results = Results(FACEBOOK, query, SEARCH)
         results.total = None
         for x in data.get("data", []):
-            r = Result(url=None)
-            r.url          = self.format(x.get("link"))
-            r.description  = self.format(x.get("message"))
-            r.date         = self.format(x.get("created_time"))
-            r.author       = self.format(x.get("from", {}).get("name"))
+            r = FacebookResult(url=None)
+            r.id   = self.format(x.get("id"))
+            r.url  = self.format(x.get("link"))
+            r.text = self.format(x.get("story", x.get("message")))
+            r.date = self.format(x.get("created_time"))
+            # Store likes & comments count as int, author as (id, name)-tuple
+            # (by default Result will store everything as Unicode strings).
+            s = lambda r, k, v: dict.__setitem__(r, k, v)
+            s(r, "likes", \
+                     self.format(x.get("like_count", x.get("likes", {}).get("count", 0))) + 0)
+            s(r, "comments", \
+                     self.format(x.get("comments", {}).get("count", 0)) + 0)
+            s(r, "author",  (
+                   u(self.format(x.get("from", {}).get("id", ""))), \
+                   u(self.format(x.get("from", {}).get("name", "")))))
+            # Replace Result.text with author name for likes.
+            if type in (LIKES, FRIENDS): 
+                s(r, "author", (
+                   u(self.format(x.get("id", ""))),
+                   u(self.format(x.get("name", "")))))
+                r.text = \
+                     self.format(x.get("name"))
+            # Replace Result.url Facebook URL with object id.
+            if r.url.startswith("http://www.facebook.com/photo"): 
+                r.url = x.get("picture", r.url)
+            # Replace Result.url Facebook URL with full-size image.
+            if r.url.startswith("http://www.facebook.com/") and \
+               r.url.split("/")[-1].split("?")[0].isdigit():
+                r.url = r.url.split("/")[-1].split("?")[0].replace("_s", "_b")
             results.append(r)
         return results
+        
+    def profile(self, id=None, **kwargs):
+        """ For the given author id or alias, 
+            returns a (id, name, date of birth, gender, locale)-tuple.
+        """
+        url = FACEBOOK + (u(id or "me")).replace(FACEBOOK, "")
+        url = URL(url, method=GET, query={"access_token": self.license})
+        kwargs.setdefault("cached", False)
+        kwargs.setdefault("unicode", True)
+        kwargs.setdefault("throttle", self.throttle)
+        try:
+            data = URL(url).download(**kwargs)
+            data = json.loads(data)
+        except HTTP400BadRequest:
+            raise HTTP401Authentication
+        return (
+            u(data.get("id", "")),
+            u(data.get("name", "")),
+            u(data.get("birthday", "")),
+            u(data.get("gender", "")[:1]),
+            u(data.get("locale", ""))
+        )
+
+#license = "" # Generate a license key at: http://www.clips.ua.ac.be/media/pattern-fb.html
+#fb = Facebook(license)
+#me = fb.profile()[0]
+#for r in fb.search(me, type=NEWS, count=10):
+#    print r.id
+#    print r.text
+#    print r.url
+#    if r.comments > 0:
+#        print "%s comments:" % r.comments
+#        print [(r.text, r.author) for r in fb.search(r, type=COMMENTS)]
+#    if r.likes > 0:
+#        print "%s likes:" % r.likes
+#        print [r.author for r in fb.search(r, type=LIKES)]
+#    print
 
 #--- PRODUCT REVIEWS -------------------------------------------------------------------------------
 
@@ -1925,9 +2046,9 @@ class Products(SearchEngine):
         results.total = None
         for x in data.get("products", [])[:count]:
             r = Result(url=None)
-            r.__dict__["title"]       = u(x.get("title"))
-            r.__dict__["description"] = u(x.get("description"))
-            r.__dict__["reviews"]     = []
+            r.__dict__["title"]   = u(x.get("title"))
+            r.__dict__["text"]    = u(x.get("text"))
+            r.__dict__["reviews"] = []
             reviews = x.get("community_review") or {}
             for p in reviews.get("pros", []):
                 r.reviews.append((p.get("text", ""), int(p.get("score")) or +1))
@@ -1973,13 +2094,13 @@ class Newsfeed(SearchEngine):
         for x in data["entries"][:count]:
             s = "\n\n".join([v.get("value") for v in x.get("content", [])]) or x.get("summary")
             r = Result(url=None)
-            r.id          = self.format(x.get("id"))
-            r.url         = self.format(x.get("link"))
-            r.title       = self.format(x.get("title"))
-            r.description = self.format(s)
-            r.date        = self.format(x.get("updated"))
-            r.author      = self.format(x.get("author"))
-            r.language    = self.format(x.get("content") and \
+            r.id       = self.format(x.get("id"))
+            r.url      = self.format(x.get("link"))
+            r.title    = self.format(x.get("title"))
+            r.text     = self.format(s)
+            r.date     = self.format(x.get("updated"))
+            r.author   = self.format(x.get("author"))
+            r.language = self.format(x.get("content") and \
                                 x.get("content")[0].get("language") or \
                                                data.get("language"))
             for tag in tags:
@@ -2002,7 +2123,7 @@ feeds = {
 #    print r.title
 #    print r.author
 #    print r.url
-#    print plaintext(r.description)
+#    print plaintext(r.text)
 #    print
 
 #--- QUERY -----------------------------------------------------------------------------------------
@@ -2312,12 +2433,16 @@ DOM = Document
 
 class Link:
     
-    def __init__(self, url, description="", relation="", referrer=""):
+    def __init__(self, url, text="", relation="", referrer=""):
         """ A hyperlink parsed from a HTML document, in the form:
-            <a href="url"", title="description", rel="relation">xxx</a>.
+            <a href="url"", title="text", rel="relation">xxx</a>.
         """
-        self.url, self.description, self.relation, self.referrer = \
-            u(url), u(description), u(relation), u(referrer), 
+        self.url, self.text, self.relation, self.referrer = \
+            u(url), u(text), u(relation), u(referrer), 
+    
+    @property
+    def description(self):
+        return self.text
     
     def __repr__(self):
         return "Link(url=%s)" % repr(self.url)
@@ -2354,7 +2479,7 @@ class HTMLLinkParser(HTMLParser):
             attributes = dict(attributes)
             if "href" in attributes:
                 link = Link(url = attributes.get("href"),
-                    description = attributes.get("title"),
+                           text = attributes.get("title"),
                        relation = attributes.get("rel", ""),
                        referrer = self._url)
                 self._data.append(link)
