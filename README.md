@@ -15,7 +15,7 @@ It is well documented and bundled with 30+ examples and 350+ unit tests. The sou
 Version
 -------
 
-2.4
+2.5
 
 License
 -------
