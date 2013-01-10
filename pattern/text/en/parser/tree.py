@@ -254,6 +254,7 @@ class Chunk(object):
         self.attachments  = []        # PNP chunks attached to this anchor.
         self.conjunctions = Conjunctions(self)
         self._modifiers   = None
+        self._head        = lambda self: self.words[-1]
         self.extend(words)
 
     def extend(self, words):
@@ -301,7 +302,7 @@ class Chunk(object):
     def head(self):
         """ The head of the chunk (i.e. the last word in the chunk).
         """
-        return self.words[-1]
+        return self._head(self) # self.words[-1]
 
     @property
     def relation(self):
