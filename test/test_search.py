@@ -349,7 +349,7 @@ class TestPattern(unittest.TestCase):
             self.assertTrue(getattr(m, "string", None) == match)
         # Assert chunk with head at the front.
         s = S("Felix the cat")
-        s.chunks[0].head = s.chunks[0][0] # head = "Felix"
+        s.chunks[0]._head = lambda ch: ch.words[0] # head = "Felix" (it's a hack)
         self.assertEqual(P("felix").match(s).string, "Felix the cat")
         # Assert negation + custom greedy() function.
         s = S("the big white rabbit")

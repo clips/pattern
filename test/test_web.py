@@ -460,11 +460,11 @@ class TestSearchEngine(unittest.TestCase):
         # Assert SearchEngine standard interface for any api:
         # Google, Yahoo, Bing, Twitter, Wikipedia, Flickr, Facebook, Products, Newsfeed.
         # SearchEngine.search() returns a list of Result objects with unicode fields, 
-        # except Wikipedia which returns a MediaWikiArticle.
+        # except Wikipedia which returns a WikipediaArticle (MediaWikiArticle subclass).
         if api == "Yahoo" and license == ("",""): 
             return
         t = time.time()
-        e = Engine(license, throttle=0.25, language="en")
+        e = Engine(license=license, throttle=0.25, language="en")
         v = e.search(query, type, start=1, count=1, cached=False)
         t = time.time() - t
         self.assertTrue(t >= 0.25)
@@ -481,7 +481,7 @@ class TestSearchEngine(unittest.TestCase):
             self.assertTrue(isinstance(v[0].title, unicode))
             self.assertTrue(isinstance(v[0].description, unicode))
             self.assertTrue(isinstance(v[0].language, unicode))
-            self.assertTrue(isinstance(v[0].author, unicode))
+            self.assertTrue(isinstance(v[0].author, (unicode, tuple)))
             self.assertTrue(isinstance(v[0].date, unicode))
         else:
             self.assertTrue(isinstance(v, web.MediaWikiArticle))
@@ -529,7 +529,7 @@ class TestSearchEngine(unittest.TestCase):
         i2 = 0
         i3 = 0
         i4 = 0
-        e = Engine(license, language="en", throttle=0.25)
+        e = Engine(license=license, language="en", throttle=0.25)
         for result in e.search(query, type, count=10, cached=False):
             i1 += int(result.url.startswith("http"))
             i2 += int(query in result.url.lower())
@@ -617,10 +617,30 @@ class TestSearchEngine(unittest.TestCase):
     def test_flickr_image_size(self):
         self._test_search_image_size("Flickr", *self.api["Flickr"])
     
+    def test_wikipedia_list(self):
+        # Assert WikipediaArticle.list(), an iterator over all article titles.
+        source, license, Engine = self.api["Wikipedia"]
+        v = Engine(license).list(start="a", count=1)
+        v = [v.next() for i in range(2)]
+        self.assertTrue(len(v) == 2)
+        self.assertTrue(v[0].lower().startswith("a"))
+        self.assertTrue(v[1].lower().startswith("a"))
+        print "pattern.web.Wikipedia.list()"
+        
+    def test_wikipedia_all(self):
+        # Assert WikipediaArticle.all(), an iterator over WikipediaArticle objects.
+        source, license, Engine = self.api["Wikipedia"]
+        v = Engine(license).all(start="a", count=1)
+        v = [v.next() for i in range(1)]
+        self.assertTrue(len(v) == 1)
+        self.assertTrue(isinstance(v[0], web.WikipediaArticle))
+        self.assertTrue(v[0].title.lower().startswith("a"))
+        print "pattern.web.Wikipedia.all()"
+    
     def test_wikipedia_article(self):
         source, license, Engine = self.api["Wikipedia"]
         v = Engine(license).search("cat", cached=False)
-        # Assert MediaWikiArticle properties.
+        # Assert WikipediaArticle properties.
         self.assertTrue(isinstance(v.title,      unicode))
         self.assertTrue(isinstance(v.string,     unicode))
         self.assertTrue(isinstance(v.links,      list))
@@ -628,7 +648,7 @@ class TestSearchEngine(unittest.TestCase):
         self.assertTrue(isinstance(v.external,   list))
         self.assertTrue(isinstance(v.media,      list))
         self.assertTrue(isinstance(v.languages,  dict))
-        # Assert MediaWikiArticle properties content.
+        # Assert WikipediaArticle properties content.
         self.assertTrue(v.string  == v.plaintext())
         self.assertTrue(v.html    == v.source)
         self.assertTrue("</div>"  in v.source)
@@ -640,10 +660,10 @@ class TestSearchEngine(unittest.TestCase):
         self.assertTrue("chat"    in v.languages["fr"].lower())
         self.assertTrue(v.external[0].startswith("http"))
         self.assertTrue(v.media[0].endswith(("jpg","png","gif","svg")))
-        print "pattern.web.MediaWikiArticle"
+        print "pattern.web.WikipediaArticle"
         
     def test_wikipedia_article_sections(self):
-        # Assert MediaWikiArticle.sections structure.
+        # Assert WikipediaArticle.sections structure.
         # The test may need to be modified if the Wikipedia "Cat" article changes.
         source, license, Engine = self.api["Wikipedia"]
         v = Engine(license).search("cat", cached=False)
@@ -672,7 +692,7 @@ class TestSearchEngine(unittest.TestCase):
         # Test section tables.
         # XXX should test <td colspan="x"> more thoroughly.
         self.assertTrue(len(v.sections[1].tables) > 0)
-        print "pattern.web.MediaWikiSection"
+        print "pattern.web.WikipediaSection"
 
     def test_products(self):
         # Assert product reviews and score.

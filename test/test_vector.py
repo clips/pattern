@@ -910,7 +910,7 @@ class TestClassifier(unittest.TestCase):
         # Assert the accuracy of the classifier.
         A, P, R, F = vector.KNN.test(self.corpus, folds=10, k=3, distance=vector.COSINE)
         self.assertTrue(A >= 0.90)
-        self.assertTrue(P >= 0.95)
+        self.assertTrue(P >= 0.94)
         self.assertTrue(R >= 0.84)
         self.assertTrue(F >= 0.90)
         
