@@ -368,7 +368,6 @@ class URL:
         except urllib2.URLError, e:
             if e.reason == "timed out" \
             or e.reason[0] in (36, "timed out"): 
-            or e.reason[0] in (36, "timed out"):
                 raise URLTimeout
             raise URLError, e.reason
         except ValueError, e:
