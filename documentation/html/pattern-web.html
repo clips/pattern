@@ -258,7 +258,7 @@ engine.language             # Restriction for Result.language (e.g., &#39;en&#39
 </tr>
 <tr>
 <td><span class="inline_code">Bing</span></td>
-<td><span class="inline_code">SEARCH|IMAGE|NEWS<sup>3</sup></span></td>
+<td><span class="inline_code">SEARCH|IMAGE|NEWS<sup>13</sup></span></td>
 <td>1-1000/<span class="inline_code">count</span></td>
 <td>1-50</td>
 <td><span class="inline_code">RELEVANCY</span></td>
@@ -312,7 +312,7 @@ engine.language             # Restriction for Result.language (e.g., &#39;en&#39
 </tr>
 </tbody>
 </table>
-<p><span class="small"><sup>1&nbsp;</sup><span class="inline_code">Google</span> and <span class="inline_code">Yahoo</span> are paid services – see further how to obtain a license key.<span style="color: #666666; font-size: x-small;"><span style="font-size: 10px;"><br /></span></span></span><span style="font-size: 11px;"><sup style="color: #666666;">2&nbsp;</sup><span style="font-family: Courier,monospace; font-size: 12px;">Yahoo.search(type=IMAGES)</span></span><span style="font-size: 11px;">&nbsp;has a&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">count</span>&nbsp;of 1-35.<br /></span><span style="font-size: 11px;"><sup style="color: #666666;">3&nbsp;</sup><span style="font-family: Courier,monospace; font-size: 12px;">Bing.search(type=NEWS)</span></span><span style="font-size: 11px;">&nbsp;has a&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">count</span>&nbsp;of 1-15.</span><span style="color: #666666; font-size: x-small;"><span style="font-size: 10px;"><br /></span></span></p>
+<p><span class="small"><sup>1&nbsp;</sup><span class="inline_code">Google</span>,&nbsp;<span class="inline_code">Yahoo</span>&nbsp;and <span class="inline_code">Bing</span> are paid services – see further how to obtain a license key.<span style="color: #666666; font-size: x-small;"><span style="font-size: 10px;"><br /></span></span></span><span style="font-size: 11px;"><sup style="color: #666666;">2&nbsp;</sup><span style="font-family: Courier,monospace; font-size: 12px;">Yahoo.search(type=IMAGES)</span></span><span style="font-size: 11px;">&nbsp;has a&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">count</span>&nbsp;of 1-35.<br /></span><span style="font-size: 11px;"><sup style="color: #666666;">3&nbsp;</sup><span style="font-family: Courier,monospace; font-size: 12px;">Bing.search(type=NEWS)</span></span><span style="font-size: 11px;">&nbsp;has a&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">count</span>&nbsp;of 1-15.</span><span style="color: #666666; font-size: x-small;"><span style="font-size: 10px;"><br /></span></span></p>
 <h3>Results</h3>
 <p><span class="inline_code">SearchEngine.search()</span> returns a list of <span class="inline_code">Result</span> objects. The list has an additional <span class="inline_code">total</span> attribute, an estimate of the total number of results available for the given query. Each <span class="inline_code">Result</span> holds useful information:</p>
 <pre class="brush:python; gutter:false; light:true;">result = Result(url)</pre><pre class="brush:python; gutter:false; light:true;">result.url                  # URL of content associated with the given query.
@@ -327,7 +327,7 @@ result.date                 # For news items.</pre><pre class="brush:python; gut
 </ul>
 <p>For example:</p>
 <div class="example">
-<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; engine = Bing(license=None)
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; engine = Bing(license=None) # Enter your license key.
 &gt;&gt;&gt; for i in range(1,5):
 &gt;&gt;&gt;    for result in engine.search(&#39;holy handgrenade&#39;, type=SEARCH, start=i):
 &gt;&gt;&gt;        print repr(plaintext(result.description))
@@ -336,6 +336,12 @@ result.date                 # For news items.</pre><pre class="brush:python; gut
 u&quot;The Holy Hand Grenade of Antioch is a fictional weapon from ...&quot;
 u&#39;Once the number three, being the third number, be reached, then ...&#39;
 </pre></div>
+<p>Since <span class="inline_code">SearchEngine.search()</span> takes the same optional parameters as <span class="inline_code">URL.download()</span>, it is easy to disable local caching, set a timeout or a throttle, or use a proxy server if you are behind a firewall:</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; engine = Google(license=None) # Enter your license key.
+&gt;&gt;&gt; for result in engine.search(&#39;tim&#39;, cached=False, proxy=(&#39;proxy.com&#39;, &#39;https&#39;))
+&gt;&gt;&gt;     print result.url
+&gt;&gt;&gt;     print result.description</pre></div>
 <p>&nbsp;</p>
 <p><span class="smallcaps">Image search<br /></span></p>
 <p>For <span class="inline_code">Yahoo</span>, <span class="inline_code">Bing</span> and <span class="inline_code">Flickr</span>, image links retrieved with <span class="inline_code">search(type=IMAGE)</span> can be filtered by setting the <span class="inline_code">size</span> parameter to <span style="font-family: Courier, monospace; font-size: 12px;">TINY<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>SMALL<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>MEDIUM<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>LARGE</span> (or&nbsp;<span style="font-family: Courier, monospace; font-size: 12px;">None</span>&nbsp;for any size).&nbsp;Note that <span class="inline_code">Yahoo</span> image search has a <span class="inline_code">count</span> of 1-35.</p>
@@ -383,6 +389,17 @@ u&#39;Cell biology: Lung lipid hurts breathing&#39;
 
 u&quot;It&#39;s a bunny, rabbit wood. What? A gift.&quot;
 (u&#39;fr&#39;, 0.76) </pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2>Twitter streams</h2>
+<p>The <span class="inline_code">Twitter.stream()</span> method returns an endless, live stream of <span class="inline_code">Result</span> objects. A <span class="inline_code">Stream</span> is a Python list that accumulates each time <span class="inline_code">Stream.update()</span> is called:</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; s = Twitter().stream(&#39;#fail&#39;)
+&gt;&gt;&gt; for i in range(10):
+&gt;&gt;&gt;     time.sleep(1) 
+&gt;&gt;&gt;     s.update(bytes=1024)
+&gt;&gt;&gt;     print s[-1].description if s else &quot;&quot;</pre></div>
+<p>To clear the accumulated list, call <span class="inline_code">Stream.clear()</span>.</p>
 <p>&nbsp;</p>
 <hr />
 <h2>Twitter trends</h2>
@@ -577,14 +594,16 @@ spider.history              # Dictionary of (domain, time last visited).
 spider.visited              # Dictionary of URLs visited.
 spider.parse                # Function, returns list of Links from a HTML string.
 spider.sort                 # FIFO | LIFO (how new links are queued).
-spider.done                 # True when all links have been visited.</pre><pre class="brush:python; gutter:false; light:true;">spider.crawl(method=DEPTH)  # DEPTH | BREADTH | None.</pre><pre class="brush:python; gutter:false; light:true;">spider.priority(link, method=DEPTH)
+spider.done                 # True when all links have been visited.</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">spider.push(link, priority=1.0, sort=LIFO)            
+spider.pop(remove=True)
+spider.next                 # Yields the next scheduled link = Spider.pop(False)</pre><pre class="brush:python; gutter:false; light:true;">spider.crawl(method=DEPTH)  # DEPTH | BREADTH | None.</pre><pre class="brush:python; gutter:false; light:true;">spider.priority(link, method=DEPTH)
 spider.follow(link)
 spider.visit(link, source=None)
 spider.fail(link)
 </pre><pre class="brush:python; gutter:false; light:true;">spider.normalize(url)
 </pre><p><span class="smallcaps">Crawling process</span></p>
 <ul>
-<li><span class="inline_code">Spider.crawl()</span>&nbsp;is meant to be called continuously in a loop.&nbsp;&nbsp;It&nbsp;selects a link to visit, and parses its content for new links. The default parser is a robust <span class="inline_code">HTMLLinkParser</span> based on Python's <span class="inline_code">sgmllib.SGMLParser</span>. The method parameter specifies whether the spider prefers to visit internal links (<span class="inline_code">DEPTH</span>) or external links to other domains (<span class="inline_code">BREADTH</span>).<br />&nbsp;<br />If the link is on a domain recently visited (elapsed time &lt; <span class="inline_code">Spider.delay</span>) it is temporarily skipped. If this is undesired, set an optional <span class="inline_code">throttle</span> parameter of <span class="inline_code">Spider.crawl()</span> to the same value as <span class="inline_code">Spider.delay</span>.</li>
+<li><span class="inline_code">Spider.crawl()</span>&nbsp;is meant to be called continuously in a loop.&nbsp;&nbsp;It&nbsp;selects a link to visit, and parses its content for new links. The default parser is a robust <span class="inline_code">HTMLLinkParser</span> based on Python's <span class="inline_code">sgmllib.SGMLParser</span>. The method parameter specifies whether the spider prefers to visit internal links (<span class="inline_code">DEPTH</span>) or external links to other domains (<span class="inline_code">BREADTH</span>).&nbsp;If the link is on a domain recently visited (elapsed time &lt; <span class="inline_code">Spider.delay</span>) it is temporarily skipped. If this is undesirable, set an optional <span class="inline_code">throttle</span> parameter of <span class="inline_code">Spider.crawl()</span> to the same value as <span class="inline_code">Spider.delay</span>.</li>
 </ul>
 <ul>
 <li><span class="inline_code">Spider.priority()</span> is called from <span class="inline_code">Spider.crawl()</span> to determine the priority of a new <span class="inline_code">Link</span>, as a number between <span class="inline_code">0.0-1.0</span>. Links with higher priority are visited first.&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">Spider.priority()</span>&nbsp;can be overridden in a subclass, for example to demote URLs with a query string (which could just be another sort order).&nbsp;Each URL is passed through&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">Spider.normalize()</span>which can also be overridden (for example, to strip the query string entirely).</li>

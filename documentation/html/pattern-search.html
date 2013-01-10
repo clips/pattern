@@ -70,18 +70,18 @@
 <p>&nbsp;</p>
 <p><span class="smallcaps">Syntactical pattern matching</span></p>
 <p>The above can also be accomplished with regular expressions (which is faster). It is more interesting if we involve the <a href="pattern-en.html#parser">parser</a> from the <span class="inline_code">pattern.en</span> module. The parser takes a string, identifies words and sentences, and assigns a part-of-speech tag to each word. For example: <span class="postag">NN</span> (noun), <span class="postag">VB</span> (verb) or <span class="postag">JJ</span> (adjective). It groups words into chunks, for example: <span class="postag">NP</span> (noun phrase) consists of successive <span class="postag">NN</span>, <span class="postag">JJ</span>, <span class="postag">DT</span> (determiner), ...</p>
-<p>A parsed <span class="inline_code">Sentence</span> can be searched for part-of-speech tags:</p>
+<p>A parsed <span class="inline_code">Sentence</span>&nbsp;or <span class="inline_code">Text</span> can be searched for part-of-speech tags:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import search
-&gt;&gt;&gt; from pattern.en import parse, Sentence
-&gt;&gt;&gt; s = Sentence(parse(&quot;big white rabbit&quot;))
-&gt;&gt;&gt; print s
+&gt;&gt;&gt; from pattern.en import parsetree
+&gt;&gt;&gt; t = parsetree(&quot;big white rabbit&quot;)
+&gt;&gt;&gt; print t
 &gt;&gt;&gt; print
-&gt;&gt;&gt; print search(&#39;JJ&#39;, s) # all adjectives
-&gt;&gt;&gt; print search(&#39;NN&#39;, s) # all nouns
-&gt;&gt;&gt; print search(&#39;NP&#39;, s) # all noun phrases
+&gt;&gt;&gt; print search(&#39;JJ&#39;, t) # all adjectives
+&gt;&gt;&gt; print search(&#39;NN&#39;, t) # all nouns
+&gt;&gt;&gt; print search(&#39;NP&#39;, t) # all noun phrases
 
-Sentence(&#39;big/JJ/B-NP/O white/JJ/I-NP/O rabbit/NN/I-NP/O&#39;)
+[Sentence(&#39;big/JJ/B-NP/O white/JJ/I-NP/O rabbit/NN/I-NP/O&#39;)]
 
 [Match(words=[Word(u&#39;big/JJ&#39;)]), Match(words=[Word(u&#39;white/JJ&#39;)])]
 [Match(words=[Word(u&#39;rabbit/NN&#39;)])]
@@ -92,16 +92,16 @@ Sentence(&#39;big/JJ/B-NP/O white/JJ/I-NP/O rabbit/NN/I-NP/O&#39;)
 <p>A more robust approach is to work with the taxonomy:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import taxonomy, search
-&gt;&gt;&gt; from pattern.en import parse, Sentence
+&gt;&gt;&gt; from pattern.en import parsetree
 &gt;&gt;&gt; for f in (&#39;rose&#39;, &#39;lily&#39;, &#39;daisy&#39;, &#39;daffodil&#39;, &#39;begonia&#39;):
 &gt;&gt;&gt;     taxonomy.append(f, type=&#39;flower&#39;)
-&gt;&gt;&gt; s = Sentence(parse(&#39;A field of white daffodils.&#39;, lemmata=True))
-&gt;&gt;&gt; print s
+&gt;&gt;&gt; t = parsetree(&#39;A field of white daffodils.&#39;, lemmata=True)
+&gt;&gt;&gt; print t
 &gt;&gt;&gt; print
-&gt;&gt;&gt; print search(&#39;FLOWER&#39;, s)
+&gt;&gt;&gt; print search(&#39;FLOWER&#39;, t)
 
-Sentence(&#39;A/DT/B-NP/O/a field/NN/I-NP/O/field of/IN/B-PP/B-PNP/of&#39; 
-         &#39;white/JJ/B-NP/I-PNP/white daffodils/NNS/I-NP/I-PNP/daffodil ././O/O/.&#39;)
+[Sentence(&#39;A/DT/B-NP/O/a field/NN/I-NP/O/field of/IN/B-PP/B-PNP/of&#39; 
+          &#39;white/JJ/B-NP/I-PNP/white daffodils/NNS/I-NP/I-PNP/daffodil ././O/O/.&#39;)]
 
 [Match(words=[Word(u&#39;white/JJ&#39;), Word(u&#39;daffodils/NNS&#39;)])]
 </pre></div>
@@ -225,14 +225,14 @@ constraint.exclude          # None, or Constraint of disallowed options.</pre><p
 <p>The following example demonstrates the use of optional and multiple constraints:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import Pattern
-&gt;&gt;&gt; from pattern.en import parse, Sentence
-&gt;&gt;&gt; s = Sentence(parse(&#39;tasty cat food&#39;))
+&gt;&gt;&gt; from pattern.en import parsetree
+&gt;&gt;&gt; t = parsetree(&#39;tasty cat food&#39;)
 &gt;&gt;&gt; p = Pattern.fromstring(&#39;DT? RB? JJ? NN+&#39;)
-&gt;&gt;&gt; print s
+&gt;&gt;&gt; print t
 &gt;&gt;&gt; print
-&gt;&gt;&gt; print p.search(s)
+&gt;&gt;&gt; print p.search(t)
 
-Sentence(&#39;tasty/JJ/B-NP/O cat/NN/I-NP/O food/NN/I-NP/O&#39;)
+[Sentence(&#39;tasty/JJ/B-NP/O cat/NN/I-NP/O food/NN/I-NP/O&#39;)]
 
 [Match(words=[Word(u&#39;tasty/JJ&#39;), Word(u&#39;cat/NN&#39;)]), 
  Match(words=[Word(u&#39;food/NN&#39;)])]</pre></div>
@@ -242,23 +242,23 @@ Sentence(&#39;tasty/JJ/B-NP/O cat/NN/I-NP/O food/NN/I-NP/O&#39;)
 <p>The behavior can be disabled by passing a <span class="inline_code">STRICT</span> flag to <span class="inline_code">Pattern</span>, <span class="inline_code">compile()</span>, <span class="inline_code">search()</span> or <span class="inline_code">match()</span>:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import Pattern
-&gt;&gt;&gt; from pattern.en import parse, Sentence
-&gt;&gt;&gt; s = Sentence(parse(&#39;The black cat is lurking in the tree.&#39;))
-&gt;&gt;&gt; p = Pattern.fromstring(&#39;cat&#39;, s)
-&gt;&gt;&gt; print s
+&gt;&gt;&gt; from pattern.en import parsetree
+&gt;&gt;&gt; t = parsetree(&#39;The black cat is lurking in the tree.&#39;)
+&gt;&gt;&gt; p = Pattern.fromstring(&#39;cat&#39;, t)
+&gt;&gt;&gt; print t
 &gt;&gt;&gt; print
-&gt;&gt;&gt; print p.search(s)
+&gt;&gt;&gt; print p.search(t)
 
-Sentence(&#39;The/DT/B-NP/O black/JJ/I-NP/O cat/NN/I-NP/O is/VBZ/B-VP/O&#39;
-         &#39;lurking/VBG/I-VP/O in/IN/B-PP/B-PNP the/DT/B-NP/I-PNP&#39; 
-         &#39;tree/NN/I-NP/I-PNP ././O/O&#39;)
+[Sentence(&#39;The/DT/B-NP/O black/JJ/I-NP/O cat/NN/I-NP/O is/VBZ/B-VP/O&#39;
+          &#39;lurking/VBG/I-VP/O in/IN/B-PP/B-PNP the/DT/B-NP/I-PNP&#39; 
+          &#39;tree/NN/I-NP/I-PNP ././O/O&#39;)]
 
 [Match(words=[Word(u&#39;The/DT&#39;), Word(u&#39;black/JJ&#39;), Word(u&#39;cat/NN/)])]
 </pre></div>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import STRICT
-&gt;&gt;&gt; p = Pattern.fromstring(&#39;cat&#39;, s, STRICT) # Or: compile(&#39;cat&#39;, s, STRICT)
-&gt;&gt;&gt; print p.search(s)
+&gt;&gt;&gt; p = Pattern.fromstring(&#39;cat&#39;, STRICT) # Or: compile(&#39;cat&#39;, STRICT)
+&gt;&gt;&gt; print p.search(t)
 
 [Match(words=[Word(u&#39;cat/NN&#39;)])]
 </pre></div>
@@ -277,20 +277,19 @@ match.constituents(constraint=None)</pre><ul>
 <li><span class="inline_code">Match.group()</span>&nbsp;returns a list of <span class="inline_code">Words</span> matching the constraints in a <span class="inline_code">{</span> <span class="inline_code">}</span> group.</li>
 <li><span class="inline_code">Match.constraint()</span> returns the <span class="inline_code">Constraint</span> that matched the given <span class="inline_code">Word</span>, or None.</li>
 <li><span class="inline_code">Match.constraints()</span> returns the list of constraints that matched the given <span class="inline_code">Chunk</span>.</li>
-<li><span class="inline_code">Match.constituents()</span> returns a list of <span class="inline_code">Word</span> and <span class="inline_code">Chunk</span> objects, with successive words grouped into their chunks whenever possible. Optionally, returns only chunks/words that matched the given <span class="inline_code">Constraint</span>, (or list of constraints or constraint index). Chunks are only available if a <span class="inline_code">Sentence</span> was given (i.e., not for plain strings).</li>
+<li><span class="inline_code">Match.constituents()</span> returns a list of <span class="inline_code">Word</span> and <span class="inline_code">Chunk</span> objects, with successive words grouped into their chunks whenever possible. Optionally, returns only chunks/words that matched the given <span class="inline_code">Constraint</span>, (or list of constraints or constraint indices). Chunks are only available if a <span class="inline_code">Sentence</span>&nbsp;or <span class="inline_code">Text</span> was given (i.e., not for plain strings).</li>
 </ul>
 <div class="example">
-<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; p = Pattern.fromstring(&#39;NP be more? ADJP|ADVP than NP&#39;)
-&gt;&gt;&gt; s = Sentence(parse(&#39;the turtle was faster than the hare&#39;, lemmata=True))
-&gt;&gt;&gt; m = p.match(s)
-&gt;&gt;&gt; print s
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; t = parsetree(&#39;the turtle was faster than the hare&#39;, lemmata=True)
+&gt;&gt;&gt; m = match(&#39;NP be more? ADJP|ADVP than NP&#39;, t)
+&gt;&gt;&gt; print t
 &gt;&gt;&gt; print
 &gt;&gt;&gt; for w in m.words:
 &gt;&gt;&gt;    print w, &#39;\t =&gt;&#39;, m.constraint(w)
 
-Sentence(&#39;the/DT/B-NP/O/the turtle/NN/I-NP/O/turtle was/VBD/B-VP/O/be&#39;
-         &#39;faster/RBR/B-ADVP/O/faster than/IN/B-PP/B-PNP/than the/DT/B-NP/I-PNP/the&#39;
-         &#39;hare/NN/I-NP/I-PNP/hare&#39;)
+[Sentence(&#39;the/DT/B-NP/O/the turtle/NN/I-NP/O/turtle was/VBD/B-VP/O/be&#39;
+          &#39;faster/RBR/B-ADVP/O/faster than/IN/B-PP/B-PNP/than the/DT/B-NP/I-PNP/the&#39;
+          &#39;hare/NN/I-NP/I-PNP/hare&#39;)]
 
 Word(u&#39;the/DT&#39;)     =&gt; Constraint(chunks=[&#39;NP&#39;])
 Word(u&#39;turtle/NN&#39;)  =&gt; Constraint(chunks=[&#39;NP&#39;])
@@ -302,9 +301,8 @@ Word(u&#39;hare/NN&#39;)    =&gt; Constraint(chunks=[&#39;NP&#39;])
 </pre></div>
 <p>Match groups offer a convenient way to retrieve what you need from a <span class="inline_code">Match</span>:</p>
 <div class="example">
-<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; s = Sentence(parse(&#39;the big black dog&#39;))
-&gt;&gt;&gt; p = Pattern.fromstring(&#39;DT {JJ?+ NN}&#39;)
-&gt;&gt;&gt; m = p.match(s)
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; t = parsetree(&#39;the big black dog&#39;)
+&gt;&gt;&gt; m = match(&#39;DT {JJ?+ NN}&#39;, t)
 &gt;&gt;&gt; print m.group(0) # full pattern
 &gt;&gt;&gt; print m.group(1) # {JJ?+ NN}
 &gt;&gt;&gt; print m.group(1).string

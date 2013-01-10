@@ -53,7 +53,7 @@
 <pre class="brush:python; gutter:false; light:true;">node = Node(id=&quot;&quot;, radius=5, **kwargs)</pre><pre class="brush:python; gutter:false; light:true;">node.graph                     # Parent Graph.
 node.edges                     # List of Edge objects.
 node.links                     # List of Node objects.
-node.id                        # Unique string or int.</pre><pre class="brush:python; gutter:false; light:true;">node.x                         # Horizontal offset.
+node.id                        # Unique string.</pre><pre class="brush:python; gutter:false; light:true;">node.x                         # Horizontal offset.
 node.y                         # Vertical offset.
 node.force                     # Vector, updated by Graph.layout.
 node.radius                    # Default: 5
@@ -100,12 +100,14 @@ graph.edges                    # List of Edge objects.
 graph.root                     # Node or None.
 graph.density                  # &lt;0.35 =&gt; sparse, &gt;0.65 =&gt; dense
 graph.distance                 # Overall layout spacing.
-graph.layout                   # GraphSpringLayout.</pre><pre class="brush:python; gutter:false; light:true;">graph.add_node(id, *args, **kwargs, root=False) # Creates + returns new Node.
-graph.add_edge(id1, id2, *args, **kwargs)       # Creates + returns new Edge.
+graph.layout                   # GraphSpringLayout.</pre><pre class="brush:python; gutter:false; light:true;">graph.add_node(id, root=False) # Creates + returns new Node.
+graph.add_edge(id1, id2)       # Creates + returns new Edge.
 graph.remove(node)
 graph.remove(edge)
-</pre><pre class="brush:python; gutter:false; light:true;">graph.betweenness_centrality() # Updates all Node.centrality.
-graph.eigenvector_centrality() # Updates all Node.weight. </pre><pre class="brush:python; gutter:false; light:true;">graph.shortest_path(node1, node2, heuristic=None, directed=False)
+graph.node(id)                 # Returns node with given id.
+graph.edge(id1, id2)           # Returns edge connecting the given nodes.
+</pre><pre class="brush:python; gutter:false; light:true;">graph.betweenness_centrality() # Updates all Node.centrality values.
+graph.eigenvector_centrality() # Updates all Node.weight values. </pre><pre class="brush:python; gutter:false; light:true;">graph.shortest_path(node1, node2, heuristic=None, directed=False)
 graph.shortest_paths(node, heuristic=None, directed=False)
 graph.paths(node1, node2, length=4)
 graph.sorted(order=WEIGHT, threshold=0.0)
@@ -113,8 +115,8 @@ graph.prune(depth=0)
 graph.fringe(depth=0, traversable=lambda node, edge: True)
 graph.split()
 graph.copy(nodes=ALL)</pre><pre class="brush:python; gutter:false; light:true;">graph.update(iterations=10, weight=10, limit=0.5)</pre><ul>
-<li><span class="inline_code"><span style="font-family: Georgia, Times, serif; font-size: 13px;"><span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">Graph.add_node()</span> has an optional <span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">base</span> parameter which can be a subclass of <span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">Node</span> to use.</span><br /></span></li>
-<li><span class="inline_code">Graph.add_edge()</span> has an optional <span class="inline_code">base</span> parameter which can be a subclass of <span class="inline_code">Edge</span> to use.</li>
+<li><span class="inline_code"><span style="font-family: Georgia, Times, serif; font-size: 13px;"><span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">Graph.add_node()</span>&nbsp;takes all optional parameters of the&nbsp;</span></span><span class="inline_code"><span style="font-family: Georgia, Times, serif; font-size: 13px;"><span class="inline_code">Node</span></span></span><span class="inline_code"><span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;constructor, and&nbsp;</span></span>an optional <span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">base</span> parameter which can be a subclass of <span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">Node</span> to be used.</li>
+<li><span class="inline_code">Graph.add_edge()</span>&nbsp;takes all optional parameters of the <span class="inline_code">Edge</span> constructor, and an optional <span class="inline_code">base</span> parameter which can be a subclass of <span class="inline_code">Edge</span> to be used.</li>
 <li><span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;"><span style="font-family: Georgia, Times, serif; font-size: 13px;"><span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">Graph.shortest_path()</span> returns a list of nodes connecting two nodes.</span><br /></span></li>
 <li><span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">Graph.shortest_paths()</span> returns a dictionary of nodes linked to shortest path.<br />With <span class="inline_code">directed=True</span>, edges are only traversable in a single direction.<br />A <span class="inline_code">heuristic</span> function can be given that takes two node id's and returns an additional cost for movement between the two nodes.</li>
 <li><span class="inline_code">Graph.paths()</span> returns a list of paths &lt;=&nbsp;<span class="inline_code">length</span> connecting the two nodes.</li>
@@ -368,41 +370,42 @@ layout.copy(graph)</pre><p><span class="small"><span style="text-decoration: und
 &lt;html&gt;</pre></div>
 <div class="example">
 <pre class="brush:xml; gutter:false; light:true;">&lt;head&gt; 
-  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
-  &lt;script type=&quot;text/javascript&quot; src=&quot;graph.js&quot;&gt;&lt;/script&gt;
-  &lt;script type=&quot;text/javascript&quot;&gt;  
-    function init_graph() {
-      g = new Graph(document.getElementById(&quot;_ctx&quot;));
-      for (var i=0; i &lt; 50; i++) { // Random nodes.
-        g.addNode(i+1);
-      }
-      for (var i=0; i &lt; 75; i++) { // Random edges.
-        var node1 = choice(g.nodes);
-        var node2 = choice(g.nodes);
-        g.addEdge(node1, node2, {weight: Math.random()});
-      }
-      g.prune(0);
-      g.betweennessCentrality();
-      g.eigenvectorCentrality();
-      g.loop({frames:500, fps:20, ipf:2, weighted:0.5, directed:true});
-    }
-  &lt;/script&gt;
-  &lt;style type=&quot;text/css&quot;&gt;
-    #graph { display: block; position: relative; overflow: hidden; }
-    .node-label { font: 11px sans-serif; }
-  &lt;/style&gt;
+    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;graph.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;  
+        function init_graph() {
+            SHADOW = 0.65 // Slow... 
+            g = new Graph(document.getElementById(&quot;_ctx&quot;));
+            for (var i=0; i &lt; 50; i++) { // Random nodes.
+                g.addNode(i+1);
+            }
+            for (var i=0; i &lt; 75; i++) { // Random edges.
+                var node1 = Array.choice(g.nodes);
+                var node2 = Array.choice(g.nodes);
+                g.addEdge(node1, node2, {weight: Math.random()});
+            }
+            g.prune(0);
+            g.betweennessCentrality();
+            g.eigenvectorCentrality();
+            g.loop({frames:500, fps:20, ipf:2, weighted:0.5, directed:true});
+        }
+    &lt;/script&gt;
+    &lt;style type=&quot;text/css&quot;&gt;
+        #graph { display: block; position: relative; overflow: hidden; }
+        .node-label { font: 11px sans-serif; }
+    &lt;/style&gt;
 &lt;/head&gt;</pre></div>
 <div class="example">
 <pre class="brush:xml; gutter:false; light:true;">&lt;body onload=&quot;javascript:init_graph();&quot;&gt; 
-  &lt;div id=&quot;graph&quot; style=&quot;width:700px; height:500px;&quot;&gt;
-    &lt;canvas id=&quot;_ctx&quot; width=&quot;700&quot; height=&quot;500&quot;&gt;&lt;/canvas&gt;
-  &lt;/div&gt;
+    &lt;div id=&quot;graph&quot; style=&quot;width:700px; height:500px;&quot;&gt;
+        &lt;canvas id=&quot;_ctx&quot; width=&quot;700&quot; height=&quot;500&quot;&gt;&lt;/canvas&gt;
+    &lt;/div&gt;
 &lt;/body&gt;</pre></div>
 <div class="example">
 <pre class="brush:xml; gutter:false; light:true;">&lt;/html&gt; </pre></div>
 <p><img class="border" src="../g/pattern_graph4.jpg" alt="" width="610" height="390" /></p>
 <p>Loading&nbsp;<a href="http://code.google.com/p/explorercanvas/" target="_blank">excanvas.js</a> in the <span class="inline_code">&lt;head&gt;</span> enables support for Internet Explorer 6-8:</p>
-<p><span class="inline_code">&lt;!--[if lte IE 8]&gt;&lt;script type="text/javascript" src="/js/excanvas.js"&gt;&lt;/script&gt;&lt;![endif]--&gt;</span></p>
+<p><span class="inline_code">&lt;!--[if lte IE 8]&gt;&lt;script type="text/javascript" src="/js/excanvas.js"&gt;&lt;/script&gt;<br />&lt;![endif]--&gt;</span></p>
 <p>&nbsp;</p>
 <hr />
 <h2>See also</h2>

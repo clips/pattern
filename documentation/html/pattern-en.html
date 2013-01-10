@@ -94,97 +94,160 @@ worst
 <hr />
 <h2><a name="conjugation"></a>Verb conjugation</h2>
 <p>The <span class="inline_code">pattern.en</span> module has a lexicon of 8,500 common English verbs and their conjugated forms (infinitive, 3rd singular present, present participle, past and past participle – verbs such as <em>be</em> have other forms as well). The following verbs can be negated: <em>be</em>, <em>can</em>, <em>do</em>, <em>will</em>, <em>must</em>, <em>have</em>, <em>may</em>, <em>need</em>, <em>dare</em>, <em>ought</em>.</p>
-<pre class="brush:python; gutter:false; light:true;">conjugate(verb, tense=INFINITIVE, negated=False)</pre><pre class="brush:python; gutter:false; light:true;">lemma(verb)                 # Base form, e.g. are =&gt; be.</pre><pre class="brush:python; gutter:false; light:true;">lexeme(verb)                # List of possible forms: be =&gt; is, was, ...</pre><pre class="brush:python; gutter:false; light:true;">tenses(verb)                # List of possible tenses of the given form.
-</pre><p>The <span class="inline_code">tense</span> parameter of the <span class="inline_code">conjugate()</span> function can be set to the following values:</p>
+<pre class="brush:python; gutter:false; light:true;">conjugate(verb, 
+    tense = PRESENT,        # INFINITIVE, PRESENT, PAST, FUTURE
+   person = 3,              # 1, 2, 3 or None
+   number = SINGULAR,       # SG, PL
+     mood = INDICATIVE,     # INDICATIVE, IMPERATIVE, CONDITIONAL, SUBJUNCTIVE
+   aspect = IMPERFECTIVE,   # IMPERFECTIVE, PERFECTIVE, PROGRESSIVE 
+  negated = False)          # True or False</pre><pre class="brush:python; gutter:false; light:true;">lemma(verb)                 # Base form, e.g. are =&gt; be.</pre><pre class="brush:python; gutter:false; light:true;">lexeme(verb)                # List of possible forms: be =&gt; is, was, ...</pre><pre class="brush:python; gutter:false; light:true;">tenses(verb)                # List of possible tenses of the given form.
+</pre><p>The&nbsp;<span class="inline_code">conjugate()</span> function takes the following optional parameters:</p>
 <table class="border">
 <tbody>
 <tr>
-<td><span class="smallcaps">Tense</span></td>
-<td style="text-align: center;"><span class="smallcaps">Alias</span></td>
+<td style="text-align: left;"><span class="smallcaps">Tense</span></td>
+<td style="text-align: left;"><span class="smallcaps">Person</span></td>
+<td style="text-align: left;"><span class="smallcaps">Number</span></td>
+<td style="text-align: left;"><span class="smallcaps">Mood</span></td>
+<td style="text-align: left;"><span class="smallcaps">Aspect</span></td>
+<td style="text-align: left;"><span class="smallcaps">Alias</span></td>
 <td style="text-align: center;"><span class="smallcaps">Tag</span></td>
-<td><span class="smallcaps">Example</span></td>
+<td style="text-align: left;"><span class="smallcaps">Example</span></td>
 </tr>
 <tr>
 <td><span class="inline_code">INFINITIVE</span></td>
-<td style="text-align: center;"><span class="inline_code">"inf"</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">"inf"</span></td>
 <td style="text-align: center;"><span class="postag">VB</span></td>
 <td><em>be</em></td>
 </tr>
 <tr>
-<td><span class="inline_code">PRESENT_1ST_PERSON_SINGULAR</span></td>
-<td style="text-align: center;"><span class="inline_code">"1sg"</span></td>
+<td><span class="inline_code">PRESENT</span></td>
+<td><span class="inline_code">1</span></td>
+<td><span class="inline_code">SG</span></td>
+<td><span class="inline_code">INDICATIVE</span></td>
+<td><span class="inline_code">IMPERFECTIVE</span></td>
+<td><span class="inline_code">"1sg"</span></td>
 <td style="text-align: center;"><span class="postag">VBP</span></td>
 <td><em>I <span style="text-decoration: underline;">am</span></em></td>
 </tr>
 <tr>
-<td><span class="inline_code">PRESENT_2ND_PERSON_SINGULAR</span></td>
-<td style="text-align: center;"><span class="inline_code">"2sg"</span></td>
+<td><span class="inline_code">PRESENT</span></td>
+<td><span class="inline_code">2</span></td>
+<td><span class="inline_code">SG</span></td>
+<td><span class="inline_code">INDICATIVE</span></td>
+<td><span class="inline_code">IMPERFECTIVE</span></td>
+<td><span class="inline_code">"2sg"</span></td>
 <td style="text-align: center;">&nbsp;·</td>
 <td><em>you <span style="text-decoration: underline;">are</span></em></td>
 </tr>
 <tr>
-<td><span class="inline_code">PRESENT_3RD_PERSON_SINGULAR</span></td>
-<td style="text-align: center;"><span class="inline_code">"3sg"</span></td>
+<td><span class="inline_code">PRESENT</span></td>
+<td><span class="inline_code">3</span></td>
+<td><span class="inline_code">SG</span></td>
+<td><span class="inline_code">INDICATIVE</span></td>
+<td><span class="inline_code">IMPERFECTIVE</span></td>
+<td><span class="inline_code">"3sg"</span></td>
 <td style="text-align: center;"><span class="postag">VBZ</span></td>
 <td><em>he <span style="text-decoration: underline;">is</span></em></td>
 </tr>
 <tr>
-<td><span class="inline_code">PRESENT_PLURAL</span></td>
-<td style="text-align: center;"><span class="inline_code">"pl"</span></td>
+<td><span class="inline_code">PRESENT</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">PL</span></td>
+<td><span class="inline_code">INDICATIVE</span></td>
+<td><span class="inline_code">IMPERFECTIVE</span></td>
+<td><span class="inline_code">"pl"</span></td>
 <td style="text-align: center;">&nbsp;·</td>
-<td><em>we <span style="text-decoration: underline;">are</span></em></td>
+<td><em>are</em></td>
 </tr>
 <tr>
-<td><span class="inline_code">PRESENT_PARTICIPLE</span></td>
-<td style="text-align: center;"><span class="inline_code">"part"</span></td>
+<td><span class="inline_code">PRESENT</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">INDICATIVE</span></td>
+<td><span class="inline_code">PROGRESSIVE</span></td>
+<td><span class="inline_code">"part"</span></td>
 <td style="text-align: center;"><span class="postag">VBG</span></td>
 <td><em>being</em></td>
 </tr>
 <tr>
+<td style="border-left: 0; border-right: 0; padding: 0;">&nbsp;</td>
+</tr>
+<tr>
 <td><span class="inline_code">PAST</span></td>
-<td style="text-align: center;"><span class="inline_code">"p"</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">"p"</span></td>
 <td style="text-align: center;"><span class="postag">VBD</span></td>
 <td><em>were</em></td>
 </tr>
 <tr>
-<td><span class="inline_code">PAST_1ST_PERSON_SINGULAR</span></td>
-<td style="text-align: center;"><span class="inline_code">"1sgp"</span></td>
+<td><span class="inline_code">PAST</span></td>
+<td><span style="font-family: Courier, 'Courier New', monospace;"><span style="font-size: 12px;">1</span></span></td>
+<td><span style="font-family: Courier, 'Courier New', monospace;"><span style="font-size: 12px;">PL</span></span></td>
+<td><span class="inline_code">INDICATIVE</span></td>
+<td><span class="inline_code">IMPERFECTIVE</span></td>
+<td><span class="inline_code">"1sgp"</span></td>
 <td style="text-align: center;">&nbsp;·</td>
 <td><em>I <span style="text-decoration: underline;">was</span></em></td>
 </tr>
 <tr>
-<td><span class="inline_code">PAST_2ND_PERSON_SINGULAR</span></td>
-<td style="text-align: center;"><span class="inline_code">"2sgp"</span></td>
+<td><span class="inline_code">PAST</span></td>
+<td><span style="font-family: Courier, 'Courier New', monospace;"><span style="font-size: 12px;">2</span></span></td>
+<td><span style="font-family: Courier, 'Courier New', monospace;"><span style="font-size: 12px;">PL</span></span></td>
+<td><span style="font-family: Courier, 'Courier New', monospace;"><span style="font-size: 12px;">INDICATIVE</span></span></td>
+<td><span class="inline_code">IMPERFECTIVE</span></td>
+<td><span class="inline_code">"2sgp"</span></td>
 <td style="text-align: center;">&nbsp;·</td>
 <td><em>you <span style="text-decoration: underline;">were</span></em></td>
 </tr>
 <tr>
-<td><span class="inline_code">PAST_3RD_PERSON_SINGULAR</span></td>
-<td style="text-align: center;"><span class="inline_code">"3gp"</span></td>
+<td><span class="inline_code">PAST</span></td>
+<td><span style="font-family: Courier, 'Courier New', monospace;"><span style="font-size: 12px;">3</span></span></td>
+<td><span style="font-family: Courier, 'Courier New', monospace;"><span style="font-size: 12px;">PL</span></span></td>
+<td><span style="font-family: Courier, 'Courier New', monospace;"><span style="font-size: 12px;">INDICATIVE</span></span></td>
+<td><span class="inline_code">IMPERFECTIVE</span></td>
+<td><span class="inline_code">"3gp"</span></td>
 <td style="text-align: center;">&nbsp;·</td>
 <td><em>he <span style="text-decoration: underline;">was</span></em></td>
 </tr>
 <tr>
-<td><span class="inline_code">PAST_PLURAL</span></td>
-<td style="text-align: center;"><span class="inline_code">"ppl"</span></td>
+<td><span class="inline_code">PAST</span></td>
+<td><span style="font-family: Courier, 'Courier New', monospace;"><span style="font-size: 12px;">None</span></span></td>
+<td><span style="font-family: Courier, 'Courier New', monospace;"><span style="font-size: 12px;">PL</span></span></td>
+<td><span style="font-family: Courier, 'Courier New', monospace;"><span style="font-size: 12px;">INDICATIVE</span></span></td>
+<td><span class="inline_code">IMPERFECTIVE</span></td>
+<td><span class="inline_code">"ppl"</span></td>
 <td style="text-align: center;">&nbsp;·</td>
-<td><em>we <span style="text-decoration: underline;">were</span></em></td>
+<td><em>were</em></td>
 </tr>
 <tr>
-<td><span class="inline_code">PAST_PARTICIPLE</span></td>
-<td style="text-align: center;"><span class="inline_code">"ppart"</span></td>
+<td style="text-align: left;"><span class="inline_code">PAST</span></td>
+<td style="text-align: left;"><span style="font-family: Courier, 'Courier New', monospace;"><span style="font-size: 12px;">None</span></span></td>
+<td style="text-align: left;"><span class="inline_code">None</span></td>
+<td style="text-align: left;"><span class="inline_code">INDICATIVE</span></td>
+<td style="text-align: left;"><span style="font-family: Courier, 'Courier New', monospace;"><span style="font-size: 12px;">PROGRESSIVE</span></span></td>
+<td style="text-align: left;"><span class="inline_code">"ppart"</span></td>
 <td style="text-align: center;"><span class="postag">VBN</span></td>
-<td><span style="text-decoration: underline;">been</span></td>
+<td style="text-align: left;"><em>been</em></td>
 </tr>
 </tbody>
 </table>
+<p>Instead of optional parameters, a single short alias, the part-of-speech tag,&nbsp;<span class="inline_code">PARTICIPLE</span>&nbsp;or <span class="inline_code">PAST+PARTICIPLE</span> can also be given. With no parameters, the infinitive form of the verb is returned.</p>
 <p>For example:</p>
 <div class="example">
-<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import conjugate, lemma, lexeme, tenses, PAST
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import conjugate, lemma, lexeme, tenses, PAST, PL
 &gt;&gt;&gt; print lexeme(&#39;purr&#39;)
 &gt;&gt;&gt; print lemma(&#39;purring&#39;)
-&gt;&gt;&gt; print conjugate(&#39;purred&#39;, tense=&#39;3sg&#39;)
-&gt;&gt;&gt; print PAST in tenses(&quot;purred&quot;) # &#39;p&#39; in tenses() will also work.
+&gt;&gt;&gt; print conjugate(&#39;purred&#39;, &#39;3sg&#39;)
+&gt;&gt;&gt; print PAST in tenses(&#39;purred&#39;) # &#39;p&#39; in tenses() also works.
+&gt;&gt;&gt; print (PAST, 1, PL) in tensses(&#39;purred&#39;) 
 
 [&#39;purr&#39;, &#39;purrs&#39;, &#39;purring&#39;, &#39;purred&#39;]
 purr
@@ -197,14 +260,14 @@ True
 <p>All of the verb functions have an optional <span class="inline_code">parse=True</span> parameter that enables a rule-based parser for unknown verbs. This will not work for irregular verbs however, and it is fragile for verbs ending in -e in the past tense or as present participle (overall accuracy 91%).</p>
 <p>With <span class="inline_code">parse=False</span>,&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">conjugate()</span>&nbsp;and&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">lemma()</span>&nbsp;yield&nbsp;<span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">None</span>.</p>
 <div class="example">
-<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import conjugate, VERBS
-&gt;&gt;&gt; print &#39;facebooked&#39; in VERBS
-&gt;&gt;&gt; print conjugate(&#39;facebooked&#39;, tense=&#39;part&#39;, parse=False)
-&gt;&gt;&gt; print conjugate(&#39;facebooked&#39;, tense=&#39;part&#39;, parse=True)
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import conjugate, VERBS, PARTICIPLE
+&gt;&gt;&gt; print &#39;googled&#39; in VERBS
+&gt;&gt;&gt; print conjugate(&#39;googled&#39;, tense=PARTICIPLE, parse=False)
+&gt;&gt;&gt; print conjugate(&#39;googled&#39;, tense=PARTICIPLE, parse=True)
 
 False
 None
-facebooking
+googling
 </pre></div>
 <p>&nbsp;</p>
 <hr />
@@ -231,12 +294,13 @@ dozens of carrots an⁣d a score of parrots
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">spelling(string)</pre><div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; print spelling(&quot;adress&quot;)
 
-[(&quot;dress&quot;, 0.64), (&quot;address&quot;, 0.36)]</pre><p><span class="small"><span style="text-decoration: underline;">Reference</span>: Norvig, P. (2007). <em>How to Write a Spelling Corrector</em>. http://norvig.com/spell-correct.html</span>&nbsp;</p>
+[(&quot;dress&quot;, 0.64), (&quot;address&quot;, 0.36)]</pre></div>
+<p><span class="small"><span style="text-decoration: underline;">Reference</span>: Norvig, P. (2007). <em>How to Write a Spelling Corrector</em>. http://norvig.com/spell-correct.html</span>&nbsp;</p>
 <p>&nbsp;</p>
 <hr />
 <h2><em><a name="ngram"></a>n</em>-grams</h2>
-<p>The <span class="inline_code">ngrams()</span> function returns&nbsp;a list of <em>n</em>-grams (i.e., tuples of <em>n</em> successive words) from the given string.&nbsp;Alternatively, you can supply a <span class="inline_code">Text</span> or <span class="inline_code">Sentence</span> object (see further).&nbsp;<em>n</em>-grams will not run over sentence markers (i.e., .!?).</p>
-<pre class="brush:python; gutter:false; light:true;">ngrams(string, n=3)</pre><div class="example">
+<p>The <span class="inline_code">ngrams()</span> function returns&nbsp;a list of <em>n</em>-grams (i.e., tuples of <em>n</em> successive words) from the given string.&nbsp;Alternatively, you can supply a <span class="inline_code">Text</span> or <span class="inline_code">Sentence</span> object (see further).&nbsp;<em>n</em>-grams will not run over sentence markers (i.e., .!?), unless <span class="inline_code">continuous</span> is <span class="inline_code">True</span>.</p>
+<pre class="brush:python; gutter:false; light:true;">ngrams(string, n=3, continuous=False)</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print ngrams(&quot;I am eating a pizza.&quot;, n=3)
 
 [(&#39;I&#39;, &#39;am&#39;, &#39;eating&#39;), (&#39;am&#39;, &#39;eating&#39;, &#39;a&#39;), (&#39;eating&#39;, &#39;a&#39;, &#39;pizza&#39;)] </pre></div>
@@ -313,12 +377,19 @@ happy</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="tree"></a>Parse trees</h2>
-<p>A parse tree stores a tagged string as a network of linked Python objects that can be traversed to analyze the constituents in the text. The output of the <a href="#parser" target="_self">parser</a> can be passed to the <span class="inline_code">split()</span> function, which produces a <span class="inline_code">Text</span> object. Essentially, a <span class="inline_code">Text</span> is a list of <span class="inline_code">Sentence</span> objects. Each <span class="inline_code">Sentence</span> consists of <span class="inline_code">Word</span> objects. <span class="inline_code">Word</span> objects are also grouped in <span class="inline_code">Chunk</span> objects, which are related to other <span class="inline_code">Chunk</span> objects in various ways.</p>
-<pre class="brush:python; gutter:false; light:true;">split(taggedstring, token=[WORD, POS, CHUNK, PNP])</pre><p>We'll run the sentence "<em>The cat sat on the mat.</em>" through the parse tree:</p>
+<p>A parse tree stores a tagged string as a network of linked Python objects that can be traversed to analyze the constituents in the text. The <span class="inline_code">parsetree()</span> function takes the same parameters as <span class="inline_code">parse()</span> and returns a Text() object.&nbsp;A&nbsp;<span class="inline_code">Text</span> is a list of <span class="inline_code">Sentence</span> objects. Each <span class="inline_code">Sentence</span> consists of <span class="inline_code">Word</span> objects. <span class="inline_code">Word</span> objects are also grouped in <span class="inline_code">Chunk</span> objects, which are related to other <span class="inline_code">Chunk</span> objects in various ways.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">parsetree(string,
+   tokenize = True,         # Separate punctuation from words?
+       tags = True,         # Parse part-of-speech tags? (NN, JJ, ...)
+     chunks = True,         # Parse chunks? (NP, VP, PNP, ...)
+  relations = False,        # Find relations? (SBJ, OBJ, ...)
+    lemmata = False,        # Find word lemmata? (ate =&gt; eat)
+   encoding = &#39;utf-8&#39;,      # Default string encoding?
+    default = &#39;NN&#39;,         # Default part-of-speech tag.
+      light = False)        # True =&gt; disables contextual rules.</pre><p>We'll run the sentence "<em>The cat sat on the mat.</em>" through the parse tree:</p>
 <div class="example">
-<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parse, split
-&gt;&gt;&gt; s = parse(&#39;The cat sat on the mat.&#39;, relations=True, lemmata=True)
-&gt;&gt;&gt; s = split(s)
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parsetree
+&gt;&gt;&gt; s = parsetree(&#39;The cat sat on the mat.&#39;, relations=True, lemmata=True)
 &gt;&gt;&gt; print repr(s)
 
 [Sentence(
@@ -334,6 +405,7 @@ happy</pre></div>
  Chunk(&#39;sat/VP-1&#39;), 
  Chunk(&#39;on/PP&#39;), 
  Chunk(&#39;the mat/NP&#39;)]</pre></div>
+<p>If you already have a tagged string from <span class="inline_code">parse()</span>&nbsp;you can transform it to a <span class="inline_code">Text</span> with the <span class="inline_code">split()</span> function. In effect, <span class="inline_code">parsetree()</span> = <span class="inline_code">parse()</span> + <span class="inline_code">split()</span>. The tagged string might have been previously stored in a file, for example.</p>
 <h3>Text</h3>
 <p>A <span class="inline_code">Text</span> is a list of <span class="inline_code">Sentence</span> objects (i.e. you can do: <span class="inline_code">for sentence in text</span>).</p>
 <pre class="brush:python; gutter:false; light:true;">text = Text(taggedstring)</pre><pre class="brush:python; gutter:false; light:true;">text = Text.from_xml(xml)  # Reads an XML-string generated with Text.xml.
@@ -420,7 +492,7 @@ pnp.preposition            # First PP-chunk in the PNP.
 <p>In the example above,&nbsp;<span class="inline_code">-0.34</span> is a compromise between <em>surreal</em>, <em>various</em>, <em>ridiculous</em> and <em>seriously boring</em>.</p>
 <p>The <span class="inline_code">polarity()</span> function returns&nbsp;the sentence polarity (positive/negative sentiment).&nbsp;</p>
 <p>The <span class="inline_code">subjectivity()</span> function returns the sentence subjectivity (objective/subjective).</p>
-<p>The <span class="inline_code">positive()</span> function returns&nbsp;<span class="inline_code">True</span> if the given sentence's polarity is above the threshold. The threshold can be lowered or raised, but overall&nbsp;<span class="inline_code">+0.1</span> gives the best results for product reviews. Accuracy is 72% (P 0.72, R 0.71) for movie reviews.</p>
+<p>The <span class="inline_code">positive()</span> function returns&nbsp;<span class="inline_code">True</span> if the given sentence's polarity is above the threshold. The threshold can be lowered or raised, but overall&nbsp;<span class="inline_code">+0.1</span> gives the best results for product reviews. Accuracy is 73% (P 0.73, R 0.73) for movie reviews.</p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="modality"></a>Mood &amp; modality</h2>
@@ -581,7 +653,6 @@ Synset(&#39;carnivore&#39;)
 <li><a href="http://www.clips.ua.ac.be/pages/MBSP" target="_blank">MBSP</a> (GPL): r<span>obust parser using a memory-based learning approach, in Python.</span></li>
 <li><span><a href="http://www.nltk.org/" target="_blank">NLTK</a> (Apache): f</span><span>ull natural language processing toolkit for Python.</span></li>
 </ul>
-</div>
 </div>
 </div></div>
         </div>

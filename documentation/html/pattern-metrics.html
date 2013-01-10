@@ -43,6 +43,7 @@
 <li><a href="#agreement">Agreement</a></li>
 <li><a href="#similarity">String similarity</a></li>
 <li><a href="#readability">String readability</a></li>
+<li><a href="#intertextuality">Intertextuality</a></li>
 <li><a href="#statistics">Statistics</a><span class="link-maintenance small"> (mean, histogram, quantile, ...)</span></li>
 </ul>
 <p>&nbsp;</p>
@@ -167,6 +168,27 @@
 </tr>
 </tbody>
 </table>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="intertextuality"></a>Intertextuality</h2>
+<p>Intertextuality measures overlap between texts. For example, it can be used for plagiarism detection. The <span class="inline_code">intertextuality()</span> function returns a dictionary of&nbsp;<span class="inline_code">(i,</span> <span class="inline_code">j)</span> keys and <span class="inline_code">float</span> values. For indices <span class="inline_code">i</span> and <span class="inline_code">j</span> in the given list of texts (strings), the corresponding <span class="inline_code">float</span> is the percentage of text <span class="inline_code">i</span> that is also in text <span class="inline_code">j</span>. Overlap is measured by matching <em>n</em>-grams (by default, <span class="inline_code">n=5</span>&nbsp;or five successive words). An optional <span class="inline_code">weight</span> function can be used to supply the weight of each <em>n</em>-gram (by default <span class="inline_code">1</span>; but it can be useful to determine the weight of each <em>n</em>-gram using <a href="pattern-vector.html#tf-idf">TF-IDF</a>. An optional <span class="inline_code">continuous</span> parameter determines whether n-grams run over sentence periods.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">texts=[], n=5, continuous=False, weight=lambda ngram: 1)</pre><div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.metrics import intertextuality
+&gt;&gt;&gt; from glob import glob
+&gt;&gt;&gt; 
+&gt;&gt;&gt; index = {} 
+&gt;&gt;&gt; texts = []
+&gt;&gt;&gt; for i, f in enumerate(glob(&#39;data/*.txt&#39;)):
+&gt;&gt;&gt;     index[i] = f 
+&gt;&gt;&gt;     texts.append(open(f).read())
+&gt;&gt;&gt; 
+&gt;&gt;&gt; for (i, j), weight in intertextuality(texts, n=3).items():
+&gt;&gt;&gt;     if weight &gt; 0.1: 
+&gt;&gt;&gt;         print index[i]
+&gt;&gt;&gt;         print index[j]  
+&gt;&gt;&gt;         print weight
+&gt;&gt;&gt;         print weight.assessments # Set of overlapping n-grams.
+&gt;&gt;&gt;         print </pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="statistics"></a>Statistics</h2>

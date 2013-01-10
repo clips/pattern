@@ -1524,6 +1524,10 @@ body .syntaxhighlighter .xml.color1 {
 .node-type-page table { width: 100%; }
 .node-type-page table td { padding: 0.2em 0.4em 0.2em 0.4em; }
 
+/* Pattern documentation. */
+#node-1350 table td form { margin-left: 25px; }  /* PayPal donate */
+#node-1350 table td form br { display: none; }
+
 /* --- ADMIN RESOURCE RESERVATIONS ------------------------------------------------------------------------------ */
 
 .page-reservations caption { font-family: Georgia, Times, serif; font-size: 1.2em; text-align: left; margin-bottom: 1em; }
