@@ -21,7 +21,7 @@ corpus = Corpus()
 for page in range(1, 10):
     for tweet in Twitter().search('#win OR #fail', start=page, count=100, cached=True):
         # If the tweet contains #win hashtag, we'll set its type to 'WIN':
-        s = tweet.description.lower()        # tweet in lowercase
+        s = tweet.text.lower()               # tweet in lowercase
         p = '#win' in s and 'WIN' or 'FAIL'  # document labels      
         s = Sentence(parse(s))               # parse tree with part-of-speech tags
         s = search('JJ', s)                  # adjectives in the tweet

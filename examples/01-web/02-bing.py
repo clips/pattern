@@ -39,7 +39,7 @@ if request.error:
 
 # Retrieve the list of search results.
 for result in request.value:
-    print result.description
+    print result.text
     print result.url
     print
     

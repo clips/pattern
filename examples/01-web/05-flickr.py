@@ -21,7 +21,7 @@ q = "duracell bunny"
 results = engine.search(q, size=MEDIUM, sort=RELEVANCY, cached=True)
 for img in results:
     #print img.url # Retrieving the actual image URL executes an additional query.
-    print img.description
+    print img.text
     print img.author
     print
 

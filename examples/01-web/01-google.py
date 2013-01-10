@@ -5,7 +5,7 @@ from pattern.web import SEARCH
 
 # The web module has a SearchEngine class with a search() method 
 # that yields a list of Result objects.
-# Each Result has url, title, description, language, author and date and properties.
+# Each Result has url, title, text, language, author and date and properties.
 # Subclasses of SearchEngine include: 
 # Google, Yahoo, Bing, Twitter, Facebook, Wikipedia, Flickr.
 
@@ -29,7 +29,7 @@ q = "as * as a *"
 # Google is very fast but you can only get up to 100 (10x10) results per query.
 for i in range(1,2):
     for result in engine.search(q, start=i, count=10, type=SEARCH):
-        print plaintext(result.description) # plaintext() removes HTML formatting.
+        print plaintext(result.text) # plaintext() removes HTML formatting.
         print result.url
         print result.date
         print

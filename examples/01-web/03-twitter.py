@@ -22,16 +22,16 @@ engine = Twitter(language="en")
 # With cached=False, a live request is sent to Twitter,
 # so we get the latest results for the query instead of those in the local cache.
 for tweet in engine.search("is cooler than", count=25, cached=False):
-    print tweet.description
+    print tweet.text
     print tweet.author
     print tweet.date
-    print hashtags(tweet.description) # Keywords in tweets start with a #.
+    print hashtags(tweet.text) # Keywords in tweets start with a #.
     print
     # Create a unique ID based on the tweet content and author.
-    id = str(hash(tweet.author + tweet.description))
+    id = str(hash(tweet.author + tweet.text))
     # Only add the tweet to the table if it doesn't already contain this ID.
     if len(table) == 0 or id not in index:
-        table.append([id, tweet.description])
+        table.append([id, tweet.text])
         index[id] = True
 
 table.save("cool.csv")

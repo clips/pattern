@@ -13,7 +13,7 @@ comparisons = []
 for i in range(1,10):
     # Set cached=False for live results:
     for result in Twitter(language="en").search("\"is the new\"", start=i, count=100, cached=True):
-        s = result.description
+        s = result.text
         s = s.replace("\n", " ")
         s = s.lower()
         s = s.replace("is the new", "NEW")

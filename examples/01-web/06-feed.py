@@ -15,7 +15,7 @@ engine = Newsfeed()
 
 for result in engine.search(CNN, cached=True):
     print result.title.upper()
-    print plaintext(result.description) # Remove HTML formatting.
+    print plaintext(result.text) # Remove HTML formatting.
     print result.url
     print result.date
     print
