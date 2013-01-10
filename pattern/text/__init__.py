@@ -20,6 +20,8 @@ from en.inflect import \
     IMPERFECT, PRETERITE, \
     PARTICIPLE, GERUND
 
+LANGUAGES = ["en", "es", "de", "fr", "nl"]
+
 def _multilingual(function, *args, **kwargs):
     """ Returns the value from the function with the given name in the given language module.
         By default, language="en".
