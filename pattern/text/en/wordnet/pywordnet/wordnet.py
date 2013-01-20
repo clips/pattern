@@ -914,7 +914,7 @@ class Dictionary:
 	return self.indexFile.has_key(form)
 	
     def __contains__(self, form):
-        return self.indexFile.has_key(form) # Tom De Smedt, 2010
+        return self.indexFile.has_key(form.encode("utf-8", "ignore")) # Tom De Smedt, 2013
     
     #
     # Testing
