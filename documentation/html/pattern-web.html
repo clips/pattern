@@ -249,7 +249,7 @@ engine.language             # Restriction for Result.language (e.g., &#39;en&#39
 </tr>
 <tr>
 <td><span class="inline_code">Yahoo</span></td>
-<td><span class="inline_code">SEARCH|IMAGE|NEWS<sup>12</sup></span></td>
+<td><span class="inline_code">SEARCH|NEWS|IMAGE<sup>12</sup></span></td>
 <td>1-1000/count</td>
 <td>1-50</td>
 <td><span class="inline_code">RELEVANCY</span></td>
@@ -258,7 +258,7 @@ engine.language             # Restriction for Result.language (e.g., &#39;en&#39
 </tr>
 <tr>
 <td><span class="inline_code">Bing</span></td>
-<td><span class="inline_code">SEARCH|IMAGE|NEWS<sup>13</sup></span></td>
+<td><span class="inline_code">SEARCH|NEWS|IMAGE<sup>13</sup></span></td>
 <td>1-1000/<span class="inline_code">count</span></td>
 <td>1-50</td>
 <td><span class="inline_code">RELEVANCY</span></td>
@@ -276,15 +276,24 @@ engine.language             # Restriction for Result.language (e.g., &#39;en&#39
 </tr>
 <tr>
 <td><span class="inline_code">Facebook</span></td>
-<td><span class="inline_code">SEARCH</span></td>
+<td><span class="inline_code">SEARCH|NEWS</span></td>
 <td>1</td>
 <td>1-100</td>
-<td><span class="inline_code">RELEVANCT</span></td>
+<td><span class="inline_code">RELEVANCY</span></td>
 <td>500/hour</td>
 <td>1.0</td>
 </tr>
 <tr>
 <td><span style="font-family: Courier,monospace; font-size: small;"><span style="font-size: 12px;">Wikipedia</span></span></td>
+<td><span style="font-family: Courier,monospace; font-size: small;"><span style="font-size: 12px;">SEARCH</span></span></td>
+<td>1</td>
+<td>1</td>
+<td><span style="font-family: Courier,monospace; font-size: small;"><span style="font-size: 12px;">RELEVANCY</span></span></td>
+<td>-</td>
+<td>5.0</td>
+</tr>
+<tr>
+<td><span style="font-family: Courier,monospace; font-size: small;"><span style="font-size: 12px;">Wikia</span></span></td>
 <td><span style="font-family: Courier,monospace; font-size: small;"><span style="font-size: 12px;">SEARCH</span></span></td>
 <td>1</td>
 <td>1</td>
@@ -317,7 +326,7 @@ engine.language             # Restriction for Result.language (e.g., &#39;en&#39
 <p><span class="inline_code">SearchEngine.search()</span> returns a list of <span class="inline_code">Result</span> objects. The list has an additional <span class="inline_code">total</span> attribute, an estimate of the total number of results available for the given query. Each <span class="inline_code">Result</span> holds useful information:</p>
 <pre class="brush:python; gutter:false; light:true;">result = Result(url)</pre><pre class="brush:python; gutter:false; light:true;">result.url                  # URL of content associated with the given query.
 result.title                # Content title.
-result.description          # Content summary.
+result.text                 # Content summary.
 result.language             # Content language.
 result.author               # For news items and images.
 result.date                 # For news items.</pre><pre class="brush:python; gutter:false; light:true;">result.download(timeout=10, cached=True, proxy=None)
@@ -330,7 +339,7 @@ result.date                 # For news items.</pre><pre class="brush:python; gut
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; engine = Bing(license=None) # Enter your license key.
 &gt;&gt;&gt; for i in range(1,5):
 &gt;&gt;&gt;    for result in engine.search(&#39;holy handgrenade&#39;, type=SEARCH, start=i):
-&gt;&gt;&gt;        print repr(plaintext(result.description))
+&gt;&gt;&gt;        print repr(plaintext(result.text))
 &gt;&gt;&gt;        print
 
 u&quot;The Holy Hand Grenade of Antioch is a fictional weapon from ...&quot;
@@ -341,7 +350,7 @@ u&#39;Once the number three, being the third number, be reached, then ...&#39;
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; engine = Google(license=None) # Enter your license key.
 &gt;&gt;&gt; for result in engine.search(&#39;tim&#39;, cached=False, proxy=(&#39;proxy.com&#39;, &#39;https&#39;))
 &gt;&gt;&gt;     print result.url
-&gt;&gt;&gt;     print result.description</pre></div>
+&gt;&gt;&gt;     print result.text</pre></div>
 <p>&nbsp;</p>
 <p><span class="smallcaps">Image search<br /></span></p>
 <p>For <span class="inline_code">Yahoo</span>, <span class="inline_code">Bing</span> and <span class="inline_code">Flickr</span>, image links retrieved with <span class="inline_code">search(type=IMAGE)</span> can be filtered by setting the <span class="inline_code">size</span> parameter to <span style="font-family: Courier, monospace; font-size: 12px;">TINY<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>SMALL<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>MEDIUM<span style="font-family: Georgia, Times, serif; font-size: 13px;">&nbsp;|&nbsp;</span>LARGE</span> (or&nbsp;<span style="font-family: Courier, monospace; font-size: 12px;">None</span>&nbsp;for any size).&nbsp;Note that <span class="inline_code">Yahoo</span> image search has a <span class="inline_code">count</span> of 1-35.</p>
@@ -353,7 +362,7 @@ u&#39;Once the number three, being the third number, be reached, then ...&#39;
 <p><span class="inline_code">Google</span> is a paid service (5$ per 1o00 queries). If you have a license key you get 100 free queries per day. To get a key, follow the link below, activate "Custom Search API" and "Translate API" under "Services" and look up your key under "API Access".</p>
 <p>Bing is a paid service (20$ per 10,000 queries). If you have a license key you get 5,000 free queries per month. To get a key, follow the link below.</p>
 <p><span class="inline_code">Yahoo</span>&nbsp;is a paid service (0.8$ per 1000 queries) that requires an OAuth key + secret, which you can pass as a tuple to:&nbsp;<span class="inline_code">Yahoo(license=(key, secret))</span>.</p>
-<p>Obtain a license key for: <a href="https://code.google.com/apis/console/" target="_blank">Google</a>,&nbsp;<a href="https://datamarket.azure.com/dataset/5BA839F1-12CE-4CCE-BF57-A49D98D29A44" target="_blank">Bing</a>, <a href="http://developer.yahoo.com/search/boss/" target="_blank">Yahoo</a>, <a href="http://www.flickr.com/services/api/keys/" target="_blank">Flickr</a>.</p>
+<p>Obtain a license key for: <a href="https://code.google.com/apis/console/" target="_blank">Google</a>,&nbsp;<a href="https://datamarket.azure.com/dataset/5BA839F1-12CE-4CCE-BF57-A49D98D29A44" target="_blank">Bing</a>, <a href="http://developer.yahoo.com/search/boss/" target="_blank">Yahoo</a>, <a href="http://www.flickr.com/services/api/keys/" target="_blank">Flickr</a>, <a href="http://www.clips.ua.ac.be/media/pattern-fb.html" target="_blank">Facebook</a>.</p>
 <p>&nbsp;</p>
 <p><span class="smallcaps">Service request throttle</span></p>
 <p>A <span class="inline_code">SearchEngine.search()</span> request takes a minimum amount of time to complete, as outlined in the table above. This is intended as etiquette towards the servers providing the service. Be polite and raise the throttle value when you plan to run a lot of queries in batch.</p>
@@ -398,7 +407,7 @@ u&quot;It&#39;s a bunny, rabbit wood. What? A gift.&quot;
 &gt;&gt;&gt; for i in range(10):
 &gt;&gt;&gt;     time.sleep(1) 
 &gt;&gt;&gt;     s.update(bytes=1024)
-&gt;&gt;&gt;     print s[-1].description if s else &quot;&quot;</pre></div>
+&gt;&gt;&gt;     print s[-1].text if s else &quot;&quot;</pre></div>
 <p>To clear the accumulated list, call <span class="inline_code">Stream.clear()</span>.</p>
 <p>&nbsp;</p>
 <hr />
@@ -411,7 +420,7 @@ u&quot;It&#39;s a bunny, rabbit wood. What? A gift.&quot;
 <p>&nbsp;</p>
 <hr />
 <h2><a name="wikipedia"></a>Wikipedia articles</h2>
-<p><span class="inline_code">Wikipedia.search()</span> does not return a list of <span class="inline_code">Result</span> objects. Instead, it returns a single <span class="inline_code">WikipediaArticle</span> for the given (case-sensitive) query. The <span class="inline_code">Wikipedia</span> constructor has an additional <span class="inline_code">language</span> parameter (by default, <span class="inline_code">"en"</span>) that determines the language of the returned articles.</p>
+<p><span class="inline_code">Wikipedia.search()</span> does not return a list of <span class="inline_code">Result</span> objects. Instead, it returns a single <span class="inline_code">WikipediaArticle</span> for the given (case-sensitive) query – usually the title of an article. <span class="inline_code">Wikipedia.list()</span> returns an iterator over all article titles on Wikipedia. The <span class="inline_code">Wikipedia</span> constructor has an additional <span class="inline_code">language</span> parameter (by default, <span class="inline_code">"en"</span>) that determines the language of the returned articles.</p>
 <pre class="brush:python; gutter:false; light:true;">article = WikipediaArticle(title=&#39;&#39;, source=&#39;&#39;, links=[])</pre><pre class="brush:python; gutter:false; light:true;">article.source              # Article HTML source.
 article.string              # Article plaintext unicode string.</pre><pre class="brush:python; gutter:false; light:true;">article.title               # Article title.
 article.sections            # Article sections.
@@ -455,6 +464,48 @@ table.source                # Table HTML source.
 table.title                 # Table title.
 table.headers               # List of table column headers.
 table.rows                  # List of table rows, each a list of column values.</pre><p>&nbsp;</p>
+<hr />
+<h2><a name="wikia"></a>Wikia</h2>
+<p><a href="http://www.wikia.com/" target="_blank">Wikia</a> is a free hosting service for thousands of wikis. It works in the same way as <span class="inline_code">Wikipedia</span>, both classes&nbsp;inherit from the&nbsp;<span class="inline_code">MediaWiki</span> base class. The <span class="inline_code">Wikia</span> constructor takes the name of a domain on Wikia. Notice the use of <span class="inline_code">Wikia.list()</span>, which returns an iterator over all article titles (<span class="inline_code">Wikipedia</span> has a similar method):</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; wiki = Wikia(domain=&#39;montypython&#39;)
+&gt;&gt;&gt; for i, title in enumerate(wiki.list(start=&#39;a&#39;, throttle=1.0, cached=True)):
+&gt;&gt;&gt;     if i &gt;= 3:
+&gt;&gt;&gt;         break
+&gt;&gt;&gt;     article = wiki.search(title)
+&gt;&gt;&gt;     print repr(article.title)
+
+u&#39;Albatross&#39;
+u&#39;Always Look on the Bright Side of Life&#39;
+u&#39;And Now for Something Completely Different&#39;</pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="facebook"></a>Facebook posts, comments &amp; likes</h2>
+<p><span class="inline_code">Facebook.search(query, type=SEARCH)</span> returns a list of <span class="inline_code">Result</span> objects, where each result is a (publicly available) post matching a given query.</p>
+<p><span class="inline_code">Facebook.search(id, type=NEWS</span>, returns posts from a given user profile, if you use a personal license key. You can get a key one when you &nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-fb.html" target="_blank">authorize Pattern</a> to search Facebook in your name.</p>
+<p><span class="inline_code">Facebook.search(id, type=COMMENTS)</span>&nbsp;retrieves comments for a given <span class="inline_code">Result.id</span> of a post.&nbsp;You can also pass the id&nbsp;of a post or comment to <span class="inline_code">Facebook.search(id, type=LIKES)</span> to retrieve users that liked it.</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; fb = Facebook(license=&#39;your key&#39;)
+&gt;&gt;&gt; me = fb.profile(id=None) # (id, name, date, gender, locale)-tuple
+&gt;&gt;&gt; 
+&gt;&gt;&gt; for post in fb.search(me[0], type=NEWS, count=25):
+&gt;&gt;&gt;     print repr(post.id)
+&gt;&gt;&gt;     print repr(post.text)
+&gt;&gt;&gt;     print repr(post.url)
+&gt;&gt;&gt;     if post.comments &gt; 0:
+&gt;&gt;&gt;         print &#39;%i comments&#39; % post.comments 
+&gt;&gt;&gt;         print [(r.text, r.author) for r in fb.search(post.id, type=COMMENTS)]
+&gt;&gt;&gt;     if post.likes &gt; 0:
+&gt;&gt;&gt;         print &#39;%i likes&#39; % post.likes 
+&gt;&gt;&gt;         print [r.author for r in fb.search(post.id, type=LIKES)]
+
+u&#39;530415277_10151455896030278&#39;
+u&#39;Tom De Smedt likes CLiPS Research Center&#39;
+u&#39;http://www.facebook.com/CLiPS.UA&#39;
+1 likes 
+[(u&#39;485942414773810&#39;, u&#39;CLiPS Research Center&#39;)]
+.... </pre></div>
+<p>&nbsp;</p>
 <hr />
 <h2><a name="sort"></a>Web sort</h2>
 <p>Interestingly, each list of results returned from <span class="inline_code">SearchEngine.search()</span> has a <span class="inline_code">total</span> property by which we can compare lists. The <span class="inline_code">sort()</span> function sorts the given terms according to search result count.</p>
@@ -618,8 +669,8 @@ spider.fail(link)
 <li><span class="inline_code">Spider.fail()</span> is called from <span class="inline_code">Spider.crawl()</span> for links whose MIME-type could not be determined or which raised a <span class="inline_code">URLError</span> on download.</li>
 </ul>
 <p>The spider uses <span class="inline_code">Link</span> objects internally, which hold additional information besides the URL string:</p>
-<pre class="brush:python; gutter:false; light:true;">link = Link(url, description=&#39;&#39;, relation=&#39;&#39;)</pre><pre class="brush:python; gutter:false; light:true;">link.url                    # Parsed from &lt;a href=&#39;&#39;&gt; attribute.
-link.description            # Parsed from &lt;a title=&#39;&#39;&gt; attribute.
+<pre class="brush:python; gutter:false; light:true;">link = Link(url, text=&#39;&#39;, relation=&#39;&#39;)</pre><pre class="brush:python; gutter:false; light:true;">link.url                    # Parsed from &lt;a href=&#39;&#39;&gt; attribute.
+link.text                   # Parsed from &lt;a title=&#39;&#39;&gt; attribute.
 link.relation               # Parsed from &lt;a rel=&#39;&#39;&gt; attribute.
 link.referrer               # Parent web page URL.</pre><p>For example, here is a subclass of <span class="inline_code">Spider</span> that simply prints each link it visits. Since it uses <span class="inline_code">DEPTH</span> for crawling, it will prefer website internal links.</p>
 <div class="example">
@@ -689,7 +740,7 @@ http://www.top-hot-casino.ru</pre></div>
 &gt;&gt;&gt; from pattern.web.locale import geocode 
 &gt;&gt;&gt; twitter = Twitter(language=&#39;en&#39;)
 &gt;&gt;&gt; for tweet in twitter.search(&#39;restaurant&#39;, geo=geocode(&#39;Brussels&#39;)[:2]):
-&gt;&gt;&gt;      print tweet.description
+&gt;&gt;&gt;      print tweet.text
 
 u&#39;Did you know: every McDonalds restaurant has free internet in Belgium...&#39;</pre></div>
 <p>&nbsp;</p>
