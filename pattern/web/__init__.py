@@ -1307,7 +1307,7 @@ class Twitter(SearchEngine):
         data = json.loads(data)
         return [u(x.get("name")) for x in data[0].get("trends", [])]
 
-    def stream(self, query):
+    def stream(self, query, **kwargs):
         """ Returns a live stream of Result objects for the given query.
         """
         url = URL(TWITTER_STREAM)
@@ -1323,12 +1323,12 @@ class Twitter(SearchEngine):
         url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query, GET,
             self.license[1],
             self.license[2][1])
-        return TwitterStream(url, delimiter="\n", format=self.format)
+        return TwitterStream(url, delimiter="\n", format=self.format, **kwargs)
 
 class TwitterStream(Stream):
 
-    def __init__(self, socket, delimiter="\n", format=lambda s: s):
-        Stream.__init__(self, socket, delimiter)
+    def __init__(self, socket, delimiter="\n", format=lambda s: s, **kwargs):
+        Stream.__init__(self, socket, delimiter, **kwargs)
         self.format = format
 
     def parse(self, data):
