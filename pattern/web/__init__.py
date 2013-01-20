@@ -141,7 +141,7 @@ send = asynchronous
 
 # User agent and referrer.
 # Used to identify the application accessing the web.
-USER_AGENT = "Pattern/2.3 +http://www.clips.ua.ac.be/pages/pattern"
+USER_AGENT = "Pattern/2.5 +http://www.clips.ua.ac.be/pages/pattern"
 REFERRER   = "http://www.clips.ua.ac.be/pages/pattern"
 
 # Mozilla user agent.
@@ -2022,20 +2022,19 @@ class Facebook(SearchEngine):
             s(r, "author",  (
                    u(self.format(x.get("from", {}).get("id", ""))), \
                    u(self.format(x.get("from", {}).get("name", "")))))
-            # Replace Result.text with author name for likes.
+            # Set Result.text to author name for likes.
             if type in (LIKES, FRIENDS): 
                 s(r, "author", (
                    u(self.format(x.get("id", ""))),
                    u(self.format(x.get("name", "")))))
                 r.text = \
                      self.format(x.get("name"))
-            # Replace Result.url Facebook URL with object id.
+            # Set Result.url to full-size image.
             if r.url.startswith("http://www.facebook.com/photo"): 
-                r.url = x.get("picture", r.url)
-            # Replace Result.url Facebook URL with full-size image.
-            if r.url.startswith("http://www.facebook.com/") and \
-               r.url.split("/")[-1].split("?")[0].isdigit():
-                r.url = r.url.split("/")[-1].split("?")[0].replace("_s", "_b")
+                r.url = x.get("picture").replace("_s", "_b") or r.url
+            # Set Result.title to object id.
+            if r.url.startswith("http://www.facebook.com/"):
+                r.title = r.url.split("/")[-1].split("?")[0]
             results.append(r)
         return results
         
@@ -2060,21 +2059,6 @@ class Facebook(SearchEngine):
             u(data.get("gender", "")[:1]),
             u(data.get("locale", ""))
         )
-
-#license = "" # Generate a license key at: http://www.clips.ua.ac.be/media/pattern-fb.html
-#fb = Facebook(license)
-#me = fb.profile()[0]
-#for r in fb.search(me, type=NEWS, count=10):
-#    print r.id
-#    print r.text
-#    print r.url
-#    if r.comments > 0:
-#        print "%s comments:" % r.comments
-#        print [(r.text, r.author) for r in fb.search(r, type=COMMENTS)]
-#    if r.likes > 0:
-#        print "%s likes:" % r.likes
-#        print [r.author for r in fb.search(r, type=LIKES)]
-#    print
 
 #--- PRODUCT REVIEWS -------------------------------------------------------------------------------
 
