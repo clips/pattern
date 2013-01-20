@@ -11,7 +11,7 @@ from pattern.db import Datasheet
 # We'll test it with a corpus of spam e-mail messages
 # included in the test suite, stored as a CSV-file.
 # The corpus contains mostly technical e-mail from developer mailing lists.
-data = Datasheet.load(os.path.join("..","..","test","corpora","apache-spam.csv"))
+data = Datasheet.load(os.path.join("..","..","test","corpora","spam-apache.csv"))
 
 documents = []
 for score, message in data:
@@ -46,7 +46,8 @@ print
 # we typically use 10-fold cross validation.
 # This means that 10 individual tests are performed, 
 # each with 90% of the corpus as training data and 10% as testing data.
-print Bayes.test(corpus, folds=10)
+from pattern.vector import k_fold_cv
+print k_fold_cv(Bayes, folds=10, documents=corpus)
 
 # This yields 4 scores: Accuracy, Precision, Recall and F-score.
 # Accuracy in itself is not very useful, 

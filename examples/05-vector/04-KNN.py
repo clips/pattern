@@ -36,8 +36,8 @@ for page in range(1, 10):
 # The more training data, the more statistically reliable the classifier becomes.
 # The only way to really know if you're classifier is working correctly
 # is to test it with testing data, see the documentation for Classifier.test().
-classifier = KNN()
-for document in corpus:
+classifier = KNN(baseline=None) # By default, baseline=FREQUENCY
+for document in corpus:         # (classify unknown documents with the most frequent type).
     classifier.train(document)
 
 # These are the adjectives the classifier has learned:
@@ -48,11 +48,13 @@ print
 # Note that you may get different results than the ones indicated below,
 # since you will be mining other (more recent) tweets.
 # Again, a robust classifier needs lots and lots of training data.
+# If None is returned, the word was not recognized,
+# and the classifier returned the default value (see above).
 print classifier.classify('sweet')  # yields 'WIN'
 print classifier.classify('stupid') # yields 'FAIL'
 
 # "What can I do with it?"
-# In the scientific community, classifiers have been used to predict
+# In the scientific community, classifiers have been used to predict:
 # - the author of medieval poems,
 # - the opinion (positive/negative) in product reviews on blogs,
 # - the age of users posting on social networks,

@@ -32,14 +32,14 @@ classifier = SVM()
 
 # We'll build a classifier to predict sentiment in Dutch movie reviews.
 # For example, "geweldige film!" (great movie) indicates a positive sentiment.
-# The CSV file at pattern/test/corpora/bol.com-polarity.csv
+# The CSV file at pattern/test/corpora/polarity-nl-bol.com.csv
 # contains 1,500 positive and 1,500 negative reviews.
 
 # The pattern.vector module has a shuffled() function
 # which we use to randomly arrange the reviews in the list:
 
 print "loading data..."
-data = Datasheet.load(os.path.join("..","..","test","corpora","bol.com-polarity.csv"))
+data = Datasheet.load(os.path.join("..","..","test","corpora","polarity-nl-bol.com.csv"))
 data = shuffled(data)
 
 # We do not necessarily need Document objects as in the previous example.
