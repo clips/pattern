@@ -709,15 +709,15 @@ class TestLSA(unittest.TestCase):
             return
         # Test time and accuracy of corpus with sparse vectors of maximum 250 features.
         t1 = time.time()
-        A1, P1, R1, F1 = vector.KNN().test(self.corpus, folds=10)
+        A1, P1, R1, F1 = vector.KNN.test(self.corpus, folds=10)
         t1 = time.time() - t1
         # Test time and accuracy of corpus with reduced vectors of 20 features.
         self.corpus.reduce(dimensions=20)
         t2 = time.time()
-        A2, P2, R2, F2 = vector.KNN().test(self.corpus, folds=10)
+        A2, P2, R2, F2 = vector.KNN.test(self.corpus, folds=10)
         t2 = time.time() - t2
         self.assertTrue(len(self.corpus.lsa[self.corpus.documents[0].id]) == 20)
-        self.assertTrue(t2 * 2 < t1)        # KNN over 2x faster.
+        self.assertTrue(t2 * 2 < t1)       # KNN over 2x faster.
         self.assertTrue(abs(F1-F2) < 0.06) # Difference in F-score = 1-6%.
         self.corpus.lsa = None
         print "pattern.vector.Corpus.reduce()"

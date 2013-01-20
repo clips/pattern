@@ -813,7 +813,7 @@ class TestSentiment(unittest.TestCase):
         # http://www.cs.cornell.edu/people/pabo/movie-review-data/
         # The baseline should increase (not decrease) when the algorithm is modified.
         from pattern.db import Datasheet
-        from pattern.metrics import test        
+        from pattern.metrics import test
         reviews = []
         for score, review in Datasheet.load(os.path.join(PATH, "corpora", "polarity-en-pang&lee.csv")):
             reviews.append((review, int(score) > 0))
