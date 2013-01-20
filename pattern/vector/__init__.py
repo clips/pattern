@@ -570,7 +570,7 @@ def entropy(vector):
 ORANGE, WEKA = "orange", "weka"
 
 # LSA reduction methods:
-NORM, TOP300 = "norm", "top300"
+NORM, L1, L2, TOP300 = "norm", "L1", "L2", "top300"
 
 # Feature selection methods:
 IG = INFOGAIN = "infogain"
@@ -1131,8 +1131,10 @@ class LSA:
         # Delete the smallest coefficients in the diagonal matrix (i.e., at the end of the list).
         # The difficulty and weakness of LSA is knowing how many dimensions to reduce
         # (generally L2-norm is used).
-        if k == NORM:
-            k = int(round(numpy.linalg.norm(sigma)))
+        if k == L1:
+            k = int(round(numpy.linalg.norm(sigma, 1)))
+        if k == L2 or k == NORM:
+            k = int(round(numpy.linalg.norm(sigma, 2)))
         if k == TOP300:
             k = max(0, len(sigma) - 300)
         if isinstance(k, int):
@@ -1483,39 +1485,73 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
 
 #--- CLASSIFIER BASE CLASS -------------------------------------------------------------------------
 
+# The baseline (default predicted class) is set to the most frequent class:
+FREQUENCY = "frequency"
+
 class Classifier:
 
-    def __init__(self):
-        self._classes  = []
-        self._features = []
+    def __init__(self, train=[], baseline=FREQUENCY):
+        self._classes  = {}
+        self._baseline = baseline
+        # Train on the list of Document objects or (document, type)-tuples:
+        for d in (isinstance(d, Document) and (d, d.type) or d for d in train):
+            self.train(*d)
+        # In Pattern 2.5-, Classifier.test() is a classmethod.
+        # In Pattern 2.6+, it is replaced with Classifier._test() once instantiated.
+        self.test = self._test
 
     @property
     def features(self):
-        return self._features
-    @property
-    def terms(self): 
-        return self.features
+        """ Yields a list of trained features.
+        """
+        # Must be implemented in a subclass.
+        return []
 
     @property
     def classes(self):
-        return self._classes
-    @property
-    def types(self):
-        return self.classes
+        """ Yields a list of trained classes.
+        """
+        return self._classes.keys()
     
+    terms, types = features, classes
+
     @property
     def binary(self):
-        """ Yields True if the classifier has exactly two prediction classes.
+        """ Yields True if the classifier predicts either True (0) or False (1).
         """
         return sorted(self.classes) in ([False, True], [0, 1])
+        
+    @property
+    def distribution(self):
+        """ Yields a dictionary of trained (class, frequency)-items.
+        """
+        return self._classes.copy()
+        
+    @property
+    def baseline(self):
+        """ Yields the most frequent class in the training data.
+        """
+        if self._baseline != FREQUENCY:
+            return self._baseline
+        return ([(0, None)] + sorted([(v, k) for k, v in self.distribution.iteritems()]))[-1][1]
 
     def train(self, document, type=None):
+        """ Trains the classifier with the given document of the given type (i.e., class).
+            A document can be a Document object, list or dictionary.
+            If no type is given, Document.type will be used instead.
+        """
         # Must be implemented in a subclass.
-        pass
+        if type is None and isinstance(document, Document):
+            type = document.type
+        if type not in self._classes:
+            self._classes[type] = 0
+        self._classes[type] += 1
         
     def classify(self, document):
+        """ Returns the type with the highest probability for the given document.
+        """
         # Must be implemented in a subclass.
-        return None
+        return self.baseline
 
     def _vector(self, document, type=None):
         """ Returns a (type, Vector)-tuple for the given document.
@@ -1534,75 +1570,98 @@ class Classifier:
             return type, Document(document, filter=None, stopwords=True).vector
         if isinstance(document, basestring):
             return type, Document(document, filter=None, stopwords=True).vector
-    
-    @classmethod
-    def test(cls, corpus=[], d=0.65, folds=1, **kwargs):
-        """ Returns an (accuracy, precision, recall, F-score)-tuple for the given corpus.
-            The corpus is a list of documents or (wordlist, type)-tuples.
-            2/3 of the data will be used as training material and tested against the other 1/3.
-            With folds > 1, K-fold cross-validation is performed.
-            For example: in 10-fold cross-validation ten tests are performed,
-            each using a different 1/10 of the corpus as testing data.
-            For non-binary classifiers, precision, recall and F-score are None.
-        """
-        corpus  = [isinstance(x, Document) and (x, x.type) or x for x in corpus]
-        corpus  = shuffled(corpus) # Avoid a list sorted by type (because we take successive folds).
-        classes = set(type for document, type in corpus)
-        binary  = len(classes) == 2 and sorted(classes) in ([False,True], [0,1])
-        m = [0, 0, 0, 0] # accuracy | precision | recall | F1-score.
-        K = max(folds, 1)
-        for k in range(K):
-            classifier = cls(**kwargs)
-            t = len(corpus) / float(K) # Documents per fold.
-            i = int(round(k * t))      # Corpus start index.
-            j = int(round(k * t + t))  # Corpus stop index.
-            if K == 1:
-                i = int(len(corpus) * d)
-                j = int(len(corpus))
-            for document, type in corpus[:i] + corpus[j:]:
-                # Train with 9/10 of the corpus, using 1/10 fold for testing.
-                classifier.train(document, type)
-            TP = TN = FP = FN = 0
-            if not binary:
-                # If the classifier predicts classes other than True/False,
-                # we can only measure accuracy.
-                for document, type in corpus[i:j]:
-                    if classifier.classify(document) == type:
-                        TP += 1
-                m[0] += TP / float(j-i)
-            else:
-                # For binary classifiers, calculate the confusion matrix
-                # to measure precision and recall.
-                for document, b1 in corpus[i:j]:
-                    b2 = classifier.classify(document)
-                    if b1 and b2:
-                        TP += 1 # true positive
-                    elif not b1 and not b2:
-                        TN += 1 # true negative
-                    elif not b1 and b2:
-                        FP += 1 # false positive (type I error)
-                    elif b1 and not b2:
-                        FN += 1 # false negative (type II error)
-                    #print "%s\t%s\t%s\t%s\t%s\t%s" % (b1, b2, TP, TN, FP, FN)
-                m[0] += float(TP+TN) / ((TP+TN+FP+FN) or 1)
-                m[1] += float(TP) / ((TP+FP) or 1)
-                m[2] += float(TP) / ((TP+FN) or 1)
-        m = [v/K for v in m]
-        m[3] = binary and 2 * m[1] * m[2] / ((m[1] + m[2]) or 1) or 0 # F1-score.
-        return binary and tuple(m) or (m[0], None, None, None)
 
     @classmethod
     def k_fold_cross_validation(cls, corpus=[], k=10, **kwargs):
-        return cls.test(corpus, kwargs.pop("d", 0.65), k, **kwargs)
+        # Backwards compatibility.
+        return K_fold_cross_validation(cls, K=k, documents=corpus, **kwargs)
     
-    crossvalidate = cross_validate = k_fold_cross_validation
+    crossvalidate = cross_validate = cv = k_fold_cross_validation
+    
+    @classmethod
+    def test(cls, corpus=[], d=0.65, folds=1, **kwargs):
+        # Backwards compatibility.
+        # In Pattern 2.5-, Classifier.test() is a classmethod.
+        # In Pattern 2.6+, it is replaced with Classifier._test() once instantiated.
+        if folds > 1:
+            return K_fold_cross_validation(cls, K=folds, documents=corpus, **kwargs)
+        i = int(round(max(0.0, min(1.0, d)) * len(corpus)))
+        d = shuffled(corpus)
+        return cls(train=d[:i]).test(d[i:])
+    
+    def _test(self, documents=[], **kwargs):
+        """ Returns an (accuracy, precision, recall, F-score)-tuple for the given documents,
+            with values between 0.0 (0%) and 1.0 (100%).
+            For non-binary classifiers, precision, recall and F-score are None.
+        """
+        documents = [isinstance(d, Document) and (d, d.type) or d for d in documents]
+        TP = 0 # True positives.
+        TN = 0 # True negatives.
+        FP = 0 # False positives (type I error).
+        FN = 0 # False negatives (type II error).
+        if not self.binary:
+            # We can only measure accuracy for multi-label classifiers
+            # (i.e., classifiers that predict classes other than True-False).
+            TP = len([1 for d, type in documents if self.classify(d) == type])
+        else:
+            # Calculate the confusion matrix to measure precision and recall.
+            for d, b1 in documents:
+                b2 = self.classify(d)
+                if b1 and b2:
+                    TP += 1
+                elif not b1 and not b2:
+                    TN += 1
+                elif not b1 and b2:
+                    FP += 1
+                elif b1 and not b2:
+                    FN += 1
+                #print "%s\t%s\t%s\t%s\t%s\t%s" % (b1, b2, TP, TN, FP, FN)
+        # Calculate accuracy, precision, recall and F1-score.
+        b = self.binary
+        A = float(TP + TN) / ((TP + TN + FP + FN) or 1)
+        P = b and float(TP) / ((TP + FP) or 1) or None
+        R = b and float(TP) / ((TP + FN) or 1) or None
+        F = b and 2 * P * R / ((P + R) or 1) or None
+        return A, P, R, F
 
     def save(self, path):
+        self.test = None # Can't pickle instancemethods.
         cPickle.dump(self, open(path, "w"), BINARY)
 
     @classmethod
     def load(cls, path):
-        return cPickle.load(open(path))
+        self = cPickle.load(open(path))
+        self.test = self._test
+        return self
+
+def K_fold_cross_validation(Classifier, K=10, documents=[], **kwargs):
+    """ For 10-fold cross-validations, performs 10 separate tests of the classifier,
+        each with a different 9/10 training and 1/10 testing documents.
+        The given classifier is a class (Bayes, KNN, SVM)
+        which is initialized with the given optional parameters.
+    """
+    K = kwargs.pop("folds", K)
+    d = [isinstance(d, Document) and (d, d.type) or d for d in documents]
+    d = shuffled(d) # Avoid a list sorted by type (because we take successive folds).
+    m = [0.0, 0.0, 0.0, 0.0] # mean accuracy | precision | recall | F1-score.
+    for i in range(K):
+        n = len(d) / float(K)     # Test fold size.
+        x = int(round(i * n))     # Test fold start index.
+        y = int(round(i * n + n)) # Test fold stop index.
+        classifier = Classifier(train=d[:x]+d[y:], **kwargs)
+        A, P, R, F = classifier.test(d[x:y])
+        if not classifier.binary:
+            m[0] += A
+        else:
+            m[0] += A
+            m[1] += P
+            m[2] += R
+            m[3] += F
+    if not classifier.binary:
+        return m[0] / (K or 1), None, None, None
+    return tuple([v / (K or 1) for v in m])
+    
+K_fold_cv = k_fold_cv = k_fold_cross_validation = K_fold_cross_validation
 
 #--- NAIVE BAYES CLASSIFIER ------------------------------------------------------------------------
 # Based on: Magnus Lie Hetland, http://hetland.org/coding/python/nbayes.py
@@ -1616,7 +1675,7 @@ NBid2 = lambda type, v, i: (type, v, 1)
 
 class NaiveBayes(Classifier):
     
-    def __init__(self, aligned=False):
+    def __init__(self, aligned=False, train=[], baseline=FREQUENCY):
         """ Naive Bayes is a simple supervised learning method for text classification.
             For example: if we have a set of documents of movie reviews (training data),
             and we know the star rating of each document, 
@@ -1627,18 +1686,19 @@ class NaiveBayes(Classifier):
         self._classes  = {} # Frequency of each class (or type).
         self._features = {} # Frequency of each feature, as (type, feature, value)-tuples.
         self._count    = 0  # Number of training instances.
-    
+        Classifier.__init__(self, train, baseline)
+
     @property
     def classes(self):
         return self._classes.keys()
-        
+
     @property
     def features(self):
         return list(set(k[1] for k in self._features.iterkeys()))
 
     def train(self, document, type=None):
         """ Trains the classifier with the given document of the given type (i.e., class).
-            A document can be a Document object or a list of words (or other hashable items).
+            A document can be a Document object, list or dictionary.
             If no type is given, Document.type will be used instead.
         """
         id = self._aligned and NBid1 or NBid2
@@ -1649,8 +1709,7 @@ class NaiveBayes(Classifier):
         self._count += 1
 
     def classify(self, document):
-        """ Returns the type with the highest probability for the given document
-            (a Document object or a list of words).
+        """ Returns the type with the highest probability for the given document.
             If the training documents come from a LSA-reduced corpus,
             the given document must be Corpus.lsa.transform(document).
         """
@@ -1666,7 +1725,8 @@ class NaiveBayes(Classifier):
         try:
             return max((g(document, type), type) for type in self._classes)[1]
         except ValueError: # max() arg is an empty sequence
-            return None
+            pass
+        return self.baseline
 
 Bayes = NaiveBayes
 
@@ -1728,11 +1788,8 @@ class SVM(Classifier):
             (      "cache", 100),
             ("probability", False),
             (      "debug", False)): setattr(self, k, kwargs.get(k, v))
+        Classifier.__init__(self, train=kwargs.get("train", []), baseline=FREQUENCY)
 
-    @property
-    def classes(self):
-        return list(set(type for type, v in self._vectors))
-        
     @property
     def features(self):
         return list(features(v for type, v in self._vectors))
@@ -1796,15 +1853,17 @@ class SVM(Classifier):
         
     def train(self, document, type=None):
         """ Trains the classifier with the given document of the given type (i.e., class).
-            A document can be a Document object or a list of words (or other hashable items).
+            A document can be a Document object, list or dictionary.
             If no type is given, Document.type will be used instead.
         """
+        Classifier.train(self, document, type)
         self._model = None
         self._vectors.append(self._vector(document, type=type))
             
     def classify(self, document):
-        """ Returns the type with the highest probability for the given document
-            (a Document object or a list of words).
+        """ Returns the type with the highest probability for the given document.
+            If the training documents come from a LSA-reduced corpus,
+            the given document must be Corpus.lsa.transform(document).
         """
         if self._model is None:
             self._libsvm_train()
@@ -1821,7 +1880,7 @@ class SVM(Classifier):
     @classmethod
     def load(cls, path):
         import svm
-        classifier = cPickle.load(open(path))
+        classifier = Classifier.load(path)
         classifier._libsvm = svm
         classifier._libsvm_train()
         return classifier
@@ -1830,7 +1889,7 @@ class SVM(Classifier):
 
 class NearestNeighbor(Classifier):
     
-    def __init__(self, k=10, distance=COSINE):
+    def __init__(self, k=10, distance=COSINE, default=None, train=[], baseline=FREQUENCY):
         """ k-nearest neighbor (kNN) is a simple supervised learning method for text classification.
             Documents are classified by a majority vote of nearest neighbors (cosine distance)
             in the training corpus.
@@ -1839,25 +1898,24 @@ class NearestNeighbor(Classifier):
         self.distance = distance # COSINE, EUCLIDEAN, ...
         self._vectors = []       # Training instances.
         self._kdtree  = None
+        Classifier.__init__(self, train, baseline)
     
-    @property
-    def classes(self):
-        return list(set(type for type, v in self._vectors))
-        
     @property
     def features(self):
         return list(features(v for type, v in self._vectors))
-    
+        
     def train(self, document, type=None):
         """ Trains the classifier with the given document of the given type (i.e., class).
-            A document can be a Document object or a list of words (or other hashable items).
+            A document can be a Document object, list or dictionary.
             If no type is given, Document.type will be used instead.
         """
+        Classifier.train(self, document, type)
         self._vectors.append(self._vector(document, type=type))
     
     def classify(self, document):
-        """ Returns the type with the highest probability for the given document
-            (a Document object or a list of words).
+        """ Returns the type with the highest probability for the given document.
+            If the training documents come from a LSA-reduced corpus,
+            the given document must be Corpus.lsa.transform(document).
         """
         # Basic majority voting.
         # Distance is calculated between the document vector and all training instances.
@@ -1879,7 +1937,8 @@ class NearestNeighbor(Classifier):
             # Pick random winner if several candidates have equal highest score.
             return choice([k for k, v in classes.iteritems() if v == max(classes.values()) > 0])
         except IndexError:
-            return None
+            pass
+        return self.baseline
 
 kNN = KNN = NearestNeighbor
 
