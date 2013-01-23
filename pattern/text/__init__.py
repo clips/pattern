@@ -27,7 +27,7 @@ def _multilingual(function, *args, **kwargs):
         By default, language="en".
     """
     language = kwargs.pop("language", "en")
-    for module in ("en", "de", "nl"):
+    for module in ("en", "es", "de", "fr", "nl"):
         if module == language:
             module = __import__(module)
             return getattr(module, function)(*args, **kwargs)

@@ -199,7 +199,6 @@ def parse(s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=Fal
     # Use pattern.de.inflect for lemmatization:
     if lemmata:
         p = [find_lemmata(sentence) for sentence in s.split()]
-        p = "\n".join([" ".join(["/".join(token) for token in sentence]) for sentence in p])
         s = TaggedString(p, tags=s.tags+["lemma"], language="de")
     return s
 

@@ -435,8 +435,16 @@ TOKENS = "tokens"
 class TaggedString(unicode):
     
     def __new__(self, string, tags=["word"], language="en"):
-        if isinstance(string, unicode) and hasattr(string, "tags"): 
+        """ Unicode string with tags and language attributes.
+            For example: TaggedString("cat/NN/NP", tags=["word", "pos", "chunk"]).
+        """
+        # From a TaggedString:
+        if isinstance(string, unicode) and hasattr(string, "tags"):
             tags, language = string.tags, string.language
+        # From a TaggedString.split(TOKENS) list:
+        if isinstance(string, list):
+            string = [[[x.replace("/", "&slash;") for x in token] for token in s] for s in string]
+            string = "\n".join(" ".join("/".join(token) for token in s) for s in string)
         s = unicode.__new__(self, string)
         s.tags = list(tags)
         s.language = language
