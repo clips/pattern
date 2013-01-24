@@ -210,7 +210,7 @@ class TestURL(unittest.TestCase):
         # Assert URL redirected URL (this depends on where you are).
         # In Belgium, it yields "http://www.google.be/".
         v = web.URL(self.live).redirect
-        print "pattern.web.URL.redirect: " + self.live + " => " + v
+        print "pattern.web.URL.redirect: " + self.live + " => " + (v or "None")
 
     def test_abs(self):
         # Assert absolute URL (special attention for anchors).
