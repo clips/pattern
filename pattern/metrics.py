@@ -55,6 +55,12 @@ class Counter(dict):
     def __repr__(self):
         return "Counter({%s})" % ", ".join("%r: %r" % e for e in self.most_common())
 
+try: 
+    # Import Counter from Python 2.7+ if possible.
+    from collections import Counter
+except:
+    pass
+
 #### PROFILER ######################################################################################
 
 def duration(function, *args, **kwargs):
