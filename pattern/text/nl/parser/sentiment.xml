@@ -7,9 +7,32 @@ Words are tagged per sense, e.g., scherp (sharp sound) = negative, scherp (sharp
 The Cornetto id (lexical unit id) and Cornetto synset id refer to the Cornetto lexical database for Dutch.
 The WordNet id refers to the WordNet3 lexical database for English.
 The part-of-speech tags (pos) use the Penn Treebank || tag set: NN = noun, JJ = adjective, ...
-For Dutch book reviews, the accuracy is 80% (P 0.77, R 0.83, F1 0.80).
+For Dutch book reviews, the accuracy is 82% (P 0.80, R 0.86, F1 0.83).
 -->
 <sentiment language="nl" version="1.0" author="Tom De Smedt, Walter Daelemans" license="PDDL"> 
+<word form="aanraden" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="VB" sense="" polarity="0.2" subjectivity="0.0" intensity="1.0" reliability="0.9" />
+<word form="aanrader" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="0.6" subjectivity="0.4" intensity="1.0" reliability="0.9" />
+<word form="genoten" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="VB" sense="" polarity="0.4" subjectivity="0.4" intensity="1.0" reliability="0.9" />
+<word form="meesterwerk" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="0.6" subjectivity="0.7" intensity="1.0" reliability="0.9" />
+<word form="juweeltje" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="0.6" subjectivity="0.8" intensity="1.0" reliability="0.9" />
+<word form="kopen" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="VB" sense="" polarity="0.1" subjectivity="0.0" intensity="1.0" reliability="0.9" />
+<word form="must" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="FW" sense="" polarity="0.2" subjectivity="0.5" intensity="1.0" reliability="0.9" />
+<word form="teleurstelling" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.5" subjectivity="0.5" intensity="1.0" reliability="0.9" />
+<word form="afknapper" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.6" subjectivity="0.7" intensity="1.0" reliability="0.9" />
+<word form="gruwel" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.6" subjectivity="0.4" intensity="1.0" reliability="0.9" />
+<word form="miskleun" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.4" subjectivity="0.4" intensity="1.0" reliability="0.9" />
+<word form="flop" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.5" subjectivity="0.6" intensity="1.0" reliability="0.9" />
+<word form="ramp" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.4" subjectivity="0.3" intensity="1.0" reliability="0.9" />
+<word form="fiasco" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.5" subjectivity="0.5" intensity="1.0" reliability="0.9" />
+<word form="tegenvaller" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.5" subjectivity="0.5" intensity="1.0" reliability="0.9" />
+<word form="tegenvallen" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="VB" sense="" polarity="-0.5" subjectivity="0.5" intensity="1.0" reliability="0.9" />
+<word form="misser" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.2" subjectivity="0.3" intensity="1.0" reliability="0.9" />
+<word form="geeuw" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="UH" sense="" polarity="-0.1" subjectivity="0.1" intensity="1.0" reliability="0.9" />
+<word form="feest" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="0.5" subjectivity="0.2" intensity="1.0" reliability="0.9" />
+<word form="irritatie" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.4" subjectivity="0.3" intensity="1.0" reliability="0.9" />
+<word form="vervelens" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.4" subjectivity="0.3" intensity="1.0" reliability="0.9" />
+<word form="genot" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="0.5" subjectivity="0.3" intensity="1.0" reliability="0.9" />
+<word form="genoten" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="0.5" subjectivity="0.4" intensity="1.0" reliability="0.9" />
 <word form="dapper" cornetto_id="r_a-9998" cornetto_synset_id="n_a-519123" wordnet_id="a-00262792" pos="JJ" sense="moedig" polarity="0.8" subjectivity="0.9" intensity="1.0" reliability="1.0" />
 <word form="dankbaar" cornetto_id="r_a-9997" cornetto_synset_id="n_a-506397" wordnet_id="a-01586866" pos="JJ" sense="voldoening gevend" polarity="0.7" subjectivity="0.9" intensity="1.0" reliability="1.0" />
 <word form="dankbaar" cornetto_id="r_a-9996" cornetto_synset_id="n_a-506396" wordnet_id="a-00774676" pos="JJ" sense="erkentelijk" polarity="0.6" subjectivity="0.9" intensity="1.0" reliability="1.0" />

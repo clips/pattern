@@ -99,3 +99,4 @@ Contributors (chronological):
 - Shubhanshu Mishra
 - Robert Elwell
 - Fred Jehle
+- Antoine Mazières + fabelier.org
