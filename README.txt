@@ -60,8 +60,10 @@ Pattern is bundled with the following data sets, algorithms and Python packages:
 - Brill tagger for Dutch, Jeroen Geertzen
 - Brill tagger for German, Gerold Schneider & Martin Volk
 - Brill tagger for Spanish, trained on Wikicorpus (Samuel Reese & Gemma Boleda et al.)
+- Brill tagger for French, trained on Lefff (Benoît Sagot & Lionel Clément et al.)
 - English pluralization, Damian Conway
-- Spanish verb inflections, Fred Jehle
+- Spanish verb inflection, Fred Jehle
+- French verb inflection, Bob Salita
 - Graph JavaScript framework, Aslak Hellesoy & Dave Hoover
 - LIBSVM, Chih-Chung Chang & Chih-Jen Lin
 - NetworkX centrality, Aric Hagberg, Dan Schult & Pieter Swart
@@ -100,3 +102,4 @@ Contributors (chronological):
 - Robert Elwell
 - Fred Jehle
 - Antoine Mazières + fabelier.org
+- Rémi de Zoeten + closealert.nl
