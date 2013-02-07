@@ -341,6 +341,39 @@ def intertextuality(texts=[], n=5, continuous=False, weight=lambda ngram: 1):
         w[i,j]  = min(w[i,j], Weight(1.0))
     return w
 
+#### WORD INFLECTION SUFFIXES ######################################################################
+
+def suffixes(inflections=[], n=3, top=10):
+    """ For a given list of (base, inflection)-tuples,
+        returns a list of (count, inflected suffix, [(base suffix, frequency), ... ]):
+        suffixes([("beau", "beaux"), ("jeune", "jeunes"), ("hautain", "hautaines")], n=3) =>
+        [(2, "nes", [("ne", 0.5), ("n", 0.5)]), (1, "aux", [("au", 1.0)])]
+    """
+    # This is utility function we use to train singularize() and lemma()
+    # in pattern.de, pattern.es, pattern.fr, etc.
+    d = {}
+    for y, x in inflections:
+        x0 = x[:-n]      # be-   jeu-  hautai-
+        x1 = x[-n:]      # -aux  -nes  -nes
+        y1 = y[len(x0):] # -au   -ne   -n
+        if len(x) <= n:
+            continue
+        if x0 + y1 != y:
+            continue
+        if x1 not in d:
+            d[x1] = {}
+        if y1 not in d[x1]:
+            d[x1][y1] = 0.0
+        d[x1][y1] += 1.0
+    # Sort by frequency of inflected suffix: 2x -nes, 1x -aux.
+    # Sort by frequency of base suffixes for each inflection:
+    # [(2, "nes", [("ne", 0.5), ("n", 0.5)]), (1, "aux", [("au", 1.0)])]
+    d = [(int(sum(y.values())), x, y.items()) for x, y in d.items()]
+    d = sorted(d, reverse=True)
+    d = ((n, x, (sorted(y, key=itemgetter(1)))) for n, x, y in d)
+    d = ((n, x, [(y, m / n) for y, m in y]) for n, x, y in d)
+    return list(d)[:top]
+
 #### STATISTICS ####################################################################################
 
 #--- MEAN ------------------------------------------------------------------------------------------
