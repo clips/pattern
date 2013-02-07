@@ -53,7 +53,7 @@ class LexicalRules(list):
             Rules are lexically based on word characters, prefixes and suffixes.
         """
         word, pos = token[0], token[1]
-        if word[:1].isdigit() and word.replace(".","").isdigit():
+        if word[:1].isdigit() and word.replace(".", "").isdigit():
             return [word, "CD"]
         for cmd, rule in iter(self):
             pos = rule[-2]
@@ -72,7 +72,7 @@ class LexicalRules(list):
             or (cmd == "addpref"    and x+word in self.lexicon) \
             or (cmd == "goodleft"   and x == next[0]) \
             or (cmd == "goodright"  and x == previous[0]):
-                return [word, pos]
+                token[1] = pos
         return token
 
 #### BRILL CONTEXTUAL RULES ########################################################################
