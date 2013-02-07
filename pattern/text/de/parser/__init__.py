@@ -20,12 +20,19 @@ except:
 # Schneider, G., Volk, M. (1998). Adding Manual Constraints and Lexical Look-up to a Brill-Tagger for German.
 # In: Proceedings of the ESSLLI workshop on recent advances in corpus annotation. Saarbrucken, Germany.
 # http://www.zora.uzh.ch/28579/
+
 # Accuracy is reported around 96%, but Pattern scores may vary from Schneider & Volk's original
 # due to STTS => Penn Treebank mapping etc.
-import sys; sys.path.insert(0, os.path.join(MODULE, "..", ".."))
-from en.parser import Lexicon
-from en.parser import PUNCTUATION, tokenize as _en_tokenize, parse as _en_parse, TaggedString
-from en.parser import commandline
+
+try:
+    from ...en.parser import Lexicon
+    from ...en.parser import PUNCTUATION, tokenize as _en_tokenize, parse as _en_parse, TaggedString
+    from ...en.parser import commandline
+except:
+    import sys; sys.path.insert(0, os.path.join(MODULE, "..", ".."))
+    from en.parser import Lexicon
+    from en.parser import PUNCTUATION, tokenize as _en_tokenize, parse as _en_parse, TaggedString
+    from en.parser import commandline
 
 #### TOKENIZER #####################################################################################
 

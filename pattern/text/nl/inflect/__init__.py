@@ -207,14 +207,23 @@ def singularize(word, pos=NOUN, custom={}):
 
 #### VERB CONJUGATION ##############################################################################
 
-import sys; sys.path.insert(0, os.path.join(MODULE, "..", ".."))
-from en.inflect import Verbs
-from en.inflect import \
-    INFINITIVE, PRESENT, PAST, FUTURE, \
-    FIRST, SECOND, THIRD, \
-    SINGULAR, PLURAL, SG, PL, \
-    PROGRESSIVE, \
-    PARTICIPLE
+try:
+    from ...en.inflect import Verbs
+    from ...en.inflect import \
+        INFINITIVE, PRESENT, PAST, FUTURE, \
+        FIRST, SECOND, THIRD, \
+        SINGULAR, PLURAL, SG, PL, \
+        PROGRESSIVE, \
+        PARTICIPLE
+except:
+    import sys; sys.path.insert(0, os.path.join(MODULE, "..", ".."))
+    from en.inflect import Verbs
+    from en.inflect import \
+        INFINITIVE, PRESENT, PAST, FUTURE, \
+        FIRST, SECOND, THIRD, \
+        SINGULAR, PLURAL, SG, PL, \
+        PROGRESSIVE, \
+        PARTICIPLE
 
 # Load the pattern.en.Verbs class, with a Dutch lexicon instead.
 # Lexicon was trained on CELEX and contains the top 2000 most frequent verbs.

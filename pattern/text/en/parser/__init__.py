@@ -52,7 +52,7 @@ def tokenize(string, punctuation=PUNCTUATION, abbreviations=abbreviations, repla
     """ Returns a list of sentences. Each sentence is a space-separated string of tokens (words).
         Handles common cases ("etc.") of abbreviations.
     """
-    for a,b in replace.items():
+    for a, b in replace.items():
         string = re.sub(a, b, string)
     # Collapse whitespace.
     string = re.sub(r"\s+", " ", string)
@@ -60,11 +60,13 @@ def tokenize(string, punctuation=PUNCTUATION, abbreviations=abbreviations, repla
     for t in token.findall(string+" "):
         if len(t) > 0:
             tail = []
-            while t.startswith(punctuation) and not t in replace:
+            while t.startswith(punctuation) and \
+              not t in replace:
                 # Split leading punctuation.
                 if t.startswith(punctuation):
                     tokens.append(t[0]); t=t[1:]
-            while t.endswith(punctuation+(".",)):
+            while t.endswith(punctuation+(".",)) and \
+              not t in replace:
                 # Split trailing punctuation.
                 if t.endswith(punctuation):
                     tail.append(t[-1]); t=t[:-1]

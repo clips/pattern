@@ -25,11 +25,18 @@ except:
 # La Valleta, Malta. May, 2010. 
 # http://www.lsi.upc.edu/~nlp/wikicorpus/
 
-# Accuracy is around 92%, but Pattern scores may vary due to Parole => Penn Treebank mapping etc.
-import sys; sys.path.insert(0, os.path.join(MODULE, "..", ".."))
-from en.parser import Lexicon
-from en.parser import PUNCTUATION, tokenize as _en_tokenize, parse as _en_parse, TaggedString
-from en.parser import commandline
+# Accuracy is around 92%, but Pattern scores may vary 
+# due to Parole => Penn Treebank mapping etc.
+
+try:
+    from ...en.parser import Lexicon
+    from ...en.parser import PUNCTUATION, tokenize as _en_tokenize, parse as _en_parse, TaggedString
+    from ...en.parser import commandline
+except:
+    import sys; sys.path.insert(0, os.path.join(MODULE, "..", ".."))
+    from en.parser import Lexicon
+    from en.parser import PUNCTUATION, tokenize as _en_tokenize, parse as _en_parse, TaggedString
+    from en.parser import commandline
 
 #### TOKENIZER #####################################################################################
 

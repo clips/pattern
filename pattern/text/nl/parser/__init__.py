@@ -18,21 +18,33 @@ except:
 # The tagger is based on Jeroen Geertzen's Dutch language model Brill-NL
 # (brill-bigrams.txt, brill-contextual.txt, brill-lexical.txt, brill-lexicon.txt):
 # http://cosmion.net/jeroen/software/brill_pos/
+
 # Accuracy is reported around 92%, but Pattern scores may vary from Geertzen's original
 # due to WOTAN => Penn Treebank mapping etc.
-import sys; sys.path.insert(0, os.path.join(MODULE, "..", ".."))
-from en.parser import Lexicon
-from en.parser import PUNCTUATION, tokenize as _en_tokenize, parse as _en_parse, TaggedString
-from en.parser import commandline
+
+try:
+    from ...en.parser import Lexicon
+    from ...en.parser import PUNCTUATION, tokenize as _en_tokenize, parse as _en_parse, TaggedString
+    from ...en.parser import commandline
+except:
+    import sys; sys.path.insert(0, os.path.join(MODULE, "..", ".."))
+    from en.parser import Lexicon
+    from en.parser import PUNCTUATION, tokenize as _en_tokenize, parse as _en_parse, TaggedString
+    from en.parser import commandline
 
 #### TOKENIZER #####################################################################################
 
-def tokenize(s, punctuation=PUNCTUATION, abbreviations=["bv.", "blz.", "e.d.", "m.a.w.", "nl."], replace={}):
+abbreviations = [
+    "a.d.h.v.", "afb.", "a.u.b.", "bv.", "b.v.", "bijv.", "blz.", "ca.", "cfr.", "dhr.", "dr.",
+    "d.m.v.", "d.w.z.", "e.a.", "e.d.", "e.g.", "enz.", "etc.", "e.v.", "evt.", "fig.", "i.e.",
+    "i.h.b.", "ir.", "i.p.v.", "i.s.m.", "m.a.w.", "max.", "m.b.t.", "m.b.v.", "mevr.", "min.",
+    "n.a.v.", "nl.", "n.o.t.k.", "n.t.b.", "n.v.t.", "o.a.", "ong.", "pag.", "ref.", "t.a.v.",
+    "tel.", "zgn."]
+
+def tokenize(s, punctuation=PUNCTUATION, abbreviations=abbreviations, replace={"'n": " 'n"}):
     # 's in Dutch preceded by a vowel indicates plural ("auto's"): don't replace.
     s = _en_tokenize(s, punctuation, abbreviations, replace)
-    s = [s.replace("' s morgens", "'s morgens") for s in s]
-    s = [s.replace("' s middags", "'s middags") for s in s]
-    s = [s.replace("' s avonds" , "'s avonds" ) for s in s]
+    s = [re.sub(r"' s (ochtends|morgens|middags|avonds)", "'s \\1", s) for s in s]
     return s
 
 _tokenize = tokenize

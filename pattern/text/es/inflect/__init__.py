@@ -178,16 +178,27 @@ def singularize(word, pos=NOUN, custom={}):
 
 #### VERB CONJUGATION ##############################################################################
 
-import sys; sys.path.insert(0, os.path.join(MODULE, "..", ".."))
-from en.inflect import Verbs
-from en.inflect import \
-    INFINITIVE, PRESENT, PAST, FUTURE, CONDITIONAL, \
-    FIRST, SECOND, THIRD, \
-    SINGULAR, PLURAL, SG, PL, \
-    INDICATIVE, IMPERATIVE, SUBJUNCTIVE, \
-    IMPERFECTIVE, PERFECTIVE, PROGRESSIVE, \
-    IMPERFECT, PRETERITE, \
-    PARTICIPLE, GERUND
+try:
+    from ...en.inflect import Verbs
+    from ...en.inflect import \
+        INFINITIVE, PRESENT, PAST, FUTURE, CONDITIONAL, \
+        FIRST, SECOND, THIRD, \
+        SINGULAR, PLURAL, SG, PL, \
+        INDICATIVE, IMPERATIVE, SUBJUNCTIVE, \
+        IMPERFECTIVE, PERFECTIVE, PROGRESSIVE, \
+        IMPERFECT, PRETERITE, \
+        PARTICIPLE, GERUND
+except:
+    import sys; sys.path.insert(0, os.path.join(MODULE, "..", ".."))
+    from en.inflect import Verbs
+    from en.inflect import \
+        INFINITIVE, PRESENT, PAST, FUTURE, CONDITIONAL, \
+        FIRST, SECOND, THIRD, \
+        SINGULAR, PLURAL, SG, PL, \
+        INDICATIVE, IMPERATIVE, SUBJUNCTIVE, \
+        IMPERFECTIVE, PERFECTIVE, PROGRESSIVE, \
+        IMPERFECT, PRETERITE, \
+        PARTICIPLE, GERUND
 
 # Defines the tenses on each line in verbs.txt (see pattern.en.inflect.TENSES).
 FORMAT = [

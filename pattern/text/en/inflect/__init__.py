@@ -612,79 +612,79 @@ N = None
 # The aliases can be passed to conjugate() and Tenses.__contains__().
 TENSES = {
   None: (None, N, N,  N,   N,    False, (None,)),
-     0: (INF,  N, N,  N,   N,    False, ("inf",  )), # TO BE         # SER               # SEIN       # ZIJN
-     1: (PRES, 1, SG, IND, IPFV, False, ("1sg",  )), # I am          # yo soy            # ich bin    # ik ben
-     2: (PRES, 2, SG, IND, IPFV, False, ("2sg",  )), # you are       # tú eres           # du bist    # jij bent
-     3: (PRES, 3, SG, IND, IPFV, False, ("3sg",  )), # he is         # él es             # er ist     # hij is
-     4: (PRES, 1, PL, IND, IPFV, False, ("1pl",  )), # we are        # nosotros somos    # wir sind   # wij zijn
-     5: (PRES, 2, PL, IND, IPFV, False, ("2pl",  )), # you are       # vosotros sois     # ihr seid   # jullie zijn
-     6: (PRES, 3, PL, IND, IPFV, False, ("3pl",  )), # they are      # ellos son         # sie sind   # zij zijn
-     7: (PRES, N, PL, IND, IPFV, False, ( "pl",  )), # are           #                   #            #
-     8: (PRES, N, N,  IND, PROG, False, ("part", )), # being         # siendo            #            # zijnd
-    36: (PRES, 1, SG, IND, IPFV, True,  ("1sg-", )), # I am not      #                   #            #
-    37: (PRES, 2, SG, IND, IPFV, True,  ("2sg-", )), # you aren't    #                   #            #
-    38: (PRES, 3, SG, IND, IPFV, True,  ("3sg-", )), # he isn't      #                   #            #
-    39: (PRES, 1, PL, IND, IPFV, True,  ("1pl-", )), # we aren't     #                   #            #
-    40: (PRES, 2, PL, IND, IPFV, True,  ("2pl-", )), # you aren't    #                   #            #
-    41: (PRES, 3, PL, IND, IPFV, True,  ("3pl-", )), # they aren't   #                   #            #
-    42: (PRES, N, PL, IND, IPFV, True,  ( "pl-", )), # aren't        #                   #            #
-    43: (PRES, N, N,  IND, IPFV, True,  (   "-", )), # isn't         #                   #            #
-     9: (PST,  1, SG, IND, IPFV, False, ("1sgp", )), # I was         # yo era            # ich war    # ik was
-    10: (PST,  2, SG, IND, IPFV, False, ("2sgp", )), # you were      # tú eras           # du warst   # jij was
-    11: (PST,  3, SG, IND, IPFV, False, ("3sgp", )), # he was        # él era            # er war     # hij was
-    12: (PST,  1, PL, IND, IPFV, False, ("1ppl", )), # we were       # nosotros éramos   # wir waren  # wij waren
-    13: (PST,  2, PL, IND, IPFV, False, ("2ppl", )), # you were      # vosotros erais    # ihr wart   # jullie waren
-    14: (PST,  3, PL, IND, IPFV, False, ("3ppl", )), # they were     # ellos eran        # sie waren  # wij waren
-    15: (PST,  N, PL, IND, IPFV, False, ( "ppl", )), # were          #                   #            #
-    16: (PST,  N, N,  IND, PROG, False, ("ppart",)), # been          # sido              # gewesen    # geweest
-    17: (PST,  N, N,  IND, IPFV, False, (   "p", )), # was           #                   #            #
-    44: (PST,  1, SG, IND, IPFV, True,  ("1sgp-",)), # I wasn't      #                   #            #
-    45: (PST,  2, SG, IND, IPFV, True,  ("2sgp-",)), # you weren't   #                   #            #
-    46: (PST,  3, SG, IND, IPFV, True,  ("3sgp-",)), # he wasn't     #                   #            #
-    47: (PST,  1, PL, IND, IPFV, True,  ("1ppl-",)), # we weren't    #                   #            #
-    48: (PST,  2, PL, IND, IPFV, True,  ("2ppl-",)), # you weren't   #                   #            #
-    49: (PST,  3, PL, IND, IPFV, True,  ("3ppl-",)), # they weren't  #                   #            #
-    50: (PST,  N, PL, IND, IPFV, True,  ( "ppl-",)), # weren't       #                   #            #
-    51: (PST,  N, N,  IND, IPFV, True,  ( "p-",  )), # wasn't        #                   #            #
-    58: (PST,  1, SG, IND,  PFV, False, ("1sg+", )), #               # yo fui            #            #
-    59: (PST,  2, SG, IND,  PFV, False, ("2sg+", )), #               # tú fuiste         #            #
-    60: (PST,  3, SG, IND,  PFV, False, ("3sg+", )), #               # él fue            #            #
-    61: (PST,  1, PL, IND,  PFV, False, ("1pl+", )), #               # nosotros fuimos   #            #
-    62: (PST,  2, PL, IND,  PFV, False, ("2pl+", )), #               # vosotros fuisteis #            #
-    63: (PST,  3, PL, IND,  PFV, False, ("3pl+", )), #               # ellos fueron      #            #
-    52: (FUT,  1, SG, IND, IPFV, False, ("1sgf", )), #               # yo seré           #            #
-    53: (FUT,  2, SG, IND, IPFV, False, ("2sgf", )), #               # tú serás          #            #
-    54: (FUT,  3, SG, IND, IPFV, False, ("3sgf", )), #               # él será           #            #
-    55: (FUT,  1, PL, IND, IPFV, False, ("1plf", )), #               # nosotros seremos  #            #
-    56: (FUT,  2, PL, IND, IPFV, False, ("2plf", )), #               # vosotros seréis   #            #
-    57: (FUT,  3, PL, IND, IPFV, False, ("3plf", )), #               # ellos serán       #            #
-    70: (COND, 1, SG, IND, IPFV, False, ("1sgc", )), #               # yo sería          #            #
-    71: (COND, 2, SG, IND, IPFV, False, ("2sgc", )), #               # tú serías         #            #
-    72: (COND, 3, SG, IND, IPFV, False, ("3sgc", )), #               # él sería          #            #
-    73: (COND, 1, PL, IND, IPFV, False, ("1plc", )), #               # nosotros seríamos #            #
-    74: (COND, 2, PL, IND, IPFV, False, ("2plc", )), #               # vosotros seríais  #            #
-    75: (COND, 3, PL, IND, IPFV, False, ("3plc", )), #               # ellos serían      #            #
-    19: (PRES, 2, SG, IMP, IPFV, False, ("2sg!", )), #               # tú sé             # du sei     #
-    21: (PRES, 1, PL, IMP, IPFV, False, ("1pl!", )), #               #                   # seien wir  #
-    22: (PRES, 2, PL, IMP, IPFV, False, ("2pl!", )), #               # vosotros sed      # ihr seid   #
-    24: (PRES, 1, SG, SJV, IPFV, False, ("1sg?", )), #               # yo sea            # ich sei    #
-    25: (PRES, 2, SG, SJV, IPFV, False, ("2sg?", )), #               # tú seas           # du seist   #
-    26: (PRES, 3, SG, SJV, IPFV, False, ("3sg?", )), #               # él sea            # er sei     #
-    27: (PRES, 1, PL, SJV, IPFV, False, ("1pl?", )), #               # nosotros seamos   # wir seien  #
-    28: (PRES, 2, PL, SJV, IPFV, False, ("2pl?", )), #               # vosotros seáis    # ihr seiet  #
-    29: (PRES, 3, PL, SJV, IPFV, False, ("3pl?", )), #               # ellos sean        # sie seien  #
-    64: (PRES, 1, SG, SJV,  PFV, False, ("1sg?+",)), #               #                   #            #
-    65: (PRES, 2, SG, SJV,  PFV, False, ("2sg?+",)), #               #                   #            #
-    66: (PRES, 3, SG, SJV,  PFV, False, ("3sg?+",)), #               #                   #            #
-    67: (PRES, 1, PL, SJV,  PFV, False, ("1pl?+",)), #               #                   #            #
-    68: (PRES, 2, PL, SJV,  PFV, False, ("2pl?+",)), #               #                   #            #
-    69: (PRES, 3, PL, SJV,  PFV, False, ("3pl?+",)), #               #                   #            #
-    30: (PST,  1, SG, SJV, IPFV, False, ("1sgp?",)), #               # yo fuera          # ich wäre   #
-    31: (PST,  2, SG, SJV, IPFV, False, ("2sgp?",)), #               # tú fueras         # du wärest  #
-    32: (PST,  3, SG, SJV, IPFV, False, ("3sgp?",)), #               # él fuera          # er wäre    #
-    33: (PST,  1, PL, SJV, IPFV, False, ("1ppl?",)), #               # nosotros fuéramos # wir wären  #
-    34: (PST,  2, PL, SJV, IPFV, False, ("2ppl?",)), #               # vosotros fuerais  # ihr wäret  #
-    35: (PST,  3, PL, SJV, IPFV, False, ("3ppl?",)), #               # ellos fueran      # sie wären  #
+     0: (INF,  N, N,  N,   N,    False, ("inf",  )), # TO BE         # SER               # SEIN       # ZIJN         # ÊTRE
+     1: (PRES, 1, SG, IND, IPFV, False, ("1sg",  )), # I am          # yo soy            # ich bin    # ik ben       # je suis
+     2: (PRES, 2, SG, IND, IPFV, False, ("2sg",  )), # you are       # tú eres           # du bist    # jij bent     # tu es
+     3: (PRES, 3, SG, IND, IPFV, False, ("3sg",  )), # he is         # él es             # er ist     # hij is       # il est
+     4: (PRES, 1, PL, IND, IPFV, False, ("1pl",  )), # we are        # nosotros somos    # wir sind   # wij zijn     # nous sommes
+     5: (PRES, 2, PL, IND, IPFV, False, ("2pl",  )), # you are       # vosotros sois     # ihr seid   # jullie zijn  # vous êtes
+     6: (PRES, 3, PL, IND, IPFV, False, ("3pl",  )), # they are      # ellos son         # sie sind   # zij zijn     # ils sont
+     7: (PRES, N, PL, IND, IPFV, False, ( "pl",  )), # are           #                   #            #              #
+     8: (PRES, N, N,  IND, PROG, False, ("part", )), # being         # siendo            #            # zijnd        # étant
+    36: (PRES, 1, SG, IND, IPFV, True,  ("1sg-", )), # I am not      #                   #            #              #
+    37: (PRES, 2, SG, IND, IPFV, True,  ("2sg-", )), # you aren't    #                   #            #              #
+    38: (PRES, 3, SG, IND, IPFV, True,  ("3sg-", )), # he isn't      #                   #            #              #
+    39: (PRES, 1, PL, IND, IPFV, True,  ("1pl-", )), # we aren't     #                   #            #              #
+    40: (PRES, 2, PL, IND, IPFV, True,  ("2pl-", )), # you aren't    #                   #            #              #
+    41: (PRES, 3, PL, IND, IPFV, True,  ("3pl-", )), # they aren't   #                   #            #              #
+    42: (PRES, N, PL, IND, IPFV, True,  ( "pl-", )), # aren't        #                   #            #              #
+    43: (PRES, N, N,  IND, IPFV, True,  (   "-", )), # isn't         #                   #            #              #
+     9: (PST,  1, SG, IND, IPFV, False, ("1sgp", )), # I was         # yo era            # ich war    # ik was       # j'étais
+    10: (PST,  2, SG, IND, IPFV, False, ("2sgp", )), # you were      # tú eras           # du warst   # jij was      # tu étais
+    11: (PST,  3, SG, IND, IPFV, False, ("3sgp", )), # he was        # él era            # er war     # hij was      # il était
+    12: (PST,  1, PL, IND, IPFV, False, ("1ppl", )), # we were       # nosotros éramos   # wir waren  # wij waren    # nous étions
+    13: (PST,  2, PL, IND, IPFV, False, ("2ppl", )), # you were      # vosotros erais    # ihr wart   # jullie waren # vous étiez
+    14: (PST,  3, PL, IND, IPFV, False, ("3ppl", )), # they were     # ellos eran        # sie waren  # wij waren    # ils étaient
+    15: (PST,  N, PL, IND, IPFV, False, ( "ppl", )), # were          #                   #            #              #
+    16: (PST,  N, N,  IND, PROG, False, ("ppart",)), # been          # sido              # gewesen    # geweest      # été
+    17: (PST,  N, N,  IND, IPFV, False, (   "p", )), # was           #                   #            #              #
+    44: (PST,  1, SG, IND, IPFV, True,  ("1sgp-",)), # I wasn't      #                   #            #              #
+    45: (PST,  2, SG, IND, IPFV, True,  ("2sgp-",)), # you weren't   #                   #            #              #
+    46: (PST,  3, SG, IND, IPFV, True,  ("3sgp-",)), # he wasn't     #                   #            #              #
+    47: (PST,  1, PL, IND, IPFV, True,  ("1ppl-",)), # we weren't    #                   #            #              #
+    48: (PST,  2, PL, IND, IPFV, True,  ("2ppl-",)), # you weren't   #                   #            #              #
+    49: (PST,  3, PL, IND, IPFV, True,  ("3ppl-",)), # they weren't  #                   #            #              #
+    50: (PST,  N, PL, IND, IPFV, True,  ( "ppl-",)), # weren't       #                   #            #              #
+    51: (PST,  N, N,  IND, IPFV, True,  ( "p-",  )), # wasn't        #                   #            #              #
+    58: (PST,  1, SG, IND,  PFV, False, ("1sg+", )), #               # yo fui            #            #              # je fus
+    59: (PST,  2, SG, IND,  PFV, False, ("2sg+", )), #               # tú fuiste         #            #              # tu fus
+    60: (PST,  3, SG, IND,  PFV, False, ("3sg+", )), #               # él fue            #            #              # il fut
+    61: (PST,  1, PL, IND,  PFV, False, ("1pl+", )), #               # nosotros fuimos   #            #              # nous fûmes
+    62: (PST,  2, PL, IND,  PFV, False, ("2pl+", )), #               # vosotros fuisteis #            #              # vous fûtes
+    63: (PST,  3, PL, IND,  PFV, False, ("3pl+", )), #               # ellos fueron      #            #              # ils furent
+    52: (FUT,  1, SG, IND, IPFV, False, ("1sgf", )), #               # yo seré           #            #              # je serai
+    53: (FUT,  2, SG, IND, IPFV, False, ("2sgf", )), #               # tú serás          #            #              # tu seras
+    54: (FUT,  3, SG, IND, IPFV, False, ("3sgf", )), #               # él será           #            #              # il sera
+    55: (FUT,  1, PL, IND, IPFV, False, ("1plf", )), #               # nosotros seremos  #            #              # nous serons
+    56: (FUT,  2, PL, IND, IPFV, False, ("2plf", )), #               # vosotros seréis   #            #              # vous serez
+    57: (FUT,  3, PL, IND, IPFV, False, ("3plf", )), #               # ellos serán       #            #              # ils serong
+    70: (COND, 1, SG, IND, IPFV, False, ("1sgc", )), #               # yo sería          #            #              # je serais
+    71: (COND, 2, SG, IND, IPFV, False, ("2sgc", )), #               # tú serías         #            #              # tu serais
+    72: (COND, 3, SG, IND, IPFV, False, ("3sgc", )), #               # él sería          #            #              # il serait
+    73: (COND, 1, PL, IND, IPFV, False, ("1plc", )), #               # nosotros seríamos #            #              # nous serions
+    74: (COND, 2, PL, IND, IPFV, False, ("2plc", )), #               # vosotros seríais  #            #              # vous seriez
+    75: (COND, 3, PL, IND, IPFV, False, ("3plc", )), #               # ellos serían      #            #              # ils seraient
+    19: (PRES, 2, SG, IMP, IPFV, False, ("2sg!", )), #               # tú sé             # du sei     #              # sois
+    21: (PRES, 1, PL, IMP, IPFV, False, ("1pl!", )), #               #                   # seien wir  #              # soyons
+    22: (PRES, 2, PL, IMP, IPFV, False, ("2pl!", )), #               # vosotros sed      # ihr seid   #              # soyez
+    24: (PRES, 1, SG, SJV, IPFV, False, ("1sg?", )), #               # yo sea            # ich sei    #              # je sois
+    25: (PRES, 2, SG, SJV, IPFV, False, ("2sg?", )), #               # tú seas           # du seist   #              # to sois
+    26: (PRES, 3, SG, SJV, IPFV, False, ("3sg?", )), #               # él sea            # er sei     #              # il soit
+    27: (PRES, 1, PL, SJV, IPFV, False, ("1pl?", )), #               # nosotros seamos   # wir seien  #              # nous soyons
+    28: (PRES, 2, PL, SJV, IPFV, False, ("2pl?", )), #               # vosotros seáis    # ihr seiet  #              # vous soyez
+    29: (PRES, 3, PL, SJV, IPFV, False, ("3pl?", )), #               # ellos sean        # sie seien  #              # ils soient
+    64: (PRES, 1, SG, SJV,  PFV, False, ("1sg?+",)), #               #                   #            #              #
+    65: (PRES, 2, SG, SJV,  PFV, False, ("2sg?+",)), #               #                   #            #              #
+    66: (PRES, 3, SG, SJV,  PFV, False, ("3sg?+",)), #               #                   #            #              #
+    67: (PRES, 1, PL, SJV,  PFV, False, ("1pl?+",)), #               #                   #            #              #
+    68: (PRES, 2, PL, SJV,  PFV, False, ("2pl?+",)), #               #                   #            #              #
+    69: (PRES, 3, PL, SJV,  PFV, False, ("3pl?+",)), #               #                   #            #              #
+    30: (PST,  1, SG, SJV, IPFV, False, ("1sgp?",)), #               # yo fuera          # ich wäre   #              # je fusse
+    31: (PST,  2, SG, SJV, IPFV, False, ("2sgp?",)), #               # tú fueras         # du wärest  #              # tu fusses
+    32: (PST,  3, SG, SJV, IPFV, False, ("3sgp?",)), #               # él fuera          # er wäre    #              # il fût
+    33: (PST,  1, PL, SJV, IPFV, False, ("1ppl?",)), #               # nosotros fuéramos # wir wären  #              # nous fussions
+    34: (PST,  2, PL, SJV, IPFV, False, ("2ppl?",)), #               # vosotros fuerais  # ihr wäret  #              # vous fussiez
+    35: (PST,  3, PL, SJV, IPFV, False, ("3ppl?",)), #               # ellos fueran      # sie wären  #              # ils fussent
 }
 
 # Map tenses and aliases to index.
