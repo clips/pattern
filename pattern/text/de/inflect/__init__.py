@@ -27,7 +27,7 @@ vowel = lambda ch: ch in VOWELS
 # 75% gender()
 # 72% pluralize()
 # 84% singularize() (for nominative)
-# 88% _parse_lemma()
+# 87% _parse_lemma()
 # 87% _parse_lexeme()
 # 98% predicative
 
@@ -335,18 +335,18 @@ conjugate, lemma, lexeme, tenses = \
     _verbs.conjugate, _verbs.lemma, _verbs.lexeme, _verbs.tenses
 
 prefix_inseparable = (
-    "be", "emp", "ent", "er", "ge", "miss", "ueber", "unter", "ver", "voll", "wider", "zer"
+    u"be", u"emp", u"ent", u"er", u"ge", u"miss", u"über", u"unter", u"ver", u"voll", u"wider", u"zer"
 )
 prefix_separable = (
-    "ab", "an", "auf", "aus", "bei", "durch", "ein", "fort", "mit", "nach", "vor", "weg",
-    "zurueck", "zusammen", "zu", "dabei", "daran", "da", "empor", "entgegen", "entlang", 
-    "fehl", "fest", "gegenueber", "gleich", "herab", "heran", "herauf", "heraus", "herum", 
-    "her", "hinweg", "hinzu", "hin", "los", "nieder", "statt", "umher", "um", "weg", 
-    "weiter", "wieder", "zwischen"
+    u"ab", u"an", u"auf", u"aus", u"bei", u"durch", u"ein", u"fort", u"mit", u"nach", u"vor", u"weg",
+    u"zurück", u"zusammen", u"zu", u"dabei", u"daran", u"da", u"empor", u"entgegen", u"entlang", 
+    u"fehl", u"fest", u"gegenüber", u"gleich", u"herab", u"heran", u"herauf", u"heraus", u"herum", 
+    u"her", u"hinweg", u"hinzu", u"hin", u"los", u"nieder", u"statt", u"umher", u"um", u"weg", 
+    u"weiter", u"wieder", u"zwischen"
 ) + (
      # There are many more...
-     "dort", "fertig", "frei", "gut", "heim", "hoch", "klein", "klar", "nahe", 
-     "offen", "richtig", "tot"
+     u"dort", u"fertig", u"frei", u"gut", u"heim", u"hoch", u"klein", u"klar", u"nahe", 
+     u"offen", u"richtig", u"tot"
 )
 prefixes = prefix_inseparable + prefix_separable
 
@@ -370,9 +370,10 @@ def _parse_lemma(verb):
     """
     v = verb.lower()
     # Common prefixes: be-finden and emp-finden probably inflect like finden.
-    for prefix in prefixes:
-        if v.startswith(prefix) and v[len(prefix):] in _verbs._lemmas:
-            return prefix + _verbs._lemmas[v[len(prefix):]]
+    if not (v.startswith("ge") and v.endswith("t")): # Probably gerund.
+        for prefix in prefixes:
+            if v.startswith(prefix) and v[len(prefix):] in _verbs._lemmas:
+                return prefix + _verbs._lemmas[v[len(prefix):]]
     # Common sufixes: setze nieder => niedersetzen.
     b, suffix = " " in v and v.split()[:2] or  (v, "")
     # Infinitive -ln: trommeln.
@@ -387,11 +388,23 @@ def _parse_lemma(verb):
       ("ien", "ein"), ("iess", "ass"), (u"ieß", u"aß"), ("iff", "eif"), ("iss", "eiss"), 
       (u"iß", u"eiß"), ("it", "eid"), ("oss", "iess"), (u"öss", "iess")):
         if b.endswith(x): b = b[:-len(x)] + y; break
+    b = b.replace("eeiss", "eiss")
+    b = b.replace("eeid", "eit")
     # Subjunctive: wechselte => wechseln
     if not b.endswith(("e", "l")) and not (b.endswith("er") and not b[-3] in VOWELS):
         b = b + "e"
     # abknallst != abknalln => abknallen
     if b.endswith(("hl", "ll", "ul", "eil")):
+        b = b + "e"
+    # Strip ge- from (likely) gerund:
+    if b.startswith("ge") and v.endswith("t"):
+        b = b[2:]
+    # Corrections (these add about 1.5% accuracy):
+    if b.endswith(("lnde", "rnde")):
+        b = b[:-3]
+    if b.endswith(("ae", "al", u"öe", u"üe")):
+        b = b.rstrip("e") + "te"
+    if b.endswith(u"äl"):
         b = b + "e"
     return suffix + b + "n"
 
