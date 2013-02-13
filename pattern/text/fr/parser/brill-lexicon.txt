@@ -11,21 +11,18 @@
 !? .
 !?!? .
 " "
-% NN
+% SYM
 & CC
 &amp; CC
-&gt; VB
-&gt;&gt; VB
-&lt; VB
-&lt;&lt; VB
-&lt;- .
-&lt;-&gt; .
 ' '
 ( (
 (...) .
 ) )
 * *
-+ RB
+- -
+-ci RB
+-il PRP
++ +
 ++ UH
 , ,
 . .
@@ -48,6 +45,8 @@
 ??? .
 @ IN
 @+ UH
+1er CD
+A IN
 AFP NNP
 ANRTT NNP
 ART NNP
@@ -388,7 +387,7 @@ Aguilcourt NNP
 Agustín NNP
 Aguts NNP
 Agy NNP
-Ah NNP
+Ah UH
 Ahab NNP
 Aharon NNP
 Ahaxe-Alciette-Bascassan NNP
@@ -1075,6 +1074,7 @@ Amenoncourt NNP
 Amenucourt NNP
 Amerey NNP
 America NNP
+Américains NNPS
 Americo NNP
 Amerigo NNP
 Ames NNP
@@ -6855,6 +6855,7 @@ Bénin NNP
 Bénédicte NNP
 Börje NNP
 Bözsi NNP
+C' DT
 CFDT NNP
 CFE-CGC NNP
 CFTC NNP
@@ -7802,6 +7803,7 @@ Cazillac NNP
 Cazoules NNP
 Cazouls-d'Herault NNP
 Cazouls-les-Beziers NNP
+Ce PRP
 Ceallach NNP
 Ceallagh NNP
 Ceara NNP
@@ -7835,6 +7837,7 @@ Ceillac NNP
 Ceilloux NNP
 Ceintrey NNP
 Ceinwen NNP
+Cela PRP
 Celandine NNP
 Celeste NNP
 Celestina NNP
@@ -7967,6 +7970,7 @@ Cervione NNP
 Cervon NNP
 Cerys NNP
 Cerzat NNP
+Ces PRP
 Cesaire NNP
 Cesancey NNP
 Cesarches NNP
@@ -7996,6 +8000,7 @@ Cessy-les-Bois NNP
 Cestas NNP
 Cestayrols NNP
 Ceton NNP
+Cette PRP
 Cette-Eygun NNP
 Cevins NNP
 Ceylan NNP
@@ -11379,6 +11384,7 @@ Céline NNP
 César NNP
 Côte-d'Or NNP
 Côtes-d'Armor NNPS
+D' IN
 D'Huison-Longueville NNP
 DGSE NNP
 DST NNP
@@ -15373,6 +15379,7 @@ Franvillers NNP
 Franxault NNP
 Franz NNP
 Franziska NNP
+Français NNP
 François NNP
 François-Joseph NNP
 Françoise NNP
@@ -19242,6 +19249,7 @@ Izz-ed-din NNP
 Izzy NNP
 Iñaki NNP
 Iúile NNP
+J' PRP
 J-C NNP
 J.-C NNP
 J.-C. NNP
@@ -20857,6 +20865,7 @@ Károly NNP
 Kázmér NNP
 Käthe NNP
 Körbl NNP
+L' DT
 L'Abergement-Clémenciat NNP
 L'Abergement-Sainte-Colombe NNP
 L'Abergement-Ste-Colombe NNP
@@ -26272,6 +26281,8 @@ Lõrinc NNP
 Lúcia NNP
 Lúcás NNP
 Lúðvík NNP
+M. NN
+M' PRP
 M6 NNP
 MI5 NNP
 MK2 NNP
@@ -26537,6 +26548,7 @@ Mairy NNP
 Mairy-Mainville NNP
 Mairy-sur-Marne NNP
 Mairéad NNP
+Mais CC
 Maisdon-sur-Sevre NNP
 Maisey-le-Duc NNP
 Maisie NNP
@@ -28789,6 +28801,7 @@ Mixe NNP
 Miyako NNP
 Mizerieux NNP
 Mizoen NNP
+Mme NN
 Mnason NNP
 Mneme NNP
 Moa NNP
@@ -29003,6 +29016,7 @@ Moncrabeau NNP
 Moncy NNP
 Mondavezan NNP
 Monday NNP
+Monde NNP
 Mondelange NNP
 Mondement-Montgivroux NNP
 Mondescourt NNP
@@ -30447,6 +30461,7 @@ Mórríghan NNP
 Móstoles NNP
 Mózes NNP
 Müge NNP
+N' RB
 N'Djamena NNP
 N.-D. NNP
 NSA NNP
@@ -32651,6 +32666,7 @@ Parker NNP
 Parlan NNP
 Parlanges NNP
 Parleboscq NNP
+Parlement NN
 Parly NNP
 Parmain NNP
 Parmilocation NNP
@@ -34763,10 +34779,12 @@ Qatar NNP
 Qiana NNP
 Qing NNP
 Qiu NNP
+Qu' CC
 Quaedypre NNP
 Quaix-en-Chartreuse NNP
 Quan NNP
 Quanah NNP
+Quand CC
 Quang NNP
 Quanna NNP
 Quantilly NNP
@@ -36743,6 +36761,7 @@ Róza NNP
 Rózsa NNP
 Rózsi NNP
 Rüdiger NNP
+S' PRP
 SARL NNP
 SNCF NNP
 SNES NNP
@@ -46747,6 +46766,7 @@ Søren NNP
 Sülayman NNP
 Süleiman NNP
 Süleyman NNP
+T' PRP
 TF1 NNP
 Taavetti NNP
 Taavi NNP
@@ -47181,6 +47201,7 @@ Terrassa NNP
 Terrasson-la-Villedieu NNP
 Terrats NNP
 Terraube NNP
+Terre NNP
 Terre-Clapier NNP
 Terre-Natale NNP
 Terrebasse NNP
@@ -53248,7 +53269,10 @@ aménagé VBN
 aménagée VBN
 aménagées VBN
 aménagés VBN
+américain JJ
 américaine JJ
+américains JJ
+américaines JJ
 an NN
 anachronique JJ
 anachroniques JJ
@@ -53682,7 +53706,7 @@ appâter VB
 appétissant JJ
 appétissante JJ
 appétit NN
-après RB
+après IN
 après-demain RB
 apte JJ
 aptes JJ
@@ -54286,6 +54310,7 @@ atténue VB
 atténuer VB
 atténué VBN
 atténuée VBN
+au IN
 au-dedans RB
 au-dehors RB
 au-delà RB
@@ -54373,12 +54398,13 @@ autorités NNS
 autoroute NN
 autos NNS
 autour RB
-autre PRP
+autre JJ
 autrefois RB
 autrement RB
-autres PRP
+autres JJ
 autrichiennes JJ
 autrui PRP
+aux IN
 avachi VBN
 avachie VBN
 avachis VBN
@@ -54409,7 +54435,7 @@ avancé VBN
 avancée VBN
 avancées VBN
 avancés VBN
-avant RB
+avant IN
 avant-bras NN
 avant-coureur JJ
 avant-coureurs JJ
@@ -54431,7 +54457,7 @@ avançant VB
 avançons VB
 avares JJ
 avarié VBN
-avec RB
+avec IN
 avenante JJ
 avenantes JJ
 avenir NN
@@ -55034,7 +55060,7 @@ bombé VBN
 bombée VBN
 bombées VBN
 bombés VBN
-bon RB
+bon JJ
 bonasse JJ
 bonbons NNS
 bond NN
@@ -55593,6 +55619,7 @@ bêtement RB
 bêtise NN
 bêtises NN
 bûmes VB
+c' DT
 c'est-à-dire RB
 cabalistiques JJ
 cabane NN
@@ -55901,7 +55928,7 @@ cave NN
 caverneuse JJ
 caverneux JJ
 caves NN
-ce DT
+ce PRP
 ceci PRP
 ceint VBN
 ceinte VBN
@@ -55911,7 +55938,7 @@ ceinture NN
 ceinturé VBN
 ceinturée VBN
 ceinturés VBN
-cela DT
+cela PRP
 celle PRP
 celle-ci PRP
 celle-là PRP
@@ -55962,18 +55989,18 @@ cerné VBN
 cernée VBN
 cernées VBN
 cernés VBN
-certain DT
-certaine DT
+certain PRP
+certaine PRP
 certainement RB
-certaines DT
-certains DT
+certaines PRP
+certains PRP
 certes RB
 certifier VB
 certifié VBN
 certitude NN
 cerveau NN
 cervelle NN
-ces DT
+ces PRP
 cessa VB
 cessai VB
 cessaient VB
@@ -55994,8 +56021,8 @@ cessons VB
 cessât VB
 cessèrent VB
 cessé VB
-cet DT
-cette DT
+cet PRP
+cette PRP
 ceux PRP
 ceux-ci PRP
 ceux-là PRP
@@ -56427,7 +56454,7 @@ cinglante JJ
 cinglantes JJ
 cingle VB
 cingler VB
-cinq NN
+cinq CD
 cinquante NN
 cintra VB
 cintré VBN
@@ -57550,7 +57577,7 @@ contrastait VB
 contrastant VBG
 contraste NN
 contrat NN
-contre RB
+contre IN
 contre-attaquer VB
 contrebas NN
 contrecarre VB
@@ -58310,7 +58337,7 @@ côtoyé VBN
 côtoyés VBN
 côté NN
 côtés NNS
-d' DT
+d' IN
 d'abord RB
 d'emblée RB
 daigna VB
@@ -58368,7 +58395,7 @@ dater VB
 daté VBN
 datée VBN
 davantage RB
-de DT
+de IN
 debout RB
 dedans RB
 degré NN
@@ -58435,7 +58462,7 @@ dentelé VBN
 dentelée VBN
 dentelées VBN
 dents NNS
-depuis RB
+depuis IN
 derechef RB
 dermatologique JJ
 derniers JJ
@@ -58443,7 +58470,7 @@ dernière JJ
 dernièrement RB
 dernières JJ
 derrière RB
-des DT
+des IN
 descend VB
 descendaient VB
 descendais VB
@@ -58514,7 +58541,8 @@ destinés VBN
 destruction NN
 destructrice JJ
 deuil NN
-deux NN
+deux CD
+deuxième CD
 deuxièmement RB
 devaient VB
 devais VB
@@ -58522,7 +58550,7 @@ devait VB
 devance VB
 devancer VB
 devancé VBN
-devant VBG
+devant IN
 devança VB
 devançait VB
 devançant VB
@@ -58655,7 +58683,7 @@ dilue VB
 diluer VB
 dilué VBN
 diluée VBN
-dimanche RB
+dimanche NN
 dimanches NNS
 dimensions NNS
 diminua VB
@@ -58971,6 +58999,7 @@ divorcer VB
 divorcé VBN
 divorcée VBN
 divulguer VB
+dix CD
 dix-huit JJ
 dix-huitième JJ
 dix-neuf JJ
@@ -59200,7 +59229,7 @@ druzes JJ
 dry JJ
 drôle JJ
 drôlement RB
-du DT
+du IN
 dubitatif JJ
 dubitative JJ
 duc NN
@@ -61973,6 +62002,8 @@ eues VBN
 euh UH
 euphorique JJ
 eurent VB
+euro NNP
+européen JJ
 européenne JJ
 eus VBN
 eusse VB
@@ -62423,7 +62454,7 @@ faisant VB
 faisiez VB
 faisions VB
 faisons VB
-fait VBN
+fait VB
 faite VBN
 faites VBN
 falaise NN
@@ -62791,7 +62822,7 @@ filtré VBN
 filèrent VB
 filé VBN
 filés VBN
-fin RB
+fin NN
 final JJ
 finalement RB
 financer VB
@@ -63287,6 +63318,7 @@ frangées VBN
 frangés VBN
 franque JJ
 franques JJ
+français JJ
 française JJ
 françaises JJ
 frappa VB
@@ -63775,6 +63807,7 @@ gaspiller VB
 gaspillé VBN
 gastronomique JJ
 gastronomiques JJ
+gauche JJ
 gauchement RB
 gauchère JJ
 gauler VB
@@ -64344,6 +64377,7 @@ génie NN
 génitaux JJ
 généalogique JJ
 généalogiques JJ
+général NN
 générale JJ
 généralement RB
 générales JJ
@@ -66296,6 +66330,7 @@ ivoirin JJ
 ivre JJ
 ivres JJ
 ivresse NN
+j' PRP
 jacasser VB
 jactait VB
 jacte VB
@@ -66375,7 +66410,7 @@ jetée VBN
 jetées VBN
 jetés VBN
 jeu NN
-jeudi RB
+jeudi NN
 jeune JJ
 jeunes JJ
 jeunesse NN
@@ -66519,6 +66554,7 @@ juridiques JJ
 jurèrent VB
 juré VBN
 jus NN
+jusqu' RB
 jusque RB
 jusque-là RB
 juste RB
@@ -66755,9 +66791,9 @@ lesté VBN
 lestés VBN
 lettre NN
 lettres NNS
-leur DT
+leur PRP$
 leurrer VB
-leurs DT
+leurs PRP$
 leva VB
 levai VB
 levaient VB
@@ -66954,6 +66990,7 @@ lorgnant VB
 lorgner VB
 lorraine NN
 lors RB
+lorsqu' RB
 lorsque RB
 lot NN
 loua VB
@@ -67027,7 +67064,7 @@ lumières NNS
 lunaire NN
 lunaires NNS
 lunatique NN
-lundi RB
+lundi NN
 lune NN
 lunettes NNS
 lurent VB
@@ -67122,7 +67159,8 @@ lénifiante JJ
 lépreuses NNS
 lésiner VB
 léthargique JJ
-ma DT
+m' PRP
+ma PRP$
 maboul NN
 macabre JJ
 macabres JJ
@@ -67191,7 +67229,7 @@ maintint VB
 maints DT
 maire NN
 mairie NN
-mais RB
+mais CC
 maison NN
 maisons NN
 majestueuse JJ
@@ -67397,7 +67435,7 @@ marchions VB
 marchons VB
 marchâmes VB
 marchèrent VB
-mardi RB
+mardi NN
 marge NN
 marginale JJ
 marginales JJ
@@ -67649,7 +67687,7 @@ menés VBN
 mer NN
 mercantile JJ
 merci NN
-mercredi RB
+mercredi NN
 merdeuse NN
 merdeuses NNS
 mers NNS
@@ -67659,7 +67697,7 @@ merveilleuse JJ
 merveilleusement RB
 merveilleuses JJ
 merveilleux JJ
-mes DT
+mes PRP$
 mesquin JJ
 mesquine JJ
 mesquines JJ
@@ -67911,7 +67949,7 @@ momentanée JJ
 momentanément RB
 moments NNS
 momifié VBN
-mon DT
+mon PRP$
 monacale JJ
 monarchiste NN
 monastique JJ
@@ -68446,7 +68484,7 @@ mûrissait VB
 mûrissent VB
 mûrit VB
 mûrs JJ
-n' PRP
+n' RB
 na RB
 nacré VBN
 nacrée VBN
@@ -68541,7 +68579,7 @@ naïf JJ
 naïve JJ
 naïvement RB
 naïves JJ
-ne PRP
+ne RB
 neige NN
 neigeait VB
 neiger VB
@@ -68671,7 +68709,7 @@ normande NN
 normandes NNS
 normands NNS
 normaux JJ
-nos DT
+nos PRP$
 nostalgie NN
 nostalgique JJ
 nostalgiques JJ
@@ -68693,7 +68731,7 @@ notion NN
 notoire JJ
 notoirement RB
 notoires JJ
-notre DT
+notre PRP$
 noté VBN
 noua VB
 nouaient VB
@@ -68724,8 +68762,11 @@ nourriture NN
 nous PRP
 nous-même PRP
 nous-mêmes PRP
+nouveau JJ
 nouveaux JJ
 nouvel JJ
+nouvelle JJ
+nouvelles JJ
 nouvellement RB
 noué VBN
 nouée VBN
@@ -69089,7 +69130,7 @@ ondulés VBN
 ongle NN
 ongles NNS
 ont VB
-onze NN
+onze CD
 onéreux JJ
 opaque JJ
 opaques JJ
@@ -69484,6 +69525,7 @@ paraître VB
 paraîtront VB
 parbleu UH
 parc NN
+parce CC
 parcimonieuse JJ
 parcimonieusement RB
 parcimonieux JJ
@@ -69900,7 +69942,7 @@ pend VB
 pendable JJ
 pendaient VB
 pendait VB
-pendant VBG
+pendant IN
 pendante JJ
 pendantes JJ
 pendants JJ
@@ -70536,8 +70578,8 @@ plume NN
 plumer VB
 plumes NN
 plurent VB
-plus VBN
-plusieurs DT
+plus RB
+plusieurs PRP
 plut VB
 plutôt RB
 pluvieuse JJ
@@ -70904,7 +70946,8 @@ pratiqué VBN
 pratiquée VBN
 pratiquées VBN
 pratiqués VBN
-première JJ
+premier CD
+première CD
 premièrement RB
 premières JJ
 prenaient VB
@@ -71665,6 +71708,7 @@ publia VB
 publiaient VB
 publiait VB
 publiant VB
+public JJ
 publicitaire JJ
 publicitaires JJ
 publicité NN
@@ -71696,6 +71740,7 @@ puisait VB
 puisant VB
 puise VB
 puiser VB
+puisqu' RB
 puisque RB
 puissamment RB
 puissance NN
@@ -71878,6 +71923,7 @@ pêché VBN
 pêle-mêle RB
 pûmes VB
 pût VB
+qu' CC
 quadrillé VBN
 quadrillée VBN
 quai NN
@@ -71902,10 +71948,10 @@ quasi RB
 quasiment RB
 quatorze NN
 quatorzième JJ
-quatre NN
+quatre CD
 quatre-vingt NN
 quatre-vingt-dix NN
-que WP
+que CC
 quel DT
 quelconque JJ
 quelconques JJ
@@ -73968,7 +74014,7 @@ ridée VBN
 ridées VBN
 ridés VBN
 rie VB
-rien PRP
+rien RB
 rient VB
 rieur NN
 rieurs NNS
@@ -74876,7 +74922,7 @@ rôle NN
 rôti VBN
 rôtir VB
 s' PRP
-sa DT
+sa PRP$
 sable NN
 sablonneuse JJ
 sablonneux JJ
@@ -75007,7 +75053,7 @@ salé VBN
 salée VBN
 salées VBN
 salés VBN
-samedi RB
+samedi NN
 sanctifié VBN
 sanctionner VB
 sanctionnée VBN
@@ -75423,7 +75469,7 @@ servis VBN
 servit VB
 serviteurs NNS
 servît VB
-ses DT
+ses PRP$
 seuil NN
 seul RB
 seule JJ
@@ -75444,7 +75490,7 @@ seyant VBG
 shoote VB
 shooter VB
 shooté VBN
-si RB
+si CC
 sibyllin JJ
 sibylline JJ
 sibérienne JJ
@@ -75593,7 +75639,7 @@ située VBN
 situées VBN
 situés VBN
 sitôt RB
-six NN
+six CD
 siècle NN
 siècles NNS
 siège NN
@@ -75718,7 +75764,7 @@ somptueuse JJ
 somptueusement RB
 somptueuses JJ
 somptueux JJ
-son DT
+son PRP$
 sonda VB
 sonder VB
 songea VB
@@ -76698,7 +76744,7 @@ sûres JJ
 sûrs JJ
 sût VB
 t' PRP
-ta DT
+ta PRP$
 tabac NN
 tabasser VB
 table NN
@@ -77020,7 +77066,7 @@ terré VBN
 terrée VBN
 terrés VBN
 tertio RB
-tes DT
+tes PRP$
 testa VB
 tester VB
 texte NN
@@ -77183,7 +77229,7 @@ tombé VBN
 tombée VBN
 tombées VBN
 tombés VBN
-ton DT
+ton PRP$
 tondre VB
 tondu VBN
 tondue VBN
@@ -77320,7 +77366,7 @@ tournèrent VB
 tourné VBN
 tournés VBN
 tours NNS
-tous DT
+tous RB
 toussa VB
 toussait VB
 toussant VB
@@ -77330,12 +77376,12 @@ toussota VB
 toussotait VB
 toussote VB
 toussé VB
-tout DT
+tout RB
 tout-puissant JJ
-toute DT
+toute RB
 toute-puissante JJ
 toutefois RB
-toutes DT
+toutes RB
 toux NN
 tracassait VB
 tracasse VB
@@ -77686,7 +77732,8 @@ triviales JJ
 triviaux JJ
 trié VBN
 triés VBN
-trois NN
+trois CD
+troisième CD
 troisièmement RB
 trompa VB
 trompaient VB
@@ -78200,7 +78247,7 @@ vendra VB
 vendrai VB
 vendrait VB
 vendre VB
-vendredi RB
+vendredi NN
 vends VB
 vendu VBN
 vendue VBN
@@ -78425,7 +78472,7 @@ vin NN
 vindicatif JJ
 vineuse JJ
 vineux JJ
-vingt NN
+vingt CD
 vingtaine NN
 vinrent VB
 vinssent VB
@@ -78658,9 +78705,9 @@ vont VB
 vorace JJ
 voracement RB
 voraces JJ
-vos DT
+vos PRP$
 voter VB
-votre DT
+votre PRP$
 voté VBN
 vouait VB
 voudra VB
@@ -79911,7 +79958,7 @@ zéro NN
 étudiée VBN
 étudiées VBN
 étudiés VBN
-été VB
+été VBN
 évacuait VB
 évacue VB
 évacuer VB

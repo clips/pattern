@@ -52,9 +52,9 @@ replacements = {
 replacements.update(((k.upper(), v.upper()) for k, v in replacements.items()))
 
 ABBREVIATIONS = [
-    "av.", "boul.", "C.-B.", "c.-à-d.", "ex.", "éd.", "fig.", "I.-P.-E.", "J.-C.", 
-    "Ltee.", "Ltée.", "M.", "Me.","Mlle.", "Mlles.", "MM.", "N.-B.", "N.-É.", "p.", 
-    "S.B.E.", "Ste.", "T.-N.", "t.a.b."
+    u"av.", u"boul.", u"C.-B.", u"c.-à-d.", u"ex.", u"éd.", u"fig.", u"I.-P.-E.", u"J.-C.", 
+    u"Ltee.", u"Ltée.", u"M.", u"Me.","Mlle.", u"Mlles.", u"MM.", u"N.-B.", u"N.-É.", u"p.", 
+    u"S.B.E.", u"Ste.", u"T.-N.", u"t.a.b."
 ]
 
 def tokenize(s, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, replace=replacements):
@@ -86,8 +86,8 @@ def lemma(word, pos="NN"):
         return conjugate(word, "infinitive") or word
     if pos.startswith(("JJ",)):
         return predicative(word)
-    if pos.startswith(("DT",)):
-        return singularize(word, pos="DT")
+    if pos.startswith(("DT","PR","WP")):
+        return singularize(word, pos=pos)
     return word
 
 def find_lemmata(tagged):
@@ -139,10 +139,10 @@ def tag(s, tokenize=True, encoding="utf-8"):
         for token in sentence:
             tags.append((token[0], token[1]))
     return tags
-    
+
 #### COMMAND LINE ##################################################################################
 # From the folder that contains the "pattern" folder:
-# python -m pattern.es.parser xml -s "A quien se hace de miel las moscas le comen." -OTCLI
-#
-#if __name__ == "__main__":
-#    commandline(parse)
+# python -m pattern.fr.parser xml -s "C'est l'exception qui confirme la règle." -OTCLI
+
+if __name__ == "__main__":
+    commandline(parse)
