@@ -1,8 +1,8 @@
 ;;;   
 ;;;   The lexicon was based on Lefff (Lexique des Formes Fléchies du Français).
 ;;;   
-;;;   Benoît Sagot, Lionel Clément, Érice Villemonte de la Clergerie, Pierre Boullier.
 ;;;   The Lefff 2 syntactic lexicon for French: architecture, acquisition.
+;;;   Benoît Sagot, Lionel Clément, Érice Villemonte de la Clergerie, Pierre Boullier.
 ;;;   http://alpage.inria.fr/~sagot/lefff-en.html
 ;;;   
 ! .
@@ -15,21 +15,60 @@
 & CC
 &amp; CC
 ' '
+'Un JJ
 ( (
 (...) .
 ) )
 * *
-- -
--ci RB
--il PRP
 + +
 ++ UH
 , ,
+- -
+-ce PRP
+-ci RB
+-il PRP
+-je PRP
+-là RB
+-moi PRP
+-même JJ
+-on PRP
+-t-il PRP
+-t-on PRP
+-tu PRP
+-y PRP
 . .
 ... ...
 .... .
 / CC
+10e CD
+114e JJ
+11e CD
+12e CD
+13e CD
+14e CD
+15e CD
+160e JJ
+16e CD
+17e CD
+18e CD
+19e CD
+1er CD
+20e CD
+21e JJ
+23e JJ
+2e CD
+300e JJ
+33e JJ
+35e JJ
+39e JJ
+3e CD
+4e CD
 4x4 NN
+5e CD
+6e CD
+7e CD
+8e CD
+9e CD
 : :
 ; ;
 < VB
@@ -45,7 +84,6 @@
 ??? .
 @ IN
 @+ UH
-1er CD
 A IN
 AFP NNP
 ANRTT NNP
@@ -167,8 +205,11 @@ Accenture NNP
 Accolans NNP
 Accolay NNP
 Accons NNP
+Accorder VB
 Accous NNP
 Accra NNP
+Accusant VBG
+Accusé VBN
 Ace NNP
 Achaicus NNP
 Achain NNP
@@ -197,9 +238,11 @@ Acke NNP
 Aclou NNP
 Acon NNP
 Acq NNP
+Acqua VB
 Acqueville NNP
 Acquigny NNP
 Acquin-Westbecourt NNP
+Acquérir VB
 Acy NNP
 Acy-Romance NNP
 Acy-en-Multien NNP
@@ -305,6 +348,7 @@ Afa NNP
 Afanasi NNP
 Afanasy NNP
 Afanen NNP
+Affaibli VBN
 Affieux NNP
 Affleville NNP
 Affoux NNP
@@ -312,6 +356,7 @@ Affracourt NNP
 Affringues NNP
 Afghanistan NNP
 Afia NNP
+Afin CC
 Afolabi NNP
 Afon NNP
 Afonso NNP
@@ -319,6 +364,7 @@ Afra NNP
 Africa NNP
 Afrique NNP
 Afriques NNPS
+After VB
 Afua NNP
 Agafya NNP
 Agamemnon NNP
@@ -333,6 +379,7 @@ Agathon NNP
 Agaue NNP
 Agay NNP
 Agde NNP
+Age VB
 Agel NNP
 Agen NNP
 Agen-d'Aveyron NNP
@@ -377,6 +424,7 @@ Agostina NNP
 Agostinho NNP
 Agostino NNP
 Agrafena NNP
+Agricultural JJ
 Agrippa NNP
 Agrippina NNP
 Agris NNP
@@ -497,6 +545,7 @@ Ainharp NNP
 Ainhice-Mongelos NNP
 Ainhoa NNP
 Aino NNP
+Ainsi RB
 Ainsley NNP
 Ainslie NNP
 Aintzane NNP
@@ -563,6 +612,7 @@ Ajit NNP
 Ajith NNP
 Ajoncourt NNP
 Ajou NNP
+Ajouter VB
 Ajoux NNP
 Akakios NNP
 Akamu NNP
@@ -844,6 +894,7 @@ Allon NNP
 Allondans NNP
 Allondaz NNP
 Allondrelle-la-Malmaison NNP
+Allonger VB
 Allonne NNP
 Allonnes NNP
 Allons NNP
@@ -1074,7 +1125,6 @@ Amenoncourt NNP
 Amenucourt NNP
 Amerey NNP
 America NNP
-Américains NNPS
 Americo NNP
 Amerigo NNP
 Ames NNP
@@ -1143,6 +1193,7 @@ Amponville NNP
 Ampriani NNP
 Ampuis NNP
 Ampus NNP
+Amputée VBN
 Amrit NNP
 Amrita NNP
 Amsterdam NNP
@@ -1153,6 +1204,8 @@ Amália NNP
 Amédée NNP
 Amélia NNP
 Amélie NNP
+Améliorez VB
+Américains NNPS
 Amérique NNP
 Amériques NNPS
 An NNP
@@ -1225,6 +1278,7 @@ Ancy NNP
 Ancy-le-Franc NNP
 Ancy-le-Libre NNP
 Ancy-sur-Moselle NNP
+And VB
 Andainville NNP
 Andance NNP
 Andancette NNP
@@ -1412,6 +1466,7 @@ Anika NNP
 Aniketos NNP
 Anikó NNP
 Anima NNP
+Animée VBN
 Aniruddha NNP
 Anisa NNP
 Anise NNP
@@ -1489,6 +1544,7 @@ Annois NNP
 Annoisin-Chatelans NNP
 Annoix NNP
 Annonay NNP
+Annoncé VBN
 Annonville NNP
 Annot NNP
 Annouville-Vilmesnil NNP
@@ -1555,6 +1611,8 @@ Anthy-sur-Leman NNP
 Antibes NNP
 Antichan NNP
 Antichan-de-Frontignes NNP
+Anticipant VBG
+Anticommuniste JJ
 Antignac NNP
 Antigny NNP
 Antigny-la-Ville NNP
@@ -1662,6 +1720,7 @@ Apolonija NNP
 Apostolis NNP
 Apostolos NNP
 Appelle NNP
+Appelé VBN
 Appenai-sous-Belleme NNP
 Appenans NNP
 Appenwihr NNP
@@ -2073,6 +2132,7 @@ Arrien-en-Bethmale NNP
 Arrigas NNP
 Arrigny NNP
 Arrigo NNP
+Arrivé VBN
 Arro NNP
 Arrodets NNP
 Arrodets-Ez-Angles NNP
@@ -2227,6 +2287,7 @@ Ashoka NNP
 Ashtad NNP
 Ashton NNP
 Ashtoreth NNP
+Asi JJ
 Asia NNP
 Asie NNP
 Asim NNP
@@ -2290,6 +2351,7 @@ Assenoncourt NNP
 Asserac NNP
 Assevent NNP
 Assevillers NNP
+Assez RB
 Assier NNP
 Assieu NNP
 Assignan NNP
@@ -2356,10 +2418,13 @@ Atilio NNP
 Atiya NNP
 Atlanta NNP
 Atlas NNP
+Atofina VB
 Attac NNP
 Attainville NNP
 Attancourt NNP
+Atteint VBN
 Attenschwiller NNP
+Attentif JJ
 Attiches NNP
 Attichy NNP
 Atticus NNP
@@ -2372,11 +2437,14 @@ Attilio NNP
 Attilloncourt NNP
 Attilly NNP
 Attin NNP
+Attirée VBN
 Atton NNP
 Attray NNP
 Attricourt NNP
 Atur NNP
 Atílio NNP
+Au IN
+Au-delà RB
 Aubagnan NNP
 Aubagne NNP
 Aubaine NNP
@@ -2559,6 +2627,7 @@ Aujan-Mournede NNP
 Aujargues NNP
 Aujeurres NNP
 Aujols NNP
+Aujourd'hui RB
 Aukusti NNP
 Aulan NNP
 Aulas NNP
@@ -2619,6 +2688,7 @@ Auneau NNP
 Auneuil NNP
 Aunou-le-Faucon NNP
 Aunou-sur-Orne NNP
+Auparavant RB
 Auppegard NNP
 Aups NNP
 Auquainville NNP
@@ -2681,6 +2751,7 @@ Aussac NNP
 Aussac-Vadalle NNP
 Ausseing NNP
 Aussevielle NNP
+Aussi RB
 Aussillon NNP
 Aussois NNP
 Ausson NNP
@@ -2693,6 +2764,7 @@ Austin NNP
 Australie NNP
 Austyn NNP
 Autainville NNP
+Autant RB
 Autechaux NNP
 Autechaux-Roide NNP
 Auterive NNP
@@ -2732,8 +2804,10 @@ Autingues NNP
 Autoire NNP
 Autoreille NNP
 Autouillet NNP
+Autour RB
 Autrac NNP
 Autrans NNP
+Autre JJ
 Autreche NNP
 Autrechene NNP
 Autreches NNP
@@ -2779,6 +2853,7 @@ Auvillars-sur-Saone NNP
 Auvillers-les-Forges NNP
 Auvilliers NNP
 Auvilliers-en-Gatinais NNP
+Aux IN
 Aux-Aussat NNP
 Aux-Marais NNP
 Auxais NNP
@@ -2827,6 +2902,7 @@ Avallon NNP
 Avalon NNP
 Avancon NNP
 Avanne-Aveney NNP
+Avant IN
 Avant-les-Marcilly NNP
 Avant-les-Ramerupt NNP
 Avanton NNP
@@ -2834,6 +2910,7 @@ Avapessa NNP
 Avaray NNP
 Avaux NNP
 Avdotya NNP
+Avec IN
 Avedis NNP
 Aveize NNP
 Aveizieux NNP
@@ -2862,6 +2939,7 @@ Avernes-Saint-Gourgon NNP
 Avernes-St-Gourgon NNP
 Avernes-sous-Exmes NNP
 Averon-Bergelle NNP
+Averti VBN
 Averton NNP
 Avery NNP
 Avesnelles NNP
@@ -2914,6 +2992,7 @@ Avize NNP
 Avner NNP
 Avocourt NNP
 Avoine NNP
+Avoir VB
 Avoise NNP
 Avolsheim NNP
 Avon NNP
@@ -2955,6 +3034,7 @@ Awoingt NNP
 Awotwi NNP
 Awstin NNP
 Ax-les-Thermes NNP
+Axa VB
 Axat NNP
 Axel NNP
 Axelle NNP
@@ -2963,6 +3043,7 @@ Ay NNP
 Ay-sur-Moselle NNP
 Aya NNP
 Ayala NNP
+Ayant VBG
 Ayat-sur-Sioule NNP
 Aydat NNP
 Aydie NNP
@@ -3209,6 +3290,7 @@ Balanzac NNP
 Balaruc-le-Vieux NNP
 Balaruc-les-Bains NNP
 Balatre NNP
+Balayant VBG
 Balaze NNP
 Balazuc NNP
 Balbigny NNP
@@ -3305,6 +3387,7 @@ Bannegon NNP
 Bannes NNP
 Banneville-la-Campagne NNP
 Banneville-sur-Ajon NNP
+Bannie VBN
 Bannieres NNP
 Bannoncourt NNP
 Bannost-Villegagnon NNP
@@ -3586,6 +3669,7 @@ Bastien NNP
 Basu NNP
 Basville NNP
 Basya NNP
+Basée VBN
 Bathelemont-les-Bauzemont NNP
 Bathernay NNP
 Bathsheba NNP
@@ -3767,6 +3851,7 @@ Beauchery-Saint-Martin NNP
 Beauchery-St-Martin NNP
 Beauclair NNP
 Beaucoudray NNP
+Beaucoup RB
 Beaucourt NNP
 Beaucourt-en-Santerre NNP
 Beaucouze NNP
@@ -3904,6 +3989,7 @@ Beautiran NNP
 Beautor NNP
 Beautot NNP
 Beautour NNP
+Beauté VBN
 Beauvain NNP
 Beauvais NNP
 Beauvais-sur-Matha NNP
@@ -3980,6 +4066,7 @@ Begaar NNP
 Begadan NNP
 Beganne NNP
 Begard NNP
+Beghal JJ
 Begles NNP
 Begmeil NNP
 Begnecourt NNP
@@ -4791,8 +4878,10 @@ Bief-du-Fourg NNP
 Biefmorin NNP
 Biefvillers-les-Bapaume NNP
 Bielle NNP
+Bien RB
 Biencourt NNP
 Biencourt-sur-Orge NNP
+Bientôt RB
 Bienvenida NNP
 Bienville NNP
 Bienville-la-Petite NNP
@@ -5139,6 +5228,7 @@ Blythe NNP
 Bláithín NNP
 Bláthnaid NNP
 Bláthnat NNP
+Blême JJ
 Bo NNP
 Boadicea NNP
 Boaz NNP
@@ -5330,6 +5420,7 @@ Bommes NNP
 Bommiers NNP
 Bompas NNP
 Bomy NNP
+Bon JJ
 Bon-Encontre NNP
 Bona NNP
 Bonac-Irazein NNP
@@ -5359,6 +5450,7 @@ Bonlocation NNP
 Bonlocation-sur-Roubion NNP
 Bonnac NNP
 Bonnac-la-Cote NNP
+Bonnaire JJ
 Bonnal NNP
 Bonnard NNP
 Bonnat NNP
@@ -5655,6 +5747,7 @@ Boule-d'Amont NNP
 Bouleternere NNP
 Bouleurs NNP
 Bouleuse NNP
+Boulez VB
 Bouliac NNP
 Bouligneux NNP
 Bouligney NNP
@@ -5821,6 +5914,7 @@ Bourriot-Bergonce NNP
 Bourron-Marlotte NNP
 Bourrou NNP
 Bourrouillan NNP
+Bourré VBN
 Bours NNP
 Boursault NNP
 Boursay NNP
@@ -5838,6 +5932,7 @@ Bourville NNP
 Boury-en-Vexin NNP
 Bousbach NNP
 Bousbecque NNP
+Bousculé VBN
 Bousies NNP
 Bousignies NNP
 Bousignies-sur-Roc NNP
@@ -5938,6 +6033,7 @@ Bovel NNP
 Bovelles NNP
 Boves NNP
 Boviolles NNP
+Bové VBN
 Boyardville NNP
 Boyaval NNP
 Boyce NNP
@@ -6011,6 +6107,7 @@ Branceilles NNP
 Branches NNP
 Brancourt-en-Laonnois NNP
 Brancourt-le-Grand NNP
+Brancusi JJ
 Brand NNP
 Branda NNP
 Brande NNP
@@ -6131,6 +6228,7 @@ Brecy-Brieres NNP
 Breda NNP
 Bree NNP
 Breel NNP
+Bref RB
 Bregnier-Cordon NNP
 Bregy NNP
 Brehain NNP
@@ -6618,6 +6716,7 @@ Bucy-le-Roi NNP
 Bucy-les-Cerny NNP
 Bucy-les-Pierrepont NNP
 Bud NNP
+Buda VB
 Budapest NNP
 Buddy NNP
 Budeliere NNP
@@ -6865,6 +6964,7 @@ CIA NNP
 COGIP NNP
 CSA NNP
 CSM NNP
+Ca VB
 Cabanac NNP
 Cabanac-Cazaux NNP
 Cabanac-Seguenville NNP
@@ -6984,6 +7084,7 @@ Caitrìona NNP
 Caitríona NNP
 Caius NNP
 Caix NNP
+Caixa VB
 Caixas NNP
 Caixon NNP
 Cajarc NNP
@@ -7169,6 +7270,7 @@ Campsegret NNP
 Campuac NNP
 Campugnan NNP
 Campuzan NNP
+Campée VBN
 Camron NNP
 Camryn NNP
 Camurac NNP
@@ -7297,6 +7399,7 @@ Capricia NNP
 Caprina NNP
 Captieux NNP
 Capvern NNP
+Car CC
 Cara NNP
 Caracas NNP
 Caradoc NNP
@@ -7867,6 +7970,7 @@ Celon NNP
 Celoux NNP
 Celso NNP
 Celsoy NNP
+Celui PRP
 Cely-en-Biere NNP
 Celyn NNP
 Cemboing NNP
@@ -7888,9 +7992,12 @@ Cenon-sur-Vienne NNP
 Censeau NNP
 Censerey NNP
 Censy NNP
+Cent CD
 Centre NNP
+Centré VBN
 Centuri NNP
 Cenves NNP
+Cependant RB
 Cepet NNP
 Cephalus NNP
 Cephas NNP
@@ -7999,9 +8106,11 @@ Cessy NNP
 Cessy-les-Bois NNP
 Cestas NNP
 Cestayrols NNP
+Cet PRP
 Ceton NNP
 Cette PRP
 Cette-Eygun NNP
+Ceux PRP
 Cevins NNP
 Ceylan NNP
 Ceyras NNP
@@ -8504,6 +8613,7 @@ Chaponost NNP
 Chappes NNP
 Chaptelat NNP
 Chaptuzat NNP
+Chaque PRP
 Chara NNP
 Charalampos NNP
 Charancieu NNP
@@ -8551,6 +8661,7 @@ Charezier NNP
 Charge NNP
 Chargey-les-Gray NNP
 Chargey-les-Port NNP
+Chargé VBN
 Chariez NNP
 Charigny NNP
 Charis NNP
@@ -8960,6 +9071,7 @@ Chavenon NNP
 Chaveria NNP
 Chaveroche NNP
 Chaveyriat NNP
+Chavez VB
 Chavignon NNP
 Chavigny NNP
 Chavigny-Bailleul NNP
@@ -9228,6 +9340,7 @@ Cheyanne NNP
 Cheylade NNP
 Cheylard-l'Évêque NNP
 Cheyssieu NNP
+Chez IN
 Chezal-Benoit NNP
 Cheze NNP
 Chezeaux NNP
@@ -9316,6 +9429,7 @@ Chloe NNP
 Chloris NNP
 Chloé NNP
 Chocques NNP
+Choice JJ
 Choignes NNP
 Choilley-Dardenay NNP
 Choisel NNP
@@ -9340,6 +9454,7 @@ Choqueuse-les-Benards NNP
 Choranche NNP
 Chorey NNP
 Chorges NNP
+Chorégraphié VBN
 Chouain NNP
 Chouday NNP
 Choue NNP
@@ -9400,6 +9515,7 @@ Chuignes NNP
 Chuignolles NNP
 Chuisnes NNP
 Chun NNP
+Churchill JJ
 Chus NNP
 Chusclan NNP
 Chuyer NNP
@@ -9511,6 +9627,7 @@ Cinderella NNP
 Cindra NNP
 Cindre NNP
 Cindy NNP
+Cinq CD
 Cinq-Mars-la-Pile NNP
 Cinquetral NNP
 Cinqueux NNP
@@ -9559,6 +9676,7 @@ Cisse NNP
 Cissy NNP
 Cisternes-la-Foret NNP
 Cistrieres NNP
+Citant VBG
 Citerne NNP
 Citers NNP
 Citey NNP
@@ -9853,6 +9971,7 @@ Cohade NNP
 Cohan NNP
 Cohennoz NNP
 Cohiniac NNP
+Cohn-Bendit VB
 Cohons NNP
 Coiffy-le-Bas NNP
 Coiffy-le-Haut NNP
@@ -10035,6 +10154,7 @@ Combrimont NNP
 Combrit NNP
 Combronde NNP
 Combs-la-Ville NNP
+Comdirect JJ
 Comfort NNP
 Comgal NNP
 Comgan NNP
@@ -10044,12 +10164,15 @@ Comiac NNP
 Comigne NNP
 Comines NNP
 Commana NNP
+Commandant VBG
 Commarin NNP
+Comme CC
 Commeaux NNP
 Commelle NNP
 Commelle-Vernay NNP
 Commenailles NNP
 Commenchon NNP
+Commencé VBN
 Commensacq NNP
 Commentry NNP
 Commeny NNP
@@ -10069,12 +10192,17 @@ Compertrix NNP
 Compeyre NNP
 Compiegne NNP
 Compigny NNP
+Compilé VBN
 Compolibat NNP
+Composite JJ
+Composé VBN
 Compregnac NNP
 Compreignac NNP
+Comprenne VB
 Comps NNP
 Comps-la-Grand-Ville NNP
 Comps-sur-Artuby NNP
+Compte VB
 Comus NNP
 Conakry NNP
 Conall NNP
@@ -10085,6 +10213,7 @@ Conca NNP
 Concarneau NNP
 Concepción NNP
 Concepta NNP
+Concernant VBG
 Concetta NNP
 Concetto NNP
 Concevreux NNP
@@ -10111,6 +10240,7 @@ Concriers NNP
 Condac NNP
 Condal NNP
 Condamine NNP
+Condamné VBN
 Condat NNP
 Condat-en-Combraille NNP
 Condat-en-Feniers NNP
@@ -10163,6 +10293,7 @@ Conflans-sur-Seine NNP
 Confolens NNP
 Confolent-Port-Dieu NNP
 Confort NNP
+Conforter VB
 Confracourt NNP
 Confrancon NNP
 Confucius NNP
@@ -10223,8 +10354,11 @@ Constantin NNP
 Constantina NNP
 Constantine NNP
 Constanza NNP
+Constatant VBG
+Constitué VBN
 Consuela NNP
 Consuelo NNP
+Consulte VB
 Consus NNP
 Contalmaison NNP
 Contamine-Sarzin NNP
@@ -10252,13 +10386,16 @@ Contres NNP
 Contreuve NNP
 Contrevoz NNP
 Contrexeville NNP
+Contribuant VBG
 Contrieres NNP
 Contrisson NNP
 Contréglise NNP
 Conty NNP
 Contz-les-Bains NNP
+Convaincu VBN
 Conway NNP
 Conzieu NNP
+Conçu VBN
 Coole NNP
 Coolus NNP
 Cooper NNP
@@ -11167,6 +11304,8 @@ Cruzy-le-Chatel NNP
 Cry NNP
 Crystal NNP
 Crystin NNP
+Créé VBN
+Créée VBN
 Csaba NNP
 Csilla NNP
 Ctibor NNP
@@ -11274,6 +11413,7 @@ Curchy NNP
 Curciat-Dongalon NNP
 Curcy-sur-Orne NNP
 Curdin NNP
+Cure VBN
 Curel NNP
 Curemonte NNP
 Cures NNP
@@ -11381,11 +11521,15 @@ Célestin NNP
 Célestine NNP
 Célia NNP
 Céline NNP
+Célébré VBN
 César NNP
 Côte-d'Or NNP
 Côtes-d'Armor NNPS
 D' IN
 D'Huison-Longueville NNP
+D'abord RB
+D'accord RB
+D'autant RB
 DGSE NNP
 DST NNP
 Dabo NNP
@@ -11416,6 +11560,7 @@ Daignac NNP
 Daigny NNP
 Daillancourt NNP
 Daillecourt NNP
+DaimlerChrysler VB
 Daina NNP
 Dainville NNP
 Dainville-Bertheleville NNP
@@ -11585,6 +11730,7 @@ Daoulas NNP
 Daours NNP
 Daphne NNP
 Dara NNP
+Darabont VB
 Darach NNP
 Darazac NNP
 Darbonnay NNP
@@ -11683,6 +11829,7 @@ Dayo NNP
 Dayton NNP
 Dazbog NNP
 Dazhdbog NNP
+De IN
 Dean NNP
 Deana NNP
 Deandre NNP
@@ -11768,6 +11915,7 @@ Deluz NNP
 Delwyn NNP
 Delyth NNP
 Dema NNP
+Demain RB
 Demandolx NNP
 Demange-Aux-Eaux NNP
 Demangevelle NNP
@@ -11840,6 +11988,7 @@ Dermid NNP
 Dermot NNP
 Dernacueillette NNP
 Dernancourt NNP
+Dernier JJ
 Derren NNP
 Derrick NNP
 Derry NNP
@@ -11870,6 +12019,7 @@ Despoina NNP
 Desseling NNP
 Dessenheim NNP
 Dessia NNP
+Dessiné VBN
 Desta NNP
 Destinee NNP
 Destiny NNP
@@ -11886,21 +12036,25 @@ Dettwiller NNP
 Deuil-la-Barre NNP
 Deuillet NNP
 Deulemont NNP
+Deux CD
 Deux-Chaises NNP
 Deux-Evailles NNP
 Deux-Jumeaux NNP
 Deux-Sèvres NNPS
 Deux-Verges NNP
+Deuxième CD
 Deuxnouds-Aux-Bois NNP
 Deuxnouds-Devant-Beauzee NNP
 Deuxville NNP
 Dev NNP
 Devan NNP
+Devant IN
 Devay NNP
 Devdan NNP
 Devdas NNP
 Devecey NNP
 Deven NNP
+Devenu VBN
 Devereux NNP
 Devesset NNP
 Deveze NNP
@@ -12073,11 +12227,13 @@ Diou NNP
 Dipak NNP
 Dipali NNP
 Dirac NNP
+Dire VB
 Direnç NNP
 Dirinon NNP
 Dirk NNP
 Dirol NNP
 Disgleirio NNP
+Disposant VBG
 Dissais NNP
 Dissangis NNP
 Dissay NNP
@@ -12094,6 +12250,7 @@ Divina NNP
 Divion NNP
 Divonne-les-Bains NNP
 Divya NNP
+Dix-huit JJ
 Dixie NNP
 Dixmont NNP
 Diya NNP
@@ -12290,6 +12447,7 @@ Donatien NNP
 Donatienne NNP
 Donato NNP
 Donazac NNP
+Donc RB
 Donchery NNP
 Doncieres NNP
 Doncourt-Aux-Templiers NNP
@@ -12320,6 +12478,7 @@ Donnie NNP
 Donny NNP
 Donostia NNP
 Donovan NNP
+Dont PRP
 Dontreix NNP
 Dontrien NNP
 Donville-les-Bains NNP
@@ -12390,6 +12549,7 @@ Dossenheim-sur-Zinsel NNP
 Dot NNP
 Dottie NNP
 Dotty NNP
+Doté VBN
 Douadic NNP
 Douai NNP
 Douains NNP
@@ -12454,6 +12614,7 @@ Douy NNP
 Douy-la-Ramee NNP
 Douzains NNP
 Douzat NNP
+Douze CD
 Douzens NNP
 Douzies NNP
 Douzies-Feignies NNP
@@ -12557,7 +12718,9 @@ Druye NNP
 Druyes-les-Belles-Fontaine NNP
 Dry NNP
 Drystan NNP
+Dré VBN
 Drôme NNP
+Du IN
 Dua NNP
 Duana NNP
 Duane NNP
@@ -12617,8 +12780,10 @@ Dunya NNP
 Dunyasha NNP
 Duong NNP
 Duppigheim NNP
+Dur JJ
 Duran NNP
 Durance NNP
+Durant IN
 Duranus NNP
 Duranville NNP
 Duras NNP
@@ -12671,10 +12836,16 @@ Dáire NNP
 Dáiríne NNP
 Dániel NNP
 Dávid NNP
+Défendu VBN
+Déjà RB
+Démontrant VBG
+Démontrer VB
 Dénes NNP
+Désigné VBN
 Désiré NNP
 Désirée NNP
 Dóra NNP
+Dürer VB
 Düsseldorf NNP
 EDF NNP
 ELDA NNP
@@ -12741,6 +12912,7 @@ Ecalles-Alix NNP
 Ecaquelon NNP
 Ecardenville-la-Campagne NNP
 Ecardenville-sur-Eure NNP
+Ecarter VB
 Ecaterina NNP
 Ecausseville NNP
 Ecauville NNP
@@ -12827,6 +12999,7 @@ Ecourt-Saint-Quentin NNP
 Ecourt-St-Quentin NNP
 Ecoust-Saint-Mein NNP
 Ecoust-St-Mein NNP
+Ecouter VB
 Ecouviez NNP
 Ecoyeux NNP
 Ecquedecques NNP
@@ -12955,6 +13128,7 @@ Eguilly NNP
 Eguilly-sous-Bois NNP
 Eguisheim NNP
 Eguzon-Chantome NNP
+Eh UH
 Ehnwihr NNP
 Ehud NNP
 Ehuns NNP
@@ -13061,6 +13235,7 @@ Eliina NNP
 Eliisa NNP
 Elijah NNP
 Elikapeka NNP
+Eliminant VBG
 Elin NNP
 Elina NNP
 Elincourt NNP
@@ -13222,23 +13397,27 @@ Emmy NNP
 Emondeville NNP
 Emory NNP
 Empeaux NNP
+Employé VBN
 Empurany NNP
 Empure NNP
 Empury NNP
 Emrys NNP
 Emyr NNP
 Emánuel NNP
+En IN
 Ena NNP
 Encarnacion NNP
 Encausse NNP
 Encausse-les-Thermes NNP
 Enchastrayes NNP
 Enchenberg NNP
+Encore RB
 Encourtiech NNP
 Endoufielle NNP
 Endre NNP
 Enencourt-Leage NNP
 Enencourt-le-Sec NNP
+Enfin RB
 Enfonvelle NNP
 Enfys NNP
 Engayrac NNP
@@ -13264,6 +13443,7 @@ Engwiller NNP
 Enid NNP
 Eniola NNP
 Enitan NNP
+Enlevé VBN
 Ennemain NNP
 Ennery NNP
 Ennetieres-en-Weppes NNP
@@ -13287,6 +13467,9 @@ Ens NNP
 Ensigne NNP
 Ensisheim NNP
 Ensues-la-Redonne NNP
+Ensuite RB
+Entendu VBN
+Entouré VBN
 Entrages NNP
 Entraigues NNP
 Entraigues-sur-Sorgues NNP
@@ -13295,6 +13478,7 @@ Entrammes NNP
 Entrange NNP
 Entraunes NNP
 Entraygues-sur-Truyere NNP
+Entre IN
 Entre-Deux-Eaux NNP
 Entre-Deux-Guiers NNP
 Entre-Deux-Monts NNP
@@ -13303,16 +13487,20 @@ Entrechaux NNP
 Entremont NNP
 Entremont-le-Vieux NNP
 Entrepierres NNP
+Entrer VB
 Entressen NNP
 Entrevaux NNP
 Entrevennes NNP
 Entrevernes NNP
 Entrois NNP
+Entré VBN
 Entzheim NNP
 Enu NNP
 Enval NNP
 Enveitg NNP
 Envermeu NNP
+Environ IN
+Envoyer VB
 Envronville NNP
 Enya NNP
 Enyo NNP
@@ -13476,6 +13664,7 @@ Erica NNP
 Erich NNP
 Erick NNP
 Ericka NNP
+Erigée VBN
 Erik NNP
 Erika NNP
 Eringes NNP
@@ -13814,6 +14003,7 @@ Estialescq NNP
 Estibeaux NNP
 Estigarde NNP
 Estillac NNP
+Estimant VBG
 Estipouy NNP
 Estirac NNP
 Estissac NNP
@@ -13858,6 +14048,7 @@ Eswars NNP
 Esyllt NNP
 Eszter NNP
 Eszti NNP
+Et CC
 Etable NNP
 Etables NNP
 Etables-sur-Mer NNP
@@ -14032,6 +14223,7 @@ Euville NNP
 Euvy NNP
 Euzet NNP
 Eva NNP
+Evacuer VB
 Evadne NNP
 Evaille NNP
 Evaline NNP
@@ -14080,6 +14272,7 @@ Evires NNP
 Evisa NNP
 Evita NNP
 Evonne NNP
+Evoquant VBG
 Evosges NNP
 Evpraksiya NNP
 Evran NNP
@@ -14101,15 +14294,20 @@ Ewan NNP
 Ewart NNP
 Ewen NNP
 Excel NNP
+Excellente JJ
 Excenevex NNP
 Excideuil NNP
+Exclue VBN
 Exermont NNP
 Exideuil NNP
+Exigeant VBG
 Exincourt NNP
 Exireuil NNP
+Existe VB
 Exmes NNP
 Exoudun NNP
 Expiremont NNP
+Extrême JJ
 Extrême-Orient NNP
 Eybens NNP
 Eybouleuf NNP
@@ -14208,8 +14406,10 @@ Fain-les-Moutiers NNP
 Fains NNP
 Fains-Veel NNP
 Fains-la-Folie NNP
+Faire VB
 Fairuza NNP
 Faissault NNP
+Fait VBN
 Faith NNP
 Faithe NNP
 Faivish NNP
@@ -14294,6 +14494,7 @@ Fastred NNP
 Fatah NNP
 Fathi NNP
 Fathiyya NNP
+Fatigué VBN
 Fatima NNP
 Fatin NNP
 Fatines NNP
@@ -14328,6 +14529,7 @@ Faustina NNP
 Faustine NNP
 Fausto NNP
 Faustus NNP
+Faut VB
 Fauverney NNP
 Fauville NNP
 Fauville-en-Caux NNP
@@ -14477,6 +14679,7 @@ Feodor NNP
 Feodora NNP
 Feofilakt NNP
 Fepin NNP
+Fera VB
 Ferapont NNP
 Ferce NNP
 Ferce-sur-Sarthe NNP
@@ -14520,6 +14723,7 @@ Ferrals-les-Corbieres NNP
 Ferrals-les-Montagnes NNP
 Ferran NNP
 Ferrassieres NNP
+Ferreira VB
 Ferrensac NNP
 Ferrer NNP
 Ferrere NNP
@@ -14617,6 +14821,7 @@ Fieffes-Montrelet NNP
 Fiefs NNP
 Fiennes NNP
 Fienvillers NNP
+Fier VB
 Fiera NNP
 Fierville-Bray NNP
 Fierville-les-Mines NNP
@@ -14632,6 +14837,7 @@ Figarol NNP
 Figeac NNP
 Fignevelle NNP
 Fignieres NNP
+Figure VB
 Fihr NNP
 Fikri NNP
 Fikriyya NNP
@@ -14657,7 +14863,9 @@ Fillonniere NNP
 Filomena NNP
 Filstroff NNP
 Fimenil NNP
+Fin JJ
 Fina NNP
+Final JJ
 Finbar NNP
 Findlay NNP
 Findrol NNP
@@ -14944,6 +15152,7 @@ Foncquevillers NNP
 Fondamente NNP
 Fondettes NNP
 Fondremand NNP
+Fondée VBN
 Fongalop NNP
 Fongrave NNP
 Fongueusemare NNP
@@ -15148,17 +15357,20 @@ Formentin NNP
 Formerie NNP
 Formigny NNP
 Formigueres NNP
+Formée VBN
 Fornex NNP
 Forrest NNP
 Fors NNP
 Forstfeld NNP
 Forstheim NNP
+Fort JJ
 Fort-Louis NNP
 Fort-Mahon-Plage NNP
 Fort-Mardyck NNP
 Fort-Moville NNP
 Fort-du-Plasne NNP
 Fortan NNP
+Forte JJ
 Fortel-en-Artois NNP
 Fortschwihr NNP
 Fortunata NNP
@@ -15847,11 +16059,13 @@ Garche NNP
 Garches NNP
 Garchizy NNP
 Garchy NNP
+Garcia VB
 Gard NNP
 Gardanne NNP
 Gardefort NNP
 Gardegan-et-Tourtirac NNP
 Gardenia NNP
+Garder VB
 Garderes NNP
 Gardes-le-Pontaroux NNP
 Gardie NNP
@@ -16132,6 +16346,7 @@ Georg NNP
 George NNP
 Georgene NNP
 Georges NNP
+Georges-Balanchine JJ
 Georgeta NNP
 Georgetown NNP
 Georgette NNP
@@ -16851,6 +17066,7 @@ Goviller NNP
 Govind NNP
 Gowri NNP
 Goxwiller NNP
+Goya VB
 Goyathlay NNP
 Goyencourt NNP
 Goyrans NNP
@@ -16925,6 +17141,7 @@ Grandchamp NNP
 Grandchamp-le-Chateau NNP
 Grandchamps-des-Fontaines NNP
 Grandcourt NNP
+Grande JJ
 Grande-Bretagne NNP
 Grande-Riviere NNP
 Grande-Synthe NNP
@@ -17003,6 +17220,7 @@ Gratot NNP
 Gratreuil NNP
 Grattepanche NNP
 Grattery NNP
+Gratuit JJ
 Graufthal NNP
 Graulhet NNP
 Grauves NNP
@@ -17165,6 +17383,7 @@ Grivy-Loisy NNP
 Grizel NNP
 Gro NNP
 Groffliers NNP
+Groggy JJ
 Groises NNP
 Groissiat NNP
 Groisy NNP
@@ -17242,6 +17461,7 @@ Gualtiero NNP
 Guarbecque NNP
 Guarguale NNP
 Guatemala NNP
+Gucci VBN
 Guchan NNP
 Guchen NNP
 Guda NNP
@@ -17525,6 +17745,7 @@ Gérald NNP
 Gérard NNP
 Géraud NNP
 Géza NNP
+Gêné VBN
 Göker NNP
 Göran NNP
 Gösta NNP
@@ -17746,6 +17967,7 @@ Haplincourt NNP
 Happencourt NNP
 Happonvilliers NNP
 Happy NNP
+Happé VBN
 Harald NNP
 Haraldur NNP
 Haramont NNP
@@ -17888,6 +18110,7 @@ Haussignemont NNP
 Haussimont NNP
 Haussonville NNP
 Haussy NNP
+Haut JJ
 Haut-Clocher NNP
 Haut-Location NNP
 Haut-Loquin NNP
@@ -18440,6 +18663,7 @@ Hollie NNP
 Holling NNP
 Hollis NNP
 Holly NNP
+Hollywood JJ
 Holnon NNP
 Holque NNP
 Holtzheim NNP
@@ -18499,6 +18723,7 @@ Hormazd NNP
 Hormazed NNP
 Hornaing NNP
 Hornoy-le-Bourg NNP
+Hornu JJ
 Horsa NNP
 Horsarrieu NNP
 Horst NNP
@@ -18627,6 +18852,7 @@ Huisnes-sur-Mer NNP
 Huisseau-en-Beauce NNP
 Huisseau-sur-Cosson NNP
 Huisseau-sur-Mauves NNP
+Huit CD
 Hulda NNP
 Huldah NNP
 Hulluch NNP
@@ -18714,7 +18940,9 @@ Hùng NNP
 Hùong NNP
 I'tidal NNP
 IBM NNP
+IIIe CD
 ISR NNP
+IVe CD
 Iacchus NNP
 Iagan NNP
 Iago NNP
@@ -18744,11 +18972,13 @@ Ichabod NNP
 Ichiro NNP
 Ichtratzheim NNP
 Ichy NNP
+Ici RB
 Ida NNP
 Idaho NNP
 Idan NNP
 Idaux-Mendy NNP
 Idelle NNP
+Idem RB
 Idesta NNP
 Idetta NNP
 Idonea NNP
@@ -18767,6 +18997,7 @@ Iefan NNP
 Iekika NNP
 Ienisseï NNP
 Ienisseï-Angara NNP
+Ier CD
 Iestyn NNP
 Ieuan NNP
 Ifan NNP
@@ -18804,6 +19035,7 @@ Ikaia NNP
 Ikaika NNP
 Ike NNP
 Ikraam NNP
+Il PRP
 Ila NNP
 Ilan NNP
 Ilana NNP
@@ -18878,6 +19110,7 @@ Ilya NNP
 Ima NNP
 Imaculada NNP
 Imad NNP
+Imaginez VB
 Imam NNP
 Imamu NNP
 Iman NNP
@@ -18899,6 +19132,8 @@ Immonville NNP
 Imogen NNP
 Imogene NNP
 Imphy NNP
+Imposer VB
+Impuissant JJ
 Imre NNP
 Imrus NNP
 In'am NNP
@@ -18970,14 +19205,19 @@ Innokenti NNP
 Inocencio NNP
 Inor NNP
 Insming NNP
+Installé VBN
 Insviller NNP
 Intermarché NNP
+Interrogé VBN
+Interrogée VBN
 Into NNP
 Intraville NNP
 Intres NNP
 Intreville NNP
 Intville-la-Guetard NNP
+Intégré VBN
 Inval-Boiron NNP
+Invité VBN
 Inxent NNP
 Inzinzac-Lochrist NNP
 Inácio NNP
@@ -19048,6 +19288,7 @@ Irodouer NNP
 Iron NNP
 Irouleguy NNP
 Irreville NNP
+Irriguer VB
 Irvillac NNP
 Irvin NNP
 Irvine NNP
@@ -19157,6 +19398,7 @@ Issor NNP
 Issou NNP
 Issoudun NNP
 Issoudun-Letrieix NNP
+Issu JJ
 Issur NNP
 Issus NNP
 Issy NNP
@@ -19567,6 +19809,7 @@ Jazennes NNP
 Jazmin NNP
 Jazmine NNP
 Jaén NNP
+Je PRP
 Jean NNP
 Jean-Antoine NNP
 Jean-Baptiste NNP
@@ -19931,6 +20174,7 @@ Joucas NNP
 Joucou NNP
 Joudes NNP
 Joudreville NNP
+Jouer VB
 Jouey NNP
 Jougne NNP
 Jouhe NNP
@@ -20123,6 +20367,8 @@ Jurvielle NNP
 Jury NNP
 Juscorps NNP
 Jusix NNP
+Jusqu' IN
+Jusque IN
 Jussac NNP
 Jussarupt NNP
 Jussas NNP
@@ -20326,6 +20572,7 @@ Karrie NNP
 Karsten NNP
 Karyn NNP
 Karyna NNP
+Karzaï VBN
 Kasandra NNP
 Kasey NNP
 Kasi NNP
@@ -20793,6 +21040,7 @@ Kristyna NNP
 Kristóf NNP
 Krisztina NNP
 Krisztián NNP
+Krome JJ
 Kruth NNP
 Krysia NNP
 Krystal NNP
@@ -20966,6 +21214,7 @@ L'Étang-Vergy NNP
 L'Étang-la-Ville NNP
 L'Étoile NNP
 LVMH NNP
+La DT
 La-Bachellerie NNP
 La-Baconnière NNP
 La-Baffe NNP
@@ -22549,6 +22798,7 @@ Laires NNP
 Lairiere NNP
 Lairoux NNP
 Laissac NNP
+Laissant VBG
 Laissaud NNP
 Laissey NNP
 Laitre-sous-Amance NNP
@@ -23336,6 +23586,7 @@ Lazarus NNP
 Lazenay NNP
 Lazer NNP
 Lazzaro NNP
+Le DT
 Le-Bailleul NNP
 Le-Baizil NNP
 Le-Ban-Saint-Martin NNP
@@ -24313,6 +24564,7 @@ Lelex NNP
 Lelia NNP
 Lelin-Lapujolle NNP
 Lelling NNP
+Lellouche VB
 Lemainville NNP
 Lembach NNP
 Lemberg NNP
@@ -24917,6 +25169,7 @@ Letteguives NNP
 Lettice NNP
 Lettie NNP
 Lettonie NNP
+Lettre VB
 Lettret NNP
 Letty NNP
 Leubringhen NNP
@@ -24932,6 +25185,7 @@ Leuhan NNP
 Leuilly-sous-Coucy NNP
 Leulinghem NNP
 Leulinghen-Bernes NNP
+Leur PRP$
 Leurville NNP
 Leury NNP
 Leutenheim NNP
@@ -24951,6 +25205,7 @@ Levernois NNP
 Leves NNP
 Levesville-la-Chenard NNP
 Levet NNP
+Levez VB
 Levi NNP
 Levie NNP
 Levier NNP
@@ -25048,6 +25303,7 @@ Liberia NNP
 Liberius NNP
 Libermont NNP
 Liberty NNP
+Libeskind VB
 Libitina NNP
 Libor NNP
 Liboria NNP
@@ -25057,6 +25313,8 @@ Librecy NNP
 Libreville NNP
 Libye NNP
 Libéria NNP
+Libéré VBN
+Licencié VBN
 Licey-sur-Vingeanne NNP
 Lichans-Sunhar NNP
 Licheres NNP
@@ -25348,6 +25606,7 @@ Lissieu NNP
 Lissy NNP
 Listrac-Medoc NNP
 Listrac-de-Dureze NNP
+Liszt VB
 Lit-et-Mixe NNP
 Lita NNP
 Lithaire NNP
@@ -25512,6 +25771,7 @@ Lohuec NNP
 Loic NNP
 Loigne-sur-Mayenne NNP
 Loigny-la-Bataille NNP
+Loin RB
 Loir-et-Cher NNP
 Loire-Atlantique NNP
 Loire-les-Marais NNP
@@ -25662,6 +25922,7 @@ Looze NNP
 Lope NNP
 Loperec NNP
 Loperhet NNP
+Lopez VB
 Lopigna NNP
 Loqueffret NNP
 Lor NNP
@@ -25731,6 +25992,8 @@ Lorrin NNP
 Lorris NNP
 Lorry-Mardigny NNP
 Lorry-les-Metz NNP
+Lorsqu' CC
+Lorsque CC
 Lortet NNP
 Los-Masos NNP
 Loscouet-sur-Meu NNP
@@ -26042,6 +26305,7 @@ Lugos NNP
 Lugrin NNP
 Lugus NNP
 Lugy NNP
+Lui PRP
 Luigi NNP
 Luigina NNP
 Luigino NNP
@@ -26256,6 +26520,7 @@ Lyudmila NNP
 Lyudmyla NNP
 Lyydia NNP
 Lyyti NNP
+Là RB
 Lành NNP
 Lára NNP
 Lárus NNP
@@ -26265,6 +26530,7 @@ Lærke NNP
 Léa NNP
 Léan NNP
 Léandre NNP
+Léger JJ
 Léo NNP
 Léon NNP
 Léonard NNP
@@ -26281,11 +26547,12 @@ Lõrinc NNP
 Lúcia NNP
 Lúcás NNP
 Lúðvík NNP
-M. NN
 M' PRP
+M. NN
 M6 NNP
 MI5 NNP
 MK2 NNP
+Ma PRP$
 Maaike NNP
 Maaria NNP
 Maarit NNP
@@ -26528,6 +26795,7 @@ Maing NNP
 Mainio NNP
 Mainneville NNP
 Mainsat NNP
+Maintenant RB
 Maintenay NNP
 Maintenon NNP
 Mainterne NNP
@@ -26686,6 +26954,7 @@ Malestroit NNP
 Maletable NNP
 Maleville NNP
 Malgorzata NNP
+Malgré IN
 Malguenac NNP
 Mali NNP
 Malia NNP
@@ -26814,11 +27083,13 @@ Manhoue NNP
 Mani NNP
 Manicamp NNP
 Manicourt NNP
+Manifester VB
 Manigod NNP
 Manille NNP
 Manin NNP
 Maninghem NNP
 Maninghen-Henne NNP
+Manipulée VBN
 Maniquerville NNP
 Manish NNP
 Manitoba NNP
@@ -27123,6 +27394,7 @@ Margh NNP
 Margherita NNP
 Margie NNP
 Margilley NNP
+Marginal JJ
 Margit NNP
 Margival NNP
 Margny NNP
@@ -27942,6 +28214,7 @@ Meillard NNP
 Meilleray NNP
 Meillerie NNP
 Meillers NNP
+Meilleur JJ
 Meillier-Fontaine NNP
 Meillon NNP
 Meillonnas NNP
@@ -28123,6 +28396,7 @@ Mentque-Nortbecourt NNP
 Menucourt NNP
 Menuha NNP
 Menville NNP
+Mené VBN
 Meobecq NNP
 Meolans NNP
 Meolans-Revel NNP
@@ -28270,6 +28544,7 @@ Mery-sur-Oise NNP
 Mery-sur-Seine NNP
 Meryem NNP
 Meryl NNP
+Mesa VB
 Mesandans NNP
 Mesanger NNP
 Mesangueville NNP
@@ -28364,6 +28639,7 @@ Methuselah NNP
 Metigny NNP
 Metin NNP
 Metody NNP
+Mettant VBG
 Mette NNP
 Metting NNP
 Mettray NNP
@@ -28377,6 +28653,7 @@ Metzeral NNP
 Metzeresche NNP
 Metzervisse NNP
 Metzing NNP
+Meu JJ
 Meucon NNP
 Meudon NNP
 Meudon-la-Foret NNP
@@ -28610,6 +28887,7 @@ Milhars NNP
 Milhas NNP
 Milhaud NNP
 Milhavet NNP
+Militaire JJ
 Milizac NNP
 Millac NNP
 Millam NNP
@@ -28650,6 +28928,7 @@ Mimi NNP
 Mimizan NNP
 Mina NNP
 Minako NNP
+Minardi VBN
 Mindin NNP
 Mindy NNP
 Minerva NNP
@@ -28748,6 +29027,7 @@ Mirville NNP
 Mirza NNP
 Mis'id NNP
 Miscon NNP
+Mise VBN
 Miserey NNP
 Miserey-Salines NNP
 Miserieux NNP
@@ -28811,6 +29091,7 @@ Moca-Croce NNP
 Modane NNP
 Modene NNP
 Modenheim NNP
+Moderne JJ
 Modest NNP
 Modesta NNP
 Modeste NNP
@@ -28843,6 +29124,7 @@ Mohandas NNP
 Mohinder NNP
 Mohini NNP
 Mohon NNP
+Moi PRP
 Moidieu-Detourbe NNP
 Moidrey NNP
 Moigne NNP
@@ -28906,6 +29188,7 @@ Molieres-Cavaillac NNP
 Molieres-Glandaz NNP
 Molieres-sur-Ceze NNP
 Moliets-et-Maa NNP
+Molina VB
 Molinchart NNP
 Molines-en-Queyras NNP
 Molinet NNP
@@ -28943,6 +29226,7 @@ Momerstroff NNP
 Mommenheim NNP
 Momuy NNP
 Momy NNP
+Mon PRP$
 Mon-Idee NNP
 Mona NNP
 Monacia-d'Aullene NNP
@@ -30256,6 +30540,7 @@ Mouzieys-Teulet NNP
 Mouzillon NNP
 Mouzon NNP
 Moval NNP
+Moya VB
 Moyaux NNP
 Moydans NNP
 Moye NNP
@@ -30331,6 +30616,7 @@ Mundolsheim NNP
 Muneville-le-Bingard NNP
 Muneville-sur-Mer NNP
 Mungo NNP
+Muni VBN
 Munich NNP
 Munir NNP
 Munira NNP
@@ -30354,6 +30640,7 @@ Murchadh NNP
 Murcia NNP
 Murcie NNP
 Murdag NNP
+Murder VB
 Murdo NNP
 Murdoch NNP
 Mureaumont NNP
@@ -30451,8 +30738,10 @@ Méabh NNP
 Mékong NNP
 Mélanie NNP
 Mélissa NNP
+Même RB
 Mìcheal NNP
 Mícheál NNP
+Mîruk JJ
 Mónica NNP
 Mónika NNP
 Mór NNP
@@ -30600,6 +30889,7 @@ Nantey NNP
 Nantheuil NNP
 Nanthiat NNP
 Nantiat NNP
+Nantie VBN
 Nantille NNP
 Nantillois NNP
 Nantilly NNP
@@ -30669,6 +30959,7 @@ Nathan NNP
 Nathanael NNP
 Nathaniel NNP
 Natille NNP
+National JJ
 Natsuko NNP
 Natsumi NNP
 Nattages NNP
@@ -30709,6 +31000,7 @@ Nazaire NNP
 Nazario NNP
 Nazelles-Negron NNP
 Ndidi NNP
+Ne RB
 Nea NNP
 Neac NNP
 Neacel NNP
@@ -30833,6 +31125,7 @@ Nesta NNP
 Nestier NNP
 Nestor NNP
 Nestore NNP
+Net RB
 Nethaniah NNP
 Netta NNP
 Nettancourt NNP
@@ -30843,6 +31136,7 @@ Neublans-Abergement NNP
 Neubois NNP
 Neubourg NNP
 Neuchatel-Urtiere NNP
+Neuf JJ
 Neuf-Berquin NNP
 Neuf-Brisach NNP
 Neuf-Marche NNP
@@ -31040,6 +31334,7 @@ Ngozi NNP
 Nguyen NNP
 Nguyet NNP
 Nhung NNP
+Ni CC
 Nia NNP
 Niafles NNP
 Niall NNP
@@ -31114,6 +31409,7 @@ Nielles-les-Blequin NNP
 Nielles-les-Calais NNP
 Niels NNP
 Nieppe NNP
+Nier VBG
 Niergnies NNP
 Nieudan NNP
 Nieuil NNP
@@ -31216,6 +31512,7 @@ Nkosana NNP
 Nkosazana NNP
 Nkruma NNP
 Nnamdi NNP
+No VB
 Noa NNP
 Noach NNP
 Noah NNP
@@ -31235,6 +31532,7 @@ Nocario NNP
 Noce NNP
 Noceta NNP
 Nochize NNP
+Nocturne JJ
 Nod-sur-Seine NNP
 Nods NNP
 Noe NNP
@@ -31328,8 +31626,10 @@ Nomecourt NNP
 Nomeny NNP
 Nomexy NNP
 Nommay NNP
+Nommé VBN
 Nompatelize NNP
 Nomusa NNP
+Non RB
 Nona NNP
 Nonac NNP
 Nonancourt NNP
@@ -31342,6 +31642,7 @@ Nonglard NNP
 Nonhigny NNP
 Nonie NNP
 Nonieres NNP
+Nonobstant RB
 Nonsard-Lamarche NNP
 Nontron NNP
 Nonville NNP
@@ -31401,8 +31702,11 @@ Norwood NNP
 Nossage-et-Benevent NNP
 Nossoncourt NNP
 Nostang NNP
+Not VB
+Notant VBG
 Noth NNP
 Nothalten NNP
+Notre PRP$
 Notre-Dame-d'Aliermont NNP
 Notre-Dame-d'Allençon NNP
 Notre-Dame-d'Elle NNP
@@ -31465,8 +31769,10 @@ Nousseviller-Saint-Nabor NNP
 Nousseviller-St-Nabor NNP
 Nousseviller-les-Bitche NNP
 Nousty NNP
+Nouveau JJ
 Nouveau-Brunswick NNP
 Nouveau-Mexique NNP
+Nouvel JJ
 Nouvelle-Calédonie NNP
 Nouvelle-Zélande NNP
 Nouvelle-Écosse NNP
@@ -31572,6 +31878,7 @@ Nuits NNP
 Nuits-Saint-Georges NNP
 Nuits-St-Georges NNP
 Nukualofa NNP
+Nul JJ
 Nullemont NNP
 Nully-Tremilly NNP
 Nunavut NNP
@@ -31601,7 +31908,10 @@ Nyree NNP
 Nyssa NNP
 Nyx NNP
 Nándor NNP
+Né VBN
 Néant-sur-Yvel NNP
+Née VBN
+Négocier VB
 Népal NNP
 Nîmes NNP
 Nîmes-Armées NNP
@@ -31644,10 +31954,13 @@ Obervisse NNP
 Obi NNP
 Obies NNP
 Objat NNP
+Objectif JJ
 Oblinghem NNP
 Obrechies NNP
 Obreck NNP
+Obsolète JJ
 Obsonville NNP
+Obstiné VBN
 Obterre NNP
 Obtree NNP
 Ocana NNP
@@ -31655,6 +31968,7 @@ Occagnes NNP
 Occey NNP
 Occhiatana NNP
 Occoches NNP
+Occupée VBN
 Ocean NNP
 Ochancourt NNP
 Oches NNP
@@ -31720,12 +32034,15 @@ Offekerque NNP
 Offemont NNP
 Offendorf NNP
 Offenheim NNP
+Offert VBN
 Offignies NNP
 Offin NNP
 Offlanges NNP
 Offoy NNP
 Offranville NNP
+Offre VB
 Offrethun NNP
+Offrir VB
 Offroicourt NNP
 Offwiller NNP
 Ofra NNP
@@ -31892,6 +32209,7 @@ Omonville-la-Rogue NNP
 Omps NNP
 Omri NNP
 Oms NNP
+On PRP
 Ona NNP
 Onans NNP
 Onard NNP
@@ -31923,12 +32241,14 @@ Onnion NNP
 Onora NNP
 Onoz NNP
 Ons-en-Bray NNP
+Ont VB
 Ontario NNP
 Ontex NNP
 Onur NNP
 Onville NNP
 Onvillers NNP
 Onzain NNP
+Onze CD
 Oo NNP
 Oona NNP
 Oonagh NNP
@@ -31945,9 +32265,11 @@ Opoul-Perillos NNP
 Oppede NNP
 Oppedette NNP
 Oppenans NNP
+Opposant VBG
 Oppy NNP
 Oprah NNP
 Optevoz NNP
+Or CC
 Ora NNP
 Oraas NNP
 Orabela NNP
@@ -31989,6 +32311,7 @@ Orchaise NNP
 Orchamps NNP
 Orchamps-Vennes NNP
 Orches NNP
+Orchestra VB
 Orchies NNP
 Orcier NNP
 Orcieres NNP
@@ -32035,6 +32358,7 @@ Oriane NNP
 Orianne NNP
 Oricourt NNP
 Orieux NNP
+Originaire JJ
 Orignac NNP
 Origne NNP
 Orignolles NNP
@@ -32252,6 +32576,7 @@ Ottrott NNP
 Ottwiller NNP
 Ottó NNP
 Otávio NNP
+Ou CC
 Ouagadougou NNP
 Ouagne NNP
 Ouainville NNP
@@ -32279,6 +32604,7 @@ Ougney NNP
 Ougney-Douvot NNP
 Ougny NNP
 Ouhans NNP
+Oui UH
 Ouida NNP
 Ouides NNP
 Ouillon NNP
@@ -32296,6 +32622,7 @@ Oulles NNP
 Oullins NNP
 Oulmes NNP
 Oulon NNP
+Oumarou-Ganda VB
 Ounans NNP
 Oupia NNP
 Our NNP
@@ -32325,8 +32652,10 @@ Oussoy-en-Gatinais NNP
 Oust NNP
 Oust-Marest NNP
 Ouste NNP
+Outa VB
 Outarville NNP
 Outines NNP
+Outre RB
 Outreau NNP
 Outrebois NNP
 Outremecourt NNP
@@ -32336,6 +32665,7 @@ Outtersteene NNP
 Ouvans NNP
 Ouve-Wirquin NNP
 Ouveillan NNP
+Ouverte VBN
 Ouville NNP
 Ouville-l'Abbaye NNP
 Ouville-la-Bien-Tournée NNP
@@ -32568,6 +32898,7 @@ Papak NNP
 Papillion NNP
 Papleux NNP
 Papouasie-Nouvelle-Guinée NNP
+Par IN
 Paradou NNP
 Paraguay NNP
 Paramaribo NNP
@@ -32600,6 +32931,7 @@ Pardies-Pietat NNP
 Pardines NNP
 Pareac NNP
 Pareid NNP
+Pareil JJ
 Parempuyre NNP
 Parennes NNP
 Parent NNP
@@ -32610,6 +32942,7 @@ Parenty NNP
 Parey-Saint-Cesaire NNP
 Parey-St-Cesaire NNP
 Parey-sous-Montfort NNP
+Parfaite JJ
 Parfondeval NNP
 Parfondru NNP
 Parfondrupt NNP
@@ -32635,6 +32968,7 @@ Parigny NNP
 Parigny-la-Rose NNP
 Parigny-les-Vaux NNP
 Paris NNP
+Paris- VBN
 Paris-01 NNP
 Paris-02 NNP
 Paris-03 NNP
@@ -32661,6 +32995,7 @@ Paris-Rp NNP
 Paris-l'Hopital NNP
 Paris-la-Défense NNP
 Parisa NNP
+Parisien JJ
 Parisot NNP
 Parker NNP
 Parlan NNP
@@ -32669,6 +33004,7 @@ Parleboscq NNP
 Parlement NN
 Parly NNP
 Parmain NNP
+Parmi IN
 Parmilocation NNP
 Parnac NNP
 Parnans NNP
@@ -32694,6 +33030,7 @@ Pars-les-Chavanges NNP
 Pars-les-Romilly NNP
 Parsac NNP
 Parsifal NNP
+Partant VBG
 Parth NNP
 Parthalan NNP
 Parthenay NNP
@@ -32701,6 +33038,8 @@ Parthenay-de-Bretagne NNP
 Parthenia NNP
 Parthenope NNP
 Partinello NNP
+Partir VB
+Partout RB
 Parux NNP
 Parvaiz NNP
 Parvanah NNP
@@ -32739,6 +33078,7 @@ Passavant-en-Argonne NNP
 Passavant-la-Rochere NNP
 Passavant-sur-Layon NNP
 Passay NNP
+Passe VB
 Passel NNP
 Passenans NNP
 Passin NNP
@@ -32822,6 +33162,7 @@ Pavlo NNP
 Pavlos NNP
 Pawel NNP
 Pax NNP
+Payer VB
 Payns NNP
 Payrac NNP
 Payre NNP
@@ -32906,6 +33247,7 @@ Pembe NNP
 Pen NNP
 Penchard NNP
 Pencran NNP
+Pendant IN
 Pende NNP
 Pene NNP
 Penelope NNP
@@ -32925,6 +33267,7 @@ Pennesieres NNP
 Pennsylvanie NNP
 Penny NNP
 Penol NNP
+Pensez VB
 Pensol NNP
 Penta-Acquatella NNP
 Penta-Di-Casinca NNP
@@ -32955,6 +33298,7 @@ Percy NNP
 Percy-en-Auge NNP
 Perdita NNP
 Perdreauville NNP
+Perdu VBN
 Pere NNP
 Peregrine NNP
 Pereille NNP
@@ -33024,6 +33368,7 @@ Perreuil NNP
 Perreuse NNP
 Perreux NNP
 Perrex NNP
+Perri VBN
 Perrier NNP
 Perrieres NNP
 Perriers-en-Beauficel NNP
@@ -33084,6 +33429,7 @@ Peterkin NNP
 Petersbach NNP
 Peti NNP
 Petia NNP
+Petit JJ
 Petit-Auverne NNP
 Petit-Bersac NNP
 Petit-Coeur NNP
@@ -33104,6 +33450,7 @@ Petit-Tenquin NNP
 Petit-Verly NNP
 Petit-Wingen NNP
 Petit-Xivry NNP
+Petite JJ
 Petite-Chaux NNP
 Petite-Foret NNP
 Petite-Rosselle NNP
@@ -33135,11 +33482,14 @@ Pettonville NNP
 Petula NNP
 Petunia NNP
 Petya NNP
+Peu RB
 Peugeot NNP
 Peujard NNP
 Peumerit NNP
 Peumerit-Quintin NNP
 Peuplingues NNP
+Peut VB
+Peut-être RB
 Peuton NNP
 Peuvillers NNP
 Peux-et-Couffouleux NNP
@@ -33271,6 +33621,7 @@ Phoebe NNP
 Phoebus NNP
 Photine NNP
 Photios NNP
+Photocopié VBN
 Phrixus NNP
 Phuong NNP
 Phyliss NNP
@@ -33415,6 +33766,7 @@ Pimprez NNP
 Pin NNP
 Pin-Balma NNP
 Pin-Mories NNP
+Pina VB
 Pinas NNP
 Pinay NNP
 Pince NNP
@@ -33450,6 +33802,8 @@ Pipra NNP
 Pipriac NNP
 Piquecos NNP
 Pirajoux NNP
+Piraté VBN
+Pire JJ
 Pire-sur-Seiche NNP
 Pirey NNP
 Piri NNP
@@ -33488,6 +33842,7 @@ Pizay NNP
 Pizieux NNP
 Plabennec NNP
 Place NNP
+Placer VB
 Placey NNP
 Plachy-Buyon NNP
 Placid NNP
@@ -33499,6 +33854,7 @@ Placy-Montaigu NNP
 Plagne NNP
 Plagnole NNP
 Plagny NNP
+Plaidant VBG
 Plaigne NNP
 Plailly NNP
 Plaimbois-Vennes NNP
@@ -33572,6 +33928,7 @@ Pledeliac NNP
 Pledran NNP
 Pleguien NNP
 Plehedel NNP
+Pleine JJ
 Pleine-Fougeres NNP
 Pleine-Selve NNP
 Pleine-Seve NNP
@@ -33755,6 +34112,7 @@ Plurien NNP
 Plusquellec NNP
 Plussulien NNP
 Pluto NNP
+Plutôt RB
 Pluvault NNP
 Pluvet NNP
 Pluvigner NNP
@@ -34146,6 +34504,8 @@ Porto-Vecchio NNP
 Ports-sur-Vienne NNP
 Portsall NNP
 Portugal NNP
+Porté VBN
+Portée VBN
 Posanges NNP
 Poseidon NNP
 Poses NNP
@@ -34225,6 +34585,7 @@ Poumarous NNP
 Poupas NNP
 Poupry NNP
 Pouques-Lormes NNP
+Pour IN
 Pourcharesses NNP
 Pourcheres NNP
 Pourcieux NNP
@@ -34232,11 +34593,13 @@ Pourcy NNP
 Pourlans NNP
 Pournoy-la-Chétive NNP
 Pournoy-la-Grasse NNP
+Pourquoi RB
 Pourrain NNP
 Pourrieres NNP
 Poursac NNP
 Poursay-Garnaud NNP
 Poursiugues-Boucoue NNP
+Pourtant RB
 Pouru-Aux-Bois NNP
 Pouru-Saint-Remy NNP
 Pouru-St-Remy NNP
@@ -34248,6 +34611,7 @@ Poussignac NNP
 Poussy-la-Campagne NNP
 Pousthomy NNP
 Poutay NNP
+Pouvait- VB
 Pouvrai NNP
 Pouxeux NNP
 Pouy NNP
@@ -34385,12 +34749,14 @@ Premery NNP
 Premesques NNP
 Premeyzel NNP
 Premian NNP
+Premier CD
 Premieres NNP
 Premierfait NNP
 Premilhat NNP
 Premillocation NNP
 Premont NNP
 Premontre NNP
+Prenant VBG
 Prendeignes NNP
 Preneron NNP
 Prenois NNP
@@ -34411,6 +34777,7 @@ Presles-et-Boves NNP
 Presles-et-Thierny NNP
 Presly NNP
 Presnoy NNP
+Presque RB
 Pressac NNP
 Pressagny-l'Orgueilleux NNP
 Pressiat NNP
@@ -34474,6 +34841,7 @@ Prin-Deyrancon NNP
 Princay NNP
 Prince NNP
 Princess NNP
+Principal JJ
 Pringy NNP
 Prinquiau NNP
 Prinsuejols NNP
@@ -34490,11 +34858,14 @@ Prissey NNP
 Prissy NNP
 Privas NNP
 Privezac NNP
+Privé VBN
 Prix-les-Mezieres NNP
 Priya NNP
 Priziac NNP
 Prizy NNP
 Proche-Orient NNP
+Profond JJ
+Programmée VBN
 Proissans NNP
 Proisy NNP
 Proix NNP
@@ -34502,11 +34873,13 @@ Projan NNP
 Prometheus NNP
 Promilhanes NNP
 Prompsat NNP
+Promulguée VBN
 Prondines NNP
 Pronleroy NNP
 Pronville NNP
 Propiac NNP
 Propieres NNP
+Proposé VBN
 Propriano NNP
 Proserpina NNP
 Proserpine NNP
@@ -34588,6 +34961,8 @@ Pré-en-Pail NNP
 Préfontaines NNP
 Prégilbert NNP
 Préguillac NNP
+Présenté VBN
+Prêt JJ
 Psyche NNP
 Ptah NNP
 Ptolema NNP
@@ -34637,6 +35012,7 @@ Puiseux-le-Hauberger NNP
 Puisieulx NNP
 Puisieux NNP
 Puisieux-et-Clanlocation NNP
+Puisque CC
 Puissalicon NNP
 Puisseguin NNP
 Puisserguier NNP
@@ -34659,6 +35035,7 @@ Pulverieres NNP
 Pulversheim NNP
 Punchy NNP
 Punerot NNP
+Punir VB
 Puntous NNP
 Pupillin NNP
 Purdie NNP
@@ -34766,9 +35143,11 @@ Pála NNP
 Páll NNP
 Pål NNP
 Pékin NNP
+Pénalisé VBN
 Pénélope NNP
 Pérou NNP
 Péter NNP
+Pétrifié VBN
 Pétur NNP
 Pòl NNP
 Pól NNP
@@ -34787,16 +35166,20 @@ Quanah NNP
 Quand CC
 Quang NNP
 Quanna NNP
+Quant IN
 Quantilly NNP
 Quarante NNP
 Quarouble NNP
 Quarre-les-Tombes NNP
 Quasquara NNP
+Quatorze CD
+Quatre CD
 Quatre-Champs NNP
 Quatre-Routes-d'Albussac NNP
 Quatre-Saisons NNP
 Quatremare NNP
 Quatzenheim NNP
+Que CC
 Queant NNP
 Queaux NNP
 Quebriac NNP
@@ -34804,10 +35187,12 @@ Quedillac NNP
 Queen NNP
 Queenie NNP
 Queige NNP
+Quel PRP
 Quelaines-Saint-Gault NNP
 Quelaines-St-Gault NNP
 Quelmes NNP
 Quelneuc NNP
+Quelque PRP
 Quemeneven NNP
 Quemigny-Poisot NNP
 Quemigny-sur-Seine NNP
@@ -34859,6 +35244,7 @@ Queyrieres NNP
 Queyssac NNP
 Queyssac-les-Vignes NNP
 Quezac NNP
+Qui PRP
 Quiana NNP
 Quianna NNP
 Quiberon NNP
@@ -34926,10 +35312,13 @@ Quiry-le-Sec NNP
 Quissac NNP
 Quistinic NNP
 Quito NNP
+Quittant VBG
+Quitte VB
 Quittebeuf NNP
 Quitteur NNP
 Quivieres NNP
 Quoeux-Haut-Mainil NNP
+Quoi PRP
 Qusay NNP
 Quy NNP
 Quyen NNP
@@ -34963,9 +35352,11 @@ Rachel NNP
 Rachele NNP
 Rachelle NNP
 Raches NNP
+Racheter VB
 Rachid NNP
 Rachyl NNP
 Racines NNP
+Raciste JJ
 Raclaw NNP
 Racquel NNP
 Racquinghem NNP
@@ -35015,6 +35406,7 @@ Raffaello NNP
 Raffetot NNP
 Rafiq NNP
 Rafiqa NNP
+Raflé VBN
 Rageade NNP
 Raghnaid NNP
 Raghnailt NNP
@@ -35213,6 +35605,7 @@ Raphaela NNP
 Raphaël NNP
 Raphele-les-Arles NNP
 Rapilly NNP
+Rappelant VBG
 Rapsecourt NNP
 Raquel NNP
 Raray NNP
@@ -35228,6 +35621,7 @@ Rashne NNP
 Rasigueres NNP
 Raslay NNP
 Rasmus NNP
+Rassurée VBN
 Rasteau NNP
 Rastus NNP
 Ratan NNP
@@ -35238,6 +35632,7 @@ Ratieres NNP
 Ratnam NNP
 Ratte NNP
 Ratzwiller NNP
+Raté VBN
 Raucoules NNP
 Raucourt NNP
 Raucourt-Au-Bois NNP
@@ -35343,6 +35738,7 @@ Rebreuve-sur-Canche NNP
 Rebreuviette NNP
 Recanoz NNP
 Recey-sur-Ource NNP
+Recha VB
 Rechesy NNP
 Rechicourt NNP
 Rechicourt-la-Petite NNP
@@ -35356,6 +35752,8 @@ Recloses NNP
 Recologne NNP
 Recologne-les-Ray NNP
 Recologne-les-Rioz NNP
+Reconnaissant VBG
+Reconnaître VB
 Recoubeau-Jansac NNP
 Recoules-Previnquieres NNP
 Recoules-d'Aubrac NNP
@@ -35366,6 +35764,7 @@ Recouvrance NNP
 Recques-sur-Course NNP
 Recques-sur-Hem NNP
 Recquignies NNP
+Recréer VB
 Reculfoz NNP
 Recurt NNP
 Recy NNP
@@ -35379,6 +35778,7 @@ Redmond NNP
 Redmund NNP
 Redon NNP
 Redortiers NNP
+Redoutez VB
 Reece NNP
 Reed NNP
 Reena NNP
@@ -35397,6 +35797,7 @@ Reg NNP
 Regades NNP
 Regan NNP
 Regana NNP
+Regardez VB
 Regat NNP
 Regena NNP
 Reggie NNP
@@ -35456,6 +35857,7 @@ Reithouse NNP
 Reitwiller NNP
 Rejaumont NNP
 Rejet-de-Beaulocation NNP
+Relancée VBN
 Relanges NNP
 Relans NNP
 Relevant NNP
@@ -35481,6 +35883,7 @@ Remerangles NNP
 Remereville NNP
 Remering-les-Hargarten NNP
 Remering-les-Puttelange NNP
+Remettre VB
 Remicourt NNP
 Remiel NNP
 Remiencourt NNP
@@ -35520,6 +35923,7 @@ Renage NNP
 Renaison NNP
 Renansart NNP
 Renard NNP
+Renarde VB
 Renata NNP
 Renate NNP
 Renato NNP
@@ -35531,10 +35935,12 @@ Renauvoid NNP
 Renay NNP
 Renaze NNP
 Rencurel NNP
+Rendant VBG
 Rene NNP
 Renedale NNP
 Renescure NNP
 Reneve NNP
+Renforcé VBN
 Renie NNP
 Rening NNP
 Renita NNP
@@ -35551,10 +35957,12 @@ Rennes-sur-Loue NNP
 Renneval NNP
 Renneville NNP
 Renno NNP
+Renoncer VB
 Rentieres NNP
 Rentilly NNP
 Renty NNP
 Renung NNP
+Renvoyé VBN
 Renwez NNP
 Renzo NNP
 Renáta NNP
@@ -35565,16 +35973,21 @@ Repaix NNP
 Reparsac NNP
 Repel NNP
 Repentigny NNP
+Repliée VBN
 Replonges NNP
 Reppe NNP
+Représentant VBG
 Requeil NNP
 Requista NNP
 Resenlocation NNP
 Resigny NNP
+Respect JJ
+Ressassant VBG
 Resson NNP
 Ressons NNP
 Ressons-le-Long NNP
 Ressons-sur-Matz NNP
+Reste VB
 Restigne NNP
 Restinclieres NNP
 Retaud NNP
@@ -36741,13 +37154,23 @@ Ryo NNP
 Ryota NNP
 Ryszard NNP
 Ráichéal NNP
+Râleur JJ
 Réamann NNP
 Rébecca NNP
 Régine NNP
 Régis NNP
 Rémi NNP
 Rémy NNP
+Rénové VBN
+Répandu VBN
+Répondant VBG
+Républicain JJ
+Réputé VBN
+Réticente JJ
+Rétrograder VB
+Réunie VBN
 Réunion NNP
+Révélatrice JJ
 Ríghnach NNP
 Ríoghnach NNP
 Ríona NNP
@@ -36766,7 +37189,10 @@ SARL NNP
 SNCF NNP
 SNES NNP
 SNTRS NNP
+SNUipp-FSU JJ
 SUD NNP
+SUD-aérien JJ
+Sa PRP$
 Sa'd NNP
 Sa'dia NNP
 Sa'id NNP
@@ -40721,6 +41147,7 @@ Salses-le-Château NNP
 Salsigne NNP
 Salt-en-Donzy NNP
 Salud NNP
+Salue VB
 Salut NNP
 Salvador NNP
 Salvagnac NNP
@@ -40902,6 +41329,7 @@ Santos NNP
 Santosse NNP
 Santranges NNP
 Santuzza NNP
+Santé VBN
 Sanvensa NNP
 Sanvignes-les-Mines NNP
 Sanxay NNP
@@ -41068,6 +41496,7 @@ Saudemont NNP
 Saudoy NNP
 Saudron NNP
 Saudrupt NNP
+Sauf IN
 Saugeot NNP
 Saugnac-et-Cambran NNP
 Saugnacq-et-Muret NNP
@@ -41336,6 +41765,7 @@ Scherlenheim NNP
 Scherwiller NNP
 Schillersdorf NNP
 Schiltigheim NNP
+Schipper VB
 Schirlenhof NNP
 Schirmeck NNP
 Schirrhein NNP
@@ -41385,8 +41815,10 @@ Scoury NNP
 Scout NNP
 Scrignac NNP
 Scrupt NNP
+Scruté VBN
 Scy-Chazelles NNP
 Scye NNP
+Se PRP
 Seachnall NNP
 Seaghdh NNP
 Seailles NNP
@@ -41408,6 +41840,7 @@ Sebourg NNP
 Sebouville NNP
 Sebrazac NNP
 Seby NNP
+Sec JJ
 Secenans NNP
 Sechault NNP
 Secheras NNP
@@ -41498,6 +41931,7 @@ Selles-sur-Nahon NNP
 Sellieres NNP
 Selma NNP
 Selommes NNP
+Selon IN
 Seloncourt NNP
 Selongey NNP
 Selonnet NNP
@@ -41746,6 +42180,7 @@ Sernhac NNP
 Serocourt NNP
 Seron NNP
 Serpaize NNP
+Serpent VB
 Serques NNP
 Serqueux NNP
 Serquigny NNP
@@ -41826,6 +42261,7 @@ Seuil NNP
 Seuil-d'Argonne NNP
 Seuillet NNP
 Seuilly NNP
+Seul JJ
 Seumas NNP
 Seur NNP
 Seurre NNP
@@ -41860,6 +42296,7 @@ Sevrier NNP
 Sevry NNP
 Seward NNP
 Sewen NNP
+Sex JJ
 Sexcles NNP
 Sexey-Aux-Forges NNP
 Sexey-les-Bois NNP
@@ -42056,6 +42493,7 @@ Shura NNP
 Shyam NNP
 Shyama NNP
 Shyla NNP
+Si CC
 Sian NNP
 Siana NNP
 Siani NNP
@@ -42128,6 +42566,7 @@ Signy-Montlibert NNP
 Signy-Signets NNP
 Signy-l'Abbaye NNP
 Signy-le-Petit NNP
+Signé VBN
 Sigogne NNP
 Sigolsheim NNP
 Sigonce NNP
@@ -42220,6 +42659,7 @@ Singleyrac NNP
 Singly NNP
 Singrist NNP
 Sini NNP
+Sinon CC
 Sinsat NNP
 Sinzos NNP
 Sinéad NNP
@@ -42268,6 +42708,7 @@ Sivry-la-Perche NNP
 Sivry-les-Buzancy NNP
 Sivry-sur-Meuse NNP
 Siwan NNP
+Six CD
 Six-Fours-les-Plages NNP
 Sixt-Fer-A-Cheval NNP
 Sixt-sur-Aff NNP
@@ -42294,6 +42735,7 @@ Smermesnil NNP
 Sobieslaw NNP
 Soccia NNP
 Sochaux NNP
+Societa VB
 Socourt NNP
 Socrates NNP
 Socx NNP
@@ -42321,6 +42763,8 @@ Soisy-Bouy NNP
 Soisy-sous-Montmorency NNP
 Soisy-sur-Ecole NNP
 Soisy-sur-Seine NNP
+Soit CC
+Soixante-six CD
 Soize NNP
 Soizy-Aux-Bois NNP
 Sol NNP
@@ -42409,6 +42853,7 @@ Sommeville NNP
 Sommevoire NNP
 Sommieres NNP
 Sommieres-du-Clain NNP
+Sommé VBN
 Sompt NNP
 Sompuis NNP
 Somsois NNP
@@ -42436,6 +42881,7 @@ Sonneville NNP
 Sonnie NNP
 Sonny NNP
 Sons-et-Roncheres NNP
+Sont VB
 Sonthonnax-la-Montagne NNP
 Sonya NNP
 Sonzay NNP
@@ -42492,6 +42938,7 @@ Sorquainville NNP
 Sorrel NNP
 Sorrus NNP
 Sort-en-Chalosse NNP
+Sorti VBN
 Sortosville NNP
 Sortosville-en-Beaumont NNP
 Sos NNP
@@ -42531,6 +42978,7 @@ Soucieu-en-Jarrest NNP
 Soucirac NNP
 Souclin NNP
 Soucy NNP
+Soudain RB
 Soudaine-Lavinadiere NNP
 Soudan NNP
 Soudat NNP
@@ -42639,6 +43087,8 @@ Soussey-sur-Brionne NNP
 Soustelle NNP
 Soustons NNP
 Sousville NNP
+Soutenir VB
+Soutenu VBN
 Souternon NNP
 Soutiers NNP
 Souvans NNP
@@ -42674,9 +43124,11 @@ Spezet NNP
 Spicheren NNP
 Spike NNP
 Spincourt NNP
+Spinetta VB
 Spiridon NNP
 Spiro NNP
 Spiros NNP
+Splendide JJ
 Sponville NNP
 Spoy NNP
 Spring NNP
@@ -46169,6 +46621,7 @@ Stamatia NNP
 Stamatios NNP
 Stamatis NNP
 Stan NNP
+Standard JJ
 Stanford NNP
 Stanimir NNP
 Stanislas NNP
@@ -46532,6 +46985,7 @@ Suarce NNP
 Suare NNP
 Suaucourt-et-Pisseloup NNP
 Suaux NNP
+Subervie JJ
 Subhash NNP
 Subira NNP
 Sublaines NNP
@@ -46546,6 +47000,7 @@ Sudhir NNP
 Sue NNP
 Suevres NNP
 Suez NNP
+Suffit VB
 Sugeres NNP
 Sugny NNP
 Suha NNP
@@ -46559,6 +47014,7 @@ Suin NNP
 Suippes NNP
 Suisnes NNP
 Suisse NNP
+Suit VB
 Suizy-le-Franc NNP
 Sukie NNP
 Sulabha NNP
@@ -46599,6 +47055,7 @@ Superbagneres NNP
 Superbolquere NNP
 Superdevoluy NNP
 Supt NNP
+Sur IN
 Suraj NNP
 Surat NNP
 Suraya NNP
@@ -46622,10 +47079,13 @@ Surinder NNP
 Suris NNP
 Surjoux NNP
 Surmont NNP
+Surplombant VBG
+Surprise VB
 Surques NNP
 Surrain NNP
 Surtainville NNP
 Surtauville NNP
+Surtout RB
 Survie NNP
 Surville NNP
 Survilliers NNP
@@ -46763,6 +47223,7 @@ Síne NNP
 Síomha NNP
 Síthmaith NNP
 Søren NNP
+Sûr JJ
 Sülayman NNP
 Süleiman NNP
 Süleyman NNP
@@ -46947,7 +47408,9 @@ Tannieres NNP
 Tannois NNP
 Tanques NNP
 Tansy NNP
+Tant RB
 Tantonville NNP
+Tantôt RB
 Tanus NNP
 Tanville NNP
 Tanya NNP
@@ -47077,6 +47540,7 @@ Tazilly NNP
 Taïwan NNP
 Tbilissi NNP
 Tchad NNP
+Tchadien JJ
 Teagan NNP
 Teague NNP
 Teal NNP
@@ -47142,6 +47606,7 @@ Tendon NNP
 Tendron NNP
 Tendu NNP
 Teneur NNP
+Tenir VB
 Tennessee NNP
 Tennie NNP
 Tennyson NNP
@@ -47674,6 +48139,7 @@ Tilly-sur-Seulles NNP
 Tilques NNP
 Tim NNP
 Timaeus NNP
+Time VB
 Timeus NNP
 Timmy NNP
 Timo NNP
@@ -47711,10 +48177,12 @@ Tirent-Pontejac NNP
 Tirepied NNP
 Tirzah NNP
 Tisha NNP
+Tissant VBG
 Tissey NNP
 Titania NNP
 Titilayo NNP
 Tito NNP
+Titrée VBN
 Titty NNP
 Titus NNP
 Tivadar NNP
@@ -47861,6 +48329,7 @@ Tossiat NNP
 Tostat NNP
 Tostes NNP
 Totainville NNP
+Total JJ
 Totes NNP
 Totty NNP
 Touchay NNP
@@ -47921,6 +48390,7 @@ Tournai-sur-Dive NNP
 Tournan NNP
 Tournan-en-Brie NNP
 Tournans NNP
+Tournant VBG
 Tournavaux NNP
 Tournay NNP
 Tournay-sur-Odon NNP
@@ -47988,7 +48458,9 @@ Toussieu NNP
 Toussieux NNP
 Tousson NNP
 Toussus-le-Noble NNP
+Tout PRP
 Toutainville NNP
+Toute PRP
 Toutenant NNP
 Toutencourt NNP
 Toutens NNP
@@ -48018,6 +48490,7 @@ Tracy-le-Val NNP
 Tracy-sur-Loire NNP
 Tracy-sur-Mer NNP
 Trades NNP
+Traduit VBN
 Traenheim NNP
 Trafford NNP
 Tragny NNP
@@ -48133,6 +48606,7 @@ Treilles-en-Gatinais NNP
 Treillieres NNP
 Trein-d'Ustou NNP
 Treix NNP
+Treize CD
 Treize-Septiers NNP
 Treize-Vents NNP
 Trejouls NNP
@@ -48327,6 +48801,7 @@ Troischamps NNP
 Troisfontaines NNP
 Troisfontaines-la-Ville NNP
 Troisgots NNP
+Troisième CD
 Troissereux NNP
 Troissy NNP
 Troisvaux NNP
@@ -48342,6 +48817,7 @@ Tronsanges NNP
 Tronville NNP
 Tronville-en-Barrois NNP
 Troo NNP
+Trop RB
 Trosly-Breuil NNP
 Trosly-Loire NNP
 Trouan-le-Grand NNP
@@ -48355,6 +48831,7 @@ Troussencourt NNP
 Troussey NNP
 Troussures NNP
 Trouvans NNP
+Trouvez VB
 Trouville NNP
 Trouville-la-Haule NNP
 Trouville-sur-Mer NNP
@@ -48474,6 +48951,8 @@ Tzofiya NNP
 Tzufit NNP
 Tähti NNP
 Téhéran NNP
+Témoignant VBG
+Tétanisé VBN
 Tímea NNP
 Tòmas NNP
 Tünde NNP
@@ -48549,13 +49028,16 @@ Umar NNP
 Umberto NNP
 Ume NNP
 Umpeau NNP
+Un DT
 Una NNP
 Unac NNP
 Uncey-le-Franc NNP
 Unchair NNP
 Undine NNP
+Une DT
 Unesco NNP
 Ungersheim NNP
+Uni VBN
 Unias NNP
 Unice NNP
 Unienville NNP
@@ -48651,6 +49133,7 @@ Utah NNP
 Ute NNP
 Utelle NNP
 Uthman NNP
+Utilisez VB
 Uttenheim NNP
 Uttenhoffen NNP
 Uttwiller NNP
@@ -48679,6 +49162,8 @@ Uzma NNP
 Uzos NNP
 Uzziah NNP
 Uzziel NNP
+VIe CD
+Va VB
 Vaas NNP
 Vabre NNP
 Vabre-Tizac NNP
@@ -49098,6 +49583,7 @@ Vassincourt NNP
 Vassogne NNP
 Vassonville NNP
 Vassy NNP
+Vaste JJ
 Vasteville NNP
 Vasu NNP
 Vasya NNP
@@ -49274,6 +49760,7 @@ Vayres-sur-Essonne NNP
 Vazeilles-Limandre NNP
 Vazeilles-Pres-Saugues NNP
 Vazerac NNP
+Ve CD
 Veasna NNP
 Veauce NNP
 Veauche NNP
@@ -49416,6 +49903,7 @@ Venetia NNP
 Venette NNP
 Veneux-les-Sablons NNP
 Veney NNP
+Venez VB
 Venezuela NNP
 Vengeons NNP
 Veniamin NNP
@@ -49776,6 +50264,7 @@ Vezins-de-Levezou NNP
 Vezot NNP
 Vezzani NNP
 Vi NNP
+Via IN
 Viabon NNP
 Viais NNP
 Viala-du-Tarn NNP
@@ -49894,6 +50383,7 @@ Viens NNP
 Vientiane NNP
 Vienville NNP
 Vier-Bordes NNP
+Vierge JJ
 Viersat NNP
 Vierville NNP
 Vierville-sur-Mer NNP
@@ -50690,7 +51180,12 @@ Vineuil-Saint-Firmin NNP
 Vineuil-St-Firmin NNP
 Vinezac NNP
 Vingrau NNP
+Vingt VB
 Vingt-Hanaps NNP
+Vingt-cinq CD
+Vingt-deux CD
+Vingt-huit CD
+Vingt-quatre CD
 Vinh NNP
 Vinko NNP
 Vinnemerville NNP
@@ -50770,6 +51265,7 @@ Virville NNP
 Viry NNP
 Viry-Chatillon NNP
 Viry-Noureuil NNP
+Virée VBN
 Vis-en-Artois NNP
 Visan NNP
 Viscomtat NNP
@@ -50845,6 +51341,7 @@ Viuz-la-Chiesaz NNP
 Vivaise NNP
 Vivans NNP
 Vivario NNP
+Vive JJ
 Viveka NNP
 Viven NNP
 Viverols NNP
@@ -50900,16 +51397,20 @@ Vogelgrun NNP
 Voglans NNP
 Vogue NNP
 Voharies NNP
+Voici RB
 Void-Vacon NNP
 Voigny NNP
 Voilemont NNP
 Voillans NNP
 Voillecomte NNP
+Voilà RB
 Voimhaut NNP
 Voinemont NNP
 Voingt NNP
 Voinsles NNP
 Voipreux NNP
+Voir VBN
+Voire RB
 Voires NNP
 Voiron NNP
 Voirrey NNP
@@ -50972,6 +51473,8 @@ Vosges NNPS
 Vosgi NNP
 Vosne-Romanee NNP
 Vosnon NNP
+Voter VB
+Votre PRP$
 Vou NNP
 Vouarces NNP
 Vouciennes NNP
@@ -50995,6 +51498,7 @@ Vouilly NNP
 Voujeaucourt NNP
 Voulaines-les-Templiers NNP
 Voulangis NNP
+Voulant VBG
 Vouleme NNP
 Voulgezac NNP
 Voulon NNP
@@ -51024,6 +51528,7 @@ Vouzeron NNP
 Vouziers NNP
 Vouzon NNP
 Vouzy NNP
+Voué VBN
 Voves NNP
 Vovray-en-Bornes NNP
 Voyenne NNP
@@ -51057,6 +51562,7 @@ Vroncourt-la-Cote NNP
 Vroville NNP
 Vry NNP
 Vsevolod NNP
+Vu VBN
 Vue NNP
 Vuillafans NNP
 Vuillecin NNP
@@ -51149,6 +51655,7 @@ Wancourt NNP
 Wanda NNP
 Wandignies-Hamage NNP
 Wanel NNP
+Wang JJ
 Wangen NNP
 Wangenbourg NNP
 Wangenbourg-Engenthal NNP
@@ -51183,6 +51690,7 @@ Warwick NNP
 Washington NNP
 Wasigny NNP
 Wasim NNP
+Wasn't VB
 Wasnes-Au-Bac NNP
 Wasquehal NNP
 Wasselonne NNP
@@ -51457,6 +51965,12 @@ Wynonna NNP
 Wynter NNP
 Wyoming NNP
 Wystan NNP
+XIIe CD
+XIXe CD
+XVIIIe CD
+XVe CD
+XXIe CD
+XXe CD
 Xabier NNP
 Xaffevillers NNP
 Xaintrailles NNP
@@ -51818,6 +52332,7 @@ Zhou NNP
 Zia NNP
 Ziba NNP
 Zicavo NNP
+Zidane JJ
 Zigliara NNP
 Zilia NNP
 Zilla NNP
@@ -51986,6 +52501,7 @@ abondante JJ
 abondantes JJ
 abondants JJ
 abonde VB
+abondent VB
 abonder VB
 abonné VBN
 abonnée VBN
@@ -52041,15 +52557,19 @@ abrutie VBN
 abrutir VB
 abrège VB
 abréger VB
+abrégée VBN
 abscons JJ
 absence NN
 absent JJ
 absentait VB
+absente JJ
 absenter VB
+absolu JJ
 absolue JJ
 absolues JJ
 absolument RB
 absolus JJ
+absolutoire JJ
 absorba VB
 absorbaient VB
 absorbait VB
@@ -52065,6 +52585,7 @@ absous VBN
 abstenait VB
 abstenir VB
 abstenu VB
+abstenue VBN
 abstint VB
 abstraire VB
 abstrait VBN
@@ -52083,6 +52604,7 @@ abusif JJ
 abusive JJ
 abusivement RB
 abusé VBN
+abyssaux JJ
 abêtir VB
 abîma VB
 abîmait VB
@@ -52093,6 +52615,7 @@ abîmé VBN
 abîmée VBN
 abîmées VBN
 abîmés VBN
+académicien JJ
 académique JJ
 académiques JJ
 acariâtre JJ
@@ -52110,6 +52633,7 @@ accablé VBN
 accablée VBN
 accablés VBN
 accaparait VB
+accaparant VBG
 accapare VB
 accaparer VB
 accaparé VBN
@@ -52171,6 +52695,7 @@ accommodaient VB
 accommodait VB
 accommodant VBG
 accommode VB
+accommodent VB
 accommoder VB
 accommodé VBN
 accompagna VB
@@ -52285,7 +52810,9 @@ accroître VB
 accru VBN
 accrue VBN
 accrut VB
+accrédite VB
 accréditer VB
+accrû VBN
 accueil NN
 accueillaient VB
 accueillait VB
@@ -52325,6 +52852,7 @@ accusent VB
 accuser VB
 accuserait VB
 accusez VB
+accusé VBN
 accusée VBN
 accède VB
 accès NN
@@ -52394,6 +52922,7 @@ achèteront VB
 achètes VB
 achève VB
 achèvent VB
+achèvera VB
 achèverait VB
 acidulés VBN
 acier NN
@@ -52419,21 +52948,25 @@ acte NN
 actes NN
 acteur NN
 acteurs NN
+actif JJ
 actifs JJ
 action NN
 actionnait VB
 actionnant VB
+actionnarial JJ
 actionne VB
 actionner VB
 actionné VBN
 actions NN
 activaient VB
 activait VB
+activant VBG
 active JJ
 activement RB
 activent VB
 activer VB
 actives JJ
+activiste JJ
 activité NN
 activités NNS
 actuel JJ
@@ -52441,9 +52974,11 @@ actuelle JJ
 actuellement RB
 actuelles JJ
 actuels JJ
+actée VBN
 acéré VBN
 acérée VBN
 acérées VBN
+ad RB
 adaptait VB
 adapte VB
 adapter VB
@@ -52455,13 +52990,20 @@ additionne VB
 adhère VB
 adhérait VB
 adhérer VB
+adhéré VBN
+adhésif JJ
 adieu NN
 adieux NNS
 adipeux JJ
 adjoindre VB
+adjoint VBN
 adjudant NN
+adjugeant VBG
+adjugé VBN
+adjugée VBN
 adjurait VB
 adjurant VB
+adjure VB
 admet VB
 admets VB
 admettaient VB
@@ -52515,6 +53057,7 @@ adonnaient VB
 adonnait VB
 adonne VB
 adonner VB
+adonnera VB
 adonné VB
 adopta VB
 adoptait VB
@@ -52545,6 +53088,7 @@ adosser VB
 adossé VBN
 adossée VBN
 adossés VBN
+adoubé VBN
 adouci VBN
 adoucie VBN
 adoucir VB
@@ -52583,6 +53127,7 @@ advint VB
 adéquat JJ
 adéquate JJ
 adéquats JJ
+aequo RB
 affable JJ
 affables JJ
 affaibli VBN
@@ -52595,6 +53140,7 @@ affaiblit VB
 affaira VB
 affairaient VB
 affairait VB
+affairant VBG
 affaire NN
 affairent VB
 affairer VB
@@ -52652,6 +53198,7 @@ affichaient VB
 affichais VB
 affichait VB
 affichant VB
+affiche VB
 affichent VB
 afficher VB
 affiches NN
@@ -52661,6 +53208,7 @@ affichés VBN
 affilée VBN
 affinait VB
 affiner VB
+affinée VBN
 affirma VB
 affirmai VB
 affirmaient VB
@@ -52717,25 +53265,31 @@ affrontant VB
 affronte VB
 affrontent VB
 affronter VB
+affrontera VB
 affronté VBN
 affublant VB
 affubler VB
 affublé VBN
+affublée VBN
 affublés VBN
 affût NN
 affûter VB
 affûté VBN
 affûtée VBN
+afghane JJ
 afin IN
 africain JJ
 africaine JJ
 africaines JJ
 africains JJ
+afro-américain JJ
 agace VB
 agacent VB
 agacer VB
 agacé VBN
 agacée VBN
+again JJ
+against JJ
 agaça VB
 agaçaient VB
 agaçait VB
@@ -52764,6 +53318,7 @@ agglutinés VBN
 aggrava VB
 aggravaient VB
 aggravait VB
+aggravant VBG
 aggrave VB
 aggraver VB
 aggravé VBN
@@ -52812,6 +53367,7 @@ agrandissaient VB
 agrandissait VB
 agrandissent VB
 agrandit VB
+agressant VBG
 agresse VB
 agressif JJ
 agressifs JJ
@@ -52834,6 +53390,8 @@ agrippé VBN
 agrippée VBN
 agrippées VBN
 agrippés VBN
+agroalimentaire JJ
+agrègent VB
 agréable JJ
 agréablement RB
 agréables JJ
@@ -52881,6 +53439,7 @@ aigrelette JJ
 aigrement RB
 aigres JJ
 aigri VBN
+aigrir VB
 aigu JJ
 aiguille NN
 aiguilles NN
@@ -52945,6 +53504,8 @@ aisées JJ
 aisément RB
 aisés JJ
 ait VB
+ajourner VB
+ajournée VBN
 ajouré VBN
 ajourée VBN
 ajourées VBN
@@ -52983,10 +53544,12 @@ alarmante JJ
 alarmantes JJ
 alarmants JJ
 alarmer VB
+alarmiste JJ
 alarmé VBN
 alarmée VBN
 albinos JJ
 album NN
+alcatel JJ
 alchimique JJ
 alcool NN
 alcoolisées VBN
@@ -52999,6 +53562,7 @@ alertée VBN
 alertés VBN
 alezane JJ
 algues NNS
+algérien JJ
 algérienne JJ
 algériennes JJ
 algérois JJ
@@ -53020,6 +53584,7 @@ alimentait VB
 alimente VB
 alimentent VB
 alimenter VB
+alimenté VBN
 alimentée VBN
 aliéna VB
 aliénante JJ
@@ -53031,6 +53596,7 @@ allais VB
 allait VB
 allaiter VB
 allant VBG
+allemand JJ
 allemande JJ
 allemandes JJ
 aller VB
@@ -53038,6 +53604,8 @@ allergique JJ
 allez UH
 alliait VB
 alliance NN
+alliant VBG
+allie VB
 allier VB
 alliez VB
 allions VB
@@ -53045,6 +53613,7 @@ allié VBN
 alliée VBN
 alliées VBN
 allo UH
+allon- VBN
 allonge VB
 allongea VB
 allongeai VB
@@ -53061,6 +53630,8 @@ allongées VBN
 allongés VBN
 allons VB
 allouait VB
+allouer VB
+alloué VBN
 alluma VB
 allumai VB
 allumaient VB
@@ -53104,6 +53675,7 @@ alourdi VBN
 alourdie VBN
 alourdies VBN
 alourdir VB
+alourdira VB
 alourdis VBN
 alourdissaient VB
 alourdissait VB
@@ -53113,10 +53685,17 @@ alpague VB
 alpaguer VB
 alphabétique JJ
 alpin JJ
+alpine JJ
 alpins JJ
+alsacien JJ
+alsacienne JJ
+alter JJ
+altermondialiste JJ
 alternaient VB
 alternant VBG
+alternatif JJ
 alternativement RB
+alterne VB
 alternent VB
 alterner VB
 altier JJ
@@ -53130,6 +53709,7 @@ aléatoire JJ
 amadouer VB
 amaigri VBN
 amaigrie VBN
+amalgamer VB
 amant NN
 amants NNS
 amarrer VB
@@ -53156,6 +53736,7 @@ ambiguë JJ
 ambiguës JJ
 ambitieuse JJ
 ambition NN
+ambitionne VB
 ambitions NNS
 ambré VBN
 ambrée VBN
@@ -53167,6 +53748,8 @@ amena VB
 amenaient VB
 amenait VB
 amenant VB
+amender VB
+amendée VBN
 amener VB
 amenez VB
 amenuisait VB
@@ -53192,10 +53775,12 @@ amidonné VBN
 amidonnés VBN
 amie NN
 amincit VB
+amiral JJ
 amis NN
 amitié NN
 amitiés NNS
 amoché VBN
+amoindri VBN
 amoindrir VB
 amolli VBN
 amollie VBN
@@ -53203,6 +53788,8 @@ amollir VB
 amollit VB
 amoncelaient VB
 amoncelés VBN
+amorce VB
+amorcent VB
 amorcer VB
 amorcé VBN
 amorcée VBN
@@ -53264,6 +53851,8 @@ améliorait VB
 améliore VB
 améliorer VB
 amélioré VBN
+améliorée VBN
+aménage VB
 aménager VB
 aménagé VBN
 aménagée VBN
@@ -53271,23 +53860,27 @@ aménagées VBN
 aménagés VBN
 américain JJ
 américaine JJ
-américains JJ
 américaines JJ
+américains JJ
+américano-nippon JJ
 an NN
 anachronique JJ
 anachroniques JJ
 anal JJ
 analogue JJ
 analogues JJ
+analphabète JJ
 analysait VB
 analyser VB
 analysé VBN
 anarchique JJ
+anatolien JJ
 anatomique JJ
 anatomiques JJ
 ancestral JJ
 ancestrale JJ
 ancestrales JJ
+ancestraux JJ
 ancien JJ
 ancienne JJ
 anciennement RB
@@ -53299,12 +53892,17 @@ ancré VBN
 ancrée VBN
 ancrés VBN
 ancêtres NNS
+and VB
+andalouse JJ
+androgyne JJ
 anecdotique JJ
 anesthésiée VBN
 ange NN
 anges NNS
+anglaise JJ
 angle NN
 angles NNS
+anglo-allemande JJ
 anglo-saxon JJ
 anglo-saxonne JJ
 anglo-saxonnes JJ
@@ -53315,6 +53913,7 @@ angoissants JJ
 angoisse NN
 angoissé VBN
 angoissée VBN
+angulaire JJ
 anguleuse JJ
 anguleuses JJ
 anguleux JJ
@@ -53323,6 +53922,7 @@ angéliques JJ
 anima VB
 animaient VB
 animait VB
+animal JJ
 animale JJ
 animales JJ
 animant VB
@@ -53337,11 +53937,14 @@ animées VBN
 animés VBN
 annexer VB
 annexé VBN
+annihilant JJ
+annonce-t- VB
 annoncent VB
 annoncer VB
 annoncerait VB
 annonciateur JJ
 annonciateurs JJ
+annonciatrice JJ
 annoncèrent VB
 annoncé VBN
 annoncée VBN
@@ -53353,11 +53956,14 @@ annonçais VB
 annonçait VB
 annonçant VB
 annonçât VB
+annotée VBN
 annuel JJ
 annuelle JJ
 annulait VB
 annule VB
 annuler VB
+annulé VBN
+annulée VBN
 année NN
 années NNS
 anodin JJ
@@ -53366,18 +53972,38 @@ anodines JJ
 anodins JJ
 anonyme JJ
 anonymes JJ
+anormal JJ
 anormale JJ
 anormalement RB
 ans NNS
+anthracite JJ
+anti-Chirac JJ
+anti-occidental JJ
+antiaméricain JJ
+antiaérien JJ
 antiaérienne JJ
+anticapitaliste JJ
 antichars JJ
+anticipant VBG
 anticipe VB
+anticipent VB
+anticiper VB
+anticipé VBN
 anticipée VBN
 anticommuniste JJ
+anticoncurrentiel JJ
+antidopage JJ
+antieuropéenne JJ
+antifranquiste JJ
+antifraude JJ
 antimilitariste JJ
 antipathique JJ
 antique JJ
 antiques JJ
+antirusse VB
+antisalazariste JJ
+antiterroriste JJ
+antitrust JJ
 antérieur JJ
 antérieure JJ
 antérieurement RB
@@ -53442,6 +54068,7 @@ apitoyer VB
 apitoyé VBN
 apitoyée VBN
 aplani VBN
+aplanir VB
 aplati VBN
 aplatie VBN
 aplaties VBN
@@ -53457,6 +54084,7 @@ apoplectique JJ
 apostolique JJ
 apostropha VB
 apostrophait VB
+apostrophent VB
 apparaissaient VB
 apparaissait VB
 apparaissant VB
@@ -53506,6 +54134,7 @@ apparurent VB
 apparus VB
 apparut VB
 apparût VB
+appauvrie VBN
 appel NN
 appela VB
 appelai VB
@@ -53538,6 +54167,7 @@ appesantir VB
 appesantissait VB
 appesantit VB
 applaudi VBN
+applaudie VBN
 applaudir VB
 applaudirent VB
 applaudis VBN
@@ -53637,6 +54267,7 @@ approfondi VBN
 approfondie VBN
 approfondir VB
 approfondit VB
+appropriant VBG
 approprier VB
 approprié VBN
 appropriée VBN
@@ -53652,6 +54283,7 @@ approuvent VB
 approuver VB
 approuvèrent VB
 approuvé VBN
+approuvée VBN
 approuvés VBN
 approvisionner VB
 approximatif JJ
@@ -53713,25 +54345,33 @@ aptes JJ
 aquatique JJ
 aquatiques JJ
 aquilin JJ
+arabe JJ
 araignée NN
+arbitraire JJ
 arbitrairement RB
 arbitraires JJ
+arbitral JJ
+arbitrer VB
 arboraient VB
 arborait VB
 arborant VB
 arbore VB
 arborent VB
 arborer VB
+arborée JJ
 arbre NN
 arbres NNS
 arc NN
 arc-boutant NN
+arc-en-ciel JJ
 arcades NNS
 archaïque JJ
 archaïques JJ
+archaïsant VBG
 architectural JJ
 architecturale JJ
 architecturales JJ
+architecturaux JJ
 architecture NN
 ardemment RB
 ardent JJ
@@ -53743,19 +54383,25 @@ ardu JJ
 ardue JJ
 ardus JJ
 argent NN
+argentin JJ
 argentine JJ
 argentines JJ
+argentino-ritalo-parigote JJ
 argenté VBN
 argentée VBN
 argentées VBN
 argentés VBN
 argotique JJ
 arguant VB
+arguer VB
+argumente VB
 argumenter VB
+argumenté VBN
 aride JJ
 arides JJ
 aristocratique JJ
 aristocratiques JJ
+arlésienne JJ
 arma VB
 armait VB
 arme NN
@@ -53764,6 +54410,7 @@ armes NN
 armistice NN
 armoire NN
 armé VBN
+arménien JJ
 arménienne JJ
 armés VBN
 aromatiques JJ
@@ -53782,6 +54429,7 @@ arrachais VB
 arrachait VB
 arrachant VB
 arrache VB
+arrache-pied RB
 arrachent VB
 arracher VB
 arrachera VB
@@ -53909,6 +54557,7 @@ artificiellement RB
 artificielles JJ
 artificiels JJ
 artillerie NN
+artisan JJ
 artisanale JJ
 artistement RB
 artistes NN
@@ -53916,6 +54565,7 @@ artistique JJ
 artistiquement RB
 artistiques JJ
 arts NNS
+arty JJ
 as VB
 ascendante JJ
 ascenseur NN
@@ -53930,6 +54580,7 @@ aspergeait VB
 aspergeant VB
 asperger VB
 aspergé VBN
+asphyxiant VBG
 asphyxié VBN
 aspira VB
 aspiraient VB
@@ -53942,6 +54593,7 @@ aspirer VB
 aspiré VBN
 aspirée VBN
 assagi VBN
+assagie VBN
 assaillaient VB
 assaillait VB
 assaille VB
@@ -54073,6 +54725,7 @@ assumait VB
 assume VB
 assumer VB
 assumé VBN
+assumée VBN
 assura VB
 assurai VB
 assuraient VB
@@ -54097,6 +54750,7 @@ assèche VB
 assène VB
 assécher VB
 asséché VBN
+asséna VB
 assîmes VB
 asthmatique JJ
 asticoter VB
@@ -54115,6 +54769,7 @@ astronomiques JJ
 astucieuse JJ
 astucieux JJ
 asymétriques JJ
+at JJ
 atavique JJ
 atelier NN
 athlétique JJ
@@ -54123,19 +54778,23 @@ atmosphère NN
 atmosphérique JJ
 atomique JJ
 atomiques JJ
+atomisé VBN
 atone JJ
+atrabilaire JJ
 atroce JJ
 atrocement RB
 atroces JJ
 atrophié VBN
 attabler VB
 attablé VBN
+attablée VBN
 attablés VBN
 attacha VB
 attachaient VB
 attachais VB
 attachait VB
 attachant VBG
+attache VB
 attachent VB
 attacher VB
 attachez VB
@@ -54186,6 +54845,7 @@ atteindrait VB
 atteindre VB
 atteins VB
 atteint VBN
+atteinte VBN
 atteints VBN
 atteler VB
 attelé VBN
@@ -54300,6 +54960,7 @@ attristait VB
 attristant VBG
 attriste VB
 attrister VB
+attristera VB
 attristé VBN
 attrouper VB
 atténua VB
@@ -54311,6 +54972,7 @@ atténuer VB
 atténué VBN
 atténuée VBN
 au IN
+au- VBN
 au-dedans RB
 au-dehors RB
 au-delà RB
@@ -54340,9 +55002,11 @@ augmenter VB
 augmenté VBN
 augurait VB
 augurer VB
+auguste JJ
 aujourd'hui RB
 auparavant RB
 auprès RB
+auquel PRP
 aura VB
 aurai VB
 auraient VB
@@ -54362,8 +55026,10 @@ ausculter VB
 ausculté VBN
 aussi RB
 aussitôt RB
+austral JJ
 australe JJ
 australien JJ
+australienne JJ
 australiens JJ
 austère JJ
 austères JJ
@@ -54373,9 +55039,12 @@ auteur NN
 authentique JJ
 authentiquement RB
 authentiques JJ
+autiste JJ
 auto NN
 autobiographique JJ
 autobus NN
+autochtone JJ
+autodestructrice JJ
 automatique JJ
 automatiquement RB
 automatiques JJ
@@ -54383,6 +55052,8 @@ automnal JJ
 automne NN
 autonome JJ
 autonomes JJ
+autoproclamé JJ
+autopsier VB
 autorisa VB
 autorisaient VB
 autorisait VB
@@ -54402,8 +55073,11 @@ autre JJ
 autrefois RB
 autrement RB
 autres JJ
+autrichien JJ
+autrichienne JJ
 autrichiennes JJ
 autrui PRP
+auvergnate JJ
 aux IN
 avachi VBN
 avachie VBN
@@ -54420,6 +55094,7 @@ avalant VBG
 avale VB
 avalent VB
 avaler VB
+avalera VB
 avalé VBN
 avalée VBN
 avalées VBN
@@ -54455,6 +55130,7 @@ avançais VB
 avançait VB
 avançant VB
 avançons VB
+avare JJ
 avares JJ
 avarié VBN
 avec IN
@@ -54525,10 +55201,13 @@ avivée VBN
 avocat NN
 avocats NNS
 avoir VB
+avoisinant JJ
 avoisinantes JJ
 avoisinants JJ
+avoisine VB
 avons VB
 avorter VB
+avortée VBN
 avoua VB
 avouable JJ
 avouables JJ
@@ -54553,7 +55232,11 @@ avère VB
 avéra VB
 avéraient VB
 avérait VB
+avérera VB
 avéré VB
+avérée VBN
+axé VBN
+axée VBN
 ayant VBG
 ayez VB
 ayons VB
@@ -54564,12 +55247,15 @@ aériennes JJ
 aériens JJ
 aéré VBN
 aérée VBN
+aîné JJ
 aïe UH
 babiller VB
 bac NN
+badigeonnant VBG
 badigeonné VBN
 badigeonnés VBN
 badin JJ
+bafoue VB
 bafouer VB
 bafouilla VB
 bafouillait VB
@@ -54617,6 +55303,7 @@ baissant VBG
 baisse VB
 baissent VB
 baisser VB
+baissera VB
 baissèrent VB
 baissé VBN
 baissée VBN
@@ -54663,6 +55350,7 @@ balbutie VB
 balbutier VB
 balbutié VBN
 balcon NN
+balisé VBN
 balkanique JJ
 balkaniques JJ
 ballant VBG
@@ -54679,12 +55367,14 @@ ballottée VBN
 ballottés VBN
 balnéaire JJ
 baltes JJ
+balthusien JJ
 balustrade NN
 balèze JJ
 banal JJ
 banale JJ
 banalement RB
 banales JJ
+banalisé VBN
 banals JJ
 banc NN
 bancaire JJ
@@ -54692,6 +55382,7 @@ bancaires JJ
 bancal JJ
 bancale JJ
 bancs NNS
+band JJ
 banda VB
 bandais VB
 bandait VB
@@ -54707,6 +55398,7 @@ bandés VBN
 banlieue NN
 banlieusarde JJ
 banni VBN
+bannie VBN
 bannir VB
 banque NN
 banquette NN
@@ -54722,6 +55414,7 @@ bar NN
 baragouinait VB
 baraque NN
 baratiner VB
+barbare JJ
 barbe NN
 barbier NN
 barbotait VB
@@ -54731,6 +55424,7 @@ barbouiller VB
 barbouillé VBN
 barbouillée VBN
 barbouillés VBN
+barbu JJ
 barbue JJ
 bardé VBN
 bardée VBN
@@ -54742,6 +55436,7 @@ bariolées VBN
 bariolés VBN
 barman NN
 baron NN
+baroque JJ
 baroques JJ
 barque NN
 barques NNS
@@ -54755,6 +55450,7 @@ barrent VB
 barrer VB
 barrez VB
 barricadait VB
+barricadant VBG
 barricader VB
 barricadé VBN
 barricadés VBN
@@ -54764,6 +55460,7 @@ barrée VBN
 barrées VBN
 barrés VBN
 bas RB
+basant VBG
 basané VBN
 bascula VB
 basculaient VB
@@ -54782,6 +55479,7 @@ basses JJ
 bassin NN
 bassiner VB
 basta UH
+basé VBN
 basée VBN
 basés VBN
 bat VB
@@ -54825,6 +55523,7 @@ bavardent VB
 bavarder VB
 bavardions VB
 bavardé VB
+bavaroise JJ
 bavaroises JJ
 bavent VB
 baver VB
@@ -54844,6 +55543,7 @@ becté VBN
 bedonnant VBG
 beige JJ
 bel JJ
+belge JJ
 belle JJ
 bellement RB
 belles JJ
@@ -54863,6 +55563,7 @@ bercés VBN
 berger NN
 berlinois JJ
 berlinoise JJ
+berlusconienne VB
 berner VB
 berné VBN
 berrichon JJ
@@ -54887,6 +55588,7 @@ beurre NN
 beurrer VB
 beurré VBN
 beurrées VBN
+bi-communal JJ
 biais NN
 bible NN
 bibliothèque NN
@@ -54897,6 +55599,7 @@ bicyclette NN
 bidonne VB
 bien RB
 bien-pensant JJ
+bien/ VBN
 bienfaisant JJ
 bienfaisante JJ
 bienfaisantes JJ
@@ -54906,18 +55609,23 @@ bientôt RB
 bienveillant JJ
 bienveillante JJ
 bienveillants JJ
+bifrontal JJ
+bifurque VB
 bifurqué VBN
 bigarrée VBN
 bigler VB
 bigrement RB
 bijou NN
+bijoutier JJ
 bijoux NNS
+bilatéraux JJ
 biler VB
 bilingue JJ
 billard NN
 billes NNS
 billet NN
 billets NNS
+binational JJ
 binoclard JJ
 biographiques JJ
 biologique JJ
@@ -54973,6 +55681,7 @@ blessé VBN
 blessée VBN
 blessées VBN
 blette JJ
+bleu JJ
 bleue JJ
 bleues JJ
 bleuies VBN
@@ -54990,6 +55699,7 @@ blindées VBN
 bloc NN
 blocs NNS
 blondasse JJ
+blonde JJ
 blonds JJ
 bloqua VB
 bloquaient VB
@@ -55038,12 +55748,14 @@ boitant VB
 boite VB
 boiter VB
 boiteuse JJ
+boiteux JJ
 boitillant VBG
 boive VB
 boivent VB
 bol NN
 bolchevique JJ
 bolcheviques JJ
+bolivienne JJ
 bombait VB
 bombant VB
 bombarda VB
@@ -55078,6 +55790,7 @@ bondit VB
 bondé VBN
 bondés VBN
 bonheur NN
+bonhomme JJ
 bonjour UH
 bonne JJ
 bonnement RB
@@ -55107,6 +55820,7 @@ borna VB
 bornaient VB
 bornait VB
 bornant VB
+borne VB
 borner VB
 bornes NN
 borné VBN
@@ -55152,6 +55866,7 @@ bouda VB
 boudait VB
 bouddhiste JJ
 boude VB
+boudent VB
 bouder VB
 boudeur JJ
 boudeuse JJ
@@ -55253,6 +55968,7 @@ bourguignonne JJ
 bourra VB
 bourrait VB
 bourrant VBG
+bourrelé VBN
 bourrent VB
 bourrer VB
 bourru JJ
@@ -55262,6 +55978,7 @@ bourrée VBN
 bourrées VBN
 bourrés VBN
 bourse NN
+boursier JJ
 boursouflé VBN
 boursouflée VBN
 boursouflés VBN
@@ -55294,6 +56011,8 @@ boutons NN
 bouts NNS
 bovine JJ
 boxer VB
+boycotter VB
+boycotté VBN
 boîte NN
 boîtes NNS
 brailla VB
@@ -55348,6 +56067,7 @@ brassait VB
 brassant VB
 brasser VB
 brassé VBN
+bravache JJ
 bravant VB
 brave JJ
 bravement RB
@@ -55362,12 +56082,15 @@ bredouilles JJ
 bredouillé VBN
 bref RB
 brefs JJ
+brestoise JJ
+breton JJ
 bretonne JJ
 bretonnes JJ
 bribes NNS
 bricolait VB
 bricoler VB
 bricolé VBN
+bride VB
 bridés VBN
 briffer VB
 brigadier NN
@@ -55394,6 +56117,7 @@ brisa VB
 brisaient VB
 brisait VB
 brisant VBG
+brise VB
 brisent VB
 briser VB
 briserait VB
@@ -55424,6 +56148,7 @@ bronzé VBN
 bronzée VBN
 bronzées VBN
 bronzés VBN
+brookien JJ
 brossa VB
 brossait VB
 brosse NN
@@ -55486,6 +56211,7 @@ brutalement RB
 brutales JJ
 brutaux JJ
 bruts JJ
+bruxelloise JJ
 bruyamment RB
 bruyant JJ
 bruyante JJ
@@ -55493,6 +56219,8 @@ bruyantes JJ
 bruyants JJ
 brève JJ
 brèves JJ
+brésilien JJ
+brésilienne JJ
 brésiliennes JJ
 brûla VB
 brûlaient VB
@@ -55514,12 +56242,14 @@ brûlées VBN
 brûlés VBN
 bu VBN
 bucolique JJ
+budgétaire JJ
 bue VBN
 buffet NN
 buisson NN
 buissonnière JJ
 buissons NNS
 bungalow NN
+buraliste JJ
 bureau NN
 bureaux NNS
 burent VB
@@ -55550,6 +56280,7 @@ byzantin JJ
 byzantine JJ
 byzantines JJ
 bâche NN
+bâché VBN
 bâcler VB
 bâclé VBN
 bâfrer VB
@@ -55604,9 +56335,12 @@ bénissait VB
 bénisse VB
 bénite JJ
 bénéficiaient VB
+bénéficiaire JJ
 bénéficiait VB
+bénéficiant VBG
 bénéficie VB
 bénéficier VB
+bénéficiera VB
 bénéficié VB
 bénéfique JJ
 bénévole JJ
@@ -55615,10 +56349,12 @@ bénévoles JJ
 béret NN
 béton NN
 bêcher VB
+bête JJ
 bêtement RB
 bêtise NN
 bêtises NN
 bûmes VB
+c JJ
 c' DT
 c'est-à-dire RB
 cabalistiques JJ
@@ -55711,12 +56447,14 @@ calez VB
 calfeutré VBN
 calfeutrée VBN
 californien JJ
+californienne JJ
 calle NN
 calleuses JJ
 calligraphié VBN
 calma VB
 calmait VB
 calmante JJ
+calme JJ
 calmement RB
 calment VB
 calmer VB
@@ -55732,6 +56470,7 @@ calée VBN
 calés VBN
 camarade NN
 camarades NNS
+cambodgien JJ
 cambré VBN
 cambrée VBN
 cambrés VBN
@@ -55759,6 +56498,8 @@ camps NNS
 campé VBN
 campée VBN
 camus JJ
+canadien JJ
+canadienne JJ
 canadiennes JJ
 canal NN
 canaliser VB
@@ -55768,6 +56509,7 @@ canards NNS
 candide JJ
 candides JJ
 candie VBN
+caniculaire JJ
 canin JJ
 canne NN
 canner VB
@@ -55775,6 +56517,7 @@ canné VBN
 canon NN
 cantine NN
 cantonné VBN
+cantonnée VBN
 cantonnés VBN
 caoutchouc NN
 caoutchouteux JJ
@@ -55821,9 +56564,12 @@ carbonisés VBN
 carcasse NN
 carcéral JJ
 carcérale JJ
+card VB
 cardiaque JJ
 cardiaques JJ
+cardinal JJ
 cardinale JJ
+cardinaux JJ
 caressa VB
 caressai VB
 caressaient VB
@@ -55843,6 +56589,7 @@ caricatural JJ
 caricaturale JJ
 carillonner VB
 carmer VB
+carnavalesque JJ
 carnet NN
 carre VB
 carreau NN
@@ -55859,6 +56606,7 @@ carrément RB
 carte NN
 cartes NNS
 carton NN
+cartonne VB
 cartons NNS
 cas NN
 caser VB
@@ -55889,15 +56637,20 @@ cassé VBN
 cassée VBN
 cassées VBN
 cassés VBN
+castriste JJ
 casé VBN
+catalan JJ
 catalogué VBN
 catastrophe NN
 catastrophique JJ
+catastrophé JJ
 cathédrale NN
+catimini RB
 catégorique JJ
 catégoriquement RB
 catégoriques JJ
 cauchemar NN
+cauchemardesque JJ
 causa VB
 causaient VB
 causais VB
@@ -55917,8 +56670,10 @@ causée VBN
 causées VBN
 causés VBN
 cauteleux JJ
+cautionne VB
 cavalaient VB
 cavalant VB
+cavalcadant VBG
 cavalent VB
 cavaler VB
 cavalerie NN
@@ -55928,6 +56683,7 @@ cave NN
 caverneuse JJ
 caverneux JJ
 caves NN
+caviardée VBN
 ce PRP
 ceci PRP
 ceint VBN
@@ -55964,13 +56720,18 @@ censé JJ
 censée JJ
 censées JJ
 censés JJ
+cent CD
 centaine NN
 centaines NNS
 centenaires JJ
 centimètres NNS
 central JJ
+centralise VB
+centralisé VBN
 centre NN
 centrifuge JJ
+centriste JJ
+centrée VBN
 cents NNS
 cependant RB
 cercle NN
@@ -56026,13 +56787,16 @@ cette PRP
 ceux PRP
 ceux-ci PRP
 ceux-là PRP
+ch'timi VBN
 chacun PRP
 chacune PRP
 chafouine JJ
 chagrin JJ
 chagrinait VB
 chagriner VB
+chahute VB
 chahuter VB
+chahuteur JJ
 chair NN
 chairs NNS
 chaise NN
@@ -56141,6 +56905,7 @@ charbon NN
 charbonneuse JJ
 charbonneuses JJ
 charbonneux JJ
+charbonnier JJ
 chargea VB
 chargeai VB
 chargeaient VB
@@ -56241,6 +57006,7 @@ chaussettes NNS
 chaussures NNS
 chaussé VBN
 chaussés VBN
+chauve JJ
 chavira VB
 chavirait VB
 chavire VB
@@ -56249,6 +57015,7 @@ chaviré VBN
 chavirés VBN
 chaîne NN
 chaînes NN
+che VB
 chef NN
 chefs NNS
 chemin NN
@@ -56279,6 +57046,7 @@ chercherais VB
 chercherait VB
 chercheront VB
 cherches VB
+chercheur JJ
 cherchez VB
 cherchiez VB
 cherchions VB
@@ -56310,6 +57078,7 @@ chevelus JJ
 chevet NN
 cheveux NNS
 chevilles NN
+chevronnée VBN
 chevronnés VBN
 chevrotante JJ
 chez IN
@@ -56321,6 +57090,7 @@ chialé VBN
 chiant VBG
 chiante JJ
 chiants JJ
+chic JJ
 chiche JJ
 chichement RB
 chiches JJ
@@ -56334,8 +57104,12 @@ chiffon NN
 chiffonnait VB
 chiffonné VBN
 chiffre NN
+chiffrera VB
 chiffres NN
+chiffré VBN
+chiffrée VBN
 chignon NN
+chilien JJ
 chilienne JJ
 chimique JJ
 chimiques JJ
@@ -56348,6 +57122,7 @@ chiottes NNS
 chiper VB
 chipé VBN
 chiquer VB
+chiraquien JJ
 chirurgical JJ
 chirurgicale JJ
 chié VBN
@@ -56389,11 +57164,13 @@ choqués VBN
 chose NN
 choses NN
 chou NN
+choyé VBN
 chromatique JJ
 chromé VBN
 chromée VBN
 chromés VBN
 chronologique JJ
+chrétien JJ
 chrétienne JJ
 chrétiennes JJ
 chu VB
@@ -56413,11 +57190,15 @@ chuintant VBG
 chut VB
 chute NN
 chuter VB
+chuté VBN
+chypriote JJ
+chypriote-grecque JJ
 châtains JJ
 château NN
 châteaux NNS
 châtier VB
 châtié VBN
+chère JJ
 chèrement RB
 chères JJ
 chèvre NN
@@ -56430,6 +57211,7 @@ chétifs JJ
 chétive JJ
 chétives JJ
 chêne NN
+ci RB
 ci-après RB
 ci-dessous RB
 ci-dessus RB
@@ -56456,6 +57238,9 @@ cingle VB
 cingler VB
 cinq CD
 cinquante NN
+cinquante-neuf CD
+cinquante-quatre CD
+cinquantième JJ
 cintra VB
 cintré VBN
 cintrée VBN
@@ -56466,6 +57251,7 @@ circoncire VB
 circoncis VBN
 circonflexe JJ
 circonflexes JJ
+circonscrit VB
 circonspect JJ
 circonspects JJ
 circonstance NN
@@ -56502,9 +57288,11 @@ citait VB
 citant VB
 cite VB
 citer VB
+citera VB
 citerai VB
 citez VB
 citée VBN
+civil JJ
 civile JJ
 civilement RB
 civiles JJ
@@ -56552,6 +57340,7 @@ claquèrent VB
 claqué VBN
 claquée VBN
 claquées VBN
+clarifier VB
 clarté NN
 classait VB
 classe NN
@@ -56621,12 +57410,17 @@ clémente JJ
 clérical JJ
 clés NNS
 clôt VB
+clôturer VB
+clôturé VBN
 coagulé VBN
 cocasse JJ
 cocasses JJ
+cochent VB
 cochère JJ
 cochères JJ
 code NN
+codifié VBN
+codé VBN
 coeur NN
 coeurs NNS
 coffre NN
@@ -56675,6 +57469,7 @@ collai VB
 collaient VB
 collait VB
 collant VBG
+collecter VB
 collectif JJ
 collectifs JJ
 collection NN
@@ -56686,6 +57481,7 @@ collectivement RB
 collectives JJ
 collent VB
 coller VB
+collera VB
 collier NN
 colline NN
 collines NNS
@@ -56696,10 +57492,13 @@ collé VBN
 collée VBN
 collées VBN
 collés VBN
+colombien JJ
+colombienne JJ
 colonel NN
 colonial JJ
 coloniale JJ
 coloniales JJ
+colonialiste JJ
 colonie NN
 colonne NN
 colonnes NNS
@@ -56720,7 +57519,9 @@ colorés VBN
 colossal JJ
 colossale JJ
 colossales JJ
+colossaux JJ
 colportait VB
+colporter VB
 coltine VB
 coltiner VB
 colère NN
@@ -56810,9 +57611,11 @@ commençons VB
 commençâmes VB
 commençât VB
 commerce NN
+commercer VB
 commercial JJ
 commerciale JJ
 commerciales JJ
+commercialo-judiciaire JJ
 commerciaux JJ
 commerçants NN
 commet VB
@@ -56827,6 +57630,7 @@ commissaire NN
 commissariat NN
 commission NN
 commit VB
+commode JJ
 commodément RB
 communautaire JJ
 communauté NN
@@ -56844,6 +57648,7 @@ communique VB
 communiquent VB
 communiquer VB
 communiquée VBN
+communiste JJ
 communié VB
 communs JJ
 communément RB
@@ -56864,6 +57669,7 @@ comparais VB
 comparaison NN
 comparait VB
 comparant VBG
+comparatif JJ
 comparaître VB
 compare VB
 comparer VB
@@ -56894,6 +57700,9 @@ complaisance NN
 complaisant VBG
 complaisante JJ
 complaisants JJ
+complet JJ
+complexe JJ
+complice JJ
 complicité NN
 compliquaient VB
 compliquait VB
@@ -56914,6 +57723,7 @@ complétaient VB
 complétait VB
 complétant VB
 compléter VB
+complétera VB
 complété VBN
 complétée VBN
 comportaient VB
@@ -56981,7 +57791,9 @@ compréhensifs JJ
 compréhensive JJ
 comprît VB
 compta VB
+comptabilise VB
 comptabiliser VB
+comptabilisé VBN
 comptaient VB
 comptais VB
 comptait VB
@@ -57011,6 +57823,7 @@ concentraient VB
 concentrait VB
 concentrant VB
 concentration NN
+concentrationnaire JJ
 concentre VB
 concentrer VB
 concentrique JJ
@@ -57019,6 +57832,7 @@ concentré VBN
 concentrée VBN
 concentrées VBN
 concentrés VBN
+conceptuel JJ
 concernaient VB
 concernait VB
 concernant VBG
@@ -57030,6 +57844,7 @@ concernée VBN
 concernés VBN
 concert NN
 concerter VB
+concertée VBN
 concertés VBN
 concevable JJ
 concevais VB
@@ -57040,6 +57855,7 @@ conciliant VBG
 conciliante JJ
 concilier VB
 concis JJ
+concise JJ
 conclu VBN
 concluais VB
 concluait VB
@@ -57054,17 +57870,23 @@ concourir VB
 concours NN
 concourt VB
 concouru VB
+concret JJ
 concrets JJ
 concrète JJ
 concrètement RB
 concrètes JJ
 concrétiser VB
+concurrencer VB
+concurrencée VBN
 concurrente JJ
+concurrentiel JJ
 concède VB
 concéda VB
 concédait VB
+concédant VBG
 concéder VB
 concédé VBN
+concédée VBN
 condamnable JJ
 condamnaient VB
 condamnait VB
@@ -57101,6 +57923,7 @@ conduisirent VB
 conduisis VB
 conduisit VB
 conduit VBN
+conduite VBN
 conduits VBN
 confectionna VB
 confectionnait VB
@@ -57149,6 +57972,7 @@ confirmé VBN
 confirmée VBN
 confisquer VB
 confisqué VBN
+confit VBN
 confits VBN
 confié VBN
 confiée VBN
@@ -57174,12 +57998,17 @@ conformait VB
 conforme JJ
 conformer VB
 conformes JJ
+conformiste JJ
 conformément RB
 confort NN
 confortable JJ
 confortablement RB
 confortables JJ
 conforter VB
+conforté VBN
+confortée VBN
+confrontant VBG
+confronte VB
 confronter VB
 confronté VBN
 confrontée VBN
@@ -57197,6 +58026,7 @@ conférant VB
 conférence NN
 conférer VB
 conféré VBN
+congelé VBN
 congestionné VBN
 congestionnés VBN
 congé NN
@@ -57214,6 +58044,7 @@ conjugal JJ
 conjugale JJ
 conjugales JJ
 conjugaux JJ
+conjugue VB
 conjuguent VB
 conjuguer VB
 conjugué VBN
@@ -57292,6 +58123,7 @@ conseillez VB
 conseillé VBN
 conseils NNS
 consens VB
+consensuel JJ
 consent VB
 consentaient VB
 consentais VB
@@ -57311,8 +58143,12 @@ conserva VB
 conservaient VB
 conservait VB
 conservant VB
+conservateur JJ
+conservatrice JJ
+conserve VB
 conservent VB
 conserver VB
+conservera VB
 conservé VBN
 conservée VBN
 conservées VBN
@@ -57355,8 +58191,10 @@ consolant VBG
 consolante JJ
 consolent VB
 consoler VB
+consolera VB
 consolidait VB
 consolider VB
+consolidé VBN
 consolé VBN
 consolée VBN
 consommait VB
@@ -57364,6 +58202,7 @@ consomme VB
 consomment VB
 consommer VB
 consommé VBN
+consommée VBN
 constamment RB
 constant JJ
 constante JJ
@@ -57442,10 +58281,12 @@ conséquente JJ
 conta VB
 contact NN
 contacter VB
+contacté VBN
 contagieuse JJ
 contagieuses JJ
 contagieux JJ
 contait VB
+contamine VB
 contaminer VB
 contaminé VBN
 contaminée VBN
@@ -57479,6 +58320,7 @@ contentaient VB
 contentais VB
 contentait VB
 contentant VB
+contente VB
 contentent VB
 contenter VB
 contenterait VB
@@ -57576,12 +58418,16 @@ contrastaient VB
 contrastait VB
 contrastant VBG
 contraste NN
+contrasté VBN
+contrastée VBN
 contrat NN
 contre IN
 contre-attaquer VB
 contrebas NN
+contrebasse/ VBN
 contrecarre VB
 contrecarrer VB
+contrecoeur RB
 contredire VB
 contredisait VB
 contredit VBN
@@ -57596,6 +58442,8 @@ contribuera VB
 contribuerait VB
 contribué VB
 contrit JJ
+controversé VBN
+controversée VBN
 contrôlait VB
 contrôlant VB
 contrôler VB
@@ -57604,6 +58452,7 @@ contrôlée VBN
 contrôlées VBN
 conté VBN
 contée VBN
+convainc VB
 convaincant JJ
 convaincante JJ
 convaincre VB
@@ -57612,6 +58461,7 @@ convaincue VBN
 convaincus VBN
 convainquait VB
 convainquit VB
+convalescent JJ
 convenable JJ
 convenablement RB
 convenables JJ
@@ -57620,6 +58470,7 @@ convenait VB
 convenant VB
 convenez VB
 convenir VB
+conventionnel JJ
 conventionnelle JJ
 conventionnels JJ
 convenu VBN
@@ -57629,6 +58480,7 @@ convergeaient VB
 convergeant VB
 convergents JJ
 converger VB
+convergé VBN
 convers JJ
 conversait VB
 conversant VB
@@ -57654,10 +58506,12 @@ convient VB
 convinrent VB
 convint VB
 convié VBN
+conviée VBN
 conviés VBN
 convoi NN
 convoitais VB
 convoitait VB
+convoitant VBG
 convoité VBN
 convoitée VBN
 convoqua VB
@@ -57681,7 +58535,9 @@ conçues VBN
 conçus VBN
 conçut VB
 cool JJ
+coopératif JJ
 coopérer VB
+coordonnant VBG
 coordonner VB
 copain NN
 copains NNS
@@ -57692,6 +58548,7 @@ copieux JJ
 copine NN
 copié VBN
 copiée VBN
+coproduite VBN
 coq NN
 coquet JJ
 corbeille NN
@@ -57714,11 +58571,13 @@ corpulent JJ
 correct RB
 correcte JJ
 correctement RB
+correctionnel JJ
 corrects JJ
 correspond VB
 correspondaient VB
 correspondait VB
 correspondance NN
+correspondant VBG
 correspondent VB
 correspondre VB
 corrige VB
@@ -57733,11 +58592,14 @@ corrompu VBN
 corrosif JJ
 corrosive JJ
 corsage NN
+corse JJ
 corser VB
 corsetée VBN
 corsé VBN
 cortège NN
 corvée NN
+coréen JJ
+coréenne JJ
 cosmique JJ
 cosmopolite JJ
 cosmopolites JJ
@@ -57745,20 +58607,24 @@ cossu JJ
 cossue JJ
 cossues JJ
 cossus JJ
+cost JJ
 costume NN
 costumes NN
 costumé VBN
+cotisé VBN
 coton NN
 cotonneuse JJ
 cotonneuses JJ
 cotonneux JJ
 coté VBN
+cotée VBN
 cou NN
 coucha VB
 couchai VB
 couchaient VB
 couchais VB
 couchait VB
+couchant VBG
 couchent VB
 coucher VB
 couchera VB
@@ -57779,6 +58645,7 @@ coude NN
 coudes NN
 coudre VB
 coudrier NN
+couillu JJ
 couinait VB
 couinant VB
 couiner VB
@@ -57800,6 +58667,7 @@ couloir NN
 couloirs NNS
 coulèrent VB
 coulé VBN
+coulée VBN
 coulés VBN
 coup NN
 coupa VB
@@ -57856,6 +58724,7 @@ couronnée VBN
 couronnées VBN
 couronnés VBN
 courons VB
+courra VB
 courrait VB
 courre NN
 courrier NN
@@ -57913,6 +58782,7 @@ couvrantes JJ
 couvre VB
 couvrent VB
 couvrir VB
+couvrira VB
 couvrirait VB
 couvrirent VB
 couvris VB
@@ -57922,6 +58792,7 @@ couvés VBN
 coïncida VB
 coïncidait VB
 coïncide VB
+coïncident JJ
 coïncider VB
 coûta VB
 coûtaient VB
@@ -57969,6 +58840,7 @@ craintivement RB
 craintives JJ
 crame VB
 cramer VB
+cramera VB
 cramoisis JJ
 cramponna VB
 cramponnait VB
@@ -58078,7 +58950,10 @@ cristal NN
 cristalline JJ
 cristallines JJ
 cristallins JJ
+cristallisé VBN
+critiqua VB
 critiquait VB
+critiquant VBG
 critiquer VB
 critiqué VBN
 crièrent VB
@@ -58112,6 +58987,7 @@ croisions VB
 croisons VB
 croissaient VB
 croissait VB
+croissant VBG
 croissante JJ
 croissants NN
 croisâmes VB
@@ -58161,6 +59037,7 @@ cru VBN
 cruauté NN
 crucial JJ
 cruciale JJ
+cruciaux JJ
 crucifiée VBN
 crue VBN
 cruel JJ
@@ -58169,9 +59046,13 @@ cruellement RB
 cruelles JJ
 cruels JJ
 crues VBN
+crunch JJ
 crurent VB
 crus VBN
 crut VB
+cryogénisé JJ
+crypter VB
+crypté JJ
 crâne NN
 crânement RB
 crâner VB
@@ -58192,10 +59073,12 @@ créatures NNS
 crécher VB
 crédible JJ
 crédit NN
+crédité VBN
 crédule JJ
 crée VB
 créent VB
 créer VB
+crématoire JJ
 crémeuse JJ
 crémeux JJ
 crépis VBN
@@ -58215,11 +59098,15 @@ crépuscule NN
 créé VBN
 créée VBN
 créées VBN
+créér VB
 créés VBN
 crête NN
+crû VBN
 crûment RB
 crûmes VB
 crût VB
+cubain JJ
+cubano-américaine JJ
 cubique JJ
 cubiques JJ
 cucul JJ
@@ -58264,6 +59151,7 @@ culinaire JJ
 culinaires JJ
 culminant VBG
 culotte NN
+culpa VB
 culte NN
 cultivait VB
 cultivant VB
@@ -58279,6 +59167,7 @@ culturel JJ
 culturelle JJ
 culturelles JJ
 culturels JJ
+cumulé VBN
 cupide JJ
 curait VB
 curer VB
@@ -58290,10 +59179,12 @@ curiosité NN
 curé NN
 cuver VB
 cuvette NN
+cycliste JJ
 cylindrique JJ
 cylindriques JJ
 cynique JJ
 cyniquement RB
+câblé VBN
 cède VB
 cèdent VB
 céda VB
@@ -58318,6 +59209,7 @@ célébrer VB
 célébré VBN
 célébrée VBN
 célébrées VBN
+céréalier JJ
 cérébral JJ
 cérébrale JJ
 cérémonie NN
@@ -58337,9 +59229,14 @@ côtoyé VBN
 côtoyés VBN
 côté NN
 côtés NNS
+d JJ
 d' IN
 d'abord RB
+d'accord RB
+d'autant RB
 d'emblée RB
+d-i-r-t VB
+da UH
 daigna VB
 daignait VB
 daigne VB
@@ -58401,6 +59298,9 @@ dedans RB
 degré NN
 degrés NNS
 dehors RB
+del JJ
+del'eurodéputé JJ
+delà RB
 demain RB
 demanda VB
 demandai VB
@@ -58435,6 +59335,7 @@ demeuraient VB
 demeurais VB
 demeurait VB
 demeurant VB
+demeure VB
 demeurent VB
 demeurer VB
 demeurera VB
@@ -58465,6 +59366,7 @@ dents NNS
 depuis IN
 derechef RB
 dermatologique JJ
+dernier JJ
 derniers JJ
 dernière JJ
 dernièrement RB
@@ -58496,6 +59398,7 @@ descendues VBN
 descendus VBN
 descendîmes VB
 descente NN
+dessaisir VB
 dessein NN
 desserra VB
 desserrait VB
@@ -58540,6 +59443,7 @@ destinées VBN
 destinés VBN
 destruction NN
 destructrice JJ
+destructurée JJ
 deuil NN
 deux CD
 deuxième CD
@@ -58602,6 +59506,7 @@ devions VB
 devisaient VB
 devisait VB
 devisant VB
+devoir VB
 devoirs NNS
 devons VB
 devra VB
@@ -58614,6 +59519,8 @@ devriez VB
 devrions VB
 devront VB
 devînt VB
+deçà RB
+di VB
 diable NN
 diablement RB
 diabolique JJ
@@ -58644,6 +59551,7 @@ diffus JJ
 diffusaient VB
 diffusait VB
 diffusant VBG
+diffuse VB
 diffuser VB
 diffusé VBN
 diffusée VBN
@@ -58661,8 +59569,10 @@ différente JJ
 différentes JJ
 différents JJ
 différer VB
+différé VBN
 différée VBN
 digestive JJ
+digital JJ
 digne JJ
 dignement RB
 dignes JJ
@@ -58676,6 +59586,7 @@ dilatait VB
 dilatant VBG
 dilate VB
 dilater VB
+dilatoire JJ
 dilaté VBN
 dilatés VBN
 diluait VB
@@ -58697,6 +59608,7 @@ diminué VBN
 diminuée VBN
 diminués VBN
 dinguer VB
+diocésain JJ
 diplomatique JJ
 diplomatiques JJ
 dira VB
@@ -58706,6 +59618,7 @@ dirais VB
 dirait VB
 diras VB
 dire VB
+direct JJ
 directe JJ
 directement RB
 directes JJ
@@ -58725,6 +59638,7 @@ dirigeante JJ
 dirigent VB
 dirigeons VB
 diriger VB
+dirigez VB
 dirigèrent VB
 dirigé VBN
 dirigée VBN
@@ -58761,7 +59675,9 @@ discrète JJ
 discrètement RB
 discrètes JJ
 discréditer VB
+discrédité VBN
 discrétion NN
+discrétionnaire JJ
 disculper VB
 discussion NN
 discussions NNS
@@ -58856,6 +59772,7 @@ disposé VBN
 disposée VBN
 disposées VBN
 disposés VBN
+disputa VB
 disputaient VB
 disputait VB
 disputant VB
@@ -58866,10 +59783,12 @@ disputèrent VB
 disputé VBN
 disputée VBN
 disputés VBN
+disqualifié VBN
 disque NN
 disques NNS
 dissemblables JJ
 disserter VB
+dissidente JJ
 dissimula VB
 dissimulaient VB
 dissimulais VB
@@ -58905,6 +59824,7 @@ disséminées VBN
 disséminés VBN
 disséquer VB
 distance NN
+distancer VB
 distancés VBN
 distant JJ
 distante JJ
@@ -58917,6 +59837,7 @@ distendus VBN
 distillait VB
 distille VB
 distiller VB
+distillera VB
 distillé VBN
 distinct JJ
 distincte JJ
@@ -58956,6 +59877,7 @@ distribue VB
 distribuent VB
 distribuer VB
 distribué VBN
+distribuée VBN
 distribuées VBN
 distribués VBN
 dit VBN
@@ -58973,6 +59895,8 @@ divers JJ
 diverse JJ
 diversement RB
 diverses JJ
+diversifier VB
+diversifié VBN
 diverti VBN
 divertir VB
 divertissant VBG
@@ -58981,6 +59905,7 @@ divin JJ
 divine JJ
 divinement RB
 divines JJ
+divinisant VBG
 divins JJ
 divisaient VB
 divisait VB
@@ -58989,6 +59914,7 @@ divise VB
 divisent VB
 diviser VB
 division NN
+divisionnaire JJ
 divisions NN
 divisé VBN
 divisée VBN
@@ -59007,6 +59933,7 @@ dix-neuvième JJ
 dix-sept JJ
 dix-septième JJ
 dixit IN
+dixième JJ
 dizaine NN
 dizaines NNS
 docile JJ
@@ -59086,6 +60013,7 @@ donné VBN
 donnée VBN
 donnés VBN
 dont PRP$
+dopé VBN
 dorait VB
 dore VB
 dorer VB
@@ -59127,6 +60055,7 @@ doté VBN
 dotée VBN
 dotées VBN
 dotés VBN
+douanier JJ
 doubla VB
 doublaient VB
 doublait VB
@@ -59185,6 +60114,8 @@ down NN
 draguait VB
 draguer VB
 draguée VBN
+drainant VBG
+drainé VBN
 dramatique JJ
 dramatiques JJ
 dramatiser VB
@@ -59194,6 +60125,7 @@ drapait VB
 drape VB
 drapeau NN
 drapeaux NNS
+draper VB
 draps NNS
 drapé VBN
 drapée VBN
@@ -59219,6 +60151,7 @@ droguait VB
 drogue NN
 droguer VB
 droit RB
+droitier JJ
 dru RB
 drue JJ
 drues JJ
@@ -59238,6 +60171,7 @@ due VBN
 dues VBN
 dupe JJ
 duper VB
+duquel PRP
 dur RB
 dura VB
 durable JJ
@@ -59253,6 +60187,7 @@ durcis VBN
 durcissait VB
 durcissant VBG
 durcit VB
+dure VB
 durement RB
 durent VB
 durer VB
@@ -59363,6 +60298,8 @@ déboulait VB
 déboule VB
 débouler VB
 déboulé VBN
+déboursé VBN
+déboursée VBN
 déboussolé VBN
 déboutonna VB
 déboutonnait VB
@@ -59370,6 +60307,7 @@ déboutonne VB
 déboutonner VB
 déboutonné VBN
 déboutonnée VBN
+débouté VBN
 débrancha VB
 débranche VB
 débrancher VB
@@ -59390,8 +60328,10 @@ débusquer VB
 début NN
 débuta VB
 débutait VB
+débutant VBG
 débute VB
 débuter VB
+débutera VB
 débuts NNS
 débuté VBN
 décampe VB
@@ -59409,6 +60349,8 @@ décembre NN
 décemment RB
 décent JJ
 décente JJ
+décentralise VB
+décentrée VBN
 déception NN
 décerner VB
 décerné VBN
@@ -59556,6 +60498,7 @@ décoloré VBN
 décolorée VBN
 décolorées VBN
 décolorés VBN
+décolère VB
 décommander VB
 décomposait VB
 décompose VB
@@ -59563,6 +60506,7 @@ décomposer VB
 décomposé VBN
 décomposée VBN
 décomposées VBN
+décompter VB
 déconcerta VB
 déconcertait VB
 déconcertant VBG
@@ -59576,12 +60520,14 @@ déconcertée VBN
 déconfit VBN
 déconnait VB
 déconne VB
+déconnecté VBN
 déconner VB
 déconnes VB
 déconné VB
 déconseillé VBN
 décontenancé VBN
 décontenancée VBN
+décontextualise VB
 décontracté VBN
 décor NN
 décoraient VB
@@ -59598,11 +60544,13 @@ décoré VBN
 décorée VBN
 décorées VBN
 décorés VBN
+décotée VBN
 découdre VB
 découlait VB
 découle VB
 découlent VB
 découler VB
+découlera VB
 découpa VB
 découpaient VB
 découpait VB
@@ -59630,6 +60578,7 @@ découvrait VB
 découvrant VB
 découvre VB
 découvrent VB
+découvrez VB
 découvrions VB
 découvrir VB
 découvrira VB
@@ -59643,6 +60592,7 @@ découvrît VB
 décrasser VB
 décrire VB
 décris VB
+décrisper VB
 décrit VBN
 décrite VBN
 décrites VBN
@@ -59652,6 +60602,7 @@ décrivait VB
 décrivant VB
 décrivent VB
 décrivit VB
+décrié VBN
 décrocha VB
 décrochai VB
 décrochait VB
@@ -59664,6 +60615,7 @@ décroissant VBG
 décroît VB
 décroître VB
 décrut VB
+décrypter VB
 décrète VB
 décréta VB
 décrétait VB
@@ -59685,11 +60637,14 @@ dédaigneux JJ
 dédaigné VBN
 dédia VB
 dédiait VB
+dédicace VB
 dédie VB
 dédier VB
+dédit VB
 dédié VBN
 dédiée VBN
 dédiées VBN
+dédouane VB
 dédoubler VB
 dédoublé VBN
 déduire VB
@@ -59718,6 +60673,7 @@ défendaient VB
 défendais VB
 défendait VB
 défendant VB
+défende VB
 défendent VB
 défendez VB
 défendit VB
@@ -59731,6 +60687,7 @@ défendue VBN
 défendus VBN
 défense NN
 défensif JJ
+défensive JJ
 déferla VB
 déferlaient VB
 déferlait VB
@@ -59743,6 +60700,7 @@ défi NN
 défiaient VB
 défiait VB
 défiant VBG
+déficitaire JJ
 défie VB
 défient VB
 défier VB
@@ -59791,6 +60749,7 @@ défraîchie VBN
 défraîchies VBN
 défraîchis VBN
 défricher VB
+défunt JJ
 défuntes JJ
 déférent JJ
 déférente JJ
@@ -59848,11 +60807,13 @@ dégradait VB
 dégrade VB
 dégrader VB
 dégradé VBN
+dégradée VBN
 dégrafa VB
 dégrafait VB
 dégrafant VB
 dégrafer VB
 dégrafé VBN
+dégressif JJ
 dégringola VB
 dégringolaient VB
 dégringolait VB
@@ -59882,7 +60843,9 @@ déguste VB
 déguster VB
 dégusté VBN
 dégénérer VB
+dégénéré VBN
 dégénérés VBN
+déjanté VBN
 déjeuna VB
 déjeunaient VB
 déjeunais VB
@@ -59900,6 +60863,7 @@ délabré VBN
 délabrée VBN
 délabrées VBN
 délai NN
+délaie VB
 délaissa VB
 délaissant VB
 délaisse VB
@@ -59946,9 +60910,11 @@ délirantes JJ
 délirants JJ
 délire NN
 délirer VB
+délite VB
 délivra VB
 délivraient VB
 délivrait VB
+délivrant VBG
 délivre VB
 délivrent VB
 délivrer VB
@@ -59964,9 +60930,12 @@ délègue VB
 délégation NN
 déléguait VB
 déléguer VB
+délégué VBN
 délétère JJ
 démange VB
 démangeait VB
+démanteler VB
+démantelée VBN
 démarche NN
 démarra VB
 démarrait VB
@@ -59984,6 +60953,8 @@ démener VB
 démentaient VB
 démentait VB
 démentes JJ
+démenti VBN
+démentie VBN
 démentiel JJ
 démentir VB
 démerde VB
@@ -59996,8 +60967,12 @@ démesurée JJ
 démesurées JJ
 démesurément RB
 démesurés JJ
+démet VB
+démissionnant VBG
+démissionne VB
 démissionné VBN
 démobilisé VBN
+démocrate JJ
 démocratie NN
 démocratique JJ
 démocratiques JJ
@@ -60028,6 +61003,7 @@ démonté VBN
 démontée VBN
 démordait VB
 démordre VB
+démultiplier VB
 démuni VBN
 démunis VBN
 déménage VB
@@ -60041,7 +61017,9 @@ déniché VBN
 dénombra VB
 dénombrer VB
 dénombré VBN
+dénomme VB
 dénonce VB
+dénoncent VB
 dénoncer VB
 dénoncé VBN
 dénoncée VBN
@@ -60076,7 +61054,9 @@ déparié VBN
 dépariée VBN
 départ NN
 départager VB
+départagera VB
 départemental JJ
+départementaux JJ
 départir VB
 dépassa VB
 dépassaient VB
@@ -60120,6 +61100,7 @@ dépiauter VB
 dépister VB
 dépit NN
 dépité VBN
+dépitée VBN
 déplace VB
 déplacent VB
 déplacer VB
@@ -60158,6 +61139,7 @@ déplorait VB
 déplorant VB
 déplore VB
 déplorer VB
+déploré VBN
 déploya VB
 déployaient VB
 déployait VB
@@ -60214,6 +61196,8 @@ déprimé VBN
 déprimée VBN
 dépris VBN
 déprécier VB
+déprécié VBN
+députée VBN
 dépérir VB
 dépêcha VB
 dépêchait VB
@@ -60270,6 +61254,7 @@ dérobé VBN
 dérobée VBN
 dérobées VBN
 dérobés VBN
+dérogatoire JJ
 dérouille VB
 dérouiller VB
 dérouillé VBN
@@ -60280,6 +61265,7 @@ déroulant VB
 déroule VB
 déroulent VB
 dérouler VB
+déroulera VB
 déroulèrent VB
 déroulé VBN
 déroulée VBN
@@ -60288,6 +61274,7 @@ déroulés VBN
 déroutait VB
 déroutante JJ
 dérouté VBN
+déréglé VBN
 désabusé VBN
 désabusée VBN
 désaffecté VBN
@@ -60300,6 +61287,7 @@ désagréablement RB
 désagréables JJ
 désagréger VB
 désaltérer VB
+désamorcer VB
 désapprobateur JJ
 désapprouvait VB
 désapprouve VB
@@ -60323,9 +61311,12 @@ désastreuses JJ
 désastreux JJ
 désavouer VB
 désavoué VBN
+désembourber VB
 désemparer VB
 désemparé VBN
 désemparée VBN
+désendetter VB
+désengager VB
 déserte JJ
 déserter VB
 désertes JJ
@@ -60359,6 +61350,7 @@ déshonore VB
 déshonorer VB
 déshonoré VBN
 déshonorée VBN
+déshumanise VB
 désigna VB
 désignai VB
 désignaient VB
@@ -60373,6 +61365,7 @@ désignées VBN
 désignés VBN
 désinfecte VB
 désinfecter VB
+désinflationniste JJ
 désintoxiquer VB
 désintéressait VB
 désintéresser VB
@@ -60425,6 +61418,9 @@ désordre NN
 désorienté VBN
 désorientée VBN
 désormais RB
+déstabilisateur JJ
+déstockent VB
+déstructuré VBN
 désuet JJ
 désunir VB
 désuète JJ
@@ -60456,11 +61452,13 @@ détalant VB
 détale VB
 détaler VB
 détecter VB
+détectée VBN
 déteindre VB
 déteint VB
 dételer VB
 détenaient VB
 détenait VB
+détenant VBG
 détend VB
 détendaient VB
 détendait VB
@@ -60474,6 +61472,8 @@ détendue VBN
 détendus VBN
 détenir VB
 détente NN
+détenu VBN
+détenue VBN
 déterminant VBG
 déterminante JJ
 détermine VB
@@ -60504,6 +61504,7 @@ détestée VBN
 détiennent VB
 détient VB
 détonnait VB
+détonne VB
 détour NN
 détourna VB
 détournai VB
@@ -60578,6 +61579,7 @@ déverser VB
 déviait VB
 dévidait VB
 dévide VB
+dévident VB
 dévider VB
 dévier VB
 dévisage VB
@@ -60593,6 +61595,7 @@ dévisagé VBN
 dévissa VB
 dévisse VB
 dévisser VB
+dévissé VBN
 dévié VBN
 dévoila VB
 dévoilait VB
@@ -60612,6 +61615,7 @@ dévorante JJ
 dévore VB
 dévorent VB
 dévorer VB
+dévoreur JJ
 dévoré VBN
 dévorée VBN
 dévorées VBN
@@ -60622,10 +61626,12 @@ dévoué VBN
 dévouée VBN
 dévouées VBN
 dévoués VBN
+dévoyé VBN
 dévêtir VB
 dévêtit VB
 dévêtu VBN
 dévêtue VBN
+déçoit VB
 déçu VBN
 déçue VBN
 déçus VBN
@@ -60648,6 +61654,7 @@ dû VBN
 dûment RB
 dûmes VB
 dût VB
+e VBN
 eau NN
 eaux NNS
 efface VB
@@ -60675,6 +61682,7 @@ effaça VB
 effaçaient VB
 effaçait VB
 effaçant VB
+effectif JJ
 effective JJ
 effectivement RB
 effectua VB
@@ -60692,6 +61700,7 @@ effets NNS
 efficace JJ
 efficacement RB
 efficaces JJ
+efficiente JJ
 effilochait VB
 effiloche VB
 effiloché VBN
@@ -60809,6 +61818,7 @@ embelli VBN
 embellir VB
 embellissait VB
 embellit VB
+emblée RB
 embobiner VB
 emboîtaient VB
 emboîtant VB
@@ -60956,6 +61966,7 @@ employais VB
 employait VB
 employant VB
 employer VB
+employée VBN
 empocha VB
 empochait VB
 empocher VB
@@ -61046,6 +62057,7 @@ empêcherait VB
 empêcheront VB
 empêchèrent VB
 empêché VBN
+empêché(e JJ
 empêchée VBN
 empêchés VBN
 empêtrait VB
@@ -61103,10 +62115,12 @@ enchaînés VBN
 enchevêtrées VBN
 enchevêtrés VBN
 enchâssé VBN
+enclavé VBN
 enclenche VB
 enclin JJ
 encline JJ
 enclins JJ
+enclose VBN
 encombraient VB
 encombrait VB
 encombrant VBG
@@ -61118,6 +62132,7 @@ encombré VBN
 encombrée VBN
 encombrées VBN
 encombrés VBN
+encontre RB
 encore RB
 encourage VB
 encouragea VB
@@ -61127,26 +62142,35 @@ encourageait VB
 encourageant VBG
 encourageante JJ
 encourageantes JJ
+encouragent VB
 encourager VB
 encouragé VBN
 encouragée VBN
 encouragés VBN
 encourir VB
+encourue VBN
 encre NN
 encule VB
 enculer VB
 enculé VBN
 enculés VBN
 encyclopédique JJ
+end VB
+endetter VB
+endetté VBN
+endettée JJ
 endeuillée VBN
 endiablée VBN
 endiguer VB
+endiguera VB
+endiguée VBN
 endimanché VBN
 endimanchée VBN
 endimanchées VBN
 endimanchés VBN
 endolorie VBN
 endommagé VBN
+endommagée VBN
 endormaient VB
 endormais VB
 endormait VB
@@ -61200,6 +62224,7 @@ enfermé VBN
 enfermée VBN
 enfermées VBN
 enfermés VBN
+enferre VB
 enfila VB
 enfilai VB
 enfilaient VB
@@ -61305,10 +62330,12 @@ engendre VB
 engendrent VB
 engendrer VB
 engendré VBN
+engendrée VBN
 engendrés VBN
 englobait VB
 englobant VBG
 englobe VB
+englobent VB
 englober VB
 englouti VBN
 engloutie VBN
@@ -61327,6 +62354,7 @@ englué VBN
 engluée VBN
 engluées VBN
 englués VBN
+engoncer VB
 engoncé VBN
 engoncée VBN
 engoncés VBN
@@ -61350,12 +62378,16 @@ engourdit VB
 engraisse VB
 engraisser VB
 engraissé VBN
+engrangent VB
+engranger VB
+engrangé VBN
 engrosser VB
 engueulait VB
 engueule VB
 engueuler VB
 engueulé VBN
 engueulés VBN
+enguirlander VB
 enhardi VBN
 enhardis VBN
 enhardissait VB
@@ -61417,6 +62449,7 @@ enneigé VBN
 enneigée VBN
 enneigées VBN
 ennemi NN
+ennemie JJ
 ennemies JJ
 ennui NN
 ennuie VB
@@ -61444,17 +62477,21 @@ enquérir VB
 enquêtait VB
 enquête NN
 enquêter VB
+enquêté VBN
 enracinait VB
 enraciné VBN
 enrage VB
 enrageait VB
+enrageant VBG
 enrager VB
 enragé VBN
 enragée VBN
 enragées VBN
 enrayer VB
+enrayée VBN
 enregistra VB
 enregistrait VB
+enregistrant VBG
 enregistre VB
 enregistrer VB
 enregistreuse JJ
@@ -61499,6 +62536,7 @@ enseignez VB
 enseigné VBN
 enseignée VBN
 ensemble RB
+ensemencé VBN
 enserraient VB
 enserrait VB
 enserrant VB
@@ -61522,6 +62560,7 @@ ensuit VB
 ensuite RB
 ensuive VB
 ensuivit VB
+entachent VB
 entaché VBN
 entama VB
 entamaient VB
@@ -61617,6 +62656,7 @@ entourées VBN
 entourés VBN
 entra VB
 entrai VB
+entraident VB
 entraider VB
 entraient VB
 entrailles NNS
@@ -61663,6 +62703,7 @@ entrecoupés VBN
 entrecroisaient VB
 entrecroisant VB
 entrecroisent VB
+entrecroisé VBN
 entrecroisées VBN
 entrecroisés VBN
 entrelacées VBN
@@ -61696,6 +62737,7 @@ entretenaient VB
 entretenais VB
 entretenait VB
 entretenant VB
+entretenez VB
 entretenions VB
 entretenir VB
 entretenu VBN
@@ -61737,6 +62779,7 @@ entrés VB
 entuber VB
 enténébré VBN
 enténébrée VBN
+entérinée VBN
 entêtait VB
 entêtante JJ
 entête VB
@@ -61846,6 +62889,7 @@ errent VB
 errer VB
 erreur NN
 erreurs NNS
+erronée JJ
 erré VB
 es VB
 escalada VB
@@ -61856,6 +62900,7 @@ escalader VB
 escaladé VBN
 escalier NN
 escaliers NNS
+escamote VB
 escamoter VB
 escamoté VBN
 escamotée VBN
@@ -61876,6 +62921,7 @@ escortaient VB
 escortait VB
 escortent VB
 escorter VB
+escortera VB
 escorté VBN
 escortée VBN
 escortés VBN
@@ -61886,6 +62932,7 @@ espacer VB
 espacèrent VB
 espacées VBN
 espacés VBN
+espagnol JJ
 espagnoles JJ
 espaçaient VB
 espionnait VB
@@ -61914,6 +62961,7 @@ espéré VBN
 espérée VBN
 esquinte VB
 esquinter VB
+esquinté VBN
 esquissa VB
 esquissait VB
 esquissant VB
@@ -61923,6 +62971,7 @@ esquiva VB
 esquivait VB
 esquiver VB
 esquivé VBN
+esquivée VBN
 essaie VB
 essaient VB
 essaiera VB
@@ -61953,6 +63002,7 @@ essentiels JJ
 essorer VB
 essoufflait VB
 essouffle VB
+essouffler VB
 essoufflé VBN
 essoufflée VBN
 essoufflés VBN
@@ -61968,19 +63018,25 @@ essuyer VB
 essuyé VBN
 essuyée VBN
 est VB
+est-allemande JJ
+est-ouest JJ
 esthétiques JJ
+esthétisant JJ
 estima VB
 estimable JJ
 estimaient VB
 estimais VB
 estimait VB
 estimant VB
+estime VB
 estiment VB
 estimer VB
+estimera VB
 estimez VB
 estimions VB
 estimons VB
 estimé VBN
+estimée VBN
 estivale JJ
 estomac NN
 estomaqué VBN
@@ -61990,6 +63046,7 @@ estompait VB
 estompe VB
 estompent VB
 estomper VB
+estompée VBN
 estourbir VB
 estrade NN
 estropiés VBN
@@ -62003,6 +63060,8 @@ euh UH
 euphorique JJ
 eurent VB
 euro NNP
+euro-américaine JJ
+euro/ VBN
 européen JJ
 européenne JJ
 eus VBN
@@ -62012,6 +63071,9 @@ eussions VB
 eut VB
 eux PRP
 eux-mêmes PRP
+ex RB
+exacerber VB
+exacerbé VBN
 exact JJ
 exacte JJ
 exactement RB
@@ -62131,16 +63193,19 @@ excuserez VB
 excuses NN
 excusez VB
 excusé VBN
+excède VB
 excès NN
 excédaient VB
 excédant VBG
 excédé VBN
 excédée VBN
+exemplaire JJ
 exemple NN
 exempt JJ
 exerce VB
 exercent VB
 exercer VB
+exercera VB
 exercice NN
 exercé VBN
 exercée VBN
@@ -62168,6 +63233,7 @@ exhorta VB
 exhortait VB
 exhorte VB
 exhorter VB
+exhorté VBN
 exhumer VB
 exhumé VBN
 exige VB
@@ -62190,6 +63256,8 @@ exigée VBN
 exil NN
 exiler VB
 exilé VBN
+exilée VBN
+exista VB
 existaient VB
 existais VB
 existait VB
@@ -62201,10 +63269,12 @@ existence NN
 existent VB
 existentielle JJ
 exister VB
+existera VB
 existerait VB
 existes VB
 existât VB
 existé VB
+exonère VB
 exorbitant JJ
 exorbitante JJ
 exorbités JJ
@@ -62213,6 +63283,8 @@ exorcisé VBN
 exotique JJ
 exotiques JJ
 expansif JJ
+expatrié VBN
+expert JJ
 experte JJ
 expertes JJ
 expiatoire JJ
@@ -62225,6 +63297,7 @@ explicable JJ
 explication NN
 explications NNS
 explicative JJ
+explicitant VBG
 explicite JJ
 explicitement RB
 expliciter VB
@@ -62244,6 +63317,7 @@ expliqueras VB
 expliquerez VB
 expliques VB
 expliquez VB
+expliquiez VB
 expliqué VBN
 expliqués VBN
 exploitait VB
@@ -62267,9 +63341,15 @@ explosant VB
 explose VB
 explosent VB
 exploser VB
+explosera VB
+explosif JJ
 explosion NN
 explosive JJ
 explosé VB
+exportant VBG
+exporter VB
+exporté VBN
+exportée VBN
 exposa VB
 exposai VB
 exposais VB
@@ -62302,11 +63382,14 @@ exprimé VBN
 exprimée VBN
 exprimées VBN
 exprimés VBN
+exproprié VBN
 exprès RB
 expulse VB
 expulser VB
 expulsé VBN
+expulsée VBN
 expulsés VBN
+expurger VB
 expédia VB
 expédiait VB
 expédiant VB
@@ -62321,7 +63404,10 @@ expédiées VBN
 expédiés VBN
 expérience NN
 expériences NNS
+expérimental JJ
 expérimentale JJ
+expérimentaux JJ
+expérimente VB
 expérimenté VBN
 exquis JJ
 exquise JJ
@@ -62339,12 +63425,15 @@ extatique JJ
 exterminateur JJ
 exterminer VB
 exterminés VBN
+externe JJ
 extirpa VB
 extirpe VB
 extirper VB
 extirpé VB
 extorquer VB
 extorqué VBN
+extra JJ
+extradé VBN
 extraire VB
 extrait VBN
 extraite VBN
@@ -62421,9 +63510,14 @@ facilitent VB
 faciliter VB
 faciliterait VB
 facilité NN
+facilitée VBN
 facteur NN
 factice JJ
 factices JJ
+facto RB
+facturer VB
+facturé VBN
+facultatif JJ
 faculté NN
 facétieux JJ
 fadasse JJ
@@ -62465,6 +63559,7 @@ falloir VB
 fallu VB
 fallut VB
 falote JJ
+falsifié VBN
 fameuse JJ
 fameuses JJ
 fameux JJ
@@ -62519,6 +63614,7 @@ fardée VBN
 fardées VBN
 fardés VBN
 farfelu JJ
+farfelue JJ
 farfouilla VB
 farfouille VB
 farfouiller VB
@@ -62527,6 +63623,7 @@ farineux JJ
 farouche JJ
 farouchement RB
 farouches JJ
+farteur JJ
 fascina VB
 fascinaient VB
 fascinait VB
@@ -62540,11 +63637,13 @@ fasciner VB
 fasciné VBN
 fascinée VBN
 fascinés VBN
+fasciste JJ
 fasse VB
 fassent VB
 fasses VB
 fassiez VB
 fassions VB
+fast JJ
 fastidieuse JJ
 fastidieuses JJ
 fastidieux JJ
@@ -62612,9 +63711,11 @@ favorablement RB
 favorables JJ
 favori JJ
 favorisait VB
+favorisant VBG
 favorise VB
 favorisent VB
 favoriser VB
+favorisera VB
 favorisé VBN
 favorisée VBN
 favorisés VBN
@@ -62710,6 +63811,7 @@ fervente JJ
 fervents JJ
 ferveur NN
 fesses NN
+festif JJ
 feu NN
 feuillage NN
 feuillages NNS
@@ -62746,6 +63848,7 @@ fichant VBG
 fichent VB
 ficher VB
 fichez VB
+fichu VBN
 fichue JJ
 fiché VBN
 fichée VBN
@@ -62774,6 +63877,8 @@ figuraient VB
 figurais VB
 figurait VB
 figurant VBG
+figuratif JJ
+figure VB
 figurent VB
 figurer VB
 figures NN
@@ -62810,9 +63915,11 @@ fille NN
 filles NN
 fillette NN
 film NN
+filme VB
 filmer VB
 films NNS
 filmé VBN
+filmée VBN
 fils NN
 filtraient VB
 filtrait VB
@@ -62825,9 +63932,13 @@ filés VBN
 fin NN
 final JJ
 finalement RB
+financent VB
 financer VB
+financier JJ
 financière JJ
 financières JJ
+financé VBN
+financée VBN
 finaud JJ
 fine JJ
 finement RB
@@ -62862,6 +63973,8 @@ finit VB
 finît VB
 firent VB
 fis VB
+fiscal JJ
+fiscaux JJ
 fisse VB
 fissent VB
 fissuré VBN
@@ -62872,6 +63985,7 @@ fixaient VB
 fixais VB
 fixait VB
 fixant VB
+fixe JJ
 fixement RB
 fixent VB
 fixer VB
@@ -62976,6 +64090,8 @@ flirtait VB
 flirte VB
 flirter VB
 floc NN
+floor JJ
+florentine JJ
 florissant VBG
 florissante JJ
 florès NN
@@ -63000,7 +64116,10 @@ flous JJ
 floué VBN
 fluet JJ
 fluette JJ
+fluide JJ
+fluorescent JJ
 fluvial JJ
+fluviaux JJ
 flânait VB
 flânant VB
 flâne VB
@@ -63017,6 +64136,8 @@ flétri VBN
 flétrie VBN
 flétries VBN
 flétris VBN
+flûter VB
+focalisé VBN
 foetale JJ
 foi NN
 foie NN
@@ -63026,6 +64147,7 @@ foireuses JJ
 foireux JJ
 foiré VBN
 fois NN
+foisonnant JJ
 fol JJ
 folie NN
 folklorique JJ
@@ -63065,6 +64187,7 @@ fondamental JJ
 fondamentale JJ
 fondamentalement RB
 fondamentales JJ
+fondamentaliste JJ
 fondamentaux JJ
 fondant VBG
 fondante JJ
@@ -63111,11 +64234,13 @@ forestières JJ
 forgeait VB
 forger VB
 forgé VBN
+forgée VBN
 forgées VBN
 forgés VBN
 forma VB
 formaient VB
 formait VB
+formalisa VB
 formaliser VB
 formant VBG
 forme NN
@@ -63159,12 +64284,14 @@ fortifie VB
 fortifier VB
 fortifié VBN
 fortifiée VBN
+fortiori RB
 forts JJ
 fortuit JJ
 fortuite JJ
 fortuites JJ
 fortune NN
 fortuné JJ
+fortunée JJ
 fortunés JJ
 força VB
 forçaient VB
@@ -63176,6 +64303,7 @@ forêts NNS
 fosse NN
 fossile JJ
 fossé NN
+fou JJ
 foudre NN
 foudroyant VBG
 foudroyante JJ
@@ -63287,8 +64415,12 @@ fracasser VB
 fracassé VBN
 fracassée VBN
 fracassés VBN
+fractionne VB
+fracturé VBN
 fragile JJ
 fragiles JJ
+fragilise VB
+fragilisé VBN
 fragmentaire JJ
 fragmentaires JJ
 fraie VB
@@ -63310,6 +64442,11 @@ franchissent VB
 franchissons VB
 franchit VB
 franco RB
+franco-américain JJ
+franco-camerounaise JJ
+franco-espagnol JJ
+franco-française JJ
+franco-germano-belge JJ
 francophone JJ
 francs NN
 frangé VBN
@@ -63331,6 +64468,7 @@ frappante JJ
 frappe VB
 frappent VB
 frapper VB
+frappera VB
 frapperait VB
 frappez VB
 frappèrent VB
@@ -63343,6 +64481,7 @@ fraternelle JJ
 fraternellement RB
 fraternelles JJ
 fraternels JJ
+fratricide JJ
 fraya VB
 frayait VB
 frayant VB
@@ -63489,6 +64628,7 @@ fréquentaient VB
 fréquentais VB
 fréquentait VB
 fréquentant VB
+fréquente VB
 fréquentent VB
 fréquenter VB
 fréquentes JJ
@@ -63596,18 +64736,25 @@ fusiller VB
 fusillé VBN
 fusillés VBN
 fusils NNS
+fusionne VB
+fusionnel JJ
 fusse VB
 fussent VB
 fussions VB
+fustige VB
+fustigent VB
+fustigé VBN
 fusèrent VB
 fusé VB
 fut VB
 futile JJ
 futiles JJ
+futur JJ
 future JJ
 futures JJ
 futurs JJ
 futé JJ
+futée JJ
 fuyaient VB
 fuyais VB
 fuyait VB
@@ -63647,11 +64794,14 @@ félicitait VB
 félicite VB
 féliciter VB
 félicitèrent VB
+félicité VBN
+félicitée VBN
 féline JJ
 féminin JJ
 féminine JJ
 féminines JJ
 féminins JJ
+féminise VB
 féministe JJ
 féodal JJ
 féodale JJ
@@ -63664,6 +64814,7 @@ férocement RB
 féroces JJ
 féru VBN
 férus VBN
+fétiche JJ
 fétide JJ
 février NN
 fêlé VBN
@@ -63681,12 +64832,14 @@ fûtes VB
 gaffer VB
 gaffé VBN
 gaga JJ
+gage VB
 gagna VB
 gagnai VB
 gagnaient VB
 gagnais VB
 gagnait VB
 gagnant VBG
+gagnant-gagnant JJ
 gagne VB
 gagnent VB
 gagner VB
@@ -63735,8 +64888,10 @@ galope VB
 galopent VB
 galoper VB
 galvanisé VBN
+galvauder VB
 gambadait VB
 gambader VB
+gambadé VBN
 gambergeais VB
 gambergeait VB
 gambergeant VB
@@ -63808,9 +64963,12 @@ gaspillé VBN
 gastronomique JJ
 gastronomiques JJ
 gauche JJ
+gauche-droite JJ
 gauchement RB
 gauchère JJ
 gauler VB
+gaulliste JJ
+gaullo-communiste JJ
 gaussaient VB
 gaussait VB
 gavait VB
@@ -63833,6 +64991,7 @@ gelées VBN
 gelés VBN
 gendarme NN
 gendarmes NN
+general JJ
 genou NN
 genoux NNS
 genre NN
@@ -63859,6 +65018,7 @@ gesticulant VBG
 gesticule VB
 gesticulent VB
 gesticuler VB
+ghettoïser VB
 gibier NN
 gicla VB
 giclait VB
@@ -63877,6 +65037,7 @@ gigotait VB
 gigoter VB
 gilet NN
 gironde JJ
+girondine JJ
 gisaient VB
 gisait VB
 gisant VBG
@@ -63901,6 +65062,8 @@ glaiseux JJ
 glanait VB
 glander VB
 glaner VB
+glané VBN
+glanée VBN
 glapir VB
 glapissait VB
 glapissant VBG
@@ -63934,6 +65097,7 @@ glissés VBN
 global JJ
 globale JJ
 globalement RB
+globaux JJ
 globuleux JJ
 gloire NN
 glorieuse JJ
@@ -63980,6 +65144,7 @@ gonflé VBN
 gonflée VBN
 gonflées VBN
 gonflés VBN
+good JJ
 gorge NN
 gorgé VBN
 gorgés VBN
@@ -64006,14 +65171,17 @@ gouré VBN
 gourée VBN
 goutte NN
 gouttes NN
+gouverna VB
 gouvernait VB
 gouvernement NN
 gouvernemental JJ
 gouvernementale JJ
+gouvernementaux JJ
 gouvernements NNS
 gouverner VB
 gouverneur NN
 gouverné VBN
+gouvernée VBN
 goût NN
 goûta VB
 goûtaient VB
@@ -64022,12 +65190,15 @@ goûtait VB
 goûtant VB
 goûte VB
 goûtent VB
+goûter VB
 goûtez VB
 goûtions VB
 goûtons VB
 goûts NNS
 goûtèrent VB
 goûté VBN
+graciant VBG
+gracie VB
 gracieuse JJ
 gracieusement RB
 gracieuses JJ
@@ -64048,6 +65219,7 @@ graisseuses JJ
 graisseux JJ
 grand JJ
 grand-chose NN
+grand-guignolesque JJ
 grand-mère NN
 grand-père NN
 grande JJ
@@ -64072,6 +65244,7 @@ grands JJ
 grange NN
 granuleuse JJ
 granuleux JJ
+graphite VB
 gras RB
 grasse JJ
 grassement RB
@@ -64079,6 +65252,7 @@ grasses JJ
 grassouillet JJ
 grassouillette JJ
 gratifia VB
+gratifiant JJ
 gratifie VB
 gratifier VB
 gratifié VBN
@@ -64112,11 +65286,14 @@ gravis VBN
 gravissait VB
 gravissant VB
 gravit VB
+gravite VB
 gravité NN
 gravé VBN
 gravée VBN
 gravées VBN
 gravés VBN
+grec JJ
+grecque JJ
 grecques JJ
 greffer VB
 grelottait VB
@@ -64124,10 +65301,13 @@ grelottant VBG
 grelottante JJ
 grelotte VB
 grelotter VB
+grenade VB
 grenat JJ
 grenier NN
 grenu JJ
 grenue JJ
+grever VB
+grief JJ
 griffa VB
 griffaient VB
 griffait VB
@@ -64184,6 +65364,7 @@ grimpons VB
 grimpèrent VB
 grimpé VBN
 grimpés VBN
+grimé VBN
 grince VB
 grincent VB
 grincer VB
@@ -64250,6 +65431,7 @@ grossit VB
 grossière JJ
 grossièrement RB
 grossières JJ
+grosso RB
 grotesque JJ
 grotesquement RB
 grotesques JJ
@@ -64280,6 +65462,7 @@ grâce NN
 grège JJ
 grève NN
 gré NN
+gréco-romaine JJ
 grégorien JJ
 grésillaient VB
 grésillait VB
@@ -64290,6 +65473,7 @@ grêles JJ
 guenilleux JJ
 guerre NN
 guerres NNS
+guerrier JJ
 guerrière JJ
 guerrières JJ
 guetta VB
@@ -64315,11 +65499,13 @@ guida VB
 guidaient VB
 guidait VB
 guidant VBG
+guide VB
 guident VB
 guider VB
 guidé VBN
 guidée VBN
 guidés VBN
+guigne VB
 guilleret JJ
 guillerette JJ
 guillotiné VBN
@@ -64328,6 +65514,7 @@ guindé VBN
 guindée VBN
 guise NN
 guitare NN
+guitare/ VBN
 guttural JJ
 gutturale JJ
 gutturaux JJ
@@ -64341,6 +65528,8 @@ guéris VBN
 guérissait VB
 guérit VB
 gâchait VB
+gâchant VBG
+gâche VB
 gâcher VB
 gâché VBN
 gâchée VBN
@@ -64355,8 +65544,10 @@ gâtée VBN
 gâtées VBN
 gâtés VBN
 gèle VB
+gère VB
 géante JJ
 géantes JJ
+gée VB
 gélatineuse JJ
 gélatineux JJ
 gémellaire JJ
@@ -64375,27 +65566,36 @@ géniale JJ
 géniaux JJ
 génie NN
 génitaux JJ
+génère VB
 généalogique JJ
 généalogiques JJ
 général NN
 générale JJ
 généralement RB
 générales JJ
+généralise VB
+généraliste JJ
 généralisé VBN
 généralisée VBN
 génération NN
 générations NNS
+généraux JJ
 généreuse JJ
 généreusement RB
 généreuses JJ
 généreux JJ
 générosité NN
+généré VBN
+générée VBN
 génétique JJ
 géographique JJ
 géographiques JJ
 géométrique JJ
 géométriques JJ
+géorgien JJ
+gérant VBG
 gérer VB
+géré VBN
 gêna VB
 gênaient VB
 gênais VB
@@ -64506,6 +65706,8 @@ halte NN
 halète VB
 han NN
 hanches NN
+handicaper VB
+handisport JJ
 hangar NN
 hantaient VB
 hantait VB
@@ -64521,6 +65723,8 @@ happer VB
 happé VBN
 happée VBN
 happés VBN
+harangue VB
+haranguer VB
 harassé VBN
 harassés VBN
 harcelaient VB
@@ -64586,6 +65790,8 @@ haïssaient VB
 haïssais VB
 haïssait VB
 haïssent VB
+haïtienne JJ
+hebdomadaire JJ
 hein UH
 hellénique JJ
 helvétique JJ
@@ -64651,6 +65857,7 @@ hiver NN
 hivernal JJ
 hivernale JJ
 hiérarchique JJ
+hiérarchisé VBN
 hiératique JJ
 ho VB
 hocha VB
@@ -64662,13 +65869,17 @@ hocher VB
 hochèrent VB
 hoché VBN
 hollandaise JJ
+hollywoodien JJ
+hollywoodienne JJ
 hollywoodiens JJ
 holà NN
 hommage NN
 homme NN
 hommes NNS
+homo JJ
 homogène JJ
 homérique JJ
+hongroise JJ
 honneur NN
 honnête JJ
 honnêtement RB
@@ -64694,6 +65905,7 @@ hop UH
 hoqueta VB
 hoquetait VB
 hoquetant VBG
+horaire JJ
 horizon NN
 horizontal JJ
 horizontalement RB
@@ -64701,6 +65913,7 @@ horizontales JJ
 horizontaux JJ
 horloge NN
 hormis IN
+hormonal JJ
 horreur NN
 horrible JJ
 horriblement RB
@@ -64709,6 +65922,8 @@ horrifiant VBG
 horrifié VBN
 horrifiée VBN
 hors RB
+hors-terrain JJ
+horvathienne JJ
 hospitalier JJ
 hospitaliser VB
 hospitalisé VBN
@@ -64717,11 +65932,13 @@ hospitalière JJ
 hostile JJ
 hostiles JJ
 hostilité NN
+hot JJ
 houleuse JJ
 houleux JJ
 hourra NN
 houspiller VB
 hue VB
+huer VB
 huile NN
 huileuse JJ
 huileuses JJ
@@ -64730,6 +65947,7 @@ huilé VBN
 huilée VBN
 huilés VBN
 huit NN
+huitième JJ
 hum NN
 huma VB
 humain JJ
@@ -64737,6 +65955,7 @@ humaine JJ
 humainement RB
 humaines JJ
 humait VB
+humaniste JJ
 humanitaire JJ
 humanité NN
 humant VB
@@ -64751,6 +65970,7 @@ humer VB
 humeur NN
 humide JJ
 humides JJ
+humidifié VBN
 humidité NN
 humiliait VB
 humiliant VBG
@@ -64789,6 +66009,8 @@ hydraulique JJ
 hydrophile JJ
 hygiénique JJ
 hygiéniques JJ
+hyper VB
+hyper-important JJ
 hypnotique JJ
 hypnotise VB
 hypnotisé VBN
@@ -64824,6 +66046,7 @@ hé UH
 héberger VB
 hébergé VBN
 hébraïque JJ
+hébreu JJ
 hébreux JJ
 hébété VBN
 hébétée VBN
@@ -64873,15 +66096,18 @@ hésitèrent VB
 hésité VBN
 hétéroclite JJ
 hétéroclites JJ
+hétérodoxe JJ
 hétérosexuel JJ
 hétérosexuelle JJ
 hétérosexuels JJ
 hôpital NN
 hôte NN
 hôtel NN
+hôtelier JJ
 hôtels NNS
 ici RB
 ici-bas RB
+iconoclaste JJ
 idem RB
 identifia VB
 identifiables JJ
@@ -64974,6 +66200,7 @@ imaginable JJ
 imaginables JJ
 imaginai VB
 imaginaient VB
+imaginaire JJ
 imaginaires JJ
 imaginais VB
 imaginait VB
@@ -65020,6 +66247,8 @@ immaculés JJ
 immanente JJ
 immangeable JJ
 immanquablement RB
+immatriculant VBG
+immatriculé VBN
 immatriculée VBN
 immatériel JJ
 immatérielle JJ
@@ -65029,6 +66258,7 @@ immensément RB
 immergé VBN
 immeuble NN
 immeubles NN
+immigrée VBN
 imminent JJ
 imminente JJ
 immiscer VB
@@ -65058,6 +66288,8 @@ immortelle JJ
 immuable JJ
 immuablement RB
 immuables JJ
+immunitaire JJ
+immédiat JJ
 immédiate JJ
 immédiatement RB
 immédiates JJ
@@ -65081,12 +66313,14 @@ impatience NN
 impatient JJ
 impatienta VB
 impatientait VB
+impatiente JJ
 impatienter VB
 impatients JJ
 impatienté VBN
 impavide JJ
 impavides JJ
 impayable JJ
+impayé JJ
 impeccable JJ
 impeccablement RB
 impeccables JJ
@@ -65105,6 +66339,7 @@ impitoyables JJ
 implacable JJ
 implacables JJ
 implanter VB
+implanté VBN
 implicite JJ
 implicitement RB
 impliquait VB
@@ -65142,6 +66377,7 @@ imposantes JJ
 impose VB
 imposent VB
 imposer VB
+imposera VB
 imposerait VB
 impossible JJ
 impossibles JJ
@@ -65208,6 +66444,7 @@ imprégnées VBN
 imprégnés VBN
 imprévisible JJ
 imprévisibles JJ
+imprévu JJ
 imprévue JJ
 imprévues JJ
 imprévus JJ
@@ -65243,6 +66480,7 @@ impérissable JJ
 impétueuse JJ
 impétueux JJ
 in JJ
+inabouti JJ
 inacceptable JJ
 inaccessible JJ
 inaccessibles JJ
@@ -65275,9 +66513,11 @@ inaudible JJ
 inaudibles JJ
 inaugurait VB
 inaugurale JJ
+inaugurant VBG
 inaugure VB
 inaugurer VB
 inauguré VBN
+inaugurée VBN
 inavouable JJ
 inavouables JJ
 inavoué JJ
@@ -65291,12 +66531,14 @@ incantatoire JJ
 incapable JJ
 incapables JJ
 incarcéré VBN
+incarna VB
 incarnaient VB
 incarnait VB
 incarnant VB
 incarne VB
 incarnent VB
 incarner VB
+incarnera VB
 incarné VBN
 incarnée VBN
 incassable JJ
@@ -65340,10 +66582,12 @@ inclinant VBG
 incline VB
 inclinent VB
 incliner VB
+inclinera VB
 inclinèrent VB
 incliné VBN
 inclinée VBN
 inclinés VBN
+incluant VBG
 inclure VB
 inclus VBN
 inclut VB
@@ -65419,6 +66663,7 @@ incrustés VBN
 incrédule JJ
 incrédules JJ
 inculper VB
+inculpé VBN
 inculquer VB
 inculqué VBN
 inculquée VBN
@@ -65437,6 +66682,7 @@ index NN
 indicible JJ
 indicibles JJ
 indien JJ
+indienne JJ
 indiffère VB
 indifféremment RB
 indifférence NN
@@ -65448,6 +66694,7 @@ indigeste JJ
 indigna VB
 indignait VB
 indignation NN
+indigne JJ
 indignement RB
 indignent VB
 indigner VB
@@ -65503,7 +66750,10 @@ indocile JJ
 indolemment RB
 indolent JJ
 indolente JJ
+indolore JJ
 indomptable JJ
+indoor JJ
+indu JJ
 indubitable JJ
 indubitablement RB
 induire VB
@@ -65511,6 +66761,7 @@ indulgence NN
 indulgent JJ
 indulgente JJ
 industrie NN
+industriel JJ
 industrielle JJ
 industrielles JJ
 industrieux JJ
@@ -65537,6 +66788,7 @@ indépendance NN
 indépendant JJ
 indépendante JJ
 indépendantes JJ
+indépendantiste JJ
 indépendants JJ
 indésirable JJ
 indéterminé JJ
@@ -65568,9 +66820,11 @@ inexplicablement RB
 inexplicables JJ
 inexpliqué JJ
 inexpliquée JJ
+inexploré JJ
 inexpressif JJ
 inexpressifs JJ
 inexprimable JJ
+inexpérimenté JJ
 inextinguible JJ
 inextricable JJ
 inextricablement RB
@@ -65612,18 +66866,24 @@ infirmière NN
 inflexible JJ
 inflexibles JJ
 inflige VB
+infligea VB
 infligeaient VB
 infligeait VB
+infligeant VBG
+infligent VB
 infliger VB
 infligé VBN
 infligée VBN
 infligées VBN
+influe VB
 influence NN
 influencer VB
 influencé VBN
 influent JJ
 influents JJ
 influer VB
+influera VB
+influé VBN
 infléchir VB
 infléchit VB
 informa VB
@@ -65631,6 +66891,8 @@ informait VB
 informant VBG
 information NN
 informations NNS
+informe VB
+informel JJ
 informer VB
 informes JJ
 informé VBN
@@ -65639,6 +66901,7 @@ informés VBN
 infortuné JJ
 infranchissable JJ
 infranchissables JJ
+infrarouge JJ
 infructueux JJ
 infâme JJ
 infâmes JJ
@@ -65681,8 +66944,11 @@ initiale JJ
 initialement RB
 initiatique JJ
 initiative NN
+initiaux JJ
+initie VB
 initier VB
 initié VBN
+initiée VBN
 injecter VB
 injecté VBN
 injectés VBN
@@ -65704,12 +66970,15 @@ inlassablement RB
 inlassables JJ
 innocemment RB
 innocence NN
+innocent JJ
+innocente JJ
 innocenter VB
 innocentes JJ
 innombrable JJ
 innombrables JJ
 innommable JJ
 innommables JJ
+innover VB
 inné JJ
 innée JJ
 inoccupé JJ
@@ -65741,6 +67010,7 @@ inouïs JJ
 inqualifiable JJ
 inquiet JJ
 inquiets JJ
+inquiète VB
 inquiètent VB
 inquiéta VB
 inquiétaient VB
@@ -65763,6 +67033,7 @@ insaisissables JJ
 insalubre JJ
 insatiable JJ
 insatiables JJ
+insatisfaisant JJ
 insatisfait JJ
 inscription NN
 inscrire VB
@@ -65774,6 +67045,7 @@ inscrits VBN
 inscrivaient VB
 inscrivait VB
 inscrivant VBG
+inscrive VB
 inscrivent VB
 inscrivis VB
 inscrivit VB
@@ -65838,6 +67110,7 @@ insoupçonnée JJ
 insoupçonnées JJ
 insoupçonnés JJ
 insoutenable JJ
+inspec JJ
 inspecta VB
 inspectai VB
 inspectait VB
@@ -65887,6 +67160,7 @@ instant NN
 instantané JJ
 instantanée JJ
 instantanément RB
+instaurant VBG
 instaurer VB
 instauré VBN
 instinct NN
@@ -65897,6 +67171,7 @@ instituait VB
 instituant VB
 instituer VB
 instituteur NN
+institutionnel JJ
 institué VBN
 instructif JJ
 instruction NN
@@ -65907,6 +67182,7 @@ instruit VBN
 instruite VBN
 instruits VBN
 instrument NN
+instrumental JJ
 instruments NNS
 insu NN
 insuffisamment RB
@@ -65916,6 +67192,7 @@ insuffisantes JJ
 insuffisants JJ
 insuffler VB
 insulaire JJ
+insulino-dépendant VBG
 insulta VB
 insultaient VB
 insultait VB
@@ -65930,8 +67207,11 @@ insupportable JJ
 insupportables JJ
 insurge VB
 insurger VB
+insurgé VBN
+insurgée JJ
 insurmontable JJ
 insurpassable JJ
+insère VB
 inséparable JJ
 inséparables JJ
 insérer VB
@@ -65941,6 +67221,7 @@ intactes JJ
 intacts JJ
 intarissable JJ
 intarissables JJ
+intellectuel JJ
 intellectuelle JJ
 intellectuellement RB
 intellectuelles JJ
@@ -65959,6 +67240,7 @@ intemporelle JJ
 intenable JJ
 intense JJ
 intenses JJ
+intensifia VB
 intensité NN
 intensive JJ
 intensément RB
@@ -65966,16 +67248,20 @@ intention NN
 intentionnellement RB
 intentionnés JJ
 intentions NN
+intenté VBN
 interallié JJ
 intercepter VB
 intercepté VBN
 interchangeable JJ
 interchangeables JJ
+intercéder VB
+interdira VB
 interdire VB
 interdis VB
 interdisaient VB
 interdisait VB
 interdisant VB
+interdise VB
 interdisent VB
 interdit VBN
 interdite VBN
@@ -65987,6 +67273,7 @@ interloquée VBN
 interminable JJ
 interminablement RB
 interminables JJ
+interministériel JJ
 intermittent JJ
 intermittente JJ
 intermittentes JJ
@@ -65994,6 +67281,7 @@ international JJ
 internationale JJ
 internationales JJ
 internationaux JJ
+interne JJ
 interné VBN
 interpella VB
 interpellaient VB
@@ -66013,6 +67301,7 @@ interposée VBN
 interposées VBN
 interpréta VB
 interprétait VB
+interprétant VBG
 interpréter VB
 interprété VBN
 interprétée VBN
@@ -66036,6 +67325,7 @@ interrogés VBN
 interrompaient VB
 interrompait VB
 interrompant VB
+interrompe VB
 interrompent VB
 interrompirent VB
 interrompis VB
@@ -66077,6 +67367,7 @@ intimider VB
 intimidé VBN
 intimidée VBN
 intimidés VBN
+intimiste JJ
 intimité NN
 intitulait VB
 intitule VB
@@ -66084,6 +67375,7 @@ intitulé VBN
 intitulée VBN
 intolérable JJ
 intolérables JJ
+intolérant JJ
 intouchables JJ
 intraitable JJ
 intransigeant JJ
@@ -66096,6 +67388,7 @@ intriguer VB
 intrigué VBN
 intriguée VBN
 intrigués VBN
+introductif JJ
 introduire VB
 introduisaient VB
 introduisait VB
@@ -66109,12 +67402,15 @@ introuvables JJ
 intrépide JJ
 intrépides JJ
 intuitivement RB
+intègre VB
 intègres JJ
 intégral JJ
 intégrale JJ
 intégralement RB
+intégrant VBG
 intégrante JJ
 intégrer VB
+intégriste JJ
 intégré VBN
 intégrée VBN
 intéressa VB
@@ -66140,6 +67436,7 @@ intéressés VBN
 intérieure JJ
 intérieurement RB
 intérieures JJ
+intérimaire JJ
 intérêt NN
 intérêts NNS
 inusable JJ
@@ -66149,6 +67446,7 @@ inutilement RB
 inutiles JJ
 inutilisable JJ
 inutilisables JJ
+invaincu JJ
 invariable JJ
 invariablement RB
 inventa VB
@@ -66181,6 +67479,7 @@ investi VBN
 investie VBN
 investir VB
 investis VBN
+investissant VBG
 investit VB
 invincible JJ
 invinciblement RB
@@ -66194,6 +67493,7 @@ invitais VB
 invitait VB
 invitant VBG
 invitation NN
+invite VB
 invitent VB
 inviter VB
 inviterait VB
@@ -66218,6 +67518,7 @@ invulnérables JJ
 invétéré VBN
 inébranlable JJ
 inébranlables JJ
+inédit JJ
 inédite JJ
 inédites JJ
 inédits JJ
@@ -66226,6 +67527,7 @@ inégalable JJ
 inégale JJ
 inégalement RB
 inégales JJ
+inégalé JJ
 inégaux JJ
 inéluctable JJ
 inéluctablement RB
@@ -66240,6 +67542,10 @@ irai VB
 iraient VB
 irais VB
 irait VB
+irakien JJ
+irakienne JJ
+iranien JJ
+iranienne JJ
 iras VB
 irascible JJ
 irez VB
@@ -66253,6 +67559,9 @@ ironique JJ
 ironiquement RB
 ironiques JJ
 ironisa VB
+ironisant VBG
+ironise VB
+ironisé VBN
 irons VB
 iront VB
 irradiait VB
@@ -66267,6 +67576,7 @@ irrespectueux JJ
 irrespirable JJ
 irresponsable JJ
 irresponsables JJ
+irrigue VB
 irrita VB
 irritable JJ
 irritaient VB
@@ -66281,6 +67591,7 @@ irrité VBN
 irritée VBN
 irruption NN
 irréalisable JJ
+irréaliste JJ
 irrécupérable JJ
 irrécupérables JJ
 irrécusable JJ
@@ -66310,9 +67621,11 @@ irrésistiblement RB
 irrésistibles JJ
 irréversible JJ
 irrévocable JJ
+islamiste JJ
 isola VB
 isolait VB
 isolant VBG
+isolationniste JJ
 isole VB
 isoler VB
 isolé VBN
@@ -66320,12 +67633,19 @@ isolée VBN
 isolées VBN
 isolément RB
 isolés VBN
+israélien JJ
+israélienne JJ
+israélo-palestinien JJ
 issu VBN
 issue NN
 issus VBN
+italien JJ
+italienne JJ
 italiennes JJ
 italiques JJ
 itou RB
+ivoirien JJ
+ivoirienne JJ
 ivoirin JJ
 ivre JJ
 ivres JJ
@@ -66363,17 +67683,21 @@ jamais RB
 jambe NN
 jambes NNS
 jambon NN
+janséniste JJ
 janvier NN
 japonaise JJ
 japonaises JJ
 jappe VB
 japper VB
 jardin NN
+jardinier JJ
 jardins NNS
 jaser VB
+jason VB
 jaspine VB
 jaugea VB
 jaugeait VB
+jaugent VB
 jauger VB
 jaune RB
 jaunes JJ
@@ -66416,6 +67740,7 @@ jeunes JJ
 jeunesse NN
 jeux NNS
 jeûner VB
+johann-gutenberg JJ
 joie NN
 joies NNS
 joignaient VB
@@ -66450,6 +67775,7 @@ jouais VB
 jouait VB
 jouant VB
 jouasse VB
+joue VB
 jouent VB
 jouer VB
 jouera VB
@@ -66531,10 +67857,13 @@ jugé VBN
 jugée VBN
 jugées VBN
 jugés VBN
+juif JJ
 juillet NN
 juin NN
+juive JJ
 julien JJ
 jumeaux NN
+jumelé VBN
 junior NN
 jupe NN
 jupes NNS
@@ -66543,6 +67872,7 @@ juraient VB
 jurais VB
 jurait VB
 jurant VB
+jurassien JJ
 jure VB
 jurent VB
 jurer VB
@@ -66576,6 +67906,8 @@ juteuse JJ
 juteux JJ
 juvénile JJ
 juvéniles JJ
+juxtaposant VBG
+juxtaposer VB
 kabyle NN
 kaki NN
 kif-kif JJ
@@ -66584,6 +67916,7 @@ kilos NNS
 kitsch NN
 klaxonnant VB
 klaxonner VB
+kurde JJ
 képi NN
 l' DT
 l'un PRP
@@ -66668,7 +68001,7 @@ lames NN
 lampe NN
 lampes NN
 lamé VBN
-lancent VB
+lance VBlancent VB
 lancer VB
 lancerait VB
 lancinant VBG
@@ -66698,6 +68031,7 @@ lançais VB
 lançait VB
 lançant VB
 laper VB
+lapidaire JJ
 lapidaires JJ
 lapin NN
 lapins NNS
@@ -66730,6 +68064,7 @@ lassaient VB
 lassais VB
 lassait VB
 lassant VBG
+lasse VB
 lassent VB
 lasser VB
 lasses JJ
@@ -66739,6 +68074,7 @@ lassée VBN
 lassés VBN
 latent JJ
 latente JJ
+latin JJ
 latine JJ
 latines JJ
 latins JJ
@@ -66747,12 +68083,14 @@ latérale JJ
 latéralement RB
 latérales JJ
 latéraux JJ
+lauréate JJ
 lava VB
 lavabo NN
 lavaient VB
 lavais VB
 lavait VB
 lavant VB
+lave VB
 lavent VB
 laver VB
 laverai VB
@@ -66761,6 +68099,8 @@ lavé VBN
 lavée VBN
 lavées VBN
 lavés VBN
+laxiste JJ
+laïque JJ
 laïques JJ
 le DT
 lecteur NN
@@ -66775,9 +68115,11 @@ lentement RB
 lentes JJ
 lenteur NN
 lents JJ
+lepéniste JJ
 lequel WP
 lerche RB
 les DT
+lesbien JJ
 lesbienne JJ
 lesdits DT
 lesquelles WP
@@ -66824,22 +68166,29 @@ libidineux NN
 libre JJ
 librement RB
 libres JJ
+libyenne JJ
 libère VB
 libèrent VB
 libéra VB
 libéraient VB
 libérait VB
+libéral JJ
 libérale JJ
 libérales JJ
+libéralisant VBG
 libérant VB
 libération NN
 libératrice JJ
+libéraux JJ
 libérer VB
+libérien JJ
+libérienne JJ
 libéré VBN
 libérée VBN
 libérées VBN
 libérés VBN
 licite JJ
+lie VB
 lien NN
 liens NNS
 lier VB
@@ -66863,6 +68212,8 @@ limité VBN
 limitée VBN
 limitées VBN
 limités VBN
+limogeant VBG
+limoger VB
 limpide JJ
 limpides JJ
 limé VBN
@@ -66870,6 +68221,7 @@ linge NN
 linguistiques JJ
 linéaire JJ
 lion NN
+liquide JJ
 liquider VB
 liquidé VBN
 liquidée VBN
@@ -66939,10 +68291,12 @@ lié VBN
 liée VBN
 liées VBN
 liés VBN
+local JJ
 locale JJ
 localement RB
 locales JJ
 localiser VB
+locaux JJ
 locomotive NN
 logeaient VB
 logeait VB
@@ -66957,11 +68311,15 @@ logée VBN
 logés VBN
 loi NN
 loin RB
+lointain JJ
 lointaine JJ
 lointaines JJ
 lois NNS
 loisible JJ
 loisir NN
+londonien JJ
+londonienne JJ
+long JJ
 longe VB
 longea VB
 longeaient VB
@@ -66988,6 +68346,7 @@ lorgnaient VB
 lorgnait VB
 lorgnant VB
 lorgner VB
+lorrain JJ
 lorraine NN
 lors RB
 lorsqu' RB
@@ -67004,6 +68363,7 @@ loucher VB
 loue VB
 louer VB
 louf JJ
+loufoque JJ
 loulou NN
 loup NN
 louper VB
@@ -67018,6 +68378,7 @@ lourds JJ
 louvoie VB
 louvoyant VB
 louvoyer VB
+louvoyé VBN
 loué VBN
 louée VBN
 louées VBN
@@ -67036,6 +68397,7 @@ lucide JJ
 lucidement RB
 lucides JJ
 lucidité NN
+lucratif JJ
 ludique JJ
 lue VBN
 lues VBN
@@ -67046,6 +68408,7 @@ lugubrement RB
 lugubres JJ
 lui PRP
 lui-même PRP
+luigi VBN
 luire VB
 luis VB
 luisaient VB
@@ -67088,7 +68451,9 @@ luxueuses JJ
 luxueux JJ
 luxuriante JJ
 lycée NN
+lycéen JJ
 lyonnais JJ
+lyonnaise JJ
 lyrique JJ
 lyriques JJ
 là RB
@@ -67103,6 +68468,7 @@ lâchaient VB
 lâchais VB
 lâchait VB
 lâchant VB
+lâche VB
 lâchement RB
 lâchent VB
 lâcher VB
@@ -67135,19 +68501,25 @@ légal JJ
 légale JJ
 légalement RB
 légales JJ
+légalisé VBN
 légaux JJ
 légendaire JJ
 légendaires JJ
+légendant VBG
 légende NN
+légendée VBN
 léger JJ
 légers JJ
 légion NN
 législatif JJ
 législative JJ
 législatives JJ
+légitimant VBG
 légitime JJ
 légitimement RB
+légitimer VB
 légitimes JJ
+légitimée VBN
 léguer VB
 légumes NNS
 légué VBN
@@ -67155,6 +68527,7 @@ légère JJ
 légèrement RB
 légères JJ
 légèreté NN
+lénifiant JJ
 lénifiante JJ
 lépreuses NNS
 lésiner VB
@@ -67182,6 +68555,8 @@ madame NN
 mademoiselle NN
 magasin NN
 magasins NNS
+maghrébin JJ
+maghrébine JJ
 magie NN
 magique JJ
 magiquement RB
@@ -67237,12 +68612,15 @@ majestueusement RB
 majestueuses JJ
 majestueux JJ
 majesté NN
+majeur JJ
 majeure JJ
 majeures JJ
 majeurs JJ
+major JJ
 majoritaire JJ
 majorité NN
 mal RB
+malade JJ
 maladie NN
 maladies NNS
 maladif JJ
@@ -67262,6 +68640,7 @@ malencontreux JJ
 malfaisant JJ
 malfaisante JJ
 malfaisants JJ
+malgache JJ
 malgré IN
 malhabile JJ
 malhabiles JJ
@@ -67280,6 +68659,7 @@ malicieux JJ
 maligne JJ
 malignement RB
 malignes JJ
+malin JJ
 malingre JJ
 malingres JJ
 malins JJ
@@ -67287,6 +68667,7 @@ malle NN
 malléable JJ
 malmener VB
 malmené VBN
+malmenée VBN
 malodorant JJ
 malodorante JJ
 malpropre NN
@@ -67300,13 +68681,17 @@ maltraité VBN
 maltraitée VBN
 maltraités VBN
 malveillantes JJ
+malvenu JJ
 maléfique JJ
 maléfiques JJ
 maman NN
+mammouth JJ
 manche NN
 manches NNS
+manchot JJ
 mandat NN
 mandataire NN
+mandchoue JJ
 mande VB
 mander VB
 mange VB
@@ -67341,12 +68726,14 @@ maniable JJ
 maniaient VB
 maniait VB
 maniant VB
+manie VB
 manient VB
 manier VB
 manifesta VB
 manifestaient VB
 manifestait VB
 manifestant VBG
+manifeste VB
 manifestement RB
 manifestent VB
 manifester VB
@@ -67378,6 +68765,7 @@ manquais VB
 manquait VB
 manquant VBG
 manquants NNS
+manque VB
 manquent VB
 manquer VB
 manquera VB
@@ -67399,10 +68787,12 @@ manquées VBN
 mansardé JJ
 mansardée JJ
 manteau NN
+manufacturier JJ
 manuscrit NN
 manuscrite JJ
 manuscrites JJ
 manège NN
+maoïste JJ
 maquer VB
 maquillage NN
 maquillait VB
@@ -67420,6 +68810,8 @@ marchai VB
 marchaient VB
 marchais VB
 marchait VB
+marchand JJ
+marchande JJ
 marchander VB
 marchant VB
 marchent VB
@@ -67437,8 +68829,10 @@ marchâmes VB
 marchèrent VB
 mardi NN
 marge NN
+marginal JJ
 marginale JJ
 marginales JJ
+marginalisé VBN
 mari NN
 maria VB
 mariage NN
@@ -67453,6 +68847,7 @@ marierai VB
 marieraient VB
 marierait VB
 maries VB
+marin JJ
 mariner VB
 maritime JJ
 maritimes JJ
@@ -67542,6 +68937,8 @@ massant VB
 masse NN
 masser VB
 masses NN
+massif JJ
+massifiée VBN
 massive JJ
 massivement RB
 massives JJ
@@ -67554,8 +68951,10 @@ mastique VB
 mastiquer VB
 mastoc NN
 masturbe VB
+masturbez VB
 matais VB
 matait VB
+mate JJ
 matelas NN
 mater VB
 maternel JJ
@@ -67602,6 +69001,7 @@ mauvais JJ
 mauvaise JJ
 mauvaises JJ
 mauves JJ
+maximal JJ
 maximum NN
 mazette NN
 maçonné VBN
@@ -67617,6 +69017,8 @@ maîtrisée VBN
 me PRP
 mec NN
 mecs NNS
+meilleur JJ
+meilleure JJ
 meilleures JJ
 membre NN
 membres NNS
@@ -67650,6 +69052,7 @@ mensonge NN
 mensonges NNS
 mensongère JJ
 mensongères JJ
+mensuel JJ
 mensuelle JJ
 ment VB
 mentaient VB
@@ -67743,6 +69146,7 @@ mettre VB
 mettrez VB
 mettrons VB
 mettront VB
+meu JJ
 meubler VB
 meubles NN
 meublé VBN
@@ -67754,12 +69158,15 @@ meurt VB
 meurtre NN
 meurtri VBN
 meurtrie VBN
+meurtrier JJ
 meurtries VBN
 meurtrir VB
 meurtris VBN
 meut VB
 meuvent VB
 mexicaine JJ
+mi-février JJ
+mi-juin JJ
 miam UH
 miam-miam NN
 miaula VB
@@ -67791,6 +69198,8 @@ milieu NN
 militaire JJ
 militairement RB
 militait VB
+militant JJ
+milite VB
 militer VB
 milité VB
 milliards NNS
@@ -67798,6 +69207,7 @@ milliers NNS
 millions NNS
 millième NN
 millénaire NN
+millésimé VBN
 mima VB
 mimait VB
 mimant VB
@@ -67815,9 +69225,12 @@ minces JJ
 mine NN
 miner VB
 mines NN
+mineur JJ
+minima JJ
 minime JJ
 minimes JJ
 minimiser VB
+minimisé VBN
 ministre NN
 ministres NNS
 ministère NN
@@ -67825,6 +69238,7 @@ ministériel JJ
 ministérielle JJ
 ministériels JJ
 minière JJ
+minoritaire JJ
 minuit NN
 minuscule JJ
 minuscules JJ
@@ -67856,6 +69270,7 @@ miroite VB
 miroitent VB
 miroiter VB
 mis VBN
+misant VBG
 misanthrope NN
 mise VBN
 miser VB
@@ -67871,12 +69286,15 @@ miséricordieux JJ
 mit VB
 miteuse NN
 miteux NN
+mitigé VBN
 mitonner VB
+mitonnée VBN
 mitoyen JJ
 mitraillant VB
 mitrailler VB
 mitraillé VBN
 mitraillés VBN
+mixait VB
 mixte JJ
 mixtes JJ
 mièvre JJ
@@ -67909,8 +69327,10 @@ modifier VB
 modifié VBN
 modifiée VBN
 modique JJ
+modo RB
 modulé VBN
 modulée VBN
+modérateur JJ
 modérer VB
 modéré VBN
 modérée VBN
@@ -67961,11 +69381,14 @@ monde NN
 mondial JJ
 mondiale JJ
 mondiales JJ
+mondialisé VBN
 mondiaux JJ
+mondrianesque JJ
 monnaie NN
 monnayer VB
 monocorde JJ
 monolithique JJ
+monopolisé VBN
 monotone JJ
 monotones JJ
 monsieur NN
@@ -68002,6 +69425,7 @@ montraient VB
 montrais VB
 montrait VB
 montrant VB
+montre VB
 montrent VB
 montrer VB
 montrera VB
@@ -68057,6 +69481,7 @@ morbide JJ
 morbides JJ
 morceau NN
 morceaux NNS
+morcelée VBN
 mord VB
 mordaient VB
 mordais VB
@@ -68086,6 +69511,7 @@ morne NN
 mornes NNS
 morose JJ
 moroses JJ
+mort-né JJ
 morte VBN
 mortel JJ
 mortelle JJ
@@ -68096,13 +69522,17 @@ mortifiait VB
 mortifier VB
 mortifié VBN
 mortifiée VBN
+mortifère JJ
 mortuaire NN
 mortuaires NNS
+mosaïque JJ
 moscovite JJ
 mot NN
 moteur NN
 motif NN
 motifs NNS
+motivé VBN
+motivée VBN
 moto NN
 motorisée VBN
 motorisés VBN
@@ -68114,6 +69544,7 @@ moucher VB
 mouches NN
 mouchoir NN
 mouché VBN
+moud VB
 moudre VB
 moue NN
 mouettes NNS
@@ -68164,6 +69595,7 @@ mous JJ
 moussait VB
 mousser VB
 mousseuse JJ
+mousseux JJ
 mousson NN
 moussu JJ
 moussus JJ
@@ -68184,10 +69616,12 @@ mouvement NN
 mouvements NNS
 mouvementée VBN
 mouvoir VB
+moyen JJ
 moyennant VBG
 moyennement RB
 moyens NN
 moyenâgeux JJ
+mozartien JJ
 mua VB
 muait VB
 muer VB
@@ -68200,6 +69634,7 @@ mugir VB
 mugit VB
 multicolore JJ
 multicolores JJ
+multilatéral JJ
 multiple JJ
 multiples JJ
 multiplia VB
@@ -68262,6 +69697,8 @@ musicaux JJ
 musicienne JJ
 musique NN
 musquée VBN
+musul JJ
+musulman JJ
 musulmane JJ
 musulmanes JJ
 musée NN
@@ -68270,6 +69707,7 @@ mutilé VBN
 mutilée VBN
 mutilées VBN
 mutilés VBN
+mutualiste JJ
 mutuel JJ
 mutuelle JJ
 mutuellement RB
@@ -68328,6 +69766,7 @@ médecin NN
 médecine NN
 médecins NNS
 médiane JJ
+médiatisé VBN
 médical JJ
 médicale JJ
 médicalement RB
@@ -68370,6 +69809,7 @@ méfiez VB
 méfié VB
 méfiés VB
 méga NN
+mégalomane JJ
 mélancolie NN
 mélancolique JJ
 mélancoliquement RB
@@ -68384,6 +69824,7 @@ mélangé VBN
 mélangée VBN
 mélangées VBN
 mélangés VBN
+mélo JJ
 mélodieuse JJ
 mélodieux JJ
 mélodramatique JJ
@@ -68396,6 +69837,7 @@ ménageaient VB
 ménageait VB
 ménageant VB
 ménagent VB
+ménager VB
 ménagers JJ
 ménagé VBN
 ménagée VBN
@@ -68423,6 +69865,7 @@ méritais VB
 méritait VB
 méritant VBG
 méritants JJ
+mérite VB
 méritent VB
 mériter VB
 mériterais VB
@@ -68431,6 +69874,8 @@ méritez VB
 méritoire JJ
 mérité VBN
 méritée VBN
+mésestimer VB
+mésestimée VBN
 métal NN
 métallique JJ
 métalliques JJ
@@ -68443,6 +69888,7 @@ métaphysiques JJ
 méthode NN
 méthodique JJ
 méthodiquement RB
+méthodiste JJ
 méticuleuse JJ
 méticuleusement RB
 méticuleux JJ
@@ -68484,6 +69930,7 @@ mûrissait VB
 mûrissent VB
 mûrit VB
 mûrs JJ
+n VB
 n' RB
 na RB
 nacré VBN
@@ -68513,6 +69960,7 @@ nantie VBN
 napolitaine NN
 napolitains NNS
 nappe NN
+nappée VBN
 naquit VB
 narcissique JJ
 narguait VB
@@ -68538,7 +69986,9 @@ nationaliste JJ
 nationaux JJ
 nations NNS
 native NN
+naturalisé VBN
 nature RB
+naturel JJ
 naturelle JJ
 naturellement RB
 naturelles JJ
@@ -68607,9 +70057,11 @@ nettoyer VB
 nettoyé VBN
 nettoyée VBN
 nettoyés VBN
+neuf JJ
 neufs JJ
 neurasthénique NN
 neutraliser VB
+neutralisé VBN
 neutre JJ
 neutres JJ
 neuve JJ
@@ -68617,6 +70069,7 @@ neuves JJ
 neuvième JJ
 neveu NN
 new-yorkais JJ
+new-yorkaise JJ
 nez NN
 ni CC
 nia VB
@@ -68639,8 +70092,12 @@ nient VB
 nier VB
 niez VB
 nihiliste NN
+nihilo JJ
 nimbait VB
 nimbée VBN
+nippon JJ
+nippone JJ
+nipponne JJ
 niquer VB
 niveau NN
 nivelé VBN
@@ -68657,6 +70114,7 @@ nocturnes JJ
 noeud NN
 noie VB
 noient VB
+noir JJ
 noiraud NN
 noiraude NN
 noirci VBN
@@ -68704,6 +70162,8 @@ normal JJ
 normale JJ
 normalement RB
 normales JJ
+normalisera VB
+normalisé VBN
 normand NN
 normande NN
 normandes NNS
@@ -68720,9 +70180,11 @@ notai VB
 notaire NN
 notais VB
 notait VB
+notammant VBG
 notamment RB
 notant VB
 noter VB
+notera VB
 notes NN
 notez VB
 notifier VB
@@ -68766,13 +70228,14 @@ nouveau JJ
 nouveaux JJ
 nouvel JJ
 nouvelle JJ
-nouvelles JJ
 nouvellement RB
+nouvelles JJ
 noué VBN
 nouée VBN
 nouées VBN
 noués VBN
 novembre NN
+novice JJ
 noya VB
 noyaient VB
 noyait VB
@@ -68788,6 +70251,7 @@ nuages NNS
 nuageux JJ
 nuance NN
 nuancer VB
+nuancé VBN
 nucléaire JJ
 nucléaires JJ
 nudité NN
@@ -68813,6 +70277,7 @@ nuptiale JJ
 nuptiales JJ
 nuque NN
 nus JJ
+nymphomaniaque JJ
 né VB
 néanmoins RB
 néant NN
@@ -68821,9 +70286,12 @@ nécessaire JJ
 nécessairement RB
 nécessaires JJ
 nécessitait VB
+nécessitant VBG
 nécessite VB
 nécessité NN
 née VB
+néerlandaise JJ
+néerlandophone JJ
 nées VB
 néfaste JJ
 néfastes JJ
@@ -68848,16 +70316,21 @@ négociait VB
 négocie VB
 négocier VB
 négocié VBN
+négociée VBN
 négroïde NN
 négroïdes NNS
 néo NN
+néo-zélandaise JJ
+néonazie JJ
 nés VB
 nôtre PRP$
 nôtres PRP$
+o VBN
 objecta VB
 objectait VB
 objecte VB
 objecter VB
+objectera VB
 objective JJ
 objectivement RB
 objecté VBN
@@ -68886,10 +70359,12 @@ obliquant VB
 obliquement RB
 obliquer VB
 obliques JJ
+oblitère VB
 oblong JJ
 oblongue JJ
 obnubilé VBN
 obscur JJ
+obscurantiste JJ
 obscurci VBN
 obscurcie VBN
 obscurcir VB
@@ -68919,6 +70394,8 @@ observé VBN
 observée VBN
 observées VBN
 observés VBN
+obsessionnel JJ
+obsidional JJ
 obstacle NN
 obstacles NNS
 obstina VB
@@ -68950,6 +70427,7 @@ obsédé VBN
 obsédée VBN
 obséquieux JJ
 obtempérer VB
+obtempéré VBN
 obtenaient VB
 obtenais VB
 obtenait VB
@@ -68959,6 +70437,7 @@ obtenu VBN
 obtenue VBN
 obtenues VBN
 obtenus VBN
+obtiendra VB
 obtiendrait VB
 obtienne VB
 obtient VB
@@ -68983,12 +70462,14 @@ obéissent VB
 obéit VB
 occasion NN
 occasionnel JJ
+occasionnée VBN
 occasions NNS
 occidental JJ
 occidentale JJ
 occidentales JJ
 occis VB
 occulte JJ
+occulter VB
 occultes JJ
 occupa VB
 occupai VB
@@ -69014,10 +70495,15 @@ occupé VBN
 occupée VBN
 occupées VBN
 occupés VBN
+ocre VB
+ocrée VBN
 octobre NN
 octogonal JJ
 octogonale JJ
+octroyant VBG
+octroyer VB
 octroyé VBN
+octroyée VBN
 océan NN
 océanique JJ
 odeur NN
@@ -69039,6 +70525,7 @@ oeuvre NN
 oeuvrer VB
 oeuvres NN
 oeuvré VB
+of VB
 off RB
 offensait VB
 offenser VB
@@ -69052,6 +70539,7 @@ offertes VBN
 offerts VBN
 office NN
 officiait VB
+officialisé VBN
 officie VB
 officiel JJ
 officielle JJ
@@ -69060,6 +70548,7 @@ officielles JJ
 officiers NNS
 officieusement RB
 officieux JJ
+officié VBN
 offraient VB
 offrais VB
 offrait VB
@@ -69130,10 +70619,13 @@ ondulés VBN
 ongle NN
 ongles NNS
 ont VB
+onusien JJ
+onusienne JJ
 onze CD
 onéreux JJ
 opaque JJ
 opaques JJ
+open JJ
 opina VB
 opine VB
 opinion NN
@@ -69167,6 +70659,7 @@ opprimer VB
 opta VB
 opte VB
 opter VB
+optez VB
 optimiste JJ
 opté VB
 opulent JJ
@@ -69179,6 +70672,7 @@ opéraient VB
 opérait VB
 opérant VBG
 opération NN
+opérationnel JJ
 opérations NNS
 opératoire JJ
 opérer VB
@@ -69192,12 +70686,15 @@ orageuses JJ
 orageux JJ
 orale JJ
 oralement RB
+orange JJ
 orangé VBN
 orangée VBN
 orangées VBN
 orangés VBN
 oratoires NNS
+orchestral JJ
 orchestre NN
+ordinaire JJ
 ordinairement RB
 ordinaires JJ
 ordonna VB
@@ -69230,10 +70727,14 @@ organisa VB
 organisaient VB
 organisait VB
 organisant VB
+organisateur JJ
 organisation NN
+organisationnel JJ
+organisatrice JJ
 organise VB
 organisent VB
 organiser VB
+organisera VB
 organisèrent VB
 organisé VBN
 organisée VBN
@@ -69245,6 +70746,7 @@ orgueilleusement RB
 orgueilleuses JJ
 orienta VB
 orientait VB
+oriental JJ
 orientale JJ
 orientales JJ
 orientant VB
@@ -69256,6 +70758,7 @@ orientée VBN
 orientés VBN
 originaire JJ
 originaires JJ
+original JJ
 originale JJ
 originales JJ
 origine NN
@@ -69309,6 +70812,8 @@ ostentatoire JJ
 osât VB
 osèrent VB
 osé VBN
+ottoman JJ
+ottomane JJ
 ou CC
 ouah UH
 ouais UH
@@ -69339,9 +70844,11 @@ oublié VBN
 oubliée VBN
 oubliées VBN
 oubliés VBN
+ouest-africaine JJ
 ouf RB
 oui RB
 ouille RB
+our VBN
 ourlé VBN
 ourlée VBN
 ourlées VBN
@@ -69354,6 +70861,7 @@ outragé VBN
 outragée VBN
 outragés VBN
 outre RB
+outre- VBN
 outre-mer RB
 outre-tombe RB
 outremer NN
@@ -69365,6 +70873,7 @@ ouvertement RB
 ouvertes VBN
 ouverts VBN
 ouverture NN
+ouvier JJ
 ouvrables JJ
 ouvrage NN
 ouvrages NN
@@ -69379,6 +70888,7 @@ ouvre VB
 ouvrent VB
 ouvres VB
 ouvrez VB
+ouvrier JJ
 ouvriers NN
 ouvrions VB
 ouvrir VB
@@ -69405,6 +70915,7 @@ pacifier VB
 pacifique JJ
 pacifiques JJ
 pacifié VBN
+pacifiée VBN
 pacte NN
 pactiser VB
 page NN
@@ -69430,6 +70941,8 @@ paissent VB
 paix NN
 palabrer VB
 palais NN
+palestinien JJ
+palestinienne JJ
 palier NN
 palière NN
 pallier VB
@@ -69452,6 +70965,7 @@ palpitent VB
 palpiter VB
 palpé VBN
 pan NN
+panafricain JJ
 panier NN
 paniquait VB
 panique NN
@@ -69515,6 +71029,7 @@ paralytique NN
 paramilitaires JJ
 parant VB
 parapet NN
+paraphraser VB
 parapluie NN
 parasitaire JJ
 paraît VB
@@ -69563,6 +71078,7 @@ pareille DT
 pareillement RB
 pareilles DT
 pareils DT
+parental JJ
 parentale JJ
 parents NNS
 parer VB
@@ -69570,6 +71086,7 @@ paresse NN
 paresseuse JJ
 paresseusement RB
 parfaire VB
+parfait JJ
 parfaite JJ
 parfaitement RB
 parfaites JJ
@@ -69590,6 +71107,7 @@ paries VB
 parigot NN
 parisien JJ
 parisienne JJ
+paritaire JJ
 parié VBN
 parla VB
 parlai VB
@@ -69630,6 +71148,7 @@ parole NN
 paroles NNS
 parquet NN
 parqués VBN
+parraine VB
 pars VB
 parsemaient VB
 parsemant VB
@@ -69674,6 +71193,7 @@ participant VBG
 participe VB
 participent VB
 participer VB
+participera VB
 participé VB
 particuliers JJ
 particulière JJ
@@ -69696,6 +71216,7 @@ partirez VB
 partirons VB
 partiront VB
 partis VBN
+partisan JJ
 partisans NN
 partit VB
 partons VB
@@ -69742,6 +71263,7 @@ passa VB
 passable JJ
 passablement RB
 passage NN
+passager JJ
 passages NNS
 passagèrement RB
 passai VB
@@ -69801,6 +71323,7 @@ pataugeant VB
 pataugent VB
 patauger VB
 patent JJ
+patente JJ
 patenté VBN
 patentés VBN
 paternelle JJ
@@ -69818,21 +71341,27 @@ patientait VB
 patienter VB
 patientes JJ
 patinait VB
+patine VB
 patiné VBN
 patinée VBN
 patinées VBN
 patinés VBN
 patraque NN
 patrie NN
+patrimonial JJ
+patriote JJ
 patriotique JJ
 patriotiques JJ
 patron NN
+patronal JJ
 patronne NN
 patronnesse NN
+patronnée VBN
 patrons NN
 patrouillaient VB
 patte NN
 pattes NNS
+paul-henri JJ
 paume NN
 paumer VB
 paumes NN
@@ -69858,6 +71387,7 @@ payais VB
 payait VB
 payant VBG
 payante JJ
+paye VB
 payent VB
 payer VB
 payes VB
@@ -69866,6 +71396,8 @@ payons VB
 pays NN
 paysage NN
 paysages NN
+paysan JJ
+paysanne JJ
 paysans NN
 payé VBN
 payée VBN
@@ -69953,6 +71485,7 @@ pendre VB
 pendu VBN
 pendue VBN
 pendues VBN
+pendulaire JJ
 pendus VBN
 pensa VB
 pensable JJ
@@ -69990,6 +71523,7 @@ pensée NN
 pensées NN
 pente NN
 pentes NNS
+pentu JJ
 perce VB
 percent VB
 perceptible JJ
@@ -70007,6 +71541,7 @@ perchées VBN
 perchés VBN
 perclus JJ
 percuta VB
+percutant VBG
 percutants JJ
 percuter VB
 percuté VBN
@@ -70045,12 +71580,15 @@ perfectionné VBN
 perfide JJ
 perfidement RB
 perfides JJ
+perforer VB
+performant JJ
 perlaient VB
 perlait VB
 perler VB
 perles NN
 permanence NN
 permanent JJ
+permanente JJ
 permet VB
 permets VB
 permettaient VB
@@ -70080,6 +71618,8 @@ perpendiculairement RB
 perplexe JJ
 perplexes JJ
 perpétrer VB
+perpétré VBN
+perpétrée VBN
 perpétue VB
 perpétuel JJ
 perpétuelle JJ
@@ -70130,8 +71670,10 @@ persécuté VBN
 persévérer VB
 perte NN
 pertinemment RB
+pertinente JJ
 perturber VB
 perturbé VBN
+perturbée VBN
 pervenche NN
 pervers JJ
 perverse JJ
@@ -70193,6 +71735,7 @@ peureuse NN
 peureusement RB
 peureux NN
 peut VB
+peut- VBN
 peut-être RB
 peuvent VB
 peux VB
@@ -70208,6 +71751,7 @@ philosophie NN
 philosophique JJ
 philosophiquement RB
 philosophiques JJ
+phocéen JJ
 phosphorescent JJ
 phosphorescente JJ
 phosphorescentes JJ
@@ -70245,6 +71789,7 @@ piaille VB
 piaillent VB
 piailler VB
 piano RB
+piano-orgue JJ
 pianotait VB
 piaule NN
 pic NN
@@ -70252,6 +71797,7 @@ picole VB
 picoler VB
 picolé VBN
 picorer VB
+pictural JJ
 pied NN
 pied-de-poule NN
 pieds NNS
@@ -70277,6 +71823,7 @@ pillé VBN
 pillés VBN
 pilotait VB
 piloter VB
+piloté VBN
 pilé VBN
 pilée VBN
 pimpant JJ
@@ -70314,6 +71861,7 @@ piqué VBN
 piquée VBN
 piquées VBN
 piqués VBN
+pire JJ
 pires JJ
 pis NN
 piscine NN
@@ -70364,6 +71912,7 @@ piétinés VBN
 placard NN
 placarde VB
 placarder VB
+placardée VBN
 place NN
 placent VB
 placer VB
@@ -70384,6 +71933,7 @@ plages NNS
 plaida VB
 plaidait VB
 plaide VB
+plaident VB
 plaider VB
 plaidé VBN
 plaie NN
@@ -70435,8 +71985,11 @@ planant VB
 planche NN
 plancher NN
 planches NN
+planché VBN
+plane VB
 planent VB
 planer VB
+planifiée VBN
 planquait VB
 planquent VB
 planquer VB
@@ -70491,6 +72044,7 @@ plaçais VB
 plaçait VB
 plaçant VB
 plaît VB
+plein JJ
 pleine JJ
 pleinement RB
 pleines JJ
@@ -70507,6 +72061,7 @@ pleurer VB
 pleurera VB
 pleurerait VB
 pleures VB
+pleureur JJ
 pleurez VB
 pleurnicha VB
 pleurnichait VB
@@ -70550,6 +72105,8 @@ pliées VBN
 pliés VBN
 ploie VB
 plomb NN
+plombe VB
+plombent VB
 plomber VB
 plombé VBN
 plombée VBN
@@ -70565,6 +72122,7 @@ plonger VB
 plongèrent VB
 plongé VBN
 plongés VBN
+plouf UH
 ployait VB
 ployant VB
 ployer VB
@@ -70577,6 +72135,7 @@ pluies NNS
 plume NN
 plumer VB
 plumes NN
+pluraliste JJ
 plurent VB
 plus RB
 plusieurs PRP
@@ -70585,6 +72144,7 @@ plutôt RB
 pluvieuse JJ
 pluvieux JJ
 plâtre NN
+plébiscité VBN
 plénipotentiaire NN
 plénière JJ
 plût VB
@@ -70654,14 +72214,19 @@ polies VBN
 poliment RB
 polir VB
 polis VBN
+polit VB
 politesse NN
+politique/ VBN
 politiquement RB
 politiques JJ
+politisé VBN
+polluer VB
 pollué VBN
 polonaise JJ
 polonaises JJ
 polychrome JJ
 polyglotte JJ
+polymorphe JJ
 polytechnique NN
 pomme NN
 pommelé VBN
@@ -70690,6 +72255,7 @@ pondre VB
 pondu VBN
 pondus VBN
 pondéré VBN
+pondérée VBN
 pont NN
 ponts NNS
 pop NN
@@ -70698,6 +72264,7 @@ populaires JJ
 population NN
 populations NNS
 populeux JJ
+populiste JJ
 porc NN
 porcelaine NN
 porche NN
@@ -70737,6 +72304,7 @@ portrait NN
 portraits NNS
 ports NNS
 portuaire JJ
+portugaise JJ
 portât VB
 portèrent VB
 porté VBN
@@ -70748,6 +72316,7 @@ posaient VB
 posais VB
 posait VB
 posant VB
+pose VB
 posent VB
 poser VB
 posera VB
@@ -70755,6 +72324,7 @@ poserai VB
 poserait VB
 poseront VB
 posez VB
+positif JJ
 positifs JJ
 position NN
 positive JJ
@@ -70775,6 +72345,7 @@ possédais VB
 possédait VB
 possédant VBG
 posséder VB
+possédera VB
 possédez VB
 possédions VB
 possédons VB
@@ -70782,6 +72353,10 @@ possédât VB
 possédé VBN
 possédée VBN
 possédés VBN
+post JJ
+post-apartheid JJ
+post-communiste JJ
+post-conciliaire JJ
 posta VB
 postal JJ
 postale JJ
@@ -70829,6 +72404,7 @@ pouffant VB
 pouffe VB
 pouffer VB
 pouilleux NN
+poujadiste JJ
 poule NN
 poules NNS
 poulet NN
@@ -71040,11 +72616,13 @@ primitives JJ
 primo RB
 primordial JJ
 primordiale JJ
+primé VBN
 prince NN
 princes NNS
 princesse NN
 princier JJ
 princiers JJ
+principal JJ
 principale JJ
 principalement RB
 principales JJ
@@ -71057,6 +72635,8 @@ printanier JJ
 printaniers JJ
 printanière JJ
 printemps NN
+priori RB
+prioritaire JJ
 prirent VB
 pris VBN
 prisait VB
@@ -71076,10 +72656,13 @@ privant VB
 prive VB
 priver VB
 privilège NN
+privilégiant VBG
+privilégier VB
 privilégié VBN
 privilégiée VBN
 privilégiées VBN
 privé VBN
+privé-public JJ
 privée VBN
 privées VBN
 privés VBN
@@ -71089,6 +72672,8 @@ prières NNS
 prié VBN
 priée VBN
 priés VBN
+pro-abolitionniste JJ
+pro-européen JJ
 probable JJ
 probablement RB
 probables JJ
@@ -71096,11 +72681,13 @@ probant JJ
 problème NN
 problèmes NNS
 problématique JJ
+prochain JJ
 prochaine JJ
 prochainement RB
 prochaines JJ
 prochains JJ
 proche RB
+proche-oriental JJ
 proclama VB
 proclamaient VB
 proclamait VB
@@ -71142,6 +72729,7 @@ prodigues JJ
 prodigué VBN
 prodiguées VBN
 prodigués VBN
+producteur JJ
 production NN
 produira VB
 produirait VB
@@ -71156,10 +72744,14 @@ produisît VB
 produit VBN
 produite VBN
 prof NN
+profane JJ
+profaner VB
 professait VB
 professeur NN
 professeurs NNS
 profession NN
+professionnalisé VBN
+professionnel JJ
 professionnelle JJ
 professionnellement RB
 professionnelles JJ
@@ -71204,6 +72796,7 @@ proférer VB
 proféré VBN
 programme NN
 programmé VBN
+programmée VBN
 progressaient VB
 progressait VB
 progressant VB
@@ -71215,6 +72808,7 @@ progressive JJ
 progressivement RB
 progressé VB
 progrès NN
+prohibé VBN
 proie NN
 projet NN
 projeta VB
@@ -71281,6 +72875,7 @@ promis VBN
 promise VBN
 promises VBN
 promit VB
+promoteur JJ
 promouvoir VB
 prompt JJ
 prompte JJ
@@ -71288,6 +72883,7 @@ promptement RB
 promptes JJ
 prompts JJ
 promu VBN
+promulgué VBN
 promène VB
 promènent VB
 promènerai VB
@@ -71316,6 +72912,7 @@ prophétique JJ
 prophétiques JJ
 propice JJ
 propices JJ
+proportionnel JJ
 proportionné VBN
 propos NN
 proposa VB
@@ -71327,6 +72924,7 @@ proposant VBG
 propose VB
 proposent VB
 proposer VB
+proposera VB
 proposerait VB
 proposes VB
 proposez VB
@@ -71348,15 +72946,19 @@ propulsé VBN
 propulsée VBN
 prosaïque JJ
 prosaïques JJ
+proscrit VBN
+proscrite VBN
 prospecter VB
 prospère JJ
 prospères JJ
+prospéré VBN
 prosterna VB
 prosterner VB
 prosterné VB
 prostré JJ
 prostrée JJ
 protection NN
+protectionniste JJ
 protectrice JJ
 protectrices JJ
 protesta VB
@@ -71407,6 +73009,7 @@ provient VB
 province NN
 provinciale JJ
 provinciales JJ
+provisionnel JJ
 provisions NNS
 provisoire JJ
 provisoirement RB
@@ -71414,6 +73017,7 @@ provisoires JJ
 provocant JJ
 provocante JJ
 provocants JJ
+provocateur JJ
 provoqua VB
 provoquaient VB
 provoquait VB
@@ -71434,6 +73038,7 @@ prudence NN
 prudent JJ
 prudente JJ
 prudentes JJ
+prudentiel JJ
 prudents JJ
 prunelles NNS
 près RB
@@ -71459,6 +73064,7 @@ précipitant VB
 précipite VB
 précipitent VB
 précipiter VB
+précipitera VB
 précipiterait VB
 précipitèrent VB
 précipité VBN
@@ -71471,8 +73077,10 @@ précisai VB
 précisaient VB
 précisait VB
 précisant VB
+précise VB
 précisent VB
 préciser VB
+précisera VB
 précises JJ
 précision NN
 précisé VBN
@@ -71482,6 +73090,8 @@ précisément RB
 précoce JJ
 précocement RB
 précoces JJ
+préconisant VBG
+préconise VB
 préconçues VBN
 précède VB
 précèdent VB
@@ -71493,15 +73103,20 @@ précédemment RB
 précédente JJ
 précédentes JJ
 précéder VB
+précédera VB
 précédèrent VB
 précédé VBN
 précédée VBN
 précédés VBN
+prédestiné JJ
 prédire VB
 prédis VB
 prédisait VB
 prédit VBN
+prédéterminé VBN
 préfabriqué VBN
+préfaçant VBG
+préfigurant VBG
 préfère VB
 préfèrent VB
 préfères VB
@@ -71513,6 +73128,7 @@ préférais VB
 préférait VB
 préférant VB
 préférence NN
+préférentiel JJ
 préférer VB
 préférerais VB
 préférerait VB
@@ -71533,6 +73149,8 @@ prélevé VBN
 prélevée VBN
 prélevées VBN
 prélevés VBN
+préliminaire JJ
+prélève VB
 prématuré JJ
 prématurée JJ
 prématurées JJ
@@ -71544,8 +73162,11 @@ prénom NN
 prénommait VB
 préoccupaient VB
 préoccupait VB
+préoccupant JJ
 préoccupe VB
+préoccupent VB
 préoccuper VB
+préoccupât VB
 préoccupé VBN
 préoccupée VBN
 préoccupés VBN
@@ -71572,6 +73193,7 @@ préparées VBN
 préparés VBN
 prépondérante JJ
 prés NNS
+présage VB
 présageait VB
 présager VB
 présence NN
@@ -71582,6 +73204,7 @@ présentaient VB
 présentais VB
 présentait VB
 présentant VB
+présente VB
 présentement RB
 présentent VB
 présenter VB
@@ -71609,9 +73232,11 @@ présidentiel JJ
 présidentielle JJ
 présider VB
 présidé VBN
+présidée VBN
 présomptueux JJ
 présume VB
 présumer VB
+présumée VBN
 prétend VB
 prétendaient VB
 prétendais VB
@@ -71637,6 +73262,10 @@ prétextant VB
 prétexte NN
 prétexté VBN
 prévaloir VB
+prévalu VBN
+prévaricatrice JJ
+prévaudra VB
+prévaut VB
 prévenait VB
 prévenant VBG
 prévenez VB
@@ -71652,6 +73281,7 @@ prévins VB
 prévint VB
 prévisible JJ
 prévisibles JJ
+prévisionnel JJ
 prévoir VB
 prévois VB
 prévoit VB
@@ -71673,6 +73303,7 @@ prêtaient VB
 prêtais VB
 prêtait VB
 prêtant VBG
+prête JJ
 prêtent VB
 prêter VB
 prêterai VB
@@ -71689,6 +73320,9 @@ prêtés VBN
 prîmes VB
 prît VB
 prônait VB
+prônant VBG
+prône VB
+prôner VB
 psalmodiait VB
 psalmodiant VB
 psychanalyser VB
@@ -71775,7 +73409,9 @@ punir VB
 punis VBN
 punissait VB
 punit VB
+punitif JJ
 punitive JJ
+punk JJ
 pur JJ
 pure JJ
 purement RB
@@ -71784,6 +73420,7 @@ pures JJ
 pureté NN
 purger VB
 purgé VBN
+purifiant VBG
 purificateur NN
 purifier VB
 purifié VBN
@@ -71837,11 +73474,14 @@ pécher VB
 péché NN
 pédagogique JJ
 pédagogiques JJ
+pédagogue JJ
 pédalait VB
 pédalant VB
 pédaler VB
 péjoratif JJ
 pénal JJ
+pénalise VB
+pénalisé VBN
 pénard NN
 pénible JJ
 péniblement RB
@@ -71871,6 +73511,7 @@ pépé NN
 péremptoire JJ
 péremptoirement RB
 péremptoires JJ
+pérennisé VBN
 péri VBN
 péril NN
 périlleuse JJ
@@ -71885,6 +73526,7 @@ périphériques JJ
 périr VB
 périrent VB
 périssable JJ
+péroniste JJ
 pérorait VB
 pérorant VB
 pérore VB
@@ -71910,6 +73552,7 @@ pétrissait VB
 pétrissant VB
 pétrit VB
 pétrole NN
+pétrolier JJ
 pétrolières JJ
 pété VBN
 pêchaient VB
@@ -71923,12 +73566,16 @@ pêché VBN
 pêle-mêle RB
 pûmes VB
 pût VB
+qu VBN
 qu' CC
+qua VB
+quadragénaire JJ
 quadrillé VBN
 quadrillée VBN
 quai NN
 quais NNS
 qualifiait VB
+qualifiant VBG
 qualifie VB
 qualifier VB
 qualifié VBN
@@ -71937,9 +73584,11 @@ qualifiés VBN
 qualité NN
 qualités NNS
 quand RB
+quant IN
 quantité NN
 quarantaine NN
 quarante RB
+quarante-huit CD
 quart NN
 quartier NN
 quartiers NNS
@@ -71951,6 +73600,8 @@ quatorzième JJ
 quatre CD
 quatre-vingt NN
 quatre-vingt-dix NN
+quatre-vingt-six CD
+quatrième CD
 que CC
 quel DT
 quelconque JJ
@@ -71978,6 +73629,7 @@ qui WP
 quiconque PRP
 quinzaine NN
 quinze NN
+quinzième CD
 quitta VB
 quittai VB
 quittaient VB
@@ -72004,6 +73656,7 @@ quittée VBN
 quittées VBN
 quittés VBN
 quoi WP
+quoiqu'en JJ
 quoique RB
 quotidienne JJ
 quotidiennement RB
@@ -72056,12 +73709,16 @@ raccrocher VB
 raccroché VBN
 race NN
 rachetait VB
+rachetant VBG
 racheter VB
 racheté VBN
+rachetée VBN
 rachète VB
+racial JJ
 raciale JJ
 racine NN
 racines NN
+raciste JJ
 racla VB
 raclaient VB
 raclait VB
@@ -72103,6 +73760,7 @@ radasse VB
 radical JJ
 radicale JJ
 radicalement RB
+radicalisant VBG
 radicaux JJ
 radieuse JJ
 radieuses JJ
@@ -72167,6 +73825,7 @@ raisonnables JJ
 raisonnait VB
 raisonne VB
 raisonner VB
+raisonnée JJ
 raisons NNS
 rajeuni VBN
 rajeunie VBN
@@ -72198,6 +73857,7 @@ rallie VB
 rallient VB
 rallier VB
 rallié VBN
+ralliée VBN
 ralliés VBN
 ralluma VB
 rallumait VB
@@ -72311,6 +73971,7 @@ rappelèrent VB
 rappelé VBN
 rappelée VBN
 rappelés VBN
+rapper VB
 rapplique VB
 rappliquent VB
 rappliquer VB
@@ -72411,8 +74072,11 @@ ratait VB
 ratatiner VB
 ratatiné VBN
 ratatinée VBN
+rate VB
 ratent VB
 rater VB
+ratifie VB
+ratifier VB
 rationnel JJ
 rationnelle JJ
 ratisse VB
@@ -72477,6 +74141,7 @@ ravitaillement NN
 ravitailler VB
 ravivait VB
 raviver VB
+ravivé VBN
 ravoir VB
 raya VB
 rayait VB
@@ -72493,7 +74158,9 @@ rayé VBN
 rayée VBN
 rayées VBN
 rayés VBN
+rebelote UH
 rebiffe VB
+rebiffent VB
 rebiffer VB
 rebondi VB
 rebondies VB
@@ -72507,6 +74174,7 @@ rebord NN
 rebours NN
 rebroussa VB
 rebrousse VB
+rebrousse-poil RB
 rebrousser VB
 rebroussé VBN
 rebutait VB
@@ -72530,6 +74198,7 @@ recevrai VB
 recevrait VB
 recevras VB
 recharger VB
+rechaussé VBN
 recherchaient VB
 recherchais VB
 recherchait VB
@@ -72541,6 +74210,7 @@ recherché VBN
 recherchée VBN
 recherchés VBN
 rechignait VB
+rechigne VB
 rechigner VB
 reclus VBN
 recluse NN
@@ -72551,6 +74221,7 @@ recommandable JJ
 recommandait VB
 recommandant VB
 recommande VB
+recommandent VB
 recommander VB
 recommandé VBN
 recommandée VBN
@@ -72579,6 +74250,7 @@ recomposer VB
 reconduire VB
 reconduisit VB
 reconduit VBN
+reconduite VBN
 reconnais VB
 reconnaissable JJ
 reconnaissables JJ
@@ -72622,7 +74294,9 @@ reconstruire VB
 reconstruit VBN
 reconstruite VBN
 reconverti VBN
+reconvertie VBN
 reconvertir VB
+reconvoque VB
 recopiait VB
 recopie VB
 recopier VB
@@ -72633,6 +74307,7 @@ recouche VB
 recoucher VB
 recouchée VBN
 recoudre VB
+recoupant VBG
 recourbé VBN
 recourbés VBN
 recourir VB
@@ -72665,6 +74340,7 @@ recrutait VB
 recruter VB
 recruté VBN
 recrutés VBN
+recréent VB
 recréer VB
 recréé VBN
 recta RB
@@ -72706,11 +74382,13 @@ reculé VBN
 reculée VBN
 reculées VBN
 reculés VBN
+recycler VB
 recèle VB
 recèlent VB
 redemanda VB
 redemandait VB
 redemande VB
+redemander VB
 redemandé VBN
 redescend VB
 redescendaient VB
@@ -72732,18 +74410,21 @@ redevenues VBN
 redevenus VBN
 redeviendra VB
 redeviendrait VB
+redevienne VB
 redeviennent VB
 redeviens VB
 redevient VB
 redevint VB
 redire VB
 redis VB
+rediscute VB
 redit VBN
 redonna VB
 redonnait VB
 redonne VB
 redonner VB
 redonné VBN
+redorer VB
 redoubla VB
 redoublaient VB
 redoublait VB
@@ -72777,6 +74458,7 @@ redresser VB
 redressé VBN
 redressée VBN
 redressés VBN
+redécouvert VBN
 redécouvrir VB
 redémarre VB
 refaire VB
@@ -72809,6 +74491,7 @@ refilé VBN
 refit VB
 reflet NN
 reflets NNS
+refleurit VB
 reflua VB
 refluaient VB
 refluait VB
@@ -72952,6 +74635,7 @@ rejetais VB
 rejetait VB
 rejetant VB
 rejeter VB
+rejetez VB
 rejette VB
 rejettent VB
 rejeté VBN
@@ -72998,6 +74682,7 @@ relayaient VB
 relayant VB
 relayer VB
 relayé VBN
+relayée VBN
 releva VB
 relevai VB
 relevaient VB
@@ -73018,6 +74703,7 @@ relie VB
 relief NN
 relient VB
 relier VB
+reliera VB
 religieusement RB
 religion NN
 relire VB
@@ -73031,6 +74717,7 @@ relié VBN
 reliée VBN
 reliées VBN
 reliés VBN
+relooker VB
 relu VBN
 reluire VB
 reluisant VBG
@@ -73047,7 +74734,9 @@ relâcher VB
 relâchèrent VB
 relâché VBN
 relâchée VBN
+relève VB
 relèvent VB
+relèvera VB
 relèverait VB
 reléguer VB
 relégué VBN
@@ -73075,6 +74764,7 @@ remarqué VBN
 remarquée VBN
 remarquées VBN
 remarqués VBN
+remballera VB
 rembourré VBN
 rembourrés VBN
 rembourse VB
@@ -73089,6 +74779,7 @@ remerciait VB
 remerciant VB
 remercie VB
 remercier VB
+remerciera VB
 remerciez VB
 remercions VB
 remercièrent VB
@@ -73113,6 +74804,7 @@ remis VBN
 remises VBN
 remisé VBN
 remit VB
+remodeler VB
 remonta VB
 remontai VB
 remontaient VB
@@ -73165,6 +74857,7 @@ remplissant VB
 remplisse VB
 remplissent VB
 remplit VB
+remporta VB
 remportait VB
 remporte VB
 remporter VB
@@ -73371,6 +75064,7 @@ renvoyaient VB
 renvoyait VB
 renvoyant VB
 renvoyer VB
+renvoyez VB
 renvoyèrent VB
 renvoyé VBN
 renvoyée VBN
@@ -73378,7 +75072,9 @@ renvoyées VBN
 renvoyés VBN
 renâclant VB
 renâcler VB
+renâclé VBN
 rené VB
+renégocier VB
 reparaissaient VB
 reparaissait VB
 reparaît VB
@@ -73440,6 +75136,7 @@ repenser VB
 repensé VBN
 repentait VB
 repenti VBN
+reperdu VBN
 repique VB
 replace VB
 replacer VB
@@ -73470,7 +75167,9 @@ reporta VB
 reportait VB
 reportant VB
 reporte VB
+reporter VB
 reporté VBN
+reportée VBN
 repos NN
 reposa VB
 reposaient VB
@@ -73529,12 +75228,15 @@ reprochaient VB
 reprochais VB
 reprochait VB
 reprochant VB
+reproche VB
 reprochent VB
 reprocher VB
+reprochera VB
 reproches NN
 reprochez VB
 reproché VBN
 reprochés VBN
+reproductrice JJ
 reproduire VB
 reproduisait VB
 reproduisant VB
@@ -73579,6 +75281,8 @@ requinqué VBN
 requis VBN
 requise VBN
 requises VBN
+rescapé VBN
+resituer VB
 respect NN
 respectable JJ
 respectables JJ
@@ -73590,6 +75294,7 @@ respecte VB
 respectent VB
 respecter VB
 respectez VB
+respectif JJ
 respectifs JJ
 respective JJ
 respectivement RB
@@ -73621,6 +75326,7 @@ resplendir VB
 resplendissait VB
 resplendissante JJ
 resplendit VB
+responsabilisant VBG
 responsabilité NN
 responsabilités NNS
 ressaisi VBN
@@ -73658,6 +75364,7 @@ ressentent VB
 ressenti VBN
 ressentie VBN
 ressentir VB
+ressentira VB
 ressentis VBN
 ressentit VB
 resserra VB
@@ -73670,6 +75377,7 @@ resserrés VBN
 resservi VBN
 resservir VB
 ressors VB
+ressort VB
 ressortaient VB
 ressortait VB
 ressortant VB
@@ -73681,6 +75389,8 @@ ressortirent VB
 ressortis VBN
 ressortit VB
 ressources NN
+ressurgi VBN
+ressurgit VB
 ressuscitaient VB
 ressuscitait VB
 ressuscitant VB
@@ -73702,6 +75412,7 @@ restaurants NNS
 restaurer VB
 restauré VBN
 restaurée VBN
+reste VB
 restent VB
 rester VB
 restera VB
@@ -73727,6 +75438,8 @@ restons VB
 restreint VBN
 restreinte VBN
 restreints VBN
+restrictif JJ
+restructurer VB
 restâmes VB
 restât VB
 restèrent VB
@@ -73734,6 +75447,7 @@ resté VB
 restée VB
 restées VB
 restés VB
+resurgi VBN
 resurgir VB
 resurgit VB
 retaper VB
@@ -73744,6 +75458,7 @@ retardait VB
 retardant VB
 retarde VB
 retarder VB
+retardera VB
 retardé VBN
 retardée VBN
 retenaient VB
@@ -73763,6 +75478,7 @@ retentissants JJ
 retentissent VB
 retentit VB
 retenu VBN
+retenue VBN
 retenues VBN
 retenus VBN
 retiendra VB
@@ -73807,6 +75523,7 @@ retombé VBN
 retombée VBN
 retordre VB
 retors JJ
+retouche VB
 retoucher VB
 retour NN
 retourna VB
@@ -73894,6 +75611,7 @@ revendait VB
 revendiquait VB
 revendique VB
 revendiquer VB
+revendiqué VBN
 revendre VB
 revendu VBN
 revenez VB
@@ -73914,6 +75632,7 @@ reverras VB
 reverrons VB
 reverront VB
 revers NN
+reverser VB
 reviendra VB
 reviendrai VB
 reviendraient VB
@@ -73928,10 +75647,13 @@ reviennent VB
 reviennes VB
 reviens VB
 revient VB
+revigorer VB
 revinrent VB
 revins VB
 revint VB
 revis VB
+revisite VB
+revisité VBN
 revit VB
 revivait VB
 revivant VB
@@ -73982,6 +75704,7 @@ rhabillée VBN
 rhabillés VBN
 rhum NN
 rhénans JJ
+rhônalpine JJ
 ri VB
 riaient VB
 riais VB
@@ -74023,11 +75746,13 @@ rieuses NNS
 riez VB
 rigide JJ
 rigides JJ
+rigidifie VB
 rigola VB
 rigolaient VB
 rigolait VB
 rigolant VB
 rigolard JJ
+rigolarde JJ
 rigolent VB
 rigoler VB
 rigolera VB
@@ -74053,6 +75778,7 @@ riposter VB
 riposté VBN
 rira VB
 rirait VB
+rire VB
 rirent VB
 rires NNS
 ris VB
@@ -74078,9 +75804,11 @@ risquât VB
 risqué VBN
 risquée VBN
 rit VB
+ritualisé VBN
 rituelle JJ
 rituellement RB
 rituelles JJ
+rité JJ
 rivage NN
 rivait VB
 rivalisaient VB
@@ -74097,6 +75825,7 @@ riz NN
 robe NN
 robes NN
 robinet NN
+roboratif JJ
 robuste JJ
 robustes JJ
 rocailleuse JJ
@@ -74110,6 +75839,7 @@ rocheux JJ
 rock NN
 rococo JJ
 rodée VBN
+rogatoire JJ
 rogner VB
 rogue NN
 roi NN
@@ -74129,6 +75859,7 @@ rompaient VB
 rompait VB
 rompant VB
 rompe VB
+rompent VB
 rompez VB
 rompit VB
 rompre VB
@@ -74144,6 +75875,7 @@ ronchonnait VB
 ronchonne VB
 ronchonner VB
 rond RB
+ronde JJ
 rondelet JJ
 rondelette JJ
 rondement RB
@@ -74171,6 +75903,7 @@ ronronnait VB
 ronronnant VB
 ronronne VB
 ronronner VB
+rose JJ
 roseaux NNS
 rosir VB
 rosissait VB
@@ -74181,6 +75914,7 @@ rosâtre JJ
 rosâtres JJ
 rote VB
 roter VB
+rotulien JJ
 roucoulait VB
 roucouler VB
 roue NN
@@ -74248,6 +75982,7 @@ roussis VBN
 roussâtre JJ
 route NN
 routes NN
+routier JJ
 routière JJ
 routières JJ
 rouvert VBN
@@ -74262,6 +75997,7 @@ roué VBN
 royal JJ
 royalement RB
 royales JJ
+royaliste JJ
 royaume NN
 royaux JJ
 rua VB
@@ -74321,6 +76057,8 @@ rurale JJ
 ruraux JJ
 ruse NN
 ruser VB
+russe JJ
+russo-ukrainien JJ
 rustique JJ
 rustiques JJ
 rusé VB
@@ -74356,14 +76094,21 @@ râpées VBN
 règlement NN
 règles NN
 règnent VB
+règner VB
+ré)écouter VB
 réaction NN
 réactionnaire JJ
 réactions NNS
+réaffirmant VBG
+réaffirme VB
+réaffirmer VB
+réaffirmé VBN
 réagi VB
 réagir VB
 réagis VB
 réagissais VB
 réagissait VB
+réagissant VBG
 réagissent VB
 réagit VB
 réalisa VB
@@ -74375,6 +76120,7 @@ réalisant VB
 réalise VB
 réalisent VB
 réaliser VB
+réalisera VB
 réaliste JJ
 réalistes JJ
 réalisé VBN
@@ -74382,6 +76128,7 @@ réalisée VBN
 réalisées VBN
 réalisés VBN
 réalité NN
+réaménager VB
 réapparaissait VB
 réapparaissent VB
 réapparaît VB
@@ -74389,6 +76136,7 @@ réapparaître VB
 réapparu VB
 réapparue VB
 réapparut VB
+réapprend VB
 réapprendre VB
 réaux NNS
 rébarbatif JJ
@@ -74405,6 +76153,7 @@ réchauffe VB
 réchauffent VB
 réchauffer VB
 réchauffé VBN
+récidiver VB
 réciproque JJ
 réciproquement RB
 réciproques JJ
@@ -74423,6 +76172,7 @@ réclamaient VB
 réclamais VB
 réclamait VB
 réclamant VB
+réclame VB
 réclament VB
 réclamer VB
 réclamèrent VB
@@ -74459,11 +76209,13 @@ récupérai VB
 récupérait VB
 récupérant VB
 récupérer VB
+récupérera VB
 récupéré VBN
 récupérée VBN
 récupérées VBN
 récupérés VBN
 récurer VB
+récuse VB
 récuser VB
 rédaction NN
 rédige VB
@@ -74474,6 +76226,7 @@ rédigé VBN
 rédigée VBN
 rédigées VBN
 rédigés VBN
+réducteur JJ
 réduire VB
 réduisaient VB
 réduisait VB
@@ -74485,11 +76238,15 @@ réduit VBN
 réduite VBN
 réduites VBN
 réduits VBN
+réel JJ
 réelle JJ
 réellement RB
 réelles JJ
 réels JJ
 réentendre VB
+réexamine VB
+réexaminée VBN
+réexprimer VB
 réflexe NN
 réflexion NN
 réflexions NNS
@@ -74504,7 +76261,9 @@ réfléchisse VB
 réfléchissent VB
 réfléchissez VB
 réfléchit VB
+réformatrice JJ
 réformer VB
+réformiste JJ
 réformé VBN
 réfractaire JJ
 réfugia VB
@@ -74512,27 +76271,34 @@ réfugiai VB
 réfugiaient VB
 réfugiais VB
 réfugiait VB
+réfugiant VBG
 réfugie VB
 réfugient VB
 réfugier VB
 réfugié VBN
 réfugiée VBN
 réfugiées VBN
+réfute VB
 réfuter VB
+réfère VB
 référant VB
 référer VB
 régalait VB
 régale VB
 régaler VB
 régalé VBN
+régenté VBN
 régi VBN
 régime NN
 régiment NN
 région NN
 régional JJ
 régionale JJ
+régionaux JJ
 régions NNS
 régis VBN
+régissant VBG
+régit VB
 régla VB
 réglaient VB
 réglait VB
@@ -74562,10 +76328,16 @@ régulièrement RB
 régulières JJ
 régénérer VB
 réhabiliter VB
+réhabilité VBN
 réinstaller VB
+réinterprétant VBG
+réinterrogée VBN
 réintégrer VB
 réintégré VBN
+réinvente VB
 réinventer VB
+réinvesti VBN
+réinvité VBN
 réitéra VB
 réjoui VBN
 réjouie VBN
@@ -74578,8 +76350,10 @@ réjouissant VBG
 réjouissante JJ
 réjouissent VB
 réjouit VB
+rémunéré VBN
 rénover VB
 rénové VBN
+réorganisant VBG
 réorganiser VB
 répand VB
 répandaient VB
@@ -74615,6 +76389,7 @@ répercutant VB
 répercute VB
 répercuter VB
 répercuté VBN
+répertorier VB
 répertoriés VBN
 répit NN
 répliqua VB
@@ -74651,6 +76426,7 @@ réprimant VB
 réprime VB
 réprimer VB
 réprimé VBN
+réprimée VBN
 réprobateur JJ
 réprouvait VB
 réprouve VB
@@ -74713,6 +76489,7 @@ résidant VBG
 réside VB
 résidentiel JJ
 résider VB
+résiduel JJ
 résigna VB
 résignai VB
 résignais VB
@@ -74722,6 +76499,7 @@ résigner VB
 résigné VBN
 résignée VBN
 résignés VBN
+résilié VBN
 résineuse JJ
 résista VB
 résistaient VB
@@ -74796,7 +76574,10 @@ rétorqué VBN
 rétracte VB
 rétracter VB
 rétracté VBN
+rétroactif JJ
+rétrocédera VB
 rétrograde JJ
+rétrogradé VBN
 rétrospectif JJ
 rétrospectivement RB
 rétréci VBN
@@ -74808,8 +76589,10 @@ rétrécit VB
 réuni VBN
 réunie VBN
 réunies VBN
+réunifiée VBN
 réunion NN
 réunir VB
+réunira VB
 réunirent VB
 réunis VBN
 réunissaient VB
@@ -74832,6 +76615,7 @@ réussissait VB
 réussissant VB
 réussisse VB
 réussissent VB
+réussissez VB
 réussit VB
 réussite NN
 réveil NN
@@ -74855,6 +76639,7 @@ réveillée VBN
 réveillées VBN
 réveillés VBN
 réviser VB
+révisé VBN
 révolta VB
 révoltait VB
 révoltant VBG
@@ -74877,6 +76662,7 @@ révéla VB
 révélaient VB
 révélait VB
 révélant VB
+révélateur JJ
 révélation NN
 révélatrice JJ
 révéler VB
@@ -74885,6 +76671,11 @@ révélèrent VB
 révélé VBN
 révélée VBN
 révélées VBN
+révérend JJ
+réélire VB
+réélu VBN
+réétudier VB
+réévalué VBN
 rêche JJ
 rêches JJ
 rêva VB
@@ -74922,10 +76713,12 @@ rôle NN
 rôti VBN
 rôtir VB
 s' PRP
+s. JJ
 sa PRP$
 sable NN
 sablonneuse JJ
 sablonneux JJ
+saborder VB
 saboter VB
 sabots NNS
 sabrait VB
@@ -74956,6 +76749,7 @@ sacrifiée VBN
 sacrifiées VBN
 sacrifiés VBN
 sacrilèges NNS
+sacro-saint JJ
 sacré VBN
 sacrée VBN
 sacrées VBN
@@ -74988,6 +76782,8 @@ sain JJ
 saine JJ
 saines JJ
 sains JJ
+saint JJ
+sainte JJ
 saintes JJ
 sais VB
 saisi VBN
@@ -75009,6 +76805,8 @@ sait VB
 salaces JJ
 salade NN
 salants NNS
+salariaux JJ
+salarié JJ
 salauds NN
 sale JJ
 salement RB
@@ -75049,12 +76847,15 @@ salué VBN
 saluée VBN
 salués VBN
 salvateur JJ
+salvatrice JJ
 salé VBN
 salée VBN
 salées VBN
 salés VBN
 samedi NN
+sanctifier VB
 sanctifié VBN
+sanctionne VB
 sanctionner VB
 sanctionnée VBN
 sang NN
@@ -75082,6 +76883,9 @@ sanguins JJ
 sanitaire JJ
 sans IN
 santé NN
+saoudien JJ
+saoudienne JJ
+saoudite JJ
 saoul JJ
 saoulait VB
 saouler VB
@@ -75097,6 +76901,7 @@ sapés VBN
 saquer VB
 sarcastique JJ
 sarcler VB
+sarde JJ
 sardonique JJ
 satanique JJ
 sataniques JJ
@@ -75112,6 +76917,7 @@ satisfaisantes JJ
 satisfait VBN
 satisfaite VBN
 satisfaits VBN
+satisfont VB
 saturé VBN
 saturée VBN
 sauf IN
@@ -75180,6 +76986,7 @@ savaient VB
 savais VB
 savait VB
 savamment RB
+savant JJ
 savante JJ
 savantes JJ
 savent VB
@@ -75224,6 +77031,7 @@ scandé VBN
 scandée VBN
 scandés VBN
 sceller VB
+scellera VB
 scellé VBN
 scellée VBN
 scellées VBN
@@ -75236,7 +77044,9 @@ sciemment RB
 science NN
 scientifique JJ
 scientifiquement RB
+scientiste JJ
 scier VB
+scinder VB
 scintillaient VB
 scintillait VB
 scintillant VBG
@@ -75271,10 +77081,13 @@ sculptés VBN
 scène NN
 scènes NNS
 se PRP
+se'morta VB
 seau NN
 sec RB
+second CD
 secondaire JJ
 secondaires JJ
+seconde CD
 seconder VB
 secondes NN
 secondé VBN
@@ -75302,6 +77115,7 @@ secrètement RB
 secrètes JJ
 secrétaire NN
 secs JJ
+sectaire JJ
 secteur NN
 section NN
 sectionné VBN
@@ -75326,7 +77140,9 @@ semblablement RB
 semblaient VB
 semblais VB
 semblait VB
+semblant VBG
 semble VB
+semble-t- VBN
 semblent VB
 sembler VB
 semblera VB
@@ -75396,12 +77212,14 @@ sentons VB
 sentît VB
 sept NN
 septembre NN
+septième JJ
 sera VB
 serai VB
 seraient VB
 serais VB
 serait VB
 seras VB
+serbe JJ
 serein JJ
 sereine JJ
 sereinement RB
@@ -75479,6 +77297,7 @@ seuls JJ
 sevré VBN
 sevrée VBN
 sexe NN
+sexiste JJ
 sexuel JJ
 sexuelle JJ
 sexuellement RB
@@ -75495,6 +77314,8 @@ sibyllin JJ
 sibylline JJ
 sibérienne JJ
 sic RB
+sicilien JJ
+sidère VB
 sidéré VBN
 sied VB
 sien PRP$
@@ -75513,6 +77334,7 @@ sifflement NN
 sifflent VB
 siffler VB
 sifflet NN
+siffleur JJ
 sifflota VB
 sifflotait VB
 sifflotant VB
@@ -75520,6 +77342,7 @@ sifflote VB
 siffloter VB
 sifflèrent VB
 sifflé VBN
+siglé VBN
 signa VB
 signaient VB
 signait VB
@@ -75567,9 +77390,11 @@ silencieux JJ
 silhouette NN
 silhouettes NN
 sillage NN
+sillonna VB
 sillonnaient VB
 sillonnait VB
 sillonnant VB
+sillonne VB
 sillonnent VB
 sillonner VB
 sillonné VBN
@@ -75580,6 +77405,7 @@ similaire JJ
 simple JJ
 simplement RB
 simples JJ
+simplet JJ
 simplette NN
 simplicité NN
 simplifiait VB
@@ -75600,12 +77426,14 @@ simultanés JJ
 sincère JJ
 sincèrement RB
 sincères JJ
+sine JJ
 singe NN
 singea VB
 singeait VB
 singeant VB
 singer VB
 singulariser VB
+singulier JJ
 singuliers JJ
 singulière JJ
 singulièrement RB
@@ -75613,10 +77441,12 @@ singulières JJ
 sinistre JJ
 sinistrement RB
 sinistres JJ
+sino-japonaise JJ
 sinon RB
 sinueuse JJ
 sinueuses JJ
 sinueux JJ
+sioniste JJ
 sirotait VB
 sirotant VB
 sirote VB
@@ -75627,6 +77457,7 @@ sirupeux JJ
 sirène NN
 sis VB
 sise VB
+situ VBN
 situaient VB
 situait VB
 situasse VB
@@ -75640,6 +77471,7 @@ situées VBN
 situés VBN
 sitôt RB
 six CD
+sixième CD
 siècle NN
 siècles NNS
 siège NN
@@ -75651,6 +77483,7 @@ siéger VB
 slave JJ
 slaves JJ
 slip NN
+slovaque JJ
 sniffe VB
 sniffer VB
 snob JJ
@@ -75659,7 +77492,10 @@ sobrement RB
 sobres JJ
 sociable JJ
 social JJ
+social-chrétien JJ
+social-démocrate JJ
 sociale JJ
+sociale-chrétienne JJ
 socialement RB
 sociales JJ
 socialiste JJ
@@ -75687,6 +77523,7 @@ soigneuse JJ
 soigneusement RB
 soigneux JJ
 soigné VBN
+soigné/ VBN
 soignée VBN
 soignées VBN
 soignés VBN
@@ -75699,13 +77536,18 @@ soirées NNS
 sois VB
 soit VB
 soixante NN
+soixante-cinq CD
 soixante-dix NN
+soixante-huit CD
+soixante-quinze CD
+soixante-seize CD
 sol NN
 solaire JJ
 solaires JJ
 soldat NN
 soldats NNS
 solder VB
+soldée VBN
 soleil NN
 solennel JJ
 solennelle JJ
@@ -75717,6 +77559,8 @@ solidaires JJ
 solide JJ
 solidement RB
 solides JJ
+solidifiée VBN
+solitaire JJ
 solitairement RB
 solitude NN
 sollicitaient VB
@@ -75739,6 +77583,7 @@ sombré VB
 sommaire NN
 sommairement RB
 sommaires NNS
+sommant VBG
 somme NN
 sommeil NN
 sommeillaient VB
@@ -75902,6 +77747,7 @@ souhaitant VB
 souhaite VB
 souhaitent VB
 souhaiter VB
+souhaitera VB
 souhaiterais VB
 souhaiterait VB
 souhaites VB
@@ -75955,7 +77801,9 @@ soulèvent VB
 soumet VB
 soumets VB
 soumettait VB
+soumettant VBG
 soumettent VB
+soumettra VB
 soumettre VB
 soumis VBN
 soumise VBN
@@ -76001,7 +77849,9 @@ sourcils NNS
 sourd JJ
 sourdait VB
 sourde JJ
+sourde-muette JJ
 sourdement RB
+sourdent VB
 sourdes JJ
 sourdre VB
 souri VB
@@ -76023,8 +77873,14 @@ sournoisement RB
 sournoises JJ
 sous IN
 sous-entendait VB
+sous-estimée VBN
+sous-jacent JJ
+sous-noter VB
+sous-noté VBN
+sous-titré VBN
 souscrire VB
 souscrit VBN
+souscrivant VBG
 soussigné VBN
 soustraire VB
 soustrait VBN
@@ -76033,14 +77889,17 @@ soutenaient VB
 soutenais VB
 soutenait VB
 soutenant VBG
+soutenez VB
 soutenir VB
 soutenu VBN
 soutenue VBN
 soutenues VBN
 soutenus VBN
+souterrain JJ
 souterraine JJ
 souterraines JJ
 soutiendrait VB
+soutienne VB
 soutiennent VB
 soutient VB
 soutint VB
@@ -76055,8 +77914,10 @@ souvenirs NNS
 souvent RB
 souvenu VB
 souvenue VB
+souverain JJ
 souverainement RB
 souveraineté NN
+souverainiste JJ
 souviendra VB
 souviendrai VB
 souviendraient VB
@@ -76084,6 +77945,7 @@ spacieuses JJ
 spacieux JJ
 spasmodiquement RB
 spatial JJ
+spatio-temporel JJ
 spectacle NN
 spectaculaire JJ
 spectaculaires JJ
@@ -76109,6 +77971,7 @@ sporadique JJ
 sporadiquement RB
 sporadiques JJ
 sport NN
+sportif JJ
 sportive JJ
 spécial JJ
 spéciale JJ
@@ -76124,10 +77987,12 @@ spécifique JJ
 spécifiquement RB
 spécifiques JJ
 spécifié VBN
+spéculant VBG
 square NN
 squelettique JJ
 squelettiques JJ
 stabiliser VB
+stabilisé VBN
 stable JJ
 stables JJ
 stade NN
@@ -76137,6 +78002,7 @@ stagnante JJ
 stagnantes JJ
 stagne VB
 stagner VB
+stalinien JJ
 stalinienne JJ
 staliniennes JJ
 station NN
@@ -76149,13 +78015,19 @@ stationnée VBN
 stationnées VBN
 statique JJ
 statue NN
+statuer VB
 statues NN
 stellaire JJ
 steppe NN
 sterling NN
+stigmatisant VBG
+stigmatise VB
+stigmatisé VBN
 stimulant VBG
 stimule VB
 stimuler VB
+stimulée VBN
+stipulant VBG
 stoppa VB
 stoppait VB
 stoppe VB
@@ -76168,6 +78040,8 @@ stoïque JJ
 stratégique JJ
 stratégiquement RB
 stratégiques JJ
+stravinskienne JJ
+street JJ
 strict JJ
 stricte JJ
 strictement RB
@@ -76181,6 +78055,8 @@ strié VBN
 striée VBN
 striées VBN
 striés VBN
+structurer VB
+structuré JJ
 studieuse JJ
 studieuses JJ
 studieux JJ
@@ -76222,6 +78098,7 @@ subissais VB
 subissait VB
 subissant VB
 subissent VB
+subit VB
 subite JJ
 subitement RB
 subites JJ
@@ -76269,6 +78146,7 @@ subvenir VB
 subversif JJ
 subversive JJ
 subversives JJ
+successif JJ
 successifs JJ
 succession NN
 successivement RB
@@ -76303,6 +78181,9 @@ sucrée VBN
 sucrées VBN
 sucrés VBN
 sucé VBN
+sud-africain JJ
+sud-africaine JJ
+sud-ouest JJ
 sue VBN
 suer VB
 sueur NN
@@ -76342,7 +78223,9 @@ suggérant VB
 suggérer VB
 suggéré VBN
 suggérée VBN
+suicidaire JJ
 suicide NN
+suicident VB
 suicider VB
 suicidé VBN
 suicidée VBN
@@ -76392,6 +78275,7 @@ superficiel JJ
 superficielle JJ
 superficielles JJ
 superficiels JJ
+superflu JJ
 superflue JJ
 superflues JJ
 superflus JJ
@@ -76414,6 +78298,7 @@ suppliant VBG
 suppliante JJ
 suppliants JJ
 supplice NN
+supplicié VBN
 supplie VB
 supplient VB
 supplier VB
@@ -76446,6 +78331,7 @@ supposant VB
 suppose VB
 supposent VB
 supposer VB
+supposera VB
 supposez VB
 supposons VB
 supposé VBN
@@ -76463,6 +78349,7 @@ supputait VB
 supputant VB
 suppute VB
 supputer VB
+supranationaux JJ
 suprême JJ
 suprêmement RB
 suprêmes JJ
@@ -76483,12 +78370,15 @@ surchargés VBN
 surchauffé VBN
 surchauffée VBN
 surchauffés VBN
+surclasse VB
 surcroît NN
+surdéterminé VBN
 surenchérit VB
 surent VB
 surexcité VBN
 surexcités VBN
 surface NN
+surfaite VBN
 surgi VB
 surgie VB
 surgies VB
@@ -76518,10 +78408,14 @@ surnager VB
 surnaturel JJ
 surnaturelle JJ
 surnaturelles JJ
+surnomma VB
 surnommait VB
+surnomme VB
 surnommer VB
 surnommé VBN
 surnommée VBN
+surnotant VBG
+surnoté VBN
 surpasser VB
 surpeuplé VBN
 surpeuplés VBN
@@ -76567,6 +78461,7 @@ surveillant VBG
 surveille VB
 surveillent VB
 surveiller VB
+surveillera VB
 surveillez VB
 surveillé VBN
 surveillée VBN
@@ -76577,6 +78472,7 @@ survenant VB
 survenir VB
 survenu VB
 survenus VB
+survienne VB
 survient VB
 survint VB
 survit VB
@@ -76597,9 +78493,11 @@ survolé VBN
 survécu VB
 survécut VB
 surélevé VBN
+surévalué VBN
 sus VBN
 susceptible JJ
 susceptibles JJ
+susci VBN
 suscita VB
 suscitaient VB
 suscitait VB
@@ -76636,6 +78534,7 @@ suçaient VB
 suçait VB
 suçant VB
 svelte JJ
+sweet JJ
 sylvestre JJ
 symbole NN
 symbolique JJ
@@ -76654,9 +78553,14 @@ sympathisé VB
 symétrique JJ
 symétriquement RB
 symétriques JJ
+syndical JJ
 syndicale JJ
+syndicalistes- VBN
+syndicaux JJ
+synonyme JJ
 synthétique JJ
 synthétiques JJ
+synthétise VB
 syrien JJ
 syrienne JJ
 syriennes JJ
@@ -76685,8 +78589,11 @@ sécrète VB
 séculaire JJ
 séculaires JJ
 séculier NN
+sécurise VB
+sécuritaire JJ
 sécurité NN
 séditieux NN
+séductrice JJ
 séduire VB
 séduisait VB
 séduisant VBG
@@ -76695,13 +78602,17 @@ séduisantes JJ
 séduisants JJ
 séduit VBN
 séduite VBN
+ségrégationniste JJ
 séjour NN
 séjournait VB
 séjourner VB
 séjourné VB
+sélectionnant VBG
 sélectionner VB
+sélectionnée VBN
 sélective JJ
 séminale JJ
+sénatoriaux JJ
 sénile JJ
 sénégalais NN
 sépara VB
@@ -76709,6 +78620,7 @@ séparaient VB
 séparait VB
 séparant VB
 séparation NN
+séparatiste JJ
 sépare VB
 séparent VB
 séparer VB
@@ -76747,6 +78659,7 @@ t' PRP
 ta PRP$
 tabac NN
 tabasser VB
+tablant VBG
 table NN
 tableau NN
 tableaux NNS
@@ -76769,6 +78682,7 @@ tacite JJ
 tacitement RB
 taciturne JJ
 taciturnes JJ
+tacler VB
 tactile JJ
 tailla VB
 taillaient VB
@@ -76825,6 +78739,7 @@ tannée VBN
 tant RB
 tante NN
 tantôt RB
+taoïste JJ
 tapa VB
 tapageur JJ
 tapageuse JJ
@@ -76866,6 +78781,7 @@ tarda VB
 tardaient VB
 tardait VB
 tarde VB
+tardent VB
 tarder VB
 tarderaient VB
 tarderait VB
@@ -76876,8 +78792,11 @@ tardivement RB
 tardives JJ
 tardèrent VB
 tardé VB
+targue VB
+targuer VB
 tari VBN
 tarie VBN
+tarifaire JJ
 tarir VB
 tarit VB
 tartiner VB
@@ -76905,7 +78824,9 @@ taureau NN
 taxer VB
 taxi NN
 taxé VBN
+tchèque JJ
 tchécoslovaque JJ
+tchétchène JJ
 te PRP
 techniquement RB
 teignait VB
@@ -76933,6 +78854,7 @@ temporaires JJ
 temporel JJ
 temporelle JJ
 temps NN
+tempère VB
 tempérait VB
 température NN
 tempérer VB
@@ -76989,6 +78911,7 @@ tentant VBG
 tentateur NN
 tentation NN
 tentative NN
+tente VB
 tentent VB
 tenter VB
 tenteraient VB
@@ -77003,6 +78926,7 @@ tentés VBN
 tenu VBN
 tenus VBN
 ter RB
+tergiverse VB
 tergiverser VB
 terme NN
 termes NNS
@@ -77014,6 +78938,7 @@ terminant VB
 termine VB
 terminent VB
 terminer VB
+terminera VB
 terminerait VB
 terminé VBN
 terminée VBN
@@ -77022,6 +78947,7 @@ terminés VBN
 terne JJ
 ternes JJ
 terni VBN
+ternie VBN
 ternir VB
 ternis VBN
 ternissait VB
@@ -77059,6 +78985,7 @@ territoriale JJ
 territoriales JJ
 terrorisait VB
 terroriser VB
+terroriste JJ
 terrorisé VBN
 terrorisée VBN
 terrorisés VBN
@@ -77068,11 +78995,14 @@ terrés VBN
 tertio RB
 tes PRP$
 testa VB
+teste VB
 tester VB
+texane JJ
 texte NN
 textes NNS
 texto NN
 textuellement RB
+the VB
 thermal JJ
 thermale JJ
 thermos NN
@@ -77087,6 +79017,7 @@ théâtral JJ
 théâtrale JJ
 théâtrales JJ
 théâtre NN
+tie JJ
 tien PRP$
 tiendra VB
 tiendrai VB
@@ -77097,9 +79028,11 @@ tiendras VB
 tiendrez VB
 tiendrons VB
 tiendront VB
+tienne VB
 tiennent VB
 tient VB
 tiers NN
+tiers-mondiste JJ
 tige NN
 tiges NNS
 tigré JJ
@@ -77175,6 +79108,8 @@ titubante JJ
 titubants JJ
 titube VB
 tituber VB
+titulaire JJ
+titularisé VBN
 tiède JJ
 tièdes JJ
 tiédeur NN
@@ -77190,6 +79125,7 @@ toisa VB
 toisait VB
 toisant VB
 toiser VB
+toisons/ VBN
 toisèrent VB
 toit NN
 toits NNS
@@ -77211,6 +79147,7 @@ tombales NNS
 tombant VBG
 tombante JJ
 tombantes JJ
+tombe VB
 tombent VB
 tomber VB
 tombera VB
@@ -77298,6 +79235,7 @@ touchant VBG
 touchante JJ
 touchantes JJ
 touchants JJ
+touche VB
 touchent VB
 toucher VB
 touchera VB
@@ -77319,6 +79257,8 @@ touffus JJ
 touille VB
 touiller VB
 toujours RB
+toulousain JJ
+toulousaine JJ
 tour NN
 tourbillon NN
 tourbillonnaient VB
@@ -77406,6 +79346,7 @@ traduis VB
 traduisaient VB
 traduisait VB
 traduisant VB
+traduise VB
 traduisent VB
 traduisit VB
 traduit VBN
@@ -77454,6 +79395,7 @@ tramait VB
 trancha VB
 tranchaient VB
 tranchait VB
+tranchant VBG
 tranchante JJ
 tranchent VB
 trancher VB
@@ -77464,6 +79406,7 @@ tranquille JJ
 tranquillement RB
 tranquilles JJ
 tranquillité NN
+transalpine JJ
 transcendantal JJ
 transcrire VB
 transcrit VBN
@@ -77487,9 +79430,11 @@ transféré VBN
 transférée VBN
 transgresser VB
 transi VBN
+transigent VB
 transiger VB
 transis VBN
 transitoire JJ
+transité VBN
 translucide JJ
 translucides JJ
 transmet VB
@@ -77535,12 +79480,14 @@ transportée VBN
 transportées VBN
 transportés VBN
 transposer VB
+transposé VBN
 transversale JJ
 transversales JJ
 trapu JJ
 trapue JJ
 trapues JJ
 trapus JJ
+trapézoïdal JJ
 traquaient VB
 traquait VB
 traquer VB
@@ -77564,6 +79511,7 @@ travailleras VB
 travailles VB
 travaillez VB
 travaillions VB
+travailliste JJ
 travaillons VB
 travaillèrent VB
 travaillé VBN
@@ -77612,6 +79560,7 @@ traînés VBN
 traîtresse NN
 traîtreusement RB
 treize NN
+treizième CD
 trembla VB
 tremblaient VB
 tremblais VB
@@ -77643,6 +79592,11 @@ trempées VBN
 trempés VBN
 trentaine NN
 trente NN
+trente-cinq CD
+trente-deux CD
+trente-huit CD
+trente-neuf CD
+trente-sept CD
 trentième JJ
 tressaillait VB
 tressaillant VB
@@ -77663,8 +79617,11 @@ triait VB
 triangle NN
 triangulaire JJ
 triangulaires JJ
+triant VBG
+tribal JJ
 tribu NN
 tribunal NN
+tributaire JJ
 trichait VB
 trichant VB
 tricher VB
@@ -77678,6 +79635,7 @@ tricotant VB
 tricote VB
 tricoter VB
 tricoté VBN
+trie VB
 trier VB
 trimbalait VB
 trimbale VB
@@ -77686,6 +79644,7 @@ trimballe VB
 trimballer VB
 trime VB
 trimer VB
+trimestriel JJ
 trimé VBN
 tringler VB
 trinqua VB
@@ -77702,6 +79661,7 @@ triomphal JJ
 triomphale JJ
 triomphalement RB
 triomphales JJ
+triomphaliste JJ
 triomphant VBG
 triomphante JJ
 triomphants JJ
@@ -77755,6 +79715,7 @@ trompés VBN
 tronc NN
 tronche NN
 troncs NNS
+tronqué VBN
 trop RB
 tropical JJ
 tropicale JJ
@@ -77834,6 +79795,7 @@ trouvés VBN
 troué VBN
 trouées VBN
 troués VBN
+troyenne JJ
 truc NN
 trucs NNS
 truffé VBN
@@ -77842,6 +79804,7 @@ truffés VBN
 truquer VB
 truqué VBN
 truquée VBN
+trusté VBN
 très RB
 trébucha VB
 trébuchait VB
@@ -77894,7 +79857,9 @@ tunnel NN
 turbulent JJ
 turbulente JJ
 turbulents JJ
+turc JJ
 turent VB
+turque JJ
 turques JJ
 turquoise JJ
 tus VBN
@@ -77914,6 +79879,7 @@ types NN
 typique JJ
 typiquement RB
 typiques JJ
+typé JJ
 tyrannique JJ
 tyrolien NN
 tzigane NN
@@ -77948,6 +79914,7 @@ tâté VBN
 tète VB
 télescopique JJ
 télé NN
+télécharge VB
 télégramme NN
 télégraphiai VB
 télégraphie VB
@@ -77992,6 +79959,7 @@ ténèbres NNS
 ténébreuse NN
 ténébreuses NNS
 ténébreux NN
+tétanise VB
 tétanisé VBN
 tétant VB
 téter VB
@@ -78004,11 +79972,16 @@ têtus NNS
 tînt VB
 tôle NN
 tôt RB
+uivi VBN
 ulcéré VBN
 ulcérée VBN
 ultime JJ
 ultimes JJ
 ultra RB
+ultra-orthodoxe JJ
+ultralibéral JJ
+ultralibéraux JJ
+ultramoderne JJ
 ultérieure JJ
 ultérieurement RB
 ultérieures JJ
@@ -78043,11 +80016,13 @@ universelles JJ
 universitaire JJ
 universitaires JJ
 université NN
+univoque JJ
 unième NN
 uns PRP
 urbain JJ
 urbaine JJ
 urbains JJ
+urbaniste JJ
 urge VB
 urgence NN
 urgent JJ
@@ -78055,6 +80030,8 @@ urgente JJ
 urgentes JJ
 urgents JJ
 uriner VB
+uruguayen JJ
+uruguayenne JJ
 usa VB
 usage NN
 usagé VBN
@@ -78072,6 +80049,7 @@ userait VB
 usine NN
 usines NN
 usure NN
+usurper VB
 usurpé VBN
 usé VBN
 usée VBN
@@ -78094,6 +80072,7 @@ utilisée VBN
 utilisées VBN
 utilisés VBN
 utilitaire JJ
+ux JJ
 va VB
 va-et-vient NN
 vacances NNS
@@ -78145,12 +80124,16 @@ valeureux JJ
 valeurs NNS
 valez VB
 valide JJ
+valider VB
 valides JJ
 validé VBN
 valise NN
 valises NNS
 vallée NN
 valoir VB
+valorisant VBG
+valorise VB
+valorisé VBN
 valser VB
 valsé VBN
 valu VB
@@ -78193,6 +80176,7 @@ vaseuse JJ
 vaseux JJ
 vaste JJ
 vastes JJ
+vau-l'eau JJ
 vaudois NN
 vaudra VB
 vaudrait VB
@@ -78204,6 +80188,7 @@ vautré VB
 vautrée VB
 vautrés VB
 veau NN
+vecteur JJ
 vedette NN
 veilla VB
 veillaient VB
@@ -78333,6 +80318,7 @@ versé VBN
 versée VBN
 versées VBN
 versés VBN
+vert JJ
 verte JJ
 vertement RB
 vertes JJ
@@ -78386,8 +80372,10 @@ vibrantes JJ
 vibre VB
 vibrent VB
 vibrer VB
+vibrionnant VBG
 vibré VBN
 vice NN
+vice-premier JJ
 vicelard NN
 vicelards NNS
 victime NN
@@ -78403,6 +80391,7 @@ vidai VB
 vidaient VB
 vidait VB
 vidant VB
+vide JJ
 vident VB
 vider VB
 vides JJ
@@ -78447,7 +80436,9 @@ viennoise NN
 viennoises NNS
 viens VB
 vient VB
+vierge JJ
 vies NNS
+vietnamien JJ
 vif JJ
 vifs JJ
 vigilant JJ
@@ -78473,7 +80464,14 @@ vindicatif JJ
 vineuse JJ
 vineux JJ
 vingt CD
+vingt-cinq CD
+vingt-deux CD
+vingt-huit CD
+vingt-neuf CD
+vingt-quatre CD
+vingt-six CD
 vingtaine NN
+vingtième CD
 vinrent VB
 vinssent VB
 vint VB
@@ -78534,6 +80532,7 @@ visible JJ
 visiblement RB
 visibles JJ
 vision NN
+visionne VB
 visita VB
 visitai VB
 visitaient VB
@@ -78567,6 +80566,7 @@ vissés VBN
 visuel JJ
 visuelle JJ
 visé VBN
+vit VB
 vital JJ
 vitale JJ
 vitales JJ
@@ -78591,6 +80591,7 @@ vivait VB
 vivant VBG
 vivante JJ
 vivantes JJ
+vive JJ
 vivement RB
 vivent VB
 vives JJ
@@ -78640,8 +80641,10 @@ voilés VBN
 voir VB
 voire CC
 vois VB
+voisin JJ
 voisinage NN
 voisinaient VB
+voisine JJ
 voisinent VB
 voit VB
 voiture NN
@@ -78653,6 +80656,7 @@ volage JJ
 volaient VB
 volais VB
 volait VB
+volant JJ
 volante NN
 volantes NNS
 volatilisé VBN
@@ -78675,6 +80679,7 @@ volettent VB
 voleur NN
 volontaire JJ
 volontairement RB
+volontariste JJ
 volontiers RB
 volonté NN
 voltigeaient VB
@@ -78706,9 +80711,11 @@ vorace JJ
 voracement RB
 voraces JJ
 vos PRP$
+votant VBG
 voter VB
 votre PRP$
 voté VBN
+votée VBN
 vouait VB
 voudra VB
 voudrai VB
@@ -78774,6 +80781,7 @@ voûtée VBN
 voûtées VBN
 voûtés VBN
 vrai RB
+vrai-faux JJ
 vraie JJ
 vraies JJ
 vraiment RB
@@ -78807,6 +80815,7 @@ végétaux JJ
 végéter VB
 véhicule NN
 véhiculer VB
+véhiculée VBN
 véhément JJ
 véhémente JJ
 véhémentes JJ
@@ -78814,6 +80823,8 @@ véhéments JJ
 vélo NN
 véloce JJ
 vénal JJ
+vénaux JJ
+vénitien JJ
 vénitienne JJ
 vénitiennes JJ
 vénéneuse JJ
@@ -78825,6 +80836,8 @@ vénérer VB
 vénériennes NNS
 vénéré VBN
 vénérés VBN
+vénézuélien JJ
+vénézuélienne JJ
 véreux JJ
 véridique JJ
 véridiques JJ
@@ -78857,11 +80870,16 @@ vôtre PRP$
 vôtres PRP$
 wagon NN
 wagons NNS
+wahhabite JJ
+wallon JJ
 week-end NN
 whisky NN
+x. JJ
+xénophobe JJ
 y PRP
 yeux NNS
 yiddish NN
+yougoslave JJ
 youpi UH
 zazou NN
 zen NN
@@ -78908,6 +80926,8 @@ zéro NN
 Árpád NNP
 Ásdís NNP
 Åsa NNP
+Ça PRP
+Çà RB
 Èbre NNP
 Ève NNP
 Éabha NNP
@@ -79167,6 +81187,7 @@ zéro NN
 écloses VBN
 écluser VB
 éclusé VBN
+éclôt VB
 écoeurait VB
 écoeurant VBG
 écoeurante JJ
@@ -79188,6 +81209,7 @@ zéro NN
 économiquement RB
 économiques JJ
 économiser VB
+économisera VB
 écoper VB
 écopé VBN
 écorchait VB
@@ -79197,6 +81219,7 @@ zéro NN
 écorché VBN
 écorchée VBN
 écorchés VBN
+écorner VB
 écossaise JJ
 écossaises JJ
 écosse VB
@@ -79213,6 +81236,7 @@ zéro NN
 écoulées VBN
 écoulés VBN
 écourter VB
+écourtée VBN
 écouta VB
 écoutai VB
 écoutaient VB
@@ -79298,6 +81322,7 @@ zéro NN
 écroulée VB
 écroulées VB
 écroulés VB
+écroué VBN
 écrue JJ
 éculées VBN
 écumait VB
@@ -79320,14 +81345,20 @@ zéro NN
 édifié VBN
 édifiée VBN
 édifiés VBN
+édite VB
 éditer VB
 édition NN
+éditorial JJ
+éditoriaux JJ
 édité VBN
 édités VBN
+éducatif JJ
 éducation NN
+édulcoré VBN
 éduquer VB
 éduqué VBN
 éduqués VBN
+égal JJ
 égalait VB
 égale JJ
 également RB
@@ -79366,6 +81397,7 @@ zéro NN
 égoutter VB
 égoïste JJ
 égoïstes JJ
+égratignant VBG
 égrenaient VB
 égrenait VB
 égrenant VB
@@ -79373,10 +81405,12 @@ zéro NN
 égrenées VBN
 égrillard JJ
 égrène VB
+égyptienne JJ
 éhontée JJ
 éjecter VB
 éjecté VBN
 élaborait VB
+élaborant VBG
 élaborer VB
 élaboré VBN
 élaborée VBN
@@ -79404,10 +81438,12 @@ zéro NN
 électoral JJ
 électorale JJ
 électorales JJ
+électoraux JJ
 électricité NN
 électrique JJ
 électriques JJ
 électrisé VBN
+électro JJ
 électroniques JJ
 éleva VB
 élevaient VB
@@ -79421,6 +81457,7 @@ zéro NN
 élevées VBN
 élevés VBN
 éliminait VB
+éliminant VBG
 élimine VB
 éliminer VB
 éliminé VBN
@@ -79473,6 +81510,7 @@ zéro NN
 émanaient VB
 émanait VB
 émanant VB
+émanciper VB
 émane VB
 émaner VB
 émerge VB
@@ -79508,10 +81546,12 @@ zéro NN
 éminente JJ
 éminents JJ
 émis VBN
+émissaire JJ
 émit VB
 émotif JJ
 émotion NN
 émotions NNS
+émousse VB
 émoussée VBN
 émoustillé VBN
 émouvait VB
@@ -79551,6 +81591,7 @@ zéro NN
 énoncer VB
 énonça VB
 énonçait VB
+énonçant VBG
 énorme JJ
 énormes JJ
 énormément RB
@@ -79559,6 +81600,7 @@ zéro NN
 énumérait VB
 énumérant VB
 énumérer VB
+énuméré VBN
 épais RB
 épaisse JJ
 épaissement RB
@@ -79608,6 +81650,7 @@ zéro NN
 épatait VB
 épatant VBG
 épatante JJ
+épate VB
 épater VB
 épaté VBN
 épaula VB
@@ -79724,6 +81767,7 @@ zéro NN
 épuisé VBN
 épuisée VBN
 épuisés VBN
+épurée VBN
 épée NN
 équarries VBN
 équatorial JJ
@@ -79738,17 +81782,21 @@ zéro NN
 équipe NN
 équiper VB
 équipé VBN
+équipée VBN
 équipés VBN
 équitable JJ
 équitablement RB
 équivalait VB
+équivalant VBG
 équivaut VB
 éraflé VBN
 éraillée VBN
 érige VB
+érigeant VBG
 ériger VB
 érigé VBN
 érigée VBN
+érodent VB
 érotique JJ
 érotiques JJ
 éructe VB
@@ -79828,6 +81876,7 @@ zéro NN
 étends VB
 étendu VBN
 étendus VBN
+éternel JJ
 éternelle JJ
 éternellement RB
 éternelles JJ
@@ -79918,6 +81967,7 @@ zéro NN
 étourdit VB
 étrange JJ
 étrangement RB
+étranger JJ
 étranges JJ
 étrangla VB
 étranglait VB
@@ -79927,6 +81977,7 @@ zéro NN
 étranglé VBN
 étranglée VBN
 étranglés VBN
+étrangère JJ
 étrangères JJ
 étreignaient VB
 étreignait VB
@@ -79937,6 +81988,8 @@ zéro NN
 étreint VBN
 étreinte NN
 étreints VBN
+étrenne VB
+étrenné VBN
 étriper VB
 étriqué VBN
 étriquée VBN
@@ -79951,6 +82004,7 @@ zéro NN
 étudia VB
 étudiais VB
 étudiait VB
+étudiant VBG
 étudiants NN
 étudie VB
 étudier VB
@@ -79966,6 +82020,7 @@ zéro NN
 évacués VBN
 évadait VB
 évade VB
+évadent VB
 évader VB
 évadé VBN
 évadée VBN
@@ -79975,6 +82030,7 @@ zéro NN
 évalue VB
 évaluer VB
 évalué VBN
+évaluée VBN
 évanescent JJ
 évangélique JJ
 évangéliques JJ
@@ -80035,6 +82091,7 @@ zéro NN
 évidentes JJ
 évidents JJ
 évier NN
+évincé VBN
 évita VB
 évitai VB
 évitaient VB
@@ -80052,6 +82109,7 @@ zéro NN
 évitée VBN
 évités VBN
 évocateur JJ
+évocatrice JJ
 évoluaient VB
 évoluait VB
 évolue VB
@@ -80107,6 +82165,7 @@ zéro NN
 örjan NNP
 özgür NNP
 özlem NNP
+ù VBN
 ùisdean NNP
 þór NNP
 þórbjörn NNP
