@@ -8,7 +8,8 @@
 from time import time
 from math import sqrt, floor, modf, exp, pi, log
 
-from collections import defaultdict
+from collections import defaultdict, deque
+from itertools import chain
 from operator import itemgetter
 from heapq import nlargest
 
@@ -189,7 +190,9 @@ def fleiss_kappa(m):
     
 agreement = fleiss_kappa
 
-#### STRING SIMILARITY #############################################################################
+#### STRINGS & WORDS ###############################################################################
+
+#--- STRING SIMILARITY -----------------------------------------------------------------------------
 
 def levenshtein(string1, string2):
     """ Measures the amount of difference between two strings.
@@ -239,7 +242,7 @@ def similarity(string1, string2, metric=LEVENSHTEIN):
     if metric == DICE:
         return dice_coefficient(string1, string2)
 
-#### STRING READABILITY ############################################################################
+#--- STRING READABILITY ----------------------------------------------------------------------------
 # 0.9-1.0 = easily understandable by 11-year old.
 # 0.6-0.7 = easily understandable by 13- to 15-year old.
 # 0.0-0.3 = best understood by university graduates.
@@ -277,7 +280,7 @@ def flesch_reading_ease(string):
 
 readability = flesch_reading_ease
 
-#### STRING INTERTEXTUALITY ########################################################################
+#--- STRING INTERTEXTUALITY ------------------------------------------------------------------------
 # Intertextuality may be useful for plagiarism detection.
 # For example, on the Corpus of Plagiarised Short Answers (Clough & Stevenson, 2009),
 # accuracy (F1) is 94.5% with n=3 and intertextuality threshold > 0.1.
@@ -341,9 +344,9 @@ def intertextuality(texts=[], n=5, continuous=False, weight=lambda ngram: 1):
         w[i,j]  = min(w[i,j], Weight(1.0))
     return w
 
-#### WORD INFLECTION SUFFIXES ######################################################################
+#--- WORD INFLECTION -------------------------------------------------------------------------------
 
-def suffixes(inflections=[], n=3, top=10):
+def suffixes(inflections=[], n=3, top=10, reverse=True):
     """ For a given list of (base, inflection)-tuples,
         returns a list of (count, inflected suffix, [(base suffix, frequency), ... ]):
         suffixes([("beau", "beaux"), ("jeune", "jeunes"), ("hautain", "hautaines")], n=3) =>
@@ -352,12 +355,10 @@ def suffixes(inflections=[], n=3, top=10):
     # This is utility function we use to train singularize() and lemma()
     # in pattern.de, pattern.es, pattern.fr, etc.
     d = {}
-    for y, x in inflections:
+    for x, y in (reverse and (y, x) or (x, y) for x, y in inflections):
         x0 = x[:-n]      # be-   jeu-  hautai-
         x1 = x[-n:]      # -aux  -nes  -nes
         y1 = y[len(x0):] # -au   -ne   -n
-        if len(x) <= n:
-            continue
         if x0 + y1 != y:
             continue
         if x1 not in d:
@@ -373,6 +374,88 @@ def suffixes(inflections=[], n=3, top=10):
     d = ((n, x, (sorted(y, key=itemgetter(1)))) for n, x, y in d)
     d = ((n, x, [(y, m / n) for y, m in y]) for n, x, y in d)
     return list(d)[:top]
+
+#--- WORD CO-OCCURRENCE ----------------------------------------------------------------------------
+
+def isplit(string, sep="\t\n\x0b\x0c\r "):
+    """ Returns an iterator over string.split().
+        This is efficient in combination with cooccurrence(), 
+        since the string may be very long (e.g., Brown corpus).
+    """
+    a = []
+    for ch in string:
+        if ch not in sep: 
+            a.append(ch)
+            continue
+        if a: yield "".join(a); a=[]
+    if a: yield "".join(a)
+
+def cooccurrence(iterable, window=(-1,-1), match=lambda x: False, filter=lambda x: True, normalize=lambda x: x):
+    """ Returns the co-occurence matrix of terms in the given iterable
+        as a dictionary: {term1: {term2: count, term3: count, ...}}.
+        A string can be given as an iterable over the words with: isplit(string).
+        A file can be given as an iterable over the words with: isplit(chain(*open("file.txt"))).
+        The given match() function determines search terms.
+        The given filter() function determines co-occurring terms to count.
+        The given normalize() function can be used to remove punctuation, lowercase words, etc.
+        The given window, a (before, after)-tuple, specifies the size of the co-occurence window.
+    """
+    class Sentinel():
+        pass
+    # Window of terms before and after the search term.
+    # Deque is more efficient than list.pop(0).
+    q = deque()
+    # Window size of terms alongside the search term.
+    # Note that window=(0,0) will return a dictionary of search term frequency
+    # (since it counts co-occurence with itself).
+    n = -min(0, window[0]) + max(window[1], 0)
+    m = {}
+    # Search terms may fall outside the co-occurrence window, e.g., window=(-3,-2).
+    # We add sentinel markers at the start and end of the given iterable.
+    for x in chain([Sentinel()] * n, iterable, [Sentinel()] * n):
+        q.append(x)
+        if len(q) > n:
+            # Given window q size and offset,
+            # find the index of the candidate term:
+            if window[1] >= 0:
+                i = -1 - window[1]
+            if window[1] < 0:
+                i = len(q) - 1
+            if i < 0:
+                i = len(q) + i
+            x1 = q[i]
+            if not isinstance(x1, Sentinel):
+                x1 = normalize(x1)
+                if match(x1):
+                    # Iterate the window and filter co-occurent terms.
+                    for x2 in list(q).__getslice__(i+window[0], i+window[1]+1):
+                        if not isinstance(x2, Sentinel):
+                            x2 = normalize(x2)
+                            if filter(x2):
+                                if x1 not in m:
+                                    m[x1] = {}
+                                if x2 not in m[x1]:
+                                    m[x1][x2] = 0
+                                m[x1][x2] += 1
+            # Slide window.
+            q.popleft()
+    return m
+    
+co_occurrence = cooccurrence
+
+## Words occuring before and after the word "cat":
+## {"cat": {"sat": 1, "black": 1, "cat": 1}}
+#s = "The black cat sat on the mat."
+#print co_occurrence(isplit(s), window=(-1,1), 
+#        match = lambda w: w in ("cat",),
+#    normalize = lambda w: w.lower().strip(".:;,!?()[]'\""))
+
+## Adjectives preceding nouns:
+## {("cat", "NN"): {("black", "JJ"): 1}}
+#s = [("The","DT"), ("black","JJ"), ("cat","NN"), ("sat","VB"), ("on","IN"), ("the","DT"), ("mat","NN")]
+#print co_occurrence(s, window=(-2,-1), 
+#        match = lambda token: token[1].startswith("NN"),
+#       filter = lambda token: token[1].startswith("JJ"))
 
 #### STATISTICS ####################################################################################
 
