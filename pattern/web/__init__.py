@@ -2833,11 +2833,11 @@ class PDF:
 #  Some Usage Examples:
 # >>> from pattern.web import DBPedia
 # >>> DBPedia().search('select distinct ?Concept where {[] a ?Concept}')
-# >>> results = DBPedia().search('PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX : <http://dbpedia.org/resource/> select * where {?a rdf:type ?s.}')
+# >>> results = DBPedia().search('PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX : <http://dbpedia.org/resource/> select * where {?a rdf:type ?s.}',"SPARQL", 1,1)
 # >>> 
 # >>> for row in results:
-# ...     print "Entity: " + row.data('a') + " ( " + row.data('s') + " )"
-#
+# ...   print "Entity: " + row.data('a') + " ( " + row.data('s') + " )"
+# ..,   print row.download('a')  
 class DBPedia(SearchEngine):
     def __init__(self, license=None, throttle=0.5, language=None):
         SearchEngine.__init__(self, license, throttle, language)
@@ -2890,3 +2890,9 @@ class RDFResult:
 
     def vars(self):
         return self._vars
+
+    def download(self, var, *args, **kwargs):
+        if(self.types(var).lower() != "uri"):
+            raise TypeError(var + " is not a URI.")
+
+        return URL(self.data(var)).download(*args, **kwargs)
