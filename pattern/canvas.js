@@ -2,7 +2,7 @@
 // Copyright (c) 2010 University of Antwerp, Belgium
 // Authors: Tom De Smedt <tom@organisms.be>
 // License: BSD (see LICENSE.txt for details).
-// Version: 1.3
+// Version: 1.4
 // http://www.clips.ua.ac.be/pages/pattern-canvas
 
 // The NodeBox drawing API for the HTML5 <canvas> element.
@@ -360,9 +360,9 @@ var Geometry = Class.extend({
         /* Returns the linear interpolation between a and b for time t between 0.0-1.0.
          * For example: lerp(100, 200, 0.5) => 150.
          */
-         if (t < 0.0) return a;
-         if (t > 1.0) return b;
-         return a + (b-a)*t;
+        if (t < 0.0) return a;
+        if (t > 1.0) return b;
+        return a + (b-a)*t;
     },
     
     smoothstep: function(a, b, x) {
@@ -370,10 +370,32 @@ var Geometry = Class.extend({
          * where x is a number between a and b. The return value will ease (slow down) as x nears a or b.
          * For x smaller than a, returns 0.0. For x bigger than b, returns 1.0.
          */
-         if (x < a) return 0.0;
-         if (x >=b) return 1.0;
-         x = (x-a) / (b-a);
-         return x*x * (3-2*x);
+        if (x < a) return 0.0;
+        if (x >=b) return 1.0;
+        x = (x-a) / (b-a);
+        return x*x * (3-2*x);
+    },
+    
+    bounce: function(x) {
+        /* Returns a bouncing value between 0.0 and 1.0 (e.g. Mac OS X Dock) for a value between 0.0-1.0.
+         */
+        return Math.abs(Math.sin(2 * Math.PI * (x+1) * (x+1)) * (1-x));
+    },
+    
+    // ELLIPSES:
+    
+    superformula: function(m, n1, n2, n3, phi) {
+        /* A generalization of the superellipse (Gielis, 2003).
+         * that can be used to describe many complex shapes and curves found in nature.
+         */
+        if (n1 == 0) return (0, 0);
+        var a = 1.0;
+        var b = 1.0;
+        var r = Math.pow(Math.pow(Math.abs(Math.cos(m * phi/4) / a), n2) +
+                Math.pow(Math.abs(Math.sin(m * phi/4) / b), n3), 1/n1);
+        if (Math.abs(r) == 0)
+            return (0, 0);
+        return [(1/r) * Math.cos(phi), (1/r) * Math.sin(phi)];
     },
     
     // INTERSECTION:
@@ -1337,6 +1359,73 @@ var Bezier = Class.extend({
             pt.ctrl2 = new Point(_pt[4], _pt[5]);
         }
         return pt;
+    },
+    
+    findPath: function(points, curvature) {
+        if (curvature === undefined) curvature = 1.0;
+        // Don't crash on something straightforward such as a list of [x,y]-arrays.
+        for (var i=0; i < points.length; i++) {
+            if (points[i] instanceof Array) {
+                points[i] = new Point(points[i][0], points[i][1]);
+            }
+        }
+        var path = new Path();
+        //  No points: return nothing.
+        //  One point: return a path with a single MOVETO-point.
+        // Two points: return a path with a single straight line.
+        if (points.length == 0) {
+            return null;
+        }
+        if (points.length == 1) {
+            path.moveto(points[0].x, points[0].y);
+            return path;
+        }
+        if (points.length == 2) {
+            path.moveto(points[0].x, points[0].y);
+            path.lineto(points[1].x, points[1].y);
+            return path;
+        }
+        // Zero curvature means path with straight lines.
+        if (curvature <= 0) {
+            path.moveto(points[0].x, points[0].y)
+            for (var i=1; i < points.length; i++) {
+                path.lineto(points[i].x, points[i].y);
+            }
+            return path;
+        }
+        // Construct the path with curves.
+        curvature = Math.min(1.0, curvature);
+        curvature = 4 + (1.0 - curvature) * 40;
+        // The first point's ctrl1 and ctrl2 and last point's ctrl2
+        // will be the same as that point's location;
+        // we cannot infer how the path curvature started or will continue.
+        var dx = {0: 0}; dx[points.length-1] = 0;
+        var dy = {0: 0}; dy[points.length-1] = 0;
+        var bi = {1: 1 / curvature};
+        var ax = {1: (points[2].x - points[0].x - dx[0]) * bi[1]};
+        var ay = {1: (points[2].y - points[0].y - dy[0]) * bi[1]};
+        for (var i=2; i < points.length-1; i++) {
+            bi[i] = -1 / (curvature + bi[i-1]);
+            ax[i] = -(points[i+1].x - points[i-1].x - ax[i-1]) * bi[i];
+            ay[i] = -(points[i+1].y - points[i-1].y - ay[i-1]) * bi[i];        
+        }
+        var r = Array.reversed(Array.range(1, points.length-1));
+        for (var i=points.length-2; i > 0; i--) {
+            dx[i] = ax[i] + dx[i+1] * bi[i];
+            dy[i] = ay[i] + dy[i+1] * bi[i];
+        }
+        path.moveto(points[0].x, points[0].y);
+        for (var i=0; i < points.length-1; i++) {
+            path.curveto(
+                points[i].x + dx[i],
+                points[i].y + dy[i],
+                points[i+1].x - dx[i+1],
+                points[i+1].y - dy[i+1],
+                points[i+1].x,
+                points[i+1].y
+            );
+        }
+        return path;
     }
 });
 
@@ -1659,6 +1748,12 @@ function endpath(options) {
     return p;
 }
 
+function findpath(points, curvature) {
+    /* Returns a smooth BezierPath from the given list of points.
+     */
+    return bezier.findPath(points, curvature);
+}
+
 var drawPath = drawpath;
 var autoClosePath = autoclosepath;
 var beginPath = beginpath;
@@ -1667,6 +1762,7 @@ var lineTo = lineto;
 var curveTo = curveto;
 var closePath = closepath;
 var endPath = endpath;
+var findPath = findpath;
 
 /*--- POINT ANGLES ---------------------------------------------------------------------------------*/
 
@@ -1740,6 +1836,36 @@ function endclip() {
 
 var beginClip = beginclip;
 var endClip = endclip;
+
+/*--- SUPERSHAPE -----------------------------------------------------------------------------------*/
+
+function supershape(x, y, width, height, m, n1, n2, n3, options) {
+    /* Returns a BezierPath constructed using the superformula (Gielis, 2003),
+     * which can be used to describe many complex shapes and curves that are found in nature.
+     */
+    var o = options || {};
+    var pts = (o.points !== undefined)? o.points : 100;
+    var pct = (o.percentage !== undefined)? o.percentage : 1.0;
+    var rng = (o.range !== undefined)? o.range : 2 * Math.PI;
+    var path = new Path();
+    for (var i=0; i < pts; i++) {
+        if (i <= pts * pct) {
+            var d  = geometry.superformula(m, n1, n2, n3, i * rng / pts);
+            var dx = d[0] * width / 2 + x;
+            var dy = d[1] * height / 2 + y;
+            if (path.array.length == 0) {
+                path.moveto(dx, dy);
+            } else {
+                path.lineto(dx, dy);
+            }
+        }
+    }
+    path.closepath();
+    if (o.draw === undefined || o.draw == true) {
+        path.draw(o);
+    }
+    return path;
+}
 
 /*##################################################################################################*/
 
