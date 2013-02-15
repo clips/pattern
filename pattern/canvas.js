@@ -2986,6 +2986,8 @@ function solid(width, height, clr) {
 
 /*--- IMAGE FILTERS | COLOR ------------------------------------------------------------------------*/
 
+var LUMINANCE = [0.2125 / 255, 0.7154 / 255, 0.0721 / 255];
+
 function invert(img) {
     /* Returns an image with inverted colors (e.g. white becomes black).
      */
@@ -3065,9 +3067,8 @@ function desaturate(img) {
 function brightpass(img, threshold) {
     /* Returns a new image where pixels whose luminance fall below the threshold are black.
      */
-    var L = [0.2125 / 255, 0.7154 / 255, 0.072 / 255];
     return filter(img, function(p) {
-        return (Math.dot(p, L) > ((threshold || threshold == 0)? threshold : 0.5))? p : [0,0,0, p[3]];
+        return (Math.dot(p, LUMINANCE) > ((threshold || threshold == 0)? threshold : 0.5))? p : [0,0,0, p[3]];
     });    
 }
 
@@ -3133,12 +3134,14 @@ function mask(img1, img2, dx, dy, alpha) {
     });
 }
 
-var ADD      = "add";      // Pixels are added.
-var SUBTRACT = "subtract"; // Pixels are subtracted.
-var LIGHTEN  = "lighten";  // Lightest value for each pixel.
-var DARKEN   = "darken";   // Darkest value for each pixel.
-var MULTIPLY = "multiply"; // Pixels are multiplied, resulting in a darker image.
-var SCREEN   = "screen";   // Pixels are inverted/multiplied/inverted, resulting in a brighter picture.
+var ADD       = "add";      // Pixels are added.
+var SUBTRACT  = "subtract"; // Pixels are subtracted.
+var LIGHTEN   = "lighten";  // Lightest value for each pixel.
+var DARKEN    = "darken";   // Darkest value for each pixel.
+var MULTIPLY  = "multiply"; // Pixels are multiplied, resulting in a darker image.
+var SCREEN    = "screen";   // Pixels are inverted/multiplied/inverted, resulting in a brighter picture.
+var OVERLAY   = "overlay";  // Combines multiply and screen: light parts become ligher, dark parts darker.
+var HARDLIGHT = "hardlight" // Same as overlay, but uses the blend instead of base image for luminance.
 
 function blend(mode, img1, img2, dx, dy, alpha) {
     /* Applies the second image as a blend layer with the first image.
@@ -3153,19 +3156,34 @@ function blend(mode, img1, img2, dx, dy, alpha) {
         case DARKEN   : op = function(x, y) { return Math.min(x, y); }; break;
         case MULTIPLY : op = function(x, y) { return x * y / 255;    }; break;
         case SCREEN   : op = function(x, y) { return 255 - (255-x) * (255-y) / 255; }; break;
-        default       : op = function(x, y) { return 0; };
+        case OVERLAY  : op = function(x, y, luminance) { };
+        case HARDLIGHT: op = function(x, y, luminance) {
+            var a = 2 * x * y / 255;
+            var b = 255 - 2 * (255-x) * (255-y) / 255;
+            return (luminance < 0.45)? a :
+                   (luminance > 0.55)? b : 
+                    geometry.lerp(a, b, (luminance - 0.45) * 255); }; break;
+        default:
+            op = function(x, y) { return 0; };
     }
-    var swap = (mode==LIGHTEN || mode==DARKEN || mode==MULTIPLY || mode==SCREEN);
+    // Some blend modes swap opaque blend (alpha=255) with base layer to mimic Photoshop.
+    // Some blend modes use luminace (overlay & hard light).
+    var swap = (mode == LIGHTEN || mode == DARKEN || mode == MULTIPLY || mode == SCREEN);
+    var L1 = mode == OVERLAY;
+    var L2 = mode == HARDLIGHT;
+    var L;
     return composite(img1, img2, dx, dy, function(p1, p2) {
-        // Swap opaque blend (alpha=255) with base to mimic Photoshop.
         if (swap && p2[3] == 255) {
             var tmp=p1; p1=p2; p2=tmp;
         }
+        if (L1) L = Math.dot(p1.slice(0, 3), LUMINANCE);
+        if (L2) L = Math.dot(p2.slice(0, 3), LUMINANCE);
         var p = [0,0,0,0];
         var a = p2[3] / 255 * alpha;
-        p[0] = geometry.lerp(p1[0], op(p1[0], p2[0]), a);
-        p[1] = geometry.lerp(p1[1], op(p1[1], p2[1]), a);
-        p[2] = geometry.lerp(p1[2], op(p1[2], p2[2]), a);
+        // Mix each two pixels with the blending operation.
+        p[0] = geometry.lerp(p1[0], op(p1[0], p2[0], L), a);
+        p[1] = geometry.lerp(p1[1], op(p1[1], p2[1], L), a);
+        p[2] = geometry.lerp(p1[2], op(p1[2], p2[2], L), a);
         p[3] = geometry.lerp(p1[3], 255, a);
         return p;
     });
@@ -3188,6 +3206,12 @@ function multiply(img1, img2, dx, dy, alpha) {
 }
 function screen(img1, img2, dx, dy, alpha) {
     return blend(SCREEN, img1, img2, dx, dy, alpha);
+}
+function overlay(img1, img2, dx, dy, alpha) {
+    return blend(OVERLAY, img1, img2, dx, dy, alpha);
+}
+function hardlight(img1, img2, dx, dy, alpha) {
+    return blend(HARDLIGHT, img1, img2, dx, dy, alpha);
 }
 
 /*--- IMAGE FILTERS | LIGHT ------------------------------------------------------------------------*/
