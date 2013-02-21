@@ -41,10 +41,11 @@ except:
 #### TOKENIZER #####################################################################################
 
 ABBREVIATIONS = [
-    "a.C.", "a.m.", "apdo.", "aprox.", "Av.", "Avda.", "c.c.", "D.", "Da.", "d.C.", "d.j.C.",
-    "dna.", "Dr.", "Dra.", "esq.", "etc.", "Gob.", "h.", "m.n.", "no.", u"núm.", u"pág.",
-    "P.D.", "P.S.", "p.ej.", "p.m.", "Profa.", "q.e.p.d.", "S.A.", "S.L.", "Sr.", "Sra.",
-    "Srta.", "s.s.s.", "tel.", "Ud.", "Vd.", "Uds.", "Vds.", "v.", "vol.", "W.C."
+    u"a.C.", u"a.m.", u"apdo.", u"aprox.", u"Av.", u"Avda.", u"c.c.", u"D.", u"Da.", u"d.C.", 
+    u"d.j.C.", u"dna.", u"Dr.", u"Dra.", u"esq.", u"etc.", u"Gob.", u"h.", u"m.n.", u"no.", 
+    u"núm.", u"pág.", u"P.D.", u"P.S.", u"p.ej.", u"p.m.", u"Profa.", u"q.e.p.d.", u"S.A.", 
+    u"S.L.", u"Sr.", u"Sra.", u"Srta.", u"s.s.s.", u"tel.", u"Ud.", u"Vd.", u"Uds.", u"Vds.", 
+    u"v.", u"vol.", u"W.C."
 ]
 
 def tokenize(s, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, replace={}):
