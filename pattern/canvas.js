@@ -288,7 +288,11 @@ Math.radians = function(degrees) {
 };
 
 Math.clamp = function(value, min, max) {
-    return Math.max(min, Math.min(value, max));
+    if (max > min) {
+        return Math.max(min, Math.min(value, max));
+    } else {
+        return Math.max(max, Math.min(value, min));
+    }
 };
 
 Math.dot = function(a, b) {
@@ -2051,6 +2055,10 @@ var Cache = Class.extend({
         } else if (img && img.substr && img.substr(0,5) == "data:") {
             var url = null
             var src = img;
+        // From local path ("/g/image.png").
+        } else if (img && img.substr && img.substr(0,5) != "file:") {
+            var url = img;
+            var src = img; 
         // From <img>.
         } else if (img.src && img.complete) {
             var url = null;
@@ -2191,12 +2199,14 @@ var Image = Class.extend({
         var w = (o.width !== undefined && o.width != null)? o.width : this.width;
         var h = (o.height !== undefined && o.height != null)? o.height : this.height;
         var a = (o.alpha !== undefined)? o.alpha : this.alpha;
+        x = (x || x === 0)? x : this.x;
+        y = (y || y === 0)? y : this.y;
         if (this._img.complete && w && h && a > 0) {
             if (a >= 1.0) {
-                _ctx.drawImage(this._img, x || this.x, y || this.y, w, h);
+                _ctx.drawImage(this._img, x, y, w, h);
             } else {
                 _ctx.globalAlpha = a;
-                _ctx.drawImage(this._img, x || this.x, y || this.y, w, h);
+                _ctx.drawImage(this._img, x, y, w, h);
                 _ctx.globalAlpha = 1.0;
             }
         }
@@ -2281,7 +2291,7 @@ var Pixels = Class.extend({
          * Function takes a list of R,G,B,A channel values and must return a similar list.
          */
         for (var i=0; i < this.width * this.height; i++) {
-            this.set(i, callback(this.get(i)))
+            this.set(i, callback(this.get(i)));
         }
     },
     
@@ -2501,6 +2511,7 @@ var HIDDEN  = "none";
 var CROSS   = "crosshair";
 var HAND    = "pointer";
 var POINTER = "pointer";
+var DRAG    = "move";
 var TEXT    = "text";
 var WAIT    = "wait";
 
@@ -2520,11 +2531,22 @@ var Mouse = Class.extend({
             "x": 0,
             "y": 0
         };
-        this._away = function() {
+        this.scroll = 0;
+        this._out = function() {
             // Returns true if not inside Mouse.parent.
             return !(0 <= this.x && this.x <= this.parent.offsetWidth && 
                      0 <= this.y && this.y <= this.parent.offsetHeight);
         }
+        var eventScroll = function(e) {
+            // Create parent onmousewheel event (set Mouse.scroll).
+            // Fire Mouse.onscroll().
+            var m = this._mouse;
+            m.scroll += Math.sign(e.wheelDelta);
+            if (m.onscroll && m.onscroll(m) === false) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        };
         var eventDown = function(e) {
             // Create parent onmousedown event (set Mouse.pressed).
             // Fire Mouse.onpress().
@@ -2542,9 +2564,8 @@ var Mouse = Class.extend({
             m.dragged = false;
             m.drag.x = 0;
             m.drag.y = 0;
-            if (!m._away()) {
-                m.onrelease(m);
-            }
+            m.scroll = 0;
+            m.onrelease(m, m._out());
         };
         var eventMove = function(e) {
             // Create parent onmousemove event (set Mouse position & drag).
@@ -2572,11 +2593,12 @@ var Mouse = Class.extend({
             m.relative_y = m.relativeY = m.y / m.parent.offsetHeight;
             if (m.pressed) {
                 m.ondrag(m);
-            } else if (!m._away()) {
+            } else if (!m._out()) {
                 m.onmove(m);
             }
         };
         // Bind mouse and multi-touch events:
+        attachEvent(element, "mousewheel", eventScroll);
         attachEvent(element, "mousedown" , eventDown);
         attachEvent(element, "touchstart", eventDown);
         attachEvent(window,  "mouseup"   , Function.closure(this.parent, eventUp)); 
@@ -2586,10 +2608,11 @@ var Mouse = Class.extend({
     },
     
     // These can be patched with a custom function:
-    onmove:    function(element) {},
-    onpress:   function(element) {},
-    onrelease: function(element) {},
-    ondrag:    function(element) {},
+    onscroll:  function(mouse) {},
+    onpress:   function(mouse) {},
+    onrelease: function(mouse, out) {}, // With out=true if mouse outside canvas.
+    onmove:    function(mouse) {},
+    ondrag:    function(mouse) {},
     
     cursor: function(mode) {
         /* Sets the mouse cursor (DEFAULT, HIDDEN, CROSS, POINTER, TEXT or WAIT).
@@ -3095,7 +3118,7 @@ function composite(img1, img2, dx, dy, operator) {
     dx = dx || 0;
     dy = dy || 0;
     var pixels1 = new Pixels(img1);
-    var pixels2 = new Pixels(img2);    
+    var pixels2 = new Pixels(img2);   
     for (var j=0; j < pixels1.height; j++) {
         for (var i=0; i < pixels1.width; i++) {
             if (0 <= i-dx && i-dx < pixels2.width) {
@@ -3134,14 +3157,15 @@ function mask(img1, img2, dx, dy, alpha) {
     });
 }
 
-var ADD       = "add";      // Pixels are added.
-var SUBTRACT  = "subtract"; // Pixels are subtracted.
-var LIGHTEN   = "lighten";  // Lightest value for each pixel.
-var DARKEN    = "darken";   // Darkest value for each pixel.
-var MULTIPLY  = "multiply"; // Pixels are multiplied, resulting in a darker image.
-var SCREEN    = "screen";   // Pixels are inverted/multiplied/inverted, resulting in a brighter picture.
-var OVERLAY   = "overlay";  // Combines multiply and screen: light parts become ligher, dark parts darker.
-var HARDLIGHT = "hardlight" // Same as overlay, but uses the blend instead of base image for luminance.
+var ADD       = "add";       // Pixels are added.
+var SUBTRACT  = "subtract";  // Pixels are subtracted.
+var LIGHTEN   = "lighten";   // Lightest value for each pixel.
+var DARKEN    = "darken";    // Darkest value for each pixel.
+var MULTIPLY  = "multiply";  // Pixels are multiplied, resulting in a darker image.
+var SCREEN    = "screen";    // Pixels are inverted/multiplied/inverted, resulting in a brighter picture.
+var OVERLAY   = "overlay";   // Combines multiply and screen: light parts become ligher, dark parts darker.
+var HARDLIGHT = "hardlight"; // Same as overlay, but uses the blend instead of base image for luminance.
+var HUE       = "hue";       // Hue from the blend image, brightness and saturation from the base image.
 
 function blend(mode, img1, img2, dx, dy, alpha) {
     /* Applies the second image as a blend layer with the first image.
@@ -3166,27 +3190,46 @@ function blend(mode, img1, img2, dx, dy, alpha) {
         default:
             op = function(x, y) { return 0; };
     }
-    // Some blend modes swap opaque blend (alpha=255) with base layer to mimic Photoshop.
-    // Some blend modes use luminace (overlay & hard light).
-    var swap = (mode == LIGHTEN || mode == DARKEN || mode == MULTIPLY || mode == SCREEN);
-    var L1 = mode == OVERLAY;
-    var L2 = mode == HARDLIGHT;
-    var L;
-    return composite(img1, img2, dx, dy, function(p1, p2) {
-        if (swap && p2[3] == 255) {
-            var tmp=p1; p1=p2; p2=tmp;
-        }
-        if (L1) L = Math.dot(p1.slice(0, 3), LUMINANCE);
-        if (L2) L = Math.dot(p2.slice(0, 3), LUMINANCE);
+    function mix(p1, p2, op, luminance) {
         var p = [0,0,0,0];
         var a = p2[3] / 255 * alpha;
-        // Mix each two pixels with the blending operation.
-        p[0] = geometry.lerp(p1[0], op(p1[0], p2[0], L), a);
-        p[1] = geometry.lerp(p1[1], op(p1[1], p2[1], L), a);
-        p[2] = geometry.lerp(p1[2], op(p1[2], p2[2], L), a);
+        p[0] = geometry.lerp(p1[0], op(p1[0], p2[0], luminance), a);
+        p[1] = geometry.lerp(p1[1], op(p1[1], p2[1], luminance), a);
+        p[2] = geometry.lerp(p1[2], op(p1[2], p2[2], luminance), a);
         p[3] = geometry.lerp(p1[3], 255, a);
         return p;
-    });
+    }
+    // Some blend modes swap opaque blend (alpha=255) with base layer to mimic Photoshop.
+    // Some blend modes use luminace (overlay & hard light).
+    if (mode == ADD|| mode == SUBTRACT) {
+        return composite(img1, img2, dx, dy, function(p1, p2) {
+            return mix(p1, p2, op); 
+        });    
+    }
+    if (mode == LIGHTEN || mode == DARKEN || mode == MULTIPLY || mode == SCREEN) {
+        return composite(img1, img2, dx, dy, function(p1, p2) {
+            return (p2[3] == 255)? mix(p2, p1, op) : mix(p1, p2, op); 
+        });
+    }
+    if (mode == OVERLAY) {
+        return composite(img1, img2, dx, dy, function(p1, p2) {
+            return mix(p1, p2, op, Math.dot(p1.slice(0, 3), LUMINANCE)); 
+        });
+    }
+    if (mode == HARDLIGHT) {
+        return composite(img1, img2, dx, dy, function(p1, p2) {
+            return mix(p1, p2, op, Math.dot(p2.slice(0, 3), LUMINANCE)); 
+        });
+    }
+    if (mode == HUE) {
+        return composite(img1, img2, dx, dy, function(p1, p2) {
+            var p, a=p1[3];
+            p1 = _rgb2hsb(p1[0], p1[1], p1[2]);
+            p2 = _rgb2hsb(p2[0], p2[1], p2[2]);
+            p  = _hsb2rgb(p2[0], p1[1], p1[2]); p.push(a);
+            return p;
+        });
+    }
 }
 
 function add(img1, img2, dx, dy, alpha) {
@@ -3212,6 +3255,9 @@ function overlay(img1, img2, dx, dy, alpha) {
 }
 function hardlight(img1, img2, dx, dy, alpha) {
     return blend(HARDLIGHT, img1, img2, dx, dy, alpha);
+}
+function hue(img1, img2, dx, dy, alpha) {
+    return blend(HUE, img1, img2, dx, dy, alpha);
 }
 
 /*--- IMAGE FILTERS | LIGHT ------------------------------------------------------------------------*/
