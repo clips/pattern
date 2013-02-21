@@ -321,12 +321,13 @@ epistemic_JJ = {
     -1.00: d("absurd", "impossible", "prepostoreous", "ridiculous"),
     -0.75: d("inconceivable", "unthinkable"),
     -0.50: d("misleading", "scant", "unlikely", "unreliable"),
-    -0.25: d("doubtful", "ever", "ill-defined, ""inadequate", "late", "uncertain", "unclear", "unrealistic", 
-             "unspecified", "unsure", "wild"),
+    -0.25: d("doubtful", "ever", "ill-defined, ""inadequate", "late", 
+             "uncertain", "unclear", "unrealistic", "unspecified", "unsure", "wild"),
      0.00: d("possible", "unknown"),
     +0.25: d("according", "likely", "local", "interesting", "potential", "probable", "several", "some", "viable"),
-    +0.50: d("certain", "generally", "many", "numerous", "promising", "putative", "well-known"),
-    +0.75: d("concrete", "credible", "major", "necessary", "positive", "real", "robust", "substantial", "sure"),
+    +0.50: d("certain", "generally", "many", "notable", "numerous", "promising", "putative", "well-known"),
+    +0.75: d("concrete", "credible", "famous", "important", "major", "necessary", "original", 
+             "positive", "significant", "real", "robust", "substantial", "sure"),
     +1.00: d("confirmed", "definite", "prime", "undisputable"),
 }
 
@@ -344,7 +345,7 @@ epistemic_NN = {
 
 epistemic_CC_DT_IN = {
      0.00: d("either", "whether"),
-    +0.25: d("however", "some")
+    +0.25: d("however", "some"),
 }
 
 epistemic_PRP = {
@@ -357,13 +358,15 @@ epistemic_weaseling = {
     -0.75: d("popular belief"),
     -0.50: d("but that", "but this", "have sought", "might have", "seems to"),
     -0.25: d("may also", "may be", "may have", "may have been", "some have", "sort of"),
-    +0.00: d("been argued", "believed to", "considered to", "claimed to", "is considered", "regarded as", "said to"),
+    +0.00: d("been argued", "believed to", "considered to", "claimed to", "is considered", "is possible", 
+             "regarded as", "said to"),
     +0.25: d("a number of", "in some", "one of", "some of", 
              "many modern", "many people", "most people", "some people", "some cases", "some studies", 
              "scientists", "researchers"),
-    +0.50: d("in several", "is likely", "many of", "many other", "of many", "such as",
+    +0.50: d("in several", "is likely", "many of", "many other", "of many", "of the most", "such as",
              "several reasons", "several studies", "several universities"),
-    +0.75: d("almost always", "and many", "and some", "by many", "in many", "most likely"),
+    +0.75: d("almost always", "and many", "and some", "around the world", "by many", "in many", "in order to", 
+             "most likely"),
     +1.00: d("i.e.", "'s most", "of course", "There are", "without doubt"),
     +1.25: d("means that")
 }
@@ -411,7 +414,7 @@ def modality(sentence, type=EPISTEMIC):
                             m += weight
                             break
             # Numbers, citations, explanations make the sentence more factual.
-            if w.type in ("CD", "SYM", "\"", "'", ":", "("):
+            if w.type in ("CD", "\"", "'", ":", "("):
                 n += 0.75
                 m += 1
     if m == 0:
