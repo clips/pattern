@@ -116,6 +116,16 @@ def chunk(list, n):
         yield list[i:j]
         i=j
 
+def pimap(function, iterable, *args, **kwargs):
+    """ Returns an iterator of function(x, *args, **kwargs) for the iterable (x1, x2, x3, ...).
+        The function is applied in parallel over available CPU cores.
+    """
+    from multiprocessing import Pool
+    global worker
+    def worker(x):
+        return function(x, *args, **kwargs)
+    return Pool(processes=None).imap(worker, iterable)
+
 #--- READ-ONLY DICTIONARY --------------------------------------------------------------------------
 
 class ReadOnlyError(Exception):
@@ -1017,8 +1027,8 @@ class Corpus(object):
             that is faster (less features = less matrix columns) but quite efficient.
         """
         if method == IG:
-            subset = sorted(((self.information_gain(w), w) for w in self.terms), reverse=True)
-            subset = [w for ig, w in subset[:top]]
+            subset = sorted(((self.information_gain(w), w) for w in self.terms))
+            subset = [w for ig, w in subset[-top:]]
             return subset
         if method == KLD:
             v = [d.vector for d in self.documents]
@@ -1619,9 +1629,9 @@ class Classifier:
         # Calculate accuracy, precision, recall and F1-score.
         b = self.binary
         A = float(TP + TN) / ((TP + TN + FP + FN) or 1)
-        P = b and float(TP) / ((TP + FP) or 1) or None
-        R = b and float(TP) / ((TP + FN) or 1) or None
-        F = b and 2 * P * R / ((P + R) or 1) or None
+        P = float(TP) / ((TP + FP) or 1) if b else None
+        R = float(TP) / ((TP + FN) or 1) if b else None
+        F = 2.0 * P * R / ((P + R) or 1) if b else None
         return A, P, R, F
 
     def save(self, path):
@@ -1796,7 +1806,9 @@ class SVM(Classifier):
         
     @property
     def support_vectors(self):
-        return self._model and self._model[0].get_SV() or []
+        if self._model is None:
+            self._libsvm_train()
+        return self._model[0].get_SV()
         
     sv = support_vectors
 
@@ -1870,19 +1882,26 @@ class SVM(Classifier):
         return self._libsvm_predict(document)
             
     def save(self, path):
-        tmp = (self._libsvm, self._model)
+        svm, model = self._libsvm, self._model
+        if model is not None:
+            svm.svm_save_model(path, model[0])
         self._libsvm = None
-        self._model  = None # Retrains after Classifier.load().
+        self._model  = ((open(path).read(),) + model[1:]) if model else None
         Classifier.save(self, path)
-        self._libsvm, \
-        self._model = tmp
+        self._libsvm = svm
+        self._model  = model
         
     @classmethod
     def load(cls, path):
         import svm
         classifier = Classifier.load(path)
         classifier._libsvm = svm
-        classifier._libsvm_train()
+        if classifier._model is not None:
+            f = open(path + ".tmp", "w")
+            f.write(classifier._model[0])
+            f.close()
+            classifier._model = (svm.svm_load_model(path + ".tmp"),) + classifier._model[1:]
+            os.remove(f.name)
         return classifier
 
 #--- K-NEAREST NEIGHBOR CLASSIFIER -----------------------------------------------------------------
