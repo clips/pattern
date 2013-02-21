@@ -150,6 +150,42 @@ class TestStringFunctions(unittest.TestCase):
         self.assertTrue(P > 0.96)
         self.assertTrue(R > 0.94)
         print "pattern.metrics.intertextuality()"
+        
+    def test_suffixes(self):
+        # Assert base => inflected and reversed inflected => base suffixes.
+        s = [("beau", "beaux"), ("jeune", "jeunes"), ("hautain", "hautaines")]
+        v = metrics.suffixes(s, n=3)
+        self.assertEqual(v, [
+            (2, "nes", [("ne", 0.5), ("n", 0.5)]), 
+            (1, "aux", [("au", 1.0)])])
+        v = metrics.suffixes(s, n=2, reverse=False)
+        self.assertEqual(v, [
+            (1, "ne", [("nes", 1.0)]), 
+            (1, "in", [("ines", 1.0)]), 
+            (1, "au", [("aux", 1.0)])])
+        print "pattern.metrics.suffixes()"
+        
+    def test_isplit(self):
+        # Assert string.split() iterator.
+        v = metrics.isplit("test\nisplit")
+        self.assertTrue(hasattr(v, "next"))
+        self.assertEqual(list(v), ["test", "isplit"])
+        print "pattern.metrics.isplit()"
+    
+    def test_cooccurrence(self):
+        s = "The black cat sat on the mat."
+        v = metrics.cooccurrence(metrics.isplit(s), window=(-1,1), 
+                match = lambda w: w in ("cat",),
+            normalize = lambda w: w.lower().strip(".:;,!?()[]'\""))
+        self.assertEqual(sorted(v.keys()), ["cat"])
+        self.assertEqual(sorted(v["cat"].keys()), ["black", "cat", "sat"])
+        self.assertEqual(sorted(v["cat"].values()), [1, 1, 1])
+        s = [("The","DT"), ("black","JJ"), ("cat","NN"), ("sat","VB"), ("on","IN"), ("the","DT"), ("mat","NN")]
+        v = metrics.co_occurrence(s, window=(-2,-1), 
+             match = lambda token: token[1].startswith("NN"),
+            filter = lambda token: token[1].startswith("JJ"))
+        self.assertEqual(v, {("cat", "NN"): {("black", "JJ"): 1}})
+        print "pattern.metrics.cooccurrence()"
 
 class TestStatistics(unittest.TestCase):
     

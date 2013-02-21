@@ -23,8 +23,8 @@ VERB, NOUN, ADJECTIVE, ADVERB = "VB", "NN", "JJ", "RB"
 # Accuracy (measured on CELEX English morphology word forms):
 # 95% pluralize()
 # 96% singularize()
-# 95% _parse_lemma()
-# 96% _parse_lexeme()
+# 95% _parse_lemma() (for regular verbs)
+# 96% _parse_lexeme() (for regular verbs)
 
 #### ARTICLE #######################################################################################
 # Based on the Ruby Linguistics module by Michael Granger:
@@ -951,6 +951,12 @@ def _parse_lemma(verb):
     """
     v = verb.lower()
     b = False
+    if v in ("'m", "'re", "'s", "n't"):
+        return "be"
+    if v in ("'d", "'ll"):
+        return "will"
+    if v in  ("'ve"):
+        return "have"
     if v.endswith("s"):
         if v.endswith("ies") and len(v) > 3 and v[-4] not in VOWELS:
             return v[:-3]+"y" # complies => comply

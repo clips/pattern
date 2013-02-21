@@ -78,11 +78,10 @@ class TestInflection(unittest.TestCase):
     def test_parse_lemma(self):
         # Assert the accuracy of the verb lemmatization algorithm.
         i, n = 0, 0
-        for v in es.inflect.VERBS.infinitives:
-            for tense in es.inflect.VERBS.TENSES:
-                if es.inflect._parse_lemma(es.conjugate(v, tense)) == v: 
-                    i += 1
-                n += 1
+        for v1, v2 in es.inflect.VERBS.inflections.items():
+            if es.inflect._parse_lemma(v1) == v2: 
+                i += 1
+            n += 1
         self.assertTrue(float(i) / n > 0.80)
         print "pattern.es.inflect._parse_lemma()"
         

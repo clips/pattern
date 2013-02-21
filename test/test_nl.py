@@ -68,11 +68,10 @@ class TestInflection(unittest.TestCase):
         # Note: the accuracy is higher (90%) when measured on CELEX word forms
         # (presumably because nl.inflect.VERBS has high percentage irregular verbs).
         i, n = 0, 0
-        for v in nl.inflect.VERBS.infinitives:
-            for tense in nl.inflect.VERBS.TENSES:
-                if nl.inflect._parse_lemma(nl.conjugate(v, tense)) == v: 
-                    i += 1
-                n += 1
+        for v1, v2 in nl.inflect.VERBS.inflections.items():
+            if nl.inflect._parse_lemma(v1) == v2: 
+                i += 1
+            n += 1
         self.assertTrue(float(i) / n > 0.83)
         print "pattern.nl.inflect._parse_lemma()"
         
@@ -84,7 +83,7 @@ class TestInflection(unittest.TestCase):
             for j in range(len(lexeme2)):
                 if lexeme1[j] == lexeme2[j] or \
                    lexeme1[j] == "" and \
-                   lexeme1[j>5 and 10 or 0] == lexeme2[j]:
+                   lexeme1[j > 5 and 10 or 0] == lexeme2[j]:
                     i += 1
                 n += 1
         self.assertTrue(float(i) / n > 0.79)

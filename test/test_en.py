@@ -67,12 +67,11 @@ class TestInflection(unittest.TestCase):
         # Note: the accuracy is higher (95%) when measured on CELEX word forms
         # (probably because en.inflect.VERBS has high percentage irregular verbs).
         i, n = 0, 0
-        for v in en.inflect.VERBS.infinitives:
-            for tense in en.inflect.VERBS.TENSES:
-                if en.inflect._parse_lemma(en.conjugate(v, tense)) == v: 
-                    i += 1
-                n += 1
-        self.assertTrue(float(i) / n > 0.88)
+        for v1, v2 in en.inflect.VERBS.inflections.items():
+            if en.inflect._parse_lemma(v1) == v2: 
+                i += 1
+            n += 1
+        self.assertTrue(float(i) / n > 0.90)
         print "pattern.en.inflect._parse_lemma()"
         
     def test_parse_lexeme(self):
@@ -328,10 +327,10 @@ class TestParser(unittest.TestCase):
     def test_apply_lexical_rules(self):
         # Assert part-of-speech tag for unknown tokens (Brill's lexical rules).
         v = self._test_lexical_rules(function=en.parser.lexicon.lexical_rules.apply)
-        self.assertTrue(v[0] > 0.88) # NN
-        self.assertTrue(v[1] > 0.22) # VB
-        self.assertTrue(v[2] > 0.53) # JJ
-        self.assertTrue(v[3] > 0.61) # RB
+        self.assertTrue(v[0] > 0.84) # NN
+        self.assertTrue(v[1] > 0.19) # VB
+        self.assertTrue(v[2] > 0.65) # JJ
+        self.assertTrue(v[3] > 0.59) # RB
         print "pattern.en.parser.lexicon.lexical_rules.apply()"
         
     def test_apply_contextual_rules(self):
@@ -623,7 +622,7 @@ class TestParseTree(unittest.TestCase):
         self.assertTrue(v.pnp    != None)
         for i, tags in enumerate([
           ["I", "PRP", "B-NP", "O", "NP-SBJ-1", "i"],
-          ["'m", "VBP", "B-VP", "O", "VP-1", "'m"],
+          ["'m", "VBP", "B-VP", "O", "VP-1", "be"],
           ["eating", "VBG", "I-VP", "O", "VP-1", "eat"],
           ["pizza", "NN", "B-NP", "O", "NP-OBJ-1", "pizza"],
           ["with", "IN", "B-PP", "B-PNP", "O", "with"],
@@ -774,10 +773,10 @@ class TestModality(unittest.TestCase):
             sentence = en.Sentence(sentence)
             sentences.append((sentence, int(certain) > 0))
         A, P, R, F = test(lambda sentence: en.modality(sentence) > 0.5, sentences)
-        self.assertTrue(A > 0.67)
-        self.assertTrue(P > 0.69)
-        self.assertTrue(R > 0.62)
-        self.assertTrue(F > 0.65)
+        self.assertTrue(A > 0.69)
+        self.assertTrue(P > 0.72)
+        self.assertTrue(R > 0.63)
+        self.assertTrue(F > 0.67)
         print "pattern.en.modality()"
 
 #---------------------------------------------------------------------------------------------------
