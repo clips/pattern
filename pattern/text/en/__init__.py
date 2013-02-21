@@ -29,7 +29,7 @@ from parser           import tokenize, parse, tag
 from parser.tree      import Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
 from parser.tree      import SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
 from parser.modality  import mood, INDICATIVE, IMPERATIVE, CONDITIONAL, SUBJUNCTIVE
-from parser.modality  import modality, EPISTEMIC
+from parser.modality  import modality, uncertain, EPISTEMIC
 from parser.modality  import negated
 from parser.sentiment import sentiment, polarity, subjectivity, positive
 from parser.sentiment import NOUN, VERB, ADJECTIVE, ADVERB
@@ -79,4 +79,4 @@ def ngrams(string, n=3, continuous=False):
     for s in s:
         #s = [None] + s + [None]
         g.extend([tuple(s[i:i+n]) for i in range(len(s)-n+1)])        
-    return g    
+    return g

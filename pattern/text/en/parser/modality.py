@@ -1,4 +1,5 @@
 #### PATTERN | EN | MOOD & MODALITY ################################################################
+# -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
@@ -38,6 +39,8 @@ def imperative(sentence, **kwargs):
         "For goodness sake, just stop it!"
     """
     S = sentence
+    if not (hasattr(S, "words") and hasattr(S, "parse_token")):
+        raise TypeError, "%s object is not a parsed Sentence" % repr(S.__class__.__name__)
     if question(S):
         return False
     if S.subjects and s(S.subjects[0]) not in ("you", "yourself"):
@@ -98,6 +101,8 @@ def conditional(sentence, predictive=True, **kwargs):
         Sentences with can/may always need an explicit if-clause.
     """
     S = sentence
+    if not (hasattr(S, "words") and hasattr(S, "parse_token")):
+        raise TypeError, "%s object is not a parsed Sentence" % repr(S.__class__.__name__)
     if question(S):
         return False
     i = find(lambda w: s(w) == "were", S)
@@ -160,6 +165,8 @@ def subjunctive(sentence, classical=True, **kwargs):
         "It is recommended that he bring his own computer."
     """
     S = sentence
+    if not (hasattr(S, "words") and hasattr(S, "parse_token")):
+        raise TypeError, "%s object is not a parsed Sentence" % repr(S.__class__.__name__)
     if question(S):
         return False
     for i, w in enumerate(S):
@@ -268,23 +275,25 @@ epistemic_MD = { # would => could => can => should => shall => will => must
      0.00: d("can", "ca", "may"),
     +0.25: d("ought", "should"),
     +0.50: d("shall", "sha"),
-    +0.75: d("will", "ll", "wo"),
+    +0.75: d("will", "'ll", "wo"),
     +1.00: d("have", "has", "must", "need"),
 }
 
 epistemic_VB = { # wish => feel => believe => seem => think => know => prove + THAT
     -1.00: d(),
     -0.75: d(),
-    -0.50: d("doubt", "question"),
+    -0.50: d("dispute", "disputed", "doubt", "question"),
     -0.25: d("hope", "want", "wish"),
-     0.00: d("guess", "imagine"),
-    +0.25: d("appear", "feel", "hear", "rumor", "rumour", "seem", "sense", "speculate", "suspect", 
-             "suppose"),
-    +0.50: d("allude", "anticipate", "assume", "believe", "conjecture", "expect", "hypothesize", 
-             "imply", "indicate", "infer", "postulate", "predict", "presume", "propose", 
-             "suggest", "think"),
-    +0.75: d("know", "look", "see", "show"),
-    +1.00: d("certify", "demonstrate", "prove", "verify"),
+     0.00: d("guess", "imagine", "seek"),
+    +0.25: d("appear", "bet", "feel", "hear", "rumor", "rumour", "say", "said", "seem", "seemed",
+             "sense", "speculate", "suspect", "suppose", "wager"),
+    +0.50: d("allude", "anticipate", "assume", "claim", "claimed", "believe", "believed", 
+             "conjecture", "consider", "considered", "decide", "expect", "find", "found", 
+             "hypothesize", "imply", "indicate", "infer", "postulate", "predict", "presume", 
+             "propose", "report", "reported", "suggest", "suggested", "tend", 
+             "think", "thought"),
+    +0.75: d("know", "known", "look", "see", "show", "shown"),
+    +1.00: d("certify", "demonstrate", "prove", "proven", "verify"),
 }
 
 epistemic_RB = { # unlikely => supposedly => maybe => probably => usually => clearly => definitely
@@ -294,15 +303,15 @@ epistemic_RB = { # unlikely => supposedly => maybe => probably => usually => cle
     -0.25: d("almost", "allegedly", "debatably", "nearly", "presumably", "purportedly", "reportedly", 
              "reputedly", "rumoredly", "rumouredly", "supposedly"),
      0.00: d("barely", "hypothetically", "maybe", "occasionally", "perhaps", "possibly", "putatively", 
-             "sometimes", "sporadically"),
-    +0.25: d("admittedly", "apparently", "arguably", "believably", "conceivably", "feasibly", 
+             "sometimes", "sporadically", "traditionally", "widely"),
+    +0.25: d("admittedly", "apparently", "arguably", "believably", "conceivably", "feasibly", "fairly", 
              "hopefully", "likely", "ostensibly", "potentially", "probably", "quite", "seemingly"),
     +0.50: d("commonly", "credibly", "defendably", "defensibly", "effectively", "frequently", 
-             "generally", "noticeably", "often", "plausibly", "reasonably", "regularly", 
-             "relatively", "typically", "usually"),
+             "generally", "largely", "mostly", "normally", "noticeably", "often", "plausibly", 
+             "reasonably", "regularly", "relatively", "typically", "usually"),
     +0.75: d("assuredly", "certainly", "clearly", "doubtless", "evidently", "evitably", "manifestly", 
-             "necessarily", "observably", "ostensively", "patently", "plainly", "positively", 
-             "really", "surely", "truly", "undoubtably", "undoubtedly", "verifiably"),
+             "necessarily", "nevertheless", "observably", "ostensively", "patently", "plainly", 
+             "positively", "really", "surely", "truly", "undoubtably", "undoubtedly", "verifiably"),
     +1.00: d("absolutely", "always", "definitely", "incontestably", "indisputably", "indubitably", 
              "ineluctably", "inescapably", "inevitably", "invariably", "obviously", "unarguably", 
              "unavoidably", "undeniably", "unquestionably")
@@ -311,43 +320,52 @@ epistemic_RB = { # unlikely => supposedly => maybe => probably => usually => cle
 epistemic_JJ = {
     -1.00: d("absurd", "impossible", "prepostoreous", "ridiculous"),
     -0.75: d("inconceivable", "unthinkable"),
-    -0.50: d("unlikely"),
-    -0.25: d("doubtful", "uncertain", "unclear", "unsure"),
+    -0.50: d("misleading", "scant", "unlikely", "unreliable"),
+    -0.25: d("doubtful", "ever", "ill-defined, ""inadequate", "late", "uncertain", "unclear", "unrealistic", 
+             "unspecified", "unsure", "wild"),
      0.00: d("possible", "unknown"),
-    +0.25: d("potential", "probable", "some"),
-    +0.50: d("generally", "likely", "many", "putative", "several"),
-    +0.75: d("credible", "necessary", "positive", "sure"),
-    +1.00: d("certain", "confirmed", "definite"),
+    +0.25: d("according", "likely", "local", "interesting", "potential", "probable", "several", "some", "viable"),
+    +0.50: d("certain", "generally", "many", "numerous", "promising", "putative", "well-known"),
+    +0.75: d("concrete", "credible", "major", "necessary", "positive", "real", "robust", "substantial", "sure"),
+    +1.00: d("confirmed", "definite", "prime", "undisputable"),
 }
 
 epistemic_NN = {
     -1.00: d("fantasy", "fiction", "lie", "myth", "nonsense"),
-    -0.75: d(),
-    -0.50: d(),
-    -0.25: d("chance", "speculation"),
-     0.00: d("guess", "possibility"),
-    +0.25: d("assumption", "expectation", "hypothesis", "notion"),
-    +0.50: d("belief", "theory"),
-    +0.75: d(),
-    +1.00: d("fact", "truth"),
+    -0.75: d("controversy"),
+    -0.50: d("criticism", "debate", "doubt"),
+    -0.25: d("belief", "chance", "faith", "luck", "perception", "speculation"),
+     0.00: d("guess", "feeling", "hunch", "opinion", "possibility", "question"),
+    +0.25: d("assumption", "expectation", "hypothesis", "notion", "others", "team"),
+    +0.50: d("example", "proces", "theory"),
+    +0.75: d("conclusion", "data", "evidence", "majority", "proof", "symptom", "symptoms"),
+    +1.00: d("fact", "truth", "power"),
 }
 
 epistemic_CC_DT_IN = {
      0.00: d("either", "whether"),
-    +0.25: d("some")
+    +0.25: d("however", "some")
 }
 
-epistemic_phrase = {
-    -1.00: d(),
-    -0.75: d(),
-    -0.50: d(),
-    -0.25: d(),
-     0.00: d("a number of", "sort of", "some cases", "some people", "in some way"),
-    +0.25: d("at first blush", "at first sight", "at first glance", "many of these"),
-    +0.50: d("all else being equal", "all in all", "all things considered", "for several reasons",
-             "has been argued", "is considered", "said to be"),
-    +0.75: d("as a matter of fact"),
-    +1.00: d("without a doubt", "of course"),
+epistemic_PRP = {
+    +0.25: d("I", "my"),
+    +0.50: d("our"),
+    +0.75: d("we")
+}
+
+epistemic_weaseling = {
+    -0.75: d("popular belief"),
+    -0.50: d("but that", "but this", "have sought", "might have", "seems to"),
+    -0.25: d("may also", "may be", "may have", "may have been", "some have", "sort of"),
+    +0.00: d("been argued", "believed to", "considered to", "claimed to", "is considered", "regarded as", "said to"),
+    +0.25: d("a number of", "in some", "one of", "some of", 
+             "many modern", "many people", "most people", "some people", "some cases", "some studies", 
+             "scientists", "researchers"),
+    +0.50: d("in several", "is likely", "many of", "many other", "of many", "such as",
+             "several reasons", "several studies", "several universities"),
+    +0.75: d("almost always", "and many", "and some", "by many", "in many", "most likely"),
+    +1.00: d("i.e.", "'s most", "of course", "There are", "without doubt"),
+    +1.25: d("means that")
 }
 
 def modality(sentence, type=EPISTEMIC):
@@ -356,37 +374,52 @@ def modality(sentence, type=EPISTEMIC):
         Epistemic modality is used to express possibility (i.e. how truthful is what is being said).
     """
     S, n, m = sentence, 0.0, 0
+    if not (hasattr(S, "words") and hasattr(S, "parse_token")):
+        raise TypeError, "%s object is not a parsed Sentence" % repr(S.__class__.__name__)
     if type == EPISTEMIC:
-        r = s(S).rstrip(" .!")
-        for k,v in epistemic_phrase.items():
+        r = S.string.rstrip(" .!")
+        for k, v in epistemic_weaseling.items():
             for phrase in v:
                 if phrase in r:
                     n += k
-                    m += 1
-        for i, w in enumerate(S):
+                    m += 2
+        for i, w in enumerate(S.words):
             for type, dict, weight in (
-              ("MD", epistemic_MD, 2), 
-              ("VB", epistemic_VB, 2), 
-              ("RB", epistemic_RB, 2), 
-              ("JJ", epistemic_JJ, 1),
-              ("NN", epistemic_NN, 1),
-              ("CC", epistemic_CC_DT_IN, 1),
-              ("DT", epistemic_CC_DT_IN, 1),
-              ("IN", epistemic_CC_DT_IN, 1)):
-                if i < 0 and s(S[i-1]) in MODIFIERS:
-                    # "likely" => weight 1, "very likely" => weight 2
+              (  "MD", epistemic_MD, 4), 
+              (  "VB", epistemic_VB, 2), 
+              (  "RB", epistemic_RB, 2), 
+              (  "JJ", epistemic_JJ, 1),
+              (  "NN", epistemic_NN, 1),
+              (  "CC", epistemic_CC_DT_IN, 1),
+              (  "DT", epistemic_CC_DT_IN, 1),
+              (  "IN", epistemic_CC_DT_IN, 1),
+              ("PRP" , epistemic_PRP, 1),
+              ("PRP$", epistemic_PRP, 1),
+              ( "WP" , epistemic_PRP, 1)):
+                # "likely" => weight 1, "very likely" => weight 2
+                if i > 0 and s(S[i-1]) in MODIFIERS:
                     weight += 1
-                if w.type.startswith(type):
-                    # likely" => score 0.25 (neutral inclining towards positive).
-                    for k,v in dict.items():
-                        if (w.lemma or s(w)) in v: # Prefer lemmata.
-                            #print w, weight, k
+                # likely" => score 0.25 (neutral inclining towards positive).
+                if w.type and w.type.startswith(type):
+                    for k, v in dict.items():
+                        # Prefer lemmata.
+                        if (w.lemma or s(w)) in v: 
+                            # Reverse score for negated terms.
+                            if i > 0 and s(S[i-1]) in ("not", "n't", "never", "without"):
+                                k = -k * 0.5
                             n += weight * k
                             m += weight
                             break
+            # Numbers, citations, explanations make the sentence more factual.
+            if w.type in ("CD", "SYM", "\"", "'", ":", "("):
+                n += 0.75
+                m += 1
     if m == 0:
         return 1.0 # No modal verbs/adverbs used, so statement must be true.
-    return n / (m or 1)
+    return max(-1.0, min(n / (m or 1), +1.0))
+
+def uncertain(sentence, threshold=0.5):
+    return modality(sentence) <= threshold
 
 #from __init__ import parse
 #from tree import Sentence
@@ -426,4 +459,4 @@ def modality(sentence, type=EPISTEMIC):
 # http://www.aclweb.org/anthology/W/W10/W10-3006.pdf
 # Sentences in the training corpus are labelled as "certain" or "uncertain".
 # For Wikipedia sentences, 2000 "certain" and 2000 "uncertain":
-# modality(sentence) > 0.5 => A 0.67 P 0.70 R 0.63 F1 0.66
+# modality(sentence) > 0.5 => A 0.70 P 0.73 R 0.64 F1 0.68
