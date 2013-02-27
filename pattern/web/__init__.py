@@ -2822,3 +2822,77 @@ class PDF:
         s = s.replace("<!-- paragraph -->", "\n\n")
         s = collapse_spaces(s)
         return s
+
+#### DBPedia Search Engine ####################################################################################
+#  Kenneth Koch kkoch986@gmail.com 2013
+# the result object returned by this will have the following functions set (see RDFResult class)
+# result.vars() => a list containing the names of all variables bound in this result
+# result.types(var) => the type for <var> in this row
+# result.data(var) => the value of <var> in this result
+#
+#  Some Usage Examples:
+# >>> from pattern.web import DBPedia
+# >>> DBPedia().search('select distinct ?Concept where {[] a ?Concept}')
+# >>> results = DBPedia().search('PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX : <http://dbpedia.org/resource/> select * where {?a rdf:type ?s.}',"SPARQL", 1,1)
+# >>> 
+# >>> for row in results:
+# ...   print "Entity: " + row.data('a') + " ( " + row.data('s') + " )"
+# ..,   print row.download('a')  
+class DBPedia(SearchEngine):
+    def __init__(self, license=None, throttle=0.5, language=None):
+        SearchEngine.__init__(self, license, throttle, language)
+
+    def search(self, query, type="SPARQL", start=1, count=10, sort=RELEVANCY, size=None, cached=False, **kwargs):
+        query = query + " OFFSET " + start.__str__() + " LIMIT " + count.__str__()
+        
+        # Search will accept a db pedia sparql query
+        url = URL("http://dbpedia.org/sparql?", method=GET)
+        url.query = {
+            "query":    query,
+            "format":   "json"
+        }
+
+        try:
+            data = URL(url).download(cached=cached, timeout=30, **kwargs)            
+            data = json.loads(data)
+        except HTTP400BadRequest:
+            raise SyntaxError("Invalid Query Syntax")
+
+        # now build a results object to return the results
+        total = data["results"]["bindings"].__len__()
+        results = Results(url, query, type, total)
+        vars = data["head"]["vars"]
+        for row in data["results"]["bindings"]:            
+            types   = dict((k,row[k]["type"]) for k in vars)
+            data    = dict((k,row[k]["value"]) for k in vars)
+            result  = RDFResult(vars, types, data)
+            results.append(result)
+
+        return results
+
+class RDFResult:
+    def __init__(self, vars, types, data):
+        self._vars   = vars
+        self._types  = types
+        self._data   = data
+
+    def data(self, var = None):
+        if(var is None):
+            return self._data
+        else:
+            return self._data[var]
+
+    def types(self, var = None):
+        if(var is None):
+            return self._types
+        else:
+            return self._types[var]
+
+    def vars(self):
+        return self._vars
+
+    def download(self, var, *args, **kwargs):
+        if(self.types(var).lower() != "uri"):
+            raise TypeError(var + " is not a URI.")
+
+        return URL(self.data(var)).download(*args, **kwargs)
