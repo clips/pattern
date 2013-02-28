@@ -267,8 +267,7 @@ def flesch_reading_ease(string):
     string = string.replace("!", ".")
     string = string.replace("?", ".")
     string = string.replace(",", " ")
-    string = string.replace("\n", " ")
-    y = [count_syllables(w) for w in string.split(" ") if w != ""]
+    y = [count_syllables(w) for w in string.split() if w != ""]
     w = len([w for w in string.split(" ") if w != ""])
     s = len([s for s in string.split(".") if len(s) > 2])
     #R = 206.835 - 1.015 * w/s - 84.6 * sum(y)/w
@@ -285,10 +284,12 @@ readability = flesch_reading_ease
 # For example, on the Corpus of Plagiarised Short Answers (Clough & Stevenson, 2009),
 # accuracy (F1) is 94.5% with n=3 and intertextuality threshold > 0.1.
 
+PUNCTUATION = ".:;,!?()[]'\""
+
 def ngrams(string, n=3, **kwargs):
     """ Returns a list of n-grams (tuples of n successive words) from the given string.
     """
-    s = [w.strip(".:;,!?()[]'\"") for w in string.replace("\n", " ").split(" ")]
+    s = [w.strip(PUNCTUATION) for w in string.split()]
     s = [w.strip() for w in s if w.strip()]
     return [tuple(s[i:i+n]) for i in range(len(s)-n+1)]
 
@@ -343,6 +344,22 @@ def intertextuality(texts=[], n=5, continuous=False, weight=lambda ngram: 1):
         w[i,j] /= float(sum[i])
         w[i,j]  = min(w[i,j], Weight(1.0))
     return w
+
+#--- WORD TYPE-TOKEN RATIO -------------------------------------------------------------------------
+
+def type_token_ratio(string):
+    """ Returns the percentage of unique words in the given string as a number between 0.0-1.0,
+        as opposed to the total number of words.
+    """
+    u = {}
+    n = 0
+    for w in string.lower().split():
+        w = w.strip(PUNCTUATION)
+        u[w] = True
+        n += 1
+    return float(len(u)) / (n or 1)
+
+ttr = type_token_ratio
 
 #--- WORD INFLECTION -------------------------------------------------------------------------------
 
