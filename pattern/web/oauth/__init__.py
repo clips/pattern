@@ -46,7 +46,7 @@ def timestamp():
     return int(time.time())
 
 def escape(string):
-    return urllib.quote(string, "~")
+    return urllib.quote_plus(string, "~")
     
 def utf8(string):
     return isinstance(string, unicode) and string.encode("utf-8") or str(string)

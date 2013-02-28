@@ -1047,8 +1047,8 @@ class Google(SearchEngine):
             Google Translate is a paid service, license without billing raises HTTP401Authentication.
         """
         url = URL("https://www.googleapis.com/language/translate/v2?", method=GET, query={
-               "key": GOOGLE_LICENSE,
-                 "q": string,
+               "key": self.license or GOOGLE_LICENSE,
+                 "q": string, # 1000 characters maximum
             "source": input,
             "target": output
         })
@@ -1069,7 +1069,7 @@ class Google(SearchEngine):
             Google Translate is a paid service, license without billing raises HTTP401Authentication.
         """
         url = URL("https://www.googleapis.com/language/translate/v2/detect?", method=GET, query={
-               "key": GOOGLE_LICENSE,
+               "key": self.license or GOOGLE_LICENSE,
                  "q": string[:1000]
         })
         kwargs.setdefault("cached", False)
@@ -1115,7 +1115,7 @@ class Yahoo(SearchEngine):
             return Results(YAHOO, query, type)
         # 1) Create request URL.
         url = URL(url, method=GET, query={
-                 "q": encode_url(query),
+                 "q": query,
              "start": 1 + (start-1) * count,
              "count": min(count, type==IMAGE and 35 or 50),
             "format": "json"
