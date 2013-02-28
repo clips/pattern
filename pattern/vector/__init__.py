@@ -27,6 +27,7 @@ from time      import time
 from random    import random, choice
 from itertools import izip, chain
 from bisect    import insort
+from operator  import itemgetter
 from StringIO  import StringIO
 from codecs    import open
 
@@ -1027,8 +1028,10 @@ class Corpus(object):
             that is faster (less features = less matrix columns) but quite efficient.
         """
         if method == IG:
-            subset = sorted(((self.information_gain(w), w) for w in self.terms))
-            subset = [w for ig, w in subset[-top:]]
+            subset = ((self.information_gain(w), w) for w in self.terms)
+            subset = sorted(subset, key=itemgetter(1))
+            subset = sorted(subset, key=itemgetter(0), reverse=True)
+            subset = [w for ig, w in subset[:top]]
             return subset
         if method == KLD:
             v = [d.vector for d in self.documents]
@@ -1538,12 +1541,39 @@ class Classifier:
         return self._classes.copy()
         
     @property
+    def majority(self):
+        """ Yields the majority class (= most frequent class).
+        """
+        d = sorted((v, k) for k, v in self._classes.iteritems())
+        return d and d[-1][1] or None
+    
+    @property
+    def minority(self):
+        """ Yields the minority class (= least frequent class).
+        """
+        d = sorted((v, k) for k, v in self._classes.iteritems())
+        return d and d[0][1] or None
+        
+    @property
     def baseline(self):
-        """ Yields the most frequent class in the training data.
+        """ Yields the most frequent class in the training data,
+            or a user-defined class if Classifier(baseline != FREQUENCY).
         """
         if self._baseline != FREQUENCY:
             return self._baseline
-        return ([(0, None)] + sorted([(v, k) for k, v in self.distribution.iteritems()]))[-1][1]
+        return ([(0, None)] + sorted([(v, k) for k, v in self._classes.iteritems()]))[-1][1]
+        
+    @property
+    def skewness(self):
+        """ Yields 0.0 if the classes are evenly distributed.
+            Yields > +1.0 or < -1.0 if the training data is highly skewed.
+        """
+        def moment(a, m, k=1):
+            return sum([(x-m)**k for x in a]) / (len(a) or 1)
+        # List each training instance by an int that represents its class:
+        a = list(chain(*([i] * v for i, (k, v) in enumerate(self._classes.iteritems()))))
+        m = float(sum(a)) / len(a) # mean
+        return moment(a, m, 3) / (moment(a, m, 2) ** 1.5 or 1)
 
     def train(self, document, type=None):
         """ Trains the classifier with the given document of the given type (i.e., class).
@@ -1584,7 +1614,7 @@ class Classifier:
     @classmethod
     def k_fold_cross_validation(cls, corpus=[], k=10, **kwargs):
         # Backwards compatibility.
-        return K_fold_cross_validation(cls, K=k, documents=corpus, **kwargs)
+        return K_fold_cross_validation(cls, documents=corpus, folds=k, **kwargs)
     
     crossvalidate = cross_validate = cv = k_fold_cross_validation
     
@@ -1594,7 +1624,7 @@ class Classifier:
         # In Pattern 2.5-, Classifier.test() is a classmethod.
         # In Pattern 2.6+, it is replaced with Classifier._test() once instantiated.
         if folds > 1:
-            return K_fold_cross_validation(cls, K=folds, documents=corpus, **kwargs)
+            return K_fold_cross_validation(cls, documents=corpus, folds=folds, **kwargs)
         i = int(round(max(0.0, min(1.0, d)) * len(corpus)))
         d = shuffled(corpus)
         return cls(train=d[:i]).test(d[i:])
@@ -1644,13 +1674,13 @@ class Classifier:
         self.test = self._test
         return self
 
-def K_fold_cross_validation(Classifier, K=10, documents=[], **kwargs):
+def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
     """ For 10-fold cross-validations, performs 10 separate tests of the classifier,
         each with a different 9/10 training and 1/10 testing documents.
         The given classifier is a class (Bayes, KNN, SVM)
         which is initialized with the given optional parameters.
     """
-    K = kwargs.pop("folds", K)
+    K = kwargs.pop("K", folds)
     d = [isinstance(d, Document) and (d, d.type) or d for d in documents]
     d = shuffled(d) # Avoid a list sorted by type (because we take successive folds).
     m = [0.0, 0.0, 0.0, 0.0] # mean accuracy | precision | recall | F1-score.
