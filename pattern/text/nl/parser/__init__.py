@@ -1,4 +1,5 @@
 #### PATTERN | NL | RULE-BASED SHALLOW PARSER ######################################################
+# -*- coding: utf-8 -*-
 # Copyright (c) 2010 Jeroen Geertzen and University of Antwerp, Belgium
 # Authors: Jeroen Geertzen (Dutch language model), Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
@@ -104,7 +105,7 @@ wotan = {
      "Num(": "CD",
     "Prep(": [("voorinf","TO"), ("", "IN")],
     "Pron(": [("bez","PRP$"), ("","PRP")],
-    "Punc(": [("komma",","), ("haakopen","("), ("haaksluit",")"), ("",".")],
+    "Punc(": [("komma",","), ("haakopen","("), ("haaksluit",")"), ("schuinstreep", "CC"), ("",".")],
       "Int": "UH",
      "Misc": [("symbool","SYM"), ("vreemd","FW")]
 }

@@ -38,6 +38,7 @@
 -studenten NN 
 -verbesserung NN 
 . S 
+/ KON
 0,3 CARDNUM 
 0,31 CARDNUM 
 0,5 CARDNUM 

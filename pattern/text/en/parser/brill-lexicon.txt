@@ -353,7 +353,7 @@ $ $
 .fundamentally RB
 .to TO
 .what WDT
-/ NN
+/ CC
 : :
 :35.3 CD
 ; :
