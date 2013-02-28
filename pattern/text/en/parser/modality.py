@@ -299,7 +299,7 @@ epistemic_VB = { # wish => feel => believe => seem => think => know => prove + T
 epistemic_RB = { # unlikely => supposedly => maybe => probably => usually => clearly => definitely
     -1.00: d("impossibly"),
     -0.75: d("hardly"),
-    -0.50: d("presumptively", "rarely", "scarcely", "seldom", "seldomly", "uncertainly", "unlikely"),
+    -0.50: d("presumptively", "rarely", "scarcely", "seldomly", "uncertainly", "unlikely"),
     -0.25: d("almost", "allegedly", "debatably", "nearly", "presumably", "purportedly", "reportedly", 
              "reputedly", "rumoredly", "rumouredly", "supposedly"),
      0.00: d("barely", "hypothetically", "maybe", "occasionally", "perhaps", "possibly", "putatively", 
@@ -318,14 +318,16 @@ epistemic_RB = { # unlikely => supposedly => maybe => probably => usually => cle
 }
 
 epistemic_JJ = {
-    -1.00: d("absurd", "impossible", "prepostoreous", "ridiculous"),
+    -1.00: d("absurd", "prepostoreous", "ridiculous"),
     -0.75: d("inconceivable", "unthinkable"),
     -0.50: d("misleading", "scant", "unlikely", "unreliable"),
-    -0.25: d("doubtful", "ever", "ill-defined, ""inadequate", "late", 
+    -0.25: d("customer-centric", "doubtful", "ever", "ill-defined, ""inadequate", "late", 
              "uncertain", "unclear", "unrealistic", "unspecified", "unsure", "wild"),
-     0.00: d("possible", "unknown"),
-    +0.25: d("according", "likely", "local", "interesting", "potential", "probable", "several", "some", "viable"),
-    +0.50: d("certain", "generally", "many", "notable", "numerous", "promising", "putative", "well-known"),
+     0.00: d("dynamic", "possible", "unknown"),
+    +0.25: d("according", "creative", "likely", "local", "innovative", "interesting", 
+             "potential", "probable", "several", "some", "talented", "viable"),
+    +0.50: d("certain", "generally", "many", "notable", "numerous", "performance-oriented", 
+             "promising", "putative", "well-known"),
     +0.75: d("concrete", "credible", "famous", "important", "major", "necessary", "original", 
              "positive", "significant", "real", "robust", "substantial", "sure"),
     +1.00: d("confirmed", "definite", "prime", "undisputable"),
@@ -336,7 +338,7 @@ epistemic_NN = {
     -0.75: d("controversy"),
     -0.50: d("criticism", "debate", "doubt"),
     -0.25: d("belief", "chance", "faith", "luck", "perception", "speculation"),
-     0.00: d("guess", "feeling", "hunch", "opinion", "possibility", "question"),
+     0.00: d("challenge", "guess", "feeling", "hunch", "opinion", "possibility", "question"),
     +0.25: d("assumption", "expectation", "hypothesis", "notion", "others", "team"),
     +0.50: d("example", "proces", "theory"),
     +0.75: d("conclusion", "data", "evidence", "majority", "proof", "symptom", "symptoms"),
@@ -346,6 +348,7 @@ epistemic_NN = {
 epistemic_CC_DT_IN = {
      0.00: d("either", "whether"),
     +0.25: d("however", "some"),
+    +1.00: d("despite")
 }
 
 epistemic_PRP = {
@@ -359,16 +362,15 @@ epistemic_weaseling = {
     -0.50: d("but that", "but this", "have sought", "might have", "seems to"),
     -0.25: d("may also", "may be", "may have", "may have been", "some have", "sort of"),
     +0.00: d("been argued", "believed to", "considered to", "claimed to", "is considered", "is possible", 
-             "regarded as", "said to"),
+             "overall solutions", "regarded as", "said to"),
     +0.25: d("a number of", "in some", "one of", "some of", 
              "many modern", "many people", "most people", "some people", "some cases", "some studies", 
              "scientists", "researchers"),
     +0.50: d("in several", "is likely", "many of", "many other", "of many", "of the most", "such as",
-             "several reasons", "several studies", "several universities"),
+             "several reasons", "several studies", "several universities", "wide range"),
     +0.75: d("almost always", "and many", "and some", "around the world", "by many", "in many", "in order to", 
              "most likely"),
     +1.00: d("i.e.", "'s most", "of course", "There are", "without doubt"),
-    +1.25: d("means that")
 }
 
 def modality(sentence, type=EPISTEMIC):
