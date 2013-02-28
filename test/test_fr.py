@@ -51,6 +51,60 @@ class TestInflection(unittest.TestCase):
         self.assertTrue(float(i) / n > 0.85)
         print "pattern.fr.inflect._parse_lexeme()"
 
+    def test_conjugate(self):
+        # Assert different tenses with different conjugations.
+        for (v1, v2, tense) in (
+          (u"être", u"être",      fr.INFINITIVE),
+          (u"être", u"suis",     (fr.PRESENT, 1, fr.SINGULAR)),
+          (u"être", u"es",       (fr.PRESENT, 2, fr.SINGULAR)),
+          (u"être", u"est",      (fr.PRESENT, 3, fr.SINGULAR)),
+          (u"être", u"sommes",   (fr.PRESENT, 1, fr.PLURAL)),
+          (u"être", u"êtes",     (fr.PRESENT, 2, fr.PLURAL)),
+          (u"être", u"sont",     (fr.PRESENT, 3, fr.PLURAL)),
+          (u"être", u"étant",    (fr.PRESENT + fr.PARTICIPLE)),
+          (u"être", u"été",      (fr.PAST + fr.PARTICIPLE)),
+          (u"être", u"étais",    (fr.IMPERFECT, 1, fr.SINGULAR)),
+          (u"être", u"étais",    (fr.IMPERFECT, 2, fr.SINGULAR)),
+          (u"être", u"était",    (fr.IMPERFECT, 3, fr.SINGULAR)),
+          (u"être", u"étions",   (fr.IMPERFECT, 1, fr.PLURAL)),
+          (u"être", u"étiez",    (fr.IMPERFECT, 2, fr.PLURAL)),
+          (u"être", u"étaient",  (fr.IMPERFECT, 3, fr.PLURAL)),
+          (u"être", u"fus",      (fr.PRETERITE, 1, fr.SINGULAR)),
+          (u"être", u"fus",      (fr.PRETERITE, 2, fr.SINGULAR)),
+          (u"être", u"fut",      (fr.PRETERITE, 3, fr.SINGULAR)),
+          (u"être", u"fûmes",    (fr.PRETERITE, 1, fr.PLURAL)),
+          (u"être", u"fûtes",    (fr.PRETERITE, 2, fr.PLURAL)),
+          (u"être", u"furent",   (fr.PRETERITE, 3, fr.PLURAL)),
+          (u"être", u"serais",   (fr.CONDITIONAL, 1, fr.SINGULAR)),
+          (u"être", u"serais",   (fr.CONDITIONAL, 2, fr.SINGULAR)),
+          (u"être", u"serait",   (fr.CONDITIONAL, 3, fr.SINGULAR)),
+          (u"être", u"serions",  (fr.CONDITIONAL, 1, fr.PLURAL)),
+          (u"être", u"seriez",   (fr.CONDITIONAL, 2, fr.PLURAL)),
+          (u"être", u"seraient", (fr.CONDITIONAL, 3, fr.PLURAL)),
+          (u"être", u"serai",    (fr.FUTURE, 1, fr.SINGULAR)),
+          (u"être", u"seras",    (fr.FUTURE, 2, fr.SINGULAR)),
+          (u"être", u"sera",     (fr.FUTURE, 3, fr.SINGULAR)),
+          (u"être", u"serons",   (fr.FUTURE, 1, fr.PLURAL)),
+          (u"être", u"serez",    (fr.FUTURE, 2, fr.PLURAL)),
+          (u"être", u"seront",   (fr.FUTURE, 3, fr.PLURAL)),
+          (u"être", u"sois",     (fr.PRESENT, 2, fr.SINGULAR, fr.IMPERATIVE)),
+          (u"être", u"soyons",   (fr.PRESENT, 1, fr.PLURAL, fr.IMPERATIVE)),
+          (u"être", u"soyez",    (fr.PRESENT, 2, fr.PLURAL, fr.IMPERATIVE)),
+          (u"être", u"sois",     (fr.PRESENT, 1, fr.SINGULAR, fr.SUBJUNCTIVE)),
+          (u"être", u"sois",     (fr.PRESENT, 2, fr.SINGULAR, fr.SUBJUNCTIVE)),
+          (u"être", u"soit",     (fr.PRESENT, 3, fr.SINGULAR, fr.SUBJUNCTIVE)),
+          (u"être", u"soyons",   (fr.PRESENT, 1, fr.PLURAL, fr.SUBJUNCTIVE)),
+          (u"être", u"soyez",    (fr.PRESENT, 2, fr.PLURAL, fr.SUBJUNCTIVE)),
+          (u"être", u"soient",   (fr.PRESENT, 3, fr.PLURAL, fr.SUBJUNCTIVE)),
+          (u"être", u"fusse",    (fr.PAST, 1, fr.SINGULAR, fr.SUBJUNCTIVE)),
+          (u"être", u"fusses",   (fr.PAST, 2, fr.SINGULAR, fr.SUBJUNCTIVE)),
+          (u"être", u"fût",      (fr.PAST, 3, fr.SINGULAR, fr.SUBJUNCTIVE)),
+          (u"être", u"fussions", (fr.PAST, 1, fr.PLURAL, fr.SUBJUNCTIVE)),
+          (u"être", u"fussiez",  (fr.PAST, 2, fr.PLURAL, fr.SUBJUNCTIVE)),
+          (u"être", u"fussent",  (fr.PAST, 3, fr.PLURAL, fr.SUBJUNCTIVE))):
+            self.assertEqual(fr.conjugate(v1, tense), v2)
+        print "pattern.fr.conjugate()"
+
     def test_lexeme(self):
         # Assert all inflections of "sein".
         v = fr.lexeme(u"être")
@@ -63,7 +117,7 @@ class TestInflection(unittest.TestCase):
             u"sois", u"soyons", u"soyez", u"soit", u"soient", 
             u"fusse", u"fusses", u"fût", u"fussions", u"fussiez", u"fussent"
         ])
-        print "pattern.es.inflect.lexeme()"
+        print "pattern.fr.inflect.lexeme()"
 
     def test_tenses(self):
         # Assert tense of "is".
@@ -77,7 +131,24 @@ class TestParser(unittest.TestCase):
     
     def setUp(self):
         pass
-   
+
+    def test_tag(self):
+        # Assert [("le", "DT"), ("chat", "NN"), ("noir", "JJ")].
+        v = fr.parser.tag("le chat noir")
+        self.assertEqual(v, [("le", "DT"), ("chat", "NN"), ("noir", "JJ")])
+        print "pattern.fr.parser.tag()"
+
+    def test_parse(self):
+        # Assert parsed output with Penn Treebank II tags (slash-formatted).
+        # "le chat noir" is a noun phrase, "sur le tapis" is a prepositional noun phrase.
+        v = fr.parser.parse(u"Le chat noir s'était assis sur le tapis.")
+        self.assertEqual(v,
+            u"Le/DT/B-NP/O chat/NN/I-NP/O noir/JJ/I-NP/O " + \
+            u"s'/PRP/B-NP/O était/VB/B-VP/O assis/VBN/I-VP/O " + \
+            u"sur/IN/B-PP/B-PNP le/DT/B-NP/I-PNP tapis/NN/I-NP/I-PNP ././O/O"
+        )
+        print "pattern.fr.parser.parse()"
+
     def test_command_line(self):
         # Assert parsed output from the command-line (example from the documentation).
         p = ["python", "-m", "pattern.fr.parser", "-s", u"Le chat noir.", "-OTCRL"]

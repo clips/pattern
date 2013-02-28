@@ -150,7 +150,14 @@ class TestStringFunctions(unittest.TestCase):
         self.assertTrue(P > 0.96)
         self.assertTrue(R > 0.94)
         print "pattern.metrics.intertextuality()"
-        
+    
+    def test_ttr(self):
+        # Assert type-token ratio: words = 7, unique words = 6.
+        s = "The black cat \n sat on the mat."
+        v = metrics.ttr(s)
+        self.assertAlmostEqual(v, 0.86, places=2)
+        print "pattern.metrics.ttr()"
+    
     def test_suffixes(self):
         # Assert base => inflected and reversed inflected => base suffixes.
         s = [("beau", "beaux"), ("jeune", "jeunes"), ("hautain", "hautaines")]

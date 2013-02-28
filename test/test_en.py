@@ -483,6 +483,8 @@ class TestParser(unittest.TestCase):
         # Assert [("black", "JJ"), ("cats", "NNS")].
         v = en.parser.tag("black cats")
         self.assertEqual(v, [("black", "JJ"), ("cats", "NNS")])
+        v = en.parser.tag("")
+        self.assertEqual(v, [])
         print "pattern.en.parser.tag()"
         
     def test_ngrams(self):
