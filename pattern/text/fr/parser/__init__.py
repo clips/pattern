@@ -47,7 +47,8 @@ replacements = {
    "jusqu'": "jusqu' ",
   "lorsqu'": "lorsqu' ",
   "puisqu'": "puisqu' ",
-
+    # Same rule for Unicode apostrophe, see also tokenize():
+    ur"(l|c|d|j|m|n|qu|s|t|jusqu|lorsqu|puisqu)’": u"\\1&rsquo; "
 }
 replacements.update(((k.upper(), v.upper()) for k, v in replacements.items()))
 
@@ -58,7 +59,9 @@ ABBREVIATIONS = [
 ]
 
 def tokenize(s, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, replace=replacements):
-    return _en_tokenize(s, punctuation, abbreviations, replace)
+    s = _en_tokenize(s, punctuation, abbreviations, replace)
+    s = [s.replace("&rsquo ;", u"’") if isinstance(s, unicode) else s for s in s]
+    return s
     
 _tokenize = tokenize
 
@@ -66,18 +69,18 @@ _tokenize = tokenize
 # Word lemmas using singularization and verb conjugation from the inflect module.
 
 try: 
-    from ..inflect import singularize, conjugate, predicative
+    from ..inflect import singularize, predicative, conjugate
 except:
     try:
         sys.path.append(os.path.join(MODULE, ".."))
-        from inflect import singularize, conjugate, predicative
+        from inflect import singularize, predicative, conjugate
     except:
         try: 
-            from pattern.es.inflect import singularize, conjugate, predicative 
+            from pattern.es.inflect import singularize, predicative , conjugate
         except:
-            singularize = lambda w: w
-            conjugate   = lambda w, t: w
-            predicative = lambda w: w
+            singularize = lambda w, **k: w
+            predicative = lambda w, **k: w
+            conjugate   = lambda w, t, **k: w
 
 def lemma(word, pos="NN"):
     if pos == "NNS":
@@ -87,6 +90,8 @@ def lemma(word, pos="NN"):
     if pos.startswith(("JJ",)):
         return predicative(word)
     if pos.startswith(("DT","PR","WP")):
+        return singularize(word, pos=pos)
+    if pos.startswith(("RB", "IN")) and (word.endswith(("'", u"’")) or word == "du"):
         return singularize(word, pos=pos)
     return word
 
