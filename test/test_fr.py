@@ -9,7 +9,7 @@ try:
     PATH = os.path.dirname(os.path.abspath(__file__))
 except:
     PATH = ""
-
+    
 #---------------------------------------------------------------------------------------------------
 
 class TestInflection(unittest.TestCase):
@@ -132,11 +132,22 @@ class TestParser(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_tag(self):
-        # Assert [("le", "DT"), ("chat", "NN"), ("noir", "JJ")].
-        v = fr.parser.tag("le chat noir")
-        self.assertEqual(v, [("le", "DT"), ("chat", "NN"), ("noir", "JJ")])
-        print "pattern.fr.parser.tag()"
+    def test_find_lemmata(self):
+        # Assert lemmata for nouns, adjectives, verbs and determiners.
+        v = fr.parser.find_lemmata([
+            ["Les", "DT"], ["chats", "NNS"], ["noirs", "JJ"], ["s'", "PRP"], [u"étaient", "VB"], ["assis", "VB"],
+            ["sur", "IN"], ["le", "DT"], ["tapis", "NN"]])
+        self.assertEqual(v, [
+            ["Les", "DT", "le"], 
+            ["chats", "NNS", "chat"], 
+            ["noirs", "JJ", "noir"], 
+            ["s'", "PRP", "se"], 
+            [u"étaient", "VB", u"être"],
+            ["assis", "VB", "asseoir"],
+            ["sur", "IN", "sur"], 
+            ["le", "DT", "le"], 
+            ["tapis", "NN", "tapis"]])
+        print "pattern.fr.parser.find_lemmata()"
 
     def test_parse(self):
         # Assert parsed output with Penn Treebank II tags (slash-formatted).
@@ -148,6 +159,12 @@ class TestParser(unittest.TestCase):
             u"sur/IN/B-PP/B-PNP le/DT/B-NP/I-PNP tapis/NN/I-NP/I-PNP ././O/O"
         )
         print "pattern.fr.parser.parse()"
+
+    def test_tag(self):
+        # Assert [("le", "DT"), ("chat", "NN"), ("noir", "JJ")].
+        v = fr.parser.tag("le chat noir")
+        self.assertEqual(v, [("le", "DT"), ("chat", "NN"), ("noir", "JJ")])
+        print "pattern.fr.parser.tag()"
 
     def test_command_line(self):
         # Assert parsed output from the command-line (example from the documentation).
