@@ -2781,7 +2781,7 @@ class PDFParseError(Exception):
 class PDF:
 
     def __init__(self, data, format=None):
-        """ Plaintext parsed from the given PDF data.
+        """ Plaintext parsed from the given PDF, given as a file path or a string.
         """
         self.content = self._parse(data, format)
 
