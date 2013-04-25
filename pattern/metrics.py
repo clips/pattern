@@ -284,7 +284,7 @@ readability = flesch_reading_ease
 # For example, on the Corpus of Plagiarised Short Answers (Clough & Stevenson, 2009),
 # accuracy (F1) is 94.5% with n=3 and intertextuality threshold > 0.1.
 
-PUNCTUATION = ".:;,!?()[]'\""
+PUNCTUATION = ".:;,!?()[]'\"*#-"
 
 def ngrams(string, n=3, **kwargs):
     """ Returns a list of n-grams (tuples of n successive words) from the given string.
@@ -853,6 +853,8 @@ def erfc(x):
         return r
     return 2 - r
 
+#--- PROBABILITY DISTRIBUTION ----------------------------------------------------------------------
+
 def cdf(x, mu=0, sigma=1):
     """ Cumulative distribution function.
     """
@@ -863,3 +865,8 @@ def pdf(x, mu=0, sigma=1):
     """
     u = (x - mu) / abs(sigma)
     return (1 / sqrt(2*pi) * abs(sigma)) * exp(-u*u / 2)
+
+def tpdf(x, df):
+    """ Probability density function for the Student's t-distribution.
+    """
+    return gamma((df+1) * 0.5) / (sqrt(pi * df) * gamma(df * 0.5) * (1 + x**2.0 / df) ** ((df+1) * 0.5))
