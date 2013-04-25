@@ -23,7 +23,7 @@ from inflect import \
 # Submodules pattern.de.inflect and pattern.de.parser import from pattern.en.
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from en import split, pprint, ngrams
-from en import Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
+from en import Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
 from en import SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
 
 from parser           import tokenize, parse, tag

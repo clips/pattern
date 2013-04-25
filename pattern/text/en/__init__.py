@@ -26,7 +26,7 @@ from inflect.spelling import \
     suggest as spelling
 
 from parser           import tokenize, parse, tag
-from parser.tree      import Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
+from parser.tree      import Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
 from parser.tree      import SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
 from parser.modality  import mood, INDICATIVE, IMPERATIVE, CONDITIONAL, SUBJUNCTIVE
 from parser.modality  import modality, uncertain, EPISTEMIC
