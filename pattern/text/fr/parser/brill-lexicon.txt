@@ -11,6 +11,9 @@
 !? .
 !?!? .
 " "
+“ "
+” "
+© SYM
 % SYM
 & CC
 &amp; CC
@@ -6955,6 +6958,7 @@ Bénédicte NNP
 Börje NNP
 Bözsi NNP
 C' DT
+C’ DT
 CFDT NNP
 CFE-CGC NNP
 CFTC NNP
@@ -11526,6 +11530,7 @@ César NNP
 Côte-d'Or NNP
 Côtes-d'Armor NNPS
 D' IN
+D’ IN
 D'Huison-Longueville NNP
 D'abord RB
 D'accord RB
@@ -19492,6 +19497,7 @@ Izzy NNP
 Iñaki NNP
 Iúile NNP
 J' PRP
+J’ PRP
 J-C NNP
 J.-C NNP
 J.-C. NNP
@@ -20368,6 +20374,7 @@ Jury NNP
 Juscorps NNP
 Jusix NNP
 Jusqu' IN
+Jusqu’ IN
 Jusque IN
 Jussac NNP
 Jussarupt NNP
@@ -21114,6 +21121,7 @@ Kázmér NNP
 Käthe NNP
 Körbl NNP
 L' DT
+L’ DT
 L'Abergement-Clémenciat NNP
 L'Abergement-Sainte-Colombe NNP
 L'Abergement-Ste-Colombe NNP
@@ -25993,6 +26001,7 @@ Lorris NNP
 Lorry-Mardigny NNP
 Lorry-les-Metz NNP
 Lorsqu' CC
+Lorsqu’ CC
 Lorsque CC
 Lortet NNP
 Los-Masos NNP
@@ -26548,6 +26557,7 @@ Lúcia NNP
 Lúcás NNP
 Lúðvík NNP
 M' PRP
+M’ PRP
 M. NN
 M6 NNP
 MI5 NNP
@@ -30751,6 +30761,7 @@ Móstoles NNP
 Mózes NNP
 Müge NNP
 N' RB
+N’ RB
 N'Djamena NNP
 N.-D. NNP
 NSA NNP
@@ -35159,6 +35170,7 @@ Qiana NNP
 Qing NNP
 Qiu NNP
 Qu' CC
+Qu’ CC
 Quaedypre NNP
 Quaix-en-Chartreuse NNP
 Quan NNP
@@ -37185,6 +37197,7 @@ Rózsa NNP
 Rózsi NNP
 Rüdiger NNP
 S' PRP
+s’ PRP
 SARL NNP
 SNCF NNP
 SNES NNP
@@ -47228,6 +47241,7 @@ Sülayman NNP
 Süleiman NNP
 Süleyman NNP
 T' PRP
+t’ PRP
 TF1 NNP
 Taavetti NNP
 Taavi NNP
@@ -55004,6 +55018,7 @@ augurait VB
 augurer VB
 auguste JJ
 aujourd'hui RB
+aujourd’hui RB
 auparavant RB
 auprès RB
 auquel PRP
@@ -56356,6 +56371,7 @@ bêtises NN
 bûmes VB
 c JJ
 c' DT
+c’ DT
 c'est-à-dire RB
 cabalistiques JJ
 cabane NN
@@ -59231,10 +59247,15 @@ côté NN
 côtés NNS
 d JJ
 d' IN
+d’ IN
 d'abord RB
+d’abord RB
 d'accord RB
+d’accord RB
 d'autant RB
+d’autant RB
 d'emblée RB
+d’emblée RB
 d-i-r-t VB
 da UH
 daigna VB
@@ -67651,6 +67672,7 @@ ivre JJ
 ivres JJ
 ivresse NN
 j' PRP
+j’ PRP
 jacasser VB
 jactait VB
 jacte VB
@@ -67885,6 +67907,7 @@ jurèrent VB
 juré VBN
 jus NN
 jusqu' RB
+jusqu’ RB
 jusque RB
 jusque-là RB
 juste RB
@@ -67919,8 +67942,11 @@ klaxonner VB
 kurde JJ
 képi NN
 l' DT
+l’ DT
 l'un PRP
+l’un PRP
 l'une PRP
+l’une PRP
 la DT
 laboratoire NN
 laborieuse JJ
@@ -68350,6 +68376,7 @@ lorrain JJ
 lorraine NN
 lors RB
 lorsqu' RB
+lorsqu’ RB
 lorsque RB
 lot NN
 loua VB
@@ -68533,6 +68560,7 @@ lépreuses NNS
 lésiner VB
 léthargique JJ
 m' PRP
+m’ PRP
 ma PRP$
 maboul NN
 macabre JJ
@@ -69932,6 +69960,7 @@ mûrit VB
 mûrs JJ
 n VB
 n' RB
+n’ RB
 na RB
 nacré VBN
 nacrée VBN
@@ -73375,6 +73404,7 @@ puisant VB
 puise VB
 puiser VB
 puisqu' RB
+puisqu’ RB
 puisque RB
 puissamment RB
 puissance NN
@@ -73568,6 +73598,7 @@ pûmes VB
 pût VB
 qu VBN
 qu' CC
+qu’ CC
 qua VB
 quadragénaire JJ
 quadrillé VBN
@@ -73609,7 +73640,9 @@ quelconques JJ
 quelle DT
 quelles DT
 quelqu'un PRP
+quelqu’un PRP
 quelqu'une PRP
+quelqu’une PRP
 quelque DT
 quelquefois RB
 quelques DT
@@ -76713,6 +76746,7 @@ rôle NN
 rôti VBN
 rôtir VB
 s' PRP
+s’ PRP
 s. JJ
 sa PRP$
 sable NN
@@ -78656,6 +78690,7 @@ sûres JJ
 sûrs JJ
 sût VB
 t' PRP
+t’ PRP
 ta PRP$
 tabac NN
 tabasser VB

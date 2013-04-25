@@ -20698,6 +20698,8 @@ zürcherischen ADJA
 üppig ADJD 
 ! Ex 
 " QMc 
+“ QMc 
+” QMc 
 " QMo 
 % NN 
 & XY KON

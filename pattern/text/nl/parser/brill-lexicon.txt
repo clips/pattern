@@ -4,6 +4,8 @@
 ;;;   
 ! Punc(uitroep) N(soort,mv,neut)
 " Punc(aanhaal_dubb) 
+“ Punc(aanhaal_dubb) 
+” Punc(aanhaal_dubb) 
 % N(soort,ev,neut) 
 & N(eigen,ev,neut) 
 ' Punc(aanhaal) 

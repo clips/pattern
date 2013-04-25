@@ -12,7 +12,10 @@
 ;;;   or any later version published by the Free Software Foundation.
 ;;;   
 ! Fa
+¡ Fa
 " Fe
+“ Fe
+” Fe
 # Fz
 #11 Z
 #12-438-512 Z
@@ -5810,6 +5813,7 @@ $93,7 Z
 > Fz
 >> Fr
 ? Fi
+¿ Fi
 @ Fz
 A SP
 A'Tuin NP
