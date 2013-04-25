@@ -22,15 +22,14 @@ from en.inflect import \
 
 LANGUAGES = ["en", "es", "de", "fr", "nl"]
 
+_modules = {}
 def _multilingual(function, *args, **kwargs):
     """ Returns the value from the function with the given name in the given language module.
         By default, language="en".
     """
     language = kwargs.pop("language", "en")
-    for module in ("en", "es", "de", "fr", "nl"):
-        if module == language:
-            module = __import__(module)
-            return getattr(module, function)(*args, **kwargs)
+    module = _modules.setdefault(language, __import__(language, globals(), {}, [], -1))
+    return getattr(module, function)(*args, **kwargs)
 
 def ngrams(*args, **kwargs):
     return _multilingual("ngrams", *args, **kwargs)
@@ -61,3 +60,6 @@ def pluralize(*args, **kwargs):
 
 def conjugate(*args, **kwargs):
     return _multilingual("conjugate", *args, **kwargs)
+
+def predicative(*args, **kwargs):
+    return _multilingual("predicative", *args, **kwargs)
