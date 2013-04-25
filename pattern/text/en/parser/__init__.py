@@ -10,6 +10,7 @@
 
 import re
 import os
+import string
 
 try: 
     MODULE = os.path.dirname(__file__)
@@ -48,13 +49,26 @@ a3 = re.compile("^[A-Z]["+"|".join("bcdfghjklmnpqrstvwxz")+"]+.$") # capital fol
 PUNCTUATION = \
 punctuation = tuple([ch for ch in ",;:!?()[]{}`''\"@#$^&*+-|=~_"])
 
-def tokenize(string, punctuation=PUNCTUATION, abbreviations=abbreviations, replace=replacements):
+# Handle paragraph line breaks (\n\n marks end of sentence).
+EOS = "END-OF-SENTENCE"
+
+def tokenize(string, punctuation=PUNCTUATION, abbreviations=abbreviations, replace=replacements, linebreak=r"\n{2,}"):
     """ Returns a list of sentences. Each sentence is a space-separated string of tokens (words).
-        Handles common cases ("etc.") of abbreviations.
+        Handles common cases of abbreviations (e.g., etc., ...). 
+        Punctuation marks are split from other words. Periods (or ?!) mark the end of a sentence.
+        Headings without an ending period are inferred by line breaks.
     """
     for a, b in replace.items():
         string = re.sub(a, b, string)
+    # Unicode quotes.
+    if isinstance(string, unicode):
+        string = string.replace(u"“", u" “ ")
+        string = string.replace(u"”", u" ” ")
+        string = string.replace(u"‘", u" ‘ ")
+        string = string.replace(u"’", u" ’ ")
     # Collapse whitespace.
+    string = re.sub("\r\n", "\n", string)
+    string = re.sub(linebreak, " %s " % EOS, string)
     string = re.sub(r"\s+", " ", string)
     tokens = []
     for t in token.findall(string+" "):
@@ -87,11 +101,12 @@ def tokenize(string, punctuation=PUNCTUATION, abbreviations=abbreviations, repla
             tokens.extend(reversed(tail))
     sentences, i, j = [[]], 0, 0
     while j < len(tokens):
-        # A period token always breaks the sentence.
-        if tokens[j] in ("...",".","!","?"):
+        if tokens[j] in ("...", ".", "!", "?", EOS):
             # But it might have a parenthesis trailing behind it.
-            while j < len(tokens) and tokens[j] in ("...",".","!","?",")","'","\""): j+=1
-            sentences[-1].extend(tokens[i:j]);
+            while j < len(tokens) \
+              and tokens[j] in ("...", ".", "!", "?", ")", "'", "\"", u"”", u"’", EOS): 
+                j += 1
+            sentences[-1].extend(t for t in tokens[i:j] if t != EOS)
             sentences.append([])
             i = j
         j += 1
@@ -108,7 +123,11 @@ def tokenize(string, punctuation=PUNCTUATION, abbreviations=abbreviations, repla
 
 #--- BRILL TAGGER ----------------------------------------------------------------------------------
 
-LEXICON = lexicon = Lexicon() # Lazy dictionary based on Brill_lexicon.txt.
+# Lazy dictionary based on Brill_lexicon.txt.
+LEXICON = lexicon = Lexicon()
+
+# By default, numbers are recognized as strings of digits and -,.:/%
+CD = re.compile(r"^[0-9\-\,\.\:\/\%]+$")
 
 def find_tags(tokens, default="NN", light=False, lexicon=LEXICON, language="en", map=None):
     """ Returns a list of [token, tag]-items for the given list of tokens.
@@ -121,7 +140,8 @@ def find_tags(tokens, default="NN", light=False, lexicon=LEXICON, language="en",
     """
     tagged = []
     for token in tokens:
-        # By default, all tokens are tagged NN unless we find an entry in the lexicon.
+        # By default, all tokens are tagged NN (CD for numbers), 
+        # unless we find an entry in the lexicon.
         # Words that are not in the lexicon are then improved with lexical rules.
         # Words that start with a capital letter are tagged with NNP by default,
         # unless the language is German (which capitalizes all nouns).
@@ -134,6 +154,8 @@ def find_tags(tokens, default="NN", light=False, lexicon=LEXICON, language="en",
             and token[0].isalpha() \
             and language != "de":
                 tagged[i] = [token, lexicon.named_entities.tag]
+            elif CD.match(token) is not None:
+                tagged[i] = [token, "CD"]
             else:
                 tagged[i] = [token, default]
                 tagged[i] = f(tagged[i],
@@ -341,8 +363,8 @@ except:
         try: 
             from pattern.en.inflect import singularize, conjugate
         except:
-            singularize = lambda w: w
-            conjugate = lambda w,t: w
+            singularize = lambda w, **k: w
+            conjugate   = lambda w, t, **k: w
 
 def lemma(word, pos="NN"):
     """ Returns the lemma of the given word, e.g. horses/NNS => horse, am/VBP => be.
