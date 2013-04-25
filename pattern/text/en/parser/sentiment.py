@@ -64,7 +64,7 @@ class Lexicon:
     def negation(self):
         return ("no", "not", "never")
     
-    def _parse_xml(self, reliability=None):
+    def _parse_xml(self, confidence=None):
         """ Returns a (language, words)-tuple, where each word is a list of
             (form, WordNet3 id, part-of-speech, (polarity, subjectivity, intensity))-tuples.
         """
@@ -74,8 +74,8 @@ class Lexicon:
         language = xml.getAttribute("language") or None
         words = []
         for w in xml.getElementsByTagName("word"):
-            if reliability is None \
-            or reliability <= (float(w.getAttribute("reliability") or 0.0)):
+            if confidence is None \
+            or confidence <= (float(w.getAttribute("confidence") or 0.0)):
                 words.append((w.getAttribute("form"), # Can also be "cornetto_id":
                               w.getAttribute(self._kwargs.get("synsets", "wordnet_id")),
                               w.getAttribute("pos") or None,
@@ -84,11 +84,11 @@ class Lexicon:
                         float(w.getAttribute("intensity") or 1.0))))
         return (language, words)
         
-    def _parse(self, reliability=None):
+    def _parse(self, confidence=None):
         """ Parses the source XML and averages the scores per word
             (word senses are grouped per part-of-speech tag).
         """
-        language, words = self._parse_xml(reliability)
+        language, words = self._parse_xml(confidence)
         self._words.clear()
         self._language = language
         self._parsed = True        
