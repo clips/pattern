@@ -164,7 +164,7 @@ class Word(object):
             For example: ["was", "VBD", "B-VP", "O", "VP-1", "A1", "be"]
         """
         # See also. Sentence.__repr__()
-        # Note: IOB-tags and relations tags can differ from the original MBSP output:
+        # Note: IOB-tags and relations tags can differ from the original output:
         # - B-VP N-NP I-NP <=> I-VP B-NP I-NP
         # - PP-CLR-1 NP-CLR-1 <=> PP-CLR-1 PP-CLR-1
         # This has no influence when creating a new tree from repr(Sentence).
@@ -514,7 +514,7 @@ class Sentence:
 
     def __init__(self, string="", token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA], language="en"):
         """ A search object for sentence words, chunks and prepositions.
-            The input is a tagged string from MBSP.parse(). 
+            The input is a tagged string from parse(). 
             The order in which token tags appear can be specified.
         """
         # Extract token format from TokenString if possible.
@@ -999,7 +999,7 @@ class Text(list):
     
     def __init__(self, string, token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA], language="en", encoding="utf-8"):
         """ A list of Sentence objects parsed from the given string.
-            The string is the unicode return value from MBSP.parse().
+            The string is the unicode return value from parse().
         """
         self.encoding = encoding
         # Extract token format from TokenString if possible.
@@ -1247,37 +1247,39 @@ def parse_xml(sentence, tab="\t", id=""):
 
 #--- XML TO SENTENCE(S) ----------------------------------------------------------------------------
 
+# Classes XML and XMLNode provide an abstract interface to cElementTree.
+# The advantage is that we can switch to a faster parser in the future,
+# just as we did when switching from xml.dom.minidom to xml.etree.
+# cElemenTree is fast; but the fastest way is to simply store and reload the parsed Unicode string.
+# The disadvantage is that we need to remember the token format, see (1) below:
+# s = "..."
+# s = parse(s, lemmata=True)
+# open("parsed.txt",  "w", encoding="utf-8").write(s)
+# s = open("parsed.txt", encoding="utf-8")
+# s = Text(s, token=[WORD, POS, CHUNK, PNP, LEMMA]) # (1)
+
 class XML:
-    
     def __init__(self, string):
-        #from xml.dom.minidom import parseString
-        #return parseString(string)
         from xml.etree import cElementTree
         self.root = cElementTree.fromstring(string)
-        
-    def find(self, tag):
-        #return node.getElementsByTagName(tag)
-        return self.root.findall(tag)
-    
-    @classmethod
-    def children(cls, node):
-        #return node.childNodes
-        return list(node)
+    def __call__(self, tag):
+        return [XMLNode(e) for e in self.root.findall(tag)]
 
-    @classmethod        
-    def value(cls, node):
-        #return filter(lambda n: n.nodeType == n.TEXT_NODE, node.childNodes)[0].data
-        return node.text
-
-    @classmethod
-    def attr(cls, node, attribute, default=""):
-        #return node.getAttribute(attribute) or default
-        return node.attrib.get(attribute, default)
-
-    @classmethod
-    def hastag(cls, node, tag):
-        #return node.nodeType == node.ELEMENT_NODE and node.tagName == tag
-        return node.tag == tag
+class XMLNode:
+    def __init__(self, element):
+        self.element = element
+    @property
+    def tag(self):
+        return self.element.tag
+    @property
+    def value(self):
+        return self.element.text
+    def __iter__(self):
+        return [XMLNode(e) for e in self.element]
+    def __getitem__(self, k):
+        return self.element.attrib[k]
+    def get(self, k, default=""):
+        return self.element.attrib.get(k, default)
 
 # The structure of linked anchor chunks and PNP attachments
 # is collected from _parse_token() calls.
@@ -1299,25 +1301,25 @@ class TaggedString(unicode):
 
 def parse_string(xml):
     """ Returns a slash-formatted string from the given XML representation.
-        The return value is a TokenString (see mbsp.py).
+        The return value is a TokenString (for MBSP) or TaggedString (for Pattern).
     """
     string = ""
     # Traverse all the <sentence> elements in the XML.
     dom = XML(xml)
-    for sentence in dom.find(XML_SENTENCE):
+    for sentence in dom(XML_SENTENCE):
         _anchors.clear()     # Populated by calling _parse_tokens().
         _attachments.clear() # Populated by calling _parse_tokens().
         # Parse the language from <sentence language="">.
-        language = XML.attr(sentence, XML_LANGUAGE, "en")
+        language = sentence.get(XML_LANGUAGE, "en")
         # Parse the token tag format from <sentence token="">.
         # This information is returned in TokenString.tags,
         # so the format and order of the token tags is retained when exporting/importing as XML.
-        format = XML.attr(sentence, XML_TOKEN, [WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA])
+        format = sentence.get(XML_TOKEN, [WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA])
         format = not isinstance(format, basestring) and format or format.replace(" ","").split(",")
         # Traverse all <chunk> and <chink> elements in the sentence.
         # Find the <word> elements inside and create tokens.
         tokens = []
-        for chunk in XML.children(sentence):
+        for chunk in sentence:
             tokens.extend(_parse_tokens(chunk, format))
         # Attach PNP's to their anchors.
         # Keys in _anchors have linked anchor chunks (each chunk is a list of tokens).
@@ -1354,12 +1356,12 @@ def _parse_tokens(chunk, format=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
     tokens = []
     # Only process <chunk> and <chink> elements, 
     # text nodes in between return an empty list.
-    if not (XML.hastag(chunk, XML_CHUNK) or XML.hastag(chunk, XML_CHINK)):
+    if not (chunk.tag == XML_CHUNK or chunk.tag == XML_CHINK):
         return []
-    type = XML.attr(chunk, XML_TYPE, "O")
+    type = chunk.get(XML_TYPE, "O")
     if type == "PNP":
         # For, <chunk type="PNP">, recurse all the child chunks inside the PNP.
-        for ch in XML.children(chunk):
+        for ch in chunk:
             tokens.extend(_parse_tokens(ch, format))
         # Tag each of them as part of the PNP.
         if PNP in format:
@@ -1368,7 +1370,7 @@ def _parse_tokens(chunk, format=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
                 token[i] = (j==0 and "B-" or "I-") + "PNP"
         # Store attachments so we can construct anchor id's in parse_string().
         # This has to be done at the end, when all the chunks have been found.
-        a = XML.attr(chunk, XML_OF).split(_UID_SEPARATOR)[-1]
+        a = chunk.get(XML_OF).split(_UID_SEPARATOR)[-1]
         if a:
             _attachments.setdefault(a, [])
             _attachments[a].append(tokens)
@@ -1378,7 +1380,7 @@ def _parse_tokens(chunk, format=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
     relation = _parse_relation(chunk, type)
     # Process all of the <word> elements in the chunk, for example:
     # <word type="NN" lemma="pizza">pizza</word> => [pizza, NN, I-NP, O, NP-OBJ-1, O, pizza]
-    for word in filter(lambda n: XML.hastag(n, XML_WORD), XML.children(chunk)):
+    for word in filter(lambda n: n.tag == XML_WORD, chunk):
         tokens.append(_parse_token(word, chunk=type, relation=relation, format=format))
     # Add the IOB chunk tags:
     # words at the start of a chunk are marked with B-, words inside with I-.
@@ -1388,7 +1390,7 @@ def _parse_tokens(chunk, format=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
             token[i] = token[i] != "O" and ((j==0 and "B-" or "I-") + token[i]) or "O"
     # The chunk can be the anchor of one or more PNP chunks.
     # Store anchors so we can construct anchor id's in parse_string().
-    a = XML.attr(chunk, XML_ANCHOR, "").split(_UID_SEPARATOR)[-1]
+    a = chunk.get(XML_ANCHOR, "").split(_UID_SEPARATOR)[-1]
     if a: 
         _anchors[a] = tokens
     return tokens
@@ -1397,8 +1399,8 @@ def _parse_relation(chunk, type="O"):
     """ Returns a string of the roles and relations parsed from the given <chunk> element.
         The chunk type (which is part of the relation string) can be given as parameter.
     """
-    r1 = XML.attr(chunk, XML_RELATION)
-    r2 = XML.attr(chunk, XML_ID, XML.attr(chunk, XML_OF))
+    r1 = chunk.get(XML_RELATION)
+    r2 = chunk.get(XML_ID, chunk.get(XML_OF))
     r1 = [x != "-" and x or None for x in r1.split("|")] or [None]
     r2 = [x != "-" and x or None for x in r2.split("|")] or [None]
     r2 = [x is not None and x.split(_UID_SEPARATOR )[-1] or x for x in r2]
@@ -1413,16 +1415,16 @@ def _parse_token(word, chunk="O", pnp="O", relation="O", anchor="O",
     """
     tags = []
     for tag in format:
-        if   tag == WORD   : tags.append(xml_decode(XML.value(word)))
-        elif tag == POS    : tags.append(xml_decode(XML.attr(word, XML_TYPE, "O")))
+        if   tag == WORD   : tags.append(xml_decode(word.value))
+        elif tag == POS    : tags.append(xml_decode(word.get(XML_TYPE, "O")))
         elif tag == CHUNK  : tags.append(chunk)
         elif tag == PNP    : tags.append(pnp)
         elif tag == REL    : tags.append(relation)
         elif tag == ANCHOR : tags.append(anchor)
-        elif tag == LEMMA  : tags.append(xml_decode(XML.attr(word, XML_LEMMA, "")))
+        elif tag == LEMMA  : tags.append(xml_decode(word.get(XML_LEMMA, "")))
         else:
-            # Custom tags when MBSP has been extended, see also Word.custom_tags{}.
-            tags.append(xml_decode(XML.attr(word, tag, "O")))
+            # Custom tags when the parser has been extended, see also Word.custom_tags{}.
+            tags.append(xml_decode(word.get(tag, "O")))
     return tags
 
 ### NLTK TREE ######################################################################################
