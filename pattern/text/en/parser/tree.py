@@ -1275,7 +1275,7 @@ class XMLNode:
     def value(self):
         return self.element.text
     def __iter__(self):
-        return [XMLNode(e) for e in self.element]
+        return iter(XMLNode(e) for e in self.element)
     def __getitem__(self, k):
         return self.element.attrib[k]
     def get(self, k, default=""):
