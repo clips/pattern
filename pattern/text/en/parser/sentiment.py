@@ -5,7 +5,7 @@
 # http://www.clips.ua.ac.be/pages/pattern
 
 from glob      import glob
-from xml.dom   import minidom
+from xml.etree import cElementTree
 from itertools import chain
 
 import os
@@ -69,19 +69,19 @@ class Lexicon:
             (form, WordNet3 id, part-of-speech, (polarity, subjectivity, intensity))-tuples.
         """
         # <word form="great" wordnet_id="a-01123879" pos="JJ" polarity="1.0" subjectivity="1.0" intensity="1.0" />
-        xml = minidom.parse(self.path)
-        xml = xml.documentElement
-        language = xml.getAttribute("language") or None
+        xml = cElementTree.parse(self.path)
+        xml = xml.getroot()
+        language = xml.attrib.get("language") or None
         words = []
-        for w in xml.getElementsByTagName("word"):
+        for w in xml.findall("word"):
             if confidence is None \
-            or confidence <= (float(w.getAttribute("confidence") or 0.0)):
-                words.append((w.getAttribute("form"), # Can also be "cornetto_id":
-                              w.getAttribute(self._kwargs.get("synsets", "wordnet_id")),
-                              w.getAttribute("pos") or None,
-                       (float(w.getAttribute("polarity") or 0.0),
-                        float(w.getAttribute("subjectivity") or 0.0),
-                        float(w.getAttribute("intensity") or 1.0))))
+            or confidence <= (float(w.attrib.get("confidence") or 0.0)):
+                words.append((w.attrib.get("form"), # Can also be "cornetto_id":
+                              w.attrib.get(self._kwargs.get("synsets", "wordnet_id")),
+                              w.attrib.get("pos") or None,
+                       (float(w.attrib.get("polarity") or 0.0),
+                        float(w.attrib.get("subjectivity") or 0.0),
+                        float(w.attrib.get("intensity") or 1.0))))
         return (language, words)
         
     def _parse(self, confidence=None):
