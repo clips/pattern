@@ -1508,6 +1508,9 @@ json = JSON()
 
 #--- CSV -------------------------------------------------------------------------------------------
 
+# Raise the default field size limit:
+csv.field_size_limit(sys.maxint)
+
 def csv_header_encode(field, type=STRING):
     # csv_header_encode("age", INTEGER) => "age (INTEGER)".
     t = re.sub(r"^varchar\(.*?\)", "string", (type or ""))
