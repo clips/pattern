@@ -1,88 +1,99 @@
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 import time
 
-from pattern.vector import Document, Corpus, KNN
+from pattern.vector import Document, Model, KNN
 from pattern.db import Datasheet
 
-# Latent Semantic Analysis (LSA) is a statistical machine learning method 
+# Long documents contain lots of words.
+# Models with lots of long documents can become slow,
+# because calculating cosine similarity then takes a long time.
+
+# Latent Semantic Analysis (LSA) is a statistical machine learning method,
 # based on a matrix calculation called "singular value decomposition" (SVD).
 # It discovers semantically related words across documents.
-# It groups these into different "concepts" 
-# and creates a "concept vector" instead of a word vector for each document.
+# It groups related words into "concepts" .
+# It then creates a concept vector for each document.
 # This reduces the amount of data to work with (for example when clustering),
 # and filters out noise, so that semantically related words come out stronger. 
 
 # We'll use the Pang & Lee corpus of movie reviews, included in the testing suite.
-# Take 200 positive reviews and 200 negative reviews:
-data = Datasheet.load(os.path.join("..","..","test","corpora","pang&lee-polarity.csv"))
-data = data[:200] + data[-200:]
+# Take 250 positive reviews and 250 negative reviews:
+data = os.path.join("..","..","test", "corpora", "polarity-en-pang&lee.csv")
+data = Datasheet.load(data)
+data = data[:250] + data[-250:]
 
-# Build a corpus of review documents.
-# Each document consists of the top 30 words in the movie review.
+# Build a model of movie reviews.
+# Each document consists of the top 40 words in the movie review.
 documents = []
 for score, review in data:
-    document = Document(review, type=int(score) > 0, top=30)
+    document = Document(review, stopwords=False, top=40, type=int(score) > 0)
     documents.append(document)
-corpus = Corpus(documents)
 
-print "number of documents:", len(corpus)
-print "number of words:", len(corpus.vector)
-print "number of words (average):", sum(len(d.terms) for d in corpus.documents) / float(len(corpus))
+m = Model(documents)
+
+print "number of documents:", len(m)
+print "number of features:", len(m.vector)
+print "number of features (average):", sum(len(d.terms) for d in m.documents) / float(len(m))
 print
 
-# This may be too much words for some clustering algorithms (e.g., hierarchical).
-# We'll reduce the documents to vectors of 4 concepts.
+# 6,337 different features may be too slow for some algorithms (e.g., hierarchical clustering).
+# We'll reduce the document vectors to 10 concepts.
 
-# First, let's test how the corpus would perform as a classifier.
-# The details of KNN are not that important right now, just observe the numbers.
+# Let's test how our model performs as a classifier.
+# A document can have a label (or type, or class).
+# For example, in the movie reviews corpus,
+# there are positive reviews (score > 0) and negative reviews (score < 0).
+# A classifier uses a model as "training" data
+# to predict the label (type/class) of unlabeled documents.
+# In this case, it can predict whether a new movie review is positive or negative.
+
+# The details are not that important right now, just observe the accuracy.
 # Naturally, we want accuracy to stay the same after LSA reduction,
 # and hopefully decrease the time needed to run.
+
 t = time.time()
-print "accuracy:", KNN.test(corpus, folds=10)[-1]
+print "accuracy:", KNN.test(m, folds=10)[-1]
 print "time:", time.time() - t
 print
 
-# Reduce the documents to vectors of 4 concepts (= 1/7 of 30 words).
+# Reduce the documents to vectors of 10 concepts (= 1/4 of 40 features).
 print "LSA reduction..."
 print
-corpus.reduce(4)
+m.reduce(10)
 
 t = time.time()
-print "accuracy:", KNN.test(corpus, folds=10)[-1]
+print "accuracy:", KNN.test(m, folds=10)[-1]
 print "time:", time.time() - t
 print
 
-# Not bad, accuracy is about the same but performance is 3x faster,
-# because each document is now a "4-word summary" of the original review.
+# Accuracy is about the same, but the performance is better: 2x-3x faster,
+# because each document is now a "10-word summary" of the original review.
 
 # Let's take a closer look at the concepts.
 # The concept vector for the first document:
-print corpus.lsa.vectors[corpus[0].id]
+print m.lsa.vectors[m[0].id]
 print
 
-# It is a dictionary linking concept id's to a score.
+# It is a dictionary of concept id's (instead of features).
 # This is is not very helpful.
-# But we can look up the words related to a concept id:
-#print corpus.lsa.concepts[0]
+# But we can look up the features "bundled" in each concept:
+print len(m.lsa.concepts[0])
 
 # That's a lot of words.
-# Actually, all words in the corpus have a score in one of the four concepts. 
-# This is a little bit abstract.
-# We'll do a new reduction with 100 concepts (or semantic "categories"),
-# and examine only the salient words for a concept.
+# In fact, all features in the model have a score for one of the ten concepts.
 
-corpus.lsa = None
-corpus.reduce(100)
+# To make it clearer, let's generate 100 concepts (i.e., semantic categories),
+# and then examine the features with the highest score for a concept:
 
-for word, weight in corpus.lsa.concepts[1].items():
+m.lsa = None
+m.reduce(100)
+
+for feature, weight in m.lsa.concepts[2].items(): # concept id=2
     if abs(weight) > 0.1:
-        print word
+        print feature
         
-# Concept  1 = "truman", "ventura", "ace", "carrey", ... It's obviously about Jim Carrey movies.
-# Concept 20 = "ripley", "butcher", "aliens", ... the Alien-franchise?
-# Concept 40 = "wars", "lucas", "jedi", "phantom", "star", ...
+# Concept  2 = "truman", "ventura", "ace", "carrey", ... Obviously about Jim Carrey movies.
+# Concept 23 = "star", "wars", "jedi", "vader", "luke", "effects", ...
 
-# You'll notice that not all concepts are equally easy to interpret,
-# or that some of them seem to mingle 2 or more core ideas.
-# However, it should underpin that (with further massaging)
-# LSA can not only be used for faster processing but also to discover synonym sets.
+# Not all concepts are equally easy to interpret,
+# but the technique can be useful to discover synonym sets.

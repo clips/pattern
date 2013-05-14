@@ -3,7 +3,7 @@ import random
 
 from pattern.db     import Datasheet
 from pattern.nl     import tag, predicative
-from pattern.vector import SVM, KNN, count, shuffled
+from pattern.vector import SVM, KNN, count, shuffled, Bayes
 
 # This example demonstrates a Support Vector Machine (SVM).
 # SVM is a robust classifier that uses "kernel" functions.
@@ -19,7 +19,7 @@ from pattern.vector import SVM, KNN, count, shuffled
 # - The room is filled with static, floating red and blue marbles.
 # - It is your task to separate them by inserting a glass panel between them.
 #
-# The 3D space gives a lot more options. Adding more dimensions add even more options.
+# The 3-D space gives a lot more options. Adding more dimensions add even more options.
 # This is roughly what a SVM does, using kernel functions to push the separation
 # to a higher dimension.
 
@@ -42,7 +42,7 @@ print "loading data..."
 data = Datasheet.load(os.path.join("..","..","test","corpora","polarity-nl-bol.com.csv"))
 data = shuffled(data)
 
-# We do not necessarily need Document objects as in the previous example.
+# We do not necessarily need Document objects as in the previous examples.
 # We can train any classifier on simple Python dictionaries too.
 # This is sometimes easier if you want full control over the data.
 # The instance() function below returns a train/test instance for a given review:
@@ -81,8 +81,8 @@ for score, review in data[1000:1500]:
     n += 1
 
 # The overall accuracy is around 82%.
-# A Naieve Bayes classifier has about 65% accuracy.
-# A KNN classifier has about 79% accuracy.
+# A Naieve Bayes classifier has about 79% accuracy.
+# A KNN classifier has about 80% accuracy.
 # Careful: to get a reliable score you need to calculate precision and recall,
 # study the documentation at:
 # http://www.clips.ua.ac.be/pages/pattern-metrics#accuracy
