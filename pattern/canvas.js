@@ -12,10 +12,10 @@
 
 /*##################################################################################################*/
 
-function $(id) {
-    /* Returns the element with the given id.
-     */
-    return document.getElementById(id);
+try { $; } catch(e) {
+    function $(id) {
+        return document.getElementById(id);
+    }
 }
 
 function attachEvent(element, name, f) {
