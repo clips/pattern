@@ -228,7 +228,7 @@ def stem(word, stemmer=PORTER, **kwargs):
             if word.pos.startswith(("DT", "PR", "WP")):
                 return singularize(w, pos=pos)
         return singularize(word, pos=kwargs.get("pos", "noun"))
-    if type(stemmer).__name__ == "function":
+    if hasattr(stemmer, "__call__"):
         return decode_utf8(stemmer(word))
     return word.lower()
 
@@ -1961,7 +1961,7 @@ class NaiveBayes(Classifier):
             g = 0
             for f in v:
                 # Conditional probabilities:
-                g += log(self._likelihood[type].get(f, self._alpha)) / d
+                g += log(self._likelihood[type].get(f, self._alpha) / d)
             g = exp(g) * self._classes[type] / n # prior
             p[type] = g
         # Normalize probability estimates.
