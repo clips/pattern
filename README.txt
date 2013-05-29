@@ -7,7 +7,7 @@ Pattern is a web mining module for the Python programming language. It bundles t
 VERSION
 =======
 
-2.5
+2.6
 
 LICENSE
 =======
@@ -18,7 +18,7 @@ INSTALLATION
 ============
 
 Pattern is written for Python 2.5+ (no support for Python 3 yet). The module has no external dependencies except when using LSA in the pattern.vector module, which requires NumPy (installed by default on Mac OS X). To install Pattern so that it is available in all your scripts, unzip the download and from the command line do:
-> cd pattern-2.5
+> cd pattern-2.6
 > python setup.py install
 
 If you have pip, you can automatically download and install from the PyPi repository:
