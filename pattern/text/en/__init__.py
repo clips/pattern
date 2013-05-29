@@ -1,4 +1,5 @@
 #### PATTERN | EN ##################################################################################
+# -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
@@ -7,35 +8,115 @@
 ####################################################################################################
 # English linguistical tools using fast regular expressions.
 
-from inflect import \
-    article, referenced, DEFINITE, INDEFINITE, \
-    pluralize, singularize, NOUN, VERB, ADJECTIVE, \
-    conjugate, lemma, lexeme, tenses, VERBS, \
-    grade, comparative, superlative, COMPARATIVE, SUPERLATIVE, \
-    predicative, attributive, \
-    INFINITIVE, PRESENT, PAST, FUTURE, \
-    FIRST, SECOND, THIRD, \
-    SINGULAR, PLURAL, SG, PL, \
-    PROGRESSIVE, \
+import os
+import sys
+
+try:
+    MODULE = os.path.dirname(os.path.abspath(__file__))
+except:
+    MODULE = ""
+
+sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))
+
+# Import parser base classes.
+from pattern.text import (
+    Lexicon, Spelling, Parser as _Parser, ngrams, pprint, commandline,
+    PUNCTUATION
+)
+# Import parse tree base classes.
+from pattern.text.tree import (
+    Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table,
+    SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
+)
+# Import sentiment analysis base classes.
+from pattern.text import (
+    Sentiment, NOUN, VERB, ADJECTIVE, ADVERB
+)
+# Import verb tenses.
+from pattern.text import (
+    INFINITIVE, PRESENT, PAST, FUTURE,
+    FIRST, SECOND, THIRD,
+    SINGULAR, PLURAL, SG, PL,
+    PROGRESSIVE,
     PARTICIPLE
-
-from inflect.quantify import \
+)
+# Import inflection functions.
+from pattern.text.en.inflect import (
+    article, referenced, DEFINITE, INDEFINITE,
+    pluralize, singularize, NOUN, VERB, ADJECTIVE,
+    grade, comparative, superlative, COMPARATIVE, SUPERLATIVE,
+    verbs, conjugate, lemma, lexeme, tenses,
+    predicative, attributive
+)
+# Import quantification functions.
+from pattern.text.en.inflect_quantify import (
     number, numerals, quantify, reflect
+)
+# Import mood & modality functions.
+from pattern.text.en.modality import (
+    mood, INDICATIVE, IMPERATIVE, CONDITIONAL, SUBJUNCTIVE,
+    modality, uncertain, EPISTEMIC,
+    negated
+)
+# Import all submodules.
+from pattern.text.en import inflect
+from pattern.text.en import wordnet
+from pattern.text.en import wordlist
+
+sys.path.pop(0)
+
+#--- ENGLISH PARSER --------------------------------------------------------------------------------
+
+def find_lemmata(tokens):
+    """ Annotates the tokens with lemmata for plural nouns and conjugated verbs,
+        where each token is a [word, part-of-speech] list.
+    """
+    for token in tokens:
+        word, pos, lemma = token[0], token[1], token[0]
+        # cats => cat
+        if pos == "NNS":
+            lemma = singularize(word)
+        # sat => sit
+        if pos.startswith(("VB", "MD")):
+            lemma = conjugate(word, INFINITIVE) or word
+        token.append(lemma.lower())
+    return tokens
     
-from inflect.spelling import \
-    suggest as spelling
+class Parser(_Parser):
+    
+    def find_lemmata(self, tokens, **kwargs):
+        return find_lemmata(tokens)
 
-from parser           import tokenize, parse, tag
-from parser.tree      import Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
-from parser.tree      import SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
-from parser.modality  import mood, INDICATIVE, IMPERATIVE, CONDITIONAL, SUBJUNCTIVE
-from parser.modality  import modality, uncertain, EPISTEMIC
-from parser.modality  import negated
-from parser.sentiment import sentiment, polarity, subjectivity, positive
-from parser.sentiment import NOUN, VERB, ADJECTIVE, ADVERB
+lexicon = Lexicon(
+        path = os.path.join(MODULE, "en-lexicon.txt"), 
+  morphology = os.path.join(MODULE, "en-morphology.txt"), 
+     context = os.path.join(MODULE, "en-context.txt"), 
+    entities = os.path.join(MODULE, "en-entities.txt"),
+    language = "en"
+)
+parser = Parser(
+     lexicon = lexicon,
+     default = ("NN", "NNP", "CD"),
+    language = "en"
+)
+sentiment = Sentiment(
+        path = os.path.join(MODULE, "en-sentiment.xml"), 
+      synset = "wordnet_id",
+    language = "en"
+)
+spelling = Spelling(
+        path = os.path.join(MODULE, "en-spelling.txt")
+)
 
-import wordnet
-import wordlist
+def tokenize(s, *args, **kwargs):
+    """ Returns a list of sentences, where punctuation marks have been split from words.
+    """
+    return parser.find_tokens(s, *args, **kwargs)
+
+def parse(s, *args, **kwargs):
+    """ Returns a tagged Unicode string.
+    """
+    return parser.parse(s, *args, **kwargs)
 
 def parsetree(s, *args, **kwargs):
     """ Returns a parsed Text from the given string.
@@ -46,37 +127,38 @@ def split(s, token=[WORD, POS, CHUNK, PNP]):
     """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
+    
+def tag(s, tokenize=True, encoding="utf-8"):
+    """ Returns a list of (token, tag)-tuples from the given string.
+    """
+    tags = []
+    for sentence in parse(s, tokenize, True, False, False, False, encoding).split():
+        for token in sentence:
+            tags.append((token[0], token[1]))
+    return tags
 
-def pprint(string, token=[WORD, POS, CHUNK, PNP], column=4):
-    """ Pretty-prints the output of parse() as a table with outlined columns.
-        Alternatively, you can supply a Text or Sentence object.
+def suggest(w):
+    """ Returns a list of (word, confidence)-tuples of spelling corrections.
     """
-    if isinstance(string, basestring):
-        print "\n\n".join([table(sentence, fill=column) for sentence in Text(string, token)])
-    if isinstance(string, Text):
-        print "\n\n".join([table(sentence, fill=column) for sentence in string])
-    if isinstance(string, Sentence):
-        print table(string, fill=column)
-        
-def ngrams(string, n=3, continuous=False):
-    """ Returns a list of n-grams (tuples of n successive words) from the given string.
-        Alternatively, you can supply a Text or Sentence object.
-        With continuous=False, n-grams will not run over sentence markers (i.e., .!?).
+    return spelling.suggest(w)
+  
+def polarity(s, **kwargs):
+    """ Returns the sentence polarity (positive/negative) between -1.0 and 1.0.
     """
-    def strip_period(s, punctuation=set(".:;,!?()[]'\"")):
-        return [w for w in s if (isinstance(w, Word) and w.string or w) not in punctuation]
-    if n <= 0:
-        return []
-    if isinstance(string, basestring):
-        s = [strip_period(s.split(" ")) for s in tokenize(string)]
-    if isinstance(string, Sentence):
-        s = [strip_period(string)]
-    if isinstance(string, Text):
-        s = [strip_period(s) for s in string]
-    if continuous:
-        s = [sum(s, [])]
-    g = []
-    for s in s:
-        #s = [None] + s + [None]
-        g.extend([tuple(s[i:i+n]) for i in range(len(s)-n+1)])        
-    return g
+    return sentiment(s, **kwargs)[0]
+
+def subjectivity(s, **kwargs):
+    """ Returns the sentence subjectivity (objective/subjective) between 0.0 and 1.0.
+    """
+    return sentiment(s, **kwargs)[1]
+    
+def positive(s, threshold=0.1, **kwargs):
+    """ Returns True if the given sentence has a positive sentiment.
+    """
+    return polarity(s, **kwargs) >= threshold
+
+#---------------------------------------------------------------------------------------------------
+# python -m pattern.en xml -s "The cat sat on the mat." -OTCL
+
+if __name__ == "__main__":
+    commandline(parse)

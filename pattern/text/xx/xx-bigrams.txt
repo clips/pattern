@@ -1,0 +1,6 @@
+The cat
+cat sat
+sat on
+on the
+the mat
+mat .

@@ -1,4 +1,4 @@
-#### PATTERN | TEXT ################################################################################
+#### PATTERN | TEXT | PARSER #######################################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
@@ -6,21 +6,1679 @@
 # http://www.clips.ua.ac.be/pages/pattern
 
 ####################################################################################################
-# English, German and Dutch linguistical tools using fast regular expressions.
 
-from en import Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
-from en import SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
+import os
+import sys
+import re
+import string
+import types
 
-from en.inflect import \
-    INFINITIVE, PRESENT, PAST, FUTURE, CONDITIONAL, \
-    FIRST, SECOND, THIRD, \
-    SINGULAR, PLURAL, SG, PL, \
-    INDICATIVE, IMPERATIVE, SUBJUNCTIVE, \
-    IMPERFECTIVE, PERFECTIVE, PROGRESSIVE, \
-    IMPERFECT, PRETERITE, \
-    PARTICIPLE, GERUND
+from xml.etree import cElementTree
+from itertools import chain
 
-LANGUAGES = ["en", "es", "de", "fr", "nl"]
+try: 
+    MODULE = os.path.dirname(os.path.abspath(__file__))
+except:
+    MODULE = ""
+
+from tree import Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
+from tree import SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
+
+#--- STRING FUNCTIONS ------------------------------------------------------------------------------
+# Latin-1 (ISO-8859-1) encoding is identical to Windows-1252 except for the code points 128-159:
+# Latin-1 assigns control codes in this range, Windows-1252 has characters, punctuation, symbols
+# assigned to these code points.
+
+def decode_string(v, encoding="utf-8"):
+    """ Returns the given value as a Unicode string (if possible).
+    """
+    if isinstance(encoding, basestring):
+        encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
+    if isinstance(v, str):
+        for e in encoding:
+            try: return v.decode(*e)
+            except:
+                pass
+        return v
+    return unicode(v)
+
+def encode_string(v, encoding="utf-8"):
+    """ Returns the given value as a Python byte string (if possible).
+    """
+    if isinstance(encoding, basestring):
+        encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
+    if isinstance(v, unicode):
+        for e in encoding:
+            try: return v.encode(*e)
+            except:
+                pass
+        return v
+    return str(v)
+
+decode_utf8 = decode_string
+encode_utf8 = encode_string
+
+PUNCTUATION = ".,;:!?()[]{}`''\"@#$^&*+-|=~_"
+
+def ngrams(string, n=3, punctuation=PUNCTUATION, continuous=False):
+    """ Returns a list of n-grams (tuples of n successive words) from the given string.
+        Alternatively, you can supply a Text or Sentence object.
+        With continuous=False, n-grams will not run over sentence markers (i.e., .!?).
+        Punctuation marks are stripped from words.
+    """
+    def strip_punctuation(s, punctuation=set(punctuation)):
+        return [w for w in s if (isinstance(w, Word) and w.string or w) not in punctuation]
+    if n <= 0:
+        return []
+    if isinstance(string, basestring):
+        s = [strip_punctuation(s.split(" ")) for s in tokenize(string)]
+    if isinstance(string, Sentence):
+        s = [strip_punctuation(string)]
+    if isinstance(string, Text):
+        s = [strip_punctuation(s) for s in string]
+    if continuous:
+        s = [sum(s, [])]
+    g = []
+    for s in s:
+        #s = [None] + s + [None]
+        g.extend([tuple(s[i:i+n]) for i in range(len(s)-n+1)])        
+    return g
+
+def pprint(string, token=[WORD, POS, CHUNK, PNP], column=4):
+    """ Pretty-prints the output of Parser.parse() as a table with outlined columns.
+        Alternatively, you can supply a tree.Text or tree.Sentence object.
+    """
+    if isinstance(string, basestring):
+        print "\n\n".join([table(sentence, fill=column) for sentence in Text(string, token)])
+    if isinstance(string, Text):
+        print "\n\n".join([table(sentence, fill=column) for sentence in string])
+    if isinstance(string, Sentence):
+        print table(string, fill=column)
+
+#--- LAZY DICTIONARY -------------------------------------------------------------------------------
+# A lazy dictionary is empty until one of its methods is called.
+# This way many instances (e.g., lexicons) can be created without using memory until used.
+
+class lazydict(dict):
+    
+    def load(self):
+        # Must be overridden in a subclass.
+        # Must load data with dict.__setitem__(self, k, v) instead of lazydict[k] = v.
+        pass
+
+    def _lazy(self, method, *args):
+        """ If the dictionary is empty, calls lazydict.load().
+            Replaces lazydict.method() with dict.method() and calls it.
+        """
+        if dict.__len__(self) == 0:
+            self.load()
+            setattr(self, method, types.MethodType(getattr(dict, method), self))
+        return getattr(dict, method)(self, *args)
+
+    def __repr__(self):
+        return self._lazy("__repr__")
+    def __len__(self):
+        return self._lazy("__len__")
+    def __iter__(self):
+        return self._lazy("__iter__")
+    def __contains__(self, *args):
+        return self._lazy("__contains__", *args)
+    def __getitem__(self, *args):
+        return self._lazy("__getitem__", *args)
+    def __setitem__(self, *args):
+        return self._lazy("__setitem__", *args)
+    def setdefault(self, *args):
+        return self._lazy("setdefault", *args)
+    def get(self, *args, **kwargs):
+        return self._lazy("get", *args)
+    def items(self):
+        return self._lazy("items")
+    def keys(self):
+        return self._lazy("keys")
+    def values(self):
+        return self._lazy("values")
+    def update(self, *args):
+        return self._lazy("update", *args)
+    def pop(self, *args):
+        return self._lazy("pop", *args)
+    def popitem(self, *args):
+        return self._lazy("popitem", *args)
+
+class lazylist(list):
+    
+    def load(self):
+        # Must be overridden in a subclass.
+        # Must load data with list.append(self, v) instead of lazylist.append(v).
+        pass
+
+    def _lazy(self, method, *args):
+        """ If the list is empty, calls lazylist.load().
+            Replaces lazylist.method() with list.method() and calls it.
+        """
+        if list.__len__(self) == 0:
+            self.load()
+            setattr(self, method, types.MethodType(getattr(list, method), self))
+        return getattr(list, method)(self, *args)
+
+    def __repr__(self):
+        return self._lazy("__repr__")
+    def __len__(self):
+        return self._lazy("__len__")
+    def __iter__(self):
+        return self._lazy("__iter__")
+    def __contains__(self, *args):
+        return self._lazy("__contains__", *args)
+    def insert(self, *args):
+        return self._lazy("insert", *args)
+    def append(self, *args):
+        return self._lazy("append", *args)
+    def extend(self, *args):
+        return self._lazy("extend", *args)
+    def remove(self, *args):
+        return self._lazy("remove", *args)
+    def pop(self, *args):
+        return self._lazy("pop", *args)
+
+#### LEXICON #######################################################################################
+
+#--- LEXICON ---------------------------------------------------------------------------------------
+# Pattern's text parsers are based on Brill's algorithm.
+# Brill's algorithm automatically acquires a lexicon of known words,
+# and a set of rules for tagging unknown words from a training corpus.
+# Lexical rules are used to tag unknown words, based on the word morphology (prefix, suffix, ...).
+# Contextual rules are used to tag all words, based on the word's role in the sentence.
+# Named entity rules are used to discover proper nouns (NNP's).
+
+def _read(path, encoding="utf-8", comment=";;;"):
+    """ Returns an iterator over the lines in the file at the given path,
+        strippping comments and decoding each line to Unicode.
+    """
+    if path:
+        if isinstance(path, basestring) and os.path.exists(path):
+            # From file path.
+            f = open(path)
+        elif isinstance(path, basestring):
+            # From string.
+            f = path.splitlines()
+        elif hasattr(path, "read"):
+            # From string buffer.
+            f = path.read().splitlines()
+        else:
+            f = path
+        for line in f:
+            line = decode_utf8(line.strip())
+            if comment and line.startswith(comment):
+                continue
+            yield line
+    raise StopIteration
+
+class Lexicon(lazydict):
+    
+    def __init__(self, path="", morphology=None, context=None, entities=None, NNP="NNP", language=None):
+        """ A dictionary of words and their part-of-speech tags.
+            For unknown words, rules for word morphology, context and named entities can be used.
+        """
+        self._path = path
+        self._language  = language
+        self.morphology = Morphology(self, path=morphology)
+        self.context    = Context(self, path=context)
+        self.entities   = Entities(self, path=entities, tag=NNP)
+    
+    def load(self):
+        # Arnold NNP x
+        dict.update(self, (x.split(" ")[:2] for x in _read(self._path)))
+    
+    @property
+    def path(self):
+        return self._path
+        
+    @property
+    def language(self):
+        return self._language
+
+#--- MORPHOLOGICAL RULES ---------------------------------------------------------------------------
+# Brill's algorithm generates lexical (i.e., morphological) rules in the following format:
+# NN s fhassuf 1 NNS x => unknown words ending in -s and tagged NN change to NNS.
+#     ly hassuf 2 RB x => unknown words ending in -ly change to RB.
+
+class Rules:
+    
+    def __init__(self, lexicon={}, cmd={}):
+        self.lexicon, self.cmd = lexicon, cmd
+    
+    def apply(self, x):
+        """ Applies the rule to the given token or list of tokens.
+        """
+        return x
+
+class Morphology(lazylist, Rules):
+    
+    def __init__(self, lexicon={}, path=""):
+        """ A list of rules based on word morphology (prefix, suffix).
+        """
+        cmd = ("char", # Word contains x.
+            "haspref", # Word starts with x.
+             "hassuf", # Word end with x.
+            "addpref", # x + word is in lexicon.
+             "addsuf", # Word + x is in lexicon.
+         "deletepref", # Word without x at the start is in lexicon.
+          "deletesuf", # Word without x at the end is in lexicon.
+           "goodleft", # Word preceded by word x.
+          "goodright", # Word followed by word x.
+        )
+        cmd = dict.fromkeys(cmd, True)
+        cmd.update(("f" + k, v) for k, v in cmd.items())
+        Rules.__init__(self, lexicon, cmd)
+        self._path = path
+        
+    @property
+    def path(self):
+        return self._path
+
+    def load(self):
+        # ["NN", "s", "fhassuf", "1", "NNS", "x"]
+        list.extend(self, (x.split() for x in _read(self._path)))
+
+    def apply(self, token, previous=(None, None), next=(None, None)):
+        """ Applies lexical rules to the given token,
+            which is a [word, tag] list.
+        """
+        w = token[0]
+        for r in self:
+            if r[1] in self.cmd: # Rule = ly hassuf 2 RB x
+                f, x, pos, cmd = bool(0), r[0], r[-2], r[1]
+            if r[2] in self.cmd: # Rule = NN s fhassuf 1 NNS x
+                f, x, pos, cmd = bool(1), r[1], r[-2], r[2].lstrip("f")
+            if f and token[1] != r[0]:
+                continue
+            if (cmd == "char"       and x in w) \
+            or (cmd == "haspref"    and w.startswith(x)) \
+            or (cmd == "hassuf"     and w.endswith(x)) \
+            or (cmd == "addpref"    and x + w in self.lexicon) \
+            or (cmd == "addsuf"     and w + x in self.lexicon) \
+            or (cmd == "deletepref" and w.startswith(x) and w[len(x):] in self.lexicon) \
+            or (cmd == "deletesuf"  and w.endswith(x) and w[:-len(x)] in self.lexicon) \
+            or (cmd == "goodleft"   and x == next[0]) \
+            or (cmd == "goodright"  and x == previous[0]):
+                token[1] = pos
+        return token
+
+#--- CONTEXT RULES ---------------------------------------------------------------------------------
+# Brill's algorithm generates contextual rules in the following format:
+# VBD VB PREVTAG TO => unknown word tagged VBD changes to VB if preceded by a word tagged TO.
+
+class Context(lazylist, Rules):
+    
+    def __init__(self, lexicon={}, path=""):
+        """ A list of rules based on context (preceding and following words).
+        """
+        cmd = ("prevtag", # Preceding word is tagged x.
+               "nexttag", # Following word is tagged x.
+              "prev2tag", # Word 2 before is tagged x.
+              "next2tag", # Word 2 after is tagged x.
+           "prev1or2tag", # One of 2 preceding words is tagged x.
+           "next1or2tag", # One of 2 following words is tagged x.
+        "prev1or2or3tag", # One of 3 preceding words is tagged x.
+        "next1or2or3tag", # One of 3 following words is tagged x.
+           "surroundtag", # Preceding word is tagged x and following word is tagged y.
+                 "curwd", # Current word is x.
+                "prevwd", # Preceding word is x.
+                "nextwd", # Following word is x.
+            "prev1or2wd", # One of 2 preceding words is x.
+            "next1or2wd", # One of 2 following words is x. 
+         "next1or2or3wd", # One of 3 preceding words is x.
+         "prev1or2or3wd", # One of 3 following words is x. 
+             "prevwdtag", # Preceding word is x and tagged y.
+             "nextwdtag", # Following word is x and tagged y.
+              "wdprevwd", # Current word is x and preceding word is y.
+              "wdnextwd", # Current word is x and following word is y.
+             "wdprevtag", # Current word is x and preceding word is tagged y. 
+             "wdnexttag", # Current word is x and following word is tagged y.
+             "wdand2aft", # Current word is x and word 2 after is y.
+          "wdand2tagbfr", # Current word is x and word 2 before is tagged y.
+          "wdand2tagaft", # Current word is x and word 2 after is tagged y.
+               "lbigram", # Preceding word is x and word before is y.
+               "rbigram", # Following word is x and word after is y.
+            "prevbigram", # Preceding word is tagged x and word before is tagged y.
+            "nextbigram", # Following word is tagged x and word after is tagged y.
+        )
+        Rules.__init__(self, lexicon, dict.fromkeys(cmd, True))
+        self._path = path
+
+    @property
+    def path(self):
+        return self._path
+
+    def load(self):
+        # ["VBD", "VB", "PREVTAG", "TO"]
+        list.extend(self, (x.split() for x in _read(self._path)))
+
+    def apply(self, tokens):
+        """ Applies contextual rules to the given list of tokens,
+            where each token is a [word, tag] list.
+        """
+        o = [("STAART", "STAART")] * 3 # Empty delimiters for look ahead/back.
+        t = o + tokens + o
+        for i, token in enumerate(t):
+            for r in self:
+                if token[1] == "STAART":
+                    continue
+                if token[1] != r[0] and r[0] != "*": 
+                    continue
+                cmd, x, y = r[2], r[3], r[4] if len(r) > 4 else ""
+                cmd = cmd.lower()                
+                if (cmd == "prevtag"        and x ==  t[i-1][1]) \
+                or (cmd == "nexttag"        and x ==  t[i+1][1]) \
+                or (cmd == "prev2tag"       and x ==  t[i-2][1]) \
+                or (cmd == "next2tag"       and x ==  t[i+2][1]) \
+                or (cmd == "prev1or2tag"    and x in (t[i-1][1], t[i-2][1])) \
+                or (cmd == "next1or2tag"    and x in (t[i+1][1], t[i+2][1])) \
+                or (cmd == "prev1or2or3tag" and x in (t[i-1][1], t[i-2][1], t[i-3][1])) \
+                or (cmd == "next1or2or3tag" and x in (t[i+1][1], t[i+2][1], t[i+3][1])) \
+                or (cmd == "surroundtag"    and x ==  t[i-1][1] and y == t[i+1][1]) \
+                or (cmd == "curwd"          and x ==  t[i+0][0]) \
+                or (cmd == "prevwd"         and x ==  t[i-1][0]) \
+                or (cmd == "nextwd"         and x ==  t[i+1][0]) \
+                or (cmd == "prev1or2wd"     and x in (t[i-1][0], t[i-2][0])) \
+                or (cmd == "next1or2wd"     and x in (t[i+1][0], t[i+2][0])) \
+                or (cmd == "prevwdtag"      and x ==  t[i-1][0] and y == t[i-1][1]) \
+                or (cmd == "nextwdtag"      and x ==  t[i+1][0] and y == t[i+1][1]) \
+                or (cmd == "wdprevwd"       and x ==  t[i+0][0] and y == t[i-1][0]) \
+                or (cmd == "wdnextwd"       and x ==  t[i+0][0] and y == t[i+1][0]) \
+                or (cmd == "wdprevtag"      and x ==  t[i+0][0] and y == t[i-1][1]) \
+                or (cmd == "wdnexttag"      and x ==  t[i+0][0] and y == t[i+1][1]) \
+                or (cmd == "wdand2aft"      and x ==  t[i+0][0] and y == t[i+2][0]) \
+                or (cmd == "wdand2tagbfr"   and x ==  t[i+0][0] and y == t[i-2][1]) \
+                or (cmd == "wdand2tagaft"   and x ==  t[i+0][0] and y == t[i+2][1]) \
+                or (cmd == "lbigram"        and x ==  t[i-1][0] and y == t[i][0]) \
+                or (cmd == "rbigram"        and x ==  t[i+0][0] and y == t[i+1][0]) \
+                or (cmd == "prevbigram"     and x ==  t[i-2][1] and y == t[i-1][1]) \
+                or (cmd == "nextbigram"     and x ==  t[i+1][1] and y == t[i+2][1]):
+                    tokens[i-len(o)] = [tokens[i-len(o)][0], r[1]]
+        return tokens
+
+#--- NAMED ENTITY RECOGNIZER -----------------------------------------------------------------------
+
+RE_ENTITY1 = re.compile(r"^http://")                            # http://www.domain.com/path
+RE_ENTITY2 = re.compile(r"^www\..*?\.[com|org|net|edu|de|uk]$") # www.domain.com
+RE_ENTITY3 = re.compile(r"^[\w\-\.\+]+@(\w[\w\-]+\.)+[\w\-]+$") # name@domain.com
+
+class Entities(lazydict, Rules):
+    
+    def __init__(self, lexicon={}, path="", tag="NNP"):
+        """ A dictionary of named entities and their labels.
+            For domain names and e-mail adresses, regular expressions are used.
+        """
+        cmd = (
+            "pers", # Persons: George/NNP-PERS
+             "loc", # Locations: Washington/NNP-LOC
+             "org", # Organizations: Google/NNP-ORG
+        )
+        Rules.__init__(self, lexicon, cmd)
+        self._path = path
+        self.tag   = tag
+
+    @property
+    def path(self):
+        return self._path
+
+    def load(self):
+        # ["Alexander", "the", "Great", "PERS"]
+        # {"alexander": [["alexander", "the", "great", "pers"], ...]}
+        for x in _read(self.path):
+            x = [x.lower() for x in x.split()]
+            dict.setdefault(self, x[0], []).append(x)
+
+    def apply(self, tokens):
+        """ Applies the named entity recognizer to the given list of tokens,
+            where each token is a [word, tag] list.
+        """
+        # Note: we could also scan for patterns, e.g.,
+        # "my|his|her name is|was *" => NNP-PERS.
+        i = 0
+        while i < len(tokens):
+            w = tokens[i][0].lower()
+            if RE_ENTITY1.match(w) \
+            or RE_ENTITY2.match(w) \
+            or RE_ENTITY3.match(w):
+                tokens[i][1] = self.tag
+            if w in self:
+                for e in self[w]:
+                    # Look ahead to see if successive words match the named entity.
+                    e, tag = (e[:-1], "-"+e[-1].upper()) if e[-1] in self.cmd else (e, "")
+                    b = True
+                    for j, e in enumerate(e):
+                        if i + j >= len(tokens) or tokens[i+j][0].lower() != e:
+                            b = False; break
+                    if b:
+                        for token in tokens[i:i+j+1]:
+                            token[1] = (token[1] == "NNPS" and token[1] or self.tag) + tag
+                        i += j
+                        break
+            i += 1
+        return tokens
+
+#### PARSER ########################################################################################
+
+#--- PARSER ----------------------------------------------------------------------------------------
+# A shallow parser can be used to retrieve syntactic-semantic information from text
+# in an efficient way (usually at the expense of deeper configurational syntactic information).
+# The shallow parser in Pattern is meant to handle the following tasks:
+# 1)  Tokenization: split punctuation marks from words and find sentence periods.
+# 2)       Tagging: find the part-of-speech tag of each word (noun, verb, ...) in a sentence.
+# 3)      Chunking: find words that belong together in a phrase.
+# 4) Role labeling: find the subject and object of the sentence.
+# 5) Lemmatization: find the base form of each word ("was" => "is").
+
+#    WORD     TAG     CHUNK      PNP        ROLE        LEMMA
+#------------------------------------------------------------------
+#     The      DT      B-NP        O        NP-SBJ-1      the
+#   black      JJ      I-NP        O        NP-SBJ-1      black
+#     cat      NN      I-NP        O        NP-SBJ-1      cat
+#     sat      VB      B-VP        O        VP-1          sit
+#      on      IN      B-PP      B-PNP      PP-LOC        on
+#     the      DT      B-NP      I-PNP      NP-OBJ-1      the
+#     mat      NN      I-NP      I-PNP      NP-OBJ-1      mat
+#       .      .        O          O          O           .
+
+# The example demonstrates what information can be retrieved:
+#
+# - the period is split from "mat." = the end of the sentence,
+# - the words are annotated: NN (noun), VB (verb), JJ (adjective), DT (determiner), ...
+# - the phrases are annotated: NP (noun phrase), VP (verb phrase), PNP (preposition), ...
+# - the phrases are labeled: SBJ (subject), OBJ (object), LOC (location), ...
+# - the phrase start is marked: B (begin), I (inside), O (outside),
+# - the past tense "sat" is lemmatized => "sit".
+
+class Parser:
+    
+    def __init__(self, lexicon={}, default=("NN", "NNP", "CD"), language=None):
+        """ A simple shallow parser using a Brill-based part-of-speech tagger.
+            The given lexicon is a dictionary of known words and their part-of-speech tag.
+            The given default tags are used for unknown words.
+            Unknown words that start with a capital letter are tagged NNP (except for German).
+            Unknown words that contain only digits and punctuation are tagged CD.
+            The given language can be used to discern between
+            Germanic and Romance languages for phrase chunking.
+        """
+        self.lexicon  = lexicon
+        self.default  = default
+        self.language = language    
+
+    def find_tokens(self, string, **kwargs):
+        """ Returns a list of sentences from the given string.
+            Punctuation marks are separated from each word by a space.
+        """
+        # "The cat purs." => ["The cat purs ."]
+        return find_tokens(string,
+                punctuation = kwargs.get(  "punctuation", PUNCTUATION),
+              abbreviations = kwargs.get("abbreviations", ABBREVIATIONS),
+                    replace = kwargs.get(      "replace", replacements),
+                  linebreak = r"\n{2,}")
+    
+    def find_tags(self, tokens, **kwargs):
+        """ Annotates the given list of tokens with part-of-speech tags.
+            Returns a list of tokens, where each token is now a [word, tag]-list.
+        """
+        # ["The", "cat", "purs"] => [["The", "DT"], ["cat", "NN"], ["purs", "VB"]]
+        return find_tags(tokens,
+                   language = kwargs.get("language", self.language),
+                    lexicon = kwargs.get( "lexicon", self.lexicon),
+                    default = kwargs.get( "default", self.default), 
+                        map = kwargs.get(     "map", None))
+
+    def find_chunks(self, tokens, **kwargs):
+        """ Annotates the given list of tokens with chunk tags.
+            Several tags can be added, for example chunk + preposition tags.
+        """
+        # [["The", "DT"], ["cat", "NN"], ["purs", "VB"]] =>
+        # [["The", "DT", "B-NP"], ["cat", "NN", "I-NP"], ["purs", "VB", "B-VP"]]
+        return find_prepositions(
+               find_chunks(tokens, 
+                   language = kwargs.get("language", self.language)))
+    
+    def find_prepositions(self, tokens, **kwargs):
+        """ Annotates the given list of tokens with prepositional noun phrase tags.
+        """
+        return find_prepositions(tokens) # See also Parser.find_chunks().
+    
+    def find_labels(self, tokens, **kwargs):
+        """ Annotates the given list of tokens with verb/predicate tags.
+        """
+        return find_relations(tokens)
+        
+    def find_lemmata(self, tokens, **kwargs):
+        """ Annotates the given list of tokens with word lemmata.
+        """
+        return [token + [token[0].lower()] for token in tokens]
+        
+    def parse(self, s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=False, encoding="utf-8", **kwargs):
+        """ Takes a string (sentences) and returns a tagged Unicode string (TaggedString). 
+            Sentences in the output are separated by newlines.
+            With tokenize=True, punctuation is split from words and sentences are separated by \n.
+            With tags=True, part-of-speech tags are parsed (NN, VB, IN, ...).
+            With chunks=True, phrase chunk tags are parsed (NP, VP, PP, PNP, ...).
+            With relations=True, semantic role labels are parsed (SBJ, OBJ).
+            With lemmata=True, word lemmata are parsed.
+            Optional parameters are passed to 
+            the tokenizer, tagger, chunker, labeler and lemmatizer.
+        """
+        # Tokenizer.
+        if tokenize is True:
+            s = self.find_tokens(s)
+        if isinstance(s, (list, tuple)):
+            s = [isinstance(s, basestring) and s.split(" ") or s for s in s]
+        if isinstance(s, basestring):
+            s = [s.split(" ") for s in s.split("\n")]
+        # Unicode.
+        for i in range(len(s)):
+            for j in range(len(s[i])):
+                if isinstance(s[i][j], str):
+                    s[i][j] = decode_string(s[i][j], encoding)
+            # Tagger (required by chunker, labeler & lemmatizer).
+            if tags or chunks or relations or lemmata:
+                s[i] = self.find_tags(s[i], **kwargs)
+            else:
+                s[i] = [[w] for w in s[i]]
+            # Chunker.
+            if chunks or relations:
+                s[i] = self.find_chunks(s[i], **kwargs)
+            # Labeler.
+            if relations:
+                s[i] = self.find_labels(s[i], **kwargs)
+            # Lemmatizer.
+            if lemmata:
+                s[i] = self.find_lemmata(s[i], **kwargs)
+        # Slash-formatted tagged string.
+        # With collapse=False (or split=True), returns raw list
+        # (this output is not usable by tree.Text).
+        if not kwargs.get("collapse", True) \
+            or kwargs.get("split", False):
+            return s
+        # Construct TaggedString.format.
+        # (this output is usable by tree.Text).
+        format = ["word"]
+        if tags:
+            format.append("part-of-speech")
+        if chunks:
+            format.extend(("chunk", "preposition"))
+        if relations:
+            format.append("relation")
+        if lemmata:
+            format.append("lemma")
+        # Collapse raw list.
+        # Sentences are separated by newlines, tokens by spaces, tags by slashes.
+        # Slashes in words are encoded with &slash;
+        for i in range(len(s)):
+            for j in range(len(s[i])):
+                s[i][j][0] = s[i][j][0].replace("/", "&slash;")
+                s[i][j] = "/".join(s[i][j])
+            s[i] = " ".join(s[i])
+        s = "\n".join(s)
+        s = TaggedString(s, format, language=kwargs.get("language", self.language))
+        return s
+
+#--- TAGGED STRING ---------------------------------------------------------------------------------
+# Pattern.parse() returns a TaggedString: a Unicode string with "tags" and "language" attributes.
+# The pattern.text.tree.Text class uses this attribute to determine the token format and
+# transform the tagged string to a parse tree of nested Sentence, Chunk and Word objects.
+
+TOKENS = "tokens"
+
+class TaggedString(unicode):
+    
+    def __new__(self, string, tags=["word"], language=None):
+        """ Unicode string with tags and language attributes.
+            For example: TaggedString("cat/NN/NP", tags=["word", "pos", "chunk"]).
+        """
+        # From a TaggedString:
+        if isinstance(string, unicode) and hasattr(string, "tags"):
+            tags, language = string.tags, string.language
+        # From a TaggedString.split(TOKENS) list:
+        if isinstance(string, list):
+            string = [[[x.replace("/", "&slash;") for x in token] for token in s] for s in string]
+            string = "\n".join(" ".join("/".join(token) for token in s) for s in string)
+        s = unicode.__new__(self, string)
+        s.tags = list(tags)
+        s.language = language
+        return s
+    
+    def split(self, sep=TOKENS):
+        """ Returns a list of sentences, where each sentence is a list of tokens,
+            where each token is a list of word + tags.
+        """
+        if sep != TOKENS:
+            return unicode.split(self, sep)
+        if len(self) == 0:
+            return []
+        return [[[x.replace("&slash;", "/") for x in token.split("/")] 
+            for token in sentence.split(" ")] 
+                for sentence in unicode.split(self, "\n")]
+
+#--- TOKENIZER -------------------------------------------------------------------------------------
+
+TOKEN = re.compile(r"(\S+)\s")
+
+# Handle common punctuation marks.
+PUNCTUATION = \
+punctuation = ".,;:!?()[]{}`''\"@#$^&*+-|=~_"
+
+# Handle common abbreviations.
+ABBREVIATIONS = abbreviations = set((
+    "a.", "adj.", "adv.", "al.", "a.m.", "c.", "cf.", "comp.", "conf.", "def.", 
+    "ed.", "e.g.", "esp.", "etc.", "ex.", "f.", "fig.", "gen.", "id.", "i.e.", 
+    "int.", "l.", "m.", "Med.", "Mil.", "Mr.", "n.", "n.q.", "orig.", "pl.", 
+    "pred.", "pres.", "p.m.", "ref.", "v.", "vs.", "w/"
+))
+
+RE_ABBR1 = re.compile("^[A-Za-z]\.$")       # single letter, "T. De Smedt"
+RE_ABBR2 = re.compile("^([A-Za-z]\.)+$")    # alternating letters, "U.S."
+RE_ABBR3 = re.compile("^[A-Z][" + "|".join( # capital followed by consonants, "Mr."
+        "bcdfghjklmnpqrstvwxz") + "]+.$")
+
+RE_SMILEY = (r"[:|8]", r"-?", r"[\)|\(|D|S|o|p|s]") # eyes|nose|mouth :-)
+RE_SMILEY = re.compile(r"(%s) ?(%s) ?(%s)" % RE_SMILEY)
+
+# Handle common contractions.
+replacements = {
+     "'d": " 'd", 
+     "'m": " 'm", 
+     "'s": " 's",
+    "'ll": " 'll", 
+    "'re": " 're", 
+    "'ve": " 've", 
+    "n't": " n't"
+}
+
+# Handle paragraph line breaks (\n\n marks end of sentence).
+EOS = "END-OF-SENTENCE"
+
+def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, replace=replacements, linebreak=r"\n{2,}"):
+    """ Returns a list of sentences. Each sentence is a space-separated string of tokens (words).
+        Handles common cases of abbreviations (e.g., etc., ...). 
+        Punctuation marks are split from other words. Periods (or ?!) mark the end of a sentence.
+        Headings without an ending period are inferred by line breaks.
+    """
+    # Handle periods separately.
+    punctuation = tuple(punctuation.replace(".", ""))
+    # Handle replacements (contractions).
+    for a, b in replace.items():
+        string = re.sub(a, b, string)
+    # Handle Unicode quotes.
+    if isinstance(string, unicode):
+        string = string.replace(u"“", u" “ ")
+        string = string.replace(u"”", u" ” ")
+        string = string.replace(u"‘", u" ‘ ")
+        string = string.replace(u"’", u" ’ ")
+    # Collapse whitespace.
+    string = re.sub("\r\n", "\n", string)
+    string = re.sub(linebreak, " %s " % EOS, string)
+    string = re.sub(r"\s+", " ", string)
+    tokens = []
+    for t in TOKEN.findall(string+" "):
+        if len(t) > 0:
+            tail = []
+            while t.startswith(punctuation) and \
+              not t in replace:
+                # Split leading punctuation.
+                if t.startswith(punctuation):
+                    tokens.append(t[0]); t=t[1:]
+            while t.endswith(punctuation+(".",)) and \
+              not t in replace:
+                # Split trailing punctuation.
+                if t.endswith(punctuation):
+                    tail.append(t[-1]); t=t[:-1]
+                # Split ellipsis (...) before splitting period.
+                if t.endswith("..."):
+                    tail.append("..."); t=t[:-3].rstrip(".")
+                # Split period (if not an abbreviation).
+                if t.endswith("."):
+                    if t in abbreviations or \
+                      RE_ABBR1.match(t) is not None or \
+                      RE_ABBR2.match(t) is not None or \
+                      RE_ABBR3.match(t) is not None:
+                        break
+                    else:
+                        tail.append(t[-1]); t=t[:-1]
+            if t != "":
+                tokens.append(t)
+            tokens.extend(reversed(tail))
+    sentences, i, j = [[]], 0, 0
+    while j < len(tokens):
+        if tokens[j] in ("...", ".", "!", "?", EOS):
+            # There may be a trailing parenthesis.
+            while j < len(tokens) \
+              and tokens[j] in ("...", ".", "!", "?", ")", "'", "\"", u"”", u"’", EOS): 
+                j += 1
+            sentences[-1].extend(t for t in tokens[i:j] if t != EOS)
+            sentences.append([])
+            i = j
+        j += 1
+    sentences[-1].extend(tokens[i:j])
+    sentences = [" ".join(s) for s in sentences if len(s) > 0]
+    sentences = [RE_SMILEY.sub("\\1\\2\\3", s) for s in sentences]
+    return sentences
+
+#--- PART-OF-SPEECH TAGGER -------------------------------------------------------------------------
+
+# Unknown words are recognized as numbers if they contain only digits and -,.:/%$
+CD = re.compile(r"^[0-9\-\,\.\:\/\%\$]+$")
+
+def _suffix_rules(token, **kwargs):
+    """ Default morphological tagging rules for English, based on word suffixes.
+    """
+    word, pos = token
+    if word.endswith("ing"):
+        pos = "VBG"
+    if word.endswith("ly"):
+        pos = "RB"
+    if word.endswith("s") and not word.endswith(("is", "ous", "ss")):
+        pos = "NNS"
+    if word.endswith(("able", "al", "ful", "ible", "ient", "ish", "ive", "less", "tic", "ous")) or "-" in word:
+        pos = "JJ"
+    if word.endswith("ed"):
+        pos = "VBN"
+    if word.endswith(("ate", "ify", "ise", "ize")):
+        pos = "VBP"
+    return [word, pos]
+
+def find_tags(tokens, lexicon={}, default=("NN", "NNP", "CD"), language="en", map=None, **kwargs):
+    """ Returns a list of [token, tag]-items for the given list of tokens:
+        ["The", "cat", "purs"] => [["The", "DT"], ["cat", "NN"], ["purs", "VB"]]
+        Words are tagged using the given lexicon of (word, tag)-items.
+        Unknown words are tagged NN by default.
+        Unknown words that start with a capital letter are tagged NNP (unless language="de").
+        Unknown words that consist only of digits and punctuation marks are tagged CD.
+        Unknown words are then improved with morphological rules.
+        All words are improved with contextual rules.
+        If map is a function, it is applied to each tag after applying all rules.
+    """
+    tagged = []
+    if isinstance(lexicon, Lexicon):
+        f = lexicon.morphology.apply
+    elif language == "en":
+        f = _suffix_rules
+    else:
+        f = lambda token, **kwargs: token
+    for token in tokens:
+        tagged.append([token, lexicon.get(token, lexicon.get(token.lower(), None))])
+    for i, (token, tag) in enumerate(tagged):
+        if tag is None:
+            if len(token) > 0 \
+            and token[0].isupper() \
+            and token[0].isalpha() \
+            and language != "de":
+                tagged[i] = [token, default[1]] # NNP
+            elif CD.match(token) is not None:
+                tagged[i] = [token, default[2]] # CD
+            else:
+                tagged[i] = [token, default[0]] # NN
+                tagged[i] = f(tagged[i],
+                    previous = i > 0 and tagged[i-1] or (None, None), 
+                        next = i < len(tagged)-1 and tagged[i+1] or (None, None))
+    if isinstance(lexicon, Lexicon):
+        tagged = lexicon.context.apply(tagged)
+        tagged = lexicon.entities.apply(tagged)
+    if map is not None:
+        tagged = [[token, map(tag) or default[0]] for token, tag in tagged]
+    return tagged
+
+#--- PHRASE CHUNKER --------------------------------------------------------------------------------
+
+SEPARATOR = "/"
+
+NN = r"NN|NNS|NNP|NNPS|NNPS?\-[A-Z]{3,4}|PR|PRP|PRP\$"
+VB = r"VB|VBD|VBG|VBN|VBP|VBZ"
+JJ = r"JJ|JJR|JJS"
+RB = r"(?<!W)RB|RBR|RBS"
+
+# Chunking rules.
+# CHUNKS[0] = Germanic: RB + JJ precedes NN ("the round table").
+# CHUNKS[1] = Romance: RB + JJ precedes or follows NN ("la table ronde", "une jolie fille").
+CHUNKS = [[ 
+    # Germanic languages: en, de, nl, ...
+    (  "NP", re.compile(r"(("+NN+")/)*((DT|CD|CC)/)*(("+RB+"|"+JJ+")/)*(("+NN+")/)+")),
+    (  "VP", re.compile(r"(((MD|"+RB+")/)*(("+VB+")/)+)+")),
+    (  "VP", re.compile(r"((MD)/)")),
+    (  "PP", re.compile(r"((IN|TO)/)")),
+    ("ADJP", re.compile(r"((CC|"+RB+"|"+JJ+")/)*(("+JJ+")/)+")),
+    ("ADVP", re.compile(r"(("+RB+"|WRB)/)+")),
+], [ 
+    # Romance languages: es, fr, it, ...
+    (  "NP", re.compile(r"(("+NN+")/)*((DT|CD|CC)/)*(("+RB+"|"+JJ+")/)*(("+NN+")/)+(("+RB+"|"+JJ+")/)*")),
+    (  "VP", re.compile(r"(((MD|"+RB+")/)*(("+VB+")/)+(("+RB+")/)*)+")),
+    (  "VP", re.compile(r"((MD)/)")),
+    (  "PP", re.compile(r"((IN|TO)/)")),
+    ("ADJP", re.compile(r"((CC|"+RB+"|"+JJ+")/)*(("+JJ+")/)+")),
+    ("ADVP", re.compile(r"(("+RB+"|WRB)/)+")),
+]]
+
+# Handle ADJP before VP, so that 
+# RB prefers next ADJP over previous VP.
+CHUNKS[0].insert(1, CHUNKS[0].pop(3))
+CHUNKS[1].insert(1, CHUNKS[1].pop(3))
+
+def find_chunks(tagged, language="en"):
+    """ The input is a list of [token, tag]-items.
+        The output is a list of [token, tag, chunk]-items:
+        The/DT nice/JJ fish/NN is/VBZ dead/JJ ./. => 
+        The/DT/B-NP nice/JJ/I-NP fish/NN/I-NP is/VBZ/B-VP dead/JJ/B-ADJP ././O
+    """
+    chunked = [x for x in tagged]
+    tags = "".join("%s%s" % (tag, SEPARATOR) for token, tag in tagged)
+    # Use Germanic or Romance chunking rules according to given language.
+    for tag, rule in CHUNKS[int(language in ("ca", "es", "pt", "fr", "it", "pt", "ro"))]:
+        for m in rule.finditer(tags):
+            # Find the start of chunks inside the tags-string.
+            # Number of preceding separators = number of preceding tokens.
+            i = m.start()
+            j = tags[:i].count(SEPARATOR)
+            n = m.group(0).count(SEPARATOR)
+            for k in range(j, j+n):
+                if len(chunked[k]) == 3:
+                    continue
+                if len(chunked[k]) < 3:
+                    # A conjunction can not be start of a chunk.
+                    if k == j and chunked[k][1] in ("CC", "KON", "Conj(neven)"):
+                        j += 1
+                    # Mark first token in chunk with B-.
+                    elif k == j:
+                        chunked[k].append("B-"+tag)
+                    # Mark other tokens in chunk with I-.
+                    else:
+                        chunked[k].append("I-"+tag)
+    # Mark chinks (tokens outside of a chunk) with O-.
+    for chink in filter(lambda x: len(x) < 3, chunked):
+        chink.append("O")
+    # Post-processing corrections.
+    for i, (word, tag, chunk) in enumerate(chunked):
+        if tag.startswith("RB") and chunk == "B-NP":
+            # "Very nice work" (NP) <=> "Perhaps" (ADVP) + "you" (NP).
+            if i < len(chunked)-1 and not chunked[i+1][1].startswith("JJ"):
+                chunked[i+0][2] = "B-ADVP"
+                chunked[i+1][2] = "B-NP"
+    return chunked
+
+def find_prepositions(chunked):
+    """ The input is a list of [token, tag, chunk]-items.
+        The output is a list of [token, tag, chunk, preposition]-items.
+        PP-chunks followed by NP-chunks make up a PNP-chunk.
+    """
+    n = len(chunked) > 0 and len(chunked[0]) or 0
+    for i, chunk in enumerate(chunked):
+        if chunk[2].endswith("PP") and i<len(chunked)-1 and chunked[i+1][2].endswith("NP"):
+            chunk.append("B-PNP")
+            for ch in chunked[i+1:]:
+                if not ch[2].endswith("NP"): 
+                    break
+                ch.append("I-PNP")
+    # Tokens that are not part of a preposition just get the O-tag.
+    for chunk in filter(lambda x: len(x) < n+1, chunked):
+        chunk.append("O")
+    return chunked
+
+#--- SEMANTIC ROLE LABELER -------------------------------------------------------------------------
+# Naive approach.
+
+BE = dict.fromkeys(("be", "am", "are", "is", "being", "was", "were", "been"), True)
+GO = dict.fromkeys(("go", "goes", "going", "went"), True)
+
+def find_relations(chunked):
+    """ The input is a list of [token, tag, chunk]-items.
+        The output is a list of [token, tag, chunk, relation]-items.
+        A noun phrase preceding a verb phrase is perceived as sentence subject.
+        A noun phrase following a verb phrase is perceived as sentence object.
+    """
+    tag = lambda token: token[2].split("-")[-1] # B-NP => NP
+    # Group successive tokens with the same chunk-tag.
+    chunks = []
+    for token in chunked:
+        if len(chunks) == 0 \
+        or token[2].startswith("B-") \
+        or tag(token) != tag(chunks[-1][-1]):
+            chunks.append([])
+        chunks[-1].append(token+["O"])
+    # If a VP is preceded by a NP, the NP is tagged as NP-SBJ-(id).
+    # If a VP is followed by a NP, the NP is tagged as NP-OBJ-(id).
+    # Chunks that are not part of a relation get an O-tag.
+    id = 0
+    for i, chunk in enumerate(chunks):
+        if tag(chunk[-1]) == "VP" and i > 0 and tag(chunks[i-1][-1]) == "NP":
+            if chunk[-1][-1] == "O":
+                id += 1
+            for token in chunk: 
+                token[-1] = "VP-" + str(id)
+            for token in chunks[i-1]: 
+                token[-1] += "*NP-SBJ-" + str(id)
+                token[-1] = token[-1].lstrip("O-*")
+        if tag(chunk[-1]) == "VP" and i < len(chunks)-1 and tag(chunks[i+1][-1]) == "NP":
+            if chunk[-1][-1] == "O":
+                id += 1
+            for token in chunk: 
+                token[-1] = "VP-" + str(id)
+            for token in chunks[i+1]: 
+                token[-1] = "*NP-OBJ-" + str(id)
+                token[-1] = token[-1].lstrip("O-*")
+    # This is more a proof-of-concept than useful in practice:
+    # PP-LOC = be + in|at + the|my
+    # PP-DIR = go + to|towards + the|my
+    for i, chunk in enumerate(chunks):
+        if 0 < i < len(chunks)-1 and len(chunk) == 1 and chunk[-1][-1] == "O":
+            t0, t1, t2 = chunks[i-1][-1], chunks[i][0], chunks[i+1][0] # previous / current / next
+            if tag(t1) == "PP" and t2[1] in ("DT", "PRP$"):
+                if t0[0] in BE and t1[0] in ("in", "at")      : t1[-1] = "PP-LOC"
+                if t0[0] in GO and t1[0] in ("to", "towards") : t1[-1] = "PP-DIR"
+    related = []; [related.extend(chunk) for chunk in chunks]
+    return related
+
+#### COMMAND LINE ##################################################################################
+# The commandline() function enables command line support for a Parser.
+# The following code can be added to pattern.en, for example:
+#
+# from pattern.text import Parser, commandline
+# parse = Parser(lexicon=LEXICON).parse
+# if __name__ == "main":
+#     commandline(parse)
+#
+# The parser is then accessible from the command line:
+# python -m pattern.en.parser xml -s "Hello, my name is Dr. Sbaitso. Nice to meet you." -OTCLI
+
+def commandline(parse=Parser().parse):
+    import optparse
+    import codecs
+    p = optparse.OptionParser()
+    p.add_option("-f", "--file",      dest="file",      action="store",      help="text file to parse",   metavar="FILE")
+    p.add_option("-s", "--string",    dest="string",    action="store",      help="text string to parse", metavar="STRING")
+    p.add_option("-O", "--tokenize",  dest="tokenize",  action="store_true", help="tokenize the input")
+    p.add_option("-T", "--tags",      dest="tags",      action="store_true", help="parse part-of-speech tags")
+    p.add_option("-C", "--chunks",    dest="chunks",    action="store_true", help="parse chunk tags")
+    p.add_option("-R", "--relations", dest="relations", action="store_true", help="find verb/predicate relations")
+    p.add_option("-L", "--lemmata",   dest="lemmata",   action="store_true", help="find word lemmata")
+    p.add_option("-e", "--encoding",  dest="encoding",  action="store_true", help="character encoding", default="utf-8")
+    p.add_option("-v", "--version",   dest="version",   action="store_true", help="version info")
+    o, arguments = p.parse_args()
+    # Version info.
+    if o.version:
+        sys.path.insert(0, os.path.join(MODULE, "..", ".."))
+        from pattern import __version__
+        print __version__
+        sys.path.pop(0)
+    # Either a text file (-f) or a text string (-s) must be supplied.
+    s = o.file and codecs.open(o.file, "r", o.encoding).read() or o.string
+    # The given text can be parsed in two modes: 
+    # - implicit: parse everything (tokenize, tag/chunk, find relations, lemmatize).
+    # - explicit: define what to parse manually.
+    if s:
+        explicit = False
+        for option in [o.tokenize, o.tags, o.chunks, o.relations, o.lemmata]:
+            if option is not None: explicit=True; break
+        if not explicit:
+            a = {"encoding": o.encoding }
+        else:
+            a = {"tokenize": o.tokenize  or False,
+                     "tags": o.tags      or False,
+                   "chunks": o.chunks    or False,
+                "relations": o.relations or False,
+                  "lemmata": o.lemmata   or False,
+                 "encoding": o.encoding }
+        s = parse(s, **a)
+        # The output can be either slash-formatted string or XML.
+        if "xml" in arguments:
+            s = Tree(s, s.tags).xml
+        print s
+
+#### VERBS #########################################################################################
+
+#--- VERB TENSES -----------------------------------------------------------------------------------
+# Conjugation is the inflection of verbs by tense, person, number, mood and aspect.
+
+# VERB TENSE:
+INFINITIVE, PRESENT, PAST, FUTURE = \
+    INF, PRES, PST, FUT = \
+        "infinitive", "present", "past", "future"
+
+# VERB PERSON:
+# 1st person = I or we (plural).
+# 2nd person = you.
+# 3rd person = he, she, it or they (plural).
+FIRST, SECOND, THIRD = \
+    1, 2, 3
+
+# VERB NUMBER:
+# singular number = I, you, he, she, it.
+#   plural number = we, you, they.
+SINGULAR, PLURAL = \
+    SG, PL = \
+        "singular", "plural"
+
+# VERB MOOD:
+#  indicative mood = a fact: "the cat meowed".
+#  imperative mood = a command: "meow!".
+# conditional mood = a hypothesis: "a cat *will* meow *if* it is hungry".
+# subjunctive mood = a wish, possibility or necessity: "I *wish* the cat *would* stop meowing".
+# Note: In Spanish, the conditional is regarded as an indicative tense.
+INDICATIVE, IMPERATIVE, CONDITIONAL, SUBJUNCTIVE = \
+    IND, IMP, COND, SJV = \
+        "indicative", "imperative", "conditional", "subjunctive"
+
+# VERB ASPECT:
+# imperfective aspect = a habitual or ongoing action: "it was midnight; the cat meowed".
+#   perfective aspect = a momentary or completed action: "I flung my pillow at the cat".
+#  progressive aspect = a incomplete action in progress: "the cat was meowing".
+# Note: the progressive aspect is a subtype of the imperfective aspect.
+IMPERFECTIVE, PERFECTIVE, PROGRESSIVE = \
+    IPFV, PFV, PROG = \
+        "imperfective", "perfective", "progressive"
+
+# Imperfect = past tense + imperfective aspect.
+# Preterite = past tense + perfective aspect.
+IMPERFECT = "imperfect"
+PRETERITE = "preterite"
+
+# Participle = present tense  + progressive aspect.
+PARTICIPLE, GERUND = "participle", "gerund"
+
+# Continuous aspect ≈ progressive aspect.
+CONTINUOUS = CONT = "continuous"
+
+_ = None # prettify the table =>
+
+# Unique index per tense (= tense + person + number + mood + aspect + negated? + aliases).
+# The index is used to describe the format of the verb lexicon file.
+# The aliases can be passed to Verbs.conjugate() and Tenses.__contains__().
+TENSES = {
+  None: (None, _, _,  _,   _,    False, (None,)),    #       ENGLISH   SPANISH   GERMAN    DUTCH     FRENCH    
+     0: (INF,  _, _,  _,   _,    False, ("inf",  )), #       to be     ser       sein      zijn      être      
+     1: (PRES, 1, SG, IND, IPFV, False, ("1sg",  )), #     I am        soy       bin       ben       suis      
+     2: (PRES, 2, SG, IND, IPFV, False, ("2sg",  )), #   you are       eres      bist      bent      es        
+     3: (PRES, 3, SG, IND, IPFV, False, ("3sg",  )), # (s)he is        es        ist       is        est       
+     4: (PRES, 1, PL, IND, IPFV, False, ("1pl",  )), #    we are       somos     sind      zijn      sommes    
+     5: (PRES, 2, PL, IND, IPFV, False, ("2pl",  )), #   you are       sois      seid      zijn      êtes      
+     6: (PRES, 3, PL, IND, IPFV, False, ("3pl",  )), #  they are       son       sind      zijn      sont      
+     7: (PRES, _, PL, IND, IPFV, False, ( "pl",  )), #       are                                               
+     8: (PRES, _, _,  IND, PROG, False, ("part", )), #       being     siendo              zijnd     étant     
+     9: (PRES, 1, SG, IND, IPFV, True,  ("1sg-", )), #     I am not                                            
+    10: (PRES, 2, SG, IND, IPFV, True,  ("2sg-", )), #   you aren't                                            
+    11: (PRES, 3, SG, IND, IPFV, True,  ("3sg-", )), # (s)he isn't                                             
+    12: (PRES, 1, PL, IND, IPFV, True,  ("1pl-", )), #    we aren't                                            
+    13: (PRES, 2, PL, IND, IPFV, True,  ("2pl-", )), #   you aren't                                            
+    14: (PRES, 3, PL, IND, IPFV, True,  ("3pl-", )), #  they aren't                                            
+    15: (PRES, _, PL, IND, IPFV, True,  ( "pl-", )), #       aren't                                            
+    16: (PRES, _, _,  IND, IPFV, True,  (   "-", )), #       isn't                                             
+    17: (PST,  1, SG, IND, IPFV, False, ("1sgp", )), #     I was       era       war       was       étais     
+    18: (PST,  2, SG, IND, IPFV, False, ("2sgp", )), #   you were      eras      warst     was       étais     
+    19: (PST,  3, SG, IND, IPFV, False, ("3sgp", )), # (s)he was       era       war       was       était     
+    20: (PST,  1, PL, IND, IPFV, False, ("1ppl", )), #    we were      éramos    waren     waren     étions    
+    21: (PST,  2, PL, IND, IPFV, False, ("2ppl", )), #   you were      erais     wart      waren     étiez     
+    22: (PST,  3, PL, IND, IPFV, False, ("3ppl", )), #  they were      eran      waren     waren     étaient   
+    23: (PST,  _, PL, IND, IPFV, False, ( "ppl", )), #       were                                              
+    24: (PST,  _, _,  IND, PROG, False, ("ppart",)), #       been      sido      gewesen   geweest   été       
+    25: (PST,  _, _,  IND, IPFV, False, (   "p", )), #       was                                               
+    26: (PST,  1, SG, IND, IPFV, True,  ("1sgp-",)), #     I wasn't                                            
+    27: (PST,  2, SG, IND, IPFV, True,  ("2sgp-",)), #   you weren't                                           
+    28: (PST,  3, SG, IND, IPFV, True,  ("3sgp-",)), # (s)he wasn't                                            
+    29: (PST,  1, PL, IND, IPFV, True,  ("1ppl-",)), #    we weren't                                           
+    30: (PST,  2, PL, IND, IPFV, True,  ("2ppl-",)), #   you weren't                                           
+    31: (PST,  3, PL, IND, IPFV, True,  ("3ppl-",)), #  they weren't                                           
+    32: (PST,  _, PL, IND, IPFV, True,  ( "ppl-",)), #       weren't                                           
+    33: (PST,  _, _,  IND, IPFV, True,  ( "p-",  )), #       wasn't                                            
+    34: (PST,  1, SG, IND,  PFV, False, ("1sg+", )), #     I           fui                           fus       
+    35: (PST,  2, SG, IND,  PFV, False, ("2sg+", )), #   you           fuiste                        fus       
+    36: (PST,  3, SG, IND,  PFV, False, ("3sg+", )), # (s)he           fue                           fut       
+    37: (PST,  1, PL, IND,  PFV, False, ("1pl+", )), #    we           fuimos                        fûmes     
+    38: (PST,  2, PL, IND,  PFV, False, ("2pl+", )), #   you           fuisteis                      fûtes     
+    39: (PST,  3, PL, IND,  PFV, False, ("3pl+", )), #  they           fueron                        furent    
+    40: (FUT,  1, SG, IND, IPFV, False, ("1sgf", )), #     I           seré                          serai     
+    41: (FUT,  2, SG, IND, IPFV, False, ("2sgf", )), #   you           serás                         seras     
+    42: (FUT,  3, SG, IND, IPFV, False, ("3sgf", )), # (s)he           será                          sera      
+    43: (FUT,  1, PL, IND, IPFV, False, ("1plf", )), #    we           seremos                       serons    
+    44: (FUT,  2, PL, IND, IPFV, False, ("2plf", )), #   you           seréis                        serez     
+    45: (FUT,  3, PL, IND, IPFV, False, ("3plf", )), #  they           serán                         seron     
+    46: (COND, 1, SG, IND, IPFV, False, ("1sgc", )), #     I           sería                         serais    
+    47: (COND, 2, SG, IND, IPFV, False, ("2sgc", )), #   you           serías                        serais    
+    48: (COND, 3, SG, IND, IPFV, False, ("3sgc", )), # (s)he           sería                         serait    
+    49: (COND, 1, PL, IND, IPFV, False, ("1plc", )), #    we           seríamos                      serions   
+    50: (COND, 2, PL, IND, IPFV, False, ("2plc", )), #   you           seríais                       seriez    
+    51: (COND, 3, PL, IND, IPFV, False, ("3plc", )), #  they           serían                        seraient  
+    52: (PRES, 2, SG, IMP, IPFV, False, ("2sg!", )), #   you           sé        sei                 sois      
+    53: (PRES, 1, PL, IMP, IPFV, False, ("1pl!", )), #    we                     seien               soyons    
+    54: (PRES, 2, PL, IMP, IPFV, False, ("2pl!", )), #   you           sed       seid                soyez     
+    55: (PRES, 1, SG, SJV, IPFV, False, ("1sg?", )), #     I           sea       sei                 sois      
+    56: (PRES, 2, SG, SJV, IPFV, False, ("2sg?", )), #   you           seas      seist               sois      
+    57: (PRES, 3, SG, SJV, IPFV, False, ("3sg?", )), # (s)he           sea       sei                 soit      
+    58: (PRES, 1, PL, SJV, IPFV, False, ("1pl?", )), #    we           seamos    seien               soyons    
+    59: (PRES, 2, PL, SJV, IPFV, False, ("2pl?", )), #   you           seáis     seiet               soyez     
+    60: (PRES, 3, PL, SJV, IPFV, False, ("3pl?", )), #  they           sean      seien               soient    
+    61: (PRES, 1, SG, SJV,  PFV, False, ("1sg?+",)), #     I                                                   
+    62: (PRES, 2, SG, SJV,  PFV, False, ("2sg?+",)), #   you                                                   
+    63: (PRES, 3, SG, SJV,  PFV, False, ("3sg?+",)), # (s)he                                                   
+    64: (PRES, 1, PL, SJV,  PFV, False, ("1pl?+",)), #    we                                                   
+    65: (PRES, 2, PL, SJV,  PFV, False, ("2pl?+",)), #   you                                                   
+    66: (PRES, 3, PL, SJV,  PFV, False, ("3pl?+",)), #  they                                                   
+    67: (PST,  1, SG, SJV, IPFV, False, ("1sgp?",)), #     I           fuera     wäre                fusse     
+    68: (PST,  2, SG, SJV, IPFV, False, ("2sgp?",)), #   you           fueras    wärest              fusses    
+    69: (PST,  3, SG, SJV, IPFV, False, ("3sgp?",)), # (s)he           fuera     wäre                fût       
+    70: (PST,  1, PL, SJV, IPFV, False, ("1ppl?",)), #    we           fuéramos  wären               fussions  
+    71: (PST,  2, PL, SJV, IPFV, False, ("2ppl?",)), #   you           fuerais   wäret               fussiez   
+    72: (PST,  3, PL, SJV, IPFV, False, ("3ppl?",)), #  they           fueran    wären               fussent   
+}
+
+# Map tenses and aliases to unique index.
+TENSES_ID = {}
+TENSES_ID[INFINITIVE] = 0
+for i, (tense, person, number, mood, aspect, negated, aliases) in TENSES.items():
+    for a in aliases + (i,):
+        TENSES_ID[i] = \
+        TENSES_ID[a] = \
+        TENSES_ID[(tense, person, number, mood, aspect, negated)] = i
+    if number == SINGULAR:
+        TENSES_ID[(tense, person,   "sg", mood, aspect, negated)] = i
+    if number == PLURAL:
+        TENSES_ID[(tense, person,   "pl", mood, aspect, negated)] = i
+
+# Map Penn Treebank tags to unique index.
+for tag, tense in (
+  ("vb",  0),   # infinitive
+  ("vbp", 1),   # present 1 singular
+  ("vbz", 3),   # present 3 singular
+  ("vbg", 8),   # present participle
+  ("vbn", 24),  # past participle
+  ("vbd", 25)): # past
+    TENSES_ID[tag] = tense
+
+# tense(tense=INFINITIVE)
+# tense(tense=(PRESENT, 3, SINGULAR))
+# tense(tense=PRESENT, person=3, number=SINGULAR, mood=INDICATIVE, aspect=IMPERFECTIVE, negated=False)
+def tense_id(*args, **kwargs):
+    """ Returns the tense id for a given (tense, person, number, mood, aspect, negated).
+        Aliases and compound forms (e.g., IMPERFECT) are disambiguated.
+    """
+    # Unpack tense given as a tuple, e.g., tense((PRESENT, 1, SG)):
+    if len(args) == 1 and isinstance(args[0], (list, tuple)):
+         if args[0] not in ((PRESENT, PARTICIPLE), (PAST, PARTICIPLE)):
+             args = args[0]
+    # No parameters defaults to tense=INFINITIVE, tense=PRESENT otherwise.
+    if len(args) == 0 and len(kwargs) == 0:
+        t = INFINITIVE
+    else:
+        t = PRESENT
+    # Set default values.
+    tense   = kwargs.get("tense"  , args[0] if len(args) > 0 else t)
+    person  = kwargs.get("person" , args[1] if len(args) > 1 else 3) or None
+    number  = kwargs.get("number" , args[2] if len(args) > 2 else SINGULAR)
+    mood    = kwargs.get("mood"   , args[3] if len(args) > 3 else INDICATIVE)
+    aspect  = kwargs.get("aspect" , args[4] if len(args) > 4 else IMPERFECTIVE)
+    negated = kwargs.get("negated", args[5] if len(args) > 5 else False)
+    # Disambiguate INFINITIVE.
+    # Disambiguate PARTICIPLE, IMPERFECT, PRETERITE.
+    # These are often considered to be tenses but are in fact tense + aspect.
+    if tense == INFINITIVE:
+        person = number = mood = aspect = None; negated=False
+    if tense in ((PRESENT, PARTICIPLE), PRESENT+PARTICIPLE, PARTICIPLE, GERUND):
+        tense, aspect = PRESENT, PROGRESSIVE
+    if tense in ((PAST, PARTICIPLE), PAST+PARTICIPLE):
+        tense, aspect = PAST, PROGRESSIVE
+    if tense == IMPERFECT:
+        tense, aspect = PAST, IMPERFECTIVE
+    if tense == PRETERITE:
+        tense, aspect = PAST, PERFECTIVE
+    if aspect in (CONTINUOUS, PARTICIPLE, GERUND):
+        aspect = PROGRESSIVE
+    if aspect == PROGRESSIVE:
+        person = number = None
+    # Disambiguate aliases: "pl" => 
+    # (PRESENT, None, PLURAL, INDICATIVE, IMPERFECTIVE, False).
+    return TENSES_ID.get(tense.lower(), 
+           TENSES_ID.get((tense, person, number, mood, aspect, negated)))
+
+tense = tense_id
+
+#--- VERB CONJUGATIONS -----------------------------------------------------------------------------
+# Verb conjugations based on a table of known verbs and rules for unknown verbs.
+# Verb conjugations are useful to find the verb infinitive in the parser's lemmatizer.
+# For unknown verbs, Verbs.find_lemma() and Verbs.find_lexeme() are called.
+# These must be implemented in a subclass with rules for unknown verbs.
+
+class Verbs(lazydict):
+    
+    def __init__(self, path="", format=[], default={}, language=None):
+        """ A dictionary of verb infinitives, each linked to a list of conjugated forms.
+            Each line in the file at the given path is one verb, with the tenses separated by a comma.
+            The format defines the order of tenses (see TENSES).
+            The default dictionary defines default tenses for omitted tenses.
+        """
+        self._path     = path
+        self._language = language
+        self._format   = dict((TENSES_ID[id], i) for i, id in enumerate(format))
+        self._default  = default
+        self._inverse  = {}
+        
+    def load(self):
+        # have,,,has,,having,,,,,had,had,haven't,,,hasn't,,,,,,,hadn't,hadn't
+        id = self._format[TENSES_ID[INFINITIVE]]
+        for v in _read(self._path):
+            v = v.split(",")
+            dict.__setitem__(self, v[id], v)
+            for x in (x for x in v if x): 
+                self._inverse[x] = v[id]
+
+    @property
+    def path(self):
+        return self._path
+        
+    @property
+    def language(self):
+        return self._language
+
+    @property
+    def infinitives(self):
+        """ Yields a dictionary of (infinitive, [inflections])-items.
+        """
+        if dict.__len__(self) == 0:
+            self.load()
+        return self
+        
+    @property
+    def inflections(self):
+        """ Yields a dictionary of (inflected, infinitive)-items.
+        """
+        if dict.__len__(self) == 0:
+            self.load()
+        return self._inverse
+        
+    @property
+    def TENSES(self):
+        """ Yields a list of tenses for this language, excluding negations.
+            Each tense is a (tense, person, number, mood, aspect)-tuple.
+        """
+        a = set(TENSES[id] for id in self._format)
+        a = a.union(set(TENSES[id] for id in self._default.keys()))
+        a = a.union(set(TENSES[id] for id in self._default.values()))
+        a = sorted(x[:-2] for x in a if x[-2] is False) # Exclude negation.
+        return a
+
+    def lemma(self, verb, parse=True):
+        """ Returns the infinitive form of the given verb, or None.
+        """
+        if dict.__len__(self) == 0:
+            self.load()
+        if verb.lower() in self._inverse:
+            return self._inverse[verb.lower()]
+        if verb in self._inverse:
+            return self._inverse[verb]
+        if parse is True: # rule-based
+            return self.find_lemma(verb)
+
+    def lexeme(self, verb, parse=True):
+        """ Returns a list of all possible inflections of the given verb.
+        """
+        a = []
+        b = self.lemma(verb, parse=parse)
+        if b in self:
+            a = [x for x in self[b] if x != ""]
+        elif parse is True: # rule-based
+            a = self.find_lexeme(b)
+        u = []; [u.append(x) for x in a if x not in u]
+        return u
+
+    def conjugate(self, verb, *args, **kwargs):
+        """ Inflects the verb and returns the given tense (or None).
+            For example: be
+            - Verbs.conjugate("is", INFINITVE) => be
+            - Verbs.conjugate("be", PRESENT, 1, SINGULAR) => I am
+            - Verbs.conjugate("be", PRESENT, 1, PLURAL) => we are
+            - Verbs.conjugate("be", PAST, 3, SINGULAR) => he was
+            - Verbs.conjugate("be", PAST, aspect=PROGRESSIVE) => been
+            - Verbs.conjugate("be", PAST, person=1, negated=True) => I wasn't
+        """
+        id = tense_id(*args, **kwargs)
+        # Get the tense index from the format description (or a default).
+        i1 = self._format.get(id)
+        i2 = self._format.get(self._default.get(id))
+        i3 = self._format.get(self._default.get(self._default.get(id)))
+        b = self.lemma(verb, parse=kwargs.get("parse", True))
+        v = []
+        # Get the verb lexeme and return the requested index.
+        if b in self:
+            v = self[b]
+            for i in (i1, i2, i3):
+                if i is not None and 0 <= i < len(v) and v[i]:
+                    return v[i]
+        if kwargs.get("parse", True) is True: # rule-based
+            v = self.find_lexeme(b)
+            for i in (i1, i2, i3):
+                if i is not None and 0 <= i < len(v) and v[i]:
+                    return v[i]
+
+    def tenses(self, verb, parse=True):
+        """ Returns a list of possible tenses for the given inflected verb.
+        """
+        verb = verb.lower()
+        a = set()
+        b = self.lemma(verb, parse=parse)
+        v = []
+        if b in self:
+            v = self[b]
+        elif parse is True: # rule-based
+            v = self.find_lexeme(b)
+        # For each tense in the verb lexeme that matches the given tense,
+        # 1) retrieve the tense tuple,
+        # 2) retrieve the tense tuples for which that tense is a default.
+        for i, tense in enumerate(v):
+            if tense == verb:
+                for id, index in self._format.items():
+                    if i == index:
+                        a.add(id)
+                for id1, id2 in self._default.items():
+                    if id2 in a:
+                        a.add(id1)
+                for id1, id2 in self._default.items():
+                    if id2 in a:
+                        a.add(id1)
+        a = (TENSES[id][:-2] for id in a)
+        a = Tenses(sorted(a))
+        return a
+    
+    def find_lemma(self, verb):
+        # Must be overridden in a subclass.
+        # Must return the infinitive for the given conjugated (unknown) verb.
+        return verb
+    
+    def find_lexeme(self, verb):
+        # Must be overridden in a subclass.
+        # Must return the list of conjugations for the given (unknown) verb.
+        return []
+
+class Tenses(list):
+    
+    def __contains__(self, tense):
+        # t in tenses(verb) also works when t is an alias (e.g. "1sg").
+        return list.__contains__(self, TENSES[tense_id(tense)][:-2])
+
+### SENTIMENT POLARITY LEXICON #####################################################################
+# A sentiment lexicon can be used to discern objective facts from subjective opinions in text.
+# Each word in the lexicon has scores for:
+# 1)     polarity: negative vs. positive    (-1.0 => +1.0)
+# 2) subjectivity: objective vs. subjective (+0.0 => +1.0)
+# 3)    intensity: modifies next word?   (x0.5 => x2.0)
+
+# For English, adverbs are used as modifiers.
+# For Dutch, adverbial adjectives are used as modifiers
+# ("hopeloos voorspelbaar", "ontzettend spannend", "verschrikkelijk goed").
+# Negation words (e.g., "not") reverse the polarity of the following word.
+
+NOUN, VERB, ADJECTIVE, ADVERB = \
+    "NN", "VB", "JJ", "RB"
+
+RE_SYNSET = re.compile(r"^[acdnrv][-_][0-9]+$")
+
+def avg(list):
+    return sum(list) / float(len(list) or 1)
+
+class Score(tuple):
+    
+    def __new__(self, polarity, subjectivity, assessments=[]):
+        """ A (polarity, subjectivity)-tuple with an assessments property.
+        """
+        self.assessments = assessments
+        return tuple.__new__(self, [polarity, subjectivity])
+
+class Sentiment(lazydict):
+    
+    def __init__(self, path="", language=None, synset=None, confidence=None, **kwargs):
+        """ A dictionary of words (adjectives) and polarity scores (positive/negative).
+            The value for each word is a dictionary of part-of-speech tags.
+            The value for each word POS-tag is a tuple with values for 
+            polarity (-1.0-1.0), subjectivity (0.0-1.0) and intensity (0.5-2.0).
+        """
+        self._path       = path
+        self._language   = None
+        self._confidence = None
+        self._synset     = synset
+        self._synsets    = {}
+        self.negations   = kwargs.get("negations", ("no", "not", "never"))
+        self.modifiers   = kwargs.get("modifiers", ("RB",))
+        self.modifier    = kwargs.get("modifier" , lambda w: w.endswith("ly"))
+    
+    @property
+    def path(self):
+        return self._path
+    
+    @property
+    def language(self):
+        return self._language
+
+    @property
+    def confidence(self):
+        return self._confidence
+    
+    def load(self):
+        # <word form="great" wordnet_id="a-01123879" pos="JJ" polarity="1.0" subjectivity="1.0" intensity="1.0" />
+        words, synsets = {}, {}
+        xml = cElementTree.parse(self._path)
+        xml = xml.getroot()
+        for w in xml.findall("word"):
+            if self._confidence is None \
+            or self._confidence <= float(w.attrib.get("confidence", 0.0)):
+                w, pos, p, s, i, synset = (
+                    w.attrib.get("form"),
+                    w.attrib.get("pos"),
+                    w.attrib.get("polarity", 0.0),
+                    w.attrib.get("subjectivity", 0.0),
+                    w.attrib.get("intensity", 1.0),
+                    w.attrib.get(self._synset) # wordnet_id, cornetto_id, ...
+                )
+                psi = (float(p), float(s), float(i))
+                if w:
+                    words.setdefault(w, {}).setdefault(pos, []).append(psi)
+                if synset:
+                    synsets.setdefault(synset, []).append(psi)
+        self._language = xml.attrib.get("language", self._language)
+        # Average scores of all word senses per part-of-speech tag.
+        for w in words:
+            words[w] = dict((pos, map(avg, zip(*psi))) for pos, psi in words[w].items())
+        # Average scores of all part-of-speech tags.
+        for w, pos in words.items():
+            words[w][None] = map(avg, zip(*pos.values()))        
+        # Average scores of all synonyms per synset.
+        for id, psi in synsets.items():
+            synsets[id] = map(avg, zip(*psi))
+        dict.update(self, words)
+        dict.update(self._synsets, synsets)
+
+    def synset(self, id, pos=ADJECTIVE):
+        """ Returns a (polarity, subjectivity)-tuple for the given synset id.
+            For example, the adjective "horrible" has id 193480 in WordNet:
+            Sentiment.synset(193480, pos="JJ") => (-0.6, 1.0, 1.0).
+        """
+        id = str(id).zfill(8)
+        if not id.startswith(("n-", "v-", "a-", "r-")):
+            if pos == NOUN:
+                id = "n-" + id
+            if pos == VERB:
+                id = "v-" + id
+            if pos == ADJECTIVE:
+                id = "a-" + id
+            if pos == ADVERB:
+                id = "r-" + id
+        if dict.__len__(self) == 0:
+            self.load()
+        return tuple(self._synsets.get(id, (0.0, 0.0))[:2])
+    
+    def __call__(self, s, negation=True):
+        """ Returns a (polarity, subjectivity)-tuple for the given sentence, 
+            with polarity between -1.0 and 1.0 and subjectivity between 0.0 and 1.0.
+            The sentence can be a string, Synset, Text, Sentence, Chunk or Word.
+        """
+        f = self.assessments
+        # A pattern.en.wordnet.Synset.
+        # Sentiment.polarity(synsets("horrible", "JJ")[0]) => (-0.6, 1.0)
+        if hasattr(s, "gloss"):
+            a = [(s.synonyms[0],) + self.synset(s.id, pos=s.pos)]
+        # A synset id.
+        # Sentiment.polarity("a-00193480") => horrible => (-0.6, 1.0)   (English WordNet)
+        # Sentiment.polarity("c_267") => verschrikkelijk => (-0.9, 1.0) (Dutch Cornetto)
+        elif isinstance(s, basestring) and RE_SYNSET.match(s):
+            a = [(s.synonyms[0],) + self.synset(s.id, pos=s.pos)]
+        # A string of words.
+        # Sentiment.polarity("a horrible movie") => (-0.6, 1.0)
+        elif isinstance(s, basestring):
+            a = f(((w.lower(), None) for w in " ".join(find_tokens(s)).split()), negation)
+        # A pattern.en.Text.
+        elif hasattr(s, "sentences"):
+            a = f(((w.lemma or w.string.lower(), w.pos[:2]) for w in chain(*s)), negation)
+        # A pattern.en.Sentence or pattern.en.Chunk.
+        elif hasattr(s, "words"):
+            a = f(((w.lemma or w.string.lower(), w.pos[:2]) for w in s.words), negation)
+        # A pattern.en.Word.
+        elif hasattr(s, "lemma"):
+            a = f(((s.lemma or s.string.lower(), s.pos[:2]),), negation)
+        # A list of words.
+        elif isinstance(s, list):
+            a = f(((w, None) for w in s), negation)
+        else:
+            a = []
+        return Score(polarity = avg([p for w, p, s in a]),
+                 subjectivity = avg([s for w, p, s in a]),
+                  assessments = a)
+        
+    def assessments(self, words=[], negation=True):
+        """ Returns a list of (chunk, polarity, subjectivity)-tuples for the given list of words,
+            where chunk is a list of successive words: a known word optionally 
+            preceded by a modifier ("very good") or a negation ("not good").
+        """
+        a = []
+        m = None # Preceding modifier (i.e., adverb or adjective).
+        n = None # Preceding negation (e.g., "not beautiful").
+        for w, pos in words:
+            # Only assess known words, preferably by part-of-speech tag.
+            # Including unknown words (polarity 0.0 and subjectivity 0.0) lowers the average.
+            if w in self and pos in self[w]:
+                p, s, i = self[w][pos]
+                # Known word not preceded by a modifier ("good").
+                if m is None:
+                    a.append(dict(w=[w], p=p, s=s, i=i, n=1))
+                # Known word preceded by a modifier ("really good").
+                if m is not None and any(RB in self[m[0]] for RB in self.modifiers):
+                    a[-1]["w"].append(w)
+                    a[-1]["p"] = min(p * a[-1]["i"], 1.0)
+                    a[-1]["s"] = min(p * a[-1]["i"], 1.0)
+                    a[-1]["i"] = i
+                # Known word preceded by a negation ("not really good").
+                if n is not None:
+                    a[-1]["w"].insert(0, n)
+                    a[-1]["i"] = 1.0 / a[-1]["i"]
+                    a[-1]["n"] = -1
+                m = (w, pos)
+                n = None
+            else:
+                n = negation and w in self.negations and w or None
+                # Unknown word is a negation preceded by a modifier ("really not good").
+                if n is not None and m is not None and (pos in self.modifiers or self.modifier(m[0])):
+                    a[-1]["w"].append(n)
+                    a[-1]["n"] = -1
+                    n = None
+                # Unknown word. Retain modifier ("really is a good").
+                elif m and len(w) > 2:
+                    m = None
+                # Exclamation marks boost previous words.
+                if w == "!" and len(a) > 0:
+                    for x in a[-3:]: x["p"] = min(x["p"] * 1.25, 1.0)
+                # Emoticon (happy).
+                if w in (":)", ":-)", ":-D"):
+                    a.append(dict(w=[w], p=+1.0, s=1.0, i=1.0, n=1))
+                # Emoticon (sad).
+                if w in (":(", ":-(", ":-S"):
+                    a.append(dict(w=[w], p=-1.0, s=1.0, i=1.0, n=1))
+        a = [(a["w"], a["p"] * a["n"], a["s"]) for a in a]
+        return a
+
+#### SPELLING CORRECTION ###########################################################################
+# Based on: Peter Norvig, "How to Write a Spelling Corrector", http://norvig.com/spell-correct.html
+
+class Spelling(lazydict):
+    
+    ALPHA = "abcdefghijklmnopqrstuvwxyz"
+    
+    def __init__(self, path=""):
+        self._path = path
+    
+    def load(self):
+        for x in _read(self._path):
+            x = x.split()
+            dict.__setitem__(self, x[0], int(x[1]))
+    
+    @property
+    def path(self):
+        return self._path
+        
+    @property
+    def language(self):
+        return self._language
+
+    @classmethod
+    def train(self, s, path="spelling.txt"):
+        """ Counts the words in the given string and saves the probabilities at the given path.
+            This can be used to generate a new model for the Spelling() constructor.
+        """
+        model = {}
+        for w in re.findall("[a-z]+", s.lower()):
+            model[w] = w in model and model[w] + 1 or 1
+        model = ("%s %s" % (k, v) for k, v in sorted(model.items()))
+        model = "\n".join(model)
+        f = open(path, "w")
+        f.write(model)
+        f.close()
+        
+    def _edit1(self, w):
+        """ Returns a set of words with edit distance 1 from the given word.
+        """
+        # Of all spelling errors, 80% is covered by edit distance 1.
+        # Edit distance 1 = one character deleted, swapped, replaced or inserted.
+        split = [(w[:i], w[i:]) for i in range(len(w) + 1)]
+        delete, transpose, replace, insert = (
+            [a + b[1:] for a, b in split if b],
+            [a + b[1] + b[0] + b[2:] for a, b in split if len(b) > 1],
+            [a + c + b[1:] for a, b in split for c in Spelling.ALPHA if b],
+            [a + c + b[0:] for a, b in split for c in Spelling.ALPHA]
+        )
+        return set(delete + transpose + replace + insert)
+        
+    def _edit2(self, w):
+        """ Returns a set of words with edit distance 2 from the given word
+        """
+        # Of all spelling errors, 99% is covered by edit distance 2.
+        # Only keep candidates that are actually known words (20% speedup).
+        return set(e2 for e1 in self._edit1(w) for e2 in self._edit1(e1) if e2 in self)
+
+    def _known(self, words=[]):
+        """ Returns the given list of words filtered by known words.
+        """
+        return set(w for w in words if w in self)
+
+    def suggest(self, w):
+        """ Return a list of (word, confidence) spelling corrections for the given word,
+            based on the probability of known words with edit distance 1-2 from the given word.
+        """
+        if len(self) == 0:
+            self.load()
+        candidates = self._known([w]) \
+                  or self._known(self._edit1(w)) \
+                  or self._known(self._edit2(w)) \
+                  or [w]
+        candidates = [(self.get(w, 0.0), w) for w in candidates]
+        s = float(sum(p for p, w in candidates) or 1)
+        candidates = sorted(((p / s, w) for p, w in candidates), reverse=True)
+        candidates = [(w, p) for p, w in candidates]
+        return candidates
+
+#### MULTILINGUAL ##################################################################################
+# The default functions in each language submodule, with an optional language parameter:
+# from pattern.text import parse
+# print parse("The cat sat on the mat.", language="en")
+# print parse("De kat zat op de mat.", language="nl") 
+
+LANGUAGES = ["en", "es", "de", "fr", "it", "nl"]
 
 _modules = {}
 def _multilingual(function, *args, **kwargs):
@@ -30,9 +1688,6 @@ def _multilingual(function, *args, **kwargs):
     language = kwargs.pop("language", "en")
     module = _modules.setdefault(language, __import__(language, globals(), {}, [], -1))
     return getattr(module, function)(*args, **kwargs)
-
-def ngrams(*args, **kwargs):
-    return _multilingual("ngrams", *args, **kwargs)
 
 def tokenize(*args, **kwargs):
     return _multilingual("tokenize", *args, **kwargs)
@@ -63,3 +1718,6 @@ def conjugate(*args, **kwargs):
 
 def predicative(*args, **kwargs):
     return _multilingual("predicative", *args, **kwargs)
+    
+def suggest(*args, **kwargs):
+    return _multilingual("suggest", *args, **kwargs)

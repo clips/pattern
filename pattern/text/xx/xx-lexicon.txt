@@ -1,0 +1,8 @@
+The DT
+the DT
+cat NN
+sat VBD
+sit VB
+on IN
+mat NN
+. .

@@ -7,26 +7,215 @@
 ####################################################################################################
 # Dutch linguistical tools using fast regular expressions.
 
-from parser           import tokenize, parse, tag
-from parser.sentiment import sentiment, polarity, subjectivity, positive
-from parser.sentiment import NOUN, VERB, ADJECTIVE, ADVERB
+import os
+import sys
+import re
 
-from inflect import \
-    pluralize, singularize, NOUN, VERB, ADJECTIVE, \
-    conjugate, lemma, lexeme, tenses, VERBS, \
-    predicative, attributive, \
-    INFINITIVE, PRESENT, PAST, FUTURE, \
-    FIRST, SECOND, THIRD, \
-    SINGULAR, PLURAL, SG, PL, \
-    PROGRESSIVE, \
+try:
+    MODULE = os.path.dirname(os.path.abspath(__file__))
+except:
+    MODULE = ""
+
+sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))
+
+# Import parser base classes.
+from pattern.text import (
+    Lexicon, Spelling, Parser as _Parser, ngrams, pprint, commandline,
+    PUNCTUATION
+)
+# Import parse tree base classes.
+from pattern.text.tree import (
+    Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table,
+    SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
+)
+# Import sentiment analysis base classes.
+from pattern.text import (
+    Sentiment as _Sentiment, NOUN, VERB, ADJECTIVE, ADVERB
+)
+# Import verb tenses.
+from pattern.text import (
+    INFINITIVE, PRESENT, PAST, FUTURE,
+    FIRST, SECOND, THIRD,
+    SINGULAR, PLURAL, SG, PL,
+    PROGRESSIVE,
     PARTICIPLE
+)
+# Import inflection functions.
+from pattern.text.nl.inflect import (
+    pluralize, singularize, NOUN, VERB, ADJECTIVE,
+    verbs, conjugate, lemma, lexeme, tenses,
+    predicative, attributive
+)
+# Import all submodules.
+from pattern.text.nl import inflect
 
-# Language-independent functionality is inherited from pattern.en:
-# Submodules pattern.nl.inflect and pattern.nl.parser import from pattern.en.
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from en import split, pprint, ngrams
-from en import Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
-from en import SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
+sys.path.pop(0)
+
+#--- DUTCH PARSER ----------------------------------------------------------------------------------
+# The Dutch parser (accuracy 92%) is based on Jeroen Geertzen's language model:
+# Brill-NL, http://cosmion.net/jeroen/software/brill_pos/
+
+# The lexicon uses the WOTAN tagset:
+# http://lands.let.ru.nl/literature/hvh.1999.2.ps
+PENN  = PENNTREEBANK = "penntreebank"
+WOTAN = "wotan"
+wotan = {
+    "Adj(": (("vergr", "JJR"), ("overtr", "JJS"), ("", "JJ")),
+    "Adv(": (("deel", "RP"),  ("", "RB")),
+    "Art(": (("", "DT"),),
+   "Conj(": (("", "CC"),),
+     "Int": (("", "UH"),),
+    "Misc": (("symb", "SYM"), ("vreemd","FW")),
+      "N(": (("eigen,ev", "NNP"), ("eigen,mv", "NNPS"), ("ev", "NN"), ("mv", "NNS")),
+    "Num(": (("", "CD"),),
+   "Prep(": (("inf", "TO"), ("", "IN")),
+   "Pron(": (("bez", "PRP$"), ("","PRP")),
+   "Punc(": (("komma", ","), ("open", "("), ("sluit", ")"), ("schuin", "CC"), ("", ".")),
+      "V(": (("hulp", "MD"), ("ott,3", "VBZ"), ("ott", "VBP"), ("ovt", "VBD"), 
+             ("verl", "VBN"), ("teg", "VBG"), ("", "VB"))
+}
+wotan = {
+       "N(": [("eigen,ev","NNP"), ("eigen,mv","NNPS"), ("ev","NN"), ("mv","NNS")],
+       "V(": [("hulp","MD"), ("ott,3","VBZ"), ("ott","VBP"), ("ovt","VBD"), ("verldw","VBN"), ("tegdw","VBG"), ("imp","VB"), ("inf","VB")],
+     "Adj(": [("stell","JJ"), ("vergr","JJR"), ("overtr","JJS")],
+     "Adv(": [("deel","RP"), ("gew","RB"), ("pro","RB")],
+     "Art(": "DT",
+    "Conj(": "CC",
+     "Num(": "CD",
+    "Prep(": [("voorinf","TO"), ("", "IN")],
+    "Pron(": [("bez","PRP$"), ("","PRP")],
+    "Punc(": [("komma",","), ("haakopen","("), ("haaksluit",")"), ("schuinstreep", "CC"), ("",".")],
+      "Int": "UH",
+     "Misc": [("symbool","SYM"), ("vreemd","FW")]
+}
+
+def wotan2penntreebank(tag):
+    """ Converts a WOTAN tag to Penn Treebank II tag.
+        For example: bokkenrijders N(soort,mv,neut) => bokkenrijders/NNS
+    """
+    for k, v in wotan.iteritems():
+        if tag.startswith(k):
+            for a, b in v:
+                if a in tag: 
+                    return b
+    return tag
+
+ABBREVIATIONS = set((
+    "a.d.h.v.", "afb.", "a.u.b.", "bv.", "b.v.", "bijv.", "blz.", "ca.", "cfr.", "dhr.", "dr.",
+    "d.m.v.", "d.w.z.", "e.a.", "e.d.", "e.g.", "enz.", "etc.", "e.v.", "evt.", "fig.", "i.e.",
+    "i.h.b.", "ir.", "i.p.v.", "i.s.m.", "m.a.w.", "max.", "m.b.t.", "m.b.v.", "mevr.", "min.",
+    "n.a.v.", "nl.", "n.o.t.k.", "n.t.b.", "n.v.t.", "o.a.", "ong.", "pag.", "ref.", "t.a.v.",
+    "tel.", "zgn."
+))
+
+def find_lemmata(tokens):
+    """ Annotates the tokens with lemmata for plural nouns and conjugated verbs,
+        where each token is a [word, part-of-speech] list.
+    """
+    for token in tokens:
+        word, pos, lemma = token[0], token[1], token[0]
+        if pos.startswith("JJ") and word.endswith("e"):
+            lemma = predicative(word)  
+        if pos == "NNS":
+            lemma = singularize(word)
+        if pos.startswith(("VB", "MD")):
+            lemma = conjugate(word, INFINITIVE) or word
+        token.append(lemma.lower())
+    return tokens
+
+class Parser(_Parser):
+
+    def find_tokens(self, tokens, **kwargs):
+        # 's in Dutch preceded by a vowel indicates plural ("auto's"): don't replace.
+        kwargs.setdefault("abbreviations", ABBREVIATIONS)
+        kwargs.setdefault("replace", {"'n": " 'n"})
+        s = _Parser.find_tokens(self, tokens, **kwargs)
+        s = [re.sub(r"' s (ochtends|morgens|middags|avonds)", "'s \\1", s) for s in s]
+        return s
+
+    def find_lemmata(self, tokens, **kwargs):
+        return find_lemmata(tokens)
+        
+    def find_tags(self, tokens, **kwargs):
+        if kwargs.get("tagset") != WOTAN:
+            kwargs.setdefault("map", wotan2penntreebank)
+        return _Parser.find_tags(self, tokens, **kwargs)
+
+class Sentiment(_Sentiment):
+    
+    def load(self):
+        _Sentiment.load(self)
+        for w, pos in self.items():
+            if "JJ" in pos:
+                # Map "verschrikkelijk" to adverbial "verschrikkelijke" (+1% accuracy)
+                self.setdefault(attributive(w), {"JJ": pos["JJ"], None: pos["JJ"]})
+
+lexicon = Lexicon(
+        path = os.path.join(MODULE, "nl-lexicon.txt"), 
+  morphology = os.path.join(MODULE, "nl-morphology.txt"), 
+     context = os.path.join(MODULE, "nl-context.txt"), 
+    language = "nl"
+)
+parser = Parser(
+     lexicon = lexicon,
+     default = ("N(soort,ev,neut)", "N(eigen,ev)", "Num()"),
+    language = "nl"
+)
+sentiment = Sentiment(
+        path = os.path.join(MODULE, "nl-sentiment.xml"), 
+      synset = "cornetto_id",
+   negations = ("geen", "niet", "nooit"),
+   modifiers = ("JJ", "RB",),
+   modifier  = lambda w: w.endswith(("ig", "isch", "lijk")),
+    language = "nl"
+)
+
+def tokenize(s, *args, **kwargs):
+    """ Returns a list of sentences, where punctuation marks have been split from words.
+    """
+    return parser.find_tokens(s, *args, **kwargs)
+
+def parse(s, *args, **kwargs):
+    """ Returns a tagged Unicode string.
+    """
+    return parser.parse(s, *args, **kwargs)
 
 def parsetree(s, *args, **kwargs):
+    """ Returns a parsed Text from the given string.
+    """
     return Text(parse(s, *args, **kwargs))
+
+def split(s, token=[WORD, POS, CHUNK, PNP]):
+    """ Returns a parsed Text from the given parsed string.
+    """
+    return Text(s, token)
+    
+def tag(s, tokenize=True, encoding="utf-8"):
+    """ Returns a list of (token, tag)-tuples from the given string.
+    """
+    tags = []
+    for sentence in parse(s, tokenize, True, False, False, False, encoding).split():
+        for token in sentence:
+            tags.append((token[0], token[1]))
+    return tags
+
+def polarity(s, **kwargs):
+    """ Returns the sentence polarity (positive/negative) between -1.0 and 1.0.
+    """
+    return sentiment(s, **kwargs)[0]
+
+def subjectivity(s, **kwargs):
+    """ Returns the sentence subjectivity (objective/subjective) between 0.0 and 1.0.
+    """
+    return sentiment(s, **kwargs)[1]
+    
+def positive(s, threshold=0.1, **kwargs):
+    """ Returns True if the given sentence has a positive sentiment.
+    """
+    return polarity(s, **kwargs) >= threshold
+
+#---------------------------------------------------------------------------------------------------
+# python -m pattern.nl xml -s "De kat wil wel vis eten maar geen poot nat maken." -OTCL
+
+if __name__ == "__main__":
+    commandline(parse)

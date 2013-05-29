@@ -1,0 +1,172 @@
+N(soort,ev,neut) en fhassuf 2 N(soort,mv,neut) 464.471284271284
+N(soort,ev,neut) s fhassuf 1 N(soort,mv,neut) 173.743377483444
+e deletesuf 1 Adj(attr,stell,verv_neut) 135.077380952381
+N(soort,mv,neut) te fgoodright V(trans,inf) 89.6146422886831
+N(soort,ev,neut) e faddsuf 1 Adj(attr,stell,onverv) 58.3238544135603
+ige hassuf 3 Adj(attr,stell,verv_neut) 52
+erd hassuf 3 V(trans,verl_dw,onverv) 51.3333333333333
+N(soort,ev,neut) ke fhassuf 2 Adj(attr,stell,verv_neut) 44.5
+ende hassuf 4 V(intrans,teg_dw,verv_neut) 39.6666666666667
+N(soort,ev,neut) le fhassuf 2 Adj(attr,stell,verv_neut) 31.775
+ig hassuf 2 Adj(attr,stell,onverv) 30.9
+N(soort,ev,neut) 0 fchar Num(hoofd,bep,attr,onverv) 30.8333333333333
+t deletesuf 1 V(trans,ott,3,ev) 28.9836200947145
+worden goodright V(trans,verl_dw,onverv) 27.4525132275132
+N(soort,mv,neut) een fgoodright N(soort,ev,neut) 27.1666666666667
+se hassuf 2 Adj(attr,stell,verv_neut) 25.75
+N(soort,ev,neut) end fhassuf 3 V(intrans,teg_dw,onverv) 25
+sche hassuf 4 Adj(attr,stell,verv_neut) 23
+lijk hassuf 4 Adj(adv,stell,onverv) 22.6499102204985
+N(soort,mv,neut) het fgoodright N(soort,ev,neut) 22.0344002943341
+wordt goodright V(trans,verl_dw,onverv) 19.7719047619048
+N(soort,ev,neut) de fhassuf 2 V(trans,ovt,1_of_2_of_3,ev) 19.5476190476191
+jaar goodleft Num(hoofd,bep,attr,onverv) 17.4069208626531
+deze goodleft Prep(voor) 16.971518133281
+N(soort,ev,neut) kt fhassuf 2 V(trans,verl_dw,onverv) 16.75
+N(soort,ev,neut) re fhassuf 2 Adj(attr,stell,verv_neut) 15
+er deletepref 2 Adv(pron,onbep) 15
+N(soort,ev,neut) 1 fchar Num(hoofd,bep,zelfst,onverv) 14.75
+r deletesuf 1 Adj(attr,vergr,onverv) 14.25
+daa haspref 3 Adv(pron,aanw) 14
+N(soort,ev,neut) ste fhassuf 3 Adj(attr,overtr,verv_neut) 13
+gt hassuf 2 V(trans,ott,3,ev) 12.8333333333333
+V(trans,ovt,1_of_2_of_3,ev) de fgoodright N(soort,ev,neut) 12.7857142857143
+N(soort,ev,neut) is fgoodright Adv(gew,geen_func,stell,onverv) 12.0504164807378
+N(soort,mv,neut) is fhassuf 2 N(soort,ev,neut) 12
+baar hassuf 4 Adj(attr,stell,onverv) 12
+gd hassuf 2 V(trans,verl_dw,onverv) 11
+opge haspref 4 V(trans,verl_dw,onverv) 11
+N(soort,ev,neut) hij fgoodleft V(trans,ovt,1_of_2_of_3,ev) 10.5664414087657
+N(soort,mv,neut) as fhassuf 2 N(soort,ev,neut) 10
+N(soort,mv,neut) en faddsuf 2 N(soort,ev,neut) 10
+waar deletepref 4 Adv(pron,vrag) 9.33333333333333
+N(soort,mv,neut) us fhassuf 2 N(soort,ev,neut) 9
+N(soort,mv,neut) ge fhaspref 2 V(trans,verl_dw,onverv) 9
+ve hassuf 2 Adj(attr,stell,verv_neut) 8
+5 char Num(hoofd,bep,attr,onverv) 8
+N(soort,mv,neut) is fgoodright Adv(gew,geen_func,stell,onverv) 7.75
+N(soort,mv,neut) kunnen fgoodright V(trans,inf) 7.33333333333333
+N(soort,ev,neut) zo fgoodright Adj(attr,stell,onverv) 7.03846153846154
+oos hassuf 3 Adj(attr,stell,onverv) 7
+gek haspref 3 V(trans,verl_dw,onverv) 7
+N(soort,mv,neut) kan fgoodright V(trans,inf) 7
+N(soort,ev,neut) lt fhassuf 2 V(intrans,ott,3,ev) 7
+dat deletesuf 3 Conj(onder,met_fin) 7
+N(soort,mv,neut) de faddsuf 2 V(intrans,inf) 6.33333333333333
+V(trans,verl_dw,onverv) en fdeletesuf 2 N(soort,mv,neut) 6
+aang haspref 4 V(trans,verl_dw,onverv) 6
+N(soort,mv,neut) laten fgoodright V(trans,inf) 6
+gaat deletesuf 4 V(intrans,ott,3,ev) 6
+V(trans,verl_dw,onverv) e fhassuf 1 V(trans,verl_dw,verv_neut) 8
+Adj(attr,stell,verv_neut) re fdeletesuf 2 Adj(attr,vergr,verv_neut) 6
+Adj(attr,stell,verv_neut) kte fhassuf 3 V(trans,ovt,1_of_2_of_3,ev) 5.875
+N(soort,mv,neut) Ze fgoodright V(intrans,ovt,1_of_2_of_3,mv) 5.58095238095238
+V(trans,ovt,1_of_2_of_3,ev) t fhassuf 1 V(trans,ott,3,ev) 5.55729621255937
+V(trans,ott,3,ev) s fhaspref 1 V(intrans,ott,3,ev) 6.05333333333333
+N(soort,ev,neut) uitg fhaspref 4 V(trans,verl_dw,onverv) 5.5
+N(eigen,ev,neut) zijn fgoodleft Prep(voor) 5.11571790006325
+Adj(attr,stell,onverv) er fgoodright Adj(adv,stell,onverv) 5.03571428571429
+ss hassuf 2 N(soort,ev,neut) 5
+je addsuf 2 N(soort,ev,neut) 5
+V(trans,ott,3,ev) de fgoodright N(soort,ev,neut) 5
+N(eigen,ev,neut) ers fhassuf 3 N(soort,mv,neut) 5
+ante hassuf 4 Adj(attr,stell,verv_neut) 5
+N(soort,ev,neut) r faddsuf 1 Adj(attr,stell,verv_neut) 5
+Adj(adv,stell,onverv) b fchar Adj(attr,stell,onverv) 5
+teld hassuf 4 V(trans,verl_dw,onverv) 5
+N(soort,mv,neut) be fdeletepref 2 V(trans,inf) 5
+V(trans,ovt,1_of_2_of_3,ev) ge fhaspref 2 V(trans,verl_dw,verv_neut) 5
+N(eigen,ev,neut) 's fhassuf 2 N(eigen,ev,gen) 5
+N(soort,ev,neut) ik fgoodleft V(trans,ott,1,ev) 4.86642721604771
+nds hassuf 3 N(soort,ev,gen) 4.66666666666667
+afge haspref 4 V(trans,verl_dw,onverv) 4.5
+N(soort,mv,neut) niet fgoodright Adv(gew,geen_func,stell,onverv) 4.4590321958743
+V(trans,ovt,1_of_2_of_3,ev) fde fhassuf 3 Pron(aanw,neut,attr) 4.41666666666667
+we hassuf 2 Adj(attr,stell,verv_neut) 4.33333333333333
+N(soort,mv,neut) ze fgoodleft V(trans,ovt,1_of_2_of_3,mv) 4.27272727272727
+N(soort,mv,neut) ver fdeletepref 3 V(trans,inf) 4.25
+Adj(attr,stell,onverv) S-T-A-R-T fgoodright Adj(adv,stell,onverv) 4.21428571428571
+N(eigen,ev,neut) ik fgoodleft Conj(onder,met_fin) 4.18333333333333
+N(soort,ev,neut) Ik fgoodright V(trans,ott,1,ev) 4.16666666666667
+Adj(attr,stell,onverv) die fgoodright Adj(adv,stell,onverv) 4.07582417582418
+Adj(adv,stell,onverv) zijn fgoodleft Adj(attr,stell,onverv) 4.04117647058824
+ode hassuf 3 N(soort,ev,neut) 4
+ze hassuf 2 Adj(attr,stell,verv_neut) 4
+nge hassuf 3 Adj(attr,stell,verv_neut) 4
+goe haspref 3 Adj(attr,stell,verv_neut) 4
+N(soort,ev,neut) heel fgoodright Adj(attr,stell,onverv) 4
+N(soort,mv,neut) af fdeletepref 2 V(trans,inf) 4
+maal deletesuf 4 Adv(gew,geen_func,stell,onverv) 4
+eens deletesuf 4 Adv(gew,geen_func,stell,onverv) 4
+eert hassuf 4 V(trans,ott,3,ev) 4
+N(soort,ev,neut) dt fhassuf 2 V(intrans,ott,3,ev) 4
+V(intrans,ott,3,ev) b fchar V(trans,ott,3,ev) 4
+N(soort,ev,neut) mt fhassuf 2 V(intrans,ott,3,ev) 4
+N(soort,ev,neut) pt fhassuf 2 V(intrans,ott,3,ev) 4
+tond hassuf 4 V(intrans,ovt,1_of_2_of_3,ev) 4
+Adj(attr,stell,verv_neut) rde fhassuf 3 V(trans,verl_dw,verv_neut) 4
+mand hassuf 4 Pron(onbep,neut,zelfst) 4
+een deletesuf 3 Adv(gew,geen_func,stell,onverv) 3.89473684210526
+V(trans,ott,3,ev) en fgoodleft V(intrans,ott,3,ev) 3.86967766116942
+eft hassuf 3 V(trans,ott,3,ev) 4.4
+V(trans,inf) de fgoodright N(soort,mv,neut) 3.83333333333333
+2 char Num(hoofd,bep,attr,onverv) 3.71428571428571
+Adj(attr,stell,onverv) over fgoodleft Adj(adv,stell,onverv) 3.7047619047619
+V(trans,ott,1,ev) in fgoodleft V(intrans,ovt,1_of_2_of_3,ev) 3.62096774193548
+V(trans,ott,3,ev) zich fgoodleft V(refl,ott,3,ev) 3.60614035087719
+ief deletesuf 3 Adj(attr,stell,onverv) 3.5
+N(soort,mv,neut) moet fgoodright V(trans,inf) 3.5
+V(trans,verl_dw,onverv) s fhassuf 1 Adv(gew,geen_func,stell,onverv) 3.5
+N(soort,ev,neut) ken fhassuf 3 V(trans,inf,subst) 3.5
+V(trans,ovt,1_of_2_of_3,ev) in fgoodleft V(intrans,ovt,1_of_2_of_3,ev) 3.19579538171719
+N(soort,ev,neut) niet fgoodright Adj(attr,stell,onverv) 3.14761904761905
+Adj(attr,stell,onverv) de fgoodright N(soort,ev,neut) 3.18893557422969
+V(trans,verl_dw,onverv) tijd fgoodright Adv(gew,geen_func,stell,onverv) 3.10843373493976
+hi deletepref 2 Adv(pron,aanw) 3.04545454545455
+V(trans,ovt,1_of_2_of_3,ev) j fchar N(soort,ev,neut) 3
+Pr haspref 2 N(soort,ev,neut) 3
+N(soort,mv,neut) sen faddsuf 3 N(soort,ev,neut) 3
+ten goodright N(soort,ev,neut) 3
+N(eigen,ev,neut) een fgoodright N(soort,ev,neut) 3
+ci hassuf 2 N(soort,mv,neut) 3
+jes hassuf 3 N(soort,mv,neut) 3
+N(eigen,ev,neut) nen fhassuf 3 N(soort,mv,neut) 3
+Pi haspref 2 N(eigen,ev,neut) 4
+N(soort,ev,neut) sch fhassuf 3 Adj(adv,stell,onverv) 4
+N(soort,ev,neut) . fchar N(eigen,ev,neut) 3
+N(soort,mv,neut) B fchar N(eigen,ev,neut) 3
+ber hassuf 3 N(eigen,ev,neut) 3
+dag hassuf 3 N(eigen,ev,neut) 3
+rne hassuf 3 Adj(attr,stell,verv_neut) 3
+N(soort,ev,neut) one fhassuf 3 Adj(attr,stell,verv_neut) 3
+V(trans,ovt,1_of_2_of_3,ev) ude fhassuf 3 Adj(attr,stell,verv_neut) 3
+Adv(gew,geen_func,stell,onverv) p fchar Adj(attr,stell,onverv) 3
+Num(hoofd,bep,attr,onverv) rig fhassuf 3 Adj(attr,stell,onverv) 3
+urd hassuf 3 V(trans,verl_dw,onverv) 3
+N(soort,ev,neut) tst fhassuf 3 V(trans,verl_dw,onverv) 3
+N(soort,mv,neut) ont fhaspref 3 V(trans,verl_dw,onverv) 3
+meeg haspref 4 V(trans,verl_dw,onverv) 3
+toeg haspref 4 V(trans,verl_dw,onverv) 3
+N(soort,mv,neut) doet fgoodright V(trans,inf) 3
+lig deletesuf 3 Adj(adv,stell,onverv) 3
+wel deletesuf 3 Adv(gew,geen_func,stell,onverv) 3
+van deletepref 3 Adv(gew,geen_func,stell,onverv) 3
+min hassuf 3 Adv(gew,geen_func,stell,onverv) 3
+N(soort,ev,neut) kwam fgoodright Adv(gew,geen_func,stell,onverv) 3
+rouw hassuf 4 N(soort,ev,neut) 3
+eep hassuf 3 V(trans,ovt,1_of_2_of_3,ev) 3
+htte hassuf 4 V(trans,ovt,1_of_2_of_3,ev) 3
+gaan deletesuf 4 V(intrans,inf) 3
+N(soort,ev,neut) jft fhassuf 3 V(trans,ott,3,ev) 3
+urt hassuf 3 V(intrans,ott,3,ev) 3
+ande hassuf 4 V(intrans,teg_dw,verv_neut) 3
+gden hassuf 4 V(intrans,ovt,1_of_2_of_3,mv) 3
+Hi deletepref 2 Adv(pron,aanw) 3
+Daa haspref 3 Adv(pron,aanw) 3
+N(soort,ev,neut) jker fhassuf 4 Adj(adv,vergr,onverv) 3
+N(eigen,ev,gen) a's fhassuf 3 N(eigen,mv,neut) 3
+dere deletesuf 4 Adj(attr,vergr,verv_neut) 3
+N(soort,mv,neut) igen fhassuf 4 Adj(zelfst,stell,verv_mv) 3
+N(soort,mv,neut) iets fgoodright Adj(attr,stell,verv_gen) 3
+. haspref 1 Punc(hellip) 3
+Adj(attr,stell,verv_neut) Op fgoodright Pron(onbep,neut,attr) 2.97872340425532

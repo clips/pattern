@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sentiment language="xx" version="1.0" author="" license="PDDL">
+<word form="happy" pos="JJ" polarity="0.5" subjectivity="0.5" intensity="1.0" />
+<word form="sad" pos="JJ" polarity="0.5" subjectivity="-0.5" intensity="1.0" />
+<word form="very" pos="RB" polarity="0.0" subjectivity="0.25" intensity="1.5" />
+<word form="hate" pos="VB" polarity="-0.7" subjectivity="0.8" intensity="1.0" />
+</sentiment>
