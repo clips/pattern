@@ -1,9 +1,9 @@
-import os
+import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 import random
 
 from pattern.db     import Datasheet
 from pattern.nl     import tag, predicative
-from pattern.vector import SVM, KNN, count, shuffled, Bayes
+from pattern.vector import SVM, KNN, NB, count, shuffled
 
 # This example demonstrates a Support Vector Machine (SVM).
 # SVM is a robust classifier that uses "kernel" functions.
@@ -81,7 +81,7 @@ for score, review in data[1000:1500]:
     n += 1
 
 # The overall accuracy is around 82%.
-# A Naieve Bayes classifier has about 79% accuracy.
+# A Naieve Bayes classifier has about 78% accuracy.
 # A KNN classifier has about 80% accuracy.
 # Careful: to get a reliable score you need to calculate precision and recall,
 # study the documentation at:
