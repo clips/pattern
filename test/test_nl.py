@@ -63,23 +63,23 @@ class TestInflection(unittest.TestCase):
         self.assertTrue(float(i) / n > 0.96)
         print "pattern.nl.predicative()"
 
-    def test_parse_lemma(self):
+    def test_find_lemma(self):
         # Assert the accuracy of the verb lemmatization algorithm.
         # Note: the accuracy is higher (90%) when measured on CELEX word forms
-        # (presumably because nl.inflect.VERBS has high percentage irregular verbs).
+        # (presumably because nl.inflect.verbs has high percentage irregular verbs).
         i, n = 0, 0
-        for v1, v2 in nl.inflect.VERBS.inflections.items():
-            if nl.inflect._parse_lemma(v1) == v2: 
+        for v1, v2 in nl.inflect.verbs.inflections.items():
+            if nl.inflect.verbs.find_lemma(v1) == v2: 
                 i += 1
             n += 1
         self.assertTrue(float(i) / n > 0.83)
-        print "pattern.nl.inflect._parse_lemma()"
+        print "pattern.nl.inflect.verbs.find_lemma()"
         
-    def test_parse_lexeme(self):
+    def test_find_lexeme(self):
         # Assert the accuracy of the verb conjugation algorithm.
         i, n = 0, 0
-        for v, lexeme1 in nl.inflect.VERBS.infinitives.items():
-            lexeme2 = nl.inflect._parse_lexeme(v)
+        for v, lexeme1 in nl.inflect.verbs.infinitives.items():
+            lexeme2 = nl.inflect.verbs.find_lexeme(v)
             for j in range(len(lexeme2)):
                 if lexeme1[j] == lexeme2[j] or \
                    lexeme1[j] == "" and \
@@ -87,7 +87,7 @@ class TestInflection(unittest.TestCase):
                     i += 1
                 n += 1
         self.assertTrue(float(i) / n > 0.79)
-        print "pattern.nl.inflect._parse_lexeme()"
+        print "pattern.nl.inflect.verbs.find_lexeme()"
 
     def test_conjugate(self):
         # Assert different tenses with different conjugations.
@@ -173,8 +173,8 @@ class TestParser(unittest.TestCase):
           (".",    "Punc(punt)"),
           ("UH",   "Int"),
           ("SYM",  "Misc(symbool)")):
-            self.assertEqual(nl.parser.wotan2penntreebank(wotan), penntreebank)
-        print "pattern.nl.parser.wotan2penntreebank()"
+            self.assertEqual(nl.wotan2penntreebank(wotan), penntreebank)
+        print "pattern.nl.wotan2penntreebank()"
         
     def test_find_lemmata(self):
         # Assert lemmata for nouns and verbs.
@@ -206,7 +206,7 @@ class TestParser(unittest.TestCase):
         for sentence in open(os.path.join(PATH, "corpora", "tagged-nl-twnc.txt")).readlines():
             sentence = sentence.decode("utf-8").strip()
             s1 = [w.split("/") for w in sentence.split(" ")]
-            s1 = [(w, nl.parser.wotan2penntreebank(tag)) for w, tag in s1]
+            s1 = [(w, nl.wotan2penntreebank(tag)) for w, tag in s1]
             s2 = [[w for w, pos in s1]]
             s2 = nl.parse(s2, tokenize=False)
             s2 = [w.split("/") for w in s2.split(" ")]
@@ -219,19 +219,19 @@ class TestParser(unittest.TestCase):
 
     def test_tag(self):
         # Assert [("zwarte", "JJ"), ("panters", "NNS")].
-        v = nl.parser.tag("zwarte panters")
+        v = nl.tag("zwarte panters")
         self.assertEqual(v, [("zwarte", "JJ"), ("panters", "NNS")])
-        print "pattern.nl.parser.tag()"
+        print "pattern.nl.tag()"
     
     def test_command_line(self):
         # Assert parsed output from the command-line (example from the documentation).
-        p = ["python", "-m", "pattern.nl.parser", "-s", "Leuke kat.", "-OTCRL"]
+        p = ["python", "-m", "pattern.nl", "-s", "Leuke kat.", "-OTCRL"]
         p = subprocess.Popen(p, stdout=subprocess.PIPE)
         p.wait()
         v = p.stdout.read()
         v = v.strip()
         self.assertEqual(v, "Leuke/JJ/B-NP/O/O/leuk kat/NN/I-NP/O/O/kat ././O/O/O/.")
-        print "python -m pattern.nl.parser"
+        print "python -m pattern.nl"
 
 #---------------------------------------------------------------------------------------------------
 
@@ -253,10 +253,10 @@ class TestSentiment(unittest.TestCase):
         for score, review in Datasheet.load(os.path.join(PATH, "corpora", "polarity-nl-bol.com.csv")):
             reviews.append((review, int(score) > 0))
         A, P, R, F = test(lambda review: nl.positive(review), reviews)
-        self.assertTrue(A > 0.80)
-        self.assertTrue(P > 0.77)
-        self.assertTrue(R > 0.85)
-        self.assertTrue(F > 0.81)
+        self.assertTrue(A > 0.81)
+        self.assertTrue(P > 0.79)
+        self.assertTrue(R > 0.86)
+        self.assertTrue(F > 0.82)
         print "pattern.nl.sentiment()"
 
 #---------------------------------------------------------------------------------------------------

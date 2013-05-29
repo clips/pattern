@@ -75,27 +75,27 @@ class TestInflection(unittest.TestCase):
         self.assertTrue(float(i) / n > 0.92)
         print "pattern.es.predicative()"
 
-    def test_parse_lemma(self):
+    def test_find_lemma(self):
         # Assert the accuracy of the verb lemmatization algorithm.
         i, n = 0, 0
-        for v1, v2 in es.inflect.VERBS.inflections.items():
-            if es.inflect._parse_lemma(v1) == v2: 
+        for v1, v2 in es.inflect.verbs.inflections.items():
+            if es.inflect.verbs.find_lemma(v1) == v2: 
                 i += 1
             n += 1
         self.assertTrue(float(i) / n > 0.80)
-        print "pattern.es.inflect._parse_lemma()"
+        print "pattern.es.inflect.verbs.find_lemma()"
         
-    def test_parse_lexeme(self):
+    def test_find_lexeme(self):
         # Assert the accuracy of the verb conjugation algorithm.
         i, n = 0, 0
-        for v, lexeme1 in es.inflect.VERBS.infinitives.items():
-            lexeme2 = es.inflect._parse_lexeme(v)
+        for v, lexeme1 in es.inflect.verbs.infinitives.items():
+            lexeme2 = es.inflect.verbs.find_lexeme(v)
             for j in range(len(lexeme2)):
                 if lexeme1[j] == lexeme2[j]:
                     i += 1
                 n += 1
         self.assertTrue(float(i) / n > 0.85)
-        print "pattern.es.inflect._parse_lexeme()"
+        print "pattern.es.inflect.verbs.find_lexeme()"
 
     def test_conjugate(self):
         # Assert different tenses with different conjugations.
@@ -209,7 +209,7 @@ class TestParser(unittest.TestCase):
             sentence = sentence.decode("utf-8").strip()
             s1 = [w.split("/") for w in sentence.split(" ")]
             s2 = [[w for w, pos in s1]]
-            s2 = es.parse(s2, tokenize=False, tagset=es.parser.PAROLE)
+            s2 = es.parse(s2, tokenize=False, tagset=es.PAROLE)
             s2 = [w.split("/") for w in s2.split(" ")]
             for j in range(len(s1)):
                 if s1[j][1] == s2[j][1]:
@@ -220,19 +220,19 @@ class TestParser(unittest.TestCase):
 
     def test_tag(self):
         # Assert [("el", "DT"), ("gato", "NN"), ("negro", "JJ")].
-        v = es.parser.tag("el gato negro")
+        v = es.tag("el gato negro")
         self.assertEqual(v, [("el", "DT"), ("gato", "NN"), ("negro", "JJ")])
-        print "pattern.es.parser.tag()"
+        print "pattern.es.tag()"
     
     def test_command_line(self):
         # Assert parsed output from the command-line (example from the documentation).
-        p = ["python", "-m", "pattern.es.parser", "-s", "El gato negro.", "-OTCRL"]
+        p = ["python", "-m", "pattern.es", "-s", "El gato negro.", "-OTCRL"]
         p = subprocess.Popen(p, stdout=subprocess.PIPE)
         p.wait()
         v = p.stdout.read()
         v = v.strip()
         self.assertEqual(v, "El/DT/B-NP/O/O/el gato/NN/I-NP/O/O/gato negro/JJ/I-NP/O/O/negro ././O/O/O/.")
-        print "python -m pattern.es.parser"
+        print "python -m pattern.es"
 
 #---------------------------------------------------------------------------------------------------
 

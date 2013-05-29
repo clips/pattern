@@ -82,23 +82,23 @@ class TestInflection(unittest.TestCase):
         self.assertTrue(float(i) / n > 0.98)
         print "pattern.de.predicative()"
 
-    def test_parse_lemma(self):
+    def test_find_lemma(self):
         # Assert the accuracy of the verb lemmatization algorithm.
         # Note: the accuracy is higher (88%) when measured on CELEX word forms
-        # (presumably because de.inflect.VERBS has high percentage irregular verbs).
+        # (presumably because de.inflect.verbs has high percentage irregular verbs).
         i, n = 0, 0
-        for v1, v2 in de.inflect.VERBS.inflections.items():
-            if de.inflect._parse_lemma(v1) == v2: 
+        for v1, v2 in de.inflect.verbs.inflections.items():
+            if de.inflect.verbs.find_lemma(v1) == v2: 
                 i += 1
             n += 1
         self.assertTrue(float(i) / n > 0.86)
-        print "pattern.de.inflect._parse_lemma()"
+        print "pattern.de.inflect.verbs.find_lemma()"
         
-    def test_parse_lexeme(self):
+    def test_find_lexeme(self):
         # Assert the accuracy of the verb conjugation algorithm.
         i, n = 0, 0
-        for v, lexeme1 in de.inflect.VERBS.infinitives.items():
-            lexeme2 = de.inflect._parse_lexeme(v)
+        for v, lexeme1 in de.inflect.verbs.infinitives.items():
+            lexeme2 = de.inflect.verbs.find_lexeme(v)
             for j in range(len(lexeme2)):
                 if lexeme1[j] == "":
                     continue
@@ -106,7 +106,7 @@ class TestInflection(unittest.TestCase):
                     i += 1
                 n += 1
         self.assertTrue(float(i) / n > 0.86)
-        print "pattern.de.inflect._parse_lexeme()"
+        print "pattern.de.inflect.verbs.find_lexeme()"
 
     def test_conjugate(self):
         # Assert different tenses with different conjugations.
@@ -175,7 +175,7 @@ class TestParser(unittest.TestCase):
             ["Ich", "PRP", "ich"], 
             ["sage", "VB", "sagen"], 
             [u"schöne", "JJ", u"schön"], 
-            ["Dinge", "NNS", "Ding"]])
+            ["Dinge", "NNS", "ding"]])
         print "pattern.de.parser.find_lemmata()"
     
     def test_parse(self):
@@ -199,19 +199,19 @@ class TestParser(unittest.TestCase):
 
     def test_tag(self):
         # Assert [("der", "DT"), ("grosse", "JJ"), ("Hund", "NN")].
-        v = de.parser.tag("der grosse Hund")
+        v = de.tag("der grosse Hund")
         self.assertEqual(v, [("der", "DT"), ("grosse", "JJ"), ("Hund", "NN")])
-        print "pattern.de.parser.tag()"
+        print "pattern.de.tag()"
     
     def test_command_line(self):
         # Assert parsed output from the command-line (example from the documentation).
-        p = ["python", "-m", "pattern.de.parser", "-s", "Der grosse Hund.", "-OTCRL"]
+        p = ["python", "-m", "pattern.de", "-s", "Der grosse Hund.", "-OTCRL"]
         p = subprocess.Popen(p, stdout=subprocess.PIPE)
         p.wait()
         v = p.stdout.read()
         v = v.strip()
         self.assertEqual(v, "Der/DT/B-NP/O/O/der grosse/JJ/I-NP/O/O/gross Hund/NN/I-NP/O/O/hund ././O/O/O/.")
-        print "python -m pattern.de.parser"
+        print "python -m pattern.de"
 
 #---------------------------------------------------------------------------------------------------
 

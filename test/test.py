@@ -9,6 +9,7 @@ import test_en
 import test_es
 import test_fr
 import test_nl
+import test_text
 import test_search
 import test_vector
 import test_graph
@@ -29,6 +30,7 @@ def suite():
     suite.addTest(test_es.suite())
     suite.addTest(test_fr.suite())
     suite.addTest(test_nl.suite())
+    suite.addTest(test_text.suite())
     suite.addTest(test_search.suite())
     suite.addTest(test_vector.suite())
     suite.addTest(test_graph.suite())

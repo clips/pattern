@@ -29,27 +29,27 @@ class TestInflection(unittest.TestCase):
         self.assertTrue(float(i) / n > 0.95)
         print "pattern.fr.predicative()"
 
-    def test_parse_lemma(self):
+    def test_find_lemma(self):
         # Assert the accuracy of the verb lemmatization algorithm.
         i, n = 0, 0
-        for v1, v2 in fr.inflect.VERBS.inflections.items():
-            if fr.inflect._parse_lemma(v1) == v2: 
+        for v1, v2 in fr.inflect.verbs.inflections.items():
+            if fr.inflect.verbs.find_lemma(v1) == v2: 
                 i += 1
             n += 1
         self.assertTrue(float(i) / n > 0.80)
-        print "pattern.fr.inflect._parse_lemma()"
+        print "pattern.fr.inflect.verbs.find_lemma()"
         
-    def test_parse_lexeme(self):
+    def test_find_lexeme(self):
         # Assert the accuracy of the verb conjugation algorithm.
         i, n = 0, 0
-        for v, lexeme1 in fr.inflect.VERBS.infinitives.items():
-            lexeme2 = fr.inflect._parse_lexeme(v)
+        for v, lexeme1 in fr.inflect.verbs.infinitives.items():
+            lexeme2 = fr.inflect.verbs.find_lexeme(v)
             for j in range(len(lexeme2)):
                 if lexeme1[j] == lexeme2[j]:
                     i += 1
                 n += 1
         self.assertTrue(float(i) / n > 0.85)
-        print "pattern.fr.inflect._parse_lexeme()"
+        print "pattern.fr.inflect.verbs.find_lexeme()"
 
     def test_conjugate(self):
         # Assert different tenses with different conjugations.
@@ -162,19 +162,19 @@ class TestParser(unittest.TestCase):
 
     def test_tag(self):
         # Assert [("le", "DT"), ("chat", "NN"), ("noir", "JJ")].
-        v = fr.parser.tag("le chat noir")
+        v = fr.tag("le chat noir")
         self.assertEqual(v, [("le", "DT"), ("chat", "NN"), ("noir", "JJ")])
-        print "pattern.fr.parser.tag()"
+        print "pattern.fr.tag()"
 
     def test_command_line(self):
         # Assert parsed output from the command-line (example from the documentation).
-        p = ["python", "-m", "pattern.fr.parser", "-s", u"Le chat noir.", "-OTCRL"]
+        p = ["python", "-m", "pattern.fr", "-s", u"Le chat noir.", "-OTCRL"]
         p = subprocess.Popen(p, stdout=subprocess.PIPE)
         p.wait()
         v = p.stdout.read()
         v = v.strip()
         self.assertEqual(v, "Le/DT/B-NP/O/O/le chat/NN/I-NP/O/O/chat noir/JJ/I-NP/O/O/noir ././O/O/O/.")
-        print "python -m pattern.fr.parser"
+        print "python -m pattern.fr"
 
 #---------------------------------------------------------------------------------------------------
 
@@ -198,7 +198,7 @@ class TestSentiment(unittest.TestCase):
         A, P, R, F = test(lambda review: fr.positive(review), reviews)
         self.assertTrue(A > 0.75)
         self.assertTrue(P > 0.76)
-        self.assertTrue(R > 0.73)
+        self.assertTrue(R > 0.74)
         self.assertTrue(F > 0.75)
         print "pattern.fr.sentiment()"
 
