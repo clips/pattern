@@ -7,12 +7,20 @@
 ####################################################################################################
 # This module can benefit from loading psyco when iterating a GraphLayout.
 
+import os
+
 from math     import sqrt, pow
 from math     import sin, cos, atan2, degrees, radians, pi
 from random   import random
 from heapq    import heappush, heappop
 from warnings import warn
 from codecs   import open
+from shutil   import rmtree
+
+try:
+    MODULE = os.path.dirname(os.path.abspath(__file__))
+except:
+    MODULE = ""
 
 # float("inf") doesn't work on windows.
 INFINITE = 1e20
@@ -1097,17 +1105,10 @@ def insert(graph, node, a, b):
 
 #--- HTML CANVAS GRAPH RENDERER --------------------------------------------------------------------
 
-import os, shutil, glob
-import re
-
-try:
-    MODULE = os.path.dirname(__file__)
-except:
-    MODULE = ""
-
 def minify(js):
     """ Returns a compressed Javascript string with comments and whitespace removed.
     """
+    import re
     W = (
         "\(\[\{\,\;\=\-\+\*\/",
         "\)\]\}\,\;\=\-\+\*\/"
@@ -1432,7 +1433,7 @@ class HTMLCanvasRenderer:
             that visualizes the graph using the HTML5 <canvas> tag.
         """
         if overwrite and os.path.exists(path):
-            shutil.rmtree(path)
+            rmtree(path)
         os.mkdir(path) # With overwrite=False, raises OSError if the path already exists.
         os.mkdir(os.path.join(path, "js"))
         # Copy compressed graph.js + canvas.js (unless a custom path is given.)

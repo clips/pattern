@@ -1,4 +1,5 @@
 #### PATTERN | WEB #################################################################################
+# -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
@@ -52,31 +53,38 @@ except:
     MODULE = ""
 
 #### UNICODE #######################################################################################
+# Latin-1 (ISO-8859-1) encoding is identical to Windows-1252 except for the code points 128-159:
+# Latin-1 assigns control codes in this range, Windows-1252 has characters, punctuation, symbols
+# assigned to these code points.
 
-def decode_utf8(string):
-    """ Returns the given string as a unicode string (if possible).
+def decode_string(v, encoding="utf-8"):
+    """ Returns the given value as a Unicode string (if possible).
     """
-    if isinstance(string, str):
-        for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
-            try:
-                return string.decode(*encoding)
+    if isinstance(encoding, basestring):
+        encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
+    if isinstance(v, str):
+        for e in encoding:
+            try: return v.decode(*e)
             except:
                 pass
-        return string
-    return unicode(string)
+        return v
+    return unicode(v)
 
-def encode_utf8(string):
-    """ Returns the given string as a Python byte string (if possible).
+def encode_string(v, encoding="utf-8"):
+    """ Returns the given value as a Python byte string (if possible).
     """
-    if isinstance(string, unicode):
-        try:
-            return string.encode("utf-8")
-        except:
-            return string
-    return str(string)
+    if isinstance(encoding, basestring):
+        encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
+    if isinstance(v, unicode):
+        for e in encoding:
+            try: return v.encode(*e)
+            except:
+                pass
+        return v
+    return str(v)
 
-u = decode_utf8
-s = encode_utf8
+u = decode_utf8 = decode_string
+s = encode_utf8 = encode_string
 
 # For clearer source code:
 bytestring = s
@@ -1695,7 +1703,7 @@ class Wikipedia(MediaWiki):
         s = MEDIAWIKI
         s = s.replace("{SUBDOMAIN}", self._subdomain)
         s = s.replace("{DOMAIN}", "wikipedia.org")
-        s = s.replace("{API}", '/w/api.php')
+        s = s.replace("{API}", "/w/api.php")
         return s
 
     @property
@@ -2328,6 +2336,9 @@ class Node:
         """
         visit(self); [node.traverse(visit) for node in self.children]
 
+    def __nonzero__(self):
+        return True
+
     def __len__(self):
         return len(self.children)
     def __iter__(self):
@@ -2416,7 +2427,7 @@ class Element(Node):
         """ Returns a list of nested Elements with the given attribute value.
         """
         return [Element(x) for x in (self._p.findAll(True, attrs=kwargs))]
-    by_attribute = getElementsByAttribute = get_elements_by_attribute
+    by_attribute = by_attr = getElementsByAttribute = get_elements_by_attribute
 
     @property
     def content(self):

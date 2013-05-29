@@ -34,13 +34,13 @@ from time        import time
 from random      import random, choice
 from itertools   import izip, chain
 from bisect      import insort
-from operator    import itemgetter, mul
+from operator    import itemgetter
 from StringIO    import StringIO
 from codecs      import open
 from collections import defaultdict
 
 try:
-    MODULE = os.path.dirname(__file__)
+    MODULE = os.path.dirname(os.path.abspath(__file__))
 except:
     MODULE = ""
 
@@ -55,28 +55,38 @@ except:
         conjugate   = lambda w, t, **k: w
 
 #--- STRING FUNCTIONS ------------------------------------------------------------------------------
-            
-def decode_utf8(string):
-    """ Returns the given string as a unicode string (if possible).
+# Latin-1 (ISO-8859-1) encoding is identical to Windows-1252 except for the code points 128-159:
+# Latin-1 assigns control codes in this range, Windows-1252 has characters, punctuation, symbols
+# assigned to these code points.
+
+def decode_string(v, encoding="utf-8"):
+    """ Returns the given value as a Unicode string (if possible).
     """
-    if isinstance(string, str):
-        for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
-            try: 
-                return string.decode(*encoding)
+    if isinstance(encoding, basestring):
+        encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
+    if isinstance(v, str):
+        for e in encoding:
+            try: return v.decode(*e)
             except:
                 pass
-        return string
-    return unicode(string)
-    
-def encode_utf8(string):
-    """ Returns the given string as a Python byte string (if possible).
+        return v
+    return unicode(v)
+
+def encode_string(v, encoding="utf-8"):
+    """ Returns the given value as a Python byte string (if possible).
     """
-    if isinstance(string, unicode):
-        try: 
-            return string.encode("utf-8")
-        except:
-            return string
-    return str(string)
+    if isinstance(encoding, basestring):
+        encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
+    if isinstance(v, unicode):
+        for e in encoding:
+            try: return v.encode(*e)
+            except:
+                pass
+        return v
+    return str(v)
+
+decode_utf8 = decode_string
+encode_utf8 = encode_string
     
 def shi(i, base="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"):
     """ Returns a short string hash for a given int.
@@ -188,7 +198,7 @@ for f in glob.glob(os.path.join(MODULE, "stopwords-*.txt")):
 #--- WORD COUNT ------------------------------------------------------------------------------------
 # Simple bag-of-word models are often made up of word frequencies or character trigram frequencies.
 
-PUNCTUATION = ".:;,!?()[]'\"*#-"
+PUNCTUATION = ".,;:!?()[]{}`''\"@#$^&*+-|=~_"
 
 def words(string, filter=lambda w: w.lstrip("'").isalnum(), punctuation=PUNCTUATION, **kwargs):
     """ Returns a list of words (alphanumeric character sequences) from the given string.
@@ -1872,6 +1882,20 @@ class ConfusionMatrix(defaultdict):
                 if type == t2 != t1: 
                     FP += n
         return (TP, TN, FP, FN)
+    
+    @property
+    def table(self):
+        k = sorted(map(decode_utf8, self))
+        n = max(map(len, k)) + 2
+        s = "".ljust(n)
+        for t1 in k:
+            s += t1.ljust(n)
+        for t1 in k:
+            s += "\n"
+            s += t1.ljust(n)
+            for t2 in k: 
+                s += str(self[t1][t2]).ljust(n)
+        return s
 
 def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
     """ For 10-fold cross-validation, performs 10 separate tests of the classifier,

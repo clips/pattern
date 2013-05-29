@@ -28,7 +28,7 @@ except:
     from email.Utils import parsedate_tz, mktime_tz
     
 try: 
-    MODULE = os.path.dirname(__file__)
+    MODULE = os.path.dirname(os.path.abspath(__file__))
 except:
     MODULE = ""
 
@@ -88,8 +88,26 @@ class Date(datetime):
     """ A convenience wrapper for datetime.datetime with a default string format.
     """
     format = DEFAULT_DATE_FORMAT
-    def copy(self):
-        return date(self.timestamp)
+    # Date.year
+    # Date.month
+    # Date.day
+    # Date.minute
+    # Date.second
+    @property
+    def minutes(self):
+        return self.minute
+    @property
+    def seconds(self):
+        return self.second
+    @property
+    def microseconds(self):
+        return self.microsecond
+    @property
+    def week(self):
+        return self.isocalendar()[1]
+    @property
+    def weekday(self):
+        return self.isocalendar()[2]
     @property
     def timestamp(self):
         return int(mktime(self.timetuple())) # Seconds elapsed since 1/1/1970.
@@ -98,6 +116,8 @@ class Date(datetime):
             # Python's strftime() doesn't handle year < 1900:
             return strftime(format, (1900,) + self.timetuple()[1:]).replace("1900", str(self.year), 1)
         return datetime.strftime(self, format)
+    def copy(self):
+        return date(self.timestamp)
     def __str__(self):
         return self.strftime(self.format)
     def __repr__(self):
@@ -169,6 +189,38 @@ def time(days=0, seconds=0, minutes=0, hours=0, **kwargs):
     return timedelta(days=days, seconds=seconds, minutes=minutes, hours=hours, **kwargs)
 
 #### STRING FUNCTIONS ##############################################################################
+# Latin-1 (ISO-8859-1) encoding is identical to Windows-1252 except for the code points 128-159:
+# Latin-1 assigns control codes in this range, Windows-1252 has characters, punctuation, symbols
+# assigned to these code points.
+
+def decode_string(v, encoding="utf-8"):
+    """ Returns the given value as a Unicode string (if possible).
+    """
+    if isinstance(encoding, basestring):
+        encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
+    if isinstance(v, str):
+        for e in encoding:
+            try: return v.decode(*e)
+            except:
+                pass
+        return v
+    return unicode(v)
+
+def encode_string(v, encoding="utf-8"):
+    """ Returns the given value as a Python byte string (if possible).
+    """
+    if isinstance(encoding, basestring):
+        encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
+    if isinstance(v, unicode):
+        for e in encoding:
+            try: return v.encode(*e)
+            except:
+                pass
+        return v
+    return str(v)
+
+decode_utf8 = decode_string
+encode_utf8 = encode_string
 
 def string(value, default=""):
     """ Returns the value cast to unicode, or default if it is None/empty.
@@ -177,28 +229,6 @@ def string(value, default=""):
     if value is None or value == "": # Don't do value != None because this includes 0.
         return default
     return decode_utf8(value)
-
-def decode_utf8(string):
-    """ Returns the given string as a unicode string (if possible).
-    """
-    if isinstance(string, str):
-        for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
-            try: 
-                return string.decode(*encoding)
-            except:
-                pass
-        return string
-    return unicode(string)
-    
-def encode_utf8(string):
-    """ Returns the given string as a Python byte string (if possible).
-    """
-    if isinstance(string, unicode):
-        try: 
-            return string.encode("utf-8")
-        except:
-            return string
-    return str(string)
 
 RE_AMPERSAND = re.compile("\&(?!\#)")           # & not followed by #
 RE_UNICODE   = re.compile(r'&(#?)(x|X?)(\w+);') # &#201;

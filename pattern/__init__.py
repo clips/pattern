@@ -39,11 +39,14 @@
 
 __author__    = "Tom De Smedt"
 __credits__   = "Tom De Smedt, Walter Daelemans"
-__version__   = "2.4"
+__version__   = "2.6"
 __copyright__ = "Copyright (c) 2010 University of Antwerp (BE)"
 __license__   = "BSD"
 
 ####################################################################################################
 
 import os
-__path__.append(os.path.join(__path__[0], "text"))
+
+try: __path__.append(os.path.join(__path__[0], "text"))
+except:
+    pass

@@ -16,7 +16,7 @@ from __init__ import WEIGHT, CENTRALITY, EIGENVECTOR, BETWEENNESS
 import os
 
 try:
-    MODULE = os.path.dirname(__file__)
+    MODULE = os.path.dirname(os.path.abspath(__file__))
 except:
     MODULE = ""
 

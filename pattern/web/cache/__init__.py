@@ -43,7 +43,7 @@ import codecs
 import datetime
 
 try: 
-    MODULE = os.path.dirname(__file__)
+    MODULE = os.path.dirname(os.path.abspath(__file__))
 except:
     MODULE = ""
 
