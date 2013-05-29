@@ -9,29 +9,21 @@ from time import time
 from math import sqrt, floor, modf, exp, pi, log
 
 from collections import defaultdict, deque
-from itertools import chain
-from operator import itemgetter
-from heapq import nlargest
+from itertools   import izip, chain
+from operator    import itemgetter
+from heapq       import nlargest
 
 ####################################################################################################
+# Simple implementation of Counter for Python 2.5 and 2.6.
+# See also: http://code.activestate.com/recipes/576611/
 
 class Counter(dict):
     
     def __init__(self, iterable=None, **kwargs):
-        """ Simple implementation of Counter for Python 2.5 and 2.6.
-        """
-        # See also: http://code.activestate.com/recipes/576611/
         self.update(iterable, **kwargs)
-
+                        
     def __missing__(self, k):
         return 0
-
-    def most_common(self, n=None):
-        """ Returns a list of the n most common (element, count)-tuples.
-        """
-        if n is None:
-            return sorted(self.items(), key=itemgetter(1), reverse=True)
-        return nlargest(n, self.items(), key=itemgetter(1))
 
     def update(self, iterable=None, **kwargs):
         """ Updates counter with the tallies from the given iterable, dictionary or Counter.
@@ -40,11 +32,18 @@ class Counter(dict):
             self.update(kwargs)
         if hasattr(iterable, "items"):
             for k, v in iterable.items(): 
-                self[k] = k in self and self[k] + v or v
+                self[k] = self.get(k, 0) + v
         elif hasattr(iterable, "__getitem__") \
           or hasattr(iterable, "__iter__"):
             for k in iterable: 
-                self[k] = k in self and self[k] + 1 or 1
+                self[k] = self.get(k, 0) + 1
+
+    def most_common(self, n=None):
+        """ Returns a list of the n most common (element, count)-tuples.
+        """
+        if n is None:
+            return sorted(self.items(), key=itemgetter(1), reverse=True)
+        return nlargest(n, self.items(), key=itemgetter(1))
 
     def copy(self):
         return Counter(self)
@@ -94,21 +93,25 @@ def profile(function, *args, **kwargs):
     return s
 
 #### PRECISION & RECALL ############################################################################
-# Recall: how good a system is at retrieving relevant results.
-# Precision: how good it is at filtering out irrelevant results (e.g., bad web search results).
 
 ACCURACY, PRECISION, RECALL, F1_SCORE = "accuracy", "precision", "recall", "F1-score"
 
-def confusion_matrix(match=lambda document:False, documents=[(None,False)]):
-    """ Returns the reliability of a binary classifier, as a tuple with the amount of 
-        true positives (TP), true negatives (TN), false positives (FP), false negatives (FN).
-        The classifier is a function that returns True or False for a document.
-        The list of documents contains (document, bool)-tuples,
-        where True means a document that should be identified as relevant (True) by the classifier.
+MACRO = "macro"
+
+def confusion_matrix(classify=lambda document: False, documents=[(None,False)]):
+    """ Returns the performance of a binary classification task (i.e., predicts True or False)
+        as a tuple of (TP, TN, FP, FN):
+        - TP: true positives  = correct hits, 
+        - TN: true negatives  = correct rejections,
+        - FP: false positives = false alarm (= type I error), 
+        - FN: false negatives = misses (= type II error).
+        The given classify() function returns True or False for a document.
+        The list of documents contains (document, bool)-tuples for testing,
+        where True means a document that should be identified as True by classify().
     """
     TN = TP = FN = FP = 0
     for document, b1 in documents:
-        b2 = match(document)
+        b2 = classify(document)
         if b1 and b2:
             TP += 1 # true positive
         elif not b1 and not b2:
@@ -119,42 +122,91 @@ def confusion_matrix(match=lambda document:False, documents=[(None,False)]):
             FN += 1 # false negative (type II error)
     return TP, TN, FP, FN
 
-def test(match=lambda document:False, documents=[]):
+def test(classify=lambda document:False, documents=[], average=None):
     """ Returns an (accuracy, precision, recall, F1-score)-tuple.
+        With average=None, precision & recall are computed for the positive class (True).
+        With average=MACRO, precision & recall for positive and negative class are macro-averaged.
     """
-    TP, TN, FP, FN = confusion_matrix(match, documents)
-    a = float(TP+TN) / ((TP+TN+FP+FN) or 1)
-    p = float(TP) / ((TP+FP) or 1)
-    r = float(TP) / ((TP+FN) or 1)
-    f = 2 * p * r / ((p + r) or 1)
-    return (a, p, r, f)
+    TP, TN, FP, FN = confusion_matrix(classify, documents)
+    A  = float(TP + TN) / ((TP + TN + FP + FN) or 1)
+    P1 = float(TP) / ((TP + FP) or 1) # positive class precision
+    R1 = float(TP) / ((TP + FN) or 1) # positive class recall
+    P0 = float(TN) / ((TN + FN) or 1) # negative class precision
+    R0 = float(TN) / ((TN + FP) or 1) # negative class recall
+    if average is None:
+        P, R = (P1, R1)
+    if average == MACRO:
+        P, R = ((P1 + P0) / 2,
+                (R1 + R0) / 2)
+    F1 = 2 * P * R / ((P + R) or 1)
+    return (A, P, R, F1)
 
-def accuracy(match=lambda document:False, documents=[]):
+def accuracy(classify=lambda document:False, documents=[], average=None):
     """ Returns the percentage of correct classifications (true positives + true negatives).
     """
-    return test(match, documents)[0]
+    return test(classify, documents)[0]
 
-def precision(match=lambda document:False, documents=[]):
+def precision(classify=lambda document:False, documents=[], average=None):
     """ Returns the percentage of correct positive classifications.
     """
-    return test(match, documents)[1]
+    return test(classify, documents)[1]
 
-def recall(match=lambda document:False, documents=[]):
+def recall(classify=lambda document:False, documents=[], average=None):
     """ Returns the percentage of positive cases correctly classified as positive.
     """
-    return test(match, documents)[2]
+    return test(classify, documents)[2]
     
-def F1(match=lambda document:False, documents=[]):
+def F1(classify=lambda document:False, documents=[], average=None):
     """ Returns the harmonic mean of precision and recall.
     """
-    return test(match, documents)[3]
+    return test(classify, documents)[3]
     
-def F(match=lambda document:False, documents=[], beta=1):
+def F(classify=lambda document:False, documents=[], beta=1, average=None):
     """ Returns the weighted harmonic mean of precision and recall,
         where recall is beta times more important than precision.
     """
-    a, p, r, f = test(match, documents)
-    return (beta**2 + 1) * p * r / ((beta**2 * p + r) or 1)
+    A, P, R, F1 = test(classify, documents)
+    return (beta ** 2 + 1) * P * R / ((beta ** 2 * P + R) or 1)
+
+#### SENSITIVITY & SPECIFICITY #####################################################################
+
+def sensitivity(classify=lambda document:False, documents=[]):
+    """ Returns the percentage of positive cases correctly classified as positive (= recall).
+    """
+    return recall(classify, document, average=None)
+    
+def specificity(classify=lambda document:False, documents=[]):
+    """ Returns the percentage of negative cases correctly classified as negative.
+    """
+    TP, TN, FP, FN = confusion_matrix(classify, documents, average=None)
+    return float(TN) / ((TN + FP) or 1)
+
+TPR = sensitivity # true positive rate
+TNR = specificity # true negative rate
+
+#### ROC & AUC #####################################################################################
+# See: Tom Fawcett (2005), An Introduction to ROC analysis.
+
+def roc(tests=[]):
+    """ Returns the ROC curve as an iterator of (x, y)-points,
+        for the given list of (TP, TN, FP, FN)-tuples.
+        The x-axis represents FPR = the false positive rate (1 - specificity).
+        The y-axis represents TPR = the true positive rate.
+    """
+    x = FPR = lambda TP, TN, FP, FN: float(FP) / ((FP + TN) or 1)
+    y = TPR = lambda TP, TN, FP, FN: float(TP) / ((TP + FN) or 1)
+    return sorted([(0.0, 0.0), (1.0, 1.0)] + [(x(*m), y(*m)) for m in tests])
+    
+def auc(curve=[]):
+    """ Returns the area under the curve for the given list of (x, y)-points.
+        The area is calculated using the trapezoidal rule.
+        For the area under the ROC-curve, 
+        the return value is the probability (0.0-1.0) that a classifier will rank 
+        a random positive document (True) higher than a random negative one (False).
+    """
+    curve = sorted(curve)
+    # Trapzoidal rule: area = (a + b) * h / 2, where a=y0, b=y1 and h=x1-x0.
+    return sum(0.5 * (x1 - x0) * (y1 + y0) for (x0, y0), (x1, y1) in sorted(izip(curve, curve[1:])))
 
 #### AGREEMENT #####################################################################################
 # +1.0 = total agreement between voters
@@ -284,20 +336,19 @@ readability = flesch_reading_ease
 # For example, on the Corpus of Plagiarised Short Answers (Clough & Stevenson, 2009),
 # accuracy (F1) is 94.5% with n=3 and intertextuality threshold > 0.1.
 
-PUNCTUATION = ".:;,!?()[]'\"*#-"
+PUNCTUATION = ".,;:!?()[]{}`''\"@#$^&*+-|=~_"
 
-def ngrams(string, n=3, **kwargs):
+def ngrams(string, n=3, punctuation=PUNCTUATION, **kwargs):
     """ Returns a list of n-grams (tuples of n successive words) from the given string.
+        Punctuation marks are stripped from words.
     """
-    s = [w.strip(PUNCTUATION) for w in string.split()]
+    s = string
+    s = s.replace(".", " .")
+    s = s.replace("?", " ?")
+    s = s.replace("!", " !")
+    s = [w.strip(punctuation) for w in s.split()]
     s = [w.strip() for w in s if w.strip()]
     return [tuple(s[i:i+n]) for i in range(len(s)-n+1)]
-
-try:
-    # Attempt to import the more robust ngrams() function with tokenization.
-    from pattern.en import ngrams
-except:
-    pass
 
 class Weight(float):
     """ A float with a magic "assessments" property,
