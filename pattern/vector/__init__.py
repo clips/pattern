@@ -304,7 +304,7 @@ def _uid():
     global _UID; _UID+=1; return _SESSION+"-"+str(_UID)
 
 # Term relevance weight:
-TF, TFIDF, TF_IDF = "tf", "tf-idf", "tf-idf"
+TF, TFIDF, TF_IDF, WEIGHT_BINARY, WEIGHT_ORIGINAL = "tf", "tf-idf", "tf-idf", "binary", "original"
 
 class Document(object):
     # Document(string = "", 
@@ -556,6 +556,10 @@ class Document(object):
             # When a document is added/deleted from a model, the cached vector is deleted.
             if getattr(self.model, "weight", TF) == TFIDF:
                 w, f = TFIDF, self.tf_idf
+            elif getattr(self.model, "weight", TF) == WEIGHT_ORIGINAL:
+                w, f = WEIGHT_ORIGINAL, (lambda word: float(self.terms.get(word, 0)))
+            elif getattr(self.model, "weight", TF) == WEIGHT_BINARY:
+                w, f = WEIGHT_BINARY, (lambda word: 1 if float(self.terms.get(word, 0)) > 0 else 0)
             else:
                 w, f = TF, self.tf
             self._vector = Vector(((w, f(w)) for w in self.terms), weight=w)
