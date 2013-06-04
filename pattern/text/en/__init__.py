@@ -102,6 +102,9 @@ parser = Parser(
 sentiment = Sentiment(
         path = os.path.join(MODULE, "en-sentiment.xml"), 
       synset = "wordnet_id",
+   negations = ("no", "not", "n't", "never"),
+   modifiers = ("RB",),
+   modifier  = lambda w: w.endswith("ly"),
     language = "en"
 )
 spelling = Spelling(
@@ -153,7 +156,7 @@ def subjectivity(s, **kwargs):
     return sentiment(s, **kwargs)[1]
     
 def positive(s, threshold=0.1, **kwargs):
-    """ Returns True if the given sentence has a positive sentiment.
+    """ Returns True if the given sentence has a positive sentiment (polarity >= threshold).
     """
     return polarity(s, **kwargs) >= threshold
 
