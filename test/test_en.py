@@ -824,30 +824,40 @@ class TestSentiment(unittest.TestCase):
         self.assertEqual(v, 2.5)
         print "pattern.text.avg"
 
-    def __test_sentiment(self):
+    def test_sentiment(self):
         # Assert < 0 for negative adjectives and > 0 for positive adjectives.
         self.assertTrue(en.sentiment("wonderful")[0] > 0)
         self.assertTrue(en.sentiment("horrible")[0] < 0)
         self.assertTrue(en.sentiment(en.wordnet.synsets("horrible", pos="JJ")[0])[0] < 0)
         self.assertTrue(en.sentiment(en.Text(en.parse("A bad book. Really horrible.")))[0] < 0)
         # Assert that :) and :( are recognized.
-        #self.assertTrue(en.sentiment(":)")[0] > 0)
-        #self.assertTrue(en.sentiment(":(")[0] < 0)
-        # Assert the accuracy of the sentiment analysis.
+        self.assertTrue(en.sentiment(":)")[0] > 0)
+        self.assertTrue(en.sentiment(":(")[0] < 0)
+        # Assert the accuracy of the sentiment analysis (for the positive class).
         # Given are the scores for Pang & Lee's polarity dataset v2.0:
         # http://www.cs.cornell.edu/people/pabo/movie-review-data/
         # The baseline should increase (not decrease) when the algorithm is modified.
         from pattern.db import Datasheet
         from pattern.metrics import test
         reviews = []
-        for score, review in Datasheet.load(os.path.join(PATH, "corpora", "polarity-en-pang&lee.csv")):
+        for score, review in Datasheet.load(os.path.join(PATH, "corpora", "polarity-en-pang&lee1.csv")):
             reviews.append((review, int(score) > 0))
         A, P, R, F = test(lambda review: en.positive(review), reviews)
-        print A, P, R, F
-        self.assertTrue(A > 0.74)
-        self.assertTrue(P > 0.73)
-        self.assertTrue(R > 0.75)
-        self.assertTrue(F > 0.74)
+        self.assertTrue(A > 0.755)
+        self.assertTrue(P > 0.760)
+        self.assertTrue(R > 0.747)
+        self.assertTrue(F > 0.754)
+        # Assert the accuracy of the sentiment analysis on short text (for the positive class).
+        # Given are the scores for Pang & Lee's sentence polarity dataset v1.0:
+        # http://www.cs.cornell.edu/people/pabo/movie-review-data/
+        reviews = []
+        for score, review in Datasheet.load(os.path.join(PATH, "corpora", "polarity-en-pang&lee2.csv")):
+            reviews.append((review, int(score) > 0))
+        A, P, R, F = test(lambda review: en.positive(review), reviews)
+        self.assertTrue(A > 0.642)
+        self.assertTrue(P > 0.653)
+        self.assertTrue(R > 0.607)
+        self.assertTrue(F > 0.629)
         print "pattern.en.sentiment()"
         
     def test_sentiment_assessment(self):
@@ -878,7 +888,7 @@ class TestSentiment(unittest.TestCase):
     def test_sentiwordnet(self):
         # Assert < 0 for negative words and > 0 for positive words.
         try:
-            from pattern.text.en.sentiment import SentiWordNet
+            from pattern.text.en.wordnet import SentiWordNet
             lexicon = SentiWordNet()
             lexicon.load()
         except ImportError, e:
