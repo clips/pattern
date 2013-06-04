@@ -53,7 +53,7 @@ setup(
         "pattern.text.fr"         : ["*.txt", "*.xml"],
         "pattern.text.nl"         : ["*.txt", "*.xml"],
         "pattern.vector"          : ["*.txt"],
-        "pattern.vector.svm"      : ["*"],
+        "pattern.vector.svm"      : ["*.txt", "3.11/*", "3.17/*"],
         "pattern.graph"           : ["*.js", "*.csv"],
     },
     py_modules = [
