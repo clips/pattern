@@ -181,7 +181,7 @@ def subjectivity(s, **kwargs):
     return sentiment(s, **kwargs)[1]
     
 def positive(s, threshold=0.1, **kwargs):
-    """ Returns True if the given sentence has a positive sentiment.
+    """ Returns True if the given sentence has a positive sentiment (polarity >= threshold).
     """
     return polarity(s, **kwargs) >= threshold
 

@@ -27,105 +27,72 @@ sys.path.pop(0)
 ####################################################################################################
 
 NUMERALS = {
-    "zero"      :  0, 
-    "one"       :  1, 
-    "two"       :  2, 
-    "three"     :  3, 
-    "four"      :  4, 
-    "five"      :  5, 
-    "six"       :  6, 
-    "seven"     :  7,
-    "eight"     :  8,
-    "nine"      :  9, 
-    "ten"       : 10, 
-    "eleven"    : 11, 
-    "twelve"    : 12,
-    "thirteen"  : 13, 
-    "fourteen"  : 14, 
-    "fifteen"   : 15,
-    "sixteen"   : 16, 
-    "seventeen" : 17, 
-    "eighteen"  : 18, 
-    "nineteen"  : 19,
-    "twenty"    : 20, 
-    "thirty"    : 30, 
-    "forty"     : 40, 
-    "fifty"     : 50, 
-    "sixty"     : 60, 
-    "seventy"   : 70, 
-    "eighty"    : 80, 
-    "ninety"    : 90
-}
-# Integer keys pointing to numeral words:
-NUMERALS_REVERSED = dict([(b,a) for a,b in NUMERALS.items()])
-
-# Some special numerals:
-# first multiply by the second value, then add the first value
-# (e.g. two dozen => 2x12, two and a half => 2*1 + 0.5)
-NUMERALS_ALTERNATE = {
-    "half"  : (0.5, 1),
-    "dozen" : (0, 12),
-    "score" : (0, 20)
+    "zero"  :  0,    "ten"       : 10,    "twenty"  : 20,
+    "one"   :  1,    "eleven"    : 11,    "thirty"  : 30,
+    "two"   :  2,    "twelve"    : 12,    "forty"   : 40,
+    "three" :  3,    "thirteen"  : 13,    "fifty"   : 50,
+    "four"  :  4,    "fourteen"  : 14,    "sixty"   : 60,
+    "five"  :  5,    "fifteen"   : 15,    "seventy" : 70,
+    "six"   :  6,    "sixteen"   : 16,    "eighty"  : 80,
+    "seven" :  7,    "seventeen" : 17,    "ninety"  : 90,
+    "eight" :  8,    "eighteen"  : 18,
+    "nine"  :  9,    "nineteen"  : 19
 }
 
-ORDER = [
-    "hundred",
-    "thousand"        
-] + [m+"illion" for m in [
-    "m", 
-    "b", 
-    "tr", 
+NUMERALS_INVERSE = dict((i, w) for w, i in NUMERALS.items()) # 0 => "zero"
+NUMERALS_VERBOSE = {
+    "half"  : ( 1, 0.5),
+    "dozen" : (12, 0.0),
+    "score" : (20, 0.0)
+}
+
+ORDER  = ["hundred", "thousand"] + [m+"illion" for m in ("m", "b", "tr", 
     "quadr", 
-    "quint",
-    "sext",
-    "sept",
-    "oct",
-    "non",
-    "dec",
-    "undec",
-    "duodec",
-    "tredec",
-    "quattuordec",
-    "quindec",
-    "sexdec",
-    "septemdec",
-    "octodec",
-    "novemdec",
-    "vigint" # A one + 62 zeroes; quite big but not nearly a googol.
-]]
+    "quint", 
+    "sext", 
+    "sept", 
+    "oct", 
+    "non", 
+    "dec", 
+    "undec", 
+    "duodec", 
+    "tredec", 
+    "quattuordec", 
+    "quindec", 
+    "sexdec", 
+    "septemdec", 
+    "octodec", 
+    "novemdec", 
+    "vigint"
+)]
 
-# Dictionary of thousands: {"hundred": 100, "thousand": 1000, etc.}
-O = {ORDER[0]:100, ORDER[1]:1000}
-for i, k in enumerate(ORDER[2:]): O[k] = 1000000*1000**i
+# {"hundred": 100, "thousand": 1000, ...}
+O = {
+    ORDER[0]: 100, 
+    ORDER[1]: 1000
+}
+for i, k in enumerate(ORDER[2:]): 
+    O[k] = 1000000 * 1000 ** i
 
-ZERO        = "zero"
-MINUS       = "minus"
-RADIX       = "point"
-THOUSANDS   = ","
-CONJUNCTION = "and"
+ZERO, MINUS, RADIX, THOUSANDS, CONJUCTION = \
+    "zero", "minus", "point", ",", "and"
 
-def _extract_leading_zeros(string):
-    """ Returns a tuple of 1) the string with leading zeros stripped and 2) a count of zeros.
-        For example:
-        zero zero one => ("one", 2)
-        0 0 five => ("five", 2)
+def zshift(s):
+    """ Returns a (string, count)-tuple, with leading zeros strippped from the string and counted.
     """
+    s = s.lstrip()
     i = 0
-    string = string.lstrip()
-    while True:
-        if string.startswith(ZERO):
-            string = string.replace(ZERO,"",1).lstrip()
-            i+=1
-        elif string.startswith("0"):
-            string = string.replace("0","",1).lstrip()
-            i+=1
-        else:
-            break
-    return string.lstrip(), i
+    while s.startswith((ZERO, "0")):
+        s = re.sub(r"^(0|%s)\s*" % ZERO, "", s, 1)
+        i = i + 1
+    return s, i
+
+#print zshift("zero one")  # ("one", 1)
+#print zshift("0 0 seven") # ("seven", 2)
 
 #--- STRING TO NUMBER ------------------------------------------------------------------------------
 
-def number(string):
+def number(s):
     """ Returns the given numeric string as a float or an int.
         If no number can be parsed from the string, returns 0.
         For example:
@@ -133,40 +100,42 @@ def number(string):
         number("seventy-five point two") => 75.2
         number("three thousand and one") => 3001
     """
-    string = string.lower()
-    # For negative numbers, simply prepend minus.
-    if string.strip().startswith(MINUS):
-        return -number(string.strip().replace(MINUS,"",1))
+    s = s.strip()
+    s = s.lower()
+    # Negative number.
+    if s.startswith(MINUS):
+        return -number(s.replace(MINUS, "", 1))
     # Strip commas and dashes ("seventy-five").
     # Split into integral and fractional part.
-    string = string.replace("&", " %s " % CONJUNCTION)
-    string = string.replace(THOUSANDS, "").replace("-", " ")
-    string = string.split(RADIX)
+    s = s.replace("&", " %s " % CONJUNCTION)
+    s = s.replace(THOUSANDS, "")
+    s = s.replace("-", " ")
+    s = s.split(RADIX)
     # Process fractional part.
     # Extract all the leading zeros.
-    if len(string) > 1:
-        f = " ".join(string[1:])         # zero point zero twelve => zero twelve
-        f, z = _extract_leading_zeros(f) # zero twelve => (1, "twelve")
-        f = float(number(f))             # "twelve" => 12.0
-        f /= 10**(len(str(int(f)))+z)    # 10**(len("12")+1) = 1000; 12.0 / 1000 => 0.012
+    if len(s) > 1:
+        f = " ".join(s[1:])      # zero point zero twelve => zero twelve
+        f, z = zshift(f)              # zero twelve => (1, "twelve")
+        f = float(number(f))          # "twelve" => 12.0
+        f /= 10**(len(str(int(f)))+z) # 10**(len("12")+1) = 1000; 12.0 / 1000 => 0.012
     else:
         f = 0
     i = n = 0
-    string = string[0].split()
-    for j, x in enumerate(string):
+    s = s[0].split()
+    for j, x in enumerate(s):
         if x in NUMERALS:
             # Map words from the dictionary of numerals: "eleven" => 11.
             i += NUMERALS[x]
-        elif x in NUMERALS_ALTERNATE:
-            # Map words from alternate numerals: "two dozen" => (2+0)*12
-            i = i * NUMERALS_ALTERNATE[x][1] + NUMERALS_ALTERNATE[x][0]
+        elif x in NUMERALS_VERBOSE:
+            # Map words from alternate numerals: "two dozen" => 2 * 12
+            i = i * NUMERALS_VERBOSE[x][0] + NUMERALS_VERBOSE[x][1]
         elif x in O: 
             # Map thousands from the dictionary of orders.
             # When a thousand is encountered, the subtotal is shifted to the total
             # and we start a new subtotal. An exception to this is when we
             # encouter two following thousands (e.g. two million vigintillion is one subtotal).
             i *= O[x]
-            if j < len(string)-1 and string[j+1] in O: 
+            if j < len(s)-1 and s[j+1] in O: 
                 continue
             if O[x] > 100: 
                 n += i
@@ -215,9 +184,9 @@ def numerals(n, round=2):
     f = n-i
     # The remainder, which we will stringify in recursion.
     r = 0
-    if i in NUMERALS_REVERSED: # 11 => eleven
+    if i in NUMERALS_INVERSE: # 11 => eleven
         # Map numbers from the dictionary to numerals: 11 => "eleven".
-        s = NUMERALS_REVERSED[i]
+        s = NUMERALS_INVERSE[i]
     elif i < 100:
         # Map tens + digits: 75 => 70+5 => "seventy-five".
         s = numerals((i//10)*10) + "-" + numerals(i%10)
@@ -246,7 +215,7 @@ def numerals(n, round=2):
         # Some rounding occurs.
         f = ("%." + str(round is None and 2 or round) + "f") % f
         f = f.replace("0.","",1).rstrip("0")
-        f, z = _extract_leading_zeros(f)
+        f, z = zshift(f)
         f = f and " %s%s %s" % (RADIX, " %s"%ZERO*z, numerals(long(f))) or ""
     else:
         f = ""

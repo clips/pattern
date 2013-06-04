@@ -1436,7 +1436,7 @@ class Sentiment(lazydict):
         self._confidence = None
         self._synset     = synset
         self._synsets    = {}
-        self.negations   = kwargs.get("negations", ("no", "not", "never"))
+        self.negations   = kwargs.get("negations", ("no", "not", "n't", "never"))
         self.modifiers   = kwargs.get("modifiers", ("RB",))
         self.modifier    = kwargs.get("modifier" , lambda w: w.endswith("ly"))
     
@@ -1590,7 +1590,13 @@ class Sentiment(lazydict):
                 # Emoticon (sad).
                 if w in (":(", ":-(", ":-S"):
                     a.append(dict(w=[w], p=-1.0, s=1.0, i=1.0, n=1))
-        a = [(a["w"], a["p"] * a["n"], a["s"]) for a in a]
+        for i in range(len(a)):
+            w = a[i]["w"]
+            p = a[i]["p"]
+            s = a[i]["s"]
+            n = a[i]["n"]
+            # "not good" = slightly bad, "not bad" = slightly good.
+            a[i] = (w, p * -0.5 if n < 0 else p, s)
         return a
 
 #### SPELLING CORRECTION ###########################################################################

@@ -620,6 +620,7 @@ For French book reviews, the accuracy is 75% (P 0.76, R 0.75, F1 0.75).
 <word form="bavards" pos="JJ" polarity="-0.30" subjectivity="0.65" intensity="1.0" confidence="0.8" />
 <word form="beau" pos="JJ" polarity="0.80" subjectivity="0.80" intensity="1.0" confidence="1.0" />
 <word form="beaux" pos="JJ" polarity="0.80" subjectivity="0.80" intensity="1.0" confidence="0.9" />
+<word form="beaucoup" pos="RB" polarity="0.10" subjectivity="0.10" intensity="1.2" confidence="0.8" />
 <word form="bel" pos="JJ" polarity="0.40" subjectivity="0.40" intensity="1.0" confidence="0.9" />
 <word form="belge" pos="JJ" polarity="0.00" subjectivity="0.00" intensity="1.0" confidence="0.9" />
 <word form="belges" pos="JJ" polarity="0.00" subjectivity="0.00" intensity="1.0" confidence="0.8" />
@@ -3799,6 +3800,7 @@ For French book reviews, the accuracy is 75% (P 0.76, R 0.75, F1 0.75).
 <word form="plébéienne" pos="JJ" polarity="0.25" subjectivity="0.50" intensity="1.0" confidence="0.7" />
 <word form="plébéiennes" pos="JJ" polarity="0.25" subjectivity="0.50" intensity="1.0" confidence="0.7" />
 <word form="plébéiens" pos="JJ" polarity="0.25" subjectivity="0.50" intensity="1.0" confidence="0.7" />
+<word form="plus" pos="RB" polarity="0.15" subjectivity="0.10" intensity="1.3" confidence="0.8" />
 <word form="pointu" pos="JJ" polarity="0.30" subjectivity="0.20" intensity="1.0" confidence="0.9" />
 <word form="pointue" pos="JJ" polarity="0.30" subjectivity="0.20" intensity="1.0" confidence="0.8" />
 <word form="pointues" pos="JJ" polarity="0.30" subjectivity="0.20" intensity="1.0" confidence="0.8" />

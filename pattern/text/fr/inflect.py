@@ -133,12 +133,11 @@ verb_inflections = [
     (u"iez", u"er"),        (u"ent", u"er"),        (u"ais", u"er"),       (u"ons", u"er"),
     (u"ait", u"er"),        (u"ant", u"er"),        (u"era", u"er"),       (u"ira", u"ir"),
     (u"es", u"er"),         (u"ez", u"er"),         (u"as", u"er"),        (u"ai", u"er"),
-    (u"ât", u"er"),         (u"is", u"ir"),         (u"it", u"ir"),        (u"ît", u"ir"),
-    (u"ïr", u"ïr"),         (u"e", u"er"),          (u"é", u"er"),         (u"a", u"er"), 
-    (u"t", u"re"),          (u"s", u"re"),          (u"i", u"ir"),         (u"u", u"re"),
-    (u"d", u"dre"),         (u"z", u"ir"),          (u"l", u"lore"),       (u"x", u"oir"),
-    (u"h", u"hoir"),        (u"ï", u"ïr"),          (u"o", u"oudre"),      (u"c", u"cre"),
-    (u"g", u"ger"),         (u"b", u"ber"),         (u"û", u"ir")
+    (u"ât", u"er"),         (u"ds", u"dre"),        (u"is", u"ir"),        (u"it", u"ir"),
+    (u"ît", u"ir"),         (u"ïr", u"ïr"),         (u"nd", u"ndre"),      (u"nu", u"nir"),
+    (u"e", u"er"),          (u"é", u"er"),          (u"a", u"er"),         (u"t", u"re"),
+    (u"s", u"re"),          (u"i", u"ir"),          (u"û", u"ir"),         (u"u", u"re"),          
+    (u"d", u"dre")
 ]
 
 class Verbs(_Verbs):
