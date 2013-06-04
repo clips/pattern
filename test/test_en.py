@@ -860,6 +860,29 @@ class TestSentiment(unittest.TestCase):
         self.assertTrue(F > 0.629)
         print "pattern.en.sentiment()"
         
+    def test_sentiment_twitter(self):
+        sanders = os.path.join(PATH, "corpora", "polarity-en-sanders.csv")
+        if os.path.exists(sanders):
+            # Assert the accuracy of the sentiment analysis on tweets.
+            # Given are the scores for Sanders Twitter Sentiment Corpus:
+            # http://www.sananalytics.com/lab/twitter-sentiment/
+            # Positive + neutral is taken as polarity >= 0.0,
+            # Negative is taken as polarity < 0.0.
+            # Since there are a lot of neutral cases,
+            # and the algorithm predicts 0.0 by default (i.e., majority class) the results are good.
+            # Distinguishing negative from neutral from positive is a much harder task
+            from pattern.db import Datasheet
+            from pattern.metrics import test
+            reviews = []
+            for i, id, date, tweet, polarity, topic in Datasheet.load(sanders):
+                if polarity != "irrelevant":
+                    reviews.append((tweet, polarity in ("positive", "neutral")))
+            A, P, R, F = test(lambda review: en.positive(review, threshold=0.0), reviews)
+            self.assertTrue(A > 0.824)
+            self.assertTrue(P > 0.878)
+            self.assertTrue(R > 0.912)
+            self.assertTrue(F > 0.895)
+        
     def test_sentiment_assessment(self):
         # Assert that en.sentiment() has a fine-grained "assessments" property.
         v = en.sentiment("A warm and pleasant day.").assessments
