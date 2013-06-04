@@ -1657,7 +1657,7 @@ FREQUENCY = "frequency"
 
 class Classifier:
 
-    def __init__(self, train=[], baseline=FREQUENCY):
+    def __init__(self, train=[], baseline=FREQUENCY, **kwargs):
         """ A base class for Naive Bayes, k-NN and SVM.
             Trains a classifier on the given list of Documents or (document, type)-tuples,
             where document can be a Document, Vector, dict or string
@@ -1884,15 +1884,16 @@ class ConfusionMatrix(defaultdict):
         return (TP, TN, FP, FN)
     
     @property
-    def table(self):
-        k = sorted(map(decode_utf8, self))
-        n = max(map(len, k)) + 2
+    def table(self, padding=1):
+        k = sorted(self)
+        n = max(map(lambda x: len(decode_utf8(x)), k))
+        n = max(n, *(len(str(self[k1][k2])) for k1 in k for k2 in k)) + padding
         s = "".ljust(n)
         for t1 in k:
-            s += t1.ljust(n)
+            s += decode_utf8(t1).ljust(n)
         for t1 in k:
             s += "\n"
-            s += t1.ljust(n)
+            s += decode_utf8(t1).ljust(n)
             for t2 in k: 
                 s += str(self[t1][t2]).ljust(n)
         return s
@@ -1912,7 +1913,7 @@ def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
         x = int(round(i * n))     # Test fold start index.
         y = int(round(i * n + n)) # Test fold stop index.
         classifier = Classifier(train=d[:x]+d[y:], **kwargs)
-        A, P, R, F = classifier.test(d[x:y])
+        A, P, R, F = classifier.test(d[x:y], **kwargs)
         m[0] += A
         m[1] += P
         m[2] += R
