@@ -1841,9 +1841,13 @@ class Classifier:
         self.test = None # Can't pickle instancemethods.
         cPickle.dump(self, open(path, "wb"), BINARY)
 
+    def on_load(self):
+        pass
+
     @classmethod
     def load(cls, path):
         self = cPickle.load(open(path))
+        self.on_load() # run classifier specific initialization (e.g. for SVM)
         self.test = self._test
         return self
 
@@ -2234,18 +2238,17 @@ class SVM(Classifier):
         self._libsvm = svm
         self._model  = model
         
-    @classmethod
-    def load(cls, path):
+    def on_load(self):
+        """ SVM specific initialization to run on Classifier.load()
+        """
         import svm
-        classifier = Classifier.load(path)
-        classifier._libsvm = svm
-        if classifier._model is not None:
+        self._libsvm = svm
+        if self._model is not None:
             f = open(path + ".tmp", "w")
-            f.write(classifier._model[0])
+            f.write(self._model[0])
             f.close()
-            classifier._model = (svm.svm_load_model(path + ".tmp"),) + classifier._model[1:]
+            self._model = (svm.svm_load_model(path + ".tmp"),) + self._model[1:]
             os.remove(f.name)
-        return classifier
 
 #### GENETIC ALGORITHM #############################################################################
 
