@@ -3,14 +3,15 @@ import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 from pattern.web import Wikipedia
 
 # This example retrieves an article from Wikipedia (http://en.wikipedia.org).
-# A query requests the article's HTML source from the server, which can be quite slow.
+# Wikipedia queries request the article HTML source from the server. This can be slow.
 # It is a good idea to cache results from Wikipedia locally,
 # and to set a high timeout when calling Wikipedia.search().
 
 engine = Wikipedia(language="en")
 
-# Contrary to other search engines in the module,
-# Wikipedia simply returns one WikipediaArticle object (or None) instead of a list of results.
+# Contrary to the other search engines in the pattern.web module,
+# Wikipedia simply returns one WikipediaArticle object (or None),
+# instead of a list of results.
 article = engine.search("alice in wonderland", cached=True, timeout=30)
 
 print article.title               # Article title (may differ from the search query).

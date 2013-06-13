@@ -4,10 +4,10 @@ from pattern.web import Newsfeed, plaintext, URL
 from pattern.db  import date
 
 # This example reads a given RSS or Atom newsfeed channel.
-# Some sample newsfeeds to try out:
+# Some example feeds to try out:
 NATURE  = "http://feeds.nature.com/nature/rss/current"
 SCIENCE = "http://www.sciencemag.org/rss/podcast.xml"
-HERALD  = "http://www.iht.com/rss/frontpage.xml"
+NYT     = "http://rss.nytimes.com/services/xml/rss/nyt/GlobalHome.xml"
 TIME    = "http://feeds.feedburner.com/time/topstories"
 CNN     = "http://rss.cnn.com/rss/edition.rss"
 
@@ -20,12 +20,14 @@ for result in engine.search(CNN, cached=True):
     print result.date
     print
 
-# Newsfeed item URL's lead to the page with the full article.
-# Since this page can have any kind of formatting, there is no default way to read it,
-# but we can simply download the source HTML and convert it to plain text:
+# News item URL's lead to the page with the full article.
+# This page can have any kind of formatting.
+# There is no default way to read it.
+# But we could just download the source HTML and convert it to plain text:
+
 #html = URL(result.url).download()
 #print plaintext(html)
 
-# The resulting text can contain a lot of garbage.
-# An better way to do this is to use a DOM parser and select the HTML elements we want.
-# This is demonstrated in the next example.
+# The resulting text may contain a lot of garbage.
+# A better way is to use a DOM parser to select the HTML elements we want.
+# This is demonstrated in one of the next examples.
