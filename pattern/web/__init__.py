@@ -22,6 +22,7 @@ import re
 import xml.dom.minidom
 import StringIO
 import bisect
+import itertools
 import new
 
 import api
@@ -35,7 +36,8 @@ from soup import BeautifulSoup
 
 try:
     # Import persistent Cache.
-    # If this module is used separately, a dict is used (i.e. for this Python session only).
+    # If this module is used separately, 
+    # a dict is used (i.e. this Python session only).
     from cache import Cache, cache, TMP
 except:
     cache = {}
@@ -541,7 +543,8 @@ class Stream(list):
         while len(self.buffer) > 1:
             data = self.buffer[0]
             data = self.parse(data)
-            packets.append(data)
+            if data is not None:
+                packets.append(data)
             self.buffer = self.buffer[-1]
             self.buffer = self.buffer.split(self.delimiter, 1)
         self.buffer = self.buffer[-1]
@@ -564,6 +567,7 @@ def stream(url, delimiter="\n", parse=lambda data: data, **kwargs):
     return stream
 
 #--- FIND URLs -------------------------------------------------------------------------------------
+# Functions for parsing URL's and e-mail adresses from strings.
 
 RE_URL_PUNCTUATION = ("\"'{(>", "\"'.,;)}")
 RE_URL_HEAD = r"[%s|\[|\s]" % "|".join(RE_URL_PUNCTUATION[0])      # Preceded by space, parenthesis or HTML tag.
@@ -618,6 +622,7 @@ def find_between(a, b, string):
     return [m for m in p.findall(string)]
 
 #### PLAIN TEXT ####################################################################################
+# Functions for stripping HTML tags from strings.
 
 BLOCK = [
     "title", "h1", "h2", "h3", "h4", "h5", "h6", "p",
@@ -944,7 +949,7 @@ class Result(dict):
         dict.update(self, [(u(k), u(v)) for k, v in map.items()])
 
     def __repr__(self):
-        return "Result(url=%s)" % repr(self.url)
+        return "Result(%s)" % dict.__repr__(self)
 
 class Results(list):
 
@@ -967,7 +972,7 @@ class SearchEngine:
         """ A base class for a web service.
             - license  : license key for the API,
             - throttle : delay between requests (avoid hammering the server).
-            Inherited by: Google, Yahoo, Bing, Twitter, Wikipedia, Flickr.
+            Inherited by: Google, Bing, Wikipedia, Twitter, Facebook, Flickr, ...
         """
         self.license  = license
         self.throttle = throttle    # Amount of sleep time after executing a query.
@@ -985,6 +990,7 @@ class SearchEngineLimitError(SearchEngineError):
     pass # Raised when the query limit for a license is reached.
 
 #--- GOOGLE ----------------------------------------------------------------------------------------
+# Google Search is a web search engine owned by Google Inc.
 # Google Custom Search is a paid service.
 # https://code.google.com/apis/console/
 # http://code.google.com/apis/customsearch/v1/overview.html
@@ -1093,7 +1099,8 @@ class Google(SearchEngine):
         return data
 
 #--- YAHOO -----------------------------------------------------------------------------------------
-# Yahoo BOSS is a paid service.
+# Yahoo! Search is a web search engine owned by Yahoo! Inc.
+# Yahoo! BOSS ("Build Your Own Search Service") is a paid service.
 # http://developer.yahoo.com/search/
 
 YAHOO = "http://yboss.yahooapis.com/ysearch/"
@@ -1103,6 +1110,20 @@ class Yahoo(SearchEngine):
 
     def __init__(self, license=None, throttle=0.5, language=None):
         SearchEngine.__init__(self, license or YAHOO_LICENSE, throttle, language)
+
+    def _authenticate(self, url):
+        url.query.update({
+            "oauth_version": "1.0",
+            "oauth_nonce": oauth.nonce(),
+            "oauth_timestamp": oauth.timestamp(),
+            "oauth_consumer_key": self.license[0],
+            "oauth_signature_method": "HMAC-SHA1"
+        })
+        url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query, 
+            method = GET, 
+            secret = self.license[1]
+        )
+        return url
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """ Returns a list of results from Yahoo for the given query.
@@ -1133,16 +1154,9 @@ class Yahoo(SearchEngine):
             market = locale.market(self.language)
             if market:
                 url.query["market"] = market.lower()
-        # 3) BOSS OAuth authentication.
-        url.query.update({
-            "oauth_version": "1.0",
-            "oauth_nonce": oauth.nonce(),
-            "oauth_timestamp": oauth.timestamp(),
-            "oauth_consumer_key": self.license[0],
-            "oauth_signature_method": "HMAC-SHA1"
-        })
-        url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query, method=GET, secret=self.license[1])
-        # 3) Parse JSON response.
+        # 3) Authenticate.
+        url = self._authenticate(url)
+        # 4) Parse JSON response.
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         try:
@@ -1169,6 +1183,8 @@ class Yahoo(SearchEngine):
         return results
 
 #--- BING ------------------------------------------------------------------------------------------
+# Bing is a web search engine owned by Microsoft.
+# Bing Search API is a paid service.
 # https://datamarket.azure.com/dataset/5BA839F1-12CE-4CCE-BF57-A49D98D29A44
 # https://datamarket.azure.com/account/info
 
@@ -1245,10 +1261,12 @@ class Bing(SearchEngine):
         return results
 
 #--- TWITTER ---------------------------------------------------------------------------------------
-# http://apiwiki.twitter.com/
+# Twitter is an online social networking service and microblogging service,
+# that enables users to post and read text-based messages of up to 140 characters ("tweets").
+# https://dev.twitter.com/docs/api/1.1
 
-TWITTER         = "http://search.twitter.com/"
-TWITTER_STREAM  = "https://stream.twitter.com/1/statuses/filter.json"
+TWITTER         = "http://api.twitter.com/1.1/"
+TWITTER_STREAM  = "https://stream.twitter.com/1.1/statuses/filter.json"
 TWITTER_STATUS  = "https://twitter.com/%s/status/%s"
 TWITTER_LICENSE = api.license["Twitter"]
 TWITTER_HASHTAG = re.compile(r"(\s|^)(#[a-z0-9_\-]+)", re.I)    # Word starts with "#".
@@ -1258,56 +1276,85 @@ class Twitter(SearchEngine):
 
     def __init__(self, license=None, throttle=0.5, language=None):
         SearchEngine.__init__(self, license or TWITTER_LICENSE, throttle, language)
+        self._pagination = {}
+
+    def _authenticate(self, url):
+        url.query.update({
+            "oauth_version": "1.0",
+            "oauth_nonce": oauth.nonce(),
+            "oauth_timestamp": oauth.timestamp(),
+            "oauth_consumer_key": self.license[0],
+            "oauth_token": self.license[2][0],
+            "oauth_signature_method": "HMAC-SHA1"
+        })
+        url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query, 
+            method = GET,
+            secret = self.license[1],
+             token = self.license[2][1]
+        )
+        return url
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=False, **kwargs):
         """ Returns a list of results from Twitter for the given query.
             - type : SEARCH or TRENDS,
-            - start: maximum 1500 results (10 for trends) => start 1-15 with count=100, 1500/count,
-            - count: maximum 100, or 10 for trends.
-            There is an hourly limit of 150+ queries (actual amount undisclosed).
+            - start: Result.id or int,
+            - count: maximum 100.
+            There is an limit of 150+ queries per 15 minutes.
         """
         if type != SEARCH:
             raise SearchEngineTypeError
-        if not query or count < 1 or start < 1 or start > 1500 / count:
+        if not query or count < 1 or (isinstance(start, (int, float)) and start < 1):
             return Results(TWITTER, query, type)
+        if isinstance(start, (int, float)):
+            id = self._pagination.get((int(start), count), "")
+        else:
+            id = start or ""
         # 1) Construct request URL.
-        url = URL(TWITTER + "search.json?", method=GET)
+        url = URL(TWITTER + "search/tweets.json?", method=GET)
         url.query = {
                "q": query,
-            "page": start,
-             "rpp": min(count, 100)
+          "max_id": id,
+           "count": min(count, 100)
         }
+        # 2) Restrict location with geo=(latitude, longitude, radius).
+        #    It can also be a (latitude, longitude)-tuple with default radius "10km".
         if "geo" in kwargs:
-            # Filter by location with geo=(latitude, longitude, radius).
-            # It can also be a (latitude, longitude)-tuple with default radius "10km".
             url.query["geocode"] = ",".join((map(str, kwargs.pop("geo")) + ["10km"])[:3])
-        # 2) Restrict language.
+        # 3) Restrict language.
         url.query["lang"] = self.language or ""
-        # 3) Parse JSON response.
+        # 4) Authenticate.
+        url = self._authenticate(url)
+        # 5) Parse JSON response.
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         try:
-            data = URL(url).download(cached=cached, **kwargs)
+            data = url.download(cached=cached, **kwargs)
         except HTTP420Error:
             raise SearchEngineLimitError
         data = json.loads(data)
         results = Results(TWITTER, query, type)
         results.total = None
-        for x in data.get("results", data.get("trends", [])):
+        for x in data.get("statuses", []):
             r = Result(url=None)
-            r.url      = self.format(TWITTER_STATUS % (x.get("from_user"), x.get("id_str")))
+            r.id       = self.format(x.get("id_str"))
+            r.url      = self.format(TWITTER_STATUS % (x.get("user", {}).get("screen_name"), x.get("id_str")))
             r.text     = self.format(x.get("text"))
-            r.date     = self.format(x.get("created_at", data.get("as_of")))
-            r.author   = self.format(x.get("from_user"))
-            r.profile  = self.format(x.get("profile_image_url")) # Profile picture URL.
-            r.language = self.format(x.get("iso_language_code"))
+            r.date     = self.format(x.get("created_at"))
+            r.author   = self.format(x.get("user", {}).get("screen_name"))
+            r.profile  = self.format(x.get("user", {}).get("profile_image_url")) # Profile picture URL.
+            r.language = self.format(x.get("metadata", {}).get("iso_language_code"))
             results.append(r)
+        # Store the last id retrieved.
+        # If search() is called again with start+1, start from this id.
+        if isinstance(start, (int, float)):
+            self._pagination[(int(start)+1, count)] = str(int(results[-1].id) - 1)
         return results
 
     def trends(self, **kwargs):
         """ Returns a list with 10 trending topics on Twitter.
         """
-        url = URL("https://api.twitter.com/1/trends/1.json")
+        url = URL("https://api.twitter.com/1.1/trends/place.json?id=1")
+        url = self._authenticate(url)
         kwargs.setdefault("cached", False)
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
@@ -1319,23 +1366,14 @@ class Twitter(SearchEngine):
         """ Returns a live stream of Result objects for the given query.
         """
         url = URL(TWITTER_STREAM)
-        url.query.update({
-            "track": query,
-            "oauth_version": "1.0",
-            "oauth_nonce": oauth.nonce(),
-            "oauth_timestamp": oauth.timestamp(),
-            "oauth_consumer_key": self.license[0],
-            "oauth_token": self.license[2][0],
-            "oauth_signature_method": "HMAC-SHA1"
-        })
-        url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query, GET,
-            self.license[1],
-            self.license[2][1])
+        url.query["track"] = query
+        url = self._authenticate(url)
         return TwitterStream(url, delimiter="\n", format=self.format, **kwargs)
 
 class TwitterStream(Stream):
 
     def __init__(self, socket, delimiter="\n", format=lambda s: s, **kwargs):
+        kwargs.setdefault("timeout", 30)
         Stream.__init__(self, socket, delimiter, **kwargs)
         self.format = format
 
@@ -1343,15 +1381,17 @@ class TwitterStream(Stream):
         """ TwitterStream.queue will populate with Result objects as
             TwitterStream.update() is called iteratively.
         """
-        x = json.loads(data)
-        r = Result(url=None)
-        r.url      = self.format(TWITTER_STATUS % (x.get("user", {}).get("screen_name"), x.get("id_str")))
-        r.text     = self.format(x.get("text"))
-        r.date     = self.format(x.get("created_at"))
-        r.author   = self.format(x.get("user", {}).get("screen_name"))
-        r.profile  = self.format(x.get("profile_image_url"))
-        r.language = self.format(x.get("iso_language_code"))
-        return r
+        if data.strip():
+            x = json.loads(data)
+            r = Result(url=None)
+            r.id       = self.format(x.get("id_str"))
+            r.url      = self.format(TWITTER_STATUS % (x.get("user", {}).get("screen_name"), x.get("id_str")))
+            r.text     = self.format(x.get("text"))
+            r.date     = self.format(x.get("created_at"))
+            r.author   = self.format(x.get("user", {}).get("screen_name"))
+            r.profile  = self.format(x.get("user", {}).get("profile_image_url"))
+            r.language = self.format(x.get("metadata", {}).get("iso_language_code"))
+            return r
 
 def author(name):
     """ Returns a Twitter query-by-author-name that can be passed to Twitter.search().
@@ -1369,16 +1409,36 @@ def retweets(string):
     """
     return [b for a, b in TWITTER_RETWEET.findall(string)]
 
+#engine = Twitter()
+#for i in range(2):
+#    for tweet in engine.search("cat nap", cached=False, start=i+1, count=10):
+#        print
+#        print tweet.id
+#        print tweet.url
+#        print tweet.text
+#        print tweet.author
+#        print tweet.profile
+#        print tweet.language
+#        print tweet.date
+#        print hashtags(tweet.text)
+#        print retweets(tweet.text)
+
 #stream = Twitter().stream("cat")
 #for i in range(10):
+#    print i
 #    stream.update()
 #    for tweet in reversed(stream):
+#        print tweet.id
 #        print tweet.text
 #        print tweet.url
+#        print tweet.language
 #    print
 #stream.clear()
 
 #--- MEDIAWIKI -------------------------------------------------------------------------------------
+# MediaWiki is a free wiki software application.
+# MediaWiki powers popular websites such as Wikipedia, Wiktionary and Wikia.
+# http://www.mediawiki.org/wiki/API:Main_page
 # http://en.wikipedia.org/w/api.php
 
 WIKIA = "http://wikia.com"
@@ -1474,7 +1534,7 @@ class MediaWiki(SearchEngine):
         # 1) Construct request URL (e.g., Wikipedia for a given language).
         url = URL(self._url, method=GET, query={
             "action": "parse",
-              "page": query.replace(" ","_"),
+              "page": query.replace(" ", "_"),
          "redirects": 1,
             "format": "json"
         })
@@ -1689,6 +1749,8 @@ class MediaWikiTable:
         return "MediaWikiTable(title='%s')" % bytestring(self.title)
 
 #--- MEDIAWIKI: WIKIPEDIA --------------------------------------------------------------------------
+# Wikipedia is a collaboratively edited, multilingual, free Internet encyclopedia.
+# Wikipedia depends on MediaWiki.
 
 class Wikipedia(MediaWiki):
 
@@ -1758,6 +1820,10 @@ class WikipediaTable(MediaWikiTable):
 #print article.string
 
 #--- MEDIAWIKI: WIKIA ------------------------------------------------------------------------------
+# Wikia (formerly Wikicities) is a free web hosting service and a wiki farm for wikis.
+# Wikia hosts several hundred thousand wikis using MediaWiki.
+
+# Author: Robert Elwell (2012)
 
 class Wikia(MediaWiki):
 
@@ -1827,7 +1893,102 @@ class WikiaTable(MediaWikiTable):
     def __repr__(self):
         return "WikiaTable(title='%s')" % bytestring(self.title)
 
+#--- DBPEDIA --------------------------------------------------------------------------------------------------
+# DBPedia is a database of structured information mined from Wikipedia.
+# DBPedia data is stored as RDF triples: (subject, predicate, object),
+# e.g., X is-a Actor, Y is-a Country, Z has-birthplace Country, ...
+
+# DBPedia can be queried using SPARQL: 
+# http://www.w3.org/TR/rdf-sparql-query/
+# A SPARQL query yields rows that match all triples in the WHERE clause.
+# A SPARQL query uses ?wildcards in triple subject/object to select fields.
+
+# For example:
+# > PREFIX dbo: <http://dbpedia.org/ontology/>
+# > SELECT ?actor ?place
+# > WHERE {
+# >     ?actor a dbo:Actor; dbo:birthPlace ?place.
+# >     ?place a dbo:Country.
+# > }
+#
+# - Each row in the results has an "actor" and a "place" field.
+# - The actor is of the class "Actor".
+# - The place is of the class "Country".
+# - Only actors for which a place of birth is known are retrieved.
+#
+# The fields are RDF resources, e.g.:
+# http://dbpedia.org/resource/Australia
+
+# Author: Kenneth Koch (2013) <kkoch986@gmail.com>
+
+DBPEDIA = "http://dbpedia.org/sparql?"
+
+SPARQL = "sparql"
+
+class DBPediaQueryError(HTTP400BadRequest):
+    pass 
+
+class DBPediaResource(unicode):
+    @property
+    def name(self):
+        # http://dbpedia.org/resource/Australia => Australia
+        return re.sub("^http://dbpedia.org/resource/", "", self)
+
+class DBPedia(SearchEngine):
+
+    def __init__(self, license=None, throttle=1.0, language=None):
+        SearchEngine.__init__(self, license, throttle, language)
+
+    def search(self, query, type=SPARQL, start=1, count=10, sort=RELEVANCY, size=None, cached=False, **kwargs):
+        """ Returns a list of results from DBPedia for the given SPARQL query.
+            - type : SPARQL,
+            - start: no maximum,
+            - count: maximum 1000,
+            There is a limit of 10 requests/second. 
+            Maximum query execution time is 120 seconds.
+        """
+        if type not in (SPARQL,):
+            raise SearchEngineTypeError
+        if not query or count < 1 or start < 1:
+            return Results(DBPEDIA, query, type)
+        # 1) Construct request URL.
+        url = URL(DBPEDIA, method=GET)
+        url.query = {
+            "format": "json",
+             "query": "%s OFFSET %s LIMIT %s" % (query, 
+                        (start-1) * min(count, 1000), 
+                        (start-0) * min(count, 1000)
+            )
+        }
+        # 2) Parse JSON response.
+        try:
+            data = URL(url).download(cached=cached, timeout=30, **kwargs)
+            data = json.loads(data)
+        except HTTP400BadRequest:
+            raise DBPediaQueryError # SPARQL query syntax error.
+        except HTTP403Forbidden:
+            raise SearchEngineLimitError
+        results = Results(DBPEDIA, url.query, type)
+        results.total = None
+        for x in data["results"]["bindings"]:
+            r = Result(url=None)
+            for k in data["head"]["vars"]:
+                t1 = x[k].get("type", "literal") # uri | literal | typed-literal
+                t2 = x[k].get("datatype", "?")   # http://www.w3.org/2001/XMLSchema#float | int | date
+                v = x[k].get("value")
+                v = self.format(v)
+                if t1 == "uri":
+                    v = DBPediaResource(v)
+                if t2.endswith("float"):
+                    v = float(v)
+                if t2.endswith("int"):
+                    v = int(v)
+                r[k] = v
+            results.append(r)
+        return results
+
 #--- FLICKR ----------------------------------------------------------------------------------------
+# Flickr is a popular image hosting and video hosting website.
 # http://www.flickr.com/services/api/
 
 FLICKR = "http://api.flickr.com/services/rest/"
@@ -1922,7 +2083,7 @@ class FlickrResult(Result):
 #f.close()
 
 #--- FACEBOOK --------------------------------------------------------------------------------------
-# Facebook public status updates.
+# Facebook is a popular online social networking service.
 # https://developers.facebook.com/docs/reference/api/
 
 FACEBOOK = "https://graph.facebook.com/"
@@ -2039,7 +2200,7 @@ class Facebook(SearchEngine):
                      self.format(x.get("name"))
             # Set Result.url to full-size image.
             if r.url.startswith("http://www.facebook.com/photo"): 
-                r.url = x.get("picture").replace("_s", "_b") or r.url
+                r.url = x.get("picture", "").replace("_s", "_b") or r.url
             # Set Result.title to object id.
             if r.url.startswith("http://www.facebook.com/"):
                 r.title = r.url.split("/")[-1].split("?")[0]
@@ -2069,6 +2230,8 @@ class Facebook(SearchEngine):
         )
 
 #--- PRODUCT REVIEWS -------------------------------------------------------------------------------
+# ProductWiki is an open web-based product information resource.
+# http://connect.productwiki.com/connect-api/
 
 PRODUCTWIKI = "http://api.productwiki.com/connect/api.aspx"
 PRODUCTWIKI_LICENSE = api.license["Products"]
@@ -2263,12 +2426,14 @@ def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, revers
 #print sort(["black", "happy"], "darth vader", GOOGLE)
 
 #### DOCUMENT OBJECT MODEL #########################################################################
-# Tree traversal of HTML source code.
 # The Document Object Model (DOM) is a cross-platform and language-independent convention
 # for representing and interacting with objects in HTML, XHTML and XML documents.
-# BeautifulSoup is wrapped in Document, Element and Text classes that resemble the Javascript DOM.
-# BeautifulSoup can of course be used directly since it is imported here.
-# http://www.crummy.com/software/BeautifulSoup/
+# The pattern.web DOM can be used to traverse HTML source code as a tree of nested elements.
+# The pattern.web DOM is based on Beautiful Soup.
+
+# Beautiful Soup is wrapped in DOM, Element and Text classes, resembling the Javascript DOM.
+# Beautiful Soup can also be used directly, since it is imported here.
+# L. Richardson (2004), http://www.crummy.com/software/BeautifulSoup/
 
 SOUP = (
     BeautifulSoup.BeautifulSoup,
@@ -2329,6 +2494,7 @@ class Node:
     @property
     def previous_sibling(self):
         return self._wrap(self._p.previousSibling)
+    
     next, previous = next_sibling, previous_sibling
 
     def traverse(self, visit=lambda node: None):
@@ -2386,15 +2552,32 @@ class Element(Node):
     @property
     def tagname(self):
         return self._p.name
+    
     tag = tagName = tagname
 
     @property
     def attributes(self):
         return self._p._getAttrMap()
+        
+    attr = attributes
 
     @property
     def id(self):
         return self.attributes.get("id")
+
+    @property
+    def content(self):
+        """ Yields the element content as a unicode string.
+        """
+        return u"".join([u(x) for x in self._p.contents])
+
+    @property
+    def source(self):
+        """ Yields the HTML source as a unicode string (tag + content).
+        """
+        return u(self._p)
+    
+    html = source
 
     def get_elements_by_tagname(self, v):
         """ Returns a list of nested Elements with the given tag name.
@@ -2409,38 +2592,35 @@ class Element(Node):
             v1 = v1 in ("*","") or v1.lower()
             return [Element(x) for x in self._p.findAll(v1, v2)]
         return [Element(x) for x in self._p.findAll(v in ("*","") or v.lower())]
+    
     by_tag = getElementsByTagname = get_elements_by_tagname
 
     def get_element_by_id(self, v):
         """ Returns the first nested Element with the given id attribute value.
         """
         return ([Element(x) for x in self._p.findAll(id=v, limit=1) or []]+[None])[0]
+    
     by_id = getElementById = get_element_by_id
 
     def get_elements_by_classname(self, v):
         """ Returns a list of nested Elements with the given class attribute value.
         """
         return [Element(x) for x in (self._p.findAll(True, v))]
+    
     by_class = getElementsByClassname = get_elements_by_classname
 
     def get_elements_by_attribute(self, **kwargs):
         """ Returns a list of nested Elements with the given attribute value.
         """
         return [Element(x) for x in (self._p.findAll(True, attrs=kwargs))]
+    
     by_attribute = by_attr = getElementsByAttribute = get_elements_by_attribute
 
-    @property
-    def content(self):
-        """ Yields the element content as a unicode string.
+    def __call__(self, selector):
+        """ Returns a list of nested Elements that match the given CSS selector.
+            For example: Element("div#main p.comment a:first-child") matches:
         """
-        return u"".join([u(x) for x in self._p.contents])
-
-    @property
-    def source(self):
-        """ Yields the HTML source as a unicode string (tag + content).
-        """
-        return u(self._p)
-    html = source
+        return SelectorChain(selector).search(self)
 
     def __getattr__(self, k):
         if k in self.__dict__:
@@ -2481,6 +2661,7 @@ class Document(Element):
     @property
     def tagname(self):
         return None
+    
     tag = tagname
 
     def __repr__(self):
@@ -2494,6 +2675,150 @@ DOM = Document
 #print [element.attributes["href"] for element in dom.get_elements_by_tagname("a")]
 #print dom.get_elements_by_tagname("p")[0].next.previous.children[0].parent.__class__
 #print
+
+#--- DOM CSS SELECTORS -----------------------------------------------------------------------------
+# CSS selectors are pattern matching rules (or selectors) to select elements in the DOM.
+# CSS selectors may range from simple element tag names to rich contextual patterns.
+# http://www.w3.org/TR/CSS2/selector.html
+
+class Selector:
+    
+    def __init__(self, s):
+        """ A simple CSS selector is a type (e.g., "p") or universal ("*") selector 
+            followed by id selectors, attribute selectors, or pseudo-classes.
+        """
+        self.string = s
+        s = s.strip()
+        s = s.lower()
+        s = s.startswith(("#", ".", ":")) and "*" + s or s
+        s = s.replace("#", " #") + " #"
+        s = s.replace(".", " .")
+        s = s.replace(":", " :")
+        s = s.replace("[", " [")
+        s = s.split(" ")
+        self.tag, self.id, self.classes, self.pseudo, self.attributes = (
+             s[0],
+              [x[1:] for x in s if x[0] == "#"][0],
+          set([x[1:] for x in s if x[0] == "."]),
+          set([x[1:] for x in s if x[0] == ":"]),
+         dict(self._parse_attribute(x) for x in s if x[0] == "[")
+        )
+        
+    def _parse_attribute(self, s):
+        """ Returns an (attribute, value)-tuple for the given attribute selector.
+        """
+        s = s.strip("[]")
+        s = s.replace("'", "")
+        s = s.replace('"', "")
+        s = s.replace("~=", "=~")
+        s = s.replace("^=", "=^")
+        s = s.replace("|=", "=|")
+        s = s.split("=") + [True]
+        # Attribute selectors ~=, ^=, |= don't work yet,
+        # but can be implemented by mapping the value to a regular expression.
+        return s[:2]
+        
+    def _first_child(self, e):
+        """ Returns the first child Element of the given element.
+        """
+        if isinstance(e, Node):
+            for e in e.children:
+                if isinstance(e, Element):
+                    return e
+    
+    def _first_sibling(self, e):
+        """ Returns the first next sibling Element of the given element.
+        """
+        while isinstance(e, Node):
+            e = e.next
+            if isinstance(e, Element):
+                return e
+    
+    def match(self, e):
+        """ Returns True if the given element matches the simple CSS selector.
+        """
+        if not isinstance(e, Element):
+            return False
+        if self.tag not in (e.tag, "*"):
+            return False
+        if self.id not in (e.id, "", None):
+            return False
+        if self.classes.issubset(set(e.attr.get("class", "").split())) is False:
+            return False
+        if "first-child" in self.pseudo and self._first_child(e.parent) != e:
+            return False
+        for k, v in self.attributes:
+            if k not in e.attrs or v not in (e.attrs[k], True):
+                return False
+        return True
+    
+    def search(self, e):
+        """ Returns the nested elements that match the simple CSS selector.
+        """
+        # Map tag to True if it is "*".
+        tag = self.tag == "*" or self.tag
+        # Map id into a **kwargs dict.
+        a = {"id": self.id} if self.id else {}
+        a.update(self.attributes)
+        # Match tag + id + all classes + relevant pseudo-elements.
+        if not isinstance(e, Element):
+            return []
+        if len(self.classes) == 0 or len(self.classes) >= 2:
+            e = map(Element, e._p.findAll(tag, **a))
+        if len(self.classes) == 1:
+            e = map(Element, e._p.findAll(tag, list(self.classes)[0], **a))
+        if len(self.classes) >= 2:
+            e = filter(lambda e: self.classes.issubset(set(e.attr.get("class", "").split())), e)
+        if "first-child" in self.pseudo:
+            e = filter(lambda e: e == self._first_child(e.parent), e)
+        return e
+        
+    def __repr__(self):
+        return "Selector(%s)" % repr(self.string)
+
+class SelectorChain(list):
+    
+    def __init__(self, s):
+        """ A selector is a chain of one or more simple selectors,
+            separated by combinators (e.g., ">").
+        """
+        self.string = s
+        for s in s.split(","):
+            s = s.lower()
+            s = s.strip()
+            s = re.sub(r" +", " ", s)
+            s = re.sub(r" *\> *", " >", s)
+            s = re.sub(r" *\+ *", " +", s)
+            self.append([])
+            for s in s.split(" "):
+                if not s.startswith((">", "+")):
+                    self[-1].append((" ", Selector(s)))
+                elif s.startswith(">"):
+                    self[-1].append((">", Selector(s[1:])))
+                elif s.startswith("+"):
+                    self[-1].append(("+", Selector(s[1:])))
+                    
+    def search(self, e):
+        """ Returns the nested elements that match the CSS selector chain.
+        """
+        m, root = [], e
+        for chain in self:
+            e = [root]
+            for combinator, s in chain:
+                if combinator == " ":
+                    # X Y => X is ancestor of Y
+                    e = map(s.search, e)
+                    e = list(itertools.chain(*e))
+                if combinator == ">":
+                    # X > Y => X is parent of Y
+                    e = map(lambda e: filter(s.match, e.children), e)
+                    e = list(itertools.chain(*e))
+                if combinator == "+":
+                    # X + Y => X directly precedes Y
+                    e = map(s._first_sibling, e)
+                    e = filter(s.match, e)
+            m.extend(e)
+        return m
 
 #### WEB CRAWLER ###################################################################################
 # Tested with a crawl across 1,000 domain so far.
