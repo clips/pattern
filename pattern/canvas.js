@@ -206,7 +206,7 @@ function len(array) {
 /*##################################################################################################*/
 
 /*--- BASE CLASS -----------------------------------------------------------------------------------*/
-// JavaScript class inheritance, John Resig (http://ejohn.org/blog/simple-javascript-inheritance).
+// JavaScript class inheritance, John Resig, 2008 (http://ejohn.org/blog/simple-javascript-inheritance).
 //
 // var Person = Class.extend({
 //     init: function(name) {
@@ -263,6 +263,8 @@ function len(array) {
 /*##################################################################################################*/
 
 /*--- GEOMETRY -------------------------------------------------------------------------------------*/
+
+var PI = Math.PI;
 
 Math._round = Math.round;
 Math.round = function(x, decimals) {
@@ -396,10 +398,11 @@ var Geometry = Class.extend({
         var a = 1.0;
         var b = 1.0;
         var r = Math.pow(Math.pow(Math.abs(Math.cos(m * phi/4) / a), n2) +
-                Math.pow(Math.abs(Math.sin(m * phi/4) / b), n3), 1/n1);
+                         Math.pow(Math.abs(Math.sin(m * phi/4) / b), n3), 1/n1);
         if (Math.abs(r) == 0)
             return (0, 0);
-        return [(1/r) * Math.cos(phi), (1/r) * Math.sin(phi)];
+        r = 1 / r;
+        return [r * Math.cos(phi), r * Math.sin(phi)];
     },
     
     // INTERSECTION:
@@ -408,7 +411,7 @@ var Geometry = Class.extend({
         /* Determines the intersection point of two lines, or two finite line segments if infinite=False.
          * When the lines do not intersect, returns null.
          */
-        // Based on: P. Bourke, http://local.wasp.uwa.edu.au/~pbourke/geometry/lineline2d/
+        // Based on: P. Bourke, 1989, http://paulbourke.net/geometry/pointlineplane/
         if (infinite === undefined) infinite = false;
         var ua = (x4-x3) * (y1-y3) - (y4-y3) * (x1-x3);
         var ub = (x2-x1) * (y1-y3) - (y2-y1) * (x1-x3);
@@ -434,6 +437,7 @@ var Geometry = Class.extend({
          * The algorithm does not always report correctly when the point is very close to the boundary.
          * The polygon is passed as an array of Points.
          */
+        // Based on: W. Randolph Franklin, 1970, http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
         var odd = false;
         var n = points.length;
         for (var i=0; i < n; i++) {
@@ -700,9 +704,37 @@ function strokewidth(width) {
     return _ctx.state.strokewidth;
 }
 
+var SOLID  = "solid";
+var DOTTED = "dotted";
+var DASHED = "dashed";
+
+function strokestyle(style) {
+    /* Sets the outline stroke style.
+     */
+    if (style !== undefined) {
+        _ctx.state.strokestyle = style;
+    }
+    return _ctx.state.strokestyle;
+}
+
+var BUTT   = "butt";
+var ROUND  = "round";
+var SQUARE = "square";
+
+function linecap(cap) {
+    /* Sets the outline line caps style.
+     */
+    if (cap !== undefined) {
+        _ctx.state.linecap = cap;
+    }
+    return _ctx.state.linecap;
+}
+
 var noFill = nofill;
 var noStroke = nostroke;
 var strokeWidth = strokewidth;
+var strokeStyle = strokestyle;
+var lineCap = linecap;
 
 // fill() and stroke() are heavy operations:
 // - they are called often,
@@ -713,7 +745,7 @@ var strokeWidth = strokewidth;
 
 /*--- COLOR SPACE ----------------------------------------------------------------------------------*/
 // Transformations between RGB, HSB, HEX color spaces.
-// http://www.easyrgb.com/math.php
+// Based on: http://www.easyrgb.com/math.php
 
 function _rgb2hex(r, g, b) {
     /* Converts the given R,G,B values to a hexadecimal color string.
@@ -867,12 +899,12 @@ function analog(clr, angle, d) {
 /*--- COLOR MIXIN ----------------------------------------------------------------------------------*/
 // Drawing commands like rect() have optional parameters fill and stroke to set the color directly.
 
-// function _colorMixin({fill: Color(), stroke: Color(), strokewidth: 1.0}) 
+// function _colorMixin({fill: Color(), stroke: Color(), strokewidth: 1.0, strokestyle: SOLID}) 
 function _colorMixin(options) {
     var s = _ctx.state;
     var o = options;
     if (options === undefined) {
-        return [s.fill, s.stroke, s.strokewidth];
+        return [s.fill, s.stroke, s.strokewidth, s.strokestyle, s.linecap];
     } else {
         return [
             (o.fill !== undefined)? 
@@ -882,7 +914,11 @@ function _colorMixin(options) {
                 (o.stroke instanceof Color)? 
                     o.stroke : new Color(o.stroke) : s.stroke,
             (o.strokewidth !== undefined)? o.strokewidth : 
-                (o.strokeWidth !== undefined)? o.strokeWidth : s.strokewidth
+                (o.strokeWidth !== undefined)? o.strokeWidth : s.strokewidth,
+            (o.strokestyle !== undefined)? o.strokestyle : 
+                (o.strokeStyle !== undefined)? o.strokeStyle : s.strokestyle,
+            (o.linecap !== undefined)? o.linecap : 
+                (o.lineCap !== undefined)? o.lineCap : s.linecap
         ];
     }
 }
@@ -902,13 +938,22 @@ function _ctx_fill(fill) {
     }
 }
 
-function _ctx_stroke(stroke, strokewidth) {
+function _ctx_stroke(stroke, strokewidth, strokestyle, linecap) {
     if (stroke && stroke.a > 0 && strokewidth > 0) {
         var s = stroke._get();
         if (_ctx.state._stroke != s) {
             _ctx.strokeStyle = _ctx.state._stroke = s;
         }
+        if (_ctx.state._strokestyle != strokestyle && _ctx.setLineDash) {
+            _ctx.state._strokestyle = strokestyle;
+            switch(strokestyle) {
+                case DOTTED: _ctx.setLineDash([1,3]); break;
+                case DASHED: _ctx.setLineDash([3,3]); break;
+                    default: _ctx.setLineDash(null);
+            }
+        }
         _ctx.lineWidth = strokewidth;
+        _ctx.lineCap = linecap;
         _ctx.stroke();
     }
 }
@@ -976,8 +1021,8 @@ function shadow(dx, dy, blur, alpha) {
      */
     var s = _ctx.state;
     s.shadow = {
-         "dx": (dx !== undefined)? dx : 6,
-         "dy": (dy !== undefined)? dy : 6,
+         "dx": (dx !== undefined)? dx : 5,
+         "dy": (dy !== undefined)? dy : 5,
        "blur": (blur !== undefined)? blur : 5,
       "alpha": (alpha !== undefined)? alpha : 0.5
     }
@@ -998,6 +1043,7 @@ var noShadow = noshadow;
 /*##################################################################################################*/
 
 /*--- AFFINE TRANSFORM -----------------------------------------------------------------------------*/
+// Based on: T. McCauley, 2009, http://www.senocular.com/flash/tutorials/transformmatrix/
 
 var AffineTransform = Transform = Class.extend({
     
@@ -1137,7 +1183,6 @@ var AffineTransform = Transform = Class.extend({
 });
 
 /*--- TRANSFORMATIONS ------------------------------------------------------------------------------*/
-// Unlike NodeBox, all transformations are CORNER-mode and originate from the bottom-left corner.
 
 function push() {
     /* Pushes the transformation state.
@@ -1192,7 +1237,7 @@ function reset() {
 /*##################################################################################################*/
 
 /*--- BEZIER MATH ----------------------------------------------------------------------------------*/
-// Thanks to Prof. F. De Smedt at the Vrije Universiteit Brussel.
+// Thanks to Prof. F. De Smedt at the Vrije Universiteit Brussel, 2006.
 
 var Bezier = Class.extend({
     
@@ -1368,6 +1413,9 @@ var Bezier = Class.extend({
     findPath: function(points, curvature) {
         if (curvature === undefined) curvature = 1.0;
         // Don't crash on something straightforward such as a list of [x,y]-arrays.
+        if (points instanceof Path) {
+            points = points.array;
+        }
         for (var i=0; i < points.length; i++) {
             if (points[i] instanceof Array) {
                 points[i] = new Point(points[i][0], points[i][1]);
@@ -1588,7 +1636,7 @@ var Path = BezierPath = Class.extend({
         this.closepath();
     },
 
-//  draw: function({fill: Color(), stroke: Color(), strokewidth: 1.0})
+//  draw: function({fill: Color(), stroke: Color(), strokewidth: 1.0, strokestyle: SOLID})
     draw: function(options) {
         /* Draws the path.
          */
@@ -1614,9 +1662,9 @@ var Path = BezierPath = Class.extend({
             }
         }
         if (!this._clip) {
-            var a = _colorMixin(options); // [fill, stroke, strokewidth]
+            var a = _colorMixin(options); // [fill, stroke, strokewidth, strokestyle, linecap]
             _ctx_fill(a[0]);
-            _ctx_stroke(a[1], a[2]);
+            _ctx_stroke(a[1], a[2], a[3], a[4]);
         } else {
             _ctx.clip();
         }
@@ -1625,7 +1673,7 @@ var Path = BezierPath = Class.extend({
     angle: function(t) {
         /* Returns the directional angle at time t (0.0-1.0) on the path.
          */
-        // The directed() enumerator is much faster but less precise.
+        // The derive() enumerator is much faster but less precise.
         if (t == 0) {
             var pt0 = this.point(t);
             var pt1 = this.point(t+0.001);
@@ -1690,7 +1738,7 @@ var Path = BezierPath = Class.extend({
 
 function drawpath(path, options) {
     /* Draws the given Path (or list of PathElements).
-     * The current stroke, strokewidth and fill color are applied.
+     * The current stroke, strokewidth, strokestyle and fill color are applied.
      */
     if (path instanceof Array) {
         path = new Path(path);
@@ -1770,12 +1818,12 @@ var findPath = findpath;
 
 /*--- POINT ANGLES ---------------------------------------------------------------------------------*/
 
-function directed(points, callback) {
+function derive(points, callback) {
     /* Calls callback(angle, pt) for each point in the given path.
      * The angle represents the direction of the point on the path.
      * This works with Path, Path.points, [pt1, pt2, pt2, ...]
      * For example:
-     * directed(path.points(30), function(angle, pt) {
+     * derive(path.points(30), function(angle, pt) {
      *     push();
      *     translate(pt.x, pt.y);
      *     rotate(angle);
@@ -1820,6 +1868,11 @@ function directed(points, callback) {
         }
         callback(angle, pt);
     }
+}
+
+// Backwards compatibility.
+function directed(points, callback) {
+    return derive(points, callback);
 }
 
 /*--- CLIPPING PATH --------------------------------------------------------------------------------*/
@@ -1876,7 +1929,8 @@ function supershape(x, y, width, height, m, n1, n2, n3, options) {
 /*--- DRAWING PRIMITIVES ---------------------------------------------------------------------------*/
 
 function line(x0, y0, x1, y1, options) {
-    /* Draws a straight line from x0, y0 to x1, y1 with the current stroke color and strokewidth.
+    /* Draws a straight line from x0, y0 to x1, y1. 
+     * The current stroke, strokewidth and strokestyle are applied.
      */
     // It is faster to do it directly without creating a Path:
     var a = _colorMixin(options);
@@ -1884,13 +1938,13 @@ function line(x0, y0, x1, y1, options) {
         _ctx.beginPath();
         _ctx.moveTo(x0, y0);
         _ctx.lineTo(x1, y1);
-        _ctx_stroke(a[1], a[2]);
+        _ctx_stroke(a[1], a[2], a[3], a[4]);
     }
 }
 
 function rect(x, y, width, height, options) {
     /* Draws a rectangle with the top left corner at x, y.
-     * The current stroke, strokewidth and fill color are applied.
+     * The current stroke, strokewidth, strokestyle and fill color are applied.
      */
     // It is faster to do it directly without creating a Path:
     var a = _colorMixin(options);
@@ -1899,7 +1953,7 @@ function rect(x, y, width, height, options) {
             _ctx.beginPath();
             _ctx.rect(x, y, width, height);
             _ctx_fill(a[0]);
-            _ctx_stroke(a[1], a[2]);
+            _ctx_stroke(a[1], a[2], a[3], a[4]);
         } else {
             var p = new Path();
             p.rect(x, y, width, height, options);
@@ -1910,7 +1964,7 @@ function rect(x, y, width, height, options) {
 
 function triangle(x1, y1, x2, y2, x3, y3, options) {
     /* Draws the triangle created by connecting the three given points.
-     * The current stroke, strokewidth and fill color are applied.
+     * The current stroke, strokewidth, strokestyle and fill color are applied.
      */
     var a = _colorMixin(options);
     if (a[0] && a[0].a > 0 || a[1] && a[1].a > 0) {
@@ -1920,13 +1974,13 @@ function triangle(x1, y1, x2, y2, x3, y3, options) {
         _ctx.lineTo(x3, y3);
         _ctx.closePath();
         _ctx_fill(a[0]);
-        _ctx_stroke(a[1], a[2]);
+        _ctx_stroke(a[1], a[2], a[3], a[4]);
     }
 }
 
 function ellipse(x, y, width, height, options) {
     /* Draws an ellipse with the center located at x, y.
-     * The current stroke, strokewidth and fill color are applied.
+     * The current stroke, strokewidth, strokestyle and fill color are applied.
      */
     var p = new Path();
     p.ellipse(x, y, width, height);
@@ -1937,7 +1991,7 @@ var oval = ellipse;
 
 function arrow(x, y, width, options) {
     /* Draws an arrow with its tip located at x, y.
-     * The current stroke, strokewidth and fill color are applied.
+     * The current stroke, strokewidth, strokestyle and fill color are applied.
      */
     var head = width * 0.4;
     var tail = width * 0.2;
@@ -1955,7 +2009,7 @@ function arrow(x, y, width, options) {
 
 function star(x, y, points, outer, inner, options) {
     /* Draws a star with the given points, outer radius and inner radius.
-     * The current stroke, strokewidth and fill color are applied.
+     * The current stroke, strokewidth, strokestyle and fill color are applied.
      */
     if (points === undefined) points = 20;
     if (outer === undefined) outer = 100;
@@ -2385,6 +2439,10 @@ function _ctx_font(fontname, fontsize, fontweight) {
     _ctx.font = fontweight + " " + fontsize + "px " + fontname;
 }
 
+function str(v) {
+    return v.toString();
+}
+
 function text(str, x, y, options) {
     /* Draws the string at the given position.
      * Lines of text will be split at \n.
@@ -2734,6 +2792,7 @@ var Canvas = Class.extend({
                  "fill": new Color(0,0,0,1),
                "stroke": null,
           "strokewidth": 1.0,
+          "strokestyle": SOLID,
                "shadow": null,
              "fontname": "sans-serif",
              "fontsize": 12,
@@ -3106,6 +3165,7 @@ function blur(img, radius) {
 }
 
 /*--- IMAGE FILTERS | ALPHA COMPOSITING ------------------------------------------------------------*/
+// Based on: R. Dura, 2009, http://mouaif.wordpress.com/2009/01/05/photoshop-math-with-glsl-shaders/
 
 function composite(img1, img2, dx, dy, operator) {
     /* Returns a new Image by mixing img1 (the destination) with blend image img2 (the source).
@@ -3285,6 +3345,7 @@ function bloom(img, intensity, radius, threshold) {
 }
 
 /*--- IMAGE FILTERS | DISTORTION -------------------------------------------------------------------*/
+// Based on: L. Spagnolini, 2007, http://dem.ocracy.org/libero/photobooth/
 
 function polar(img, x0, y0, callback) {
     /* Returns a new Image based on a polar coordinates filter.
