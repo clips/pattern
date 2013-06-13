@@ -211,7 +211,11 @@ def proxy(host, protocol="https"):
     """
     return (host, protocol)
 
-class URLError(Exception):
+class Error(Exception):
+    def __init__(self, *args, **kwargs):
+        Exception.__init__(self, *args); self.src=kwargs.pop("src", None)
+
+class URLError(Error):
     pass # URL contains errors (e.g. a missing t in htp://).
 class URLTimeout(URLError):
     pass # URL takes to long to load.
@@ -365,23 +369,23 @@ class URL:
                     base64.encodestring('%s:%s' % authentication))
             return urllib2.urlopen(request)
         except urllib2.HTTPError, e:
-            if e.code == 301: raise HTTP301Redirect
-            if e.code == 400: raise HTTP400BadRequest
-            if e.code == 401: raise HTTP401Authentication
-            if e.code == 403: raise HTTP403Forbidden
-            if e.code == 404: raise HTTP404NotFound
-            if e.code == 420: raise HTTP420Error
-            if e.code == 500: raise HTTP500InternalServerError
-            raise HTTPError
-        except socket.timeout:
-            raise URLTimeout
+            if e.code == 301: raise HTTP301Redirect(src=e)
+            if e.code == 400: raise HTTP400BadRequest(src=e)
+            if e.code == 401: raise HTTP401Authentication(src=e)
+            if e.code == 403: raise HTTP403Forbidden(src=e)
+            if e.code == 404: raise HTTP404NotFound(src=e)
+            if e.code == 420: raise HTTP420Error(src=e)
+            if e.code == 500: raise HTTP500InternalServerError(src=e)
+            raise HTTPError(src=e)
+        except socket.timeout, e:
+            raise URLTimeout(src=e)
         except urllib2.URLError, e:
             if e.reason == "timed out" \
             or e.reason[0] in (36, "timed out"): 
-                raise URLTimeout
-            raise URLError, e.reason
+                raise URLTimeout(src=e)
+            raise URLError(e.reason, src=e)
         except ValueError, e:
-            raise URLError, e
+            raise URLError(src=e)
 
     def download(self, timeout=10, cached=True, throttle=0, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None, unicode=False, **kwargs):
         """ Downloads the content at the given URL (by default it will be cached locally).
@@ -826,9 +830,9 @@ def decode_entities(string):
     return string
 
 def encode_url(string):
-    return urllib.quote_plus(bytestring(string))
+    return urllib.quote_plus(bytestring(string)) # "black/white" => "black%2Fwhite".
 def decode_url(string):
-    return urllib.unquote_plus(string) # "black/white" => "black%2Fwhite".
+    return urllib.unquote_plus(string)
 
 RE_SPACES = re.compile("( |\xa0)+", re.M) # Matches one or more spaces.
 RE_TABS   = re.compile(r"\t+", re.M)      # Matches one or more tabs.
@@ -1932,7 +1936,12 @@ class DBPediaResource(unicode):
     @property
     def name(self):
         # http://dbpedia.org/resource/Australia => Australia
-        return re.sub("^http://dbpedia.org/resource/", "", self)
+        s = re.sub("^http://dbpedia.org/resource/", "", self)
+        s = s.replace("_", " ")
+        s = encode_utf8(s)
+        s = decode_url(s)
+        s = decode_utf8(s)
+        return s
 
 class DBPedia(SearchEngine):
 
@@ -1964,8 +1973,8 @@ class DBPedia(SearchEngine):
         try:
             data = URL(url).download(cached=cached, timeout=30, **kwargs)
             data = json.loads(data)
-        except HTTP400BadRequest:
-            raise DBPediaQueryError # SPARQL query syntax error.
+        except HTTP400BadRequest, e:
+            raise DBPediaQueryError, e.src.read().splitlines()[0]
         except HTTP403Forbidden:
             raise SearchEngineLimitError
         results = Results(DBPEDIA, url.query, type)
@@ -1983,7 +1992,7 @@ class DBPedia(SearchEngine):
                     v = float(v)
                 if t2.endswith("int"):
                     v = int(v)
-                r[k] = v
+                dict.__setitem__(r, k, v)
             results.append(r)
         return results
 
