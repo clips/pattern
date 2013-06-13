@@ -120,3 +120,4 @@ Acknowledgements
 - Fred Jehle
 - Antoine Mazières + fabelier.org
 - Rémi de Zoeten + closealert.nl
+- Kenneth Koch
