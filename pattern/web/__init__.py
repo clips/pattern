@@ -237,6 +237,8 @@ class HTTP404NotFound(HTTPError):
     pass # URL doesn't exist on the internet.
 class HTTP420Error(HTTPError):
     pass # Used by Twitter for rate limiting.
+class HTTP429TooMayRequests(HTTPError):
+    pass # Used by Twitter for rate limiting.
 class HTTP500InternalServerError(HTTPError):
     pass # Generic server error.
 
@@ -375,6 +377,7 @@ class URL:
             if e.code == 403: raise HTTP403Forbidden(src=e)
             if e.code == 404: raise HTTP404NotFound(src=e)
             if e.code == 420: raise HTTP420Error(src=e)
+            if e.code == 429: raise HTTP429TooMayRequests(src=e)
             if e.code == 500: raise HTTP500InternalServerError(src=e)
             raise HTTPError(src=e)
         except socket.timeout, e:
@@ -1300,17 +1303,18 @@ class Twitter(SearchEngine):
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=False, **kwargs):
         """ Returns a list of results from Twitter for the given query.
-            - type : SEARCH or TRENDS,
+            - type : SEARCH,
             - start: Result.id or int,
             - count: maximum 100.
-            There is an limit of 150+ queries per 15 minutes.
+            There is a limit of 150+ queries per 15 minutes.
         """
         if type != SEARCH:
             raise SearchEngineTypeError
         if not query or count < 1 or (isinstance(start, (int, float)) and start < 1):
             return Results(TWITTER, query, type)
-        if isinstance(start, (int, float)):
-            id = self._pagination.get((int(start), count), "")
+        if isinstance(start, (int, float)) and start < 10000:
+            id = (query, kwargs.get("geo"), int(start), count)
+            id = self._pagination.pop(id, "")
         else:
             id = start or ""
         # 1) Construct request URL.
@@ -1335,6 +1339,8 @@ class Twitter(SearchEngine):
             data = url.download(cached=cached, **kwargs)
         except HTTP420Error:
             raise SearchEngineLimitError
+        except HTTP429TooMayRequests:
+            raise SearchEngineLimitError
         data = json.loads(data)
         results = Results(TWITTER, query, type)
         results.total = None
@@ -1348,10 +1354,21 @@ class Twitter(SearchEngine):
             r.profile  = self.format(x.get("user", {}).get("profile_image_url")) # Profile picture URL.
             r.language = self.format(x.get("metadata", {}).get("iso_language_code"))
             results.append(r)
+        # Twitter.search(start=id, count=10) takes a tweet.id,
+        # and returns 10 results that are older than this id.
+        # In the past, start took an int used for classic pagination.
+        # However, new tweets may arrive quickly,
+        # so that by the time Twitter.search(start=2) is called,
+        # it will yield results from page 1 (or even newer results).
+        # For backward compatibility, we keep a one-time page cache,
+        # that remembers the last id for a "page" for a given query,
+        # when called in a loop.
+        #
         # Store the last id retrieved.
         # If search() is called again with start+1, start from this id.
         if isinstance(start, (int, float)):
-            self._pagination[(int(start)+1, count)] = str(int(results[-1].id) - 1)
+            id = (query, kwargs.get("geo"), int(start)+1, count)
+            self._pagination[id] = str(int(results[-1].id) - 1)
         return results
 
     def trends(self, **kwargs):
@@ -2694,16 +2711,16 @@ class Selector:
     
     def __init__(self, s):
         """ A simple CSS selector is a type (e.g., "p") or universal ("*") selector 
-            followed by id selectors, attribute selectors, or pseudo-classes.
+            followed by id selectors, attribute selectors, or pseudo-elements.
         """
         self.string = s
         s = s.strip()
         s = s.lower()
         s = s.startswith(("#", ".", ":")) and "*" + s or s
-        s = s.replace("#", " #") + " #"
-        s = s.replace(".", " .")
-        s = s.replace(":", " :")
-        s = s.replace("[", " [")
+        s = s.replace("#", " #") + " #" # #id
+        s = s.replace(".", " .")        # .class
+        s = s.replace(":", " :")        # :pseudo-element
+        s = s.replace("[", " [")        # [attribute="value"]
         s = s.split(" ")
         self.tag, self.id, self.classes, self.pseudo, self.attributes = (
              s[0],
@@ -2719,12 +2736,17 @@ class Selector:
         s = s.strip("[]")
         s = s.replace("'", "")
         s = s.replace('"', "")
-        s = s.replace("~=", "=~")
-        s = s.replace("^=", "=^")
-        s = s.replace("|=", "=|")
+        s = re.sub(r"(\~|\||\^|\$|\*)\=", "=\\1", s)
         s = s.split("=") + [True]
-        # Attribute selectors ~=, ^=, |= don't work yet,
-        # but can be implemented by mapping the value to a regular expression.
+        s = s[:2]
+        if s[1] is not True and s[1].startswith(("~", "|", "^", "$", "*")):
+            p, s[1] = s[1][0], s[1][1:]
+            if p == "~": r = r"(^|\s)%s(\s|$)"
+            if p == "|": r = r"^%s(-|$)" # XXX doesn't work with spaces.
+            if p == "^": r = r"^%s"
+            if p == "$": r = r"%s$"
+            if p == "*": r = r"%s"
+            s[1] = re.compile(r % s[1], re.I)
         return s[:2]
         
     def _first_child(self, e):
@@ -2797,13 +2819,16 @@ class SelectorChain(list):
             s = s.strip()
             s = re.sub(r" +", " ", s)
             s = re.sub(r" *\> *", " >", s)
+            s = re.sub(r" *\< *", " <", s)
             s = re.sub(r" *\+ *", " +", s)
             self.append([])
             for s in s.split(" "):
-                if not s.startswith((">", "+")):
+                if not s.startswith((">", "<", "+")):
                     self[-1].append((" ", Selector(s)))
                 elif s.startswith(">"):
                     self[-1].append((">", Selector(s[1:])))
+                elif s.startswith("<"):
+                    self[-1].append(("<", Selector(s[1:])))
                 elif s.startswith("+"):
                     self[-1].append(("+", Selector(s[1:])))
                     
@@ -2822,6 +2847,10 @@ class SelectorChain(list):
                     # X > Y => X is parent of Y
                     e = map(lambda e: filter(s.match, e.children), e)
                     e = list(itertools.chain(*e))
+                if combinator == "<":
+                    # X > Y => X is child of Y
+                    e = map(lambda e: e.parent, e)
+                    e = filter(s.match, e)
                 if combinator == "+":
                     # X + Y => X directly precedes Y
                     e = map(s._first_sibling, e)
@@ -2829,8 +2858,25 @@ class SelectorChain(list):
             m.extend(e)
         return m
 
+#dom = DOM("""
+#<html>
+#<head></head>
+#<body>
+#    <div id="#main">
+#        <span class="11 22 33">x</span>
+#    </div>
+#</body>
+#</hmtl>
+#""")
+#
+#print dom("*[class='11']")
+#print dom("*[class^='11']")
+#print dom("*[class~='22']")
+#print dom("*[class$='33']")
+#print dom("*[class*='3']")
+
 #### WEB CRAWLER ###################################################################################
-# Tested with a crawl across 1,000 domain so far.
+# Tested with a crawl across 1,000 domains so far.
 
 class Link:
 
@@ -2848,7 +2894,7 @@ class Link:
     def __repr__(self):
         return "Link(url=%s)" % repr(self.url)
 
-    # Used for sorting in Spider.links:
+    # Used for sorting in Crawler.links:
     def __eq__(self, link):
         return self.url == link.url
     def __ne__(self, link):
@@ -2907,18 +2953,18 @@ FIFO = "fifo" # First In, First Out.
 FILO = "filo" # First In, Last Out.
 LIFO = "lifo" # Last In, First Out (= FILO).
 
-class Spider:
+class Crawler:
 
     def __init__(self, links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse, sort=FIFO):
-        """ A spider can be used to browse the web in an automated manner.
+        """ A crawler can be used to browse the web in an automated manner.
             It visits the list of starting URLs, parses links from their content, visits those, etc.
-            - Links can be prioritized by overriding Spider.priority().
-            - Links can be ignored by overriding Spider.follow().
-            - Each visited link is passed to Spider.visit(), which can be overridden.
+            - Links can be prioritized by overriding Crawler.priority().
+            - Links can be ignored by overriding Crawler.follow().
+            - Each visited link is passed to Crawler.visit(), which can be overridden.
         """
         self.parse    = parser
         self.delay    = delay   # Delay between visits to the same (sub)domain.
-        self.domains  = domains # Domains the spider is allowed to visit.
+        self.domains  = domains # Domains the crawler is allowed to visit.
         self.history  = {}      # Domain name => time last visited.
         self.visited  = {}      # URLs visited.
         self._queue   = []      # URLs scheduled for a visit: (priority, time, Link).
@@ -2951,7 +2997,7 @@ class Spider:
 
     def pop(self, remove=True):
         """ Returns the next Link queued to visit and removes it from the queue.
-            Links on a recently visited (sub)domain are skipped until Spider.delay has elapsed.
+            Links on a recently visited (sub)domain are skipped until Crawler.delay has elapsed.
         """
         now = time.time()
         for i, (priority, dt, link) in enumerate(self._queue):
@@ -2968,11 +3014,11 @@ class Spider:
         return self.pop(remove=False)
 
     def crawl(self, method=DEPTH, **kwargs):
-        """ Visits the next link in Spider._queue.
-            If the link is on a domain recently visited (< Spider.delay) it is skipped.
+        """ Visits the next link in Crawler._queue.
+            If the link is on a domain recently visited (< Crawler.delay) it is skipped.
             Parses the content at the link for new links and adds them to the queue,
-            according to their Spider.priority().
-            Visited links (and content) are passed to Spider.visit().
+            according to their Crawler.priority().
+            Visited links (and content) are passed to Crawler.visit().
         """
         link = self.pop()
         if link is None:
@@ -2990,8 +3036,8 @@ class Spider:
                         # 1) Parse new links from HTML web pages.
                         # 2) Schedule unknown links for a visit.
                         # 3) Only links that are not already queued are queued.
-                        # 4) Only links for which Spider.follow() is True are queued.
-                        # 5) Only links on Spider.domains are queued.
+                        # 4) Only links for which Crawler.follow() is True are queued.
+                        # 5) Only links on Crawler.domains are queued.
                         if new.url in self.visited:
                             continue
                         if new.url in self._queued:
@@ -3006,7 +3052,7 @@ class Spider:
                             self._queue = self._queue[:self.QUEUE]
                             self._queued.clear()
                             self._queued.update(dict((q[2].url, True) for q in self._queue))
-                        # 7) Position in the queue is determined by Spider.priority().
+                        # 7) Position in the queue is determined by Crawler.priority().
                         # 8) Equal ranks are sorted FIFO or FILO.
                         self.push(new, priority=self.priority(new, method=method), sort=self.sort)
                     self.visit(link, source=html)
@@ -3016,7 +3062,7 @@ class Spider:
             else:
                 # URL MIME-type is not HTML, don't know how to handle.
                 self.fail(link)
-            # Log the current time visited for the domain (see Spider.pop()).
+            # Log the current time visited for the domain (see Crawler.pop()).
             # Log the URL as visited.
             self.history[base(link.url)] = time.time()
             self.visited[link.url] = True
@@ -3025,7 +3071,7 @@ class Spider:
         return False
 
     def normalize(self, url):
-        """ Called from Spider.crawl() to normalize URLs.
+        """ Called from Crawler.crawl() to normalize URLs.
             For example: return url.split("?")[0]
         """
         # All links pass through here (visited or not).
@@ -3033,13 +3079,13 @@ class Spider:
         return url
 
     def follow(self, link):
-        """ Called from Spider.crawl() to determine if it should follow this link.
+        """ Called from Crawler.crawl() to determine if it should follow this link.
             For example: return "nofollow" not in link.relation
         """
         return True
 
     def priority(self, link, method=DEPTH):
-        """ Called from Spider.crawl() to determine the priority of this link,
+        """ Called from Crawler.crawl() to determine the priority of this link,
             as a number between 0.0-1.0. Links with higher priority are visited first.
         """
         # Depth-first search dislikes external links to other (sub)domains.
@@ -3052,17 +3098,19 @@ class Spider:
         return 0.80
 
     def visit(self, link, source=None):
-        """ Called from Spider.crawl() when the link is crawled.
+        """ Called from Crawler.crawl() when the link is crawled.
             When source=None, the link is not a web page (and was not parsed),
             or possibly a URLTimeout occured (content size too big).
         """
         pass
 
     def fail(self, link):
-        """ Called from Spider.crawl() for link whose MIME-type could not be determined,
+        """ Called from Crawler.crawl() for link whose MIME-type could not be determined,
             or which raised a URLError on download.
         """
         pass
+
+Spider = Crawler
 
 #class Spiderling(Spider):
 #    def visit(self, link, source=None):
@@ -3076,8 +3124,6 @@ class Spider:
 
 #--- CRAWL FUNCTION --------------------------------------------------------------------------------
 # Functional approach to crawling.
-
-Crawler = Spider
 
 def crawl(links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse, sort=FIFO, method=DEPTH, **kwargs):
     """ Returns a generator that yields (Link, source)-tuples of visited pages.
