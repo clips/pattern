@@ -267,28 +267,29 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
         count = count.__class__(heapq.nsmallest(top, count.iteritems(), key=lambda (k,v): (-v,k)))
     return count
 
-def trigrams(string="", top=None, threshold=0, exclude=[], **kwargs):
-    """ Returns a dictionary of (character trigram, count)-items, in lowercase.
-        Trigrams in the exclude list are not counted.
-        Trigrams whose count falls below (or equals) the given threshold are excluded.
-        Trigrams that are not in the given top most counted are excluded.
+def character_ngrams(string="", n=3, top=None, threshold=0, exclude=[], **kwargs):
+    """ Returns a dictionary of (character n-gram, count)-items, in lowercase.
+        N-grams in the exclude list are not counted.
+        N-grams whose count falls below (or equals) the given threshold are excluded.
+        N-grams that are not in the given top most counted are excluded.
     """
     # An optional dict-parameter can be used to specify a subclass of dict, 
     # e.g., count(words, dict=readonlydict) as used in Document.
     count = kwargs.get("dict", dict)()
-    ch1 = ch2 = ch3 = ""
-    for ch in string:
-        ch1, ch2, ch3 = ch2, ch3, ch.lower()
-        if ch1:
-            w = ch1 + ch2 + ch3
-            if w not in exclude:
-                dict.__setitem__(count, w, (w in count) and count[w]+1 or 1)
+    for w in re.findall(r"(?=(" + "."*n + "))", string.lower()):
+        if w not in exclude:
+            dict.__setitem__(count, w, (w in count) and count[w]+1 or 1)
     for k in count.keys():
         if count[k] <= threshold:
             dict.__delitem__(count, k)
     if top is not None:
         count = count.__class__(heapq.nsmallest(top, count.iteritems(), key=lambda (k,v): (-v,k)))
     return count
+    
+chngrams = character_ngrams
+
+def trigrams(*args, **kwargs):
+    kwargs["n"]=3; return character_ngrams(*args, **kwargs)
 
 #--- DOCUMENT --------------------------------------------------------------------------------------
 # A Document is a bag of words in which each word is a feature.
@@ -1920,7 +1921,7 @@ def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
         m[3] += F
     return tuple([v / (K or 1) for v in m])
     
-K_fold_cv = k_fold_cv = k_fold_cross_validation = K_fold_cross_validation
+kfoldcv = K_fold_cv = k_fold_cv = k_fold_cross_validation = K_fold_cross_validation
 
 #--- NAIVE BAYES CLASSIFIER ------------------------------------------------------------------------
 
@@ -2246,6 +2247,25 @@ class SVM(Classifier):
             classifier._model = (svm.svm_load_model(path + ".tmp"),) + classifier._model[1:]
             os.remove(f.name)
         return classifier
+
+# Nothing beats SVM + character n-grams.
+# Character n-grams seem to capture all information: morphology, context, frequency, ...
+# SVM will discover the most informative features.
+# Each row in the CSV is a score (positive = +1, negative = –1) and a Dutch book review.
+# Can we learn from this dataset to predict sentiment? Yes we can!
+# The following script demonstrates sentiment analysis for Dutch book reviews,
+# with 90% accuracy, in 10 lines of Python code:
+
+#from pattern.db import CSV
+#from pattern.vector import SVM, chngrams, kfoldcv
+#
+#def v(s):
+#    return chngrams(s, n=4)
+#
+#data = CSV.load(os.path.join("..", "..", "test", "corpora", "polarity-nl-bol.com.csv"))
+#data = map(lambda (p, review): (v(review), int(p) > 0), data)
+#
+#print kfoldcv(SVM, data, folds=3)
 
 #### GENETIC ALGORITHM #############################################################################
 
