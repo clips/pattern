@@ -1923,6 +1923,34 @@ def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
     
 kfoldcv = K_fold_cv = k_fold_cv = k_fold_cross_validation = K_fold_cross_validation
 
+def gridsearch(Classifier, documents=[], folds=10, **kwargs):
+    """ Returns the test results for every combination of optional parameters,
+        using K-fold cross-validation for the given classifier (Bayes, KNN, SVM).
+        For example:
+        for (A, P, R, F), p in gridsearch(SVM, data, c=[0.1, 1, 10]):
+            print (A, P, R, F), p
+        > (0.919, 0.921, 0.919, 0.920), {"c": 10}
+        > (0.874, 0.884, 0.865, 0.874), {"c": 1}
+        > (0.535, 0.424, 0.551, 0.454), {"c": 0.1}
+    """
+    def product(*args):
+        # Yields the cartesian product of given iterables:
+        # list(product([1, 2], [3, 4])) => [(1, 3), (1, 4), (2, 3), (2, 4)]
+        p = [[]]
+        for iterable in args:
+            p = [x + [y] for x in p for y in iterable]
+        for p in p:
+            yield tuple(p)
+    s = [] # [((A, P, R, F), parameters), ...]
+    p = [] # [[("c", 0.1), ("c", 10), ...], 
+           #  [("gamma", 0.1), ("gamma", 0.2), ...], ...]
+    for k, v in kwargs.items():
+        p.append([(k, v) for v in v])
+    for p in product(*p):
+        p = dict(p)
+        s.append((K_fold_cross_validation(Classifier, documents, folds, **p), p))
+    return sorted(s, reverse=True)
+
 #--- NAIVE BAYES CLASSIFIER ------------------------------------------------------------------------
 
 MULTINOMIAL = "multinomial" # Feature weighting.
@@ -2112,6 +2140,7 @@ class SVM(Classifier):
             - cost=1, 
             - epsilon=0.01, 
             - cache=100, 
+            - shrinking=True,
             - debug=False
         """
         import svm
@@ -2121,17 +2150,19 @@ class SVM(Classifier):
             kwargs.setdefault("type", args[0])
         if len(args) > 1: 
             kwargs.setdefault("kernel", args[1])
-        for k, v in (
-            (       "type", CLASSIFICATION),
-            (     "kernel", LINEAR),
-            (     "degree", 3), # POLYNOMIAL
-            (      "gamma", 0), # POLYNOMIAL
-            (     "coeff0", 0), # POLYNOMIAL
-            (       "cost", 1),
-            (    "epsilon", 0.1),
-            (         "nu", 0.5),
-            (      "cache", 100),
-            (      "debug", False)): setattr(self, k, kwargs.get(k, v))
+        for k1, k2, v in (
+            (       "type", "s", CLASSIFICATION),
+            (     "kernel", "t", LINEAR),
+            (     "degree", "d", 3), # POLYNOMIAL
+            (      "gamma", "g", 0), # POLYNOMIAL
+            (     "coeff0", "r", 0), # POLYNOMIAL
+            (       "cost", "c", 1),
+            (    "epsilon", "p", 0.1),
+            (         "nu", "n", 0.5),
+            (      "cache", "m", 100),
+            (  "shrinking", "h", True),
+            (      "debug", "q", False)): 
+                setattr(self, k1, kwargs.get(k2, kwargs.get(k1, v)))
         Classifier.__init__(self, train=kwargs.get("train", []), baseline=FREQUENCY)
 
     @property
@@ -2160,17 +2191,18 @@ class SVM(Classifier):
         H3 = dict((i, w) for i, w in enumerate(self.classes))    # Class reversed hash.
         x  = [dict((H1[k], v) for k, v in v.items()) for v in M] # Hashed vectors.
         y  = [H2[type] for  type, v in self._vectors]            # Hashed classes.
-        o  = "-s %s -t %s -d %s -g %s -r %s -c %s -p %s -n %s -m %s -b %s %s" % (
-            self.type, 
-            self.kernel, 
-            self.degree, 
-            self.gamma, 
-            self.coeff0, 
-            self.cost, 
-            self.epsilon, 
-            self.nu,
-            self.cache,
-            1,
+        o  = "-s %s -t %s -d %s -g %s -r %s -c %s -p %s -n %s -m %s -h %s -b %s %s" % (
+            self.type,       # -s
+            self.kernel,     # -t
+            self.degree,     # -d
+            self.gamma,      # -g
+            self.coeff0,     # -r
+            self.cost,       # -c
+            self.epsilon,    # -p
+            self.nu,         # -n
+            self.cache,      # -m
+        int(self.shrinking), # -h
+            1,               # -b
             self.debug is False and "-q" or ""
         )
         # Cache the model and the feature hash.
@@ -2248,7 +2280,8 @@ class SVM(Classifier):
             os.remove(f.name)
         return classifier
 
-# Nothing beats SVM + character n-grams.
+#---------------------------------------------------------------------------------------------------
+# "Nothing beats SVM + character n-grams."
 # Character n-grams seem to capture all information: morphology, context, frequency, ...
 # SVM will discover the most informative features.
 # Each row in the CSV is a score (positive = +1, negative = –1) and a Dutch book review.
@@ -2266,6 +2299,29 @@ class SVM(Classifier):
 #data = map(lambda (p, review): (v(review), int(p) > 0), data)
 #
 #print kfoldcv(SVM, data, folds=3)
+
+#---------------------------------------------------------------------------------------------------
+# I hate to spoil your party..." by Lars Buitinck.
+# As pointed out by Lars Buitinck, words + word-level bigrams with TF-IDF can beat the 90% boundary:
+
+#from pattern.db import CSV
+#from pattern.en import ngrams
+#from pattern.vector import Model, SVM, gridsearch
+#
+#def v(s):
+#    return count(words(s) + ngrams(s, n=2))
+#    
+#data = CSV.load(os.path.join("..", "..", "test", "corpora", "polarity-nl-bol.com.csv"))
+#data = map(lambda (p, review): Document(v(review), type=int(p) > 0), data)
+#data = Model(data, weight="tf-idf")
+#
+#for p in gridsearch(SVM, data, c=[0.1, 1, 10], folds=3):
+#    print p
+
+# This reports 92% accuracy for the best run (c=10).
+# Of course, it's optimizing for the same cross-validation 
+# that it's testing on, so this is easy to overfit.
+# In scikit-learn it will run very fast (about 4 seconds), see: http://goo.gl/YqlRa
 
 #### GENETIC ALGORITHM #############################################################################
 
