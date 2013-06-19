@@ -412,7 +412,10 @@ class URL:
                 return cache.get(id, unicode=False)
         t = time.time()
         # Open a connection with the given settings, read it and (by default) cache the data.
-        data = self.open(timeout, proxy, user_agent, referrer, authentication).read()
+        try:
+            data = self.open(timeout, proxy, user_agent, referrer, authentication).read()
+        except socket.timeout, e:
+            raise URLTimeout(src=e)
         if unicode is True:
             data = u(data)
         if cached:
@@ -1328,11 +1331,15 @@ class Twitter(SearchEngine):
         #    It can also be a (latitude, longitude)-tuple with default radius "10km".
         if "geo" in kwargs:
             url.query["geocode"] = ",".join((map(str, kwargs.pop("geo")) + ["10km"])[:3])
-        # 3) Restrict language.
+        # 3) Restrict most recent with date="YYYY-MM-DD". 
+        #    Only older tweets are returned.
+        if "date" in kwargs:
+            url.query["until"] = kwargs.pop("date")
+        # 4) Restrict language.
         url.query["lang"] = self.language or ""
-        # 4) Authenticate.
+        # 5) Authenticate.
         url = self._authenticate(url)
-        # 5) Parse JSON response.
+        # 6) Parse JSON response.
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         try:
@@ -1366,8 +1373,8 @@ class Twitter(SearchEngine):
         #
         # Store the last id retrieved.
         # If search() is called again with start+1, start from this id.
-        if isinstance(start, (int, float)):
-            id = (query, kwargs.get("geo"), int(start)+1, count)
+        if isinstance(start, (int, float)) and results:
+            id = (query, kwargs.get("geo"), kwargs.get("date"), int(start)+1, count)
             self._pagination[id] = str(int(results[-1].id) - 1)
         return results
 
