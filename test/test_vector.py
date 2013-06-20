@@ -901,6 +901,33 @@ class TestClassifier(unittest.TestCase):
         self.assertTrue(P >= 0.93)
         self.assertTrue(R >= 0.93)
         self.assertTrue(F >= 0.93)
+        
+    def test_liblinear(self):
+        # If LIBLINEAR can be loaded, 
+        # assert that it is used for linear SVC (= 10x faster).
+        try:
+            from pattern.vector import svm
+        except ImportError, e:
+            print e
+            return
+        if svm.LIBLINEAR:
+            classifier1 = vector.SVM(
+                      type =  vector.CLASSIFICATION, 
+                    kernel =  vector.LINEAR,
+                extensions = (vector.LIBSVM, vector.LIBLINEAR))
+            classifier2 = vector.SVM(
+                      type =  vector.CLASSIFICATION, 
+                    kernel =  vector.RBF,
+                extensions = (vector.LIBSVM, vector.LIBLINEAR))
+            classifier3 = vector.SVM(
+                      type =  vector.CLASSIFICATION, 
+                    kernel =  vector.LINEAR,
+                extensions = (vector.LIBSVM,))
+            self.assertEqual(classifier1.extension, vector.LIBLINEAR)
+            self.assertEqual(classifier2.extension, vector.LIBSVM)
+            self.assertEqual(classifier3.extension, vector.LIBSVM)
+        print "pattern.vector.svm.LIBSVM"
+        print "pattern.vector.svm.LIBLINEAR"
 
 #---------------------------------------------------------------------------------------------------
 

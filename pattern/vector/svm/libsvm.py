@@ -2,8 +2,8 @@
 
 from ctypes import *
 from ctypes.util import find_library
+from os import path
 import sys
-import os
 
 # For unix the prefix 'lib' is not considered.
 if find_library('svm'):
@@ -12,7 +12,7 @@ elif find_library('libsvm'):
 	libsvm = CDLL(find_library('libsvm'))
 else:
 	b = False
-	for v in ("3.17", "3.11"):  # LIBSVM 3.11-17
+	for v in ("libsvm-3.17", "libsvm-3.11"):  # LIBSVM 3.11-17
 		for binary in (
 		  # If you have OS X 32-bit, you need a 32-bit Python and libsvm-mac32.so.
 		  # If you have OS X 32-bit with 64-bit Python, 
@@ -28,7 +28,7 @@ else:
 			if sys.platform.startswith("win") and binary.endswith(".so"):
 				continue
 			try:
-				libsvm = CDLL(os.path.join(os.path.dirname(__file__), v, binary)); b=True; break
+				libsvm = CDLL(path.join(path.dirname(__file__), v, binary)); b=True; break
 			except OSError, e:
 				continue
 		if b: break
@@ -60,10 +60,15 @@ class svm_node(Structure):
 	_types = [c_int, c_double]
 	_fields_ = genFields(_names, _types)
 
-def gen_svm_nodearray(xi, feature_max=None, issparse=None):
+	def __str__(self):
+		return '%d:%g' % (self.index, self.value)
+
+def gen_svm_nodearray(xi, feature_max=None, isKernel=None):
 	if isinstance(xi, dict):
 		index_range = xi.keys()
 	elif isinstance(xi, (list, tuple)):
+		if not isKernel:
+			xi = [0] + xi  # idx should start from 1
 		index_range = range(len(xi))
 	else:
 		raise TypeError('xi should be a dictionary, list or tuple')
@@ -71,9 +76,9 @@ def gen_svm_nodearray(xi, feature_max=None, issparse=None):
 	if feature_max:
 		assert(isinstance(feature_max, int))
 		index_range = filter(lambda j: j <= feature_max, index_range)
-	if issparse: 
+	if not isKernel: 
 		index_range = filter(lambda j:xi[j] != 0, index_range)
-	
+
 	index_range = sorted(index_range)
 	ret = (svm_node * (len(index_range)+1))()
 	ret[-1].index = -1
@@ -90,7 +95,7 @@ class svm_problem(Structure):
 	_types = [c_int, POINTER(c_double), POINTER(POINTER(svm_node))]
 	_fields_ = genFields(_names, _types)
 
-	def __init__(self, y, x):
+	def __init__(self, y, x, isKernel=None):
 		if len(y) != len(x):
 			raise ValueError("len(y) != len(x)")
 		self.l = l = len(y)
@@ -98,7 +103,7 @@ class svm_problem(Structure):
 		max_idx = 0
 		x_space = self.x_space = []
 		for i, xi in enumerate(x):
-			tmp_xi, tmp_idx = gen_svm_nodearray(xi)
+			tmp_xi, tmp_idx = gen_svm_nodearray(xi,isKernel=isKernel)
 			x_space += [tmp_xi]
 			max_idx = max(max_idx, tmp_idx)
 		self.n = max_idx
@@ -123,11 +128,15 @@ class svm_parameter(Structure):
 			options = ''
 		self.parse_options(options)
 
-	def show(self):
-		attrs = svm_parameter._names + self.__dict__.keys()
+	def __str__(self):
+		s = ''
+		attrs = svm_parameter._names + list(self.__dict__.keys())
 		values = map(lambda attr: getattr(self, attr), attrs) 
 		for attr, val in zip(attrs, values):
-			print(' %s: %s' % (attr, val))
+			s += (' %s: %s\n' % (attr, val))
+		s = s.strip()
+
+		return s
 
 	def set_to_default_values(self):
 		self.svm_type = C_SVC;
@@ -150,7 +159,12 @@ class svm_parameter(Structure):
 		self.print_func = None
 
 	def parse_options(self, options):
-		argv = options.split()
+		if isinstance(options, list):
+			argv = options
+		elif isinstance(options, str):
+			argv = options.split()
+		else:
+			raise TypeError("arg 1 should be a list or a str.")
 		self.set_to_default_values()
 		self.print_func = cast(None, PRINT_STRING_FUN)
 		weight_label = []
@@ -221,11 +235,11 @@ class svm_parameter(Structure):
 
 class svm_model(Structure):
 	_names = ['param', 'nr_class', 'l', 'SV', 'sv_coef', 'rho',
-			'probA', 'probB', 'label', 'nSV', 'free_sv']
+			'probA', 'probB', 'sv_indices', 'label', 'nSV', 'free_sv']
 	_types = [svm_parameter, c_int, c_int, POINTER(POINTER(svm_node)),
 			POINTER(POINTER(c_double)), POINTER(c_double),
 			POINTER(c_double), POINTER(c_double), POINTER(c_int),
-			POINTER(c_int), c_int]
+			POINTER(c_int), POINTER(c_int), c_int]
 	_fields_ = genFields(_names, _types)
 
 	def __init__(self):
@@ -234,9 +248,7 @@ class svm_model(Structure):
 	def __del__(self):
 		# free memory created by C to avoid memory leak
 		if hasattr(self, '__createfrom__') and self.__createfrom__ == 'C':
-			try: libsvm.svm_free_and_destroy_model(pointer(self))
-			except:
-				pass
+			libsvm.svm_free_and_destroy_model(pointer(self))
 
 	def get_svm_type(self):
 		return libsvm.svm_get_svm_type(self)
@@ -252,6 +264,15 @@ class svm_model(Structure):
 		labels = (c_int * nr_class)()
 		libsvm.svm_get_labels(self, labels)
 		return labels[:nr_class]
+
+	def get_sv_indices(self):
+		total_sv = self.get_nr_sv()
+		sv_indices = (c_int * total_sv)()
+		libsvm.svm_get_sv_indices(self, sv_indices)
+		return sv_indices[:total_sv]
+
+	def get_nr_sv(self):
+		return libsvm.svm_get_nr_sv(self)
 
 	def is_probability_model(self):
 		return (libsvm.svm_check_probability_model(self) == 1)
@@ -296,6 +317,8 @@ fillprototype(libsvm.svm_load_model, POINTER(svm_model), [c_char_p])
 fillprototype(libsvm.svm_get_svm_type, c_int, [POINTER(svm_model)])
 fillprototype(libsvm.svm_get_nr_class, c_int, [POINTER(svm_model)])
 fillprototype(libsvm.svm_get_labels, None, [POINTER(svm_model), POINTER(c_int)])
+fillprototype(libsvm.svm_get_sv_indices, None, [POINTER(svm_model), POINTER(c_int)])
+fillprototype(libsvm.svm_get_nr_sv, c_int, [POINTER(svm_model)])
 fillprototype(libsvm.svm_get_svr_probability, c_double, [POINTER(svm_model)])
 
 fillprototype(libsvm.svm_predict_values, c_double, [POINTER(svm_model), POINTER(svm_node), POINTER(c_double)])

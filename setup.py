@@ -53,7 +53,7 @@ setup(
         "pattern.text.fr"         : ["*.txt", "*.xml"],
         "pattern.text.nl"         : ["*.txt", "*.xml"],
         "pattern.vector"          : ["*.txt"],
-        "pattern.vector.svm"      : ["*.txt", "3.11/*", "3.17/*"],
+        "pattern.vector.svm"      : ["*.txt", "libsvm-3.11/*", "libsvm-3.17/*", "liblinear-1.93/*"],
         "pattern.graph"           : ["*.js", "*.csv"],
     },
     py_modules = [

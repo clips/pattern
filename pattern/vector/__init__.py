@@ -2102,7 +2102,7 @@ NearestNeighbor = kNN = KNN
 # Pattern comes bundled with LIBSVM 3.17:
 # http://www.csie.ntu.edu.tw/~cjlin/libsvm/
 #
-# Compiled binaries for Windows and Mac OS X (32-bit or 64-bit), and Ubuntu (64-bit) are included.
+# Compiled binaries for 32-bit and 64-bit Windows, Mac OS X and Ubuntu are included.
 # If no binary works, SVM() raises an ImportError,
 # and you will need to download and compile LIBSVM from source.
 # If Mac OS X complains during compilation, rename -soname" to "-install_name" in libsvm/Makefile.
@@ -2110,6 +2110,10 @@ NearestNeighbor = kNN = KNN
 # Put the binary (i.e., "libsvm.dll" or "libsvm.so") in pattern/vector/svm/.
 # Windows binaries can be downloaded from:
 # http://www.lfd.uci.edu/~gohlke/pythonlibs/#libsvm
+
+# SVM extensions:
+LIBSVM, LIBLINEAR = \
+    "libsvm", "liblinear"
 
 # SVM type:
 SVC = CLASSIFICATION = 0
@@ -2132,84 +2136,154 @@ class SVM(Classifier):
             where training documents are represented as points in n-dimensional space.
             The SVM constructs a number of hyperplanes that subdivide the space.
             Optional parameters:
-            - type=CLASSIFICATION, 
-            - kernel=LINEAR, 
-            - degree=3, 
-            - gamma=1/len(SVM.features), 
-            - coeff0=0,
-            - cost=1, 
-            - epsilon=0.01, 
-            - cache=100, 
-            - shrinking=True,
-            - debug=False
+            -      type = CLASSIFICATION, 
+            -    kernel = LINEAR, 
+            -    degree = 3, 
+            -     gamma = 1/len(SVM.features), 
+            -    coeff0 = 0,
+            -      cost = 1, 
+            -   epsilon = 0.01, 
+            -     cache = 100, 
+            - shrinking = True
         """
         import svm
-        self._libsvm = svm
-        self._model  = None
+        self._svm = svm
+        # Cached LIBSVM or LIBLINEAR model:
+        self._model = None
+        # SVM.extensions is a tuple of extension modules that can be used.
+        # By default, LIBLINEAR will be used for linear SVC (it is faster).
+        # If you do not want to use LIBLINEAR, use SVM(extension=LIBSVM).
+        self._extensions = \
+            kwargs.get("extensions", 
+            kwargs.get("extension", (LIBSVM, LIBLINEAR)))
+        # Optional parameters are read-only:
         if len(args) > 0: 
-            kwargs.setdefault("type", args[0])
+            kwargs.setdefault(  "type", args[0])
         if len(args) > 1: 
             kwargs.setdefault("kernel", args[1])
+        if len(args) > 2: 
+            kwargs.setdefault("degree", args[2])
         for k1, k2, v in (
             (       "type", "s", CLASSIFICATION),
             (     "kernel", "t", LINEAR),
-            (     "degree", "d", 3), # POLYNOMIAL
-            (      "gamma", "g", 0), # POLYNOMIAL
-            (     "coeff0", "r", 0), # POLYNOMIAL
-            (       "cost", "c", 1),
+            (     "degree", "d", 3),   # For POLYNOMIAL.
+            (      "gamma", "g", 0),   # For POLYNOMIAL + RADIAL.
+            (     "coeff0", "r", 0),   # For POLYNOMIAL.
+            (       "cost", "c", 1),   # Can be optimized with gridsearch().
             (    "epsilon", "p", 0.1),
             (         "nu", "n", 0.5),
-            (      "cache", "m", 100),
-            (  "shrinking", "h", True),
-            (      "debug", "q", False)): 
-                setattr(self, k1, kwargs.get(k2, kwargs.get(k1, v)))
+            (      "cache", "m", 100), # MB
+            (  "shrinking", "h", True)):
+                v = kwargs.get(k2, kwargs.get(k1, v))
+                setattr(self, "_"+k1, v)
         Classifier.__init__(self, train=kwargs.get("train", []), baseline=FREQUENCY)
+    
+    @property
+    def extension(self):
+        """ Yields the extension module used (LIBSVM or LIBLINEAR).
+        """
+        if LIBLINEAR in self._extensions and \
+          self._svm.LIBLINEAR and \
+          self._type == CLASSIFICATION and \
+          self._kernel == LINEAR:
+            return LIBLINEAR
+        return LIBSVM
+    
+    @property
+    def _extension(self):
+        """ Yields the extension module object,
+            e.g., pattern/vector/svm/3.17/libsvm-mac64.so.
+        """
+        if self.extension == LIBLINEAR:
+            return self._svm.liblinear.liblinear
+        return self._svm.libsvm.libsvm
 
     @property
-    def _lib(self):
-        """ Returns the CDLL object (e.g., pattern/vector/svm/3.17/libsvm-mac64.so).
-        """
-        return self._libsvm.libsvm
+    def type(self):
+        return self._type
+    @property
+    def kernel(self):
+        return self._kernel
+    @property
+    def degree(self):
+        return self._degree
+    @property
+    def gamma(self):
+        return self._gamma
+    @property
+    def coeff0(self):
+        return self._coeff0
+    @property
+    def cost(self):
+        return self._cost
+    @property
+    def epsilon(self):
+        return self._epsilon
+    @property
+    def nu(self):
+        return self._nu
+    @property
+    def cache(self):
+        return self._cache
+    @property
+    def shrinking(self):
+        return self._shrinking
+        
+    s, t, d, g, r, c, p, n, m, h = (
+        type, kernel, degree, gamma, coeff0, cost, epsilon, nu, cache, shrinking
+    )
 
     @property
     def support_vectors(self):
         """ Yields the support vectors.
         """
         if self._model is None:
-            self._libsvm_train()
+            self._train()
+        if self.extension == LIBLINEAR:
+            return []
         return self._model[0].get_SV()
         
     sv = support_vectors
 
-    def _libsvm_train(self):
+    def _train(self):
         """ Calls libsvm.svm_train() to create a model.
             Vector classes and features are mapped to integers.
         """
+        # Note: LIBLINEAR feature indices start from 1 (not 0).
         M  = [v for type, v in self._vectors]                    # List of vectors.
-        H1 = dict((w, i) for i, w in enumerate(self.features))   # Feature => integer hash.
-        H2 = dict((w, i) for i, w in enumerate(self.classes))    # Class => integer hash.
-        H3 = dict((i, w) for i, w in enumerate(self.classes))    # Class reversed hash.
+        H1 = dict((w, i+1) for i, w in enumerate(self.features)) # Feature => integer hash.
+        H2 = dict((w, i+1) for i, w in enumerate(self.classes))  # Class => integer hash.
+        H3 = dict((i+1, w) for i, w in enumerate(self.classes))  # Class reversed hash.
         x  = [dict((H1[k], v) for k, v in v.items()) for v in M] # Hashed vectors.
-        y  = [H2[type] for  type, v in self._vectors]            # Hashed classes.
-        o  = "-s %s -t %s -d %s -g %s -r %s -c %s -p %s -n %s -m %s -h %s -b %s %s" % (
-            self.type,       # -s
-            self.kernel,     # -t
-            self.degree,     # -d
-            self.gamma,      # -g
-            self.coeff0,     # -r
-            self.cost,       # -c
-            self.epsilon,    # -p
-            self.nu,         # -n
-            self.cache,      # -m
-        int(self.shrinking), # -h
-            1,               # -b
-            self.debug is False and "-q" or ""
-        )
+        y  = [H2[type] for type, v in self._vectors]             # Hashed classes.
+        # For linear SVC, use LIBLINEAR which is faster.
+        # For kernel SVC, use LIBSVM.
+        if self.extension == LIBLINEAR:
+            f = self._svm.liblinearutil.train
+            o = "-s 1 -c %s -p %s -q" % (
+                self._cost,       # -c
+                self._epsilon     # -p
+            )
+        else:
+            f = self._svm.libsvmutil.svm_train
+            o = "-s %s -t %s -d %s -g %s -r %s -c %s -p %s -n %s -m %s -h %s -b %s -q" % (
+                self._type,       # -s
+                self._kernel,     # -t
+                self._degree,     # -d
+                self._gamma,      # -g
+                self._coeff0,     # -r
+                self._cost,       # -c
+                self._epsilon,    # -p
+                self._nu,         # -n
+                self._cache,      # -m
+            int(self._shrinking), # -h
+                1,               # -b
+            )
         # Cache the model and the feature hash.
         # SVM.train() will remove the cached model (since it needs to be retrained).
-        self._model = (self._libsvm.svm_train(y, x, o), H1, H2, H3)
+        self._model = (f(y, x, o), H1, H2, H3)
   
-    def _libsvm_predict(self, document, probability=False):
+    def _classify(self, document, probability=False):
         """ Calls libsvm.svm_predict() with the cached model.
             For CLASSIFICATION, returns the predicted class.
             For CLASSIFICATION with probability=True, returns a list of (weight, class)-tuples.
@@ -2217,29 +2291,34 @@ class SVM(Classifier):
         """
         if self._model is None:
             return None
-        if self.debug is False:
-            # Redirect stdout to a file stream.
-            so, sys.stdout = sys.stdout, StringIO()
         M  = self._model[0]
         H1 = self._model[1]
         H2 = self._model[2]
         H3 = self._model[3]
         v  = self._vector(document)[1]
-        v  = dict((H1.get(k, len(H1)+i), v) for i, (k,v) in enumerate(v.items()))
-        p  = self._libsvm.svm_predict([0], [v], M, "-b %s" % int(probability))
-        t  = M.get_svm_type()
-        if self.debug is False:
-            sys.stdout = so
-        if t == CLASSIFICATION and probability is True:
+        v  = dict((H1.get(k, len(H1)+i+1), v) for i, (k, v) in enumerate(v.items()))
+        # For linear SVC, use LIBLINEAR which is 10x faster.
+        # For kernel SVC, use LIBSVM.
+        if self.extension == LIBLINEAR:
+            f = self._svm.liblinearutil.predict
+            o = "-b 0 -q"
+        else:
+            f = self._svm.libsvmutil.svm_predict
+            o = "-b %s -q" % int(probability)
+        p = f([0], [v], M, o)
+        # Note: LIBLINEAR does not currently support probabilities for classification.
+        if self._type == CLASSIFICATION and probability is True and self.extension == LIBLINEAR:
+            return {}
+        if self._type == CLASSIFICATION and probability is True:
             return defaultdict(float, ((H3[i], w) for i, w in enumerate(p[2][0])))
-        if t == CLASSIFICATION:
+        if self._type == CLASSIFICATION:
             return H3.get(int(p[0][0]))
-        if t == REGRESSION:
+        if self._type == REGRESSION:
             return p[0][0]
-        if t == DETECTION:
+        if self._type == DETECTION:
             return p[0][0] > 0 # -1 = outlier => return False
         return p[0][0]
-        
+    
     def train(self, document, type=None):
         """ Trains the classifier with the given document of the given type (i.e., class).
             A document can be a Document, Vector, dict, list or string.
@@ -2254,29 +2333,37 @@ class SVM(Classifier):
             you need to supply LSA.transform(document).
         """
         if self._model is None:
-            self._libsvm_train()
-        return self._libsvm_predict(document, probability=not discrete)
+            self._train()
+        return self._classify(document, probability=not discrete)
             
     def save(self, path):
-        svm, model = self._libsvm, self._model
+        svm, model = self._svm, self._model
         if model is not None:
-            svm.svm_save_model(path, model[0])
-        self._libsvm = None
-        self._model  = ((open(path).read(),) + model[1:]) if model else None
+            # Convert the SVM model to a string, save the string:
+            _save = self.extension == LIBLINEAR and \
+                svm.liblinearutil.save_model or \
+                svm.libsvmutil.svm_save_model
+            _save(path, model[0])
+        self._svm = None
+        self._model = ((open(path).read(),) + model[1:]) if model else None
         Classifier.save(self, path)
-        self._libsvm = svm
-        self._model  = model
+        self._svm = svm
+        self._model = model
         
     @classmethod
     def load(cls, path):
         import svm
         classifier = Classifier.load(path)
-        classifier._libsvm = svm
+        classifier._svm = svm
         if classifier._model is not None:
+            # Convert the SVM model string to a tmp file, load the file:
             f = open(path + ".tmp", "w")
             f.write(classifier._model[0])
             f.close()
-            classifier._model = (svm.svm_load_model(path + ".tmp"),) + classifier._model[1:]
+            _load = classifier.extension == LIBLINEAR and \
+                svm.liblinearutil.load_model or \
+                svm.libsvmutil.svm_load_model
+            classifier._model = (_load(path + ".tmp"),) + classifier._model[1:]
             os.remove(f.name)
         return classifier
 
@@ -2321,7 +2408,7 @@ class SVM(Classifier):
 # This reports 92% accuracy for the best run (c=10).
 # Of course, it's optimizing for the same cross-validation 
 # that it's testing on, so this is easy to overfit.
-# In scikit-learn it will run very fast (about 4 seconds), see: http://goo.gl/YqlRa
+# In scikit-learn it will run faster (4 seconds <=> 22 seconds), see: http://goo.gl/YqlRa
 
 #### GENETIC ALGORITHM #############################################################################
 

@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
-from svm import *
+from libsvm import *
+
+import os, sys
+sys.path = [os.path.dirname(os.path.abspath(__file__))] + sys.path 
 
 def svm_read_problem(data_file_name):
 	"""
@@ -30,7 +33,7 @@ def svm_load_model(model_file_name):
 	
 	Load a LIBSVM model from model_file_name and return.
 	"""
-	model = libsvm.svm_load_model(model_file_name)
+	model = libsvm.svm_load_model(model_file_name.encode())
 	if not model: 
 		print("can't open model file %s" % model_file_name)
 		return None
@@ -43,7 +46,7 @@ def svm_save_model(model_file_name, model):
 
 	Save a LIBSVM model to the file model_file_name.
 	"""
-	libsvm.svm_save_model(model_file_name, model)
+	libsvm.svm_save_model(model_file_name.encode(), model)
 
 def evaluations(ty, pv):
 	"""
@@ -76,21 +79,21 @@ def evaluations(ty, pv):
 
 def svm_train(arg1, arg2=None, arg3=None):
 	"""
-	svm_train(y, x [, 'options']) -> model | ACC | MSE 
-	svm_train(prob, [, 'options']) -> model | ACC | MSE 
+	svm_train(y, x [, options]) -> model | ACC | MSE 
+	svm_train(prob [, options]) -> model | ACC | MSE 
 	svm_train(prob, param) -> model | ACC| MSE 
 
 	Train an SVM model from data (y, x) or an svm_problem prob using
 	'options' or an svm_parameter param. 
 	If '-v' is specified in 'options' (i.e., cross validation)
 	either accuracy (ACC) or mean-squared error (MSE) is returned.
-	'options':
+	options:
 	    -s svm_type : set type of SVM (default 0)
-	        0 -- C-SVC
-	        1 -- nu-SVC
+	        0 -- C-SVC		(multi-class classification)
+	        1 -- nu-SVC		(multi-class classification)
 	        2 -- one-class SVM
-	        3 -- epsilon-SVR
-	        4 -- nu-SVR
+	        3 -- epsilon-SVR	(regression)
+	        4 -- nu-SVR		(regression)
 	    -t kernel_type : set type of kernel function (default 2)
 	        0 -- linear: u'*v
 	        1 -- polynomial: (gamma*u'*v + coef0)^degree
@@ -115,8 +118,8 @@ def svm_train(arg1, arg2=None, arg3=None):
 	if isinstance(arg1, (list, tuple)):
 		assert isinstance(arg2, (list, tuple))
 		y, x, options = arg1, arg2, arg3
-		prob = svm_problem(y, x)
 		param = svm_parameter(options)
+		prob = svm_problem(y, x, isKernel=(param.kernel_type == PRECOMPUTED))
 	elif isinstance(arg1, svm_problem):
 		prob = arg1
 		if isinstance(arg2, svm_parameter):
@@ -163,12 +166,13 @@ def svm_train(arg1, arg2=None, arg3=None):
 
 def svm_predict(y, x, m, options=""):
 	"""
-	svm_predict(y, x, m [, "options"]) -> (p_labels, p_acc, p_vals)
+	svm_predict(y, x, m [, options]) -> (p_labels, p_acc, p_vals)
 
 	Predict data (y, x) with the SVM model m. 
-	"options": 
+	options: 
 	    -b probability_estimates: whether to predict probability estimates, 
 	        0 or 1 (default 0); for one-class SVM only 0 is supported.
+	    -q : quiet mode (no outputs).
 
 	The return tuple contains
 	p_labels: a list of predicted labels
@@ -182,6 +186,10 @@ def svm_predict(y, x, m, options=""):
 	        Note that the order of classes here is the same as 'model.label'
 	        field in the model structure.
 	"""
+
+	def info(s):
+		print(s)
+
 	predict_probability = 0
 	argv = options.split()
 	i = 0
@@ -189,6 +197,8 @@ def svm_predict(y, x, m, options=""):
 		if argv[i] == '-b':
 			i += 1
 			predict_probability = int(argv[i])
+		elif argv[i] == '-q':
+			info = print_null
 		else:
 			raise ValueError("Wrong options")
 		i+=1
@@ -204,27 +214,27 @@ def svm_predict(y, x, m, options=""):
 			raise ValueError("Model does not support probabiliy estimates")
 
 		if svm_type in [NU_SVR, EPSILON_SVR]:
-			print("Prob. model for test data: target value = predicted value + z,\n"
+			info("Prob. model for test data: target value = predicted value + z,\n"
 			"z: Laplace distribution e^(-|z|/sigma)/(2sigma),sigma=%g" % m.get_svr_probability());
 			nr_class = 0
 
 		prob_estimates = (c_double * nr_class)()
 		for xi in x:
-			xi, idx = gen_svm_nodearray(xi)
+			xi, idx = gen_svm_nodearray(xi, isKernel=(m.param.kernel_type == PRECOMPUTED))
 			label = libsvm.svm_predict_probability(m, xi, prob_estimates)
 			values = prob_estimates[:nr_class]
 			pred_labels += [label]
 			pred_values += [values]
 	else:
 		if is_prob_model:
-			print("Model supports probability estimates, but disabled in predicton.")
+			info("Model supports probability estimates, but disabled in predicton.")
 		if svm_type in (ONE_CLASS, EPSILON_SVR, NU_SVC):
 			nr_classifier = 1
 		else:
 			nr_classifier = nr_class*(nr_class-1)//2
 		dec_values = (c_double * nr_classifier)()
 		for xi in x:
-			xi, idx = gen_svm_nodearray(xi)
+			xi, idx = gen_svm_nodearray(xi, isKernel=(m.param.kernel_type == PRECOMPUTED))
 			label = libsvm.svm_predict_values(m, xi, dec_values)
 			if(nr_class == 1): 
 				values = [1]
@@ -236,10 +246,10 @@ def svm_predict(y, x, m, options=""):
 	ACC, MSE, SCC = evaluations(y, pred_labels)
 	l = len(y)
 	if svm_type in [EPSILON_SVR, NU_SVR]:
-		print("Mean squared error = %g (regression)" % MSE)
-		print("Squared correlation coefficient = %g (regression)" % SCC)
+		info("Mean squared error = %g (regression)" % MSE)
+		info("Squared correlation coefficient = %g (regression)" % SCC)
 	else:
-		print("Accuracy = %g%% (%d/%d) (classification)" % (ACC, int(l*ACC/100), l))
+		info("Accuracy = %g%% (%d/%d) (classification)" % (ACC, int(l*ACC/100), l))
 
 	return pred_labels, (ACC, MSE, SCC), pred_values
 
