@@ -535,7 +535,7 @@ class Document(object):
             If the document is not incorporated in a model, simply returns tf weight.
         """
         w = self.tf(word)
-        if weight == TFIDF and self.model:
+        if weight == TFIDF and self.model is not None:
             # Use tf if no model, or idf==None (happens when the word is not in the model).
             idf = self.model.idf(word)
             idf = idf is None and 1 or idf
@@ -575,9 +575,9 @@ class Document(object):
         """ Returns the similarity between the two documents as a number between 0.0-1.0.
             If both documents are part of the same model the calculations are cached for reuse.
         """
-        if self.model: 
+        if self.model is not None: 
             return self.model.cosine_similarity(self, document)
-        if document.model:
+        if document.model is not None:
             return document.model.cosine_similarity(self, document)
         return cosine_similarity(self.vector, document.vector)
             
@@ -665,7 +665,7 @@ class Vector(readonlydict):
 def features(vectors=[]):
     """ Returns the set of unique features for all given vectors.
     """
-    return set(f for f in chain(*vectors))
+    return set(chain(*vectors))
 
 _features = features
 
@@ -945,12 +945,13 @@ class Model(object):
         if len(self._df) == 0:
             # Caching document frequency for each word gives a 300x performance boost
             # (i.e., calculated all at once). Drawback is if you need it for just one word.
+            df = self._df
             for d in self.documents:
-                for w in d.terms:
-                    if d.terms[w] != 0:
-                        self._df[w] = (w in self._df) and self._df[w] + 1 or 1.0
-            for w in self._df:
-                self._df[w] /= float(len(self.documents))
+                for w, f in d.terms.iteritems():
+                    if f != 0:
+                        df[w] = (w in df) and df[w] + 1 or 1.0
+            for w in df:
+                df[w] /= float(len(self.documents))
         return self._df.get(word, 0.0)
         
     df = document_frequency
@@ -2250,12 +2251,12 @@ class SVM(Classifier):
             Vector classes and features are mapped to integers.
         """
         # Note: LIBLINEAR feature indices start from 1 (not 0).
-        M  = [v for type, v in self._vectors]                    # List of vectors.
-        H1 = dict((w, i+1) for i, w in enumerate(self.features)) # Feature => integer hash.
-        H2 = dict((w, i+1) for i, w in enumerate(self.classes))  # Class => integer hash.
-        H3 = dict((i+1, w) for i, w in enumerate(self.classes))  # Class reversed hash.
-        x  = [dict((H1[k], v) for k, v in v.items()) for v in M] # Hashed vectors.
-        y  = [H2[type] for type, v in self._vectors]             # Hashed classes.
+        M  = [v for type, v in self._vectors]                        # List of vectors.
+        H1 = dict((w, i+1) for i, w in enumerate(self.features))     # Feature => integer hash.
+        H2 = dict((w, i+1) for i, w in enumerate(self.classes))      # Class => integer hash.
+        H3 = dict((i+1, w) for i, w in enumerate(self.classes))      # Class reversed hash.
+        x  = map(lambda v: dict(map(lambda k: (H1[k], v[k]), v)), M) # Hashed vectors.
+        y  = map(lambda (type, v): H2[type], self._vectors)          # Hashed classes.
         # For linear SVC, use LIBLINEAR which is faster.
         # For kernel SVC, use LIBSVM.
         if self.extension == LIBLINEAR:
@@ -2295,8 +2296,9 @@ class SVM(Classifier):
         H1 = self._model[1]
         H2 = self._model[2]
         H3 = self._model[3]
+        n  = len(H1)
         v  = self._vector(document)[1]
-        v  = dict((H1.get(k, len(H1)+i+1), v) for i, (k, v) in enumerate(v.items()))
+        v  = dict(map(lambda (i, k): (H1.get(k, n+i+1), v[k]), enumerate(v)))
         # For linear SVC, use LIBLINEAR which is 10x faster.
         # For kernel SVC, use LIBSVM.
         if self.extension == LIBLINEAR:
@@ -2391,16 +2393,16 @@ class SVM(Classifier):
 # I hate to spoil your party..." by Lars Buitinck.
 # As pointed out by Lars Buitinck, words + word-level bigrams with TF-IDF can beat the 90% boundary:
 
-#from pattern.db import CSV
-#from pattern.en import ngrams
+from pattern.db import CSV
+from pattern.en import ngrams
 #from pattern.vector import Model, SVM, gridsearch
 #
-#def v(s):
-#    return count(words(s) + ngrams(s, n=2))
+def v(s):
+    return count(words(s) + ngrams(s, n=2))
 #    
-#data = CSV.load(os.path.join("..", "..", "test", "corpora", "polarity-nl-bol.com.csv"))
-#data = map(lambda (p, review): Document(v(review), type=int(p) > 0), data)
-#data = Model(data, weight="tf-idf")
+data = CSV.load(os.path.join("..", "..", "test", "corpora", "polarity-nl-bol.com.csv"))
+data = map(lambda (p, review): Document(v(review), type=int(p) > 0), data)
+data = Model(data, weight="tf-idf")
 #
 #for p in gridsearch(SVM, data, c=[0.1, 1, 10], folds=3):
 #    print p
@@ -2409,6 +2411,9 @@ class SVM(Classifier):
 # Of course, it's optimizing for the same cross-validation 
 # that it's testing on, so this is easy to overfit.
 # In scikit-learn it will run faster (4 seconds <=> 22 seconds), see: http://goo.gl/YqlRa
+
+from pattern.metrics import profile
+print profile(gridsearch, SVM, data, c=[0.1, 1, 10], folds=3)
 
 #### GENETIC ALGORITHM #############################################################################
 
