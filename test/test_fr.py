@@ -196,11 +196,21 @@ class TestSentiment(unittest.TestCase):
         for review, score in Datasheet.load(os.path.join(PATH, "corpora", "polarity-fr-amazon.csv")):
             reviews.append((review, int(score) > 0))
         A, P, R, F = test(lambda review: fr.positive(review), reviews)
-        self.assertTrue(A > 0.753)
+        #print A, P, R, F
+        self.assertTrue(A > 0.746)
         self.assertTrue(P > 0.756)
-        self.assertTrue(R > 0.747)
-        self.assertTrue(F > 0.751)
+        self.assertTrue(R > 0.726)
+        self.assertTrue(F > 0.741)
         print "pattern.fr.sentiment()"
+        
+    def test_tokenizer(self):
+        # Assert that french sentiment() uses French tokenizer. ("t'aime" => "t' aime").
+        v1 = fr.sentiment("je t'aime")
+        v2 = fr.sentiment("je ne t'aime pas")
+        self.assertTrue(v1[0] > 0)
+        self.assertTrue(v2[0] < 0)
+        self.assertTrue(v1.assessments[0][0] == ["aime"])
+        self.assertTrue(v2.assessments[0][0] == ["ne", "aime"])
 
 #---------------------------------------------------------------------------------------------------
 

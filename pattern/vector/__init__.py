@@ -305,7 +305,8 @@ def _uid():
     global _UID; _UID+=1; return _SESSION+"-"+str(_UID)
 
 # Term relevance weight:
-TF, TFIDF, TF_IDF, WEIGHT_BINARY, WEIGHT_ORIGINAL = "tf", "tf-idf", "tf-idf", "binary", "original"
+TF, TFIDF, TF_IDF, BINARY = \
+    "tf", "tf-idf", "tf-idf", "binary"
 
 class Document(object):
     # Document(string = "", 
@@ -353,9 +354,14 @@ class Document(object):
             w = kwargs["dict"](w)
             v = Vector(w)
         # A Vector of (word, TF-IDF weight)-items: copy as document vector.
-        elif isinstance(string, Vector) and string.weight == TF_IDF:
+        elif isinstance(string, Vector) and string.weight == TFIDF:
             w = string
             w = kwargs["dict"](w) # XXX term count is lost.
+            v = Vector(w)
+        # A Vector of (word, weight)-items: copy as document vector.
+        elif isinstance(string, Vector):
+            w = string
+            w = kwargs["dict"](w)
             v = Vector(w)
         # A dict of (word, count)-items: make read-only.
         elif isinstance(string, dict):
@@ -557,10 +563,10 @@ class Document(object):
             # When a document is added/deleted from a model, the cached vector is deleted.
             if getattr(self.model, "weight", TF) == TFIDF:
                 w, f = TFIDF, self.tf_idf
-            elif getattr(self.model, "weight", TF) == WEIGHT_ORIGINAL:
-                w, f = WEIGHT_ORIGINAL, (lambda word: float(self.terms.get(word, 0)))
-            elif getattr(self.model, "weight", TF) == WEIGHT_BINARY:
-                w, f = WEIGHT_BINARY, (lambda word: 1 if float(self.terms.get(word, 0)) > 0 else 0)
+            elif getattr(self.model, "weight", TF) == BINARY:
+                w, f = BINARY, lambda w: int(self._terms.get(w, 0) > 0)
+            elif getattr(self.model, "weight", TF) is None:
+                w, f = None, lambda w: float(self._terms.get(w, 0))
             else:
                 w, f = TF, self.tf
             self._vector = Vector(((w, f(w)) for w in self.terms), weight=w)
@@ -600,6 +606,8 @@ class Document(object):
     def __repr__(self):
         return "Document(id=%s%s)" % (
             repr(self._id), self.name and ", name=%s" % repr(self.name) or "")
+
+Bag = BagOfWords = Document
 
 #--- VECTOR ----------------------------------------------------------------------------------------
 # A Vector represents document terms (called features) and their tf or tf * idf relevance weight.
@@ -2397,16 +2405,16 @@ class SVM(Classifier):
 # I hate to spoil your party..." by Lars Buitinck.
 # As pointed out by Lars Buitinck, words + word-level bigrams with TF-IDF can beat the 90% boundary:
 
-from pattern.db import CSV
-from pattern.en import ngrams
+#from pattern.db import CSV
+#from pattern.en import ngrams
 #from pattern.vector import Model, SVM, gridsearch
 #
-def v(s):
-    return count(words(s) + ngrams(s, n=2))
+#def v(s):
+#    return count(words(s) + ngrams(s, n=2))
 #    
-data = CSV.load(os.path.join("..", "..", "test", "corpora", "polarity-nl-bol.com.csv"))
-data = map(lambda (p, review): Document(v(review), type=int(p) > 0), data)
-data = Model(data, weight="tf-idf")
+#data = CSV.load(os.path.join("..", "..", "test", "corpora", "polarity-nl-bol.com.csv"))
+#data = map(lambda (p, review): Document(v(review), type=int(p) > 0), data)
+#data = Model(data, weight="tf-idf")
 #
 #for p in gridsearch(SVM, data, c=[0.1, 1, 10], folds=3):
 #    print p
@@ -2414,10 +2422,7 @@ data = Model(data, weight="tf-idf")
 # This reports 92% accuracy for the best run (c=10).
 # Of course, it's optimizing for the same cross-validation 
 # that it's testing on, so this is easy to overfit.
-# In scikit-learn it will run faster (4 seconds <=> 22 seconds), see: http://goo.gl/YqlRa
-
-from pattern.metrics import profile
-print profile(gridsearch, SVM, data, c=[0.1, 1, 10], folds=3)
+# In scikit-learn it will run faster (4 seconds <=> 20 seconds), see: http://goo.gl/YqlRa
 
 #### GENETIC ALGORITHM #############################################################################
 

@@ -3446,11 +3446,7 @@ For French book reviews, the accuracy is 75% (P 0.76, R 0.75, F1 0.75).
 <word form="mûre" pos="JJ" polarity="0.20" subjectivity="0.20" intensity="1.0" confidence="0.8" />
 <word form="mûres" pos="JJ" polarity="0.20" subjectivity="0.20" intensity="1.0" confidence="0.8" />
 <word form="mûrs" pos="JJ" polarity="0.20" subjectivity="0.20" intensity="1.0" confidence="0.8" />
-<word form="n'" pos="" polarity="-0.01" subjectivity="0.00" intensity="1.0" confidence="0.9" />
-<word form="n'a" pos="VB" polarity="-0.05" subjectivity="0.00" intensity="1.0" confidence="0.9" />
-<word form="n'ai" pos="VB" polarity="-0.10" subjectivity="0.00" intensity="1.0" confidence="0.9" />
-<word form="n'est" pos="VB" polarity="-0.05" subjectivity="0.00" intensity="1.0" confidence="0.9" />
-<word form="n'y" pos="PR" polarity="-0.01" subjectivity="0.00" intensity="1.0" confidence="0.9" />
+<word form="n'" pos="" polarity="-0.05" subjectivity="0.00" intensity="1.0" confidence="0.9" />
 <word form="naissant" pos="JJ" polarity="0.14" subjectivity="0.20" intensity="1.0" confidence="0.7" />
 <word form="naissante" pos="JJ" polarity="0.14" subjectivity="0.20" intensity="1.0" confidence="0.7" />
 <word form="naissantes" pos="JJ" polarity="0.14" subjectivity="0.20" intensity="1.0" confidence="0.7" />

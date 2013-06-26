@@ -226,7 +226,7 @@ class Lexicon(lazydict):
     
     def load(self):
         # Arnold NNP x
-        dict.update(self, (x.split(" ")[:2] for x in _read(self._path)))
+        dict.update(self, (x.split(" ")[:2] for x in _read(self._path) if x.strip()))
     
     @property
     def path(self):
@@ -1420,8 +1420,10 @@ class Score(tuple):
     def __new__(self, polarity, subjectivity, assessments=[]):
         """ A (polarity, subjectivity)-tuple with an assessments property.
         """
-        self.assessments = assessments
         return tuple.__new__(self, [polarity, subjectivity])
+
+    def __init__(self, polarity, subjectivity, assessments=[]):
+        self.assessments = assessments
 
 class Sentiment(lazydict):
     
@@ -1436,6 +1438,7 @@ class Sentiment(lazydict):
         self._confidence = None
         self._synset     = synset
         self._synsets    = {}
+        self.tokenizer   = kwargs.get("tokenizer", find_tokens)
         self.negations   = kwargs.get("negations", ("no", "not", "n't", "never"))
         self.modifiers   = kwargs.get("modifiers", ("RB",))
         self.modifier    = kwargs.get("modifier" , lambda w: w.endswith("ly"))
@@ -1454,6 +1457,8 @@ class Sentiment(lazydict):
     
     def load(self):
         # <word form="great" wordnet_id="a-01123879" pos="JJ" polarity="1.0" subjectivity="1.0" intensity="1.0" />
+        if not os.path.exists(self._path):
+            return
         words, synsets = {}, {}
         xml = cElementTree.parse(self._path)
         xml = xml.getroot()
@@ -1505,41 +1510,59 @@ class Sentiment(lazydict):
             self.load()
         return tuple(self._synsets.get(id, (0.0, 0.0))[:2])
     
-    def __call__(self, s, negation=True):
+    def __call__(self, s, negation=True, **kwargs):
         """ Returns a (polarity, subjectivity)-tuple for the given sentence, 
             with polarity between -1.0 and 1.0 and subjectivity between 0.0 and 1.0.
-            The sentence can be a string, Synset, Text, Sentence, Chunk or Word.
+            The sentence can be a string, Synset, Text, Sentence, Chunk, Word, Document, Vector.
+            An optional weight parameter can be given,
+            as a function that takes a list of words and returns a weight.
         """
-        f = self.assessments
+        def avg(assessments, weighted=lambda w: 1):
+            s, n = 0, 0
+            for words, score in assessments:
+                w = weighted(words)
+                s += w * score
+                n += w
+            return s / float(n or 1)
         # A pattern.en.wordnet.Synset.
-        # Sentiment.polarity(synsets("horrible", "JJ")[0]) => (-0.6, 1.0)
+        # Sentiment(synsets("horrible", "JJ")[0]) => (-0.6, 1.0)
         if hasattr(s, "gloss"):
             a = [(s.synonyms[0],) + self.synset(s.id, pos=s.pos)]
         # A synset id.
-        # Sentiment.polarity("a-00193480") => horrible => (-0.6, 1.0)   (English WordNet)
-        # Sentiment.polarity("c_267") => verschrikkelijk => (-0.9, 1.0) (Dutch Cornetto)
+        # Sentiment("a-00193480") => horrible => (-0.6, 1.0)   (English WordNet)
+        # Sentiment("c_267") => verschrikkelijk => (-0.9, 1.0) (Dutch Cornetto)
         elif isinstance(s, basestring) and RE_SYNSET.match(s):
             a = [(s.synonyms[0],) + self.synset(s.id, pos=s.pos)]
         # A string of words.
-        # Sentiment.polarity("a horrible movie") => (-0.6, 1.0)
+        # Sentiment("a horrible movie") => (-0.6, 1.0)
         elif isinstance(s, basestring):
-            a = f(((w.lower(), None) for w in " ".join(find_tokens(s)).split()), negation)
+            a = self.assessments(((w.lower(), None) for w in " ".join(self.tokenizer(s)).split()), negation)
         # A pattern.en.Text.
         elif hasattr(s, "sentences"):
-            a = f(((w.lemma or w.string.lower(), w.pos[:2]) for w in chain(*s)), negation)
+            a = self.assessments(((w.lemma or w.string.lower(), w.pos[:2]) for w in chain(*s)), negation)
         # A pattern.en.Sentence or pattern.en.Chunk.
-        elif hasattr(s, "words"):
-            a = f(((w.lemma or w.string.lower(), w.pos[:2]) for w in s.words), negation)
+        elif hasattr(s, "lemmata"):
+            a = self.assessments(((w.lemma or w.string.lower(), w.pos[:2]) for w in s.words), negation)
         # A pattern.en.Word.
         elif hasattr(s, "lemma"):
-            a = f(((s.lemma or s.string.lower(), s.pos[:2]),), negation)
+            a = self.assessments(((s.lemma or s.string.lower(), s.pos[:2]),), negation)
+        # A pattern.vector.Document.
+        # Average score = weighted average using feature weights.
+        elif hasattr(s, "terms"):
+            a = self.assessments(((w, None) for w in s.terms), negation)
+            kwargs.setdefault("weight", lambda w: s.terms[w[0]])
+        # A dict of (word, weight)-items.
+        elif isinstance(s, dict):
+            a = self.assessments(((w, None) for w in s), negation)
+            kwargs.setdefault("weight", lambda w: s[w[0]])
         # A list of words.
         elif isinstance(s, list):
-            a = f(((w, None) for w in s), negation)
+            a = self.assessments(((w, None) for w in s), negation)
         else:
             a = []
-        return Score(polarity = avg([p for w, p, s in a]),
-                 subjectivity = avg([s for w, p, s in a]),
+        weight = kwargs.get("weight", lambda w: 1)
+        return Score(polarity = avg(map(lambda (w, p, s): (w, p), a), weight),
+                 subjectivity = avg(map(lambda (w, p, s): (w, s), a), weight),
                   assessments = a)
         
     def assessments(self, words=[], negation=True):
@@ -1559,7 +1582,7 @@ class Sentiment(lazydict):
                 if m is None:
                     a.append(dict(w=[w], p=p, s=s, i=i, n=1))
                 # Known word preceded by a modifier ("really good").
-                if m is not None and any(RB in self[m[0]] for RB in self.modifiers):
+                if m is not None:
                     a[-1]["w"].append(w)
                     a[-1]["p"] = min(p * a[-1]["i"], 1.0)
                     a[-1]["s"] = min(p * a[-1]["i"], 1.0)
@@ -1569,26 +1592,37 @@ class Sentiment(lazydict):
                     a[-1]["w"].insert(0, n)
                     a[-1]["i"] = 1.0 / a[-1]["i"]
                     a[-1]["n"] = -1
-                m = (w, pos)
+                # Known word may be a negation.
+                # Known word may be modifying the next word (i.e., it is a known adverb).
+                m = None
                 n = None
+                if pos and pos in self.modifiers or any(map(self[w].__contains__, self.modifiers)):
+                    m = (w, pos)
+                if negation and w in self.negations:
+                    n = w
             else:
-                n = negation and w in self.negations and w or None
-                # Unknown word is a negation preceded by a modifier ("really not good").
+                # Unknown word may be a negation ("not good").
+                if negation and w in self.negations:
+                    n = w
+                # Unknown word. Retain negation across small words ("not a good").
+                elif n and len(w.strip("'")) > 1:
+                    n = None
+                # Unknown word may be a negation preceded by a modifier ("really not good").
                 if n is not None and m is not None and (pos in self.modifiers or self.modifier(m[0])):
                     a[-1]["w"].append(n)
                     a[-1]["n"] = -1
                     n = None
-                # Unknown word. Retain modifier ("really is a good").
+                # Unknown word. Retain modifier across small words ("really is a good").
                 elif m and len(w) > 2:
                     m = None
                 # Exclamation marks boost previous words.
                 if w == "!" and len(a) > 0:
                     for x in a[-3:]: x["p"] = min(x["p"] * 1.25, 1.0)
                 # Emoticon (happy).
-                if w in (":)", ":-)", ":-D"):
+                if w in (":)", ":-)", ":-d", "<3", u"♥"):
                     a.append(dict(w=[w], p=+1.0, s=1.0, i=1.0, n=1))
                 # Emoticon (sad).
-                if w in (":(", ":-(", ":-S"):
+                if w in (":(", ":-(", ":-s"):
                     a.append(dict(w=[w], p=-1.0, s=1.0, i=1.0, n=1))
         for i in range(len(a)):
             w = a[i]["w"]

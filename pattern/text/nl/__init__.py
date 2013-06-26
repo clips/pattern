@@ -74,20 +74,6 @@ wotan = {
       "V(": (("hulp", "MD"), ("ott,3", "VBZ"), ("ott", "VBP"), ("ovt", "VBD"), 
              ("verl", "VBN"), ("teg", "VBG"), ("", "VB"))
 }
-wotan = {
-       "N(": [("eigen,ev","NNP"), ("eigen,mv","NNPS"), ("ev","NN"), ("mv","NNS")],
-       "V(": [("hulp","MD"), ("ott,3","VBZ"), ("ott","VBP"), ("ovt","VBD"), ("verldw","VBN"), ("tegdw","VBG"), ("imp","VB"), ("inf","VB")],
-     "Adj(": [("stell","JJ"), ("vergr","JJR"), ("overtr","JJS")],
-     "Adv(": [("deel","RP"), ("gew","RB"), ("pro","RB")],
-     "Art(": "DT",
-    "Conj(": "CC",
-     "Num(": "CD",
-    "Prep(": [("voorinf","TO"), ("", "IN")],
-    "Pron(": [("bez","PRP$"), ("","PRP")],
-    "Punc(": [("komma",","), ("haakopen","("), ("haaksluit",")"), ("schuinstreep", "CC"), ("",".")],
-      "Int": "UH",
-     "Misc": [("symbool","SYM"), ("vreemd","FW")]
-}
 
 def wotan2penntreebank(tag):
     """ Converts a WOTAN tag to Penn Treebank II tag.
@@ -167,6 +153,7 @@ sentiment = Sentiment(
    negations = ("geen", "niet", "nooit"),
    modifiers = ("JJ", "RB",),
    modifier  = lambda w: w.endswith(("ig", "isch", "lijk")),
+   tokenizer = parser.find_tokens,
     language = "nl"
 )
 

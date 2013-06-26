@@ -135,9 +135,10 @@ parser = Parser(
 sentiment = Sentiment(
         path = os.path.join(MODULE, "fr-sentiment.xml"), 
       synset = None,
-   negations = ("ne", "ni", "non", "pas", "rien", "sans", "aucun", "jamais"),
+   negations = ("n'", "ne", "ni", "non", "pas", "rien", "sans", "aucun", "jamais"),
    modifiers = ("RB",),
    modifier  = lambda w: w.endswith("ment"),
+   tokenizer = parser.find_tokens,
     language = "fr"
 )
 

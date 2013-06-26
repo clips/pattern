@@ -105,6 +105,7 @@ sentiment = Sentiment(
    negations = ("no", "not", "n't", "never"),
    modifiers = ("RB",),
    modifier  = lambda w: w.endswith("ly"),
+   tokenizer = parser.find_tokens,
     language = "en"
 )
 spelling = Spelling(

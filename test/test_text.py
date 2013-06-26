@@ -108,10 +108,37 @@ class TestParser(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+class TestSentiment(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+
+    def test_dict(self):
+        # Assert weighted average polarity and subjectivity for dictionary.
+        s = text.Sentiment()
+        v = {":-(": 3, ":-)": 1}
+        self.assertEqual(s(v)[0], -0.5)
+        self.assertEqual(s(v)[1], +1.0)
+        self.assertEqual(s(v).assessments[0], ([":-("], -1.0, 1.0))
+        self.assertEqual(s(v).assessments[1], ([":-)"], +1.0, 1.0))
+        
+    def test_bag_of_words(self):
+        # Assert weighted average polarity and subjectivity for bag-of-words with weighted features.
+        from pattern.vector import BagOfWords # Alias for pattern.vector.Document.
+        s = text.Sentiment()
+        v = BagOfWords({":-(": 3, ":-)": 1})
+        self.assertEqual(s(v)[0], -0.5)
+        self.assertEqual(s(v)[1], +1.0)
+        self.assertEqual(s(v).assessments[0], ([":-("], -1.0, 1.0))
+        self.assertEqual(s(v).assessments[1], ([":-)"], +1.0, 1.0))
+
+#---------------------------------------------------------------------------------------------------
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLexicon))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParser))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSentiment))
     return suite
 
 if __name__ == "__main__":
