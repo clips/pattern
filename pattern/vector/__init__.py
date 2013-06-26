@@ -26,7 +26,7 @@ import re
 import glob
 import heapq
 import codecs
-import cPickle; BINARY=1
+import cPickle
 import stemmer; _stemmer=stemmer
 
 from math        import log, exp, sqrt
@@ -348,16 +348,6 @@ class Document(object):
             w = string
             w = count(w, **kwargs)
             v = None
-        # A Vector of (word, TF weight)-items: copy as document vector.
-        elif isinstance(string, Vector) and string.weight == TF:
-            w = string
-            w = kwargs["dict"](w)
-            v = Vector(w)
-        # A Vector of (word, TF-IDF weight)-items: copy as document vector.
-        elif isinstance(string, Vector) and string.weight == TFIDF:
-            w = string
-            w = kwargs["dict"](w) # XXX term count is lost.
-            v = Vector(w)
         # A Vector of (word, weight)-items: copy as document vector.
         elif isinstance(string, Vector):
             w = string
@@ -559,16 +549,16 @@ class Document(object):
         """
         if not self._vector:
             # See the Vector class below = a dict with extra functionality (copy, norm).
-            # Model.weight (TFIDF or TF) determines how the weights will be calculated.
+            # Model.weight (Tf, TFIDF, BINARY or None) defines how weights are calculated.
             # When a document is added/deleted from a model, the cached vector is deleted.
+            if getattr(self.model, "weight", TF) not in (TF, TFIDF, BINARY):
+                w, f = None, lambda w: float(self._terms[w])
+            if getattr(self.model, "weight", TF) == BINARY:
+                w, f = BINARY, lambda w: int(self._terms[w] > 0)
+            if getattr(self.model, "weight", TF) == TF:
+                w, f = TF, self.tf_idf
             if getattr(self.model, "weight", TF) == TFIDF:
                 w, f = TFIDF, self.tf_idf
-            elif getattr(self.model, "weight", TF) == BINARY:
-                w, f = BINARY, lambda w: int(self._terms.get(w, 0) > 0)
-            elif getattr(self.model, "weight", TF) is None:
-                w, f = None, lambda w: float(self._terms.get(w, 0))
-            else:
-                w, f = TF, self.tf
             self._vector = Vector(((w, f(w)) for w in self.terms), weight=w)
         return self._vector
 
@@ -630,7 +620,7 @@ class Vector(readonlydict):
             Vectors that represent text documents can be compared using cosine similarity.
         """
         self.id     = Vector.id; Vector.id+=1  # Unique ID.
-        self.weight = kwargs.pop("weight", TF) # Vector weights based on tf or tf-idf?
+        self.weight = kwargs.pop("weight", TF) # Vector weights based on tf, tf-idf, binary?
         self._norm  = None
         readonlydict.__init__(self, *args, **kwargs)
     
@@ -710,7 +700,7 @@ def cosine_similarity(v1, v2):
     
 cos = cosine_similarity
 
-def tf_idf(vectors=[], base=2.71828): # e
+def tf_idf(vectors=[], base=2.71828): # Euler's number
     """ Calculates tf * idf on the vector feature weights (in-place).
     """
     df = {}
@@ -781,6 +771,8 @@ class Model(object):
         """ A model is a bag-of-word representation of a corpus of documents, 
             where each document vector is a bag of (word, relevance)-items.
             Vectors can then be compared for similarity using a distance metric.
+            The weighting scheme can be: relative TF, TFIDF (default), BINARY, None,
+            where None means that the original weights are used.
         """
         self.description = ""             # Description of the dataset: author e-mail, etc.
         self._documents  = readonlylist() # List of documents (read-only).
@@ -790,7 +782,7 @@ class Model(object):
         self._ig         = {}             # Cache of (word, information gain)-items.
         self._vector     = None           # Cache of model vector with all the features in the model.
         self._lsa        = None           # LSA matrix with reduced dimensionality.
-        self._weight     = weight         # Weight used in Document.vector (TFIDF or TF).
+        self._weight     = weight         # Weight used in Document.vector (TF, TFIDF, BINARY or None).
         self._update()
         self.extend(documents)
     
@@ -847,7 +839,7 @@ class Model(object):
             if id1 not in m \
             or id2 not in m:
                 self._cos.pop((id1, id2))
-        cPickle.dump(self, open(path, "wb"), BINARY)
+        cPickle.dump(self, open(path, "wb"), 1) # 1 = binary
         
     def export(self, path, format=ORANGE, **kwargs):
         """ Exports the model as a file for other machine learning applications,
@@ -1853,7 +1845,7 @@ class Classifier:
 
     def save(self, path):
         self.test = None # Can't pickle instancemethods.
-        cPickle.dump(self, open(path, "wb"), BINARY)
+        cPickle.dump(self, open(path, "wb"), 1) # 1 = binary
 
     @classmethod
     def load(cls, path):
