@@ -1850,8 +1850,12 @@ class Classifier:
     @classmethod
     def load(cls, path):
         self = cPickle.load(open(path))
+        self._on_load(path) # Initialize subclass (e.g., SVM).
         self.test = self._test
         return self
+
+    def _on_load(self, path):
+        pass
 
 #--- CLASSIFIER EVALUATION -------------------------------------------------------------------------
 
@@ -2355,23 +2359,30 @@ class SVM(Classifier):
         Classifier.save(self, path)
         self._svm = svm
         self._model = model
-        
+
     @classmethod
     def load(cls, path):
+        Classifier.load(cls, path)
+
+    def _on_load(self, path):
+        # Called from Classifier.load().
+        # The actual SVM model was stored as a string.
+        # 1) Import pattern.vector.svm.
+        # 2) Extract the model string.
+        # 3) Save it as a temporary file.
+        # 4) Use pattern.vector.svm's LIBSVM or LIBLINEAR to load the file.
+        # 5) Delete the temporary file.
         import svm
-        classifier = Classifier.load(path)
-        classifier._svm = svm
-        if classifier._model is not None:
-            # Convert the SVM model string to a tmp file, load the file:
+        self._svm = svm # 1
+        if self._model is not None:
             f = open(path + ".tmp", "w")
-            f.write(classifier._model[0])
+            f.write(self._model[0]) # 2 + 3
             f.close()
-            _load = classifier.extension == LIBLINEAR and \
+            _load = self.extension == LIBLINEAR and \
                 svm.liblinearutil.load_model or \
                 svm.libsvmutil.svm_load_model
-            classifier._model = (_load(path + ".tmp"),) + classifier._model[1:]
-            os.remove(f.name)
-        return classifier
+            self._model = (_load(path + ".tmp"),) + self._model[1:] # 4
+            os.remove(f.name) # 5
 
 #---------------------------------------------------------------------------------------------------
 # "Nothing beats SVM + character n-grams."
