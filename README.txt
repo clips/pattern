@@ -3,7 +3,6 @@ PATTERN
 
 Pattern is a web mining module for the Python programming language. It bundles tools for data mining (Google + Twitter + Wikipedia API, web spider, HTML DOM parser), natural language processing (tagger/chunker, n-gram search, sentiment analysis, WordNet), machine learning (vector space model, k-means clustering, Naive Bayes + k-NN + SVM classiﬁers) and network analysis (graph centrality and visualization). It is well documented and bundled with 30+ examples and 350+ unit tests. The source code is licensed under BSD and available from http://www.clips.ua.ac.be/pages/pattern. 
 
-
 VERSION
 =======
 

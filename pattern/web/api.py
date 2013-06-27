@@ -15,6 +15,9 @@ license["Bing"] = \
 license["Yahoo"] = \
     ("", "") # OAuth (key, secret)
 
+license["DuckDuckGo"] = \
+    None
+
 license["Wikipedia"] = \
     None
 

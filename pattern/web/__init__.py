@@ -151,8 +151,8 @@ send = asynchronous
 
 # User agent and referrer.
 # Used to identify the application accessing the web.
-USER_AGENT = "Pattern/2.5 +http://www.clips.ua.ac.be/pages/pattern"
-REFERRER   = "http://www.clips.ua.ac.be/pages/pattern"
+USER_AGENT = "Pattern/2.6 +http://www.clips.ua.ac.be/pattern"
+REFERRER   = "http://www.clips.ua.ac.be/pattern"
 
 # Mozilla user agent.
 # Websites can include code to block out any application except browsers.
@@ -189,19 +189,20 @@ def urldecode(query):
         Returns a dictionary of (name, value)-items from a URL query string.
     """
     def _format(s):
-        if s == "None":
+        if s == "" or s == "None":
              return None
-        if s.isdigit():
+        if s.lstrip("-").isdigit():
              return int(s)
         try: return float(s)
         except:
              return s
-    query = [(kv.split("=")+[None])[:2] for kv in query.lstrip("?").split("&")]
-    query = [(urllib.unquote_plus(bytestring(k)), urllib.unquote_plus(bytestring(v))) for k, v in query]
-    query = [(u(k), u(v)) for k, v in query]
-    query = [(k, _format(v) or None) for k, v in query]
-    query = dict([(k,v) for k, v in query if k != ""])
-    return query
+    if query:
+        query = query.lstrip("?").split("&")
+        query = ((kv.split("=") + [None])[:2] for kv in query)
+        query = ((u(urllib.unquote_plus(bytestring(k))), 
+          _format(u(urllib.unquote_plus(bytestring(v))))) for k, v in query if k != "")
+        return dict(query)
+    return {}
 
 url_decode = urldecode
 
@@ -244,7 +245,7 @@ class HTTP500InternalServerError(HTTPError):
 
 class URL:
 
-    def __init__(self, string=u"", method=GET, query={}):
+    def __init__(self, string=u"", method=GET, query={}, **kwargs):
         """ URL object with the individual parts available as attributes:
             For protocol://username:password@domain:port/path/page?query_string#anchor:
             - URL.protocol: http, https, ftp, ...
@@ -269,6 +270,9 @@ class URL:
         if len(query) > 0:
             # Requires that we parse the string first (see URL.__setattr__).
             self.query.update(query)
+        if len(kwargs) > 0:
+            # Requires that we parse the string first (see URL.__setattr__).
+            self.parts.update(kwargs)
 
     def _parse(self):
         """ Parses all the parts of the URL string to a dictionary.
@@ -296,11 +300,11 @@ class URL:
         if ":" in P[DOMAIN]:
             P[DOMAIN], \
             P[PORT] = P[DOMAIN].split(":")
-            P[PORT] = int(P[PORT])
+            P[PORT] = P[PORT].isdigit() and int(P[PORT]) or P[PORT]
         # Split the base page from the path.
         if "/" in P[PATH]:
             P[PAGE] = p[2].split("/")[-1]
-            P[PATH] = p[2][:len(p[2])-len(P[PAGE])].strip("/").split("/")
+            P[PATH] = p[2][:len(p[2]) - len(P[PAGE])].strip("/").split("/")
             P[PATH] = filter(lambda v: v != "", P[PATH])
         else:
             P[PAGE] = p[2].strip("/")
@@ -482,11 +486,7 @@ class URL:
 
     def __unicode__(self):
         # The string representation includes the query attributes with HTTP GET.
-        # This gives us the advantage of not having to parse the URL
-        # when no separate query attributes were given (e.g. all info is in URL._string):
-        if self._parts is None and self.method == GET:
-            return self._string
-        P = self._parts
+        P = self.parts
         u = []
         if P[PROTOCOL]:
             u.append("%s://" % P[PROTOCOL])
@@ -496,6 +496,8 @@ class URL:
             u.append(P[DOMAIN])
         if P[PORT]:
             u.append(":%s" % P[PORT])
+        if P[PORT] or P[DOMAIN] and not P[PATH] and not P[PAGE]:
+            u.append("/")
         if P[PATH]:
             u.append("/%s/" % "/".join(P[PATH]))
         if P[PAGE] and len(u) > 0:
@@ -1208,11 +1210,11 @@ class Bing(SearchEngine):
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """" Returns a list of results from Bing for the given query.
-            - type : SEARCH, IMAGE or NEWS,
-            - start: maximum 1000 results => start 1-100 with count=10, 1000/count,
-            - count: maximum 50, or 15 for news,
-            - size : for images, either SMALL, MEDIUM or LARGE.
-            There is no daily query limit.
+             - type : SEARCH, IMAGE or NEWS,
+             - start: maximum 1000 results => start 1-100 with count=10, 1000/count,
+             - count: maximum 50, or 15 for news,
+             - size : for images, either SMALL, MEDIUM or LARGE.
+             There is no daily query limit.
         """
         if type not in (SEARCH, IMAGE, NEWS):
             raise SearchEngineTypeError
@@ -1269,6 +1271,129 @@ class Bing(SearchEngine):
             r.author   = self.format(x.get("Source"))
             results.append(r)
         return results
+
+#--- DUCKDUCKGO ------------------------------------------------------------------------------------
+# DuckDuckGo is a privacy-respecting aggregate search engine,
+# with information from Wikipedia, WikiHow, Wikia, GitHub, The Free Dictionary, etc.
+# https://duckduckgo.com/api.html
+# https://duckduckgo.com/params.html
+
+DUCKDUCKGO = "http://api.duckduckgo.com/"
+DUCKDUCKGO_LICENSE = api.license["DuckDuckGo"]
+
+# Results from DuckDuckGo have a Result.type with semantic information,
+# e.g., "apple" => "plant and plant parts". Known types:
+REFERENCE, CATEGORY, DEFINITION = \
+    "reference", "category", "definition"
+
+class DuckDuckGo(SearchEngine):
+
+    def __init__(self, license=None, throttle=0.5, language=None):
+        SearchEngine.__init__(self, license or DUCKDUCKGO_LICENSE, throttle, language)
+
+    def search(self, query, type=SEARCH, start=None, count=None, sort=RELEVANCY, size=None, cached=True, **kwargs):
+        """" Returns a list of results from DuckDuckGo for the given query.
+        """
+        if type != SEARCH:
+            raise SearchEngineTypeError
+        # 1) Construct request URL.
+        url = URL(DUCKDUCKGO, method=GET, query={
+            "q": query,
+            "o": "json",
+        })
+        # 2) Restrict language.
+        if type == SEARCH and self.language is not None:
+            url.query["kl"] = self.language
+        # 3) Parse JSON response.
+        kwargs.setdefault("unicode", True)
+        kwargs.setdefault("throttle", self.throttle)
+        data = url.download(cached=cached, **kwargs)
+        data = json.loads(data)
+        results = Results(DUCKDUCKGO, query, type)
+        results.total = None
+        for x in data.get("Results", []):
+            if x.get("FirstURL"):
+                r = Result(url=None)
+                # Parse official website link.
+                r.url    = self.format(x.get("FirstURL"))
+                r.title  = self.format(data.get("Heading"))
+                r.text   = self.format(data.get("Abstract"))
+                r.author = self.format(data.get("AbstractSource"))
+                r.type   = self.format(REFERENCE)
+                results.append(r)
+        for topic in data.get("RelatedTopics", []):
+            for x in topic.get("Topics", [topic]):
+                r = Result(url=None)
+                r.url = x.get("FirstURL")
+                # Parse title and type from URL (e.g., http://duckduckgo.com/d/Cats?kl=en).
+                m = re.match(r"^http://duckduckgo.com/([a-z]/)?(.*?)(\?|$)", r.url)
+                # Parse title: "Cats".
+                s1 = m and m.group(2) or "" # Title: "Cats"
+                s1 = u(decode_url(s1.encode("utf-8")))
+                s1 = s1.strip().replace("_", " ")
+                s1 = s1[:1].upper() + s1[1:]
+                # Parse description; the part before the first "-" or "," was the link.
+                s2 = x.get("Text", "").strip()
+                s2 = re.sub(r" +", " ", s2)
+                s2 = s2[:1].upper() + s2[1:] or ""
+                s2 = s2.startswith(s1) \
+                    and "<a href=\"%s\">%s</a>%s" % (r.url, s1, s2[len(s1):]) \
+                     or re.sub(r"^(.*?)( - | or |, )(.*?)", "<a href=\"%s\">\\1</a>\\2\\3" % r.url, s2)
+                # Parse type: "d/" => "definition".
+                s3 = m and m.group(1) or ""
+                s3 = {"c": CATEGORY, "d": DEFINITION}.get(s3.rstrip("/"), "")
+                s3 = topic.get("Name", "").lower() or s3
+                s3 = re.sub("^in ", "", s3)
+                # Format result.
+                r.url   = self.format(r.url)
+                r.title = self.format(s1)
+                r.text  = self.format(s2)
+                r.type  = self.format(s3)
+                results.append(r)
+        return results
+
+    def answer(self, string, **kwargs):
+        """ Returns a DuckDuckGo answer for the given string (e.g., math, spelling, ...)
+        """
+        url = URL(DUCKDUCKGO, method=GET, query={
+            "q": string,
+            "o": "json"
+        })
+        kwargs.setdefault("cached", False)
+        kwargs.setdefault("unicode", True)
+        kwargs.setdefault("throttle", self.throttle)
+        data = url.download(**kwargs)
+        data = json.loads(data)
+        data = data.get(kwargs.get("field", "Answer"))
+        return u(data)
+        
+    def spelling(self, string):
+        """ Returns a list of spelling suggestions for the given string.
+        """
+        s = self.answer("spell " + string, cached=True)
+        s = re.findall(r"<a.*?>(.*?)</a>", s)
+        return s
+        
+    def definition(self, string):
+        """ Returns a dictionary definition for the given string.
+        """
+        s = self.answer(string, field="Definition", cached=True)
+        s = re.sub(r"^.*? definition: ", "", s)
+        s = re.sub(r"(^'''.*?''' |^)(.)(.*?)$",
+            lambda m: m.group(1) + m.group(2).upper() + m.group(3), s)
+        return s
+
+DDG = DuckDuckGo
+
+#for r in DDG().search("cats"):
+#    print r.url
+#    print r.title # Can be used as a new query.
+#    print plaintext(r.text)
+#    print r.type  # REFERENCE, CATEGORY, DEFINITION, "people", "sports" ...
+#    print 
+
+#print DDG().definition("cat")
+#print DDG().spelling("catnpa")
 
 #--- TWITTER ---------------------------------------------------------------------------------------
 # Twitter is an online social networking service and microblogging service,
