@@ -1299,7 +1299,7 @@ class DuckDuckGo(SearchEngine):
         # 1) Construct request URL.
         url = URL(DUCKDUCKGO, method=GET, query={
             "q": query,
-            "o": "json",
+            "o": "json"
         })
         # 2) Restrict language.
         if type == SEARCH and self.language is not None:
@@ -2715,9 +2715,11 @@ class Element(Node):
 
     @property
     def attributes(self):
-        return self._p._getAttrMap()
+        if not hasattr(self, "_attributes"):
+            self._attributes = self._p._getAttrMap()
+        return self._attributes
         
-    attr = attributes
+    attr = attrs = attributes
 
     @property
     def id(self):
@@ -2839,6 +2841,20 @@ DOM = Document
 # CSS selectors may range from simple element tag names to rich contextual patterns.
 # http://www.w3.org/TR/CSS2/selector.html
 
+# "*"                =  <div>, <p>, ...                (all elements)
+# "*#x"              =  <div id="x">, <p id="x">, ...  (all elements with id="x")
+# "div#x"            =  <div id="x">                   (<div> elements with id="x")
+# "div.x"            =  <div class="x">                (<div> elements with class="x")
+# "div[class='x']"   =  <div class="x">                (<div> elements with attribute "class"="x")
+# "div:first-child"  =  <div><a>1st<a><a></a></div>    (first child inside a <div>)
+# "div a"            =  <div><<p><a></a></p></div      (all <a>'s inside a <div>)
+# "div, a"           =  <div>, <a>                     (all <a>'s and <div> elements)
+# "div + a"          =  <div></div><a></a>             (all <a>'s directly preceded by <div>)
+# "div > a"          =  <div><a></a></div>             (all <a>'s directly inside a <div>)
+# "div < a"                                            (all <div>'s directly containing an <a>)
+
+# Selectors are case-insensitive.
+
 class Selector:
     
     def __init__(self, s):
@@ -2904,14 +2920,14 @@ class Selector:
             return False
         if self.tag not in (e.tag, "*"):
             return False
-        if self.id not in (e.id, "", None):
+        if self.id not in (e.id.lower(), "", None):
             return False
-        if self.classes.issubset(set(e.attr.get("class", "").split())) is False:
+        if self.classes.issubset(set(map(str.lower, e.attr.get("class", "").split()))) is False:
             return False
         if "first-child" in self.pseudo and self._first_child(e.parent) != e:
             return False
         for k, v in self.attributes:
-            if k not in e.attrs or v not in (e.attrs[k], True):
+            if k not in e.attrs or v not in (e.attrs[k].lower(), True):
                 return False
         return True
     
@@ -2920,18 +2936,19 @@ class Selector:
         """
         # Map tag to True if it is "*".
         tag = self.tag == "*" or self.tag
-        # Map id into a **kwargs dict.
-        a = {"id": self.id} if self.id else {}
-        a.update(self.attributes)
+        # Map id into a case-insensitive **kwargs dict.
+        i = lambda s: re.compile("^%s$" % s, re.I)
+        a = {"id": i(self.id)} if self.id else {}
+        a.update(map(lambda (k, v): (k, i(v)), self.attributes.iteritems()))
         # Match tag + id + all classes + relevant pseudo-elements.
         if not isinstance(e, Element):
             return []
         if len(self.classes) == 0 or len(self.classes) >= 2:
             e = map(Element, e._p.findAll(tag, **a))
         if len(self.classes) == 1:
-            e = map(Element, e._p.findAll(tag, list(self.classes)[0], **a))
+            e = map(Element, e._p.findAll(tag, **dict(a, **{"class": i(list(self.classes)[0])})))
         if len(self.classes) >= 2:
-            e = filter(lambda e: self.classes.issubset(set(e.attr.get("class", "").split())), e)
+            e = filter(lambda e: self.classes.issubset(set(map(str.lower, e.attr.get("class", "").split()))), e)
         if "first-child" in self.pseudo:
             e = filter(lambda e: e == self._first_child(e.parent), e)
         return e
@@ -2980,7 +2997,7 @@ class SelectorChain(list):
                     e = map(lambda e: filter(s.match, e.children), e)
                     e = list(itertools.chain(*e))
                 if combinator == "<":
-                    # X > Y => X is child of Y
+                    # X < Y => X is child of Y
                     e = map(lambda e: e.parent, e)
                     e = filter(s.match, e)
                 if combinator == "+":
