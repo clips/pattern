@@ -36,7 +36,7 @@ from soup import BeautifulSoup
 
 try:
     # Import persistent Cache.
-    # If this module is used separately, 
+    # If this module is used separately,
     # a dict is used (i.e. this Python session only).
     from cache import Cache, cache, TMP
 except:
@@ -93,7 +93,7 @@ bytestring = s
 
 #### ASYNCHRONOUS REQUEST ##########################################################################
 
-class AsynchronousRequest:
+class AsynchronousRequest(object):
 
     def __init__(self, function, *args, **kwargs):
         """ Executes the function in the background.
@@ -199,7 +199,7 @@ def urldecode(query):
     if query:
         query = query.lstrip("?").split("&")
         query = ((kv.split("=") + [None])[:2] for kv in query)
-        query = ((u(urllib.unquote_plus(bytestring(k))), 
+        query = ((u(urllib.unquote_plus(bytestring(k))),
           _format(u(urllib.unquote_plus(bytestring(v))))) for k, v in query if k != "")
         return dict(query)
     return {}
@@ -243,7 +243,7 @@ class HTTP429TooMayRequests(HTTPError):
 class HTTP500InternalServerError(HTTPError):
     pass # Generic server error.
 
-class URL:
+class URL(object):
 
     def __init__(self, string=u"", method=GET, query={}, **kwargs):
         """ URL object with the individual parts available as attributes:
@@ -388,7 +388,7 @@ class URL:
             raise URLTimeout(src=e)
         except urllib2.URLError, e:
             if e.reason == "timed out" \
-            or e.reason[0] in (36, "timed out"): 
+            or e.reason[0] in (36, "timed out"):
                 raise URLTimeout(src=e)
             raise URLError(e.reason, src=e)
         except ValueError, e:
@@ -724,7 +724,7 @@ class HTMLTagstripper(HTMLParser):
         self.close()
         self.reset()
         return "".join(self._data)
-        
+
     def clean(self, html):
         # Escape all entities (just strip tags).
         return HTMLParser.clean(self, html).replace("&", "&amp;")
@@ -978,7 +978,7 @@ class Results(list):
         self.type   = type
         self.total  = total
 
-class SearchEngine:
+class SearchEngine(object):
 
     def __init__(self, license=None, throttle=1.0, language=None):
         """ A base class for a web service.
@@ -1062,7 +1062,7 @@ class Google(SearchEngine):
             if not r.date:
                 # Google Search results can start with a date (parsed from the content):
                 m = RE_GOOGLE_DATE.match(r.text)
-                if m: 
+                if m:
                     r.date = m.group(1)
                     r.text = "..." + r.text[len(m.group(0)):]
             results.append(r)
@@ -1131,8 +1131,8 @@ class Yahoo(SearchEngine):
             "oauth_consumer_key": self.license[0],
             "oauth_signature_method": "HMAC-SHA1"
         })
-        url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query, 
-            method = GET, 
+        url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query,
+            method = GET,
             secret = self.license[1]
         )
         return url
@@ -1366,14 +1366,14 @@ class DuckDuckGo(SearchEngine):
         data = json.loads(data)
         data = data.get(kwargs.get("field", "Answer"))
         return u(data)
-        
+
     def spelling(self, string):
         """ Returns a list of spelling suggestions for the given string.
         """
         s = self.answer("spell " + string, cached=True)
         s = re.findall(r"<a.*?>(.*?)</a>", s)
         return s
-        
+
     def definition(self, string):
         """ Returns a dictionary definition for the given string.
         """
@@ -1390,7 +1390,7 @@ DDG = DuckDuckGo
 #    print r.title # Can be used as a new query.
 #    print plaintext(r.text)
 #    print r.type  # REFERENCE, CATEGORY, DEFINITION, "people", "sports" ...
-#    print 
+#    print
 
 #print DDG().definition("cat")
 #print DDG().spelling("catnpa")
@@ -1422,7 +1422,7 @@ class Twitter(SearchEngine):
             "oauth_token": self.license[2][0],
             "oauth_signature_method": "HMAC-SHA1"
         })
-        url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query, 
+        url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query,
             method = GET,
             secret = self.license[1],
              token = self.license[2][1]
@@ -1456,7 +1456,7 @@ class Twitter(SearchEngine):
         #    It can also be a (latitude, longitude)-tuple with default radius "10km".
         if "geo" in kwargs:
             url.query["geocode"] = ",".join((map(str, kwargs.pop("geo")) + ["10km"])[:3])
-        # 3) Restrict most recent with date="YYYY-MM-DD". 
+        # 3) Restrict most recent with date="YYYY-MM-DD".
         #    Only older tweets are returned.
         if "date" in kwargs:
             url.query["until"] = kwargs.pop("date")
@@ -1635,15 +1635,15 @@ class MediaWiki(SearchEngine):
 
     def __iter__(self):
         return self.all()
-        
+
     def all(self, **kwargs):
         """ Returns an iterator over all MediaWikiArticle objects.
-            Optional parameters can include those passed to 
+            Optional parameters can include those passed to
             MediaWiki.list(), MediaWiki.search() and URL.download().
         """
         for title in self.list(**kwargs):
             yield self.search(title, **kwargs)
-            
+
     articles = all
 
     def list(self, namespace=0, start=None, count=100, cached=True, **kwargs):
@@ -1663,7 +1663,7 @@ class MediaWiki(SearchEngine):
                      "apfrom": start or "",
                     "aplimit": min(count, 500),
               "apfilterredir": "nonredirects",
-                     "format": "json"        
+                     "format": "json"
             })
             data = url.download(cached=cached, **kwargs)
             data = json.loads(data)
@@ -1753,7 +1753,7 @@ class MediaWiki(SearchEngine):
                     break
         return article
 
-class MediaWikiArticle:
+class MediaWikiArticle(object):
 
     def __init__(self, title=u"", source=u"", links=[], categories=[], languages={}, disambiguation=False, **kwargs):
         """ A MediaWiki article returned from MediaWiki.search().
@@ -1808,7 +1808,7 @@ class MediaWikiArticle:
     def __repr__(self):
         return "MediaWikiArticle(title=%s)" % repr(self.title)
 
-class MediaWikiSection:
+class MediaWikiSection(object):
 
     def __init__(self, article, title=u"", start=0, stop=0, level=1):
         """ A (nested) section in the content of a MediaWikiArticle.
@@ -1883,7 +1883,7 @@ class MediaWikiSection:
     def __repr__(self):
         return "MediaWikiSection(title='%s')" % bytestring(self.title)
 
-class MediaWikiTable:
+class MediaWikiTable(object):
 
     def __init__(self, section, title=u"", headers=[], rows=[], source=u""):
         """ A <table class="wikitable> in a MediaWikiSection.
@@ -2003,7 +2003,7 @@ class Wikia(MediaWiki):
     @property
     def MediaWikiTable(self):
         return WikiaTable
-        
+
     def all(self, **kwargs):
         if kwargs.pop("batch", True):
             # We can take advantage of Wikia's search API to reduce bandwith.
@@ -2051,7 +2051,7 @@ class WikiaTable(MediaWikiTable):
 # DBPedia data is stored as RDF triples: (subject, predicate, object),
 # e.g., X is-a Actor, Y is-a Country, Z has-birthplace Country, ...
 
-# DBPedia can be queried using SPARQL: 
+# DBPedia can be queried using SPARQL:
 # http://www.w3.org/TR/rdf-sparql-query/
 # A SPARQL query yields rows that match all triples in the WHERE clause.
 # A SPARQL query uses ?wildcards in triple subject/object to select fields.
@@ -2079,7 +2079,7 @@ DBPEDIA = "http://dbpedia.org/sparql?"
 SPARQL = "sparql"
 
 class DBPediaQueryError(HTTP400BadRequest):
-    pass 
+    pass
 
 class DBPediaResource(unicode):
     @property
@@ -2102,7 +2102,7 @@ class DBPedia(SearchEngine):
             - type : SPARQL,
             - start: no maximum,
             - count: maximum 1000,
-            There is a limit of 10 requests/second. 
+            There is a limit of 10 requests/second.
             Maximum query execution time is 120 seconds.
         """
         if type not in (SPARQL,):
@@ -2113,8 +2113,8 @@ class DBPedia(SearchEngine):
         url = URL(DBPEDIA, method=GET)
         url.query = {
             "format": "json",
-             "query": "%s OFFSET %s LIMIT %s" % (query, 
-                        (start-1) * min(count, 1000), 
+             "query": "%s OFFSET %s LIMIT %s" % (query,
+                        (start-1) * min(count, 1000),
                         (start-0) * min(count, 1000)
             )
         }
@@ -2301,7 +2301,7 @@ class Facebook(SearchEngine):
             max = 1000
         if type in (FRIENDS,):
             max = 10000
-        if not query or start < 1 or count < 1: 
+        if not query or start < 1 or count < 1:
             return Results(FACEBOOK, query, SEARCH)
         if isinstance(query, FacebookResult):
             query = query.id
@@ -2350,23 +2350,23 @@ class Facebook(SearchEngine):
                    u(self.format(x.get("from", {}).get("id", ""))), \
                    u(self.format(x.get("from", {}).get("name", "")))))
             # Set Result.text to author name for likes.
-            if type in (LIKES, FRIENDS): 
+            if type in (LIKES, FRIENDS):
                 s(r, "author", (
                    u(self.format(x.get("id", ""))),
                    u(self.format(x.get("name", "")))))
                 r.text = \
                      self.format(x.get("name"))
             # Set Result.url to full-size image.
-            if r.url.startswith("http://www.facebook.com/photo"): 
+            if r.url.startswith("http://www.facebook.com/photo"):
                 r.url = x.get("picture", "").replace("_s", "_b") or r.url
             # Set Result.title to object id.
             if r.url.startswith("http://www.facebook.com/"):
                 r.title = r.url.split("/")[-1].split("?")[0]
             results.append(r)
         return results
-        
+
     def profile(self, id=None, **kwargs):
-        """ For the given author id or alias, 
+        """ For the given author id or alias,
             returns a (id, name, date of birth, gender, locale)-tuple.
         """
         url = FACEBOOK + (u(id or "me")).replace(FACEBOOK, "")
@@ -2605,7 +2605,7 @@ NODE, TEXT, COMMENT, ELEMENT, DOCUMENT = \
 
 #--- NODE ------------------------------------------------------------------------------------------
 
-class Node:
+class Node(object):
 
     def __init__(self, html, type=NODE, **kwargs):
         """ The base class for Text, Comment and Element.
@@ -2652,7 +2652,7 @@ class Node:
     @property
     def previous_sibling(self):
         return self._wrap(self._p.previousSibling)
-    
+
     next, previous = next_sibling, previous_sibling
 
     def traverse(self, visit=lambda node: None):
@@ -2710,7 +2710,7 @@ class Element(Node):
     @property
     def tagname(self):
         return self._p.name
-    
+
     tag = tagName = tagname
 
     @property
@@ -2718,7 +2718,7 @@ class Element(Node):
         if not hasattr(self, "_attributes"):
             self._attributes = self._p._getAttrMap()
         return self._attributes
-        
+
     attr = attrs = attributes
 
     @property
@@ -2736,7 +2736,7 @@ class Element(Node):
         """ Yields the HTML source as a unicode string (tag + content).
         """
         return u(self._p)
-    
+
     html = source
 
     def get_elements_by_tagname(self, v):
@@ -2752,28 +2752,28 @@ class Element(Node):
             v1 = v1 in ("*","") or v1.lower()
             return [Element(x) for x in self._p.findAll(v1, v2)]
         return [Element(x) for x in self._p.findAll(v in ("*","") or v.lower())]
-    
+
     by_tag = getElementsByTagname = get_elements_by_tagname
 
     def get_element_by_id(self, v):
         """ Returns the first nested Element with the given id attribute value.
         """
         return ([Element(x) for x in self._p.findAll(id=v, limit=1) or []]+[None])[0]
-    
+
     by_id = getElementById = get_element_by_id
 
     def get_elements_by_classname(self, v):
         """ Returns a list of nested Elements with the given class attribute value.
         """
         return [Element(x) for x in (self._p.findAll(True, v))]
-    
+
     by_class = getElementsByClassname = get_elements_by_classname
 
     def get_elements_by_attribute(self, **kwargs):
         """ Returns a list of nested Elements with the given attribute value.
         """
         return [Element(x) for x in (self._p.findAll(True, attrs=kwargs))]
-    
+
     by_attribute = by_attr = getElementsByAttribute = get_elements_by_attribute
 
     def __call__(self, selector):
@@ -2821,7 +2821,7 @@ class Document(Element):
     @property
     def tagname(self):
         return None
-    
+
     tag = tagname
 
     def __repr__(self):
@@ -2855,10 +2855,10 @@ DOM = Document
 
 # Selectors are case-insensitive.
 
-class Selector:
-    
+class Selector(object):
+
     def __init__(self, s):
-        """ A simple CSS selector is a type (e.g., "p") or universal ("*") selector 
+        """ A simple CSS selector is a type (e.g., "p") or universal ("*") selector
             followed by id selectors, attribute selectors, or pseudo-elements.
         """
         self.string = s
@@ -2877,7 +2877,7 @@ class Selector:
           set([x[1:] for x in s if x[0] == ":"]),
          dict(self._parse_attribute(x) for x in s if x[0] == "[")
         )
-        
+
     def _parse_attribute(self, s):
         """ Returns an (attribute, value)-tuple for the given attribute selector.
         """
@@ -2896,7 +2896,7 @@ class Selector:
             if p == "*": r = r"%s"
             s[1] = re.compile(r % s[1], re.I)
         return s[:2]
-        
+
     def _first_child(self, e):
         """ Returns the first child Element of the given element.
         """
@@ -2904,7 +2904,7 @@ class Selector:
             for e in e.children:
                 if isinstance(e, Element):
                     return e
-    
+
     def _first_sibling(self, e):
         """ Returns the first next sibling Element of the given element.
         """
@@ -2912,7 +2912,7 @@ class Selector:
             e = e.next
             if isinstance(e, Element):
                 return e
-    
+
     def match(self, e):
         """ Returns True if the given element matches the simple CSS selector.
         """
@@ -2930,7 +2930,7 @@ class Selector:
             if k not in e.attrs or v not in (e.attrs[k].lower(), True):
                 return False
         return True
-    
+
     def search(self, e):
         """ Returns the nested elements that match the simple CSS selector.
         """
@@ -2952,12 +2952,12 @@ class Selector:
         if "first-child" in self.pseudo:
             e = filter(lambda e: e == self._first_child(e.parent), e)
         return e
-        
+
     def __repr__(self):
         return "Selector(%s)" % repr(self.string)
 
 class SelectorChain(list):
-    
+
     def __init__(self, s):
         """ A selector is a chain of one or more simple selectors,
             separated by combinators (e.g., ">").
@@ -2980,7 +2980,7 @@ class SelectorChain(list):
                     self[-1].append(("<", Selector(s[1:])))
                 elif s.startswith("+"):
                     self[-1].append(("+", Selector(s[1:])))
-                    
+
     def search(self, e):
         """ Returns the nested elements that match the CSS selector chain.
         """
@@ -3027,14 +3027,14 @@ class SelectorChain(list):
 #### WEB CRAWLER ###################################################################################
 # Tested with a crawl across 1,000 domains so far.
 
-class Link:
+class Link(object):
 
     def __init__(self, url, text="", relation="", referrer=""):
         """ A hyperlink parsed from a HTML document, in the form:
             <a href="url"", title="text", rel="relation">xxx</a>.
         """
         self.url, self.text, self.relation, self.referrer = \
-            u(url), u(text), u(relation), u(referrer), 
+            u(url), u(text), u(relation), u(referrer),
 
     @property
     def description(self):
@@ -3102,7 +3102,7 @@ FIFO = "fifo" # First In, First Out.
 FILO = "filo" # First In, Last Out.
 LIFO = "lifo" # Last In, First Out (= FILO).
 
-class Crawler:
+class Crawler(object):
 
     def __init__(self, links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse, sort=FIFO):
         """ A crawler can be used to browse the web in an automated manner.
@@ -3318,7 +3318,7 @@ def crawl(links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse, sort=
 class PDFParseError(Exception):
     pass
 
-class PDF:
+class PDF(object):
 
     def __init__(self, data, format=None):
         """ Plaintext parsed from the given PDF, given as a file path or a string.
@@ -3332,7 +3332,7 @@ class PDF:
         return self.content
 
     def _parse(self, data, format=None):
-        
+
         # The output will be ugly: it may be useful for mining but probably not for displaying.
         # You can also try PDF(data, format="html") to preserve some layout information.
         from pdf.pdfinterp import PDFResourceManager, process_pdf
