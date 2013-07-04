@@ -29,46 +29,43 @@ class TestUtilityFunctions(unittest.TestCase):
     def test_unique(self):
         self.assertEqual(search.unique([1,1,2,2]), [1,2])
         
-    def test_unique2(self):
-        self.assertEqual(search.unique2([1,1,2,2]), [1,2])
-        
     def test_find(self):
         self.assertEqual(search.find(lambda v: v>2, [1,2,3,4,5]), 3)
         
-    def test_combinations(self):
+    def test_product(self):
         # Assert combinations of list items.
-        self.assertEqual(list(search.combinations([ ], 2)), [])   # No possibilities.
-        self.assertEqual(list(search.combinations([1], 0)), [[]]) # One possibility: the empty list.
-        self.assertEqual(list(search.combinations([1,2,3], 2)), 
-            [[1,1], [1,2], [1,3], [2,1], [2,2], [2,3], [3,1], [3,2], [3,3]])
+        self.assertEqual(list(search.product([ ], repeat=2)), [])   # No possibilities.
+        self.assertEqual(list(search.product([1], repeat=0)), [()]) # One possibility: the empty set.
+        self.assertEqual(list(search.product([1,2,3], repeat=2)), 
+            [(1,1), (1,2), (1,3), (2,1), (2,2), (2,3), (3,1), (3,2), (3,3)])
         for n, m in ((1,9), (2,81), (3,729), (4,6561)):
-            v = search.combinations([1,2,3,4,5,6,7,8,9], n)
+            v = search.product([1,2,3,4,5,6,7,8,9], repeat=n)
             self.assertEqual(len(list(v)), m)
-        print "pattern.search.combinations()"
+        print "pattern.search.product()"
             
     def test_variations(self):
         # Assert variations include the original input (the empty list has one variation = itself).
         v = search.variations([])
-        self.assertEqual(v, [[]])
-        # Assert variations = [1] and [].
+        self.assertEqual(v, [()])
+        # Assert variations = (1,) and ().
         v = search.variations([1], optional=lambda item: item == 1)
-        self.assertEqual(v, [[1], []])
-        # Assert variations = the original input, [1], [2] and [].
+        self.assertEqual(v, [(1,), ()])
+        # Assert variations = the original input, (2,), (1,) and ().
         v = search.variations([1,2], optional=lambda item: item in (1,2))
-        self.assertEqual(v, [[1,2], [2], [1], []])
+        self.assertEqual(v, [(1,2), (2,), (1,), ()])
         # Assert variations are sorted longest-first.
         v = search.variations([1,2,3,4], optional=lambda item: item in (1,2))
-        self.assertEqual(v, [[1,2,3,4], [2,3,4], [1,3,4], [3,4]])
+        self.assertEqual(v, [(1,2,3,4), (2,3,4), (1,3,4), (3,4)])
         self.assertTrue(len(v[0]) >= len(v[1]) >= len(v[2]), len(v[3]))
         print "pattern.search.variations()"
         
     def test_odict(self):
         # Assert odict.append() which must be order-preserving.
         v = search.odict()
-        v.append(("a", 1))
-        v.append(("b", 2))
-        v.append(("c", 3))
-        v.append(("a", 0))
+        v.push(("a", 1))
+        v.push(("b", 2))
+        v.push(("c", 3))
+        v.push(("a", 0))
         v = v.copy()
         self.assertTrue(isinstance(v, dict))
         self.assertEqual(v.keys(), ["a", "c","b"])

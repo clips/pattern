@@ -48,10 +48,10 @@ is_vowel = lambda ch: ch in VOWELS
 
 #### PLURALIZE ######################################################################################
 
-plural_irregular_en = dict.fromkeys(("dag", "dak", "dal", "pad", "vat", "weg"), True)
-plural_irregular_een = dict.fromkeys(("fee", "genie", "idee", "orgie", "ree"), True)
-plural_irregular_eren = dict.fromkeys(("blad", "ei", "gelid", "gemoed", "kalf", "kind", "lied", "rad", "rund"), True)
-plural_irregular_deren = dict.fromkeys(("hoen", "been"), True)
+plural_irregular_en = set(("dag", "dak", "dal", "pad", "vat", "weg"))
+plural_irregular_een = set(("fee", "genie", "idee", "orgie", "ree"))
+plural_irregular_eren = set(("blad", "ei", "gelid", "gemoed", "kalf", "kind", "lied", "rad", "rund"))
+plural_irregular_deren = set(("hoen", "been"))
 
 plural_irregular = {
      "centrum": "centra",
@@ -73,12 +73,9 @@ def pluralize(word, pos=NOUN, custom={}):
         For example: stad => steden.
         The custom dictionary is for user-defined replacements.
     """
-
     if word in custom.keys():
         return custom[word]
-
     w = word.lower()
-    
     if pos == NOUN:
         if w in plural_irregular_en:    # dag => dagen
             return w + "en"
@@ -135,7 +132,6 @@ def pluralize(word, pos=NOUN, custom={}):
         if len(w) > 2 and not is_vowel(w[-1]) and w[-2] == w[-3]:
             return w[:-2] + w[-1] + "en"
         return w + "en"
-    
     return w
 
 #### SINGULARIZE ###################################################################################
@@ -143,12 +139,9 @@ def pluralize(word, pos=NOUN, custom={}):
 singular_irregular = dict((v,k) for k,v in plural_irregular.iteritems())
 
 def singularize(word, pos=NOUN, custom={}):
-
     if word in custom.keys():
         return custom[word]
-
     w = word.lower()
-    
     if pos == NOUN and w in singular_irregular:
         return singular_irregular[w]
     if pos == NOUN and w.endswith((u"ën", "en", "s", "i")):
@@ -218,7 +211,6 @@ def singularize(word, pos=NOUN, custom={}):
             if len(w) > 2 and not is_vowel(w[-1]) and is_vowel(w[-2]) and not is_vowel(w[-3]):
                 return w[:-1] + w[-2] + w[-1]
             return w
-    
     return w
 
 #### VERB CONJUGATION ##############################################################################
@@ -341,20 +333,20 @@ conjugate, lemma, lexeme, tenses = \
 #### ATTRIBUTIVE & PREDICATIVE #####################################################################
 
 adjective_attributive = {
-    "civiel"  : "civiele",
-    "complex" : "complexe",
-    "enkel"   : "enkele",
-    "grof"    : "grove",
-    "half"    : "halve",
-    "luttel"  : "luttele",
-    "mobiel"  : "mobiele",
-    "parijs"  : "parijse",
-    "ruw"     : "ruwe",
-    "simpel"  : "simpele",
-    "stabiel" : "stabiele",
-    "steriel" : "steriele",
-    "subtiel" : "subtiele",
-    "teer"    : "tere"
+     "civiel": "civiele",
+    "complex": "complexe",
+      "enkel": "enkele",
+       "grof": "grove",
+       "half": "halve",
+     "luttel": "luttele",
+     "mobiel": "mobiele",
+     "parijs": "parijse",
+        "ruw": "ruwe",
+     "simpel": "simpele",
+    "stabiel": "stabiele",
+    "steriel": "steriele",
+    "subtiel": "subtiele",
+       "teer": "tere"
 }
 
 def attributive(adjective):
@@ -385,8 +377,8 @@ def attributive(adjective):
 
 adjective_predicative = dict((v,k) for k,v in adjective_attributive.iteritems())
 adjective_predicative.update({
-    "moe"      : "moe",
-    "taboe"    : "taboe",
+          "moe": "moe",
+        "taboe": "taboe",
     "voldoende": "voldoende"
 })
 

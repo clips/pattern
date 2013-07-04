@@ -77,7 +77,7 @@ def tagset2penntreebank(tag):
 # and abbreviations. The following functions define contractions and abbreviations
 # for pattern.xx, see also Parser.find_tokens().
 
-REPLACEMENTS  = {"'s": " 's", "'ve", " 've"}
+REPLACEMENTS  = {"'s": " 's", "'ve": " 've"}
 ABBREVIATIONS = set(("e.g.", "etc.", "i.e."))
 
 # A lemmatizer can be constructed if we have a pattern.xx.inflect,
@@ -133,7 +133,6 @@ lexicon = Lexicon(
 # Create the parser with default tags for unknown words:
 # (noun, proper noun, numeric).
 
-lexicon.load()
 parser = Parser(
      lexicon = lexicon,
      default = ("NN", "NNP", "CD"),

@@ -11,27 +11,34 @@ except:
 
 #### UNICODE #######################################################################################
     
-def decode_utf8(string):
-    """ Returns the given string as a unicode string (if possible).
+def decode_string(v, encoding="utf-8"):
+    """ Returns the given value as a Unicode string (if possible).
     """
-    if isinstance(string, str):
-        for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
-            try: 
-                return string.decode(*encoding)
+    if isinstance(encoding, basestring):
+        encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
+    if isinstance(v, str):
+        for e in encoding:
+            try: return v.decode(*e)
             except:
                 pass
-        return string
-    return unicode(string)
-    
-def encode_utf8(string):
-    """ Returns the given string as a Python byte string (if possible).
+        return v
+    return unicode(v)
+
+def encode_string(v, encoding="utf-8"):
+    """ Returns the given value as a Python byte string (if possible).
     """
-    if isinstance(string, unicode):
-        try: 
-            return string.encode("utf-8")
-        except:
-            return string
-    return str(string)
+    if isinstance(encoding, basestring):
+        encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
+    if isinstance(v, unicode):
+        for e in encoding:
+            try: return v.encode(*e)
+            except:
+                pass
+        return v
+    return str(v)
+
+decode_utf8 = decode_string
+encode_utf8 = encode_string
 
 #### CACHE #########################################################################################
 # Caching is implemented in URL.download(), which is used by all other downloaders.

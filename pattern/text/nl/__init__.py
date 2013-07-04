@@ -142,11 +142,13 @@ lexicon = Lexicon(
      context = os.path.join(MODULE, "nl-context.txt"), 
     language = "nl"
 )
+
 parser = Parser(
      lexicon = lexicon,
      default = ("N(soort,ev,neut)", "N(eigen,ev)", "Num()"),
     language = "nl"
 )
+
 sentiment = Sentiment(
         path = os.path.join(MODULE, "nl-sentiment.xml"), 
       synset = "cornetto_id",

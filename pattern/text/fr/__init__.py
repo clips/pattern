@@ -35,10 +35,10 @@ from pattern.text import (
 )
 # Import verb tenses.
 from pattern.text import (
-    INFINITIVE, PRESENT, PAST, FUTURE, CONDITIONAL,
+    INFINITIVE, PRESENT, PAST, FUTURE,
     FIRST, SECOND, THIRD,
     SINGULAR, PLURAL, SG, PL,
-    INDICATIVE, IMPERATIVE, SUBJUNCTIVE,
+    INDICATIVE, IMPERATIVE, SUBJUNCTIVE, CONDITIONAL,
     IMPERFECTIVE, PERFECTIVE, PROGRESSIVE,
     IMPERFECT, PRETERITE,
     PARTICIPLE, GERUND
@@ -127,11 +127,13 @@ lexicon = Lexicon(
      context = os.path.join(MODULE, "fr-context.txt"),
     language = "fr"
 )
+
 parser = Parser(
      lexicon = lexicon,
      default = ("NN", "NNP", "CD"),
     language = "fr"
 )
+
 sentiment = Sentiment(
         path = os.path.join(MODULE, "fr-sentiment.xml"), 
       synset = None,

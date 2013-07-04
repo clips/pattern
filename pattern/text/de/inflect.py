@@ -53,8 +53,9 @@ is_vowel = lambda ch: ch in VOWELS
 
 # Inflection gender.
 # Masculine is the most common, so it is the default for all functions.
-MASCULINE, FEMININE, NEUTER, PLURAL = MALE, FEMALE, NEUTRAL, PLURAL = \
-    "masculine", "feminine", "neuter", "plural"
+MASCULINE, FEMININE, NEUTER, PLURAL = \
+    MALE, FEMALE, NEUTRAL, PLURAL = \
+        M, F, N, PL = "m", "f", "n", "p"
 
 # Inflection role.
 # - nom = subject, "Der Hund bellt" (the dog barks).
@@ -159,48 +160,48 @@ def gender(word, pos=NOUN):
 #### PLURALIZE ######################################################################################
 
 plural_inflections = [
-    (u"aal", u"äle"),    (u"aat", u"aaten"), (u"abe", u"aben"),  (u"ach", u"ächer"), (u"ade", u"aden"),  
-    (u"age", u"agen"),   (u"ahn", u"ahnen"), (u"ahr", u"ahre"),  (u"akt", u"akte"),  (u"ale", u"alen"),  
-    (u"ame", u"amen"),   (u"amt", u"ämter"), (u"ane", u"anen"),  (u"ang", u"änge"),  (u"ank", u"änke"),  
-    (u"ann", u"änner"),  (u"ant", u"anten"), (u"aph", u"aphen"), (u"are", u"aren"),  (u"arn", u"arne"),  
-    (u"ase", u"asen"),   (u"ate", u"aten"),  (u"att", u"ätter"), (u"atz", u"ätze"),  (u"aum", u"äume"),  
-    (u"aus", u"äuser"),  (u"bad", u"bäder"), (u"bel", u"bel"),   (u"ben", u"ben"),   (u"ber", u"ber"),  
-    (u"bot", u"bote"),   (u"che", u"chen"),  (u"chs", u"chse"),  (u"cke", u"cken"),  (u"del", u"del"),  
-    (u"den", u"den"),    (u"der", u"der"),   (u"ebe", u"ebe"),   (u"ede", u"eden"),  (u"ehl", u"ehle"),  
-    (u"ehr", u"ehr"),    (u"eil", u"eile"),  (u"eim", u"eime"),  (u"eis", u"eise"),  (u"eit", u"eit"),  
-    (u"ekt", u"ekte"),   (u"eld", u"elder"), (u"ell", u"elle"),  (u"ene", u"enen"),  (u"enz", u"enzen"),  
-    (u"erd", u"erde"),   (u"ere", u"eren"),  (u"erk", u"erke"),  (u"ern", u"erne"),  (u"ert", u"erte"),  
-    (u"ese", u"esen"),   (u"ess", u"esse"),  (u"est", u"este"),  (u"etz", u"etze"),  (u"eug", u"euge"),  
-    (u"eur", u"eure"),   (u"fel", u"fel"),   (u"fen", u"fen"),   (u"fer", u"fer"),   (u"ffe", u"ffen"),  
-    (u"gel", u"gel"),    (u"gen", u"gen"),   (u"ger", u"ger"),   (u"gie", u"gie"),   (u"hen", u"hen"),  
-    (u"her", u"her"),    (u"hie", u"hien"),  (u"hle", u"hlen"),  (u"hme", u"hmen"),  (u"hne", u"hnen"),  
-    (u"hof", u"höfe"),   (u"hre", u"hren"),  (u"hrt", u"hrten"), (u"hse", u"hsen"),  (u"hte", u"hten"),  
-    (u"ich", u"iche"),   (u"ick", u"icke"),  (u"ide", u"iden"),  (u"ieb", u"iebe"),  (u"ief", u"iefe"),  
-    (u"ieg", u"iege"),   (u"iel", u"iele"),  (u"ien", u"ium"),   (u"iet", u"iete"),  (u"ife", u"ifen"),  
-    (u"iff", u"iffe"),   (u"ift", u"iften"), (u"ige", u"igen"),  (u"ika", u"ikum"),  (u"ild", u"ilder"),  
-    (u"ilm", u"ilme"),   (u"ine", u"inen"),  (u"ing", u"inge"),  (u"ion", u"ionen"), (u"ise", u"isen"),  
-    (u"iss", u"isse"),   (u"ist", u"isten"), (u"ite", u"iten"),  (u"itt", u"itte"),  (u"itz", u"itze"),  
-    (u"ium", u"ium"),    (u"kel", u"kel"),   (u"ken", u"ken"),   (u"ker", u"ker"),   (u"lag", u"läge"),  
-    (u"lan", u"läne"),   (u"lar", u"lare"),  (u"lei", u"leien"), (u"len", u"len"),   (u"ler", u"ler"),  
-    (u"lge", u"lgen"),   (u"lie", u"lien"),  (u"lle", u"llen"),  (u"mel", u"mel"),   (u"mer", u"mer"),  
-    (u"mme", u"mmen"),   (u"mpe", u"mpen"),  (u"mpf", u"mpfe"),  (u"mus", u"mus"),   (u"mut", u"mut"),  
-    (u"nat", u"nate"),   (u"nde", u"nden"),  (u"nen", u"nen"),   (u"ner", u"ner"),   (u"nge", u"ngen"),  
-    (u"nie", u"nien"),   (u"nis", u"nisse"), (u"nke", u"nken"),  (u"nkt", u"nkte"),  (u"nne", u"nnen"),  
-    (u"nst", u"nste"),   (u"nte", u"nten"),  (u"nze", u"nzen"),  (u"ock", u"öcke"),  (u"ode", u"oden"),  
-    (u"off", u"offe"),   (u"oge", u"ogen"),  (u"ohn", u"öhne"),  (u"ohr", u"ohre"),  (u"olz", u"ölzer"),  
-    (u"one", u"onen"),   (u"oot", u"oote"),  (u"opf", u"öpfe"),  (u"ord", u"orde"),  (u"orm", u"ormen"),  
-    (u"orn", u"örner"),  (u"ose", u"osen"),  (u"ote", u"oten"),  (u"pel", u"pel"),   (u"pen", u"pen"),  
-    (u"per", u"per"),    (u"pie", u"pien"),  (u"ppe", u"ppen"),  (u"rag", u"räge"),  (u"rau", u"raün"),  
-    (u"rbe", u"rben"),   (u"rde", u"rden"),  (u"rei", u"reien"), (u"rer", u"rer"),   (u"rie", u"rien"),  
-    (u"rin", u"rinnen"), (u"rke", u"rken"),  (u"rot", u"rote"),  (u"rre", u"rren"),  (u"rte", u"rten"),  
-    (u"ruf", u"rufe"),   (u"rzt", u"rzte"),  (u"sel", u"sel"),   (u"sen", u"sen"),   (u"ser", u"ser"),  
-    (u"sie", u"sien"),   (u"sik", u"sik"),   (u"sse", u"ssen"),  (u"ste", u"sten"),  (u"tag", u"tage"),  
-    (u"tel", u"tel"),    (u"ten", u"ten"),   (u"ter", u"ter"),   (u"tie", u"tien"),  (u"tin", u"tinnen"),  
-    (u"tiv", u"tive"),   (u"tor", u"toren"), (u"tte", u"tten"),  (u"tum", u"tum"),   (u"tur", u"turen"),  
-    (u"tze", u"tzen"),   (u"ube", u"uben"),  (u"ude", u"uden"),  (u"ufe", u"ufen"),  (u"uge", u"ugen"),  
-    (u"uhr", u"uhren"),  (u"ule", u"ulen"),  (u"ume", u"umen"),  (u"ung", u"ungen"), (u"use", u"usen"),  
-    (u"uss", u"üsse"),   (u"ute", u"uten"),  (u"utz", u"utz"),   (u"ver", u"ver"),   (u"weg", u"wege"),  
-    (u"zer", u"zer"),    (u"zug", u"züge"),  (u"ück", u"ücke")
+    ("aal", u"äle"   ), ("aat",  "aaten"), ( "abe",  "aben" ), ("ach", u"ächer"), ("ade",  "aden"  ),
+    ("age",  "agen"  ), ("ahn",  "ahnen"), ( "ahr",  "ahre" ), ("akt",  "akte" ), ("ale",  "alen"  ),
+    ("ame",  "amen"  ), ("amt", u"ämter"), ( "ane",  "anen" ), ("ang", u"änge" ), ("ank", u"änke"  ),
+    ("ann", u"änner" ), ("ant",  "anten"), ( "aph",  "aphen"), ("are",  "aren" ), ("arn",  "arne"  ),
+    ("ase",  "asen"  ), ("ate",  "aten" ), ( "att", u"ätter"), ("atz", u"ätze" ), ("aum",  "äume"  ),
+    ("aus", u"äuser" ), ("bad", u"bäder"), ( "bel",  "bel"  ), ("ben",  "ben"  ), ("ber",  "ber"   ),
+    ("bot",  "bote"  ), ("che",  "chen" ), ( "chs",  "chse" ), ("cke",  "cken" ), ("del",  "del"   ),
+    ("den",  "den"   ), ("der",  "der"  ), ( "ebe",  "ebe"  ), ("ede",  "eden" ), ("ehl",  "ehle"  ),
+    ("ehr",  "ehr"   ), ("eil",  "eile" ), ( "eim",  "eime" ), ("eis",  "eise" ), ("eit",  "eit"   ),
+    ("ekt",  "ekte"  ), ("eld",  "elder"), ( "ell",  "elle" ), ("ene",  "enen" ), ("enz",  "enzen" ),
+    ("erd",  "erde"  ), ("ere",  "eren" ), ( "erk",  "erke" ), ("ern",  "erne" ), ("ert",  "erte"  ),
+    ("ese",  "esen"  ), ("ess",  "esse" ), ( "est",  "este" ), ("etz",  "etze" ), ("eug",  "euge"  ),
+    ("eur",  "eure"  ), ("fel",  "fel"  ), ( "fen",  "fen"  ), ("fer",  "fer"  ), ("ffe",  "ffen"  ),
+    ("gel",  "gel"   ), ("gen",  "gen"  ), ( "ger",  "ger"  ), ("gie",  "gie"  ), ("hen",  "hen"   ),
+    ("her",  "her"   ), ("hie",  "hien" ), ( "hle",  "hlen" ), ("hme",  "hmen" ), ("hne",  "hnen"  ),
+    ("hof", u"höfe"  ), ("hre",  "hren" ), ( "hrt",  "hrten"), ("hse",  "hsen" ), ("hte",  "hten"  ),
+    ("ich",  "iche"  ), ("ick",  "icke" ), ( "ide",  "iden" ), ("ieb",  "iebe" ), ("ief",  "iefe"  ),
+    ("ieg",  "iege"  ), ("iel",  "iele" ), ( "ien",  "ium"  ), ("iet",  "iete" ), ("ife",  "ifen"  ),
+    ("iff",  "iffe"  ), ("ift",  "iften"), ( "ige",  "igen" ), ("ika",  "ikum" ), ("ild",  "ilder" ),
+    ("ilm",  "ilme"  ), ("ine",  "inen" ), ( "ing",  "inge" ), ("ion",  "ionen"), ("ise",  "isen"  ),
+    ("iss",  "isse"  ), ("ist",  "isten"), ( "ite",  "iten" ), ("itt",  "itte" ), ("itz",  "itze"  ),
+    ("ium",  "ium"   ), ("kel",  "kel"  ), ( "ken",  "ken"  ), ("ker",  "ker"  ), ("lag", u"läge"  ),
+    ("lan", u"läne"  ), ("lar",  "lare" ), ( "lei",  "leien"), ("len",  "len"  ), ("ler",  "ler"   ),
+    ("lge",  "lgen"  ), ("lie",  "lien" ), ( "lle",  "llen" ), ("mel",  "mel"  ), ("mer",  "mer"   ),
+    ("mme",  "mmen"  ), ("mpe",  "mpen" ), ( "mpf",  "mpfe" ), ("mus",  "mus"  ), ("mut",  "mut"   ),
+    ("nat",  "nate"  ), ("nde",  "nden" ), ( "nen",  "nen"  ), ("ner",  "ner"  ), ("nge",  "ngen"  ),
+    ("nie",  "nien"  ), ("nis",  "nisse"), ( "nke",  "nken" ), ("nkt",  "nkte" ), ("nne",  "nnen"  ),
+    ("nst",  "nste"  ), ("nte",  "nten" ), ( "nze",  "nzen" ), ("ock", u"öcke" ), ("ode",  "oden"  ),
+    ("off",  "offe"  ), ("oge",  "ogen" ), ( "ohn", u"öhne" ), ("ohr",  "ohre" ), ("olz", u"ölzer" ),
+    ("one",  "onen"  ), ("oot",  "oote" ), ( "opf", u"öpfe" ), ("ord",  "orde" ), ("orm",  "ormen" ),
+    ("orn", u"örner" ), ("ose",  "osen" ), ( "ote",  "oten" ), ("pel",  "pel"  ), ("pen",  "pen"   ),
+    ("per",  "per"   ), ("pie",  "pien" ), ( "ppe",  "ppen" ), ("rag", u"räge" ), ("rau", u"raün"  ),
+    ("rbe",  "rben"  ), ("rde",  "rden" ), ( "rei",  "reien"), ("rer",  "rer"  ), ("rie",  "rien"  ),
+    ("rin",  "rinnen"), ("rke",  "rken" ), ( "rot",  "rote" ), ("rre",  "rren" ), ("rte",  "rten"  ),
+    ("ruf",  "rufe"  ), ("rzt",  "rzte" ), ( "sel",  "sel"  ), ("sen",  "sen"  ), ("ser",  "ser"   ),
+    ("sie",  "sien"  ), ("sik",  "sik"  ), ( "sse",  "ssen" ), ("ste",  "sten" ), ("tag",  "tage"  ),
+    ("tel",  "tel"   ), ("ten",  "ten"  ), ( "ter",  "ter"  ), ("tie",  "tien" ), ("tin",  "tinnen"),
+    ("tiv",  "tive"  ), ("tor",  "toren"), ( "tte",  "tten" ), ("tum",  "tum"  ), ("tur",  "turen" ),
+    ("tze",  "tzen"  ), ("ube",  "uben" ), ( "ude",  "uden" ), ("ufe",  "ufen" ), ("uge",  "ugen"  ),
+    ("uhr",  "uhren" ), ("ule",  "ulen" ), ( "ume",  "umen" ), ("ung",  "ungen"), ("use",  "usen"  ),
+    ("uss", u"üsse"  ), ("ute",  "uten" ), ( "utz",  "utz"  ), ("ver",  "ver"  ), ("weg",  "wege"  ),
+    ("zer",  "zer"   ), ("zug", u"züge" ), (u"ück", u"ücke" )
 ]
 
 def pluralize(word, pos=NOUN, gender=MALE, role=SUBJECT, custom={}):
@@ -256,50 +257,50 @@ def pluralize(word, pos=NOUN, gender=MALE, role=SUBJECT, custom={}):
 #### SINGULARIZE ###################################################################################
 
 singular_inflections = [
-    (u"innen", u"in"),  (u"täten", u"tät"), (u"ahnen", u"ahn"), (u"enten", u"ent"), (u"räser", u"ras"), 
-    (u"hrten", u"hrt"), (u"ücher", u"uch"), (u"örner", u"orn"), (u"änder", u"and"), (u"ürmer", u"urm"), 
-    (u"ahlen", u"ahl"), (u"uhren", u"uhr"), (u"ätter", u"att"), (u"suren", u"sur"), (u"chten", u"cht"), 
-    (u"kuren", u"kur"), (u"erzen", u"erz"), (u"güter", u"gut"), (u"soren", u"sor"), (u"änner", u"ann"), 
-    (u"äuser", u"aus"), (u"taten", u"tat"), (u"isten", u"ist"), (u"bäder", u"bad"), (u"ämter", u"amt"), 
-    (u"eiten", u"eit"), (u"raten", u"rat"), (u"ormen", u"orm"), (u"ionen", u"ion"), (u"nisse", u"nis"), 
-    (u"ölzer", u"olz"), (u"ungen", u"ung"), (u"läser", u"las"), (u"ächer", u"ach"), (u"urten", u"urt"), 
-    (u"enzen", u"enz"), (u"aaten", u"aat"), (u"aphen", u"aph"), (u"öcher", u"och"), (u"türen", u"tür"), 
-    (u"sonen", u"son"), (u"ühren", u"ühr"), (u"ühner", u"uhn"), (u"toren", u"tor"), (u"örter", u"ort"), 
-    (u"anten", u"ant"), (u"räder", u"rad"), (u"turen", u"tur"), (u"äuler", u"aul"), (u"änze", u"anz"),  
-    (u"tten", u"tte"),  (u"mben", u"mbe"),  (u"ädte", u"adt"),  (u"llen", u"lle"),  (u"ysen", u"yse"),  
-    (u"rben", u"rbe"),  (u"hsen", u"hse"),  (u"raün", u"rau"),  (u"rven", u"rve"),  (u"rken", u"rke"),  
-    (u"ünge", u"ung"),  (u"üten", u"üte"),  (u"usen", u"use"),  (u"tien", u"tie"),  (u"läne", u"lan"),  
-    (u"iben", u"ibe"),  (u"ifen", u"ife"),  (u"ssen", u"sse"),  (u"gien", u"gie"),  (u"eten", u"ete"),  
-    (u"rden", u"rde"),  (u"öhne", u"ohn"),  (u"ärte", u"art"),  (u"ncen", u"nce"),  (u"ünde", u"und"),  
-    (u"uben", u"ube"),  (u"lben", u"lbe"),  (u"üsse", u"uss"),  (u"agen", u"age"),  (u"räge", u"rag"),  
-    (u"ogen", u"oge"),  (u"anen", u"ane"),  (u"sken", u"ske"),  (u"eden", u"ede"),  (u"össe", u"oss"),  
-    (u"ürme", u"urm"),  (u"ggen", u"gge"),  (u"üren", u"üre"),  (u"nten", u"nte"),  (u"ühle", u"ühl"),  
-    (u"änge", u"ang"),  (u"mmen", u"mme"),  (u"igen", u"ige"),  (u"nken", u"nke"),  (u"äcke", u"ack"),  
-    (u"oden", u"ode"),  (u"oben", u"obe"),  (u"ähne", u"ahn"),  (u"änke", u"ank"),  (u"inen", u"ine"),  
-    (u"seen", u"see"),  (u"äfte", u"aft"),  (u"ulen", u"ule"),  (u"äste", u"ast"),  (u"hren", u"hre"),  
-    (u"öcke", u"ock"),  (u"aben", u"abe"),  (u"öpfe", u"opf"),  (u"ugen", u"uge"),  (u"lien", u"lie"),  
-    (u"ände", u"and"),  (u"ücke", u"ück"),  (u"asen", u"ase"),  (u"aden", u"ade"),  (u"dien", u"die"),  
-    (u"aren", u"are"),  (u"tzen", u"tze"),  (u"züge", u"zug"),  (u"üfte", u"uft"),  (u"hien", u"hie"),  
-    (u"nden", u"nde"),  (u"älle", u"all"),  (u"hmen", u"hme"),  (u"ffen", u"ffe"),  (u"rmen", u"rma"),  
-    (u"olen", u"ole"),  (u"sten", u"ste"),  (u"amen", u"ame"),  (u"höfe", u"hof"),  (u"üste", u"ust"),  
-    (u"hnen", u"hne"),  (u"ähte", u"aht"),  (u"umen", u"ume"),  (u"nnen", u"nne"),  (u"alen", u"ale"),  
-    (u"mpen", u"mpe"),  (u"mien", u"mie"),  (u"rten", u"rte"),  (u"rien", u"rie"),  (u"äute", u"aut"),  
-    (u"uden", u"ude"),  (u"lgen", u"lge"),  (u"ngen", u"nge"),  (u"iden", u"ide"),  (u"ässe", u"ass"),  
-    (u"osen", u"ose"),  (u"lken", u"lke"),  (u"eren", u"ere"),  (u"üche", u"uch"),  (u"lüge", u"lug"),  
-    (u"hlen", u"hle"),  (u"isen", u"ise"),  (u"ären", u"äre"),  (u"töne", u"ton"),  (u"onen", u"one"),  
-    (u"rnen", u"rne"),  (u"üsen", u"üse"),  (u"haün", u"hau"),  (u"pien", u"pie"),  (u"ihen", u"ihe"),  
-    (u"ürfe", u"urf"),  (u"esen", u"ese"),  (u"ätze", u"atz"),  (u"sien", u"sie"),  (u"läge", u"lag"),  
-    (u"iven", u"ive"),  (u"ämme", u"amm"),  (u"äufe", u"auf"),  (u"ppen", u"ppe"),  (u"enen", u"ene"),  
-    (u"lfen", u"lfe"),  (u"äume", u"aum"),  (u"nien", u"nie"),  (u"unen", u"une"),  (u"cken", u"cke"),  
-    (u"oten", u"ote"),  (u"mie", u"mie"),   (u"rie", u"rie"),   (u"sis", u"sen"),   (u"rin", u"rin"),   
-    (u"ein", u"ein"),   (u"age", u"age"),   (u"ern", u"ern"),   (u"ber", u"ber"),   (u"ion", u"ion"),   
-    (u"inn", u"inn"),   (u"ben", u"ben"),   (u"äse", u"äse"),   (u"eis", u"eis"),   (u"hme", u"hme"), 
-    (u"iss", u"iss"),   (u"hen", u"hen"),   (u"fer", u"fer"),   (u"gie", u"gie"),   (u"fen", u"fen"), 
-    (u"her", u"her"),   (u"ker", u"ker"),   (u"nie", u"nie"),   (u"mer", u"mer"),   (u"ler", u"ler"), 
-    (u"men", u"men"),   (u"ass", u"ass"),   (u"ner", u"ner"),   (u"per", u"per"),   (u"rer", u"rer"), 
-    (u"mus", u"mus"),   (u"abe", u"abe"),   (u"ter", u"ter"),   (u"ser", u"ser"),   (u"äle", u"aal"), 
-    (u"hie", u"hie"),   (u"ger", u"ger"),   (u"tus", u"tus"),   (u"gen", u"gen"),   (u"ier", u"ier"), 
-    (u"ver", u"ver"),   (u"zer", u"zer"), 
+    ( "innen", "in" ), (u"täten", u"tät"), ( "ahnen",  "ahn"), ( "enten", "ent"), (u"räser",  "ras"),
+    ( "hrten", "hrt"), (u"ücher",  "uch"), (u"örner",  "orn"), (u"änder", "and"), (u"ürmer",  "urm"),
+    ( "ahlen", "ahl"), ( "uhren",  "uhr"), (u"ätter",  "att"), ( "suren", "sur"), ( "chten",  "cht"),
+    ( "kuren", "kur"), ( "erzen",  "erz"), (u"güter",  "gut"), ( "soren", "sor"), (u"änner",  "ann"),
+    (u"äuser", "aus"), ( "taten",  "tat"), ( "isten",  "ist"), (u"bäder", "bad"), (u"ämter",  "amt"),
+    ( "eiten", "eit"), ( "raten",  "rat"), ( "ormen",  "orm"), ( "ionen", "ion"), ( "nisse",  "nis"),
+    (u"ölzer", "olz"), ( "ungen",  "ung"), (u"läser",  "las"), (u"ächer", "ach"), ( "urten",  "urt"),
+    ( "enzen", "enz"), ( "aaten",  "aat"), ( "aphen",  "aph"), (u"öcher", "och"), (u"türen", u"tür"),
+    ( "sonen", "son"), (u"ühren", u"ühr"), (u"ühner",  "uhn"), ( "toren", "tor"), (u"örter",  "ort"),
+    ( "anten", "ant"), (u"räder",  "rad"), ( "turen",  "tur"), (u"äuler", "aul"), ( u"änze",  "anz"),
+    (  "tten", "tte"), (  "mben",  "mbe"), ( u"ädte",  "adt"), (  "llen", "lle"), (  "ysen",  "yse"),
+    (  "rben", "rbe"), (  "hsen",  "hse"), ( u"raün",  "rau"), (  "rven", "rve"), (  "rken",  "rke"),
+    ( u"ünge", "ung"), ( u"üten", u"üte"), (  "usen",  "use"), (  "tien", "tie"), ( u"läne",  "lan"),
+    (  "iben", "ibe"), (  "ifen",  "ife"), (  "ssen",  "sse"), (  "gien", "gie"), (  "eten",  "ete"),
+    (  "rden", "rde"), ( u"öhne",  "ohn"), ( u"ärte",  "art"), (  "ncen", "nce"), ( u"ünde",  "und"),
+    (  "uben", "ube"), (  "lben",  "lbe"), ( u"üsse",  "uss"), (  "agen", "age"), ( u"räge",  "rag"),
+    (  "ogen", "oge"), (  "anen",  "ane"), (  "sken",  "ske"), (  "eden", "ede"), ( u"össe",  "oss"),
+    ( u"ürme", "urm"), (  "ggen",  "gge"), ( u"üren", u"üre"), (  "nten", "nte"), ( u"ühle", u"ühl"),
+    ( u"änge", "ang"), (  "mmen",  "mme"), (  "igen",  "ige"), (  "nken", "nke"), ( u"äcke",  "ack"),
+    (  "oden", "ode"), (  "oben",  "obe"), ( u"ähne",  "ahn"), ( u"änke", "ank"), (  "inen",  "ine"),
+    (  "seen", "see"), ( u"äfte",  "aft"), (  "ulen",  "ule"), ( u"äste", "ast"), (  "hren",  "hre"),
+    ( u"öcke", "ock"), (  "aben",  "abe"), ( u"öpfe",  "opf"), (  "ugen", "uge"), (  "lien",  "lie"),
+    ( u"ände", "and"), ( u"ücke", u"ück"), (  "asen",  "ase"), (  "aden", "ade"), (  "dien",  "die"),
+    (  "aren", "are"), (  "tzen",  "tze"), ( u"züge",  "zug"), ( u"üfte", "uft"), (  "hien",  "hie"),
+    (  "nden", "nde"), ( u"älle",  "all"), (  "hmen",  "hme"), (  "ffen", "ffe"), (  "rmen",  "rma"),
+    (  "olen", "ole"), (  "sten",  "ste"), (  "amen",  "ame"), ( u"höfe", "hof"), ( u"üste",  "ust"),
+    (  "hnen", "hne"), ( u"ähte",  "aht"), (  "umen",  "ume"), (  "nnen", "nne"), (  "alen",  "ale"),
+    (  "mpen", "mpe"), (  "mien",  "mie"), (  "rten",  "rte"), (  "rien", "rie"), ( u"äute",  "aut"),
+    (  "uden", "ude"), (  "lgen",  "lge"), (  "ngen",  "nge"), (  "iden", "ide"), ( u"ässe",  "ass"),
+    (  "osen", "ose"), (  "lken",  "lke"), (  "eren",  "ere"), ( u"üche", "uch"), ( u"lüge",  "lug"),
+    (  "hlen", "hle"), (  "isen",  "ise"), ( u"ären", u"äre"), ( u"töne", "ton"), (  "onen",  "one"),
+    (  "rnen", "rne"), ( u"üsen", u"üse"), ( u"haün",  "hau"), (  "pien", "pie"), (  "ihen",  "ihe"),
+    ( u"ürfe", "urf"), (  "esen",  "ese"), ( u"ätze",  "atz"), (  "sien", "sie"), ( u"läge",  "lag"),
+    (  "iven", "ive"), ( u"ämme",  "amm"), ( u"äufe",  "auf"), (  "ppen", "ppe"), (  "enen",  "ene"),
+    (  "lfen", "lfe"), ( u"äume",  "aum"), (  "nien",  "nie"), (  "unen", "une"), (  "cken",  "cke"),
+    (  "oten", "ote"), (   "mie",  "mie"), (   "rie",  "rie"), (   "sis", "sen"), (   "rin",  "rin"),
+    (   "ein", "ein"), (   "age",  "age"), (   "ern",  "ern"), (   "ber", "ber"), (   "ion",  "ion"),
+    (   "inn", "inn"), (   "ben",  "ben"), (  u"äse", u"äse"), (   "eis", "eis"), (   "hme",  "hme"),
+    (   "iss", "iss"), (   "hen",  "hen"), (   "fer",  "fer"), (   "gie", "gie"), (   "fen",  "fen"),
+    (   "her", "her"), (   "ker",  "ker"), (   "nie",  "nie"), (   "mer", "mer"), (   "ler",  "ler"),
+    (   "men", "men"), (   "ass",  "ass"), (   "ner",  "ner"), (   "per", "per"), (   "rer",  "rer"),
+    (   "mus", "mus"), (   "abe",  "abe"), (   "ter",  "ter"), (   "ser", "ser"), (  u"äle",  "aal"),
+    (   "hie", "hie"), (   "ger",  "ger"), (   "tus",  "tus"), (   "gen", "gen"), (   "ier",  "ier"),
+    (   "ver", "ver"), (   "zer",  "zer"),
 ]
 
 def singularize(word, pos=NOUN, gender=MALE, role=SUBJECT, custom={}):
@@ -322,20 +323,16 @@ def singularize(word, pos=NOUN, gender=MALE, role=SUBJECT, custom={}):
 # The verb table was trained on CELEX and contains the top 2000 most frequent verbs.
 
 prefix_inseparable = (
-    u"be", u"emp", u"ent", u"er", u"ge", u"miss", u"über", u"unter", u"ver", 
-    u"voll", u"wider", u"zer"
+    "be", "emp", "ent", "er", "ge", "miss", u"über", "unter", "ver", "voll", "wider", "zer"
 )
 prefix_separable = (
-    u"ab", u"an", u"auf", u"aus", u"bei", u"durch", u"ein", u"fort", u"mit", 
-    u"nach", u"vor", u"weg", u"zurück", u"zusammen", u"zu", u"dabei", u"daran", 
-    u"da", u"empor", u"entgegen", u"entlang", u"fehl", u"fest", u"gegenüber", 
-    u"gleich", u"herab", u"heran", u"herauf", u"heraus", u"herum", u"her", 
-    u"hinweg", u"hinzu", u"hin", u"los", u"nieder", u"statt", u"umher", u"um", 
-    u"weg", u"weiter", u"wieder", u"zwischen"
-) + (
-     # There are many more...
-     u"dort", u"fertig", u"frei", u"gut", u"heim", u"hoch", u"klein", u"klar", 
-     u"nahe", u"offen", u"richtig", u"tot"
+    "ab", "an", "auf", "aus", "bei", "durch", "ein", "fort", "mit", "nach", "vor", "weg", 
+    u"zurück", "zusammen", "zu", "dabei", "daran", "da", "empor", "entgegen", "entlang", 
+    "fehl", "fest", u"gegenüber", "gleich", "herab", "heran", "herauf", "heraus", "herum", 
+    "her", "hinweg", "hinzu", "hin", "los", "nieder", "statt", "umher", "um", "weg", 
+    "weiter", "wieder", "zwischen"
+) + ( # There are many more...
+     "dort", "fertig", "frei", "gut", "heim", "hoch", "klein", "klar", "nahe", "offen", "richtig"
 )
 prefixes = prefix_inseparable + prefix_separable
 
@@ -372,9 +369,9 @@ class Verbs(_Verbs):
             if b.endswith(x): b = b[:-len(x)]; break
         # Subjunctive: hielte => halten, schnitte => schneiden.
         for x, y in (
-          ("ieb", "eib"), ("ied", "eid"), ("ief", "auf"), ("ieg", "eig"), ("iel", "alt"), 
-          ("ien", "ein"), ("iess", "ass"), (u"ieß", u"aß"), ("iff", "eif"), ("iss", "eiss"), 
-          (u"iß", u"eiß"), ("it", "eid"), ("oss", "iess"), (u"öss", "iess")):
+          ("ieb",  "eib"), ( "ied", "eid"), ( "ief",  "auf" ), ( "ieg", "eig" ), ("iel", "alt"), 
+          ("ien",  "ein"), ("iess", "ass"), (u"ieß", u"aß"  ), ( "iff", "eif" ), ("iss", "eiss"), 
+          (u"iß", u"eiß"), (  "it", "eid"), ( "oss",  "iess"), (u"öss", "iess")):
             if b.endswith(x): b = b[:-len(x)] + y; break
         b = b.replace("eeiss", "eiss")
         b = b.replace("eeid", "eit")

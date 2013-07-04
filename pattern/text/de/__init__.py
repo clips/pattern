@@ -48,7 +48,7 @@ from pattern.text.de.inflect import (
     grade, comparative, superlative, COMPARATIVE, SUPERLATIVE,
     verbs, conjugate, lemma, lexeme, tenses,
     predicative, attributive,
-    gender, MASCULINE, MALE, FEMININE, FEMALE, NEUTER, NEUTRAL, PLURAL,
+    gender, MASCULINE, MALE, FEMININE, FEMALE, NEUTER, NEUTRAL, PLURAL, M, F, N, PL,
             NOMINATIVE, ACCUSATIVE, DATIVE, GENITIVE, SUBJECT, OBJECT, INDIRECT, PROPERTY
 )
 # Import all submodules.
@@ -196,6 +196,7 @@ lexicon = Lexicon(
      context = os.path.join(MODULE, "de-context.txt"),
     language = "de"
 )
+
 parser = Parser(
      lexicon = lexicon,
      default = ("NN", "NE", "CARDNUM"),

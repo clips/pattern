@@ -94,11 +94,13 @@ lexicon = Lexicon(
     entities = os.path.join(MODULE, "en-entities.txt"),
     language = "en"
 )
+
 parser = Parser(
      lexicon = lexicon,
      default = ("NN", "NNP", "CD"),
     language = "en"
 )
+
 sentiment = Sentiment(
         path = os.path.join(MODULE, "en-sentiment.xml"), 
       synset = "wordnet_id",
@@ -108,6 +110,7 @@ sentiment = Sentiment(
    tokenizer = parser.find_tokens,
     language = "en"
 )
+
 spelling = Spelling(
         path = os.path.join(MODULE, "en-spelling.txt")
 )

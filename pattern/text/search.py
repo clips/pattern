@@ -1,4 +1,5 @@
-#### PATTERN | EN | PATTERN MATCHING ###############################################################
+#### PATTERN | TEXT | PATTERN MATCHING #############################################################
+# -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
@@ -9,25 +10,39 @@
 import re
 import itertools
 
-# Following classes emulate those in en.parser.tree:
+#--- TEXT, SENTENCE AND WORD -----------------------------------------------------------------------
+# The search() and match() functions work on Text, Sentence and Word objects (see pattern.text.tree),
+# i.e., the parse tree including part-of-speech tags and phrase chunk tags.
+# The Match object will contain matched Word objects, 
+# emulated with the following classes if the input was a plain string:
+
+PUNCTUATION = ".,;:!?()[]{}`''\"@#$^&*+-|=~_"
 
 class Text(list):
 
     def __init__(self, string="", token=["word"]):
-        list.__init__(self, [Sentence(s+".", token) for s in string.split(".")])
+        """ A list of sentences, where each sentence is separated by a period.
+        """
+        list.__init__(self, (Sentence(s+".", token) for s in string.split(".")))
     
     @property
     def sentences(self):
         return self
 
-class Sentence:
+class Sentence(list):
     
     def __init__(self, string="", token=["word"]):
-        for punctuation in ".,;?!:": # Naive tokenization.
-            string = string.replace(punctuation, " "+punctuation)
+        """ A list of words, where punctuation marks are split from words.
+        """
+        for ch in PUNCTUATION: # Naive tokenization.
+            string = string.replace(ch, " %s " % ch)
         string = re.sub(r"\s+", " ", string)
         string = string.split(" ")
-        self.words = [Word(self, w, index=i) for i,w in enumerate(string)]
+        list.__init__(self, (Word(self, w, index=i) for i, w in enumerate(string)))
+    
+    @property
+    def words(self):
+        return self
     
     @property
     def chunks(self):
@@ -36,6 +51,8 @@ class Sentence:
 class Word(object):
     
     def __init__(self, sentence, string, tag=None, index=0):
+        """ A word with a position in a sentence.
+        """
         self.sentence, self.string, self.tag, self.index = sentence, string, tag, index
     
     def __repr__(self):
@@ -45,6 +62,7 @@ class Word(object):
         return self.tag
     def _set_type(self, v):
         self.tag = v
+        
     type = property(_get_type, _set_type)
     
     @property
@@ -61,7 +79,7 @@ WILDCARD = "*"
 regexp = type(re.compile(r"."))
 
 def _match(string, pattern):
-    """ Returns True if the pattern is part of the given word string.
+    """ Returns True if the pattern matches the given word string.
         The pattern can include a wildcard (*front, back*, *both*, in*side),
         or it can be a compiled regular expression.
     """
@@ -77,127 +95,160 @@ def _match(string, pattern):
             p = p.split(WILDCARD)
             return string.startswith(p[0]) and string.endswith(p[-1])
     except AttributeError:
-        # For performance (doing isinstance() at the end is 10% faster for regular strings).
+        # For performance, calling isinstance() last is 10% faster for plain strings.
         if isinstance(p, regexp):
             return p.search(string) is not None
     return False
 
 #--- LIST FUNCTIONS --------------------------------------------------------------------------------
+# Search patterns can contain optional constraints, 
+# so we need to find all possible variations of a pattern.
 
-def unique(list):
-    """ Returns a list copy in which each item occurs only once.
+def unique(iterable):
+    """ Returns a list copy in which each item occurs only once (in-order).
     """
-    u=[]; [u.append(item) for item in list if item not in u]
-    return u
-    
-def unique2(list):
-    """ Returns a list copy in which each item occurs only once.
-        This is faster than unique(), but list items must be hashable.
-    """
-    u, s = [], {}
-    for item in list:
-        if item not in s: u.append(item)
-        s[item] = True
-    return u
+    seen = set()
+    return [x for x in iterable if x not in seen and not seen.add(x)]
 
-def find(function, list):
+def find(function, iterable):
     """ Returns the first item in the list for which function(item) is True, None otherwise.
     """
-    for item in list:
-        if function(item) is True:
-            return item
+    for x in iterable:
+        if function(x) is True:
+            return x
 
-def combinations(list, n):
-    """ Returns all possible combinations of length n of the given items in the list.
-    """
-    if n == 0: yield [] # Only one possibility, the empty list.
-    else:
-        for i in xrange(len(list)):
-            for c in combinations(list, n-1):
-                yield [list[i]] + c
+def combinations(iterable, n):
+    # Backwards compatibility.
+    return product(iterable, repeat=n)
 
-def variations(list, optional=lambda item: False):
-    """ Returns all possible variations of a list containing optional items.
+def product(*args, **kwargs):
+    """ Yields all permutations with replacement:
+        list(product("cat", repeat=2)) => 
+        [("c", "c"), 
+         ("c", "a"), 
+         ("c", "t"), 
+         ("a", "c"), 
+         ("a", "a"), 
+         ("a", "t"), 
+         ("t", "c"), 
+         ("t", "a"), 
+         ("t", "t")]
     """
-    # Boolean pattern, True where pattern is optional.
-    # (A) (B) C --> True True False
-    o = [optional(item) for item in list]
-    V = []
-    # All the possible True/False combinations of optionals.
-    # (A) (B) C --> True True, True False, False True, False False.
-    for c in combinations([True, False], sum(o)):
-        # If True in boolean pattern, replace by boolean in current combination.
-        # (A) (B) C --> True True False, True False False, False True False, False False False.
-        v = [b and (b and c.pop(0)) for b in o]
-        # Replace True by pattern at that index.
-        # --> (A) (B) C, (A) C, (B) C, C.
-        v = [list[i] for i in range(len(v)) if not v[i]]
-        if v not in V: 
-            V.append(v)
+    p = [[]]
+    for iterable in map(tuple, args) * kwargs.get("repeat", 1):
+        p = [x + [y] for x in p for y in iterable]
+    for p in p:
+        yield tuple(p)
+
+try: from itertools import product
+except:
+    pass
+
+def variations(iterable, optional=lambda x: False):
+    """ Returns all possible variations of a sequence with optional items.
+    """
+    # For example: variations(["A?", "B?", "C"], optional=lambda s: s.endswith("?"))
+    # defines a sequence where constraint A and B are optional:
+    # [("A?", "B?", "C"), ("B?", "C"), ("A?", "C"), ("C")]
+    iterable = tuple(iterable)
+    # Create a boolean sequence where True means optional:
+    # ("A?", "B?", "C") => [True, True, False]
+    o = [optional(x) for x in iterable]
+    # Find all permutations of the boolean sequence:
+    # [True, False, True], [True, False, False], [False, False, True], [False, False, False].
+    # Map to sequences of constraints whose index in the boolean sequence yields True.
+    a = set()
+    for p in product([False, True], repeat=sum(o)):
+        p = list(p)
+        v = [b and (b and p.pop(0)) for b in o]
+        v = tuple(iterable[i] for i in range(len(v)) if not v[i])
+        if v not in a: 
+            a.add(v)
     # Longest-first.
-    V.sort(lambda a, b: len(b) - len(a))
-    return V
+    return sorted(a, cmp=lambda x, y: len(y) - len(x))
 
 #### TAXONOMY ######################################################################################
 
 #--- ORDERED DICTIONARY ----------------------------------------------------------------------------
+# A taxonomy is based on an ordered dictionary 
+# (i.e., if a taxonomy term has multiple parents, the most recent parent is the default).
 
 class odict(dict):
-    """ Dictionary with ordered keys.
-        With reversed=True, the latest keys will be returned first when traversing the dictionary.
-        Taxonomy (see below) uses ordered dictionaries:
-        if a taxonomy term has multiple parents, the last parent is the default.
-    """
-    def __init__(self, d=None, reversed=True):
-        dict.__init__(self)
-        self._o = [] # The ordered keys.
-        self._f = reversed and self._insertkey or self._appendkey
-        if d != None: self.update(dict(d))
-    @property
-    def reversed(self):
-        return self._f == self._insertkey
-    @classmethod
-    def fromkeys(cls, k, v=None, reversed=True):
-        d = cls(reversed=reversed)
-        for k in k: d.__setitem__(k,v)
-        return d
-    def _insertkey(self, k):
-        if k not in self: self._o.insert(0,k) # Sort newest-first with reversed=True.
-    def _appendkey(self, k):
-        if k not in self: self._o.append(k)   # Sort oldest-first with reversed=False.
-    def append(self, (k, v)):
-        """ Takes a (key, value)-tuple. Sets the given key to the given value.
-            If the key exists, pushes the updated item to the head (or tail) of the dict.
+
+    def __init__(self, items=[]):
+        """ A dictionary with ordered keys (first-in last-out).
         """
-        if k in self: self.__delitem__(k)
-        self.__setitem__(k,v)
-    def update(self, d):
-        for k,v in d.items(): self.__setitem__(k,v)
-    def setdefault(self, k, v=None):
-        if not k in self: self.__setitem__(k,v)
-        return self[k]        
-    def __setitem__(self, k, v): 
-        self._f(k); dict.__setitem__(self, k, v)
-    def __delitem__(self, k):
-        dict.__delitem__(self, k); self._o.remove(k)
-    def pop(self, k):
-        self._o.remove(k); return dict.pop(self, k)
-    def clear(self):
-        dict.clear(self); self._o=[]
-    def keys(self): 
-        return self._o
-    def values(self):
-        return map(self.get, self._o)
-    def items(self): 
-        return zip(self._o, self.values())
+        dict.__init__(self)
+        self._o = [] # List of ordered keys.
+        if isinstance(items, dict):
+            items = reversed(items.items())
+        for k, v in items:
+            self.__setitem__(k, v)
+        
+    @classmethod
+    def fromkeys(cls, keys=[], v=None):
+        return cls((k, v) for k in keys)
+    
+    def push(self, (k, v)):
+        """ Adds a new item from the given (key, value)-tuple.
+            If the key exists, pushes the updated item to the head of the dict.
+        """
+        if k in self: 
+            self.__delitem__(k)
+        self.__setitem__(k, v)
+    append = push
+
     def __iter__(self):
-        return self._o.__iter__()
+        return reversed(self._o)
+
+    def __setitem__(self, k, v):
+        if k not in self:
+            self._o.append(k)
+        dict.__setitem__(self, k, v)
+        
+    def __delitem__(self, k):
+        self._o.remove(k)
+        dict.__delitem__(self, k)
+
+    def update(self, d):
+        for k, v in reversed(d.items()): 
+            self.__setitem__(k, v)
+        
+    def setdefault(self, k, v=None):
+        if not k in self: 
+            self.__setitem__(k, v)
+        return self[k]        
+
+    def pop(self, k, *args, **kwargs):
+        if k in self:
+            self._o.remove(k)
+        return dict.pop(self, k, *args, **kwargs)
+        
+    def popitem(self):
+        k=self._o[-1] if self._o else None; return (k, self.pop(k))
+        
+    def clear(self):
+        self._o=[]; dict.clear(self)
+
+    def iterkeys(self):
+        return reversed(self._o)
+    def itervalues(self):
+        return itertools.imap(self.__getitem__, reversed(self._o))
+    def iteritems(self):
+        return itertools.izip(self.keys(), self.values())
+
+    def keys(self): 
+        return list(self.iterkeys())
+    def values(self):
+        return list(self.itervalues())
+    def items(self): 
+        return list(self.iteritems())
+    
     def copy(self):
-        d = self.__class__(reversed=self.reversed)
-        for k,v in (self.reversed and reversed(self.items()) or self.items()): d[k] = v
-        return d
+        return self.__class__(reversed(self.items()))
+    
     def __repr__(self):
-        return "{%s}" % ", ".join(["%s: %s" % (repr(k), repr(v)) for k, v in self.items()])
+        return "{%s}" % ", ".join("%s: %s" % (repr(k), repr(v)) for k, v in self.items())
 
 #--- TAXONOMY --------------------------------------------------------------------------------------
 
@@ -242,8 +293,8 @@ class Taxonomy(dict):
         """
         term = self._normalize(term)
         type = self._normalize(type)
-        self.setdefault(term, (odict(), odict()))[0].append((type, True))
-        self.setdefault(type, (odict(), odict()))[1].append((term, True))
+        self.setdefault(term, (odict(), odict()))[0].push((type, True))
+        self.setdefault(type, (odict(), odict()))[1].push((term, True))
         self._values[term] = value
     
     def classify(self, term, **kwargs):
@@ -277,7 +328,7 @@ class Taxonomy(dict):
             if recursive:
                 for w in a: a += dfs(w, recursive, visited, **kwargs)
             return a
-        return unique2(dfs(self._normalize(term), recursive, {}, **kwargs))
+        return unique(dfs(self._normalize(term), recursive, {}, **kwargs))
     
     def children(self, term, recursive=False, **kwargs):
         """ Returns all terms of the given semantic type: "quantity" => ["many", "lot", "few", ...]
@@ -294,7 +345,7 @@ class Taxonomy(dict):
             if recursive:
                 for w in a: a += dfs(w, recursive, visited, **kwargs)
             return a
-        return unique2(dfs(self._normalize(term), recursive, {}, **kwargs))
+        return unique(dfs(self._normalize(term), recursive, {}, **kwargs))
     
     def value(self, term, **kwargs):
         """ Returns the value of the given term ("many" => "50-200")

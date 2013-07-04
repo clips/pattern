@@ -106,7 +106,7 @@ class TestInflection(unittest.TestCase):
         print "pattern.fr.conjugate()"
 
     def test_lexeme(self):
-        # Assert all inflections of "sein".
+        # Assert all inflections of "être".
         v = fr.lexeme(u"être")
         self.assertEqual(v, [
             u"être", u"suis", u"es", u"est", u"sommes", u"êtes", u"sont", u"étant", u"été", 
@@ -120,7 +120,7 @@ class TestInflection(unittest.TestCase):
         print "pattern.fr.inflect.lexeme()"
 
     def test_tenses(self):
-        # Assert tense of "is".
+        # Assert tense recognition.
         self.assertTrue((fr.PRESENT, 3, fr.SG) in fr.tenses("est"))
         self.assertTrue("2sg" in fr.tenses("es"))
         print "pattern.fr.tenses()"

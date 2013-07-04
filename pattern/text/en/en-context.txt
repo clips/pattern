@@ -287,4 +287,4 @@ VBG JJ SURROUNDTAG DT NN
 * IN CURWD with
 * VB CURWD be
 * JJ WDNEXTWD such as
-* IN WDPREVWD as such
+* IN WDPREVWD such as

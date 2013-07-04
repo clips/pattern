@@ -156,7 +156,7 @@ class TestInflection(unittest.TestCase):
         print "pattern.de.inflect.lexeme()"
 
     def test_tenses(self):
-        # Assert tense of "is".
+        # Assert tense recognition.
         self.assertTrue((de.PRESENT, 3, de.SG) in de.tenses("ist"))
         self.assertTrue("2sg" in de.tenses("bist"))
         print "pattern.de.tenses()"

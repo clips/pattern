@@ -54,8 +54,9 @@ def normalize(vowel):
 # Spanish inflection of depends on gender and number.
 
 # Inflection gender.
-MASCULINE, FEMININE, NEUTER, PLURAL = MALE, FEMALE, NEUTRAL, PLURAL = \
-    "m", "f", "n", "p"
+MASCULINE, FEMININE, NEUTER, PLURAL = \
+    MALE, FEMALE, NEUTRAL, PLURAL = \
+        M, F, N, PL = "m", "f", "n", "p"
 
 def definite_article(word, gender=MALE):
     """ Returns the definite article (el/la/los/las) for a given word.
@@ -86,7 +87,7 @@ _article = article
 def referenced(word, article=INDEFINITE, gender=MALE):
     """ Returns a string with the article + the word.
     """
-    return "%s %s" % (_article(word, article), word)
+    return "%s %s" % (_article(word, article, gender), word)
 
 #### PLURALIZE #####################################################################################
 
@@ -198,50 +199,50 @@ def singularize(word, pos=NOUN, custom={}):
 #### VERB CONJUGATION ##############################################################################
 
 verb_irregular_inflections = [
-    (u"yéramos", "ir"),    (u"cisteis", "cer"),   (u"tuviera", "tener"), (u"ndieron", "nder"),
-    (u"ndiendo", "nder"),  (u"tándose", "tarse"), (u"ndieran", "nder"),  (u"ndieras", "nder"),
-    (u"izaréis", "izar"),  (u"disteis", "der"),   (u"irtiera", "ertir"), (u"pusiera", "poner"),
-    (u"endiste", "ender"), (u"laremos", "lar"),   (u"ndíamos", "nder"),  (u"icaréis", "icar"),
-    (u"dábamos", "dar"),   (u"intiera", "entir"), (u"iquemos", "icar"),  (u"jéramos", "cir"),
-    (u"dierais", "der"),   (u"endiera", "ender"), (u"iéndose", "erse"),  (u"jisteis", "cir"),
-    (u"cierais", "cer"),   (u"ecíamos", "ecer"),  (u"áramos", "ar"),     (u"ríamos", "r"),
-    (u"éramos", "r"),      (u"iríais", "ir"),     (u"temos", "tar"),     (u"steis", "r"),
-    (u"ciera", "cer"),     (u"erais", "r"),       (u"timos", "tir"),     (u"uemos", "ar"),
-    (u"tiera", "tir"),     (u"bimos", "bir"),     (u"ciéis", "ciar"),    (u"gimos", "gir"),
-    (u"jiste", "cir"),     (u"mimos", "mir"),     (u"guéis", "gar"),     (u"stéis", "star"),
-    (u"jimos", "cir"),     (u"inéis", "inar"),    (u"jemos", "jar"),     (u"tenga", "tener"),
-    (u"quéis", "car"),     (u"bíais", "bir"),     (u"jeron", "cir"),     (u"uíais", "uir"),
-    (u"ntéis", "ntar"),    (u"jeras", "cir"),     (u"jeran", "cir"),     (u"ducía", "ducir"),
-    (u"yendo", "ir"),      (u"eemos", "ear"),     (u"ierta", "ertir"),   (u"ierte", "ertir"),
-    (u"nemos", "nar"),     (u"ngáis", "ner"),     (u"liera", "ler"),     (u"endió", "ender"),
-    (u"uyáis", "uir"),     (u"memos", "mar"),     (u"ciste", "cer"),     (u"ujera", "ucir"),
-    (u"uimos", "uir"),     (u"ienda", "ender"),   (u"lléis", "llar"),    (u"iemos", "iar"),
-    (u"iende", "ender"),   (u"rimos", "rir"),     (u"semos", "sar"),     (u"itéis", "itar"),
-    (u"gíais", "gir"),     (u"ndáis", "nder"),    (u"tíais", "tir"),     (u"demos", "dar"),
-    (u"lemos", "lar"),     (u"ponga", "poner"),   (u"yamos", "ir"),      (u"icéis", "izar"),
-    (u"bais", "r"),        (u"rías", "r"),        (u"rían", "r"),        (u"iría", "ir"),
-    (u"eran", "r"),        (u"eras", "r"),        (u"irán", "ir"),       (u"irás", "ir"),
-    (u"ongo", "oner"),     (u"aiga", "aer"),      (u"ímos", "ir"),       (u"ibía", "ibir"),
-    (u"diga", "decir"),    (u"edía", "edir"),     (u"orte", "ortar"),    (u"guió", "guir"),
-    (u"iega", "egar"),     (u"oren", "orar"),     (u"ores", "orar"),     (u"léis", "lar"),
-    (u"irme", "irmar"),    (u"siga", "seguir"),   (u"séis", "sar"),      (u"stré", "strar"),
-    (u"cien", "ciar"),     (u"cies", "ciar"),     (u"dujo", "ducir"),    (u"eses", "esar"),
-    (u"esen", "esar"),     (u"coja", "coger"),    (u"lice", "lizar"),    (u"tías", "tir"),
-    (u"tían", "tir"),      (u"pare", "parar"),    (u"gres", "grar"),     (u"gren", "grar"),
-    (u"tuvo", "tener"),    (u"uían", "uir"),      (u"uías", "uir"),      (u"quen", "car"),
-    (u"ques", "car"),      (u"téis", "tar"),      (u"iero", "erir"),     (u"iere", "erir"),
-    (u"uche", "uchar"),    (u"tuve", "tener"),    (u"inen", "inar"),     (u"pire", "pirar"),
-    (u"reía", "reir"),     (u"uste", "ustar"),    (u"ibió", "ibir"),     (u"duce", "ducir"),
-    (u"icen", "izar"),     (u"ices", "izar"),     (u"ines", "inar"),     (u"ires", "irar"),
-    (u"iren", "irar"),     (u"duje", "ducir"),    (u"ille", "illar"),    (u"urre", "urrir"),
-    (u"tido", "tir"),      (u"ndió", "nder"),     (u"uido", "uir"),      (u"uces", "ucir"),
-    (u"ucen", "ucir"),     (u"iéis", "iar"),      (u"eció", "ecer"),     (u"jéis", "jar"),
-    (u"erve", "ervar"),    (u"uyas", "uir"),      (u"uyan", "uir"),      (u"tía", "tir"),
-    (u"uía", "uir"),       (u"aos", "arse"),      (u"gue", "gar"),       (u"qué", "car"),
-    (u"que", "car"),       (u"rse", "rse"),       (u"ste", "r"),         (u"era", "r"),
-    (u"tió", "tir"),       (u"ine", "inar"),      (u"ré", "r"),          (u"ya", "ir"),
-    (u"ye", "ir"),         (u"tí", "tir"),        (u"cé", "zar"),        (u"ie", "iar"),
-    (u"id", "ir"),         (u"ué", "ar"),
+    (u"yéramos", "ir"   ), ( "cisteis", "cer"   ), ( "tuviera", "tener"), ( "ndieron", "nder" ),
+    ( "ndiendo", "nder" ), (u"tándose", "tarse" ), ( "ndieran", "nder" ), ( "ndieras", "nder" ),
+    (u"izaréis", "izar" ), ( "disteis", "der"   ), ( "irtiera", "ertir"), ( "pusiera", "poner"),
+    ( "endiste", "ender"), ( "laremos", "lar"   ), (u"ndíamos", "nder" ), (u"icaréis", "icar" ),
+    (u"dábamos", "dar"  ), ( "intiera", "entir" ), ( "iquemos", "icar" ), (u"jéramos", "cir"  ),
+    ( "dierais", "der"  ), ( "endiera", "ender" ), (u"iéndose", "erse" ), ( "jisteis", "cir"  ),
+    ( "cierais", "cer"  ), (u"ecíamos", "ecer"  ), ( u"áramos", "ar"   ), ( u"ríamos", "r"    ),
+    ( u"éramos", "r"    ), ( u"iríais", "ir"    ), (   "temos", "tar"  ), (   "steis", "r"    ),
+    (   "ciera", "cer"  ), (   "erais", "r"     ), (   "timos", "tir"  ), (   "uemos", "ar"   ),
+    (   "tiera", "tir"  ), (   "bimos", "bir"   ), (  u"ciéis", "ciar" ), (   "gimos", "gir"  ),
+    (   "jiste", "cir"  ), (   "mimos", "mir"   ), (  u"guéis", "gar"  ), (  u"stéis", "star" ),
+    (   "jimos", "cir"  ), (  u"inéis", "inar"  ), (   "jemos", "jar"  ), (   "tenga", "tener"),
+    (  u"quéis", "car"  ), (  u"bíais", "bir"   ), (   "jeron", "cir"  ), (  u"uíais", "uir"  ),
+    (  u"ntéis", "ntar" ), (   "jeras", "cir"   ), (   "jeran", "cir"  ), (  u"ducía", "ducir"),
+    (   "yendo", "ir"   ), (   "eemos", "ear"   ), (   "ierta", "ertir"), (   "ierte", "ertir"),
+    (   "nemos", "nar"  ), (  u"ngáis", "ner"   ), (   "liera", "ler"  ), (  u"endió", "ender"),
+    (  u"uyáis", "uir"  ), (   "memos", "mar"   ), (   "ciste", "cer"  ), (   "ujera", "ucir" ),
+    (   "uimos", "uir"  ), (   "ienda", "ender" ), (  u"lléis", "llar" ), (   "iemos", "iar"  ),
+    (   "iende", "ender"), (   "rimos", "rir"   ), (   "semos", "sar"  ), (  u"itéis", "itar" ),
+    (  u"gíais", "gir"  ), (  u"ndáis", "nder"  ), (  u"tíais", "tir"  ), (   "demos", "dar"  ),
+    (   "lemos", "lar"  ), (   "ponga", "poner" ), (   "yamos", "ir"   ), (  u"icéis", "izar" ),
+    (    "bais", "r"    ), (   u"rías", "r"     ), (   u"rían", "r"    ), (   u"iría", "ir"   ),
+    (    "eran", "r"    ), (    "eras", "r"     ), (   u"irán", "ir"   ), (   u"irás", "ir"   ),
+    (    "ongo", "oner" ), (    "aiga", "aer"   ), (   u"ímos", "ir"   ), (   u"ibía", "ibir" ),
+    (    "diga", "decir"), (   u"edía", "edir"  ), (    "orte", "ortar"), (   u"guió", "guir" ),
+    (    "iega", "egar" ), (    "oren", "orar"  ), (    "ores", "orar" ), (   u"léis", "lar"  ),
+    (    "irme", "irmar"), (    "siga", "seguir"), (   u"séis", "sar"  ), (   u"stré", "strar"),
+    (    "cien", "ciar" ), (    "cies", "ciar"  ), (    "dujo", "ducir"), (    "eses", "esar" ),
+    (    "esen", "esar" ), (    "coja", "coger" ), (    "lice", "lizar"), (   u"tías", "tir"  ),
+    (   u"tían", "tir"  ), (    "pare", "parar" ), (    "gres", "grar" ), (    "gren", "grar" ),
+    (    "tuvo", "tener"), (   u"uían", "uir"   ), (   u"uías", "uir"  ), (    "quen", "car"  ),
+    (    "ques", "car"  ), (   u"téis", "tar"   ), (    "iero", "erir" ), (    "iere", "erir" ),
+    (    "uche", "uchar"), (    "tuve", "tener" ), (    "inen", "inar" ), (    "pire", "pirar"),
+    (   u"reía", "reir" ), (    "uste", "ustar" ), (   u"ibió", "ibir" ), (    "duce", "ducir"),
+    (    "icen", "izar" ), (    "ices", "izar"  ), (    "ines", "inar" ), (    "ires", "irar" ),
+    (    "iren", "irar" ), (    "duje", "ducir" ), (    "ille", "illar"), (    "urre", "urrir"),
+    (    "tido", "tir"  ), (   u"ndió", "nder"  ), (    "uido", "uir"  ), (    "uces", "ucir" ),
+    (    "ucen", "ucir" ), (   u"iéis", "iar"   ), (   u"eció", "ecer" ), (   u"jéis", "jar"  ),
+    (    "erve", "ervar"), (    "uyas", "uir"   ), (    "uyan", "uir"  ), (    u"tía", "tir"  ),
+    (    u"uía", "uir"  ), (     "aos", "arse"  ), (     "gue", "gar"  ), (    u"qué", "car"  ),
+    (     "que", "car"  ), (     "rse", "rse"   ), (     "ste", "r"    ), (     "era", "r"    ),
+    (    u"tió", "tir"  ), (     "ine", "inar"  ), (     u"ré", "r"    ), (      "ya", "ir"   ),
+    (      "ye", "ir"   ), (     u"tí", "tir"   ), (     u"cé", "zar"  ), (      "ie", "iar"  ),
+    (      "id", "ir"   ), (     u"ué", "ar"    ),
 ]
 
 class Verbs(_Verbs):
@@ -372,9 +373,6 @@ conjugate, lemma, lexeme, tenses = \
     verbs.conjugate, verbs.lemma, verbs.lexeme, verbs.tenses
 
 #### ATTRIBUTIVE & PREDICATIVE #####################################################################
-
-MASCULINE, FEMININE, NEUTER, PLURAL = MALE, FEMALE, NEUTRAL, PLURAL = \
-    "masculine", "feminine", "neuter", "plural"
 
 def attributive(adjective, gender=MALE):
     w = adjective.lower()

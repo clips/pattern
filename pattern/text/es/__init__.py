@@ -41,7 +41,7 @@ from pattern.text import (
 # Import inflection functions.
 from pattern.text.es.inflect import (
     article, referenced, DEFINITE, INDEFINITE,
-    MASCULINE, MALE, FEMININE, FEMALE, NEUTER, NEUTRAL, PLURAL,
+    MASCULINE, MALE, FEMININE, FEMALE, NEUTER, NEUTRAL, PLURAL, M, F, N, PL,
     pluralize, singularize, NOUN, VERB, ADJECTIVE,
     verbs, conjugate, lemma, lexeme, tenses,
     predicative, attributive
@@ -178,6 +178,7 @@ lexicon = Lexicon(
      context = os.path.join(MODULE, "es-context.txt"),
     language = "es"
 )
+
 parser = Parser(
      lexicon = lexicon,
      default = ("NCS", "NP", "Z"),

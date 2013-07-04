@@ -12,6 +12,7 @@ import sys
 import re
 import string
 import types
+import codecs
 
 from xml.etree import cElementTree
 from itertools import chain
@@ -205,9 +206,11 @@ def _read(path, encoding="utf-8", comment=";;;"):
             f = path.read().splitlines()
         else:
             f = path
-        for line in f:
-            line = decode_utf8(line.strip())
-            if comment and line.startswith(comment):
+        for i, line in enumerate(f):
+            line = line.lstrip(codecs.BOM_UTF8) if i==0 else line
+            line = line.strip()
+            line = decode_utf8(line)
+            if not line or (comment and line.startswith(comment)):
                 continue
             yield line
     raise StopIteration
@@ -226,7 +229,7 @@ class Lexicon(lazydict):
     
     def load(self):
         # Arnold NNP x
-        dict.update(self, (x.split(" ")[:2] for x in _read(self._path) if x.strip()))
+        dict.update(self, (x.split(" ")[:2] for x in _read(self._path)))
     
     @property
     def path(self):
@@ -330,14 +333,14 @@ class Context(lazylist, Rules):
          "prev1or2or3wd", # One of 3 following words is x. 
              "prevwdtag", # Preceding word is x and tagged y.
              "nextwdtag", # Following word is x and tagged y.
-              "wdprevwd", # Current word is x and preceding word is y.
+              "wdprevwd", # Current word is y and preceding word is x.
               "wdnextwd", # Current word is x and following word is y.
-             "wdprevtag", # Current word is x and preceding word is tagged y. 
+             "wdprevtag", # Current word is y and preceding word is tagged x. 
              "wdnexttag", # Current word is x and following word is tagged y.
              "wdand2aft", # Current word is x and word 2 after is y.
-          "wdand2tagbfr", # Current word is x and word 2 before is tagged y.
+          "wdand2tagbfr", # Current word is y and word 2 before is tagged x.
           "wdand2tagaft", # Current word is x and word 2 after is tagged y.
-               "lbigram", # Preceding word is x and word before is y.
+               "lbigram", # Preceding word is y and word before is x.
                "rbigram", # Following word is x and word after is y.
             "prevbigram", # Preceding word is tagged x and word before is tagged y.
             "nextbigram", # Following word is tagged x and word after is tagged y.
@@ -383,15 +386,15 @@ class Context(lazylist, Rules):
                 or (cmd == "next1or2wd"     and x in (t[i+1][0], t[i+2][0])) \
                 or (cmd == "prevwdtag"      and x ==  t[i-1][0] and y == t[i-1][1]) \
                 or (cmd == "nextwdtag"      and x ==  t[i+1][0] and y == t[i+1][1]) \
-                or (cmd == "wdprevwd"       and x ==  t[i+0][0] and y == t[i-1][0]) \
+                or (cmd == "wdprevwd"       and x ==  t[i-1][0] and y == t[i+0][0]) \
                 or (cmd == "wdnextwd"       and x ==  t[i+0][0] and y == t[i+1][0]) \
-                or (cmd == "wdprevtag"      and x ==  t[i+0][0] and y == t[i-1][1]) \
+                or (cmd == "wdprevtag"      and x ==  t[i-1][1] and y == t[i+0][0]) \
                 or (cmd == "wdnexttag"      and x ==  t[i+0][0] and y == t[i+1][1]) \
                 or (cmd == "wdand2aft"      and x ==  t[i+0][0] and y == t[i+2][0]) \
-                or (cmd == "wdand2tagbfr"   and x ==  t[i+0][0] and y == t[i-2][1]) \
+                or (cmd == "wdand2tagbfr"   and x ==  t[i-2][1] and y == t[i+0][0]) \
                 or (cmd == "wdand2tagaft"   and x ==  t[i+0][0] and y == t[i+2][1]) \
-                or (cmd == "lbigram"        and x ==  t[i-1][0] and y == t[i][0]) \
-                or (cmd == "rbigram"        and x ==  t[i+0][0] and y == t[i+1][0]) \
+                or (cmd == "lbigram"        and x ==  t[i-2][0] and y == t[i-1][0]) \
+                or (cmd == "rbigram"        and x ==  t[i+1][0] and y == t[i+2][0]) \
                 or (cmd == "prevbigram"     and x ==  t[i-2][1] and y == t[i-1][1]) \
                 or (cmd == "nextbigram"     and x ==  t[i+1][1] and y == t[i+2][1]):
                     tokens[i-len(o)] = [tokens[i-len(o)][0], r[1]]
@@ -676,8 +679,8 @@ RE_ABBR2 = re.compile("^([A-Za-z]\.)+$")    # alternating letters, "U.S."
 RE_ABBR3 = re.compile("^[A-Z][" + "|".join( # capital followed by consonants, "Mr."
         "bcdfghjklmnpqrstvwxz") + "]+.$")
 
-RE_SMILEY = (r"[:|8]", r"-?", r"[\)|\(|D|S|o|p|s]") # eyes|nose|mouth :-)
-RE_SMILEY = re.compile(r"(%s) ?(%s) ?(%s)" % RE_SMILEY)
+RE_SMILEY = (r"[:|8]", r"-?", r"[\)|\(|D|S|O|o|p|s]", r"$|\s") # eyes|nose|mouth :-)
+RE_SMILEY = re.compile(r"(%s) ?(%s) ?(%s)(%s)" % RE_SMILEY)
 
 # Handle common contractions.
 replacements = {
@@ -756,7 +759,7 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
         j += 1
     sentences[-1].extend(tokens[i:j])
     sentences = [" ".join(s) for s in sentences if len(s) > 0]
-    sentences = [RE_SMILEY.sub("\\1\\2\\3", s) for s in sentences]
+    sentences = [RE_SMILEY.sub("\\1\\2\\3\\4", s) for s in sentences]
     return sentences
 
 #--- PART-OF-SPEECH TAGGER -------------------------------------------------------------------------
@@ -800,8 +803,8 @@ def find_tags(tokens, lexicon={}, default=("NN", "NNP", "CD"), language="en", ma
         f = _suffix_rules
     else:
         f = lambda token, **kwargs: token
-    for token in tokens:
-        tagged.append([token, lexicon.get(token, lexicon.get(token.lower(), None))])
+    for i, token in enumerate(tokens):
+        tagged.append([token, lexicon.get(token, i==0 and lexicon.get(token.lower()) or None)])
     for i, (token, tag) in enumerate(tagged):
         if tag is None:
             if len(token) > 0 \
@@ -1056,7 +1059,6 @@ SINGULAR, PLURAL = \
 #  imperative mood = a command: "meow!".
 # conditional mood = a hypothesis: "a cat *will* meow *if* it is hungry".
 # subjunctive mood = a wish, possibility or necessity: "I *wish* the cat *would* stop meowing".
-# Note: In Spanish, the conditional is regarded as an indicative tense.
 INDICATIVE, IMPERATIVE, CONDITIONAL, SUBJUNCTIVE = \
     IND, IMP, COND, SJV = \
         "indicative", "imperative", "conditional", "subjunctive"
@@ -1087,83 +1089,90 @@ _ = None # prettify the table =>
 # The index is used to describe the format of the verb lexicon file.
 # The aliases can be passed to Verbs.conjugate() and Tenses.__contains__().
 TENSES = {
-  None: (None, _, _,  _,   _,    False, (None,)),    #       ENGLISH   SPANISH   GERMAN    DUTCH     FRENCH    
-     0: (INF,  _, _,  _,   _,    False, ("inf",  )), #       to be     ser       sein      zijn      être      
-     1: (PRES, 1, SG, IND, IPFV, False, ("1sg",  )), #     I am        soy       bin       ben       suis      
-     2: (PRES, 2, SG, IND, IPFV, False, ("2sg",  )), #   you are       eres      bist      bent      es        
-     3: (PRES, 3, SG, IND, IPFV, False, ("3sg",  )), # (s)he is        es        ist       is        est       
-     4: (PRES, 1, PL, IND, IPFV, False, ("1pl",  )), #    we are       somos     sind      zijn      sommes    
-     5: (PRES, 2, PL, IND, IPFV, False, ("2pl",  )), #   you are       sois      seid      zijn      êtes      
-     6: (PRES, 3, PL, IND, IPFV, False, ("3pl",  )), #  they are       son       sind      zijn      sont      
-     7: (PRES, _, PL, IND, IPFV, False, ( "pl",  )), #       are                                               
-     8: (PRES, _, _,  IND, PROG, False, ("part", )), #       being     siendo              zijnd     étant     
-     9: (PRES, 1, SG, IND, IPFV, True,  ("1sg-", )), #     I am not                                            
-    10: (PRES, 2, SG, IND, IPFV, True,  ("2sg-", )), #   you aren't                                            
-    11: (PRES, 3, SG, IND, IPFV, True,  ("3sg-", )), # (s)he isn't                                             
-    12: (PRES, 1, PL, IND, IPFV, True,  ("1pl-", )), #    we aren't                                            
-    13: (PRES, 2, PL, IND, IPFV, True,  ("2pl-", )), #   you aren't                                            
-    14: (PRES, 3, PL, IND, IPFV, True,  ("3pl-", )), #  they aren't                                            
-    15: (PRES, _, PL, IND, IPFV, True,  ( "pl-", )), #       aren't                                            
-    16: (PRES, _, _,  IND, IPFV, True,  (   "-", )), #       isn't                                             
-    17: (PST,  1, SG, IND, IPFV, False, ("1sgp", )), #     I was       era       war       was       étais     
-    18: (PST,  2, SG, IND, IPFV, False, ("2sgp", )), #   you were      eras      warst     was       étais     
-    19: (PST,  3, SG, IND, IPFV, False, ("3sgp", )), # (s)he was       era       war       was       était     
-    20: (PST,  1, PL, IND, IPFV, False, ("1ppl", )), #    we were      éramos    waren     waren     étions    
-    21: (PST,  2, PL, IND, IPFV, False, ("2ppl", )), #   you were      erais     wart      waren     étiez     
-    22: (PST,  3, PL, IND, IPFV, False, ("3ppl", )), #  they were      eran      waren     waren     étaient   
-    23: (PST,  _, PL, IND, IPFV, False, ( "ppl", )), #       were                                              
-    24: (PST,  _, _,  IND, PROG, False, ("ppart",)), #       been      sido      gewesen   geweest   été       
-    25: (PST,  _, _,  IND, IPFV, False, (   "p", )), #       was                                               
-    26: (PST,  1, SG, IND, IPFV, True,  ("1sgp-",)), #     I wasn't                                            
-    27: (PST,  2, SG, IND, IPFV, True,  ("2sgp-",)), #   you weren't                                           
-    28: (PST,  3, SG, IND, IPFV, True,  ("3sgp-",)), # (s)he wasn't                                            
-    29: (PST,  1, PL, IND, IPFV, True,  ("1ppl-",)), #    we weren't                                           
-    30: (PST,  2, PL, IND, IPFV, True,  ("2ppl-",)), #   you weren't                                           
-    31: (PST,  3, PL, IND, IPFV, True,  ("3ppl-",)), #  they weren't                                           
-    32: (PST,  _, PL, IND, IPFV, True,  ( "ppl-",)), #       weren't                                           
-    33: (PST,  _, _,  IND, IPFV, True,  ( "p-",  )), #       wasn't                                            
-    34: (PST,  1, SG, IND,  PFV, False, ("1sg+", )), #     I           fui                           fus       
-    35: (PST,  2, SG, IND,  PFV, False, ("2sg+", )), #   you           fuiste                        fus       
-    36: (PST,  3, SG, IND,  PFV, False, ("3sg+", )), # (s)he           fue                           fut       
-    37: (PST,  1, PL, IND,  PFV, False, ("1pl+", )), #    we           fuimos                        fûmes     
-    38: (PST,  2, PL, IND,  PFV, False, ("2pl+", )), #   you           fuisteis                      fûtes     
-    39: (PST,  3, PL, IND,  PFV, False, ("3pl+", )), #  they           fueron                        furent    
-    40: (FUT,  1, SG, IND, IPFV, False, ("1sgf", )), #     I           seré                          serai     
-    41: (FUT,  2, SG, IND, IPFV, False, ("2sgf", )), #   you           serás                         seras     
-    42: (FUT,  3, SG, IND, IPFV, False, ("3sgf", )), # (s)he           será                          sera      
-    43: (FUT,  1, PL, IND, IPFV, False, ("1plf", )), #    we           seremos                       serons    
-    44: (FUT,  2, PL, IND, IPFV, False, ("2plf", )), #   you           seréis                        serez     
-    45: (FUT,  3, PL, IND, IPFV, False, ("3plf", )), #  they           serán                         seron     
-    46: (COND, 1, SG, IND, IPFV, False, ("1sgc", )), #     I           sería                         serais    
-    47: (COND, 2, SG, IND, IPFV, False, ("2sgc", )), #   you           serías                        serais    
-    48: (COND, 3, SG, IND, IPFV, False, ("3sgc", )), # (s)he           sería                         serait    
-    49: (COND, 1, PL, IND, IPFV, False, ("1plc", )), #    we           seríamos                      serions   
-    50: (COND, 2, PL, IND, IPFV, False, ("2plc", )), #   you           seríais                       seriez    
-    51: (COND, 3, PL, IND, IPFV, False, ("3plc", )), #  they           serían                        seraient  
-    52: (PRES, 2, SG, IMP, IPFV, False, ("2sg!", )), #   you           sé        sei                 sois      
-    53: (PRES, 1, PL, IMP, IPFV, False, ("1pl!", )), #    we                     seien               soyons    
-    54: (PRES, 2, PL, IMP, IPFV, False, ("2pl!", )), #   you           sed       seid                soyez     
-    55: (PRES, 1, SG, SJV, IPFV, False, ("1sg?", )), #     I           sea       sei                 sois      
-    56: (PRES, 2, SG, SJV, IPFV, False, ("2sg?", )), #   you           seas      seist               sois      
-    57: (PRES, 3, SG, SJV, IPFV, False, ("3sg?", )), # (s)he           sea       sei                 soit      
-    58: (PRES, 1, PL, SJV, IPFV, False, ("1pl?", )), #    we           seamos    seien               soyons    
-    59: (PRES, 2, PL, SJV, IPFV, False, ("2pl?", )), #   you           seáis     seiet               soyez     
-    60: (PRES, 3, PL, SJV, IPFV, False, ("3pl?", )), #  they           sean      seien               soient    
-    61: (PRES, 1, SG, SJV,  PFV, False, ("1sg?+",)), #     I                                                   
-    62: (PRES, 2, SG, SJV,  PFV, False, ("2sg?+",)), #   you                                                   
-    63: (PRES, 3, SG, SJV,  PFV, False, ("3sg?+",)), # (s)he                                                   
-    64: (PRES, 1, PL, SJV,  PFV, False, ("1pl?+",)), #    we                                                   
-    65: (PRES, 2, PL, SJV,  PFV, False, ("2pl?+",)), #   you                                                   
-    66: (PRES, 3, PL, SJV,  PFV, False, ("3pl?+",)), #  they                                                   
-    67: (PST,  1, SG, SJV, IPFV, False, ("1sgp?",)), #     I           fuera     wäre                fusse     
-    68: (PST,  2, SG, SJV, IPFV, False, ("2sgp?",)), #   you           fueras    wärest              fusses    
-    69: (PST,  3, SG, SJV, IPFV, False, ("3sgp?",)), # (s)he           fuera     wäre                fût       
-    70: (PST,  1, PL, SJV, IPFV, False, ("1ppl?",)), #    we           fuéramos  wären               fussions  
-    71: (PST,  2, PL, SJV, IPFV, False, ("2ppl?",)), #   you           fuerais   wäret               fussiez   
-    72: (PST,  3, PL, SJV, IPFV, False, ("3ppl?",)), #  they           fueran    wären               fussent   
+   None: (None, _,  _,    _,    _, False, (None   ,)), #       ENGLISH   SPANISH   GERMAN    DUTCH     FRENCH    
+     0 : ( INF, _,  _,    _,    _, False, ("inf"  ,)), #       to be     ser       sein      zijn      être      
+     1 : (PRES, 1, SG,  IND, IPFV, False, ("1sg"  ,)), #     I am        soy       bin       ben       suis      
+     2 : (PRES, 2, SG,  IND, IPFV, False, ("2sg"  ,)), #   you are       eres      bist      bent      es        
+     3 : (PRES, 3, SG,  IND, IPFV, False, ("3sg"  ,)), # (s)he is        es        ist       is        est       
+     4 : (PRES, 1, PL,  IND, IPFV, False, ("1pl"  ,)), #    we are       somos     sind      zijn      sommes    
+     5 : (PRES, 2, PL,  IND, IPFV, False, ("2pl"  ,)), #   you are       sois      seid      zijn      êtes      
+     6 : (PRES, 3, PL,  IND, IPFV, False, ("3pl"  ,)), #  they are       son       sind      zijn      sont      
+     7 : (PRES, _, PL,  IND, IPFV, False, ( "pl"  ,)), #       are                                               
+     8 : (PRES, _,  _,  IND, PROG, False, ("part" ,)), #       being     siendo              zijnd     étant     
+     9 : (PRES, 1, SG,  IND, IPFV, True,  ("1sg-" ,)), #     I am not                                            
+    10 : (PRES, 2, SG,  IND, IPFV, True,  ("2sg-" ,)), #   you aren't                                            
+    11 : (PRES, 3, SG,  IND, IPFV, True,  ("3sg-" ,)), # (s)he isn't                                             
+    12 : (PRES, 1, PL,  IND, IPFV, True,  ("1pl-" ,)), #    we aren't                                            
+    13 : (PRES, 2, PL,  IND, IPFV, True,  ("2pl-" ,)), #   you aren't                                            
+    14 : (PRES, 3, PL,  IND, IPFV, True,  ("3pl-" ,)), #  they aren't                                            
+    15 : (PRES, _, PL,  IND, IPFV, True,  ( "pl-" ,)), #       aren't                                            
+    16 : (PRES, _,  _,  IND, IPFV, True,  (   "-" ,)), #       isn't                                             
+    17 : ( PST, 1, SG,  IND, IPFV, False, ("1sgp" ,)), #     I was       era       war       was       étais     
+    18 : ( PST, 2, SG,  IND, IPFV, False, ("2sgp" ,)), #   you were      eras      warst     was       étais     
+    19 : ( PST, 3, SG,  IND, IPFV, False, ("3sgp" ,)), # (s)he was       era       war       was       était     
+    20 : ( PST, 1, PL,  IND, IPFV, False, ("1ppl" ,)), #    we were      éramos    waren     waren     étions    
+    21 : ( PST, 2, PL,  IND, IPFV, False, ("2ppl" ,)), #   you were      erais     wart      waren     étiez     
+    22 : ( PST, 3, PL,  IND, IPFV, False, ("3ppl" ,)), #  they were      eran      waren     waren     étaient   
+    23 : ( PST, _, PL,  IND, IPFV, False, ( "ppl" ,)), #       were                                              
+    24 : ( PST, _,  _,  IND, PROG, False, ("ppart",)), #       been      sido      gewesen   geweest   été       
+    25 : ( PST, _,  _,  IND, IPFV, False, (   "p" ,)), #       was                                               
+    26 : ( PST, 1, SG,  IND, IPFV, True,  ("1sgp-",)), #     I wasn't                                            
+    27 : ( PST, 2, SG,  IND, IPFV, True,  ("2sgp-",)), #   you weren't                                           
+    28 : ( PST, 3, SG,  IND, IPFV, True,  ("3sgp-",)), # (s)he wasn't                                            
+    29 : ( PST, 1, PL,  IND, IPFV, True,  ("1ppl-",)), #    we weren't                                           
+    30 : ( PST, 2, PL,  IND, IPFV, True,  ("2ppl-",)), #   you weren't                                           
+    31 : ( PST, 3, PL,  IND, IPFV, True,  ("3ppl-",)), #  they weren't                                           
+    32 : ( PST, _, PL,  IND, IPFV, True,  ( "ppl-",)), #       weren't                                           
+    33 : ( PST, _,  _,  IND, IPFV, True,  ( "p-"  ,)), #       wasn't                                            
+    34 : ( PST, 1, SG,  IND,  PFV, False, ("1sg+" ,)), #     I           fui                           fus       
+    35 : ( PST, 2, SG,  IND,  PFV, False, ("2sg+" ,)), #   you           fuiste                        fus       
+    36 : ( PST, 3, SG,  IND,  PFV, False, ("3sg+" ,)), # (s)he           fue                           fut       
+    37 : ( PST, 1, PL,  IND,  PFV, False, ("1pl+" ,)), #    we           fuimos                        fûmes     
+    38 : ( PST, 2, PL,  IND,  PFV, False, ("2pl+" ,)), #   you           fuisteis                      fûtes     
+    39 : ( PST, 3, PL,  IND,  PFV, False, ("3pl+" ,)), #  they           fueron                        furent    
+    40 : ( FUT, 1, SG,  IND, IPFV, False, ("1sgf" ,)), #     I           seré                          serai     
+    41 : ( FUT, 2, SG,  IND, IPFV, False, ("2sgf" ,)), #   you           serás                         seras     
+    42 : ( FUT, 3, SG,  IND, IPFV, False, ("3sgf" ,)), # (s)he           será                          sera      
+    43 : ( FUT, 1, PL,  IND, IPFV, False, ("1plf" ,)), #    we           seremos                       serons    
+    44 : ( FUT, 2, PL,  IND, IPFV, False, ("2plf" ,)), #   you           seréis                        serez     
+    45 : ( FUT, 3, PL,  IND, IPFV, False, ("3plf" ,)), #  they           serán                         seron     
+    46 : (PRES, 1, SG, COND, IPFV, False, ("1sg->",)), #     I           sería                         serais    
+    47 : (PRES, 2, SG, COND, IPFV, False, ("2sg->",)), #   you           serías                        serais    
+    48 : (PRES, 3, SG, COND, IPFV, False, ("3sg->",)), # (s)he           sería                         serait    
+    49 : (PRES, 1, PL, COND, IPFV, False, ("1pl->",)), #    we           seríamos                      serions   
+    50 : (PRES, 2, PL, COND, IPFV, False, ("2pl->",)), #   you           seríais                       seriez    
+    51 : (PRES, 3, PL, COND, IPFV, False, ("3pl->",)), #  they           serían                        seraient  
+    52 : (PRES, 2, SG,  IMP, IPFV, False, ("2sg!" ,)), #   you           sé        sei                 sois      
+    521: (PRES, 3, SG,  IMP, IPFV, False, ("3sg!" ,)), # (s)he                                                   
+    53 : (PRES, 1, PL,  IMP, IPFV, False, ("1pl!" ,)), #    we                     seien               soyons    
+    54 : (PRES, 2, PL,  IMP, IPFV, False, ("2pl!" ,)), #   you           sed       seid                soyez     
+    541: (PRES, 3, PL,  IMP, IPFV, False, ("3pl!" ,)), #   you                                               
+    55 : (PRES, 1, SG,  SJV, IPFV, False, ("1sg?" ,)), #     I           sea       sei                 sois      
+    56 : (PRES, 2, SG,  SJV, IPFV, False, ("2sg?" ,)), #   you           seas      seist               sois      
+    57 : (PRES, 3, SG,  SJV, IPFV, False, ("3sg?" ,)), # (s)he           sea       sei                 soit      
+    58 : (PRES, 1, PL,  SJV, IPFV, False, ("1pl?" ,)), #    we           seamos    seien               soyons    
+    59 : (PRES, 2, PL,  SJV, IPFV, False, ("2pl?" ,)), #   you           seáis     seiet               soyez     
+    60 : (PRES, 3, PL,  SJV, IPFV, False, ("3pl?" ,)), #  they           sean      seien               soient    
+    61 : (PRES, 1, SG,  SJV,  PFV, False, ("1sg?+",)), #     I                                                   
+    62 : (PRES, 2, SG,  SJV,  PFV, False, ("2sg?+",)), #   you                                                   
+    63 : (PRES, 3, SG,  SJV,  PFV, False, ("3sg?+",)), # (s)he                                                   
+    64 : (PRES, 1, PL,  SJV,  PFV, False, ("1pl?+",)), #    we                                                   
+    65 : (PRES, 2, PL,  SJV,  PFV, False, ("2pl?+",)), #   you                                                   
+    66 : (PRES, 3, PL,  SJV,  PFV, False, ("3pl?+",)), #  they                                                   
+    67 : ( PST, 1, SG,  SJV, IPFV, False, ("1sgp?",)), #     I           fuera     wäre                fusse     
+    68 : ( PST, 2, SG,  SJV, IPFV, False, ("2sgp?",)), #   you           fueras    wärest              fusses    
+    69 : ( PST, 3, SG,  SJV, IPFV, False, ("3sgp?",)), # (s)he           fuera     wäre                fût       
+    70 : ( PST, 1, PL,  SJV, IPFV, False, ("1ppl?",)), #    we           fuéramos  wären               fussions  
+    71 : ( PST, 2, PL,  SJV, IPFV, False, ("2ppl?",)), #   you           fuerais   wäret               fussiez   
+    72 : ( PST, 3, PL,  SJV, IPFV, False, ("3ppl?",)), #  they           fueran    wären               fussent   
 }
 
 # Map tenses and aliases to unique index.
+# Aliases include:
+# - a short number: "s", "sg", "singular" => SINGULAR,
+# - a short string: "1sg" => 1st person singular present,
+# - a unique index:  1    => 1st person singular present,
+# -  Penn treebank: "VBP" => 1st person singular present.
 TENSES_ID = {}
 TENSES_ID[INFINITIVE] = 0
 for i, (tense, person, number, mood, aspect, negated, aliases) in TENSES.items():
@@ -1171,20 +1180,22 @@ for i, (tense, person, number, mood, aspect, negated, aliases) in TENSES.items()
         TENSES_ID[i] = \
         TENSES_ID[a] = \
         TENSES_ID[(tense, person, number, mood, aspect, negated)] = i
-    if number == SINGULAR:
-        TENSES_ID[(tense, person,   "sg", mood, aspect, negated)] = i
-    if number == PLURAL:
-        TENSES_ID[(tense, person,   "pl", mood, aspect, negated)] = i
+    if number == SG:
+        for sg in ("s", "sg", "singular"):
+            TENSES_ID[(tense, person, sg, mood, aspect, negated)] = i
+    if number == PL:
+        for pl in ("p", "pl", "plural"):
+            TENSES_ID[(tense, person, pl, mood, aspect, negated)] = i
 
 # Map Penn Treebank tags to unique index.
 for tag, tense in (
-  ("vb",  0),   # infinitive
-  ("vbp", 1),   # present 1 singular
-  ("vbz", 3),   # present 3 singular
-  ("vbg", 8),   # present participle
-  ("vbn", 24),  # past participle
-  ("vbd", 25)): # past
-    TENSES_ID[tag] = tense
+  ("VB",  0 ),  # infinitive
+  ("VBP", 1 ),  # present 1 singular
+  ("VBZ", 3 ),  # present 3 singular
+  ("VBG", 8 ),  # present participle
+  ("VBN", 24),  # past participle
+  ("VBD", 25)): # past
+    TENSES_ID[tag.lower()] = tense
 
 # tense(tense=INFINITIVE)
 # tense(tense=(PRESENT, 3, SINGULAR))
@@ -1226,6 +1237,10 @@ def tense_id(*args, **kwargs):
         aspect = PROGRESSIVE
     if aspect == PROGRESSIVE:
         person = number = None
+    # Disambiguate CONDITIONAL.
+    # In Spanish, the conditional is regarded as an indicative tense.
+    if tense == CONDITIONAL and mood == INDICATIVE:
+        tense, mood = PRESENT, CONDITIONAL
     # Disambiguate aliases: "pl" => 
     # (PRESENT, None, PLURAL, INDICATIVE, IMPERFECTIVE, False).
     return TENSES_ID.get(tense.lower(), 

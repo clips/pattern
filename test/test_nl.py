@@ -129,7 +129,7 @@ class TestInflection(unittest.TestCase):
         print "pattern.nl.inflect.lexeme()"
 
     def test_tenses(self):
-        # Assert tense of "is".
+        # Assert tense recognition.
         self.assertTrue((nl.PRESENT, 3, "sg") in nl.tenses("is"))
         self.assertTrue("3sg" in nl.tenses("is"))
         print "pattern.nl.tenses()"

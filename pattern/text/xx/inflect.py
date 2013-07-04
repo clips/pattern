@@ -44,6 +44,11 @@ is_vowel = lambda ch: ch in VOWELS
 
 #### ARTICLE #######################################################################################
 
+# Inflection gender.
+MASCULINE, FEMININE, NEUTER, PLURAL = \
+    MALE, FEMALE, NEUTRAL, PLURAL = \
+        M, F, N, PL = "m", "f", "n", "p"
+
 def definite_article(word):
     """ Returns the definite article for a given word.
     """

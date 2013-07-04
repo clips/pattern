@@ -65,29 +65,34 @@ The corpora are meant for personal use, they are not part of the module's BSD li
 - http://www.gutenberg.org/
 - Full text of Alice in Wonderland in PDF format.
 
-13) Celex 2.5 German Wordforms
+13) Celex 2.5 German word forms
 - wordforms-de-celex.csv
 - http://celex.mpi.nl/
 - 250 singular nouns and their plural form.
 - 250 predicative adjectives and their attributive form.
 
-14) Celex 2.5 English Wordforms
+14) Celex 2.5 English word forms
 - wordforms-en-celex.csv
 - http://celex.mpi.nl/
 - 4000 singular nouns and their plural form.
 
-15) Celex 2.5 Dutch Wordforms
+15) Celex 2.5 Dutch word forms
 - wordforms-nl-celex.csv
 - http://celex.mpi.nl/
 - 1000 singular nouns and their plural form.
 - 1000 predicative adjectives and their attributive form.
 
-16) Davies Corpus del Espa–ol lemma sample
+16) Davies Corpus del Espa–ol word forms
 - wordforms-es-davies.csv
 - http://www.wordfrequency.info/files/spanish/spanish_lemmas20k.txt
-- 3000 wordforms with lemma, part-of-speech and frequency.
+- 3000 word forms with lemma, part-of-speech and frequency.
 
-17) Lexique 3 lemma sample
+17) Lexique 3 French word forms
 - wordforms-fr-lexique.csv
 - http://www.lexique.org/
-- 2000 wordforms with lemma and part-of-speech.
+- 2000 word forms with lemma and part-of-speech.
+
+18) Wiktionary Italian word forms
+- wordforms-it-wiktionary.csv
+- https://en.wiktionary.org/wiki/Category:Italian_language
+- 2000 word forms with lemma, part-of-speech and gender.

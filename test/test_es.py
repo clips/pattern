@@ -151,7 +151,7 @@ class TestInflection(unittest.TestCase):
         print "pattern.es.conjugate()"
 
     def test_lexeme(self):
-        # Assert all inflections of "sein".
+        # Assert all inflections of "ser".
         v = es.lexeme("ser")
         self.assertEqual(v, [
             u'ser', u'soy', u'eres', u'es', u'somos', u'sois', u'son', u'siendo', 
@@ -166,9 +166,18 @@ class TestInflection(unittest.TestCase):
         print "pattern.es.inflect.lexeme()"
 
     def test_tenses(self):
-        # Assert tense of "is".
+        # Assert tense recognition.
         self.assertTrue((es.PRESENT, 3, es.SG) in es.tenses("es"))
         self.assertTrue("2sg" in es.tenses("eres"))
+        # The CONDITIONAL is sometimes described as a mood, 
+        # and sometimes as a tense of the indicative mood (e.g., in Spanish):
+        t1 = (es.CONDITIONAL, 1, es.SG)
+        t2 = (es.PRESENT, 1, es.SG, es.CONDITIONAL)
+        self.assertTrue("1sg->" in es.tenses(u"sería"))
+        self.assertTrue(t1 in es.tenses(u"sería"))
+        self.assertTrue(t2 in es.tenses(u"sería"))
+        self.assertTrue(t1 in es.tenses(es.conjugate("ser", mood=es.INDICATIVE, tense=es.CONDITIONAL)))
+        self.assertTrue(t2 in es.tenses(es.conjugate("ser", mood=es.CONDITIONAL)))
         print "pattern.es.tenses()"
 
 #---------------------------------------------------------------------------------------------------
