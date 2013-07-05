@@ -379,7 +379,7 @@ TAXONOMY = taxonomy = Taxonomy()
 
 #--- TAXONOMY CLASSIFIER ---------------------------------------------------------------------------
 
-class Classifier:
+class Classifier(object):
     
     def __init__(self, parents=lambda term: [], children=lambda term: [], value=lambda term: None):
         """ A classifier uses a rule-based approach to enrich the taxonomy, for example:
@@ -437,7 +437,7 @@ TAGS   = dict.fromkeys(["CC", "CD", "DT", "EX", "FW", "IN", "JJ", "JJR", "JJS", 
 ALPHA = re.compile("[a-zA-Z]")
 has_alpha = lambda string: ALPHA.match(string) is not None
 
-class Constraint:
+class Constraint(object):
     
     def __init__(self, words=[], tags=[], chunks=[], roles=[], taxa=[], optional=False, multiple=False, first=False, taxonomy=TAXONOMY, exclude=None):
         """ A range of words, tags and taxonomy terms that matches certain words in a sentence.        
@@ -649,7 +649,7 @@ class Constraint:
 STRICT = "strict"
 GREEDY = "greedy"
 
-class Pattern:
+class Pattern(object):
     
     def __init__(self, sequence=[], *args, **kwargs):
         """ A sequence of constraints that matches certain phrases in a sentence.
@@ -904,7 +904,7 @@ def escape(string):
 
 #--- PATTERN MATCH ---------------------------------------------------------------------------------
 
-class Match:
+class Match(object):
     
     def __init__(self, pattern, words=[], map={}):
         """ Search result returned from Pattern.match(sentence),

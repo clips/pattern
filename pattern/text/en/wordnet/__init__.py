@@ -109,7 +109,7 @@ def synsets(word, pos=NOUN):
         return []
     return []
 
-class Synset:
+class Synset(object):
     
     def __init__(self, synset=None, pos=NOUN):
         """ A set of synonyms that share a common meaning.
@@ -361,7 +361,7 @@ sys.path.insert(0, os.path.join(MODULE, "..", ".."))
 try:
     from pattern.text import Sentiment
 except:
-    class Sentiment:
+    class Sentiment(object):
         PLACEHOLDER = True
 
 sys.path.pop(0)
@@ -428,7 +428,7 @@ else:
 # Backwards compatibility.
 # Older code may be using pattern.en.wordnet.sentiment[w],
 # which yields a (positive, negative, neutral)-tuple.
-class sentiment:
+class sentiment(object):
 
     def load(self, **kwargs):
         sentiwordnet.load(**kwargs)

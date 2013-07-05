@@ -3024,9 +3024,6 @@ class SelectorChain(list):
 #print dom("*[class$='33']")
 #print dom("*[class*='3']")
 
-dom = DOM("<p class='test'></p>")
-print dom("p")[0].id
-
 #### WEB CRAWLER ###################################################################################
 # Tested with a crawl across 1,000 domains so far.
 

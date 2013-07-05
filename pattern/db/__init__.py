@@ -1505,7 +1505,7 @@ def parse_xml(database, xml, table=None, field=lambda s: s.replace(".", "-")):
 
 #### JSON PARSER ###################################################################################
 
-class JSON:
+class JSON(object):
     
     def __init__(self):
         self.float = lambda f: ("%.3f" % f).rstrip("0")

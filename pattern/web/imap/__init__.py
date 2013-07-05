@@ -190,7 +190,7 @@ def _decode(s, message):
                 pass 
     return s
 
-class MailFolder:
+class MailFolder(object):
     
     def __init__(self, parent, name):
         """ A folder (inbox, spam, trash, ...) in a mailbox.

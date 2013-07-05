@@ -510,7 +510,7 @@ def _is_tokenstring(string):
     # regardless of the given token format parameter for Sentence() or Text().
     return isinstance(string, unicode) and hasattr(string, "tags")
 
-class Sentence:
+class Sentence(object):
 
     def __init__(self, string="", token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA], language="en"):
         """ A search object for sentence words, chunks and prepositions.
@@ -904,7 +904,7 @@ class Sentence:
                 p4, p7 = None, None
             s.append(word=p0, lemma=p1, type=p2, chunk=p3, pnp=p4, relation=p5, role=p6, anchor=p7, iob=p8, custom=p9)
         s.parent = self
-        s.start = start
+        s._start = start
         return s
 
     def copy(self):
@@ -965,7 +965,20 @@ class Sentence:
         return nltk_tree(self)
 
 class Slice(Sentence):
-    pass
+    
+    def __init__(self, *args, **kwargs):
+        """ A portion of the sentence returned by Sentence.slice().
+        """
+        self._start = kwargs.pop("start", 0)
+        Sentence.__init__(self, *args, **kwargs)
+    
+    @property
+    def start(self):
+        return self._start
+        
+    @property
+    def stop(self):
+        return self._start + len(self.words)
 
 #---------------------------------------------------------------------------------------------------
 # s = split(parse("black cats and white dogs"))
@@ -1258,14 +1271,14 @@ def parse_xml(sentence, tab="\t", id=""):
 # s = open("parsed.txt", encoding="utf-8")
 # s = Text(s, token=[WORD, POS, CHUNK, PNP, LEMMA]) # (1)
 
-class XML:
+class XML(object):
     def __init__(self, string):
         from xml.etree import cElementTree
         self.root = cElementTree.fromstring(string)
     def __call__(self, tag):
         return [XMLNode(e) for e in self.root.findall(tag)]
 
-class XMLNode:
+class XMLNode(object):
     def __init__(self, element):
         self.element = element
     @property

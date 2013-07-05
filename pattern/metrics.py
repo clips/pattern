@@ -468,7 +468,7 @@ def cooccurrence(iterable, window=(-1,-1), match=lambda x: False, filter=lambda 
         The given normalize() function can be used to remove punctuation, lowercase words, etc.
         The given window, a (before, after)-tuple, specifies the size of the co-occurence window.
     """
-    class Sentinel():
+    class Sentinel(object):
         pass
     # Window of terms before and after the search term.
     # Deque is more efficient than list.pop(0).

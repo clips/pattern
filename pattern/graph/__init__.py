@@ -38,7 +38,7 @@ def ellipse(x, y, width, height, fill=(0,0,0,1), stroke=None, strokewidth=1):
     """
     pass
 
-class Text:
+class Text(object):
     def __init__(self, string, **kwargs):
         self.string = string
         self.__dict__.update(kwargs)
@@ -576,7 +576,7 @@ class Graph(dict):
 # Graph drawing or graph layout, as a branch of graph theory, 
 # applies topology and geometry to derive two-dimensional representations of graphs.
 
-class GraphLayout:
+class GraphLayout(object):
     
     def __init__(self, graph):
         """ Calculates node positions iteratively when GraphLayout.update() is called.
@@ -1128,7 +1128,7 @@ def minify(js):
 DEFAULT, INLINE = "default", "inline"
 HTML, CANVAS, STYLE, SCRIPT, DATA = "html", "canvas", "style", "script", "data"
 
-class HTMLCanvasRenderer:
+class HTMLCanvasRenderer(object):
     
     def __init__(self, graph, **kwargs):
         self.graph    = graph

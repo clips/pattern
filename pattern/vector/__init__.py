@@ -1206,7 +1206,7 @@ Corpus = Model
 # Agrawal R. & Srikant R. (1994), Fast algorithms for mining association rules in large databases.
 # Based on: https://gist.github.com/1423287
 
-class Apriori:
+class Apriori(object):
     
     def __init__(self):
         self._candidates = []
@@ -1265,7 +1265,7 @@ apriori = Apriori()
 # http://en.wikipedia.org/wiki/Latent_semantic_analysis
 # http://blog.josephwilk.net/projects/latent-semantic-analysis-in-python.html
 
-class LSA:
+class LSA(object):
     
     def __init__(self, model, k=NORM):
         """ Latent Semantic Analysis is a statistical machine learning method based on 
@@ -1420,7 +1420,7 @@ def centroid(vectors=[], features=[]):
     c = Vector((f, w) for f, w in c if w != 0)
     return c
 
-class DistanceMap:
+class DistanceMap(object):
     
     def __init__(self, method=COSINE):
         """ A lazy map of cached distances between Vector objects.
@@ -1661,7 +1661,7 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
 # The default baseline (i.e., the default predicted class) is the most frequent class:
 FREQUENCY = "frequency"
 
-class Classifier:
+class Classifier(object):
 
     def __init__(self, train=[], baseline=FREQUENCY, **kwargs):
         """ A base class for Naive Bayes, k-NN and SVM.
@@ -2362,7 +2362,7 @@ class SVM(Classifier):
 
     @classmethod
     def load(cls, path):
-        Classifier.load(cls, path)
+        return Classifier.load(path)
 
     def _on_load(self, path):
         # Called from Classifier.load().
@@ -2429,7 +2429,7 @@ class SVM(Classifier):
 
 #### GENETIC ALGORITHM #############################################################################
 
-class GeneticAlgorithm:
+class GeneticAlgorithm(object):
     
     def __init__(self, candidates=[], **kwargs):
         """ A genetic algorithm is a stochastic search method  based on natural selection.
