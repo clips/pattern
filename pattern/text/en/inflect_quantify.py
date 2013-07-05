@@ -74,7 +74,7 @@ O = {
 for i, k in enumerate(ORDER[2:]): 
     O[k] = 1000000 * 1000 ** i
 
-ZERO, MINUS, RADIX, THOUSANDS, CONJUCTION = \
+ZERO, MINUS, RADIX, THOUSANDS, CONJUNCTION = \
     "zero", "minus", "point", ",", "and"
 
 def zshift(s):
