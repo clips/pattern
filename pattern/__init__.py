@@ -47,6 +47,8 @@ __license__   = "BSD"
 
 import os
 
+# Shortcuts to pattern.en, pattern.es, ... 
+# (instead of pattern.text.en, pattern.text.es, ...)
 try: __path__.append(os.path.join(__path__[0], "text"))
 except:
     pass
