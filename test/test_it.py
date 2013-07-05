@@ -223,6 +223,25 @@ class TestParser(unittest.TestCase):
             u"seduto/VB/B-VP/O " + \
             u"sulla/IN/B-PP/B-PNP stuoia/NN/B-NP/I-PNP ././O/O"
         )
+        
+        # Assert the accuracy of the Italian tagger.
+        i, n = 0, 0
+        for sentence in open(os.path.join(PATH, "corpora", "tagged-it-wacky.txt")).readlines():
+            sentence = sentence.decode("utf-8").strip()
+            s1 = [w.split("/") for w in sentence.split(" ")]
+            s2 = [[w for w, pos in s1]]
+            s2 = it.parse(s2, tokenize=False)
+            s2 = [w.split("/") for w in s2.split(" ")]
+            for j in range(len(s1)):
+                t1 = s1[j][1]
+                t2 = s2[j][1]
+                # WaCKy test set tags plural nouns as "NN", pattern.it as "NNS".
+                # Some punctuation marks are also tagged differently, 
+                # but these are not necessarily errors.
+                if t1 == t2 or (t1 == "NN" and t2 == "NNS") or s1[j][0] in "\":;)-":
+                    i += 1
+                n += 1
+        self.assertTrue(float(i) / n > 0.92)
         print "pattern.it.parser.parse()"
 
     def test_tag(self):

@@ -1,4 +1,4 @@
-#### PATTERN | XX ##################################################################################
+#### PATTERN | IT ##################################################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2013 University of Antwerp, Belgium
 # Copyright (c) 2013 St. Lucas University College of Art & Design, Antwerp.
