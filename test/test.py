@@ -8,6 +8,7 @@ import test_de
 import test_en
 import test_es
 import test_fr
+import test_it
 import test_nl
 import test_text
 import test_search
@@ -29,6 +30,7 @@ def suite():
     suite.addTest(test_en.suite())
     suite.addTest(test_es.suite())
     suite.addTest(test_fr.suite())
+    suite.addTest(test_it.suite())
     suite.addTest(test_nl.suite())
     suite.addTest(test_text.suite())
     suite.addTest(test_search.suite())

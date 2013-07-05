@@ -40,59 +40,64 @@ The corpora are meant for personal use, they are not part of the module's BSD li
 - http://www.lsi.upc.edu/~nlp/wikicorpus/
 - 1000 Spanish sentences with Parole part-of-speech tags.
 
-8) Dutch portion of Twente Nieuws Corpus (Ordelman et al.)
+8) Italian portion of WaCKy Corpus (Baroni et al.)
+- tagged-it-wacky.txt
+- http://wacky.sslmit.unibo.it/doku.php?id=corpora
+- 1000 Italian sentences with Penn Treebank II part-of-speech tags.
+
+9) Dutch portion of Twente Nieuws Corpus (Ordelman et al.)
 - tagged-nl-twnc.txt
 - http://hmi.ewi.utwente.nl/TwNC
 - 1000 Dutch sentences with Wotan part-of-speech tags.
 
-9) Apache SpamAssassin public mail corpus
+10) Apache SpamAssassin public mail corpus
 - spam-apache.csv
 - http://spamassassin.apache.org/publiccorpus/
 - 125 "spam" and 125 (mostly technical) "ham" messages.
 
-10) Birkbeck spelling error corpus
+11) Birkbeck spelling error corpus
 - spelling-birkbeck.csv
 - http://www.ota.ox.ac.uk/headers/0643.xml
 - 500 words and how they are commonly misspelled.
 
-11) CoNLL 2010 Shared Task 1 - Wikipedia uncertainty
+12) CoNLL 2010 Shared Task 1 - Wikipedia uncertainty
 - uncertainty-conll2010.csv
 - http://www.inf.u-szeged.hu/rgai/conll2010st/tasks.html#task1
 - 1500 "certain" and 1500 "uncertain" Wikipedia sentences.
 
-12) Alice in Wonderland, written by Lewis Carroll
+13) Alice in Wonderland, written by Lewis Carroll
 - wonderland-carroll.pdf
 - http://www.gutenberg.org/
 - Full text of Alice in Wonderland in PDF format.
 
-13) Celex 2.5 German word forms
+14) Celex 2.5 German word forms
 - wordforms-de-celex.csv
 - http://celex.mpi.nl/
 - 250 singular nouns and their plural form.
 - 250 predicative adjectives and their attributive form.
 
-14) Celex 2.5 English word forms
+15) Celex 2.5 English word forms
 - wordforms-en-celex.csv
 - http://celex.mpi.nl/
 - 4000 singular nouns and their plural form.
 
-15) Celex 2.5 Dutch word forms
+16) Celex 2.5 Dutch word forms
 - wordforms-nl-celex.csv
 - http://celex.mpi.nl/
 - 1000 singular nouns and their plural form.
 - 1000 predicative adjectives and their attributive form.
 
-16) Davies Corpus del Espa–ol word forms
+17) Davies Corpus del Espa–ol word forms
 - wordforms-es-davies.csv
 - http://www.wordfrequency.info/files/spanish/spanish_lemmas20k.txt
 - 3000 word forms with lemma, part-of-speech and frequency.
-
-17) Lexique 3 French word forms
-- wordforms-fr-lexique.csv
-- http://www.lexique.org/
-- 2000 word forms with lemma and part-of-speech.
 
 18) Wiktionary Italian word forms
 - wordforms-it-wiktionary.csv
 - https://en.wiktionary.org/wiki/Category:Italian_language
 - 2000 word forms with lemma, part-of-speech and gender.
+
+19) Lexique 3 French word forms
+- wordforms-fr-lexique.csv
+- http://www.lexique.org/
+- 2000 word forms with lemma and part-of-speech.

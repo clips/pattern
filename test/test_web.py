@@ -948,7 +948,7 @@ class TestMail(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
-class TestSpider(unittest.TestCase):
+class TestCrawler(unittest.TestCase):
     
     def setUp(self):
         pass
@@ -979,36 +979,36 @@ class TestSpider(unittest.TestCase):
         self.assertTrue(v[0] < v[1])
         print "pattern.web.HTMLLinkParser"
     
-    def test_spider_crawl(self):
+    def test_crawler_crawl(self):
         # Assert domain filter.
-        v = web.Spider(links=["http://www.clips.ua.ac.be/"], domains=["clips.ua.ac.be"], delay=0.5)
+        v = web.Crawler(links=["http://www.clips.ua.ac.be/"], domains=["clips.ua.ac.be"], delay=0.5)
         while len(v.visited) < 4:
             v.crawl(throttle=0.1, cached=False)
         for url in v.visited:
             self.assertTrue("clips.ua.ac.be" in url)
         self.assertTrue(len(v.history) == 1)
-        print "pattern.web.Spider.crawl()"
+        print "pattern.web.Crawler.crawl()"
     
-    def test_spider_delay(self):
+    def test_crawler_delay(self):
         # Assert delay for several crawls to a single domain.
-        v = web.Spider(links=["http://www.clips.ua.ac.be/"], domains=["clips.ua.ac.be"], delay=1.0)
+        v = web.Crawler(links=["http://www.clips.ua.ac.be/"], domains=["clips.ua.ac.be"], delay=1.0)
         v.crawl()
         t = time.time()
         while not v.crawl(throttle=0.1, cached=False):
             pass
         t = time.time() - t
         self.assertTrue(t > 1.0)
-        print "pattern.web.Spider.delay"
+        print "pattern.web.Crawler.delay"
         
-    def test_spider_breadth(self):
+    def test_crawler_breadth(self):
         # Assert BREADTH cross-domain preference.
-        v = web.Spider(links=["http://www.clips.ua.ac.be/"], delay=10)
+        v = web.Crawler(links=["http://www.clips.ua.ac.be/"], delay=10)
         while len(v.visited) < 4:
             v.crawl(throttle=0.1, cached=False, method=web.BREADTH)
         self.assertTrue(v.history.keys()[0] != v.history.keys()[1])
         self.assertTrue(v.history.keys()[0] != v.history.keys()[2])
         self.assertTrue(v.history.keys()[1] != v.history.keys()[2])
-        print "pattern.web.Spider.crawl(method=BREADTH)"
+        print "pattern.web.Crawler.crawl(method=BREADTH)"
 
 #---------------------------------------------------------------------------------------------------
 
@@ -1023,7 +1023,7 @@ def suite():
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPDF))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLocale))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMail))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSpider))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCrawler))
     return suite
 
 if __name__ == "__main__":

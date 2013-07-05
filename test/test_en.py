@@ -207,10 +207,10 @@ class TestQuantification(unittest.TestCase):
         
     def test_extract_leading_zeros(self):
         # Assert "zero zero one" => ("one", 2).
-        from pattern.text.en.quantify import _extract_leading_zeros
-        v = _extract_leading_zeros("zero zero one")
+        from pattern.text.en.inflect_quantify import zshift
+        v = zshift("zero zero one")
         self.assertEqual(v, ("one", 2))
-        v = _extract_leading_zeros("0 0 one")
+        v = zshift("0 0 one")
         self.assertEqual(v, ("one", 2))
         print "pattern.en.quantify._extract_leading_zeros()"
         
@@ -348,6 +348,7 @@ class TestParser(unittest.TestCase):
           ([["very", ""], ["much", "JJ"]],      [["very", ""], ["much", "RB"]]),      # LBIGRAM
           ([["such", "JJ"], ["as", "DT"]],      [["such", "JJ"], ["as", "IN"]]),      # WDNEXTWD
           ([["be", "VB"]],                      [["be", "VB"]])):                     # CURWD
+            print a, en.lexicon.context.apply(a)
             self.assertEqual(en.lexicon.context.apply(a), b)
         print "pattern.en.lexicon.context.apply()"
     
