@@ -73,10 +73,10 @@ article_definite = {
 }
 
 article_indefinite = {
-    ("m", "nom"): ""  , ("f", "nom"): "e" , ("n", "nom"): ""  , ("p", "nom"): "e",
-    ("m", "acc"): "en", ("f", "acc"): "e" , ("n", "acc"): ""  , ("p", "acc"): "e",
-    ("m", "dat"): "em", ("f", "dat"): "er", ("n", "dat"): "em", ("p", "dat"): "en",
-    ("m", "gen"): "es", ("f", "gen"): "er", ("n", "gen"): "es", ("p", "gen"): "er",
+    ("m", "nom"): "ein"  , ("f", "nom"): "eine" , ("n", "nom"): "ein"  , ("p", "nom"): "eine",
+    ("m", "acc"): "einen", ("f", "acc"): "eine" , ("n", "acc"): "ein"  , ("p", "acc"): "eine",
+    ("m", "dat"): "einem", ("f", "dat"): "einer", ("n", "dat"): "einem", ("p", "dat"): "einen",
+    ("m", "gen"): "eines", ("f", "gen"): "einer", ("n", "gen"): "eines", ("p", "gen"): "einer",
 }
 
 def definite_article(word, gender=MALE, role=SUBJECT):
@@ -84,10 +84,10 @@ def definite_article(word, gender=MALE, role=SUBJECT):
     """
     return article_definite.get((gender[:1].lower(), role[:3].lower()))
 
-def indefinite_article(word):
+def indefinite_article(word, gender=MALE, role=SUBJECT):
     """ Returns the indefinite article (ein) for a given word.
     """
-    return article_indefinite.get((gender[:1].lower(), role[:1].lower()))
+    return article_indefinite.get((gender[:1].lower(), role[:3].lower()))
 
 DEFINITE   = "definite"
 INDEFINITE = "indefinite"
