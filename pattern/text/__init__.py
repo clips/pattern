@@ -207,7 +207,7 @@ def _read(path, encoding="utf-8", comment=";;;"):
         else:
             f = path
         for i, line in enumerate(f):
-            line = line.lstrip(codecs.BOM_UTF8) if i==0 else line
+            line = line.strip(codecs.BOM_UTF8) if i == 0 and isinstance(line, str) else line
             line = line.strip()
             line = decode_utf8(line)
             if not line or (comment and line.startswith(comment)):
@@ -333,15 +333,13 @@ class Context(lazylist, Rules):
          "prev1or2or3wd", # One of 3 following words is x. 
              "prevwdtag", # Preceding word is x and tagged y.
              "nextwdtag", # Following word is x and tagged y.
-              "wdprevwd", # Current word is y and preceding word is x.
-              "wdnextwd", # Current word is x and following word is y.
              "wdprevtag", # Current word is y and preceding word is tagged x. 
              "wdnexttag", # Current word is x and following word is tagged y.
              "wdand2aft", # Current word is x and word 2 after is y.
           "wdand2tagbfr", # Current word is y and word 2 before is tagged x.
           "wdand2tagaft", # Current word is x and word 2 after is tagged y.
-               "lbigram", # Preceding word is y and word before is x.
-               "rbigram", # Following word is x and word after is y.
+               "lbigram", # Current word is y and word before is x.
+               "rbigram", # Current word is x and word after is y.
             "prevbigram", # Preceding word is tagged x and word before is tagged y.
             "nextbigram", # Following word is tagged x and word after is tagged y.
         )
@@ -386,15 +384,13 @@ class Context(lazylist, Rules):
                 or (cmd == "next1or2wd"     and x in (t[i+1][0], t[i+2][0])) \
                 or (cmd == "prevwdtag"      and x ==  t[i-1][0] and y == t[i-1][1]) \
                 or (cmd == "nextwdtag"      and x ==  t[i+1][0] and y == t[i+1][1]) \
-                or (cmd == "wdprevwd"       and x ==  t[i-1][0] and y == t[i+0][0]) \
-                or (cmd == "wdnextwd"       and x ==  t[i+0][0] and y == t[i+1][0]) \
                 or (cmd == "wdprevtag"      and x ==  t[i-1][1] and y == t[i+0][0]) \
                 or (cmd == "wdnexttag"      and x ==  t[i+0][0] and y == t[i+1][1]) \
                 or (cmd == "wdand2aft"      and x ==  t[i+0][0] and y == t[i+2][0]) \
                 or (cmd == "wdand2tagbfr"   and x ==  t[i-2][1] and y == t[i+0][0]) \
                 or (cmd == "wdand2tagaft"   and x ==  t[i+0][0] and y == t[i+2][1]) \
-                or (cmd == "lbigram"        and x ==  t[i-2][0] and y == t[i-1][0]) \
-                or (cmd == "rbigram"        and x ==  t[i+1][0] and y == t[i+2][0]) \
+                or (cmd == "lbigram"        and x ==  t[i-1][0] and y == t[i+0][0]) \
+                or (cmd == "rbigram"        and x ==  t[i+0][0] and y == t[i+1][0]) \
                 or (cmd == "prevbigram"     and x ==  t[i-2][1] and y == t[i-1][1]) \
                 or (cmd == "nextbigram"     and x ==  t[i+1][1] and y == t[i+2][1]):
                     tokens[i-len(o)] = [tokens[i-len(o)][0], r[1]]
