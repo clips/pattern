@@ -42,26 +42,26 @@ for link in DOM(url.download()).by_tag("a"):
 # The DOM object is a tree of nested Element and Text objects.
 # All objects inherit from Node (check the source code).
 
-# Node.type       => NODE, TEXT, COMMENT, ELEMENT or DOM
-# Node.parent     => Parent Node object.
-# Node.children   => List of child Node objects.
-# Node.next       => Next Node in Node.parent.children.
-# Node.previous   => Previous Node in Node.parent.children.
+# Node.type       : NODE, TEXT, COMMENT, ELEMENT or DOM
+# Node.parent     : Parent Node object.
+# Node.children   : List of child Node objects.
+# Node.next       : Next Node in Node.parent.children.
+# Node.previous   : Previous Node in Node.parent.children.
 
-# DOM.head        => Element with tag name "head".
-# DOM.body        => Element with tag name "body".
+# DOM.head        : Element with tag name "head".
+# DOM.body        : Element with tag name "body".
 
-# Element.tag     => Element tag name, e.g. "body".
-# Element.attributes => Dictionary of tag attribute, e.g. {"class": "header"}
-# Element.content => Element HTML content as a string.
-# Element.source  => Element tag + content
+# Element.tag     : Element tag name, e.g. "body".
+# Element.attributes : Dictionary of tag attribute, e.g. {"class": "header"}
+# Element.content : Element HTML content as a string.
+# Element.source  : Element tag + content
 
 # Element.get_element_by_id(value)
 # Element.get_elements_by_tagname(value)
 # Element.get_elements_by_classname(value)
 # Element.get_elements_by_attribute(name=value)
 
-# You can also use short aliases: 
+# You can also use shorter aliases (we prefer them): 
 # Element.by_id(), by_tag(), by_class(), by_attr().
 
 # The tag name passed to Element.by_tag() can include 
@@ -78,6 +78,7 @@ print kw
 print
 
 # You can also use CSS selectors:
+# http://www.w3.org/TR/CSS2/selector.html
 # Element(selector) will return a list of nested elements that match the given string.
 dom = DOM(URL("http://www.clips.ua.ac.be").download())
 for e in dom("div#sidebar-left li div:first-child span"):
