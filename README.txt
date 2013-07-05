@@ -1,7 +1,7 @@
 PATTERN
 =======
 
-Pattern is a web mining module for the Python programming language. It bundles tools for data mining (Google + Twitter + Wikipedia API, web spider, HTML DOM parser), natural language processing (tagger/chunker, n-gram search, sentiment analysis, WordNet), machine learning (vector space model, k-means clustering, Naive Bayes + k-NN + SVM classiﬁers) and network analysis (graph centrality and visualization). It is well documented and bundled with 30+ examples and 350+ unit tests. The source code is licensed under BSD and available from http://www.clips.ua.ac.be/pages/pattern. 
+Pattern is a web mining module for the Python programming language. It bundles tools for data mining (Google + Twitter + Wikipedia API, web crawler, HTML DOM parser), natural language processing (part-of-speech taggers, n-gram search, sentiment analysis, WordNet), machine learning (vector space model, k-means clustering, Naive Bayes + k-NN + SVM classiﬁers) and network analysis (graph centrality and visualization). It is well documented and bundled with 30+ examples and 350+ unit tests. The source code is licensed under BSD and available from http://www.clips.ua.ac.be/pages/pattern. 
 
 VERSION
 =======
@@ -60,11 +60,13 @@ Pattern is bundled with the following data sets, algorithms and Python packages:
 - Brill tagger for German, Gerold Schneider & Martin Volk
 - Brill tagger for Spanish, trained on Wikicorpus (Samuel Reese & Gemma Boleda et al.)
 - Brill tagger for French, trained on Lefff (Benoît Sagot & Lionel Clément et al.)
+- Brill tagger for Italian, mined from Wiktionary
 - English pluralization, Damian Conway
 - Spanish verb inflection, Fred Jehle
 - French verb inflection, Bob Salita
 - Graph JavaScript framework, Aslak Hellesoy & Dave Hoover
 - LIBSVM, Chih-Chung Chang & Chih-Jen Lin
+- LIBLINEAR, Rong-En Fan et al.
 - NetworkX centrality, Aric Hagberg, Dan Schult & Pieter Swart
 - PDFMiner, Yusuke Shinyama
 - PyWordNet, Oliver Steele
@@ -104,3 +106,5 @@ Contributors (chronological):
 - Rémi de Zoeten + closealert.nl
 - Kenneth Koch
 - Jens Grivolla
+- Fabio Marfia
+- Steven Loria

@@ -3,8 +3,8 @@ Pattern
 
 Pattern is a web mining module for the Python programming language. It bundles tools for:
 
- * Data Mining: Google + Twitter + Wikipedia API, web spider, HTML DOM parser
- * Natural Language Processing: tagger/chunker, n-gram search, sentiment analysis, WordNet
+ * Data Mining: Google + Twitter + Wikipedia API, web crawler, HTML DOM parser
+ * Natural Language Processing: part-of-speech taggers, n-gram search, sentiment analysis, WordNet
  * Machine Learning: vector space model, *k*-means clustering, Naive Bayes + *k*-NN + SVM classiﬁers
  * Network Analysis: graph centrality and visualization.
 
@@ -76,11 +76,13 @@ Pattern is bundled with the following data sets, algorithms and Python packages:
 - **Brill tagger for German**, Gerold Schneider & Martin Volk
 - **Brill tagger for Spanish**, trained on Wikicorpus (Samuel Reese & Gemma Boleda et al.)
 - **Brill tagger for French**, trained on Lefff (Benoît Sagot & Lionel Clément et al.)
+- **Brill tagger for Italian**, mined from Wiktionary
 - **English pluralization**, Damian Conway
 - **Spanish verb inflection**, Fred Jehle
 - **French verb inflection**, Bob Salita
 - **Graph JavaScript framework**, Aslak Hellesoy & Dave Hoover
 - **LIBSVM**, Chih-Chung Chang & Chih-Jen Lin
+- **LIBLINEAR**, Rong-En Fan et al.
 - **NetworkX centrality**, Aric Hagberg, Dan Schult & Pieter Swart
 - **PDFMiner**, Yusuke Shinyama
 - **PyWordNet**, Oliver Steele
@@ -122,3 +124,5 @@ Acknowledgements
 - Rémi de Zoeten + closealert.nl
 - Kenneth Koch
 - Jens Grivolla
+- Fabio Marfia
+- Steven Loria
