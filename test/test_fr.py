@@ -9,7 +9,7 @@ try:
     PATH = os.path.dirname(os.path.abspath(__file__))
 except:
     PATH = ""
-    
+
 #---------------------------------------------------------------------------------------------------
 
 class TestInflection(unittest.TestCase):
@@ -131,6 +131,9 @@ class TestParser(unittest.TestCase):
     
     def setUp(self):
         pass
+
+    def test_find_prepositions(self):
+        v = fr.parser.parse("Parce que c'est comme ça.")
 
     def test_find_lemmata(self):
         # Assert lemmata for nouns, adjectives, verbs and determiners.

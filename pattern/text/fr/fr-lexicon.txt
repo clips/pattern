@@ -359,7 +359,7 @@ Affracourt NNP
 Affringues NNP
 Afghanistan NNP
 Afia NNP
-Afin CC
+Afin IN
 Afolabi NNP
 Afon NNP
 Afonso NNP
@@ -10170,7 +10170,7 @@ Comines NNP
 Commana NNP
 Commandant VBG
 Commarin NNP
-Comme CC
+Comme IN
 Commeaux NNP
 Commelle NNP
 Commelle-Vernay NNP
@@ -12452,7 +12452,7 @@ Donatien NNP
 Donatienne NNP
 Donato NNP
 Donazac NNP
-Donc RB
+Donc CC
 Donchery NNP
 Doncieres NNP
 Doncourt-Aux-Templiers NNP
@@ -13472,7 +13472,7 @@ Ens NNP
 Ensigne NNP
 Ensisheim NNP
 Ensues-la-Redonne NNP
-Ensuite RB
+Ensuite CC
 Entendu VBN
 Entouré VBN
 Entrages NNP
@@ -26000,9 +26000,9 @@ Lorrin NNP
 Lorris NNP
 Lorry-Mardigny NNP
 Lorry-les-Metz NNP
-Lorsqu' CC
-Lorsqu’ CC
-Lorsque CC
+Lorsqu' IN
+Lorsqu’ IN
+Lorsque IN
 Lortet NNP
 Los-Masos NNP
 Loscouet-sur-Meu NNP
@@ -32929,7 +32929,7 @@ Parc-d'Anxtot NNP
 Parcay-Meslay NNP
 Parcay-les-Pins NNP
 Parcay-sur-Vienne NNP
-Parce NNP
+Parce IN
 Parce-sur-Sarthe NNP
 Parcey NNP
 Parcieux NNP
@@ -35023,7 +35023,7 @@ Puiseux-le-Hauberger NNP
 Puisieulx NNP
 Puisieux NNP
 Puisieux-et-Clanlocation NNP
-Puisque CC
+Puisque IN
 Puissalicon NNP
 Puisseguin NNP
 Puisserguier NNP
@@ -35175,7 +35175,7 @@ Quaedypre NNP
 Quaix-en-Chartreuse NNP
 Quan NNP
 Quanah NNP
-Quand CC
+Quand IN
 Quang NNP
 Quanna NNP
 Quant IN
@@ -35191,7 +35191,7 @@ Quatre-Routes-d'Albussac NNP
 Quatre-Saisons NNP
 Quatremare NNP
 Quatzenheim NNP
-Que CC
+Que IN
 Queant NNP
 Queaux NNP
 Quebriac NNP
@@ -42506,7 +42506,7 @@ Shura NNP
 Shyam NNP
 Shyama NNP
 Shyla NNP
-Si CC
+Si IN
 Sian NNP
 Siana NNP
 Siani NNP
@@ -57586,7 +57586,7 @@ commandé VBN
 commandée VBN
 commandées VBN
 commandés VBN
-comme RB
+comme IN
 commence VB
 commencement NN
 commencent VB
@@ -60003,7 +60003,7 @@ dominées VBN
 dominés VBN
 dompter VB
 don NN
-donc RB
+donc CC
 dong NN
 donna VB
 donnai VB
@@ -62578,7 +62578,7 @@ ensommeillé JJ
 ensommeillée JJ
 ensommeillés JJ
 ensuit VB
-ensuite RB
+ensuite CC
 ensuive VB
 ensuivit VB
 entachent VB
@@ -68375,9 +68375,9 @@ lorgner VB
 lorrain JJ
 lorraine NN
 lors RB
-lorsqu' RB
-lorsqu’ RB
-lorsque RB
+lorsqu' IN
+lorsqu’ IN
+lorsque IN
 lot NN
 loua VB
 louable JJ
@@ -71069,7 +71069,7 @@ paraître VB
 paraîtront VB
 parbleu UH
 parc NN
-parce CC
+parce IN
 parcimonieuse JJ
 parcimonieusement RB
 parcimonieux JJ
@@ -73395,7 +73395,7 @@ pueblo JJ
 puent VB
 puer VB
 pues VB
-puis RB
+puis CC
 puisa VB
 puisaient VB
 puisais VB
@@ -73403,9 +73403,9 @@ puisait VB
 puisant VB
 puise VB
 puiser VB
-puisqu' RB
-puisqu’ RB
-puisque RB
+puisqu' IN
+puisqu’ IN
+puisque IN
 puissamment RB
 puissance NN
 puissances NNS
@@ -73597,8 +73597,8 @@ pêle-mêle RB
 pûmes VB
 pût VB
 qu VBN
-qu' CC
-qu’ CC
+qu' IN
+qu’ IN
 qua VB
 quadragénaire JJ
 quadrillé VBN
@@ -73614,7 +73614,7 @@ qualifiée VBN
 qualifiés VBN
 qualité NN
 qualités NNS
-quand RB
+quand IN
 quant IN
 quantité NN
 quarantaine NN
@@ -73633,7 +73633,7 @@ quatre-vingt NN
 quatre-vingt-dix NN
 quatre-vingt-six CD
 quatrième CD
-que CC
+que IN
 quel DT
 quelconque JJ
 quelconques JJ
@@ -73690,7 +73690,7 @@ quittées VBN
 quittés VBN
 quoi WP
 quoiqu'en JJ
-quoique RB
+quoique IN
 quotidienne JJ
 quotidiennement RB
 quotidiennes JJ
@@ -77343,7 +77343,7 @@ seyant VBG
 shoote VB
 shooter VB
 shooté VBN
-si CC
+si IN
 sibyllin JJ
 sibylline JJ
 sibérienne JJ
