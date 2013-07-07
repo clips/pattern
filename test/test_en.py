@@ -348,7 +348,6 @@ class TestParser(unittest.TestCase):
           ([["very", ""], ["much", "JJ"]],      [["very", ""], ["much", "RB"]]),      # LBIGRAM
           ([["such", "JJ"], ["as", "DT"]],      [["such", "JJ"], ["as", "IN"]]),      # WDNEXTWD
           ([["be", "VB"]],                      [["be", "VB"]])):                     # CURWD
-            print a, en.lexicon.context.apply(a)
             self.assertEqual(en.lexicon.context.apply(a), b)
         print "pattern.en.lexicon.context.apply()"
     
@@ -419,6 +418,16 @@ class TestParser(unittest.TestCase):
             ["", "", "PP", "B-PNP"], 
             ["", "", "NP", "I-PNP"], 
             ["", "", "NP", "I-PNP"]])
+        # Assert PNP's with consecutive PP's.
+        v = en.parse("The cat was looking at me from up on the roof with interest.", prepositions=True)
+        self.assertEqual(v,
+            "The/DT/B-NP/O cat/NN/I-NP/O " \
+            "was/VBD/B-VP/O looking/VBG/I-VP/O " \
+            "at/IN/B-PP/B-PNP me/PRP/B-NP/I-PNP " \
+            "from/IN/B-PP/B-PNP up/IN/I-PP/I-PNP on/IN/I-PP/I-PNP the/DT/B-NP/I-PNP roof/NN/I-NP/I-PNP " \
+            "with/IN/B-PP/B-PNP interest/NN/B-NP/I-PNP " \
+            "././O/O"
+        )
         print "pattern.en.parser.find_prepositions()"
         
     def test_find_lemmata(self):
@@ -471,6 +480,20 @@ class TestParser(unittest.TestCase):
         # 6) Assert optional parameters (i.e., setting all to False).
         self.assertEqual(en.parse("ø ü.", tokenize=True,  tags=False, chunks=False), u"ø ü .")
         self.assertEqual(en.parse("ø ü.", tokenize=False, tags=False, chunks=False), u"ø ü.")
+        # 7) Assert the accuracy of the English tagger.
+        i, n = 0, 0
+        for sentence in open(os.path.join(PATH, "corpora", "tagged-en-penntreebank.txt")).readlines():
+            sentence = sentence.decode("utf-8").strip()
+            s1 = [w.split("/") for w in sentence.split(" ")]
+            s2 = [[w for w, pos in s1]]
+            s2 = en.parse(s2, tokenize=False)
+            s2 = [w.split("/") for w in s2.split(" ")]
+            for j in range(len(s1)):
+                if s1[j][1] == s2[j][1].split("-")[0]:
+                    i += 1
+                n += 1
+        #print float(i) / n
+        self.assertTrue(float(i) / n > 0.945)
         print "pattern.en.parse()"
 
     def test_tagged_string(self):
@@ -696,12 +719,12 @@ class TestParseTree(unittest.TestCase):
         self.assertEqual(v[0], 1)
         print "pattern.text.tree.unique()"
     
-    def test_dynamic_map(self):
-        # Assert iterator map().
-        v = text.tree.dynamic_map(lambda x: x+1, [1,2,3])
+    def test_map(self):
+        # Assert dynamic Map().
+        v = text.tree.Map(lambda x: x+1, [1,2,3])
         self.assertEqual(list(v), [2,3,4])
-        self.assertEqual(v.set[0], 1)
-        print "pattern.text.tree.dynamic_map()"
+        self.assertEqual(v.items[0], 1)
+        print "pattern.text.tree.Map()"
         
 #---------------------------------------------------------------------------------------------------
 
