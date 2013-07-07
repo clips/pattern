@@ -5,103 +5,110 @@
 # http://www.clips.ua.ac.be/pages/pattern
 
 ####################################################################################################
-# Implements a Sentence object to traverse sentence words, chunks and prepositions.
-# This is probably what you will be working with when processing the output of the parser in Python.
-# It is used internally in the PP-attacher and to generate XML and NLTK trees.
+# Text and Sentence objects to traverse words and chunks in parsed text.
+# from pattern.en import parsetree
+# for sentence in parsetree("The cat sat on the mat."):
+#     for chunk in sentence.chunks:
+#         for word in chunk.words:
+#             print word.string, word.tag, word.lemma
 
-# Some basic terminology:
-# - sentence: the basic unit of writing, expected to have a subject and a predicate.
-# - word: a string of characters that expresses a meaningful concept.
-# - token: a specific word with grammatical tags, the word "can" can appear many times in the sentence.
-# - chunk: a phrase; a group of words that contains a single thought; phrases make up sentences.
-# - argument: a phrase that is related to a verb in a clause, i.e. subject and object.
-# - clause: subject + predicate.
-# - subject: the person/thing the sentence is about, usually a noun phrase (NP); "[the oval] is white".
-# - predicate: the remainder of the sentence tells us what the subject does; "the oval [is white]".
-# - object: the person/thing affected by the action; "the shapes form [a circle]".
-# - preposition: temporal, spatial or logical relationship; "the oval is [below the rectangle]".
-# - copula: a word used to link subject and predicate, typically the verb "to be".
-# - lemma: canonical form of a word: "run","runs", "running" are part of a lexeme, "run" is the lemma.
-# - pos: part-of-speech, the role that a word or phrase plays in a sentence, e.g. NN (noun).
+# Terminology:
+# - part-of-speech: the role that a word plays in a sentence: noun (NN), verb (VB), adjective, ...
+# -    sentence: a unit of language, with a subject (e.g., "the cat") and a predicate ("jumped").
+# -       token: a word in a sentence with a part-of-speech tag (e.g., "jump/VB" or "jump/NN").
+# -        word: a string of characters that expresses a meaningful concept (e.g., "cat").
+# -       lemma: the canonical word form ("jumped" => "jump").
+# -      lexeme: the set of word forms ("jump", "jumps", "jumping", ...)
+# -       chunk: a phrase, group of words that express a single thought (e.g., "the cat").
+# -     subject: the phrase that the sentence is about, usually a noun phrase.
+# -   predicate: the remainder of the sentence tells us what the subject does (jump).
+# -      object: the phrase that is affected by the action (the cat jumped [the mouse]").
+# - preposition: temporal, spatial or logical relationship ("the cat jumped [on the table]").
+# -      anchor: the chunk to which the preposition is attached:
+#                "the cat eats its snackerel with vigor" => eat with vigor?
+#                                                     OR => vigorous snackerel?
 
-# Sentence is meant for analysis - no parsing functionality should be added to it.
-# All parsing takes place in the parse() function.
+# The Text and Sentece classes are containers: 
+# no parsing functionality should be added to it.
 
 try:
     from config import SLASH
     from config import WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA
-    MBSP = True
+    MBSP = True # Memory-Based Shallow Parser for Python.
 except:
     SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA = \
         "&slash;", "word", "part-of-speech", "chunk", "preposition", "relation", "anchor", "lemma"
     MBSP = False
 
-IOB  = "IOB"  # The I- part of I-NP.
-ROLE = "role" # The SBJ part of NP-SBJ-1.
+# B- marks the start of a chunk: the/DT/B-NP cat/NN/I-NP
+# I- words are inside a chunk.
+# O- words are outside a chunk (punctuation etc.).
+IOB, BEGIN, INSIDE, OUTSIDE  = "IOB", "B", "I", "O"
 
-# IOB chunk tags:
-BEGIN   = "B"  # Start of chunk, as in B-NP.
-INSIDE  = "I"  # Inside a chunk, as in I-NP.
-OUTSIDE = "O"  # Outside a chunk (punctuation etc.)
+# -SBJ marks subjects: the/DT/B-NP-SBJ cat/NN/I-NP-SBJ
+# -OBJ marks objects.
+ROLE = "role"
 
 ### LIST FUNCTIONS #################################################################################
 
-def find(function, list):
+def find(function, iterable):
     """ Returns the first item in the list for which function(item) is True, None otherwise.
     """
-    for item in list:
-        if function(item) == True:
-            return item
+    for x in iterable:
+        if function(x) == True:
+            return x
 
 _zip = zip
-def zip(*lists, **default):
+def zip(*args, **default):
     """ Returns a list of tuples, where the i-th tuple contains the i-th element 
-        from each of the argument sequences or iterables.
-        The default value is appended to the shortest list to match the length of the longest list.
+        from each of the argument sequences or iterables (or default if too short).
     """
-    m = max([len(x) for x in lists])
-    return _zip(*[x+[default.get("default", None)]*(m-len(x)) for x in lists])
+    args = [list(iterable) for iterable in args]
+    n = max(map(len, args))
+    return _zip(*[i + [default.get("default", None)] * (n-len(i)) for i in args])
 
-def unzip(index, list):
+def unzip(i, iterable):
     """ Returns the item at the given index from inside each tuple in the list.
     """
-    return [item[index] for item in list]
+    return [x[i] for x in iterable]
 
-def intersects(list1, list2):
-    """ Returns True if list1 and list2 have at least one item in common.
+def intersects(iterable1, iterable2):
+    """ Returns True if the given lists have at least one item in common.
     """
-    return find(lambda item: item in list1, list2) is not None
+    return find(lambda x: x in iterable1, iterable2) is not None
 
-def unique(list):
-    """ Returns a copy of the list with unique items, in-order.
+def unique(iterable):
+    """ Returns a list copy in which each item occurs only once (in-order).
     """
-    unique, v = [], {}
-    for item in list: 
-        if item in v: continue 
-        unique.append(item); v[item]=1
-    return unique
+    seen = set()
+    return [x for x in iterable if x not in seen and not seen.add(x)]
 
-class dynamic_map(list):
-    """ Behaves as lambda map() by executing a function on each item in the set.
-        Different from map() it does not compute a list copy,
-        but fetches items or an iterator on the fly.
+class Map(list):
+    """ A stored imap() on a list.
+        The list is referenced instead of copied, and the items are mapped on-the-fly.
     """
-    def __init__(self, function=lambda item: item, set=[]):
-        self.set = set
-        self.function = function
+    def __init__(self, function=lambda x: x, items=[]):
+        self._f = function
+        self._a = items
+    @property
+    def items(self):
+        return self._a
     def __repr__(self):
-        return repr([item for item in self])
-    def __getitem__(self, index):
-        return self.function(self.set[index])
+        return repr(list(iter(self)))
+    def __getitem__(self, i):
+        return self._f(self._a[i])
     def __len__(self):
-        return len(self.set)
+        return len(self._a)
     def __iter__(self):
         i = 0
-        while i < len(self.set):
-            yield self.function(self.set[i])
-            i+=1
+        while i < len(self._a):
+            yield self._f(self._a[i])
+            i += 1
 
 ### SENTENCE #######################################################################################
+
+# The output of parse() is a slash-formatted string (e.g., "the/DT cat/NN"),
+# so slashes in words themselves are encoded as &slash;
 
 encode_entities = lambda string: string.replace("/", SLASH)
 decode_entities = lambda string: string.replace(SLASH, "/")
@@ -112,24 +119,23 @@ class Word(object):
 
     def __init__(self, sentence, string, lemma=None, type=None, index=0):
         """ A word in the sentence.
-            - lemma : base form of the word, e.g. "was" => "be".
-            - type  : the part-of-speech tag, e.g. "NN" => a noun.
-            - chunk : the chunk (or phrase) this word belongs to.
-            - index : the index in the sentence.
+            - lemma: base form of the word; "was" => "be".
+            -  type: the part-of-speech tag; "NN" => a noun.
+            - chunk: the chunk (or phrase) this word belongs to.
+            - index: the index in the sentence.
         """
         try: string = string.decode("utf-8") # ensure Unicode
         except: 
             pass
-        
         self.sentence = sentence
         self.index    = index
-        self.string   = string        # laughed
-        self.lemma    = lemma         # laugh
+        self.string   = string        # "was"
+        self.lemma    = lemma         # "be"
         self.type     = type          # VB
-        self.chunk    = None          # Chunk object this word belongs to (e.g. VP).
+        self.chunk    = None          # Chunk object this word belongs to (i.e., a VP).
         self.pnp      = None          # PNP chunk object this word belongs to.
                                       # word.chunk and word.pnp are set in chunk.append().
-        self.custom_tags = Tags(self) # Additional user-defined tags (e.g. {SENTIMENT: "joy"}).
+        self.custom_tags = Tags(self) # User-defined tags.
     
     def copy(self, chunk=None, pnp=None):
         w = Word(
@@ -147,6 +153,7 @@ class Word(object):
         return self.type    
     def _set_tag(self, v):
         self.type = v
+        
     tag = pos = part_of_speech = property(_get_tag, _set_tag)
     
     @property
@@ -156,6 +163,7 @@ class Word(object):
     @property
     def prepositional_phrase(self):
         return self.pnp
+        
     prepositional_noun_phrase = prepositional_phrase
 
     @property
@@ -163,14 +171,10 @@ class Word(object):
         """ Yields a list of all the token tags as they appeared when the word was parsed.
             For example: ["was", "VBD", "B-VP", "O", "VP-1", "A1", "be"]
         """
-        # See also. Sentence.__repr__()
-        # Note: IOB-tags and relations tags can differ from the original output:
-        # - B-VP N-NP I-NP <=> I-VP B-NP I-NP
-        # - PP-CLR-1 NP-CLR-1 <=> PP-CLR-1 PP-CLR-1
-        # This has no influence when creating a new tree from repr(Sentence).
+        # See also. Sentence.__repr__().
         ch, I,O,B = self.chunk, INSIDE+"-", OUTSIDE, BEGIN+"-"
         tags = [OUTSIDE for i in range(len(self.sentence.token))]
-        for i, tag in enumerate(self.sentence.token): # Default = [WORD, POS, CHUNK, PNP, RELATION, ANCHOR, LEMMA]
+        for i, tag in enumerate(self.sentence.token): # Default: [WORD, POS, CHUNK, PNP, RELATION, ANCHOR, LEMMA]
             if tag == WORD:
                 tags[i] = encode_entities(self.string)
             elif tag == POS and self.type:
@@ -190,7 +194,7 @@ class Word(object):
                 tags[i] = self.custom_tags.get(tag) or OUTSIDE
         return tags
     
-    # User-defined tags are available as Word.tag attributes.
+    # User-defined tags are available as Word.[tag] attributes.
     def __getattr__(self, tag):
         if tag in self.__dict__.get("custom_tags",()):
             return self.__dict__["custom_tags"][tag]
@@ -213,13 +217,18 @@ class Word(object):
 class Tags(dict):
     
     def __init__(self, word, items=[]):
-        # A dictionary of custom word tags.
-        # If a new tag is introduced, ensures that is also in Word.sentence.token.
-        # This way it won't be forgotten when exporting/importing as XML.
+        """ A dictionary of custom word tags.
+            A word may be annotated with its part-of-speech tag (e.g., "cat/NN"), 
+            phrase tag (e.g., "cat/NN/NP"), the prepositional noun phrase it is part of etc.
+            An example of an extra custom slot is its semantic type, 
+            e.g., gene type, topic, and so on: "cat/NN/NP/genus_felis"
+        """
         dict.__init__(self, items)
         self.word = word
     
     def __setitem__(self, k, v):
+        # Ensure that the custom tag is also in Word.sentence.token,
+        # so that it is not forgotten when exporting or importing XML.
         dict.__setitem__(self, k, v)
         if k not in reversed(self.word.sentence.token): 
             self.word.sentence.token.append(k)
@@ -233,12 +242,12 @@ class Chunk(object):
     
     def __init__(self, sentence, words=[], type=None, role=None, relation=None):
         """ A list of words that make up a phrase in the sentence.
-            - type: the part-of-speech tag, e.g. "NP" => a noun phrase, like "the big statue".
-            - role: the function of the phrase, e.g. "SBJ" => sentence subject.
-            - relation: an id shared with other phrases (e.g. linking subject to object, ...)
+            - type: the phrase tag; "NP" => a noun phrase (e.g., "the black cat").
+            - role: the function of the phrase; "SBJ" => sentence subject.
+            - relation: an id shared with other phrases, linking subject to object in the sentence.
         """
-        # A chunk can have multiple roles and/or relations in the sentence.
-        # Role and relation can therefore also be passed as a list.
+        # A chunk can have multiple roles or relations in the sentence,
+        # so role and relation can also be given as lists.
         a, b = relation, role
         if not isinstance(a, (list, tuple)):
             a = isinstance(b, (list, tuple)) and [a for x in b] or [a]
@@ -275,6 +284,7 @@ class Chunk(object):
         return self.type
     def _set_tag(self, v):
         self.type = v
+        
     tag = pos = part_of_speech = property(_get_tag, _set_tag)
 
     @property
@@ -300,20 +310,33 @@ class Chunk(object):
     
     @property
     def head(self):
-        """ The head of the chunk (i.e. the last word in the chunk).
+        """ Yields the head of the chunk (usually, the last word in the chunk).
         """
-        return self._head(self) # self.words[-1]
+        w = None
+        if self.type == "NP":  # "the cat" => "cat"
+            w = find(lambda w: w.type.startswith("NN"), reversed(self))
+        if self.type == "VP":  # "is watching" => "watching"
+            w = find(lambda w: w.type.startswith("VB"), reversed(self))
+        if self.type == "PP":  # "from up on" => "from"
+            w = find(lambda w: w.type.startswith(("IN", "PP")), self)
+        if self.type == "PNP": # "from up on the roof" => "roof"
+            w = find(lambda w: w.type.startswith("NN"), reversed(self))
+        if w is None:
+            w = self[-1]
+        return w
 
     @property
     def relation(self):
-        """ The first relation id of the chunk (i.e. chunk.relations[(2,OBJ), (3,OBJ)])] => 2).
+        """ Yields the first relation id of the chunk.
         """
+        # [(2,OBJ), (3,OBJ)])] => 2
         return len(self.relations) > 0 and self.relations[0][0] or None
         
     @property
     def role(self):
-        """ The first role of the chunk (i.e. chunk.relations[(1,SBJ), (1,OBJ)])] => SBJ).
+        """ Yields the first role of the chunk (SBJ, OBJ, ...).
         """
+        # [(1,SBJ), (1,OBJ)])] => SBJ
         return len(self.relations) > 0 and self.relations[0][1] or None
 
     @property
@@ -333,7 +356,7 @@ class Chunk(object):
             return ch
     @property
     def related(self):
-        """ A list of all the chunks that have the same relation id.
+        """ Yields a list of all chunks in the sentence with the same relation id.
         """
         return [ch for ch in self.sentence.chunks 
                     if ch != self and intersects(unzip(0, ch.relations), unzip(0, self.relations))]
@@ -341,35 +364,33 @@ class Chunk(object):
     @property
     def prepositional_phrase(self):
         return self.pnp
+        
     prepositional_noun_phrase = prepositional_phrase
 
     @property
     def anchor_id(self):
         """ Yields the anchor tag as parsed from the original token.
-            For anchor chunks, it has the "A" prefix (e.g. "A1").
-            For PNP's attached to an anchor (or chunks inside the PNP), it has the "P" prefix (e.g. "P1").
-            A chunk inside a PNP can be both anchor and attachment (e.g. "P1-A2"), as in:
-            "stand/A1 in/P1 front/P1-A2 of/P2 people/P2".
+            Chunks that are anchors have a tag with an "A" prefix (e.g., "A1").
+            Chunks that are PNP attachmens (or chunks inside a PNP) have "P" (e.g., "P1").
+            Chunks inside a PNP can be both anchor and attachment (e.g., "P1-A2"),
+            as in: "clawed/A1 at/P1 mice/P1-A2 in/P2 the/P2 wall/P2"
         """
         id = ""
-        # Yields all anchor tags (e.g. A1, P1, ...) of the given chunk.
         f = lambda ch: filter(lambda k: self.sentence._anchors[k] == ch, self.sentence._anchors)
         if self.pnp and self.pnp.anchor:
-            id += "-"+"-".join(f(self.pnp))
+            id += "-" + "-".join(f(self.pnp))
         if self.anchor:
-            id += "-"+"-".join(f(self))
+            id += "-" + "-".join(f(self))
         if self.attachments:
-            id += "-"+"-".join(f(self))
+            id += "-" + "-".join(f(self))
         return id.strip("-") or None
 
     @property
     def modifiers(self):
-        """ For verb phrases (VP), yields a list of nearby adjectives and adverbs with no clear role:
-            "the page is [cluttered] with red ovals", "maybe it is green" != "it is green", etc.
+        """ For verb phrases (VP), yields a list of the nearest adjectives and adverbs.
         """
         if self._modifiers is None:
-            # Modifiers have not been initialized yet:
-            # iterate over all the chunks and attach modifiers to their VP-anchor.
+            # Iterate over all the chunks and attach modifiers to their VP-anchor.
             is_modifier = lambda ch: ch.type in ("ADJP", "ADVP") and ch.relation is None
             for chunk in self.sentence.chunks:
                 chunk._modifiers = []
@@ -380,8 +401,8 @@ class Chunk(object):
 
     def nearest(self, type="VP"):
         """ Returns the nearest chunk in the sentence with the given type.
-            We can use this to relate adverbs and adjectives to verbs. 
-            For example: "the page [is] [cluttered] with ovals": is <=> cluttered.
+            This can be used (for example) to find adverbs and adjectives related to verbs,
+            as in: "the cat is ravenous" => is what? => "ravenous".
         """
         candidate, d = None, len(self.sentence.chunks)
         if isinstance(self, PNPChunk):
@@ -394,7 +415,7 @@ class Chunk(object):
         return candidate
         
     def next(self, type=None):
-        """ Returns the next chunk (of the given type) in the sentence.
+        """ Returns the next chunk in the sentence with the given type.
         """
         i = self.stop
         while i < len(self.sentence):
@@ -403,7 +424,7 @@ class Chunk(object):
             i += 1
 
     def previous(self, type=None):
-        """ Returns the next previous (of the given type) in the sentence.
+        """ Returns the next previous chunk in the sentence with the given type.
         """
         i = self.start-1
         while i > 0:
@@ -430,7 +451,8 @@ class Chunk(object):
     def __ne__(self, chunk):
         return id(self) != id(chunk)
 
-# Used in the chunked() function:
+# Chinks are non-chunks,
+# see also the chunked() function:
 class Chink(Chunk):
     def __repr__(self):
         return Chunk.__repr__(self).replace("Chunk(", "Chink(", 1)
@@ -440,34 +462,32 @@ class Chink(Chunk):
 class PNPChunk(Chunk):
 
     def __init__(self, *args, **kwargs):
-        """ A chunk used to identify a prepositional noun phrase.
-            When the Sentence class has functionality for PP-attachment,
-            PNPChunk.anchor will point to the phrase clarified by the preposition,
-            for example: "I eat pizza with a fork" => "eat" + "with a fork".
+        """ A chunk of chunks that make up a prepositional noun phrase (i.e., PP + NP).
+            When the output of the parser includes PP-attachment,
+            PNPChunck.anchor will yield the chunk that is clarified by the preposition.
+            For example: "the cat went [for the mouse] [with its claws]":
+            - [went] what? => for the mouse,
+            - [went] how? => with its claws.
         """
-        self.anchor     = None # The anchor chunk (e.g. "eat pizza with fork" => "eat" is anchor of "with fork").
-        self.chunks     = []   # The chunks that make up the prepositional noun phrase.
+        self.anchor     = None # The anchor chunk (e.g., "for the mouse" => "went").
+        self.chunks     = []   # List of chunks in the prepositional noun phrase.
         Chunk.__init__(self, *args, **kwargs)
 
     def append(self, word):
         self.words.append(word)
         word.pnp = self
         if word.chunk is not None:
-            # Collect the chunks that are part of the preposition.
-            # This usually involves a PP and a NP chunk ("below/PP the surface/NP"),
-            # where the PP is the preposition that can be attached
-            # to another phrase, e.g. "What goes on below the surface":
-            # "below the surface" <=> "go".
             word.chunk.pnp = self
             if word.chunk not in self.chunks:
                 self.chunks.append(word.chunk)
 
     @property
     def preposition(self):
-        """ The first chunk in the prepositional noun phrase, which should be a PP-type chunk.
-            PP-chunks are words such as "with" or "underneath".
+        """ Yields the first chunk in the prepositional noun phrase, usually a PP-chunk.
+            PP-chunks contain words such as "for", "with", "in", ...
         """
         return self.chunks[0]
+        
     pp = preposition
 
     @property
@@ -475,8 +495,8 @@ class PNPChunk(Chunk):
         return self.chunks
 
     def guess_anchor(self):
-        """ Returns a possible anchor chunk for this prepositional noun phrase (without a PP-attacher).
-            Often, the nearest verb phrase is a good guess.
+        """ Returns an anchor chunk for this prepositional noun phrase (without a PP-attacher).
+            Often, the nearest verb phrase is a good candidate.
         """
         return self.nearest("VP")
 
@@ -488,8 +508,7 @@ DISJUNCT = OR  = "OR"
 class Conjunctions(list):
     
     def __init__(self, chunk):
-        """ A chunk property containing other chunks participating in a conjunction,
-            e.g. "clear skies AND sunny beaches".
+        """ Chunk.conjunctions is a list of other chunks participating in a conjunction.
             Each item in the list is a (chunk, conjunction)-tuple, with conjunction either AND or OR.
         """
         list.__init__(self)
@@ -513,37 +532,36 @@ def _is_tokenstring(string):
 class Sentence(object):
 
     def __init__(self, string="", token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA], language="en"):
-        """ A search object for sentence words, chunks and prepositions.
+        """ A nested tree of sentence words, chunks and prepositions.
             The input is a tagged string from parse(). 
             The order in which token tags appear can be specified.
         """
-        # Extract token format from TokenString if possible.
+        # Extract token format from TokenString or TaggedString if possible.
         if _is_tokenstring(string):
             token, language = string.tags, getattr(string, "language", language)
-        # Ensure Unicode.
+        # Convert to Unicode.
         if isinstance(string, str):
             for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
                 try: string = string.decode(*encoding)
                 except:
                     pass
-        self.parent      = None # Slices will refer to the sentence they are part of.
-        self.text        = None # Text object this sentence is part of.
+        self.parent      = None # A Slice refers to the Sentence it is part of.
+        self.text        = None # A Sentence refers to the Text it is part of.
         self.language    = language
         self.id          = _uid()
         self.token       = list(token)
         self.words       = []
-        self.chunks      = [] # Words grouped in chunk ranges.
-        self.pnp         = [] # Words grouped in prepositional noun phrase ranges.
+        self.chunks      = [] # Words grouped into chunks.
+        self.pnp         = [] # Words grouped into PNP chunks.
         self._anchors    = {} # Anchor tags related to anchor chunks or attached PNP's.
         self._relation   = None # Helper variable: the last chunk's relation and role.
-        self._attachment = None # Helper variable: the last attachment tag (e.g. P1) parsed in _do_pnp().
+        self._attachment = None # Helper variable: the last attachment tag (e.g., "P1") parsed in _do_pnp().
         self._previous   = None # Helper variable: the last token parsed in parse_token().
         self.relations   = { "SBJ":{}, "OBJ":{}, "VP":{} }
-        
+        # Split the slash-formatted token into the separate tags in the given order.
+        # Append Word and Chunk objects according to the token's tags.        
         for chars in string.split(" "):
             if len(chars) > 0:
-                # Split the slash-formatted token into the separate tags according to the given order.
-                # Append Word and Chunk objects according to the token's tags.
                 self.append(*self.parse_token(chars, token))
 
     @property
@@ -552,14 +570,16 @@ class Sentence(object):
 
     @property
     def lemmata(self):
-        return dynamic_map(lambda w: w.lemma, self.words)
+        return Map(lambda w: w.lemma, self.words)
         #return [word.lemma for word in self.words]
+        
     lemma = lemmata
 
     @property
     def parts_of_speech(self):
-        return dynamic_map(lambda w: w.type, self.words)
+        return Map(lambda w: w.type, self.words)
         #return [word.type for word in self.words]
+        
     pos = parts_of_speech
 
     @property
@@ -569,11 +589,13 @@ class Sentence(object):
     @property
     def phrases(self):
         return self.chunks
+        
     chunk = phrases
 
     @property
     def prepositional_phrases(self):
         return self.pnp
+        
     prepositional_noun_phrases = prepositional_phrases
 
     @property
@@ -622,17 +644,17 @@ class Sentence(object):
         return self.words.__iter__()
     
     def append(self, word, lemma=None, type=None, chunk=None, role=None, relation=None, pnp=None, anchor=None, iob=None, custom={}):
-        """ Appends the next word to the sentence and attaches words, chunks, prepositions.
-            The tagged tokens from the parser's output simply need to be split and passed to Sentence.append().
-            - word     : the current word.
-            - lemma    : lemmatized form of the word.
-            - type     : part-of-speech tag for the word (NN, JJ, ...).
-            - chunk    : part-of-speech tag for the chunk this word is part of (NP, VP, ...).
-            - role     : the chunk's grammatical role (SBJ, OBJ, ...).
-            - relation : an id shared by other related chunks (e.g. SBJ-1 <=> VP-1).
-            - pnp      : PNP if this word is in a prepositional noun phrase (BEGIN- prefix optional).
-            - iob      : BEGIN if the word marks the start of a new chunk.
-                         INSIDE (optional) if the word is part of the previous chunk.
+        """ Appends the next word to the sentence / chunk / preposition.
+            For example: Sentence.append("clawed", "claw", "VB", "VP", role=None, relation=1)
+            - word     : the current word,
+            - lemma    : the canonical form of the word,
+            - type     : part-of-speech tag for the word (NN, JJ, ...),
+            - chunk    : part-of-speech tag for the chunk this word is part of (NP, VP, ...),
+            - role     : the chunk's grammatical role (SBJ, OBJ, ...),
+            - relation : an id shared by other related chunks (e.g., SBJ-1 <=> VP-1),
+            - pnp      : PNP if this word is in a prepositional noun phrase (B- prefix optional),
+            - iob      : BEGIN if the word marks the start of a new chunk,
+                         INSIDE (optional) if the word is part of the previous chunk,
             - custom   : a dictionary of (tag, value)-items for user-defined word tags.
         """
         self._do_word(word, lemma, type)           # Appends a new Word object.
@@ -646,18 +668,24 @@ class Sentence(object):
     def parse_token(self, token, tags=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
         """ Returns the arguments for Sentence.append() from a tagged token representation.
             The order in which token tags appear can be specified.
-            The default order is: word, part-of-speech, (IOB-)chunk, (IOB-)preposition, 
-            chunk(-relation)(-role), anchor, lemma, separated by slashes. 
-            As in:
-            I/PRP/B-NP/O/NP-SBJ-1/O/i 
-            eat/VBP/B-VP/O/VP-1/A1/eat
-            pizza/NN/B-NP/O/NP-OBJ-1/O/pizza 
-            with/IN/B-PP/B-PNP/PP/P1/with 
-            a/DT/B-NP/I-PNP/NP/P1/a 
-            fork/NN/I-NP/I-PNP/NP/P1/fork 
+            The default order is (separated by slashes): 
+            - word, 
+            - part-of-speech, 
+            - (IOB-)chunk, 
+            - (IOB-)preposition, 
+            - chunk(-relation)(-role), 
+            - anchor, 
+            - lemma.
+            Examples:
+            The/DT/B-NP/O/NP-SBJ-1/O/the
+            cats/NNS/I-NP/O/NP-SBJ-1/O/cat
+            clawed/VBD/B-VP/O/VP-1/A1/claw
+            at/IN/B-PP/B-PNP/PP/P1/at
+            the/DT/B-NP/I-PNP/NP/P1/the
+            sofa/NN/I-NP/I-PNP/NP/P1/sofa
             ././O/O/O/O/.
             Returns a (word, lemma, type, chunk, role, relation, preposition, anchor, iob, custom)-tuple,
-            i.e. you can do Sentence.append(*Sentence.parse_token("airplane/NN"))
+            which can be passed to Sentence.append(): Sentence.append(*Sentence.parse_token("cats/NNS/NP"))
             The custom value is a dictionary of (tag, value)-items of unrecognized tags in the token.
         """
         p = { WORD: "", 
@@ -669,42 +697,45 @@ class Sentence(object):
               ROLE: None,
             ANCHOR: None,
              LEMMA: None }
-        custom = [tag for tag in tags if tag not in p] # Tags for custom parsers, e.g. a SENTIMENT-tag.
+        custom = [tag for tag in tags if tag not in p] # Custom tags.
         p.update(dict.fromkeys(custom, None))
-        # Split the slash-formatted token into the separate tags according to the given order.
-        # Convert &slash; characters (usually in words and lemmata).
+        # Split the slash-formatted token into separate tags in the given order.
+        # Decode &slash; characters (usually in words and lemmata).
         # Assume None for missing tags (except the word itself, which defaults to an empty string).
         token = token.split("/")
         for i in range(min(len(token), len(tags))):
             if token[i] != OUTSIDE \
-             or tags[i] in (WORD, LEMMA): # In "O is part of the alphabet" => "O" != OUTSIDE.
+             or tags[i] in (WORD, LEMMA): # "O is part of the alphabet" => "O" != OUTSIDE.
                 p[tags[i]] = decode_entities(token[i])
-        # Split I/B prefix from the chunk tag:
-        # B- marks the start of a new chunk, I- marks inside of a chunk.
+        # Split IOB-prefix from the chunk tag:
+        # B- marks the start of a new chunk, 
+        # I- marks inside of a chunk.
         if p[CHUNK] is not None:
             x = p[CHUNK].split("-")
             if len(x) == 2: p[CHUNK] = x[1]; p[IOB] = x[0] # B-NP
             if len(x) == 1: p[CHUNK] = x[0]                # NP        
         # Split the role from the relation:
-        # NP-SBJ-1 => relation id is 1 and role SBJ, VP-1 => relation id is 1 and no role.
-        # Note: tokens can be tagged with multiple relations (e.g. NP-OBJ-1*NP-OBJ-3).
+        # NP-SBJ-1 => relation id is 1 and role is SBJ, 
+        # VP-1 => relation id is 1 with no role.
+        # Tokens may be tagged with multiple relations (e.g., NP-OBJ-1*NP-OBJ-3).
         if p[REL] is not None:
             ch, p[REL], p[ROLE] = self._parse_relation(p[REL])
-            # We can derive a (missing) chunk tag from the relation tag (e.g. NP-SBJ-1 => NP).
-            # For PP relation tags (e.g. PP-CLR-1), the first chunk is PP, the following chunks NP.
-            if ch == "PP" and self._previous \
-                            and self._previous[REL]  == p[REL] \
-                            and self._previous[ROLE] == p[ROLE]: ch = "NP"
+            # Infer a missing chunk tag from the relation tag (e.g., NP-SBJ-1 => NP).
+            # For PP relation tags (e.g., PP-CLR-1), the first chunk is PP, the following chunks NP.
+            if ch == "PP" \
+              and self._previous \
+              and self._previous[REL]  == p[REL] \
+              and self._previous[ROLE] == p[ROLE]: 
+                ch = "NP"
             if not p[CHUNK] and ch != OUTSIDE:
                 p[CHUNK] = ch
         self._previous = p
-        # Return the tags in the same order as the parameters for Sentence.append().
+        # Return the tags in the right order for Sentence.append().
         custom = dict([(tag, p[tag]) for tag in custom])
         return p[WORD], p[LEMMA], p[POS], p[CHUNK], p[ROLE], p[REL], p[PNP], p[ANCHOR], p[IOB], custom
     
     def _parse_relation(self, tag):
-        """ Parses the role and relation id from the token relation tag.
-            About 20 percent of sentences parsed by MBSP have chunks with multiple relations:
+        """ Parses the chunk tag, role and relation id from the token relation tag.
             - VP                => VP, [], []
             - VP-1              => VP, [1], [None]
             - NP-SBJ-1          => NP, [1], [SBJ]
@@ -736,15 +767,15 @@ class Sentence(object):
         """ Adds a new Word to the sentence.
             Other Sentence._do_[tag] functions assume a new word has just been appended.
         """
-        # Improve 3rd person singular "'s" lemma to "be", e.g. as in "he's fine".
-        if lemma == "'s" and type == "VBZ":
+        # Improve 3rd person singular "'s" lemma to "be", e.g., as in "he's fine".
+        if lemma == "'s" and type in ("VB", "VBZ"):
             lemma = "be"
         self.words.append(Word(self, word, lemma, type, index=len(self.words)))     
 
     def _do_chunk(self, type, role=None, relation=None, iob=None):
-        """ Either adds a new Chunk to the sentence, or adds the last word to the previous chunk.
+        """ Adds a new Chunk to the sentence, or adds the last word to the previous chunk.
             The word is attached to the previous chunk if both type and relation match,
-            and if the word's chunk tag does not start with "B-" (i.e. iob != BEGIN).
+            and if the word's chunk tag does not start with "B-" (i.e., iob != BEGIN).
             Punctuation marks (or other "O" chunk tags) are not chunked.
         """
         O = (None, OUTSIDE)
@@ -754,7 +785,7 @@ class Sentence(object):
          and self.chunks[-1].type == type \
          and self._relation == (relation, role) \
          and not iob == BEGIN \
-         and not self.words[-2].chunk is None: # As for me, I'm off => me + I are different chunks
+         and not self.words[-2].chunk is None: # "As for me, I'm off" => "me" & "I" are different chunks
             self.chunks[-1].append(self.words[-1])
         else:
             ch = Chunk(self, [self.words[-1]], type, role, relation)
@@ -763,7 +794,7 @@ class Sentence(object):
     
     def _do_relation(self):
         """ Attaches subjects, objects and verbs.
-            If the previous chunk is a subject/object/verb it is stored in Sentence.relations{}.
+            If the previous chunk is a subject/object/verb, it is stored in Sentence.relations{}.
         """
         if len(self.chunks) > 0:
             ch = self.chunks[-1]
@@ -773,9 +804,9 @@ class Sentence(object):
                 self.relations[ch.type][ch.relation] = ch
 
     def _do_pnp(self, pnp, anchor=None):
-        """ Attach prepositional noun phrases.
-            We can identify PNP's from either the PNP tag or the P-attachment tag.
-            This does not yet determine the PP-anchor, only groups words in a PNP chunk.
+        """ Attaches prepositional noun phrases.
+            Identifies PNP's from either the PNP tag or the P-attachment tag.
+            This does not determine the PP-anchor, it only groups words in a PNP chunk.
         """
         P = find(lambda x: x.startswith("P"), anchor and anchor.split("-") or [])
         if pnp and pnp.endswith("PNP") or P is not None:
@@ -791,8 +822,8 @@ class Sentence(object):
             self._attachment = P
     
     def _do_anchor(self, anchor):
-        """ Collect preposition anchors and attachments in a dictionary as we iterate words.
-            Once the dictionary has an entry for both the anchor and the attachment we can link them.
+        """ Collects preposition anchors and attachments in a dictionary.
+            Once the dictionary has an entry for both the anchor and the attachment, they are linked.
         """
         for x in (anchor and anchor.split("-") or []):
             A, P = None, None
@@ -815,7 +846,7 @@ class Sentence(object):
 
     def _do_conjunction(self):
         """ Attach conjunctions.
-            CC-words like "and" / "or" between two chunks indicate a conjunction.
+            CC-words like "and" and "or" between two chunks indicate a conjunction.
         """
         if len(self.words) > 2 and self.words[-2].type == "CC":
             if self.words[-2].chunk is None:
@@ -852,7 +883,7 @@ class Sentence(object):
         
     def loop(self, *tags):
         """ Iterates over the tags in the entire Sentence,
-            e.g. Sentence.loop(POS, LEMMA) yields tuples of the part-of-speech tags and lemmata. 
+            For example, Sentence.loop(POS, LEMMA) yields tuples of the part-of-speech tags and lemmata. 
             Possible tags: WORD, LEMMA, POS, CHUNK, PNP, RELATION, ROLE, ANCHOR or a custom word tag.
             Any order or combination of tags can be supplied.
         """
@@ -894,7 +925,7 @@ class Sentence(object):
             # If the given range does not contain the chunk head, remove the chunk tags.
             if word.chunk is not None and (word.chunk.stop > stop):
                 p3, p4, p5, p6, p7, p8 = None, None, None, None, None, None
-            # If the word starts the preposition, add the IOB B-prefix (i.e. B-PNP).
+            # If the word starts the preposition, add the IOB B-prefix (i.e., B-PNP).
             if word.pnp is not None and word.pnp.start == start+i:
                 p4 = BEGIN+"-"+"PNP"
             # If the given range does not contain the entire PNP, remove the PNP tags.
@@ -914,7 +945,7 @@ class Sentence(object):
         return chunked(self)
         
     def constituents(self, pnp=False):
-        """ Returns an in-order list of the top Chunk and Word objects.
+        """ Returns an in-order list of mixed Chunk and Word objects.
             With pnp=True, also contains PNPChunk objects whenever possible.
         """
         a = []
@@ -940,9 +971,9 @@ class Sentence(object):
         return "Sentence(%s)" % repr(" ".join(["/".join(word.tags) for word in self.words]).encode("utf-8"))
         
     def __eq__(self, other):
-        if not isinstance(other, Sentence): return False
-        return len(self) == len(other) \
-          and repr(self) == repr(other)
+        if not isinstance(other, Sentence): 
+            return False
+        return len(self) == len(other) and repr(self) == repr(other)
 
     @property
     def xml(self):
@@ -981,20 +1012,20 @@ class Slice(Sentence):
         return self._start + len(self.words)
 
 #---------------------------------------------------------------------------------------------------
-# s = split(parse("black cats and white dogs"))
-# s.words           => [Word('black/JJ'), Word('cats/NNS'), Word('and/CC'), Word('white/JJ'), Word('dogs/NNS')]
-# s.chunks          => [Chunk('black cats/NP'), Chunk('white dogs/NP')]
-# s.constituents(s) => [Chunk('black cats/NP'), Word('and/CC'), Chunk('white dogs/NP')]
-# chunked(s)        => [Chunk('black cats/NP'), Chink('and/O'), Chunk('white dogs/NP')]
+# s = Sentence(parse("black cats and white dogs"))
+# s.words          => [Word('black/JJ'), Word('cats/NNS'), Word('and/CC'), Word('white/JJ'), Word('dogs/NNS')]
+# s.chunks         => [Chunk('black cats/NP'), Chunk('white dogs/NP')]
+# s.constituents() => [Chunk('black cats/NP'), Word('and/CC'), Chunk('white dogs/NP')]
+# s.chunked(s)     => [Chunk('black cats/NP'), Chink('and/O'), Chunk('white dogs/NP')]
 
 def chunked(sentence):
     """ Returns a list of Chunk and Chink objects from the given sentence.
-        Chink is a subclass of Chunk used for words that have Word.chunk==None
-        (e.g. punctuation marks, conjunctions).
+        Chink is a subclass of Chunk used for words that have Word.chunk == None
+        (e.g., punctuation marks, conjunctions).
     """
-    # For example: to create an instance that uses the head of previous chunks as feature.
-    # Doing this with Sentence.chunks would lose the punctuation and conjunction words
-    # (Sentence.chunks only has Chunk objects) which can be useful as feature.
+    # For example, to construct a training vector with the head of previous chunks as a feature.
+    # Doing this with Sentence.chunks would discard the punctuation marks and conjunctions
+    # (Sentence.chunks only yields Chunk objects), which amy be useful features.
     chunks = []
     for word in sentence:
         if word.chunk is not None:
@@ -1012,7 +1043,7 @@ class Text(list):
     
     def __init__(self, string, token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA], language="en", encoding="utf-8"):
         """ A list of Sentence objects parsed from the given string.
-            The string is the unicode return value from parse().
+            The string is the Unicode return value from parse().
         """
         self.encoding = encoding
         # Extract token format from TokenString if possible.
@@ -1062,7 +1093,7 @@ class Text(list):
     @property
     def xml(self):
         """ Yields the sentence as an XML-formatted string (plain bytestring, UTF-8 encoded).
-            All the sentences are wrapped in a <text> element.
+            All the sentences in the XML are wrapped in a <text> element.
         """
         xml = []
         xml.append('<?xml version="1.0" encoding="%s"?>' % XML_ENCODING.get(self.encoding, self.encoding))
@@ -1082,13 +1113,13 @@ class Text(list):
 Tree = Text
 
 def split(string, token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
-    """ Transforms the output from parse() into a Text object.
+    """ Transforms the output of parse() into a Text object.
         The token parameter lists the order of tags in each token in the input string.
     """
     return Text(string, token)
 
 def xml(string, token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
-    """ Transforms the output from parse() into XML.
+    """ Transforms the output of parse() into XML.
         The token parameter lists the order of tags in each token in the input string.
     """
     return Text(string, token).xml
@@ -1214,7 +1245,7 @@ def parse_xml(sentence, tab="\t", id=""):
         if chunk and chunk.start == word.index:
             if chunk.relations:
                 # Create the shortest possible attribute values for multiple relations, 
-                # e.g. [(1,"OBJ"),(2,"OBJ")]) => relation="OBJ" id="1|2"
+                # e.g., [(1,"OBJ"),(2,"OBJ")]) => relation="OBJ" id="1|2"
                 r1 = unzip(0, chunk.relations) # Relation id's.
                 r2 = unzip(1, chunk.relations) # Relation roles.
                 r1 = [x is None and "-" or uid(x) for x in r1]
@@ -1302,7 +1333,7 @@ _attachments = {} # {u'A1': [[[u'with', u'IN', u'B-PP', 'B-PNP', u'PP', 'O', u'w
                   #           [u'fork', u'NN', u'I-NP', 'I-PNP', u'NP', 'O', u'fork', 'O']]]}
 
 # This is a fallback if for some reason we fail to import MBSP.TokenString,
-# e.g. when tree.py is part of another project.
+# e.g., when tree.py is part of another project.
 class TaggedString(unicode):
     def __new__(cls, string, tags=["word"], language="en"):
         if isinstance(string, unicode) and hasattr(string, "tags"): 
@@ -1424,7 +1455,7 @@ def _parse_relation(chunk, type="O"):
 def _parse_token(word, chunk="O", pnp="O", relation="O", anchor="O", 
                  format=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
     """ Returns a list of token tags parsed from the given <word> element.
-        Tags that are not attributes in a <word> (e.g. relation) can be given as parameters.
+        Tags that are not attributes in a <word> (e.g., relation) can be given as parameters.
     """
     tags = []
     for tag in format:
@@ -1588,6 +1619,6 @@ def table(sentence, fill=1, placeholder="-"):
     # Anchor column is useful in MBSP but not in pattern.en.
     if not MBSP:
         del columns[6] 
-    # Create a string with one row (i.e. one token) per line.
+    # Create a string with one row (i.e., one token) per line.
     return "\n".join(["".join([x[i] for x in columns]) for i in range(len(columns[0]))])
     
