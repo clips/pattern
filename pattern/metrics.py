@@ -178,7 +178,7 @@ def sensitivity(classify=lambda document:False, documents=[]):
 def specificity(classify=lambda document:False, documents=[]):
     """ Returns the percentage of negative cases correctly classified as negative.
     """
-    TP, TN, FP, FN = confusion_matrix(classify, documents, average=None)
+    TP, TN, FP, FN = confusion_matrix(classify, documents)
     return float(TN) / ((TN + FP) or 1)
 
 TPR = sensitivity # true positive rate
