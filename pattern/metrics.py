@@ -144,28 +144,28 @@ def test(classify=lambda document:False, documents=[], average=None):
 def accuracy(classify=lambda document:False, documents=[], average=None):
     """ Returns the percentage of correct classifications (true positives + true negatives).
     """
-    return test(classify, documents)[0]
+    return test(classify, documents, average)[0]
 
 def precision(classify=lambda document:False, documents=[], average=None):
     """ Returns the percentage of correct positive classifications.
     """
-    return test(classify, documents)[1]
+    return test(classify, documents, average)[1]
 
 def recall(classify=lambda document:False, documents=[], average=None):
     """ Returns the percentage of positive cases correctly classified as positive.
     """
-    return test(classify, documents)[2]
+    return test(classify, documents, average)[2]
     
 def F1(classify=lambda document:False, documents=[], average=None):
     """ Returns the harmonic mean of precision and recall.
     """
-    return test(classify, documents)[3]
+    return test(classify, documents, average)[3]
     
 def F(classify=lambda document:False, documents=[], beta=1, average=None):
     """ Returns the weighted harmonic mean of precision and recall,
         where recall is beta times more important than precision.
     """
-    A, P, R, F1 = test(classify, documents)
+    A, P, R, F1 = test(classify, documents, average)
     return (beta ** 2 + 1) * P * R / ((beta ** 2 * P + R) or 1)
 
 #### SENSITIVITY & SPECIFICITY #####################################################################
