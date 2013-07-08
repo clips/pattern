@@ -244,7 +244,7 @@ class Lexicon(lazydict):
 # NN s fhassuf 1 NNS x => unknown words ending in -s and tagged NN change to NNS.
 #     ly hassuf 2 RB x => unknown words ending in -ly change to RB.
 
-class Rules:
+class Rules(object):
     
     def __init__(self, lexicon={}, cmd={}):
         self.lexicon, self.cmd = lexicon, cmd
@@ -393,8 +393,8 @@ class Context(lazylist, Rules):
                 or (cmd == "rbigram"        and x ==  t[i+0][0] and y == t[i+1][0]) \
                 or (cmd == "prevbigram"     and x ==  t[i-2][1] and y == t[i-1][1]) \
                 or (cmd == "nextbigram"     and x ==  t[i+1][1] and y == t[i+2][1]):
-                    tokens[i-len(o)] = [tokens[i-len(o)][0], r[1]]
-        return tokens
+                    t[i] = [t[i][0], r[1]]
+        return t[len(o):-len(o)]
 
 #--- NAMED ENTITY RECOGNIZER -----------------------------------------------------------------------
 
@@ -489,7 +489,11 @@ class Entities(lazydict, Rules):
 # - the phrase start is marked: B (begin), I (inside), O (outside),
 # - the past tense "sat" is lemmatized => "sit".
 
-class Parser:
+# By default, the English parser uses the Penn Treebank II tagset:
+# http://www.clips.ua.ac.be/pages/penn-treebank-tagset
+PTB = PENN = "penn"
+
+class Parser(object):
     
     def __init__(self, lexicon={}, default=("NN", "NNP", "CD"), language=None):
         """ A simple shallow parser using a Brill-based part-of-speech tagger.
@@ -654,6 +658,55 @@ class TaggedString(unicode):
             for token in sentence.split(" ")] 
                 for sentence in unicode.split(self, "\n")]
 
+#--- UNIVERSAL TAGSET ------------------------------------------------------------------------------
+# The default part-of-speech tagset used in Pattern is Penn Treebank II.
+# However, not all languages are well-suited to Penn Treebank (which was developed for English).
+# As more languages are implemented, this is becoming more problematic.
+#
+# A universal tagset is proposed by Slav Petrov (2012):
+# http://www.petrovi.de/data/lrec.pdf
+#
+# Subclasses of Parser should start implementing 
+# Parser.parse(tagset=UNIVERSAL) with a simplified tagset.
+# The names of the constants correspond to Petrov's naming scheme, while
+# the value of the constants correspond to Penn Treebank.
+
+UNIVERSAL = "universal"
+
+NOUN, VERB, ADJ, ADV, PRON, DET, PREP, ADP, NUM, CONJ, INTJ, PRT, PUNC, X = \
+    "NN", "VB", "JJ", "RB", "PR", "DT", "PP", "PP", "NO", "CJ", "UH", "PT", ".", "X"
+
+def penntreebank2universal(token, tag):
+    """ Returns a (token, tag)-tuple with a simplified universal part-of-speech tag.
+    """
+    if tag.startswith(("NNP-", "NNPS-")):
+        return (token, "%s-%s" % (NOUN, tag.split("-")[-1]))
+    if tag in ("NN", "NNS", "NNP", "NNPS", "NP"):
+        return (token, NOUN)
+    if tag in ("MD", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"):
+        return (token, VERB)
+    if tag in ("JJ", "JJR", "JJS"):
+        return (token, ADJ)
+    if tag in ("RB", "RBR", "RBS", "WRB"):
+        return (token, ADV)
+    if tag in ("PRP", "PRP$", "WP", "WP$"):
+        return (token, PRON)
+    if tag in ("DT", "PDT", "WDT", "EX"):
+        return (token, DET)
+    if tag in ("IN",):
+        return (token, PREP)
+    if tag in ("CD",):
+        return (token, NUM)
+    if tag in ("CC",):
+        return (token, CONJ)
+    if tag in ("UH",):
+        return (token, INTJ)
+    if tag in ("POS", "RP", "TO"):
+        return (token, PRT)
+    if tag in ("SYM", "LS", ".", "!", "?", ",", ":", "(", ")", "\"", "#", "$"):
+        return (token, PUNC)
+    return (token, X)
+        
 #--- TOKENIZER -------------------------------------------------------------------------------------
 
 TOKEN = re.compile(r"(\S+)\s")
@@ -790,7 +843,7 @@ def find_tags(tokens, lexicon={}, default=("NN", "NNP", "CD"), language="en", ma
         Unknown words that consist only of digits and punctuation marks are tagged CD.
         Unknown words are then improved with morphological rules.
         All words are improved with contextual rules.
-        If map is a function, it is applied to each tag after applying all rules.
+        If map is a function, it is applied to each (token, tag) after applying all rules.
     """
     tagged = []
     if isinstance(lexicon, Lexicon):
@@ -819,7 +872,7 @@ def find_tags(tokens, lexicon={}, default=("NN", "NNP", "CD"), language="en", ma
         tagged = lexicon.context.apply(tagged)
         tagged = lexicon.entities.apply(tagged)
     if map is not None:
-        tagged = [[token, map(tag) or default[0]] for token, tag in tagged]
+        tagged = [list(map(token, tag)) or [token, default[0]] for token, tag in tagged]
     return tagged
 
 #--- PHRASE CHUNKER --------------------------------------------------------------------------------
@@ -836,19 +889,19 @@ RB = r"(?<!W)RB|RBR|RBS"
 # CHUNKS[1] = Romance: RB + JJ precedes or follows NN ("la table ronde", "une jolie fille").
 CHUNKS = [[ 
     # Germanic languages: en, de, nl, ...
-    (  "NP", re.compile(r"(("+NN+")/)*((DT|CD|CC)/)*(("+RB+"|"+JJ+")/)*(("+NN+")/)+")),
+    (  "NP", re.compile(r"(("+NN+")/)*((DT|CD|CC|CJ)/)*(("+RB+"|"+JJ+")/)*(("+NN+")/)+")),
     (  "VP", re.compile(r"(((MD|"+RB+")/)*(("+VB+")/)+)+")),
     (  "VP", re.compile(r"((MD)/)")),
-    (  "PP", re.compile(r"((IN|TO)/)")),
-    ("ADJP", re.compile(r"((CC|"+RB+"|"+JJ+")/)*(("+JJ+")/)+")),
+    (  "PP", re.compile(r"((IN|PP|TO)/)+")),
+    ("ADJP", re.compile(r"((CC|CJ|"+RB+"|"+JJ+")/)*(("+JJ+")/)+")),
     ("ADVP", re.compile(r"(("+RB+"|WRB)/)+")),
 ], [ 
     # Romance languages: es, fr, it, ...
-    (  "NP", re.compile(r"(("+NN+")/)*((DT|CD|CC)/)*(("+RB+"|"+JJ+")/)*(("+NN+")/)+(("+RB+"|"+JJ+")/)*")),
+    (  "NP", re.compile(r"(("+NN+")/)*((DT|CD|CC|CJ)/)*(("+RB+"|"+JJ+")/)*(("+NN+")/)+(("+RB+"|"+JJ+")/)*")),
     (  "VP", re.compile(r"(((MD|"+RB+")/)*(("+VB+")/)+(("+RB+")/)*)+")),
     (  "VP", re.compile(r"((MD)/)")),
-    (  "PP", re.compile(r"((IN|TO)/)")),
-    ("ADJP", re.compile(r"((CC|"+RB+"|"+JJ+")/)*(("+JJ+")/)+")),
+    (  "PP", re.compile(r"((IN|PP|TO)/)+")),
+    ("ADJP", re.compile(r"((CC|CJ|"+RB+"|"+JJ+")/)*(("+JJ+")/)+")),
     ("ADVP", re.compile(r"(("+RB+"|WRB)/)+")),
 ]]
 
@@ -878,7 +931,7 @@ def find_chunks(tagged, language="en"):
                     continue
                 if len(chunked[k]) < 3:
                     # A conjunction can not be start of a chunk.
-                    if k == j and chunked[k][1] in ("CC", "KON", "Conj(neven)"):
+                    if k == j and chunked[k][1] in ("CC", "CJ", "KON", "Conj(neven)"):
                         j += 1
                     # Mark first token in chunk with B-.
                     elif k == j:
@@ -903,17 +956,25 @@ def find_prepositions(chunked):
         The output is a list of [token, tag, chunk, preposition]-items.
         PP-chunks followed by NP-chunks make up a PNP-chunk.
     """
-    n = len(chunked) > 0 and len(chunked[0]) or 0
-    for i, chunk in enumerate(chunked):
-        if chunk[2].endswith("PP") and i<len(chunked)-1 and chunked[i+1][2].endswith("NP"):
-            chunk.append("B-PNP")
-            for ch in chunked[i+1:]:
-                if not ch[2].endswith("NP"): 
-                    break
-                ch.append("I-PNP")
     # Tokens that are not part of a preposition just get the O-tag.
-    for chunk in filter(lambda x: len(x) < n+1, chunked):
-        chunk.append("O")
+    for ch in chunked:
+        ch.append("O")
+    for i, chunk in enumerate(chunked):
+        if chunk[2].endswith("PP") and chunk[-1] == "O":
+            # Find PP followed by other PP, NP with nouns and pronouns, VP with a gerund.
+            if i < len(chunked)-1 and \
+             (chunked[i+1][2].endswith(("NP", "PP")) or \
+              chunked[i+1][1] in ("VBG", "VBN")):
+                chunk[-1] = "B-PNP"
+                pp = True
+                for ch in chunked[i+1:]:
+                    if not (ch[2].endswith(("NP", "PP")) or ch[1] in ("VBG", "VBN")):
+                        break
+                    if ch[2].endswith("PP") and pp:
+                        ch[-1] = "I-PNP"
+                    if not ch[2].endswith("PP"):
+                        ch[-1] = "I-PNP"
+                        pp = False
     return chunked
 
 #--- SEMANTIC ROLE LABELER -------------------------------------------------------------------------
@@ -964,7 +1025,7 @@ def find_relations(chunked):
     for i, chunk in enumerate(chunks):
         if 0 < i < len(chunks)-1 and len(chunk) == 1 and chunk[-1][-1] == "O":
             t0, t1, t2 = chunks[i-1][-1], chunks[i][0], chunks[i+1][0] # previous / current / next
-            if tag(t1) == "PP" and t2[1] in ("DT", "PRP$"):
+            if tag(t1) == "PP" and t2[1] in ("DT", "PR", "PRP$"):
                 if t0[0] in BE and t1[0] in ("in", "at")      : t1[-1] = "PP-LOC"
                 if t0[0] in GO and t1[0] in ("to", "towards") : t1[-1] = "PP-DIR"
     related = []; [related.extend(chunk) for chunk in chunks]

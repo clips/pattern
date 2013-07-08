@@ -173,7 +173,7 @@ class TestParser(unittest.TestCase):
           (".",    "Punc(punt)"),
           ("UH",   "Int"),
           ("SYM",  "Misc(symbool)")):
-            self.assertEqual(nl.wotan2penntreebank(wotan), penntreebank)
+            self.assertEqual(nl.wotan2penntreebank("", wotan)[1], penntreebank)
         print "pattern.nl.wotan2penntreebank()"
         
     def test_find_lemmata(self):
@@ -206,7 +206,7 @@ class TestParser(unittest.TestCase):
         for sentence in open(os.path.join(PATH, "corpora", "tagged-nl-twnc.txt")).readlines():
             sentence = sentence.decode("utf-8").strip()
             s1 = [w.split("/") for w in sentence.split(" ")]
-            s1 = [(w, nl.wotan2penntreebank(tag)) for w, tag in s1]
+            s1 = [nl.wotan2penntreebank(w, tag) for w, tag in s1]
             s2 = [[w for w, pos in s1]]
             s2 = nl.parse(s2, tokenize=False)
             s2 = [w.split("/") for w in s2.split(" ")]

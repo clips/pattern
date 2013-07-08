@@ -23,6 +23,12 @@ from pattern.text import (
     Lexicon, Spelling, Parser as _Parser, ngrams, pprint, commandline,
     PUNCTUATION
 )
+# Import parser universal tagset.
+from pattern.text import (
+    penntreebank2universal,
+    PTB, PENN, UNIVERSAL,
+    NOUN, VERB, ADJ, ADV, PRON, DET, PREP, ADP, NUM, CONJ, INTJ, PRT, PUNC, X
+)
 # Import parse tree base classes.
 from pattern.text.tree import (
     Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table,
@@ -65,7 +71,6 @@ sys.path.pop(0)
 
 # The lexicon uses the Stuttgart/Tubinger Tagset (STTS):
 # https://files.ifi.uzh.ch/cl/tagger/UIS-STTS-Diffs.html
-PENN = PENNTREEBANK = "penntreebank"
 STTS = "stts"
 stts = tagset = {
      "ADJA": "JJ",   # das große Haus
@@ -138,11 +143,25 @@ stts = tagset = {
        "Se": ":",    # ;
 }
 
-def stts2penntreebank(tag):
-    """ Converts an STTS tag to Penn Treebank II tag.
-        For example: ohne APPR => ohne/IN
+def stts2penntreebank(token, tag):
+    """ Converts an STTS tag to a Penn Treebank II tag.
+        For example: ohne/APPR => ohne/IN
     """
-    return stts.get(tag, tag)
+    return (token, stts.get(tag, tag))
+    
+def stts2universal(token, tag):
+    """ Converts an STTS tag to a universal tag.
+        For example: ohne/APPR => ohne/PREP
+    """
+    if tag in ("KON", "KOUI", "KOUS", "KOKOM"):
+        return (token, CONJ)
+    if tag in ("PTKZU", "PTKNEG", "PTKVZ", "PTKANT"):
+        return (token, PRT)
+    if tag in ("PDF", "PDAT", "PIS", "PIAT", "PIDAT", "PPER", "PPOS", "PPOSAT"): 
+        return (token, PRON)
+    if tag in ("PRELS", "PRELAT", "PRF", "PWS", "PWAT", "PWAV", "PAV"):
+        return (token, PRON)
+    return penntreebank2universal(*stts2penntreebank(token, tag))
 
 ABBREVIATIONS = set((
     "Abs.", "Abt.", "Ass.", "Br.", "Ch.", "Chr.", "Cie.", "Co.", "Dept.", "Diff.", 
@@ -182,8 +201,12 @@ class Parser(_Parser):
         return find_lemmata(tokens)
         
     def find_tags(self, tokens, **kwargs):
-        if kwargs.get("tagset") != STTS:
-            kwargs.setdefault("map", stts2penntreebank)
+        if kwargs.get("tagset") in (PENN, None):
+            kwargs.setdefault("map", lambda token, tag: stts2penntreebank(token, tag))
+        if kwargs.get("tagset") == UNIVERSAL:
+            kwargs.setdefault("map", lambda token, tag: stts2universal(token, tag))
+        if kwargs.get("tagset") is STTS:
+            kwargs.setdefault("map", lambda token,tag: (token, tag))
         # The lexicon uses Swiss spelling: "ss" instead of "ß".
         # We restore the "ß" after parsing.
         tokens_ss = [t.replace(u"ß", "ss") for t in tokens]

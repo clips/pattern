@@ -24,6 +24,12 @@ from pattern.text import (
     Lexicon, Spelling, Parser as _Parser, ngrams, pprint, commandline,
     PUNCTUATION
 )
+# Import parser universal tagset.
+from pattern.text import (
+    penntreebank2universal as _penntreebank2universal,
+    PTB, PENN, UNIVERSAL,
+    NOUN, VERB, ADJ, ADV, PRON, DET, PREP, ADP, NUM, CONJ, INTJ, PRT, PUNC, X
+)
 # Import parse tree base classes.
 from pattern.text.tree import (
     Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table,
@@ -63,6 +69,18 @@ sys.path.pop(0)
 # For words in Lefff that can have different part-of-speech tags,
 # we used Lexique to find the most frequent POS-tag:
 # http://www.lexique.org/
+
+_subordinating_conjunctions = set((
+    "afin", "comme", "lorsque", "parce", "puisque", "quand", "que", "quoique", "si"
+))
+
+def penntreebank2universal(token, tag):
+    """ Converts a Penn Treebank II tag to a universal tag.
+        For example: comme/IN => comme/CONJ
+    """
+    if tag == "IN" and token.lower() in _subordinating_conjunctions:
+        return CONJ
+    return _penntreebank2universal(token, tag)
 
 ABBREVIATIONS = set((
     u"av.", u"boul.", u"C.-B.", u"c.-à-d.", u"ex.", u"éd.", u"fig.", u"I.-P.-E.", u"J.-C.", 
@@ -120,6 +138,13 @@ class Parser(_Parser):
 
     def find_lemmata(self, tokens, **kwargs):
         return find_lemmata(tokens)
+        
+    def find_tags(self, tokens, **kwargs):
+        if kwargs.get("tagset") in (PENN, None):
+            kwargs.setdefault("map", lambda token, tag: (token, tag))
+        if kwargs.get("tagset") == UNIVERSAL:
+            kwargs.setdefault("map", lambda token, tag: penntreebank2universal(token, tag))
+        return _Parser.find_tags(self, tokens, **kwargs)
 
 lexicon = Lexicon(
         path = os.path.join(MODULE, "fr-lexicon.txt"), 

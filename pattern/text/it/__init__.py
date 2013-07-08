@@ -6,6 +6,7 @@
 # License: BSD (see LICENSE.txt for details).
 
 ####################################################################################################
+# Italian linguistical tools using fast regular expressions.
 
 import os
 import sys
@@ -21,6 +22,12 @@ sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))
 from pattern.text import (
     Lexicon, Spelling, Parser as _Parser, ngrams, pprint, commandline,
     PUNCTUATION
+)
+# Import parser universal tagset.
+from pattern.text import (
+    penntreebank2universal as _penntreebank2universal,
+    PTB, PENN, UNIVERSAL,
+    NOUN, VERB, ADJ, ADV, PRON, DET, PREP, ADP, NUM, CONJ, INTJ, PRT, PUNC, X
 )
 # Import parse tree base classes.
 from pattern.text.tree import (
@@ -55,6 +62,22 @@ from pattern.text.it import inflect
 sys.path.pop(0)
 
 #--- PARSER ----------------------------------------------------------------------------------------
+
+_subordinating_conjunctions = set((
+    "che"   , u"perché", "sebbene", 
+    "come"  , u"poiché", "senza", 
+    "se"    , u"perciò", "salvo", 
+    "mentre", u"finché", "dopo",
+    "quando", u"benché"
+))
+
+def penntreebank2universal(token, tag):
+    """ Converts a Penn Treebank II tag to a universal tag.
+        For example: che/IN => che/CONJ
+    """
+    if tag == "IN" and token.lower() in _subordinating_conjunctions:
+        return CONJ
+    return _penntreebank2universal(token, tag)
 
 ABBREVIATIONS = [
     "a.C.", "all.", "apr.", "art.", "artt.", "b.c.", "c.a.", "cfr.", "c.d.", 
@@ -107,6 +130,13 @@ class Parser(_Parser):
 
     def find_lemmata(self, tokens, **kwargs):
         return find_lemmata(tokens)
+
+    def find_tags(self, tokens, **kwargs):
+        if kwargs.get("tagset") in (PENN, None):
+            kwargs.setdefault("map", lambda token, tag: (token, tag))
+        if kwargs.get("tagset") == UNIVERSAL:
+            kwargs.setdefault("map", lambda token, tag: penntreebank2universal(token, tag))
+        return _Parser.find_tags(self, tokens, **kwargs)
 
 lexicon = Lexicon(
         path = os.path.join(MODULE, "it-lexicon.txt"), 

@@ -23,6 +23,12 @@ from pattern.text import (
     Lexicon, Spelling, Parser as _Parser, ngrams, pprint, commandline,
     PUNCTUATION
 )
+# Import parser universal tagset.
+from pattern.text import (
+    penntreebank2universal,
+    PTB, PENN, UNIVERSAL,
+    NOUN, VERB, ADJ, ADV, PRON, DET, PREP, ADP, NUM, CONJ, INTJ, PRT, PUNC, X
+)
 # Import parse tree base classes.
 from pattern.text.tree import (
     Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table,
@@ -57,7 +63,6 @@ sys.path.pop(0)
 
 # The lexicon uses the WOTAN tagset:
 # http://lands.let.ru.nl/literature/hvh.1999.2.ps
-PENN  = PENNTREEBANK = "penntreebank"
 WOTAN = "wotan"
 wotan = {
     "Adj(": (("vergr", "JJR"), ("overtr", "JJS"), ("", "JJ")),
@@ -75,16 +80,24 @@ wotan = {
              ("verl", "VBN"), ("teg", "VBG"), ("", "VB"))
 }
 
-def wotan2penntreebank(tag):
-    """ Converts a WOTAN tag to Penn Treebank II tag.
-        For example: bokkenrijders N(soort,mv,neut) => bokkenrijders/NNS
+def wotan2penntreebank(token, tag):
+    """ Converts a WOTAN tag to a Penn Treebank II tag.
+        For example: bokkenrijders/N(soort,mv,neut) => bokkenrijders/NNS
     """
     for k, v in wotan.iteritems():
         if tag.startswith(k):
             for a, b in v:
                 if a in tag: 
-                    return b
-    return tag
+                    return (token, b)
+    return (token, tag)
+    
+def wotan2universal(token, tag):
+    """ Converts a WOTAN tag to a universal tag.
+        For example: bokkenrijders/N(soort,mv,neut) => bokkenrijders/NOUN
+    """
+    if tag.startswith("Adv"):
+        return (token, ADV)
+    return penntreebank2universal(*wotan2penntreebank(token, tag))
 
 ABBREVIATIONS = set((
     "a.d.h.v.", "afb.", "a.u.b.", "bv.", "b.v.", "bijv.", "blz.", "ca.", "cfr.", "dhr.", "dr.",
@@ -123,8 +136,12 @@ class Parser(_Parser):
         return find_lemmata(tokens)
         
     def find_tags(self, tokens, **kwargs):
-        if kwargs.get("tagset") != WOTAN:
-            kwargs.setdefault("map", wotan2penntreebank)
+        if kwargs.get("tagset") in (PENN, None):
+            kwargs.setdefault("map", lambda token, tag: wotan2penntreebank(token, tag))
+        if kwargs.get("tagset") == UNIVERSAL:
+            kwargs.setdefault("map", lambda token, tag: wotan2universal(token, tag))
+        if kwargs.get("tagset") is WOTAN:
+            kwargs.setdefault("map", lambda token, tag: (token, tag))
         return _Parser.find_tags(self, tokens, **kwargs)
 
 class Sentiment(_Sentiment):

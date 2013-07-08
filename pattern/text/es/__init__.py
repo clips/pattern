@@ -23,6 +23,12 @@ from pattern.text import (
     Lexicon, Spelling, Parser as _Parser, ngrams, pprint, commandline,
     PUNCTUATION
 )
+# Import parser universal tagset.
+from pattern.text import (
+    penntreebank2universal,
+    PTB, PENN, UNIVERSAL,
+    NOUN, VERB, ADJ, ADV, PRON, DET, PREP, ADP, NUM, CONJ, INTJ, PRT, PUNC, X
+)
 # Import parse tree base classes.
 from pattern.text.tree import (
     Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table,
@@ -63,7 +69,6 @@ sys.path.pop(0)
 # The lexicon uses the Parole tagset:
 # http://www.lsi.upc.edu/~nlp/SVMTool/parole.html
 # http://nlp.lsi.upc.edu/freeling/doc/tagsets/tagset-es.html
-PENN = PENNTREEBANK = "penntreebank"
 PAROLE = "parole"
 parole = {
     "AO": "JJ",   # primera
@@ -126,11 +131,23 @@ parole = {
     "Zp": "CD",   # 1,7%
 }
 
-def parole2penntreebank(tag):
-    """ Converts a Parole tag to Penn Treebank II tag.
-        For example: importantísimo AQ => importantísimo/JJ
+def parole2penntreebank(token, tag):
+    """ Converts a Parole tag to a Penn Treebank II tag.
+        For example: importantísimo/AQ => importantísimo/ADJ
     """
-    return parole.get(tag, tag)
+    return (token, parole.get(tag, tag))
+
+def parole2universal(token, tag):
+    """ Converts a Parole tag to a universal tag.
+        For example: importantísimo/AQ => importantísimo/ADJ
+    """
+    if tag == "CS":
+        return (token, CONJ)
+    if tag == "DP":
+        return (token, DET)
+    if tag in ("P0", "PD", "PI", "PP", "PR", "PT", "PX"):
+        return (token, PRON)
+    return penntreebank2universal(*parole2penntreebank(token, tag))
 
 ABBREVIATIONS = set((
     u"a.C.", u"a.m.", u"apdo.", u"aprox.", u"Av.", u"Avda.", u"c.c.", u"D.", u"Da.", u"d.C.", 
@@ -168,8 +185,12 @@ class Parser(_Parser):
         return find_lemmata(tokens)
 
     def find_tags(self, tokens, **kwargs):
-        if kwargs.get("tagset") != PAROLE:
-            kwargs.setdefault("map", parole2penntreebank)
+        if kwargs.get("tagset") in (PENN, None):
+            kwargs.setdefault("map", lambda token, tag: parole2penntreebank(token, tag))
+        if kwargs.get("tagset") == UNIVERSAL:
+            kwargs.setdefault("map", lambda token, tag: parole2universal(token, tag))
+        if kwargs.get("tagset") is PAROLE:
+            kwargs.setdefault("map", lambda token, tag: (token, tag))
         return _Parser.find_tags(self, tokens, **kwargs)
 
 lexicon = Lexicon(

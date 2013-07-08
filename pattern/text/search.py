@@ -428,11 +428,11 @@ class WordNetClassifier(Classifier):
 # Allowed chunk, role and part-of-speech tags (Penn Treebank II):
 CHUNKS = dict.fromkeys(["NP", "PP", "VP", "ADVP", "ADJP", "SBAR", "PRT", "INTJ"], True)
 ROLES  = dict.fromkeys(["SBJ", "OBJ", "PRD", "TMP", "CLR", "LOC", "DIR", "EXT", "PRP"], True)
-TAGS   = dict.fromkeys(["CC", "CD", "DT", "EX", "FW", "IN", "JJ", "JJR", "JJS", "JJ*", 
-                        "LS", "MD", "NN", "NNS", "NNP", "NNPS", "NN*", "PDT", "PRP", 
-                        "PRP$", "PRP*", "RB", "RBR", "RBS", "RB*", "RP", "SYM", "TO", 
-                        "UH", "VB", "VBZ", "VBP", "VBD", "VBN", "VBG", "VB*", 
-                        "WDT", "WP*", "WRB", ".", ",", ":", "(", ")"], True)
+TAGS   = dict.fromkeys(["CC", "CD", "CJ", "DT", "EX", "FW", "IN", "JJ", "JJR", "JJS", "JJ*", 
+                        "LS", "MD", "NN", "NNS", "NNP", "NNPS", "NN*", "NO", "PDT", "PR", 
+                        "PRP", "PRP$", "PR*", "PRP*", "PT", "RB", "RBR", "RBS", "RB*", "RP", 
+                        "SYM", "TO", "UH", "VB", "VBZ", "VBP", "VBD", "VBN", "VBG", "VB*", 
+                        "WDT", "WP*", "WRB", "X", ".", ",", ":", "(", ")"], True)
 
 ALPHA = re.compile("[a-zA-Z]")
 has_alpha = lambda string: ALPHA.match(string) is not None

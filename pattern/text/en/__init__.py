@@ -23,6 +23,12 @@ from pattern.text import (
     Lexicon, Spelling, Parser as _Parser, ngrams, pprint, commandline,
     PUNCTUATION
 )
+# Import parser universal tagset.
+from pattern.text import (
+    penntreebank2universal,
+    PTB, PENN, UNIVERSAL,
+    NOUN, VERB, ADJ, ADV, PRON, DET, PREP, ADP, NUM, CONJ, INTJ, PRT, PUNC, X
+)
 # Import parse tree base classes.
 from pattern.text.tree import (
     Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table,
@@ -86,6 +92,13 @@ class Parser(_Parser):
     
     def find_lemmata(self, tokens, **kwargs):
         return find_lemmata(tokens)
+
+    def find_tags(self, tokens, **kwargs):
+        if kwargs.get("tagset") in (PENN, None):
+            kwargs.setdefault("map", lambda token, tag: (token, tag))
+        if kwargs.get("tagset") == UNIVERSAL:
+            kwargs.setdefault("map", lambda token, tag: penntreebank2universal(token, tag))
+        return _Parser.find_tags(self, tokens, **kwargs)
 
 lexicon = Lexicon(
         path = os.path.join(MODULE, "en-lexicon.txt"), 
