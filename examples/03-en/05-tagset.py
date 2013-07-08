@@ -87,4 +87,9 @@ print
 # or wonder why the Italian "che" is tagged "PRP", "IN" or "CC"
 # (in the universal tagset it is a PRON or a CONJ).
 
-print parse("i gatti neri che sono la mia", language="it", tagset=UNIVERSAL)
+from pattern.text import parsetree
+
+for sentence in parsetree("i gatti neri che sono la mia", language="it", tagset=UNIVERSAL):
+    for word in sentence.words:
+        if word.tag == PRON:
+            print word
