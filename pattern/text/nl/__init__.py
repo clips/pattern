@@ -36,7 +36,9 @@ from pattern.text.tree import (
 )
 # Import sentiment analysis base classes.
 from pattern.text import (
-    Sentiment as _Sentiment, NOUN, VERB, ADJECTIVE, ADVERB
+    Sentiment as _Sentiment,
+    NOUN, VERB, ADJECTIVE, ADVERB,
+    MOOD, IRONY
 )
 # Import verb tenses.
 from pattern.text import (
@@ -146,12 +148,14 @@ class Parser(_Parser):
 
 class Sentiment(_Sentiment):
     
-    def load(self):
-        _Sentiment.load(self)
-        for w, pos in self.items():
-            if "JJ" in pos:
-                # Map "verschrikkelijk" to adverbial "verschrikkelijke" (+1% accuracy)
-                self.setdefault(attributive(w), {"JJ": pos["JJ"], None: pos["JJ"]})
+    def load(self, path=None):
+        _Sentiment.load(self, path)
+        # Map "verschrikkelijk" to adverbial "verschrikkelijke" (+1%)
+        if not path:
+            for w, pos in dict.items(self):
+                if "JJ" in pos:
+                    p, s, i = pos["JJ"]
+                    self.annotate(attributive(w), "JJ", p, s, i)
 
 lexicon = Lexicon(
         path = os.path.join(MODULE, "nl-lexicon.txt"), 

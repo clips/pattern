@@ -40,7 +40,9 @@ from pattern.text.tree import (
 )
 # Import sentiment analysis base classes.
 from pattern.text import (
-    Sentiment, NOUN, VERB, ADJECTIVE, ADVERB
+    Sentiment,
+    NOUN, VERB, ADJECTIVE, ADVERB,
+    MOOD, IRONY
 )
 # Import verb tenses.
 from pattern.text import (

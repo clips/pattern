@@ -200,10 +200,10 @@ class TestSentiment(unittest.TestCase):
             reviews.append((review, int(score) > 0))
         A, P, R, F = test(lambda review: fr.positive(review), reviews)
         #print A, P, R, F
-        self.assertTrue(A > 0.746)
-        self.assertTrue(P > 0.756)
-        self.assertTrue(R > 0.726)
-        self.assertTrue(F > 0.741)
+        self.assertTrue(A > 0.751)
+        self.assertTrue(P > 0.765)
+        self.assertTrue(R > 0.725)
+        self.assertTrue(F > 0.744)
         print "pattern.fr.sentiment()"
         
     def test_tokenizer(self):

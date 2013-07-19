@@ -108,3 +108,4 @@ Contributors (chronological):
 - Jens Grivolla
 - Fabio Marfia
 - Steven Loria
+- Colin Molter + tevizz.com

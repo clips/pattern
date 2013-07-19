@@ -594,8 +594,10 @@ class Document(object):
         return not self.__eq__(document)
     
     def __repr__(self):
-        return "Document(id=%s%s)" % (
-            repr(self._id), self.name and ", name=%s" % repr(self.name) or "")
+        return "Document(id=%s%s%s)" % (
+            repr(self._id), 
+                 self.name and ", name=%s" % repr(self.name) or "",
+                 self.type and ", type=%s" % repr(self.type) or "")
 
 Bag = BagOfWords = Document
 

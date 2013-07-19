@@ -9,7 +9,7 @@ The WordNet id refers to the WordNet3 lexical database for English.
 The part-of-speech tags (pos) use the Penn Treebank || tag set: NN = noun, JJ = adjective, ...
 For English movie reviews (Pang & Lee polarity dataset v2.0), the accuracy is 75% (P 0.76, R 0.75, F1 0.75).
 -->
-<sentiment language="en" version="1.3" author="Tom De Smedt, Walter Daelemans" license="PDDL">
+<sentiment language="en" version="1.3" author="Tom De Smedt, Walter Daelemans" license="PDDL">	
 <word form="13th" wordnet_id="a-02203763" pos="JJ" sense="coming next after the twelfth in position" polarity="0.0" subjectivity="0.0" intensity="1.0" confidence="0.9" />
 <word form="20th" cornetto_synset_id="n_a-531612" wordnet_id="a-02204716" pos="JJ" sense="coming next after the nineteenth in position" polarity="0.0" subjectivity="0.0" intensity="1.0" confidence="0.9" />
 <word form="21st" wordnet_id="a-02204823" pos="JJ" sense="coming next after the twentieth in position" polarity="0.0" subjectivity="0.0" intensity="1.0" confidence="0.9" />
@@ -223,9 +223,9 @@ For English movie reviews (Pang & Lee polarity dataset v2.0), the accuracy is 75
 <word form="back" wordnet_id="a-00197576" pos="JJ" sense="related to or located at the back" polarity="0.0" subjectivity="0.0" intensity="1.0" confidence="0.9" />
 <word form="back" wordnet_id="a-00668816" pos="JJ" sense="of an earlier date" polarity="0.0" subjectivity="0.0" intensity="1.0" confidence="0.9" />
 <word form="bad" cornetto_synset_id="c_174" wordnet_id="a-01125429" pos="JJ" sense="having undesirable or negative qualities" polarity="-0.7" subjectivity="0.9" intensity="1.0" confidence="0.8" />
-<word form="bad" cornetto_synset_id="c_386" wordnet_id="a-01125429" pos="JJ" sense="having undesirable or negative qualities" polarity="-0.65" subjectivity="0.5" intensity="1.0" confidence="0.9" />
-<word form="bad" cornetto_synset_id="d_a-9561" wordnet_id="a-01117226" pos="JJ" sense="reproduced fraudulently" polarity="-0.5" subjectivity="0.6" intensity="1.0" confidence="0.8" />
-<word form="badness" wordnet_id="n-5036715" pos="NN" sense="used of the degree of something undesirable e.g. pain or weather" polarity="-0.2" subjectivity="0.2" intensity="1.0" reliability="0.9" />
+<word form="bad" cornetto_synset_id="c_386" wordnet_id="a-01125429" pos="JJ" sense="having undesirable or negative qualities" polarity="-0.7" subjectivity="0.5" intensity="1.0" confidence="0.9" />
+<word form="bad" cornetto_synset_id="d_a-9561" wordnet_id="a-01117226" pos="JJ" sense="reproduced fraudulently" polarity="-0.7" subjectivity="0.6" intensity="1.0" confidence="0.8" />
+<word form="badness" wordnet_id="n-5036715" pos="NN" sense="used of the degree of something undesirable e.g. pain or weather" polarity="-0.3" subjectivity="0.2" intensity="1.0" reliability="0.9" />
 <word form="balmy" cornetto_synset_id="n_a-501466" wordnet_id="a-02074929" pos="JJ" sense="informal or slang terms for mentally irregular" polarity="-0.2" subjectivity="0.9" intensity="1.0" confidence="0.8" />
 <word form="balmy" cornetto_synset_id="n_a-535263" wordnet_id="a-00438332" pos="JJ" sense="mild and pleasant" polarity="0.4" subjectivity="0.8" intensity="1.0" confidence="0.8" />
 <word form="banal" wordnet_id="a-1688757" pos="JJ" sense="repeated too often" polarity="-0.3" subjectivity="0.5" intensity="1.0" reliability="0.9" />>
@@ -1084,7 +1084,7 @@ For English movie reviews (Pang & Lee polarity dataset v2.0), the accuracy is 75
 <word form="golden" cornetto_synset_id="d_a-9196" wordnet_id="a-00177547" pos="JJ" sense="presaging or likely to bring good luck" polarity="0.0" subjectivity="0.1" intensity="1.0" confidence="0.8" />
 <word form="golden" cornetto_synset_id="n_a-513884" wordnet_id="a-00177547" pos="JJ" sense="presaging or likely to bring good luck" polarity="0.6" subjectivity="0.9" intensity="1.0" confidence="0.8" />
 <word form="good" cornetto_synset_id="c_168" wordnet_id="a-01123148" pos="JJ" sense="having desirable or positive qualities especially those suitable for a thing specified" polarity="0.7" subjectivity="0.4" intensity="1.0" confidence="0.8" />
-<word form="good" cornetto_synset_id="n_a-510925" wordnet_id="a-01166413" pos="JJ" sense="tending to promote physical well-being" polarity="0.6" subjectivity="0.8" intensity="1.0" confidence="0.8" />
+<word form="good" cornetto_synset_id="n_a-510925" wordnet_id="a-01166413" pos="JJ" sense="tending to promote physical well-being" polarity="0.7" subjectivity="0.8" intensity="1.0" confidence="0.8" />
 <word form="goody-goody" cornetto_synset_id="n_a-535834" wordnet_id="a-01130614" pos="JJ" sense="affectedly or smugly good or self-righteous" polarity="-0.5" subjectivity="1.0" intensity="1.0" confidence="0.8" />
 <word form="goofy" wordnet_id="a-02571536" pos="JJ" sense="ludicrous, foolish" polarity="0.5" subjectivity="1.0" intensity="1.0" confidence="0.9" />
 <word form="gorgeous" cornetto_synset_id="n_a-512199" wordnet_id="a-00219705" pos="JJ" sense="dazzlingly beautiful" polarity="0.7" subjectivity="0.9" intensity="1.0" confidence="0.8" />

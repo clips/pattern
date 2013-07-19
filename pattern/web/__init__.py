@@ -175,7 +175,7 @@ MIMETYPE_PDF        = ["application/pdf"]
 MIMETYPE_NEWSFEED   = ["application/rss+xml", "application/atom+xml"]
 MIMETYPE_IMAGE      = ["image/gif", "image/jpeg", "image/png", "image/tiff"]
 MIMETYPE_AUDIO      = ["audio/mpeg", "audio/mp4", "audio/x-aiff", "audio/x-wav"]
-MIMETYPE_VIDEO      = ["video/mpeg", "video/mp4", "video/quicktime"]
+MIMETYPE_VIDEO      = ["video/mpeg", "video/mp4", "video/avi", "video/quicktime", "video/x-flv"]
 MIMETYPE_ARCHIVE    = ["application/x-stuffit", "application/x-tar", "application/zip"]
 MIMETYPE_SCRIPT     = ["application/javascript", "application/ecmascript"]
 
@@ -428,8 +428,8 @@ class URL(object):
             time.sleep(max(throttle-(time.time()-t), 0))
         return data
 
-    def read(self, *args):
-        return self.open().read(*args)
+    def read(self, *args, **kwargs):
+        return self.open(**kwargs).read(*args)
 
     @property
     def exists(self, timeout=10):
@@ -586,7 +586,7 @@ RE_URL_HEAD = r"[%s|\[|\s]" % "|".join(RE_URL_PUNCTUATION[0])      # Preceded by
 RE_URL_TAIL = r"[%s|\]]*[\s|\<]" % "|".join(RE_URL_PUNCTUATION[1]) # Followed by space, punctuation or HTML tag.
 RE_URL1 = r"(https?://.*?)" + RE_URL_TAIL                          # Starts with http:// or https://
 RE_URL2 = RE_URL_HEAD + r"(www\..*?\..*?)" + RE_URL_TAIL           # Starts with www.
-RE_URL3 = RE_URL_HEAD + r"([\w|-]*?\.(com|net|org))" + RE_URL_TAIL # Ends with .com, .net, .org
+RE_URL3 = RE_URL_HEAD + r"([\w|-]*?\.(com|net|org|edu|de|uk))" + RE_URL_TAIL
 
 RE_URL1, RE_URL2, RE_URL3 = (
     re.compile(RE_URL1, re.I),
@@ -2524,14 +2524,18 @@ def query(string, service=GOOGLE, **kwargs):
         engine = Yahoo
     if service in (BING, "bing"):
         engine = Bing
-    if service in (TWITTER, "twitter"):
+    if service in (DUCKDUCKGO, "duckduckgo", "ddg"):
+        engine = DuckDuckGo
+    if service in (TWITTER, "twitter", "tw"):
         engine = Twitter
     if service in (FACEBOOK, "facebook", "fb"):
         engine = Facebook
-    if service in (WIKIA, "wikia"):
-        engine = Wikia
     if service in (WIKIPEDIA, "wikipedia", "wp"):
         engine = Wikipedia
+    if service in (WIKIA, "wikia"):
+        engine = Wikia
+    if service in (DBPEDIA, "dbpedia", "dbp"):
+        engine = DBPedia
     if service in (FLICKR, "flickr"):
         engine = Flickr
     try:
@@ -2730,6 +2734,8 @@ class Element(Node):
         """ Yields the element content as a unicode string.
         """
         return u"".join([u(x) for x in self._p.contents])
+        
+    string = content
 
     @property
     def source(self):
@@ -2847,7 +2853,7 @@ DOM = Document
 # "div.x"            =  <div class="x">                (<div> elements with class="x")
 # "div[class='x']"   =  <div class="x">                (<div> elements with attribute "class"="x")
 # "div:first-child"  =  <div><a>1st<a><a></a></div>    (first child inside a <div>)
-# "div a"            =  <div><<p><a></a></p></div      (all <a>'s inside a <div>)
+# "div a"            =  <div><p><a></a></p></div>      (all <a>'s inside a <div>)
 # "div, a"           =  <div>, <a>                     (all <a>'s and <div> elements)
 # "div + a"          =  <div></div><a></a>             (all <a>'s directly preceded by <div>)
 # "div > a"          =  <div><a></a></div>             (all <a>'s directly inside a <div>)
@@ -3187,6 +3193,8 @@ class Crawler(object):
                         # 3) Only links that are not already queued are queued.
                         # 4) Only links for which Crawler.follow() is True are queued.
                         # 5) Only links on Crawler.domains are queued.
+                        if new.url == link.url:
+                            continue
                         if new.url in self.visited:
                             continue
                         if new.url in self._queued:
@@ -3261,31 +3269,30 @@ class Crawler(object):
 
 Spider = Crawler
 
-#class Spiderling(Spider):
+#class Polly(Crawler):
 #    def visit(self, link, source=None):
 #        print "visited:", link.url, "from:", link.referrer
 #    def fail(self, link):
 #        print "failed:", link.url
 #
-#s = Spiderling(links=["http://nodebox.net/"], domains=["nodebox.net"], delay=5)
-#while not s.done:
-#    s.crawl(method=DEPTH, cached=True, throttle=5)
+#p = Polly(links=["http://nodebox.net/"], domains=["nodebox.net"], delay=5)
+#while not p.done:
+#    p.crawl(method=DEPTH, cached=True, throttle=5)
 
 #--- CRAWL FUNCTION --------------------------------------------------------------------------------
 # Functional approach to crawling.
 
 def crawl(links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse, sort=FIFO, method=DEPTH, **kwargs):
     """ Returns a generator that yields (Link, source)-tuples of visited pages.
-        When the crawler is busy, it yields (None, None).
-        When the crawler is done, it yields None.
+        When the crawler is idle, it yields (None, None).
     """
-    # The scenarios below defines "busy":
+    # The scenarios below defines "idle":
     # - crawl(delay=10, throttle=0)
     #   The crawler will wait 10 seconds before visiting the same subdomain.
     #   The crawler will not throttle downloads, so the next link is visited instantly.
     #   So sometimes (None, None) is returned while it waits for an available subdomain.
     # - crawl(delay=0, throttle=10)
-    #   The crawler will halt 10 seconds after each visit.
+    #   The crawler will wait 10 seconds after each and any visit.
     #   The crawler will not delay before visiting the same subdomain.
     #   So usually a result is returned each crawl.next(), but each call takes 10 seconds.
     # - asynchronous(crawl().next)
@@ -3300,10 +3307,10 @@ def crawl(links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse, sort=
         crawler.crawl(method, **kwargs)
         yield crawler.crawled
 
-#for link, source in crawl("http://www.nodebox.net/", delay=0, throttle=10):
+#for link, source in crawl("http://www.clips.ua.ac.be/", delay=0, throttle=1, cached=False):
 #    print link
 
-#g = crawl("http://www.nodebox.net/")
+#g = crawl("http://www.clips.ua.ac.be/"")
 #for i in range(10):
 #    p = asynchronous(g.next)
 #    while not p.done:

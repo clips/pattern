@@ -36,7 +36,7 @@ from pattern.text.tree import (
 )
 # Import sentiment analysis base classes.
 from pattern.text import (
-    Sentiment, NOUN, VERB, ADJECTIVE, ADVERB
+    Sentiment as _Sentiment, NOUN, VERB, ADJECTIVE, ADVERB
 )
 # Import verb tenses.
 from pattern.text import (
@@ -99,6 +99,21 @@ class Parser(_Parser):
         if kwargs.get("tagset") == UNIVERSAL:
             kwargs.setdefault("map", lambda token, tag: penntreebank2universal(token, tag))
         return _Parser.find_tags(self, tokens, **kwargs)
+
+class Sentiment(_Sentiment):
+    
+    def load(self, path=None):
+        _Sentiment.load(self, path)
+        # Map "terrible" to adverb "terribly" (+1% accuracy)
+        if not path:
+            for w, pos in dict.items(self):
+                if "JJ" in pos:
+                    if w.endswith("y"):
+                        w = w[:-1] + "i"
+                    if w.endswith("le"):
+                        w = w[:-2]
+                    p, s, i = pos["JJ"]
+                    self.annotate(w + "ly", "RB", p, s, i)
 
 lexicon = Lexicon(
         path = os.path.join(MODULE, "en-lexicon.txt"), 

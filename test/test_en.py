@@ -866,12 +866,14 @@ class TestSentiment(unittest.TestCase):
         reviews = []
         for score, review in Datasheet.load(os.path.join(PATH, "corpora", "polarity-en-pang&lee1.csv")):
             reviews.append((review, int(score) > 0))
+        from time import time
+        t = time()
         A, P, R, F = test(lambda review: en.positive(review), reviews)
         #print A, P, R, F
-        self.assertTrue(A > 0.741)
-        self.assertTrue(P > 0.750)
-        self.assertTrue(R > 0.722)
-        self.assertTrue(F > 0.736)
+        self.assertTrue(A > 0.753)
+        self.assertTrue(P > 0.768)
+        self.assertTrue(R > 0.725)
+        self.assertTrue(F > 0.746)
         # Assert the accuracy of the sentiment analysis on short text (for the positive class).
         # Given are the scores for Pang & Lee's sentence polarity dataset v1.0:
         # http://www.cs.cornell.edu/people/pabo/movie-review-data/
@@ -880,10 +882,10 @@ class TestSentiment(unittest.TestCase):
             reviews.append((review, int(score) > 0))
         A, P, R, F = test(lambda review: en.positive(review), reviews)
         #print A, P, R, F
-        self.assertTrue(A > 0.646)
-        self.assertTrue(P > 0.657)
-        self.assertTrue(R > 0.613)
-        self.assertTrue(F > 0.634)
+        self.assertTrue(A > 0.654)
+        self.assertTrue(P > 0.660)
+        self.assertTrue(R > 0.636)
+        self.assertTrue(F > 0.648)
         print "pattern.en.sentiment()"
         
     def test_sentiment_twitter(self):
