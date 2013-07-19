@@ -21,10 +21,10 @@ from pattern.web import NODE, TEXT, COMMENT, ELEMENT, DOCUMENT
 url = URL("http://www.reddit.com/top/")
 dom = DOM(url.download(cached=True))
 #print dom.body.content
-for e in dom.get_elements_by_tagname("div.entry")[:5]: # Top 5 reddit entries.
-    for a in e.get_elements_by_tagname("a.title")[:1]: # First <a class="title"> in entry.
+for e in dom.by_tag("div.entry")[:5]: # Top 5 reddit entries.
+    for a in e.by_tag("a.title")[:1]: # First <a class="title"> in entry.
         print plaintext(a.content)
-        print a.attributes["href"]
+        print a.attrs["href"]
         print
         
 # The links in the HTML source code may be relative,
@@ -35,7 +35,7 @@ for e in dom.get_elements_by_tagname("div.entry")[:5]: # Top 5 reddit entries.
 from pattern.web import abs
 url = URL("http://nodebox.net")
 for link in DOM(url.download()).by_tag("a"):
-    link = link.attributes.get("href","")
+    link = link.attrs.get("href","")
     link = abs(link, base=url.redirect or url.string)
     #print link
 
@@ -52,7 +52,7 @@ for link in DOM(url.download()).by_tag("a"):
 # DOM.body        : Element with tag name "body".
 
 # Element.tag     : Element tag name, e.g. "body".
-# Element.attributes : Dictionary of tag attribute, e.g. {"class": "header"}
+# Element.attrs   : Dictionary of tag attributes, e.g. {"class": "header"}
 # Element.content : Element HTML content as a string.
 # Element.source  : Element tag + content
 
@@ -71,13 +71,13 @@ for link in DOM(url.download()).by_tag("a"):
 # In the <head> tag, retrieve the <meta name="keywords"> element.
 # Get the string value of its "content" attribute and split into a list:
 dom = DOM(URL("http://www.clips.ua.ac.be").download())
-kw = dom.head.by_attribute(name="keywords")[0]
-kw = kw.attributes["content"]
+kw = dom.head.by_attr(name="keywords")[0]
+kw = kw.attrs["content"]
 kw = [x.strip() for x in kw.split(",")]
 print kw
 print
 
-# You can also use CSS selectors:
+# If you know CSS, you can also use short and handy CSS selectors:
 # http://www.w3.org/TR/CSS2/selector.html
 # Element(selector) will return a list of nested elements that match the given string.
 dom = DOM(URL("http://www.clips.ua.ac.be").download())
