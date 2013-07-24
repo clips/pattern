@@ -195,7 +195,21 @@ class TestParser(unittest.TestCase):
             u"sitzt/VB/B-VP/O/sitzen " + \
             u"auf/IN/B-PP/B-PNP/auf der/DT/B-NP/I-PNP/der Matte/NN/I-NP/I-PNP/matte ././O/O/."
         )
-        print "pattern.de.parser.parse()"
+        # 3) Assert the accuracy of the German tagger.
+        i, n = 0, 0
+        for sentence in open(os.path.join(PATH, "corpora", "tagged-de-tiger.txt")).readlines():
+            sentence = sentence.decode("utf-8").strip()
+            s1 = [w.split("/") for w in sentence.split(" ")]
+            s1 = [de.stts2penntreebank(w, pos) for w, pos in s1]
+            s2 = [[w for w, pos in s1]]
+            s2 = de.parse(s2, tokenize=False)
+            s2 = [w.split("/") for w in s2.split(" ")]
+            for j in range(len(s1)):
+                if s1[j][1] == s2[j][1]:
+                    i += 1
+                n += 1
+        self.assertTrue(float(i) / n > 0.844)
+        print "pattern.de.parse()"
 
     def test_tag(self):
         # Assert [("der", "DT"), ("grosse", "JJ"), ("Hund", "NN")].

@@ -73,6 +73,7 @@ sys.path.pop(0)
 # https://files.ifi.uzh.ch/cl/tagger/UIS-STTS-Diffs.html
 STTS = "stts"
 stts = tagset = {
+      "ADJ": "JJ",
      "ADJA": "JJ",   # das große Haus
      "ADJD": "JJ",   # er ist schnell
       "ADV": "RB",   # schon
