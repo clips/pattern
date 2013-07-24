@@ -63992,6 +63992,10 @@ ionizing VBG
 ionosphere NN
 ions NNS
 iota NN
+iMac NNP
+iPad NNP
+iPod NNP
+iPhone NNP
 ip NN
 ipso FW
 irate JJ
