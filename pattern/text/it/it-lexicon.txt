@@ -49750,6 +49750,10 @@ ionosfere NNS
 ionosferici JJ
 iotacismi NNS
 iotacismo NN
+iMac NNP
+iPad NNP
+iPod NNP
+iPhone NNP
 ipallagi NNS
 iperacusica JJ
 iperacusici JJ

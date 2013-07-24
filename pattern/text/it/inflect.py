@@ -17,7 +17,7 @@
 # 84% for singularize()
 # 82% for Verbs.find_lemma()
 # 90% for Verbs.find_lexeme()
-# 87% for predicative()
+# 88% for predicative()
 
 import os
 import sys
@@ -403,6 +403,20 @@ conjugate, lemma, lexeme, tenses = \
 
 #### ATTRIBUTIVE & PREDICATIVE #####################################################################
 
+adjective_predicative = {
+       "bei": "bello",
+       "bel": "bello",
+     "bell'": "bello",
+     "begli": "bello",
+      "buon": "buono",
+     "buon'": "buona",
+      "gran": "grande",
+    "grand'": "grande",
+    "grandi": "grande",
+       "san": "santo",
+     "sant'": "santa"
+}
+
 def attributive(adjective):
     """ For a predicative adjective, returns the attributive form.
     """
@@ -413,6 +427,8 @@ def predicative(adjective):
     """ Returns the predicative adjective.
     """
     w = adjective.lower()
+    if w in adjective_predicative:
+        return adjective_predicative[w]
     if w.endswith("ari"):
         return w + "o"
     if w.endswith(("ali", "ili", "esi", "nti", "ori")):
@@ -425,4 +441,6 @@ def predicative(adjective):
         return w[:-2] + "o"
     if w.endswith("i"):
         return w[:-1] + "o"
+    if w.endswith("e"):
+        return w[:-1] + "a"
     return adjective

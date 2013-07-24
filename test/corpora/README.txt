@@ -35,74 +35,79 @@ The corpora are meant for personal use, they are not part of the module's BSD li
 - http://www.bol.com/nl/m/nederlandse-boeken/literatuur/
 - 1500 "positive" and 1500 "negative" book reviews.
 
-7) English portion of Penn Treebank (Marcus et al.)
+7) German portion of Tiger Treebank (Brants et al.)
+- tagged-de-tiger.txt
+- http://www.ims.uni-stuttgart.de/forschung/ressourcen/korpora
+- 250 German sentences with STTS part-of-speech tags.
+
+8) English portion of Penn Treebank (Marcus et al.)
 - tagged-en-penntreebank.txt
 - http://www.cis.upenn.edu/~treebank/home.html
 - 1000 English sentences with Penn Treebank part-of-speech tags.
 
-8) Spanish portion of Wikicorpus v.1.0 (Reese & Boleda et al.)
+9) Spanish portion of Wikicorpus v.1.0 (Reese & Boleda et al.)
 - tagged-es-wikicorpus.txt
 - http://www.lsi.upc.edu/~nlp/wikicorpus/
 - 1000 Spanish sentences with Parole part-of-speech tags.
 
-9) Italian portion of WaCKy Corpus (Baroni et al.)
+10) Italian portion of WaCKy Corpus (Baroni et al.)
 - tagged-it-wacky.txt
 - http://wacky.sslmit.unibo.it/doku.php?id=corpora
 - 1000 Italian sentences with Penn Treebank II part-of-speech tags.
 
-10) Dutch portion of Twente Nieuws Corpus (Ordelman et al.)
+11) Dutch portion of Twente Nieuws Corpus (Ordelman et al.)
 - tagged-nl-twnc.txt
 - http://hmi.ewi.utwente.nl/TwNC
 - 1000 Dutch sentences with Wotan part-of-speech tags.
 
-11) Apache SpamAssassin public mail corpus
+12) Apache SpamAssassin public mail corpus
 - spam-apache.csv
 - http://spamassassin.apache.org/publiccorpus/
 - 125 "spam" and 125 (mostly technical) "ham" messages.
 
-12) Birkbeck spelling error corpus
+13) Birkbeck spelling error corpus
 - spelling-birkbeck.csv
 - http://www.ota.ox.ac.uk/headers/0643.xml
 - 500 words and how they are commonly misspelled.
 
-13) CoNLL 2010 Shared Task 1 - Wikipedia uncertainty
+14) CoNLL 2010 Shared Task 1 - Wikipedia uncertainty
 - uncertainty-conll2010.csv
 - http://www.inf.u-szeged.hu/rgai/conll2010st/tasks.html#task1
 - 1500 "certain" and 1500 "uncertain" Wikipedia sentences.
 
-14) Alice in Wonderland, written by Lewis Carroll
+15) Alice in Wonderland, written by Lewis Carroll
 - wonderland-carroll.pdf
 - http://www.gutenberg.org/
 - Full text of Alice in Wonderland in PDF format.
 
-15) Celex 2.5 German word forms
+16) Celex 2.5 German word forms
 - wordforms-de-celex.csv
 - http://celex.mpi.nl/
 - 250 singular nouns and their plural form.
 - 250 predicative adjectives and their attributive form.
 
-16) Celex 2.5 English word forms
+17) Celex 2.5 English word forms
 - wordforms-en-celex.csv
 - http://celex.mpi.nl/
 - 4000 singular nouns and their plural form.
 
-17) Celex 2.5 Dutch word forms
+18) Celex 2.5 Dutch word forms
 - wordforms-nl-celex.csv
 - http://celex.mpi.nl/
 - 1000 singular nouns and their plural form.
 - 1000 predicative adjectives and their attributive form.
 
-18) Davies Corpus del Espa–ol word forms
+19) Davies Corpus del Espa–ol word forms
 - wordforms-es-davies.csv
 - http://www.wordfrequency.info/files/spanish/spanish_lemmas20k.txt
 - 3000 word forms with lemma, part-of-speech and frequency.
 
-19) Wiktionary Italian word forms
+20) Wiktionary Italian word forms
 - wordforms-it-wiktionary.csv
 - https://en.wiktionary.org/wiki/Category:Italian_language
 - 2000 word forms with lemma, part-of-speech and gender.
 
-20) Lexique 3 French word forms
+21) Lexique 3 French word forms
 - wordforms-fr-lexique.csv
 - http://www.lexique.org/
 - 2000 word forms with lemma and part-of-speech.
