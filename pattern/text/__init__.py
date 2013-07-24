@@ -1346,6 +1346,9 @@ def tense_id(*args, **kwargs):
     mood    = kwargs.get("mood"   , args[3] if len(args) > 3 else INDICATIVE)
     aspect  = kwargs.get("aspect" , args[4] if len(args) > 4 else IMPERFECTIVE)
     negated = kwargs.get("negated", args[5] if len(args) > 5 else False)
+    # Disambiguate wrong order of parameters.
+    if mood in (PERFECTIVE, IMPERFECTIVE):
+        mood, aspect = INDICATIVE, mood
     # Disambiguate INFINITIVE.
     # Disambiguate PARTICIPLE, IMPERFECT, PRETERITE.
     # These are often considered to be tenses but are in fact tense + aspect.
@@ -1710,8 +1713,10 @@ class Sentiment(lazydict):
             a = self.assessments(((s.lemma or s.string.lower(), s.pos[:2]),), negation)
         # A pattern.vector.Document.
         # Average score = weighted average using feature weights.
+        # Bag-of words is unordered: inject None between each two words
+        # to stop assessments() from scanning for preceding negation & modifiers.
         elif hasattr(s, "terms"):
-            a = self.assessments(((w, None) for w in s.terms), negation)
+            a = self.assessments(chain(*(((w, None), (None, None)) for w in s)), negation)
             kwargs.setdefault("weight", lambda w: s.terms[w[0]])
         # A dict of (word, weight)-items.
         elif isinstance(s, dict):
@@ -1719,7 +1724,7 @@ class Sentiment(lazydict):
             kwargs.setdefault("weight", lambda w: s[w[0]])
         # A list of words.
         elif isinstance(s, list):
-            a = self.assessments(chain(*(((w, None), (None, None)) for w in s)), negation)
+            a = self.assessments(((w, None) for w in s), negation)
         else:
             a = []
         weight = kwargs.get("weight", lambda w: 1)
@@ -1749,7 +1754,7 @@ class Sentiment(lazydict):
                 if m is not None:
                     a[-1]["w"].append(w)
                     a[-1]["p"] = max(-1.0, min(p * a[-1]["i"], +1.0))
-                    a[-1]["s"] = max(-1.0, min(p * a[-1]["i"], +1.0))
+                    a[-1]["s"] = max(-1.0, min(s * a[-1]["i"], +1.0))
                     a[-1]["i"] = i
                     a[-1]["x"] = self.labeler.get(w)
                 # Known word preceded by a negation ("not really good").
