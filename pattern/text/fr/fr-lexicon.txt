@@ -67558,6 +67558,10 @@ inépuisables JJ
 inévitable JJ
 inévitablement RB
 inévitables JJ
+iMac NNP
+iPad NNP
+iPod NNP
+iPhone NNP
 ira VB
 irai VB
 iraient VB
