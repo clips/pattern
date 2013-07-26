@@ -34,6 +34,30 @@ If none of the above works, you can make Python aware of the module in three way
   >>> import sys; if MODULE not in sys.path: sys.path.append(MODULE)
   >>> from pattern.en import parsetree
 
+Example
+=======
+
+This example trains a classifier on adjectives mined from Twitter. First, tweets that contain hashtag #win or #fail are collected. For example: "$20 tip off a sweet little old lady today #win". The word part-of-speech tags are then parsed, keeping only adjectives. Each tweet is transformed to a vector: a dictionary of adjective → count items, labeled WIN or FAIL. The classifier uses the vectors to predict which adjectives are commonly associated with either WIN or FAIL.
+
+>>> from pattern.web    import Twitter
+>>> from pattern.en     import tag
+>>> from pattern.vector import KNN, count
+>>> 
+>>> knn = KNN()
+>>> 
+>>> for i in range(1, 3):
+>>>     for tweet in Twitter().search('#win OR #fail', start=i, count=100):
+>>>         s = tweet.text.lower()
+>>>         p = '#win' in s and 'WIN' or 'FAIL'
+>>>         v = tag(s)
+>>>         v = [word for word, pos in v if pos == 'JJ'] # JJ = adjective
+>>>         v = count(v) # {'sweet': 1}
+>>>         if v:
+>>>             knn.train(v, type=p)
+>>> 
+>>> print knn.classify('sweet')
+>>> print knn.classify('stupid')
+
 DOCUMENTATION
 =============
 
