@@ -3,7 +3,7 @@ import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
 from pattern.db import Database, SQLITE, MYSQL
 from pattern.db import field, pk, STRING, INTEGER, DATE, NOW
-from pattern.db import relation
+from pattern.db import rel
 
 # In this example, we'll build a mini-store:
 # with products, customers and orders.
@@ -57,7 +57,7 @@ if not "orders" in db:
 
 # Show all the products in the database:
 print "There are", db.products.count(), "products available:"
-for row in db.products.rows():
+for row in db.products:
     print row
 
 # Note how the orders table only contains integer id's.
@@ -66,17 +66,17 @@ for row in db.products.rows():
 q = db.orders.search(
        fields = ["products.description", "products.price", "customers.name", "date"],
     relations = [
-        relation("product_id", "products.id", "products"),
-        relation("customer_id", "customers.id", "customers")
+        rel("product_id", "products.id", "products"),
+        rel("customer_id", "customers.id", "customers")
     ]
 )
 print
 print "Invoices:"
-for row in q.rows():
+for row in q:
     print row # (product description, product price, customer name, date created)
 print
 print "Invoice query SQL syntax:"
-print q.sql()
+print q
 print
 print "Invoice query XML:"
 print q.xml

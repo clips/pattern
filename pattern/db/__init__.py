@@ -510,8 +510,12 @@ class Database(object):
         return len(self.tables)
     def __iter__(self):
         return iter(self.tables.keys())
-    def __getitem__(self, k):
-        return self.tables[k]
+    def __getitem__(self, table):
+        return self.tables[table]
+    def __setitem__(self, table, fields):
+        self.create(table, fields)
+    def __delitem__(self, table):
+        self.drop(table)
     def __nonzero__(self):
         return True
     
@@ -529,20 +533,29 @@ class Database(object):
         return self._query
     
     def execute(self, SQL, commit=False):
-        """ Executes the given SQL query and return a list of rows.
+        """ Executes the given SQL query and return an iterator over the rows.
             With commit=True, automatically commits insert/update/delete changes.
         """
+        class rowiterator:
+            def __init__(self, cursor):
+                self._cursor = cursor
+            def next(self):
+                return self.__iter__().next()
+            def __iter__(self):
+                for row in (hasattr(self._cursor, "__iter__") and self._cursor or self._cursor.fetchall()):
+                    yield row
+                self._cursor.close()
+            def __del__(self):
+                self._cursor.close()
         self._query = SQL
         if not SQL:
             return # MySQL doesn't like empty queries.
         #print SQL
         cursor = self._connection.cursor()
         cursor.execute(SQL)
-        rows = list(cursor.fetchall())
-        cursor.close()
         if commit is not False:
             self._connection.commit()
-        return rows
+        return rowiterator(cursor)
         
     def commit(self):
         """ Commit all pending insert/update/delete changes.
@@ -580,6 +593,7 @@ class Database(object):
         # The field string can be used in a CREATE TABLE or ALTER TABLE statement.
         # The index string is an optional CREATE INDEX statement (or None).
         auto  = " auto%sincrement" % (self.type == MYSQL and "_" or "")
+        field = isinstance(field, basestring) and [field, STRING(255)] or field
         field = list(field) + [STRING, None, False, True][len(field)-1:]
         field = list(_field(field[0], field[1], default=field[2], index=field[3], optional=field[4]))
         if field[1] == "timestamp" and field[2] == "now":
@@ -685,7 +699,7 @@ class _String(str):
 STRING, INTEGER, FLOAT, TEXT, BLOB, BOOLEAN, DATE  = \
     _String(), "integer", "float", "text", "blob", "boolean", "date"
 
-INT, BOOL = INTEGER, BOOLEAN
+STR, INT, BOOL = STRING, INTEGER, BOOLEAN
 
 # Field index.
 PRIMARY = "primary"
@@ -889,19 +903,34 @@ class Table(object):
     def __len__(self):
         return self.count()
     def __iter__(self):
-        return iter(self.rows())
-    def __getitem__(self, i):
-        return self.rows()[i]
+        return self.iterrows()
+    def __getitem__(self, id):
+        return self.filter(ALL, id=id)
+    def __setitem__(self, id, row):
+        self.delete(id)
+        self.update(self.insert(row), {"id": id})
+    def __delitem__(self, id):
+        self.delete(id)
 
     def abs(self, field):
         """ Returns the absolute field name (e.g., "name" => ""persons.name").
         """
         return abs(self.name, field)
 
+    def iterrows(self):
+        """ Returns an iterator over the rows in the table.
+        """
+        return self.db.execute("select * from `%s`;" % self.name)
+
     def rows(self):
         """ Returns a list of all the rows in the table.
         """
-        return self.db.execute("select * from `%s`;" % self.name)
+        return list(self.iterrows())
+        
+    def record(self, row):
+        """ Returns the given row as a dictionary of (field or alias, value)-items.
+        """
+        return dict(zip(self.fields, row))
 
     def filter(self, *args, **kwargs):
         """ Returns the rows that match the given constraints (using equals + AND):
@@ -926,7 +955,7 @@ class Table(object):
         q = " and ".join(cmp(k, v, "=", self.db.escape) for k, v in kwargs.items())
         q = q and " where %s" % q or ""
         q = "select %s from `%s`%s;" % (fields, self.name, q)
-        return self.db.execute(q)         
+        return list(self.db.execute(q))
 
     def search(self, *args, **kwargs):
         """ Returns a Query object that can be used to construct complex table queries.
@@ -951,7 +980,9 @@ class Table(object):
         if len(args) == 0 and len(kwargs) == 1 and isinstance(kwargs.get("values"), dict):
             kwargs = kwargs["values"]        
         elif len(args) == 1 and isinstance(args[0], dict):
-            a=args[0]; a.update(kwargs); kwargs=a
+            kwargs = dict(args[0], **kwargs)
+        elif len(args) == 1 and isinstance(args[0], (list, tuple)):
+            kwargs = dict(zip((f for f in self.fields if f != self.pk), args[0]))
         if len(self.default) > 0:
             kwargs.update(self.default)
         k = ", ".join("`%s`" % k for k in kwargs.keys())
@@ -1162,6 +1193,8 @@ FULL  = "full"  # All rows form both tables.
 
 def relation(field1, field2, table, join=LEFT):
     return (field1, field2, table, join)
+
+rel = relation
     
 # Sorting:
 ASCENDING  = "asc"
@@ -1188,7 +1221,7 @@ class Query(object):
         self.fields    = fields    # A field name, list of field names or ALL.
         self.aliases   = {}        # A dictionary of field name aliases, used with Query.xml or Query-in-Query.
         self.filters   = filters   # A group of filter() objects.
-        self.relations = relations # A list of relation() objects. 
+        self.relations = relations # A list of rel() objects. 
         self.sort      = sort      # A field name, list of field names or field index for sorting.
         self.order     = order     # ASCENDING or DESCENDING.
         self.group     = group     # A field name, list of field names or field index for folding.
@@ -1202,9 +1235,9 @@ class Query(object):
     def __len__(self):
         return len(list(self.rows()))
     def __iter__(self):
-        return iter(self.rows())
+        return self.execute()
     def __getitem__(self, i):
-        return self.rows()[i]
+        return self.rows()[i] # poor performance
 
     def SQL(self):
         """ Yields the SQL syntax of the query, which can be passed to Database.execute().
@@ -1231,7 +1264,7 @@ class Query(object):
         # but overridden by relations defined on the query.
         q.append("from `%s`" % self._table.name)
         relations = {}
-        for key1, key2, table, join in (relation(*r) for r in self.relations):
+        for key1, key2, table, join in (rel(*r) for r in self.relations):
             table = isinstance(table, Table) and table.name or table
             relations[table] = (key1, key2, join)
         for table1, key1, table2, key2, join in self._table.db.relations:
@@ -1277,14 +1310,19 @@ class Query(object):
     sql = SQL
     
     def execute(self):
-        """ Executes the query and returns the matching rows from the table.
+        """ Executes the query and returns an iterator over the matching rows in the table.
         """
         return self._table.db.execute(self.SQL())
+
+    def iterrows(self):
+        """ Executes the query and returns an iterator over the matching rows in the table.
+        """
+        return self.execute()
 
     def rows(self):
         """ Executes the query and returns the matching rows from the table.
         """
-        return self.execute()
+        return list(self.execute())
         
     def record(self, row):
         """ Returns the given row as a dictionary of (field or alias, value)-items.
