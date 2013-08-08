@@ -75,6 +75,8 @@ def profile(function, *args, **kwargs):
     """
     def run():
         function(*args, **kwargs)
+    if not hasattr(function, "__call__"):
+        raise TypeError, "%s is not a function" % type(function)
     try:
         import cProfile as profile
     except:

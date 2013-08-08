@@ -1,6 +1,6 @@
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
-from pattern.vector import Document, Model, Bayes
+from pattern.vector import Document, Model, NB
 from pattern.db import Datasheet
 
 # Naive Bayes is one of the oldest classifiers,
@@ -28,7 +28,7 @@ print
 # Each document has a type: True for actual e-mail, False for spam.
 # This results in a "binary" classifier that either answers True or False
 # for unknown documents.
-classifier = Bayes()
+classifier = NB()
 for document in m:
     classifier.train(document)
 

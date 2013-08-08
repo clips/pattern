@@ -13,7 +13,7 @@ import warnings
 import re
 import htmlentitydefs
 import urllib
-import csv
+import csv as csvlib
 
 from cStringIO import StringIO
 from codecs    import BOM_UTF8
@@ -500,8 +500,8 @@ class Database(object):
     def __getattr__(self, k):
         """ Tables are available as attributes by name, e.g., Database.persons.
         """
-        if k in self.tables: 
-            return self.tables[k]
+        if k in self.__dict__["tables"]: 
+            return self.__dict__["tables"][k]
         if k in self.__dict__: 
             return self.__dict__[k]
         raise AttributeError, "'Database' object has no attribute '%s'" % k
@@ -939,6 +939,11 @@ class Table(object):
         # Table.filter(ALL, type=("cat","dog")) => "cat" OR "dog"
         # Table.filter(ALL, type="cat", name="Taxi") => "cat" AND "Taxi"
         # Table.filter({"type":"cat", "name":"Taxi"})
+        class rowlist(list):
+            def __init__(self, table, data):
+                list.__init__(self, data); self.table=table
+            def record(self, row):
+                return self.table.record(row)
         if len(args) == 0:
             # No parameters: default to ALL fields.
             fields = ALL
@@ -955,7 +960,10 @@ class Table(object):
         q = " and ".join(cmp(k, v, "=", self.db.escape) for k, v in kwargs.items())
         q = q and " where %s" % q or ""
         q = "select %s from `%s`%s;" % (fields, self.name, q)
-        return list(self.db.execute(q))
+        return rowlist(self, self.db.execute(q))
+        
+    def find(self, *args, **kwargs):
+        return self.filter(*args, **kwargs)
 
     def search(self, *args, **kwargs):
         """ Returns a Query object that can be used to construct complex table queries.
@@ -1336,6 +1344,14 @@ class Query(object):
     def __repr__(self):
         return "Query(sql=%s)" % repr(self.SQL())
 
+def associative(query):
+    """ Yields query rows as dictionaries of (field, value)-items.
+    """
+    for row in query:
+        yield query.record(row)
+
+assoc = associative
+
 #### VIEW ##########################################################################################
 # A representation of data based on a table in the database.
 # The render() method can be overridden to output data in a certain format (e.g., HTML for a web app).
@@ -1542,42 +1558,106 @@ def parse_xml(database, xml, table=None, field=lambda s: s.replace(".", "-")):
     return database[table]
 
 #### JSON PARSER ###################################################################################
+# JSON is useful to store nested data in a Database or Datasheet.
+# 1) Try to import Python 2.6+ json module.
+# 2) Try to import pattern.web simplejson module.
+# 3) Otherwise, use trivial algorithm below.
 
-class JSON(object):
+class json(object):
     
     def __init__(self):
-        self.float = lambda f: ("%.3f" % f).rstrip("0")
+        self.float = lambda f: re.sub(r"0+$", "0", "%.3f" % f)
+        self.escape = [
+            ("\\", "\\\\"), 
+            ( '"', '\\"' ), 
+            ("\n", "\\n" ), 
+            ("\r", "\\r "), 
+            ("\t", "\\t" )
+        ]
+        
+    def _split(self, s, sep=",", parens=[["[","{",'"'], ["]","}",'"']]):
+        """ Splits the string on the given separator (unless the separator is inside parentheses).
+        """
+        (p1, p2), p, i = parens, [], 0
+        for j, ch in enumerate(s):
+            if ch == sep and not p:
+                yield s[i:j]; i=j+1
+            elif ch in p2 and p and p[-1] == p1[p2.index(ch)]:
+                p.pop()
+            elif ch in p1:
+                p.append(ch)
+        yield s[i:]
+        
+    def encode(self, s):
+        for a, b in self.escape:
+            s = s.replace(a, b)
+        return '"%s"' % s
+        
+    def decode(self, s):
+        for a, b in self.escape:
+            s = s.replace(b, a)
+        return s.strip('"')
 
-    def __call__(self, obj, *args, **kwargs):
+    def loads(self, string, *args, **kwargs):
+        """ Returns the data parsed from the given JSON string.
+            The data can be a nested structure of dict, list, str, unicode, bool, int, float and None.
+        """
+        s = string.strip()
+        if s.startswith('"'):
+            return self.decode(s)
+        if s.isdigit():
+            return int(s)
+        if s.replace(".", "", 1).isdigit():
+            return float(s)
+        if s in ("true", "false"):
+            return bool(s == "true")
+        if s == "null":
+            return None
+        if s.startswith("{"):
+            return dict(map(self.loads, self._split(kv, ":")) for kv in self._split(s.strip("{}")))
+        if s.startswith("["):
+            return list(self.loads(v) for v in self._split(s.strip("[]")))
+        raise TypeError, "can't process %s." % repr(string)
+
+    def dumps(self, obj, *args, **kwargs):
         """ Returns a JSON string from the given data.
             The data can be a nested structure of dict, list, str, unicode, bool, int, float and None.
         """
-        def _str(obj):
-            if isinstance(obj, type(None)):
-                return "null"
-            if isinstance(obj, bool):
-                return obj and "true" or "false"
-            if isinstance(obj, (int, long)): # Also validates bools, so those are handled first.
-                return str(obj)
-            if isinstance(obj, float):
-                return str(self.float(obj))
-            if isinstance(obj, (str, unicode)):
-                return '"%s"' % obj.replace('"', '\\"')
-            if isinstance(obj, dict):
-                return "{%s}" % ", ".join(['"%s": %s' % (k.replace('"', '\\"'), _str(v)) for k, v in obj.items()])
-            if isinstance(obj, (list, tuple, GeneratorType)):
-                return "[%s]" % ", ".join(_str(v) for v in obj)
-            raise TypeError, "can't process %s." % type(obj)
-        return "%s" % _str(obj)
+        if isinstance(obj, (str, unicode)):
+            return self.encode(obj)
+        if isinstance(obj, (int, long)): # Also validates bools, so those are handled first.
+            return str(obj)
+        if isinstance(obj, float):
+            return str(self.float(obj))
+        if isinstance(obj, bool):
+            return obj and "true" or "false"
+        if isinstance(obj, type(None)):
+            return "null"
+        if isinstance(obj, dict):
+            return "{%s}" % ", ".join(['%s: %s' % tuple(map(self.dumps, kv)) for kv in sorted(obj.items())])
+        if isinstance(obj, (list, tuple, GeneratorType)):
+            return "[%s]" % ", ".join(self.dumps(v) for v in obj)
+        raise TypeError, "can't process %s." % type(obj)
 
-json = JSON()
+try: import json # Python 2.6+
+except:
+    try: from pattern.web import json # simplejson
+    except:
+        pass
+
+#db = Database("test")
+#db.create("persons", (pk(), field("data", TEXT)))
+#db.persons.append((json.dumps({"name": u"Schrödinger", "type": "cat"}),))
+#
+#for id, data in db.persons:
+#    print id, json.loads(data)
 
 #### DATASHEET #####################################################################################
 
 #--- CSV -------------------------------------------------------------------------------------------
 
 # Raise the default field size limit:
-csv.field_size_limit(sys.maxint)
+csvlib.field_size_limit(sys.maxint)
 
 def csv_header_encode(field, type=STRING):
     # csv_header_encode("age", INTEGER) => "age (INTEGER)".
@@ -1595,12 +1675,22 @@ def csv_header_decode(s):
 
 class CSV(list):
 
-    def __init__(self, rows=[], fields=None, **kwargs):
-        """ A list of lists that can be exported as a comma-separated text file.
+    def __new__(cls, rows=[], fields=None, **kwargs):
+        """ A list of lists that can be imported and exported as a comma-separated text file (CSV).
         """
-        fields = fields or kwargs.get("headers", None)
-        self.__dict__["fields"] = fields # List of (name, type)-tuples, with type = STRING, INTEGER, etc.
-        self.extend(rows)
+        # From a CSV file path:
+        if isinstance(rows, basestring) and os.path.exists(rows):
+            csv = cls.load(rows, **kwargs)
+        # From a list of rows:
+        else:
+            csv = list.__new__(cls); list.extend(csv, rows)
+        # CSV.fields is a list of (name, type)-tuples,
+        # with type STRING, INTEGER, FLOAT, DATE or BOOLEAN.
+        csv.__dict__["fields"] = fields or kwargs.get("headers", None)
+        return csv
+
+    def __init__(self, rows=[], fields=None, **kwargs):
+        pass
         
     def _set_headers(self, v):
         self.__dict__["fields"] = v
@@ -1618,10 +1708,10 @@ class CSV(list):
         # Optional parameters include all arguments for csv.writer(), see:
         # http://docs.python.org/library/csv.html#csv.writer
         kwargs.setdefault("delimiter", separator)
-        kwargs.setdefault("quoting", csv.QUOTE_ALL)
+        kwargs.setdefault("quoting", csvlib.QUOTE_ALL)
         # csv.writer will handle str, int, float and bool:
         s = StringIO()
-        w = csv.writer(s, **kwargs)
+        w = csvlib.writer(s, **kwargs)
         if headers and self.fields is not None:
             w.writerows([[csv_header_encode(name, type) for name, type in self.fields]])
         w.writerows([[encode_utf8(encoder(v)) for v in row] for row in self])
@@ -1634,7 +1724,7 @@ class CSV(list):
         f.close()
 
     @classmethod
-    def load(cls, path, separator=",", decoder=lambda v: v, headers=False, preprocess=lambda s: s):
+    def load(cls, path, separator=",", decoder=lambda v: v, headers=False, preprocess=lambda s: s, **kwargs):
         """ Returns a table from the data in the given text file.
             Rows are expected to be separated by a newline. 
             Columns are expected to be separated by the given separator (by default, comma).
@@ -1648,7 +1738,7 @@ class CSV(list):
         data = preprocess(data)
         data = "\n".join(line for line in data.splitlines()) # Excel \r => \n
         data = StringIO(data)
-        data = [row for row in csv.reader(data, delimiter=separator)]
+        data = [row for row in csvlib.reader(data, delimiter=separator)]
         if headers:
             fields  = [csv_header_decode(field) for field in data.pop(0)]
             fields += [(None, None)] * (max([0]+[len(row) for row in data]) - len(fields))
@@ -1913,9 +2003,9 @@ class Datasheet(CSV):
             This is useful for sending a Datasheet to JavaScript, for example.
         """
         if self.fields is not None:
-            return json([dict((f[0], row[i]) for i, f in enumerate(self.fields)) for row in self])
+            return json.dumps([dict((f[0], row[i]) for i, f in enumerate(self.fields)) for row in self])
         else:
-            return json(self)
+            return json.dumps(self)
             
     @property
     def array(self):
@@ -1929,6 +2019,11 @@ def flip(datasheet):
     """ Returns a new datasheet with rows for columns and columns for rows.
     """
     return Datasheet(rows=datasheet.columns)
+
+def csv(*args, **kwargs):
+    """ Returns a Datasheet from the given CSV file path.
+    """
+    return Datasheet.load(*args, **kwargs)
 
 #--- DATASHEET ROWS --------------------------------------------------------------------------------
 # Datasheet.rows mimics the operations on Datasheet:

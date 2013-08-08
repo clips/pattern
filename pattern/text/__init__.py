@@ -201,10 +201,8 @@ def _read(path, encoding="utf-8", comment=";;;"):
         elif isinstance(path, basestring):
             # From string.
             f = path.splitlines()
-        elif hasattr(path, "read"):
-            # From string buffer.
-            f = path.read().splitlines()
         else:
+            # From file or buffer.
             f = path
         for i, line in enumerate(f):
             line = line.strip(codecs.BOM_UTF8) if i == 0 and isinstance(line, str) else line
@@ -246,7 +244,7 @@ class Lexicon(lazydict):
 
 class Rules(object):
     
-    def __init__(self, lexicon={}, cmd={}):
+    def __init__(self, lexicon={}, cmd=set()):
         self.lexicon, self.cmd = lexicon, cmd
     
     def apply(self, x):
@@ -269,8 +267,8 @@ class Morphology(lazylist, Rules):
            "goodleft", # Word preceded by word x.
           "goodright", # Word followed by word x.
         )
-        cmd = dict.fromkeys(cmd, True)
-        cmd.update(("f" + k, v) for k, v in cmd.items())
+        cmd = set(cmd)
+        cmd.update([("f" + x) for x in cmd])
         Rules.__init__(self, lexicon, cmd)
         self._path = path
         
@@ -366,7 +364,7 @@ class Context(lazylist, Rules):
             "prevbigram", # Preceding word is tagged x and word before is tagged y.
             "nextbigram", # Following word is tagged x and word after is tagged y.
         )
-        Rules.__init__(self, lexicon, dict.fromkeys(cmd, True))
+        Rules.__init__(self, lexicon, set(cmd))
         self._path = path
 
     @property
@@ -453,7 +451,7 @@ class Entities(lazydict, Rules):
              "loc", # Locations: Washington/NNP-LOC
              "org", # Organizations: Google/NNP-ORG
         )
-        Rules.__init__(self, lexicon, cmd)
+        Rules.__init__(self, lexicon, set(cmd))
         self._path = path
         self.tag   = tag
 

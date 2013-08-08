@@ -3,6 +3,7 @@ import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
 from pattern.db import Database, SQLITE, MYSQL
 from pattern.db import field, pk, STRING, INTEGER, DATE, NOW
+from pattern.db import assoc
 from pattern.db import rel
 
 # In this example, we'll build a mini-store:
@@ -25,54 +26,63 @@ db = Database("store.db", type=SQLITE)
 if not "products" in db:
     # Note: in SQLite, the STRING type is mapped to TEXT (unlimited length).
     # In MySQL, the length matters. Smaller fields have faster lookup.
-    db.create("products", fields=(
+    schema = (
         pk(), # Auto-incremental id.
         field("description", STRING(50)),
-        field("price", INTEGER)
-    ))
+        field("price", INTEGER)    
+    )
+    db.create("products", schema)
     db.products.append(description="pizza", price=15)
     db.products.append(description="garlic bread", price=3)
+    #db.products.append({"description": "garlic bread", "price": 3})
 
 # CUSTOMERS
 # Create the customers table and add data.
 if not "customers" in db:
-    db.create("customers", fields=(
+    schema = (
         pk(),
         field("name", STRING(50)),
         field("address", STRING(200))
-    ))
+    )
+    db.create("customers", schema)
     db.customers.append(name=u"Schrödinger") # Unicode is supported.
     db.customers.append(name=u"Hofstadter")
 
 # ORDERS
 # Create the orders table if it doesn't exist yet and add data.
 if not "orders" in db:
-    db.create("orders", fields=(
+    schema = (
         pk(),
         field("product_id", INTEGER),
         field("customer_id", INTEGER),
         field("date", DATE, default=NOW) # By default, current date/time.
-    ))
+    )
+    db.create("orders", schema)
     db.orders.append(product_id=1, customer_id=2) # Hofstadter orders pizza.
 
-# Show all the products in the database:
-print "There are", db.products.count(), "products available:"
-for row in db.products:
+# Show all the products in the database.
+# The assoc() iterator yields each row as a dictionary.
+print "There are", len(db.products), "products available:"
+for row in assoc(db.products):
     print row
 
 # Note how the orders table only contains integer id's.
 # This is much more efficient than storing entire strings (e.g., customer address).
 # To get the related data, we can create a query with relations between the tables.
 q = db.orders.search(
-       fields = ["products.description", "products.price", "customers.name", "date"],
-    relations = [
+    fields = (
+       "products.description", 
+       "products.price", 
+       "customers.name", 
+       "date"
+    ),
+    relations = (
         rel("product_id", "products.id", "products"),
         rel("customer_id", "customers.id", "customers")
-    ]
-)
+    ))
 print
 print "Invoices:"
-for row in q:
+for row in assoc(q):
     print row # (product description, product price, customer name, date created)
 print
 print "Invoice query SQL syntax:"

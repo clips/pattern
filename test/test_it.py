@@ -223,7 +223,6 @@ class TestParser(unittest.TestCase):
             u"seduto/VB/B-VP/O " + \
             u"sulla/IN/B-PP/B-PNP stuoia/NN/B-NP/I-PNP ././O/O"
         )
-        
         # Assert the accuracy of the Italian tagger.
         i, n = 0, 0
         for sentence in open(os.path.join(PATH, "corpora", "tagged-it-wacky.txt")).readlines():
@@ -241,6 +240,7 @@ class TestParser(unittest.TestCase):
                 if t1 == t2 or (t1 == "NN" and t2 == "NNS") or s1[j][0] in "\":;)-":
                     i += 1
                 n += 1
+        #print float(i) / n
         self.assertTrue(float(i) / n > 0.92)
         print "pattern.it.parser.parse()"
 

@@ -38,7 +38,7 @@ for page in range(1, 10):
 # The more training data, the more statistically reliable the classifier becomes.
 # The only way to really know if you're classifier is working correctly
 # is to test it with testing data, see the documentation for Classifier.test().
-classifier = KNN(baseline=None) # By default, baseline=FREQUENCY
+classifier = KNN(baseline=None) # By default, baseline=MAJORITY
 for document in m:              # (classify unknown documents with the most frequent type).
     classifier.train(document)
 
