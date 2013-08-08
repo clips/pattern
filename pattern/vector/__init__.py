@@ -1661,11 +1661,11 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
 #--- CLASSIFIER BASE CLASS -------------------------------------------------------------------------
 
 # The default baseline (i.e., the default predicted class) is the most frequent class:
-FREQUENCY = "frequency"
+MAJORITY, FREQUENCY = "majority", "frequency"
 
 class Classifier(object):
 
-    def __init__(self, train=[], baseline=FREQUENCY, **kwargs):
+    def __init__(self, train=[], baseline=MAJORITY, **kwargs):
         """ A base class for Naive Bayes, k-NN and SVM.
             Trains a classifier on the given list of Documents or (document, type)-tuples,
             where document can be a Document, Vector, dict or string
@@ -1724,9 +1724,9 @@ class Classifier(object):
     @property
     def baseline(self):
         """ Yields the most frequent class in the training data,
-            or a user-defined class if Classifier(baseline != FREQUENCY).
+            or a user-defined class if Classifier(baseline != MAJORITY).
         """
-        if self._baseline != FREQUENCY:
+        if self._baseline not in (MAJORITY, FREQUENCY):
             return self._baseline
         return ([(0, None)] + sorted([(v, k) for k, v in self._classes.iteritems()]))[-1][1]
         
@@ -1969,7 +1969,7 @@ BERNOUILLI  = "bernouilli"  # Feature occurs in class (1) or not (0).
 
 class NaiveBayes(Classifier):
     
-    def __init__(self, train=[], baseline=FREQUENCY, method=MULTINOMIAL, alpha=0.0001):
+    def __init__(self, train=[], baseline=MAJORITY, method=MULTINOMIAL, alpha=0.0001):
         """ Naive Bayes is a simple supervised learning method for text classification.
             Documents are classified based on the probability that a feature occurs in a class,
             (independent of other features).
@@ -2051,7 +2051,7 @@ Bayes = NB = NaiveBayes
 
 class KNN(Classifier):
     
-    def __init__(self, k=10, distance=COSINE, train=[], baseline=FREQUENCY):
+    def __init__(self, train=[], baseline=MAJORITY, k=10, distance=COSINE):
         """ k-nearest neighbor (kNN) is a simple supervised learning method for text classification.
             Documents are classified by a majority vote of nearest neighbors (cosine distance)
             in the training data.
@@ -2187,7 +2187,7 @@ class SVM(Classifier):
             (  "shrinking", "h", True)):
                 v = kwargs.get(k2, kwargs.get(k1, v))
                 setattr(self, "_"+k1, v)
-        Classifier.__init__(self, train=kwargs.get("train", []), baseline=FREQUENCY)
+        Classifier.__init__(self, train=kwargs.get("train", []), baseline=MAJORITY)
     
     @property
     def extension(self):
@@ -2288,7 +2288,7 @@ class SVM(Classifier):
                 self._nu,         # -n
                 self._cache,      # -m
             int(self._shrinking), # -h
-                1,               # -b
+            int(self._type != DETECTION), # -b
             )
         # Cache the model and the feature hash.
         # SVM.train() will remove the cached model (since it needs to be retrained).
