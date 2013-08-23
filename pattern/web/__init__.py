@@ -1441,10 +1441,10 @@ class Twitter(SearchEngine):
         if not query or count < 1 or (isinstance(start, (int, float)) and start < 1):
             return Results(TWITTER, query, type)
         if isinstance(start, (int, float)) and start < 10000:
-            id = (query, kwargs.get("geo"), int(start), count)
+            id = (query, kwargs.get("geo"), kwargs.get("date"), int(start)-1, count)
             id = self._pagination.pop(id, "")
         else:
-            id = start or ""
+            id = int(start) - 1 if start and start.isdigit() else ""
         # 1) Construct request URL.
         url = URL(TWITTER + "search/tweets.json?", method=GET)
         url.query = {
@@ -1499,7 +1499,7 @@ class Twitter(SearchEngine):
         # Store the last id retrieved.
         # If search() is called again with start+1, start from this id.
         if isinstance(start, (int, float)) and results:
-            id = (query, kwargs.get("geo"), kwargs.get("date"), int(start)+1, count)
+            id = (query, kwargs.get("geo"), kwargs.get("date"), int(start), count)
             self._pagination[id] = str(int(results[-1].id) - 1)
         return results
 

@@ -53,17 +53,17 @@ from pattern.en import parsetree
 Example
 -------
 
-This example trains a classifier on adjectives mined from Twitter. First, tweets that contain hashtag #win or #fail are collected. For example: "$20 tip off a sweet little old lady today #win". The word part-of-speech tags are then parsed, keeping only adjectives. Each tweet is transformed to a vector: a dictionary of adjective → count items, labeled `WIN` or `FAIL`. The classifier uses the vectors to predict which adjectives are commonly associated with either `WIN` or `FAIL`.
+This example trains a classifier on adjectives mined from Twitter. First, tweets that contain hashtag #win or #fail are collected. For example: "$20 tip off a sweet little old lady today #win". The word part-of-speech tags are then parsed, keeping only adjectives. Each tweet is transformed to a vector, a dictionary of adjective → count items, labeled `WIN` or `FAIL`. The classifier uses the vectors to learn what other tweets look more like  `WIN` or more like `FAIL`.
 
 ```python
 from pattern.web    import Twitter
 from pattern.en     import tag
 from pattern.vector import KNN, count
 
-knn = KNN()
+twitter, knn = Twitter(), KNN()
 
 for i in range(1, 3):
-    for tweet in Twitter().search('#win OR #fail', start=i, count=100):
+    for tweet in twitter.search('#win OR #fail', start=i, count=100):
         s = tweet.text.lower()
         p = '#win' in s and 'WIN' or 'FAIL'
         v = tag(s)
@@ -72,8 +72,8 @@ for i in range(1, 3):
         if v:
             knn.train(v, type=p)
 
-print knn.classify('sweet')
-print knn.classify('stupid')
+print knn.classify('sweet potato burger')
+print knn.classify('stupid autocorrect')
 ```
 
 Documentation
