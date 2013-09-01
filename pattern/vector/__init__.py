@@ -44,15 +44,18 @@ try:
 except:
     MODULE = ""
 
-try: from pattern.text import singularize, predicative, conjugate
+try: from pattern.text import singularize, predicative, conjugate, tokenize
 except:
     try: 
         import sys; sys.path.insert(0, os.path.join(MODULE, ".."))
-        from text import singularize, predicative, conjugate
+        from text import singularize, predicative, conjugate, tokenize
     except:
         singularize = lambda w, **k: w
         predicative = lambda w, **k: w
         conjugate   = lambda w, t, **k: w
+        tokenize    = lambda s: filter(len, 
+                                    re.split(r"(.*?[\.|\?|\!])", 
+                                        re.sub(r"(\.|\?|\!|,|;|:)", " \\1", s)))
 
 #--- STRING FUNCTIONS ------------------------------------------------------------------------------
 # Latin-1 (ISO-8859-1) encoding is identical to Windows-1252 except for the code points 128-159:
@@ -200,13 +203,14 @@ for f in glob.glob(os.path.join(MODULE, "stopwords-*.txt")):
 
 PUNCTUATION = ".,;:!?()[]{}`''\"@#$^&*+-|=~_"
 
-def words(string, filter=lambda w: w.lstrip("'").isalnum(), punctuation=PUNCTUATION, **kwargs):
+def words(string, filter=lambda w: w.strip("'").isalnum(), punctuation=PUNCTUATION, **kwargs):
     """ Returns a list of words (alphanumeric character sequences) from the given string.
         Common punctuation marks are stripped from words.
     """
     string = decode_utf8(string)
-    string = re.sub(r"([a-z|A-Z])'(m|s|ve|re|ll|d)", u"\\1 `'\\2", string)
-    words = (w.strip(punctuation).replace(u"`'", "'", 1) for w in string.split())
+    string = re.sub(r"([a-z|A-Z])'(m|s|ve|re|ll|d)", u"\\1 <QUOTE/>\\2", string)
+    string = re.sub(r"(c|d|gl|j|l|m|n|s|t|un)'([a-z|A-Z])", u"\\1<QUOTE/> \\2", string)
+    words = (w.strip(punctuation).replace(u"<QUOTE/>", "'", 1) for w in string.split())
     words = (w for w in words if filter is None or filter(w) is not False)
     words = [w for w in words if w]
     return words
@@ -530,35 +534,46 @@ class Document(object):
             compared to its frequency in other documents in the model.
             If the document is not incorporated in a model, simply returns tf weight.
         """
-        w = self.tf(word)
-        if weight == TFIDF and self.model is not None:
+        if self.model is not None and weight == TFIDF:
             # Use tf if no model, or idf==None (happens when the word is not in the model).
             idf = self.model.idf(word)
             idf = idf is None and 1 or idf
-            w *= idf
-        return w
+            return self.tf(word) * idf
+        return self.tf(word)
         
     tf_idf = tfidf = term_frequency_inverse_document_frequency
+    
+    def information_gain(self, word):
+        """ Returns the information gain for the given word.
+        """
+        if self.model is not None:
+            return self.model.ig(word)
+        return 0.0
+        
+    ig = infogain = information_gain
     
     @property
     def vector(self):
         """ Yields the document vector, a dictionary of (word, relevance)-items from the document.
-            The relevance is tf, or tf * idf if the document is part of a Model.
+            The relevance is tf, tf * idf, infogain or binary if the document is part of a Model, 
+            based on the value of Model.weight (TF, TFIDF, IG, BINARY, None).
             The document vector is used to calculate similarity between two documents,
             for example in a clustering or classification algorithm.
         """
         if not self._vector:
             # See the Vector class below = a dict with extra functionality (copy, norm).
-            # Model.weight (Tf, TFIDF, BINARY or None) defines how weights are calculated.
             # When a document is added/deleted from a model, the cached vector is deleted.
-            if getattr(self.model, "weight", TF) not in (TF, TFIDF, BINARY):
-                w, f = None, lambda w: float(self._terms[w])
-            if getattr(self.model, "weight", TF) == BINARY:
-                w, f = BINARY, lambda w: int(self._terms[w] > 0)
-            if getattr(self.model, "weight", TF) == TF:
-                w, f = TF, self.tf_idf
-            if getattr(self.model, "weight", TF) == TFIDF:
-                w, f = TFIDF, self.tf_idf
+            w = getattr(self.model, "weight", TF)
+            if w not in (TF, TFIDF, IG, BINARY):
+                f = lambda w: float(self._terms[w]); w=None
+            if w == BINARY:
+                f = lambda w: int(self._terms[w] > 0)
+            if w == TF:
+                f = self.tf_idf
+            if w == TFIDF:
+                f = self.tf_idf
+            if w == IG:
+                f = self.model.ig
             self._vector = Vector(((w, f(w)) for w in self.terms), weight=w)
         return self._vector
 
@@ -745,13 +760,14 @@ def entropy(p=[]):
     """ Returns the Shannon entropy for the given list of probabilities.
     """
     s = float(sum(p)) or 1
-    return -sum(x / s * log(x / s, len(p)) for x in p if x != 0) 
+    n = max(len(p), 2)
+    return -sum(x / s * log(x / s, n) for x in p if x != 0) or 0.0
 
 #### MODEL #########################################################################################
 
 #--- MODEL -----------------------------------------------------------------------------------------
 # A Model is a representation of a collection of documents as bag-of-words.
-# A Model is a matrix (or vector space) with features as columns and feature weights as rows,
+# A Model is a matrix (or vector space) with features as columns and documents as rows,
 # where each document is a vector of features (e.g., words) and feature weights (e.g., frequency).
 # The matrix is used to calculate adjusted weights (e.g., tf * idf), document similarity and LSA.
 
@@ -773,7 +789,7 @@ class Model(object):
         """ A model is a bag-of-word representation of a corpus of documents, 
             where each document vector is a bag of (word, relevance)-items.
             Vectors can then be compared for similarity using a distance metric.
-            The weighting scheme can be: relative TF, TFIDF (default), BINARY, None,
+            The weighting scheme can be: relative TF, TFIDF (default), IG, BINARY, None,
             where None means that the original weights are used.
         """
         self.description = ""             # Description of the dataset: author e-mail, etc.
@@ -784,7 +800,7 @@ class Model(object):
         self._ig         = {}             # Cache of (word, information gain)-items.
         self._vector     = None           # Cache of model vector with all the features in the model.
         self._lsa        = None           # LSA matrix with reduced dimensionality.
-        self._weight     = weight         # Weight used in Document.vector (TF, TFIDF, BINARY or None).
+        self._weight     = weight         # Weight used in Document.vector (TF, TFIDF, IG, BINARY or None).
         self._update()
         self.extend(documents)
     
@@ -1159,16 +1175,16 @@ class Model(object):
             # "How many documents have feature yi?"
             Y = dict.fromkeys(self.features, 0)
             for d in self.documents:
-                for y, v in d.vector.items():
-                    if v > 0:
+                for y, v in d.terms.items():
+                    if v:
                         Y[y] += 1 # Discrete: feature is present (1) or not (0).
             Y = dict((y, Y[y] / float(len(self.documents))) for y in Y)
             # XY = features by class distribution.
             # "How many documents of class xi have feature yi?"
             XY = dict.fromkeys(self.features, {})
             for d in self.documents:
-                for y, v in d.vector.items():
-                    if v != 0:
+                for y, v in d.terms.items():
+                    if v:
                         XY[y][d.type] = XY[y].get(d.type, 0) + 1
             # IG.
             for y in self.features:
@@ -1193,12 +1209,14 @@ class Model(object):
         """ Returns a new Model with documents only containing the given list of features,
             for example a subset returned from Model.feature_selection().
         """
-        features = dict.fromkeys(features, True)
+        features = set(features)
         model = Model(weight=self.weight)
         model.extend([
             Document(dict((w, f) for w, f in d.terms.iteritems() if w in features),
-                name = d.name,
-                type = d.type) for d in self.documents])
+                       name = d.name,
+                       type = d.type,
+                   language = d.language,
+                description = d.description) for d in self.documents])
         return model
 
 # Backwards compatibility.
@@ -1876,7 +1894,7 @@ class ConfusionMatrix(defaultdict):
         """
         return iter((type,) + self(type) for type in self)
 
-    def __call__(self, type):
+    def __call__(self, target):
         """ Returns a (TP, TN, FP, FN)-tuple for the given class (one-vs-all).
         """
         TP = 0 # True positives.
@@ -1885,13 +1903,13 @@ class ConfusionMatrix(defaultdict):
         FN = 0 # False negatives (type II error).
         for t1 in self:
             for t2, n in self[t1].iteritems():
-                if type == t1 == t2: 
+                if target == t1 == t2: 
                     TP += n
-                if type != t1 == t2: 
+                if target != t1 == t2: 
                     TN += n
-                if type == t1 != t2: 
+                if target == t1 != t2: 
                     FN += n
-                if type == t2 != t1: 
+                if target == t2 != t1: 
                     FP += n
         return (TP, TN, FP, FN)
     
@@ -1909,6 +1927,9 @@ class ConfusionMatrix(defaultdict):
             for t2 in k: 
                 s += str(self[t1][t2]).ljust(n)
         return s
+    
+    def __repr__(self):
+        return repr(dict((k, dict(v)) for k, v in self.iteritems()))
 
 def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
     """ For 10-fold cross-validation, performs 10 separate tests of the classifier,
@@ -1965,6 +1986,7 @@ def gridsearch(Classifier, documents=[], folds=10, **kwargs):
 #--- NAIVE BAYES CLASSIFIER ------------------------------------------------------------------------
 
 MULTINOMIAL = "multinomial" # Feature weighting.
+BINOMIAL    = "binomial"    # Feature occurs in class (1) or not (0).
 BERNOUILLI  = "bernouilli"  # Feature occurs in class (1) or not (0).
 
 class NaiveBayes(Classifier):
@@ -2001,7 +2023,7 @@ class NaiveBayes(Classifier):
         self._classes[type] = self._classes.get(type, 0) + 1
         self._likelihood.setdefault(type, {})
         for f, w in vector.iteritems():
-            if self.method == BERNOUILLI:
+            if self._method in (BINOMIAL, BERNOUILLI):
                 w = 1
             self._features[f] = self._features.get(f, 0) + 1
             self._likelihood[type][f] = self._likelihood[type].get(f, 0) + w
@@ -2021,7 +2043,7 @@ class NaiveBayes(Classifier):
         for type in self._classes:
             if self._method == MULTINOMIAL:
                 d = float(sum(self._likelihood[type].itervalues()))
-            if self._method == BERNOUILLI:
+            if self._method in (BINOMIAL, BERNOUILLI):
                 d = float(self._classes[type])
             g = 0
             for f in v:

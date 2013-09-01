@@ -304,6 +304,12 @@ Math.dot = function(a, b) {
     return n;
 };
 
+Math.mix = function(a, b, t) {
+    if (t < 0.0) return a;
+    if (t > 1.0) return b;
+    return a + (b-a)*t;
+};
+
 var Point = Class.extend({
     init: function(x, y) {
         this.x = x;
@@ -2523,6 +2529,35 @@ function random(v1, v2, bias) {
         var r = Math.pow(Math.random(), _rndExp(bias));
     }
     return r * (v2-v1) + v1;
+}
+
+var _NOISE_P = []; // Noise permutation table.
+var _NOISE_G = []; // Noise gradient (2D = 8 directions).
+
+function noise(x, y, m) {
+    /* Returns a smooth value between -1.0 and 1.0.
+     * Since the 2D space is infinite, the actual (x,y) coordinates do not matter.
+     * Smaller steps between successive coordinates yield smoother noise (e.g., 0.01-0.1).
+     */
+    // Based on: http://www.angelcode.com/dev/perlin/perlin.html
+    if (m === undefined) m = 1.5;
+    if (_NOISE_P.length == 0) {
+        _NOISE_P = Array.shuffle(Array.range(256));
+        _NOISE_P = _NOISE_P.concat(_NOISE_P);
+        _NOISE_G = [[-1, +1], [+0, +1], [+1, +1], [-1, +0], [+1, +0], [-1, -1], [+0, -1], [+1, -1]];
+    }
+    var X = Math.floor(x) & 255;
+    var Y = Math.floor(y) & 255;
+    x -= Math.floor(x);
+    y -= Math.floor(y);
+    var u = x * x * x * (x * (x * 6 - 15) + 10); // fade
+    var v = y * y * y * (y * (y * 6 - 15) + 10);
+    var n = Math.mix(
+        Math.mix(Math.dot(_NOISE_G[_NOISE_P[X   + _NOISE_P[Y  ]] % 8], [x  , y  ]), 
+                 Math.dot(_NOISE_G[_NOISE_P[X+1 + _NOISE_P[Y  ]] % 8], [x-1, y  ]), u),
+        Math.mix(Math.dot(_NOISE_G[_NOISE_P[X   + _NOISE_P[Y+1]] % 8], [x  , y-1]), 
+                 Math.dot(_NOISE_G[_NOISE_P[X+1 + _NOISE_P[Y+1]] % 8], [x-1, y-1]), u), v);
+    return (Math.clamp(n * m, -1, +1) + 1) * 0.5; // 0.0-1.0
 }
 
 function grid(cols, rows, colWidth, rowHeight, shuffled) {

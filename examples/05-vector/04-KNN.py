@@ -17,11 +17,12 @@ from pattern.vector import Document, Model, KNN
 # to the k documents that are most similar (cosine similarity) to the given input document.
 
 m = Model()
+t = Twitter()
 
 # First, we mine a model of a 1000 tweets.
 # We'll use hashtags as type.
 for page in range(1, 10):
-    for tweet in Twitter().search('#win OR #fail', start=page, count=100, cached=True):
+    for tweet in t.search('#win OR #fail', start=page, count=100, cached=True):
         # If the tweet contains #win hashtag, we'll set its type to 'WIN':
         s = tweet.text.lower()               # tweet in lowercase
         p = '#win' in s and 'WIN' or 'FAIL'  # document labels      
@@ -52,8 +53,8 @@ print
 # Again, a robust classifier needs lots and lots of training data.
 # If None is returned, the word was not recognized,
 # and the classifier returned the default value (see above).
-print classifier.classify('sweet')  # yields 'WIN'
-print classifier.classify('stupid') # yields 'FAIL'
+print classifier.classify('sweet potato burger') # yields 'WIN'
+print classifier.classify('stupid autocorrect')  # yields 'FAIL'
 
 # "What can I do with it?"
 # In the scientific community, classifiers have been used to predict:
