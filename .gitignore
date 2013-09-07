@@ -11,3 +11,4 @@ dist
 # Ignore cache folders
 pattern/web/cache/tmp/
 web/cache/tmp/
+test/pattern_unittest_db
