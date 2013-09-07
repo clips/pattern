@@ -37,7 +37,7 @@ If none of the above works, you can make Python aware of the module in three way
 Example
 =======
 
-This example trains a classifier on adjectives mined from Twitter. First, tweets that contain hashtag #win or #fail are collected. For example: "$20 tip off a sweet little old lady today #win". The word part-of-speech tags are then parsed, keeping only adjectives. Each tweet is transformed to a vector, a dictionary of adjective → count items, labeled WIN or FAIL. The classifier uses the vectors to learn what other tweets look more like  WIN or more like FAIL.
+This example trains a classifier on adjectives mined from Twitter. First, tweets that contain hashtag #win or #fail are collected. For example: "$20 tip off a sweet little old lady today #win". The word part-of-speech tags are then parsed, keeping only adjectives. Each tweet is transformed to a vector, a dictionary of adjective → count items, labeled WIN or FAIL. The classifier uses the vectors to learn which other tweets look more like  WIN or more like FAIL.
 
 >>> from pattern.web    import Twitter
 >>> from pattern.en     import tag

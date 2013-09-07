@@ -20,6 +20,8 @@
 # Unsupervised machine learning or clustering can be used to group unlabeled documents
 # into subsets based on their similarity.
 
+import stemmer; _stemmer=stemmer
+
 import sys
 import os
 import re
@@ -27,11 +29,11 @@ import glob
 import heapq
 import codecs
 import cPickle
-import stemmer; _stemmer=stemmer
+import types
 
 from math        import log, exp, sqrt
 from time        import time
-from random      import random, choice
+from random      import random, randint, choice, sample
 from itertools   import izip, chain
 from bisect      import insort
 from operator    import itemgetter
@@ -321,15 +323,16 @@ class Document(object):
     #         stemmer = None, 
     #         exclude = [], 
     #       stopwords = False, 
-    #        language = None,
     #            name = None, 
-    #            type = None
+    #            type = None,
+    #        language = None,
+    #     description = None
     # )
     def __init__(self, string="", **kwargs):
         """ An unordered bag-of-words representation of the given string, list, dict or Sentence.
             Lists can contain tuples (of), strings or numbers.
             Dicts can contain tuples (of), strings or numbers as keys, and floats as values.
-            Document.terms stores a dict of (word, count)-items.
+            Document.words stores a dict of (word, count)-items.
             Document.vector stores a dict of (word, weight)-items, 
             where weight is the term frequency normalized (0.0-1.0) to remove document length bias.
             Punctuation marks are stripped from the words.
@@ -373,6 +376,14 @@ class Document(object):
             w = []; [w.extend(sentence.words) for sentence in string]
             w = [w for w in w if kwargs["filter"](w.string)]
             w = count(w, **kwargs)
+            v = None
+        # Another Document: copy words, wordcount, name and type.
+        elif isinstance(string, Document):
+            for k in ("name", "type", "label", "language", "description"):
+                if hasattr(string, k):
+                    kwargs.setdefault(k, getattr(string, k))
+            w = string.terms
+            w = kwargs["dict"](w)
             v = None
         else:
             raise TypeError, "document string is not str, unicode, list, dict, Vector, Sentence or Text."
@@ -507,6 +518,10 @@ class Document(object):
         # Cache the word count so we can reuse it when calculating tf.
         if not self._count: self._count = sum(self.terms.values())
         return self._count
+        
+    @property
+    def wordcount(self):
+        return self._count
 
     def __len__(self):
         return len(self.terms)
@@ -569,13 +584,19 @@ class Document(object):
             if w == BINARY:
                 f = lambda w: int(self._terms[w] > 0)
             if w == TF:
-                f = self.tf_idf
+                f = self.tf
             if w == TFIDF:
                 f = self.tf_idf
             if w == IG:
                 f = self.model.ig
             self._vector = Vector(((w, f(w)) for w in self.terms), weight=w)
         return self._vector
+        
+    @property
+    def concepts(self):
+        """ Yields the document concept vector if the document is part of an LSA model.
+        """
+        return self.model and self.model.lsa and self.model.lsa.concepts.get(self.id) or None
 
     def keywords(self, top=10, normalized=True):
         """ Returns a sorted list of (relevance, word)-tuples that are top keywords in the document.
@@ -614,7 +635,7 @@ class Document(object):
                  self.name and ", name=%s" % repr(self.name) or "",
                  self.type and ", type=%s" % repr(self.type) or "")
 
-Bag = BagOfWords = Document
+Bag = BagOfWords = BOW = Document
 
 #--- VECTOR ----------------------------------------------------------------------------------------
 # A Vector represents document terms (called features) and their tf or tf * idf relevance weight.
@@ -628,7 +649,7 @@ Bag = BagOfWords = Document
 
 class Vector(readonlydict):
     
-    id = 1
+    id = 0
     
     def __init__(self, *args, **kwargs):
         """ A dictionary of (feature, weight)-items of the features (terms, words) in a Document.
@@ -636,11 +657,31 @@ class Vector(readonlydict):
             For example, vectors with 2 features (x, y) can be compared using 2D Euclidean distance.
             Vectors that represent text documents can be compared using cosine similarity.
         """
-        self.id     = Vector.id; Vector.id+=1  # Unique ID.
-        self.weight = kwargs.pop("weight", TF) # Vector weights based on tf, tf-idf, binary?
-        self._norm  = None
-        readonlydict.__init__(self, *args, **kwargs)
-    
+        f = ()
+        w = None
+        if len(args) > 0:
+            # From a Vector (copy weighting scheme).
+            if isinstance(args[0], Vector):
+                w = args[0].weight
+            # From a dict.
+            if isinstance(args[0], dict):
+                f = args[0].iteritems()
+            # From an iterator.
+            elif hasattr(args[0], "__iter__"):
+                f = iter(args[0])
+        Vector.id  += 1
+        self.id     = Vector.id               # Unique ID.
+        self.weight = kwargs.pop("weight", w) # TF, TFIDF, IG, BINARY or None.
+        self._norm  = None                    # Cached L2-norm.
+        # Exclude zero weights (= sparse).
+        f = chain(f, kwargs.iteritems())
+        f = ((k, v) for k, v in f if v != 0)
+        readonlydict.__init__(self, f)
+
+    @classmethod
+    def fromkeys(cls, k, default=None):
+        return Vector((k, default) for k in k)
+
     @property
     def features(self):
         return self.keys()
@@ -697,7 +738,7 @@ def relative(v):
         s(v, f, v[f] / n)
     return v
     
-rel = relative
+normalize = rel = relative
 
 def l2_norm(v):
     """ Returns the L2-norm of the given vector.
@@ -734,8 +775,8 @@ def tf_idf(vectors=[], base=2.71828): # Euler's number
 
 tfidf = tf_idf
 
-COSINE, EUCLIDEAN, MANHATTAN, HAMMING = \
-    "cosine", "euclidean", "manhattan", "hamming"
+COSINE, EUCLIDEAN, MANHATTAN, CHEBYSHEV, HAMMING = \
+    "cosine", "euclidean", "manhattan", "chebyshev", "hamming"
     
 def distance(v1, v2, method=COSINE):
     """ Returns the distance between two vectors.
@@ -746,6 +787,8 @@ def distance(v1, v2, method=COSINE):
         return sum((v1.get(w, 0) - v2.get(w, 0)) ** 2 for w in set(chain(v1, v2)))
     if method == MANHATTAN:
         return sum(abs(v1.get(w, 0) - v2.get(w, 0)) for w in set(chain(v1, v2)))
+    if method == CHEBYSHEV:
+        return max(abs(v1.get(w, 0) - v2.get(w, 0)) for w in set(chain(v1, v2)))
     if method == HAMMING:
         d = sum(not (w in v1 and w in v2 and v1[w] == v2[w]) for w in set(chain(v1, v2))) 
         d = d / float(max(len(v1), len(v2)) or 1)
@@ -781,7 +824,7 @@ NORM, L1, L2, TOP300 = "norm", "L1", "L2", "top300"
 IG = INFOGAIN = "infogain"
 
 # Clustering methods:
-KMEANS, HIERARCHICAL, ALL = "k-means", "hierarchical", "all"
+KMEANS, HIERARCHICAL = "k-means", "hierarchical"
 
 class Model(object):
     
@@ -807,6 +850,8 @@ class Model(object):
     @property
     def documents(self):
         return self._documents
+        
+    docs = documents
 
     @property
     def terms(self):
@@ -823,16 +868,16 @@ class Model(object):
     def _get_lsa(self):
         return self._lsa
     def _set_lsa(self, v=None):
+        self._update() # Clear the cache.
         self._lsa = v
-        self._update()
         
     lsa = property(_get_lsa, _set_lsa)
 
     def _get_weight(self):
         return self._weight
     def _set_weight(self, w):
-        self._weight = w
         self._update() # Clear the cache.
+        self._weight = w
         
     weight = property(_get_weight, _set_weight)
 
@@ -851,6 +896,8 @@ class Model(object):
             for d1 in self.documents:
                 for d2 in self.documents:
                     self.cosine_similarity(d1, d2)
+            for w in self.vector:
+                self.information_gain(w)
         m = dict.fromkeys((d.id for d in self.documents), True)
         for id1, id2 in self._cos.keys():
             # Remove Model.search() query cache.
@@ -924,26 +971,26 @@ class Model(object):
             (feature weights will be different now that there is a new document).
         """
         if not isinstance(document, Document):
-            raise TypeError, "Model.append() expects a Document."
-        document._model = self
+            document = Document(document)
         if document.name is not None:
             self._index[document.name] = document
-        if self._weight != TF:
-            self._update()
+        document._model = self
         list.append(self.documents, document)
+        if self._weight not in (TF, BINARY, None):
+            self._update()
         
     def extend(self, documents):
         """ Extends the model with the given list of documents.
         """
-        for document in documents:
+        for i, document in enumerate(documents):
             if not isinstance(document, Document):
-                raise TypeError, "Model.extend() expects a list of Documents."
-            document._model = self
+                documents[i] = Document(document)
             if document.name is not None:
                 self._index[document.name] = document
-        if self._weight != TF:
-            self._update()
+            document._model = self
         list.extend(self.documents, documents)
+        if self._weight not in (TF, BINARY, None):
+            self._update()
         
     def remove(self, document):
         """ Removes the given Document from the model, and sets Document.model=None.
@@ -955,6 +1002,8 @@ class Model(object):
         """
         if name in self._index:
             return self._index[name]
+            
+    doc = document
         
     def document_frequency(self, word):
         """ Returns the document frequency for the given word or feature.
@@ -1080,18 +1129,16 @@ class Model(object):
             The given words can be a string (one word), a list or tuple of words, or a Document.
         """
         top = kwargs.pop("top", 10)
-        if not isinstance(words, (list, tuple, Document)):
-            words = [words]
         if not isinstance(words, Document):
-            kwargs.setdefault("threshold", 0) # Same stemmer as other documents should be given.
-            words = Document(" ".join(words), **kwargs)
-        words._model = self # So we can calculate tf-idf.
-        # Documents that are not in the model,
-        # consisting only of words that are not in the model,
-        # have no related documents in the model:
-        if len([True for w in words if w in self.vector]) == 0:
+            kwargs.setdefault("filter", lambda w: w) # pass-through.
+            kwargs.setdefault("stopwords", True)
+            words = Document(words)
+        if len([w for w in words if w in self.vector]) == 0:
             return []
-        return self.nearest_neighbors(words, top)
+        m, words._model = words._model, self # So we can calculate tf-idf.
+        n, words._model = self.nearest_neighbors(words, top), m
+        words._model = m
+        return n
         
     search = vector_space_search
     
@@ -1100,16 +1147,17 @@ class Model(object):
         """
         return distance(document1.vector, document2.vector, *args, **kwargs)
     
-#   def cluster(self, documents=ALL, method=KMEANS, k=10, iterations=10)
-#   def cluster(self, documents=ALL, method=HIERARCHICAL, k=1, iterations=1000)
-    def cluster(self, documents=ALL, method=KMEANS, **kwargs):
+#   def cluster(self, method=KMEANS, k=10, iterations=10)
+#   def cluster(self, method=HIERARCHICAL, k=1, iterations=1000)
+    def cluster(self, method=KMEANS, **kwargs):
         """ Clustering is an unsupervised machine learning method for grouping similar documents.
             - k-means clustering returns a list of k clusters (each is a list of documents).
             - hierarchical clustering returns a list of documents and Cluster objects,
               where a Cluster is a list of documents and other clusters (see Cluster.flatten()).
         """
-        if documents == ALL:
-            documents = self.documents
+        # The optional documents parameter can be a selective list 
+        # of documents in the model to cluster.
+        documents = kwargs.get("documents", self.documents)
         if not getattr(self, "lsa", None):
             # Using document vectors:
             vectors, features = [d.vector for d in documents], self.vector.keys()
@@ -1146,6 +1194,7 @@ class Model(object):
         """
         self._lsa = LSA(self, k=dimensions)
         self._cos = {}
+        return self._lsa
         
     reduce = latent_semantic_analysis
     
@@ -1384,7 +1433,7 @@ class LSA(object):
         v = numpy.dot(numpy.dot(numpy.linalg.inv(numpy.diag(self.sigma)), self.vt), v)
         v = _lsa_transform_cache[document.id] = Vector(enumerate(v))
         return v
-        
+
 # LSA cache for Model.vector_space_search() shouldn't be stored with Model.save()
 # (so it is a global instead of a property of the LSA class).
 _lsa_transform_cache = {}
@@ -1614,7 +1663,7 @@ class Cluster(list):
                 item.traverse(visit)
 
     def __repr__(self):
-        return "Cluster(%s)" % list.__repr__(self)[1:-1]
+        return "Cluster(%s)" % list.__repr__(self)
 
 def sequence(i=0, f=lambda i: i+1):
     """ Yields an infinite sequence, for example:
@@ -2462,79 +2511,54 @@ class GeneticAlgorithm(object):
         """
         self.population = candidates
         self.generation = 0
-        self._avg = None # Average fitness for this generation.
-        # GeneticAlgorithm.fitness(), crossover(), mutate() can be given as functions:
-        for f in ("fitness", "crossover", "mutate"):
-            if f in kwargs: 
-                setattr(self, f, kwargs[f])
+        # Set GA.fitness(), crossover(), mutate() from function.
+        for f in ("fitness", "combine", "mutate"):
+            if f in kwargs:
+                setattr(self, f, types.MethodType(kwargs[f], self))
     
     def fitness(self, candidate):
         """ Must be implemented in a subclass, returns 0.0-1.0.
         """
         return 1.0
     
-    def crossover(self, candidate1, candidate2, d=0.5):
+    def combine(self, candidate1, candidate2):
         """ Must be implemented in a subclass, returns a new candidate.
         """
         return None
         
-    def mutate(self, candidate, d=0.1):
+    def mutate(self, candidate):
         """ Must be implemented in a subclass, returns a new candidate.
         """
         return None or candidate
         
-    def update(self, top=0.7, crossover=0.5, mutation=0.1, d=0.9):
+    def update(self, top=0.5, mutation=0.5):
         """ Updates the population by selecting the top fittest candidates,
             and recombining them into a new generation.
         """
         # 1) Selection.
-        p = sorted((self.fitness(x), x) for x in self.population) # Weakest-first.
-        a = self._avg = float(sum(f for f, x in p)) / len(p)
-        x = min(f for f, x in p)
-        y = max(f for f, x in p)
-        i = 0
-        while len(p) > len(self.population) * top:
-            # Weaker candidates have a higher chance of being removed,
-            # chance being equal to (1-fitness), starting with the weakest.
-            if x + (y - x) * random() >= p[i][0]:
-                p.pop(i)
-            else:
-                i = (i + 1) % len(p)
+        # Choose the top fittest candidates.
+        # Including weaker candidates can be beneficial (diversity).
+        p = sorted(self.population, key=self.fitness, reverse=True)
+        p = p[:max(2, int(round(len(p) * top)))]
         # 2) Reproduction.
+        # Choose random parents for crossover.
+        # Mutation avoids local optima by maintaining genetic diversity.
         g = []
-        while len(g) < len(self.population):
-            # Choose randomly between recombination of parents or mutation.
-            # Mutation avoids local optima by maintaining genetic diversity.
-            if random() < d:
-                i = int(round(random() * (len(p)-1)))
-                j = choice(range(0, i) + range(i + 1, len(p)))
-                g.append(self.crossover(p[i][1], p[j][1], d=crossover))
-            else:
-                g.append(self.mutate(choice(p)[1], d=mutation))
+        n = len(p)
+        for candidate in self.population:
+            i = randint(0, n-1)
+            j = choice([x for x in xrange(n) if x != i]) if n > 1 else 0
+            g.append(self.combine(p[i], p[j]))
+            if random() <= mutation:
+                g[-1] = self.mutate(g[-1])
         self.population = g
         self.generation += 1
         
     @property
     def avg(self):
         # Average fitness is supposed to increase each generation.
-        if not self._avg: self._avg = float(sum(map(self.fitness, self.population))) / len(self.population)
-        return self._avg
+        return float(sum(map(self.fitness, self.population))) / len(self.population)
     
     average_fitness = avg
 
 GA = GeneticAlgorithm
-
-# GA for floats between 0.0-1.0 that prefers higher numbers:
-#class HighFloatGA(GeneticAlgorithm):
-#    def fitness(self, x):
-#        return x
-#    def crossover(self, x, y, d=0.5):
-#        return (x + y) / 2
-#    def mutate(self, x, d=0.1):
-#        return min(1, max(0, x + random() * 0.2 - 0.1))
-#
-#ga = HighFloatGA([random() for i in range(100)])
-#for i in range(100):
-#    ga.update()
-#    print ga.average_fitness
-#print ga.population

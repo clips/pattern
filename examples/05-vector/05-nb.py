@@ -21,7 +21,7 @@ m = Model(documents)
 
 print "number of documents:", len(m)
 print "number of words:", len(m.vector)
-print "number of words (average):", sum(len(d.terms) for d in m.documents) / float(len(m))
+print "number of words (average):", sum(len(d.features) for d in m.documents) / float(len(m))
 print
 
 # Train Naive Bayes on all documents.

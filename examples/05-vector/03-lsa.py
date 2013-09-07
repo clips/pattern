@@ -33,7 +33,7 @@ m = Model(documents)
 
 print "number of documents:", len(m)
 print "number of features:", len(m.vector)
-print "number of features (average):", sum(len(d.terms) for d in m.documents) / float(len(m))
+print "number of features (average):", sum(len(d.features) for d in m.documents) / float(len(m))
 print
 
 # 6,337 different features may be too slow for some algorithms (e.g., hierarchical clustering).

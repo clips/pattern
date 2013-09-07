@@ -30,7 +30,7 @@ before its flight window closed this Monday.
 # With threshold=1, only words that occur more than once are counted.
 # With stopwords=False, words like "the", "and", "I", "is" are ignored.
 document = Document(s, threshold=1, stopwords=False)
-print document.terms
+print document.words
 print
 
 # The /corpus folder contains texts mined from Wikipedia.
@@ -69,7 +69,7 @@ print
 # The dictionary of words (features) and their normalized word count (weights)
 # is also called the document vector:
 document = Document("a black cat and a white cat", stopwords=True)
-print document.terms
+print document.words
 print document.vector.features
 for feature, weight in document.vector.items():
     print feature, weight
