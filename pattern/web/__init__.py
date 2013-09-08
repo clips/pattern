@@ -2952,9 +2952,11 @@ class Selector(object):
         if len(self.classes) == 0 or len(self.classes) >= 2:
             e = map(Element, e._p.findAll(tag, **a))
         if len(self.classes) == 1:
-            e = map(Element, e._p.findAll(tag, **dict(a, **{"class": i(list(self.classes)[0])})))
+            b = lambda s: re.compile("\\b%s\\b" % s, re.I)
+            e = map(Element, e._p.findAll(tag, **dict(a, **{"class": b(list(self.classes)[0])})))
         if len(self.classes) >= 2:
-            e = filter(lambda e: self.classes.issubset(set(map(str.lower, e.attr.get("class", "").split()))), e)
+            lower = lambda s: s.lower() #make lower work for str and unicode
+            e = filter(lambda e: self.classes.issubset(set(map(lower, e.attr.get("class", "").split()))), e)
         if "first-child" in self.pseudo:
             e = filter(lambda e: e == self._first_child(e.parent), e)
         return e

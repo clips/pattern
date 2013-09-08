@@ -729,6 +729,9 @@ class TestDOM(unittest.TestCase):
                         <span class="author">me</span>
                         Blah blah
                     </P>
+                    <P class="class1 class2">
+                        Blah blah
+                    </P>
                     <p>Read more</p>
                 </div>
             </body>
@@ -802,6 +805,20 @@ class TestDOM(unittest.TestCase):
         print "pattern.web.Node.Element.by_class()"
         print "pattern.web.Node.Element.by_id()"
         print "pattern.web.Node.Element.by_attribute()"
+
+    def test_selector(self):
+        v = web.DOM(self.html).body
+        p1 = v("p.class1")
+        self.assertEqual(len(p1), 1)
+        self.assertTrue("class1" in p1[0].attributes["class"])
+        p2 = v("p.class2")
+        self.assertEqual(len(p2), 1)
+        self.assertTrue("class2" in p2[0].attributes["class"])
+        p1andp2 = v(".class1.class2")
+        self.assertEqual(len(p1andp2), 1)
+        self.assertTrue("class1" in p1andp2[0].attributes["class"])
+        self.assertTrue("class2" in p1andp2[0].attributes["class"])
+        print "pattern.web.Node.Element()"
 
 #---------------------------------------------------------------------------------------------------
 
