@@ -2734,7 +2734,7 @@ class Element(Node):
         """ Yields the element content as a unicode string.
         """
         return u"".join([u(x) for x in self._p.contents])
-        
+
     string = content
 
     @property
@@ -2794,6 +2794,13 @@ class Element(Node):
         if k in self.attributes:
             return self.attributes[k]
         raise AttributeError, "'Element' object has no attribute '%s'" % k
+
+    def __contains__(self, sub):
+        """Implements the `in` keyword."""
+        if isinstance(sub, Element):
+            return sub.content in self.content
+        else:
+            return sub in self.content
 
     def __repr__(self):
         return "Element(tag='%s')" % bytestring(self.tagname)
