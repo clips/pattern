@@ -2943,7 +2943,7 @@ class Selector(object):
         # Map tag to True if it is "*".
         tag = self.tag == "*" or self.tag
         # Map id into a case-insensitive **kwargs dict.
-        i = lambda s: re.compile("^%s$" % s, re.I)
+        i = lambda s: re.compile(r"\b%s\b" % s, re.I)
         a = {"id": i(self.id)} if self.id else {}
         a.update(map(lambda (k, v): (k, i(v)), self.attributes.iteritems()))
         # Match tag + id + all classes + relevant pseudo-elements.
@@ -2952,11 +2952,9 @@ class Selector(object):
         if len(self.classes) == 0 or len(self.classes) >= 2:
             e = map(Element, e._p.findAll(tag, **a))
         if len(self.classes) == 1:
-            b = lambda s: re.compile("\\b%s\\b" % s, re.I)
-            e = map(Element, e._p.findAll(tag, **dict(a, **{"class": b(list(self.classes)[0])})))
+            e = map(Element, e._p.findAll(tag, **dict(a, **{"class": i(list(self.classes)[0])})))
         if len(self.classes) >= 2:
-            lower = lambda s: s.lower() #make lower work for str and unicode
-            e = filter(lambda e: self.classes.issubset(set(map(lower, e.attr.get("class", "").split()))), e)
+            e = filter(lambda e: self.classes.issubset(set(e.attr.get("class", "").lower().split())), e)
         if "first-child" in self.pseudo:
             e = filter(lambda e: e == self._first_child(e.parent), e)
         return e
