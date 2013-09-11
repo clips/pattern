@@ -153,3 +153,4 @@ Acknowledgements
 - Fabio Marfia
 - Steven Loria
 - Colin Molter + tevizz.com
+- Peter Bull
