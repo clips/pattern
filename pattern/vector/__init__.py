@@ -2093,7 +2093,7 @@ class NaiveBayes(Classifier):
         p = defaultdict(float)
         for type in self._classes:
             if self._method == MULTINOMIAL:
-                if not type in self._cache_lh_value:
+                if not type in self._cache_lh_sum:
                     self._cache_lh_sum[type] = float(sum(self._likelihood[type].itervalues()))
                 d = self._cache_lh_sum[type]
             if self._method in (BINOMIAL, BERNOUILLI):
