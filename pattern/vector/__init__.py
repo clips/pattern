@@ -2045,6 +2045,7 @@ class NaiveBayes(Classifier):
             Documents are classified based on the probability that a feature occurs in a class,
             (independent of other features).
         """
+        self._cache_lh_sum = {}
         self._classes    = {}     # {class: frequency}
         self._features   = {}     # {feature: frequency}
         self._likelihood = {}     # {class: {feature: frequency}}
@@ -2076,6 +2077,7 @@ class NaiveBayes(Classifier):
                 w = 1
             self._features[f] = self._features.get(f, 0) + 1
             self._likelihood[type][f] = self._likelihood[type].get(f, 0) + w
+        self._cache_lh_sum.pop(type, None)
 
     def classify(self, document, discrete=True):
         """ Returns the type with the highest probability for the given document.
@@ -2091,7 +2093,9 @@ class NaiveBayes(Classifier):
         p = defaultdict(float)
         for type in self._classes:
             if self._method == MULTINOMIAL:
-                d = float(sum(self._likelihood[type].itervalues()))
+                if not type in self._cache_lh_value:
+                    self._cache_lh_sum[type] = float(sum(self._likelihood[type].itervalues()))
+                d = self._cache_lh_sum[type]
             if self._method in (BINOMIAL, BERNOUILLI):
                 d = float(self._classes[type])
             g = 0
