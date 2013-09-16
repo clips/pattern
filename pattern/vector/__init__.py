@@ -224,6 +224,8 @@ def stem(word, stemmer=PORTER, **kwargs):
         With stemmer=LEMMA, either uses Word.lemma or inflect.singularize().
         (with optional parameter language="en", pattern.en.inflect is used).
     """
+    if hasattr(word, "string") and stemmer in (PORTER, None):
+        word = word.string
     if isinstance(word, basestring):
         word = decode_utf8(word.lower())
     if stemmer is None:
@@ -231,7 +233,7 @@ def stem(word, stemmer=PORTER, **kwargs):
     if stemmer == PORTER:
         return _stemmer.stem(word, **kwargs)
     if stemmer == LEMMA:
-        if word.__class__.__name__ == "Word":
+        if hasattr(word, "lemma"): # pattern.en.Word
             w = word.string.lower()
             if word.lemma is not None:
                 return word.lemma
@@ -242,8 +244,9 @@ def stem(word, stemmer=PORTER, **kwargs):
             if word.pos.startswith(("JJ",)):
                 return predicative(w)
             if word.pos.startswith(("DT", "PR", "WP")):
-                return singularize(w, pos=pos)
-        return singularize(word, pos=kwargs.get("pos", "noun"))
+                return singularize(w, pos=word.pos)
+            return w
+        return singularize(word, pos=kwargs.get("pos", "NN"))
     if hasattr(stemmer, "__call__"):
         return decode_utf8(stemmer(word))
     return word.lower()
@@ -258,14 +261,17 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
     # e.g., count(words, dict=readonlydict) as used in Document.
     count = kwargs.get("dict", dict)()
     for w in words:
-        if w.__class__.__name__ == "Word":
-            w = w.string.lower()
+        w1 = w
+        w2 = w
+        if hasattr(w, "string"): # pattern.en.Word
+            w1 = w.string.lower()
         if isinstance(w, basestring):
-            w = w.lower()
-        if (stopwords or not w in _stopwords.get(language or "en", ())) and not w in exclude:
+            w1 = w.lower()
+            w2 = w.lower()
+        if (stopwords or not w1 in _stopwords.get(language or "en", ())) and not w1 in exclude:
             if stemmer is not None:
-                w = stem(w, stemmer, **kwargs)
-            dict.__setitem__(count, w, (w in count) and count[w]+1 or 1)
+                w2 = stem(w2, stemmer, **kwargs).lower()
+            dict.__setitem__(count, w2, (w2 in count) and count[w2]+1 or 1)
     for k in count.keys():
         if count[k] <= threshold:
             dict.__delitem__(count, k)
@@ -293,9 +299,6 @@ def character_ngrams(string="", n=3, top=None, threshold=0, exclude=[], **kwargs
     return count
     
 chngrams = character_ngrams
-
-def trigrams(*args, **kwargs):
-    kwargs["n"]=3; return character_ngrams(*args, **kwargs)
 
 #--- DOCUMENT --------------------------------------------------------------------------------------
 # A Document is a bag of words in which each word is a feature.
@@ -1925,6 +1928,9 @@ class Classifier(object):
 
     def _on_load(self, path):
         pass
+        
+    def finalize(self):
+        pass
 
 #--- CLASSIFIER EVALUATION -------------------------------------------------------------------------
 
@@ -2456,6 +2462,14 @@ class SVM(Classifier):
                 svm.libsvmutil.svm_load_model
             self._model = (_load(path + ".tmp"),) + self._model[1:] # 4
             os.remove(f.name) # 5
+            
+    def finalize(self):
+        """ Removes the training data from memory, 
+            keeping only the LIBSVM trained model.
+        """
+        if self._model is None:
+            self._train()
+        self._vectors = []
 
 #---------------------------------------------------------------------------------------------------
 # "Nothing beats SVM + character n-grams."
