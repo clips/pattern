@@ -29,6 +29,7 @@ import glob
 import heapq
 import codecs
 import cPickle
+import gzip
 import types
 
 from math        import log, exp, sqrt
@@ -653,13 +654,14 @@ Bag = BagOfWords = BOW = Document
 class Vector(readonlydict):
     
     id = 0
-    
+
     def __init__(self, *args, **kwargs):
         """ A dictionary of (feature, weight)-items of the features (terms, words) in a Document.
             A vector can be used to compare the document to another document with a distance metric.
             For example, vectors with 2 features (x, y) can be compared using 2D Euclidean distance.
             Vectors that represent text documents can be compared using cosine similarity.
         """
+        s = kwargs.pop("sparse", True)
         f = ()
         w = None
         if len(args) > 0:
@@ -676,14 +678,14 @@ class Vector(readonlydict):
         self.id     = Vector.id               # Unique ID.
         self.weight = kwargs.pop("weight", w) # TF, TFIDF, IG, BINARY or None.
         self._norm  = None                    # Cached L2-norm.
-        # Exclude zero weights (= sparse).
+        # Exclude zero weights (sparse=True).
         f = chain(f, kwargs.iteritems())
-        f = ((k, v) for k, v in f if v != 0)
+        f = ((k, v) for k, v in f if not s or v != 0)
         readonlydict.__init__(self, f)
 
     @classmethod
-    def fromkeys(cls, k, default=None):
-        return Vector((k, default) for k in k)
+    def fromkeys(cls, k, default=None, **kwargs):
+        return Vector(((k, default) for k in k), **kwargs)
 
     @property
     def features(self):
@@ -702,7 +704,7 @@ class Vector(readonlydict):
     norm = l2 = L2 = L2norm = l2norm = L2_norm = l2_norm
     
     def copy(self):
-        return Vector(self, weight=self.weight)
+        return Vector(self, weight=self.weight, sparse=False)
 
     def __call__(self, vector={}):
         """ Vector(vector) returns a new vector updated with values from the given vector.
@@ -1059,8 +1061,8 @@ class Model(object):
         #    Words in a document that are not in the model are ignored,
         #    i.e., the document was not in the model, this can be the case in Model.search().
         # See: Vector.__call__().
-        if not self._vector: 
-            self._vector = Vector((w, 0.0) for w in chain(*(d.terms for d in self.documents)))
+        if not self._vector:
+            self._vector = Vector(((w, 0.0) for w in chain(*(d.terms for d in self.documents))), sparse=False)
         return self._vector
 
     @property
@@ -1915,21 +1917,34 @@ class Classifier(object):
         # Trapzoidal rule: area = (a + b) * h / 2, where a=y0, b=y1 and h=x1-x0.
         return sum(0.5 * (x1 - x0) * (y1 + y0) for (x0, y0), (x1, y1) in sorted(izip(roc, roc[1:])))
 
-    def save(self, path):
+    def save(self, path, final=False):
+        """ Saves the classifier as a gzipped pickle file.
+        """
+        if final:
+            self.finalize()
         self.test = None # Can't pickle instancemethods.
-        cPickle.dump(self, open(path, "wb"), 1) # 1 = binary
+        f = gzip.GzipFile(path, "wb")
+        f.write(cPickle.dumps(self, 1)) # 1 = binary
+        f.close()
 
     @classmethod
     def load(cls, path):
-        self = cPickle.load(open(path))
+        """ Loads the classifier from a gzipped pickle file.
+        """
+        f = gzip.GzipFile(path, "rb")
+        self = cPickle.loads(f.read())
         self._on_load(path) # Initialize subclass (e.g., SVM).
         self.test = self._test
+        f.close()
         return self
 
     def _on_load(self, path):
         pass
         
     def finalize(self):
+        """ Removes training data from memory, keeping only the trained model,
+            reducing file size with Classifier.save().
+        """
         pass
 
 #--- CLASSIFIER EVALUATION -------------------------------------------------------------------------
@@ -2051,10 +2066,10 @@ class NaiveBayes(Classifier):
             Documents are classified based on the probability that a feature occurs in a class,
             (independent of other features).
         """
-        self._cache_lh_sum = {}
         self._classes    = {}     # {class: frequency}
         self._features   = {}     # {feature: frequency}
         self._likelihood = {}     # {class: {feature: frequency}}
+        self._cache      = {}     # Cache log likelihood sums.
         self._method     = method # MULTINOMIAL or BERNOUILLI.
         self._alpha      = alpha  # Smoothing.
         Classifier.__init__(self, train, baseline)
@@ -2078,12 +2093,12 @@ class NaiveBayes(Classifier):
         type, vector = self._vector(document, type=type)
         self._classes[type] = self._classes.get(type, 0) + 1
         self._likelihood.setdefault(type, {})
+        self._cache.pop(type, None)
         for f, w in vector.iteritems():
             if self._method in (BINOMIAL, BERNOUILLI):
                 w = 1
             self._features[f] = self._features.get(f, 0) + 1
             self._likelihood[type][f] = self._likelihood[type].get(f, 0) + w
-        self._cache_lh_sum.pop(type, None)
 
     def classify(self, document, discrete=True):
         """ Returns the type with the highest probability for the given document.
@@ -2099,9 +2114,9 @@ class NaiveBayes(Classifier):
         p = defaultdict(float)
         for type in self._classes:
             if self._method == MULTINOMIAL:
-                if not type in self._cache_lh_sum:
-                    self._cache_lh_sum[type] = float(sum(self._likelihood[type].itervalues()))
-                d = self._cache_lh_sum[type]
+                if not type in self._cache: # 10x faster
+                    self._cache[type] = float(sum(self._likelihood[type].itervalues()))
+                d = self._cache[type]
             if self._method in (BINOMIAL, BERNOUILLI):
                 d = float(self._classes[type])
             g = 0
@@ -2154,7 +2169,7 @@ class KNN(Classifier):
             you need to supply LSA.transform(document).
         """
         # Distance is calculated between the document vector and all training instances.
-        # This will make KNN.test() slow in higher dimensions.
+        # This will make KNN slow in higher dimensions.
         classes = {}
         v1 = self._vector(document)[1]
         D = ((distance(v1, v2, method=self.distance), type) for type, v2 in self._vectors)
@@ -2236,7 +2251,9 @@ class SVM(Classifier):
             -      cost = 1, 
             -   epsilon = 0.01, 
             -     cache = 100, 
-            - shrinking = True
+            - shrinking = True,
+            - extension = (LIBSVM, LIBLINEAR),
+            -     train = []
         """
         import svm
         self._svm = svm
@@ -2429,18 +2446,20 @@ class SVM(Classifier):
             self._train()
         return self._classify(document, probability=not discrete)
             
-    def save(self, path):
-        svm, model = self._svm, self._model
-        if model is not None:
-            # Convert the SVM model to a string, save the string:
-            _save = self.extension == LIBLINEAR and \
-                svm.liblinearutil.save_model or \
-                svm.libsvmutil.svm_save_model
-            _save(path, model[0])
-        self._svm = None
-        self._model = ((open(path).read(),) + model[1:]) if model else None
-        Classifier.save(self, path)
-        self._svm = svm
+    def save(self, path, final=False):
+        if self._model is None:
+            self._train()
+        if self.extension == LIBSVM:
+            self._svm.libsvmutil.svm_save_model(path, self._model[0])
+        if self.extension == LIBLINEAR:
+            self._svm.liblinearutil.save_model(path, self._model[0])
+        # Save LIBSVM/LIBLINEAR model as a string.
+        # Unlink LIBSVM/LIBLINEAR binaries for cPickle.
+        svm, model  = self._svm, self._model
+        self._svm   = None
+        self._model = (open(path, "rb").read(),) + model[1:]
+        Classifier.save(self, path, final)
+        self._svm   = svm
         self._model = model
 
     @classmethod
@@ -2451,25 +2470,26 @@ class SVM(Classifier):
         # Called from Classifier.load().
         # The actual SVM model was stored as a string.
         # 1) Import pattern.vector.svm.
-        # 2) Extract the model string.
-        # 3) Save it as a temporary file.
-        # 4) Use pattern.vector.svm's LIBSVM or LIBLINEAR to load the file.
-        # 5) Delete the temporary file.
-        import svm
-        self._svm = svm # 1
+        # 2) Extract the model string and save it as a temporary file.
+        # 3) Use pattern.vector.svm's LIBSVM or LIBLINEAR to load the file.
+        # 4) Delete the temporary file.
+        import svm                                         # 1
+        self._svm = svm
         if self._model is not None:
-            f = open(path + ".tmp", "w")
-            f.write(self._model[0]) # 2 + 3
+            p = path + ".tmp"
+            f = open(p, "wb")
+            f.write(self._model[0])                       # 2
             f.close()
-            _load = self.extension == LIBLINEAR and \
-                svm.liblinearutil.load_model or \
-                svm.libsvmutil.svm_load_model
-            self._model = (_load(path + ".tmp"),) + self._model[1:] # 4
-            os.remove(f.name) # 5
+            if self.extension == LIBSVM:
+                m = self._svm.libsvmutil.svm_load_model(p)
+            if self.extension == LIBLINEAR:
+                m = self._svm.liblinearutil.load_model(p)
+            self._model = (m,) + self._model[1:]           # 3
+            os.remove(f.name)                              # 4
             
     def finalize(self):
-        """ Removes the training data from memory, 
-            keeping only the LIBSVM trained model.
+        """ Removes training data from memory, keeping only the LIBSVM/LIBLINEAR trained model,
+            reducing file size with Classifier.save() (e.g., 15MB => 3MB).
         """
         if self._model is None:
             self._train()
