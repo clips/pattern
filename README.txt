@@ -134,3 +134,4 @@ Contributors (chronological):
 - Steven Loria
 - Colin Molter + tevizz.com
 - Peter Bull
+- Maurizio Sambati
