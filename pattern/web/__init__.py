@@ -684,7 +684,6 @@ class HTMLParser(sgmllib.SGMLParser):
         html = html.replace("&lt;!--", "<!--")
         return html
 
-
     def parse_declaration(self, i):
         # We can live without sgmllib's parse_declaration().
         try:
@@ -730,6 +729,9 @@ class HTMLTagstripper(HTMLParser):
         return HTMLParser.clean(self, html).replace("&", "&amp;")
 
     def handle_starttag(self, tag, attributes):
+        if tag in BLOCK and self._data and self._data[-1][-1:] != "\n":
+            # Block-level elements always break to a new line.
+            self._data.append("\n")
         if tag in self._exclude:
             # Create the tag attribute string,
             # including attributes defined in the HTMLTagStripper._exclude dict.
@@ -1796,15 +1798,18 @@ class MediaWikiArticle(object):
         s = strip_element(s, "div", "class=\"navbox")         # Navbox.
         s = strip_element(s, "div", "class=\"metadata")       # Metadata.
         s = strip_element(s, "div", "id=\"annotation")        # Annotations.
-        s = strip_element(s, "div", "class=\"noprint")        # Hidden from print.
         s = strip_element(s, "div", "class=\"dablink")        # Disambiguation message.
         s = strip_element(s, "div", "class=\"magnify")        # Thumbnails.
         s = strip_element(s, "div", "class=\"thumb ")         # Thumbnail captions.
         s = strip_element(s, "div", "class=\"barbox")         # Bar charts.
+        s = strip_element(s, "div", "class=\"noprint")        # Hidden from print.
+        s = strip_element(s, "sup", "class=\"noprint")
+        # Strip absolute elements (don't know their position).
+        s = strip_element(s, "div", "style=\"position:absolute")
         # Strip meta <span> elements.
         s = strip_element(s, "span", "class=\"error")
         # Strip math formulas, add [math] placeholder.
-        s = re.sub(r"<img class=\"tex\".*?/>", "[math]", s)          # LaTex math images.
+        s = re.sub(r"<img class=\"tex\".*?/>", "[math]", s)   # LaTex math images.
         s = plaintext(s, **kwargs)
         # Strip [edit] link (language dependent.)
         s = re.sub(r"\[edit\]\s*", "", s)
@@ -1886,7 +1891,7 @@ class MediaWikiSection(object):
                 f = find_between
                 for s in f(b[0], b[1], self.source):
                     t = self.article.parser.MediaWikiTable(self, 
-                         title = p((f(r"<caption*?>", "</caption>", s) + [""])[0]),
+                         title = p((f(r"<caption.*?>", "</caption>", s) + [""])[0]),
                         source = b[0] + s + b[1])
                     # 1) Parse <td> and <th> content and format it as plain text.
                     # 2) Parse <td colspan=""> attribute, duplicate spanning cells.
@@ -1923,9 +1928,16 @@ class MediaWikiTable(object):
         self.headers = headers # List of table headers.
         self.rows    = rows    # List of table rows, each a list of cells.
 
+    def plaintext(self, **kwargs):
+        return self.article._plaintext(self.source, **kwargs)
+
     @property
     def html(self):
         return self.source
+
+    @property
+    def string(self):
+        return self.plaintext()
 
     def __repr__(self):
         return "MediaWikiTable(title=%s)" % repr(self.title)
