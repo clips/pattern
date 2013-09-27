@@ -135,3 +135,4 @@ Contributors (chronological):
 - Colin Molter + tevizz.com
 - Peter Bull
 - Maurizio Sambati
+- Dan Fu

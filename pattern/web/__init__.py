@@ -513,7 +513,7 @@ class URL(object):
         return u
 
     def __repr__(self):
-        return "URL('%s', method='%s')" % (str(self), str(self.method))
+        return "URL(%s, method=%s)" % (repr(self.string), repr(self.method))
 
     def copy(self):
         return URL(self.string, self.method, self.query)
@@ -638,7 +638,7 @@ def find_between(a, b, string):
 
 BLOCK = [
     "title", "h1", "h2", "h3", "h4", "h5", "h6", "p",
-    "center", "blockquote", "div", "table", "ul", "ol", "pre", "code", "form"
+    "center", "blockquote", "div", "table", "ul", "ol", "dl", "pre", "code", "form"
 ]
 
 SELF_CLOSING = ["br", "hr", "img"]
@@ -765,8 +765,8 @@ strip_tags = HTMLTagstripper().strip
 def strip_element(string, tag, attributes=""):
     """ Removes all elements with the given tagname and attributes from the string.
         Open and close tags are kept in balance.
-        No HTML parser is used: strip_element(s, "a", "href='foo' class='bar'")
-        matches "<a href='foo' class='bar'" but not "<a class='bar' href='foo'".
+        No HTML parser is used: strip_element(s, "a", 'class="x"') matches
+        '<a class="x">' or '<a href="x" class="x">' but not "<a class='x'>".
     """
     s = string.lower() # Case-insensitive.
     t = tag.strip("</>")
@@ -774,7 +774,9 @@ def strip_element(string, tag, attributes=""):
     i = 0
     j = 0
     while j >= 0:
-        i = s.find("<%s%s" % (t, a), i)
+        #i = s.find("<%s%s" % (t, a), i)
+        m = re.search(r"<%s[^\>]*?%s" % (t, a), s[i:])
+        i = i + m.start() if m else -1
         j = s.find("</%s>" % t, i+1)
         opened, closed = s[i:j].count("<%s" % t), 1
         while opened > closed and j >= 0:
@@ -1438,11 +1440,13 @@ class Twitter(SearchEngine):
         """
         if type != SEARCH:
             raise SearchEngineTypeError
-        if not query or count < 1 or (isinstance(start, (int, float)) and start < 1):
+        if not query or count < 1 or (isinstance(start, (int, long, float)) and start < 1):
             return Results(TWITTER, query, type)
-        if isinstance(start, (int, float)) and start < 10000:
+        if isinstance(start, (int, long, float)) and start < 10000:
             id = (query, kwargs.get("geo"), kwargs.get("date"), int(start)-1, count)
             id = self._pagination.pop(id, "")
+        if isinstance(start, (int, long, float)):
+            id = int(start) - 1
         else:
             id = int(start) - 1 if start and start.isdigit() else ""
         # 1) Construct request URL.
@@ -1498,7 +1502,7 @@ class Twitter(SearchEngine):
         #
         # Store the last id retrieved.
         # If search() is called again with start+1, start from this id.
-        if isinstance(start, (int, float)) and results:
+        if isinstance(start, (int, long, float)) and results:
             id = (query, kwargs.get("geo"), kwargs.get("date"), int(start), count)
             self._pagination[id] = str(int(results[-1].id) - 1)
         return results
@@ -1738,7 +1742,7 @@ class MediaWiki(SearchEngine):
                         start = i,
                          stop = j,
                         level = d))
-                    t = x.get("line", "")
+                    t = plaintext(x.get("line", ""))
                     d = int(x.get("level", 2)) - 1
                     i = j
         return article
@@ -1779,19 +1783,43 @@ class MediaWikiArticle(object):
             This is called internally from MediaWikiArticle.string.
         """
         s = string
-        s = strip_between("<table class=\"metadata", "</table>", s)   # Metadata.
-        s = strip_between("<table id=\"toc", "</table>", s)           # Table of contents.
-        s = strip_between("<table class=\"infobox", "</table>", s)    # Infobox.
-        s = strip_between("<table class=\"wikitable", "</table>", s)  # Table.
-        s = strip_element(s, "table", "class=\"navbox")               # Navbox.
-        s = strip_between("<div id=\"annotation", "</div>", s)        # Annotations.
-        s = strip_between("<div class=\"dablink", "</div>", s)        # Disambiguation message.
-        s = strip_between("<div class=\"magnify", "</div>", s)        # Thumbnails.
-        s = strip_between("<div class=\"thumbcaption", "</div>", s)   # Thumbnail captions.
-        s = re.sub(r"<img class=\"tex\".*?/>", "[math]", s)           # LaTex math images.
+        # Strip meta <table> elements.
+        s = strip_element(s, "table", "id=\"toc")             # Table of contents.
+        s = strip_element(s, "table", "class=\"infobox")      # Infobox.
+        s = strip_element(s, "table", "class=\"navbox")       # Navbox.
+        s = strip_element(s, "table", "class=\"metadata")     # Metadata.
+        s = strip_element(s, "table", "class=\".*?wikitable") # Table.
+        s = strip_element(s, "table", "class=\"toccolours")   # Table.
+        # Strip meta <div> elements.
+        s = strip_element(s, "div", "id=\"toc")               # Table of contents.
+        s = strip_element(s, "div", "class=\"infobox")        # Infobox.
+        s = strip_element(s, "div", "class=\"navbox")         # Navbox.
+        s = strip_element(s, "div", "class=\"metadata")       # Metadata.
+        s = strip_element(s, "div", "id=\"annotation")        # Annotations.
+        s = strip_element(s, "div", "class=\"noprint")        # Hidden from print.
+        s = strip_element(s, "div", "class=\"dablink")        # Disambiguation message.
+        s = strip_element(s, "div", "class=\"magnify")        # Thumbnails.
+        s = strip_element(s, "div", "class=\"thumb ")         # Thumbnail captions.
+        s = strip_element(s, "div", "class=\"barbox")         # Bar charts.
+        # Strip meta <span> elements.
+        s = strip_element(s, "span", "class=\"error")
+        # Strip math formulas, add [math] placeholder.
+        s = re.sub(r"<img class=\"tex\".*?/>", "[math]", s)          # LaTex math images.
         s = plaintext(s, **kwargs)
-        s = re.sub(r"\[edit\]\s*", "", s) # [edit] is language dependent (e.g. nl => "[bewerken]")
-        s = s.replace("[", " [").replace("  [", " [") # Space before inline references.
+        # Strip [edit] link (language dependent.)
+        s = re.sub(r"\[edit\]\s*", "", s)
+        s = re.sub(r"\[%s\]\s*" % {
+            "en":  "edit",
+            "es": u"editar código",
+            "de":  "Bearbeiten",
+            "fr":  "modifier le code",
+            "it":  "modifica sorgente",
+            "nl":  "bewerken",
+        }.get(self.language, "edit"), "", s)
+        # Insert space before inline references.
+        s = s.replace("[", " [").replace("  [", " [")
+        # Strip inline references.
+        #s = re.sub(r" \[[0-9]+\]", "", s)
         return s
 
     def plaintext(self, **kwargs):
@@ -1841,8 +1869,9 @@ class MediaWikiSection(object):
     def content(self):
         # ArticleSection.string, minus the title.
         s = self.plaintext()
-        if s == self.title or s.startswith(self.title+"\n"):
-            return s[len(self.title):].lstrip()
+        t = plaintext(self.title)
+        if s == t or (s.startswith(t) and s[len(t)] != " "):
+            return s[len(t):].lstrip()
         return s
 
     @property
@@ -1851,27 +1880,27 @@ class MediaWikiSection(object):
         """
         if self._tables is None:
             self._tables = []
-            b = "<table class=\"wikitable\"", "</table>"
-            p = self.article._plaintext
-            f = find_between
-            for s in f(b[0], b[1], self.source):
-                t = self.article.parser.MediaWikiTable(self,
-                     title = p((f(r"<caption.*?>", "</caption>", s) + [""])[0]),
-                    source = b[0] + s + b[1]
-                )
-                for i, row in enumerate(f(r"<tr", "</tr>", s)):
+            for style in ("wikitable", "sortable wikitable"):
+                b = "<table class=\"%s\"" % style, "</table>"
+                p = self.article._plaintext
+                f = find_between
+                for s in f(b[0], b[1], self.source):
+                    t = self.article.parser.MediaWikiTable(self, 
+                         title = p((f(r"<caption*?>", "</caption>", s) + [""])[0]),
+                        source = b[0] + s + b[1])
                     # 1) Parse <td> and <th> content and format it as plain text.
                     # 2) Parse <td colspan=""> attribute, duplicate spanning cells.
                     # 3) For <th> in the first row, update MediaWikiTable.headers.
-                    r1 = f(r"<t[d|h]", r"</t[d|h]>", row)
-                    r1 = (((f(r'colspan="', r'"', v)+[1])[0], v[v.find(">")+1:]) for v in r1)
-                    r1 = ((int(n), v) for n, v in r1)
-                    r2 = []; [[r2.append(p(v)) for j in range(n)] for n, v in r1]
-                    if i == 0 and "</th>" in row:
-                        t.headers = r2
-                    else:
-                        t.rows.append(r2)
-                self._tables.append(t)
+                    for i, row in enumerate(f(r"<tr", "</tr>", s)):
+                        r1 = f(r"<t[d|h]", r"</t[d|h]>", row)
+                        r1 = (((f(r'colspan="', r'"', v)+[1])[0], v[v.find(">")+1:]) for v in r1)
+                        r1 = ((int(n), v) for n, v in r1)
+                        r2 = []; [[r2.append(p(v)) for j in range(n)] for n, v in r1]
+                        if i == 0 and "</th>" in row:
+                            t.headers = r2
+                        else:
+                            t.rows.append(r2)
+                    self._tables.append(t)
         return self._tables
 
     @property
@@ -1881,7 +1910,7 @@ class MediaWikiSection(object):
     depth = level
 
     def __repr__(self):
-        return "MediaWikiSection(title='%s')" % bytestring(self.title)
+        return "MediaWikiSection(title=%s)" % repr(self.title)
 
 class MediaWikiTable(object):
 
@@ -1899,7 +1928,7 @@ class MediaWikiTable(object):
         return self.source
 
     def __repr__(self):
-        return "MediaWikiTable(title='%s')" % bytestring(self.title)
+        return "MediaWikiTable(title=%s)" % repr(self.title)
 
 #--- MEDIAWIKI: WIKIPEDIA --------------------------------------------------------------------------
 # Wikipedia is a collaboratively edited, multilingual, free Internet encyclopedia.
@@ -1954,11 +1983,11 @@ class WikipediaArticle(MediaWikiArticle):
 
 class WikipediaSection(MediaWikiSection):
     def __repr__(self):
-        return "WikipediaSection(title='%s')" % bytestring(self.title)
+        return "WikipediaSection(title=%s)" % repr(self.title)
 
 class WikipediaTable(MediaWikiTable):
     def __repr__(self):
-        return "WikipediaTable(title='%s')" % bytestring(self.title)
+        return "WikipediaTable(title=%s)" % repr(self.title)
 
 #article = Wikipedia().search("cat")
 #for section in article.sections:
@@ -2040,11 +2069,11 @@ class WikiaArticle(MediaWikiArticle):
 
 class WikiaSection(MediaWikiSection):
     def __repr__(self):
-        return "WikiaSection(title='%s')" % bytestring(self.title)
+        return "WikiaSection(title=%s)" % repr(self.title)
 
 class WikiaTable(MediaWikiTable):
     def __repr__(self):
-        return "WikiaTable(title='%s')" % bytestring(self.title)
+        return "WikiaTable(title=%s)" % repr(self.title)
 
 #--- DBPEDIA --------------------------------------------------------------------------------------------------
 # DBPedia is a database of structured information mined from Wikipedia.
@@ -2795,15 +2824,13 @@ class Element(Node):
             return self.attributes[k]
         raise AttributeError, "'Element' object has no attribute '%s'" % k
 
-    def __contains__(self, sub):
-        """Implements the `in` keyword."""
-        if isinstance(sub, Element):
-            return sub.content in self.content
-        else:
-            return sub in self.content
+    def __contains__(self, v):
+        if isinstance(v, Element):
+            v = v.content
+        return v in self.content
 
     def __repr__(self):
-        return "Element(tag='%s')" % bytestring(self.tagname)
+        return "Element(tag=%s)" % repr(self.tagname)
 
 #--- DOCUMENT --------------------------------------------------------------------------------------
 
