@@ -1733,6 +1733,7 @@ class MediaWiki(SearchEngine):
                 m = p.search(article.source, i)
                 if m:
                     j = m.start()
+                    t = plaintext(t)
                     article.sections.append(self.MediaWikiSection(article,
                         title = t,
                         start = i,
@@ -1780,7 +1781,9 @@ class MediaWikiArticle(object):
         """
         s = string
         s = strip_between("<table class=\"metadata", "</table>", s)   # Metadata.
-        s = strip_between("<table id=\"toc", "</table>", s)           # Table of contents.
+        s = strip_between("<div id=\"toctitle", "</div>", s)          # Table of contents.
+        s = strip_between("<div id=\"toc\" class=\"toc", "</div>", s) # Table of contents.
+        s = strip_between("<div id=\"toclimit-", "</div>", s)         # Table of contents.
         s = strip_between("<table class=\"infobox", "</table>", s)    # Infobox.
         s = strip_between("<table class=\"wikitable", "</table>", s)  # Table.
         s = strip_element(s, "table", "class=\"navbox")               # Navbox.
@@ -1788,6 +1791,7 @@ class MediaWikiArticle(object):
         s = strip_between("<div class=\"dablink", "</div>", s)        # Disambiguation message.
         s = strip_between("<div class=\"magnify", "</div>", s)        # Thumbnails.
         s = strip_between("<div class=\"thumbcaption", "</div>", s)   # Thumbnail captions.
+        s = strip_between("<table class=\"mbox.*?<audio", "</audio>.*?</table>", s) # Audio files/warnings.
         s = re.sub(r"<img class=\"tex\".*?/>", "[math]", s)           # LaTex math images.
         s = plaintext(s, **kwargs)
         s = re.sub(r"\[edit\]\s*", "", s) # [edit] is language dependent (e.g. nl => "[bewerken]")
@@ -1841,7 +1845,7 @@ class MediaWikiSection(object):
     def content(self):
         # ArticleSection.string, minus the title.
         s = self.plaintext()
-        if s == self.title or s.startswith(self.title+"\n"):
+        if s == self.title or (len(s) > len(self.title) and s.startswith(self.title) and s[len(self.title)] != ' '):
             return s[len(self.title):].lstrip()
         return s
 
