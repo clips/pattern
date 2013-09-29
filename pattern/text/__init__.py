@@ -1907,7 +1907,10 @@ class Spelling(lazydict):
         candidates = [(self.get(c, 0.0), c) for c in candidates]
         s = float(sum(p for p, w in candidates) or 1)
         candidates = sorted(((p / s, w) for p, w in candidates), reverse=True)
-        candidates = [(w.istitle() and w.title() or w, p) for p, w in candidates] # case-sensitive
+        if w.istitle():  # Preserve capitalization
+            candidates = [(word.title(), p) for p, word in candidates]
+        else:
+            candidates = [(word, p) for p, word in candidates]
         return candidates
 
 #### MULTILINGUAL ##################################################################################
