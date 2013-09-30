@@ -1793,7 +1793,7 @@ class MediaWikiArticle(object):
         s = strip_element(s, "table", "class=\"mbox")         # Message.
         s = strip_element(s, "table", "class=\"metadata")     # Metadata.
         s = strip_element(s, "table", "class=\".*?wikitable") # Table.
-        s = strip_element(s, "table", "class=\"toccolours")   # Table (footer).
+        s = strip_element(s, "table", "class=\"toc")          # Table (usually footer).
         # Strip meta <div> elements.
         s = strip_element(s, "div", "id=\"toc")               # Table of contents.
         s = strip_element(s, "div", "class=\"infobox")        # Infobox.
