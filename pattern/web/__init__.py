@@ -1739,6 +1739,7 @@ class MediaWiki(SearchEngine):
                 m = p.search(article.source, i)
                 if m:
                     j = m.start()
+                    t = plaintext(t)
                     article.sections.append(self.MediaWikiSection(article,
                         title = t,
                         start = i,
@@ -1789,13 +1790,15 @@ class MediaWikiArticle(object):
         s = strip_element(s, "table", "id=\"toc")             # Table of contents.
         s = strip_element(s, "table", "class=\"infobox")      # Infobox.
         s = strip_element(s, "table", "class=\"navbox")       # Navbox.
+        s = strip_element(s, "table", "class=\"mbox")         # Message.
         s = strip_element(s, "table", "class=\"metadata")     # Metadata.
         s = strip_element(s, "table", "class=\".*?wikitable") # Table.
-        s = strip_element(s, "table", "class=\"toccolours")   # Table.
+        s = strip_element(s, "table", "class=\"toccolours")   # Table (footer).
         # Strip meta <div> elements.
         s = strip_element(s, "div", "id=\"toc")               # Table of contents.
         s = strip_element(s, "div", "class=\"infobox")        # Infobox.
         s = strip_element(s, "div", "class=\"navbox")         # Navbox.
+        s = strip_element(s, "div", "class=\"mbox")           # Message.
         s = strip_element(s, "div", "class=\"metadata")       # Metadata.
         s = strip_element(s, "div", "id=\"annotation")        # Annotations.
         s = strip_element(s, "div", "class=\"dablink")        # Disambiguation message.
@@ -1875,7 +1878,7 @@ class MediaWikiSection(object):
         # ArticleSection.string, minus the title.
         s = self.plaintext()
         t = plaintext(self.title)
-        if s == t or (s.startswith(t) and s[len(t)] != " "):
+        if s == t or (len(s) > len(t) and s.startswith(t) and s[len(t)] != " "):
             return s[len(t):].lstrip()
         return s
 
