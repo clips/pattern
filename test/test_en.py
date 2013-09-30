@@ -261,6 +261,18 @@ class TestQuantification(unittest.TestCase):
 class TestSpelling(unittest.TestCase):
 
     def test_spelling(self):
+        # Assert case-sensitivity + numbers.
+        for a, b in (
+          (   ".", "."   ),
+          (   "?", "?"   ),
+          (   "!", "!"   ),
+          (   "I", "I"   ),
+          (   "a", "a"   ),
+          (  "42", "42"  ),
+          ("3.14", "3.14"),
+          ( "The", "The" ),
+          ( "the", "the" )):
+            self.assertEqual(en.suggest(a)[0][0], b)
         # Assert spelling suggestion accuracy.
         # Note: simply training on more text will not improve accuracy.
         i = j = 0.0
@@ -273,25 +285,6 @@ class TestSpelling(unittest.TestCase):
                     j += 1
         self.assertTrue(i / (i+j) > 0.70)
         print "pattern.en.suggest()"
-
-    def test_spelling_oneletter_words(self):
-        self.assertEqual(en.suggest("I"), [("I", 1.0)])
-        self.assertEqual(en.suggest("a"), [("a", 1.0)])
-
-    def test_spelling_numbers(self):
-        self.assertEqual(en.suggest("42"), [("42", 1.0)])
-        self.assertEqual(en.suggest("3.1415"), [("3.1415", 1.0)])
-
-    def test_spelling_punctuation(self):
-        self.assertEqual(en.suggest("!"), [("!", 1.0)])
-        self.assertEqual(en.suggest("?"), [("?", 1.0)])
-        self.assertEqual(en.suggest("."), [('.', 1.0)])
-
-    def test_suggest_preserves_capitalization(self):
-        suggestion = en.suggest("The")
-        self.assertEqual(suggestion[0][0], "The")
-
-
 
 #---------------------------------------------------------------------------------------------------
 
