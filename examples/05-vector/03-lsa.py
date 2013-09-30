@@ -18,7 +18,7 @@ from pattern.db import Datasheet
 
 # We'll use the Pang & Lee corpus of movie reviews, included in the testing suite.
 # Take 250 positive reviews and 250 negative reviews:
-data = os.path.join("..","..","test", "corpora", "polarity-en-pang&lee.csv")
+data = os.path.join("..","..","test", "corpora", "polarity-en-pang&lee1.csv")
 data = Datasheet.load(data)
 data = data[:250] + data[-250:]
 
