@@ -96,15 +96,6 @@ def pprint(string, token=[WORD, POS, CHUNK, PNP], column=4):
     if isinstance(string, Sentence):
         print table(string, fill=column)
 
-def isnumeric(strg):
-    """ Return whether a string is numerical (float or integer).
-    """
-    try:
-        float(strg)
-    except ValueError:
-        return False
-    return True
-
 #--- LAZY DICTIONARY -------------------------------------------------------------------------------
 # A lazy dictionary is empty until one of its methods is called.
 # This way many instances (e.g., lexicons) can be created without using memory until used.
@@ -192,12 +183,13 @@ class lazylist(list):
 #### LEXICON #######################################################################################
 
 #--- LEXICON ---------------------------------------------------------------------------------------
-# Pattern's text parsers are based on Brill's algorithm.
+# Pattern's text parsers are based on Brill's algorithm, or optionally a trained language model.
 # Brill's algorithm automatically acquires a lexicon of known words,
 # and a set of rules for tagging unknown words from a training corpus.
 # Lexical rules are used to tag unknown words, based on the word morphology (prefix, suffix, ...).
 # Contextual rules are used to tag all words, based on the word's role in the sentence.
 # Named entity rules are used to discover proper nouns (NNP's).
+# When available, the parser will use a faster, more accurate language model (SLP, SVM, NB, ...).
 
 def _read(path, encoding="utf-8", comment=";;;"):
     """ Returns an iterator over the lines in the file at the given path,
@@ -224,12 +216,13 @@ def _read(path, encoding="utf-8", comment=";;;"):
 
 class Lexicon(lazydict):
 
-    def __init__(self, path="", morphology=None, context=None, entities=None, NNP="NNP", language=None):
+    def __init__(self, path="", model=None, morphology=None, context=None, entities=None, NNP="NNP", language=None):
         """ A dictionary of words and their part-of-speech tags.
             For unknown words, rules for word morphology, context and named entities can be used.
         """
         self._path = path
         self._language  = language
+        #self.model      = model(self, path=model)
         self.morphology = Morphology(self, path=morphology)
         self.context    = Context(self, path=context)
         self.entities   = Entities(self, path=entities, tag=NNP)
@@ -245,6 +238,71 @@ class Lexicon(lazydict):
     @property
     def language(self):
         return self._language
+
+#--- LANGUAGE MODEL --------------------------------------------------------------------------------
+# A language model determines the statistically most probable tag for an unknown word,
+# given the surrounding words and their tags, the word suffixes, etc.
+# A pattern.vector Classifier such as SLP can be used to produce a language model,
+# by generalizing patterns from a treebank (i.e., a corpus of hand-tagged texts).
+# For example, "generalizing/VBG from/IN patterns/NNS" and "dancing/VBG with/IN squirrels/NNS"
+# have a pattern -ing/VBG + [?] + NNS => IN.
+# Unknown words preceded by -ing and followed by a plural noun will be tagged IN (preposition),
+# unless (put simply) a majority of other patterns disagrees.
+
+class Model(object):
+    
+    def __init__(self, lexicon={}, path="", classifier=None):
+        """ A language model using a classifier (e.g., SLP) trained on word morphology and context.
+        """
+        from pattern.vector import Classifier
+        from pattern.vector import Perceptron
+        self.lexicon = lexicon
+        self._classifier = Classifier.load(path) if path else classifier or Perceptron()
+
+    @classmethod
+    def load(self, lexicon={}, path=""):
+        return Model(lexicon, path)
+
+    def save(self, path, final=True):
+        self._classifier.save(path, final)
+
+    def train(self, token, tag, previous=None, next=None):
+        self._classifier.train(self.v(token, previous, next), type=tag)
+
+    def classify(self, token, previous=None, next=None):
+        return self._classifier.classify(self.v(token, previous, next))
+
+    apply = classify
+
+    def v(self, token, previous=None, next=None):
+        """ Returns a training vector for the given (word, tag)-token and its context.
+        """
+        def f(v, s1, s2):
+            if s2: 
+                v[s1 + " " + s2] = 1
+        p = previous or ("", "")
+        n = next or ("", "")
+        v = {}
+        f(v,  "b", "b")        # Bias.
+        f(v,  "h", token[0])   # Capitalization.
+        f(v,  "w", token[-6:] if token not in self.lexicon else "")
+        f(v,  "x", token[-3:]) # Suffix.
+        f(v, "-w", p[0][-6:])  # Suffix of word before.
+        f(v, "+w", n[0][-6:])  # Suffix of word after.
+        f(v, "-x", p[0][-3:])  # Suffix of word before.
+        f(v, "+x", n[0][-3:])  # Suffix of word after.
+        f(v, "-t", p[1])       # POS-tag of word before.
+        f(v, "+t", n[1])       # POS-tag of word after.
+        return v
+
+def model(lexicon={}, path="", classifier=None):
+    """ Returns a Model from the given path or with the given classifier, or None.
+    """
+    if path or classifier:
+        try:
+            return Model(lexicon, path, classifier)
+        except ImportError:
+            pass
 
 #--- MORPHOLOGICAL RULES ---------------------------------------------------------------------------
 # Brill's algorithm generates lexical (i.e., morphological) rules in the following format:
@@ -840,6 +898,7 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
     string = re.sub(linebreak, " %s " % EOS, string)
     string = re.sub(r"\s+", " ", string)
     tokens = []
+    # Handle punctuation marks.
     for t in TOKEN.findall(string+" "):
         if len(t) > 0:
             tail = []
@@ -868,10 +927,10 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
             if t != "":
                 tokens.append(t)
             tokens.extend(reversed(tail))
+    # Handle sentence breaks (periods, quotes, parenthesis).
     sentences, i, j = [[]], 0, 0
     while j < len(tokens):
         if tokens[j] in ("...", ".", "!", "?", EOS):
-            # Handle citations, trailing parenthesis, repeated punctuation (!?).
             while j < len(tokens) \
               and tokens[j] in ("'", "\"", u"”", u"’", "...", ".", "!", "?", ")", EOS):
                 if tokens[j] in ("'", "\"") and sentences[-1].count(tokens[j]) % 2 == 0:
@@ -881,6 +940,7 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
             sentences.append([])
             i = j
         j += 1
+    # Handle emoticons.
     sentences[-1].extend(tokens[i:j])
     sentences = (" ".join(s) for s in sentences if len(s) > 0)
     sentences = (RE_SARCASM.sub("(!)", s) for s in sentences)
@@ -1907,7 +1967,7 @@ class Spelling(lazydict):
         candidates = [(self.get(c, 0.0), c) for c in candidates]
         s = float(sum(p for p, w in candidates) or 1)
         candidates = sorted(((p / s, w) for p, w in candidates), reverse=True)
-        candidates = [(w.istitle() and w.title() or w, p) for p, w in candidates] # case-sensitive
+        candidates = [(w.istitle() and x.title() or x, p) for p, x in candidates] # case-sensitive
         return candidates
 
 #### MULTILINGUAL ##################################################################################
