@@ -198,7 +198,7 @@ def _read(path, encoding="utf-8", comment=";;;"):
     if path:
         if isinstance(path, basestring) and os.path.exists(path):
             # From file path.
-            f = open(path)
+            f = open(path, "rb")
         elif isinstance(path, basestring):
             # From string.
             f = path.splitlines()
@@ -222,7 +222,7 @@ class Lexicon(lazydict):
         """
         self._path = path
         self._language  = language
-        #self.model      = model(self, path=model)
+        self.model      = _model(self, path=model) # Model, or None if model is None.
         self.morphology = Morphology(self, path=morphology)
         self.context    = Context(self, path=context)
         self.entities   = Entities(self, path=entities, tag=NNP)
@@ -241,7 +241,7 @@ class Lexicon(lazydict):
 
 #--- LANGUAGE MODEL --------------------------------------------------------------------------------
 # A language model determines the statistically most probable tag for an unknown word,
-# given the surrounding words and their tags, the word suffixes, etc.
+# given the surrounding words and their tags, word suffixes, etc.
 # A pattern.vector Classifier such as SLP can be used to produce a language model,
 # by generalizing patterns from a treebank (i.e., a corpus of hand-tagged texts).
 # For example, "generalizing/VBG from/IN patterns/NNS" and "dancing/VBG with/IN squirrels/NNS"
@@ -252,19 +252,25 @@ class Lexicon(lazydict):
 class Model(object):
     
     def __init__(self, lexicon={}, path="", classifier=None):
-        """ A language model using a classifier (e.g., SLP) trained on word morphology and context.
+        """ A language model using a classifier (e.g., SLP, SVM) trained on morphology and context.
         """
-        from pattern.vector import Classifier
-        from pattern.vector import Perceptron
-        self.lexicon = lexicon
+        try:
+            from pattern.vector import Classifier
+            from pattern.vector import Perceptron
+        except ImportError:
+            sys.path.insert(0, os.path.join(MODULE, ".."))
+            from vector import Classifier
+            from vector import Perceptron
+        # Use a property instead of a subclass, so users can choose their own classifier.
         self._classifier = Classifier.load(path) if path else classifier or Perceptron()
+        self.lexicon = lexicon
 
     @classmethod
     def load(self, lexicon={}, path=""):
         return Model(lexicon, path)
 
     def save(self, path, final=True):
-        self._classifier.save(path, final)
+        self._classifier.save(path, final) # final = unlink training data (smaller file).
 
     def train(self, token, tag, previous=None, next=None):
         self._classifier.train(self.v(token, previous, next), type=tag)
@@ -275,7 +281,7 @@ class Model(object):
     apply = classify
 
     def v(self, token, previous=None, next=None):
-        """ Returns a training vector for the given (word, tag)-token and its context.
+        """ Returns a training vector for the given (word, tag) token and its context.
         """
         def f(v, s1, s2):
             if s2: 
@@ -287,22 +293,19 @@ class Model(object):
         f(v,  "h", token[0])   # Capitalization.
         f(v,  "w", token[-6:] if token not in self.lexicon else "")
         f(v,  "x", token[-3:]) # Suffix.
-        f(v, "-w", p[0][-6:])  # Suffix of word before.
-        f(v, "+w", n[0][-6:])  # Suffix of word after.
         f(v, "-x", p[0][-3:])  # Suffix of word before.
         f(v, "+x", n[0][-3:])  # Suffix of word after.
         f(v, "-t", p[1])       # POS-tag of word before.
         f(v, "+t", n[1])       # POS-tag of word after.
         return v
 
-def model(lexicon={}, path="", classifier=None):
-    """ Returns a Model from the given path or with the given classifier, or None.
+def _model(lexicon={}, path="", classifier=None):
+    """ Returns a Model from the given path, or with the given classifier, or None.
     """
-    if path or classifier:
-        try:
-            return Model(lexicon, path, classifier)
-        except ImportError:
-            pass
+    try:
+        if path or classifier: return Model(lexicon, path, classifier)
+    except ImportError:
+        pass
 
 #--- MORPHOLOGICAL RULES ---------------------------------------------------------------------------
 # Brill's algorithm generates lexical (i.e., morphological) rules in the following format:
@@ -324,7 +327,8 @@ class Morphology(lazylist, Rules):
     def __init__(self, lexicon={}, path=""):
         """ A list of rules based on word morphology (prefix, suffix).
         """
-        cmd = ("char", # Word contains x.
+        cmd = ("word", # Word is x.
+               "char", # Word contains x.
             "haspref", # Word starts with x.
              "hassuf", # Word end with x.
             "addpref", # x + word is in lexicon.
@@ -358,7 +362,8 @@ class Morphology(lazylist, Rules):
                 f, x, pos, cmd = bool(1), r[1], r[-2], r[2].lower().lstrip("f")
             if f and token[1] != r[0]:
                 continue
-            if (cmd == "char"       and x in w) \
+            if (cmd == "word"       and x == w) \
+            or (cmd == "char"       and x in w) \
             or (cmd == "haspref"    and w.startswith(x)) \
             or (cmd == "hassuf"     and w.endswith(x)) \
             or (cmd == "addpref"    and x + w in self.lexicon) \
@@ -983,14 +988,22 @@ def find_tags(tokens, lexicon={}, default=("NN", "NNP", "CD"), language="en", ma
         If map is a function, it is applied to each (token, tag) after applying all rules.
     """
     tagged = []
-    if isinstance(lexicon, Lexicon):
+    # Use language model (i.e., SLP) for unknown words.
+    if isinstance(lexicon, Lexicon) and lexicon.model:
+        f = lexicon.model.apply
+    # Use suffix rules (e.g., -ly = RB).
+    elif isinstance(lexicon, Lexicon):
         f = lexicon.morphology.apply
+    # Use suffix rules (English default).
     elif language == "en":
         f = _suffix_rules
+    # Use most frequent tag (NN).
     else:
         f = lambda token, **kwargs: token
+    # Tag known words.
     for i, token in enumerate(tokens):
         tagged.append([token, lexicon.get(token, i==0 and lexicon.get(token.lower()) or None)])
+    # Tag unknown words with model or morphology.
     for i, (token, tag) in enumerate(tagged):
         if tag is None:
             if len(token) > 0 \
@@ -1005,8 +1018,11 @@ def find_tags(tokens, lexicon={}, default=("NN", "NNP", "CD"), language="en", ma
                 tagged[i] = f(tagged[i],
                     previous = i > 0 and tagged[i-1] or (None, None),
                         next = i < len(tagged)-1 and tagged[i+1] or (None, None))
-    if isinstance(lexicon, Lexicon):
+    # Tag words by context.
+    if isinstance(lexicon, Lexicon) and not lexicon.model:
         tagged = lexicon.context.apply(tagged)
+    # Tag named entities.
+    if isinstance(lexicon, Lexicon):
         tagged = lexicon.entities.apply(tagged)
     if map is not None:
         tagged = [list(map(token, tag)) or [token, default[0]] for token, tag in tagged]
