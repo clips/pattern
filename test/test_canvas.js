@@ -188,6 +188,14 @@ var test_canvas = {
             assert(Array.eq(new Color(1,0,0).map({colorspace:HSB}), [0,1,1,1]));
             console.log("Color.map()")
         };
+        this.test_rotate = function() {
+            var rgba = new Color(1,0,0).rotate(180).rgba();
+            assert(Math.round(rgba[0], 1) == 0.0);
+            assert(Math.round(rgba[1], 1) == 1.0);
+            assert(Math.round(rgba[2], 1) == 0.3);
+            assert(Math.round(rgba[3], 1) == 1.0);
+            console.log("Color.rotate()")
+        }
     },
 
     //----------------------------------------------------------------------------------------------

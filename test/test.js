@@ -32,7 +32,7 @@ function run(tests) {
                 try {
                     tests[i][method]();
                 } catch(e) {
-                    throw e + " in " + method + "()";
+                    console.error(e + " in " + method + "()");
                 }
                 tests[i].tearDown();
             }

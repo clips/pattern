@@ -87,6 +87,7 @@ Array.index = function(array, v) {
 
 Array.contains = function(array, v) {
     for (var i=0; i < array.length; i++) { if (array[i] === v) return true; }
+    return false;
 };
 
 Array.find = function(array, match) {
@@ -842,7 +843,7 @@ var lighten = lighter;
 // In HSB, colors hues range from 0 to 360, 
 // but on the color wheel these values are not evenly distributed. 
 // The second tuple value contains the actual value on the wheel (angle).
-var _COLORHWEEL = [
+var _COLORWHEEL = [
     [  0,   0], [ 15,   8], [ 30,  17], [ 45,  26],
     [ 60,  34], [ 75,  41], [ 90,  48], [105,  54],
     [120,  60], [135,  81], [150, 103], [165, 123],
