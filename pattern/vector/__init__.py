@@ -847,6 +847,7 @@ class Model(object):
         self._cos        = {}             # Cache of ((d1.id, d2.id), relevance)-items (cosine similarity).
         self._ig         = {}             # Cache of (word, information gain)-items.
         self._vector     = None           # Cache of model vector with all the features in the model.
+        self._classifier = None           # Classifier trained on the documents in the model (NB, KNN, SVM).
         self._lsa        = None           # LSA matrix with reduced dimensionality.
         self._weight     = weight         # Weight used in Document.vector (TF, TFIDF, IG, BINARY or None).
         self._update()
@@ -870,6 +871,10 @@ class Model(object):
         
     labels = classes
 
+    @property
+    def classifier(self):
+        return self._classifier
+
     def _get_lsa(self):
         return self._lsa
     def _set_lsa(self, v=None):
@@ -888,12 +893,12 @@ class Model(object):
 
     @classmethod
     def load(cls, path):
-        """ Loads the model from a pickle file created with Model.save().
+        """ Loads the model from a gzipped pickle file created with Model.save().
         """
-        return cPickle.load(open(path))
+        return cPickle.loads(gzip.GzipFile(path, "rb").read())
         
     def save(self, path, update=False):
-        """ Saves the model as a pickle file at the given path.
+        """ Saves the model as a gzipped pickle file at the given path.
             The advantage is that cached vectors and cosine similarity are stored.
         """
         if update:
@@ -909,7 +914,9 @@ class Model(object):
             if id1 not in m \
             or id2 not in m:
                 self._cos.pop((id1, id2))
-        cPickle.dump(self, open(path, "wb"), 1) # 1 = binary
+        f = gzip.GzipFile(path, "wb")
+        f.write(cPickle.dumps(self, 1)) # 1 = binary
+        f.close()
         
     def export(self, path, format=ORANGE, **kwargs):
         """ Exports the model as a file for other machine learning applications,
@@ -951,6 +958,7 @@ class Model(object):
         self._cos = {}
         self._ig  = {}
         self._vector = None
+        self._classifier = None
         self._lsa = None
         for document in self.documents:
             document._vector = None
@@ -1272,6 +1280,27 @@ class Model(object):
                    language = d.language,
                 description = d.description) for d in self.documents])
         return model
+    
+    # XXX Model.save() conflicts with Model.classifier.
+    
+    def train(self, *args, **kwargs):
+        """ Trains Model.classifier with the document vectors.
+            Each document is expected to have a Document.type.
+            Model.predict() can then be used to predict the type of other (unknown) documents.
+        """
+        if len(args) == 0:
+            Classifier = kwargs.pop("Classifier", "")
+        if len(args) >= 1:
+            Classifier = args[0]; args=args[1:]
+        kwargs["train"] = self
+        self._classifier = Classifier(*args, **kwargs)
+        self._classifier.finalize()
+
+    def predict(self, *args, **kwargs):
+        """ Returns the type for a given document,
+            based on the similarity of documents in the trained Model.classifier.
+        """
+        return self._classifier.classify(*args, **kwargs)            
 
 # Backwards compatibility.
 Corpus = Model
@@ -2110,19 +2139,21 @@ class NaiveBayes(Classifier):
         # The multiplication can cause underflow so we use log() instead.
         # For unknown features, we smoothen with an alpha value.
         v = self._vector(document)[1]
-        n = float(sum(self._classes.itervalues()))
+        m = self._method
+        a = self._alpha
+        n = self._classes.itervalues()
+        n = float(sum(n))
         p = defaultdict(float)
         for type in self._classes:
-            if self._method == MULTINOMIAL:
+            if m == MULTINOMIAL:
                 if not type in self._cache: # 10x faster
                     self._cache[type] = float(sum(self._likelihood[type].itervalues()))
                 d = self._cache[type]
-            if self._method in (BINOMIAL, BERNOUILLI):
+            if m == BINOMIAL \
+            or m == BERNOUILLI:
                 d = float(self._classes[type])
-            g = 0
-            for f in v:
-                # Conditional probabilities:
-                g += log(self._likelihood[type].get(f, self._alpha) / d)
+            L = self._likelihood[type]
+            g = sum(log((L[f] if f in L else a) / d) for f in v)
             g = exp(g) * self._classes[type] / n # prior
             p[type] = g
         # Normalize probability estimates.
@@ -2204,6 +2235,84 @@ NearestNeighbor = kNN = KNN
 #print knn.classes
 #print knn.classify(Document("something that can fly", threshold=0, stemmer=None))
 #print KNN.test((d1, d2, d3), folds=2)
+
+#--- SINGLE-LAYER PERCEPTRON ------------------------------------------------------------------------
+
+class SLP(Classifier):
+    
+    def __init__(self, train=[], baseline=MAJORITY):
+        """ Perceptron (SLP, single-layer averaged perceptron) is a simple artificial neural network,
+            a supervised learning method sometimes used for i.a. part-of-speech tagging.
+            Documents are classified based on the neuron that outputs the highest weight
+            for the given inputs (i.e., document vector features).
+            A feature is taken to occur in a vector (1) or not (0), i.e. BINARY weight.
+        """
+        self._weight    = defaultdict(dict) # {class: {feature: (weight, weight sum, timestamp)}}
+        self._iteration = 0                 # iteration
+        Classifier.__init__(self, train, baseline)
+
+    @property
+    def features(self):
+        return list(features(self._weights))
+        
+    def train(self, document, type=None):
+        """ Trains the classifier with the given document of the given type (i.e., class).
+            A document can be a Document, Vector, dict, list or string.
+            If no type is given, Document.type will be used instead.
+        """
+        def _accumulate(type, feature, weight, i):
+            # Accumulate average weights (prevents overfitting).
+            # Instead of keeping all intermediate results and averaging them at the end,
+            # we keep a running sum and the iteration in which the sum was last modified.
+            w = self._weight[type]
+            w0, w1, j = w[feature] if feature in w else (0, 0, 0)
+            w0 += weight
+            w[feature] = (w0, (i-j) * w0 + w1, i)
+        type, vector = self._vector(document, type=type)
+        self._classes[type] = self._classes.get(type, 0) + 1
+        self._iteration += 1
+        t1 = type
+        t2 = SLP.classify(self, document)
+        if t1 != t2: # Error correction.
+            i = self._iteration
+            for f in vector:
+                _accumulate(t1, f, +1, i)
+                _accumulate(t2, f, -1, i)
+
+    def classify(self, document, discrete=True):
+        """ Returns the type with the highest probability for the given document.
+            If the classifier has been trained on LSA concept vectors
+            you need to supply LSA.transform(document).
+        """
+        v = self._vector(document)[1]
+        i = self._iteration or 1
+        i = float(i)
+        p = defaultdict(float)
+        for type, w in self._weight.iteritems():
+            #p[type] = sum(w[f][0] for f in v if f in w) # Without averaging.
+            s = 0
+            for f in v:
+                if f in w:
+                    w0, w1, j = w[f]
+                    s += ((i-j) * w0 + w1) / i
+            p[type] = s
+        # Normalize probability estimates.
+        s = sum(p.itervalues()) or 1
+        for type in p:
+            p[type] /= s
+        if not discrete:
+            return p
+        try:
+            # Ties are broken in favor of the majority class
+            # (random winner for majority ties).
+            m = max(p.itervalues())
+            p = sorted((self._classes[type], type) for type, w in p.iteritems() if w == m > 0)
+            p = [type for frequency, type in p if frequency == p[0][0]]
+            return choice(p)
+        except:
+            return self.baseline
+
+ANN = NN = AP = AveragedPerceptron = Perceptron = SLP
 
 #--- SUPPORT VECTOR MACHINE ------------------------------------------------------------------------
 # Pattern comes bundled with LIBSVM 3.17:
@@ -2480,10 +2589,12 @@ class SVM(Classifier):
             f = open(p, "wb")
             f.write(self._model[0])                       # 2
             f.close()
-            if self.extension == LIBSVM:
-                m = self._svm.libsvmutil.svm_load_model(p)
+            if self.extension == LIBLINEAR and not svm.LIBLINEAR:
+                raise ImportError, "can't import liblinear"
             if self.extension == LIBLINEAR:
                 m = self._svm.liblinearutil.load_model(p)
+            if self.extension == LIBSVM:
+                m = self._svm.libsvmutil.svm_load_model(p)
             self._model = (m,) + self._model[1:]           # 3
             os.remove(f.name)                              # 4
             
