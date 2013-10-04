@@ -111,6 +111,7 @@ Pattern is bundled with the following data sets, algorithms and Python packages:
 - **LIBLINEAR**, Rong-En Fan et al.
 - **NetworkX centrality**, Aric Hagberg, Dan Schult & Pieter Swart
 - **PDFMiner**, Yusuke Shinyama
+- **Python docx**, Mike Maccana
 - **PyWordNet**, Oliver Steele
 - **simplejson**, Bob Ippolito
 - **spelling corrector**, Peter Norvig
@@ -156,3 +157,4 @@ Acknowledgements
 - Peter Bull
 - Maurizio Sambati
 - Dan Fu
+- Salvatore Di Dio

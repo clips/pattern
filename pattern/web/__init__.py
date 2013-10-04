@@ -2280,7 +2280,7 @@ class FlickrResult(Result):
 #    print img.url
 #
 #data = img.download()
-#f = open("kitten"+extension(img.url), "w")
+#f = open("kitten"+extension(img.url), "wb")
 #f.write(data)
 #f.close()
 
@@ -3368,53 +3368,103 @@ def crawl(links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse, sort=
 #    link, source = p.value
 #    print link
 
-#### PDF PARSER ####################################################################################
+
+#### DOCUMENT PARSER ###############################################################################
+# Not to be confused with Document, which is the top-level element in the HTML DOM.
+
+class DocumentParser(object):
+    
+    def __init__(self, path, *args, **kwargs):
+        """ Parses a text document (e.g., .pdf or .docx),
+            given as a file path or a string.
+        """
+        self.content = self._parse(path, *args, **kwargs)
+
+    def _open(self, path):
+        """ Returns a file-like object with a read() method,
+            from the given file path or string.
+        """
+        if isinstance(path, basestring) and os.path.exists(path):
+            return open(path, "rb")
+        return StringIO.StringIO(path)
+
+    def _parse(self, path, *args, **kwargs):
+        return plaintext(decode_utf8(self.open(path).read()))
+        
+    @property
+    def string(self):
+        return self.content
+
+    def __unicode__(self):
+        return self.content
+
+#--- PDF PARSER ------------------------------------------------------------------------------------
 #  Yusuke Shinyama, PDFMiner, http://www.unixuser.org/~euske/python/pdfminer/
 
 class PDFParseError(Exception):
     pass
 
-class PDF(object):
+class PDF(DocumentParser):
 
-    def __init__(self, data, format=None):
-        """ Plaintext parsed from the given PDF, given as a file path or a string.
-        """
-        self.content = self._parse(data, format)
+    def __init__(self, path, output="txt"):
+        self.content = self._parse(path, format=output)
 
-    @property
-    def string(self):
-        return self.content
-    def __unicode__(self):
-        return self.content
-
-    def _parse(self, data, format=None):
-
-        # The output will be ugly: it may be useful for mining but probably not for displaying.
-        # You can also try PDF(data, format="html") to preserve some layout information.
+    def _parse(self, path, format=None):
+        # The output is useful for mining but not for display.
+        # Alternatively, PDF(format="html") preserves some layout.
         from pdf.pdfinterp import PDFResourceManager, process_pdf
         from pdf.converter import TextConverter, HTMLConverter
         from pdf.layout    import LAParams
-        s = ""
-        m = PDFResourceManager()
         try:
-            # Given data is a PDF file path.
-            data = os.path.exists(data) and open(data) or StringIO.StringIO(data)
-        except TypeError:
-            # Given data is a PDF string.
-            data = StringIO.StringIO(data)
-        try:
-            stream = StringIO.StringIO()
-            parser = format=="html" and HTMLConverter or TextConverter
-            parser = parser(m, stream, codec="utf-8", laparams=LAParams())
-            process_pdf(m, parser, data, set(), maxpages=0, password="")
+            m = PDFResourceManager()
+            s = StringIO.StringIO()
+            p = format.endswith("html") and HTMLConverter or TextConverter
+            p = p(m, s, codec="utf-8", laparams=LAParams())
+            process_pdf(m, p, self._open(path), set(), maxpages=0, password="")
         except Exception, e:
             raise PDFParseError, str(e)
-        s = stream.getvalue()
+        s = s.getvalue()
         s = decode_utf8(s)
         s = s.strip()
-        s = re.sub(r"([a-z])\-\n", "\\1", s)        # Join hyphenated words.
-        s = s.replace("\n\n", "<!-- paragraph -->") # Preserve paragraph spacing.
+        s = re.sub(r"([a-z])\-\n", "\\1", s) # Hyphenation.
+        s = s.replace("\n\n", "<!-- #p -->") # Paragraphs.
         s = s.replace("\n", " ")
-        s = s.replace("<!-- paragraph -->", "\n\n")
+        s = s.replace("<!-- #p -->", "\n\n")
         s = collapse_spaces(s)
         return s
+
+#--- OOXML PARSER ----------------------------------------------------------------------------------
+#  Mike Maccana, Python docx, https://github.com/mikemaccana/python-docx
+
+class DOCXParseError(Exception):
+    pass
+
+class DOCX(DocumentParser):
+    
+    def _parse(self, path):
+        from docx.docx import opendocx
+        from docx.docx import getdocumenttext
+        try:
+            s = opendocx(self._open(path))
+            s = getdocumenttext(s)
+        except Exception, e:
+            raise DOCXParseError, str(e)
+        s = "\n\n".join(p for p in s)
+        s = decode_utf8(s)
+        s = collapse_spaces(s)
+        return s
+    
+def parsepdf(path, output="txt"):
+    return PDF(path, output).content
+    
+def parsedocx(path):
+    return DOCX(path).content
+    
+def parsedoc(path):
+    if isinstance(path, basestring):
+        if path.endswith(".pdf"):
+            return parsepdf(path)
+        if path.endswith(".docx"):
+            return parsedocx(path)
+    
+print parsedoc("docx/test.docx")
