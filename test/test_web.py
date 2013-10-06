@@ -823,18 +823,25 @@ class TestDOM(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
-class TestPDF(unittest.TestCase):
+class TestDocumentParser(unittest.TestCase):
     
     def setUp(self):
         pass
         
     def test_pdf(self):
         # Assert PDF to string parser.
-        v = web.PDF(open(os.path.join(PATH, "corpora", "wonderland-carroll.pdf")).read())
-        self.assertTrue("Curiouser and curiouser!" in v.string)
-        self.assertTrue(isinstance(v.string, unicode))
-        print "pattern.web.PDF.string"
-        
+        s = web.parsedoc(os.path.join(PATH, "corpora", "carroll-wonderland.pdf"))
+        self.assertTrue("Curiouser and curiouser!" in s)
+        self.assertTrue(isinstance(s, unicode))
+        print "pattern.web.parsepdf()"
+
+    def test_docx(self):
+        # Assert PDF to string parser.
+        s = web.parsedoc(os.path.join(PATH, "corpora", "carroll-lookingglass.docx"))
+        self.assertTrue("'Twas brillig, and the slithy toves" in s)
+        self.assertTrue(isinstance(s, unicode))
+        print "pattern.web.parsedocx()"
+
 #---------------------------------------------------------------------------------------------------
 
 class TestLocale(unittest.TestCase):
@@ -1032,16 +1039,16 @@ class TestCrawler(unittest.TestCase):
 
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCache))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestURL))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPlaintext))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSearchEngine))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDOM))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPDF))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLocale))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMail))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCrawler))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCache))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestURL))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPlaintext))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSearchEngine))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDOM))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDocumentParser))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLocale))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMail))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCrawler))
     return suite
 
 if __name__ == "__main__":

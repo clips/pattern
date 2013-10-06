@@ -3372,6 +3372,9 @@ def crawl(links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse, sort=
 #### DOCUMENT PARSER ###############################################################################
 # Not to be confused with Document, which is the top-level element in the HTML DOM.
 
+class DocumentParserError(Exception):
+    pass
+
 class DocumentParser(object):
     
     def __init__(self, path, *args, **kwargs):
@@ -3386,9 +3389,13 @@ class DocumentParser(object):
         """
         if isinstance(path, basestring) and os.path.exists(path):
             return open(path, "rb")
+        if hasattr(path, "read"):
+            return path
         return StringIO.StringIO(path)
 
     def _parse(self, path, *args, **kwargs):
+        """ Returns a plaintext Unicode string parsed from the given document.
+        """
         return plaintext(decode_utf8(self.open(path).read()))
         
     @property
@@ -3401,7 +3408,7 @@ class DocumentParser(object):
 #--- PDF PARSER ------------------------------------------------------------------------------------
 #  Yusuke Shinyama, PDFMiner, http://www.unixuser.org/~euske/python/pdfminer/
 
-class PDFParseError(Exception):
+class PDFError(DocumentParserError):
     pass
 
 class PDF(DocumentParser):
@@ -3409,7 +3416,7 @@ class PDF(DocumentParser):
     def __init__(self, path, output="txt"):
         self.content = self._parse(path, format=output)
 
-    def _parse(self, path, format=None):
+    def _parse(self, path, *args, **kwargs):
         # The output is useful for mining but not for display.
         # Alternatively, PDF(format="html") preserves some layout.
         from pdf.pdfinterp import PDFResourceManager, process_pdf
@@ -3418,11 +3425,11 @@ class PDF(DocumentParser):
         try:
             m = PDFResourceManager()
             s = StringIO.StringIO()
-            p = format.endswith("html") and HTMLConverter or TextConverter
+            p = kwargs.get("format", "txt").endswith("html") and HTMLConverter or TextConverter
             p = p(m, s, codec="utf-8", laparams=LAParams())
             process_pdf(m, p, self._open(path), set(), maxpages=0, password="")
         except Exception, e:
-            raise PDFParseError, str(e)
+            raise PDFError, str(e)
         s = s.getvalue()
         s = decode_utf8(s)
         s = s.strip()
@@ -3436,35 +3443,54 @@ class PDF(DocumentParser):
 #--- OOXML PARSER ----------------------------------------------------------------------------------
 #  Mike Maccana, Python docx, https://github.com/mikemaccana/python-docx
 
-class DOCXParseError(Exception):
+class DOCXError(DocumentParserError):
     pass
 
 class DOCX(DocumentParser):
     
-    def _parse(self, path):
+    def _parse(self, path, *args, **kwargs):
         from docx.docx import opendocx
         from docx.docx import getdocumenttext
         try:
             s = opendocx(self._open(path))
             s = getdocumenttext(s)
         except Exception, e:
-            raise DOCXParseError, str(e)
+            raise DOCXError, str(e)
         s = "\n\n".join(p for p in s)
         s = decode_utf8(s)
         s = collapse_spaces(s)
         return s
+
+#---------------------------------------------------------------------------------------------------
+
+def parsepdf(path, *args, **kwargs):
+    """ Returns the content as a Unicode string from the given .pdf file.
+    """
+    return PDF(path, *args, **kwargs).content
     
-def parsepdf(path, output="txt"):
-    return PDF(path, output).content
-    
-def parsedocx(path):
-    return DOCX(path).content
-    
-def parsedoc(path):
+def parsedocx(path, *args, **kwargs):
+    """ Returns the content as a Unicode string from the given .docx file.
+    """
+    return DOCX(path, *args, **kwargs).content
+
+def parsehtml(path, *args, **kwargs):
+    """ Returns the content as a Unicode string from the given .html file.
+    """
+    return plaintext(DOM(path, *args, **kwargs).body)
+
+def parsedoc(path, format=None):
+    """ Returns the content as a Unicode string from the given document (.html., .pdf, .docx).
+    """
     if isinstance(path, basestring):
-        if path.endswith(".pdf"):
+        if format == "pdf"  or path.endswith(".pdf"):
             return parsepdf(path)
-        if path.endswith(".docx"):
+        if format == "docx" or path.endswith(".docx"):
             return parsedocx(path)
-    
-print parsedoc("docx/test.docx")
+        if format == "html" or path.endswith((".htm", ".html", ".xhtml")):
+            return parsehtml(path)
+    # Brute-force approach if the format is unknown.
+    for f in (parsepdf, parsedocx, parsehtml):
+        try: 
+            return f(path)
+        except:
+            pass
