@@ -736,6 +736,14 @@ def features(vectors=[]):
 
 _features = features
 
+def sparse(v):
+    """ Returns the vector with features that have weight 0 removed.
+    """
+    for f, w in list(v.iteritems()):
+        if w == 0:
+            del v[f]
+    return v
+
 def relative(v):
     """ Returns the vector with feature weights normalized so that their sum is 1.0 (in-place).
     """
@@ -1120,12 +1128,12 @@ class Model(object):
             # Using LSA concept space:
             v1 = id1 in self.lsa and self.lsa[id1] or self._lsa.transform(document1)
             v2 = id2 in self.lsa and self.lsa[id2] or self._lsa.transform(document2)
-            s = sum(a * b for a, b in izip(v1.itervalues(), v2.itervalues())) / (v1.norm * v2.norm or 1)
+            s = cosine_similarity(v1, v2)
         # Cache the similarity weight for reuse.
         self._cos[(id1, id2)] = s
         return s
         
-    similarity = cosine_similarity
+    similarity = cos = cosine_similarity
     
     def nearest_neighbors(self, document, top=10):
         """ Returns a list of (similarity, document)-tuples in the model, 
@@ -1445,6 +1453,11 @@ class LSA(object):
                     print document, concept
         """
         return self.u
+        
+    def vector(self, id):
+        if isinstance(id, Document):
+            id = id.id
+        return self.u[id]
 
     def __getitem__(self, id):
         return self.u[id]
@@ -2096,7 +2109,7 @@ MULTINOMIAL = "multinomial" # Feature weighting.
 BINOMIAL    = "binomial"    # Feature occurs in class (1) or not (0).
 BERNOUILLI  = "bernouilli"  # Feature occurs in class (1) or not (0).
 
-class NaiveBayes(Classifier):
+class NB(Classifier):
     
     def __init__(self, train=[], baseline=MAJORITY, method=MULTINOMIAL, alpha=0.0001):
         """ Naive Bayes is a simple supervised learning method for text classification.
@@ -2180,7 +2193,7 @@ class NaiveBayes(Classifier):
         except:
             return self.baseline
 
-Bayes = NB = NaiveBayes
+Bayes = NaiveBayes = NB
 
 #--- K-NEAREST NEIGHBOR CLASSIFIER -----------------------------------------------------------------
 
@@ -2260,13 +2273,13 @@ class SLP(Classifier):
             A feature is taken to occur in a vector (1) or not (0), i.e. BINARY weight.
         """
         self._weight    = defaultdict(dict) # {class: {feature: (weight, weight sum, timestamp)}}
-        self._iteration = 0                 # iteration
+        self._iteration = 0
         train = chain(*(shuffled(train) for i in range(iterations)))
         Classifier.__init__(self, train, baseline)
 
     @property
     def features(self):
-        return list(features(self._weights))
+        return list(set(chain(*(f.iterkeys() for f in self._weight.itervalues()))))
         
     def train(self, document, type=None):
         """ Trains the classifier with the given document of the given type (i.e., class).
