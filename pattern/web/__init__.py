@@ -939,6 +939,10 @@ class Result(dict):
         self.url   = url
 
     @property
+    def txt(self):
+        return self.text
+
+    @property
     def description(self):
         return self.text # Backwards compatibility.
 
@@ -2353,6 +2357,7 @@ class Facebook(SearchEngine):
         if type == SEARCH:
             url = FACEBOOK + type
             url = URL(url, method=GET, query={
+              "access_token": self.license,
                          "q": query,
                       "type": "post",
                     "fields": ",".join(("id", "link", "message", "created_time", "from")),
@@ -2387,9 +2392,9 @@ class Facebook(SearchEngine):
             # (by default Result will store everything as Unicode strings).
             s = lambda r, k, v: dict.__setitem__(r, k, v)
             s(r, "likes", \
-                     self.format(x.get("like_count", x.get("likes", {}).get("count", 0))) + 0)
+                     self.format(x.get("like_count", len(x.get("likes", {}).get("data", [])))) + 0)
             s(r, "comments", \
-                     self.format(x.get("comments", {}).get("count", 0)) + 0)
+                     self.format(x.get("comment_count", len(x.get("comments", {}).get("data", [])))) + 0)
             s(r, "author",  (
                    u(self.format(x.get("from", {}).get("id", ""))), \
                    u(self.format(x.get("from", {}).get("name", "")))))
