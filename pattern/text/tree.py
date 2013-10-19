@@ -263,7 +263,6 @@ class Chunk(object):
         self.attachments  = []        # PNP chunks attached to this anchor.
         self.conjunctions = Conjunctions(self)
         self._modifiers   = None
-        self._head        = lambda self: self.words[-1]
         self.extend(words)
 
     def extend(self, words):
@@ -312,15 +311,18 @@ class Chunk(object):
     def head(self):
         """ Yields the head of the chunk (usually, the last word in the chunk).
         """
-        w = None
-        if self.type == "NP":  # "the cat" => "cat"
+        if self.type == "NP" and any(w.type.startswith("NNP") for w in self):
+            w = find(lambda w: w.type.startswith("NNP"), reversed(self))
+        elif self.type == "NP":  # "the cat" => "cat"
             w = find(lambda w: w.type.startswith("NN"), reversed(self))
-        if self.type == "VP":  # "is watching" => "watching"
+        elif self.type == "VP":  # "is watching" => "watching"
             w = find(lambda w: w.type.startswith("VB"), reversed(self))
-        if self.type == "PP":  # "from up on" => "from"
+        elif self.type == "PP":  # "from up on" => "from"
             w = find(lambda w: w.type.startswith(("IN", "PP")), self)
-        if self.type == "PNP": # "from up on the roof" => "roof"
+        elif self.type == "PNP": # "from up on the roof" => "roof"
             w = find(lambda w: w.type.startswith("NN"), reversed(self))
+        else:
+            w = None
         if w is None:
             w = self[-1]
         return w

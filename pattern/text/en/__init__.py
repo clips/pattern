@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))
 
 # Import parser base classes.
 from pattern.text import (
-    Lexicon, Spelling, Parser as _Parser, ngrams, pprint, commandline,
+    Lexicon, Model, Morphology, Context, Parser as _Parser, ngrams, pprint, commandline,
     PUNCTUATION
 )
 # Import parser universal tagset.
@@ -37,6 +37,10 @@ from pattern.text.tree import (
 # Import sentiment analysis base classes.
 from pattern.text import (
     Sentiment as _Sentiment, NOUN, VERB, ADJECTIVE, ADVERB
+)
+# Import spelling base class.
+from pattern.text import (
+    Spelling
 )
 # Import verb tenses.
 from pattern.text import (
@@ -115,19 +119,17 @@ class Sentiment(_Sentiment):
                     p, s, i = pos["JJ"]
                     self.annotate(w + "ly", "RB", p, s, i)
 
-lexicon = Lexicon(
-        path = os.path.join(MODULE, "en-lexicon.txt"),
-  morphology = os.path.join(MODULE, "en-morphology.txt"),
-     context = os.path.join(MODULE, "en-context.txt"),
-    entities = os.path.join(MODULE, "en-entities.txt"),
-    language = "en"
-)
-
 parser = Parser(
-     lexicon = lexicon,
+     lexicon = os.path.join(MODULE, "en-lexicon.txt"),    # A dict of known words -> most frequent tag.
+       model = os.path.join(MODULE, "en-model.slp"),      # A SLP classifier trained on WSJ (01-07).
+  morphology = os.path.join(MODULE, "en-morphology.txt"), # A set of suffix rules (e.g., -ly = adverb).
+     context = os.path.join(MODULE, "en-context.txt"),    # A set of contextual rules.
+    entities = os.path.join(MODULE, "en-entities.txt"),   # A dict of named entities: Bill = NNP-PERS.
      default = ("NN", "NNP", "CD"),
     language = "en"
 )
+
+lexicon = parser.lexicon # Expose lexicon.
 
 sentiment = Sentiment(
         path = os.path.join(MODULE, "en-sentiment.xml"),

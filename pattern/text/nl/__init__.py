@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))
 
 # Import parser base classes.
 from pattern.text import (
-    Lexicon, Spelling, Parser as _Parser, ngrams, pprint, commandline,
+    Lexicon, Model, Morphology, Context, Parser as _Parser, ngrams, pprint, commandline,
     PUNCTUATION
 )
 # Import parser universal tagset.
@@ -157,18 +157,15 @@ class Sentiment(_Sentiment):
                     p, s, i = pos["JJ"]
                     self.annotate(attributive(w), "JJ", p, s, i)
 
-lexicon = Lexicon(
-        path = os.path.join(MODULE, "nl-lexicon.txt"), 
+parser = Parser(
+     lexicon = os.path.join(MODULE, "nl-lexicon.txt"), 
   morphology = os.path.join(MODULE, "nl-morphology.txt"), 
      context = os.path.join(MODULE, "nl-context.txt"), 
-    language = "nl"
-)
-
-parser = Parser(
-     lexicon = lexicon,
      default = ("N(soort,ev,neut)", "N(eigen,ev)", "Num()"),
     language = "nl"
 )
+
+lexicon = parser.lexicon # Expose lexicon.
 
 sentiment = Sentiment(
         path = os.path.join(MODULE, "nl-sentiment.xml"), 
