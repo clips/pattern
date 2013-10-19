@@ -300,7 +300,7 @@ class TestParser(unittest.TestCase):
         self.assertEqual(v, ["The cat is eating ( e.g. , a fish ) .", "Yum !"])
         print "pattern.en.tokenize()"
 
-    def _test_morphological_rules(self, function=en.lexicon.morphology.apply):
+    def _test_morphological_rules(self, function=en.parser.morphology.apply):
         """ For each word in WordNet that is not in Brill's lexicon,
             test if the given tagger((word, "NN")) yields an improved (word, tag).
             Returns the relative scores for nouns, verbs, adjectives and adverbs.
@@ -341,12 +341,12 @@ class TestParser(unittest.TestCase):
 
     def test_apply_morphological_rules(self):
         # Assert part-of-speech tag for unknown tokens (Brill's lexical rules).
-        v = self._test_morphological_rules(function=en.lexicon.morphology.apply)
+        v = self._test_morphological_rules(function=en.parser.morphology.apply)
         self.assertTrue(v[0] > 0.85) # NN
-        self.assertTrue(v[1] > 0.19) # VB
-        self.assertTrue(v[2] > 0.65) # JJ
-        self.assertTrue(v[3] > 0.59) # RB
-        print "pattern.en.lexicon.morphology.apply()"
+        self.assertTrue(v[1] > 0.15) # VB
+        self.assertTrue(v[2] > 0.63) # JJ
+        self.assertTrue(v[3] > 0.60) # RB
+        print "pattern.en.parser.morphology.apply()"
 
     def test_apply_context_rules(self):
         # Assert part-of-speech tags based on word context.
@@ -360,8 +360,8 @@ class TestParser(unittest.TestCase):
           ([["very", ""], ["much", "JJ"]],      [["very", ""], ["much", "RB"]]),      # LBIGRAM
           ([["such", "JJ"], ["as", "DT"]],      [["such", "JJ"], ["as", "IN"]]),      # WDNEXTWD
           ([["be", "VB"]],                      [["be", "VB"]])):                     # CURWD
-            self.assertEqual(en.lexicon.context.apply(a), b)
-        print "pattern.en.lexicon.context.apply()"
+            self.assertEqual(en.parser.context.apply(a), b)
+        print "pattern.en.parser.context.apply()"
 
     def test_find_tags(self):
         # Assert part-of-speech-tag annotation.
@@ -494,18 +494,19 @@ class TestParser(unittest.TestCase):
         self.assertEqual(en.parse("ø ü.", tokenize=False, tags=False, chunks=False), u"ø ü.")
         # 7) Assert the accuracy of the English tagger.
         i, n = 0, 0
-        for sentence in open(os.path.join(PATH, "corpora", "tagged-en-penntreebank.txt")).readlines():
-            sentence = sentence.decode("utf-8").strip()
-            s1 = [w.split("/") for w in sentence.split(" ")]
-            s2 = [[w for w, pos in s1]]
-            s2 = en.parse(s2, tokenize=False)
-            s2 = [w.split("/") for w in s2.split(" ")]
-            for j in range(len(s1)):
-                if s1[j][1] == s2[j][1].split("-")[0]:
-                    i += 1
-                n += 1
-        #print float(i) / n
-        self.assertTrue(float(i) / n > 0.945)
+        for corpus, a in (("tagged-en-wsj.txt", (0.968, 0.945)), ("tagged-en-oanc.txt", (0.929, 0.932))):
+            for sentence in open(os.path.join(PATH, "corpora", corpus)).readlines():
+                sentence = sentence.decode("utf-8").strip()
+                s1 = [w.split("/") for w in sentence.split(" ")]
+                s2 = [[w for w, pos in s1]]
+                s2 = en.parse(s2, tokenize=False)
+                s2 = [w.split("/") for w in s2.split(" ")]
+                for j in range(len(s1)):
+                    if s1[j][1] == s2[j][1].split("-")[0]:
+                        i += 1
+                    n += 1
+            #print corpus, float(i) / n
+            self.assertTrue(float(i) / n > (en.parser.model and a[0] or a[1]))
         print "pattern.en.parse()"
 
     def test_tagged_string(self):
@@ -750,7 +751,6 @@ class TestModality(unittest.TestCase):
         from pattern.text.en.modality import imperative
         for b, s in (
           (True,  "Do your homework!"),
-          (True,  "Do whatever you want."),
           (True,  "Do not listen to me."),
           (True,  "Turn that off, will you."),
           (True,  "Let's help him."),

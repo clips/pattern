@@ -25,7 +25,7 @@ def suite():
     suite = unittest.TestSuite()
     suite.addTest(test_metrics.suite())
     suite.addTest(test_web.suite())
-    suite.addTest(test_db.suite(host="localhost", port=3306, username="root", password="root"))
+    suite.addTest(test_db.suite(host="localhost", port=3306, username="root", password=""))
     suite.addTest(test_de.suite())
     suite.addTest(test_en.suite())
     suite.addTest(test_es.suite())

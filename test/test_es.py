@@ -224,7 +224,7 @@ class TestParser(unittest.TestCase):
                 if s1[j][1] == s2[j][1]:
                     i += 1
                 n += 1
-        print float(i) / n
+        #print float(i) / n
         self.assertTrue(float(i) / n > 0.92)
         print "pattern.es.parser.parse()"
 
