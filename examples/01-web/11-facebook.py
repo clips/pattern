@@ -14,7 +14,7 @@ from pattern.db  import Datasheet, pprint
 #    Search for all status updates that contain the word "horrible".
 
 try: 
-    # We'll store tweets in a Datasheet.
+    # We'll store the status updates in a Datasheet.
     # A Datasheet is a table of rows and columns that can be exported as a CSV-file.
     # In the first column, we'll store a unique id for each status update.
     # We only want to add new status updates, i.e., those we haven't seen yet.
