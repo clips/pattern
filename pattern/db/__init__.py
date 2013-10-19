@@ -1589,6 +1589,8 @@ class json(object):
         yield s[i:]
         
     def encode(self, s):
+        if not isinstance(s, basestring):
+            s = str(s)
         for a, b in self.escape:
             s = s.replace(a, b)
         return '"%s"' % s
@@ -1634,7 +1636,7 @@ class json(object):
         if isinstance(obj, type(None)):
             return "null"
         if isinstance(obj, dict):
-            return "{%s}" % ", ".join(['%s: %s' % tuple(map(self.dumps, kv)) for kv in sorted(obj.items())])
+            return "{%s}" % ", ".join(['%s: %s' % (self.encode(k), self.dumps(v)) for k, v in sorted(obj.items())])
         if isinstance(obj, (list, tuple, GeneratorType)):
             return "[%s]" % ", ".join(self.dumps(v) for v in obj)
         raise TypeError, "can't process %s." % type(obj)
@@ -1643,7 +1645,7 @@ try: import json # Python 2.6+
 except:
     try: from pattern.web import json # simplejson
     except:
-        pass
+        json = json()
 
 #db = Database("test")
 #db.create("persons", (pk(), field("data", TEXT)))
@@ -1678,20 +1680,21 @@ class CSV(list):
     def __new__(cls, rows=[], fields=None, **kwargs):
         """ A list of lists that can be imported and exported as a comma-separated text file (CSV).
         """
-        # From a CSV file path:
         if isinstance(rows, basestring) and os.path.exists(rows):
             csv = cls.load(rows, **kwargs)
-        # From a list of rows:
         else:
-            csv = list.__new__(cls); list.extend(csv, rows)
-        # CSV.fields is a list of (name, type)-tuples,
-        # with type STRING, INTEGER, FLOAT, DATE or BOOLEAN.
-        csv.__dict__["fields"] = fields or kwargs.get("headers", None)
+            csv = list.__new__(cls)
         return csv
 
     def __init__(self, rows=[], fields=None, **kwargs):
-        pass
-        
+        # List of (name, type)-tuples (STRING, INTEGER, FLOAT, DATE, BOOLEAN)..
+        self.__dict__["fields"] = fields or kwargs.pop("headers", None)
+        if hasattr(rows, "__iter__"):
+            self.extend(rows, **kwargs)
+
+    def extend(self, rows, **kwargs):
+        list.extend(self, rows)
+
     def _set_headers(self, v):
         self.__dict__["fields"] = v
     def _get_headers(self):
@@ -1770,7 +1773,7 @@ class CSV(list):
                         row[j] = v
                     else:
                         row[j] = decoder(decode_utf8(v))
-        return cls(rows=data, fields=fields)
+        return cls(rows=data, fields=fields, **kwargs)
 
 #--- DATASHEET -------------------------------------------------------------------------------------
 
@@ -1786,6 +1789,7 @@ class Datasheet(CSV):
         self.__dict__["_rows"] = DatasheetRows(self)
         self.__dict__["_columns"] = DatasheetColumns(self)
         self.__dict__["_m"] = 0 # Number of columns per row, see Datasheet.insert().
+        list.__init__(self)
         CSV.__init__(self, rows, fields, **kwargs)
     
     def _get_rows(self):
@@ -1893,7 +1897,7 @@ class Datasheet(CSV):
     def __iadd__(self, datasheet):
         self.extend(datasheet); return self
 
-    def insert(self, i, row, default=None):
+    def insert(self, i, row, default=None, **kwargs):
         """ Inserts the given row into the matrix.
             Missing columns at the end (right) will be filled with the default value.
         """
@@ -1914,9 +1918,10 @@ class Datasheet(CSV):
                     row.extend([default] * (m-len(row)))
         self.__dict__["_m"] = m
         
-    def append(self, row, default=None, _m=None):
+    def append(self, row, default=None, _m=None, **kwargs):
         self.insert(len(self), row, default)
-    def extend(self, rows, default=None):
+        
+    def extend(self, rows, default=None, **kwargs):
         for row in rows:
             self.insert(len(self), row, default)
             
@@ -1970,7 +1975,7 @@ class Datasheet(CSV):
             u[o[v]] = [[list.__getitem__(self, i)[j] for i in g[v]] for j in range(self._m)]
             # Apply the group function to each row, except the unique value in column j.
             u[o[v]] = [function[j](column) for j, column in enumerate(u[o[v]])]
-            u[o[v]][J] = v#list.__getitem__(self, i)[J]
+            u[o[v]][J] = v # list.__getitem__(self, i)[J]
         return Datasheet(rows=u)
                 
     def map(self, function=lambda item: item):
@@ -1998,14 +2003,16 @@ class Datasheet(CSV):
         return Datasheet(rows=(z[i] for i in rows))
     
     @property
-    def json(self):
+    def json(self, **kwargs):
         """ Returns a JSON-string, as a list of dictionaries (if fields are defined) or as a list of lists.
             This is useful for sending a Datasheet to JavaScript, for example.
         """
+        kwargs.setdefault("ensure_ascii", False) # Disable simplejson's Unicode encoder.
         if self.fields is not None:
-            return json.dumps([dict((f[0], row[i]) for i, f in enumerate(self.fields)) for row in self])
+            s = json.dumps([dict((f[0], row[i]) for i, f in enumerate(self.fields)) for row in self], **kwargs)
         else:
-            return json.dumps(self)
+            s = json.dumps(self, **kwargs)
+        return decode_utf8(s)
             
     @property
     def array(self):
