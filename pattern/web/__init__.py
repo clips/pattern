@@ -2307,7 +2307,7 @@ class FacebookResult(Result):
 class Facebook(SearchEngine):
 
     def __init__(self, license=None, throttle=1.0, language=None):
-        SearchEngine.__init__(self, license, throttle, language)
+        SearchEngine.__init__(self, license or FACEBOOK_LICENSE, throttle, language)
 
     @property
     def _token(self):
@@ -2357,20 +2357,25 @@ class Facebook(SearchEngine):
         if type == SEARCH:
             url = FACEBOOK + type
             url = URL(url, method=GET, query={
-              "access_token": self.license,
                          "q": query,
                       "type": "post",
-                    "fields": ",".join(("id", "link", "message", "created_time", "from")),
+              "access_token": self.license,
                     "offset": (start-1) * min(count, max),
-                     "limit": (start-0) * min(count, max),
+                     "limit": (start-0) * min(count, max)
             })
         if type in (NEWS, FEED, COMMENTS, LIKES, FRIENDS):
             url = FACEBOOK + (u(query) or "me").replace(FACEBOOK, "") + "/" + type.replace("news", "feed")
             url = URL(url, method=GET, query={
               "access_token": self.license,
                     "offset": (start-1) * min(count, max),
-                     "limit": (start-0) * min(count, max)
+                     "limit": (start-0) * min(count, max),
             })
+        if type in (SEARCH, NEWS, FEED):
+            url.query["fields"] = ",".join((
+                "id", "from", "name", "story", "message", "link", "picture", "created_time", 
+                "comments.limit(1).summary(true)", 
+                   "likes.limit(1).summary(true)"
+            ))
         # 2) Parse JSON response.
         kwargs.setdefault("cached", cached)
         kwargs.setdefault("unicode", True)
@@ -2386,17 +2391,17 @@ class Facebook(SearchEngine):
             r = FacebookResult(url=None)
             r.id   = self.format(x.get("id"))
             r.url  = self.format(x.get("link"))
-            r.text = self.format(x.get("story", x.get("message")))
+            r.text = self.format(x.get("story", x.get("message", x.get("name"))))
             r.date = self.format(x.get("created_time"))
             # Store likes & comments count as int, author as (id, name)-tuple
             # (by default Result will store everything as Unicode strings).
             s = lambda r, k, v: dict.__setitem__(r, k, v)
             s(r, "likes", \
-                     self.format(x.get("like_count", len(x.get("likes", {}).get("data", [])))) + 0)
+                     self.format(x.get("like_count", x.get("likes", {}).get("summary", {}).get("total_count", 0))) + 0)
             s(r, "comments", \
-                     self.format(x.get("comment_count", len(x.get("comments", {}).get("data", [])))) + 0)
+                     self.format(x.get("comments", {}).get("summary", {}).get("total_count", 0)) + 0)
             s(r, "author",  (
-                   u(self.format(x.get("from", {}).get("id", ""))), \
+                   u(self.format(x.get("from", {}).get("id", ""))),
                    u(self.format(x.get("from", {}).get("name", "")))))
             # Set Result.text to author name for likes.
             if type in (LIKES, FRIENDS):
@@ -2406,17 +2411,17 @@ class Facebook(SearchEngine):
                 r.text = \
                      self.format(x.get("name"))
             # Set Result.url to full-size image.
-            if r.url.startswith("http://www.facebook.com/photo"):
+            if re.match(r"^http(s?)://www\.facebook\.com/photo", r.url) is not None:
                 r.url = x.get("picture", "").replace("_s", "_b") or r.url
             # Set Result.title to object id.
-            if r.url.startswith("http://www.facebook.com/"):
+            if re.match(r"^http(s?)://www\.facebook\.com/", r.url) is not None:
                 r.title = r.url.split("/")[-1].split("?")[0]
             results.append(r)
         return results
 
     def profile(self, id=None, **kwargs):
         """ For the given author id or alias,
-            returns a (id, name, date of birth, gender, locale)-tuple.
+            returns a (id, name, date of birth, gender, locale, likes)-tuple.
         """
         url = FACEBOOK + (u(id or "me")).replace(FACEBOOK, "")
         url = URL(url, method=GET, query={"access_token": self.license})
@@ -2433,7 +2438,8 @@ class Facebook(SearchEngine):
             u(data.get("name", "")),
             u(data.get("birthday", "")),
             u(data.get("gender", "")[:1]),
-            u(data.get("locale", ""))
+            u(data.get("locale", "")),
+          int(data.get("likes", 0)) # For pages.
         )
 
 #--- PRODUCT REVIEWS -------------------------------------------------------------------------------

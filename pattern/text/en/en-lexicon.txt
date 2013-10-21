@@ -42798,6 +42798,7 @@ beau NN
 beauteous JJ
 beauticians NNS
 beauties NNS
+beautfl JJ
 beautiful JJ
 beautifully RB
 beautifully-built JJ
@@ -50299,7 +50300,7 @@ d-Percentage NN
 d-c NN
 dBASE NNP
 dBase NNP
-da NNP
+da DT
 dabbed VBD
 dabbing VBG
 dabble VB
@@ -60470,6 +60471,7 @@ happier JJR
 happiest JJS
 happily RB
 happiness NN
+happi JJ
 happy JJ
 hara-kiri FW
 harangued VBD
@@ -67058,6 +67060,7 @@ lyricist NN
 lyricists NNS
 lyrics NNS
 lyriist NN
+lvly JJ
 m NN
 m&a JJ
 m.p.h NN
@@ -75058,6 +75061,7 @@ plutonium-recovery JJ
 ply VBP
 plying VBG
 plywood NN
+plz RB
 pm NN
 pneumatic JJ
 pneumocystis NN
@@ -88258,6 +88262,8 @@ this.... :
 this.`` ``
 thistles NNS
 thither RB
+thnk VB
+thnx NNS
 tho NN
 tholins NNS
 thomp NN
@@ -93149,6 +93155,7 @@ whiz-bang UH
 whizzed VBD
 whizzes NNS
 whizzing VBG
+whle IN
 who WP
 who's VBP
 who... :
@@ -93822,6 +93829,7 @@ writing-like JJ
 writings NNS
 writs NNS
 written VBN
+wrng JJ
 wrondgoing NN
 wrong JJ
 wrong-headed JJ
