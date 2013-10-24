@@ -1881,9 +1881,9 @@ class MediaWikiSection(object):
     def content(self):
         # ArticleSection.string, minus the title.
         s = self.plaintext()
-        t = plaintext(self.title)
-        if s == t or (len(s) > len(t) and s.startswith(t) and s[len(t)] != " "):
-            return s[len(t):].lstrip()
+        # Check that the title isn't part of the first sentence.
+        if s == self.title or re.search("^%s[^ ,]" % re.escape(self.title), s):
+            return s[len(self.title):].lstrip()
         return s
 
     @property
