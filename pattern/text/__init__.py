@@ -868,10 +868,10 @@ punctuation = ".,;:!?()[]{}`''\"@#$^&*+-|=~_"
 
 # Handle common abbreviations.
 ABBREVIATIONS = abbreviations = set((
-    "a.", "adj.", "adv.", "al.", "a.m.", "c.", "cf.", "comp.", "conf.", "def.",
-    "ed.", "e.g.", "esp.", "etc.", "ex.", "f.", "fig.", "gen.", "id.", "i.e.",
-    "int.", "l.", "m.", "Med.", "Mil.", "Mr.", "n.", "n.q.", "orig.", "pl.",
-    "pred.", "pres.", "p.m.", "ref.", "v.", "vs.", "w/"
+    "a.", "adj.", "adv.", "al.", "a.m.", "art.", "c.", "capt.", "cert.", "cf.", "col.", "Col.", 
+    "comp.", "conf.", "def.", "Dep.", "Dept.", "Dr.", "dr.", "ed.", "e.g.", "esp.", "etc.", "ex.", 
+    "f.", "fig.", "gen.", "id.", "i.e.", "int.", "l.", "m.", "Med.", "Mil.", "Mr.", "n.", "n.q.", 
+    "orig.", "pl.", "pred.", "pres.", "p.m.", "ref.", "v.", "vs.", "w/"
 ))
 
 RE_ABBR1 = re.compile("^[A-Za-z]\.$")       # single letter, "T. De Smedt"

@@ -165,7 +165,6 @@ def numerals(n, round=2):
         numerals(2.25) => two point twenty-five
         numerals(2.249) => two point twenty-five
         numerals(2.249, round=3) => two point two hundred and forty-nine
-        Note: due to rounding of float values, float(number(x)) == x is not always True.
     """
     if isinstance(n, basestring):
         if n.isdigit():
