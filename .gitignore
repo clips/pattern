@@ -1,6 +1,9 @@
 # Ignore compiled Python files
 *.pyc
 
+# Ignore development files
+*.dev*
+
 # Ignore Ninja files
 *.nja
 

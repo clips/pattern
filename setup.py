@@ -1,8 +1,40 @@
+#### PATTERN #######################################################################################
+
+import sys
+import os
+import re
+import zipfile
+import hashlib
+
 from distutils.core import setup
 from distutils.dist import DistributionMetadata
 
-# Patch distutils if it can't cope with the "classifiers" keyword (prior to Python 2.3.0).
-if not hasattr(DistributionMetadata, 'classifiers'):
+from pattern import __version__
+
+#---------------------------------------------------------------------------------------------------
+# "python setup.py zip" will create the zipped distribution and checksum.
+
+if sys.argv[-1] == "zip":
+    n = "pattern-%s.zip" % __version__
+    p = os.path.join(os.path.dirname(os.path.abspath(__file__)))
+    z = zipfile.ZipFile(os.path.join(p, "..", n), "w", zipfile.ZIP_DEFLATED)
+    for root, folders, files in os.walk(p):
+        for f in files:
+            if not re.search(r"\.git|\.dev|tmp|models", root):
+                if not re.search(r"\.pyc|\.dev|\.DS", f):
+                    f = os.path.join(root, f)
+                    r = os.path.relpath(f, p)
+                    r = os.path.join("pattern-" + __version__, r)
+                    z.write(f, r)
+    z.close()
+    print n
+    print hashlib.sha256(p).hexdigest()
+    sys.exit(0)
+
+#---------------------------------------------------------------------------------------------------
+# "python setup.py install" will install /pattern in /site-packages.
+
+if not hasattr(DistributionMetadata, 'classifiers'): # Python 2.3
     DistributionMetadata.classifiers = None
 
 setup(
