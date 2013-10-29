@@ -51,22 +51,22 @@
 <p>The <span class="inline_code">search()</span> function takes a word (or a sequence of words) that you want to retrieve from a string. It returns a list of non-overlapping matches. The <span class="inline_code">match()</span> function returns the first match (or <span class="inline_code">None</span>). The <span class="inline_code">compile()</span> function returns a <span class="inline_code">Pattern</span> object with a <span class="inline_code">Pattern.search()</span> and <span class="inline_code">Pattern.match()</span> method.</p>
 <pre class="brush:python; gutter:false; light:true;">search(pattern, sentence)</pre><pre class="brush:python; gutter:false; light:true;">match(pattern, sentence)</pre><pre class="brush:python; gutter:false; light:true;">compile(pattern)</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import search
-&gt;&gt;&gt; print search(&#39;rabbit&#39;, &#39;big white rabbit&#39;)
+&gt;&gt;&gt; print search('rabbit', 'big white rabbit')
 
-[Match(words=[Word(&#39;rabbit&#39;)])]</pre></div>
+[Match(words=[Word('rabbit')])]</pre></div>
 <p>Search words can contain a wildcard character at the <span class="inline_code">*start</span>, <span class="inline_code">end*</span>, <span class="inline_code">*both*</span> or <span class="inline_code">in*between</span>:</p>
 <div class="example">
-<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print search(&#39;rabbit*&#39;, &#39;big white rabbit&#39;)
-&gt;&gt;&gt; print search(&#39;rabbit*&#39;, &#39;big white rabbits&#39;)
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print search('rabbit*', 'big white rabbit')
+&gt;&gt;&gt; print search('rabbit*', 'big white rabbits')
 
-[Match(words=[Word(&#39;rabbit&#39;)])]
-[Match(words=[Word(&#39;rabbits&#39;)])]
+[Match(words=[Word('rabbit')])]
+[Match(words=[Word('rabbits')])]
 </pre></div>
 <p>Search words can be composed of different options separated by a vertical bar:</p>
 <div class="example">
-<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print search(&#39;rabbit|cony|bunny&#39;, &#39;big black bunny&#39;)
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print search('rabbit|cony|bunny', 'big black bunny')
 
-[Match(words=[Word(&#39;bunny&#39;)])]</pre></div>
+[Match(words=[Word('bunny')])]</pre></div>
 <p>&nbsp;</p>
 <p><span class="smallcaps">Syntactical pattern matching</span></p>
 <p>The above can also be accomplished with regular expressions (which is faster). It is more interesting if we involve the <a href="pattern-en.html#parser">parser</a> from the <span class="inline_code">pattern.en</span> module. The parser takes a string, identifies words and sentences, and assigns a part-of-speech tag to each word. For example: <span class="postag">NN</span> (noun), <span class="postag">VB</span> (verb) or <span class="postag">JJ</span> (adjective). It groups words into chunks, for example: <span class="postag">NP</span> (noun phrase) consists of successive <span class="postag">NN</span>, <span class="postag">JJ</span>, <span class="postag">DT</span> (determiner), ...</p>
@@ -74,18 +74,18 @@
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import search
 &gt;&gt;&gt; from pattern.en import parsetree
-&gt;&gt;&gt; t = parsetree(&quot;big white rabbit&quot;)
+&gt;&gt;&gt; t = parsetree("big white rabbit")
 &gt;&gt;&gt; print t
 &gt;&gt;&gt; print
-&gt;&gt;&gt; print search(&#39;JJ&#39;, t) # all adjectives
-&gt;&gt;&gt; print search(&#39;NN&#39;, t) # all nouns
-&gt;&gt;&gt; print search(&#39;NP&#39;, t) # all noun phrases
+&gt;&gt;&gt; print search('JJ', t) # all adjectives
+&gt;&gt;&gt; print search('NN', t) # all nouns
+&gt;&gt;&gt; print search('NP', t) # all noun phrases
 
-[Sentence(&#39;big/JJ/B-NP/O white/JJ/I-NP/O rabbit/NN/I-NP/O&#39;)]
+[Sentence('big/JJ/B-NP/O white/JJ/I-NP/O rabbit/NN/I-NP/O')]
 
-[Match(words=[Word(u&#39;big/JJ&#39;)]), Match(words=[Word(u&#39;white/JJ&#39;)])]
-[Match(words=[Word(u&#39;rabbit/NN&#39;)])]
-[Match(words=[Word(u&#39;big/JJ&#39;), Word(u&#39;white/JJ&#39;), Word(u&#39;rabbit/NN&#39;)])]</pre></div>
+[Match(words=[Word(u'big/JJ')]), Match(words=[Word(u'white/JJ')])]
+[Match(words=[Word(u'rabbit/NN')])]
+[Match(words=[Word(u'big/JJ'), Word(u'white/JJ'), Word(u'rabbit/NN')])]</pre></div>
 <p>&nbsp;</p>
 <p><span class="smallcaps">Semantical pattern matching</span></p>
 <p>The <span class="inline_code">pattern.search</span> module includes a <span class="inline_code">Taxonomy</span> class that can be used to define semantic categories for words. Assume that you wanted to extract flower names from a text. This can make patterns long and clumsy, e.g.: <span class="inline_code">compile("rose|lily|daisy|daffodil|begonia")</span>.</p>
@@ -93,17 +93,17 @@
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import taxonomy, search
 &gt;&gt;&gt; from pattern.en import parsetree
-&gt;&gt;&gt; for f in (&#39;rose&#39;, &#39;lily&#39;, &#39;daisy&#39;, &#39;daffodil&#39;, &#39;begonia&#39;):
-&gt;&gt;&gt;     taxonomy.append(f, type=&#39;flower&#39;)
-&gt;&gt;&gt; t = parsetree(&#39;A field of white daffodils.&#39;, lemmata=True)
+&gt;&gt;&gt; for f in ('rose', 'lily', 'daisy', 'daffodil', 'begonia'):
+&gt;&gt;&gt;     taxonomy.append(f, type='flower')
+&gt;&gt;&gt; t = parsetree('A field of white daffodils.', lemmata=True)
 &gt;&gt;&gt; print t
 &gt;&gt;&gt; print
-&gt;&gt;&gt; print search(&#39;FLOWER&#39;, t)
+&gt;&gt;&gt; print search('FLOWER', t)
 
-[Sentence(&#39;A/DT/B-NP/O/a field/NN/I-NP/O/field of/IN/B-PP/B-PNP/of&#39; 
-          &#39;white/JJ/B-NP/I-PNP/white daffodils/NNS/I-NP/I-PNP/daffodil ././O/O/.&#39;)]
+[Sentence('A/DT/B-NP/O/a field/NN/I-NP/O/field of/IN/B-PP/B-PNP/of' 
+          'white/JJ/B-NP/I-PNP/white daffodils/NNS/I-NP/I-PNP/daffodil ././O/O/.')]
 
-[Match(words=[Word(u&#39;white/JJ&#39;), Word(u&#39;daffodils/NNS&#39;)])]
+[Match(words=[Word(u'white/JJ'), Word(u'daffodils/NNS')])]
 </pre></div>
 <p>Since the pattern has <span class="inline_code">"FLOWER"</span> in uppercase, it is recognized as the taxonomic category (rose + lily + daisy + daffodil + begonia) instead of the word "flower". The parser will compute word lemmata, so that "daffodils" is recognized as the plural form of "daffodil" (the lemma), and therefore part of <span class="postag">FLOWER</span>.</p>
 <p>Note that the returned match is actually "white daffodils". This is because (by default) the system assumes that you are underspecifying: <em>white daffodils</em> is a more specified version of <em>daffodil</em>, so the whole chunk is returned.</p>
@@ -226,16 +226,16 @@ constraint.exclude          # None, or Constraint of disallowed options.</pre><p
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import Pattern
 &gt;&gt;&gt; from pattern.en import parsetree
-&gt;&gt;&gt; t = parsetree(&#39;tasty cat food&#39;)
-&gt;&gt;&gt; p = Pattern.fromstring(&#39;DT? RB? JJ? NN+&#39;)
+&gt;&gt;&gt; t = parsetree('tasty cat food')
+&gt;&gt;&gt; p = Pattern.fromstring('DT? RB? JJ? NN+')
 &gt;&gt;&gt; print t
 &gt;&gt;&gt; print
 &gt;&gt;&gt; print p.search(t)
 
-[Sentence(&#39;tasty/JJ/B-NP/O cat/NN/I-NP/O food/NN/I-NP/O&#39;)]
+[Sentence('tasty/JJ/B-NP/O cat/NN/I-NP/O food/NN/I-NP/O')]
 
-[Match(words=[Word(u&#39;tasty/JJ&#39;), Word(u&#39;cat/NN&#39;)]), 
- Match(words=[Word(u&#39;food/NN&#39;)])]</pre></div>
+[Match(words=[Word(u'tasty/JJ'), Word(u'cat/NN')]), 
+ Match(words=[Word(u'food/NN')])]</pre></div>
 <p>The pattern looks for successive nouns (<span class="postag">NN</span>), but it will also include a preceding determiner (<span class="postag">DT</span>), adverb (<span class="postag">RB</span>) and adjective (<span class="postag">JJ</span>). It matches anything from <em>food</em> to&nbsp;<em>cat food</em>, <em>tasty food</em>, <em>the tasty cat food</em>, etc.</p>
 <h3>Constraint underspecification</h3>
 <p>The <a href="pattern-en.html#parser">parser</a> in <span class="inline_code">pattern.en</span> groups words that belong together into chunks. For example, <em>the black cat</em> is one chunk, tagged <span class="postag">NP</span> (noun phrase). The head of the chunk is <em>cat</em>. By default, the pattern matching algorithm will compare a <span class="inline_code">Sentence</span> on the chunk head. Thus, if you look for <em>cat</em> and the sentence has <em>a big black cat</em>, the entire chunk will be returned. The extra words in the chunk contain important information about how the cat looks and feels, an opinion (<em>my silly cat</em>), etc. Expert users can tweak which chunks are matched with a custom <span class="inline_code">Pattern.greedy</span> function.</p>
@@ -243,24 +243,24 @@ constraint.exclude          # None, or Constraint of disallowed options.</pre><p
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import Pattern
 &gt;&gt;&gt; from pattern.en import parsetree
-&gt;&gt;&gt; t = parsetree(&#39;The black cat is lurking in the tree.&#39;)
-&gt;&gt;&gt; p = Pattern.fromstring(&#39;cat&#39;, t)
+&gt;&gt;&gt; t = parsetree('The black cat is lurking in the tree.')
+&gt;&gt;&gt; p = Pattern.fromstring('cat', t)
 &gt;&gt;&gt; print t
 &gt;&gt;&gt; print
 &gt;&gt;&gt; print p.search(t)
 
-[Sentence(&#39;The/DT/B-NP/O black/JJ/I-NP/O cat/NN/I-NP/O is/VBZ/B-VP/O&#39;
-          &#39;lurking/VBG/I-VP/O in/IN/B-PP/B-PNP the/DT/B-NP/I-PNP&#39; 
-          &#39;tree/NN/I-NP/I-PNP ././O/O&#39;)]
+[Sentence('The/DT/B-NP/O black/JJ/I-NP/O cat/NN/I-NP/O is/VBZ/B-VP/O'
+          'lurking/VBG/I-VP/O in/IN/B-PP/B-PNP the/DT/B-NP/I-PNP' 
+          'tree/NN/I-NP/I-PNP ././O/O')]
 
-[Match(words=[Word(u&#39;The/DT&#39;), Word(u&#39;black/JJ&#39;), Word(u&#39;cat/NN/)])]
+[Match(words=[Word(u'The/DT'), Word(u'black/JJ'), Word(u'cat/NN/)])]
 </pre></div>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import STRICT
-&gt;&gt;&gt; p = Pattern.fromstring(&#39;cat&#39;, STRICT) # Or: compile(&#39;cat&#39;, STRICT)
+&gt;&gt;&gt; p = Pattern.fromstring('cat', STRICT) # Or: compile('cat', STRICT)
 &gt;&gt;&gt; print p.search(t)
 
-[Match(words=[Word(u&#39;cat/NN&#39;)])]
+[Match(words=[Word(u'cat/NN')])]
 </pre></div>
 <p>&nbsp;</p>
 <hr />
@@ -280,36 +280,36 @@ match.constituents(constraint=None)</pre><ul>
 <li><span class="inline_code">Match.constituents()</span> returns a list of <span class="inline_code">Word</span> and <span class="inline_code">Chunk</span> objects, with successive words grouped into their chunks whenever possible. Optionally, returns only chunks/words that matched the given <span class="inline_code">Constraint</span>, (or list of constraints or constraint indices). Chunks are only available if a <span class="inline_code">Sentence</span>&nbsp;or <span class="inline_code">Text</span> was given (i.e., not for plain strings).</li>
 </ul>
 <div class="example">
-<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; t = parsetree(&#39;the turtle was faster than the hare&#39;, lemmata=True)
-&gt;&gt;&gt; m = match(&#39;NP be more? ADJP|ADVP than NP&#39;, t)
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; t = parsetree('the turtle was faster than the hare', lemmata=True)
+&gt;&gt;&gt; m = match('NP be more? ADJP|ADVP than NP', t)
 &gt;&gt;&gt; print t
 &gt;&gt;&gt; print
 &gt;&gt;&gt; for w in m.words:
-&gt;&gt;&gt;    print w, &#39;\t =&gt;&#39;, m.constraint(w)
+&gt;&gt;&gt;    print w, '\t =&gt;', m.constraint(w)
 
-[Sentence(&#39;the/DT/B-NP/O/the turtle/NN/I-NP/O/turtle was/VBD/B-VP/O/be&#39;
-          &#39;faster/RBR/B-ADVP/O/faster than/IN/B-PP/B-PNP/than the/DT/B-NP/I-PNP/the&#39;
-          &#39;hare/NN/I-NP/I-PNP/hare&#39;)]
+[Sentence('the/DT/B-NP/O/the turtle/NN/I-NP/O/turtle was/VBD/B-VP/O/be'
+          'faster/RBR/B-ADVP/O/faster than/IN/B-PP/B-PNP/than the/DT/B-NP/I-PNP/the'
+          'hare/NN/I-NP/I-PNP/hare')]
 
-Word(u&#39;the/DT&#39;)     =&gt; Constraint(chunks=[&#39;NP&#39;])
-Word(u&#39;turtle/NN&#39;)  =&gt; Constraint(chunks=[&#39;NP&#39;])
-Word(u&#39;was/VBD&#39;)    =&gt; Constraint(words=[&#39;be&#39;])
-Word(u&#39;faster/RBR&#39;) =&gt; Constraint(chunks=[&#39;ADJP&#39;, &#39;ADVP&#39;])
-Word(u&#39;than/IN&#39;)    =&gt; Constraint(words=[&#39;than&#39;])
-Word(u&#39;the/DT&#39;)     =&gt; Constraint(chunks=[&#39;NP&#39;])
-Word(u&#39;hare/NN&#39;)    =&gt; Constraint(chunks=[&#39;NP&#39;])
+Word(u'the/DT')     =&gt; Constraint(chunks=['NP'])
+Word(u'turtle/NN')  =&gt; Constraint(chunks=['NP'])
+Word(u'was/VBD')    =&gt; Constraint(words=['be'])
+Word(u'faster/RBR') =&gt; Constraint(chunks=['ADJP', 'ADVP'])
+Word(u'than/IN')    =&gt; Constraint(words=['than'])
+Word(u'the/DT')     =&gt; Constraint(chunks=['NP'])
+Word(u'hare/NN')    =&gt; Constraint(chunks=['NP'])
 </pre></div>
 <p>Match groups offer a convenient way to retrieve what you need from a <span class="inline_code">Match</span>:</p>
 <div class="example">
-<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; t = parsetree(&#39;the big black dog&#39;)
-&gt;&gt;&gt; m = match(&#39;DT {JJ?+ NN}&#39;, t)
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; t = parsetree('the big black dog')
+&gt;&gt;&gt; m = match('DT {JJ?+ NN}', t)
 &gt;&gt;&gt; print m.group(0) # full pattern
 &gt;&gt;&gt; print m.group(1) # {JJ?+ NN}
 &gt;&gt;&gt; print m.group(1).string
 
-[Word(u&#39;the/DT&#39;), Word(u&#39;big/JJ&#39;), Word(u&#39;black/JJ&#39;), Word(u&#39;dog/NN&#39;)]
-[Word(u&#39;big/JJ&#39;), Word(u&#39;black/JJ&#39;), Word(u&#39;dog/NN&#39;)]
-&#39;big black dog&#39;</pre></div>
+[Word(u'the/DT'), Word(u'big/JJ'), Word(u'black/JJ'), Word(u'dog/NN')]
+[Word(u'big/JJ'), Word(u'black/JJ'), Word(u'dog/NN')]
+'big black dog'</pre></div>
 <p>Each <span class="inline_code">Word</span> in a <span class="inline_code">Match</span>&nbsp;or <span class="inline_code">Match.group()</span> has the following attributes:</p>
 <pre class="brush:python; gutter:false; light:true;">word = Word(sentence, string, tag=None, index=0)</pre><pre class="brush:python; gutter:false; light:true;">word.string
 word.tag                    # Part-of-speech tag (e.g. NN, JJ).
@@ -332,19 +332,19 @@ taxonomy.value(term)</pre><ul>
 <p>For example:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import taxonomy, search
-&gt;&gt;&gt; taxonomy.append(&#39;chicken&#39;, type=&#39;food&#39;)
-&gt;&gt;&gt; taxonomy.append(&#39;chicken&#39;, type=&#39;bird&#39;)
-&gt;&gt;&gt; taxonomy.append(&#39;penguin&#39;, type=&#39;bird&#39;)
-&gt;&gt;&gt; taxonomy.append(&#39;bird&#39;, type=&#39;animal&#39;)
-&gt;&gt;&gt; print taxonomy.parents(&#39;chicken&#39;)
-&gt;&gt;&gt; print taxonomy.children(&#39;animal&#39;, recursive=True)
+&gt;&gt;&gt; taxonomy.append('chicken', type='food')
+&gt;&gt;&gt; taxonomy.append('chicken', type='bird')
+&gt;&gt;&gt; taxonomy.append('penguin', type='bird')
+&gt;&gt;&gt; taxonomy.append('bird', type='animal')
+&gt;&gt;&gt; print taxonomy.parents('chicken')
+&gt;&gt;&gt; print taxonomy.children('animal', recursive=True)
 &gt;&gt;&gt; print
-&gt;&gt;&gt; print search(&#39;FOOD&#39;, &#39;I&#39;m eating chicken.&#39;)
+&gt;&gt;&gt; print search('FOOD', "I'm eating chicken.")
 
-[&#39;bird&#39;, &#39;food&#39;]
-[&#39;bird&#39;, &#39;penguin&#39;, &#39;chicken&#39;]
+['bird', 'food']
+['bird', 'penguin', 'chicken']
 
-[Match(words=[Word(&#39;chicken&#39;)])]</pre></div>
+[Match(words=[Word('chicken')])]</pre></div>
 <h3>Taxonomy classifiers</h3>
 <p>A <span class="inline_code">Classifier</span> offers a rule-based approach to enrich the taxonomy. If a term is not in the taxonomy, the taxonomy will go over the list of its classifiers. Each classifier is a group of functions that can be customized to yield the semantic type for a given set of terms.</p>
 <pre class="brush:python; gutter:false; light:true;">classifier = Classifier(
@@ -356,23 +356,23 @@ classifier.value            # Returns value for a term, or None.
 </pre><p>This is useful since taxonomy terms can't include wildcards (the <span class="inline_code">*</span> character is taken literally). The example below creates a classifier that tags any word ending in <em>-ness</em> as <span class="postag">QUALITY</span>. This is more concise than manually adding <em>roughness</em>, <em>sharpness</em>, ... to the taxonomy.</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import Classifier, taxonomy, search
-&gt;&gt;&gt; c = Classifier(parents=lambda s: s.endswith(&#39;ness&#39;) and [&#39;quality&#39;] or [])
+&gt;&gt;&gt; c = Classifier(parents=lambda s: s.endswith('ness') and ['quality'] or [])
 &gt;&gt;&gt; taxonomy.classifiers.append(c)
-&gt;&gt;&gt; taxonomy.append(&#39;chicken&#39;, type=&#39;animal&#39;)
-&gt;&gt;&gt; print search(&#39;QUALITY of a|an|the ANIMAL&#39;, &#39;the spryness of a chicken&#39;)
+&gt;&gt;&gt; taxonomy.append('chicken', type='animal')
+&gt;&gt;&gt; print search('QUALITY of a|an|the ANIMAL', 'the spryness of a chicken')
 
-[Match(words=[Word(&#39;spryness&#39;), Word(&#39;of&#39;), Word(&#39;a&#39;), Word(&#39;chicken&#39;)])]</pre></div>
+[Match(words=[Word('spryness'), Word('of'), Word('a'), Word('chicken')])]</pre></div>
 <p>If you plan to use classifiers for pattern matching you need to implement <span class="inline_code">Classifier.parents()</span> (<span class="inline_code">Classifier.children()</span> is not called in <span class="inline_code">Constraint.match()</span> for performance).</p>
 <div class="example">Finally, this example creates a rule-based taxonomy from the <span class="inline_code">pattern.en.wordnet</span>&nbsp;module:</div>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.search import taxonomy, WordNetClassifier
 &gt;&gt;&gt; from pattern.en import wordnet
 &gt;&gt;&gt; taxonomy.classifiers.append(WordNetClassifier(wordnet))
-&gt;&gt;&gt; print taxonomy.parents(&#39;duck&#39;, pos=&#39;NN&#39;)
-&gt;&gt;&gt; print taxonomy.parents(&#39;duck&#39;, pos=&#39;VB&#39;)
+&gt;&gt;&gt; print taxonomy.parents('duck', pos='NN')
+&gt;&gt;&gt; print taxonomy.parents('duck', pos='VB')
 
-[&#39;anseriform bird&#39;]
-[&#39;move&#39;]</pre></div>
+['anseriform bird']
+['move']</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="utility"></a>Useful list functions</h2>

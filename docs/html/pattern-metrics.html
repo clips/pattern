@@ -32,8 +32,8 @@
         <!-- Parsed from the online documentation. -->
         <div id="node-1405" class="node node-type-page"><div class="node-inner">
 <div class="content">
-<p><span class="big">The pattern.metrics module is a loose collection of performance and accuracy measurements, including tools for profiling the speed of Python functions, precision and recall for classifiers, agreement across different voters (Fleiss), string similarity (Levenshtein + Dice), string readability (Flesch), descriptive statistics.</span></p>
-<p>It can be used by itself or with other&nbsp;<a href="pattern.html">pattern</a>&nbsp;modules:&nbsp;<a href="pattern-web.html">web</a>&nbsp;|&nbsp;<a href="pattern-db.html">db</a>&nbsp;|&nbsp;<a href="pattern-en.html">en</a>&nbsp;|&nbsp;<a href="pattern-search.html">search</a>&nbsp;<span class="blue">&nbsp;</span>| <a href="pattern-vector.html">vector</a> |&nbsp;<a href="pattern-graph.html">graph</a>.</p>
+<p><span class="big">The pattern.metrics module is a loose collection of performance, accuracy, similarity and significance tests, including code profiling, precision &amp; recall, inter-rater agreement (Fleiss), string similarity (Levenshtein), readability (Flesch), cooccurence, intertextuality and statistics (Fisher, Pearson chi-squared, Kolmogorov-Smirnov).</span></p>
+<p>It can be used by itself or with other <a href="pattern.html">pattern</a> modules: <a href="pattern-web.html">web</a> | <a href="pattern-db.html">db</a> | <a href="pattern-en.html">en</a> | <a href="pattern-search.html">search</a> <span class="blue"> </span>| <a href="pattern-vector.html">vector</a> | <a href="pattern-graph.html">graph</a>.</p>
 <p><img src="../g/pattern_schema.gif" alt="" width="620" height="180" /></p>
 <hr />
 <h2>Documentation</h2>
@@ -49,53 +49,101 @@
 <p>&nbsp;</p>
 <hr />
 <h2><a name="profile"></a>Profiler</h2>
-<p>In general, Python is highly optimized with C extensions (e.g., string manipulation, dictionary access, regular expressions). The Pattern module is optimized with a number of caching mechanisms.&nbsp;To test if your own code is fast or slow you need to profile it. You can then optimize the slowest parts, typically the three slowest functions.&nbsp;You should do this&nbsp;<em>after</em>&nbsp;all the code has been written, since you can only measure speed if the program first gives the correct results.</p>
-<p><span class="inline_code">duration()</span> takes a function + its (optional) arguments and returns the running time in seconds.</p>
-<p><span class="inline_code">profile()&nbsp;</span>takes a function and returns a string of performance statistics for the top 20 slowest parts.</p>
-<pre class="brush:python; gutter:false; light:true;">duration(function, *args, **kwargs)</pre><pre class="brush:python; gutter:false; light:true;">profile(function, *args, **kwargs)</pre><div class="example">
+<p>Python is optimized with fast C extensions (e.g., <span class="inline_code">dict</span> traversal, regular expressions). Pattern is optimized with caching mechanisms. The <span class="inline_code">profile()</span> function can be used to test the performance (speed) of your own code. It returns a string with a breakdown of function calls + running time. You can then test the <span class="inline_code">duration()</span> of individual functions and refactor their source code to make them faster.</p>
+<pre class="brush:python; gutter:false; light:true;">profile(function, *args, **kwargs)  # Returns a string (report).</pre><pre class="brush:python; gutter:false; light:true;">duration(function, *args, **kwargs) # Returns a float (seconds).</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.metrics import profile
-&gt;&gt;&gt; from pattern.en import parse, Sentence
-&gt;&gt;&gt; def main():
-&gt;&gt;&gt;     for i in range(100):
-&gt;&gt;&gt;         s = Sentence(parse(&quot;the cat sat on the mat&quot;))
+&gt;&gt;&gt; from pattern.en import parsetree
+&gt;&gt;&gt;  
+&gt;&gt;&gt; def main(n=10):
+&gt;&gt;&gt;     for i in range(n):
+&gt;&gt;&gt;         parsetree('the cat sat on the mat')
 &gt;&gt;&gt;
-&gt;&gt;&gt; print profile(main)</pre></div>
+&gt;&gt;&gt; print profile(main, n=100)</pre></div>
+<table class="border">
+<tbody>
+<tr>
+<td class="smallcaps" style="text-align: center;">ncalls</td>
+<td class="smallcaps" style="text-align: center;">tottime</td>
+<td class="smallcaps" style="text-align: center;">percall</td>
+<td class="smallcaps" style="text-align: center;">cumtime</td>
+<td class="smallcaps" style="text-align: center;">percall</td>
+<td class="smallcaps">filename:lineno(function)</td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.082</td>
+<td style="text-align: center;">0.082</td>
+<td style="text-align: center;">1.171</td>
+<td style="text-align: center;">1.171</td>
+<td>text/__init__.py:229(load)</td>
+</tr>
+<tr>
+<td style="text-align: center;">94,127</td>
+<td style="text-align: center;">0.147</td>
+<td style="text-align: center;">0.000</td>
+<td style="text-align: center;">1.089</td>
+<td style="text-align: center;">0.000</td>
+<td>text/__init__.py:231(&lt;genexpr&gt;)</td>
+</tr>
+<tr>
+<td style="text-align: center;">94,774</td>
+<td style="text-align: center;">0.233</td>
+<td style="text-align: center;">0.000</td>
+<td style="text-align: center;">0.861</td>
+<td style="text-align: center;">0.000</td>
+<td>text/__init__.py:195(_read)</td>
+</tr>
+<tr>
+<td style="text-align: center;">95,391</td>
+<td style="text-align: center;">0.321</td>
+<td style="text-align: center;">0.000</td>
+<td style="text-align: center;">0.541</td>
+<td style="text-align: center;">0.000</td>
+<td>text/__init__.py:33(decode_string)</td>
+</tr>
+<tr>
+<td style="text-align: center;">95,991</td>
+<td style="text-align: center;">0.073</td>
+<td style="text-align: center;">0.000</td>
+<td style="text-align: center;">0.182</td>
+<td style="text-align: center;">0.000</td>
+<td>{_codecs.utf_8_decode}</td>
+</tr>
+</tbody>
+</table>
+<p>In this example, the pattern.en parser spends most of its time loading data files and decoding Unicode.</p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="accuracy"></a>Accuracy, precision and recall</h2>
-<p>Say you have an&nbsp;<span class="inline_code">is_spam()</span> algorithm that yields&nbsp;<span class="inline_code">True</span> or <span class="inline_code">False</span>. You test it with a 1,000 e-mail messages of which 200 are spam. Say it identifies 180 messages as spam. The accuracy is 90% (180/200). But what does this really mean? The algorithm may have tagged 180 <em>good</em> e-mails as spam (= false positives) and 180 <em>bad</em> e-mails as ham (= false negatives).&nbsp;No real harm is done in terms of&nbsp;<span class="inline_code">is_spam()</span>, but a&nbsp;<span class="inline_code">has_cancer()</span> algorithm is an entirely different matter. Care has to be taken when evaluating the quality of predictive algorithms.&nbsp;</p>
-<p>Precision and recall are measurements based on the actual amount of true positives – e.g., where <span class="inline_code">is_spam()</span> yields&nbsp;<span class="inline_code">True</span> for e-mails that <em>really are</em> spam.</p>
-<ul>
-<li><strong>precision:</strong> how well messages that are not spam are discarded (= rule out false positives).&nbsp;</li>
-<li><strong>recall:</strong> how well possible spam messages are selected (= rule out false negatives).</li>
-</ul>
-<p><span class="inline_code">confusion_matrix()</span>&nbsp;takes a function&nbsp;that returns&nbsp;<span class="inline_code">True</span> or <span class="inline_code">False</span> for a given document (e.g., a string), and a list (<span class="inline_code">document</span>, <span class="inline_code">bool</span>)-tuples for testing; where <span class="inline_code">bool=True</span> marks documents that should be selected by your function. It&nbsp;returns a (<span class="inline_code">TP</span>, <span class="inline_code">TN</span>, <span class="inline_code">FP</span>, <span class="inline_code">FN</span>)-tuple with the amount of true positives, true negatives, false positives and false negatives.</p>
-<p><span class="inline_code">test()</span>&nbsp;takes a&nbsp;function and a list of (<span class="inline_code">document</span>,&nbsp;<span class="inline_code">bool</span>)-tuples and returns a tuple with (<span class="inline_code">accuracy</span>,&nbsp;<span class="inline_code">precision</span>,&nbsp;<span class="inline_code">recall</span>,&nbsp;<span class="inline_code">F1-score</span>), based on the confusion matrix.</p>
-<pre class="brush:python; gutter:false; light:true;">confusion_matrix(match=lambda document:False, documents=[(None,False)])</pre><pre class="brush:python; gutter:false; light:true;">test(match=lambda document:False, documents=[])</pre><table class="border">
+<p>Precision and recall can be used to test the performance (accuracy) of a binary classifier. A well-known classification task is spam detection, for example an <span class="inline_code">is_spam()</span> function that yields <span class="inline_code">True</span> or <span class="inline_code">False</span> (binary). Accuracy is a measure of how many times the function yields <span class="inline_code">True</span> for given spam messages (= true positives or "hits"). Occasionally, the function might also return <span class="inline_code">True</span> for messages that are not spam (= false positives or "errors") or <span class="inline_code">False</span> for messages that are spam (= false negatives or "misses").</p>
+<p><strong>Precision</strong> is a measure of hits vs. errors. <strong>Recall</strong> is a measure of hits vs. misses. High precision means that important mail does not end up in the junk folder. High recall means that no spam ends up in the inbox.</p>
+<p>The <span class="inline_code">confusion_matrix()</span> function takes a function that returns <span class="inline_code">True</span> or <span class="inline_code">False</span> for a given document (e.g., a string), and a list (<span class="inline_code">document</span>, <span class="inline_code">bool</span>)-tuples for testing. It returns a (<span class="inline_code">TP</span>, <span class="inline_code">TN</span>, <span class="inline_code">FP</span>, <span class="inline_code">FN</span>)-tuple.</p>
+<p>The <span class="inline_code">test()</span> function takes a function and a list of (<span class="inline_code">document</span>, <span class="inline_code">bool</span>)-tuples. It returns a tuple with &nbsp;(<span class="inline_code">accuracy</span>, <span class="inline_code">precision</span>, <span class="inline_code">recall</span>, <span class="inline_code">F1-score</span>). The optional <span class="inline_code">average</span> can be <span class="inline_code">MACRO</span> or <span class="inline_code">None</span>.</p>
+<pre class="brush:python; gutter:false; light:true;">confusion_matrix(match=lambda document: False, documents=[(None, False)])</pre><pre class="brush:python; gutter:false; light:true;">test(match=lambda document:False, documents=[], average=None)</pre><table class="border">
 <tbody>
 <tr>
 <td><span class="smallcaps">Metric</span></td>
-<td><span class="smallcaps">Definition</span></td>
+<td><span class="smallcaps">Formula</span></td>
 <td><span class="smallcaps">Description</span></td>
 </tr>
 <tr>
-<td>accuracy</td>
-<td><span class="inline_code">A = TP+TN / (TP+TN+FP+FN)</span></td>
+<td>Accuracy</td>
+<td><span class="inline_code">(TP</span> <span class="inline_code">+</span> <span class="inline_code">TN)</span> <span class="inline_code">/</span> <span class="inline_code">(TP</span> <span class="inline_code">+</span> <span class="inline_code">TN</span> <span class="inline_code">+</span> <span class="inline_code">FP</span> <span class="inline_code">+</span> <span class="inline_code">FN)</span></td>
 <td>percentage of correct classifications</td>
 </tr>
 <tr>
-<td>precision</td>
-<td><span class="inline_code">P = TP / (TP+FP)</span></td>
+<td>Precision</td>
+<td><span class="inline_code">TP</span> <span class="inline_code">/</span> <span class="inline_code">(TP</span> <span class="inline_code">+</span> <span class="inline_code">FP)</span></td>
 <td>percentage of correct positive classifications</td>
 </tr>
 <tr>
-<td>recall</td>
-<td><span class="inline_code">R = TP / (TP+FN)</span></td>
+<td>Recall</td>
+<td><span class="inline_code">TP</span> <span class="inline_code">/</span> <span class="inline_code">(TP</span> <span class="inline_code">+</span> <span class="inline_code">FN)</span></td>
 <td>percentage of positive cases correctly classified as positive</td>
 </tr>
 <tr>
 <td>F1-score</td>
-<td><span class="inline_code">F = 2*P*R / (P+R)</span></td>
+<td><span class="inline_code">2</span> <span class="inline_code">x</span> <span class="inline_code">P</span> <span class="inline_code">x</span> <span class="inline_code">R</span> <span class="inline_code">/</span> <span class="inline_code">(P</span> <span class="inline_code">+</span> <span class="inline_code">R)</span></td>
 <td>harmonic mean of precision and recall</td>
 </tr>
 </tbody>
@@ -104,29 +152,28 @@
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.metrics import confusion_matrix, test
 &gt;&gt;&gt;
-&gt;&gt;&gt; def is_spam(string):
-&gt;&gt;&gt;     words = (w.strip(&#39;,.?!&quot;&#39;) for w in string.lower().split(&#39; &#39;))
-&gt;&gt;&gt;     return len([w for w in words if w in (&#39;lottery&#39;, &#39;viagra&#39;)]) &gt; 0
+&gt;&gt;&gt; def is_spam(s):
+&gt;&gt;&gt;     s = (w.strip(',.?!"') for w in s.lower().split())
+&gt;&gt;&gt;     return any(w in ('lottery', 'viagra') for w in s) 
 &gt;&gt;&gt;
-&gt;&gt;&gt; documents = [
-&gt;&gt;&gt;     (&#39;Want to go for coffee?&#39;, False),
-&gt;&gt;&gt;     (&#39;In attachment is the latest report.&#39;, False),
-&gt;&gt;&gt;     (&#39;Here is the website I was talking about.&#39;, False),
-&gt;&gt;&gt;     (&#39;We can improve our classifier by excluding &quot;Viagra&quot;.&#39;, False),
-&gt;&gt;&gt;     (&#39;Buy Viagra online!&#39;, True),
-&gt;&gt;&gt;     (&#39;Your e-mail address was selected in our lottery!&#39;, True)
+&gt;&gt;&gt; data = [
+&gt;&gt;&gt;   ('Want to go for coffee?', False),
+&gt;&gt;&gt;   ('In attachment is the latest report.', False),
+&gt;&gt;&gt;   ('Here is the website I was talking about.', False),
+&gt;&gt;&gt;   ('We can improve our classifier by excluding "Viagra".', False),
+&gt;&gt;&gt;   ('BUY VIAGRA ONLINE!', True),
+&gt;&gt;&gt;   ('Your e-mail address was selected in our lottery!', True)
 &gt;&gt;&gt; ]
-&gt;&gt;&gt; print confusion_matrix(is_spam, documents) 
-&gt;&gt;&gt; print test(is_spam, documents)
+&gt;&gt;&gt; print confusion_matrix(is_spam, data) 
+&gt;&gt;&gt; print test(is_spam, data)
  
 (2, 3, 1, 0)
 (0.83, 0.67, 1.00, 0.80) </pre></div>
-<p>In this example, <span class="inline_code">is_spam()</span> correctly classifies 5 out of 6 messages (83% accuracy). It identifies all spam messages (100% recall), which is good. However, it also promotes a<em>&nbsp;</em>message that is not spam to the junk folder, which is bad. Only 2 out of 3 messages tagged as spam are in reality spam (67% precision). Here is room for improvement. Notice how there is a trade-off between recall (no spam in inbox) and precision (real e-mails in junk folder).</p>
-<p>The following helper functions simply call <span class="inline_code">test()</span> internally and return a single metric:</p>
-<pre class="brush:python; gutter:false; light:true;">accuracy(match=lambda document:False, documents=[])</pre><pre class="brush:python; gutter:false; light:true;">precision(match=lambda document:False, documents=[])</pre><pre class="brush:python; gutter:false; light:true;">recall(match=lambda document:False, documents=[])</pre><pre class="brush:python; gutter:false; light:true;">F1(match=lambda document:False, documents=[])</pre><pre class="brush:python; gutter:false; light:true;">F(match=lambda document:False, documents=[], beta=1)</pre><p>&nbsp;</p>
+<p>In this example, <span class="inline_code">is_spam()</span> correctly classifies 5 out of 6 messages (83% accuracy). It identifies all spam messages (100% recall). However, it also flags a<em> </em>message that is not spam.</p>
+<p>&nbsp;</p>
 <hr />
 <h2><a name="agreement"></a>Agreement</h2>
-<p>Fleiss' kappa agreement measures reliability or consensus in ratings given by different voters. Say you and a colleague are writing an <span class="inline_code">is_subjective()</span> algorithm to detect opinions, sentiments, customer feedback, etc. It uses a list of adjectives (e.g., fantastic, disappointing) tagged&nbsp;with values between 0.0-1.0 (subjectivity). To avoid bias, you both&nbsp;tag the list and take the average of the two values for each adjective.&nbsp;However, say that each word you tagged 0.0 your colleague tagged 1.0. This results in low agreement, indicating that the function won't work properly because you didn't reach a consensus of what is subjective and what is not.</p>
+<p>Fleiss' kappa agreement measures reliability or consensus in ratings given by different voters. Say you and a colleague are writing an <span class="inline_code">is_subjective()</span> algorithm to detect opinions, sentiments, customer feedback, etc. It uses a list of adjectives (e.g., fantastic, disappointing) tagged with values between 0.0-1.0 (subjectivity). To avoid bias, you both tag the list and take the average of the two values for each adjective. However, say that each word you tagged 0.0 your colleague tagged 1.0. This results in low agreement, indicating that the function won't work properly because you didn't reach a consensus of what is subjective and what is not.</p>
 <p><span class="inline_code">agreement()</span> returns the reliability as a number between -1.0 and +1.0 (where <span class="inline_code">+0.7</span> is reliable). The given <span class="inline_code">matrix</span> is a list in which each row represents a task. Each task is a list with the number of votes per category. Each column represents a category.</p>
 <pre class="brush:python; gutter:false; light:true;">agreement(matrix)</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; m = [ # 0.0 0.5 1.0 SUBJ
@@ -143,7 +190,7 @@
 <hr />
 <h2><a name="similarity"></a>String similarity</h2>
 <p>Levenshtein edit distance measures the difference between two strings, as the number of operations (insert, delete, replace) required to transform one string into the other. Another similarity measure is Dice's coefficient, based on the number of shared bigrams – e.g., <em>night</em> and <em>nacht</em> have one common bigram <em>ht</em>.</p>
-<p><span class="inline_code">similarity()</span> returns the similarity of <span class="inline_code">string1</span> and <span class="inline_code">string2</span> as a number between <span class="inline_code">0.0</span> and <span class="inline_code">1.0</span>.<br />The given <span class="inline_code">metric</span> can be <span class="inline_code">LEVENSHTEIN</span> or <span class="inline_code">DICE</span>.&nbsp;</p>
+<p><span class="inline_code">similarity()</span> returns the similarity of <span class="inline_code">string1</span> and <span class="inline_code">string2</span> as a number between <span class="inline_code">0.0</span> and <span class="inline_code">1.0</span>.<br />The given <span class="inline_code">metric</span> can be <span class="inline_code">LEVENSHTEIN</span> or <span class="inline_code">DICE</span>.</p>
 <pre class="brush:python; gutter:false; light:true;">levenshtein(string1, string2) # Returns the edit distance.</pre><pre class="brush:python; gutter:false; light:true;">similarity(string1, string2, metric=LEVENSHTEIN)</pre><p>&nbsp;</p>
 <hr />
 <h2><a name="readability"></a>String readability</h2>
@@ -171,14 +218,14 @@
 <p>&nbsp;</p>
 <hr />
 <h2><a name="intertextuality"></a>Intertextuality</h2>
-<p>Intertextuality measures overlap between texts. For example, it can be used for plagiarism detection. The <span class="inline_code">intertextuality()</span> function returns a dictionary of&nbsp;<span class="inline_code">(i,</span> <span class="inline_code">j)</span> keys and <span class="inline_code">float</span> values. For indices <span class="inline_code">i</span> and <span class="inline_code">j</span> in the given list of texts (strings), the corresponding <span class="inline_code">float</span> is the percentage of text <span class="inline_code">i</span> that is also in text <span class="inline_code">j</span>. Overlap is measured by matching <em>n</em>-grams (by default, <span class="inline_code">n=5</span>&nbsp;or five successive words). An optional <span class="inline_code">weight</span> function can be used to supply the weight of each <em>n</em>-gram (by default <span class="inline_code">1</span>; but it can be useful to determine the weight of each <em>n</em>-gram using <a href="pattern-vector.html#tf-idf">TF-IDF</a>. An optional <span class="inline_code">continuous</span> parameter determines whether n-grams run over sentence periods.</p>
+<p>Intertextuality measures overlap between texts. For example, it can be used for plagiarism detection. The <span class="inline_code">intertextuality()</span> function returns a dictionary of <span class="inline_code">(i,</span> <span class="inline_code">j)</span> keys and <span class="inline_code">float</span> values. For indices <span class="inline_code">i</span> and <span class="inline_code">j</span> in the given list of texts (strings), the corresponding <span class="inline_code">float</span> is the percentage of text <span class="inline_code">i</span> that is also in text <span class="inline_code">j</span>. Overlap is measured by matching <em>n</em>-grams (by default, <span class="inline_code">n=5</span> or five successive words). An optional <span class="inline_code">weight</span> function can be used to supply the weight of each <em>n</em>-gram (by default <span class="inline_code">1</span>; but it can be useful to determine the weight of each <em>n</em>-gram using <a href="pattern-vector.html#tf-idf">TF-IDF</a>. An optional <span class="inline_code">continuous</span> parameter determines whether n-grams run over sentence periods.</p>
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">texts=[], n=5, continuous=False, weight=lambda ngram: 1)</pre><div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.metrics import intertextuality
 &gt;&gt;&gt; from glob import glob
 &gt;&gt;&gt; 
 &gt;&gt;&gt; index = {} 
 &gt;&gt;&gt; texts = []
-&gt;&gt;&gt; for i, f in enumerate(glob(&#39;data/*.txt&#39;)):
+&gt;&gt;&gt; for i, f in enumerate(glob('data/*.txt')):
 &gt;&gt;&gt;     index[i] = f 
 &gt;&gt;&gt;     texts.append(open(f).read())
 &gt;&gt;&gt; 
@@ -192,7 +239,7 @@
 <p>&nbsp;</p>
 <hr />
 <h2><a name="statistics"></a>Statistics</h2>
-<p>In mathematics, an&nbsp;<em>average</em> is a measure of the "middle" of a data set (or <em>sample</em>, usually a list of numbers). An average can be calculated in different ways, but commonly the&nbsp;<em>mean</em> is used. The arithmetic mean is the sum of the values divided by the sample size: [<span class="inline_code">1,2,4] → 1+2+4 / 3 = 2.3</span>.&nbsp;Another average measure is the <em>median</em>, found by sorting the values from lowest to highest value and picking the middle one: <span class="inline_code">[1,2,4] → 2</span>.&nbsp;</p>
+<p>In mathematics, an <em>average</em> is a measure of the "middle" of a data set (or <em>sample</em>, usually a list of numbers). An average can be calculated in different ways, but commonly the <em>mean</em> is used. The arithmetic mean is the sum of the values divided by the sample size: [<span class="inline_code">1,2,4] → 1+2+4 / 3 = 2.3</span>. Another average measure is the <em>median</em>, found by sorting the values from lowest to highest value and picking the middle one: <span class="inline_code">[1,2,4] → 2</span>.</p>
 <p>The <em>standard deviation</em> measures the amount of variation in a sample. Low standard deviation means the values tend to be close to the mean. If you draw it, you get a steep, narrow curve. High standard deviation means the values are spread out over a large range. If you draw it you get a flat, wide curve.</p>
 <pre class="brush:python; gutter:false; light:true;">mean(list)                    # [1, 2, 4] =&gt; 2.33</pre><pre class="brush:python; gutter:false; light:true;">median(list)                  # [1, 2, 4] =&gt; 2</pre><pre class="brush:python; gutter:false; light:true;">variance(list, sample=True)   # Use sample=False for population variance.</pre><pre class="brush:python; gutter:false; light:true;">stdev(list)                   # [1, 2, 4] =&gt; 1.53</pre><p><span class="smallcaps"><br />Histogram</span></p>
 <p>A <em>histogram</em> divides a list of numbers into intervals. This gives an idea of the distribution of the data: which interval has the most values? Are there more values in lower intervals? The <span class="inline_code">histogram()</span> function returns a dictionary with <span class="inline_code">k</span> items: <span class="inline_code">{(start, stop): [values], ...}</span>, with equal <span class="inline_code">(start, stop)</span> intervals between <span class="inline_code">min(list)</span> and <span class="inline_code">max(list)</span>.</p>
@@ -207,9 +254,9 @@
 5.0 7.0 6.0 [6, 7]
 7.0 9.0 8.0 [8, 9] </pre></div>
 <p><span class="smallcaps"><br />Moment</span></p>
-<p>A <em>moment</em> is a measure of the "shape" of a list of numbers. For example, the 2nd moment (which is the <em>variance</em>) measures the width.&nbsp;The 3rd moment measures&nbsp;<em>skewness</em>&nbsp;or asymmetry of the sample. If &gt; 0.0, relatively few values are higher than the mean. If &lt; 0.0, relatively few values are lower than the mean.&nbsp;The 4th moment measures&nbsp;<em>kurtosis</em> or peakedness of the sample. If &gt; 0.0, there is a sharp peak around the mean (more infrequent / extreme values). If &lt; 0.0 there is a wide peak around the mean.</p>
+<p>A <em>moment</em> is a measure of the "shape" of a list of numbers. For example, the 2nd moment (which is the <em>variance</em>) measures the width. The 3rd moment measures <em>skewness</em> or asymmetry of the sample. If &gt; 0.0, relatively few values are higher than the mean. If &lt; 0.0, relatively few values are lower than the mean. The 4th moment measures <em>kurtosis</em> or peakedness of the sample. If &gt; 0.0, there is a sharp peak around the mean (more infrequent / extreme values). If &lt; 0.0 there is a wide peak around the mean.</p>
 <pre class="brush:python; gutter:false; light:true;">moment(list, k=1)</pre><pre class="brush:python; gutter:false; light:true;">skewness(list)</pre><pre class="brush:python; gutter:false; light:true;">kurtosis(list)</pre><p><span class="smallcaps"><br />Quantile</span></p>
-<p>The <span class="inline_code">quantile()</span> function returns the interpolated value from a sorted list of numbers at point <span class="inline_code">p</span> (0.0-1.0). The optional parameters <span class="inline_code">a</span>, <span class="inline_code">b</span>, <span class="inline_code">c</span>, <span class="inline_code">d</span> refer to the algorithm by Hyndman and Fan <a href="http://stat.ethz.ch/R-manual/R-patched/library/stats/html/quantile.html" target="_blank">[1]</a>. Quantiles can be used to create&nbsp;a <em>box plot</em>, useful for identifying&nbsp;<em>outliers</em>.&nbsp;For example: if a sample of temperature in your household comprises you (37°C), the cat (38°C),&nbsp;the refrigerator (5°C) and the oven (220°C) then the average temperature is 75°C, which of course is incorrect since the oven is an outlier.&nbsp;The <span class="inline_code">boxplot()</span>&nbsp;function returns a <span class="inline_code">(min, Q1, Q2, Q3, max)</span>-tuple for a given list of numbers, where <span class="inline_code">Q2</span> is the median, <span class="inline_code">Q1</span> is the lower 25-50% and <span class="inline_code">Q3</span> is the upper 50-75%.</p>
+<p>The <span class="inline_code">quantile()</span> function returns the interpolated value from a sorted list of numbers at point <span class="inline_code">p</span> (0.0-1.0). The optional parameters <span class="inline_code">a</span>, <span class="inline_code">b</span>, <span class="inline_code">c</span>, <span class="inline_code">d</span> refer to the algorithm by Hyndman and Fan <a href="http://stat.ethz.ch/R-manual/R-patched/library/stats/html/quantile.html" target="_blank">[1]</a>. Quantiles can be used to create a <em>box plot</em>, useful for identifying <em>outliers</em>. For example: if a sample of temperature in your household comprises you (37°C), the cat (38°C), the refrigerator (5°C) and the oven (220°C) then the average temperature is 75°C, which of course is incorrect since the oven is an outlier. The <span class="inline_code">boxplot()</span> function returns a <span class="inline_code">(min, Q1, Q2, Q3, max)</span>-tuple for a given list of numbers, where <span class="inline_code">Q2</span> is the median, <span class="inline_code">Q1</span> is the lower 25-50% and <span class="inline_code">Q3</span> is the upper 50-75%.</p>
 <pre class="brush:python; gutter:false; light:true;">quantile(list, p=0.5, sort=True, a=1, b=-1, c=0, d=1)</pre><pre class="brush:python; gutter:false; light:true;">boxplot(list)</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; s = [5, 37, 38, 220)
 &gt;&gt;&gt; print boxplot(s)
@@ -222,13 +269,13 @@
 </tr>
 </tbody>
 </table>
-<p><span class="small"><span style="text-decoration: underline;">Reference</span>: Adorio E. (2008)&nbsp;http://adorio-research.org/wordpress/?p=125</span></p>
+<p><span class="small"><span style="text-decoration: underline;">Reference</span>: Adorio E. (2008) http://adorio-research.org/wordpress/?p=125</span></p>
 <p>&nbsp;</p>
 <hr />
-<h2>Statistical tests&nbsp;</h2>
+<h2>Statistical tests</h2>
 <p>A statistical hypothesis test is a method used to verify if sample data is evenly distributed (= the <em>null hypothesis</em>). For example: 96 subjects were asked about their pet. 29/46 men reported owning a dog, while 30/50 women reported owning a cat (fictious). Is gender correlated to pet ownership, in other words should we reject the null hypothesis?</p>
-<p><span class="smallcaps">&nbsp;<br />Fisher's exact test</span></p>
-<p>The <span class="inline_code">fisher_test()</span> function is a fast implementation of Fisher's exact test (two-tailed), using the hypergeometric distribution. It returns significance <span class="inline_code">P</span> for the 2 x 2 contingency table, where <span class="inline_code">P</span> <span class="inline_code">&lt;</span> <span class="inline_code">0.05</span>&nbsp;is significant and&nbsp;<span class="inline_code">P</span> <span class="inline_code">&lt;</span> <span class="inline_code">0.01</span>&nbsp;is very significant.</p>
+<p><span class="smallcaps"> <br />Fisher's exact test</span></p>
+<p>The <span class="inline_code">fisher_test()</span> function is a fast implementation of Fisher's exact test (two-tailed), using the hypergeometric distribution. It returns significance <span class="inline_code">P</span> for the 2 x 2 contingency table, where <span class="inline_code">P</span> <span class="inline_code">&lt;</span> <span class="inline_code">0.05</span> is significant and <span class="inline_code">P</span> <span class="inline_code">&lt;</span> <span class="inline_code">0.01</span> is very significant.</p>
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">fisher_test(a, b, c, d)</pre><div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; print fisher_test(a=17, b=30, c=29, d=20)
 
@@ -253,8 +300,8 @@
 </tr>
 </tbody>
 </table>
-<p>Since <span class="inline_code">P=0.027</span>&nbsp;<span class="inline_code">&lt;</span> <span class="inline_code">0.05</span>, the test shows a significant correlation between gender and pet ownership.</p>
-<p><span class="smallcaps">&nbsp;<br />Chi-squared test</span></p>
+<p>Since <span class="inline_code">P=0.027</span> <span class="inline_code">&lt;</span> <span class="inline_code">0.05</span>, the test shows a significant correlation between gender and pet ownership.</p>
+<p><span class="smallcaps"> <br />Chi-squared test</span></p>
 <p>The <span class="inline_code">chi2()</span> function is a fast implementation of Pearson's chi-squared test. It returns an<span class="inline_code"> (X2, P)</span>-tuple for the <span class="inline_code">n</span> x <span class="inline_code">m</span> observed and expected data (containing absolute frequencies). Likewise, the <span class="inline_code">llr()</span> function returns the log-likelihood ratio as a <span class="inline_code">(G, P)</span>-tuple. With <span class="inline_code">expected=None</span>, an even distribution over all classes is assumed. If <span class="inline_code">df=None</span>, it is the number of classes-1 (i.e., <span class="inline_code">len(observed)[0] - 1</span>).</p>
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">chi2(observed=[], expected=[], df=None, tail=UPPER) # UPPER | LOWER</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">llr(observed=[], expected=[], df=None, tail=UPPER)  # UPPER | LOWER</pre><div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; observed = [[22, 21, 22, 27, 22, 36]]
@@ -285,7 +332,7 @@
 </tr>
 </tbody>
 </table>
-<p>Intuitively, the die appears to roll 6 more often.&nbsp;But&nbsp;<span class="inline_code">P=0.24</span> <span class="inline_code">&gt;</span> <span class="inline_code">0.05</span> is not significant, so there is no reason to reject the null hypothesis that the die is fair.</p>
+<p>Intuitively, the die appears to roll 6 more often. But <span class="inline_code">P=0.24</span> <span class="inline_code">&gt;</span> <span class="inline_code">0.05</span> is not significant, so there is no reason to reject the null hypothesis that the die is fair.</p>
 </div>
 </div></div>
         </div>

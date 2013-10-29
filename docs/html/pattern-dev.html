@@ -33,8 +33,8 @@
         <div id="node-1480" class="node node-type-page"><div class="node-inner">
 <div class="content">
 <p><span class="big">Pattern is a web mining module for the Python programming language.</span></p>
-<p><span class="big">Pattern is written in Python, with extensions in JavaScript for web apps. The source code is hosted on GitHub. It is released under a BSD-license, so it can be freely incorporated in commercial applications. All contributions are welcome.</span></p>
-<p>There are six core modules in the&nbsp;<a href="pattern.html">pattern</a> package: <a href="pattern-web.html">web</a> | <a href="pattern-db.html">db</a>&nbsp;| <a href="pattern-en.html">en</a> | <a href="pattern-search.html">search</a> | <a href="pattern-vector.html">vector</a> | <a href="pattern-graph.html">graph</a>.</p>
+<p><span class="big">Pattern is written in Python with extensions in JavaScript for web apps. The source code is hosted on GitHub. It is licensed under BSD, so it can be freely incorporated in proprietary applications. Contributions and donations are welcomed.</span></p>
+<p>There are six core modules in the&nbsp;<a href="pattern.html">pattern</a> package: <a href="pattern-web.html">web</a> | <a href="pattern-db.html">db</a>&nbsp;| <a href="pattern-text.html">text</a>&nbsp;| <a href="pattern-search.html">search</a> | <a href="pattern-vector.html">vector</a> | <a href="pattern-graph.html">graph</a>.</p>
 <p><img src="../g/pattern_schema.gif" alt="" width="620" height="180" /></p>
 <hr />
 <h2>Topics</h2>
@@ -66,15 +66,15 @@
 </tr>
 <tr>
 <td><span class="inline_code">web</span></td>
-<td>Asynchronous requests, cached downloads, search engine API's, HTML parser + spider.</td>
+<td>Asynchronous requests, cached downloads, search engine API's, HTML parser + crawler.</td>
 </tr>
 <tr>
 <td><span class="inline_code">db</span></td>
 <td>Wrappers for MySQL + SQLite databases and CSV-files.</td>
 </tr>
 <tr>
-<td><span class="inline_code">en</span></td>
-<td>English text parser, parse trees, word inflection, sentiment, mood &amp; modality.</td>
+<td><span class="inline_code">text</span></td>
+<td>Base classes for parsers, parse trees, inflection and sentiment analysis.</td>
 </tr>
 <tr>
 <td><span class="inline_code">search</span></td>
@@ -110,7 +110,7 @@
 <li><strong>pattern.text</strong>: the&nbsp;<span class="inline_code">Lexicon</span>&nbsp;class can be reused by Brill-based taggers. This is explained in more detail in the&nbsp;<a href="#language">language support</a>&nbsp;section. An example is the <span class="inline_code">pattern.nl</span> module which inherits from the English parser. Note that the package tree can benefit from a reorganization in this module.</li>
 </ul>
 <ul>
-<li><strong>pattern.vector</strong>: classifiers inherit from the <span class="inline_code">Classifier</span> base class. Clustering algorithms must be available through <span class="inline_code">Corpus.cluster()</span>, for example <span class="inline_code">Corpus.cluster(method=KMEANS)</span>.</li>
+<li><strong>pattern.vector</strong>: classifiers inherit from the <span class="inline_code">Classifier</span> base class. Clustering algorithms must be available through <span class="inline_code">Model.cluster()</span>, for example <span class="inline_code">Model.cluster(method=KMEANS)</span>.</li>
 </ul>
 <ul>
 <li><strong>pattern.graph</strong>: the <span class="inline_code">Node</span>, <span class="inline_code">Edge</span> and <span class="inline_code">Graph</span>&nbsp;classes can be subclassed. Pay attention to&nbsp;<span class="inline_code">Graph.add_node()</span> and <span class="inline_code">Graph.add_edge()</span>: we need to pass the subclass of <span class="inline_code">Node</span> and <span class="inline_code">Edge</span> as an optional parameter here. Layout algorithms can be implemented by subclassing <span class="inline_code">GraphLayout</span>.</li>
@@ -121,8 +121,8 @@
 <p>Each function or method should have a docstring:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">def find(match=lambda item: False, list=[]):
-    &quot;&quot;&quot; Returns the first item in the given list for which match(item) is True.
-    &quot;&quot;&quot;
+    """ Returns the first item in the given list for which match(item) is True.
+    """
     for item in list:
         if match(item) is True: 
             return item</pre></div>
@@ -136,8 +136,8 @@
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">class Table(object):
     def __init__(self, name, database):
-        &quot;&quot;&quot; A collection of rows with one or more fields of a certain type.
-        &quot;&quot;&quot;
+        """ A collection of rows with one or more fields of a certain type.
+        """
         self.database    = database
         self.name        = name
         self.fields      = [] # List of field names (i.e., column names).
@@ -147,10 +147,10 @@
         self._update()</pre></div>
 <p>We sometimes use whitespace to align the keys and values in a dictionary:</p>
 <div class="example">
-<pre class="brush:python; gutter:false; light:true;">url = URL(&quot;http://search.twitter.com/search.json?&quot;, method=GET, query={
-       &quot;q&quot;: query,
-    &quot;page&quot;: start,
-     &quot;rpp&quot;: min(count, 100) 
+<pre class="brush:python; gutter:false; light:true;">url = URL("http://search.twitter.com/search.json?", method=GET, query={
+       "q": query,
+    "page": start,
+     "rpp": min(count, 100) 
 })</pre></div>
 <h3>Class and function names</h3>
 <p>Class names use CamelCase: <span class="inline_code">AsynchronousRequest</span>, <span class="inline_code">SearchEngine</span>, <span class="inline_code">HTTP404Error</span>.&nbsp;Function and method names use lowercase_with_underscore. Preferably, function and methods names are single, short, descriptive words. Furthermore, if a method takes no arguments and it is not a heavy operation, it should be a property:</p>
@@ -165,8 +165,8 @@
 <h3>Variable names</h3>
 <p>We use single character variable names often. Usually this is the first letter of what the variable name would otherwise be (for example,&nbsp;<span class="inline_code">dict</span> keys and values are <span class="inline_code">k</span> and <span class="inline_code">v</span>). This is done to make the structure of the algorithm more visible. In the example below, <span class="inline_code">s</span> is used as short for "string". Attention draws to the actual string methods, not the <span class="inline_code">s = [...]</span>&nbsp;assigment part.</p>
 <div class="example">
-<pre class="brush:python; gutter:false; light:true;">def normalize(s, punctuation=&quot;!?.:;,()[] &quot;):
-    s = s.decode(&quot;utf-8&quot;)
+<pre class="brush:python; gutter:false; light:true;">def normalize(s, punctuation="!?.:;,()[] "):
+    s = s.decode("utf-8")
     s = s.lower()
     s = s.strip(punctuation)
     return s</pre></div>
@@ -246,7 +246,7 @@
 </tbody>
 </table>
 <h3>Dictionaries</h3>
-<p>Large portions of the code deal with dictionaries. For example, <span class="inline_code">pattern.en</span>&nbsp;is built around a word&nbsp;→&nbsp;part-of-speech tag dictionary, or verb infinitive&nbsp;→&nbsp;inflected verbs. In <span class="inline_code">pattern.vector</span>, document vectors are represented as word&nbsp;→&nbsp;weight dictionaries. In <span class="inline_code">pattern.graph</span>, node adjacency is represented as a dictionary indexed by node id's,&nbsp;in which each value is a node id&nbsp;→ weight dictionary.&nbsp;Python's <span class="inline_code">dict</span> is fast for lookup operations (<span class="inline_code">key in dict</span>).This can be exploited by using <span class="inline_code">dict</span> as a sparse data format.&nbsp;For example, a document vector stores only the words in the document, not all words in the entire corpus. When comparing two documents, <span class="inline_code">dict.get()</span> is used with an optional default value for missing terms:</p>
+<p>Large portions of the code deal with dictionaries. For example, <span class="inline_code">pattern.en</span>&nbsp;is built around a word&nbsp;→&nbsp;part-of-speech tag dictionary, or verb infinitive&nbsp;→&nbsp;inflected verbs. In <span class="inline_code">pattern.vector</span>, document vectors are represented as word&nbsp;→&nbsp;weight dictionaries. In <span class="inline_code">pattern.graph</span>, node adjacency is represented as a dictionary indexed by node id's,&nbsp;in which each value is a node id&nbsp;→ weight dictionary.&nbsp;Python's <span class="inline_code">dict</span> is fast for lookup operations (<span class="inline_code">key in dict</span>).This can be exploited by using <span class="inline_code">dict</span> as a sparse data format.&nbsp;For example, a document vector stores only the words in the document, not all words in the entire model. When comparing two documents, <span class="inline_code">dict.get()</span> is used with an optional default value for missing terms:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">v1 = document1.vector
 v2 = document2.vector
@@ -256,9 +256,9 @@ similarity = sum(v1.get(w,0) * f for w, f in v2.items()) / (v1.norm * v2.norm or
 <p>We make abundant use of list comprehensions (single line <span class="inline_code">for</span>). They are often faster than <span class="inline_code">for</span> or <span class="inline_code">map()</span>. Another advantage is that multiple lines of nested <span class="inline_code">for</span> and <span class="inline_code">if</span> can be bundled into a single statement. A disadvantage is that sometimes it is harder to read the code – in which case a comment should be added:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;"># Split string into words and remove punctuation.
-words = s.replace(&quot;\n&quot;, &quot;\n &quot;)
-words = (w.strip(punctuation) for w in words.split(&quot; &quot;)) # generator
-words = [w for w in words if w != &quot;&quot;]</pre></div>
+words = s.replace("\n", "\n ")
+words = (w.strip(punctuation) for w in words.split(" ")) # generator
+words = [w for w in words if w != ""]</pre></div>
 <h3>Ternary operator</h3>
 <p>Pattern supports Python 2.4 (some web servers still run it), which does not have the ternary operator.&nbsp;The ternary operator (single line <span class="inline_code">if</span>) is available since Python 2.5:</p>
 <div class="example">
@@ -273,7 +273,7 @@ words = [w for w in words if w != &quot;&quot;]</pre></div>
 <p>The source code numbers about 25,000 lines of Python code + 20,000 lines of bundled external projects (Universal Feed Parser, simplejson, PDFminer, Beautiful Soup, PyWordNet, LIBSVM). You can use <a href="http://www.logilab.org/857" target="_blank">pylint</a>&nbsp;from the shell to check the quality of the source code and look for possible bugs:</p>
 <div class="install">
 <pre class="gutter:false; light:true;">&gt; cd pattern
-&gt; pylint pattern --rcfile=.pylintrc </pre></div>
+&gt; pylint pattern --rcfile=.pylintrc&nbsp;</pre></div>
 <p>The configuration file <span class="inline_code">.pylintrc</span> defines a number of customized settings:</p>
 <ol>
 <li>pylint complains about lines longer than 80 characters, but we use a more relaxed 100 characters.</li>
@@ -315,13 +315,13 @@ words = [w for w in words if w != &quot;&quot;]</pre></div>
 <td>Austria (<span class="smallcaps">10m</span>), Germany (<span class="smallcaps">80m</span>), Switzerland (<span class="smallcaps">7m</span>)</td>
 </tr>
 <tr>
-<td>French</td>
+<td><span class="Apple-style-span" style="line-height: 19px;"><s>French</s></span></td>
 <td style="text-align: center;"><span class="inline_code">fr</span></td>
 <td style="text-align: center;"><span class="smallcaps">70m</span></td>
 <td>France (<span class="smallcaps">65m</span>),&nbsp;Côte d'Ivoire (<span class="smallcaps">20m</span>)</td>
 </tr>
 <tr>
-<td>Italian</td>
+<td><span class="Apple-style-span" style="line-height: 19px;"><s>Italian</s></span></td>
 <td style="text-align: center;"><span class="inline_code">it</span></td>
 <td style="text-align: center;"><span class="smallcaps">60m</span></td>
 <td>Italy (<span class="smallcaps">60m</span>)</td>
@@ -335,15 +335,20 @@ words = [w for w in words if w != &quot;&quot;]</pre></div>
 </tbody>
 </table>
 <h3>Reference corpus</h3>
-<p>The parser consists of a <a href="http://en.wikipedia.org/wiki/Brill_tagger" target="_blank">Brill tagger</a> and regular expressions for tokenization and chunking (see <span class="inline_code">pattern/text/en/parser/</span>).&nbsp;</p>
-<p>Tokenization splits punctuation marks from words. Chunking groups words that belong together (e.g.<em>, the black cat</em>). The English tokenizer can be reused for any language. The English chunker can be reused for Germanic languages (<span class="inline_code">en</span>, <span class="inline_code">de</span>, <span class="inline_code">nl</span>) but probably needs to be updated for Romance languages (<span class="inline_code">es</span>, <span class="inline_code">fr</span>, <span class="inline_code">it</span>) because the chunk word order is different: <em>the black cat</em>&nbsp;→ <em>el gato negro</em>.</p>
+<p>The parser consists of a <a href="http://en.wikipedia.org/wiki/Brill_tagger" target="_blank">Brill tagger</a> and regular expressions for tokenization and chunking (see <span class="inline_code">pattern/text/__init__.py</span>).&nbsp;</p>
+<p>Tokenization splits punctuation marks from words. Chunking groups words that belong together (e.g.<em>, the black cat</em>). The tokenizer, tagger and chunker in <span class="inline_code">pattern.text</span> can be reused for any language,&nbsp;but may need further refactoring for new languages.</p>
 <p>Brill's tagger is based on a lookup dictionary of common words and their part-of-speech tag (<em>black</em>&nbsp;→ adjective). This dictionary (or <strong>lexicon</strong>) is "trained" on text that has been manually tagged by people (called a <strong>reference corpus</strong>). To support a new language in Pattern, a Brill lexicon is required. Therefore, a reference corpus is required. We can then count the most frequent words in the corpus and include them in the lexicon together with their part-of-speech tag. The bigger the available corpus (e.g., 1 million words) the better the lexicon. For example, for English there is <a href="http://en.wikipedia.org/wiki/Brown_Corpus" target="_blank">Brown corpus</a>.</p>
+<p>There are two tutorials that demonstrate how to build a lexicon for Spanish and Italian:</p>
+<ul>
+<li><a href="http://www.clips.ua.ac.be/pages/using-wiktionary-to-build-an-italian-part-of-speech-tagger">Using Wikitionary to build an Italian part-of-speech tagger</a></li>
+<li><a href="http://www.clips.ua.ac.be/pages/using-wikicorpus-nltk-to-build-a-spanish-part-of-speech-tagger">Using Wikicorpus &amp; NLTK to build a Spanish part-of-speech tagger</a></li>
+</ul>
 <h3>Tranformation rules</h3>
 <p>Some words can have a different part-of-speech depending on how they are used in a sentence. For example: in "<em>the cat can have a can of tuna</em>" the word <em>can</em> is used both as a verb and as a noun. Brill's tagger uses the lexicon together with transformation rules that improve the predicted part-of-speech tag according to where a word occurs in a sentence. A set of rules can be trained from the reference corpus, using Brill's algorithm. The original algorithm is written in C and is available <a href="http://www.clips.ua.ac.be/media/RBT1_14.tgz">here</a>. A Python implementation is bundled in <a href="http://nltk.googlecode.com/svn/trunk/doc/api/nltk.tag.brill-module.html" target="_blank">NLTK</a>.</p>
 <p>The Brill tagger typically achieves an accuracy of 94-97%. More robust methods exist (for example, <a href="/MBSP" target="_blank">MBSP</a>) that achieve an accuracy of 98-99%. We use a Brill tagger because it is fast and economic in memory usage, making it well-suited for web applications.</p>
 <h3>Inflection rules</h3>
 <p>The parser is further augmented with regular expressions to singularize nouns (<em>cats</em>&nbsp;→ <em>cat</em>), conjugate verbs and adjective attribution (<em>un garçon <span style="text-decoration: underline;">curieux</span></em>, <em>des filles <span style="text-decoration: underline;">curieuses</span></em>). This is used to implement the parser's lemmatizer (i.e., word base forms), which is important for text mining purposes (we want to bring <em>curieux</em> and <em>curieuses</em> together). See for example <span class="inline_code">pattern/text/en/inflect/</span>. In general, simple regular expressions for inflection can attain a fair accuracy (+90%) but the task is non-trivial and requires certain effort (1-2 weeks of work).</p>
-<p>Other support modules such as <span class="inline_code">tree.py</span> are language-indepent and can be inherited from the English parser. To get an idea of how this works, have a look at the Dutch parser (<span class="inline_code">pattern/text/nl</span>), which inherits from the English parser.</p>
+<p>Other support modules such as <span class="inline_code">tree.py</span> are language-indepent.</p>
 </div>
 </div></div>
         </div>

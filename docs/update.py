@@ -62,7 +62,8 @@ template = """
 
 #--- DOWNLOAD & UPDATE -------------------------------------------------------------------------------
 
-for p in ("-", "-web", "-db", "-en", "-es", "-de", "-nl", "-search", "-vector", "-graph", "-canvas", "-metrics", 
+for p in ("-", "-web", "-db", "-search", "-vector", "-graph", "-canvas", "-metrics", 
+          "-de", "-en", "-es", "-fr", "-it", "-nl", 
           "-shell", "stop-words", "mbsp-tags", "-dev"):
     # We include some useful pages (Penn Treebank tags, stop words) referenced in the documentation.
     if p.startswith("-"):
@@ -89,6 +90,8 @@ for p in ("-", "-web", "-db", "-en", "-es", "-de", "-nl", "-search", "-vector", 
     # Link to online media.
     html = html.replace('href="/pages/MBSP"', 'href="%sMBSP"' % url)                   # MBSP docs (online)
     html = re.sub('href="/pages/(pattern-examples.*?)"', 'href="%s\\1"' % url, html)   # examples (online)
+    html = re.sub('href="/pages/(using-.*?)"', 'href="%s\\1"' % url, html)             # examples (online)
+    html = re.sub('href="/pages/(modeling-.*?)"', 'href="%s\\1"' % url, html)          # examples (online)
     html = re.sub('href="/pages/(.*?)([#|"])', 'href="\\1.html\\2', html)              # pages (offline)
     html = html.replace('src="/media/', 'src="../g/')                                  # images (offline)
     html = html.replace('src="/sites/all/themes/clips/g/', 'src="../g/')               # images (offline)

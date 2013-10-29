@@ -1,11 +1,20 @@
 /* --- GENERAL STYLES ------------------------------------------------------------------------------------------- */
 
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:300,700);
+@import url(http://fonts.googleapis.com/css?family=Inconsolata:400,700);
+
 body { margin: 0; padding: 0; background: rgb(128,128,128) url(g/gradient.jpg); background-repeat: repeat-x; }
 body, table, th, td, fieldset, legend, 
 fieldset.group-info,
 fieldset.group-info .field-item a,
 .page-demos #content caption h3 { 
-    color: #444; font: normal 9.5pt Georgia, Times, serif; }
+    color: #444; font: normal 9pt "Roboto Slab", Georgia, Times, serif;
+}
+
+/* Ignore copy & pasted font styles. */
+.node span[style] {
+    font: inherit !important;
+}
 
 sup { color: #666; }
 
@@ -48,7 +57,7 @@ h1 a:hover, h2 a:hover, h3 a:hover,
 h1.title, h2.title, h3.title { margin: 0; }
 h1 { margin-bottom: 1em !important; }
 
-a { color: dodgerblue; }
+a { color: rgb(20,120,240); }
 a { outline: none !important; }
 /* Extra icon indicates external links. */
 a[href^="http"] { 
@@ -61,11 +70,12 @@ a.noexternal { background-image: none; padding-right: 0; }
 a.link-news[href^="http"] { 
     background-image: url(g/external-news.png);
 }
-p { margin: 0.2em 0 0.5em 0; }
+p { margin: 0.2em 0 0.6em 0; }
 
 .field-label { 
     margin-bottom: 0.5em;
     border-bottom: 1px solid #ccc;
+    font-size: 1.1em; 
     font-variant: small-caps; 
     font-weight: normal !important;
 }
@@ -81,14 +91,31 @@ div.resizable-textarea .grippie { display: none; }
 /* Hide title on front page. */
 .front h1.title { display: none; }
 
+/* CSS for Twitter/FB/G+/LinkedIn share buttons */
+.social-button-container {
+	overflow: visible;
+
+}
+
+.social-button {
+	float: left;
+	width: 100px;
+	height: 20px;
+}
+
 /* --- PAGINATION ---------------------------------------------------------------------------------------------- */
 
 .pager { }
 .pager li { padding: 0.1em 0.4em 0.2em 0.4em !important; }
-.pager a { padding: 0 !important; color: dodgerblue !important; text-decoration: none; }
+.pager a { padding: 0 !important; color: rgb(20,120,240) !important; text-decoration: none; }
 .pager a:hover { text-decoration: underline; }
-.pager-current { background: #0b5083; color: white; font-weight: normal; 
-    border-radius: 0.3em; -moz-border-radius: 0.3em; -webkit-border-radius: 0.3em; }
+.pager-current { 
+    background: #0b5083; 
+    color: white; 
+    font-weight: normal; 
+    border-radius: 0.3em; 
+    -moz-border-radius: 0.3em; 
+    -webkit-border-radius: 0.3em; }
 
 /* --- SEARCH -------------------------------------------------------------------------------------------------- */
 /* Search results page. */
@@ -96,7 +123,7 @@ div.resizable-textarea .grippie { display: none; }
 .section-search #content h1,
 .section-search-pages #content h1 { margin-bottom: 0.5em !important; }
 .section-search .box,
-.section-search-pages .box { background: none; border: 0; padding: 0; }
+.section-search-pages .box { background: none !important; border: 0 !important; padding: 0; }
 .section-search #content h2,
 .section-search-pages #content h2 { border-top: 1px solid #ccc; margin-top: 2em; display: none; }
 .section-search #content-header .tabs,
@@ -108,9 +135,9 @@ div.resizable-textarea .grippie { display: none; }
 .section-search #search-form .search-advanced,
 .section-search-pages #search-form .search-advanced { display: none; }
 .section-search dt,
-.section-search-pages dt { margin: 1em 0 0 0; border-top: 1px solid #ccc; padding-top: 0.5em; font-size: 1em; }
+.section-search-pages dt { margin: 0; padding-bottom: 0.1em; font-size: 1.2em; }
 .section-search dd,
-.section-search-pages dd { margin: 0; margin-top: 0.1em; }
+.section-search-pages dd { margin: 0 0 1.5em 0; margin-top: 0.1em; }
 .section-search .search-snippet,
 .section-search-pages .search-snippet { margin-bottom: 0; }
 .section-search .search-info,
@@ -145,9 +172,10 @@ body.node-type-page .meta { margin-top: -1.5em; margin-bottom: 1.5em; }
 .biblio-entry .taxonomy-terms { 
     margin-right: 0.3em;
     font-variant: small-caps; 
-    font-size: 1.0em; 
+    font-size: 1.2em; 
     font-weight: bold;
     font-style: normal;
+    text-transform: lowercase;
 }
 .terms li a,
 .page-computational-linguistics .views-field-name a,
@@ -267,7 +295,7 @@ div.node-type-biblio .terms a,
 .page-language-acquisition #content .view-header,
 .page-language-processing #content .view-header {
     font-size: 1em;
-    line-height: 1.3em;
+    line-height: 1.6em;
     margin-bottom: 3em;
 }
 
@@ -302,7 +330,7 @@ div.node-type-biblio .terms a,
 .page-computational-linguistics h3,
 .page-language-acquisition h3,
 .page-language-processing h3 { 
-    font-size: 1em;
+    font-size: 1.1em;
     font-variant: small-caps;
     margin: 2em 0 1.5em 0;
     padding: 0.2em 0.2em 0.2em 0.5em;
@@ -337,7 +365,7 @@ div.node-type-biblio .terms a,
 .view-og-members-faces table { margin: 0; }
 .view-og-members-faces td { float: left; display: inline; padding: 0 3px 0 0; }
 .view-og-members-faces img { border: 1px solid #ccc; }
-#block-views-og_members_faces-block_1 h2 { font-size: 1em; line-height: 1em; margin-bottom: 0.5em; }
+#block-views-og_members_faces-block_1 h2 { font-size: 0.9em; line-height: 1.2em; margin-bottom: 0.75em; }
 #block-views-og_members-block_1 { margin-bottom: 0 !important; }
 .views-field-field-others-value div.field-content { display:list-item; list-style-type: disc; margin: 0 0 0 1.5em; }
 .views-field-field-others-value div.field-item { display:list-item; list-style-type: disc; margin: 0; }
@@ -357,7 +385,7 @@ div.node-type-biblio .terms a,
 /* Project publications. */
 .project-publications { margin-top: 2em; }
 /* Project date. */
-.date-display-start, .date-display-separator, .date-display-end { font-family: Courier, "Courier New", monospace; font-size: 0.9em; }
+.date-display-start, .date-display-separator, .date-display-end { font-family: "Inconsolata", "Courier New", Courier, monospace; font-size: 1em; }
 
 .section-projects .field-field-subtitle { font-size: 1.0em; font-weight: bold; }
 .section-projects #sidebar-left .pager { display: none; }
@@ -365,6 +393,7 @@ div.node-type-biblio .terms a,
 /* The /og page search form. */
 .section-og table.views-table th,
 .section-og table.sticky-header th {
+    font-size: 1.1em;
     font-variant: small-caps;
 }
 .section-og table.views-table th a,
@@ -376,7 +405,7 @@ div.node-type-biblio .terms a,
 .section-og table.views-table th.views-field-subscribe,
 .section-og table.views-table td.views-field-subscribe { }
 .section-og #content table { width: 100%; }
-.section-og #content table caption { text-align: left; font: 1.25em Georgia, Times, serif; margin: 1em 0 0 0; padding-top: 1em; }
+.section-og #content table caption { text-align: left; font: 1.25em "Roboto Slab", Georgia, Times, serif; margin: 1em 0 0 0; padding-top: 1em; }
 .section-og #content th { white-space: nowrap; }
 .section-og #content th a { text-decoration: none; }
 .section-og #content th,
@@ -391,7 +420,7 @@ div.node-type-biblio .terms a,
 .section-og #content td.views-field-name a:hover { text-decoration: underline; }
 .section-og #content td.views-field-post-count { text-align: center; }
 .section-og #content td.views-field-member-count { text-align: center; }
-.section-og #content td.views-field-member-count a { color: dodgerblue; }
+.section-og #content td.views-field-member-count a { color: rgb(20,120,240); }
 .section-og #content .view-og-members-faces { margin-top: 2em; }
 .section-og #content .view-og-members-faces td { display: block; float: left; width: 100%; border: 0; padding: 0; }
 .section-og #content .view-og-members-faces td { text-align: left; }
@@ -408,8 +437,8 @@ div.node-type-biblio .terms a,
 
 fieldset.group-info { border: 0; background: none; padding: 0; margin: 0; }
 fieldset.group-info legend { display: none; }
-fieldset.group-info a { color: dodgerblue !important; text-decoration: underline; }
-fieldset.group-info p { line-height: 1.3em !important; }
+fieldset.group-info a { color: rgb(20,120,240) !important; text-decoration: underline; }
+fieldset.group-info p { line-height: 1.6em !important; }
 
 .page-software #content table, .section-software #content table { margin-top: 0; }
 .page-software #content tr, .section-software #content tr { border: 0; }
@@ -427,7 +456,7 @@ fieldset.group-info p { line-height: 1.3em !important; }
 
 .page-demos #content table { margin-top: 0; }
 .page-demos #content caption { text-align: left; }
-.page-demos #content caption h3 { margin: 2em 0 0 0; font-variant: small-caps; }
+.page-demos #content caption h3 { margin: 2em 0 0 0; font-size: 1.1em; font-variant: small-caps; }
 .page-demos #content tr { border: 0; }
 .page-demos #content td { display: block; float: left; width: 100%; }
 .page-demos #content td.views-field-title { background: none; padding-top: 0.5em; border-top: 1px solid #ccc; }
@@ -456,8 +485,8 @@ body .syntaxhighlighter div.toolbar .command_help { display: none !important; }
 .node-type-script .field-label,
 .node-type-script .field-items,
 .node-type-script .field-item { display: inline; border: 0; }
-.node-type-script .field-field-script-version .field-item div { font-variant: small-caps; font-weight: normal; }
-.node-type-script .field-field-script-language .field-item { font-family: Courier, "Courier New", monospace; font-size: 9.5pt; }
+.node-type-script .field-field-script-version .field-item div { font-size: 1.1em; font-variant: small-caps; font-weight: normal; }
+.node-type-script .field-field-script-language .field-item { font-family: "Inconsolata", "Courier New", Courier, monospace; font-size: 13px; }
 .node-type-script .field-field-script-description {}
 .node-type-script .field-field-script-description .field-items { display: inline-block; width: 400px; vertical-align: top; }
 .node-type-script .field-field-script-authors { margin-bottom: 1.2em; }
@@ -470,18 +499,18 @@ body .syntaxhighlighter div.toolbar .command_help { display: none !important; }
 
 .section-public-scripts h1.title { margin-bottom: 0.5em !important; }
 .section-public-scripts table { width: 575px; margin-top: 2em; }
-.section-public-scripts th { font-variant: small-caps; }
+.section-public-scripts th { font-size: 1.1em; font-variant: small-caps; }
 .section-public-scripts th { padding: 0.7em; }
 .section-public-scripts td { padding: 0.7em; }
-.section-public-scripts #content td a:hover { color: dodgerblue !important; }
+.section-public-scripts #content td a:hover { color: rgb(20,120,240) !important; }
 .section-public-scripts td.views-field-title { white-space: nowrap; }
 .section-public-scripts td.views-field-field-script-version-value { 
     text-align: center; 
 }
 .section-public-scripts td.views-field-field-script-language-value { 
     text-align: center; 
-    font-family: Courier, "Courier New", monospace;
-    font-size: 9.5pt;
+    font-family: "Inconsolata", "Courier New", Courier, monospace;
+    font-size: 13px;
 }
 .section-public-scripts td { font-size: 0.95em; }
 .section-public-scripts td.views-field-upload-fid ul { padding: 0 !important; margin: 0 !important; }
@@ -504,7 +533,7 @@ body .syntaxhighlighter div.toolbar .command_help { display: none !important; }
 
 /* Date reference: "Submitted by X on Y in Z." */
 .submitted a { color: #888; }
-.submitted, .node .terms-inline { display: inline; color: #888; }
+.submitted, .node .terms-inline { display: inline; color: #888; font-size: 0.95em; }
 
 /* --- CONTENT TYPE: TWEETS & NEWS ITEMS ------------------------------------------------------------------------ */
 /* Twitter updates and project news displayed in the left sidebar. */
@@ -515,15 +544,16 @@ body .syntaxhighlighter div.toolbar .command_help { display: none !important; }
 #sidebar-left .view-news-items ul { margin: 0; padding: 0; list-style-type: none; } 
 .view-tweets li, 
 .view-project-news li,
-#sidebar-left .view-news-items li { 
+#sidebar-left .view-news-items li,
+#sidebar-right .view-internal-pages li { 
     margin-bottom: 0.5em !important; 
     padding: 0.5em !important; 
-    background: #eaebe0; 
+    background: #e9eee0; 
     border: 1px solid #d0d1c7; 
-    border-radius: 0.6em; -moz-border-radius: 0.6em; -webkit-border-radius: 0.6em;
+    border-radius: 0.4em; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
     font-size: 0.9em; 
+    line-height: 1.5em;
 }
-#sidebar-left .view-news-items li:first-child { background: #e4e5d5; color: #222; } 
 .view-tweets a { background: none; color: orange; }
 .view-tweets p { margin: 0; }
 .view-tweets em { }
@@ -535,6 +565,15 @@ body .syntaxhighlighter div.toolbar .command_help { display: none !important; }
 #sidebar-left .view-news-items .views-field-view-node { display: inline !important; }
 #sidebar-left .view-news-items .views-field-view-node a { color: black; }
 #sidebar-left .view-news-items .more-link a { color: orange; text-transform: capitalize; text-align: left;  }
+
+#sidebar-right .view-internal-pages ul { margin: 0; padding: 0; list-style-type: none; }
+#sidebar-right .view-internal-pages a { color: black; }
+#sidebar-right .view-internal-pages .more-link a { color: orange; text-transform: capitalize; text-align: left;  }
+
+/* Hide external link image for social links */
+#sidebar-right #social-links { text-align: center; }
+#sidebar-right #social-links a { background-image: none; padding: 0 2px 0 0; }
+#sidebar-right #social-links img { width: 25px; height: 25px; }
 
 /* --- CONTENT TYPE: PUBLICATION -------------------------------------------------------------------------------- */
 /* Citations appear in a purple box with rounded corners. */
@@ -562,11 +601,11 @@ div.node-type-biblio,
 .biblio-authors a { color: #444; text-decoration: underline; }
 .biblio-authors a:hover { color: #222; text-decoration: underline; }
 .biblio-title a,
-.biblio-title-vancouver a { color: #444; font: bold 1em Arial; text-decoration: none; }
+.biblio-title-vancouver a { color: #444; font: bold 1em "Roboto Slab", Georgia, Times, Serif; text-decoration: none; }
 .biblio-title a:hover { text-decoration: underline; }
 .biblio-entry u, div.node-type-biblio u { font-style: normal; text-decoration: none; }
-.biblio-separator-bar { padding: 0; background: none; border: 0; color: #444; font: normal 1.3em Georgia, Times, serif; }
-td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
+.biblio-separator-bar { padding: 0; background: none; border: 0; color: #444; font: normal 1.3em "Roboto Slab", Georgia, Times, serif; }
+td.biblio-row-title { font-size: 1.1em; font-variant: small-caps; white-space: nowrap; }
 .biblio_authors a { color: #444; text-decoration: none; } /* Editors */
 
 /* Biblio search and filter options. */
@@ -596,7 +635,7 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 #biblio-header .biblio-export { display: none; }
 #biblio-header .biblio-export { text-align: left; float: none; margin-bottom: 0.5em; }
 #biblio-header .biblio-export-buttons { display: inline; }
-#biblio-header > a { text-transform: none; color: #444; font-variant: small-caps; text-decoration: none; }
+#biblio-header > a { text-transform: none; color: #444; font-size: 1.1em; font-variant: small-caps; text-decoration: none; }
 #biblio-header > a:hover { text-decoration: underline; }
 #biblio-header a, 
 .biblio-alpha-line { margin-left: 0.3em;  }
@@ -625,7 +664,7 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 }
 
 /* Download attachment */
-#attachments th { font-variant: small-caps; border-bottom: 1px solid #ccc; padding-right: 0.5em; white-space: nowrap; }
+#attachments th { font-size: 1.1em; font-variant: small-caps; border-bottom: 1px solid #ccc; padding-right: 0.5em; white-space: nowrap; }
 #attachments th:last-child { width: 100%; }
 #attachments td { }
 #attachments td:first-child a { white-space: nowrap;  }
@@ -643,18 +682,20 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 .biblio_file_links { 
     display: block;
     text-align: right;
-    position: relative; right: -35px;
+    position: relative; right: -30px;
     margin-top: -1.2em;
     margin-bottom: -0.1em;
 }
 .biblio_file_links a,
 #attachments td:first-child a { 
     margin: 0 0.2em 0 0.2em;
-    padding: 0.1em 0.3em 0.1em 0.3em; 
-    background: #6d678a; 
+    padding: 0.3em 0.4em 0.3em 0.4em;
+    background-image: url(g/shadow-label.png);
+    background-repeat: repeat-x;
+    background-color: #6d678a;
     color: white; 
-    font: bold 1em Arial;
-    font-variant: small-caps;
+    font: normal 0.8em Arial;
+    text-transform: uppercase;
     text-decoration: none;
     border-radius: 0.4em; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
 }
@@ -663,11 +704,11 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
     text-decoration: underline;
 }
 .biblio-talks .biblio_file_links a {
-    background: #5b682e;    
+    background-color: #5b682e;    
 }
 #attachments td { padding-top: 0.5em; }
 #attachments td:first-child a {
-    background: dodgerblue;
+    background-color: rgb(20,120,240);
 }
 .node-type-biblio #page .biblio_file_links {
     display: none;
@@ -696,7 +737,7 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 .view-user-page h2 { padding: 1em 0 0 0; border-top: 1px solid #ccc; }
 .view-user-page table caption {
     width: 100%;
-    font-family: Georgia, Times, serif;
+    font-family: "Roboto Slab", Georgia, Times, serif;
     text-align: left;
 }
 .view-user-page caption { font-size: 1.3em; margin: 0.5em 0 0.5em 0; padding-top: 0.5em; 
@@ -722,7 +763,7 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 .profile .picture { float: left; }
 .profile .picture img { width: 140px; height: 190px; border: 1px solid #ccc; }
 .profile h3 { border: 0; }
-.profile dt { font-weight: normal; font-variant: small-caps; margin: 0; }
+.profile dt { font-size: 1.1em; font-weight: normal; font-variant: small-caps; margin: 0; }
 .profile dt { width: 100px; float: left; }
 .profile dd { width: 400px; border-bottom: 1px solid #ccc; }
 .profile dt, .profile dd { margin: 0; padding: 0.2em 0 0.2em 0; }
@@ -732,7 +773,7 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 .profile dd.profile-profile_interests { border: 0; }
 
 .profile dt.logins { float: none; width: 400px; border-bottom: 1px solid #ccc; }
-.profile dd.logins { font-size: 0.9em; line-height: 1.2em; border: 0; color: #666; }
+.profile dd.logins { font-size: 0.9em; line-height: 1.3em; border: 0; color: #666; }
 .profile dd.logins a { color: rgb(140,170,255); }
 
 /* Projects (i.e. organic groups) this user belongs to. */
@@ -751,13 +792,14 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 .node-type-ctrs #content .field-label-inline-first { 
     display: block; 
     margin: 0.5em 0 0.2em 0;
+    font-size: 1.1em; 
     font-variant: small-caps; 
     font-weight: normal;
     border-bottom: 1px solid #ccc; 
 }
 .node-type-ctrs .field-label-inline { display: none !important; }
 .section-ctrs .date-display-single,
-.node-type-ctrs .date-display-single { font-family: Courier, "Courier New", monospace; }
+.node-type-ctrs .date-display-single { font-family: "Inconsolata", "Courier New", Courier, monospace; }
 .section-ctrs #content { }
 .section-ctrs .image { margin-right: 1em; }
 .section-ctrs .image,
@@ -770,14 +812,14 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 /* --- ARCHIVE OF CORPORA ON THE CLIPS SERVERS ------------------------------------------------------------------ */
 
 .section-corpora-overview table { width: 100%; }
-.section-corpora-overview th { font-variant: small-caps; padding-bottom: 0.5em; }
+.section-corpora-overview th { font-size: 1.1em; font-variant: small-caps; padding-bottom: 0.5em; }
 .section-corpora-overview th a { color: #333; }
 .section-corpora-overview tr.odd { background: #F0F5FA; }
 .section-corpora-overview td { border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; padding: 5px 0 5px 0; }
 .section-corpora-overview td.active { background: none; }
 .section-corpora-overview .views-field-field-corpus-version-value { text-align: center; }
-.section-corpora-overview td.views-field-field-corpus-path-value { font-family: Courier, "Courier New", monospace; }
-.field-field-corpus-path .field-items { font-family: Courier, "Courier New", monospace; }
+.section-corpora-overview td.views-field-field-corpus-path-value { font-family: "Inconsolata", "Courier New", Courier, monospace; }
+.field-field-corpus-path .field-items { font-family: "Inconsolata", "Courier New", Courier, monospace; }
 
 /* --- ARCHIVE OF PUBLICATIONS ---------------------------------------------------------------------------------- */
 
@@ -795,18 +837,19 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 .page-archive #archive .timeline-copyright { display: none; }
 .page-archive #archive .timeline-date-label { color: #888; }
 
-.page-archive caption { font-size: 1.25em; font-family: Georgia, Times, serif; text-align: left; }
-.page-archive .views-table th { padding-top: 0.4em; padding-bottom: 0.8em; font-variant: small-caps; }
+.page-archive caption { font-size: 1.25em; font-family: "Roboto Slab", Georgia, Times, serif; text-align: left; }
+.page-archive .views-table th { padding-top: 0.4em; padding-bottom: 0.8em; font-size: 1.1em; font-variant: small-caps; white-space: nowrap; }
 .page-archive .views-table th a { color: #333; }
 .page-archive .views-table th,
-.page-archive .views-table td { padding: 0.4em 0.4em 0.4em 0; }
-.page-archive .views-table td a:hover { color: dodgerblue; }
+.page-archive .views-table td { padding: 0.4em 0.8em 0.8em 0; }
+.page-archive .views-table td.views-field-title { min-width: 300px; }
+.page-archive .views-table td a:hover { color: rgb(20,120,240); }
 .page-archive .views-field-upload-fid a {
     margin: 0 0.2em 0 0.2em;
     padding: 0.1em 0.3em 0.1em 0.3em; 
-    background: #6d678a; 
+    background:  #6d678a url(g/shadow-label.png) repeat-x left bottom; 
     color: white; 
-    font: bold 1em Arial;
+    font: normal 0.9em Arial;
     font-variant: small-caps;
     text-decoration: none;
     border-radius: 0.4em; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;    
@@ -814,7 +857,7 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 .page-archive .views-field-upload-fid a:hover { text-decoration: underline; color: white !important; }
 .page-archive .simileAjax-bubble-container .views-field-field-archive-series-value { display: block; }
 .page-archive .simileAjax-bubble-container .views-field-title { display: none; }
-.page-archive .simileAjax-bubble-container label { font-variant: small-caps; font-size: 0.95em; }
+.page-archive .simileAjax-bubble-container label { font-size: 1.1em; font-variant: small-caps; font-size: 0.95em; }
 .page-archive .simileAjax-bubble-container .timeline-event-bubble-title a { 
     color: #333; 
     background: none; 
@@ -822,7 +865,7 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 }
 
 .node-type-archive .meta { display: none; }
-.node-type-archive .field-label-inline-first { display: block; font-variant: small-caps; font-weight: normal;
+.node-type-archive .field-label-inline-first { display: block; font-size: 1.1em; font-variant: small-caps; font-weight: normal;
     border-bottom: 1px solid #ccc; }
 
 
@@ -846,8 +889,8 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
     border-left: 1px solid #555;
     border-right: 1px solid #555;
 }
-#page, table {
-     line-height: 1.3em;
+#page, table, td p {
+     line-height: 1.6em;
 }
 
 /* --- PAGE HEADER ---------------------------------------------------------------------------------------------- */
@@ -872,6 +915,20 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 #block-menu-primary-links { display: none; }
 .block-search #search-box { } /* Wrapper for the search form */
 .block-search #edit-search-block-form-1-wrapper label { display: none !important; }
+.block-search #edit-submit,
+.block-search #edit-submit-1,
+.block-search #edit-submit-2 {
+    border: 0;
+    background: #586073 url(g/shadow-label.png) repeat-x left bottom;
+    color: white;
+    border-radius: 3px;
+    padding: 3px 5px 3px 5px;
+}
+.block-search #edit-submit:hover,
+.block-search #edit-submit-1:hover,
+.block-search #edit-submit-2:hover {
+    cursor: pointer;
+}
 
 #primary {
     height: 50px;
@@ -886,10 +943,10 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
     padding-top: 16px;
     background: #dbe6ec;
     border-left: 1px solid #c6d4dd;
-    font-size: 16px;
+    font-size: 1.25em;
 }
 #primary li:hover { background: #d1dfe7; }
-#primary li.active { background: #0b5083 url(g/current.jpg) repeat-x; }
+#primary li.active { background: #0b5083 url(g/current.jpg) repeat-x; box-shadow: inset 0px 0px 3px 3px rgba(0,0,0,0.25); }
 #primary li.active a { color: white !important; }
 #primary li a { color: #0e5682; text-decoration: none; }
 #primary li a:hover { text-decoration: underline; }
@@ -919,9 +976,9 @@ td.biblio-row-title { font-variant: small-caps; white-space: nowrap; }
 #sidebar-left-inner { margin: 0; }
 #sidebar-right {
     width: 160px;
-    margin-left: 800px;
+    margin-left: 770px;
     margin-right: -160px;
-    margin-top: 95px !important;
+    margin-top: 105px !important;
 }
 #sidebar-right-inner { margin: 0; }
 #sidebar-right .block-user h2 { display:none; }
@@ -996,19 +1053,19 @@ ul.links li { display: inline; list-style-type: none; padding: 0; }
     font-size: 11px;
 }
 #footer-inner td { color: #80888f; font-size: 9pt; }
-#footer-inner td h2 { font-size: 1em; font-variant: small-caps; line-height: 1em; margin-bottom: 0 !important; }
+#footer-inner td h2 { font-size: 1.1em; font-variant: small-caps; line-height: 1em; margin-bottom: 0 !important; }
 #footer-inner td a { color: #80888f; }
 #footer-inner #block-block-2 {
     min-height: 200px;
 }
 #footer-inner #block-views-tracker-block_1 {
-    padding: 2px 30px 2px 30px;
-    background: #660d2e; 
-    color: #b3949f; 
+    box-shadow: inset 0px 4px 5px 0px rgba(0,0,0,0.25);
+    padding: 6px 30px 2px 30px;
     font-size: 10px;
+    color: #70808f;
 }
 #footer-inner .content { margin: 0; }
-#footer-inner a { background: none; color: #b3949f; }
+#footer-inner a { background: none; color: #80888f; }
 #footer-message {}
 #closure-blocks {}
 
@@ -1029,7 +1086,7 @@ margin-right:auto;
 .form-item textarea.error,
 .form-item select { margin-left: 0; }
 .form-item select.error { border: 2px solid #c00; }
-.form-item label { display: block; font-variant: small-caps; font-weight: normal; }
+.form-item label { display: block; font-size: 1.1em; font-variant: small-caps; font-weight: normal; }
 .form-item label.option { display: inline; font-weight: normal; }
 .form-required { color: deeppink; }
 .form-item .description { font-size: 0.85em; }
@@ -1124,7 +1181,7 @@ form thead th { text-align: left; padding-right: 1em; border-bottom: 3px solid #
 #user-login li.openid-link,
 #user-login li.user-link { margin-left: -2em; }
 
-.advanced-help-topic { font-family: Courier, "Courier New", monospace; }
+.advanced-help-topic { font-family: "Inconsolata", "Courier New", Courier, monospace; }
 
 /* --- ISI Journal List --- */
 #node-1501 div.textcell { overflow-y:auto; height: 150px; }
@@ -1135,13 +1192,13 @@ form thead th { text-align: left; padding-right: 1em; border-bottom: 3px solid #
 
 div.edit { display: none !important; } /* Hide the old contextual edit menu, use Admin menus. */
 div.tabs { }
-div.tabs * { background: none !important; padding: 0; }
+div.tabs * { background: none !important; padding: 0; margin-bottom: 15px; }
 div.tabs li {  margin-right: 0.5em; }
 div.tabs li * { text-transform: lowercase; padding: 0 !important; }
-div.tabs li a { color: dodgerblue !important; text-decoration: underline; font-weight: normal; }
+div.tabs li a { color: rgb(20,120,240) !important; text-decoration: underline; font-weight: normal; }
 div.tabs .primary li.active { 
     padding: 0.1em 0.4em 0.1em 0.4em;
-    background: #0b5083 !important; 
+    background: #0b5083 !important; box-shadow: inset 0px 0px 3px 3px rgba(0,0,0,0.25) !important;
     border-radius: 0.3em; -moz-border-radius: 0.3em; -webkit-border-radius: 0.3em;
 }
 div.tabs .primary li.active a {
@@ -1215,11 +1272,12 @@ code,
 .syntaxhighlighter code,
 .syntaxhighlighter .line,
 .syntaxhighlighter code a,
+.syntaxhighlighter textarea,
 pre.wysiwyg-syntaxhl, 
 pre,
  .install pre { 
-    font-family: Courier, "Courier New", monospace !important; 
-    font-size: 12px !important; 
+    font-family: "Inconsolata", "Courier New", Courier, monospace !important; 
+    font-size: 13px !important; 
     line-height: 1.3em !important;
 }
 
@@ -1353,10 +1411,11 @@ body.mceContentBody {
     background-image: none;
 }
 
-.big { font-size: 1.2em; line-height: 1.3em; }
-.small { font-size: 0.9em; }
+.big { font-size: 1.3em; line-height: 1.5em; }
+.small { font-size: 0.9em; line-height: 1.45em; }
 .caption { 
     display: block; 
+    font-size: 1.1em; 
     font-variant: small-caps; 
     border-bottom: 1px solid #ccc; 
     margin-bottom: 0.5em; 
@@ -1364,6 +1423,7 @@ body.mceContentBody {
 .highlight { color: deeppink !important; }
 .tag { 
     color: #0E5682; 
+    font-size: 1.1em; 
     font-variant: small-caps;
     font-weight: bold;
     text-decoration: none;
@@ -1371,13 +1431,12 @@ body.mceContentBody {
 .tag a { text-decoration: none; }
 .tag a:hover { text-decoration: underline; }
 .link-news { color: orange; }
-.link-maintenance  { color: rgb(120,170,255); }
-a.link-maintenance, .link-maintenance a { color: rgb(140,170,255); }
+.link-maintenance, a.link-maintenance, .link-maintenance a { color: rgb(100,140,190); }
 .link-colorless { color: #333; }
 
-.postag { font: bold 0.85em Arial; padding: 0px 1px 0px 1px; }
-.inline_code { font-family: Courier, "Courier New", monospace; font-size: 12px; }
-.smallcaps { font-variant: small-caps; }
+.postag { font: bold 0.85em Arial; text-transform: uppercase; padding: 0px 1px 0px 1px; }
+.inline_code { font-family: "Inconsolata", "Courier New", Courier, monospace; font-size: 13px; color: #333; }
+.smallcaps { font-size: 1.1em; font-variant: small-caps; }
 .blue { color: #0e5682 !important; }
 table.border td, td.border, img.border { border: 1px solid #ccc; }
 
@@ -1390,6 +1449,7 @@ body pre.wysiwyg-syntaxhl {
     border: 1px solid rgb(200,215,230) !important;
     border-radius: 0.5em; -moz-border-radius: 0.5em; -webkit-border-radius: 0.5em;
 }
+body .syntaxhighlighter textarea { display: none; }
 body .syntaxhighlighter code.plain a,
 body .syntaxhighlighter code.string a,
 body .syntaxhighlighter code.comments a,
@@ -1425,7 +1485,9 @@ body .syntaxhighlighter .gutter .line.alt2 {
 code, body .syntaxhighlighter, pre.wysiwyg-syntaxhl { 
     margin: 0.7em 0 0.7em 0 !important; 
 }
-code, body .syntaxhighlighter table .plain, pre.wysiwyg-syntaxhl { 
+code, 
+body .syntaxhighlighter table .plain, pre.wysiwyg-syntaxhl,
+body .syntaxhighlighter textarea { 
     color: #555 !important; 
 }
 .example code,
@@ -1472,11 +1534,11 @@ body .syntaxhighlighter .javascript.string {
 }
 body .syntaxhighlighter .jscript.comments1,
 body .syntaxhighlighter .javascript.comments1 { 
-    color: grey !important; 
+    color: grey !important;
 }
 body .syntaxhighlighter .jscript.comments2,
 body .syntaxhighlighter .javascript.comments2 { 
-    color: #657a8a !important; 
+    color: #657a8a !important;
 }
 /* Python syntax */
 body .syntaxhighlighter .python.keyword {
@@ -1489,10 +1551,10 @@ body .syntaxhighlighter .python.string {
     color: #657a8a !important; 
 }
 body .syntaxhighlighter .python.comments1 { 
-    color: grey !important; 
+    color: #888 !important;
 }
 body .syntaxhighlighter .python.comments2 { 
-    color: #657a8a !important; 
+    color: #657a8a !important;
 }
 body .syntaxhighlighter .python.functions,
 body .syntaxhighlighter .python.color1 { 
@@ -1510,6 +1572,11 @@ body .syntaxhighlighter .xml.string {
 }
 body .syntaxhighlighter .xml.color1 {
     color: inherit !important;
+}
+
+/* Plaintext */
+body .syntaxhighlighter.plain .plain {
+    color: #6c7780 !important;
 }
 
 /* Page formatting. */
@@ -1530,15 +1597,15 @@ body .syntaxhighlighter .xml.color1 {
 
 /* --- ADMIN RESOURCE RESERVATIONS ------------------------------------------------------------------------------ */
 
-.page-reservations caption { font-family: Georgia, Times, serif; font-size: 1.2em; text-align: left; margin-bottom: 1em; }
+.page-reservations caption { font-family: "Roboto Slab", Georgia, Times, serif; font-size: 1.2em; text-align: left; margin-bottom: 1em; }
 .page-reservations table { width: 100%; }
-.page-reservations th, .page-colloquia th { font-variant: small-caps; padding-bottom: 0.5em; }
+.page-reservations th, .page-colloquia th { font-size: 1.1em; font-variant: small-caps; padding-bottom: 0.5em; }
 .page-reservations td.views-field-field-timeslot-value { background: none; }
 .page-reservations th.views-field-edit-node { visibility: hidden; }
 .page-reservations td.views-field-edit-node { text-align: right; font-size: 0.9em; }
 .page-reservations a { background: none; text-transform: lowercase; }
 
-.page-reservations .date-display-single { font-family: Courier, "Courier New", monospace; font-size: 0.9em; }
+.page-reservations .date-display-single { font-family: "Inconsolata", "Courier New", Courier, monospace; font-size: 1em; }
 .page-reservations .date-display-start { }
 .page-reservations .date-display-end { }
 
@@ -1547,18 +1614,19 @@ body .syntaxhighlighter .xml.color1 {
 .page-colloquia .view-header { margin-bottom: 2em; }
 .page-colloquia caption { display: none; }
 .page-colloquia #content table { width: 100%; }
-.page-colloquia #content th { font-variant: small-caps; padding: 0.5em 1em 0.5em 0; white-space: nowrap; }
+.page-colloquia #content th { font-size: 1.1em; font-variant: small-caps; padding: 0.5em 1em 0.5em 0; white-space: nowrap; }
 .page-colloquia #content td { vertical-align: top; padding: 0.5em 1em 0.5em 0; border: 0; border-top: 1px solid #ccc; }
 .page-colloquia #content td strong { font-weight: normal; }
-.page-colloquia #content td a:hover { color: dodgerblue; }
+.page-colloquia #content td a:hover { color: rgb(20,120,240); }
 .page-colloquia #content td.views-field-field-date-value,
-.node-type-colloquium .date-display-single { background: none; font-family: Courier, "Courier New", monospace; font-size: 0.9em; white-space: nowrap; line-height: 1.5em; }
+.node-type-colloquium .date-display-single { background: none; font-family: "Inconsolata", "Courier New", Courier, monospace; font-size: 1em; white-space: nowrap; line-height: 1.5em; }
 
 .node-type-colloquium .submitted { display: none; }
 .node-type-colloquium .node .content { margin-top: 1em; }
 .node-type-colloquium .field { margin-top: 0.5em; }
 .node-type-colloquium .field-item { border-bottom: 1px solid #ccc; }
 .node-type-colloquium .field-label-inline-first { 
+    font-size: 1.1em; 
     font-variant: small-caps; 
     font-weight: normal; 
     display: block;
