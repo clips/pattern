@@ -20,15 +20,14 @@ if sys.argv[-1] == "zip":
     z = zipfile.ZipFile(os.path.join(p, "..", n), "w", zipfile.ZIP_DEFLATED)
     for root, folders, files in os.walk(p):
         for f in files:
-            if not re.search(r"\.git|\.dev|tmp|models", root):
-                if not re.search(r"\.pyc|\.dev|\.DS", f):
-                    f = os.path.join(root, f)
-                    r = os.path.relpath(f, p)
-                    r = os.path.join("pattern-" + __version__, r)
-                    z.write(f, r)
+            if not re.search(r"\.DS|\.git[^i]|\.pyc|\.dev|tmp", os.path.join(root, f)):
+                f1 = os.path.join(root, f)
+                f2 = os.path.join("pattern-" + __version__, os.path.relpath(f1, p))
+                z.write(f1, f2)
     z.close()
+    z = open(os.path.join(p, "..", n))
     print n
-    print hashlib.sha256(p).hexdigest()
+    print hashlib.sha256(z.read()).hexdigest()
     sys.exit(0)
 
 #---------------------------------------------------------------------------------------------------
