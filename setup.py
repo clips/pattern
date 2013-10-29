@@ -2,9 +2,6 @@
 
 import sys
 import os
-import re
-import zipfile
-import hashlib
 
 from distutils.core import setup
 from distutils.dist import DistributionMetadata
@@ -15,25 +12,29 @@ from pattern import __version__
 # "python setup.py zip" will create the zipped distribution and checksum.
 
 if sys.argv[-1] == "zip":
+    import zipfile
+    import hashlib
+    import re
     n = "pattern-%s.zip" % __version__
     p = os.path.join(os.path.dirname(os.path.abspath(__file__)))
     z = zipfile.ZipFile(os.path.join(p, "..", n), "w", zipfile.ZIP_DEFLATED)
     for root, folders, files in os.walk(p):
         for f in files:
+            # Exclude revision history (.git).
+            # Exclude development files (.dev).
             if not re.search(r"\.DS|\.git[^i]|\.pyc|\.dev|tmp", os.path.join(root, f)):
                 f1 = os.path.join(root, f)
                 f2 = os.path.join("pattern-" + __version__, os.path.relpath(f1, p))
                 z.write(f1, f2)
     z.close()
-    z = open(os.path.join(p, "..", n))
     print n
-    print hashlib.sha256(z.read()).hexdigest()
+    print hashlib.sha256(open(z.filename).read()).hexdigest()
     sys.exit(0)
 
 #---------------------------------------------------------------------------------------------------
 # "python setup.py install" will install /pattern in /site-packages.
 
-if not hasattr(DistributionMetadata, 'classifiers'): # Python 2.3
+if not hasattr(DistributionMetadata, 'classifiers'): # Python <2.3
     DistributionMetadata.classifiers = None
 
 setup(
@@ -46,20 +47,21 @@ setup(
              url = "http://www.clips.ua.ac.be/pages/pattern",
         packages = [
         "pattern",
-        "pattern.web", 
-        "pattern.web.cache", 
-        "pattern.web.feed", 
-        "pattern.web.imap", 
-        "pattern.web.json", 
-        "pattern.web.oauth", 
-        "pattern.web.pdf", 
-        "pattern.web.soup",
-        "pattern.db", 
+        "pattern.web",
+        "pattern.web.cache",
+        "pattern.web.docx",
+        "pattern.web.feed",
+        "pattern.web.imap",
+        "pattern.web.json",
+        "pattern.web.oauth",
+        "pattern.web.pdf",
+        "pattern.web.soup"
+        "pattern.db",
         "pattern.text",
         "pattern.text.de",
         "pattern.text.en",
         "pattern.text.en.wordlist",
-        "pattern.text.en.wordnet", 
+        "pattern.text.en.wordnet",
         "pattern.text.en.wordnet.pywordnet",
         "pattern.text.es",
         "pattern.text.fr",
@@ -72,6 +74,7 @@ setup(
     package_data = {
         "pattern"                 : ["*.js"],
         "pattern.web.cache"       : ["tmp/*"],
+        "pattern.web.docx"        : ["*"],
         "pattern.web.feed"        : ["*"],
         "pattern.web.json"        : ["*"],
         "pattern.web.pdf"         : ["*.txt", "cmap/*"],
