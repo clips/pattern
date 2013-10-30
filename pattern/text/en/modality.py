@@ -175,6 +175,9 @@ def subjunctive(sentence, classical=True, **kwargs):
             if s(w).startswith("wish"):
                 # "I wish I knew."
                 return True
+            if s(w) == "hope" and i > 0 and s(S[i-1]) in ("i", "we"):
+                # "I hope ..."
+                return True
             if s(w) == "were" and i > 0 and (s(S[i-1]) in ("i", "it", "he", "she") or S[i-1].type == "NN"):
                 # "It is as though she were here." => counterfactual.
                 return True

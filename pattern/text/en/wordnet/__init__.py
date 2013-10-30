@@ -21,6 +21,8 @@ import os
 import sys
 import glob
 
+from math import log
+
 try: 
     MODULE = os.path.dirname(os.path.abspath(__file__))
 except:
@@ -121,11 +123,11 @@ class Synset(object):
         self._synset = synset
 
     def __iter__(self):
-        for s in self._synset.getSenses(): yield s.form
+        for s in self._synset.getSenses(): yield unicode(s.form)
     def __len__(self):
         return len(self._synset.getSenses())
     def __getitem__(self, i):
-        return self._synset.getSenses()[i].form
+        return unicode(self._synset.getSenses()[i].form)
     def __eq__(self, synset):
         return isinstance(synset, Synset) and self.id == synset.id
     def __ne__(self, synset):
@@ -158,7 +160,7 @@ class Synset(object):
         """ Yields a list of word forms (i.e. synonyms), for example:
             synsets("TV")[0].synonyms => ["television", "telecasting", "TV", "video"]
         """
-        return [s.form for s in self._synset.getSenses()]
+        return [unicode(s.form) for s in self._synset.getSenses()]
         
     senses = synonyms # Backwards compatibility; senses = list of Synsets for a word.
         
@@ -167,13 +169,13 @@ class Synset(object):
         """ Yields a descriptive string, for example:
             synsets("glass")[0].gloss => "a brittle transparent solid with irregular atomic structure".
         """
-        return str(self._synset.gloss)
+        return unicode(self._synset.gloss)
         
     @property
     def lexname(self):
         """ Yields a category, e.g., noun.animal.
         """
-        return self._synset.lexname and str(self._synset.lexname) or None
+        return self._synset.lexname and unicode(self._synset.lexname) or None
 
     @property
     def antonym(self):
@@ -260,14 +262,17 @@ class Synset(object):
         return p
         
     def similarity(self, synset):
-        """ Returns the semantic similarity of the given synsets.
-            Lower numbers indicate higher similarity, for example:
-            synsets("river")[0].similarity(synsets("lake")[0]) => 3.77
-            synsets("river")[0].similarity(synsets("lion")[0]) => 786.05
+        """ Returns the semantic similarity of the given synsets (0.0-1.0).
+            synsets("cat")[0].similarity(synsets("dog")[0]) => 0.86.
+            synsets("cat")[0].similarity(synsets("box")[0]) => 0.17.
         """
-        # Lin semantic distance measure.
-        lin = 2.0 * lcs(self, synset).ic / ((self.ic + synset.ic) or 1e-10)
-        return lin
+        if self == synset:
+            return 1.0
+        try: # Lin semantic distance measure.
+            lin = 2.0 * log(lcs(self, synset).ic) / (log(self.ic * synset.ic) or 1)
+        except OverflowError:
+            lin = 0.0
+        return abs(lin)
         
     @property
     def ic(self):
@@ -327,7 +332,7 @@ def information_content(synset):
                 IC[pos][id] = w
             if w > IC_MAX:
                 IC_MAX = w
-    return IC.get(synset.pos, {}).get(synset.id, 0.0)
+    return IC.get(synset.pos, {}).get(synset.id, 0.0) / IC_MAX
 
 ### WORDNET3 TO WORDNET2 ###########################################################################
 # Map WordNet3 synset id's to WordNet2 synset id's.

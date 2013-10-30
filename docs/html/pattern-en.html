@@ -1,0 +1,725 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>pattern-en</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" href="../clips.css" />
+    <style>
+        /* Small fixes because we omit the online layout.css. */
+        h3 { line-height: 1.3em; }
+        #page { margin-left: auto; margin-right: auto; }
+        #header, #header-inner { height: 175px; }
+        #header { border-bottom: 1px solid #C6D4DD;  }
+        table { border-collapse: collapse; }
+    </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
+</head>
+<body class="node-type-page one-sidebar sidebar-right section-pages">
+    <div id="page">
+    <div id="page-inner">
+    <div id="header"><div id="header-inner"></div></div>
+    <div id="content">
+    <div id="content-inner">
+    <div class="node node-type-page"
+        <div class="node-inner">
+        <div class="breadcrumb">View online at: <a href="http://www.clips.ua.ac.be/pages/pattern-en" class="noexternal" target="_blank">http://www.clips.ua.ac.be/pages/pattern-en</a></div>
+        <h1>pattern.en</h1>
+        <!-- Parsed from the online documentation. -->
+        <div id="node-1383" class="node node-type-page"><div class="node-inner">
+<div class="content">
+<h3>The pattern.en module contains a fast part-of-speech tagger for English (identifies nouns, adjectives, verbs, etc. in a sentence), a WordNet interface and tools for English sentiment analysis, verb conjugation and noun singularization &amp; pluralization.</h3>
+<p>It can be used by itself or with other <a href="pattern.html">pattern</a> modules: <a href="pattern-web.html">web</a> | <a href="pattern-db.html">db</a>&nbsp;| en | <a href="pattern-search.html">search</a> | <a href="pattern-vector.html">vector</a> | <a href="pattern-graph.html">graph</a>.</p>
+<p><img src="../g/pattern_schema.gif" alt="" width="620" height="180" /></p>
+<hr />
+<h2>Documentation</h2>
+<ul>
+<li><a href="#article">Indefinite article</a></li>
+<li><a href="#pluralization">Pluralization + singularization</a></li>
+<li><a href="#comparative">Comparative + superlative</a></li>
+<li><a href="#conjugation">Verb conjugation</a></li>
+<li><a href="#quantify">Quantification</a></li>
+<li><a href="#spelling">Spelling</a></li>
+<li><a href="#ngram">n-grams</a></li>
+<li><a href="#parser">Parser</a>&nbsp;<span class="smallcaps link-maintenance">(tokenizer, tagger, chunker)</span></li>
+<li><a href="#tree">Parse trees</a></li>
+<li><a href="#sentiment">Sentiment</a></li>
+<li><a href="#modality">Mood &amp; modality</a></li>
+<li><a href="#wordnet">WordNet</a></li>
+<li><a href="#wordlist">Wordlists</a></li>
+</ul>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="article"></a>Indefinite article</h2>
+<p>The article is the most common determiner (<span class="postag">DT</span>) in English. It defines whether the successive noun is definite (<em><span style="text-decoration: underline;">the</span> cat</em>) or indefinite (<em><span style="text-decoration: underline;">a</span> cat</em>). The definite article is always <em>the</em>. The indefinite article can be&nbsp;<em>a</em> or <em>an</em>&nbsp;depending on how the successive noun is pronounced.</p>
+<pre class="brush:python; gutter:false; light:true;">article(word, function=INDEFINITE)   # DEFINITE | INDEFINITE</pre><pre class="brush:python; gutter:false; light:true;">referenced(word, article=INDEFINITE) # Returns article + word.
+</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import referenced
+&gt;&gt;&gt;  
+&gt;&gt;&gt; print referenced('university')
+&gt;&gt;&gt; print referenced('hour')
+
+a university
+an hour</pre></div>
+<p><span class="small"><span style="text-decoration: underline;">Reference</span>: Granger, M. (2006). <em>Ruby Linguistics Framework</em>, </span><span class="small">http://deveiate.org/projects/Linguistics</span></p>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="pluralization"></a>Pluralization + singularization</h2>
+<p>The <span class="inline_code">pluralize()</span> function returns the singular form of a plural noun. The <span class="inline_code">singularize()</span> function returns the plural form of a singular noun. The <span class="inline_code">pos</span> parameter (part-of-speech) can be set to <span class="inline_code">NOUN</span> or <span class="inline_code">ADJECTIVE</span>, but only a small number of possessive adjectives inflect (e.g. <em>my</em> → <em>our</em>). The <span class="inline_code">custom</span> dictionary is for user-defined replacements. Accuracy of the algorithms is 96%.</p>
+<pre class="brush:python; gutter:false; light:true;">pluralize(word, pos=NOUN, custom={}, classical=True)</pre><pre class="brush:python; gutter:false; light:true;">singularize(word, pos=NOUN, custom={})</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import pluralize, singularize
+&gt;&gt;&gt;  
+&gt;&gt;&gt; print pluralize('child')
+&gt;&gt;&gt; print singularize('wolves')
+
+children
+wolf
+</pre></div>
+<p><span class="small"><span style="text-decoration: underline;">Reference</span>: <br />Conway, D. (1998). An Algorithmic Approach to English Pluralization. <em>Proceedings of the 2nd Perl conference</em>.<br />Ferrer, B. (2005). <em>Inflector for Python</em>, http://www.bermi.org/projects/inflector</span></p>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="comparative"></a>Comparative + superlative</h2>
+<p>The <span class="inline_code">comparative()</span> and <span class="inline_code">superlative()</span> functions give the comparative or superlative form of an adjective. Words with three or more syllables (e.g., <em>fantastic</em>) are simply preceded by <em>more</em> or <em>most</em>.</p>
+<pre class="brush:python; gutter:false; light:true;">comparative(adjective)      # big =&gt; bigger</pre><pre class="brush:python; gutter:false; light:true;">superlative(adjective)      # big =&gt; biggest</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import comparative, superlative
+&gt;&gt;&gt;  
+&gt;&gt;&gt; print comparative('bad')
+&gt;&gt;&gt; print superlative('bad')
+
+worse
+worst
+</pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="conjugation"></a>Verb conjugation</h2>
+<p>The pattern.en module has a lexicon of 8,500 common English verbs and their conjugated forms (infinitive, 3rd singular present, present participle, past and past participle – verbs such as <em>be</em>&nbsp;may have more forms). Some verbs can also be negated, including&nbsp;<em>be</em>, <em>can</em>, <em>do</em>, <em>will</em>, <em>must</em>, <em>have</em>, <em>may</em>, <em>need</em>, <em>dare</em>, <em>ought</em>.</p>
+<pre class="brush:python; gutter:false; light:true;">conjugate(verb, 
+    tense = PRESENT,        # INFINITIVE, PRESENT, PAST, FUTURE
+   person = 3,              # 1, 2, 3 or None
+   number = SINGULAR,       # SG, PL
+     mood = INDICATIVE,     # INDICATIVE, IMPERATIVE, CONDITIONAL, SUBJUNCTIVE
+   aspect = IMPERFECTIVE,   # IMPERFECTIVE, PERFECTIVE, PROGRESSIVE 
+  negated = False,          # True or False
+    parse = True) </pre><pre class="brush:python; gutter:false; light:true;">lemma(verb)                 # Base form, e.g., are =&gt; be.</pre><pre class="brush:python; gutter:false; light:true;">lexeme(verb)                # List of possible forms: be =&gt; is, was, ...</pre><pre class="brush:python; gutter:false; light:true;">tenses(verb)                # List of possible tenses of the given form.
+</pre><p>The&nbsp;<span class="inline_code">conjugate()</span> function takes the following optional parameters:</p>
+<table class="border">
+<tbody>
+<tr>
+<td style="text-align: left;"><span class="smallcaps">Tense</span></td>
+<td style="text-align: left;"><span class="smallcaps">Person</span></td>
+<td style="text-align: left;"><span class="smallcaps">Number</span></td>
+<td style="text-align: left;"><span class="smallcaps">Mood</span></td>
+<td style="text-align: left;"><span class="smallcaps">Aspect</span></td>
+<td style="text-align: left;"><span class="smallcaps">Alias</span></td>
+<td style="text-align: center;"><span class="smallcaps">Tag</span></td>
+<td style="text-align: left;"><span class="smallcaps">Example</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">INFINITIVE</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">"inf"</span></td>
+<td style="text-align: center;"><span class="postag">VB</span></td>
+<td><em>be</em></td>
+</tr>
+<tr>
+<td><span class="inline_code">PRESENT</span></td>
+<td><span class="inline_code">1</span></td>
+<td><span class="inline_code">SG</span></td>
+<td><span class="inline_code">INDICATIVE</span></td>
+<td><span class="inline_code">IMPERFECTIVE</span></td>
+<td><span class="inline_code">"1sg"</span></td>
+<td style="text-align: center;"><span class="postag">VBP</span></td>
+<td><em>I <span style="text-decoration: underline;">am</span></em></td>
+</tr>
+<tr>
+<td><span class="inline_code">PRESENT</span></td>
+<td><span class="inline_code">2</span></td>
+<td><span class="inline_code">SG</span></td>
+<td><span class="inline_code">INDICATIVE</span></td>
+<td><span class="inline_code">IMPERFECTIVE</span></td>
+<td><span class="inline_code">"2sg"</span></td>
+<td style="text-align: center;">&nbsp;·</td>
+<td><em>you <span style="text-decoration: underline;">are</span></em></td>
+</tr>
+<tr>
+<td><span class="inline_code">PRESENT</span></td>
+<td><span class="inline_code">3</span></td>
+<td><span class="inline_code">SG</span></td>
+<td><span class="inline_code">INDICATIVE</span></td>
+<td><span class="inline_code">IMPERFECTIVE</span></td>
+<td><span class="inline_code">"3sg"</span></td>
+<td style="text-align: center;"><span class="postag">VBZ</span></td>
+<td><em>he <span style="text-decoration: underline;">is</span></em></td>
+</tr>
+<tr>
+<td><span class="inline_code">PRESENT</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">PL</span></td>
+<td><span class="inline_code">INDICATIVE</span></td>
+<td><span class="inline_code">IMPERFECTIVE</span></td>
+<td><span class="inline_code">"pl"</span></td>
+<td style="text-align: center;">&nbsp;·</td>
+<td><em>are</em></td>
+</tr>
+<tr>
+<td><span class="inline_code">PRESENT</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">INDICATIVE</span></td>
+<td><span class="inline_code">PROGRESSIVE</span></td>
+<td><span class="inline_code">"part"</span></td>
+<td style="text-align: center;"><span class="postag">VBG</span></td>
+<td><em>being</em></td>
+</tr>
+<tr>
+<td style="border-left: 0; border-right: 0; padding: 0;">&nbsp;</td>
+</tr>
+<tr>
+<td><span class="inline_code">PAST</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">None</span></td>
+<td><span class="inline_code">"p"</span></td>
+<td style="text-align: center;"><span class="postag">VBD</span></td>
+<td><em>were</em></td>
+</tr>
+<tr>
+<td><span class="inline_code">PAST</span></td>
+<td><span class="inline_code"><span>1</span></span></td>
+<td><span class="inline_code"><span>PL</span></span></td>
+<td><span class="inline_code">INDICATIVE</span></td>
+<td><span class="inline_code">IMPERFECTIVE</span></td>
+<td><span class="inline_code">"1sgp"</span></td>
+<td style="text-align: center;">&nbsp;·</td>
+<td><em>I <span style="text-decoration: underline;">was</span></em></td>
+</tr>
+<tr>
+<td><span class="inline_code">PAST</span></td>
+<td><span class="inline_code"><span>2</span></span></td>
+<td><span class="inline_code"><span>PL</span></span></td>
+<td><span class="inline_code"><span>INDICATIVE</span></span></td>
+<td><span class="inline_code">IMPERFECTIVE</span></td>
+<td><span class="inline_code">"2sgp"</span></td>
+<td style="text-align: center;">&nbsp;·</td>
+<td><em>you <span style="text-decoration: underline;">were</span></em></td>
+</tr>
+<tr>
+<td><span class="inline_code">PAST</span></td>
+<td><span class="inline_code"><span>3</span></span></td>
+<td><span class="inline_code"><span>PL</span></span></td>
+<td><span class="inline_code"><span>INDICATIVE</span></span></td>
+<td><span class="inline_code">IMPERFECTIVE</span></td>
+<td><span class="inline_code">"3gp"</span></td>
+<td style="text-align: center;">&nbsp;·</td>
+<td><em>he <span style="text-decoration: underline;">was</span></em></td>
+</tr>
+<tr>
+<td><span class="inline_code">PAST</span></td>
+<td><span class="inline_code"><span>None</span></span></td>
+<td><span class="inline_code"><span>PL</span></span></td>
+<td><span class="inline_code"><span>INDICATIVE</span></span></td>
+<td><span class="inline_code">IMPERFECTIVE</span></td>
+<td><span class="inline_code">"ppl"</span></td>
+<td style="text-align: center;">&nbsp;·</td>
+<td><em>were</em></td>
+</tr>
+<tr>
+<td style="text-align: left;"><span class="inline_code">PAST</span></td>
+<td style="text-align: left;"><span><span>None</span></span></td>
+<td style="text-align: left;"><span class="inline_code">None</span></td>
+<td style="text-align: left;"><span class="inline_code">INDICATIVE</span></td>
+<td style="text-align: left;"><span class="inline_code"><span>PROGRESSIVE</span></span></td>
+<td style="text-align: left;"><span class="inline_code">"ppart"</span></td>
+<td style="text-align: center;"><span class="postag">VBN</span></td>
+<td style="text-align: left;"><em>been</em></td>
+</tr>
+</tbody>
+</table>
+<p>Instead of optional parameters, a single short alias, the part-of-speech tag, or&nbsp;<span class="inline_code">PARTICIPLE</span>&nbsp;or <span class="inline_code">PAST+PARTICIPLE</span> can also be given. With no parameters, the infinitive form of the verb is returned.</p>
+<p>For example:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import conjugate, lemma, lexeme
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print lexeme('purr')
+&gt;&gt;&gt; print lemma('purring')
+&gt;&gt;&gt; print conjugate('purred', '3sg') # he / she / it
+
+['purr', 'purrs', 'purring', 'purred']
+purr
+purrs
+</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import tenses, PAST, PL
+&gt;&gt;&gt;
+&gt;&gt;&gt; print 'p' in tenses('purred') # By alias.
+&gt;&gt;&gt; print PAST in tenses('purred')
+&gt;&gt;&gt; print (PAST, 1, PL) in tenses('purred')
+
+True
+True
+True </pre></div>
+<p><span class="small"><span style="text-decoration: underline;">Reference</span>: <em>XTAG English morphology</em> (1999), University of Pennsylvania, http://www.cis.upenn.edu/~xtag</span></p>
+<p>&nbsp;<br /><span class="smallcaps">Rule-based conjugation</span></p>
+<p>All verb functions have an optional <span class="inline_code">parse</span>&nbsp;parameter (<span class="inline_code">True</span> by default) that enables a rule-based parser for unknown verbs. This will not work for irregular verbs, and it is fragile for verbs ending in -e in the past tense, or the present participle. The overall accuracy of the algorithm is 91%.</p>
+<p>With <span class="inline_code">parse=False</span>,&nbsp;<span class="inline_code">conjugate()</span>&nbsp;and&nbsp;<span class="inline_code">lemma()</span>&nbsp;yield&nbsp;<span class="inline_code">None</span>:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import verbs, conjugate, PARTICIPLE
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print 'google'  in verbs.infinitives
+&gt;&gt;&gt; print 'googled' in verbs.inflections
+&gt;&gt;&gt;  
+&gt;&gt;&gt; print conjugate('googled', tense=PARTICIPLE, parse=False)
+&gt;&gt;&gt; print conjugate('googled', tense=PARTICIPLE, parse=True)
+
+False
+False 
+None
+googling
+</pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="quantify"></a>Quantification</h2>
+<p>The <span class="inline_code">number()</span> function returns a <span class="inline_code">float</span> or <span class="inline_code">int</span> parsed from the given (numeric) string. If no number can be parsed from the string, it returns <span class="inline_code">0</span>.</p>
+<p>The <span class="inline_code">numerals()</span> function returns the given <span class="inline_code">int</span> or <span class="inline_code">float</span> as a string of numerals. By default, the fraction is rounded to two decimals.</p>
+<p>The <span class="inline_code">quantify()</span> function returns a word count approximation. Two similar words are a <em>pair</em>, three to eight <em>several</em>, and so on. Words can be given as a list, a word → count dictionary, or as a single word + amount.</p>
+<p>The <span class="inline_code">reflect()</span> function quantifies Python objects – see the examples bundled with the module.</p>
+<pre class="brush:python; gutter:false; light:true;">number(string)              # "seventy-five point two" =&gt; 75.2</pre><pre class="brush:python; gutter:false; light:true;">numerals(n, round=2)        # 2.245 =&gt; "two point twenty-five"</pre><pre class="brush:python; gutter:false; light:true;">quantify([word1, word2, ...], plural={})</pre><pre class="brush:python; gutter:false; light:true;">reflect(object, quantify=True, replace=[])
+</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import quantify
+&gt;&gt;&gt;  
+&gt;&gt;&gt; print quantify(['goose', 'goose', 'duck', 'chicken', 'chicken', 'chicken'])
+&gt;&gt;&gt; print quantify({'carrot': 100, 'parrot': 20})
+&gt;&gt;&gt; print quantify('carrot', amount=1000)
+
+several chickens, a pair of geese an⁣d a duck
+dozens of carrots an⁣d a score of parrots
+hundreds of carrots 
+</pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="spelling"></a>Spelling</h2>
+<p>The <span class="inline_code">suggest()</span> function returns a list of spelling suggestions for a given word. Each suggestion is a <span class="inline_code">(word,</span> <span class="inline_code">confidence)</span>-tuple. It is about 70% accurate.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">suggest(string)</pre><div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.en import suggest
+&gt;&gt;&gt; print suggest("parot")
+
+[("part", 0.99), ("parrot", 0.01)]</pre></div>
+<p><span class="small"><span style="text-decoration: underline;">Reference</span>: Norvig, P. (2007). <em>How to Write a Spelling Corrector</em>. http://norvig.com/spell-correct.html</span>&nbsp;</p>
+<p>&nbsp;</p>
+<hr />
+<h2><em><a name="ngram"></a>n</em>-grams</h2>
+<p>The <span class="inline_code">ngrams()</span> function returns&nbsp;a list of <em>n</em>-grams (i.e., tuples of <em>n</em> successive words) from the given string.&nbsp;Alternatively, you can supply a <span class="inline_code">Text</span> or <span class="inline_code">Sentence</span> object (see further). Punctuation marks are stripped from words, and&nbsp;<em>n</em>-grams will not run over sentence delimiters (i.e., .!?), unless <span class="inline_code">continuous</span> is <span class="inline_code">True</span>.</p>
+<pre class="brush:python; gutter:false; light:true;">ngrams(string, n=3, punctuation=".,;:!?()[]{}`''\"@#$^&amp;*+-|=~_", continuous=False)</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import ngrams
+&gt;&gt;&gt; print ngrams("I am eating pizza.", n=2) # bigrams
+
+[('I', 'am'), ('am', 'eating'), ('eating', 'pizza')] </pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="parser"></a>Parser</h2>
+<p>A parser identifies sentences, words and word types in a string of text. This involves tokenization (distinguishing between abbreviations and sentence breaks), part-of-speech tagging (annotating words with their type, e.g., is <em>can</em> a <span class="postag">noun</span> or a <span class="postag">verb</span>?) and chunking (grouping consecutive words that belong together). Parsing can be used to answer questions such as <em>who did what and why</em> and is useful in a wide range of text mining applications.&nbsp;The pattern.en parser uses a lexicon of a 100,000 known words and their part-of-speech <a class="link-maintenance" href="MBSP-tags.html" target="_blank">tag</a>, along with rules for unknown words based on word suffix (e.g., <em>-ly</em> = <span class="postag">ADVERB</span>) and context (surrounding words). This approach is fast but not always accurate, since many words are ambiguous and hard to capture with simple rules. The overall accuracy is about 95% (95.8% on WSJ portions 22-24). It is lower for informal language use (e.g., chat language).</p>
+<p>The <span class="inline_code">parse()</span> function takes a string of text and returns a part-of-speech tagged Unicode string. Sentences in the output are separated by newline characters.</p>
+<pre class="brush:python; gutter:false; light:true;">parse(string, 
+   tokenize = True,         # Split punctuation marks from words?
+       tags = True,         # Parse part-of-speech tags? (NN, JJ, ...)
+     chunks = True,         # Parse chunks? (NP, VP, PNP, ...)
+  relations = False,        # Parse chunk relations? (-SBJ, -OBJ, ...)
+    lemmata = False,        # Parse lemmata? (ate =&gt; eat)
+   encoding = 'utf-8')      # Input string encoding.
+</pre><p>For example:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parse
+&gt;&gt;&gt; print parse('I eat pizza with a fork.')
+
+I/PRP/B-NP/O eat/VBD/B-VP/O pizza/NN/B-NP/O with/IN/B-PP/B-PNP a/DT/B-NP/I-PNP
+fork/NN/I-NP/I-PNP ././O/O
+</pre></div>
+<ul>
+<li>With&nbsp;<span class="inline_code">tags</span><span class="inline_code">=True</span> each word is annotated with a part-of-speech tag.&nbsp;</li>
+<li>With <span class="inline_code">chunks=True</span>&nbsp;each word is annotated with a chunk tag and a&nbsp;<span class="postag">PNP</span> tag (prepositional noun phrase, <span class="postag">PP</span> + <span class="postag">NP</span>). The <span class="inline_code postag">O</span> tag (= outside) means that the word is not part of a chunk.</li>
+<li>With <span class="inline_code">relations=True</span>&nbsp;each word is annotated with a role tag (e.g., <span class="postag">-SBJ</span>&nbsp;for subject or -<span class="postag">OBJ</span>&nbsp;for).</li>
+<li>With <span class="inline_code">lemmata=True</span> each word is annotated with its base form.&nbsp;</li>
+<li>With <span class="inline_code">tokenize=False</span>, punctuation marks will not be separated from words. <br />The input string is expected to be tokenized beforehand, or sentence delimiters are not discovered.</li>
+</ul>
+<p><span class="small"><span style="text-decoration: underline;">Reference</span>: Brill, E. (1992). <em>A simple rule-based part of speech tagger.</em> ANLC '92 Proceedings.</span></p>
+<h3>Parser tags</h3>
+<p>Let's examine the word <em>fork</em> and the tags assigned by the parser in the example above:</p>
+<table class="border">
+<tbody>
+<tr>
+<td class="smallcaps" style="text-align: center;" align="center">word</td>
+<td class="smallcaps" style="text-align: center;" align="center">part-of-speech</td>
+<td class="smallcaps" style="text-align: center;" align="center">chunk</td>
+<td class="smallcaps" style="text-align: center;" align="center">pnp</td>
+</tr>
+<tr>
+<td align="center">fork</td>
+<td align="center"><span class="postag">NN </span></td>
+<td align="center"><span class="postag">I-NP</span></td>
+<td align="center"><span class="postag">I-PNP</span></td>
+</tr>
+</tbody>
+</table>
+<p>The word's part-of-speech tag is <span class="postag">NN</span>, which means that it is a noun. The word occurs in a <span class="postag">NP</span> chunk, a noun phrase (i.e., <em>a fork</em>). It is also part of a prepositional noun phrase (i.e., <em><span style="text-decoration: underline;">with</span> a fork</em>).</p>
+<p>Common part-of-speech tags are&nbsp;<span class="postag">NN</span> (noun), <span class="postag">VB</span> (verb),&nbsp;<span class="postag">JJ</span> (adjective), <span class="postag">RB</span> (adverb)&nbsp;and&nbsp;<span class="postag">IN</span> (preposition).<br />Common chunk tags are&nbsp;<span class="postag">NP</span> (noun phrase) and <span class="postag">VP</span> (verb phrase).<br />Common chunk relations are <span class="postag">NP-SBJ</span> (subject) and <span class="postag">NP-OBJ</span> (object).</p>
+<p>The <a class="link-maintenance" href="MBSP-tags.html" target="_blank">Penn Treebank II tagset</a>&nbsp;gives an overview of all the possible tags generated by the parser.</p>
+<h3>Parser tagger &amp; tokenizer</h3>
+<p>The <span class="inline_code">tokenize()</span> function returns a list of sentences, with punctuation marks split from words. It takes an optional&nbsp;<span class="inline_code">replace</span>&nbsp;dictionary, by default used to split contractions, i.e.,&nbsp;<span class="inline_code">{"'ve":</span>&nbsp;<span class="inline_code">"&nbsp;</span><span class="inline_code">'ve"</span><span class="inline_code">,</span> <span class="inline_code">...}</span>.</p>
+<p>The <span class="inline_code">tag()</span> function simply annotates words with their part-of-speech tag and returns a list of <span class="inline_code">(word,</span> <span class="inline_code">tag)</span>-tuples:</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">tokenize(string, punctuation=".,;:!?()[]{}`''\"@#$^&amp;*+-|=~_", replace={})</pre><pre class="brush:python; gutter:false; light:true;">tag(string, tokenize=True, encoding='utf-8')</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import tag
+&gt;&gt;&gt; 
+&gt;&gt;&gt; for word, pos in tag('I feel *happy*!') 
+&gt;&gt;&gt;     if pos == "JJ": # Retrieve all adjectives.
+&gt;&gt;&gt;         print word
+
+happy</pre></div>
+<h3>Parser output</h3>
+<p>The output of&nbsp;<span class="inline_code">parse()</span>&nbsp;is a string of sentences in which each word has been annotated with the requested tags. The <span class="inline_code">pprint()</span> function gives a human-readable breakdown of the tags (the extra <em>p-</em> is for <em>pretty</em>).</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parse
+&gt;&gt;&gt; from pattern.en import pprint 
+&gt;&gt;&gt; 
+&gt;&gt;&gt; pprint(parse('I ate pizza.', relations=True, lemmata=True))
+
+    WORD   TAG    CHUNK   ROLE   ID     PNP    LEMMA
+       I   PRP    NP      SBJ    1      -      i   
+     ate   VBP    VP      -      1      -      eat         
+   pizza   NN     NP      OBJ    1      -      pizza         
+       .   .      -       -      -      -      .        </pre></div>
+<p>The output of <span class="inline_code">parse()</span> is a subclass of <span class="inline_code">unicode</span> called&nbsp;<span class="inline_code">TaggedString</span>&nbsp;whose&nbsp;<span class="inline_code">TaggedString.split()</span> method by default yields a list of sentences, where each sentence is a list of tokens, where each token is a list of the word + its tags.</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parse
+&gt;&gt;&gt; print parse('I ate pizza.').split()
+
+[[[u'I', u'PRP', u'B-NP', u'O'], 
+  [u'ate', u'VBD', u'B-VP', u'O'], 
+  [u'pizza', u'NN', u'B-NP', u'O'], 
+  [u'.', u'.', u'O', u'O']]]     </pre></div>
+<p>The most convenient way to analyze and mine the output is to construct&nbsp;a <a href="#tree" target="_self">parse tree</a>.</p>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="tree"></a>Parse trees</h2>
+<p>A parse tree stores a tagged string as a tree of nested objects that can be traversed to analyze the constituents in the text. The <span class="inline_code">parsetree()</span> function takes the same parameters as <span class="inline_code">parse()</span> and returns a <span class="inline_code">Text</span> object.&nbsp;A&nbsp;<span class="inline_code">Text</span> is a list of <span class="inline_code">Sentence</span> objects. Each <span class="inline_code">Sentence</span> is a list of <span class="inline_code">Word</span> objects. <span class="inline_code">Word</span> objects can be grouped in <span class="inline_code">Chunk</span> objects, which are related to other <span class="inline_code">Chunk</span> objects.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">parsetree(string,
+   tokenize = True,         # Split punctuation marks from words?
+       tags = True,         # Parse part-of-speech tags? (NN, JJ, ...)
+     chunks = True,         # Parse chunks? (NP, VP, PNP, ...)
+  relations = False,        # Parse chunk relations? (-SBJ, -OBJ, ...)
+    lemmata = False,        # Parse lemmata? (ate =&gt; eat)
+   encoding = 'utf-8')      # Input string encoding.
+</pre><p>The following example shows the parse tree for the sentence "<em>The cat sat on the mat.</em>":</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parsetree
+&gt;&gt;&gt; 
+&gt;&gt;&gt; s = parsetree('The cat sat on the mat.', relations=True, lemmata=True)
+&gt;&gt;&gt; print repr(s)
+
+[Sentence(
+ u'The/DT/B-NP/O/NP-SBJ-1/the 
+   cat/NN/I-NP/O/NP-SBJ-1/cat 
+   sat/VBD/B-VP/O/VP-1/sit 
+   on/IN/B-PP/B-PNP/O/on 
+   the/DT/B-NP/I-PNP/O/the 
+   mat/NN/I-NP/I-PNP/O/mat 
+   ././O/O/O/O/.')]</pre><pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; for sentence in s:
+&gt;&gt;&gt;     for chunk in sentence.chunks:
+&gt;&gt;&gt;         print chunk.type, [(w.string, w.type) for w in chunk.words]
+
+NP [(u'the', u'DT'), (u'cat', u'NN')]
+VP [(u'sat', u'VBD')]
+PP [(u'on', u'IN')]
+NP [(u'the', 'DT), (u'mat', u'NN')] 
+</pre></div>
+<p>If you already have a tagged string from <span class="inline_code">parse()</span>&nbsp;(e.g., stored in a file) you can transform it to a <span class="inline_code">Text</span> with the module's&nbsp;<span class="inline_code">split()</span> function. In other words, <span class="inline_code">parsetree()</span> = <span class="inline_code">split(parse()</span><span class="inline_code">)</span>.</p>
+<h3>Text</h3>
+<p>A <span class="inline_code">Text</span> is a list of <span class="inline_code">Sentence</span> objects (i.e., it can be iterated with&nbsp;<span class="inline_code">for</span> <span class="inline_code">sentence</span> <span class="inline_code">in</span> <span class="inline_code">text:</span>).</p>
+<pre class="brush:python; gutter:false; light:true;">text = Text(taggedstring)</pre><pre class="brush:python; gutter:false; light:true;">text = Text.from_xml(xml)  # Reads an XML string generated with Text.xml.
+</pre><pre class="brush:python; gutter:false; light:true;">text.string                # 'The cat sat on the mat .'
+text.sentences             # [Sentence('The cat sat on the mat .')]
+text.copy()
+text.xml</pre><h3>Sentence</h3>
+<p>A <span class="inline_code">Sentence</span> is a list of <span class="inline_code">Word</span> objects, with attributes and methods that group words in <span class="inline_code">Chunk</span> objects.</p>
+<pre class="brush:python; gutter:false; light:true;">sentence = Sentence(taggedstring)</pre><pre class="brush:python; gutter:false; light:true;">sentence = Sentence.from_xml(xml) 
+</pre><pre class="brush:python; gutter:false; light:true;">sentence.parent            # Sentence parent, or None.
+sentence.id                # Unique id for each sentence.
+sentence.start             # 0
+sentence.stop              # len(Sentence).
+</pre><pre class="brush:python; gutter:false; light:true;">sentence.string            # Tokenized string, without tags. 
+sentence.words             # List of Word objects. 
+sentence.lemmata           # List of word lemmata. 
+sentence.chunks            # List of Chunk objects.
+sentence.subjects          # List of NP-SBJ chunks.
+sentence.objects           # List of NP-OBJ chunks.
+sentence.verbs             # List of VP chunks.
+sentence.relations         # {'SBJ': {1: Chunk('the cat/NP-SBJ-1')},
+                           #   'VP': {1: Chunk('sat/VP-1')},
+                           #  'OBJ': {}}
+sentence.pnp               # List of PNPChunks: [Chunk('on the mat/PNP')]
+</pre><pre class="brush:python; gutter:false; light:true;">sentence.constituents(pnp=False)</pre><pre class="brush:python; gutter:false; light:true;">sentence.slice(start, stop)
+sentence.copy()
+sentence.xml
+</pre><ul>
+<li><span class="inline_code">Sentence.constituents()</span> returns a mixed, in-order list of <span class="inline_code">Word</span> and <span class="inline_code">Chunk</span> objects.<br />With <span class="inline_code">pnp=True</span>, it will yield&nbsp;<span class="inline_code">PNPChunk</span> objects whenever possible.</li>
+<li><span class="inline_code">Sentence.slice()</span>&nbsp;returns a <span class="inline_code">Slice</span> (= a subclass of <span class="inline_code">Sentence</span>) starting with the word at index <span class="inline_code">start</span> and containing all words up to (not including) index <span class="inline_code">stop</span>.</li>
+</ul>
+<h3>Sentence words</h3>
+<p>A <span class="inline_code">Sentence</span> is made up of <span class="inline_code">Word</span> objects, which are also grouped in <span class="inline_code">Chunk</span> objects:</p>
+<pre class="brush:python; gutter:false; light:true;">word = Word(sentence, string, lemma=None, type=None, index=0)</pre><pre class="brush:python; gutter:false; light:true;">word.sentence              # Sentence parent.
+word.index                 # Sentence index of word.
+word.string                # String (Unicode).
+word.lemma                 # String lemma, e.g. 'sat' =&gt; 'sit',
+word.type                  # Part-of-speech tag (NN, JJ, VBD, ...)
+word.chunk                 # Chunk parent, or None.
+word.pnp                   # PNPChunk parent, or None.</pre><h3>Sentence chunks</h3>
+<p>A <span class="inline_code">Chunk</span> is a list of <span class="inline_code">Word</span> objects that belong together. <br />Multiple chunks can be part of a <span class="inline_code">PNPChunk</span>, which start with a <span class="postag">PP</span> chunk followed by <span class="postag">NP</span> chunks.</p>
+<pre class="brush:python; gutter:false; light:true;">chunk = Chunk(sentence, words=[], type=None, role=None, relation=None)</pre><pre class="brush:python; gutter:false; light:true;">chunk.sentence             # Sentence parent.
+chunk.start                # Sentence index of first word.
+chunk.stop                 # Sentence index of last word + 1.
+chunk.string               # String of words (Unicode).
+chunk.words                # List of Word objects.
+chunk.lemmata              # List of word lemmata. 
+chunk.head                 # Primary Word in the chunk.
+chunk.type                 # Chunk tag (NP, VP, PP, ...)
+chunk.role                 # Role tag (SBJ, OBJ, ...)
+chunk.relation             # Relation id, e.g. NP-SBJ-1 =&gt; 1.
+chunk.relations            # List of (id, role)-tuples.
+chunk.related              # List of Chunks with same relation id.
+chunk.subject              # NP-SBJ chunk with same id.
+chunk.object               # NP-OBJ chunk with same id.
+chunk.verb                 # VP chunk with same id.
+chunk.modifiers            # []
+chunk.conjunctions         # []
+chunk.pnp                  # PNPChunk parent, or None.
+</pre><pre class="brush:python; gutter:false; light:true;">chunk.previous(type=None)
+chunk.next(type=None)
+chunk.nearest(type='VP')</pre><ul>
+<li><span class="inline_code">Chunk.head</span> yields the primary&nbsp;<span class="inline_code">Word</span> in the chunk: <em>the big cat</em> → <em>cat</em>.</li>
+<li><span class="inline_code">Chunk.relations</span>&nbsp;contains all relations the chunk is part of. <br />Some chunks have multiple relations, e.g., <span class="postag">SBJ</span> as well as&nbsp;<span class="postag">OBJ</span>, or&nbsp;<span class="postag">OBJ</span> of multiple <span class="postag">VP</span>'s.</li>
+<li>For <span class="postag">VP</span> chunks, <span class="inline_code">Chunk.modifiers</span> is a list of nearby adjectives and adverbs that have no relations. <br />For example, in <em>the cat purred happily</em>, modifier of&nbsp;<em>purred</em>&nbsp;→ <em>happily</em>.</li>
+<li><span class="inline_code">Chunk.conjunctions</span> is a list of chunks linked by <em>and</em>&nbsp;and&nbsp;<em>or</em> to this chunk. <br />For example in <em>up and down</em>: the <em>up</em> chunk has conjunctions: <span class="inline_code">[(Chunk('down'),</span> <span class="inline_code">AND)]</span>.</li>
+</ul>
+<h3>Prepositional noun phrases</h3>
+<p>A <span class="inline_code">PNPChunk</span>&nbsp;or prepositional noun phrase is a subclass of <span class="inline_code">Chunk</span>.&nbsp;It groups <span class="postag">PP</span> + <span class="postag">NP</span> chunks (= <span class="postag">PNP</span>).</p>
+<pre class="brush:python; gutter:false; light:true;">pnp = PNPChunk(sentence, words=[], type=None, role=None, relation=None)</pre><pre class="brush:python; gutter:false; light:true;">pnp.string                 # String of words (Unicode).
+pnp.chunks                 # List of Chunk objects.
+pnp.preposition            # First PP chunk in the PNP.
+</pre><p>Words and chunks that are part of a <span class="postag">PNP</span> will have their <span class="inline_code">Word.pnp</span> and <span class="inline_code">Chunk.pnp</span> attribute set.&nbsp;All prepositional noun phrases in a sentence can be retrieved with <span class="inline_code">Sentence.pnp</span>.</p>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="sentiment"></a>Sentiment</h2>
+<p>Written text can be broadly categorized into two types: facts and opinions. Opinions carry people's sentiments, appraisals and feelings toward the world. The pattern.en module bundles a lexicon of adjectives (e.g., <em>good</em>, <em>bad</em>, <em>amazing</em>, <em>irritating</em>, ...) that occur frequently in product reviews, annotated with scores for sentiment polarity (positive ↔&nbsp;negative) and subjectivity (objective ↔ subjective).&nbsp;</p>
+<p>The <span class="inline_code">sentiment()</span> function returns a <span class="inline_code">(polarity,</span> <span class="inline_code">subjectivity)</span>-tuple for the given sentence, based on the adjectives it contains,&nbsp;where polarity is a value between <span class="inline_code">-1.0</span> and +<span class="inline_code">1.0</span> and subjectivity between <span class="inline_code">0.0</span> and <span class="inline_code">1.0</span>.&nbsp;The sentence can be a string, <span class="inline_code">Text</span>, <span class="inline_code">Sentence</span>, <span class="inline_code">Chunk</span>,&nbsp;<span class="inline_code">Word</span> or a&nbsp;<span class="inline_code">Synset</span> (see below).&nbsp;</p>
+<p>The <span class="inline_code">positive()</span> function returns <span class="inline_code">True</span> if the given sentence's polarity is above the threshold. The threshold can be lowered or raised, but overall <span class="inline_code">+0.1</span> gives the best results for product reviews. Accuracy is about 75% for movie reviews.</p>
+<pre class="brush:python; gutter:false; light:true;">sentiment(sentence)        # Returns a (polarity, subjectivity)-tuple.</pre><pre class="brush:python; gutter:false; light:true;">positive(s, threshold=0.1) # Returns True if polarity &gt;= threshold.</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import sentiment
+&gt;&gt;&gt;  
+&gt;&gt;&gt; print sentiment(
+&gt;&gt;&gt;     "The movie attempts to be surreal by incorporating various time paradoxes,"
+&gt;&gt;&gt;     "but it's presented in such a ridiculous way it's seriously boring.") 
+
+(-0.34, 1.0) </pre></div>
+<p>In the example above,&nbsp;<span class="inline_code">-0.34</span> is the average of&nbsp;<em>surreal</em>, <em>various</em>, <em>ridiculous</em> and <em>seriously boring</em>.&nbsp;To retrieve the scores for indivual words, use the special <span class="inline_code">assessments</span> property, which yields a list of <span class="inline_code">(words,</span> <span class="inline_code">polarity,</span> <span class="inline_code">subjectivity,</span> <span class="inline_code">label)</span>-tuples.</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print sentiment('Wonderfully awful! :-)').assessments
+
+[(['wonderfully', 'awful', '!'], -1.0, 1.0, None), 
+ ([':-)'], 0.5, 1.0, 'mood')] 
+</pre></div>
+<p>&nbsp;&nbsp;</p>
+<hr />
+<h2><a name="modality"></a>Mood &amp; modality</h2>
+<p>Grammatical mood refers to the use of auxillary verbs (e.g., <em>could</em>, <em>would</em>) and adverbs (e.g., <em>definitely</em>,<em> maybe</em>) to express uncertainty.&nbsp;</p>
+<p>The <span class="inline_code">mood()</span> function returns either&nbsp;<span class="inline_code">INDICATIVE</span>, <span class="inline_code">IMPERATIVE</span>, <span class="inline_code">CONDITIONAL</span>&nbsp;or <span class="inline_code">SUBJUNCTIVE</span>&nbsp;for a given parsed&nbsp;<span class="inline_code">Sentence</span>. See the table below for an overview of moods.</p>
+<p>The <span class="inline_code">modality()</span> function returns the degree of certainty as a value between <span class="inline_code">-1.0</span> and <span class="inline_code">+1.0</span>, where values <span class="inline_code">&gt;</span> <span class="inline_code">+0.5</span> represent facts. For example, "<em>I wish it would stop raining"</em> scores <span class="inline_code">-0.35</span>, whereas "<em>It will stop raining"</em> scores <span class="inline_code">+0.75</span>. Accuracy is about 68% for Wikipedia texts.</p>
+<pre class="brush:python; gutter:false; light:true;">mood(sentence)     # Returns INDICATIVE | IMPERATIVE | CONDITIONAL | SUBJUNCTIVE</pre><pre class="brush:python; gutter:false; light:true;">modality(sentence) # Returns -1.0 =&gt; +1.0.</pre><table class="border">
+<tbody>
+<tr>
+<td><span class="smallcaps">Mood</span></td>
+<td><span class="smallcaps">Form</span></td>
+<td><span class="smallcaps">Use</span></td>
+<td><span class="smallcaps">Example</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">INDICATIVE</span></td>
+<td>none of the below&nbsp;</td>
+<td>fact, belief</td>
+<td><em>It rains.</em></td>
+</tr>
+<tr>
+<td><span class="inline_code">IMPERATIVE</span></td>
+<td>infinitive without <em>to</em></td>
+<td>command, warning</td>
+<td><em><span style="text-decoration: underline;">Do</span>n't rain!</em></td>
+</tr>
+<tr>
+<td><span class="inline_code">CONDITIONAL</span></td>
+<td><em>would</em>, <em>could</em>, <em>should</em>, <em>may</em>, or <em>will</em>,&nbsp;<em>can</em> + <em>if</em></td>
+<td>conjecture</td>
+<td><em>It <span style="text-decoration: underline;">might</span> rain.</em></td>
+</tr>
+<tr>
+<td><span class="inline_code">SUBJUNCTIVE</span></td>
+<td><em>wish</em>, <em>were</em>, or&nbsp;<em>it is</em> + infinitive</td>
+<td>wish, opinion</td>
+<td><em>I <span style="text-decoration: underline;">hope</span> it rains.</em></td>
+</tr>
+</tbody>
+</table>
+<p>For example:</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.en import parse, Sentence, parse
+&gt;&gt;&gt; from pattern.en import modality
+&gt;&gt;&gt; 
+&gt;&gt;&gt; s = "Some amino acids tend to be acidic while others may be basic." # weaseling
+&gt;&gt;&gt; s = parse(s, lemmata=True)
+&gt;&gt;&gt; s = Sentence(s)
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print modality(s)
+
+0.11</pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="wordnet"></a>WordNet</h2>
+<p>The pattern.en module includes WordNet 3.0 and Oliver Steele's PyWordNet module. <a href="http://wordnet.princeton.edu/" target="_blank">WordNet</a> is a lexical database that groups related words into <span class="inline_code">Synset</span> objects (= sets of synonyms). Each synset provides a short definition and semantic relations to other synsets.</p>
+<p>The <span class="inline_code">synsets()</span> function returns a list of <span class="inline_code">Synset</span> objects for a given word, where each set corresponds to a word sense (e.g., <em>tree</em> in the sense of plant, <em>tree</em> in the sense of diagram, etc.)</p>
+<pre class="brush:python; gutter:false; light:true;">synset = synsets(word, pos=NOUN)[i]</pre><pre class="brush:python; gutter:false; light:true;">synset.pos                  # Part-of-speech: NOUN | VERB | ADJECTIVE | ADVERB.
+synset.synonyms             # List of word forms (i.e., synonyms).
+synset.gloss                # Definition string.
+synset.lexname              # Category string, or None.
+synset.ic                   # Information Content (float).
+</pre><pre class="brush:python; gutter:false; light:true;">synset.antonym              # Synset (semantic opposite).
+synset.hypernym             # Synset (semantic parent).</pre><pre class="brush:python; gutter:false; light:true;">synset.hypernyms(recursive=False, depth=None)
+synset.hyponyms(recursive=False, depth=None)
+synset.meronyms()           # List of synsets (members/parts).
+synset.holonyms()           # List of synsets (of which this is a member).
+synset.similar()            # List of synsets (similar adjectives/verbs).</pre><ul>
+<li><span class="inline_code">Synset.hypernyms()</span> returns a list of <em>&nbsp;</em>parent synsets (i.e., more general).</li>
+<li><span class="inline_code">Synset.hyponyms()</span> returns a list child synsets (i.e., more specific).<br />With <span class="inline_code">recursive=True</span>, returns parents of parents or children of children.<br />Optionally, returns parents or children recursively up to the given <span class="inline_code">depth</span>.</li>
+</ul>
+<p>For example:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import wordnet
+&gt;&gt;&gt;  
+&gt;&gt;&gt; s = wordnet.synsets('bird')[0]
+&gt;&gt;&gt;  
+&gt;&gt;&gt; print 'Definition:', s.gloss
+&gt;&gt;&gt; print '  Synonyms:', s.synonyms
+&gt;&gt;&gt; print ' Hypernyms:', s.hypernyms()
+&gt;&gt;&gt; print '  Hyponyms:', s.hyponyms()
+&gt;&gt;&gt; print '  Holonyms:', s.holonyms()
+&gt;&gt;&gt; print '  Meronyms:', s.meronyms()
+
+Definition: u'warm-blooded egg-laying vertebrates characterized '
+             'by feathers and forelimbs modified as wings'
+  Synonyms: [u'bird']
+ Hypernyms: [Synset(u'vertebrate')]
+  Hyponyms: [Synset(u'cock'), Synset(u'hen'), ...]
+  Holonyms: [Synset(u'Aves'), Synset(u'flock')]
+  Meronyms: [Synset(u'beak'), Synset(u'feather'), ...]</pre></div>
+<div class="example"><span class="small"><span style="text-decoration: underline;">Reference</span>: Fellbaum, C. (1998). </span><em class="small">WordNet: An Electronic Lexical Database</em><span class="small">. Cambridge, MIT Press.</span></div>
+<h3>Synset similarity</h3>
+<p>The <span class="inline_code">ancestor()</span> function returns the common ancestor&nbsp;of two synsets.&nbsp;The <span class="inline_code">similarity()</span> function returns the semantic similarity of two synsets as a value between <span class="inline_code">0.0</span>–<span class="inline_code">1.0</span>.</p>
+<pre class="brush:python; gutter:false; light:true;">ancestor(synset1, synset2)</pre><pre class="brush:python; gutter:false; light:true;">similarity(synset1, synset2)
+</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import wordnet
+&gt;&gt;&gt; 
+&gt;&gt;&gt; a = wordnet.synsets('cat')[0]
+&gt;&gt;&gt; b = wordnet.synsets('dog')[0]
+&gt;&gt;&gt; c = wordnet.synsets('box')[0]
+&gt;&gt;&gt;  
+&gt;&gt;&gt; print wordnet.ancestor(a, b)
+&gt;&gt;&gt;  
+&gt;&gt;&gt; print wordnet.similarity(a, a) 
+&gt;&gt;&gt; print wordnet.similarity(a, b)
+&gt;&gt;&gt; print wordnet.similarity(a, c)  
+
+Synset('carnivore')
+1.0
+0.86
+0.17 </pre></div>
+<p>Similarity is calculated using Lin's formula and Resnik's Information Content (IC). IC values for each synset are derived from the word count in Brown corpus.</p>
+<p><span class="inline_code">lin</span> <span class="inline_code">=</span> <span class="inline_code">2.0</span> <span class="inline_code">*</span> <span class="inline_code">log(ancestor(synset1,</span> <span class="inline_code">synset2).ic)</span> <span class="inline_code">/</span> <span class="inline_code">log(synset1.ic</span> <span class="inline_code">*</span> <span class="inline_code">synset2.ic)</span></p>
+<h3>Synset sentiment</h3>
+<p><a href="http://sentiwordnet.isti.cnr.it/" target="_blank">SentiWordNet</a> is a lexical resource for opinion mining, with polarity and subjectivity scores for all WordNet synsets. SentiWordNet is free for non-commercial research purposes. To use SentiWordNet, request a download from the authors and put&nbsp;<span class="inline_code">SentiWordNet*.txt</span> in&nbsp;<span class="inline_code">pattern/en/wordnet/</span>.&nbsp;You can then use&nbsp;<span class="inline_code">Synset.weight()</span> in your script:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import wordnet
+&gt;&gt;&gt; from pattern.en import ADJECTIVE
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print wordnet.synsets('happy', ADJECTIVE)[0].weight
+&gt;&gt;&gt; print wordnet.synsets('sad', ADJECTIVE)[0].weight
+
+(0.375, 0.875)
+(-0.625, 0.875)
+</pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="wordlist"></a>Wordlists</h2>
+<p>The patten.en module includes a number of general-purpose word lists:</p>
+<table class="border">
+<tbody>
+<tr>
+<td><span class="smallcaps">List</span></td>
+<td><span class="smallcaps">Description</span></td>
+<td style="text-align: center;"><span class="smallcaps">Size</span></td>
+<td><span class="smallcaps">Example</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">ACADEMIC</span></td>
+<td>English academic words</td>
+<td style="text-align: center;">500</td>
+<td><em>criterion</em>, <em>proportionally</em>, <em>research</em></td>
+</tr>
+<tr>
+<td><span class="inline_code">BASIC</span></td>
+<td>English basic words</td>
+<td style="text-align: center;">1,000</td>
+<td><em>chicken</em>, <em>pain</em>, <em>road</em></td>
+</tr>
+<tr>
+<td><span class="inline_code">PROFANITY</span></td>
+<td>English swear words</td>
+<td style="text-align: center;">350</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><span class="inline_code">TIME</span></td>
+<td>English time &amp; date words</td>
+<td style="text-align: center;">100</td>
+<td><em>Christmas</em>, <em>past</em>, <em>saturday</em></td>
+</tr>
+</tbody>
+</table>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en.wordlist import ACADEMIC
+&gt;&gt;&gt; 
+&gt;&gt;&gt; words = open('paper.txt').read().split()
+&gt;&gt;&gt; words = [w for w in words if w not in ACADEMIC] </pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2>See also</h2>
+<ul>
+<li><a href="http://www.clips.ua.ac.be/pages/MBSP" target="_blank">MBSP</a> (GPL): r<span>obust parser using a memory-based learning approach, in Python.</span></li>
+<li><span><a href="http://www.nltk.org/" target="_blank">NLTK</a> (Apache): f</span><span>ull natural language processing toolkit for Python.</span></li>
+</ul>
+</div>
+</div></div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
+</body>
+</html>

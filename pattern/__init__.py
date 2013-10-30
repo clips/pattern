@@ -2,6 +2,9 @@
 
 # Authors: Tom De Smedt <tom@organisms.be>, Walter Daelemans <walter.daelemans@ua.ac.be>
 # License: BSD License, see LICENSE.txt
+
+#### BSD LICENSE ###################################################################################
+
 # Copyright (c) 2010 University of Antwerp, Belgium
 # All rights reserved.
 #

@@ -1,0 +1,1647 @@
+/* --- GENERAL STYLES ------------------------------------------------------------------------------------------- */
+
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:300,700);
+@import url(http://fonts.googleapis.com/css?family=Inconsolata:400,700);
+
+body { margin: 0; padding: 0; background: rgb(128,128,128) url(g/gradient.jpg); background-repeat: repeat-x; }
+body, table, th, td, fieldset, legend, 
+fieldset.group-info,
+fieldset.group-info .field-item a,
+.page-demos #content caption h3 { 
+    color: #444; font: normal 9pt "Roboto Slab", Georgia, Times, serif;
+}
+
+/* Ignore copy & pasted font styles. */
+.node span[style] {
+    font: inherit !important;
+}
+
+sup { color: #666; }
+
+table { margin: 1em 0; }
+tr, tr.even, tr.odd { background: none; }
+td { padding: 0.2em 1em 0.2em 0; vertical-align: top; }
+
+h1, table h1 { font-size: 1.7em; }
+h2, table h2 { font-size: 1.25em; }
+h3, table h3 { font-size: 1.25em; }
+h1, h2, h3 { font-weight: normal; }
+
+/* Extra icon indicates clickable titles. */
+h1 a, h2 a, h3 a, 
+.page-projects .views-field-title a,
+.page-software .views-field-title a,
+.page-demos .views-field-title a,
+.page-computational-linguistics .views-field-title a,
+.page-language-acquisition .views-field-title a,
+.page-language-processing .views-field-title a,
+.section-software .views-field-title a,
+.section-ctrs .views-field-title a {
+    padding-right: 12px;
+    background-image: url(g/more.png);
+    background-position: right !important;
+    background-repeat: no-repeat;
+    color: #444; 
+    text-decoration: none; 
+}
+h1 a:hover, h2 a:hover, h3 a:hover,
+.views-field-title a:hover { color: #444; text-decoration: underline; }
+.page-projects .views-field-title a,
+.page-software .views-field-title a,
+.page-demos .views-field-title a,
+.page-computational-linguistics .views-field-title a,
+.page-language-acquisition .views-field-title a,
+.page-language-processing .views-field-title a,
+.section-software .views-field-title a,
+.section-ctrs .views-field-title a { font-size: 1.3em; }
+h1.title, h2.title, h3.title { margin: 0; }
+h1 { margin-bottom: 1em !important; }
+
+a { color: rgb(20,120,240); }
+a { outline: none !important; }
+/* Extra icon indicates external links. */
+a[href^="http"] { 
+    padding-right: 12px;
+    background-image: url(g/external.png);
+    background-position: right !important;
+    background-repeat: no-repeat;
+}
+a.noexternal { background-image: none; padding-right: 0; }
+a.link-news[href^="http"] { 
+    background-image: url(g/external-news.png);
+}
+p { margin: 0.2em 0 0.6em 0; }
+
+.field-label { 
+    margin-bottom: 0.5em;
+    border-bottom: 1px solid #ccc;
+    font-size: 1.1em; 
+    font-variant: small-caps; 
+    font-weight: normal !important;
+}
+.block { margin-bottom: 1em !important; }
+.block ul, .item-list ul { margin: 0.5em 0 0 0 !important; padding: 0 0 0 1.5em; }
+li { }
+
+hr { height: 0px !important; border: 0; border-top: 1px solid #ccc; }
+
+textarea {  }
+div.resizable-textarea .grippie { display: none; }
+
+/* Hide title on front page. */
+.front h1.title { display: none; }
+
+/* CSS for Twitter/FB/G+/LinkedIn share buttons */
+.social-button-container {
+	overflow: visible;
+
+}
+
+.social-button {
+	float: left;
+	width: 100px;
+	height: 20px;
+}
+
+/* --- PAGINATION ---------------------------------------------------------------------------------------------- */
+
+.pager { }
+.pager li { padding: 0.1em 0.4em 0.2em 0.4em !important; }
+.pager a { padding: 0 !important; color: rgb(20,120,240) !important; text-decoration: none; }
+.pager a:hover { text-decoration: underline; }
+.pager-current { 
+    background: #0b5083; 
+    color: white; 
+    font-weight: normal; 
+    border-radius: 0.3em; 
+    -moz-border-radius: 0.3em; 
+    -webkit-border-radius: 0.3em; }
+
+/* --- SEARCH -------------------------------------------------------------------------------------------------- */
+/* Search results page. */
+
+.section-search #content h1,
+.section-search-pages #content h1 { margin-bottom: 0.5em !important; }
+.section-search .box,
+.section-search-pages .box { background: none !important; border: 0 !important; padding: 0; }
+.section-search #content h2,
+.section-search-pages #content h2 { border-top: 1px solid #ccc; margin-top: 2em; display: none; }
+.section-search #content-header .tabs,
+.section-search-pages #content-header .tabs { margin-bottom: 2em; }
+.section-search #search-form,
+.section-search-pages #content #search { margin-top: -6.5em; float: right; }
+.section-search .form-text,
+.section-search-pages .form-text { width: 200px; } 
+.section-search #search-form .search-advanced,
+.section-search-pages #search-form .search-advanced { display: none; }
+.section-search dt,
+.section-search-pages dt { margin: 0; padding-bottom: 0.1em; font-size: 1.2em; }
+.section-search dd,
+.section-search-pages dd { margin: 0 0 1.5em 0; margin-top: 0.1em; }
+.section-search .search-snippet,
+.section-search-pages .search-snippet { margin-bottom: 0; }
+.section-search .search-info,
+.section-search .search-info a,
+.section-search-pages .search-info,
+.section-search-pages .search-info a { color: #888; font-size: 0.95em; }
+.section-search a[href^="http"],
+.section-search-pages a[href^="http"] { background: none; }
+.section-search-pages #sidebar-left { }
+.section-search #sidebar-right li a { color: rgb(140,170,255); }
+
+/* --- CONTENT FLAT PAGES --------------------------------------------------------------------------------------- */
+/* Flat pages generated with the Page content type (e.g. Home). */
+
+body.node-type-page div.tabs {  }
+body.node-type-page .meta { margin-top: -1.5em; margin-bottom: 1.5em; }
+
+/* --- CONTENT TAGS (TAXONOMY TERMS) ---------------------------------------------------------------------------- */
+/* Keywords such as "stylometry" attached to publictations, talks, software, etc. */
+/* The color changes to match the background color of a publication or talk. */
+
+.terms li { margin-bottom: 2.5em !important; }
+.terms li,
+.view-publications .views-field-tid,
+.view-talks .views-field-tid,
+.page-computational-linguistics .views-field-name a,
+.page-language-acquisition .views-field-name a,
+.page-language-processing .views-field-name a,
+.page-projects .views-field-name a,
+.page-software .views-field-tid a,
+.page-demos .views-field-tid,
+.biblio-entry .taxonomy-terms { 
+    margin-right: 0.3em;
+    font-variant: small-caps; 
+    font-size: 1.2em; 
+    font-weight: bold;
+    font-style: normal;
+    text-transform: lowercase;
+}
+.terms li a,
+.page-computational-linguistics .views-field-name a,
+.page-language-acquisition .views-field-name a,
+.page-language-processing .views-field-name a,
+.page-projects .views-field-name a,
+.page-software .views-field-tid a,
+.page-demos .views-field-tid a,
+.biblio-entry .taxonomy-terms { 
+    color: #0e5682; text-decoration: none;
+}
+.view-publications .views-field-tid a,
+div.node-type-biblio .terms a,
+.biblio-entry .terms a,
+.biblio-entry .taxonomy-terms {
+    color: #701637; text-decoration: none;
+}
+.view-talks .views-field-tid a,
+.section-taxonomy .biblio-talks .terms a,
+.section-category .biblio-talks .terms a,
+.biblio-talks .terms a,
+.biblio-talks .taxonomy-terms { 
+    color: #5b682e !important; text-decoration: none; 
+}
+.terms li a:hover,
+.view-publications .views-field-tid a:hover,
+.view-talks .views-field-tid a:hover,
+.page-computational-linguistics .views-field-name a:hover,
+.page-language-acquisition .views-field-name a:hover,
+.page-language-processing .views-field-name a:hover,
+.page-projects .views-field-name a:hover,
+.page-software .views-field-tid a:hover { 
+    text-decoration: underline; 
+}
+
+/* --- CONTENT TAGS: LIST (TAXONOMY VIEW) ----------------------------------------------------------------------- */
+/* Better alignment in the overview for everything tagged with this keyword. */
+/* Publications in this view are colorized with Javascript, see sites/all/themes/clips/script.js
+   or with PHP (see sites/all/themes/clips/template.php. */
+
+.section-taxonomy h1,
+.section-category h1 {
+    text-transform: capitalize; 
+}
+.section-taxonomy .node,
+.section-category .node {
+    margin-bottom: 1.5em;
+}
+.section-taxonomy div.node-type-biblio,
+.section-category div.node-type-biblio {
+    margin-bottom: 1em;
+}
+.section-taxonomy .node h2,
+.section-category .node h2 {
+    border-top: 1px solid #ccc;
+    padding-top: 0.5em;
+    margin-bottom: 0;
+}
+.section-taxonomy div.node-type-biblio h2,
+.section-category div.node-type-biblio h2 {
+    border-top: 0;
+    padding-top: 0;
+    display: none;
+}
+.section-taxonomy div.node-type-biblio .terms,
+.section-category div.node-type-biblio .terms {
+    display: none;
+}
+.section-taxonomy .node-type-story .content,
+.section-category .node-type-story .content {
+    margin: 0.5em 0 0.5em 0;
+}
+.section-taxonomy .node-type-software .meta,
+.section-category .node-type-software .meta {
+    display: none;
+}
+.section-taxonomy .node .field-field-abstracteng .field-label,
+.section-category .node .field-field-abstracteng .field-label,
+.page-projects .node .field-field-abstracteng .field-label {
+    display: none;
+}
+.section-taxonomy .node .field-field-period,
+.section-category .node .field-field-period,
+.section-taxonomy .node .field-field-sponsor,
+.section-category .node .field-field-sponsor,
+.section-taxonomy .node .field-field-intro,
+.section-category .node .field-field-intro {
+    display: none;
+}
+.section-taxonomy .node .field-field-link,
+.section-category .node .field-field-link {
+    background: url(g/download4.gif) no-repeat;
+    padding-left: 23px;
+    padding-top: 1px;
+    padding-bottom: 0;
+    margin-top: 0.5em;
+    margin-bottom: 0;
+    border-bottom: 0;
+    min-height: 20px;
+}
+.section-taxonomy .node .terms,
+.section-category .node .terms {
+    display: none;
+}
+.section-taxonomy .node .form-item,
+.section-category .node .form-item {
+    display: none;
+}
+.section-taxonomy .node ul.links,
+.section-category .node ul.links {
+    display: none;
+}
+
+/* --- RESEARCH GROUPS ------------------------------------------------------------------------------------------- */
+
+.page-computational-linguistics #content .view-header,
+.page-language-acquisition #content .view-header,
+.page-language-processing #content .view-header {
+    font-size: 1em;
+    line-height: 1.6em;
+    margin-bottom: 3em;
+}
+
+.page-computational-linguistics .views-label-field-abstracteng-value,
+.page-language-acquisition .views-label-field-abstracteng-value,
+.page-language-processing views-label-field-abstracteng-value {
+    display: none;
+}
+
+.page-computational-linguistics .views-field-field-abstracteng-value,
+.page-language-acquisition .views-field-field-abstracteng-value,
+.page-language-processing views-field-field-abstracteng-value {
+    margin-top: 0.5em;
+}
+
+/* --- CONTENT TYPE: PROJECTS & SOFTWARE ------------------------------------------------------------------------- */
+
+.node-type-software h1.title,
+.node-type-demo h1.title { margin: 0 !important; }
+
+.page-projects h1,
+.page-software h1 { margin-bottom: 1em; }
+.page-projects #content .views-row,
+.page-computational-linguistics #content .views-row,
+.page-language-acquisition #content .views-row,
+.page-language-processing #content .views-row,
+.page-projects .node,
+.page-software .node { border-top: 1px solid #ccc; }
+
+/* Make the "Past Projects" header more visible. */
+.page-projects h3,
+.page-computational-linguistics h3,
+.page-language-acquisition h3,
+.page-language-processing h3 { 
+    font-size: 1.1em;
+    font-variant: small-caps;
+    margin: 2em 0 1.5em 0;
+    padding: 0.2em 0.2em 0.2em 0.5em;
+    background: #003a69; 
+    border-radius: 0.5em; -moz-border-radius: 0.5em; -webkit-border-radius: 0.5em;
+    color: white;
+}
+
+.page-computational-linguistics #content .views-row,
+.page-language-acquisition #content .views-row,
+.page-language-processing #content .views-row,
+.page-projects #content .views-row { padding-top: 0.5em; padding-bottom: 1em; }
+
+.page-computational-linguistics #content .views-row,
+.page-language-acquisition #content .views-row,
+.page-language-processing #content .views-row,
+.page-projects #content .views-row,
+.page-software h2 { margin: 0.5em 0 0 0; }
+
+.page-software .field-type-link,
+.section-software .field-type-link,
+.node-type-software .field-type-link,
+.node-type-demo .field-type-link {
+    background: url(g/download2.gif) no-repeat;
+    padding-left: 40px;
+    padding-top: 11px;
+    min-height: 30px;
+}
+.page-projects .views-field-field-abstracteng-value { margin-top: 0.5em; }
+.page-software .field { margin-top: 0.5em; }
+/* Project member list and screenshots in the sidebar. */
+.view-og-members-faces table { margin: 0; }
+.view-og-members-faces td { float: left; display: inline; padding: 0 3px 0 0; }
+.view-og-members-faces img { border: 1px solid #ccc; }
+#block-views-og_members_faces-block_1 h2 { font-size: 0.9em; line-height: 1.2em; margin-bottom: 0.75em; }
+#block-views-og_members-block_1 { margin-bottom: 0 !important; }
+.views-field-field-others-value div.field-content { display:list-item; list-style-type: disc; margin: 0 0 0 1.5em; }
+.views-field-field-others-value div.field-item { display:list-item; list-style-type: disc; margin: 0; }
+.views-field-field-others-value div.field-item:first-child { display: inline; }
+/* Project software in the sidebar. */
+#block-views-project_software-block_1 ul,
+#block-views-project_demos-block_1 ul {
+    margin: 0; padding: 0; list-style-type: none;
+}
+#block-views-project_software-block_1 li,
+#block-views-project_demos-block_1 li {
+    background: url(g/download3.gif) no-repeat;
+    padding-left: 30px;
+    padding-top: 6px;
+    min-height: 25px;
+}
+/* Project publications. */
+.project-publications { margin-top: 2em; }
+/* Project date. */
+.date-display-start, .date-display-separator, .date-display-end { font-family: "Inconsolata", "Courier New", Courier, monospace; font-size: 1em; }
+
+.section-projects .field-field-subtitle { font-size: 1.0em; font-weight: bold; }
+.section-projects #sidebar-left .pager { display: none; }
+
+/* The /og page search form. */
+.section-og table.views-table th,
+.section-og table.sticky-header th {
+    font-size: 1.1em;
+    font-variant: small-caps;
+}
+.section-og table.views-table th a,
+.section-og table.sticky-header th a {
+    color: #444;
+}
+.section-og table.views-table th.views-field-name,
+.section-og table.views-table td.views-field-name,
+.section-og table.views-table th.views-field-subscribe,
+.section-og table.views-table td.views-field-subscribe { }
+.section-og #content table { width: 100%; }
+.section-og #content table caption { text-align: left; font: 1.25em "Roboto Slab", Georgia, Times, serif; margin: 1em 0 0 0; padding-top: 1em; }
+.section-og #content th { white-space: nowrap; }
+.section-og #content th a { text-decoration: none; }
+.section-og #content th,
+.section-og #content td { padding: 0.5em 1em 0.5em 0; border-bottom: 1px solid #ddd; }
+.section-og #content tr.even td { background: white; }
+.section-og #content tr.odd td { background: #f0f5fa; }
+.section-og #content td a { color: #333; white-space: nowrap; }
+.section-og #content td a:hover { color: black; }
+.section-og #content td.views-field-view-node a { }
+.section-og #content td.views-field-name { white-space: nowrap; }
+.section-og #content td.views-field-name a { }
+.section-og #content td.views-field-name a:hover { text-decoration: underline; }
+.section-og #content td.views-field-post-count { text-align: center; }
+.section-og #content td.views-field-member-count { text-align: center; }
+.section-og #content td.views-field-member-count a { color: rgb(20,120,240); }
+.section-og #content .view-og-members-faces { margin-top: 2em; }
+.section-og #content .view-og-members-faces td { display: block; float: left; width: 100%; border: 0; padding: 0; }
+.section-og #content .view-og-members-faces td { text-align: left; }
+.section-og #content .view-og-members-faces td div { display: inline; vertical-align: top; }
+.section-og #content .view-og-members-faces td div.picture { padding-right: 0.5em; }
+.section-og #content .view-og-members-faces .views-field-is-admin { font-style: normal; color: #999; }
+.section-og #content .views-field-name { display: none; }
+.section-og #content td.views-field-managelinkadmin a,
+.section-og #content td.views-field-managelink a { color: rgb(140,170,255) !important; }
+.section-og #content .view-filters form div { display: inline; }
+.section-og #content .view-filters form label { display: block; margin-bottom: 0.5em; width: 100%; }
+.section-og #content form { font-family: Arial; }
+.section-og #content form .description { }
+
+fieldset.group-info { border: 0; background: none; padding: 0; margin: 0; }
+fieldset.group-info legend { display: none; }
+fieldset.group-info a { color: rgb(20,120,240) !important; text-decoration: underline; }
+fieldset.group-info p { line-height: 1.6em !important; }
+
+.page-software #content table, .section-software #content table { margin-top: 0; }
+.page-software #content tr, .section-software #content tr { border: 0; }
+.page-software #content td, .section-software #content td { display: block; float: left; width: 100%; }
+.page-software #content td.views-field-title,
+.section-software #content td.views-field-title { background: none; padding-top: 0.5em; border-top: 1px solid #ccc; }
+.page-software #content td.views-field-field-link-url,
+.section-software #content td.views-field-field-link-url { 
+    background: url(g/download3.gif) no-repeat;
+    padding-left: 30px;
+    padding-top: 6px;
+    margin-bottom: 1em;
+    min-height: 25px;
+}
+
+.page-demos #content table { margin-top: 0; }
+.page-demos #content caption { text-align: left; }
+.page-demos #content caption h3 { margin: 2em 0 0 0; font-size: 1.1em; font-variant: small-caps; }
+.page-demos #content tr { border: 0; }
+.page-demos #content td { display: block; float: left; width: 100%; }
+.page-demos #content td.views-field-title { background: none; padding-top: 0.5em; border-top: 1px solid #ccc; }
+.page-demos #content td.views-field-field-link-url,
+.page-public-scripts td.views-field-upload-fid li { 
+    background: url(g/download4.gif) no-repeat;
+    padding-left: 23px;
+    padding-top: 1px;
+    margin-bottom: 1em;
+    min-height: 20px;
+}
+
+.node-type-demo #content .tabs { }
+.node-type-demo .field-type-link { border-bottom: 1px solid #ccc; margin-bottom: 0.5em; padding-bottom: 1em;  }
+.node-type-demo .field-type-link + p { }
+.node-type-demo .submitted { display: none; }
+.node-type-demo #content .content { }
+
+/* --- CONTENT TYPE: SCRIPTS ------------------------------------------------------------------------------------- */
+/* Shared programming scripts repository. */
+
+body .syntaxhighlighter div.toolbar { background-color: transparent !important; }
+body .syntaxhighlighter div.toolbar .command_help { display: none !important; }
+.node-type-script h1.title { margin-bottom: 0.5em !important; }
+.node-type-script .field { border-bottom: 1px solid #ccc; padding-bottom: 0.4em; margin: 0.4em 0; }
+.node-type-script .field-label,
+.node-type-script .field-items,
+.node-type-script .field-item { display: inline; border: 0; }
+.node-type-script .field-field-script-version .field-item div { font-size: 1.1em; font-variant: small-caps; font-weight: normal; }
+.node-type-script .field-field-script-language .field-item { font-family: "Inconsolata", "Courier New", Courier, monospace; font-size: 13px; }
+.node-type-script .field-field-script-description {}
+.node-type-script .field-field-script-description .field-items { display: inline-block; width: 400px; vertical-align: top; }
+.node-type-script .field-field-script-authors { margin-bottom: 1.2em; }
+.node-type-script .field-field-script-authors .field-item { display: inline; padding-right: 4px; }
+.node-type-script .field-field-script-authors a { }
+.node-type-script .submitted { display: none; }
+.node-type-script #content table { border-collapse: collapse; }
+.node-type-script #content table td { border: 1px solid #ccc; }
+.node-type-script #content table#attachments td { border: 0; }
+
+.section-public-scripts h1.title { margin-bottom: 0.5em !important; }
+.section-public-scripts table { width: 575px; margin-top: 2em; }
+.section-public-scripts th { font-size: 1.1em; font-variant: small-caps; }
+.section-public-scripts th { padding: 0.7em; }
+.section-public-scripts td { padding: 0.7em; }
+.section-public-scripts #content td a:hover { color: rgb(20,120,240) !important; }
+.section-public-scripts td.views-field-title { white-space: nowrap; }
+.section-public-scripts td.views-field-field-script-version-value { 
+    text-align: center; 
+}
+.section-public-scripts td.views-field-field-script-language-value { 
+    text-align: center; 
+    font-family: "Inconsolata", "Courier New", Courier, monospace;
+    font-size: 13px;
+}
+.section-public-scripts td { font-size: 0.95em; }
+.section-public-scripts td.views-field-upload-fid ul { padding: 0 !important; margin: 0 !important; }
+.section-public-scripts td.views-field-upload-fid li {
+    list-style: none; margin: 0;
+}
+.section-public-scripts table#tutorials { border-bottom: 1px solid #ccc; margin-top: 1em; }
+.section-public-scripts table#tutorials td:first-child { width: 10%; white-space: nowrap; }
+.section-public-scripts table#tutorials td { }
+.section-public-scripts table#tutorials td ul { margin-top: 0; }
+
+/* --- CONTENT TYPE: STORIES, STORY NEWS ------------------------------------------------------------------------- */
+/* Global stories, either as news item teaser or as full pages. */
+
+.view-news-items .views-row-odd { }
+.view-news-items .node { margin-top: 1.5em; padding-top: 0.5em; border-top: 1px solid #ccc; }
+.view-news-items .node .content { color: #555; }
+.node .links li, .comment .links li { margin-right: 0.2em; }
+.node-type-story .content { margin: 0.5em 0 0.5em 0; }
+
+/* Date reference: "Submitted by X on Y in Z." */
+.submitted a { color: #888; }
+.submitted, .node .terms-inline { display: inline; color: #888; font-size: 0.95em; }
+
+/* --- CONTENT TYPE: TWEETS & NEWS ITEMS ------------------------------------------------------------------------ */
+/* Twitter updates and project news displayed in the left sidebar. */
+
+.view-tweets { margin: 0.5em 0 1em 0; }
+.view-tweets ul,
+.view-project-news ul,
+#sidebar-left .view-news-items ul { margin: 0; padding: 0; list-style-type: none; } 
+.view-tweets li, 
+.view-project-news li,
+#sidebar-left .view-news-items li,
+#sidebar-right .view-internal-pages li { 
+    margin-bottom: 0.5em !important; 
+    padding: 0.5em !important; 
+    background: #e9eee0; 
+    border: 1px solid #d0d1c7; 
+    border-radius: 0.4em; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+    font-size: 0.9em; 
+    line-height: 1.5em;
+}
+.view-tweets a { background: none; color: orange; }
+.view-tweets p { margin: 0; }
+.view-tweets em { }
+.view-tweets .views-field-created-time { font-style: italic; }
+.view-project-news li div { display: inline; }
+.view-project-news li a { color: orange; }
+
+#sidebar-left .view-news-items .views-field-title,
+#sidebar-left .view-news-items .views-field-view-node { display: inline !important; }
+#sidebar-left .view-news-items .views-field-view-node a { color: black; }
+#sidebar-left .view-news-items .more-link a { color: orange; text-transform: capitalize; text-align: left;  }
+
+#sidebar-right .view-internal-pages ul { margin: 0; padding: 0; list-style-type: none; }
+#sidebar-right .view-internal-pages a { color: black; }
+#sidebar-right .view-internal-pages .more-link a { color: orange; text-transform: capitalize; text-align: left;  }
+
+/* Hide external link image for social links */
+#sidebar-right #social-links { text-align: center; }
+#sidebar-right #social-links a { background-image: none; padding: 0 2px 0 0; }
+#sidebar-right #social-links img { width: 25px; height: 25px; }
+
+/* --- CONTENT TYPE: PUBLICATION -------------------------------------------------------------------------------- */
+/* Citations appear in a purple box with rounded corners. */
+
+.view-publications .search-link,
+.view-talks .search-link {
+    float: right;
+}
+
+.view-publications .views-row,
+.view-talks .views-row,
+div.node-type-biblio,
+.biblio-entry {
+    margin-bottom: 1em;
+    padding: 0.7em; 
+    background: #e5e3ef; 
+    border: 1px solid #cdcbd6;
+    border-radius: 0.5em; -moz-border-radius: 0.5em; -webkit-border-radius: 0.5em;
+}
+.view-publications .biblio-entry { margin: 0; padding: 0; background: none; border: 0; }
+
+/* Text styling of a citation, across projects, persons, etc. */
+.bilbio-entry { }
+.biblio-entry h2, div.node-type-biblio h2 { margin: 0 !important; }
+.biblio-authors a { color: #444; text-decoration: underline; }
+.biblio-authors a:hover { color: #222; text-decoration: underline; }
+.biblio-title a,
+.biblio-title-vancouver a { color: #444; font: bold 1em "Roboto Slab", Georgia, Times, Serif; text-decoration: none; }
+.biblio-title a:hover { text-decoration: underline; }
+.biblio-entry u, div.node-type-biblio u { font-style: normal; text-decoration: none; }
+.biblio-separator-bar { padding: 0; background: none; border: 0; color: #444; font: normal 1.3em "Roboto Slab", Georgia, Times, serif; }
+td.biblio-row-title { font-size: 1.1em; font-variant: small-caps; white-space: nowrap; }
+.biblio_authors a { color: #444; text-decoration: none; } /* Editors */
+
+/* Biblio search and filter options. */
+
+.page-biblio .breadcrumb { margin: 0 !important; }
+.section-biblio h1.title { margin-bottom: 0.5em !important; }
+.section-biblio .tabs { }
+#biblio-search-form .biblio-search { margin-bottom: 0.5em; }
+.biblio-export-buttons { margin: 0; font-size: 0.75em; text-transform: uppercase; font-weight: bold; display: inline; }
+.biblio-export-buttons li { margin: 0; }
+.biblio-export-buttons .comment_add,
+.biblio-export-buttons .upload_attachments { display: none; }
+.biblio-export-buttons a:hover { color: #000; }
+.biblio-export a, .biblio-export-buttons a { } 
+.biblio-export a, 
+.biblio-export-buttons a, 
+.biblio_tagged a,
+.biblio_xml a,
+.biblio_bibtex a,
+.biblio_google_scholar a { margin: 0 0.1em 0 0; background: 0; color: #444; }
+.biblio-abstract-link { display: none; }
+#biblio-header { margin-top: -3em; }
+#biblio-header form { margin-bottom: 3em; padding-top: 0.2em; }
+#biblio-header form input.form-text { width: 200px; }
+#biblio-header { height: 2.5em; overflow: hidden;  }
+#biblio-header { text-align: right; }
+#biblio-header .biblio-export { display: none; }
+#biblio-header .biblio-export { text-align: left; float: none; margin-bottom: 0.5em; }
+#biblio-header .biblio-export-buttons { display: inline; }
+#biblio-header > a { text-transform: none; color: #444; font-size: 1.1em; font-variant: small-caps; text-decoration: none; }
+#biblio-header > a:hover { text-decoration: underline; }
+#biblio-header a, 
+.biblio-alpha-line { margin-left: 0.3em;  }
+.biblio-alpha-line { margin: 0.4em; }
+.biblio-alpha-line a { text-decoration: none; }
+.biblio-alpha-line a:hover { text-decoration: underline; }
+.biblio-alpha-line b { color: #003a68; }
+.biblio-current-filters { background: none; color: #888; text-align: right; font-size: 0.95em; margin-bottom: -1em; }
+.biblio-current-filters a { text-transform: none; color: #888; }
+.biblio-current-filters, .biblio-current-filters * { 
+    font-weight: normal;
+    font-style: normal; 
+}
+
+.section-bibliography h1 { margin-bottom: 0 !important; }
+.section-bibliography div.node-type-biblio {
+    background: none !important;
+    border: 0 !important;
+    padding: 0;
+}
+.section-bibliography div.node-type-biblio .content {
+    margin-top: 2em;
+}
+.section-bibliography div.node-type-biblio .terms a {
+    color: #0e5682 !important;
+}
+
+/* Download attachment */
+#attachments th { font-size: 1.1em; font-variant: small-caps; border-bottom: 1px solid #ccc; padding-right: 0.5em; white-space: nowrap; }
+#attachments th:last-child { width: 100%; }
+#attachments td { }
+#attachments td:first-child a { white-space: nowrap;  }
+#attachments tr { border-bottom: 0; }
+#attachments { }
+
+.section-user fieldset { 
+    background: #f4f4f4; 
+    font: normal 13px "Lucida","Lucida Grande","Trebuchet MS",Tahoma,Verdana,sans-serif;
+}
+.section-user fieldset * { 
+    font-variant: normal !important;
+}
+/* PDF download button in publications. */
+.biblio_file_links { 
+    display: block;
+    text-align: right;
+    position: relative; right: -30px;
+    margin-top: -1.2em;
+    margin-bottom: -0.1em;
+}
+.biblio_file_links a,
+#attachments td:first-child a { 
+    margin: 0 0.2em 0 0.2em;
+    padding: 0.3em 0.4em 0.3em 0.4em;
+    background-image: url(g/shadow-label.png);
+    background-repeat: repeat-x;
+    background-color: #6d678a;
+    color: white; 
+    font: normal 0.8em Arial;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 0.4em; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+}
+.biblio_file_links a:hover,
+#attachments td:first-child a:hover {
+    text-decoration: underline;
+}
+.biblio-talks .biblio_file_links a {
+    background-color: #5b682e;    
+}
+#attachments td { padding-top: 0.5em; }
+#attachments td:first-child a {
+    background-color: rgb(20,120,240);
+}
+.node-type-biblio #page .biblio_file_links {
+    display: none;
+}
+
+/* --- CONTENT-TYPE: TALK --------------------------------------------------------------------------------------- */
+/* Talks appear in a green box with rounded corners. */
+
+.view-talks .views-row, 
+.section-taxonomy .biblio-talks,
+.section-category .biblio-talks,
+.biblio-talks,
+.node-type-project .talks,
+.section-user .talks { 
+    background: #e5f8e3 !important; 
+    border: 1px solid #cedecc !important; 
+}
+.view-talks .biblio-entry { margin: 0; padding: 0; background: none; border: 0 !important; }
+
+.field { margin-top: 1em; }
+
+/* --- CONTENT-TYPE: PEOPLE ------------------------------------------------------------------------------------- */
+/* List of people, and people pages. */
+
+.page-people h1 { margin-bottom: 0 !important; }
+.view-user-page h2 { padding: 1em 0 0 0; border-top: 1px solid #ccc; }
+.view-user-page table caption {
+    width: 100%;
+    font-family: "Roboto Slab", Georgia, Times, serif;
+    text-align: left;
+}
+.view-user-page caption { font-size: 1.3em; margin: 0.5em 0 0.5em 0; padding-top: 0.5em; 
+    padding-left: 55px; margin-left: 1em; }
+.view-user-page table { width: 100%; margin-bottom: 2em; }
+.view-user-page tr { border-bottom: 0; }
+.view-user-page td { padding: 0.5em 0 0 0; border-top: 1px solid #ccc; }
+.view-user-page td a:first-child:hover { text-decoration: underline; }
+.view-user-page td a:first-child { 
+    padding-right: 12px;
+    background-image: url(g/more.png);
+    background-position: right !important;
+    background-repeat: no-repeat;
+    color: #444; 
+    font-size: 1.1em;
+    text-decoration: none; 
+}
+.view-user-page .picture { margin: -1px 0 0 0 !important; }
+.view-user-page .picture a { background: none !important; padding: 0; }
+.view-user-page .picture img { width: 55px; height: 80px; border: 1px solid #ccc; }
+.view-user-page td.views-field-picture { width: 55px; padding: 0 1em 0.7em 0; border-top: 0 !important; }
+
+.profile .picture { float: left; }
+.profile .picture img { width: 140px; height: 190px; border: 1px solid #ccc; }
+.profile h3 { border: 0; }
+.profile dt { font-size: 1.1em; font-weight: normal; font-variant: small-caps; margin: 0; }
+.profile dt { width: 100px; float: left; }
+.profile dd { width: 400px; border-bottom: 1px solid #ccc; }
+.profile dt, .profile dd { margin: 0; padding: 0.2em 0 0.2em 0; }
+.profile dl, .profile h3 { margin-left: 160px; }
+
+.profile dt.profile-profile_interests { border-bottom: 1px solid #ccc; width: 400px; float: none; }
+.profile dd.profile-profile_interests { border: 0; }
+
+.profile dt.logins { float: none; width: 400px; border-bottom: 1px solid #ccc; }
+.profile dd.logins { font-size: 0.9em; line-height: 1.3em; border: 0; color: #666; }
+.profile dd.logins a { color: rgb(140,170,255); }
+
+/* Projects (i.e. organic groups) this user belongs to. */
+.profile dl.user-member { display: none; }
+.section-people #content-bottom .block { margin-left: 160px; }
+.section-people #content-bottom #block-views-og_user-block_1 h2 { display: none; }
+
+.biblio-entry .taxonomy-terms { display: none; }
+.section-biblio .biblio-entry .taxonomy-terms,
+.section-user .biblio-entry .taxonomy-terms { display: block; }
+
+/* --- CONTENT TYPE: TECHNICAL REPORT ---------------------------------------------------------------------------- */
+
+.section-ctrs .views-field-title { margin-bottom: 1em; }
+.section-ctrs #content label,
+.node-type-ctrs #content .field-label-inline-first { 
+    display: block; 
+    margin: 0.5em 0 0.2em 0;
+    font-size: 1.1em; 
+    font-variant: small-caps; 
+    font-weight: normal;
+    border-bottom: 1px solid #ccc; 
+}
+.node-type-ctrs .field-label-inline { display: none !important; }
+.section-ctrs .date-display-single,
+.node-type-ctrs .date-display-single { font-family: "Inconsolata", "Courier New", Courier, monospace; }
+.section-ctrs #content { }
+.section-ctrs .image { margin-right: 1em; }
+.section-ctrs .image,
+.node-type-ctrs .image { border: 1px solid #ccc; float: left;  }
+.node-type-ctrs .image { margin-top: 2em; }
+.image-preview { border: 1px solid #ccc;  }
+.image_size_larger { display: none !important; }
+.image-attach-body { float: left; }
+
+/* --- ARCHIVE OF CORPORA ON THE CLIPS SERVERS ------------------------------------------------------------------ */
+
+.section-corpora-overview table { width: 100%; }
+.section-corpora-overview th { font-size: 1.1em; font-variant: small-caps; padding-bottom: 0.5em; }
+.section-corpora-overview th a { color: #333; }
+.section-corpora-overview tr.odd { background: #F0F5FA; }
+.section-corpora-overview td { border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; padding: 5px 0 5px 0; }
+.section-corpora-overview td.active { background: none; }
+.section-corpora-overview .views-field-field-corpus-version-value { text-align: center; }
+.section-corpora-overview td.views-field-field-corpus-path-value { font-family: "Inconsolata", "Courier New", Courier, monospace; }
+.field-field-corpus-path .field-items { font-family: "Inconsolata", "Courier New", Courier, monospace; }
+
+/* --- ARCHIVE OF PUBLICATIONS ---------------------------------------------------------------------------------- */
+
+.page-archive #content-bottom h2 { margin-top: 2em; }
+.page-archive #archive .timeline-event-label { 
+    font-size: 0.9em; 
+    font-family: Arial; 
+    font-weight: bold; 
+    padding: 0.1em 0.0em 0.1em 0.3em; 
+    margin: 0em;
+    background: #e5e3ef; 
+    border: 1px solid #cdcbd6; }
+.page-archive #archive .timeline-event-label:hover { text-decoration: underline; }
+.page-archive #archive .timeline-event-icon img { display: none; }
+.page-archive #archive .timeline-copyright { display: none; }
+.page-archive #archive .timeline-date-label { color: #888; }
+
+.page-archive caption { font-size: 1.25em; font-family: "Roboto Slab", Georgia, Times, serif; text-align: left; }
+.page-archive .views-table th { padding-top: 0.4em; padding-bottom: 0.8em; font-size: 1.1em; font-variant: small-caps; white-space: nowrap; }
+.page-archive .views-table th a { color: #333; }
+.page-archive .views-table th,
+.page-archive .views-table td { padding: 0.4em 0.8em 0.8em 0; }
+.page-archive .views-table td.views-field-title { min-width: 300px; }
+.page-archive .views-table td a:hover { color: rgb(20,120,240); }
+.page-archive .views-field-upload-fid a {
+    margin: 0 0.2em 0 0.2em;
+    padding: 0.1em 0.3em 0.1em 0.3em; 
+    background:  #6d678a url(g/shadow-label.png) repeat-x left bottom; 
+    color: white; 
+    font: normal 0.9em Arial;
+    font-variant: small-caps;
+    text-decoration: none;
+    border-radius: 0.4em; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;    
+}
+.page-archive .views-field-upload-fid a:hover { text-decoration: underline; color: white !important; }
+.page-archive .simileAjax-bubble-container .views-field-field-archive-series-value { display: block; }
+.page-archive .simileAjax-bubble-container .views-field-title { display: none; }
+.page-archive .simileAjax-bubble-container label { font-size: 1.1em; font-variant: small-caps; font-size: 0.95em; }
+.page-archive .simileAjax-bubble-container .timeline-event-bubble-title a { 
+    color: #333; 
+    background: none; 
+    text-decoration: none;
+}
+
+.node-type-archive .meta { display: none; }
+.node-type-archive .field-label-inline-first { display: block; font-size: 1.1em; font-variant: small-caps; font-weight: normal;
+    border-bottom: 1px solid #ccc; }
+
+
+/* --- CONTACT FORM --------------------------------------------------------------------------------------------- */
+
+.page-contact .address { font-size: 1.2em; }
+.page-contact .art { color: #888; padding-bottom: 0.5em; display: block; }
+.page-contact .art:hover { color: #555; }
+
+/* --- PAGE ----------------------------------------------------------------------------------------------------- */
+
+#page {
+    width: 1000px;
+    background: url(g/shadow.png) repeat-y;
+    font-size: 1em;
+}
+#page-inner {
+    width: 960px; 
+    margin-left: 20px;
+    background: white;
+    border-left: 1px solid #555;
+    border-right: 1px solid #555;
+}
+#page, table, td p {
+     line-height: 1.6em;
+}
+
+/* --- PAGE HEADER ---------------------------------------------------------------------------------------------- */
+
+#header { height: 200px; background: #c0c8d5 url(g/header.jpg) repeat-x; }
+#header-inner { background: url(g/scanner.jpg) no-repeat right top; }
+#logo { margin: 110px 0 0 85px; padding: 0; }
+#logo-image {}
+#site-name, div#site-name { display: none; }
+
+/* --- PAGE NAVIGATION ------------------------------------------------------------------------------------------ */
+
+#navbar { height: auto; background: #e6edf1; border-bottom: 1px solid #c6d4dd; }
+#navbar-inner {}
+#skip-to-nav { display: none; }
+.block-search, 
+.block-search_by_page  { position: relative; top: -25px; left: 760px; z-index: 0; width: 200px; }
+.block-search input[type="text"],
+.block-search_by_page input[type="text"] { width: 110px; }
+.block-search h2, 
+.block-search_by_page h2, 
+#block-menu-primary-links { display: none; }
+.block-search #search-box { } /* Wrapper for the search form */
+.block-search #edit-search-block-form-1-wrapper label { display: none !important; }
+.block-search #edit-submit,
+.block-search #edit-submit-1,
+.block-search #edit-submit-2 {
+    border: 0;
+    background: #586073 url(g/shadow-label.png) repeat-x left bottom;
+    color: white;
+    border-radius: 3px;
+    padding: 3px 5px 3px 5px;
+}
+.block-search #edit-submit:hover,
+.block-search #edit-submit-1:hover,
+.block-search #edit-submit-2:hover {
+    cursor: pointer;
+}
+
+#primary {
+    height: 50px;
+    overflow: hidden;
+    margin: 0;
+    padding-left: 70px;
+    background: url(g/UA.jpg) no-repeat;
+}
+#primary li {
+    height: 50px;
+    padding: 0 15px 0 15px;
+    padding-top: 16px;
+    background: #dbe6ec;
+    border-left: 1px solid #c6d4dd;
+    font-size: 1.25em;
+}
+#primary li:hover { background: #d1dfe7; }
+#primary li.active { background: #0b5083 url(g/current.jpg) repeat-x; box-shadow: inset 0px 0px 3px 3px rgba(0,0,0,0.25); }
+#primary li.active a { color: white !important; }
+#primary li a { color: #0e5682; text-decoration: none; }
+#primary li a:hover { text-decoration: underline; }
+#primary li.last a { color: #2a323f; }
+#primary li.last { border-right: 1px solid #c6d4dd; }
+/* Secondary links */
+#secondary {}
+
+/* Publication subnavigation */
+#navbar .block { border-top: 1px solid #c6d4dd; margin: 0; }
+#navbar .block ul { margin: 0 !important; }
+#navbar .block li:first-child { border-left: 1px solid #c6d4dd; }
+#navbar #block-block-3 ul { margin-left: 600px !important; }
+#navbar .block li { list-style: none; padding: 3px; border-right: 1px solid #c6d4dd; }
+#navbar .block li:hover { background: #dbe6ec; }
+#navbar .block li a { color: #0e5682; font-size: 0.95em; text-decoration: none; padding: 0 10px 0 10px; }
+#navbar .block li a:hover { text-decoration: underline; } 
+
+/* --- PAGE SIDEBARS -------------------------------------------------------------------------------------------- */
+
+#sidebar-left {
+    width: 160px;
+    margin-left: 30px;
+    margin-right: -190px !important;
+    margin-top: 105px !important;
+}
+#sidebar-left-inner { margin: 0; }
+#sidebar-right {
+    width: 160px;
+    margin-left: 770px;
+    margin-right: -160px;
+    margin-top: 105px !important;
+}
+#sidebar-right-inner { margin: 0; }
+#sidebar-right .block-user h2 { display:none; }
+
+/* Internal "Create content" links */
+#block-menu-secondary-links { margin-top: 1.6em; }
+#block-menu-secondary-links h2 { font-size: 1.1em; }
+#block-menu-secondary-links a { color: rgb(140,170,255); }
+#block-menu-secondary-links ul.menu { }
+#block-menu-secondary-links li.leaf { list-style: disc !important; }
+
+/* --- PAGE CONTENT --------------------------------------------------------------------------------------------- */
+
+#main {}
+#main-inner {}
+
+.one-sidebar #content,
+.two-sidebars #content,
+#content {
+    width: 610px !important; 
+    margin-left: 190px !important; 
+    margin-right: -800px !important;
+    min-height: 450px;
+}
+
+.no-sidebars #content,
+.sidebar-right #content,
+.section-search-pages #content {
+    width: 610px !important; 
+    margin-left: 65px !important; 
+    margin-right: -800px !important; 
+}
+
+#content-inner { padding: 50px 70px 105px 20px; }
+#content-top {}    /* Wrapper for any blocks placed in the "content top" region */
+#content-header {} /* Wrapper for breadcrumb, title, messages, tabs, and help */
+#content-area {}   /* Wrapper for the actual page content */
+#content-bottom {} /* Wrapper for any blocks placed in the "content bottom" region */
+
+.breadcrumb { padding-bottom: 0; color: #888; font-size: 11px; }
+.breadcrumb a { color: #888; }
+
+div.messages { margin: 1em 0 1em 0;}
+div.status {}
+div.warning, tr.warning {}
+div.error, tr.error {}
+div.tabs {}
+.help { margin: 1em 0; }
+.more-help-link { font-size: 0.85em; text-align: right; }
+
+/* Links */
+ul.links { margin: 1em 0; padding: 0; }
+ul.links.inline { margin: 0; display: inline; }
+ul.links li { display: inline; list-style-type: none; padding: 0; }
+
+/* A list of page numbers when more than 1 page of content is available */
+.pager { clear: both; margin: 1em 0; text-align: center; }
+.pager a, .pager strong.pager-current { padding: 0.5em; }
+
+/* The links to the RSS or Atom feeds for the current list of content */
+.feed-icons { margin: 1em 0; } 
+
+/* --- PAGE FOOTER ---------------------------------------------------------------------------------------------- */
+
+#footer { margin-top: 50px; background: #1e272f url(g/footer.jpg) repeat-x; margin-bottom: -10px; }
+#footer-inner { padding-top: 20px; }
+#footer-inner table { 
+    width: 95%;
+    margin: 0 30px 0 30px;
+    min-height: 200px;
+    color: #80888f;
+    font-size: 11px;
+}
+#footer-inner td { color: #80888f; font-size: 9pt; }
+#footer-inner td h2 { font-size: 1.1em; font-variant: small-caps; line-height: 1em; margin-bottom: 0 !important; }
+#footer-inner td a { color: #80888f; }
+#footer-inner #block-block-2 {
+    min-height: 200px;
+}
+#footer-inner #block-views-tracker-block_1 {
+    box-shadow: inset 0px 4px 5px 0px rgba(0,0,0,0.25);
+    padding: 6px 30px 2px 30px;
+    font-size: 10px;
+    color: #70808f;
+}
+#footer-inner .content { margin: 0; }
+#footer-inner a { background: none; color: #80888f; }
+#footer-message {}
+#closure-blocks {}
+
+#footer-shadow {
+margin-left:auto;
+margin-right:auto;
+    width: 1000px;
+    height: 0px;
+    background: url(g/shadow-foot.png) 0 0 no-repeat;
+}
+
+/* --- DRUPAL FORMS --------------------------------------------------------------------------------------------- */
+
+.form-item,
+.form-checkboxes,
+.form-radios { margin: 1em 0; }
+.form-item input.error,
+.form-item textarea.error,
+.form-item select { margin-left: 0; }
+.form-item select.error { border: 2px solid #c00; }
+.form-item label { display: block; font-size: 1.1em; font-variant: small-caps; font-weight: normal; }
+.form-item label.option { display: inline; font-weight: normal; }
+.form-required { color: deeppink; }
+.form-item .description { font-size: 0.85em; }
+.form-checkboxes .form-item, 
+.form-radios .form-item { margin: 0.4em 0; }
+.form-submit {}
+.container-inline div, .container-inline label { display: inline; }
+.tips { margin: 0; padding: 0; font-size: 0.9em; }
+
+/* --- DRUPAL ADMIN TABLES -------------------------------------------------------------------------------------- */
+
+form tbody { border-top: 1px solid #ccc; }
+form th { text-align: left; padding-right: 1em; border-bottom: 3px solid #ccc; }
+form tbody th { border-bottom: 1px solid #ccc; }
+form thead th { text-align: left; padding-right: 1em; border-bottom: 3px solid #ccc; }
+
+/* --- DRUPAL NODES --------------------------------------------------------------------------------------------- */
+
+.comment-unpublished div.unpublished {
+    height: 0;
+    overflow: visible;
+    color: #d8d8d8;
+    font-size: 75px;
+    line-height: 1;
+    font-family: Impact, "Arial Narrow", Helvetica, sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    word-wrap: break-word;
+}
+.marker { color: #c00; }
+.comment.comment-unpublished .picture { position: relative; }
+
+/* --- DRUPAL COMMENTS ------------------------------------------------------------------------------------------ */
+
+#comments { margin: 2em 0; border-top: 1px solid #ccc; }
+.section-comment h1 {
+    margin-bottom: 1em;
+}
+.section-comment li.comment_add { display: none; }
+.section-comment .box h2 {
+    margin-top: 2em;
+    padding-top: 1em;
+    border-top: 1px solid #ccc;
+}
+
+.comment span.new {
+    padding: 1px 3px 1px 3px;
+    background: deeppink;
+    color: white;
+    font-size: 0.8em;
+}
+.comment { 
+    margin-bottom: 0.5em; padding: 0.7em; 
+    background: rgb(235,235,255); 
+    border: 1px solid rgb(225,225,255);
+    border-radius: 0.6em; -moz-border-radius: 0.6em; -webkit-border-radius: 0.6em;
+}
+.comment div.content { margin: 0.5em 0 0.5em 0; }
+.comment ul.links { margin: 1em 0; }
+.comment ul.links { margin: 0; text-transform: lowercase; }
+.new { color: #c00; }
+.comment_add, .node_read_more { text-transform: lowercase; }
+
+#comment-form .tips { display: none; }
+#comment-form p { display: none; }
+#comment-form fieldset .tips,
+#comment-form fieldset p { display: block; }
+
+/* CAPTCHA image security. */
+.captcha { padding-bottom: 2em; }
+.captcha img { float: left; margin-right: 1em; width: 60px; height: 40px; }
+.captcha #edit-captcha-response-wrapper {  }
+.captcha .description { display: none; }
+
+.wysiwyg-toggle-wrapper a { color: #999; }
+
+/* --- MISCELLANEOUS -------------------------------------------------------------------------------------------- */
+
+.error {}
+.warning {}
+.more-link { text-align: left; }
+
+#user-login-form { text-align: left; }
+#user-login-form .form-item { margin: 0.5em 0 0.5em 0 !important; }
+#user-login-form .form-text { width: 110px; }
+#user-login-form ul { margin: 0; padding: 0; list-style-type: none; }
+#user-login-form ul a { color: rgb(140,170,255); font-size: 0.9em; }
+#user-login-form li.openid-link { margin-top: 1em; margin-left: -20px; }
+#user-login-form li.user-link { margin-top: 1em; }
+#user-login ul { margin: 1em 0; }
+#user-login li.openid-link,
+#user-login li.user-link { margin-left: -2em; }
+
+.advanced-help-topic { font-family: "Inconsolata", "Courier New", Courier, monospace; }
+
+/* --- ISI Journal List --- */
+#node-1501 div.textcell { overflow-y:auto; height: 150px; }
+
+/* --- DRUPAL TABS ---------------------------------------------------------------------------------------------- */
+/* Some stuff like tabs and contextual edit menus seeple through to the front-end. */
+/* We style them to correspond to pagination and the main navigation. */
+
+div.edit { display: none !important; } /* Hide the old contextual edit menu, use Admin menus. */
+div.tabs { }
+div.tabs * { background: none !important; padding: 0; margin-bottom: 15px; }
+div.tabs li {  margin-right: 0.5em; }
+div.tabs li * { text-transform: lowercase; padding: 0 !important; }
+div.tabs li a { color: rgb(20,120,240) !important; text-decoration: underline; font-weight: normal; }
+div.tabs .primary li.active { 
+    padding: 0.1em 0.4em 0.1em 0.4em;
+    background: #0b5083 !important; box-shadow: inset 0px 0px 3px 3px rgba(0,0,0,0.25) !important;
+    border-radius: 0.3em; -moz-border-radius: 0.3em; -webkit-border-radius: 0.3em;
+}
+div.tabs .primary li.active a {
+    height: auto;
+    color: white !important;
+    text-decoration: none; 
+}
+
+.section-news div.tabs,
+.section-projects div.tabs,
+.section-software div.tabs,
+.section-bibliography div.tabs { }
+
+.section-biblio .breadcrumb { margin-bottom: 1em; }
+
+/* The admin tabs with view/edit/revisions. */
+body.node-type-page div.tabs,
+.node-type-demo #content .tabs,
+.section-biblio .tabs,
+.section-news div.tabs,
+.section-projects div.tabs,
+.section-software div.tabs,
+.section-bibliography div.tabs {
+    font-family: Arial;
+    font-size: 11px;
+}
+
+/* --- ADMIN EDITOR --------------------------------------------------------------------------------------------- */
+/* The Edit / Export / Clone links when you hover over a view. */
+
+.views-admin-links .links {
+    background: #333;
+    opacity: 0.8;
+    margin-top: -0.5em !important;
+    padding: 0.4em !important;
+    padding-left: 0.7em !important;
+    border-radius: 0.4em; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
+}
+.views-admin-links .links * {
+    font-size: 1em !important;
+    background: none !important;
+    padding: 0 0 0 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+}
+.views-admin-links .links a {
+    padding: 0 !important;
+    margin-right: 0.2em !important;
+    color: #ddd !important;
+    font-family: Arial;
+}
+.views-admin-links .links a:hover {
+    color: #fff !important;
+}
+
+#sidebar-left .view-news-items .views-admin-links li {
+    padding: 0 !important;
+}
+
+.admin_hover { background: none; border: 0; margin-left: 1em; margin-top: -1em; }
+.admin_hover a { width: 30px !important; height: 30px !important; }
+.admin_hover a.admin_hover-node_edit { background: url(g/icon-edit.png) !important; }
+.admin_hover a.admin_hover-node_delete { background: url(g/icon-delete.png) !important; }
+.admin_hover ul li { border: 0; }
+
+/* --- ADMIN USER EDITOR ---------------------------------------------------------------------------------------- */
+/*  Integrates the Admin back-end style with the Clips front-end style for the Blocks Editor. */
+
+code,
+.syntaxhighlighter table .plain, 
+.syntaxhighlighter code,
+.syntaxhighlighter .line,
+.syntaxhighlighter code a,
+.syntaxhighlighter textarea,
+pre.wysiwyg-syntaxhl, 
+pre,
+ .install pre { 
+    font-family: "Inconsolata", "Courier New", Courier, monospace !important; 
+    font-size: 13px !important; 
+    line-height: 1.3em !important;
+}
+
+fieldset { 
+    padding: 0.5em;
+    background: #f4f4f4; 
+    border: 1px solid #ddd; 
+    font: normal 13px "Lucida","Lucida Grande","Trebuchet MS",Tahoma,Verdana,sans-serif;
+}
+fieldset.collapsed { border: 1px solid #ddd !important; }
+fieldset fieldset { background: #f8f8f8 !important; }
+fieldset legend, fieldset a, fieldset th { font-family: Arial; }
+fieldset legend, fieldset legend a { font-size: 11px; font-weight: bold; color: #333 !important; }
+fieldset a { text-decoration: none; color: #3399CC; }
+fieldset label, fieldset th { text-transform: uppercase; font-size: 10px; font-weight: bold !important; color: #888; }
+fieldset .description { color: #666; }
+
+fieldset input, fieldset select {
+    margin: 0.2em 0 0.2em 0;
+    padding: 0.2em;
+    background: #fff;
+    border: 1px solid #ccc;
+    color: #444;
+    font: normal 12px Arial !important;
+}
+.section-user .tabs .secondary { margin-top: 1em; }
+.section-user .tabs .secondary li a {
+    border: 0 !important;
+}
+.section-user #content input.form-submit { margin-top: 2em; }
+
+/* --- ADMIN BLOCKS EDITOR -------------------------------------------------------------------------------------- */
+/*  Integrates the Admin back-end style with the Clips front-end style for the Blocks Editor. */
+
+.section-admin div.help,
+.section-admin div.tabs li,
+.section-admin form#block-admin-display-form td,
+.section-admin .block-region {
+    font-family: "Lucida","Lucida Grande","Trebuchet MS",Tahoma,Verdana,sans-serif;
+    font-size: 11px;       
+}
+.section-admin div.help,
+.section-admin .block-region {
+    margin: 0;
+    padding: 1em;
+}
+.section-admin div.help { background: #f4f4f4; border: 1px solid #ddd; }
+.section-admin .block-region { margin-top: 3px; background: #d1fff5; border: 1px solid #a7ccc4; }
+.section-admin div.tabs { margin: 0px; background: none; }
+.section-admin div.tabs * { background: none !important; }
+.section-admin div.tabs li,
+.section-user .tabs .secondary li,
+.logged-in .tabs .secondary li {
+    height: 28px;
+    margin-right: 1px;
+    padding: 0 !important;
+    background-color: #f4f4f4 !important; 
+    font: normal 11px Arial;
+    text-transform: uppercase !important;
+    border: 1px solid #f0f0f0;
+    border-bottom: 0;
+    border-radius: 0.6em 0.6em 0 0; -moz-border-radius: 0.6em 0.6em 0 0; -webkit-border-radius: 0.6em 0.6em 0 0;
+}
+.section-admin div.tabs li a,
+.section-user .tabs .secondary li a,
+.logged-in .tabs .secondary li a {
+    border: 0; 
+    text-decoration: none;
+}
+.section-admin div.tabs li a span,
+.section-user .tabs .secondary li a span,
+.logged-in .tabs .secondary li a span { 
+    color: #333; 
+    margin: 0.5em 1em 0.5em 1em; 
+    text-transform: capitalize !important; 
+}
+.section-admin div.tabs li:hover,
+.section-admin div.tabs li.active,
+.section-user div.tabs .secondary li:hover,
+.section-user div.tabs .secondary li.active,
+.logged-in div.tabs .secondary li:hover,
+.logged-in div.tabs .secondary li.active {
+    background-color: #e4e4e4 !important;
+}
+.section-admin div.help a,
+.section-admin form a,
+.section-user form a {
+    background: none; 
+    text-decoration: none;
+}
+.section-admin form table,
+.section-user form table { width: 100%; }
+.section-admin form thead { display: none; }
+.section-admin form tr.odd,
+.section-user form tr.odd  { }
+.section-admin form td.region,
+.section-user form td.region,
+.section-user form thead { 
+    padding-top: 1em; 
+    background: #eee; 
+    font: bold 0.8em Arial;
+    text-transform: uppercase; 
+}
+
+.section-admin form td,
+.section-user form td,
+.section-user form th {
+    margin: 0;
+    padding: 0.5em 0.5em 0.5em 1em;
+    border: 1px solid #ddd; 
+    vertical-align: middle;
+    line-height: 1em;
+    font: normal 11px Arial;
+}
+.section-user form th {
+    font-weight: bold;
+    color: #888;
+}
+.section-admin form a.tabledrag-handle { 
+    padding: 0 1em 0 0; 
+}
+.section-user form { font-family: Arial; }
+.section-user form label { text-transform: uppercase; font-size: 10px; font-weight: bold !important; color: #888; }
+.section-user form a { color: #3399CC; }
+
+/* --- PAGE STYLES ---------------------------------------------------------------------------------------------- */
+/* These are made available through the TinyMCE editor. */
+
+body.mceContentBody { 
+    background: white !important;
+    background-image: none;
+}
+
+.big { font-size: 1.3em; line-height: 1.5em; }
+.small { font-size: 0.9em; line-height: 1.45em; }
+.caption { 
+    display: block; 
+    font-size: 1.1em; 
+    font-variant: small-caps; 
+    border-bottom: 1px solid #ccc; 
+    margin-bottom: 0.5em; 
+}
+.highlight { color: deeppink !important; }
+.tag { 
+    color: #0E5682; 
+    font-size: 1.1em; 
+    font-variant: small-caps;
+    font-weight: bold;
+    text-decoration: none;
+}
+.tag a { text-decoration: none; }
+.tag a:hover { text-decoration: underline; }
+.link-news { color: orange; }
+.link-maintenance, a.link-maintenance, .link-maintenance a { color: rgb(100,140,190); }
+.link-colorless { color: #333; }
+
+.postag { font: bold 0.85em Arial; text-transform: uppercase; padding: 0px 1px 0px 1px; }
+.inline_code { font-family: "Inconsolata", "Courier New", Courier, monospace; font-size: 13px; color: #333; }
+.smallcaps { font-size: 1.1em; font-variant: small-caps; }
+.blue { color: #0e5682 !important; }
+table.border td, td.border, img.border { border: 1px solid #ccc; }
+
+/* Syntax coloring. */
+code, pre, .box, 
+body .syntaxhighlighter,
+body pre.wysiwyg-syntaxhl { 
+    padding: 0.2em 0.4em 0.2em 0.4em !important;
+    background: rgb(220,235,250) !important;
+    border: 1px solid rgb(200,215,230) !important;
+    border-radius: 0.5em; -moz-border-radius: 0.5em; -webkit-border-radius: 0.5em;
+}
+body .syntaxhighlighter textarea { display: none; }
+body .syntaxhighlighter code.plain a,
+body .syntaxhighlighter code.string a,
+body .syntaxhighlighter code.comments a,
+body .syntaxhighlighter code.comments1 a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+body .syntaxhighlighter code.plain a:hover,
+body .syntaxhighlighter code.string a:hover,
+body .syntaxhighlighter code.comments a:hover,
+body .syntaxhighlighter code.comments1 a:hover { 
+    text-decoration: underline !important; 
+}
+body .syntaxhighlighter {
+    width: auto !important;
+}
+body .syntaxhighlighter div code {
+    border-width: 0px !important;
+    font: inherit !important;
+}
+body .syntaxhighlighter div.line.alt1,
+body .syntaxhighlighter div.line.alt2 {
+    background: transparent !important;
+    padding: 0 0 0 0 !important;
+}
+body .syntaxhighlighter .gutter .line.alt1,
+body .syntaxhighlighter .gutter .line.alt2 {
+    border-right: 1px solid #adc7d9 !important;
+    padding-right: 0.5em !important;
+    margin-right: 0.5em !important;
+    color: #a3bccc !important;
+}
+code, body .syntaxhighlighter, pre.wysiwyg-syntaxhl { 
+    margin: 0.7em 0 0.7em 0 !important; 
+}
+code, 
+body .syntaxhighlighter table .plain, pre.wysiwyg-syntaxhl,
+body .syntaxhighlighter textarea { 
+    color: #555 !important; 
+}
+.example code,
+.example .syntaxhighlighter,
+.example pre.wysiwyg-syntaxhl,
+.node-type-script .syntaxhighlighter.nogutter,
+.node-type-script pre.wysiwyg-syntaxhl,
+pre { 
+    background: rgb(239,246,252) !important;
+    border: 1px solid rgb(220,223,233) !important;
+}
+body .node-type-page .syntaxhighlighter {
+    overflow: hidden !important;
+}
+
+.install code span,
+.install pre { color: #555 !important; }
+.install code,
+.install pre,
+.install .syntaxhighlighter,
+.install pre.wysiwyg-syntaxhl { 
+    background: rgb(239,246,252) !important;
+    border: 1px solid rgb(220,223,233) !important;
+    color: #555 !important;
+}
+/* Javascript syntax */
+body .syntaxhighlighter .jscript.keyword1, 
+body .syntaxhighlighter .javascript.keyword1 { 
+    color: #28334f !important; font-weight: bold !important; 
+}
+body .syntaxhighlighter .jscript.keyword2, 
+body .syntaxhighlighter .javascript.keyword2,
+body .syntaxhighlighter .jscript.keyword3, 
+body .syntaxhighlighter .javascript.keyword3 { 
+    color: #4a587c !important; 
+}
+body .syntaxhighlighter .jcript.name,
+body .syntaxhighlighter .javascript.name {
+    color: rgb(70, 140, 200) !important;
+}
+body .syntaxhighlighter .jscript.string,
+body .syntaxhighlighter .javascript.string { 
+    color: #657a8a !important; 
+}
+body .syntaxhighlighter .jscript.comments1,
+body .syntaxhighlighter .javascript.comments1 { 
+    color: grey !important;
+}
+body .syntaxhighlighter .jscript.comments2,
+body .syntaxhighlighter .javascript.comments2 { 
+    color: #657a8a !important;
+}
+/* Python syntax */
+body .syntaxhighlighter .python.keyword {
+    color: #28334f !important; font-weight: bold !important;
+}
+body .syntaxhighlighter .python.name {
+    color: rgb(70, 140, 200) !important;
+}
+body .syntaxhighlighter .python.string {
+    color: #657a8a !important; 
+}
+body .syntaxhighlighter .python.comments1 { 
+    color: #888 !important;
+}
+body .syntaxhighlighter .python.comments2 { 
+    color: #657a8a !important;
+}
+body .syntaxhighlighter .python.functions,
+body .syntaxhighlighter .python.color1 { 
+    color: #4a587c !important; 
+}
+body .syntaxhighlighter .python.value { 
+    color: #666 !important; 
+}
+/* XML syntax */
+body .syntaxhighlighter .xml.keyword {
+    color: #28334f !important; font-weight: bold !important;
+}
+body .syntaxhighlighter .xml.string {
+    color: #657a8a !important;
+}
+body .syntaxhighlighter .xml.color1 {
+    color: inherit !important;
+}
+
+/* Plaintext */
+body .syntaxhighlighter.plain .plain {
+    color: #6c7780 !important;
+}
+
+/* Page formatting. */
+.node-type-page #content { width: 700px !important; }
+.node-type-page.front #content { width: 610px !important; }
+.node-type-page h2 { font-size: 1.50em; }
+.node-type-page h3 { font-size: 1.25em; margin-top: 1.5em; margin-bottom: 0.5em; }
+.node-type-page.front h2 { font-size: 1.25em; }
+.node-type-page.front h3 { font-size: 1.25em; }
+.node-type-page h2 a,
+.node-type-page h3 a { background: none; padding: 0; }
+.node-type-page table { width: 100%; }
+.node-type-page table td { padding: 0.2em 0.4em 0.2em 0.4em; }
+
+/* Pattern documentation. */
+#node-1350 table td form { margin-left: 25px; }  /* PayPal donate */
+#node-1350 table td form br { display: none; }
+
+/* --- ADMIN RESOURCE RESERVATIONS ------------------------------------------------------------------------------ */
+
+.page-reservations caption { font-family: "Roboto Slab", Georgia, Times, serif; font-size: 1.2em; text-align: left; margin-bottom: 1em; }
+.page-reservations table { width: 100%; }
+.page-reservations th, .page-colloquia th { font-size: 1.1em; font-variant: small-caps; padding-bottom: 0.5em; }
+.page-reservations td.views-field-field-timeslot-value { background: none; }
+.page-reservations th.views-field-edit-node { visibility: hidden; }
+.page-reservations td.views-field-edit-node { text-align: right; font-size: 0.9em; }
+.page-reservations a { background: none; text-transform: lowercase; }
+
+.page-reservations .date-display-single { font-family: "Inconsolata", "Courier New", Courier, monospace; font-size: 1em; }
+.page-reservations .date-display-start { }
+.page-reservations .date-display-end { }
+
+/* --- ADMIN COLLOQIUA ------------------------------------------------------------------------------------------ */
+
+.page-colloquia .view-header { margin-bottom: 2em; }
+.page-colloquia caption { display: none; }
+.page-colloquia #content table { width: 100%; }
+.page-colloquia #content th { font-size: 1.1em; font-variant: small-caps; padding: 0.5em 1em 0.5em 0; white-space: nowrap; }
+.page-colloquia #content td { vertical-align: top; padding: 0.5em 1em 0.5em 0; border: 0; border-top: 1px solid #ccc; }
+.page-colloquia #content td strong { font-weight: normal; }
+.page-colloquia #content td a:hover { color: rgb(20,120,240); }
+.page-colloquia #content td.views-field-field-date-value,
+.node-type-colloquium .date-display-single { background: none; font-family: "Inconsolata", "Courier New", Courier, monospace; font-size: 1em; white-space: nowrap; line-height: 1.5em; }
+
+.node-type-colloquium .submitted { display: none; }
+.node-type-colloquium .node .content { margin-top: 1em; }
+.node-type-colloquium .field { margin-top: 0.5em; }
+.node-type-colloquium .field-item { border-bottom: 1px solid #ccc; }
+.node-type-colloquium .field-label-inline-first { 
+    font-size: 1.1em; 
+    font-variant: small-caps; 
+    font-weight: normal; 
+    display: block;
+    float: left;
+    min-width: 100px; 
+}
+.node-type-colloquium h3 { }
+.node-type-colloquium h3 em { font-style: normal; }
+.node-type-colloquium .field-field-presenter { margin-bottom: 2em; }
+
+.node-type-colloquium .tabs .primary { margin-bottom: 1em; }
+
+#signup-node-settings-form,
+#signup-node-settings-form td { font-family: Arial !important; }
+#signup-node-settings-form label { text-transform: uppercase; font-size: 10px; font-weight: bold !important; color: #888; }
+#signup-node-settings-form textarea { font-size: 1em; color: #333; }
+
+._page-pages-mbsp { font-size: 9pt; }

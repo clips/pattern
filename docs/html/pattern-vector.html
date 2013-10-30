@@ -1,0 +1,927 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>pattern-vector</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" href="../clips.css" />
+    <style>
+        /* Small fixes because we omit the online layout.css. */
+        h3 { line-height: 1.3em; }
+        #page { margin-left: auto; margin-right: auto; }
+        #header, #header-inner { height: 175px; }
+        #header { border-bottom: 1px solid #C6D4DD;  }
+        table { border-collapse: collapse; }
+    </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
+</head>
+<body class="node-type-page one-sidebar sidebar-right section-pages">
+    <div id="page">
+    <div id="page-inner">
+    <div id="header"><div id="header-inner"></div></div>
+    <div id="content">
+    <div id="content-inner">
+    <div class="node node-type-page"
+        <div class="node-inner">
+        <div class="breadcrumb">View online at: <a href="http://www.clips.ua.ac.be/pages/pattern-vector" class="noexternal" target="_blank">http://www.clips.ua.ac.be/pages/pattern-vector</a></div>
+        <h1>pattern.vector</h1>
+        <!-- Parsed from the online documentation. -->
+        <div id="node-1377" class="node node-type-page"><div class="node-inner">
+<div class="content">
+<p><span class="big">The pattern.vector module contains easy-to-use machine learning tools, starting from word count functions, bag-of-word documents and a vector space model, to latent semantic analysis and algorithms for clustering and classification (Naive Bayes, <em>k</em>-NN, SVM).</span></p>
+<p>It can be used by itself or with other <a href="pattern.html">pattern</a> modules: <a href="pattern-web.html">web</a> | <a href="pattern-db.html">db</a> | <a href="pattern-en.html">en</a> | <a href="pattern-search.html">search</a> <span class="blue"> </span>| vector | <a href="pattern-graph.html">graph</a>.</p>
+<p><img src="../g/pattern_schema.gif" alt="" width="620" height="180" /></p>
+<hr />
+<h2>Documentation</h2>
+<ul>
+<li><a href="#wordcount">Word count</a></li>
+<li><a href="#tf-idf">TF-IDF<span class="smallcaps"> </span></a></li>
+<li><a href="#document">Document</a></li>
+<li><a href="#model">Model</a></li>
+<li><a href="#lsa">Latent Semantic Analysis</a></li>
+<li><a href="#cluster">Clustering</a> <span class="smallcaps link-maintenance">(<a href="#kmeans">k-means</a>, <a href="#hierarchical">hierarchical</a>)</span></li>
+<li><a href="#classification">Classification</a> <span class="smallcaps link-maintenance">(<a href="#nb">naive bayes</a>, <a href="#knn">knn</a>, <a href="#svm">svm</a>)</span></li>
+<li><a href="#ga">Genetic algorithm</a></li>
+</ul>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="wordcount"></a>Word count</h2>
+<p>One way to measure which words in a text matter is to count the number of times each word appears in the text Different texts can then be compared, based on the keywords they share. This is an important task in many <em>text mining</em> applications, e.g., search engines, social network monitoring, targeted ads, recommender systems ("you may also like"), and so on.</p>
+<p>The <span class="inline_code">words()</span> and <span class="inline_code">count()</span> functions can be used to count words in a given string:</p>
+<pre class="brush:python; gutter:false; light:true;">words(string, 
+       filter = lambda w: w.strip("'").isalnum(),
+  punctuation = '.,;:!?()[]{}`''\"@#$^&amp;*+-|=~_')
+</pre><pre class="brush:python; gutter:false; light:true;">count(
+      words = [], 
+        top = None,         # Filter words not in the top most frequent (int).
+  threshold = 0,            # Filter words whose count &lt;= threshold.
+    stemmer = None,         # PORTER | LEMMA | function | None
+    exclude = [],           # Filter words in the exclude list.
+  stopwords = False,        # Include stop words?
+   language = 'en')         # en, es, de, fr, it, nl
+</pre><ul>
+<li><span class="inline_code">words()</span> returns a list of words by splitting the string on spaces.<br />Punctuation marks are stripped from words. If <span class="inline_code">filter(word)</span> is&nbsp;<span class="inline_code">False</span>, the word is excluded.</li>
+<li><span class="inline_code">count()</span> takes a list of words and returns a dictionary of <span class="inline_code">(word,</span> <span class="inline_code">count)</span>-items.</li>
+</ul>
+<h3>Stop words &amp; stemming</h3>
+<p><a href="https://github.com/clips/pattern/blob/master/pattern/vector/stopwords-en.txt">Stop words</a>&nbsp;are common words (e.g. I, the, very, about) that are ignored with <span class="inline_code">count(stopwords=False)</span>. There is no definite list of stop words, so you may need to tweak it.</p>
+<p>With <span class="inline_code">count(stemmer=PORTER)</span>, the&nbsp;<span class="inline_code">stem()</span>&nbsp;function is used to normalize words. For example,&nbsp;<em>consisted</em> and <em>consistently</em> are stemmed to <em>consist</em>, and&nbsp;<em>spies</em> is stemmed to <em>spi</em>&nbsp;(<a href="http://tartarus.org/%7Emartin/PorterStemmer/">Porter2 stemming algorithm</a>).</p>
+<p>With <span class="inline_code">count(stemmer=LEMMA)</span>, the&nbsp;<span class="inline_code">pattern.en.singularize()</span> and&nbsp;<span class="inline_code">conjugate()</span>&nbsp;functions are used to normalize words if a <a class="link-maintenance" href="pattern-en.html#parse">parsed</a> &nbsp;<span class="inline_code">Sentence</span> or <span class="inline_code">Text</span> is given. This is more robust, but also slower.</p>
+<pre class="brush:python; gutter:false; light:true;">stem(word, stemmer=PORTER)</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import stem, PORTER, LEMMA
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print stem('spies', stemmer=PORTER)
+&gt;&gt;&gt; print stem('spies', stemmer=LEMMA)
+
+spi
+spy</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import count, words, PORTER, LEMMA
+&gt;&gt;&gt; 
+&gt;&gt;&gt; s = 'The black cat was spying on the white cat.'
+&gt;&gt;&gt; print count(words(s), stemmer=PORTER)
+&gt;&gt;&gt; print count(words(s), stemmer=LEMMA) 
+
+{u'spi': 1, u'white': 1, u'black': 1, u'cat': 2}</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import count, LEMMA
+&gt;&gt;&gt; from pattern.en import parse, Sentence
+&gt;&gt;&gt;  
+&gt;&gt;&gt; s = 'The black cat was spying on the white cat.'
+&gt;&gt;&gt; s = Sentence(parse(s))
+&gt;&gt;&gt; print count(s, stemmer=LEMMA)
+
+{u'spy': 1, u'white': 1, u'black': 1, u'cat': 2, u'.': 1}&nbsp;</pre></div>
+<h3>Character <em>n</em>-grams</h3>
+<p>Another counting technique is to split a text into sequences of <em>n</em> successive characters. Although these are more difficult to interpret, they can be quite effective for comparing texts.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">chngrams(string="", n=3, top=None, threshold=0, exclude=[])</pre><div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.vector import chngrams
+&gt;&gt;&gt; print chngrams('The cat sat on the mat.', n=3)
+
+{' ca': 1, 'at ': 2, 'he ': 2, 't o': 1, 
+ ' ma': 1, 'at.': 1, 'mat': 1, 't s': 1, 
+ ' on': 1, 'cat': 1, 'n t': 1, 'the': 2,
+ ' sa': 1, 'e c': 1, 'on ': 1, 
+ ' th': 1, 'e m': 1, 'sat': 1
+}</pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="tf-idf"></a>Term frequency – inverse document frequency</h2>
+<p>Word count or <em>term frequency</em> (tf) is a measure of a word's relevance in a text. Similarly, <em>document frequency</em>&nbsp;(df) is a measure of a word's relevance across multiple texts. Dividing term frequency by document frequency yields tf-idf, a measure of how important or unique a word is in a text in relation to other texts. For example, even if the words "the" and "is" may occur frequently in one text, they are not that important in this text, since they occur frequently in may other texts. This can be used to build a search engine, for example. If a user queries for "cat", the search engine returns the pages that have a high tf-idf for "cat".</p>
+<table class="border">
+<tbody>
+<tr>
+<td><span class="smallcaps">Metric</span></td>
+<td><span class="smallcaps">Description</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">tf</span></td>
+<td>number of occurences of a word <span class="inline_code">/</span> number of words in document</td>
+</tr>
+<tr>
+<td><span class="inline_code">df</span></td>
+<td>number of documents containing a word <span class="inline_code">/</span> number of documents</td>
+</tr>
+<tr>
+<td><span class="inline_code">idf</span></td>
+<td><span class="inline_code">ln(1/df)</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">tf-idf</span></td>
+<td><span class="inline_code">tf</span> <span class="inline_code">*</span> <span class="inline_code">idf</span></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="cos"></a>Cosine similarity</h2>
+<p>A <em>document vector</em> is a dictionary of distinct words in a document (i.e., text, paragraph, sentence) with their tf-idf. Higher tf-idf indicates words that are more important (i.e., keywords). A collection of document vectors is called a <em>vector space model</em>, a matrix of words x documents. By calculating the matrix dot product (angle) of two document vectors, we can measure how similar they are. This is called <em>cosine similarity</em>.</p>
+<p>Let <span class="inline_code">v1</span>, <span class="inline_code">v2</span> be <span class="inline_code">Document.vector</span> objects:</p>
+<p><span class="inline_code">cosθ</span> <span class="inline_code">=</span> <span class="inline_code">dot(v1,</span> <span class="inline_code">v2)</span> <span class="inline_code">/</span> <span class="inline_code">(v1.norm</span>&nbsp;<span class="inline_code">*</span> <span class="inline_code">v2.norm) </span></p>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="document"></a>Document</h2>
+<p>A <span class="inline_code">Document</span> is an unordered <em>bag-of-words</em> representation of a given string, dictionary of <span class="inline_code">(word,</span> <span class="inline_code">count)</span>-items,&nbsp;<span class="inline_code">Sentence</span>&nbsp;or&nbsp;<span class="inline_code">Text</span>.&nbsp;Documents can be bundled in a <span class="inline_code">Model</span>. Bag-of-words means that the word order in the given text is discarded. Instead, words are counted using the <span class="inline_code">words()</span>, <span class="inline_code">count()</span> and&nbsp;<span class="inline_code">stem()</span> and functions. This exposes keywords (= high word count) in the text, by which documents can be compared for similarity.</p>
+<p>The <span class="inline_code">Document.words</span> dictionary maps words to word count. The generalized&nbsp;<span class="inline_code">Document.vector</span>&nbsp;dictionary maps&nbsp;<em>features</em> (e.g., words) to <em>feature weights</em> (e.g., relative word count). We call them features because they can be other things besides words in a text, for example id's or labels. For a document that is not part of a <span class="inline_code">Model</span>, the feature weights are <span class="inline_code">TF</span>, relative frequency between <span class="inline_code">0.0</span>–<span class="inline_code">1.0</span>. This is useful when comparing long vs. short texts. Say we have a 10,000-word document that mentions "cat"&nbsp;5000x and a 10-word document that mentions "cat" 5x. They are quite similar since they both mention "cat" 50% (0.5) of the time. Documents that are part of a <span class="inline_code">Model</span> can use different weighting schemes such as <span class="inline_code">TF</span>,&nbsp;<span class="inline_code">TFIDF</span>, <span class="inline_code">IG</span> and <span class="inline_code">BINARY</span>.</p>
+<pre class="brush:python; gutter:false; light:true;">document = Document(string, 
+       filter = lambda w: w.lstrip("'").isalnum(), 
+  punctuation = '.,;:!?()[]{}\'`"@#$*+-|=~_', 
+          top = None,       # Filter words not in the top most frequent.
+    threshold = 0,          # Filter words whose count falls below threshold.
+      exclude = [],         # Filter words in the exclude list. 
+      stemmer = None,       # STEMMER | LEMMA | function | None.
+    stopwords = False,      # Include stop words?
+         name = None,
+         type = None,
+     language = None, 
+  description = None)</pre><pre class="brush:python; gutter:false; light:true;">document.id                 # Unique number (read-only).
+document.name               # Unique name, or None, used in Model.document().
+document.type               # Document type, used with classifiers.
+document.language           # Document language (e.g., 'en').
+document.description        # Document info.  
+document.model              # The parent Model, or None.
+document.features           # List of words from Document.words.keys().  
+document.words              # Dictionary of (word, count)-items (read-only).
+document.wordcount          # Total word count.
+document.vector             # Cached Vector (read-only dict).</pre><pre class="brush:python; gutter:false; light:true;">document.tf(word)
+document.tfidf(word)        # Note: simply yields tf if model is None.
+document.keywords(top=10, normalized=True)
+</pre><pre class="brush:python; gutter:false; light:true;">document.copy()
+</pre><ul>
+<li><span class="inline_code">Document.tf()</span> returns the frequency of a word as a number between <span class="inline_code">0.0-1.0</span>.</li>
+<li><span class="inline_code">Document.tfidf()</span> returns the word's relevancy as tf-idf.<span class="inline_code"> </span></li>
+<li><span class="inline_code">Document.keywords()</span> returns a sorted list of <span class="inline_code">(weight,</span> <span class="inline_code">word)</span>-tuples.<br />With <span class="inline_code">normalized=True</span>&nbsp;the weights will be between <span class="inline_code">0.0-1.0</span> (their sum is <span class="inline_code">1.0</span>).</li>
+</ul>
+<p>For example:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import Document
+&gt;&gt;&gt; 
+&gt;&gt;&gt; s = '''
+&gt;&gt;&gt;     The shuttle Discovery, already delayed three times by technical problems 
+&gt;&gt;&gt;     and bad weather, was grounded again Friday, this time by a potentially 
+&gt;&gt;&gt;     dangerous gaseous hydrogen leak in a vent line attached to the shipʼs 
+&gt;&gt;&gt;     external tank. The Discovery was initially scheduled to make its 39th 
+&gt;&gt;&gt;     and final flight last Monday, bearing fresh supplies and an intelligent 
+&gt;&gt;&gt;     robot for the International Space Station. But complications delayed the 
+&gt;&gt;&gt;     flight from Monday to Friday,  when the hydrogen leak led NASA to conclude 
+&gt;&gt;&gt;     that the shuttle would not be ready to launch before its flight window 
+&gt;&gt;&gt;     closed this Monday.
+&gt;&gt;&gt; '''
+&gt;&gt;&gt; d = Document(s, threshold=1)
+&gt;&gt;&gt; print d.keywords(top=6)
+
+[(0.17, u'flight'), 
+ (0.17, u'monday'), 
+ (0.11, u'delayed'), 
+ (0.11, u'discovery'), 
+ (0.11, u'friday'),
+ (0.11, u'hydrogen')
+]</pre></div>
+<h3>Document vector</h3>
+<p>A <span class="inline_code">Document.vector</span> is a read-only, sparse (non-zero values) <span class="inline_code">dict</span> of&nbsp;<span class="inline_code">(feature,</span> <span class="inline_code">weight)</span>-items, where weight is the relative frequency (<span class="inline_code">TF</span>) of a feature in the document. Documents can be bundled in a&nbsp;<span class="inline_code">Model</span> with other weighting schemes such as <span class="inline_code">TFIDF</span>, <span class="inline_code">IG</span> and <span class="inline_code">BINARY</span>.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">vector = Document.vector</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">vector = Vector(*args, **kwargs) # Same arguments as dict().</pre><p>The pattern.vector module has the following low-level functions for vectors (or&nbsp;<span class="inline_code">dicts</span>):</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">normalize(vector)                # Adjusts weights so sum is 1.</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">tfidf(vectors=[], base=2.72)     # Adjusts weights to tf * idf.</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">distance(v1, v2, method=COSINE)  # COSINE | EUCLIDEAN | MANHATTAN | HAMMING</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">features(vectors=[]              # Returns the set() of unique features.</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">centroid(vectors=[])             # Returns the mean Vector.</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">cluster(method=KMEANS, vectors=[], distance=COSINE, **kwargs)</pre><ul>
+<li><span class="inline_code">relative()</span> and <span class="inline_code">tfidf()</span> modify and return the vectors in-place for performance.&nbsp;</li>
+<li><span class="inline_code">distance()</span>&nbsp;can also take a user-defined function as&nbsp;<span class="inline_code">method</span>&nbsp;that returns <span class="inline_code">0.0</span>–<span class="inline_code">1.0</span>.<br />Cosine similarity for two vectors <span class="inline_code">v1</span> and <span class="inline_code">v2</span> = <span class="inline_code">1</span> <span class="inline_code">-</span> <span class="inline_code">distance(v1,</span> <span class="inline_code">v2)</span>.</li>
+<li><span class="inline_code">cluster()</span> takes optional parameters <span class="inline_code">k</span>, <span class="inline_code">iterations</span>, <span class="inline_code">seed</span> and <span class="inline_code">p</span> – see <a class="link-maintenance" href="#kmeans">clustering</a>.</li>
+</ul>
+<div>Here is a low-level approach (cf. what&nbsp;<span class="inline_code">Model</span> does under the hood) for calculating cosine similarity:</div>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.vector import Vector, distance
+&gt;&gt;&gt; 
+&gt;&gt;&gt; v1 = Vector({"curiosity": 1, "kill": 1, "cat": 1})
+&gt;&gt;&gt; v2 = Vector({"curiosity": 1, "explore": 1, "mars": 1})
+&gt;&gt;&gt; print 1 - distance(v1, v2)
+
+0.33</pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="model"></a>Model</h2>
+<p>A <span class="inline_code">Model</span> (previously <span class="inline_code">Corpus</span>) or <em>vector space model</em> is a collection of <span class="inline_code">Document</span> objects. Each <span class="inline_code">Document.vector</span> in a model is a dictionary of features (e.g., words) and feature weights (e.g., word count). Essentially, a model is then a sparse matrix with documents as rows, features as columns, and feature weights as cells. Mathematical functions can be used on the matrix. For example, to compute how similar two documents are, based on the features they have in common.</p>
+<p>A <span class="inline_code">Model</span> has a weighting scheme that determines how the feature weights in each document vector are calculated. The <span class="inline_code">weight</span> parameter can be set to <span class="inline_code">TF</span> (relative term frequency), <span class="inline_code">TFIDF</span>, (term frequency vs. document frequency),&nbsp;<span class="inline_code">IG</span> (information gain), <span class="inline_code">BINARY</span> (<span class="inline_code">0</span> or <span class="inline_code">1</span>) or <span class="inline_code">None</span> (original weights).</p>
+<pre class="brush:python; gutter:false; light:true;">model = Model(documents=[], weight=TFIDF)</pre><pre class="brush:python; gutter:false; light:true;">model = Model.load(path)    # Imports file created with Model.save().</pre><pre class="brush:python; gutter:false; light:true;">model.documents             # List of Documents (read-only).
+model.document(name)        # Yields document with given name (unique).
+model.vectors               # List of all Document vectors. 
+model.features              # List of all Document.vector.keys(). 
+model.classes               # List of all Document.type values.  
+model.weight                # Feature weights: TF | TFIDF | IG | BINARY | None
+model.density               # Overall word coverage (0.0-1.0).
+model.lsa                   # Concept space, set with Model.reduce().</pre><pre class="brush:python; gutter:false; light:true;">model.append(document)
+model.remove(document)
+model.extend(documents)
+model.clear()</pre><pre class="brush:python; gutter:false; light:true;">model.df(word)                                       # Document frequency (0.0-1.0).
+model.idf(word)                                      # log(1/df)
+model.similarity(document1, document2)               # Cosine similarity (0.0-1.0).
+model.neighbors(document, top=10)                    # (similarity, document) list.
+model.search(words=[], **kwargs)                     # (similarity, document) list.
+model.distance(document1, document2, method=COSINE)  # COSINE | EUCLIDEAN | MANHATTAN
+model.cluster(documents=ALL, method=KMEANS)          # KMEANS | HIERARCHICAL
+model.reduce(dimensions=L2)                          # L1 | L2 | TOP300 | int</pre><pre class="brush:python; gutter:false; light:true;">model.infogain(word)                                 # Entropy (≈predictability).
+model.feature_selection(top=100, method=IG)          # Top original features (terms).
+model.filter(features=[])                            # Model with selected features.</pre><pre class="brush:python; gutter:false; light:true;">model.sets(threshold=0.5)                            # Frequent word sets.</pre><pre class="brush:python; gutter:false; light:true;">model.save(path, update=False)
+model.export(path, format=ORANGE)                    # ORANGE | WEKA </pre><ul>
+<li><span class="inline_code">Model.df()</span> returns document frequency of a feature, as a value between <span class="inline_code">0.0-1.0</span>.</li>
+<li><span class="inline_code">Model.idf()</span> returns the inverse document frequency (or <span class="inline_code">None</span> if a feature is not in the model).</li>
+<li><span class="inline_code">Model.similarity()</span> returns the cosine similarity of two <span class="inline_code">Documents</span> between <span class="inline_code">0.0-1.0</span>.<span class="inline_code"><br /></span></li>
+<li><span class="inline_code">Model.neighbors()</span> returns a sorted list of <span class="inline_code">(similarity, Document)</span>-tuples.</li>
+<li><span class="inline_code">Model.search()</span> returns a sorted list of <span class="inline_code">(similarity, Document)</span>-tuples, based on a list of query words. A <span class="inline_code">Document</span> is created on-the-fly for the given list, using the given optional arguments.</li>
+<li><span class="inline_code">Model.sets()</span> returns a dictionary of <span class="inline_code">(set(words), frequency)</span>-items of word combinations and their relative frequency above the given threshold (<span class="inline_code">0.0-1.0</span>).</li>
+</ul>
+<p>The following example demonstrates the tf-idf weighting scheme and cosine similarity:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import Document, Model, TFIDF
+&gt;&gt;&gt;  
+&gt;&gt;&gt; d1 = Document('A tiger is a big yellow cat with stripes.', type='tiger')
+&gt;&gt;&gt; d2 = Document('A lion is a big yellow cat with manes.', type='lion',)
+&gt;&gt;&gt; d3 = Document('An elephant is a big grey animal with a slurf.', type='elephant')
+&gt;&gt;&gt;  
+&gt;&gt;&gt; print d1.vector
+&gt;&gt;&gt;
+&gt;&gt;&gt; m = Model(documents=[d1, d2, d3], weight=TFIDF)
+&gt;&gt;&gt;  
+&gt;&gt;&gt; print d1.vector
+&gt;&gt;&gt; print
+&gt;&gt;&gt; print m.similarity(d1, d2) # tiger vs. lion
+&gt;&gt;&gt; print m.similarity(d1, d3) # tiger vs. elephant
+
+{u'tiger': 0.25, u'stripes': 0.25, u'yellow': 0.25, u'cat': 0.25} # TF
+{u'tiger': 0.27, u'stripes': 0.27, u'yellow': 0.10, u'cat': 0.10} # TFIDF
+
+0.12
+0.0
+</pre></div>
+<p>In this example we created documents with descriptions of a <span class="smallcaps">tiger</span>, a <span class="smallcaps">lion</span> and an <span class="smallcaps">elephant</span>. When we print the <span class="smallcaps">tiger</span> vector, all the feature weights are equal (<span class="inline_code">TF</span>). But when we group the documents in a model, the weight of <span class="smallcaps">tiger</span> features <em>yellow</em> and <em>cat</em> diminishes, because these features also appear in <span class="smallcaps">lion</span> (<span class="inline_code">TFIDF</span>).</p>
+<p>We then compare <span class="smallcaps">tiger</span> with <span class="smallcaps">lion</span> and <span class="smallcaps">elephant</span> and, as it turns out, <span class="smallcaps">tiger</span> is more similar to <span class="smallcaps">lion</span>. The similarity is quite low (12%), because in this example 2/3 of all documents (<span class="smallcaps">tiger</span> and <span class="smallcaps">lion</span>) share most of their features. If we continue to add, say, 10,000 documents for other animals (e.g. "A squirrel is a small rodent with a tail.") the similarity will rise, since the difference in word usage for different types of animals will stand out more clearly.</p>
+<p>If we had multiple descriptions for each animal – each a <span class="inline_code">Document</span> with a <span class="inline_code">type</span>&nbsp;– we could use <span class="inline_code">Model.neighbors()</span> to retrieve a list of the top most similar documents for a given (unknown) document, and then check which type in the list predominates (= a majority vote). This is essentially what a <span class="inline_code">KNN</span> <a class="link-maintenance" href="#classifier">classifier</a> does.</p>
+<h3>Model cache</h3>
+<p>The calculations in <span class="inline_code">Model.df()</span> (document frequency), <span class="inline_code">Model.similarity()</span> (cosine similarity) and <span class="inline_code">Model.infogain()</span> (information gain) are cached for faster performance.</p>
+<p>Note that whenever a document is added to or removed from a model with a <span class="inline_code">TFIDF</span> or <span class="inline_code">IG</span> weighting scheme, the cache is cleared, since new features will change the weights. So if you need to add a lot of documents (e.g., 10,000+), use <span class="inline_code">Document.extend()</span> with a list of documents for faster performance.</p>
+<h3>Model import &amp; export</h3>
+<p><span class="inline_code">Model.save()</span> exports the model as a binary file using the Python <span class="inline_code">cPickle</span> module, including the cache. With <span class="inline_code">Model.save(update=True)</span>, all possible vectors and similarities will be calculated and cached before saving. The classmethod <span class="inline_code">Model.load()</span> returns a <span class="inline_code">Model</span> from the given file created with <span class="inline_code">Model.save()</span>.</p>
+<p><span class="inline_code">Model.export(</span>) exports a file that can be used with popular machine learning software. With <span class="inline_code">ORANGE</span>, it generates a tab-separated text file for <a href="http://orange.biolab.si/">Orange</a>. With <span class="inline_code">WEKA</span>, it generates an ARFF text file for <a href="http://www.cs.waikato.ac.nz/ml/weka/">Weka</a>.</p>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="lsa"></a>Latent semantic analysis</h2>
+<p>Latent Semantic Analysis (LSA) is a statistical technique based on singular value decomposition (SVD). <span class="small"><a class="noexternal" href="http://en.wikipedia.org/wiki/Singular_value_decomposition" target="_blank">[1]</a> <a class="noexternal" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.svd.html" target="_blank">[2]</a></span>. It groups related features in the model into concepts (e.g., <em>purr</em> + <em>fur</em> + <em>claw</em> = <span class="smallcaps">feline</span> concept). This is called dimensionality reduction. Each document in the model then gets a concept vector, a compressed approximation of the original vector that may be faster for cosine similarity, clustering and classification.</p>
+<p>SVD requires the Python <a href="http://numpy.scipy.org/" target="_blank">NumPy</a> package (installed by default on Mac OS X). Given a matrix of documents ×&nbsp;features, it yields a matrix <span class="inline_code">U</span> with documents ×&nbsp;concepts, a diagonal matrix <span class="inline_code">Σ</span> with singular values, and a matrix <span class="inline_code">Vt</span> with concepts ×&nbsp;features.</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">from numpy.linalg import svd
+from numpy import dot, diag
+ 
+u, sigma, vt = svd(matrix, full_matrices=False)
+for i in range(-k, 0):
+    sigma[i] = 0 # Reduce k smallest singular values.
+
+matrix = dot(u, dot(diag(sigma), vt))</pre></div>
+<p><span class="small"><span style="text-decoration: underline;">Reference</span>: Wilk J. (2007). http://blog.josephwilk.net/projects/latent-semantic-analysis-in-python.html</span></p>
+<div class="example"><br />The following figure illustrates LSA for a&nbsp;document of words that commonly occur after the word <em>nice</em>:</div>
+<table class="border" border="0">
+<tbody>
+<tr>
+<td>
+<p><br /><img style="display: block; margin-left: auto; margin-right: auto;" src="../g/pattern-vector-lsa1.jpg" alt="" /></p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>LSA concept space</h3>
+<p>The <span class="inline_code">Model.reduce()</span> method calculates SVD and stores the concept space in <span class="inline_code">Model.lsa</span>. The optional&nbsp;<span class="inline_code">dimensions</span> parameter defines the number of dimensions in the concept space: <span class="inline_code">TOP300</span>, <span class="inline_code">L1</span>, <span class="inline_code">L2</span>&nbsp;(default), an&nbsp;<span class="inline_code">int</span> or a function. There is no universal optimal value, too many dimensions may result in noise while too few may remove useful information.</p>
+<p>When <span class="inline_code">Model.lsa</span> is set,&nbsp;<span class="inline_code">Model.similarity()</span>, <span class="inline_code">neighbors()</span>, <span class="inline_code">search()</span> and <span class="inline_code">cluster()</span>&nbsp;will subsequently compute in LSA concept space. To undo the reduction, set <span class="inline_code">Model.lsa</span> to <span class="inline_code">None</span>. Adding or removing documents in the model will also undo the reduction.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">lsa = Model.reduce(dimensions=L2)</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">lsa = Model.lsa</pre><pre class="brush:python; gutter:false; light:true;">lsa = LSA(model, k=L2)</pre><pre class="brush:python; gutter:false; light:true;">lsa.model                   # Parent Model.
+lsa.features                # List of features, same as Model.features.
+lsa.concepts                # List of concepts, each a {feature: weight} dict.
+lsa.vectors                 # {Document.id: {concept_index: weight}}</pre><pre class="brush:python; gutter:false; light:true;">lsa.transform(document)</pre><table class="border">
+<tbody>
+<tr>
+<td class="smallcaps">Dimensions</td>
+<td class="smallcaps">Description</td>
+</tr>
+<tr>
+<td class="inline_code">TOP300</td>
+<td>Keep the top 300 dimensions (rule of thumb).</td>
+</tr>
+<tr>
+<td class="inline_code">L1</td>
+<td>L1-norm of the singular values as the number of dimensions to remove.</td>
+</tr>
+<tr>
+<td class="inline_code">L2</td>
+<td>L2-norm of the singular values as the number of dimensions to remove.</td>
+</tr>
+<tr>
+<td class="inline_code">int</td>
+<td>An <span class="inline_code">int</span> that is the number of dimensions to remove.</td>
+</tr>
+<tr>
+<td class="inline_code">function</td>
+<td>A function that takes the list of singular values and returns an int.</td>
+</tr>
+</tbody>
+</table>
+<p><span class="inline_code">LSA.transform()</span> takes a <span class="inline_code">Document</span> and returns its <span class="inline_code">Vector</span> in concept space. This is useful for documents that are not part of the model – see also <span class="inline_code">Classifier.classify()</span>.</p>
+<p>The following example demonstrates how related features are grouped after LSA:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import Document, Model
+&gt;&gt;&gt;
+&gt;&gt;&gt; d1 = Document('The cat purrs.', name='cat1')
+&gt;&gt;&gt; d2 = Document('Curiosity killed the cat.', name='cat2')
+&gt;&gt;&gt; d3 = Document('The dog wags his tail.', name='dog1')
+&gt;&gt;&gt; d4 = Document('The dog is happy.', name='dog2')
+&gt;&gt;&gt; 
+&gt;&gt;&gt; m = Model([d1, d2, d3, d4])
+&gt;&gt;&gt; m.reduce(2)
+&gt;&gt;&gt; 
+&gt;&gt;&gt; for d in m.documents:
+&gt;&gt;&gt;     print
+&gt;&gt;&gt;     print d.name
+&gt;&gt;&gt;     for concept, w1 in m.lsa.vectors[d.id].items():
+&gt;&gt;&gt;         for feature, w2 in m.lsa.concepts[concept].items():
+&gt;&gt;&gt;             if w1 != 0 and w2 != 0:
+&gt;&gt;&gt;                 print (feature, w1 * w2)
+</pre></div>
+<p>The model is reduced to two dimensions. So there are two concepts in the concept space. Each document has a concept vector with weights for each concept. As illustrated below, cat features have been grouped together and dog features have been grouped together.</p>
+<table class="border">
+<tbody>
+<tr>
+<td style="width: 12%; text-align: center;"><span class="smallcaps">concept</span></td>
+<td style="text-align: center;"><span>cat</span></td>
+<td style="text-align: center;"><span>curiosity</span></td>
+<td style="text-align: center;"><span>dog</span></td>
+<td style="text-align: center;"><span>happy</span></td>
+<td style="text-align: center;"><span>killed</span></td>
+<td style="text-align: center;"><span>purrs</span></td>
+<td style="text-align: center;"><span>tail</span></td>
+<td style="text-align: center;"><span>wags</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">0</span></td>
+<td style="text-align: center;"><span class="inline_code">&nbsp;0.00</span></td>
+<td style="text-align: center;"><span class="inline_code">&nbsp;0.00</span></td>
+<td style="text-align: center;"><span class="inline_code">+0.52</span></td>
+<td style="text-align: center;"><span class="inline_code">+0.78</span></td>
+<td style="text-align: center;"><span class="inline_code">&nbsp;0.00</span></td>
+<td style="text-align: center;"><span class="inline_code">&nbsp;0.00</span></td>
+<td style="text-align: center;"><span class="inline_code">+0.26</span></td>
+<td style="text-align: center;"><span class="inline_code">+0.26</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">1</span></td>
+<td style="text-align: center;"><span class="inline_code">-0.52</span></td>
+<td style="text-align: center;"><span class="inline_code">-0.26</span></td>
+<td style="text-align: center;"><span class="inline_code">&nbsp;0.00</span></td>
+<td style="text-align: center;"><span class="inline_code">&nbsp;0.00</span></td>
+<td style="text-align: center;"><span class="inline_code">-0.26</span></td>
+<td style="text-align: center;"><span class="inline_code">-0.78</span></td>
+<td style="text-align: center;"><span class="inline_code">&nbsp;0.00</span></td>
+<td style="text-align: center;"><span class="inline_code">&nbsp;0.00</span></td>
+</tr>
+</tbody>
+</table>
+<table class="border">
+<tbody>
+<tr>
+<td style="width: 12%; text-align: center;"><span class="smallcaps">concept</span></td>
+<td style="text-align: center;"><span><span class="inline_code">d1</span> (cat1)</span></td>
+<td style="text-align: center;"><span><span class="inline_code">d2</span> (cat2)</span></td>
+<td style="text-align: center;"><span><span class="inline_code">d3</span> (dog1)</span></td>
+<td style="text-align: center;"><span><span class="inline_code">d4</span> (dog2)</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">0</span></td>
+<td style="text-align: center;"><span class="inline_code">&nbsp;0.00</span></td>
+<td style="text-align: center;"><span class="inline_code">&nbsp;0.00</span></td>
+<td style="text-align: center;"><span class="inline_code">+0.45</span></td>
+<td style="text-align: center;"><span class="inline_code">+0.90</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">1</span></td>
+<td style="text-align: center;"><span class="inline_code">-0.90</span></td>
+<td style="text-align: center;"><span class="inline_code">-0.45</span></td>
+<td style="text-align: center;"><span class="inline_code">&nbsp;0.00</span></td>
+<td style="text-align: center;"><span class="inline_code">&nbsp;0.00</span></td>
+</tr>
+</tbody>
+</table>
+<p>Dimensionality reduction is useful with <span class="inline_code">Model.cluster()</span>. Clustering algorithms are exponentially slow (i.e., 3 nested <span class="inline_code">for</span>-loops). Clustering a model of a 1,000 documents with a 1,000 features takes a couple of minutes. However, it takes a couple of seconds to reduce this model to concept vectors with a 100 features, after which <em>k</em>-means clustering also runs in a couple of seconds.&nbsp;Note that document vectors are stored in sparse format (i.e., features with weight <span class="inline_code">0.0</span> are omitted), so it is often not necessary to reduce the model. Even if the model has a 1,000 features, each document might have no more than 5-10 features. To get an idea of the average document vector length:</p>
+<p><span class="inline_code">sum(len(d.vector) for d in model.documents) / float(len(model)) </span></p>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="cluster"></a>Clustering</h2>
+<p>Clustering is an unsupervised machine learning method that can be used to partition a set of unlabeled documents (i.e., <span class="inline_code">Document</span> objects without a <span class="inline_code">type</span>). Since the label (class, type, category) of a document is not known, clustering will attempt to create clusters (categories) of similar documents by measuring the distance between the document vectors. The optimal solution is then a set of <em>dense</em> clusters, where each cluster is made up of documents with the smallest possible distance between them.</p>
+<p>Say we have a number of 2D points with&nbsp;coordinates <span class="inline_code">x</span> and <span class="inline_code">y</span> (horizontal and vertical position). Some points will be further apart than others. The figure below illustrates how we can partition the points by measuring their distance to two centroids. More centroids create more clusters. The principle holds for 3D points with&nbsp;<span class="inline_code">x</span>, <span class="inline_code">y</span>&nbsp;and&nbsp;<span class="inline_code">z</span>&nbsp;coordinates, or any n-D points&nbsp;(<span class="inline_code">x</span>, <span class="inline_code">y</span>, <span class="inline_code">z</span>, <span class="inline_code">...</span>, <span class="inline_code">n</span>). This is how the <em>k</em>-means clustering algorithm works. A <span class="inline_code">Document.vector</span> is an n-dimensional point. Instead of coordinates&nbsp;<span class="inline_code">x</span> and <span class="inline_code">y</span> it has <span class="inline_code">n</span> features (words) and feature weights. We can calculate the distance between document vectors with cosine similarity.</p>
+<table class="border">
+<tbody>
+<tr>
+<td style="text-align: center;"><img style="display: block; margin-left: auto; margin-right: auto;" src="../g/pattern-vector-cluster1.jpg" alt="" width="249" height="125" /><span class="smallcaps">random points in 2D</span></td>
+<td style="text-align: center;"><img style="display: block; margin-left: auto; margin-right: auto;" src="../g/pattern-vector-cluster2.jpg" alt="" width="249" height="125" /><span class="smallcaps">points by distance to centroid</span></td>
+</tr>
+</tbody>
+</table>
+<p>The <span class="inline_code">Model.cluster()</span> method returns a list of clusters using the <span class="inline_code">KMEANS</span> or the <span class="inline_code">HIERARCHICAL</span> algorithm. The optional <span class="inline_code">distance</span> parameter can be <span class="inline_code">COSINE</span> (default), <span class="inline_code">EUCLIDEAN</span>, <span class="inline_code">MANHATTAN</span> or <span class="inline_code">HAMMING</span>. An optional <span class="inline_code">documents</span>&nbsp;parameter can be a selective list of documents in the model to cluster.</p>
+<pre class="brush:python; gutter:false; light:true;">clusters = Model.cluster(method=KMEANS, k=10, iterations=10, distance=COSINE)</pre><pre class="brush:python; gutter:false; light:true;">clusters = Model.cluster(method=HIERARCHICAL, k=1, iterations=1000, distance=COSINE)</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import Document, Model, HIERARCHICAL
+&gt;&gt;&gt;  
+&gt;&gt;&gt; d1 = Document('Cats are independent pets.', name='cat')
+&gt;&gt;&gt; d2 = Document('Dogs are trustworthy pets.', name='dog')
+&gt;&gt;&gt; d3 = Document('Boxes are made of cardboard.', name='box')
+&gt;&gt;&gt;  
+&gt;&gt;&gt; m = Model((d1, d2, d3))
+&gt;&gt;&gt; print m.cluster(method=HIERARCHICAL, k=2)
+
+Cluster([
+    Document(id=3, name='box'), 
+    Cluster([
+        Document(id=2, name='dog'), 
+        Document(id=1, name='cat')
+    ])
+])</pre></div>
+<h3><em><a name="kmeans"></a>k</em>-means clustering</h3>
+<p>The <em>k</em>-means clustering algorithm partitions a set of unlabeled documents into <em>k</em> clusters, using <em>k</em> random centroids. It returns a list containing&nbsp;<em>k</em> lists of similar documents.&nbsp;</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">Model.cluster(method=KMEANS, k=10, iterations=10, distance=COSINE, seed=RANDOM, p=0.8)</pre><p>The advantage of <em>k</em>-means is that it is fast. The drawback is that an optimal solution is not guaranteed, since the position of the centroids is random.&nbsp;Each iteration, the algorithm will swap documents between clusters to create denser clusters.&nbsp;</p>
+<p>The optional <span class="inline_code">seed</span>&nbsp;parameter be <span class="inline_code">RANDOM</span> or&nbsp;<span class="inline_code">KMPP</span>. The <span class="inline_code">KMPP</span> or&nbsp;<em>k</em>-means++ initialization algorithm can be used to find better centroids. In many cases this is also faster. The optional parameter <span class="inline_code">p</span>&nbsp;sets the "relaxation" of the <em>k</em>-means algorithm. Relaxation is based on a mathematical trick called triangle inequality, where <span class="inline_code">p=0.5</span> is stable but slow and <span class="inline_code">p=1.0</span> is prone to errors but faster, especially for higher <span class="inline_code">k</span> and document vectors with many features (i.e., higher dimensionality).</p>
+<p><span class="small"><span style="text-decoration: underline;">References</span>: <br />Arthur, D. (2007). <em>k-means++: the advantages of careful seeding. </em>SODA'07 Proceedings.<br />Elkan, C. (2003). <em>Using the Triangle Inequality to Accelerate k-Means. </em>ICML'03 Proceedings.</span></p>
+<h3><a name="hierarchical"></a>Hierarchical clustering</h3>
+<p>The hierarchical clustering algorithm returns a tree of nested clusters. The top level item is a <span class="inline_code">Cluster</span>, a mixed list of&nbsp;<span class="inline_code">Document</span> and (nested)&nbsp;<span class="inline_code">Cluster</span> objects.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">Model.cluster(method=HIERARCHICAL, k=1, iterations=1000, distance=COSINE)</pre><p>The advantage of hierarchical clustering is that the optimal solution is guaranteed. Each iteration, the algorithm will cluster the two nearest documents. The drawback is that it is slow.</p>
+<p>A <span class="inline_code">Cluster</span> is a list of <span class="inline_code">Document</span>&nbsp;and <span class="inline_code">Cluster</span>&nbsp;objects, with some additional properties:</p>
+<pre class="brush:python; gutter:false; light:true;">cluster = Cluster([])</pre><pre class="brush:python; gutter:false; light:true;">cluster.depth               # Returns the maximum depth of nested clusters.
+cluster.flatten(depth=1000) # Returns a flat list, down to the given depth.
+cluster.traverse(visit=lambda cluster: None) </pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.vector import Cluster
+&gt;&gt;&gt;  
+&gt;&gt;&gt; cluster = Cluster((1, Cluster((2, Cluster((3, 4))))))
+&gt;&gt;&gt; print cluster.depth
+&gt;&gt;&gt; print cluster.flatten(1) 
+
+2
+[1, 2, Cluster([3, 4])] </pre></div>
+<p class="small">Note: the maximum recursion depth in Python is 1,000. For deeper clusters, raise <span class="inline_code">sys.setrecursionlimit()</span>.</p>
+<h3>Centroid</h3>
+<p>The <span class="inline_code">centroid()</span> function takes a <span class="inline_code">Cluster</span>, or a list of <span class="inline_code">Cluster</span>, <span class="inline_code">Document</span> and <span class="inline_code">Vector</span> objects, and returns the mean <span class="inline_code">Vector</span>. The <span class="inline_code">distance()</span> function returns the distance between two vectors. A common problem is that a cluster has no meaningful descriptive name. One solution is to calculate its centroid, and use the <span class="inline_code">Document.type</span> of the document vector(s) nearest to the centroid.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">centroid(vectors=[])            # Returns the mean Vector. </pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">distance(v1, v2, method=COSINE) # COSINE | EUCLIDEAN | MANHATTAN | HAMMING</pre><p>&nbsp;</p>
+<hr />
+<h2><a name="classification"></a>Classification</h2>
+<p>Classification can be used to predict the label of an unlabeled document. More specically, classification is a supervised machine learning method that uses labeled documents (i.e., <span class="inline_code">Document</span> objects with a <span class="inline_code">type</span>) as training examples to statistically predict the label (class, type) of new documents, based on their similarity to the training examples using a distance metric (e.g., cosine similarity). A <span class="inline_code">Document</span> is a bag-of-words representation of a text, i.e., unordered words + word count. The <span class="inline_code">Document.vector</span> maps the words (or features) to their weight (absolute or relative word count, tf-idf, ...). The weight of a word represents its relevancy in the text. So we can compare how similar two documents are by measuring if they have relevant words in common. Given an unlabeled document, a classifier yields the label of the most similar document(s) in its training set. This implies that a larger training set with more features (and less labels) gives better performance.</p>
+<p>For example, if we have a corpus of product reviews (<em>training data</em>) for which the star rating of each product review is known (<em>labels</em>, e.g., ★★★☆☆ = 3), we can use it to predict the star rating of other reviews, based on common words (<em>features</em>) in the text. We could represent each review as a vector of adjectives (e.g., good, bad, awesome, awful, ...) since positive reviews (good, awesome) will most likely contain different adjectives than negative reviews (bad, awful).</p>
+<p>The pattern.vector module implements three classification algorithms:</p>
+<ul>
+<li><span class="inline_code"> NB</span>: <a href="https://en.wikipedia.org/wiki/Naive_Bayes_classifier" target="_blank">Naive Bayes</a>, based on the probability that a feature occurs in a class.</li>
+<li><span class="inline_code">KNN</span>: <a href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm" target="_blank"><em>k</em>-nearest neighbor</a>, based on the <em>k</em> most similar documents in the training set.</li>
+<li><span class="inline_code">SVM</span>: <a href="https://en.wikipedia.org/wiki/Support_vector_machine" target="_blank">support vector machine</a>, based on a representation of the documents in a high-dimensional space separated by hyperplanes (see further).</li>
+</ul>
+<pre class="brush:python; gutter:false; light:true;">classifier = NB(train=[], baseline=MAJORITY, method=MULTINOMIAL, alpha=0.0001)</pre><pre class="brush:python; gutter:false; light:true;">classifier = KNN(train=[], baseline=MAJORITY, k=10, distance=COSINE)</pre><pre class="brush:python; gutter:false; light:true;">classifier = SVM(type=CLASSIFICATION, kernel=LINEAR, train=[])</pre><h3>Classifier</h3>
+<p>The <span class="inline_code">NB</span>, <span class="inline_code">KNN</span> and <span class="inline_code">SVM</span> classifiers inherit from the <span class="inline_code">Classifier</span> base class:</p>
+<pre class="brush:python; gutter:false; light:true;">classifier = Classifier(train=[], baseline=MAJORITY)</pre><pre class="brush:python; gutter:false; light:true;">classifier = Classifier.load(path)</pre><pre class="brush:python; gutter:false; light:true;">classifier.features       # List of trained features (words).
+classifier.classes        # List of trained class labels.
+classifier.binary         # True if Classifier.classes == [True, False] or [0, 1]. 
+classifier.distribution   # Dictionary of (label, frequency)-items.
+classifier.baseline       # Default predicted class (most frequent or user-given). 
+classifier.majority       # Most frequent class label.
+classifier.minority       # Least frequent class label.  
+classifier.skewness       # 0.0 if the classes are evenly distributed.</pre><pre class="brush:python; gutter:false; light:true;">classifier.train(document, type=None)
+classifier.classify(document, discrete=True) 
+</pre><pre class="brush:python; gutter:false; light:true;">classifier.confusion_matrix(documents=[])
+classifier.test(documents=[], target=None) 
+classifier.auc(documents=[], k=10)  
+</pre><pre class="brush:python; gutter:false; light:true;">classifier.finalize()     # Trains + removes training data from memory. </pre><pre class="brush:python; gutter:false; light:true;">classifier.save(path)     # gzipped pickle file, load with Classifier.load().</pre><ul>
+<li><span class="inline_code">Classifier.train()</span> trains the classifier with the given document and type (= class label).<br />A document can be a <span class="inline_code">Document</span>, <span class="inline_code">Vector</span>, <span class="inline_code">dict</span>, or a list or string of words (features).<br />If no <span class="inline_code">type</span> is given, <span class="inline_code">Document.type</span> will be used instead.<br />You can also use <span class="inline_code">Classifier(train=[document1</span><span class="inline_code">,</span> <span class="inline_code">document2</span><span class="inline_code">,</span> <span class="inline_code">...])</span> with a list or a <span class="inline_code">Model</span>.</li>
+<li><span class="inline_code">Classifier.classify()</span> returns the type with the highest probability for the given document.<br />If <span class="inline_code">discrete=False</span>, returns a dictionary of (<span class="inline_code">class</span>, <span class="inline_code">probability</span>)-items.<br />If the classifier is trained on an LSA model, you must supply the output of <span class="inline_code">Model.lsa.transform()</span>.</li>
+<li><span class="inline_code">Classifier.test()</span> returns an <span class="inline_code">(accuracy,</span> <span class="inline_code">precision,</span> <span class="inline_code">recall,</span> <span class="inline_code">F1-score)</span>-tuple.<br />The given test data can be a list of documents, <span class="inline_code">(document,</span> <span class="inline_code">type)</span>-tuples or a <span class="inline_code">Model</span>.</li>
+</ul>
+<h3>Training a classifier</h3>
+<p>Say we have a corpus of a 1,000 short movie reviews (<a class="link-maintenance" href="http://www.clips.ua.ac.be/media/reviews.csv.zip">reviews.csv.zip</a>), each with a star rating given by the reviewer or customer. The corpus contains such instances as:</p>
+<table class="border">
+<tbody>
+<tr>
+<td><span class="smallcaps">Review</span></td>
+<td style="text-align: center;"><span class="smallcaps">Rating</span></td>
+</tr>
+<tr>
+<td><em>Amazing film!</em></td>
+<td style="text-align: center;"><span class="inline_code">★★★★★</span></td>
+</tr>
+<tr>
+<td><em>Pretty darn good</em></td>
+<td style="text-align: center;"><span class="inline_code">★★★★☆</span></td>
+</tr>
+<tr>
+<td><em>Rather disappointing</em></td>
+<td style="text-align: center;"><span class="inline_code">★★☆☆☆</span></td>
+</tr>
+<tr>
+<td><em>How can anyone watch this drivel?</em></td>
+<td style="text-align: center;"><span class="inline_code">☆☆☆☆☆</span></td>
+</tr>
+</tbody>
+</table>
+<p>We can use the corpus to train a classifier that predicts the star rating of other reviews, based on word similarity. By creating a <span class="inline_code">Document</span> for each review we have control over what words (features) are included or not (e.g., stopwords). We will use a Naive Bayes (<span class="inline_code">NB</span>) classifier, but the examples will also work with <span class="inline_code">KNN</span> and <span class="inline_code">SVM</span>, since all classifiers inherit from <span class="inline_code">Classifier</span>.</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.vector import Document, NB
+&gt;&gt;&gt; from pattern.db import csv
+&gt;&gt;&gt;  
+&gt;&gt;&gt; nb = NB()
+&gt;&gt;&gt; for review, rating in csv('reviews.csv'):
+&gt;&gt;&gt;     v = Document(review, type=int(rating), stopwords=True) 
+&gt;&gt;&gt;     nb.train(v)
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print nb.classes
+&gt;&gt;&gt; print nb.classify(Document('A good movie!'))
+
+[0, 1, 2, 3, 4, 5]
+4 </pre></div>
+<p>The review <em>"A good movie!"</em> is classified as ★★★★☆ because, based on the training data, the classifier learned that <em>good</em> is often related to higher star ratings.</p>
+<h3>Testing a classifier</h3>
+<p>How accurate is the classifier? Naive Bayes can be quite effective despite its simple implementation. In this example it has an accuracy of 60%. Given a set of testing data, <span class="inline_code">NB.test()</span> returns an <span class="inline_code">(accuracy,</span> <span class="inline_code">precision,</span> <span class="inline_code">recall,</span> <span class="inline_code">F1-score)</span>-tuple with values between <span class="inline_code">0.0–</span><span class="inline_code">1.0</span>:</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">NB.test(documents=[], target=None) # Returns (accuracy, precision, recall, F1).</pre><div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; data = csv('reviews.csv')
+&gt;&gt;&gt; data = [(review, int(rating)) for review, rating in data]
+&gt;&gt;&gt; data = [Document(review, type=rating, stopwords=True) for review, rating in data]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; nb = NB(train=data[:500])
+&gt;&gt;&gt; 
+&gt;&gt;&gt; accuracy, precision, recall, f1 = nb.test(data[500:])
+&gt;&gt;&gt; print accuracy
+
+0.60</pre></div>
+<p>Note how we used 1/2 of the data for training and reserve the other 1/2 of the data for testing.</p>
+<p class="smallcaps"><br />Binary classification</p>
+<p>The reported accuracy (60%) is not the worst baseline. Random guessing between the six possible star ratings (0-5) has only 17% accuracy. Moreover, many errors are off by only one (e.g., predicts ★ instead of ★★ or vice versa). If we simplify the task and train a <em>binary</em> classifier that predicts either positive (<span class="inline_code">True</span> → star rating 3, 4, 5) or negative (<span class="inline_code">False</span> → star rating 0, 1, 2), accuracy increases to 68%. This is because we now have only two classes to choose from and more training data per class.</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; data = csv('reviews.csv')
+&gt;&gt;&gt; data = [(review, int(rating) &gt;= 3) for review, rating in data]
+&gt;&gt;&gt; data = [Document(review, type=rating, stopwords=True) for review, rating in data]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; nb = NB(train=data[:500])
+&gt;&gt;&gt; 
+&gt;&gt;&gt; accuracy, precision, recall, f1 = nb.test(data[500:])
+&gt;&gt;&gt; print accuracy
+
+0.68</pre></div>
+<p class="smallcaps"><br />Skewed data</p>
+<p>The reported accuracy can be misleading. Suppose we have a classifier that <em>always</em> predicts positive (<span class="inline_code">True</span>). We evaluate it with a test set that contains 1/2 positive reviews. So accuracy is 50%. We then evaluate it with a test set that contains 9/10 positive reviews. Accuracy is now 90%. This happens if the data is skewed, i.e., when it has more instances of one class and fewer of the other.</p>
+<p>A more reliable evaluation is to look at both the rate of correct predictions and incorrect predictions, per class. This information can be derived from the <em>confusion matrix</em>.</p>
+<p class="smallcaps"><br />Confusion matrix</p>
+<p>A <span class="inline_code">ConfusionMatrix</span> is a matrix of actual classes ×&nbsp;predicted classes, stored as a dictionary:</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">confusion = Classifier.confusion_matrix(documents=[])</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">confusion(target)         # (TP, TN, FP, FN) for given class.
+confusion.table           # Pretty string ouput.</pre><div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; print nb.distribution
+&gt;&gt;&gt; print nb.confusion_matrix(data[500:])
+&gt;&gt;&gt; print nb.confusion_matrix(data[500:])(True) # (TP, TN, FP, FN) 
+
+{True: 373, False: 127}
+{True: {True: 285, False: 94}, False: {False: 53, True: 68}}
+(286, 53, 68, 93) </pre></div>
+<table class="border">
+<tbody>
+<tr>
+<td class="smallcaps" style="text-align: center;">Class</td>
+<td class="smallcaps" style="text-align: center;" colspan="2">Predicted class</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td class="inline_code" style="text-align: center;">True</td>
+<td class="inline_code" style="text-align: center;">False</td>
+</tr>
+<tr>
+<td class="inline_code" style="text-align: center;">True</td>
+<td style="text-align: center;">285</td>
+<td style="text-align: center;">94</td>
+</tr>
+<tr>
+<td class="inline_code" style="text-align: center;">False</td>
+<td style="text-align: center;">68</td>
+<td style="text-align: center;">53</td>
+</tr>
+</tbody>
+</table>
+<p>The class distribution shows that there are more positive reviews in the training data (373/500).</p>
+<p>The confusion matrix shows that, by consequence, the classifier is good at predicting positive reviews (286/373 or 76%) but bad at predicting negative reviews (53/127 or 42%). Note how we call the <span class="inline_code">ConfusionMatrix</span> like a function. This returns a <span class="inline_code">(TP,</span> <span class="inline_code">TN,</span> <span class="inline_code">FP,</span> <span class="inline_code">FN)</span>-tuple for a given class, the amount of true positives ("hits"), true negatives ("rejects"), false positives ("errors") and false negatives ("misses").</p>
+<p class="smallcaps"><br />Precision &amp; recall</p>
+<p><strong>Precision</strong> is a measure of hits vs. errors. <strong>Recall</strong> is a measure of hits vs. misses. If the classifier has a low precision, negative cases are being misclassified as positive. If the classifier has a low recall, not all positive cases are being caught. F1-score is simply the harmonic mean of precision and recall.</p>
+<p>Say we have an online shop that automatically highlights positive customer reviews. Negative reviews might contain profanity, so we want to focus on high precision to make sure that no swear words are highlighted. Say we hire a moderator to double-check highlighted reviews. In this case we can focus on high recall, to make sure that no positive review is overlooked. Our moderator will have to unhighlight some reviews by hand.</p>
+<table class="border">
+<tbody>
+<tr>
+<td class="smallcaps">Metric</td>
+<td><span class="smallcaps">Formula</span></td>
+</tr>
+<tr>
+<td>Accuracy</td>
+<td><span class="inline_code">(TP</span> <span class="inline_code">+</span> <span class="inline_code">TN)</span> <span class="inline_code">/</span> <span class="inline_code">(TP</span> <span class="inline_code">+</span> <span class="inline_code">TN</span> <span class="inline_code">+</span> <span class="inline_code">FP</span> <span class="inline_code">+</span> <span class="inline_code">FN)</span></td>
+</tr>
+<tr>
+<td>Precision</td>
+<td><span class="inline_code">TP</span> <span class="inline_code">/</span> <span class="inline_code">(TP</span> <span class="inline_code">+</span> <span class="inline_code">FP)</span></td>
+</tr>
+<tr>
+<td>Recall</td>
+<td><span class="inline_code">TP</span> <span class="inline_code">/</span> <span class="inline_code">(TP</span> <span class="inline_code">+</span> <span class="inline_code">FN)</span></td>
+</tr>
+<tr>
+<td>F1-score</td>
+<td><span class="inline_code">2</span> <span class="inline_code">x</span> <span class="inline_code">P</span> <span class="inline_code">x</span> <span class="inline_code">R</span> <span class="inline_code">/</span> <span class="inline_code">(P</span> <span class="inline_code">+</span> <span class="inline_code">R)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; print nb.test(data[500:], target=True)
+&gt;&gt;&gt; print nb.test(data[500:], target=False)
+&gt;&gt;&gt; print nb.test(data[500:]) 
+
+(0.676, 0.807, 0.752, 0.779) # A, P, R, F1 for predicting True.
+(0.676, 0.361, 0.438, 0.396) # A, P, R, F1 for predicting False.
+(0.676, 0.584, 0.595, 0.589) # A, P, R, F1 (macro-averaged).</pre></div>
+<p>In summary, the 59% F1-score is a more reliable estimate than the 68% accuracy.</p>
+<p class="smallcaps"><br />K-fold cross-validation</p>
+<p>K-fold cross-validation performs <em>K</em> tests on a given classifier, each time partitioning the given dataset into different subsets for training and testing, and returns the average <span class="inline_code">(accuracy,</span> <span class="inline_code">precision,</span> <span class="inline_code">recall,</span> <span class="inline_code">F1)</span>. This is more reliable (= generalized) than always using the same training data.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">kfoldcv(Classifier, documents=[], folds=10, target=None)</pre><div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.vector import NB, Document, kfoldcv
+&gt;&gt;&gt; from pattern.db import csv 
+&gt;&gt;&gt; 
+&gt;&gt;&gt; data = csv('reviews.csv') 
+&gt;&gt;&gt; data = [(review, int(rating) &gt;= 3) for review, rating in data]
+&gt;&gt;&gt; data = [Document(review, type=rating, stopwords=True) for review, rating in data]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print kfoldcv(NB, data, folds=10)
+
+(0.678, 0.563, 0.568, 0.565)  </pre></div>
+<p>Note that <span class="inline_code">kfoldcv()</span> takes any parameters of the given <span class="inline_code">Classifier</span> as optional parameters:</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; print kfoldcv(KNN, data, folds=10, k=3, distance=EUCLIDEAN)</pre></div>
+<p>As it turns out, our Naive Bayes classifier is not that accurate: 57% F1-score. We will need more training data and/or be more selective about our data. How about we just take the adjectives and exclamation marks in each review instead of the whole text?</p>
+<p>&nbsp;</p>
+<hr />
+<h3><a name="feature-selection"></a>Feature selection</h3>
+<p>The performance of a classifier relies on the availability of training data, and the quality of each document in the training data. The <span class="inline_code">Document.vector</span> may contain redundant or irrelevant features that reduce performance, or it may be missing features. Useful techniques that may increase performance include:</p>
+<ul>
+<li>Filter out noise. Raise the word count threshold with <span class="inline_code">Document(threshold=0)</span>.</li>
+<li>Use <a class="link-maintenance" href="pattern-en.html#parser">part-of-speech tagging</a> to select specific types of words (e.g., adjectives, punctuation, ...)</li>
+<li>Lemmatize features (<em>purred</em> → <em>purr</em>) with <a class="link-maintenance" href="pattern-en.html#parser">pattern.en</a>'s <span class="inline_code">parse(lemmata=True)</span>.</li>
+<li>Use <a class="link-maintenance" href="pattern-en.html#ngram">ngrams</a> or <span class="inline_code">chngrams()</span> as features.</li>
+</ul>
+<p>Note that you can pass a custom dictionary of <span class="inline_code">(feature,</span> <span class="inline_code">weight)</span>-items to the <span class="inline_code">Document()</span> constructor, instead of a string. You can also pass dictionaries directly to <span class="inline_code">Classifier.train()</span>.</p>
+<p>The following example improves the accuracy of our movie review classifier from 57% to 60% by selecting lemmatized adjectives (<span class="postag">JJ</span>), nouns (<span class="inline_code">NN</span>), verbs (<span class="postag">VB</span>) and exclamation marks from each review:</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.vector import NB, kfoldcv, count
+&gt;&gt;&gt; from pattern.db import csv
+&gt;&gt;&gt; from pattern.en import parsetree
+&gt;&gt;&gt; 
+&gt;&gt;&gt; def v(review):
+&gt;&gt;&gt;     v = parsetree(review, lemmata=True)[0]
+&gt;&gt;&gt;     v = [w.lemma for w in v if w.tag.startswith(('JJ', 'NN', 'VB', '!'))]
+&gt;&gt;&gt;     v = count(v)
+&gt;&gt;&gt;     return v
+&gt;&gt;&gt; 
+&gt;&gt;&gt; data = csv('reviews') 
+&gt;&gt;&gt; data = [(v(review), int(rating) &gt;= 3) for review, rating in data]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print kfoldcv(NB, data)
+
+(0.631, 0.588, 0.626, 0.606)  </pre></div>
+<p>Features can be selected automatically using <span class="inline_code">Model.infogain(feature)</span> (was <span class="inline_code">Corpus.information_gain()</span> in previous versions). Information gain is a measure of a feature's predictability for a class label. The value is used in <span class="inline_code">Model.feature_selection()</span> to compute a sorted list of the most unpredictable (original) features.</p>
+<p>Automatic feature selection is useful for documents with many features (e.g., 10,000). More features require more computation and can lead to <em>overfitting</em>. Overfitting means that the classifier is making assumptions based on irrelevant features (noise). It memorizes the training data instead of generalizing from trends.</p>
+<p>Automatic feature selection is not so useful for our movie review classifier, since each document has few features. By cutting out the predictable features (e.g., <em>good movie</em>, <em>bad movie</em>) performance drops:</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.vector import Model, TF, NB, kfoldcv
+&gt;&gt;&gt; from pattern.db import csv
+&gt;&gt;&gt; 
+&gt;&gt;&gt; data = csv('reviews.csv') 
+&gt;&gt;&gt; data = [(review, int(rating) &gt;= 3) for review, rating in data]
+&gt;&gt;&gt; data = [Document(review, type=rating, stopwords=True) for review, rating in data]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; model = Model(documents=data, weight=TF)
+&gt;&gt;&gt; model = model.filter(features=model.feature_selection(top=1000))
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print kfoldcv(NB, model)
+
+(0.607, 0.500, 0.504, 0.502) # random  </pre></div>
+<p>&nbsp;</p>
+<hr />
+<h3><a name="nb"></a>Naive bayes</h3>
+<p>The Naive Bayes classifier is based on the probability that a feature occurs in a class, independent of other features, using Bayes' theorem.</p>
+<div>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">classifier = NB(train=[], baseline=MAJORITY, method=MULTINOMIAL, alpha=0.0001)</pre></div>
+<p>With the <span class="inline_code">MULTINOMIAL</span> method, feature weights are used (<span class="inline_code">0.0</span>–<span class="inline_code">1.0</span>). With the <span class="inline_code">BINOMIAL</span> method, a feature is either part of a document (<span class="inline_code">1</span>) or not (<span class="inline_code">0</span>). The <span class="inline_code">alpha</span> value is used to avoid a division by zero (smoothing). Ties are broken in favor of the majority class (either <span class="inline_code">NB.majority</span> or user-given).</p>
+<p>&nbsp;</p>
+<hr />
+<h3><em><a name="knn"></a>k</em>-nearest neighbor</h3>
+<p>The <em>k</em>-nearest neighbor classifier is based on the <em>k</em> most similar documents in the training data, given some distance function for calculating similarity.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">classifier = KNN(train=[], baseline=MAJORITY, k=10, distance=COSINE)</pre><p class="example">The given <span class="inline_code">distance</span> can be <span class="inline_code">COSINE</span>, <span class="inline_code">EUCLIDEAN</span>, <span class="inline_code">MANHATTAN</span> or <span class="inline_code">HAMMING</span>, or a user-given function that takes two dictionaries of <span class="inline_code">(feature,</span> <span class="inline_code">weight)</span>-items and returns a value between <span class="inline_code">0.0</span>–<span class="inline_code">1.0</span>. Ties are broken in favor of the majority class (either <span class="inline_code">KNN.majority</span> or user-given).</p>
+<p>&nbsp;</p>
+<hr />
+<h3><a name="svm"></a>Support vector machine</h3>
+<p class="example">The SVM classifier is based on a representation of the documents in a high-dimensional space (e.g., 2D, 3D, ...) separated by hyperplanes.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">classifier = SVM(type=CLASSIFICATION, kernel=LINEAR, train=[], **kwargs)</pre><p class="example">The given <span class="inline_code">type</span> can be <span class="inline_code">CLASSIFICATION</span> or <span class="inline_code">REGRESSION</span>. <br />The given <span class="inline_code">kernel</span> can be <span class="inline_code">LINEAR</span>, <span class="inline_code">POLYNOMIAL</span> or <span class="inline_code">RADIAL</span>.</p>
+<table class="border">
+<tbody>
+<tr>
+<td><span class="smallcaps">Kernel</span></td>
+<td><span class="smallcaps">Separation</span></td>
+<td><span class="smallcaps">Function</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">LINEAR</span></td>
+<td>straight line</td>
+<td><span class="inline_code">u' * v</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">POLYNOMIAL</span></td>
+<td>curved line</td>
+<td><span class="inline_code">(gamma * u' * v + coeff0) ** degree</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">RADIAL</span></td>
+<td>curved path</td>
+<td><span class="inline_code">exp(-gamma * abs(u-v) ** 2)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Overview of optional parameters:</p>
+<table class="border">
+<tbody>
+<tr>
+<td><span class="smallcaps">Parameter</span></td>
+<td><span class="smallcaps">Value</span></td>
+<td><span class="smallcaps">Description</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">type</span></td>
+<td><span class="inline_code">CLASSIFICATION</span>, <span class="inline_code">REGRESSION</span></td>
+<td><span class="inline_code">REGRESSION</span> returns a float value.</td>
+</tr>
+<tr>
+<td><span class="inline_code">kernel</span></td>
+<td><span class="inline_code">LINEAR</span>, <span class="inline_code">POLYNOMIAL</span>, <span class="inline_code">RADIAL</span></td>
+<td>Kernel function used for separation.</td>
+</tr>
+<tr>
+<td><span class="inline_code">degree</span></td>
+<td><span class="inline_code">3</span></td>
+<td>Used in <span class="inline_code">POLYNOMIAL</span> kernel.</td>
+</tr>
+<tr>
+<td><span class="inline_code">gamma</span></td>
+<td><span class="inline_code">1</span> <span class="inline_code">/</span> <span class="inline_code">len(SVM.features)</span></td>
+<td>Used in <span class="inline_code">POLYNOMIAL</span> and <span class="inline_code">RADIAL</span> kernel.</td>
+</tr>
+<tr>
+<td><span class="inline_code">coeff0</span></td>
+<td><span class="inline_code">0</span></td>
+<td>Used in <span class="inline_code">POLYNOMIAL</span> kernel.</td>
+</tr>
+<tr>
+<td><span class="inline_code">cost</span></td>
+<td><span class="inline_code">1</span></td>
+<td>Soft margin for training errors.</td>
+</tr>
+<tr>
+<td><span class="inline_code">epsilon</span></td>
+<td>0.1</td>
+<td>Tolerance for termination criterion.</td>
+</tr>
+<tr>
+<td><span class="inline_code">cache</span></td>
+<td>100</td>
+<td>Cache memory size in MB.</td>
+</tr>
+<tr>
+<td><span class="inline_code"><span class="inline_code">probability</span></span></td>
+<td class="inline_code">False</td>
+<td><span class="inline_code">CLASSIFICATION</span> yields <span class="inline_code">(weight,</span> <span class="inline_code">class)</span> values.</td>
+</tr>
+</tbody>
+</table>
+<p class="example">The SVM classifier uses kernel functions to divide the high-dimensional space. The simplest way to divide two clusters of points in 2D is a straight line (<span class="inline_code">LINEAR</span>). As illustrated below, moving the points to a higher dimensional (<span class="inline_code">POLYNOMIAL</span> or <span class="inline_code">RADIAL</span>) can make separation easier (using hyperplanes). The optional <span class="inline_code">degree</span>, <span class="inline_code">gamma</span>, <span class="inline_code">coeff0</span> and <span class="inline_code">cost</span> can be used to tweak the kernel function.</p>
+<table class="border">
+<tbody>
+<tr>
+<td style="text-align: center;"><img style="display: block; margin-left: auto; margin-right: auto;" src="../g/pattern-vector-svm1.jpg" alt="" width="178" height="148" /><span class="smallcaps">complex in low dimension</span></td>
+<td style="text-align: center;"><img style="display: block; margin-left: auto; margin-right: auto;" src="../g/pattern-vector-svm2.jpg" alt="" width="190" height="148" /><span class="smallcaps">simple in higher dimension</span></td>
+</tr>
+</tbody>
+</table>
+<p class="smallcaps"><br />Gridsearch</p>
+<p>Different settings for <span class="inline_code">degree</span>, <span class="inline_code">gamma</span>, <span class="inline_code">coeff0</span> and <span class="inline_code">cost</span> yield better or worse performance. Which settings to use? The <span class="inline_code">gridsearch()</span> function returns the K-fold cross-validation test results for every possible combination of optional parameters (given as lists of values):</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">gridsearch(Classifier, documents=[], folds=10, **kwargs)</pre><div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.vector import SVM, RADIAL, gridsearch, kfoldcv
+&gt;&gt;&gt; from pattern.db import csv 
+&gt;&gt;&gt; 
+&gt;&gt;&gt; data = csv('reviews.csv') 
+&gt;&gt;&gt; data = [(count(review), int(rating) &gt;= 3) for review, rating in data]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; for (A, P, R, F), p in gridsearch(SVM, data, kernel=[RADIAL], gamma=[0.1,1,10]):
+&gt;&gt;&gt;     print (A, P, R, F), p
+
+(0.752, 0.376, 0.500, 0.429) {'kernel': RADIAL, 'gamma': 0.1}
+(0.754, 0.477, 0.504, 0.474) {'kernel': RADIAL, 'gamma': 1}
+(0.753, 0.477, 0.504, 0.474) {'kernel': RADIAL, 'gamma': 10} </pre></div>
+<p>Note that this example is for demonstration. A poor man's linear SVM works better:</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; print kfoldcv(SVM, data, folds=10)
+
+(0.756, 0.652, 0.587, 0.617)  </pre></div>
+<p><br /><span class="smallcaps">Libsvm and Liblinear</span></p>
+<p>The SVM implementation in Pattern relies on the <a href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/">LIBSVM</a> and <a href="http://www.csie.ntu.edu.tw/~cjlin/liblinear/">LIBLINEAR</a> C++ libraries. Precompiled bindings are included for Windows, Mac OS X and Ubuntu. These may not work on your system. In this case you need to compile the bindings from source (see the instructions in <span class="inline_code">pattern/vector/svm/INSTALL.txt</span>).</p>
+<p class="small"><span style="text-decoration: underline;">Reference</span>: Chang, C.-C., Lin, C.-J. (2011). LIBSVM: a library for support vector machines. <em>ACM</em>.</p>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="ga"></a>Genetic algorithm</h2>
+<p>A <span class="inline_code">GA</span> or genetic algorithm is an optimization technique based on evolution by natural selection. With each <span class="inline_code">GA.update()</span>, the fittest candidates (e.g., lists or objects) are selected and recombined into a new generation, converging towards optimal fitness. GA's can be used for automatic <a class="link-maintenance" href="#feature-selection">feature selection</a>, for example.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">ga = GA(candidates=[])</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">ga.population               # List of candidates.
+ga.generation               # Current generation (int).
+ga.avg                      # Average population fitness.</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">ga.fitness(candidate)
+ga.combine(candidate1, candidate2) 
+ga.mutate(candidate)
+</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">ga.update(top=0.5, mutation=0.5)</pre><p>The <span class="inline_code">GA.fitness()</span>, <span class="inline_code">combine()</span> and&nbsp;<span class="inline_code">mutate()</span> methods must be defined in a subclass.</p>
+<ul>
+<li><span class="inline_code">GA.fitness()</span>&nbsp;returns the given candidate's fitness as a value (<span class="inline_code">0.0</span>–<span class="inline_code">1.0</span>).</li>
+<li><span class="inline_code">GA.combine()</span> returns a new candidate that is a combination of the given candidates.</li>
+<li><span class="inline_code">GA.mutate()</span>&nbsp;returns a new candidate that is a mutation of&nbsp;the given candidate.</li>
+<li><span class="inline_code">GA.update()</span> populates <span class="inline_code">GA.population</span> with a new generation of candidates,<br />each a combination of the <span class="inline_code">top</span> fittest candidates with a chance of <span class="inline_code">mutation</span> (<span class="inline_code">0.5</span> = 50%).</li>
+</ul>
+<p>The following GA converges from random character sequences to neologisms (invented words).</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.vector import GA, chngrams
+&gt;&gt;&gt; from pattern.en import lexicon
+&gt;&gt;&gt; from random import choice
+&gt;&gt;&gt; 
+&gt;&gt;&gt; def chseq(length=4, chars='abcdefghijklmnopqrstuvwxyz'):
+&gt;&gt;&gt;     # Returns a string of random characters. 
+&gt;&gt;&gt;     return ''.join(choice(chars) for i in range(length))
+&gt;&gt;&gt; 
+&gt;&gt;&gt; class Jabberwocky(GA):
+&gt;&gt;&gt;     
+&gt;&gt;&gt;     def fitness(self, w):
+&gt;&gt;&gt;         return sum(0.2 for ch in chngrams(w, 4) if ch in lexicon) + \
+&gt;&gt;&gt;                sum(0.1 for ch in chngrams(w, 3) if ch in lexicon)
+&gt;&gt;&gt;     
+&gt;&gt;&gt;     def combine(self, w1, w2):
+&gt;&gt;&gt;         return w1[:len(w1)/2] + w2[len(w2)/2:] # cut-and-splice
+&gt;&gt;&gt; 
+&gt;&gt;&gt;     def combine(self, w):
+&gt;&gt;&gt;         returns w.replace(choice(w), chseq(1), 1)   
+&gt;&gt;&gt; 
+&gt;&gt;&gt; # Start with 10 strings, each 8 random characters.
+&gt;&gt;&gt; candidates = [''.join(chseq(8)) for i in range(10)]
+&gt;&gt;&gt; 
+&gt;&gt;&gt; ga = Jabberwocky(candidates)
+&gt;&gt;&gt; i = 0
+&gt;&gt;&gt; while ga.avg &lt; 1.0 and i &lt; 1000:
+&gt;&gt;&gt;     ga.update(top=0.5, mutation=0.3)
+&gt;&gt;&gt;     i += 1
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print ga.population
+&gt;&gt;&gt; print ga.generation
+&gt;&gt;&gt; print ga.avg</pre></div>
+<p>In this example we are interested in creative language use.&nbsp;The GA's fitness function promotes substrings of 3–4 characters that are real words, ensuring that the invented words have a familiar feel.&nbsp;For example, <em>spingrsh</em> is not a real word, but <em>spin</em>, <em>pin</em> and <em>ping</em> are (<span class="inline_code">+0.7</span>). After a random mutation that replaces <em>r</em> with <em>a</em>, <em>spingash</em> also contains&nbsp;<em>gas</em> and <em>gash</em>, raising its fitness (<span class="inline_code">+1.0</span>).&nbsp;</p>
+<p>By randomly combining sequences, we then end up with invented words such as <em>spingash</em>, <em>skidspat</em>, <em>galagush</em>,&nbsp;<em>halfetee</em>,&nbsp;<em>clubelle</em>, and <em>sodasham</em>.<br />&nbsp;</p>
+<p class="small" style="text-align: left;"><em>The spingashes galagushed and the halfetees rupeeked,</em></p>
+<p class="small" style="text-align: left;"><em>&nbsp; &nbsp;An oofundoo sloboored.</em></p>
+<p class="small" style="text-align: left;"><em></em><em>The showshope skidspatted and the otherbits did dadampsi,</em></p>
+<p class="small" style="text-align: left;"><em>&nbsp; &nbsp;And the willsage widskits bratslared.</em></p>
+<p class="small" style="text-align: left;"><em></em>&nbsp;</p>
+<hr />
+<h2>See also</h2>
+<ul>
+<li><a href="http://orange.biolab.si/" target="_blank">Orange</a> (GPL): d<span>ata mining &amp; machine learning in Python, with a node-based GUI.</span></li>
+<li><span><a href="http://pybrain.org/" target="_blank">PyBrain</a> (BSD): p</span><span>owerful machine learning algorithms in Python + C.</span></li>
+<li><a href="http://www.scipy.org/" target="_blank">SciPy</a><span> (BSD): scientific computing tools for Python.</span></li>
+<li><span><a href="http://scikit-learn.org/" target="_blank">scikit-learn</a> (BSD): machine learning algorithms tightly knit with numpy, scipy, matplotlib.</span></li>
+</ul>
+</div>
+</div></div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
+</body>
+</html>

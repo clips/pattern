@@ -180,16 +180,17 @@ class lazylist(list):
     def pop(self, *args):
         return self._lazy("pop", *args)
 
-#### LEXICON #######################################################################################
+
+#### PARSER ########################################################################################
+# Pattern's text parsers are based on Brill's algorithm, or optionally on a trained language model.
+# Brill's algorithm automatically acquires a lexicon of known words (aka tag dictionary),
+# and a set of rules for tagging unknown words from a training corpus.
+# Morphological rules are used to tag unknown words based on word suffixes (e.g., -ly = adverb).
+# Contextual rules are used to tag unknown words based on a word's role in the sentence.
+# Named entity rules are used to annotate proper nouns (NNP's: Google = NNP-ORG).
+# When available, the parser will use a faster and more accurate language model (SLP, SVM, NB, ...).
 
 #--- LEXICON ---------------------------------------------------------------------------------------
-# Pattern's text parsers are based on Brill's algorithm, or optionally a trained language model.
-# Brill's algorithm automatically acquires a lexicon of known words,
-# and a set of rules for tagging unknown words from a training corpus.
-# Lexical rules are used to tag unknown words, based on the word morphology (prefix, suffix, ...).
-# Contextual rules are used to tag all words, based on the word's role in the sentence.
-# Named entity rules are used to discover proper nouns (NNP's).
-# When available, the parser will use a faster, more accurate language model (SLP, SVM, NB, ...).
 
 def _read(path, encoding="utf-8", comment=";;;"):
     """ Returns an iterator over the lines in the file at the given path,
@@ -216,42 +217,33 @@ def _read(path, encoding="utf-8", comment=";;;"):
 
 class Lexicon(lazydict):
 
-    def __init__(self, path="", model=None, morphology=None, context=None, entities=None, NNP="NNP", language=None):
-        """ A dictionary of words and their part-of-speech tags.
-            For unknown words, rules for word morphology, context and named entities can be used.
+    def __init__(self, path=""):
+        """ A dictionary of known words and their part-of-speech tags.
         """
         self._path = path
-        self._language  = language
-        self.model      = _model(self, path=model) # Model, or None if model is None.
-        self.morphology = Morphology(self, path=morphology)
-        self.context    = Context(self, path=context)
-        self.entities   = Entities(self, path=entities, tag=NNP)
-
-    def load(self):
-        # Arnold NNP x
-        dict.update(self, (x.split(" ")[:2] for x in _read(self._path)))
 
     @property
     def path(self):
         return self._path
 
-    @property
-    def language(self):
-        return self._language
+    def load(self):
+        # Arnold NNP x
+        dict.update(self, (x.split(" ")[:2] for x in _read(self._path)))
 
 #--- LANGUAGE MODEL --------------------------------------------------------------------------------
-# A language model determines the statistically most probable tag for an unknown word,
-# given the surrounding words and their tags, word suffixes, etc.
+# A language model determines the statistically most probable tag for an unknown word.
 # A pattern.vector Classifier such as SLP can be used to produce a language model,
-# by generalizing patterns from a treebank (i.e., a corpus of hand-tagged texts).
-# For example, "generalizing/VBG from/IN patterns/NNS" and "dancing/VBG with/IN squirrels/NNS"
-# have a pattern -ing/VBG + [?] + NNS => IN.
+# by generalizing patterns from a treebank (i.e., a corpus of hand-tagged texts). 
+# For example:
+# "generalizing/VBG from/IN patterns/NNS" and 
+# "dancing/VBG with/IN squirrels/NNS"
+# both have a pattern -ing/VBG + [?] + NNS => IN.
 # Unknown words preceded by -ing and followed by a plural noun will be tagged IN (preposition),
-# unless (put simply) a majority of other patterns disagrees.
+# unless (put simply) a majority of other patterns learned by the classifier disagrees.
 
 class Model(object):
     
-    def __init__(self, lexicon={}, path="", classifier=None):
+    def __init__(self, path="", classifier=None, known=set(), unknown=set()):
         """ A language model using a classifier (e.g., SLP, SVM) trained on morphology and context.
         """
         try:
@@ -261,87 +253,96 @@ class Model(object):
             sys.path.insert(0, os.path.join(MODULE, ".."))
             from vector import Classifier
             from vector import Perceptron
+        self._path  = path
         # Use a property instead of a subclass, so users can choose their own classifier.
         self._classifier = Classifier.load(path) if path else classifier or Perceptron()
-        self.lexicon = lexicon
+        # Parser.lexicon entries can be ambiguous (e.g., about/IN  is RB 25% of the time).
+        # Parser.lexicon entries also in Model.unknown are overruled by the model.
+        # Parser.lexicon entries also in Model.known are not learned by the model
+        # (only their suffix and context is learned, see Model._v() below).
+        self.unknown = unknown | self._classifier._data.get("model_unknown", set())
+        self.known = known
+
+    @property
+    def path(self):
+        return self._path
 
     @classmethod
     def load(self, lexicon={}, path=""):
         return Model(lexicon, path)
 
     def save(self, path, final=True):
+        self._classifier._data["model_unknown"] = self.unknown
         self._classifier.save(path, final) # final = unlink training data (smaller file).
 
     def train(self, token, tag, previous=None, next=None):
-        self._classifier.train(self.v(token, previous, next), type=tag)
+        self._classifier.train(self._v(token, previous, next), type=tag)
 
-    def classify(self, token, previous=None, next=None):
-        return self._classifier.classify(self.v(token, previous, next))
+    def classify(self, token, previous=None, next=None, **kwargs):
+        """ Returns the predicted tag for the given token,
+            in context of the given previous and next (token, tag)-tuples.
+        """
+        return self._classifier.classify(self._v(token, previous, next), **kwargs)
 
-    apply = classify
+    def apply(self, token, previous=(None, None), next=(None, None)):
+        """ Returns a (token, tag)-tuple for the given token,
+            in context of the given previous and next (token, tag)-tuples.
+        """
+        return [token[0], self._classifier.classify(self._v(token[0], previous, next))]
 
-    def v(self, token, previous=None, next=None):
-        """ Returns a training vector for the given (word, tag) token and its context.
+    def _v(self, token, previous=None, next=None):
+        """ Returns a training vector for the given (word, tag)-tuple and its context.
         """
         def f(v, s1, s2):
             if s2: 
                 v[s1 + " " + s2] = 1
-        p = previous or ("", "")
-        n = next or ("", "")
+        p, n = previous, next
+        p = ("", "") if not p else (p[0] or "", p[1] or "")
+        n = ("", "") if not n else (n[0] or "", n[1] or "")
         v = {}
-        f(v,  "b", "b")        # Bias.
-        f(v,  "h", token[0])   # Capitalization.
-        f(v,  "w", token[-6:] if token not in self.lexicon else "")
-        f(v,  "x", token[-3:]) # Suffix.
-        f(v, "-x", p[0][-3:])  # Suffix of word before.
-        f(v, "+x", n[0][-3:])  # Suffix of word after.
-        f(v, "-t", p[1])       # POS-tag of word before.
-        f(v, "+t", n[1])       # POS-tag of word after.
+        f(v,  "b", "b")         # Bias.
+        f(v,  "h", token[0])    # Capitalization.
+        f(v,  "w", token[-6:] if token not in self.known or token in self.unknown else "")
+        f(v,  "x", token[-3:])  # Word suffix.
+        f(v, "-x", p[0][-3:])   # Word suffix left.
+        f(v, "+x", n[0][-3:])   # Word suffix right.
+        f(v, "-t", p[1])        # Tag left.
+        f(v, "-+", p[1] + n[1]) # Tag left + right.
+        f(v, "+t", n[1])        # Tag right.
         return v
-
-def _model(lexicon={}, path="", classifier=None):
-    """ Returns a Model from the given path, or with the given classifier, or None.
-    """
-    try:
-        if path or classifier: return Model(lexicon, path, classifier)
-    except ImportError:
-        pass
+        
+    def _get_description(self):
+        return self._classifier.description
+    def _set_description(self, s):
+        self._classifier.description = s
+    
+    description = property(_get_description, _set_description)
 
 #--- MORPHOLOGICAL RULES ---------------------------------------------------------------------------
 # Brill's algorithm generates lexical (i.e., morphological) rules in the following format:
 # NN s fhassuf 1 NNS x => unknown words ending in -s and tagged NN change to NNS.
 #     ly hassuf 2 RB x => unknown words ending in -ly change to RB.
 
-class Rules(object):
+class Morphology(lazylist):
 
-    def __init__(self, lexicon={}, cmd=set()):
-        self.lexicon, self.cmd = lexicon, cmd
-
-    def apply(self, x):
-        """ Applies the rule to the given token or list of tokens.
-        """
-        return x
-
-class Morphology(lazylist, Rules):
-
-    def __init__(self, lexicon={}, path=""):
+    def __init__(self, path="", known={}):
         """ A list of rules based on word morphology (prefix, suffix).
         """
-        cmd = ("word", # Word is x.
-               "char", # Word contains x.
-            "haspref", # Word starts with x.
-             "hassuf", # Word end with x.
-            "addpref", # x + word is in lexicon.
-             "addsuf", # Word + x is in lexicon.
-         "deletepref", # Word without x at the start is in lexicon.
-          "deletesuf", # Word without x at the end is in lexicon.
-           "goodleft", # Word preceded by word x.
-          "goodright", # Word followed by word x.
-        )
-        cmd = set(cmd)
-        cmd.update([("f" + x) for x in cmd])
-        Rules.__init__(self, lexicon, cmd)
+        self.known = known
         self._path = path
+        self._cmd  = set((
+                "word", # Word is x.
+                "char", # Word contains x.
+             "haspref", # Word starts with x.
+              "hassuf", # Word end with x.
+             "addpref", # x + word is in lexicon.
+              "addsuf", # Word + x is in lexicon.
+          "deletepref", # Word without x at the start is in lexicon.
+           "deletesuf", # Word without x at the end is in lexicon.
+            "goodleft", # Word preceded by word x.
+           "goodright", # Word followed by word x.
+        ))
+        self._cmd.update([("f" + x) for x in self._cmd])
 
     @property
     def path(self):
@@ -350,15 +351,15 @@ class Morphology(lazylist, Rules):
     def load(self):
         # ["NN", "s", "fhassuf", "1", "NNS", "x"]
         list.extend(self, (x.split() for x in _read(self._path)))
-
+        
     def apply(self, token, previous=(None, None), next=(None, None)):
         """ Applies lexical rules to the given token, which is a [word, tag] list.
         """
         w = token[0]
         for r in self:
-            if r[1] in self.cmd: # Rule = ly hassuf 2 RB x
+            if r[1] in self._cmd: # Rule = ly hassuf 2 RB x
                 f, x, pos, cmd = bool(0), r[0], r[-2], r[1].lower()
-            if r[2] in self.cmd: # Rule = NN s fhassuf 1 NNS x
+            if r[2] in self._cmd: # Rule = NN s fhassuf 1 NNS x
                 f, x, pos, cmd = bool(1), r[1], r[-2], r[2].lower().lstrip("f")
             if f and token[1] != r[0]:
                 continue
@@ -366,10 +367,10 @@ class Morphology(lazylist, Rules):
             or (cmd == "char"       and x in w) \
             or (cmd == "haspref"    and w.startswith(x)) \
             or (cmd == "hassuf"     and w.endswith(x)) \
-            or (cmd == "addpref"    and x + w in self.lexicon) \
-            or (cmd == "addsuf"     and w + x in self.lexicon) \
-            or (cmd == "deletepref" and w.startswith(x) and w[len(x):] in self.lexicon) \
-            or (cmd == "deletesuf"  and w.endswith(x) and w[:-len(x)] in self.lexicon) \
+            or (cmd == "addpref"    and x + w in self.known) \
+            or (cmd == "addsuf"     and w + x in self.known) \
+            or (cmd == "deletepref" and w.startswith(x) and w[len(x):] in self.known) \
+            or (cmd == "deletesuf"  and w.endswith(x) and w[:-len(x)] in self.known) \
             or (cmd == "goodleft"   and x == next[0]) \
             or (cmd == "goodright"  and x == previous[0]):
                 token[1] = pos
@@ -402,12 +403,14 @@ class Morphology(lazylist, Rules):
 # Brill's algorithm generates contextual rules in the following format:
 # VBD VB PREVTAG TO => unknown word tagged VBD changes to VB if preceded by a word tagged TO.
 
-class Context(lazylist, Rules):
+class Context(lazylist):
 
-    def __init__(self, lexicon={}, path=""):
+    def __init__(self, path=""):
         """ A list of rules based on context (preceding and following words).
         """
-        cmd = ("prevtag", # Preceding word is tagged x.
+        self._path = path
+        self._cmd = set((
+               "prevtag", # Preceding word is tagged x.
                "nexttag", # Following word is tagged x.
               "prev2tag", # Word 2 before is tagged x.
               "next2tag", # Word 2 after is tagged x.
@@ -434,9 +437,7 @@ class Context(lazylist, Rules):
                "rbigram", # Current word is x and word after is y.
             "prevbigram", # Preceding word is tagged x and word before is tagged y.
             "nextbigram", # Following word is tagged x and word after is tagged y.
-        )
-        Rules.__init__(self, lexicon, set(cmd))
-        self._path = path
+        ))
 
     @property
     def path(self):
@@ -511,20 +512,19 @@ RE_ENTITY1 = re.compile(r"^http://")                            # http://www.dom
 RE_ENTITY2 = re.compile(r"^www\..*?\.[com|org|net|edu|de|uk]$") # www.domain.com
 RE_ENTITY3 = re.compile(r"^[\w\-\.\+]+@(\w[\w\-]+\.)+[\w\-]+$") # name@domain.com
 
-class Entities(lazydict, Rules):
+class Entities(lazydict):
 
-    def __init__(self, lexicon={}, path="", tag="NNP"):
+    def __init__(self, path="", tag="NNP"):
         """ A dictionary of named entities and their labels.
             For domain names and e-mail adresses, regular expressions are used.
         """
-        cmd = (
+        self.tag   = tag
+        self._path = path
+        self._cmd  = ((
             "pers", # Persons: George/NNP-PERS
              "loc", # Locations: Washington/NNP-LOC
              "org", # Organizations: Google/NNP-ORG
-        )
-        Rules.__init__(self, lexicon, set(cmd))
-        self._path = path
-        self.tag   = tag
+        ))
 
     @property
     def path(self):
@@ -553,14 +553,15 @@ class Entities(lazydict, Rules):
             if w in self:
                 for e in self[w]:
                     # Look ahead to see if successive words match the named entity.
-                    e, tag = (e[:-1], "-"+e[-1].upper()) if e[-1] in self.cmd else (e, "")
+                    e, tag = (e[:-1], "-"+e[-1].upper()) if e[-1] in self._cmd else (e, "")
                     b = True
                     for j, e in enumerate(e):
                         if i + j >= len(tokens) or tokens[i+j][0].lower() != e:
                             b = False; break
                     if b:
                         for token in tokens[i:i+j+1]:
-                            token[1] = (token[1] == "NNPS" and token[1] or self.tag) + tag
+                            token[1] = token[1] if token[1].startswith(self.tag) else self.tag
+                            token[1] += tag
                         i += j
                         break
             i += 1
@@ -615,18 +616,44 @@ PTB = PENN = "penn"
 
 class Parser(object):
 
-    def __init__(self, lexicon={}, default=("NN", "NNP", "CD"), language=None):
+    def __init__(self, lexicon={}, model=None, morphology=None, context=None, entities=None, default=("NN", "NNP", "CD"), language=None):        
         """ A simple shallow parser using a Brill-based part-of-speech tagger.
             The given lexicon is a dictionary of known words and their part-of-speech tag.
             The given default tags are used for unknown words.
             Unknown words that start with a capital letter are tagged NNP (except for German).
             Unknown words that contain only digits and punctuation are tagged CD.
+            Optionally, morphological and contextual rules (or a language model) can be used 
+            to improve the tags of unknown words.
             The given language can be used to discern between
             Germanic and Romance languages for phrase chunking.
         """
-        self.lexicon  = lexicon
-        self.default  = default
-        self.language = language
+        self.lexicon    = lexicon or {}
+        self.model      = model
+        self.morphology = morphology
+        self.context    = context
+        self.entities   = entities
+        self.default    = default
+        self.language   = language
+        # Load data.
+        f = lambda s: isinstance(s, basestring) or hasattr(s, "read")
+        if f(lexicon):
+            # Known words.
+            self.lexicon = Lexicon(path=lexicon)
+        if f(morphology):
+            # Unknown word rules based on word suffix.
+            self.morphology = Morphology(path=morphology, known=self.lexicon)
+        if f(context):
+            # Unknown word rules based on word context.
+            self.context = Context(path=context)
+        if f(entities):
+            # Named entities.
+            self.entities = Entities(path=entities, tag=default[1])
+        if f(model):
+            # Word part-of-speech classifier.
+            try: 
+                self.model = Model(path=model)
+            except ImportError: # pattern.vector
+                pass
 
     def find_tokens(self, string, **kwargs):
         """ Returns a list of sentences from the given string.
@@ -645,10 +672,14 @@ class Parser(object):
         """
         # ["The", "cat", "purs"] => [["The", "DT"], ["cat", "NN"], ["purs", "VB"]]
         return find_tags(tokens,
-                   language = kwargs.get("language", self.language),
-                    lexicon = kwargs.get( "lexicon", self.lexicon),
-                    default = kwargs.get( "default", self.default),
-                        map = kwargs.get(     "map", None))
+                    lexicon = kwargs.get(   "lexicon", self.lexicon or {}),
+                      model = kwargs.get(     "model", self.model),
+                 morphology = kwargs.get("morphology", self.morphology),
+                    context = kwargs.get(   "context", self.context),
+                   entities = kwargs.get(  "entities", self.entities),
+                   language = kwargs.get(  "language", self.language),
+                    default = kwargs.get(   "default", self.default),
+                        map = kwargs.get(       "map", None))
 
     def find_chunks(self, tokens, **kwargs):
         """ Annotates the given list of tokens with chunk tags.
@@ -837,10 +868,10 @@ punctuation = ".,;:!?()[]{}`''\"@#$^&*+-|=~_"
 
 # Handle common abbreviations.
 ABBREVIATIONS = abbreviations = set((
-    "a.", "adj.", "adv.", "al.", "a.m.", "c.", "cf.", "comp.", "conf.", "def.",
-    "ed.", "e.g.", "esp.", "etc.", "ex.", "f.", "fig.", "gen.", "id.", "i.e.",
-    "int.", "l.", "m.", "Med.", "Mil.", "Mr.", "n.", "n.q.", "orig.", "pl.",
-    "pred.", "pres.", "p.m.", "ref.", "v.", "vs.", "w/"
+    "a.", "adj.", "adv.", "al.", "a.m.", "art.", "c.", "capt.", "cert.", "cf.", "col.", "Col.", 
+    "comp.", "conf.", "def.", "Dep.", "Dept.", "Dr.", "dr.", "ed.", "e.g.", "esp.", "etc.", "ex.", 
+    "f.", "fig.", "gen.", "id.", "i.e.", "int.", "l.", "m.", "Med.", "Mil.", "Mr.", "n.", "n.q.", 
+    "orig.", "pl.", "pred.", "pres.", "p.m.", "ref.", "v.", "vs.", "w/"
 ))
 
 RE_ABBR1 = re.compile("^[A-Za-z]\.$")       # single letter, "T. De Smedt"
@@ -958,25 +989,24 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
 # Unknown words are recognized as numbers if they contain only digits and -,.:/%$
 CD = re.compile(r"^[0-9\-\,\.\:\/\%\$]+$")
 
-def _suffix_rules(token, **kwargs):
+def _suffix_rules(token, tag="NN"):
     """ Default morphological tagging rules for English, based on word suffixes.
     """
-    word, pos = token
-    if word.endswith("ing"):
-        pos = "VBG"
-    if word.endswith("ly"):
-        pos = "RB"
-    if word.endswith("s") and not word.endswith(("is", "ous", "ss")):
-        pos = "NNS"
-    if word.endswith(("able", "al", "ful", "ible", "ient", "ish", "ive", "less", "tic", "ous")) or "-" in word:
-        pos = "JJ"
-    if word.endswith("ed"):
-        pos = "VBN"
-    if word.endswith(("ate", "ify", "ise", "ize")):
-        pos = "VBP"
-    return [word, pos]
+    if token.endswith("ing"):
+        tag = "VBG"
+    if token.endswith("ly"):
+        tag = "RB"
+    if token.endswith("s") and not token.endswith(("is", "ous", "ss")):
+        tag = "NNS"
+    if token.endswith(("able", "al", "ful", "ible", "ient", "ish", "ive", "less", "tic", "ous")) or "-" in token:
+        tag = "JJ"
+    if token.endswith("ed"):
+        tag = "VBN"
+    if token.endswith(("ate", "ify", "ise", "ize")):
+        tag = "VBP"
+    return [token, tag]
 
-def find_tags(tokens, lexicon={}, default=("NN", "NNP", "CD"), language="en", map=None, **kwargs):
+def find_tags(tokens, lexicon={}, model=None, morphology=None, context=None, entities=None, default=("NN", "NNP", "CD"), language="en", map=None, **kwargs):
     """ Returns a list of [token, tag]-items for the given list of tokens:
         ["The", "cat", "purs"] => [["The", "DT"], ["cat", "NN"], ["purs", "VB"]]
         Words are tagged using the given lexicon of (word, tag)-items.
@@ -985,45 +1015,46 @@ def find_tags(tokens, lexicon={}, default=("NN", "NNP", "CD"), language="en", ma
         Unknown words that consist only of digits and punctuation marks are tagged CD.
         Unknown words are then improved with morphological rules.
         All words are improved with contextual rules.
+        If a model is given, uses model for unknown words instead of morphology and context.
         If map is a function, it is applied to each (token, tag) after applying all rules.
     """
     tagged = []
-    # Use language model (i.e., SLP) for unknown words.
-    if isinstance(lexicon, Lexicon) and lexicon.model:
-        f = lexicon.model.apply
-    # Use suffix rules (e.g., -ly = RB).
-    elif isinstance(lexicon, Lexicon):
-        f = lexicon.morphology.apply
-    # Use suffix rules (English default).
-    elif language == "en":
-        f = _suffix_rules
-    # Use most frequent tag (NN).
-    else:
-        f = lambda token, **kwargs: token
     # Tag known words.
     for i, token in enumerate(tokens):
-        tagged.append([token, lexicon.get(token, i==0 and lexicon.get(token.lower()) or None)])
-    # Tag unknown words with model or morphology.
+        tagged.append([token, lexicon.get(token, i == 0 and lexicon.get(token.lower()) or None)])
+    # Tag unknown words.
     for i, (token, tag) in enumerate(tagged):
-        if tag is None:
-            if len(token) > 0 \
-            and token[0].isupper() \
-            and token[0].isalpha() \
-            and language != "de":
-                tagged[i] = [token, default[1]] # NNP
+        prev, next = (None, None), (None, None)
+        if i > 0:
+            prev = tagged[i-1]
+        if i < len(tagged) - 1:
+            next = tagged[i+1]
+        if tag is None or token in (model is not None and model.unknown or ()):
+            # Use language model (i.e., SLP).
+            if model is not None:
+                tagged[i] = model.apply([token, None], prev, next)
+            # Use NNP for capitalized words (except in German).
+            elif token.istitle() and language != "de":
+                tagged[i] = [token, default[1]]
+            # Use CD for digits and numbers.
             elif CD.match(token) is not None:
-                tagged[i] = [token, default[2]] # CD
+                tagged[i] = [token, default[2]]
+            # Use suffix rules (e.g., -ly = RB).
+            elif morphology is not None:
+                tagged[i] = morphology.apply([token, default[0]], prev, next)
+            # Use suffix rules (English default).
+            elif language == "en":
+                tagged[i] = _suffix_rules(token, default[0])
+            # Use most frequent tag (NN).
             else:
-                tagged[i] = [token, default[0]] # NN
-                tagged[i] = f(tagged[i],
-                    previous = i > 0 and tagged[i-1] or (None, None),
-                        next = i < len(tagged)-1 and tagged[i+1] or (None, None))
+                tagged[i] = [token, default[0]]
     # Tag words by context.
-    if isinstance(lexicon, Lexicon) and not lexicon.model:
-        tagged = lexicon.context.apply(tagged)
+    if context is not None and model is None:
+        tagged = context.apply(tagged)
     # Tag named entities.
-    if isinstance(lexicon, Lexicon):
-        tagged = lexicon.entities.apply(tagged)
+    if entities is not None:
+        tagged = entities.apply(tagged)
+    # Map tags with a custom function.
     if map is not None:
         tagged = [list(map(token, tag)) or [token, default[0]] for token, tag in tagged]
     return tagged
@@ -1043,17 +1074,17 @@ RB = r"(?<!W)RB|RBR|RBS"
 CHUNKS = [[
     # Germanic languages: en, de, nl, ...
     (  "NP", re.compile(r"(("+NN+")/)*((DT|CD|CC|CJ)/)*(("+RB+"|"+JJ+")/)*(("+NN+")/)+")),
-    (  "VP", re.compile(r"(((MD|"+RB+")/)*(("+VB+")/)+)+")),
+    (  "VP", re.compile(r"(((MD|TO|"+RB+")/)*(("+VB+")/)+((RP)/)*)+")),
     (  "VP", re.compile(r"((MD)/)")),
-    (  "PP", re.compile(r"((IN|PP|TO)/)+")),
+    (  "PP", re.compile(r"((IN|PP)/)+")),
     ("ADJP", re.compile(r"((CC|CJ|"+RB+"|"+JJ+")/)*(("+JJ+")/)+")),
     ("ADVP", re.compile(r"(("+RB+"|WRB)/)+")),
 ], [
     # Romance languages: es, fr, it, ...
     (  "NP", re.compile(r"(("+NN+")/)*((DT|CD|CC|CJ)/)*(("+RB+"|"+JJ+")/)*(("+NN+")/)+(("+RB+"|"+JJ+")/)*")),
-    (  "VP", re.compile(r"(((MD|"+RB+")/)*(("+VB+")/)+(("+RB+")/)*)+")),
+    (  "VP", re.compile(r"(((MD|TO|"+RB+")/)*(("+VB+")/)+((RP)/)*(("+RB+")/)*)+")),
     (  "VP", re.compile(r"((MD)/)")),
-    (  "PP", re.compile(r"((IN|PP|TO)/)+")),
+    (  "PP", re.compile(r"((IN|PP)/)+")),
     ("ADJP", re.compile(r"((CC|CJ|"+RB+"|"+JJ+")/)*(("+JJ+")/)+")),
     ("ADVP", re.compile(r"(("+RB+"|WRB)/)+")),
 ]]

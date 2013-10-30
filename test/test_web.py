@@ -564,7 +564,7 @@ class TestSearchEngine(unittest.TestCase):
     def test_results_twitter(self):
         self._test_results("Twitter",  *self.api["Twitter"])
     def test_results_flickr(self):
-        self._test_results("Flickr", *self.api["Flickr"], **{"baseline": [6,6,0,6]})
+        self._test_results("Flickr",   *self.api["Flickr"], **{"baseline": [6,6,0,6]})
     def test_results_facebook(self):
         self._test_results("Facebook", *self.api["Facebook"], **{"baseline": [0,1,0,0]})
 
@@ -1039,16 +1039,16 @@ class TestCrawler(unittest.TestCase):
 
 def suite():
     suite = unittest.TestSuite()
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCache))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestURL))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPlaintext))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSearchEngine))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDOM))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCache))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestURL))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPlaintext))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSearchEngine))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDOM))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDocumentParser))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLocale))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMail))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCrawler))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLocale))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMail))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCrawler))
     return suite
 
 if __name__ == "__main__":

@@ -342,11 +342,9 @@ class TestPattern(unittest.TestCase):
           (P("[*+ rabbit]"),        S("big white rabbit"),    None),                  # 39 bad pattern: "+" is literal
         )):
             m = pattern.match(test)
-            #print i, match, "<=>", m and m.string or None
             self.assertTrue(getattr(m, "string", None) == match)
         # Assert chunk with head at the front.
         s = S("Felix the cat")
-        s.chunks[0]._head = lambda ch: ch.words[0] # head = "Felix" (it's a hack)
         self.assertEqual(P("felix").match(s).string, "Felix the cat")
         # Assert negation + custom greedy() function.
         s = S("the big white rabbit")

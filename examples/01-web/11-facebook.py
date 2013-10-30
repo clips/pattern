@@ -4,7 +4,8 @@ from pattern.web import Facebook, NEWS, COMMENTS, LIKES
 from pattern.db  import Datasheet, pprint
 
 # The Facebook API can be used to search public status updates (no license needed).
-# It can be used to get status updates, comments and persons that liked it,
+
+# It can also be used to get status updates, comments and persons that liked it,
 # from a given profile or product page.
 # This requires a personal license key.
 # If you are logged in to Facebook, you can get a license key here:
@@ -14,7 +15,7 @@ from pattern.db  import Datasheet, pprint
 #    Search for all status updates that contain the word "horrible".
 
 try: 
-    # We'll store tweets in a Datasheet.
+    # We'll store the status updates in a Datasheet.
     # A Datasheet is a table of rows and columns that can be exported as a CSV-file.
     # In the first column, we'll store a unique id for each status update.
     # We only want to add new status updates, i.e., those we haven't seen yet.
@@ -32,9 +33,13 @@ fb = Facebook()
 # Keeping a local cache can also be useful (e.g., while testing)
 # because a query is instant when it is executed the second time.
 for status in fb.search("horrible", count=25, cached=False):
+    print "=" * 100
+    print status.id
     print status.text
     print status.author # Yields an (id, name)-tuple.
     print status.date
+    print status.likes
+    print status.comments
     print
     # Only add the tweet to the table if it doesn't already exists.
     if len(table) == 0 or status.id not in index:
@@ -51,18 +56,21 @@ license = ""
 
 if license != "":
     fb = Facebook(license)
-    # Facebook.profile() returns an (id, name, date of birth, gender, locale)-tuple.
+    # Facebook.profile() returns an (id, name, date of birth, gender, locale, likes)-tuple.
     # By default, this is your own profile. 
-    # You can also supply the id of another profile.
+    # You can also supply the id of another profile, 
+    # or the name of a product page.
     me = fb.profile()[0]
-    for status in fb.search(me, type=NEWS, count=20, cached=False):
-        print status.id   # Status update unique id.
-        print status.text # Status update text.
-        print status.url  # Status update image, external link, ...
+    for status in fb.search(me, type=NEWS, count=30, cached=False):
+        print "-" * 100
+        print status.id    # Status update unique id.
+        print status.title # Status title (i.e., the id of the page or event given as URL).
+        print status.text  # Status update text.
+        print status.url   # Status update image, external link, ...
         if status.comments > 0:
             # Retrieve comments on the status update.
             print "%s comments:" % status.comments
-            print [(x.text, x.author) for x in fb.search(status.id, type=COMMENTS)]
+            print [(x.author, x.text, x.likes) for x in fb.search(status.id, type=COMMENTS)]
         if status.likes > 0:
             # Retrieve likes on the status update.
             print "%s likes:" % status.likes

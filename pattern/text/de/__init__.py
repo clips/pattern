@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))
 
 # Import parser base classes.
 from pattern.text import (
-    Lexicon, Spelling, Parser as _Parser, ngrams, pprint, commandline,
+    Lexicon, Model, Morphology, Context, Parser as _Parser, ngrams, pprint, commandline,
     PUNCTUATION
 )
 # Import parser universal tagset.
@@ -214,18 +214,15 @@ class Parser(_Parser):
         tokens_ss = _Parser.find_tags(self, tokens_ss, **kwargs)
         return [[w] + tokens_ss[i][1:] for i, w in enumerate(tokens)]
 
-lexicon = Lexicon(
-        path = os.path.join(MODULE, "de-lexicon.txt"), 
+parser = Parser(
+     lexicon = os.path.join(MODULE, "de-lexicon.txt"), 
   morphology = os.path.join(MODULE, "de-morphology.txt"), 
      context = os.path.join(MODULE, "de-context.txt"),
-    language = "de"
-)
-
-parser = Parser(
-     lexicon = lexicon,
      default = ("NN", "NE", "CARDNUM"),
     language = "de"
 )
+
+lexicon = parser.lexicon # Expose lexicon.
 
 def tokenize(s, *args, **kwargs):
     """ Returns a list of sentences, where punctuation marks have been split from words.

@@ -50,69 +50,74 @@ The corpora are meant for personal use, they are not part of the module's BSD li
 - http://www.ims.uni-stuttgart.de/forschung/ressourcen/korpora
 - 250 German sentences with STTS part-of-speech tags.
 
-10) English portion of Penn Treebank (Marcus et al.)
-- tagged-en-penntreebank.txt
+10) English portion of Open American National Corpus (Ide et al.)
+- tagged-en-oanc.txt
+- http://www.anc.org/data/oanc/
+- 1000 English sentences with Penn Treebank part-of-speech tags.
+
+11) English portion of Penn Treebank (Marcus et al.)
+- tagged-en-wsj.txt
 - http://www.cis.upenn.edu/~treebank/home.html
 - 1000 English sentences with Penn Treebank part-of-speech tags.
 
-11) Spanish portion of Wikicorpus v.1.0 (Reese & Boleda et al.)
+12) Spanish portion of Wikicorpus v.1.0 (Reese & Boleda et al.)
 - tagged-es-wikicorpus.txt
 - http://www.lsi.upc.edu/~nlp/wikicorpus/
 - 1000 Spanish sentences with Parole part-of-speech tags.
 
-12) Italian portion of WaCKy Corpus (Baroni et al.)
+13) Italian portion of WaCKy Corpus (Baroni et al.)
 - tagged-it-wacky.txt
 - http://wacky.sslmit.unibo.it/doku.php?id=corpora
 - 1000 Italian sentences with Penn Treebank II part-of-speech tags.
 
-13) Dutch portion of Twente Nieuws Corpus (Ordelman et al.)
+14) Dutch portion of Twente Nieuws Corpus (Ordelman et al.)
 - tagged-nl-twnc.txt
 - http://hmi.ewi.utwente.nl/TwNC
 - 1000 Dutch sentences with Wotan part-of-speech tags.
 
-14) Apache SpamAssassin public mail corpus
+15) Apache SpamAssassin public mail corpus
 - spam-apache.csv
 - http://spamassassin.apache.org/publiccorpus/
 - 125 "spam" and 125 (mostly technical) "ham" messages.
 
-15) Birkbeck spelling error corpus
+16) Birkbeck spelling error corpus
 - spelling-birkbeck.csv
 - http://www.ota.ox.ac.uk/headers/0643.xml
 - 500 words and how they are commonly misspelled.
 
-16) CoNLL 2010 Shared Task 1 - Wikipedia uncertainty
+17) CoNLL 2010 Shared Task 1 - Wikipedia uncertainty
 - uncertainty-conll2010.csv
 - http://www.inf.u-szeged.hu/rgai/conll2010st/tasks.html#task1
 - 1500 "certain" and 1500 "uncertain" Wikipedia sentences.
 
-17) Celex 2.5 German word forms
+18) Celex 2.5 German word forms
 - wordforms-de-celex.csv
 - http://celex.mpi.nl/
 - 250 singular nouns and their plural form.
 - 250 predicative adjectives and their attributive form.
 
-18) Celex 2.5 English word forms
+19) Celex 2.5 English word forms
 - wordforms-en-celex.csv
 - http://celex.mpi.nl/
 - 4000 singular nouns and their plural form.
 
-19) Celex 2.5 Dutch word forms
+20) Celex 2.5 Dutch word forms
 - wordforms-nl-celex.csv
 - http://celex.mpi.nl/
 - 1000 singular nouns and their plural form.
 - 1000 predicative adjectives and their attributive form.
 
-20) Davies Corpus del Espa–ol word forms
+21) Davies Corpus del Espa–ol word forms
 - wordforms-es-davies.csv
 - http://www.wordfrequency.info/files/spanish/spanish_lemmas20k.txt
 - 3000 word forms with lemma, part-of-speech and frequency.
 
-21) Wiktionary Italian word forms
+22) Wiktionary Italian word forms
 - wordforms-it-wiktionary.csv
 - https://en.wiktionary.org/wiki/Category:Italian_language
 - 2000 word forms with lemma, part-of-speech and gender.
 
-22) Lexique 3 French word forms
+23) Lexique 3 French word forms
 - wordforms-fr-lexique.csv
 - http://www.lexique.org/
 - 2000 word forms with lemma and part-of-speech.

@@ -1,0 +1,415 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>pattern-de</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" href="../clips.css" />
+    <style>
+        /* Small fixes because we omit the online layout.css. */
+        h3 { line-height: 1.3em; }
+        #page { margin-left: auto; margin-right: auto; }
+        #header, #header-inner { height: 175px; }
+        #header { border-bottom: 1px solid #C6D4DD;  }
+        table { border-collapse: collapse; }
+    </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
+</head>
+<body class="node-type-page one-sidebar sidebar-right section-pages">
+    <div id="page">
+    <div id="page-inner">
+    <div id="header"><div id="header-inner"></div></div>
+    <div id="content">
+    <div id="content-inner">
+    <div class="node node-type-page"
+        <div class="node-inner">
+        <div class="breadcrumb">View online at: <a href="http://www.clips.ua.ac.be/pages/pattern-de" class="noexternal" target="_blank">http://www.clips.ua.ac.be/pages/pattern-de</a></div>
+        <h1>pattern.de</h1>
+        <!-- Parsed from the online documentation. -->
+        <div id="node-1534" class="node node-type-page"><div class="node-inner">
+<div class="content">
+<p><span class="big">The pattern.de module contains a fast part-of-speech tagger for German (identifies nouns, adjectives, verbs, etc. in a sentence) and tools for German verb conjugation and noun singularization &amp; pluralization.</span></p>
+<p>It can be used by itself or with other&nbsp;<a href="pattern.html">pattern</a>&nbsp;modules:&nbsp;<a href="pattern-web.html">web</a>&nbsp;|&nbsp;<a href="pattern-db.html">db</a>&nbsp;| <a href="pattern-en.html">en</a>&nbsp;|&nbsp;<a href="pattern-search.html">search</a>&nbsp;|&nbsp;<a href="pattern-vector.html">vector</a>&nbsp;|&nbsp;<a href="pattern-graph.html">graph</a>.</p>
+<p><img src="../g/pattern_schema_de.gif" alt="" width="620" height="180" /></p>
+<hr />
+<h2>Documentation</h2>
+<p>The functions in this module take the same parameters and return the same values as their counterparts in <a href="pattern-en.html">pattern.en</a>. Refer to the documentation there for more details.&nbsp;</p>
+<h3>Gender</h3>
+<p>German nouns and adjectives inflect according to gender. The <span class="inline_code">gender()</span> function predicts the gender (<span class="inline_code">MALE</span>, <span class="inline_code">FEMALE</span>,&nbsp;<span class="inline_code">NEUTRAL</span>) of&nbsp;a given noun with about 75% accuracy:&nbsp;</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.de import gender, MALE, FEMALE, NEUTRAL
+&gt;&gt;&gt; print gender('Katze')
+
+FEMALE</pre></div>
+<h3>Article</h3>
+<p>The <span class="inline_code">article()</span> function returns the article (<span class="inline_code">INDEFINITE</span> or <span class="inline_code">DEFINITE</span>) inflected by gender and role (<span class="inline_code">SUBJECT</span>, <span class="inline_code">OBJECT</span>, <span class="inline_code">INDIRECT</span> or <span class="inline_code">PROPERTY</span>).&nbsp;In the following example,&nbsp;<span class="inline_code">role=OBJECT</span>&nbsp;means that the article is used in front of a noun that is the object of the sentence, as in: <em>Ich sehe <span style="text-decoration: underline;">die Katze</span></em> (<em>I see the cat</em> – what do I see?&nbsp;→ the cat).</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.de import article, DEFINITE, FEMALE, OBJECT
+&gt;&gt;&gt; print article('Katze', DEFINITE, gender=FEMALE, role=OBJECT)
+
+die</pre></div>
+<h3>Noun singularization &amp; pluralization</h3>
+<p>For German nouns there is <span class="inline_code">singularize()</span> and <span class="inline_code">pluralize()</span>.&nbsp;The implementation uses a statistical approach with 84% accuracy for singularization and 72% for pluralization.</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.de import singularize, pluralize
+&gt;&gt;&gt; print singularize('Katzen')
+&gt;&gt;&gt; print pluralize('Katze')
+
+Katze
+Katzen </pre></div>
+<h3>Verb conjugation</h3>
+<p>For German verbs there is <span class="inline_code">conjugate()</span>, <span class="inline_code">lemma()</span>, <span class="inline_code">lexeme()</span> and <span class="inline_code">tenses()</span>.&nbsp;The lexicon for verb conjugation contains about 2,000 common German verbs. For unknown verbs it will fall back to a rule-based approach with an accuracy of about 87%.</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.de import conjugate
+&gt;&gt;&gt; from pattern.de import INFINITIVE, PRESENT, SG, SUBJUNCTIVE
+&gt;&gt;&gt;  
+&gt;&gt;&gt; print conjugate('war', INFINITIVE)
+&gt;&gt;&gt; print conjugate('war', PRESENT, 1, SG, mood=SUBJUNCTIVE) 
+
+sein
+sei  </pre></div>
+<p>German verbs have more tenses than English verbs. In particular, the plural differs for each person and there are additional forms for the <span class="inline_code">IMPERATIVE</span> and <span class="inline_code">SUBJUNCTIVE</span> mood.&nbsp;The <span class="inline_code">conjugate()</span> function takes the following optional parameters:</p>
+<table class="border">
+<tbody>
+<tr>
+<td class="smallcaps">Tense</td>
+<td class="smallcaps">Person</td>
+<td class="smallcaps">Number</td>
+<td class="smallcaps">Mood</td>
+<td class="smallcaps">Aspect</td>
+<td class="smallcaps">Alias</td>
+<td class="smallcaps">Example</td>
+</tr>
+<tr>
+<td class="inline_code">INFINITVE</td>
+<td class="inline_code">None</td>
+<td class="inline_code">None</td>
+<td class="inline_code">None</td>
+<td class="inline_code">None</td>
+<td class="inline_code">"inf"</td>
+<td><em>sein</em></td>
+</tr>
+<tr>
+<td class="inline_code">PRESENT</td>
+<td class="inline_code">1</td>
+<td class="inline_code">SG</td>
+<td class="inline_code">INDICATIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"1sg"</td>
+<td><em>ich <span style="text-decoration: underline;">bin</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PRESENT</td>
+<td class="inline_code">2</td>
+<td class="inline_code">SG</td>
+<td class="inline_code">INDICATIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"2sg"</td>
+<td><em>du <span style="text-decoration: underline;">bist</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PRESENT</td>
+<td class="inline_code">3</td>
+<td class="inline_code">SG</td>
+<td class="inline_code">INDICATIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"3sg"</td>
+<td><em>er <span style="text-decoration: underline;">ist</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PRESENT</td>
+<td class="inline_code">1</td>
+<td class="inline_code">PL</td>
+<td class="inline_code">INDICATIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"1pl"</td>
+<td><em>wir <span style="text-decoration: underline;">sind</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PRESENT</td>
+<td class="inline_code">2</td>
+<td class="inline_code">PL</td>
+<td class="inline_code">INDICATIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"2pl"</td>
+<td><em>ihr <span style="text-decoration: underline;">seid</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PRESENT</td>
+<td class="inline_code">3</td>
+<td class="inline_code">PL</td>
+<td class="inline_code">INDICATIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"3pl"</td>
+<td><em>sie <span style="text-decoration: underline;">sind</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PRESENT</td>
+<td class="inline_code">None</td>
+<td class="inline_code">None</td>
+<td class="inline_code">INDICATIVE</td>
+<td class="inline_code">PROGRESSIVE</td>
+<td class="inline_code">"part"</td>
+<td><em>seiend</em></td>
+</tr>
+<tr>
+<td style="border-left: 0; border-right: 0; padding: 0;">&nbsp;</td>
+</tr>
+<tr>
+<td class="inline_code">PRESENT</td>
+<td class="inline_code">2</td>
+<td class="inline_code">SG</td>
+<td class="inline_code">IMPERATIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"2sg!"</td>
+<td><em>sei</em></td>
+</tr>
+<tr>
+<td class="inline_code">PRESENT</td>
+<td class="inline_code">1</td>
+<td class="inline_code">PL</td>
+<td class="inline_code">IMPERATIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"1pl!"</td>
+<td><em>seien</em></td>
+</tr>
+<tr>
+<td class="inline_code">PRESENT</td>
+<td class="inline_code">2</td>
+<td class="inline_code">PL</td>
+<td class="inline_code">IMPERATIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"2pl!"</td>
+<td><em>seid</em></td>
+</tr>
+<tr>
+<td style="border-left: 0; border-right: 0; padding: 0;">&nbsp;</td>
+</tr>
+<tr>
+<td class="inline_code">PRESENT</td>
+<td class="inline_code">1</td>
+<td class="inline_code">SG</td>
+<td class="inline_code">SUBJUNCTIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"1sg?"</td>
+<td><em>ich <span style="text-decoration: underline;">sei</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PRESENT</td>
+<td class="inline_code">2</td>
+<td class="inline_code">SG</td>
+<td class="inline_code">SUBJUNCTIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"2sg?"</td>
+<td><em>du <span style="text-decoration: underline;">seiest</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PRESENT</td>
+<td class="inline_code">3</td>
+<td class="inline_code">SG</td>
+<td class="inline_code">SUBJUNCTIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"3sg?"</td>
+<td><em>ihr <span style="text-decoration: underline;">sei</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PRESENT</td>
+<td class="inline_code">1</td>
+<td class="inline_code">PL</td>
+<td class="inline_code">SUBJUNCTIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"1pl?"</td>
+<td><em>wir <span style="text-decoration: underline;">seien</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PRESENT</td>
+<td class="inline_code">2</td>
+<td class="inline_code">PL</td>
+<td class="inline_code">SUBJUNCTIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"2pl?"</td>
+<td><em>ihr <span style="text-decoration: underline;">seiet</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PRESENT</td>
+<td class="inline_code">3</td>
+<td class="inline_code">PL</td>
+<td class="inline_code">SUBJUNCTIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"3pl?"</td>
+<td><em>sie <span style="text-decoration: underline;">seien</span></em></td>
+</tr>
+<tr>
+<td style="border-left: 0; border-right: 0; padding: 0;">&nbsp;</td>
+</tr>
+<tr>
+<td class="inline_code">PAST</td>
+<td class="inline_code">1</td>
+<td class="inline_code">SG</td>
+<td class="inline_code">INDICATIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"1sgp"</td>
+<td><em>ich <span style="text-decoration: underline;">war</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PAST</td>
+<td class="inline_code">2</td>
+<td class="inline_code">SG</td>
+<td class="inline_code">INDICATIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"2sgp"</td>
+<td><em>du <span style="text-decoration: underline;">warst</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PAST</td>
+<td class="inline_code">3</td>
+<td class="inline_code">SG</td>
+<td class="inline_code">INDICATIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"3sgp"</td>
+<td><em>er <span style="text-decoration: underline;">war</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PAST</td>
+<td class="inline_code">1</td>
+<td class="inline_code">PL</td>
+<td class="inline_code">INDICATIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"1ppl"</td>
+<td><em>wir <span style="text-decoration: underline;">waren</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PAST</td>
+<td class="inline_code">2</td>
+<td class="inline_code">PL</td>
+<td class="inline_code">INDICATIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"2ppl"</td>
+<td><em>ihr <span style="text-decoration: underline;">wart</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PAST</td>
+<td class="inline_code">3</td>
+<td class="inline_code">PL</td>
+<td class="inline_code">INDICATIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"3ppl"</td>
+<td><em>sie <span style="text-decoration: underline;">waren</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PAST</td>
+<td class="inline_code">None</td>
+<td class="inline_code">None</td>
+<td class="inline_code">INDICATIVE</td>
+<td class="inline_code">PROGRESSIVE</td>
+<td class="inline_code">"ppart"</td>
+<td><em>gewesen</em></td>
+</tr>
+<tr>
+<td style="border-left: 0; border-right: 0; padding: 0;">&nbsp;</td>
+</tr>
+<tr>
+<td class="inline_code">PAST</td>
+<td class="inline_code">1</td>
+<td class="inline_code">SG</td>
+<td class="inline_code">SUBJUNCTIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"1sgp?"</td>
+<td><em>ich <span style="text-decoration: underline;">wäre</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PAST</td>
+<td class="inline_code">2</td>
+<td class="inline_code">SG</td>
+<td class="inline_code">SUBJUNCTIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"2sgp?"</td>
+<td><em>du <span style="text-decoration: underline;">wärest</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PAST</td>
+<td class="inline_code">3</td>
+<td class="inline_code">SG</td>
+<td class="inline_code">SUBJUNCTIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"3sgp?"</td>
+<td><em>er <span style="text-decoration: underline;">wäre</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PAST</td>
+<td class="inline_code">1</td>
+<td class="inline_code">PL</td>
+<td class="inline_code">SUBJUNCTIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"1ppl?"</td>
+<td><em>wir <span style="text-decoration: underline;">wären</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PAST</td>
+<td class="inline_code">2</td>
+<td class="inline_code">PL</td>
+<td class="inline_code">SUBJUNCTIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"2ppl?"</td>
+<td><em>ihr <span style="text-decoration: underline;">wäret</span></em></td>
+</tr>
+<tr>
+<td class="inline_code">PAST</td>
+<td class="inline_code">3</td>
+<td class="inline_code">PL</td>
+<td class="inline_code">SUBJUNCTIVE</td>
+<td class="inline_code">IMPERFECTIVE</td>
+<td class="inline_code">"3ppl?"</td>
+<td><em>sie <span style="text-decoration: underline;">wären</span></em></td>
+</tr>
+</tbody>
+</table>
+<p>Instead of optional parameters, a single short alias, or&nbsp;<span class="inline_code">PARTICIPLE</span> or <span class="inline_code">PAST+PARTICIPLE</span> can also be given. With no parameters, the infinitive form of the verb is returned.</p>
+<h3>Attributive &amp; predicative adjectives&nbsp;</h3>
+<p>German adjectives inflect with an <span class="inline_code">-e</span>,&nbsp;<span class="inline_code">-em</span>&nbsp;, <span class="inline_code">-en</span>, <span class="inline_code">-er</span>, or <span class="inline_code">-es</span> suffix (e.g., <em>neugierig</em>&nbsp;→ <em>die neugierige Katze</em>) depending on gender and role. You can get the base form with the <span class="inline_code">predicative()</span> function, or vice versa with&nbsp;<span class="inline_code">attributive()</span>.&nbsp;For predicative, a statistical approach is used with an accuracy of 98%. For attributive, you need to supply gender (<span class="inline_code">MALE</span>, <span class="inline_code">FEMALE</span>, <span class="inline_code">NEUTRAL</span>) and role (<span class="inline_code">SUBJECT</span>, <span class="inline_code">OBJECT</span>, <span class="inline_code">INDIRECT</span>, <span class="inline_code">PROPERTY</span>).</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.de import attributive, predicative
+&gt;&gt;&gt; from pattern.de import MALE, FEMALE, SUBJECT, OBJECT
+&gt;&gt;&gt;   
+&gt;&gt;&gt; print predicative('neugierige') 
+&gt;&gt;&gt; print attributive('neugierig', gender=FEMALE)
+&gt;&gt;&gt; print attributive('neugierig', gender=FEMALE, role=OBJECT)
+&gt;&gt;&gt; print attributive('neugierig', gender=FEMALE, role=INDIRECT, article="die")
+
+neugierig
+neugierige 
+neugierige 
+neugierigen </pre></div>
+<h3>Parser</h3>
+<p>For parsing there is <span class="inline_code">parse()</span>, <span class="inline_code">parsetree()</span> and <span class="inline_code">split()</span>. The <span class="inline_code">parse()</span> function annotates words in the given string with their part-of-speech <a class="link-maintenance" href="mbsp-tags.html">tags</a> (e.g., <span class="postag">NN</span> for nouns and <span class="postag">VB</span> for verbs). The <span class="inline_code">parsetree()</span> function takes a string and returns a tree of nested objects (<span class="inline_code">Text</span> → <span class="inline_code">Sentence</span> → <span class="inline_code">Chunk</span> → <span class="inline_code">Word</span>). The <span class="inline_code">split()</span> function takes the output of <span class="inline_code">parse()</span> and returns a <span class="inline_code">Text</span>. See the pattern.en documentation (<a class="link-maintenance" href="pattern-en.html#tree">here</a>) how to manipulate <span class="inline_code">Text</span> objects.&nbsp;</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.de import parse, split
+&gt;&gt;&gt;  
+&gt;&gt;&gt; s = parse('Die Katze liegt auf der Matte.')
+&gt;&gt;&gt; for sentence in split(s):
+&gt;&gt;&gt;     print sentence 
+
+Sentence('Die/DT/B-NP/O Katze/NN/I-NP/O liegt/VB/B-VP/O'
+         'auf/IN/B-PP/B-PNP der/DT/B-NP/I-PNP Matte/NN/I-NP/I-PNP ././O/O')</pre></div>
+<p>The parser is built on Gerold Schneider &amp; Martin Volk's&nbsp;<a href="http://www.zora.uzh.ch/28579/" target="_blank">German language model</a>.&nbsp;The accuracy is around 85%. The original <a href="http://www.fi.muni.cz/~xnemcik/nlp/sarrebrugge/handout.pdf" target="_self">STTS</a> tagset is mapped to <a href="mbsp-tags.html">Penn Treebank</a> tagset. If you need to work with the original tags you can also use&nbsp;<span class="inline_code">parse()</span> with an optional parameter <span class="inline_code">tagset="STTS"</span>.</p>
+<p class="small"><span style="text-decoration: underline;">Reference</span>: Schneider, G. &amp; Volk, M. (1998). <br />Adding manual constraints and lexical look-up to a Brill-tagger for German. <em>Proceedings of ESSLLI-98</em>.&nbsp;</p>
+<h3>Sentiment analysis</h3>
+<p>There's no&nbsp;<span class="inline_code">sentiment()</span> function for German yet.</p>
+<p class="small"><span style="text-decoration: underline;">Note</span>: We did a test by automatically assigning scores (<span class="inline_code">-1.0</span>&nbsp;→ +<span class="inline_code">1.0</span>) to adjectives translated from English, but this approach only had 35% accuracy.</p>
+</div>
+</div></div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
+</body>
+</html>

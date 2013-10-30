@@ -1,0 +1,745 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>pattern-db</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" href="../clips.css" />
+    <style>
+        /* Small fixes because we omit the online layout.css. */
+        h3 { line-height: 1.3em; }
+        #page { margin-left: auto; margin-right: auto; }
+        #header, #header-inner { height: 175px; }
+        #header { border-bottom: 1px solid #C6D4DD;  }
+        table { border-collapse: collapse; }
+    </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
+</head>
+<body class="node-type-page one-sidebar sidebar-right section-pages">
+    <div id="page">
+    <div id="page-inner">
+    <div id="header"><div id="header-inner"></div></div>
+    <div id="content">
+    <div id="content-inner">
+    <div class="node node-type-page"
+        <div class="node-inner">
+        <div class="breadcrumb">View online at: <a href="http://www.clips.ua.ac.be/pages/pattern-db" class="noexternal" target="_blank">http://www.clips.ua.ac.be/pages/pattern-db</a></div>
+        <h1>pattern.db</h1>
+        <!-- Parsed from the online documentation. -->
+        <div id="node-1432" class="node node-type-page"><div class="node-inner">
+<div class="content">
+<h3>The pattern.db module includes wrappers for popular databases (SQLite + MySQL), Unicode CSV files and Python's datetime. It offers a convenient way to work with tabular data, for example retrieved with the pattern.web module.</h3>
+<p>It can be used by itself or with other <a href="pattern.html">pattern</a> modules: <a href="pattern-web.html">web</a> | db | <a href="pattern-en.html">en</a> | <a href="pattern-search.html">search</a> <span class="blue">&nbsp;</span>| <a href="pattern-vector.html">vector</a> | <a href="pattern-graph.html">graph</a>.</p>
+<p><img src="../g/pattern_schema.gif" alt="" width="620" height="180" /></p>
+<hr />
+<h2>Documentation</h2>
+<ul style="margin-top: 0;">
+<li><a href="#database">Database</a>&nbsp;<span class="smallcaps link-maintenance">(sqlite + mysql)</span></li>
+<li><a href="#table">Table</a></li>
+<li><a href="#query">Query</a></li>
+<li><a href="#view">View</a></li>
+<li><a href="#datasheet">Datasheet</a>&nbsp;<span class="smallcaps link-maintenance">(<a href="#csv">csv</a>)</span></li>
+<li><a href="#date">Date</a></li>
+</ul>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="database"></a>Database</h2>
+<p>A <span class="inline_code">Database</span> is a collection of tables. A <span class="inline_code">Table</span> contains rows of data, with a specific data type (e.g., <span class="inline_code">str</span>, <span class="inline_code">int</span>) for each field (column).&nbsp;A database is typically managed by a robust engine such as MySQL. Statements written in <a href="https://en.wikipedia.org/wiki/SQL" target="_blank">SQL</a> (<em>Structured Query Language</em>) are used to interact with the engine.&nbsp;The <span class="inline_code">pattern.db</span> module is a wrapper for SQL. It&nbsp;supports the <span class="inline_code">SQLITE</span>&nbsp;and&nbsp;<span class="inline_code">MYSQL</span> engines.&nbsp;</p>
+<p>SQLite is already included with Python 2.5+. With older versions you need to install <a href="http://code.google.com/p/pysqlite/downloads/list" target="_blank">PySQLite</a>. To use MySQL, you need to install <a href="http://www.mysql.com/" target="_blank">MySQL</a> and <a href="http://sourceforge.net/projects/mysql-python/" target="_blank">MySQL-Python</a>. If you have a 64-bit Python you'll need a 64-bit MySQL and MySQLdb.</p>
+<p><span class="inline_code">Database()</span> creates (if necessary) and returns a new database. With <span class="inline_code">SQLITE</span>, this will generate a file with the given name in the current folder.</p>
+<pre class="brush:python; gutter:false; light:true;">db = Database(
+      name, 
+      host = 'localhost', 
+      port = 3306, 
+  username = 'root', 
+  password = '', 
+      type = SQLITE
+)
+</pre><pre class="brush:python; gutter:false; light:true;">db.type                     # SQLITE | MYSQL
+db.name                     # Database name.
+db.host                     # Database host (MySQL).
+db.port                     # Database port (MySQL).
+db.username                 # Database username (MySQL).
+db.password                 # Database password (MySQL).
+db.tables                   # Dictionary of (name, Table)-items.
+db.relations                # List of relations, see Database.link().
+db.query                    # Last SQL query string.
+db.connected                # True after Database.connect(). </pre><pre class="brush:python; gutter:false; light:true;">db.connect()                # Happens automatically.
+db.disconnect()</pre><pre class="brush:python; gutter:false; light:true;">db.create(table, fields=[])
+db.remove(table)
+db.link(table1, field1, table2, field2, join=LEFT) </pre><pre class="brush:python; gutter:false; light:true;">db.execute(SQL, commit=False)
+db.commit()
+db.escape(value)            # "a cat's tail" =&gt; "'a cat\'s tail'"</pre><ul>
+<li><span class="inline_code">Database.execute()</span> returns the results from a raw SQL query.</li>
+<li><span class="inline_code">Database.commit()</span> commits the changes after&nbsp;<span class="inline_code">INSERT</span>, <span class="inline_code">UPDATE</span>, <span class="inline_code">DELETE</span>&nbsp;SQL queries.</li>
+<li><span class="inline_code">Database.escape()</span>&nbsp;safely quotes and escapes field values.<br />Also see the source code for <span class="inline_code">abs()</span> and <span class="inline_code">cmp()</span>&nbsp;when constructing raw SQL queries.</li>
+</ul>
+<h3>Creating a table</h3>
+<p><span class="inline_code">Database.create()</span> creates a new table in the database, from a given table name and a list of row fields, defined with the <span class="inline_code">field()</span> function:</p>
+<pre class="brush:python; gutter:false; light:true;">field(name, type=STRING, default=None, index=False, optional=True)</pre><p>Each field has a <span class="inline_code">name</span> and a&nbsp;<span class="inline_code">type</span>, with an optional <span class="inline_code">default</span> value for new rows. Field names should contain only characters (a-z) and underscores. The default value for a&nbsp;<span class="inline_code">DATE</span> field is <span class="inline_code">NOW</span> (current date &amp; time). With <span class="inline_code">optional=True</span>, the field is allowed to contain <span class="inline_code">None</span>.</p>
+<table class="border">
+<tbody>
+<tr>
+<td><span class="smallcaps">Type</span></td>
+<td><span class="smallcaps">Value</span>&nbsp;</td>
+<td><span class="smallcaps">Example</span>&nbsp;</td>
+</tr>
+<tr>
+<td><span class="inline_code">STRING</span></td>
+<td><span class="inline_code">str</span>, <span class="inline_code">unicode</span>&nbsp;<span class="small">(1-255 characters)</span></td>
+<td>&nbsp;<span class="inline_code">u'Schrödinger'</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">INTEGER</span></td>
+<td><span class="inline_code">int</span></td>
+<td><span class="inline_code">42</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">FLOAT</span></td>
+<td><span class="inline_code">float</span></td>
+<td><span class="inline_code">3.14159</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">TEXT</span></td>
+<td><span class="inline_code">str</span>, <span class="inline_code">unicode</span></td>
+<td><span class="inline_code">open('file.txt').read()&nbsp;</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">BLOB</span></td>
+<td><span class="inline_code">str</span>&nbsp;<span class="small">(binary: PDF, PNG, ...)</span></td>
+<td><span class="inline_code">Database.binary(open('cat.jpg').read())</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">BOOLEAN</span></td>
+<td><span class="inline_code">bool</span></td>
+<td><span class="inline_code">True</span>,&nbsp;<span class="inline_code">False</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">DATE</span></td>
+<td><span class="inline_code">Date</span></td>
+<td><span class="inline_code">date('1999-12-31 23:59:59')</span></td>
+</tr>
+</tbody>
+</table>
+<p>By default, a&nbsp;<span class="inline_code">STRING</span> field can hold up to a 100 characters, but the length (1-255) can be changed by calling <span class="inline_code">STRING</span> like a function: e.g., <span class="inline_code">type=STRING(255)</span>. For longer strings, use <span class="inline_code">TEXT</span>.</p>
+<p>With&nbsp;<span class="inline_code">index=True</span>, the field is indexed for faster search. The index can also be set to <span class="inline_code">UNIQUE</span>&nbsp;(no duplicates allowed in this column) or&nbsp;<span class="inline_code">PRIMARY</span>. A table should have one primary key field that uniquely identifies each row (i.e., an id). You can use the <span class="inline_code">pk()</span> function, which creates an <span class="inline_code">INTEGER</span> primary key field named <span class="inline_code">id</span>. Integer primary keys are auto-numbered – no need to set the value manually in new rows.</p>
+<pre class="brush:python; gutter:false; light:true;">pk(name='id') # type=INTEGER + index=PRIMARY + optional=False </pre><p>For example:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import Database, field, pk, STRING, BOOLEAN, DATE, NOW, date
+&gt;&gt;&gt;  
+&gt;&gt;&gt; db = Database('my_stuff')
+&gt;&gt;&gt; db.create('pets', fields=[
+&gt;&gt;&gt;     pk(),
+&gt;&gt;&gt;     field('name', STRING(80), index=True),
+&gt;&gt;&gt;     field('type', STRING(20)),
+&gt;&gt;&gt;     field('tail', BOOLEAN),
+&gt;&gt;&gt;     field('date_birth', DATE, default=None),
+&gt;&gt;&gt;     field('date_created', DATE, default=NOW)
+&gt;&gt;&gt; ])</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.append(name=u'Schrödinger', type='cat', tail=True)
+&gt;&gt;&gt; print db.pets.rows()[0]
+
+[u'Schrödinger', u'cat', True, None, '2011-08-17 19:16:46']</pre></div>
+<h3>Creating a table from XML</h3>
+<p>You can also pass&nbsp;<span class="inline_code">Table.xml</span>&nbsp;or <span class="inline_code">Query.xml</span> (see below) to <span class="inline_code">Database.create()</span>. An optional <span class="inline_code">name</span> parameter can then be used to give the new table a different name.&nbsp;</p>
+<p>An optional <span class="inline_code">field</span> parameter is a function that takes each field name from the XML and returns a new field name to be used in the table. This is useful for <span class="inline_code">Query.xml</span>, where field names may contain a period (e.g., <span class="inline_code">pets.name</span>), which is not allowed in a table.&nbsp;Alternatively, use the&nbsp;<span class="inline_code">Query.aliases</span>&nbsp;dictionary to define custom field names for the XML.</p>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="table"></a>Table</h2>
+<p>A <span class="inline_code">Table</span> is a list of rows, consisting of one or more fields (i.e., table columns) of a certain type (i.e., strings or numbers). New tables can be created with the <span class="inline_code">Database.create()</span> method. A <span class="inline_code">TableError</span> is raised if a table with the given name already exists. Existing tables can be retrieved with <span class="inline_code">Database.tables[name]</span>&nbsp;or <span class="inline_code">Database[name]</span> or <span class="inline_code">Database.&lt;name&gt;</span>.</p>
+<pre class="brush:python; gutter:false; light:true;">table = Database.tables[name]</pre><pre class="brush:python; gutter:false; light:true;">table.db                    # Parent Database.
+table.name                  # Table name (characters a-z + underscore).
+table.fields                # List of field names (i.e., columns).
+table.schema                # Dictionary of (field, Schema)-items.
+table.default               # Dictionary of (field, value)-items for new rows.
+table.pk                    # Primary key field name.</pre><pre class="brush:python; gutter:false; light:true;">table.count()               # Total number of rows (len(table) also works).
+table.rows()                # List of rows, each a list of fields.
+</pre><pre class="brush:python; gutter:false; light:true;">table.record(row)           # Dictionary of (field, value)-items for given row.</pre><pre class="brush:python; gutter:false; light:true;">table.append(fields={}, commit=True)
+table.update(id, fields={}, commit=True)
+table.remove(id, commit=True)
+table.filter(fields, filters)</pre><pre class="brush:python; gutter:false; light:true;">table.search(*args, **kwargs) </pre><pre class="brush:python; gutter:false; light:true;">table.xml                   # XML-string with the table schema and rows. 
+table.datasheet             # Datasheet object (see below).</pre><ul>
+<li><span class="inline_code">Table.rows()</span>&nbsp;returns all rows as a list. To iterate over the rows, use <span class="inline_code">iter(Table)</span> instead.</li>
+<li><span class="inline_code">Table.append()</span>, <span class="inline_code">update()</span>,&nbsp;<span class="inline_code">remove()</span>&nbsp;modify the table contents (see further).<br />With <span class="inline_code">commit=False</span>, changes are only reflected after a&nbsp;<span class="inline_code">Database.commit()</span> (= faster in batch).&nbsp;</li>
+<li><span class="inline_code">Table.filter()</span> returns a subset of rows with a subset of fields (see further).<br />For example: <span class="inline_code">table.filter('name', type='cat')</span>.</li>
+</ul>
+<h3>Table schema</h3>
+<p>The <span class="inline_code">Table.schema</span> dictionary has a <span class="inline_code">Schema</span> object for each field name, containing field information:</p>
+<pre class="brush:python; gutter:false; light:true;">schema = Table.schema[fieldname]</pre><pre class="brush:python; gutter:false; light:true;">schema.name                 # Field name.
+schema.type                 # STRING, INTEGER, FLOAT, TEXT, BLOB, BOOLEAN, DATE 
+schema.length               # STRING field length.
+schema.default              # Default value.
+schema.index                # PRIMARY | UNIQUE | True | False
+schema.optional             # True or False. </pre><p>For example:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print db.pets.fields
+&gt;&gt;&gt; print db.pets.schema['name'].type
+&gt;&gt;&gt; print db.pets.schema['name'].length
+
+['id', 'name', 'tail', 'date_birth', 'date_created']
+STRING
+80 </pre></div>
+<h3>Append, update and remove rows</h3>
+<p><span class="inline_code">Table.append()</span>&nbsp;adds a new row with the given field values.&nbsp;If the table has a primary key generated with <span class="inline_code">pk()</span>, returns the row's id (<span class="inline_code">None</span> otherwise).</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.append(name=u'Schrödinger', date_birth=date('2009-08-12'))</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.append({'name': u'Schrödinger', 'date_birth': date('2009-08-12')}) </pre></div>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; db.pets.append((u'Schrödinger', 'cat', True, date('2009-08-12')) # in-order</pre></div>
+<p>If a field name does not allow it to be used as an optional parameter, the field values can be passed as a dictionary (e.g., Unicode strings like&nbsp;<em>data_de_creació</em>).</p>
+<p><span class="inline_code">Table.update()</span>&nbsp;updates the values in the row with the given primary key. Instead of a primary key value, a selection of rows can also be updated using <span class="inline_code">any()</span>&nbsp;or <span class="inline_code">all()</span>&nbsp;(see further). In the third example, rows with&nbsp;<span class="inline_code">type='cat'</span>&nbsp;will have their <span class="inline_code">tail</span> field set to&nbsp;<span class="inline_code">True</span>.</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.update(1, type='cat') # set type='cat' in row with id=1.</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.update(1, {'type': 'cat'})</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.update(all(filter('type', 'cat')), tail=True)</pre></div>
+<p><span class="inline_code">Table.remove()</span>&nbsp;removes the row with the given primary key:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.remove(1)</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.remove(ALL)</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.remove(all(filter('type', 'cat'), filter(year('date_birth'), 1990, '&lt;')))</pre></div>
+<p>The last example removes rows that have&nbsp;<span class="inline_code">type='cat'</span>&nbsp;AND year of birth before 1990.</p>
+<p><span style="text-decoration: underline;">Note</span>: to insert binary data into a <span class="inline_code">BLOB</span> field, first pass it through&nbsp;<span class="inline_code">Database.binary()</span>.&nbsp;<br />For example: <span class="inline_code">db.images.append(src=db.binary(open('cat.png','rb').read())))&nbsp;</span></p>
+<h3><span>Filter rows</span></h3>
+<p><span class="inline_code">Table.filter()</span> returns a list of rows filtered by field value(s), where each row is a list of fields.&nbsp;The function's first argument defines which fields to return for each row: either <span class="inline_code">ALL</span>&nbsp;or a field name or a list of field names. The second argument is a dictionary of field constraints. These can also be given as optional keyword parameters:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.filter('name')                     # all rows, name</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.filter(('id', 'name'))             # all rows, name + id</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.filter(ALL, type='cat')            # type='cat', all fields</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.filter(ALL, type=('cat', 'dog'))   # type='cat' OR type='dog'   </pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.filter(ALL, type='*at')            # type='cat' OR 'hat' OR 'brat', ...</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.filter(ALL, type='cat', tail=True) # type='cat' AND tail=True </pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.pets.filter('id', {'type': 'cat', 'tail': True})
+</pre></div>
+<p>For more intricate queries a <span class="inline_code">Query</span> object can be used.</p>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="query"></a>Query</h2>
+<p><span class="inline_code">Table.search()</span> returns a <span class="inline_code">Query</span> object with options for filtering, sorting and ordering rows by field value(s). It can also include fields from other, related tables.</p>
+<pre class="brush:python; gutter:false; light:true;">query = Table.search( 
+     fields = ALL,
+    filters = [],
+  relations = [],
+       sort = None,
+      order = ASCENDING,
+      group = None,
+   function = FIRST,
+      range = None
+)</pre><pre class="brush:python; gutter:false; light:true;">query.table                 # Parent Table.
+query.fields                # Field name, or list of field names, or ALL.
+query.aliases               # Dictionary of (field name, alias)-items.
+query.filters               # List of filter() objects.
+query.relations             # List of rel() objects.
+query.sort                  # Field name or list of field names.
+query.order                 # ASCENDING | DESCENDING
+query.group                 # Field name or list of field names.
+query.function              # FIRST, LAST, COUNT, MIN, MAX, SUM, AVG, CONCATENATE
+query.range                 # (start, stop)-tuple, e.g. rows 11-20.</pre><pre class="brush:python; gutter:false; light:true;">query.rows()                # List of rows, each a list of fields.</pre><pre class="brush:python; gutter:false; light:true;">query.record(row)           # Dictionary of (field, value)-items for given row.</pre><pre class="brush:python; gutter:false; light:true;">query.xml                   # XML-string with the query schema and rows.</pre><p>To iterate more efficiently over the rows, you can also use <span class="inline_code">iter(Query)</span> instead of <span class="inline_code">Query.rows()</span>.</p>
+<h3>Query filters</h3>
+<p>The <span class="inline_code">filter()</span> function creates a field-value constraint that will match certain rows in a table. A list of such filters can be passed to the <span class="inline_code">filters</span> parameter of the Query object.</p>
+<pre class="brush:python; gutter:false; light:true;">filter(field, value, comparison='=')</pre><table class="border">
+<tbody>
+<tr>
+<td style="text-align: center;"><span class="smallcaps">Comparison</span></td>
+<td><span class="smallcaps">Description</span></td>
+<td><span class="smallcaps">Example</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">=</span></td>
+<td>equal to</td>
+<td><span class="inline_code">filter('type', ('cat', 'dog'), '=')&nbsp;</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">i=</span></td>
+<td>equal to (case-insensitive)</td>
+<td><span class="inline_code">filter('name', 'tig*', 'i=')&nbsp;</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">!=</span></td>
+<td>not equal to</td>
+<td><span class="inline_code">filter('name', '*y', '!=')</span>&nbsp;</td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">&gt;</span></td>
+<td>greater than</td>
+<td><span class="inline_code">filter('weight', 10, '&gt;') </span>&nbsp;</td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">&lt;</span></td>
+<td>less than</td>
+<td><span class="inline_code">filter('weight', 10, '&lt;')&nbsp;</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">&gt;=</span></td>
+<td>greater than or equal to</td>
+<td><span class="inline_code">filter(year('date'), 1999, '&gt;=')&nbsp;</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">&lt;=</span></td>
+<td>less than or equal to</td>
+<td><span class="inline_code">filter(year('date'), 2002, '&lt;=')</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">:</span></td>
+<td>between (inclusive)</td>
+<td><span class="inline_code">filter(year('date'), (1999, 2002), ':')</span></td>
+</tr>
+</tbody>
+</table>
+<p>To work with a specific part of a <span class="inline_code">DATE</span> field (e.g., the year), wrap it in the&nbsp;<span class="inline_code">year()</span>, <span class="inline_code">month()</span>, <span class="inline_code">day()</span>, <span class="inline_code">hour()</span>, <span class="inline_code">minute()</span> or <span class="inline_code">second()</span> function.&nbsp;</p>
+<p>Multiple filters can be chained together in an&nbsp;<span class="inline_code">all()</span> or <span class="inline_code">any()</span>&nbsp;list, using <span class="inline_code">AND</span> or <span class="inline_code">OR</span> logic respectively:</p>
+<pre class="brush:python; gutter:false; light:true;">all(filter1, filter2, ...) # Rows must match ALL of the filters.</pre><pre class="brush:python; gutter:false; light:true;">any(filter1, filter2, ...) # Rows must match ONE of the filters.</pre><p>For example:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import Database, filter, all, any
+&gt;&gt;&gt;  
+&gt;&gt;&gt; db = Database('my_stuff')
+&gt;&gt;&gt; db.pets.search(filters=all(filter('name', 'Taxi'), filter('type', 'cat')))
+&gt;&gt;&gt; db.pets.search(filters=any(filter('name', 'Taxi'), filter('type', 'cat')))</pre></div>
+<p>In this example, the first query matches all cats named Taxi (i.e., <span class="inline_code">name='Taxi'</span>&nbsp;AND&nbsp;<span class="inline_code">type='cat'</span>). The second query matches any pet that is a cat or that is named Taxi (i.e., <span class="inline_code">name='Taxi'</span> OR <span class="inline_code">type='cat'</span>).&nbsp;</p>
+<p>Also, <span class="inline_code">all()</span> and <span class="inline_code">any()</span>&nbsp;lists can be nested to create complex search criteria.&nbsp;The example below matches all pets that are cats, and whose name starts with Fluff- or ends with a -y:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; f = all() # AND
+&gt;&gt;&gt; f.append(filter('type', 'cat'))
+&gt;&gt;&gt; f.append(any(filter('name', 'Fluff*'), filter('name', '*y'))) # OR
+&gt;&gt;&gt; db.pets.search(filters=f)</pre></div>
+<h3>Query relations</h3>
+<p>Relations are used to include fields from other tables. Say we have a <em>products</em> table and an <em>orders</em> table. We don't want all the product info in the <em>orders</em> table – it belongs in the <em>products</em> table so duplicate data is avoided (this is called database normalization). Each order just contains the product id. So each product id can occur in multiple orders. When we run an <em>invoice</em> query for a given order, we need to fetch the product description, price, etc. using a relation.</p>
+<p>The <span class="inline_code">rel()</span>&nbsp;or <span class="inline_code">relation()</span> function defines a relation to another table, between two fields in the tables (usually id's):</p>
+<pre class="brush:python; gutter:false; light:true;">rel(field1, field2, table, join=LEFT) # INNER | LEFT | RIGHT | FULL</pre><ul>
+<li><span class="inline_code">LEFT</span>&nbsp;selects all rows from the base table, with additional fields from the related table (if found). <br />If there is no link between <span class="inline_code">field1</span> and <span class="inline_code">field2</span>, the fields from the related table contain <span class="inline_code">None</span>.</li>
+<li><span class="inline_code">RIGHT</span>&nbsp;is the reverse of <span class="inline_code">LEFT</span>.</li>
+<li><span class="inline_code">FULL</span>&nbsp;means <span class="inline_code">LEFT</span> + <span class="inline_code">RIGHT</span>.</li>
+<li><span class="inline_code">INNER</span> is like <span class="inline_code">LEFT</span>, but if there is no link between <span class="inline_code">field1</span> and <span class="inline_code">field2</span> that row is omitted.</li>
+</ul>
+<p>Below is an example of a simple products / customers / orders database:</p>
+<table class="border=">
+<tbody>
+<tr>
+<td>
+<table class="border" style="margin: 0;">
+<tbody>
+<tr>
+<td style="text-align: center;" colspan="3"><span class="smallcaps">products</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="smallcaps">id</span></td>
+<td style="text-align: left;"><span class="smallcaps">Description</span></td>
+<td style="text-align: center;"><span class="smallcaps">price</span></td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">pizza</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">garlic bread</td>
+<td style="text-align: center;">3</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table class="border" style="margin: 0;">
+<tbody>
+<tr>
+<td style="text-align: center;" colspan="3"><span class="smallcaps">customers</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="smallcaps">id</span></td>
+<td style="text-align: left;"><span class="smallcaps">name</span></td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">Schrödinger</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">Hofstadter</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table class="border" style="margin: 0;">
+<tbody>
+<tr>
+<td style="text-align: center;" colspan="3"><span class="smallcaps">orders</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="smallcaps">id</span></td>
+<td style="text-align: center;"><span class="smallcaps">product_id</span></td>
+<td style="text-align: center;"><span class="smallcaps">customer_id</span></td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import Database, field, pk, INT
+&gt;&gt;&gt;  
+&gt;&gt;&gt; db = Database('pizza_delivery')
+&gt;&gt;&gt; db.create('products', (pk(), field('description'), field('price', INT)))
+&gt;&gt;&gt; db.create('customers', (pk(), field('name')))
+&gt;&gt;&gt; db.create('orders', (pk(), field('product_id', INT), field('customer_id', INT)))</pre></div>
+<div class="example">Add products and customers. &nbsp;Pizza delivery is open for business!</div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.products.append(description='pizza', price=15)
+&gt;&gt;&gt; db.products.append(description='garlic bread', price=3)</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.customers.append(name=u'Schrödinger')
+&gt;&gt;&gt; db.customers.append(name=u'Hofstadter')</pre></div>
+<p>Hofstadter orders a pizza.</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; db.orders.append(product_id=1, customer_id=2)</pre></div>
+<div class="example">We can use a query with relations between the tables to display the order:</div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import Database, relation, LEFT
+&gt;&gt;&gt;  
+&gt;&gt;&gt; db = Database('pizza_delivery')
+&gt;&gt;&gt; q = db.orders.search(
+&gt;&gt;&gt;      fields = ['id', 'customers.name', 'products.description', 'products.price'],
+&gt;&gt;&gt;   relations = [rel('customer_id', 'id', 'customers', join=LEFT),
+&gt;&gt;&gt;                rel('product_id', 'id', 'products', join=LEFT)])
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print q.fields
+&gt;&gt;&gt; print q.rows()
+
+['id', 'customers.name', 'products.description', 'products.price']
+[[1, u'Hofstadter', u'pizza', 15]] </pre></div>
+<div class="example">Note: if a relation is used repeatedly, define it once with <span class="inline_code">Database.link()</span>. It will then be available in every <span class="inline_code">Query</span>.</div>
+<h3>Grouping rows</h3>
+<p>Rows in a <span class="inline_code">Query</span> are folded on duplicate values in the given <span class="inline_code">group</span> field. The given&nbsp;<span class="inline_code">function</span>&nbsp;is applied to the other fields. It can also be a list with a function for each field.</p>
+<table class="border">
+<tbody>
+<tr>
+<td><span class="smallcaps">Function</span></td>
+<td style="text-align: center;"><span class="smallcaps">Field type</span></td>
+<td><span class="smallcaps">Description</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">FIRST</span></td>
+<td style="text-align: center;">any</td>
+<td>The first field in the group.</td>
+</tr>
+<tr>
+<td><span class="inline_code">LAST</span></td>
+<td style="text-align: center;">&nbsp;any</td>
+<td>The last&nbsp;field&nbsp;in the group.</td>
+</tr>
+<tr>
+<td><span class="inline_code">COUNT</span></td>
+<td style="text-align: center;">&nbsp;any</td>
+<td>The number of rows in the group.</td>
+</tr>
+<tr>
+<td><span class="inline_code">MIN</span></td>
+<td style="text-align: center;"><span class="inline_code">INTEGER</span>&nbsp;+&nbsp;<span class="inline_code">FLOAT</span></td>
+<td>The lowest&nbsp;field&nbsp;value in the group.</td>
+</tr>
+<tr>
+<td><span class="inline_code">MAX</span></td>
+<td style="text-align: center;"><span class="inline_code">INTEGER</span>&nbsp;+&nbsp;<span class="inline_code">FLOAT</span></td>
+<td>The highest&nbsp;field&nbsp;value in the group.</td>
+</tr>
+<tr>
+<td><span class="inline_code">SUM</span></td>
+<td style="text-align: center;"><span class="inline_code">INTEGER</span>&nbsp;+&nbsp;<span class="inline_code">FLOAT</span></td>
+<td>The sum of all&nbsp;field&nbsp;values in the group.</td>
+</tr>
+<tr>
+<td><span class="inline_code">AVG</span></td>
+<td style="text-align: center;"><span class="inline_code">INTEGER</span>&nbsp;+&nbsp;<span class="inline_code">FLOAT</span></td>
+<td>The average of all&nbsp;field&nbsp;values in the group.</td>
+</tr>
+<tr>
+<td><span class="inline_code">STDEV</span></td>
+<td style="text-align: center;"><span class="inline_code">INTEGER</span>&nbsp;+&nbsp;<span class="inline_code">FLOAT</span></td>
+<td>The standard deviation (= variation from average).</td>
+</tr>
+<tr>
+<td><span class="inline_code">CONCATENATE</span></td>
+<td style="text-align: center;"><span class="inline_code">STRING</span></td>
+<td>Joins all field values with a comma.&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>For example, to get the total revenue per ordered product:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print db.orders.search(
+&gt;&gt;&gt;        fields = ['products.description', 'products.price'],
+&gt;&gt;&gt;     relations = [rel('product_id', 'id', 'products')],
+&gt;&gt;&gt;         group = 'products.description', # Fold products with same description.
+&gt;&gt;&gt;      function = SUM
+&gt;&gt;&gt; ).rows()</pre></div>
+<p>To get the sum of a column for all rows in a table or query, simply use <span class="inline_code">sum()</span>:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print db.products.filter(sum('price'))[0][0]</pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="view"></a>View</h2>
+<p><span class="inline_code">View</span>&nbsp;is a thin interface between a <span class="inline_code">Table</span> and an app. The <span class="inline_code">View.render()</span> method must be overridden in a subclass to yield rows in a certain output format (e.g., HTML). The outside world does not need to know about <span class="inline_code">Table</span> or <span class="inline_code">Query</span>, &nbsp;only what parameters can be fed to <span class="inline_code">render()</span>.</p>
+<p>If the given table does not exist, the constructor will call&nbsp;<span class="inline_code">View.setup()</span> with the given schema&nbsp;of <span class="inline_code">field()</span> items to create it.</p>
+<pre class="brush:python; gutter:false; light:true;">view = View(database, table_name, schema=[])</pre><pre class="brush:python; gutter:false; light:true;">view.db                     # Parent Database.
+view.table                  # Parent Table.
+view.schema                 # List of field()-items to create the table.</pre><pre class="brush:python; gutter:false; light:true;">view.setup(overwrite=False)</pre><pre class="brush:python; gutter:false; light:true;">view.render(*args, **kwargs) </pre><p>For example, the following view renders a HTML <span class="inline_code">&lt;table&gt;</span>&nbsp;with products that match a search query:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import Database, View
+&gt;&gt;&gt; 
+&gt;&gt;&gt; db = Database('pizza_delivery')
+&gt;&gt;&gt;
+&gt;&gt;&gt; class Products(View):
+&gt;&gt;&gt;     def __init__(self, database):
+&gt;&gt;&gt;         View.__init__(self, database, 'products', schema=[
+&gt;&gt;&gt;             pk(),
+&gt;&gt;&gt;             field('description', STRING),
+&gt;&gt;&gt;             field('price', FLOAT)
+&gt;&gt;&gt;         ])
+&gt;&gt;&gt;        
+&gt;&gt;&gt;     def render(self, query, **kwargs):
+&gt;&gt;&gt;         q = self.table.search(
+&gt;&gt;&gt;              fields = ['description', 'price'], 
+&gt;&gt;&gt;             filters = [filter('description', '*%s*' % query)])
+&gt;&gt;&gt;         html = []
+&gt;&gt;&gt;         for row in q:
+&gt;&gt;&gt;             td = []
+&gt;&gt;&gt;             for field, value in zip(q.fields, row): 
+&gt;&gt;&gt;                  td.append('&lt;td class="%s"&gt;%s&lt;/td&gt;' % (field, string(value)))
+&gt;&gt;&gt;             html.append('&lt;tr&gt;%s&lt;/tr&gt;' % ''.join(td))
+&gt;&gt;&gt;         return '&lt;table&gt;' + ''.join(html) + '&lt;/table&gt;'
+&gt;&gt;&gt;
+&gt;&gt;&gt; print Products().render(query='bread')
+
+'&lt;table&gt;'
+'&lt;tr&gt;'
+'&lt;td class="description"&gt;garlic bread&lt;/td&gt;'
+'&lt;td class="price"&gt;3&lt;/td&gt;'
+'&lt;/tr&gt;'
+'&lt;/table&gt;' </pre></div>
+<p class="example">Note the <span class="inline_code">string()</span> function, which returns the given input as Unicode (<span class="inline_code">None</span> as an empty string).</p>
+<div class="example">When <span class="inline_code">View</span>&nbsp;is used as a <a href="http://www.cherrypy.org/" target="_blank">CherryPy</a> web page, <span class="inline_code">render()</span> will be called with&nbsp;<span class="inline_code">args</span>&nbsp;as a list of parts in the relative URL, and <span class="inline_code">kwargs</span> as a dictionary of all <span class="inline_code">POST</span> and <span class="inline_code">GET</span> variables sent from the client. For example, <span class="inline_code">http://pizzadelivery.com/products/search?q=bread</span>&nbsp;→ <span class="inline_code">['products', 'search']</span> +<span class="inline_code"> {'q': 'bread'}</span>.</div>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="datasheet"></a>Datasheet</h2>
+<p><span class="inline_code">Datasheet</span> is a matrix of rows and columns, where each row and column can be retrieved as a list. The data is not stored in a database but imported / exported as a CSV-file. Optionally, the given <span class="inline_code">fields</span> is a list of <span class="inline_code">(name,</span> <span class="inline_code">type) headers&nbsp;</span>where <span class="inline_code">type</span> can be <span class="inline_code">STRING</span>, <span class="inline_code">TEXT</span>, <span class="inline_code">INTEGER</span>, <span class="inline_code">FLOAT</span>, <span class="inline_code">BOOLEAN</span>, <span class="inline_code">BLOB</span> or <span class="inline_code">DATE</span>.</p>
+<pre class="brush:python; gutter:false; light:true;">datasheet = Datasheet(rows=[], fields=None)</pre><pre class="brush:python; gutter:false; light:true;">datasheet = Datasheet.load(path, separator=',', decoder=lambda v: v, headers=False)
+</pre><pre class="brush:python; gutter:false; light:true;">datasheet.rows              # List of rows (each row = list of values).
+datasheet.columns           # List of columns (each column = list of values).
+datasheet.fields            # List of (name, type) column headers.
+datasheet.&lt;field&gt;           # List of column values. </pre><pre class="brush:python; gutter:false; light:true;">datasheet[i]                # Row with index i.
+datasheet[i, j]             # Value in row i at column j.
+datasheet[i1:i2, j]         # Slice of column j from rows i1-i2.
+datasheet[i, j1:j2]         # Slice of columns j1-j2 from row i.
+datasheet[i1:i2, j1:j2]     # Datasheet with columns j1-j2 from rows i1-i2.
+datasheet[:]                # Datasheet copy. </pre><pre class="brush:python; gutter:false; light:true;">datasheet.insert(i, row, default=None)
+datasheet.append(row, default=None)
+datasheet.extend(rows, default=None)
+datasheet.copy(rows=ALL, columns=ALL) </pre><pre class="brush:python; gutter:false; light:true;">datasheet.group(j, function=FIRST, key=lambda v: v)</pre><pre class="brush:python; gutter:false; light:true;">datasheet.save(path, separator=',', encoder=lambda v: v, headers=False)</pre><pre class="brush:python; gutter:false; light:true;">datasheet.json              # JSON-formatted string.</pre><ul>
+<li><span class="inline_code">Datasheet.insert()</span> and <span class="inline_code">append()</span> fill missing columns (at the right) with the&nbsp;<span class="inline_code">default</span> value.</li>
+<li><span class="inline_code">Datasheet.columns.insert()</span> and <span class="inline_code">append()</span> fill missing rows (bottom) with the default.<br />An optional <span class="inline_code">field</span> parameter can be used to supply a (<span class="inline_code">name</span>, <span class="inline_code">type</span>) column header.&nbsp;</li>
+<li><span class="inline_code">Datasheet.copy()</span> returns a new <span class="inline_code">Datasheet</span>&nbsp;from a selective list of row and/or column indices.</li>
+<li>To flip a datasheet, use: <span class="inline_code">datasheet</span> <span class="inline_code">=</span> <span class="inline_code">flip(datasheet)</span>.</li>
+</ul>
+<p>Here is a simple example:</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.db import Datasheet
+&gt;&gt;&gt; 
+&gt;&gt;&gt; ds = Datasheet()
+&gt;&gt;&gt; ds.append((u'Schrödinger', 'cat'))
+&gt;&gt;&gt; ds.append((u'Hofstadter', 'cat'))
+&gt;&gt;&gt; ds.save('pets.csv')
+&gt;&gt;&gt; 
+&gt;&gt;&gt; ds = Datasheet.load('pets.csv')
+&gt;&gt;&gt; print ds
+
+[[u'Schrödinger', 'cat'],
+ [u'Hofstadter', 'cat']]</pre></div>
+<h3>Grouping rows</h3>
+<p><span class="inline_code">Datasheet.group(j)</span> returns a new&nbsp;<span class="inline_code">Datasheet</span>&nbsp;with unique values in column <span class="inline_code">j</span>, by grouping rows with a given function.&nbsp;It takes a list of column values and returns a single value. Predefined functions are:&nbsp;<span class="inline_code">FIRST</span>, <span class="inline_code">LAST</span>, <span class="inline_code">COUNT</span>, <span class="inline_code">MIN</span>, <span class="inline_code">MAX</span>, <span class="inline_code">SUM</span>, <span class="inline_code">AVG</span>, <span class="inline_code">STDEV</span>,&nbsp;<span class="inline_code">CONCATENATE</span>. The <span class="inline_code">function</span> parameter can also be a list of functions, one for each column. A <span class="inline_code">TypeError</span>&nbsp;is raised when a function cannot handle the data in this column.&nbsp;</p>
+<p>The <span class="inline_code">key</span> argument can be used to prepare the values in column <span class="inline_code">j</span> for comparison, for example: <span class="inline_code">key=lambda date:</span> <span class="inline_code">date.year</span> groups a column of <span class="inline_code">Date</span> objects by year.&nbsp;</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import Datasheet, uid, pprint
+&gt;&gt;&gt; 
+&gt;&gt;&gt; ds = Datasheet(rows=[
+&gt;&gt;&gt;     (uid(), u'Schrödinger', 'cat'),
+&gt;&gt;&gt;     (uid(), u'Hofstadter',  'cat'),
+&gt;&gt;&gt;     (uid(), u'Taxi',        'dog')
+&gt;&gt;&gt; ])
+&gt;&gt;&gt; g = ds.copy(columns=[2,0]) # A copy with the type and id columns.
+&gt;&gt;&gt; g = g.group(0, COUNT)      # Group by type, count rows per type.
+&gt;&gt;&gt; pprint(g, fill='')
+
+cat  2 
+dog  1</pre></div>
+<div class="example">The example below uses a custom concatenate function:</div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; g = ds.copy(columns=[2,1]) # A copy with the type and name columns.
+&gt;&gt;&gt; g = g.group(0, function=lambda col: ' + '.join(col))
+&gt;&gt;&gt; pprint(g, fill='')
+
+cat  Schrödinger + Hofstadter
+dog  Taxi     </pre></div>
+<h3>Sorting rows &amp; columns</h3>
+<p><span class="inline_code">Datasheet.columns[j].sort()</span> sorts the rows in the matrix according to the values in column <span class="inline_code">j</span>.&nbsp;<br /><span class="inline_code">Datasheet.columns.sort()</span>&nbsp;is useful when you set its&nbsp;<span class="inline_code">order</span>&nbsp;parameter, which is a list of columns indices:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; ds.columns.sort(order=[0,2,1])
+&gt;&gt;&gt; pprint(ds, fill='')
+
+1  cat  Schrödinger
+2  cat  Hofstadter
+3  dog Taxi</pre></div>
+<p><span class="inline_code">Datasheet.columns.swap(j1,j2)</span> swaps two individual columns with given indices.</p>
+<h3>Helper functions: uid &amp; pprint</h3>
+<p>The <span class="inline_code">pattern.table</span> module has two functions that are useful in combination with a <span class="inline_code">Datasheet</span>:</p>
+<pre class="brush:python; gutter:false; light:true;">uid()</pre><pre class="brush:python; gutter:false; light:true;">pprint(datasheet, truncate=40, padding=" ", fill=".")</pre><p>The <span class="inline_code">uid()</span> function returns a unique number, starting from 1, useful as a row id.</p>
+<p>The <span class="inline_code">pprint()</span> function pretty-prints the table, with columns aligned vertically. The <span class="inline_code">truncate</span> parameter defines the maximum column width, <span class="inline_code">padding</span> the spacing between columns and <span class="inline_code">fill</span> the character used for spacing.</p>
+<h3><a name="csv"></a>CSV import &amp; export</h3>
+<p>CSV (c<em>omma-separated values</em>) is a simple text format for tabular data, where each row is a new line and each value is separated by a comma. <span class="inline_code">Datasheet.save()</span> exports the matrix as a CSV file. <span class="inline_code">Datasheet.load()</span> returns a <span class="inline_code">Datasheet</span> from a given CSV file.</p>
+<pre class="brush:python; gutter:false; light:true;">datasheet = Datasheet.load(path, separator=',', decoder=lambda v: v, headers=False)</pre><pre class="brush:python; gutter:false; light:true;">datasheet.save(path, separator=',', encoder=lambda v: v, headers=False)</pre><p>When saving a CSV file, <span class="inline_code">str</span>, <span class="inline_code">int</span>, <span class="inline_code">float</span>, <span class="inline_code">bool</span> and <span class="inline_code">Date</span> are converted to <span class="inline_code">unicode</span>. For other data types a custom <span class="inline_code">encoder</span> must be given.&nbsp;When loading a CSV file, all values in the datasheet will be <span class="inline_code">unicode</span>&nbsp;unless a custom <span class="inline_code">decoder</span> is given.</p>
+<p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;">With <span class="inline_code">headers=True</span>, the headers in&nbsp;<span class="inline_code">Datasheet.fields</span>&nbsp;are saved to + loaded from CSV. In this case, the data type (<span class="inline_code">STRING</span>, <span class="inline_code">INTEGER</span>, <span class="inline_code">FLOAT</span>, <span class="inline_code">BOOLEAN</span> or <span class="inline_code">DATE</span>) for each column is explicitly known and no <span class="inline_code">encoder</span> or <span class="inline_code">decoder</span> is necessary:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import Datasheet, STRING, DATE, date
+&gt;&gt;&gt; 
+&gt;&gt;&gt; ds = Datasheet(fields=(('name', STRING), ('date', DATE)))
+&gt;&gt;&gt; ds.append((u'Schrödinger', date('1887-08-12')))
+&gt;&gt;&gt; ds.append((u'Hofstadter', date('1945-02-15')))
+&gt;&gt;&gt; ds.save('pets.csv', headers=True)
+&gt;&gt;&gt;  
+&gt;&gt;&gt; ds = Datasheet.load('pets.csv', headers=True)
+&gt;&gt;&gt;
+&gt;&gt;&gt; print ds.fields
+&gt;&gt;&gt; print ds[0]         # 1st row.
+&gt;&gt;&gt; print type(d2[0,1]) # 1st row, 2nd column.
+
+[(u'name', 'string'), (u'date', 'date')]
+[u'Schrödinger', Date('1887-08-12 00:00:00')]
+&lt;class 'pattern.db.Date'&gt; </pre></div>
+<p>If you like concise code, you can also use&nbsp;<span class="inline_code">csv()</span>&nbsp;instead of <span class="inline_code">Datasheet.load()</span>:</p>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.db import csv
+&gt;&gt;&gt; 
+&gt;&gt;&gt; for name, date in csv('pets.csv', separator=',', headers=True):
+&gt;&gt;&gt;     print name, date</pre></div>
+<p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;">&nbsp;</p>
+<hr />
+<h2><a name="date"></a>Date</h2>
+<p>The <span class="inline_code">Date</span> object is a convenient subclass of Python's <span class="inline_code">datetime.datetime</span>.&nbsp;The <span class="inline_code">date()</span> function returns a <span class="inline_code">Date</span> object. A date can be generated from an integer (Unix timestamp), a string or <span class="inline_code">NOW</span>. Optionally, a string input format (e.g. <span class="inline_code">"%d/%m/%Y"</span>) and a string output format can be given. The default format is <span class="inline_code">"YYYY-MM-DD hh:mm:ss"</span>.&nbsp;</p>
+<pre class="brush:python; gutter:false; light:true;">d = date(int)</pre><pre class="brush:python; gutter:false; light:true;">d = date(NOW, format=DEFAULT)
+</pre><pre class="brush:python; gutter:false; light:true;">d = date(string)</pre><pre class="brush:python; gutter:false; light:true;">d = date(string, format=DEFAULT)</pre><pre class="brush:python; gutter:false; light:true;">d = date(string, inputformat, format=DEFAULT)</pre><pre class="brush:python; gutter:false; light:true;">d = date(year, month, day, format=DEFAULT)</pre><pre class="brush:python; gutter:false; light:true;">d = date(year, month, day, hours, minutes, seconds, format=DEFAULT)</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">d.year
+d.month                     # 1-12
+d.week                      # 1-52
+d.weekday                   # 1-7
+d.day                       # 1-31
+d.minute                    # 1-60
+d.second                    # 1-60
+d.timestamp                 # Seconds elapsed since 1/1/1970.</pre><p>If no string input format is given, a number of common formats will be tried:</p>
+<table class="border">
+<tbody>
+<tr>
+<td><span class="smallcaps">Format</span></td>
+<td><span class="smallcaps">Example</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">%Y-%m-%d %H:%M:%S</span></td>
+<td>2010-09-21 09:27:01</td>
+</tr>
+<tr>
+<td><span class="inline_code">%a, %d %b %Y %H:%M:%S %z</span></td>
+<td>Tue, 9 Sep 2010 17:58:28 +0000</td>
+</tr>
+<tr>
+<td><span class="inline_code">%Y-%m-%dT%H:%M:%SZ</span></td>
+<td>2010-09-20T09:27:01Z</td>
+</tr>
+<tr>
+<td><span class="inline_code">%Y-%m-%dT%H:%M:%S+0000</span></td>
+<td>2010-09-20T09:27:01+0000</td>
+</tr>
+<tr>
+<td><span class="inline_code">%Y-%m-%d %H:%M</span></td>
+<td>2010-09-20 09:27</td>
+</tr>
+<tr>
+<td><span class="inline_code">%Y-%m-%d</span></td>
+<td>2010-09-20</td>
+</tr>
+<tr>
+<td><span class="inline_code">%d/%m/%Y</span></td>
+<td>20/09/2010</td>
+</tr>
+<tr>
+<td><span class="inline_code">%d %B %Y</span></td>
+<td>9 september 2010</td>
+</tr>
+<tr>
+<td><span class="inline_code">%B %d %Y</span></td>
+<td>September 9 2010</td>
+</tr>
+<tr>
+<td><span class="inline_code">%B %d, %Y</span></td>
+<td>September 09, 2010</td>
+</tr>
+</tbody>
+</table>
+<p>All date formats used in <a class="link-maintenance" href="pattern-web.html">pattern.web</a>&nbsp;(e.g., a Bing search result) are automatically detected.<br />For a full overview of date format syntax, see: <a href="http://docs.python.org/library/time.html#time.strftime" target="_blank">http://docs.python.org/library/time.html#time.strftime</a>.</p>
+<p class="smallcaps"><br />Date calculations</p>
+<p>The <span class="inline_code">time()</span> function can be used to add (or subtract) time to a <span class="inline_code">Date</span>:</p>
+<pre class="brush:python; gutter:false; light:true;">time(days=0, seconds=0, minutes=0, hours=0)</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import date, time
+&gt;&gt;&gt; 
+&gt;&gt;&gt; d  = date('23 august 2011')
+&gt;&gt;&gt; d += time(days=2, hours=5)
+&gt;&gt;&gt; print type(d)
+&gt;&gt;&gt; print d
+&gt;&gt;&gt; print d.year, d.month, d.day
+
+&lt;class 'pattern.db.Date'&gt;
+2011-08-25 05:00:00
+2011, 8, 25 </pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2>See also</h2>
+<ul>
+<li><a href="http://www.cherrypy.org/" target="_blank">CherryPy</a> (BSD): o<span>bject-oriented HTTP framework for Python.</span></li>
+<li><span><a href="https://www.djangoproject.com/" target="_blank">Django</a> (BSD): m</span><span>odel-view-controller framework for Python.</span></li>
+</ul>
+</div>
+</div></div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
+</body>
+</html>

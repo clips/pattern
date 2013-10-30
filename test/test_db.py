@@ -187,7 +187,7 @@ class TestUtilityFunctions(unittest.TestCase):
         
     def test_json(self):
         # Assert JSON input and output.
-        v1 = ["a,b", 1, 1.0, True, False, None, [1,2], {"a:b": 1.2, "a,b": True, "a": [1,{2:3}], 1:"None"}]
+        v1 = ["a,b", 1, 1.0, True, False, None, [1, 2], {"a:b": 1.2, "a,b": True, "a": [1, {"2": 3}], "1": "None"}]
         v2 = db.json.dumps(v1)
         v3 = db.json.loads(v2)
         self.assertEqual(v1, v3)

@@ -30,7 +30,7 @@ sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))
 
 # Import parser base classes.
 from pattern.text import (
-    Lexicon, Spelling, Parser as _Parser, ngrams, pprint, commandline,
+    Lexicon, Model, Morphology, Context, Parser as _Parser, ngrams, pprint, commandline,
     PUNCTUATION
 )
 # Import parse tree base classes.
@@ -43,6 +43,10 @@ from pattern.text import (
     Sentiment,
     NOUN, VERB, ADJECTIVE, ADVERB,
     MOOD, IRONY
+)
+# Import spelling base class.
+from pattern.text import (
+    Spelling
 )
 # Import verb tenses.
 from pattern.text import (
@@ -124,22 +128,19 @@ class Parser(_Parser):
 # for further details. A tutorial on how to acquire data for the lexicon is here:
 # http://www.clips.ua.ac.be/pages/using-wiktionary-to-build-an-italian-part-of-speech-tagger
 
-lexicon = Lexicon(
-        path = os.path.join(MODULE, "xx-lexicon.txt"), 
-  morphology = os.path.join(MODULE, "xx-morphology.txt"), 
-     context = os.path.join(MODULE, "xx-context.txt"),
-    entities = os.path.join(MODULE, "xx-entities.txt"),
-    language = "xx"
-)
-
 # Create the parser with default tags for unknown words:
 # (noun, proper noun, numeric).
 
 parser = Parser(
-     lexicon = lexicon,
+     lexicon = os.path.join(MODULE, "xx-lexicon.txt"), 
+  morphology = os.path.join(MODULE, "xx-morphology.txt"), 
+     context = os.path.join(MODULE, "xx-context.txt"),
+    entities = os.path.join(MODULE, "xx-entities.txt"),
      default = ("NN", "NNP", "CD"),
     language = "xx"
 )
+
+lexicon = parser.lexicon # Expose lexicon.
 
 # Create the sentiment lexicon,
 # see pattern/text/xx/xx-sentiment.xml for further details.

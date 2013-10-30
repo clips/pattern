@@ -1,0 +1,630 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>pattern-canvas</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" href="../clips.css" />
+    <style>
+        /* Small fixes because we omit the online layout.css. */
+        h3 { line-height: 1.3em; }
+        #page { margin-left: auto; margin-right: auto; }
+        #header, #header-inner { height: 175px; }
+        #header { border-bottom: 1px solid #C6D4DD;  }
+        table { border-collapse: collapse; }
+    </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
+</head>
+<body class="node-type-page one-sidebar sidebar-right section-pages">
+    <div id="page">
+    <div id="page-inner">
+    <div id="header"><div id="header-inner"></div></div>
+    <div id="content">
+    <div id="content-inner">
+    <div class="node node-type-page"
+        <div class="node-inner">
+        <div class="breadcrumb">View online at: <a href="http://www.clips.ua.ac.be/pages/pattern-canvas" class="noexternal" target="_blank">http://www.clips.ua.ac.be/pages/pattern-canvas</a></div>
+        <h1>pattern.canvas</h1>
+        <!-- Parsed from the online documentation. -->
+        <div id="node-1481" class="node node-type-page"><div class="node-inner">
+<div class="content">
+<p><span class="big">The canvas.js module is a simple and robust JavaScript API for the HTML5 &lt;canvas&gt; element, which can be used to generate interactive 2D graphics in a web browser, using lines, shapes, paths, images and text.</span></p>
+<p>The&nbsp;module is part of the&nbsp;<a href="pattern.html">pattern</a>&nbsp;package: <a href="pattern-web.html">web</a> | <a href="pattern-db.html">db</a>&nbsp;| <a href="pattern-en.html">en</a> | <a href="pattern-search.html">search</a> | <a href="pattern-vector.html">vector</a> | <a href="pattern-graph.html">graph</a>.</p>
+<table border="0">
+<tbody>
+<tr>
+<td style="width: 30px;">
+<p><img src="../g/download3.gif" alt="" width="30" height="30" /></p>
+</td>
+<td valign="bottom">
+<p><span class="smallcaps">Download:</span><strong class="smallcaps"><br /></strong><a href="http://www.clips.ua.ac.be/cgi-bin/tom/api/minify.cgi?filename=canvas.js&amp;url=https%3A%2F%2Fraw.github.com%2Fclips%2Fpattern%2Fmaster%2Fpattern%2Fcanvas.js">canvas.js</a> (120KB)<br /><a href="http://www.clips.ua.ac.be/cgi-bin/tom/api/minify.cgi?filename=canvas.compressed.js&amp;url=https%3A%2F%2Fraw.github.com%2Fclips%2Fpattern%2Fmaster%2Fpattern%2Fcanvas.js&amp;compressed=1">canvas.compressed.js</a> (65KB)&nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<hr />
+<h2>Documentation</h2>
+<table style="width: auto; white-space: nowrap;" border="0">
+<tbody>
+<tr>
+<td style="padding-right: 35px;"><span class="smallcaps">Drawing</span>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#coordinates">Coordinate system</a></li>
+<li><a href="#color">Color</a></li>
+<li><a href="#transformation">Transformation</a></li>
+<li><a href="#primitives">Primitives</a></li>
+<li><a href="#path">Path</a></li>
+<li><a href="#image">Image</a></li>
+<li><a href="#text">Text</a></li>
+<li><a href="#mouse">Mouse &amp; keyboard</a></li>
+<li><a href="#canvas">Canvas</a></li>
+</ul>
+</td>
+<td style="padding-right: 35px;"><span style="font-variant: small-caps;">Data</span>
+<ul>
+<li><a href="#widget">Widgets</a></li>
+<li><a href="#json">JSON</a></li>
+</ul>
+</td>
+<td style="padding-right: 35px;">Helper functions
+<div>
+<ul>
+<li><a href="#geometry">Geometry</a></li>
+<li><a href="#array">Arrays</a></li>
+</ul>
+</div>
+<p>&nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="introduction"></a>Introduction</h2>
+<p>A <span class="inline_code">canvas.js</span> animation is written in JavaScript code as part of&nbsp;a HTML file. It will run in all modern web browsers (Chrome, Firefox, IE7+, Safari, Opera). Performance may vary &nbsp;from browser to browser. Animations on mobile devices are (currently) quite slow.</p>
+<h3>Quick overview</h3>
+<p>Below is an example&nbsp;script. The HTML source imports the JavaScript <span class="inline_code">canvas.js</span>&nbsp;module with the standard set of drawing commands. Note the <span class="inline_code">&lt;script type="text/canvas"&gt;</span>&nbsp;that defines the animation. It has a <span class="inline_code">setup()</span> function that will be executed once when the animation starts, and a&nbsp;<span class="inline_code">draw()</span> function that will be executed each animation frame.</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;script type="text/javascript" src="canvas.js"&gt;&lt;/script&gt;   
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script type="text/canvas"&gt;
+        function setup(canvas) {
+            canvas.size(500, 500);
+        }
+        function draw(canvas) {
+            canvas.clear();
+            translate(250, 250);
+            rotate(canvas.frame);
+            rect(-150, -150, 300, 300, {fill: color(1,0,0,1)});
+        }
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<h3 class="example">Syntax</h3>
+<p>Functions can have parameters with default values. For example, the <span class="inline_code">star()</span> function takes two to five parameters in the right order (<span class="inline_code">x</span>, <span class="inline_code">y</span>, <span class="inline_code">points</span>, <span class="inline_code">outer</span>&nbsp;and&nbsp;<span class="inline_code">inner</span>). If you supply four parameters, the fifth parameter assumes a default value (<span class="inline_code">inner=50</span>). If you need to define the fifth parameter, you must define all parameters preceding it. Contrarily, some functions have optional, named parameters. For example, the <span class="inline_code">rect()</span> function takes four parameters and a fifth, optional <span class="inline_code">roundness</span>.</p>
+<p>If you want to set <span class="inline_code">roundness</span>, you must supply it by name and enclosed in curly braces. If the documentation mentions other optional parameters you can supply these as well inside the curly braces, in any order. For example:&nbsp;<span class="inline_code">rect(50,</span> <span class="inline_code">50,</span> <span class="inline_code">100,</span> <span class="inline_code">100,</span> <span class="inline_code">{roundness:</span> <span class="inline_code">0.2,</span> <span class="inline_code">fill:</span> <span class="inline_code">color(1,0,0)});</span></p>
+<h3>Editor</h3>
+<p>You can use the <a href="http://www.clips.ua.ac.be/media/canvas/" target="_blank">online editor</a> (with syntax coloring and live editing) for sketching and testing. It runs in Chrome, FireFox and Safari. You can import example scripts from <span class="inline_code">pattern/examples/07-canvas/</span> or export new scripts (remember to change the <span class="inline_code">&lt;script&gt;</span> link to <span class="inline_code">canvas.js</span> in the HTML source). The editor will provide hintz when an error occurs, but the best way to track errors is to use the browser's developer tools (e.g., FireBug).</p>
+<p style="text-align: center;"><a title="Open canvas.js editor" href="http://www.clips.ua.ac.be/media/canvas/" target="_blank"><img src="../g/pattern-canvas-editor2.jpg" alt="" width="610" height="610" /></a><br /><span class="small">pattern/examples/07-canvas/09-class.html</span></p>
+<p style="text-align: left;">&nbsp;</p>
+<hr />
+<h2><a name="coordinates"></a>Coordinate system</h2>
+<p>By, default, the canvas origin (0, 0) is located in the upper-left corner. The origin can be moved (or <em>translated</em>) with the <span class="inline_code">translate()</span> function, where positive numbers define the amount of pixels to move right and down.</p>
+<table>
+<tbody>
+<tr>
+<td><img class="border" src="../g/pattern-canvas-origin1.jpg" alt="" /></td>
+<td>
+<p>When the origin is translated to (100, 80), all subsequent shapes drawn at (0, 0) originate from this point. A shape is drawn, rotated and scaled from its top-left corner – except ellipses which are always drawn from their center.</p>
+</td>
+</tr>
+<tr>
+<td><img class="border" src="../g/pattern-canvas-origin2.jpg" alt="" /></td>
+<td>
+<p>When the origin is translated to (100, 80) and a rectangle with a width of and height of 100 is then drawn at (-50, -50), it will have its center at the origin point, as illustrated in the figure on the left:</p>
+<p class="inline_code">translate(100, 80)<br />rotate(45)<br />rect(-50, -50, 100, 100)&nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="color"></a>Color</h2>
+<p>The <span class="inline_code">Color</span> object can be used to store a color in terms of R,G,B,A channel values (red, green, blue and alpha). It can be passed to <span class="inline_code">background()</span>, <span class="inline_code">fill()</span> and <span class="inline_code">stroke()</span> to set the current drawing color for primitives.</p>
+<p>A color can be initialized with either four values (R,G,B,A), three values (R,G,B), two values (grayscale + alpha) or one value (grayscale, a&nbsp;<span class="inline_code">Color</span>, or an <span class="inline_code">[R,G,B,A]</span> array). An optional <span class="inline_code">base</span> parameter defines the range of the given values (e.g., 0-255 instead of 0.0-1.0). An optional <span class="inline_code">colorspace</span> defines the color space of the given parameters: <span class="inline_code">HSB</span>&nbsp;expects hue, saturation, brightness and alpha instead of red, green, blue and alpha.</p>
+<pre class="brush:javascript; gutter:false; light:true;">var clr = new Color(r, g, b, a, {base: 1.0, colorspace: RGB});</pre><pre class="brush:javascript; gutter:false; light:true;">var clr = new Color(r, g, b);</pre><pre class="brush:javascript; gutter:false; light:true;">var clr = new Color(grayscale, a);</pre><pre class="brush:javascript; gutter:false; light:true;">var clr = new Color(grayscale);</pre><pre class="brush:javascript; gutter:false; light:true;">var clr = new Color(clr);</pre><pre class="brush:javascript; gutter:false; light:true;">clr.r                                 // Red value between 0.0-1.0.   
+clr.g                                 // Green value between 0.0-1.0.
+clr.b                                 // Blue value between 0.0-1.0.
+clr.a                                 // Alpha value between 0.0-1.0.</pre><pre class="brush:javascript; gutter:false; light:true;">clr.rgba()                            // Returns an array of [R,G,B,A]-values.
+clr.map({base: 1.0, colorspace: RGB}) // Returns an array of [R,G,B,A]-values.  
+clr.rotate(angle)                     // Returns a new Color.
+clr.adjust({hue: 0, saturation: 1, brightness: 1})  </pre><pre class="brush:javascript; gutter:false; light:true;">clr.copy()   </pre><ul>
+<li><span class="inline_code">Color.map()</span> returns an array of channel values mapped to the given base and colorspace. <br />For example: <span class="inline_code">clr.map({base: 255, colorspace: HSB})</span> <br />yields an <span class="inline_code">[H,S,B,A]</span> array of values between 0-255.</li>
+<li><span class="inline_code">Color.rotate()</span> returns a color with hue rotated on the <a href="http://kuler.adobe.com/#create/fromacolor" target="_blank">RYB color wheel</a> by the given angle.</li>
+<li><span class="inline_code">Color.adjust()</span> returns a color with added <span class="inline_code">hue</span> and multiplied <span class="inline_code">saturation</span> and <span class="inline_code">brightness</span> (values between 0.0-1.0).</li>
+</ul>
+<h3>Color state functions</h3>
+<p>The color() function returns a new <span class="inline_code">Color</span>. The <span class="inline_code">background()</span>, <span class="inline_code">fill()</span> and <span class="inline_code">stroke()</span> functions set the current canvas background, shape fill and shape outline color respectively. All subsequently drawn primitives (e.g., lines, ellipses) will use the current fill and outline color. Each function takes the same parameters as a <span class="inline_code">Color</span> object (R,G,B,A | R,G,B | grayscale + alpha | <span class="inline_code">Color</span>&nbsp;| &nbsp;<span class="inline_code">[R,G,B,A]</span>). Each function returns its current setting.&nbsp;</p>
+<p>The <span class="inline_code">strokewidth()</span> function sets the width of the outline.</p>
+<pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">color(r, g, b, a, {base: 1.0, colorspace: RGB})</pre><pre class="brush:javascript; gutter:false; light:true;">background(r, g, b, a)</pre><pre class="brush:javascript; gutter:false; light:true;">fill(r, g, b, a)</pre><pre class="brush:javascript; gutter:false; light:true;">stroke(r, g, b, a)</pre><pre class="brush:javascript; gutter:false; light:true;">nofill()</pre><pre class="brush:javascript; gutter:false; light:true;">nostroke()</pre><pre class="brush:javascript; gutter:false; light:true;">strokewidth(width)</pre><h3>Color filters</h3>
+<p>A color filter returns a new <span class="inline_code">Color</span> that is a variation of the given color, useful for constructing a set of colors that look aesthetically pleasing together. The <span class="inline_code">darker()</span> and <span class="inline_code">lighter()</span> functions modify the color's brightness in HSB, <span class="inline_code">complement()</span> returns the color that is opposite on the RYB color wheel, <span class="inline_code">analog()</span> returns a random adjacent color on the color wheel.</p>
+<pre class="brush:javascript; gutter:false; light:true;">darker(clr, step=0.2)              // Returns a new Color.</pre><pre class="brush:javascript; gutter:false; light:true;">lighter(clr, step=0.2)             // Returns a new Color. </pre><pre class="brush:javascript; gutter:false; light:true;">complement(clr)                    // Returns a new Color. </pre><pre class="brush:javascript; gutter:false; light:true;">analog(clr, angle=20, d=0.1)       // d = random percentage saturation &amp; brightness.</pre><h3>Color gradient</h3>
+<p>The <span class="inline_code">Gradient</span> object can be used to create a smooth <span class="inline_code">LINEAR</span> or <span class="inline_code">RADIAL</span> transition between two <span class="inline_code">Color</span> objects. It can be passed to <span class="inline_code">fill()</span> instead of a solid color.</p>
+<pre class="brush:javascript; gutter:false; light:true;">var g = new Gradient(clr1, clr2, {type: LINEAR, x: 0, y: 0, spread: 100, angle: 0});</pre><h3>Shadows</h3>
+<p>The <span class="inline_code">shadow()</span> function enables drop shadows for all subsequently drawn shapes:</p>
+<pre class="brush:javascript; gutter:false; light:true;">shadow(dx=5, dy=5, blur=5, alpha=0.5)</pre><pre class="brush:javascript; gutter:false; light:true;">noshadow()</pre><p>&nbsp;</p>
+<hr />
+<h2><a name="transformation"></a>Transformation</h2>
+<p>The <span class="inline_code">translate()</span> function sets the current origin point for primitives, paths, images and text. By default the origin is (0, 0), the <strong>upper left</strong> corner of the canvas. With <span class="inline_code">translate(100,100)</span>, the current origin becomes (100, 100). If <span class="inline_code">translate(-50,0)</span> is then called, the current origin becomes (50, 100). In the same way, <span class="inline_code">rotate(30)</span> followed by <span class="inline_code">rotate(60)</span> sets the current rotation for all subsequent shapes to 90°.</p>
+<p>The <span class="inline_code">push()</span> and <span class="inline_code">pop()</span> functions create a nested branch in the current transformation state. The effect of <span class="inline_code">translate()</span>, <span class="inline_code">rotate()</span> and <span class="inline_code">scale()</span> after a <span class="inline_code">push()</span> only lasts until <span class="inline_code">pop()</span> is called. The <span class="inline_code">reset()</span> function resets all transformations (origin (0, 0), no rotation, scale 100%).</p>
+<pre class="brush:javascript; gutter:false; light:true;">translate(x, y)                    // Push horizontal and vertical offset.</pre><pre class="brush:javascript; gutter:false; light:true;">rotate(degrees)                    // Push angle in degrees.</pre><pre class="brush:javascript; gutter:false; light:true;">scale(x, y=None)                   // Push relative scale: 1.0 = 100%</pre><pre class="brush:javascript; gutter:false; light:true;">push()</pre><pre class="brush:javascript; gutter:false; light:true;">pop()</pre><pre class="brush:javascript; gutter:false; light:true;">reset()</pre><p>&nbsp;</p>
+<hr />
+<h2><a name="primitives"></a>Primitives</h2>
+<p>Geometric primitives are the simplest shapes that can be drawn to the canvas: <em>line</em>, <em>rectangle</em>, <em>triangle</em>, <em>ellipse</em>, and two additional shapes, <em>arrow</em> and <em>star</em>.</p>
+<table class="border">
+<tbody>
+<tr>
+<td style="text-align: center;"><img src="../g/pattern-canvas-primitives1.jpg" alt="" width="80" height="80" /><br /><span class="smallcaps">line</span></td>
+<td style="text-align: center;"><img src="../g/pattern-canvas-primitives2.jpg" alt="" width="80" height="80" /><br /><span class="smallcaps">rect</span></td>
+<td style="text-align: center;"><img src="../g/pattern-canvas-primitives3.jpg" alt="" width="80" height="80" /><br /><span class="smallcaps">triangle</span></td>
+<td style="text-align: center;"><img src="../g/pattern-canvas-primitives4.jpg" alt="" width="80" height="80" /><br /><span class="smallcaps">ellipse</span></td>
+<td style="text-align: center;"><img src="../g/pattern-canvas-primitives5.jpg" alt="" width="80" height="80" /><br /><span class="smallcaps">arrow</span></td>
+<td style="text-align: center;"><img src="../g/pattern-canvas-primitives6.jpg" alt="" width="80" height="80" /><br /><span class="smallcaps">star</span></td>
+</tr>
+</tbody>
+</table>
+<pre class="brush:javascript; gutter:false; light:true;">line(x0, y0, x1, y1)</pre><pre class="brush:javascript; gutter:false; light:true;">rect(x, y, width, height, {roundness: 0.0})</pre><pre class="brush:javascript; gutter:false; light:true;">triangle(x1, y1, x2, y2, x3, y3)</pre><pre class="brush:javascript; gutter:false; light:true;">ellipse(x, y, width, height)</pre><pre class="brush:javascript; gutter:false; light:true;">arrow(x, y, width)</pre><pre class="brush:javascript; gutter:false; light:true;">star(x, y, points=20, outer=100, inner=50)</pre><p>Drawn primitives will adhere to the current color and transformation state. The color state can be overridden by passing an optional <span class="inline_code">fill</span>, <span class="inline_code">stroke</span>, <span class="inline_code">strokewidth</span>&nbsp;to the function, for example:</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">function draw(canvas) {
+    canvas.clear();
+    nofill();
+    stroke(0, 0.25);
+    strokewidth(1);
+    rect( 50, 50, 50, 50);
+    rect(110, 50, 50, 50, {stroke: color(0)});
+    rect(170, 50, 50, 50);
+} </pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="path"></a>Path</h2>
+<h3><span style="font-size: 16px;">Path element</span></h3>
+<p>The <span class="inline_code">PathElement</span> object defines a single point in a <span class="inline_code">Path</span>. Its <span class="inline_code">cmd</span> property defines the kind of segment from the previous point to this point: <span class="inline_code">MOVETO</span>, <span class="inline_code">LINETO</span>, <span class="inline_code">CURVETO</span> or <span class="inline_code">CLOSE</span>. For curve segments, the point has <span class="inline_code">ctrl1</span> and <span class="inline_code">ctrl2</span> properties that define the control handles of the curve:</p>
+<ul>
+<li><span class="inline_code">ctrl1</span> describes the direction and magnitude of the curve starting from the previous point,</li>
+<li><span class="inline_code">ctrl2</span> describes the direction and magnitude of the curve ending in this point.</li>
+</ul>
+<pre class="brush:javascript; gutter:false; light:true;">var pt = new PathElement(x, y, cmd);</pre><pre class="brush:javascript; gutter:false; light:true;">pt.cmd                             // MOVETO, LINETO, CURVETO, CLOSE
+pt.x                               // Horizontal offset.
+pt.y                               // Vertical offset.
+pt.ctrl1.x
+pt.ctrl1.y
+pt.ctrl2.x
+pt.ctrl2.y</pre><pre class="brush:javascript; gutter:false; light:true;">pt.copy()                          // Returns a copy of the point.</pre><h3>Bézier Path</h3>
+<p>The <span class="inline_code">Path</span> object contains an array of <span class="inline_code">PathElement</span> objects. The points in a path can easily be traversed in a <span class="inline_code">for</span>-loop. New points can be added to the path with the <span class="inline_code">moveto()</span>, <span class="inline_code">lineto(</span>), <span class="inline_code">curveto()</span> methods.</p>
+<pre class="brush:javascript; gutter:false; light:true;">var path = new Path(path=null);</pre><pre class="brush:javascript; gutter:false; light:true;">path.array
+path.array.push(pathelement)
+</pre><pre class="brush:javascript; gutter:false; light:true;">path.moveto(x, y)
+path.lineto(x, y)
+path.curveto(x1, y1, x2, y2, x3, y3)
+path.closepath()</pre><pre class="brush:javascript; gutter:false; light:true;">path.rect(x, y, width, height, {roundness: 0.0})
+path.ellipse(x, y, width, height)</pre><pre class="brush:javascript; gutter:false; light:true;">path.length()                      // Returns the length of the path.
+path.contains(x, y)                // Returns true if (x, y) in path. 
+path.angle(t)                      // Returns tangent angle at t.
+path.point(t)                      // Returns PathElement at t.
+path.points(amount, {start: 0.0, end: 1.0})
+</pre><pre class="brush:javascript; gutter:false; light:true;">path.draw({fill: Color, stroke: Color, strokewidth: 1.0}) </pre><pre class="brush:javascript; gutter:false; light:true;">path.copy()</pre><ul>
+<li><span class="inline_code">Path.points()</span> and <span class="inline_code">Path.point(</span>) return <span class="inline_code">DynamicPathElement</span> objects.&nbsp;<br />These are dynamically calculated using linear interpolation based on a given time <span class="inline_code">t</span>&nbsp;<br />(where <span class="inline_code">t=0.0</span> is the start of the path and <span class="inline_code">t=1.0</span> is the end of the path).</li>
+<li><span class="inline_code">Path.draw()</span> draws the path to the canvas.<br />Optional parameters include <span class="inline_code">fill</span>, <span class="inline_code">stroke</span>&nbsp;and&nbsp;<span class="inline_code">strokewidth</span>.</li>
+</ul>
+<h3>Path state functions</h3>
+<p>The&nbsp;<span class="inline_code">beginpath(</span>) function starts a new current path at (x, y). Points can be added to the current path with <span class="inline_code">moveto()</span>, <span class="inline_code">lineto()</span>, <span class="inline_code">curveto()</span>&nbsp;until <span class="inline_code">endpath()</span>&nbsp;is called and the path is drawn (or returned).&nbsp;</p>
+<p>The <span class="inline_code">drawpath()</span> function draws a <span class="inline_code">Path</span> using the current color and transformation state. The color state can be overridden by passing an optional <span class="inline_code">fill</span>, <span class="inline_code">stroke</span>&nbsp;and/or <span class="inline_code">strokewidth</span> to the function.&nbsp;</p>
+<p>The <span class="inline_code">findpath()</span> function takes an array of <span class="inline_code">[x,y]</span> coordinates (or <span class="inline_code">PathElement</span> or&nbsp;<span class="inline_code">Point</span> objects)&nbsp;and returns a smooth&nbsp;<span class="inline_code">Path</span>.</p>
+<pre class="brush:javascript; gutter:false; light:true;">autoclosepath(close=true) 
+</pre><pre class="brush:javascript; gutter:false; light:true;">beginpath(x, y)</pre><pre class="brush:javascript; gutter:false; light:true;">moveto(x, y)</pre><pre class="brush:javascript; gutter:false; light:true;">lineto(x, y)</pre><pre class="brush:javascript; gutter:false; light:true;">curveto(x1, y1, x2, y2, x3, y3)</pre><pre class="brush:javascript; gutter:false; light:true;">closepath()</pre><pre class="brush:javascript; gutter:false; light:true;">endpath({draw: true})              // Returns a Path. </pre><pre class="brush:javascript; gutter:false; light:true;">drawpath(path, {fill: Color, stroke: Color, strokewidth: 1.0})  </pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">findpath(points)</pre><h3>Path iteration</h3>
+<p>The <span class="inline_code">derive()</span> function iterates over the points in a path (<span class="inline_code">Path</span> or array of <span class="inline_code">PathElement</span> objects) and passes each tangent angle and point to a given callback function. The tangent angle represents the direction of a point in the path. To get the normal (i.e. perpendicular) of a point, rotate its angle by +90 or -90.</p>
+<pre class="brush:javascript; gutter:false; light:true;">derive(points, callback)
+</pre><p>This is useful if you want to have shapes following a path, for example, to fit text on a path:</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">function setup(canvas) {
+    path = new Path();
+    path.moveto(100, 50);
+    path.curveto(200, 100, 300, 0, 400, 50);
+    txt = 'pattern canvas.js'; // We'll draw each character separately.
+}
+function draw(canvas) {
+    canvas.clear();
+    fill(0);
+    fontsize(16);
+    var i = 0;
+    var points = path.points(txt.length, {start: 0.05, end: 0.95});
+    derive(points, function(angle, pt) {
+        push();
+        translate(pt.x, pt.y);
+        rotate(angle);
+        text(txt[i], -textwidth(txt[i])/2, 0);
+        pop();
+        i++;
+    });
+    drawpath(path, {fill: null, stroke: [0,0,0,0.5]});
+}</pre></div>
+<table class="border">
+<tbody>
+<tr>
+<td><img style="display: block; margin-left: auto; margin-right: auto;" src="../g/pattern-canvas-path1.jpg" alt="" /></td>
+</tr>
+</tbody>
+</table>
+<p>Supershape</p>
+<p>The <span class="inline_code">supershape()</span> command can be used to generate a range of natural-looking shapes (Gielis, 2003).<br />It returns a <span class="inline_code">Path</span>&nbsp;that can be drawn with <span class="inline_code">drawpath()</span>.</p>
+<table class="border">
+<tbody>
+<tr>
+<td>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="../g/pattern-canvas-supershape1.jpg" alt="" /></p>
+<p class="small" style="text-align: center;">m=3, n1=1.0, n2=1.0, n3=1.0</p>
+</td>
+<td>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="../g/pattern-canvas-supershape2.jpg" alt="" width="120" height="120" /></p>
+<p class="small" style="text-align: center;">m=1, n1=0.65, n2=0.35, n3=0.35</p>
+</td>
+<td>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="../g/pattern-canvas-supershape3.jpg" alt="" width="120" height="120" /></p>
+<p class="small" style="text-align: center;">m=16, n1=1.5, n2=0.5, n3=-0.75</p>
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">supershape(x, y, width, height, m, n1, n2, n3, {points: 100, percentage: 1.0})</pre><h3>Clipping mask</h3>
+<p>Drawing functions between <span class="inline_code">beginclip()</span> and <span class="inline_code">endclip()</span> are constrained to the shape of the given path.</p>
+<pre class="brush:javascript; gutter:false; light:true;">beginclip(path)</pre><pre class="brush:javascript; gutter:false; light:true;">endclip()</pre><p>&nbsp;</p>
+<hr />
+<h2><a name="image"></a>Image</h2>
+<p>The <span class="inline_code">image()</span> function draws an image to the canvas. It can load a PNG, JPEG or GIF from a given URL. However, images are loaded asynchronously, i.e., the browser is idle while the image downloads in the background. The safe way is to <strong>preload</strong> an <span class="inline_code">Image</span> object in&nbsp;<span class="inline_code">setup()</span>. The main <span class="inline_code">draw()</span> will not be called until all <span class="inline_code">Image</span> objects in <span class="inline_code">setup()</span> are ready.</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">function setup(canvas) {
+    images = [];
+    images.push(new Image('http://www.clips.ua.ac.be/media/pattern_schema.gif'));
+}
+function draw(canvas) {
+    canvas.clear();
+    image(images[0], 0, 0);
+}</pre></div>
+<p>The <span class="inline_code">Image</span> object can be used to load an image from a <span class="inline_code">http://</span> location (<span class="inline_code">file://</span> will not work), a <span class="inline_code">data:</span>&nbsp;string, another <span class="inline_code">Image</span>,&nbsp;<span class="inline_code">Pixels</span>, an offscreen&nbsp;<span class="inline_code">Buffer</span> or a&nbsp;<span class="inline_code">Canvas</span>. Optionally, it will be rescaled to the given width and height. Note that for security reasons you cannot get <span class="inline_code">Pixels</span>&nbsp;of remote images (i.e., from a URL on another server).</p>
+<pre class="brush:javascript; gutter:false; light:true;">var img = new Image(path, x=0, y=0, {width: null, height: null, alpha: 1.0});
+</pre><pre class="brush:javascript; gutter:false; light:true;">img.x                              // Horizontal offset.
+img.y                              // Vertical offset.
+img.width                          // Image width in pixels.
+img.height                         // Image height in pixels.
+img.alpha                          // Image opacity (0.0-1.0).</pre><pre class="brush:javascript; gutter:false; light:true;">img.busy()                         // Still preloading? (true|false)</pre><pre class="brush:javascript; gutter:false; light:true;">img.copy()</pre><pre class="brush:javascript; gutter:false; light:true;">img.draw(x=0, y=0, {width: null, height: null, alpha: 1.0})</pre><h3>Image state functions</h3>
+<p>The <span class="inline_code">image()</span> function draws an image to the screen. If optional parameters are given, they will take precedence over any property set in the given <span class="inline_code">Image</span>.</p>
+<pre class="brush:javascript; gutter:false; light:true;">image(img, x, y, {width: null, height: null, alpha: 1.0})</pre><pre class="brush:javascript; gutter:false; light:true;">imagesize(img)                     // Returns a [width, height]-array.</pre><h3>Image pixels</h3>
+<p>The <span class="inline_code">Pixels</span> object can be used to retrieve an array of R,G,B,A values (0-255) for each pixel in an image. Values can be modified, after which <span class="inline_code">Pixels.update()</span> must be called to reflect any changes to <span class="inline_code">Pixels.array</span>. The original image is not modified. A <span class="inline_code">Pixels</span> object can be passed to the <span class="inline_code">image()</span> function to draw it to the canvas.</p>
+<pre class="brush:javascript; gutter:false; light:true;">var pixels = new Pixels(img);</pre><pre class="brush:javascript; gutter:false; light:true;">pixels.width                          // Image width in pixels.
+pixels.height                         // Image height in pixels.
+pixels.array                          // Array of width * height * 4 values (0-255).</pre><pre class="brush:javascript; gutter:false; light:true;">pixels.get(i)                         // Returns an [R,G,B,A]-array.
+pixels.set(i, rgba)
+pixels.map(callback)
+pixels.update()
+pixels.image()
+pixels.copy()</pre><ul>
+<li><span class="inline_code">Pixels.map()</span> applies a function to each pixel. Function takes (and returns) an <span class="inline_code">[R,G,B,A]</span>-array.</li>
+<li><span class="inline_code">Pixels.get()</span> returns pixel <span class="inline_code">i</span> as an <span class="inline_code">[R,G,B,A]</span>-array with values between 0-255.</li>
+<li><span class="inline_code">Pixels.set()</span> sets pixel <span class="inline_code">i</span> from an <span class="inline_code">[R,G,B,A]</span>-array.</li>
+</ul>
+<p>To iterate the pixels row by row:</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">var p = new Pixels(img);
+for (var i=0; i &lt; p.height; i++) {
+    for (var j=0; j &lt; p.width; j++) {
+        var rgba = p.get(i * p.width + j);
+    }
+}&nbsp;</pre></div>
+<h3>Image filters&nbsp;</h3>
+<p>The <span class="inline_code">render()</span> function returns an <span class="inline_code">Image</span> from the drawing operations in the given callback function, i.e., a <em>procedural</em> image. This is useful for example to render a blur effect on a <span class="inline_code">BezierPath</span> or text.&nbsp;</p>
+<p>The <span class="inline_code">filter()</span> function returns a new <span class="inline_code">Image</span> with the given callback function applied to each pixel. This function takes an <span class="inline_code">[R,G,B,A]</span>-array (base 255) and returns a new array.&nbsp;</p>
+<p>The <span class="inline_code">polar()</span> function returns a new <span class="inline_code">Image</span> based on a polar coordinates filter (i.e., radial).&nbsp;The given callback is a <span class="inline_code">function(distance, angle)</span> that returns new <span class="inline_code">[distance,</span> <span class="inline_code">angle]</span>-array.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">render(callback, width, height)</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">filter(img, callback)</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">polar(img, x0, y0, callback)</pre><p>A range of predefined filters is available, built on <span class="inline_code">Pixels</span>, <span class="inline_code">render()</span>, <span class="inline_code">filter()</span>&nbsp;and <span class="inline_code">polar()</span>. For example:<br />&nbsp;</p>
+<table border="0">
+<tbody>
+<tr>
+<td>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="../g/pattern-canvas-filter1.jpg" alt="" width="110" height="110" /></p>
+<p class="small" style="text-align: center;">normal</p>
+</td>
+<td>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="../g/pattern-canvas-filter2.jpg" alt="" width="110" height="110" /></p>
+<p class="small" style="text-align: center;">bloom</p>
+</td>
+<td>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="../g/pattern-canvas-filter3.jpg" alt="" width="110" height="110" /></p>
+<p class="small" style="text-align: center;">blur</p>
+</td>
+<td>
+<p class="small" style="text-align: center;"><img src="../g/pattern-canvas-filter4.jpg" alt="" width="110" height="110" /></p>
+<p class="small" style="text-align: center;">twirl</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="smallcaps">Generators</p>
+<p>The <span class="inline_code">solid()</span> function returns an <span class="inline_code">Image</span> with a solid fill color.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">solid(width, height, clr)</pre><p class="smallcaps">&nbsp;<br />Coloring</p>
+<p>Coloring filters return a new <span class="inline_code">Image</span> with modified pixel values:</p>
+<ul>
+<li><span class="inline_code">invert()</span> swaps all the color channels (e.g., black becomes white).</li>
+<li><span class="inline_code">colorize()</span> multiples the R,G,B,A channels with a color and adds bias.</li>
+<li><span class="inline_code">adjust()</span> modifies the image brightness, contrast, and/or hue.</li>
+<li><span class="inline_code">desaturate()</span> returns a grayscale image.</li>
+<li><span class="inline_code">brightpass()</span> makes pixels whose luminance falls below the threshold black.</li>
+<li><span class="inline_code">blur()</span> returns a blurred image, where radius defines the extent of the effect. <br />This uses the <a href="http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html" target="_blank">fast stack blur</a> algorithm.</li>
+</ul>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">invert(img)</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">colorize(img, color=[1,1,1,1], bias=[0,0,0,0])</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">adjust(img, {hue: 0.0, saturation: 1.0, brightness: 1.0, contrast: 1.0})</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">desaturate(img)</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">brightpass(img, threshold=0.5)</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">blur(img, radius=10)</pre><p class="smallcaps">&nbsp;<br />Alpha Compositing</p>
+<p>Alpha compositing filters return a new Image that blend the pixels of two images. The <span class="inline_code">transparent()</span> function applies a solid alpha channel to the image. The <span class="inline_code">mask()</span> function applies <span class="inline_code">img2</span> as alpha channel to <span class="inline_code">img1</span>, where <span class="inline_code">img2</span> is a grayscale image (black areas = transparency).</p>
+<pre class="wysiwyg-syntaxhl brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">transparent(img, alpha)</pre><pre class="wysiwyg-syntaxhl brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">mask(img1, img2, dx=0, dy=0, alpha=1.0)</pre><pre class="wysiwyg-syntaxhl brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">blend(mode, img1, img2, dx=0, dy=0, alpha=1.0)</pre><p>The&nbsp;<span class="inline_code">blend()</span>&nbsp;function mixes pixels using a set of formulas comparable to blend modes in Photoshop:</p>
+<table class="border">
+<tbody>
+<tr>
+<td class="smallcaps">Mode</td>
+<td class="smallcaps">Effect</td>
+</tr>
+<tr>
+<td class="inline_code">ADD</td>
+<td>Pixels are added.</td>
+</tr>
+<tr>
+<td class="inline_code">SUBTRACT</td>
+<td>Pixels are subtracted.</td>
+</tr>
+<tr>
+<td class="inline_code">LIGHTEN</td>
+<td>Lightest value for each pixel.</td>
+</tr>
+<tr>
+<td class="inline_code">DARKEN</td>
+<td>Darkest value for each pixel.</td>
+</tr>
+<tr>
+<td class="inline_code">MULTIPLY</td>
+<td>Pixels are multiplied, resulting in a darker image.</td>
+</tr>
+<tr>
+<td class="inline_code">SCREEN</td>
+<td>Pixels are inverted, multiplied, inverted, resulting in a brighter image.</td>
+</tr>
+</tbody>
+</table>
+<p>The <span class="inline_code">dx</span> and <span class="inline_code">dy</span> parameters define the offset in pixels of <span class="inline_code">img2</span> from the top-left of <span class="inline_code">img1</span>.&nbsp;Each blend mode is also available as a separate function: <span class="inline_code">add()</span>, <span class="inline_code">subtract()</span>&nbsp;etc., with the same parameters except <span class="inline_code">mode</span>.&nbsp;</p>
+<p class="smallcaps">&nbsp;<br />Lighting</p>
+<p>Lighting filters return a new <span class="inline_code">Image</span> with fringes of light around bright areas ("magic glow"). The <span class="inline_code">glow()</span> function uses a combination of <span class="inline_code">blur()</span> and <span class="inline_code">add()</span>. The&nbsp;<span class="inline_code">bloom()</span>&nbsp;function uses a combination of <span class="inline_code">brightpass()</span>, <span class="inline_code">blur()</span> and <span class="inline_code">glow()</span>.&nbsp;The <span class="inline_code">radius</span>&nbsp;defines the extent of the blur.&nbsp;Pixels whose luminance falls below the <span class="inline_code">threshold</span>&nbsp;produce no glow. &nbsp;</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">glow(img, intensity=0.5, radius=10)</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">bloom(img, intensity=0.5, radius=10, threshold=0.3)</pre><p>&nbsp;<br /><span class="smallcaps">Distortion</span></p>
+<p>Distortion filters return a new&nbsp;<span class="inline_code">Image</span> based on a polar coordinates operation. The <span class="inline_code">bump()</span> function bulges the image outward, <span class="inline_code">dent()</span>&nbsp;squeezes the image inward, and&nbsp;<span class="inline_code">pinch()</span> does both. The <span class="inline_code">splash()</span> function produces a light-tunnel effect, while <span class="inline_code">twirl()</span> produces a spinning effect. The <span class="inline_code">radius</span> defines the extent of the effect in pixels. The <span class="inline_code">zoom</span> defines the depth of the effect (<span class="inline_code">0.0</span>–<span class="inline_code">1.0</span> for bump and dent, and <span class="inline_code">-1.0</span>–<span class="inline_code">1.0</span> for pinch). The <span class="inline_code">angle</span> is the amount of degrees to rotate.</p>
+<pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">bump(img, dx, dy, radius, zoom)</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">dent(img, dx, dy, radius, zoom)</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">pinch(img, dx, dy, zoom)</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">splash(img, dx, dy, radius)</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">twirl(img, dx, dy, radius, angle)</pre><p>The <span class="inline_code">dx</span> and <span class="inline_code">dy</span> parameters define the offset of the effect from the image center, in pixels.</p>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="text"></a>Text</h2>
+<p>The <span class="inline_code">text()</span> function can be used to draw a string of text to the canvas. The <span class="inline_code">font()</span>, <span class="inline_code">fontsize()</span>, <span class="inline_code">fontweight()</span> and <span class="inline_code">lineheight()</span> functions set the current text state. Each function also returns its current setting. The default font is 12px normal sans-serif with 1.2em line height.</p>
+<pre class="brush:javascript; gutter:false; light:true;">font(fontname)</pre><pre class="brush:javascript; gutter:false; light:true;">fontsize(fontsize)</pre><pre class="brush:javascript; gutter:false; light:true;">fontweight(fontweight)            // NORMAL, BOLD, ITALIC, BOLD+ITALIC</pre><pre class="brush:javascript; gutter:false; light:true;">lineheight(lineheight)</pre><p>The <span class="inline_code">text()</span> function draws a string using the current color, transformation and text state:</p>
+<pre class="brush:javascript; gutter:false; light:true;">text(str, x, y)</pre><pre class="brush:javascript; gutter:false; light:true;">textwidth(str)</pre><pre class="brush:javascript; gutter:false; light:true;">textheight(str)</pre><p>The state can be overridden by passing an optional <span class="inline_code">font</span>, <span class="inline_code">fontsize</span>, <span class="inline_code">fontweight</span>, <span class="inline_code">lineheight</span> and/or <span class="inline_code">fill</span> to the functions:</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">text("Hello world", 0, 0, {
+    fill: new Color(1,0,0),
+    font: "Georgia", 
+    fontweight: BOLD
+});</pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="mouse"></a>Mouse &amp; keyboard</h2>
+<p>The <span class="inline_code">Mouse</span> object stores the current state of the mouse input device (or touch event). It can be retrieved with the <span class="inline_code">canvas.mouse</span> property in the main <span class="inline_code">draw()</span> loop.</p>
+<pre class="brush:javascript; gutter:false; light:true;">var mouse = canvas.mouse;</pre><pre class="brush:javascript; gutter:false; light:true;">var mouse = new Mouse(element);</pre><pre class="brush:javascript; gutter:false; light:true;">mouse.parent                      // Element to track.
+mouse.x                           // Horizontal position.
+mouse.y                           // Vertical position.
+mouse.relative_x                  // Relative (0.0-1.0) to Canvas.width.
+mouse.relative_y                  // Relative (0.0-1.0) to Canvas.height.
+mouse.pressed                     // Mouse is pressed? (true|false)
+mouse.dragged                     // Mouse is dragged? (true|false)
+mouse.drag.x                      // Drag distance from previous x.
+mouse.drag.y                      // Drag distance from previous y.</pre><pre class="brush:javascript; gutter:false; light:true;">mouse.cursor(mode)                // DEFAULT, CROSS, HAND, HIDDEN, TEXT, WAIT</pre><pre class="brush:javascript; gutter:false; light:true;">mouse.onmove()
+mouse.onpress()
+mouse.onrelease()
+mouse.ondrag()</pre><p>Custom event handlers can be attached to <span class="inline_code">Mouse</span>. The function takes a parameter <span class="inline_code">mouse</span>, which is the <span class="inline_code">Mouse</span> receiving the event. The canvas can be accessed with <span class="inline_code">mouse.parent.canvas</span>. To draw to this canvas during the event, first call its <span class="inline_code">focus()</span> method.</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">function setup(canvas) {
+    canvas.mouse.ondrag = function(mouse) {
+        mouse.parent.canvas.focus();
+        ellipse(mouse.x, mouse.y, 2, 2);
+    };
+} </pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="canvas"></a>Canvas</h2>
+<p>The <span class="inline_code">Canvas</span> object manages the animation container.&nbsp;With <span class="inline_code">&lt;script type="text/canvas"&gt;</span>, there is no explicit need to initialize a new canvas in your script. It will be created for you and passed as a&nbsp;parameter <span class="inline_code">canvas</span> to the&nbsp;<span class="inline_code">draw()</span> and <span class="inline_code">setup()</span>&nbsp;functions in your script:</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;script type="text/javascript" src="canvas.js"&gt;&lt;/script&gt;   
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script type="text/canvas" loop="true"&gt;
+        function setup(canvas) {
+            canvas.size(500, 500);
+        }
+        function draw(canvas) {
+            canvas.clear();
+            // Add drawing code here.
+        }
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<p>Custom animations require a HTML&nbsp;<span class="inline_code">&lt;canvas&gt;</span> element and a <span class="inline_code">window.onload()</span>&nbsp;that binds the element to a <span class="inline_code">Canvas</span> object and assigns a <span class="inline_code">draw()</span> and a <span class="inline_code">setup()</span> function to the canvas:</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;script type="text/javascript" src="canvas.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+        function setup(canvas) {
+            canvas.size(500, 500);
+        }
+        function draw(canvas) {
+            canvas.clear();
+            // Add drawing code here.
+        }
+        window.onload = function() {
+            canvas = new Canvas(document.getElementById("canvas1"));
+            canvas.setup = setup;
+            canvas.draw = draw;
+            canvas.run();
+        }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;canvas id="canvas1" width="500px" height="500px"&gt;&lt;/canvas&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<p>The <span class="inline_code">Canvas</span> object takes a <span class="inline_code">&lt;canvas&gt;</span> element:</p>
+<pre class="brush:javascript; gutter:false; light:true;">var canvas = new Canvas(element);</pre><pre class="brush:javascript; gutter:false; light:true;">canvas.id
+canvas.element                    // HTML &lt;canvas&gt; element.
+canvas.width                      // Element width.
+canvas.height                     // Element height.
+canvas.frame                      // Current animation frame (start = 1).
+canvas.fps                        // Frames per second (read-only).
+canvas.dt                         // Time elapsed since last frame. 
+canvas.mouse                      // Mouse object.
+canvas.variables                  // Widget variables.</pre><pre class="brush:javascript; gutter:false; light:true;">canvas.size(width, height)</pre><pre class="brush:javascript; gutter:false; light:true;">canvas.setup()
+canvas.draw()
+canvas.clear()
+canvas.run()
+canvas.pause()
+canvas.stop()
+canvas.active()                   // Returns true if the animation is running. 
+canvas.focus()                    // Sets the canvas as current drawing context. </pre><pre class="brush:javascript; gutter:false; light:true;">canvas.image()                    // Returns the canvas as an Image.
+canvas.save()                     // Returns the canvas as PNG data.</pre><ul>
+<li><span class="inline_code">Canvas.setup()</span> is meant to be overridden. It runs once at the start of the animation.</li>
+<li><span class="inline_code">Canvas.draw()</span> is meant be overridden. It runs each frame.</li>
+<li><span class="inline_code">Canvas.save()</span> and <span class="inline_code">Canvas.image()</span> will throw an error if the canvas contains remote images<br />(i.e., from a URL on a different server). This is for security reasons, see <span class="link-maintenance"><a href="https://developer.mozilla.org/en/CORS_Enabled_Image" target="_blank">CORS</a></span>.&nbsp;</li>
+</ul>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="widget"></a>Widgets</h2>
+<p>Widgets (e.g., buttons, sliders) give you the possibility to create apps that users can interact with without diving into the JavaScript code.&nbsp;The <span class="inline_code">widget()</span> function creates a widget linked to the given&nbsp;<span class="inline_code">Canvas</span>. The value of the widget can be retrieved as <span class="inline_code">Canvas.variables[variable]</span>. The <span class="inline_code">type</span>&nbsp;can be <span class="inline_code">STRING</span> or <span class="inline_code">NUMBER</span> (a field), <span class="inline_code">BOOLEAN</span> (a checkbox), <span class="inline_code">RANGE</span> (a slider), <span class="inline_code">LIST</span> (a dropdown list) or <span class="inline_code">FUNCTION</span> (a button).</p>
+<p>Optionally, a default <span class="inline_code">value</span> can be given. For lists, this is an <span class="inline_code">Array</span>, the <span class="inline_code">index</span> of the selected value is 0 by default. For sliders, you can also set <span class="inline_code">min</span>, <span class="inline_code">max</span> and <span class="inline_code">step</span>.&nbsp;For functions, a <span class="inline_code">callback(event)</span> must be given. To get the canvas in the callback function, use <span class="inline_code">event.target.canvas</span>. If the function does drawing, call <span class="inline_code">event.target.canvas.focus()</span> first.</p>
+<p>The <span class="inline_code">widget()</span> function will generate a <span class="inline_code">&lt;div id="[canvas.id]_widgets" class="widgets"&gt;</span>, if it does not yet exist. The <span class="inline_code">&lt;div&gt;</span> is added to the page below the canvas. Optionally, a different&nbsp;<span class="inline_code">parent</span> HTML element can be given. The parent contains all canvas widgets, each wrapped in a <span class="inline_code">&lt;span class="widget"&gt;</span>.</p>
+<pre class="brush:javascript; gutter:false; light:true;">widget(canvas, variable, type, {
+    parent: null,
+     value: null,
+       min: 0,
+       max: 1,
+      step: 0.01,
+     index: 0, 
+  callback: function(event) { }
+})</pre><p>For example, the following script comes with buttons to start and pause the animation:</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">function setup(canvas) {
+    widget(canvas, "start", FUNCTION, {callback: function(e) {
+        e.target.canvas.run();
+    }});
+    widget(canvas, "pause", FUNCTION, {callback: function(e) {
+        e.target.canvas.pause();
+    }});
+}
+function draw(canvas) {
+    canvas.clear();
+    translate(200, 200);
+    rotate(canvas.frame);
+    rect(-75, -75, 150, 150);
+}</pre></div>
+<div class="example">&nbsp;</div>
+<hr />
+<h2 class="example"><a name="json"></a>JSON</h2>
+<div class="example">The easiest way to incorporate data sets in an animation is by using&nbsp;<a href="http://www.json.org/" target="_blank">JSON</a>, a lightweight data-interchange format based on associative arrays (i.e., like a&nbsp;<span class="inline_code">dict</span>&nbsp;in Python).&nbsp;For example, you can use the <span class="inline_code">Datasheet</span> object in <a href="pattern.db.html">pattern.db</a> to generate JSON from Python:</div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.db import Datasheet, STRING, INTEGER
+&gt;&gt;&gt; ds = Datasheet(fields=[('name', STRING), ('count', INTEGER)])
+&gt;&gt;&gt; ds.append(( 'chickens', 12))
+&gt;&gt;&gt; ds.append(( 'penguins', 26))
+&gt;&gt;&gt; ds.append(('sombreros', 9))
+&gt;&gt;&gt; open('data.js', 'w').write('var data = ' + ds.json + ';')</pre></div>
+<p>This generates a <span class="inline_code">data.js</span> file that defines a <span class="inline_code">data</span> variable:</p>
+<div class="example">
+<pre class="brush:javascript; gutter:false; light:true;">var data = [
+    {'name': 'chickens',  'count': 12}, 
+    {'name': 'penguins',  'count': 26}, 
+    {'name': 'sombreros', 'count': 9}
+];</pre></div>
+<p>We can load <span class="inline_code">data.js</span> in the HTML <span class="inline_code">&lt;head&gt;</span> section so <span class="inline_code">data</span> becomes available in the animation:</p>
+<div class="example">
+<pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">&lt;html&gt;
+&lt;head&gt;
+    &lt;script type="text/javascript" src="canvas.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="data.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script type="text/canvas"&gt;
+        function draw(canvas) {
+            // Draw the data as a bar chart.
+            var dx = 10; 
+            var dy = 10; 
+            for (var i=0; i &lt; data.length; i++) {
+                rect(dx, dy, data[i]['count'] * 10, 30); 
+                text(data[i]['name'], dx+10, dy+20, {fill:1}); dy += 40; 
+            }
+        }
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="geometry"></a>Geometry</h2>
+<p>The <span class="inline_code">Point</span> object can be used to represent (x, y) coordinates in 2D space:</p>
+<pre class="wysiwyg-syntaxhl brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">var pt = new Point(x, y);</pre><pre class="wysiwyg-syntaxhl brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">pt.x
+pt.y </pre><p>The module includes the following helper functions for 2D geometry:&nbsp;</p>
+<pre class="wysiwyg-syntaxhl brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">geometry.angle(x0, y0, x1, y1)     // Returns the angle between two points.</pre><pre class="wysiwyg-syntaxhl brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">geometry.distance(x0, y0, x1, y1)  // Returns the distance between two points.</pre><pre class="wysiwyg-syntaxhl brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">geometry.coordinates(x0, y0, d, a) // Returns Point at distance d with angle a.</pre><pre class="wysiwyg-syntaxhl brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">geometry.rotate(x, y, x0, y0, a)   // Returns Point (x,y) rotated around (x0,y0).</pre><pre class="wysiwyg-syntaxhl brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">geometry.lerp(a, b, t)             // Linear interpolation: lerp(4, 8, 0.5) =&gt; 6</pre><pre class="wysiwyg-syntaxhl brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">geometry.smoothstep(a, b, x)       // Hermite interpolation (ease-in + ease-out).</pre><pre class="wysiwyg-syntaxhl brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">geometry.lineIntesection(x0, y0, x1, y1, x2, y2, x3, y3, infinite=false)</pre><pre class="wysiwyg-syntaxhl brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">geometry.pointInPolygon(points, x, y)</pre><p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;">In addition to the standard math functions such as&nbsp;<span class="inline_code">Math.sin()</span>,&nbsp;<span class="inline_code">Math.cos()</span>&nbsp;and&nbsp;<span class="inline_code">Math.sqrt()</span>, the module defines the following math functions:</p>
+<pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">Math.sign(x)                       // Returns +1, -1 or 0 for a given number.</pre><pre class="wysiwyg-syntaxhl brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">Math.degrees(radians)              // Math.degrees(Math.PI) =&gt; 180</pre><pre class="wysiwyg-syntaxhl brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">Math.radians(degrees)              // Math.radians(180) =&gt; Math.PI</pre><pre class="wysiwyg-syntaxhl brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">Math.clamp(value, min, max)        // Math.clamp(1.5, 0.0, 1.0) =&gt; 1.0</pre><pre class="wysiwyg-syntaxhl brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; " style="color: #555555 !important; font-family: Courier, 'Courier New', monospace !important; font-size: 12px !important; margin-top: 0.7em !important; margin-right: 0px !important; margin-bottom: 0.7em !important; margin-left: 0px !important; line-height: 1.3em !important; padding-top: 0.2em !important; padding-right: 0.4em !important; padding-bottom: 0.2em !important; padding-left: 0.4em !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: #dcebfa !important; border-top-left-radius: 0.5em 0.5em; border-top-right-radius: 0.5em 0.5em; border-bottom-right-radius: 0.5em 0.5em; border-bottom-left-radius: 0.5em 0.5em; font: normal normal normal 10px/normal Monaco, monospace, 'Courier New', Courier; background-position: initial initial !important; background-repeat: initial initial !important; border-width: 1px !important; border-color: #c8d7e6 !important; border-style: solid !important;">Math.dot(array1, array2)           // a1[0] * a2[0] + a1[1] * a2[1] + ...&nbsp;</pre><p>&nbsp;</p>
+<hr />
+<h2><a name="array"></a>Arrays</h2>
+<p>An <span class="inline_code">Array</span> can be used to store a list of values (e.g., numbers and/or strings):</p>
+<pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">var a = [1, 2, 3];</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">a[index]                           // [1,2,3][0] =&gt; 1 
+a.indexOf(value)                   // [1,2,3].indexOf(1) =&gt; 0
+a.push(value)                      // [1,2,3].push(4) =&gt; [1,2,3,4]
+a.pop()                            // [1,2,3].pop() =&gt; [1,2] 3
+a.shift()                          // [1,2,3].shift() =&gt; 1 [2,3]
+a.concat(array)                    // [1,2,3].concact([4,5]) =&gt; [1,2,3,4,5] copy
+a.slice(i, j=null)                 // [1,2,3].slice(1,3) =&gt; [2,3]
+a.splice(i, n, v1, v2, ...)        // [1,2,3].splice(1,0,11,12) =&gt; [1,11,12,2,3]
+a.join(str)                        // [1,2,3].join(",") =&gt; "1,2,3" </pre><p>The module defines the following helper functions for arrays:</p>
+<pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">Array.instanceof(array)            // Returns true if object is an Array.</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">Array.min(array)                   // Returns the smallest value.</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">Array.max(array)                   // Returns the largest value.</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">Array.sum(array)                   // Returns the sum of all values.</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">Array.contains(array, value)       // Returns true if array contains value.</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">Array.find(array, match)           // Returns first value with match(value) == true.</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">Array.map(array, callback)         // Returns new array of callback(value) values.</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">Array.filter(array, callback)      // Returns new array for callback(value) == true.</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">Array.enumerate(array, callback)   // Calls callback(index, value) for each value.</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">Array.eq(array1, array2)           // Returns true if values array1 == array2.</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">Array.sorted(array, reverse=false) // Returns a new array with sorted values. </pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">Array.reversed(array)              // Returns a new array with reversed order. </pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">Array.choice(array)                // Returns a random value.</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">Array.shuffle(array)               // Randomly shuffles the values in the array.</pre><pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">Array.range(i, j)                  // Returns an array with values i =&gt; j-1.</pre><div class="example">
+<pre class="brush: jscript;gutter: false; light: true; fontsize: 100; first-line: 1; ">var a = [0, 1, 2, 3, 4, 5];
+a = Array.map(a, function(v) { return v * 2; });   // {0, 2, 3, 6, 8, 10}
+a = Array.filter(a, function(v) { return v &lt; 5 }); // [0, 2, 4]</pre></div>
+<p>&nbsp;</p>
+<hr />
+<h2>See also</h2>
+<ul>
+<li><a href="http://processingjs.org/" target="_blank">processing.js</a></li>
+<li><a href="http://paperjs.org/" target="_blank">paper.js</a></li>
+</ul>
+</div>
+</div></div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
+</body>
+</html>

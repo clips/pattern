@@ -1,14 +1,12 @@
-# Ignore compiled Python files
 *.pyc
-
-# Ignore Ninja files
+*.dev*
 *.nja
 
-# Ignore build folders
 build
 dist
 
-# Ignore cache folders
 pattern/web/cache/tmp/
 web/cache/tmp/
 test/pattern_unittest_db
+
+.DS_Store

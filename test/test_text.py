@@ -37,25 +37,81 @@ class TestLexicon(unittest.TestCase):
         print "pattern.text.lazylist"
         
     def test_lexicon(self):
-        # Assert loading and applying Brill lexicon and rules.
+        # Assert lexicon from file (or file-like string).
         f1 = u";;; Comments. \n schrödinger NNP \n cat NN"
-        f2 = StringIO.StringIO(u"NN s fhassuf 1 NNS x")
-        f3 = StringIO.StringIO(u"VBD VB PREVTAG TO")
-        f4 = StringIO.StringIO(u"Schrödinger's cat PERS")
-        v = text.Lexicon(path=f1, morphology=f2, context=f3, entities=f4)
-        self.assertEqual(v[u"schrödinger"], "NNP")
-        self.assertEqual(v.morphology.apply(
+        f2 = StringIO.StringIO(u";;; Comments. \n schrödinger NNP \n cat NN")
+        v1 = text.Lexicon(path=f1)
+        v2 = text.Lexicon(path=f2)
+        self.assertEqual(v1[u"schrödinger"], "NNP")
+        self.assertEqual(v2[u"schrödinger"], "NNP")
+        print "pattern.text.Lexicon"
+
+#---------------------------------------------------------------------------------------------------
+
+class TestModel(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+        
+    def test_model(self):
+        # Assert SLP language model.
+        v = text.Model()
+        for i in range(2):
+            v.train("black", "JJ", previous=("the", "DT"), next=("cat", "NN"))
+            v.train("on", "IN", previous=("sat", "VBD"), next=("the", "DT"))
+        self.assertEqual("JJ", v.classify("slack"))
+        self.assertEqual("JJ", v.classify("white", previous=("a", "DT"), next=("cat", "NN")))
+        self.assertEqual("IN", v.classify("on", previous=("sat", "VBD")))
+        self.assertEqual("IN", v.classify("on", next=("the", "")))
+        self.assertEqual(["white", "JJ"], v.apply(("white", ""), next=("cat", "")))
+        print "pattern.text.Model"
+
+#---------------------------------------------------------------------------------------------------
+
+class TestMorphology(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+        
+    def test_morphology(self):
+        # Assert morphological tagging rules.
+        f = StringIO.StringIO(u"NN s fhassuf 1 NNS x")
+        v = text.Morphology(f)
+        self.assertEqual(v.apply(
             ["cats", "NN"]), 
             ["cats", "NNS"])
-        self.assertEqual(v.context.apply(
+        print "pattern.text.Morphology"
+
+#---------------------------------------------------------------------------------------------------
+
+class TestContext(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+        
+    def test_context(self):
+        # Assert contextual tagging rules.
+        f = StringIO.StringIO(u"VBD VB PREVTAG TO")
+        v = text.Context(path=f)
+        self.assertEqual(v.apply(
             [["to", "TO"], ["be", "VBD"]]), 
             [["to", "TO"], ["be", "VB"]])
-        self.assertEqual(v.entities.apply(
+        print "pattern.text.Context"
+
+#---------------------------------------------------------------------------------------------------
+
+class TestEntities(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+        
+    def test_entities(self):
+        # Assert named entity recognizer.
+        f = StringIO.StringIO(u"Schrödinger's cat PERS")
+        v = text.Entities(path=f)
+        self.assertEqual(v.apply(
             [[u"Schrödinger's", "NNP"], ["cat", "NN"]]),
             [[u"Schrödinger's", "NNP-PERS"], ["cat", "NNP-PERS"]])
-        print "pattern.text.Lexicon"
-        print "pattern.text.Morphology"
-        print "pattern.text.Context"
         print "pattern.text.Entities"
 
 #---------------------------------------------------------------------------------------------------
@@ -64,6 +120,15 @@ class TestParser(unittest.TestCase):
     
     def setUp(self):
         pass
+        
+    def test_stringio(self):
+        # Assert loading data from file-like strings.
+        p = text.Parser(
+               lexicon = {"to": "TO", "saw": "VBD"},
+            morphology = StringIO.StringIO(u"NN s fhassuf 1 NNS x"),
+               context = StringIO.StringIO(u"VBD VB PREVTAG TO"))
+        self.assertEqual(p.parse("cats"), "cats/NNS/B-NP/O")
+        self.assertEqual(p.parse("to saw"), "to/TO/B-VP/O saw/VB/I-VP/O")
         
     def test_find_tokens(self):
         # Assert the default tokenizer and its optional parameters.
@@ -83,7 +148,7 @@ class TestParser(unittest.TestCase):
         p = text.Parser()
         v1 = p.find_tags([u"Schrödinger", "cat", "1.0"], lexicon={}, default=("NN?", "NNP?", "CD?"))
         v2 = p.find_tags([u"Schrödinger", "cat", "1.0"], lexicon={"1.0": "CD?"})
-        v3 = p.find_tags([u"Schrödinger", "cat", "1.0"], map=lambda tag: tag+"!")
+        v3 = p.find_tags([u"Schrödinger", "cat", "1.0"], map=lambda token, tag: (token, tag+"!"))
         v4 = p.find_tags(["observer", "observable"], language="fr")
         v5 = p.find_tags(["observer", "observable"], language="en")
         self.assertEqual(v1, [[u"Schr\xf6dinger", "NNP?"], ["cat", "NN?"], ["1.0", "CD?"]])
@@ -116,27 +181,31 @@ class TestSentiment(unittest.TestCase):
     def test_dict(self):
         # Assert weighted average polarity and subjectivity for dictionary.
         s = text.Sentiment()
-        v = {":-(": 3, ":-)": 1}
+        v = {":-(": 4, ":-)": 1}
         self.assertEqual(s(v)[0], -0.5)
         self.assertEqual(s(v)[1], +1.0)
-        self.assertEqual(s(v).assessments[0], ([":-("], -1.0, 1.0))
-        self.assertEqual(s(v).assessments[1], ([":-)"], +1.0, 1.0))
+        self.assertEqual(s(v).assessments[0], ([":-("], -0.75, 1.0, "mood"))
+        self.assertEqual(s(v).assessments[1], ([":-)"], +0.50, 1.0, "mood"))
         
     def test_bag_of_words(self):
         # Assert weighted average polarity and subjectivity for bag-of-words with weighted features.
         from pattern.vector import BagOfWords # Alias for pattern.vector.Document.
         s = text.Sentiment()
-        v = BagOfWords({":-(": 3, ":-)": 1})
+        v = BagOfWords({":-(": 4, ":-)": 1})
         self.assertEqual(s(v)[0], -0.5)
         self.assertEqual(s(v)[1], +1.0)
-        self.assertEqual(s(v).assessments[0], ([":-("], -1.0, 1.0))
-        self.assertEqual(s(v).assessments[1], ([":-)"], +1.0, 1.0))
+        self.assertEqual(s(v).assessments[0], ([":-("], -0.75, 1.0, "mood"))
+        self.assertEqual(s(v).assessments[1], ([":-)"], +0.50, 1.0, "mood"))
 
 #---------------------------------------------------------------------------------------------------
 
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLexicon))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestModel))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMorphology))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestContext))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestEntities))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParser))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSentiment))
     return suite

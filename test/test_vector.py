@@ -5,6 +5,8 @@ import random
 import codecs
 import unittest
 
+from random import seed; seed(0)
+
 from pattern import vector
 
 from pattern.en import Text, Sentence, Word, parse
@@ -245,9 +247,9 @@ class TestDocument(unittest.TestCase):
         # Assert Document properties.
         # Test with different input types.
         for constructor, w in (
-          (vector.Document, "The cats sat on the mat."),
-          (vector.Document, ["The", "cats", "sat", "on", "the", "mat"]),
-          (vector.Document, {"cat":1, "sat":1, "mat":1}),
+          (vector.Document, "The cats sit on the mat."),
+          (vector.Document, ["The", "cats", "sit", "on", "the", "mat"]),
+          (vector.Document, {"cat":1, "mat":1, "sit":1}),
           (vector.Document, Text(parse("The cats sat on the mat."))),
           (vector.Document, Sentence(parse("The cats sat on the mat.")))):
             # Test copy.
@@ -257,10 +259,10 @@ class TestDocument(unittest.TestCase):
             self.assertEqual(v.name, "Cat")
             self.assertEqual(v.type, "CAT")
             self.assertEqual(v.count, 3)
-            self.assertEqual(v.terms, {"cat":1, "sat":1, "mat":1})
+            self.assertEqual(v.terms, {"cat":1, "mat":1, "sit":1})
             # Test iterator decoration.
-            self.assertEqual(sorted(v.features), ["cat", "mat", "sat"])
-            self.assertEqual(sorted(v), ["cat", "mat", "sat"])
+            self.assertEqual(sorted(v.features), ["cat", "mat", "sit"])
+            self.assertEqual(sorted(v), ["cat", "mat", "sit"])
             self.assertEqual(len(v), 3)
             self.assertEqual(v["cat"], 1)
             self.assertEqual("cat" in v, True)
@@ -324,7 +326,7 @@ class TestDocument(unittest.TestCase):
         v = [[0.0, 0.4, 0.6], [0.6, 0.4, 0.0]]
         v = [dict(enumerate(v)) for v in v]
         m = vector.Model([vector.Document(x) for x in v], weight=vector.TFIDF)
-        v = vector.tf_idf(v)
+        v = [vector.sparse(v) for v in vector.tf_idf(v)]
         self.assertEqual(sorted(m[0].vector.items()), sorted(v[0].items()))
         self.assertAlmostEqual(v[0][2], 0.42, places=2)
         self.assertAlmostEqual(v[1][0], 0.42, places=2)
@@ -626,7 +628,7 @@ class TestLSA(unittest.TestCase):
         for document in self.model:
             v = lsa.vectors[document.id]
             self.assertTrue(isinstance(v, vector.Vector))
-            self.assertTrue(len(v) == k)
+            self.assertTrue(len(v) <= k)
         print "pattern.vector.LSA"
         
     def test_lsa_concepts(self):
@@ -664,10 +666,10 @@ class TestLSA(unittest.TestCase):
         # We'd expect the "dog" documents to score high on the "dog" concept vector.
         v1 = model.lsa[model.documents[0].id]
         v2 = model.lsa[model.documents[2].id]
-        self.assertTrue(v1[i1]  > 0.7)
-        self.assertTrue(v1[i2] == 0.0)
-        self.assertTrue(v2[i1] == 0.0)
-        self.assertTrue(v2[i2]  > 0.7)
+        self.assertTrue(v1.get(i1, 0)  > 0.7)
+        self.assertTrue(v1.get(i2, 0) == 0.0)
+        self.assertTrue(v2.get(i1, 0) == 0.0)
+        self.assertTrue(v2.get(i2, 0)  > 0.7)
         # Assert LSA.transform() for unknown documents.
         v = model.lsa.transform(vector.Document("cats dogs"))
         self.assertAlmostEqual(v[0], 0.34, places=2)
@@ -844,7 +846,7 @@ class TestClassifier(unittest.TestCase):
         self.assertEqual(v.binary, True)
         self.assertEqual(sorted(v.classes), [False, True])
         self.assertTrue(isinstance(v.features, list))
-        self.assertTrue("postgresql" in v.features)
+        self.assertTrue("ftp" in v.features)
         # Assert saving + loading.
         v.save(Classifier.__name__)
         v = Classifier.load(Classifier.__name__)
@@ -867,11 +869,11 @@ class TestClassifier(unittest.TestCase):
         self.assertEqual(("cat", {"cat":0.5, "purs":0.5}), v("cat purs", type="cat"))
         print "pattern.vector.Classifier._vector()"
     
-    def test_bayes(self):
+    def test_nb(self):
         # Assert Bayesian probability classification.
-        self._test_classifier(vector.Bayes)
+        self._test_classifier(vector.NB)
         # Assert the accuracy of the classifier.
-        A, P, R, F = vector.Bayes.test(self.model, folds=10, method=vector.BERNOUILLI)
+        A, P, R, F = vector.NB.test(self.model, folds=10, method=vector.BERNOUILLI)
         #print A, P, R, F
         self.assertTrue(P >= 0.89)
         self.assertTrue(R >= 0.89)
@@ -886,6 +888,16 @@ class TestClassifier(unittest.TestCase):
         self.assertTrue(P >= 0.92)
         self.assertTrue(R >= 0.92)
         self.assertTrue(F >= 0.92)
+
+    def test_slp(self):
+        # Assert single-layer averaged perceptron classification.
+        self._test_classifier(vector.SLP)
+        # Assert the accuracy of the classifier.
+        A, P, R, F = vector.SLP.test(self.model, folds=10, iterations=3)
+        #print A, P, R, F
+        self.assertTrue(P >= 0.94)
+        self.assertTrue(R >= 0.94)
+        self.assertTrue(F >= 0.94)
         
     def test_svm(self):
         try:

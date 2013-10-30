@@ -1,0 +1,364 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>pattern-dev</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link type="text/css" rel="stylesheet" href="../clips.css" />
+    <style>
+        /* Small fixes because we omit the online layout.css. */
+        h3 { line-height: 1.3em; }
+        #page { margin-left: auto; margin-right: auto; }
+        #header, #header-inner { height: 175px; }
+        #header { border-bottom: 1px solid #C6D4DD;  }
+        table { border-collapse: collapse; }
+    </style>
+    <link href="../js/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../js/shThemeDefault.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" src="../js/shCore.js"></script>
+    <script language="javascript" src="../js/shBrushXml.js"></script>
+    <script language="javascript" src="../js/shBrushJScript.js"></script>
+    <script language="javascript" src="../js/shBrushPython.js"></script>
+</head>
+<body class="node-type-page one-sidebar sidebar-right section-pages">
+    <div id="page">
+    <div id="page-inner">
+    <div id="header"><div id="header-inner"></div></div>
+    <div id="content">
+    <div id="content-inner">
+    <div class="node node-type-page"
+        <div class="node-inner">
+        <div class="breadcrumb">View online at: <a href="http://www.clips.ua.ac.be/pages/pattern-dev" class="noexternal" target="_blank">http://www.clips.ua.ac.be/pages/pattern-dev</a></div>
+        <h1>pattern.dev</h1>
+        <!-- Parsed from the online documentation. -->
+        <div id="node-1480" class="node node-type-page"><div class="node-inner">
+<div class="content">
+<p><span class="big">Pattern is a web mining module for the Python programming language.</span></p>
+<p><span class="big">Pattern is written in Python with extensions in JavaScript for web apps. The source code is hosted on GitHub. It is licensed under BSD, so it can be freely incorporated in proprietary applications. Contributions and donations are welcomed.</span></p>
+<p>There are six core modules in the&nbsp;<a href="pattern.html">pattern</a> package: <a href="pattern-web.html">web</a> | <a href="pattern-db.html">db</a>&nbsp;| <a href="pattern-text.html">text</a>&nbsp;| <a href="pattern-search.html">search</a> | <a href="pattern-vector.html">vector</a> | <a href="pattern-graph.html">graph</a>.</p>
+<p><img src="../g/pattern_schema.gif" alt="" width="620" height="180" /></p>
+<hr />
+<h2>Topics</h2>
+<ul>
+<li><a href="#contribute">Contributing</a></li>
+<li><a href="#dependencies">Dependencies</a></li>
+<li><a href="#documentation">Documentation</a></li>
+<li><a href="#code">Coding conventions</a></li>
+<li><a href="#quality">Code quality</a></li>
+<li><a href="#language">Language support</a></li>
+</ul>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="contribute"></a>Contribute</h2>
+<p><span class="smallcaps">Source code updates</span></p>
+<p>The source code is hosted on <a href="https://github.com/clips/pattern" target="_blank">GitHub</a>, a web-based hosting service for software projects using version control. Version control keeps track of all the changes to the source code. For example, you can step back to an earlier version, or merge revisions from different contributors into the latest version.</p>
+<p>The best way to get involved is to create a <em>fork</em> of the project. Detailed information can be found <a href="http://help.github.com/fork-a-repo/" target="_blank">here</a>&nbsp;on GitHub.&nbsp;You can then work on your own local copy – implement new functionality or improve existing code.&nbsp;When you are ready with your changes, you can <em>push</em> them to GitHub. Several desktop applications can help out in this process. We use <a href="http://www.git-tower.com/">Tower</a>.&nbsp;<a href="http://mac.github.com/" target="_blank">GitHub for Mac</a>&nbsp;is free. You can also issue a <em>pull request </em>(as described <a href="http://help.github.com/send-pull-requests/" target="_blank">here</a>). This notifies the developers of Pattern. If your changes are interesting to a wider audience, we can pull them into the main branch so they become part of the next Pattern release.</p>
+<p><span class="smallcaps">Bug reports</span></p>
+<p>Please let us know if you encounter a bug. We prefer if you create an <a href="https://github.com/clips/pattern/issues" target="_blank">issue</a> on GitHub. This way, the bug is known to all users of Pattern and we can work together to solve it.</p>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="dependencies"></a>Dependencies</h2>
+<p>There are six core modules in the package:</p>
+<table class="border">
+<tbody>
+<tr>
+<td><span class="smallcaps">Module</span></td>
+<td><span class="smallcaps">Functionality</span></td>
+</tr>
+<tr>
+<td><span class="inline_code">web</span></td>
+<td>Asynchronous requests, cached downloads, search engine API's, HTML parser + crawler.</td>
+</tr>
+<tr>
+<td><span class="inline_code">db</span></td>
+<td>Wrappers for MySQL + SQLite databases and CSV-files.</td>
+</tr>
+<tr>
+<td><span class="inline_code">text</span></td>
+<td>Base classes for parsers, parse trees, inflection and sentiment analysis.</td>
+</tr>
+<tr>
+<td><span class="inline_code">search</span></td>
+<td>N-gram pattern matching algorithm for parsed text.</td>
+</tr>
+<tr>
+<td><span class="inline_code">vector</span></td>
+<td>Vector space model for corpora, clustering, classification.</td>
+</tr>
+<tr>
+<td><span class="inline_code">graph</span></td>
+<td>Graph networks &amp; graph visualization.</td>
+</tr>
+</tbody>
+</table>
+<h3>Design philosophy</h3>
+<p><span class="smallcaps">Decentralized</span></p>
+<p>Each module is designed to be standalone. One should be able to take the <span class="inline_code">web</span> folder out of the package and use it as a standalone project. Modules that refer to other modules should degrade silently if that module is not present. Inside a single module there may be a lot of interdependency between classes, hence the oversized <span class="inline_code">__init__.py</span> files. They will have to be split into submodules in the future.</p>
+<p><span class="smallcaps">Pure Python</span></p>
+<p>Pattern is a pure-Python package written for Python 2.4. This means that it should not include C/C++ code, Perl scripts or (ideally) Python 2.7 functionality. Pattern's audience is diverse (from computer scientists to web designers) so we prefer out-of-the-box installation without <span class="inline_code">INSTALL.txt</span> over speed. Many fast, specialized alternatives already exist. Pattern's strength is in ease-of-use.&nbsp;If you must include C/C++ code, provide precompiled binaries for different platforms and use <a href="http://docs.python.org/library/ctypes.html" target="_blank">ctypes</a>.</p>
+<p><span class="smallcaps">Web-enabled</span></p>
+<p>For visualization purposes, graphics that display natively in the browser are preferred. This is reflected by the <span class="inline_code">canvas.js</span> helper module, which offers browser-based visualization without dependencies. You can include Python code that generates JavaScript for <span class="inline_code">canvas.js</span> apps. Also, some users may want to incorporate Pattern in Google App Engine, so data files should be no larger than 10MB.</p>
+<p><span class="smallcaps">Pragmatic</span></p>
+<p>If it is non-trivial and it already exists, don't rewrite it. Many Python projects are BSD-licensed and can be included in Pattern without restriction. Do not include GPL-licensed projects. Do not include big projects (e.g., NLTK, Django). Instead provide tools for mapping data structures from/to Pattern.</p>
+<h3>Base classes</h3>
+<ul>
+<li><strong>pattern.web</strong>: the idea is to wrap existing tools (e.g., Beautiful Soup, PDFMiner) instead of writing code from scratch – the code in this module requires a lot of maintenance since the web changes constantly. New search engines inherit from <span class="inline_code">SearchEngine</span> to provide a uniform API.</li>
+</ul>
+<ul>
+<li><strong>pattern.db</strong>: there is no strategy to include new database engines next to MySQL and SQLite. If you think this is a challenge you can start by inspecting <span class="inline_code">Database.connect()</span>, <span class="inline_code">Database.escape()</span>, <span class="inline_code">Database._field_SQL()</span>&nbsp;and&nbsp;<span class="inline_code">Table._update()</span>.</li>
+</ul>
+<ul>
+<li><strong>pattern.text</strong>: the&nbsp;<span class="inline_code">Lexicon</span>&nbsp;class can be reused by Brill-based taggers. This is explained in more detail in the&nbsp;<a href="#language">language support</a>&nbsp;section. An example is the <span class="inline_code">pattern.nl</span> module which inherits from the English parser. Note that the package tree can benefit from a reorganization in this module.</li>
+</ul>
+<ul>
+<li><strong>pattern.vector</strong>: classifiers inherit from the <span class="inline_code">Classifier</span> base class. Clustering algorithms must be available through <span class="inline_code">Model.cluster()</span>, for example <span class="inline_code">Model.cluster(method=KMEANS)</span>.</li>
+</ul>
+<ul>
+<li><strong>pattern.graph</strong>: the <span class="inline_code">Node</span>, <span class="inline_code">Edge</span> and <span class="inline_code">Graph</span>&nbsp;classes can be subclassed. Pay attention to&nbsp;<span class="inline_code">Graph.add_node()</span> and <span class="inline_code">Graph.add_edge()</span>: we need to pass the subclass of <span class="inline_code">Node</span> and <span class="inline_code">Edge</span> as an optional parameter here. Layout algorithms can be implemented by subclassing <span class="inline_code">GraphLayout</span>.</li>
+</ul>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="documentation"></a>Documentation</h2>
+<p>Each function or method should have a docstring:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">def find(match=lambda item: False, list=[]):
+    """ Returns the first item in the given list for which match(item) is True.
+    """
+    for item in list:
+        if match(item) is True: 
+            return item</pre></div>
+<p>Provide a concise description of the expected input and output. Our docstrings usually start with "Returns the ..." If you add new functionality, remember to also add unit tests for other developers and a <em>fun</em> example for users. Some users prefer to learn by reading documentation, others by tinkering with examples. Unit tests are important since they ensure that individual parts work correctly.</p>
+<p>Unfortunately, we do not have an open documentation framework. We will update the online documentation with your contributions when the next version is released.&nbsp;The offline documentation is automatically generated.</p>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="code"></a>Coding conventions</h2>
+<h3>Whitespace</h3>
+<p>Unfortunately, the source code does not always follow the <a href="http://www.python.org/dev/peps/pep-0008/" target="_blank">PEP8</a> style guide for Python code. This is the case for whitespace. We add additional whitespace to object property assignments so that the inline comments are aligned as a block:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">class Table(object):
+    def __init__(self, name, database):
+        """ A collection of rows with one or more fields of a certain type.
+        """
+        self.database    = database
+        self.name        = name
+        self.fields      = [] # List of field names (i.e., column names).
+        self.schema      = {} # Dictionary of (field, Schema)-items.
+        self.default     = {} # Default values for Table.insert().
+        self.primary_key = None
+        self._update()</pre></div>
+<p>We sometimes use whitespace to align the keys and values in a dictionary:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">url = URL("http://search.twitter.com/search.json?", method=GET, query={
+       "q": query,
+    "page": start,
+     "rpp": min(count, 100) 
+})</pre></div>
+<h3>Class and function names</h3>
+<p>Class names use CamelCase: <span class="inline_code">AsynchronousRequest</span>, <span class="inline_code">SearchEngine</span>, <span class="inline_code">HTTP404Error</span>.&nbsp;Function and method names use lowercase_with_underscore. Preferably, function and methods names are single, short, descriptive words. Furthermore, if a method takes no arguments and it is not a heavy operation, it should be a property:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">class AsynchronousRequest:
+    @property
+    def done(self):
+        return not self._thread.isAlive()</pre></div>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">while not request.done:
+   ... </pre></div>
+<h3>Variable names</h3>
+<p>We use single character variable names often. Usually this is the first letter of what the variable name would otherwise be (for example,&nbsp;<span class="inline_code">dict</span> keys and values are <span class="inline_code">k</span> and <span class="inline_code">v</span>). This is done to make the structure of the algorithm more visible. In the example below, <span class="inline_code">s</span> is used as short for "string". Attention draws to the actual string methods, not the <span class="inline_code">s = [...]</span>&nbsp;assigment part.</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">def normalize(s, punctuation="!?.:;,()[] "):
+    s = s.decode("utf-8")
+    s = s.lower()
+    s = s.strip(punctuation)
+    return s</pre></div>
+<p>Overview of frequently used single character variable names:</p>
+<table class="border">
+<tbody>
+<tr>
+<td style="text-align: center;"><span class="smallcaps">Variable</span></td>
+<td><span class="smallcaps">Meaning</span></td>
+<td><span class="smallcaps">Example</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">a</span></td>
+<td>array, all</td>
+<td><span class="inline_code">a = [normalize(w) for w in words]</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">b</span></td>
+<td>boolean</td>
+<td><span class="inline_code">while b is False:</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">f</span></td>
+<td>file, filter, function</td>
+<td><span class="inline_code">f = open('data.csv', 'r')</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">i</span></td>
+<td>index</td>
+<td><span class="inline_code">for i in range(len(matrix)):</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">j</span></td>
+<td>index</td>
+<td><span class="inline_code">for j in range(len(matrix[i])):</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">k</span></td>
+<td>key</td>
+<td><span class="inline_code">for k in vector.keys():</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">p</span></td>
+<td>parser, pattern</td>
+<td><span class="inline_code">p = pattern.search.compile('NN')</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">s</span></td>
+<td>string</td>
+<td><span class="inline_code">s = s.decode('utf-8').strip()</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">t</span></td>
+<td>time</td>
+<td><span class="inline_code">t = time.time() - t0</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">v</span></td>
+<td>value, vector</td>
+<td><span class="inline_code">for k, v in vector.items():</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">w</span></td>
+<td>word</td>
+<td><span class="inline_code">for i, w in enumerate(sentence.words):</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">x</span></td>
+<td>horizontal position</td>
+<td><span class="inline_code">node.x = 0</span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span class="inline_code">y</span></td>
+<td>vertical position</td>
+<td><span class="inline_code">node.y = 0</span></td>
+</tr>
+</tbody>
+</table>
+<h3>Dictionaries</h3>
+<p>Large portions of the code deal with dictionaries. For example, <span class="inline_code">pattern.en</span>&nbsp;is built around a word&nbsp;→&nbsp;part-of-speech tag dictionary, or verb infinitive&nbsp;→&nbsp;inflected verbs. In <span class="inline_code">pattern.vector</span>, document vectors are represented as word&nbsp;→&nbsp;weight dictionaries. In <span class="inline_code">pattern.graph</span>, node adjacency is represented as a dictionary indexed by node id's,&nbsp;in which each value is a node id&nbsp;→ weight dictionary.&nbsp;Python's <span class="inline_code">dict</span> is fast for lookup operations (<span class="inline_code">key in dict</span>).This can be exploited by using <span class="inline_code">dict</span> as a sparse data format.&nbsp;For example, a document vector stores only the words in the document, not all words in the entire model. When comparing two documents, <span class="inline_code">dict.get()</span> is used with an optional default value for missing terms:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">v1 = document1.vector
+v2 = document2.vector
+similarity = sum(v1.get(w,0) * f for w, f in v2.items()) / (v1.norm * v2.norm or 1)</pre></div>
+<p>Once similarity is calculated it can be stored in a cache helper dictionary indexed by&nbsp;<span class="inline_code">(v1.id, v2.id)</span>. Since Python is slower than Java or C, profiling an algorithm&nbsp;and optimizing it with a caching mechanism is often useful. See also <span class="inline_code">pattern.metrics.profile()</span>.</p>
+<h3>List comprehensions</h3>
+<p>We make abundant use of list comprehensions (single line <span class="inline_code">for</span>). They are often faster than <span class="inline_code">for</span> or <span class="inline_code">map()</span>. Another advantage is that multiple lines of nested <span class="inline_code">for</span> and <span class="inline_code">if</span> can be bundled into a single statement. A disadvantage is that sometimes it is harder to read the code – in which case a comment should be added:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;"># Split string into words and remove punctuation.
+words = s.replace("\n", "\n ")
+words = (w.strip(punctuation) for w in words.split(" ")) # generator
+words = [w for w in words if w != ""]</pre></div>
+<h3>Ternary operator</h3>
+<p>Pattern supports Python 2.4 (some web servers still run it), which does not have the ternary operator.&nbsp;The ternary operator (single line <span class="inline_code">if</span>) is available since Python 2.5:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">s = s.lower() if lowercase is True else s # Python 2.5</pre></div>
+<p>Instead we use a boolean condition:</p>
+<div class="example">
+<pre class="brush:python; gutter:false; light:true;">s = lowercase is True and s.lower() or s  # Python 2.4</pre></div>
+<p>This is useful in combination with list comprehensions. Care must be taken for values <span class="inline_code">0</span>, <span class="inline_code">''</span>, <span class="inline_code">[]</span>, <span class="inline_code">()</span>, <span class="inline_code">{}</span>, and <span class="inline_code">None</span>, since they evaluate to <span class="inline_code">False</span> and might trigger the <span class="inline_code">or</span>-clause. <br />For example,&nbsp;<span class="inline_code">score = word not in vector and 0 or 1</span>&nbsp;&nbsp;<em>always</em> results in 1.</p>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="quality"></a>Code quality</h2>
+<p>The source code numbers about 25,000 lines of Python code + 20,000 lines of bundled external projects (Universal Feed Parser, simplejson, PDFminer, Beautiful Soup, PyWordNet, LIBSVM). You can use <a href="http://www.logilab.org/857" target="_blank">pylint</a>&nbsp;from the shell to check the quality of the source code and look for possible bugs:</p>
+<div class="install">
+<pre class="gutter:false; light:true;">&gt; cd pattern
+&gt; pylint pattern --rcfile=.pylintrc&nbsp;</pre></div>
+<p>The configuration file <span class="inline_code">.pylintrc</span> defines a number of customized settings:</p>
+<ol>
+<li>pylint complains about lines longer than 80 characters, but we use a more relaxed 100 characters.</li>
+<li>Ignore pylint id <span class="inline_code">C0103</span>. We use single-character variable names (see above).</li>
+<li>Ignore pylint id <span class="inline_code">W0142</span>. We think <span class="inline_code">*args</span> and <span class="inline_code">**kwargs</span> are powerful Python features, not magic.</li>
+<li>Ignore bundled third-party modules (e.g., Beautiful Soup, pywordnet, libsvm).</li>
+</ol>
+<p>With these settings the code scores about 7.3. It scores about 4.0 with the default settings. Message id's to look out for are those starting with <span class="inline_code">E</span>, which are possible bugs.</p>
+<p>Over 20% of the source code is unit testing (see <a href="http://docs.python.org/library/unittest.html" target="_blank">PyUnit</a>). If you implement new functionality, also add unit tests for it. This ensures that the code continues to run correctly even after further changes are made.</p>
+<p>&nbsp;</p>
+<hr />
+<h2><a name="language"></a>Language support</h2>
+<p>Pattern bundles a parser for English that can be used to annotate words with their part-of-speech tag<em> (</em>is <em>can</em> a noun or a verb?), to inflect verbs, to predict positive or negative opinion in text, etc.&nbsp;As of 2005, there are 340 million native speakers of English. We are interested in adding support for other languages, if we can collaborate with native speakers of those languages.&nbsp;</p>
+<p>Here is an overview of some languages on the to-do list (but we are interested in all languages):</p>
+<table class="border">
+<tbody>
+<tr>
+<td><span class="smallcaps">Language</span></td>
+<td style="text-align: center;"><span class="smallcaps">Code</span></td>
+<td style="text-align: center;"><span class="smallcaps">Speakers</span></td>
+<td><span class="smallcaps">Example countries</span></td>
+</tr>
+<tr>
+<td><s>Spanish</s></td>
+<td style="text-align: center;"><span class="inline_code">es</span></td>
+<td style="text-align: center;"><span class="smallcaps">350m</span></td>
+<td>Argentina (<span class="smallcaps">40m</span>), Colombia (<span class="smallcaps">40m</span>), Mexico (<span class="smallcaps">110m</span>), Spain (<span class="smallcaps">45m</span>)</td>
+</tr>
+<tr>
+<td><s>English</s></td>
+<td style="text-align: center;"><span class="inline_code">en</span></td>
+<td style="text-align: center;"><span class="smallcaps">340m</span></td>
+<td>Canada (<span class="smallcaps">30m</span>), United Kingdom (<span class="smallcaps">60m</span>), United States (<span class="smallcaps">300m</span>)</td>
+</tr>
+<tr>
+<td><s>German</s></td>
+<td style="text-align: center;"><span class="inline_code">de</span></td>
+<td style="text-align: center;"><span class="smallcaps">100m</span></td>
+<td>Austria (<span class="smallcaps">10m</span>), Germany (<span class="smallcaps">80m</span>), Switzerland (<span class="smallcaps">7m</span>)</td>
+</tr>
+<tr>
+<td><span class="Apple-style-span" style="line-height: 19px;"><s>French</s></span></td>
+<td style="text-align: center;"><span class="inline_code">fr</span></td>
+<td style="text-align: center;"><span class="smallcaps">70m</span></td>
+<td>France (<span class="smallcaps">65m</span>),&nbsp;Côte d'Ivoire (<span class="smallcaps">20m</span>)</td>
+</tr>
+<tr>
+<td><span class="Apple-style-span" style="line-height: 19px;"><s>Italian</s></span></td>
+<td style="text-align: center;"><span class="inline_code">it</span></td>
+<td style="text-align: center;"><span class="smallcaps">60m</span></td>
+<td>Italy (<span class="smallcaps">60m</span>)</td>
+</tr>
+<tr>
+<td><s>Dutch</s></td>
+<td style="text-align: center;"><span class="inline_code">nl</span></td>
+<td style="text-align: center;"><span class="smallcaps">25M</span></td>
+<td>Netherlands (<span class="smallcaps">15m</span>), Belgium (<span class="smallcaps">5m</span>), Suriname (<span class="smallcaps">1m</span>)</td>
+</tr>
+</tbody>
+</table>
+<h3>Reference corpus</h3>
+<p>The parser consists of a <a href="http://en.wikipedia.org/wiki/Brill_tagger" target="_blank">Brill tagger</a> and regular expressions for tokenization and chunking (see <span class="inline_code">pattern/text/__init__.py</span>).&nbsp;</p>
+<p>Tokenization splits punctuation marks from words. Chunking groups words that belong together (e.g.<em>, the black cat</em>). The tokenizer, tagger and chunker in <span class="inline_code">pattern.text</span> can be reused for any language,&nbsp;but may need further refactoring for new languages.</p>
+<p>Brill's tagger is based on a lookup dictionary of common words and their part-of-speech tag (<em>black</em>&nbsp;→ adjective). This dictionary (or <strong>lexicon</strong>) is "trained" on text that has been manually tagged by people (called a <strong>reference corpus</strong>). To support a new language in Pattern, a Brill lexicon is required. Therefore, a reference corpus is required. We can then count the most frequent words in the corpus and include them in the lexicon together with their part-of-speech tag. The bigger the available corpus (e.g., 1 million words) the better the lexicon. For example, for English there is <a href="http://en.wikipedia.org/wiki/Brown_Corpus" target="_blank">Brown corpus</a>.</p>
+<p>There are two tutorials that demonstrate how to build a lexicon for Spanish and Italian:</p>
+<ul>
+<li><a href="http://www.clips.ua.ac.be/pages/using-wiktionary-to-build-an-italian-part-of-speech-tagger">Using Wikitionary to build an Italian part-of-speech tagger</a></li>
+<li><a href="http://www.clips.ua.ac.be/pages/using-wikicorpus-nltk-to-build-a-spanish-part-of-speech-tagger">Using Wikicorpus &amp; NLTK to build a Spanish part-of-speech tagger</a></li>
+</ul>
+<h3>Tranformation rules</h3>
+<p>Some words can have a different part-of-speech depending on how they are used in a sentence. For example: in "<em>the cat can have a can of tuna</em>" the word <em>can</em> is used both as a verb and as a noun. Brill's tagger uses the lexicon together with transformation rules that improve the predicted part-of-speech tag according to where a word occurs in a sentence. A set of rules can be trained from the reference corpus, using Brill's algorithm. The original algorithm is written in C and is available <a href="http://www.clips.ua.ac.be/media/RBT1_14.tgz">here</a>. A Python implementation is bundled in <a href="http://nltk.googlecode.com/svn/trunk/doc/api/nltk.tag.brill-module.html" target="_blank">NLTK</a>.</p>
+<p>The Brill tagger typically achieves an accuracy of 94-97%. More robust methods exist (for example, <a href="/MBSP" target="_blank">MBSP</a>) that achieve an accuracy of 98-99%. We use a Brill tagger because it is fast and economic in memory usage, making it well-suited for web applications.</p>
+<h3>Inflection rules</h3>
+<p>The parser is further augmented with regular expressions to singularize nouns (<em>cats</em>&nbsp;→ <em>cat</em>), conjugate verbs and adjective attribution (<em>un garçon <span style="text-decoration: underline;">curieux</span></em>, <em>des filles <span style="text-decoration: underline;">curieuses</span></em>). This is used to implement the parser's lemmatizer (i.e., word base forms), which is important for text mining purposes (we want to bring <em>curieux</em> and <em>curieuses</em> together). See for example <span class="inline_code">pattern/text/en/inflect/</span>. In general, simple regular expressions for inflection can attain a fair accuracy (+90%) but the task is non-trivial and requires certain effort (1-2 weeks of work).</p>
+<p>Other support modules such as <span class="inline_code">tree.py</span> are language-indepent.</p>
+</div>
+</div></div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
+</body>
+</html>

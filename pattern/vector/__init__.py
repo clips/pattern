@@ -198,6 +198,8 @@ for f in glob.glob(os.path.join(MODULE, "stopwords-*.txt")):
     stopwords[language] = dict.fromkeys(w, True)
 
 # The following English words could also be meaningful nouns:
+
+#from pattern.vector import stopwords
 #for w in ["mine", "us", "will", "can", "may", "might"]:
 #    stopwords["en"].pop(w)
 
@@ -734,6 +736,14 @@ def features(vectors=[]):
 
 _features = features
 
+def sparse(v):
+    """ Returns the vector with features that have weight 0 removed.
+    """
+    for f, w in list(v.iteritems()):
+        if w == 0:
+            del v[f]
+    return v
+
 def relative(v):
     """ Returns the vector with feature weights normalized so that their sum is 1.0 (in-place).
     """
@@ -926,7 +936,7 @@ class Model(object):
         keys = sorted(self.vector.keys())
         s = []
         # Orange tab format:
-        if format == ORANGE:
+        if format.lower() == ORANGE:
             s.append("\t".join(keys + ["m#name", "c#type"]))
             for document in self.documents:
                 v = document.vector
@@ -935,7 +945,7 @@ class Model(object):
                 v = "%s\t%s\t%s" % (v, document.name or "", document.type or "")
                 s.append(v)
         # Weka ARFF format:
-        if format == WEKA:
+        if format.lower() == WEKA:
             s.append("@RELATION %s" % kwargs.get("name", hash(self)))
             s.append("\n".join("@ATTRIBUTE %s NUMERIC" % k for k in keys))
             s.append("@ATTRIBUTE class {%s}" % ",".join(set(d.type or "" for d in self.documents)))
@@ -947,7 +957,7 @@ class Model(object):
                 v = "%s,%s" % (v, document.type or "")
                 s.append(v)
         s = "\n".join(s)
-        f = open(path, "w", encoding="utf-8")
+        f = open(path, "wb", encoding="utf-8")
         f.write(decode_utf8(s))
         f.close()
     
@@ -995,6 +1005,7 @@ class Model(object):
     def extend(self, documents):
         """ Extends the model with the given list of documents.
         """
+        documents = list(documents)
         for i, document in enumerate(documents):
             if not isinstance(document, Document):
                 documents[i] = Document(document)
@@ -1117,12 +1128,12 @@ class Model(object):
             # Using LSA concept space:
             v1 = id1 in self.lsa and self.lsa[id1] or self._lsa.transform(document1)
             v2 = id2 in self.lsa and self.lsa[id2] or self._lsa.transform(document2)
-            s = sum(a * b for a, b in izip(v1.itervalues(), v2.itervalues())) / (v1.norm * v2.norm or 1)
+            s = cosine_similarity(v1, v2)
         # Cache the similarity weight for reuse.
         self._cos[(id1, id2)] = s
         return s
         
-    similarity = cosine_similarity
+    similarity = cos = cosine_similarity
     
     def nearest_neighbors(self, document, top=10):
         """ Returns a list of (similarity, document)-tuples in the model, 
@@ -1442,6 +1453,11 @@ class LSA(object):
                     print document, concept
         """
         return self.u
+        
+    def vector(self, id):
+        if isinstance(id, Document):
+            id = id.id
+        return self.u[id]
 
     def __getitem__(self, id):
         return self.u[id]
@@ -1747,9 +1763,12 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
         centroids.append((id.next(), v))
     return clusters
 
+#from pattern.vector import Vector
+#
 #v1 = Vector(wings=0, beak=0, claws=1, paws=1, fur=1) # cat
 #v2 = Vector(wings=0, beak=0, claws=0, paws=1, fur=1) # dog
 #v3 = Vector(wings=1, beak=1, claws=1, paws=0, fur=0) # bird
+#
 #print hierarchical([v1, v2, v3])
 
 #### CLASSIFIER ####################################################################################
@@ -1772,9 +1791,11 @@ class Classifier(object):
             where document can be a Document, Vector, dict or string
             (dicts and strings are implicitly converted to vectors).
         """
-        self._vectors  = []       # List of trained (type, vector)-tuples.
-        self._classes  = {}       # Dict of (class, frequency)-items.
-        self._baseline = baseline # Default predicted class.
+        self.description = ""       # Description of the dataset: author e-mail, etc.
+        self._data       = {}       # Custom data for (pickleable) subclasses.
+        self._vectors    = []       # List of trained (type, vector)-tuples.
+        self._classes    = {}       # Dict of (class, frequency)-items.
+        self._baseline   = baseline # Default predicted class.
         # Train on the list of Document objects or (document, type)-tuples:
         for d in (isinstance(d, Document) and (d, d.type) or d for d in train):
             self.train(*d)
@@ -2088,7 +2109,7 @@ MULTINOMIAL = "multinomial" # Feature weighting.
 BINOMIAL    = "binomial"    # Feature occurs in class (1) or not (0).
 BERNOUILLI  = "bernouilli"  # Feature occurs in class (1) or not (0).
 
-class NaiveBayes(Classifier):
+class NB(Classifier):
     
     def __init__(self, train=[], baseline=MAJORITY, method=MULTINOMIAL, alpha=0.0001):
         """ Naive Bayes is a simple supervised learning method for text classification.
@@ -2172,7 +2193,7 @@ class NaiveBayes(Classifier):
         except:
             return self.baseline
 
-Bayes = NB = NaiveBayes
+Bayes = NaiveBayes = NB
 
 #--- K-NEAREST NEIGHBOR CLASSIFIER -----------------------------------------------------------------
 
@@ -2225,22 +2246,26 @@ class KNN(Classifier):
 
 NearestNeighbor = kNN = KNN
 
-#d1 = Document("cats have stripes, purr and drink milk", type="cat", threshold=0, stemmer=None)
-#d2 = Document("cows are black and white, they moo and give milk", type="cow", threshold=0, stemmer=None)
-#d3 = Document("birds have wings and can fly", type="bird", threshold=0, stemmer=None)
-#knn = kNN()
+#from pattern.vector import Document, KNN 
+#
+#d1 = Document("cats have stripes, purr and drink milk", type="cat")
+#d2 = Document("cows are black and white, they moo and give milk", type="cow")
+#d3 = Document("birds have wings and can fly", type="bird")
+#
+#knn = KNN()
 #for d in (d1, d2, d3):
 #    knn.train(d)
+#
 #print knn.binary
 #print knn.classes
-#print knn.classify(Document("something that can fly", threshold=0, stemmer=None))
+#print knn.classify(Document("something that can fly"))
 #print KNN.test((d1, d2, d3), folds=2)
 
 #--- SINGLE-LAYER PERCEPTRON ------------------------------------------------------------------------
 
 class SLP(Classifier):
     
-    def __init__(self, train=[], baseline=MAJORITY):
+    def __init__(self, train=[], baseline=MAJORITY, iterations=1):
         """ Perceptron (SLP, single-layer averaged perceptron) is a simple artificial neural network,
             a supervised learning method sometimes used for i.a. part-of-speech tagging.
             Documents are classified based on the neuron that outputs the highest weight
@@ -2248,12 +2273,13 @@ class SLP(Classifier):
             A feature is taken to occur in a vector (1) or not (0), i.e. BINARY weight.
         """
         self._weight    = defaultdict(dict) # {class: {feature: (weight, weight sum, timestamp)}}
-        self._iteration = 0                 # iteration
+        self._iteration = 0
+        train = chain(*(shuffled(train) for i in range(iterations)))
         Classifier.__init__(self, train, baseline)
 
     @property
     def features(self):
-        return list(features(self._weights))
+        return list(set(chain(*(f.iterkeys() for f in self._weight.itervalues()))))
         
     def train(self, document, type=None):
         """ Trains the classifier with the given document of the given type (i.e., class).
@@ -2261,6 +2287,8 @@ class SLP(Classifier):
             If no type is given, Document.type will be used instead.
         """
         def _accumulate(type, feature, weight, i):
+            # Collins M. (2002). Discriminative Training Methods for Hidden Markov Models. EMNLP 2002.
+            # Based on: http://honnibal.wordpress.com/2013/09/11/
             # Accumulate average weights (prevents overfitting).
             # Instead of keeping all intermediate results and averaging them at the end,
             # we keep a running sum and the iteration in which the sum was last modified.
@@ -2270,14 +2298,13 @@ class SLP(Classifier):
             w[feature] = (w0, (i-j) * w0 + w1, i)
         type, vector = self._vector(document, type=type)
         self._classes[type] = self._classes.get(type, 0) + 1
-        self._iteration += 1
         t1 = type
         t2 = SLP.classify(self, document)
         if t1 != t2: # Error correction.
-            i = self._iteration
+            self._iteration += 1
             for f in vector:
-                _accumulate(t1, f, +1, i)
-                _accumulate(t2, f, -1, i)
+                _accumulate(t1, f, +1, self._iteration)
+                _accumulate(t2, f, -1, self._iteration)
 
     def classify(self, document, discrete=True):
         """ Returns the type with the highest probability for the given document.
@@ -2297,8 +2324,10 @@ class SLP(Classifier):
                     s += ((i-j) * w0 + w1) / i
             p[type] = s
         # Normalize probability estimates.
-        s = sum(p.itervalues()) or 1
+        m = min(chain(p.itervalues(), (0,)))
+        s = sum(x-m for x in p.itervalues()) or 1
         for type in p:
+            p[type] -= m
             p[type] /= s
         if not discrete:
             return p
@@ -2313,6 +2342,17 @@ class SLP(Classifier):
             return self.baseline
 
 ANN = NN = AP = AveragedPerceptron = Perceptron = SLP
+
+# Perceptron learns one training example at a time,
+# adjusting weights if the example is predicted wrong.
+# Higher accuracy can be achieved by doing multiple iterations:
+
+#from pattern.vector import Perceptron, shuffled
+#
+#p = Perceptron()
+#for i in range(5):
+#    for v in shuffled(data):
+#        p.train(v)
 
 #--- SUPPORT VECTOR MACHINE ------------------------------------------------------------------------
 # Pattern comes bundled with LIBSVM 3.17:
