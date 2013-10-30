@@ -77,7 +77,7 @@ setup(
         "pattern.web.pdf"         : ["*.txt", "cmap/*"],
         "pattern.web.soup"        : ["*"],
         "pattern.text.de"         : ["*.txt", "*.xml"],
-        "pattern.text.en"         : ["*.txt", "*.xml"],
+        "pattern.text.en"         : ["*.txt", "*.xml", "*.slp"],
         "pattern.text.en.wordlist": ["*.txt"],
         "pattern.text.en.wordnet" : ["*.txt", "dict/*"],
         "pattern.text.en.wordnet.pywordnet": ["*"],
