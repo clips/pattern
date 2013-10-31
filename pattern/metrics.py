@@ -71,7 +71,7 @@ def duration(function, *args, **kwargs):
     return time() - t
 
 def profile(function, *args, **kwargs):
-    """ Returns the performance statistics (as a string) of the given Python function.
+    """ Returns the performance analysis (as a string) of the given Python function.
     """
     def run():
         function(*args, **kwargs)
@@ -88,7 +88,7 @@ def profile(function, *args, **kwargs):
     profile.run("__profile_run__()", id)
     p = pstats.Stats(id)
     p.stream = open(id, "w")
-    p.sort_stats("time").print_stats(20)
+    p.sort_stats("cumulative").print_stats(30)
     p.stream.close()
     s = open(id).read()
     os.remove(id)
@@ -321,14 +321,15 @@ def flesch_reading_ease(string):
     string = string.replace("!", ".")
     string = string.replace("?", ".")
     string = string.replace(",", " ")
+    string = " ".join(string.split())
     y = [count_syllables(w) for w in string.split() if w != ""]
     w = len([w for w in string.split(" ") if w != ""])
     s = len([s for s in string.split(".") if len(s) > 2])
     #R = 206.835 - 1.015 * w/s - 84.6 * sum(y)/w
     # Use the Farr, Jenkins & Patterson algorithm,
     # which uses simpler syllable counting (count_syllables() is the weak point here). 
-    R = 1.599 * sum(1 for v in y if v == 1) * 100 / w - 1.015*w/s - 31.517
-    R = max(0.0, min(R*0.01, 1.0))
+    R = 1.599 * sum(1 for v in y if v == 1) * 100 / w - 1.015 * w / s - 31.517
+    R = max(0.0, min(R * 0.01, 1.0))
     return R
 
 readability = flesch_reading_ease
@@ -350,7 +351,7 @@ def ngrams(string, n=3, punctuation=PUNCTUATION, **kwargs):
     s = s.replace("!", " !")
     s = [w.strip(punctuation) for w in s.split()]
     s = [w.strip() for w in s if w.strip()]
-    return [tuple(s[i:i+n]) for i in range(len(s)-n+1)]
+    return [tuple(s[i:i+n]) for i in range(len(s) - n + 1)]
 
 class Weight(float):
     """ A float with a magic "assessments" property,
@@ -369,7 +370,7 @@ class Weight(float):
     def __idiv__(self, value):
         return Weight(self / value, self.assessments)
 
-def intertextuality(texts=[], n=5, continuous=False, weight=lambda ngram: 1):
+def intertextuality(texts=[], n=5, weight=lambda ngram: 1.0, **kwargs):
     """ Returns a dictionary of (i, j) => float.
         For indices i and j in the given list of texts,
         the corresponding float is the percentage of text i that is also in text j.
@@ -379,7 +380,7 @@ def intertextuality(texts=[], n=5, continuous=False, weight=lambda ngram: 1):
     map = {} # n-gram => text id's
     sum = {} # text id => sum of weight(n-gram)
     for i, txt in enumerate(texts):
-        for j, ngram in enumerate(ngrams(txt, n, continuous=continuous)):
+        for j, ngram in enumerate(ngrams(txt, n, **kwargs)):
             if ngram not in map:
                 map[ngram] = set()
             map[ngram].add(i)
@@ -400,17 +401,18 @@ def intertextuality(texts=[], n=5, continuous=False, weight=lambda ngram: 1):
 
 #--- WORD TYPE-TOKEN RATIO -------------------------------------------------------------------------
 
-def type_token_ratio(string):
+def type_token_ratio(string, n=100, punctuation=PUNCTUATION):
     """ Returns the percentage of unique words in the given string as a number between 0.0-1.0,
-        as opposed to the total number of words.
+        as opposed to the total number of words (= lexical diversity, vocabulary richness).
     """
-    u = {}
-    n = 0
-    for w in string.lower().split():
-        w = w.strip(PUNCTUATION)
-        u[w] = True
-        n += 1
-    return float(len(u)) / (n or 1)
+    def window(a, n=100):
+        if n > 0:
+            for i in xrange(max(len(a) - n + 1, 1)):
+                yield a[i:i+n]
+    s = string.lower().split()
+    s = [w.strip(punctuation) for w in s]
+    # Covington & McFall moving average TTR algorithm.
+    return mean(1.0 * len(set(x)) / len(x) for x in window(s, n))
 
 ttr = type_token_ratio
 
@@ -460,18 +462,23 @@ def isplit(string, sep="\t\n\x0b\x0c\r "):
         if a: yield "".join(a); a=[]
     if a: yield "".join(a)
 
-def cooccurrence(iterable, window=(-1,-1), match=lambda x: False, filter=lambda x: True, normalize=lambda x: x):
-    """ Returns the co-occurence matrix of terms in the given iterable
+def cooccurrence(iterable, window=(-1,-1), term1=lambda x: True, term2=lambda x: True, normalize=lambda x: x):
+    """ Returns the co-occurence matrix of terms in the given iterable, string, file or file list,
         as a dictionary: {term1: {term2: count, term3: count, ...}}.
-        A string can be given as an iterable over the words with: isplit(string).
-        A file can be given as an iterable over the words with: isplit(chain(*open("file.txt"))).
-        The given match() function determines search terms.
+        The given search() function determines search terms.
         The given filter() function determines co-occurring terms to count.
         The given normalize() function can be used to remove punctuation, lowercase words, etc.
         The given window, a (before, after)-tuple, specifies the size of the co-occurence window.
     """
     class Sentinel(object):
         pass
+    # Memory-efficient iteration:
+    if isinstance(iterable, basestring):
+        iterable = isplit(iterable)
+    if isinstance(iterable, (list, tuple)) and all(hasattr(f, "read") for f in iterable):
+        iterable = chain(*(isplit(chain(*x)) for x in iterable))
+    if hasattr(iterable, "read"):
+        iterable = isplit(chain(*iterable))
     # Window of terms before and after the search term.
     # Deque is more efficient than list.pop(0).
     q = deque()
@@ -496,12 +503,12 @@ def cooccurrence(iterable, window=(-1,-1), match=lambda x: False, filter=lambda 
             x1 = q[i]
             if not isinstance(x1, Sentinel):
                 x1 = normalize(x1)
-                if match(x1):
+                if term1(x1):
                     # Iterate the window and filter co-occurent terms.
                     for x2 in list(q).__getslice__(i+window[0], i+window[1]+1):
                         if not isinstance(x2, Sentinel):
                             x2 = normalize(x2)
-                            if filter(x2):
+                            if term2(x2):
                                 if x1 not in m:
                                     m[x1] = {}
                                 if x2 not in m[x1]:
@@ -516,16 +523,19 @@ co_occurrence = cooccurrence
 ## Words occuring before and after the word "cat":
 ## {"cat": {"sat": 1, "black": 1, "cat": 1}}
 #s = "The black cat sat on the mat."
-#print co_occurrence(isplit(s), window=(-1,1), 
-#        match = lambda w: w in ("cat",),
+#print cooccurrence(s, window=(-1,1), 
+#       search = lambda w: w in ("cat",),
 #    normalize = lambda w: w.lower().strip(".:;,!?()[]'\""))
 
 ## Adjectives preceding nouns:
 ## {("cat", "NN"): {("black", "JJ"): 1}}
 #s = [("The","DT"), ("black","JJ"), ("cat","NN"), ("sat","VB"), ("on","IN"), ("the","DT"), ("mat","NN")]
-#print co_occurrence(s, window=(-2,-1), 
-#        match = lambda token: token[1].startswith("NN"),
+#print cooccurrence(s, window=(-2,-1), 
+#       search = lambda token: token[1].startswith("NN"),
 #       filter = lambda token: token[1].startswith("JJ"))
+
+# Adjectives preceding nouns:
+# {("cat", "NN"): {("black", "JJ"): 1}}
 
 #### STATISTICS ####################################################################################
 
@@ -908,15 +918,15 @@ def erfc(x):
 
 #--- PROBABILITY DISTRIBUTION ----------------------------------------------------------------------
 
-def cdf(x, mu=0, sigma=1):
+def cdf(x, mu=0.0, sigma=1.0):
     """ Cumulative distribution function.
     """
     return min(1.0, 0.5 * erfc((-x + mu) / (sigma * 2**0.5)))
 
-def pdf(x, mu=0, sigma=1):
+def pdf(x, mu=0.0, sigma=1.0):
     """ Probability density function.
     """
-    u = (x - mu) / abs(sigma)
+    u = float(x - mu) / abs(sigma)
     return (1 / sqrt(2*pi) * abs(sigma)) * exp(-u*u / 2)
 
 def tpdf(x, df):

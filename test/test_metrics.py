@@ -127,13 +127,13 @@ class TestStringFunctions(unittest.TestCase):
             
     def test_readability(self):
         # Assert that technical jargon is in the "difficult" range (< 0.30).
-        s = "The Australian platypus is seemingly a hybrid of a mammal and reptilian creature"
+        s = "The Australian platypus is seemingly a hybrid of a mammal and reptilian creature."
         v = metrics.readability(s)
         self.assertTrue(v < 0.30)        
         # Assert that Dr. Seuss is in the "easy" range (> 0.70).
-        s = "'I know some good games we could play,' said the cat." + \
-            "'I know some new tricks,' said the cat in the hat." + \
-            "'A lot of good tricks. I will show them to you.'" + \
+        s = "'I know some good games we could play,' said the cat. " + \
+            "'I know some new tricks,' said the cat in the hat. " + \
+            "'A lot of good tricks. I will show them to you.' " + \
             "'Your mother will not mind at all if I do.'"
         v = metrics.readability(s)
         self.assertTrue(v > 0.70)
@@ -181,16 +181,16 @@ class TestStringFunctions(unittest.TestCase):
     
     def test_cooccurrence(self):
         s = "The black cat sat on the mat."
-        v = metrics.cooccurrence(metrics.isplit(s), window=(-1,1), 
-                match = lambda w: w in ("cat",),
+        v = metrics.cooccurrence(s, window=(-1, 1), 
+                term1 = lambda w: w in ("cat",),
             normalize = lambda w: w.lower().strip(".:;,!?()[]'\""))
         self.assertEqual(sorted(v.keys()), ["cat"])
         self.assertEqual(sorted(v["cat"].keys()), ["black", "cat", "sat"])
         self.assertEqual(sorted(v["cat"].values()), [1, 1, 1])
         s = [("The","DT"), ("black","JJ"), ("cat","NN"), ("sat","VB"), ("on","IN"), ("the","DT"), ("mat","NN")]
-        v = metrics.co_occurrence(s, window=(-2,-1), 
-             match = lambda token: token[1].startswith("NN"),
-            filter = lambda token: token[1].startswith("JJ"))
+        v = metrics.co_occurrence(s, window=(-2, -1), 
+             term1 = lambda token: token[1].startswith("NN"),
+             term2 = lambda token: token[1].startswith("JJ"))
         self.assertEqual(v, {("cat", "NN"): {("black", "JJ"): 1}})
         print "pattern.metrics.cooccurrence()"
 
@@ -374,7 +374,7 @@ class TestSpecialFunctions(unittest.TestCase):
           ( 2.00, 0.005),
           ( 3.00, 0.000)]:
             self.assertAlmostEqual(metrics.erfc(x), y, places=3)
-        print "pattern.metrics.erfc"
+        print "pattern.metrics.erfc()"
 
 #---------------------------------------------------------------------------------------------------
 
