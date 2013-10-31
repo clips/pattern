@@ -84,7 +84,7 @@ class TestProfiling(unittest.TestCase):
         self.assertAlmostEqual(v, 0.210, places=3)
         print "pattern.metrics.agreement()"
 
-class TestStringFunctions(unittest.TestCase):
+class TestTextMetrics(unittest.TestCase):
     
     def setUp(self):
         pass
@@ -381,7 +381,7 @@ class TestSpecialFunctions(unittest.TestCase):
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestProfiling))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestStringFunctions))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestTextMetrics))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestStatistics))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSpecialFunctions))
     return suite

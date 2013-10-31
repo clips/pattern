@@ -462,16 +462,20 @@ def isplit(string, sep="\t\n\x0b\x0c\r "):
         if a: yield "".join(a); a=[]
     if a: yield "".join(a)
 
-def cooccurrence(iterable, window=(-1,-1), term1=lambda x: True, term2=lambda x: True, normalize=lambda x: x):
+def cooccurrence(iterable, window=(-1,-1), term1=lambda x: True, term2=lambda x: True, normalize=lambda x: x, matrix=None, update=None):
     """ Returns the co-occurence matrix of terms in the given iterable, string, file or file list,
         as a dictionary: {term1: {term2: count, term3: count, ...}}.
-        The given search() function determines search terms.
-        The given filter() function determines co-occurring terms to count.
-        The given normalize() function can be used to remove punctuation, lowercase words, etc.
-        The given window, a (before, after)-tuple, specifies the size of the co-occurence window.
+        The window specifies the size of the co-occurence window.
+        The term1() function defines anchors.
+        The term2() function defines co-occurring terms to count.
+        The normalize() function can be used to remove punctuation, lowercase words, etc.
+        Optionally, a user-defined matrix to update can be given.
+        Optionally, a user-defined update(matrix, term1, term2, index2) function can be given.
     """
     class Sentinel(object):
         pass
+    if not isinstance(matrix, dict):
+        matrix = {}
     # Memory-efficient iteration:
     if isinstance(iterable, basestring):
         iterable = isplit(iterable)
@@ -486,7 +490,7 @@ def cooccurrence(iterable, window=(-1,-1), term1=lambda x: True, term2=lambda x:
     # Note that window=(0,0) will return a dictionary of search term frequency
     # (since it counts co-occurence with itself).
     n = -min(0, window[0]) + max(window[1], 0)
-    m = {}
+    m = matrix
     # Search terms may fall outside the co-occurrence window, e.g., window=(-3,-2).
     # We add sentinel markers at the start and end of the given iterable.
     for x in chain([Sentinel()] * n, iterable, [Sentinel()] * n):
@@ -505,10 +509,12 @@ def cooccurrence(iterable, window=(-1,-1), term1=lambda x: True, term2=lambda x:
                 x1 = normalize(x1)
                 if term1(x1):
                     # Iterate the window and filter co-occurent terms.
-                    for x2 in list(q).__getslice__(i+window[0], i+window[1]+1):
+                    for j, x2 in enumerate(list(q).__getslice__(i+window[0], i+window[1]+1)):
                         if not isinstance(x2, Sentinel):
                             x2 = normalize(x2)
                             if term2(x2):
+                                if update:
+                                    update(matrix, x1, x2, j); continue
                                 if x1 not in m:
                                     m[x1] = {}
                                 if x2 not in m[x1]:
@@ -541,80 +547,82 @@ co_occurrence = cooccurrence
 
 #--- MEAN ------------------------------------------------------------------------------------------
 
-def mean(list):
+def mean(iterable):
     """ Returns the arithmetic mean of the given list of values.
         For example: mean([1,2,3,4]) = 10/4 = 2.5.
     """
     s = 0
     n = 0
-    for x in list:
+    for x in iterable:
         s += x
         n += 1
     return float(s) / (n or 1)
 
 avg = mean
 
-def median(list):
+def median(iterable):
     """ Returns the value that separates the lower half from the higher half of values in the list.
     """
-    s = sorted(list)
-    n = len(list)
+    s = sorted(iterable)
+    n = len(s)
     if n == 0:
         raise ValueError, "median() arg is an empty sequence"
     if n % 2 == 0:
-        return float(s[(n/2)-1] + s[n/2]) / 2
-    return s[n/2]
+        return float(s[(n // 2) - 1] + s[n // 2]) / 2
+    return s[n // 2]
 
-def variance(list, sample=True):
+def variance(iterable, sample=False):
     """ Returns the variance of the given list of values.
         The variance is the average of squared deviations from the mean.
     """
     # Sample variance = E((xi-m)^2) / (n-1)
     # Population variance = E((xi-m)^2) / n
-    m = mean(list)
-    return sum((x-m)**2 for x in list) / (len(list)-int(sample) or 1)
-    
-def standard_deviation(list, *args, **kwargs):
+    a = list(iterable)
+    m = mean(a)
+    return sum((x - m) ** 2 for x in a) / (len(a) - int(sample) or 1)
+
+def standard_deviation(iterable, *args, **kwargs):
     """ Returns the standard deviation of the given list of values.
         Low standard deviation => values are close to the mean.
         High standard deviation => values are spread out over a large range.
     """
-    return sqrt(variance(list, *args, **kwargs))
+    return sqrt(variance(iterable, *args, **kwargs))
     
 stdev = standard_deviation
 
-def histogram(list, k=10, range=None):
+def histogram(iterable, k=10, range=None):
     """ Returns a dictionary with k items: {(start, stop): [values], ...},
         with equal (start, stop) intervals between min(list) => max(list).
     """
     # To loop through the intervals in sorted order, use:
-    # for (i,j), values in sorted(histogram(list).items()):
-    #     m = i + (j-i)/2 # midpoint
+    # for (i, j), values in sorted(histogram(iterable).items()):
+    #     m = i + (j - i) / 2 # midpoint
     #     print i, j, m, values
-    if range is None:
-        range = (min(list), max(list))
+    a = list(iterable)
+    r = range or (min(a), max(a))
     k = max(int(k), 1)
-    w = float(range[1] - range[0] + 0.000001) / k # interval (bin width)
+    w = float(r[1] - r[0] + 0.000001) / k # interval (bin width)
     h = [[] for i in xrange(k)]
-    for x in list:
-        i = int(floor((x-range[0]) / w))
+    for x in a:
+        i = int(floor((x - r[0]) / w))
         if 0 <= i < len(h): 
-            #print x, i, "(%.2f, %.2f)" % (range[0]+w*i, range[0]+w+w*i)
+            #print x, i, "(%.2f, %.2f)" % (r[0] + w * i, r[0] + w + w * i)
             h[i].append(x)
-    return dict(((range[0]+w*i, range[0]+w+w*i), v) for i, v in enumerate(h))
+    return dict(((r[0] + w * i, r[0] + w + w * i), v) for i, v in enumerate(h))
 
 #--- MOMENT ----------------------------------------------------------------------------------------
 
-def moment(list, k=1):
+def moment(iterable, k=1, sample=False):
     """ Returns the kth central moment of the given list of values
         (2nd central moment = variance, 3rd and 4th are used to define skewness and kurtosis).
     """
     if k == 1:
         return 0.0
-    m = mean(list)
-    return sum([(x-m)**k for x in list]) / (len(list) or 1)
-    
-def skewness(list):
+    a = list(iterable)
+    m = mean(a)
+    return sum((x - m) ** k for x in a) / (len(a) - int(sample) or 1)
+
+def skewness(iterable, sample=False):
     """ Returns the degree of asymmetry of the given list of values:
         > 0.0 => relatively few values are higher than mean(list),
         < 0.0 => relatively few values are lower than mean(list),
@@ -622,18 +630,18 @@ def skewness(list):
     """
     # Distributions with skew and kurtosis between -1 and +1 
     # can be considered normal by approximation.
-    return moment(list, 3) / (moment(list, 2) ** 1.5 or 1)
+    return moment(iterable, 3, sample) / (moment(iterable, 2, sample) ** 1.5 or 1)
 
 skew = skewness
 
-def kurtosis(list):
+def kurtosis(iterable, sample=False):
     """ Returns the degree of peakedness of the given list of values:
         > 0.0 => sharper peak around mean(list) = more infrequent, extreme values,
         < 0.0 => wider peak around mean(list),
         = 0.0 => normal distribution,
         =  -3 => flat
     """
-    return moment(list, 4) / (moment(list, 2) ** 2.0 or 1) - 3
+    return moment(iterable, 4, sample) / (moment(iterable, 2, sample) ** 2.0 or 1) - 3
 
 #a = 1
 #b = 1000
@@ -642,7 +650,7 @@ def kurtosis(list):
 
 #--- QUANTILE --------------------------------------------------------------------------------------
 
-def quantile(list, p=0.5, sort=True, a=1, b=-1, c=0, d=1):
+def quantile(iterable, p=0.5, sort=True, a=1, b=-1, c=0, d=1):
     """ Returns the value from the sorted list at point p (0.0-1.0).
         If p falls between two items in the list, the return value is interpolated.
         For example, quantile(list, p=0.5) = median(list)
@@ -650,8 +658,8 @@ def quantile(list, p=0.5, sort=True, a=1, b=-1, c=0, d=1):
     # Based on: Ernesto P. Adorio, http://adorio-research.org/wordpress/?p=125
     # Parameters a, b, c, d refer to the algorithm by Hyndman and Fan (1996):
     # http://stat.ethz.ch/R-manual/R-patched/library/stats/html/quantile.html
-    s = sort is True and sorted(list) or list
-    n = len(list)
+    s = sort is True and sorted(iterable) or list(iterable)
+    n = len(s)
     f, i = modf(a + (b+n) * p - 1)
     if n == 0:
         raise ValueError, "quantile() arg is an empty sequence"
@@ -666,14 +674,14 @@ def quantile(list, p=0.5, sort=True, a=1, b=-1, c=0, d=1):
 
 #print quantile(range(10), p=0.5) == median(range(10))
 
-def boxplot(list, **kwargs):
+def boxplot(iterable, **kwargs):
     """ Returns a tuple (min(list), Q1, Q2, Q3, max(list)) for the given list of values.
         Q1, Q2, Q3 are the quantiles at 0.25, 0.5, 0.75 respectively.
     """
     # http://en.wikipedia.org/wiki/Box_plot
     kwargs.pop("p", None)
     kwargs.pop("sort", None)
-    s = sorted(list)
+    s = sorted(iterable)
     Q1 = quantile(s, p=0.25, sort=False, **kwargs)
     Q2 = quantile(s, p=0.50, sort=False, **kwargs)
     Q3 = quantile(s, p=0.75, sort=False, **kwargs)
@@ -773,8 +781,8 @@ def pearson_chi_squared_test(observed=[], expected=[], df=None, tail=UPPER):
     # The P-value (upper tail area) is obtained from the incomplete gamma integral:
     # P(X2 | v) = gammai(v/2, x/2) with v degrees of freedom.
     # See: Cephes, https://github.com/scipy/scipy/blob/master/scipy/special/cephes/chdtr.c
-    O  = observed
-    E  = expected or _expected(observed)
+    O  = list(observed)
+    E  = list(expected) or _expected(O)
     df = df or (len(O) > 0 and len(O[0])-1 or 0)
     X2 = 0.0
     for i in range(len(O)):
@@ -804,8 +812,8 @@ def pearson_log_likelihood_ratio(observed=[], expected=[], df=None, tail=UPPER):
         P < 0.05: significant
         P < 0.01: very significant
     """
-    O  = observed
-    E  = expected or _expected(observed)
+    O  = list(observed)
+    E  = list(expected) or _expected(O)
     df = df or (len(O) > 0 and len(O[0])-1 or 0)
     G  = 0.0
     for i in range(len(O)):
