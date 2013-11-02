@@ -2416,11 +2416,11 @@ class SVM(Classifier):
             kwargs.get("extension", (LIBSVM, LIBLINEAR)))
         # Optional parameters are read-only:
         if len(args) > 0: 
-            kwargs.setdefault(  "type", args[0])
+            kwargs.setdefault( "train", args[0])
         if len(args) > 1: 
-            kwargs.setdefault("kernel", args[1])
+            kwargs.setdefault(  "type", args[1])
         if len(args) > 2: 
-            kwargs.setdefault("degree", args[2])
+            kwargs.setdefault("kernel", args[2])
         for k1, k2, v in (
             (       "type", "s", CLASSIFICATION),
             (     "kernel", "t", LINEAR),

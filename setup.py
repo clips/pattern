@@ -55,7 +55,7 @@ setup(
         "pattern.web.json",
         "pattern.web.oauth",
         "pattern.web.pdf",
-        "pattern.web.soup"
+        "pattern.web.soup",
         "pattern.db",
         "pattern.text",
         "pattern.text.de",
