@@ -439,7 +439,7 @@ has_alpha = lambda string: ALPHA.match(string) is not None
 
 class Constraint(object):
     
-    def __init__(self, words=[], tags=[], chunks=[], roles=[], taxa=[], optional=False, multiple=False, first=False, taxonomy=TAXONOMY, exclude=None):
+    def __init__(self, words=[], tags=[], chunks=[], roles=[], taxa=[], optional=False, multiple=False, first=False, taxonomy=TAXONOMY, exclude=None, custom=None):
         """ A range of words, tags and taxonomy terms that matches certain words in a sentence.        
             For example: 
             Constraint.fromstring("with|of") matches either "with" or "of".
@@ -458,6 +458,7 @@ class Constraint(object):
         self.multiple = multiple
         self.first    = first
         self.exclude  = exclude      # Constraint of words that are *not* allowed, or None.
+        self.custom   = custom       # Custom function that takes a Word and returns True is the word is part of the constraint
         
     @classmethod
     def fromstring(cls, s, **kwargs):
@@ -620,6 +621,9 @@ class Constraint(object):
                     for p in self.taxonomy.parents(s, recursive=True):
                         if find(lambda s: p==s, self.taxa): # No wildcards.
                             return True
+        # If the constraint contains a custom function
+        if self.custom is not None and not self.custom(word):
+            b = False
         return b
     
     def __repr__(self):
