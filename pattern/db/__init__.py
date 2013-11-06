@@ -1687,8 +1687,10 @@ class CSV(list):
         return csv
 
     def __init__(self, rows=[], fields=None, **kwargs):
-        # List of (name, type)-tuples (STRING, INTEGER, FLOAT, DATE, BOOLEAN)..
-        self.__dict__["fields"] = fields or kwargs.pop("headers", None)
+        # List of (name, type)-tuples (STRING, INTEGER, FLOAT, DATE, BOOLEAN).
+        fields = fields or kwargs.pop("headers", None)
+        fields = fields and [f if isinstance(f, tuple) else (f, None) for f in fields] or None
+        self.__dict__["fields"] = fields
         if hasattr(rows, "__iter__"):
             self.extend(rows, **kwargs)
 
@@ -2030,6 +2032,8 @@ def flip(datasheet):
 def csv(*args, **kwargs):
     """ Returns a Datasheet from the given CSV file path.
     """
+    if len(args) == 0:
+        return Datasheet(**kwargs)
     return Datasheet.load(*args, **kwargs)
 
 #--- DATASHEET ROWS --------------------------------------------------------------------------------
