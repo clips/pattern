@@ -2062,9 +2062,9 @@ def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
     d = shuffled(d) # Avoid a list sorted by type (because we take successive folds).
     m = [0.0, 0.0, 0.0, 0.0] # Macro-average accuracy, precision, recall & F1-score.
     for i in range(K):
-        n = len(d) / float(K)     # Test fold size.
-        x = int(round(i * n))     # Test fold start index.
-        y = int(round(i * n + n)) # Test fold stop index.
+        n = len(d) / float(max(K, 2)) # Test fold size.
+        x = int(round(i * n))         # Test fold start index.
+        y = int(round(i * n + n))     # Test fold stop index.
         classifier = Classifier(train=d[:x]+d[y:], **kwargs)
         A, P, R, F = classifier.test(d[x:y], **kwargs)
         m[0] += A
