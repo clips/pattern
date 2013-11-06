@@ -12,6 +12,7 @@ from collections import defaultdict, deque
 from itertools   import izip, chain
 from operator    import itemgetter
 from heapq       import nlargest
+from bisect      import bisect_right
 
 ####################################################################################################
 # Simple implementation of Counter for Python 2.5 and 2.6.
@@ -60,6 +61,14 @@ try:
     from collections import Counter
 except:
     pass
+
+def cumsum(iterable):
+    """ Returns an iterator over the cumulative sum of values in the given list.
+    """
+    n = 0
+    for x in iterable:
+        n += x
+        yield n
 
 #### PROFILER ######################################################################################
 
@@ -244,9 +253,9 @@ def fleiss_kappa(m):
     
 agreement = fleiss_kappa
 
-#### STRINGS & WORDS ###############################################################################
+#### TEXT METRICS ##################################################################################
 
-#--- STRING SIMILARITY -----------------------------------------------------------------------------
+#--- SIMILARITY ------------------------------------------------------------------------------------
 
 def levenshtein(string1, string2):
     """ Measures the amount of difference between two strings.
@@ -296,7 +305,7 @@ def similarity(string1, string2, metric=LEVENSHTEIN):
     if metric == DICE:
         return dice_coefficient(string1, string2)
 
-#--- STRING READABILITY ----------------------------------------------------------------------------
+#--- READABILITY -----------------------------------------------------------------------------------
 # 0.9-1.0 = easily understandable by 11-year old.
 # 0.6-0.7 = easily understandable by 13- to 15-year old.
 # 0.0-0.3 = best understood by university graduates.
@@ -334,7 +343,7 @@ def flesch_reading_ease(string):
 
 readability = flesch_reading_ease
 
-#--- STRING INTERTEXTUALITY ------------------------------------------------------------------------
+#--- INTERTEXTUALITY -------------------------------------------------------------------------------
 # Intertextuality may be useful for plagiarism detection.
 # For example, on the Corpus of Plagiarised Short Answers (Clough & Stevenson, 2009),
 # accuracy (F1) is 94.5% with n=3 and intertextuality threshold > 0.1.
@@ -551,19 +560,15 @@ def mean(iterable):
     """ Returns the arithmetic mean of the given list of values.
         For example: mean([1,2,3,4]) = 10/4 = 2.5.
     """
-    s = 0
-    n = 0
-    for x in iterable:
-        s += x
-        n += 1
-    return float(s) / (n or 1)
+    a = iterable if isinstance(iterable, list) else list(iterable)
+    return float(sum(a)) / (len(a) or 1)
 
 avg = mean
 
-def median(iterable):
+def median(iterable, sort=True):
     """ Returns the value that separates the lower half from the higher half of values in the list.
     """
-    s = sorted(iterable)
+    s = sorted(iterable) if sort is True else list(iterable)
     n = len(s)
     if n == 0:
         raise ValueError, "median() arg is an empty sequence"
@@ -577,7 +582,7 @@ def variance(iterable, sample=False):
     """
     # Sample variance = E((xi-m)^2) / (n-1)
     # Population variance = E((xi-m)^2) / n
-    a = list(iterable)
+    a = iterable if isinstance(iterable, list) else list(iterable)
     m = mean(a)
     return sum((x - m) ** 2 for x in a) / (len(a) - int(sample) or 1)
 
@@ -590,6 +595,18 @@ def standard_deviation(iterable, *args, **kwargs):
     
 stdev = standard_deviation
 
+def simple_moving_average(iterable, k=10):
+    """ Returns an iterator over the simple moving average of the given list of values.
+    """
+    a = iterable if isinstance(iterable, list) else list(iterable)
+    for m in xrange(len(a)):
+        i = m - k
+        j = m + k + 1
+        w = a[max(0,i):j]
+        yield float(sum(w)) / (len(w) or 1)
+      
+sma = simple_moving_average
+
 def histogram(iterable, k=10, range=None):
     """ Returns a dictionary with k items: {(start, stop): [values], ...},
         with equal (start, stop) intervals between min(list) => max(list).
@@ -598,7 +615,7 @@ def histogram(iterable, k=10, range=None):
     # for (i, j), values in sorted(histogram(iterable).items()):
     #     m = i + (j - i) / 2 # midpoint
     #     print i, j, m, values
-    a = list(iterable)
+    a = iterable if isinstance(iterable, list) else list(iterable)
     r = range or (min(a), max(a))
     k = max(int(k), 1)
     w = float(r[1] - r[0] + 0.000001) / k # interval (bin width)
@@ -612,15 +629,15 @@ def histogram(iterable, k=10, range=None):
 
 #--- MOMENT ----------------------------------------------------------------------------------------
 
-def moment(iterable, k=1, sample=False):
-    """ Returns the kth central moment of the given list of values
+def moment(iterable, n=2, sample=False):
+    """ Returns the n-th central moment of the given list of values
         (2nd central moment = variance, 3rd and 4th are used to define skewness and kurtosis).
     """
-    if k == 1:
+    if n == 1:
         return 0.0
-    a = list(iterable)
+    a = iterable if isinstance(iterable, list) else list(iterable)
     m = mean(a)
-    return sum((x - m) ** k for x in a) / (len(a) - int(sample) or 1)
+    return sum((x - m) ** n for x in a) / (len(a) - int(sample) or 1)
 
 def skewness(iterable, sample=False):
     """ Returns the degree of asymmetry of the given list of values:
@@ -630,7 +647,8 @@ def skewness(iterable, sample=False):
     """
     # Distributions with skew and kurtosis between -1 and +1 
     # can be considered normal by approximation.
-    return moment(iterable, 3, sample) / (moment(iterable, 2, sample) ** 1.5 or 1)
+    a = iterable if isinstance(iterable, list) else list(iterable)
+    return moment(a, 3, sample) / (moment(a, 2, sample) ** 1.5 or 1)
 
 skew = skewness
 
@@ -641,7 +659,8 @@ def kurtosis(iterable, sample=False):
         = 0.0 => normal distribution,
         =  -3 => flat
     """
-    return moment(iterable, 4, sample) / (moment(iterable, 2, sample) ** 2.0 or 1) - 3
+    a = iterable if isinstance(iterable, list) else list(iterable)
+    return moment(a, 4, sample) / (moment(a, 2, sample) ** 2.0 or 1) - 3
 
 #a = 1
 #b = 1000
@@ -658,7 +677,7 @@ def quantile(iterable, p=0.5, sort=True, a=1, b=-1, c=0, d=1):
     # Based on: Ernesto P. Adorio, http://adorio-research.org/wordpress/?p=125
     # Parameters a, b, c, d refer to the algorithm by Hyndman and Fan (1996):
     # http://stat.ethz.ch/R-manual/R-patched/library/stats/html/quantile.html
-    s = sort is True and sorted(iterable) or list(iterable)
+    s = sorted(iterable) if sort is True else list(iterable)
     n = len(s)
     f, i = modf(a + (b+n) * p - 1)
     if n == 0:
@@ -687,11 +706,13 @@ def boxplot(iterable, **kwargs):
     Q3 = quantile(s, p=0.75, sort=False, **kwargs)
     return float(min(s)), Q1, Q2, Q3, float(max(s))
 
+#### STATISTICAL TESTS #############################################################################
+
 #--- FISHER'S EXACT TEST ---------------------------------------------------------------------------
 
 def fisher_exact_test(a, b, c, d, **kwargs):
     """ Fast implementation of Fisher's exact test (two-tailed).
-        Returns the significance for the given 2x2 contingency table:
+        Returns the significance for the given 2 x 2 contingency table:
         < 0.05: significant
         < 0.01: very significant
         The following test shows a very significant correlation between gender & dieting:
@@ -799,7 +820,7 @@ def chi2p(X2, df=1, tail=UPPER):
     """
     return gammai(df * 0.5, X2 * 0.5, tail)
 
-#o, e = [[44,56]], [[50,50]]
+#o, e = [[44, 56]], [[50, 50]]
 #assert round(chi_squared(o, e)[0], 4)  == 1.4400
 #assert round(chi_squared(o, e)[1], 4)  == 0.2301
 
@@ -826,14 +847,48 @@ def pearson_log_likelihood_ratio(observed=[], expected=[], df=None, tail=UPPER):
     
 llr = likelihood = pearson_log_likelihood_ratio
 
+#--- KOLMOGOROV-SMIRNOV TWO SAMPLE TEST ------------------------------------------------------------
+# Based on: https://github.com/scipy/scipy/blob/master/scipy/stats/stats.py
+
+def kolmogorov_smirnov_two_sample_test(a1, a2):
+    """ Returns the likelihood that two independent samples are drawn from the same distribution.
+        Returns a (d, p)-tuple with maximum distance d and two-tailed p-value.
+    """
+    n1 = float(len(a1))
+    n2 = float(len(a2))
+    a1 = sorted(a1) # [1, 2, 5]
+    a2 = sorted(a2) # [3, 4, 6]
+    a3 = a1 + a2    # [1, 2, 5, 3, 4, 6]
+    # Find the indices in a1 so that, 
+    # if the values in a3 were inserted before these indices,
+    # the order of a1 would be preserved:
+    cdf1 = [bisect_right(a1, v) for v in a3] # [1, 2, 3, 2, 2, 3]
+    cdf2 = [bisect_right(a2, v) for v in a3]
+    # Cumulative distributions.
+    cdf1 = [v / n1 for v in cdf1]
+    cdf2 = [v / n2 for v in cdf2]
+    # Compute maximum deviation between cumulative distributions.
+    d = max(abs(v1 - v2) for v1, v2 in zip(cdf1, cdf2))
+    # Compute p-value.
+    e = sqrt(n1 * n2 / (n1 + n2))
+    p = kolmogorov((e + 0.12 + 0.11 / e) * d)
+    return d, p
+
+ks2 = kolmogorov_smirnov_two_sample_test
+
 #### SPECIAL FUNCTIONS #############################################################################
 
-#--- INCOMPLETE GAMMA FUNCTION ---------------------------------------------------------------------
+#--- GAMMA FUNCTION --------------------------------------------------------------------------------
 # Based on: http://www.johnkerl.org/python/sp_funcs_m.py.txt, Tom Loredo
 # See also: http://www.mhtl.uwaterloo.ca/courses/me755/web_chap1.pdf
 
+def gamma(x):
+    """ Returns the gamma function at x.
+    """
+    return exp(gammaln(x))
+
 def gammaln(x):
-    """ Returns the logarithm of the gamma function.
+    """ Returns the natural logarithm of the gamma function at x.
     """
     x = x - 1.0
     y = x + 5.5
@@ -841,18 +896,23 @@ def gammaln(x):
     n = 1.0
     for i in range(6):
         x += 1
-        n += (76.18009173, -86.50532033, 24.01409822, -1.231739516e0, 0.120858003e-2, -0.536382e-5)[i] / x
+        n += (
+          76.18009173, 
+         -86.50532033, 
+          24.01409822, 
+          -1.231739516e0, 
+           0.120858003e-2, 
+          -0.536382e-5)[i] / x
     return y + log(2.50662827465 * n)
-    
-def gamma(x):
-    return exp(gammaln(x))
+
+lgamma = gammaln
 
 def gammai(a, x, tail=UPPER):
     """ Returns the incomplete gamma function for LOWER or UPPER tail.
     """
     
-    # Series approximation to the incomplete gamma function.
-    def gs(a, x, epsilon=3.e-7, iterations=700):
+    # Series approximation.
+    def _gs(a, x, epsilon=3.e-7, iterations=700):
         ln = gammaln(a)
         s = 1.0 / a
         d = 1.0 / a
@@ -863,8 +923,8 @@ def gammai(a, x, tail=UPPER):
                 return (s * exp(-x + a * log(x) - ln), ln)
         raise StopIteration, (abs(d), abs(s) * epsilon)
     
-    # Continued fraction approximation of the incomplete gamma function.
-    def gf(a, x, epsilon=3.e-7, iterations=200):
+    # Continued fraction approximation.
+    def _gf(a, x, epsilon=3.e-7, iterations=200):
         ln = gammaln(a)
         g0 = 0.0
         a0 = 1.0
@@ -891,23 +951,28 @@ def gammai(a, x, tail=UPPER):
         return 1.0
     if x < a + 1:
         if tail == LOWER:
-            return gs(a, x)[0]
-        return 1 - gs(a, x)[0]
+            return _gs(a, x)[0]
+        return 1 - _gs(a, x)[0]
     else:
         if tail == UPPER:
-            return gf(a, x)[0]
-        return 1 - gf(a, x)[0]
+            return _gf(a, x)[0]
+        return 1 - _gf(a, x)[0]
 
-#--- COMPLEMENTARY ERROR FUNCTION ------------------------------------------------------------------
+#--- ERROR FUNCTION --------------------------------------------------------------------------------
 # Based on: http://www.johnkerl.org/python/sp_funcs_m.py.txt, Tom Loredo
 
+def erf(x):
+    """ Returns the error function at x.
+    """
+    return 1.0 - erfc(x)
+
 def erfc(x):
-    """ Complementary error function.
+    """ Returns the complementary error function at x.
     """
     z = abs(x)
-    t = 1 / (1 + 0.5 * z)
-    r = 0
-    for y in [
+    t = 1.0 / (1 + 0.5 * z)
+    r = 0.0
+    for y in (
       0.17087277, 
      -0.82215223, 
       1.48851587, 
@@ -917,27 +982,46 @@ def erfc(x):
       0.09678418, 
       0.37409196, 
       1.00002368, 
-     -1.26551223]:
+     -1.26551223):
         r = y + t * r
-    r = t * exp(-z*z + r)
+    r = t * exp(-z ** 2 + r)
     if x >= 0:
         return r
-    return 2 - r
+    return 2.0 - r
 
-#--- PROBABILITY DISTRIBUTION ----------------------------------------------------------------------
+#--- NORMAL DISTRIBUTION ---------------------------------------------------------------------------
 
-def cdf(x, mu=0.0, sigma=1.0):
-    """ Cumulative distribution function.
+def cdf(x, mean=0.0, stdev=1.0):
+    """ Returns the cumulative distribution function at x.
     """
-    return min(1.0, 0.5 * erfc((-x + mu) / (sigma * 2**0.5)))
+    return min(1.0, 0.5 * erfc((-x + mean) / (stdev * 2**0.5)))
 
-def pdf(x, mu=0.0, sigma=1.0):
-    """ Probability density function.
+def pdf(x, mean=0.0, stdev=1.0):
+    """ Returns the probability density function at x:
+        the likelihood of x in a distribution with given mean and standard deviation.
     """
-    u = float(x - mu) / abs(sigma)
-    return (1 / sqrt(2*pi) * abs(sigma)) * exp(-u*u / 2)
+    u = float(x - mean) / abs(stdev)
+    return (1 / (sqrt(2*pi) * abs(stdev))) * exp(-u*u / 2)
+    
+normpdf = pdf
 
-def tpdf(x, df):
-    """ Probability density function for the Student's t-distribution.
+#--- KOLMOGOROV DISTRIBUTION -----------------------------------------------------------------------
+# Based on: http://www.math.ucla.edu/~tom/distributions/Kolmogorov.html, Thomas Ferguson
+
+def kolmogorov(x):
+    """ Returns the approximation Kolmogorov's distribution of the two-sample test.
+        For a sample of size m and a sample of size n,
+        it is the probability that the maximum deviation > x / sqrt(m+n).
     """
-    return gamma((df+1) * 0.5) / (sqrt(pi * df) * gamma(df * 0.5) * (1 + x**2.0 / df) ** ((df+1) * 0.5))
+    if x < 0.27:
+        return 0.0
+    if x > 3.2:
+        return 1.0
+    try:
+        x = -2.0 * x * x
+        k = 0
+        for i in reversed(range(1, 27+1, 2)): # 27 25 23 ... 1
+            k = (1 - k) * exp(x * i)
+        return 2.0 * k
+    except:
+        return 1.0
