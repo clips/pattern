@@ -32,7 +32,7 @@
         <!-- Parsed from the online documentation. -->
         <div id="node-1377" class="node node-type-page"><div class="node-inner">
 <div class="content">
-<p><span class="big">The pattern.vector module contains easy-to-use machine learning tools, starting from word count functions, bag-of-word documents and a vector space model, to latent semantic analysis and algorithms for clustering and classification (Naive Bayes, <em>k</em>-NN, SVM).</span></p>
+<p><span class="big">The pattern.vector module contains easy-to-use machine learning tools, starting from word count functions, bag-of-word documents and a vector space model, to latent semantic analysis and algorithms for clustering and classification (Naive Bayes, <em>k</em>-NN, Perceptron, SVM).</span></p>
 <p>It can be used by itself or with other <a href="pattern.html">pattern</a> modules: <a href="pattern-web.html">web</a> | <a href="pattern-db.html">db</a> | <a href="pattern-en.html">en</a> | <a href="pattern-search.html">search</a> <span class="blue"> </span>| vector | <a href="pattern-graph.html">graph</a>.</p>
 <p><img src="../g/pattern_schema.gif" alt="" width="620" height="180" /></p>
 <hr />
@@ -44,7 +44,7 @@
 <li><a href="#model">Model</a></li>
 <li><a href="#lsa">Latent Semantic Analysis</a></li>
 <li><a href="#cluster">Clustering</a> <span class="smallcaps link-maintenance">(<a href="#kmeans">k-means</a>, <a href="#hierarchical">hierarchical</a>)</span></li>
-<li><a href="#classification">Classification</a> <span class="smallcaps link-maintenance">(<a href="#nb">naive bayes</a>, <a href="#knn">knn</a>, <a href="#svm">svm</a>)</span></li>
+<li><a href="#classification">Classification</a> <span class="smallcaps link-maintenance">(<a href="#nb">nb</a>, <a href="#knn">knn</a>, <a href="#SLP">slp</a>,&nbsp;<a href="#svm">svm</a>)</span></li>
 <li><a href="#ga">Genetic algorithm</a></li>
 </ul>
 <p>&nbsp;</p>
@@ -487,14 +487,15 @@ cluster.traverse(visit=lambda cluster: None) </pre><div class="example">
 <h2><a name="classification"></a>Classification</h2>
 <p>Classification can be used to predict the label of an unlabeled document. More specically, classification is a supervised machine learning method that uses labeled documents (i.e., <span class="inline_code">Document</span> objects with a <span class="inline_code">type</span>) as training examples to statistically predict the label (class, type) of new documents, based on their similarity to the training examples using a distance metric (e.g., cosine similarity). A <span class="inline_code">Document</span> is a bag-of-words representation of a text, i.e., unordered words + word count. The <span class="inline_code">Document.vector</span> maps the words (or features) to their weight (absolute or relative word count, tf-idf, ...). The weight of a word represents its relevancy in the text. So we can compare how similar two documents are by measuring if they have relevant words in common. Given an unlabeled document, a classifier yields the label of the most similar document(s) in its training set. This implies that a larger training set with more features (and less labels) gives better performance.</p>
 <p>For example, if we have a corpus of product reviews (<em>training data</em>) for which the star rating of each product review is known (<em>labels</em>, e.g., ★★★☆☆ = 3), we can use it to predict the star rating of other reviews, based on common words (<em>features</em>) in the text. We could represent each review as a vector of adjectives (e.g., good, bad, awesome, awful, ...) since positive reviews (good, awesome) will most likely contain different adjectives than negative reviews (bad, awful).</p>
-<p>The pattern.vector module implements three classification algorithms:</p>
+<p>The pattern.vector module implements four classification algorithms:</p>
 <ul>
-<li><span class="inline_code"> NB</span>: <a href="https://en.wikipedia.org/wiki/Naive_Bayes_classifier" target="_blank">Naive Bayes</a>, based on the probability that a feature occurs in a class.</li>
+<li><span class="inline_code">&nbsp;NB</span>: <a href="https://en.wikipedia.org/wiki/Naive_Bayes_classifier" target="_blank">Naive Bayes</a>, based on the probability that a feature occurs in a class.</li>
 <li><span class="inline_code">KNN</span>: <a href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm" target="_blank"><em>k</em>-nearest neighbor</a>, based on the <em>k</em> most similar documents in the training set.</li>
+<li><span class="inline_code">SLP</span>: <a href="http://en.wikipedia.org/wiki/Perceptron" target="_blank">single-layer averaged perceptron</a>, based on an artificial neural network.</li>
 <li><span class="inline_code">SVM</span>: <a href="https://en.wikipedia.org/wiki/Support_vector_machine" target="_blank">support vector machine</a>, based on a representation of the documents in a high-dimensional space separated by hyperplanes (see further).</li>
 </ul>
-<pre class="brush:python; gutter:false; light:true;">classifier = NB(train=[], baseline=MAJORITY, method=MULTINOMIAL, alpha=0.0001)</pre><pre class="brush:python; gutter:false; light:true;">classifier = KNN(train=[], baseline=MAJORITY, k=10, distance=COSINE)</pre><pre class="brush:python; gutter:false; light:true;">classifier = SVM(type=CLASSIFICATION, kernel=LINEAR, train=[])</pre><h3>Classifier</h3>
-<p>The <span class="inline_code">NB</span>, <span class="inline_code">KNN</span> and <span class="inline_code">SVM</span> classifiers inherit from the <span class="inline_code">Classifier</span> base class:</p>
+<pre class="brush:python; gutter:false; light:true;">classifier =  NB(train=[], baseline=MAJORITY, method=MULTINOMIAL, alpha=0.0001)</pre><pre class="brush:python; gutter:false; light:true;">classifier = KNN(train=[], baseline=MAJORITY, k=10, distance=COSINE)</pre><pre class="brush:python; gutter:false; light:true;">classifier = SLP(train=[], baseline=MAJORITY, iterations=1)</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">classifier = SVM(train=[], type=CLASSIFICATION, kernel=LINEAR)</pre><h3>Classifier</h3>
+<p>The <span class="inline_code">NB</span>, <span class="inline_code">KNN</span>, <span class="inline_code">SLP</span> and <span class="inline_code">SVM</span> classifiers inherit from the <span class="inline_code">Classifier</span> base class:</p>
 <pre class="brush:python; gutter:false; light:true;">classifier = Classifier(train=[], baseline=MAJORITY)</pre><pre class="brush:python; gutter:false; light:true;">classifier = Classifier.load(path)</pre><pre class="brush:python; gutter:false; light:true;">classifier.features       # List of trained features (words).
 classifier.classes        # List of trained class labels.
 classifier.binary         # True if Classifier.classes == [True, False] or [0, 1]. 
@@ -725,12 +726,17 @@ confusion.table           # Pretty string ouput.</pre><div class="example">
 <p>The Naive Bayes classifier is based on the probability that a feature occurs in a class, independent of other features, using Bayes' theorem.</p>
 <div>
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">classifier = NB(train=[], baseline=MAJORITY, method=MULTINOMIAL, alpha=0.0001)</pre></div>
-<p>With the <span class="inline_code">MULTINOMIAL</span> method, feature weights are used (<span class="inline_code">0.0</span>–<span class="inline_code">1.0</span>). With the <span class="inline_code">BINOMIAL</span> method, a feature is either part of a document (<span class="inline_code">1</span>) or not (<span class="inline_code">0</span>). The <span class="inline_code">alpha</span> value is used to avoid a division by zero (smoothing). Ties are broken in favor of the majority class (either <span class="inline_code">NB.majority</span> or user-given).</p>
+<p>With the <span class="inline_code">MULTINOMIAL</span> method, feature weights are used (<span class="inline_code">0.0</span>–<span class="inline_code">1.0</span>). With the <span class="inline_code">BINOMIAL</span> method, a feature is part of a document (<span class="inline_code">1</span>) or not (<span class="inline_code">0</span>). The <span class="inline_code">alpha</span> value is used to avoid a division by zero. If <span class="inline_code">NB.classify()</span>&nbsp;is unable to classify a document, it returns the&nbsp;<span class="inline_code">baseline</span> (by default, the most frequent class).</p>
 <p>&nbsp;</p>
 <hr />
 <h3><em><a name="knn"></a>k</em>-nearest neighbor</h3>
 <p>The <em>k</em>-nearest neighbor classifier is based on the <em>k</em> most similar documents in the training data, given some distance function for calculating similarity.</p>
-<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">classifier = KNN(train=[], baseline=MAJORITY, k=10, distance=COSINE)</pre><p class="example">The given <span class="inline_code">distance</span> can be <span class="inline_code">COSINE</span>, <span class="inline_code">EUCLIDEAN</span>, <span class="inline_code">MANHATTAN</span> or <span class="inline_code">HAMMING</span>, or a user-given function that takes two dictionaries of <span class="inline_code">(feature,</span> <span class="inline_code">weight)</span>-items and returns a value between <span class="inline_code">0.0</span>–<span class="inline_code">1.0</span>. Ties are broken in favor of the majority class (either <span class="inline_code">KNN.majority</span> or user-given).</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">classifier = KNN(train=[], baseline=MAJORITY, k=10, distance=COSINE)</pre><p class="example">The given <span class="inline_code">distance</span> can be <span class="inline_code">COSINE</span>, <span class="inline_code">EUCLIDEAN</span>, <span class="inline_code">MANHATTAN</span> or <span class="inline_code">HAMMING</span>, or a user-given function that takes two dictionaries of <span class="inline_code">(feature,</span> <span class="inline_code">weight)</span>-items and returns a value between <span class="inline_code">0.0</span>–<span class="inline_code">1.0</span>. If <span class="inline_code">KNN.classify()</span> is unable to classify a document, it returns the <span class="inline_code">baseline</span> (by default, the most frequent class).</p>
+<p class="example">&nbsp;</p>
+<hr />
+<h3 class="example"><a name="SLP"></a>Single-layer averaged perceptron</h3>
+<p class="example">The perceptron classifier is a simple artificial neural network (ANN), based on weighted connections whose weights are iteratively fine-tuned during training.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">classifier = SLP(train=[], baseline=MAJORITY, iterations=1)</pre><p class="example">Accuracy improves with more <span class="inline_code">iterations</span> (e.g., 3-4) over the training documents. Feature weights in each document are expected to be binary (<span class="inline_code">0</span> or <span class="inline_code">1</span>). If <span class="inline_code">SLP.classify()</span> is unable to classify a document, it returns the <span class="inline_code">baseline</span> (by default, the most frequent class).</p>
 <p>&nbsp;</p>
 <hr />
 <h3><a name="svm"></a>Support vector machine</h3>
