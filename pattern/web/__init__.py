@@ -1615,7 +1615,7 @@ MEDIAWIKI = "http://{SUBDOMAIN}.{DOMAIN}{API}"
 MEDIAWIKI_NAMESPACE  = ["Main", "User", "Wikipedia", "File", "MediaWiki", "Template", "Help", "Category", "Portal", "Book"]
 MEDIAWIKI_NAMESPACE += [s+" talk" for s in MEDIAWIKI_NAMESPACE] + ["Talk", "Special", "Media"]
 MEDIAWIKI_NAMESPACE += ["WP", "WT", "MOS", "C", "CAT", "Cat", "P", "T", "H", "MP", "MoS", "Mos"]
-_mediawiki_namespace = re.compile(r"^"+"|".join(MEDIAWIKI_NAMESPACE)+":", re.I)
+_mediawiki_namespace = re.compile(r"^("+"|".join(MEDIAWIKI_NAMESPACE)+"):", re.I)
 
 # Pattern to identify disambiguation pages.
 MEDIAWIKI_DISAMBIGUATION = "<a href=\"/wiki/Help:Disambiguation\" title=\"Help:Disambiguation\">disambiguation</a> page"
@@ -2019,6 +2019,48 @@ class WikipediaTable(MediaWikiTable):
 #
 #article = Wikipedia(language="nl").search("borrelnootje")
 #print article.string
+
+#--- MEDIAWIKI: WIKTIONARY -------------------------------------------------------------------------
+# Wiktionary is a collaborative project to produce a free-content multilingual dictionary.
+
+class Wiktionary(MediaWiki):
+
+    def __init__(self, license=None, throttle=5.0, language="en"):
+        """ Mediawiki search engine for http://[language].wiktionary.com.
+        """
+        SearchEngine.__init__(self, license or MEDIAWIKI_LICENSE, throttle, language)
+        self._subdomain = language
+
+    @property
+    def _url(self):
+        s = MEDIAWIKI
+        s = s.replace("{SUBDOMAIN}", self._subdomain)
+        s = s.replace("{DOMAIN}", "wiktionary.org")
+        s = s.replace("{API}", "/w/api.php")
+        return s
+
+    @property
+    def MediaWikiArticle(self):
+        return WiktionaryArticle
+    @property
+    def MediaWikiSection(self):
+        return WiktionarySection
+    @property
+    def MediaWikiTable(self):
+        return WiktionaryTable
+
+class WiktionaryArticle(MediaWikiArticle):
+    def __repr__(self):
+        return "WiktionaryArticle(title=%s)" % repr(self.title)
+
+class WiktionarySection(MediaWikiSection):
+    def __repr__(self):
+        return "WiktionarySection(title=%s)" % repr(self.title)
+
+class WiktionaryTable(MediaWikiTable):
+    def __repr__(self):
+        return "WiktionaryTable(title=%s)" % repr(self.title)
+
 
 #--- MEDIAWIKI: WIKIA ------------------------------------------------------------------------------
 # Wikia (formerly Wikicities) is a free web hosting service and a wiki farm for wikis.
@@ -2441,6 +2483,8 @@ class Facebook(SearchEngine):
             u(data.get("locale", "")),
           int(data.get("likes", 0)) # For pages.
         )
+        
+    page = profile
 
 #--- PRODUCT REVIEWS -------------------------------------------------------------------------------
 # ProductWiki is an open web-based product information resource.
