@@ -252,10 +252,10 @@ class TestStatistics(unittest.TestCase):
     
     def test_moment(self):
         # Assert 0.0 (1st central moment = 0.0).
-        v = metrics.moment([1,2,3,4,5], k=1)
+        v = metrics.moment([1,2,3,4,5], n=1)
         self.assertEqual(v, 0.0)
         # Assert 2.0 (2nd central moment = population variance).
-        v = metrics.moment([1,2,3,4,5], k=2)
+        v = metrics.moment([1,2,3,4,5], n=2)
         self.assertEqual(v, 2.0)
         print "pattern.metrics.moment()"
     
@@ -299,7 +299,12 @@ class TestStatistics(unittest.TestCase):
         self.assertTrue(abs(v[3] - 92.0) <= 0.5)
         self.assertEqual(v[4], max(a))
         print "pattern.metrics.boxplot()"
-        
+
+class TestStatisticalTests(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+
     def test_fisher_test(self):
         # Assert Fisher exact test significance.
         v = metrics.fisher_exact_test(a=1, b=9, c=11, d=3)
@@ -341,6 +346,12 @@ class TestStatistics(unittest.TestCase):
                 v = metrics.chi2p(x2, df, tail=metrics.UPPER)
                 self.assertTrue(v < (0.05, 0.025, 0.01, 0.005)[i])
         print "pattern.metrics.chi2p()"
+        
+    def test_kolmogorov_smirnov(self):
+        v = metrics.ks2([1, 2, 3], [1, 2, 4])
+        self.assertAlmostEqual(v[0],  0.3333, places=4)
+        self.assertAlmostEqual(v[1],  0.9762, places=4)
+        print "pattern.metrics.ks2()"
 
 class TestSpecialFunctions(unittest.TestCase):
     
@@ -375,6 +386,15 @@ class TestSpecialFunctions(unittest.TestCase):
           ( 3.00, 0.000)]:
             self.assertAlmostEqual(metrics.erfc(x), y, places=3)
         print "pattern.metrics.erfc()"
+        
+    def test_kolmogorov(self):
+        # Assert Kolmogorov limit distribution.
+        self.assertAlmostEqual(metrics.kolmogorov(0.0), 1.0000, places=4)
+        self.assertAlmostEqual(metrics.kolmogorov(0.5), 0.9639, places=4)
+        self.assertAlmostEqual(metrics.kolmogorov(1.0), 0.2700, places=4)
+        self.assertAlmostEqual(metrics.kolmogorov(2.0), 0.0007, places=4)
+        self.assertAlmostEqual(metrics.kolmogorov(4.0), 0.0000, places=4)
+        print "pattern.metrics.kolmogorov()"
 
 #---------------------------------------------------------------------------------------------------
 
@@ -383,6 +403,7 @@ def suite():
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestProfiling))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestTextMetrics))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestStatistics))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestStatisticalTests))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSpecialFunctions))
     return suite
 

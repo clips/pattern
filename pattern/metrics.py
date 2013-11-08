@@ -13,6 +13,7 @@ from itertools   import izip, chain
 from operator    import itemgetter
 from heapq       import nlargest
 from bisect      import bisect_right
+from random      import gauss
 
 ####################################################################################################
 # Simple implementation of Counter for Python 2.5 and 2.6.
@@ -268,9 +269,9 @@ def levenshtein(string1, string2):
         # Make sure n <= m to use O(min(n,m)) space.
         string1, string2, n, m = string2, string1, m, n
     current = range(n+1)
-    for i in range(1, m+1):
+    for i in xrange(1, m+1):
         previous, current = current, [i]+[0]*n
-        for j in range(1, n+1):
+        for j in xrange(1, n+1):
             insert, delete, replace = previous[j]+1, current[j-1]+1, previous[j-1]
             if string1[j-1] != string2[i-1]:
                 replace += 1
@@ -289,7 +290,7 @@ def dice_coefficient(string1, string2):
         based on the number of shared bigrams, e.g., "night" and "nacht" have one common bigram "ht".
     """
     def bigrams(s):
-        return set(s[i:i+2] for i in range(len(s)-1))
+        return set(s[i:i+2] for i in xrange(len(s)-1))
     nx = bigrams(string1)
     ny = bigrams(string2)
     nt = nx.intersection(ny)
@@ -360,7 +361,7 @@ def ngrams(string, n=3, punctuation=PUNCTUATION, **kwargs):
     s = s.replace("!", " !")
     s = [w.strip(punctuation) for w in s.split()]
     s = [w.strip() for w in s if w.strip()]
-    return [tuple(s[i:i+n]) for i in range(len(s) - n + 1)]
+    return [tuple(s[i:i+n]) for i in xrange(len(s) - n + 1)]
 
 class Weight(float):
     """ A float with a magic "assessments" property,
@@ -712,9 +713,9 @@ def boxplot(iterable, **kwargs):
 
 def fisher_exact_test(a, b, c, d, **kwargs):
     """ Fast implementation of Fisher's exact test (two-tailed).
-        Returns the significance for the given 2 x 2 contingency table:
-        < 0.05: significant
-        < 0.01: very significant
+        Returns the significance p for the given 2 x 2 contingency table:
+        p < 0.05: significant
+        p < 0.01: very significant
         The following test shows a very significant correlation between gender & dieting:
         -----------------------------
         |             | men | women |
@@ -737,7 +738,7 @@ def fisher_exact_test(a, b, c, d, **kwargs):
             k = n - k
         if 0 <= k <= n and (n, k) not in _cache:
             c = 1.0
-            for i in range(1, int(k + 1)):
+            for i in xrange(1, int(k + 1)):
                 c *= n - k + i
                 c /= i
             _cache[(n, k)] = c # 3x speedup.
@@ -747,23 +748,11 @@ def fisher_exact_test(a, b, c, d, **kwargs):
     # Probabilities of "more extreme" data, in both directions (two-tailed).
     # Based on: http://www.koders.com/java/fid868948AD5196B75C4C39FEA15A0D6EAF34920B55.aspx?s=252
     s = [cutoff] + \
-        [p(a+i, b-i, c-i, d+i) for i in range(1, min(b, c) + 1)] + \
-        [p(a-i, b+i, c+i, d-i) for i in range(1, min(a, d) + 1)]
+        [p(a+i, b-i, c-i, d+i) for i in xrange(1, min(b, c) + 1)] + \
+        [p(a-i, b+i, c+i, d-i) for i in xrange(1, min(a, d) + 1)]
     return sum(v for v in s if v <= cutoff) or 0.0
     
-fisher_test = fisher_exact_test
-
-FISHER, CHI2, LLR = "fisher", "chi2", "llr"
-def significance(*args, **kwargs):
-    """ Returns the significance for the given test (FISHER, CHI2, LLR).
-    """
-    test = kwargs.pop("test", FISHER)
-    if test == FISHER:
-        return fisher_exact_test(*args, **kwargs)
-    if test == CHI2:
-        return pearson_chi_squared_test(*args, **kwargs)[1]
-    if test == LLR:
-        return pearson_log_likelihood_ratio(*args, **kwargs)[1]
+fisher = fisher_test = fisher_exact_test
 
 #--- PEARSON'S CHI-SQUARED TEST --------------------------------------------------------------------
 
@@ -774,24 +763,24 @@ def _expected(observed):
     """ Returns the table of (absolute) expected frequencies
         from the given table of observed frequencies.
     """
-    O = observed
-    if len(O) == 0:
+    o = observed
+    if len(o) == 0:
         return []
-    if len(O) == 1:
-        return [[sum(O[0]) / float(len(O[0]))] * len(O[0])]
-    n = [sum(O[i]) for i in range(len(O))]
-    m = [sum(O[i][j] for i in range(len(O))) for j in range(len(O[0]))]
+    if len(o) == 1:
+        return [[sum(o[0]) / float(len(o[0]))] * len(o[0])]
+    n = [sum(o[i]) for i in xrange(len(o))]
+    m = [sum(o[i][j] for i in xrange(len(o))) for j in xrange(len(o[0]))]
     s = float(sum(n))
     # Each cell = row sum * column sum / total.
-    return [[n[i] * m[j] / s for j in range(len(O[i]))] for i in range(len(O))]
+    return [[n[i] * m[j] / s for j in xrange(len(o[i]))] for i in xrange(len(o))]
 
 def pearson_chi_squared_test(observed=[], expected=[], df=None, tail=UPPER):
-    """ Returns (X2, P) for the n x m observed and expected data (containing absolute frequencies).
+    """ Returns (x2, p) for the n x m observed and expected data (containing absolute frequencies).
         If expected is None, an equal distribution over all classes is assumed.
-        If df is None, it is the number of classes-1 (i.e., len(observed[0]) - 1).
-        P < 0.05: significant
-        P < 0.01: very significant
-        This means that if P < 5%, the data is unevenly distributed (e.g., biased).
+        If df is None, it is (n-1) * (m-1).
+        p < 0.05: significant
+        p < 0.01: very significant
+        This means that if p < 5%, the data is unevenly distributed (e.g., biased).
         The following test shows that the die is fair:
         ---------------------------------------
         |       | 1  | 2  | 3  | 4  | 5  | 6  | 
@@ -799,26 +788,29 @@ def pearson_chi_squared_test(observed=[], expected=[], df=None, tail=UPPER):
         ---------------------------------------
         chi2([[22, 21, 22, 27, 22, 36]]) => (6.72, 0.24)
     """
-    # The P-value (upper tail area) is obtained from the incomplete gamma integral:
-    # P(X2 | v) = gammai(v/2, x/2) with v degrees of freedom.
+    # The p-value (upper tail area) is obtained from the incomplete gamma integral:
+    # p(x2 | v) = gammai(v/2, x/2) with v degrees of freedom.
     # See: Cephes, https://github.com/scipy/scipy/blob/master/scipy/special/cephes/chdtr.c
-    O  = list(observed)
-    E  = list(expected) or _expected(O)
-    df = df or (len(O) > 0 and len(O[0])-1 or 0)
-    X2 = 0.0
-    for i in range(len(O)):
-        for j in range(len(O[i])):
-            if O[i][j] != 0 and E[i][j] != 0:
-                X2 += (O[i][j] - E[i][j]) ** 2.0 / E[i][j]
-    P = gammai(df * 0.5, X2 * 0.5, tail)
-    return (X2, P)
+    o  = list(observed)
+    e  = list(expected) or _expected(o)
+    n  = len(o)
+    m  = len(o[0]) if o else 0
+    df = df or (n-1) * (m-1)
+    df = df or (m == 1 and n-1 or m-1)
+    x2 = 0.0
+    for i in xrange(n):
+        for j in xrange(m):
+            if o[i][j] != 0 and e[i][j] != 0:
+                x2 += (o[i][j] - e[i][j]) ** 2.0 / e[i][j]  
+    p = gammai(df * 0.5, x2 * 0.5, tail)
+    return (x2, p)
     
 chi2 = chi_squared = pearson_chi_squared_test
 
-def chi2p(X2, df=1, tail=UPPER):
-    """ Returns P-value for given X2 and degrees of freedom.
+def chi2p(x2, df=1, tail=UPPER):
+    """ Returns p-value for given x2 and degrees of freedom.
     """
-    return gammai(df * 0.5, X2 * 0.5, tail)
+    return gammai(df * 0.5, x2 * 0.5, tail)
 
 #o, e = [[44, 56]], [[50, 50]]
 #assert round(chi_squared(o, e)[0], 4)  == 1.4400
@@ -827,33 +819,42 @@ def chi2p(X2, df=1, tail=UPPER):
 #--- PEARSON'S LOG LIKELIHOOD RATIO APPROXIMATION --------------------------------------------------
 
 def pearson_log_likelihood_ratio(observed=[], expected=[], df=None, tail=UPPER):
-    """ Returns (G, P) for the n x m observed and expected data (containing absolute frequencies).
+    """ Returns (g, p) for the n x m observed and expected data (containing absolute frequencies).
         If expected is None, an equal distribution over all classes is assumed.
-        If df is None, it is the number of classes-1 (i.e., len(observed[0]) - 1).
-        P < 0.05: significant
-        P < 0.01: very significant
+        If df is None, it is (n-1) * (m-1).
+        p < 0.05: significant
+        p < 0.01: very significant
     """
-    O  = list(observed)
-    E  = list(expected) or _expected(O)
-    df = df or (len(O) > 0 and len(O[0])-1 or 0)
-    G  = 0.0
-    for i in range(len(O)):
-        for j in range(len(O[i])):
-            if O[i][j] != 0 and E[i][j] != 0:
-                G += O[i][j] * log(O[i][j] / E[i][j])
-    G = G * 2
-    P = gammai(df * 0.5, G * 0.5, tail)
-    return (G, P)
+    o  = list(observed)
+    e  = list(expected) or _expected(o)
+    n  = len(o)
+    m  = len(o[0]) if o else 0
+    df = df or (n-1) * (m-1)
+    df = df or (m == 1 and n-1 or m-1)
+    g  = 0.0
+    for i in xrange(n):
+        for j in xrange(m):
+            if o[i][j] != 0 and e[i][j] != 0:
+                g += o[i][j] * log(o[i][j] / e[i][j])
+    g = g * 2
+    p = gammai(df * 0.5, g * 0.5, tail)
+    return (g, p)
     
 llr = likelihood = pearson_log_likelihood_ratio
 
 #--- KOLMOGOROV-SMIRNOV TWO SAMPLE TEST ------------------------------------------------------------
 # Based on: https://github.com/scipy/scipy/blob/master/scipy/stats/stats.py
+# Thanks to prof. F. De Smedt for additional information.
 
-def kolmogorov_smirnov_two_sample_test(a1, a2):
+NORMAL = "normal"
+
+def kolmogorov_smirnov_two_sample_test(a1, a2=NORMAL, n=1000):
     """ Returns the likelihood that two independent samples are drawn from the same distribution.
         Returns a (d, p)-tuple with maximum distance d and two-tailed p-value.
+        By default, the second sample is the normal distribution.
     """
+    if a2 == NORMAL:
+        a2 = norm(max(n, len(a1)), mean(a1), stdev(a1))
     n1 = float(len(a1))
     n2 = float(len(a2))
     a1 = sorted(a1) # [1, 2, 5]
@@ -916,7 +917,7 @@ def gammai(a, x, tail=UPPER):
         ln = gammaln(a)
         s = 1.0 / a
         d = 1.0 / a
-        for i in range(1, iterations):
+        for i in xrange(1, iterations):
             d = d * x / (a + i)
             s = s + d
             if abs(d) < abs(s) * epsilon:
@@ -932,7 +933,7 @@ def gammai(a, x, tail=UPPER):
         a1 = x
         b1 = 1.0
         f  = 1.0
-        for i in range(1, iterations):
+        for i in xrange(1, iterations):
             a0 = (a1 + a0 * (i - a)) * f
             b0 = (b1 + b0 * (i - a)) * f
             a1 = x * a0 + a1 * i * f
@@ -1005,23 +1006,25 @@ def pdf(x, mean=0.0, stdev=1.0):
     
 normpdf = pdf
 
+def norm(n, mean=0.0, stdev=1.0):
+    """ Returns a list of n random samples from the normal distribution.
+    """
+    return [gauss(mean, stdev) for i in xrange(n)]
+
 #--- KOLMOGOROV DISTRIBUTION -----------------------------------------------------------------------
 # Based on: http://www.math.ucla.edu/~tom/distributions/Kolmogorov.html, Thomas Ferguson
 
 def kolmogorov(x):
-    """ Returns the approximation Kolmogorov's distribution of the two-sample test.
+    """ Returns the approximation of Kolmogorov's distribution of the two-sample test.
         For a sample of size m and a sample of size n,
         it is the probability that the maximum deviation > x / sqrt(m+n).
     """
     if x < 0.27:
-        return 0.0
+        return 1.0
     if x > 3.2:
-        return 1.0
-    try:
-        x = -2.0 * x * x
-        k = 0
-        for i in reversed(range(1, 27+1, 2)): # 27 25 23 ... 1
-            k = (1 - k) * exp(x * i)
-        return 2.0 * k
-    except:
-        return 1.0
+        return 0.0
+    x = -2.0 * x * x
+    k = 0
+    for i in reversed(range(1, 27+1, 2)): # 27 25 23 ... 1
+        k = (1 - k) * exp(x * i)
+    return 2.0 * k
