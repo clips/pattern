@@ -160,20 +160,20 @@ def parsetree(s, *args, **kwargs):
     """
     return Text(parse(s, *args, **kwargs))
 
-def split(s, token=[WORD, POS, CHUNK, PNP]):
+def split(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
     """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
 
-def tag(s, tokenize=True, encoding="utf-8"):
+def tag(s, tokenize=True, encoding="utf-8", **kwargs):
     """ Returns a list of (token, tag)-tuples from the given string.
     """
     tags = []
-    for sentence in parse(s, tokenize, True, False, False, False, encoding).split():
+    for sentence in parse(s, tokenize, True, False, False, False, encoding, **kwargs).split():
         for token in sentence:
             tags.append((token[0], token[1]))
     return tags
-
+    
 def suggest(w):
     """ Returns a list of (word, confidence)-tuples of spelling corrections.
     """
@@ -193,6 +193,47 @@ def positive(s, threshold=0.1, **kwargs):
     """ Returns True if the given sentence has a positive sentiment (polarity >= threshold).
     """
     return polarity(s, **kwargs) >= threshold
+
+import re
+from glob import glob
+from time import time
+from random import choice
+
+from itertools import chain
+from pattern.metrics import profile
+from pattern.search import search
+from pattern.vector import pimap
+
+t = time()
+
+hits = ("news", "year")
+
+def read1():
+    i = 0
+    for f in glob(MODULE + "/wsj-*.txt")[:10]:
+        
+        s = open(f)#.read()
+        #s = s.replace(" ", "/%s/PNP/XX-OBJ " % choice(("NP", "VP", "PP")))
+        s = split(s)
+        #print len(s)
+        
+        #for s in open(f):
+        #    i += 1
+        #    #if any(w in s for w in hits):
+        #    s = s.replace(" ", "/%s/PNP/XX-OBJ " % choice(("NP", "VP", "PP")))
+        #    s = Sentence(s)
+        #    #    m = search("JJ news|year", s)
+        #    #    if m:
+        #    #        print m
+    print i
+
+#def read2():
+#    s = list(pimap(list(chain(*(open(f) for f in glob(MODULE+"/wsj-*.txt")[:10]))), lambda s: Sentence(s)))
+
+print profile(read1) 
+
+#print time() - t
+print xxx
 
 #---------------------------------------------------------------------------------------------------
 # python -m pattern.en xml -s "The cat sat on the mat." -OTCL

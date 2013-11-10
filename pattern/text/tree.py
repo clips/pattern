@@ -1099,15 +1099,21 @@ class Text(list):
         if _is_tokenstring(string):
             token, language = string.tags, getattr(string, "language", language)
         if string:
-            for s in string.split("\n"):
+            # From a string.
+            if isinstance(string, basestring):
+                string = string.splitlines()
+            # From an iterable (e.g., string.splitlines(), open('parsed.txt')).
+            for s in string:
                 self.append(Sentence(s, token, language))
     
     def insert(self, index, sentence):
         list.insert(self, index, sentence)
-        self[-1].text = self
+        sentence.text = self
+        
     def append(self, sentence):
         list.append(self, sentence)
-        self[-1].text = self
+        sentence.text = self
+        
     def extend(self, sentences):
         for s in sentences:
             self.append(s)
@@ -1115,6 +1121,7 @@ class Text(list):
     def remove(self, sentence):
         list.remove(self, sentence)
         sentence.text = None
+        
     def pop(self, index):
         sentence = list.pop(self, index)
         sentence.text = None
@@ -1134,8 +1141,10 @@ class Text(list):
     @property
     def string(self):
         return u"\n".join([unicode(sentence) for sentence in self])
+        
     def __unicode__(self):
         return self.string
+        
     #def __repr__(self):
     #    return "\n".join([repr(sentence) for sentence in self])
 
