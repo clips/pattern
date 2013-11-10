@@ -51,6 +51,8 @@ IOB, BEGIN, INSIDE, OUTSIDE  = "IOB", "B", "I", "O"
 # -OBJ marks objects.
 ROLE = "role"
 
+SLASH0 = SLASH[0]
+
 ### LIST FUNCTIONS #################################################################################
 
 def find(function, iterable):
@@ -732,19 +734,18 @@ class Sentence(object):
         # Assume None for missing tags (except the word itself, which defaults to an empty string).
         custom = {}
         for k, v in izip(tags, token.split("/")):
+            if SLASH0 in v:
+                v = v.replace(SLASH, "/")
             if k not in p:
                 custom[k] = None
             if v != OUTSIDE or k == WORD or k == LEMMA: # "type O negative" => "O" != OUTSIDE.
-                (p if k not in custom else custom)[k] = v.replace(SLASH, "/")
+                (p if k not in custom else custom)[k] = v
         # Split IOB-prefix from the chunk tag:
         # B- marks the start of a new chunk, 
         # I- marks inside of a chunk.
-        if p[CHUNK] is not None:
-            x = p[CHUNK].split("-")
-            if len(x) >= 2: 
-                p[CHUNK] = x[1]; p[IOB] = x[0] # B-NP
-            else:
-                p[CHUNK] = x[0] # NP        
+        ch = p[CHUNK]
+        if ch is not None and ch.startswith(("B-", "I-")):
+            p[IOB], p[CHUNK] = ch[:1], ch[2:] # B-NP
         # Split the role from the relation:
         # NP-SBJ-1 => relation id is 1 and role is SBJ, 
         # VP-1 => relation id is 1 with no role.
@@ -753,12 +754,12 @@ class Sentence(object):
             ch, p[REL], p[ROLE] = self._parse_relation(p[REL])
             # Infer a missing chunk tag from the relation tag (e.g., NP-SBJ-1 => NP).
             # For PP relation tags (e.g., PP-CLR-1), the first chunk is PP, the following chunks NP.
-            if ch == "PP":
-                if self._previous and \
-                   self._previous[REL] == p[REL] and \
-                   self._previous[ROLE] == p[ROLE]: 
-                    ch = "NP"
-            if not p[CHUNK] and ch != OUTSIDE:
+            if ch == "PP" \
+             and self._previous \
+             and self._previous[REL] == p[REL] \
+             and self._previous[ROLE] == p[ROLE]: 
+                ch = "NP"
+            if p[CHUNK] is None and ch != OUTSIDE:
                 p[CHUNK] = ch
         self._previous = p
         # Return the tags in the right order for Sentence.append().
@@ -774,30 +775,32 @@ class Sentence(object):
             - NP-SBJ;NP-OBJ-1   => NP, [1,1], [SBJ,OBJ]
         """
         chunk, relation, role = None, [], []
-        for s in tag.split("*"):
-            if ";" in s:
-                id = ([None] + s.split("-"))[-1] # NP-SBJ;NP-OBJ-1 => 1 relates to both SBJ and OBJ.
-                id = id is not None and "-" + id or ""
-                s = s.replace(";", id + ";")
-                s = s.split(";")
-            else:
-                s = [s]
-            for s in s:
-                s = s.split("-")
-                if len(s) == 1: 
-                    chunk = s[0]
-                if len(s) == 2: 
-                    chunk = s[0]; relation.append(s[1]); role.append(None)
-                if len(s) >= 3: 
-                    chunk = s[0]; relation.append(s[2]); role.append(s[1])
-        for i, id in enumerate(relation):
-            if id is not None:
+        if ";" in tag:
+            # NP-SBJ;NP-OBJ-1 => 1 relates to both SBJ and OBJ.
+            id = tag.split("*")[0][-2:]
+            id = id if id.startswith("-") else ""
+            tag = tag.replace(";", id + "*")
+        if "*" in tag:
+            tag = tag.split("*")
+        else:
+            tag = [tag]
+        for s in tag:
+            s = s.split("-")
+            n = len(s)
+            if n == 1: 
+                chunk = s[0]
+            if n == 2: 
+                chunk = s[0]; relation.append(s[1]); role.append(None)
+            if n >= 3: 
+                chunk = s[0]; relation.append(s[2]); role.append(s[1])
+            if n > 1:
+                id = relation[-1]
                 if id.isdigit():
-                    relation[i] = int(id)
+                    relation[-1] = int(id)
                 else:
                     # Correct "ADJP-PRD":
                     # (ADJP, [PRD], [None]) => (ADJP, [None], [PRD])
-                    relation[i], role[i] = None, id
+                    relation[-1], role[-1] = None, id
         return chunk, relation, role
     
     def _do_word(self, word, lemma=None, type=None):
@@ -854,7 +857,7 @@ class Sentence(object):
             if self.pnp \
              and pnp \
              and pnp != OUTSIDE \
-             and pnp.startswith(BEGIN) is False \
+             and pnp.startswith("B-") is False \
              and self.words[-2].pnp is not None:
                 self.pnp[-1].append(self.words[-1])
             elif m is not None and m == self._attachment:
