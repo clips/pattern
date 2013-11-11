@@ -1844,15 +1844,9 @@ class Sentiment(lazydict):
             a = []
         weight = kwargs.get("weight", lambda w: 1)
         polarity = avg(map(lambda (w, p, s, x): (w, p), a), weight)
-        if polarity < -1: 
-            polarity = -1.0 
-        elif polarity > 1: 
-            polarity = 1.0
+        polarity = -1 < polarity < 1 and polarity or round(polarity, 1) 
         subjectivity = avg(map(lambda (w, p, s, x): (w, s), a), weight)
-        if subjectivity < 0: 
-            subjectivity = 0.0
-        elif subjectivity > 1:
-            subjectivity = 1.0
+        subjectivity = 0 < subjectivity < 1 and subjectivity or round(subjectivity, 1) 
         return Score(polarity, subjectivity, assessments = a)
 
     def assessments(self, words=[], negation=True):
