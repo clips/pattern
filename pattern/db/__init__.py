@@ -2336,14 +2336,13 @@ def pprint(datasheet, truncate=40, padding=" ", fill="."):
             # Cast each field in the row to a string.
             # Strings that span beyond the maximum column width are wrapped.
             # Thus, each "field" in the row is a list of lines.
-            head, tail = _truncate(decode_utf8(v), truncate)
             lines = []
-            lines.append(head)
-            w[j] = max(w[j], len(head))
-            while len(tail) > 0:
-                head, tail = _truncate(tail, truncate)
-                lines.append(head)
-                w[j] = max(w[j], len(head))
+            for v in v.splitlines():
+                v = decode_utf8(v.strip())
+                while v:
+                    head, v = _truncate(v, truncate)
+                    lines.append(head)
+                    w[j] = max(w[j], len(head))
             fields.append(lines)
         R.append(fields)
     for i, fields in enumerate(R):
