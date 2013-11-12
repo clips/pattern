@@ -160,7 +160,7 @@ def parsetree(s, *args, **kwargs):
     """
     return Text(parse(s, *args, **kwargs))
 
-def split(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
+def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
     """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
@@ -193,6 +193,8 @@ def positive(s, threshold=0.1, **kwargs):
     """ Returns True if the given sentence has a positive sentiment (polarity >= threshold).
     """
     return polarity(s, **kwargs) >= threshold
+    
+split = tree # Backwards compatibility.
 
 import re
 from glob import glob
@@ -201,7 +203,7 @@ from random import choice
 
 from itertools import chain
 from pattern.metrics import profile
-from pattern.search import search
+from pattern.search import search, scan
 from pattern.vector import pimap
 
 t = time()
@@ -210,22 +212,22 @@ hits = ("news", "year")
 
 def read1():
     i = 0
+    j = 0
     for f in glob(MODULE + "/wsj-*.txt")[:10]:
-        
-        s = open(f)#.read()
-        #s = s.replace(" ", "/%s/PNP/XX-OBJ " % choice(("NP", "VP", "PP")))
-        s = split(s)
-        #print len(s)
-        
-        #for s in open(f):
-        #    i += 1
-        #    #if any(w in s for w in hits):
-        #    s = s.replace(" ", "/%s/PNP/XX-OBJ " % choice(("NP", "VP", "PP")))
-        #    s = Sentence(s)
-        #    #    m = search("JJ news|year", s)
-        #    #    if m:
-        #    #        print m
+        for s in open(f):
+            s = s.replace(" ", "/%s " % choice(("NP", "VP", "PP")))
+            i += 1
+            if scan("news|year", s):
+            #if any(w in s for w in hits):
+                s = Sentence(s)
+                m = search("news|year", s)
+                if m:
+                    j += 1
+                    #print s
+                    #print m
+                    print
     print i
+    print j
 
 #def read2():
 #    s = list(pimap(list(chain(*(open(f) for f in glob(MODULE+"/wsj-*.txt")[:10]))), lambda s: Sentence(s)))

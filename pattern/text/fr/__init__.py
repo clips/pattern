@@ -201,7 +201,7 @@ def parsetree(s, *args, **kwargs):
     """
     return Text(parse(s, *args, **kwargs))
 
-def split(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
+def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
     """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
@@ -229,6 +229,8 @@ def positive(s, threshold=0.1, **kwargs):
     """ Returns True if the given sentence has a positive sentiment (polarity >= threshold).
     """
     return polarity(s, **kwargs) >= threshold
+
+split = tree # Backwards compatibility.
 
 #---------------------------------------------------------------------------------------------------
 # python -m pattern.fr xml -s "C'est l'exception qui confirme la règle." -OTCL

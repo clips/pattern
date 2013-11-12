@@ -192,7 +192,7 @@ def parsetree(s, *args, **kwargs):
     """
     return Text(parse(s, *args, **kwargs))
 
-def split(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
+def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
     """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
@@ -220,6 +220,8 @@ def positive(s, threshold=0.1, **kwargs):
     """ Returns True if the given sentence has a positive sentiment (polarity >= threshold).
     """
     return polarity(s, **kwargs) >= threshold
+
+split = tree # Backwards compatibility.
 
 #---------------------------------------------------------------------------------------------------
 # python -m pattern.nl xml -s "De kat wil wel vis eten maar geen poot nat maken." -OTCL

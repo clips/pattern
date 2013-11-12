@@ -163,7 +163,7 @@ def parsetree(s, *args, **kwargs):
     """
     return Text(parse(s, *args, **kwargs))
 
-def split(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
+def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
     """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
@@ -176,6 +176,8 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
         for token in sentence:
             tags.append((token[0], token[1]))
     return tags
+
+split = tree # Backwards compatibility.
 
 #---------------------------------------------------------------------------------------------------
 # python -m pattern.it xml -s "Il gatto nero faceva le fusa." -OTCL

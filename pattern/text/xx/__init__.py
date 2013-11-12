@@ -174,7 +174,7 @@ def parsetree(s, *args, **kwargs):
     """
     return Text(parse(s, *args, **kwargs))
 
-def split(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
+def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
     """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
@@ -203,9 +203,7 @@ def positive(s, threshold=0.1, **kwargs):
     """
     return polarity(s, **kwargs) >= threshold
 
-#print parse("The happy cat sat on the mat.", lemmata=True)
-#print singularize("cats")
-#print polarity("very happy")
+split = tree # Backwards compatibility.
 
 #---------------------------------------------------------------------------------------------------
 # python -m pattern.xx xml -s "..." -OTCL

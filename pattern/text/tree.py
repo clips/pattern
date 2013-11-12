@@ -466,7 +466,7 @@ class Chunk(object):
     # repr(Chunk) is a Python string (with Unicode characters encoded).
     @property
     def string(self):
-        return u" ".join([word.string for word in self.words])
+        return u" ".join(word.string for word in self.words)
     def __unicode__(self):
         return self.string
     def __repr__(self):
@@ -690,12 +690,9 @@ class Sentence(object):
         self._do_chunk(chunk, role, relation, iob)  # Append Chunk, or add last word to last chunk.
         self._do_conjunction()
         self._do_relation()
-        if anchor is not None or pnp is not None:
-            self._do_pnp(pnp, anchor)
-        if anchor is not None:
-            self._do_anchor(anchor)
-        if custom is not None:
-            self._do_custom(custom)
+        self._do_pnp(pnp, anchor)
+        self._do_anchor(anchor)
+        self._do_custom(custom)
 
     def parse_token(self, token, tags=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
         """ Returns the arguments for Sentence.append() from a tagged token representation.
@@ -1013,7 +1010,7 @@ class Sentence(object):
     # repr(Sentence) is a Python strings (with Unicode characters encoded).
     @property
     def string(self):
-        return u" ".join([word.string for word in self])
+        return u" ".join(word.string for word in self)
     def __unicode__(self):
         return self.string
     def __repr__(self):
@@ -1103,8 +1100,7 @@ class Text(list):
             if isinstance(string, basestring):
                 string = string.splitlines()
             # From an iterable (e.g., string.splitlines(), open('parsed.txt')).
-            for s in string:
-                self.append(Sentence(s, token, language))
+            self.extend(Sentence(s, token, language) for s in string)
     
     def insert(self, index, sentence):
         list.insert(self, index, sentence)
@@ -1115,8 +1111,9 @@ class Text(list):
         sentence.text = self
         
     def extend(self, sentences):
+        list.extend(self, sentences)
         for s in sentences:
-            self.append(s)
+            s.text = self
             
     def remove(self, sentence):
         list.remove(self, sentence)
@@ -1140,7 +1137,7 @@ class Text(list):
     # Text.string and unicode(Text) are Unicode strings.
     @property
     def string(self):
-        return u"\n".join([unicode(sentence) for sentence in self])
+        return u"\n".join(sentence.string for sentence in self)
         
     def __unicode__(self):
         return self.string
@@ -1170,11 +1167,13 @@ class Text(list):
 
 Tree = Text
 
-def split(string, token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
+def tree(string, token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
     """ Transforms the output of parse() into a Text object.
         The token parameter lists the order of tags in each token in the input string.
     """
     return Text(string, token)
+    
+split = tree # Backwards compatibility.
 
 def xml(string, token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
     """ Transforms the output of parse() into XML.
