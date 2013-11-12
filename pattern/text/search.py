@@ -32,6 +32,10 @@ class Text(list):
     @property
     def sentences(self):
         return self
+        
+    @property
+    def words(self):
+        return list(chain(*self))
 
 class Sentence(list):
     
@@ -764,14 +768,10 @@ class Pattern(object):
         #         m = p.search(s)
         #         if m:
         #             print m
-        if isinstance(string, (Sentence, Text)):
-            string = string.string
-        # Check if words in the pattern occur in the string (case-insensitive).
         w = (constraint.words for constraint in self.sequence if not constraint.optional)
         w = itertools.chain(*w)
         w = [w.strip(WILDCARD) for w in w if WILDCARD not in w[1:-1]]
-        s = string.lower()
-        if w and not any(w in s for w in w):
+        if w and not any(w in string.lower() for w in w):
             return False
         return True
 
@@ -905,7 +905,7 @@ def compile(pattern, *args, **kwargs):
     """ Returns a Pattern from the given string or regular expression.
         Recently compiled patterns are kept in cache.
     """
-    id, p = repr(pattern)+repr(args), None
+    id, p = repr(pattern) + repr(args), pattern
     if id in _cache:
         return _cache[id]
     if isinstance(pattern, basestring):

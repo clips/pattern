@@ -31,7 +31,7 @@
 # The Text and Sentece classes are containers: 
 # no parsing functionality should be added to it.
 
-from itertools import izip
+from itertools import izip, chain
 
 try:
     from config import SLASH
@@ -1127,6 +1127,10 @@ class Text(list):
     @property
     def sentences(self):
         return list(self)
+        
+    @property
+    def words(self):
+        return list(chain(*self))
         
     def copy(self):
         t = Text("", encoding=self.encoding)

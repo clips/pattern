@@ -196,47 +196,6 @@ def positive(s, threshold=0.1, **kwargs):
     
 split = tree # Backwards compatibility.
 
-import re
-from glob import glob
-from time import time
-from random import choice
-
-from itertools import chain
-from pattern.metrics import profile
-from pattern.search import search, scan
-from pattern.vector import pimap
-
-t = time()
-
-hits = ("news", "year")
-
-def read1():
-    i = 0
-    j = 0
-    for f in glob(MODULE + "/wsj-*.txt")[:10]:
-        for s in open(f):
-            s = s.replace(" ", "/%s " % choice(("NP", "VP", "PP")))
-            i += 1
-            if scan("news|year", s):
-            #if any(w in s for w in hits):
-                s = Sentence(s)
-                m = search("news|year", s)
-                if m:
-                    j += 1
-                    #print s
-                    #print m
-                    print
-    print i
-    print j
-
-#def read2():
-#    s = list(pimap(list(chain(*(open(f) for f in glob(MODULE+"/wsj-*.txt")[:10]))), lambda s: Sentence(s)))
-
-print profile(read1) 
-
-#print time() - t
-print xxx
-
 #---------------------------------------------------------------------------------------------------
 # python -m pattern.en xml -s "The cat sat on the mat." -OTCL
 
