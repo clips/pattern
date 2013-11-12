@@ -7,7 +7,7 @@ from pattern.web import SEARCH
 # with a SearchEngine.search() method that yields a list of Result objects.
 # Each Result has url, title, text, language, author and date and properties.
 # Subclasses of SearchEngine include: 
-# Google, Bing, Yahoo, Twitter, Facebook, Wikipedia, Flickr, ...
+# Google, Bing, Yahoo, Twitter, Facebook, Wikipedia, Wiktionary, Flickr, ...
 
 # This example retrieves results from Google based on a given query.
 # The Google search engine can handle SEARCH type searches.

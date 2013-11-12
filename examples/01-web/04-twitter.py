@@ -49,7 +49,7 @@ print
 # Since it is stored as a CSV-file it grows comfortably each time the script runs.
 # We can also open the table later on: in other scripts, for further analysis, ...
 
-#pprint(table)
+pprint(table, truncate=100)
 
 # Note: you can also search tweets by author:
 # Twitter().search("from:tom_de_smedt")

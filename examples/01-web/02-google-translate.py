@@ -2,7 +2,7 @@ import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
 from pattern.web import Google, plaintext
 
-# Search engines in pattern.web sometimes have custom methods that others don't.
+# A search engine in pattern.web sometimes has custom methods that the others don't.
 # For example, Google has Google.translate() and Google.identify().
 
 # This example demonstrates the Google Translate API.
@@ -19,4 +19,4 @@ print
 
 q = "C'est un lapin, lapin de bois, un cadeau."
 print q
-print g.identify(q)
+print g.identify(q) # (language, confidence)
