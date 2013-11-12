@@ -13,17 +13,21 @@ import itertools
 #--- TEXT, SENTENCE AND WORD -----------------------------------------------------------------------
 # The search() and match() functions work on Text, Sentence and Word objects (see pattern.text.tree),
 # i.e., the parse tree including part-of-speech tags and phrase chunk tags.
-# The Match object will contain matched Word objects, 
-# emulated with the following classes if the input was a plain string:
 
-PUNCTUATION = ".,;:!?()[]{}`''\"@#$^&*+-|=~_"
+# The pattern.text.search Match object will contain matched Word objects, 
+# emulated with the following classes if the original input was a plain string:
+
+PUNCTUATION = ".,;:!?()[]{}`'\"@#$^&*+-|=~_"
+
+RE_PUNCTUATION = "|".join(map(re.escape, PUNCTUATION))
+RE_PUNCTUATION = re.compile("(%s)" % RE_PUNCTUATION)
 
 class Text(list):
 
     def __init__(self, string="", token=["word"]):
         """ A list of sentences, where each sentence is separated by a period.
         """
-        list.__init__(self, (Sentence(s+".", token) for s in string.split(".")))
+        list.__init__(self, (Sentence(s + ".", token) for s in string.split(".")))
     
     @property
     def sentences(self):
@@ -34,12 +38,17 @@ class Sentence(list):
     def __init__(self, string="", token=["word"]):
         """ A list of words, where punctuation marks are split from words.
         """
-        for ch in PUNCTUATION: # Naive tokenization.
-            string = string.replace(ch, " %s " % ch)
-        string = re.sub(r"\s+", " ", string)
-        string = string.split(" ")
-        list.__init__(self, (Word(self, w, index=i) for i, w in enumerate(string)))
-    
+        s = RE_PUNCTUATION.sub(" \\1 ", string) # Naive tokenization.
+        s = re.sub(r"\s+", " ", s)
+        s = re.sub(r" ' (d|m|s|ll|re|ve)", " '\\1", s)
+        s = s.replace("n ' t", " n't")
+        s = s.split(" ")
+        list.__init__(self, (Word(self, w, index=i) for i, w in enumerate(s)))
+        
+    @property
+    def string(self):
+        return " ".join(w.string for w in self)
+
     @property
     def words(self):
         return self
@@ -458,7 +467,7 @@ class Constraint(object):
         self.multiple = multiple
         self.first    = first
         self.exclude  = exclude      # Constraint of words that are *not* allowed, or None.
-        self.custom   = custom       # Custom function that takes a Word and returns True is the word is part of the constraint
+        self.custom   = custom       # Custom function(Word) returns True if word matches constraint.
         
     @classmethod
     def fromstring(cls, s, **kwargs):
@@ -557,6 +566,9 @@ class Constraint(object):
             For example: Constraint(words=["Mac OS X*"]) 
             matches the word "Mac" if the word occurs in a Chunk("Mac OS X 10.5").
         """
+        # If the constraint has a custom function it must return True.
+        if self.custom is not None and self.custom(word) is False:
+            return False
         # If the constraint can only match the first word, Word.index must be 0.
         if self.first and word.index > 0:
             return False
@@ -621,9 +633,6 @@ class Constraint(object):
                     for p in self.taxonomy.parents(s, recursive=True):
                         if find(lambda s: p==s, self.taxa): # No wildcards.
                             return True
-        # If the constraint contains a custom function
-        if self.custom is not None and not self.custom(word):
-            b = False
         return b
     
     def __repr__(self):
@@ -742,6 +751,29 @@ class Pattern(object):
                 if G: O[G[-1][0]] = G[-1][1]; G.pop()
         P.groups = [g for g in O if g]
         return P
+        
+    def scan(self, string):
+        """ Returns True if search(Sentence(string)) may yield matches.
+            If is often faster to scan prior to creating a Sentence and searching it.
+        """
+        # In the following example, first scan the string for "good" and "bad":
+        # p = Pattern.fromstring("good|bad NN")
+        # for s in open("parsed.txt"):
+        #     if p.scan(s):
+        #         s = Sentence(s)
+        #         m = p.search(s)
+        #         if m:
+        #             print m
+        if isinstance(string, (Sentence, Text)):
+            string = string.string
+        # Check if words in the pattern occur in the string (case-insensitive).
+        w = (constraint.words for constraint in self.sequence if not constraint.optional)
+        w = itertools.chain(*w)
+        w = [w.strip(WILDCARD) for w in w if WILDCARD not in w[1:-1]]
+        s = string.lower()
+        if w and not any(w in s for w in w):
+            return False
+        return True
 
     def search(self, sentence):
         """ Returns a list of all matches found in the given sentence.
@@ -756,12 +788,12 @@ class Pattern(object):
             a.append(m)
             m = self.match(sentence, start=m.words[-1].index+1, _v=v, _u=u)
         return a
-        
+    
     def match(self, sentence, start=0, _v=None, _u=None):
         """ Returns the first match found in the given sentence, or None.
         """
         if sentence.__class__.__name__ == "Text":
-            return find(lambda (m,s): m!=None, ((self.match(s, start, _v), s) for s in sentence))[0]
+            return find(lambda (m,s): m is not None, ((self.match(s, start, _v), s) for s in sentence))[0]
         if isinstance(sentence, basestring):
             sentence = Sentence(sentence)
         # Variations (_v) further down the list may match words more to the front.
@@ -801,7 +833,7 @@ class Pattern(object):
         if map is None:
             map = {}
 
-        # MATCH
+        # --- MATCH ----------
         if i == len(sequence):
             if w0 is not None:
                 w1 = sentence.words[start-1]
@@ -835,7 +867,7 @@ class Pattern(object):
                 return Match(self, words, map)
             return None
 
-        # RECURSION
+        # --- RECURSION --------
         constraint = sequence[i]
         for w in sentence.words[start:]:
             #print " "*d, "match?", w, sequence[i].string # DEBUG
@@ -887,6 +919,12 @@ def compile(pattern, *args, **kwargs):
         return p
     else:
         raise TypeError, "can't compile '%s' object" % pattern.__class__.__name__
+
+def scan(pattern, string, *args, **kwargs):
+    """ Returns True if pattern.search(Sentence(string)) may yield matches.
+        If is often faster to scan prior to creating a Sentence and searching it.
+    """
+    return compile(pattern, *args, **kwargs).scan(string) 
 
 def match(pattern, sentence, *args, **kwargs):
     """ Returns the first match found in the given sentence, or None.
