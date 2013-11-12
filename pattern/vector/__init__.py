@@ -206,7 +206,7 @@ for f in glob.glob(os.path.join(MODULE, "stopwords-*.txt")):
 #--- WORD COUNT ------------------------------------------------------------------------------------
 # Simple bag-of-word models are often made up of word frequencies or character trigram frequencies.
 
-PUNCTUATION = ".,;:!?()[]{}`''\"@#$^&*+-|=~_"
+PUNCTUATION = ".,;:!?()[]{}`'\"@#$^&*+-|=~_"
 
 def words(string, filter=lambda w: w.strip("'").isalnum(), punctuation=PUNCTUATION, **kwargs):
     """ Returns a list of words (alphanumeric character sequences) from the given string.

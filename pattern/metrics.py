@@ -349,7 +349,7 @@ readability = flesch_reading_ease
 # For example, on the Corpus of Plagiarised Short Answers (Clough & Stevenson, 2009),
 # accuracy (F1) is 94.5% with n=3 and intertextuality threshold > 0.1.
 
-PUNCTUATION = ".,;:!?()[]{}`''\"@#$^&*+-|=~_"
+PUNCTUATION = ".,;:!?()[]{}`'\"@#$^&*+-|=~_"
 
 def ngrams(string, n=3, punctuation=PUNCTUATION, **kwargs):
     """ Returns a list of n-grams (tuples of n successive words) from the given string.

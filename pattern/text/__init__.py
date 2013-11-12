@@ -59,7 +59,7 @@ def encode_string(v, encoding="utf-8"):
 decode_utf8 = decode_string
 encode_utf8 = encode_string
 
-PUNCTUATION = ".,;:!?()[]{}`''\"@#$^&*+-|=~_"
+PUNCTUATION = ".,;:!?()[]{}`'\"@#$^&*+-|=~_"
 
 def ngrams(string, n=3, punctuation=PUNCTUATION, continuous=False):
     """ Returns a list of n-grams (tuples of n successive words) from the given string.
