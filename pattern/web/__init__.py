@@ -3030,9 +3030,9 @@ class Selector(object):
             return False
         if self.tag not in (e.tag, "*"):
             return False
-        if self.id not in (e.id.lower(), "", None):
+        if self.id not in ((e.id or "").lower(), "", None):
             return False
-        if self.classes.issubset(set(map(str.lower, e.attr.get("class", "").split()))) is False:
+        if self.classes.issubset(set(map(lambda s: s.lower(), e.attr.get("class", "").split()))) is False:
             return False
         if "first-child" in self.pseudo and self._first_child(e.parent) != e:
             return False
@@ -3098,6 +3098,7 @@ class SelectorChain(list):
         for chain in self:
             e = [root]
             for combinator, s in chain:
+                # Search Y, where:
                 if combinator == " ":
                     # X Y => X is ancestor of Y
                     e = map(s.search, e)
