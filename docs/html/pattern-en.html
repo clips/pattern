@@ -333,7 +333,8 @@ hundreds of carrots
      chunks = True,         # Parse chunks? (NP, VP, PNP, ...)
   relations = False,        # Parse chunk relations? (-SBJ, -OBJ, ...)
     lemmata = False,        # Parse lemmata? (ate =&gt; eat)
-   encoding = 'utf-8')      # Input string encoding.
+   encoding = 'utf-8'       # Input string encoding.
+     tagset = None)         # Penn Treebank II (default) or UNIVERSAL.
 </pre><p>For example:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parse
@@ -415,7 +416,8 @@ happy</pre></div>
      chunks = True,         # Parse chunks? (NP, VP, PNP, ...)
   relations = False,        # Parse chunk relations? (-SBJ, -OBJ, ...)
     lemmata = False,        # Parse lemmata? (ate =&gt; eat)
-   encoding = 'utf-8')      # Input string encoding.
+   encoding = 'utf-8'       # Input string encoding.
+     tagset = None)         # Penn Treebank II (default) or UNIVERSAL.
 </pre><p>The following example shows the parse tree for the sentence "<em>The cat sat on the mat.</em>":</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parsetree
@@ -439,16 +441,21 @@ VP [(u'sat', u'VBD')]
 PP [(u'on', u'IN')]
 NP [(u'the', 'DT), (u'mat', u'NN')] 
 </pre></div>
-<p>If you already have a tagged string from <span class="inline_code">parse()</span>&nbsp;(e.g., stored in a file) you can transform it to a <span class="inline_code">Text</span> with the module's&nbsp;<span class="inline_code">split()</span> function. In other words, <span class="inline_code">parsetree()</span> = <span class="inline_code">split(parse()</span><span class="inline_code">)</span>.</p>
+<p>A common approach is to store output from <span class="inline_code">parse()</span>&nbsp;in a .txt file, with a tagged sentence on each line.&nbsp;The <span class="inline_code">tree()</span> function can be used to load it as a <span class="inline_code">Text</span> object. It has an optional <span class="inline_code">token</span> parameter that defines the format of the tokens (tagged words).&nbsp;So&nbsp;<span class="inline_code">parsetree(s)</span>&nbsp;is the same as&nbsp;<span class="inline_code">tree(parse(s)</span><span class="inline_code">)</span>.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">tree(taggedstring, token=[WORD, POS, CHUNK, PNP, REL, LEMMA])</pre><div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.en import tree
+&gt;&gt;&gt;
+&gt;&gt;&gt; for sentence in tree(open('tagged.txt'), token=[WORD, POS, CHUNK]) 
+&gt;&gt;&gt;     print sentence</pre></div>
 <h3>Text</h3>
 <p>A <span class="inline_code">Text</span> is a list of <span class="inline_code">Sentence</span> objects (i.e., it can be iterated with&nbsp;<span class="inline_code">for</span> <span class="inline_code">sentence</span> <span class="inline_code">in</span> <span class="inline_code">text:</span>).</p>
-<pre class="brush:python; gutter:false; light:true;">text = Text(taggedstring)</pre><pre class="brush:python; gutter:false; light:true;">text = Text.from_xml(xml)  # Reads an XML string generated with Text.xml.
+<pre class="brush:python; gutter:false; light:true;">text = Text(taggedstring, token=[WORD, POS, CHUNK, PNP, REL, LEMMA])</pre><pre class="brush:python; gutter:false; light:true;">text = Text.from_xml(xml)  # Reads an XML string generated with Text.xml.
 </pre><pre class="brush:python; gutter:false; light:true;">text.string                # 'The cat sat on the mat .'
 text.sentences             # [Sentence('The cat sat on the mat .')]
 text.copy()
 text.xml</pre><h3>Sentence</h3>
 <p>A <span class="inline_code">Sentence</span> is a list of <span class="inline_code">Word</span> objects, with attributes and methods that group words in <span class="inline_code">Chunk</span> objects.</p>
-<pre class="brush:python; gutter:false; light:true;">sentence = Sentence(taggedstring)</pre><pre class="brush:python; gutter:false; light:true;">sentence = Sentence.from_xml(xml) 
+<pre class="brush:python; gutter:false; light:true;">sentence = Sentence(taggedstring, token=[WORD, POS, CHUNK, PNP, REL, LEMMA])</pre><pre class="brush:python; gutter:false; light:true;">sentence = Sentence.from_xml(xml) 
 </pre><pre class="brush:python; gutter:false; light:true;">sentence.parent            # Sentence parent, or None.
 sentence.id                # Unique id for each sentence.
 sentence.start             # 0

@@ -32,7 +32,7 @@
         <!-- Parsed from the online documentation. -->
         <div id="node-1405" class="node node-type-page"><div class="node-inner">
 <div class="content">
-<p><span class="big">The pattern.metrics module is a loose collection of performance, accuracy, similarity and significance tests, including code profiling, precision &amp; recall, inter-rater agreement, text metrics (similarity, readability, intertextuality, cooccurrence) and statistics (variance, chi-squared, goodness of fit).</span></p>
+<p style="text-align: left;"><span class="big">The pattern.metrics module is a loose collection of performance, accuracy, similarity and significance tests, including code profiling, precision &amp; recall, inter-rater agreement, text metrics (similarity, readability, intertextuality, cooccurrence) and statistics (variance, chi-squared, goodness of fit).</span></p>
 <p>It can be used by itself or with other <a href="pattern.html">pattern</a> modules: <a href="pattern-web.html">web</a> | <a href="pattern-db.html">db</a> | <a href="pattern-en.html">en</a> | <a href="pattern-search.html">search</a> <span class="blue"> </span>| <a href="pattern-vector.html">vector</a> | <a href="pattern-graph.html">graph</a>.</p>
 <p><img src="../g/pattern_schema.gif" alt="" width="620" height="180" /></p>
 <hr />
@@ -58,10 +58,10 @@
 <li><a href="#moment">Moment</a></li>
 <li><a href="#quantile">Quantile &amp; box plot</a></li>
 </ul>
-<p class="smallcaps">Statistical tests</p>
 <ul>
 <li><a href="#fisher">Fisher's exact test</a></li>
-<li><a href="#chi2">Chi-squared test</a> <span class="small link-maintenance">(Pearson)</span></li>
+<li><a href="#chi2">Pearson's chi-squared test</a></li>
+<li><a href="#ks2">Kolmogorov-Smirnov test</a></li>
 </ul>
 <p>&nbsp;</p>
 <hr />
@@ -134,8 +134,8 @@
 <h2><a name="accuracy"></a>Accuracy, precision and recall</h2>
 <p>Precision and recall can be used to test the performance (accuracy) of a binary classifier. A well-known classification task is spam detection, for example an <span class="inline_code">is_spam()</span> function that yields <span class="inline_code">True</span> or <span class="inline_code">False</span> (binary). Accuracy is a measure of how many times the function yields <span class="inline_code">True</span> for spam messages (= true positives, "hits"). Occasionally, the function might also return <span class="inline_code">True</span> for messages that are not spam (= false positives, "errors"), or <span class="inline_code">False</span> for messages that <em>are</em> spam (= false negatives, "misses").</p>
 <p><strong>Precision</strong> is a measure of hits vs. errors. <strong>Recall</strong> is a measure of hits vs. misses. High precision means that actual e-mail does not end up in the junk folder. High recall means that no spam ends up in the inbox.</p>
-<p>The <span class="inline_code">confusion_matrix()</span> function takes a function that returns <span class="inline_code">True</span> or <span class="inline_code">False</span> for a given document (e.g., a string), and a list (<span class="inline_code">document</span>, <span class="inline_code">bool</span>)-tuples for testing. It returns a (<span class="inline_code">TP</span>, <span class="inline_code">TN</span>, <span class="inline_code">FP</span>, <span class="inline_code">FN</span>)-tuple.</p>
-<p>The <span class="inline_code">test()</span> function takes a function and a list of (<span class="inline_code">document</span>, <span class="inline_code">bool</span>)-tuples. It returns a tuple with (<span class="inline_code">accuracy</span>, <span class="inline_code">precision</span>, <span class="inline_code">recall</span>, <span class="inline_code">F1-score</span>). The optional <span class="inline_code">average</span> can be <span class="inline_code">MACRO</span> or <span class="inline_code">None</span>.</p>
+<p>The <span class="inline_code">confusion_matrix()</span> function takes a function that returns <span class="inline_code">True</span> or <span class="inline_code">False</span> for a given document (e.g., a string), and a list of <span class="inline_code">(document,</span> <span class="inline_code">bool)</span>-tuples for testing. It returns a <span class="inline_code">(TP,</span> <span class="inline_code">TN,</span> <span class="inline_code">FP,</span> <span class="inline_code">FN)</span>-tuple.</p>
+<p>The <span class="inline_code">test()</span> function takes a function and a list of <span class="inline_code">(document,</span> <span class="inline_code">bool)</span>-tuples. It returns a tuple with <span class="inline_code">(accuracy,</span> <span class="inline_code">precision,</span> <span class="inline_code">recall,</span> <span class="inline_code">F1-score)</span>. The optional <span class="inline_code">average</span> can be <span class="inline_code">MACRO</span> or <span class="inline_code">None</span>.</p>
 <pre class="brush:python; gutter:false; light:true;">confusion_matrix(match=lambda document: False, documents=[(None, False)])</pre><pre class="brush:python; gutter:false; light:true;">test(match=lambda document:False, documents=[], average=None)</pre><table class="border">
 <tbody>
 <tr>
@@ -295,7 +295,7 @@
 </tbody>
 </table>
 <h3><a name="intertextuality"></a>Intertextuality</h3>
-<p>The <span class="inline_code">intertextuality()</span> function can be used to test the overlap between texts (e.g., plagiarism detection). It takes a list of strings and returns a <span class="inline_code">dict</span> with (<span class="inline_code">i</span>, <span class="inline_code">j</span>)-tuples as keys and <span class="inline_code">float</span> values between <span class="inline_code">0.0</span>-<span class="inline_code">1.0</span>. For indices <span class="inline_code">i</span> and <span class="inline_code">j</span> in the given list, the corresponding <span class="inline_code">float</span> is the percentage of text <span class="inline_code">i</span> that is also in text <span class="inline_code">j</span>. Overlap is measured by <a class="link-maintenance" href="pattern-en.html#ngram"><em>n</em>-grams</a> (by default <span class="inline_code">n=5</span> or five successive words). An optional <span class="inline_code">weight</span> function can be used to supply a weight for each <em>n</em>-gram (e.g., <a class="link-maintenance" href="pattern-vector.html#tf-idf">tf-idf</a>).</p>
+<p>The <span class="inline_code">intertextuality()</span> function can be used to test the overlap between texts (e.g., plagiarism detection). It takes a list of strings and returns a <span class="inline_code">dict</span> with <span class="inline_code">(i,</span> <span class="inline_code">j)</span>-tuples as keys and <span class="inline_code">float</span> values between <span class="inline_code">0.0</span>-<span class="inline_code">1.0</span>. For indices <span class="inline_code">i</span> and <span class="inline_code">j</span> in the given list, the corresponding <span class="inline_code">float</span> is the percentage of text <span class="inline_code">i</span> that is also in text <span class="inline_code">j</span>. Overlap is measured by <a class="link-maintenance" href="pattern-en.html#ngram"><em>n</em>-grams</a> (by default <span class="inline_code">n=5</span> or five successive words). An optional <span class="inline_code">weight</span> function can be used to supply a weight for each <em>n</em>-gram (e.g., <a class="link-maintenance" href="pattern-vector.html#tf-idf">tf-idf</a>).</p>
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">texts=[], n=5, weight=lambda ngram: 1.0)</pre><div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.metrics import intertextuality
 &gt;&gt;&gt; from glob import glob
@@ -389,8 +389,9 @@
 </tr>
 </tbody>
 </table>
-<p>The <span class="inline_code">pdf()</span> or probability density function returns the chance (<span class="inline_code">0.0</span>-<span class="inline_code">1.0</span>) that a given value occurs in a normal distribution with the given <span class="inline_code">mean</span> and <span class="inline_code">stdev</span>:</p>
-<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">pdf(x, mean=0.0, stdev=1.0)</pre><div class="example">
+<p>The <span class="inline_code">norm()</span> function returns a list of <span class="inline_code">n</span> random samples from the normal distribution.</p>
+<p>The <span class="inline_code">pdf()</span> or probability density function returns the chance (<span class="inline_code">0.0</span>-<span class="inline_code">1.0</span>) that a given value occurs in a normal distribution with the given <span class="inline_code">mean</span> and <span class="inline_code">stdev</span>.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">norm(n, mean=0.0, stdev=1.0) </pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">pdf(x, mean=0.0, stdev=1.0)</pre><div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.metrics import pdf
 &gt;&gt;&gt; print sum(pdf(iq, mean=100, stdev=15) for iq in range(85, 115))
 
@@ -439,66 +440,81 @@
 <p>&nbsp;</p>
 <hr />
 <h2>Statistical tests</h2>
-<p>A statistical hypothesis test can be used to verify if sample data is evenly distributed (= null hypothesis). For example: 96 subjects were asked about their pet. 29/46 men reported owning a dog, while 30/50 women reported owning a cat (fictious). Is gender correlated to pet ownership, in other words should we reject the null hypothesis?</p>
 <h3><a name="fisher"></a>Fisher's exact test</h3>
-<p>The <span class="inline_code">fisher_test()</span> function is a fast implementation of Fisher's exact test (two-tailed), using the hypergeometric distribution. It returns significance <span class="inline_code">p</span> for the 2 x 2 contingency table, where <span class="inline_code">p</span> <span class="inline_code">&lt;</span> <span class="inline_code">0.05</span> is significant and <span class="inline_code">p</span> <span class="inline_code">&lt;</span> <span class="inline_code">0.01</span> is very significant.</p>
-<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">fisher_test(a, b, c, d)</pre><div class="example">
-<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; print fisher_test(a=17, b=30, c=29, d=20)
+<p>The <span class="inline_code">fisher()</span> function or <a href="http://en.wikipedia.org/wiki/Fisher's_exact_test">Fisher's exact test</a>&nbsp;can be used to test the contingency of a 2 x 2 classification. It returns probability <span class="inline_code">p</span> between <span class="inline_code">0.0</span>-<span class="inline_code">1.0</span>, where <span class="inline_code">p</span> <span class="inline_code">&lt;</span> <span class="inline_code">0.05</span> is significant and <span class="inline_code">p</span> <span class="inline_code">&lt;</span> <span class="inline_code">0.01</span> is very significant.</p>
+<p>Say that 96 pet owners were asked about their pet, and 29/46 men reported owning a dog and 30/50 women reported owning a cat. We have a 2 x 2 classification (cat or dog&nbsp;↔ man or woman)&nbsp;that we assume to be evenly distributed, i.e., we assume that men and women are equally fond of cats and dogs. This is the <em>null hypothesis</em>. But Fisher's exact test yields <span class="inline_code">p</span> <span class="inline_code">0.027</span> <span class="inline_code">&lt;</span> <span class="inline_code">0.05</span>&nbsp;so we need to <em>reject</em> the null hypothesis. There is a significant correlation between gender and pet ownership (women are more fond of cats).</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">fisher(a, b, c, d)</pre><div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.metrics import fisher
+&gt;&gt;&gt; print fisher(a=17, b=30, c=29, d=20)
 
 0.027</pre></div>
-<p>Suppose the data represents pet ownership:</p>
-<table class="border" style="width: 50%;">
+<table class="border">
 <tbody>
 <tr>
 <td>&nbsp;</td>
-<td class="smallcaps" style="text-align: center;">Men</td>
-<td class="smallcaps" style="text-align: center;">Women</td>
+<td class="smallcaps" style="text-align: center;">men</td>
+<td class="smallcaps" style="text-align: center;">women</td>
 </tr>
 <tr>
 <td class="smallcaps" style="text-align: right;">cat owner</td>
-<td style="text-align: center;">17</td>
-<td style="text-align: center;">30</td>
+<td style="text-align: center;"><span class="inline_code">17</span><span class="small"> (a)</span></td>
+<td style="text-align: center;"><span class="inline_code">30</span><span class="small"> (b)</span></td>
 </tr>
 <tr>
 <td class="smallcaps" style="text-align: right;">dog owner</td>
-<td style="text-align: center;">29</td>
-<td style="text-align: center;">20</td>
+<td style="text-align: center;"><span class="inline_code">29</span><span class="small"> (c)</span></td>
+<td style="text-align: center;"><span class="inline_code">20</span><span class="small"> (d)</span></td>
 </tr>
 </tbody>
 </table>
-<p>Since <span class="inline_code">P=0.027</span> <span class="inline_code">&lt;</span> <span class="inline_code">0.05</span>, the test shows a significant correlation between gender and pet ownership.</p>
+<p class="small"><span style="text-decoration: underline;">Reference</span>: Edelson, J. &amp; Lester D. (1983). Personality and pet ownership: a preliminary study. <em>Psychological Reports</em>.</p>
 <h3><a name="chi2"></a>Chi-squared test</h3>
-<p>The <span class="inline_code">chi2()</span> function is a fast implementation of Pearson's chi-squared test. It returns an<span class="inline_code"> (X2, P)</span>-tuple for the <span class="inline_code">n</span> x <span class="inline_code">m</span> observed and expected data (containing absolute frequencies). Likewise, the <span class="inline_code">llr()</span> function returns the log-likelihood ratio as a <span class="inline_code">(G,</span> <span class="inline_code">p)</span>-tuple. With <span class="inline_code">expected=None</span>, an even distribution over all classes is assumed. If <span class="inline_code">df=None</span>, it is the number of classes-1 (i.e., <span class="inline_code">len(observed)[0] - 1</span>).</p>
-<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">chi2(observed=[], expected=[], df=None, tail=UPPER) # UPPER | LOWER</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">llr(observed=[], expected=[], df=None, tail=UPPER)  # UPPER | LOWER</pre><div class="example">
-<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; observed = [[22, 21, 22, 27, 22, 36]]
-&gt;&gt;&gt; expected = [[25, 25, 25, 25, 25, 25]] # Even distribution.
-&gt;&gt;&gt; print chi2(observed, expected)
+<p>The <span class="inline_code">chi2()</span> function or <a href="http://en.wikipedia.org/wiki/Pearson's_chi-squared_test">Pearson's chi-squared test</a> can be used to test the contingency of an n x m classification. It returns an <span class="inline_code">(x2,</span>&nbsp;<span class="inline_code">p)</span>-tuple, where probability&nbsp;<span class="inline_code">p</span> <span class="inline_code">&lt;</span> <span class="inline_code">0.05</span> is significant and <span class="inline_code">p</span> <span class="inline_code">&lt;</span> <span class="inline_code">0.01</span> is very significant.&nbsp;The <span class="inline_code">observed</span> matrix is a list of lists of <span class="inline_code">int</span> values (i.e., absolute frequencies).&nbsp;By default, the <span class="inline_code">expected</span> matrix is evenly distributed over all classes, and&nbsp;<span class="inline_code">df</span> is&nbsp;<span class="inline_code">(n-1)</span> <span class="inline_code">*</span> <span class="inline_code">(m-1)</span>&nbsp;degrees of freedom.&nbsp;</p>
+<p>Say that 255 pet owners aged 30, 40, 50 or 55+ were asked whether they owned a cat or a dog. We have an n x m classification (cat or dog&nbsp;↔ 30, 40, 50, 55+) that we assume to be evenly distributed, i.e., we assume that pet preference&nbsp;is unrelated to age.&nbsp;This is the <em>null hypothesis</em>. The chi-squared test for the data below yields <span class="inline_code">p</span> <span class="inline_code">0.89</span>&nbsp;<span class="inline_code">&gt;</span> <span class="inline_code">0.05</span>, which confirms the null hypothesis.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">chi2(observed=[], expected=None, df=None)</pre><div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.metrics import chi2
+&gt;&gt;&gt; print chi2(observed=[[15, 22, 27, 21], [37, 40, 52, 41]])
 
-(6.72, 0.24)</pre></div>
-<p>Suppose the data represents die rolls:</p>
-<table class="border" style="width: 50%;">
+(0.63, 0.89)</pre></div>
+<table class="border">
 <tbody>
 <tr>
 <td>&nbsp;</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">6</td>
+<td style="text-align: center;">25–34</td>
+<td style="text-align: center;">35–44</td>
+<td style="text-align: center;">45–54</td>
+<td style="text-align: center;">55+</td>
 </tr>
 <tr>
-<td class="smallcaps">Die rolls</td>
-<td style="text-align: center;">22</td>
-<td style="text-align: center;">21</td>
-<td style="text-align: center;">22</td>
-<td style="text-align: center;">27</td>
-<td style="text-align: center;">22</td>
-<td style="text-align: center;">36</td>
+<td class="smallcaps" style="text-align: right;">cat owner</td>
+<td class="inline_code" style="text-align: center;">15</td>
+<td class="inline_code" style="text-align: center;">22</td>
+<td class="inline_code" style="text-align: center;">27</td>
+<td class="inline_code" style="text-align: center;">21</td>
+</tr>
+<tr>
+<td class="smallcaps" style="text-align: right;">dog owner</td>
+<td class="inline_code" style="text-align: center;">37</td>
+<td class="inline_code" style="text-align: center;">40</td>
+<td class="inline_code" style="text-align: center;">52</td>
+<td class="inline_code" style="text-align: center;">41</td>
 </tr>
 </tbody>
 </table>
-<p>Intuitively, the die appears to roll 6 more often. But <span class="inline_code">p=0.24</span> <span class="inline_code">&gt;</span> <span class="inline_code">0.05</span> is not significant, so there is no reason to reject the null hypothesis that the die is fair.</p>
+<h3><a name="ks2"></a>Kolmogorov-Smirnov test</h3>
+<p>The <span class="inline_code">ks2()</span> function or <a href="http://en.wikipedia.org/wiki/Kolmogorov–Smirnov_test">two-sample Kolmogorov-Smirnov test</a> can be used to test if two samples are drawn from the same distribution. It returns a <span class="inline_code">(d,</span> <span class="inline_code">p)</span>-tuple with maximum distance <span class="inline_code">d</span> and probability <span class="inline_code">p</span>&nbsp;(<span class="inline_code">0.0</span>-<span class="inline_code">1.0</span>). By default, the second sample <span class="inline_code">a2</span> is <span class="inline_code">NORMAL</span>, i.e., a list with <span class="inline_code">n</span> values from&nbsp;<span class="inline_code">gauss(mean(a1),</span> <span class="inline_code">stdev(a1))</span>.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">ks2(a1, a2=NORMAL, n=1000)</pre><div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.metrics import ks2
+&gt;&gt;&gt; ks2([70, 85, 85, 100, 100, 100, 115, 115, 130], n=10000)
+
+(0.17, 0.94)&nbsp;</pre></div>
+<p>The values in the given list appear to be normally distributed (bell-shape).</p>
+<p>&nbsp;</p>
+<hr />
+<h2>See also</h2>
+<ul>
+<li><a href="http://www.scipy.org/">Scipy</a> (BSD): scientific computing for Python.</li>
+</ul>
 </div>
 </div></div>
         </div>

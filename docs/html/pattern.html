@@ -33,8 +33,8 @@
         <div id="node-1350" class="node node-type-page"><div class="node-inner">
 <div class="content">
 <p><span class="big">Pattern is a web mining module for the Python programming language.</span></p>
-<p><span class="big">It bundles tools for data mining (Google + Twitter + Wikipedia API, web crawler, HTML DOM parser), natural language processing (part-of-speech taggers, n-gram search, sentiment analysis, WordNet), machine learning (vector space model, <em>k</em>-means, <em>k</em>-NN, SVM) and network analysis (graph centrality &amp; visualization).</span></p>
-<p>The module is well-document and bundled with 30+ examples and 350+ unit tests.</p>
+<p><span class="big">It has tools for data mining (Google, Twitter and Wikipedia API, a web crawler, a HTML DOM parser), natural language processing (part-of-speech taggers, n-gram search, sentiment analysis, WordNet), machine learning (vector space model, clustering, SVM), network analysis and &lt;canvas&gt; visualization.</span></p>
+<p>The module is free, well-document and bundled with 50+ examples and 350+ unit tests.</p>
 <p><img src="../g/pattern_schema.gif" alt="" width="620" height="180" /></p>
 <hr />
 <h2>Download</h2>
@@ -97,8 +97,8 @@
 <p>&nbsp;</p>
 <hr />
 <h2>Installation</h2>
-<p>Pattern is written for Python 2.5+ (no support for Python 3 yet). The module has no external dependencies except <span class="inline_code">LSA</span> in the pattern.vector module, which requires <a href="http://numpy.scipy.org/" target="_blank">NumPy</a> (installed by default on Mac OS X).</p>
-<p>To install Pattern so that the module is available in all of your scripts, open a terminal and do:</p>
+<p>Pattern is written for Python 2.5+ (no support for Python 3 yet). The module has no external dependencies, except <span class="inline_code">LSA</span> in the pattern.vector module, which requires <a href="http://numpy.scipy.org/" target="_blank">NumPy</a> (installed by default on Mac OS X).&nbsp;</p>
+<p>To install Pattern so that the module is available in all Python scripts, from the command line do:</p>
 <div class="install">
 <pre class="gutter:false; light:true;">&gt; cd pattern-2.6
 &gt; python setup.py install&nbsp;</pre></div>
@@ -107,22 +107,23 @@
 <pre class="gutter:false; light:true;">&gt; pip install pattern</pre></div>
 <p>If none of the above works, you can make Python aware of the module in three ways:</p>
 <ul>
-<li>Put the <span class="inline_code">pattern</span>&nbsp;subfolder in the zip archive in the same folder as your script.</li>
-<li>Put the <span class="inline_code">pattern</span>&nbsp;subfolder in the standard location for modules so it is available to all scripts:<br /><span class="inline_code" style="font-family: Courier, monospace; font-size: 12px;">c:\python25\Lib\site-packages\</span>&nbsp;(Windows),<br /><span class="inline_code"> /Library/Python/2.6/site-packages/</span>&nbsp;(Mac OS X), <br /><span class="inline_code">/usr/lib/python2.6/site-packages/</span>&nbsp;(Unix).<span style="font-family: Courier, monospace; font-size: small;"><span style="font-size: 12px;"><br /></span></span></li>
-<li>Add the location of the module to&nbsp;<span class="inline_code">sys.path</span>&nbsp;in your script, before importing it:</li>
+<li>Put the <span class="inline_code">pattern</span>&nbsp;subfolder in the .zip archive in the same folder as your script.</li>
+<li>Put the <span class="inline_code">pattern</span>&nbsp;subfolder in the standard location for modules so it is available to all scripts:<br /><span class="inline_code">c:\python27\Lib\site-packages\</span>&nbsp;(Windows),<br /><span class="inline_code"> /Library/Python/2.7/site-packages/</span>&nbsp;(Mac), <br /><span class="inline_code">/usr/lib/python2.7/site-packages/</span>&nbsp;(Unix).<span style="font-family: Courier, monospace; font-size: small;"><span style="font-size: 12px;"><br /></span></span></li>
+<li>Add the location of the module to&nbsp;<span class="inline_code">sys.path</span>&nbsp;in your Python script, before importing it:</li>
 </ul>
 <div class="example">
-<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; MODULE = '/users/tom/desktop/pattern'
-&gt;&gt;&gt; import sys; if MODULE not in sys.path: sys.path.append(MODULE)
-&gt;&gt;&gt; from pattern.en import parse, Sentence </pre></div>
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; import sys; sys.path.append('/users/tom/desktop/pattern')
+&gt;&gt;&gt; from pattern.web import Twitter </pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2>Quick overview</h2>
 <h3>pattern.web</h3>
-<p>Module <a href="pattern-web.html">pattern.web</a> is a web toolkit that bundles various API's (Google, Gmail, Bing, Twitter, Facebook, Wikipedia, DBPedia, Flickr, ...) with a robust HTML DOM parser and a web crawler. The module's purpose is to retrieve online content in an easy-to-use and uniform way.</p>
+<p>The&nbsp;<a href="pattern-web.html">pattern.web</a>&nbsp;module is a web toolkit that contains API's (Google, Gmail, Bing, Twitter, Facebook, Wikipedia, Wiktionary, DBPedia, Flickr, ...), a robust HTML DOM parser and a web crawler.</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import Twitter, plaintext
-&gt;&gt;&gt; for tweet in Twitter().search('"more important than"', cached=False):
+&gt;&gt;&gt;
+&gt;&gt;&gt; twitter = Twitter(language='en') 
+&gt;&gt;&gt; for tweet in twitter.search('"more important than"', cached=False):
 &gt;&gt;&gt;    print plaintext(tweet.text)
 
 'The mobile web is more important than mobile apps.'
@@ -130,33 +131,126 @@
 'Imagination is more important than knowledge. - Albert Einstein'
 ... </pre></div>
 <h3>pattern.en</h3>
-<p>Module <a href="pattern-en.html">pattern.en</a> is a natural language processing (NLP) toolkit for English. English language is ambiguous, so the module uses a statistical approach + regular expressions. This means that it is fast, roughly accurate, and on occasion prone to incorrect results&nbsp;(see <span class="link-maintenance"><a href="http://www.clips.ua.ac.be/pages/MBSP" target="_blank">MBSP</a></span> for a robust approach compatible with Pattern). It has functionality for word inflection (for example: verb conjugation and noun pluralization), a Python interface to the WordNet database, and a Brill-based text parser. A<em>&nbsp;parser</em> analyzes a text and identifies the constituents (sentences, nouns, verbs, etc.):</p>
+<p>The&nbsp;<a href="pattern-en.html">pattern.en</a>&nbsp;module is a natural language processing (NLP) toolkit for English. Because language is ambiguous (e.g., <em>I can</em>&nbsp;↔ <em>a can</em>) it uses statistical approaches + regular expressions. This means that it is fast, quite accurate and occasionally incorrect. It has a part-of-speech tagger that identifies word types (e.g., noun, verb, adjective), word inflection (conjugation, singularization) and a WordNet API.</p>
 <div class="example">
-<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parse, pprint
+<pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parse
+&gt;&gt;&gt;  
 &gt;&gt;&gt; s = 'The mobile web is more important than mobile apps.'
 &gt;&gt;&gt; s = parse(s, relations=True, lemmata=True)
-&gt;&gt;&gt; pprint(s)
+&gt;&gt;&gt; print s
 
-          WORD   TAG    CHUNK    ROLE   ID     PNP    LEMMA       
-                                                                  
-           The   DT     NP       SBJ    1      -      the         
-        mobile   JJ     NP ^     SBJ    1      -      mobile      
-           web   NN     NP ^     SBJ    1      -      web         
-            is   VBZ    VP       -      1      -      be          
-          more   RBR    ADJP     -      -      -      more        
-     important   JJ     ADJP ^   -      -      -      important   
-          than   IN     PP       -      -      PNP    than        
-        mobile   JJ     NP       -      -      PNP    mobile      
-          apps   NNS    NP ^     -      -      PNP    app     
-             .   .      -        -      -      -      .
-
+'The/DT/B-NP/O/NP-SBJ-1/the mobile/JJ/I-NP/O/NP-SBJ-1/mobile' ... 
 </pre></div>
-<p>Note how the sentence has been annotated with various tags, identifying for example nouns (<span class="postag">NN</span>), adjectives (<span class="postag">JJ</span>), determiners (<span class="postag">DT</span>), verbs (<span class="postag">VB</span>), noun phrases (<span class="postag">NP</span>), sentence subject (<span class="postag">SBJ</span>), and a prepositional noun phrase (<span class="postag">PNP</span>). A <em>parse tree</em>&nbsp;is a Python structure of linked objects in the parsed text:</p>
+<table class="border">
+<tbody>
+<tr>
+<td class="smallcaps" style="text-align: right;">word</td>
+<td class="smallcaps" style="text-align: center;">tag</td>
+<td class="smallcaps" style="text-align: center;">chunk</td>
+<td class="smallcaps" style="text-align: center;">role</td>
+<td class="smallcaps" style="text-align: center;">id</td>
+<td class="smallcaps" style="text-align: center;">pnp</td>
+<td class="smallcaps">lemma</td>
+</tr>
+<tr>
+<td style="text-align: right;">The</td>
+<td class="inline_code" style="text-align: center;">DT</td>
+<td class="inline_code" style="text-align: center;">NP&nbsp;</td>
+<td class="inline_code" style="text-align: center;">SBJ</td>
+<td class="inline_code" style="text-align: center;">1</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td><em>the</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">mobile</td>
+<td class="inline_code" style="text-align: center;">JJ</td>
+<td class="inline_code" style="text-align: center;">NP^</td>
+<td class="inline_code" style="text-align: center;">SBJ</td>
+<td class="inline_code" style="text-align: center;">1</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td><em>mobile</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">web</td>
+<td class="inline_code" style="text-align: center;">NN</td>
+<td class="inline_code" style="text-align: center;">NP^</td>
+<td class="inline_code" style="text-align: center;">SBJ</td>
+<td class="inline_code" style="text-align: center;">1</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td><em>web</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">is</td>
+<td class="inline_code" style="text-align: center;">VBZ</td>
+<td class="inline_code" style="text-align: center;">VP&nbsp;</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td class="inline_code" style="text-align: center;">1</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td><em>be</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">more</td>
+<td class="inline_code" style="text-align: center;">RBR</td>
+<td class="inline_code" style="text-align: center;">ADJP&nbsp;</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td><em>more</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">important</td>
+<td class="inline_code" style="text-align: center;">JJ</td>
+<td class="inline_code" style="text-align: center;">ADJP^</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td><em>important</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">than</td>
+<td class="inline_code" style="text-align: center;">IN</td>
+<td class="inline_code" style="text-align: center;">PP&nbsp;</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td class="inline_code" style="text-align: center;">PNP</td>
+<td><em>than</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">mobile</td>
+<td class="inline_code" style="text-align: center;">JJ</td>
+<td class="inline_code" style="text-align: center;">NP&nbsp;</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td class="inline_code" style="text-align: center;">PNP</td>
+<td><em>mobile</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">apps</td>
+<td class="inline_code" style="text-align: center;">NNS</td>
+<td class="inline_code" style="text-align: center;">NP^</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td class="inline_code" style="text-align: center;">PNP</td>
+<td><em>app</em></td>
+</tr>
+<tr>
+<td style="text-align: right;">.</td>
+<td class="inline_code" style="text-align: center;">.</td>
+<td class="inline_code" style="text-align: center;">-&nbsp;</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td class="inline_code" style="text-align: center;">-</td>
+<td>.</td>
+</tr>
+</tbody>
+</table>
+<p>The text has been annotated with word types,&nbsp;for example nouns (<span class="postag">NN</span>), verbs(<span class="postag">VB</span>),&nbsp;adjectives (<span class="postag">JJ</span>) and determiners (<span class="postag">DT</span>), word types (e.g.,&nbsp;sentence subject&nbsp;<span class="postag">SBJ</span>) and prepositional noun phrases (<span class="postag">PNP</span>). To iterate over the parts in the tagged text we can construct a <em>parse tree</em>.</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parsetree
+&gt;&gt;&gt;  
 &gt;&gt;&gt; s = 'The mobile web is more important than mobile apps.'
-&gt;&gt;&gt; t = parsetree(s)
-&gt;&gt;&gt; for sentence in t: 
+&gt;&gt;&gt; s = parsetree(s) 
+&gt;&gt;&gt; for sentence in s: 
 &gt;&gt;&gt;     for chunk in sentence.chunks:
 &gt;&gt;&gt;         for word in chunk.words:
 &gt;&gt;&gt;             print word,
@@ -170,34 +264,30 @@ Word(u'mobile/JJ') Word(u'apps/NNS')
 </pre></div>
 <p>Parsers for Spanish, French, Italian, German and Dutch are also available: <br /><a href="pattern-es.html">pattern.es</a>&nbsp;| <a href="pattern-fr.html">pattern.fr</a> | <a href="pattern-it.html">pattern.it</a> |&nbsp;<a href="pattern-de.html">pattern.de</a>&nbsp;|&nbsp;<a href="pattern-nl.html">pattern.nl</a></p>
 <h3>pattern.search</h3>
-<p>Module <a href="pattern-search.html">pattern.search</a> contains an elegant search algorithm to retrieve sequences of words (called <em>n-grams</em>) from a parsed sentence.</p>
+<p>The&nbsp;<a href="pattern-search.html">pattern.search</a>&nbsp;module contains a search algorithm to retrieve sequences of words (called <em>n-grams</em>) from tagged text.</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import parsetree
 &gt;&gt;&gt; from pattern.search import search
+&gt;&gt;&gt;  
 &gt;&gt;&gt; s = 'The mobile web is more important than mobile apps.'
-&gt;&gt;&gt; t = parsetree(s, relations=True, lemmata=True)
+&gt;&gt;&gt; s = parsetree(s, relations=True, lemmata=True)
 &gt;&gt;&gt;
-&gt;&gt;&gt; for match in search('NP be (RB)+ important than NP', t):
-&gt;&gt;&gt;     print match.constituents()[-1], "=&gt;", \
+&gt;&gt;&gt; for match in search('NP be RB?+ important than NP', s):
+&gt;&gt;&gt;     print match.constituents()[-1], '=&gt;', \
 &gt;&gt;&gt;           match.constituents()[0]
 
 Chunk('mobile apps/NP') =&gt; Chunk('The mobile web/NP-SBJ-1')
 </pre></div>
-<p>Observe the given search pattern: <span class="inline_code">"NP be (RB)+ important than NP"</span>.&nbsp;It means: any noun phrase followed by the verb <em>to be</em> (<em>is</em>, <em>was</em>, ...), followed by zero or more adverbs (e.g. <em>much</em>, <em>more</em>), followed by the words <em>important than</em>, followed by any noun phrase. It will match any of the following variations:</p>
-<ul>
-<li>"the mobile web <em>will be much more</em> important than mobile apps"</li>
-<li>"mobile apps <em>are less</em> important than the mobile web"</li>
-<li>"a good blog <em>is more</em> important than a fancy facebook page", etc.</li>
-</ul>
+<p>The search pattern&nbsp;<span class="inline_code">NP</span> <span class="inline_code">be</span> <span class="inline_code">RB?+</span> <span class="inline_code">important</span> <span class="inline_code">than</span> <span class="inline_code">NP</span> means any noun phrase (<span class="postag">NP</span>) followed by the verb <em>to be</em>, followed by zero or more adverbs (<span class="postag">RB</span>, e.g.,&nbsp;<em>much</em>, <em>more</em>), followed by the words <em>important than</em>, followed by any noun phrase. It will also match "<em>The mobile web <span style="text-decoration: underline;">will</span> <span style="text-decoration: underline;">be</span> <span style="text-decoration: underline;">much</span> <span style="text-decoration: underline;">less</span> important than mobile apps</em>" and other grammatical variations.</p>
 <h3>pattern.vector</h3>
-<div>Module <a href="pattern-vector.html">pattern.vector</a> is a toolkit for machine learning (classification and clustering). It contains functionality to implement a vector space model&nbsp;of bag-of-words documents with tf-idf weighted features, cosine similarity, information gain, Latent Semantic Analysis (LSA), <em>k</em>-means and hierarchical clustering and Naive Bayes, <em>k-</em>NN and SVM classifiers.</div>
+<p>The&nbsp;<a href="pattern-vector.html">pattern.vector</a>&nbsp;module is a toolkit for machine learning, based on a vector space model&nbsp;of bag-of-words documents with weighted features (e.g., tf-idf) and distance metrics (e.g., cosine similarity, infogain).&nbsp;Models can be used for clustering (<em>k</em>-means, hierarchical), classification (Naive Bayes, Perceptron,&nbsp;<em>k-</em>NN, SVM) and latent semantic analysis (LSA).</p>
 <div>
 <div class="example">
 <pre class="brush: python;gutter: false; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.web    import Twitter
 &gt;&gt;&gt; from pattern.en     import tag
 &gt;&gt;&gt; from pattern.vector import KNN, count
 &gt;&gt;&gt; 
-&gt;&gt;&gt; twitter, knn = Twitter, KNN()
+&gt;&gt;&gt; twitter, knn = Twitter(), KNN()
 &gt;&gt;&gt; 
 &gt;&gt;&gt; for i in range(1, 10):
 &gt;&gt;&gt;     for tweet in twitter.search('#win OR #fail', start=i, count=100):
@@ -215,65 +305,79 @@ Chunk('mobile apps/NP') =&gt; Chunk('The mobile web/NP-SBJ-1')
 'WIN'
 'FAIL'   </pre></div>
 </div>
-<div>This example combines three Pattern modules&nbsp;to train a classiﬁer on adjectives mined from Twitter. First, it mines a 1,000 tweets with the hashtag #win or #fail (the classes). For example: “<em>$20 tip off a <span style="text-decoration: underline;">sweet</span> <span style="text-decoration: underline;">little</span> <span style="text-decoration: underline;">old</span> lady today #win</em>”. The part-of-speech tags are parsed for each tweet, filtering everything but adjectives. Each tweet is then transformed to a vector, a dictionary of adjective&nbsp;→ count items, with type <span class="inline_code">WIN</span> or <span class="inline_code">FAIL.&nbsp;</span>The vectors are used to train the classifier. The classifier learns which adjectives are commonly associated with either <span class="inline_code">WIN</span> or <span class="inline_code">FAIL</span>.&nbsp;It predicts “<em>sweet potato burger</em>” as <span class="inline_code">WIN</span> and “<em>stupid autocorrect</em>” as <span class="inline_code">FAIL</span>&nbsp;(results may vary depending on what is buzzing on Twitter).</div>
+<p>This example trains a classifier on adjectives mined from Twitter. First, tweets with hashtag #win or #fail are mined. For example: <em>"$20 tip off a <span style="text-decoration: underline;">sweet</span> <span style="text-decoration: underline;">little</span> <span style="text-decoration: underline;">old</span> lady today #win"</em>. The word part-of-speech tags are parsed, keeping only adjectives. Each tweet is transformed to a vector, a dictionary of adjective → count items, labeled <span class="inline_code">WIN</span> or <span class="inline_code">FAIL</span>. The classifier uses the vectors to learn which other, unknown tweets look more like&nbsp;<span class="inline_code">WIN</span>&nbsp;(e.g., <em>sweet potato burger</em>) or more like <span class="inline_code">FAIL</span> (e.g., <em>stupid autocorrect</em>).</p>
 <h3>pattern.graph</h3>
-<p>Module <a href="pattern-graph.html">pattern.graph</a> provides a data structure to represent relationships between <em>nodes</em> (e.g. words, concepts, entities ...) The relative importance (or <em>centrality</em>) of each node can then be calculated. Graphs can be exported as an interactive web page using the HTML <span class="inline_code">&lt;canvas&gt;</span> element (<span class="link-maintenance"><a href="http://www.clips.ua.ac.be/media/pattern-graph" target="_blank">demo</a></span>).&nbsp;</p>
-<p>The screenshot shows&nbsp;an exported graph with nodes pointing to more important nodes (data mined from Bing). Nodes with a lot of "traffic" are marked with a shadow (e.g.,&nbsp;<em>health</em>) and important nodes are marked in blue (<em>health</em>, <em>nothing</em>, <em>lover</em>).</p>
+<p>The&nbsp;<a href="pattern-graph.html">pattern.graph</a>&nbsp;module provides a graph data structure that represents relations between nodes (e.g., terms, concepts). Graphs can be exported as HTML <span class="inline_code">&lt;canvas&gt;</span> animations (<span class="link-maintenance"><a href="http://www.clips.ua.ac.be/media/pattern-graph" target="_blank">demo</a></span>). In the example below, more <em>central</em> nodes (= more incoming traffic) are colored in blue.</p>
 <p><img class="border" src="../g/pattern_graph5.jpg" alt="" width="610" height="198" /></p>
-<p><span style="font-size: 11px;"><span style="text-decoration: underline;">Note</span>: The&nbsp;<em>nothing</em>&nbsp;result could use some extra post-processing, e.g. in:&nbsp;<em>nothing is more important than life</em>, the word&nbsp;<em>life</em>&nbsp;is important, not the word&nbsp;<em>nothing</em>.</span></p>
-<p>Source code:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web    import Bing, plaintext
 &gt;&gt;&gt; from pattern.en     import parsetree
 &gt;&gt;&gt; from pattern.search import search
-&gt;&gt;&gt; from pattern.graph  import Graph, Node, Edge, export
+&gt;&gt;&gt; from pattern.graph  import Graph, export
 &gt;&gt;&gt;  
 &gt;&gt;&gt; g = Graph()
 &gt;&gt;&gt; for i in range(10):
-&gt;&gt;&gt;     for r in Bing().search('"more important than"', start=i+1, count=50):
+&gt;&gt;&gt;     for result in Bing().search('"more important than"', start=i+1, count=50):
 &gt;&gt;&gt;         s = r.text.lower() 
 &gt;&gt;&gt;         s = plaintext(s)
-&gt;&gt;&gt;         t = parsetree(s)
-&gt;&gt;&gt;         p = '{NP} (VP) more important than {NP}'
-&gt;&gt;&gt;         for m in search(p, t):
-&gt;&gt;&gt;             a = m.group(1).string # Left NP.
-&gt;&gt;&gt;             b = m.group(2).string # Right NP.
-&gt;&gt;&gt;             if a not in g:
-&gt;&gt;&gt;                 g.add_node(a, radius=5, stroke=(0,0,0,0.8))
-&gt;&gt;&gt;             if b not in g:
-&gt;&gt;&gt;                 g.add_node(b, radius=5, stroke=(0,0,0,0.8))
-&gt;&gt;&gt;             g.add_edge(g[b], g[a], stroke=(0,0,0,0.6))
+&gt;&gt;&gt;         s = parsetree(s)
+&gt;&gt;&gt;         p = '{NP} (VP) more important than {NP}' 
+&gt;&gt;&gt;         for m in search(p, s):
+&gt;&gt;&gt;             x = m.group(1).string # NP left
+&gt;&gt;&gt;             y = m.group(2).string # NP right
+&gt;&gt;&gt;             if x not in g:
+&gt;&gt;&gt;                 g.add_node(x)
+&gt;&gt;&gt;             if y not in g:
+&gt;&gt;&gt;                 g.add_node(y)
+&gt;&gt;&gt;             g.add_edge(g[x], g[y], stroke=(0,0,0,0.75)) # R,G,B,A
 &gt;&gt;&gt;  
 &gt;&gt;&gt; g = g.split()[0] # Largest subgraph.
 &gt;&gt;&gt;  
-&gt;&gt;&gt; for n in g.sorted()[:40]: # Sorted by Node.weight.
-&gt;&gt;&gt;     n.fill = (0.0, 0.5, 1.0, 0.7 * n.weight)
+&gt;&gt;&gt; for n in g.sorted()[:40]: # Sort by Node.weight.
+&gt;&gt;&gt;     n.fill = (0, 0.5, 1, 0.75 * n.weight)
 &gt;&gt;&gt;  
-&gt;&gt;&gt; export(g, 'test', directed=True, weighted=0.6, distance=6) </pre></div>
+&gt;&gt;&gt; export(g, 'test', directed=True, weighted=0.6) </pre></div>
+<p>Some relations (= edges) could use some extra post-processing, e.g., in <em>nothing is more important than life</em>, <em>nothing</em> is <span style="text-decoration: underline;">not</span> more important than <em>life</em>.</p>
 <p>&nbsp;</p>
 <hr />
-<h2>Examples &amp; experiments</h2>
+<h2>Case studies&nbsp;</h2>
+<p>Case studies with hands-on source code examples.</p>
 <table border="0">
 <tbody>
 <tr>
-<td><a href="http://www.clips.ua.ac.be/pages/modeling-creativity-with-a-semantic-network-of-common-sense"><img src="../g/pattern_example_semantic_network.jpg" alt="" width="70" height="70" /></a></td>
-<td><span class="smallcaps">Modeling creativity with a semantic network of common sense<br /></span>Say the mind is a map of concepts with paths in between. Creativity pertains to how these paths are traversed when we think (or daydream). In this case study we model such a map, using a semantic network of common sense. <a href="http://www.clips.ua.ac.be/pages/modeling-creativity-with-a-semantic-network-of-common-sense">read more</a></td>
+<td>
+<p><a href="http://www.clips.ua.ac.be/pages/modeling-creativity-with-a-semantic-network-of-common-sense"><img src="../g/pattern_example_semantic_network.jpg" alt="" width="70" height="70" /><br /></a></p>
+</td>
+<td>&nbsp;</td>
+<td><span class="smallcaps">modeling creativity with a semantic network of common sense </span><span class="small">(2013)</span>&nbsp;<br />This case study offers a computational model of creativity, by representing the mind as a semantic network of common sense, using <a class="link-maintenance" href="pattern-graph.html">pattern.graph</a>&nbsp;&amp; <a class="link-maintenance" href="pattern-web.html">web</a>.<br /><a href="http://www.clips.ua.ac.be/pages/modeling-creativity-with-a-semantic-network-of-common-sense">read more »</a></td>
 </tr>
 <tr>
-<td><a href="http://www.clips.ua.ac.be/pages/using-wiktionary-to-build-an-italian-part-of-speech-tagger"><img src="../g/pattern_example_italian.jpg" alt="" width="70" height="70" /></a></td>
-<td><span class="smallcaps">Using Wiktionary to build an Italian part-of-speech tagger<br /></span>This case study provides source code examples and a walkthrough on how to use Pattern to build an Italian part-of-speech tagger that identifies words and their role in a sentence, based on data mined from Wiktionary and Wikipedia. <a href="http://www.clips.ua.ac.be/pages/using-wiktionary-to-build-an-italian-part-of-speech-tagger">read more</a></td>
+<td>
+<p><a href="http://www.clips.ua.ac.be/pages/using-wiktionary-to-build-an-italian-part-of-speech-tagger"><img src="../g/pattern_example_italian.jpg" alt="" width="70" height="70" /><br /></a></p>
+</td>
+<td>&nbsp;</td>
+<td><span class="smallcaps">using wiktionary to build an italian part-of-speech tagger </span><span class="small">(2013)</span> <br />This case study demonstrates how a part-of-speech tagger for Italian (see <a class="link-maintenance" href="pattern-it.html">pattern.it</a>) can be built by mining Wiktionary and Wikipedia. &nbsp;<br /><a href="http://www.clips.ua.ac.be/pages/using-wiktionary-to-build-an-italian-part-of-speech-tagger">read more »</a></td>
 </tr>
 <tr>
-<td><a href="http://www.clips.ua.ac.be/pages/using-wikicorpus-nltk-to-build-a-spanish-part-of-speech-tagger"><img src="../g/pattern_example_spanish.jpg" alt="" width="70" height="70" /></a></td>
-<td><span class="smallcaps">Using Wikicorpus &amp; NLTK to build a Spanish part-of-speech tagger<br /></span>This case study provides source code examples and a walkthrough on how to train a new Spanish part-of-speech tagger for Pattern, using NLTK and the freely available Spanish Wikicorpus. <a href="http://www.clips.ua.ac.be/pages/using-wikicorpus-nltk-to-build-a-spanish-part-of-speech-tagger">read more</a></td>
+<td>
+<p><a href="http://www.clips.ua.ac.be/pages/using-wikicorpus-nltk-to-build-a-spanish-part-of-speech-tagger"><img src="../g/pattern_example_spanish.jpg" alt="" width="70" height="70" /><br /></a></p>
+</td>
+<td>&nbsp;</td>
+<td><span class="smallcaps">using wikicorpus and nltk to build a spanish part-of-speech tagger </span><span class="small">(2012)</span><br />This case study demonstrates how a part-of-speech tagger for Spanish (see <a class="link-maintenance" href="pattern-es.html">pattern.es</a>) can be built by using NLTK and the freely available Wikicorpus. <br /><a href="http://www.clips.ua.ac.be/pages/using-wikicorpus-nltk-to-build-a-spanish-part-of-speech-tagger">read more »</a></td>
 </tr>
 <tr>
-<td><a href="http://www.clips.ua.ac.be/pages/pattern-examples-elections"><img src="../g/pattern_example_elections.jpg" alt="" width="70" height="70" /></a></td>
-<td><span class="smallcaps">Belgian elections, June 13, 2010 – Twitter opinion mining<br /></span>After the fall of the previous government, the New Flemish Alliance emerged as the plurality party with 27 seats. In the week before the elections we analyzed 7,600 tweets that mentioned the name of a Belgian politician.&nbsp;<a href="http://www.clips.ua.ac.be/pages/pattern-examples-elections">read more</a></td>
+<td>
+<p><a href="http://www.clips.ua.ac.be/pages/pattern-examples-elections"><img src="../g/pattern_example_elections.jpg" alt="" width="70" height="70" /><br /></a></p>
+</td>
+<td>&nbsp;</td>
+<td><span class="smallcaps">belgian elections</span><span class="smallcaps">, twitter sentiment analysis&nbsp;</span><span class="small">(2010)</span><br />This case study uses sentiment analysis (e.g., positive or negative tone) on 7,500 Dutch and French tweets (see <a class="link-maintenance" href="pattern-web.html">pattern.web</a> |&nbsp;<a class="link-maintenance" href="pattern-nl.html">nl</a>&nbsp;|&nbsp;<a class="link-maintenance" href="pattern-fr.html">fr</a>) in the weeks before the Belgian 2010 elections. <br /><a href="http://www.clips.ua.ac.be/pages/pattern-examples-elections">read more »</a></td>
 </tr>
 <tr>
-<td><a href="http://www.clips.ua.ac.be/pages/pattern-examples-100days"><img src="../g/pattern_example_100days.jpg" alt="" width="70" height="70" /></a></td>
-<td><span class="smallcaps">November 2010 – March 2011, 100 days of web mining<br /></span>During a 100-day period, we collected 6,400 Google News items and 70,000 tweets with the goal of finding a correlation between important news items and personal opinions on Twitter. What we got was profanity, mostly. <a href="http://www.clips.ua.ac.be/pages/pattern-examples-100days">read more</a></td>
+<td>
+<p><a href="http://www.clips.ua.ac.be/pages/pattern-examples-100days"><img src="../g/pattern_example_100days.jpg" alt="" width="70" height="70" /><br /></a></p>
+</td>
+<td>&nbsp;</td>
+<td><span class="smallcaps">web mining and visualization </span><span class="small">(2010)</span><br />This case study uses a number of different approaches to mine, correlate and visualize about 6,000 Google News items and 70,000 tweets.&nbsp;<br /><a href="http://www.clips.ua.ac.be/pages/pattern-examples-100days">read more »</a></td>
 </tr>
 </tbody>
 </table>
