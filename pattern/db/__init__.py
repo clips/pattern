@@ -536,17 +536,6 @@ class Database(object):
         """ Executes the given SQL query and return an iterator over the rows.
             With commit=True, automatically commits insert/update/delete changes.
         """
-        class rowiterator:
-            def __init__(self, cursor):
-                self._cursor = cursor
-            def next(self):
-                return self.__iter__().next()
-            def __iter__(self):
-                for row in (hasattr(self._cursor, "__iter__") and self._cursor or self._cursor.fetchall()):
-                    yield row
-                self._cursor.close()
-            def __del__(self):
-                self._cursor.close()
         self._query = SQL
         if not SQL:
             return # MySQL doesn't like empty queries.
@@ -555,7 +544,21 @@ class Database(object):
         cursor.execute(SQL)
         if commit is not False:
             self._connection.commit()
-        return rowiterator(cursor)
+        return self.RowsIterator(cursor)
+        
+    class RowsIterator:
+        """ Iterator over the rows returned from Database.execute().
+        """
+        def __init__(self, cursor):
+            self._cursor = cursor
+        def next(self):
+            return self.__iter__().next()
+        def __iter__(self):
+            for row in (hasattr(self._cursor, "__iter__") and self._cursor or self._cursor.fetchall()):
+                yield row
+            self._cursor.close()
+        def __del__(self):
+            self._cursor.close()
         
     def commit(self):
         """ Commit all pending insert/update/delete changes.
@@ -932,6 +935,15 @@ class Table(object):
         """
         return dict(zip(self.fields, row))
 
+    class Rows(list):
+        """ A list of results from Table.filter() with a Rows.table property.
+            (i.e., like Query.table returned from Table.search()).
+        """
+        def __init__(self, table, data):
+            list.__init__(self, data); self.table=table
+        def record(self, row):
+            return self.table.record(row)
+
     def filter(self, *args, **kwargs):
         """ Returns the rows that match the given constraints (using equals + AND):
         """
@@ -939,11 +951,6 @@ class Table(object):
         # Table.filter(ALL, type=("cat","dog")) => "cat" OR "dog"
         # Table.filter(ALL, type="cat", name="Taxi") => "cat" AND "Taxi"
         # Table.filter({"type":"cat", "name":"Taxi"})
-        class rowlist(list):
-            def __init__(self, table, data):
-                list.__init__(self, data); self.table=table
-            def record(self, row):
-                return self.table.record(row)
         if len(args) == 0:
             # No parameters: default to ALL fields.
             fields = ALL
@@ -960,7 +967,7 @@ class Table(object):
         q = " and ".join(cmp(k, v, "=", self.db.escape) for k, v in kwargs.items())
         q = q and " where %s" % q or ""
         q = "select %s from `%s`%s;" % (fields, self.name, q)
-        return rowlist(self, self.db.execute(q))
+        return self.Rows(self, self.db.execute(q))
         
     def find(self, *args, **kwargs):
         return self.filter(*args, **kwargs)
@@ -1041,7 +1048,7 @@ class Table(object):
             repr(self.name), 
             repr(self.count()),
             repr(self.db.name))
-
+            
 #### QUERY #########################################################################################
 
 #--- QUERY SYNTAX ----------------------------------------------------------------------------------
@@ -2357,3 +2364,16 @@ def pprint(datasheet, truncate=40, padding=" ", fill="."):
                 s += padding
                 print s,
             print
+
+
+db = Database("test")
+#db.create("persons", fields=(pk(), field("name")))
+tbl = db.persons
+#tbl.append(("tom",))
+print tbl.filter(id=1)
+
+from time import time
+t = time()
+for i in range(5000):
+    tbl.filter(id=1)
+print time() - t
