@@ -242,6 +242,8 @@ class HTTP429TooMayRequests(HTTPError):
     pass # Used by Twitter for rate limiting.
 class HTTP500InternalServerError(HTTPError):
     pass # Generic server error.
+class HTTP503ServiceUnavailable(HTTPError):
+    pass # Used by Bing for rate limiting.
 
 class URL(object):
 
@@ -383,6 +385,7 @@ class URL(object):
             if e.code == 420: raise HTTP420Error(src=e)
             if e.code == 429: raise HTTP429TooMayRequests(src=e)
             if e.code == 500: raise HTTP500InternalServerError(src=e)
+            if e.code == 503: raise HTTP503ServiceUnavailable(src=e)
             raise HTTPError(src=e)
         except socket.timeout, e:
             raise URLTimeout(src=e)
@@ -1164,7 +1167,7 @@ class Yahoo(SearchEngine):
             return Results(YAHOO, query, type)
         # 1) Create request URL.
         url = URL(url, method=GET, query={
-                 "q": query,
+                 "q": query.replace(" ", "+"),
              "start": 1 + (start-1) * count,
              "count": min(count, type==IMAGE and 35 or 50),
             "format": "json"
@@ -1264,6 +1267,8 @@ class Bing(SearchEngine):
             data = url.download(cached=cached, **kwargs)
         except HTTP401Authentication:
             raise HTTP401Authentication, "Bing %s API is a paid service" % type
+        except HTTP503ServiceUnavailable:
+            raise SearchEngineLimitError
         data = json.loads(data)
         data = data.get("d", {})
         data = data.get("results", [{}])[0]
