@@ -207,7 +207,27 @@ class Word(object):
     def custom_tags(self):
         if not self._custom_tags: self._custom_tags = Tags(self)
         return self._custom_tags
-    
+
+    def next(self, type=None):
+        """ Returns the next word in the sentence with the given type.
+        """
+        i = self.index + 1
+        s = self.sentence
+        while i < len(s):
+            if type in (s[i].type, None):
+                return s[i]
+            i += 1
+
+    def previous(self, type=None):
+        """ Returns the next previous word in the sentence with the given type.
+        """
+        i = self.index - 1
+        s = self.sentence
+        while i > 0:
+            if type in (s[i].type, None):
+                return s[i]
+            i -= 1
+
     # User-defined tags are available as Word.[tag] attributes.
     def __getattr__(self, tag):
         d = self.__dict__.get("_custom_tags", None)
@@ -448,18 +468,20 @@ class Chunk(object):
         """ Returns the next chunk in the sentence with the given type.
         """
         i = self.stop
-        while i < len(self.sentence):
-            if self.sentence[i].chunk is not None and type in (self.sentence[i].chunk.type, None):
-                return self.sentence[i].chunk
+        s = self.sentence
+        while i < len(s):
+            if s[i].chunk is not None and type in (s[i].chunk.type, None):
+                return s[i].chunk
             i += 1
 
     def previous(self, type=None):
         """ Returns the next previous chunk in the sentence with the given type.
         """
-        i = self.start-1
+        i = self.start - 1
+        s = self.sentence
         while i > 0:
-            if self.sentence[i].chunk is not None and type in (self.sentence[i].chunk.type, None):
-                return self.sentence[i].chunk
+            if s[i].chunk is not None and type in (s[i].chunk.type, None):
+                return s[i].chunk
             i -= 1
 
     # Chunk.string and unicode(Chunk) are Unicode strings.
