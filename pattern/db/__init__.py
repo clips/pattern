@@ -2364,16 +2364,3 @@ def pprint(datasheet, truncate=40, padding=" ", fill="."):
                 s += padding
                 print s,
             print
-
-
-db = Database("test")
-#db.create("persons", fields=(pk(), field("name")))
-tbl = db.persons
-#tbl.append(("tom",))
-print tbl.filter(id=1)
-
-from time import time
-t = time()
-for i in range(5000):
-    tbl.filter(id=1)
-print time() - t
