@@ -174,9 +174,8 @@ def variations(iterable, optional=lambda x: False):
     for p in product([False, True], repeat=sum(o)):
         p = list(p)
         v = [b and (b and p.pop(0)) for b in o]
-        v = tuple(iterable[i] for i in range(len(v)) if not v[i])
-        if v not in a: 
-            a.add(v)
+        v = tuple(iterable[i] for i in xrange(len(v)) if not v[i])
+        a.add(v)
     # Longest-first.
     return sorted(a, cmp=lambda x, y: len(y) - len(x))
 
@@ -832,9 +831,11 @@ class Pattern(object):
         
         if map is None:
             map = {}
-
+            
+        n = len(sequence)
+            
         # --- MATCH ----------
-        if i == len(sequence):
+        if i == n:
             if w0 is not None:
                 w1 = sentence.words[start-1]
                 # Greedy algorithm: 
@@ -847,8 +848,8 @@ class Pattern(object):
                 for j in (0, -1):
                     constraint, w = sequence[j], w01[j]
                     if self.strict is False and w.chunk is not None:
-                        if len(constraint.tags) == 0:
-                            if constraint.exclude is None or len(constraint.exclude.tags) == 0:
+                        if not constraint.tags:
+                            if not constraint.exclude or not constraint.exclude.tags:
                                 if constraint.match(w.chunk.head):
                                     w01[j] = w.chunk.words[j]
                                 if constraint.exclude and constraint.exclude.match(w.chunk.head):
@@ -871,28 +872,29 @@ class Pattern(object):
         constraint = sequence[i]
         for w in sentence.words[start:]:
             #print " "*d, "match?", w, sequence[i].string # DEBUG
-            if i < len(sequence) and constraint.match(w):
+            if i < n and constraint.match(w):
                 #print " "*d, "match!", w, sequence[i].string # DEBUG
                 map[w.index] = constraint
                 if constraint.multiple:
                     # Next word vs. same constraint if Constraint.multiple=True.
                     m = self._match(sequence, sentence, w.index+1, i, w0 or w, map, d+1)
-                    if m: return m
+                    if m: 
+                        return m
                 # Next word vs. next constraint.
                 m = self._match(sequence, sentence, w.index+1, i+1, w0 or w, map, d+1)
-                if m: return m
+                if m: 
+                    return m
             # Chunk words other than the head are optional:
             # - Pattern.fromstring("cat") matches "cat" but also "the big cat" (overspecification).
             # - Pattern.fromstring("cat|NN") does not match "the big cat" (explicit POS-tag).
-            if w0 is not None and len(constraint.tags) == 0:
-                if constraint.exclude is None or len(constraint.exclude.tags) == 0:
-                    if self.strict is False and w.chunk is not None and w.chunk.head != w:
-                        continue
+            if w0 and not constraint.tags:
+                if not constraint.exclude and not self.strict and w.chunk and w.chunk.head != w:
+                    continue
                 break
             # Part-of-speech tags match one single word.
-            if w0 is not None and len(constraint.tags) > 0:
+            if w0 and constraint.tags:
                 break
-            if w0 is not None and constraint.exclude and len(constraint.exclude.tags) > 0:
+            if w0 and constraint.exclude and constraint.exclude.tags:
                 break
                 
     @property
