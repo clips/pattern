@@ -1268,7 +1268,7 @@ def commandline(parse=Parser().parse):
         # The output can be either slash-formatted string or XML.
         if "xml" in arguments:
             s = Tree(s, s.tags).xml
-        print s
+        print encode_utf8(s)
 
 #### VERBS #########################################################################################
 
