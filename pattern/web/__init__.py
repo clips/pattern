@@ -1649,19 +1649,20 @@ class MediaWiki(SearchEngine):
         return MediaWikiTable
 
     def __iter__(self):
-        return self.all()
+        return self.articles()
 
-    def all(self, **kwargs):
+    def articles(self, **kwargs):
         """ Returns an iterator over all MediaWikiArticle objects.
             Optional parameters can include those passed to
-            MediaWiki.list(), MediaWiki.search() and URL.download().
+            MediaWiki.index(), MediaWiki.search() and URL.download().
         """
-        for title in self.list(**kwargs):
+        for title in self.index(**kwargs):
             yield self.search(title, **kwargs)
 
-    articles = all
+    # Backwards compatibility.
+    all = articles
 
-    def list(self, namespace=0, start=None, count=100, cached=True, **kwargs):
+    def index(self, namespace=0, start=None, count=100, cached=True, **kwargs):
         """ Returns an iterator over all article titles (for a given namespace id).
         """
         kwargs.setdefault("unicode", True)
@@ -1688,6 +1689,9 @@ class MediaWiki(SearchEngine):
             start = data.get("query-continue", {}).get("allpages", {})
             start = start.get("apcontinue", start.get("apfrom", -1))
         raise StopIteration
+    
+    # Backwards compatibility.
+    list = index
 
     def search(self, query, type=SEARCH, start=1, count=1, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """ Returns a MediaWikiArticle for the given query.
@@ -2099,12 +2103,12 @@ class Wikia(MediaWiki):
     def MediaWikiTable(self):
         return WikiaTable
 
-    def all(self, **kwargs):
+    def articles(self, **kwargs):
         if kwargs.pop("batch", True):
             # We can take advantage of Wikia's search API to reduce bandwith.
             # Instead of executing a query to retrieve each article,
             # we query for a batch of (10) articles.
-            iterator = self.list(_id="pageid", **kwargs)
+            iterator = self.index(_id="pageid", **kwargs)
             while True:
                 batch, done = [], False
                 try:
@@ -2126,7 +2130,7 @@ class Wikia(MediaWiki):
                     yield WikiaArticle(title=x.get("title", ""), source=x.get("html", ""))
                 if done:
                     raise StopIteration
-        for title in self.list(**kwargs):
+        for title in self.index(**kwargs):
             yield self.search(title, **kwargs)
 
 class WikiaArticle(MediaWikiArticle):
