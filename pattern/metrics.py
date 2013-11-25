@@ -459,6 +459,9 @@ def suffixes(inflections=[], n=3, top=10, reverse=True):
 
 #--- WORD CO-OCCURRENCE ----------------------------------------------------------------------------
 
+class Sentinel(object):
+    pass
+
 def isplit(string, sep="\t\n\x0b\x0c\r "):
     """ Returns an iterator over string.split().
         This is efficient in combination with cooccurrence(), 
@@ -482,8 +485,6 @@ def cooccurrence(iterable, window=(-1,-1), term1=lambda x: True, term2=lambda x:
         Optionally, a user-defined matrix to update can be given.
         Optionally, a user-defined update(matrix, term1, term2, index2) function can be given.
     """
-    class Sentinel(object):
-        pass
     if not isinstance(matrix, dict):
         matrix = {}
     # Memory-efficient iteration:
