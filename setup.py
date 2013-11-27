@@ -53,6 +53,7 @@ setup(
         "pattern.web.feed",
         "pattern.web.imap",
         "pattern.web.json",
+        "pattern.web.locale",
         "pattern.web.oauth",
         "pattern.web.pdf",
         "pattern.web.soup",
