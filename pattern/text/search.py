@@ -98,9 +98,9 @@ def _match(string, pattern):
     """
     p = pattern
     try:
-        if p.startswith(WILDCARD) and (p.endswith(WILDCARD) and p[1:-1] in string or string.endswith(p[1:])):
+        if p[:1] == WILDCARD and (p[-1:] == WILDCARD and p[1:-1] in string or string.endswith(p[1:])):
             return True
-        if p.endswith(WILDCARD) and not p.endswith("\\"+WILDCARD) and string.startswith(p[:-1]):
+        if p[-1:] == WILDCARD and not p[-2:-1] == "\\" and string.startswith(p[:-1]):
             return True
         if p == string:
             return True
@@ -412,19 +412,23 @@ class WordNetClassifier(Classifier):
     
     def __init__(self, wordnet=None):
         if wordnet is None:
-            try: from en import wordnet
+            try: from pattern.en import wordnet
             except:
-                pass
+                try: from en import wordnet
+                except:
+                    pass
         Classifier.__init__(self, self._parents, self._children)
         self.wordnet = wordnet
 
     def _children(self, word, pos="NN"):
-        try: return [w.senses[0] for w in self.wordnet.synsets(word, pos)[0].hyponyms()]
+        try: 
+            return [w.synonyms[0] for w in self.wordnet.synsets(word, pos[:2])[0].hyponyms()]
         except KeyError:
             pass
         
     def _parents(self, word, pos="NN"):
-        try: return [w.senses[0] for w in self.wordnet.synsets(word, pos)[0].hypernyms()]
+        try: 
+            return [w.synonyms[0] for w in self.wordnet.synsets(word, pos[:2])[0].hypernyms()]
         except KeyError:
             pass
 
@@ -777,7 +781,7 @@ class Pattern(object):
     def search(self, sentence):
         """ Returns a list of all matches found in the given sentence.
         """
-        if sentence.__class__.__name__ == "Text":
+        if isinstance(sentence, list) or sentence.__class__.__name__ == "Text":
             a=[]; [a.extend(self.search(s)) for s in sentence]; return a
         a = []
         v = self._variations()
@@ -791,7 +795,7 @@ class Pattern(object):
     def match(self, sentence, start=0, _v=None, _u=None):
         """ Returns the first match found in the given sentence, or None.
         """
-        if sentence.__class__.__name__ == "Text":
+        if isinstance(sentence, list) or sentence.__class__.__name__ == "Text":
             return find(lambda (m,s): m is not None, ((self.match(s, start, _v), s) for s in sentence))[0]
         if isinstance(sentence, basestring):
             sentence = Sentence(sentence)
@@ -1070,24 +1074,3 @@ class Group(list):
     @property
     def string(self):
         return " ".join(w.string for w in self)
-
-#from en import Sentence, parse
-#s = Sentence(parse("I was looking at the big cat, and the big cat was staring back", lemmata=True))
-#p = Pattern.fromstring("(*_look*|)+ (at|)+ (DT|)+ (*big_cat*)+")
-#
-#def profile():
-#    import time
-#    t = time.time()
-#    for i in range(100):
-#        p.search(s)
-#    print time.time()-t
-#
-#import cProfile
-##import pstats
-#cProfile.run("profile()", "_profile")
-#p = pstats.Stats("_profile")
-#p.stream = open("_profile", "w")
-#p.sort_stats("time").print_stats(30)
-#p.stream.close()
-#s = open("_profile").read()
-#print s
