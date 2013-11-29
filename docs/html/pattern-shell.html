@@ -33,8 +33,8 @@
         <div id="node-1400" class="node node-type-page"><div class="node-inner">
 <div class="content">
 <h2>pattern.en parser</h2>
-<p>You can run the parser from the command-line. The&nbsp;<a href="pattern.html">pattern</a> module should be installed (i.e., located in <span class="inline_code">/site-packages</span>, see installation instructions), or the current working directory should be the one that contains the <span class="inline_code">pattern</span> folder.</p>
-<pre class="brush:python; gutter:false; light:true;">&gt; python -m pattern.en.parser -f lewiscarroll.txt</pre><p><span>If no options are given a full parse is executed (i.e. tokenization, tagging, chunking, relations and lemmata). Otherwise, you need to explicitly list every required option:</span></p>
+<p>The English parser can be invoked from the command-line.&nbsp;The&nbsp;<a href="pattern.html">pattern</a> module should be installed (i.e., located in <span class="inline_code">/site-packages</span>, see installation instructions) or the current working directory should be the one that contains the <span class="inline_code">pattern</span> folder.</p>
+<pre class="brush:python; gutter:false; light:true;">&gt; python -m pattern.en -f file.txt</pre><p><span>If no options are given a full parse is executed (i.e. tokenization, tagging, chunking, relations and lemmata). Otherwise, you need to explicitly list every required option:</span></p>
 <table class="border">
 <tbody>
 <tr>
@@ -50,27 +50,22 @@
 <tr>
 <td><span class="inline_code">-C</span>&nbsp;</td>
 <td><span class="inline_code">--chunks&nbsp;</span></td>
-<td>Parse chunks and PNP tags.&nbsp;</td>
+<td>Parse chunks and <span class="postag">PNP</span> tags.&nbsp;</td>
 </tr>
 <tr>
 <td><span class="inline_code">-R</span>&nbsp;</td>
 <td><span class="inline_code">--relations</span>&nbsp;</td>
-<td>Find verb/predicate relations.&nbsp;</td>
+<td>Parse verb/predicate relations.&nbsp;</td>
 </tr>
 <tr>
 <td><span class="inline_code">-L</span>&nbsp;</td>
 <td><span class="inline_code">--lemmata&nbsp;</span></td>
-<td>Find word lemmata.&nbsp;</td>
-</tr>
-<tr>
-<td><span class="inline_code">-I</span></td>
-<td><span class="inline_code">--light</span></td>
-<td>Disable contextual rules.</td>
+<td>Parse lemmata (<em>was</em> → <em>be</em>).&nbsp;</td>
 </tr>
 <tr>
 <td><span class="inline_code">-f&nbsp;</span></td>
 <td><span class="inline_code">--file</span>&nbsp;</td>
-<td>Input filename.&nbsp;</td>
+<td>Input file path.&nbsp;</td>
 </tr>
 <tr>
 <td><span class="inline_code">-s&nbsp;</span></td>
@@ -84,20 +79,26 @@
 </tr>
 <tr>
 <td><span class="inline_code">-v&nbsp;</span></td>
-<td>--version</td>
-<td>Current version of pattern.</td>
+<td class="inline_code">--version</td>
+<td>Print current version of Pattern.</td>
 </tr>
 </tbody>
 </table>
-<p>Short options can be concatenated:&nbsp;<span class="inline_code">python -m pattern.en.parser -OTLI -f lewiscarroll.txt</span></p>
-<h2><span>pattern.nl parser</span></h2>
-<p><span>The Dutch parser works in the same way. Note the <span class="inline_code">xml</span> option (which produces XML output):</span></p>
+<p>Short options can be concatenated. Also note the <span class="inline_code">xml</span> option which produces XML output:</p>
 <div class="example">
-<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt; python -m pattern.nl.parser xml -s &quot;Het wordt steeds vreemder.&quot;</pre></div>
-<h2>pattern.de parser</h2>
-<p>The German parser works in the same way.</p>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt; python -m pattern.en xml -OT -s 'The black cat sat on the mat.'</pre></div>
+<h3><span>pattern.es | de | fr | it | nl parsers</span></h3>
+<p><span>The parsers for other languages work in the same way. Note the <span class="inline_code">xml</span> option (produces XML output).</span></p>
 <div class="example">
-<pre class="brush: python;gutter: false; fontsize: 100; first-line: 1; ">&gt; python -m pattern.de.parser xml -s &quot;Ein Abenteuer im Wunderland!&quot;</pre></div>
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt; python -m pattern.es -s 'El gato negro se sienta en la estera.'</pre></div>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt; python -m pattern.de -s 'Die schwarze Katze liegt auf der Matte.'</pre></div>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt; python -m pattern.fr -s "Le chat noir s'était assis sur le tapis."</pre></div>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt; python -m pattern.it -s 'Il gatto nero faceva le fusa.'</pre></div>
+<div class="example">
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt; python -m pattern.nl -s 'De zwarte kat zat op de mat.'</pre></div>
 </div>
 </div></div>
         </div>

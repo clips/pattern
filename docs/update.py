@@ -85,7 +85,7 @@ for p in ("-", "-web", "-db", "-search", "-vector", "-graph", "-canvas", "-metri
     html = strip_between('<div id="navbar">', '/#navbar -->', html)
     html = strip_between('<div id="sidebar-right">', '/#sidebar-right -->', html)
     html = strip_between('<div id="footer">', '/#footer -->', html)
-    html = strip_between('<a href="http://twitter.com/share"', '</a>', html)
+    html = strip_between('<a class="twitter-share-button"', '</a>', html)
     # Link to local pages and images.
     # Link to online media.
     html = html.replace('href="/pages/MBSP"', 'href="%sMBSP"' % url)                   # MBSP docs (online)

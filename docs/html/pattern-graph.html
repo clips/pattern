@@ -71,25 +71,22 @@ node.centrality                # Betweenness centrality (0.0-1.0).</pre><pre cla
 <li><span class="inline_code">Node.centrality</span> indicates the node's passing traffic (or <em>betweenness centrality</em>): how often it occurs in shortest paths, as a value between <span class="inline_code">0.0-1.0</span>. Highly trafficked nodes can be thought of as hubs, landmarks, crossroads, etc.</li>
 </ul>
 <ul>
-<li><span class="inline_code">Node.weight</span> indicates the node's incoming traffic or (<em>eigenvector centrality</em>): how many nodes are connected to it, as a value between <span class="inline_code">0.0-1.0</span>. Nodes that (indirectly) connect to high-scoring nodes get a better score themselves. In this case the edge direction plays an important role: ideally, everyone is pointing at you and you are pointing at no-one, meaning that you are at the top of hierarchy.<br /><span style="font-size: 11px;"><span style="text-decoration: underline;"><br />Reference</span>: <br />NetworkX (2008), <span>h</span>ttp://networkx.lanl.gov/<br />Barnes, C. (2005), <span>h</span>ttp://code.activestate.com/recipes/119466-dijkstras-algorithm-for-shortest-paths/&nbsp;<br />Brandes, E. (2001), <em>A Faster Algorithm for Betweenness Centrality</em>. Mathematical Sociology.</span></li>
+<li><span class="inline_code">Node.weight</span> indicates the node's incoming traffic or (<em>eigenvector centrality</em>): how many nodes are connected to it, as a value between <span class="inline_code">0.0-1.0</span>. Nodes that (indirectly) connect to high-scoring nodes get a better score themselves. In this case the edge direction plays an important role: ideally, everyone is pointing at you and you are pointing at no-one, meaning that you are at the top of hierarchy.<br /><span style="font-size: 11px;"><span style="text-decoration: underline;"><br />Reference</span>: <br />NetworkX (2008), <span>h</span>ttp://networkx.lanl.gov/<br />Barnes, C. (2005), <span>h</span>ttp://code.activestate.com/recipes/119466-dijkstras-algorithm-for-shortest-paths/ <br />Brandes, E. (2001), <em>A Faster Algorithm for Betweenness Centrality</em>. Mathematical Sociology.</span></li>
 </ul>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="edge"></a>Edge</h2>
-<p>The <span class="inline_code">Edge</span> object represents a connection between two nodes. Its <span class="inline_code">weight</span> indicates the importance (not the cost) of the connection. Edges with a higher weight are preferred in shortest paths. Optional parameters include <span class="inline_code">stroke</span> and <span class="inline_code">strokewidth</span>, used to style the visualization (see the <a href="#canvas">renderer</a> below).</p>
+<p>An <span class="inline_code">Edge</span> is a connection between two nodes. Its <span class="inline_code">weight</span> defines the importance of the connection. Edges with a higher weight are preferred when finding the path between two (indirectly) connected nodes.</p>
 <pre class="brush:python; gutter:false; light:true;">edge = Edge(node1, node2, weight=0.0, length=1.0, type=None, **kwargs)</pre><pre class="brush:python; gutter:false; light:true;">edge.node1                     # Node (sender).
 edge.node2                     # Node (receiver).
 edge.weight                    # Connection strength.
 edge.length                    # Length modifier when drawn.
 edge.type                      # Useful in semantic networks.
 edge.stroke                    # Default: (0,0,0,1)
-edge.strokewidth               # Default: 1 </pre><p><span class="smallcaps"><br />Directed edges</span></p>
-<ul>
-<li>An edge can be traversed in both directions: <span class="inline_code">node1</span> <span>→</span> <span class="inline_code">node2</span> and <span class="inline_code">node2</span> <span>→</span> <span class="inline_code">node1</span>. Some methods (for example <span class="inline_code">Graph.shortest_path()</span> and <span class="inline_code">Graph.betweenness_centrality()</span>) have a <span class="inline_code">directed</span> parameter which when set to <span class="inline_code">True</span>, regards an edge as going only in one direction: <span class="inline_code">node1</span> <span>→</span> <span class="inline_code">node2</span>. This obviously produces different paths and node weights.</li>
-</ul>
-<ul>
-<li>Two nodes can be connected by at most two edges (one in each direction). Otherwise, calling <span class="inline_code">Graph.add_edge()</span> simply returns the edge that already exists between the given nodes.</li>
-</ul>
+edge.strokewidth               # Default: 1 </pre><p class="smallcaps"><br />Directed graph</p>
+<p>An edge can be traversed in both directions: from <span class="inline_code">node1</span> → <span class="inline_code">node2</span>, and from <span class="inline_code">node2</span> → <span class="inline_code">node1</span>. The <span class="inline_code">Graph.shortest_path()</span> and <span class="inline_code">Graph.betweenness_centrality()</span> methods have a <span class="inline_code">directed</span> parameter which can be set to <span class="inline_code">True</span>, so that edges are only traversed from <span class="inline_code">node1</span> → <span class="inline_code">node2</span>. This is called a directed graph. Evidently, it produces different shortest paths and node weights.</p>
+<p>Two nodes can be connected by at most two edges (one in each direction). Otherwise,&nbsp;<span class="inline_code">Graph.add_edge()</span> simply returns the edge that already exists between the given nodes.</p>
+<p>The optional parameters <span class="inline_code">stroke</span> (a tuple of <a href="http://en.wikipedia.org/wiki/RGBA">RGBA</a> values between 0.0-1.0) and <span class="inline_code">strokewidth</span> can be used to style the visualization (see the <a href="#canvas">renderer</a> below).</p>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="graph"></a>Graph</h2>
@@ -115,11 +112,11 @@ graph.prune(depth=0)
 graph.fringe(depth=0, traversable=lambda node, edge: True)
 graph.split()
 graph.copy(nodes=ALL)</pre><pre class="brush:python; gutter:false; light:true;">graph.update(iterations=10, weight=10, limit=0.5)</pre><ul>
-<li><span class="inline_code"><span><span class="inline_code">Graph.add_node()</span>&nbsp;takes all optional parameters of the&nbsp;</span></span><span class="inline_code"><span><span class="inline_code">Node</span></span></span><span class="inline_code"><span>&nbsp;constructor, and&nbsp;</span></span>an optional <span class="inline_code">base</span> parameter which can be a subclass of <span class="inline_code">Node</span> to be used.</li>
-<li><span class="inline_code">Graph.add_edge()</span>&nbsp;takes all optional parameters of the <span class="inline_code">Edge</span> constructor, and an optional <span class="inline_code">base</span> parameter which can be a subclass of <span class="inline_code">Edge</span> to be used.</li>
+<li><span class="inline_code"><span><span class="inline_code">Graph.add_node()</span> takes all optional parameters of the </span></span><span class="inline_code"><span><span class="inline_code">Node</span></span></span><span class="inline_code"><span> constructor, and </span></span>an optional <span class="inline_code">base</span> parameter which can be a subclass of <span class="inline_code">Node</span> to be used.</li>
+<li><span class="inline_code">Graph.add_edge()</span> takes all optional parameters of the <span class="inline_code">Edge</span> constructor, and an optional <span class="inline_code">base</span> parameter which can be a subclass of <span class="inline_code">Edge</span> to be used.</li>
 <li><span class="inline_code"><span><span class="inline_code">Graph.shortest_path()</span> returns a list of nodes connecting two nodes.</span><br /></span></li>
 <li><span class="inline_code">Graph.shortest_paths()</span> returns a dictionary of nodes linked to shortest path.<br />With <span class="inline_code">directed=True</span>, edges are only traversable in a single direction.<br />A <span class="inline_code">heuristic</span> function can be given that takes two node id's and returns an additional cost for movement between the two nodes.</li>
-<li><span class="inline_code">Graph.paths()</span> returns a list of paths &lt;=&nbsp;<span class="inline_code">length</span> connecting the two nodes.</li>
+<li><span class="inline_code">Graph.paths()</span> returns a list of paths &lt;= <span class="inline_code">length</span> connecting the two nodes.</li>
 <li><span class="inline_code">Graph.sorted()</span> returns a list of nodes sorted by <span class="inline_code">WEIGHT</span> or <span class="inline_code">CENTRALITY</span>.<br />If the value falls below the given <span class="inline_code">threshold</span>, the node is excluded from the list.</li>
 <li><span class="inline_code">Graph.prune()</span> removes all nodes with less or equal links than <span class="inline_code">depth</span>.</li>
 <li><span class="inline_code">Graph.fringe()</span> returns a list of leaf nodes.<br />With <span class="inline_code">depth=0</span>, returns the nodes with only one connection.<br />With <span class="inline_code">depth=1</span>, returns the nodes with one connection + their connections, etc.</li>
@@ -165,7 +162,7 @@ layout.copy(graph)</pre><p><span class="small"><span style="text-decoration: und
 <h2><a name="utility"></a>Graph adjacency</h2>
 <p>Utility functions to modify graph edges, while keeping <span class="inline_code">Graph.edges</span> and <span class="inline_code">Node.links</span> in synch:</p>
 <pre class="brush:python; gutter:false; light:true;">unlink(graph, node1, node2=None)</pre><pre class="brush:python; gutter:false; light:true;">redirect(graph, node1, node2)</pre><pre class="brush:python; gutter:false; light:true;">cut(graph, node)</pre><pre class="brush:python; gutter:false; light:true;">insert(graph, node, a, b)</pre><ul>
-<li><span class="inline_code">unlink()</span> removes the edges between <span class="inline_code">node1</span> and <span class="inline_code">node2</span>.&nbsp;<br />If only <span class="inline_code">node1</span> is given, removes all edges to + from it. This does not remove <span class="inline_code">node1</span> from the graph.</li>
+<li><span class="inline_code">unlink()</span> removes the edges between <span class="inline_code">node1</span> and <span class="inline_code">node2</span>. <br />If only <span class="inline_code">node1</span> is given, removes all edges to + from it. This does not remove <span class="inline_code">node1</span> from the graph.</li>
 <li><span class="inline_code">redirect()</span> connects all of <span class="inline_code">node1</span>'s edges to <span class="inline_code">node2</span> and unlinks <span class="inline_code">node1</span>.</li>
 <li><span class="inline_code">cut()</span> unlinks the given <span class="inline_code">node</span>, but keeps edges intact by connecting the surrounding nodes. <br />If <span class="inline_code">A</span>, <span class="inline_code">B</span>, <span class="inline_code">C</span>, <span class="inline_code">D</span> are nodes and <span class="inline_code">A</span> <span>→</span> <span class="inline_code">B</span>, <span class="inline_code">B</span> <span>→</span> <span class="inline_code">C</span>, <span class="inline_code">B</span> <span>→</span> <span class="inline_code">D</span>, if we then cut <span class="inline_code">B</span>: <span class="inline_code">A</span> <span>→</span> <span class="inline_code">C</span>, <span class="inline_code">A</span> <span>→</span> <span class="inline_code">D</span>.</li>
 <li><span class="inline_code">insert()</span> inserts the given <span class="inline_code">node</span> between node <span class="inline_code">a</span> and node <span class="inline_code">b</span>. <br />If <span class="inline_code">A</span>, <span class="inline_code">B</span>, <span class="inline_code">C</span> are nodes and <span class="inline_code">A</span> <span>→</span> <span class="inline_code">B</span>, if we then insert <span class="inline_code">C</span>: <span class="inline_code">A</span> <span>→</span> <span class="inline_code">C</span>, <span class="inline_code">C</span> <span>→</span> <span class="inline_code">B</span>.</li>
@@ -186,9 +183,9 @@ layout.copy(graph)</pre><p><span class="small"><span style="text-decoration: und
 <p>&nbsp;</p>
 <hr />
 <h2><a name="canvas"></a>HTML &lt;canvas&gt; renderer</h2>
-<p>To visualize a graph, we need a drawing engine (e.g. Flash). The <span class="inline_code">Graph</span>, <span class="inline_code">Node</span> and <span class="inline_code">Edge</span> classes are&nbsp;identical to those in <a href="http://cityinabottle.org/nodebox" target="_blank">NodeBox for OpenGL</a>, a cross-platform Python animation toolkit, so graphs can be rendered in NodeBox without effort.&nbsp;Another option is to export the graph to a web page: the <span class="inline_code">&lt;canvas&gt;</span> element is part of HTML5 and allows for dynamic, scriptable rendering of 2D shapes and bitmap images.</p>
+<p>To visualize a graph, we need a drawing engine (e.g. Flash). The <span class="inline_code">Graph</span>, <span class="inline_code">Node</span> and <span class="inline_code">Edge</span> classes are identical to those in <a href="http://cityinabottle.org/nodebox" target="_blank">NodeBox for OpenGL</a>, a cross-platform Python animation toolkit, so graphs can be rendered in NodeBox without effort. Another option is to export the graph to a web page: the <span class="inline_code">&lt;canvas&gt;</span> element is part of HTML5 and allows for dynamic, scriptable rendering of 2D shapes and bitmap images.</p>
 <h3>Exporting as a web page</h3>
-<p>The <span class="inline_code">export(</span>) function creates a folder at the given <span class="inline_code">path</span> containing an <span class="inline_code">index.html</span>&nbsp;that visualizes the graph using <a href="pattern-canvas.html" target="_blank">canvas.js</a>. The folder also has a <span class="inline_code">style.css</span> stylesheet and a <span class="inline_code">js/</span> subfolder with a compressed&nbsp;<span class="inline_code">graph.js</span> (full JavaScript implementation of <span class="inline_code">pattern.graph</span>) and&nbsp;<span class="inline_code">canvas.js</span>. If an optional parameter <span class="inline_code">js</span> is given, it is expected to be a URL path to&nbsp;<span class="inline_code">graph.js</span> +&nbsp;<span class="inline_code">canvas.js</span>&nbsp;(subfolder will not be included in this case).</p>
+<p>The <span class="inline_code">export(</span>) function creates a folder at the given <span class="inline_code">path</span> containing an <span class="inline_code">index.html</span> that visualizes the graph using <a href="pattern-canvas.html" target="_blank">canvas.js</a>. The folder also has a <span class="inline_code">style.css</span> stylesheet and a <span class="inline_code">js/</span> subfolder with a compressed <span class="inline_code">graph.js</span> (full JavaScript implementation of <span class="inline_code">pattern.graph</span>) and <span class="inline_code">canvas.js</span>. If an optional parameter <span class="inline_code">js</span> is given, it is expected to be a URL path to <span class="inline_code">graph.js</span> + <span class="inline_code">canvas.js</span> (subfolder will not be included in this case).</p>
 <pre class="brush:python; gutter:false; light:true;">export(graph, path, overwrite=False, encoding='utf-8', **kwargs)</pre><p>For example:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.graph import Graph, export
@@ -199,7 +196,7 @@ layout.copy(graph)</pre><p><span class="small"><span style="text-decoration: und
 &gt;&gt;&gt;    g.add_node(n2)
 &gt;&gt;&gt;    g.add_edge(n1, n2, weight=0.0, type='is-related-to')
 &gt;&gt;&gt; export(g, 'sound', directed=True)</pre></div>
-<p>Nodes and edges will be styled according to their&nbsp;<span class="inline_code">fill</span>,&nbsp;<span class="inline_code">stroke</span>, and&nbsp;<span class="inline_code">strokewidth</span>.<br />Many optional parameters can be given to customize the visualization:</p>
+<p>Nodes and edges will be styled according to their <span class="inline_code">fill</span>, <span class="inline_code">stroke</span>, and <span class="inline_code">strokewidth</span>.<br />Many optional parameters can be given to customize the visualization:</p>
 <table class="border">
 <tbody>
 <tr>
@@ -220,7 +217,7 @@ layout.copy(graph)</pre><p><span class="small"><span style="text-decoration: und
 <tr>
 <td><span class="inline_code">title</span></td>
 <td><span class="inline_code">'Graph'</span></td>
-<td><span class="inline_code"><span>Generates&nbsp;<span class="inline_code">&lt;title&gt;Graph&lt;/title&gt;</span>.</span></span></td>
+<td><span class="inline_code"><span>Generates <span class="inline_code">&lt;title&gt;Graph&lt;/title&gt;</span>.</span></span></td>
 </tr>
 <tr>
 <td><span class="inline_code">id</span></td>
@@ -317,12 +314,12 @@ layout.copy(graph)</pre><p><span class="small"><span style="text-decoration: und
 <tr>
 <td><span class="inline_code">default</span></td>
 <td style="white-space: nowrap;"><span class="inline_code">{'radius': 5,<br />&nbsp;'fixed': False,<br />&nbsp;'fill': None,<br />&nbsp;'stroke': (0,0,0,1),<br />&nbsp;'strokewidth': 1,<br />&nbsp;'text': (0,0,0,1),<br />&nbsp;'fontsize': 11<br />}&nbsp;</span></td>
-<td><span class="inline_code"><span><span>To save bandwidth,</span></span></span>&nbsp;<span class="inline_code">Node</span> and <span class="inline_code">Edge</span>&nbsp;attributes are only passed to JavaScript if they differ from the default.</td>
+<td><span class="inline_code"><span><span>To save bandwidth,</span></span></span> <span class="inline_code">Node</span> and <span class="inline_code">Edge</span> attributes are only passed to JavaScript if they differ from the default.</td>
 </tr>
 </tbody>
 </table>
 <h3>Rendering as a HTML string</h3>
-<p>Separate parts of the HTML can be generated dynamically with the&nbsp;<span class="inline_code">render()</span>&nbsp;function. <br />This is useful if you have a HTML template and you want to load nodes and edges on-the-fly.</p>
+<p>Separate parts of the HTML can be generated dynamically with the <span class="inline_code">render()</span> function. <br />This is useful if you have a HTML template and you want to load nodes and edges on-the-fly.</p>
 <pre class="brush:python; gutter:false; light:true;">render(graph, type=HTML, **kwargs) # Same optional parameters as export().</pre><table class="border">
 <tbody>
 <tr>
@@ -331,39 +328,39 @@ layout.copy(graph)</pre><p><span class="small"><span style="text-decoration: und
 </tr>
 <tr>
 <td><span class="inline_code">DATA</span></td>
-<td>JavaScript string that loads the&nbsp;<span class="inline_code">Graph</span>&nbsp;into&nbsp;<span class="inline_code">var g</span>.</td>
+<td>JavaScript string that loads the <span class="inline_code">Graph</span> into <span class="inline_code">var g</span>.</td>
 </tr>
 <tr>
 <td><span class="inline_code">SCRIPT</span></td>
-<td><span class="inline_code">DATA</span>&nbsp;+ prune + pack + weights + a call to&nbsp;<span class="inline_code">draw()</span>&nbsp;to start the animation.</td>
+<td><span class="inline_code">DATA</span> + prune + pack + weights + a call to <span class="inline_code">draw()</span> to start the animation.</td>
 </tr>
 <tr>
 <td><span class="inline_code">STYLE</span></td>
-<td>CSS string with a minimal style for&nbsp;<span class="inline_code">&lt;div id="graph"&gt;</span>.</td>
+<td>CSS string with a minimal style for <span class="inline_code">&lt;div id="graph"&gt;</span>.</td>
 </tr>
 <tr>
 <td><span class="inline_code">CANVAS</span></td>
-<td>HTML string with a&nbsp;<span class="inline_code">&lt;div id="graph"&gt;</span>&nbsp;containing&nbsp;<span class="inline_code">&lt;script type="text/canvas"&gt;</span>.</td>
+<td>HTML string with a <span class="inline_code">&lt;div id="graph"&gt;</span> containing <span class="inline_code">&lt;script type="text/canvas"&gt;</span>.</td>
 </tr>
 <tr>
 <td><span class="inline_code">HTML</span></td>
-<td><span class="inline_code">SCRIPT</span>&nbsp;+&nbsp;<span class="inline_code">STYLE</span>&nbsp;+&nbsp;<span class="inline_code">CANVAS</span>&nbsp;bundled in a HTML document.</td>
+<td><span class="inline_code">SCRIPT</span> + <span class="inline_code">STYLE</span> + <span class="inline_code">CANVAS</span> bundled in a HTML document.</td>
 </tr>
 </tbody>
 </table>
 <p><br /><span class="smallcaps">Static vs. dynamic</span></p>
-<p>The most exhaustive graph operations are the spring layout, <span class="inline_code">GraphSpringLayout.update()</span>, and calculating weights: <span class="inline_code">Graph.betweenness_centrality()</span> and <span class="inline_code">Graph.eigenvector_centrality()</span>. The latter two are called automatically the first time you fetch&nbsp;<span class="inline_code">Node.weight</span> or <span class="inline_code">Node.centrality</span>.&nbsp;You can opt to do some or all of the calculations in Python (i.e. server-side) or in JavaScript (i.e. client-side).&nbsp;</p>
+<p>The most exhaustive graph operations are the spring layout, <span class="inline_code">GraphSpringLayout.update()</span>, and calculating weights: <span class="inline_code">Graph.betweenness_centrality()</span> and <span class="inline_code">Graph.eigenvector_centrality()</span>. The latter two are called automatically the first time you fetch <span class="inline_code">Node.weight</span> or <span class="inline_code">Node.centrality</span>. You can opt to do some or all of the calculations in Python (i.e. server-side) or in JavaScript (i.e. client-side).</p>
 <ul>
-<li>If the nodes and edges are updated dynamically, calculate the weights client-side.&nbsp;</li>
-<li>If the nodes and edges never change, calculate the weights in Python and export once:&nbsp;<br /><span class="inline_code">export(graph, path, weights=[WEIGHT, CENTRALITY])</span>.&nbsp;</li>
+<li>If the nodes and edges are updated dynamically, calculate the weights client-side.</li>
+<li>If the nodes and edges never change, calculate the weights in Python and export once: <br /><span class="inline_code">export(graph, path, weights=[WEIGHT, CENTRALITY])</span>.</li>
 <li>If you don't need fancy animation, calculate node positions in Python and export as a single frame:<span class="inline_code"> <br />export(graph, path, frames=1, ipf=0)</span>.</li>
-<li>Choose good&nbsp;<span class="inline_code">default</span>&nbsp;values to minimize data passed from Python to JavaScript.</li>
+<li>Choose good <span class="inline_code">default</span> values to minimize data passed from Python to JavaScript.</li>
 </ul>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="javascript"></a>JavaScript library: graph.js</h2>
-<p>Below is a concise standalone demonstration of <span class="inline_code">graph.js</span>&nbsp;(co-authored by Daniel Friesen). &nbsp;With standalone we mean that it is not generated with <span class="inline_code">export()</span> and does not rely on <span class="inline_code">canvas.js</span>. Only <span class="inline_code">graph.js</span> is required.&nbsp;</p>
-<p>The implementation of <span class="inline_code">graph.js</span> is identical to the Python module, except for some naming conventions (e.g. <span class="inline_code">Graph.eigenvector_centrality()</span> is written as&nbsp;<span class="inline_code">Graph.eigenvectorCentrality()</span>&nbsp;in JavaScript), optional parameters, and the addition of the&nbsp;<span class="inline_code">Graph.loop()</span> method which starts the interactive animation (<span class="link-maintenance"><a href="http://www.clips.ua.ac.be/media/pattern-graph/random" target="_blank">view live demo</a></span>):</p>
+<p>Below is a concise standalone demonstration of <span class="inline_code">graph.js</span> (co-authored by Daniel Friesen). With standalone we mean that it is not generated with <span class="inline_code">export()</span> and does not rely on <span class="inline_code">canvas.js</span>. Only <span class="inline_code">graph.js</span> is required.</p>
+<p>The implementation of <span class="inline_code">graph.js</span> is identical to the Python module, except for some naming conventions (e.g. <span class="inline_code">Graph.eigenvector_centrality()</span> is written as <span class="inline_code">Graph.eigenvectorCentrality()</span> in JavaScript), optional parameters, and the addition of the <span class="inline_code">Graph.loop()</span> method which starts the interactive animation (<span class="link-maintenance"><a href="http://www.clips.ua.ac.be/media/pattern-graph/random" target="_blank">view live demo</a></span>):</p>
 <div class="example">
 <pre class="brush:xml; gutter:false; light:true;">&lt;!DOCTYPE html&gt; 
 &lt;html&gt;</pre></div>
@@ -403,7 +400,7 @@ layout.copy(graph)</pre><p><span class="small"><span style="text-decoration: und
 <div class="example">
 <pre class="brush:xml; gutter:false; light:true;">&lt;/html&gt; </pre></div>
 <p><img class="border" src="../g/pattern_graph4.jpg" alt="" width="610" height="390" /></p>
-<p>Loading&nbsp;<a href="http://code.google.com/p/explorercanvas/" target="_blank">excanvas.js</a> in the <span class="inline_code">&lt;head&gt;</span> enables support for Internet Explorer 6-8:</p>
+<p>Loading <a href="http://code.google.com/p/explorercanvas/" target="_blank">excanvas.js</a> in the <span class="inline_code">&lt;head&gt;</span> enables support for Internet Explorer 6-8:</p>
 <p><span class="inline_code">&lt;!--[if lte IE 8]&gt;&lt;script type="text/javascript" src="excanvas.js"&gt;&lt;/script&gt;<br />&lt;![endif]--&gt;</span></p>
 <p>&nbsp;</p>
 <hr />
