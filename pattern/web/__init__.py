@@ -2668,7 +2668,7 @@ SERVICES = {
     FACEBOOK  : Facebook
 }
 
-def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, reverse=False, **kwargs):
+def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, prefix=False, **kwargs):
     """ Returns a list of (percentage, term)-tuples for the given list of terms.
         Sorts the terms in the list according to search result count.
         When a context is defined, sorts according to relevancy to the context, e.g.:
@@ -2683,14 +2683,14 @@ def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, revers
     service = SERVICES.get(service, SearchEngine)(license, language=kwargs.pop("language", None))
     R = []
     for word in terms:
-        q = reverse and context+" "+word or word+" "+context
+        q = prefix and (context + " " + word) or (word + " " + context)
         q.strip()
         q = strict and "\"%s\"" % q or q
         r = service.search(q, count=1, **kwargs)
         R.append(r)
     s = float(sum([r.total or 1 for r in R])) or 1.0
     R = [((r.total or 1)/s, r.query) for r in R]
-    R = sorted(R, reverse=True)
+    R = sorted(R, reverse=kwargs.pop("reverse", True))
     return R
 
 #print sort(["black", "happy"], "darth vader", GOOGLE)
@@ -3224,14 +3224,14 @@ LIFO = "lifo" # Last In, First Out (= FILO).
 
 class Crawler(object):
 
-    def __init__(self, links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse, sort=FIFO):
+    def __init__(self, links=[], domains=[], delay=20.0, parse=HTMLLinkParser().parse, sort=FIFO):
         """ A crawler can be used to browse the web in an automated manner.
             It visits the list of starting URLs, parses links from their content, visits those, etc.
             - Links can be prioritized by overriding Crawler.priority().
             - Links can be ignored by overriding Crawler.follow().
             - Each visited link is passed to Crawler.visit(), which can be overridden.
         """
-        self.parse    = parser
+        self.parse    = parse
         self.delay    = delay   # Delay between visits to the same (sub)domain.
         self.domains  = domains # Domains the crawler is allowed to visit.
         self.history  = {}      # Domain name => time last visited.
@@ -3335,7 +3335,7 @@ class Crawler(object):
                 self.fail(link)
             # Log the current time visited for the domain (see Crawler.pop()).
             # Log the URL as visited.
-            self.history[base(link.url)] = time.time()
+            self.history[base(link.url)] = t
             self.visited[link.url] = True
             return True
         # Nothing happened, we already visited this link.
@@ -3396,7 +3396,7 @@ Spider = Crawler
 #--- CRAWL FUNCTION --------------------------------------------------------------------------------
 # Functional approach to crawling.
 
-def crawl(links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse, sort=FIFO, method=DEPTH, **kwargs):
+def crawl(links=[], domains=[], delay=20.0, parse=HTMLLinkParser().parse, sort=FIFO, method=DEPTH, **kwargs):
     """ Returns a generator that yields (Link, source)-tuples of visited pages.
         When the crawler is idle, it yields (None, None).
     """
@@ -3412,7 +3412,7 @@ def crawl(links=[], domains=[], delay=20.0, parser=HTMLLinkParser().parse, sort=
     # - asynchronous(crawl().next)
     #   AsynchronousRequest.value is set to (Link, source) once AsynchronousRequest.done=True.
     #   The program will not halt in the meantime (i.e., the next crawl is threaded).
-    crawler = Crawler(links, domains, delay, parser, sort)
+    crawler = Crawler(links, domains, delay, parse, sort)
     bind(crawler, "visit", \
         lambda crawler, link, source=None: \
             setattr(crawler, "crawled", (link, source))) # Define Crawler.visit() on-the-fly.
