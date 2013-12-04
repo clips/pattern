@@ -975,6 +975,7 @@ Herr N(eigen,ev,neut)
 Hertogin N(eigen,ev,neut) 
 Het Pron(onbep,neut,zelfst) N(eigen,ev,neut) Art(bep,onzijd,neut) Pron(per,3,ev,nom)
 Hetzelfde Pron(aanw,neut,zelfst) 
+Hey Int
 Heuff N(eigen,ev,neut) 
 Hier Adv(gew,aanw) Adv(gew,geen_func,stell,onverv)
 Hieraan Adv(pron,aanw) 
@@ -8860,7 +8861,12 @@ goedaardige Adj(attr,stell,verv_neut)
 goedbedoelende Adj(attr,stell,verv_neut)
 goeddeels Adv(gew,geen_func,stell,onverv)
 goede Adj(attr,stell,verv_neut) Adj(zelfst,stell,verv_neut)
+goededag Int
+goedemiddag Int
 goedemorgen Int
+goeiemorgen Int
+goeiemiddag Int
+goeiedag Int
 goeden Adj(zelfst,stell,verv_mv)
 goeder Adj(attr,stell,verv_neut)
 goederen N(soort,mv,neut) 
@@ -9173,6 +9179,7 @@ halfslachtigheid N(soort,ev,neut)
 halfstok Adv(gew,geen_func,stell,onverv)
 halfvolle Adj(attr,stell,verv_neut)
 hallen N(soort,mv,neut)
+hallo Int
 hals N(soort,ev,neut) 
 halsbrekende Adj(attr,stell,verv_neut)
 halsringen N(soort,mv,neut) 

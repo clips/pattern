@@ -2025,13 +2025,29 @@ class Spelling(lazydict):
 LANGUAGES = ["en", "es", "de", "fr", "it", "nl"]
 
 _modules = {}
+def _module(language):
+    """ Returns the given language module (e.g., "en" => pattern.en).
+    """
+    return _modules.setdefault(language, __import__(language, globals(), {}, [], -1))
+
 def _multilingual(function, *args, **kwargs):
     """ Returns the value from the function with the given name in the given language module.
         By default, language="en".
     """
-    language = kwargs.pop("language", "en")
-    module = _modules.setdefault(language, __import__(language, globals(), {}, [], -1))
-    return getattr(module, function)(*args, **kwargs)
+    return getattr(_module(kwargs.pop("language", "en")), function)(*args, **kwargs)
+
+def language(s):
+    """ Returns a (language, confidence)-tuple for the given string.
+    """
+    s = set(w.strip(PUNCTUATION) for w in s.replace("'", "' ").split())
+    n = float(len(s) or 1)
+    p = {}
+    for xx in LANGUAGES:
+        lexicon = _module(xx).__dict__["lexicon"]
+        p[xx] = sum(1 for w in s if w in lexicon) / n
+    return max(p.items(), key=lambda (k, v): (v, int(k == "en")))
+    
+lang = language
 
 def tokenize(*args, **kwargs):
     return _multilingual("tokenize", *args, **kwargs)

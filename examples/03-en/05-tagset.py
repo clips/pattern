@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
 # By default, parse() uses part-of-speech tags from the Penn Treebank tagset:
@@ -93,3 +95,14 @@ for sentence in parsetree("i gatti neri che sono la mia", language="it", tagset=
     for word in sentence.words:
         if word.tag == PRON:
             print word
+            
+# The language() function in pattern.text can be used to guess the language of a text.
+# It returns a (language code, confidence)-tuple.
+# It can guess en, es, de, fr, it, nl.
+
+from pattern.text import language
+
+print
+print language(u"the cat sat on the mat")             # ("en", 1.00)
+print language(u"de kat zat op de mat")               # ("nl", 0.80)
+print language(u"le chat s'était assis sur le tapis") # ("fr", 0.86)
