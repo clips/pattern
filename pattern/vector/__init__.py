@@ -1221,7 +1221,29 @@ class Model(object):
         return self._lsa
         
     reduce = latent_semantic_analysis
-    
+
+    def condensed_nearest_neighbor(self, distance=COSINE):
+        """ Returns a filtered list of documents, without impairing classification accuracy.
+            Iteratively constructs a set of "prototype" documents.
+            Documents that are correctly classified by the set are discarded.
+            Documents that are incorrectly classified by the set are added to the set.
+        """
+        d = DistanceMap(method=distance)
+        u = []
+        v = list(self.documents)
+        b = False
+        while not b:
+            b = True
+            for i, x in enumerate(v):
+                if not u or x.type != min((d(x.vector, y.vector), y) for y in u)[1].type: # k=1
+                    b = False
+                    u.append(x)
+                    v.pop(i)
+                    break
+        return v
+        
+    cnn = condensed_nearest_neighbor
+
     def information_gain(self, word):
         """ Returns the information gain (IG) for the given feature, 
             by examining how much it contributes to each document type (class).
@@ -1278,10 +1300,12 @@ class Model(object):
             subset = [w for ig, w in subset[:top]]
             return subset
         
-    def filter(self, features=[]):
+    def filter(self, features=[], condensed=False, **kwargs):
         """ Returns a new Model with documents only containing the given list of features,
             for example a subset returned from Model.feature_selection().
+            With condensed=True, only includes documents from Model.condesed_nearest_neighbor().
         """
+        documents = not condensed and self.documents or self.codensed_nearest_neighbor(**kwargs)
         features = set(features)
         model = Model(weight=self.weight)
         model.extend([
@@ -1289,7 +1313,7 @@ class Model(object):
                        name = d.name,
                        type = d.type,
                    language = d.language,
-                description = d.description) for d in self.documents])
+                description = d.description) for d in documents])
         return model
     
     # XXX Model.save() conflicts with Model.classifier.
