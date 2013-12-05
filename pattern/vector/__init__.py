@@ -852,10 +852,11 @@ class Model(object):
         """
         self.description = ""             # Description of the dataset: author e-mail, etc.
         self._documents  = readonlylist() # List of documents (read-only).
-        self._index      = {}             # Document.name => Document
+        self._index      = {}             # Document.name => Document.
         self._df         = {}             # Cache of document frequency per word.
         self._cos        = {}             # Cache of ((d1.id, d2.id), relevance)-items (cosine similarity).
         self._ig         = {}             # Cache of (word, information gain)-items.
+        self._inverted   = {}             # Cache of word => Document.
         self._vector     = None           # Cache of model vector with all the features in the model.
         self._classifier = None           # Classifier trained on the documents in the model (NB, KNN, SVM).
         self._lsa        = None           # LSA matrix with reduced dimensionality.
@@ -967,6 +968,7 @@ class Model(object):
         self._df  = {}
         self._cos = {}
         self._ig  = {}
+        self._inverted = {}
         self._vector = None
         self._classifier = None
         self._lsa = None
@@ -1066,6 +1068,22 @@ class Model(object):
         return log(1.0 / df, base)
         
     idf = inverse_document_frequency
+
+    @property
+    def inverted_index(self):
+        """ Yields a dictionary of (word, set([document1, document2, ...]))-items. 
+        """
+        if not self._inverted:
+            m = {}
+            for d in self.documents:
+                for w in d.terms:
+                    if w not in m:
+                        m[w] = set()
+                    m[w].add(d)
+            self._inverted = m
+        return self._inverted
+        
+    inverted = inverted_index
 
     @property
     def vector(self):
