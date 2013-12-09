@@ -1925,8 +1925,9 @@ class MediaWikiSection(object):
         if self._links is None:
             s = "/wiki/"
             ll = HTMLLinkParser().parse(self.source)
-            ll = set([urllib.unquote_plus(l.url[len(s):]) for l in ll if l.url.startswith(s)])
-            self._links = list([l.replace("_", " ") for l in ll])
+            ll = [urllib.unquote_plus(l.url[len(s):]) for l in ll if l.url.startswith(s)]
+            ll = [l.replace("_", " ") for l in ll]
+            self._links = list(set(ll))
         return self._links
 
     @property
