@@ -70,6 +70,8 @@ Array.unique = function(array) {
     return a;
 };
 
+var choice = Array.choice;
+
 /*--- MATH -----------------------------------------------------------------------------------------*/
 
 Math.degrees = function(radians) {
@@ -317,6 +319,7 @@ var Node = Class.extend({
         this.strokewidth = a.strokewidth;
         this.weight      = a.weight || 0;
         this.centrality  = a.centrality || 0;
+        this.degree      = a.degree || 0;
         this.text = null;
         if (a.text != false) {
             var div = document.createElement('div');
@@ -739,6 +742,20 @@ var Graph = Class.extend({
         return r;
     },
 
+    degreeCentrality: function(graph) {
+        /* Calculates degree centrality and returns a node => weight dictionary.
+         * Node.degree is updated in the process.
+         * Node.degree is higher for nodes with a lot of local traffic.
+         */
+        var r = {};
+        for (var i=0; i < this.nodes.length; i++) {
+            var n = this.nodes[i];
+            n.degree = n.links.length / this.nodes.length;
+            r[n] = n.degree;
+        }
+        return r;
+    },
+
     sorted: function(order, threshold) {
         /* Returns a list of nodes sorted by WEIGHT or CENTRALITY.
          * Nodes with a lot of traffic will be at the start of the list.
@@ -852,13 +869,13 @@ var Graph = Class.extend({
         }        
     },
 
-//  loop: function({frames:500, weighted:false, directed:false, fps:10, ipf:2})
+//  loop: function({frames:500, weighted:false, directed:false, fps:30, ipf:2})
     loop: function(a) {
         /* Calls Graph.update() and Graph.draw() in an animation loop.
          */
         if (a === undefined) a = {};
         if (a.frames === undefined) a.frames = 500;
-        if (a.fps    === undefined) a.fps    = 20;
+        if (a.fps    === undefined) a.fps    = 30;
         if (a.ipf    === undefined) a.ipf    = 2;
         this._i = 0;
         this._frames = a.frames;
