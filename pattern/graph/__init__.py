@@ -5,7 +5,6 @@
 # http://www.clips.ua.ac.be/pages/pattern
 
 ####################################################################################################
-# This module can benefit from loading psyco when iterating a GraphLayout.
 
 import os
 
@@ -53,7 +52,10 @@ class Text(object):
         pass
         
 class Vector(object):
+    
     def __init__(self, x=0, y=0):
+        """ A point in 2D-space.
+        """
         self.x = x
         self.y = y
 
@@ -124,6 +126,16 @@ class Node(object):
         return self.graph is not None \
            and [e for e in self.graph.edges if self.id in (e.node1.id, e.node2.id)] \
             or []
+            
+    @property
+    def edge(self, node, reverse=False):
+        """ Yields the Edge from this node to the given node, or None.
+        """
+        if not isinstance(node, Node):
+            node = self.graph and self.graph.get(node) or node
+        if reverse:
+            return node.links.edge(self)
+        return self.links.edge(node)
     
     @property
     def weight(self):
@@ -143,6 +155,12 @@ class Node(object):
     
     eigenvector = eigenvector_centrality = weight
     betweenness = betweenness_centrality = centrality
+    
+    @property
+    def degree(self):
+        """ Yields degree centrality as a number between 0.0-1.0.
+        """
+        return self.graph and (1.0 * len(self.links) / len(self.graph)) or 0.0
         
     def flatten(self, depth=1, traversable=lambda node, edge: True, _visited=None):
         """ Recursively lists the node and nodes linked to it.
@@ -312,6 +330,7 @@ SPRING = "spring"
 # Graph node centrality:
 EIGENVECTOR = "eigenvector"
 BETWEENNESS = "betweenness"
+DEGREE      = "degree"
 
 # Graph node sort order:
 WEIGHT, CENTRALITY = "weight", "centrality"
@@ -327,7 +346,7 @@ class Graph(dict):
         self.edges      = []   # List of Edge objects.
         self.root       = None
         self._adjacency = None # Cached adjacency() dict.
-        self.layout     = layout==SPRING and GraphSpringLayout(self) or GraphLayout(self)
+        self.layout     = layout == SPRING and GraphSpringLayout(self) or GraphLayout(self)
         self.distance   = distance
     
     def __getitem__(self, id):
@@ -571,6 +590,12 @@ class Graph(dict):
         for e in self.edges: 
             g._add_edge_copy(e)
         return g
+        
+    def export(self, *args, **kwargs):
+        export(self, *args, **kwargs)
+    
+    def serialize(self, *args, **kwargs):
+        return render(self, *args, **kwargs)
 
 #--- GRAPH LAYOUT ----------------------------------------------------------------------------------
 # Graph drawing or graph layout, as a branch of graph theory, 
@@ -590,9 +615,9 @@ class GraphLayout(object):
     def reset(self):
         self.iterations = 0
         for n in self.graph.nodes:
-            n._x = 0
-            n._y = 0
-            n.force = Vector(0,0)
+            n._x = 0.0
+            n._y = 0.0
+            n.force = Vector(0.0, 0.0)
             
     @property
     def bounds(self):
@@ -620,25 +645,25 @@ class GraphSpringLayout(GraphLayout):
         GraphLayout.__init__(self, graph)
         self.k         = 4.0  # Force constant.
         self.force     = 0.01 # Force multiplier.
-        self.repulsion = 15   # Maximum repulsive force radius.
+        self.repulsion = 50   # Maximum repulsive force radius.
 
     def _distance(self, node1, node2):
         # Yields a tuple with distances (dx, dy, d, d**2).
         # Ensures that the distance is never zero (which deadlocks the animation).
         dx = node2._x - node1._x
         dy = node2._y - node1._y
-        d2 = dx*dx + dy*dy
+        d2 = dx * dx + dy * dy
         if d2 < 0.01:
             dx = random() * 0.1 + 0.1
             dy = random() * 0.1 + 0.1
-            d2 = dx*dx + dy*dy
+            d2 = dx * dx + dy * dy
         return dx, dy, sqrt(d2), d2
 
     def _repulse(self, node1, node2):
         # Updates Node.force with the repulsive force.
         dx, dy, d, d2 = self._distance(node1, node2)
         if d < self.repulsion:
-            f = self.k**2 / d2
+            f = self.k ** 2 / d2
             node2.force.x += f * dx
             node2.force.y += f * dy
             node1.force.x -= f * dx
@@ -648,7 +673,7 @@ class GraphSpringLayout(GraphLayout):
         # Updates Node.force with the attractive edge force.
         dx, dy, d, d2 = self._distance(node1, node2)
         d = min(d, self.repulsion)
-        f = (d2 - self.k**2) / self.k * length
+        f = (d2 - self.k ** 2) / self.k * length
         f *= weight * 0.5 + 1
         f /= d
         node2.force.x -= f * dx
@@ -668,7 +693,7 @@ class GraphSpringLayout(GraphLayout):
                 self._repulse(n1, n2)
         # Forces on nodes due to edge attractions.
         for e in self.graph.edges:
-            self._attract(e.node1, e.node2, weight*e.weight, 1.0/(e.length or 0.01))
+            self._attract(e.node1, e.node2, weight * e.weight, 1.0 / (e.length or 0.01))
         # Move nodes by given force.
         for n in self.graph.nodes:
             if not n.fixed:
@@ -1126,18 +1151,19 @@ def minify(js):
     return js.strip()
 
 DEFAULT, INLINE = "default", "inline"
-HTML, CANVAS, STYLE, SCRIPT, DATA = "html", "canvas", "style", "script", "data"
+HTML, CANVAS, STYLE, CSS, SCRIPT, DATA = \
+    "html", "canvas", "style", "css", "script", "data"
 
 class HTMLCanvasRenderer(object):
     
-    def __init__(self, graph, **kwargs):
+    def __init__(self, graph):
         self.graph    = graph
         self._source  = \
-            "<!DOCTYPE html>\n" \
+            "<!doctype html>\n" \
             "<html>\n" \
             "<head>\n" \
                 "\t<title>%s</title>\n" \
-                "\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n" \
+                "\t<meta charset=\"utf-8\">\n" \
                 "\t%s\n" \
                 "\t<script type=\"text/javascript\" src=\"%scanvas.js\"></script>\n" \
                 "\t<script type=\"text/javascript\" src=\"%sgraph.js\"></script>\n" \
@@ -1152,7 +1178,7 @@ class HTMLCanvasRenderer(object):
             "</html>"
         # HTML
         self.title      = "Graph" # <title>Graph</title>
-        self.javascript = "js/"   # Path to canvas.js + graph.js.
+        self.javascript = None    # Path to canvas.js + graph.js.
         self.stylesheet = INLINE  # Either None, INLINE, DEFAULT (style.css) or a custom path.
         self.id         = "graph" # <div id="graph">
         self.ctx        = "canvas.element"
@@ -1167,12 +1193,12 @@ class HTMLCanvasRenderer(object):
         self.prune      = None    # None or int, calls Graph.prune() in Javascript.
         self.pack       = True    # Shortens leaf edges, adds eigenvector weight to node radius.
         # JS GraphLayout
-        self.distance   = 10      # Node spacing.
-        self.k          = 4.0     # Force constant.
-        self.force      = 0.01    # Force dampener.
-        self.repulsion  = 50      # Repulsive force radius.
+        self.distance   = graph.distance         # Node spacing.
+        self.k          = graph.layout.k         # Force constant.
+        self.force      = graph.layout.force     # Force dampener.
+        self.repulsion  = graph.layout.repulsion # Repulsive force radius.
         # Data
-        self.weight     = [WEIGHT, CENTRALITY] # Calculate these in Python, or True (in Javascript).
+        self.weight     = [DEGREE, WEIGHT, CENTRALITY]
         self.href       = {}      # Dictionary of Node.id => URL.
         self.css        = {}      # Dictionary of Node.id => CSS classname.
         # Default options.
@@ -1206,11 +1232,6 @@ class HTMLCanvasRenderer(object):
         return "".join(self._data())
     
     def _data(self):
-        if self.graph.nodes and isinstance(self.weight, (list, tuple)):
-            if WEIGHT in self.weight and self.graph.nodes[-1]._weight is None:
-                self.graph.eigenvector_centrality()
-            if CENTRALITY in self.weight and self.graph.nodes[-1]._centrality is None:
-                self.graph.betweenness_centrality()
         s = []
         s.append("g = new Graph(%s, %s);\n" % (self.ctx, self.distance))
         s.append("var n = {")
@@ -1225,10 +1246,6 @@ class HTMLCanvasRenderer(object):
                 p.append("y:%i" % n._y)                           # 0
             if n.radius != self.default["radius"]:
                 p.append("radius:%.1f" % n.radius)                # 5.0
-            if n._weight is not None:
-                p.append("weight:%.2f" % n.weight)                # 0.00
-            if n._centrality is not None:
-                p.append("centrality:%.2f" % n.centrality)        # 0.00
             if n.fixed != self.default["fixed"]:
                 p.append("fixed:%s" % repr(n.fixed).lower())      # false
             if n.fill != self.default["fill"]:
@@ -1303,32 +1320,6 @@ class HTMLCanvasRenderer(object):
         s.append(   "\tcanvas.fps = %s;\n" % (self.fps))
         s.append(   "\t" + "".join(self._data()).replace("\n", "\n\t"))
         s.append(   "\n")
-        # Apply node weight to node radius.
-        if self.pack: s.append(
-                    "\tfor (var i=0; i < g.nodes.length; i++) {\n"
-                        "\t\tvar n = g.nodes[i];\n"
-                        "\t\tn.radius = n.radius + n.radius * n.weight;\n"
-                    "\t}\n")
-        # Apply edge length (leaves get shorter edges).
-        if self.pack: s.append(
-                    "\tfor (var i=0; i < g.nodes.length; i++) {\n"
-                        "\t\tvar e = g.nodes[i].edges();\n"
-                        "\t\tif (e.length == 1) {\n"
-                        "\t\t\te[0].length *= 0.2;\n"
-                        "\t\t}\n"
-                    "\t}\n")
-        # Apply eigenvector and betweenness centrality.
-        if self.weight is True: s.append(
-                    "\tg.eigenvectorCentrality();\n"
-                    "\tg.betweennessCentrality();\n")
-        if isinstance(self.weight, (list, tuple)):
-            if WEIGHT in self.weight: s.append(
-                    "\tg.eigenvectorCentrality();\n")
-            if CENTRALITY in self.weight: s.append(
-                    "\tg.betweennessCentrality();\n")
-        # Apply pruning.
-        if self.prune is not None: s.append(
-                    "\tg.prune(%s);\n" % self.prune)
         # Apply the layout settings.
         s.append(   "\tg.layout.k = %s; // Force constant (= edge length).\n"
                     "\tg.layout.force = %s; // Repulsive strength.\n"
@@ -1336,6 +1327,37 @@ class HTMLCanvasRenderer(object):
                         self.k, 
                         self.force, 
                         self.repulsion))
+        # Apply eigenvector, betweenness and degree centrality.
+        if self.weight is True: s.append(
+                    "\tg.eigenvectorCentrality();\n"
+                    "\tg.betweennessCentrality();\n"
+                    "\tg.degreeCentrality();\n")
+        if isinstance(self.weight, (list, tuple)):
+            if WEIGHT in self.weight: s.append(
+                    "\tg.eigenvectorCentrality();\n")
+            if CENTRALITY in self.weight: s.append(
+                    "\tg.betweennessCentrality();\n")
+            if DEGREE in self.weight: s.append(
+                    "\tg.degreeCentrality();\n")
+        # Apply node weight to node radius.
+        if self.pack: s.append(
+                    "\t// Apply Node.weight to Node.radius.\n"
+                    "\tfor (var i=0; i < g.nodes.length; i++) {\n"
+                        "\t\tvar n = g.nodes[i];\n"
+                        "\t\tn.radius = n.radius + n.radius * n.weight;\n"
+                    "\t}\n")
+        # Apply edge length (leaves get shorter edges).
+        if self.pack: s.append(
+                    "\t// Apply Edge.length (leaves get shorter edges).\n"
+                    "\tfor (var i=0; i < g.nodes.length; i++) {\n"
+                        "\t\tvar e = g.nodes[i].edges();\n"
+                        "\t\tif (e.length == 1) {\n"
+                        "\t\t\te[0].length *= 0.2;\n"
+                        "\t\t}\n"
+                    "\t}\n")
+        # Apply pruning.
+        if self.prune is not None: s.append(
+                    "\tg.prune(%s);\n" % self.prune)
         # Implement <canvas> draw().
         s.append("}\n")
         s.append("function draw(canvas) {\n"
@@ -1388,10 +1410,9 @@ class HTMLCanvasRenderer(object):
     @property
     def html(self):
         """ Yields a string of HTML to visualize the graph using a force-based spring layout.
-            The js parameter sets the path to graph.js and excanvas.js (by default, "./").
+            The js parameter sets the path to graph.js and canvas.js.
         """
-        js  = self.javascript.rstrip("/")
-        js  = (js and js or ".")+"/"
+        js  = self.javascript or ""
         if self.stylesheet == INLINE:
             css = self.style.replace("\n","\n\t\t").rstrip("\t")
             css = "<style type=\"text/css\">\n\t\t%s\n\t</style>" % css
@@ -1421,7 +1442,7 @@ class HTMLCanvasRenderer(object):
             return self.html
         if type == CANVAS:
             return self.canvas
-        if type == STYLE:
+        if type in (STYLE, CSS):
             return self.style
         if type == SCRIPT:
             return self.script
@@ -1435,12 +1456,11 @@ class HTMLCanvasRenderer(object):
         if overwrite and os.path.exists(path):
             rmtree(path)
         os.mkdir(path) # With overwrite=False, raises OSError if the path already exists.
-        os.mkdir(os.path.join(path, "js"))
         # Copy compressed graph.js + canvas.js (unless a custom path is given.)
-        if self.javascript == "js/":
+        if self.javascript is None:
             for p, f in (("..", "canvas.js"), (".", "graph.js")):
                 a = open(os.path.join(MODULE, p, f), "r")
-                b = open(os.path.join(path, "js", f), "w")
+                b = open(os.path.join(path, f), "w")
                 b.write(minify(a.read()))
                 b.close()
         # Create style.css.
