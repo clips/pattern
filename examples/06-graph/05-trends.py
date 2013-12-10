@@ -1,7 +1,7 @@
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
 from pattern.web import Twitter
-from pattern.graph import Graph, export
+from pattern.graph import Graph
 
 # This example demonstrates a simple Twitter miner + visualizer.
 # We collect tweets containing "A is the new B", 
@@ -38,4 +38,4 @@ for A, B in comparisons:
 # Simply take the largest subgraph for our visualization.
 g = g.split()[0]
 
-export(g, "trends", weight=True, weighted=True, directed=True, overwrite=True)
+g.export("trends", weighted=True, directed=True, overwrite=True)
