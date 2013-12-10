@@ -376,7 +376,7 @@ class Verbs(_Verbs):
         b = b.replace("eeiss", "eiss")
         b = b.replace("eeid", "eit")
         # Subjunctive: wechselte => wechseln
-        if not b.endswith(("e", "l")) and not (b.endswith("er") and not b[-3] in VOWELS):
+        if not b.endswith(("e", "l")) and not (b.endswith("er") and len(b) >= 3 and not b[-3] in VOWELS):
             b = b + "e"
         # abknallst != abknalln => abknallen
         if b.endswith(("hl", "ll", "ul", "eil")):
