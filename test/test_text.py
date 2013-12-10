@@ -199,6 +199,20 @@ class TestSentiment(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+class TestMultilingual(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_language(self):
+        # Assert language recognition.
+        self.assertEqual(text.language(u"the cat sat on the mat")[0], "en")
+        self.assertEqual(text.language(u"de kat zat op de mat")[0], "nl")
+        self.assertEqual(text.language(u"le chat s'était assis sur le tapis")[0], "fr")
+        print "pattern.text.language()"
+
+#---------------------------------------------------------------------------------------------------
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLexicon))
@@ -208,6 +222,7 @@ def suite():
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestEntities))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParser))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSentiment))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMultilingual))
     return suite
 
 if __name__ == "__main__":

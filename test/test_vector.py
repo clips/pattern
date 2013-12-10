@@ -569,6 +569,27 @@ class TestModel(unittest.TestCase):
         )
         self.assertAlmostEqual(v.information_gain("wind"), 0.52, places=2)
         print "patten.vector.Model.information_gain()"
+        
+    def test_condensed_nearest_neighbor(self):
+        # Assert CNN for data reduction.
+        v = vector.Model((
+            vector.Document("woof", type="dog"),
+            vector.Document("meow", type="cat"),  # redundant
+            vector.Document("meow meow", type="cat")
+        ))
+        self.assertTrue(len(v.cnn()) < len(v))
+        print "pattern.vector.Model.condensed_nearest_neighbor()"
+        
+    def test_classifier(self):
+        # Assert that the model classifier is correctly saved and loaded.
+        p = "test.model.tmp"
+        v = vector.Model([vector.Document("chirp", type="bird")])
+        v.train(vector.SVM)
+        v.save(p)
+        v = vector.Model.load(p)
+        self.assertTrue(isinstance(v.classifier, vector.SVM))
+        print "pattern.vector.Model.classifier"
+        print "pattern.vector.Model.train()"
 
 #---------------------------------------------------------------------------------------------------
 
@@ -895,9 +916,9 @@ class TestClassifier(unittest.TestCase):
         # Assert the accuracy of the classifier.
         A, P, R, F = vector.SLP.test(self.model, folds=10, iterations=3)
         #print A, P, R, F
-        self.assertTrue(P >= 0.94)
-        self.assertTrue(R >= 0.94)
-        self.assertTrue(F >= 0.94)
+        self.assertTrue(P >= 0.93)
+        self.assertTrue(R >= 0.93)
+        self.assertTrue(F >= 0.93)
         
     def test_svm(self):
         try:
