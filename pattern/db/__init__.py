@@ -1749,7 +1749,7 @@ class CSV(list):
     def __init__(self, rows=[], fields=None, **kwargs):
         # List of (name, type)-tuples (STRING, INTEGER, FLOAT, DATE, BOOLEAN).
         fields = fields or kwargs.pop("headers", None)
-        fields = fields and [f if isinstance(f, tuple) else (f, None) for f in fields] or None
+        fields = fields and [tuple(f) if isinstance(f, (tuple, list)) else (f, None) for f in fields] or None
         self.__dict__["fields"] = fields
         if hasattr(rows, "__iter__"):
             self.extend(rows, **kwargs)
