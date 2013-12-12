@@ -107,7 +107,7 @@ def _match(string, pattern):
         if WILDCARD in p[1:-1]:
             p = p.split(WILDCARD)
             return string.startswith(p[0]) and string.endswith(p[-1])
-    except AttributeError:
+    except:
         # For performance, calling isinstance() last is 10% faster for plain strings.
         if isinstance(p, regexp):
             return p.search(string) is not None
