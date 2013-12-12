@@ -906,27 +906,38 @@ class Model(object):
     def load(cls, path):
         """ Loads the model from a gzipped pickle file created with Model.save().
         """
-        return cPickle.loads(gzip.GzipFile(path, "rb").read())
+        model = cPickle.loads(gzip.GzipFile(path, "rb").read())
+        # Deserialize Model.classifier.
+        if model.classifier:
+            p = path + ".tmp"
+            f = open(p, "wb")
+            f.write(model.classifier)
+            f.close()
+            model._classifier = Classifier.load(p)
+            os.remove(p)
+        return model
         
-    def save(self, path, update=False):
+    def save(self, path, update=False, final=False):
         """ Saves the model as a gzipped pickle file at the given path.
             The advantage is that cached vectors and cosine similarity are stored.
         """
+        # Update the cache before saving.
         if update:
-            # Update the entire cache before saving.
-            for d1 in self.documents:
+            self.document_frequency("")  # set self._df
+            self.inverted_index          # set self._inverted
+            self.vector                  # set self._vector
+            for d1 in self.documents:    # set self._cos
                 for d2 in self.documents:
                     self.cosine_similarity(d1, d2)
             for w in self.vector:
-                self.information_gain(w)
-        m = dict.fromkeys((d.id for d in self.documents), True)
-        for id1, id2 in self._cos.keys():
-            # Remove Model.search() query cache.
-            if id1 not in m \
-            or id2 not in m:
-                self._cos.pop((id1, id2))
+                self.information_gain(w) # set self._ig
+        # Serialize Model.classifier.
+        if self._classifier:
+            p = path + ".tmp"
+            self._classifier.save(p, final)
+            self._classifier = open(p, "rb").read(); os.remove(p)
         f = gzip.GzipFile(path, "wb")
-        f.write(cPickle.dumps(self, 1)) # 1 = binary
+        f.write(cPickle.dumps(self, 1))  # 1 = binary
         f.close()
         
     def export(self, path, format=ORANGE, **kwargs):
@@ -1135,8 +1146,10 @@ class Model(object):
         # it is available in cache for reuse.
         id1 = document1.id
         id2 = document2.id
-        if (id1, id2) in self._cos: return self._cos[(id1, id2)]
-        if (id2, id1) in self._cos: return self._cos[(id2, id1)]
+        if (id1, id2) in self._cos: 
+            return self._cos[(id1, id2)]
+        if (id2, id1) in self._cos: 
+            return self._cos[(id2, id1)]
         # Calculate the matrix multiplication of the document vectors.
         if not getattr(self, "lsa", None):
             v1 = document1.vector
@@ -1148,7 +1161,9 @@ class Model(object):
             v2 = id2 in self.lsa and self.lsa[id2] or self._lsa.transform(document2)
             s = cosine_similarity(v1, v2)
         # Cache the similarity weight for reuse.
-        self._cos[(id1, id2)] = s
+        if document1.model == self and \
+           document2.model == self:
+            self._cos[(id1, id2)] = s
         return s
         
     similarity = cos = cosine_similarity
@@ -1240,7 +1255,7 @@ class Model(object):
         
     reduce = latent_semantic_analysis
 
-    def condensed_nearest_neighbor(self, distance=COSINE):
+    def condensed_nearest_neighbor(self, k=1, distance=COSINE):
         """ Returns a filtered list of documents, without impairing classification accuracy.
             Iteratively constructs a set of "prototype" documents.
             Documents that are correctly classified by the set are discarded.
@@ -1253,7 +1268,8 @@ class Model(object):
         while not b:
             b = True
             for i, x in enumerate(v):
-                if not u or x.type != min((d(x.vector, y.vector), y) for y in u)[1].type: # k=1
+                nn = heapq.nsmallest(k, ((d(x.vector, y.vector), y) for y in u))
+                if not u or x.type in (y.type for d, y in nn):
                     b = False
                     u.append(x)
                     v.pop(i)
@@ -1318,12 +1334,11 @@ class Model(object):
             subset = [w for ig, w in subset[:top]]
             return subset
         
-    def filter(self, features=[], condensed=False, **kwargs):
+    def filter(self, features=[], documents=[]):
         """ Returns a new Model with documents only containing the given list of features,
             for example a subset returned from Model.feature_selection().
-            With condensed=True, only includes documents from Model.condesed_nearest_neighbor().
         """
-        documents = not condensed and self.documents or self.codensed_nearest_neighbor(**kwargs)
+        documents = documents or self.documents
         features = set(features)
         model = Model(weight=self.weight)
         model.extend([
@@ -1334,16 +1349,16 @@ class Model(object):
                 description = d.description) for d in documents])
         return model
     
-    # XXX Model.save() conflicts with Model.classifier.
-    
     def train(self, *args, **kwargs):
         """ Trains Model.classifier with the document vectors.
             Each document is expected to have a Document.type.
             Model.predict() can then be used to predict the type of other (unknown) documents.
         """
         if len(args) == 0:
-            Classifier = kwargs.pop("Classifier", "")
+            # Model.train(classifier=KNN)
+            Classifier = kwargs.pop("Classifier", NB)
         if len(args) >= 1:
+            # Model.train(KNN, k=1)
             Classifier = args[0]; args=args[1:]
         kwargs["train"] = self
         self._classifier = Classifier(*args, **kwargs)
