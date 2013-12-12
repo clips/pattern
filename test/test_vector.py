@@ -588,6 +588,7 @@ class TestModel(unittest.TestCase):
         v.save(p)
         v = vector.Model.load(p)
         self.assertTrue(isinstance(v.classifier, vector.SVM))
+        os.unlink(p)
         print "pattern.vector.Model.classifier"
         print "pattern.vector.Model.train()"
 
@@ -911,6 +912,7 @@ class TestClassifier(unittest.TestCase):
         self.assertTrue(F >= 0.92)
 
     def test_slp(self):
+        random.seed(1)
         # Assert single-layer averaged perceptron classification.
         self._test_classifier(vector.SLP)
         # Assert the accuracy of the classifier.

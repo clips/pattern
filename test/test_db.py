@@ -25,7 +25,7 @@ def create_db_mysql():
                 port = PORT,
             username = USERNAME,
             password = PASSWORD)
-    except ImportError, e: 
+    except ImportError, e:
         DB_MYSQL_EXCEPTION = None # "No module named MySQLdb"
     except Exception, e:
         DB_MYSQL_EXCEPTION = e
@@ -669,23 +669,23 @@ class TestQuery(unittest.TestCase):
             self.assertEqual(db.cmp(*args), sql)
         print "pattern.db.cmp()"
         
-    def test_group(self):
-        # Assert WHERE with AND/OR combinations from Group object().
+    def test_filterchain(self):
+        # Assert WHERE with AND/OR combinations from FilterChain object().
         yesterday  = db.date()
         yesterday -= db.time(days=1)
-        g1 = db.Group(("name", "garlic bread"))
-        g2 = db.Group(("name", "pizza"), ("price", 10, "<"), operator=db.AND)
-        g3 = db.Group(g1, g2, operator=db.OR)
-        g4 = db.Group(g3, ("date", yesterday, ">"), operator=db.AND)
-        self.assertEqual(g1.SQL(), "name='garlic bread'")
-        self.assertEqual(g2.SQL(), "name='pizza' and price<10")
-        self.assertEqual(g3.SQL(), "(name='garlic bread') or (name='pizza' and price<10)")
-        self.assertEqual(g4.SQL(), "((name='garlic bread') or (name='pizza' and price<10)) and date>'%s'" % yesterday)
-        # Assert subquery in group.
+        f1 = db.FilterChain(("name", "garlic bread"))
+        f2 = db.FilterChain(("name", "pizza"), ("price", 10, "<"), operator=db.AND)
+        f3 = db.FilterChain(f1, f2, operator=db.OR)
+        f4 = db.FilterChain(f3, ("date", yesterday, ">"), operator=db.AND)
+        self.assertEqual(f1.SQL(), "name='garlic bread'")
+        self.assertEqual(f2.SQL(), "name='pizza' and price<10")
+        self.assertEqual(f3.SQL(), "(name='garlic bread') or (name='pizza' and price<10)")
+        self.assertEqual(f4.SQL(), "((name='garlic bread') or (name='pizza' and price<10)) and date>'%s'" % yesterday)
+        # Assert subquery in filter chain.
         q = self._query(fields=["name"])
-        g = db.any(("name", u"Gödel"), ("name", q))
-        self.assertEqual(g.SQL(), u"name='Gödel' or name in (select persons.name from `persons`)")
-        print "pattern.db.Group"
+        f = db.any(("name", u"Gödel"), ("name", q))
+        self.assertEqual(f.SQL(), u"name='Gödel' or name in (select persons.name from `persons`)")
+        print "pattern.db.FilterChain"
         
     def test_query(self):
         # Assert table query results from Table.search().

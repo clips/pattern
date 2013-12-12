@@ -352,7 +352,7 @@ class TestGraphSpringLayout(TestGraphLayout):
         self.assertTrue(gl.graph      == self.g)
         self.assertTrue(gl.k          == 4.0)
         self.assertTrue(gl.force      == 0.01)
-        self.assertTrue(gl.repulsion  == 15)
+        self.assertTrue(gl.repulsion  == 50)
         self.assertTrue(gl.bounds     == (0,0,0,0))
         self.assertTrue(gl.iterations == 0)
         gl.update()
