@@ -479,8 +479,8 @@ class Database(object):
             self._connection.converter[type.TINY]       = bool
             self._connection.converter[type.TIMESTAMP]  = date
         if self.type == SQLITE:
-            sqlite.converters["TINYINT(1)"] = bool # See Binary() why this is necessary:
-            sqlite.converters["BLOB"]       = lambda data: str(data).decode("string-escape")
+            sqlite.converters["TINYINT(1)"] = lambda v: bool(int(v))
+            sqlite.converters["BLOB"]       = lambda v: str(v).decode("string-escape")
             sqlite.converters["TIMESTAMP"]  = date
             
     def disconnect(self):
@@ -942,7 +942,7 @@ class Table(object):
         def __init__(self, table, data):
             list.__init__(self, data); self.table=table
         def record(self, row):
-            return self.table.record(row)
+            return self.table.record(row) # See assoc().
 
     def filter(self, *args, **kwargs):
         """ Returns the rows that match the given constraints (using equals + AND):
@@ -1013,13 +1013,15 @@ class Table(object):
         # Table.update(1, {"age":3})
         # Table.update(all(filter(field="name", value="Taxi")), age=3)
         commit = kwargs.pop("commit", True) # As fieldname, use abs(Table.name, "commit").
+        if isinstance(id, (list, tuple)):
+            id = FilterChain(*id)
         if len(args) == 0 and len(kwargs) == 1 and isinstance(kwargs.get("values"), dict):
             kwargs = kwargs["values"]  
         if len(args) == 1 and isinstance(args[0], dict):
             a=args[0]; a.update(kwargs); kwargs=a
         kv = ", ".join("`%s`=%s" % (k, self.db.escape(v)) for k, v in kwargs.items())
         q  = "update `%s` set %s where %s;" % (self.name, kv, 
-            not isinstance(id, Group) and cmp(self.primary_key, id, "=", self.db.escape) \
+            not isinstance(id, (Filter, FilterChain)) and cmp(self.primary_key, id, "=", self.db.escape) \
              or id.SQL(escape=self.db.escape))
         self.db.execute(q, commit)
 
@@ -1029,8 +1031,10 @@ class Table(object):
         # Table.delete(1)
         # Table.delete(ALL)
         # Table.delete(all(("type","cat"), ("age",15,">")))
+        if isinstance(id, (list, tuple)):
+            id = FilterChain(*id)
         q = "delete from `%s` where %s" % (self.name, 
-            not isinstance(id, Group) and cmp(self.primary_key, id, "=", self.db.escape) \
+            not isinstance(id, (Filter, FilterChain)) and cmp(self.primary_key, id, "=", self.db.escape) \
              or id.SQL(escape=self.db.escape))
         self.db.execute(q, commit)
     
@@ -1144,24 +1148,63 @@ def sum(value):
 
 AND, OR = "and", "or"
 
-def filter(field, value, comparison="="):
-    return (field, value, comparison)
+class Filter(tuple):
+    def __new__(cls, field, value, comparison):
+        return tuple.__new__(cls, (field, value, comparison))
+    def SQL(self, **kwargs):
+        return cmp(*self, **kwargs)
 
-class Group(list):
+def filter(field, value, comparison="="):
+    return Filter(field, value, comparison)
+  
+def eq(field, value):
+    return Filter(field, value, "=")
+    
+def eqi(field, value):
+    return Filter(field, value, "i=")
+    
+def ne(field, value):
+    return Filter(field, value, "!=")
+    
+def gt(field, value):
+    return Filter(field, value, ">")
+
+def lt(field, value):
+    return Filter(field, value, "<")
+
+def gte(field, value):
+    return Filter(field, value, ">=")
+
+def lte(field, value):
+    return Filter(field, value, "<=")
+    
+def rng(field, value):
+    return Filter(field, value, ":")
+
+class FilterChain(list):
     
     def __init__(self, *args, **kwargs):
         """ A list of SQL WHERE filters combined with AND/OR logical operator.
         """
+        # FilterChain(filter("type", "cat", "="), filter("age", 5, "="), operator=AND)
+        # FilterChain(type="cat", age=5, operator=AND)
+        # FilterChain({"type": "cat", "age": 5}, operator=AND)
+        if len(args) == 1 and isinstance(args[0], dict):
+            args[0].pop("operator", None); kwargs=dict(args[0], **kwargs)
+            args = []
+        else:
+            args = list(args)
+        self.operator = kwargs.pop("operator", AND)
+        args.extend(filter(k, v, "=") for k, v in kwargs.iteritems())
         list.__init__(self, args)
-        self.operator = kwargs.get("operator", AND)
     
     def SQL(self, **kwargs):
         """ For example, filter for small pets with tails or wings
             (which is not the same as small pets with tails or pets with wings):
-            >>> Group(
+            >>> FilterChain(
             >>>     filter("type", "pet"),
             >>>     filter("weight", (4,6), ":"),
-            >>>     Group(
+            >>>     FilterChain(
             >>>         filter("tail", True),
             >>>         filter("wing", True), operator=OR))
             Yields: 
@@ -1171,27 +1214,29 @@ class Group(list):
         a = []
         for filter in self:
             # Traverse subgroups recursively.
-            if isinstance(filter, Group):
+            if isinstance(filter, FilterChain):
                 a.append("(%s)" % filter.SQL(**kwargs))
                 continue
             # Convert filter() to string with cmp() - see above.
-            if isinstance(filter, (list, tuple)):
+            if isinstance(filter, (Filter, list, tuple)):
                 a.append(cmp(*filter, **kwargs))
                 continue
-            raise TypeError, "Group can contain other Group or filter(), not %s" % type(filter)
+            raise TypeError, "FilterChain can contain other FilterChain or filter(), not %s" % type(filter)
         return (" %s " % self.operator).join(a)
         
     sql = SQL
 
-def all(*args):
+def all(*args, **kwargs):
     """ Returns a group of filters combined with AND.
     """
-    return Group(*args, **dict(operator=AND))
+    kwargs["operator"] = AND
+    return FilterChain(*args, **kwargs)
     
-def any(*args):
+def any(*args, **kwargs):
     """ Returns a group of filters combined with OR.
     """
-    return Group(*args, **dict(operator=OR))
+    kwargs["operator"] = OR
+    return FilterChain(*args, **kwargs)
     
 # From a GET-query dict:
 # all(*dict.items())
@@ -1206,8 +1251,12 @@ LEFT  = "left"  # All rows from this table, with field values from the related t
 RIGHT = "right" # All rows from the related table, with field values from this table when possible.
 FULL  = "full"  # All rows form both tables.
 
+class Relation(tuple):
+    def __new__(cls, field1, field2, table, join):
+        return tuple.__new__(cls, (field1, field2, table, join))
+
 def relation(field1, field2, table, join=LEFT):
-    return (field1, field2, table, join)
+    return Relation(field1, field2, table, join)
 
 rel = relation
     
@@ -1229,8 +1278,12 @@ class Query(object):
         # Table.search(ALL, filters=any(("type","cat"), ("type","dog")) => cats and dogs.
         # Table.search(("type", "name")), group="type", function=COUNT) => all types + amount per type.
         # Table.search(("name", "types.has_tail"), relations=[("types","type","id")]) => links type to types.id.
+        if isinstance(filters, Filter):
+            filters = [filters]
+        if isinstance(relations, Relation):
+            relations = [relations]
         Query.id += 1
-        filters = Group(*filters, **dict(operator=isinstance(filters, Group) and filters.operator or AND))
+        filters = FilterChain(*filters, **dict(operator=getattr(filters, "operator", AND)))
         self._id       = Query.id
         self._table    = table
         self.fields    = fields    # A field name, list of field names or ALL.
@@ -1986,6 +2039,11 @@ class Datasheet(CSV):
             u[o[v]] = [function[j](column) for j, column in enumerate(u[o[v]])]
             u[o[v]][J] = v # list.__getitem__(self, i)[J]
         return Datasheet(rows=u)
+        
+    def record(self, row):
+        """ Returns the given row as a dictionary of (field or alias, value)-items.
+        """
+        return dict(zip((f for f, type in self.fields), row))
                 
     def map(self, function=lambda item: item):
         """ Applies the given function to each item in the matrix.
