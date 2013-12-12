@@ -195,13 +195,13 @@ def languages(region):
 
 def regions(language):
     """ Returns a list of region codes for the given language code.
-        For example: regions(encode_language("dutch")) => ["BE", "NL"]
+        For example: regions(encode_language("dutch")) => ["NL", "BE"]
     """
     x, a = language.lower(), []
     for tag, (language, region, iso639, iso3166) in LANGUAGE_REGION.iteritems():
         if iso639 == x: 
             a.append(iso3166)
-    return sorted(a)
+    return sorted(a, key=lambda tag: tag.lower() != x and tag or "")
 
 def regionalize(language):
     """ Returns a list of RFC-5646 language-region codes for the given language code.
