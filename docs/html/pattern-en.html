@@ -534,7 +534,7 @@ pnp.preposition            # First PP chunk in the PNP.
 &gt;&gt;&gt;     "but it's presented in such a ridiculous way it's seriously boring.") 
 
 (-0.34, 1.0) </pre></div>
-<p>In the example above,&nbsp;<span class="inline_code">-0.34</span> is the average of&nbsp;<em>surreal</em>, <em>various</em>, <em>ridiculous</em> and <em>seriously boring</em>.&nbsp;To retrieve the scores for indivual words, use the special <span class="inline_code">assessments</span> property, which yields a list of <span class="inline_code">(words,</span> <span class="inline_code">polarity,</span> <span class="inline_code">subjectivity,</span> <span class="inline_code">label)</span>-tuples.</p>
+<p>In the example above,&nbsp;<span class="inline_code">-0.34</span> is the average of&nbsp;<em>surreal</em>, <em>various</em>, <em>ridiculous</em> and <em>seriously boring</em>.&nbsp;To retrieve the scores for individual words, use the special <span class="inline_code">assessments</span> property, which yields a list of <span class="inline_code">(words,</span> <span class="inline_code">polarity,</span> <span class="inline_code">subjectivity,</span> <span class="inline_code">label)</span>-tuples.</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; print sentiment('Wonderfully awful! :-)').assessments
 
@@ -544,7 +544,7 @@ pnp.preposition            # First PP chunk in the PNP.
 <p>&nbsp;&nbsp;</p>
 <hr />
 <h2><a name="modality"></a>Mood &amp; modality</h2>
-<p>Grammatical mood refers to the use of auxillary verbs (e.g., <em>could</em>, <em>would</em>) and adverbs (e.g., <em>definitely</em>,<em> maybe</em>) to express uncertainty.&nbsp;</p>
+<p>Grammatical mood refers to the use of auxiliary verbs (e.g., <em>could</em>, <em>would</em>) and adverbs (e.g., <em>definitely</em>,<em> maybe</em>) to express uncertainty.&nbsp;</p>
 <p>The <span class="inline_code">mood()</span> function returns either&nbsp;<span class="inline_code">INDICATIVE</span>, <span class="inline_code">IMPERATIVE</span>, <span class="inline_code">CONDITIONAL</span>&nbsp;or <span class="inline_code">SUBJUNCTIVE</span>&nbsp;for a given parsed&nbsp;<span class="inline_code">Sentence</span>. See the table below for an overview of moods.</p>
 <p>The <span class="inline_code">modality()</span> function returns the degree of certainty as a value between <span class="inline_code">-1.0</span> and <span class="inline_code">+1.0</span>, where values <span class="inline_code">&gt;</span> <span class="inline_code">+0.5</span> represent facts. For example, "<em>I wish it would stop raining"</em> scores <span class="inline_code">-0.35</span>, whereas "<em>It will stop raining"</em> scores <span class="inline_code">+0.75</span>. Accuracy is about 68% for Wikipedia texts.</p>
 <pre class="brush:python; gutter:false; light:true;">mood(sentence)     # Returns INDICATIVE | IMPERATIVE | CONDITIONAL | SUBJUNCTIVE</pre><pre class="brush:python; gutter:false; light:true;">modality(sentence) # Returns -1.0 =&gt; +1.0.</pre><table class="border">

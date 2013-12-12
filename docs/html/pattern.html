@@ -46,7 +46,7 @@
 <ul>
 <li>Requires: Python 2.5+ on Windows | Mac | Linux</li>
 <li>Licensed under <a href="http://www.linfo.org/bsdlicense.html" target="_blank">BSD</a></li>
-<li>Latest releases: <a href="http://www.clips.ua.ac.be/media/pattern-2.6.zip">2.6</a> |&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-2.5.zip">2.5</a> |&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-2.4.zip">2.4</a> | <a href="http://www.clips.ua.ac.be/media/pattern-2.3.zip">2.3</a>&nbsp;|&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-2.2.zip">2.2</a> |&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-2.1.zip">2.1</a> |&nbsp;<a href="http://www.clips.ua.ac.be/media/pattern-2.0.zip">2.0</a></li>
+<li>Latest releases: <a class="noexternal" href="http://www.clips.ua.ac.be/media/pattern-2.6.zip">2.6</a> |&nbsp;<a class="noexternal" href="http://www.clips.ua.ac.be/media/pattern-2.5.zip">2.5</a> |&nbsp;<a class="noexternal" href="http://www.clips.ua.ac.be/media/pattern-2.4.zip">2.4</a> | <a class="noexternal" href="http://www.clips.ua.ac.be/media/pattern-2.3.zip">2.3</a>&nbsp;|&nbsp;<a class="noexternal" href="http://www.clips.ua.ac.be/media/pattern-2.2.zip">2.2</a> |&nbsp;<a class="noexternal" href="http://www.clips.ua.ac.be/media/pattern-2.1.zip">2.1</a> |&nbsp;<a class="noexternal" href="http://www.clips.ua.ac.be/media/pattern-2.0.zip">2.0</a></li>
 <li>Authors:<br />&nbsp;Tom De Smedt (<em>tom at organisms.be</em>)<br />&nbsp;Walter Daelemans&nbsp;</li>
 </ul>
 <p><span class="small"><span style="text-decoration: underline;">Reference</span>: De Smedt, T. &amp; Daelemans, W. (2012)</span>.<br /><span class="small">Pattern for Python. <em>Journal of Machine Learning Research</em>, 13: 2031–2035.</span></p>
@@ -313,7 +313,7 @@ Chunk('mobile apps/NP') =&gt; Chunk('The mobile web/NP-SBJ-1')
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web    import Bing, plaintext
 &gt;&gt;&gt; from pattern.en     import parsetree
 &gt;&gt;&gt; from pattern.search import search
-&gt;&gt;&gt; from pattern.graph  import Graph, export
+&gt;&gt;&gt; from pattern.graph  import Graph
 &gt;&gt;&gt;  
 &gt;&gt;&gt; g = Graph()
 &gt;&gt;&gt; for i in range(10):
@@ -336,7 +336,7 @@ Chunk('mobile apps/NP') =&gt; Chunk('The mobile web/NP-SBJ-1')
 &gt;&gt;&gt; for n in g.sorted()[:40]: # Sort by Node.weight.
 &gt;&gt;&gt;     n.fill = (0, 0.5, 1, 0.75 * n.weight)
 &gt;&gt;&gt;  
-&gt;&gt;&gt; export(g, 'test', directed=True, weighted=0.6) </pre></div>
+&gt;&gt;&gt; g.export('test', directed=True, weighted=0.6) </pre></div>
 <p>Some relations (= edges) could use some extra post-processing, e.g., in <em>nothing is more important than life</em>, <em>nothing</em> is <span style="text-decoration: underline;">not</span> more important than <em>life</em>.</p>
 <p>&nbsp;</p>
 <hr />
@@ -353,28 +353,28 @@ Chunk('mobile apps/NP') =&gt; Chunk('The mobile web/NP-SBJ-1')
 </tr>
 <tr>
 <td>
-<p><a href="http://www.clips.ua.ac.be/pages/using-wiktionary-to-build-an-italian-part-of-speech-tagger"><img src="../g/pattern_example_italian.jpg" alt="" width="70" height="70" /><br /></a></p>
+<p><a class="noexternal" href="http://www.clips.ua.ac.be/pages/using-wiktionary-to-build-an-italian-part-of-speech-tagger"><img src="../g/pattern_example_italian.jpg" alt="" width="70" height="70" /><br /></a></p>
 </td>
 <td>&nbsp;</td>
 <td><span class="smallcaps">using wiktionary to build an italian part-of-speech tagger </span><span class="small">(2013)</span> <br />This case study demonstrates how a part-of-speech tagger for Italian (see <a class="link-maintenance" href="pattern-it.html">pattern.it</a>) can be built by mining Wiktionary and Wikipedia. &nbsp;<br /><a href="http://www.clips.ua.ac.be/pages/using-wiktionary-to-build-an-italian-part-of-speech-tagger">read more »</a></td>
 </tr>
 <tr>
 <td>
-<p><a href="http://www.clips.ua.ac.be/pages/using-wikicorpus-nltk-to-build-a-spanish-part-of-speech-tagger"><img src="../g/pattern_example_spanish.jpg" alt="" width="70" height="70" /><br /></a></p>
+<p><a class="noexternal" href="http://www.clips.ua.ac.be/pages/using-wikicorpus-nltk-to-build-a-spanish-part-of-speech-tagger"><img src="../g/pattern_example_spanish.jpg" alt="" width="70" height="70" /><br /></a></p>
 </td>
 <td>&nbsp;</td>
 <td><span class="smallcaps">using wikicorpus and nltk to build a spanish part-of-speech tagger </span><span class="small">(2012)</span><br />This case study demonstrates how a part-of-speech tagger for Spanish (see <a class="link-maintenance" href="pattern-es.html">pattern.es</a>) can be built by using NLTK and the freely available Wikicorpus. <br /><a href="http://www.clips.ua.ac.be/pages/using-wikicorpus-nltk-to-build-a-spanish-part-of-speech-tagger">read more »</a></td>
 </tr>
 <tr>
 <td>
-<p><a href="http://www.clips.ua.ac.be/pages/pattern-examples-elections"><img src="../g/pattern_example_elections.jpg" alt="" width="70" height="70" /><br /></a></p>
+<p><a class="noexternal" href="http://www.clips.ua.ac.be/pages/pattern-examples-elections"><img src="../g/pattern_example_elections.jpg" alt="" width="70" height="70" /><br /></a></p>
 </td>
 <td>&nbsp;</td>
 <td><span class="smallcaps">belgian elections</span><span class="smallcaps">, twitter sentiment analysis&nbsp;</span><span class="small">(2010)</span><br />This case study uses sentiment analysis (e.g., positive or negative tone) on 7,500 Dutch and French tweets (see <a class="link-maintenance" href="pattern-web.html">pattern.web</a> |&nbsp;<a class="link-maintenance" href="pattern-nl.html">nl</a>&nbsp;|&nbsp;<a class="link-maintenance" href="pattern-fr.html">fr</a>) in the weeks before the Belgian 2010 elections. <br /><a href="http://www.clips.ua.ac.be/pages/pattern-examples-elections">read more »</a></td>
 </tr>
 <tr>
 <td>
-<p><a href="http://www.clips.ua.ac.be/pages/pattern-examples-100days"><img src="../g/pattern_example_100days.jpg" alt="" width="70" height="70" /><br /></a></p>
+<p><a class="noexternal" href="http://www.clips.ua.ac.be/pages/pattern-examples-100days"><img src="../g/pattern_example_100days.jpg" alt="" width="70" height="70" /><br /></a></p>
 </td>
 <td>&nbsp;</td>
 <td><span class="smallcaps">web mining and visualization </span><span class="small">(2010)</span><br />This case study uses a number of different approaches to mine, correlate and visualize about 6,000 Google News items and 70,000 tweets.&nbsp;<br /><a href="http://www.clips.ua.ac.be/pages/pattern-examples-100days">read more »</a></td>
