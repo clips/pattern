@@ -991,6 +991,8 @@ CD = re.compile(r"^[0-9\-\,\.\:\/\%\$]+$")
 def _suffix_rules(token, tag="NN"):
     """ Default morphological tagging rules for English, based on word suffixes.
     """
+    if isinstance(token, (list, tuple)):
+        token, tag = token
     if token.endswith("ing"):
         tag = "VBG"
     if token.endswith("ly"):
@@ -1043,7 +1045,7 @@ def find_tags(tokens, lexicon={}, model=None, morphology=None, context=None, ent
                 tagged[i] = morphology.apply([token, default[0]], prev, next)
             # Use suffix rules (English default).
             elif language == "en":
-                tagged[i] = _suffix_rules(token, default[0])
+                tagged[i] = _suffix_rules([token, default[0]])
             # Use most frequent tag (NN).
             else:
                 tagged[i] = [token, default[0]]
