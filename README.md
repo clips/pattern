@@ -1,14 +1,14 @@
 Pattern
 =======
 
-Pattern is a web mining module for the Python programming language. It bundles tools for:
+Pattern is a web mining module for Python. It has tools for:
 
- * Data Mining: Google + Twitter + Wikipedia API, web crawler, HTML DOM parser
+ * Data Mining: web services (Google, Twitter, Wikipedia), web crawler, HTML DOM parser
  * Natural Language Processing: part-of-speech taggers, n-gram search, sentiment analysis, WordNet
- * Machine Learning: vector space model, *k*-means clustering, Naive Bayes + *k*-NN + SVM classiﬁers
+ * Machine Learning: vector space model, clustering, classification (KNN, SVM, Perceptron)
  * Network Analysis: graph centrality and visualization.
 
-It is well documented and bundled with 30+ examples and 350+ unit tests. The source code is licensed under BSD and available from <http://www.clips.ua.ac.be/pages/pattern>.
+It is well documented and bundled with 50+ examples and 350+ unit tests. The source code is licensed under BSD and available from <http://www.clips.ua.ac.be/pages/pattern>.
 
 ![Pattern example workflow](http://www.clips.ua.ac.be/media/pattern_schema.gif)
 
