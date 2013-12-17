@@ -542,23 +542,26 @@ class TestModel(unittest.TestCase):
     
     def test_feature_selection(self):
         # Assert information gain feature selection.
-        v = self.model.feature_selection(top=4, method=vector.IG)
-        self.assertEqual(sorted(v), ["bark", "howl", "meow", "purr"])
+        m = vector.Model((
+            vector.Document("the cat sat on the mat", type="cat", stopwords=True),
+            vector.Document("the dog howled at the moon", type="dog", stopwords=True)
+        ))
+        v = m.feature_selection(top=3, method=vector.IG, threshold=0.0)
+        self.assertEqual(v, ["at", "cat", "dog"])
         # Assert Model.filter().
-        v = self.model.filter(v)
-        self.assertTrue("purr" in v.terms)
-        self.assertTrue("meow" in v.terms)
-        self.assertTrue("howl" in v.terms)
-        self.assertTrue("bark" in v.terms)
-        self.assertTrue("cats" not in v.terms)
-        self.assertTrue("dogs" not in v.terms)
+        v = m.filter(v)
+        self.assertTrue("at"  in v.terms)
+        self.assertTrue("cat" in v.terms)
+        self.assertTrue("dog" in v.terms)
+        self.assertTrue("the" not in v.terms)
+        self.assertTrue("mat" not in v.terms)
         print "pattern.vector.Model.feature_selection()"
         print "pattern.vector.Model.filter()"
         
     def test_information_gain(self):
         # Assert information gain weights.
         # Example from http://www.comp.lancs.ac.uk/~kc/Lecturing/csc355/DecisionTrees_given.pdf
-        v = vector.Model([
+        m = vector.Model([
             vector.Document({"wind":1}, type=False),
             vector.Document({"wind":0}, type=True),
             vector.Document({"wind":0}, type=True),
@@ -567,8 +570,32 @@ class TestModel(unittest.TestCase):
             vector.Document({"wind":1}, type=False),
             vector.Document({"wind":1}, type=False)], weight=vector.TF
         )
-        self.assertAlmostEqual(v.information_gain("wind"), 0.52, places=2)
+        self.assertAlmostEqual(m.information_gain("wind"), 0.52, places=2)
+        # Example from http://rutcor.rutgers.edu/~amai/aimath02/PAPERS/14.pdf
+        m = vector.Model([
+            vector.Document({"3":1}, type=True),
+            vector.Document({"3":5}, type=True),
+            vector.Document({"3":1}, type=False),
+            vector.Document({"3":7}, type=True),
+            vector.Document({"3":2}, type=False),
+            vector.Document({"3":2}, type=True),
+            vector.Document({"3":6}, type=False),
+            vector.Document({"3":4}, type=True),
+            vector.Document({"3":0}, type=False),
+            vector.Document({"3":9}, type=True)], weight=vector.TF
+        )
+        self.assertAlmostEqual(m.ig("3"), 0.571, places=3)
+        self.assertAlmostEqual(m.gr("3"), 0.195, places=3)
         print "patten.vector.Model.information_gain()"
+        print "patten.vector.Model.gain_ratio()"
+        
+    def test_entropy(self):
+        # Assert Shannon entropy calculcation.
+        self.assertAlmostEqual(vector.entropy([1, 1]), 1.00, places=2)
+        self.assertAlmostEqual(vector.entropy([2, 1]), 0.92, places=2)
+        self.assertAlmostEqual(vector.entropy([0.5, 0.5]), 1.00, places=2)
+        self.assertAlmostEqual(vector.entropy([0.6]), 0.44, places=2)
+        print "pattern.vector.entropy()"
         
     def test_condensed_nearest_neighbor(self):
         # Assert CNN for data reduction.

@@ -814,12 +814,17 @@ def distance(v1, v2, method=COSINE):
 
 _distance  = distance
 
-def entropy(p=[]):
-    """ Returns the Shannon entropy for the given list of probabilities.
+def entropy(p=[], base=None):
+    """ Returns the Shannon entropy for the given list of probabilities
+        as a value between 0.0-1.0, where higher values indicate uncertainty.
     """
-    s = float(sum(p)) or 1
-    n = max(len(p), 2)
-    return -sum(x / s * log(x / s, n) for x in p if x != 0) or 0.0
+    # entropy([1.0]) => 0.0, one possible outcome with a 100% chance
+    # entropy([0.5, 0.5]) => 1.0, two outcomes with a 50% chance each (random.)
+    p = list(p)
+    s = float(sum(p)) or 1.0
+    s = s if len(p) > 1 else max(s, 1.0)
+    b = base or max(len(p), 2)
+    return -sum(x / s * log(x / s, b) for x in p if x != 0) or 0.0
 
 #### MODEL #########################################################################################
 
@@ -837,6 +842,8 @@ NORM, L1, L2, TOP300 = "norm", "L1", "L2", "top300"
 
 # Feature selection methods:
 IG = INFOGAIN = "infogain"
+GR = GAINRATIO = "gainratio"
+DF = "df"
 
 # Clustering methods:
 KMEANS, HIERARCHICAL = "k-means", "hierarchical"
@@ -856,6 +863,7 @@ class Model(object):
         self._df         = {}             # Cache of document frequency per word.
         self._cos        = {}             # Cache of ((d1.id, d2.id), relevance)-items (cosine similarity).
         self._ig         = {}             # Cache of (word, information gain)-items.
+        self._gr         = {}             # Cache of (word, information gain ratio)-items.
         self._inverted   = {}             # Cache of word => Document.
         self._vector     = None           # Cache of model vector with all the features in the model.
         self._classifier = None           # Classifier trained on the documents in the model (NB, KNN, SVM).
@@ -930,7 +938,7 @@ class Model(object):
                 for d2 in self.documents:
                     self.cosine_similarity(d1, d2)
             for w in self.vector:
-                self.information_gain(w) # set self._ig
+                self.information_gain(w) # set self._ig + self._gr
         # Serialize Model.classifier.
         if self._classifier:
             p = path + ".tmp"
@@ -979,6 +987,7 @@ class Model(object):
         self._df  = {}
         self._cos = {}
         self._ig  = {}
+        self._gr  = {}
         self._inverted = {}
         self._vector = None
         self._classifier = None
@@ -1279,60 +1288,87 @@ class Model(object):
     cnn = condensed_nearest_neighbor
 
     def information_gain(self, word):
-        """ Returns the information gain (IG) for the given feature, 
-            by examining how much it contributes to each document type (class).
-            High IG means low entropy (or predictability) = interesting for feature selection.
+        """ Returns the information gain (IG, 0.0-1.0) for the given feature,
+            by measuring how much the feature contributes to each document type (class).
+            High information gain means low entropy. Low entropy means predictability,
+            i.e., a feature that is biased towards some class(es),
+            i.e., a feature that occurs more in one document type and less in others.
         """
         if not self._ig:
             # Based on Vincent Van Asch, http://www.clips.ua.ac.be/~vincent/scripts/textgain.py
-            # For classes {xi...xn} and features {yi...yn}:
-            # IG(X,Y)  = H(X) - H(X|Y)
-            # H(X)     = -sum(p(x) * log2(x) for x in X)
-            # H(X|Y)   =  sum(p(y) * H(X|Y=y) for y in Y)
-            # H(X|Y=y) = -sum(p(x) * log2(x) for x in X if y in x)
+            # IG(f) = H(C) - sum(p(v) * H(C|v) for v in V)
+            # where C is the set of class labels,
+            # where V is the set of values for feature f,
+            # where p(v) is the probalitity that feature f has value v,
+            # where C|v is the distribution of value v for feature f per class.
             # H is the entropy for a list of probabilities.
             # Lower entropy indicates predictability, i.e., some values are more probable.
-            # H([0.50,0.50]) = 1.00
-            # H([0.75,0.25]) = 0.81
+            # H([0.50, 0.50]) = 1.00
+            # H([0.75, 0.25]) = 0.81
             H = entropy
-            # X = document type (class) distribution.
-            # "How many documents have class xi?"
-            X = dict.fromkeys(self.classes, 0)
+            # {class: count}
+            C = dict.fromkeys(self.classes, 0)
             for d in self.documents:
-                X[d.type] += 1
-            # Y = document feature distribution.
-            # "How many documents have feature yi?"
-            Y = dict.fromkeys(self.features, 0)
+                C[d.type] += 1
+            HC = H(C.values())
+            # {feature: {value: {class: count}}}
+            V = dict((f, {}) for f in self.features)
             for d in self.documents:
-                for y, v in d.terms.items():
-                    if v:
-                        Y[y] += 1 # Discrete: feature is present (1) or not (0).
-            Y = dict((y, Y[y] / float(len(self.documents))) for y in Y)
-            # XY = features by class distribution.
-            # "How many documents of class xi have feature yi?"
-            XY = dict.fromkeys(self.features, {})
-            for d in self.documents:
-                for y, v in d.terms.items():
-                    if v:
-                        XY[y][d.type] = XY[y].get(d.type, 0) + 1
-            # IG.
-            for y in self.features:
-                self._ig[y] = H(X.values()) - Y[y] * H(XY[y].values())
+                for f, v in d.terms.items():
+                    if isinstance(v, float):
+                        v = round(v, 1) # 10 discrete intervals for float values.
+                    if v not in V[f]:
+                        V[f][v] = {}
+                    if d.type not in V[f][v]:
+                        V[f][v][d.type] = 0
+                    V[f][v][d.type] += 1
+            # IG
+            for f in self.features:
+                n  = sum(sum(V[f][v].values()) for v in V[f]) # total value count
+                n  = float(n) or 1
+                ig = HC
+                si = 0
+                for Cv in V[f].values():
+                    Cv = Cv.values()
+                    pv = sum(Cv) / n
+                    ig = ig - pv * H(Cv)
+                    si = si + H([pv])
+                self._ig[f] = ig
+                self._gr[f] = ig / (si or 1)
         return self._ig[word]
             
     IG = ig = infogain = gain = information_gain
     
-    def feature_selection(self, top=100, method=INFOGAIN, verbose=False):
-        """ Returns the top unpredictable (or original) features (terms), using information gain.
+    def gain_ratio(self, word):
+        """ Returns the information gain ratio (GR, 0.0-1.0) for the given feature.
+        """
+        if not self._gr: self.ig(word)
+        return self._gr[word]
+        
+    GR = gr = gainratio = gain_ratio
+    
+    def feature_selection(self, top=100, method=INFOGAIN, threshold=0.0):
+        """ Returns the most informative features (terms), using information gain.
             This is a subset of Model.features that can be used to build a Classifier
             that is faster (less features = less matrix columns) but still efficient.
+            The given document frequency threshold excludes features that occur in 
+            less than the given percentage of documents (i.e., outliers).
         """
         if method == IG:
-            subset = ((self.information_gain(w), w) for w in self.terms)
-            subset = sorted(subset, key=itemgetter(1))
-            subset = sorted(subset, key=itemgetter(0), reverse=True)
-            subset = [w for ig, w in subset[:top]]
-            return subset
+            f = self.ig
+        if method == GR:
+            f = self.gr
+        if method == DF:
+            f = self.df
+        if method is None:
+            f = lambda w: 1.0
+        if hasattr(method, "__call__"):
+            f = method
+        subset = ((f(w), w) for w in self.terms if self.df(w) >= threshold)
+        subset = sorted(subset, key=itemgetter(1))
+        subset = sorted(subset, key=itemgetter(0), reverse=True)
+        subset = [w for x, w in subset[:top]]
+        return subset
         
     def filter(self, features=[], documents=[]):
         """ Returns a new Model with documents only containing the given list of features,

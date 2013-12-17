@@ -138,3 +138,4 @@ Contributors (chronological):
 - Maurizio Sambati
 - Dan Fu
 - Salvatore Di Dio
+- Vincent Van Asch
