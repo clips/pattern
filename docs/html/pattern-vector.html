@@ -244,8 +244,9 @@ model.search(words=[], **kwargs)                     # (similarity, document) li
 model.distance(document1, document2, method=COSINE)  # COSINE | EUCLIDEAN | MANHATTAN
 model.cluster(documents=ALL, method=KMEANS)          # KMEANS | HIERARCHICAL
 model.reduce(dimensions=L2)                          # L1 | L2 | TOP300 | int</pre><pre class="brush:python; gutter:false; light:true;">model.infogain(word)                                 # Entropy (≈predictability).
-model.feature_selection(top=100, method=IG)          # Top original features (terms).
-model.filter(features=[])                            # Model with selected features.</pre><pre class="brush:python; gutter:false; light:true;">model.sets(threshold=0.5)                            # Frequent word sets.</pre><pre class="brush:python; gutter:false; light:true;">model.save(path, update=False)
+model.filter(features=[], documents=[])              # Model with selected features. 
+model.feature_selection(top=100, method=IG, threshold=0.0)   # Informative features.
+</pre><pre class="brush:python; gutter:false; light:true;">model.sets(threshold=0.5)                            # Frequent word sets.</pre><pre class="brush:python; gutter:false; light:true;">model.save(path, update=False)
 model.export(path, format=ORANGE)                    # ORANGE | WEKA </pre><ul>
 <li><span class="inline_code">Model.df()</span> returns document frequency of a feature, as a value between <span class="inline_code">0.0-1.0</span>.</li>
 <li><span class="inline_code">Model.idf()</span> returns the inverse document frequency (or <span class="inline_code">None</span> if a feature is not in the model).</li>
@@ -706,9 +707,9 @@ confusion.table           # Pretty string output.</pre><div class="example">
 &gt;&gt;&gt; print kfoldcv(NB, data)
 
 (0.631, 0.588, 0.626, 0.606)  </pre></div>
-<p>Features can be selected automatically using <span class="inline_code">Model.infogain(feature)</span> (was <span class="inline_code">Corpus.information_gain()</span> in previous versions). Information gain is a measure of a feature's predictability for a class label. The value is used in <span class="inline_code">Model.feature_selection()</span> to compute a sorted list of the most unpredictable (original) features.</p>
+<p>Features can be selected automatically using <span class="inline_code">Model.infogain(feature)</span>. Information gain is a measure of a feature's predictability for a class label (<span class="inline_code">0.0</span>-<span class="inline_code">1.0</span>). Some features will occur more frequently in documents with a certain class label (e.g., <em>awesome</em>&nbsp;→ positive reviews, <em>awful</em>&nbsp;→ negative reviews), hence they are more "informative" than features that occur in all documents, such as <em>the</em> and <em>you</em>.</p>
+<p>This value is used in <span class="inline_code">Model.feature_selection()</span> to compute a sorted list of the most informative features. An optional document frequency <span class="inline_code">threshold</span> parameter (<span class="inline_code">0.0</span>-<span class="inline_code">1.0</span>) excludes features that only occur in a few documents (i.e., outliers).</p>
 <p>Automatic feature selection is useful for documents with many features (e.g., 10,000). More features require more computation and can lead to <em>overfitting</em>. Overfitting means that the classifier is making assumptions based on irrelevant features (noise). It memorizes the training data instead of generalizing from trends.</p>
-<p>Automatic feature selection is not so useful for our movie review classifier, since each document has few features. By cutting out the predictable features (e.g., <em>good movie</em>, <em>bad movie</em>) performance drops:</p>
 <div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.vector import Model, TF, NB, kfoldcv
 &gt;&gt;&gt; from pattern.db import csv
@@ -718,11 +719,11 @@ confusion.table           # Pretty string output.</pre><div class="example">
 &gt;&gt;&gt; data = [Document(review, type=rating, stopwords=True) for review, rating in data]
 &gt;&gt;&gt; 
 &gt;&gt;&gt; model = Model(documents=data, weight=TF)
-&gt;&gt;&gt; model = model.filter(features=model.feature_selection(top=1000))
+&gt;&gt;&gt; model = model.filter(features=model.feature_selection(top=1250))
 &gt;&gt;&gt; 
 &gt;&gt;&gt; print kfoldcv(NB, model)
 
-(0.607, 0.500, 0.504, 0.502) # random  </pre></div>
+(0.716, 0.664, 0.704, 0.683)</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h3><a name="nb"></a>Naive bayes</h3>
