@@ -423,13 +423,13 @@ class WordNetClassifier(Classifier):
     def _children(self, word, pos="NN"):
         try: 
             return [w.synonyms[0] for w in self.wordnet.synsets(word, pos[:2])[0].hyponyms()]
-        except KeyError:
+        except:
             pass
         
     def _parents(self, word, pos="NN"):
         try: 
             return [w.synonyms[0] for w in self.wordnet.synsets(word, pos[:2])[0].hypernyms()]
-        except KeyError:
+        except:
             pass
 
 #from en import wordnet
