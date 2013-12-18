@@ -560,12 +560,6 @@
 99-101 CARDNUM 
 : Co 
 ; Se 
-;;; 
-;;;   
-;;;   Adding Manual Constraints and Lexical Look-up to a Brill-Tagger for German.
-;;;   Proceedings of the ESSLLI workshop on recent advances in corpus annotation. 
-;;;   Saarbrucken, Germany. http://www.zora.uzh.ch/28579/
-;;;   Schneider, G., Volk, M. (1998). 
 </H1> SGML 
 </H2> SGML 
 </H3> SGML 

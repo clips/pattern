@@ -395,6 +395,40 @@ class TestParser(unittest.TestCase):
             ["", "RB", "B-ADJP", "O"], ["", "JJ", "I-ADJP", "O"],
             ["", "IN", "B-PP", "B-PNP"],
             ["", "CD", "B-NP", "I-PNP"], ["", "NNS", "I-NP", "I-PNP"]])
+        # Assert commas inside chunks.
+        # - "the big, black cat"
+        v = en.parser.find_chunks([
+            ["", "DT"], ["", "JJ"], ["", ","], ["", "JJ"], ["", "NN"]
+        ])
+        self.assertEqual(v, [
+            ["", "DT", "B-NP", "O"], 
+            ["", "JJ", "I-NP", "O"], 
+            ["",  ",", "I-NP", "O"], 
+            ["", "JJ", "I-NP", "O"], 
+            ["", "NN", "I-NP", "O"]
+        ])
+        # - "big, black and furry"
+        v = en.parser.find_chunks([
+            ["", "JJ"], ["", ","], ["", "JJ"], ["", "CC"], ["", "JJ"]
+        ])
+        self.assertEqual(v, [
+            ["", "JJ", "B-ADJP", "O"], 
+            ["",  ",", "I-ADJP", "O"], 
+            ["", "JJ", "I-ADJP", "O"],
+            ["", "CC", "I-ADJP", "O"], 
+            ["", "JJ", "I-ADJP", "O"]
+        ])
+        # - big, and very black (= two chunks "big" and "very black")
+        v = en.parser.find_chunks([
+            ["", "JJ"], ["", ","], ["", "CC"], ["", "RB"], ["", "JJ"]
+        ])
+        self.assertEqual(v, [
+            ["", "JJ", "B-ADJP", "O"], 
+            ["",  ",", "O", "O"], 
+            ["", "CC", "O", "O"], 
+            ["", "RB", "B-ADJP", "O"], 
+            ["", "JJ", "I-ADJP", "O"]
+        ])
         # Assert cases for which we have written special rules.
         # - "perhaps you" (ADVP + NP)
         v = en.parser.find_chunks([["","RB"], ["","PRP"]])

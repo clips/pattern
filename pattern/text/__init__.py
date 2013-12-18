@@ -1068,30 +1068,41 @@ NN = r"NN|NNS|NNP|NNPS|NNPS?\-[A-Z]{3,4}|PR|PRP|PRP\$"
 VB = r"VB|VBD|VBG|VBN|VBP|VBZ"
 JJ = r"JJ|JJR|JJS"
 RB = r"(?<!W)RB|RBR|RBS"
+CC = r"CC|CJ"
 
 # Chunking rules.
 # CHUNKS[0] = Germanic: RB + JJ precedes NN ("the round table").
 # CHUNKS[1] = Romance: RB + JJ precedes or follows NN ("la table ronde", "une jolie fille").
 CHUNKS = [[
     # Germanic languages: en, de, nl, ...
-    (  "NP", re.compile(r"(("+NN+")/)*((DT|CD|CC|CJ)/)*(("+RB+"|"+JJ+")/)*(("+NN+")/)+")),
-    (  "VP", re.compile(r"(((MD|TO|"+RB+")/)*(("+VB+")/)+((RP)/)*)+")),
-    (  "VP", re.compile(r"((MD)/)")),
-    (  "PP", re.compile(r"((IN|PP)/)+")),
-    ("ADJP", re.compile(r"((CC|CJ|"+RB+"|"+JJ+")/)*(("+JJ+")/)+")),
-    ("ADVP", re.compile(r"(("+RB+"|WRB)/)+")),
+    (  "NP", r"((NN)/)* ((DT|CD|CC)/)* ((RB|JJ)/)* (((JJ)/(CC|,)/)*(JJ)/)* ((NN)/)+"),
+    (  "VP", r"(((MD|TO|RB)/)* ((VB)/)+ ((RP)/)*)+"),
+    (  "VP", r"((MD)/)"),
+    (  "PP", r"((IN|PP)/)+"),
+    ("ADJP", r"((RB|JJ)/)* ((JJ)/,/)* ((JJ)/(CC)/)* ((JJ)/)+"),
+    ("ADVP", r"((RB)/)+"),
 ], [
     # Romance languages: es, fr, it, ...
-    (  "NP", re.compile(r"(("+NN+")/)*((DT|CD|CC|CJ)/)*(("+RB+"|"+JJ+")/)*(("+NN+")/)+(("+RB+"|"+JJ+")/)*")),
-    (  "VP", re.compile(r"(((MD|TO|"+RB+")/)*(("+VB+")/)+((RP)/)*(("+RB+")/)*)+")),
-    (  "VP", re.compile(r"((MD)/)")),
-    (  "PP", re.compile(r"((IN|PP)/)+")),
-    ("ADJP", re.compile(r"((CC|CJ|"+RB+"|"+JJ+")/)*(("+JJ+")/)+")),
-    ("ADVP", re.compile(r"(("+RB+"|WRB)/)+")),
+    (  "NP", r"((NN)/)* ((DT|CD|CC)/)* ((RB|JJ|,)/)* (((JJ)/(CC|,)/)*(JJ)/)* ((NN)/)+ ((RB|JJ)/)*"),
+    (  "VP", r"(((MD|TO|RB)/)* ((VB)/)+ ((RP)/)* ((RB)/)*)+"),
+    (  "VP", r"((MD)/)"),
+    (  "PP", r"((IN|PP)/)+"),
+    ("ADJP", r"((RB|JJ)/)* ((JJ)/,/)* ((JJ)/(CC)/)* ((JJ)/)+"),
+    ("ADVP", r"((RB)/)+"),
 ]]
 
-# Handle ADJP before VP, so that
-# RB prefers next ADJP over previous VP.
+for i in (0, 1):
+    for j, (tag, s) in enumerate(CHUNKS[i]):
+        s = s.replace("NN", NN)
+        s = s.replace("VB", VB)
+        s = s.replace("JJ", JJ)
+        s = s.replace("RB", RB)
+        s = s.replace(" ", "")
+        s = re.compile(s)
+        CHUNKS[i][j] = (tag, s)
+
+# Handle ADJP before VP, 
+# so that RB prefers next ADJP over previous VP.
 CHUNKS[0].insert(1, CHUNKS[0].pop(3))
 CHUNKS[1].insert(1, CHUNKS[1].pop(3))
 
@@ -1115,25 +1126,31 @@ def find_chunks(tagged, language="en"):
                 if len(chunked[k]) == 3:
                     continue
                 if len(chunked[k]) < 3:
-                    # A conjunction can not be start of a chunk.
-                    if k == j and chunked[k][1] in ("CC", "CJ", "KON", "Conj(neven)"):
+                    # A conjunction or comma cannot be start of a chunk.
+                    if k == j and chunked[k][1] in ("CC", "CJ", ","):
                         j += 1
                     # Mark first token in chunk with B-.
                     elif k == j:
-                        chunked[k].append("B-"+tag)
+                        chunked[k].append("B-" + tag)
                     # Mark other tokens in chunk with I-.
                     else:
-                        chunked[k].append("I-"+tag)
+                        chunked[k].append("I-" + tag)
     # Mark chinks (tokens outside of a chunk) with O-.
     for chink in filter(lambda x: len(x) < 3, chunked):
         chink.append("O")
     # Post-processing corrections.
     for i, (word, tag, chunk) in enumerate(chunked):
         if tag.startswith("RB") and chunk == "B-NP":
-            # "Very nice work" (NP) <=> "Perhaps" (ADVP) + "you" (NP).
+            # "Perhaps you" => ADVP + NP
+            # "Really nice work" => NP
+            # "Really, nice work" => ADVP + O + NP
             if i < len(chunked)-1 and not chunked[i+1][1].startswith("JJ"):
                 chunked[i+0][2] = "B-ADVP"
                 chunked[i+1][2] = "B-NP"
+            if i < len(chunked)-1 and chunked[i+1][1] in ("CC", "CJ", ","):
+                chunked[i+1][2] = "O"
+            if i < len(chunked)-2 and chunked[i+1][2] == "O":
+                chunked[i+2][2] = "B-NP"
     return chunked
 
 def find_prepositions(chunked):
