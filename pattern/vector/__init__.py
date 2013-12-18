@@ -585,7 +585,7 @@ class Document(object):
             # See the Vector class below = a dict with extra functionality (copy, norm).
             # When a document is added/deleted from a model, the cached vector is deleted.
             w = getattr(self.model, "weight", TF)
-            if w not in (TF, TFIDF, IG, BINARY):
+            if w not in (TF, TFIDF, IG, INFOGAIN, BINARY):
                 f = lambda w: float(self._terms[w]); w=None
             if w == BINARY:
                 f = lambda w: int(self._terms[w] > 0)
@@ -593,7 +593,7 @@ class Document(object):
                 f = self.tf
             if w == TFIDF:
                 f = self.tf_idf
-            if w == IG:
+            if w in (IG, INFOGAIN):
                 f = self.model.ig
             self._vector = Vector(((w, f(w)) for w in self.terms), weight=w)
         return self._vector
@@ -819,7 +819,7 @@ def entropy(p=[], base=None):
         as a value between 0.0-1.0, where higher values indicate uncertainty.
     """
     # entropy([1.0]) => 0.0, one possible outcome with a 100% chance
-    # entropy([0.5, 0.5]) => 1.0, two outcomes with a 50% chance each (random.)
+    # entropy([0.5, 0.5]) => 1.0, two outcomes with a 50% chance each (random).
     p = list(p)
     s = float(sum(p)) or 1.0
     s = s if len(p) > 1 else max(s, 1.0)
@@ -841,9 +841,8 @@ ORANGE, WEKA = "orange", "weka"
 NORM, L1, L2, TOP300 = "norm", "L1", "L2", "top300"
 
 # Feature selection methods:
-IG = INFOGAIN = "infogain"
-GR = GAINRATIO = "gainratio"
-DF = "df"
+INFOGAIN, GAINRATIO = "infogain", "gainratio"
+IG, GR, DF = "ig", "gr", "df"
 
 # Clustering methods:
 KMEANS, HIERARCHICAL = "k-means", "hierarchical"
@@ -1299,19 +1298,19 @@ class Model(object):
             # IG(f) = H(C) - sum(p(v) * H(C|v) for v in V)
             # where C is the set of class labels,
             # where V is the set of values for feature f,
-            # where p(v) is the probalitity that feature f has value v,
+            # where p(v) is the probability that feature f has value v,
             # where C|v is the distribution of value v for feature f per class.
             # H is the entropy for a list of probabilities.
             # Lower entropy indicates predictability, i.e., some values are more probable.
             # H([0.50, 0.50]) = 1.00
             # H([0.75, 0.25]) = 0.81
             H = entropy
-            # {class: count}
+            # C => {class: count}
             C = dict.fromkeys(self.classes, 0)
             for d in self.documents:
                 C[d.type] += 1
             HC = H(C.values())
-            # {feature: {value: {class: count}}}
+            # V => {feature: {value: {class: count}}}
             V = dict((f, {}) for f in self.features)
             for d in self.documents:
                 for f, v in d.terms.items():
@@ -1327,7 +1326,7 @@ class Model(object):
                 n  = sum(sum(V[f][v].values()) for v in V[f]) # total value count
                 n  = float(n) or 1
                 ig = HC
-                si = 0
+                si = 0 # split info
                 for Cv in V[f].values():
                     Cv = Cv.values()
                     pv = sum(Cv) / n
@@ -1348,15 +1347,15 @@ class Model(object):
     GR = gr = gainratio = gain_ratio
     
     def feature_selection(self, top=100, method=INFOGAIN, threshold=0.0):
-        """ Returns the most informative features (terms), using information gain.
+        """ Returns a list with the most informative features (terms), using information gain.
             This is a subset of Model.features that can be used to build a Classifier
             that is faster (less features = less matrix columns) but still efficient.
             The given document frequency threshold excludes features that occur in 
             less than the given percentage of documents (i.e., outliers).
         """
-        if method == IG:
+        if method in (IG, INFOGAIN):
             f = self.ig
-        if method == GR:
+        if method in (GR, GAINRATIO):
             f = self.gr
         if method == DF:
             f = self.df
@@ -2715,7 +2714,7 @@ class SVM(Classifier):
         # 2) Extract the model string and save it as a temporary file.
         # 3) Use pattern.vector.svm's LIBSVM or LIBLINEAR to load the file.
         # 4) Delete the temporary file.
-        import svm                                         # 1
+        import svm                                        # 1
         self._svm = svm
         if self._model is not None:
             p = path + ".tmp"
