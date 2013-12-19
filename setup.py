@@ -14,18 +14,29 @@ from pattern import __version__
 if sys.argv[-1] == "zip":
     import zipfile
     import hashlib
+    import codecs
     import re
     n = "pattern-%s.zip" % __version__
     p = os.path.join(os.path.dirname(os.path.abspath(__file__)))
     z = zipfile.ZipFile(os.path.join(p, "..", n), "w", zipfile.ZIP_DEFLATED)
     for root, folders, files in os.walk(p):
         for f in files:
+            f = os.path.join(root, f)
+            # Exclude private settings.
+            if f.endswith(os.path.join("web", "api.py")):
+                d = "#--- PRIVATE"
+                s = codecs.open(f, "r", encoding="utf-8").read().split(d)
+                x = codecs.open(f, "w", encoding="utf-8")
+                x.write(s[0])
+                x.close()
             # Exclude revision history (.git).
             # Exclude development files (.dev).
-            if not re.search(r"\.DS|\.git[^i]|\.pyc|\.dev|tmp", os.path.join(root, f)):
-                f1 = os.path.join(root, f)
-                f2 = os.path.join("pattern-" + __version__, os.path.relpath(f1, p))
-                z.write(f1, f2)
+            if not re.search(r"\.DS|\.git[^i]|\.pyc|\.dev|tmp", f):
+                z.write(f, os.path.join("pattern-" + __version__, os.path.relpath(f, p)))
+            if f.endswith(os.path.join("web", "api.py")):
+                x = codecs.open(f, "w", encoding="utf-8")
+                x.write(d.join(s))
+                x.close()
     z.close()
     print n
     print hashlib.sha256(open(z.filename).read()).hexdigest()
