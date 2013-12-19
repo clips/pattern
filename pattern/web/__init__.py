@@ -1733,6 +1733,7 @@ class MediaWiki(SearchEngine):
              categories = [x["*"] for x in data.get("categories", [])],
                external = [x for x in data.get("externallinks", [])],
                   media = [x for x in data.get("images", [])],
+              redirects = [x for x in data.get("redirects", [])],
               languages = dict([(x["lang"], x["*"]) for x in data.get("langlinks", [])]),
               language  = self.language,
                  parser = self, **kwargs)
@@ -1870,6 +1871,7 @@ class MediaWikiSection(object):
         self._stop    = stop    # Section stop index in MediaWikiArticle.string.
         self._level   = level   # Section depth (main title + intro = level 0).
         self._tables  = None
+        self._links   = None
 
     def plaintext(self, **kwargs):
         return self.article._plaintext(self.source, **kwargs)
@@ -1923,6 +1925,19 @@ class MediaWikiSection(object):
                             t.rows.append(r2)
                     self._tables.append(t)
         return self._tables
+
+    @property
+    def links(self):
+        """ Returns list of Wikipedia links from the section. Similar
+        in functionality to MediaWikiArticle.links.
+        """
+        if self._links is None:
+            s = "/wiki/"
+            ll = HTMLLinkParser().parse(self.source)
+            ll = [urllib.unquote_plus(l.url[len(s):]) for l in ll if l.url.startswith(s)]
+            ll = [l.replace("_", " ") for l in ll]
+            self._links = list(set(ll))
+        return self._links
 
     @property
     def level(self):
