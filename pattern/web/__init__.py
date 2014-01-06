@@ -818,7 +818,7 @@ def encode_entities(string):
         For example, to display "<em>hello</em>" in a browser,
         we need to pass "&lt;em&gt;hello&lt;/em&gt;" (otherwise "hello" in italic is displayed).
     """
-    if isinstance(string, (str, unicode)):
+    if isinstance(string, basestring):
         string = RE_AMPERSAND.sub("&amp;", string)
         string = string.replace("<", "&lt;")
         string = string.replace(">", "&gt;")
@@ -840,7 +840,7 @@ def decode_entities(string):
         else:
             cp = htmlentitydefs.name2codepoint.get(name) # "&amp;" => "&"
             return cp and unichr(cp) or match.group()    # "&foo;" => "&foo;"
-    if isinstance(string, (str, unicode)):
+    if isinstance(string, basestring):
         return RE_UNICODE.subn(replace_entity, string)[0]
     return string
 
@@ -1790,6 +1790,7 @@ class MediaWikiArticle(object):
         self.disambiguation = disambiguation # True when the article is a disambiguation page.
         self.languages      = languages      # Dictionary of (language, article)-items, e.g. Cat => ("nl", "Kat")
         self.language       = kwargs.get("language", "en")
+        self.redirects      = kwargs.get("redirects", [])
         self.parser         = kwargs.get("parser", MediaWiki())
         for k, v in kwargs.items():
             setattr(self, k, v)
@@ -1870,8 +1871,8 @@ class MediaWikiSection(object):
         self._start   = start   # Section start index in MediaWikiArticle.string.
         self._stop    = stop    # Section stop index in MediaWikiArticle.string.
         self._level   = level   # Section depth (main title + intro = level 0).
-        self._tables  = None
         self._links   = None
+        self._tables  = None
 
     def plaintext(self, **kwargs):
         return self.article._plaintext(self.source, **kwargs)
@@ -1896,6 +1897,19 @@ class MediaWikiSection(object):
         if s == t or (len(s) > len(t)) and s.startswith(t) and s[len(t)] not in (",", " "):
             return s[len(t):].lstrip()
         return s
+
+    @property
+    def links(self, path="/wiki/"):
+        """ Yields a list of Wikipedia links in this section. Similar
+            in functionality to MediaWikiArticle.links.
+        """
+        if self._links is None:
+            a = HTMLLinkParser().parse(self.source)
+            a = (decode_url(a.url) for a in a)
+            a = (a[len(path):].replace("_", " ") for a in a if a.startswith(path))
+            a = (a for a in a if not _mediawiki_namespace.match(a))
+            self._links = sorted(set(a))
+        return self._links
 
     @property
     def tables(self):
@@ -1925,19 +1939,6 @@ class MediaWikiSection(object):
                             t.rows.append(r2)
                     self._tables.append(t)
         return self._tables
-
-    @property
-    def links(self):
-        """ Returns list of Wikipedia links from the section. Similar
-        in functionality to MediaWikiArticle.links.
-        """
-        if self._links is None:
-            s = "/wiki/"
-            ll = HTMLLinkParser().parse(self.source)
-            ll = [urllib.unquote_plus(l.url[len(s):]) for l in ll if l.url.startswith(s)]
-            ll = [l.replace("_", " ") for l in ll]
-            self._links = list(set(ll))
-        return self._links
 
     @property
     def level(self):
