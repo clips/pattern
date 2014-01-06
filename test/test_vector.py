@@ -568,7 +568,7 @@ class TestModel(unittest.TestCase):
             vector.Document({"wind":0}, type=True),
             vector.Document({"wind":1}, type=True),
             vector.Document({"wind":1}, type=False),
-            vector.Document({"wind":1}, type=False)], weight=vector.TF
+            vector.Document({"wind":1}, type=False)], weight=None
         )
         self.assertAlmostEqual(m.information_gain("wind"), 0.52, places=2)
         # Example from http://rutcor.rutgers.edu/~amai/aimath02/PAPERS/14.pdf
@@ -582,7 +582,7 @@ class TestModel(unittest.TestCase):
             vector.Document({"3":6}, type=False),
             vector.Document({"3":4}, type=True),
             vector.Document({"3":0}, type=False),
-            vector.Document({"3":9}, type=True)], weight=vector.TF
+            vector.Document({"3":9}, type=True)], weight=None
         )
         self.assertAlmostEqual(m.ig("3"), 0.571, places=3)
         self.assertAlmostEqual(m.gr("3"), 0.195, places=3)
