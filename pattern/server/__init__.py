@@ -1,0 +1,705 @@
+#### PATTERN | SERVER ##############################################################################
+# -*- coding: utf-8 -*-
+# Copyright (c) 2014 University of Antwerp, Belgium
+# Copyright (c) 2014 St. Lucas University College of Art & Design, Antwerp.
+# Author: Tom De Smedt <tom@organisms.be>
+# License: BSD (see LICENSE.txt for details).
+
+####################################################################################################
+
+import __main__
+import os
+import re
+import time; _time=time
+import random
+import hashlib
+import base64
+import types
+import inspect
+import threading
+import sqlite3 as sqlite
+import cherrypy as cp
+
+try: import json # Python 2.6+
+except:
+    try: from pattern.web import json # simplejson
+    except:
+        json = None
+
+# Folder that contains the script that imports pattern.server.
+SCRIPT = os.path.dirname(os.path.abspath(__main__.__file__))
+
+#### STRING FUNCTIONS ##############################################################################
+
+RE_AMPERSAND = re.compile("\&(?!\#)")           # & not followed by #
+RE_UNICODE   = re.compile(r'&(#?)(x|X?)(\w+);') # &#201;
+
+def encode_entities(string):
+    """ Encodes HTML entities in the given string ("<" => "&lt;").
+        For example, to display "<em>hello</em>" in a browser,
+        we need to pass "&lt;em&gt;hello&lt;/em&gt;" (otherwise "hello" in italic is displayed).
+    """
+    if isinstance(string, basestring):
+        string = RE_AMPERSAND.sub("&amp;", string)
+        string = string.replace("<", "&lt;")
+        string = string.replace(">", "&gt;")
+        string = string.replace('"', "&quot;")
+        string = string.replace("'", "&#39;")
+    return string
+
+#### INTROSPECTION #################################################################################
+# URL paths are routed to handler functions, whose arguments represent URL path & query parameters.
+# So we need to know what the arguments and keywords arguments are at runtime.
+
+def define(f):
+    """ Returns (name, type, tuple, dict) for the given function,
+        with a tuple of argument names and a dict of keyword arguments.
+        If the given function has *args, returns True instead of tuple.
+        If the given function has **kwargs, returns True instead of dict.
+    """
+    def undecorate(f): # "__closure__" in Py3.
+        while getattr(f, "func_closure", None):
+            f = getattr(f, "func_closure")[0].cell_contents
+        return f
+    f = undecorate(f)
+    a = inspect.getargspec(f) # (names, *args, **kwargs, values)
+    i = len(a[0]) - len(a[3] or [])
+    x = tuple(a[0][:i])
+    y = dict(zip(a[0][i:], a[3] or []))
+    x = x if not a[1] else True
+    y = y if not a[2] else True
+    return (f.__name__, type(f), x, y)
+
+#### DATABASE ######################################################################################
+# A simple wrapper for SQLite databases.
+
+class Row(dict):
+    
+    def __init__(self, cursor, row):
+        """ Row as dictionary.
+        """
+        d = cursor.description
+        dict.__init__(self, ((d[i][0], v) for i, v in enumerate(row)))
+
+class Database(object):
+    
+    def __init__(self, name, schema="", factory=Row): # or sqlite.Row
+        """ Creates and opens the SQLite database with the given name.
+            Optionally, the given SQL schema string is executed (once).
+        """
+        if isinstance(name, Database):
+            name, factory = name.name, name.factory if factory == Row else factory
+        if os.path.exists(name):
+            schema = ""
+        self._name = name
+        self._factory = factory
+        self._connection = sqlite.connect(name)
+        self._connection.row_factory = factory
+        self._connection.executescript(schema)
+        self._connection.commit()
+    
+    @property
+    def name(self):
+        """ Yields the path to the database file.
+        """
+        return self._name
+    
+    @property
+    def connection(self):
+        """ Yields the sqlite3.Connection object.
+        """
+        return self._connection
+    
+    def execute(self, sql, values=(), first=False, commit=True):
+        """ Executes the given SQL query string and returns an iterator of rows.
+            With first=True, returns the first row.
+        """
+        r = self._connection.execute(sql, values)
+        if commit:
+            self._connection.commit()
+        return r.fetchone() if first else r
+        
+    def commit(self):
+        """ Commits pending insert/update/delete queries.
+        """
+        self._connection.commit()
+        
+    def __call__(self, *args, **kwargs):
+        return self.execute(*args, **kwargs)
+
+    def __repr__(self):
+        return "Database(name=%s)" % repr(self._name)
+
+    def __del__(self):
+        try:
+            self._connection.commit()
+            self._connection.close()
+            self._connection = None
+        except:
+            pass
+
+#### RATE LIMITING #################################################################################
+# With @app.route(path, throttle=True), the decorated URL path handler function calls Throttle().
+
+MINUTE, HOUR, DAY = 60., 60*60., 60*60*24.
+
+class ThrottleError(Exception):
+    pass
+
+class ThrottleLimitExceeded(ThrottleError):
+    pass
+
+class ThrottleForbidden(ThrottleError):
+    pass
+
+class Throttle(Database):
+
+    def __init__(self, name="throttle.db", **kwargs):
+        """ A database for rate limiting API requests.
+            It manages a table with (id, key, path, count, limit, time, delta)-items.
+            It grants each key a rate (max number of requests / time) for a URL path.
+            If Throttle() is called with the optional limit and time arguments,
+            unknown keys are automatically added and granted this rate.
+        """
+        Database.__init__(self, name, schema=(
+            "create table if not exists `throttle` ("
+                   "`id` integer primary key autoincrement,"
+                  "`key` text,"    # API key (e.g., App.request.ip).
+                 "`path` text,"    # API URL path (e.g., "/api/1/").
+                "`count` integer," # Current number of requests.
+                "`limit` integer," # Maximum number of requests.
+                 "`time` float,"   # Time frame for maximum.
+                "`delta` float"    # Time last accessed.
+            ");"
+            "create index if not exists `throttle1` on throttle(key);"
+            "create index if not exists `throttle2` on throttle(path);"
+        ), **kwargs)
+    
+    @property
+    def key(self, pairs=("rA","aZ","gQ","hH","hG","aR","DD")):
+        """ Yields a new random key.
+        """
+        k = str(random.getrandbits(256))
+        k = hashlib.sha256(k).hexdigest()
+        k = base64.b64encode(k, random.choice(pairs)).rstrip('==')
+        return k
+
+    def set(self, key, path="/", count=0, limit=100, time=HOUR, delta=None):
+        """ Sets the rate for the given key and path,
+            where limit is the maximum number of request allowed in the given time
+            (by default, 100 requests per hour).
+        """
+        q1 = "delete from `throttle` where key=? and path=?"
+        q2 = "insert into `throttle` values (null, ?, ?, ?, ?, ?, ?)"
+        dt = delta if delta is not None else _time.time()
+        self.execute(q1, (key, path))
+        self.execute(q2, (key, path, count, limit, time, dt))
+        return {"key": key, "path": path, "count": count, "limit": limit, "time": time, "delta": dt}
+
+    def get(self, key, path="/"):
+        """ Returns the rate for the given key and path (or None).
+        """
+        q = "select * from `throttle` where key=? and path=?"
+        return self.execute(q, (key, path), first=True, commit=False)
+
+    def __contains__(self, key, path="%"):
+        """ Returns True if the given key exists (for the given path).
+        """
+        q = "select * from `throttle` where key=? and path like ?"
+        return self.execute(q, (key, path), first=True, commit=False) is not None
+        
+    def __call__(self, key, path="/", limit=None, time=None):
+        """ Increases the request count by 1 for the given key and path.
+            If the request count exceeds its limit, raises ThrottleLimitExceeded.
+            If the optional limit and time arguments are given,
+            unknown keys are automatically added and granted this rate (except for key=None).
+            Otherwise a ThrottleForbidden is raised.
+        """
+        r = self.get(key, path)
+        t = _time.time()
+        # Unknown key (set default limit / time rate).
+        if r is None and key is not None and limit is not None and time is not None:
+            r = self.set(key, path, count=0, limit=limit, time=time, delta=t)
+        if r is None:
+            raise ThrottleForbidden
+        # Limit reached within time frame (raise error).
+        elif r["count"] >= r["limit"] and r["time"] > t - r["delta"]:
+            raise ThrottleLimitExceeded
+        # Limit reached out of time frame (reset count).
+        elif r["count"] >= r["limit"]:
+            q = "update `throttle` set count=1, delta=? where key=? and path=?"
+            self.execute(q, (t, key, path))
+        # Limit not reached (count +1).
+        elif r["count"] <  r["limit"]:
+            q = "update `throttle` set count = count + 1 where key=? and path=?"
+            self.execute(q, (key, path))
+        #print self.get(key, path)
+
+#### ROUTER ########################################################################################
+# The @app.route(path) decorator registers each URL path handler in Application.router.
+
+class RouteError(Exception):
+    pass
+
+class Router(dict):
+    
+    def __init__(self):
+        """ A router resolves URL paths to handler functions.
+        """
+        pass
+    
+    def __setitem__(self, path, handler):
+        """ Defines the handler function for the given URL path.
+            The path is a slash-formatted string (e.g., "/api/1/en/parser").
+            The handler is a function that takes 
+            arguments (path) and keyword arguments (query data).
+        """
+        p = "/" + path.strip("/")
+        p = p.lower()
+        p = p.encode("utf8") if isinstance(p, unicode) else p
+        # Store the handler + its argument names (tuple(args), dict(kwargs)),
+        # so that we can call this function without (all) keyword arguments,
+        # if it does not take (all) query data.
+        dict.__setitem__(self, p, (handler, define(handler)[2:]))
+        
+    def __call__(self, path, **data):
+        """ Calls the handler function for the given URL path.
+            If no handler is found, raises a RouteError.
+            If a base handler is found (e.g., "/api" for "/api/1/en"),
+            calls the handler with arguments (e.g., handler("1", "en")).
+        """
+        if not isinstance(path, tuple):
+            path = path.strip("/").split("/") # ("api", "1", "en")
+        n = len(path)
+        for i in xrange(n + 1):
+            p = "/" + "/".join(path[:n-i])    # "/api/1/en", "/api/1", "/api", ...
+            p = p.lower()
+            if p in self:
+                # Call the handler function and return its response.
+                (handler, (args, kwargs)), path = self[p], path[n-i:]
+                i = len(path)
+                j = len(args) if args is not True else i
+                if i != j:
+                    continue
+                # Handler takes path, but no query data.
+                if not kwargs:
+                    return handler(*path)
+                # Handler takes path and all query data.
+                if kwargs is True:
+                    return handler(*path, **data)
+                # Handler takes path and some query data.
+                return handler(*path, **dict((k, v) for k, v in data.items() if k in kwargs))
+        # No handler.
+        raise RouteError
+
+#### APPLICATION ###################################################################################
+
+#--- APPLICATION ERRORS & REQUESTS -----------------------------------------------------------------
+
+class HTTPError(Exception):
+    
+    def __init__(self, code, status="", message="", traceback=None):
+        """ A HTTP error object passed to an @app.error handler (or raised in a route handler).
+        """
+        self.code      = code
+        self.status    = status
+        self.message   = message
+        self.traceback = traceback or None
+        
+    def __repr__(self):
+        return "HTTPError(code=%s)" % repr(self.code)
+
+class HTTPRequest(object):
+    
+    def __init__(self, app, ip, path="/", method="get", data={}, headers={}):
+        """ A Request object with metadata returned from app.request.
+        """
+        self.app     = app
+        self.ip      = ip
+        self.path    = "/" + path.strip("/")
+        self.method  = method.lower()
+        self.data    = dict(data)
+        self.headers = dict(headers)
+        
+    def __repr__(self):
+        return "HTTPRequest(ip=%s, path=%s)" % repr(self.ip, self.path)
+
+#--- APPLICATION THREAD-SAFE DATA ------------------------------------------------------------------
+# With a multi-threaded server, each thread requires its own local data (i.e., database connection).
+# Local data can be initialized with @app.thread("start"):
+#
+# >>> @app.thread("start")
+# >>> def db():
+# >>>    g.db = Database()
+# >>>
+# >>> @app.route("/")
+# >>> def index(*path, db=None):
+# >>>    print db # = Database object.
+#
+# The thread-safe database connection can then be retrieved from 
+# app.thread.db, g.db, or as a keyword argument of a URL handler.
+
+class localdict(dict):
+    
+    def __init__(self, data=None, **kwargs):
+        """ Thread-safe dictionary.
+        """
+        self.__dict__["_data"] = data or threading.local()
+        self.__dict__.update(kwargs) # Global in every thread.
+        
+    def items(self):
+        return self._data.__dict__.items()
+    def keys(self):
+        return self._data.__dict__.keys()
+    def values(self):
+        return self._data.__dict__.values()
+    def update(self, d):
+        return self._data.__dict__.update(d)
+    def clear(self):
+        return self._data.__dict__.clear()
+    def pop(self, *kv):
+        return self._data.__dict__.pop(*kv)
+    def setdefault(self, k, v=None):
+        return self._data.__dict__.setdefault(k, v)
+    def set(self, k, v):
+        return setattr(self._data, k, v)
+    def get(self, k, default=None):
+        return getattr(self._data, k, default)
+    def __delitem__(self, k):
+        return delattr(self._data, k)
+    def __getitem__(self, k):
+        return getattr(self._data, k)
+    def __setitem__(self, k, v):
+        return setattr(self._data, k, v)
+    def __delattr__(self, k):
+        return delattr(self._data, k)
+    def __getattr__(self, k):
+        return getattr(self._data, k)
+    def __setattr__(self, k, v):
+        return setattr(self._data, k, v)
+    def __len__(self):
+        return  len(self._data.__dict__)
+    def __iter__(self):
+        return iter(self._data.__dict__)
+    def __contains__(self, k):
+        return k in self._data.__dict__
+    def __str__(self):
+        return repr(self)
+    def __repr__(self):
+        return "localdict({%s})" % ", ".join(
+            ("%s: %s" % (repr(k), repr(v)) for k, v in self.items()))
+
+# Alias for app.thread (Flask-style):
+g = localdict(data=cp.thread_data)
+
+#--- APPLICATION -----------------------------------------------------------------------------------
+
+class Application(object):
+    
+    def __init__(self, name=None, throttle="throttle.db"):
+        """ A web app served by a WSGI-server that starts with App.run().
+            @App.route(path) defines a URL path handler.
+            @App.error(code) defines a HTTP error handler.
+        """
+        self._name     = name         # App name.
+        self._host     = None         # Server host, see App.run().
+        self._port     = None         # Server port, see App.run().
+        self._static   = None         # Static content folder.
+        self._throttle = throttle     # Throttle db name, see also App.route(throttle=True).
+        self.router    = Router()     # Router object, maps URL paths to handlers.
+        self.thread    = App.Thread() # Thread-safe dictionary.
+        
+    @property
+    def name(self):
+        return self._name
+        
+    @property
+    def host(self):
+        return self._host
+    
+    @property
+    def port(self):
+        return self._port
+    
+    @property
+    def path(self):
+        """ Yields the absolute path to the folder containing the app.
+        """
+        return SCRIPT
+        
+    @property
+    def static(self):
+        """ Yields the absolute path to the folder with static content.
+        """
+        return os.path.join(self.path, self._static)
+
+    @property
+    def session(self):
+        """ Yields the dictionary of session data.
+        """
+        return cp.session
+        
+    @property
+    def request(self):
+        """ Yields a Request object with metadata
+            (IP address, request path, query data and headers).
+        """
+        r = cp.request
+        return HTTPRequest(
+                app = self, 
+                 ip = r.remote.ip, 
+               path = r.path_info, 
+             method = r.method, 
+               data = r.params, 
+            headers = r.headers)
+        
+    @property
+    def response(self):
+        """ Yields a Response object with metadata
+            (status, headers).
+        """
+        return cp.response
+        
+    @property
+    def elapsed(self):
+        """ Yields the elapsed time since the start of the request.
+        """
+        return time.time() - cp.request.time # See also _request_time().
+
+    def _cast(self, v):
+        """ Returns the given value as a string (used to cast handler functions).
+            If the value is a dictionary, returns a JSON-string.
+            If the value is a generator, starts a stream.
+            If the value is an iterable, joins the values with a space.
+        """
+        if isinstance(v, basestring):
+            return v
+        if isinstance(v, cp.lib.file_generator): # serve_file()
+            return v
+        if isinstance(v, dict):
+            cp.response.headers['Content-Type'] = "application/json"
+            return json.dumps(v)
+        if isinstance(v, types.GeneratorType):
+            cp.response.stream = True
+            return iter(self._cast(v) for v in v)
+        if isinstance(v, (list, tuple, set)):
+            return " ".join(self._cast(v) for v in v)
+        if isinstance(v, HTTPError):
+            raise cp.HTTPError(v.code)
+        if v is None:
+            return ""
+        try: # (bool, int, float, object.__unicode__)
+            return unicode(v)
+        except:
+            return encode_entities(repr(v))
+
+    @cp.expose
+    def default(self, *path, **data):
+        """ Resolves URL paths to handler functions and casts the return value.
+        """
+        # If there is an app.thread.db connection,
+        # pass it as a keyword argument named "db".
+        # If there is a query parameter named "db",
+        # it is overwritten (the reverse is not safe).
+        for k, v in g.items():
+            data[k] = v
+        # Call the handler function for the given path.
+        # Call @app.error(404) if no handler is found.
+        # Call @app.error(403) if rate limit forbidden (= no API key).
+        # Call @app.error(429) if rate limit exceeded.
+        try:
+            v = self.router(path, **data)
+        except RouteError:
+            raise cp.HTTPError(404) # 404 Not Found
+        except ThrottleForbidden:
+            raise cp.HTTPError(403) # 403 Forbidden
+        except ThrottleLimitExceeded:
+            raise cp.HTTPError(429) # 429 Too May Requests
+        except HTTPError, e:
+            raise cp.HTTPError(e.code)
+        v = self._cast(v)
+        #print self.elapsed
+        return v
+        
+    def route(self, path, throttle=False, limit=None, time=None, key=lambda data: data.get("key")):
+        """ The @app.route(path) decorator defines the handler function for the given path.
+            The function can take arguments (path) and keyword arguments (query data), e.g.,
+            if no handler exists for URL "/api/1/en", but a handler exists for URL "/api/1",
+            this handler will be called with 1 argument: "en".
+            It returns a string, a generator or a dictionary (which is parsed to a JSON-string).
+        """
+        def decorator(handler):
+            def throttled(handler):
+                # With @app.route(path, throttle=True), rate limiting is applied.
+                # The handler function is wrapped in a function that first calls
+                # Throttle(key, path, limit, time) before calling the handler.
+                # By default, a query parameter "key" is expected.
+                # If the key is known, apply rate limiting (429 Too Many Requests).
+                # If the key is unknown or None, deny access (403 Forbidden).
+                # If the key is unknown and a default limit and time are given,
+                # add the key and grant the given credentials, e.g.:
+                # @app.route(path, limit=100, time=HOUR, key=lambda data: app.request.ip).
+                @self.thread("start")
+                def connect():
+                    g.throttle = Throttle(name=self._throttle)
+                def wrapper(*args, **kwargs):
+                    self = cp.request.app.root
+                    self.throttle(
+                          key = key(self.request.data), # API key (e.g., App.request.ip).
+                         path = "/" + "/".join(args),   # API URL path (e.g., "/api/1/").
+                        limit = limit,                  # Default limit for unknown keys.
+                         time = time                    # Default time for unknown keys.
+                    )
+                    return handler(*args, **kwargs)
+                return wrapper
+            if throttle is True or (limit is not None and time is not None):
+                handler = throttled(handler)
+            self.router[path] = handler                 # Register the handler.
+            return handler
+        return decorator
+        
+    def error(self, code):
+        """ The @app.error(code) decorator defines the handler function for the given HTTP error.
+            The function takes a HTTPError object and returns a string.
+        """
+        def decorator(handler):
+            # CherryPy error handlers take keyword arguments.
+            # Wrap as a HTTPError and pass it to the handler.
+            def wrapper(status="", message="", traceback="", version=""):
+                return handler(HTTPError(int(status.split(" ")[0]), status, message, traceback))
+            cp.config.update({"error_page.%s" % code: wrapper})
+            return handler
+        return decorator
+
+    class Thread(localdict):
+        """ The @app.thread(event) decorator can be used to initialize thread-safe data.
+            Get data (e.g., a database connection) with app.thread.[name] or g.[name].
+        """
+        def __init__(self):
+            localdict.__init__(self, data=cp.thread_data, handlers=set())
+        def __call__(self, event="start"): # "stop"
+            def decorator(handler):
+                def wrapper(id):
+                    return handler()
+                # If @app.thread() is called twice for 
+                # the same handler, register it only once.
+                if not (event, handler) in self.handlers:
+                    self.handlers.add((event, handler))
+                    cp.engine.subscribe(event + "_thread", wrapper)
+                return handler
+            return decorator
+
+    @property
+    def throttle(self, name="throttle"):
+        """ Yields a thread-safe connection to the app's Throttle (used for rate limiting).
+        """
+        if not hasattr(g, name): setattr(g, name, Throttle(name=self._throttle))
+        return getattr(g, name)
+
+    def set(self, name="db"):
+        """ The @app.set(name) decorator defines the function that spawns a database connection.
+            The database connection is stored thread-safe in app.thread.[name] & g.[name].
+            The database connection is available in handlers as a keyword argument [name].
+        """
+        def decorator(handler):
+            return self.thread("start")(lambda: setattr(g, name, handler()))
+        return decorator
+
+    def run(self, host="127.0.0.1", port=8080, static="/static", threads=10, debug=True):
+        """ Starts the server and blocks until the server stops.
+        """
+        self._host = host
+        self._port = port
+        self._static = static        
+        if not debug: cp.config.update({
+            # Production environment disables errors.
+            "environment": "production"
+        })
+        cp.config.update({
+            # Global configuration.
+            "server.socket_host"  : host,
+            "server.socket_port"  : port,
+            "server.thread_pool"  : threads,
+        })
+        cp.tree.mount(self, "/", config={"/": {
+            # Static content is served from the /static subfolder, 
+            # e.g., <img src="g/cat.jpg" /> refers to "/static/g/cat.jpg".
+            "tools.staticdir.dir" : os.path.join(self.path, static.strip("/")),
+            "tools.staticdir.on"  : True,
+            "tools.sessions.on"   : True
+        }})
+        # TODO: robots.txt, favicon.ico
+        cp.engine.start()
+        cp.engine.block()
+
+App = Application
+
+#---------------------------------------------------------------------------------------------------
+
+def static(path, root=None, mimetype=None):
+    """ Returns the file at the given absolute path.
+        To serve relative paths from the app folder, use root=app.path.
+    """
+    p = os.path.join(root or "", path)
+    p = os.path.abspath(p)
+    return cp.lib.static.serve_file(p, content_type=mimetype)
+
+#---------------------------------------------------------------------------------------------------
+
+def _register(event, handler):
+    """ Registers the given event handler.
+        See: http://cherrypy.readthedocs.org/en/latest/progguide/extending/customtools.html
+    """
+    k = handler.__name__
+    setattr(cp.tools, k, cp.Tool(event, handler))
+    cp.config.update({"tools.%s.on" % k: True})
+
+def _request_start(): 
+    # Register request start time.
+    cp.request.time = time.time()
+    
+def _request_end():
+    #print time.time() - cp.request.time
+    pass
+    
+_register("on_start_resource", _request_start)
+_register("on_end_request", _request_end)
+
+####################################################################################################
+
+#app = App()
+#
+#@app.set("db")
+#def db():
+#    return Database(":memory:")
+#
+## http://localhost:8080/whatever
+#@app.route("/")
+#def index(*path, **data):
+#    return "%s<br>%s" % (path, data.get("db"))
+#
+#from pattern.en import sentiment
+#
+## http://localhost:8080/api/en/sentiment?q=awesome
+#@app.route("api/en/sentiment", throttle=True, limit=10, time=MINUTE, key=lambda data: app.request.ip)
+#def nl_sentiment(q=""):
+#    polarity, subjectivity = sentiment(q)
+#    return {"polarity": polarity}
+#
+#@app.error("403")
+#def error_403(error):
+#    return "%s<pre>%s</pre>" % (error.status, error.traceback)
+#
+#@app.error("404")
+#def error_404(error):
+#    return "%s<pre>%s</pre>" % (error.status, error.traceback)
+#
+#@app.error("429")
+#def error_429(error):
+#    return "%s<pre>%s</pre>" % (error.status, error.traceback)
+#
+#@app.error("500")
+#def error_500(error):
+#    return "%s<pre>%s</pre>" % (error.status, error.traceback)
+#
+#app.run()
