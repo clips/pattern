@@ -565,13 +565,22 @@ class Document(object):
     tf_idf = tfidf = term_frequency_inverse_document_frequency
     
     def information_gain(self, word):
-        """ Returns the information gain for the given word.
+        """ Returns the information gain for the given word (0.0-1.0).
         """
         if self.model is not None:
             return self.model.ig(word)
         return 0.0
         
     ig = infogain = information_gain
+    
+    def gain_ratio(self, word):
+        """ Returns the information gain ratio for the given word (0.0-1.0).
+        """
+        if self.model is not None:
+            return self.model.gr(word)
+        return 0.0
+        
+    gr = gainratio = gain_ratio
     
     @property
     def vector(self):
@@ -1311,23 +1320,26 @@ class Model(object):
                 C[d.type] += 1
             HC = H(C.values())
             # V => {feature: {value: {class: count}}}
-            V = dict((f, {}) for f in self.features)
+            F = set(self.features)
+            V = dict((f, defaultdict(lambda: defaultdict(lambda: 0))) for f in F)
             for d in self.documents:
-                for f, v in d.terms.items():
+                type = d.type
+                seen = set()
+                for f, v in d.vector.items():
+                    seen.add(f)
                     if isinstance(v, float):
                         v = round(v, 1) # 10 discrete intervals for float values.
-                    if v not in V[f]:
-                        V[f][v] = {}
-                    if d.type not in V[f][v]:
-                        V[f][v][d.type] = 0
-                    V[f][v][d.type] += 1
+                    V[f][v][type] += 1
+                for f in F - seen:
+                    V[f][0][type] += 1
             # IG
-            for f in self.features:
-                n  = sum(sum(V[f][v].values()) for v in V[f]) # total value count
+            for f in F:
+                Vf = V[f]
+                n  = sum(sum(Vf[v].values()) for v in Vf) # total value count
                 n  = float(n) or 1
                 ig = HC
                 si = 0 # split info
-                for Cv in V[f].values():
+                for Cv in Vf.values():
                     Cv = Cv.values()
                     pv = sum(Cv) / n
                     ig = ig - pv * H(Cv)
@@ -1366,7 +1378,7 @@ class Model(object):
         subset = ((f(w), w) for w in self.terms if self.df(w) >= threshold)
         subset = sorted(subset, key=itemgetter(1))
         subset = sorted(subset, key=itemgetter(0), reverse=True)
-        subset = [w for x, w in subset[:top]]
+        subset = [w for x, w in subset[:top if top is not None else len(subset)]]
         return subset
         
     def filter(self, features=[], documents=[]):
