@@ -7,6 +7,8 @@
 
 ####################################################################################################
 
+from __future__ import with_statement
+
 import __main__
 import os
 import re
@@ -73,6 +75,8 @@ def define(f):
 #### DATABASE ######################################################################################
 # A simple wrapper for SQLite databases.
 
+DatabaseError = sqlite.DatabaseError
+
 class Row(dict):
     
     def __init__(self, cursor, row):
@@ -83,17 +87,17 @@ class Row(dict):
 
 class Database(object):
     
-    def __init__(self, name, schema="", factory=Row): # or sqlite.Row
+    def __init__(self, name, schema="", factory=Row, timeout=10.0): # or sqlite.Row
         """ Creates and opens the SQLite database with the given name.
             Optionally, the given SQL schema string is executed (once).
         """
         if isinstance(name, Database):
             name, factory = name.name, name.factory if factory == Row else factory
         if os.path.exists(name):
-            schema = ""
+            schema = ";"
         self._name = name
         self._factory = factory
-        self._connection = sqlite.connect(name)
+        self._connection = sqlite.connect(name, timeout=timeout)
         self._connection.row_factory = factory
         self._connection.executescript(schema)
         self._connection.commit()
@@ -114,9 +118,19 @@ class Database(object):
         """ Executes the given SQL query string and returns an iterator of rows.
             With first=True, returns the first row.
         """
-        r = self._connection.execute(sql, values)
-        if commit:
-            self._connection.commit()
+        try:
+            r = self._connection.execute(sql, values)
+            if commit: 
+                self._connection.commit()
+        except DatabaseError, e:
+            # "OperationalError: database is locked" means that 
+            # SQLite is receiving too many concurrent write ops.
+            # A write operation locks the entire database;
+            # other threaded connections may time out waiting.
+            # In this case you can raise Database(timeout=10),
+            # lower Application.run(threads=10) or switch to MySQL or Redis.
+            self._connection.rollback()
+            raise e
         return r.fetchone() if first else r
         
     def commit(self):
@@ -141,6 +155,10 @@ class Database(object):
 #### RATE LIMITING #################################################################################
 # With @app.route(path, throttle=True), the decorated URL path handler function calls Throttle().
 
+_THROTTLE_CACHE = {}  # Cache of request counts.
+_THROTTLE_RESET = 1e6 # Cach size.
+_THROTTLE_LOCK  = threading.RLock()
+
 MINUTE, HOUR, DAY = 60., 60*60., 60*60*24.
 
 class ThrottleError(Exception):
@@ -153,28 +171,34 @@ class ThrottleForbidden(ThrottleError):
     pass
 
 class Throttle(Database):
-
+    
     def __init__(self, name="throttle.db", **kwargs):
         """ A database for rate limiting API requests.
-            It manages a table with (id, key, path, count, limit, time, delta)-items.
-            It grants each key a rate (max number of requests / time) for a URL path.
+            It manages a table with (key, path, limit, time) entries.
+            It grants each key a rate (number of requests / time) for a URL path.
+            It keeps track of the number of requests in local memory (i.e., RAM).
             If Throttle() is called with the optional limit and time arguments,
-            unknown keys are automatically added and granted this rate.
+            unknown keys are temporarily granted this rate.
         """
         Database.__init__(self, name, schema=(
             "create table if not exists `throttle` ("
-                   "`id` integer primary key autoincrement,"
                   "`key` text,"    # API key (e.g., App.request.ip).
                  "`path` text,"    # API URL path (e.g., "/api/1/").
-                "`count` integer," # Current number of requests.
                 "`limit` integer," # Maximum number of requests.
-                 "`time` float,"   # Time frame for maximum.
-                "`delta` float"    # Time last accessed.
+                 "`time` float,"   # Time frame.
             ");"
             "create index if not exists `throttle1` on throttle(key);"
-            "create index if not exists `throttle2` on throttle(path);"
-        ), **kwargs)
-    
+            "create index if not exists `throttle2` on throttle(path);"), **kwargs)
+        self.load()
+
+    @property
+    def cache(self):
+        return _THROTTLE_CACHE
+        
+    @property
+    def lock(self):
+        return _THROTTLE_LOCK
+
     @property
     def key(self, pairs=("rA","aZ","gQ","hH","hG","aR","DD")):
         """ Yields a new random key.
@@ -183,19 +207,36 @@ class Throttle(Database):
         k = hashlib.sha256(k).hexdigest()
         k = base64.b64encode(k, random.choice(pairs)).rstrip('==')
         return k
-
-    def set(self, key, path="/", count=0, limit=100, time=HOUR, delta=None):
-        """ Sets the rate for the given key and path,
-            where limit is the maximum number of request allowed in the given time
-            (by default, 100 requests per hour).
+        
+    def reset(self):
+        self.cache.clear()
+        self.load()
+            
+    def load(self):
+        """ For performance, rate limiting is handled in memory (i.e., RAM).
+            Loads the stored rate limits in memory (100,000 records ~= 5MB RAM).
         """
+        if not self.cache:
+            with self.lock: 
+                # Lock concurrent threads when modifying cache.
+                for r in self.execute("select * from `throttle`"):
+                    self.cache[(r["key"], r["path"])] = \
+                        (0, r["limit"], r["time"], _time.time())
+    
+    def set(self, key, path="/", limit=100, time=HOUR):
+        """ Sets the rate for the given key and path,
+            where limit is the maximum number of requests in the given time (e.g., 100/hour).
+        """
+        # Update database.
         q1 = "delete from `throttle` where key=? and path=?"
-        q2 = "insert into `throttle` values (null, ?, ?, ?, ?, ?, ?)"
-        dt = delta if delta is not None else _time.time()
-        self.execute(q1, (key, path))
-        self.execute(q2, (key, path, count, limit, time, dt))
-        return {"key": key, "path": path, "count": count, "limit": limit, "time": time, "delta": dt}
-
+        q2 = "insert into `throttle` values (null, ?, ?, ?, ?)"
+        self.execute(q1, (key, path), commit=False)
+        self.execute(q2, (key, path, limit, time))
+        # Update cache.
+        with self.lock: 
+            self.cache[(key, path)] = (0, limit, time, _time.time())
+        return {"key": key, "path": path, "limit": limit, "time": time}
+        
     def get(self, key, path="/"):
         """ Returns the rate for the given key and path (or None).
         """
@@ -207,33 +248,36 @@ class Throttle(Database):
         """
         q = "select * from `throttle` where key=? and path like ?"
         return self.execute(q, (key, path), first=True, commit=False) is not None
-        
-    def __call__(self, key, path="/", limit=None, time=None):
-        """ Increases the request count by 1 for the given key and path.
+
+    def __call__(self, key, path="/", limit=None, time=None, reset=_THROTTLE_RESET):
+        """ Increases the (cached) request count by 1 for the given key and path.
             If the request count exceeds its limit, raises ThrottleLimitExceeded.
-            If the optional limit and time arguments are given,
-            unknown keys are automatically added and granted this rate (except for key=None).
+            If the optional limit and time are given, unknown keys (!= None) 
+            are given this rate limit - as long as the cache exists in memory.
             Otherwise a ThrottleForbidden is raised.
         """
-        r = self.get(key, path)
-        t = _time.time()
-        # Unknown key (set default limit / time rate).
-        if r is None and key is not None and limit is not None and time is not None:
-            r = self.set(key, path, count=0, limit=limit, time=time, delta=t)
-        if r is None:
-            raise ThrottleForbidden
-        # Limit reached within time frame (raise error).
-        elif r["count"] >= r["limit"] and r["time"] > t - r["delta"]:
-            raise ThrottleLimitExceeded
-        # Limit reached out of time frame (reset count).
-        elif r["count"] >= r["limit"]:
-            q = "update `throttle` set count=1, delta=? where key=? and path=?"
-            self.execute(q, (t, key, path))
-        # Limit not reached (count +1).
-        elif r["count"] <  r["limit"]:
-            q = "update `throttle` set count = count + 1 where key=? and path=?"
-            self.execute(q, (key, path))
-        #print self.get(key, path)
+        _time.sleep(0.01)
+        with self.lock:
+            t = _time.time()
+            r = self.cache.get((key, path))
+            # Reset the cache if too large (e.g., 1M+ IP addresses).
+            if reset and reset < len(self.cache):
+                self.reset()
+            # Unknown key (apply default limit / time rate).
+            if r is None and key is not None and limit is not None and time is not None:
+                self.cache[(key, path)] = r = (0, limit, time, t)
+            if r is None:
+                raise ThrottleForbidden
+            # Limit reached within time frame (raise error).
+            elif r[0] >= r[1] and r[2] > t - r[3]:
+                raise ThrottleLimitExceeded
+            # Limit reached out of time frame (reset count).
+            elif r[0] >= r[1]:
+                self.cache[(key, path)] = (1, r[1], r[2], t)
+            # Limit not reached (increment count).
+            elif r[0] <  r[1]:
+                self.cache[(key, path)] = (r[0] + 1, r[1], r[2], r[3])
+        #print self.cache.get((key, path))
 
 #### ROUTER ########################################################################################
 # The @app.route(path) decorator registers each URL path handler in Application.router.
@@ -515,6 +559,8 @@ class Application(object):
             raise cp.HTTPError(403) # 403 Forbidden
         except ThrottleLimitExceeded:
             raise cp.HTTPError(429) # 429 Too May Requests
+        except DatabaseError:
+            raise cp.HTTPError(503) # 503 Service Unavailable
         except HTTPError, e:
             raise cp.HTTPError(e.code)
         v = self._cast(v)
@@ -558,7 +604,7 @@ class Application(object):
             return handler
         return decorator
         
-    def error(self, code):
+    def error(self, code="*"):
         """ The @app.error(code) decorator defines the handler function for the given HTTP error.
             The function takes a HTTPError object and returns a string.
         """
@@ -567,7 +613,13 @@ class Application(object):
             # Wrap as a HTTPError and pass it to the handler.
             def wrapper(status="", message="", traceback="", version=""):
                 return handler(HTTPError(int(status.split(" ")[0]), status, message, traceback))
-            cp.config.update({"error_page.%s" % code: wrapper})
+            if code in ("*", None):
+                cp.config.update({"error_page.default": wrapper})
+            elif isinstance(code, (int, basestring)):
+                cp.config.update({"error_page.%s" % code: wrapper})
+            elif isinstance(code, (tuple, list)):
+                for x in code:
+                    cp.config.update({"error_page.%s" % x: wrapper})
             return handler
         return decorator
 
@@ -605,7 +657,7 @@ class Application(object):
             return self.thread("start")(lambda: setattr(g, name, handler()))
         return decorator
 
-    def run(self, host="127.0.0.1", port=8080, static="/static", threads=10, debug=True):
+    def run(self, host="127.0.0.1", port=8080, static="/static", threads=20, debug=True):
         """ Starts the server and blocks until the server stops.
         """
         self._host = host
@@ -667,6 +719,8 @@ _register("on_end_request", _request_end)
 
 ####################################################################################################
 
+#from pattern.en import sentiment
+#
 #app = App()
 #
 #@app.set("db")
@@ -678,28 +732,14 @@ _register("on_end_request", _request_end)
 #def index(*path, **data):
 #    return "%s<br>%s" % (path, data.get("db"))
 #
-#from pattern.en import sentiment
-#
 ## http://localhost:8080/api/en/sentiment?q=awesome
-#@app.route("api/en/sentiment", throttle=True, limit=10, time=MINUTE, key=lambda data: app.request.ip)
+#@app.route("api/en/sentiment", throttle=True, limit=5, time=MINUTE, key=lambda data: data.get("key"))
 #def nl_sentiment(q=""):
 #    polarity, subjectivity = sentiment(q)
 #    return {"polarity": polarity}
 #
-#@app.error("403")
-#def error_403(error):
-#    return "%s<pre>%s</pre>" % (error.status, error.traceback)
+#@app.error((403, 404, 429, 500, 503))
+#def error(e):
+#    return "<h2>%s</h2><pre>%s</pre>" % (e.status, e.traceback)
 #
-#@app.error("404")
-#def error_404(error):
-#    return "%s<pre>%s</pre>" % (error.status, error.traceback)
-#
-#@app.error("429")
-#def error_429(error):
-#    return "%s<pre>%s</pre>" % (error.status, error.traceback)
-#
-#@app.error("500")
-#def error_500(error):
-#    return "%s<pre>%s</pre>" % (error.status, error.traceback)
-#
-#app.run()
+#app.run(debug=True)
