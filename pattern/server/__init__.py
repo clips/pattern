@@ -157,7 +157,7 @@ class Database(object):
 #### RATE LIMITING #################################################################################
 # With @app.route(path, throttle=True), the decorated URL path handler function calls Throttle().
 
-_THROTTLE_CACHE = {} # Cache of request counts.
+_THROTTLE_CACHE = {} # RAM cache of request counts.
 _THROTTLE_LOCK  = threading.RLock()
 
 MINUTE, HOUR, DAY = 60., 60*60., 60*60*24.
@@ -173,23 +173,27 @@ class ThrottleForbidden(ThrottleError):
 
 class Throttle(Database):
     
-    def __init__(self, name="throttle.db", **kwargs):
+    def __init__(self, name="throttle.db", timeout=10.0):
         """ A database for rate limiting API requests.
             It manages a table with (key, path, limit, time) entries.
             It grants each key a rate (number of requests / time) for a URL path.
             It keeps track of the number of requests in local memory (i.e., RAM).
-            If Throttle() is called with the optional limit and time arguments,
+            If Throttle()() is called with the optional limit and time arguments,
             unknown keys are temporarily granted this rate.
         """
-        Database.__init__(self, name, schema=(
-            "create table if not exists `throttle` ("
-                  "`key` text,"    # API key (e.g., App.request.ip).
-                 "`path` text,"    # API URL path (e.g., "/api/1/").
-                "`limit` integer," # Maximum number of requests.
-                 "`time` float,"   # Time frame.
-            ");"
-            "create index if not exists `throttle1` on throttle(key);"
-            "create index if not exists `throttle2` on throttle(path);"), **kwargs)
+        Database.__init__(self, name, 
+            schema = (
+                "create table if not exists `throttle` ("
+                      "`key` text,"    # API key (e.g., ?key="1234").
+                     "`path` text,"    # API URL path (e.g., "/api/1/").
+                    "`limit` integer," # Maximum number of requests.
+                     "`time` float,"   # Time frame.
+                ");"
+                "create index if not exists `throttle1` on throttle(key);"
+                "create index if not exists `throttle2` on throttle(path);"
+            ), 
+            factory = None, 
+            timeout = timeout)
         self.load()
 
     @property
@@ -221,8 +225,8 @@ class Throttle(Database):
             with self.lock: 
                 # Lock concurrent threads when modifying cache.
                 for r in self.execute("select * from `throttle`"):
-                    self.cache[(r["key"], r["path"])] = \
-                        (0, r["limit"], r["time"], _time.time())
+                    self.cache[(r[0], r[1])] = (0, r[2], r[3], _time.time())
+                self._rowcount = len(self.cache)
     
     def set(self, key, path="/", limit=100, time=HOUR):
         """ Sets the rate for the given key and path,
@@ -236,7 +240,8 @@ class Throttle(Database):
         # Update cache.
         with self.lock: 
             self.cache[(key, path)] = (0, limit, time, _time.time())
-        return {"key": key, "path": path, "limit": limit, "time": time}
+            self._rowcount += 1
+        return (key, path, limit, time)
         
     def get(self, key, path="/"):
         """ Returns the rate for the given key and path (or None).
@@ -262,7 +267,7 @@ class Throttle(Database):
             t = _time.time()
             r = self.cache.get((key, path))
             # Reset the cache if too large (e.g., 1M+ IP addresses).
-            if reset and reset < len(self.cache):
+            if reset and reset < len(self.cache) and reset > self._rowcount:
                 self.reset()
             # Unknown key (apply default limit / time rate).
             if r is None and key is not None and limit is not None and time is not None:
@@ -489,7 +494,7 @@ class Application(object):
         """ Yields a Request object with metadata
             (IP address, request path, query data and headers).
         """
-        r = cp.request
+        r = cp.request # Deep copy (ensure garbage colletion).
         return HTTPRequest(
                 app = self, 
                  ip = r.remote.ip, 
@@ -660,8 +665,12 @@ class Application(object):
             return self.thread("start")(lambda: setattr(g, name, handler()))
         return decorator
 
-    def run(self, host="127.0.0.1", port=8080, static="/static", threads=20, debug=True):
+    def run(self, host="127.0.0.1", port=8080, static="/static", threads=30, queue=20, timeout=10, debug=True):
         """ Starts the server and blocks until the server stops.
+            Static content (e.g., "g/img.jpg") is served from the given subfolder (e.g., "static/g").
+            With threads=10, the server can handle up to 10 concurrent requests.
+            With queue=10, the server will queue up to 10 waiting requests.
+            With debug=False, starts a production server.
         """
         self._host = host
         self._port = port
@@ -672,16 +681,22 @@ class Application(object):
         })
         cp.config.update({
             # Global configuration.
-            "server.socket_host"  : host,
-            "server.socket_port"  : port,
-            "server.thread_pool"  : threads,
+            # If more concurrent requests are made than can be queued / handled,
+            # the server will time out and a "connection reset by peer" occurs.
+            # Note: SQLite cannot handle many concurrent writes (e.g., UPDATE).
+            "server.socket_host"       : host,
+            "server.socket_port"       : port,
+            "server.socket_timeout"    : max(1, timeout),
+            "server.socket_queue_size" : max(1, queue),
+            "server.thread_pool"       : max(1, threads),
+            "server.thread_pool_max"   : -1,
         })
         cp.tree.mount(self, "/", config={"/": {
             # Static content is served from the /static subfolder, 
             # e.g., <img src="g/cat.jpg" /> refers to "/static/g/cat.jpg".
-            "tools.staticdir.dir" : os.path.join(self.path, static.strip("/")),
-            "tools.staticdir.on"  : True,
-            "tools.sessions.on"   : True
+            "tools.staticdir.dir"      : os.path.join(self.path, static.strip("/")),
+            "tools.staticdir.on"       : True,
+            "tools.sessions.on"        : True
         }})
         # TODO: robots.txt, favicon.ico
         cp.engine.start()
@@ -745,4 +760,4 @@ _register("on_end_request", _request_end)
 #def error(e):
 #    return "<h2>%s</h2><pre>%s</pre>" % (e.status, e.traceback)
 #
-#app.run(debug=True)
+#app.run(debug=True, threads=30, queue=20)
