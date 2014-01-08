@@ -61,7 +61,9 @@ def define(f):
     """
     def undecorate(f): # "__closure__" in Py3.
         while getattr(f, "func_closure", None):
-            f = getattr(f, "func_closure")[0].cell_contents
+            f = [v.cell_contents for v in getattr(f, "func_closure")]
+            f = [v for v in f if callable(v)]
+            f = f[0]   # guess...
         return f
     f = undecorate(f)
     a = inspect.getargspec(f) # (names, *args, **kwargs, values)
@@ -155,8 +157,7 @@ class Database(object):
 #### RATE LIMITING #################################################################################
 # With @app.route(path, throttle=True), the decorated URL path handler function calls Throttle().
 
-_THROTTLE_CACHE = {}  # Cache of request counts.
-_THROTTLE_RESET = 1e6 # Cach size.
+_THROTTLE_CACHE = {} # Cache of request counts.
 _THROTTLE_LOCK  = threading.RLock()
 
 MINUTE, HOUR, DAY = 60., 60*60., 60*60*24.
@@ -249,7 +250,7 @@ class Throttle(Database):
         q = "select * from `throttle` where key=? and path like ?"
         return self.execute(q, (key, path), first=True, commit=False) is not None
 
-    def __call__(self, key, path="/", limit=None, time=None, reset=_THROTTLE_RESET):
+    def __call__(self, key, path="/", limit=None, time=None, reset=100000):
         """ Increases the (cached) request count by 1 for the given key and path.
             If the request count exceeds its limit, raises ThrottleLimitExceeded.
             If the optional limit and time are given, unknown keys (!= None) 
@@ -567,13 +568,14 @@ class Application(object):
         #print self.elapsed
         return v
         
-    def route(self, path, throttle=False, limit=None, time=None, key=lambda data: data.get("key")):
+    def route(self, path, throttle=False, limit=None, time=None, key=lambda data: data.get("key"), reset=100000):
         """ The @app.route(path) decorator defines the handler function for the given path.
             The function can take arguments (path) and keyword arguments (query data), e.g.,
             if no handler exists for URL "/api/1/en", but a handler exists for URL "/api/1",
             this handler will be called with 1 argument: "en".
             It returns a string, a generator or a dictionary (which is parsed to a JSON-string).
         """
+        a = (key, limit, time, reset) # Avoid trouble with key=lambda inside define().
         def decorator(handler):
             def throttled(handler):
                 # With @app.route(path, throttle=True), rate limiting is applied.
@@ -591,10 +593,11 @@ class Application(object):
                 def wrapper(*args, **kwargs):
                     self = cp.request.app.root
                     self.throttle(
-                          key = key(self.request.data), # API key (e.g., App.request.ip).
-                         path = "/" + "/".join(args),   # API URL path (e.g., "/api/1/").
-                        limit = limit,                  # Default limit for unknown keys.
-                         time = time                    # Default time for unknown keys.
+                          key = a[0](self.request.data), # API key (e.g., App.request.ip).
+                         path = "/" + "/".join(args),    # API URL path (e.g., "/api/1/").
+                        limit = a[1],                    # Default limit for unknown keys.
+                         time = a[2],                    # Default time for unknown keys.
+                        reset = a[3]
                     )
                     return handler(*args, **kwargs)
                 return wrapper
@@ -733,7 +736,7 @@ _register("on_end_request", _request_end)
 #    return "%s<br>%s" % (path, data.get("db"))
 #
 ## http://localhost:8080/api/en/sentiment?q=awesome
-#@app.route("api/en/sentiment", throttle=True, limit=5, time=MINUTE, key=lambda data: data.get("key"))
+#@app.route("api/en/sentiment", throttle=True, limit=5, time=MINUTE, key=lambda data: app.request.ip)
 #def nl_sentiment(q=""):
 #    polarity, subjectivity = sentiment(q)
 #    return {"polarity": polarity}
