@@ -16,9 +16,13 @@ import time; _time=time
 import random
 import hashlib
 import base64
+import string
+import StringIO
+import textwrap
 import types
 import inspect
 import threading
+import collections
 import sqlite3 as sqlite
 import cherrypy as cp
 
@@ -75,6 +79,8 @@ def define(f):
     return (f.__name__, type(f), x, y)
 
 #### DATABASE ######################################################################################
+
+#--- DATABASE --------------------------------------------------------------------------------------
 # A simple wrapper for SQLite databases.
 
 DatabaseError = sqlite.DatabaseError
@@ -136,9 +142,14 @@ class Database(object):
         return r.fetchone() if first else r
         
     def commit(self):
-        """ Commits pending insert/update/delete queries.
+        """ Commits changes (pending insert/update/delete queries).
         """
         self._connection.commit()
+        
+    def rollback(self):
+        """ Discard changes since the last commit.
+        """
+        self._conncection.rollback()
         
     def __call__(self, *args, **kwargs):
         return self.execute(*args, **kwargs)
@@ -153,6 +164,49 @@ class Database(object):
             self._connection = None
         except:
             pass
+    
+    @property
+    def batch(self):
+        k = self._name
+        return Database._batch.setdefault(k, DatabaseTransaction(k))
+
+    _batch = {} # Shared across instances.
+
+#--- DATABASE TRANSACTION BUFFER -------------------------------------------------------------------
+
+class DatabaseTransaction:
+    
+    def __init__(self, name, timeout=10.0):
+        """ Database.batch.execute() stores given the SQL query in RAM memory, across threads.
+            Database.batch.commit() commits all buffered queries.
+            This can be combined with @app.task() to periodically write batches to the database
+            (instead of writing on each request).
+        """
+        self._name   = name
+        self._queue  = []
+        self.timeout = timeout
+    
+    def execute(self, sql, values=()):
+        self._queue.append((sql, values))
+        
+    def commit(self):
+        q, self._queue = self._queue, []
+        if q:
+            try:
+                connection = sqlite.connect(self._name, timeout=self.timeout)
+                for sql, v in q:
+                    connection.execute(sql, v)
+                connection.commit()
+            except DatabaseError, e:
+                connection.rollback(); raise e # Data in q will be lost.
+            finally:
+                connection.close()
+            
+    def rollback(self):
+        self._queue = []
+        
+    def __len__(self):
+        return len(self._queue)
 
 #### RATE LIMITING #################################################################################
 # With @app.route(path, throttle=True), the decorated URL path handler function calls Throttle().
@@ -187,7 +241,7 @@ class Throttle(Database):
                       "`key` text,"    # API key (e.g., ?key="1234").
                      "`path` text,"    # API URL path (e.g., "/api/1/").
                     "`limit` integer," # Maximum number of requests.
-                     "`time` float,"   # Time frame.
+                     "`time` float"    # Time frame.
                 ");"
                 "create index if not exists `throttle1` on throttle(key);"
                 "create index if not exists `throttle2` on throttle(path);"
@@ -221,10 +275,10 @@ class Throttle(Database):
         """ For performance, rate limiting is handled in memory (i.e., RAM).
             Loads the stored rate limits in memory (100,000 records ~= 5MB RAM).
         """
-        if not self.cache:
-            with self.lock: 
+        with self.lock: 
+            if not self.cache:
                 # Lock concurrent threads when modifying cache.
-                for r in self.execute("select * from `throttle`"):
+                for r in self.execute("select * from `throttle`;"):
                     self.cache[(r[0], r[1])] = (0, r[2], r[3], _time.time())
                 self._rowcount = len(self.cache)
     
@@ -233,26 +287,34 @@ class Throttle(Database):
             where limit is the maximum number of requests in the given time (e.g., 100/hour).
         """
         # Update database.
-        q1 = "delete from `throttle` where key=? and path=?"
-        q2 = "insert into `throttle` values (null, ?, ?, ?, ?)"
-        self.execute(q1, (key, path), commit=False)
-        self.execute(q2, (key, path, limit, time))
+        p  = "/" + path.strip("/")
+        q1 = "delete from `throttle` where key=? and path=?;"
+        q2 = "insert into `throttle` values (?, ?, ?, ?);"
+        self.execute(q1, (key, p), commit=False)
+        self.execute(q2, (key, p, limit, time))
         # Update cache.
         with self.lock: 
-            self.cache[(key, path)] = (0, limit, time, _time.time())
+            self.cache[(key, p)] = (0, limit, time, _time.time())
             self._rowcount += 1
         return (key, path, limit, time)
         
     def get(self, key, path="/"):
         """ Returns the rate for the given key and path (or None).
         """
-        q = "select * from `throttle` where key=? and path=?"
-        return self.execute(q, (key, path), first=True, commit=False)
+        p = "/" + path.strip("/")
+        q = "select * from `throttle` where key=? and path=?;"
+        return self.execute(q, (key, p), first=True, commit=False)
+        
+    def __setitem__(self, (key, path), (limit, time)):
+        return self.set(key, path, limit, time)
+        
+    def __getitem__(self, (key, path)):
+        return self.get(key, path)
 
     def __contains__(self, key, path="%"):
         """ Returns True if the given key exists (for the given path).
         """
-        q = "select * from `throttle` where key=? and path like ?"
+        q = "select * from `throttle` where key=? and path like ?;"
         return self.execute(q, (key, path), first=True, commit=False) is not None
 
     def __call__(self, key, path="/", limit=None, time=None, reset=100000):
@@ -262,16 +324,16 @@ class Throttle(Database):
             are given this rate limit - as long as the cache exists in memory.
             Otherwise a ThrottleForbidden is raised.
         """
-        _time.sleep(0.01)
         with self.lock:
             t = _time.time()
-            r = self.cache.get((key, path))
+            p = "/" + path.strip("/")
+            r = self.cache.get((key, p))
             # Reset the cache if too large (e.g., 1M+ IP addresses).
             if reset and reset < len(self.cache) and reset > self._rowcount:
                 self.reset()
             # Unknown key (apply default limit / time rate).
             if r is None and key is not None and limit is not None and time is not None:
-                self.cache[(key, path)] = r = (0, limit, time, t)
+                self.cache[(key, p)] = r = (0, limit, time, t)
             if r is None:
                 raise ThrottleForbidden
             # Limit reached within time frame (raise error).
@@ -279,10 +341,10 @@ class Throttle(Database):
                 raise ThrottleLimitExceeded
             # Limit reached out of time frame (reset count).
             elif r[0] >= r[1]:
-                self.cache[(key, path)] = (1, r[1], r[2], t)
+                self.cache[(key, p)] = (1, r[1], r[2], t)
             # Limit not reached (increment count).
             elif r[0] <  r[1]:
-                self.cache[(key, path)] = (r[0] + 1, r[1], r[2], r[3])
+                self.cache[(key, p)] = (r[0] + 1, r[1], r[2], r[3])
         #print self.cache.get((key, path))
 
 #### ROUTER ########################################################################################
@@ -376,9 +438,9 @@ class HTTPRequest(object):
 
 #--- APPLICATION THREAD-SAFE DATA ------------------------------------------------------------------
 # With a multi-threaded server, each thread requires its own local data (i.e., database connection).
-# Local data can be initialized with @app.thread("start"):
+# Local data can be initialized with @app.thread(START):
 #
-# >>> @app.thread("start")
+# >>> @app.thread(START)
 # >>> def db():
 # >>>    g.db = Database()
 # >>>
@@ -442,19 +504,48 @@ class localdict(dict):
 # Alias for app.thread (Flask-style):
 g = localdict(data=cp.thread_data)
 
+def threadsafe(function):
+    """ The @threadsafe decorator ensures that no two threads execute the function simultaneously.
+    """
+    # In some cases, global data must be available across all threads (e.g., rate limits).
+    # Atomic operations like dict.get() or list.append() (= single execution step) are thread-safe,
+    # but some operations like dict[k] += 1 are not, and require a lock.
+    # http://effbot.org/zone/thread-synchronization.htm
+    #
+    # >>> count = defaultdict(int)
+    #
+    # >>> @threadsafe
+    # >>> def inc(k):
+    # >>>     count[k] += 1
+    #
+    lock = threading.RLock()
+    def decorator(*args, **kwargs):
+        with lock:
+            v = function(*args, **kwargs)
+        return v
+    return decorator
+
 #--- APPLICATION -----------------------------------------------------------------------------------
+
+LOCALHOST = "127.0.0.1"
+
+START = "start"
+STOP  = "stop"
 
 class Application(object):
     
-    def __init__(self, name=None, throttle="throttle.db"):
+    def __init__(self, name=None, static="static/", throttle="throttle.db"):
         """ A web app served by a WSGI-server that starts with App.run().
             @App.route(path) defines a URL path handler.
             @App.error(code) defines a HTTP error handler.
         """
+        # Create Throttle db in the app folder:
+        throttle = os.path.join(SCRIPT, throttle)
         self._name     = name         # App name.
         self._host     = None         # Server host, see App.run().
         self._port     = None         # Server port, see App.run().
-        self._static   = None         # Static content folder.
+        self._up       = False        # True if server is up & running.
+        self._static   = static       # Static content folder.
         self._throttle = throttle     # Throttle db name, see also App.route(throttle=True).
         self.router    = Router()     # Router object, maps URL paths to handlers.
         self.thread    = App.Thread() # Thread-safe dictionary.
@@ -470,6 +561,10 @@ class Application(object):
     @property
     def port(self):
         return self._port
+        
+    @property
+    def up(self):
+        return self._up
     
     @property
     def path(self):
@@ -564,7 +659,7 @@ class Application(object):
         except ThrottleForbidden:
             raise cp.HTTPError(403) # 403 Forbidden
         except ThrottleLimitExceeded:
-            raise cp.HTTPError(429) # 429 Too May Requests
+            raise cp.HTTPError(429) # 429 Too Many Requests
         except DatabaseError:
             raise cp.HTTPError(503) # 503 Service Unavailable
         except HTTPError, e:
@@ -580,7 +675,7 @@ class Application(object):
             this handler will be called with 1 argument: "en".
             It returns a string, a generator or a dictionary (which is parsed to a JSON-string).
         """
-        a = (key, limit, time, reset) # Avoid trouble with key=lambda inside define().
+        _a = (key, limit, time, reset) # Avoid trouble with key=lambda inside define().
         def decorator(handler):
             def throttled(handler):
                 # With @app.route(path, throttle=True), rate limiting is applied.
@@ -592,23 +687,24 @@ class Application(object):
                 # If the key is unknown and a default limit and time are given,
                 # add the key and grant the given credentials, e.g.:
                 # @app.route(path, limit=100, time=HOUR, key=lambda data: app.request.ip).
-                @self.thread("start")
+                @self.thread(START)
                 def connect():
                     g.throttle = Throttle(name=self._throttle)
                 def wrapper(*args, **kwargs):
-                    self = cp.request.app.root
+                    r = cp.request
+                    self = r.app.root
                     self.throttle(
-                          key = a[0](self.request.data), # API key (e.g., App.request.ip).
-                         path = "/" + "/".join(args),    # API URL path (e.g., "/api/1/").
-                        limit = a[1],                    # Default limit for unknown keys.
-                         time = a[2],                    # Default time for unknown keys.
-                        reset = a[3]
+                          key = _a[0](r.params),
+                         path = "/" + r.path_info.strip("/"),
+                        limit = _a[1],  # Default limit for unknown keys.
+                         time = _a[2],  # Default time for unknown keys.
+                        reset = _a[3]   # Threshold for clearing cache.
                     )
                     return handler(*args, **kwargs)
                 return wrapper
             if throttle is True or (limit is not None and time is not None):
                 handler = throttled(handler)
-            self.router[path] = handler                 # Register the handler.
+            self.router[path] = handler # Register the handler.
             return handler
         return decorator
         
@@ -630,6 +726,23 @@ class Application(object):
                     cp.config.update({"error_page.%s" % x: wrapper})
             return handler
         return decorator
+        
+    def view(self, template, cached=True):
+        """ The @app.view(template) decorator defines a template to format the handler function.
+            The function returns a dict of keyword arguments for Template.render().
+        """
+        def decorator(handler):
+            def wrapper(*args, **kwargs):
+                if not hasattr(template, "render"):
+                    t = Template(template, root=self.static, cached=cached)
+                else:
+                    t = template
+                v = handler(*args, **kwargs)
+                if isinstance(v, dict):
+                    return t.render(**v) # {kwargs}
+                return t.render(*v) # (globals(), locals(), {kwargs})
+            return wrapper
+        return decorator
 
     class Thread(localdict):
         """ The @app.thread(event) decorator can be used to initialize thread-safe data.
@@ -637,7 +750,7 @@ class Application(object):
         """
         def __init__(self):
             localdict.__init__(self, data=cp.thread_data, handlers=set())
-        def __call__(self, event="start"): # "stop"
+        def __call__(self, event=START): # START / STOP
             def decorator(handler):
                 def wrapper(id):
                     return handler()
@@ -662,10 +775,29 @@ class Application(object):
             The database connection is available in handlers as a keyword argument [name].
         """
         def decorator(handler):
-            return self.thread("start")(lambda: setattr(g, name, handler()))
+            return self.thread(START)(lambda: setattr(g, name, handler()))
+        return decorator
+    
+    def task(self, interval=MINUTE):
+        """ The @app.task(interval) decorator will call the given function repeatedly (in a thread).
+            For example, this can be used to commit a Database.batch periodically,
+            instead of executing and committing to a Database during each request.
+        """
+        def decorator(handler):
+            _, _, args, kwargs = define(handler)
+            def wrapper():
+                # Bind data from @app.thread(START) or @app.set().
+                m = cp.process.plugins.ThreadManager(cp.engine)
+                m.acquire_thread()
+                # If there is an app.thread.db connection,
+                # pass it as a keyword argument named "db".
+                return handler(**dict((k, v) for k, v in g.items() if k in kwargs))
+            p = cp.process.plugins.BackgroundTask(interval, wrapper)
+            p.start()
+            return handler
         return decorator
 
-    def run(self, host="127.0.0.1", port=8080, static="/static", threads=30, queue=20, timeout=10, debug=True):
+    def run(self, host=LOCALHOST, port=8080, threads=30, queue=20, timeout=10, sessions=False, debug=True):
         """ Starts the server and blocks until the server stops.
             Static content (e.g., "g/img.jpg") is served from the given subfolder (e.g., "static/g").
             With threads=10, the server can handle up to 10 concurrent requests.
@@ -674,7 +806,7 @@ class Application(object):
         """
         self._host = host
         self._port = port
-        self._static = static        
+        self._up   = True
         if not debug: cp.config.update({
             # Production environment disables errors.
             "environment": "production"
@@ -694,20 +826,22 @@ class Application(object):
         cp.tree.mount(self, "/", config={"/": {
             # Static content is served from the /static subfolder, 
             # e.g., <img src="g/cat.jpg" /> refers to "/static/g/cat.jpg".
-            "tools.staticdir.dir"      : os.path.join(self.path, static.strip("/")),
             "tools.staticdir.on"       : True,
-            "tools.sessions.on"        : True
+            "tools.staticdir.dir"      : self.static,
+            "tools.sessions.on"        : sessions
         }})
-        # TODO: robots.txt, favicon.ico
         cp.engine.start()
         cp.engine.block()
+        self._host = None
+        self._port = None
+        self._up   = False
 
 App = Application
 
 #---------------------------------------------------------------------------------------------------
 
 def static(path, root=None, mimetype=None):
-    """ Returns the file at the given absolute path.
+    """ Returns the contents of the file at the given absolute path.
         To serve relative paths from the app folder, use root=app.path.
     """
     p = os.path.join(root or "", path)
@@ -715,10 +849,10 @@ def static(path, root=None, mimetype=None):
     return cp.lib.static.serve_file(p, content_type=mimetype)
 
 #---------------------------------------------------------------------------------------------------
+# http://cherrypy.readthedocs.org/en/latest/progguide/extending/customtools.html
 
 def _register(event, handler):
     """ Registers the given event handler.
-        See: http://cherrypy.readthedocs.org/en/latest/progguide/extending/customtools.html
     """
     k = handler.__name__
     setattr(cp.tools, k, cp.Tool(event, handler))
@@ -735,15 +869,132 @@ def _request_end():
 _register("on_start_resource", _request_start)
 _register("on_end_request", _request_end)
 
+#### TEMPLATE ######################################################################################
+# Based on: http://davidbau.com/archives/2011/09/09/python_templating_with_stringfunction.html
+   
+class Template(object):
+    
+    _cache = {}
+    
+    def __init__(self, path, root=None, cached=True):
+        """ A template with placeholders and/or source code loaded from the given string or path.
+            Placeholders that start with $ are replaced with keyword arguments in Template.render().
+            Source code enclosed in <?= var + 100 ?> is executed with eval().
+            Source code enclosed in <? write(var) ?> is executed with exec().
+        """
+        p = os.path.join(root or "", path)
+        k = hash(p)
+        b = k in Template._cache
+        # Caching enabled + template already cached.
+        if cached is True and b is True:
+            a = Template._cache[k]
+        # Caching disabled / template not yet cached.
+        if cached is False or b is False:
+            a = "".join(static(p, mimetype="text/html")) if os.path.exists(p) else path
+            a = self._compile(a)
+        # Caching enabled + template not yet cached.
+        if cached is True and b is False:
+            a = Template._cache.setdefault(k, a)
+        self._compiled = a
+
+    def _compile(self, string):
+        """ Returns the template string as a (type, value) list,
+            where type is either <str>, <arg>, <eval> or <exec>.
+            With <eval> and <exec>, value is a compiled code object
+            that can be executed with eval() or exec() respectively.
+        """
+        r = r"(%s|%s|%s|%s|%s)" % (
+            r"\$[_a-z][\w]*",     # $var
+            r"\$\{[_a-z][\w]*\}", # ${var}iable
+            r"\<\%\=.*?\%\>",     # <%= var + 1 %>
+            r"\<\%.*?\%\>",       # <% print(var) %>
+            r"\<\%[^\n]*?"
+        )
+        a = []
+        i = 0
+        for m in re.finditer(r, string, re.I | re.M):
+            s = m.group(1)
+            j = m.start(1)
+            n = string[:j].count("\n") # line number
+            if i != j:
+                a.append(("<str>", string[i:j]))
+            if s.startswith("$") and j > 0 and string[j-1] == "$":
+                a.append(("<str>", s))
+            elif s.startswith("${") and s.endswith("}"):
+                a.append(("<arg>", s[2:-1]))
+            elif s.startswith("$"):
+                a.append(("<arg>", s[1:]))
+            elif s.startswith("<%=") and s.endswith("%>"):
+                a.append(("<eval>", compile("\n"*n + textwrap.dedent(s[3:-2]), "<string>", "eval")))
+            elif s.startswith("<%") and s.endswith("%>"):
+                a.append(("<exec>", compile("\n"*n + textwrap.dedent(s[2:-2]), "<string>", "exec")))
+            else:
+                raise SyntaxError, "template has no end tag for '%s' (line %s)" % (s, n+1)
+            i = m.end(1)
+        a.append(("<str>", string[i:]))
+        return a
+        
+    def _render(self, *args, **kwargs):
+        """ Returns the rendered string as an iterator.
+            Replaces template placeholders with keyword arguments (if any).
+            Replaces source code with the return value of eval() or exec().
+        """
+        k = {}; 
+        for d in args:
+            k.update(d)
+        k.update(kwargs)
+        for cmd, v in self._compiled:
+            if cmd is None:
+                continue
+            elif cmd == "<str>":
+                yield v
+            elif cmd == "<arg>":
+                yield "%s" % k.get(v, "$" + v)
+            elif cmd == "<eval>":
+                yield "%s" % eval(v, k)
+            elif cmd == "<exec>":
+                o = StringIO.StringIO()
+                k["write"] = o.write # Code blocks use write() for output.
+                exec(v, k)
+                yield o.getvalue()
+                del k["write"]
+                o.close()
+                
+    def render(self, *args, **kwargs):
+        """ Returns the rendered template as a string.
+            Replaces template placeholders with keyword arguments (if any).
+            Replaces source code with the return value of eval() or exec().
+            The keyword arguments are used as namespace for eval() and exec().
+            For example, source code in Template.render(re=re) has access to the regex library.
+            Multiple dictionaries can be given, e.g.,
+            Template.render(globals(), locals(), foo="bar").
+        """
+        return "".join(self._render(*args, **kwargs))
+
+def template(string, *args, **kwargs):
+    """ Returns the rendered template as a string.
+    """
+    root, cached = (
+        kwargs.pop("root", None),
+        kwargs.pop("cached", None)
+    )
+    if root is None and len(args) > 0 and isinstance(args[0], basestring):
+        root = args[0]
+        args = args[1:]
+    if hasattr(string, "render"):
+        return string
+    return Template(string, root, cached).render(*args, **kwargs)
+
 ####################################################################################################
 
 #from pattern.en import sentiment
 #
 #app = App()
+##app.throttle[("1234", "/api/en/sentiment")] = (5, MINUTE)
 #
 #@app.set("db")
 #def db():
-#    return Database(":memory:")
+#    return Database("log.db", schema="create table if not exists `log` (q text);")
 #
 ## http://localhost:8080/whatever
 #@app.route("/")
@@ -751,13 +1002,20 @@ _register("on_end_request", _request_end)
 #    return "%s<br>%s" % (path, data.get("db"))
 #
 ## http://localhost:8080/api/en/sentiment?q=awesome
-#@app.route("api/en/sentiment", throttle=True, limit=5, time=MINUTE, key=lambda data: app.request.ip)
-#def nl_sentiment(q=""):
+##@app.route("/api/en/sentiment", throttle=True)
+#@app.route("/api/en/sentiment", throttle=True, limit=10, time=MINUTE, key=lambda data: app.request.ip)
+#def nl_sentiment(q="", db=None):
 #    polarity, subjectivity = sentiment(q)
+#    db.batch.execute("insert into `log` (q) values (?);", (q,))
 #    return {"polarity": polarity}
+#    
+#@app.task(interval=MINUTE)
+#def log(db=None):
+#    print "committing log..."
+#    db.batch.commit()
 #
 #@app.error((403, 404, 429, 500, 503))
 #def error(e):
 #    return "<h2>%s</h2><pre>%s</pre>" % (e.status, e.traceback)
 #
-#app.run(debug=True, threads=30, queue=20)
+#app.run(debug=True, threads=100, queue=50)
