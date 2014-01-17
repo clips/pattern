@@ -590,7 +590,7 @@ singular_irregular = {
 def singularize(word, pos=NOUN, custom={}):
     """ Returns the singular of a given word.
     """
-    if word in custom.keys():
+    if word in custom:
         return custom[word]
     # Recurse compound words (e.g. mothers-in-law). 
     if "-" in word:
@@ -610,7 +610,7 @@ def singularize(word, pos=NOUN, custom={}):
     for x in singular_ie:
         if w.endswith(x+"s"):
             return w
-    for x in singular_irregular.keys():
+    for x in singular_irregular:
         if w.endswith(x):
             return re.sub('(?i)'+x+'$', singular_irregular[x], word)
     for suffix, inflection in singular_rules:

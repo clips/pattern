@@ -209,6 +209,8 @@ def pluralize(word, pos=NOUN, gender=MALE, role=SUBJECT, custom={}):
         The inflection is based on probability rather than gender and role.
     """
     w = word.lower().capitalize()
+    if word in custom:
+        return custom[word]
     if pos == NOUN:
         for a, b in plural_inflections:
             if w.endswith(a):
@@ -303,11 +305,19 @@ singular_inflections = [
     (   "ver", "ver"), (   "zer",  "zer"),
 ]
 
+singular = {
+    u"Löwen": u"Löwe",
+}
+
 def singularize(word, pos=NOUN, gender=MALE, role=SUBJECT, custom={}):
     """ Returns the singular of a given word.
         The inflection is based on probability rather than gender and role.
     """
     w = word.lower().capitalize()
+    if word in custom:
+        return custom[word]
+    if word in singular:
+        return singular[word]
     if pos == NOUN:
         for a, b in singular_inflections:
             if w.endswith(a):
@@ -315,7 +325,11 @@ def singularize(word, pos=NOUN, gender=MALE, role=SUBJECT, custom={}):
         # Default rule: strip known plural suffixes (baseline = 51%).
         for suffix in ("nen", "en", "n", "e", "er", "s"):
             if w.endswith(suffix):
-                return w[:-len(suffix)]
+                w = w[:-len(suffix)]
+                break
+        # Corrections (these add about 1% accuracy):
+        if w.endswith(("rr", "rv", "nz")):
+            return w + "e"
         return w
     return w
 

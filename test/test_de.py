@@ -46,7 +46,7 @@ class TestInflection(unittest.TestCase):
                 if de.singularize(pl) == sg:
                     i +=1
                 n += 1
-        self.assertTrue(float(i) / n > 0.81)
+        self.assertTrue(float(i) / n > 0.82)
         print "pattern.de.singularize()"
 
     def test_attributive(self):
