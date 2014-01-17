@@ -1413,7 +1413,7 @@ DDG = DuckDuckGo
 # that enables users to post and read text-based messages of up to 140 characters ("tweets").
 # https://dev.twitter.com/docs/api/1.1
 
-TWITTER         = "http://api.twitter.com/1.1/"
+TWITTER         = "https://api.twitter.com/1.1/"
 TWITTER_STREAM  = "https://stream.twitter.com/1.1/statuses/filter.json"
 TWITTER_STATUS  = "https://twitter.com/%s/status/%s"
 TWITTER_LICENSE = api.license["Twitter"]
