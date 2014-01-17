@@ -10,6 +10,7 @@
 from __future__ import with_statement
 
 import __main__
+import sys
 import os
 import re
 import time; _time=time
@@ -24,7 +25,7 @@ import inspect
 import threading
 import collections
 import sqlite3 as sqlite
-import cherrypy as cp
+import cherrypy; cp=cherrypy
 
 try: import json # Python 2.6+
 except:
@@ -408,10 +409,20 @@ class Router(dict):
 
 #--- APPLICATION ERRORS & REQUESTS -----------------------------------------------------------------
 
+class HTTPRedirect(Exception):
+    
+    def __init__(self, url):
+        """ A HTTP redirect raised in an @app.route() handler.
+        """
+        self.url = url
+    
+    def __repr__(self):
+        return "HTTPRedirect(url=%s)" % repr(self.url)
+
 class HTTPError(Exception):
     
     def __init__(self, code, status="", message="", traceback=None):
-        """ A HTTP error object passed to an @app.error handler (or raised in a route handler).
+        """ A HTTP error passed to an @app.error handler (or raised in a route handler).
         """
         self.code      = code
         self.status    = status
@@ -655,13 +666,15 @@ class Application(object):
         try:
             v = self.router(path, **data)
         except RouteError:
-            raise cp.HTTPError(404) # 404 Not Found
+            raise cp.HTTPError(404)         # 404 Not Found
         except ThrottleForbidden:
-            raise cp.HTTPError(403) # 403 Forbidden
+            raise cp.HTTPError(403)         # 403 Forbidden
         except ThrottleLimitExceeded:
-            raise cp.HTTPError(429) # 429 Too Many Requests
-        except DatabaseError:
-            raise cp.HTTPError(503) # 503 Service Unavailable
+            raise cp.HTTPError(429)         # 429 Too Many Requests
+        except DatabaseError, e:
+            raise cp.HTTPError(503, str(e)) # 503 Service Unavailable
+        except HTTPRedirect, e:
+            raise cp.HTTPRedirect(e.url)
         except HTTPError, e:
             raise cp.HTTPError(e.code)
         v = self._cast(v)
@@ -797,6 +810,12 @@ class Application(object):
             return handler
         return decorator
 
+    def redirect(path):
+        """ Redirects the server to another route handler path 
+            (or to another server for absolute URL's).
+        """
+        raise HTTPRedirect(path)
+
     def run(self, host=LOCALHOST, port=8080, threads=30, queue=20, timeout=10, sessions=False, debug=True):
         """ Starts the server and blocks until the server stops.
             Static content (e.g., "g/img.jpg") is served from the given subfolder (e.g., "static/g").
@@ -804,8 +823,8 @@ class Application(object):
             With queue=10, the server will queue up to 10 waiting requests.
             With debug=False, starts a production server.
         """
-        self._host = host
-        self._port = port
+        self._host = str(host)
+        self._port = int(port)
         self._up   = True
         if not debug: cp.config.update({
             # Production environment disables errors.
@@ -816,12 +835,12 @@ class Application(object):
             # If more concurrent requests are made than can be queued / handled,
             # the server will time out and a "connection reset by peer" occurs.
             # Note: SQLite cannot handle many concurrent writes (e.g., UPDATE).
-            "server.socket_host"       : host,
-            "server.socket_port"       : port,
+            "server.socket_host"       : self._host,
+            "server.socket_port"       : self._port,
             "server.socket_timeout"    : max(1, timeout),
             "server.socket_queue_size" : max(1, queue),
             "server.thread_pool"       : max(1, threads),
-            "server.thread_pool_max"   : -1,
+            "server.thread_pool_max"   : -1
         })
         cp.tree.mount(self, "/", config={"/": {
             # Static content is served from the /static subfolder, 
@@ -837,6 +856,14 @@ class Application(object):
         self._up   = False
 
 App = Application
+
+#---------------------------------------------------------------------------------------------------
+
+def redirect(path):
+    """ Redirects the server to another route handler path 
+        (or to another server for absolute URL's).
+    """
+    raise HTTPRedirect(path)
 
 #---------------------------------------------------------------------------------------------------
 
@@ -871,7 +898,7 @@ _register("on_end_request", _request_end)
 
 #### TEMPLATE ######################################################################################
 # Based on: http://davidbau.com/archives/2011/09/09/python_templating_with_stringfunction.html
-   
+
 class Template(object):
     
     _cache = {}
@@ -896,9 +923,16 @@ class Template(object):
         if cached is True and b is False:
             a = Template._cache.setdefault(k, a)
         self._compiled = a
+        
+    def _format(self, v, indent=""):
+        """ Returns the given value as a string (empty string for None).
+        """
+        v = "%s" % (v if v is not None else "")
+        v = v.replace("\n", "\n" + indent)
+        return v
 
     def _compile(self, string):
-        """ Returns the template string as a (type, value) list,
+        """ Returns the template string as a (type, value, indent) list,
             where type is either <str>, <arg>, <eval> or <exec>.
             With <eval> and <exec>, value is a compiled code object
             that can be executed with eval() or exec() respectively.
@@ -915,23 +949,26 @@ class Template(object):
         for m in re.finditer(r, string, re.I | re.M):
             s = m.group(1)
             j = m.start(1)
-            n = string[:j].count("\n") # line number
+            n = string[:j].count("\n")      # line number
+            p = re.compile(r"(^|\n)(.*?)$") # line indent
+            p = re.search(p, string[:j]) 
+            p = re.sub(r"[^\t]", " ", string[p.start(2):j])
             if i != j:
-                a.append(("<str>", string[i:j]))
+                a.append(("<str>", string[i:j], ""))
             if s.startswith("$") and j > 0 and string[j-1] == "$":
-                a.append(("<str>", s))
+                a.append(("<str>", s, ""))
             elif s.startswith("${") and s.endswith("}"):
-                a.append(("<arg>", s[2:-1]))
+                a.append(("<arg>", s[2:-1], p))
             elif s.startswith("$"):
-                a.append(("<arg>", s[1:]))
+                a.append(("<arg>", s[1:], p))
             elif s.startswith("<%=") and s.endswith("%>"):
-                a.append(("<eval>", compile("\n"*n + textwrap.dedent(s[3:-2]), "<string>", "eval")))
+                a.append(("<eval>", compile("\n"*n + textwrap.dedent(s[3:-2]), "<string>", "eval"), p))
             elif s.startswith("<%") and s.endswith("%>"):
-                a.append(("<exec>", compile("\n"*n + textwrap.dedent(s[2:-2]), "<string>", "exec")))
+                a.append(("<exec>", compile("\n"*n + textwrap.dedent(s[2:-2]), "<string>", "exec"), p))
             else:
                 raise SyntaxError, "template has no end tag for '%s' (line %s)" % (s, n+1)
             i = m.end(1)
-        a.append(("<str>", string[i:]))
+        a.append(("<str>", string[i:], ""))
         return a
         
     def _render(self, *args, **kwargs):
@@ -939,24 +976,24 @@ class Template(object):
             Replaces template placeholders with keyword arguments (if any).
             Replaces source code with the return value of eval() or exec().
         """
-        k = {}; 
+        k = {}
         for d in args:
             k.update(d)
         k.update(kwargs)
-        for cmd, v in self._compiled:
+        for cmd, v, p in self._compiled:
             if cmd is None:
                 continue
             elif cmd == "<str>":
                 yield v
             elif cmd == "<arg>":
-                yield "%s" % k.get(v, "$" + v)
+                yield self._format(k.get(v, "$" + v), p)
             elif cmd == "<eval>":
-                yield "%s" % eval(v, k)
+                yield self._format(eval(v, k), p)
             elif cmd == "<exec>":
                 o = StringIO.StringIO()
                 k["write"] = o.write # Code blocks use write() for output.
                 exec(v, k)
-                yield o.getvalue()
+                yield self._format(o.getvalue(), p)
                 del k["write"]
                 o.close()
                 
@@ -984,6 +1021,11 @@ def template(string, *args, **kwargs):
     if hasattr(string, "render"):
         return string
     return Template(string, root, cached).render(*args, **kwargs)
+
+####################################################################################################
+
+# TODO: if you already have CherryPy installed, remove the one bundled in Pattern,
+# otherwise it will try to start two servers.
 
 ####################################################################################################
 
