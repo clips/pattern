@@ -14,18 +14,35 @@ import sys
 import os
 import re
 import time; _time=time
-import random
+import urllib
 import hashlib
 import base64
+import random
 import string
-import StringIO
+import cStringIO
+import cPickle
 import textwrap
 import types
 import inspect
 import threading
+import itertools
 import collections
 import sqlite3 as sqlite
-import cherrypy; cp=cherrypy
+
+try:
+    MODULE = os.path.dirname(os.path.abspath(__file__))
+except:
+    MODULE = ""
+
+try:
+    # Import from python2.x/site-packages/cherrypy
+    import cherrypy; cp=cherrypy
+except:
+    # Import from pattern/server/cherrypy/cherrypy
+    # Bundled package is "hidden" in a non-package folder,
+    # otherwise it conflicts with site-packages/cherrypy.
+    sys.path.insert(0, os.path.join(MODULE, "cherrypy"))
+    import cherrypy; cp=cherrypy
 
 try: import json # Python 2.6+
 except:
@@ -54,6 +71,30 @@ def encode_entities(string):
         string = string.replace("'", "&#39;")
     return string
 
+def decode_entities(string):
+    """ Decodes HTML entities in the given string ("&lt;" => "<").
+    """
+    # http://snippets.dzone.com/posts/show/4569
+    def replace_entity(match):
+        hash, hex, name = match.group(1), match.group(2), match.group(3)
+        if hash == "#" or name.isdigit():
+            if hex == "":
+                return unichr(int(name))                 # "&#38;" => "&"
+            if hex.lower() == "x":
+                return unichr(int("0x" + name, 16))      # "&#x0026;" = > "&"
+        else:
+            cp = htmlentitydefs.name2codepoint.get(name) # "&amp;" => "&"
+            return unichr(cp) if cp else match.group()   # "&foo;" => "&foo;"
+    if isinstance(string, basestring):
+        return RE_UNICODE.subn(replace_entity, string)[0]
+    return string
+
+def encode_url(string):
+    return urllib.quote_plus(bytestring(string)) # "black/white" => "black%2Fwhite".
+    
+def decode_url(string):
+    return urllib.unquote_plus(string)
+
 #### INTROSPECTION #################################################################################
 # URL paths are routed to handler functions, whose arguments represent URL path & query parameters.
 # So we need to know what the arguments and keywords arguments are at runtime.
@@ -68,7 +109,7 @@ def define(f):
         while getattr(f, "func_closure", None):
             f = [v.cell_contents for v in getattr(f, "func_closure")]
             f = [v for v in f if callable(v)]
-            f = f[0]   # guess...
+            f = f[0]   # We need guess (arg could also be a function).
         return f
     f = undecorate(f)
     a = inspect.getargspec(f) # (names, *args, **kwargs, values)
@@ -82,9 +123,13 @@ def define(f):
 #### DATABASE ######################################################################################
 
 #--- DATABASE --------------------------------------------------------------------------------------
-# A simple wrapper for SQLite databases.
+# A simple wrapper for SQLite and MySQL databases.
 
-DatabaseError = sqlite.DatabaseError
+# Database type:
+SQLITE, MYSQL = "sqlite", "mysql"
+
+# Database host:
+LOCALHOST = "127.0.0.1"
 
 class Row(dict):
     
@@ -93,45 +138,97 @@ class Row(dict):
         """
         d = cursor.description
         dict.__init__(self, ((d[i][0], v) for i, v in enumerate(row)))
-
+        
+class DatabaseError(Exception):
+    pass
+        
 class Database(object):
     
-    def __init__(self, name, schema="", factory=Row, timeout=10.0): # or sqlite.Row
+    def __init__(self, name, **kwargs):
         """ Creates and opens the SQLite database with the given name.
-            Optionally, the given SQL schema string is executed (once).
         """
-        if isinstance(name, Database):
-            name, factory = name.name, name.factory if factory == Row else factory
-        if os.path.exists(name):
-            schema = ";"
-        self._name = name
-        self._factory = factory
-        self._connection = sqlite.connect(name, timeout=timeout)
-        self._connection.row_factory = factory
-        self._connection.executescript(schema)
-        self._connection.commit()
+        k = kwargs.get
+        self._name    = name
+        self._type    = k("type", SQLITE)
+        self._host    = k("host", LOCALHOST)
+        self._port    = k("port", 3306)
+        self._user    = k("user", (k("username", "root"), k("password", "")))
+        self._factory = k("factory", Row)
+        self._timeout = k("timeout", 10)
+        self._connection = None
+        if kwargs.get("connect", True):
+            self.connect()
+        if kwargs.get("schema"):
+            # Database(schema="create table if not exists" `...`)
+            # initializes the database table and index structure.
+            for q in kwargs["schema"].split(";"):
+                self.execute(q+";", commit=False)
+            self.commit()
     
     @property
     def name(self):
-        """ Yields the path to the database file.
+        """ Yields the database name (for SQLITE, file path).
         """
         return self._name
+
+    @property
+    def type(self):
+        """ Yields the database type (SQLITE or MYSQL).
+        """
+        return self._type
+        
+    @property
+    def host(self):
+        """ Yields the database server host (MYSQL).
+        """
+        return self._host
+                
+    @property
+    def port(self):
+        """ Yields the database server port (MYSQL).
+        """
+        return self._port
     
     @property
     def connection(self):
         """ Yields the sqlite3.Connection object.
         """
         return self._connection
+        
+    def connect(self):
+        if self._type == SQLITE:
+            self._connection = sqlite.connect(self._name, timeout=self._timeout)
+            self._connection.row_factory = self._factory
+        if self._type == MYSQL:
+            import MySQLdb
+            self._connection = MySQLdb.connect(
+                  host = self._host, 
+                  port = self._port, 
+                  user = self._user[0], 
+                passwd = self._user[1], 
+       connect_timeout = self._timeout, 
+           use_unicode = True, 
+               charset = "utf8"
+            )
+            self._connection.row_factory = self._factory
+            self._connection.cursor().execute("create database if not exists `%s`" % self._name)
+            self._connection.cursor().execute("use `%s`" % self._name)
+            
+    def disconnect(self):
+        if self._connection is not None:
+            self._connection.commit()
+            self._connection.close()
+            self._connection = None
     
     def execute(self, sql, values=(), first=False, commit=True):
         """ Executes the given SQL query string and returns an iterator of rows.
             With first=True, returns the first row.
         """
         try:
-            r = self._connection.execute(sql, values)
+            r = self._connection.cursor().execute(sql, values)
             if commit: 
                 self._connection.commit()
-        except DatabaseError, e:
+        except Exception, e:
             # "OperationalError: database is locked" means that 
             # SQLite is receiving too many concurrent write ops.
             # A write operation locks the entire database;
@@ -139,7 +236,7 @@ class Database(object):
             # In this case you can raise Database(timeout=10),
             # lower Application.run(threads=10) or switch to MySQL or Redis.
             self._connection.rollback()
-            raise e
+            raise DatabaseError, str(e)
         return r.fetchone() if first else r
         
     def commit(self):
@@ -150,7 +247,7 @@ class Database(object):
     def rollback(self):
         """ Discard changes since the last commit.
         """
-        self._conncection.rollback()
+        self._connection.rollback()
         
     def __call__(self, *args, **kwargs):
         return self.execute(*args, **kwargs)
@@ -159,33 +256,29 @@ class Database(object):
         return "Database(name=%s)" % repr(self._name)
 
     def __del__(self):
-        try:
-            self._connection.commit()
-            self._connection.close()
-            self._connection = None
+        try: 
+            self.disconnect()
         except:
             pass
     
     @property
     def batch(self):
-        k = self._name
-        return Database._batch.setdefault(k, DatabaseTransaction(k))
+        return Database._batch.setdefault(self._name, DatabaseTransaction(self._name, **self.__dict__))
 
-    _batch = {} # Shared across instances.
+    _batch = {} # Shared across all instances.
 
 #--- DATABASE TRANSACTION BUFFER -------------------------------------------------------------------
 
-class DatabaseTransaction:
+class DatabaseTransaction(Database):
     
-    def __init__(self, name, timeout=10.0):
+    def __init__(self, name, **kwargs):
         """ Database.batch.execute() stores given the SQL query in RAM memory, across threads.
             Database.batch.commit() commits all buffered queries.
             This can be combined with @app.task() to periodically write batches to the database
             (instead of writing on each request).
         """
-        self._name   = name
-        self._queue  = []
-        self.timeout = timeout
+        Database.__init__(self, name, **dict(kwargs, connect=False))
+        self._queue = []
     
     def execute(self, sql, values=()):
         self._queue.append((sql, values))
@@ -194,74 +287,91 @@ class DatabaseTransaction:
         q, self._queue = self._queue, []
         if q:
             try:
-                connection = sqlite.connect(self._name, timeout=self.timeout)
+                Database.connect(self)  # Connect in this thread.
                 for sql, v in q:
-                    connection.execute(sql, v)
-                connection.commit()
+                    Database.execute(self, sql, v, commit=False)
+                Database.commit(self)
             except DatabaseError, e:
-                connection.rollback(); raise e # Data in q will be lost.
-            finally:
-                connection.close()
-            
+                Database.rollback(self) # Data in q will be lost.
+                raise e
+
     def rollback(self):
         self._queue = []
         
     def __len__(self):
         return len(self._queue)
+        
+    def __repr__(self):
+        return "DatabaseTransaction(name=%s)" % repr(self._name)
+
+    @property
+    def batch(self):
+        raise AttributeError
+
+#---------------------------------------------------------------------------------------------------
+# MySQL on Mac OS X installation notes:
+
+# 1) Download Sequel Pro: http://www.sequelpro.com (GUI).
+# 2) Download MySQL .dmg: http://dev.mysql.com/downloads/mysql/ (for 64-bit Python, 64-bit MySQL).
+# 3) Install the .pkg, startup item and preferences pane.
+# 4) Start server in preferences pane (user: "root", password: "").
+# 5) Command line: open -a "TextEdit" .bash_profile =>
+# 6) export PATH=~/bin:/usr/local/bin:/usr/local/mysql/bin:$PATH
+# 7) Command line: sudo pip install MySQL-python
+# 8) Command line: sudo ln -s /usr/local/mysql/lib/libmysqlclient.xx.dylib 
+#                             /usr/lib/libmysqlclient.xx.dylib
+# 9) import MySQLdb
 
 #### RATE LIMITING #################################################################################
-# With @app.route(path, throttle=True), the decorated URL path handler function calls Throttle().
+# With @app.route(path, limit=True), the decorated URL path handler function calls RateLimit().
 
-_THROTTLE_CACHE = {} # RAM cache of request counts.
-_THROTTLE_LOCK  = threading.RLock()
+_RATELIMIT_CACHE = {} # RAM cache of request counts.
+_RATELIMIT_LOCK  = threading.RLock()
 
 MINUTE, HOUR, DAY = 60., 60*60., 60*60*24.
 
-class ThrottleError(Exception):
+class RateLimitError(Exception):
     pass
 
-class ThrottleLimitExceeded(ThrottleError):
+class RateLimitExceeded(RateLimitError):
     pass
 
-class ThrottleForbidden(ThrottleError):
+class RateLimitForbidden(RateLimitError):
     pass
 
-class Throttle(Database):
+class RateLimit(Database):
     
-    def __init__(self, name="throttle.db", timeout=10.0):
+    def __init__(self, name="rate.db", **kwargs):
         """ A database for rate limiting API requests.
             It manages a table with (key, path, limit, time) entries.
             It grants each key a rate (number of requests / time) for a URL path.
             It keeps track of the number of requests in local memory (i.e., RAM).
-            If Throttle()() is called with the optional limit and time arguments,
+            If RateLimit()() is called with the optional limit and time arguments,
             unknown keys are temporarily granted this rate.
         """
-        Database.__init__(self, name, 
-            schema = (
-                "create table if not exists `throttle` ("
-                      "`key` text,"    # API key (e.g., ?key="1234").
-                     "`path` text,"    # API URL path (e.g., "/api/1/").
-                    "`limit` integer," # Maximum number of requests.
-                     "`time` float"    # Time frame.
-                ");"
-                "create index if not exists `throttle1` on throttle(key);"
-                "create index if not exists `throttle2` on throttle(path);"
-            ), 
-            factory = None, 
-            timeout = timeout)
+        Database.__init__(self, name, **dict(kwargs, factory=None, schema=(
+            "create table if not exists `rate` ("
+                  "`key` text,"    # API key (e.g., ?key="1234").
+                 "`path` text,"    # API URL path (e.g., "/api/1/").
+                "`limit` integer," # Maximum number of requests.
+                 "`time` float"    # Time frame.
+            ");"
+            "create index if not exists `rate1` on rate(key);"
+            "create index if not exists `rate2` on rate(path);")
+        ))
         self.load()
 
     @property
     def cache(self):
-        return _THROTTLE_CACHE
+        return _RATELIMIT_CACHE
         
     @property
     def lock(self):
-        return _THROTTLE_LOCK
+        return _RATELIMIT_LOCK
 
     @property
     def key(self, pairs=("rA","aZ","gQ","hH","hG","aR","DD")):
-        """ Yields a new random key.
+        """ Yields a new random key ("ZjNmYTc4ZDk0MTkyYk...").
         """
         k = str(random.getrandbits(256))
         k = hashlib.sha256(k).hexdigest()
@@ -279,7 +389,7 @@ class Throttle(Database):
         with self.lock: 
             if not self.cache:
                 # Lock concurrent threads when modifying cache.
-                for r in self.execute("select * from `throttle`;"):
+                for r in self.execute("select * from `rate`;"):
                     self.cache[(r[0], r[1])] = (0, r[2], r[3], _time.time())
                 self._rowcount = len(self.cache)
     
@@ -289,8 +399,8 @@ class Throttle(Database):
         """
         # Update database.
         p  = "/" + path.strip("/")
-        q1 = "delete from `throttle` where key=? and path=?;"
-        q2 = "insert into `throttle` values (?, ?, ?, ?);"
+        q1 = "delete from `rate` where key=? and path=?;"
+        q2 = "insert into `rate` values (?, ?, ?, ?);"
         self.execute(q1, (key, p), commit=False)
         self.execute(q2, (key, p, limit, time))
         # Update cache.
@@ -303,7 +413,7 @@ class Throttle(Database):
         """ Returns the rate for the given key and path (or None).
         """
         p = "/" + path.strip("/")
-        q = "select * from `throttle` where key=? and path=?;"
+        q = "select * from `rate` where key=? and path=?;"
         return self.execute(q, (key, p), first=True, commit=False)
         
     def __setitem__(self, (key, path), (limit, time)):
@@ -315,31 +425,34 @@ class Throttle(Database):
     def __contains__(self, key, path="%"):
         """ Returns True if the given key exists (for the given path).
         """
-        q = "select * from `throttle` where key=? and path like ?;"
+        q = "select * from `rate` where key=? and path like ?;"
         return self.execute(q, (key, path), first=True, commit=False) is not None
 
     def __call__(self, key, path="/", limit=None, time=None, reset=100000):
         """ Increases the (cached) request count by 1 for the given key and path.
-            If the request count exceeds its limit, raises ThrottleLimitExceeded.
+            If the request count exceeds its limit, raises RateLimitExceeded.
             If the optional limit and time are given, unknown keys (!= None) 
             are given this rate limit - as long as the cache exists in memory.
-            Otherwise a ThrottleForbidden is raised.
+            Otherwise a RateLimitForbidden is raised.
         """
         with self.lock:
             t = _time.time()
             p = "/" + path.strip("/")
-            r = self.cache.get((key, p))
+            r = self.cache.get((key, p))   
             # Reset the cache if too large (e.g., 1M+ IP addresses).
             if reset and reset < len(self.cache) and reset > self._rowcount:
                 self.reset()
             # Unknown key (apply default limit / time rate).
             if r is None and key is not None and limit is not None and time is not None:
                 self.cache[(key, p)] = r = (0, limit, time, t)
+            # Unknown key (apply root key, if any).
+            if r is None and p != "/":
+                self.cache.get((key, "/"))
             if r is None:
-                raise ThrottleForbidden
+                raise RateLimitForbidden
             # Limit reached within time frame (raise error).
             elif r[0] >= r[1] and r[2] > t - r[3]:
-                raise ThrottleLimitExceeded
+                raise RateLimitExceeded
             # Limit reached out of time frame (reset count).
             elif r[0] >= r[1]:
                 self.cache[(key, p)] = (1, r[1], r[2], t)
@@ -373,7 +486,10 @@ class Router(dict):
         # Store the handler + its argument names (tuple(args), dict(kwargs)),
         # so that we can call this function without (all) keyword arguments,
         # if it does not take (all) query data.
-        dict.__setitem__(self, p, (handler, define(handler)[2:]))
+        if callable(handler):
+            dict.__setitem__(self, p, (handler, define(handler)[2:]))
+        else:
+            dict.__setitem__(self, p, (handler, ((), {})))
         
     def __call__(self, path, **data):
         """ Calls the handler function for the given URL path.
@@ -382,26 +498,33 @@ class Router(dict):
             calls the handler with arguments (e.g., handler("1", "en")).
         """
         if not isinstance(path, tuple):
-            path = path.strip("/").split("/") # ("api", "1", "en")
+            path = path.strip("/").split("/") # ["api", "1", "en"]
         n = len(path)
         for i in xrange(n + 1):
-            p = "/" + "/".join(path[:n-i])    # "/api/1/en", "/api/1", "/api", ...
-            p = p.lower()
-            if p in self:
-                # Call the handler function and return its response.
-                (handler, (args, kwargs)), path = self[p], path[n-i:]
-                i = len(path)
+            p0 = "/" + "/".join(path[:n-i])
+            p0 = p0.lower()                   # "/api/1/en", "/api/1", "/api", ...
+            p1 = path[n-i:]                   # [], ["en"], ["1", "en"], ...
+            if p0 in self:
+                (handler, (args, kwargs)) = self[p0]
+                i = len(p1)
                 j = len(args) if args is not True else i
+                # Handler takes 1 argument, 0 given (pass None for convenience).
+                if i == 0 and j == 1:
+                    p1 = (None,); i=j
+                # Handler does not take path.
                 if i != j:
                     continue
+                # Handler is a string / dict.
+                if not callable(handler):
+                    return handler
                 # Handler takes path, but no query data.
                 if not kwargs:
-                    return handler(*path)
+                    return handler(*p1)
                 # Handler takes path and all query data.
                 if kwargs is True:
-                    return handler(*path, **data)
+                    return handler(*p1, **data)
                 # Handler takes path and some query data.
-                return handler(*path, **dict((k, v) for k, v in data.items() if k in kwargs))
+                return handler(*p1, **dict((k, v) for k, v in data.items() if k in kwargs))
         # No handler.
         raise RouteError
 
@@ -421,13 +544,13 @@ class HTTPRedirect(Exception):
 
 class HTTPError(Exception):
     
-    def __init__(self, code, status="", message="", traceback=None):
-        """ A HTTP error passed to an @app.error handler (or raised in a route handler).
+    def __init__(self, code, status="", message="", traceback=""):
+        """ A HTTP error raised in an @app.route() handler + passed to @app.error().
         """
         self.code      = code
         self.status    = status
         self.message   = message
-        self.traceback = traceback or None
+        self.traceback = traceback or ""
         
     def __repr__(self):
         return "HTTPError(code=%s)" % repr(self.code)
@@ -435,7 +558,7 @@ class HTTPError(Exception):
 class HTTPRequest(object):
     
     def __init__(self, app, ip, path="/", method="get", data={}, headers={}):
-        """ A Request object with metadata returned from app.request.
+        """ A HTTP request object with metadata returned from app.request.
         """
         self.app     = app
         self.ip      = ip
@@ -467,8 +590,8 @@ class localdict(dict):
     def __init__(self, data=None, **kwargs):
         """ Thread-safe dictionary.
         """
-        self.__dict__["_data"] = data or threading.local()
-        self.__dict__.update(kwargs) # Global in every thread.
+        self.__dict__["_data"] = data if data != None else threading.local()
+        self.__dict__.update(kwargs) # Attributes are global in every thread.
         
     def items(self):
         return self._data.__dict__.items()
@@ -512,7 +635,7 @@ class localdict(dict):
         return "localdict({%s})" % ", ".join(
             ("%s: %s" % (repr(k), repr(v)) for k, v in self.items()))
 
-# Alias for app.thread (Flask-style):
+# Global alias for app.thread (Flask-style):
 g = localdict(data=cp.thread_data)
 
 def threadsafe(function):
@@ -524,7 +647,6 @@ def threadsafe(function):
     # http://effbot.org/zone/thread-synchronization.htm
     #
     # >>> count = defaultdict(int)
-    #
     # >>> @threadsafe
     # >>> def inc(k):
     # >>>     count[k] += 1
@@ -538,28 +660,32 @@ def threadsafe(function):
 
 #--- APPLICATION -----------------------------------------------------------------------------------
 
+# Server host.
 LOCALHOST = "127.0.0.1"
+INTRANET = "0.0.0.0"
 
+# Server thread handlers.
 START = "start"
-STOP  = "stop"
+STOP = "stop"
 
 class Application(object):
     
-    def __init__(self, name=None, static="static/", throttle="throttle.db"):
+    def __init__(self, name=None, static="static/", rate="rate.db"):
         """ A web app served by a WSGI-server that starts with App.run().
             @App.route(path) defines a URL path handler.
             @App.error(code) defines a HTTP error handler.
         """
-        # Create Throttle db in the app folder:
-        throttle = os.path.join(SCRIPT, throttle)
-        self._name     = name         # App name.
-        self._host     = None         # Server host, see App.run().
-        self._port     = None         # Server port, see App.run().
-        self._up       = False        # True if server is up & running.
-        self._static   = static       # Static content folder.
-        self._throttle = throttle     # Throttle db name, see also App.route(throttle=True).
-        self.router    = Router()     # Router object, maps URL paths to handlers.
-        self.thread    = App.Thread() # Thread-safe dictionary.
+        # Create RateLimit db in app folder:
+        rate = os.path.join(SCRIPT, rate)
+        self._name   = name         # App name.
+        self._host   = None         # Server host, see App.run().
+        self._port   = None         # Server port, see App.run().
+        self._up     = False        # True if server is up & running.
+        self._cache  = {}           # Memoize cache.
+        self._static = static       # Static content folder.
+        self._rate   = rate         # RateLimit db name, see also App.route(limit=True).
+        self.router  = Router()     # Router object, maps URL paths to handlers.
+        self.thread  = App.Thread() # Thread-safe dictionary.
         
     @property
     def name(self):
@@ -597,10 +723,10 @@ class Application(object):
         
     @property
     def request(self):
-        """ Yields a Request object with metadata
+        """ Yields a request object with metadata
             (IP address, request path, query data and headers).
         """
-        r = cp.request # Deep copy (ensure garbage colletion).
+        r = cp.request # Deep copy (ensures garbage colletion).
         return HTTPRequest(
                 app = self, 
                  ip = r.remote.ip, 
@@ -611,7 +737,7 @@ class Application(object):
         
     @property
     def response(self):
-        """ Yields a Response object with metadata
+        """ Yields a response object with metadata
             (status, headers).
         """
         return cp.response
@@ -663,13 +789,14 @@ class Application(object):
         # Call @app.error(404) if no handler is found.
         # Call @app.error(403) if rate limit forbidden (= no API key).
         # Call @app.error(429) if rate limit exceeded.
+        # Call @app.error(503) if a database error occurs.
         try:
             v = self.router(path, **data)
         except RouteError:
             raise cp.HTTPError(404)         # 404 Not Found
-        except ThrottleForbidden:
+        except RateLimitForbidden:
             raise cp.HTTPError(403)         # 403 Forbidden
-        except ThrottleLimitExceeded:
+        except RateLimitExceeded:
             raise cp.HTTPError(429)         # 429 Too Many Requests
         except DatabaseError, e:
             raise cp.HTTPError(503, str(e)) # 503 Service Unavailable
@@ -681,32 +808,33 @@ class Application(object):
         #print self.elapsed
         return v
         
-    def route(self, path, throttle=False, limit=None, time=None, key=lambda data: data.get("key"), reset=100000):
+    def route(self, path, limit=False, time=None, key=lambda data: data.get("key"), reset=100000):
         """ The @app.route(path) decorator defines the handler function for the given path.
             The function can take arguments (path) and keyword arguments (query data), e.g.,
             if no handler exists for URL "/api/1/en", but a handler exists for URL "/api/1",
             this handler will be called with 1 argument: "en".
             It returns a string, a generator or a dictionary (which is parsed to a JSON-string).
         """
-        _a = (key, limit, time, reset) # Avoid trouble with key=lambda inside define().
+        _a = (key, limit, time, reset) # Avoid ambiguity with key=lambda inside define().
         def decorator(handler):
-            def throttled(handler):
-                # With @app.route(path, throttle=True), rate limiting is applied.
+            def ratelimited(handler):
+                # With @app.route(path, limit=True), rate limiting is applied.
                 # The handler function is wrapped in a function that first calls
-                # Throttle(key, path, limit, time) before calling the handler.
+                # RateLimit()(key, path, limit, time) before calling the handler.
                 # By default, a query parameter "key" is expected.
                 # If the key is known, apply rate limiting (429 Too Many Requests).
                 # If the key is unknown or None, deny access (403 Forbidden).
                 # If the key is unknown and a default limit and time are given,
                 # add the key and grant the given credentials, e.g.:
                 # @app.route(path, limit=100, time=HOUR, key=lambda data: app.request.ip).
+                # This grants each IP-address a 100 requests per hour.
                 @self.thread(START)
                 def connect():
-                    g.throttle = Throttle(name=self._throttle)
+                    g.rate = RateLimit(name=self._rate)
                 def wrapper(*args, **kwargs):
                     r = cp.request
                     self = r.app.root
-                    self.throttle(
+                    self.rate(
                           key = _a[0](r.params),
                          path = "/" + r.path_info.strip("/"),
                         limit = _a[1],  # Default limit for unknown keys.
@@ -715,8 +843,8 @@ class Application(object):
                     )
                     return handler(*args, **kwargs)
                 return wrapper
-            if throttle is True or (limit is not None and time is not None):
-                handler = throttled(handler)
+            if limit is True or (limit is not False and limit is not None and time is not None):
+                handler = ratelimited(handler)
             self.router[path] = handler # Register the handler.
             return handler
         return decorator
@@ -730,10 +858,13 @@ class Application(object):
             # Wrap as a HTTPError and pass it to the handler.
             def wrapper(status="", message="", traceback="", version=""):
                 return handler(HTTPError(int(status.split(" ")[0]), status, message, traceback))
+            # app.error("*") catches all error codes.
             if code in ("*", None):
                 cp.config.update({"error_page.default": wrapper})
+            # app.error(404) catches 404 error codes.
             elif isinstance(code, (int, basestring)):
                 cp.config.update({"error_page.%s" % code: wrapper})
+            # app.error((404, 500)) catches 404 + 500 error codes.
             elif isinstance(code, (tuple, list)):
                 for x in code:
                     cp.config.update({"error_page.%s" % x: wrapper})
@@ -746,7 +877,7 @@ class Application(object):
         """
         def decorator(handler):
             def wrapper(*args, **kwargs):
-                if not hasattr(template, "render"):
+                if not hasattr(template, "render"): # bottle.py templates have render() too.
                     t = Template(template, root=self.static, cached=cached)
                 else:
                     t = template
@@ -776,20 +907,48 @@ class Application(object):
             return decorator
 
     @property
-    def throttle(self, name="throttle"):
-        """ Yields a thread-safe connection to the app's Throttle (used for rate limiting).
+    def rate(self, name="rate"):
+        """ Yields a thread-safe connection to the app's RateLimit db.
         """
-        if not hasattr(g, name): setattr(g, name, Throttle(name=self._throttle))
+        if not hasattr(g, name): setattr(g, name, RateLimit(name=self._rate))
         return getattr(g, name)
 
-    def set(self, name="db"):
-        """ The @app.set(name) decorator defines the function that spawns a database connection.
-            The database connection is stored thread-safe in app.thread.[name] & g.[name].
-            The database connection is available in handlers as a keyword argument [name].
+    def bind(self, name="db"):
+        """ The @app.bind(name) decorator binds the given function to a keyword argument
+            that can be used with @app.route() handlers.
+            The return value is stored thread-safe in app.thread.[name] & g.[name].
+            The return value is available in handlers as a keyword argument [name].
         """
+        # This is useful for multi-threaded database connections:
+        # >>>
+        # >>> @app.bind("db")
+        # >>> def db():
+        # >>>     return Database("products.db")
+        # >>>
+        # >>> @app.route("/products")
+        # >>> def products(id, db=None):
+        # >>>     return db.execute("select * from products where id=?", (id,))
         def decorator(handler):
             return self.thread(START)(lambda: setattr(g, name, handler()))
         return decorator
+    
+    @property
+    def cached(self):
+        """ The @app.cached decorator caches the return value of the given handler.
+            This is useful if the handler is computationally expensive,
+            and often called with the same arguments (e.g., recursion).
+        """
+        def decorator(handler):
+            def wrapper(*args, **kwargs):
+                # Cache return value for given arguments.
+                k = (handler, cPickle.dumps(args), cPickle.dumps(kwargs))
+                if k not in self._cache:
+                    self._cache[k] = handler(*args, **kwargs)
+                return self._cache[k]
+            return wrapper
+        return decorator
+        
+    memoize = cached
     
     def task(self, interval=MINUTE):
         """ The @app.task(interval) decorator will call the given function repeatedly (in a thread).
@@ -845,10 +1004,11 @@ class Application(object):
         cp.tree.mount(self, "/", config={"/": {
             # Static content is served from the /static subfolder, 
             # e.g., <img src="g/cat.jpg" /> refers to "/static/g/cat.jpg".
-            "tools.staticdir.on"       : True,
+            "tools.staticdir.on"       : self.static is not None,
             "tools.staticdir.dir"      : self.static,
             "tools.sessions.on"        : sessions
         }})
+        os.chdir(self.path) # Relative root = project path.
         cp.engine.start()
         cp.engine.block()
         self._host = None
@@ -879,7 +1039,7 @@ def static(path, root=None, mimetype=None):
 # http://cherrypy.readthedocs.org/en/latest/progguide/extending/customtools.html
 
 def _register(event, handler):
-    """ Registers the given event handler.
+    """ Registers the given event handler (e.g., "on_end_request").
     """
     k = handler.__name__
     setattr(cp.tools, k, cp.Tool(event, handler))
@@ -897,7 +1057,25 @@ _register("on_start_resource", _request_start)
 _register("on_end_request", _request_end)
 
 #### TEMPLATE ######################################################################################
+# A template is a HTML-file with placeholders, which can be variable names or Python source code.
 # Based on: http://davidbau.com/archives/2011/09/09/python_templating_with_stringfunction.html
+
+_MARKUP = [
+    r"\$[_a-z][\w]*",     # $var
+    r"\$\{[_a-z][\w]*\}", # ${var}iable
+    r"\<\%=.*?\%\>",      # <%= var + 1 %>
+    r"\<\%.*?\%\>",       # <% print(var) %>
+    r"\<\%[^\n]*?"        # SyntaxError (no closing tag)
+]
+
+# <% if x in y: %> ... <% end if %>
+# <% for x in y: %> ... <% end for %>
+_MARKUP.insert(0, r"\<\% if (.*?) : \%\>(.*)\<\% end if \%\>") # No "elif", "else" yet.
+_MARKUP.insert(1, r"\<\% for (.*?) in (.*?) : \%\>(.*)\<\% end for \%\>")
+
+_MARKUP = (p.replace(" ", r"\s*") for p in _MARKUP)
+_MARKUP = "(%s)" % "|".join(_MARKUP)
+_MARKUP = re.compile(_MARKUP, re.I | re.S | re.M)
 
 class Template(object):
     
@@ -923,55 +1101,78 @@ class Template(object):
         if cached is True and b is False:
             a = Template._cache.setdefault(k, a)
         self._compiled = a
+
+    def _escape(self, s):
+        """ Returns a string with no leading indentation and escaped newlines.
+        """
+        # Used in Template._compile() with eval() and exec().
+        s = s.replace("\n", "\\n")
+        s = textwrap.dedent(s)
+        return s
         
-    def _format(self, v, indent=""):
+    def _encode(self, v, indent=""):
         """ Returns the given value as a string (empty string for None).
         """
+        # Used in Template._render().
         v = "%s" % (v if v is not None else "")
-        v = v.replace("\n", "\n" + indent)
+        v = v.replace("\n", "\n" + indent) if indent else v
         return v
+
+    def _dict(self, k="", v=[]):
+        """ Returns a dictionary of keys k and values v, where k is a string.
+            Used in Template._render() with <for> blocks.
+        """
+        # For example: "<% for $i, $x in enumerate([1, 2, 3]): %>",
+        # "$i, $x" is mapped to {"i": 0, "x": 1}, {"i": 1, "x": 2}, ...
+        # Nested tuples are not supported (e.g., "($i, ($k, $v))").
+        k = [k.strip("$ ") for k in k.strip("()").split(",")]
+        return dict(zip(k, v if len(k) > 1 else [v]))
 
     def _compile(self, string):
         """ Returns the template string as a (type, value, indent) list,
-            where type is either <str>, <arg>, <eval> or <exec>.
+            where type is either <str>, <arg>, <if>, <for>, <eval> or <exec>.
             With <eval> and <exec>, value is a compiled code object
             that can be executed with eval() or exec() respectively.
         """
-        r = r"(%s|%s|%s|%s|%s)" % (
-            r"\$[_a-z][\w]*",     # $var
-            r"\$\{[_a-z][\w]*\}", # ${var}iable
-            r"\<\%\=.*?\%\>",     # <%= var + 1 %>
-            r"\<\%.*?\%\>",       # <% print(var) %>
-            r"\<\%[^\n]*?"
-        )
         a = []
         i = 0
-        for m in re.finditer(r, string, re.I | re.M):
+        for m in _MARKUP.finditer(string):
             s = m.group(1)
             j = m.start(1)
             n = string[:j].count("\n")      # line number
-            p = re.compile(r"(^|\n)(.*?)$") # line indent
-            p = re.search(p, string[:j]) 
-            p = re.sub(r"[^\t]", " ", string[p.start(2):j])
+            w = re.compile(r"(^|\n)(.*?)$") # line indent
+            w = re.search(w, string[:j]) 
+            w = re.sub(r"[^\t]", " ", string[w.start(2):j])
             if i != j:
                 a.append(("<str>", string[i:j], ""))
+            # $$escaped
             if s.startswith("$") and j > 0 and string[j-1] == "$":
                 a.append(("<str>", s, ""))
+            # ${var}iable
             elif s.startswith("${") and s.endswith("}"):
-                a.append(("<arg>", s[2:-1], p))
+                a.append(("<arg>", s[2:-1], w))
+            # $var
             elif s.startswith("$"):
-                a.append(("<arg>", s[1:], p))
+                a.append(("<arg>", s[1:], w))
+            # <% if x in y: %> ... <% end if %>
+            elif s.startswith("<%") and m.group(2):
+                a.append(("<if>", (m.group(2), self._compile(m.group(3).lstrip("\n"))), w))
+            # <% for x in y: %> ... <% end for %>
+            elif s.startswith("<%") and m.group(4):
+                a.append(("<for>", (m.group(4), m.group(5), self._compile(m.group(6).lstrip("\n"))), w))
+            # <%= var + 1 %>
             elif s.startswith("<%=") and s.endswith("%>"):
-                a.append(("<eval>", compile("\n"*n + textwrap.dedent(s[3:-2]), "<string>", "eval"), p))
+                a.append(("<eval>", compile("\n"*n + self._escape(s[3:-2]), "<string>", "eval"), w))
+            # <% print(var) %>
             elif s.startswith("<%") and s.endswith("%>"):
-                a.append(("<exec>", compile("\n"*n + textwrap.dedent(s[2:-2]), "<string>", "exec"), p))
+                a.append(("<exec>", compile("\n"*n + self._escape(s[2:-2]), "<string>", "exec"), w))
             else:
                 raise SyntaxError, "template has no end tag for '%s' (line %s)" % (s, n+1)
             i = m.end(1)
         a.append(("<str>", string[i:], ""))
         return a
         
-    def _render(self, *args, **kwargs):
+    def _render(self, compiled, *args, **kwargs):
         """ Returns the rendered string as an iterator.
             Replaces template placeholders with keyword arguments (if any).
             Replaces source code with the return value of eval() or exec().
@@ -980,20 +1181,28 @@ class Template(object):
         for d in args:
             k.update(d)
         k.update(kwargs)
-        for cmd, v, p in self._compiled:
+        k["template"] = template
+        indent = kwargs.pop("indent", False)
+        for cmd, v, w in compiled:
+            if indent is False:
+                w = ""
             if cmd is None:
                 continue
             elif cmd == "<str>":
-                yield v
+                yield self._encode(v, w)
             elif cmd == "<arg>":
-                yield self._format(k.get(v, "$" + v), p)
+                yield self._encode(k.get(v, "$" + v), w)
+            elif cmd == "<if>":
+                yield "".join(self._render(v[1], k)) if eval(v[0]) else ""
+            elif cmd == "<for>":
+                yield "".join(["".join(self._render(v[2], k, self._dict(v[0], i))) for i in eval(v[1], k)])
             elif cmd == "<eval>":
-                yield self._format(eval(v, k), p)
+                yield self._encode(eval(v, k), w)
             elif cmd == "<exec>":
-                o = StringIO.StringIO()
+                o = cStringIO.StringIO()
                 k["write"] = o.write # Code blocks use write() for output.
                 exec(v, k)
-                yield self._format(o.getvalue(), p)
+                yield self._encode(o.getvalue(), w)
                 del k["write"]
                 o.close()
                 
@@ -1005,36 +1214,46 @@ class Template(object):
             For example, source code in Template.render(re=re) has access to the regex library.
             Multiple dictionaries can be given, e.g.,
             Template.render(globals(), locals(), foo="bar").
+            Code blocks in <? ?> can use write() and template().
         """
-        return "".join(self._render(*args, **kwargs))
+        return "".join(self._render(self._compiled, *args, **kwargs))
 
 def template(string, *args, **kwargs):
     """ Returns the rendered template as a string.
     """
+    if hasattr(string, "render"):
+        return string.render(*args, **kwargs)
     root, cached = (
         kwargs.pop("root", None),
-        kwargs.pop("cached", None)
-    )
+        kwargs.pop("cached", None))
     if root is None and len(args) > 0 and isinstance(args[0], basestring):
         root = args[0]
         args = args[1:]
-    if hasattr(string, "render"):
-        return string
     return Template(string, root, cached).render(*args, **kwargs)
 
-####################################################################################################
-
-# TODO: if you already have CherryPy installed, remove the one bundled in Pattern,
-# otherwise it will try to start two servers.
+#s = """
+#<html>
+#<head>
+#    <title>$title</title>
+#</head>
+#<body>
+#<% for $i, $name in enumerate(names): %>
+#    <b><%= i+1 %>) Hello $name!</b>
+#<% end for %>
+#</body>
+#</html>
+#"""
+#
+#print template(s.strip(), title="test", names=["Tom", "Walter"])
 
 ####################################################################################################
 
 #from pattern.en import sentiment
 #
 #app = App()
-##app.throttle[("1234", "/api/en/sentiment")] = (5, MINUTE)
+#app.rate[("1234", "/api/en/sentiment")] = (100, MINUTE)
 #
-#@app.set("db")
+#@app.bind("db")
 #def db():
 #    return Database("log.db", schema="create table if not exists `log` (q text);")
 #
@@ -1044,8 +1263,8 @@ def template(string, *args, **kwargs):
 #    return "%s<br>%s" % (path, data.get("db"))
 #
 ## http://localhost:8080/api/en/sentiment?q=awesome
-##@app.route("/api/en/sentiment", throttle=True)
-#@app.route("/api/en/sentiment", throttle=True, limit=10, time=MINUTE, key=lambda data: app.request.ip)
+##@app.route("/api/en/sentiment", limit=True)
+#@app.route("/api/en/sentiment", limit=10, time=MINUTE, key=lambda data: app.request.ip)
 #def nl_sentiment(q="", db=None):
 #    polarity, subjectivity = sentiment(q)
 #    db.batch.execute("insert into `log` (q) values (?);", (q,))
