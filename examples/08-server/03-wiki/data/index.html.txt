@@ -1,0 +1,3 @@
+<p>This is a very simple wiki powered by pattern.server.</p>
+<p>Each page can be modified by clicking the edit-link.</p>
+<p>To create a new page, create a link to it, for example this <a href="test">test</a> page.</p>
