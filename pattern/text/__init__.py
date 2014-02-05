@@ -2058,6 +2058,7 @@ def _multilingual(function, *args, **kwargs):
 def language(s):
     """ Returns a (language, confidence)-tuple for the given string.
     """
+    s = decode_utf8(s)
     s = set(w.strip(PUNCTUATION) for w in s.replace("'", "' ").split())
     n = float(len(s) or 1)
     p = {}

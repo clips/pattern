@@ -80966,6 +80966,7 @@ zéro NN
 Ásdís NNP
 Åsa NNP
 Ça PRP
+Çava UH
 Çà RB
 Èbre NNP
 Ève NNP
@@ -81034,6 +81035,7 @@ zéro NN
 æðelstan NNP
 æðelþryð NNP
 ça DT
+çava UH
 ébahi VBN
 ébahie VBN
 ébahis VBN

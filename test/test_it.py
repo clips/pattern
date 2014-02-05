@@ -237,7 +237,7 @@ class TestParser(unittest.TestCase):
                 # WaCKy test set tags plural nouns as "NN", pattern.it as "NNS".
                 # Some punctuation marks are also tagged differently, 
                 # but these are not necessarily errors.
-                if t1 == t2 or (t1 == "NN" and t2 == "NNS") or s1[j][0] in "\":;)-":
+                if t1 == t2 or (t1 == "NN" and t2.startswith("NN")) or s1[j][0] in "\":;)-":
                     i += 1
                 n += 1
         #print float(i) / n
