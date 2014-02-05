@@ -387,7 +387,7 @@ var Node = Class.extend({
         // Draw the node weight as a shadow (based on node betweenness centrality).
         if (weighted && weighted != false && this.centrality > ((weighted==true)?-1:weighted)) {
             var w = this.centrality * 35;
-           _ctx_graph_fillStyle("rgba(0,0,0,0.1)", ctx);
+           _ctx_graph_fillStyle("rgba(0,0,0,0.075)", ctx);
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius+w, 0, Math.PI*2, true);
             ctx.closePath();
