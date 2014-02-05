@@ -272,6 +272,8 @@ class Synset(object):
             lin = 2.0 * log(lcs(self, synset).ic) / (log(self.ic * synset.ic) or 1)
         except OverflowError:
             lin = 0.0
+        except ValueError: # / log(0)
+            lin = 0.0
         return abs(lin)
         
     @property
