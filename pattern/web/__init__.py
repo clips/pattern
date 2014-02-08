@@ -50,7 +50,7 @@ except:
     pass
 
 try:
-    MODULE = os.path.dirname(os.path.abspath(__file__))
+    MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
 
@@ -833,13 +833,13 @@ def decode_entities(string):
     def replace_entity(match):
         hash, hex, name = match.group(1), match.group(2), match.group(3)
         if hash == "#" or name.isdigit():
-            if hex == '' :
+            if hex == "":
                 return unichr(int(name))                 # "&#38;" => "&"
-            if hex in ("x","X"):
-                return unichr(int('0x'+name, 16))        # "&#x0026;" = > "&"
+            if hex.lower() == "x":
+                return unichr(int("0x" + name, 16))      # "&#x0026;" = > "&"
         else:
             cp = htmlentitydefs.name2codepoint.get(name) # "&amp;" => "&"
-            return cp and unichr(cp) or match.group()    # "&foo;" => "&foo;"
+            return unichr(cp) if cp else match.group()   # "&foo;" => "&foo;"
     if isinstance(string, basestring):
         return RE_UNICODE.subn(replace_entity, string)[0]
     return string
@@ -1453,13 +1453,16 @@ class Twitter(SearchEngine):
             raise SearchEngineTypeError
         if not query or count < 1 or (isinstance(start, (int, long, float)) and start < 1):
             return Results(TWITTER, query, type)
-        if isinstance(start, (int, long, float)) and start < 10000:
-            id = (query, kwargs.get("geo"), kwargs.get("date"), int(start)-1, count)
-            id = self._pagination.pop(id, "")
-        if isinstance(start, (int, long, float)):
-            id = int(start) - 1
-        else:
+        if not isinstance(start, (int, long, float)):
             id = int(start) - 1 if start and start.isdigit() else ""
+        else:
+            if start == 1:
+                self._pagination = {}
+            if start <= 10000:
+                id = (query, kwargs.get("geo"), kwargs.get("date"), int(start)-1, count)
+                id = self._pagination.get(id, "")
+            else:
+                id = int(start) - 1
         # 1) Construct request URL.
         url = URL(TWITTER + "search/tweets.json?", method=GET)
         url.query = {
@@ -1507,16 +1510,43 @@ class Twitter(SearchEngine):
         # However, new tweets may arrive quickly,
         # so that by the time Twitter.search(start=2) is called,
         # it will yield results from page 1 (or even newer results).
-        # For backward compatibility, we keep a one-time page cache,
+        # For backward compatibility, we keep page cache,
         # that remembers the last id for a "page" for a given query,
         # when called in a loop.
         #
         # Store the last id retrieved.
         # If search() is called again with start+1, start from this id.
-        if isinstance(start, (int, long, float)) and results:
-            id = (query, kwargs.get("geo"), kwargs.get("date"), int(start), count)
-            self._pagination[id] = str(int(results[-1].id) - 1)
+        if isinstance(start, (int, long, float)):
+            k = (query, kwargs.get("geo"), kwargs.get("date"), int(start), count)
+            if results:  
+                self._pagination[k] = str(int(results[-1].id) - 1) 
+            else:
+                self._pagination[k] = id
         return results
+        
+    def profile(self, query, start=1, count=10, **kwargs):
+        """ For the given author id, alias or search query,
+            returns a list of (id, alias, name, description, location, picture, date created)-tuple.
+        """
+        url = URL(TWITTER + "users/search.json?", method=GET, query={
+               "q": query,
+            "page": start,
+           "count": count
+        })
+        url = self._authenticate(url)
+        kwargs.setdefault("cached", False)
+        kwargs.setdefault("unicode", True)
+        kwargs.setdefault("throttle", self.throttle)
+        data = URL(url).download(**kwargs)
+        data = json.loads(data)
+        return [(
+            u(x.get("id_str", "")),
+            u(x.get("screen_name", "")),
+            u(x.get("name", "")),
+            u(x.get("description", "")),
+            u(x.get("location", "")),
+            u(x.get("profile_image_url", "")),
+            u(x.get("created_at", ""))) for x in data]
 
     def trends(self, **kwargs):
         """ Returns a list with 10 trending topics on Twitter.
