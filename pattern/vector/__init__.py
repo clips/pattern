@@ -43,7 +43,7 @@ from codecs      import open
 from collections import defaultdict
 
 try:
-    MODULE = os.path.dirname(os.path.abspath(__file__))
+    MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
 
@@ -2156,15 +2156,17 @@ class ConfusionMatrix(defaultdict):
         return repr(dict((k, dict(v)) for k, v in self.iteritems()))
 
 def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
-    """ For 10-fold cross-validation, performs 10 separate tests of the classifier,
+    """ Returns an (accuracy, precisiom, recall, F1-score, standard deviation)-tuple.
+        For 10-fold cross-validation, performs 10 separate tests of the classifier,
         each with a different 9/10 training and 1/10 testing documents.
-        The given classifier is a class (Bayes, KNN, SVM)
+        The given classifier is a class (NB, KNN, SLP, SVM)
         which is initialized with the given optional parameters.
     """
     K = kwargs.pop("K", folds)
     d = [isinstance(d, Document) and (d, d.type) or d for d in documents]
     d = shuffled(d) # Avoid a list sorted by type (because we take successive folds).
     m = [0.0, 0.0, 0.0, 0.0] # Macro-average accuracy, precision, recall & F1-score.
+    f = []
     for i in range(K):
         n = len(d) / float(max(K, 2)) # Test fold size.
         x = int(round(i * n))         # Test fold start index.
@@ -2175,16 +2177,21 @@ def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
         m[1] += P
         m[2] += R
         m[3] += F
-    return tuple([v / (K or 1) for v in m])
+        f.append(F)
+    # F-score mean & variance.
+    u = float(sum(f)) / (K or 1)
+    o = float(sum((x - u) ** 2 for x in f)) / (K-1 or 1)
+    o = sqrt(o)
+    return tuple([v / (K or 1) for v in m] + [o])
     
 kfoldcv = K_fold_cv = k_fold_cv = k_fold_cross_validation = K_fold_cross_validation
 
 def gridsearch(Classifier, documents=[], folds=10, **kwargs):
     """ Returns the test results for every combination of optional parameters,
-        using K-fold cross-validation for the given classifier (Bayes, KNN, SVM).
+        using K-fold cross-validation for the given classifier (NB, KNN, SLP, SVM).
         For example:
-        for (A, P, R, F), p in gridsearch(SVM, data, c=[0.1, 1, 10]):
-            print (A, P, R, F), p
+        for (A, P, R, F, o), p in gridsearch(SVM, data, c=[0.1, 1, 10]):
+            print (A, P, R, F, o), p
         > (0.919, 0.921, 0.919, 0.920), {"c": 10}
         > (0.874, 0.884, 0.865, 0.874), {"c": 1}
         > (0.535, 0.424, 0.551, 0.454), {"c": 0.1}
@@ -2197,7 +2204,7 @@ def gridsearch(Classifier, documents=[], folds=10, **kwargs):
             p = [x + [y] for x in p for y in iterable]
         for p in p:
             yield tuple(p)
-    s = [] # [((A, P, R, F), parameters), ...]
+    s = [] # [((A, P, R, F, o), parameters), ...]
     p = [] # [[("c", 0.1), ("c", 10), ...], 
            #  [("gamma", 0.1), ("gamma", 0.2), ...], ...]
     for k, v in kwargs.items():
