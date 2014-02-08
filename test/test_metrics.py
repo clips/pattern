@@ -1,4 +1,4 @@
-import os, sys; sys.path.insert(0, os.path.join(".."))
+import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import unittest
 import time
 import math
@@ -6,7 +6,7 @@ import math
 from pattern import metrics
 
 try:
-    PATH = os.path.dirname(os.path.abspath(__file__))
+    PATH = os.path.dirname(os.path.realpath(__file__))
 except:
     PATH = ""
 

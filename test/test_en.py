@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import os, sys; sys.path.insert(0, os.path.join(".."))
+import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import unittest
 import random
 import subprocess
@@ -8,7 +8,7 @@ from pattern import text
 from pattern import en
 
 try:
-    PATH = os.path.dirname(os.path.abspath(__file__))
+    PATH = os.path.dirname(os.path.realpath(__file__))
 except:
     PATH = ""
 

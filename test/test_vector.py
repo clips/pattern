@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import os, sys; sys.path.insert(0, os.path.join(".."))
+import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import time
 import random
 import codecs
@@ -13,7 +13,7 @@ from pattern.en import Text, Sentence, Word, parse
 from pattern.db import Datasheet
 
 try:
-    PATH = os.path.dirname(os.path.abspath(__file__))
+    PATH = os.path.dirname(os.path.realpath(__file__))
 except:
     PATH = ""
 
@@ -922,8 +922,8 @@ class TestClassifier(unittest.TestCase):
         # Assert Bayesian probability classification.
         self._test_classifier(vector.NB)
         # Assert the accuracy of the classifier.
-        A, P, R, F = vector.NB.test(self.model, folds=10, method=vector.BERNOUILLI)
-        #print A, P, R, F
+        A, P, R, F, o = vector.NB.test(self.model, folds=10, method=vector.BERNOUILLI)
+        #print A, P, R, F, o
         self.assertTrue(P >= 0.89)
         self.assertTrue(R >= 0.89)
         self.assertTrue(F >= 0.89)
@@ -932,8 +932,8 @@ class TestClassifier(unittest.TestCase):
         # Assert nearest-neighbor classification.
         self._test_classifier(vector.KNN, k=10, distance=vector.COSINE)
         # Assert the accuracy of the classifier.
-        A, P, R, F = vector.KNN.test(self.model, folds=10, k=2, distance=vector.COSINE)
-        #print A, P, R, F
+        A, P, R, F, o = vector.KNN.test(self.model, folds=10, k=2, distance=vector.COSINE)
+        #print A, P, R, F, o
         self.assertTrue(P >= 0.92)
         self.assertTrue(R >= 0.92)
         self.assertTrue(F >= 0.92)
@@ -943,8 +943,8 @@ class TestClassifier(unittest.TestCase):
         # Assert single-layer averaged perceptron classification.
         self._test_classifier(vector.SLP)
         # Assert the accuracy of the classifier.
-        A, P, R, F = vector.SLP.test(self.model, folds=10, iterations=3)
-        #print A, P, R, F
+        A, P, R, F, o = vector.SLP.test(self.model, folds=10, iterations=3)
+        #print A, P, R, F, o
         self.assertTrue(P >= 0.93)
         self.assertTrue(R >= 0.93)
         self.assertTrue(F >= 0.93)
@@ -958,8 +958,8 @@ class TestClassifier(unittest.TestCase):
         # Assert support vector classification.
         self._test_classifier(vector.SVM, type=vector.SVC, kernel=vector.LINEAR)
         # Assert the accuracy of the classifier.
-        A, P, R, F = vector.SVM.test(self.model, folds=10, type=vector.SVC, kernel=vector.LINEAR)
-        #print A, P, R, F
+        A, P, R, F, o = vector.SVM.test(self.model, folds=10, type=vector.SVC, kernel=vector.LINEAR)
+        #print A, P, R, F, o
         self.assertTrue(P >= 0.93)
         self.assertTrue(R >= 0.93)
         self.assertTrue(F >= 0.93)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # These tests require a working internet connection.
-import os, sys; sys.path.insert(0, os.path.join(".."))
+import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import unittest
 import time
 import warnings
@@ -8,7 +8,7 @@ import warnings
 from pattern import web
 
 try:
-    PATH = os.path.dirname(os.path.abspath(__file__))
+    PATH = os.path.dirname(os.path.realpath(__file__))
 except:
     PATH = ""
 
