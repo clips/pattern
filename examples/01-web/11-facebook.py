@@ -1,7 +1,7 @@
-import os, sys; sys.path.insert(0, os.path.join("..", ".."))
+import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import Facebook, NEWS, COMMENTS, LIKES
-from pattern.db  import Datasheet, pprint
+from pattern.db  import Datasheet, pprint, pd
 
 # The Facebook API can be used to search public status updates (no license needed).
 
@@ -20,7 +20,7 @@ try:
     # In the first column, we'll store a unique id for each status update.
     # We only want to add new status updates, i.e., those we haven't seen yet.
     # With an index on the first column we can quickly check if an id already exists.
-    table = Datasheet.load("opinions.txt")
+    table = Datasheet.load(pd("opinions.csv"))
     index = set(table.columns[0])
 except:
     table = Datasheet()
@@ -46,7 +46,8 @@ for status in fb.search("horrible", count=25, cached=False):
         table.append([status.id, status.text])
         index.add(status.id)
 
-table.save("opinions.txt")
+# Create a .csv in pattern/examples/01-web/
+table.save(pd("opinions.csv"))
 
 # 2) Status updates from specific profiles.
 #    For this you need a personal license key:

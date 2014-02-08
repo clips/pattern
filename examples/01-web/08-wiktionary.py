@@ -1,5 +1,7 @@
+import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+
 from pattern.web import Wiktionary, DOM
-from pattern.db import csv
+from pattern.db import csv, pd
 
 # This example retrieves male and female given names from Wiktionary (http://en.wiktionary.org).
 # It then trains a classifier that can predict the gender of unknown names (about 78% correct).
@@ -10,6 +12,8 @@ f = csv() # csv() is a short alias for Datasheet().
 
 # Collect male and female given names from Wiktionary.
 # Store the data as (name, gender)-rows in a CSV-file.
+# The pd() function returns the parent directory of the current script,
+# so pd("given-names.csv") = pattern/examples/01-web/given-names.csv.
 
 for gender in ("male", "female"):
     for ch in ("abcdefghijklmnopqrstuvwxyz"):
@@ -17,7 +21,7 @@ for gender in ("male", "female"):
         for name in p.links:
             if not name.startswith("Appendix:"):
                 f.append((name, gender[0]))
-        f.save("given-names.csv")
+        f.save(pd("given-names.csv"))
         print ch, gender
 
 # Create a classifier that predicts gender based on name.
@@ -42,24 +46,24 @@ class GenderByName(SVM):
         v[len(name)] = 1
         return v
 
-data = csv("given-names.csv")
+data = csv(pd("given-names.csv"))
 
-# Test average (accuracy, precision, recall, F-score).
+# Test average (accuracy, precision, recall, F-score, standard deviation).
 
-print kfoldcv(GenderByName, data, folds=3) # (0.81, 0.79, 0.77, 0.78)
+print kfoldcv(GenderByName, data, folds=3) # (0.81, 0.79, 0.77, 0.78, 0.0005)
 
-# Train and save the classifier.
+# Train and save the classifier in the current folder.
 # With final=True, discards the original training data (= smaller file).
 
 g = GenderByName(train=data)
-g.save("gender-by-name.svm", final=True)
+g.save(pd("gender-by-name.svm"), final=True)
 
 # Next time, we can simply load the trained classifier.
 # Keep in mind that the script that loads the classifier
 # must include the code for the GenderByName class description,
 # otherwise Python won't know how to load the data.
 
-g = GenderByName.load("gender-by-name.svm")
+g = GenderByName.load(pd("gender-by-name.svm"))
 
 for name in (
   "Felix",
@@ -79,6 +83,6 @@ for name in (
 
 #g.train("Arwen", gender="f")
 #g.train("Jabba", gender="m")
-#g.save("gender-by-name.svm", final=True)
+#g.save(pd("gender-by-name.svm"), final=True)
 #print g.classify("Arwen")
 #print g.classify("Jabba")

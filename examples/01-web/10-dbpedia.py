@@ -1,5 +1,5 @@
 # -*- coding: utf-8 *-*
-import os, sys, pprint; sys.path.insert(0, os.path.join("..", ".."))
+import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import DBPedia
 

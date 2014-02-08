@@ -1,7 +1,7 @@
-import os, sys; sys.path.insert(0, os.path.join("..", ".."))
+import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import Twitter, hashtags
-from pattern.db  import Datasheet, pprint
+from pattern.db  import Datasheet, pprint, pd
 
 # This example retrieves tweets containing given keywords from Twitter.
 
@@ -11,7 +11,8 @@ try:
     # In the first column, we'll store a unique id for each tweet.
     # We only want to add the latest tweets, i.e., those we haven't seen yet.
     # With an index on the first column we can quickly check if an id already exists.
-    table = Datasheet.load("cool.csv")
+    # The pd() function returns the parent directory of this script + any given path.
+    table = Datasheet.load(pd("cool.csv"))
     index = set(table.columns[0])
 except:
     table = Datasheet()
@@ -40,7 +41,8 @@ for i in range(2):
         # Continue mining older tweets in next iteration.
         prev = tweet.id
 
-table.save("cool.csv")
+# Create a .csv in pattern/examples/01-web/
+table.save(pd("cool.csv"))
 
 print "Total results:", len(table)
 print

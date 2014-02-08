@@ -1,4 +1,4 @@
-import os, sys; sys.path.insert(0, os.path.join("..", ".."))
+import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 import codecs
 
 from pattern.vector import Document, PORTER, LEMMA
@@ -51,7 +51,7 @@ print
 #    f.close()
 
 # Loading a document from a text file:
-f = os.path.join("corpus", "wolf.txt")
+f = os.path.join(os.path.dirname(__file__), "corpus", "wolf.txt")
 s = codecs.open(f, encoding="utf-8").read()
 document = Document(s, name="wolf", stemmer=PORTER)
 print document

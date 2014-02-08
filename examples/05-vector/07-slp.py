@@ -1,4 +1,4 @@
-import os, sys; sys.path.insert(0, os.path.join("..", ".."))
+import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 import random
 
 from codecs         import open
@@ -30,7 +30,7 @@ def corpus(path, encoding="utf-8"):
         yield s
 
 # The corpus is included in the Pattern download zip, in pattern/test/corpora:
-path = os.path.join("..", "..", "test", "corpora", "tagged-en-oanc.txt")
+path = os.path.join(os.path.dirname(__file__), "..", "..", "test", "corpora", "tagged-en-oanc.txt")
 data = list(corpus(path))
 
 # A parser is typically based on a lexicon of known words (aka a tag dictionary),
@@ -105,7 +105,8 @@ for iteration in range(5):
             prev = (w, tag)
             next = None
 
-m.save("en-model.slp", final=True)
+f = os.path.join(os.path.dirname(__file__), "en-model.slp")
+m.save(f, final=True)
 
 # Each parser in Pattern (pattern.en, pattern.es, pattern.it, ...)
 # assumes that a lexicon of known words and their most frequent tag is available,
@@ -118,7 +119,8 @@ m.save("en-model.slp", final=True)
 
 print "loading model..."
 
-lexicon.model = Model.load(lexicon, "en-model.slp")
+f = os.path.join(os.path.dirname(__file__), "en-model.slp")
+lexicon.model = Model.load(lexicon, f)
 
 # To test the accuracy of the language model,
 # we can compare a tagged corpus to the predicted tags.

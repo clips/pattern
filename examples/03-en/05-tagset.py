@@ -1,6 +1,5 @@
 # coding: utf-8
-
-import os, sys; sys.path.insert(0, os.path.join("..", ".."))
+import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 # By default, parse() uses part-of-speech tags from the Penn Treebank tagset:
 # http://www.clips.ua.ac.be/pages/penn-treebank-tagset

@@ -1,4 +1,4 @@
-import os, sys; sys.path.insert(0, os.path.join("..", ".."))
+import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 import time
 
 from pattern.vector import Document, Model, KNN
@@ -18,7 +18,7 @@ from pattern.db import Datasheet
 
 # We'll use the Pang & Lee corpus of movie reviews, included in the testing suite.
 # Take 250 positive reviews and 250 negative reviews:
-data = os.path.join("..","..","test", "corpora", "polarity-en-pang&lee1.csv")
+data = os.path.join(os.path.dirname(__file__), "..","..","test", "corpora", "polarity-en-pang&lee1.csv")
 data = Datasheet.load(data)
 data = data[:250] + data[-250:]
 
@@ -88,12 +88,12 @@ print len(m.lsa.concepts[0])
 m.lsa = None
 m.reduce(100)
 
-for feature, weight in m.lsa.concepts[2].items(): # concept id=2
+for feature, weight in m.lsa.concepts[15].items(): # concept id=2
     if abs(weight) > 0.1:
         print feature
         
 # Concept  2 = "truman", "ventura", "ace", "carrey", ... Obviously about Jim Carrey movies.
-# Concept 23 = "star", "wars", "jedi", "vader", "luke", "effects", ...
+# Concept 15 = "sixth", "sense", "child", "dead", "willis" ...
 
 # Not all concepts are equally easy to interpret,
 # but the technique can be useful to discover synonym sets.

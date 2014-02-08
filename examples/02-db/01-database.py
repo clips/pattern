@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-import os, sys; sys.path.insert(0, os.path.join("..", ".."))
+import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.db import Database, SQLITE, MYSQL
 from pattern.db import field, pk, STRING, INTEGER, DATE, NOW
 from pattern.db import assoc
 from pattern.db import rel
+from pattern.db import pd # pd() = parent directory of current script.
 
 # In this example, we'll build a mini-store:
 # with products, customers and orders.
@@ -16,7 +17,7 @@ from pattern.db import rel
 # MySQL databases require a username and a password.
 # MySQL also requires that you install MySQLdb, see the installation instructions at:
 # http://www.clips.ua.ac.be/pages/pattern-db
-db = Database("store.db", type=SQLITE)
+db = Database(pd("store.db"), type=SQLITE)
 #db._delete()
 
 # PRODUCTS

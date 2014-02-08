@@ -11,7 +11,8 @@ from pattern.db import Datasheet
 # We'll test it with a corpus of spam e-mail messages,
 # included in the test suite, stored as a CSV-file.
 # The corpus contains mostly technical e-mail from developer mailing lists.
-data = Datasheet.load(os.path.join("..","..","test","corpora","spam-apache.csv"))
+data = os.path.join(os.path.dirname(__file__), "..","..","test","corpora","spam-apache.csv")
+data = Datasheet.load(data)
 
 documents = []
 for score, message in data:
@@ -47,12 +48,13 @@ print
 # This means that 10 individual tests are performed, 
 # each with 90% of the corpus as training data and 10% as testing data.
 from pattern.vector import k_fold_cv
-print k_fold_cv(Bayes, documents=m, folds=10)
+print k_fold_cv(NB, documents=m, folds=10)
 
-# This yields 4 scores: (Accuracy, Precision, Recall, F-score).
+# This yields 5 scores: (Accuracy, Precision, Recall, F-score, standard deviation).
 # Accuracy in itself is not very useful, 
 # since some spam may have been regarded as real messages (false positives),
 # and some real messages may have been regarded as spam (false negatives).
 # Precision = how accurately false positives are discarded,
 #    Recall = how accurately false negatives are discarded.
 #   F-score = harmonic mean of precision and recall.
+#     stdev = folds' variation from average F-score.
