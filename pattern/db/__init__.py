@@ -9,6 +9,7 @@
 
 import os
 import sys
+import inspect
 import warnings
 import re
 import htmlentitydefs
@@ -28,7 +29,7 @@ except:
     from email.Utils import parsedate_tz, mktime_tz
     
 try: 
-    MODULE = os.path.dirname(os.path.abspath(__file__))
+    MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
 
@@ -53,12 +54,14 @@ def _import_db(engine=SQLITE):
             # Python 2.4 with pysqlite2
             import pysqlite2.dbapi2 as sqlite
 
-def find(match=lambda item: False, list=[]):
-    """ Returns the first item in the list for which match(item) is True.
+def pd(*args):
+    """ Returns the path to the parent directory of the script that calls pd() + given relative path.
+        For example, in this script: pd("..") => /usr/local/lib/python2.x/site-packages/pattern/db/..
     """
-    for item in list:
-        if match(item) is True: 
-            return item
+    f = inspect.currentframe()
+    f = inspect.getouterframes(f)[1][1]
+    f = f != "<stdin>" and f or os.getcwd()
+    return os.path.join(os.path.dirname(os.path.realpath(f)), *args)
 
 _sum = sum # pattern.db.sum() is also a column aggregate function.
 
@@ -315,6 +318,13 @@ def _escape(value, quote=lambda string: "'%s'" % string.replace("'", "\\'")):
     return value
 
 #### LIST FUNCTIONS ################################################################################
+
+def find(match=lambda item: False, list=[]):
+    """ Returns the first item in the list for which match(item) is True.
+    """
+    for item in list:
+        if match(item) is True: 
+            return item
 
 def order(list, cmp=None, key=None, reverse=False):
     """ Returns a list of indices in the order as when the given list is sorted.

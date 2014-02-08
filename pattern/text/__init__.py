@@ -18,7 +18,7 @@ from xml.etree import cElementTree
 from itertools import chain, imap
 
 try:
-    MODULE = os.path.dirname(os.path.abspath(__file__))
+    MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
 

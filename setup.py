@@ -17,7 +17,7 @@ if sys.argv[-1] == "zip":
     import codecs
     import re
     n = "pattern-%s.zip" % __version__
-    p = os.path.join(os.path.dirname(os.path.abspath(__file__)))
+    p = os.path.join(os.path.dirname(os.path.realpath(__file__)))
     z = zipfile.ZipFile(os.path.join(p, "..", n), "w", zipfile.ZIP_DEFLATED)
     for root, folders, files in os.walk(p):
         for f in files:
