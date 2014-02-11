@@ -594,6 +594,9 @@ class Graph(dict):
     def export(self, *args, **kwargs):
         export(self, *args, **kwargs)
     
+    def write(self, *args, **kwargs):
+        write(self, *args, **kwargs)
+    
     def serialize(self, *args, **kwargs):
         return render(self, *args, **kwargs)
 
@@ -1492,3 +1495,86 @@ def export(graph, path, overwrite=False, encoding="utf-8", **kwargs):
         if k in renderer.__dict__: 
             renderer.__dict__[k] = v
     return renderer.export(path, overwrite, encoding)
+
+def write(graph, outfile, format=None, directed=False, **kwargs):
+    """Write graph to a file."""
+    writers = {
+        "graphml": write_graphml,
+        }
+    if format is None:
+        if isinstance(outfile, file):
+            try:
+                filename = outfile.name
+            except AttributeError:
+                filename = ""
+        else:
+            filename = outfile
+        _, ext = os.path.splitext(filename)
+        format = ext.lstrip('.')
+    writer = writers[format]
+    writer(graph, outfile, directed, **kwargs)
+        
+def write_graphml(graph, outfile, directed=False, encoding="utf-8"):
+    """Write graph to a GraphML file."""
+    try:
+        from lxml import etree
+        lxml = True
+    except ImportError:
+        import xml.etree.ElementTree as etree
+        lxml = False
+    NS = "http://graphml.graphdrawing.org/xmlns"
+    P = "{" + NS + "}"
+    if lxml:
+        root = etree.Element(P + "graphml",
+                             nsmap = {None: NS})
+    else:
+        root = etree.Element(P + "graphml")
+    graph_elem = etree.SubElement(root, P + "graph",
+                 id="g",
+                 edgedefault="directed" if directed else "undirected")
+    id_map = {}
+    n_label = False
+    e_weight = True  # in pattern, edges always have weights
+    for i, n in enumerate(graph.nodes):
+        nid = "n%s" % i
+        id_map[n.id] = nid
+        node_elem = etree.SubElement(graph_elem, P + "node",
+                    id=nid)
+        label = None
+        if n.text and n.text.string != n.id:
+            label = n.text.string
+        elif not isinstance(n.id, int):
+            label = n.id
+        if label:
+            n_label = True
+            data_elem = etree.SubElement(node_elem, P + "data",
+                        key="n_label")
+            data_elem.text = label
+    for i, e in enumerate(graph.edges):
+        edge_elem = etree.SubElement(graph_elem, P + "edge",
+                    id="e%s" % i,
+                    source=id_map[e.node1.id],
+                    target=id_map[e.node2.id])
+        data_elem = etree.SubElement(edge_elem, P + "data",
+                    key="e_weight")
+        data_elem.text = str(e.weight)
+    if e_weight:
+        key_elem = etree.Element(P + "key", **{
+                                 "id": "e_weight",
+                                 "for": "edge",
+                                 "attr.name": "weight",
+                                 "attr.type": "double"})
+        root.insert(0, key_elem)
+    if n_label:
+        key_elem = etree.Element(P + "key", **{
+                                 "id": "n_label",
+                                 "for": "node",
+                                 "attr.name": "label",
+                                 "attr.type": "string"})
+        root.insert(0, key_elem)
+    tree = etree.ElementTree(root)
+    if lxml:
+        tree.write(outfile, encoding=encoding, pretty_print=True)
+    else:
+        etree.register_namespace("", NS)
+        tree.write(outfile, encoding=encoding)
