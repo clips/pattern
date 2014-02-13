@@ -50,7 +50,7 @@ data = csv(pd("given-names.csv"))
 
 # Test average (accuracy, precision, recall, F-score, standard deviation).
 
-print kfoldcv(GenderByName, data, folds=3) # (0.81, 0.79, 0.77, 0.78, 0.0005)
+print kfoldcv(GenderByName, data, folds=3) # (0.81, 0.79, 0.77, 0.78, 0.00)
 
 # Train and save the classifier in the current folder.
 # With final=True, discards the original training data (= smaller file).

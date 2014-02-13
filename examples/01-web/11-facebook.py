@@ -9,7 +9,8 @@ from pattern.db  import Datasheet, pprint, pd
 # from a given profile or product page.
 # This requires a personal license key.
 # If you are logged in to Facebook, you can get a license key here:
-# http://www.clips.ua.ac.be/media/pattern-fb.html
+# http://www.clips.ua.ac.be/pattern-facebook
+# (We don't / can't store your information).
 
 # 1) Searching for public status updates.
 #    Search for all status updates that contain the word "horrible".
@@ -51,7 +52,7 @@ table.save(pd("opinions.csv"))
 
 # 2) Status updates from specific profiles.
 #    For this you need a personal license key:
-#    http://www.clips.ua.ac.be/media/pattern-fb.html
+#    http://www.clips.ua.ac.be/pattern-facebook
 
 license = ""
 
