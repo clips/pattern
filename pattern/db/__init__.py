@@ -2078,7 +2078,15 @@ class Datasheet(CSV):
             return Datasheet(rows=(self.rows[i] for i in rows))
         z = zip(*(self.columns[j] for j in columns))
         return Datasheet(rows=(z[i] for i in rows))
-    
+            
+    @property
+    def array(self):
+        """ Returns a NumPy array. 
+            Arrays must have elements of the same type, and rows of equal size.
+        """
+        import numpy
+        return numpy.array(self)
+        
     @property
     def json(self, **kwargs):
         """ Returns a JSON-string, as a list of dictionaries (if fields are defined) or as a list of lists.
@@ -2090,14 +2098,31 @@ class Datasheet(CSV):
         else:
             s = json.dumps(self, **kwargs)
         return decode_utf8(s)
-            
+        
     @property
-    def array(self):
-        """ Returns a NumPy array. 
-            Arrays must have elements of the same type, and rows of equal size.
+    def html(self):
+        """ Returns a HTML-string with a <table>.
+            This is useful for viewing the data, e.g., open("data.html", "wb").write(datasheet.html).
         """
-        import numpy
-        return numpy.array(self)
+        a = []
+        a.append("<meta charset=\"utf8\">\n")
+        a.append("<style>")
+        a.append("table.datasheet { border-collapse: collapse; font: 11px sans-serif; } ")
+        a.append("table.datasheet * { border: 1px solid #ccc; padding: 4px; } ")
+        a.append("</style>\n")
+        a.append("<table class=\"datasheet\">\n")
+        if self.fields is not None:
+            a.append("<tr>\n")
+            a.append("\t<th>%s</th>\n" % "#")
+            a.extend("\t<th>%s</th>\n" % f[0] for f in self.fields)
+            a.append("</tr>\n")
+        for i, row in enumerate(self):
+            a.append("<tr>\n")
+            a.append("\t<td>%s</td>\n" % (i+1))
+            a.extend("\t<td>%s</td>\n" % v for v in row)
+            a.append("</tr>\n")
+        a.append("</table>")
+        return encode_utf8("".join(a))
         
 def flip(datasheet):
     """ Returns a new datasheet with rows for columns and columns for rows.
