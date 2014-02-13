@@ -214,7 +214,9 @@ def proxy(host, protocol="https"):
 
 class Error(Exception):
     def __init__(self, *args, **kwargs):
-        Exception.__init__(self, *args); self.src=kwargs.pop("src", None)
+        Exception.__init__(self, *args)
+        self.src = kwargs.pop("src", None)
+        self.url = kwargs.pop("url", None)
 
 class URLError(Error):
     pass # URL contains errors (e.g. a missing t in htp://).
@@ -377,25 +379,25 @@ class URL(object):
                     base64.encodestring('%s:%s' % authentication))
             return urllib2.urlopen(request)
         except urllib2.HTTPError, e:
-            if e.code == 301: raise HTTP301Redirect(src=e)
-            if e.code == 400: raise HTTP400BadRequest(src=e)
-            if e.code == 401: raise HTTP401Authentication(src=e)
-            if e.code == 403: raise HTTP403Forbidden(src=e)
-            if e.code == 404: raise HTTP404NotFound(src=e)
-            if e.code == 420: raise HTTP420Error(src=e)
-            if e.code == 429: raise HTTP429TooMayRequests(src=e)
-            if e.code == 500: raise HTTP500InternalServerError(src=e)
-            if e.code == 503: raise HTTP503ServiceUnavailable(src=e)
-            raise HTTPError(src=e)
+            if e.code == 301: raise HTTP301Redirect(src=e, url=url)
+            if e.code == 400: raise HTTP400BadRequest(src=e, url=url)
+            if e.code == 401: raise HTTP401Authentication(src=e, url=url)
+            if e.code == 403: raise HTTP403Forbidden(src=e, url=url)
+            if e.code == 404: raise HTTP404NotFound(src=e, url=url)
+            if e.code == 420: raise HTTP420Error(src=e, url=url)
+            if e.code == 429: raise HTTP429TooMayRequests(src=e, url=url)
+            if e.code == 500: raise HTTP500InternalServerError(src=e, url=url)
+            if e.code == 503: raise HTTP503ServiceUnavailable(src=e, url=url)
+            raise HTTPError(src=e, url=url)
         except socket.timeout, e:
-            raise URLTimeout(src=e)
+            raise URLTimeout(src=e, url=url)
         except urllib2.URLError, e:
             if e.reason == "timed out" \
             or e.reason[0] in (36, "timed out"):
-                raise URLTimeout(src=e)
-            raise URLError(e.reason, src=e)
+                raise URLTimeout(src=e, url=url)
+            raise URLError(e.reason, src=e, url=url)
         except ValueError, e:
-            raise URLError(src=e)
+            raise URLError(src=e, url=url)
 
     def download(self, timeout=10, cached=True, throttle=0, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None, unicode=False, **kwargs):
         """ Downloads the content at the given URL (by default it will be cached locally).
@@ -422,7 +424,7 @@ class URL(object):
         try:
             data = self.open(timeout, proxy, user_agent, referrer, authentication).read()
         except socket.timeout, e:
-            raise URLTimeout(src=e)
+            raise URLTimeout(src=e, url=self.string)
         if unicode is True:
             data = u(data)
         if cached:
@@ -1094,7 +1096,7 @@ class Google(SearchEngine):
         kwargs.setdefault("throttle", self.throttle)
         try:
             data = url.download(**kwargs)
-        except HTTP403Forbidden:
+        except HTTP403Forbidden, e:
             raise HTTP401Authentication, "Google translate API is a paid service"
         data = json.loads(data)
         data = data.get("data", {}).get("translations", [{}])[0].get("translatedText", "")
@@ -1526,7 +1528,7 @@ class Twitter(SearchEngine):
         
     def profile(self, query, start=1, count=10, **kwargs):
         """ For the given author id, alias or search query,
-            returns a list of (id, alias, name, description, location, picture, date created)-tuple.
+            returns a list of (id, handle, name, description, location, picture, tweets)-tuple.
         """
         url = URL(TWITTER + "users/search.json?", method=GET, query={
                "q": query,
@@ -1534,7 +1536,7 @@ class Twitter(SearchEngine):
            "count": count
         })
         url = self._authenticate(url)
-        kwargs.setdefault("cached", False)
+        kwargs.setdefault("cached", True)
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         data = URL(url).download(**kwargs)
@@ -1546,7 +1548,7 @@ class Twitter(SearchEngine):
             u(x.get("description", "")),
             u(x.get("location", "")),
             u(x.get("profile_image_url", "")),
-            u(x.get("created_at", ""))) for x in data]
+            u(x.get("statuses_count", ""))) for x in data]
 
     def trends(self, **kwargs):
         """ Returns a list with 10 trending topics on Twitter.
@@ -2412,7 +2414,7 @@ class Facebook(SearchEngine):
         # With this license, we can view public content.
         # To view more information, we need a "user access token" as license key.
         # This token can be retrieved manually from:
-        #  http://www.clips.ua.ac.be/media/pattern-fb.html
+        #  http://www.clips.ua.ac.be/pattern-facebook
         # Or parsed from this URL:
         #  https://graph.facebook.com/oauth/authorize?type=user_agent
         #   &client_id=332061826907464
@@ -2469,7 +2471,7 @@ class Facebook(SearchEngine):
             })
         if type in (SEARCH, NEWS, FEED):
             url.query["fields"] = ",".join((
-                "id", "from", "name", "story", "message", "link", "picture", "created_time", 
+                "id", "from", "name", "story", "message", "link", "picture", "created_time",
                 "comments.limit(1).summary(true)", 
                    "likes.limit(1).summary(true)"
             ))
@@ -2522,7 +2524,7 @@ class Facebook(SearchEngine):
         """
         url = FACEBOOK + (u(id or "me")).replace(FACEBOOK, "")
         url = URL(url, method=GET, query={"access_token": self.license})
-        kwargs.setdefault("cached", False)
+        kwargs.setdefault("cached", True)
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         try:

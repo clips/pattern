@@ -30,9 +30,16 @@ import collections
 import sqlite3 as sqlite
 
 try:
-    MODULE = os.path.dirname(os.path.abspath(__file__))
+    # Folder that contains pattern.server.
+    MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
+
+try:
+    # Folder that contains the script that imports pattern.server.
+    SCRIPT = os.path.dirname(os.path.realpath(__main__.__file__))
+except:
+    SCRIPT = os.getcwd()
 
 try:
     # Import from python2.x/site-packages/cherrypy
@@ -49,9 +56,6 @@ except:
     try: from pattern.web import json # simplejson
     except:
         json = None
-
-# Folder that contains the script that imports pattern.server.
-SCRIPT = os.path.dirname(os.path.abspath(__main__.__file__))
 
 #### STRING FUNCTIONS ##############################################################################
 
@@ -138,6 +142,9 @@ class Row(dict):
         """
         d = cursor.description
         dict.__init__(self, ((d[i][0], v) for i, v in enumerate(row)))
+        
+    def __getattr__(self, k):
+        return self[k] # Row.[field]
         
 class DatabaseError(Exception):
     pass
@@ -686,6 +693,7 @@ class Application(object):
         self._rate   = rate         # RateLimit db name, see also App.route(limit=True).
         self.router  = Router()     # Router object, maps URL paths to handlers.
         self.thread  = App.Thread() # Thread-safe dictionary.
+        os.chdir(self.path)
         
     @property
     def name(self):
@@ -1032,7 +1040,7 @@ def static(path, root=None, mimetype=None):
         To serve relative paths from the app folder, use root=app.path.
     """
     p = os.path.join(root or "", path)
-    p = os.path.abspath(p)
+    p = os.path.realpath(p)
     return cp.lib.static.serve_file(p, content_type=mimetype)
 
 #---------------------------------------------------------------------------------------------------
@@ -1245,6 +1253,77 @@ def template(string, *args, **kwargs):
 #"""
 #
 #print template(s.strip(), title="test", names=["Tom", "Walter"])
+
+#### HTML ##########################################################################################
+# Useful HTML generators.
+
+class HTML:
+    
+    def _attrs(self, **kwargs):
+        """ Returns a string of HTML element attributes.
+            Use "css" for the CSS classname (since "class" is a reserved word).
+        """
+        a = []
+        if "id" in kwargs:
+            a.append("id=\"%s\"" % kwargs.pop("id"))
+        if "name" in kwargs:
+            a.append("name=\"%s\"" % kwargs.pop("name"))
+        if "css" in kwargs:
+            a.append("class=\"%s\"" % kwargs.pop("css"))
+        for k, v in kwargs.items():
+            a.append("%s=\"%s\"" % (k, v))
+        return (" " + " ".join(a)).rstrip()
+    
+    def div(self, content, **attributes):
+        """ Returns a string with a HTML <div> with the given content.
+        """
+        return "<div%s>\n\t%s\n</div>\n" % (self._attrs(**attributes), content)
+        
+    def span(self, content, **attributes):
+        """ Returns a string with a HTML <span> with the given content.
+        """
+        return "<span%s>\n\t%s\n</span>\n" % (self._attrs(**attributes), content)
+    
+    def table(self, rows=[], headers=[], striped=True, **attributes):
+        """ Returns a string with a HTML <table> for the given list,
+            where each item is a list of values.
+            With striped=True, generates <tr class="even|odd">.
+            With striped=True and headers, generates <td class="header[i]">.
+        """
+        h = list(headers)
+        r = list(rows) if not h else [h] + list(rows)
+        a = ["<table%s>\n" % self._attrs(**attributes)]
+        if h:
+            a.append("\t<colgroup>\n")
+            a.extend("\t\t<col class=\"%s\">\n" % v for v in h)
+            a.append("\t</colgroup>\n")
+        for i, row in enumerate(r):
+            a.append("\t<tr%s>\n" % (" class=\"%s\"" % ("odd", "even")[i % 2] if striped else ""))
+            for j, v in enumerate(row):
+                if i == 0 and h:
+                    a.append("\t\t<th>%s</th>\n" % v)
+                else:
+                    a.append("\t\t<td>%s</td>\n" % v)
+            a.append("\t</tr>\n")
+        a.append("</table>\n")
+        return "".join(a)
+        
+    def select(self, options={}, selected=None, **attributes):
+        """ Returns a string with a HTML <select> for the given dictionary,
+            where each dict item is an <option value="key">value</option>.
+        """
+        a = ["<select%s>\n" % self._attrs(**attributes)]
+        for k, v in sorted(options.items()):
+            if k == selected:
+                a.append("\t<option value=\"%s\" selected>%s</option>\n" % (k, v))
+            else:
+                a.append("\t<option value=\"%s\">%s</option>\n" % (k, v))
+        a.append("</select>\n")
+        return "".join(a)
+        
+    dropdown = select        
+
+html = HTML()
 
 ####################################################################################################
 
