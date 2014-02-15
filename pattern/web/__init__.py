@@ -1530,6 +1530,7 @@ class Twitter(SearchEngine):
         """ For the given author id, alias or search query,
             returns a list of (id, handle, name, description, location, picture, tweets)-tuple.
         """
+        # 1) Construct request URL.
         url = URL(TWITTER + "users/search.json?", method=GET, query={
                "q": query,
             "page": start,
@@ -1539,6 +1540,7 @@ class Twitter(SearchEngine):
         kwargs.setdefault("cached", True)
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
+        # 2) Parse JSON response.
         data = URL(url).download(**kwargs)
         data = json.loads(data)
         return [(
@@ -1553,11 +1555,13 @@ class Twitter(SearchEngine):
     def trends(self, **kwargs):
         """ Returns a list with 10 trending topics on Twitter.
         """
+        # 1) Construct request URL.
         url = URL("https://api.twitter.com/1.1/trends/place.json?id=1")
         url = self._authenticate(url)
         kwargs.setdefault("cached", False)
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
+        # 2) Parse JSON response.
         data = url.download(**kwargs)
         data = json.loads(data)
         return [u(x.get("name")) for x in data[0].get("trends", [])]
@@ -1660,6 +1664,9 @@ MEDIAWIKI_DISAMBIGUATION = "<a href=\"/wiki/Help:Disambiguation\" title=\"Help:D
 # Pattern to identify references, e.g. [12]
 MEDIAWIKI_REFERENCE = r"\s*\[[0-9]{1,3}\]"
 
+# Mediawiki.search(type=ALL).
+ALL = "all"
+
 class MediaWiki(SearchEngine):
 
     def __init__(self, license=None, throttle=5.0, language="en"):
@@ -1725,24 +1732,56 @@ class MediaWiki(SearchEngine):
     # Backwards compatibility.
     list = index
 
-    def search(self, query, type=SEARCH, start=1, count=1, sort=RELEVANCY, size=None, cached=True, **kwargs):
+    def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
+        """ With type=SEARCH, returns a MediaWikiArticle for the given query (case-sensitive).
+            With type=ALL, returns a list of results. 
+            Each result.title is the title of an article that contains the given query.
+        """
+        if type not in (SEARCH, ALL):
+            raise SearchEngineTypeError
+        if type == SEARCH: # Backwards compatibility.
+            return self.article(query, cached=cached, **kwargs)
+        if not query or start < 1 or count < 1:
+            return Results(self._url, query, type)
+        # 1) Construct request URL (e.g., Wikipedia for a given language).
+        url = URL(self._url, method=GET, query={
+            "action": "query",
+              "list": "search",
+          "srsearch": query,
+          "sroffset": (start - 1) * count,
+           "srlimit": min(count, 100),
+            "srprop": "snippet",
+            "format": "json"
+        })
+        # 2) Parse JSON response.
+        kwargs.setdefault("unicode", True)
+        kwargs.setdefault("throttle", self.throttle)
+        data = url.download(cached=cached, **kwargs)
+        data = json.loads(data)
+        data = data.get("query", {})
+        results = Results(self._url, query, type)
+        results.total = int(data.get("searchinfo", {}).get("totalhits", 0))
+        for x in data.get("search", []):
+            u = "http://%s/wiki/%s" % (URL(self._url).domain, x.get("title").replace(" ", "_"))
+            r = Result(url=u)
+            r.id    = self.format(x.get("title"))
+            r.title = self.format(x.get("title"))
+            r.text  = plaintext(self.format(x.get("snippet")))
+            results.append(r)
+        return results
+
+    def article(self, query, cached=True, **kwargs):
         """ Returns a MediaWikiArticle for the given query.
             The query is case-sensitive, for example on Wikipedia:
             - "tiger" = Panthera tigris,
             - "TIGER" = Topologically Integrated Geographic Encoding and Referencing.
         """
-        if type != SEARCH:
-            raise SearchEngineTypeError
-        if count < 1:
-            return None
-        # 1) Construct request URL (e.g., Wikipedia for a given language).
         url = URL(self._url, method=GET, query={
             "action": "parse",
               "page": query.replace(" ", "_"),
          "redirects": 1,
             "format": "json"
         })
-        # 2) Parse JSON response.
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("timeout", 30) # Parsing the article takes some time.
         kwargs.setdefault("throttle", self.throttle)
@@ -2522,11 +2561,13 @@ class Facebook(SearchEngine):
         """ For the given author id or alias,
             returns a (id, name, date of birth, gender, locale, likes)-tuple.
         """
+        # 1) Construct request URL.
         url = FACEBOOK + (u(id or "me")).replace(FACEBOOK, "")
         url = URL(url, method=GET, query={"access_token": self.license})
         kwargs.setdefault("cached", True)
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
+        # 2) Parse JSON response.
         try:
             data = URL(url).download(**kwargs)
             data = json.loads(data)
