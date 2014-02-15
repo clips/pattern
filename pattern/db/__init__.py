@@ -2104,22 +2104,30 @@ class Datasheet(CSV):
         """ Returns a HTML-string with a <table>.
             This is useful for viewing the data, e.g., open("data.html", "wb").write(datasheet.html).
         """
+        def encode(s):
+            s = "%s" % s
+            s = s.replace("&", "&amp;")
+            s = s.replace("<", "&lt;")
+            s = s.replace(">", "&gt;")
+            s = s.replace("-", "&#8209;")
+            s = s.replace("\n", "<br>\n")
+            return s
         a = []
         a.append("<meta charset=\"utf8\">\n")
         a.append("<style>")
         a.append("table.datasheet { border-collapse: collapse; font: 11px sans-serif; } ")
-        a.append("table.datasheet * { border: 1px solid #ccc; padding: 4px; } ")
+        a.append("table.datasheet * { border: 1px solid #ddd; padding: 4px; } ")
         a.append("</style>\n")
         a.append("<table class=\"datasheet\">\n")
         if self.fields is not None:
             a.append("<tr>\n")
             a.append("\t<th>%s</th>\n" % "#")
-            a.extend("\t<th>%s</th>\n" % f[0] for f in self.fields)
+            a.extend("\t<th>%s</th>\n" % encode(f[0]) for f in self.fields)
             a.append("</tr>\n")
         for i, row in enumerate(self):
             a.append("<tr>\n")
             a.append("\t<td>%s</td>\n" % (i+1))
-            a.extend("\t<td>%s</td>\n" % v for v in row)
+            a.extend("\t<td>%s</td>\n" % encode(v) for v in row)
             a.append("</tr>\n")
         a.append("</table>")
         return encode_utf8("".join(a))
