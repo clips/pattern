@@ -1,6 +1,7 @@
 #### PATTERN | GRAPH ###############################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
+# Author: Frederik Elwert <frederik.elwert@web.de>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
