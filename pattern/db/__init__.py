@@ -2157,6 +2157,8 @@ class DatasheetRows(list):
         self._datasheet.insert(i, row)
     def __getitem__(self, i):
         return list.__getitem__(self._datasheet, i)
+    def __getslice__(self, i, j):
+        return self._datasheet[i:j]
     def __delitem__(self, i):
         self.pop(i)
     def __len__(self):
@@ -2219,6 +2221,8 @@ class DatasheetColumns(list):
         if j >= len(self): 
             raise IndexError, "list index out of range"
         return self._cache.setdefault(j, DatasheetColumn(self._datasheet, j))
+    def __getslice__(self, i, j):
+        return self._datasheet[:,i:j]
     def __delitem__(self, j):
         self.pop(j)
     def __len__(self):
@@ -2323,7 +2327,9 @@ class DatasheetColumn(list):
         """
         self._datasheet = datasheet
         self._j = j
-    
+
+    def __getslice__(self, i, j):
+        return list(list.__getitem__(self._datasheet, i)[self._j] for i in range(i, j))
     def __getitem__(self, i):
         return list.__getitem__(self._datasheet, i)[self._j]
     def __setitem__(self, i, value):
