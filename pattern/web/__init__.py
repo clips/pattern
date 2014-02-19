@@ -1537,12 +1537,15 @@ class Twitter(SearchEngine):
            "count": count
         })
         url = self._authenticate(url)
+        # 2) Parse JSON response.
         kwargs.setdefault("cached", True)
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
-        # 2) Parse JSON response.
-        data = URL(url).download(**kwargs)
-        data = json.loads(data)
+        try:
+            data = URL(url).download(**kwargs)
+            data = json.loads(data)
+        except HTTP400BadRequest:
+            return []
         return [(
             u(x.get("id_str", "")),
             u(x.get("screen_name", "")),
@@ -1558,12 +1561,15 @@ class Twitter(SearchEngine):
         # 1) Construct request URL.
         url = URL("https://api.twitter.com/1.1/trends/place.json?id=1")
         url = self._authenticate(url)
+        # 2) Parse JSON response.
         kwargs.setdefault("cached", False)
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
-        # 2) Parse JSON response.
-        data = url.download(**kwargs)
-        data = json.loads(data)
+        try:
+            data = url.download(**kwargs)
+            data = json.loads(data)
+        except HTTP400BadRequest:
+            return []
         return [u(x.get("name")) for x in data[0].get("trends", [])]
 
     def stream(self, query, **kwargs):
@@ -1737,7 +1743,7 @@ class MediaWiki(SearchEngine):
             With type=ALL, returns a list of results. 
             Each result.title is the title of an article that contains the given query.
         """
-        if type not in (SEARCH, ALL):
+        if type not in (SEARCH, ALL, "*"):
             raise SearchEngineTypeError
         if type == SEARCH: # Backwards compatibility.
             return self.article(query, cached=cached, **kwargs)
@@ -2116,6 +2122,11 @@ class WikipediaTable(MediaWikiTable):
 #article = Wikipedia(language="nl").search("borrelnootje")
 #print article.string
 
+#for result in Wikipedia().search("\"cat's\"", type="*"):
+#    print result.title
+#    print result.text
+#    print
+
 #--- MEDIAWIKI: WIKTIONARY -------------------------------------------------------------------------
 # Wiktionary is a collaborative project to produce a free-content multilingual dictionary.
 
@@ -2457,7 +2468,7 @@ class Facebook(SearchEngine):
         # Or parsed from this URL:
         #  https://graph.facebook.com/oauth/authorize?type=user_agent
         #   &client_id=332061826907464
-        #   &redirect_uri=http%3A%2F%2Fwww.clips.ua.ac.be/media/pattern-facebook-token.html
+        #   &redirect_uri=http://www.clips.ua.ac.be/pattern-facebook
         #   &scope=read_stream,user_birthday,user_likes,user_photos,friends_birthday,friends_likes
         # The token is valid for a limited duration.
         return URL(FACEBOOK + "oauth/access_token?", query={
@@ -2478,6 +2489,7 @@ class Facebook(SearchEngine):
         # Facebook.search(type=NEWS) returns posts for the given author (id | alias | "me").
         # Facebook.search(type=COMMENTS) returns comments for the given post id.
         # Facebook.search(type=LIKES) returns authors for the given author, post or comments.
+        # Facebook.search(type=FRIENDS) returns authors for the given author.
         # An author is a Facebook user or other entity (e.g., a product page).
         if type not in (SEARCH, NEWS, COMMENTS, LIKES, FRIENDS):
             raise SearchEngineTypeError
@@ -2775,7 +2787,8 @@ def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, prefix
         q = prefix and (context + " " + word) or (word + " " + context)
         q.strip()
         q = strict and "\"%s\"" % q or q
-        r = service.search(q, count=1, **kwargs)
+        t = service in (WIKIPEDIA, WIKIA) and "*" or SEARCH
+        r = service.search(q, type=t, count=1, **kwargs)
         R.append(r)
     s = float(sum([r.total or 1 for r in R])) or 1.0
     R = [((r.total or 1)/s, r.query) for r in R]
