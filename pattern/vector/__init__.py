@@ -1322,16 +1322,26 @@ class Model(object):
             # V => {feature: {value: {class: count}}}
             F = set(self.features)
             V = dict((f, defaultdict(lambda: defaultdict(lambda: 0))) for f in F)
+            z = dict((c, defaultdict(int)) for c in C)
             for d in self.documents:
                 type = d.type
                 seen = set()
                 for f, v in d.vector.items():
                     seen.add(f)
                     if isinstance(v, float):
-                        v = round(v, 1) # 10 discrete intervals for float values.
+                        v = round(v, 1) # 10 discrete intervals for float values.                        
                     V[f][v][type] += 1
+                #for f in F - seen:
+                #    V[f][0][type] += 1
+                # We also need to count features with value 0.0.
+                # This is done with the two lines above, however
+                # the code below is 2x faster (less dict.__getitem__).
+                zt = z[type]
                 for f in F - seen:
-                    V[f][0][type] += 1
+                    zt[f] += 1
+            for type, f in z.items():
+                for f, i in f.items():
+                    V[f][0][type] += i
             # IG
             for f in F:
                 Vf = V[f]
