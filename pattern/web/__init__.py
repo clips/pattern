@@ -213,10 +213,15 @@ def proxy(host, protocol="https"):
     return (host, protocol)
 
 class Error(Exception):
+    """ Base class for pattern.web errors.
+    """
     def __init__(self, *args, **kwargs):
         Exception.__init__(self, *args)
         self.src = kwargs.pop("src", None)
         self.url = kwargs.pop("url", None)
+    @property
+    def headers(self):
+        return dict(self.src.headers.items())
 
 class URLError(Error):
     pass # URL contains errors (e.g. a missing t in htp://).
@@ -3105,6 +3110,7 @@ class Selector(object):
         s = s.strip("[]")
         s = s.replace("'", "")
         s = s.replace('"', "")
+        s = s.replace("<!space>", " ")
         s = re.sub(r"(\~|\||\^|\$|\*)\=", "=\\1", s)
         s = s.split("=") + [True]
         s = s[:2]
@@ -3133,6 +3139,13 @@ class Selector(object):
             e = e.next
             if isinstance(e, Element):
                 return e
+                
+    def _contains(self, e, s):
+        """ Returns True if string s occurs in the given element (case-insensitive).
+        """
+        s = re.sub(r"^contains\((.*?)\)$", "\\1", s)
+        s = re.sub(r"^[\"']|[\"']$", "", s)
+        return re.search(s.lower(), e.content.lower()) is not None
 
     def match(self, e):
         """ Returns True if the given element matches the simple CSS selector.
@@ -3147,6 +3160,8 @@ class Selector(object):
             return False
         if "first-child" in self.pseudo and self._first_child(e.parent) != e:
             return False
+        if any(x.startswith("contains") and not self._contains(e, x) for x in self.pseudo):
+            return False # jQuery :contains("...") selector.
         for k, v in self.attributes:
             if k not in e.attrs or v not in (e.attrs[k].lower(), True):
                 return False
@@ -3172,6 +3187,8 @@ class Selector(object):
             e = filter(lambda e: self.classes.issubset(set(e.attr.get("class", "").lower().split())), e)
         if "first-child" in self.pseudo:
             e = filter(lambda e: e == self._first_child(e.parent), e)
+        if any(x.startswith("contains") for x in self.pseudo):
+            e = filter(lambda e: all(not x.startswith("contains") or self._contains(e, x) for x in self.pseudo), e)
         return e
 
     def __repr__(self):
@@ -3191,6 +3208,7 @@ class SelectorChain(list):
             s = re.sub(r" *\> *", " >", s)
             s = re.sub(r" *\< *", " <", s)
             s = re.sub(r" *\+ *", " +", s)
+            s = re.sub(r"\[.*?\]", lambda m: m.group(0).replace(" ", "<!space>"), s)
             self.append([])
             for s in s.split(" "):
                 if not s.startswith((">", "<", "+")):
