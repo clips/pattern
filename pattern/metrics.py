@@ -5,6 +5,8 @@
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
+import sys
+
 from time import time
 from math import sqrt, floor, modf, exp, pi, log
 
@@ -104,6 +106,16 @@ def profile(function, *args, **kwargs):
     os.remove(id)
     return s
 
+def sizeof(object):
+    """ Returns the memory size of the given object (in bytes).
+    """
+    return sys.getsizeof(object)
+    
+def kb(object):
+    """ Returns the memory size of the given object (in kilobytes).
+    """
+    return sys.getsizeof(object) * 0.01
+    
 #### PRECISION & RECALL ############################################################################
 
 ACCURACY, PRECISION, RECALL, F1_SCORE = "accuracy", "precision", "recall", "F1-score"
