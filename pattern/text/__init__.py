@@ -85,6 +85,15 @@ def ngrams(string, n=3, punctuation=PUNCTUATION, continuous=False):
         g.extend([tuple(s[i:i+n]) for i in range(len(s)-n+1)])
     return g
 
+def deflood(s, n=3):
+    """ Returns the string with no more than n repeated characters, e.g.,
+        deflood("NIIIICE!!", n=1) => "Nice!"
+        deflood("nice.....", n=3) => "nice..."
+    """
+    if n == 0:
+        return s[0:0]
+    return re.sub(r"((.)\2{%s,})" % (n-1), lambda m: m.group(1)[0] * n, s)
+
 def pprint(string, token=[WORD, POS, CHUNK, PNP], column=4):
     """ Pretty-prints the output of Parser.parse() as a table with outlined columns.
         Alternatively, you can supply a tree.Text or tree.Sentence object.
