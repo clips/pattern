@@ -38,4 +38,4 @@ for A, B in comparisons:
 # Simply take the largest subgraph for our visualization.
 g = g.split()[0]
 
-g.export("trends", weighted=True, directed=True, overwrite=True)
+g.export("trends", weighted=True, directed=True)

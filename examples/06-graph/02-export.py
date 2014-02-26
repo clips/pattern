@@ -39,7 +39,6 @@ g["1"].text.string = "home"
 # The layout can be tweaked in many ways:
 
 g.export(os.path.join(os.path.dirname(__file__), "test"), 
-    overwrite = True,    # Overwrite existing folder?
         width = 700,     # <canvas> width.
        height = 500,     # <canvas> height.
        frames = 500,     # Number of frames of animation.
