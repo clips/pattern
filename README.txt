@@ -139,3 +139,4 @@ Contributors (chronological):
 - Dan Fu
 - Salvatore Di Dio
 - Vincent Van Asch
+- Frederik Elwert
