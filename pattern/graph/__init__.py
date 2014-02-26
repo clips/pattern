@@ -1,7 +1,6 @@
 #### PATTERN | GRAPH ###############################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
-# Author: Frederik Elwert <frederik.elwert@web.de>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
@@ -25,11 +24,20 @@ except:
 # float("inf") doesn't work on windows.
 INFINITE = 1e20
 
-# This module is standalone.
-# For drawing, line(), ellipse() and Text.draw() must be either implemented or patched.
+#--- LIST FUNCTIONS --------------------------------------------------------------------------------
+
+def unique(iterable):
+    """ Returns a list copy in which each item occurs only once (in-order).
+    """
+    seen = set()
+    return [x for x in iterable if x not in seen and not seen.add(x)]
+
+#--- DRAWING FUNCTIONS -----------------------------------------------------------------------------
+# This module is standalone (i.e., it is not a graph rendering package).
+# If you want to call Graph.draw() then line(), ellipse() and Text.draw() must be implemented.
 
 def line(x1, y1, x2, y2, stroke=(0,0,0,1), strokewidth=1):
-    """ Draws a line from (x1, y1) to (x2, y2) using the given strok color and stroke width.
+    """ Draws a line from (x1, y1) to (x2, y2) using the given stroke color and stroke width.
     """
     pass
     
@@ -39,32 +47,39 @@ def ellipse(x, y, width, height, fill=(0,0,0,1), stroke=None, strokewidth=1):
     pass
 
 class Text(object):
+    
     def __init__(self, string, **kwargs):
+        """ Draws the node label.
+            Optional properties include width, fill, font, fontsize, fontweight.
+        """
         self.string = string
         self.__dict__.update(kwargs)
+        
     def copy(self):
         k = self.__dict__.copy()
         k.pop("string")
         return Text(self.string, **k)
+        
     def draw(self):
-        """ Draws the node label.
-            Optional properties include width, fill and fontsize.
-        """
         pass
         
 class Vector(object):
     
     def __init__(self, x=0, y=0):
-        """ A point in 2D-space.
-        """
         self.x = x
         self.y = y
+        
+def coordinates(x, y, distance, angle):
+    return (
+        (x + distance * cos(radians(angle))),
+        (y + distance * sin(radians(angle)))
+    )
 
-#--- NODE ------------------------------------------------------------------------------------------
+#--- DEEPCOPY --------------------------------------------------------------------------------------
 
 def deepcopy(o):
-    # A color can be represented as a tuple or as a nodebox.graphics.Color object,
-    # in which case it needs to be copied by invoking Color.copy().
+    """ Returns a deep (recursive) copy of the given object.
+    """
     if o is None:
         return o
     if hasattr(o, "copy"):
@@ -76,6 +91,10 @@ def deepcopy(o):
     if isinstance(o, dict):
         return dict((deepcopy(k), deepcopy(v)) for k,v in o.iteritems())
     raise Exception, "don't know how to copy %s" % o.__class__.__name__
+
+#### NODE ##########################################################################################
+
+#--- NODE ------------------------------------------------------------------------------------------
 
 class Node(object):
     
@@ -218,11 +237,13 @@ class Node(object):
     def __ne__(self, node):
         return not self.__eq__(node)
 
+#--- NODE LINKS ------------------------------------------------------------------------------------
+
 class Links(list):
     
     def __init__(self): 
         """ A list in which each node has an associated edge.
-            The edge() method returns the edge for a given node id.
+            The Links.edge() method returns the edge for a given node id.
         """
         self.edges = dict()
     
@@ -238,9 +259,7 @@ class Links(list):
     def edge(self, node): 
         return self.edges.get(isinstance(node, Node) and node.id or node)
 
-#--- EDGE ------------------------------------------------------------------------------------------
-
-coordinates = lambda x, y, d, a: (x + d*cos(radians(a)), y + d*sin(radians(a)))
+#### EDGE ##########################################################################################
 
 class Edge(object):
 
@@ -304,26 +323,29 @@ class Edge(object):
     def __repr__(self):
         return "%s(id1=%s, id2=%s)" % (self.__class__.__name__, repr(self.node1.id), repr(self.node2.id))
 
-#--- GRAPH -----------------------------------------------------------------------------------------
+#### GRAPH #########################################################################################
 
-# Return value of Graph.shortest_paths().
-# Dictionary values can be accessed by Node as well as by node id.
+#--- GRAPH NODE DICTIONARY -------------------------------------------------------------------------
+
 class nodedict(dict):
+    
     def __init__(self, graph, *args, **kwargs):
+        """ Graph.shortest_paths() and Graph.eigenvector_centrality() return a nodedict,
+            where dictionary values can be accessed by Node as well as by node id.
+        """
         dict.__init__(self, *args, **kwargs)
         self.graph = graph
+        
     def __contains__(self, node):
         return dict.__contains__(self, self.graph.get(node, node))
+        
     def __getitem__(self, node):
         return dict.__getitem__(self, isinstance(node, Node) and node or self.graph[node])
+        
     def get(self, node, default=None):
         return dict.get(self, self.graph.get(node, node), default)
 
-def unique(iterable):
-    """ Returns a list copy in which each item occurs only once (in-order).
-    """
-    seen = set()
-    return [x for x in iterable if x not in seen and not seen.add(x)]
+#--- GRAPH -----------------------------------------------------------------------------------------
 
 # Graph layouts:
 SPRING = "spring"
@@ -639,6 +661,8 @@ class GraphLayout(object):
     def copy(self, graph):
         return GraphLayout(self, graph)
 
+#--- GRAPH LAYOUT: FORCE-BASED ---------------------------------------------------------------------
+
 class GraphSpringLayout(GraphLayout):
     
     def __init__(self, graph):
@@ -711,7 +735,9 @@ class GraphSpringLayout(GraphLayout):
         g.k, g.force, g.repulsion = self.k, self.force, self.repulsion
         return g
 
-#--- GRAPH TRAVERSAL -------------------------------------------------------------------------------
+#### GRAPH ANALYSIS ################################################################################
+
+#--- GRAPH SEARCH ----------------------------------------------------------------------------------
 
 def depth_first_search(node, visit=lambda node: False, traversable=lambda node, edge: True, _visited=None):
     """ Visits all the nodes connected to the given root node, depth-first.
@@ -776,8 +802,8 @@ def edges(path):
     # For example, the distance (i.e., edge weight sum) of a path:
     # sum(e.weight for e in edges(path))
     return len(path) > 1 and (n.links.edge(path[i+1]) for i,n in enumerate(path[:-1])) or iter(())
-    
-#--- GRAPH THEORY ----------------------------------------------------------------------------------
+
+#--- GRAPH ADJACENCY -------------------------------------------------------------------------------
 
 def adjacency(graph, directed=False, reversed=False, stochastic=False, heuristic=None):
     """ Returns a dictionary indexed by node id1's,
@@ -912,6 +938,8 @@ def predecessor_path(tree, u, v):
         return _traverse(u,w) + [w] + _traverse(w,v)
     return [u] + _traverse(u,v) + [v]
 
+#--- GRAPH CENTRALITY ------------------------------------------------------------------------------
+
 def brandes_betweenness_centrality(graph, normalized=True, directed=False):
     """ Betweenness centrality for nodes in the graph.
         Betweenness centrality is a measure of the number of shortests paths that pass through a node.
@@ -998,6 +1026,8 @@ def eigenvector_centrality(graph, normalized=True, reversed=True, rating={}, ite
     warn("node weight is 0 because eigenvector_centrality() did not converge.", Warning)
     return dict((n, 0) for n in G)
 
+#--- GRAPH PARTITIONING ----------------------------------------------------------------------------
+
 # a | b => all elements from a and all the elements from b. 
 # a & b => elements that appear in a as well as in b.
 # a - b => elements that appear in a but not in b.
@@ -1024,8 +1054,6 @@ def partition(graph):
     g = [graph.copy(nodes=[graph[id] for id in n]) for n in g if n]
     g.sort(lambda a, b: len(b) - len(a))
     return g
-
-#--- GRAPH THEORY | CLIQUE -------------------------------------------------------------------------
 
 def is_clique(graph):
     """ A clique is a set of nodes in which each node is connected to all other nodes.
@@ -1061,8 +1089,8 @@ def cliques(graph, threshold=3):
             if c not in a: a.append(c)
     return a
 
-#--- GRAPH MAINTENANCE -----------------------------------------------------------------------------
-# Utility functions for safe linking and unlinking of nodes,
+#### GRAPH UTILITY FUNCTIONS #######################################################################
+# Utility functions for safely linking and unlinking of nodes,
 # with respect for the surrounding nodes.
 
 def unlink(graph, node1, node2=None):
@@ -1132,7 +1160,21 @@ def insert(graph, node, a, b):
             graph._add_edge_copy(e, node1=node, node2=a) 
     unlink(graph, a, b)
 
-#--- HTML CANVAS GRAPH RENDERER --------------------------------------------------------------------
+#### GRAPH EXPORT ##################################################################################
+
+class GraphRenderer(object):
+    
+    def __init__(self, graph):
+        self.graph = graph
+
+    def serialize(self, *args, **kwargs):
+        pass
+
+    def export(self, path, *args, **kwargs):
+        pass
+
+#--- GRAPH EXPORT: HTML5 <CANVAS> ELEMENT ---------------------------------------------------------
+# Exports graphs to interactive web pages using graph.js.
 
 def minify(js):
     """ Returns a compressed Javascript string with comments and whitespace removed.
@@ -1158,9 +1200,9 @@ DEFAULT, INLINE = "default", "inline"
 HTML, CANVAS, STYLE, CSS, SCRIPT, DATA = \
     "html", "canvas", "style", "css", "script", "data"
 
-class HTMLCanvasRenderer(object):
+class HTMLCanvasRenderer(GraphRenderer):
     
-    def __init__(self, graph):
+    def __init__(self, graph, **kwargs):
         self.graph    = graph
         self._source  = \
             "<!doctype html>\n" \
@@ -1217,6 +1259,10 @@ class HTMLCanvasRenderer(object):
                   "text": (0,0,0,1),
               "fontsize": 11,
         }
+        # Override settings from keyword arguments.
+        self.default.update(kwargs.pop("default", {}))
+        for k, v in kwargs.items():
+            setattr(self, k, v)
     
     def _escape(self, s):
         if isinstance(s, basestring):
@@ -1441,7 +1487,7 @@ class HTMLCanvasRenderer(object):
             s)
         return s
 
-    def render(self, type=HTML):
+    def serialize(self, type=HTML):
         if type == HTML:
             return self.html
         if type == CANVAS:
@@ -1452,14 +1498,17 @@ class HTMLCanvasRenderer(object):
             return self.script
         if type == DATA:
             return self.data
+    
+    # Backwards compatibility.
+    render = serialize
 
-    def export(self, path, overwrite=False, encoding="utf-8"):
+    def export(self, path, encoding="utf-8"):
         """ Generates a folder at the given path containing an index.html
             that visualizes the graph using the HTML5 <canvas> tag.
         """
-        if overwrite and os.path.exists(path):
+        if os.path.exists(path):
             rmtree(path)
-        os.mkdir(path) # With overwrite=False, raises OSError if the path already exists.
+        os.mkdir(path)
         # Copy compressed graph.js + canvas.js (unless a custom path is given.)
         if self.javascript is None:
             for p, f in (("..", "canvas.js"), (".", "graph.js")):
@@ -1477,105 +1526,97 @@ class HTMLCanvasRenderer(object):
         f.write(self.html)
         f.close()
 
-def render(graph, type=HTML, **kwargs):
-    renderer = HTMLCanvasRenderer(graph)
-    renderer.default.update(kwargs.get("default", {}))
-    kwargs["default"] = renderer.default
-    kwargs["stylesheet"] = kwargs.get("stylesheet", INLINE)
-    for k,v in kwargs.items():
-        if k in renderer.__dict__: 
-            renderer.__dict__[k] = v
-    return renderer.render(type)
+#--- GRAPH EXPORT: GRAPHML ------------------------------------------------------------------------
+# Exports graphs as GraphML XML, which can be read by Gephi (https://gephi.org).
+# Author: Frederik Elwert <frederik.elwert@web.de>, 2014.
 
-def export(graph, path, overwrite=False, encoding="utf-8", **kwargs):
-    renderer = HTMLCanvasRenderer(graph)
-    renderer.default.update(kwargs.get("default", {}))
-    kwargs["default"] = renderer.default
-    kwargs["stylesheet"] = kwargs.get("stylesheet", DEFAULT)
-    for k,v in kwargs.items():
-        if k in renderer.__dict__: 
-            renderer.__dict__[k] = v
-    return renderer.export(path, overwrite, encoding)
+GRAPHML = "graphml"
 
-def write(graph, outfile, format=None, directed=False, **kwargs):
-    """Write graph to a file."""
-    writers = {
-        "graphml": write_graphml,
-        }
-    if format is None:
-        if isinstance(outfile, file):
-            try:
-                filename = outfile.name
-            except AttributeError:
-                filename = ""
-        else:
-            filename = outfile
-        _, ext = os.path.splitext(filename)
-        format = ext.lstrip('.')
-    writer = writers[format]
-    writer(graph, outfile, directed, **kwargs)
-        
-def write_graphml(graph, outfile, directed=False, encoding="utf-8"):
-    """Write graph to a GraphML file."""
-    try:
-        from lxml import etree
-        lxml = True
-    except ImportError:
+class GraphMLRenderer(GraphRenderer):
+
+    def serialize(self, directed=False):
+        p = "tmp.graphml"
+        self.export(p, directed, encoding="utf-8")
+        s = open(p, encoding="utf-8").read()
+        os.unlink(p)
+        return s
+
+    def export(self, path, directed=False, encoding="utf-8"):
+        """ Generates a GraphML XML file at the given path.
+        """
         import xml.etree.ElementTree as etree
-        lxml = False
-    NS = "http://graphml.graphdrawing.org/xmlns"
-    P = "{" + NS + "}"
-    if lxml:
-        root = etree.Element(P + "graphml",
-                             nsmap = {None: NS})
-    else:
-        root = etree.Element(P + "graphml")
-    graph_elem = etree.SubElement(root, P + "graph",
-                 id="g",
-                 edgedefault="directed" if directed else "undirected")
-    id_map = {}
-    n_label = False
-    e_weight = True  # in pattern, edges always have weights
-    for i, n in enumerate(graph.nodes):
-        nid = "n%s" % i
-        id_map[n.id] = nid
-        node_elem = etree.SubElement(graph_elem, P + "node",
-                    id=nid)
-        label = None
-        if n.text and n.text.string != n.id:
-            label = n.text.string
-        elif not isinstance(n.id, int):
-            label = n.id
-        if label:
-            n_label = True
-            data_elem = etree.SubElement(node_elem, P + "data",
-                        key="n_label")
-            data_elem.text = label
-    for i, e in enumerate(graph.edges):
-        edge_elem = etree.SubElement(graph_elem, P + "edge",
-                    id="e%s" % i,
-                    source=id_map[e.node1.id],
-                    target=id_map[e.node2.id])
-        data_elem = etree.SubElement(edge_elem, P + "data",
-                    key="e_weight")
-        data_elem.text = str(e.weight)
-    if e_weight:
-        key_elem = etree.Element(P + "key", **{
-                                 "id": "e_weight",
-                                 "for": "edge",
-                                 "attr.name": "weight",
-                                 "attr.type": "double"})
-        root.insert(0, key_elem)
-    if n_label:
-        key_elem = etree.Element(P + "key", **{
-                                 "id": "n_label",
-                                 "for": "node",
-                                 "attr.name": "label",
-                                 "attr.type": "string"})
-        root.insert(0, key_elem)
-    tree = etree.ElementTree(root)
-    if lxml:
-        tree.write(outfile, encoding=encoding, pretty_print=True)
-    else:
-        etree.register_namespace("", NS)
-        tree.write(outfile, encoding=encoding)
+        ns = "{http://graphml.graphdrawing.org/xmlns}"
+        etree.register_namespace("", ns.strip("{}"))
+        # Define type for node labels (string).
+        # Define type for node edges (float).
+        root = etree.Element(ns + "graphml")
+        root.insert(0, etree.Element(ns + "key", **{
+            "id": "node_label", "for": "node", "attr.name": "label", "attr.type": "string"
+        }))
+        root.insert(0, etree.Element(ns + "key", **{
+            "id": "edge_weight", "for": "edge", "attr.name": "weight", "attr.type": "double"
+        }))
+        # Map Node.id => GraphML node id.
+        m = {}        
+        g = etree.SubElement(root, ns + "graph", id="g", edgedefault=directed and "directed" or "undirected")
+        # Export nodes.
+        for i, n in enumerate(self.graph.nodes):
+            m[n.id] = "node%s" % i
+            x = etree.SubElement(g, ns + "node", id=m[n.id])
+            x = etree.SubElement(x, ns + "data", key="node_label")
+            if n.text and n.text.string != n.id:
+                x.text = n.text.string
+        # Export edges.
+        for i, e in enumerate(self.graph.edges):
+            x = etree.SubElement(g, ns + "edge", id="edge%s" % i, source=m[e.node1.id], target=m[e.node2.id])
+            x = etree.SubElement(x, ns + "data", key="edge_weight")
+            x.text = "%.3f" % e.weight
+        # Export graph with pretty indented XML.
+        # http://effbot.org/zone/element-lib.htm#prettyprint
+        def indent(e, level=0):
+            w = "\n" + level * "  "
+            if len(e):
+                if not e.text or not e.text.strip():
+                    e.text = w + "  "
+                if not e.tail or not e.tail.strip():
+                    e.tail = w
+                for e in e:
+                    indent(e, level+1)
+                if not e.tail or not e.tail.strip():
+                    e.tail = w
+            else:
+                if level and (not e.tail or not e.tail.strip()):
+                    e.tail = w
+        indent(root)
+        tree = etree.ElementTree(root)
+        tree.write(path, encoding=encoding)
+
+#--------------------------------------------------------------------------------------------------
+# The export() and serialize() function are called from Graph.export() and Graph.serialize(),
+# and are expected to handle any GraphRenderer by specifying an optional type=HTML|GRAPHML.
+
+def export(graph, path, encoding="utf-8", **kwargs):
+    type = kwargs.pop("type", HTML)
+    # Export to GraphML.
+    if type == GRAPHML or path.endswith(".graphml"):
+        r = GraphMLRenderer(graph)
+        return r.export(path, directed=kwargs.get("directed", False), encoding=encoding)
+    # Export to HTML with <canvas>.
+    if type == HTML:
+        kwargs.setdefault("stylesheet", DEFAULT)
+        r = HTMLCanvasRenderer(graph, **kwargs)
+        return r.export(path, encoding)
+
+def serialize(graph, type=HTML, **kwargs):
+    # Return GraphML string.
+    if type == GRAPHML:
+        r = GraphMLRenderer(graph)
+        return r.serialize(directed=kwargs.get("directed", False))
+    # Return HTML string.
+    if type in (HTML, CANVAS, STYLE, CSS, SCRIPT, DATA):
+        kwargs.setdefault("stylesheet", INLINE)
+        r = HTMLCanvasRenderer(graph, **kwargs)
+        return r.serialize(type)
+    
+# Backwards compatibility.
+write, render = export, serialize

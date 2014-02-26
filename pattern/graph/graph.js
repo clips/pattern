@@ -1,4 +1,4 @@
-/*### PATTERN | JAVASCRIPT:GRAPH ###################################################################*/
+/*### PATTERN | GRAPH.JS ###########################################################################*/
 // Copyright (c) 2010 University of Antwerp, Belgium
 // Authors: Tom De Smedt <tom@organisms.be>, Daniel Friesen (daniel@nadir-seen-fire.com)
 // License: BSD (see LICENSE.txt for details).
@@ -1040,6 +1040,8 @@ GraphLayout = Class.extend({
     
 });
 
+/*--- GRAPH LAYOUT: FORCE-BASED --------------------------------------------------------------------*/
+
 GraphSpringLayout = GraphLayout.extend({
     
     init: function(graph) {
@@ -1137,7 +1139,7 @@ GraphSpringLayout = GraphLayout.extend({
     }
 });
 
-/*--- GRAPH TRAVERSAL ------------------------------------------------------------------------------*/
+/*--- GRAPH SEARCH ---------------------------------------------------------------------------------*/
 
 //    depthFirstSearch(node, {visit:function(node){return false;}, traversable:function(node,edge){return true;}, _visited:null}
 Graph.depthFirstSearch = function(node, a) {
@@ -1238,7 +1240,7 @@ function edges(path) {
     return [];
 };
 
-/*--- GRAPH THEORY ---------------------------------------------------------------------------------*/
+/*--- GRAPH ADJACENCY ------------------------------------------------------------------------------*/
 
 var Heap = Class.extend({
     init: function() {
@@ -1371,6 +1373,8 @@ Graph.dijkstraShortestPaths = function(graph, id, a) {
     return P;
 };
 
+/*--- GRAPH CENTRALITY -----------------------------------------------------------------------------*/
+
 //    brandesBetweennessCentrality(graph {normalized:true, directed:false})
 Graph.brandesBetweennessCentrality = function(graph, a) {
     /* Betweenness centrality for nodes in the graph.
@@ -1486,6 +1490,8 @@ Graph.eigenvectorCentrality = function(graph, a) {
     return x;
 };
 
+/*--- GRAPH PARTITIONING ---------------------------------------------------------------------------*/
+
 // a | b => all elements from a and all the elements from b. 
 // a & b => elements that appear in a as well as in b.
 // a - b => elements that appear in a but not in b.
@@ -1541,8 +1547,6 @@ Graph.partition = function(graph) {
     return g;
 };
 
-/*--- GRAPH THEORY | CLIQUE ------------------------------------------------------------------------*/
-
 Graph.isClique = function(graph) {
     /* A clique is a set of nodes in which each node is connected to all other nodes.
      */
@@ -1589,7 +1593,7 @@ Graph.cliques = function(graph, threshold) {
     }
 };
 
-/*--- GRAPH MAINTENANCE ----------------------------------------------------------------------------*/
+/*--- GRAPH UTLITY FUNCTIONS -----------------------------------------------------------------------*/
 
 Graph.unlink = function(graph, node1, node2) {
     /* Removes the edges between node1 and node2.
