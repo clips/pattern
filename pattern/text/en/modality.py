@@ -15,6 +15,7 @@ def find(function, list):
             return item
 
 ### MOOD ###########################################################################################
+# Functions take Sentence objects, see pattern.text.tree.Sentence and pattern.text.parsetree().
 
 INDICATIVE  = "indicative"  # They went for a walk.
 IMPERATIVE  = "imperative"  # Let's go for a walk!
@@ -228,6 +229,14 @@ def negated(sentence, negative=("not", "n't", "never")):
 def mood(sentence, **kwargs):
     """ Returns IMPERATIVE (command), CONDITIONAL (possibility), SUBJUNCTIVE (wish) or INDICATIVE (fact).
     """
+    if isinstance(sentence, basestring):
+        try:
+            # A Sentence is expected but a string given.
+            # Attempt to parse the string on-the-fly.
+            from pattern.en import parse, Sentence
+            sentence = Sentence(parse(sentence))
+        except ImportError:
+            pass
     if imperative(sentence, **kwargs):
         return IMPERATIVE
     if conditional(sentence, **kwargs):
@@ -238,6 +247,7 @@ def mood(sentence, **kwargs):
         return INDICATIVE
 
 ### MODALITY #######################################################################################
+# Functions take Sentence objects, see pattern.text.tree.Sentence and pattern.text.parsetree().
 
 def d(*args):
     return dict.fromkeys(args, True)
@@ -381,6 +391,14 @@ def modality(sentence, type=EPISTEMIC):
         Currently, the only type implemented is EPISTEMIC.
         Epistemic modality is used to express possibility (i.e. how truthful is what is being said).
     """
+    if isinstance(sentence, basestring):
+        try:
+            # A Sentence is expected but a string given.
+            # Attempt to parse the string on-the-fly.
+            from pattern.en import parse, Sentence
+            sentence = Sentence(parse(sentence))
+        except ImportError:
+            pass
     S, n, m = sentence, 0.0, 0
     if not (hasattr(S, "words") and hasattr(S, "parse_token")):
         raise TypeError, "%s object is not a parsed Sentence" % repr(S.__class__.__name__)
