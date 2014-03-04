@@ -875,9 +875,9 @@ class TestModality(unittest.TestCase):
         A, P, R, F = test(lambda sentence: en.modality(sentence) > 0.5, sentences)
         #print A, P, R, F
         self.assertTrue(A > 0.69)
-        self.assertTrue(P > 0.71)
+        self.assertTrue(P > 0.72)
         self.assertTrue(R > 0.64)
-        self.assertTrue(F > 0.67)
+        self.assertTrue(F > 0.68)
         print "pattern.en.modality()"
 
 #---------------------------------------------------------------------------------------------------

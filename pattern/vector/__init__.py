@@ -2389,14 +2389,28 @@ NearestNeighbor = kNN = KNN
 
 #--- INFORMATION GAIN TREE --------------------------------------------------------------------------
 
-class IGTREE(Classifier):
+class IGTreeNode(list):
+    
+    def __init__(self, feature=None, value=None, type=None):
+        self.feature = feature
+        self.value = value
+        self.type = type
+        
+    @property
+    def children(self):
+        return self
+        
+    @property
+    def leaf(self):
+        return len(self) == 0
+
+class IGTree(Classifier):
 
     def __init__(self, train=[], baseline=MAJORITY, method=GAINRATIO):
         """ IGTREE is a supervised learning method
             where training data is represented as a tree ordered by information gain.
             A feature is taken to occur in a vector (1) or not (0), i.e. BINARY weight.
         """
-        
         self._root   = None
         self._method = method
         Classifier.__init__(self, train, baseline)
@@ -2404,18 +2418,6 @@ class IGTREE(Classifier):
     @property
     def method(self):
         return self._method
-
-    class Node(list):
-        def __init__(self, feature=None, value=None, type=None):
-            self.feature = feature
-            self.value = value
-            self.type = type
-        @property
-        def children(self):
-            return self
-        @property
-        def leaf(self):
-            return len(self) == 0
             
     def _tree(self, vectors=[], features=[]):
         """ Returns a tree of nested IGTREE.Node objects,
@@ -2426,6 +2428,8 @@ class IGTREE(Classifier):
         # IGTree: Using trees for compression and classification in lazy learning algorithms.
         # Artificial Intelligence Review 11, 407-423.
         #
+        if len(vectors) == 0 or len(features) == 0:
+            return IGTreeNode()
         # {class: count}
         classes = defaultdict(int)
         for v, type in vectors:
@@ -2434,7 +2438,7 @@ class IGTREE(Classifier):
         c = max(classes, key=classes.__getitem__)
         # Find the most informative feature f.
         f = features[0]
-        n = self.Node(feature=f, type=c)
+        n = IGTreeNode(feature=f, type=c)
         # The current node has a hyperplane on feature f,
         # and the majority class in the set of vectors.
         if len(classes) == 1:
@@ -2477,7 +2481,7 @@ class IGTREE(Classifier):
         """
         m = Model((Document(set(v), type=type) for type, v in self._vectors), weight=BINARY)
         f = sorted(m.features, key=getattr(m, self._method), reverse=True)
-        sys.setrecursionlimit(len(f) * 2)
+        sys.setrecursionlimit(max(len(f) * 2, 1000))
         self._root = self._tree([(v, type) for type, v in self._vectors], features=f)
         
     def classify(self, document, discrete=True):
@@ -2497,13 +2501,13 @@ class IGTREE(Classifier):
             self._train()
         self._vectors = []
 
-IGTree = IGTREE
+IGTREE = IGTree
 
 #from pattern.db import csv, pd
 #data = csv(pd("..", "..", "test", "corpora", "polarity-nl-bol.com.csv"))
 #data = ((review, score) for score, review in data)
 #
-#print kfoldcv(IGTREE, data, folds=3)
+#print kfoldcv(IGTree, data, folds=3)
 
 #--- SINGLE-LAYER PERCEPTRON ------------------------------------------------------------------------
 

@@ -210,6 +210,12 @@ class TestMultilingual(unittest.TestCase):
         self.assertEqual(text.language(u"de kat zat op de mat")[0], "nl")
         self.assertEqual(text.language(u"le chat s'était assis sur le tapis")[0], "fr")
         print "pattern.text.language()"
+        
+    def test_deflood(self):
+        # Assert flooding removal.
+        self.assertEqual(text.deflood("NIIICE!!!", n=1), "NICE!")
+        self.assertEqual(text.deflood("NIIICE!!!", n=2), "NIICE!!")
+        print "pattern.text.deflood()"
 
 #---------------------------------------------------------------------------------------------------
 
