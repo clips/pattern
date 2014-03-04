@@ -361,6 +361,11 @@ class Document(object):
             w = string
             w = count(w, **kwargs)
             v = None
+        # A set of unique words: map to ready-only dict of (word, 1)-items.
+        elif isinstance(string, set):
+            w = string
+            w = kwargs["dict"].fromkeys(w, 1)
+            v = None
         # A Vector of (word, weight)-items: copy as document vector.
         elif isinstance(string, Vector):
             w = string
@@ -1329,7 +1334,7 @@ class Model(object):
                 for f, v in d.vector.items():
                     seen.add(f)
                     if isinstance(v, float):
-                        v = round(v, 1) # 10 discrete intervals for float values.                        
+                        v = round(v, 1) # 10 discrete intervals for float values.
                     V[f][v][type] += 1
                 #for f in F - seen:
                 #    V[f][0][type] += 1
@@ -2053,10 +2058,10 @@ class Classifier(object):
                 P.append(float(TP) / ((TP + FP) or 1))
                 R.append(float(TP) / ((TP + FN) or 1))
         # Macro-averaged:
-        A = sum(A) / (len(A) or 1)
-        P = sum(P) / (len(P) or 1)
-        R = sum(R) / (len(R) or 1)
-        F = 2.0 * P * R / ((P + R) or 1)
+        A = sum(A) / (len(A) or 1.0)
+        P = sum(P) / (len(P) or 1.0)
+        R = sum(R) / (len(R) or 1.0)
+        F = 2.0 * P * R / ((P + R) or 1.0)
         return A, P, R, F
 
     def confusion_matrix(self, documents=[]):
@@ -2189,10 +2194,10 @@ def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
         m[3] += F
         f.append(F)
     # F-score mean & variance.
-    u = float(sum(f)) / (K or 1)
-    o = float(sum((x - u) ** 2 for x in f)) / (K-1 or 1)
+    u = float(sum(f)) / (K or 1.0)
+    o = float(sum((x - u) ** 2 for x in f)) / (K-1 or 1.0)
     o = sqrt(o)
-    return tuple([v / (K or 1) for v in m] + [o])
+    return tuple([v / (K or 1.0) for v in m] + [o])
     
 kfoldcv = K_fold_cv = k_fold_cv = k_fold_cross_validation = K_fold_cross_validation
 
@@ -2381,6 +2386,124 @@ NearestNeighbor = kNN = KNN
 #print knn.classes
 #print knn.classify(Document("something that can fly"))
 #print KNN.test((d1, d2, d3), folds=2)
+
+#--- INFORMATION GAIN TREE --------------------------------------------------------------------------
+
+class IGTREE(Classifier):
+
+    def __init__(self, train=[], baseline=MAJORITY, method=GAINRATIO):
+        """ IGTREE is a supervised learning method
+            where training data is represented as a tree ordered by information gain.
+            A feature is taken to occur in a vector (1) or not (0), i.e. BINARY weight.
+        """
+        
+        self._root   = None
+        self._method = method
+        Classifier.__init__(self, train, baseline)
+
+    @property
+    def method(self):
+        return self._method
+
+    class Node(list):
+        def __init__(self, feature=None, value=None, type=None):
+            self.feature = feature
+            self.value = value
+            self.type = type
+        @property
+        def children(self):
+            return self
+        @property
+        def leaf(self):
+            return len(self) == 0
+            
+    def _tree(self, vectors=[], features=[]):
+        """ Returns a tree of nested IGTREE.Node objects,
+            where the given list of vectors contains (Vector, class)-tuples, and
+            where the given list of features is sorted by information gain ratio.
+        """
+        # Daelemans, W., van den Bosch, A., Weijters, T. (1997).
+        # IGTree: Using trees for compression and classification in lazy learning algorithms.
+        # Artificial Intelligence Review 11, 407-423.
+        #
+        # {class: count}
+        classes = defaultdict(int)
+        for v, type in vectors:
+            classes[type] += 1
+        # Find the most frequent class for the set of vectors.
+        c = max(classes, key=classes.__getitem__)
+        # Find the most informative feature f.
+        f = features[0]
+        n = self.Node(feature=f, type=c)
+        # The current node has a hyperplane on feature f,
+        # and the majority class in the set of vectors.
+        if len(classes) == 1:
+            return n
+        if len(features) == 1:
+            return n
+        # Partition the set of vectors into subsets
+        # (vectors with the same value for feature f are in the same subset).
+        p = defaultdict(list)
+        for v, type in vectors:
+            #x = round(v.get(f, 0.0), 1)
+            x = f in v
+            p[x].append((v, type))
+        # If not all vectors in a subset have the same class,
+        # build IGTREE._tree(subset, features[1:]) and connect it to the current node.
+        for x in p:
+            if any((type != c) for v, type in p[x]):
+                n.append(self._tree(p[x], features[1:]))
+                n[-1].value = x
+        return n
+        
+    def _search(self, node, vector):
+        """ Returns the predicted class for the given Vector.
+        """
+        while True:
+            #x = round(vector.get(node.feature, 0.0), 1)
+            x = node.feature in vector
+            b = False
+            for n in node.children:
+                if n.value == x: 
+                    b = True
+                    break
+            if b is False:
+                return node.type
+            node = n
+            
+    def _train(self):
+        """ Calculates information gain ratio for the features in the training data.
+            Constructs the search tree.
+        """
+        m = Model((Document(set(v), type=type) for type, v in self._vectors), weight=BINARY)
+        f = sorted(m.features, key=getattr(m, self._method), reverse=True)
+        sys.setrecursionlimit(len(f) * 2)
+        self._root = self._tree([(v, type) for type, v in self._vectors], features=f)
+        
+    def classify(self, document, discrete=True):
+        """ Returns the type with the highest probability for the given document.
+            If the classifier has been trained on LSA concept vectors
+            you need to supply LSA.transform(document).
+        """
+        if self._root is None:
+            self._train()
+        return self._search(self._root, self._vector(document)[1])
+    
+    def finalize(self):
+        """ Removes training data from memory, keeping only the IG tree,
+            reducing file size with Classifier.save().
+        """
+        if self._root is None:
+            self._train()
+        self._vectors = []
+
+IGTree = IGTREE
+
+#from pattern.db import csv, pd
+#data = csv(pd("..", "..", "test", "corpora", "polarity-nl-bol.com.csv"))
+#data = ((review, score) for score, review in data)
+#
+#print kfoldcv(IGTREE, data, folds=3)
 
 #--- SINGLE-LAYER PERCEPTRON ------------------------------------------------------------------------
 
