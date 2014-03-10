@@ -33,5 +33,5 @@ license["Facebook"] = \
 license["Flickr"] = \
     "787081027f43b0412ba41142d4540480"
 
-license["Products"] = \
+license["ProductWiki"] = \
     "64819965ec784395a494a0d7ed0def32"
