@@ -453,12 +453,12 @@ class TestSearchEngine(unittest.TestCase):
              "Wikia": (web.MEDIAWIKI,   web.MEDIAWIKI_LICENSE,   web.Wikia),
             "Flickr": (web.FLICKR,      web.FLICKR_LICENSE,      web.Flickr),
           "Facebook": (web.FACEBOOK,    web.FACEBOOK_LICENSE,    web.Facebook),
-          "Products": (web.PRODUCTWIKI, web.PRODUCTWIKI_LICENSE, web.Products)
+       "ProductWiki": (web.PRODUCTWIKI, web.PRODUCTWIKI_LICENSE, web.ProductWiki)
         }
 
     def _test_search_engine(self, api, source, license, Engine, query="today", type=web.SEARCH):
         # Assert SearchEngine standard interface for any api:
-        # Google, Yahoo, Bing, Twitter, Wikipedia, Flickr, Facebook, Products, Newsfeed.
+        # Google, Yahoo, Bing, Twitter, Wikipedia, Flickr, Facebook, ProductWiki, Newsfeed.
         # SearchEngine.search() returns a list of Result objects with unicode fields, 
         # except Wikipedia which returns a WikipediaArticle (MediaWikiArticle subclass).
         if api == "Yahoo" and license == ("",""): 
@@ -499,23 +499,23 @@ class TestSearchEngine(unittest.TestCase):
         print "pattern.web.%s.search()" % api
     
     def test_search_google(self):
-        self._test_search_engine("Google",    *self.api["Google"])
+        self._test_search_engine("Google",       *self.api["Google"])
     def test_search_yahoo(self):
-        self._test_search_engine("Yahoo",     *self.api["Yahoo"])
+        self._test_search_engine("Yahoo",        *self.api["Yahoo"])
     def test_search_bing(self):
-        self._test_search_engine("Bing",      *self.api["Bing"])
+        self._test_search_engine("Bing",         *self.api["Bing"])
     def test_search_twitter(self):
-        self._test_search_engine("Twitter",   *self.api["Twitter"])
+        self._test_search_engine("Twitter",      *self.api["Twitter"])
     def test_search_wikipedia(self):
-        self._test_search_engine("Wikipedia", *self.api["Wikipedia"])
+        self._test_search_engine("Wikipedia",    *self.api["Wikipedia"])
     def test_search_wikia(self):
-        self._test_search_engine("Wikia",     *self.api["Wikia"], **{"query": "games"})
+        self._test_search_engine("Wikia",        *self.api["Wikia"], **{"query": "games"})
     def test_search_flickr(self):
-        self._test_search_engine("Flickr",    *self.api["Flickr"], **{"type": web.IMAGE})
+        self._test_search_engine("Flickr",       *self.api["Flickr"], **{"type": web.IMAGE})
     def test_search_facebook(self):
-        self._test_search_engine("Facebook",  *self.api["Facebook"])
-    def test_search_products(self):
-        self._test_search_engine("Products",  *self.api["Products"], **{"query": "computer"})
+        self._test_search_engine("Facebook",     *self.api["Facebook"])
+    def test_search_productwiki(self):
+        self._test_search_engine("ProductWiki",  *self.api["ProductWiki"], **{"query": "computer"})
     def test_search_newsfeed(self):
         for feed, url in web.feeds.items():
             self._test_search_engine("Newsfeed", url, None, web.Newsfeed, query=url, type=web.NEWS)
@@ -694,14 +694,14 @@ class TestSearchEngine(unittest.TestCase):
         self.assertTrue(len(v.sections[1].tables) > 0)
         print "pattern.web.WikipediaSection"
 
-    def test_products(self):
+    def test_productwiki(self):
         # Assert product reviews and score.
-        source, license, Engine = self.api["Products"]
+        source, license, Engine = self.api["ProductWiki"]
         v = Engine(license).search("computer", cached=False)
         self.assertTrue(isinstance(v[0].reviews, list))
         self.assertTrue(isinstance(v[0].score, int))
-        print "pattern.web.Products.Result.reviews"
-        print "pattern.web.Products.Result.score"
+        print "pattern.web.ProductWiki.Result.reviews"
+        print "pattern.web.ProductWiki.Result.score"
 
 #---------------------------------------------------------------------------------------------------
 
