@@ -199,8 +199,8 @@ var test_canvas = {
         }
         this.test_rgb2hex = function() {
             assert(_rgb2hex(0, 0, 0) === '#000000');
-            assert(_rgb2hex(0.01, 0.5, 0.99) === '#0380FC');
             assert(_rgb2hex(1, 1, 1) === '#FFFFFF');
+            assert(_rgb2hex(0.01, 0.5, 0.99) === '#0380FC');
             console.log("_rgb2hex()")
         }
     },
