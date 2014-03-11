@@ -757,17 +757,23 @@ var lineCap = linecap;
 function _rgb2hex(r, g, b) {
     /* Converts the given R,G,B values to a hexadecimal color string.
      */
+    parseHex = function(i) { 
+        return ((i == 0)? "00" : (i.length < 2)? "0"+i : i).toString(16).toUpperCase(); 
+    }
+    return "#"
+        + parseHex(Math.round(r * 255)) 
+        + parseHex(Math.round(g * 255)) 
+        + parseHex(Math.round(b * 255));
+}
+
+function _rgb2hex(r, g, b) {
+    /* Converts the given R,G,B values to a hexadecimal color string.
+     */
     parseHex = function(i) {
-        var s;
-        if (i == 0) {
-            return "00";
-        } else {
-            s = i.toString(16).toUpperCase();
-            if (s.length < 2) {
-                s = "0" + s;
-            }
-            return s;
-        }
+        var s = "00";
+        s = (i != 0)? i.toString(16).toUpperCase() : s;
+        s = (s.length < 2)? "0" + s : s;
+        return s;
     }
     return "#"
         + parseHex(Math.round(r * 255)) 
