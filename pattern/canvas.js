@@ -956,7 +956,7 @@ function _ctx_stroke(stroke, strokewidth, strokestyle, linecap) {
             switch(strokestyle) {
                 case DOTTED: _ctx.setLineDash([1,3]); break;
                 case DASHED: _ctx.setLineDash([3,3]); break;
-                    default: _ctx.setLineDash(null);
+                    default: _ctx.setLineDash([]);
             }
         }
         _ctx.lineWidth = strokewidth;
