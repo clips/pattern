@@ -559,7 +559,7 @@ var Color = Class.extend({
             g=r.g; b=r.b; a=r.a; r=r.r;
         // One value, array with R,G,B,A values.
         } else if (r instanceof Array) {
-            g=r[1]; b=r[2]; a=r[3]||1; r=r[0];
+            g=r[1]; b=r[2]; a=r[3] !== undefined ? r[3] : 1; r=r[0];
         // No value or null, transparent black.
         } else if (r === undefined || r == null) {
             r=0; g=0; b=0; a=0;
@@ -757,8 +757,17 @@ var lineCap = linecap;
 function _rgb2hex(r, g, b) {
     /* Converts the given R,G,B values to a hexadecimal color string.
      */
-    parseHex = function(i) { 
-        return ((i == 0)? "00" : (i.length < 2)? "0"+i : i).toString(16).toUpperCase(); 
+    parseHex = function(i) {
+        var s;
+        if (i == 0) {
+            return "00";
+        } else {
+            s = i.toString(16).toUpperCase();
+            if (s.length < 2) {
+                s = "0" + s;
+            }
+            return s;
+        }
     }
     return "#"
         + parseHex(Math.round(r * 255)) 

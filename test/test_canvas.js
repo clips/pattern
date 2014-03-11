@@ -170,6 +170,7 @@ var test_canvas = {
             assert(Array.eq(new Color(0,0,0.5).rgba(), [0,0,0.5,1]));
             assert(Array.eq(new Color(1,1,1,1).rgba(), [1,1,1,1]));
             assert(Array.eq(new Color([1,0,0,1]).rgba(), [1,0,0,1]));
+            assert(Array.eq(new Color([1,0,0,0]).rgba(), [1,0,0,0]));
             assert(Array.eq(new Color(255,255,0,0, {base:255}).rgba(), [1,1,0,0]));
             assert(Array.eq(new Color(1,1,0.5,0, {colorspace:HSB}).rgba(), [0.5,0,0,0]));
             assert(Array.eq(new Color(new Color(0)).rgba(), [0,0,0,1]));
@@ -195,6 +196,12 @@ var test_canvas = {
             assert(Math.round(rgba[2], 1) == 0.3);
             assert(Math.round(rgba[3], 1) == 1.0);
             console.log("Color.rotate()")
+        }
+        this.test_rgb2hex = function() {
+            assert(_rgb2hex(0, 0, 0) === '#000000');
+            assert(_rgb2hex(0.01, 0.5, 0.99) === '#0380FC');
+            assert(_rgb2hex(1, 1, 1) === '#FFFFFF');
+            console.log("_rgb2hex()")
         }
     },
 
