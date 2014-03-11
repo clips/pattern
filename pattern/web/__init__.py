@@ -17,6 +17,7 @@ import os
 import socket, urlparse, urllib, urllib2
 import base64
 import htmlentitydefs
+import httplib
 import sgmllib
 import re
 import xml.dom.minidom
@@ -393,16 +394,23 @@ class URL(object):
             if e.code == 429: raise HTTP429TooMayRequests(src=e, url=url)
             if e.code == 500: raise HTTP500InternalServerError(src=e, url=url)
             if e.code == 503: raise HTTP503ServiceUnavailable(src=e, url=url)
-            raise HTTPError(src=e, url=url)
+            raise HTTPError(str(e), src=e, url=url)
+        except httplib.BadStatusLine, e:
+            raise HTTPError(str(e), src=e, url=url)
         except socket.timeout, e:
             raise URLTimeout(src=e, url=url)
-        except urllib2.URLError, e:
-            if e.reason == "timed out" \
-            or e.reason[0] in (36, "timed out"):
+        except socket.error, e:
+            if e.args[0].endswith("timed out"):
                 raise URLTimeout(src=e, url=url)
-            raise URLError(e.reason, src=e, url=url)
+            raise URLError(str(e), src=e, url=url)
+        except urllib2.URLError, e:
+            if e.reason == "timed out":
+                raise URLTimeout(src=e, url=url)
+            if e.reason[0] in (36, "timed out"):
+                raise URLTimeout(src=e, url=url)
+            raise URLError(str(e), src=e, url=url)
         except ValueError, e:
-            raise URLError(src=e, url=url)
+            raise URLError(str(e), src=e, url=url)
 
     def download(self, timeout=10, cached=True, throttle=0, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None, unicode=False, **kwargs):
         """ Downloads the content at the given URL (by default it will be cached locally).
@@ -2606,9 +2614,9 @@ class Facebook(SearchEngine):
 # http://connect.productwiki.com/connect-api/
 
 PRODUCTWIKI = "http://api.productwiki.com/connect/api.aspx"
-PRODUCTWIKI_LICENSE = api.license["Products"]
+PRODUCTWIKI_LICENSE = api.license["ProductWiki"]
 
-class Products(SearchEngine):
+class ProductWiki(SearchEngine):
 
     def __init__(self, license=None, throttle=5.0, language=None):
         SearchEngine.__init__(self, license or PRODUCTWIKI_LICENSE, throttle, language)
@@ -2631,7 +2639,7 @@ class Products(SearchEngine):
         url = URL(url, method=GET, query={
                "key": self.license or "",
                  "q": query,
-             "page" : start,
+              "page": start,
                 "op": "search",
             "fields": "proscons", # "description,proscons" is heavy.
             "format": "json"
@@ -2659,7 +2667,10 @@ class Products(SearchEngine):
         results.sort(key=lambda r: r.score, reverse=True)
         return results
 
-#for r in Products().search("tablet"):
+# Backwards compatibility.
+Products = ProductWiki
+
+#for r in ProductWiki().search("tablet"):
 #    print r.title
 #    print r.score
 #    print r.reviews
