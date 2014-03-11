@@ -14,6 +14,7 @@ import sys
 import os
 import re
 import time; _time=time
+import atexit
 import urllib
 import hashlib
 import base64
@@ -34,12 +35,6 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
-
-try:
-    # Folder that contains the script that imports pattern.server.
-    SCRIPT = os.path.dirname(os.path.realpath(__main__.__file__))
-except:
-    SCRIPT = os.getcwd()
 
 try:
     # Import from python2.x/site-packages/cherrypy
@@ -331,6 +326,8 @@ class DatabaseTransaction(Database):
 
 #### RATE LIMITING #################################################################################
 # With @app.route(path, limit=True), the decorated URL path handler function calls RateLimit().
+# For performance, rate limiting uses a RAM cache of api keys + the time of the last request.
+# This will not work with multi-processing, since each process gets its own RAM.
 
 _RATELIMIT_CACHE = {} # RAM cache of request counts.
 _RATELIMIT_LOCK  = threading.RLock()
@@ -541,10 +538,11 @@ class Router(dict):
 
 class HTTPRedirect(Exception):
     
-    def __init__(self, url):
+    def __init__(self, url, code=303):
         """ A HTTP redirect raised in an @app.route() handler.
         """
-        self.url = url
+        self.url  = url
+        self.code = code
     
     def __repr__(self):
         return "HTTPRedirect(url=%s)" % repr(self.url)
@@ -560,7 +558,7 @@ class HTTPError(Exception):
         self.traceback = traceback or ""
         
     def __repr__(self):
-        return "HTTPError(code=%s)" % repr(self.code)
+        return "HTTPError(status=%s)" % repr(self.status)
 
 class HTTPRequest(object):
     
@@ -666,6 +664,7 @@ def threadsafe(function):
     return decorator
 
 #--- APPLICATION -----------------------------------------------------------------------------------
+# With Apache + mod_wsgi, the Application instance must be named "application".
 
 # Server host.
 LOCALHOST = "127.0.0.1"
@@ -675,6 +674,9 @@ INTRANET = "0.0.0.0"
 START = "start"
 STOP = "stop"
 
+class ApplicationError(Exception):
+    pass
+
 class Application(object):
     
     def __init__(self, name=None, static="static/", rate="rate.db"):
@@ -683,10 +685,11 @@ class Application(object):
             @App.error(code) defines a HTTP error handler.
         """
         # Create RateLimit db in app folder:
-        rate = os.path.join(SCRIPT, rate)
+        rate = os.path.join(self.path, rate)
         self._name   = name         # App name.
         self._host   = None         # Server host, see App.run().
         self._port   = None         # Server port, see App.run().
+        self._app    = None         # CherryPy Application object.
         self._up     = False        # True if server is up & running.
         self._cache  = {}           # Memoize cache.
         self._static = static       # Static content folder.
@@ -710,12 +713,17 @@ class Application(object):
     @property
     def up(self):
         return self._up
+        
+    running = up
     
     @property
     def path(self):
         """ Yields the absolute path to the folder containing the app.
         """
-        return SCRIPT
+        f = inspect.currentframe()
+        f = inspect.getouterframes(f)[1][0]
+        f = f.f_globals["__file__"]
+        return os.path.dirname(os.path.abspath(f))
         
     @property
     def static(self):
@@ -767,7 +775,8 @@ class Application(object):
         if isinstance(v, cp.lib.file_generator): # serve_file()
             return v
         if isinstance(v, dict):
-            cp.response.headers['Content-Type'] = "application/json"
+            cp.response.headers["Content-Type"] = "application/json; charset=utf-8"
+            cp.response.headers["Access-Control-Allow-Origin"] = "*" # CORS
             return json.dumps(v)
         if isinstance(v, types.GeneratorType):
             cp.response.stream = True
@@ -801,17 +810,17 @@ class Application(object):
         try:
             v = self.router(path, **data)
         except RouteError:
-            raise cp.HTTPError(404)         # 404 Not Found
+            raise cp.HTTPError("404 Not Found")
         except RateLimitForbidden:
-            raise cp.HTTPError(403)         # 403 Forbidden
+            raise cp.HTTPError("403 Forbidden")
         except RateLimitExceeded:
-            raise cp.HTTPError(429)         # 429 Too Many Requests
+            raise cp.HTTPError("429 Too Many Requests")
         except DatabaseError, e:
-            raise cp.HTTPError(503, str(e)) # 503 Service Unavailable
+            raise cp.HTTPError("503 Service Unavailable", message=str(e))
         except HTTPRedirect, e:
             raise cp.HTTPRedirect(e.url)
         except HTTPError, e:
-            raise cp.HTTPError(e.code)
+            raise cp.HTTPError(e.status)
         v = self._cast(v)
         #print self.elapsed
         return v
@@ -865,7 +874,10 @@ class Application(object):
             # CherryPy error handlers take keyword arguments.
             # Wrap as a HTTPError and pass it to the handler.
             def wrapper(status="", message="", traceback="", version=""):
-                return handler(HTTPError(int(status.split(" ")[0]), status, message, traceback))
+                # Avoid CherryPy bug "ValueError: status message was not supplied":
+                v = handler(HTTPError(int(status.split(" ")[0]), status, message, traceback))
+                v = self._cast(v) if not isinstance(v, HTTPError) else repr(v)
+                return v
             # app.error("*") catches all error codes.
             if code in ("*", None):
                 cp.config.update({"error_page.default": wrapper})
@@ -977,61 +989,132 @@ class Application(object):
             return handler
         return decorator
 
-    def redirect(path):
+    def redirect(path, code=303):
         """ Redirects the server to another route handler path 
             (or to another server for absolute URL's).
         """
-        raise HTTPRedirect(path)
+        raise HTTPRedirect(path, int(code))
 
-    def run(self, host=LOCALHOST, port=8080, threads=30, queue=20, timeout=10, sessions=False, debug=True):
-        """ Starts the server and blocks until the server stops.
+    def run(self, host=LOCALHOST, port=8080, threads=30, queue=20, timeout=10, sessions=False, embedded=False, debug=True):
+        """ Starts the server.
             Static content (e.g., "g/img.jpg") is served from the given subfolder (e.g., "static/g").
             With threads=10, the server can handle up to 10 concurrent requests.
             With queue=10, the server will queue up to 10 waiting requests.
             With debug=False, starts a production server.
         """
+        # Do nothing if the app is running.
+        if self._up:
+            return
         self._host = str(host)
         self._port = int(port)
         self._up   = True
-        if not debug: cp.config.update({
-            # Production environment disables errors.
-            "environment": "production"
-        })
-        cp.config.update({
-            # Global configuration.
-            # If more concurrent requests are made than can be queued / handled,
-            # the server will time out and a "connection reset by peer" occurs.
-            # Note: SQLite cannot handle many concurrent writes (e.g., UPDATE).
-            "server.socket_host"       : self._host,
-            "server.socket_port"       : self._port,
-            "server.socket_timeout"    : max(1, timeout),
-            "server.socket_queue_size" : max(1, queue),
-            "server.thread_pool"       : max(1, threads),
-            "server.thread_pool_max"   : -1
-        })
-        cp.tree.mount(self, "/", config={"/": {
-            # Static content is served from the /static subfolder, 
-            # e.g., <img src="g/cat.jpg" /> refers to "/static/g/cat.jpg".
-            "tools.staticdir.on"       : self.static is not None,
-            "tools.staticdir.dir"      : self.static,
-            "tools.sessions.on"        : sessions
+        # Production environment disables errors.
+        if debug is False: 
+            cp.config.update({"environment": "production"})
+        # Embedded environment (mod_wsgi) disables errors & signal handlers.
+        if embedded is True: 
+            cp.config.update({"environment": "embedded"})
+        # Global configuration.
+        # If more concurrent requests are made than can be queued / handled,
+        # the server will time out and a "connection reset by peer" occurs.
+        # Note: SQLite cannot handle many concurrent writes (e.g., UPDATE).
+        else:
+            cp.config.update({
+                "server.socket_host"       : self._host,
+                "server.socket_port"       : self._port,
+                "server.socket_timeout"    : max(1, timeout),
+                "server.socket_queue_size" : max(1, queue),
+                "server.thread_pool"       : max(1, threads),
+                "server.thread_pool_max"   : -1
+            })
+        # Static content is served from the /static subfolder, 
+        # e.g., <img src="g/cat.jpg" /> refers to "/static/g/cat.jpg".
+        self._app = cp.tree.mount(self, "/", 
+            config={"/": {
+                "tools.staticdir.on"       : self.static is not None,
+                "tools.staticdir.dir"      : self.static,
+                "tools.sessions.on"        : sessions
         }})
-        os.chdir(self.path) # Relative root = project path.
-        cp.engine.start()
-        cp.engine.block()
+        # Relative root = project path.
+        os.chdir(self.path)
+        # With mod_wsgi, stdout is restriced.
+        if embedded:
+            sys.stdout = sys.stderr
+        else:
+            atexit.register(self.stop)
+            cp.engine.start()
+            cp.engine.block()
+        
+    def stop(self):
+        """ Stops the server (registered with atexit).
+        """
+        try:
+            atexit._exithandlers.remove((self.stop, (), {}))
+        except:
+            pass
+        cp.engine.exit()
+        sys.stdout = sys.__stdout__
         self._host = None
         self._port = None
+        self._app  = None
         self._up   = False
-
+    
+    def __call__(self, *args, **kwargs):
+        # Called when deployed with mod_wsgi.
+        if self._app is not None:
+            return self._app(*args, **kwargs)
+        raise ApplicationError, "application not running"
+        
 App = Application
 
 #---------------------------------------------------------------------------------------------------
+# Apache + mod_wsgi installation notes (thanks to Frederik De Bleser).
+# The APP placeholder is the URL of your app, e.g., pattern.emrg.be.
+# 
+# 1) Create a DNS-record for APP, which maps the url to your server's IP-address.
+#
+# 2) sudo apt-get install apache2
+#    sudo apt-get install libapache2-mod-wsgi
+#
+# 3) sudo mkdir -p /www/APP/static
+#    sudo mkdir -p /www/APP/log
+#
+# 4) sudo nano /etc/apache2/sites-available/APP
+#    > <VirtualHost *:80>
+#    >     ServerName APP
+#    >     DocumentRoot /www/APP/static
+#    >     CustomLog /www/APP/logs/access.log combined
+#    >     ErrorLog /www/APP/logs/error.log
+#    >     WSGIScriptAlias / /www/APP/app.py
+#    >     WSGIDaemonProcess APP processes=1 threads=x
+#    >     WSGIProcessGroup APP
+#    > </VirtualHost>
+#
+# 5) sudo nano /www/APP/app.py
+#    > from pattern.server import App
+#    > from pattern.text import sentiment
+#    >
+#    > app = application = App() # mod_wsgi app must be available as "application"!
+#    >
+#    > @app.route("/api/1/sentiment", limit=100, time=HOUR, key=lambda data: app.request.ip)
+#    > def api_sentiment(q=None, lang="en"):
+#    >     return {"polarity": sentiment(q, language=lang)[0]}
+#    >
+#    > app.run(embedded=True)
+#
+# 6) sudo a2ensite APP
+#    sudo apache2ctl configtest
+#    sudo service apache2 restart
+#
+# 7) Try: http://APP/api/1/sentiment?q=marvelously+extravagant&lang=en
 
-def redirect(path):
+#---------------------------------------------------------------------------------------------------
+
+def redirect(path, code=303):
     """ Redirects the server to another route handler path 
         (or to another server for absolute URL's).
     """
-    raise HTTPRedirect(path)
+    raise HTTPRedirect(path, int(code))
 
 #---------------------------------------------------------------------------------------------------
 
