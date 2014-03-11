@@ -170,6 +170,7 @@ var test_canvas = {
             assert(Array.eq(new Color(0,0,0.5).rgba(), [0,0,0.5,1]));
             assert(Array.eq(new Color(1,1,1,1).rgba(), [1,1,1,1]));
             assert(Array.eq(new Color([1,0,0,1]).rgba(), [1,0,0,1]));
+            assert(Array.eq(new Color([1,0,0,0]).rgba(), [1,0,0,0]));
             assert(Array.eq(new Color(255,255,0,0, {base:255}).rgba(), [1,1,0,0]));
             assert(Array.eq(new Color(1,1,0.5,0, {colorspace:HSB}).rgba(), [0.5,0,0,0]));
             assert(Array.eq(new Color(new Color(0)).rgba(), [0,0,0,1]));

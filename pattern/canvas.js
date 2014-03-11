@@ -559,7 +559,7 @@ var Color = Class.extend({
             g=r.g; b=r.b; a=r.a; r=r.r;
         // One value, array with R,G,B,A values.
         } else if (r instanceof Array) {
-            g=r[1]; b=r[2]; a=r[3]||1; r=r[0];
+            g=r[1]; b=r[2]; a=r[3] !== undefined ? r[3] : 1; r=r[0];
         // No value or null, transparent black.
         } else if (r === undefined || r == null) {
             r=0; g=0; b=0; a=0;
