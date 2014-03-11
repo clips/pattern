@@ -35,6 +35,15 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
+    
+try:
+    # Folder that contains the script that imports pattern.server.
+    f = inspect.currentframe()
+    f = inspect.getouterframes(f)[1][0]
+    f = f.f_globals["__file__"]
+    SCRIPT = os.path.dirname(os.path.abspath(f))
+except:
+    SCRIPT = os.getcwd()
 
 try:
     # Import from python2.x/site-packages/cherrypy
@@ -720,10 +729,7 @@ class Application(object):
     def path(self):
         """ Yields the absolute path to the folder containing the app.
         """
-        f = inspect.currentframe()
-        f = inspect.getouterframes(f)[1][0]
-        f = f.f_globals["__file__"]
-        return os.path.dirname(os.path.abspath(f))
+        return SCRIPT
         
     @property
     def static(self):

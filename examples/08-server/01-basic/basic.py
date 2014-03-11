@@ -71,7 +71,7 @@ def products(name):
     return (
         "<html>",
         "<head></head>",
-        "<body>View product: " + name + "</body>",
+        "<body>View product: " + (name or "") + "</body>",
         "</html>"
     )
     
