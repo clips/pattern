@@ -591,7 +591,7 @@ class Document(object):
     def vector(self):
         """ Yields the document vector, a dictionary of (word, relevance)-items from the document.
             The relevance is tf, tf * idf, infogain or binary if the document is part of a Model, 
-            based on the value of Model.weight (TF, TFIDF, IG, BINARY, None).
+            based on the value of Model.weight (TF, TFIDF, IG, GR, BINARY, None).
             The document vector is used to calculate similarity between two documents,
             for example in a clustering or classification algorithm.
         """
@@ -599,7 +599,7 @@ class Document(object):
             # See the Vector class below = a dict with extra functionality (copy, norm).
             # When a document is added/deleted from a model, the cached vector is deleted.
             w = getattr(self.model, "weight", TF)
-            if w not in (TF, TFIDF, IG, INFOGAIN, BINARY):
+            if w not in (TF, TFIDF, IG, INFOGAIN, GR, GAINRATIO, BINARY):
                 f = lambda w: float(self._terms[w]); w=None
             if w == BINARY:
                 f = lambda w: int(self._terms[w] > 0)
@@ -609,6 +609,8 @@ class Document(object):
                 f = self.tf_idf
             if w in (IG, INFOGAIN):
                 f = self.model.ig
+            if w in (GR, GAINRATIO):
+                f = self.model.gr
             self._vector = Vector(((w, f(w)) for w in self.terms), weight=w)
         return self._vector
         
@@ -1327,26 +1329,27 @@ class Model(object):
             # V => {feature: {value: {class: count}}}
             F = set(self.features)
             V = dict((f, defaultdict(lambda: defaultdict(lambda: 0))) for f in F)
-            z = dict((c, defaultdict(int)) for c in C)
             for d in self.documents:
-                type = d.type
-                seen = set()
-                for f, v in d.vector.items():
-                    seen.add(f)
+                if self.weight in (IG, GR, INFOGAIN, GAINRATIO):
+                    d_vector = dict.fromkeys(d.terms, True)
+                else:
+                    d_vector = d.vector
+                # Count features by value per class.
+                # Equal-width binning.
+                # Features with float values are taken to range between 0.0-1.0,
+                # for which 10 discrete intervals are used (0.1, 0.2, 0.3, ...).
+                for f, v in d_vector.items():
                     if isinstance(v, float):
-                        v = round(v, 1) # 10 discrete intervals for float values.
-                    V[f][v][type] += 1
-                #for f in F - seen:
+                        v = round(v, 1)
+                    V[f][v][d.type] += 1
+                #for f in F - set(d_vector):
                 #    V[f][0][type] += 1
                 # We also need to count features with value 0.0.
                 # This is done with the two lines above, however
-                # the code below is 2x faster (less dict.__getitem__).
-                zt = z[type]
-                for f in F - seen:
-                    zt[f] += 1
-            for type, f in z.items():
-                for f, i in f.items():
-                    V[f][0][type] += i
+                # the code below is over a 1000x faster (less dict.__getitem__).
+            for f in F:
+                for type, n in C.items():
+                    V[f][0][type] += n - sum(V[f][v][type] for v in V[f])
             # IG
             for f in F:
                 Vf = V[f]

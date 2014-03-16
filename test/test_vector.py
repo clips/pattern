@@ -1003,14 +1003,14 @@ class TestClassifier(unittest.TestCase):
 
 def suite():
     suite = unittest.TestSuite()
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUtilityFunctions))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestStemmer))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDocument))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestModel))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestApriori))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLSA))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestClustering))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUtilityFunctions))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestStemmer))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDocument))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestModel))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestApriori))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLSA))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestClustering))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestClassifier))
     return suite
 
