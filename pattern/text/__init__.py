@@ -1815,7 +1815,10 @@ class Sentiment(lazydict):
                 id = "r-" + id
         if dict.__len__(self) == 0:
             self.load()
-        return tuple(self._synsets.get(id, (0.0, 0.0))[:2])
+        try:
+            return tuple(self._synsets[id])[:2]
+        except KeyError: # Some WordNet id's are not zero padded.
+            return tuple(self._synsets.get(re.sub(r"-0+", "-", id), (0.0, 0.0))[:2])
 
     def __call__(self, s, negation=True, **kwargs):
         """ Returns a (polarity, subjectivity)-tuple for the given sentence,
