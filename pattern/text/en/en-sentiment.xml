@@ -2077,7 +2077,7 @@ For English movie reviews (Pang & Lee polarity dataset v2.0), the accuracy is 75
 <word form="regular" wordnet_id="a-02366927" pos="JJ" sense="regularly scheduled for fixed times" polarity="0.0" subjectivity="0.0" intensity="1.0" confidence="0.9" />
 <word form="regular" wordnet_id="a-02372520" pos="JJ" sense="symmetrically arranged" polarity="0.0" subjectivity="0.0" intensity="1.0" confidence="0.9" />
 <word form="regular" wordnet_id="a-02469577" pos="JJ" sense="often used as intensifiers" polarity="0.0" subjectivity="0.0" intensity="1.0" confidence="0.9" />
-<word form="regurgitates" wordnet_id="VBZ" pos="" sense="" polarity="-0.3" subjectivity="0.3" intensity="1.0" reliability="0.9" />
+<word form="regurgitates" wordnet_id="" pos="VBZ" sense="" polarity="-0.3" subjectivity="0.3" intensity="1.0" reliability="0.9" />
 <word form="rehash" wordnet_id="n-6635759" pos="NN" sense="old material that is slightly reworked and used again" polarity="-0.05" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="rehash" wordnet_id="v-1162629" pos="VB" sense="present or use over, with no or few changes" polarity="-0.05" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="related" cornetto_synset_id="n_a-532834" wordnet_id="a-01972820" pos="JJ" sense="being connected either logically or causally or by shared characteristics " polarity="0.0" subjectivity="0.4" intensity="1.0" confidence="0.8" />
@@ -2644,7 +2644,7 @@ For English movie reviews (Pang & Lee polarity dataset v2.0), the accuracy is 75
 <word form="traditional" cornetto_synset_id="n_a-531133" wordnet_id="a-01690767" pos="JJ" sense="pertaining to time-honored orthodox doctrines" polarity="0.0" subjectivity="1.0" intensity="1.0" confidence="0.9" />
 <word form="tragic" wordnet_id="a-01363153" pos="JJ" sense="very sad" polarity="-1.0" subjectivity="1.0" intensity="1.0" confidence="0.9" />
 <word form="tragic" wordnet_id="a-02973241" pos="JJ" sense="of or relating to or characteristic of tragedy" polarity="-0.5" subjectivity="0.5" intensity="1.0" confidence="0.9" />
-<word form="trapped" wordnet_id="VBN" pos="" sense="" polarity="-0.2" subjectivity="0.0" intensity="1.0" reliability="0.9" />
+<word form="trapped" wordnet_id="" pos="VBN" sense="" polarity="-0.2" subjectivity="0.0" intensity="1.0" reliability="0.9" />
 <word form="tremendous" cornetto_synset_id="c_267" wordnet_id="a-01385255" pos="JJ" sense="extraordinarily large in size or extent or amount or power or degree" polarity="0.0" subjectivity="1.0" intensity="1.0" confidence="0.9" />
 <word form="tremendous" wordnet_id="a-01676517" pos="JJ" sense="extraordinarily good or great " polarity="1.0" subjectivity="1.0" intensity="1.0" confidence="0.9" />
 <word form="tremendous" wordnet_id="a-01677200" pos="JJ" sense="extreme in degree or extent or amount or impact" polarity="0.0" subjectivity="1.0" intensity="1.0" confidence="0.9" />
