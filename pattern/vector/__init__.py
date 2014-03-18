@@ -2181,16 +2181,19 @@ def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
         which is initialized with the given optional parameters.
     """
     K = kwargs.pop("K", folds)
-    d = [isinstance(d, Document) and (d, d.type) or d for d in documents]
-    d = shuffled(d) # Avoid a list sorted by type (because we take successive folds).
-    m = [0.0, 0.0, 0.0, 0.0] # Macro-average accuracy, precision, recall & F1-score.
+    # Macro-average accuracy, precision, recall & F1-score.
+    m = [0.0, 0.0, 0.0, 0.0] 
     f = []
-    for i in range(K):
-        n = len(d) / float(max(K, 2)) # Test fold size.
-        x = int(round(i * n))         # Test fold start index.
-        y = int(round(i * n + n))     # Test fold stop index.
-        classifier = Classifier(train=d[:x]+d[y:], **kwargs)
-        A, P, R, F = classifier.test(d[x:y], **kwargs)
+    # Create shuffled folds to avoid a list sorted by type 
+    # (we take successive folds and the source data could be sorted).
+    if isinstance(folds, (int, float, long)):
+        folds = _folds(shuffled(documents), K)
+    # K tests with different train (d1) and test (d2) sets.
+    for d1, d2 in folds:
+        d1 = [isinstance(d, Document) and (d, d.type) or d for d in d1]
+        d2 = [isinstance(d, Document) and (d, d.type) or d for d in d2]
+        classifier = Classifier(train=d1, **kwargs)
+        A, P, R, F = classifier.test(d2, **kwargs)
         m[0] += A
         m[1] += P
         m[2] += R
@@ -2203,6 +2206,28 @@ def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
     return tuple([v / (K or 1.0) for v in m] + [o])
     
 kfoldcv = K_fold_cv = k_fold_cv = k_fold_cross_validation = K_fold_cross_validation
+
+def folds(documents=[], K=10, **kwargs):
+    """ Returns an iterator of K folds, where each fold is a (train, test)-tuple.
+        For example, for 10-fold cross-validation, it yields 10 tuples,
+        each with a different 9/10 training and 1/10 testing documents.
+    """
+    def chunks(iterable, n=10):
+        # Returns an iterator of n lists of roughly equal size.
+        # http://www.garyrobinson.net/2008/04/splitting-a-pyt.html
+        a = list(iterable)
+        i = 0
+        j = 0
+        for m in xrange(n):
+            j = i + len(a[m::n])
+            yield a[i:j]
+            i = j
+    k = kwargs.get("k", K)
+    d = list(chunks(documents, k))
+    for holdout in xrange(k):
+        yield list(chain(*(d[:holdout] + d[holdout+1:]))), d[holdout]
+
+_folds = folds
 
 def gridsearch(Classifier, documents=[], folds=10, **kwargs):
     """ Returns the test results for every combination of optional parameters,
