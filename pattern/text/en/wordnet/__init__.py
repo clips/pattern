@@ -31,6 +31,7 @@ except:
 # Path to WordNet /dict folder.
 CORPUS = ""
 os.environ["WNHOME"] = os.path.join(MODULE, CORPUS)
+os.environ["WNSEARCHDIR"] = os.path.join(MODULE, CORPUS, "dict")
 
 from pywordnet import wordnet as wn
 from pywordnet import wntools
