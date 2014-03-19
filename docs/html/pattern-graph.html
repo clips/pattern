@@ -44,7 +44,7 @@
 <li><a href="#graph">Graph</a></li>
 <li><a href="#layout">Graph layout</a></li>
 <li><a href="#utility">Graph adjacency</a></li>
-<li><a href="#canvas">Visualization</a></li>
+<li><a href="#canvas">Visualization</a>&nbsp;<span class="link-maintenance">(</span><a class="link-maintenance" href="#canvas"><span class="smallcaps link-maintenance">export</span></a><span class="link-maintenance">)</span></li>
 <li><a href="#javascript">graph.js</a></li>
 </ul>
 <p>&nbsp;</p>
@@ -216,7 +216,7 @@ layout.copy(graph)</pre><p><span class="small"><span style="text-decoration: und
 <h2><a name="canvas"></a>Visualization</h2>
 <p>The pattern.graph module has a JavaScript counterpart (graph.js) that can be used to visualize a graph in a web page, as a&nbsp;HTML&nbsp;&lt;canvas&gt; element. The HTML &lt;canvas&gt; element allows dynamic, scriptable rendering of 2D shapes and bitmap images (see also Pattern's&nbsp;<a class="link-maintenance" href="pattern-canvas.html">canvas.js</a>).</p>
 <p><span class="inline_code">Graph.export(</span>) creates a new file folder at the given <span class="inline_code">path</span>&nbsp;with an index.html (the visualization), a style.css, graphs.js and canvas.js. The optional parameter <span class="inline_code">javascript</span>&nbsp;defines the URL path to graph.js and canvas.js (which will not be included in this case).</p>
-<pre class="brush:python; gutter:false; light:true;">graph.export(path, overwrite=False, encoding='utf-8', **kwargs)</pre><div class="example">
+<pre class="brush:python; gutter:false; light:true;">graph.export(path, encoding='utf-8', **kwargs)</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.graph import Graph
 &gt;&gt;&gt;  
 &gt;&gt;&gt; g = Graph()
@@ -343,7 +343,7 @@ layout.copy(graph)</pre><p><span class="small"><span style="text-decoration: und
 </table>
 <p>To export a static visualization, use <span class="inline_code">frames=1</span> and <span class="inline_code">ipf=0</span>.<br />&nbsp;</p>
 <p class="smallcaps">Server-side scripting</p>
-<p><span class="inline_code">Graph.serialize()</span> returns a string with (a portion of) the HTML, CSS and JavaScript source code of the visualization. It can be used to serve a dynamic web page.&nbsp;With <span class="inline_code">type=CANVAS</span>, it returns a HTML string with a <span class="inline_code">&lt;div</span> <span class="inline_code">id="graph"&gt;</span>&nbsp;that contains the canvas.js animation.&nbsp;With <span class="inline_code">type=DATA</span>, it returns a Javascript string that initializes the <span class="inline_code">Graph</span> in variable&nbsp;<span class="inline_code">g</span>.&nbsp;</p>
+<p><span class="inline_code">Graph.serialize()</span> returns a string with (a portion of) the HTML, CSS and JavaScript source code of the visualization. It can be used to serve a dynamic web page.&nbsp;With <span class="inline_code">type=CANVAS</span>, it returns a HTML string with a <span class="inline_code">&lt;div</span> <span class="inline_code">id="graph"&gt;</span>&nbsp;that contains the canvas.js animation.&nbsp;With <span class="inline_code">type=DATA</span>, it returns a Javascript string that initializes the <span class="inline_code">Graph</span> in variable&nbsp;<span class="inline_code">g</span>&nbsp;(which will draw to <span class="inline_code">ctx</span>).</p>
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">graph.serialize(type=HTML, **kwargs) # HTML | CSS | CANVAS | DATA</pre><div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; import cherrypy
 &gt;&gt;&gt; 

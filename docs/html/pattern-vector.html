@@ -662,7 +662,7 @@ confusion.table           # Pretty string output.</pre><div class="example">
 (0.676, 0.584, 0.595, 0.589) # A, P, R, F1 (macro-averaged).</pre></div>
 <p>In summary, the 59% F1-score is a more reliable estimate than the 68% accuracy.</p>
 <p class="smallcaps"><br />K-fold cross-validation</p>
-<p>K-fold cross-validation performs <em>K</em> tests on a given classifier, each time partitioning the given dataset into different subsets for training and testing, and returns the average <span class="inline_code">(accuracy,</span> <span class="inline_code">precision,</span> <span class="inline_code">recall,</span> <span class="inline_code">F1)</span>. This is more reliable (= generalized) than always using the same training data.</p>
+<p>K-fold cross-validation performs <em>K</em> tests on a given classifier, each time partitioning the given dataset into different subsets for training and testing, and returns the average <span class="inline_code">(accuracy,</span> <span class="inline_code">precision,</span> <span class="inline_code">recall,</span> <span class="inline_code">F1,</span> <span class="inline_code">stdev)</span>. This is more reliable (= generalized) than always using the same training data.</p>
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">kfoldcv(Classifier, documents=[], folds=10, target=None)</pre><div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.vector import NB, Document, kfoldcv
 &gt;&gt;&gt; from pattern.db import csv 
@@ -673,7 +673,7 @@ confusion.table           # Pretty string output.</pre><div class="example">
 &gt;&gt;&gt; 
 &gt;&gt;&gt; print kfoldcv(NB, data, folds=10)
 
-(0.678, 0.563, 0.568, 0.565)  </pre></div>
+(0.678, 0.563, 0.568, 0.565, 0.034)  </pre></div>
 <p>Note that <span class="inline_code">kfoldcv()</span> takes any parameters of the given <span class="inline_code">Classifier</span> as optional parameters:</p>
 <div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; print kfoldcv(KNN, data, folds=10, k=3, distance=EUCLIDEAN)</pre></div>
@@ -701,17 +701,17 @@ confusion.table           # Pretty string output.</pre><div class="example">
 &gt;&gt;&gt;     v = count(v)
 &gt;&gt;&gt;     return v
 &gt;&gt;&gt; 
-&gt;&gt;&gt; data = csv('reviews') 
+&gt;&gt;&gt; data = csv('reviews.csv') 
 &gt;&gt;&gt; data = [(v(review), int(rating) &gt;= 3) for review, rating in data]
 &gt;&gt;&gt; 
 &gt;&gt;&gt; print kfoldcv(NB, data)
 
-(0.631, 0.588, 0.626, 0.606)  </pre></div>
+(0.631, 0.588, 0.626, 0.606, 0.044)  </pre></div>
 <p>Features can be selected automatically using <span class="inline_code">Model.infogain(feature)</span>. Information gain is a measure of a feature's predictability for a class label (<span class="inline_code">0.0</span>-<span class="inline_code">1.0</span>). Some features will occur more frequently in documents with a certain class label (e.g., <em>awesome</em>&nbsp;→ positive reviews, <em>awful</em>&nbsp;→ negative reviews), hence they are more "informative" than features that occur in all documents, such as <em>the</em> and <em>you</em>.</p>
 <p>This value is used in <span class="inline_code">Model.feature_selection()</span> to compute a sorted list of the most informative features. An optional document frequency <span class="inline_code">threshold</span> parameter (<span class="inline_code">0.0</span>-<span class="inline_code">1.0</span>) excludes features that only occur in a few documents (i.e., outliers).</p>
 <p>Automatic feature selection is useful for documents with many features (e.g., 10,000). More features require more computation and can lead to <em>overfitting</em>. Overfitting means that the classifier is making assumptions based on irrelevant features (noise). It memorizes the training data instead of generalizing from trends.</p>
 <div class="example">
-<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.vector import Model, TF, NB, kfoldcv
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.vector import Model, Document, BINARY, NB, kfoldcv
 &gt;&gt;&gt; from pattern.db import csv
 &gt;&gt;&gt; 
 &gt;&gt;&gt; data = csv('reviews.csv') 
@@ -719,11 +719,11 @@ confusion.table           # Pretty string output.</pre><div class="example">
 &gt;&gt;&gt; data = [Document(review, type=rating, stopwords=True) for review, rating in data]
 &gt;&gt;&gt; 
 &gt;&gt;&gt; model = Model(documents=data, weight=TF)
-&gt;&gt;&gt; model = model.filter(features=model.feature_selection(top=1250))
+&gt;&gt;&gt; model = model.filter(features=model.feature_selection(top=1000))
 &gt;&gt;&gt; 
 &gt;&gt;&gt; print kfoldcv(NB, model)
 
-(0.716, 0.664, 0.704, 0.683)</pre></div>
+(0.769, 0.689, 0.639, 0.662, 0.043)</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h3><a name="nb"></a>Naive bayes</h3>
@@ -837,23 +837,23 @@ confusion.table           # Pretty string output.</pre><div class="example">
 <p class="smallcaps"><br />Gridsearch</p>
 <p>Different settings for <span class="inline_code">degree</span>, <span class="inline_code">gamma</span>, <span class="inline_code">coeff0</span> and <span class="inline_code">cost</span> yield better or worse performance. Which settings to use? The <span class="inline_code">gridsearch()</span> function returns the K-fold cross-validation test results for every possible combination of optional parameters (given as lists of values):</p>
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">gridsearch(Classifier, documents=[], folds=10, **kwargs)</pre><div class="example">
-<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.vector import SVM, RADIAL, gridsearch, kfoldcv
+<pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.vector import SVM, RADIAL, gridsearch, kfoldcv, count
 &gt;&gt;&gt; from pattern.db import csv 
 &gt;&gt;&gt; 
 &gt;&gt;&gt; data = csv('reviews.csv') 
 &gt;&gt;&gt; data = [(count(review), int(rating) &gt;= 3) for review, rating in data]
 &gt;&gt;&gt; 
-&gt;&gt;&gt; for (A, P, R, F), p in gridsearch(SVM, data, kernel=[RADIAL], gamma=[0.1,1,10]):
-&gt;&gt;&gt;     print (A, P, R, F), p
+&gt;&gt;&gt; for (A, P, R, F, o), p in gridsearch(SVM, data, kernel=[RADIAL], gamma=[0.1,1,10]):
+&gt;&gt;&gt;     print (A, P, R, F, o), p
 
-(0.752, 0.376, 0.500, 0.429) {'kernel': RADIAL, 'gamma': 0.1}
-(0.754, 0.477, 0.504, 0.474) {'kernel': RADIAL, 'gamma': 1}
-(0.753, 0.477, 0.504, 0.474) {'kernel': RADIAL, 'gamma': 10} </pre></div>
-<p>Note that this example is for demonstration. A poor man's linear SVM works better:</p>
+(0.756, 0.679, 0.517, 0.578, 0.091) {'kernel': RADIAL, 'gamma': 0.1}
+(0.753, 0.452, 0.503, 0.465, 0.078) {'kernel': RADIAL, 'gamma': 1}
+(0.753, 0.477, 0.503, 0.474, 0.093) {'kernel': RADIAL, 'gamma': 10} </pre></div>
+<p>A (faster) poor man's linear SVM often produces results that are equally accurate:</p>
 <div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; print kfoldcv(SVM, data, folds=10)
 
-(0.756, 0.652, 0.587, 0.617)  </pre></div>
+(0.741, 0.617, 0.537, 0.570, 0.083)  </pre></div>
 <p><br /><span class="smallcaps">Libsvm and Liblinear</span></p>
 <p>The SVM implementation in Pattern relies on the <a href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/">LIBSVM</a> and <a href="http://www.csie.ntu.edu.tw/~cjlin/liblinear/">LIBLINEAR</a> C++ libraries. Precompiled bindings are included for Windows, Mac OS X and Ubuntu. These may not work on your system. In this case you need to compile the bindings from source (see the instructions in <span class="inline_code">pattern/vector/svm/INSTALL.txt</span>).</p>
 <p class="small"><span style="text-decoration: underline;">Reference</span>: Chang, C.-C., Lin, C.-J. (2011). LIBSVM: a library for support vector machines. <em>ACM</em>.</p>

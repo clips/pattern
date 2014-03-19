@@ -100,11 +100,12 @@ for p in ("-", "-web", "-db", "-search", "-vector", "-graph", "-canvas", "-metri
     # Apply the simplified template + set page titles.
     html = template % (p, url+p, url+p, title, html)
     # Generate offline HTML file.
-    f = codecs.open(os.path.join("html", "%s.html" % p), "w", encoding="utf-8")
+    f = os.path.join(os.path.dirname(__file__), "html", "%s.html" % p)
+    f = codecs.open(f, "w", encoding="utf-8")
     f.write(html)
     f.close()
 
 # Create index.html (which simply redirects to pattern.html).
-f = open("index.html", "w")
+f = open(os.path.join(os.path.dirname(__file__), "index.html"), "w")
 f.write('<meta http-equiv="refresh" content="0; url=html/pattern.html" />')
 f.close()

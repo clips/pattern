@@ -346,21 +346,21 @@ engine.language             # Restriction for Result.language (e.g., 'en').</pre
 <tr>
 <td><span class="inline_code">Newsfeed</span></td>
 <td><span class="inline_code">NEWS</span></td>
+<td>1</td>
 <td>1+</td>
-<td>-</td>
 <td>?</td>
 <td>1.0</td>
 </tr>
 </tbody>
 </table>
-<p><span class="small"><sup>1 </sup><span class="inline_code">Google</span>, <span class="inline_code">Bing</span> and <span class="inline_code">Yahoo</span> are paid services – see further how to obtain a license key.<br /></span> <span class="small"><sup>2 </sup><span class="inline_code">Bing.search(type=NEWS)</span> has a <span class="inline_code">count</span> of 1-15.<br /></span> <span class="small"><sup>3 </sup><span class="inline_code">Yahoo.search(type=IMAGES)</span> has a <span class="inline_code">count</span> of 1-35.</span><br /> <span class="smallcaps"><br />Web service license key</span></p>
+<p><span class="small"><sup>1 </sup><span class="inline_code">Google</span>, <span class="inline_code">Bing</span> and <span class="inline_code">Yahoo</span> are paid services – see further how to obtain a license key.<br /></span> <span class="small"><sup>2 </sup><span class="inline_code">Bing.search(type=NEWS)</span> has a <span class="inline_code">count</span> of 1-15.<br /></span> <span class="small"><sup>3 </sup><span class="inline_code">Yahoo.search(type=IMAGES)</span> has a <span class="inline_code">count</span> of 1-35.</span><br /> <span class="smallcaps"><br /><a name="license"></a>Web service license key</span></p>
 <p>Some services require a license key. They may work without one, but this implies that you share a public license key (and query limit) with other users of the pattern.web module. If the query limit is exceeded, <span class="inline_code">SearchEngine.search()</span>&nbsp;raises a&nbsp;<span class="inline_code">SearchEngineLimitError</span>.</p>
 <ul>
 <li><span class="inline_code">Google</span> is a paid service ($1 for 200 queries), with a 100 free queries per day. When you obtain a license key (follow the link below), activate "Custom Search API" and "Translate API" under "Services" and look up the key under "API Access".</li>
 <li><span class="inline_code">Bing</span> is a paid service ($1 for 500 queries), with a 5,000 free queries per month.</li>
 <li><span class="inline_code">Yahoo</span> is a paid service ($1 for 1250 queries) that requires an OAuth key + secret, which can be passed as a tuple: <span class="inline_code">Yahoo(license=(key,</span> <span class="inline_code">secret))</span>.</li>
 </ul>
-<p>Obtain a license key: <a href="https://code.google.com/apis/console/" target="_blank">Google</a>, <a href="https://datamarket.azure.com/dataset/5BA839F1-12CE-4CCE-BF57-A49D98D29A44" target="_blank">Bing</a>, <a href="http://developer.yahoo.com/search/boss/" target="_blank">Yahoo</a>, <a href="http://www.flickr.com/services/api/keys/" target="_blank">Flickr</a>, <a href="http://www.clips.ua.ac.be/media/pattern-fb.html" target="_blank">Facebook</a>.<br /><span class="smallcaps"><br />Web service request throttle</span></p>
+<p>Obtain a license key: <a href="https://code.google.com/apis/console/" target="_blank">Google</a>, <a href="https://datamarket.azure.com/dataset/5BA839F1-12CE-4CCE-BF57-A49D98D29A44" target="_blank">Bing</a>, <a href="http://developer.yahoo.com/search/boss/" target="_blank">Yahoo</a>, <a href="https://apps.twitter.com/app/new" target="_blank">Twitter</a>, <a href="/pattern-facebook" target="_blank">Facebook</a>, <a href="http://www.flickr.com/services/api/keys/" target="_blank">Flickr</a>.<br /><span class="smallcaps"><br />Web service request throttle</span></p>
 <p>A <span class="inline_code">SearchEngine.search()</span> request takes a minimum amount of time to complete, as outlined in the table above. This is intended as etiquette towards the server providing the service. Raise the <span class="inline_code">throttle</span> value if you plan to run multiple queries in batch.&nbsp;Wikipedia requests are especially intensive. If you plan to mine a lot of data from Wikipedia, download the <a href="http://en.wikipedia.org/wiki/Wikipedia:Database_download">Wikipedia database</a> instead.</p>
 <p>&nbsp;</p>
 <hr />
@@ -418,7 +418,7 @@ u"It's a rabbit, wood. What? A gift."
 <p>Remember to activate the Translate API in the <a href="https://code.google.com/apis/console" target="_blank">Google API Console</a>. Max. 1,000 characters per request.</p>
 <p>&nbsp;</p>
 <hr />
-<h2>Twitter search</h2>
+<h2><a name="twitter"></a>Twitter search</h2>
 <p>The <span class="inline_code">start</span> parameter of&nbsp;<span class="inline_code">Twitter.search()</span>&nbsp;takes an <span class="inline_code">int</span> (= the starting page, cfr. other search engines) or a <span class="inline_code">tweet.id</span>. If you create two <span class="inline_code">Twitter</span> objects, their result pages for a given query may not correspond, since new tweets become available more quickly than we can query pages. The best way is to pass the last seen tweet id:</p>
 <div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.web import Twitter
@@ -432,7 +432,7 @@ u"It's a rabbit, wood. What? A gift."
 &gt;&gt;&gt;         i = tweet.id</pre></div>
 <p>&nbsp;</p>
 <hr />
-<h2><a name="twitter"></a>Twitter streams</h2>
+<h2>Twitter streams</h2>
 <p><span class="inline_code">Twitter.stream()</span>&nbsp;returns an endless, live stream of <span class="inline_code">Result</span> objects. A <span class="inline_code">Stream</span> is a Python list that accumulates each time <span class="inline_code">Stream.update()</span> is called:</p>
 <div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.web import Twitter
@@ -477,6 +477,7 @@ section.source              # Section HTML source.
 section.string              # Section plaintext unicode string.
 section.content             # Section string minus title.
 section.level               # Section nested depth (from 0).
+section.links               # List of titles of linked articles. 
 section.tables              # List of WikipediaTable objects.</pre><p>The following example downloads a Wikipedia article and prints the title of each section, indented according to the section level:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import Wikipedia
@@ -542,7 +543,7 @@ u'And Now for Something Completely Different'</pre></div>
 <hr />
 <h2><a name="facebook"></a>Facebook posts, comments &amp; likes</h2>
 <p><span class="inline_code">Facebook.search(query,</span> <span class="inline_code">type=SEARCH)</span> returns a list of <span class="inline_code">Result</span> objects, where each result is a (publicly available) post that contains (or which comments contain) the given query.</p>
-<p><span class="inline_code">Facebook.search(id,</span> <span class="inline_code">type=NEWS)</span> returns posts from a given user profile. You need to supply a personal license key. You can get a key when you <a href="http://www.clips.ua.ac.be/media/pattern-fb.html" target="_blank">authorize Pattern</a> to search Facebook in your name.</p>
+<p><span class="inline_code">Facebook.search(id,</span> <span class="inline_code">type=NEWS)</span> returns posts from a given user profile. You need to supply a personal license key. You can get a key when you <a href="/pattern-facebook" target="_blank">authorize Pattern</a> to search Facebook in your name.</p>
 <p><span class="inline_code">Facebook.search(id,</span> <span class="inline_code">type=COMMENTS)</span> retrieves comments for a given post's&nbsp;<span class="inline_code">Result.id</span>. You can also pass the id of a post or a comment to <span class="inline_code">Facebook.search(id, type=LIKES)</span> to retrieve users that liked it.</p>
 <div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.web import Facebook, NEWS, COMMENTS, LIKES
@@ -550,7 +551,7 @@ u'And Now for Something Completely Different'</pre></div>
 &gt;&gt;&gt; fb = Facebook(license='your key')
 &gt;&gt;&gt; me = fb.profile(id=None) # (id, name, date, gender, locale, likes)-tuple
 &gt;&gt;&gt; 
-&gt;&gt;&gt; for post in fb.search(me[0], type=NEWS, count=25):
+&gt;&gt;&gt; for post in fb.search(me[0], type=NEWS, count=100):
 &gt;&gt;&gt;     print repr(post.id)
 &gt;&gt;&gt;     print repr(post.text)
 &gt;&gt;&gt;     print repr(post.url)
@@ -567,6 +568,7 @@ u'http://www.facebook.com/CLiPS.UA'
 1 likes 
 [(u'485942414773810', u'CLiPS Research Center')]
 .... </pre></div>
+<p>The maximum <span class="inline_code">count</span> for <span class="inline_code">COMMENTS</span> and <span class="inline_code">LIKES</span> is 1000 (by default, 10).&nbsp;</p>
 <p>&nbsp;</p>
 <hr />
 <h2>RSS + Atom newsfeeds</h2>

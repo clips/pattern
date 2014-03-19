@@ -597,9 +597,9 @@ pnp.preposition            # First PP chunk in the PNP.
 <p>&nbsp;</p>
 <hr />
 <h2><a name="wordnet"></a>WordNet</h2>
-<p>The pattern.en module includes WordNet 3.0 and Oliver Steele's PyWordNet module. <a href="http://wordnet.princeton.edu/" target="_blank">WordNet</a> is a lexical database that groups related words into <span class="inline_code">Synset</span> objects (= sets of synonyms). Each synset provides a short definition and semantic relations to other synsets.</p>
+<p>The pattern.en.wordnet module includes WordNet 3.0 and Oliver Steele's PyWordNet module. <a href="http://wordnet.princeton.edu/" target="_blank">WordNet</a> is a lexical database that groups related words into <span class="inline_code">Synset</span> objects (= sets of synonyms). Each synset provides a short definition and semantic relations to other synsets.</p>
 <p>The <span class="inline_code">synsets()</span> function returns a list of <span class="inline_code">Synset</span> objects for a given word, where each set corresponds to a word sense (e.g., <em>tree</em> in the sense of plant, <em>tree</em> in the sense of diagram, etc.)</p>
-<pre class="brush:python; gutter:false; light:true;">synset = synsets(word, pos=NOUN)[i]</pre><pre class="brush:python; gutter:false; light:true;">synset.pos                  # Part-of-speech: NOUN | VERB | ADJECTIVE | ADVERB.
+<pre class="brush:python; gutter:false; light:true;">synset = wordnet.synsets(word, pos=NOUN)[i]</pre><pre class="brush:python; gutter:false; light:true;">synset.pos                  # Part-of-speech: NOUN | VERB | ADJECTIVE | ADVERB.
 synset.synonyms             # List of word forms (i.e., synonyms).
 synset.gloss                # Definition string.
 synset.lexname              # Category string, or None.
@@ -636,7 +636,7 @@ Definition: u'warm-blooded egg-laying vertebrates characterized '
 <div class="example"><span class="small"><span style="text-decoration: underline;">Reference</span>: Fellbaum, C. (1998). </span><em class="small">WordNet: An Electronic Lexical Database</em><span class="small">. Cambridge, MIT Press.</span></div>
 <h3>Synset similarity</h3>
 <p>The <span class="inline_code">ancestor()</span> function returns the common ancestor&nbsp;of two synsets.&nbsp;The <span class="inline_code">similarity()</span> function returns the semantic similarity of two synsets as a value between <span class="inline_code">0.0</span>–<span class="inline_code">1.0</span>.</p>
-<pre class="brush:python; gutter:false; light:true;">ancestor(synset1, synset2)</pre><pre class="brush:python; gutter:false; light:true;">similarity(synset1, synset2)
+<pre class="brush:python; gutter:false; light:true;">wordnet.ancestor(synset1, synset2)</pre><pre class="brush:python; gutter:false; light:true;">wordnet.similarity(synset1, synset2)
 </pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import wordnet
 &gt;&gt;&gt; 
