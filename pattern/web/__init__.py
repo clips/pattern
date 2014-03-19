@@ -400,13 +400,12 @@ class URL(object):
         except socket.timeout, e:
             raise URLTimeout(src=e, url=url)
         except socket.error, e:
-            if e.args[0].endswith("timed out"):
+            if "timed out" in e.args[0]:
                 raise URLTimeout(src=e, url=url)
             raise URLError(str(e), src=e, url=url)
         except urllib2.URLError, e:
-            if e.reason == "timed out":
-                raise URLTimeout(src=e, url=url)
-            if e.reason[0] in (36, "timed out"):
+            if "timed out" in e.args[0] \
+            or "timed out" in e.reason:
                 raise URLTimeout(src=e, url=url)
             raise URLError(str(e), src=e, url=url)
         except ValueError, e:
