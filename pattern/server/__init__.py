@@ -37,9 +37,10 @@ except:
     MODULE = ""
     
 try:
-    # Folder that contains the script that imports pattern.server.
+    # Folder that contains the script that (indirectly) imports pattern.server.
+    # This is used as the default App.path.
     f = inspect.currentframe()
-    f = inspect.getouterframes(f)[1][0]
+    f = inspect.getouterframes(f)[-1][0]
     f = f.f_globals["__file__"]
     SCRIPT = os.path.dirname(os.path.abspath(f))
 except:
@@ -688,14 +689,17 @@ class ApplicationError(Exception):
 
 class Application(object):
     
-    def __init__(self, name=None, static="static/", rate="rate.db"):
+    def __init__(self, name=None, path=SCRIPT, static="static/", rate="rate.db"):
         """ A web app served by a WSGI-server that starts with App.run().
+            By default, the app is served from the folder of the script that imports pattern.server.
+            By default, static content is served from the given subfolder.
             @App.route(path) defines a URL path handler.
             @App.error(code) defines a HTTP error handler.
         """
-        # Create RateLimit db in app folder:
-        rate = os.path.join(self.path, rate)
+        # RateLimit db resides in app folder:
+        rate = os.path.join(path, rate)
         self._name   = name         # App name.
+        self._path   = path         # App path.
         self._host   = None         # Server host, see App.run().
         self._port   = None         # Server port, see App.run().
         self._app    = None         # CherryPy Application object.
@@ -705,7 +709,7 @@ class Application(object):
         self._rate   = rate         # RateLimit db name, see also App.route(limit=True).
         self.router  = Router()     # Router object, maps URL paths to handlers.
         self.thread  = App.Thread() # Thread-safe dictionary.
-        os.chdir(self.path)
+        os.chdir(path)
         
     @property
     def name(self):
@@ -729,13 +733,13 @@ class Application(object):
     def path(self):
         """ Yields the absolute path to the folder containing the app.
         """
-        return SCRIPT
+        return self._path
         
     @property
     def static(self):
         """ Yields the absolute path to the folder with static content.
         """
-        return os.path.join(self.path, self._static)
+        return os.path.join(self._path, self._static)
 
     @property
     def session(self):
@@ -1003,10 +1007,11 @@ class Application(object):
 
     def run(self, host=LOCALHOST, port=8080, threads=30, queue=20, timeout=10, sessions=False, embedded=False, debug=True):
         """ Starts the server.
-            Static content (e.g., "g/img.jpg") is served from the given subfolder (e.g., "static/g").
+            Static content (e.g., "g/img.jpg") is served from the App.static subfolder (e.g., "static/g").
             With threads=10, the server can handle up to 10 concurrent requests.
             With queue=10, the server will queue up to 10 waiting requests.
             With debug=False, starts a production server.
+            With embedded=True, runs behind Apache mod_wsgi.
         """
         # Do nothing if the app is running.
         if self._up:
@@ -1042,7 +1047,7 @@ class Application(object):
                 "tools.sessions.on"        : sessions
         }})
         # Relative root = project path.
-        os.chdir(self.path)
+        os.chdir(self._path)
         # With mod_wsgi, stdout is restriced.
         if embedded:
             sys.stdout = sys.stderr
