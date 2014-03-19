@@ -3,8 +3,7 @@
 import sys
 import os
 
-from distutils.core import setup
-from distutils.dist import DistributionMetadata
+from setuptools import setup
 
 from pattern import __version__
 
@@ -45,9 +44,6 @@ if sys.argv[-1] == "zip":
 #---------------------------------------------------------------------------------------------------
 # "python setup.py install" will install /pattern in /site-packages.
 
-if not hasattr(DistributionMetadata, 'classifiers'): # Python <2.3
-    DistributionMetadata.classifiers = None
-
 setup(
             name = "Pattern",
          version = "2.6",
@@ -81,7 +77,8 @@ setup(
         "pattern.text.nl",
         "pattern.vector",
         "pattern.vector.svm",
-        "pattern.graph"
+        "pattern.graph",
+        "pattern.server"
     ],
     package_data = {
         "pattern"                 : ["*.js"],
@@ -104,6 +101,9 @@ setup(
         "pattern.vector"          : ["*.txt"],
         "pattern.vector.svm"      : ["*.txt", "libsvm-3.11/*", "libsvm-3.17/*", "liblinear-1.93/*"],
         "pattern.graph"           : ["*.js", "*.csv"],
+        "pattern.server"          : ["static/*", "cherrypy/cherrypy/*.*", 
+                                                 "cherrypy/cherrypy/*/*", 
+                                                 "cherrypy/cherrypy/cherryd"],
     },
     py_modules = [
         "pattern.metrics",
@@ -133,5 +133,6 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Text Processing :: Linguistic",
         "Topic :: Text Processing :: Markup :: HTML"
-    ]
+    ],
+    zip_safe = False
 )
