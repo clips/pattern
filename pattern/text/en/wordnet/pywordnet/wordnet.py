@@ -573,7 +573,7 @@ class Sense:
         elif name == 'lexname':
             return self.synset.lexname
 	else:
-	    raise AttributeError, name
+	    raise AttributeError(name)
     
     def __str__(self):
 	"""Return a human-readable representation.
@@ -818,7 +818,7 @@ class Dictionary:
 	if word:
 	    return word
 	else:
-	    raise KeyError, "%s is not in the %s database" % (`form`, `pos`)
+	    raise KeyError("%s is not in the %s database" % (`form`, `pos`))
     
     def getSynset(self, offset):
 	pos = self.pos
@@ -878,7 +878,7 @@ class Dictionary:
 	    line = self.indexFile[index]
 	    return self.getWord(string.replace(line[:string.find(line, ' ')], '_', ' '), line)
 	else:
-	    raise TypeError, "%s is not a String or Int" % `index`
+	    raise TypeError("%s is not a String or Int" % `index`)
     
     #
     # Dictionary protocol
@@ -1001,12 +1001,12 @@ class _IndexFile:
 		self.file.seek(self.nextOffset)
 		line = self.file.readline()
 		if line == "":
-		    raise IndexError, "index out of range"
+		    raise IndexError("index out of range")
 		self.nextIndex = self.nextIndex + 1
 		self.nextOffset = self.file.tell()
 	    return line
 	else:
-	    raise TypeError, "%s is not a String or Int" % `index`
+	    raise TypeError("%s is not a String or Int" % `index`)
 	
     #
     # Dictionary protocol
@@ -1097,7 +1097,7 @@ getword, getsense, getsynset = getWord, getSense, getSynset
 
 def _requirePointerType(pointerType):
     if pointerType not in POINTER_TYPES:
-	raise TypeError, `pointerType` + " is not a pointer type"
+	raise TypeError(`pointerType` + " is not a pointer type")
     return pointerType
 
 def _compareInstances(a, b, fields):
@@ -1396,13 +1396,13 @@ def _normalizePOS(pos):
     norm = _POSNormalizationTable.get(pos)
     if norm:
 	return norm
-    raise TypeError, `pos` + " is not a part of speech type"
+    raise TypeError(`pos` + " is not a part of speech type")
 
 def _dictionaryFor(pos):
     pos = _normalizePOS(pos)
     dict = _POStoDictionaryTable.get(pos)
     if dict == None:
-	raise RuntimeError, "The " + `pos` + " dictionary has not been created"
+	raise RuntimeError("The " + `pos` + " dictionary has not been created")
     return dict
 
 def buildIndexFiles():

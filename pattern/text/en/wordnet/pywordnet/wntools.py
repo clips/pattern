@@ -41,9 +41,9 @@ from wordnet import *
 def _requireSource(entity):
     if not hasattr(entity, 'pointers'):
         if isinstance(entity, Word):
-            raise TypeError, `entity` + " is not a Sense or Synset.  Try " + `entity` + "[0] instead."
+            raise TypeError(`entity` + " is not a Sense or Synset.  Try " + `entity` + "[0] instead.")
         else:
-            raise TypeError, `entity` + " is not a Sense or Synset"
+            raise TypeError(`entity` + " is not a Sense or Synset")
 
 def tree(source, pointerType):
     """

@@ -152,7 +152,12 @@ def date(*args, **kwargs):
     """
     d = None
     f = None
-    if len(args) == 0 or args[0] == NOW:
+    if len(args) == 0 \
+    and kwargs.get("year") is not None \
+    and kwargs.get("month") \
+    and kwargs.get("day"):
+        d = Date(**kwargs)
+    elif len(args) == 0 or args[0] == NOW:
         # No parameters or one parameter NOW.
         d = Date.now()
     elif len(args) == 1 \
@@ -169,7 +174,7 @@ def date(*args, **kwargs):
                 except:
                     pass
         if d is None:
-            raise DateError, "unknown date format for %s" % repr(args[0])
+            raise DateError("unknown date format for %s" % repr(args[0]))
     elif len(args) == 2 and isinstance(args[0], basestring):
         # Two parameters, a date string and an explicit input format.
         d = Date.strptime(args[0], args[1])
@@ -178,8 +183,8 @@ def date(*args, **kwargs):
         f = kwargs.pop("format", None)
         d = Date(*args[:7], **kwargs)
     else:
-        raise DateError, "unknown date format"
-    d.format = kwargs.get("format") or len(args)>7 and args[7] or f or Date.format
+        raise DateError("unknown date format")
+    d.format = kwargs.get("format") or len(args) > 7 and args[7] or f or Date.format
     return d
 
 def time(days=0, seconds=0, minutes=0, hours=0, **kwargs):
@@ -450,10 +455,10 @@ class Database(object):
             try: 
                 self._connection = MySQLdb.connect(self.host, self.username, self.password, self.name, port=self.port, use_unicode=unicode)
                 self._connection.autocommit(False)
-            except Exception, e:
+            except Exception as e:
                 # Create the database if it doesn't exist yet.
                 if "unknown database" not in str(e).lower():
-                    raise DatabaseConnectionError, e[1] # Wrong host, username and/or password.
+                    raise DatabaseConnectionError(e[1]) # Wrong host, username and/or password.
                 connection = MySQLdb.connect(self.host, self.username, self.password)
                 cursor = connection.cursor()
                 cursor.execute("create database if not exists `%s`;" % self.name)
@@ -514,7 +519,7 @@ class Database(object):
             return self.__dict__["tables"][k]
         if k in self.__dict__: 
             return self.__dict__[k]
-        raise AttributeError, "'Database' object has no attribute '%s'" % k
+        raise AttributeError("'Database' object has no attribute '%s'" % k)
 
     def __len__(self):
         return len(self.tables)
@@ -629,7 +634,7 @@ class Database(object):
             The given list of fields must contain values returned from the field() function.
         """
         if table in self.tables:
-            raise TableError, "table '%s' already exists" % (self.name + "." + table)
+            raise TableError("table '%s' already exists" % (self.name + "." + table))
         if table.startswith(XML_HEADER):
             # From an XML-string generated with Table.xml.
             return parse_xml(self, table, 
@@ -841,7 +846,7 @@ class Table(object):
         def extend(self, fields):
             [self.append(f) for f in fields]
         def __setitem__(self, *args, **kwargs):
-            raise NotImplementedError, "Table.fields only supports append()"
+            raise NotImplementedError("Table.fields only supports append()")
         insert = remove = pop = __setitem__
     
     def __init__(self, name, database):
@@ -864,7 +869,7 @@ class Table(object):
         # The primary key column is stored in Table.primary_key.
         self.fields = Table.Fields(self)
         if self.name not in self.database.tables:
-            raise TableError, "table '%s' does not exist" % (self.database.name + "." + self.name)
+            raise TableError("table '%s' does not exist" % (self.database.name + "." + self.name))
         if self.db.type == MYSQL:
             q = "show columns from `%s`;" % self.name
         if self.db.type == SQLITE:
@@ -1231,7 +1236,7 @@ class FilterChain(list):
             if isinstance(filter, (Filter, list, tuple)):
                 a.append(cmp(*filter, **kwargs))
                 continue
-            raise TypeError, "FilterChain can contain other FilterChain or filter(), not %s" % type(filter)
+            raise TypeError("FilterChain can contain other FilterChain or filter(), not %s" % type(filter))
         return (" %s " % self.operator).join(a)
         
     sql = SQL
@@ -1620,7 +1625,7 @@ def parse_xml(database, xml, table=None, field=lambda s: s.replace(".", "-")):
     if database.connected is False:
         database.connect()
     if table in database:
-        raise TableError, "table '%s' already exists" % table
+        raise TableError("table '%s' already exists" % table)
     database.create(table, fields=schema)
     for r in rows:
         database[table].insert(r, commit=False)
@@ -1689,7 +1694,7 @@ class json(object):
             return dict(map(self.loads, self._split(kv, ":")) for kv in self._split(s.strip("{}")))
         if s.startswith("["):
             return list(self.loads(v) for v in self._split(s.strip("[]")))
-        raise TypeError, "can't process %s." % repr(string)
+        raise TypeError("can't process %s." % repr(string))
 
     def dumps(self, obj, *args, **kwargs):
         """ Returns a JSON string from the given data.
@@ -1709,7 +1714,7 @@ class json(object):
             return "{%s}" % ", ".join(['%s: %s' % (self.encode(k), self.dumps(v)) for k, v in sorted(obj.items())])
         if isinstance(obj, (list, tuple, GeneratorType)):
             return "[%s]" % ", ".join(self.dumps(v) for v in obj)
-        raise TypeError, "can't process %s." % type(obj)
+        raise TypeError("can't process %s." % type(obj))
 
 try: import json # Python 2.6+
 except:
@@ -1870,7 +1875,7 @@ class Datasheet(CSV):
         # Datasheet.rows property can't be set, except in special case Datasheet.rows += row.
         if isinstance(rows, DatasheetRows) and rows._datasheet == self:
             self._rows = rows; return
-        raise AttributeError, "can't set attribute"
+        raise AttributeError("can't set attribute")
     rows = property(_get_rows, _set_rows)
     
     def _get_columns(self):
@@ -1879,7 +1884,7 @@ class Datasheet(CSV):
         # Datasheet.columns property can't be set, except in special case Datasheet.columns += column.
         if isinstance(columns, DatasheetColumns) and columns._datasheet == self:
             self._columns = columns; return
-        raise AttributeError, "can't set attribute"
+        raise AttributeError("can't set attribute")
     columns = cols = property(_get_columns, _set_columns)
     
     def __getattr__(self, k):
@@ -1891,7 +1896,7 @@ class Datasheet(CSV):
         for i, f in enumerate(f[0] for f in self.__dict__["fields"] or []):
             if f == k: 
                 return self.__dict__["_columns"][i]
-        raise AttributeError, "'Datasheet' object has no attribute '%s'" % k
+        raise AttributeError("'Datasheet' object has no attribute '%s'" % k)
         
     def __setattr__(self, k, v):
         """ Columns can be set by field name, e.g., Datasheet.date = [...].
@@ -1912,7 +1917,7 @@ class Datasheet(CSV):
         for i, f in enumerate(f[0] for f in self.__dict__["fields"] or []):
             if f == k: 
                 self.__dict__["_columns"].__setitem__(i, v); return
-        raise AttributeError, "'Datasheet' object has no attribute '%s'" % k
+        raise AttributeError("'Datasheet' object has no attribute '%s'" % k)
     
     def __setitem__(self, index, value):
         """ Sets an item or row in the matrix.
@@ -1925,7 +1930,7 @@ class Datasheet(CSV):
             self.pop(index)
             self.insert(index, value)
         else:
-            raise TypeError, "Datasheet indices must be int or tuple"
+            raise TypeError("Datasheet indices must be int or tuple")
     
     def __getitem__(self, index):
         """ Returns an item, row or slice from the matrix.
@@ -1948,7 +1953,7 @@ class Datasheet(CSV):
             return Datasheet(
                   rows = (row[j] for row in list.__getitem__(self, i)),
                 fields = self.fields and self.fields[j] or self.fields)
-        raise TypeError, "Datasheet indices must be int, tuple or slice"
+        raise TypeError("Datasheet indices must be int, tuple or slice")
 
     def __getslice__(self, i, j):
         # Datasheet[i1:i2] => Datasheet with rows i1-i2.
@@ -1977,7 +1982,7 @@ class Datasheet(CSV):
             # Copy the row (fast + safe for generators and DatasheetColumns).
             row = [v for v in row]
         except:
-            raise TypeError, "Datasheet.insert(x): x must be list"
+            raise TypeError("Datasheet.insert(x): x must be list")
         list.insert(self, i, row)
         m = max((len(self) > 1 and self._m or 0, len(row)))
         if len(row) < m:
@@ -2168,7 +2173,7 @@ class DatasheetRows(list):
     def __repr__(self):
         return repr(self._datasheet)
     def __add__(self, row):
-        raise TypeError, "unsupported operand type(s) for +: 'Datasheet.rows' and '%s'" % row.__class__.__name__
+        raise TypeError("unsupported operand type(s) for +: 'Datasheet.rows' and '%s'" % row.__class__.__name__)
     def __iadd__(self, row):
         self.append(row); return self
     def __eq__(self, rows):
@@ -2219,7 +2224,7 @@ class DatasheetColumns(list):
     def __getitem__(self, j):
         if j < 0: j = j % len(self) # DatasheetColumns[-1]
         if j >= len(self): 
-            raise IndexError, "list index out of range"
+            raise IndexError("list index out of range")
         return self._cache.setdefault(j, DatasheetColumn(self._datasheet, j))
     def __getslice__(self, i, j):
         return self._datasheet[:,i:j]
@@ -2232,7 +2237,7 @@ class DatasheetColumns(list):
     def __repr__(self):
         return repr(list(iter(self)))    
     def __add__(self, column):
-        raise TypeError, "unsupported operand type(s) for +: 'Datasheet.columns' and '%s'" % column.__class__.__name__
+        raise TypeError("unsupported operand type(s) for +: 'Datasheet.columns' and '%s'" % column.__class__.__name__)
     def __iadd__(self, column):
         self.append(column); return self
     def __eq__(self, columns):
@@ -2246,7 +2251,7 @@ class DatasheetColumns(list):
         """
         try: column = [v for v in column]
         except:
-            raise TypeError, "Datasheet.columns.insert(x): x must be list"
+            raise TypeError("Datasheet.columns.insert(x): x must be list")
         column = column + [default] * (len(self._datasheet) - len(column))
         if len(column) > len(self._datasheet):
             self._datasheet.extend([[None]] * (len(column)-len(self._datasheet)))
@@ -2267,7 +2272,7 @@ class DatasheetColumns(list):
     def remove(self, column):
         if isinstance(column, DatasheetColumn) and column._datasheet == self._datasheet:
             self.pop(column._j); return
-        raise ValueError, "list.remove(x): x not in list"
+        raise ValueError("list.remove(x): x not in list")
     
     def pop(self, j):
         column = list(self[j]) # Return a list copy.
@@ -2353,7 +2358,7 @@ class DatasheetColumn(list):
     def __ne__(self, column):
         return not self.__eq__(column)
     def __add__(self, value):
-        raise TypeError, "unsupported operand type(s) for +: 'Datasheet.columns[x]' and '%s'" % value.__class__.__name__
+        raise TypeError("unsupported operand type(s) for +: 'Datasheet.columns[x]' and '%s'" % value.__class__.__name__)
     def __iadd__(self, value):
         self.append(value); return self
     def __contains__(self, value):
@@ -2368,7 +2373,7 @@ class DatasheetColumn(list):
         for i, v in enumerate(self):
             if v == value: 
                 return i
-        raise ValueError, "list.index(x): x not in list"
+        raise ValueError("list.index(x): x not in list")
 
     def remove(self, value):
         """ Removes the matrix row that has the given value in this column.
@@ -2376,7 +2381,7 @@ class DatasheetColumn(list):
         for i, v in enumerate(self):
             if v == value:
                 self._datasheet.pop(i); return
-        raise ValueError, "list.remove(x): x not in list"
+        raise ValueError("list.remove(x): x not in list")
         
     def pop(self, i):
         """ Removes the entire row from the matrix and returns the value at the given index.

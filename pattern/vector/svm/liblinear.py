@@ -29,14 +29,14 @@ else:
 				continue
 			try:
 				liblinear = CDLL(path.join(path.dirname(__file__), v, binary)); b=True; break
-			except OSError, e:
+			except OSError as e:
 				continue
 		if b: break
 	if not b:
-		raise ImportError, "can't import liblinear (%sbit-%s)" % (
+		raise ImportError("can't import liblinear (%sbit-%s)" % (
 			sizeof(c_voidp) * 8, 
 			sys.platform
-		)
+		))
 
 # Construct constants
 SOLVER_TYPE = ['L2R_LR', 'L2R_L2LOSS_SVC_DUAL', 'L2R_L2LOSS_SVC', 'L2R_L1LOSS_SVC_DUAL',\

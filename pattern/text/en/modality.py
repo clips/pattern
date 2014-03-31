@@ -41,7 +41,7 @@ def imperative(sentence, **kwargs):
     """
     S = sentence
     if not (hasattr(S, "words") and hasattr(S, "parse_token")):
-        raise TypeError, "%s object is not a parsed Sentence" % repr(S.__class__.__name__)
+        raise TypeError("%s object is not a parsed Sentence" % repr(S.__class__.__name__))
     if question(S):
         return False
     if S.subjects and s(S.subjects[0]) not in ("you", "yourself"):
@@ -103,7 +103,7 @@ def conditional(sentence, predictive=True, **kwargs):
     """
     S = sentence
     if not (hasattr(S, "words") and hasattr(S, "parse_token")):
-        raise TypeError, "%s object is not a parsed Sentence" % repr(S.__class__.__name__)
+        raise TypeError("%s object is not a parsed Sentence" % repr(S.__class__.__name__))
     if question(S):
         return False
     i = find(lambda w: s(w) == "were", S)
@@ -167,7 +167,7 @@ def subjunctive(sentence, classical=True, **kwargs):
     """
     S = sentence
     if not (hasattr(S, "words") and hasattr(S, "parse_token")):
-        raise TypeError, "%s object is not a parsed Sentence" % repr(S.__class__.__name__)
+        raise TypeError("%s object is not a parsed Sentence" % repr(S.__class__.__name__))
     if question(S):
         return False
     for i, w in enumerate(S):
@@ -401,7 +401,7 @@ def modality(sentence, type=EPISTEMIC):
             pass
     S, n, m = sentence, 0.0, 0
     if not (hasattr(S, "words") and hasattr(S, "parse_token")):
-        raise TypeError, "%s object is not a parsed Sentence" % repr(S.__class__.__name__)
+        raise TypeError("%s object is not a parsed Sentence" % repr(S.__class__.__name__))
     if type == EPISTEMIC:
         r = S.string.rstrip(" .!")
         for k, v in epistemic_weaseling.items():

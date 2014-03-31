@@ -90,7 +90,7 @@ def deepcopy(o):
         return o.__class__(deepcopy(v) for v in o)
     if isinstance(o, dict):
         return dict((deepcopy(k), deepcopy(v)) for k,v in o.iteritems())
-    raise Exception, "don't know how to copy %s" % o.__class__.__name__
+    raise Exception("don't know how to copy %s" % o.__class__.__name__)
 
 #### NODE ##########################################################################################
 
@@ -376,7 +376,7 @@ class Graph(dict):
         try: 
             return dict.__getitem__(self, id)
         except KeyError:
-            raise KeyError, "no node with id '%s' in graph" % id
+            raise KeyError("no node with id '%s' in graph" % id)
     
     def append(self, base, *args, **kwargs):
         """ Appends a Node or Edge to the graph: Graph.append(Node, id="rabbit").

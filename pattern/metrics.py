@@ -88,7 +88,7 @@ def profile(function, *args, **kwargs):
     def run():
         function(*args, **kwargs)
     if not hasattr(function, "__call__"):
-        raise TypeError, "%s is not a function" % type(function)
+        raise TypeError("%s is not a function" % type(function))
     try:
         import cProfile as profile
     except:
@@ -585,7 +585,7 @@ def median(iterable, sort=True):
     s = sorted(iterable) if sort is True else list(iterable)
     n = len(s)
     if n == 0:
-        raise ValueError, "median() arg is an empty sequence"
+        raise ValueError("median() arg is an empty sequence")
     if n % 2 == 0:
         return float(s[(n // 2) - 1] + s[n // 2]) / 2
     return s[n // 2]
@@ -695,7 +695,7 @@ def quantile(iterable, p=0.5, sort=True, a=1, b=-1, c=0, d=1):
     n = len(s)
     f, i = modf(a + (b+n) * p - 1)
     if n == 0:
-        raise ValueError, "quantile() arg is an empty sequence"
+        raise ValueError("quantile() arg is an empty sequence")
     if f == 0: 
         return float(s[int(i)])
     if i < 0: 
@@ -935,7 +935,7 @@ def gammai(a, x, tail=UPPER):
             s = s + d
             if abs(d) < abs(s) * epsilon:
                 return (s * exp(-x + a * log(x) - ln), ln)
-        raise StopIteration, (abs(d), abs(s) * epsilon)
+        raise StopIteration(abs(d), abs(s) * epsilon)
     
     # Continued fraction approximation.
     def _gf(a, x, epsilon=3.e-7, iterations=200):
@@ -957,7 +957,7 @@ def gammai(a, x, tail=UPPER):
                 if abs((g - g0) / g) < epsilon:
                     return (g * exp(-x + a * log(x) - ln), ln)
                 g0 = g
-        raise StopIteration, (abs((g-g0) / g))
+        raise StopIteration(abs((g-g0) / g))
 
     if a <= 0.0:
         return 1.0

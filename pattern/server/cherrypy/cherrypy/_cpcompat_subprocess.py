@@ -481,7 +481,7 @@ def _eintr_retry_call(func, *args):
     while True:
         try:
             return func(*args)
-        except (OSError, IOError), e:
+        except (OSError, IOError) as e:
             if e.errno == errno.EINTR:
                 continue
             raise
@@ -900,7 +900,7 @@ class Popen(object):
                                          env,
                                          cwd,
                                          startupinfo)
-                except pywintypes.error, e:
+                except pywintypes.error as e:
                     # Translate pywintypes.error to WindowsError, which is
                     # a subclass of OSError.  FIXME: We should really
                     # translate errno using _sys_errlist (or similar), but
@@ -978,7 +978,7 @@ class Popen(object):
                 if input is not None:
                     try:
                         self.stdin.write(input)
-                    except IOError, e:
+                    except IOError as e:
                         if e.errno != errno.EPIPE:
                             raise
                 self.stdin.close()
@@ -1245,7 +1245,7 @@ class Popen(object):
             if data != "":
                 try:
                     _eintr_retry_call(os.waitpid, self.pid, 0)
-                except OSError, e:
+                except OSError as e:
                     if e.errno != errno.ECHILD:
                         raise
                 child_exception = pickle.loads(data)
@@ -1295,7 +1295,7 @@ class Popen(object):
             if self.returncode is None:
                 try:
                     pid, sts = _eintr_retry_call(os.waitpid, self.pid, 0)
-                except OSError, e:
+                except OSError as e:
                     if e.errno != errno.ECHILD:
                         raise
                     # This happens if SIGCLD is set to be ignored or waiting
@@ -1370,7 +1370,7 @@ class Popen(object):
             while fd2file:
                 try:
                     ready = poller.poll()
-                except select.error, e:
+                except select.error as e:
                     if e.args[0] == errno.EINTR:
                         continue
                     raise
@@ -1380,7 +1380,7 @@ class Popen(object):
                         chunk = input[input_offset : input_offset + _PIPE_BUF]
                         try:
                             input_offset += os.write(fd, chunk)
-                        except OSError, e:
+                        except OSError as e:
                             if e.errno == errno.EPIPE:
                                 close_unregister_and_remove(fd)
                             else:
@@ -1419,7 +1419,7 @@ class Popen(object):
             while read_set or write_set:
                 try:
                     rlist, wlist, xlist = select.select(read_set, write_set, [])
-                except select.error, e:
+                except select.error as e:
                     if e.args[0] == errno.EINTR:
                         continue
                     raise
@@ -1428,7 +1428,7 @@ class Popen(object):
                     chunk = input[input_offset : input_offset + _PIPE_BUF]
                     try:
                         bytes_written = os.write(self.stdin.fileno(), chunk)
-                    except OSError, e:
+                    except OSError as e:
                         if e.errno == errno.EPIPE:
                             self.stdin.close()
                             write_set.remove(self.stdin)

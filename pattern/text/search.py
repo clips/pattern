@@ -783,6 +783,10 @@ class Pattern(object):
         """
         if isinstance(sentence, list) or sentence.__class__.__name__ == "Text":
             a=[]; [a.extend(self.search(s)) for s in sentence]; return a
+        if isinstance(sentence, basestring):
+            sentence = Sentence(sentence)
+        if isinstance(sentence, Match) and len(sentence) > 0:
+            sentence = sentence[0].sentence.slice(sentence[0].index, sentence[-1].index + 1)
         a = []
         v = self._variations()
         u = {}
@@ -796,9 +800,11 @@ class Pattern(object):
         """ Returns the first match found in the given sentence, or None.
         """
         if isinstance(sentence, list) or sentence.__class__.__name__ == "Text":
-            return find(lambda (m,s): m is not None, ((self.match(s, start, _v), s) for s in sentence))[0]
+            return find(lambda m,s: m is not None, ((self.match(s, start, _v), s) for s in sentence))[0]
         if isinstance(sentence, basestring):
             sentence = Sentence(sentence)
+        if isinstance(sentence, Match) and len(sentence) > 0:
+            sentence = sentence[0].sentence.slice(sentence[0].index, sentence[-1].index + 1)
         # Variations (_v) further down the list may match words more to the front.
         # We need to check all of them. Unmatched variations are blacklisted (_u).
         # Pattern.search() calls Pattern.match() with a persistent blacklist (1.5x faster).
@@ -924,7 +930,7 @@ def compile(pattern, *args, **kwargs):
         _cache[id] = p
         return p
     else:
-        raise TypeError, "can't compile '%s' object" % pattern.__class__.__name__
+        raise TypeError("can't compile '%s' object" % pattern.__class__.__name__)
 
 def scan(pattern, string, *args, **kwargs):
     """ Returns True if pattern.search(Sentence(string)) may yield matches.
@@ -1036,7 +1042,7 @@ class Match(object):
             search("{JJ JJ} NN", Sentence(parse("big black cat"))).group(1) => big black.
         """
         if index < 0 or index > len(self.pattern.groups):
-            raise IndexError, "no such group"
+            raise IndexError("no such group")
         if index > 0 and index <= len(self.pattern.groups):
             g = self.pattern.groups[index-1]
         if index == 0:

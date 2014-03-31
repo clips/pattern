@@ -340,7 +340,7 @@ class FeedParserDict(dict):
             try:
                 return dict.__getitem__(self, 'tags')[0]['term']
             except IndexError:
-                raise KeyError, "object doesn't have key 'category'"
+                raise KeyError("object doesn't have key 'category'")
         elif key == 'enclosures':
             norel = lambda link: FeedParserDict([(name,value) for (name,value) in link.items() if name!='rel'])
             return [norel(link) for link in dict.__getitem__(self, 'links') if link['rel']==u'enclosure']
@@ -421,7 +421,7 @@ class FeedParserDict(dict):
         try:
             return self.__getitem__(key)
         except KeyError:
-            raise AttributeError, "object has no attribute '%s'" % key
+            raise AttributeError("object has no attribute '%s'" % key)
 
     def __hash__(self):
         return id(self)
@@ -1806,7 +1806,7 @@ if _XML_AVAILABLE:
                 givenprefix = None
             prefix = self._matchnamespaces.get(lowernamespace, givenprefix)
             if givenprefix and (prefix == None or (prefix == '' and lowernamespace == '')) and givenprefix not in self.namespacesInUse:
-                raise UndeclaredNamespace, "'%s' is not associated with a namespace" % givenprefix
+                raise UndeclaredNamespace("'%s' is not associated with a namespace" % givenprefix)
             localname = str(localname).lower()
 
             # qname implementation is horribly broken in Python 2.1 (it
@@ -2771,7 +2771,7 @@ class _HTMLSanitizer(_BaseHTMLProcessor):
 
         # declare xlink namespace, if needed
         if self.mathmlOK or self.svgOK:
-            if filter(lambda (n,v): n.startswith('xlink:'),attrs):
+            if filter(lambda n,v: n.startswith('xlink:'),attrs):
                 if not ('xmlns:xlink','http://www.w3.org/1999/xlink') in attrs:
                     attrs.append(('xmlns:xlink','http://www.w3.org/1999/xlink'))
 
@@ -3801,7 +3801,7 @@ def parse(url_file_stream_or_string, etag=None, modified=None, agent=None, refer
     try:
         f = _open_resource(url_file_stream_or_string, etag, modified, agent, referrer, handlers, request_headers)
         data = f.read()
-    except Exception, e:
+    except Exception as e:
         result['bozo'] = 1
         result['bozo_exception'] = e
         data = None
@@ -3826,7 +3826,7 @@ def parse(url_file_stream_or_string, etag=None, modified=None, agent=None, refer
         if gzip and 'gzip' in http_headers.get('content-encoding', ''):
             try:
                 data = gzip.GzipFile(fileobj=_StringIO(data)).read()
-            except (IOError, struct.error), e:
+            except (IOError, struct.error) as e:
                 # IOError can occur if the gzip header is bad.
                 # struct.error can occur if the data is damaged.
                 result['bozo'] = 1
@@ -3839,11 +3839,11 @@ def parse(url_file_stream_or_string, etag=None, modified=None, agent=None, refer
         elif zlib and 'deflate' in http_headers.get('content-encoding', ''):
             try:
                 data = zlib.decompress(data)
-            except zlib.error, e:
+            except zlib.error as e:
                 try:
                     # The data may have no headers and no checksum.
                     data = zlib.decompress(data, -15)
-                except zlib.error, e:
+                except zlib.error as e:
                     result['bozo'] = 1
                     result['bozo_exception'] = e
 
@@ -4003,7 +4003,7 @@ def parse(url_file_stream_or_string, etag=None, modified=None, agent=None, refer
         source.setByteStream(_StringIO(data))
         try:
             saxparser.parse(source)
-        except xml.sax.SAXParseException, e:
+        except xml.sax.SAXParseException as e:
             result['bozo'] = 1
             result['bozo_exception'] = feedparser.exc or e
             use_strict_parser = 0

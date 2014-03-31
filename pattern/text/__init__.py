@@ -284,6 +284,9 @@ class Model(object):
         self._classifier.save(path, final) # final = unlink training data (smaller file).
 
     def train(self, token, tag, previous=None, next=None):
+        """ Trains the model to predict the given tag for the given token,
+            in context of the given previous and next (token, tag)-tuples.
+        """
         self._classifier.train(self._v(token, previous, next), type=tag)
 
     def classify(self, token, previous=None, next=None, **kwargs):
@@ -1873,8 +1876,9 @@ class Sentiment(lazydict):
         else:
             a = []
         weight = kwargs.get("weight", lambda w: 1)
-        return Score(polarity = avg(map(lambda (w, p, s, x): (w, p), a), weight),
-                 subjectivity = avg(map(lambda (w, p, s, x): (w, s), a), weight),
+        # Each "w" in "a" is a (words, polarity, subjectivity, label)-tuple.
+        return Score(polarity = avg(map(lambda w: (w[0], w[1]), a), weight),
+                 subjectivity = avg(map(lambda w: (w[0], w[2]), a), weight),
                   assessments = a)
 
     def assessments(self, words=[], negation=True):
@@ -2077,7 +2081,7 @@ def language(s):
     for xx in LANGUAGES:
         lexicon = _module(xx).__dict__["lexicon"]
         p[xx] = sum(1 for w in s if w in lexicon) / n
-    return max(p.items(), key=lambda (k, v): (v, int(k == "en")))
+    return max(p.items(), key=lambda k, v: (v, int(k == "en")))
     
 lang = language
 

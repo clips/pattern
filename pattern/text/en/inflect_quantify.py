@@ -254,7 +254,7 @@ def approximate(word, amount=1, plural={}):
     """
     try: p = pluralize(word, custom=plural)
     except:
-        raise TypeError, "can't pluralize %s, only str and unicode" % word.__class__.__name__
+        raise TypeError("can't pluralize %s (not a string)" % word.__class__.__name__)
     # Anything up to 200.
     if amount == 0: 
         return "%s %s" % (NONE, p)
@@ -316,7 +316,7 @@ def count(*args, **kwargs):
                 count.setdefault(word, 0)
                 count[word] += 1
             except:
-                raise TypeError, "can't count %s, only str and unicode" % word.__class__.__name__
+                raise TypeError("can't count %s (not a string)" % word.__class__.__name__)
     # Create an iterator of (count, item) tuples, sorted highest-first.
     s = [(count[word], word) for word in count]
     s = max([n for (n,w) in s]) > 1 and reversed(sorted(s)) or s

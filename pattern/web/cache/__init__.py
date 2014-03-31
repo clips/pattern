@@ -114,7 +114,7 @@ class Cache(object):
                 return decode_utf8(v)
             else:
                 return v
-        raise KeyError, k
+        raise KeyError(k)
 
     def age(self, k):
         """ Returns the age of the cached item, in days.

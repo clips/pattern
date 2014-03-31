@@ -3,7 +3,7 @@ LIBSVM = LIBLINEAR = True
 try:
     import libsvm
     import libsvmutil
-except ImportError, e:
+except ImportError as e:
     LIBSVM = False
     raise e
     

@@ -240,7 +240,7 @@ class Database(object):
             r = self._connection.cursor().execute(sql, values)
             if commit: 
                 self._connection.commit()
-        except Exception, e:
+        except Exception as e:
             # "OperationalError: database is locked" means that 
             # SQLite is receiving too many concurrent write ops.
             # A write operation locks the entire database;
@@ -248,7 +248,7 @@ class Database(object):
             # In this case you can raise Database(timeout=10),
             # lower Application.run(threads=10) or switch to MySQL or Redis.
             self._connection.rollback()
-            raise DatabaseError, str(e)
+            raise DatabaseError(str(e))
         return r.fetchone() if first else r
         
     def commit(self):
@@ -303,7 +303,7 @@ class DatabaseTransaction(Database):
                 for sql, v in q:
                     Database.execute(self, sql, v, commit=False)
                 Database.commit(self)
-            except DatabaseError, e:
+            except DatabaseError as e:
                 Database.rollback(self) # Data in q will be lost.
                 raise e
 
@@ -825,11 +825,11 @@ class Application(object):
             raise cp.HTTPError("403 Forbidden")
         except RateLimitExceeded:
             raise cp.HTTPError("429 Too Many Requests")
-        except DatabaseError, e:
+        except DatabaseError as e:
             raise cp.HTTPError("503 Service Unavailable", message=str(e))
-        except HTTPRedirect, e:
+        except HTTPRedirect as e:
             raise cp.HTTPRedirect(e.url)
-        except HTTPError, e:
+        except HTTPError as e:
             raise cp.HTTPError(e.status)
         v = self._cast(v)
         #print self.elapsed
@@ -1074,7 +1074,7 @@ class Application(object):
         # Called when deployed with mod_wsgi.
         if self._app is not None:
             return self._app(*args, **kwargs)
-        raise ApplicationError, "application not running"
+        raise ApplicationError("application not running")
         
 App = Application
 
@@ -1269,7 +1269,7 @@ class Template(object):
             elif s.startswith("<%") and s.endswith("%>"):
                 a.append(("<exec>", compile("\n"*n + self._escape(s[2:-2]), "<string>", "exec"), w))
             else:
-                raise SyntaxError, "template has no end tag for '%s' (line %s)" % (s, n+1)
+                raise SyntaxError("template has no end tag for '%s' (line %s)" % (s, n+1))
             i = m.end(1)
         a.append(("<str>", string[i:], ""))
         return a

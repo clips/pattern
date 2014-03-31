@@ -106,7 +106,7 @@ def synsets(word, pos=NOUN):
         elif pos.startswith(ADVERB.lower()):
             w = wn.ADV[word]
         else:
-            raise TypeError, "part of speech must be NOUN, VERB, ADJECTIVE or ADVERB, not %s" % repr(pos)
+            raise TypeError("part of speech must be NOUN, VERB, ADJECTIVE or ADVERB, not %s" % repr(pos))
         return [Synset(s.synset) for i, s in enumerate(w)]
     except KeyError:
         return []
@@ -391,7 +391,7 @@ class SentiWordNet(Sentiment):
             glob.glob(os.path.join(MODULE, self.path)) + \
             glob.glob(os.path.join(MODULE, "..", self.path)))[0]
         except IndexError:
-            raise ImportError, "can't find SentiWordnet data file"
+            raise ImportError("can't find SentiWordnet data file")
         # Map synset id: a-00193480" => (193480, JJ).
         # Map synset id's to WordNet2 if VERSION == 2:
         if int(float(VERSION)) == 3:

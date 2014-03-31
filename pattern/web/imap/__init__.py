@@ -136,7 +136,7 @@ class Mail(object):
         except:
             raise MailLoginError
         if status != "OK":
-            raise MailLoginError, response
+            raise MailLoginError(response)
  
     def logout(self):
         """ Signs out of the mail account.
@@ -171,7 +171,7 @@ class Mail(object):
             return self.__dict__[k]
         if k in self.folders:
             return self.folders[k]
-        raise AttributeError, "'Mail' object has no attribute '%s'" % k
+        raise AttributeError("'Mail' object has no attribute '%s'" % k)
 
 #--- MAIL FOLDER -----------------------------------------------------------------------------------
 

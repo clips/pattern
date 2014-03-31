@@ -117,7 +117,7 @@ class AsynchronousRequest(object):
         """
         try:
             self._response = function(*args, **kwargs)
-        except Exception, e:
+        except Exception as e:
             self._error = e
 
     def now(self):
@@ -349,14 +349,14 @@ class URL(object):
     def __getattr__(self, k):
         if k in self.__dict__ : return self.__dict__[k]
         if k in self.parts    : return self.__dict__["_parts"][k]
-        raise AttributeError, "'URL' object has no attribute '%s'" % k
+        raise AttributeError("'URL' object has no attribute '%s'" % k)
 
     def __setattr__(self, k, v):
         if k in self.__dict__ : self.__dict__[k] = u(v); return
         if k == "string"      : self._set_string(v); return
         if k == "query"       : self.parts[k] = v; return
         if k in self.parts    : self.__dict__["_parts"][k] = u(v); return
-        raise AttributeError, "'URL' object has no attribute '%s'" % k
+        raise AttributeError("'URL' object has no attribute '%s'" % k)
 
     def open(self, timeout=10, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None):
         """ Returns a connection to the url from which data can be retrieved with connection.read().
@@ -384,7 +384,7 @@ class URL(object):
                 request.add_header("Authorization", "Basic %s" %
                     base64.encodestring('%s:%s' % authentication))
             return urllib2.urlopen(request)
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             if e.code == 301: raise HTTP301Redirect(src=e, url=url)
             if e.code == 400: raise HTTP400BadRequest(src=e, url=url)
             if e.code == 401: raise HTTP401Authentication(src=e, url=url)
@@ -395,20 +395,20 @@ class URL(object):
             if e.code == 500: raise HTTP500InternalServerError(src=e, url=url)
             if e.code == 503: raise HTTP503ServiceUnavailable(src=e, url=url)
             raise HTTPError(str(e), src=e, url=url)
-        except httplib.BadStatusLine, e:
+        except httplib.BadStatusLine as e:
             raise HTTPError(str(e), src=e, url=url)
-        except socket.timeout, e:
+        except socket.timeout as e:
             raise URLTimeout(src=e, url=url)
-        except socket.error, e:
+        except socket.error as e:
             if "timed out" in e.args[0]:
                 raise URLTimeout(src=e, url=url)
             raise URLError(str(e), src=e, url=url)
-        except urllib2.URLError, e:
+        except urllib2.URLError as e:
             if "timed out" in e.args[0] \
             or "timed out" in e.reason:
                 raise URLTimeout(src=e, url=url)
             raise URLError(str(e), src=e, url=url)
-        except ValueError, e:
+        except ValueError as e:
             raise URLError(str(e), src=e, url=url)
 
     def download(self, timeout=10, cached=True, throttle=0, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None, unicode=False, **kwargs):
@@ -435,7 +435,7 @@ class URL(object):
         # Open a connection with the given settings, read it and (by default) cache the data.
         try:
             data = self.open(timeout, proxy, user_agent, referrer, authentication).read()
-        except socket.timeout, e:
+        except socket.timeout as e:
             raise URLTimeout(src=e, url=self.string)
         if unicode is True:
             data = u(data)
@@ -455,7 +455,9 @@ class URL(object):
         try: self.open(timeout)
         except HTTP404NotFound:
             return False
-        except HTTPError, URLTimeoutError:
+        except HTTPError:
+            return True
+        except URLTimeoutError:
             return True
         except URLError:
             return False
@@ -908,6 +910,8 @@ def plaintext(html, keep=[], replace=blocks, linebreaks=2, indentation=False):
         - linebreaks  : the maximum amount of consecutive linebreaks,
         - indentation : keep left line indentation (tabs and spaces)?
     """
+    if isinstance(html, Element):
+        html = html.content
     if not keep.__contains__("script"):
         html = strip_javascript(html)
     if not keep.__contains__("style"):
@@ -1108,8 +1112,8 @@ class Google(SearchEngine):
         kwargs.setdefault("throttle", self.throttle)
         try:
             data = url.download(**kwargs)
-        except HTTP403Forbidden, e:
-            raise HTTP401Authentication, "Google translate API is a paid service"
+        except HTTP403Forbidden:
+            raise HTTP401Authentication("Google translate API is a paid service")
         data = json.loads(data)
         data = data.get("data", {}).get("translations", [{}])[0].get("translatedText", "")
         data = decode_entities(data)
@@ -1129,7 +1133,7 @@ class Google(SearchEngine):
         try:
             data = url.download(**kwargs)
         except HTTP403Forbidden:
-            raise HTTP401Authentication, "Google translate API is a paid service"
+            raise HTTP401Authentication("Google translate API is a paid service")
         data = json.loads(data)
         data = data.get("data", {}).get("detections", [[{}]])[0][0]
         data = u(data.get("language")), float(data.get("confidence"))
@@ -1199,7 +1203,7 @@ class Yahoo(SearchEngine):
         try:
             data = url.download(cached=cached, **kwargs)
         except HTTP401Authentication:
-            raise HTTP401Authentication, "Yahoo %s API is a paid service" % type
+            raise HTTP401Authentication("Yahoo %s API is a paid service" % type)
         except HTTP403Forbidden:
             raise SearchEngineLimitError
         data = json.loads(data)
@@ -1280,7 +1284,7 @@ class Bing(SearchEngine):
         try:
             data = url.download(cached=cached, **kwargs)
         except HTTP401Authentication:
-            raise HTTP401Authentication, "Bing %s API is a paid service" % type
+            raise HTTP401Authentication("Bing %s API is a paid service" % type)
         except HTTP503ServiceUnavailable:
             raise SearchEngineLimitError
         data = json.loads(data)
@@ -2331,8 +2335,8 @@ class DBPedia(SearchEngine):
         try:
             data = URL(url).download(cached=cached, timeout=30, **kwargs)
             data = json.loads(data)
-        except HTTP400BadRequest, e:
-            raise DBPediaQueryError, e.src.read().splitlines()[0]
+        except HTTP400BadRequest as e:
+            raise DBPediaQueryError(e.src.read().splitlines()[0])
         except HTTP403Forbidden:
             raise SearchEngineLimitError
         results = Results(DBPEDIA, url.query, type)
@@ -2769,7 +2773,7 @@ def query(string, service=GOOGLE, **kwargs):
                 kw[a] = kwargs.pop(a)
         return engine(kw).search(string, **kwargs)
     except UnboundLocalError:
-        raise SearchEngineError, "unknown search engine '%s'" % service
+        raise SearchEngineError("unknown search engine '%s'" % service)
 
 #--- WEB SORT --------------------------------------------------------------------------------------
 
@@ -2888,6 +2892,11 @@ class Node(object):
         """ Executes the visit function on this node and each of its child nodes.
         """
         visit(self); [node.traverse(visit) for node in self.children]
+        
+    def remove(self, child):
+        """ Removes the given child node (and all nested nodes).
+        """
+        child._p.extract()
 
     def __nonzero__(self):
         return True
@@ -3018,7 +3027,7 @@ class Element(Node):
             return self.__dict__[k]
         if k in self.attributes:
             return self.attributes[k]
-        raise AttributeError, "'Element' object has no attribute '%s'" % k
+        raise AttributeError("'Element' object has no attribute '%s'" % k)
 
     def __contains__(self, v):
         if isinstance(v, Element):
@@ -3185,7 +3194,7 @@ class Selector(object):
         # Map id into a case-insensitive **kwargs dict.
         i = lambda s: re.compile(r"\b%s\b" % s, re.I)
         a = {"id": i(self.id)} if self.id else {}
-        a.update(map(lambda (k, v): (k, i(v)), self.attributes.iteritems()))
+        a.update(map(lambda k, v: (k, i(v)), self.attributes.iteritems()))
         # Match tag + id + all classes + relevant pseudo-elements.
         if not isinstance(e, Element):
             return []
@@ -3623,8 +3632,8 @@ class PDF(DocumentParser):
             p = kwargs.get("format", "txt").endswith("html") and HTMLConverter or TextConverter
             p = p(m, s, codec="utf-8", laparams=LAParams())
             process_pdf(m, p, self._open(path), set(), maxpages=0, password="")
-        except Exception, e:
-            raise PDFError, str(e)
+        except Exception as e:
+            raise PDFError(str(e))
         s = s.getvalue()
         s = decode_utf8(s)
         s = s.strip()
@@ -3649,8 +3658,8 @@ class DOCX(DocumentParser):
         try:
             s = opendocx(self._open(path))
             s = getdocumenttext(s)
-        except Exception, e:
-            raise DOCXError, str(e)
+        except Exception as e:
+            raise DOCXError(str(e))
         s = "\n\n".join(p for p in s)
         s = decode_utf8(s)
         s = collapse_spaces(s)

@@ -233,7 +233,7 @@ class Word(object):
         d = self.__dict__.get("_custom_tags", None)
         if d and tag in d:
             return d[tag]
-        raise AttributeError, "Word instance has no attribute '%s'" % tag
+        raise AttributeError("Word instance has no attribute '%s'" % tag)
 
     # Word.string and unicode(Word) are Unicode strings.
     # repr(Word) is a Python string (with Unicode characters encoded).

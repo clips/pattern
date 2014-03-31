@@ -279,7 +279,7 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
         if count[k] <= threshold:
             dict.__delitem__(count, k)
     if top is not None:
-        count = count.__class__(heapq.nsmallest(top, count.iteritems(), key=lambda (k,v): (-v,k)))
+        count = count.__class__(heapq.nsmallest(top, count.iteritems(), key=lambda k,v: (-v,k)))
     return count
 
 def character_ngrams(string="", n=3, top=None, threshold=0, exclude=[], **kwargs):
@@ -298,7 +298,7 @@ def character_ngrams(string="", n=3, top=None, threshold=0, exclude=[], **kwargs
         if count[k] <= threshold:
             dict.__delitem__(count, k)
     if top is not None:
-        count = count.__class__(heapq.nsmallest(top, count.iteritems(), key=lambda (k,v): (-v,k)))
+        count = count.__class__(heapq.nsmallest(top, count.iteritems(), key=lambda k,v: (-v,k)))
     return count
     
 chngrams = character_ngrams
@@ -397,7 +397,7 @@ class Document(object):
             w = kwargs["dict"](w)
             v = None
         else:
-            raise TypeError, "document string is not str, unicode, list, dict, Vector, Sentence or Text."
+            raise TypeError("document string is not str, unicode, list, dict, Vector, Sentence or Text.")
         self._id          = _uid()             # Document ID, used when comparing objects.
         self._name        = kwargs.get("name") # Name that describes the document content.
         self._type        = kwargs.get("type", # Type that describes the category or class of the document.
@@ -2299,7 +2299,7 @@ class NB(Classifier):
         self._likelihood.setdefault(type, {})
         self._cache.pop(type, None)
         for f, w in vector.iteritems():
-            if self._method in (BINOMIAL, BERNOUILLI):
+            if self._method in (BINARY, BINOMIAL, BERNOUILLI):
                 w = 1
             self._features[f] = self._features.get(f, 0) + 1
             self._likelihood[type][f] = self._likelihood[type].get(f, 0) + w
@@ -2789,7 +2789,7 @@ class SVM(Classifier):
         H2 = dict((w, i+1) for i, w in enumerate(self.classes))      # Class => integer hash.
         H3 = dict((i+1, w) for i, w in enumerate(self.classes))      # Class reversed hash.
         x  = map(lambda v: dict(map(lambda k: (H1[k], v[k]), v)), M) # Hashed vectors.
-        y  = map(lambda (type, v): H2[type], self._vectors)          # Hashed classes.
+        y  = map(lambda v: H2[v[0]], self._vectors)                  # Hashed classes.
         # For linear SVC, use LIBLINEAR which is faster.
         # For kernel SVC, use LIBSVM.
         if self.extension == LIBLINEAR:
@@ -2831,7 +2831,7 @@ class SVM(Classifier):
         H3 = self._model[3]
         n  = len(H1)
         v  = self._vector(document)[1]
-        v  = dict(map(lambda (i, k): (H1.get(k, n+i+1), v[k]), enumerate(v)))
+        v  = dict(map(lambda k: (H1.get(k[1], k[0] + n + 1), v[k[1]]), enumerate(v)))
         # For linear SVC, use LIBLINEAR which is 10x faster.
         # For kernel SVC, use LIBSVM.
         if self.extension == LIBLINEAR:
@@ -2906,7 +2906,7 @@ class SVM(Classifier):
             f.write(self._model[0])                       # 2
             f.close()
             if self.extension == LIBLINEAR and not svm.LIBLINEAR:
-                raise ImportError, "can't import liblinear"
+                raise ImportError("can't import liblinear")
             if self.extension == LIBLINEAR:
                 m = self._svm.liblinearutil.load_model(p)
             if self.extension == LIBSVM:
@@ -2938,7 +2938,7 @@ class SVM(Classifier):
 #    return chngrams(s, n=4)
 #
 #data = CSV.load(os.path.join("..", "..", "test", "corpora", "polarity-nl-bol.com.csv"))
-#data = map(lambda (p, review): (v(review), int(p) > 0), data)
+#data = map(lambda p, review: (v(review), int(p) > 0), data)
 #
 #print kfoldcv(SVM, data, folds=3)
 
@@ -2954,7 +2954,7 @@ class SVM(Classifier):
 #    return count(words(s) + ngrams(s, n=2))
 #    
 #data = CSV.load(os.path.join("..", "..", "test", "corpora", "polarity-nl-bol.com.csv"))
-#data = map(lambda (p, review): Document(v(review), type=int(p) > 0), data)
+#data = map(lambda p, review: Document(v(review), type=int(p) > 0), data)
 #data = Model(data, weight="tf-idf")
 #
 #for p in gridsearch(SVM, data, c=[0.1, 1, 10], folds=3):

@@ -29,14 +29,14 @@ else:
 				continue
 			try:
 				libsvm = CDLL(path.join(path.dirname(__file__), v, binary)); b=True; break
-			except OSError, e:
+			except OSError as e:
 				continue
 		if b: break
 	if not b:
-		raise ImportError, "can't import libsvm (%sbit-%s)" % (
+		raise ImportError("can't import libsvm (%sbit-%s)" % (
 			sizeof(c_voidp) * 8, 
 			sys.platform
-		)
+		))
 
 # Construct constants
 SVM_TYPE = ['C_SVC', 'NU_SVC', 'ONE_CLASS', 'EPSILON_SVR', 'NU_SVR' ]
