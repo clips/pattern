@@ -35,7 +35,7 @@ import types
 from math        import log, exp, sqrt
 from time        import time
 from random      import random, randint, choice, sample
-from itertools   import izip, chain
+from itertools   import chain
 from bisect      import insort
 from operator    import itemgetter
 from StringIO    import StringIO
@@ -1546,7 +1546,7 @@ class LSA(object):
         self.model = model
         self._terms = dict(enumerate(model.vector().keys())) # Vt-index => word.
         self.u, self.sigma, self.vt = (
-            dict((d.id, Vector((i, float(x)) for i, x in enumerate(v))) for d, v in izip(model, u)),
+            dict((d.id, Vector((i, float(x)) for i, x in enumerate(v))) for d, v in zip(model, u)),
             list(sigma),
             [[float(x) for x in v] for v in vt]
         )
@@ -2087,7 +2087,7 @@ class Classifier(object):
             #print "%s\t%s %s %s %s\t %s %s" % (TP, TN, FP, FN, FPR, TPR)
         roc = sorted(roc)
         # Trapzoidal rule: area = (a + b) * h / 2, where a=y0, b=y1 and h=x1-x0.
-        return sum(0.5 * (x1 - x0) * (y1 + y0) for (x0, y0), (x1, y1) in sorted(izip(roc, roc[1:])))
+        return sum(0.5 * (x1 - x0) * (y1 + y0) for (x0, y0), (x1, y1) in sorted(zip(roc, roc[1:])))
 
     def save(self, path, final=False):
         """ Saves the classifier as a gzipped pickle file.

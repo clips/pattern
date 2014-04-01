@@ -11,7 +11,7 @@ from time import time
 from math import sqrt, floor, modf, exp, pi, log
 
 from collections import defaultdict, deque
-from itertools   import izip, chain
+from itertools   import chain
 from operator    import itemgetter
 from heapq       import nlargest
 from bisect      import bisect_right
@@ -230,7 +230,7 @@ def auc(curve=[]):
     """
     curve = sorted(curve)
     # Trapzoidal rule: area = (a + b) * h / 2, where a=y0, b=y1 and h=x1-x0.
-    return sum(0.5 * (x1 - x0) * (y1 + y0) for (x0, y0), (x1, y1) in sorted(izip(curve, curve[1:])))
+    return sum(0.5 * (x1 - x0) * (y1 + y0) for (x0, y0), (x1, y1) in sorted(zip(curve, curve[1:])))
 
 #### AGREEMENT #####################################################################################
 # +1.0 = total agreement between voters
