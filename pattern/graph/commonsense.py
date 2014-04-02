@@ -205,8 +205,8 @@ class Commonsense(Graph):
     field = semantic_field = taxonomy
 
 #g = Commonsense()
-#print g.nn("party", g.field("animal"))
-#print g.nn("creepy", g.field("animal"))
+#print(g.nn("party", g.field("animal")))
+#print(g.nn("creepy", g.field("animal")))
 
 #### COMMONSENSE DATA ##############################################################################
 

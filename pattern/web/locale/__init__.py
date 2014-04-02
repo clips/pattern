@@ -224,13 +224,13 @@ def market(language):
     a = len(a) > 0 and a[0] or None
     return a
 
-#print encode_language("dutch") # nl
-#print decode_language("nl")    # Dutch
-#print encode_region("belgium") # BE
-#print decode_region("be")      # Belgium
-#print languages("be")          # ["fr", "nl"]
-#print regions("nl")            # ["NL", "BE"]
-#print regionalize("nl")        # ["nl-NL", "nl-BE"]
+#print(encode_language("dutch")) # nl
+#print(decode_language("nl"))    # Dutch
+#print(encode_region("belgium")) # BE
+#print(decode_region("be"))      # Belgium
+#print(languages("be"))          # ["fr", "nl"]
+#print(regions("nl"))            # ["NL", "BE"]
+#print(regionalize("nl"))        # ["nl-NL", "nl-BE"]
 
 ### GEOCODE ########################################################################################
 # capital => (latitude, longitude, ISO-639 language code, region)

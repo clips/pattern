@@ -15,15 +15,15 @@ import types
 import codecs
 
 from xml.etree import cElementTree
-from itertools import chain, imap
+from itertools import chain
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
 
-from tree import Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
-from tree import SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
+from pattern.text.tree import Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
+from pattern.text.tree import SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
 
 #--- STRING FUNCTIONS ------------------------------------------------------------------------------
 # Latin-1 (ISO-8859-1) encoding is identical to Windows-1252 except for the code points 128-159:
@@ -99,11 +99,11 @@ def pprint(string, token=[WORD, POS, CHUNK, PNP], column=4):
         Alternatively, you can supply a tree.Text or tree.Sentence object.
     """
     if isinstance(string, basestring):
-        print "\n\n".join([table(sentence, fill=column) for sentence in Text(string, token)])
+        print("\n\n".join([table(sentence, fill=column) for sentence in Text(string, token)]))
     if isinstance(string, Text):
-        print "\n\n".join([table(sentence, fill=column) for sentence in string])
+        print("\n\n".join([table(sentence, fill=column) for sentence in string]))
     if isinstance(string, Sentence):
-        print table(string, fill=column)
+        print(table(string, fill=column))
 
 #--- LAZY DICTIONARY -------------------------------------------------------------------------------
 # A lazy dictionary is empty until one of its methods is called.
@@ -1275,7 +1275,7 @@ def commandline(parse=Parser().parse):
     if o.version:
         sys.path.insert(0, os.path.join(MODULE, "..", ".."))
         from pattern import __version__
-        print __version__
+        print(__version__)
         sys.path.pop(0)
     # Either a text file (-f) or a text string (-s) must be supplied.
     s = o.file and codecs.open(o.file, "r", o.encoding).read() or o.string
@@ -1299,7 +1299,7 @@ def commandline(parse=Parser().parse):
         # The output can be either slash-formatted string or XML.
         if "xml" in arguments:
             s = Tree(s, s.tags).xml
-        print encode_utf8(s)
+        print(encode_utf8(s))
 
 #### VERBS #########################################################################################
 
@@ -1944,7 +1944,7 @@ class Sentiment(lazydict):
                 # EMOTICONS: {("grin", +1.0): set((":-D", ":D"))}
                 if w.isalpha() is False and len(w) <= 5 and w not in PUNCTUATION: # speedup
                     for (type, p), e in EMOTICONS.items():
-                        if w in imap(lambda e: e.lower(), e):
+                        if w in map(lambda e: e.lower(), e):
                             a.append(dict(w=[w], p=p, s=1.0, i=1.0, n=1, x=MOOD))
                             break
         for i in range(len(a)):
@@ -2054,8 +2054,8 @@ class Spelling(lazydict):
 #### MULTILINGUAL ##################################################################################
 # The default functions in each language submodule, with an optional language parameter:
 # from pattern.text import parse
-# print parse("The cat sat on the mat.", language="en")
-# print parse("De kat zat op de mat.", language="nl")
+# print(parse("The cat sat on the mat.", language="en"))
+# print(parse("De kat zat op de mat.", language="nl"))
 
 LANGUAGES = ["en", "es", "de", "fr", "it", "nl"]
 

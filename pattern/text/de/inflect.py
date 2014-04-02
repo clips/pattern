@@ -576,6 +576,6 @@ def comparative(adjective):
 def superlative(adjective):
     return grade(adjective, SUPERLATIVE)
 
-#print comparative(u"schönes")
-#print superlative(u"schönes")
-#print superlative(u"große")
+#print(comparative(u"schönes"))
+#print(superlative(u"schönes"))
+#print(superlative(u"große"))

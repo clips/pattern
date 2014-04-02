@@ -20,8 +20,6 @@ import hashlib
 import base64
 import random
 import string
-import cStringIO
-import cPickle
 import textwrap
 import types
 import inspect
@@ -29,6 +27,21 @@ import threading
 import itertools
 import collections
 import sqlite3 as sqlite
+
+try: # Python 2.x vs 3.x
+    import htmlentitydefs
+except:
+    from html import entities as htmlentitydefs
+
+try: # Python 2.x vs 3.x
+    from cStringIO import StringIO
+except:
+    from io import BytesIO as StringIO
+
+try: # Python 2.x vs 3.x
+    import cPickle as pickle
+except:
+    import pickle
 
 try:
     # Folder that contains pattern.server.
@@ -430,11 +443,11 @@ class RateLimit(Database):
         q = "select * from `rate` where key=? and path=?;"
         return self.execute(q, (key, p), first=True, commit=False)
         
-    def __setitem__(self, (key, path), (limit, time)):
+    def __setitem__(self, k, v): # (key, path), (limit, time)
         return self.set(key, path, limit, time)
         
-    def __getitem__(self, (key, path)):
-        return self.get(key, path)
+    def __getitem__(self, k):    # (key, path)
+        return self.get(*k)
 
     def __contains__(self, key, path="%"):
         """ Returns True if the given key exists (for the given path).
@@ -473,7 +486,7 @@ class RateLimit(Database):
             # Limit not reached (increment count).
             elif r[0] <  r[1]:
                 self.cache[(key, p)] = (r[0] + 1, r[1], r[2], r[3])
-        #print self.cache.get((key, path))
+        #print(self.cache.get((key, path)))
 
 #### ROUTER ########################################################################################
 # The @app.route(path) decorator registers each URL path handler in Application.router.
@@ -595,7 +608,7 @@ class HTTPRequest(object):
 # >>>
 # >>> @app.route("/")
 # >>> def index(*path, db=None):
-# >>>    print db # = Database object.
+# >>>    print(db) # = Database object.
 #
 # The thread-safe database connection can then be retrieved from 
 # app.thread.db, g.db, or as a keyword argument of a URL handler.
@@ -832,7 +845,7 @@ class Application(object):
         except HTTPError as e:
             raise cp.HTTPError(e.status)
         v = self._cast(v)
-        #print self.elapsed
+        #print(self.elapsed)
         return v
         
     def route(self, path, limit=False, time=None, key=lambda data: data.get("key"), reset=100000):
@@ -971,7 +984,7 @@ class Application(object):
         def decorator(handler):
             def wrapper(*args, **kwargs):
                 # Cache return value for given arguments.
-                k = (handler, cPickle.dumps(args), cPickle.dumps(kwargs))
+                k = (handler, pickle.dumps(args), pickle.dumps(kwargs))
                 if k not in self._cache:
                     self._cache[k] = handler(*args, **kwargs)
                 return self._cache[k]
@@ -1152,7 +1165,7 @@ def _request_start():
     cp.request.time = time.time()
     
 def _request_end():
-    #print time.time() - cp.request.time
+    #print(time.time() - cp.request.time)
     pass
     
 _register("on_start_resource", _request_start)
@@ -1301,7 +1314,7 @@ class Template(object):
             elif cmd == "<eval>":
                 yield self._encode(eval(v, k), w)
             elif cmd == "<exec>":
-                o = cStringIO.StringIO()
+                o = StringIO()
                 k["write"] = o.write # Code blocks use write() for output.
                 exec(v, k)
                 yield self._encode(o.getvalue(), w)
@@ -1346,7 +1359,7 @@ def template(string, *args, **kwargs):
 #</html>
 #"""
 #
-#print template(s.strip(), title="test", names=["Tom", "Walter"])
+#print(template(s.strip(), title="test", names=["Tom", "Walter"]))
 
 #### HTML ##########################################################################################
 # Useful HTML generators.
@@ -1445,7 +1458,7 @@ html = HTML()
 #    
 #@app.task(interval=MINUTE)
 #def log(db=None):
-#    print "committing log..."
+#    print("committing log...")
 #    db.batch.commit()
 #
 #@app.error((403, 404, 429, 500, 503))

@@ -12,21 +12,29 @@ import sys
 import inspect
 import warnings
 import re
-import htmlentitydefs
 import urllib
 import csv as csvlib
 
-from cStringIO import StringIO
-from codecs    import BOM_UTF8
-from datetime  import datetime, timedelta
-from time      import mktime, strftime
-from math      import sqrt
-from types     import GeneratorType
+from codecs   import BOM_UTF8
+from datetime import datetime, timedelta
+from time     import mktime, strftime
+from math     import sqrt
+from types    import GeneratorType
 
-try:
-    from email.utils import parsedate_tz, mktime_tz
+try: # Python 2.x vs 3.x
+    from cStringIO import StringIO
 except:
+    from io import BytesIO as StringIO
+
+try: # Python 2.x vs 3.x
+    import htmlentitydefs
+except:
+    from html import entities as htmlentitydefs
+
+try: # Python 2.4 vs 2.5+
     from email.Utils import parsedate_tz, mktime_tz
+except:
+    from email.utils import parsedate_tz, mktime_tz
     
 try: 
     MODULE = os.path.dirname(os.path.realpath(__file__))
@@ -554,7 +562,7 @@ class Database(object):
         self._query = SQL
         if not SQL:
             return # MySQL doesn't like empty queries.
-        #print SQL
+        #print(SQL)
         cursor = self._connection.cursor()
         cursor.execute(SQL)
         if commit is not False:
@@ -1727,14 +1735,14 @@ except:
 #db.persons.append((json.dumps({"name": u"Schrödinger", "type": "cat"}),))
 #
 #for id, data in db.persons:
-#    print id, json.loads(data)
+#    print(id, json.loads(data))
 
 #### DATASHEET #####################################################################################
 
 #--- CSV -------------------------------------------------------------------------------------------
 
 # Raise the default field size limit:
-csvlib.field_size_limit(sys.maxint)
+csvlib.field_size_limit(sys.maxsize)
 
 def csv_header_encode(field, type=STRING):
     # csv_header_encode("age", INTEGER) => "age (INTEGER)".
@@ -1890,7 +1898,7 @@ class Datasheet(CSV):
     def __getattr__(self, k):
         """ Columns can be retrieved by field name, e.g., Datasheet.date.
         """
-        #print "Datasheet.__getattr__", k
+        #print("Datasheet.__getattr__", k)
         if k in self.__dict__:
             return self.__dict__[k]
         for i, f in enumerate(f[0] for f in self.__dict__["fields"] or []):
@@ -1901,7 +1909,7 @@ class Datasheet(CSV):
     def __setattr__(self, k, v):
         """ Columns can be set by field name, e.g., Datasheet.date = [...].
         """
-        #print "Datasheet.__setattr__", k
+        #print("Datasheet.__setattr__", k)
         if k in self.__dict__:
             self.__dict__[k] = v
             return
@@ -2456,6 +2464,8 @@ def pprint(datasheet, truncate=40, padding=" ", fill="."):
             # Strings that span beyond the maximum column width are wrapped.
             # Thus, each "field" in the row is a list of lines.
             lines = []
+            if not isinstance(v, basestring):
+                v = str(v)
             for v in v.splitlines():
                 v = decode_utf8(v.strip())
                 while v:
@@ -2469,10 +2479,11 @@ def pprint(datasheet, truncate=40, padding=" ", fill="."):
         n = max([len(lines) for lines in fields])
         fields = [lines+[""] * (n-len(lines)) for lines in fields]
         # Print the row line per line, justifying the fields with spaces.
+        columns = []
         for k in range(n):
             for j, lines in enumerate(fields):
                 s  = lines[k]
                 s += ((k==0 or len(lines[k]) > 0) and fill or " ") * (w[j] - len(lines[k])) 
                 s += padding
-                print s,
-            print
+                columns.append(s)
+            print(" ".join(columns))

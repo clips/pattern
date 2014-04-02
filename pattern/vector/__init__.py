@@ -34,7 +34,7 @@ import types
 
 from math        import log, exp, sqrt
 from time        import time
-from random      import random, randint, choice, sample
+from random      import random, randint, choice, sample, seed
 from itertools   import chain
 from bisect      import insort
 from operator    import itemgetter
@@ -1531,7 +1531,7 @@ class LSA(object):
             k = max(0, len(sigma) - k)
         if type(k).__name__ == "function":
             k = max(0, int(k(sigma)))
-        #print numpy.dot(u, numpy.dot(numpy.diag(sigma), vt))
+        #print(numpy.dot(u, numpy.dot(numpy.diag(sigma), vt)))
         # Apply dimension reduction.
         # The maximum length of a concept vector = the number of documents.
         assert k < len(model.documents), \
@@ -1572,7 +1572,7 @@ class LSA(object):
             where each concept is a dictionary of (concept_index, weight)-items.
             for document in lsa.model:
                 for concept in lsa.vectors(document.id):
-                    print document, concept
+                    print(document, concept)
         """
         return self.u
         
@@ -1747,7 +1747,7 @@ def k_means(vectors, k=None, iterations=10, distance=COSINE, seed=RANDOM, **kwar
                 if nearest != i: # Other cluster is nearer.
                     clusters[nearest].append(clusters[i].pop(clusters[i].index(v)))
                     converged = False
-        iterations -= 1; #print iterations
+        iterations -= 1; #print(iterations)
     return clusters
     
 kmeans = k_means
@@ -1891,7 +1891,7 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
 #v2 = Vector(wings=0, beak=0, claws=0, paws=1, fur=1) # dog
 #v3 = Vector(wings=1, beak=1, claws=1, paws=0, fur=0) # bird
 #
-#print hierarchical([v1, v2, v3])
+#print(hierarchical([v1, v2, v3]))
 
 #### CLASSIFIER ####################################################################################
 # Classification can be used to predict the label of an unlabeled document.
@@ -2084,7 +2084,7 @@ class Classifier(object):
             x = FPR = float(FP) / ((FP + TN) or 1) # false positive rate
             y = TPR = float(TP) / ((TP + FN) or 1) #  true positive rate
             roc.append((x, y))
-            #print "%s\t%s %s %s %s\t %s %s" % (TP, TN, FP, FN, FPR, TPR)
+            #print("%s\t%s %s %s %s\t %s %s" % (TP, TN, FP, FN, FPR, TPR))
         roc = sorted(roc)
         # Trapzoidal rule: area = (a + b) * h / 2, where a=y0, b=y1 and h=x1-x0.
         return sum(0.5 * (x1 - x0) * (y1 + y0) for (x0, y0), (x1, y1) in sorted(zip(roc, roc[1:])))
@@ -2234,7 +2234,7 @@ def gridsearch(Classifier, documents=[], folds=10, **kwargs):
         using K-fold cross-validation for the given classifier (NB, KNN, SLP, SVM).
         For example:
         for (A, P, R, F, o), p in gridsearch(SVM, data, c=[0.1, 1, 10]):
-            print (A, P, R, F, o), p
+            print((A, P, R, F, o), p)
         > (0.919, 0.921, 0.919, 0.920), {"c": 10}
         > (0.874, 0.884, 0.865, 0.874), {"c": 1}
         > (0.535, 0.424, 0.551, 0.454), {"c": 0.1}
@@ -2410,10 +2410,10 @@ NearestNeighbor = kNN = KNN
 #for d in (d1, d2, d3):
 #    knn.train(d)
 #
-#print knn.binary
-#print knn.classes
-#print knn.classify(Document("something that can fly"))
-#print KNN.test((d1, d2, d3), folds=2)
+#print(knn.binary)
+#print(knn.classes)
+#print(knn.classify(Document("something that can fly")))
+#print(KNN.test((d1, d2, d3), folds=2))
 
 #--- INFORMATION GAIN TREE --------------------------------------------------------------------------
 
@@ -2535,7 +2535,7 @@ IGTREE = IGTree
 #data = csv(pd("..", "..", "test", "corpora", "polarity-nl-bol.com.csv"))
 #data = ((review, score) for score, review in data)
 #
-#print kfoldcv(IGTree, data, folds=3)
+#print(kfoldcv(IGTree, data, folds=3))
 
 #--- SINGLE-LAYER PERCEPTRON ------------------------------------------------------------------------
 
@@ -2671,7 +2671,7 @@ class SVM(Classifier):
             -      type = CLASSIFICATION, 
             -    kernel = LINEAR, 
             -    degree = 3, 
-            -     gamma = 1/len(SVM.features), 
+            -     gamma = 1 / len(SVM.features), 
             -    coeff0 = 0,
             -      cost = 1, 
             -   epsilon = 0.01, 
@@ -2691,6 +2691,8 @@ class SVM(Classifier):
             kwargs.get("extensions", 
             kwargs.get("extension", (LIBSVM, LIBLINEAR)))
         # Optional parameters are read-only:
+        # -  cost: higher cost = less margin for error (and risk of overfitting).
+        # - gamma: influence ("radius") of each training example for RBF.
         if len(args) > 0: 
             kwargs.setdefault( "train", args[0])
         if len(args) > 1: 
@@ -2940,7 +2942,7 @@ class SVM(Classifier):
 #data = CSV.load(os.path.join("..", "..", "test", "corpora", "polarity-nl-bol.com.csv"))
 #data = map(lambda p, review: (v(review), int(p) > 0), data)
 #
-#print kfoldcv(SVM, data, folds=3)
+#print(kfoldcv(SVM, data, folds=3))
 
 #---------------------------------------------------------------------------------------------------
 # I hate to spoil your party..." by Lars Buitinck.
@@ -2958,7 +2960,7 @@ class SVM(Classifier):
 #data = Model(data, weight="tf-idf")
 #
 #for p in gridsearch(SVM, data, c=[0.1, 1, 10], folds=3):
-#    print p
+#    print(p)
 
 # This reports 92% accuracy for the best run (c=10).
 # Of course, it's optimizing for the same cross-validation 

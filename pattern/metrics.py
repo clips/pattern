@@ -552,16 +552,16 @@ co_occurrence = cooccurrence
 ## Words occuring before and after the word "cat":
 ## {"cat": {"sat": 1, "black": 1, "cat": 1}}
 #s = "The black cat sat on the mat."
-#print cooccurrence(s, window=(-1,1), 
+#print(cooccurrence(s, window=(-1,1), 
 #       search = lambda w: w in ("cat",),
-#    normalize = lambda w: w.lower().strip(".:;,!?()[]'\""))
+#    normalize = lambda w: w.lower().strip(".:;,!?()[]'\"")))
 
 ## Adjectives preceding nouns:
 ## {("cat", "NN"): {("black", "JJ"): 1}}
 #s = [("The","DT"), ("black","JJ"), ("cat","NN"), ("sat","VB"), ("on","IN"), ("the","DT"), ("mat","NN")]
-#print cooccurrence(s, window=(-2,-1), 
+#print(cooccurrence(s, window=(-2,-1), 
 #       search = lambda token: token[1].startswith("NN"),
-#       filter = lambda token: token[1].startswith("JJ"))
+#       filter = lambda token: token[1].startswith("JJ")))
 
 # Adjectives preceding nouns:
 # {("cat", "NN"): {("black", "JJ"): 1}}
@@ -628,7 +628,7 @@ def histogram(iterable, k=10, range=None):
     # To loop through the intervals in sorted order, use:
     # for (i, j), values in sorted(histogram(iterable).items()):
     #     m = i + (j - i) / 2 # midpoint
-    #     print i, j, m, values
+    #     print(i, j, m, values)
     a = iterable if isinstance(iterable, list) else list(iterable)
     r = range or (min(a), max(a))
     k = max(int(k), 1)
@@ -637,7 +637,7 @@ def histogram(iterable, k=10, range=None):
     for x in a:
         i = int(floor((x - r[0]) / w))
         if 0 <= i < len(h): 
-            #print x, i, "(%.2f, %.2f)" % (r[0] + w * i, r[0] + w + w * i)
+            #print(x, i, "(%.2f, %.2f)" % (r[0] + w * i, r[0] + w + w * i))
             h[i].append(x)
     return dict(((r[0] + w * i, r[0] + w + w * i), v) for i, v in enumerate(h))
 
@@ -679,7 +679,7 @@ def kurtosis(iterable, sample=False):
 #a = 1
 #b = 1000
 #U = [float(i-a)/(b-a) for i in range(a,b)] # uniform distribution
-#print abs(-1.2 - kurtosis(U)) < 0.0001
+#print(abs(-1.2 - kurtosis(U)) < 0.0001)
 
 #--- QUANTILE --------------------------------------------------------------------------------------
 
@@ -705,7 +705,7 @@ def quantile(iterable, p=0.5, sort=True, a=1, b=-1, c=0, d=1):
     i = int(floor(i))
     return s[i] + (s[i+1] - s[i]) * (c + d * f)
 
-#print quantile(range(10), p=0.5) == median(range(10))
+#print(quantile(range(10), p=0.5) == median(range(10)))
 
 def boxplot(iterable, **kwargs):
     """ Returns a tuple (min(list), Q1, Q2, Q3, max(list)) for the given list of values.

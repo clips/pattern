@@ -544,9 +544,9 @@ def download(url=u"", method=GET, query={}, timeout=10, cached=True, throttle=0,
     return URL(url, method, query).download(timeout, cached, throttle, proxy, user_agent, referrer, authentication, unicode)
 
 #url = URL("http://user:pass@example.com:992/animal/bird?species#wings")
-#print url.parts
-#print url.query
-#print url.string
+#print(url.parts)
+#print(url.query)
+#print(url.string)
 
 #--- STREAMING URL BUFFER --------------------------------------------------------------------------
 
@@ -1417,14 +1417,14 @@ class DuckDuckGo(SearchEngine):
 DDG = DuckDuckGo
 
 #for r in DDG().search("cats"):
-#    print r.url
-#    print r.title # Can be used as a new query.
-#    print plaintext(r.text)
-#    print r.type  # REFERENCE, CATEGORY, DEFINITION, "people", "sports" ...
-#    print
+#    print(r.url)
+#    print(r.title) # Can be used as a new query.
+#    print(plaintext(r.text))
+#    print(r.type)  # REFERENCE, CATEGORY, DEFINITION, "people", "sports" ...
+#    print()
 
-#print DDG().definition("cat")
-#print DDG().spelling("catnpa")
+#print(DDG().definition("cat"))
+#print(DDG().spelling("catnpa"))
 
 #--- TWITTER ---------------------------------------------------------------------------------------
 # Twitter is an online social networking service and microblogging service,
@@ -1638,27 +1638,27 @@ def retweets(string):
 #engine = Twitter()
 #for i in range(2):
 #    for tweet in engine.search("cat nap", cached=False, start=i+1, count=10):
-#        print
-#        print tweet.id
-#        print tweet.url
-#        print tweet.text
-#        print tweet.author
-#        print tweet.profile
-#        print tweet.language
-#        print tweet.date
-#        print hashtags(tweet.text)
-#        print retweets(tweet.text)
+#        print()
+#        print(tweet.id)
+#        print(tweet.url)
+#        print(tweet.text)
+#        print(tweet.author)
+#        print(tweet.profile)
+#        print(tweet.language)
+#        print(tweet.date)
+#        print(hashtags(tweet.text))
+#        print(retweets(tweet.text))
 
 #stream = Twitter().stream("cat")
 #for i in range(10):
-#    print i
+#    print(i)
 #    stream.update()
 #    for tweet in reversed(stream):
-#        print tweet.id
-#        print tweet.text
-#        print tweet.url
-#        print tweet.language
-#    print
+#        print(tweet.id)
+#        print(tweet.text)
+#        print(tweet.url)
+#        print(tweet.language)
+#    print()
 #stream.clear()
 
 #--- MEDIAWIKI -------------------------------------------------------------------------------------
@@ -2128,7 +2128,7 @@ class WikipediaTable(MediaWikiTable):
 
 #article = Wikipedia().search("cat")
 #for section in article.sections:
-#    print "  "*(section.level-1) + section.title
+#    print("  "*(section.level-1) + section.title)
 #if article.media:
 #    data = article.download(article.media[2])
 #    f = open(article.media[2], "w")
@@ -2136,12 +2136,12 @@ class WikipediaTable(MediaWikiTable):
 #    f.close()
 #
 #article = Wikipedia(language="nl").search("borrelnootje")
-#print article.string
+#print(article.string)
 
 #for result in Wikipedia().search("\"cat's\"", type="*"):
-#    print result.title
-#    print result.text
-#    print
+#    print(result.title)
+#    print(result.text)
+#    print()
 
 #--- MEDIAWIKI: WIKTIONARY -------------------------------------------------------------------------
 # Wiktionary is a collaborative project to produce a free-content multilingual dictionary.
@@ -2445,8 +2445,8 @@ class FlickrResult(Result):
 
 #images = Flickr().search("kitten", count=10, size=SMALL)
 #for img in images:
-#    print bytestring(img.description)
-#    print img.url
+#    print(bytestring(img.description))
+#    print(img.url)
 #
 #data = img.download()
 #f = open("kitten"+extension(img.url), "wb")
@@ -2674,10 +2674,10 @@ class ProductWiki(SearchEngine):
 Products = ProductWiki
 
 #for r in ProductWiki().search("tablet"):
-#    print r.title
-#    print r.score
-#    print r.reviews
-#    print
+#    print(r.title)
+#    print(r.score)
+#    print(r.reviews)
+#    print()
 
 #--- NEWS FEED -------------------------------------------------------------------------------------
 # Based on the Universal Feed Parser by Mark Pilgrim:
@@ -2733,11 +2733,11 @@ feeds = {
 }
 
 #for r in Newsfeed().search(feeds["Nature"]):
-#    print r.title
-#    print r.author
-#    print r.url
-#    print plaintext(r.text)
-#    print
+#    print(r.title)
+#    print(r.author)
+#    print(r.url)
+#    print(plaintext(r.text))
+#    print()
 
 #--- QUERY -----------------------------------------------------------------------------------------
 
@@ -2814,7 +2814,7 @@ def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, prefix
     R = sorted(R, reverse=kwargs.pop("reverse", True))
     return R
 
-#print sort(["black", "happy"], "darth vader", GOOGLE)
+#print(sort(["black", "happy"], "darth vader", GOOGLE))
 
 #### DOCUMENT OBJECT MODEL #########################################################################
 # The Document Object Model (DOM) is a cross-platform and language-independent convention
@@ -3076,10 +3076,10 @@ DOM = Document
 
 #article = Wikipedia().search("Document Object Model")
 #dom = DOM(article.html)
-#print dom.get_element_by_id("References").source
-#print [element.attributes["href"] for element in dom.get_elements_by_tagname("a")]
-#print dom.get_elements_by_tagname("p")[0].next.previous.children[0].parent.__class__
-#print
+#print(dom.get_element_by_id("References").source)
+#print([element.attributes["href"] for element in dom.get_elements_by_tagname("a")])
+#print(dom.get_elements_by_tagname("p")[0].next.previous.children[0].parent.__class__)
+#print()
 
 #--- DOM CSS SELECTORS -----------------------------------------------------------------------------
 # CSS selectors are pattern matching rules (or selectors) to select elements in the DOM.
@@ -3277,11 +3277,11 @@ class SelectorChain(list):
 #</hmtl>
 #""")
 #
-#print dom("*[class='11']")
-#print dom("*[class^='11']")
-#print dom("*[class~='22']")
-#print dom("*[class$='33']")
-#print dom("*[class*='3']")
+#print(dom("*[class='11']"))
+#print(dom("*[class^='11']"))
+#print(dom("*[class~='22']"))
+#print(dom("*[class$='33']"))
+#print(dom("*[class*='3']"))
 
 #### WEB CRAWLER ###################################################################################
 # Tested with a crawl across 1,000 domains so far.
@@ -3524,9 +3524,9 @@ Spider = Crawler
 
 #class Polly(Crawler):
 #    def visit(self, link, source=None):
-#        print "visited:", link.url, "from:", link.referrer
+#        print("visited:", link.url, "from:", link.referrer)
 #    def fail(self, link):
-#        print "failed:", link.url
+#        print("failed:", link.url)
 #
 #p = Polly(links=["http://nodebox.net/"], domains=["nodebox.net"], delay=5)
 #while not p.done:
@@ -3561,16 +3561,16 @@ def crawl(links=[], domains=[], delay=20.0, parse=HTMLLinkParser().parse, sort=F
         yield crawler.crawled
 
 #for link, source in crawl("http://www.clips.ua.ac.be/", delay=0, throttle=1, cached=False):
-#    print link
+#    print(link)
 
 #g = crawl("http://www.clips.ua.ac.be/"")
 #for i in range(10):
 #    p = asynchronous(g.next)
 #    while not p.done:
-#        print "zzz..."
+#        print("zzz...")
 #        time.sleep(0.1)
 #    link, source = p.value
-#    print link
+#    print(link)
 
 
 #### DOCUMENT PARSER ###############################################################################

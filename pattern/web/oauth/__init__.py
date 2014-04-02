@@ -95,4 +95,4 @@ def sign(url, data={}, method="GET", secret="", token="", hash=HMAC_SHA1):
 #data["oauth_signature"] = sign(url, data, secret=CONSUMER_SECRET)
 #data = dict((k, utf8(v)) for k, v in data.items())
 #
-#print url + "?" + urllib.urlencode(data)
+#print(url + "?" + urllib.urlencode(data))

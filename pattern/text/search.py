@@ -201,13 +201,13 @@ class odict(dict):
     def fromkeys(cls, keys=[], v=None):
         return cls((k, v) for k in keys)
     
-    def push(self, (k, v)):
+    def push(self, kv):
         """ Adds a new item from the given (key, value)-tuple.
             If the key exists, pushes the updated item to the head of the dict.
         """
         if k in self: 
-            self.__delitem__(k)
-        self.__setitem__(k, v)
+            self.__delitem__(kv[0])
+        self.__setitem__(kv[0], kv[1])
     append = push
 
     def __iter__(self):
@@ -269,9 +269,9 @@ class Taxonomy(dict):
     def __init__(self):
         """ Hierarchical tree of words classified by semantic type.
             For example: "rose" and "daffodil" can be classified as "flower":
-            taxonomy.append("rose", type="flower")
-            taxonomy.append("daffodil", type="flower")
-            print taxonomy.children("flower")
+            >>> taxonomy.append("rose", type="flower")
+            >>> taxonomy.append("daffodil", type="flower")
+            >>> print(taxonomy.children("flower"))
             Taxonomy terms can be used in a Pattern:
             FLOWER will match "flower" as well as "rose" and "daffodil".
             The taxonomy is case insensitive by default.
@@ -382,12 +382,12 @@ TAXONOMY = taxonomy = Taxonomy()
 #taxonomy.append("rose", type="flower")
 #taxonomy.append("daffodil", type="flower")
 #taxonomy.append("flower", type="plant")
-#print taxonomy.classify("rose")
-#print taxonomy.children("plant", recursive=True)
+#print(taxonomy.classify("rose"))
+#print(taxonomy.children("plant", recursive=True))
 
 #c = Classifier(parents=lambda term: term.endswith("ness") and ["quality"] or [])
 #taxonomy.classifiers.append(c)
-#print taxonomy.classify("roughness")
+#print(taxonomy.classify("roughness"))
 
 #--- TAXONOMY CLASSIFIER ---------------------------------------------------------------------------
 
@@ -434,8 +434,8 @@ class WordNetClassifier(Classifier):
 
 #from en import wordnet
 #taxonomy.classifiers.append(WordNetClassifier(wordnet))
-#print taxonomy.parents("ponder", pos="VB")
-#print taxonomy.children("computer")
+#print(taxonomy.parents("ponder", pos="VB"))
+#print(taxonomy.children("computer"))
 
 #### PATTERN #######################################################################################
 
@@ -770,7 +770,7 @@ class Pattern(object):
         #         s = Sentence(s)
         #         m = p.search(s)
         #         if m:
-        #             print m
+        #             print(m)
         w = (constraint.words for constraint in self.sequence if not constraint.optional)
         w = itertools.chain(*w)
         w = [w.strip(WILDCARD) for w in w if WILDCARD not in w[1:-1]]
@@ -881,9 +881,9 @@ class Pattern(object):
         # --- RECURSION --------
         constraint = sequence[i]
         for w in sentence.words[start:]:
-            #print " "*d, "match?", w, sequence[i].string # DEBUG
+            #print(" "*d, "match?", w, sequence[i].string) # DEBUG
             if i < n and constraint.match(w):
-                #print " "*d, "match!", w, sequence[i].string # DEBUG
+                #print(" "*d, "match!", w, sequence[i].string) # DEBUG
                 map[w.index] = constraint
                 if constraint.multiple:
                     # Next word vs. same constraint if Constraint.multiple=True.

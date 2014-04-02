@@ -10,7 +10,7 @@
 # for sentence in parsetree("The cat sat on the mat."):
 #     for chunk in sentence.chunks:
 #         for word in chunk.words:
-#             print word.string, word.tag, word.lemma
+#             print(word.string, word.tag, word.lemma)
 
 # Terminology:
 # - part-of-speech: the role that a word plays in a sentence: noun (NN), verb (VB), adjective, ...

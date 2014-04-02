@@ -147,14 +147,14 @@ def pluralize(word, pos=NOUN, custom={}):
     # Words ending in a consonant get -es.
     return w + "es"
 
-#print pluralize(u"libro")  # libros
-#print pluralize(u"señor")  # señores
-#print pluralize(u"ley")    # leyes
-#print pluralize(u"mes")    # meses
-#print pluralize(u"luz")    # luces
-#print pluralize(u"inglés") # ingleses
-#print pluralize(u"rubí")   # rubíes
-#print pluralize(u"papá")   # papás
+#print(pluralize(u"libro"))  # libros
+#print(pluralize(u"señor"))  # señores
+#print(pluralize(u"ley"))    # leyes
+#print(pluralize(u"mes"))    # meses
+#print(pluralize(u"luz"))    # luces
+#print(pluralize(u"inglés")) # ingleses
+#print(pluralize(u"rubí"))   # rubíes
+#print(pluralize(u"papá"))   # papás
 
 #### SINGULARIZE ###################################################################################
 
@@ -392,12 +392,12 @@ def attributive(adjective, gender=MALE):
             return w + "s"
     return w
         
-#print attributive("intelligente", gender=PLURAL) # intelligentes
-#print attributive("alto", gender=MALE+PLURAL)    # altos
-#print attributive("alto", gender=FEMALE+PLURAL)  # altas
-#print attributive("normal", gender=MALE)         # normal
-#print attributive("normal", gender=FEMALE)       # normal
-#print attributive("normal", gender=PLURAL)       # normales
+#print(attributive("intelligente", gender=PLURAL)) # intelligentes
+#print(attributive("alto", gender=MALE+PLURAL))    # altos
+#print(attributive("alto", gender=FEMALE+PLURAL))  # altas
+#print(attributive("normal", gender=MALE))         # normal
+#print(attributive("normal", gender=FEMALE))       # normal
+#print(attributive("normal", gender=PLURAL))       # normales
 
 def predicative(adjective):
     """ Returns the predicative adjective (lowercase).
