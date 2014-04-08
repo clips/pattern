@@ -948,16 +948,21 @@ class Result(dict):
 
     def __init__(self, url):
         """ An item in a list of results returned by SearchEngine.search().
-            All dictionary entries are available as unicode string attributes.
-            - url     : the URL of the referred web content,
-            - title   : the title of the content at the URL,
-            - text    : the content text,
-            - language: the content language,
-            - author  : for news items and images, the author,
-            - date    : for news items, the publication date.
+            All dictionary keys are available as Unicode string attributes.
+            - url      : the URL of the referred web content,
+            - title    : the title of the content at the URL,
+            - text     : the content text,
+            - language : the content language,
+            - author   : for news items and posts, the author,
+            - date     : for news items and posts, the publication date.
         """
         dict.__init__(self)
         self.url   = url
+        # Attributes have value u"" by default.
+        # Exceptions:
+        self.votes    = 0 # (e.g., Facebook likes)
+        self.shares   = 0 # (e.g., Twitter retweets)
+        self.comments = 0
 
     @property
     def txt(self):
@@ -967,30 +972,44 @@ class Result(dict):
     def description(self):
         return self.text # Backwards compatibility.
 
+    @property
+    def likes(self):
+        return self.votes
+        
+    @property
+    def retweets(self):
+        return self.shares
+
     def download(self, *args, **kwargs):
         """ Download the content at the given URL.
             By default it will be cached - see URL.download().
         """
         return URL(self.url).download(*args, **kwargs)
 
+    def _format(self, v):
+        if isinstance(v, str): # Store strings as unicode.
+            return u(v)
+        if v is None:
+            return u""
+        return v
+
     def __getattr__(self, k):
         return self.get(k, u"")
     def __getitem__(self, k):
         return self.get(k, u"")
     def __setattr__(self, k, v):
-        dict.__setitem__(self, u(k), v is not None and u(v) or u"") # Store strings as unicode.
+        self.__setitem__(k, v)
     def __setitem__(self, k, v):
-        dict.__setitem__(self, u(k), v is not None and u(v) or u"")
+        dict.__setitem__(self, u(k), self._format(v))
 
-    def setdefault(self, k, v):
-        dict.setdefault(self, u(k), u(v))
+    def setdefault(self, k, v=None):
+        return dict.setdefault(self, u(k), self._format(v))
+        
     def update(self, *args, **kwargs):
-        map = dict()
-        map.update(*args, **kwargs)
-        dict.update(self, [(u(k), u(v)) for k, v in map.items()])
+        dict.update(self, [(u(k), self._format(v)) for k, v in dict(*args, **kwargs).items()])
 
     def __repr__(self):
-        return "Result(%s)" % dict.__repr__(self)
+        return "Result(%s)" % repr(dict((k, v) for k, v in self.items() if v))
 
 class Results(list):
 
@@ -1436,6 +1455,7 @@ TWITTER_STREAM  = "https://stream.twitter.com/1.1/statuses/filter.json"
 TWITTER_STATUS  = "https://twitter.com/%s/status/%s"
 TWITTER_LICENSE = api.license["Twitter"]
 TWITTER_HASHTAG = re.compile(r"(\s|^)(#[a-z0-9_\-]+)", re.I)    # Word starts with "#".
+TWITTER_MENTION = re.compile(r"(\s|^)(@[a-z0-9_\-]+)", re.I)    # Word starts with "@".
 TWITTER_RETWEET = re.compile(r"(\s|^RT )(@[a-z0-9_\-]+)", re.I) # Word starts with "RT @".
 
 class Twitter(SearchEngine):
@@ -1519,8 +1539,15 @@ class Twitter(SearchEngine):
             r.text     = self.format(x.get("text"))
             r.date     = self.format(x.get("created_at"))
             r.author   = self.format(x.get("user", {}).get("screen_name"))
-            r.profile  = self.format(x.get("user", {}).get("profile_image_url")) # Profile picture URL.
             r.language = self.format(x.get("metadata", {}).get("iso_language_code"))
+            r.shares   = self.format(x.get("retweet_count", 0))
+            r.profile  = self.format(x.get("user", {}).get("profile_image_url")) # Profile picture URL.
+            # Fetch original status if retweet is truncated (i.e., ends with "...").
+            rt = x.get("retweeted_status", None)
+            if rt:
+                comment = re.search(r"^(.*? )RT", r.text)
+                comment = comment.group(1) if comment else ""
+                r.text = self.format("RT @%s: %s" % (rt["user"]["screen_name"], rt["text"]))
             results.append(r)
         # Twitter.search(start=id, count=10) takes a tweet.id,
         # and returns 10 results that are older than this id.
@@ -1544,7 +1571,7 @@ class Twitter(SearchEngine):
         
     def profile(self, query, start=1, count=10, **kwargs):
         """ For the given author id, alias or search query,
-            returns a list of (id, handle, name, description, location, picture, tweets)-tuple.
+            returns a list of (id, handle, name, description, location, picture, followers, tweets)-tuples.
         """
         # 1) Construct request URL.
         url = URL(TWITTER + "users/search.json?", method=GET, query={
@@ -1569,7 +1596,8 @@ class Twitter(SearchEngine):
             u(x.get("description", "")),
             u(x.get("location", "")),
             u(x.get("profile_image_url", "")),
-            u(x.get("statuses_count", ""))) for x in data]
+              x.get("followers_count", 0),
+              x.get("statuses_count", 0)) for x in data]
 
     def trends(self, **kwargs):
         """ Returns a list with 10 trending topics on Twitter.
@@ -1615,8 +1643,15 @@ class TwitterStream(Stream):
             r.text     = self.format(x.get("text"))
             r.date     = self.format(x.get("created_at"))
             r.author   = self.format(x.get("user", {}).get("screen_name"))
-            r.profile  = self.format(x.get("user", {}).get("profile_image_url"))
             r.language = self.format(x.get("metadata", {}).get("iso_language_code"))
+            r.shares   = self.format(x.get("retweet_count", 0))
+            r.profile  = self.format(x.get("user", {}).get("profile_image_url")) # Profile picture URL.
+            # Fetch original status if retweet is truncated (i.e., ends with "...").
+            rt = x.get("retweeted_status", None)
+            if rt:
+                comment = re.search(r"^(.*? )RT", r.text)
+                comment = comment.group(1) if comment else ""
+                r.text = self.format("RT @%s: %s" % (rt["user"]["screen_name"], rt["text"]))
             return r
 
 def author(name):
@@ -1629,6 +1664,11 @@ def hashtags(string):
     """ Returns a list of hashtags (words starting with a #hash) from a tweet.
     """
     return [b for a, b in TWITTER_HASHTAG.findall(string)]
+
+def mentions(string):
+    """ Returns a list of mentions (words starting with a @author) from a tweet.
+    """
+    return [b for a, b in TWITTER_MENTION.findall(string)]
 
 def retweets(string):
     """ Returns a list of retweets (words starting with a RT @author) from a tweet.
@@ -1788,7 +1828,7 @@ class MediaWiki(SearchEngine):
             r = Result(url=u)
             r.id    = self.format(x.get("title"))
             r.title = self.format(x.get("title"))
-            r.text  = plaintext(self.format(x.get("snippet")))
+            r.text  = self.format(plaintext(x.get("snippet")))
             results.append(r)
         return results
 
@@ -2538,7 +2578,7 @@ class Facebook(SearchEngine):
             })
         if type in (SEARCH, NEWS, FEED):
             url.query["fields"] = ",".join((
-                "id", "from", "name", "story", "message", "link", "picture", "created_time",
+                "id", "from", "name", "story", "message", "link", "picture", "created_time", "shares", 
                 "comments.limit(1).summary(true)", 
                    "likes.limit(1).summary(true)"
             ))
@@ -2555,27 +2595,21 @@ class Facebook(SearchEngine):
         results.total = None
         for x in data.get("data", []):
             r = FacebookResult(url=None)
-            r.id   = self.format(x.get("id"))
-            r.url  = self.format(x.get("link"))
-            r.text = self.format(x.get("story", x.get("message", x.get("name"))))
-            r.date = self.format(x.get("created_time"))
-            # Store likes & comments count as int, author as (id, name)-tuple
-            # (by default Result will store everything as Unicode strings).
-            s = lambda r, k, v: dict.__setitem__(r, k, v)
-            s(r, "likes", \
-                     self.format(x.get("like_count", x.get("likes", {}).get("summary", {}).get("total_count", 0))) + 0)
-            s(r, "comments", \
-                     self.format(x.get("comments", {}).get("summary", {}).get("total_count", 0)) + 0)
-            s(r, "author",  (
-                   u(self.format(x.get("from", {}).get("id", ""))),
-                   u(self.format(x.get("from", {}).get("name", "")))))
+            r.id       = self.format(x.get("id"))
+            r.url      = self.format(x.get("link"))
+            r.text     = self.format(x.get("story", x.get("message", x.get("name"))))
+            r.date     = self.format(x.get("created_time"))
+            r.votes    = self.format(x.get("like_count", x.get("likes", {}).get("summary", {}).get("total_count", 0)) + 0)
+            r.shares   = self.format(x.get("shares", {}).get("count", 0))
+            r.comments = self.format(x.get("comments", {}).get("summary", {}).get("total_count", 0) + 0)
+            r.author   = self.format(x.get("from", {}).get("id", "")), \
+                         self.format(x.get("from", {}).get("name", ""))
             # Set Result.text to author name for likes.
             if type in (LIKES, FRIENDS):
-                s(r, "author", (
-                   u(self.format(x.get("id", ""))),
-                   u(self.format(x.get("name", "")))))
-                r.text = \
-                     self.format(x.get("name"))
+                r.author = \
+                   self.format(x.get("id", "")), \
+                   self.format(x.get("name", ""))
+                r.text = self.format(x.get("name"))
             # Set Result.url to full-size image.
             if re.match(r"^http(s?)://www\.facebook\.com/photo", r.url) is not None:
                 r.url = x.get("picture", "").replace("_s", "_b") or r.url
@@ -2587,7 +2621,7 @@ class Facebook(SearchEngine):
 
     def profile(self, id=None, **kwargs):
         """ For the given author id or alias,
-            returns a (id, name, date of birth, gender, locale, likes)-tuple.
+            returns a (id, name, date of birth, gender, locale, votes)-tuple.
         """
         # 1) Construct request URL.
         url = FACEBOOK + (u(id or "me")).replace(FACEBOOK, "")
