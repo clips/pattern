@@ -58,11 +58,11 @@ license = ""
 
 if license != "":
     fb = Facebook(license)
-    # Facebook.profile() returns an (id, name, date of birth, gender, locale, likes)-tuple.
+    # Facebook.profile() returns a dictionary with author info.
     # By default, this is your own profile. 
     # You can also supply the id of another profile, 
     # or the name of a product page.
-    me = fb.profile()[0]
+    me = fb.profile()["id"]
     for status in fb.search(me, type=NEWS, count=30, cached=False):
         print "-" * 100
         print status.id    # Status update unique id.

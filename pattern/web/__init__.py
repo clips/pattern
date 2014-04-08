@@ -946,9 +946,10 @@ LATEST    = "latest"    # Sort results by most recent.
 
 class Result(dict):
 
-    def __init__(self, url):
+    def __init__(self, url, **kwargs):
         """ An item in a list of results returned by SearchEngine.search().
             All dictionary keys are available as Unicode string attributes.
+            - id       : unique identifier,
             - url      : the URL of the referred web content,
             - title    : the title of the content at the URL,
             - text     : the content text,
@@ -957,12 +958,18 @@ class Result(dict):
             - date     : for news items and posts, the publication date.
         """
         dict.__init__(self)
-        self.url   = url
-        # Attributes have value u"" by default.
-        # Exceptions:
-        self.votes    = 0 # (e.g., Facebook likes)
-        self.shares   = 0 # (e.g., Twitter retweets)
-        self.comments = 0
+        self.url      = url
+        self.id       = kwargs.pop("id"       , u"")
+        self.title    = kwargs.pop("title"    , u"")
+        self.text     = kwargs.pop("text"     , u"")
+        self.language = kwargs.pop("language" , u"")
+        self.author   = kwargs.pop("author"   , u"")
+        self.date     = kwargs.pop("date"     , u"")
+        self.votes    = kwargs.pop("votes"    , 0) # (e.g., Facebook likes)
+        self.shares   = kwargs.pop("shares"   , 0) # (e.g., Twitter retweets)
+        self.comments = kwargs.pop("comments" , 0)
+        for k, v in kwargs.items():
+            self[k] = v
 
     @property
     def txt(self):
@@ -1570,8 +1577,7 @@ class Twitter(SearchEngine):
         return results
         
     def profile(self, query, start=1, count=10, **kwargs):
-        """ For the given author id, alias or search query,
-            returns a list of (id, handle, name, description, location, picture, followers, tweets)-tuples.
+        """ Returns a list of results for the given author id, alias or search query.
         """
         # 1) Construct request URL.
         url = URL(TWITTER + "users/search.json?", method=GET, query={
@@ -1589,15 +1595,20 @@ class Twitter(SearchEngine):
             data = json.loads(data)
         except HTTP400BadRequest:
             return []
-        return [(
-            u(x.get("id_str", "")),
-            u(x.get("screen_name", "")),
-            u(x.get("name", "")),
-            u(x.get("description", "")),
-            u(x.get("location", "")),
-            u(x.get("profile_image_url", "")),
-              x.get("followers_count", 0),
-              x.get("statuses_count", 0)) for x in data]
+        return [
+            Result(url = "https://www.twitter.com/" + x.get("screen_name", ""),
+                    id = x.get("id_str", ""),              # 14898655
+                handle = x.get("screen_name", ""),         # tom_de_smedt
+                  name = x.get("name", ""),                # Tom De Smedt
+                  text = x.get("description", ""),         # Artist, scientist, software engineer
+              language = x.get("lang", ""),                # en
+                  date = x.get("created_at"),              # Sun May 10 10:00:00
+                locale = x.get("location", ""),            # Belgium
+               picture = x.get("profile_image_url", ""),   # http://pbs.twimg.com/...
+               friends = int(x.get("followers_count", 0)), # 100
+                 posts = int(x.get("statuses_count", 0))   # 100
+            ) for x in data
+        ]
 
     def trends(self, **kwargs):
         """ Returns a list with 10 trending topics on Twitter.
@@ -2620,8 +2631,7 @@ class Facebook(SearchEngine):
         return results
 
     def profile(self, id=None, **kwargs):
-        """ For the given author id or alias,
-            returns a (id, name, date of birth, gender, locale, votes)-tuple.
+        """ Returns a Result for the given author id or alias.
         """
         # 1) Construct request URL.
         url = FACEBOOK + (u(id or "me")).replace(FACEBOOK, "")
@@ -2635,13 +2645,17 @@ class Facebook(SearchEngine):
             data = json.loads(data)
         except HTTP400BadRequest:
             raise HTTP401Authentication
-        return (
-            u(data.get("id", "")),
-            u(data.get("name", "")),
-            u(data.get("birthday", "")),
-            u(data.get("gender", "")[:1]),
-            u(data.get("locale", "")),
-          int(data.get("likes", 0)) # For pages.
+        return Result(
+                id = data.get("id", ""),                   # 123456...
+               url = data.get("link", ""),                 # https://www.facebook.com/tomdesmedt
+            handle = data.get("username", ""),             # tomdesmedt
+              name = data.get("name"),                     # Tom De Smedt
+              text = data.get("description", ""),          # Artist, scientist, software engineer
+          language = data.get("locale", "").split("_")[0], # en_US
+              date = data.get("birthday", ""),             # 10/10/1000
+            gender = data.get("gender", "")[:1],           # m
+            locale = data.get("hometown", {}).get("name", ""),
+             votes = int(data.get("likes", 0)) # (for product pages)
         )
         
     page = profile
