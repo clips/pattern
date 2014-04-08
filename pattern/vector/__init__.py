@@ -279,7 +279,7 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
         if count[k] <= threshold:
             dict.__delitem__(count, k)
     if top is not None:
-        count = count.__class__(heapq.nsmallest(top, count.iteritems(), key=lambda k,v: (-v,k)))
+        count = count.__class__(heapq.nsmallest(top, count.iteritems(), key=lambda kv: (-kv[1], kv[0])))
     return count
 
 def character_ngrams(string="", n=3, top=None, threshold=0, exclude=[], **kwargs):
@@ -298,7 +298,7 @@ def character_ngrams(string="", n=3, top=None, threshold=0, exclude=[], **kwargs
         if count[k] <= threshold:
             dict.__delitem__(count, k)
     if top is not None:
-        count = count.__class__(heapq.nsmallest(top, count.iteritems(), key=lambda k,v: (-v,k)))
+        count = count.__class__(heapq.nsmallest(top, count.iteritems(), key=lambda kv: (-kv[1], kv[0])))
     return count
     
 chngrams = character_ngrams
@@ -1200,7 +1200,7 @@ class Model(object):
         # Filter the input document from the matches.
         # Filter documents that score zero, and return the top.
         v = [(w, d) for w, d in v if w > 0 and d.id != document.id]
-        v = heapq.nsmallest(top, v, key=lambda v: (-v[0],v[1]))
+        v = heapq.nsmallest(top, v, key=lambda v: (-v[0], v[1]))
         return v
         
     similar = related = neighbors = nn = nearest_neighbors

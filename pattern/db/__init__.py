@@ -353,7 +353,7 @@ def order(list, cmp=None, key=None, reverse=False):
     else:
         f = lambda i, j: int(list[i] >= list[j]) * 2 - 1
     return sorted(range(len(list)), cmp=f, reverse=reverse)
-    
+
 _order = order
 
 def avg(list):

@@ -2081,7 +2081,7 @@ def language(s):
     for xx in LANGUAGES:
         lexicon = _module(xx).__dict__["lexicon"]
         p[xx] = sum(1 for w in s if w in lexicon) / n
-    return max(p.items(), key=lambda k, v: (v, int(k == "en")))
+    return max(p.items(), key=lambda kv: (kv[1], int(kv[0] == "en")))
     
 lang = language
 

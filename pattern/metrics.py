@@ -220,7 +220,7 @@ def roc(tests=[]):
     x = FPR = lambda TP, TN, FP, FN: float(FP) / ((FP + TN) or 1)
     y = TPR = lambda TP, TN, FP, FN: float(TP) / ((TP + FN) or 1)
     return sorted([(0.0, 0.0), (1.0, 1.0)] + [(x(*m), y(*m)) for m in tests])
-    
+
 def auc(curve=[]):
     """ Returns the area under the curve for the given list of (x, y)-points.
         The area is calculated using the trapezoidal rule.
