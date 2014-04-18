@@ -15,11 +15,12 @@ import re
 import urllib
 import csv as csvlib
 
-from codecs   import BOM_UTF8
-from datetime import datetime, timedelta
-from time     import mktime, strftime
-from math     import sqrt
-from types    import GeneratorType
+from codecs    import BOM_UTF8
+from itertools import islice
+from datetime  import datetime, timedelta
+from time      import mktime, strftime
+from math      import sqrt
+from types     import GeneratorType
 
 try: # Python 2.x vs 3.x
     from cStringIO import StringIO
@@ -1826,7 +1827,21 @@ class CSV(list):
         data = preprocess(data)
         data = "\n".join(line for line in data.splitlines()) # Excel \r => \n
         data = StringIO(data)
-        data = [row for row in csvlib.reader(data, delimiter=separator)]
+        
+        data = csvlib.reader(data, delimiter=separator)
+        
+        i, n = kwargs.get("start"), kwargs.get("count")
+        if i is not None and n is not None:
+            data = list(islice(data, i, i+n))
+        elif i is not None:
+            data = list(islice(data, i, None))
+        elif n is not None:
+            data = list(islice(data, n))
+        else:
+            data = list(data)
+        
+        #data = [row for row in csvlib.reader(data, delimiter=separator)]
+        
         if headers:
             fields  = [csv_header_decode(field) for field in data.pop(0)]
             fields += [(None, None)] * (max([0]+[len(row) for row in data]) - len(fields))
@@ -2365,10 +2380,10 @@ class DatasheetColumn(list):
         return list(self) == column
     def __ne__(self, column):
         return not self.__eq__(column)
-    def __add__(self, value):
-        raise TypeError("unsupported operand type(s) for +: 'Datasheet.columns[x]' and '%s'" % value.__class__.__name__)
-    def __iadd__(self, value):
-        self.append(value); return self
+    def __add__(self, column):
+        return list(self) + list(column)
+    def __iadd__(self, column):
+        self.extend(column)
     def __contains__(self, value):
         for v in self:
             if v == value: return True
