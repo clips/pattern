@@ -3148,6 +3148,11 @@ DOM = Document
 
 # Selectors are case-insensitive.
 
+def _encode_space(s):
+    return s.replace(" ", "<!space!>")
+def _decode_space(s):
+    return s.replace("<!space!>", " ")
+
 class Selector(object):
 
     def __init__(self, s):
@@ -3162,6 +3167,10 @@ class Selector(object):
         s = s.replace(".", " .")        # .class
         s = s.replace(":", " :")        # :pseudo-element
         s = s.replace("[", " [")        # [attribute="value"]
+        s = re.sub(r"\[.*?\]", 
+            lambda m: _encode_space(m.group(0)), s)
+        s = re.sub(r":contains\(.*?\)", 
+            lambda m: _encode_space(m.group(0)), s)
         s = s.split(" ")
         self.tag, self.id, self.classes, self.pseudo, self.attributes = (
              s[0],
@@ -3177,17 +3186,19 @@ class Selector(object):
         s = s.strip("[]")
         s = s.replace("'", "")
         s = s.replace('"', "")
-        s = s.replace("<!space>", " ")
+        s = _decode_space(s)
         s = re.sub(r"(\~|\||\^|\$|\*)\=", "=\\1", s)
         s = s.split("=") + [True]
         s = s[:2]
-        if s[1] is not True and s[1].startswith(("~", "|", "^", "$", "*")):
-            p, s[1] = s[1][0], s[1][1:]
-            if p == "~": r = r"(^|\s)%s(\s|$)"
-            if p == "|": r = r"^%s(-|$)" # XXX doesn't work with spaces.
-            if p == "^": r = r"^%s"
-            if p == "$": r = r"%s$"
-            if p == "*": r = r"%s"
+        if s[1] is not True:
+            r = r"^%s$"
+            if s[1].startswith(("~", "|", "^", "$", "*")):
+                p, s[1] = s[1][0], s[1][1:]
+                if p == "~": r = r"(^|\s)%s(\s|$)"
+                if p == "|": r = r"^%s(-|$)" # XXX doesn't work with spaces.
+                if p == "^": r = r"^%s"
+                if p == "$": r = r"%s$"
+                if p == "*": r = r"%s"
             s[1] = re.compile(r % s[1], re.I)
         return s[:2]
 
@@ -3212,6 +3223,7 @@ class Selector(object):
         """
         s = re.sub(r"^contains\((.*?)\)$", "\\1", s)
         s = re.sub(r"^[\"']|[\"']$", "", s)
+        s = _decode_space(s)
         return re.search(s.lower(), e.content.lower()) is not None
 
     def match(self, e):
@@ -3229,8 +3241,8 @@ class Selector(object):
             return False
         if any(x.startswith("contains") and not self._contains(e, x) for x in self.pseudo):
             return False # jQuery :contains("...") selector.
-        for k, v in self.attributes:
-            if k not in e.attrs or v not in (e.attrs[k].lower(), True):
+        for k, v in self.attributes.items():
+            if k not in e.attrs or not (v is True or re.search(v, e.attrs[k]) is not None):
                 return False
         return True
 
@@ -3242,7 +3254,7 @@ class Selector(object):
         # Map id into a case-insensitive **kwargs dict.
         i = lambda s: re.compile(r"\b%s\b" % s, re.I)
         a = {"id": i(self.id)} if self.id else {}
-        a.update(map(lambda k, v: (k, i(v)), self.attributes.iteritems()))
+        a.update(map(lambda kv: (kv[0], kv[1]), self.attributes.iteritems()))
         # Match tag + id + all classes + relevant pseudo-elements.
         if not isinstance(e, Element):
             return []
@@ -3275,7 +3287,10 @@ class SelectorChain(list):
             s = re.sub(r" *\> *", " >", s)
             s = re.sub(r" *\< *", " <", s)
             s = re.sub(r" *\+ *", " +", s)
-            s = re.sub(r"\[.*?\]", lambda m: m.group(0).replace(" ", "<!space>"), s)
+            s = re.sub(r"\[.*?\]", 
+                lambda m: _encode_space(m.group(0)), s)
+            s = re.sub(r":contains\(.*?\)", 
+                lambda m: _encode_space(m.group(0)), s)
             self.append([])
             for s in s.split(" "):
                 if not s.startswith((">", "<", "+")):

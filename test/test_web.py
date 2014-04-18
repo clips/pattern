@@ -800,11 +800,11 @@ class TestDOM(unittest.TestCase):
         # Assert Element.getElementByAttribute() (test on <a href="">).
         a = v.by_attribute(href="nav1.html")
         self.assertEqual(a[0].content, "nav1")
-        print "pattern.web.Node.Element"
-        print "pattern.web.Node.Element.by_tag()"
-        print "pattern.web.Node.Element.by_class()"
-        print "pattern.web.Node.Element.by_id()"
-        print "pattern.web.Node.Element.by_attribute()"
+        print "pattern.web.Element"
+        print "pattern.web.Element.by_tag()"
+        print "pattern.web.Element.by_class()"
+        print "pattern.web.Element.by_id()"
+        print "pattern.web.Element.by_attribute()"
 
     def test_selector(self):
         # Assert DOM CSS selectors with multiple classes.
@@ -819,7 +819,14 @@ class TestDOM(unittest.TestCase):
         self.assertEqual(len(p), 1)
         self.assertTrue("class1" in p[0].attributes["class"])
         self.assertTrue("class2" in p[0].attributes["class"])
-        print "pattern.web.Node.Element()"
+        e = p[0]
+        self.assertEqual(e, v("p[class='class1 class2']")[0])
+        self.assertEqual(e, v("p[class^='class1']")[0])
+        self.assertEqual(e, v("p[class$='class2']")[0])
+        self.assertEqual(e, v("p[class*='class']")[0])
+        self.assertEqual(e, v("p:contains('blah')")[1])
+        self.assertTrue(web.Selector("p[class='class1 class2']").match(e))
+        print "pattern.web.Selector()"
 
 #---------------------------------------------------------------------------------------------------
 
