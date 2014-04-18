@@ -579,6 +579,12 @@ def mean(iterable):
 
 avg = mean
 
+def hmean(iterable):
+    """ Returns the harmonic mean of the given list of values.
+    """
+    a = iterable if isinstance(iterable, list) else list(iterable)
+    return float(len(a)) / sum(1.0 / x for x in a)
+
 def median(iterable, sort=True):
     """ Returns the value that separates the lower half from the higher half of values in the list.
     """
