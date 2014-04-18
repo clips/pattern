@@ -187,7 +187,12 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
         for token in sentence:
             tags.append((token[0], token[1]))
     return tags
-  
+
+def keywords(s, top=10):
+     """ Returns a sorted list of keywords in the given string.
+     """
+     return parser.find_keywords(s, top=top, frequency={})
+     
 def polarity(s, **kwargs):
     """ Returns the sentence polarity (positive/negative) between -1.0 and 1.0.
     """

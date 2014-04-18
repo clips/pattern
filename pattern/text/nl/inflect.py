@@ -238,6 +238,7 @@ class Verbs(_Verbs):
         self._inverse["waren"] = "zijn"
         self._inverse["zagen"] = "zien"
         self._inverse["wist"]  = "weten"
+        self._inverse["zou"]   = "zullen"
     
     def find_lemma(self, verb):
         """ Returns the base form of the given inflected verb, using a rule-based approach.

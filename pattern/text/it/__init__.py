@@ -126,7 +126,11 @@ class Parser(_Parser):
     def find_tokens(self, tokens, **kwargs):
         kwargs.setdefault("abbreviations", ABBREVIATIONS)
         kwargs.setdefault("replace", replacements)
-        return _Parser.find_tokens(self, tokens, **kwargs)
+        #return _Parser.find_tokens(self, tokens, **kwargs)
+        
+        s = _Parser.find_tokens(self, tokens, **kwargs)
+        s = [s.replace(" &contraction ;", u"'").replace("XXX -", "-") for s in s]
+        return s
 
     def find_lemmata(self, tokens, **kwargs):
         return find_lemmata(tokens)
@@ -176,6 +180,11 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
         for token in sentence:
             tags.append((token[0], token[1]))
     return tags
+
+def keywords(s, top=10):
+    """ Returns a sorted list of keywords in the given string.
+    """
+    return parser.find_keywords(s, top=top, frequency={})
 
 split = tree # Backwards compatibility.
 
