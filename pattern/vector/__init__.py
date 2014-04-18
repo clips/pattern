@@ -1065,7 +1065,17 @@ class Model(object):
             return self._index[name]
             
     doc = document
-        
+    
+    def keywords(self, top=10, normalized=True):
+        """ Returns a sorted list of (relevance, word)-tuples that are top keywords in the model.
+            With normalized=True, weights are normalized between 0.0 and 1.0 (their sum will be 1.0).
+        """
+        self.df(None) # Populate document frequency cache.
+        n = normalized and sum(self._df.itervalues()) or 1.0
+        v = ((f/n, w) for w, f in self._df.iteritems())
+        v = heapq.nsmallest(top, v, key=lambda v: (-v[0], v[1]))
+        return v
+    
     def document_frequency(self, word):
         """ Returns the document frequency for the given word or feature.
             Returns 0 if there are no documents in the model (e.g. no word frequency).
@@ -1471,14 +1481,15 @@ class Apriori(object):
         for s1 in candidates:
             for s2 in sets:
                 if s1.issubset(s2):
-                    Lk[s1] = s1 in Lk and Lk[s1]+x or x
+                    Lk[s1] = s1 in Lk and Lk[s1] + x or x
         return dict((s, f) for s, f in Lk.items() if f >= support)
 
-    def __call__(self, sets, support=0.5):
+    def __call__(self, sets=[], support=0.5):
         """ Returns a dictionary of (set(features), frequency)-items.
             The given support (0.0-1.0) is the relative amount of documents
-            in which a combination of feature must appear.
+            in which a combination of features must appear.
         """
+        sets = [set(iterable) for iterable in sets]
         C1 = self.C1(sets)
         L1 = self.Lk(sets, C1, support)
         self._candidates = [L1.keys()]
@@ -2051,43 +2062,21 @@ class Classifier(object):
             Recall is the percentage of documents that were correctly labeled.
             F1-score is the harmonic mean of precision and recall.
         """
-        A = [] # Accuracy.
-        P = [] # Precision.
-        R = [] # Recall.
-        for type, TP, TN, FP, FN in self.confusion_matrix(documents).split():
-            if type == target or target is None:
-                # Calculate precision & recall per class.
-                A.append(float(TP + TN) / ((TP + TN + FP + FN)))
-                P.append(float(TP) / ((TP + FP) or 1))
-                R.append(float(TP) / ((TP + FN) or 1))
-        # Macro-averaged:
-        A = sum(A) / (len(A) or 1.0)
-        P = sum(P) / (len(P) or 1.0)
-        R = sum(R) / (len(R) or 1.0)
-        F = 2.0 * P * R / ((P + R) or 1.0)
-        return A, P, R, F
-
-    def confusion_matrix(self, documents=[]):
-        """ Returns the confusion matrix for the given test data,
-            which is a list of Documents or (document, type)-tuples.
-        """
-        documents = [isinstance(d, Document) and (d, d.type) or d for d in documents]
-        return ConfusionMatrix(self.classify, documents)
+        return self.confusion_matrix(documents).test(target)
 
     def auc(self, documents=[], k=10):
         """ Returns the area under the ROC-curve.
             Returns the probability (0.0-1.0) that a classifier will rank 
             a random positive document (True) higher than a random negative one (False).
         """
-        roc = [(0.0, 0.0), (1.0, 1.0)]
-        for type, TP, TN, FP, FN in self.confusion_matrix(documents).split():
-            x = FPR = float(FP) / ((FP + TN) or 1) # false positive rate
-            y = TPR = float(TP) / ((TP + FN) or 1) #  true positive rate
-            roc.append((x, y))
-            #print("%s\t%s %s %s %s\t %s %s" % (TP, TN, FP, FN, FPR, TPR))
-        roc = sorted(roc)
-        # Trapzoidal rule: area = (a + b) * h / 2, where a=y0, b=y1 and h=x1-x0.
-        return sum(0.5 * (x1 - x0) * (y1 + y0) for (x0, y0), (x1, y1) in sorted(zip(roc, roc[1:])))
+        return self.confusion_matrix(documents).auc(k)
+        
+    def confusion_matrix(self, documents=[]):
+        """ Returns the confusion matrix for the given test data,
+            which is a list of Documents or (document, type)-tuples.
+        """
+        documents = [isinstance(d, Document) and (d, d.type) or d for d in documents]
+        return ConfusionMatrix(self.classify, documents)
 
     def save(self, path, final=False):
         """ Saves the classifier as a gzipped pickle file.
@@ -2154,9 +2143,43 @@ class ConfusionMatrix(defaultdict):
                 if target == t2 != t1: 
                     FP += n
         return (TP, TN, FP, FN)
-    
+        
+    def test(self, target=None):
+        """ Returns an (accuracy, precision, recall, F1-score)-tuple.
+        """
+        A = [] # Accuracy.
+        P = [] # Precision.
+        R = [] # Recall.
+        for type, TP, TN, FP, FN in self.split():
+            if type == target or target is None:
+                # Calculate precision & recall per class.
+                A.append(float(TP + TN) / ((TP + TN + FP + FN)))
+                P.append(float(TP) / ((TP + FP) or 1))
+                R.append(float(TP) / ((TP + FN) or 1))
+        # Macro-averaged:
+        A = sum(A) / (len(A) or 1.0)
+        P = sum(P) / (len(P) or 1.0)
+        R = sum(R) / (len(R) or 1.0)
+        F = 2.0 * P * R / ((P + R) or 1.0)
+        return A, P, R, F
+
+    def auc(self, k=10):
+        """ Returns the area under the ROC-curve.
+        """
+        roc = [(0.0, 0.0), (1.0, 1.0)]
+        for type, TP, TN, FP, FN in self.split():
+            x = FPR = float(FP) / ((FP + TN) or 1) # false positive rate
+            y = TPR = float(TP) / ((TP + FN) or 1) #  true positive rate
+            roc.append((x, y))
+            #print("%s\t%s %s %s %s\t %s %s" % (TP, TN, FP, FN, FPR, TPR))
+        roc = sorted(roc)
+        # Trapzoidal rule: area = (a + b) * h / 2, where a=y0, b=y1 and h=x1-x0.
+        return sum(0.5 * (x1 - x0) * (y1 + y0) for (x0, y0), (x1, y1) in sorted(zip(roc, roc[1:])))
+
     @property
     def table(self, padding=1):
+        """ Returns the matrix as a string with rows and columns.
+        """
         k = sorted(self)
         n = max(map(lambda x: len(decode_utf8(x)), k))
         n = max(n, *(len(str(self[k1][k2])) for k1 in k for k2 in k)) + padding
