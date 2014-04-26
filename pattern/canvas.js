@@ -543,6 +543,7 @@ var geometry = new Geometry();
 
 var RGB = "RGB";
 var HSB = "HSB";
+var LCH = "LCH";
 var HEX = "HEX";
 
 var Color = Class.extend({
@@ -578,14 +579,16 @@ var Color = Class.extend({
             if (options.base !== undefined) {
                 r/=options.base; g/=options.base; b/=options.base; a/=options.base;
             }
-            // Transform to color space RGB:
-            if (options.colorspace == HSB) {
-                var rgb = _hsb2rgb(r, g, b); r=rgb[0]; g=rgb[1]; b=rgb[2];
-            }
-            // Transform to color space HEX:
+            // Transform from color space HEX:
             if (options.colorspace == HEX) {
                 var rgb = _hex2rgb(r); r=rgb[0]; g=rgb[1]; b=rgb[2]; a=1;
-            }            
+            // Transform from color space HSB:
+			} else if (options.colorspace == HSB) {
+                var rgb = _hsb2rgb(r, g, b); r=rgb[0]; g=rgb[1]; b=rgb[2];
+            // Transform from color space LCH:
+			} else if (options.colorspace == LCH) {
+                var rgb = _lch2rgb(r, g, b); r=rgb[0]; g=rgb[1]; b=rgb[2];
+            } 
         }
         this.r = r;
         this.g = g;
@@ -623,11 +626,14 @@ var Color = Class.extend({
         var g = this.g;
         var b = this.b;
         var a = this.a;
+        if (colorspace == HEX) {
+            return _rgb2hex(r, g, b);
+        }
         if (colorspace == HSB) {
             rgb = _rgb2hsb(r, g, b); r=rgb[0]; g=rgb[1]; b=rgb[2];
         }
-        if (colorspace == HEX) {
-            return _rgb2hex(r, g, b);
+        if (colorspace == LCH) {
+            rgb = _rgb2lch(r, g, b); r=rgb[0]; g=rgb[1]; b=rgb[2];
         }
         if (base != 1) {
             return [r*base, g*base, b*base, a*base];
@@ -640,7 +646,7 @@ var Color = Class.extend({
          */
         var hsb = _rgb2hsb(this.r, this.g, this.b);
         var hsb = _rotateRYB(hsb[0], hsb[1], hsb[2], angle);
-        return new Color(hsb[0], hsb[1], hsb[2], this.a, {"colorspace":HSB});
+        return new Color(hsb[0], hsb[1], hsb[2], this.a, {"colorspace": HSB});
     },
     
     adjust: function(options) {
@@ -651,7 +657,7 @@ var Color = Class.extend({
         hsb[0] += options.hue || 0;
         hsb[1] *= options.saturation || 1;
         hsb[2] *= options.brightness || 1;
-        return new Color(hsb[0]%1, hsb[1], hsb[2], this.a, {"colorspace":HSB});
+        return new Color(hsb[0]%1, hsb[1], hsb[2], this.a, {"colorspace": HSB});
     }
 });
 
@@ -751,23 +757,11 @@ var lineCap = linecap;
 // This is the main reason that scripts will run (in overall) 2-8 fps slower than in processing.js.
 
 /*--- COLOR SPACE ----------------------------------------------------------------------------------*/
-// Transformations between RGB, HSB, HEX color spaces.
+// Transformations between RGB, HSB, XYZ, LAB, LCH, HEX color spaces.
 // Based on: http://www.easyrgb.com/math.php
 
 function _rgb2hex(r, g, b) {
-    /* Converts the given R,G,B values to a hexadecimal color string.
-     */
-    parseHex = function(i) { 
-        return ((i == 0)? "00" : (i.length < 2)? "0"+i : i).toString(16).toUpperCase(); 
-    }
-    return "#"
-        + parseHex(Math.round(r * 255)) 
-        + parseHex(Math.round(g * 255)) 
-        + parseHex(Math.round(b * 255));
-}
-
-function _rgb2hex(r, g, b) {
-    /* Converts the given R,G,B values to a hexadecimal color string.
+    /* Returns a hexadecimal color string from the given R,G,B values.
      */
     parseHex = function(i) {
         var s = "00";
@@ -782,7 +776,7 @@ function _rgb2hex(r, g, b) {
 }
 
 function _hex2rgb(hex) {
-    /* Converts the given hexadecimal color string to R,G,B (between 0.0-1.0).
+    /* Returns an array [R,G,B] (0.0-1.0) from the given hexadecimal color string.
      */
     hex = hex.replace(/^#/, "");
     if (hex.length < 6) { // hex += hex[-1] * (6-hex.length);
@@ -795,7 +789,7 @@ function _hex2rgb(hex) {
 }
 
 function _rgb2hsb(r, g, b) {
-    /* Converts the given R,G,B values to H,S,B (between 0.0-1.0).
+    /* Returns an array [H,S,B] (0.0-1.0) from the given R,G,B values.
      */
     var h = 0;
     var s = 0;
@@ -814,7 +808,7 @@ function _rgb2hsb(r, g, b) {
 }
 
 function _hsb2rgb(h, s, v) {
-    /* Converts the given H,S,B color values to R,G,B (between 0.0-1.0).
+    /* Returns an array [R,G,B] (0.0-1.0) from the given H,S,B values.
      */
     if (s == 0) {
         return [v, v, v];
@@ -829,6 +823,107 @@ function _hsb2rgb(h, s, v) {
         return [v, x, y];
     }
     return [[v,z,x], [y,v,x], [x,v,z], [x,y,v], [z,x,v]][parseInt(i)];
+}
+
+function _rgb2xyz(r, g, b) {
+    /* Returns an array [X,Y,Z] (0-95.047, 0-100, 0-108.883) from the given R,G,B values.
+     */
+	r = ((r > 0.04045)? Math.pow((r + 0.055) / 1.055, 2.4) : r / 12.92) * 100;
+	g = ((g > 0.04045)? Math.pow((g + 0.055) / 1.055, 2.4) : g / 12.92) * 100;
+	b = ((b > 0.04045)? Math.pow((b + 0.055) / 1.055, 2.4) : b / 12.92) * 100;
+	// Observer = 2°, Illuminant = D65.
+	var x = r * 0.4124 + g * 0.3576 + b * 0.1805;
+	var y = r * 0.2126 + g * 0.7152 + b * 0.0722;
+	var z = r * 0.0193 + g * 0.1192 + b * 0.9505;
+	return [x, y, z];
+}
+
+function _xyz2rgb(x, y, z) {
+    /* Returns an array [R,G,B] (0.0-1.0) from the given X,Y,Z values.
+     */
+	x /= 100;
+	y /= 100;
+	z /= 100;
+	var r = x *  3.2406 + y * -1.5372 + z * -0.4986;
+	var g = x * -0.9689 + y *  1.8758 + z *  0.0415;
+	var b = x *  0.0557 + y * -0.2040 + z *  1.0570;
+	r = (r > 0.0031308)? 1.055 * Math.pow(r, 1 / 2.4) - 0.055 : 12.92 * r;
+	g = (g > 0.0031308)? 1.055 * Math.pow(g, 1 / 2.4) - 0.055 : 12.92 * g;
+	b = (b > 0.0031308)? 1.055 * Math.pow(b, 1 / 2.4) - 0.055 : 12.92 * b;
+	return [r, g, b];
+}
+
+function _xyz2lab(x, y, z) {
+    /* Returns an array [L,a,b] (0.0-1.0) from the given X,Y,Z values.
+     */
+	// Observer = 2°, Illuminant = D65.
+	x /=  95.047;
+	y /= 100.000;
+	z /= 108.883;
+	x = (x > 0.008856)? Math.pow(x, 1 / 3) : 7.787 * x + (16 / 116);
+	y = (y > 0.008856)? Math.pow(y, 1 / 3) : 7.787 * y + (16 / 116);
+	z = (z > 0.008856)? Math.pow(z, 1 / 3) : 7.787 * z + (16 / 116);
+	var l = 116 * y - 16;
+	var a = 500 * (x - y);
+	var b = 200 * (y - z);
+	return [l, a, b];
+}
+
+function _lab2xyz(l, a, b) {
+    /* Returns an array [X,Y,Z] (0-95.047, 0-100, 0-108.883) from the given L,a,b values.
+     */
+	var y = (l + 16 ) / 116;
+	var x = a / 500 + y;
+	var z = y - b / 200;
+	x = (Math.pow(x, 3) > 0.008856)? Math.pow(x, 3) : (x - 16 / 116) / 7.787;
+	y = (Math.pow(y, 3) > 0.008856)? Math.pow(y, 3) : (y - 16 / 116) / 7.787;
+	z = (Math.pow(z, 3) > 0.008856)? Math.pow(z, 3) : (z - 16 / 116) / 7.787;
+	// Observer = 2°, Illuminant = D65.
+	x *=  95.047;
+	y *= 100.000;
+	z *= 108.883;
+	return [x, y, z];
+}
+
+function _lab2lch(l, a, b) {
+    /* Returns an array [L,C,H] (0.0-1.0) from the given L,a,b values.
+     */
+	var h = Math.atan2(b, a);
+	h = (h > 0)? h / Math.PI * 180 : 360 - Math.abs(h) / Math.PI * 180;
+	c = Math.sqrt(a * a + b * b);
+	return [l, c, h];
+}
+
+function _lch2lab(l, c, h) {
+    /* Returns an array [L,a,b] (0.0-1.0) from the given L,C,H values.
+     */
+	h = h / 180 * Math.PI;
+	var a = Math.cos(h) * c;
+	var b = Math.sin(h) * c;
+	return [l, a, b];
+}
+
+function _rgb2lch(r, g, b) {
+    /* Returns an array [L,C,H] (0.0-1.0) from the given R,G,B values.
+     */
+	var xyz = _rgb2xyz(r, g, b);
+	var lab = _xyz2lab(xyz[0], xyz[1], xyz[2]);
+	var lch = _lab2lch(lab[0], lab[1], lab[2]);
+	lch[0] /= 100;
+	lch[1] /= 100;
+	lch[2] /= 360;
+	return lch;
+}
+
+function _lch2rgb(l, c, h) {
+    /* Returns an array [R,G,B] (0.0-1.0) from the given L,C,H values.
+     */
+	l *= 100;
+	c *= 100;
+	h *= 350;
+	var lab = _lch2lab(l, c, h);
+	var xyz = _lab2xyz(lab[0], lab[1], lab[2]);
+	return _xyz2rgb(xyz[0], xyz[1], xyz[2]);
 }
 
 function darker(clr, step) {
@@ -851,6 +946,34 @@ function lighter(clr, step) {
     
 var darken  = darker;
 var lighten = lighter;
+
+/*--- COLOR INTERPOLATION --------------------------------------------------------------------------*/
+
+function colors(colors, k, colorspace) {
+	/* Returns a new array with k colors,
+	   by calculating intermediary colors in the given colorspace.
+	 */
+	if (k === undefined) k = 100;
+	if (colorspace === undefined) colorspace = LCH;
+	var a = Array.map(colors, function(clr) { return clr.map({colorspace: colorspace}); });
+	var b = [];
+	var x, y, t, n = a.length - 1;
+	for (var i=0; i < k-1; i++) {
+		x = Math.min(Math.floor(i / k * n), n);
+		y = Math.min(x + 1, n);
+		t = (i - x * k / n) / (k / n);
+		b.push(new Color(
+			a[x][0] * (1-t) + a[y][0] * t,
+			a[x][1] * (1-t) + a[y][1] * t,
+			a[x][2] * (1-t) + a[y][2] * t, 
+			a[x][3] * (1-t) + a[y][3] * t, {colorspace: colorspace}
+		));
+	}
+	if (k > 0) {
+		b.push(new Color(a[n][0], a[n][1], a[n][2], a[n][3], {colorspace: colorspace}));
+	}
+	return b;
+}
 
 /*--- COLOR ROTATION -------------------------------------------------------------------------------*/
 
