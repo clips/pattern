@@ -672,8 +672,8 @@ class Parser(object):
         """
         return find_keywords(string,
                      parser = self,
-                        top = kwargs.get("top", 10),
-                  frequency = kwargs.get("frequency", {})
+                        top = kwargs.pop("top", 10),
+                  frequency = kwargs.pop("frequency", {}), **kwargs
         )
     
     def find_tokens(self, string, **kwargs):
@@ -902,7 +902,7 @@ RE_ABBR3 = re.compile("^[A-Z][" + "|".join( # capital followed by consonants, "M
 
 # Handle emoticons.
 EMOTICONS = { # (facial expression, sentiment)-keys
-    ("love" , +1.00): set(("<3", u"♥")),
+    ("love" , +1.00): set(("<3", u"♥", u"❤")),
     ("grin" , +1.00): set((">:D", ":-D", ":D", "=-D", "=D", "X-D", "x-D", "XD", "xD", "8-D")),
     ("taunt", +0.75): set((">:P", ":-P", ":P", ":-p", ":p", ":-b", ":b", ":c)", ":o)", ":^)")),
     ("smile", +0.50): set((">:)", ":-)", ":)", "=)", "=]", ":]", ":}", ":>", ":3", "8)", "8-)")),
@@ -1257,17 +1257,18 @@ def find_relations(chunked):
 
 #--- KEYWORDS EXTRACTION ---------------------------------------------------------------------------
 
-def find_keywords(string, parser, top=10, frequency={}):
+def find_keywords(string, parser, top=10, frequency={}, **kwargs):
     """ Returns a sorted list of keywords in the given string.
         The given parser (e.g., pattern.en.parser) is used to identify noun phrases.
         The given frequency dictionary can be a reference corpus,
         with relative document frequency (df, 0.0-1.0) for each lemma, 
         e.g., {"the": 0.8, "cat": 0.1, ...}
     """
+    lemmata = kwargs.pop("lemmata", kwargs.pop("stem", True))
     # Parse the string and extract noun phrases (NP).
     chunks = []
     wordcount = 0
-    for sentence in parser.parse(string, chunks=True, lemmata=True).split():
+    for sentence in parser.parse(string, chunks=True, lemmata=lemmata).split():
         for w in sentence: # ["cats", "NNS", "I-NP", "O", "cat"]
             if w[2] == "B-NP":
                 chunks.append([w])
@@ -1288,7 +1289,10 @@ def find_keywords(string, parser, top=10, frequency={}):
             chunk = list(reversed(chunk))
         for w in chunk:
             if w[1].startswith("NN"):
-                k = w[-1] # lemma
+                if lemmata:
+                    k = w[-1]
+                else:
+                    k = w[0].lower()
                 if not k in m:
                     m[k] = [0.0, set(), 1.0, 1.0, 1.0]
                 # Higher score for chunks that appear more frequently.
