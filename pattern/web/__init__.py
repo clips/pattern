@@ -19,6 +19,7 @@ import base64
 import htmlentitydefs
 import httplib
 import sgmllib
+import cookielib
 import re
 import xml.dom.minidom
 import StringIO
@@ -60,6 +61,50 @@ except:
 # Latin-1 assigns control codes in this range, Windows-1252 has characters, punctuation, symbols
 # assigned to these code points.
 
+GREMLINS = set([
+    0x0152, 0x0153, 0x0160, 0x0161, 0x0178, 0x017E, 0x017D, 0x0192, 0x02C6, 
+    0x02DC, 0x2013, 0x2014, 0x201A, 0x201C, 0x201D, 0x201E, 0x2018, 0x2019, 
+    0x2020, 0x2021, 0x2022, 0x2026, 0x2030, 0x2039, 0x203A, 0x20AC, 0x2122
+])
+
+def fix(s, ignore=u""):
+    """ Returns a Unicode string that fixes common encoding problems (Latin-1, Windows-1252).
+        For example: fix("clichÃ©") => u"cliché".
+    """
+    # http://blog.luminoso.com/2012/08/20/fix-unicode-mistakes-with-python/
+    if not isinstance(s, unicode):
+        s = s.decode("utf-8")
+    u = []
+    i = 0
+    for j, ch in enumerate(s):
+        if ch in ignore:
+            continue
+        if ord(ch) < 128: # ASCII
+            continue
+        if ord(ch) in GREMLINS:
+            ch = ch.encode("windows-1252")
+        else:
+            try:
+                ch = ch.encode("latin-1")
+            except:
+                ch = ch.encode("utf-8")
+        u.append(s[i:j].encode("utf-8"))
+        u.append(ch)
+        i = j + 1
+    u.append(s[i:].encode("utf-8"))
+    u = "".join(u)
+    u = u.decode("utf-8", "replace")
+    u = u.replace("\n", "\n ")
+    u = u.split(" ")
+    # Revert words that have the replacement character,
+    # i.e., fix("cliché") should not return u"clich�".
+    for i, (w1, w2) in enumerate(zip(s.split(" "), u)):
+        if u"\ufffd" in w2: # �
+            u[i] = w1
+    u = " ".join(u)
+    u = u.replace("\n ", "\n")
+    return u
+
 def decode_string(v, encoding="utf-8"):
     """ Returns the given value as a Unicode string (if possible).
     """
@@ -90,7 +135,7 @@ u = decode_utf8 = decode_string
 s = encode_utf8 = encode_string
 
 # For clearer source code:
-bytestring = s
+bytestring = b = s
 
 #### ASYNCHRONOUS REQUEST ##########################################################################
 
@@ -364,16 +409,20 @@ class URL(object):
             When an error occurs, raises a URLError (e.g. HTTP404NotFound).
         """
         url = self.string
-        # Use basic urllib.urlopen() instead of urllib2.urlopen() for local files.
+        # Handle local files with urllib.urlopen() instead of urllib2.urlopen().
         if os.path.exists(url):
             return urllib.urlopen(url)
-        # Get the query string as a separate parameter if method=POST.
+        # Handle method=POST with query string as a separate parameter.
         post = self.method == POST and self.querystring or None
         socket.setdefaulttimeout(timeout)
+        # Handle proxies and cookies.
+        handlers = []
         if proxy:
-            proxy = urllib2.ProxyHandler({proxy[1]: proxy[0]})
-            proxy = urllib2.build_opener(proxy, urllib2.HTTPHandler)
-            urllib2.install_opener(proxy)
+            handlers.append(urllib2.ProxyHandler({proxy[1]: proxy[0]}))
+        handlers.append(urllib2.HTTPCookieProcessor(cookielib.CookieJar()))
+        handlers.append(urllib2.HTTPHandler)
+        urllib2.install_opener(urllib2.build_opener(*handlers))
+        # Send request.
         try:
             request = urllib2.Request(bytestring(url), post, {
                         "User-Agent": user_agent,
