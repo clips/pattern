@@ -335,7 +335,11 @@ def flesch_reading_ease(string):
             n += int(v and not p)
             p = v
         return n
+    if not isinstance(string, basestring):
+        raise TypeError("%s is not a string" % repr(string))
     if len(string) <  3:
+        return 1.0
+    if len(string.split(" ")) < 2:
         return 1.0
     string = string.strip()
     string = string.strip("\"'().")
@@ -345,8 +349,8 @@ def flesch_reading_ease(string):
     string = string.replace(",", " ")
     string = " ".join(string.split())
     y = [count_syllables(w) for w in string.split() if w != ""]
-    w = len([w for w in string.split(" ") if w != ""])
-    s = len([s for s in string.split(".") if len(s) > 2])
+    w = max(1, len([w for w in string.split(" ") if w != ""]))
+    s = max(1, len([s for s in string.split(".") if len(s) > 2]))
     #R = 206.835 - 1.015 * w/s - 84.6 * sum(y)/w
     # Use the Farr, Jenkins & Patterson algorithm,
     # which uses simpler syllable counting (count_syllables() is the weak point here). 
