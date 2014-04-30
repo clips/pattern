@@ -130,6 +130,20 @@ class TestParser(unittest.TestCase):
         self.assertEqual(p.parse("cats"), "cats/NNS/B-NP/O")
         self.assertEqual(p.parse("to saw"), "to/TO/B-VP/O saw/VB/I-VP/O")
         
+    def test_find_keywords(self):
+        # Assert the intrinsic keyword extraction algorithm.
+        p = text.Parser()
+        p.lexicon["the"] = "DT"
+        p.lexicon["cat"] = "NN"
+        p.lexicon["dog"] = "NN"
+        v1 = p.find_keywords("the cat")
+        v2 = p.find_keywords("cat. cat. dog.")
+        v3 = p.find_keywords("cat. dog. dog.")
+        self.assertEqual(v1, ["cat"])
+        self.assertEqual(v2, ["cat", "dog"])
+        self.assertEqual(v3, ["dog", "cat"])
+        print "pattern.text.Parser.find_keywords()"
+        
     def test_find_tokens(self):
         # Assert the default tokenizer and its optional parameters.
         p = text.Parser()

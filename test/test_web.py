@@ -55,6 +55,13 @@ class TestUnicode(unittest.TestCase):
         for s in self.strings:
             self.assertTrue(isinstance(web.encode_utf8(s), str))
         print "pattern.web.encode_utf8()"
+        
+    def test_fix(self):
+        # Assert fix for common Unicode mistakes.
+        self.assertEqual(web.fix(u"clichÃ©"), u"cliché")
+        self.assertEqual(web.fix("clichÃ©"), u"cliché")
+        self.assertEqual(web.fix("cliché"), u"cliché")
+        self.assertEqual(web.fix("â€“"), u"–")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -1048,14 +1055,14 @@ def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCache))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestURL))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPlaintext))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSearchEngine))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDOM))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDocumentParser))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLocale))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMail))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCrawler))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestURL))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPlaintext))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSearchEngine))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDOM))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDocumentParser))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLocale))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMail))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCrawler))
     return suite
 
 if __name__ == "__main__":
