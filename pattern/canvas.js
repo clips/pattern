@@ -543,7 +543,7 @@ var geometry = new Geometry();
 
 var RGB = "RGB";
 var HSB = "HSB";
-var LCH = "LCH";
+var HCL = "HCL";
 var HEX = "HEX";
 
 var Color = Class.extend({
@@ -555,8 +555,13 @@ var Color = Class.extend({
          * two parameters (grayscale and alpha) or one parameter (grayscale or Color object).
          * An optional {base: 1.0, colorspace: RGB} can be used with four parameters.
          */
-        // One value, another color object.
-        if (r instanceof Color) {
+        var base = options && options.base || 1.0;
+        var colorspace = options && options.colorspace || RGB;
+        // One value, a hexadecimal string.
+		if (r && r.match && r.match(/^#/)) {
+			colorspace = HEX;
+		// One value, another color object.
+		} else if (r instanceof Color) {
             g=r.g; b=r.b; a=r.a; r=r.r;
         // One value, array with R,G,B,A values.
         } else if (r instanceof Array) {
@@ -574,27 +579,37 @@ var Color = Class.extend({
         } else if (a === undefined || a == null) {
             a=1;
         }
-        if (options) {
-            // Transform to base 1:
-            if (options.base !== undefined) {
-                r/=options.base; g/=options.base; b/=options.base; a/=options.base;
-            }
-            // Transform from color space HEX:
-            if (options.colorspace == HEX) {
-                var rgb = _hex2rgb(r); r=rgb[0]; g=rgb[1]; b=rgb[2]; a=1;
-            // Transform from color space HSB:
-			} else if (options.colorspace == HSB) {
-                var rgb = _hsb2rgb(r, g, b); r=rgb[0]; g=rgb[1]; b=rgb[2];
-            // Transform from color space LCH:
-			} else if (options.colorspace == LCH) {
-                var rgb = _lch2rgb(r, g, b); r=rgb[0]; g=rgb[1]; b=rgb[2];
-            } 
-        }
+		// Transform to base 1.
+		if (base != 1) {
+			r /= base;
+			g /= base;
+			b /= base;
+			a /= base;
+		}
+		// Transform to base (0.0-1.0).
+		if (colorspace != HEX) {
+			r = (r < 0)? 0 : (r > 1)? 1 : r;
+			g = (g < 0)? 0 : (g > 1)? 1 : g;
+			b = (b < 0)? 0 : (b > 1)? 1 : b;
+			a = (a < 0)? 0 : (a > 1)? 1 : a;
+		}
+		// Transform to RGB.
+		if (colorspace != RGB) {
+			if (colorspace == HEX) {
+				var rgb = _hex2rgb(r); r=rgb[0]; g=rgb[1]; b=rgb[2]; a=1;
+			}
+			if (colorspace == HSB) {
+				var rgb = _hsb2rgb(r, g, b); r=rgb[0]; g=rgb[1]; b=rgb[2];
+			}
+			if (colorspace == HCL) {
+				var rgb = _hcl2rgb(r, g, b); r=rgb[0]; g=rgb[1]; b=rgb[2];
+			}
+		}
         this.r = r;
         this.g = g;
         this.b = b;
         this.a = a;
-    },
+	},
 
     rgb: function() {
         return [this.r, this.g, this.b];
@@ -632,11 +647,11 @@ var Color = Class.extend({
         if (colorspace == HSB) {
             rgb = _rgb2hsb(r, g, b); r=rgb[0]; g=rgb[1]; b=rgb[2];
         }
-        if (colorspace == LCH) {
-            rgb = _rgb2lch(r, g, b); r=rgb[0]; g=rgb[1]; b=rgb[2];
+        if (colorspace == HCL) {
+            rgb = _rgb2hcl(r, g, b); r=rgb[0]; g=rgb[1]; b=rgb[2];
         }
         if (base != 1) {
-            return [r*base, g*base, b*base, a*base];
+            return [r * base, g * base, b * base, a * base];
         }
         return [r, g, b, a];
     },
@@ -903,8 +918,8 @@ function _lch2lab(l, c, h) {
 	return [l, a, b];
 }
 
-function _rgb2lch(r, g, b) {
-    /* Returns an array [L,C,H] (0.0-1.0) from the given R,G,B values.
+function _rgb2hcl(r, g, b) {
+    /* Returns an array [H,C,L] (0.0-1.0) from the given R,G,B values.
      */
 	var xyz = _rgb2xyz(r, g, b);
 	var lab = _xyz2lab(xyz[0], xyz[1], xyz[2]);
@@ -912,15 +927,15 @@ function _rgb2lch(r, g, b) {
 	lch[0] /= 100;
 	lch[1] /= 100;
 	lch[2] /= 360;
-	return lch;
+	return [lch[2], lch[1], lch[0]];
 }
 
-function _lch2rgb(l, c, h) {
-    /* Returns an array [R,G,B] (0.0-1.0) from the given L,C,H values.
+function _hcl2rgb(h, c, l) {
+    /* Returns an array [R,G,B] (0.0-1.0) from the given H,C,L values.
      */
-	l *= 100;
+	h *= 360;
 	c *= 100;
-	h *= 350;
+	l *= 100;
 	var lab = _lch2lab(l, c, h);
 	var xyz = _lab2xyz(lab[0], lab[1], lab[2]);
 	return _xyz2rgb(xyz[0], xyz[1], xyz[2]);
@@ -951,10 +966,10 @@ var lighten = lighter;
 
 function colors(colors, k, colorspace) {
 	/* Returns a new array with k colors,
-	   by calculating intermediary colors in the given colorspace.
+	   by calculating intermediary colors in the given colorspace (by default, HCL).
 	 */
 	if (k === undefined) k = 100;
-	if (colorspace === undefined) colorspace = LCH;
+	if (colorspace === undefined) colorspace = HCL;
 	var a = Array.map(colors, function(clr) { return clr.map({colorspace: colorspace}); });
 	var b = [];
 	var x, y, t, n = a.length - 1;
@@ -963,10 +978,10 @@ function colors(colors, k, colorspace) {
 		y = Math.min(x + 1, n);
 		t = (i - x * k / n) / (k / n);
 		b.push(new Color(
-			a[x][0] * (1-t) + a[y][0] * t,
-			a[x][1] * (1-t) + a[y][1] * t,
-			a[x][2] * (1-t) + a[y][2] * t, 
-			a[x][3] * (1-t) + a[y][3] * t, {colorspace: colorspace}
+			geometry.lerp(a[x][0], a[y][0], t),
+			geometry.lerp(a[x][1], a[y][1], t),
+			geometry.lerp(a[x][2], a[y][2], t),
+			geometry.lerp(a[x][3], a[y][3], t), {colorspace: colorspace}
 		));
 	}
 	if (k > 0) {
