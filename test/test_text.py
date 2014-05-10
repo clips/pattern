@@ -48,6 +48,23 @@ class TestLexicon(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+class TestFrequency(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+        
+    def test_frequency(self):
+        # Assert word frequency from file (or file-like string).
+        f1 = u";;; Comments. \n the 1.0000 \n of 0.5040"
+        f2 = StringIO.StringIO(u";;; Comments. \n the 1.0000 \n of 0.5040")
+        v1 = text.Frequency(path=f1)
+        v2 = text.Frequency(path=f2)
+        self.assertEqual(v1[u"of"], 0.504)
+        self.assertEqual(v2[u"of"], 0.504)
+        print "pattern.text.Frequency"
+
+#---------------------------------------------------------------------------------------------------
+
 class TestModel(unittest.TestCase):
     
     def setUp(self):
@@ -139,8 +156,10 @@ class TestParser(unittest.TestCase):
         v1 = p.find_keywords("the cat")
         v2 = p.find_keywords("cat. cat. dog.")
         v3 = p.find_keywords("cat. dog. dog.")
+        v4 = p.find_keywords("the. cat. dog.", frequency={"cat": 1.0, "dog": 0.0})
         self.assertEqual(v1, ["cat"])
         self.assertEqual(v2, ["cat", "dog"])
+        self.assertEqual(v3, ["dog", "cat"])
         self.assertEqual(v3, ["dog", "cat"])
         print "pattern.text.Parser.find_keywords()"
         
@@ -236,6 +255,7 @@ class TestMultilingual(unittest.TestCase):
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLexicon))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestFrequency))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestModel))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMorphology))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestContext))

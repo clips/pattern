@@ -239,6 +239,25 @@ class Lexicon(lazydict):
         # Arnold NNP x
         dict.update(self, (x.split(" ")[:2] for x in _read(self._path)))
 
+#--- FREQUENCY -------------------------------------------------------------------------------------
+
+class Frequency(lazydict):
+    
+    def __init__(self, path=""):
+        """ A dictionary of words and their relative document frequency.
+        """
+        self._path = path
+
+    @property
+    def path(self):
+        return self._path
+
+    def load(self):
+        # and 0.4805
+        for x in _read(self.path):
+            x = x.split()
+            dict.__setitem__(self, x[0], float(x[1]))
+
 #--- LANGUAGE MODEL --------------------------------------------------------------------------------
 # A language model determines the statistically most probable tag for an unknown word.
 # A pattern.vector Classifier such as SLP can be used to produce a language model,
@@ -628,7 +647,7 @@ PTB = PENN = "penn"
 
 class Parser(object):
 
-    def __init__(self, lexicon={}, model=None, morphology=None, context=None, entities=None, default=("NN", "NNP", "CD"), language=None):        
+    def __init__(self, lexicon={}, frequency={}, model=None, morphology=None, context=None, entities=None, default=("NN", "NNP", "CD"), language=None):        
         """ A simple shallow parser using a Brill-based part-of-speech tagger.
             The given lexicon is a dictionary of known words and their part-of-speech tag.
             The given default tags are used for unknown words.
@@ -640,6 +659,7 @@ class Parser(object):
             Germanic and Romance languages for phrase chunking.
         """
         self.lexicon    = lexicon or {}
+        self.frequency  = frequency or {}
         self.model      = model
         self.morphology = morphology
         self.context    = context
@@ -651,6 +671,9 @@ class Parser(object):
         if f(lexicon):
             # Known words.
             self.lexicon = Lexicon(path=lexicon)
+        if f(frequency):
+            # Word frequency.
+            self.frequency= Frequency(path=frequency)
         if f(morphology):
             # Unknown word rules based on word suffix.
             self.morphology = Morphology(path=morphology, known=self.lexicon)
@@ -1308,8 +1331,12 @@ def find_keywords(string, parser, top=10, frequency={}, **kwargs):
                 head = False
     # Rate tf-idf if a frequency dict is given.
     for k in m:
-        df = frequency.get(k, 0.0)
-        df = log(1.0 / df, 2.71828) if df else 1.0
+        if frequency:
+            df = frequency.get(k, 0.0)
+            df = max(df, 1e-10)
+            df = log(1.0 / df, 2.71828)
+        else:
+            df = 1.0
         m[k][0] = max(1e-10, m[k][0] * df)
         m[k][1] = 1 + float(len(m[k][1]))
     # Sort candidates alphabetically by total score
