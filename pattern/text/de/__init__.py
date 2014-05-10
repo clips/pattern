@@ -215,8 +215,9 @@ class Parser(_Parser):
         return [[w] + tokens_ss[i][1:] for i, w in enumerate(tokens)]
 
 parser = Parser(
-     lexicon = os.path.join(MODULE, "de-lexicon.txt"), 
-  morphology = os.path.join(MODULE, "de-morphology.txt"), 
+     lexicon = os.path.join(MODULE, "de-lexicon.txt"),
+   frequency = os.path.join(MODULE, "de-frequency.txt"),
+  morphology = os.path.join(MODULE, "de-morphology.txt"),
      context = os.path.join(MODULE, "de-context.txt"),
      default = ("NN", "NE", "CARDNUM"),
     language = "de"
@@ -256,7 +257,7 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
 def keywords(s, top=10, **kwargs):
     """ Returns a sorted list of keywords in the given string.
     """
-    return parser.find_keywords(s, top=top, frequency={})
+    return parser.find_keywords(s, top=top, frequency=parser.frequency)
 
 split = tree # Backwards compatibility.
 

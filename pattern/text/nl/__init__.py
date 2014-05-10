@@ -158,9 +158,10 @@ class Sentiment(_Sentiment):
                     self.annotate(attributive(w), "JJ", p, s, i)
 
 parser = Parser(
-     lexicon = os.path.join(MODULE, "nl-lexicon.txt"), 
-  morphology = os.path.join(MODULE, "nl-morphology.txt"), 
-     context = os.path.join(MODULE, "nl-context.txt"), 
+     lexicon = os.path.join(MODULE, "nl-lexicon.txt"),
+   frequency = os.path.join(MODULE, "nl-frequency.txt"),
+  morphology = os.path.join(MODULE, "nl-morphology.txt"),
+     context = os.path.join(MODULE, "nl-context.txt"),
      default = ("N(soort,ev,neut)", "N(eigen,ev)", "Num()"),
     language = "nl"
 )
@@ -209,7 +210,7 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
 def keywords(s, top=10, **kwargs):
     """ Returns a sorted list of keywords in the given string.
     """
-    return parser.find_keywords(s, top=top, frequency={})
+    return parser.find_keywords(s, top=top, frequency=parser.frequency)
     
 def polarity(s, **kwargs):
     """ Returns the sentence polarity (positive/negative) between -1.0 and 1.0.

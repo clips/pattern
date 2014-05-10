@@ -132,10 +132,11 @@ class Parser(_Parser):
 # (noun, proper noun, numeric).
 
 parser = Parser(
-     lexicon = os.path.join(MODULE, "xx-lexicon.txt"), 
-  morphology = os.path.join(MODULE, "xx-morphology.txt"), 
-     context = os.path.join(MODULE, "xx-context.txt"),
-    entities = os.path.join(MODULE, "xx-entities.txt"),
+     lexicon = os.path.join(MODULE, "xx-lexicon.txt"),    # A dict of known words => most frequent tag.
+   frequency = os.path.join(MODULE, "xx-frequency.txt"),  # A dict of word frequency.
+  morphology = os.path.join(MODULE, "xx-morphology.txt"), # A set of suffix rules.
+     context = os.path.join(MODULE, "xx-context.txt"),    # A set of contextual rules.
+    entities = os.path.join(MODULE, "xx-entities.txt"),   # A dict of named entities: John = NNP-PERS.
      default = ("NN", "NNP", "CD"),
     language = "xx"
 )
@@ -191,7 +192,7 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
 def keywords(s, top=10, **kwargs):
      """ Returns a sorted list of keywords in the given string.
      """
-     return parser.find_keywords(s, top=top, frequency={})
+     return parser.find_keywords(s, top=top, frequency=parser.frequency)
      
 def polarity(s, **kwargs):
     """ Returns the sentence polarity (positive/negative) between -1.0 and 1.0.

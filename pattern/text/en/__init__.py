@@ -120,11 +120,12 @@ class Sentiment(_Sentiment):
                     self.annotate(w + "ly", "RB", p, s, i)
 
 parser = Parser(
-     lexicon = os.path.join(MODULE, "en-lexicon.txt"),    # A dict of known words -> most frequent tag.
+     lexicon = os.path.join(MODULE, "en-lexicon.txt"),    # A dict of known words => most frequent tag.
+   frequency = os.path.join(MODULE, "en-frequency.txt"),  # A dict of word frequency.
        model = os.path.join(MODULE, "en-model.slp"),      # A SLP classifier trained on WSJ (01-07).
   morphology = os.path.join(MODULE, "en-morphology.txt"), # A set of suffix rules (e.g., -ly = adverb).
      context = os.path.join(MODULE, "en-context.txt"),    # A set of contextual rules.
-    entities = os.path.join(MODULE, "en-entities.txt"),   # A dict of named entities: Bill = NNP-PERS.
+    entities = os.path.join(MODULE, "en-entities.txt"),   # A dict of named entities: John = NNP-PERS.
      default = ("NN", "NNP", "CD"),
     language = "en"
 )
@@ -177,7 +178,7 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
 def keywords(s, top=10, **kwargs):
     """ Returns a sorted list of keywords in the given string.
     """
-    return parser.find_keywords(s, top=top, frequency={})
+    return parser.find_keywords(s, top=top, frequency=kwargs.get("frequency", parser.frequency))
 
 def suggest(w):
     """ Returns a list of (word, confidence)-tuples of spelling corrections.

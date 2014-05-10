@@ -194,8 +194,9 @@ class Parser(_Parser):
         return _Parser.find_tags(self, tokens, **kwargs)
 
 parser = Parser(
-     lexicon = os.path.join(MODULE, "es-lexicon.txt"), 
-  morphology = os.path.join(MODULE, "es-morphology.txt"), 
+     lexicon = os.path.join(MODULE, "es-lexicon.txt"),
+   frequency = os.path.join(MODULE, "es-frequency.txt"),
+  morphology = os.path.join(MODULE, "es-morphology.txt"),
      context = os.path.join(MODULE, "es-context.txt"),
      default = ("NCS", "NP", "Z"),
     language = "es"
@@ -235,7 +236,7 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
 def keywords(s, top=10, **kwargs):
     """ Returns a sorted list of keywords in the given string.
     """
-    return parser.find_keywords(s, top=top, frequency={})
+    return parser.find_keywords(s, top=top, frequency=parser.frequency)
 
 split = tree # Backwards compatibility.
 
