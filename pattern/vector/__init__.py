@@ -32,9 +32,9 @@ import cPickle
 import gzip
 import types
 
-from math        import log, exp, sqrt
+from math        import log, exp, sqrt, tanh
 from time        import time
-from random      import random, randint, choice, sample, seed
+from random      import random, randint, uniform, choice, sample, seed
 from itertools   import chain
 from bisect      import insort
 from operator    import itemgetter
@@ -2047,11 +2047,12 @@ class Classifier(object):
         # Backwards compatibility.
         # In Pattern 2.5-, Classifier.test() is a classmethod.
         # In Pattern 2.6+, it is replaced with Classifier._test() once instantiated.
+        corpus = kwargs.pop("documents", kwargs.pop("train", corpus))
         if folds > 1:
             return K_fold_cross_validation(cls, documents=corpus, folds=folds, **kwargs)
         i = int(round(max(0.0, min(1.0, d)) * len(corpus)))
         d = shuffled(corpus)
-        return cls(train=d[:i]).test(d[i:])
+        return cls(train=d[:i], **kwargs).test(d[i:])
     
     def _test(self, documents=[], target=None, **kwargs):
         """ Returns an (accuracy, precision, recall, F1-score)-tuple for the given documents,
@@ -2478,7 +2479,8 @@ class IGTree(Classifier):
         # Daelemans, W., van den Bosch, A., Weijters, T. (1997).
         # IGTree: Using trees for compression and classification in lazy learning algorithms.
         # Artificial Intelligence Review 11, 407-423.
-        #
+        vectors = list(vectors)
+        features = list(features)
         if len(vectors) == 0 or len(features) == 0:
             return IGTreeNode()
         # {class: count}
@@ -2571,10 +2573,16 @@ class SLP(Classifier):
             for the given inputs (i.e., document vector features).
             A feature is taken to occur in a vector (1) or not (0), i.e. BINARY weight.
         """
-        self._weight    = defaultdict(dict) # {class: {feature: (weight, weight sum, timestamp)}}
-        self._iteration = 0
+        self._weight     = defaultdict(dict) # {class: {feature: (weight, weight sum, timestamp)}}
+        self._iterations = iterations
+        self._iteration  = 0
+        train = list(train)
         train = chain(*(shuffled(train) for i in range(iterations)))
         Classifier.__init__(self, train, baseline)
+
+    @property
+    def iterations(self):
+        return self._iterations
 
     @property
     def features(self):
@@ -2639,8 +2647,14 @@ class SLP(Classifier):
             return choice(p)
         except:
             return self.baseline
+            
+    def finalize(self):
+        """ Removes training data from memory, keeping only the node weights,
+            reducing file size with Classifier.save().
+        """
+        self._vectors = []
 
-ANN = NN = AP = AveragedPerceptron = Perceptron = SLP
+AP = AveragedPerceptron = Perceptron = SLP
 
 # Perceptron learns one training example at a time,
 # adjusting weights if the example is predicted wrong.
@@ -2652,6 +2666,196 @@ ANN = NN = AP = AveragedPerceptron = Perceptron = SLP
 #for i in range(5):
 #    for v in shuffled(data):
 #        p.train(v)
+
+#--- BACKPROPAGATION NEURAL NETWORK -----------------------------------------------------------------
+# "Deep learning" refers to deep neural networks and deep belief systems.
+# Deep neural networks are networks that have hidden layers between the input and output layers.
+# By contrast, Perceptron directly feeds the input to the output layer.
+
+# Weight initialization:
+RANDOM = "random"
+
+def matrix(m, n, a=0.0, b=0.0):
+    """ Returns an n x m matrix with values 0.0.
+        If a and b are given, values are uniformly random between a and b.
+    """
+    if a == b == 0:
+        return [[0.0] * n for i in xrange(m)]
+    return [[uniform(a, b) for j in xrange(n)] for i in xrange(m)]
+
+def sigmoid(x):
+    """ Forward propagation activation function.
+    """
+    #return 1.0 / (1.0 + math.exp(-x))
+    return tanh(x)
+        
+def dsigmoid(y):
+    """ Backward propagation activation function derivative.
+    """
+    #return y * (1.0 - y)
+    return 1.0 - y * y
+
+class BPNN(Classifier):
+    
+    def __init__(self, train=[], baseline=MAJORITY, layers=2, iterations=1000, **kwargs):
+        """ Backpropagation neural network (BPNN) is a supervised learning method 
+            bases on a network of interconnected neurons
+            inspired by an animal's nervous system (i.e., the brain).
+        """
+        # Based on:
+        # http://www.cs.pomona.edu/classes/cs30/notes/cs030neural.py
+        # http://arctrix.com/nas/python/bpnn.py
+        self._layers     = layers
+        self._iterations = iterations
+        self._rate       = kwargs.get("rate", 0.5)
+        self._momentum   = kwargs.get("momentum", 0.1)
+        self._trained    = False
+        Classifier.__init__(self, train, baseline)
+
+    @property
+    def layers(self):
+        return self._layers
+    @property
+    def iterations(self):
+        return self._iterations
+    @property
+    def rate(self):
+        return self._rate
+    @property
+    def momentum(self):
+        return self._momentum
+    
+    learningrate = learning_rate = rate
+
+    def _weight_initialization(self, i=1, o=1, hidden=1, method=RANDOM, a=0.0, b=1.0):
+        """ Initializes the network with the given number of input, hidden, output nodes.
+            Initializes the node weights uniformly random between a and b.
+        """
+        i += 1 # bias
+        # Node activation.
+        self._ai = [1.0] * i
+        self._ao = [1.0] * o
+        self._ah = [1.0] * hidden
+        # Node weights (w) and recent change (c).
+        self._wi = matrix(i, hidden, a, b)
+        self._ci = matrix(i, hidden)
+        self._wo = matrix(hidden, o, a, b)
+        self._co = matrix(hidden, o)
+
+    def _propagate_forward(self, input=[]):
+        """ Propagates the input through the network and returns the output activiation.
+        """
+        ai, ao, ah, wi, wo = self._ai,  self._ao, self._ah, self._wi, self._wo
+        assert len(input) == len(ai) - 1
+        # Activate input nodes.
+        for i, v in enumerate(input):
+            ai[i] = v
+        # Activate hidden nodes.
+        for j, v in enumerate(ah):
+            ah[j] = sigmoid(sum((v * wi[i][j] for i, v in enumerate(ai))))
+        # Activate output nodes.
+        for k, v in enumerate(ao):
+            ao[k] = sigmoid(sum((v * wo[j][k] for j, v in enumerate(ah))))
+        return list(ao)
+
+    def _propagate_backward(self, output=[], rate=0.5, momentum=0.1):
+        """ Propagates the output through the network and
+            generates delta for hidden and output nodes.
+            The learning rate determines speed vs. accuracy of the algorithm.
+        """
+        ai, ao, ah, wi, wo, ci, co = self._ai,  self._ao, self._ah, self._wi, self._wo, self._ci, self._co
+        # Compute delta for output nodes.
+        do = [0.0] * len(ao)
+        for k, v in enumerate(ao):
+            error = output[k] - v
+            do[k] = error * dsigmoid(v)
+        # Compute delta for hidden nodes.
+        dh = [0.0] * len(ah)
+        for j, v in enumerate(ah):
+            error = sum(do[k] * wo[j][k] for k in range(len(ao)))
+            dh[j] = error * dsigmoid(v)
+        # Update output weights.
+        for j, v1 in enumerate(ah):
+            for k, v2 in enumerate(ao):
+                change = do[k] * v1
+                wo[j][k] += rate * change + momentum * co[j][k]
+                co[j][k] = change
+        # Update input weight.
+        for i, v1 in enumerate(ai):
+            for j, v2 in enumerate(ah):
+                change = dh[j] * v1
+                wi[i][j] += rate * change + momentum * ci[i][j]
+                ci[i][j] = change
+        # Compute and return error.
+        return sum(0.5 * (output[k] - v) ** 2 for k, v in enumerate(ao))
+        
+    _backprop = _propagate_backward
+        
+    def _train(self, data=[], iterations=1000, rate=0.5, momentum=0.1):
+        """ Trains the network with the given data using backpropagation.
+            The given data is a list of (input, output)-tuples, 
+            where each input and output a list of values.
+            For example, to learn the XOR-function:
+            nn = BPNN()
+            nn._weight_initialization(2, 1, hidden=2)
+            nn._train([
+                ([0,0], [0]),
+                ([0,1], [1]),
+                ([1,0], [1]),
+                ([1,1], [0])
+            ])
+            print(nn._classify([0,0]))
+            print(nn._classify([0,1]))
+        """
+        # Error decreases with each iteration.
+        for i in range(iterations):
+            error = 0.0
+            for input, output in data:
+                self._propagate_forward(input)
+                error += self._propagate_backward(output, rate, momentum)
+                
+    def _classify(self, input):
+        return self._propagate_forward(input)
+
+    def train(self, document, type=None):
+        """ Trains the classifier with the given document of the given type (i.e., class).
+            A document can be a Document, Vector, dict, list or string.
+            If no type is given, Document.type will be used instead.
+        """
+        Classifier.train(self, document, type)
+        self._trained = False
+
+    def classify(self, document, discrete=True):
+        """ Returns the type with the highest probability for the given document.
+            If the classifier has been trained on LSA concept vectors
+            you need to supply LSA.transform(document).
+        """
+        if not self._trained:
+            # Batch learning (we need to know the number of features in advance).
+            n  = float(len(self.classes)) - 1
+            H1 = list(sorted(self.features))
+            H2 = dict((x, i/n) for i, x in enumerate(self.classes))  # Class => float hash (0.0-1.0).
+            H3 = dict((i/n, x) for i, x in enumerate(self.classes))  # Class reversed hash.
+            v  = [([v.get(f, 0.0) for f in H1], [H2[type]]) for type, v in self._vectors]
+            self._h = (H1, H2, H3)
+            self._weight_initialization(i=len(H1), o=1, hidden=self._layers, a=0.0, b=1.0)
+            self._train(v, self._iterations, self._rate, self._momentum)
+            self._trained = True
+        H1, H2, H3 = self._h
+        v = self._vector(document)[1]
+        i = [v.get(f, 0.0) for f in H1]
+        o = self._classify(i)[0]
+        c = min(H3.keys(), key=lambda k: abs(k - o))
+        c = H3[c]
+        return c
+
+    def finalize(self):
+        """ Removes training data from memory, keeping only the node weights,
+            reducing file size with Classifier.save().
+        """
+        self._vectors = []
+
+ANN = NN = NeuralNetwork = BPNN
 
 #--- SUPPORT VECTOR MACHINE ------------------------------------------------------------------------
 # Pattern comes bundled with LIBSVM 3.17:
