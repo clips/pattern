@@ -2327,7 +2327,12 @@ class DatasheetColumns(list):
     
     def sort(self, cmp=None, key=None, reverse=False, order=None):
         # This makes most sense if the order in which columns should appear is supplied.
-        o = order and order or _order(self, cmp, key, reverse)
+        if order and reverse is True:
+            o = list(reversed(order))
+        if order and reverse is False:
+            o = list(order)
+        if not order:
+            o = _order(self, cmp, key, reverse)
         for i, row in enumerate(self._datasheet):
             # The main difficulty is modifying each row in-place,
             # since other variables might be referring to it.
