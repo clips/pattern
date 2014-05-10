@@ -205,7 +205,7 @@ class odict(dict):
         """ Adds a new item from the given (key, value)-tuple.
             If the key exists, pushes the updated item to the head of the dict.
         """
-        if k in self: 
+        if kv[0] in self: 
             self.__delitem__(kv[0])
         self.__setitem__(kv[0], kv[1])
     append = push
@@ -699,7 +699,7 @@ class Pattern(object):
         # - Pattern.greedy(chunk, constraint) determines (True/False) if a chunk is a match.
         self.strict = kwargs.get("strict", STRICT in args and not GREEDY in args)
         self.greedy = kwargs.get("greedy", lambda chunk, constraint: True)
-        
+
     def __iter__(self):
         return iter(self.sequence)
     def __len__(self):
@@ -781,11 +781,13 @@ class Pattern(object):
     def search(self, sentence):
         """ Returns a list of all matches found in the given sentence.
         """
-        if isinstance(sentence, list) or sentence.__class__.__name__ == "Text":
+        if sentence.__class__.__name__ == "Sentence":
+            pass
+        elif isinstance(sentence, list) or sentence.__class__.__name__ == "Text":
             a=[]; [a.extend(self.search(s)) for s in sentence]; return a
-        if isinstance(sentence, basestring):
+        elif isinstance(sentence, basestring):
             sentence = Sentence(sentence)
-        if isinstance(sentence, Match) and len(sentence) > 0:
+        elif isinstance(sentence, Match) and len(sentence) > 0:
             sentence = sentence[0].sentence.slice(sentence[0].index, sentence[-1].index + 1)
         a = []
         v = self._variations()
@@ -799,11 +801,13 @@ class Pattern(object):
     def match(self, sentence, start=0, _v=None, _u=None):
         """ Returns the first match found in the given sentence, or None.
         """
-        if isinstance(sentence, list) or sentence.__class__.__name__ == "Text":
+        if sentence.__class__.__name__ == "Sentence":
+            pass
+        elif isinstance(sentence, list) or sentence.__class__.__name__ == "Text":
             return find(lambda m,s: m is not None, ((self.match(s, start, _v), s) for s in sentence))[0]
-        if isinstance(sentence, basestring):
+        elif isinstance(sentence, basestring):
             sentence = Sentence(sentence)
-        if isinstance(sentence, Match) and len(sentence) > 0:
+        elif isinstance(sentence, Match) and len(sentence) > 0:
             sentence = sentence[0].sentence.slice(sentence[0].index, sentence[-1].index + 1)
         # Variations (_v) further down the list may match words more to the front.
         # We need to check all of them. Unmatched variations are blacklisted (_u).
@@ -841,9 +845,9 @@ class Pattern(object):
         
         if map is None:
             map = {}
-            
+        
         n = len(sequence)
-            
+        
         # --- MATCH ----------
         if i == n:
             if w0 is not None:
@@ -915,10 +919,11 @@ _cache = {}
 _CACHE_SIZE = 100 # Number of dynamic Pattern objects to keep in cache.
 def compile(pattern, *args, **kwargs):
     """ Returns a Pattern from the given string or regular expression.
-        Recently compiled patterns are kept in cache.
+        Recently compiled patterns are kept in cache
+        (if they do not use taxonomies, which are mutable dicts).
     """
     id, p = repr(pattern) + repr(args), pattern
-    if id in _cache:
+    if id in _cache and not kwargs:
         return _cache[id]
     if isinstance(pattern, basestring):
         p = Pattern.fromstring(pattern, *args, **kwargs)
@@ -926,8 +931,9 @@ def compile(pattern, *args, **kwargs):
         p = Pattern([Constraint(words=[pattern], taxonomy=kwargs.get("taxonomy", TAXONOMY))], *args, **kwargs)
     if len(_cache) > _CACHE_SIZE:
         _cache.clear()
-    if isinstance(p, Pattern):
+    if isinstance(p, Pattern) and not kwargs:
         _cache[id] = p
+    if isinstance(p, Pattern):
         return p
     else:
         raise TypeError("can't compile '%s' object" % pattern.__class__.__name__)
