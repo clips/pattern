@@ -22,11 +22,12 @@ import sgmllib
 import cookielib
 import re
 import xml.dom.minidom
+import string
 import StringIO
 import bisect
 import itertools
 import new
-import string
+
 import api
 import feed
 import oauth
@@ -2087,7 +2088,7 @@ class MediaWikiSection(object):
         # ArticleSection.string, minus the title.
         s = self.plaintext()
         t = plaintext(self.title)
-        if s == t or (len(s) > len(t)) and s.startswith(t) and s[len(t)] not in string.punctuation+" ":
+        if s == t or (len(s) > len(t)) and s.startswith(t) and s[len(t)] not in string.punctuation + " ":
             return s[len(t):].lstrip()
         return s
 
