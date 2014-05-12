@@ -70,7 +70,7 @@ an hour</pre></div>
 <p>&nbsp;</p>
 <hr />
 <h2><a name="pluralization"></a>Pluralization + singularization</h2>
-<p>The <span class="inline_code">pluralize()</span> function returns the singular form of a plural noun. The <span class="inline_code">singularize()</span> function returns the plural form of a singular noun. The <span class="inline_code">pos</span> parameter (part-of-speech) can be set to <span class="inline_code">NOUN</span> or <span class="inline_code">ADJECTIVE</span>, but only a small number of possessive adjectives inflect (e.g. <em>my</em> → <em>our</em>). The <span class="inline_code">custom</span> dictionary is for user-defined replacements. Accuracy of the algorithms is 96%.</p>
+<p>The <span class="inline_code">pluralize()</span> function returns the plural form of a singular noun. The <span class="inline_code">singularize()</span> function returns the singular form of a plural noun. The <span class="inline_code">pos</span> parameter (part-of-speech) can be set to <span class="inline_code">NOUN</span> or <span class="inline_code">ADJECTIVE</span>, but only a small number of possessive adjectives inflect (e.g. <em>my</em> → <em>our</em>). The <span class="inline_code">custom</span> dictionary is for user-defined replacements. Accuracy of the algorithms is 96%.</p>
 <pre class="brush:python; gutter:false; light:true;">pluralize(word, pos=NOUN, custom={}, classical=True)</pre><pre class="brush:python; gutter:false; light:true;">singularize(word, pos=NOUN, custom={})</pre><div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.en import pluralize, singularize
 &gt;&gt;&gt;  
