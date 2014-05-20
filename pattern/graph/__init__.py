@@ -7,6 +7,7 @@
 ####################################################################################################
 
 import os
+import sys
 
 from math     import sqrt, pow
 from math     import sin, cos, atan2, degrees, radians, pi
@@ -20,6 +21,9 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
+    
+if sys.version > "3":
+    long = int
 
 # float("inf") doesn't work on windows.
 INFINITE = 1e20
@@ -89,7 +93,7 @@ def deepcopy(o):
     if isinstance(o, (list, tuple, set)):
         return o.__class__(deepcopy(v) for v in o)
     if isinstance(o, dict):
-        return dict((deepcopy(k), deepcopy(v)) for k,v in o.iteritems())
+        return dict((deepcopy(k), deepcopy(v)) for k,v in o.items())
     raise Exception("don't know how to copy %s" % o.__class__.__name__)
 
 #### NODE ##########################################################################################
@@ -489,7 +493,7 @@ class Graph(dict):
         if not isinstance(node, Node): 
             node = self[node]
         p = nodedict(self)
-        for id, path in dijkstra_shortest_paths(self, node.id, heuristic, directed).iteritems():
+        for id, path in dijkstra_shortest_paths(self, node.id, heuristic, directed).items():
             p[self[id]] = path and [self[id] for id in path] or None
         return p 
             
@@ -499,8 +503,8 @@ class Graph(dict):
             Node.weight is higher for nodes with a lot of (indirect) incoming traffic.
         """
         ec = eigenvector_centrality(self, normalized, reversed, rating, iterations, tolerance)
-        ec = nodedict(self, ((self[id], w) for id, w in ec.iteritems()))
-        for n, w in ec.iteritems(): 
+        ec = nodedict(self, ((self[id], w) for id, w in ec.items()))
+        for n, w in ec.items(): 
             n._weight = w
         return ec
             
@@ -510,8 +514,8 @@ class Graph(dict):
             Node.centrality is higher for nodes with a lot of passing traffic.
         """
         bc = brandes_betweenness_centrality(self, normalized, directed)
-        bc = nodedict(self, ((self[id], w) for id, w in bc.iteritems()))
-        for n, w in bc.iteritems(): 
+        bc = nodedict(self, ((self[id], w) for id, w in bc.items()))
+        for n, w in bc.items(): 
             n._centrality = w
         return bc
         
@@ -588,7 +592,7 @@ class Graph(dict):
         except TypeError:
             new = self.add_node(n.id, root=kwargs.get("root",False))
         new.__class__ = n.__class__
-        new.__dict__.update((k, deepcopy(v)) for k,v in n.__dict__.iteritems() 
+        new.__dict__.update((k, deepcopy(v)) for k,v in n.__dict__.items() 
             if k not in ("graph", "links", "_x", "_y", "force", "_weight", "_centrality"))
     
     def _add_edge_copy(self, e, **kwargs):
@@ -599,7 +603,7 @@ class Graph(dict):
             kwargs.get("node1", self[e.node1.id]), 
             kwargs.get("node2", self[e.node2.id]))
         new.__class__ = e.__class__
-        new.__dict__.update((k, deepcopy(v)) for k,v in e.__dict__.iteritems()
+        new.__dict__.update((k, deepcopy(v)) for k,v in e.__dict__.items()
             if k not in ("node1", "node2"))
     
     def copy(self, nodes=ALL):
@@ -858,7 +862,7 @@ def dijkstra_shortest_path(graph, id1, id2, heuristic=None, directed=False):
         if n1 == id2:
             return list(flatten(path))[::-1] + [n1]
         path = (n1, path)
-        for (n2, cost2) in G[n1].iteritems():
+        for (n2, cost2) in G[n1].items():
             if n2 not in visited:
                 heappush(q, (cost1 + cost2, n2, path))
 
@@ -881,7 +885,7 @@ def dijkstra_shortest_paths(graph, id, heuristic=None, directed=False):
         (dist, v) = heappop(Q)
         if v in D: continue
         D[v] = dist
-        for w in W[v].iterkeys():
+        for w in W[v].keys():
             vw_dist = D[v] + W[v][w]
             if w not in D and (w not in seen or vw_dist < seen[w]):
                 seen[w] = vw_dist
@@ -925,7 +929,7 @@ def floyd_warshall_all_pairs_distance(graph, heuristic=None, directed=False):
         def __init__(self, predecessors, *args, **kwargs):
             dict.__init__(self, *args, **kwargs)
             self.predecessors = predecessors
-    return pdict(p, ((u, dict((v, w) for v,w in d[u].iteritems() if w < 1e30)) for u in d))
+    return pdict(p, ((u, dict((v, w) for v,w in d[u].items() if w < 1e30)) for u in d))
 
 def predecessor_path(tree, u, v):
     """ Returns the path between node u and node v as a list of node id's.
@@ -988,7 +992,7 @@ def brandes_betweenness_centrality(graph, normalized=True, directed=False):
                 b[w] += d[w]
     # Normalize between 0.0 and 1.0.
     m = normalized and max(b.values()) or 1
-    b = dict((id, w/m) for id, w in b.iteritems())
+    b = dict((id, w/m) for id, w in b.items())
     return b
 
 def eigenvector_centrality(graph, normalized=True, reversed=True, rating={}, iterations=100, tolerance=0.0001):
@@ -1012,7 +1016,7 @@ def eigenvector_centrality(graph, normalized=True, reversed=True, rating={}, ite
     # It has no guarantee of convergence.
     for i in range(iterations):
         v0 = v
-        v  = dict.fromkeys(v0.iterkeys(), 0)
+        v  = dict.fromkeys(v0.keys(), 0)
         for n1 in v:
             for n2 in G[n1]:
                 v[n1] += 0.01 + v0[n2] * G[n1][n2] * rating.get(n1, 1)
@@ -1021,7 +1025,7 @@ def eigenvector_centrality(graph, normalized=True, reversed=True, rating={}, ite
         if e < len(G) * tolerance:
             # Normalize between 0.0 and 1.0.
             m = normalized and max(v.values()) or 1
-            v = dict((id, w/m) for id, w in v.iteritems())
+            v = dict((id, w/m) for id, w in v.items())
             return v
     warn("node weight is 0 because eigenvector_centrality() did not converge.", Warning)
     return dict((n, 0) for n in G)

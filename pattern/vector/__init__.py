@@ -42,6 +42,9 @@ from StringIO    import StringIO
 from codecs      import open
 from collections import defaultdict
 
+if sys.version > "3":
+    long = int
+
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
@@ -279,7 +282,7 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
         if count[k] <= threshold:
             dict.__delitem__(count, k)
     if top is not None:
-        count = count.__class__(heapq.nsmallest(top, count.iteritems(), key=lambda kv: (-kv[1], kv[0])))
+        count = count.__class__(heapq.nsmallest(top, count.items(), key=lambda kv: (-kv[1], kv[0])))
     return count
 
 def character_ngrams(string="", n=3, top=None, threshold=0, exclude=[], **kwargs):
@@ -298,7 +301,7 @@ def character_ngrams(string="", n=3, top=None, threshold=0, exclude=[], **kwargs
         if count[k] <= threshold:
             dict.__delitem__(count, k)
     if top is not None:
-        count = count.__class__(heapq.nsmallest(top, count.iteritems(), key=lambda kv: (-kv[1], kv[0])))
+        count = count.__class__(heapq.nsmallest(top, count.items(), key=lambda kv: (-kv[1], kv[0])))
     return count
     
 chngrams = character_ngrams
@@ -624,8 +627,8 @@ class Document(object):
         """ Returns a sorted list of (relevance, word)-tuples that are top keywords in the document.
             With normalized=True, weights are normalized between 0.0 and 1.0 (their sum will be 1.0).
         """
-        n = normalized and sum(self.vector.itervalues()) or 1.0
-        v = ((f/n, w) for w, f in self.vector.iteritems())
+        n = normalized and sum(self.vector.values()) or 1.0
+        v = ((f/n, w) for w, f in self.vector.items())
         v = heapq.nsmallest(top, v, key=lambda v: (-v[0], v[1]))
         return v
     
@@ -688,7 +691,7 @@ class Vector(readonlydict):
                 w = args[0].weight
             # From a dict.
             if isinstance(args[0], dict):
-                f = args[0].iteritems()
+                f = args[0].items()
             # From an iterator.
             elif hasattr(args[0], "__iter__"):
                 f = iter(args[0])
@@ -697,7 +700,7 @@ class Vector(readonlydict):
         self.weight = kwargs.pop("weight", w) # TF, TFIDF, IG, BINARY or None.
         self._norm  = None                    # Cached L2-norm.
         # Exclude zero weights (sparse=True).
-        f = chain(f, kwargs.iteritems())
+        f = chain(f, kwargs.items())
         f = ((k, v) for k, v in f if not s or v != 0)
         readonlydict.__init__(self, f)
 
@@ -716,7 +719,7 @@ class Vector(readonlydict):
             The matrix norm is used to normalize (0.0-1.0) cosine similarity between documents.
         """
         if self._norm is None: 
-            self._norm = sum(w * w for w in self.itervalues()) ** 0.5
+            self._norm = sum(w * w for w in self.values()) ** 0.5
         return self._norm
         
     norm = l2 = L2 = L2norm = l2norm = L2_norm = l2_norm
@@ -732,7 +735,7 @@ class Vector(readonlydict):
             vector = vector.vector
         v = self.copy()
         s = dict.__setitem__
-        for f, w in vector.iteritems():
+        for f, w in vector.items():
             if f in v:
                 s(v, f, w)
         return v
@@ -755,7 +758,7 @@ _features = features
 def sparse(v):
     """ Returns the vector with features that have weight 0 removed.
     """
-    for f, w in list(v.iteritems()):
+    for f, w in list(v.items()):
         if w == 0:
             del v[f]
     return v
@@ -763,7 +766,7 @@ def sparse(v):
 def relative(v):
     """ Returns the vector with feature weights normalized so that their sum is 1.0 (in-place).
     """
-    n = float(sum(v.itervalues())) or 1.0
+    n = float(sum(v.values())) or 1.0
     s = dict.__setitem__
     for f in v: # Modified in-place.
         s(v, f, v[f] / n)
@@ -776,14 +779,14 @@ def l2_norm(v):
     """
     if isinstance(v, Vector):
         return v.l2_norm
-    return sum(w * w for w in v.itervalues()) ** 0.5
+    return sum(w * w for w in v.values()) ** 0.5
     
 norm = l2 = L2 = L2norm = l2norm = L2_norm = l2_norm
 
 def cosine_similarity(v1, v2):
     """ Returns the cosine similarity of the given vectors.
     """
-    s = sum(v1.get(f, 0) * w for f, w in v2.iteritems())
+    s = sum(v1.get(f, 0) * w for f, w in v2.items())
     s = float(s) / (l2_norm(v1) * l2_norm(v2) or 1)
     return s
     
@@ -1071,8 +1074,8 @@ class Model(object):
             With normalized=True, weights are normalized between 0.0 and 1.0 (their sum will be 1.0).
         """
         self.df(None) # Populate document frequency cache.
-        n = normalized and sum(self._df.itervalues()) or 1.0
-        v = ((f/n, w) for w, f in self._df.iteritems())
+        n = normalized and sum(self._df.values()) or 1.0
+        v = ((f/n, w) for w, f in self._df.items())
         v = heapq.nsmallest(top, v, key=lambda v: (-v[0], v[1]))
         return v
     
@@ -1089,7 +1092,7 @@ class Model(object):
             # (i.e., calculated all at once). Drawback is if you need it for just one word.
             df = self._df
             for d in self.documents:
-                for w, f in d.terms.iteritems():
+                for w, f in d.terms.items():
                     if f != 0:
                         df[w] = (w in df) and df[w] + 1 or 1.0
             for w in df:
@@ -1417,7 +1420,7 @@ class Model(object):
         features = set(features)
         model = Model(weight=self.weight)
         model.extend([
-            Document(dict((w, f) for w, f in d.terms.iteritems() if w in features),
+            Document(dict((w, f) for w, f in d.terms.items() if w in features),
                        name = d.name,
                        type = d.type,
                    language = d.language,
@@ -1966,14 +1969,14 @@ class Classifier(object):
     def majority(self):
         """ Yields the majority class (= most frequent class).
         """
-        d = sorted((v, k) for k, v in self._classes.iteritems())
+        d = sorted((v, k) for k, v in self._classes.items())
         return d and d[-1][1] or None
     
     @property
     def minority(self):
         """ Yields the minority class (= least frequent class).
         """
-        d = sorted((v, k) for k, v in self._classes.iteritems())
+        d = sorted((v, k) for k, v in self._classes.items())
         return d and d[0][1] or None
         
     @property
@@ -1983,7 +1986,7 @@ class Classifier(object):
         """
         if self._baseline not in (MAJORITY, FREQUENCY):
             return self._baseline
-        return ([(0, None)] + sorted([(v, k) for k, v in self._classes.iteritems()]))[-1][1]
+        return ([(0, None)] + sorted([(v, k) for k, v in self._classes.items()]))[-1][1]
         
     @property
     def skewness(self):
@@ -1993,7 +1996,7 @@ class Classifier(object):
         def moment(a, m, k=1):
             return sum([(x-m)**k for x in a]) / (len(a) or 1)
         # List each training instance by an int that represents its class:
-        a = list(chain(*([i] * v for i, (k, v) in enumerate(self._classes.iteritems()))))
+        a = list(chain(*([i] * v for i, (k, v) in enumerate(self._classes.items()))))
         m = float(sum(a)) / len(a) # mean
         return moment(a, m, 3) / (moment(a, m, 2) ** 1.5 or 1)
 
@@ -2134,7 +2137,7 @@ class ConfusionMatrix(defaultdict):
         FP = 0 # False positives (type I error).
         FN = 0 # False negatives (type II error).
         for t1 in self:
-            for t2, n in self[t1].iteritems():
+            for t2, n in self[t1].items():
                 if target == t1 == t2: 
                     TP += n
                 if target != t1 == t2: 
@@ -2195,7 +2198,7 @@ class ConfusionMatrix(defaultdict):
         return s
     
     def __repr__(self):
-        return repr(dict((k, dict(v)) for k, v in self.iteritems()))
+        return repr(dict((k, dict(v)) for k, v in self.items()))
 
 def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
     """ Returns an (accuracy, precisiom, recall, F1-score, standard deviation)-tuple.
@@ -2247,7 +2250,7 @@ def folds(documents=[], K=10, **kwargs):
             yield a[i:j]
             i = j
     k = kwargs.get("k", K)
-    d = list(chunks(documents, k))
+    d = list(chunks(documents, max(k, 2)))
     for holdout in xrange(k):
         yield list(chain(*(d[:holdout] + d[holdout+1:]))), d[holdout]
 
@@ -2322,7 +2325,7 @@ class NB(Classifier):
         self._classes[type] = self._classes.get(type, 0) + 1
         self._likelihood.setdefault(type, {})
         self._cache.pop(type, None)
-        for f, w in vector.iteritems():
+        for f, w in vector.items():
             if self._method in (BINARY, BINOMIAL, BERNOUILLI):
                 w = 1
             self._features[f] = self._features.get(f, 0) + 1
@@ -2340,13 +2343,13 @@ class NB(Classifier):
         v = self._vector(document)[1]
         m = self._method
         a = self._alpha
-        n = self._classes.itervalues()
+        n = self._classes.values()
         n = float(sum(n))
         p = defaultdict(float)
         for type in self._classes:
             if m == MULTINOMIAL:
                 if not type in self._cache: # 10x faster
-                    self._cache[type] = float(sum(self._likelihood[type].itervalues()))
+                    self._cache[type] = float(sum(self._likelihood[type].values()))
                 d = self._cache[type]
             if m == BINOMIAL \
             or m == BERNOUILLI:
@@ -2356,7 +2359,7 @@ class NB(Classifier):
             g = exp(g) * self._classes[type] / n # prior
             p[type] = g
         # Normalize probability estimates.
-        s = sum(p.itervalues()) or 1
+        s = sum(p.values()) or 1
         for type in p:
             p[type] /= s
         if not discrete:
@@ -2364,8 +2367,8 @@ class NB(Classifier):
         try:
             # Ties are broken in favor of the majority class
             # (random winner for majority ties).
-            m = max(p.itervalues())
-            p = sorted((self._classes[type], type) for type, g in p.iteritems() if g == m > 0)
+            m = max(p.values())
+            p = sorted((self._classes[type], type) for type, g in p.items() if g == m > 0)
             p = [type for frequency, type in p if frequency == p[0][0]]
             return choice(p)
         except:
@@ -2415,8 +2418,8 @@ class KNN(Classifier):
         try:
             # Ties are broken in favor of the majority class
             # (random winner for majority ties).
-            m = max(p.itervalues())
-            p = sorted((self._classes[type], type) for type, w in p.iteritems() if w == m > 0)
+            m = max(p.values())
+            p = sorted((self._classes[type], type) for type, w in p.items() if w == m > 0)
             p = [type for frequency, type in p if frequency == p[0][0]]
             return choice(p)
         except:
@@ -2586,7 +2589,7 @@ class SLP(Classifier):
 
     @property
     def features(self):
-        return list(set(chain(*(f.iterkeys() for f in self._weight.itervalues()))))
+        return list(set(chain(*(f.keys() for f in self._weight.values()))))
         
     def train(self, document, type=None):
         """ Trains the classifier with the given document of the given type (i.e., class).
@@ -2622,7 +2625,7 @@ class SLP(Classifier):
         i = self._iteration or 1
         i = float(i)
         p = defaultdict(float)
-        for type, w in self._weight.iteritems():
+        for type, w in self._weight.items():
             #p[type] = sum(w[f][0] for f in v if f in w) # Without averaging.
             s = 0
             for f in v:
@@ -2631,8 +2634,8 @@ class SLP(Classifier):
                     s += ((i-j) * w0 + w1) / i
             p[type] = s
         # Normalize probability estimates.
-        m = min(chain(p.itervalues(), (0,)))
-        s = sum(x-m for x in p.itervalues()) or 1
+        m = min(chain(p.values(), (0,)))
+        s = sum(x-m for x in p.values()) or 1
         for type in p:
             p[type] -= m
             p[type] /= s
@@ -2641,8 +2644,8 @@ class SLP(Classifier):
         try:
             # Ties are broken in favor of the majority class
             # (random winner for majority ties).
-            m = max(p.itervalues())
-            p = sorted((self._classes[type], type) for type, w in p.iteritems() if w == m > 0)
+            m = max(p.values())
+            p = sorted((self._classes[type], type) for type, w in p.items() if w == m > 0)
             p = [type for frequency, type in p if frequency == p[0][0]]
             return choice(p)
         except:

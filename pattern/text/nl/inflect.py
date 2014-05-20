@@ -136,7 +136,7 @@ def pluralize(word, pos=NOUN, custom={}):
 
 #### SINGULARIZE ###################################################################################
 
-singular_irregular = dict((v,k) for k,v in plural_irregular.iteritems())
+singular_irregular = dict((v,k) for k,v in plural_irregular.items())
 
 def singularize(word, pos=NOUN, custom={}):
     if word in custom.keys():
@@ -376,7 +376,7 @@ def attributive(adjective):
         w = w + w[-1]
     return w + "e"
 
-adjective_predicative = dict((v,k) for k,v in adjective_attributive.iteritems())
+adjective_predicative = dict((v,k) for k,v in adjective_attributive.items())
 adjective_predicative.update({
           "moe": "moe",
         "taboe": "taboe",

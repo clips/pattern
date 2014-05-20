@@ -41,6 +41,9 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
+    
+if sys.version > "3":
+    long = int
 
 MYSQL  = "mysql"
 SQLITE = "sqlite"
@@ -82,15 +85,17 @@ NOW, YEAR = "now", datetime.now().year
 # http://docs.python.org/library/time.html#time.strftime
 DEFAULT_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 date_formats = [
-    DEFAULT_DATE_FORMAT,      # 2010-09-21 09:27:01  => SQLite + MySQL
-    "%Y-%m-%dT%H:%M:%SZ",     # 2010-09-20T09:27:01Z => Bing
-    "%Y-%m-%dT%H:%M:%S+0000", # 2010-09-20T09:27:01+0000 => Facebook
-    "%Y-%m-%d %H:%M",         # 2010-09-21 09:27
-    "%Y-%m-%d",               # 2010-09-21
-    "%d/%m/%Y",               # 21/09/2010
-    "%d %B %Y",               # 21 September 2010
-    "%B %d %Y",               # September 21 2010
-    "%B %d, %Y",              # September 21, 2010
+    DEFAULT_DATE_FORMAT,           # 2010-09-21 09:27:01  => SQLite + MySQL
+    "%Y-%m-%dT%H:%M:%SZ",          # 2010-09-20T09:27:01Z => Bing
+    "%a, %d %b %Y %H:%M:%S +0000", # Fri, 21 Sep 2010 09:27:01 +000 => Twitter
+    "%a %b %d %H:%M:%S +0000 %Y",  # Fri Sep 21 09:21:01 +0000 2010 => Twitter
+    "%Y-%m-%dT%H:%M:%S+0000",      # 2010-09-20T09:27:01+0000 => Facebook
+    "%Y-%m-%d %H:%M",              # 2010-09-21 09:27
+    "%Y-%m-%d",                    # 2010-09-21
+    "%d/%m/%Y",                    # 21/09/2010
+    "%d %B %Y",                    # 21 September 2010
+    "%B %d %Y",                    # September 21 2010
+    "%B %d, %Y",                   # September 21, 2010
 ]
 
 class DateError(Exception):
@@ -1219,7 +1224,7 @@ class FilterChain(list):
         else:
             args = list(args)
         self.operator = kwargs.pop("operator", AND)
-        args.extend(filter(k, v, "=") for k, v in kwargs.iteritems())
+        args.extend(filter(k, v, "=") for k, v in kwargs.items())
         list.__init__(self, args)
     
     def SQL(self, **kwargs):

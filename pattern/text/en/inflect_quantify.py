@@ -18,6 +18,9 @@ try:
 except:
     MODULE = ""
 
+if sys.version > "3":
+    long = int
+
 sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))
 
 from pattern.text.en.inflect import pluralize, referenced

@@ -11,9 +11,10 @@
 # smgllib.py is removed from Python 3, a warning is issued in Python 2.6+. Ignore for now.
 import warnings; warnings.filterwarnings(action='ignore', category=DeprecationWarning, module="sgmllib")
 
+import os
+import sys
 import threading
 import time
-import os
 import socket, urlparse, urllib, urllib2
 import base64
 import htmlentitydefs
@@ -56,6 +57,9 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
+    
+if sys.version > "3":
+    long = int
 
 #### UNICODE #######################################################################################
 # Latin-1 (ISO-8859-1) encoding is identical to Windows-1252 except for the code points 128-159:
@@ -450,12 +454,11 @@ class URL(object):
         except socket.timeout as e:
             raise URLTimeout(src=e, url=url)
         except socket.error as e:
-            if "timed out" in e.args[0]:
+            if "timed out" in e.args[1]:
                 raise URLTimeout(src=e, url=url)
             raise URLError(str(e), src=e, url=url)
         except urllib2.URLError as e:
-            if "timed out" in e.args[0] \
-            or "timed out" in e.reason:
+            if "timed out" in e.reason:
                 raise URLTimeout(src=e, url=url)
             raise URLError(str(e), src=e, url=url)
         except ValueError as e:
@@ -3304,7 +3307,7 @@ class Selector(object):
         # Map id into a case-insensitive **kwargs dict.
         i = lambda s: re.compile(r"\b%s\b" % s, re.I)
         a = {"id": i(self.id)} if self.id else {}
-        a.update(map(lambda kv: (kv[0], kv[1]), self.attributes.iteritems()))
+        a.update(map(lambda kv: (kv[0], kv[1]), self.attributes.items()))
         # Match tag + id + all classes + relevant pseudo-elements.
         if not isinstance(e, Element):
             return []
