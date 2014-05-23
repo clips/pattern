@@ -286,23 +286,24 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
     return count
 
 def character_ngrams(string="", n=3, top=None, threshold=0, exclude=[], **kwargs):
-    """ Returns a dictionary of (character n-gram, count)-items, in lowercase.
+    """ Returns a dictionary of (character n-gram, count)-items.
         N-grams in the exclude list are not counted.
         N-grams whose count falls below (or equals) the given threshold are excluded.
         N-grams that are not in the given top most counted are excluded.
     """
     # An optional dict-parameter can be used to specify a subclass of dict, 
     # e.g., count(words, dict=readonlydict) as used in Document.
-    count = kwargs.get("dict", dict)()
-    for w in re.findall(r"(?=(" + "."*n + "))", string.lower()):
-        if w not in exclude:
-            dict.__setitem__(count, w, (w in count) and count[w]+1 or 1)
-    for k in count.keys():
-        if count[k] <= threshold:
-            dict.__delitem__(count, k)
+    count = defaultdict(int)
+    if n > 0:
+        for i in xrange(len(string)-n+1):
+            w = string[i:i+n]
+            if w not in exclude:
+                count[w] += 1
+    if threshold > 0:
+        count = dict((k, v) for k, v in count.items() if v > threshold)
     if top is not None:
-        count = count.__class__(heapq.nsmallest(top, count.items(), key=lambda kv: (-kv[1], kv[0])))
-    return count
+        count = dict(heapq.nsmallest(top, count.items(), key=lambda kv: (-kv[1], kv[0])))
+    return kwargs.get("dict", dict)(count)
     
 chngrams = character_ngrams
 
@@ -2208,13 +2209,14 @@ def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
         which is initialized with the given optional parameters.
     """
     K = kwargs.pop("K", folds)
+    s = kwargs.pop("shuffled", True)
     # Macro-average accuracy, precision, recall & F1-score.
     m = [0.0, 0.0, 0.0, 0.0] 
     f = []
     # Create shuffled folds to avoid a list sorted by type 
     # (we take successive folds and the source data could be sorted).
     if isinstance(folds, (int, float, long)):
-        folds = _folds(shuffled(documents), K)
+        folds = _folds(shuffled(documents) if s else documents, K)
     # K tests with different train (d1) and test (d2) sets.
     for d1, d2 in folds:
         d1 = [isinstance(d, Document) and (d, d.type) or d for d in d1]
@@ -2292,7 +2294,7 @@ BERNOUILLI  = "bernouilli"  # Feature occurs in class (1) or not (0).
 
 class NB(Classifier):
     
-    def __init__(self, train=[], baseline=MAJORITY, method=MULTINOMIAL, alpha=0.0001):
+    def __init__(self, train=[], baseline=MAJORITY, method=MULTINOMIAL, alpha=0.0001, **kwargs):
         """ Naive Bayes is a simple supervised learning method for text classification.
             Documents are classified based on the probability that a feature occurs in a class,
             (independent of other features).
@@ -2380,7 +2382,7 @@ Bayes = NaiveBayes = NB
 
 class KNN(Classifier):
     
-    def __init__(self, train=[], baseline=MAJORITY, k=10, distance=COSINE):
+    def __init__(self, train=[], baseline=MAJORITY, k=10, distance=COSINE, **kwargs):
         """ k-nearest neighbor (kNN) is a simple supervised learning method for text classification.
             Documents are classified by a majority vote of nearest neighbors (cosine distance)
             in the training data.
@@ -2461,7 +2463,7 @@ class IGTreeNode(list):
 
 class IGTree(Classifier):
 
-    def __init__(self, train=[], baseline=MAJORITY, method=GAINRATIO):
+    def __init__(self, train=[], baseline=MAJORITY, method=GAINRATIO, **kwargs):
         """ IGTREE is a supervised learning method
             where training data is represented as a tree ordered by information gain.
             A feature is taken to occur in a vector (1) or not (0), i.e. BINARY weight.
@@ -2569,7 +2571,7 @@ IGTREE = IGTree
 
 class SLP(Classifier):
     
-    def __init__(self, train=[], baseline=MAJORITY, iterations=1):
+    def __init__(self, train=[], baseline=MAJORITY, iterations=1, **kwargs):
         """ Perceptron (SLP, single-layer averaged perceptron) is a simple artificial neural network,
             a supervised learning method sometimes used for i.a. part-of-speech tagging.
             Documents are classified based on the neuron that outputs the highest weight
