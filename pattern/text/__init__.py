@@ -95,6 +95,13 @@ def deflood(s, n=3):
         return s[0:0]
     return re.sub(r"((.)\2{%s,})" % (n-1), lambda m: m.group(1)[0] * n, s)
 
+def decamel(s, separator="_"):
+    """ Returns the string with CamelCase converted to underscores, e.g.,
+        decamel("TomDeSmedt", "-") => "tom-de-smedt"
+        decamel("getHTTPResponse2) => "get_http_response2"
+    """
+    return re.sub(r"((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))", separator + "\\1", s).lower()
+    
 def pprint(string, token=[WORD, POS, CHUNK, PNP], column=4):
     """ Pretty-prints the output of Parser.parse() as a table with outlined columns.
         Alternatively, you can supply a tree.Text or tree.Sentence object.
@@ -138,6 +145,8 @@ class lazydict(dict):
         return self._lazy("__getitem__", *args)
     def __setitem__(self, *args):
         return self._lazy("__setitem__", *args)
+    def __delitem__(self, *args):
+        return self._lazy("__delitem__", *args)
     def setdefault(self, *args):
         return self._lazy("setdefault", *args)
     def get(self, *args, **kwargs):
@@ -154,6 +163,8 @@ class lazydict(dict):
         return self._lazy("pop", *args)
     def popitem(self, *args):
         return self._lazy("popitem", *args)
+
+#--- LAZY LIST -------------------------------------------------------------------------------------
 
 class lazylist(list):
 
@@ -179,6 +190,12 @@ class lazylist(list):
         return self._lazy("__iter__")
     def __contains__(self, *args):
         return self._lazy("__contains__", *args)
+    def __getitem__(self, *args):
+        return self._lazy("__getitem__", *args)
+    def __setitem__(self, *args):
+        return self._lazy("__setitem__", *args)
+    def __delitem__(self, *args):
+        return self._lazy("__delitem__", *args)
     def insert(self, *args):
         return self._lazy("insert", *args)
     def append(self, *args):
@@ -189,6 +206,82 @@ class lazylist(list):
         return self._lazy("remove", *args)
     def pop(self, *args):
         return self._lazy("pop", *args)
+    def index(self, *args):
+        return self._lazy("index", *args)
+    def count(self, *args):
+        return self._lazy("count", *args)
+
+#--- LAZY SET --------------------------------------------------------------------------------------
+
+class lazyset(set):
+
+    def load(self):
+        # Must be overridden in a subclass.
+        # Must load data with list.append(self, v) instead of lazylist.append(v).
+        pass
+
+    def _lazy(self, method, *args):
+        """ If the list is empty, calls lazylist.load().
+            Replaces lazylist.method() with list.method() and calls it.
+        """
+        print "!"
+        if set.__len__(self) == 0:
+            self.load()
+            setattr(self, method, types.MethodType(getattr(set, method), self))
+        return getattr(set, method)(self, *args)
+
+    def __repr__(self):
+        return self._lazy("__repr__")
+    def __len__(self):
+        return self._lazy("__len__")
+    def __iter__(self):
+        return self._lazy("__iter__")
+    def __contains__(self, *args):
+        return self._lazy("__contains__", *args)
+    def __sub__(self, *args):
+        return self._lazy("__sub__", *args)
+    def __and__(self, *args):
+        return self._lazy("__and__", *args)
+    def __or__(self, *args):
+        return self._lazy("__or__", *args)
+    def __xor__(self, *args):
+        return self._lazy("__xor__", *args)
+    def __isub__(self, *args):
+        return self._lazy("__isub__", *args)
+    def __iand__(self, *args):
+        return self._lazy("__iand__", *args)
+    def __ior__(self, *args):
+        return self._lazy("__ior__", *args)
+    def __ixor__(self, *args):
+        return self._lazy("__ixor__", *args)
+    def __gt__(self, *args):
+        return self._lazy("__gt__", *args)
+    def __lt__(self, *args):
+        return self._lazy("__lt__", *args)
+    def __gte__(self, *args):
+        return self._lazy("__gte__", *args)
+    def __lte__(self, *args):
+        return self._lazy("__lte__", *args)
+    def add(self, *args):
+        return self._lazy("add", *args)
+    def pop(self, *args):
+        return self._lazy("pop", *args)
+    def remove(self, *args):
+        return self._lazy("remove", *args)
+    def discard(self, *args):
+        return self._lazy("discard", *args)
+    def isdisjoint(self, *args):
+        return self._lazy("isdisjoint", *args)
+    def issubset(self, *args):
+        return self._lazy("issubset", *args)
+    def issuperset(self, *args):
+        return self._lazy("issuperset", *args)
+    def union(self, *args):
+        return self._lazy("union", *args)
+    def intersection(self, *args):
+        return self._lazy("intersection", *args)
+    def difference(self, *args):
+        return self._lazy("difference", *args)
 
 #### PARSER ########################################################################################
 # Pattern's text parsers are based on Brill's algorithm, or optionally on a trained language model.
