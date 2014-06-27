@@ -28,6 +28,7 @@ import re
 import glob
 import heapq
 import codecs
+import tempfile
 import cPickle
 import gzip
 import types
@@ -108,19 +109,46 @@ def shi(i, base="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
 #--- LIST FUNCTIONS --------------------------------------------------------------------------------
 
-def shuffled(list):
-    """ Yields a copy of the given list with the items in random order.
+def shuffled(iterable, **kwargs):
+    """ Returns a copy of the given list with the items in random order.
     """
-    return sorted(list, key=lambda x: random())
+    seed(kwargs.get("seed"))
+    return sorted(list(iterable), key=lambda x: random())
 
-def chunk(list, n):
-    """ Yields n successive equal-sized chunks from the given list.
+def chunk(iterable, n):
+    """ Returns an iterator of n successive equal-sized chunks from the given list.
     """
+    # list(chunk([1, 2, 3, 4], n=2)) => [[1, 2], [3, 4]]
+    a = list(iterable)
+    n = int(n)
     i = 0
+    j = 0
     for m in xrange(n):
-        j = i + len(list[m::n]) 
-        yield list[i:j]
+        j = i + len(a[m::n]) 
+        yield a[i:j]
         i = j
+        
+def mix(iterables=[], n=10):
+    """ Returns an iterator that alternates the given lists, in n chunks.
+    """
+    # list(mix([[1, 2, 3, 4], ["a", "b"]], n=2)) => [1, 2, "a", 3, 4, "b"]
+    a = [list(chunk(x, n)) for x in iterables]
+    for i in xrange(int(n)):
+        for x in a:
+            for item in x[i]:
+                yield item
+        
+def bin(iterable, key=lambda x: x, value=lambda x: x):
+    """ Returns a dictionary with items in the given list grouped by the given key.
+    """
+    # bin([["a", 1], ["a", 2], ["b", 3]], key=lambda x: x[0]) => 
+    # {"a": [["a", 1], ["a", 2]], 
+    #  "b": [["b", 3]]
+    # }
+    m = defaultdict(list)
+    for x in iterable:
+        m[key(x)].append(value(x))
+    return m
 
 def pimap(iterable, function, *args, **kwargs):
     """ Returns an iterator of function(x, *args, **kwargs) for the iterable (x1, x2, x3, ...).
@@ -861,8 +889,8 @@ ORANGE, WEKA = "orange", "weka"
 NORM, L1, L2, TOP300 = "norm", "L1", "L2", "top300"
 
 # Feature selection methods:
-INFOGAIN, GAINRATIO = "infogain", "gainratio"
-IG, GR, DF = "ig", "gr", "df"
+INFOGAIN, GAINRATIO, CHISQUARE, CHISQUARED = "infogain", "gainratio", "chisquare", "chisquared"
+IG, GR, X2, DF = "ig", "gr", "x2", "df"
 
 # Clustering methods:
 KMEANS, HIERARCHICAL = "k-means", "hierarchical"
@@ -881,6 +909,8 @@ class Model(object):
         self._index      = {}             # Document.name => Document.
         self._df         = {}             # Cache of document frequency per word.
         self._cos        = {}             # Cache of ((d1.id, d2.id), relevance)-items (cosine similarity).
+        self._pp         = {}             # Cache of ((word, type), probability)-items.
+        self._x2         = {}             # Cache of (word, chi-squared p-value)-items.
         self._ig         = {}             # Cache of (word, information gain)-items.
         self._gr         = {}             # Cache of (word, information gain ratio)-items.
         self._inverted   = {}             # Cache of word => Document.
@@ -950,14 +980,16 @@ class Model(object):
         """
         # Update the cache before saving.
         if update:
-            self.document_frequency("")  # set self._df
-            self.inverted_index          # set self._inverted
-            self.vector                  # set self._vector
-            for d1 in self.documents:    # set self._cos
+            classes = self.classes
+            self.document_frequency("")        # set self._df
+            self.inverted_index                # set self._inverted
+            self.vector                        # set self._vector
+            self.posterior_probability("", "") # set self._pp
+            self.chi_squared("")               # set self._x2
+            self.information_gain("")          # set self._ig + self._gr
+            for d1 in self.documents:          # set self._cos
                 for d2 in self.documents:
                     self.cosine_similarity(d1, d2)
-            for w in self.vector:
-                self.information_gain(w) # set self._ig + self._gr
         # Serialize Model.classifier.
         if self._classifier:
             p = path + ".tmp"
@@ -1005,6 +1037,8 @@ class Model(object):
         # when a document is added or deleted (= new features).
         self._df  = {}
         self._cos = {}
+        self._pp  = {}
+        self._x2  = {}
         self._ig  = {}
         self._gr  = {}
         self._inverted = {}
@@ -1316,6 +1350,60 @@ class Model(object):
         
     cnn = condensed_nearest_neighbor
 
+    def posterior_probability(self, word, type):
+        """ Returns the probability that a document with the given word is of the given type.
+        """
+        if not self._pp:
+            # p1: {class: count}
+            # p2: {feature: {class: count}}
+            # p3: {feature: count}
+            # p4: {(feature, class): probability}
+            p1 = defaultdict(float)
+            p2 = defaultdict(lambda: defaultdict(float))
+            p3 = defaultdict(float)
+            p4 = defaultdict(float)
+            for d in self.documents:
+                p1[d.type] += 1
+            for d in self.documents:
+                for f in d.terms:
+                    p2[f][d.type] += 1 / p1[d.type]
+                    p3[f] += 1
+            for t in p1:
+                for f in p3:
+                    p4[(f, t)] = p1[t] * p2[f][t] / p3[f]
+            self._pp = p4
+        return self._pp[(word, type)]
+
+    pp = probability = posterior_probability
+
+    def chi_squared(self, word):
+        """ Returns the chi-squared p-value (0.0-1.0) for the given feature.
+            When p < 0.05, the feature is biased to a class (document type),
+            i.e., it is a significant predictor for that class.
+        """
+        if not self._x2:
+            from pattern.metrics import chi2
+            # p1: {class: count}
+            # p2: {class: {feature: count}}
+            # p3: {feature: count}
+            # p4: {feature: p-value}
+            p1 = defaultdict(float)
+            p2 = defaultdict(lambda: defaultdict(float))
+            p3 = defaultdict(float)
+            p4 = defaultdict(float)
+            for d in self.documents:
+                p1[d.type] += 1
+            for d in self.documents:
+                for f in d.terms:
+                    p2[d.type][f] += 1
+                    p3[f] += 1
+            for f in p3:
+                p4[f] = chi2(observed=[[p2[t][f] for t in p2], [p1[t] - p2[t][f] for t in p2]])[1]
+            self._x2 = p4
+        return self._x2[word]
+        
+    X2 = x2 = chi2 = chi_square = chi_squared
+
     def information_gain(self, word):
         """ Returns the information gain (IG, 0.0-1.0) for the given feature,
             by measuring how much the feature contributes to each document type (class).
@@ -1378,7 +1466,7 @@ class Model(object):
                     si = si + H([pv])
                 self._ig[f] = ig
                 self._gr[f] = ig / (si or 1)
-        return self._ig[word]
+        return self._ig.get(word, 0.0)
             
     IG = ig = infogain = gain = information_gain
     
@@ -1390,27 +1478,30 @@ class Model(object):
         
     GR = gr = gainratio = gain_ratio
     
-    def feature_selection(self, top=100, method=INFOGAIN, threshold=0.0):
+    def feature_selection(self, top=100, method=CHISQUARED, threshold=0.0, weighted=False):
         """ Returns a list with the most informative features (terms), using information gain.
             This is a subset of Model.features that can be used to build a Classifier
             that is faster (less features = less matrix columns) but still efficient.
             The given document frequency threshold excludes features that occur in 
             less than the given percentage of documents (i.e., outliers).
         """
+        if method is None:
+            f = lambda w: 1.0
+        if method in (X2, CHISQUARE, CHISQUARED, "X2"):
+            f = lambda w: 1.0 - self.x2(w)
         if method in (IG, INFOGAIN):
             f = self.ig
         if method in (GR, GAINRATIO):
             f = self.gr
         if method == DF:
             f = self.df
-        if method is None:
-            f = lambda w: 1.0
         if hasattr(method, "__call__"):
             f = method
         subset = ((f(w), w) for w in self.terms if self.df(w) >= threshold)
         subset = sorted(subset, key=itemgetter(1))
         subset = sorted(subset, key=itemgetter(0), reverse=True)
-        subset = [w for x, w in subset[:top if top is not None else len(subset)]]
+        subset = subset[:top if top is not None else len(subset)]
+        subset = subset if weighted else [w for x, w in subset]
         return subset
         
     def filter(self, features=[], documents=[]):
@@ -1928,8 +2019,9 @@ class Classifier(object):
             where document can be a Document, Vector, dict or string
             (dicts and strings are implicitly converted to vectors).
         """
+        data = getattr(self, "_data", {})
         self.description = ""       # Description of the dataset: author e-mail, etc.
-        self._data       = {}       # Custom data for (pickleable) subclasses.
+        self._data       = data     # Custom data to store when pickled.
         self._vectors    = []       # List of trained (type, vector)-tuples.
         self._classes    = {}       # Dict of (class, frequency)-items.
         self._baseline   = baseline # Default predicted class.
@@ -2000,7 +2092,7 @@ class Classifier(object):
         a = list(chain(*([i] * v for i, (k, v) in enumerate(self._classes.items()))))
         m = float(sum(a)) / len(a) # mean
         return moment(a, m, 3) / (moment(a, m, 2) ** 1.5 or 1)
-
+        
     def train(self, document, type=None):
         """ Trains the classifier with the given document of the given type (i.e., class).
             A document can be a Document, Vector, dict, list or string.
@@ -2019,7 +2111,7 @@ class Classifier(object):
             return defaultdict(float)
         return self.baseline
 
-    def _vector(self, document, type=None):
+    def _vector(self, document, type=None, **kwargs):
         """ Returns a (type, Vector)-tuple for the given document.
             If the document is part of a LSA-reduced model, returns the LSA concept vector.
             If the given type is None, returns document.type (if a Document is given).
@@ -2033,7 +2125,7 @@ class Classifier(object):
         if isinstance(document, Vector):
             return type, document
         if isinstance(document, dict):
-            return type, Vector(document)
+            return type, Vector(document, **kwargs)
         if isinstance(document, (list, tuple)):
             return type, Document(document, filter=None, stopwords=True).vector
         if isinstance(document, basestring):
@@ -2205,6 +2297,7 @@ def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
     """ Returns an (accuracy, precisiom, recall, F1-score, standard deviation)-tuple.
         For 10-fold cross-validation, performs 10 separate tests of the classifier,
         each with a different 9/10 training and 1/10 testing documents.
+        The given list of documents contains Documents or (document, type)-tuples.
         The given classifier is a class (NB, KNN, SLP, SVM)
         which is initialized with the given optional parameters.
     """
@@ -2215,8 +2308,8 @@ def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
     f = []
     # Create shuffled folds to avoid a list sorted by type 
     # (we take successive folds and the source data could be sorted).
-    if isinstance(folds, (int, float, long)):
-        folds = _folds(shuffled(documents) if s else documents, K)
+    if isinstance(K, (int, float, long)):
+        folds = list(_folds(shuffled(documents) if s else documents, K))
     # K tests with different train (d1) and test (d2) sets.
     for d1, d2 in folds:
         d1 = [isinstance(d, Document) and (d, d.type) or d for d in d1]
@@ -2229,6 +2322,7 @@ def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
         m[3] += F
         f.append(F)
     # F-score mean & variance.
+    K = len(folds)
     u = float(sum(f)) / (K or 1.0)
     o = float(sum((x - u) ** 2 for x in f)) / (K-1 or 1.0)
     o = sqrt(o)
@@ -2285,6 +2379,24 @@ def gridsearch(Classifier, documents=[], folds=10, **kwargs):
         p = dict(p)
         s.append((K_fold_cross_validation(Classifier, documents, folds, **p), p))
     return sorted(s, reverse=True)
+
+def feature_selection(documents=[], top=None, method=CHISQUARED, threshold=0.0):
+    """ Returns an iterator of (feature, weight, (probability, class))-tuples,
+        sorted by the given feature selection method (IG, GR, X2) and document frequency threshold.
+    """
+    a = []
+    for i, d in enumerate(documents):
+        if not isinstance(d, Document):
+            d = Document(d[0], type=d[1], stopwords=True)
+        a.append(d)
+    m = Model(a, weight=None)
+    p = m.posterior_probability
+    c = m.classes
+    for w, f in m.feature_selection(top, method, threshold, weighted=True):
+        # For each feature, retrieve the class with the maximum probabilty.
+        yield f, w, max([(p(f, type), type) for type in c])
+    
+fsel = feature_selection
 
 #--- NAIVE BAYES CLASSIFIER ------------------------------------------------------------------------
 
@@ -2862,6 +2974,20 @@ class BPNN(Classifier):
 
 ANN = NN = NeuralNetwork = BPNN
 
+
+
+#nn = BPNN()
+#nn._weight_initialization(2, 1, hidden=2)
+#nn._train([
+#    ([0,0], [0]),
+#    ([0,1], [1]),
+#    ([1,0], [1]),
+#    ([1,1], [0])
+#])
+#print(nn._classify([0,0]))
+#print(nn._classify([0,1]))
+#print
+
 #--- SUPPORT VECTOR MACHINE ------------------------------------------------------------------------
 # Pattern comes bundled with LIBSVM 3.17:
 # http://www.csie.ntu.edu.tw/~cjlin/libsvm/
@@ -3132,21 +3258,20 @@ class SVM(Classifier):
         # 2) Extract the model string and save it as a temporary file.
         # 3) Use pattern.vector.svm's LIBSVM or LIBLINEAR to load the file.
         # 4) Delete the temporary file.
-        import svm                                        # 1
+        import svm                               # 1
         self._svm = svm
         if self._model is not None:
-            p = path + ".tmp"
-            f = open(p, "wb")
-            f.write(self._model[0])                       # 2
-            f.close()
+            f = tempfile.NamedTemporaryFile("r+b")
+            f.write(self._model[0])              # 2
+            f.seek(0)
             if self.extension == LIBLINEAR and not svm.LIBLINEAR:
                 raise ImportError("can't import liblinear")
             if self.extension == LIBLINEAR:
-                m = self._svm.liblinearutil.load_model(p)
+                m = self._svm.liblinearutil.load_model(f.name)
             if self.extension == LIBSVM:
-                m = self._svm.libsvmutil.svm_load_model(p)
-            self._model = (m,) + self._model[1:]           # 3
-            os.remove(f.name)                              # 4
+                m = self._svm.libsvmutil.svm_load_model(f.name)
+            self._model = (m,) + self._model[1:] # 3
+            f.close()                            # 4
             
     def finalize(self):
         """ Removes training data from memory, keeping only the LIBSVM/LIBLINEAR trained model,
