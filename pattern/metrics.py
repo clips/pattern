@@ -771,8 +771,8 @@ def fisher_exact_test(a, b, c, d, **kwargs):
     # Probabilities of "more extreme" data, in both directions (two-tailed).
     # Based on: http://www.koders.com/java/fid868948AD5196B75C4C39FEA15A0D6EAF34920B55.aspx?s=252
     s = [cutoff] + \
-        [p(a+i, b-i, c-i, d+i) for i in xrange(1, min(b, c) + 1)] + \
-        [p(a-i, b+i, c+i, d-i) for i in xrange(1, min(a, d) + 1)]
+        [p(a+i, b-i, c-i, d+i) for i in xrange(1, min(int(b), int(c)) + 1)] + \
+        [p(a-i, b+i, c+i, d-i) for i in xrange(1, min(int(a), int(d)) + 1)]
     return sum(v for v in s if v <= cutoff) or 0.0
     
 fisher = fisher_test = fisher_exact_test
@@ -828,7 +828,7 @@ def pearson_chi_squared_test(observed=[], expected=[], df=None, tail=UPPER):
     p = gammai(df * 0.5, x2 * 0.5, tail)
     return (x2, p)
     
-chi2 = chi_squared = pearson_chi_squared_test
+X2 = x2 = chi2 = chi_square = chi_squared = pearson_chi_squared_test
 
 def chi2p(x2, df=1, tail=UPPER):
     """ Returns p-value for given x2 and degrees of freedom.
