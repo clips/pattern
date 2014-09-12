@@ -190,7 +190,7 @@ class Word(object):
         for i, tag in enumerate(self.sentence.token): # Default: [WORD, POS, CHUNK, PNP, RELATION, ANCHOR, LEMMA]
             if tag == WORD:
                 tags[i] = encode_entities(self.string)
-            elif tag == POS and self.type:
+            elif tag == POS or tag == "pos" and self.type:
                 tags[i] = self.type
             elif tag == CHUNK and ch and ch.type:
                 tags[i] = (self == ch[0] and B or I) + ch.type
@@ -759,6 +759,8 @@ class Sentence(object):
         for k, v in izip(tags, token.split("/")):
             if SLASH0 in v:
                 v = v.replace(SLASH, "/")
+            if k == "pos":
+                k = POS
             if k not in p:
                 custom[k] = None
             if v != OUTSIDE or k == WORD or k == LEMMA: # "type O negative" => "O" != OUTSIDE.
@@ -937,7 +939,7 @@ class Sentence(object):
             return self.words[index]
         if tag == LEMMA:
             return self.words[index].lemma
-        if tag == POS:
+        if tag == POS or tag == "pos":
             return self.words[index].type
         if tag == CHUNK:
             return self.words[index].chunk
