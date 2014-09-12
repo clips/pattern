@@ -15,7 +15,7 @@ import os
 import sys
 import threading
 import time
-import socket, urlparse, urllib, urllib2
+import socket, urlparse, urllib, urllib2, ssl
 import base64
 import htmlentitydefs
 import httplib
@@ -23,6 +23,7 @@ import sgmllib
 import cookielib
 import re
 import xml.dom.minidom
+import unicodedata
 import string
 import StringIO
 import bisect
@@ -72,13 +73,16 @@ GREMLINS = set([
     0x2020, 0x2021, 0x2022, 0x2026, 0x2030, 0x2039, 0x203A, 0x20AC, 0x2122
 ])
 
-def fix(s, ignore=u""):
+def fix(s, ignore=""):
     """ Returns a Unicode string that fixes common encoding problems (Latin-1, Windows-1252).
         For example: fix("clichÃ©") => u"cliché".
     """
     # http://blog.luminoso.com/2012/08/20/fix-unicode-mistakes-with-python/
     if not isinstance(s, unicode):
         s = s.decode("utf-8")
+        # If this doesn't work,
+        # copy & paste string in a Unicode .txt, 
+        # and then pass open(f).read() to fix().
     u = []
     i = 0
     for j, ch in enumerate(s):
@@ -109,6 +113,14 @@ def fix(s, ignore=u""):
     u = " ".join(u)
     u = u.replace("\n ", "\n")
     return u
+
+def latin(s):
+    """ Returns True if the string contains only Latin-1 characters
+        (no Chinese, Japanese, Arabic, Cyrillic, Hebrew, Greek, ...).
+    """
+    if not isinstance(s, unicode):
+        s = s.decode("utf-8")
+    return all(unicodedata.name(ch).startswith("LATIN") for ch in s if ch.isalpha())
 
 def decode_string(v, encoding="utf-8"):
     """ Returns the given value as a Unicode string (if possible).
@@ -454,11 +466,12 @@ class URL(object):
         except socket.timeout as e:
             raise URLTimeout(src=e, url=url)
         except socket.error as e:
-            if "timed out" in e.args[1]:
+            if "timed out" in str((e.args + ("", ""))[0]) \
+            or "timed out" in str((e.args + ("", ""))[1]):
                 raise URLTimeout(src=e, url=url)
             raise URLError(str(e), src=e, url=url)
         except urllib2.URLError as e:
-            if "timed out" in e.reason:
+            if "timed out" in str(e.reason):
                 raise URLTimeout(src=e, url=url)
             raise URLError(str(e), src=e, url=url)
         except ValueError as e:
@@ -1189,6 +1202,8 @@ class Google(SearchEngine):
         kwargs.setdefault("cached", False)
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
+        if input == output:
+            return string
         try:
             data = url.download(**kwargs)
         except HTTP403Forbidden:
@@ -1370,7 +1385,7 @@ class Bing(SearchEngine):
         data = data.get("d", {})
         data = data.get("results", [{}])[0]
         results = Results(BING, query, type)
-        results.total = int(data.get(src+"Total", 0))
+        results.total = int(data.get(src+"Total") or 0)
         for x in data.get(src, []):
             r = Result(url=None)
             r.url      = self.format(x.get("MediaUrl", x.get("Url")))
@@ -2048,6 +2063,10 @@ class MediaWikiArticle(object):
     @property
     def html(self):
         return self.source
+        
+    @property
+    def src(self):
+        return self.source
 
     @property
     def string(self):
@@ -2080,6 +2099,10 @@ class MediaWikiSection(object):
 
     @property
     def html(self):
+        return self.source
+        
+    @property
+    def src(self):
         return self.source
 
     @property
@@ -2162,6 +2185,10 @@ class MediaWikiTable(object):
 
     @property
     def html(self):
+        return self.source
+        
+    @property
+    def src(self):
         return self.source
 
     @property
@@ -3015,6 +3042,9 @@ class Node(object):
         return bytestring(self.__unicode__())
     def __unicode__(self):
         return u(self._p)
+        
+    def __call__(self, *args, **kwargs):
+        pass
 
 #--- TEXT ------------------------------------------------------------------------------------------
 
@@ -3262,12 +3292,20 @@ class Selector(object):
             for e in e.children:
                 if isinstance(e, Element):
                     return e
-
-    def _first_sibling(self, e):
+                
+    def _next_sibling(self, e):
         """ Returns the first next sibling Element of the given element.
         """
         while isinstance(e, Node):
             e = e.next
+            if isinstance(e, Element):
+                return e
+                
+    def _previous_sibling(self, e):
+        """ Returns the last previous sibling Element of the given element.
+        """
+        while isinstance(e, Node):
+            e = e.previous
             if isinstance(e, Element):
                 return e
                 
@@ -3305,7 +3343,7 @@ class Selector(object):
         # Map tag to True if it is "*".
         tag = self.tag == "*" or self.tag
         # Map id into a case-insensitive **kwargs dict.
-        i = lambda s: re.compile(r"\b%s\b" % s, re.I)
+        i = lambda s: re.compile(r"\b%s(?=$|\s)" % s, re.I)
         a = {"id": i(self.id)} if self.id else {}
         a.update(map(lambda kv: (kv[0], kv[1]), self.attributes.items()))
         # Match tag + id + all classes + relevant pseudo-elements.
@@ -3377,7 +3415,7 @@ class SelectorChain(list):
                     e = filter(s.match, e)
                 if combinator == "+":
                     # X + Y => X directly precedes Y
-                    e = map(s._first_sibling, e)
+                    e = map(s._next_sibling, e)
                     e = filter(s.match, e)
             m.extend(e)
         return m
