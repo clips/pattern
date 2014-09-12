@@ -669,6 +669,7 @@ For Dutch book reviews, the accuracy is 82% (P 0.80, R 0.86, F1 0.83).
 <word form="diepgeworteld" cornetto_id="r_a-10193" cornetto_synset_id="n_a-506871" wordnet_id="a-00941940" pos="JJ" sense="diep zittend" polarity="-0.1" subjectivity="0.9" intensity="1.1" confidence="0.7" />
 <word form="diepgravend" cornetto_id="r_a-10194" cornetto_synset_id="n_a-511592" wordnet_id="" pos="JJ" sense="diepgaand" polarity="0.5" subjectivity="0.7" intensity="1.1" confidence="0.7" />
 <word form="diepliggend" cornetto_id="r_a-10258" cornetto_synset_id="n_a-506875" wordnet_id="a-02264521" pos="JJ" sense="verzonken" polarity="0.0" subjectivity="0.1" intensity="1.0" confidence="0.7" />
+<word form="dieptepunt" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.3" subjectivity="0.2" intensity="1.0" confidence="0.8" />
 <word form="diepzinnig" cornetto_id="r_a-10051" cornetto_synset_id="n_a-506895" wordnet_id="a-01744515" pos="JJ" sense="getuigend van diep nadenken" polarity="0.6" subjectivity="0.9" intensity="1.0" confidence="1.0" />
 <word form="dierbaar" cornetto_id="r_a-10052" cornetto_synset_id="n_a-506898" wordnet_id="a-01461822" pos="JJ" sense="geliefd" polarity="0.7" subjectivity="1.0" intensity="1.0" confidence="1.0" />
 <word form="diffuus" cornetto_id="r_a-10054" cornetto_synset_id="n_a-506926" wordnet_id="a-00540487" pos="JJ" sense="verspreid" polarity="0.0" subjectivity="0.2" intensity="1.0" confidence="0.7" />
@@ -1011,6 +1012,7 @@ For Dutch book reviews, the accuracy is 82% (P 0.80, R 0.86, F1 0.83).
 <word form="fris" cornetto_id="r_a-10754" cornetto_synset_id="n_a-522170" wordnet_id="a-01687167" pos="JJ" sense="origineel, recent" polarity="0.8" subjectivity="0.9" intensity="1.0" confidence="1.0" />
 <word form="fris" cornetto_id="r_a-10755" cornetto_synset_id="d_a-9518" wordnet_id="a-00417413" pos="JJ" sense="schoon" polarity="0.6" subjectivity="0.9" intensity="1.0" confidence="1.0" />
 <word form="fruitig" cornetto_id="r_a-10758" cornetto_synset_id="n_a-509411" wordnet_id="a-02074929" pos="JJ" sense="met een fruitsmaak" polarity="0.6" subjectivity="1.0" intensity="1.0" confidence="0.7" />
+<word form="frustratie" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.6" subjectivity="0.7" intensity="1.0" confidence="0.8" />
 <word form="functioneel" cornetto_id="r_a-10760" cornetto_synset_id="n_a-508079" wordnet_id="a-00050641" pos="JJ" sense="geschikt voor hun functie" polarity="0.4" subjectivity="0.4" intensity="1.0" confidence="0.7" />
 <word form="functioneel" cornetto_id="r_a-10792" cornetto_synset_id="n_a-509439" wordnet_id="a-01090308" pos="JJ" sense="mbt. de functie(s)" polarity="0.6" subjectivity="0.8" intensity="1.0" confidence="0.7" />
 <word form="fundamentalistisch" cornetto_id="r_a-10761" cornetto_synset_id="n_a-509440" wordnet_id="a-02953235" pos="JJ" sense="mbt. fundamentalisme" polarity="0.0" subjectivity="0.4" intensity="1.0" confidence="0.7" />
@@ -1208,6 +1210,7 @@ For Dutch book reviews, the accuracy is 82% (P 0.80, R 0.86, F1 0.83).
 <word form="gewetenloos" cornetto_id="r_a-11085" cornetto_synset_id="d_a-9455" wordnet_id="a-01262611" pos="JJ" sense="eerloos" polarity="-0.6" subjectivity="0.8" intensity="1.0" confidence="0.7" />
 <word form="gewichtig" cornetto_id="r_a-11088" cornetto_synset_id="n_a-510846" wordnet_id="a-00625055" pos="JJ" sense="belangrijk" polarity="0.4" subjectivity="0.8" intensity="1.0" confidence="0.8" />
 <word form="gewis" cornetto_id="r_a-11093" cornetto_synset_id="n_a-510858" wordnet_id="a-01918660" pos="JJ" sense="zeker" polarity="0.0" subjectivity="0.6" intensity="1.0" confidence="0.7" />
+<word form="gewonnen" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="VBG" sense="" polarity="0.3" subjectivity="0.4" intensity="1.0" confidence="0.8" />
 <word form="gewoon" cornetto_id="r_a-11096" cornetto_synset_id="c_80" wordnet_id="a-01593649" pos="JJ" sense="normaal" polarity="-0.1" subjectivity="0.7" intensity="1.0" confidence="1.0" />
 <word form="gewoon" cornetto_id="r_a-11097" cornetto_synset_id="" wordnet_id="" pos="JJ" sense="gewend" polarity="0.1" subjectivity="0.7" intensity="1.0" confidence="1.0" />
 <word form="gewraakt" cornetto_id="r_a-11098" cornetto_synset_id="n_a-510872" wordnet_id="a-00602474" pos="JJ" sense="in ongunstig zin genoemd" polarity="-0.7" subjectivity="0.9" intensity="1.0" confidence="0.7" />
@@ -2655,6 +2658,7 @@ For Dutch book reviews, the accuracy is 82% (P 0.80, R 0.86, F1 0.83).
 <word form="oververhit" cornetto_id="r_a-14000" cornetto_synset_id="n_a-522414" wordnet_id="a-00869690" pos="JJ" sense="te heet" polarity="-0.4" subjectivity="0.5" intensity="1.0" confidence="0.7" />
 <word form="overvol" cornetto_id="r_a-14005" cornetto_synset_id="n_a-524566" wordnet_id="a-00537339" pos="JJ" sense="bomvol" polarity="-0.1" subjectivity="0.6" intensity="1.0" confidence="0.8" />
 <word form="overweldigend" cornetto_id="r_a-14008" cornetto_synset_id="n_a-522429" wordnet_id="a-00587697" pos="JJ" sense="ontzaglijk" polarity="0.4" subjectivity="0.9" intensity="1.4" confidence="1.0" />
+<word form="overwinning" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="0.6" subjectivity="0.7" intensity="1.0" confidence="0.8" />
 <word form="overzichtelijk" cornetto_id="r_a-14011" cornetto_synset_id="n_a-522439" wordnet_id="a-00464513" pos="JJ" sense="makkelijk te overzien" polarity="0.5" subjectivity="0.7" intensity="1.0" confidence="1.0" />
 <word form="pacifistisch" cornetto_id="r_a-14243" cornetto_synset_id="n_a-533830" wordnet_id="a-01741408" pos="JJ" sense="volgens het pacifisme" polarity="0.0" subjectivity="0.4" intensity="1.0" confidence="0.7" />
 <word form="pafferig" cornetto_id="r_a-14244" cornetto_synset_id="n_a-522525" wordnet_id="a-01154229" pos="JJ" sense="opgeblazen" polarity="-0.2" subjectivity="0.4" intensity="1.0" confidence="0.7" />
@@ -2817,6 +2821,7 @@ For Dutch book reviews, the accuracy is 82% (P 0.80, R 0.86, F1 0.83).
 <word form="raak" cornetto_id="r_a-14502" cornetto_synset_id="n_a-531221" wordnet_id="a-00138314" pos="JJ" sense="treffend" polarity="0.4" subjectivity="0.8" intensity="1.0" confidence="1.0" />
 <word form="raar" cornetto_id="r_a-14503" cornetto_synset_id="n_a-533834" wordnet_id="a-00488857" pos="JJ" sense="vreemd" polarity="-0.4" subjectivity="1.0" intensity="1.0" confidence="1.0" />
 <word form="raciaal" cornetto_id="r_a-14664" cornetto_synset_id="n_a-524931" wordnet_id="a-01927654" pos="JJ" sense="mbt. ras" polarity="-0.1" subjectivity="0.5" intensity="1.0" confidence="0.7" />
+<word form="racist" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="JJ" sense="" polarity="-0.5" subjectivity="0.8" intensity="1.0" confidence="0.7" />
 <word form="racistisch" cornetto_id="r_a-14504" cornetto_synset_id="n_a-524932" wordnet_id="a-00285905" pos="JJ" sense="getuigend van racisme" polarity="-0.7" subjectivity="1.0" intensity="1.1" confidence="0.7" />
 <word form="rad" cornetto_id="r_a-14505" cornetto_synset_id="n_a-528140" wordnet_id="a-00976508" pos="JJ" sense="rap" polarity="0.0" subjectivity="0.8" intensity="1.0" confidence="0.7" />
 <word form="ragfijn" cornetto_id="r_a-14667" cornetto_synset_id="n_a-525002" wordnet_id="a-00706455" pos="JJ" sense="heel fijn" polarity="-0.1" subjectivity="0.3" intensity="1.0" confidence="0.7" />
@@ -3506,7 +3511,9 @@ For Dutch book reviews, the accuracy is 82% (P 0.80, R 0.86, F1 0.83).
 <word form="verlicht" cornetto_id="r_a-15982" cornetto_synset_id="n_a-526330" wordnet_id="a-00286578" pos="JJ" sense="met moderne ideeën" polarity="0.0" subjectivity="0.4" intensity="1.0" confidence="0.7" />
 <word form="verliefd" cornetto_id="r_a-15983" cornetto_synset_id="n_a-532549" wordnet_id="a-00750054" pos="JJ" sense="stapel" polarity="0.9" subjectivity="1.0" intensity="1.0" confidence="1.0" />
 <word form="verliesgevend" cornetto_id="r_a-16246" cornetto_synset_id="n_a-532551" wordnet_id="" pos="JJ" sense="niet rendabel" polarity="-0.1" subjectivity="0.5" intensity="1.0" confidence="0.7" />
+<word form="verliezer" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="0.5" subjectivity="-0.6" intensity="1.0" confidence="0.8" />
 <word form="verlokkelijk" cornetto_id="r_a-16645" cornetto_synset_id="c_478" wordnet_id="a-00166146" pos="JJ" sense="verleidelijk" polarity="0.4" subjectivity="1.0" intensity="1.0" confidence="0.7" />
+<word form="verloren" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.2" subjectivity="-0.3" intensity="1.0" confidence="0.8" />
 <word form="vermaard" cornetto_id="r_a-15987" cornetto_synset_id="n_a-503694" wordnet_id="a-01375831" pos="JJ" sense="beroemd" polarity="0.5" subjectivity="0.9" intensity="1.0" confidence="1.0" />
 <word form="vermakelijk" cornetto_id="r_a-15988" cornetto_synset_id="n_a-511389" wordnet_id="" pos="JJ" sense="amusant" polarity="0.6" subjectivity="0.9" intensity="1.0" confidence="1.0" />
 <word form="vermaledijd" cornetto_id="r_a-16249" cornetto_synset_id="d_a-9577" wordnet_id="a-00247439" pos="JJ" sense="vervloekt" polarity="-0.2" subjectivity="0.7" intensity="1.0" confidence="0.7" />
@@ -3556,6 +3563,7 @@ For Dutch book reviews, the accuracy is 82% (P 0.80, R 0.86, F1 0.83).
 <word form="verwaarloosbaar" cornetto_id="r_a-16275" cornetto_synset_id="n_a-520661" wordnet_id="a-01279978" pos="JJ" sense="onbelangrijk" polarity="-0.3" subjectivity="0.6" intensity="1.1" confidence="0.7" />
 <word form="verwachtingsvol" cornetto_id="r_a-16276" cornetto_synset_id="n_a-532833" wordnet_id="a-00176676" pos="JJ" sense="vol verwachting" polarity="0.3" subjectivity="0.8" intensity="1.0" confidence="0.7" />
 <word form="verwant" cornetto_id="r_a-16043" cornetto_synset_id="n_a-532834" wordnet_id="a-01972820" pos="JJ" sense="nauw verbonden" polarity="0.0" subjectivity="0.4" intensity="1.0" confidence="1.0" />
+<word form="verwarren" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="VB" sense="" polarity="-0.2" subjectivity="0.1" intensity="1.0" confidence="0.7" />
 <word form="verwarrend" cornetto_id="r_a-16277" cornetto_synset_id="n_a-532842" wordnet_id="" pos="JJ" sense="wat verwart" polarity="-0.5" subjectivity="0.7" intensity="1.0" confidence="0.7" />
 <word form="verwend" cornetto_id="r_a-16278" cornetto_synset_id="n_a-532850" wordnet_id="a-01138902" pos="JJ" sense="bedorven" polarity="-0.3" subjectivity="0.9" intensity="1.0" confidence="0.7" />
 <word form="verwerpelijk" cornetto_id="r_a-16047" cornetto_synset_id="n_a-527874" wordnet_id="a-01321529" pos="JJ" sense="onaanvaardbaar slecht" polarity="-0.4" subjectivity="0.9" intensity="1.0" confidence="0.7" />
@@ -3780,6 +3788,7 @@ For Dutch book reviews, the accuracy is 82% (P 0.80, R 0.86, F1 0.83).
 <word form="wilskrachtig" cornetto_id="r_a-15870" cornetto_synset_id="n_a-534907" wordnet_id="a-01736122" pos="JJ" sense="met een krachtige wil" polarity="0.6" subjectivity="0.9" intensity="1.0" confidence="0.7" />
 <word form="winderig" cornetto_id="r_a-15842" cornetto_synset_id="n_a-534914" wordnet_id="a-00305225" pos="JJ" sense="waaierig" polarity="-0.3" subjectivity="0.5" intensity="1.0" confidence="0.7" />
 <word form="windstil" cornetto_id="r_a-15757" cornetto_synset_id="n_a-534928" wordnet_id="a-00303579" pos="JJ" sense="zonder wind" polarity="0.4" subjectivity="0.9" intensity="1.0" confidence="0.7" />
+<word form="winnaar" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="0.5" subjectivity="0.5" intensity="1.0" confidence="0.8" />
 <word form="winstgevend" cornetto_id="r_a-15843" cornetto_synset_id="d_a-9502" wordnet_id="a-02332604" pos="JJ" sense="lucratief" polarity="0.0" subjectivity="0.4" intensity="1.0" confidence="0.7" />
 <word form="wis" cornetto_id="r_a-15760" cornetto_synset_id="d_a-9623" wordnet_id="a-01918660" pos="JJ" sense="gewis" polarity="0.3" subjectivity="0.6" intensity="1.0" confidence="0.7" />
 <word form="wiskundig" cornetto_id="r_a-15761" cornetto_synset_id="n_a-535010" wordnet_id="a-00915141" pos="JJ" sense="mathematisch" polarity="0.0" subjectivity="0.0" intensity="1.0" confidence="1.0" />
@@ -3840,6 +3849,8 @@ For Dutch book reviews, the accuracy is 82% (P 0.80, R 0.86, F1 0.83).
 <word form="zenuwslopend" cornetto_id="r_a-16407" cornetto_synset_id="n_a-535561" wordnet_id="a-00090408" pos="JJ" sense="slecht voor de zenuwen" polarity="-0.4" subjectivity="1.0" intensity="1.1" confidence="1.0" />
 <word form="zenuwziek" cornetto_id="r_a-16408" cornetto_synset_id="n_a-509878" wordnet_id="a-01177899" pos="JJ" sense="heel zenuwachtig" polarity="-0.8" subjectivity="1.0" intensity="1.0" confidence="0.7" />
 <word form="zeurderig" cornetto_id="r_a-16497" cornetto_synset_id="n_a-535615" wordnet_id="" pos="JJ" sense="erg vervelend" polarity="-0.8" subjectivity="1.0" intensity="1.0" confidence="1.0" />
+<word form="zever" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.8" subjectivity="1.0" intensity="1.0" confidence="0.8" />
+<word form="zeveren" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="VB" sense="" polarity="-0.8" subjectivity="1.0" intensity="1.0" confidence="0.8" />
 <word form="zichtbaar" cornetto_id="r_a-16409" cornetto_synset_id="d_a-9626" wordnet_id="a-01618376" pos="JJ" sense="waarneembaar" polarity="0.0" subjectivity="0.3" intensity="1.0" confidence="1.0" />
 <word form="ziek" cornetto_id="r_a-16411" cornetto_synset_id="d_a-9627" wordnet_id="a-01176246" pos="JJ" sense="je slecht voelend" polarity="-0.5" subjectivity="0.6" intensity="1.1" confidence="1.0" />
 <word form="ziek" cornetto_id="r_a-17353" cornetto_synset_id="d_a-9342" wordnet_id="" pos="JJ" sense="amoreel" polarity="-0.8" subjectivity="1.0" intensity="1.0" confidence="1.0" />
@@ -3872,6 +3883,7 @@ For Dutch book reviews, the accuracy is 82% (P 0.80, R 0.86, F1 0.83).
 <word form="zonderling" cornetto_id="r_a-16507" cornetto_synset_id="n_a-535905" wordnet_id="a-00221627" pos="JJ" sense="vreemd" polarity="-0.1" subjectivity="1.0" intensity="1.1" confidence="0.7" />
 <word form="zondig" cornetto_id="r_a-16438" cornetto_synset_id="n_a-535907" wordnet_id="a-00361509" pos="JJ" sense="mbt. zonden" polarity="-0.6" subjectivity="0.8" intensity="1.0" confidence="0.7" />
 <word form="zonneklaar" cornetto_id="r_a-16439" cornetto_synset_id="n_a-522312" wordnet_id="a-01287808" pos="JJ" sense="overduidelijk" polarity="0.2" subjectivity="0.4" intensity="1.4" confidence="0.7" />
+<word form="zonneslag" cornetto_id="" cornetto_synset_id="" wordnet_id="" pos="NN" sense="" polarity="-0.2" subjectivity="-0.1" intensity="1.0" confidence="0.8" />
 <word form="zonnig" cornetto_id="d_a-346259" cornetto_synset_id="d_a-9195" wordnet_id="a-00363938" pos="JJ" sense="van karakter" polarity="0.7" subjectivity="1.0" intensity="1.0" confidence="1.0" />
 <word form="zonnig" cornetto_id="r_a-16440" cornetto_synset_id="n_a-535928" wordnet_id="a-01812237" pos="JJ" sense="met veel zon" polarity="0.5" subjectivity="0.5" intensity="1.0" confidence="1.0" />
 <word form="zorgelijk" cornetto_id="r_a-16441" cornetto_synset_id="n_a-535949" wordnet_id="a-00193015" pos="JJ" sense="zorgwekkend" polarity="-0.4" subjectivity="0.9" intensity="1.1" confidence="0.7" />
