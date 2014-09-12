@@ -355,7 +355,7 @@ class DatabaseTransaction(Database):
 _RATELIMIT_CACHE = {} # RAM cache of request counts.
 _RATELIMIT_LOCK  = threading.RLock()
 
-MINUTE, HOUR, DAY = 60., 60*60., 60*60*24.
+SECOND, MINUTE, HOUR, DAY = 1., 60., 60*60., 60*60*24.
 
 class RateLimitError(Exception):
     pass
@@ -559,30 +559,6 @@ class Router(dict):
 
 #--- APPLICATION ERRORS & REQUESTS -----------------------------------------------------------------
 
-class HTTPRedirect(Exception):
-    
-    def __init__(self, url, code=303):
-        """ A HTTP redirect raised in an @app.route() handler.
-        """
-        self.url  = url
-        self.code = code
-    
-    def __repr__(self):
-        return "HTTPRedirect(url=%s)" % repr(self.url)
-
-class HTTPError(Exception):
-    
-    def __init__(self, code, status="", message="", traceback=""):
-        """ A HTTP error raised in an @app.route() handler + passed to @app.error().
-        """
-        self.code      = code
-        self.status    = status
-        self.message   = message
-        self.traceback = traceback or ""
-        
-    def __repr__(self):
-        return "HTTPError(status=%s)" % repr(self.status)
-
 class HTTPRequest(object):
     
     def __init__(self, app, ip, path="/", method="get", data={}, headers={}):
@@ -597,6 +573,42 @@ class HTTPRequest(object):
         
     def __repr__(self):
         return "HTTPRequest(ip=%s, path=%s)" % repr(self.ip, self.path)
+
+class HTTPRedirect(Exception):
+    
+    def __init__(self, url, code=303):
+        """ A HTTP redirect raised in an @app.route() handler.
+        """
+        self.url  = url
+        self.code = code
+    
+    def __repr__(self):
+        return "HTTPRedirect(url=%s)" % repr(self.url)
+
+class HTTPError(Exception):
+    
+    def __init__(self, status="", message="", traceback=""):
+        """ A HTTP error raised in an @app.route() handler + passed to @app.error().
+        """
+        self.code      = int(status.split(" ")[0])
+        self.status    = status
+        self.message   = message
+        self.traceback = traceback or ""
+        
+    def __repr__(self):
+        return "HTTPError(status=%s)" % repr(self.status)
+
+def _HTTPErrorSubclass(status):
+    return type("HTTP%sError" % status.split(" ")[0], (HTTPError,), {'__init__': \
+        lambda self, message="", traceback="": HTTPError.__init__(self, status, message, traceback)})
+
+HTTP200OK                  = _HTTPErrorSubclass("200 OK")
+HTTP401Authentication      = _HTTPErrorSubclass("401 Authentication")
+HTTP403Forbidden           = _HTTPErrorSubclass("403 Forbidden")
+HTTP404NotFound            = _HTTPErrorSubclass("404 Not Found")
+HTTP429TooManyRequests     = _HTTPErrorSubclass("429 Too Many Requests")
+HTTP500InternalServerError = _HTTPErrorSubclass("500 InternalServerError")
+HTTP503ServiceUnavailable  = _HTTPErrorSubclass("503 ServiceUnavailable")
 
 #--- APPLICATION THREAD-SAFE DATA ------------------------------------------------------------------
 # With a multi-threaded server, each thread requires its own local data (i.e., database connection).
@@ -702,7 +714,7 @@ class ApplicationError(Exception):
 
 class Application(object):
     
-    def __init__(self, name=None, path=SCRIPT, static="static/", rate="rate.db"):
+    def __init__(self, name=None, path=SCRIPT, static="./static", rate="rate.db"):
         """ A web app served by a WSGI-server that starts with App.run().
             By default, the app is served from the folder of the script that imports pattern.server.
             By default, static content is served from the given subfolder.
@@ -807,7 +819,7 @@ class Application(object):
         if isinstance(v, (list, tuple, set)):
             return " ".join(self._cast(v) for v in v)
         if isinstance(v, HTTPError):
-            raise cp.HTTPError(v.code)
+            raise cp.HTTPError(v.status, message=v.message)
         if v is None:
             return ""
         try: # (bool, int, float, object.__unicode__)
@@ -843,7 +855,7 @@ class Application(object):
         except HTTPRedirect as e:
             raise cp.HTTPRedirect(e.url)
         except HTTPError as e:
-            raise cp.HTTPError(e.status)
+            raise cp.HTTPError(e.status, message=e.message)
         v = self._cast(v)
         #print(self.elapsed)
         return v
@@ -898,7 +910,7 @@ class Application(object):
             # Wrap as a HTTPError and pass it to the handler.
             def wrapper(status="", message="", traceback="", version=""):
                 # Avoid CherryPy bug "ValueError: status message was not supplied":
-                v = handler(HTTPError(int(status.split(" ")[0]), status, message, traceback))
+                v = handler(HTTPError(status, message, traceback))
                 v = self._cast(v) if not isinstance(v, HTTPError) else repr(v)
                 return v
             # app.error("*") catches all error codes.
@@ -1170,6 +1182,12 @@ def _request_end():
     
 _register("on_start_resource", _request_start)
 _register("on_end_request", _request_end)
+
+#---------------------------------------------------------------------------------------------------
+# The error template used when the error handler itself raises an error.
+
+cp._cperror._HTTPErrorTemplate = \
+    "<h1>%(status)s</h1\n><p>%(message)s</p>\n<pre>%(traceback)s</pre>"
 
 #### TEMPLATE ######################################################################################
 # A template is a HTML-file with placeholders, which can be variable names or Python source code.
