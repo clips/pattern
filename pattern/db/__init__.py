@@ -13,6 +13,7 @@ import inspect
 import warnings
 import re
 import urllib
+import base64
 import csv as csvlib
 
 from codecs    import BOM_UTF8
@@ -251,6 +252,40 @@ def string(value, default=""):
     if value is None or value == "": # Don't do value != None because this includes 0.
         return default
     return decode_utf8(value)
+
+class EncryptionError(Exception):
+    pass
+
+class DecryptionError(Exception):
+    pass
+
+def encrypt_string(s, key=""):
+    """ Returns the given string as an encrypted bytestring.
+    """
+    key += " "
+    s = encode_utf8(s)
+    a = []
+    for i in xrange(len(s)):
+        try: a.append(chr(ord(s[i]) + ord(key[i % len(key)]) % 256))
+        except:
+            raise EncryptionError()
+    s = "".join(a)
+    s = base64.urlsafe_b64encode(s)
+    return s
+    
+def decrypt_string(s, key=""):
+    """ Returns the given string as a decrypted Unicode string.
+    """
+    key += " "
+    s = base64.urlsafe_b64decode(s)
+    a = []
+    for i in xrange(len(s)):
+        try: a.append(chr(ord(s[i]) - ord(key[i % len(key)]) % 256))
+        except:
+            raise DecryptionError()
+    s = "".join(a)
+    s = decode_utf8(s)
+    return s
 
 RE_AMPERSAND = re.compile("\&(?!\#)")           # & not followed by #
 RE_UNICODE   = re.compile(r'&(#?)(x|X?)(\w+);') # &#201;
@@ -1793,7 +1828,7 @@ class CSV(list):
         
     headers = property(_get_headers, _set_headers)
 
-    def save(self, path, separator=",", encoder=lambda v: v, headers=False, **kwargs):
+    def save(self, path, separator=",", encoder=lambda v: v, headers=False, password=None, **kwargs):
         """ Exports the table to a unicode text file at the given path.
             Rows in the file are separated with a newline.
             Columns in a row are separated with the given separator (by default, comma).
@@ -1812,29 +1847,30 @@ class CSV(list):
         s = s.getvalue()
         s = s.strip()
         s = re.sub("([^\"]|^)\"None\"", "\\1None", s)
+        s = s if not password else encrypt_string(s, password)
         f = open(path, "wb")
         f.write(BOM_UTF8)
         f.write(s)
         f.close()
 
     @classmethod
-    def load(cls, path, separator=",", decoder=lambda v: v, headers=False, preprocess=lambda s: s, **kwargs):
+    def load(cls, path, separator=",", decoder=lambda v: v, headers=False, preprocess=None, password=None, **kwargs):
         """ Returns a table from the data in the given text file.
             Rows are expected to be separated by a newline. 
             Columns are expected to be separated by the given separator (by default, comma).
             Strings will be converted to int, float, bool, date or None if headers are parsed.
             For other data types, a custom string decoder can be given.
+            A preprocess(str) function can be given to change the file content before parsing.
         """
         # Date objects are saved and loaded as strings, but it is easy to convert these back to dates:
         # - set a DATE field type for the column,
         # - or do Table.columns[x].map(lambda s: date(s))
-        data = open(path, "rb").read().replace(BOM_UTF8, "")
-        data = preprocess(data)
-        data = "\n".join(line for line in data.splitlines()) # Excel \r => \n
-        data = StringIO(data)
-        
+        data = open(path, "rU")
+        data = data if not password else decrypt_string(data.read(), password)
+        data = data if not password else StringIO(data.replace("\r\n", "\n").replace("\r", "\n"))
+        data = data if not preprocess else StringIO(preprocess(data.read()))
+        data.seek(data.readline().startswith(BOM_UTF8) and len(BOM_UTF8) or 0)
         data = csvlib.reader(data, delimiter=separator)
-        
         i, n = kwargs.get("start"), kwargs.get("count")
         if i is not None and n is not None:
             data = list(islice(data, i, i+n))
@@ -1844,9 +1880,6 @@ class CSV(list):
             data = list(islice(data, n))
         else:
             data = list(data)
-        
-        #data = [row for row in csvlib.reader(data, delimiter=separator)]
-        
         if headers:
             fields  = [csv_header_decode(field) for field in data.pop(0)]
             fields += [(None, None)] * (max([0]+[len(row) for row in data]) - len(fields))
@@ -2077,7 +2110,7 @@ class Datasheet(CSV):
         u = [None] * len(o)
         for v in g:
             # List the column values for each group row.
-            u[o[v]] = [[list.__getitem__(self, i)[j] for i in g[v]] for j in range(self._m)]
+            u[o[v]] = [[list.__getitem__(self, i)[j] for i in g[v]] for j in xrange(self._m)]
             # Apply the group function to each row, except the unique value in column j.
             u[o[v]] = [function[j](column) for j, column in enumerate(u[o[v]])]
             u[o[v]][J] = v # list.__getitem__(self, i)[J]
@@ -2098,7 +2131,7 @@ class Datasheet(CSV):
     def slice(self, i, j, n, m):
         """ Returns a new Datasheet starting at row i and column j and spanning n rows and m columns.
         """
-        return Datasheet(rows=[list.__getitem__(self, i)[j:j+m] for i in range(i, i+n)])
+        return Datasheet(rows=[list.__getitem__(self, i)[j:j+m] for i in xrange(i, i+n)])
 
     def copy(self, rows=ALL, columns=ALL):
         """ Returns a new Datasheet from a selective list of row and/or column indices.
@@ -2311,7 +2344,7 @@ class DatasheetColumns(list):
         self._cache[j]._datasheet = Datasheet(rows=[[v] for v in column])
         self._cache[j]._j = 0
         self._cache.pop(j)
-        for k in range(j+1, len(self)+1):
+        for k in xrange(j+1, len(self)+1):
             if k in self._cache:
                 # Shift the DatasheetColumn objects on the right to the left.
                 self._cache[k-1] = self._cache.pop(k)
@@ -2367,7 +2400,7 @@ class DatasheetColumn(list):
         self._j = j
 
     def __getslice__(self, i, j):
-        return list(list.__getitem__(self._datasheet, i)[self._j] for i in range(i, j))
+        return list(list.__getitem__(self._datasheet, i)[self._j] for i in xrange(i, min(j, len(self._datasheet))))
     def __getitem__(self, i):
         return list.__getitem__(self._datasheet, i)[self._j]
     def __setitem__(self, i, value):
@@ -2376,6 +2409,8 @@ class DatasheetColumn(list):
         return len(self._datasheet)
     def __iter__(self): # Can be put more simply but optimized for performance:
         for i in xrange(len(self)): yield list.__getitem__(self._datasheet, i)[self._j]
+    def __reversed__(self):
+        return reversed(list(iter(self)))
     def __repr__(self):
         return repr(list(iter(self)))
     def __gt__(self, column):
@@ -2447,6 +2482,15 @@ class DatasheetColumn(list):
         for j, value in enumerate(self):
             self[j] = function(value)
             
+    def filter(self, function=lambda value: True):
+        """ Removes the matrix rows for which function(value) in the column is not True.
+        """
+        i = len(self)
+        for v in reversed(self):
+            i -= 1
+            if not function(v):
+                self._datasheet.pop(i)
+            
     def swap(self, i1, i2):
         self._datasheet.swap(i1, i2)
 
@@ -2505,7 +2549,7 @@ def pprint(datasheet, truncate=40, padding=" ", fill="."):
         fields = [lines+[""] * (n-len(lines)) for lines in fields]
         # Print the row line per line, justifying the fields with spaces.
         columns = []
-        for k in range(n):
+        for k in xrange(n):
             for j, lines in enumerate(fields):
                 s  = lines[k]
                 s += ((k==0 or len(lines[k]) > 0) and fill or " ") * (w[j] - len(lines[k])) 
