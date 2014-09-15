@@ -27,7 +27,7 @@ class TestCache(unittest.TestCase):
         self.assertEqual(web.cache[k], v)
         self.assertEqual(web.cache.age(k), 0)
         del web.cache[k]
-        print "pattern.web.Cache"
+        print("pattern.web.Cache")
         
 #---------------------------------------------------------------------------------------------------
 
@@ -48,13 +48,13 @@ class TestUnicode(unittest.TestCase):
         # Assert unicode.
         for s in self.strings:
             self.assertTrue(isinstance(web.decode_utf8(s), unicode))
-        print "pattern.web.decode_utf8()"
+        print("pattern.web.decode_utf8()")
 
     def test_encode_utf8(self):
         # Assert Python bytestring.
         for s in self.strings:
             self.assertTrue(isinstance(web.encode_utf8(s), str))
-        print "pattern.web.encode_utf8()"
+        print("pattern.web.encode_utf8()")
         
     def test_fix(self):
         # Assert fix for common Unicode mistakes.
@@ -90,25 +90,25 @@ class TestURL(unittest.TestCase):
         while not v.done:
             time.sleep(0.1)
         self.assertEqual(v.value, 1)
-        print "pattern.web.asynchronous()"
+        print("pattern.web.asynchronous()")
     
     def test_extension(self):
         # Assert filename extension.
         v = web.extension(os.path.join("pattern", "test", "test-web.py.zip"))
         self.assertEqual(v, ".zip")
-        print "pattern.web.extension()"
+        print("pattern.web.extension()")
         
     def test_urldecode(self):
         # Assert URL decode (inverse of urllib.urlencode).
         v = web.urldecode("?user=me&page=1&q=&")
         self.assertEqual(v, {"user": "me", "page": 1, "q": None})
-        print "pattern.web.urldecode()"
+        print("pattern.web.urldecode()")
         
     def test_proxy(self):
         # Assert URL proxy.
         v = web.proxy("www.proxy.com", "https")
         self.assertEqual(v, ("www.proxy.com", "https"))
-        print "pattern.web.proxy()"
+        print("pattern.web.proxy()")
         
     def test_url_parts(self):
         # Assert URL._parse and URL.parts{}.
@@ -124,7 +124,7 @@ class TestURL(unittest.TestCase):
           (web.QUERY,    self.parts["query"]),
           (web.ANCHOR,   self.parts["anchor"])):
             self.assertEqual(v.parts[a], b)
-        print "pattern.web.URL.parts"
+        print("pattern.web.URL.parts")
     
     def test_url_query(self):
         # Assert URL.query and URL.querystring.
@@ -140,8 +140,8 @@ class TestURL(unittest.TestCase):
         # Assert URL.query decodes unicode arguments.
         v = web.URL("http://domain.com?" + q[1])
         self.assertEqual(v.query, q[0])
-        print "pattern.web.URL.query"
-        print "pattern.web.URL.querystring"
+        print("pattern.web.URL.query")
+        print("pattern.web.URL.querystring")
     
     def test_url_string(self):
         # Assert URL._set_string().
@@ -150,7 +150,7 @@ class TestURL(unittest.TestCase):
         self.assertEqual(v.parts[web.PROTOCOL], "https")
         self.assertEqual(v.parts[web.DOMAIN],   "domain.com")
         self.assertEqual(v.parts[web.PATH],     [])
-        print "pattern.web.URL.string"
+        print("pattern.web.URL.string")
         
     def test_url(self):
         # Assert URL.copy().
@@ -170,7 +170,7 @@ class TestURL(unittest.TestCase):
         self.assertEqual(v.page,     self.parts["page"])
         self.assertEqual(v.query,    self.parts["query"])
         self.assertEqual(v.anchor,   self.parts["anchor"])
-        print "pattern.web.URL"
+        print("pattern.web.URL")
         
     def test_url_open(self):
         # Assert URLError.
@@ -188,8 +188,8 @@ class TestURL(unittest.TestCase):
         self.assertEqual(v.exists, True)
         # Assert user-agent and referer.
         self.assertTrue(v.open(user_agent=web.MOZILLA, referrer=web.REFERRER) != None)
-        print "pattern.web.URL.exists"
-        print "pattern.web.URL.open()"
+        print("pattern.web.URL.exists")
+        print("pattern.web.URL.open()")
         
     def test_url_download(self):
         t = time.time()
@@ -199,25 +199,25 @@ class TestURL(unittest.TestCase):
         self.assertTrue(isinstance(v, unicode))
         # Assert download rate limiting.
         self.assertTrue(t >= 0.25)
-        print "pattern.web.URL.download()"
+        print("pattern.web.URL.download()")
         
     def test_url_mimetype(self):
         # Assert URL MIME-type.
         v = web.URL(self.live).mimetype
         self.assertTrue(v in web.MIMETYPE_WEBPAGE)
-        print "pattern.web.URL.mimetype"
+        print("pattern.web.URL.mimetype")
         
     def test_url_headers(self):
         # Assert URL headers.
         v = web.URL(self.live).headers["content-type"].split(";")[0]
         self.assertEqual(v, "text/html")
-        print "pattern.web.URL.headers"
+        print("pattern.web.URL.headers")
         
     def test_url_redirect(self):
         # Assert URL redirected URL (this depends on where you are).
         # In Belgium, it yields "http://www.google.be/".
         v = web.URL(self.live).redirect
-        print "pattern.web.URL.redirect: " + self.live + " => " + str(v)
+        print("pattern.web.URL.redirect: " + self.live + " => " + str(v))
 
     def test_abs(self):
         # Assert absolute URL (special attention for anchors).
@@ -232,12 +232,12 @@ class TestURL(unittest.TestCase):
           (     "#anchor", "http://domain.com/page", "")):
             v = web.abs(a, base=b)
             self.assertEqual(v, b+c+a) # http://domain.com/#anchor
-        print "pattern.web.abs()"
+        print("pattern.web.abs()")
         
     def test_base(self):
         # Assert base URL domain name.
         self.assertEqual(web.base("http://domain.com/home.html"), "domain.com")
-        print "pattern.web.base()"
+        print("pattern.web.base()")
         
     def test_oauth(self):
         # Assert OAuth algorithm.
@@ -251,7 +251,7 @@ class TestURL(unittest.TestCase):
         }
         v = web.oauth.sign("http://yboss.yahooapis.com/ysearch/web", data, secret="secret")
         self.assertEqual(v, "RtTu8dxSp3uBzSbsuLAXIWOKfyI=")
-        print "pattern.web.oauth.sign()"
+        print("pattern.web.oauth.sign()")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -276,7 +276,7 @@ class TestPlaintext(unittest.TestCase):
         self.assertEqual(web.find_urls("http://domain.net),};")[0], "http://domain.net")
         self.assertEqual(web.find_urls("http://domain.net\">domain")[0], "http://domain.net")
         self.assertEqual(web.find_urls("domain.com, domain.net"), ["domain.com", "domain.net"])
-        print "pattern.web.find_urls()"
+        print("pattern.web.find_urls()")
         
     def test_find_email(self):
         # Assert e-mail finder with common e-mail notations.
@@ -287,7 +287,7 @@ class TestPlaintext(unittest.TestCase):
         s = ["me@site1.com", "me@site2.com"]
         v = web.find_email("("+",".join(s)+")")
         self.assertEqual(v, s)
-        print "pattern.web.find_email()"
+        print("pattern.web.find_email()")
         
     def test_find_between(self):
         # Assert search between open tag and close tag.
@@ -298,7 +298,7 @@ class TestPlaintext(unittest.TestCase):
         s = "a0ba1b"
         v = web.find_between("a", "b", s)
         self.assertEqual(v, ["0", "1"])
-        print "pattern.web.find_between()"
+        print("pattern.web.find_between()")
         
     def test_strip_tags(self):
         # Assert HTML parser and tag stripper.
@@ -313,43 +313,43 @@ class TestPlaintext(unittest.TestCase):
         # Assert exclude tags and attributes
         v = web.strip_tags("<a href=\"\" onclick=\"\">text</a>", exclude={"a": ["href"]})
         self.assertEqual(v, "<a href=\"\">text</a>")
-        print "pattern.web.strip_tags()"
+        print("pattern.web.strip_tags()")
     
     def test_strip_element(self):
         # Assert strip <p> elements.
         v = web.strip_element(" <p><p></p>text</p> <b><P></P></b>", "p")
         self.assertEqual(v, "  <b></b>")
-        print "pattern.web.strip_element()"
+        print("pattern.web.strip_element()")
         
     def test_strip_between(self):
         # Assert strip <p> elements.
         v = web.strip_between("<p", "</p>", " <p><p></p>text</p> <b><P></P></b>")
         self.assertEqual(v, " text</p> <b></b>")
-        print "pattern.web.strip_between()"
+        print("pattern.web.strip_between()")
         
     def test_strip_javascript(self):
         # Assert strip <script> elements.
         v = web.strip_javascript(" <script type=\"text/javascript\">text</script> ")
         self.assertEqual(v, "  ")
-        print "pattern.web.strip_javascript()"
+        print("pattern.web.strip_javascript()")
 
     def test_strip_inline_css(self):
         # Assert strip <style> elements.
         v = web.strip_inline_css(" <style type=\"text/css\">text</style> ")
         self.assertEqual(v, "  ")
-        print "pattern.web.strip_inline_css()"
+        print("pattern.web.strip_inline_css()")
         
     def test_strip_comments(self):
         # Assert strip <!-- --> elements.
         v = web.strip_comments(" <!-- text --> ")
         self.assertEqual(v, "  ")
-        print "pattern.web.strip_comments()"
+        print("pattern.web.strip_comments()")
 
     def test_strip_forms(self):
         # Assert strip <form> elements.
         v = web.strip_forms(" <form method=\"get\">text</form> ")
         self.assertEqual(v, "  ")
-        print "pattern.web.strip_forms()"
+        print("pattern.web.strip_forms()")
         
     def test_encode_entities(self):
         # Assert HTML entity encoder (e.g., "&" => "&&amp;")
@@ -361,7 +361,7 @@ class TestPlaintext(unittest.TestCase):
           ('"', "&quot;"),
           ("'", "&#39;")):
             self.assertEqual(web.encode_entities(a), b)
-        print "pattern.web.encode_entities()"
+        print("pattern.web.encode_entities()")
             
     def test_decode_entities(self):
         # Assert HMTL entity decoder (e.g., "&amp;" => "&")
@@ -372,7 +372,7 @@ class TestPlaintext(unittest.TestCase):
           ("&#160;", u"\xa0"),
           ("&foo;", "&foo;")):
             self.assertEqual(web.decode_entities(a), b)
-        print "pattern.web.decode_entities()"
+        print("pattern.web.decode_entities()")
             
     def test_collapse_spaces(self):
         # Assert collapse multiple spaces.
@@ -385,7 +385,7 @@ class TestPlaintext(unittest.TestCase):
             self.assertEqual(web.collapse_spaces(a), b)
         # Assert preserve indendation.
         self.assertEqual(web.collapse_spaces("  . \n", indentation=True), "  .")
-        print "pattern.web.collapse_spaces()"
+        print("pattern.web.collapse_spaces()")
         
     def test_collapse_tabs(self):
         # Assert collapse multiple tabs to 1 space.
@@ -397,7 +397,7 @@ class TestPlaintext(unittest.TestCase):
             self.assertEqual(web.collapse_tabs(a), b)
         # Assert preserve indendation.
         self.assertEqual(web.collapse_tabs("\t\t .\t\n", indentation=True), "\t\t .")
-        print "pattern.web.collapse_tabs()"
+        print("pattern.web.collapse_tabs()")
         
     def test_collapse_linebreaks(self):
         # Assert collapse multiple linebreaks.
@@ -408,7 +408,7 @@ class TestPlaintext(unittest.TestCase):
           (".\n  .", ".\n  ."),
           (" \n  .", "\n  .")):
             self.assertEqual(web.collapse_linebreaks(a), b)
-        print "pattern.web.collapse_linebreaks()"
+        print("pattern.web.collapse_linebreaks()")
     
     def test_plaintext(self):
         # Assert plaintext: 
@@ -442,7 +442,7 @@ class TestPlaintext(unittest.TestCase):
         self.assertEqual(web.plaintext(html, keep={"a": "href"}),
             u"tags & things\n\ntitle1\n\ntitle2\n\nparagraph1\n\nparagraph2 " + \
             u"<a href=\"http://www.domain.com\">link</a>\n\n* item1 xxx\n* item2")
-        print "pattern.web.plaintext()"
+        print("pattern.web.plaintext()")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -503,7 +503,7 @@ class TestSearchEngine(unittest.TestCase):
             self.assertEqual(v2, None)
         # Assert SearchEngineTypeError for unknown type.
         self.assertRaises(web.SearchEngineTypeError, e.search, query, type="crystall-ball")
-        print "pattern.web.%s.search()" % api
+        print("pattern.web.%s.search()" % api)
     
     def test_search_google(self):
         self._test_search_engine("Google",       *self.api["Google"])
@@ -544,15 +544,15 @@ class TestSearchEngine(unittest.TestCase):
             i2 += int(query in result.description.lower())
             i3 += int(result.language == "en")
             i4 += int(result.url.endswith(("jpg","png","gif")))
-            #print result.url
-            #print result.title
-            #print result.description
-        #print i1, i2, i3, i4
+            #print(result.url)
+            #print(result.title)
+            #print(result.description)
+        #print(i1, i2, i3, i4)
         self.assertTrue(i1 >= baseline[0]) # url's starting with "http"
         self.assertTrue(i2 >= baseline[1]) # query in url + title + description
         self.assertTrue(i3 >= baseline[2]) # language "en"
         self.assertTrue(i4 >= baseline[3]) # url's ending with "jpg", "png" or "gif"
-        print "pattern.web.%s.Result(type=%s)" % (api, type.upper())
+        print("pattern.web.%s.Result(type=%s)" % (api, type.upper()))
     
     def test_results_google(self):
         self._test_results("Google",   *self.api["Google"])
@@ -582,7 +582,7 @@ class TestSearchEngine(unittest.TestCase):
             source, license, Engine = self.api["Google"]
             v = Engine(license, throttle=0.25).translate(u"thé", input="fr", output="en", cached=False)
             self.assertEqual(v, "tea")
-            print "pattern.web.Google.translate()"
+            print("pattern.web.Google.translate()")
         except web.HTTP401Authentication:
             pass
             
@@ -593,19 +593,19 @@ class TestSearchEngine(unittest.TestCase):
             source, license, Engine = self.api["Google"]
             v = Engine(license, throttle=0.25).identify(u"L'essence des mathématiques, c'est la liberté!", cached=False)
             self.assertEqual(v[0], "fr")
-            print "pattern.web.Google.identify()"
+            print("pattern.web.Google.identify()")
         except web.HTTP401Authentication:
             pass
     
     def test_twitter_author(self):
         self.assertEqual(web.author("me"), "from:me")
-        print "pattern.web.author()"
+        print("pattern.web.author()")
     def test_twitter_hashtags(self):
         self.assertEqual(web.hashtags("#cat #dog"), ["#cat", "#dog"])
-        print "pattern.web.hashtags()"
+        print("pattern.web.hashtags()")
     def test_twitter_retweets(self):
         self.assertEqual(web.retweets("RT @me: blah"), ["@me"])
-        print "pattern.web.retweets()"
+        print("pattern.web.retweets()")
         
     def _test_search_image_size(self, api, source, license, Engine):
         # Assert image URL's for different sizes actually exist.
@@ -615,7 +615,7 @@ class TestSearchEngine(unittest.TestCase):
         for size in (web.TINY, web.SMALL, web.MEDIUM, web.LARGE):
             v = e.search("cats", type=web.IMAGE, count=1, size=size, cached=False)
             self.assertEqual(web.URL(v[0].url).exists, True)
-            print "pattern.web.%s.search(type=IMAGE, size=%s)" % (api, size.upper())
+            print("pattern.web.%s.search(type=IMAGE, size=%s)" % (api, size.upper()))
 
     def test_yahoo_image_size(self):
         self._test_search_image_size("Yahoo",  *self.api["Yahoo"])
@@ -632,7 +632,7 @@ class TestSearchEngine(unittest.TestCase):
         self.assertTrue(len(v) == 2)
         self.assertTrue(v[0].lower().startswith("a"))
         self.assertTrue(v[1].lower().startswith("a"))
-        print "pattern.web.Wikipedia.list()"
+        print("pattern.web.Wikipedia.list()")
         
     def test_wikipedia_all(self):
         # Assert WikipediaArticle.all(), an iterator over WikipediaArticle objects.
@@ -642,7 +642,7 @@ class TestSearchEngine(unittest.TestCase):
         self.assertTrue(len(v) == 1)
         self.assertTrue(isinstance(v[0], web.WikipediaArticle))
         self.assertTrue(v[0].title.lower().startswith("a"))
-        print "pattern.web.Wikipedia.all()"
+        print("pattern.web.Wikipedia.all()")
     
     def test_wikipedia_article(self):
         source, license, Engine = self.api["Wikipedia"]
@@ -667,7 +667,7 @@ class TestSearchEngine(unittest.TestCase):
         self.assertTrue("chat"    in v.languages["fr"].lower())
         self.assertTrue(v.external[0].startswith("http"))
         self.assertTrue(v.media[0].endswith(("jpg","png","gif","svg")))
-        print "pattern.web.WikipediaArticle"
+        print("pattern.web.WikipediaArticle")
         
     def test_wikipedia_article_sections(self):
         # Assert WikipediaArticle.sections structure.
@@ -699,7 +699,7 @@ class TestSearchEngine(unittest.TestCase):
         # Test section tables.
         # XXX should test <td colspan="x"> more thoroughly.
         self.assertTrue(len(v.sections[1].tables) > 0)
-        print "pattern.web.WikipediaSection"
+        print("pattern.web.WikipediaSection")
 
     def test_productwiki(self):
         # Assert product reviews and score.
@@ -707,8 +707,8 @@ class TestSearchEngine(unittest.TestCase):
         v = Engine(license).search("computer", cached=False)
         self.assertTrue(isinstance(v[0].reviews, list))
         self.assertTrue(isinstance(v[0].score, int))
-        print "pattern.web.ProductWiki.Result.reviews"
-        print "pattern.web.ProductWiki.Result.score"
+        print("pattern.web.ProductWiki.Result.reviews")
+        print("pattern.web.ProductWiki.Result.score")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -764,8 +764,8 @@ class TestDOM(unittest.TestCase):
         self.assertEqual(v1.body.type, web.ELEMENT)
         self.assertTrue(v1.head.source.startswith("<head"))
         self.assertTrue(v1.body.source.startswith("<body"))
-        print "pattern.web.Node"
-        print "pattern.web.DOM"
+        print("pattern.web.Node")
+        print("pattern.web.DOM")
     
     def test_node_traverse(self):
         # Assert Node.traverse() (must visit all child nodes recursively).
@@ -776,7 +776,7 @@ class TestDOM(unittest.TestCase):
         v = web.DOM(self.html)
         v.traverse(visit)
         self.assertEqual(self.b, True)
-        print "pattern.web.Node.traverse()"
+        print("pattern.web.Node.traverse()")
         
     def test_element(self):
         # Assert Element properties (test <body>).
@@ -807,11 +807,11 @@ class TestDOM(unittest.TestCase):
         # Assert Element.getElementByAttribute() (test on <a href="">).
         a = v.by_attribute(href="nav1.html")
         self.assertEqual(a[0].content, "nav1")
-        print "pattern.web.Element"
-        print "pattern.web.Element.by_tag()"
-        print "pattern.web.Element.by_class()"
-        print "pattern.web.Element.by_id()"
-        print "pattern.web.Element.by_attribute()"
+        print("pattern.web.Element")
+        print("pattern.web.Element.by_tag()")
+        print("pattern.web.Element.by_class()")
+        print("pattern.web.Element.by_id()")
+        print("pattern.web.Element.by_attribute()")
 
     def test_selector(self):
         # Assert DOM CSS selectors with multiple classes.
@@ -833,7 +833,7 @@ class TestDOM(unittest.TestCase):
         self.assertEqual(e, v("p[class*='class']")[0])
         self.assertEqual(e, v("p:contains('blah')")[1])
         self.assertTrue(web.Selector("p[class='class1 class2']").match(e))
-        print "pattern.web.Selector()"
+        print("pattern.web.Selector()")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -847,14 +847,14 @@ class TestDocumentParser(unittest.TestCase):
         s = web.parsedoc(os.path.join(PATH, "corpora", "carroll-wonderland.pdf"))
         self.assertTrue("Curiouser and curiouser!" in s)
         self.assertTrue(isinstance(s, unicode))
-        print "pattern.web.parsepdf()"
+        print("pattern.web.parsepdf()")
 
     def test_docx(self):
         # Assert PDF to string parser.
         s = web.parsedoc(os.path.join(PATH, "corpora", "carroll-lookingglass.docx"))
         self.assertTrue("'Twas brillig, and the slithy toves" in s)
         self.assertTrue(isinstance(s, unicode))
-        print "pattern.web.parsedocx()"
+        print("pattern.web.parsedocx()")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -867,42 +867,42 @@ class TestLocale(unittest.TestCase):
         # Assert "Dutch" => "nl".
         self.assertEqual(web.locale.encode_language("dutch"), "nl")
         self.assertEqual(web.locale.encode_language("?????"), None)
-        print "pattern.web.locale.encode_language()"
+        print("pattern.web.locale.encode_language()")
         
     def test_decode_language(self):
         # Assert "nl" => "Dutch".
         self.assertEqual(web.locale.decode_language("nl"), "Dutch")
         self.assertEqual(web.locale.decode_language("NL"), "Dutch")
         self.assertEqual(web.locale.decode_language("??"), None)
-        print "pattern.web.locale.decode_language()"
+        print("pattern.web.locale.decode_language()")
         
     def test_encode_region(self):
         # Assert "Belgium" => "BE".
         self.assertEqual(web.locale.encode_region("belgium"), "BE")
         self.assertEqual(web.locale.encode_region("???????"), None)
-        print "pattern.web.locale.encode_region()"
+        print("pattern.web.locale.encode_region()")
         
     def test_decode_region(self):
         # Assert "BE" => "Belgium".
         self.assertEqual(web.locale.decode_region("be"), "Belgium")
         self.assertEqual(web.locale.decode_region("BE"), "Belgium")
         self.assertEqual(web.locale.decode_region("??"), None)
-        print "pattern.web.locale.decode_region()"
+        print("pattern.web.locale.decode_region()")
         
     def test_languages(self):
         # Assert "BE" => "fr" + "nl".
         self.assertEqual(web.locale.languages("be"), ["fr", "nl"])
-        print "pattern.web.locale.languages()"
+        print("pattern.web.locale.languages()")
         
     def test_regions(self):
         # Assert "nl" => "NL" + "BE".
         self.assertEqual(web.locale.regions("nl"), ["NL", "BE"])
-        print "pattern.web.locale.regions()"
+        print("pattern.web.locale.regions()")
         
     def test_regionalize(self):
         # Assert "nl" => "nl-NL" + "nl-BE".
         self.assertEqual(web.locale.regionalize("nl"), ["nl-NL", "nl-BE"])
-        print "pattern.web.locale.regionalize()"
+        print("pattern.web.locale.regionalize()")
 
     def test_geocode(self):
         # Assert region geocode.
@@ -911,7 +911,7 @@ class TestLocale(unittest.TestCase):
         self.assertAlmostEqual(v[1],  4.33, places=2)
         self.assertEqual(v[2], "nl")
         self.assertEqual(v[3], "Belgium")
-        print "pattern.web.locale.geocode()"
+        print("pattern.web.locale.geocode()")
         
     def test_correlation(self):
         # Test the correlation between locale.LANGUAGE_REGION and locale.GEOCODE.
@@ -943,10 +943,10 @@ class TestMail(unittest.TestCase):
         # Assert web.imap.Mail.
         m = web.Mail(self.username, self.password, service=self.service, port=self.port, secure=self.SSL)
         # Assert web.imap.MailFolder (assuming GMail folders).
-        print m.folders
+        print(m.folders)
         self.assertTrue(len(m.folders) > 0)
         self.assertTrue(len(m.inbox) > 0)
-        print "pattern.web.Mail"
+        print("pattern.web.Mail")
         
     def test_mail_message1(self):
         if not self.username or not self.password or not self.query1:
@@ -966,8 +966,8 @@ class TestMail(unittest.TestCase):
         self.assertTrue(isinstance(e.body,          unicode))
         self.assertTrue(self.query1 in e.author.lower())
         self.assertTrue("@" in e.email_address)
-        print "pattern.web.Mail.search(field=FROM)"
-        print "pattern.web.Mail.read()"
+        print("pattern.web.Mail.search(field=FROM)")
+        print("pattern.web.Mail.read()")
 
     def test_mail_message2(self):
         if not self.username or not self.password or not self.query2:
@@ -981,9 +981,9 @@ class TestMail(unittest.TestCase):
                 if len(e.attachments) > 0:
                     self.assertTrue(isinstance(e.attachments[0][1], str))
                     self.assertTrue(len(e.attachments[0][1]) > 0)
-                    print "pattern.web.Message.attachments (MIME-type: %s)" % e.attachments[0][0]
-        print "pattern.web.Mail.search(field=SUBJECT)"
-        print "pattern.web.Mail.read()"
+                    print("pattern.web.Message.attachments (MIME-type: %s)" % e.attachments[0][0])
+        print("pattern.web.Mail.search(field=SUBJECT)")
+        print("pattern.web.Mail.read()")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -1016,7 +1016,7 @@ class TestCrawler(unittest.TestCase):
         self.assertTrue(v[0].referrer, "http://www.domain.com/")
         self.assertTrue(v[1].referrer, "http://www.domain.com/")
         self.assertTrue(v[0] < v[1])
-        print "pattern.web.HTMLLinkParser"
+        print("pattern.web.HTMLLinkParser")
     
     def test_crawler_crawl(self):
         # Assert domain filter.
@@ -1026,7 +1026,7 @@ class TestCrawler(unittest.TestCase):
         for url in v.visited:
             self.assertTrue("clips.ua.ac.be" in url)
         self.assertTrue(len(v.history) == 1)
-        print "pattern.web.Crawler.crawl()"
+        print("pattern.web.Crawler.crawl()")
     
     def test_crawler_delay(self):
         # Assert delay for several crawls to a single domain.
@@ -1037,7 +1037,7 @@ class TestCrawler(unittest.TestCase):
             pass
         t = time.time() - t
         self.assertTrue(t > 1.0)
-        print "pattern.web.Crawler.delay"
+        print("pattern.web.Crawler.delay")
         
     def test_crawler_breadth(self):
         # Assert BREADTH cross-domain preference.
@@ -1047,7 +1047,7 @@ class TestCrawler(unittest.TestCase):
         self.assertTrue(v.history.keys()[0] != v.history.keys()[1])
         self.assertTrue(v.history.keys()[0] != v.history.keys()[2])
         self.assertTrue(v.history.keys()[1] != v.history.keys()[2])
-        print "pattern.web.Crawler.crawl(method=BREADTH)"
+        print("pattern.web.Crawler.crawl(method=BREADTH)")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -1055,14 +1055,14 @@ def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCache))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestURL))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPlaintext))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSearchEngine))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDOM))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDocumentParser))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLocale))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMail))
-    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCrawler))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestURL))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPlaintext))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSearchEngine))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDOM))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDocumentParser))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLocale))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMail))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCrawler))
     return suite
 
 if __name__ == "__main__":

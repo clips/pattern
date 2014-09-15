@@ -27,7 +27,7 @@ class TestInflection(unittest.TestCase):
                     i +=1
                 n += 1
         self.assertTrue(float(i) / n > 0.95)
-        print "pattern.fr.predicative()"
+        print("pattern.fr.predicative()")
 
     def test_find_lemma(self):
         # Assert the accuracy of the verb lemmatization algorithm.
@@ -37,7 +37,7 @@ class TestInflection(unittest.TestCase):
                 i += 1
             n += 1
         self.assertTrue(float(i) / n > 0.80)
-        print "pattern.fr.inflect.verbs.find_lemma()"
+        print("pattern.fr.inflect.verbs.find_lemma()")
         
     def test_find_lexeme(self):
         # Assert the accuracy of the verb conjugation algorithm.
@@ -49,7 +49,7 @@ class TestInflection(unittest.TestCase):
                     i += 1
                 n += 1
         self.assertTrue(float(i) / n > 0.85)
-        print "pattern.fr.inflect.verbs.find_lexeme()"
+        print("pattern.fr.inflect.verbs.find_lexeme()")
 
     def test_conjugate(self):
         # Assert different tenses with different conjugations.
@@ -103,7 +103,7 @@ class TestInflection(unittest.TestCase):
           (u"être", u"fussiez",  (fr.PAST, 2, fr.PLURAL, fr.SUBJUNCTIVE)),
           (u"être", u"fussent",  (fr.PAST, 3, fr.PLURAL, fr.SUBJUNCTIVE))):
             self.assertEqual(fr.conjugate(v1, tense), v2)
-        print "pattern.fr.conjugate()"
+        print("pattern.fr.conjugate()")
 
     def test_lexeme(self):
         # Assert all inflections of "être".
@@ -117,13 +117,13 @@ class TestInflection(unittest.TestCase):
             u"sois", u"soyons", u"soyez", u"soit", u"soient", 
             u"fusse", u"fusses", u"fût", u"fussions", u"fussiez", u"fussent"
         ])
-        print "pattern.fr.inflect.lexeme()"
+        print("pattern.fr.inflect.lexeme()")
 
     def test_tenses(self):
         # Assert tense recognition.
         self.assertTrue((fr.PRESENT, 3, fr.SG) in fr.tenses("est"))
         self.assertTrue("2sg" in fr.tenses("es"))
-        print "pattern.fr.tenses()"
+        print("pattern.fr.tenses()")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -150,7 +150,7 @@ class TestParser(unittest.TestCase):
             ["sur", "IN", "sur"], 
             ["le", "DT", "le"], 
             ["tapis", "NN", "tapis"]])
-        print "pattern.fr.parser.find_lemmata()"
+        print("pattern.fr.parser.find_lemmata()")
 
     def test_parse(self):
         # Assert parsed output with Penn Treebank II tags (slash-formatted).
@@ -161,13 +161,13 @@ class TestParser(unittest.TestCase):
             u"s'/PRP/B-NP/O était/VB/B-VP/O assis/VBN/I-VP/O " + \
             u"sur/IN/B-PP/B-PNP le/DT/B-NP/I-PNP tapis/NN/I-NP/I-PNP ././O/O"
         )
-        print "pattern.fr.parser.parse()"
+        print("pattern.fr.parser.parse()")
 
     def test_tag(self):
         # Assert [("le", "DT"), ("chat", "NN"), ("noir", "JJ")].
         v = fr.tag("le chat noir")
         self.assertEqual(v, [("le", "DT"), ("chat", "NN"), ("noir", "JJ")])
-        print "pattern.fr.tag()"
+        print("pattern.fr.tag()")
 
     def test_command_line(self):
         # Assert parsed output from the command-line (example from the documentation).
@@ -177,7 +177,7 @@ class TestParser(unittest.TestCase):
         v = p.stdout.read()
         v = v.strip()
         self.assertEqual(v, "Le/DT/B-NP/O/O/le chat/NN/I-NP/O/O/chat noir/JJ/I-NP/O/O/noir ././O/O/O/.")
-        print "python -m pattern.fr"
+        print("python -m pattern.fr")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -199,12 +199,12 @@ class TestSentiment(unittest.TestCase):
         for review, score in Datasheet.load(os.path.join(PATH, "corpora", "polarity-fr-amazon.csv")):
             reviews.append((review, int(score) > 0))
         A, P, R, F = test(lambda review: fr.positive(review), reviews)
-        #print A, P, R, F
+        #print(A, P, R, F)
         self.assertTrue(A > 0.751)
         self.assertTrue(P > 0.765)
         self.assertTrue(R > 0.725)
         self.assertTrue(F > 0.744)
-        print "pattern.fr.sentiment()"
+        print("pattern.fr.sentiment()")
         
     def test_tokenizer(self):
         # Assert that french sentiment() uses French tokenizer. ("t'aime" => "t' aime").

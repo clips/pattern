@@ -24,7 +24,7 @@ class TestUtilityFunctions(unittest.TestCase):
           ("rabbits", "rab*its", True),
           ("rabbits", re.compile(r"ra.*?"), True)):
             self.assertEqual(search._match(s, p), b)
-        print "pattern.search._match()"
+        print("pattern.search._match()")
         
     def test_unique(self):
         self.assertEqual(search.unique([1,1,2,2]), [1,2])
@@ -41,7 +41,7 @@ class TestUtilityFunctions(unittest.TestCase):
         for n, m in ((1,9), (2,81), (3,729), (4,6561)):
             v = search.product([1,2,3,4,5,6,7,8,9], repeat=n)
             self.assertEqual(len(list(v)), m)
-        print "pattern.search.product()"
+        print("pattern.search.product()")
             
     def test_variations(self):
         # Assert variations include the original input (the empty list has one variation = itself).
@@ -57,7 +57,7 @@ class TestUtilityFunctions(unittest.TestCase):
         v = search.variations([1,2,3,4], optional=lambda item: item in (1,2))
         self.assertEqual(v, [(1,2,3,4), (2,3,4), (1,3,4), (3,4)])
         self.assertTrue(len(v[0]) >= len(v[1]) >= len(v[2]), len(v[3]))
-        print "pattern.search.variations()"
+        print("pattern.search.variations()")
         
     def test_odict(self):
         # Assert odict.append() which must be order-preserving.
@@ -69,7 +69,7 @@ class TestUtilityFunctions(unittest.TestCase):
         v = v.copy()
         self.assertTrue(isinstance(v, dict))
         self.assertEqual(v.keys(), ["a", "c","b"])
-        print "pattern.search.odict()"
+        print("pattern.search.odict()")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -111,7 +111,7 @@ class TestTaxonomy(unittest.TestCase):
             "sir bedevere", 
             "king arthur",
             "john cleese"])
-        print "pattern.search.Taxonomy"
+        print("pattern.search.Taxonomy")
     
     def test_classifier(self):
         # Assert taxonomy classifier + keyword arguments.
@@ -122,7 +122,7 @@ class TestTaxonomy(unittest.TestCase):
         t.classifiers.append(c2)
         self.assertEqual(t.classify("fuzziness"), "quality")
         self.assertEqual(t.classify("run", chunk="VP"), "action")
-        print "pattern.search.Classifier"
+        print("pattern.search.Classifier")
         
     def test_wordnet_classifier(self):
         # Assert WordNet classifier parents & children.
@@ -133,7 +133,7 @@ class TestTaxonomy(unittest.TestCase):
         self.assertEqual(t.classify("dog"), "canine")
         self.assertTrue("domestic cat" in t.children("cat"))
         self.assertTrue("puppy" in t.children("dog"))
-        print "pattern.search.WordNetClassifier"
+        print("pattern.search.WordNetClassifier")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -210,8 +210,8 @@ class TestConstraint(unittest.TestCase):
         v = search.Constraint.fromstring("\\!cats|!dogs|!fish")
         self.assertTrue(v.words == ["!cats"])
         self.assertTrue(v.exclude.words == ["dogs", "fish"])
-        print "pattern.search.Constraint.fromstring"
-        print "pattern.search.Constraint.fromstring"
+        print("pattern.search.Constraint.fromstring")
+        print("pattern.search.Constraint.fromstring")
         
     def test_match(self):
         # Assert Constraint-Word matching.
@@ -244,7 +244,7 @@ class TestConstraint(unittest.TestCase):
         self.assertTrue(v.match(W("bird")))
         self.assertTrue(v.match(S("tweeties")[0]))
         self.assertTrue(v.match(W("Steven")))
-        print "pattern.search.Constraint.match()"
+        print("pattern.search.Constraint.match()")
         
     def test_string(self):
         # Assert Constraint.string.
@@ -257,7 +257,7 @@ class TestConstraint(unittest.TestCase):
         v.multiple = True
         v.first    = True
         self.assertEqual(v.string, "^[Steven\\*|NN*|SBJ|\(ASSOCIATE\)_PROFESSOR|!bird]+")
-        print "pattern.search.Constraint.string"
+        print("pattern.search.Constraint.string")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -274,7 +274,7 @@ class TestPattern(unittest.TestCase):
             search.Constraint("cat")], search.STRICT)
         self.assertEqual(len(v), 3)
         self.assertEqual(v.strict, True)
-        print "pattern.search.Pattern"
+        print("pattern.search.Pattern")
         
     def test_fromstring(self):
         # Assert Pattern string syntax.
@@ -292,7 +292,7 @@ class TestPattern(unittest.TestCase):
         self.assertEqual(v[0].words,    ["avoid"])
         self.assertEqual(v[1].words,    ["", "messy", "syntax", ""])
         self.assertEqual(v[1].exclude.words, [""]) # "!" = exclude everything
-        print "pattern.search.Pattern.fromstring()"
+        print("pattern.search.Pattern.fromstring()")
         
     def test_match(self):
         # Assert Pattern.match()
@@ -367,7 +367,7 @@ class TestPattern(unittest.TestCase):
         p = search.Pattern.fromstring("[] NNS")
         p[0].words.append(re.compile(r"[0-9|\.]+"))
         self.assertEqual(p.match(s).string, "3.5 rabbits")
-        print "pattern.search.Pattern.match()"
+        print("pattern.search.Pattern.match()")
         
     def test_search(self):
         # Assert one match containing all words.
@@ -387,7 +387,7 @@ class TestPattern(unittest.TestCase):
         self.assertEqual(v[1].string, "black cats")
         self.assertEqual(v[2].string, "a big white rabbit")
         v = search.Pattern.fromstring("NN*")
-        print "pattern.search.Pattern.search()"
+        print("pattern.search.Pattern.search()")
         
     def test_convergence(self):
         # Test with random sentences and random patterns to see if it crashes.
@@ -414,7 +414,7 @@ class TestPattern(unittest.TestCase):
         self.assertTrue(isinstance(p[0].words[0], search.regexp))
         # Assert TypeError for other input.
         self.assertRaises(TypeError, search.compile, 1)
-        print "pattern.search.compile()"
+        print("pattern.search.compile()")
         
     def test_match_function(self):
         # Assert match() function.
@@ -423,7 +423,7 @@ class TestPattern(unittest.TestCase):
         m2 = search.match("chop NP+ off", s, strict=True)
         self.assertEqual(m1.constituents()[1].string, "his head")
         self.assertEqual(m2.constituents()[1].string, "his head")
-        print "pattern.search.match()"
+        print("pattern.search.match()")
         
     def test_search_function(self):
         # Assert search() function.
@@ -431,12 +431,12 @@ class TestPattern(unittest.TestCase):
         m = search.search("PRP*? NN*", s)
         self.assertEqual(m[0].string, "Bors")
         self.assertEqual(m[1].string, "his head")
-        print "pattern.search.search()"
+        print("pattern.search.search()")
         
     def test_escape(self):
         # Assert escape() function.
         self.assertEqual(search.escape("{}[]()_|!*+^."), "\\{\\}\\[\\]\\(\\)\\_\\|\\!\\*\\+\\^.")
-        print "pattern.search.escape()"
+        print("pattern.search.escape()")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -462,15 +462,15 @@ class TestMatch(unittest.TestCase):
         self.assertEqual(m[1].constraint(s.words[-3]), p[0])
         self.assertEqual(m[1].constraint(s.words[-2]), p[1])
         # Assert constraints "JJ NN*" links to chunk "pointy teeth".
-        self.assertEqual(m[1].constraints(s.chunks[6]), [p[0], p[1]])
+        self.assertEqual(m[1].constraints(s.chunks[-1]), [p[0], p[1]])
         # Assert Match.constituents() by constraint, constraint index and list of indices.
-        self.assertEqual(m[1].constituents(), [s.chunks[6]])
+        self.assertEqual(m[1].constituents(), [s.words[-3], s.words[-2]])
         self.assertEqual(m[1].constituents(constraint=p[0]), [s.words[-3]])
         self.assertEqual(m[1].constituents(constraint=1), [s.words[-2]])
-        self.assertEqual(m[1].constituents(constraint=(0,1)), [s.chunks[6]])
+        self.assertEqual(m[1].constituents(constraint=(0,1)), [s.words[-3], s.words[-2]])
         # Assert Match.string.
         self.assertEqual(m[1].string, "pointy teeth")
-        print "pattern.search.Match"
+        print("pattern.search.Match")
         
     def test_group(self):
         # Assert Match groups.
@@ -488,7 +488,7 @@ class TestMatch(unittest.TestCase):
         v = m[0].group(1, chunked=True)
         self.assertEqual(v[0].string, "eats")
         self.assertEqual(v[1].string, "a tasty fish")
-        print "pattern.search.Match.group()"
+        print("pattern.search.Match.group()")
         
     def test_group_ordering(self):
         # Assert group parser ordering (opened-first).

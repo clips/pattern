@@ -30,21 +30,21 @@ class TestUtilityFunctions(unittest.TestCase):
             o2 = graph.deepcopy(o1)
             if isinstance(o2, (list, tuple, set, dict, MyObject)):
                 self.assertTrue(id(o1) != id(o2))
-        print "pattern.graph.deepcopy()"
+        print("pattern.graph.deepcopy()")
 
     def test_unique(self):
         # Assert list copy with unique items.
         v = graph.unique([1,1,1])
         self.assertEqual(len(v), 1)
         self.assertEqual(v[0], 1)
-        print "pattern.graph.unique()"
+        print("pattern.graph.unique()")
         
     def test_coordinates(self):
         # Assert 2D coordinates.
         x, y = graph.coordinates(10, 10, 100, 30)
         self.assertAlmostEqual(x, 96.60, places=2)
         self.assertAlmostEqual(y, 60.00, places=2)
-        print "pattern.graph.coordinates()"
+        print("pattern.graph.coordinates()")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -83,7 +83,7 @@ class TestNode(unittest.TestCase):
         self.assertTrue(n.fixed         == False)
         self.assertTrue(n.weight        == 0)
         self.assertTrue(n.centrality    == 0)
-        print "pattern.graph.Node"
+        print("pattern.graph.Node")
         
     def test_edge(self):
         # Assert node edges.
@@ -95,8 +95,8 @@ class TestNode(unittest.TestCase):
         self.assertTrue(n1.links[0]          == self.g.edges[0].node2)
         self.assertTrue(n1.links.edge("b")   == self.g.edges[0])
         self.assertTrue(n1.links.edge(n2)    == self.g.edges[0])
-        print "pattern.graph.Node.links"
-        print "pattern.graph.Node.edges"
+        print("pattern.graph.Node.links")
+        print("pattern.graph.Node.edges")
         
     def test_flatten(self):
         # Assert node spreading activation.
@@ -104,12 +104,12 @@ class TestNode(unittest.TestCase):
         self.assertTrue(set(n.flatten(depth=0)) == set([n]))
         self.assertTrue(set(n.flatten(depth=1)) == set([n, n.links[0]]))
         self.assertTrue(set(n.flatten(depth=2)) == set(self.g.nodes))
-        print "pattern.graph.Node.flatten()"
+        print("pattern.graph.Node.flatten()")
         
     def test_text(self):
         n = self.g.add_node("d", text=None)
         self.assertTrue(n.text == None)
-        print "pattern.graph.Node.text"
+        print("pattern.graph.Node.text")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -133,7 +133,7 @@ class TestEdge(unittest.TestCase):
         self.assertTrue(e.type        == "is-a")
         self.assertTrue(e.stroke      == (0,0,0,1))
         self.assertTrue(e.strokewidth == 1)
-        print "pattern.graph.Edge"
+        print("pattern.graph.Edge")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -161,7 +161,7 @@ class TestGraph(unittest.TestCase):
         self.assertTrue(g._adjacency  == None)
         self.assertTrue(isinstance(g.layout, graph.GraphLayout))
         self.assertTrue(isinstance(g.layout, graph.GraphSpringLayout))
-        print "pattern.graph.Graph"
+        print("pattern.graph.Graph")
         
     def test_graph_nodes(self):
         # Assert graph nodes.
@@ -176,7 +176,7 @@ class TestGraph(unittest.TestCase):
         g.remove(g["e"])
         self.assertTrue("d" not in g)
         self.assertTrue("e" not in g)
-        print "pattern.graph.Graph.add_node()"
+        print("pattern.graph.Graph.add_node()")
         
     def test_graph_edges(self):
         # Assert graph edges.
@@ -193,7 +193,7 @@ class TestGraph(unittest.TestCase):
         g.remove(g["e"])
         # Edges d->e and e->d should now be removed automatically.
         self.assertEqual(len(g.edges), 2)
-        print "pattern.graph.Graph.add_edge()"
+        print("pattern.graph.Graph.add_edge()")
         
     def test_cache(self):
         # Assert adjacency cache is flushed when nodes, edges or direction changes.
@@ -210,7 +210,7 @@ class TestGraph(unittest.TestCase):
         g.add_edge("d", "e", weight=0.0)
         g.remove(g.node("d"))
         g.remove(g.node("e"))
-        print "pattern.graph.Graph._adjacency"
+        print("pattern.graph.Graph._adjacency")
         
     def test_paths(self):
         # Assert node paths.
@@ -232,9 +232,9 @@ class TestGraph(unittest.TestCase):
         self.assertEqual(g.shortest_paths("a")["d"], None)
         self.assertEqual(g.shortest_paths("c", directed=True)["a"], None)
         g.remove(g["d"])
-        print "pattern.graph.Graph.paths()"
-        print "pattern.graph.Graph.shortest_path()"
-        print "pattern.graph.Graph.shortest_paths()"
+        print("pattern.graph.Graph.paths()")
+        print("pattern.graph.Graph.shortest_path()")
+        print("pattern.graph.Graph.shortest_paths()")
         
     def test_eigenvector_centrality(self):
         # Assert eigenvector centrality.
@@ -244,7 +244,7 @@ class TestGraph(unittest.TestCase):
         self.assertTrue(v["a"] == v[self.g.node("a")])
         self.assertTrue(v["a"] < v["c"])
         self.assertTrue(v["b"] < v["c"])
-        print "pattern.graph.Graph.eigenvector_centrality()"
+        print("pattern.graph.Graph.eigenvector_centrality()")
         
     def test_betweenness_centrality(self):
         # Assert betweenness centrality.
@@ -254,7 +254,7 @@ class TestGraph(unittest.TestCase):
         self.assertTrue(v["a"] == v[self.g.node("a")])
         self.assertTrue(v["a"] < v["b"])
         self.assertTrue(v["c"] < v["b"])
-        print "pattern.graph.Graph.betweenness_centrality()"
+        print("pattern.graph.Graph.betweenness_centrality()")
 
     def test_sorted(self):
         # Assert graph node sorting
@@ -262,7 +262,7 @@ class TestGraph(unittest.TestCase):
         o2 = self.g.sorted(order=graph.CENTRALITY, threshold=0.0)
         self.assertEqual(o1[0], self.g["c"])
         self.assertEqual(o2[0], self.g["b"])
-        print "pattern.graph.Graph.sorted()"
+        print("pattern.graph.Graph.sorted()")
 
     def test_prune(self):
         # Assert leaf pruning.
@@ -270,20 +270,20 @@ class TestGraph(unittest.TestCase):
         g.prune(1)
         self.assertEqual(len(g), 1)
         self.assertEqual(g.nodes, [g["b"]])
-        print "pattern.graph.Graph.prune()"
+        print("pattern.graph.Graph.prune()")
     
     def test_fringe(self):
         # Assert leaf fetching.
         g = self.g.copy()
         self.assertEqual(g.fringe(0), [g["a"], g["c"]])
         self.assertEqual(g.fringe(1), [g["a"], g["b"], g["c"]])
-        print "pattern.graph.Graph.fringe()"
+        print("pattern.graph.Graph.fringe()")
     
     def test_split(self):
         # Asset subgraph splitting.
         self.assertTrue(isinstance(self.g.split(), list))
         self.assertTrue(isinstance(self.g.split()[0], graph.Graph))
-        print "pattern.graph.Graph.split()"
+        print("pattern.graph.Graph.split()")
     
     def test_update(self):
         # Assert node position after updating layout algorithm.
@@ -295,7 +295,7 @@ class TestGraph(unittest.TestCase):
         for n in self.g.nodes:
             self.assertTrue(n.x == 0)
             self.assertTrue(n.y == 0)
-        print "pattern.graph.Graph.update()"
+        print("pattern.graph.Graph.update()")
         
     def test_copy(self):
         # Assert deep copy of Graph.
@@ -319,7 +319,7 @@ class TestGraph(unittest.TestCase):
         g4 = g4.copy()
         self.assertTrue(isinstance(g4.nodes[0], MyNode))
         self.assertTrue(isinstance(g4.edges[0], MyEdge))
-        print "pattern.graph.Graph.copy()"
+        print("pattern.graph.Graph.copy()")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -342,7 +342,7 @@ class TestGraphLayout(unittest.TestCase):
         self.assertTrue(gl.iterations == 0)
         gl.update()
         self.assertTrue(gl.iterations == 1)
-        print "pattern.graph.GraphLayout"
+        print("pattern.graph.GraphLayout")
         
 class TestGraphSpringLayout(TestGraphLayout):
     
@@ -361,7 +361,7 @@ class TestGraphSpringLayout(TestGraphLayout):
         self.assertTrue(gl.bounds[1]  < 0)
         self.assertTrue(gl.bounds[2]  > 0)
         self.assertTrue(gl.bounds[3]  > 0)
-        print "pattern.graph.GraphSpringLayout"
+        print("pattern.graph.GraphSpringLayout")
     
     def test_distance(self):
         # Assert 2D distance.
@@ -371,7 +371,7 @@ class TestGraphSpringLayout(TestGraphLayout):
         n2.x = +100
         d = self.g.layout._distance(n1, n2)
         self.assertEqual(d, (200.0, 0.0, 200.0, 40000.0))
-        print "pattern.graph.GraphSpringLayout._distance"
+        print("pattern.graph.GraphSpringLayout._distance")
     
     def test_repulsion(self):
         # Assert repulsive node force.
@@ -381,7 +381,7 @@ class TestGraphSpringLayout(TestGraphLayout):
         d2 = gl._distance(self.g["a"], self.g["c"])[2]
         self.assertTrue(d2 > d1)
         self.g.layout.reset()
-        print "pattern.graph.GraphSpringLayout._repulse()"
+        print("pattern.graph.GraphSpringLayout._repulse()")
         
     def test_attraction(self):
         # Assert attractive edge force.
@@ -392,7 +392,7 @@ class TestGraphSpringLayout(TestGraphLayout):
         gl.update()
         d2 = gl._distance(self.g["a"], self.g["b"])[2]
         self.assertTrue(d2 < d1)
-        print "pattern.graph.GraphSpringLayout._attract()"
+        print("pattern.graph.GraphSpringLayout._attract()")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -420,8 +420,8 @@ class TestGraphTraversal(unittest.TestCase):
         a = []
         graph.breadth_first_search(g["a"], visit, traversable)
         self.assertEqual(a, [g["a"], g["b"], g["c"], g["d"]])
-        print "pattern.graph.depth_first_search()"
-        print "pattern.graph.breadth_first_search()"
+        print("pattern.graph.depth_first_search()")
+        print("pattern.graph.breadth_first_search()")
     
     def test_paths(self):
         # Assert depth-first all paths.
@@ -435,7 +435,7 @@ class TestGraphTraversal(unittest.TestCase):
           ("a", "x", 1, [])):
             p = graph.paths(g, id1, id2, length)
             self.assertEqual(p, path)
-        print "pattern.graph.paths()"
+        print("pattern.graph.paths()")
     
     def test_edges(self):
         # Assert path of nodes to edges.
@@ -443,7 +443,7 @@ class TestGraphTraversal(unittest.TestCase):
         p = [g["a"], g["b"], g["d"], g["x"]]
         e = list(graph.edges(p))
         self.assertEqual(e, [g.edge("a","b"), g.edge("b","d"), None])
-        print "pattern.graph.edges()"
+        print("pattern.graph.edges()")
         
     def test_adjacency(self):
         # Assert adjacency map with different settings.
@@ -491,7 +491,7 @@ class TestGraphTraversal(unittest.TestCase):
             ("d", [("b", 1.1), ("e", 1.1)]), 
             ("e", [("d", 1.1)]), 
             ("x", [])])
-        print "pattern.graph.adjacency()"
+        print("pattern.graph.adjacency()")
     
     def test_dijkstra_shortest_path(self):
         # Assert Dijkstra's algorithm (node1 -> node2).
@@ -503,7 +503,7 @@ class TestGraphTraversal(unittest.TestCase):
           ("a", "d", lambda id1, id2: id1=="d" and id2=="a" and 1 or 0, False,  ["a", "b", "d"])):
             p = graph.dijkstra_shortest_path(g, id1, id2, heuristic, directed)
             self.assertEqual(p, path)
-        print "pattern.graph.dijkstra_shortest_path()"
+        print("pattern.graph.dijkstra_shortest_path()")
         
     def test_dijkstra_shortest_paths(self):
         # Assert Dijkstra's algorithm (node1 -> all).
@@ -537,7 +537,7 @@ class TestGraphTraversal(unittest.TestCase):
             ("d", ["a", "b", "d"]), 
             ("e", ["a", "b", "d", "e"]), 
             ("x", None)])
-        print "pattern.graph.dijkstra_shortest_paths()"
+        print("pattern.graph.dijkstra_shortest_paths()")
         
     def test_floyd_warshall_all_pairs_distance(self):
         # Assert all pairs path distance.
@@ -552,7 +552,7 @@ class TestGraphTraversal(unittest.TestCase):
             ("x", [])])
         # Assert predecessor tree.
         self.assertEqual(graph.predecessor_path(p1.predecessors, "a", "d"), ["a", "b", "d"])
-        print "pattern.graph.floyd_warshall_all_pairs_distance()"
+        print("pattern.graph.floyd_warshall_all_pairs_distance()")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -583,7 +583,7 @@ class TestGraphPartitioning(unittest.TestCase):
         self.assertTrue(sorted(g[0].keys()), ["a","b","c","d","e"])
         self.assertTrue(sorted(g[1].keys()), ["x","y"])
         self.assertTrue(sorted(g[2].keys()), ["z"])
-        print "pattern.graph.partition()"
+        print("pattern.graph.partition()")
         
     def test_clique(self):
         # Assert node cliques.
@@ -594,8 +594,8 @@ class TestGraphPartitioning(unittest.TestCase):
         self.assertEqual(v, ["a","b","c"])
         v = graph.cliques(self.g, 2)
         self.assertEqual(v, [["a","b","c"], ["b","d"], ["d","e"], ["x","y"]])
-        print "pattern.graph.clique()"
-        print "pattern.graph.cliques()"
+        print("pattern.graph.clique()")
+        print("pattern.graph.cliques()")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -617,7 +617,7 @@ class TestGraphMaintenance(unittest.TestCase):
         g.add_edge("a", "c")
         graph.unlink(g, g["a"], "b")
         self.assertTrue(len(g.edges) == 1)
-        print "pattern.graph.unlink()"
+        print("pattern.graph.unlink()")
     
     def test_redirect(self):
         # Assert transfer connections of Node(a) to Node(d).
@@ -629,7 +629,7 @@ class TestGraphMaintenance(unittest.TestCase):
         self.assertTrue(len(g["a"].edges) == 0)
         self.assertTrue(len(g["d"].edges) == 2)
         self.assertTrue(g.edge("d","c").node1 == g["c"])
-        print "pattern.graph.redirect()"
+        print("pattern.graph.redirect()")
     
     def test_cut(self):
         # Assert unlink Node(b) and redirect a->c and a->d.
@@ -641,7 +641,7 @@ class TestGraphMaintenance(unittest.TestCase):
         self.assertTrue(len(g["b"].edges) == 0)
         self.assertTrue(g.edge("a","c") is not None)
         self.assertTrue(g.edge("a","d") is not None)
-        print "pattern.graph.cut()"
+        print("pattern.graph.cut()")
         
     def test_insert(self):
         g = graph.Graph()
@@ -651,7 +651,7 @@ class TestGraphMaintenance(unittest.TestCase):
         self.assertTrue(g.edge("a","b") is None)
         self.assertTrue(g.edge("a","c") is not None)
         self.assertTrue(g.edge("c","b") is not None)
-        print "pattern.graph.insert()"
+        print("pattern.graph.insert()")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -670,8 +670,8 @@ class TestGraphCommonsense(unittest.TestCase):
         v = g["rose"].properties
         self.assertTrue("red" in v)
         self.assertTrue("romance" not in v)
-        print "pattern.graph.commonsense.Concept.halo"
-        print "pattern.graph.commonsense.Concept.properties"
+        print("pattern.graph.commonsense.Concept.halo")
+        print("pattern.graph.commonsense.Concept.properties")
     
     def test_field(self):
         # Assert semantic field (e.g., concept taxonomy).
@@ -680,7 +680,7 @@ class TestGraphCommonsense(unittest.TestCase):
         self.assertTrue("red" in v)
         self.assertTrue("green" in v)
         self.assertTrue("blue" in v)
-        print "pattern.graph.commonsense.Commonsense.field()"
+        print("pattern.graph.commonsense.Commonsense.field()")
     
     def test_similarity(self):
         # Assert that tiger is more similar to lion than to spoon
@@ -689,7 +689,7 @@ class TestGraphCommonsense(unittest.TestCase):
         w1 = g.similarity("tiger", "lion")
         w2 = g.similarity("tiger", "spoon")
         self.assertTrue(w1 > w2)
-        print "pattern.graph.commonsense.Commonsense.similarity()"
+        print("pattern.graph.commonsense.Commonsense.similarity()")
 
 #---------------------------------------------------------------------------------------------------
 
