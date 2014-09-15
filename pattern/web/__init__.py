@@ -523,7 +523,7 @@ class URL(object):
             return False
         except HTTPError:
             return True
-        except URLTimeoutError:
+        except URLTimeout:
             return True
         except URLError:
             return False
