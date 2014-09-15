@@ -72,6 +72,8 @@ def ngrams(string, n=3, punctuation=PUNCTUATION, continuous=False):
         return [w for w in s if (isinstance(w, Word) and w.string or w) not in punctuation]
     if n <= 0:
         return []
+    if isinstance(string, list):
+        s = [strip_punctuation(string)]
     if isinstance(string, basestring):
         s = [strip_punctuation(s.split(" ")) for s in tokenize(string)]
     if isinstance(string, Sentence):
@@ -1100,13 +1102,18 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
             if t != "":
                 tokens.append(t)
             tokens.extend(reversed(tail))
+    # Handle citations (periods + quotes).
+    if isinstance(string, unicode):
+        quotes = ("'", "\"", u"”", u"’")
+    else:
+        quotes = ("'", "\"")    
     # Handle sentence breaks (periods, quotes, parenthesis).
     sentences, i, j = [[]], 0, 0
     while j < len(tokens):
         if tokens[j] in ("...", ".", "!", "?", EOS):
             while j < len(tokens) \
-              and tokens[j] in ("'", "\"", u"”", u"’", "...", ".", "!", "?", ")", EOS):
-                if tokens[j] in ("'", "\"") and sentences[-1].count(tokens[j]) % 2 == 0:
+              and tokens[j] in ("...", ".", "!", "?", EOS) or tokens[j] in quotes:
+                if tokens[j] in quotes and sentences[-1].count(tokens[j]) % 2 == 0:
                     break # Balanced quotes.
                 j += 1
             sentences[-1].extend(t for t in tokens[i:j] if t != EOS)
@@ -2082,14 +2089,29 @@ class Sentiment(lazydict):
             where chunk is a list of successive words: a known word optionally
             preceded by a modifier ("very good") or a negation ("not good").
         """
+        words = list(words)
+        index = 0
         a = []
         m = None # Preceding modifier (i.e., adverb or adjective).
         n = None # Preceding negation (e.g., "not beautiful").
-        for w, pos in words:
+        while index < len(words):
+            w, pos = words[index]
             # Only assess known words, preferably by part-of-speech tag.
             # Including unknown words (polarity 0.0 and subjectivity 0.0) lowers the average.
             if w is None:
+                index += 1
                 continue
+                
+            #for i in reversed(range(1, 4)):
+            #    # Known idioms ("hit the spot").
+            #    if index < len(words) - i:
+            #        idiom = words[index:index+i+1]
+            #        idiom = " ".join(zip(*idiom)[0])
+            #        if idiom in self:
+            #            w, pos = idiom, None
+            #            index += i
+            #            break
+
             if w in self and pos in self[w]:
                 p, s, i = self[w][pos]
                 # Known word not preceded by a modifier ("good").
@@ -2143,6 +2165,7 @@ class Sentiment(lazydict):
                         if w in map(lambda e: e.lower(), e):
                             a.append(dict(w=[w], p=p, s=1.0, i=1.0, n=1, x=MOOD))
                             break
+            index += 1
         for i in range(len(a)):
             w = a[i]["w"]
             p = a[i]["p"]
