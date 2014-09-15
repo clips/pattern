@@ -41,6 +41,10 @@ from pattern.text import (
     NOUN, VERB, ADJECTIVE, ADVERB,
     MOOD, IRONY
 )
+# Import spelling base class.
+from pattern.text import (
+    Spelling
+)
 # Import verb tenses.
 from pattern.text import (
     INFINITIVE, PRESENT, PAST, FUTURE,
@@ -187,6 +191,10 @@ sentiment = Sentiment(
     language = "fr"
 )
 
+spelling = Spelling(
+        path = os.path.join(MODULE, "fr-spelling.txt")
+)
+
 def tokenize(s, *args, **kwargs):
     """ Returns a list of sentences, where punctuation marks have been split from words.
     """
@@ -220,7 +228,12 @@ def keywords(s, top=10, **kwargs):
     """ Returns a sorted list of keywords in the given string.
     """
     return parser.find_keywords(s, top=top, frequency=parser.frequency)
-    
+
+def suggest(w):
+    """ Returns a list of (word, confidence)-tuples of spelling corrections.
+    """
+    return spelling.suggest(w)
+
 def polarity(s, **kwargs):
     """ Returns the sentence polarity (positive/negative) between -1.0 and 1.0.
     """
@@ -230,7 +243,7 @@ def subjectivity(s, **kwargs):
     """ Returns the sentence subjectivity (objective/subjective) between 0.0 and 1.0.
     """
     return sentiment(s, **kwargs)[1]
-    
+
 def positive(s, threshold=0.1, **kwargs):
     """ Returns True if the given sentence has a positive sentiment (polarity >= threshold).
     """

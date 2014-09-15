@@ -40,6 +40,10 @@ from pattern.text import (
     NOUN, VERB, ADJECTIVE, ADVERB,
     MOOD, IRONY
 )
+# Import spelling base class.
+from pattern.text import (
+    Spelling
+)
 # Import verb tenses.
 from pattern.text import (
     INFINITIVE, PRESENT, PAST, FUTURE,
@@ -178,6 +182,10 @@ sentiment = Sentiment(
     language = "nl"
 )
 
+spelling = Spelling(
+        path = os.path.join(MODULE, "nl-spelling.txt")
+)
+
 def tokenize(s, *args, **kwargs):
     """ Returns a list of sentences, where punctuation marks have been split from words.
     """
@@ -211,7 +219,12 @@ def keywords(s, top=10, **kwargs):
     """ Returns a sorted list of keywords in the given string.
     """
     return parser.find_keywords(s, top=top, frequency=parser.frequency)
-    
+
+def suggest(w):
+    """ Returns a list of (word, confidence)-tuples of spelling corrections.
+    """
+    return spelling.suggest(w)
+
 def polarity(s, **kwargs):
     """ Returns the sentence polarity (positive/negative) between -1.0 and 1.0.
     """

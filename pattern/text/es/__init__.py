@@ -34,6 +34,10 @@ from pattern.text.tree import (
     Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table,
     SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
 )
+# Import spelling base class.
+from pattern.text import (
+    Spelling
+)
 # Import verb tenses.
 from pattern.text import (
     INFINITIVE, PRESENT, PAST, FUTURE, CONDITIONAL,
@@ -204,6 +208,10 @@ parser = Parser(
 
 lexicon = parser.lexicon # Expose lexicon.
 
+spelling = Spelling(
+        path = os.path.join(MODULE, "es-spelling.txt")
+)
+
 def tokenize(s, *args, **kwargs):
     """ Returns a list of sentences, where punctuation marks have been split from words.
     """
@@ -237,6 +245,11 @@ def keywords(s, top=10, **kwargs):
     """ Returns a sorted list of keywords in the given string.
     """
     return parser.find_keywords(s, top=top, frequency=parser.frequency)
+
+def suggest(w):
+    """ Returns a list of (word, confidence)-tuples of spelling corrections.
+    """
+    return spelling.suggest(w)
 
 split = tree # Backwards compatibility.
 
