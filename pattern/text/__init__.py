@@ -2026,7 +2026,7 @@ class Sentiment(lazydict):
         except KeyError: # Some WordNet id's are not zero padded.
             return tuple(self._synsets.get(re.sub(r"-0+", "-", id), (0.0, 0.0))[:2])
 
-    def __call__(self, s, negation=True, **kwargs):
+    def __call__(self, s, negation=True, ngrams=3, **kwargs):
         """ Returns a (polarity, subjectivity)-tuple for the given sentence,
             with polarity between -1.0 and 1.0 and subjectivity between 0.0 and 1.0.
             The sentence can be a string, Synset, Text, Sentence, Chunk, Word, Document, Vector.
@@ -2052,30 +2052,30 @@ class Sentiment(lazydict):
         # A string of words.
         # Sentiment("a horrible movie") => (-0.6, 1.0)
         elif isinstance(s, basestring):
-            a = self.assessments(((w.lower(), None) for w in " ".join(self.tokenizer(s)).split()), negation)
+            a = self.assessments(((w.lower(), None) for w in " ".join(self.tokenizer(s)).split()), negation, ngrams)
         # A pattern.en.Text.
         elif hasattr(s, "sentences"):
-            a = self.assessments(((w.lemma or w.string.lower(), w.pos[:2]) for w in chain(*s)), negation)
+            a = self.assessments(((w.lemma or w.string.lower(), w.pos[:2]) for w in chain(*s)), negation, ngrams)
         # A pattern.en.Sentence or pattern.en.Chunk.
         elif hasattr(s, "lemmata"):
-            a = self.assessments(((w.lemma or w.string.lower(), w.pos[:2]) for w in s.words), negation)
+            a = self.assessments(((w.lemma or w.string.lower(), w.pos[:2]) for w in s.words), negation, ngrams)
         # A pattern.en.Word.
         elif hasattr(s, "lemma"):
-            a = self.assessments(((s.lemma or s.string.lower(), s.pos[:2]),), negation)
+            a = self.assessments(((s.lemma or s.string.lower(), s.pos[:2]),), negation, ngrams)
         # A pattern.vector.Document.
         # Average score = weighted average using feature weights.
         # Bag-of words is unordered: inject None between each two words
         # to stop assessments() from scanning for preceding negation & modifiers.
         elif hasattr(s, "terms"):
-            a = self.assessments(chain(*(((w, None), (None, None)) for w in s)), negation)
+            a = self.assessments(chain(*(((w, None), (None, None)) for w in s)), negation, ngrams)
             kwargs.setdefault("weight", lambda w: s.terms[w[0]])
         # A dict of (word, weight)-items.
         elif isinstance(s, dict):
-            a = self.assessments(chain(*(((w, None), (None, None)) for w in s)), negation)
+            a = self.assessments(chain(*(((w, None), (None, None)) for w in s)), negation, ngrams)
             kwargs.setdefault("weight", lambda w: s[w[0]])
         # A list of words.
         elif isinstance(s, list):
-            a = self.assessments(((w, None) for w in s), negation)
+            a = self.assessments(((w, None) for w in s), negation, ngrams)
         else:
             a = []
         weight = kwargs.get("weight", lambda w: 1)
@@ -2084,7 +2084,7 @@ class Sentiment(lazydict):
                  subjectivity = avg(map(lambda w: (w[0], w[2]), a), weight),
                   assessments = a)
 
-    def assessments(self, words=[], negation=True):
+    def assessments(self, words=[], negation=True, ngrams=3):
         """ Returns a list of (chunk, polarity, subjectivity, label)-tuples for the given list of words:
             where chunk is a list of successive words: a known word optionally
             preceded by a modifier ("very good") or a negation ("not good").
@@ -2101,17 +2101,15 @@ class Sentiment(lazydict):
             if w is None:
                 index += 1
                 continue
-                
-            #for i in reversed(range(1, 4)):
-            #    # Known idioms ("hit the spot").
-            #    if index < len(words) - i:
-            #        idiom = words[index:index+i+1]
-            #        idiom = " ".join(zip(*idiom)[0])
-            #        if idiom in self:
-            #            w, pos = idiom, None
-            #            index += i
-            #            break
-
+            for i in reversed(xrange(1, max(1, ngrams))):
+                # Known idioms ("hit the spot").
+                if index < len(words) - i:
+                    idiom = words[index:index+i+1]
+                    idiom = " ".join(w_pos[0] or "END-OF-NGRAM" for w_pos in idiom)
+                    if idiom in self:
+                        w, pos = idiom, None
+                        index += i
+                        break
             if w in self and pos in self[w]:
                 p, s, i = self[w][pos]
                 # Known word not preceded by a modifier ("good").
