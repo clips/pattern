@@ -48333,6 +48333,7 @@ confiding VBG
 configuration NN
 configuration-data JJ
 configurations NNS
+configure VB
 confine VB
 confined VBN
 confinement NN
