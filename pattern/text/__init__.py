@@ -26,6 +26,8 @@ except:
 from pattern.text.tree import Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
 from pattern.text.tree import SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
 
+DEFAULT = "default"
+
 #--- STRING FUNCTIONS ------------------------------------------------------------------------------
 # Latin-1 (ISO-8859-1) encoding is identical to Windows-1252 except for the code points 128-159:
 # Latin-1 assigns control codes in this range, Windows-1252 has characters, punctuation, symbols
@@ -87,6 +89,8 @@ def ngrams(string, n=3, punctuation=PUNCTUATION, continuous=False):
         #s = [None] + s + [None]
         g.extend([tuple(s[i:i+n]) for i in range(len(s)-n+1)])
     return g
+
+FLOODING = re.compile(r"((.)\2{2,})", re.I) # ooo, xxx, !!!, ...
 
 def deflood(s, n=3):
     """ Returns the string with no more than n repeated characters, e.g.,
@@ -1001,43 +1005,29 @@ def penntreebank2universal(token, tag):
 
 TOKEN = re.compile(r"(\S+)\s")
 
-# Handle common punctuation marks.
+# Common accent letters.
+DIACRITICS = \
+diacritics = u"àáâãäåąāæçćčςďèéêëēěęģìíîïīłįķļľņñňńйðòóôõöøþřšťùúûüůųýÿўžż"
+
+# Common punctuation marks.
 PUNCTUATION = \
 punctuation = ".,;:!?()[]{}`''\"@#$^&*+-|=~_"
 
-# Handle common abbreviations.
-ABBREVIATIONS = abbreviations = set((
+# Common abbreviations.
+ABBREVIATIONS = \
+abbreviations = set((
     "a.", "adj.", "adv.", "al.", "a.m.", "art.", "c.", "capt.", "cert.", "cf.", "col.", "Col.", 
     "comp.", "conf.", "def.", "Dep.", "Dept.", "Dr.", "dr.", "ed.", "e.g.", "esp.", "etc.", "ex.", 
     "f.", "fig.", "gen.", "id.", "i.e.", "int.", "l.", "m.", "Med.", "Mil.", "Mr.", "n.", "n.q.", 
     "orig.", "pl.", "pred.", "pres.", "p.m.", "ref.", "v.", "vs.", "w/"
 ))
 
-RE_ABBR1 = re.compile("^[A-Za-z]\.$")       # single letter, "T. De Smedt"
-RE_ABBR2 = re.compile("^([A-Za-z]\.)+$")    # alternating letters, "U.S."
-RE_ABBR3 = re.compile("^[A-Z][" + "|".join( # capital followed by consonants, "Mr."
-        "bcdfghjklmnpqrstvwxz") + "]+.$")
+RE_ABBR1 = re.compile("^[A-Za-z]\.$")    # single letter, "T. De Smedt"
+RE_ABBR2 = re.compile("^([A-Za-z]\.)+$") # alternating letters, "U.S."
+RE_ABBR3 = re.compile("^[A-Z][%s]+." % ( # capital followed by consonants, "Mr."
+        "|".join("bcdfghjklmnpqrstvwxz")))
 
-# Handle emoticons.
-EMOTICONS = { # (facial expression, sentiment)-keys
-    ("love" , +1.00): set(("<3", u"♥", u"❤")),
-    ("grin" , +1.00): set((">:D", ":-D", ":D", "=-D", "=D", "X-D", "x-D", "XD", "xD", "8-D")),
-    ("taunt", +0.75): set((">:P", ":-P", ":P", ":-p", ":p", ":-b", ":b", ":c)", ":o)", ":^)")),
-    ("smile", +0.50): set((">:)", ":-)", ":)", "=)", "=]", ":]", ":}", ":>", ":3", "8)", "8-)")),
-    ("wink" , +0.25): set((">;]", ";-)", ";)", ";-]", ";]", ";D", ";^)", "*-)", "*)")),
-    ("gasp" , +0.05): set((">:o", ":-O", ":O", ":o", ":-o", "o_O", "o.O", u"°O°", u"°o°")),
-    ("worry", -0.25): set((">:/",  ":-/", ":/", ":\\", ">:\\", ":-.", ":-s", ":s", ":S", ":-S", ">.>")),
-    ("frown", -0.75): set((">:[", ":-(", ":(", "=(", ":-[", ":[", ":{", ":-<", ":c", ":-c", "=/")),
-    ("cry"  , -1.00): set((":'(", ":'''(", ";'("))
-}
-
-RE_EMOTICONS = [r" ?".join(map(re.escape, e)) for v in EMOTICONS.values() for e in v]
-RE_EMOTICONS = re.compile(r"(%s)($|\s)" % "|".join(RE_EMOTICONS))
-
-# Handle sarcasm punctuation (!).
-RE_SARCASM = re.compile(r"\( ?\! ?\)")
-
-# Handle common contractions.
+# Common contractions.
 replacements = {
      "'d": " 'd",
      "'m": " 'm",
@@ -1048,7 +1038,47 @@ replacements = {
     "n't": " n't"
 }
 
-# Handle paragraph line breaks (\n\n marks end of sentence).
+# Common emoticons.
+EMOTICONS = \
+emoticons = { # (facial expression, sentiment)-keys
+    ("love" , +1.00): set(("<3", u"♥", u"❤")),
+    ("grin" , +1.00): set((">:D", ":-D", ":D", "=-D", "=D", "X-D", "x-D", "XD", "xD", "8-D")),
+    ("taunt", +0.75): set((">:P", ":-P", ":P", ":-p", ":p", ":-b", ":b", ":c)", ":o)", ":^)")),
+    ("smile", +0.50): set((">:)", ":-)", ":)", "=)", "=]", ":]", ":}", ":>", ":3", "8)", "8-)")),
+    ("wink" , +0.25): set((">;]", ";-)", ";)", ";-]", ";]", ";D", ";^)", "*-)", "*)")),
+    ("blank", +0.00): set((":-|", ":|")),
+    ("gasp" , -0.05): set((">:o", ":-O", ":O", ":o", ":-o", "o_O", "o.O", u"°O°", u"°o°")),
+    ("worry", -0.25): set((">:/",  ":-/", ":/", ":\\", ">:\\", ":-.", ":-s", ":s", ":S", ":-S", ">.>")),
+    ("frown", -0.75): set((">:[", ":-(", ":(", "=(", ":-[", ":[", ":{", ":-<", ":c", ":-c", "=/")),
+    ("cry"  , -1.00): set((":'(", ":'''(", ";'("))
+}
+
+RE_EMOTICONS = [r" ?".join(map(re.escape, e)) for v in EMOTICONS.values() for e in v]
+RE_EMOTICONS = re.compile(r"(%s)($|\s)" % "|".join(RE_EMOTICONS))
+
+# Common emoji.
+EMOJI = \
+emoji = { # (facial expression, sentiment)-keys
+    ("love" , +1.00): set((u"❤️", u"💜", u"💚", u"💙", u"💛", u"💕")),
+    ("grin" , +1.00): set((u"😀", u"😄", u"😃", u"😆", u"😅", u"😂", u"😁", u"😻", u"😍", u"😈", u"👌")),
+    ("taunt", +0.75): set((u"😛", u"😝", u"😜", u"😋", u"😇")),
+    ("smile", +0.50): set((u"😊", u"😌", u"😏", u"😎", u"☺", u"👍")),
+    ("wink" , +0.25): set((u"😉")),
+    ("blank", +0.00): set((u"😐", u"😶")),
+    ("gasp" , -0.05): set((u"😳", u"😮", u"😯", u"😧", u"😦", u"🙀")),
+    ("worry", -0.25): set((u"😕", u"😬")),
+    ("frown", -0.75): set((u"😟", u"😒", u"😔", u"😞", u"😠", u"😩", u"😫", u"😡", u"👿")),
+    ("cry"  , -1.00): set((u"😢", u"😥", u"😓", u"😪", u"😭", u"😿")), 
+}
+
+RE_EMOJI = [e for v in EMOJI.values() for e in v]
+RE_EMOJI = re.compile(r"(\s?)(%s)(\s?)" % "|".join(RE_EMOJI))
+
+# Sarcasm marker: "(!)".
+RE_SARCASM = re.compile(r"\( ?\! ?\)")
+
+# Paragraph line breaks 
+# (\n\n marks end of sentence).
 EOS = "END-OF-SENTENCE"
 
 def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, replace=replacements, linebreak=r"\n{2,}"):
@@ -1112,7 +1142,7 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
     while j < len(tokens):
         if tokens[j] in ("...", ".", "!", "?", EOS):
             while j < len(tokens) \
-              and tokens[j] in ("...", ".", "!", "?", EOS) or tokens[j] in quotes:
+              and (tokens[j] in ("...", ".", "!", "?", EOS) or tokens[j] in quotes):
                 if tokens[j] in quotes and sentences[-1].count(tokens[j]) % 2 == 0:
                     break # Balanced quotes.
                 j += 1
@@ -1126,6 +1156,8 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
     sentences = (RE_SARCASM.sub("(!)", s) for s in sentences)
     sentences = [RE_EMOTICONS.sub(
         lambda m: m.group(1).replace(" ", "") + m.group(2), s) for s in sentences]
+    sentences = [RE_EMOJI.sub(
+        lambda m: (m.group(1) or " ") + m.group(2) + (m.group(3) or " "), s)  for s in sentences]
     return sentences
 
 #--- PART-OF-SPEECH TAGGER -------------------------------------------------------------------------
@@ -1945,6 +1977,7 @@ class Sentiment(lazydict):
         self.negations   = kwargs.get("negations", ("no", "not", "n't", "never"))
         self.modifiers   = kwargs.get("modifiers", ("RB",))
         self.modifier    = kwargs.get("modifier" , lambda w: w.endswith("ly"))
+        self.ngrams      = kwargs.get("ngrams"   , 3)
 
     @property
     def path(self):
@@ -2026,7 +2059,7 @@ class Sentiment(lazydict):
         except KeyError: # Some WordNet id's are not zero padded.
             return tuple(self._synsets.get(re.sub(r"-0+", "-", id), (0.0, 0.0))[:2])
 
-    def __call__(self, s, negation=True, ngrams=3, **kwargs):
+    def __call__(self, s, negation=True, ngrams=DEFAULT, **kwargs):
         """ Returns a (polarity, subjectivity)-tuple for the given sentence,
             with polarity between -1.0 and 1.0 and subjectivity between 0.0 and 1.0.
             The sentence can be a string, Synset, Text, Sentence, Chunk, Word, Document, Vector.
@@ -2040,6 +2073,7 @@ class Sentiment(lazydict):
                 s += w * score
                 n += w
             return s / float(n or 1)
+        ngrams = ngrams if ngrams != DEFAULT else self.ngrams
         # A pattern.en.wordnet.Synset.
         # Sentiment(synsets("horrible", "JJ")[0]) => (-0.6, 1.0)
         if hasattr(s, "gloss"):
@@ -2084,11 +2118,12 @@ class Sentiment(lazydict):
                  subjectivity = avg(map(lambda w: (w[0], w[2]), a), weight),
                   assessments = a)
 
-    def assessments(self, words=[], negation=True, ngrams=3):
+    def assessments(self, words=[], negation=True, ngrams=DEFAULT):
         """ Returns a list of (chunk, polarity, subjectivity, label)-tuples for the given list of words:
             where chunk is a list of successive words: a known word optionally
             preceded by a modifier ("very good") or a negation ("not good").
         """
+        ngrams = ngrams if ngrams != DEFAULT else self.ngrams
         words = list(words)
         index = 0
         a = []
@@ -2159,10 +2194,11 @@ class Sentiment(lazydict):
                     a.append(dict(w=[w], p=0.0, s=1.0, i=1.0, n=1, x=IRONY))
                 # EMOTICONS: {("grin", +1.0): set((":-D", ":D"))}
                 if w.isalpha() is False and len(w) <= 5 and w not in PUNCTUATION: # speedup
-                    for (type, p), e in EMOTICONS.items():
-                        if w in map(lambda e: e.lower(), e):
-                            a.append(dict(w=[w], p=p, s=1.0, i=1.0, n=1, x=MOOD))
-                            break
+                    for E in (EMOTICONS, EMOJI):
+                        for (type, p), e in E.items():
+                            if w in map(lambda e: e.lower(), e):
+                                a.append(dict(w=[w], p=p, s=1.0, i=1.0, n=1, x=MOOD))
+                                break
             index += 1
         for i in range(len(a)):
             w = a[i]["w"]
