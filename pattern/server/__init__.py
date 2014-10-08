@@ -730,6 +730,7 @@ class Application(object):
         self._app    = None         # CherryPy Application object.
         self._up     = False        # True if server is up & running.
         self._cache  = {}           # Memoize cache.
+        self._cached = 1000         # Memoize cache size.
         self._static = static       # Static content folder.
         self._rate   = rate         # RateLimit db name, see also App.route(limit=True).
         self.router  = Router()     # Router object, maps URL paths to handlers.
@@ -884,6 +885,7 @@ class Application(object):
                 def connect():
                     g.rate = RateLimit(name=self._rate)
                 def wrapper(*args, **kwargs):
+                    v = handler(*args, **kwargs)
                     r = cp.request
                     self = r.app.root
                     self.rate(
@@ -893,7 +895,7 @@ class Application(object):
                          time = _a[2],  # Default time for unknown keys.
                         reset = _a[3]   # Threshold for clearing cache.
                     )
-                    return handler(*args, **kwargs)
+                    return v
                 return wrapper
             if limit is True or (limit is not False and limit is not None and time is not None):
                 handler = ratelimited(handler)
@@ -995,8 +997,14 @@ class Application(object):
         """
         def decorator(handler):
             def wrapper(*args, **kwargs):
-                # Cache return value for given arguments.
-                k = (handler, pickle.dumps(args), pickle.dumps(kwargs))
+                # Cache return value for given arguments
+                # (except db & rate Connection objects).
+                kw = dict(kwargs)
+                kw.pop("db", None)
+                kw.pop("rate", None)
+                k = (handler, pickle.dumps(args), pickle.dumps(kw))
+                if len(self._cache) >= self._cached:
+                    self._cache.clear()
                 if k not in self._cache:
                     self._cache[k] = handler(*args, **kwargs)
                 return self._cache[k]
