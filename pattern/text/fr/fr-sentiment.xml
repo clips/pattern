@@ -3787,7 +3787,7 @@ For French book reviews, the accuracy is 75% (P 0.76, R 0.75, F1 0.75).
 <word form="platinés" pos="JJ" polarity="0.01" subjectivity="0.03" intensity="1.0" confidence="0.7" />
 <word form="plats" pos="JJ" polarity="-0.28" subjectivity="0.40" intensity="1.0" confidence="0.9" />
 <word form="plein" pos="JJ" polarity="0.29" subjectivity="0.30" intensity="1.0" confidence="1.0" />
-<word form="plein" pos="RB" polarity="0.25" subjectivity="35.0" intensity="2.0" confidence="0.9" />
+<word form="plein" pos="RB" polarity="0.25" subjectivity="0.35" intensity="2.0" confidence="0.9" />
 <word form="pleine" pos="JJ" polarity="0.29" subjectivity="0.30" intensity="1.0" confidence="0.9" />
 <word form="pleines" pos="JJ" polarity="0.29" subjectivity="0.30" intensity="1.0" confidence="0.9" />
 <word form="pleins" pos="JJ" polarity="0.29" subjectivity="0.30" intensity="1.0" confidence="0.9" />
