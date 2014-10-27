@@ -459,6 +459,7 @@ $25 CD
 :) SYM
 :)) SYM
 :-P SYM
+:-p SYM
 :/ SYM
 :35.3 CD
 :: :
@@ -466,6 +467,8 @@ $25 CD
 :P SYM
 ; :
 ;) SYM
+:-( SYM
+:-) SYM
 ;-) SYM
 < SYM
 <3 SYM

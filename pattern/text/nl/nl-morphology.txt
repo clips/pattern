@@ -170,3 +170,5 @@ N(soort,mv,neut) igen fhassuf 4 Adj(zelfst,stell,verv_mv) 3
 N(soort,mv,neut) iets fgoodright Adj(attr,stell,verv_gen) 3
 . haspref 1 Punc(hellip) 3
 Adj(attr,stell,verv_neut) Op fgoodright Pron(onbep,neut,attr) 2.97872340425532
+ske hassuf 3 N(soort,ev,neut) 1
+@ haspref 1 N(eigen,ev,neut) 1
