@@ -194,6 +194,40 @@ class TestTextMetrics(unittest.TestCase):
         self.assertEqual(v, {("cat", "NN"): {("black", "JJ"): 1}})
         print("pattern.metrics.cooccurrence()")
 
+class TestInterpolation(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+
+    def test_lerp(self):
+        # Assert linear interpolation.
+        v = metrics.lerp(100, 200, 0.5)
+        self.assertEqual(v, 150.0)
+        print("pattern.metrics.lerp()")
+        
+    def test_smoothstep(self):
+        # Assert cubic interpolation.
+        v1 = metrics.smoothstep(0.0, 1.0, 0.5)
+        v2 = metrics.smoothstep(0.0, 1.0, 0.9)
+        v3 = metrics.smoothstep(0.0, 1.0, 0.1)
+        self.assertEqual(v1, 0.5)
+        self.assertTrue(v2 > 0.9)
+        self.assertTrue(v3 < 0.1)
+        print("pattern.metrics.smoothstep()")
+        
+    def test_smoothrange(self):
+        # Assert nice ranges for line charts.
+        v = list(metrics.smoothrange(0.0, 1.0))
+        [self.assertAlmostEqual(x, y, places=1) for x, y in zip(v, 
+            [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])]
+        v = list(metrics.smoothrange(-2, 2))
+        [self.assertAlmostEqual(x, y, places=1) for x, y in zip(v, 
+            [-2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0])]
+        v = list(metrics.smoothrange(1, 13))
+        [self.assertAlmostEqual(x, y, places=1) for x, y in zip(v, 
+            [0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0])]
+        print("pattern.metrics.smoothrange()")
+
 class TestStatistics(unittest.TestCase):
     
     def setUp(self):
@@ -402,6 +436,7 @@ def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestProfiling))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestTextMetrics))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestInterpolation))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestStatistics))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestStatisticalTests))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSpecialFunctions))

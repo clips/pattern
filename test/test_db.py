@@ -145,6 +145,15 @@ class TestDate(unittest.TestCase):
         self.assertEqual(str(v1), "2010-09-21 00:00:00")
         self.assertEqual(str(v2), "2010-09-21 09:27:01")
         self.assertEqual(str(v3), "2010-09-21 09:27:01")
+        # Assert week and weekday input
+        v4 = db.date(2014, week=1, weekday=1, hour=12, format=db.DEFAULT_DATE_FORMAT)
+        self.assertEqual(str(v4), "2013-12-30 12:00:00")
+        # Assert Date input.
+        v5 = db.date(db.date(2014, 1, 1))
+        self.assertEqual(str(v5), "2014-01-01 00:00:00")
+        # Assert timestamp input.
+        v6 = db.date(db.date(2014, 1, 1).timestamp)
+        self.assertEqual(str(v5), "2014-01-01 00:00:00")
         # Assert DateError for other input.
         self.assertRaises(db.DateError, db.date, None)
         print("pattern.db.date()")
@@ -176,6 +185,10 @@ class TestDate(unittest.TestCase):
         v = db.date("2010-09-21 9:27:00")
         v = v - db.time(days=1, hours=1, minutes=1, seconds=1)
         self.assertEqual(str(v), "2010-09-20 08:25:59")
+        # Assert Date + time(years, months)
+        v = db.date(2014, 1, 31)
+        v = v + db.time(years=1, months=1)
+        self.assertEqual(str(v), "2015-02-28 00:00:00")
         print("pattern.db.time()")
 
 #---------------------------------------------------------------------------------------------------
