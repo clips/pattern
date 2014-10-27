@@ -1022,9 +1022,9 @@ abbreviations = set((
     "orig.", "pl.", "pred.", "pres.", "p.m.", "ref.", "v.", "vs.", "w/"
 ))
 
-RE_ABBR1 = re.compile("^[A-Za-z]\.$")    # single letter, "T. De Smedt"
-RE_ABBR2 = re.compile("^([A-Za-z]\.)+$") # alternating letters, "U.S."
-RE_ABBR3 = re.compile("^[A-Z][%s]+." % ( # capital followed by consonants, "Mr."
+RE_ABBR1 = re.compile(r"^[A-Za-z]\.$")     # single letter, "T. De Smedt"
+RE_ABBR2 = re.compile(r"^([A-Za-z]\.)+$")  # alternating letters, "U.S."
+RE_ABBR3 = re.compile(r"^[A-Z][%s]+.$" % ( # capital followed by consonants, "Mr."
         "|".join("bcdfghjklmnpqrstvwxz")))
 
 # Common contractions.
@@ -1074,6 +1074,9 @@ emoji = { # (facial expression, sentiment)-keys
 RE_EMOJI = [e for v in EMOJI.values() for e in v]
 RE_EMOJI = re.compile(r"(\s?)(%s)(\s?)" % "|".join(RE_EMOJI))
 
+# Mention marker: "@tomdesmedt".
+RE_MENTION = re.compile(r"\@([0-9a-zA-z_]+)(\s|\,|\:|\.|\!|\?|$)")
+
 # Sarcasm marker: "(!)".
 RE_SARCASM = re.compile(r"\( ?\! ?\)")
 
@@ -1087,8 +1090,8 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
         Punctuation marks are split from other words. Periods (or ?!) mark the end of a sentence.
         Headings without an ending period are inferred by line breaks.
     """
-    # Handle periods separately.
-    punctuation = tuple(punctuation.replace(".", ""))
+    # Handle punctuation.
+    punctuation = tuple(punctuation)
     # Handle replacements (contractions).
     for a, b in replace.items():
         string = re.sub(a, b, string)
@@ -1107,28 +1110,30 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
     for t in TOKEN.findall(string+" "):
         if len(t) > 0:
             tail = []
-            while t.startswith(punctuation) and \
-              not t in replace:
-                # Split leading punctuation.
-                if t.startswith(punctuation):
-                    tokens.append(t[0]); t=t[1:]
-            while t.endswith(punctuation+(".",)) and \
-              not t in replace:
-                # Split trailing punctuation.
-                if t.endswith(punctuation):
-                    tail.append(t[-1]); t=t[:-1]
-                # Split ellipsis (...) before splitting period.
-                if t.endswith("..."):
-                    tail.append("..."); t=t[:-3].rstrip(".")
-                # Split period (if not an abbreviation).
-                if t.endswith("."):
-                    if t in abbreviations or \
-                      RE_ABBR1.match(t) is not None or \
-                      RE_ABBR2.match(t) is not None or \
-                      RE_ABBR3.match(t) is not None:
-                        break
-                    else:
+            if not RE_MENTION.match(t):
+                while t.startswith(punctuation) and \
+                  not t in replace:
+                    # Split leading punctuation.
+                    if t.startswith(punctuation):
+                        tokens.append(t[0]); t=t[1:]
+            if not False:
+                while t.endswith(punctuation) and \
+                  not t in replace:
+                    # Split trailing punctuation.
+                    if t.endswith(punctuation) and not t.endswith("."):
                         tail.append(t[-1]); t=t[:-1]
+                    # Split ellipsis (...) before splitting period.
+                    if t.endswith("..."):
+                        tail.append("..."); t=t[:-3].rstrip(".")
+                    # Split period (if not an abbreviation).
+                    if t.endswith("."):
+                        if t in abbreviations or \
+                          RE_ABBR1.match(t) is not None or \
+                          RE_ABBR2.match(t) is not None or \
+                          RE_ABBR3.match(t) is not None:
+                            break
+                        else:
+                            tail.append(t[-1]); t=t[:-1]
             if t != "":
                 tokens.append(t)
             tokens.extend(reversed(tail))
@@ -1412,7 +1417,7 @@ def find_relations(chunked):
 
 #--- KEYWORDS EXTRACTION ---------------------------------------------------------------------------
 
-def find_keywords(string, parser, top=10, frequency={}, **kwargs):
+def find_keywords(string, parser, top=10, frequency={}, ignore=("rt",), pos=("NN",), **kwargs):
     """ Returns a sorted list of keywords in the given string.
         The given parser (e.g., pattern.en.parser) is used to identify noun phrases.
         The given frequency dictionary can be a reference corpus,
@@ -1420,65 +1425,88 @@ def find_keywords(string, parser, top=10, frequency={}, **kwargs):
         e.g., {"the": 0.8, "cat": 0.1, ...}
     """
     lemmata = kwargs.pop("lemmata", kwargs.pop("stem", True))
-    # Parse the string and extract noun phrases (NP).
-    chunks = []
-    wordcount = 0
-    for sentence in parser.parse(string, chunks=True, lemmata=lemmata).split():
-        for w in sentence: # ["cats", "NNS", "I-NP", "O", "cat"]
-            if w[2] == "B-NP":
-                chunks.append([w])
-                wordcount += 1
-            elif w[2] == "I-NP" and w[1][:3] == chunks[-1][-1][1][:3] == "NNP":
-                chunks[-1][-1][+0] += " " + w[+0] # Collapse NNPs: "Ms Kitty".
-                chunks[-1][-1][-1] += " " + w[-1]
-            elif w[2] == "I-NP":
-                chunks[-1].append(w)
-                wordcount += 1
-    # Rate the nouns in noun phrases.
-    m = {}
-    for i, chunk in enumerate(chunks):
-        head = True
-        if parser.language not in ("ca", "es", "pt", "fr", "it", "pt", "ro"):
-            # Head of "cat hair" => "hair".
-            # Head of "poils de chat" => "poils".
-            chunk = list(reversed(chunk))
+    t = []
+    p = None
+    n = 0
+    # Remove hashtags.
+    s = string.replace("#", ". ")
+    # Parse + chunk string.
+    for sentence in parser.parse(s, chunks=True, lemmata=lemmata).split():
+        for w in sentence: # [token, tag, chunk, preposition, lemma]
+            if w[2].startswith(("B", "O")):
+                t.append([]); p=None
+            if w[1].startswith(("NNP", "DT")) and p and \
+               p[1].startswith("NNP") and \
+               p[0][0] != "@" and \
+               w[0][0] != "A":
+                p[+0] += " " + w[+0] # Merge NNP's: "Ms Kitty".
+                p[-1] += " " + w[-1]
+            else:
+                t[-1].append(w)
+            p = t[-1][-1] # word before
+            n = n + 1     # word count
+    # Parse context: {word: chunks}.
+    ctx = {}
+    for i, chunk in enumerate(t):
+        ch = " ".join(w[0] for w in chunk)
+        ch = ch.lower()
         for w in chunk:
-            if w[1].startswith("NN"):
-                if lemmata:
-                    k = w[-1]
-                else:
-                    k = w[0].lower()
-                if not k in m:
-                    m[k] = [0.0, set(), 1.0, 1.0, 1.0]
-                # Higher score for chunks that appear more frequently.
-                m[k][0] += 1 / float(wordcount)
-                # Higher score for chunks that appear in more contexts (semantic centrality).
-                m[k][1].add(" ".join(map(lambda x: x[0], chunk)).lower())
-                # Higher score for chunks at the start (25%) of the text.
-                m[k][2] += 1 if float(i) / len(chunks) <= 0.25 else 0
-                # Higher score for chunks not in a prepositional phrase.
-                m[k][3] += 1 if w[3] == "O" else 0
-                # Higher score for chunk head.
-                m[k][4] += 1 if head else 0
-                head = False
-    # Rate tf-idf if a frequency dict is given.
-    for k in m:
-        if frequency:
-            df = frequency.get(k, 0.0)
-            df = max(df, 1e-10)
-            df = log(1.0 / df, 2.71828)
-        else:
-            df = 1.0
-        m[k][0] = max(1e-10, m[k][0] * df)
-        m[k][1] = 1 + float(len(m[k][1]))
-    # Sort candidates alphabetically by total score
+            ctx.setdefault(w[0], set()).add(ch)
+    # Parse keywords.
+    m = {}
+    for i, chunk in enumerate(t):
+        # Head of "cat hair" => "hair".
+        # Head of "poils de chat" => "poils".
+        head = chunk[-int(parser.language not in ("ca", "es", "pt", "fr", "it", "pt", "ro"))]
+        for w in chunk:
+            # Lemmatize known words.
+            k = lemmata and w[-1] in parser.lexicon and w[-1] or w[0]
+            k = re.sub(r"\"\(\)", "", k)
+            k = k.strip(":.?!")
+            k = k.lower()
+            if not w[1].startswith(pos):
+                continue
+            if len(k) == 1:
+                continue
+            if k.startswith(("http", "www.")):
+                continue
+            if k in ignore or lemmata and w[0] in ignore:
+                continue
+            if k not in m:
+                m[k] = [0, 0, 0, 0, 0, 0]
+            # Scoring:
+            # 0) words that appear more frequently.
+            # 1) words that appear in more contexts (semantic centrality).
+            # 2) words that appear at the start (25%) of the text.
+            # 3) words that are nouns.
+            # 4) words that are not in a prepositional phrase.
+            # 5) words that are the head of a chunk.
+            noun = w[1].startswith("NN")
+            m[k][0] += 1 / float(n)
+            m[k][1] |= 1 if len(ctx[w[0]]) > 1 else 0
+            m[k][2] |= 1 if i / float(len(t)) <= 0.25 else 0
+            m[k][3] |= 1 if noun else 0
+            m[k][4] |= 1 if noun and w[3].startswith("O") else 0
+            m[k][5] |= 1 if noun and w == head else 0
+    # Rate tf-idf.
+    if frequency:
+        for k in m:
+            if not k.isalpha(): # @username, odd!ti's
+                df = 1.0
+            else:
+                df = 1.0 / max(frequency.get(w[0].lower(), frequency.get(k, 0)), 0.0001)
+                df = log(df)
+            m[k][0] *= df
+            #print k, m[k]
+    # Sort candidates alphabetically by total score.
     # The harmonic mean will emphasize tf-idf score.
-    hmean = lambda a: len(a) / sum(1.0 / x for x in a)
+    hmean = lambda a: len(a) / sum(1.0 / (x or 0.0001) for x in a)
     m = [(hmean(m[k]), k) for k in m]
     m = sorted(m, key=lambda x: x[1])
     m = sorted(m, key=lambda x: x[0], reverse=True)
     m = [k for score, k in m]
-    return m[:top]
+    m = m[:top]
+    return m
 
 #### COMMAND LINE ##################################################################################
 # The commandline() function enables command line support for a Parser.
@@ -2136,7 +2164,7 @@ class Sentiment(lazydict):
             if w is None:
                 index += 1
                 continue
-            for i in reversed(xrange(1, max(1, ngrams))):
+            for i in reversed(range(1, max(1, ngrams))):
                 # Known idioms ("hit the spot").
                 if index < len(words) - i:
                     idiom = words[index:index+i+1]
@@ -2218,6 +2246,31 @@ class Sentiment(lazydict):
         w[pos] = w[None] = (polarity, subjectivity, intensity)
         if label:
             self.labeler[word] = label
+            
+    def save(self, path):
+        """ Saves the lexicon as an XML-file.
+        """
+        # WordNet id's, word sense descriptions and confidence scores 
+        # from a bundled XML (e.g., en/lexicon-en.xml) are not saved.
+        a = []
+        a.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
+        a.append("<sentiment>")
+        for w in sorted(self):
+            for pos, (p, s, i) in self[w].items():
+                pos = pos or ""
+                if pos or len(self[w]) == 1:
+                    a.append("\t<word %s %s %s %s %s %s />" % (
+                              "form=\"%s\""   % w, 
+                               "pos=\"%s\""   % pos, 
+                          "polarity=\"%.2f\"" % p, 
+                      "subjectivity=\"%.2f\"" % s, 
+                         "intensity=\"%.2f\"" % i,
+                             "label=\"%s\""   % self.labeler.get(w, "")
+                    ))
+        a.append("</sentiment>")
+        f = open(path, "w")
+        f.write(codecs.BOM_UTF8 + encode_utf8("\n".join(a)))
+        f.close()
 
 #### SPELLING CORRECTION ###########################################################################
 # Based on: Peter Norvig, "How to Write a Spelling Corrector", http://norvig.com/spell-correct.html

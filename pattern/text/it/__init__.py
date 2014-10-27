@@ -193,7 +193,11 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
 def keywords(s, top=10, **kwargs):
     """ Returns a sorted list of keywords in the given string.
     """
-    return parser.find_keywords(s, top=top, frequency=parser.frequency)
+    return parser.find_keywords(s, **dict({
+        "frequency": parser.frequency,
+              "top": top,
+              "pos": ("NN",),
+           "ignore": ("rt",)}, **kwargs))
 
 def suggest(w):
     """ Returns a list of (word, confidence)-tuples of spelling corrections.
