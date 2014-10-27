@@ -47,7 +47,8 @@ window.height = function() {
 };
 
 /*##################################################################################################*/
-// Custom Array functions.
+
+/*--- ARRAY FUNCTIONS ------------------------------------------------------------------------------*/
 
 // JavaScript Array object:
 // var a = [1,2,3];
@@ -68,17 +69,9 @@ Array.instanceof = function(array) {
     return Object.prototype.toString.call(Array) === "[object Array]";
 };
 
-Array.min = function(array) {
-    return Math.min.apply(Math, array);
-};
-
-Array.max = function(array) {
-    return Math.max.apply(Math, array);
-};
-
-Array.sum = function(array) {
-    for (var i=0, sum=0; i < array.length; sum+=array[i++]){}; return sum;
-};
+Array.get = function(array, index) {
+    return (index >= 0)? array[index] : array[array.length+index];
+}
 
 Array.index = function(array, v) {
     for (var i=0; i < array.length; i++) { if (array[i] === v) return i; }
@@ -92,6 +85,28 @@ Array.contains = function(array, v) {
 
 Array.find = function(array, match) {
     for (var i=0; i < array.length; i++) { if (match(array[i])) return i; }
+};
+
+Array.sum = function(array) {
+    for (var i=0, sum=0; i < array.length; sum+=array[i++]){}; return sum;
+};
+
+Array.min = function(array, callback) {
+    callback = callback || function(x) { return x; }
+    var x = +Infinity;
+    for (var i=0; i < array.length; i++) { 
+        x = Math.min(x, callback(array[i])); 
+    }
+    return x;
+};
+
+Array.max = function(array, callback) {
+    callback = callback || function(x) { return x; }
+    var x = -Infinity;
+    for (var i=0; i < array.length; i++) { 
+        x = Math.max(x, callback(array[i])); 
+    }
+    return x;
 };
 
 Array.map = function(array, callback) {
@@ -123,6 +138,15 @@ Array.enumerate = function(array, callback, that) {
     }
 };
 
+Array.forEach = function(array, callback, that) {
+    /* Calls callback(value, index, array) for each value in the given array.
+     */
+    callback = Function.closure(that || this, callback);
+    for (var i=0; i < array.length; i++) {
+        if (callback(array[i]) == false, i, array) return;
+    }
+}
+
 Array.eq = function(array1, array2) {
     /* Returns true if both arrays contain the same values.
      */
@@ -134,13 +158,18 @@ Array.eq = function(array1, array2) {
 		if (array1[i] !== array2[i]) return false;
 	}
 	return true;
-}
+};
 
-Array.sorted = function(array, reverse) {
+Array.sorted = function(array, reverse, key) {
     /* Returns a sorted copy of the given array.
      */
+    if (key instanceof Function) {
+        var cmp = function(a, b) { return key(b) - key(a); }
+    } else {
+        var cmp = undefined
+    }
     array = array.slice();
-    array = array.sort();
+    array = array.sort(cmp);
     if (reverse) array = array.reverse();
     return array;
 };
@@ -151,9 +180,9 @@ Array.reversed = function(array) {
     array = array.slice();
     array = array.reverse();
     return array;
-}
+};
 
-Array.unique = function(array) {
+Array.unique = function (array) {
     /* Returns a new array with unique items.
      */
     var a = array.slice();
@@ -164,7 +193,7 @@ Array.unique = function(array) {
         }
     }
     return a;
-}
+};
 
 Array.choice = function(array) {
     /* Returns a random value from the given array (undefined if empty).
@@ -186,6 +215,12 @@ Array.shuffle = function(array) {
     return array;
 };
 
+Array.shuffled = function(array) {
+	/* Returns a new array with randomly shuffled values.
+	 */
+	return Array.shuffle(array.slice());
+};
+
 Array.range = function(i, j) {
     /* Returns a new array with numeric values from i to j (not including j).
      */
@@ -200,8 +235,94 @@ Array.range = function(i, j) {
     return a;
 };
 
-function len(array) {
+Array.len = function(array) {
     return array.length;
+};
+
+// Since version 1.5:
+
+var sum       = Array.sum;
+var map       = Array.map;
+var filter    = Array.filter;
+var enumerate = Array.enumerate;
+var sorted    = Array.sorted;
+var reversed  = Array.reversed;
+var unique    = Array.unique;
+var shuffled  = Array.shuffled;
+var choice    = Array.choice;
+var range     = Array.range;
+var len       = Array.len;
+
+/*--- ARRAY EXTENSIONS -----------------------------------------------------------------------------*/
+
+if (Array.isArray === undefined) {
+	Array.isArray = Array.instanceof;
+}
+
+if (!Array.prototype.get) {
+	 Array.prototype.get = function(i) {
+		return Array.get(this, i);
+	 }
+}
+
+if (!Array.prototype.index) {
+	 Array.prototype.index = function(v) {
+		return Array.index(this, v);
+	 };
+}
+
+if (!Array.prototype.contains) {
+	 Array.prototype.contains = function(v) {
+		return Array.contains(this, v);
+	};
+}
+
+if (!Array.prototype.find) {
+	 Array.prototype.find = function(match) {
+		return Array.find(this, match);
+	 };
+}
+
+if (!Array.prototype.min) {
+	 Array.prototype.min = function(callback) {
+		return Array.min(this, callback);
+	 };
+}
+
+if (!Array.prototype.max) {
+	 Array.prototype.max = function(callback) {
+		return Array.max(this, callback);
+	 };
+}
+
+if (!Array.prototype.map) {
+	 Array.prototype.map = function(callback) {
+		return Array.map(this, callback);
+	 };
+}
+
+if (!Array.prototype.filter) {
+	 Array.prototype.filter = function(callback) {
+		return Array.filter(this, callback);
+	 };
+}
+
+if (!Array.prototype.forEach) {
+	 Array.prototype.forEach = function(callback, that) {
+		return Array.forEach(this, callback, that);
+	 };
+}
+
+if (!Array.prototype.eq) {
+	 Array.prototype.eq = function(array) {
+		return Array.eq(this, array);
+	 };
+}
+
+if (!Array.prototype.shuffle) {
+	 Array.prototype.shuffle = function() {
+		return Array.shuffle(this);
+	 };
 }
 
 /*##################################################################################################*/
@@ -263,9 +384,17 @@ function len(array) {
 
 /*##################################################################################################*/
 
-/*--- GEOMETRY -------------------------------------------------------------------------------------*/
+/*--- MATH -----------------------------------------------------------------------------------------*/
 
 var PI = Math.PI;
+
+Math.degrees = function(radians) {
+    return radians * 180 / Math.PI;
+};
+
+Math.radians = function(degrees) {
+    return degrees / 180 * Math.PI;
+};
 
 Math._round = Math.round;
 Math.round = function(x, decimals) {
@@ -277,18 +406,10 @@ Math.round = function(x, decimals) {
 };
 
 Math.sign = function(x) {
-    if (x < 0) { return -1; }
-    if (x > 0) { return +1; }
+    if (x < 0) return -1;
+    if (x > 0) return +1;
     return 0;
 }
-
-Math.degrees = function(radians) {
-    return radians * 180 / Math.PI;
-};
-
-Math.radians = function(degrees) {
-    return degrees / 180 * Math.PI;
-};
 
 Math.clamp = function(value, min, max) {
     if (max > min) {
@@ -296,6 +417,16 @@ Math.clamp = function(value, min, max) {
     } else {
         return Math.max(max, Math.min(value, min));
     }
+};
+
+Math.normalize = function(value, min, max) {
+    return (value - min) / (max - min);
+}
+
+Math.sum = function(a) {
+    var n = 0;
+    for (var i=0; i < a.length; i++) n += a[i];
+    return n;
 };
 
 Math.dot = function(a, b) {
@@ -310,6 +441,55 @@ Math.mix = function(a, b, t) {
     if (t > 1.0) return b;
     return a + (b-a)*t;
 };
+
+Math.lerp = Math.mix;
+
+Math.smoothstep = function(a, b, x) {
+    if (x < a) return 0.0;
+    if (x >=b) return 1.0;
+    x = (x-a) / (b-a);
+    return x*x * (3-2*x);
+};
+
+Math.smoothrange = function(a, b, n) {
+    /* Returns an array of approximately n values v1, v2, ... vn,
+     * so that v1 <= a, and vn >= b, and all values are multiples of 1, 2, 5 and 10.
+     * For example: Math.smoothrange(1, 123) => [0, 20, 40, 60, 80, 100, 120, 140],
+     */
+    function _multiple(v, round) {
+        var e = Math.floor(Math.log(v) / Math.LN10); // exponent
+        var m = Math.pow(10, e);                     // magnitude
+        var f = v / m;                               // fraction
+        if (round) {
+            if (f <  1.5) return m * 1;
+            if (f <  3.0) return m * 2;
+            if (f <  7.0) return m * 5;
+        } else {
+            if (f <= 1.0) return m * 1;
+            if (f <= 2.0) return m * 2;
+            if (f <= 5.0) return m * 5; 
+        }
+        return m * 10;
+    }
+    if (a === undefined && b === undefined) { a=0; b=1; }
+    if (a === undefined) { a=0; b=b; }
+    if (b === undefined) { a=0; b=a; }
+    if (n === undefined) { n=10; }
+    if (a === b) {
+        return [a];
+    }
+    var r = _multiple(b-a);
+    var t = _multiple(r / (n-1), true);
+    a = Math.floor(a/t) * t;
+    b = Math.ceil( b/t) * t;
+    var rng = [];
+    for (var i=0; i < (b-a) / t + 1; i++) {
+        rng.push(a + i*t);
+    }
+    return rng;
+};
+
+/*--- GEOMETRY -------------------------------------------------------------------------------------*/
 
 var Point = Class.extend({
     init: function(x, y) {
@@ -422,9 +602,9 @@ var Geometry = Class.extend({
         if (infinite === undefined) infinite = false;
         var ua = (x4-x3) * (y1-y3) - (y4-y3) * (x1-x3);
         var ub = (x2-x1) * (y1-y3) - (y2-y1) * (x1-x3);
-        var d  = (y4-y3) * (x2-x1) - (x4-x3) * (y2-y1);        
+        var d  = (y4-y3) * (x2-x1) - (x4-x3) * (y2-y1);
         // The lines are coincident if (ua == ub && ub == 0).
-        // The lines are parallel otherwise.        
+        // The lines are parallel otherwise.
         if (d == 0) return null;
         ua /= d;
         ub /= d;
@@ -536,6 +716,11 @@ var Geometry = Class.extend({
 });
 
 var geometry = new Geometry();
+var geo = geometry;
+
+Math.angle = geometry.angle;
+Math.distance = geometry.distance;
+Math.coordinates = geometry.coordinates;
 
 /*##################################################################################################*/
 
@@ -645,11 +830,14 @@ var Color = Class.extend({
             return _rgb2hex(r, g, b);
         }
         if (colorspace == HSB) {
-            rgb = _rgb2hsb(r, g, b); r=rgb[0]; g=rgb[1]; b=rgb[2];
+            hsb = _rgb2hsb(r, g, b); r=hsb[0]; g=hsb[1]; b=hsb[2];
         }
         if (colorspace == HCL) {
-            rgb = _rgb2hcl(r, g, b); r=rgb[0]; g=rgb[1]; b=rgb[2];
+            hcl = _rgb2hcl(r, g, b); r=hcl[0]; g=hcl[1]; b=hcl[2];
         }
+		if (colorspace == "premultiplied") {
+			rgb = _rgba2rgb(r, g, b, a); r=rgb[0]; g=rgb[1]; b=rgb[2]; a=1;
+		}
         if (base != 1) {
             return [r * base, g * base, b * base, a * base];
         }
@@ -941,12 +1129,23 @@ function _hcl2rgb(h, c, l) {
 	return _xyz2rgb(xyz[0], xyz[1], xyz[2]);
 }
 
+function _rgba2rgb(r, g, b, a, blend) {
+    /* Returns an array [R,G,B,1] (0.0-1.0) from the given R,G,B,A values.
+     */
+    blend = blend || [1,1,1];
+    r = r * a + (1 - a) * blend[0];
+    g = g * a + (1 - a) * blend[1];
+    b = b * a + (1 - a) * blend[2];
+    a = 1;
+    return [r, g, b, a];
+}
+
 function darker(clr, step) {
     /* Returns a copy of the color with a darker brightness.
      */
     if (step === undefined) step = 0.2;
     var hsb = _rgb2hsb(clr.r, clr.g, clr.b);
-    var rgb = _hsb2rgb(hsb[0], hsb[1], Math.max(0, hsb[2]-step));
+    var rgb = _hsb2rgb(hsb[0], hsb[1], Math.max(0, hsb[2] - step));
     return new Color(rgb[0], rgb[1], rgb[2], clr.a);
 }
 
@@ -955,7 +1154,7 @@ function lighter(clr, step) {
      */
     if (step === undefined) step = 0.2;
     var hsb = _rgb2hsb(clr.r, clr.g, clr.b);
-    var rgb = _hsb2rgb(hsb[0], hsb[1], Math.min(1, hsb[2]+step));
+    var rgb = _hsb2rgb(hsb[0], hsb[1], Math.min(1, hsb[2] + step));
     return new Color(rgb[0], rgb[1], rgb[2], clr.a);
 }
     
@@ -978,10 +1177,10 @@ function colors(colors, k, colorspace) {
 		y = Math.min(x + 1, n);
 		t = (i - x * k / n) / (k / n);
 		b.push(new Color(
-			geometry.lerp(a[x][0], a[y][0], t),
-			geometry.lerp(a[x][1], a[y][1], t),
-			geometry.lerp(a[x][2], a[y][2], t),
-			geometry.lerp(a[x][3], a[y][3], t), {colorspace: colorspace}
+			Math.lerp(a[x][0], a[y][0], t),
+			Math.lerp(a[x][1], a[y][1], t),
+			Math.lerp(a[x][2], a[y][2], t),
+			Math.lerp(a[x][3], a[y][3], t), {colorspace: colorspace}
 		));
 	}
 	if (k > 0) {
@@ -1019,7 +1218,7 @@ function _rotateRYB(h, s, b, angle) {
         x0 = wheel[i][0]; x1 = wheel[i+1][0];
         y0 = wheel[i][1]; y1 = wheel[i+1][1];
         if (y0 <= h && h <= y1) {
-            a = geometry.lerp(x0, x1, (h-y0) / (y1-y0));
+            a = Math.lerp(x0, x1, (h-y0) / (y1-y0));
             break;
         }
     }
@@ -1029,7 +1228,7 @@ function _rotateRYB(h, s, b, angle) {
         x0 = wheel[i][0]; x1 = wheel[i+1][0];
         y0 = wheel[i][1]; y1 = wheel[i+1][1];
         if (x0 <= a && a <= x1) {
-            h = geometry.lerp(y0, y1, (a-x0) / (x1-x0));
+            h = Math.lerp(y0, y1, (a-x0) / (x1-x0));
             break;
         }
     }
@@ -1170,8 +1369,8 @@ var Gradient = Class.extend({
     }
 });
 
-function gradient(clr1, clr2, type, dx, dy, length, angle) {
-    return new Gradient(clr1, clr2, type, dx, dy, length, angle);
+function gradient(clr1, clr2, options) {
+    return new Gradient(clr1, clr2, options);
 }
 
 /*--- SHADOW ---------------------------------------------------------------------------------------*/
@@ -1330,6 +1529,12 @@ var AffineTransform = Transform = Class.extend({
     transformPath: function(path) {
         return this.transform_path(path);
     },
+	
+	transform: function(path_x, y) {
+		return (path_x instanceof Path)?
+			this.transform_path(path_x) :
+			this.transform_point(path_x, y);
+	},
     
     map: function(points) {
         return Array.map(points, function(pt) {
@@ -1571,6 +1776,8 @@ var Bezier = Class.extend({
     },
     
     findPath: function(points, curvature) {
+        /* Returns a smooth Path from the given list of points.
+         */
         if (curvature === undefined) curvature = 1.0;
         // Don't crash on something straightforward such as a list of [x,y]-arrays.
         if (points instanceof Path) {
@@ -1638,10 +1845,53 @@ var Bezier = Class.extend({
             );
         }
         return path;
+    },
+    
+    arc: function(x1, y1, x2, y2, angle, extent) {
+        /* Returns a list of [x1, y1, x2, y2, x3, y3, x4, y4] coordinates,
+         * each a curve from (x1, x1) to (x4, y4) with (x2, y2) and (x3, y3)
+         * as their respective Bezier control points.
+         */
+        angle = -angle; extent = -extent; // clockwise
+        var bounds = [x1, y1, x2, y2];
+        x1 = Math.min(bounds[0], bounds[2]);
+        y1 = Math.min(bounds[1], bounds[3]);
+        x2 = Math.max(bounds[0], bounds[2]);
+        y2 = Math.max(bounds[1], bounds[3]);
+        extent = Math.min(Math.max(extent, -360), +360);
+        var n = Math.abs(extent) <= 90 && 1 || Math.ceil(Math.abs(extent) / 90.0);
+        var a = extent / n;
+        var cx = (x1 + x2) / 2;
+        var cy = (y1 + y2) / 2;
+        var rx = (x2 - x1) / 2;
+        var ry = (y2 - y1) / 2;
+        var a2 = Math.radians(a) / 2;
+        var kappa = Math.abs(4.0 / 3 * (1 - Math.cos(a2)) / Math.sin(a2));
+        var points = [], theta0, theta1, c0, c1, s0, s1, k;
+        for (var i=0; i < n; i++) {
+            theta0 = Math.radians(angle + (i+0) * a);
+            theta1 = Math.radians(angle + (i+1) * a);
+            c0 = Math.cos(theta0);
+            s0 = Math.sin(theta0);
+            c1 = Math.cos(theta1);
+            s1 = Math.sin(theta1);
+            k = a > 0 && -kappa || kappa;
+            points.push([
+                cx + rx * c0,
+                cy - ry * s0,
+                cx + rx * (c0 + k * s0),
+                cy - ry * (s0 - k * c0),
+                cx + rx * (c1 - k * s1),
+                cy - ry * (s1 + k * c1),
+                cx + rx * c1,
+                cy - ry * s1
+            ]);
+        }
+        return points	
     }
 });
 
-bezier = new Bezier();
+_bezier = new Bezier();
 
 /*--- BEZIER PATH ----------------------------------------------------------------------------------*/
 // A Path class with lineto(), curveto() and moveto() methods.
@@ -1795,7 +2045,29 @@ var Path = BezierPath = Class.extend({
         this.curveto(x0-dx, y1, x, y0+dy, x, y0);
         this.closepath();
     },
-
+    
+    arc: function(x, y, radius, angle1, angle2, options) {
+        /* Adds an arc to the path,
+         * clockwise from angle1 to angle2 along circle (x, y, radius).
+         */
+        var a1 = angle1 % 360;
+        var a2 = angle2;
+        if (a2 < a1) {
+            a2 = a2 + 360;
+        }
+        if (options && options.clockwise === false) {
+            a2 = a2 % 360 - 360;
+        }
+        var points = _bezier.arc(x-radius, y-radius, x+radius, y+radius, a1, a2-a1);
+        for (var i=0; i < points.length; i++) {
+            var pt = points[i];
+            if (i == 0) {
+                this.moveto(pt[0], pt[1]);
+            }
+            this.curveto(pt[2], pt[3], pt[4], pt[5], pt[6], pt[7]);
+        }
+    },
+    
 //  draw: function({fill: Color(), stroke: Color(), strokewidth: 1.0, strokestyle: SOLID})
     draw: function(options) {
         /* Draws the path.
@@ -1849,9 +2121,9 @@ var Path = BezierPath = Class.extend({
          */
         if (this._segments == null) {
             // Cache the segment lengths for performace.
-            this._segments = bezier.length(this, true, 10);
+            this._segments = _bezier.length(this, true, 10);
         }
-        return bezier.point(this, t, this._segments);
+        return _bezier.point(this, t, this._segments);
     },
     
     points: function(amount, options) {
@@ -1861,7 +2133,7 @@ var Path = BezierPath = Class.extend({
         var start = (options && options.start !== undefined)? options.start : 0.0;
         var end = (options && options.end !== undefined)? options.end : 1.0;
         if (this.array.length == 0) {
-            // Otherwise bezier.point() will raise an error for empty paths.
+            // Otherwise Bezier.point() will raise an error for empty paths.
             return [];
         }
         amount = Math.round(amount);
@@ -1881,7 +2153,7 @@ var Path = BezierPath = Class.extend({
         /* Returns an approximation of the total length of the path.
          */
         if (precision === undefined) precision = 10;
-        return bezier.length(this, false, precision);
+        return _bezier.length(this, false, precision);
     },
     
     contains: function(x, y, precision) {
@@ -1963,7 +2235,7 @@ function endpath(options) {
 function findpath(points, curvature) {
     /* Returns a smooth BezierPath from the given list of points.
      */
-    return bezier.findPath(points, curvature);
+    return _bezier.findPath(points, curvature);
 }
 
 var drawPath = drawpath;
@@ -2098,6 +2370,21 @@ function line(x0, y0, x1, y1, options) {
         _ctx.beginPath();
         _ctx.moveTo(x0, y0);
         _ctx.lineTo(x1, y1);
+        _ctx_stroke(a[1], a[2], a[3], a[4]);
+    }
+}
+
+function arc(x, y, radius, angle1, angle2, options) {
+    /* Draws an arc with the center at x, y, clockwise from angle1 to angle2.
+     * The current stroke, strokewidth and strokestyle are applied.
+     */
+    // It is faster to do it directly without creating a Path:
+    var a = _colorMixin(options);
+    if (a[0] && a[0].a > 0 || a[1] && a[1].a > 0) {
+        var a1 = Math.radians(angle1);
+        var a2 = Math.radians(angle2);
+        _ctx.beginPath();
+        _ctx.arc(x, y, radius, a1, a2, (options && options.clockwise === false));
         _ctx_stroke(a[1], a[2], a[3], a[4]);
     }
 }
@@ -2319,7 +2606,7 @@ var Cache = Class.extend({
 });
 
 // Global cache:
-cache = new Cache();
+var _cache = new Cache();
 
 /*--- INCLUDE --------------------------------------------------------------------------------------*/
 
@@ -2327,8 +2614,10 @@ function include(url) {
     /* Imports the given JavaScript library,
      * from a local path (e.g., "graph.js") or a remote URL (e.g., "http://domain.com/graph.js").
      */
-    cache.script(url);
+    _cache.script(url);
 }
+
+var require = require || include;
 
 /*--- ASYNCHRONOUS REQUEST -------------------------------------------------------------------------*/
 
@@ -2378,7 +2667,7 @@ var Image = Class.extend({
          */
         var o = options || {};
         this._url = url;
-        this._img = cache.image(url);
+        this._img = _cache.image(url);
         this.x = o.x || 0;
         this.y = o.y || 0;
         this.width = (o.width !== undefined)? o.width : null;
@@ -2596,7 +2885,7 @@ function _ctx_font(fontname, fontsize, fontweight) {
     if (fontweight.length > ITALIC.length && fontweight == BOLD+ITALIC || fontweight == ITALIC+BOLD) {
         fontweight = ITALIC + " " + BOLD;
     }
-    _ctx.font = fontweight + " " + fontsize + "px " + fontname;
+    _ctx.font = fontweight + " " + fontsize + "pt " + fontname;
 }
 
 function str(v) {
@@ -2919,7 +3208,7 @@ window._clearFrame = function(id) {
 // It is the Canvas that was last created, OR
 // it is the Canvas that is preparing to call Canvas.draw(), OR
 // it is the Buffer that has called Buffer.push().
-_ctx = null;
+var _ctx = null;
 
 var G_vmlCanvasManager; // Needed with excanvas.js
 
@@ -3096,7 +3385,7 @@ var Canvas = Class.extend({
         // Delay Canvas.draw() until the cached images are done loading
         // (for example, Image objects created during Canvas.setup()).
         var _preload = function() {
-            if (cache.busy > 0) { setTimeout(Function.closure(this, _preload), 10); return; }
+            if (_cache.busy > 0) { setTimeout(Function.closure(this, _preload), 10); return; }
             this._draw(); 
         }
         _preload.apply(this);
@@ -3435,17 +3724,17 @@ function blend(mode, img1, img2, dx, dy, alpha) {
             var b = 255 - 2 * (255-x) * (255-y) / 255;
             return (luminance < 0.45)? a :
                    (luminance > 0.55)? b : 
-                    geometry.lerp(a, b, (luminance - 0.45) * 255); }; break;
+                    Math.lerp(a, b, (luminance - 0.45) * 255); }; break;
         default:
             op = function(x, y) { return 0; };
     }
     function mix(p1, p2, op, luminance) {
         var p = [0,0,0,0];
         var a = p2[3] / 255 * alpha;
-        p[0] = geometry.lerp(p1[0], op(p1[0], p2[0], luminance), a);
-        p[1] = geometry.lerp(p1[1], op(p1[1], p2[1], luminance), a);
-        p[2] = geometry.lerp(p1[2], op(p1[2], p2[2], luminance), a);
-        p[3] = geometry.lerp(p1[3], 255, a);
+        p[0] = Math.lerp(p1[0], op(p1[0], p2[0], luminance), a);
+        p[1] = Math.lerp(p1[1], op(p1[1], p2[1], luminance), a);
+        p[2] = Math.lerp(p1[2], op(p1[2], p2[2], luminance), a);
+        p[3] = Math.lerp(p1[3], 255, a);
         return p;
     }
     // Some blend modes swap opaque blend (alpha=255) with base layer to mimic Photoshop.
