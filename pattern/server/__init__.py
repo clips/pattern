@@ -24,6 +24,8 @@ import textwrap
 import types
 import inspect
 import threading
+import subprocess
+import tempfile
 import itertools
 import collections
 import sqlite3 as sqlite
@@ -117,6 +119,16 @@ def encode_url(string):
 def decode_url(string):
     return urllib.unquote_plus(string)
 
+_TEMPORARY_FILES = []
+def openable(string, **kwargs):
+    """ Returns the path to a temporary file that contains the given string.
+    """
+    f = tempfile.NamedTemporaryFile(**kwargs)
+    f.write(string)
+    f.seek(0)
+    _TEMPORARY_FILES.append(f) # Delete when program terminates.
+    return f.name
+    
 #### INTROSPECTION #################################################################################
 # URL paths are routed to handler functions, whose arguments represent URL path & query parameters.
 # So we need to know what the arguments and keywords arguments are at runtime.
@@ -861,6 +873,10 @@ class Application(object):
         #print(self.elapsed)
         return v
         
+    def unlimited(self, v=None):
+        self._ratelimited = False # See App.route() below.
+        return v
+        
     def route(self, path, limit=False, time=None, key=lambda data: data.get("key"), reset=100000):
         """ The @app.route(path) decorator defines the handler function for the given path.
             The function can take arguments (path) and keyword arguments (query data), e.g.,
@@ -885,16 +901,17 @@ class Application(object):
                 def connect():
                     g.rate = RateLimit(name=self._rate)
                 def wrapper(*args, **kwargs):
+                    self = cp.request.app.root
+                    self._ratelimited = True
                     v = handler(*args, **kwargs)
-                    r = cp.request
-                    self = r.app.root
-                    self.rate(
-                          key = _a[0](r.params),
-                         path = "/" + r.path_info.strip("/"),
-                        limit = _a[1],  # Default limit for unknown keys.
-                         time = _a[2],  # Default time for unknown keys.
-                        reset = _a[3]   # Threshold for clearing cache.
-                    )
+                    if self._ratelimited: # App.unlimited() in handler() sets it to False.
+                        self.rate(
+                              key = _a[0](cp.request.params),
+                             path = "/" + cp.request.path_info.strip("/"),
+                            limit = _a[1], # Default limit for unknown keys.
+                             time = _a[2], # Default time for unknown keys.
+                            reset = _a[3]  # Threshold for clearing cache.
+                        )
                     return v
                 return wrapper
             if limit is True or (limit is not False and limit is not None and time is not None):
@@ -1038,13 +1055,14 @@ class Application(object):
         """
         raise HTTPRedirect(path, int(code))
 
-    def run(self, host=LOCALHOST, port=8080, threads=30, queue=20, timeout=10, sessions=False, embedded=False, debug=True):
+    def run(self, host=LOCALHOST, port=8080, threads=30, queue=20, timeout=10, sessions=False, embedded=False, ssl=None, debug=True):
         """ Starts the server.
             Static content (e.g., "g/img.jpg") is served from the App.static subfolder (e.g., "static/g").
             With threads=10, the server can handle up to 10 concurrent requests.
             With queue=10, the server will queue up to 10 waiting requests.
+            With embedded=True, runs under Apache mod_wsgi.
+            With ssl=(key, certificate), runs under https:// (see certificate() function).
             With debug=False, starts a production server.
-            With embedded=True, runs behind Apache mod_wsgi.
         """
         # Do nothing if the app is running.
         if self._up:
@@ -1071,6 +1089,13 @@ class Application(object):
                 "server.thread_pool"       : max(1, threads),
                 "server.thread_pool_max"   : -1
             })
+        # Secure SSL (https://).
+        if ssl:
+            cp.config.update({
+                "server.ssl_module"        : "builtin",
+                "server.ssl_private_key"   : ssl[0] if os.path.exists(ssl[0]) else openable(ssl[0]),
+                "server.ssl_certificate"   : ssl[1] if os.path.exists(ssl[1]) else openable(ssl[1])
+            })
         # Static content is served from the /static subfolder, 
         # e.g., <img src="g/cat.jpg" /> refers to "/static/g/cat.jpg".
         self._app = cp.tree.mount(self, "/", 
@@ -1079,6 +1104,10 @@ class Application(object):
                 "tools.staticdir.dir"      : self.static,
                 "tools.sessions.on"        : sessions
         }})
+        # Static content can include favicon.ico
+        self.favicon_ico = cp.tools.staticfile.handler(
+            os.path.join(self.static, "favicon.ico")
+        )
         # Relative root = project path.
         os.chdir(self._path)
         # With mod_wsgi, stdout is restriced.
@@ -1110,6 +1139,46 @@ class Application(object):
         raise ApplicationError("application not running")
         
 App = Application
+
+#### CERTIFICATE ###################################################################################
+# A certificate can be used to secure a web app (i.e., a https:// connection).
+# A certificate confirms the owner's identity, as verified by a signer.
+# This signer can be trusted third-party (e.g., Comodo) or self-signed.
+# The certificate() function yields a free, self-signed certificate.
+# Visitors will get a browser warning that the certificate is not signed by a trusted third party.
+
+def certificate(host=LOCALHOST, country=None, state=None, city=None, company=None, contact=None, **kwargs):
+    """ Returns a (private key, certificate)-tuple for a secure SSL-encrypted https server.
+        Only works on Unix with OpenSSL.
+    """
+    # Generate private key.
+    # > openssl genrsa 2048 -out ssl.key
+    s = subprocess.PIPE
+    p = ("openssl", "genrsa", "2048")
+    p = subprocess.Popen(p, stdin=s, stdout=s, stderr=s)
+    k = kwargs.get("key") or p.communicate()[0]
+    f = tempfile.NamedTemporaryFile(delete=False)
+    f.write(k)
+    f.close()
+    # Generate certificate.
+    # > openssl req -new -x509 -days 365 -key ssl.key -out ssl.crt
+    p = ("openssl", "req", "-new", "-x509", "-days", "365", "-key", f.name)
+    p = subprocess.Popen(p, stdin=s, stdout=s, stderr=s)
+    x = p.communicate("%s\n%s\n%s\n%s\n.\n%s\n%s\n" % (
+          country or ".",      # BE
+            state or ".",       # Antwerp
+             city or ".",       # Antwerp
+          company or ".",       # CLiPS
+             host or LOCALHOST, # Tom De Smedt
+          contact or "."        # tom@organisms.be
+    ))[0]
+    os.unlink(f.name)
+    return (k, x)
+    
+#k, x = certificate(country="BE", state="Antwerp", company="CLiPS", contact="tom@organisms.be")
+#open("ssl.key", "w").write(k)
+#open("ssl.crt", "w").write(x)
+#app.run(ssl=("ssl.key", "ssl.crt"))
 
 #---------------------------------------------------------------------------------------------------
 # Apache + mod_wsgi installation notes (thanks to Frederik De Bleser).
