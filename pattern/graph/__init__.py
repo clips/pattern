@@ -1077,7 +1077,7 @@ def clique(graph, id):
     for n in graph.nodes:
         try:
             # Raises StopIteration if all nodes in the clique are connected to n:
-            (id for id in a if n.id==id or graph.edge(n.id, id) is None).next()
+            next(id for id in a if n.id==id or graph.edge(n.id, id) is None)
         except StopIteration:
             a.append(n.id)
     return a

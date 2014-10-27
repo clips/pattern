@@ -2357,7 +2357,7 @@ class Wikia(MediaWiki):
             while True:
                 batch, done = [], False
                 try:
-                    for i in range(10): batch.append(iterator.next())
+                    for i in range(10): batch.append(next(iterator))
                 except StopIteration:
                     done = True # No more articles, finish batch and raise StopIteration.
                 url = URL(self._url.replace("api.php", "wikia.php"), method=GET, query={

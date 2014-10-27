@@ -45,6 +45,7 @@ from collections import defaultdict
 
 if sys.version > "3":
     long = int
+    xrange = range
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
@@ -1717,7 +1718,7 @@ class LSA(object):
 _lsa_transform_cache = {}
 
 #def iter2array(iterator, typecode):
-#    a = numpy.array([iterator.next()], typecode)
+#    a = numpy.array([next(iterator)], typecode)
 #    shape0 = a.shape[1:]
 #    for (i, item) in enumerate(iterator):
 #        a.resize((i+2,) + shape0)
@@ -1961,7 +1962,7 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
     id = sequence()
     features  = kwargs.get("features", _features(vectors))
     clusters  = Cluster((v for v in shuffled(vectors)))
-    centroids = [(id.next(), v) for v in clusters]
+    centroids = [(next(id), v) for v in clusters]
     map = {}
     for _ in range(iterations):
         if len(clusters) <= max(k, 1): 
@@ -1988,7 +1989,7 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
         v = centroid(merged.flatten(), features)
         centroids.pop(j)
         centroids.pop(i)
-        centroids.append((id.next(), v))
+        centroids.append((next(id), v))
     return clusters
 
 #from pattern.vector import Vector
@@ -2080,6 +2081,16 @@ class Classifier(object):
         if self._baseline not in (MAJORITY, FREQUENCY):
             return self._baseline
         return ([(0, None)] + sorted([(v, k) for k, v in self._classes.items()]))[-1][1]
+        
+    @property
+    def weighted_random_baseline(self):
+        """ Yields the weighted random baseline:
+            accuracy with classes predicted randomly according to their distribution.
+        """
+        n = float(sum(self.distribution.values())) or 1
+        return sum(map(lambda x: (x / n) ** 2, self.distribution.values()))
+    
+    wrb = weighted_random_baseline
         
     @property
     def skewness(self):
@@ -2974,8 +2985,6 @@ class BPNN(Classifier):
 
 ANN = NN = NeuralNetwork = BPNN
 
-
-
 #nn = BPNN()
 #nn._weight_initialization(2, 1, hidden=2)
 #nn._train([
@@ -3070,6 +3079,16 @@ class SVM(Classifier):
             (  "shrinking", "h", True)):
                 v = kwargs.get(k2, kwargs.get(k1, v))
                 setattr(self, "_"+k1, v)
+        # SVC/SVR/SVO alias.
+        if self._type == "svc":
+            self._type = SVC
+        if self._type == "svr":
+            self._type = SVR
+        if self._type == "svo":
+            self._type = SVO
+        # RBF alias.
+        if self._kernel == "rbf":
+            self._kernel = RBF
         Classifier.__init__(self, train=kwargs.get("train", []), baseline=MAJORITY)
     
     @property

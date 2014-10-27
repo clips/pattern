@@ -174,7 +174,7 @@ def variations(iterable, optional=lambda x: False):
     for p in product([False, True], repeat=sum(o)):
         p = list(p)
         v = [b and (b and p.pop(0)) for b in o]
-        v = tuple(iterable[i] for i in xrange(len(v)) if not v[i])
+        v = tuple(iterable[i] for i in range(len(v)) if not v[i])
         a.add(v)
     # Longest-first.
     return sorted(a, cmp=lambda x, y: len(y) - len(x))
@@ -567,7 +567,7 @@ class Constraint(object):
             - the word (or lemma) occurs in Constraint.taxa taxonomy tree, AND
             - the word and/or chunk tags match those defined in the constraint.
             Individual terms in Constraint.words or the taxonomy can contain wildcards (*).
-            Some part-of-speech-tags can also contain wildcards: NN*, VB*, JJ*, RB*
+            Some part-of-speech-tags can also contain wildcards: NN*, VB*, JJ*, RB*, PR*.
             If the given word contains spaces (e.g., proper noun),
             the entire chunk will also be compared.
             For example: Constraint(words=["Mac OS X*"]) 
@@ -609,8 +609,8 @@ class Constraint(object):
                 try:
                     if " " in w and (s1 in w or s2 and s2 in w or "*" in w):
                         s1 = word.chunk and word.chunk.string.lower() or s1
-                        s2 = word.chunk and " ".join([x or "" for x in word.chunk.lemmata]) or s2
-                except:
+                        s2 = word.chunk and " ".join(x or ""  for x in word.chunk.lemmata) or s2
+                except Exception as e:
                     s1 = s1
                     s2 = None
                 # Compare the word to the allowed words (which can contain wildcards).
@@ -620,6 +620,7 @@ class Constraint(object):
                 # if "was" is not in the constraint, perhaps "be" is, which is a good match.
                 if s2 and _match(s2, w):
                     b=True; break
+                    
         # If the constraint defines allowed taxonomy terms,
         # and the given word did not match an allowed word, traverse the taxonomy.
         # The search goes up from the given word to its parents in the taxonomy.
@@ -804,7 +805,7 @@ class Pattern(object):
         if sentence.__class__.__name__ == "Sentence":
             pass
         elif isinstance(sentence, list) or sentence.__class__.__name__ == "Text":
-            return find(lambda m,s: m is not None, ((self.match(s, start, _v), s) for s in sentence))[0]
+            return find(lambda m: m is not None, (self.match(s, start, _v) for s in sentence))
         elif isinstance(sentence, basestring):
             sentence = Sentence(sentence)
         elif isinstance(sentence, Match) and len(sentence) > 0:

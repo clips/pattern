@@ -66,9 +66,9 @@ class OrderedDict(dict, DictMixin):
         # Modified from original to support Python 2.4, see
         # http://code.google.com/p/simplejson/issues/detail?id=53
         if last:
-            key = reversed(self).next()
+            key = next(reversed(self))
         else:
-            key = iter(self).next()
+            key = next(iter(self))
         value = self.pop(key)
         return key, value
 

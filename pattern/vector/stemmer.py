@@ -286,7 +286,7 @@ def case_sensitive(stem, word):
         Ponies => Poni
     """
     ch = []
-    for i in xrange(len(stem)):
+    for i in range(len(stem)):
         if word[i] == word[i].upper():
             ch.append(stem[i].upper())
         else:

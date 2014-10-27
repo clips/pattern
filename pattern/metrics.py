@@ -8,14 +8,17 @@
 import sys
 
 from time import time
-from math import sqrt, floor, modf, exp, pi, log
+from math import sqrt, floor, ceil, modf, exp, pi, log
 
 from collections import defaultdict, deque
 from itertools   import chain
-from operator    import itemgetter
+from operator    import itemgetter, lt, le
 from heapq       import nlargest
 from bisect      import bisect_right
 from random      import gauss
+
+if sys.version > "3":
+    xrange = range
 
 ####################################################################################################
 # Simple implementation of Counter for Python 2.5 and 2.6.
@@ -280,7 +283,7 @@ def levenshtein(string1, string2):
     if n > m: 
         # Make sure n <= m to use O(min(n,m)) space.
         string1, string2, n, m = string2, string1, m, n
-    current = range(n+1)
+    current = list(xrange(n+1))
     for i in xrange(1, m+1):
         previous, current = current, [i]+[0]*n
         for j in xrange(1, n+1):
@@ -570,6 +573,65 @@ co_occurrence = cooccurrence
 # Adjectives preceding nouns:
 # {("cat", "NN"): {("black", "JJ"): 1}}
 
+#### INTERPOLATION #################################################################################
+
+def lerp(a, b, t):
+    """ Returns the linear interpolation between a and b at time t between 0.0-1.0.
+        For example: lerp(100, 200, 0.5) => 150.
+    """
+    if t < 0.0:
+        return a
+    if t > 1.0:
+        return b
+    return a + (b - a) * t
+    
+def smoothstep(a, b, x):
+    """ Returns the Hermite interpolation (cubic spline) for x between a and b.
+        The return value between 0.0-1.0 eases (slows down) as x nears a or b.
+    """
+    if x < a: 
+        return 0.0
+    if x >= b: 
+        return 1.0
+    x = float(x - a) / (b - a)
+    return x * x * (3 - 2 * x)
+
+def smoothrange(a=None, b=None, n=10):
+    """ Returns an iterator of approximately n values v1, v2, ... vn,
+        so that v1 <= a, and vn >= b, and all values are multiples of 1, 2, 5 and 10.
+        For example: list(smoothrange(1, 123)) => [0, 20, 40, 60, 80, 100, 120, 140],
+    """
+    def _multiple(v, round=False):
+        e = floor(log(v, 10)) # exponent
+        m = pow(10, e)        # magnitude
+        f = v / m             # fraction
+        if round is True:
+            op, x, y, z = lt, 1.5, 3.0, 7.0
+        if round is False:
+            op, x, y, z = le, 1.0, 2.0, 5.0
+        if op(f, x):
+            return m * 1
+        if op(f, y):
+            return m * 2
+        if op(f, z):
+            return m * 5
+        else:
+            return m * 10
+    if a is None and b is None:
+        a, b = 0, 1
+    if a is None:
+        a, b = 0, b
+    if b is None:
+        a, b = 0, a
+    if a == b:
+        yield float(a); raise StopIteration
+    r = _multiple(b - a)
+    t = _multiple(r / (n - 1), round=True)
+    a = floor(a / t) * t
+    b =  ceil(b / t) * t
+    for i in range(int((b - a) / t) + 1):
+        yield a + i * t
+
 #### STATISTICS ####################################################################################
 
 #--- MEAN ------------------------------------------------------------------------------------------
@@ -688,7 +750,7 @@ def kurtosis(iterable, sample=False):
 
 #a = 1
 #b = 1000
-#U = [float(i-a)/(b-a) for i in range(a,b)] # uniform distribution
+#U = [float(i-a)/(b-a) for i in xrange(a,b)] # uniform distribution
 #print(abs(-1.2 - kurtosis(U)) < 0.0001)
 
 #--- QUANTILE --------------------------------------------------------------------------------------
@@ -715,7 +777,7 @@ def quantile(iterable, p=0.5, sort=True, a=1, b=-1, c=0, d=1):
     i = int(floor(i))
     return s[i] + (s[i+1] - s[i]) * (c + d * f)
 
-#print(quantile(range(10), p=0.5) == median(range(10)))
+#print(quantile(xrange(10), p=0.5) == median(xrange(10)))
 
 def boxplot(iterable, **kwargs):
     """ Returns a tuple (min(list), Q1, Q2, Q3, max(list)) for the given list of values.
@@ -918,7 +980,7 @@ def gammaln(x):
     y = x + 5.5
     y = (x + 0.5) * log(y) - y
     n = 1.0
-    for i in range(6):
+    for i in xrange(6):
         x += 1
         n += (
           76.18009173, 
@@ -1048,6 +1110,6 @@ def kolmogorov(x):
         return 0.0
     x = -2.0 * x * x
     k = 0
-    for i in reversed(range(1, 27+1, 2)): # 27 25 23 ... 1
+    for i in reversed(xrange(1, 27+1, 2)): # 27 25 23 ... 1
         k = (1 - k) * exp(x * i)
     return 2.0 * k
