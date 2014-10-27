@@ -19,6 +19,7 @@ import csv as csvlib
 from codecs    import BOM_UTF8
 from itertools import islice
 from datetime  import datetime, timedelta
+from calendar  import monthrange
 from time      import mktime, strftime
 from math      import sqrt
 from types     import GeneratorType
@@ -99,6 +100,20 @@ date_formats = [
     "%B %d, %Y",                   # September 21, 2010
 ]
 
+def _yyyywwd2yyyymmdd(year, week, weekday):
+    """ Returns (year, month, day) for given (year, week, weekday).
+    """
+    d = datetime(year, month=1, day=4) # 1st week contains January 4th.
+    d = d - timedelta(d.isoweekday()-1) + timedelta(days=weekday-1, weeks=week-1)
+    return (d.year, d.month, d.day)
+    
+def _strftime1900(d, format):
+    """ Returns the given date formatted as a string.
+    """
+    if d.year < 1900: # Python's strftime() doesn't handle year < 1900.
+        return strftime(format, (1900,) + d.timetuple()[1:]).replace("1900", str(d.year), 1)
+    return datetime.strftime(d, format)
+    
 class DateError(Exception):
     pass
 
@@ -130,29 +145,39 @@ class Date(datetime):
     def timestamp(self):
         return int(mktime(self.timetuple())) # Seconds elapsed since 1/1/1970.
     def strftime(self, format):
-        if self.year < 1900:
-            # Python's strftime() doesn't handle year < 1900:
-            return strftime(format, (1900,) + self.timetuple()[1:]).replace("1900", str(self.year), 1)
-        return datetime.strftime(self, format)
+        return _strftime1900(self, format)
     def copy(self):
         return date(self.timestamp)
     def __str__(self):
         return self.strftime(self.format)
     def __repr__(self):
         return "Date(%s)" % repr(self.__str__())
-    def __iadd__(self, time):
-        return self.__add__(time)
-    def __isub__(self, time):
-        return self.__sub__(time)
-    def __add__(self, time):
-        d = datetime.__add__(self, time)
+    def __iadd__(self, t):
+        return self.__add__(t)
+    def __isub__(self, t):
+        return self.__sub__(t)
+    def __add__(self, t):
+        d = self
+        if getattr(t, "years" , 0) \
+        or getattr(t, "months", 0):
+            # January 31 + 1 month = February 28.
+            y = (d.month + t.months - 1) // 12 + d.year + t.years
+            m = (d.month + t.months + 0)  % 12 or 12
+            r = monthrange(y, m)
+            d = date(y, m, min(d.day, r[1]), d.hour, d.minute, d.second, d.microsecond)
+        d = datetime.__add__(d, t)
         return date(d.year, d.month, d.day, d.hour, d.minute, d.second, d.microsecond, self.format)
-    def __sub__(self, time):
-        d = datetime.__sub__(self, time)
-        if isinstance(d, timedelta):
-            # Subtracting two dates returns a time().
-            return d
-        return date(d.year, d.month, d.day, d.hour, d.minute, d.second, d.microsecond, self.format)
+    def __sub__(self, t):
+        if isinstance(t, (Date, datetime)):
+            # Subtracting two dates returns a Time.
+            t = datetime.__sub__(self, t)
+            return Time(+t.days, +t.seconds, 
+                microseconds = +t.microseconds)
+        if isinstance(t, (Time, timedelta)):
+            return self + Time(-t.days, -t.seconds, 
+                microseconds = -t.microseconds,
+                      months = -getattr(t, "months", 0),
+                       years = -getattr(t, "years", 0))
 
 def date(*args, **kwargs):
     """ Returns a Date from the given parameters:
@@ -171,16 +196,30 @@ def date(*args, **kwargs):
     and kwargs.get("year") is not None \
     and kwargs.get("month") \
     and kwargs.get("day"):
+        # Year, month, day.
         d = Date(**kwargs)
+    elif kwargs.get("week"):
+        # Year, week, weekday.
+        f = kwargs.pop("format", None)
+        d = Date(*_yyyywwd2yyyymmdd(
+            kwargs.pop("year", args and args[0] or Date.now().year),
+            kwargs.pop("week"),
+            kwargs.pop("weekday", kwargs.pop("day", 1))), **kwargs)
     elif len(args) == 0 or args[0] == NOW:
         # No parameters or one parameter NOW.
         d = Date.now()
+    elif len(args) == 1 \
+     and isinstance(args[0], (Date, datetime)):
+        # One parameter, a Date or datetime object.
+        d = Date.fromtimestamp(int(mktime(args[0].timetuple()))) 
+        d+= time(microseconds=args[0].microsecond)
     elif len(args) == 1 \
      and (isinstance(args[0], int) \
       or  isinstance(args[0], basestring) and args[0].isdigit()):
         # One parameter, an int or string timestamp.
         d = Date.fromtimestamp(int(args[0]))
-    elif len(args) == 1 and isinstance(args[0], basestring):
+    elif len(args) == 1 \
+     and isinstance(args[0], basestring):
         # One parameter, a date string for which we guess the input format (RFC2822 or known formats).
         try: d = Date.fromtimestamp(mktime_tz(parsedate_tz(args[0])))
         except:
@@ -190,7 +229,8 @@ def date(*args, **kwargs):
                     pass
         if d is None:
             raise DateError("unknown date format for %s" % repr(args[0]))
-    elif len(args) == 2 and isinstance(args[0], basestring):
+    elif len(args) == 2 \
+     and isinstance(args[0], basestring):
         # Two parameters, a date string and an explicit input format.
         d = Date.strptime(args[0], args[1])
     elif len(args) >= 3:
@@ -202,14 +242,28 @@ def date(*args, **kwargs):
     d.format = kwargs.get("format") or len(args) > 7 and args[7] or f or Date.format
     return d
 
+class Time(timedelta):
+    
+    def __new__(cls, *args, **kwargs):
+        """ A convenience wrapper for datetime.timedelta that handles months and years.
+        """
+        # Time.years
+        # Time.months
+        # Time.days
+        # Time.seconds
+        # Time.microseconds
+        y = kwargs.pop("years", 0)
+        m = kwargs.pop("months", 0)
+        t = timedelta.__new__(cls, *args, **kwargs)
+        setattr(t, "years", y)
+        setattr(t, "months", m)
+        return t
+
 def time(days=0, seconds=0, minutes=0, hours=0, **kwargs):
-    """ Returns a value that can be added to a Date object.
+    """ Returns a Time that can be added to a Date object.
+        Other parameters: microseconds, milliseconds, weeks, months, years.
     """
-    # Other parameters: microseconds, milliseconds, weeks.
-    # There is no months-parameter since months have a variable amount of days (28-31).
-    # To increase the month of a Date:
-    # Date(date.year, date.month+1, date.day, format=date.format)
-    return timedelta(days=days, seconds=seconds, minutes=minutes, hours=hours, **kwargs)
+    return Time(days=days, seconds=seconds, minutes=minutes, hours=hours, **kwargs)
 
 #### STRING FUNCTIONS ##############################################################################
 # Latin-1 (ISO-8859-1) encoding is identical to Windows-1252 except for the code points 128-159:
@@ -370,6 +424,22 @@ def _escape(value, quote=lambda string: "'%s'" % string.replace("'", "\\'")):
         # Binary data is escaped with attention to null bytes.
         return "'%s'" % value.escape()
     return value
+
+def cast(x, f, default=None):
+    """ Returns f(x) or default.
+    """
+    if f is str and isinstance(x, unicode):
+        return decode_utf8(x)
+    if f is bool and x in ("1", "True", "true"):
+        return True
+    if f is bool and x in ("0", "False", "false"):
+        return False
+    if f is int:
+        f = lambda x: int(round(float(x)))
+    try:
+        return f(x)
+    except:
+        return default
 
 #### LIST FUNCTIONS ################################################################################
 
@@ -616,7 +686,7 @@ class Database(object):
         def __init__(self, cursor):
             self._cursor = cursor
         def next(self):
-            return self.__iter__().next()
+            return next(self.__iter__())
         def __iter__(self):
             for row in (hasattr(self._cursor, "__iter__") and self._cursor or self._cursor.fetchall()):
                 yield row
