@@ -942,9 +942,9 @@ class TestClassifier(unittest.TestCase):
         # Assert the accuracy of the classifier.
         A, P, R, F, o = vector.KNN.test(self.model, folds=10, k=2, distance=vector.COSINE)
         #print(A, P, R, F, o)
-        self.assertTrue(P >= 0.92)
-        self.assertTrue(R >= 0.92)
-        self.assertTrue(F >= 0.92)
+        self.assertTrue(P >= 0.91)
+        self.assertTrue(R >= 0.91)
+        self.assertTrue(F >= 0.91)
 
     def test_slp(self):
         random.seed(1)
