@@ -57,6 +57,8 @@ These API's are described in the CherryPy specification:
 http://www.cherrypy.org/wiki/CherryPySpec
 """
 
+from __future__ import absolute_import
+
 __version__ = "3.2.4"
 
 from cherrypy._cpcompat import urljoin as _urljoin, urlencode as _urlencode

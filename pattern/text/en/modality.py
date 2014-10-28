@@ -5,6 +5,7 @@
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
+
 ### LIST FUNCTIONS #################################################################################
 
 def find(function, list):

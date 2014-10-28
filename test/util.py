@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 import codecs
 import datetime
 import math
@@ -20,8 +21,6 @@ except ImportError:
     import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-
-from pattern import nl
 
 try:
     PATH = os.path.dirname(os.path.realpath(__file__))

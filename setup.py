@@ -135,5 +135,6 @@ setup(
         "Topic :: Text Processing :: Linguistic",
         "Topic :: Text Processing :: Markup :: HTML"
     ],
-    zip_safe = False
+    zip_safe = False,
+    install_requires = ["future"]
 )

@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 #### PATTERN | VECTOR ##############################################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
@@ -20,6 +19,8 @@ from __future__ import absolute_import
 # This is called supervised machine learning (since we provide labeled training examples).
 # Unsupervised machine learning or clustering can be used to group unlabeled documents
 # into subsets based on their similarity.
+
+from __future__ import absolute_import
 
 from . import stemmer; _stemmer=stemmer
 

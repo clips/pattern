@@ -1,10 +1,12 @@
-from __future__ import print_function
 # -*- coding: utf-8 -*-
-# These tests require a working internet connection.
+
+from __future__ import print_function
+
 from util import *
 
 from pattern import web
 
+# These tests require a working internet connection.
 #---------------------------------------------------------------------------------------------------
 
 class TestCache(unittest.TestCase):

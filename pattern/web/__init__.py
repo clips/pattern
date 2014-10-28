@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 #### PATTERN | WEB #################################################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
@@ -10,6 +9,9 @@ from __future__ import absolute_import
 # Python API interface for various web services (Google, Twitter, Wikipedia, ...)
 
 # smgllib.py is removed from Python 3, a warning is issued in Python 2.6+. Ignore for now.
+
+from __future__ import absolute_import
+
 import warnings; warnings.filterwarnings(action='ignore', category=DeprecationWarning, module="sgmllib")
 
 import os

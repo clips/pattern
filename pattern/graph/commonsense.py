@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 #### PATTERN | COMMONSENSE #########################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
@@ -6,6 +5,8 @@ from __future__ import absolute_import
 # http://www.clips.ua.ac.be/pages/pattern
 
 ####################################################################################################
+
+from __future__ import absolute_import
 
 from codecs    import BOM_UTF8
 from urllib    import urlopen

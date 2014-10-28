@@ -70,7 +70,7 @@ except:
     # Bundled package is "hidden" in a non-package folder,
     # otherwise it conflicts with site-packages/cherrypy.
     sys.path.insert(0, os.path.join(MODULE, "cherrypy"))
-    from . import cherrypy; cp=cherrypy
+    import cherrypy; cp=cherrypy
 
 try: import json # Python 2.6+
 except:

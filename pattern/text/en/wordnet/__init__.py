@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 #### PATTERN | WORDNET #############################################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
@@ -17,6 +16,8 @@ from __future__ import absolute_import
 # -  holonym = a word that is the whole of parts,   (tree => forest)
 # -  meronym = a word that is a part of the whole,  (tree => trunk)
 # -  antonym = a word that is opposite in meaning.
+
+from __future__ import absolute_import
 
 import os
 import sys

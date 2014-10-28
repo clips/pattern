@@ -1,4 +1,3 @@
-from __future__ import print_function
 #### PATTERN | DB ##################################################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
@@ -7,6 +6,8 @@ from __future__ import print_function
 # http://www.clips.ua.ac.be/pages/pattern
 
 ####################################################################################################
+
+from __future__ import print_function
 
 import os
 import sys
