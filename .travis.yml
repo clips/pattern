@@ -20,7 +20,7 @@ install:
     - pip install --quiet pytest-cov
 
 script:
-    - nosetests --with-coverage --cover-package=bashexpand
+    - nosetests --with-coverage --cover-package=pattern
 
 after_success:
     - pip install --quiet coveralls

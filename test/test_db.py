@@ -3,7 +3,11 @@ import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..")
 import datetime
 import codecs
 import random
-import unittest
+
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 from pattern import db
 
