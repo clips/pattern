@@ -917,7 +917,7 @@ class TestSentiment(unittest.TestCase):
         self.assertTrue(A > 0.751)
         self.assertTrue(P > 0.770)
         self.assertTrue(R > 0.710)
-        self.assertTrue(F > 0.745)
+        self.assertTrue(F > 0.710)
         # Assert the accuracy of the sentiment analysis on short text (for the positive class).
         # Given are the scores for Pang & Lee's sentence polarity dataset v1.0:
         # http://www.cs.cornell.edu/people/pabo/movie-review-data/
