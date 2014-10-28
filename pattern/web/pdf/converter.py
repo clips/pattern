@@ -1,14 +1,16 @@
 #!/usr/bin/env python2
+from __future__ import print_function
+from __future__ import absolute_import
 import sys, os.path
-from pdfdevice import PDFDevice, PDFTextDevice
-from pdffont import PDFUnicodeNotDefined
-from pdftypes import LITERALS_DCT_DECODE
-from pdfcolor import LITERAL_DEVICE_GRAY, LITERAL_DEVICE_RGB
-from layout import LTContainer, LTPage, LTText, LTLine, LTRect, LTCurve
-from layout import LTFigure, LTImage, LTChar, LTTextLine
-from layout import LTTextBox, LTTextBoxVertical, LTTextGroup
-from utils import apply_matrix_pt, mult_matrix
-from utils import enc, bbox2str, create_bmp
+from .pdfdevice import PDFDevice, PDFTextDevice
+from .pdffont import PDFUnicodeNotDefined
+from .pdftypes import LITERALS_DCT_DECODE
+from .pdfcolor import LITERAL_DEVICE_GRAY, LITERAL_DEVICE_RGB
+from .layout import LTContainer, LTPage, LTText, LTLine, LTRect, LTCurve
+from .layout import LTFigure, LTImage, LTChar, LTTextLine
+from .layout import LTTextBox, LTTextBoxVertical, LTTextGroup
+from .utils import apply_matrix_pt, mult_matrix
+from .utils import enc, bbox2str, create_bmp
 
 
 ##  PDFLayoutAnalyzer
@@ -106,7 +108,7 @@ class PDFLayoutAnalyzer(PDFTextDevice):
 
     def handle_undefined_char(self, font, cid):
         if self.debug:
-            print >>sys.stderr, 'undefined: %r, %r' % (font, cid)
+            print('undefined: %r, %r' % (font, cid), file=sys.stderr)
         return '(cid:%d)' % cid
 
     def receive_layout(self, ltpage):

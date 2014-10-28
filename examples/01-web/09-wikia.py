@@ -1,3 +1,4 @@
+from __future__ import print_function
 # -*- coding: utf-8 *-*
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
@@ -18,7 +19,7 @@ if len(sys.argv) > 1:
 w = Wikia(domain, language="en")
 
 # Like Wikipedia, we can search for articles by title with Wikia.search():
-print w.search("Three Headed Monkey")
+print(w.search("Three Headed Monkey"))
 
 # However, we may not know exactly what kind of articles exist,
 # three-headed monkey" for example does not redirect to the above article.
@@ -29,8 +30,8 @@ print w.search("Three Headed Monkey")
 # Retrieving the full article for each article takes another query. This can be slow.
 i = 0
 for article in w.articles(count=2, cached=True):
-    print
-    print article.title
+    print()
+    print(article.title)
     #print article.plaintext()
     i += 1
     if i >= 3:
@@ -40,8 +41,8 @@ for article in w.articles(count=2, cached=True):
 # and only retrieve the full articles for the titles we need:
 i = 0
 for title in w.index(count=2):
-    print
-    print title
+    print()
+    print(title)
     #article = w.search(title)
     #print article.plaintext()
     i += 1

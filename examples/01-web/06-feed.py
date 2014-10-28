@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import Newsfeed, plaintext, URL
@@ -14,11 +15,11 @@ CNN     = "http://rss.cnn.com/rss/edition.rss"
 engine = Newsfeed()
 
 for result in engine.search(CNN, cached=True):
-    print result.title.upper()
-    print plaintext(result.text) # Remove HTML formatting.
-    print result.url
-    print result.date
-    print
+    print(result.title.upper())
+    print(plaintext(result.text)) # Remove HTML formatting.
+    print(result.url)
+    print(result.date)
+    print()
 
 # News item URL's lead to the page with the full article.
 # This page can have any kind of formatting.

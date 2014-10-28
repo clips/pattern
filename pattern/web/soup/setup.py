@@ -1,3 +1,5 @@
+from __future__ import print_function
+from __future__ import absolute_import
 from distutils.core import setup
 import unittest
 import warnings
@@ -10,28 +12,28 @@ if sys.version < '2.2.3':
     DistributionMetadata.classifiers = None
     DistributionMetadata.download_url = None
 
-from BeautifulSoup import __version__
+from .BeautifulSoup import __version__
 
 #Make sure all the tests complete.
-import BeautifulSoupTests
+from . import BeautifulSoupTests
 loader = unittest.TestLoader()
 result = unittest.TestResult()
 suite = loader.loadTestsFromModule(BeautifulSoupTests)
 suite.run(result)
 if not result.wasSuccessful():
-    print "Unit tests have failed!"
+    print("Unit tests have failed!")
     for l in result.errors, result.failures:
         for case, error in l:
-            print "-" * 80
+            print("-" * 80)
             desc = case.shortDescription()
             if desc:
-                print desc
-            print error        
-    print '''If you see an error like: "'ascii' codec can't encode character...", see\nthe Beautiful Soup documentation:\n http://www.crummy.com/software/BeautifulSoup/documentation.html#Why%20can't%20Beautiful%20Soup%20print%20out%20the%20non-ASCII%20characters%20I%20gave%20it?'''
-    print "This might or might not be a problem depending on what you plan to do with\nBeautiful Soup."
+                print(desc)
+            print(error)        
+    print('''If you see an error like: "'ascii' codec can't encode character...", see\nthe Beautiful Soup documentation:\n http://www.crummy.com/software/BeautifulSoup/documentation.html#Why%20can't%20Beautiful%20Soup%20print%20out%20the%20non-ASCII%20characters%20I%20gave%20it?''')
+    print("This might or might not be a problem depending on what you plan to do with\nBeautiful Soup.")
     if sys.argv[1] == 'sdist':
-        print
-        print "I'm not going to make a source distribution since the tests don't pass."
+        print()
+        print("I'm not going to make a source distribution since the tests don't pass.")
         sys.exit(1)
 
 setup(name="BeautifulSoup",

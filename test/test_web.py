@@ -1,3 +1,4 @@
+from __future__ import print_function
 # -*- coding: utf-8 -*-
 # These tests require a working internet connection.
 from util import *
@@ -639,7 +640,7 @@ class TestSearchEngine(unittest.TestCase):
         # Assert WikipediaArticle.list(), an iterator over all article titles.
         source, license, Engine = self.api["Wikipedia"]
         v = Engine(license).list(start="a", count=1)
-        v = [v.next() for i in range(2)]
+        v = [next(v) for i in range(2)]
         self.assertTrue(len(v) == 2)
         self.assertTrue(v[0].lower().startswith("a"))
         self.assertTrue(v[1].lower().startswith("a"))
@@ -649,7 +650,7 @@ class TestSearchEngine(unittest.TestCase):
         # Assert WikipediaArticle.all(), an iterator over WikipediaArticle objects.
         source, license, Engine = self.api["Wikipedia"]
         v = Engine(license).all(start="a", count=1)
-        v = [v.next() for i in range(1)]
+        v = [next(v) for i in range(1)]
         self.assertTrue(len(v) == 1)
         self.assertTrue(isinstance(v[0], web.WikipediaArticle))
         self.assertTrue(v[0].title.lower().startswith("a"))

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-from libsvm import *
+from __future__ import print_function
+from __future__ import absolute_import
+from .libsvm import *
 
 import os, sys
 sys.path = [os.path.dirname(os.path.abspath(__file__))] + sys.path 

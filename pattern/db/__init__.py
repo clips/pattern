@@ -1,3 +1,4 @@
+from __future__ import print_function
 #### PATTERN | DB ##################################################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium

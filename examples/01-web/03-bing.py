@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import Bing, asynchronous, plaintext
@@ -33,10 +34,10 @@ request = asynchronous(engine.search, q, start=1, count=100, type=SEARCH, timeou
 # in which you can check request.done every now and then.
 while not request.done:
     time.sleep(0.01)
-    print ".",
+    print(".", end=' ')
 
-print
-print
+print()
+print()
 
 # An error occured in engine.search(), raise it.
 if request.error:
@@ -44,7 +45,7 @@ if request.error:
 
 # Retrieve the list of search results.
 for result in request.value:
-    print result.text
-    print result.url
-    print
+    print(result.text)
+    print(result.url)
+    print()
     

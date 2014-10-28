@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 #### PATTERN | COMMONSENSE #########################################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
@@ -10,8 +11,8 @@ from codecs    import BOM_UTF8
 from urllib    import urlopen
 from itertools import chain
 
-from __init__ import Graph, Node, Edge, bfs
-from __init__ import WEIGHT, CENTRALITY, EIGENVECTOR, BETWEENNESS
+from .__init__ import Graph, Node, Edge, bfs
+from .__init__ import WEIGHT, CENTRALITY, EIGENVECTOR, BETWEENNESS
 
 import os
 

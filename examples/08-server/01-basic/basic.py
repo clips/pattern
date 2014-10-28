@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.server import App
@@ -22,9 +23,9 @@ app = App(name="basic", static="static/")
 # app.path yields the absolute path to the app folder.
 # app.static yields the absolute path to the folder for static content.
 
-print app.name
-print app.path
-print app.static
+print(app.name)
+print(app.path)
+print(app.static)
 
 # The @app.route() decorator can be used to define a URL path handler.
 # A path handler is simply a Python function that returns a string,

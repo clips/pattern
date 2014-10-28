@@ -1,3 +1,4 @@
+from __future__ import print_function
 # coding: utf-8
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
@@ -7,8 +8,8 @@ import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..",
 # It is a good idea to study the tagset and its abbreviations for a few minutes.
 
 from pattern.en import parse as parse_en
-print parse_en("the black cats", chunks=False)      # the/DT black/JJ cat/NNS
-print
+print(parse_en("the black cats", chunks=False))      # the/DT black/JJ cat/NNS
+print()
 
 
 # ... where DT = determiner, JJ = adjective, NN = noun.
@@ -20,12 +21,12 @@ from pattern.fr import parse as parse_fr
 from pattern.it import parse as parse_it
 from pattern.nl import parse as parse_nl
 
-print parse_de("die schwarzen Katzen", chunks=False) # die/DT schwarze/JJ Katzen/NNS
-print parse_es("los gatos negros"    , chunks=False) # los/DT gatos/NNS negros/JJ
-print parse_fr("les chats noirs"     , chunks=False) # les/DT chats/NNS noirs/JJ
-print parse_it("i gatti neri"        , chunks=False) # i/DT gatti/NNS neri/JJ
-print parse_nl("de zwarte katten"    , chunks=False) # de/DT zwarte/JJ katten/NNS
-print
+print(parse_de("die schwarzen Katzen", chunks=False)) # die/DT schwarze/JJ Katzen/NNS
+print(parse_es("los gatos negros"    , chunks=False)) # los/DT gatos/NNS negros/JJ
+print(parse_fr("les chats noirs"     , chunks=False)) # les/DT chats/NNS noirs/JJ
+print(parse_it("i gatti neri"        , chunks=False)) # i/DT gatti/NNS neri/JJ
+print(parse_nl("de zwarte katten"    , chunks=False)) # de/DT zwarte/JJ katten/NNS
+print()
 
 # In some cases, this means the original tagset is mapped to Penn Treebank:
 # e.g., for German (STTS), Spanish (PAROLE), Dutch (WOTAN).
@@ -34,10 +35,10 @@ from pattern.de import STTS
 from pattern.es import PAROLE
 from pattern.nl import WOTAN
 
-print parse_de("die schwarzen Katzen", chunks=False, tagset=STTS)
-print parse_es("los gatos negros"    , chunks=False, tagset=PAROLE)
-print parse_nl("de zwarte katten"    , chunks=False, tagset=WOTAN)
-print
+print(parse_de("die schwarzen Katzen", chunks=False, tagset=STTS))
+print(parse_es("los gatos negros"    , chunks=False, tagset=PAROLE))
+print(parse_nl("de zwarte katten"    , chunks=False, tagset=WOTAN))
+print()
 
 # Not all languages are equally suited to Penn Treebank,
 # which was originally developed for English.
@@ -73,13 +74,13 @@ from pattern.text import NOUN, VERB, ADJ, ADV, PRON, DET, PREP, NUM, CONJ, INTJ,
 
 from pattern.text import parse
 
-print parse("die schwarzen Katzen", chunks=False, language="de", tagset=UNIVERSAL)
-print parse("the black cats"      , chunks=False, language="en", tagset=UNIVERSAL)
-print parse("los gatos negros"    , chunks=False, language="es", tagset=UNIVERSAL)
-print parse("les chats noirs"     , chunks=False, language="fr", tagset=UNIVERSAL)
-print parse("i gatti neri"        , chunks=False, language="it", tagset=UNIVERSAL)
-print parse("de zwarte katten"    , chunks=False, language="nl", tagset=UNIVERSAL)
-print
+print(parse("die schwarzen Katzen", chunks=False, language="de", tagset=UNIVERSAL))
+print(parse("the black cats"      , chunks=False, language="en", tagset=UNIVERSAL))
+print(parse("los gatos negros"    , chunks=False, language="es", tagset=UNIVERSAL))
+print(parse("les chats noirs"     , chunks=False, language="fr", tagset=UNIVERSAL))
+print(parse("i gatti neri"        , chunks=False, language="it", tagset=UNIVERSAL))
+print(parse("de zwarte katten"    , chunks=False, language="nl", tagset=UNIVERSAL))
+print()
 
 # This comes at the expense of (in this example) losing information about plural nouns (NNS => NN).
 # But it may be more comfortable for you to build multilingual apps 
@@ -93,7 +94,7 @@ from pattern.text import parsetree
 for sentence in parsetree("i gatti neri che sono la mia", language="it", tagset=UNIVERSAL):
     for word in sentence.words:
         if word.tag == PRON:
-            print word
+            print(word)
             
 # The language() function in pattern.text can be used to guess the language of a text.
 # It returns a (language code, confidence)-tuple.
@@ -101,7 +102,7 @@ for sentence in parsetree("i gatti neri che sono la mia", language="it", tagset=
 
 from pattern.text import language
 
-print
-print language(u"the cat sat on the mat")             # ("en", 1.00)
-print language(u"de kat zat op de mat")               # ("nl", 0.80)
-print language(u"le chat s'était assis sur le tapis") # ("fr", 0.86)
+print()
+print(language(u"the cat sat on the mat"))             # ("en", 1.00)
+print(language(u"de kat zat op de mat"))               # ("nl", 0.80)
+print(language(u"le chat s'était assis sur le tapis")) # ("fr", 0.86)

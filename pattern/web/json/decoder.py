@@ -1,10 +1,11 @@
 """Implementation of JSONDecoder
 """
+from __future__ import absolute_import
 import re
 import sys
 import struct
 
-from scanner import make_scanner
+from .scanner import make_scanner
 def _import_c_scanstring():
     try:
         from _speedups import scanstring
@@ -177,10 +178,11 @@ scanstring = c_scanstring or py_scanstring
 WHITESPACE = re.compile(r'[ \t\n\r]*', FLAGS)
 WHITESPACE_STR = ' \t\n\r'
 
-def JSONObject((s, end), encoding, strict, scan_once, object_hook,
+def JSONObject(xxx_todo_changeme, encoding, strict, scan_once, object_hook,
         object_pairs_hook, memo=None,
         _w=WHITESPACE.match, _ws=WHITESPACE_STR):
     # Backwards compatibility
+    (s, end) = xxx_todo_changeme
     if memo is None:
         memo = {}
     memo_get = memo.setdefault
@@ -273,7 +275,8 @@ def JSONObject((s, end), encoding, strict, scan_once, object_hook,
         pairs = object_hook(pairs)
     return pairs, end
 
-def JSONArray((s, end), scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
+def JSONArray(xxx_todo_changeme1, scan_once, _w=WHITESPACE.match, _ws=WHITESPACE_STR):
+    (s, end) = xxx_todo_changeme1
     values = []
     nextchar = s[end:end + 1]
     if nextchar in _ws:

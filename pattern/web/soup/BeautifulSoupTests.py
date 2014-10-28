@@ -4,9 +4,10 @@
 These tests make sure the Beautiful Soup works as it should. If you
 find a bug in Beautiful Soup, the best way to express it is as a test
 case like this that fails."""
+from __future__ import absolute_import
 
 import unittest
-from BeautifulSoup import *
+from .BeautifulSoup import *
 
 class SoupTest(unittest.TestCase):
 
@@ -254,7 +255,7 @@ class OnlyTheLonely(SoupTest):
         soup = BeautifulSoup(self.x, parseOnlyThese=strainer)
         self.assertEquals(len(soup), 10)
 
-        strainer = SoupStrainer(text=lambda(x):x[8]=='3')
+        strainer = SoupStrainer(text=lambda x:x[8]=='3')
         soup = BeautifulSoup(self.x, parseOnlyThese=strainer)
         self.assertEquals(len(soup), 3)
 
@@ -485,7 +486,7 @@ class TheManWithoutAttributes(SoupTest):
 
     def testHasKey(self):
         text = "<foo attr='bar'>"
-        self.assertEquals(BeautifulSoup(text).foo.has_key('attr'), True)
+        self.assertEquals('attr' in BeautifulSoup(text).foo, True)
 
 class QuoteMeOnThat(SoupTest):
     "Test quoting"

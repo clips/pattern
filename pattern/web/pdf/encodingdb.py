@@ -1,9 +1,10 @@
 #!/usr/bin/env python2
 
+from __future__ import absolute_import
 import re
-from psparser import PSLiteral
-from glyphlist import glyphname2unicode
-from latin_enc import ENCODING
+from .psparser import PSLiteral
+from .glyphlist import glyphname2unicode
+from .latin_enc import ENCODING
 
 
 ##  name2unicode

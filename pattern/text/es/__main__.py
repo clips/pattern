@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 #### PATTERN | ES | PARSER COMMAND-LINE ############################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
@@ -7,5 +8,5 @@
 ####################################################################################################
 # In Python 2.7+ modules invoked from the command line  will look for a __main__.py.
 
-from __init__ import commandline, parse
+from .__init__ import commandline, parse
 commandline(parse)

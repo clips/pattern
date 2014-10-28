@@ -38,8 +38,8 @@ def _getargs(func):
         co = func.__code__
     else:
         if isinstance(func, types.MethodType):
-            func = func.im_func
-        co = func.func_code
+            func = func.__func__
+        co = func.__code__
     return co.co_varnames[:co.co_argcount]
 
 

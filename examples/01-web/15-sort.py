@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import GOOGLE, YAHOO, BING, sort
@@ -26,4 +27,4 @@ results = sort(
      cached = True)
     
 for weight, term in results:
-    print "%5.2f" % (weight * 100) + "%", term
+    print("%5.2f" % (weight * 100) + "%", term)

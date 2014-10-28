@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 #### PATTERN | WORDNET #############################################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
@@ -33,8 +34,8 @@ CORPUS = ""
 os.environ["WNHOME"] = os.path.join(MODULE, CORPUS)
 os.environ["WNSEARCHDIR"] = os.path.join(MODULE, CORPUS, "dict")
 
-from pywordnet import wordnet as wn
-from pywordnet import wntools
+from .pywordnet import wordnet as wn
+from .pywordnet import wntools
 
 # The bundled version of PyWordNet has custom fixes.
 # - line  365: check if lexnames exist.

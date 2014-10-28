@@ -270,7 +270,7 @@ class ByteCountWrapper(object):
         return self
 
     def next(self):
-        data = self.rfile.next()
+        data = next(self.rfile)
         self.bytes_read += len(data)
         return data
 

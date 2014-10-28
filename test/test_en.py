@@ -1,3 +1,4 @@
+from __future__ import print_function
 # -*- coding: utf-8 -*-
 from util import *
 
@@ -682,7 +683,7 @@ class TestParseTree(unittest.TestCase):
         # Assert chunk traversal.
         self.assertEqual(v.nearest("VP"), self.text[0].chunks[1])
         self.assertEqual(v.previous(), self.text[0].chunks[1])
-        self.assertEqual(v.next(), self.text[0].chunks[3])
+        self.assertEqual(next(v), self.text[0].chunks[3])
         print("pattern.en.Chunk")
 
     def test_chunk_conjunctions(self):
@@ -987,7 +988,7 @@ class TestSentiment(unittest.TestCase):
             from pattern.text.en.wordnet import SentiWordNet
             lexicon = SentiWordNet()
             lexicon.load()
-        except ImportError, e:
+        except ImportError as e:
             # SentiWordNet data file is not installed in default location, stop test.
             print(e)
             return

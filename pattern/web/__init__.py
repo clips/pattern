@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 #### PATTERN | WEB #################################################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
@@ -30,27 +31,27 @@ import bisect
 import itertools
 import new
 
-import api
-import feed
-import oauth
-import json
-import locale
+from . import api
+from . import feed
+from . import oauth
+from . import json
+from . import locale
 
-from feed import feedparser
-from soup import BeautifulSoup
+from .feed import feedparser
+from .soup import BeautifulSoup
 
 try:
     # Import persistent Cache.
     # If this module is used separately,
     # a dict is used (i.e. this Python session only).
-    from cache import Cache, cache as CACHE, TMP
+    from .cache import Cache, cache as CACHE, TMP
 except:
     CACHE = {}
 
 try:
-    from imap import Mail, MailFolder, Message, GMAIL
-    from imap import MailError, MailServiceError, MailLoginError, MailNotLoggedIn
-    from imap import FROM, SUBJECT, DATE, BODY, ATTACHMENTS
+    from .imap import Mail, MailFolder, Message, GMAIL
+    from .imap import MailError, MailServiceError, MailLoginError, MailNotLoggedIn
+    from .imap import FROM, SUBJECT, DATE, BODY, ATTACHMENTS
 except:
     pass
 
@@ -3777,9 +3778,9 @@ class PDF(DocumentParser):
     def _parse(self, path, *args, **kwargs):
         # The output is useful for mining but not for display.
         # Alternatively, PDF(format="html") preserves some layout.
-        from pdf.pdfinterp import PDFResourceManager, process_pdf
-        from pdf.converter import TextConverter, HTMLConverter
-        from pdf.layout    import LAParams
+        from .pdf.pdfinterp import PDFResourceManager, process_pdf
+        from .pdf.converter import TextConverter, HTMLConverter
+        from .pdf.layout    import LAParams
         try:
             m = PDFResourceManager()
             s = StringIO.StringIO()
@@ -3807,8 +3808,8 @@ class DOCXError(DocumentParserError):
 class DOCX(DocumentParser):
     
     def _parse(self, path, *args, **kwargs):
-        from docx.docx import opendocx
-        from docx.docx import getdocumenttext
+        from .docx.docx import opendocx
+        from .docx.docx import getdocumenttext
         try:
             s = opendocx(self._open(path))
             s = getdocumenttext(s)

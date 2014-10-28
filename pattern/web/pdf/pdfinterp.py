@@ -1,30 +1,32 @@
 #!/usr/bin/env python2
+from __future__ import print_function
+from __future__ import absolute_import
 import sys
 import re
 try:
     from cStringIO import StringIO
 except ImportError:
     from StringIO import StringIO
-from cmapdb import CMapDB, CMap
-from psparser import PSException, PSTypeError, PSEOF
-from psparser import PSKeyword, literal_name, keyword_name
-from psparser import PSStackParser
-from psparser import LIT, KWD, STRICT
-from pdftypes import PDFException, PDFStream, PDFObjRef
-from pdftypes import resolve1
-from pdftypes import int_value, float_value, num_value
-from pdftypes import str_value, list_value, dict_value, stream_value
-from pdffont import PDFFontError
-from pdffont import PDFType1Font, PDFTrueTypeFont, PDFType3Font
-from pdffont import PDFCIDFont
-from pdfparser import PDFDocument, PDFParser
-from pdfparser import PDFPasswordIncorrect
-from pdfcolor import PDFColorSpace
-from pdfcolor import PREDEFINED_COLORSPACE
-from pdfcolor import LITERAL_DEVICE_GRAY, LITERAL_DEVICE_RGB
-from pdfcolor import LITERAL_DEVICE_CMYK
-from utils import choplist
-from utils import mult_matrix, MATRIX_IDENTITY
+from .cmapdb import CMapDB, CMap
+from .psparser import PSException, PSTypeError, PSEOF
+from .psparser import PSKeyword, literal_name, keyword_name
+from .psparser import PSStackParser
+from .psparser import LIT, KWD, STRICT
+from .pdftypes import PDFException, PDFStream, PDFObjRef
+from .pdftypes import resolve1
+from .pdftypes import int_value, float_value, num_value
+from .pdftypes import str_value, list_value, dict_value, stream_value
+from .pdffont import PDFFontError
+from .pdffont import PDFType1Font, PDFTrueTypeFont, PDFType3Font
+from .pdffont import PDFCIDFont
+from .pdfparser import PDFDocument, PDFParser
+from .pdfparser import PDFPasswordIncorrect
+from .pdfcolor import PDFColorSpace
+from .pdfcolor import PREDEFINED_COLORSPACE
+from .pdfcolor import LITERAL_DEVICE_GRAY, LITERAL_DEVICE_RGB
+from .pdfcolor import LITERAL_DEVICE_CMYK
+from .utils import choplist
+from .utils import mult_matrix, MATRIX_IDENTITY
 
 
 ##  Exceptions
@@ -159,7 +161,7 @@ class PDFResourceManager(object):
             font = self._cached_fonts[objid]
         else:
             if 2 <= self.debug:
-                print >>sys.stderr, 'get_font: create: objid=%r, spec=%r' % (objid, spec)
+                print('get_font: create: objid=%r, spec=%r' % (objid, spec), file=sys.stderr)
             if STRICT:
                 if spec['Type'] is not LITERAL_FONT:
                     raise PDFFontError('Type is not /Font')
@@ -329,7 +331,7 @@ class PDFPageInterpreter(object):
                 return PREDEFINED_COLORSPACE[name]
         for (k,v) in dict_value(resources).iteritems():
             if 2 <= self.debug:
-                print >>sys.stderr, 'Resource: %r: %r' % (k,v)
+                print('Resource: %r: %r' % (k,v), file=sys.stderr)
             if k == 'Font':
                 for (fontid,spec) in dict_value(v).iteritems():
                     objid = None
@@ -719,7 +721,7 @@ class PDFPageInterpreter(object):
                 raise PDFInterpreterError('Undefined xobject id: %r' % xobjid)
             return
         if 1 <= self.debug:
-            print >>sys.stderr, 'Processing xobj: %r' % xobj
+            print('Processing xobj: %r' % xobj, file=sys.stderr)
         subtype = xobj.get('Subtype')
         if subtype is LITERAL_FORM and 'BBox' in xobj:
             interpreter = self.dup()
@@ -743,7 +745,7 @@ class PDFPageInterpreter(object):
 
     def process_page(self, page):
         if 1 <= self.debug:
-            print >>sys.stderr, 'Processing page: %r' % page
+            print('Processing page: %r' % page, file=sys.stderr)
         (x0,y0,x1,y1) = page.mediabox
         if page.rotate == 90:
             ctm = (0,-1,1,0, -y0,x1)
@@ -763,8 +765,8 @@ class PDFPageInterpreter(object):
     #   This method may be called recursively.
     def render_contents(self, resources, streams, ctm=MATRIX_IDENTITY):
         if 1 <= self.debug:
-            print >>sys.stderr, ('render_contents: resources=%r, streams=%r, ctm=%r' %
-                             (resources, streams, ctm))
+            print(('render_contents: resources=%r, streams=%r, ctm=%r' %
+                             (resources, streams, ctm)), file=sys.stderr)
         self.init_resources(resources)
         self.init_state(ctm)
         self.execute(list_value(streams))
@@ -786,16 +788,16 @@ class PDFPageInterpreter(object):
                 method = 'do_%s' % name.replace('*','_a').replace('"','_w').replace("'",'_q')
                 if hasattr(self, method):
                     func = getattr(self, method)
-                    nargs = func.func_code.co_argcount-1
+                    nargs = func.__code__.co_argcount-1
                     if nargs:
                         args = self.pop(nargs)
                         if 2 <= self.debug:
-                            print >>sys.stderr, 'exec: %s %r' % (name, args)
+                            print('exec: %s %r' % (name, args), file=sys.stderr)
                         if len(args) == nargs:
                             func(*args)
                     else:
                         if 2 <= self.debug:
-                            print >>sys.stderr, 'exec: %s' % (name)
+                            print('exec: %s' % (name), file=sys.stderr)
                         func()
                 else:
                     if STRICT:

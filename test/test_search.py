@@ -1,3 +1,4 @@
+from __future__ import print_function
 from util import *
 
 from pattern    import search
