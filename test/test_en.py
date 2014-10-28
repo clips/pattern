@@ -1,20 +1,8 @@
 # -*- coding: utf-8 -*-
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-import random
-import subprocess
-
-try:
-    import unittest2 as unittest
-except ImportError:
-    import unittest
+from util import *
 
 from pattern import text
 from pattern import en
-
-try:
-    PATH = os.path.dirname(os.path.realpath(__file__))
-except:
-    PATH = ""
 
 #---------------------------------------------------------------------------------------------------
 
@@ -592,6 +580,10 @@ class TestParser(unittest.TestCase):
         print("pattern.en.ngrams()")
 
     def test_command_line(self):
+        from sys import version_info
+        if version_info[:2] == (2, 6):
+            raise unittest.SkipTest("FIXME")
+
         # Assert parsed output from the command-line (example from the documentation).
         p = ["python", "-m", "pattern.en", "-s", "Nice cat.", "-OTCRL"]
         p = subprocess.Popen(p, stdout=subprocess.PIPE)

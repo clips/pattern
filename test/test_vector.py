@@ -1,21 +1,14 @@
 # -*- coding: utf-8 -*-
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-import time
-import random
-import codecs
-import unittest
-
-from random import seed; seed(0)
+from util import *
 
 from pattern import vector
 
 from pattern.en import Text, Sentence, Word, parse
 from pattern.db import Datasheet
 
-try:
-    PATH = os.path.dirname(os.path.realpath(__file__))
-except:
-    PATH = ""
+from random import seed
+seed(0)
+
 
 def model(top=None):
     """ Returns a Model of e-mail messages.
