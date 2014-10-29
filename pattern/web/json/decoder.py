@@ -19,7 +19,11 @@ __all__ = ['JSONDecoder']
 FLAGS = re.VERBOSE | re.MULTILINE | re.DOTALL
 
 def _floatconstants():
-    _BYTES = '7FF80000000000007FF0000000000000'.decode('hex')
+    try:
+        _BYTES = '7FF80000000000007FF0000000000000'.decode('hex')
+    except:
+        import codecs
+        _BYTES = codecs.decode('7FF80000000000007FF0000000000000', 'hex')
     # The struct module in Python 2.4 would get frexp() out of range here
     # when an endian is specified in the format string. Fixed in Python 2.5+
     if sys.byteorder != 'big':

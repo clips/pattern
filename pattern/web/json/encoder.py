@@ -14,7 +14,7 @@ c_encode_basestring_ascii, c_make_encoder = _import_speedups()
 
 from .decoder import PosInf
 
-ESCAPE = re.compile(ur'[\x00-\x1f\\"\b\f\n\r\t\u2028\u2029]')
+ESCAPE = re.compile(r'[\x00-\x1f\\"\b\f\n\r\t\u2028\u2029]')
 ESCAPE_ASCII = re.compile(r'([\\"]|[^\ -~])')
 HAS_UTF8 = re.compile(r'[\x80-\xff]')
 ESCAPE_DCT = {
@@ -346,20 +346,21 @@ def _make_iterencode(markers, _default, _encoder, _indent, _floatstr,
         _use_decimal, _namedtuple_as_object, _tuple_as_array,
         _bigint_as_string, _item_sort_key,
         ## HACK: hand-optimized bytecode; turn globals into locals
-        False=False,
-        True=True,
-        ValueError=ValueError,
-        basestring=basestring,
-        Decimal=Decimal,
-        dict=dict,
-        float=float,
-        id=id,
-        int=int,
-        isinstance=isinstance,
-        list=list,
-        long=long,
-        str=str,
-        tuple=tuple,
+        ## FIXME THIS DOES NOT WORK IN PYTHON 3
+        #False=False,
+        #True=True,
+        #ValueError=ValueError,
+        #basestring=basestring,
+        #Decimal=Decimal,
+        #dict=dict,
+        #float=float,
+        #id=id,
+        #int=int,
+        #isinstance=isinstance,
+        #list=list,
+        #long=long,
+        #str=str,
+        #tuple=tuple,
     ):
     if _item_sort_key and not callable(_item_sort_key):
         raise TypeError("item_sort_key must be None or callable")

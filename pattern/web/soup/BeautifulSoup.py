@@ -84,24 +84,46 @@ __version__ = "3.2.1"
 __copyright__ = "Copyright (c) 2004-2012 Leonard Richardson"
 __license__ = "New-style BSD"
 
-from sgmllib import SGMLParser, SGMLParseError
+try:
+    from sgmllib import SGMLParser, SGMLParseError
+except ImportError:
+    pass # FIXME python 3
 import codecs
-import markupbase
+
+try:
+    import _markupbase as markupbase
+except ImportError:
+    import markupbase
+
 import types
 import re
-import sgmllib
+
 try:
-  from htmlentitydefs import name2codepoint
+    import sgmllib
+except:
+    pass # FIXME python 3
+
+try:
+    from html.entities import name2codepoint
 except ImportError:
-  name2codepoint = {}
+    from htmlentitydefs import name2codepoint
 try:
     set
 except NameError:
     from sets import Set as set
 
-#These hacks make Beautiful Soup able to parse XML with namespaces
-sgmllib.tagfind = re.compile('[a-zA-Z][-_.:a-zA-Z0-9]*')
-markupbase._declname_match = re.compile(r'[a-zA-Z][-_.:a-zA-Z0-9]*\s*').match
+try:
+    #These hacks make Beautiful Soup able to parse XML with namespaces
+    sgmllib.tagfind = re.compile('[a-zA-Z][-_.:a-zA-Z0-9]*')
+    markupbase._declname_match = re.compile(r'[a-zA-Z][-_.:a-zA-Z0-9]*\s*').match
+except NameError:
+    pass # python 3 FIXME
+
+
+try:
+    unicode
+except NameError:
+    unicode = str
 
 DEFAULT_OUTPUT_ENCODING = "utf-8"
 

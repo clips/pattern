@@ -18,20 +18,56 @@ import os
 import sys
 import threading
 import time
-import socket, urlparse, urllib, urllib2, ssl
+import socket
+
+try:
+    from urllib.parse import urlsplit, urlparse, urljoin
+except ImportError:
+    from urlparse import urlsplit, urlparse, urljoin
+
+import urllib
+
+try:
+    import urllib.request as urllib2
+except ImportError:
+    import urllib2
+
+import ssl
 import base64
-import htmlentitydefs
-import httplib
-import sgmllib
-import cookielib
+
+try:
+    from html.entities import name2codepoint
+except ImportError:
+    from htmlentitydefs import name2codepoint
+
+try:
+    from http.client import BadStatusLine
+except ImportError:
+    from httplib import BadStatusLine
+
+try:
+    import sgmllib
+except ImportError:
+    pass # FIXME py3
+
+try:
+    from http.cookiejar import CookieJar
+except ImportError:
+    from cookielib import CookieJar
+
 import re
 import xml.dom.minidom
 import unicodedata
 import string
-import StringIO
+
+try:
+    # Note it's import this is before the io attempt
+    from StringIO import StringIO
+except:
+    from io import StringIO
+
 import bisect
 import itertools
-import new
 
 from . import api
 from . import feed
@@ -355,7 +391,7 @@ class URL(object):
             For example: http://user:pass@example.com:992/animal/bird?species=seagull&q#wings
             This is a cached method that is only invoked when necessary, and only once.
         """
-        p = urlparse.urlsplit(self._string)
+        p = urlsplit(self._string)
         P = {PROTOCOL: p[0],            # http
              USERNAME: u"",             # user
              PASSWORD: u"",             # pass
@@ -439,7 +475,7 @@ class URL(object):
         handlers = []
         if proxy:
             handlers.append(urllib2.ProxyHandler({proxy[1]: proxy[0]}))
-        handlers.append(urllib2.HTTPCookieProcessor(cookielib.CookieJar()))
+        handlers.append(urllib2.HTTPCookieProcessor(CookieJar()))
         handlers.append(urllib2.HTTPHandler)
         urllib2.install_opener(urllib2.build_opener(*handlers))
         # Send request.
@@ -619,10 +655,15 @@ def download(url=u"", method=GET, query={}, timeout=10, cached=True, throttle=0,
 
 #--- STREAMING URL BUFFER --------------------------------------------------------------------------
 
-def bind(object, method, function):
+def bind(obj, method, function):
     """ Attaches the function as a method with the given name to the given object.
     """
-    setattr(object, method, new.instancemethod(function, object))
+    try:
+        import types
+        setattr(obj, method, types.MethodType(function, obj))
+    except ImportError:
+        import new
+        setattr(obj, method, new.instancemethod(function, obj))
 
 class Stream(list):
 
@@ -923,7 +964,7 @@ def decode_entities(string):
             if hex.lower() == "x":
                 return unichr(int("0x" + name, 16))      # "&#x0026;" = > "&"
         else:
-            cp = htmlentitydefs.name2codepoint.get(name) # "&amp;" => "&"
+            cp = name2codepoint.get(name) # "&amp;" => "&"
             return unichr(cp) if cp else match.group()   # "&foo;" => "&foo;"
     if isinstance(string, basestring):
         return RE_UNICODE.subn(replace_entity, string)[0]
@@ -3500,7 +3541,7 @@ def base(url):
     """ Returns the URL domain name:
         http://en.wikipedia.org/wiki/Web_crawler => en.wikipedia.org
     """
-    return urlparse.urlparse(url).netloc
+    return urlparse(url).netloc
 
 def abs(url, base=None):
     """ Returns the absolute URL:
@@ -3509,7 +3550,7 @@ def abs(url, base=None):
     if url.startswith("#") and not base is None and not base.endswith("/"):
         if not re.search("[^/]/[^/]", base):
             base += "/"
-    return urlparse.urljoin(base, url)
+    return urljoin(base, url)
 
 DEPTH   = "depth"
 BREADTH = "breadth"

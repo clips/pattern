@@ -151,11 +151,23 @@ import struct
 import time
 import types
 import urllib
-import urllib2
-import urlparse
+
+try:
+    import urllib.request as urllib2
+except ImportError:
+    import urllib2
+
+try:
+    from urllib.parse import urlsplit, urlparse, urljoin, urlunparse, urlunsplit
+except ImportError:
+    from urlparse import urlsplit, urlparse, urljoin, urlunparse, urlunsplit
+
 import warnings
 
-from htmlentitydefs import name2codepoint, codepoint2name, entitydefs
+try:
+    from html.entities import name2codepoint, codepoint2name, entitydefs
+except ImportError:
+    from htmlentitydefs import name2codepoint, codepoint2name, entitydefs
 
 try:
     from io import BytesIO as _StringIO
@@ -426,6 +438,11 @@ class FeedParserDict(dict):
     def __hash__(self):
         return id(self)
 
+try:
+    unichr
+except NameError:
+    unichr = chr
+
 _cp1252 = {
     128: unichr(8364), # euro sign
     130: unichr(8218), # single low-9 quotation mark
@@ -462,13 +479,13 @@ def _urljoin(base, uri):
     #try:
     if not isinstance(uri, unicode):
         uri = uri.decode('utf-8', 'ignore')
-    uri = urlparse.urljoin(base, uri)
+    uri = urljoin(base, uri)
     if not isinstance(uri, unicode):
         return uri.decode('utf-8', 'ignore')
     return uri
     #except:
-    #    uri = urlparse.urlunparse([urllib.quote(part) for part in urlparse.urlparse(uri)])
-    #    return urlparse.urljoin(base, uri)
+    #    uri = urlunparse([urllib.quote(part) for part in urlparse(uri)])
+    #    return urljoin(base, uri)
 
 class _FeedParserMixin:
     namespaces = {
@@ -1335,7 +1352,7 @@ class _FeedParserMixin:
             author, email = context.get(key), None
             if not author:
                 return
-            emailmatch = re.search(ur'''(([a-zA-Z0-9\_\-\.\+]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?))(\?subject=\S+)?''', author)
+            emailmatch = re.search(r'''(([a-zA-Z0-9\_\-\.\+]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?))(\?subject=\S+)?''', author)
             if emailmatch:
                 email = emailmatch.group(0)
                 # probably a better way to do the following, but it passes all the tests
@@ -2464,7 +2481,7 @@ class _MicroformatsParser:
            linktype.startswith('video/') or \
            (linktype.startswith('application/') and not linktype.endswith('xml')):
             return 1
-        path = urlparse.urlparse(attrsD['href'])[2]
+        path = urlparse(attrsD['href'])[2]
         if path.find('.') == -1:
             return 0
         fileext = path.split('.').pop().lower()
@@ -2477,7 +2494,7 @@ class _MicroformatsParser:
             if not href:
                 continue
             urlscheme, domain, path, params, query, fragment = \
-                       urlparse.urlparse(_urljoin(self.baseuri, href))
+                       urlparse(_urljoin(self.baseuri, href))
             segments = path.split('/')
             tag = segments.pop()
             if not tag:
@@ -2486,7 +2503,7 @@ class _MicroformatsParser:
                 else:
                     # there are no tags
                     continue
-            tagscheme = urlparse.urlunparse((urlscheme, domain, '/'.join(segments), '', '', ''))
+            tagscheme = urlunparse((urlscheme, domain, '/'.join(segments), '', '', ''))
             if not tagscheme.endswith('/'):
                 tagscheme += '/'
             self.tags.append(FeedParserDict({"term": tag, "scheme": tagscheme, "label": elm.string or ''}))
@@ -2583,7 +2600,7 @@ def _makeSafeAbsoluteURI(base, rel=None):
         return rel or u''
     if not rel:
         try:
-            scheme = urlparse.urlparse(base)[0]
+            scheme = urlparse(base)[0]
         except ValueError:
             return u''
         if not scheme or scheme in ACCEPTABLE_URI_SCHEMES:
@@ -2929,7 +2946,7 @@ class _FeedURLHandler(urllib2.HTTPDigestAuthHandler, urllib2.HTTPRedirectHandler
         # header the server sent back (for the realm) and retry
         # the request with the appropriate digest auth headers instead.
         # This evil genius hack has been brought to you by Aaron Swartz.
-        host = urlparse.urlparse(req.get_full_url())[1]
+        host = urlparse(req.get_full_url())[1]
         if base64 is None or 'Authorization' not in req.headers \
                           or 'WWW-Authenticate' not in headers:
             return self.http_error_default(req, fp, code, msg, headers)
@@ -2977,7 +2994,7 @@ def _open_resource(url_file_stream_or_string, etag, modified, agent, referrer, h
         return url_file_stream_or_string
 
     if isinstance(url_file_stream_or_string, basestring) \
-       and urlparse.urlparse(url_file_stream_or_string)[0] in ('http', 'https', 'ftp', 'file', 'feed'):
+       and urlparse(url_file_stream_or_string)[0] in ('http', 'https', 'ftp', 'file', 'feed'):
         # Deal with the feed URI scheme
         if url_file_stream_or_string.startswith('feed:http'):
             url_file_stream_or_string = url_file_stream_or_string[5:]
@@ -3032,7 +3049,7 @@ def _convert_to_idn(url):
     # this function should only be called with a unicode string
     # strategy: if the host cannot be encoded in ascii, then
     # it'll be necessary to encode it in idn form
-    parts = list(urlparse.urlsplit(url))
+    parts = list(urlsplit(url))
     try:
         parts[1].encode('ascii')
     except UnicodeEncodeError:
@@ -3047,7 +3064,7 @@ def _convert_to_idn(url):
         parts[1] = '.'.join(newhost)
         if port:
             parts[1] += ':' + port
-        return urlparse.urlunsplit(parts)
+        return urlunsplit(parts)
     else:
         return url
 
