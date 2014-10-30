@@ -22,7 +22,7 @@
 
 from __future__ import absolute_import
 
-from . import stemmer; _stemmer=stemmer
+from . import stemmer as _stemmer
 
 import sys
 import os
@@ -31,7 +31,12 @@ import glob
 import heapq
 import codecs
 import tempfile
-import cPickle
+
+try:
+    import cPickle
+except ImportError:
+    import pickle as cPickle
+
 import gzip
 import types
 
@@ -41,13 +46,21 @@ from random      import random, randint, uniform, choice, sample, seed
 from itertools   import chain
 from bisect      import insort
 from operator    import itemgetter
-from StringIO    import StringIO
+
+try:
+    # Note: crucial StringIO.StringIO is tried first
+    from StringIO    import StringIO
+except:
+    from io import StringIO
+
 from codecs      import open
 from collections import defaultdict
 
 if sys.version > "3":
     long = int
     xrange = range
+    basestring = str
+    unicode = str
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
@@ -1564,6 +1577,7 @@ class Apriori(object):
     def Ck(self, sets):
         """ For the given sets of length k, returns combined candidate sets of length k+1.
         """
+        sets = list(sets)
         Ck = []
         for i, s1 in enumerate(sets):
             for j, s2 in enumerate(sets[i+1:]):

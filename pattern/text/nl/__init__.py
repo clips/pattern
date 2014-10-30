@@ -156,7 +156,7 @@ class Sentiment(_Sentiment):
         _Sentiment.load(self, path)
         # Map "verschrikkelijk" to adverbial "verschrikkelijke" (+1%)
         if not path:
-            for w, pos in dict.items(self):
+            for w, pos in list(dict.items(self)):
                 if "JJ" in pos:
                     p, s, i = pos["JJ"]
                     self.annotate(attributive(w), "JJ", p, s, i)

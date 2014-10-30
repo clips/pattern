@@ -31,11 +31,16 @@
 # The Text and Sentece classes are containers: 
 # no parsing functionality should be added to it.
 
+from itertools import chain
 try:
-    from itertools import chain
     from itertools import izip
 except:
     izip = zip  # Python 3
+
+try:
+    unicode
+except NameError:
+    unicode = str
 
 try:
     from config import SLASH

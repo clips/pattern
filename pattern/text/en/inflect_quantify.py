@@ -20,6 +20,7 @@ except:
 
 if sys.version > "3":
     long = int
+    basestring = str
 
 sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))
 

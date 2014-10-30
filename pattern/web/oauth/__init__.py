@@ -35,6 +35,11 @@ _diacritics = {
     "z": ("ž",)
 }
 
+try:
+    unicode
+except NameError:
+    unicode = str
+
 ####################################################################################################
 
 def HMAC_SHA1(key, text):

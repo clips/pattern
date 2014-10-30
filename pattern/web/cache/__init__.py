@@ -9,6 +9,12 @@ try:
 except:
     import md5; md5=md5.new
 
+try:
+    unicode
+except NameError:
+    unicode = str
+    basestring = str
+
 #### UNICODE #######################################################################################
     
 def decode_string(v, encoding="utf-8"):

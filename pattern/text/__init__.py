@@ -28,6 +28,12 @@ except:
 from pattern.text.tree import Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
 from pattern.text.tree import SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
 
+try:
+    unicode
+except NameError:
+    unicode = str
+    basestring = str
+
 DEFAULT = "default"
 
 #--- STRING FUNCTIONS ------------------------------------------------------------------------------

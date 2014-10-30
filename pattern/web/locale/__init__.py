@@ -10,6 +10,11 @@
 # Note: the list is incomplete (especially for African languages).
 # Please help out by correcting errors and omissions.
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 LANGUAGE_REGION = {
     u'aa-ET': (u'Afar', u'Ethiopia', u'aa', u'ET'),
     u'af-ZA': (u'Afrikaans', u'South Africa', u'af', u'ZA'),

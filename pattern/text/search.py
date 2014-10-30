@@ -11,6 +11,11 @@ from __future__ import absolute_import
 import re
 import itertools
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 #--- TEXT, SENTENCE AND WORD -----------------------------------------------------------------------
 # The search() and match() functions work on Text, Sentence and Word objects (see pattern.text.tree),
 # i.e., the parse tree including part-of-speech tags and phrase chunk tags.
@@ -246,7 +251,11 @@ class odict(dict):
     def iterkeys(self):
         return reversed(self._o)
     def itervalues(self):
-        return itertools.imap(self.__getitem__, reversed(self._o))
+        try:
+            from itertools import imap
+        except ImportError:
+            imap = map
+        return imap(self.__getitem__, reversed(self._o))
     def iteritems(self):
         return iter(zip(self.iterkeys(), self.itervalues()))
 
