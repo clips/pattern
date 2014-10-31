@@ -37,7 +37,7 @@ q = "as * as a *"
 # Google is very fast but you can only get up to 100 (10x10) results per query.
 for i in range(1, 2):
     for result in engine.search(q, start=i, count=10, type=SEARCH, cached=True):
-        print(plaintext(result.text)) # plaintext() removes all HTML formatting.
+        print(plaintext(result.text.encode("utf-8"))) # plaintext() removes all HTML formatting.
         print(result.url)
         print(result.date)
         print()
