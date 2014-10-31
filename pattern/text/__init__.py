@@ -439,7 +439,7 @@ class Model(object):
         n = ("", "") if not n else (n[0] or "", n[1] or "")
         v = {}
         f(v,  "b", "b")         # Bias.
-        f(v,  "h", token[0])    # Capitalization.
+        f(v,  "h", token[:1])    # Capitalization.
         f(v,  "w", token[-6:] if token not in self.known or token in self.unknown else "")
         f(v,  "x", token[-3:])  # Word suffix.
         f(v, "-x", p[0][-3:])   # Word suffix left.
