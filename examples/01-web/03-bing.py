@@ -45,7 +45,7 @@ if request.error:
 
 # Retrieve the list of search results.
 for result in request.value:
-    print(result.text)
+    print(result.text.encode('utf-8'))
     print(result.url)
     print()
     

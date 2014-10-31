@@ -20,7 +20,7 @@ print()
 # http://docs.python.org/library/time.html#time.strftime
 
 for r in Bing(license=None, language="en").search("today", type=NEWS):
-    print(r.title)
+    print(r.title.encode('utf-8'))
     print(repr(r.date)) # Result.date is a string (e.g. we can't > <= += with the date).
     print(date(r.date)) # date() can parse any Result.date in the web module.
     print()

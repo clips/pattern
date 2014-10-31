@@ -1,3 +1,14 @@
+"""This creates a TestExamples test class and adds methods for each python
+file in the examples directory.
+
+examples/01-web/01-google.py -> TestExamples.test_01web_01google
+
+The test itself calls this python file, and asserts that it exits with exits
+status 0 (i.e. it was successful). If it wasn't it raises an AssertionError
+which includes stacktrace (from the stderr).
+
+"""
+
 import glob
 import os
 from subprocess import PIPE, Popen

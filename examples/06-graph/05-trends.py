@@ -33,7 +33,7 @@ g = Graph()
 for A, B in comparisons:
     e = g.add_edge(B, A) # "A is the new B": A <= B
     e.weight += 0.1
-    print(B, "=>", A)
+    print(("%s => %s" % (B, A)).encode('utf-8'))
 
 # Not all nodes will be connected, there will be multiple subgraphs.
 # Simply take the largest subgraph for our visualization.

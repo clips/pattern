@@ -70,12 +70,12 @@ for chunk, polarity, subjectivity, label in sentiment(s).assessments:
 # We could work this out from the fine-grained analysis.
 
 from pattern.metrics import avg
-from pattern.en import MOOD
+from pattern.en import mood
 
 a = sentiment(s).assessments
 
 score1 = avg([p for chunk, p, s, label in a if label is None]) # average polarity for words
-score2 = avg([p for chunk, p, s, label in a if label is MOOD]) # average polarity for emoticons
+score2 = avg([p for chunk, p, s, label in a if label is mood]) # average polarity for emoticons
 
 if score1 > 0 and score2 < 0:
     print("...sarcasm?")

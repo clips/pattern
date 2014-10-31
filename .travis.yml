@@ -22,7 +22,8 @@ install:
     - pip install --quiet pytest-cov
 
 script:
-    - nosetests --with-coverage --cover-package=pattern
+    - nosetests --ignore-files=test_examples --with-coverage --cover-package=pattern
+    - nosetests test/test_examples.py --with-coverage --cover-package=pattern
 
 after_success:
     - pip install --quiet coveralls

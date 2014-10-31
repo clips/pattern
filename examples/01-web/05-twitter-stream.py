@@ -15,14 +15,14 @@ from pattern.web import Twitter
 stream = Twitter().stream("I hate", timeout=30)
 
 #while True:
-for i in range(100):
+for i in range(15):
     print(i)
     # Poll Twitter to see if there are new tweets.
     stream.update()
     # The stream is a list of buffered tweets so far,
     # with the latest tweet at the end of the list.
     for tweet in reversed(stream):
-        print(tweet.text)
+        print(tweet.text.encode("utf-8"))
         print(tweet.language)
     # Clear the buffer every so often.
     stream.clear()
