@@ -1,16 +1,19 @@
 from __future__ import print_function
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.search import search
-from pattern.en     import parsetree
+from pattern.en import parsetree
 
 # The pattern.search module contains a number of pattern matching tools
 # to search a string syntactically (word function) or semantically (word meaning).
 # If you only need to match string characters, regular expressions are faster.
 # However, if you are scanning a sentence for concept types (e.g. all flowers)
-# or parts-of-speech (e.g. all adjectives), this module provides the functionality.
+# or parts-of-speech (e.g. all adjectives), this module provides the
+# functionality.
 
-# In the simplest case, the search() function 
+# In the simplest case, the search() function
 # takes a word (or a sequence of words) that you want to retrieve:
 print(search("rabbit", "big white rabbit"))
 print()
@@ -29,9 +32,9 @@ print()
 # to each word, for example NN (noun) or JJ (adjective).
 # A parsed sentence can be scanned for part-of-speech tags:
 s = parsetree("big white rabbit")
-print(search("JJ", s)) # all adjectives
-print(search("NN", s)) # all nouns
-print(search("NP", s)) # all noun phrases
+print(search("JJ", s))  # all adjectives
+print(search("NN", s))  # all nouns
+print(search("NP", s))  # all noun phrases
 print()
 
 # Since the search() is case-insensitive, uppercase search words

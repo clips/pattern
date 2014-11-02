@@ -1,10 +1,10 @@
-#### PATTERN | NL | INFLECT ########################################################################
+#### PATTERN | NL | INFLECT ##############################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 
-####################################################################################################
+##########################################################################
 # Regular expressions-based rules for Dutch word inflection:
 # - pluralization and singularization of nouns,
 # - conjugation of verbs,
@@ -46,27 +46,29 @@ VOWELS = ("a", "e", "i", "o", "u")
 re_vowel = re.compile(r"a|e|i|o|u|y", re.I)
 is_vowel = lambda ch: ch in VOWELS
 
-#### PLURALIZE ######################################################################################
+#### PLURALIZE ###########################################################
 
 plural_irregular_en = set(("dag", "dak", "dal", "pad", "vat", "weg"))
 plural_irregular_een = set(("fee", "genie", "idee", "orgie", "ree"))
-plural_irregular_eren = set(("blad", "ei", "gelid", "gemoed", "kalf", "kind", "lied", "rad", "rund"))
+plural_irregular_eren = set(
+    ("blad", "ei", "gelid", "gemoed", "kalf", "kind", "lied", "rad", "rund"))
 plural_irregular_deren = set(("hoen", "been"))
 
 plural_irregular = {
-     "centrum": "centra",
+    "centrum": "centra",
     "escargot": "escargots",
-      "gedrag": "gedragingen",
-       "gelid": "gelederen",
-       "kaars": "kaarsen",
-       "kleed": "kleren",
-         "koe": "koeien",
-         "lam": "lammeren",
-      "museum": "museums",
-        "stad": "steden",
-       "stoel": "stoelen",
-         "vlo": "vlooien"
+    "gedrag": "gedragingen",
+    "gelid": "gelederen",
+    "kaars": "kaarsen",
+    "kleed": "kleren",
+    "koe": "koeien",
+    "lam": "lammeren",
+    "museum": "museums",
+    "stad": "steden",
+    "stoel": "stoelen",
+    "vlo": "vlooien"
 }
+
 
 def pluralize(word, pos=NOUN, custom={}):
     """ Returns the plural of a given word.
@@ -83,7 +85,7 @@ def pluralize(word, pos=NOUN, custom={}):
             return w + u"ën"
         if w in plural_irregular_eren:  # blad => bladeren
             return w + "eren"
-        if w in plural_irregular_deren: # been => beenderen
+        if w in plural_irregular_deren:  # been => beenderen
             return w + "deren"
         if w in plural_irregular:
             return plural_irregular[w]
@@ -105,7 +107,7 @@ def pluralize(word, pos=NOUN, custom={}):
         # Words ending in unstressed -ee or -ie get -ën: bacterie => bacteriën
         if w.endswith("ie"):
             return w + "s"
-        if w.endswith(("ee","ie")):
+        if w.endswith(("ee", "ie")):
             return w[:-1] + u"ën"
         # Words ending in -heid get -heden: mogelijkheid => mogelijkheden
         if w.endswith("heid"):
@@ -134,9 +136,10 @@ def pluralize(word, pos=NOUN, custom={}):
         return w + "en"
     return w
 
-#### SINGULARIZE ###################################################################################
+#### SINGULARIZE #########################################################
 
-singular_irregular = dict((v,k) for k,v in plural_irregular.items())
+singular_irregular = dict((v, k) for k, v in plural_irregular.items())
+
 
 def singularize(word, pos=NOUN, custom={}):
     if word in custom.keys():
@@ -175,7 +178,7 @@ def singularize(word, pos=NOUN, custom={}):
         if w.endswith("en"):
             w = w[:-2]
             # ogen => oog
-            if w in ("og","om","ur"):
+            if w in ("og", "om", "ur"):
                 return w[:-1] + w[-2] + w[-1]
             # hoenderen => hoen
             if w.endswith("der") and w[:-3] in plural_irregular_deren:
@@ -213,33 +216,35 @@ def singularize(word, pos=NOUN, custom={}):
             return w
     return w
 
-#### VERB CONJUGATION ##############################################################################
+#### VERB CONJUGATION ####################################################
+
 
 class Verbs(_Verbs):
-    
+
     def __init__(self):
         _Verbs.__init__(self, os.path.join(MODULE, "nl-verbs.txt"),
-            language = "nl",
-              format = [0, 1, 2, 3, 7, 8, 17, 18, 19, 23, 25, 24, 16, 9, 10, 11, 15, 33, 26, 27, 28, 32],
-             default = {
-                 1: 0,   2: 0,   3: 0,   7: 0,  # present singular
-                 4: 7,   5: 7,   6: 7,          # present plural
-                17: 25, 18: 25, 19: 25, 23: 25, # past singular
-                20: 23, 21: 23, 22: 23,         # past plural
-                 9: 16, 10: 16, 11: 16, 15: 16, # present singular negated
-                12: 15, 13: 15, 14: 15,         # present plural negated
-                26: 33, 27: 33, 28: 33,         # past singular negated
-                29: 32, 30: 32, 31: 32, 32: 33  # past plural negated
-            })
-    
+                        language="nl",
+                        format=[0, 1, 2, 3, 7, 8, 17, 18, 19, 23, 25,
+                                24, 16, 9, 10, 11, 15, 33, 26, 27, 28, 32],
+                        default={
+            1: 0,   2: 0,   3: 0,   7: 0,  # present singular
+            4: 7,   5: 7,   6: 7,          # present plural
+            17: 25, 18: 25, 19: 25, 23: 25,  # past singular
+            20: 23, 21: 23, 22: 23,         # past plural
+            9: 16, 10: 16, 11: 16, 15: 16,  # present singular negated
+            12: 15, 13: 15, 14: 15,         # present plural negated
+            26: 33, 27: 33, 28: 33,         # past singular negated
+            29: 32, 30: 32, 31: 32, 32: 33  # past plural negated
+        })
+
     def load(self):
         _Verbs.load(self)
-        self._inverse["was"]   = "zijn" # Instead of "wassen".
+        self._inverse["was"] = "zijn"  # Instead of "wassen".
         self._inverse["waren"] = "zijn"
         self._inverse["zagen"] = "zien"
-        self._inverse["wist"]  = "weten"
-        self._inverse["zou"]   = "zullen"
-    
+        self._inverse["wist"] = "weten"
+        self._inverse["zou"] = "zullen"
+
     def find_lemma(self, verb):
         """ Returns the base form of the given inflected verb, using a rule-based approach.
             This is problematic if a verb ending in -e is given in the past tense or gerund.
@@ -263,8 +268,8 @@ class Verbs(_Verbs):
         elif v.endswith(("den", "ten")):
             b = v[:-3]
         # Past participle ge- and -d or -t: gehengeld, geknipt.
-        elif v.endswith(("d","t")) and v.startswith("ge"):
-            b = v[2:-1]    
+        elif v.endswith(("d", "t")) and v.startswith("ge"):
+            b = v[2:-1]
         # Present 2nd or 3rd singular: wordt, denkt, snakt, wacht.
         elif v.endswith(("cht"),):
             b = v
@@ -281,20 +286,22 @@ class Verbs(_Verbs):
             pass
         # Long vowel followed by -f or -s: geef => geven.
         elif len(b) > 2 and not is_vowel(b[-1]) and is_vowel(b[-2]) and is_vowel(b[-3])\
-          or b.endswith(("ijf", "erf"),):
-            if b.endswith("f"): b = b[:-1] + "v"
-            if b.endswith("s"): b = b[:-1] + "z"
-            if b[-2] == b[-3]: 
+                or b.endswith(("ijf", "erf"),):
+            if b.endswith("f"):
+                b = b[:-1] + "v"
+            if b.endswith("s"):
+                b = b[:-1] + "z"
+            if b[-2] == b[-3]:
                 b = b[:-2] + b[-1]
         # Short vowel followed by consonant: snak => snakken.
-        elif len(b) > 1 and not is_vowel(b[-1]) and is_vowel(b[-2]) and not b.endswith(("er","ig")):
+        elif len(b) > 1 and not is_vowel(b[-1]) and is_vowel(b[-2]) and not b.endswith(("er", "ig")):
             b = b + b[-1]
         b = b + "en"
-        b = b.replace("vven", "ven") # omgevven => omgeven
-        b = b.replace("zzen", "zen") # genezzen => genezen
+        b = b.replace("vven", "ven")  # omgevven => omgeven
+        b = b.replace("zzen", "zen")  # genezzen => genezen
         b = b.replace("aen", "aan")  # doorgaen => doorgaan
         return b
-        
+
     def find_lexeme(self, verb):
         """ For a regular verb (base form), returns the forms using a rule-based approach.
         """
@@ -302,8 +309,10 @@ class Verbs(_Verbs):
         # Stem = infinitive minus -en.
         b = b0 = re.sub("en$", "", v)
         # zweven => zweef, graven => graaf
-        if b.endswith("v"): b = b[:-1] + "f"
-        if b.endswith("z"): b = b[:-1] + "s"
+        if b.endswith("v"):
+            b = b[:-1] + "f"
+        if b.endswith("z"):
+            b = b[:-1] + "s"
         # Vowels with a long sound are doubled, we need to guess how it sounds:
         if len(b) > 2 and not is_vowel(b[-1]) and is_vowel(b[-2]) and not is_vowel(b[-3]):
             if not v.endswith(("elen", "deren", "keren", "nderen", "tteren")):
@@ -313,42 +322,47 @@ class Verbs(_Verbs):
             b = b[:-1]
         # Present tense gets -t:
         sg = not b.endswith("t") and b + "t" or b
-        # Past tense ending in a consonant in "xtc-koffieshop" gets -t, otherwise -d:
-        dt = b0 and b0[-1] in "xtckfshp" and "t" or (not b.endswith("d") and "d" or "")
+        # Past tense ending in a consonant in "xtc-koffieshop" gets -t,
+        # otherwise -d:
+        dt = b0 and b0[-
+                       1] in "xtckfshp" and "t" or (not b.endswith("d") and "d" or "")
         # Past tense -e and handle common irregular inflections:
         p = b + dt + "e"
         for suffix, irregular in (("erfde", "ierf"), ("ijfde", "eef"), ("ingde", "ong"), ("inkte", "onk")):
             if p.endswith(suffix):
-                p = p[:-len(suffix)] + irregular; break
+                p = p[:-len(suffix)] + irregular
+                break
         # Past participle: ge-:
         pp = re.sub("tt$", "t", "ge" + b + dt)
-        pp = pp.startswith(("geop", "gein", "geaf")) and pp[2:4]+"ge"+pp[4:] or pp # geopstart => opgestart
+        pp = pp.startswith(("geop", "gein", "geaf")) and pp[
+            2:4] + "ge" + pp[4:] or pp  # geopstart => opgestart
         pp = pp.startswith(("gever", "gebe", "gege")) and pp[2:] or pp
-        return [v, b, sg, sg, v, b0+"end", p, p, p, b+dt+"en", p, pp]
+        return [v, b, sg, sg, v, b0 + "end", p, p, p, b + dt + "en", p, pp]
 
 verbs = Verbs()
 
 conjugate, lemma, lexeme, tenses = \
     verbs.conjugate, verbs.lemma, verbs.lexeme, verbs.tenses
 
-#### ATTRIBUTIVE & PREDICATIVE #####################################################################
+#### ATTRIBUTIVE & PREDICATIVE ###########################################
 
 adjective_attributive = {
-     "civiel": "civiele",
+    "civiel": "civiele",
     "complex": "complexe",
-      "enkel": "enkele",
-       "grof": "grove",
-       "half": "halve",
-     "luttel": "luttele",
-     "mobiel": "mobiele",
-     "parijs": "parijse",
-        "ruw": "ruwe",
-     "simpel": "simpele",
+    "enkel": "enkele",
+    "grof": "grove",
+    "half": "halve",
+    "luttel": "luttele",
+    "mobiel": "mobiele",
+    "parijs": "parijse",
+    "ruw": "ruwe",
+    "simpel": "simpele",
     "stabiel": "stabiele",
     "steriel": "steriele",
     "subtiel": "subtiele",
-       "teer": "tere"
+    "teer": "tere"
 }
+
 
 def attributive(adjective):
     """ For a predicative adjective, returns the attributive form (lowercase).
@@ -359,7 +373,7 @@ def attributive(adjective):
         return adjective_attributive[w]
     if w.endswith("e"):
         return w
-    if w.endswith(("er","st")) and len(w) > 4:
+    if w.endswith(("er", "st")) and len(w) > 4:
         return w + "e"
     if w.endswith("ees"):
         return w[:-2] + w[-1] + "e"
@@ -368,20 +382,23 @@ def attributive(adjective):
     if w.endswith("ig"):
         return w + "e"
     if len(w) > 2 and (not is_vowel(w[-1]) and is_vowel(w[-2]) and is_vowel(w[-3]) or w[:-1].endswith("ij")):
-        if w.endswith("f"): w = w[:-1] + "v"
-        if w.endswith("s"): w = w[:-1] + "z"
+        if w.endswith("f"):
+            w = w[:-1] + "v"
+        if w.endswith("s"):
+            w = w[:-1] + "z"
         if w[-2] == w[-3]:
             w = w[:-2] + w[-1]
     elif len(w) > 1 and is_vowel(w[-2]) and w.endswith(tuple("bdfgklmnprst")):
         w = w + w[-1]
     return w + "e"
 
-adjective_predicative = dict((v,k) for k,v in adjective_attributive.items())
+adjective_predicative = dict((v, k) for k, v in adjective_attributive.items())
 adjective_predicative.update({
-          "moe": "moe",
-        "taboe": "taboe",
+    "moe": "moe",
+    "taboe": "taboe",
     "voldoende": "voldoende"
 })
+
 
 def predicative(adjective):
     """ Returns the predicative adjective (lowercase).

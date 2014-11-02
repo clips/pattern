@@ -1,5 +1,7 @@
 from __future__ import print_function
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.en import parse, pprint, tag
 
@@ -11,17 +13,20 @@ from pattern.en import parse, pprint, tag
 # Overview of tags: http://www.clips.ua.ac.be/pages/mbsp-tags
 s = "I eat pizza with a fork."
 s = parse(s,
-     tokenize = True,  # Tokenize the input, i.e. split punctuation from words.
-         tags = True,  # Find part-of-speech tags.
-       chunks = True,  # Find chunk tags, e.g. "the black cat" = NP = noun phrase.
-    relations = True,  # Find relations between chunks.
-      lemmata = True,  # Find word lemmata.
-        light = False)
+          # Tokenize the input, i.e. split punctuation from words.
+          tokenize=True,
+          tags=True,  # Find part-of-speech tags.
+          # Find chunk tags, e.g. "the black cat" = NP = noun phrase.
+          chunks=True,
+          relations=True,  # Find relations between chunks.
+          lemmata=True,  # Find word lemmata.
+          light=False)
 
 # The light parameter determines how unknown words are handled.
 # By default, unknown words are tagged NN and then improved with a set of rules.
 # light=False uses Brill's lexical and contextual rules,
-# light=True uses a set of custom rules that is less accurate but faster (5x-10x).
+# light=True uses a set of custom rules that is less accurate but faster
+# (5x-10x).
 
 # The output is a string with each sentence on a new line.
 # Words in a sentence have been annotated with tags,
@@ -38,14 +43,14 @@ print()
 # split into a list of sentences, where each sentence is a list of words
 # and each word is a list with the word + its tags.
 print(s.split())
-print() 
+print()
 
 # The tag() command returns a list of (word, POS-tag)-tuples.
-# With light=True, this is the fastest and simplest way to get an idea 
+# With light=True, this is the fastest and simplest way to get an idea
 # of a sentence's constituents:
 s = "I eat pizza with a fork."
 s = tag(s)
 print(s)
 for word, tag in s:
-    if tag == "NN": # Find all nouns in the input string.
+    if tag == "NN":  # Find all nouns in the input string.
         print(word)

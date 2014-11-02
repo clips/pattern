@@ -7,7 +7,7 @@ try:
 except ImportError as e:
     LIBSVM = False
     raise e
-    
+
 try:
     from . import liblinear
     from . import liblinearutil

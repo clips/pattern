@@ -31,7 +31,7 @@ Usage
 from __future__ import absolute_import
 from functools import reduce
 
-__author__  = "Oliver Steele <steele@osteele.com>"
+__author__ = "Oliver Steele <steele@osteele.com>"
 __version__ = "2.0"
 
 from .wordnet import *
@@ -40,12 +40,15 @@ from .wordnet import *
 # Domain utilities
 #
 
+
 def _requireSource(entity):
     if not hasattr(entity, 'pointers'):
         if isinstance(entity, Word):
-            raise TypeError(repr(entity) + " is not a Sense or Synset.  Try " + repr(entity) + "[0] instead.")
+            raise TypeError(
+                repr(entity) + " is not a Sense or Synset.  Try " + repr(entity) + "[0] instead.")
         else:
             raise TypeError(repr(entity) + " is not a Sense or Synset")
+
 
 def tree(source, pointerType):
     """
@@ -66,21 +69,22 @@ def tree(source, pointerType):
     >>> #pprint(tree(dog, HYPONYM)) # too verbose to include here
     """
     if isinstance(source,  Word):
-        return map(lambda s, t=pointerType:tree(s,t), source.getSenses())
+        return map(lambda s, t=pointerType: tree(s, t), source.getSenses())
     _requireSource(source)
-    return [source] + map(lambda s, t=pointerType:tree(s,t), source.pointerTargets(pointerType))
+    return [source] + map(lambda s, t=pointerType: tree(s, t), source.pointerTargets(pointerType))
+
 
 def closure(source, pointerType, accumulator=None):
     """Return the transitive closure of source under the pointerType
     relationship.  If source is a Word, return the union of the
     closures of its senses.
-    
+
     >>> dog = N['dog'][0]
     >>> closure(dog, HYPERNYM)
     ['dog' in {noun: dog, domestic dog, Canis familiaris}, {noun: canine, canid}, {noun: carnivore}, {noun: placental, placental mammal, eutherian, eutherian mammal}, {noun: mammal}, {noun: vertebrate, craniate}, {noun: chordate}, {noun: animal, animate being, beast, brute, creature, fauna}, {noun: organism, being}, {noun: living thing, animate thing}, {noun: object, physical object}, {noun: entity}]
     """
     if isinstance(source, Word):
-        return reduce(union, map(lambda s, t=pointerType:tree(s,t), source.getSenses()))
+        return reduce(union, map(lambda s, t=pointerType: tree(s, t), source.getSenses()))
     _requireSource(source)
     if accumulator is None:
         accumulator = []
@@ -90,10 +94,12 @@ def closure(source, pointerType, accumulator=None):
             closure(target, pointerType, accumulator)
     return accumulator
 
+
 def hyponyms(source):
     """Return source and its hyponyms.  If source is a Word, return
     the union of the hyponyms of its senses."""
     return closure(source, HYPONYM)
+
 
 def hypernyms(source):
     """Return source and its hypernyms.  If source is a Word, return
@@ -101,9 +107,10 @@ def hypernyms(source):
 
     return closure(source, HYPERNYM)
 
+
 def meet(a, b, pointerType=HYPERNYM):
     """Return the meet of a and b under the pointerType relationship.
-    
+
     >>> meet(N['dog'][0], N['cat'][0])
     {noun: carnivore}
     >>> meet(N['dog'][0], N['person'][0])
@@ -119,23 +126,25 @@ def meet(a, b, pointerType=HYPERNYM):
 #
 def startsWith(str, prefix):
     """Return true iff _str_ starts with _prefix_.
-    
+
     >>> startsWith('unclear', 'un')
     1
     """
     return str[:len(prefix)] == prefix
 
+
 def endsWith(str, suffix):
     """Return true iff _str_ ends with _suffix_.
-    
+
     >>> endsWith('clearly', 'ly')
     1
     """
     return str[-len(suffix):] == suffix
 
+
 def equalsIgnoreCase(a, b):
     """Return true iff a and b have the same lowercase representation.
-    
+
     >>> equalsIgnoreCase('dog', 'Dog')
     1
     >>> equalsIgnoreCase('dOg', 'DOG')
@@ -150,7 +159,7 @@ def equalsIgnoreCase(a, b):
 #
 def issequence(item):
     """Return true iff _item_ is a Sequence (a List, String, or Tuple).
-    
+
     >>> issequence((1,2))
     1
     >>> issequence([1,2])
@@ -162,9 +171,10 @@ def issequence(item):
     """
     return type(item) in (ListType, StringType, TupleType)
 
+
 def intersection(u, v):
     """Return the intersection of _u_ and _v_.
-    
+
     >>> intersection((1,2,3), (2,3,4))
     [2, 3]
     """
@@ -174,9 +184,10 @@ def intersection(u, v):
             w.append(e)
     return w
 
+
 def union(u, v):
     """Return the union of _u_ and _v_.
-    
+
     >>> union((1,2,3), (2,3,4))
     [1, 2, 3, 4]
     """
@@ -189,17 +200,19 @@ def union(u, v):
             w.append(e)
     return w
 
+
 def product(u, v):
     """Return the Cartesian product of u and v.
-    
+
     >>> product("123", "abc")
     [('1', 'a'), ('1', 'b'), ('1', 'c'), ('2', 'a'), ('2', 'b'), ('2', 'c'), ('3', 'a'), ('3', 'b'), ('3', 'c')]
     """
-    return flatten1(map(lambda a, v=v:map(lambda b, a=a:(a,b), v), u))
+    return flatten1(map(lambda a, v=v: map(lambda b, a=a: (a, b), v), u))
+
 
 def removeDuplicates(sequence):
     """Return a copy of _sequence_ with equal items removed.
-    
+
     >>> removeDuplicates("this is a test")
     ['t', 'h', 'i', 's', ' ', 'a', 'e']
     >>> removeDuplicates(map(lambda tuple:apply(meet, tuple), product(N['story'].getSenses(), N['joke'].getSenses())))
@@ -232,7 +245,9 @@ def flatten1(sequence):
 # WordNet utilities
 #
 
-GET_INDEX_SUBSTITUTIONS = ((' ', '-'), ('-', ' '), ('-', ''), (' ', ''), ('.', ''))
+GET_INDEX_SUBSTITUTIONS = (
+    (' ', '-'), ('-', ' '), ('-', ''), (' ', ''), ('.', ''))
+
 
 def getIndex(form, pos='noun'):
     """Search for _form_ in the index file corresponding to
@@ -252,7 +267,8 @@ def getIndex(form, pos='noun'):
             if substitute and substitute in dictionary:
                 return dictionary[substitute]
             return              trySubstitutions(trySubstitutions, form, substitutions[1:], lookup=0) or \
-                (substitute and trySubstitutions(trySubstitutions, substitute, substitutions[1:]))
+                (substitute and trySubstitutions(
+                    trySubstitutions, substitute, substitutions[1:]))
     return trySubstitutions(returnMatch, form, GET_INDEX_SUBSTITUTIONS)
 
 
@@ -283,11 +299,12 @@ MORPHOLOGICAL_SUBSTITUTIONS = {
      ('est', 'e')],
     ADVERB: []}
 
+
 def morphy(form, pos='noun', collect=0):
     """Recursively uninflect _form_, and return the first form found
     in the dictionary.  If _collect_ is true, a sequence of all forms
     is returned, instead of just the first one.
-    
+
     >>> morphy('dogs')
     'dog'
     >>> morphy('churches')
@@ -300,10 +317,12 @@ def morphy(form, pos='noun', collect=0):
     """
     from .wordnet import _normalizePOS, _dictionaryFor
     pos = _normalizePOS(pos)
-    fname = os.path.join(WNSEARCHDIR, {NOUN: 'noun', VERB: 'verb', ADJECTIVE: 'adj', ADVERB: 'adv'}[pos] + '.exc')
+    fname = os.path.join(WNSEARCHDIR, {
+                         NOUN: 'noun', VERB: 'verb', ADJECTIVE: 'adj', ADVERB: 'adv'}[pos] + '.exc')
     excfile = open(fname)
     substitutions = MORPHOLOGICAL_SUBSTITUTIONS[pos]
-    def trySubstitutions(trySubstitutions,	# workaround for lack of nested closures in Python < 2.1
+
+    def trySubstitutions(trySubstitutions,  # workaround for lack of nested closures in Python < 2.1
                          form,		  	# reduced form
                          substitutions,		# remaining substitutions
                          lookup=1,
@@ -314,7 +333,7 @@ def morphy(form, pos='noun', collect=0):
         import string
         exceptions = binarySearchFile(excfile, form)
         if exceptions:
-            form = exceptions[string.find(exceptions, ' ')+1:-1]
+            form = exceptions[string.find(exceptions, ' ') + 1:-1]
         if lookup and form in dictionary:
             if collect:
                 collection.append(form)
@@ -326,20 +345,24 @@ def morphy(form, pos='noun', collect=0):
             substitute = None
             if endsWith(form, old):
                 substitute = form[:-len(old)] + new
-                #if dictionary.has_key(substitute):
+                # if dictionary.has_key(substitute):
                 #   return substitute
             form =              trySubstitutions(trySubstitutions, form, substitutions) or \
-                (substitute and trySubstitutions(trySubstitutions, substitute, substitutions))
+                (substitute and trySubstitutions(
+                    trySubstitutions, substitute, substitutions))
             return (collect and collection) or form
         elif collect:
             return collection
     return trySubstitutions(trySubstitutions, form, substitutions)
 
+
 #
 # Testing
 #
 def _test(reset=0):
-    import doctest, wntools
+    import doctest
+    import wntools
     if reset:
-        doctest.master = None # This keeps doctest from complaining after a reload.
+        # This keeps doctest from complaining after a reload.
+        doctest.master = None
     return doctest.testmod(wntools)

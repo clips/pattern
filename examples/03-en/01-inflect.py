@@ -1,5 +1,7 @@
 from __future__ import print_function
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.en import article, referenced
 from pattern.en import pluralize, singularize
@@ -9,7 +11,8 @@ from pattern.en import NOUN, VERB, ADJECTIVE
 
 # The en module has a range of tools for word inflection:
 # guessing the indefinite article of a word (a/an?),
-# pluralization and singularization, comparative and superlative adjectives, verb conjugation.
+# pluralization and singularization, comparative and superlative
+# adjectives, verb conjugation.
 
 # INDEFINITE ARTICLE
 # ------------------
@@ -19,7 +22,8 @@ print(article("bear"), "bear")
 print()
 
 # The referenced() function returns a string with article() prepended to the given word.
-# The referenced() funtion is non-trivial, as demonstrated with the exception words below:
+# The referenced() funtion is non-trivial, as demonstrated with the
+# exception words below:
 for word in ["hour", "one-liner", "European", "university", "owl", "yclept", "year"]:
     print(referenced(word))
 print()
@@ -41,7 +45,7 @@ print()
 # ---------------
 # The singularize() function returns the singular form of a plural noun (or adjective).
 # It is slightly less robust than the pluralize() function.
-for word in ["parts-of-speech", "children", "dogs'", "wolves", "bears", "kitchen knives", 
+for word in ["parts-of-speech", "children", "dogs'", "wolves", "bears", "kitchen knives",
              "octopodes", "matrices", "matrixes"]:
     print(singularize(word))
 print(singularize("our", pos=ADJECTIVE))
@@ -66,16 +70,17 @@ print("lemma:", lemma("was"))
 print()
 
 # The conjugate() function inflects a verb to another tense.
-# You can supply: 
-# - tense : INFINITIVE, PRESENT, PAST, 
-# - person: 1, 2, 3 or None, 
+# You can supply:
+# - tense : INFINITIVE, PRESENT, PAST,
+# - person: 1, 2, 3 or None,
 # - number: SINGULAR, PLURAL,
 # - mood  : INDICATIVE, IMPERATIVE,
 # - aspect: IMPERFECTIVE, PROGRESSIVE.
-# The tense can also be given as an abbreviated alias, e.g., 
+# The tense can also be given as an abbreviated alias, e.g.,
 # inf, 1sg, 2sg, 3sg, pl, part, 1sgp, 2sgp, 3sgp, ppl, ppart.
 from pattern.en import PRESENT, SINGULAR
-print(conjugate("being", tense=PRESENT, person=1, number=SINGULAR, negated=False))
+print(
+    conjugate("being", tense=PRESENT, person=1, number=SINGULAR, negated=False))
 print(conjugate("being", tense="1sg", negated=False))
 print()
 
@@ -85,7 +90,8 @@ print()
 # Each tense is a tuple of (tense, person, number, mood, aspect).
 # For example: tenses("are") => [('present', 2, 'plural', 'indicative', 'imperfective'), ...]
 # You can then check if a tense constant is in the list.
-# This will also work with aliases, even though they are not explicitly in the list.
+# This will also work with aliases, even though they are not explicitly in
+# the list.
 from pattern.en import PRESENT, PLURAL
 print(tenses("are"))
 print((PRESENT, 1, PLURAL) in tenses("are"))

@@ -1,5 +1,7 @@
 from __future__ import print_function
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 import time
 
 from pattern.vector import Document, Model, KNN
@@ -15,11 +17,12 @@ from pattern.db import Datasheet
 # It groups related words into "concepts" .
 # It then creates a concept vector for each document.
 # This reduces the amount of data to work with (for example when clustering),
-# and filters out noise, so that semantically related words come out stronger. 
+# and filters out noise, so that semantically related words come out stronger.
 
 # We'll use the Pang & Lee corpus of movie reviews, included in the testing suite.
 # Take 250 positive reviews and 250 negative reviews:
-data = os.path.join(os.path.dirname(__file__), "..","..","test", "corpora", "polarity-en-pang&lee1.csv")
+data = os.path.join(os.path.dirname(__file__), "..", "..",
+                    "test", "corpora", "polarity-en-pang&lee1.csv")
 data = Datasheet.load(data)
 data = data[:250] + data[-250:]
 
@@ -34,7 +37,8 @@ m = Model(documents)
 
 print("number of documents:", len(m))
 print("number of features:", len(m.vector))
-print("number of features (average):", sum(len(d.features) for d in m.documents) / float(len(m)))
+print("number of features (average):", sum(len(d.features)
+                                           for d in m.documents) / float(len(m)))
 print()
 
 # 6,337 different features may be too slow for some algorithms (e.g., hierarchical clustering).
@@ -46,7 +50,8 @@ print()
 # there are positive reviews (score > 0) and negative reviews (score < 0).
 # A classifier uses a model as "training" data
 # to predict the label (type/class) of unlabeled documents.
-# In this case, it can predict whether a new movie review is positive or negative.
+# In this case, it can predict whether a new movie review is positive or
+# negative.
 
 # The details are not that important right now, just observe the accuracy.
 # Naturally, we want accuracy to stay the same after LSA reduction,
@@ -89,10 +94,10 @@ print(len(m.lsa.concepts[0]))
 m.lsa = None
 m.reduce(100)
 
-for feature, weight in m.lsa.concepts[15].items(): # concept id=2
+for feature, weight in m.lsa.concepts[15].items():  # concept id=2
     if abs(weight) > 0.1:
         print(feature)
-        
+
 # Concept  2 = "truman", "ventura", "ace", "carrey", ... Obviously about Jim Carrey movies.
 # Concept 15 = "sixth", "sense", "child", "dead", "willis" ...
 

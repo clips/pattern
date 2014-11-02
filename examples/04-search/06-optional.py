@@ -1,22 +1,24 @@
 from __future__ import print_function
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.search import search
-from pattern.en     import parsetree
+from pattern.en import parsetree
 
 # Constraints ending in "?" are optional, matching one or no word.
-# Pattern.search() uses a "greedy" approach: 
+# Pattern.search() uses a "greedy" approach:
 # it will attempt to include as many optional constraints as possible.
 
 # The following pattern scans for words whose part-of-speech tag is NN (i.e. nouns).
-# A preceding adjective, adverb or determiner are picked up as well. 
+# A preceding adjective, adverb or determiner are picked up as well.
 for s in (
-  "the cat",             # DT NN
-  "the very black cat",  # DT RB JJ NN
-  "tasty cat food",      # JJ NN NN
-  "the funny black cat", # JJ NN
-  "very funny",          # RB JJ => no match, since there is no noun.
-  "my cat is black and your cat is white"): # NN + NN  
+        "the cat",             # DT NN
+        "the very black cat",  # DT RB JJ NN
+        "tasty cat food",      # JJ NN NN
+        "the funny black cat",  # JJ NN
+        "very funny",          # RB JJ => no match, since there is no noun.
+        "my cat is black and your cat is white"):  # NN + NN
     t = parsetree(s)
     m = search("DT? RB? JJ? NN+", t)
     print()

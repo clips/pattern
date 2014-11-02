@@ -1,11 +1,11 @@
-#### PATTERN | XX ##################################################################################
+#### PATTERN | XX ########################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) year, institute, country
 # Author: Name (e-mail)
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-####################################################################################################
+##########################################################################
 # Template for pattern.xx, bundling natural language processing tools for language XXXXX.
 # The module bundles a shallow parser (part-of-speech tagger, chunker, lemmatizer)
 # with functions for word inflection (singularization, pluralization, conjugation)
@@ -14,7 +14,8 @@
 # Base classes for the parser, verb table and sentiment lexicon are inherited from pattern.text.
 # The parser can be subclassed with a custom tokenizer (finds sentence boundaries)
 # and lemmatizer (uses word inflection to find the base form of words).
-# The part-of-speech tagger requires a lexicon of tagged known words and rules for unknown words.
+# The part-of-speech tagger requires a lexicon of tagged known words and
+# rules for unknown words.
 
 # Tools for word inflection should be bundled in pattern.text.xx.inflect.
 
@@ -68,13 +69,15 @@ from pattern.text.xx import inflect
 
 sys.path.pop(0)
 
-#--- PARSER ----------------------------------------------------------------------------------------
+#--- PARSER --------------------------------------------------------------
 
 # Pattern uses the Penn Treebank II tagset (http://www.clips.ua.ac.be/pages/penn-treebank-tagset).
 # The lexicon for pattern.xx may be using a different tagset (e.g., PAROLE, WOTAN).
-# The following functions are meant to map the tags to Penn Treebank II, see Parser.find_chunks().
+# The following functions are meant to map the tags to Penn Treebank II,
+# see Parser.find_chunks().
 
-TAGSET = {"??": "NN"} # pattern.xx tagset => Penn Treebank II.
+TAGSET = {"??": "NN"}  # pattern.xx tagset => Penn Treebank II.
+
 
 def tagset2penntreebank(tag):
     return TAGSET.get(tag, tag)
@@ -83,11 +86,13 @@ def tagset2penntreebank(tag):
 # and abbreviations. The following functions define contractions and abbreviations
 # for pattern.xx, see also Parser.find_tokens().
 
-REPLACEMENTS  = {"'s": " 's", "'ve": " 've"}
+REPLACEMENTS = {"'s": " 's", "'ve": " 've"}
 ABBREVIATIONS = set(("e.g.", "etc.", "i.e."))
 
 # A lemmatizer can be constructed if we have a pattern.xx.inflect,
-# with functions for noun singularization and verb conjugation (i.e., infinitives).
+# with functions for noun singularization and verb conjugation (i.e.,
+# infinitives).
+
 
 def find_lemmata(tokens):
     """ Annotates the tokens with lemmata for plural nouns and conjugated verbs,
@@ -96,7 +101,7 @@ def find_lemmata(tokens):
     for token in tokens:
         word, pos, lemma = token[0], token[1], token[0]
         if pos.startswith("JJ"):
-            lemma = predicative(word)  
+            lemma = predicative(word)
         if pos == "NNS":
             lemma = singularize(word)
         if pos.startswith(("VB", "MD")):
@@ -106,17 +111,18 @@ def find_lemmata(tokens):
 
 # Subclass the base parser with the language-specific functionality:
 
+
 class Parser(_Parser):
-    
+
     def find_tokens(self, tokens, **kwargs):
         kwargs.setdefault("abbreviations", ABBREVIATIONS)
         kwargs.setdefault("replace", REPLACEMENTS)
         return _Parser.find_tokens(self, tokens, **kwargs)
-        
+
     def find_tags(self, tokens, **kwargs):
         kwargs.setdefault("map", tagset2penntreebank)
         return _Parser.find_tags(self, tokens, **kwargs)
-        
+
     def find_chunks(self, tokens, **kwargs):
         return _Parser.find_chunks(self, tokens, **kwargs)
 
@@ -132,54 +138,65 @@ class Parser(_Parser):
 # (noun, proper noun, numeric).
 
 parser = Parser(
-     lexicon = os.path.join(MODULE, "xx-lexicon.txt"),    # A dict of known words => most frequent tag.
-   frequency = os.path.join(MODULE, "xx-frequency.txt"),  # A dict of word frequency.
-  morphology = os.path.join(MODULE, "xx-morphology.txt"), # A set of suffix rules.
-     context = os.path.join(MODULE, "xx-context.txt"),    # A set of contextual rules.
-    entities = os.path.join(MODULE, "xx-entities.txt"),   # A dict of named entities: John = NNP-PERS.
-     default = ("NN", "NNP", "CD"),
+    # A dict of known words => most frequent tag.
+    lexicon=os.path.join(MODULE, "xx-lexicon.txt"),
+    # A dict of word frequency.
+    frequency=os.path.join(MODULE, "xx-frequency.txt"),
+    # A set of suffix rules.
+    morphology=os.path.join(MODULE, "xx-morphology.txt"),
+    # A set of contextual rules.
+    context=os.path.join(MODULE, "xx-context.txt"),
+    # A dict of named entities: John = NNP-PERS.
+    entities=os.path.join(MODULE, "xx-entities.txt"),
+    default=("NN", "NNP", "CD"),
     language = "xx"
 )
 
-lexicon = parser.lexicon # Expose lexicon.
+lexicon = parser.lexicon  # Expose lexicon.
 
 # Create the sentiment lexicon,
 # see pattern/text/xx/xx-sentiment.xml for further details.
 # We also need to define the tag for modifiers,
-# words that modify the score of the following word 
+# words that modify the score of the following word
 # (e.g., *very* good, *not good, ...)
 
 sentiment = Sentiment(
-        path = os.path.join(MODULE, "xx-sentiment.xml"), 
-      synset = None,
-   negations = ("no", "not", "never"),
-   modifiers = ("RB",),
-   modifier  = lambda w: w.endswith("ly"), # brilliantly, hardly, partially, ...
+    path=os.path.join(MODULE, "xx-sentiment.xml"),
+    synset=None,
+    negations=("no", "not", "never"),
+    modifiers = ("RB",),
+    # brilliantly, hardly, partially, ...
+    modifier = lambda w: w.endswith("ly"),
     language = "xx"
 )
 
 # Nothing should be changed below.
+
 
 def tokenize(s, *args, **kwargs):
     """ Returns a list of sentences, where punctuation marks have been split from words.
     """
     return parser.find_tokens(s, *args, **kwargs)
 
+
 def parse(s, *args, **kwargs):
     """ Returns a tagged Unicode string.
     """
     return parser.parse(s, *args, **kwargs)
+
 
 def parsetree(s, *args, **kwargs):
     """ Returns a parsed Text from the given string.
     """
     return Text(parse(s, *args, **kwargs))
 
+
 def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
     """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
-    
+
+
 def tag(s, tokenize=True, encoding="utf-8", **kwargs):
     """ Returns a list of (token, tag)-tuples from the given string.
     """
@@ -189,33 +206,37 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
             tags.append((token[0], token[1]))
     return tags
 
+
 def keywords(s, top=10, **kwargs):
     """ Returns a sorted list of keywords in the given string.
     """
     return parser.find_keywords(s, **dict({
         "frequency": parser.frequency,
-              "top": top,
-              "pos": ("NN",),
-           "ignore": ("rt",)}, **kwargs))
-     
+        "top": top,
+        "pos": ("NN",),
+        "ignore": ("rt",)}, **kwargs))
+
+
 def polarity(s, **kwargs):
     """ Returns the sentence polarity (positive/negative) between -1.0 and 1.0.
     """
     return sentiment(s, **kwargs)[0]
 
+
 def subjectivity(s, **kwargs):
     """ Returns the sentence subjectivity (objective/subjective) between 0.0 and 1.0.
     """
     return sentiment(s, **kwargs)[1]
-    
+
+
 def positive(s, threshold=0.1, **kwargs):
     """ Returns True if the given sentence has a positive sentiment.
     """
     return polarity(s, **kwargs) >= threshold
 
-split = tree # Backwards compatibility.
+split = tree  # Backwards compatibility.
 
-#---------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------
 # python -m pattern.xx xml -s "..." -OTCL
 
 if __name__ == "__main__":

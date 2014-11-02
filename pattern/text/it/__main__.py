@@ -1,5 +1,6 @@
-#### PATTERN | IT | PARSER COMMAND-LINE ############################################################
-# In Python 2.7+ modules invoked from the command line  will look for a __main__.py.
+#### PATTERN | IT | PARSER COMMAND-LINE ##################################
+# In Python 2.7+ modules invoked from the command line  will look for a
+# __main__.py.
 
 from __future__ import absolute_import
 

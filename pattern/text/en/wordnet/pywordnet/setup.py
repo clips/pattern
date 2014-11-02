@@ -6,5 +6,5 @@ setup(name="pywordnet",
       author_email="steele@osteele.com",
       url="http://pywordnet.sourceforge.net",
       py_modules=["wordnet", "wntools", "concordance"],
-#      doc_files=["README.txt", "CHANGES.txt", "docs"]
+      #      doc_files=["README.txt", "CHANGES.txt", "docs"]
       )

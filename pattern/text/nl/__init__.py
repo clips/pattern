@@ -1,10 +1,10 @@
-#### PATTERN | NL ##################################################################################
+#### PATTERN | NL ########################################################
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-####################################################################################################
+##########################################################################
 # Dutch linguistical tools using fast regular expressions.
 
 import os
@@ -63,7 +63,7 @@ from pattern.text.nl import inflect
 
 sys.path.pop(0)
 
-#--- DUTCH PARSER ----------------------------------------------------------------------------------
+#--- DUTCH PARSER --------------------------------------------------------
 # The Dutch parser (accuracy 92%) is based on Jeroen Geertzen's language model:
 # Brill-NL, http://cosmion.net/jeroen/software/brill_pos/
 
@@ -74,17 +74,18 @@ wotan = {
     "Adj(": (("vergr", "JJR"), ("overtr", "JJS"), ("", "JJ")),
     "Adv(": (("deel", "RP"),  ("", "RB")),
     "Art(": (("", "DT"),),
-   "Conj(": (("", "CC"),),
-     "Int": (("", "UH"),),
-    "Misc": (("symb", "SYM"), ("vreemd","FW")),
-      "N(": (("eigen,ev", "NNP"), ("eigen,mv", "NNPS"), ("ev", "NN"), ("mv", "NNS")),
+    "Conj(": (("", "CC"),),
+    "Int": (("", "UH"),),
+    "Misc": (("symb", "SYM"), ("vreemd", "FW")),
+    "N(": (("eigen,ev", "NNP"), ("eigen,mv", "NNPS"), ("ev", "NN"), ("mv", "NNS")),
     "Num(": (("", "CD"),),
-   "Prep(": (("inf", "TO"), ("", "IN")),
-   "Pron(": (("bez", "PRP$"), ("","PRP")),
-   "Punc(": (("komma", ","), ("open", "("), ("sluit", ")"), ("schuin", "CC"), ("", ".")),
-      "V(": (("hulp", "MD"), ("ott,3", "VBZ"), ("ott", "VBP"), ("ovt", "VBD"), 
-             ("verl", "VBN"), ("teg", "VBG"), ("", "VB"))
+    "Prep(": (("inf", "TO"), ("", "IN")),
+    "Pron(": (("bez", "PRP$"), ("", "PRP")),
+    "Punc(": (("komma", ","), ("open", "("), ("sluit", ")"), ("schuin", "CC"), ("", ".")),
+    "V(": (("hulp", "MD"), ("ott,3", "VBZ"), ("ott", "VBP"), ("ovt", "VBD"),
+           ("verl", "VBN"), ("teg", "VBG"), ("", "VB"))
 }
+
 
 def wotan2penntreebank(token, tag):
     """ Converts a WOTAN tag to a Penn Treebank II tag.
@@ -93,10 +94,11 @@ def wotan2penntreebank(token, tag):
     for k, v in wotan.items():
         if tag.startswith(k):
             for a, b in v:
-                if a in tag: 
+                if a in tag:
                     return (token, b)
     return (token, tag)
-    
+
+
 def wotan2universal(token, tag):
     """ Converts a WOTAN tag to a universal tag.
         For example: bokkenrijders/N(soort,mv,neut) => bokkenrijders/NOUN
@@ -113,6 +115,7 @@ ABBREVIATIONS = set((
     "tel.", "zgn."
 ))
 
+
 def find_lemmata(tokens):
     """ Annotates the tokens with lemmata for plural nouns and conjugated verbs,
         where each token is a [word, part-of-speech] list.
@@ -120,13 +123,14 @@ def find_lemmata(tokens):
     for token in tokens:
         word, pos, lemma = token[0], token[1], token[0]
         if pos.startswith("JJ") and word.endswith("e"):
-            lemma = predicative(word)  
+            lemma = predicative(word)
         if pos == "NNS":
             lemma = singularize(word)
         if pos.startswith(("VB", "MD")):
             lemma = conjugate(word, INFINITIVE) or word
         token.append(lemma.lower())
     return tokens
+
 
 class Parser(_Parser):
 
@@ -135,23 +139,27 @@ class Parser(_Parser):
         kwargs.setdefault("abbreviations", ABBREVIATIONS)
         kwargs.setdefault("replace", {"'n": " 'n"})
         s = _Parser.find_tokens(self, tokens, **kwargs)
-        s = [re.sub(r"' s (ochtends|morgens|middags|avonds)", "'s \\1", s) for s in s]
+        s = [re.sub(r"' s (ochtends|morgens|middags|avonds)", "'s \\1", s)
+             for s in s]
         return s
 
     def find_lemmata(self, tokens, **kwargs):
         return find_lemmata(tokens)
-        
+
     def find_tags(self, tokens, **kwargs):
         if kwargs.get("tagset") in (PENN, None):
-            kwargs.setdefault("map", lambda token, tag: wotan2penntreebank(token, tag))
+            kwargs.setdefault(
+                "map", lambda token, tag: wotan2penntreebank(token, tag))
         if kwargs.get("tagset") == UNIVERSAL:
-            kwargs.setdefault("map", lambda token, tag: wotan2universal(token, tag))
+            kwargs.setdefault(
+                "map", lambda token, tag: wotan2universal(token, tag))
         if kwargs.get("tagset") is WOTAN:
             kwargs.setdefault("map", lambda token, tag: (token, tag))
         return _Parser.find_tags(self, tokens, **kwargs)
 
+
 class Sentiment(_Sentiment):
-    
+
     def load(self, path=None):
         _Sentiment.load(self, path)
         # Map "verschrikkelijk" to adverbial "verschrikkelijke" (+1%)
@@ -162,50 +170,55 @@ class Sentiment(_Sentiment):
                     self.annotate(attributive(w), "JJ", p, s, i)
 
 parser = Parser(
-     lexicon = os.path.join(MODULE, "nl-lexicon.txt"),
-   frequency = os.path.join(MODULE, "nl-frequency.txt"),
-  morphology = os.path.join(MODULE, "nl-morphology.txt"),
-     context = os.path.join(MODULE, "nl-context.txt"),
-     default = ("N(soort,ev,neut)", "N(eigen,ev)", "Num()"),
+    lexicon=os.path.join(MODULE, "nl-lexicon.txt"),
+    frequency=os.path.join(MODULE, "nl-frequency.txt"),
+    morphology=os.path.join(MODULE, "nl-morphology.txt"),
+    context=os.path.join(MODULE, "nl-context.txt"),
+    default=("N(soort,ev,neut)", "N(eigen,ev)", "Num()"),
     language = "nl"
 )
 
-lexicon = parser.lexicon # Expose lexicon.
+lexicon = parser.lexicon  # Expose lexicon.
 
 sentiment = Sentiment(
-        path = os.path.join(MODULE, "nl-sentiment.xml"), 
-      synset = "cornetto_id",
-   negations = ("geen", "gene", "ni", "niet", "nooit"),
-   modifiers = ("JJ", "RB",),
-   modifier  = lambda w: w.endswith(("ig", "isch", "lijk")),
-   tokenizer = parser.find_tokens,
+    path=os.path.join(MODULE, "nl-sentiment.xml"),
+    synset="cornetto_id",
+    negations=("geen", "gene", "ni", "niet", "nooit"),
+    modifiers = ("JJ", "RB",),
+    modifier = lambda w: w.endswith(("ig", "isch", "lijk")),
+    tokenizer = parser.find_tokens,
     language = "nl"
 )
 
 spelling = Spelling(
-        path = os.path.join(MODULE, "nl-spelling.txt")
+    path=os.path.join(MODULE, "nl-spelling.txt")
 )
+
 
 def tokenize(s, *args, **kwargs):
     """ Returns a list of sentences, where punctuation marks have been split from words.
     """
     return parser.find_tokens(s, *args, **kwargs)
 
+
 def parse(s, *args, **kwargs):
     """ Returns a tagged Unicode string.
     """
     return parser.parse(s, *args, **kwargs)
+
 
 def parsetree(s, *args, **kwargs):
     """ Returns a parsed Text from the given string.
     """
     return Text(parse(s, *args, **kwargs))
 
+
 def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
     """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
-    
+
+
 def tag(s, tokenize=True, encoding="utf-8", **kwargs):
     """ Returns a list of (token, tag)-tuples from the given string.
     """
@@ -215,39 +228,45 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
             tags.append((token[0], token[1]))
     return tags
 
+
 def keywords(s, top=10, **kwargs):
     """ Returns a sorted list of keywords in the given string.
     """
     return parser.find_keywords(s, **dict({
         "frequency": parser.frequency,
-              "top": top,
-              "pos": ("NN",),
-           "ignore": ("rt", "mensen")}, **kwargs))
+        "top": top,
+        "pos": ("NN",),
+        "ignore": ("rt", "mensen")}, **kwargs))
+
 
 def suggest(w):
     """ Returns a list of (word, confidence)-tuples of spelling corrections.
     """
     return spelling.suggest(w)
 
+
 def polarity(s, **kwargs):
     """ Returns the sentence polarity (positive/negative) between -1.0 and 1.0.
     """
     return sentiment(s, **kwargs)[0]
 
+
 def subjectivity(s, **kwargs):
     """ Returns the sentence subjectivity (objective/subjective) between 0.0 and 1.0.
     """
     return sentiment(s, **kwargs)[1]
-    
+
+
 def positive(s, threshold=0.1, **kwargs):
     """ Returns True if the given sentence has a positive sentiment (polarity >= threshold).
     """
     return polarity(s, **kwargs) >= threshold
 
-split = tree # Backwards compatibility.
+split = tree  # Backwards compatibility.
 
-#---------------------------------------------------------------------------------------------------
-# python -m pattern.nl xml -s "De kat wil wel vis eten maar geen poot nat maken." -OTCL
+#-------------------------------------------------------------------------
+# python -m pattern.nl xml -s "De kat wil wel vis eten maar geen poot nat
+# maken." -OTCL
 
 if __name__ == "__main__":
     commandline(parse)

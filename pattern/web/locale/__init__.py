@@ -1,11 +1,11 @@
-#### PATTERN | WEB | LOCALE ########################################################################
+#### PATTERN | WEB | LOCALE ##############################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-#### LANGUAGE & REGION #############################################################################
+#### LANGUAGE & REGION ###################################################
 # IETF BCP 47 language-region code => (language, region, ISO-639 language code, ISO-3166 region code).
 # Note: the list is incomplete (especially for African languages).
 # Please help out by correcting errors and omissions.
@@ -87,7 +87,7 @@ LANGUAGE_REGION = {
     u'fr-CA': (u'French', u'Canada', u'fr', u'CA'),
     u'fr-CH': (u'French', u'Switzerland', u'fr', u'CH'),
     u'fr-LU': (u'French', u'Luxembourg', u'fr', u'LU'),
-    u'ga-IE': (u'Irish' , u'Ireland', u'ga', u'IE'),
+    u'ga-IE': (u'Irish', u'Ireland', u'ga', u'IE'),
     u'gd-UK': (u'Gaelic', u'Scotland', u'gd', u'UK'),
     u'he-IL': (u'Hebrew', 'Israel', u'he', u'IL'),
     u'hi-IN': (u'Hindi', u'India', u'hi', u'IN'),
@@ -156,6 +156,7 @@ LANGUAGE_REGION = {
     u'zu-ZW': (u'Zulu', u'Zimbabwe', u'zu', u'ZW')
 }
 
+
 def encode_language(name):
     """ Returns the language code for the given language name.
         For example: encode_language("dutch") => "nl".
@@ -164,13 +165,15 @@ def encode_language(name):
         if language == name.capitalize():
             return iso639
 
+
 def decode_language(code):
     """ Returns the language name for the given language code.
         For example: decode_language("nl") => "Dutch".
     """
     for tag, (language, region, iso639, iso3166) in LANGUAGE_REGION.items():
-        if iso639 == code.lower(): 
+        if iso639 == code.lower():
             return language
+
 
 def encode_region(name):
     """ Returns the region code for the given region name.
@@ -180,6 +183,7 @@ def encode_region(name):
         if region == name.capitalize():
             return iso3166
 
+
 def decode_region(code):
     """ Returns the region name for the given region code.
         For example: decode_region("be") => "Belgium".
@@ -187,7 +191,8 @@ def decode_region(code):
     for tag, (language, region, iso639, iso3166) in LANGUAGE_REGION.items():
         if iso3166 == code.upper():
             return region
-        
+
+
 def languages(region):
     """ Returns a list of language codes for the given region code.
         For example: languages(encode_region("belgium")) => ["fr", "nl"]
@@ -198,15 +203,17 @@ def languages(region):
             a.append(iso639)
     return sorted(a)
 
+
 def regions(language):
     """ Returns a list of region codes for the given language code.
         For example: regions(encode_language("dutch")) => ["NL", "BE"]
     """
     x, a = language.lower(), []
     for tag, (language, region, iso639, iso3166) in LANGUAGE_REGION.items():
-        if iso639 == x: 
+        if iso639 == x:
             a.append(iso3166)
     return sorted(a, key=lambda tag: tag.lower() != x and tag or "")
+
 
 def regionalize(language):
     """ Returns a list of RFC-5646 language-region codes for the given language code.
@@ -217,10 +224,12 @@ def regionalize(language):
     if "-" in language:
         language, region = language.split("-")
         return [language.lower() + "-" + region.upper()]  # nl-nl => nl-NL
-    main = lambda tag: tag in ("ar-AE", "en-US", "zh-CN") or tag[:2] == tag[3:].lower() # nl-NL
-    a = [language+"-"+r for r in regions(language.lower())]
+    main = lambda tag: tag in (
+        "ar-AE", "en-US", "zh-CN") or tag[:2] == tag[3:].lower()  # nl-NL
+    a = [language + "-" + r for r in regions(language.lower())]
     a = sorted(a, key=main, reverse=True)
     return a
+
 
 def market(language):
     """ Returns the first item from regionalize(language).
@@ -229,162 +238,163 @@ def market(language):
     a = len(a) > 0 and a[0] or None
     return a
 
-#print(encode_language("dutch")) # nl
-#print(decode_language("nl"))    # Dutch
-#print(encode_region("belgium")) # BE
-#print(decode_region("be"))      # Belgium
-#print(languages("be"))          # ["fr", "nl"]
-#print(regions("nl"))            # ["NL", "BE"]
-#print(regionalize("nl"))        # ["nl-NL", "nl-BE"]
+# print(encode_language("dutch")) # nl
+# print(decode_language("nl"))    # Dutch
+# print(encode_region("belgium")) # BE
+# print(decode_region("be"))      # Belgium
+# print(languages("be"))          # ["fr", "nl"]
+# print(regions("nl"))            # ["NL", "BE"]
+# print(regionalize("nl"))        # ["nl-NL", "nl-BE"]
 
-### GEOCODE ########################################################################################
+### GEOCODE ##############################################################
 # capital => (latitude, longitude, ISO-639 language code, region)
 
 GEOCODE = {
-         u'Abu Dhabi': ( 24.467,  54.367, u"ar", u"United Arab Emirates"),
-             u'Abuja': (  9.083,   7.533, u"en", u"Nigeria"),
-             u'Accra': (  5.550,  -0.217, u"en", u"Ghana"),
-           u'Algiers': ( 36.750,   3.050, u"ar", u"Algeria"),
-             u'Amman': ( 31.950,  35.933, u"ar", u"Jordan"),
-         u'Amsterdam': ( 52.383,   4.900, u"nl", u"Netherlands"),
-            u'Ankara': ( 39.933,  32.867, u"tr", u"Turkey"),
-            u'Astana': ( 51.167,  71.417, u"ru", u"Kazakhstan"),
-          u'Asuncion': (-25.267, -57.667, u"es", u"Paraguay"),
-            u'Athens': ( 37.983,  23.733, u"el", u"Greece"),
-           u'Baghdad': ( 33.333,  44.383, u"ar", u"Iraq"),
-            u'Bamako': ( 12.650,  -8.000, u"fr", u"Mali"),
-           u'Bangkok': ( 13.750, 100.517, u"th", u"Thailand"),
-            u'Bangui': (  4.367,  18.583, u"fr", u"Central African Republic"),
-           u'Beijing': ( 39.917, 116.383, u"zh", u"China"),
-            u'Beirut': ( 33.867,  35.500, u"ar", u"Lebanon"),
-          u'Belgrade': ( 44.833,  20.500, u"sr", u"Serbia"),
-            u'Berlin': ( 52.517,  13.400, u"de", u"Germany"),
-              u'Bern': ( 46.950,   7.433, u"de", u"Switzerland"),
-            u'Bissau': ( 11.850, -15.583, u"pt", u"Guinea"),
-            u'Bogota': (  4.600, -74.083, u"es", u"Colombia"),
-          u'Brasilia': (-15.783, -47.917, u"pt", u"Brazil"),
-        u'Bratislava': ( 48.150,  17.117, u"sk", u"Slovakia"),
-       u'Brazzaville': ( -4.250,  15.283, u"fr", u"Congo"),
-          u'Brussels': ( 50.833,   4.333, u"nl", u"Belgium"),
-         u'Bucharest': ( 44.433,  26.100, u"ro", u"Romania"),
-          u'Budapest': ( 47.500,  19.083, u"hu", u"Hungary"),
-      u'Buenos Aires': (-34.600, -58.667, u"es", u"Argentina"),
-         u'Bujumbura': ( -3.367,  29.350, u"rn", u"Burundi"),
-             u'Cairo': ( 30.050,  31.250, u"ar", u"Egypt"),
-          u'Canberra': (-35.283, 149.217, u"en", u"Australia"),
-           u'Caracas': ( 10.500, -66.933, u"es", u"Venezuela"),
-          u'Chisinau': ( 47.000,  28.850, u"ro", u"Moldova"),
-           u'Colombo': (  6.933,  79.850, u"si", u"Sri Lanka"),
-           u'Conakry': (  9.550, -13.700, u"fr", u"Guinea"),
-        u'Copenhagen': ( 55.667,  12.583, u"da", u"Denmark"),
-             u'Dakar': ( 24.633,  46.717, u"fr", u"Senegal"),
-          u'Damascus': ( 33.500,  36.300, u"ar", u"Syria"),
-     u'Dar es Salaam': ( -6.800,  39.283, u"sw", u"Tanzania"),
-             u'Dhaka': ( 23.717,  90.400, u"bn", u"Bangladesh"),
-            u'Dublin': ( 53.317,  -6.233, u"en", u"Ireland"),
-          u'Freetown': (  8.500, -13.250, u"en", u"Sierra Leone"),
-       u'George Town': ( 19.300, -81.383, u"en", u"Malaysia"),
-        u'Georgetown': (  6.800, -58.167, u"en", u"Guyana"),
-    u'Guatemala City': ( 14.617, -90.517, u"es", u"Guatemala"),
-             u'Hanoi': ( 21.033, 105.850, u"vi", u"Vietnam"),
-            u'Harare': (-17.833,  31.050, u"en", u"Zimbabwe"),
-            u'Havana': ( 23.117, -82.350, u"es", u"Cuba"),
-          u'Helsinki': ( 60.167,  24.933, u"fi", u"Finland"),
-         u'Islamabad': ( 33.700,  73.167, u"ur", u"Pakistan"),
-           u'Jakarta': ( -6.167, 106.817, u"ms", u"Indonesia"),
-         u'Jerusalem': ( 31.767,  35.233, u"he", u"Israel"),
-              u'Juba': (  4.850,  31.617, u"en", u"Sudan"),
-             u'Kabul': ( 34.517,  69.183, u"fa", u"Afghanistan"),
-           u'Kampala': (  0.317,  32.417, u"en", u"Uganda"),
-         u'Kathmandu': ( 27.717,  85.317, u"ne", u"Nepal"),
-          u'Khartoum': ( 15.600,  32.533, u"ar", u"Sudan"),
-              u'Kiev': ( 50.433,  30.517, u"rw", u"Ukraine"),
-            u'Kigali': ( -1.950,  30.067, u"en", u"Rwanda"),
-          u'Kingston': ( 18.000, -76.800, u"fr", u"Jamaica"),
-          u'Kinshasa': ( -4.317,  15.300, u"ms", u"Congo"),
-      u'Kuala Lumpur': (  3.167, 101.700, u"ar", u"Malaysia"),
-       u'Kuwait City': ( 29.367,  47.967, u"uk", u"Kuwait"),
-            u'La Paz': (-16.500, -68.150, u"es", u"Bolivia"),
-              u'Lima': (-12.050, -77.050, u"es", u"Peru"),
-            u'Lisbon': ( 38.717,  -9.133, u"pt", u"Portugal"),
-         u'Ljubljana': ( 46.050,  14.517, u"sl", u"Slovenia"),
-              u'Lome': (  6.133,   1.217, u"fr", u"Togo"),
-            u'London': ( 51.500,  -0.167, u"en", u"United Kingdom"),
-            u'Luanda': ( -8.833,  13.233, u"pt", u"Angola"),
-            u'Lusaka': (-15.417,  28.283, u"en", u"Zambia"),
-        u'Luxembourg': ( 49.600,   6.117, u"cd", u"Luxembourg"),
-            u'Madrid': ( 40.400,  -3.683, u"es", u"Spain"),
-           u'Managua': ( 12.150, -86.283, u"es", u"Nicaragua"),
-            u'Manila': ( 14.583, 121.000, u"tl", u"Philippines"),
-            u'Maputo': (-25.950,  32.583, u"pt", u"Mozambique"),
-       u'Mexico City': ( 19.433, -99.133, u"es", u"Mexico"),
-             u'Minsk': ( 53.900,  27.567, u"be", u"Belarus"),
-         u'Mogadishu': (  2.067,  45.367, u"so", u"Somalia"),
-            u'Monaco': ( 43.733,   7.417, u"fr", u"Monaco"),
-          u'Monrovia': (  6.300, -10.800, u"en", u"Liberia"),
-        u'Montevideo': (-34.883, -56.183, u"es", u"Uruguay"),
-            u'Moscow': ( 55.750,  37.583, u"ru", u"Russia"),
-            u'Muscat': ( 23.617,  58.583, u"ar", u"Oman"),
-           u'Nairobi': ( -1.283,  36.817, u"en", u"Kenya"),
-            u'Nassau': ( 25.083, -77.350, u"en", u"Bahamas"),
-         u'New Delhi': ( 28.600,  77.200, u"hi", u"India"),
-          u'New York': ( 40.756, -73.987, u"en", u"United States"),
-            u'Niamey': ( 13.517,   2.117, u"fr", u"Niger"),
-              u'Oslo': ( 59.917,  10.750, u"no", u"Norway"),
-            u'Ottawa': ( 45.417, -75.700, u"en", u"Canada"),
-       u'Panama City': (  8.967, -79.533, u"es", u"Panama"),
-             u'Paris': ( 48.867,   2.333, u"fr", u"France"),
-       u'Philipsburg': ( 18.017, -63.033, u"en", u"Sint Maarten"),
-        u'Phnom Penh': ( 11.550, 104.917, u"km", u"Cambodia"),
-        u'Port Louis': (-20.150,  57.483, u"en", u"Mauritius"),
-    u'Port-au-Prince': ( 18.533, -72.333, u"fr", u"Haiti"),
-        u'Porto-Novo': (  6.483,   2.617, u"fr", u"Benin"),
-            u'Prague': ( 50.083,  14.467, u"cs", u"Czech Republic"),
-          u'Pretoria': (-25.700,  28.217, u"xh", u"South Africa"),
-         u'Pyongyang': ( 39.017, 125.750, u"ko", u"North Korea"),
-             u'Quito': ( -0.217, -78.500, u"es", u"Ecuador"),
-             u'Rabat': ( 34.017,  -6.817, u"ar", u"Morocco"),
-           u'Rangoon': ( 16.800,  96.150, u"my", u"Myanmar"),
-         u'Reykjavik': ( 64.150, -21.950, u"is", u"Iceland"),
-              u'Riga': ( 56.950,  24.100, u"lv", u"Latvia"),
-            u'Riyadh': ( 24.633,  46.717, u"ar", u"Saudi Arabia"),
-              u'Rome': ( 41.900,  12.483, u"it", u"Italy"),
-            u'Saipan': ( 15.200, 145.750, u"en", u"Saipan"),
-          u'San Jose': (  9.933, -84.083, u"es", u"Costa Rica"),
-          u'San Juan': ( 18.467, -66.117, u"es", u"Puerto Rico"),
-        u'San Marino': ( 43.933,  12.417, u"it", u"San Marino"),
-      u'San Salvador': ( 13.700, -89.200, u"es", u"El Salvador"),
-             u'Sanaa': ( 15.350,  44.200, u"ar", u"Yemen"),
-          u'Santiago': (-33.450, -70.667, u"es", u"Chile"),
-     u'Santo Domingo': ( 18.467, -69.900, u"es", u"Domenican Republic"),
-          u'Sarajevo': ( 43.867,  18.417, u"bo", u"Bosnia and Herzegovina"),
-             u'Seoul': ( 37.550, 126.983, u"ko", u"South Korea"),
-         u'Singapore': (  1.283, 103.850, u"en", u"Singapore"),
-            u'Skopje': ( 42.000,  21.433, u"mk", u"Macedonia"),
-             u'Sofia': ( 42.683,  23.317, u"bg", u"Bulgaria"),
-         u'Stockholm': ( 59.333,  18.050, u"sv", u"Sweden"),
-            u'Taipei': ( 25.050, 121.500, u"zh", u"China"),
-           u'Tallinn': ( 59.433,  24.717, u"et", u"Estonia"),
-          u'Tashkent': ( 41.333,  69.300, u"uz", u"Uzbekistan"),
-       u'Tegucigalpa': ( 14.100, -87.217, u"es", u"Honduras"),
-            u'Tehran': ( 35.667,  51.417, u"fa", u"Iran"),
-            u'Tirana': ( 41.317,  19.817, u"sq", u"Albania"),
-             u'Tokyo': ( 35.683, 139.750, u"ja", u"Japan"),
-          u'Torshavn': ( 62.017,  -6.767, u"fo", u"Faroe Islands"),
-           u'Tripoli': ( 32.883,  13.167, u"ar", u"Libya"),
-             u'Tunis': ( 36.800,  10.183, u"ar", u"Tunis"),
-             u'Vaduz': ( 47.133,   9.517, u"de", u"Liechtenstein"),
-      u'Vatican City': ( 41.900,  12.450, u"it", u"Vatican City"),
-            u'Vienna': ( 48.200,  16.367, u"de", u"Austria"),
-         u'Vientiane': ( 17.967, 102.600, u"lo", u"Laos"),
-           u'Vilnius': ( 54.683,  25.317, u"lt", u"Lithuania"),
-            u'Warsaw': ( 52.250,  21.000, u"pl", u"Poland"),
-       u'Washington.': ( 38.883, -77.033, u"en", u"United States"),
-        u'Wellington': (-41.467, 174.850, u"en", u"New Zealand"),
-      u'Yamoussoukro': (  6.817,  -5.283, u"fr", u"Côte d'Ivoire"),
-           u'Yaounde': (  3.867,  11.517, u"en", u"Cameroon"),
-            u'Zagreb': ( 45.800,  16.000, u"hr", u"Croatia")
+    u'Abu Dhabi': (24.467,  54.367, u"ar", u"United Arab Emirates"),
+    u'Abuja': (9.083,   7.533, u"en", u"Nigeria"),
+    u'Accra': (5.550,  -0.217, u"en", u"Ghana"),
+    u'Algiers': (36.750,   3.050, u"ar", u"Algeria"),
+    u'Amman': (31.950,  35.933, u"ar", u"Jordan"),
+    u'Amsterdam': (52.383,   4.900, u"nl", u"Netherlands"),
+    u'Ankara': (39.933,  32.867, u"tr", u"Turkey"),
+    u'Astana': (51.167,  71.417, u"ru", u"Kazakhstan"),
+    u'Asuncion': (-25.267, -57.667, u"es", u"Paraguay"),
+    u'Athens': (37.983,  23.733, u"el", u"Greece"),
+    u'Baghdad': (33.333,  44.383, u"ar", u"Iraq"),
+    u'Bamako': (12.650,  -8.000, u"fr", u"Mali"),
+    u'Bangkok': (13.750, 100.517, u"th", u"Thailand"),
+    u'Bangui': (4.367,  18.583, u"fr", u"Central African Republic"),
+    u'Beijing': (39.917, 116.383, u"zh", u"China"),
+    u'Beirut': (33.867,  35.500, u"ar", u"Lebanon"),
+    u'Belgrade': (44.833,  20.500, u"sr", u"Serbia"),
+    u'Berlin': (52.517,  13.400, u"de", u"Germany"),
+    u'Bern': (46.950,   7.433, u"de", u"Switzerland"),
+    u'Bissau': (11.850, -15.583, u"pt", u"Guinea"),
+    u'Bogota': (4.600, -74.083, u"es", u"Colombia"),
+    u'Brasilia': (-15.783, -47.917, u"pt", u"Brazil"),
+    u'Bratislava': (48.150,  17.117, u"sk", u"Slovakia"),
+    u'Brazzaville': (-4.250,  15.283, u"fr", u"Congo"),
+    u'Brussels': (50.833,   4.333, u"nl", u"Belgium"),
+    u'Bucharest': (44.433,  26.100, u"ro", u"Romania"),
+    u'Budapest': (47.500,  19.083, u"hu", u"Hungary"),
+    u'Buenos Aires': (-34.600, -58.667, u"es", u"Argentina"),
+    u'Bujumbura': (-3.367,  29.350, u"rn", u"Burundi"),
+    u'Cairo': (30.050,  31.250, u"ar", u"Egypt"),
+    u'Canberra': (-35.283, 149.217, u"en", u"Australia"),
+    u'Caracas': (10.500, -66.933, u"es", u"Venezuela"),
+    u'Chisinau': (47.000,  28.850, u"ro", u"Moldova"),
+    u'Colombo': (6.933,  79.850, u"si", u"Sri Lanka"),
+    u'Conakry': (9.550, -13.700, u"fr", u"Guinea"),
+    u'Copenhagen': (55.667,  12.583, u"da", u"Denmark"),
+    u'Dakar': (24.633,  46.717, u"fr", u"Senegal"),
+    u'Damascus': (33.500,  36.300, u"ar", u"Syria"),
+    u'Dar es Salaam': (-6.800,  39.283, u"sw", u"Tanzania"),
+    u'Dhaka': (23.717,  90.400, u"bn", u"Bangladesh"),
+    u'Dublin': (53.317,  -6.233, u"en", u"Ireland"),
+    u'Freetown': (8.500, -13.250, u"en", u"Sierra Leone"),
+    u'George Town': (19.300, -81.383, u"en", u"Malaysia"),
+    u'Georgetown': (6.800, -58.167, u"en", u"Guyana"),
+    u'Guatemala City': (14.617, -90.517, u"es", u"Guatemala"),
+    u'Hanoi': (21.033, 105.850, u"vi", u"Vietnam"),
+    u'Harare': (-17.833,  31.050, u"en", u"Zimbabwe"),
+    u'Havana': (23.117, -82.350, u"es", u"Cuba"),
+    u'Helsinki': (60.167,  24.933, u"fi", u"Finland"),
+    u'Islamabad': (33.700,  73.167, u"ur", u"Pakistan"),
+    u'Jakarta': (-6.167, 106.817, u"ms", u"Indonesia"),
+    u'Jerusalem': (31.767,  35.233, u"he", u"Israel"),
+    u'Juba': (4.850,  31.617, u"en", u"Sudan"),
+    u'Kabul': (34.517,  69.183, u"fa", u"Afghanistan"),
+    u'Kampala': (0.317,  32.417, u"en", u"Uganda"),
+    u'Kathmandu': (27.717,  85.317, u"ne", u"Nepal"),
+    u'Khartoum': (15.600,  32.533, u"ar", u"Sudan"),
+    u'Kiev': (50.433,  30.517, u"rw", u"Ukraine"),
+    u'Kigali': (-1.950,  30.067, u"en", u"Rwanda"),
+    u'Kingston': (18.000, -76.800, u"fr", u"Jamaica"),
+    u'Kinshasa': (-4.317,  15.300, u"ms", u"Congo"),
+    u'Kuala Lumpur': (3.167, 101.700, u"ar", u"Malaysia"),
+    u'Kuwait City': (29.367,  47.967, u"uk", u"Kuwait"),
+    u'La Paz': (-16.500, -68.150, u"es", u"Bolivia"),
+    u'Lima': (-12.050, -77.050, u"es", u"Peru"),
+    u'Lisbon': (38.717,  -9.133, u"pt", u"Portugal"),
+    u'Ljubljana': (46.050,  14.517, u"sl", u"Slovenia"),
+    u'Lome': (6.133,   1.217, u"fr", u"Togo"),
+    u'London': (51.500,  -0.167, u"en", u"United Kingdom"),
+    u'Luanda': (-8.833,  13.233, u"pt", u"Angola"),
+    u'Lusaka': (-15.417,  28.283, u"en", u"Zambia"),
+    u'Luxembourg': (49.600,   6.117, u"cd", u"Luxembourg"),
+    u'Madrid': (40.400,  -3.683, u"es", u"Spain"),
+    u'Managua': (12.150, -86.283, u"es", u"Nicaragua"),
+    u'Manila': (14.583, 121.000, u"tl", u"Philippines"),
+    u'Maputo': (-25.950,  32.583, u"pt", u"Mozambique"),
+    u'Mexico City': (19.433, -99.133, u"es", u"Mexico"),
+    u'Minsk': (53.900,  27.567, u"be", u"Belarus"),
+    u'Mogadishu': (2.067,  45.367, u"so", u"Somalia"),
+    u'Monaco': (43.733,   7.417, u"fr", u"Monaco"),
+    u'Monrovia': (6.300, -10.800, u"en", u"Liberia"),
+    u'Montevideo': (-34.883, -56.183, u"es", u"Uruguay"),
+    u'Moscow': (55.750,  37.583, u"ru", u"Russia"),
+    u'Muscat': (23.617,  58.583, u"ar", u"Oman"),
+    u'Nairobi': (-1.283,  36.817, u"en", u"Kenya"),
+    u'Nassau': (25.083, -77.350, u"en", u"Bahamas"),
+    u'New Delhi': (28.600,  77.200, u"hi", u"India"),
+    u'New York': (40.756, -73.987, u"en", u"United States"),
+    u'Niamey': (13.517,   2.117, u"fr", u"Niger"),
+    u'Oslo': (59.917,  10.750, u"no", u"Norway"),
+    u'Ottawa': (45.417, -75.700, u"en", u"Canada"),
+    u'Panama City': (8.967, -79.533, u"es", u"Panama"),
+    u'Paris': (48.867,   2.333, u"fr", u"France"),
+    u'Philipsburg': (18.017, -63.033, u"en", u"Sint Maarten"),
+    u'Phnom Penh': (11.550, 104.917, u"km", u"Cambodia"),
+    u'Port Louis': (-20.150,  57.483, u"en", u"Mauritius"),
+    u'Port-au-Prince': (18.533, -72.333, u"fr", u"Haiti"),
+    u'Porto-Novo': (6.483,   2.617, u"fr", u"Benin"),
+    u'Prague': (50.083,  14.467, u"cs", u"Czech Republic"),
+    u'Pretoria': (-25.700,  28.217, u"xh", u"South Africa"),
+    u'Pyongyang': (39.017, 125.750, u"ko", u"North Korea"),
+    u'Quito': (-0.217, -78.500, u"es", u"Ecuador"),
+    u'Rabat': (34.017,  -6.817, u"ar", u"Morocco"),
+    u'Rangoon': (16.800,  96.150, u"my", u"Myanmar"),
+    u'Reykjavik': (64.150, -21.950, u"is", u"Iceland"),
+    u'Riga': (56.950,  24.100, u"lv", u"Latvia"),
+    u'Riyadh': (24.633,  46.717, u"ar", u"Saudi Arabia"),
+    u'Rome': (41.900,  12.483, u"it", u"Italy"),
+    u'Saipan': (15.200, 145.750, u"en", u"Saipan"),
+    u'San Jose': (9.933, -84.083, u"es", u"Costa Rica"),
+    u'San Juan': (18.467, -66.117, u"es", u"Puerto Rico"),
+    u'San Marino': (43.933,  12.417, u"it", u"San Marino"),
+    u'San Salvador': (13.700, -89.200, u"es", u"El Salvador"),
+    u'Sanaa': (15.350,  44.200, u"ar", u"Yemen"),
+    u'Santiago': (-33.450, -70.667, u"es", u"Chile"),
+    u'Santo Domingo': (18.467, -69.900, u"es", u"Domenican Republic"),
+    u'Sarajevo': (43.867,  18.417, u"bo", u"Bosnia and Herzegovina"),
+    u'Seoul': (37.550, 126.983, u"ko", u"South Korea"),
+    u'Singapore': (1.283, 103.850, u"en", u"Singapore"),
+    u'Skopje': (42.000,  21.433, u"mk", u"Macedonia"),
+    u'Sofia': (42.683,  23.317, u"bg", u"Bulgaria"),
+    u'Stockholm': (59.333,  18.050, u"sv", u"Sweden"),
+    u'Taipei': (25.050, 121.500, u"zh", u"China"),
+    u'Tallinn': (59.433,  24.717, u"et", u"Estonia"),
+    u'Tashkent': (41.333,  69.300, u"uz", u"Uzbekistan"),
+    u'Tegucigalpa': (14.100, -87.217, u"es", u"Honduras"),
+    u'Tehran': (35.667,  51.417, u"fa", u"Iran"),
+    u'Tirana': (41.317,  19.817, u"sq", u"Albania"),
+    u'Tokyo': (35.683, 139.750, u"ja", u"Japan"),
+    u'Torshavn': (62.017,  -6.767, u"fo", u"Faroe Islands"),
+    u'Tripoli': (32.883,  13.167, u"ar", u"Libya"),
+    u'Tunis': (36.800,  10.183, u"ar", u"Tunis"),
+    u'Vaduz': (47.133,   9.517, u"de", u"Liechtenstein"),
+    u'Vatican City': (41.900,  12.450, u"it", u"Vatican City"),
+    u'Vienna': (48.200,  16.367, u"de", u"Austria"),
+    u'Vientiane': (17.967, 102.600, u"lo", u"Laos"),
+    u'Vilnius': (54.683,  25.317, u"lt", u"Lithuania"),
+    u'Warsaw': (52.250,  21.000, u"pl", u"Poland"),
+    u'Washington.': (38.883, -77.033, u"en", u"United States"),
+    u'Wellington': (-41.467, 174.850, u"en", u"New Zealand"),
+    u'Yamoussoukro': (6.817,  -5.283, u"fr", u"Côte d'Ivoire"),
+    u'Yaounde': (3.867,  11.517, u"en", u"Cameroon"),
+    u'Zagreb': (45.800,  16.000, u"hr", u"Croatia")
 }
+
 
 def geocode(location):
     """ Returns a (latitude, longitude, language code, region)-tuple 
