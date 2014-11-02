@@ -43,8 +43,11 @@ for example_py in glob.glob(examples):
         if p.returncode != 0 and "raise HTTP" in err:
             raise unittest.SkipTest("Test skipped due to an HTTPError")
 
+        if p.returncode != 0 and "translate API is a paid service" in err:
+            raise unittest.SkipTest("Test skipped as translate API costs")
+
         if p.returncode != 0 and "raise NotImplementedError" in err and "2.6" in err:
-            raise unittest.SkipTest("Example is not python 2.6 compatible.")
+            raise unittest.SkipTest("Example is not python 2.6 compatible")
 
         assert (p.returncode == 0), "%s exited with bad status %s\n\n%s" % (
             example_py, p.returncode, err)
