@@ -172,8 +172,7 @@ def latin(s):
 
 
 def decode_string(v, encoding="utf-8"):
-    """ Returns the given value as a Unicode string (if possible).
-    """
+    """Returns the given value as a Unicode string (if possible)."""
     if isinstance(encoding, basestring):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, str):
@@ -187,8 +186,7 @@ def decode_string(v, encoding="utf-8"):
 
 
 def encode_string(v, encoding="utf-8"):
-    """ Returns the given value as a Python byte string (if possible).
-    """
+    """Returns the given value as a Python byte string (if possible)."""
     if isinstance(encoding, basestring):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, unicode):
@@ -212,13 +210,18 @@ bytestring = b = s
 class AsynchronousRequest(object):
 
     def __init__(self, function, *args, **kwargs):
-        """ Executes the function in the background.
-            AsynchronousRequest.done is False as long as it is busy, but the program will not halt in the meantime.
-            AsynchronousRequest.value contains the function's return value once done.
-            AsynchronousRequest.error contains the Exception raised by an erronous function.
-            For example, this is useful for running live web requests while keeping an animation running.
-            For good reasons, there is no way to interrupt a background process (i.e. Python thread).
-            You are responsible for ensuring that the given function doesn't hang.
+        """Executes the function in the background.
+
+        AsynchronousRequest.done is False as long as it is busy, but the
+        program will not halt in the meantime. AsynchronousRequest.value
+        contains the function's return value once done.
+        AsynchronousRequest.error contains the Exception raised by an
+        erronous function. For example, this is useful for running live
+        web requests while keeping an animation running. For good
+        reasons, there is no way to interrupt a background process (i.e.
+        Python thread). You are responsible for ensuring that the given
+        function doesn't hang.
+
         """
         self._response = None  # The return value of the given function.
         self._error = None  # The exception (if any) raised by the function.
@@ -229,16 +232,14 @@ class AsynchronousRequest(object):
         self._thread.start()
 
     def _fetch(self, function, *args, **kwargs):
-        """ Executes the function and sets AsynchronousRequest.response.
-        """
+        """Executes the function and sets AsynchronousRequest.response."""
         try:
             self._response = function(*args, **kwargs)
         except Exception as e:
             self._error = e
 
     def now(self):
-        """ Waits for the function to finish and yields its return value.
-        """
+        """Waits for the function to finish and yields its return value."""
         self._thread.join()
         return self._response
 
@@ -263,8 +264,7 @@ class AsynchronousRequest(object):
 
 
 def asynchronous(function, *args, **kwargs):
-    """ Returns an AsynchronousRequest object for the given function.
-    """
+    """Returns an AsynchronousRequest object for the given function."""
     return AsynchronousRequest(function, *args, **kwargs)
 
 send = asynchronous
@@ -311,8 +311,10 @@ def extension(filename):
 
 
 def urldecode(query):
-    """ Inverse operation of urllib.urlencode.
-        Returns a dictionary of (name, value)-items from a URL query string.
+    """Inverse operation of urllib.urlencode.
+
+    Returns a dictionary of (name, value)-items from a URL query string.
+
     """
     def _format(s):
         if s == "" or s == "None":
@@ -335,16 +337,17 @@ url_decode = urldecode
 
 
 def proxy(host, protocol="https"):
-    """ Returns the value for the URL.open() proxy parameter.
-        - host: host address of the proxy server.
+    """Returns the value for the URL.open() proxy parameter.
+
+    - host: host address of the proxy server.
+
     """
     return (host, protocol)
 
 
 class Error(Exception):
 
-    """ Base class for pattern.web errors.
-    """
+    """Base class for pattern.web errors."""
 
     def __init__(self, *args, **kwargs):
         Exception.__init__(self, *args)
@@ -441,10 +444,12 @@ class URL(object):
             self.parts.update(kwargs)
 
     def _parse(self):
-        """ Parses all the parts of the URL string to a dictionary.
-            URL format: protocal://username:password@domain:port/path/page?querystring#anchor
-            For example: http://user:pass@example.com:992/animal/bird?species=seagull&q#wings
-            This is a cached method that is only invoked when necessary, and only once.
+        """Parses all the parts of the URL string to a dictionary.
+
+        URL format: protocal://username:password@domain:port/path/page?querystring#anchor
+        For example: http://user:pass@example.com:992/animal/bird?species=seagull&q#wings
+        This is a cached method that is only invoked when necessary, and only once.
+
         """
         p = urlsplit(self._string)
         P = {PROTOCOL: p[0],            # http
@@ -490,8 +495,7 @@ class URL(object):
 
     @property
     def parts(self):
-        """ Yields a dictionary with the URL parts.
-        """
+        """Yields a dictionary with the URL parts."""
         if not self._parts:
             self._parse()
         return self._parts
@@ -529,9 +533,13 @@ class URL(object):
         raise AttributeError("'URL' object has no attribute '%s'" % k)
 
     def open(self, timeout=10, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None):
-        """ Returns a connection to the url from which data can be retrieved with connection.read().
-            When the timeout amount of seconds is exceeded, raises a URLTimeout.
-            When an error occurs, raises a URLError (e.g. HTTP404NotFound).
+        """Returns a connection to the url from which data can be retrieved
+        with connection.read().
+
+        When the timeout amount of seconds is exceeded, raises a
+        URLTimeout. When an error occurs, raises a URLError (e.g.
+        HTTP404NotFound).
+
         """
         url = self.string
         # Handle local files with urllib.urlopen() instead of
@@ -597,8 +605,11 @@ class URL(object):
             raise URLError(str(e), src=e, url=url)
 
     def download(self, timeout=10, cached=True, throttle=0, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None, unicode=False, **kwargs):
-        """ Downloads the content at the given URL (by default it will be cached locally).
-            Unless unicode=False, the content is returned as a unicode string.
+        """Downloads the content at the given URL (by default it will be cached
+        locally).
+
+        Unless unicode=False, the content is returned as a unicode string.
+
         """
         # Filter OAuth parameters from cache id (they will be unique for each
         # request).
@@ -638,8 +649,7 @@ class URL(object):
 
     @property
     def exists(self, timeout=10):
-        """ Yields False if the URL generates a HTTP404NotFound error.
-        """
+        """Yields False if the URL generates a HTTP404NotFound error."""
         try:
             self.open(timeout)
         except HTTP404NotFound:
@@ -667,8 +677,7 @@ class URL(object):
 
     @property
     def headers(self, timeout=10):
-        """ Yields a dictionary with the HTTP response headers.
-        """
+        """Yields a dictionary with the HTTP response headers."""
         if self.__dict__["_headers"] is None:
             try:
                 h = dict(self.open(timeout).info())
@@ -679,8 +688,7 @@ class URL(object):
 
     @property
     def redirect(self, timeout=10):
-        """ Yields the redirected URL, or None.
-        """
+        """Yields the redirected URL, or None."""
         if self.__dict__["_redirect"] is None:
             try:
                 r = self.open(timeout).geturl()
@@ -729,8 +737,11 @@ class URL(object):
 
 
 def download(url=u"", method=GET, query={}, timeout=10, cached=True, throttle=0, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None, unicode=False):
-    """ Downloads the content at the given URL (by default it will be cached locally).
-        Unless unicode=False, the content is returned as a unicode string.
+    """Downloads the content at the given URL (by default it will be cached
+    locally).
+
+    Unless unicode=False, the content is returned as a unicode string.
+
     """
     return URL(url, method, query).download(timeout, cached, throttle, proxy, user_agent, referrer, authentication, unicode)
 
@@ -743,8 +754,8 @@ def download(url=u"", method=GET, query={}, timeout=10, cached=True, throttle=0,
 
 
 def bind(obj, method, function):
-    """ Attaches the function as a method with the given name to the given object.
-    """
+    """Attaches the function as a method with the given name to the given
+    object."""
     try:
         import types
         setattr(obj, method, types.MethodType(function, obj))
@@ -756,15 +767,17 @@ def bind(obj, method, function):
 class Stream(list):
 
     def __init__(self, url, delimiter="\n", **kwargs):
-        """ Buffered stream of data from a given URL.
-        """
+        """Buffered stream of data from a given URL."""
         self.socket = URL(url).open(**kwargs)
         self.buffer = ""
         self.delimiter = delimiter
 
     def update(self, bytes=1024):
-        """ Reads a number of bytes from the stream.
-            If a delimiter is encountered, calls Stream.parse() on the packet.
+        """Reads a number of bytes from the stream.
+
+        If a delimiter is encountered, calls Stream.parse() on the
+        packet.
+
         """
         packets = []
         self.buffer += self.socket.read(bytes)
@@ -781,8 +794,7 @@ class Stream(list):
         return packets
 
     def parse(self, data):
-        """ Must be overridden in a subclass.
-        """
+        """Must be overridden in a subclass."""
         return data
 
     def clear(self):
@@ -790,8 +802,7 @@ class Stream(list):
 
 
 def stream(url, delimiter="\n", parse=lambda data: data, **kwargs):
-    """ Returns a new Stream with the given parse method.
-    """
+    """Returns a new Stream with the given parse method."""
     stream = Stream(url, delimiter, **kwargs)
     bind(stream, "parse", lambda stream, data: parse(data))
     return stream
@@ -817,10 +828,12 @@ RE_URL1, RE_URL2, RE_URL3 = (
 
 
 def find_urls(string, unique=True):
-    """ Returns a list of URLs parsed from the string.
-        Works on http://, https://, www. links or domain names ending in .com, .org, .net.
-        Links can be preceded by leading punctuation (open parens)
-        and followed by trailing punctuation (period, comma, close parens).
+    """Returns a list of URLs parsed from the string.
+
+    Works on http://, https://, www. links or domain names ending in .com, .org, .net.
+    Links can be preceded by leading punctuation (open parens)
+    and followed by trailing punctuation (period, comma, close parens).
+
     """
     string = u(string)
     string = string.replace(u"\u2024", ".")
@@ -854,8 +867,7 @@ def find_email(string, unique=True):
 
 
 def find_between(a, b, string):
-    """ Returns a list of substrings between a and b in the given string.
-    """
+    """Returns a list of substrings between a and b in the given string."""
     p = "%s(.*?)%s" % (a, b)
     p = re.compile(p, re.DOTALL | re.I)
     return [m for m in p.findall(string)]
@@ -937,11 +949,13 @@ class HTMLTagstripper(HTMLParser):
         HTMLParser.__init__(self)
 
     def strip(self, html, exclude=[], replace=blocks):
-        """ Returns the HTML string with all element tags (e.g. <p>) removed.
-            - exclude    : a list of tags to keep. Element attributes are stripped.
-                           To preserve attributes a dict of (tag name, [attribute])-items can be given.
-            - replace    : a dictionary of (tag name, (replace_before, replace_after))-items.
-                           By default, block-level elements are separated with linebreaks.
+        """Returns the HTML string with all element tags (e.g. <p>) removed.
+
+        - exclude    : a list of tags to keep. Element attributes are stripped.
+                       To preserve attributes a dict of (tag name, [attribute])-items can be given.
+        - replace    : a dictionary of (tag name, (replace_before, replace_after))-items.
+                       By default, block-level elements are separated with linebreaks.
+
         """
         if html is None:
             return None
@@ -998,10 +1012,13 @@ strip_tags = HTMLTagstripper().strip
 
 
 def strip_element(string, tag, attributes=""):
-    """ Removes all elements with the given tagname and attributes from the string.
-        Open and close tags are kept in balance.
-        No HTML parser is used: strip_element(s, "a", 'class="x"') matches
-        '<a class="x">' or '<a href="x" class="x">' but not "<a class='x'>".
+    """Removes all elements with the given tagname and attributes from the
+    string.
+
+    Open and close tags are kept in balance.
+    No HTML parser is used: strip_element(s, "a", 'class="x"') matches
+    '<a class="x">' or '<a href="x" class="x">' but not "<a class='x'>".
+
     """
     s = string.lower()  # Case-insensitive.
     t = tag.strip("</>")
@@ -1029,8 +1046,8 @@ def strip_element(string, tag, attributes=""):
 
 
 def strip_between(a, b, string):
-    """ Removes anything between (and including) string a and b inside the given string.
-    """
+    """Removes anything between (and including) string a and b inside the given
+    string."""
     p = "%s.*?%s" % (a, b)
     p = re.compile(p, re.DOTALL | re.I)
     return re.sub(p, "", string)
@@ -1100,9 +1117,11 @@ RE_TABS = re.compile(r"\t+", re.M)      # Matches one or more tabs.
 
 
 def collapse_spaces(string, indentation=False, replace=" "):
-    """ Returns a string with consecutive spaces collapsed to a single space.
-        Whitespace on empty lines and at the end of each line is removed.
-        With indentation=True, retains leading whitespace on each line.
+    """Returns a string with consecutive spaces collapsed to a single space.
+
+    Whitespace on empty lines and at the end of each line is removed.
+    With indentation=True, retains leading whitespace on each line.
+
     """
     p = []
     for x in string.splitlines():
@@ -1112,9 +1131,11 @@ def collapse_spaces(string, indentation=False, replace=" "):
 
 
 def collapse_tabs(string, indentation=False, replace=" "):
-    """ Returns a string with (consecutive) tabs replaced by a single space.
-        Whitespace on empty lines and at the end of each line is removed.
-        With indentation=True, retains leading whitespace on each line.
+    """Returns a string with (consecutive) tabs replaced by a single space.
+
+    Whitespace on empty lines and at the end of each line is removed.
+    With indentation=True, retains leading whitespace on each line.
+
     """
     p = []
     for x in string.splitlines():
@@ -1124,8 +1145,11 @@ def collapse_tabs(string, indentation=False, replace=" "):
 
 
 def collapse_linebreaks(string, threshold=1):
-    """ Returns a string with consecutive linebreaks collapsed to at most the given threshold.
-        Whitespace on empty lines and at the end of each line is removed.
+    """Returns a string with consecutive linebreaks collapsed to at most the
+    given threshold.
+
+    Whitespace on empty lines and at the end of each line is removed.
+
     """
     n = "\n" * threshold
     p = [s.rstrip() for s in string.splitlines()]
@@ -1135,14 +1159,16 @@ def collapse_linebreaks(string, threshold=1):
 
 
 def plaintext(html, keep=[], replace=blocks, linebreaks=2, indentation=False):
-    """ Returns a string with all HTML tags removed.
-        Content inside HTML comments, the <style> tag and the <script> tags is removed.
-        - keep        : a list of tags to keep. Element attributes are stripped.
-                        To preserve attributes a dict of (tag name, [attribute])-items can be given.
-        - replace     : a dictionary of (tag name, (replace_before, replace_after))-items.
-                        By default, block-level elements are followed by linebreaks.
-        - linebreaks  : the maximum amount of consecutive linebreaks,
-        - indentation : keep left line indentation (tabs and spaces)?
+    """Returns a string with all HTML tags removed. Content inside HTML
+    comments, the <style> tag and the <script> tags is removed.
+
+    - keep        : a list of tags to keep. Element attributes are stripped.
+                    To preserve attributes a dict of (tag name, [attribute])-items can be given.
+    - replace     : a dictionary of (tag name, (replace_before, replace_after))-items.
+                    By default, block-level elements are followed by linebreaks.
+    - linebreaks  : the maximum amount of consecutive linebreaks,
+    - indentation : keep left line indentation (tabs and spaces)?
+
     """
     if isinstance(html, Element):
         html = html.content
@@ -1182,15 +1208,17 @@ LATEST = "latest"    # Sort results by most recent.
 class Result(dict):
 
     def __init__(self, url, **kwargs):
-        """ An item in a list of results returned by SearchEngine.search().
-            All dictionary keys are available as Unicode string attributes.
-            - id       : unique identifier,
-            - url      : the URL of the referred web content,
-            - title    : the title of the content at the URL,
-            - text     : the content text,
-            - language : the content language,
-            - author   : for news items and posts, the author,
-            - date     : for news items and posts, the publication date.
+        """An item in a list of results returned by SearchEngine.search(). All
+        dictionary keys are available as Unicode string attributes.
+
+        - id       : unique identifier,
+        - url      : the URL of the referred web content,
+        - title    : the title of the content at the URL,
+        - text     : the content text,
+        - language : the content language,
+        - author   : for news items and posts, the author,
+        - date     : for news items and posts, the publication date.
+
         """
         dict.__init__(self)
         self.url = url
@@ -1223,8 +1251,10 @@ class Result(dict):
         return self.shares
 
     def download(self, *args, **kwargs):
-        """ Download the content at the given URL.
-            By default it will be cached - see URL.download().
+        """Download the content at the given URL.
+
+        By default it will be cached - see URL.download().
+
         """
         return URL(self.url).download(*args, **kwargs)
 
@@ -1261,12 +1291,14 @@ class Result(dict):
 class Results(list):
 
     def __init__(self, source=None, query=None, type=SEARCH, total=0):
-        """ A list of results returned from SearchEngine.search().
-            - source: the service that yields the results (e.g. GOOGLE, TWITTER).
-            - query : the query that yields the results.
-            - type  : the query type (SEARCH, IMAGE, NEWS).
-            - total : the total result count.
-                      This is not the length of the list, but the total number of matches for the given query.
+        """A list of results returned from SearchEngine.search().
+
+        - source: the service that yields the results (e.g. GOOGLE, TWITTER).
+        - query : the query that yields the results.
+        - type  : the query type (SEARCH, IMAGE, NEWS).
+        - total : the total result count.
+                  This is not the length of the list, but the total number of matches for the given query.
+
         """
         self.source = source
         self.query = query
@@ -1277,10 +1309,12 @@ class Results(list):
 class SearchEngine(object):
 
     def __init__(self, license=None, throttle=1.0, language=None):
-        """ A base class for a web service.
-            - license  : license key for the API,
-            - throttle : delay between requests (avoid hammering the server).
-            Inherited by: Google, Bing, Wikipedia, Twitter, Facebook, Flickr, ...
+        """A base class for a web service.
+
+        - license  : license key for the API,
+        - throttle : delay between requests (avoid hammering the server).
+        Inherited by: Google, Bing, Wikipedia, Twitter, Facebook, Flickr, ...
+
         """
         self.license = license
         # Amount of sleep time after executing a query.
@@ -1326,11 +1360,13 @@ class Google(SearchEngine):
             self, license or GOOGLE_LICENSE, throttle, language)
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
-        """ Returns a list of results from Google for the given query.
-            - type : SEARCH,
-            - start: maximum 100 results => start 1-10 with count=10,
-            - count: maximum 10,
-            There is a daily limit of 10,000 queries. Google Custom Search is a paid service.
+        """Returns a list of results from Google for the given query.
+
+        - type : SEARCH,
+        - start: maximum 100 results => start 1-10 with count=10,
+        - count: maximum 10,
+        There is a daily limit of 10,000 queries. Google Custom Search is a paid service.
+
         """
         if type != SEARCH:
             raise SearchEngineTypeError
@@ -1377,8 +1413,12 @@ class Google(SearchEngine):
         return results
 
     def translate(self, string, input="en", output="fr", **kwargs):
-        """ Returns the translation of the given string in the desired output language.
-            Google Translate is a paid service, license without billing raises HTTP401Authentication.
+        """Returns the translation of the given string in the desired output
+        language.
+
+        Google Translate is a paid service, license without billing
+        raises HTTP401Authentication.
+
         """
         url = URL("https://www.googleapis.com/language/translate/v2?", method=GET, query={
             "key": self.license or GOOGLE_LICENSE,
@@ -1453,11 +1493,13 @@ class Yahoo(SearchEngine):
         return url
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
-        """ Returns a list of results from Yahoo for the given query.
-            - type : SEARCH, IMAGE or NEWS,
-            - start: maximum 1000 results => start 1-100 with count=10, 1000/count,
-            - count: maximum 50, or 35 for images.
-            There is no daily limit, however Yahoo BOSS is a paid service.
+        """Returns a list of results from Yahoo for the given query.
+
+        - type : SEARCH, IMAGE or NEWS,
+        - start: maximum 1000 results => start 1-100 with count=10, 1000/count,
+        - count: maximum 50, or 35 for images.
+        There is no daily limit, however Yahoo BOSS is a paid service.
+
         """
         if type not in (SEARCH, IMAGE, NEWS):
             raise SearchEngineTypeError
@@ -1529,11 +1571,13 @@ class Bing(SearchEngine):
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """" Returns a list of results from Bing for the given query.
-             - type : SEARCH, IMAGE or NEWS,
-             - start: maximum 1000 results => start 1-100 with count=10, 1000/count,
-             - count: maximum 50, or 15 for news,
-             - size : for images, either SMALL, MEDIUM or LARGE.
-             There is no daily query limit.
+
+        - type : SEARCH, IMAGE or NEWS,
+        - start: maximum 1000 results => start 1-100 with count=10, 1000/count,
+        - count: maximum 50, or 15 for news,
+        - size : for images, either SMALL, MEDIUM or LARGE.
+        There is no daily query limit.
+
         """
         if type not in (SEARCH, IMAGE, NEWS):
             raise SearchEngineTypeError
@@ -1616,8 +1660,7 @@ class DuckDuckGo(SearchEngine):
             self, license or DUCKDUCKGO_LICENSE, throttle, language)
 
     def search(self, query, type=SEARCH, start=None, count=None, sort=RELEVANCY, size=None, cached=True, **kwargs):
-        """" Returns a list of results from DuckDuckGo for the given query.
-        """
+        """" Returns a list of results from DuckDuckGo for the given query."""
         if type != SEARCH:
             raise SearchEngineTypeError
         # 1) Construct request URL.
@@ -1680,8 +1723,8 @@ class DuckDuckGo(SearchEngine):
         return results
 
     def answer(self, string, **kwargs):
-        """ Returns a DuckDuckGo answer for the given string (e.g., math, spelling, ...)
-        """
+        """Returns a DuckDuckGo answer for the given string (e.g., math,
+        spelling, ...)"""
         url = URL(DUCKDUCKGO, method=GET, query={
             "q": string,
             "o": "json"
@@ -1695,15 +1738,13 @@ class DuckDuckGo(SearchEngine):
         return u(data)
 
     def spelling(self, string):
-        """ Returns a list of spelling suggestions for the given string.
-        """
+        """Returns a list of spelling suggestions for the given string."""
         s = self.answer("spell " + string, cached=True)
         s = re.findall(r"<a.*?>(.*?)</a>", s)
         return s
 
     def definition(self, string):
-        """ Returns a dictionary definition for the given string.
-        """
+        """Returns a dictionary definition for the given string."""
         s = self.answer(string, field="Definition", cached=True)
         s = re.sub(r"^.*? definition: ", "", s)
         s = re.sub(r"(^'''.*?''' |^)(.)(.*?)$",
@@ -1763,11 +1804,13 @@ class Twitter(SearchEngine):
         return url
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=False, **kwargs):
-        """ Returns a list of results from Twitter for the given query.
-            - type : SEARCH,
-            - start: Result.id or int,
-            - count: maximum 100.
-            There is a limit of 150+ queries per 15 minutes.
+        """Returns a list of results from Twitter for the given query.
+
+        - type : SEARCH,
+        - start: Result.id or int,
+        - count: maximum 100.
+        There is a limit of 150+ queries per 15 minutes.
+
         """
         if type != SEARCH:
             raise SearchEngineTypeError
@@ -1861,8 +1904,8 @@ class Twitter(SearchEngine):
         return results
 
     def profile(self, query, start=1, count=10, **kwargs):
-        """ Returns a list of results for the given author id, alias or search query.
-        """
+        """Returns a list of results for the given author id, alias or search
+        query."""
         # 1) Construct request URL.
         url = URL(TWITTER + "users/search.json?", method=GET, query={
             "q": query,
@@ -1897,8 +1940,7 @@ class Twitter(SearchEngine):
         ]
 
     def trends(self, **kwargs):
-        """ Returns a list with 10 trending topics on Twitter.
-        """
+        """Returns a list with 10 trending topics on Twitter."""
         # 1) Construct request URL.
         url = URL("https://api.twitter.com/1.1/trends/place.json?id=1")
         url = self._authenticate(url)
@@ -1914,8 +1956,7 @@ class Twitter(SearchEngine):
         return [u(x.get("name")) for x in data[0].get("trends", [])]
 
     def stream(self, query, **kwargs):
-        """ Returns a live stream of Result objects for the given query.
-        """
+        """Returns a live stream of Result objects for the given query."""
         url = URL(TWITTER_STREAM)
         url.query["track"] = query
         url = self._authenticate(url)
@@ -1930,9 +1971,8 @@ class TwitterStream(Stream):
         self.format = format
 
     def parse(self, data):
-        """ TwitterStream.queue will populate with Result objects as
-            TwitterStream.update() is called iteratively.
-        """
+        """TwitterStream.queue will populate with Result objects as
+        TwitterStream.update() is called iteratively."""
         if data.strip():
             x = json.loads(data)
             r = Result(url=None)
@@ -1966,8 +2006,8 @@ def author(name):
 
 
 def hashtags(string):
-    """ Returns a list of hashtags (words starting with a #hash) from a tweet.
-    """
+    """Returns a list of hashtags (words starting with a #hash) from a
+    tweet."""
     return [b for a, b in TWITTER_HASHTAG.findall(string)]
 
 
@@ -2068,9 +2108,11 @@ class MediaWiki(SearchEngine):
         return self.articles()
 
     def articles(self, **kwargs):
-        """ Returns an iterator over all MediaWikiArticle objects.
-            Optional parameters can include those passed to
-            MediaWiki.index(), MediaWiki.search() and URL.download().
+        """Returns an iterator over all MediaWikiArticle objects.
+
+        Optional parameters can include those passed to
+        MediaWiki.index(), MediaWiki.search() and URL.download().
+
         """
         for title in self.index(**kwargs):
             yield self.search(title, **kwargs)
@@ -2079,8 +2121,8 @@ class MediaWiki(SearchEngine):
     all = articles
 
     def index(self, namespace=0, start=None, count=100, cached=True, **kwargs):
-        """ Returns an iterator over all article titles (for a given namespace id).
-        """
+        """Returns an iterator over all article titles (for a given namespace
+        id)."""
         kwargs.setdefault("unicode", True)
         kwargs.setdefault("throttle", self.throttle)
         # Fetch article titles (default) or a custom id.
@@ -2232,8 +2274,10 @@ class MediaWiki(SearchEngine):
 class MediaWikiArticle(object):
 
     def __init__(self, title=u"", source=u"", links=[], categories=[], languages={}, disambiguation=False, **kwargs):
-        """ A MediaWiki article returned from MediaWiki.search().
-            MediaWikiArticle.string contains the HTML content.
+        """A MediaWiki article returned from MediaWiki.search().
+
+        MediaWikiArticle.string contains the HTML content.
+
         """
         self.title = title          # Article title.
         self.source = source         # Article HTML content.
@@ -2333,8 +2377,7 @@ class MediaWikiArticle(object):
 class MediaWikiSection(object):
 
     def __init__(self, article, title=u"", start=0, stop=0, level=1):
-        """ A (nested) section in the content of a MediaWikiArticle.
-        """
+        """A (nested) section in the content of a MediaWikiArticle."""
         self.article = article  # MediaWikiArticle the section is part of.
         self.parent = None    # MediaWikiSection the section is part of.
         self.children = []      # MediaWikiSections belonging to this section.
@@ -2375,8 +2418,10 @@ class MediaWikiSection(object):
 
     @property
     def links(self, path="/wiki/"):
-        """ Yields a list of Wikipedia links in this section. Similar
-            in functionality to MediaWikiArticle.links.
+        """Yields a list of Wikipedia links in this section.
+
+        Similar in functionality to MediaWikiArticle.links.
+
         """
         if self._links is None:
             a = HTMLLinkParser().parse(self.source)
@@ -2389,8 +2434,7 @@ class MediaWikiSection(object):
 
     @property
     def tables(self):
-        """ Yields a list of MediaWikiTable objects in the section.
-        """
+        """Yields a list of MediaWikiTable objects in the section."""
         if self._tables is None:
             self._tables = []
             for style in ("wikitable", "sortable wikitable"):
@@ -2497,12 +2541,15 @@ class Wikipedia(MediaWiki):
 class WikipediaArticle(MediaWikiArticle):
 
     def download(self, media, **kwargs):
-        """ Downloads an item from MediaWikiArticle.media and returns the content.
-            Note: images on Wikipedia can be quite large, and this method uses screen-scraping,
-                  so Wikipedia might not like it that you download media in this way.
-            To save the media in a file:
-            data = article.download(media)
-            open(filename+extension(media),"w").write(data)
+        """Downloads an item from MediaWikiArticle.media and returns the
+        content.
+
+        Note: images on Wikipedia can be quite large, and this method uses screen-scraping,
+              so Wikipedia might not like it that you download media in this way.
+        To save the media in a file:
+        data = article.download(media)
+        open(filename+extension(media),"w").write(data)
+
         """
         url = "http://%s.wikipedia.org/wiki/File:%s" % (
             self.__dict__.get("language", "en"), media)
@@ -2740,12 +2787,14 @@ class DBPedia(SearchEngine):
         SearchEngine.__init__(self, license, throttle, language)
 
     def search(self, query, type=SPARQL, start=1, count=10, sort=RELEVANCY, size=None, cached=False, **kwargs):
-        """ Returns a list of results from DBPedia for the given SPARQL query.
-            - type : SPARQL,
-            - start: no maximum,
-            - count: maximum 1000,
-            There is a limit of 10 requests/second.
-            Maximum query execution time is 120 seconds.
+        """Returns a list of results from DBPedia for the given SPARQL query.
+
+        - type : SPARQL,
+        - start: no maximum,
+        - count: maximum 1000,
+        There is a limit of 10 requests/second.
+        Maximum query execution time is 120 seconds.
+
         """
         if type not in (SPARQL,):
             raise SearchEngineTypeError
@@ -2806,13 +2855,16 @@ class Flickr(SearchEngine):
             self, license or FLICKR_LICENSE, throttle, language)
 
     def search(self, query, type=IMAGE, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
-        """ Returns a list of results from Flickr for the given query.
-            Retrieving the URL of a result (i.e. image) requires an additional query.
-            - type : SEARCH, IMAGE,
-            - start: maximum undefined,
-            - count: maximum 500,
-            - sort : RELEVANCY, LATEST or INTERESTING.
-            There is no daily limit.
+        """Returns a list of results from Flickr for the given query.
+        Retrieving the URL of a result (i.e. image) requires an additional
+        query.
+
+        - type : SEARCH, IMAGE,
+        - start: maximum undefined,
+        - count: maximum 500,
+        - sort : RELEVANCY, LATEST or INTERESTING.
+        There is no daily limit.
+
         """
         if type not in (SEARCH, IMAGE):
             raise SearchEngineTypeError
@@ -2935,12 +2987,15 @@ class Facebook(SearchEngine):
         }).download().split("=")[1]
 
     def search(self, query, type=SEARCH, start=1, count=10, cached=False, **kwargs):
-        """ Returns a list of results from Facebook public status updates for the given query.
-            - query: string, or Result.id for NEWS and COMMENTS,
-            - type : SEARCH,
-            - start: 1,
-            - count: maximum 100 for SEARCH and NEWS, 1000 for COMMENTS and LIKES.
-            There is an hourly limit of +-600 queries (actual amount undisclosed).
+        """Returns a list of results from Facebook public status updates for
+        the given query.
+
+        - query: string, or Result.id for NEWS and COMMENTS,
+        - type : SEARCH,
+        - start: 1,
+        - count: maximum 100 for SEARCH and NEWS, 1000 for COMMENTS and LIKES.
+        There is an hourly limit of +-600 queries (actual amount undisclosed).
+
         """
         # Facebook.search(type=SEARCH) returns public posts + author.
         # Facebook.search(type=NEWS) returns posts for the given author (id | alias | "me").
@@ -3026,8 +3081,7 @@ class Facebook(SearchEngine):
         return results
 
     def profile(self, id=None, **kwargs):
-        """ Returns a Result for the given author id or alias.
-        """
+        """Returns a Result for the given author id or alias."""
         # 1) Construct request URL.
         url = FACEBOOK + (u(id or "me")).replace(FACEBOOK, "")
         url = URL(url, method=GET, query={"access_token": self.license})
@@ -3140,8 +3194,8 @@ class Newsfeed(SearchEngine):
         SearchEngine.__init__(self, license, throttle, language)
 
     def search(self, query, type=NEWS, start=1, count=10, sort=LATEST, size=SMALL, cached=True, **kwargs):
-        """ Returns a list of results from the given RSS or Atom newsfeed URL.
-        """
+        """Returns a list of results from the given RSS or Atom newsfeed
+        URL."""
         if type != NEWS:
             raise SearchEngineTypeError
         if not query or start < 1 or count < 1:
@@ -3196,8 +3250,10 @@ feeds = {
 
 
 def query(string, service=GOOGLE, **kwargs):
-    """ Returns the list of search query results from the given service.
-        For service=WIKIPEDIA, this is a single WikipediaArticle or None.
+    """Returns the list of search query results from the given service.
+
+    For service=WIKIPEDIA, this is a single WikipediaArticle or None.
+
     """
     service = service.lower()
     if service in (GOOGLE, "google", "g"):
@@ -3298,8 +3354,11 @@ NODE, TEXT, COMMENT, ELEMENT, DOCUMENT = \
 class Node(object):
 
     def __init__(self, html, type=NODE, **kwargs):
-        """ The base class for Text, Comment and Element.
-            All DOM nodes can be navigated in the same way (e.g. Node.parent, Node.children, ...)
+        """The base class for Text, Comment and Element.
+
+        All DOM nodes can be navigated in the same way (e.g.
+        Node.parent, Node.children, ...)
+
         """
         self.type = type
         self._p = not isinstance(html, SOUP) and bs4.BeautifulSoup(
@@ -3354,14 +3413,13 @@ class Node(object):
     next, previous = next_sibling, previous_sibling
 
     def traverse(self, visit=lambda node: None):
-        """ Executes the visit function on this node and each of its child nodes.
-        """
+        """Executes the visit function on this node and each of its child
+        nodes."""
         visit(self)
         [node.traverse(visit) for node in self.children]
 
     def remove(self, child):
-        """ Removes the given child node (and all nested nodes).
-        """
+        """Removes the given child node (and all nested nodes)."""
         child._p.extract()
 
     def __nonzero__(self):
@@ -3393,8 +3451,10 @@ class Node(object):
 
 class Text(Node):
 
-    """ Text represents a chunk of text without formatting in a HTML document.
-        For example: "the <b>cat</b>" is parsed to [Text("the"), Element("cat")].
+    """Text represents a chunk of text without formatting in a HTML document.
+
+    For example: "the <b>cat</b>" is parsed to [Text("the"), Element("cat")].
+
     """
 
     def __init__(self, string):
@@ -3406,8 +3466,10 @@ class Text(Node):
 
 class Comment(Text):
 
-    """ Comment represents a comment in the HTML source code.
-        For example: "<!-- comment -->".
+    """Comment represents a comment in the HTML source code.
+
+    For example: "<!-- comment -->".
+
     """
 
     def __init__(self, string):
@@ -3422,8 +3484,10 @@ class Comment(Text):
 class Element(Node):
 
     def __init__(self, html):
-        """ Element represents an element or tag in the HTML source code.
-            For example: "<b>hello</b>" is a "b"-Element containing a child Text("hello").
+        """Element represents an element or tag in the HTML source code.
+
+        For example: "<b>hello</b>" is a "b"-Element containing a child Text("hello").
+
         """
         Node.__init__(self, html, type=ELEMENT)
 
@@ -3447,23 +3511,24 @@ class Element(Node):
 
     @property
     def content(self):
-        """ Yields the element content as a unicode string.
-        """
+        """Yields the element content as a unicode string."""
         return u"".join([u(x) for x in self._p.contents])
 
     string = content
 
     @property
     def source(self):
-        """ Yields the HTML source as a unicode string (tag + content).
-        """
+        """Yields the HTML source as a unicode string (tag + content)."""
         return u(self._p)
 
     html = source
 
     def get_elements_by_tagname(self, v):
-        """ Returns a list of nested Elements with the given tag name.
-            The tag name can include a class (e.g. div.header) or an id (e.g. div#content).
+        """Returns a list of nested Elements with the given tag name.
+
+        The tag name can include a class (e.g. div.header) or an id
+        (e.g. div#content).
+
         """
         if isinstance(v, basestring) and "#" in v:
             v1, v2 = v.split("#")
@@ -3478,29 +3543,30 @@ class Element(Node):
     by_tag = getElementsByTagname = get_elements_by_tagname
 
     def get_element_by_id(self, v):
-        """ Returns the first nested Element with the given id attribute value.
-        """
+        """Returns the first nested Element with the given id attribute
+        value."""
         return ([Element(x) for x in self._p.findAll(id=v, limit=1) or []] + [None])[0]
 
     by_id = getElementById = get_element_by_id
 
     def get_elements_by_classname(self, v):
-        """ Returns a list of nested Elements with the given class attribute value.
-        """
+        """Returns a list of nested Elements with the given class attribute
+        value."""
         return [Element(x) for x in (self._p.findAll(True, v))]
 
     by_class = getElementsByClassname = get_elements_by_classname
 
     def get_elements_by_attribute(self, **kwargs):
-        """ Returns a list of nested Elements with the given attribute value.
-        """
+        """Returns a list of nested Elements with the given attribute value."""
         return [Element(x) for x in (self._p.findAll(True, attrs=kwargs))]
 
     by_attribute = by_attr = getElementsByAttribute = get_elements_by_attribute
 
     def __call__(self, selector):
-        """ Returns a list of nested Elements that match the given CSS selector.
-            For example: Element("div#main p.comment a:first-child") matches:
+        """Returns a list of nested Elements that match the given CSS selector.
+
+        For example: Element("div#main p.comment a:first-child") matches:
+
         """
         return SelectorChain(selector).search(self)
 
@@ -3535,8 +3601,7 @@ class Document(Element):
 
     @property
     def declaration(self):
-        """ Yields the <!doctype> declaration, as a TEXT Node or None.
-        """
+        """Yields the <!doctype> declaration, as a TEXT Node or None."""
         for child in self.children:
             if isinstance(child._p, bs4.Doctype):  # previously Declaration
                 return child
@@ -3650,24 +3715,21 @@ class Selector(object):
         return s[:2]
 
     def _first_child(self, e):
-        """ Returns the first child Element of the given element.
-        """
+        """Returns the first child Element of the given element."""
         if isinstance(e, Node):
             for e in e.children:
                 if isinstance(e, Element):
                     return e
 
     def _next_sibling(self, e):
-        """ Returns the first next sibling Element of the given element.
-        """
+        """Returns the first next sibling Element of the given element."""
         while isinstance(e, Node):
             e = e.next
             if isinstance(e, Element):
                 return e
 
     def _previous_sibling(self, e):
-        """ Returns the last previous sibling Element of the given element.
-        """
+        """Returns the last previous sibling Element of the given element."""
         while isinstance(e, Node):
             e = e.previous
             if isinstance(e, Element):
@@ -3682,8 +3744,8 @@ class Selector(object):
         return re.search(s.lower(), e.content.lower()) is not None
 
     def match(self, e):
-        """ Returns True if the given element matches the simple CSS selector.
-        """
+        """Returns True if the given element matches the simple CSS
+        selector."""
         if not isinstance(e, Element):
             return False
         if self.tag not in (e.tag, "*"):
@@ -3703,8 +3765,7 @@ class Selector(object):
         return True
 
     def search(self, e):
-        """ Returns the nested elements that match the simple CSS selector.
-        """
+        """Returns the nested elements that match the simple CSS selector."""
         # Map tag to True if it is "*".
         tag = self.tag == "*" or self.tag
         # Map id into a case-insensitive **kwargs dict.
@@ -3737,9 +3798,8 @@ class Selector(object):
 class SelectorChain(list):
 
     def __init__(self, s):
-        """ A selector is a chain of one or more simple selectors,
-            separated by combinators (e.g., ">").
-        """
+        """A selector is a chain of one or more simple selectors, separated by
+        combinators (e.g., ">")."""
         self.string = s
         for s in s.split(","):
             s = s.lower()
@@ -3764,8 +3824,7 @@ class SelectorChain(list):
                     self[-1].append(("+", Selector(s[1:])))
 
     def search(self, e):
-        """ Returns the nested elements that match the CSS selector chain.
-        """
+        """Returns the nested elements that match the CSS selector chain."""
         m, root = [], e
         for chain in self:
             e = [root]
@@ -3847,8 +3906,7 @@ class HTMLLinkParser(HTMLParser):
         HTMLParser.__init__(self)
 
     def parse(self, html, url=""):
-        """ Returns a list of Links parsed from the given HTML string.
-        """
+        """Returns a list of Links parsed from the given HTML string."""
         if html is None:
             return None
         self._url = url
@@ -3896,11 +3954,14 @@ LIFO = "lifo"  # Last In, First Out (= FILO).
 class Crawler(object):
 
     def __init__(self, links=[], domains=[], delay=20.0, parse=HTMLLinkParser().parse, sort=FIFO):
-        """ A crawler can be used to browse the web in an automated manner.
-            It visits the list of starting URLs, parses links from their content, visits those, etc.
-            - Links can be prioritized by overriding Crawler.priority().
-            - Links can be ignored by overriding Crawler.follow().
-            - Each visited link is passed to Crawler.visit(), which can be overridden.
+        """A crawler can be used to browse the web in an automated manner. It
+        visits the list of starting URLs, parses links from their content,
+        visits those, etc.
+
+        - Links can be prioritized by overriding Crawler.priority().
+        - Links can be ignored by overriding Crawler.follow().
+        - Each visited link is passed to Crawler.visit(), which can be overridden.
+
         """
         self.parse = parse
         self.delay = delay   # Delay between visits to the same (sub)domain.
@@ -3919,16 +3980,17 @@ class Crawler(object):
 
     @property
     def done(self):
-        """ Yields True if no further links are scheduled to visit.
-        """
+        """Yields True if no further links are scheduled to visit."""
         return len(self._queue) == 0
 
     def push(self, link, priority=1.0, sort=FILO):
-        """ Pushes the given link to the queue.
-            Position in the queue is determined by priority.
-            Equal ranks are sorted FIFO or FILO.
-            With priority=1.0 and FILO, the link is inserted to the queue.
-            With priority=0.0 and FIFO, the link is appended to the queue.
+        """Pushes the given link to the queue.
+
+        Position in the queue is determined by priority.
+        Equal ranks are sorted FIFO or FILO.
+        With priority=1.0 and FILO, the link is inserted to the queue.
+        With priority=0.0 and FIFO, the link is appended to the queue.
+
         """
         if not isinstance(link, Link):
             link = Link(url=link)
@@ -3938,8 +4000,11 @@ class Crawler(object):
         self._queued[link.url] = True
 
     def pop(self, remove=True):
-        """ Returns the next Link queued to visit and removes it from the queue.
-            Links on a recently visited (sub)domain are skipped until Crawler.delay has elapsed.
+        """Returns the next Link queued to visit and removes it from the queue.
+
+        Links on a recently visited (sub)domain are skipped until
+        Crawler.delay has elapsed.
+
         """
         now = time.time()
         for i, (priority, dt, link) in enumerate(self._queue):
@@ -3951,16 +4016,17 @@ class Crawler(object):
 
     @property
     def next(self):
-        """ Returns the next Link queued to visit (without removing it).
-        """
+        """Returns the next Link queued to visit (without removing it)."""
         return self.pop(remove=False)
 
     def crawl(self, method=DEPTH, **kwargs):
-        """ Visits the next link in Crawler._queue.
-            If the link is on a domain recently visited (< Crawler.delay) it is skipped.
-            Parses the content at the link for new links and adds them to the queue,
-            according to their Crawler.priority().
-            Visited links (and content) are passed to Crawler.visit().
+        """Visits the next link in Crawler._queue.
+
+        If the link is on a domain recently visited (< Crawler.delay) it
+        is skipped. Parses the content at the link for new links and
+        adds them to the queue, according to their Crawler.priority().
+        Visited links (and content) are passed to Crawler.visit().
+
         """
         link = self.pop()
         if link is None:
@@ -4018,16 +4084,21 @@ class Crawler(object):
         return False
 
     def normalize(self, url):
-        """ Called from Crawler.crawl() to normalize URLs.
-            For example: return url.split("?")[0]
+        """Called from Crawler.crawl() to normalize URLs.
+
+        For example: return url.split("?")[0]
+
         """
         # All links pass through here (visited or not).
         # This can be a place to count backlinks.
         return url
 
     def follow(self, link):
-        """ Called from Crawler.crawl() to determine if it should follow this link.
-            For example: return "nofollow" not in link.relation
+        """Called from Crawler.crawl() to determine if it should follow this
+        link.
+
+        For example: return "nofollow" not in link.relation
+
         """
         return True
 
@@ -4045,9 +4116,11 @@ class Crawler(object):
         return 0.80
 
     def visit(self, link, source=None):
-        """ Called from Crawler.crawl() when the link is crawled.
-            When source=None, the link is not a web page (and was not parsed),
-            or possibly a URLTimeout occured (content size too big).
+        """Called from Crawler.crawl() when the link is crawled.
+
+        When source=None, the link is not a web page (and was not parsed),
+        or possibly a URLTimeout occured (content size too big).
+
         """
         pass
 
@@ -4123,9 +4196,8 @@ class DocumentParserError(Exception):
 class DocumentParser(object):
 
     def __init__(self, path, *args, **kwargs):
-        """ Parses a text document (e.g., .pdf or .docx),
-            given as a file path or a string.
-        """
+        """Parses a text document (e.g., .pdf or .docx), given as a file path
+        or a string."""
         self.content = self._parse(path, *args, **kwargs)
 
     def _open(self, path):
@@ -4139,8 +4211,8 @@ class DocumentParser(object):
         return StringIO(path)
 
     def _parse(self, path, *args, **kwargs):
-        """ Returns a plaintext Unicode string parsed from the given document.
-        """
+        """Returns a plaintext Unicode string parsed from the given
+        document."""
         return plaintext(decode_utf8(self.open(path).read()))
 
     @property
@@ -4238,26 +4310,23 @@ class DOCX(DocumentParser):
 
 
 def parsepdf(path, *args, **kwargs):
-    """ Returns the content as a Unicode string from the given .pdf file.
-    """
+    """Returns the content as a Unicode string from the given .pdf file."""
     return PDF(path, *args, **kwargs).content
 
 
 def parsedocx(path, *args, **kwargs):
-    """ Returns the content as a Unicode string from the given .docx file.
-    """
+    """Returns the content as a Unicode string from the given .docx file."""
     return DOCX(path, *args, **kwargs).content
 
 
 def parsehtml(path, *args, **kwargs):
-    """ Returns the content as a Unicode string from the given .html file.
-    """
+    """Returns the content as a Unicode string from the given .html file."""
     return plaintext(DOM(path, *args, **kwargs).body)
 
 
 def parsedoc(path, format=None):
-    """ Returns the content as a Unicode string from the given document (.html., .pdf, .docx).
-    """
+    """Returns the content as a Unicode string from the given document (.html.,
+    .pdf, .docx)."""
     if isinstance(path, basestring):
         if format == "pdf" or path.endswith(".pdf"):
             return parsepdf(path)

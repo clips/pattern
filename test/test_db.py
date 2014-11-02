@@ -707,8 +707,7 @@ class AbstractTestQuery(object):
             self.db.drop(table)
 
     def _query(self, *args, **kwargs):
-        """ Returns a pattern.db.Query object on a mock Table and Database.
-        """
+        """Returns a pattern.db.Query object on a mock Table and Database."""
         class Database:
             escape, relations = lambda self, v: db._escape(v), []
 

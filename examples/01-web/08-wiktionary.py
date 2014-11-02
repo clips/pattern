@@ -42,8 +42,10 @@ class GenderByName(SVM):
         return SVM.classify(self, self.vector(name))
 
     def vector(self, name):
-        """ Returns a dictionary with character bigrams and suffix.
-            For example, "Felix" => {"Fe":1, "el":1, "li":1, "ix":1, "ix$":1, 5:1}
+        """Returns a dictionary with character bigrams and suffix.
+
+        For example, "Felix" => {"Fe":1, "el":1, "li":1, "ix":1, "ix$":1, 5:1}
+
         """
         v = chngrams(name, n=2)
         v = count(v)

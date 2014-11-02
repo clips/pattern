@@ -99,12 +99,14 @@ def zshift(s):
 
 
 def number(s):
-    """ Returns the given numeric string as a float or an int.
-        If no number can be parsed from the string, returns 0.
-        For example:
-        number("five point two million") => 5200000
-        number("seventy-five point two") => 75.2
-        number("three thousand and one") => 3001
+    """Returns the given numeric string as a float or an int.
+
+    If no number can be parsed from the string, returns 0.
+    For example:
+    number("five point two million") => 5200000
+    number("seventy-five point two") => 75.2
+    number("three thousand and one") => 3001
+
     """
     s = s.strip()
     s = s.lower()
@@ -169,13 +171,15 @@ def number(s):
 
 
 def numerals(n, round=2):
-    """ Returns the given int or float as a string of numerals.
-        By default, the fractional part is rounded to two decimals.
-        For example:
-        numerals(4011) => four thousand and eleven
-        numerals(2.25) => two point twenty-five
-        numerals(2.249) => two point twenty-five
-        numerals(2.249, round=3) => two point two hundred and forty-nine
+    """Returns the given int or float as a string of numerals.
+
+    By default, the fractional part is rounded to two decimals.
+    For example:
+    numerals(4011) => four thousand and eleven
+    numerals(2.25) => two point twenty-five
+    numerals(2.249) => two point twenty-five
+    numerals(2.249, round=3) => two point two hundred and forty-nine
+
     """
     if isinstance(n, basestring):
         if n.isdigit():
@@ -264,13 +268,15 @@ quantify_custom_plurals = {}
 
 
 def approximate(word, amount=1, plural={}):
-    """ Returns an approximation of the number of given objects.
-        Two objects are described as being "a pair",
-        smaller than eight is "several",
-        smaller than twenty is "a number of",
-        smaller than two hundred are "dozens",
-        anything bigger is described as being tens or hundreds of thousands or millions.
-        For example: approximate("chicken", 100) => "dozens of chickens".
+    """Returns an approximation of the number of given objects.
+
+    Two objects are described as being "a pair",
+    smaller than eight is "several",
+    smaller than twenty is "a number of",
+    smaller than two hundred are "dozens",
+    anything bigger is described as being tens or hundreds of thousands or millions.
+    For example: approximate("chicken", 100) => "dozens of chickens".
+
     """
     try:
         p = pluralize(word, custom=plural)
@@ -323,8 +329,11 @@ def approximate(word, amount=1, plural={}):
 # count([word1, word2, ...], plural={})
 # counr({word1:0, word2:0, ...}, plural={})
 def count(*args, **kwargs):
-    """ Returns an approximation of the entire set.
-        Identical words are grouped and counted and then quantified with an approximation.
+    """Returns an approximation of the entire set.
+
+    Identical words are grouped and counted and then quantified with an
+    approximation.
+
     """
     if len(args) == 2 and isinstance(args[0], basestring):
         return approximate(args[0], args[1], kwargs.get("plural", {}))
@@ -386,10 +395,12 @@ readable_types = (
 
 
 def reflect(object, quantify=True, replace=readable_types):
-    """ Returns the type of each object in the given object.
-        - For modules, this means classes and functions etc.
-        - For list and tuples, means the type of each item in it.
-        - For other objects, means the type of the object itself.
+    """Returns the type of each object in the given object.
+
+    - For modules, this means classes and functions etc.
+    - For list and tuples, means the type of each item in it.
+    - For other objects, means the type of the object itself.
+
     """
     _type = lambda object: type(object).__name__
     types = []

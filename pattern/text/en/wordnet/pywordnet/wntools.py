@@ -27,6 +27,7 @@ Usage
     >>> # Find the senses of 'raise'(v.) and 'lower'(v.) that are antonyms
     >>> filter(lambda p:p[0] in p[1].pointerTargets(ANTONYM), product(V['raise'].getSenses(), V['lower'].getSenses()))
     [('raise' in {verb: raise, lift, elevate, get up, bring up}, 'lower' in {verb: lower, take down, let down, get down, bring down})]
+
 """
 from __future__ import absolute_import
 from functools import reduce
@@ -76,12 +77,13 @@ def tree(source, pointerType):
 
 def closure(source, pointerType, accumulator=None):
     """Return the transitive closure of source under the pointerType
-    relationship.  If source is a Word, return the union of the
-    closures of its senses.
+    relationship.  If source is a Word, return the union of the closures of its
+    senses.
 
     >>> dog = N['dog'][0]
     >>> closure(dog, HYPERNYM)
     ['dog' in {noun: dog, domestic dog, Canis familiaris}, {noun: canine, canid}, {noun: carnivore}, {noun: placental, placental mammal, eutherian, eutherian mammal}, {noun: mammal}, {noun: vertebrate, craniate}, {noun: chordate}, {noun: animal, animate being, beast, brute, creature, fauna}, {noun: organism, being}, {noun: living thing, animate thing}, {noun: object, physical object}, {noun: entity}]
+
     """
     if isinstance(source, Word):
         return reduce(union, map(lambda s, t=pointerType: tree(s, t), source.getSenses()))
@@ -96,14 +98,21 @@ def closure(source, pointerType, accumulator=None):
 
 
 def hyponyms(source):
-    """Return source and its hyponyms.  If source is a Word, return
-    the union of the hyponyms of its senses."""
+    """Return source and its hyponyms.
+
+    If source is a Word, return the union of the hyponyms of its senses.
+
+    """
     return closure(source, HYPONYM)
 
 
 def hypernyms(source):
-    """Return source and its hypernyms.  If source is a Word, return
-    the union of the hypernyms of its senses."""
+    """Return source and its hypernyms.
+
+    If source is a Word, return the union of the hypernyms of its
+    senses.
+
+    """
 
     return closure(source, HYPERNYM)
 
@@ -117,6 +126,7 @@ def meet(a, b, pointerType=HYPERNYM):
     {noun: organism, being}
     >>> meet(N['thought'][0], N['belief'][0])
     {noun: content, cognitive content, mental object}
+
     """
     return (intersection(closure(a, pointerType), closure(b, pointerType)) + [None])[0]
 
@@ -129,6 +139,7 @@ def startsWith(str, prefix):
 
     >>> startsWith('unclear', 'un')
     1
+
     """
     return str[:len(prefix)] == prefix
 
@@ -138,6 +149,7 @@ def endsWith(str, suffix):
 
     >>> endsWith('clearly', 'ly')
     1
+
     """
     return str[-len(suffix):] == suffix
 
@@ -149,6 +161,7 @@ def equalsIgnoreCase(a, b):
     1
     >>> equalsIgnoreCase('dOg', 'DOG')
     1
+
     """
     # test a == b first as an optimization where they're equal
     return a == b or string.lower(a) == string.lower(b)
@@ -168,6 +181,7 @@ def issequence(item):
     1
     >>> issequence(1)
     0
+
     """
     return type(item) in (ListType, StringType, TupleType)
 
@@ -177,6 +191,7 @@ def intersection(u, v):
 
     >>> intersection((1,2,3), (2,3,4))
     [2, 3]
+
     """
     w = []
     for e in u:
@@ -190,6 +205,7 @@ def union(u, v):
 
     >>> union((1,2,3), (2,3,4))
     [1, 2, 3, 4]
+
     """
     w = list(u)
     if w is u:
@@ -206,6 +222,7 @@ def product(u, v):
 
     >>> product("123", "abc")
     [('1', 'a'), ('1', 'b'), ('1', 'c'), ('2', 'a'), ('2', 'b'), ('2', 'c'), ('3', 'a'), ('3', 'b'), ('3', 'c')]
+
     """
     return flatten1(map(lambda a, v=v: map(lambda b, a=a: (a, b), v), u))
 
@@ -217,6 +234,7 @@ def removeDuplicates(sequence):
     ['t', 'h', 'i', 's', ' ', 'a', 'e']
     >>> removeDuplicates(map(lambda tuple:apply(meet, tuple), product(N['story'].getSenses(), N['joke'].getSenses())))
     [{noun: message, content, subject matter, substance}, None, {noun: abstraction}, {noun: communication}]
+
     """
     accumulator = []
     for item in sequence:
@@ -250,14 +268,17 @@ GET_INDEX_SUBSTITUTIONS = (
 
 
 def getIndex(form, pos='noun'):
-    """Search for _form_ in the index file corresponding to
-    _pos_. getIndex applies to _form_ an algorithm that replaces
-    underscores with hyphens, hyphens with underscores, removes
-    hyphens and underscores, and removes periods in an attempt to find
-    a form of the string that is an exact match for an entry in the
-    index file corresponding to _pos_.  getWord() is called on each
-    transformed string until a match is found or all the different
-    strings have been tried. It returns a Word or None."""
+    """Search for _form_ in the index file corresponding to _pos_.
+
+    getIndex applies to _form_ an algorithm that replaces underscores
+    with hyphens, hyphens with underscores, removes hyphens and
+    underscores, and removes periods in an attempt to find a form of the
+    string that is an exact match for an entry in the index file
+    corresponding to _pos_.  getWord() is called on each transformed
+    string until a match is found or all the different strings have been
+    tried. It returns a Word or None.
+
+    """
     def trySubstitutions(trySubstitutions, form, substitutions, lookup=1, dictionary=dictionaryFor(pos)):
         if lookup and form in dictionary:
             return dictionary[form]
@@ -301,9 +322,9 @@ MORPHOLOGICAL_SUBSTITUTIONS = {
 
 
 def morphy(form, pos='noun', collect=0):
-    """Recursively uninflect _form_, and return the first form found
-    in the dictionary.  If _collect_ is true, a sequence of all forms
-    is returned, instead of just the first one.
+    """Recursively uninflect _form_, and return the first form found in the
+    dictionary.  If _collect_ is true, a sequence of all forms is returned,
+    instead of just the first one.
 
     >>> morphy('dogs')
     'dog'
@@ -314,6 +335,7 @@ def morphy(form, pos='noun', collect=0):
     >>> morphy('abaci')
     'abacus'
     >>> morphy('hardrock', 'adv')
+
     """
     from .wordnet import _normalizePOS, _dictionaryFor
     pos = _normalizePOS(pos)

@@ -36,8 +36,8 @@ class Counter(dict):
         return 0
 
     def update(self, iterable=None, **kwargs):
-        """ Updates counter with the tallies from the given iterable, dictionary or Counter.
-        """
+        """Updates counter with the tallies from the given iterable, dictionary
+        or Counter."""
         if kwargs:
             self.update(kwargs)
         if hasattr(iterable, "items"):
@@ -73,8 +73,8 @@ except:
 
 
 def cumsum(iterable):
-    """ Returns an iterator over the cumulative sum of values in the given list.
-    """
+    """Returns an iterator over the cumulative sum of values in the given
+    list."""
     n = 0
     for x in iterable:
         n += x
@@ -84,16 +84,15 @@ def cumsum(iterable):
 
 
 def duration(function, *args, **kwargs):
-    """ Returns the running time of the given function, in seconds.
-    """
+    """Returns the running time of the given function, in seconds."""
     t = time()
     function(*args, **kwargs)
     return time() - t
 
 
 def profile(function, *args, **kwargs):
-    """ Returns the performance analysis (as a string) of the given Python function.
-    """
+    """Returns the performance analysis (as a string) of the given Python
+    function."""
     def run():
         function(*args, **kwargs)
     if not hasattr(function, "__call__"):
@@ -118,14 +117,12 @@ def profile(function, *args, **kwargs):
 
 
 def sizeof(object):
-    """ Returns the memory size of the given object (in bytes).
-    """
+    """Returns the memory size of the given object (in bytes)."""
     return sys.getsizeof(object)
 
 
 def kb(object):
-    """ Returns the memory size of the given object (in kilobytes).
-    """
+    """Returns the memory size of the given object (in kilobytes)."""
     return sys.getsizeof(object) * 0.01
 
 #### PRECISION & RECALL ##################################################
@@ -181,33 +178,30 @@ def test(classify=lambda document: False, documents=[], average=None):
 
 
 def accuracy(classify=lambda document: False, documents=[], average=None):
-    """ Returns the percentage of correct classifications (true positives + true negatives).
-    """
+    """Returns the percentage of correct classifications (true positives + true
+    negatives)."""
     return test(classify, documents, average)[0]
 
 
 def precision(classify=lambda document: False, documents=[], average=None):
-    """ Returns the percentage of correct positive classifications.
-    """
+    """Returns the percentage of correct positive classifications."""
     return test(classify, documents, average)[1]
 
 
 def recall(classify=lambda document: False, documents=[], average=None):
-    """ Returns the percentage of positive cases correctly classified as positive.
-    """
+    """Returns the percentage of positive cases correctly classified as
+    positive."""
     return test(classify, documents, average)[2]
 
 
 def F1(classify=lambda document: False, documents=[], average=None):
-    """ Returns the harmonic mean of precision and recall.
-    """
+    """Returns the harmonic mean of precision and recall."""
     return test(classify, documents, average)[3]
 
 
 def F(classify=lambda document: False, documents=[], beta=1, average=None):
-    """ Returns the weighted harmonic mean of precision and recall,
-        where recall is beta times more important than precision.
-    """
+    """Returns the weighted harmonic mean of precision and recall, where recall
+    is beta times more important than precision."""
     A, P, R, F1 = test(classify, documents, average)
     return (beta ** 2 + 1) * P * R / ((beta ** 2 * P + R) or 1)
 
@@ -221,8 +215,8 @@ def sensitivity(classify=lambda document: False, documents=[]):
 
 
 def specificity(classify=lambda document: False, documents=[]):
-    """ Returns the percentage of negative cases correctly classified as negative.
-    """
+    """Returns the percentage of negative cases correctly classified as
+    negative."""
     TP, TN, FP, FN = confusion_matrix(classify, documents)
     return float(TN) / ((TN + FP) or 1)
 
@@ -298,9 +292,11 @@ agreement = fleiss_kappa
 
 
 def levenshtein(string1, string2):
-    """ Measures the amount of difference between two strings.
-        The return value is the number of operations (insert, delete, replace)
-        required to transform string a into string b.
+    """Measures the amount of difference between two strings.
+
+    The return value is the number of operations (insert, delete,
+    replace) required to transform string a into string b.
+
     """
     # http://hetland.org/coding/python/levenshtein.py
     n, m = len(string1), len(string2)
@@ -528,9 +524,11 @@ class Sentinel(object):
 
 
 def isplit(string, sep="\t\n\x0b\x0c\r "):
-    """ Returns an iterator over string.split().
-        This is efficient in combination with cooccurrence(), 
-        since the string may be very long (e.g., Brown corpus).
+    """Returns an iterator over string.split().
+
+    This is efficient in combination with cooccurrence(), since the
+    string may be very long (e.g., Brown corpus).
+
     """
     a = []
     for ch in string:
@@ -639,8 +637,10 @@ def lerp(a, b, t):
 
 
 def smoothstep(a, b, x):
-    """ Returns the Hermite interpolation (cubic spline) for x between a and b.
-        The return value between 0.0-1.0 eases (slows down) as x nears a or b.
+    """Returns the Hermite interpolation (cubic spline) for x between a and b.
+
+    The return value between 0.0-1.0 eases (slows down) as x nears a or b.
+
     """
     if x < a:
         return 0.0
@@ -651,9 +651,12 @@ def smoothstep(a, b, x):
 
 
 def smoothrange(a=None, b=None, n=10):
-    """ Returns an iterator of approximately n values v1, v2, ... vn,
-        so that v1 <= a, and vn >= b, and all values are multiples of 1, 2, 5 and 10.
-        For example: list(smoothrange(1, 123)) => [0, 20, 40, 60, 80, 100, 120, 140],
+    """Returns an iterator of approximately n values v1, v2, ...
+
+    vn,
+    so that v1 <= a, and vn >= b, and all values are multiples of 1, 2, 5 and 10.
+    For example: list(smoothrange(1, 123)) => [0, 20, 40, 60, 80, 100, 120, 140],
+
     """
     def _multiple(v, round=False):
         e = floor(log(v, 10))  # exponent
@@ -693,8 +696,10 @@ def smoothrange(a=None, b=None, n=10):
 
 
 def mean(iterable):
-    """ Returns the arithmetic mean of the given list of values.
-        For example: mean([1,2,3,4]) = 10/4 = 2.5.
+    """Returns the arithmetic mean of the given list of values.
+
+    For example: mean([1,2,3,4]) = 10/4 = 2.5.
+
     """
     a = iterable if isinstance(iterable, list) else list(iterable)
     return float(sum(a)) / (len(a) or 1)
@@ -703,15 +708,14 @@ avg = mean
 
 
 def hmean(iterable):
-    """ Returns the harmonic mean of the given list of values.
-    """
+    """Returns the harmonic mean of the given list of values."""
     a = iterable if isinstance(iterable, list) else list(iterable)
     return float(len(a)) / sum(1.0 / x for x in a)
 
 
 def median(iterable, sort=True):
-    """ Returns the value that separates the lower half from the higher half of values in the list.
-    """
+    """Returns the value that separates the lower half from the higher half of
+    values in the list."""
     s = sorted(iterable) if sort is True else list(iterable)
     n = len(s)
     if n == 0:
@@ -722,8 +726,10 @@ def median(iterable, sort=True):
 
 
 def variance(iterable, sample=False):
-    """ Returns the variance of the given list of values.
-        The variance is the average of squared deviations from the mean.
+    """Returns the variance of the given list of values.
+
+    The variance is the average of squared deviations from the mean.
+
     """
     # Sample variance = E((xi-m)^2) / (n-1)
     # Population variance = E((xi-m)^2) / n
@@ -733,9 +739,11 @@ def variance(iterable, sample=False):
 
 
 def standard_deviation(iterable, *args, **kwargs):
-    """ Returns the standard deviation of the given list of values.
-        Low standard deviation => values are close to the mean.
-        High standard deviation => values are spread out over a large range.
+    """Returns the standard deviation of the given list of values.
+
+    Low standard deviation => values are close to the mean.
+    High standard deviation => values are spread out over a large range.
+
     """
     return sqrt(variance(iterable, *args, **kwargs))
 
@@ -743,8 +751,8 @@ stdev = standard_deviation
 
 
 def simple_moving_average(iterable, k=10):
-    """ Returns an iterator over the simple moving average of the given list of values.
-    """
+    """Returns an iterator over the simple moving average of the given list of
+    values."""
     a = iterable if isinstance(iterable, list) else list(iterable)
     for m in xrange(len(a)):
         i = m - k
@@ -847,8 +855,11 @@ def quantile(iterable, p=0.5, sort=True, a=1, b=-1, c=0, d=1):
 
 
 def boxplot(iterable, **kwargs):
-    """ Returns a tuple (min(list), Q1, Q2, Q3, max(list)) for the given list of values.
-        Q1, Q2, Q3 are the quantiles at 0.25, 0.5, 0.75 respectively.
+    """Returns a tuple (min(list), Q1, Q2, Q3, max(list)) for the given list of
+    values.
+
+    Q1, Q2, Q3 are the quantiles at 0.25, 0.5, 0.75 respectively.
+
     """
     # http://en.wikipedia.org/wiki/Box_plot
     kwargs.pop("p", None)
@@ -918,9 +929,8 @@ UPPER = "upper"
 
 
 def _expected(observed):
-    """ Returns the table of (absolute) expected frequencies
-        from the given table of observed frequencies.
-    """
+    """Returns the table of (absolute) expected frequencies from the given
+    table of observed frequencies."""
     o = observed
     if len(o) == 0:
         return []
@@ -934,18 +944,21 @@ def _expected(observed):
 
 
 def pearson_chi_squared_test(observed=[], expected=[], df=None, tail=UPPER):
-    """ Returns (x2, p) for the n x m observed and expected data (containing absolute frequencies).
-        If expected is None, an equal distribution over all classes is assumed.
-        If df is None, it is (n-1) * (m-1).
-        p < 0.05: significant
-        p < 0.01: very significant
-        This means that if p < 5%, the data is unevenly distributed (e.g., biased).
-        The following test shows that the die is fair:
-        ---------------------------------------
-        |       | 1  | 2  | 3  | 4  | 5  | 6  | 
-        | rolls | 22 | 21 | 22 | 27 | 22 | 36 |
-        ---------------------------------------
-        chi2([[22, 21, 22, 27, 22, 36]]) => (6.72, 0.24)
+    """Returns (x2, p) for the n x m observed and expected data (containing
+    absolute frequencies). If expected is None, an equal distribution over all
+    classes is assumed.
+
+    If df is None, it is (n-1) * (m-1).
+    p < 0.05: significant
+    p < 0.01: very significant
+    This means that if p < 5%, the data is unevenly distributed (e.g., biased).
+    The following test shows that the die is fair:
+    ---------------------------------------
+    |       | 1  | 2  | 3  | 4  | 5  | 6  |
+    | rolls | 22 | 21 | 22 | 27 | 22 | 36 |
+    ---------------------------------------
+    chi2([[22, 21, 22, 27, 22, 36]]) => (6.72, 0.24)
+
     """
     # The p-value (upper tail area) is obtained from the incomplete gamma integral:
     # p(x2 | v) = gammai(v/2, x/2) with v degrees of freedom.
@@ -981,11 +994,14 @@ def chi2p(x2, df=1, tail=UPPER):
 
 
 def pearson_log_likelihood_ratio(observed=[], expected=[], df=None, tail=UPPER):
-    """ Returns (g, p) for the n x m observed and expected data (containing absolute frequencies).
-        If expected is None, an equal distribution over all classes is assumed.
-        If df is None, it is (n-1) * (m-1).
-        p < 0.05: significant
-        p < 0.01: very significant
+    """Returns (g, p) for the n x m observed and expected data (containing
+    absolute frequencies). If expected is None, an equal distribution over all
+    classes is assumed.
+
+    If df is None, it is (n-1) * (m-1).
+    p < 0.05: significant
+    p < 0.01: very significant
+
     """
     o = list(observed)
     e = list(expected) or _expected(o)
@@ -1012,9 +1028,12 @@ NORMAL = "normal"
 
 
 def kolmogorov_smirnov_two_sample_test(a1, a2=NORMAL, n=1000):
-    """ Returns the likelihood that two independent samples are drawn from the same distribution.
-        Returns a (d, p)-tuple with maximum distance d and two-tailed p-value.
-        By default, the second sample is the normal distribution.
+    """Returns the likelihood that two independent samples are drawn from the
+    same distribution.
+
+    Returns a (d, p)-tuple with maximum distance d and two-tailed p-value.
+    By default, the second sample is the normal distribution.
+
     """
     if a2 == NORMAL:
         a2 = norm(max(n, len(a1)), mean(a1), stdev(a1))
@@ -1048,14 +1067,12 @@ ks2 = kolmogorov_smirnov_two_sample_test
 
 
 def gamma(x):
-    """ Returns the gamma function at x.
-    """
+    """Returns the gamma function at x."""
     return exp(gammaln(x))
 
 
 def gammaln(x):
-    """ Returns the natural logarithm of the gamma function at x.
-    """
+    """Returns the natural logarithm of the gamma function at x."""
     x = x - 1.0
     y = x + 5.5
     y = (x + 0.5) * log(y) - y
@@ -1075,8 +1092,7 @@ lgamma = gammaln
 
 
 def gammai(a, x, tail=UPPER):
-    """ Returns the incomplete gamma function for LOWER or UPPER tail.
-    """
+    """Returns the incomplete gamma function for LOWER or UPPER tail."""
 
     # Series approximation.
     def _gs(a, x, epsilon=3.e-7, iterations=700):
@@ -1130,14 +1146,12 @@ def gammai(a, x, tail=UPPER):
 
 
 def erf(x):
-    """ Returns the error function at x.
-    """
+    """Returns the error function at x."""
     return 1.0 - erfc(x)
 
 
 def erfc(x):
-    """ Returns the complementary error function at x.
-    """
+    """Returns the complementary error function at x."""
     z = abs(x)
     t = 1.0 / (1 + 0.5 * z)
     r = 0.0
@@ -1162,8 +1176,7 @@ def erfc(x):
 
 
 def cdf(x, mean=0.0, stdev=1.0):
-    """ Returns the cumulative distribution function at x.
-    """
+    """Returns the cumulative distribution function at x."""
     return min(1.0, 0.5 * erfc((-x + mean) / (stdev * 2 ** 0.5)))
 
 
@@ -1178,8 +1191,7 @@ normpdf = pdf
 
 
 def norm(n, mean=0.0, stdev=1.0):
-    """ Returns a list of n random samples from the normal distribution.
-    """
+    """Returns a list of n random samples from the normal distribution."""
     return [gauss(mean, stdev) for i in xrange(n)]
 
 #--- KOLMOGOROV DISTRIBUTION ---------------------------------------------

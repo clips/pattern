@@ -58,8 +58,10 @@ plural_irregular = {
 
 
 def pluralize(word, pos=NOUN, custom={}):
-    """ Returns the plural of a given word.
-        The custom dictionary is for user-defined replacements.
+    """Returns the plural of a given word.
+
+    The custom dictionary is for user-defined replacements.
+
     """
     if word in custom:
         return custom[word]
@@ -282,8 +284,7 @@ conjugate, lemma, lexeme, tenses = \
 
 
 def attributive(adjective):
-    """ For a predicative adjective, returns the attributive form.
-    """
+    """For a predicative adjective, returns the attributive form."""
     # Must deal with feminine and plural.
     raise NotImplementedError
 

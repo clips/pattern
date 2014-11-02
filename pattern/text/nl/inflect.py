@@ -71,9 +71,11 @@ plural_irregular = {
 
 
 def pluralize(word, pos=NOUN, custom={}):
-    """ Returns the plural of a given word.
-        For example: stad => steden.
-        The custom dictionary is for user-defined replacements.
+    """Returns the plural of a given word.
+
+    For example: stad => steden.
+    The custom dictionary is for user-defined replacements.
+
     """
     if word in custom.keys():
         return custom[word]
@@ -365,8 +367,10 @@ adjective_attributive = {
 
 
 def attributive(adjective):
-    """ For a predicative adjective, returns the attributive form (lowercase).
-        In Dutch, the attributive is formed with -e: "fel" => "felle kritiek".
+    """For a predicative adjective, returns the attributive form (lowercase).
+
+    In Dutch, the attributive is formed with -e: "fel" => "felle kritiek".
+
     """
     w = adjective.lower()
     if w in adjective_attributive:
@@ -401,9 +405,11 @@ adjective_predicative.update({
 
 
 def predicative(adjective):
-    """ Returns the predicative adjective (lowercase).
-        In Dutch, the attributive form preceding a noun is common:
-        "rake opmerking" => "raak", "straffe uitspraak" => "straf", "dwaze blik" => "dwaas".
+    """Returns the predicative adjective (lowercase).
+
+    In Dutch, the attributive form preceding a noun is common:
+    "rake opmerking" => "raak", "straffe uitspraak" => "straf", "dwaze blik" => "dwaas".
+
     """
     w = adjective.lower()
     if w in adjective_predicative:

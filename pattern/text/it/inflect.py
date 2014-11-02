@@ -62,8 +62,7 @@ zs = lambda w: w and (w[:1] == "z" or (w[:1] == "s" and not is_vowel(w[1:2])))
 
 
 def definite_article(word, gender=MALE):
-    """ Returns the definite article for a given word.
-    """
+    """Returns the definite article for a given word."""
     if PLURAL in gender and MALE in gender and (is_vowel(word[:1]) or zs(word)):
         return "gli"
     if PLURAL not in gender and word and is_vowel(word[:1]):
@@ -78,8 +77,7 @@ def definite_article(word, gender=MALE):
 
 
 def indefinite_article(word, gender=MALE):
-    """ Returns the indefinite article for a given word.
-    """
+    """Returns the indefinite article for a given word."""
     if MALE in gender and zs(word):
         return PLURAL in gender and "degli" or "uno"
     if MALE in gender:
@@ -95,8 +93,7 @@ DEFINITE, INDEFINITE = \
 
 
 def article(word, function=INDEFINITE, gender=MALE):
-    """ Returns the indefinite or definite article for the given word.
-    """
+    """Returns the indefinite or definite article for the given word."""
     return function == DEFINITE \
         and definite_article(word, gender) \
         or indefinite_article(word, gender)
@@ -105,8 +102,7 @@ _article = article
 
 
 def referenced(word, article=INDEFINITE, gender=MALE):
-    """ Returns a string with the article + the word.
-    """
+    """Returns a string with the article + the word."""
     s = "%s&space;%s" % (_article(word, article, gender), word)
     s = s.replace("'&space;", "'")
     s = s.replace("&space;", " ")
@@ -167,8 +163,7 @@ plural_irregular = {
 
 
 def pluralize(word, pos=NOUN, custom={}):
-    """ Returns the plural of a given word.
-    """
+    """Returns the plural of a given word."""
     if word in custom:
         return custom[word]
     w = word.lower()
@@ -219,8 +214,7 @@ singular_irregular = dict((v, k) for k, v in plural_irregular.items())
 
 
 def singularize(word, pos=NOUN, custom={}):
-    """ Returns the singular of a given word.
-    """
+    """Returns the singular of a given word."""
     if word in custom:
         return custom[word]
     w = word.lower()
@@ -453,15 +447,13 @@ adjective_predicative = {
 
 
 def attributive(adjective):
-    """ For a predicative adjective, returns the attributive form.
-    """
+    """For a predicative adjective, returns the attributive form."""
     # Must deal with feminine and plural.
     raise NotImplementedError
 
 
 def predicative(adjective):
-    """ Returns the predicative adjective.
-    """
+    """Returns the predicative adjective."""
     w = adjective.lower()
     if w in adjective_predicative:
         return adjective_predicative[w]

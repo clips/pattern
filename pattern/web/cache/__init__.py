@@ -21,8 +21,7 @@ except NameError:
 
 
 def decode_string(v, encoding="utf-8"):
-    """ Returns the given value as a Unicode string (if possible).
-    """
+    """Returns the given value as a Unicode string (if possible)."""
     if isinstance(encoding, basestring):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, str):
@@ -36,8 +35,7 @@ def decode_string(v, encoding="utf-8"):
 
 
 def encode_string(v, encoding="utf-8"):
-    """ Returns the given value as a Python byte string (if possible).
-    """
+    """Returns the given value as a Python byte string (if possible)."""
     if isinstance(encoding, basestring):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, unicode):
@@ -81,10 +79,12 @@ def date_modified(path):
 class Cache(object):
 
     def __init__(self, path=os.path.join(MODULE, "tmp")):
-        """ Cache with data stored as files with hashed filenames.
-            Content retrieved from URLs and search engines are stored in cache for performance.
-            The path where the cache is stored can be given. This way you can manage persistent
-            sets of downloaded data. If path=TMP, cached items are stored in a temporary folder.
+        """Cache with data stored as files with hashed filenames.
+
+        Content retrieved from URLs and search engines are stored in cache for performance.
+        The path where the cache is stored can be given. This way you can manage persistent
+        sets of downloaded data. If path=TMP, cached items are stored in a temporary folder.
+
         """
         self.path = path
 
@@ -123,8 +123,10 @@ class Cache(object):
             pass
 
     def get(self, k, unicode=True):
-        """ Returns the data stored with the given id.
-            With unicode=True, returns a Unicode string.
+        """Returns the data stored with the given id.
+
+        With unicode=True, returns a Unicode string.
+
         """
         if k in self:
             f = open(self._hash(k), "rb")
@@ -137,14 +139,13 @@ class Cache(object):
         raise KeyError(k)
 
     def age(self, k):
-        """ Returns the age of the cached item, in days.
-        """
+        """Returns the age of the cached item, in days."""
         p = self._hash(k)
         return os.path.exists(p) and (date_now() - date_modified(p)).days or 0
 
     def clear(self, age=None):
-        """ Clears all items from the cache (whose age is the given amount of days or older).
-        """
+        """Clears all items from the cache (whose age is the given amount of
+        days or older)."""
         n = date_now()
         for p in glob.glob(os.path.join(self.path, "*")):
             if age is None or (n - date_modified(p)).days >= age:

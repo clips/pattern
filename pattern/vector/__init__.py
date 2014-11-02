@@ -89,8 +89,7 @@ except:
 
 
 def decode_string(v, encoding="utf-8"):
-    """ Returns the given value as a Unicode string (if possible).
-    """
+    """Returns the given value as a Unicode string (if possible)."""
     if isinstance(encoding, basestring):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, str):
@@ -104,8 +103,7 @@ def decode_string(v, encoding="utf-8"):
 
 
 def encode_string(v, encoding="utf-8"):
-    """ Returns the given value as a Python byte string (if possible).
-    """
+    """Returns the given value as a Python byte string (if possible)."""
     if isinstance(encoding, basestring):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, unicode):
@@ -122,8 +120,7 @@ encode_utf8 = encode_string
 
 
 def shi(i, base="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"):
-    """ Returns a short string hash for a given int.
-    """
+    """Returns a short string hash for a given int."""
     s = []
     while i > 0:
         i, r = divmod(i, len(base))
@@ -134,8 +131,7 @@ def shi(i, base="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
 
 def shuffled(iterable, **kwargs):
-    """ Returns a copy of the given list with the items in random order.
-    """
+    """Returns a copy of the given list with the items in random order."""
     seed(kwargs.get("seed"))
     return sorted(list(iterable), key=lambda x: random())
 
@@ -155,8 +151,7 @@ def chunk(iterable, n):
 
 
 def mix(iterables=[], n=10):
-    """ Returns an iterator that alternates the given lists, in n chunks.
-    """
+    """Returns an iterator that alternates the given lists, in n chunks."""
     # list(mix([[1, 2, 3, 4], ["a", "b"]], n=2)) => [1, 2, "a", 3, 4, "b"]
     a = [list(chunk(x, n)) for x in iterables]
     for i in xrange(int(n)):
@@ -166,8 +161,8 @@ def mix(iterables=[], n=10):
 
 
 def bin(iterable, key=lambda x: x, value=lambda x: x):
-    """ Returns a dictionary with items in the given list grouped by the given key.
-    """
+    """Returns a dictionary with items in the given list grouped by the given
+    key."""
     # bin([["a", 1], ["a", 2], ["b", 3]], key=lambda x: x[0]) =>
     # {"a": [["a", 1], ["a", 2]],
     #  "b": [["b", 3]]
@@ -292,8 +287,11 @@ PUNCTUATION = ".,;:!?()[]{}`'\"@#$^&*+-|=~_"
 
 
 def words(string, filter=lambda w: w.strip("'").isalnum(), punctuation=PUNCTUATION, **kwargs):
-    """ Returns a list of words (alphanumeric character sequences) from the given string.
-        Common punctuation marks are stripped from words.
+    """Returns a list of words (alphanumeric character sequences) from the
+    given string.
+
+    Common punctuation marks are stripped from words.
+
     """
     string = decode_utf8(string)
     string = re.sub(
@@ -310,10 +308,12 @@ PORTER, LEMMA = "porter", "lemma"
 
 
 def stem(word, stemmer=PORTER, **kwargs):
-    """ Returns the base form of the word when counting words in count().
-        With stemmer=PORTER, the Porter2 stemming algorithm is used.
-        With stemmer=LEMMA, either uses Word.lemma or inflect.singularize().
-        (with optional parameter language="en", pattern.en.inflect is used).
+    """Returns the base form of the word when counting words in count().
+
+    With stemmer=PORTER, the Porter2 stemming algorithm is used.
+    With stemmer=LEMMA, either uses Word.lemma or inflect.singularize().
+    (with optional parameter language="en", pattern.en.inflect is used).
+
     """
     if hasattr(word, "string") and stemmer in (PORTER, None):
         word = word.string
@@ -516,8 +516,10 @@ class Document(object):
 
     @classmethod
     def load(cls, path):
-        """ Returns a new Document from the given text file path.
-            The given text file must be generated with Document.save().
+        """Returns a new Document from the given text file path.
+
+        The given text file must be generated with Document.save().
+
         """
         # Open unicode file.
         s = open(path, "rb").read()
@@ -731,8 +733,8 @@ class Document(object):
 
     @property
     def concepts(self):
-        """ Yields the document concept vector if the document is part of an LSA model.
-        """
+        """Yields the document concept vector if the document is part of an LSA
+        model."""
         return self.model and self.model.lsa and self.model.lsa.concepts.get(self.id) or None
 
     def keywords(self, top=10, normalized=True):
@@ -829,9 +831,11 @@ class Vector(readonlydict):
 
     @property
     def l2_norm(self):
-        """ Yields the Frobenius matrix norm (cached).
-            n = the square root of the sum of the absolute squares of the values.
-            The matrix norm is used to normalize (0.0-1.0) cosine similarity between documents.
+        """Yields the Frobenius matrix norm (cached).
+
+        n = the square root of the sum of the absolute squares of the values.
+        The matrix norm is used to normalize (0.0-1.0) cosine similarity between documents.
+
         """
         if self._norm is None:
             self._norm = sum(w * w for w in self.values()) ** 0.5
@@ -843,8 +847,11 @@ class Vector(readonlydict):
         return Vector(self, weight=self.weight, sparse=False)
 
     def __call__(self, vector={}):
-        """ Vector(vector) returns a new vector updated with values from the given vector.
-            No new features are added. For example: Vector({1:1, 2:2})({1:0, 3:3}) => {1:0, 2:2}.
+        """Vector(vector) returns a new vector updated with values from the
+        given vector.
+
+        No new features are added. For example: Vector({1:1, 2:2})({1:0, 3:3}) => {1:0, 2:2}.
+
         """
         if isinstance(vector, (Document, Model)):
             vector = vector.vector
@@ -866,16 +873,14 @@ class Vector(readonlydict):
 
 
 def features(vectors=[]):
-    """ Returns the set of unique features for all given vectors.
-    """
+    """Returns the set of unique features for all given vectors."""
     return set(chain(*vectors))
 
 _features = features
 
 
 def sparse(v):
-    """ Returns the vector with features that have weight 0 removed.
-    """
+    """Returns the vector with features that have weight 0 removed."""
     for f, w in list(v.items()):
         if w == 0:
             del v[f]
@@ -905,8 +910,7 @@ norm = l2 = L2 = L2norm = l2norm = L2_norm = l2_norm
 
 
 def cosine_similarity(v1, v2):
-    """ Returns the cosine similarity of the given vectors.
-    """
+    """Returns the cosine similarity of the given vectors."""
     s = sum(v1.get(f, 0) * w for f, w in v2.items())
     s = float(s) / (l2_norm(v1) * l2_norm(v2) or 1)
     return s
@@ -936,8 +940,7 @@ COSINE, EUCLIDEAN, MANHATTAN, CHEBYSHEV, HAMMING = \
 
 
 def distance(v1, v2, method=COSINE):
-    """ Returns the distance between two vectors.
-    """
+    """Returns the distance between two vectors."""
     if method == COSINE:
         return 1 - cosine_similarity(v1, v2)
     # Squared Euclidean distance is used (1.5x faster).
@@ -1067,8 +1070,8 @@ class Model(object):
 
     @classmethod
     def load(cls, path):
-        """ Loads the model from a gzipped pickle file created with Model.save().
-        """
+        """Loads the model from a gzipped pickle file created with
+        Model.save()."""
         model = cPickle.loads(gzip.GzipFile(path, "rb").read())
         # Deserialize Model.classifier.
         if model.classifier:
@@ -1081,8 +1084,11 @@ class Model(object):
         return model
 
     def save(self, path, update=False, final=False):
-        """ Saves the model as a gzipped pickle file at the given path.
-            The advantage is that cached vectors and cosine similarity are stored.
+        """Saves the model as a gzipped pickle file at the given path.
+
+        The advantage is that cached vectors and cosine similarity are
+        stored.
+
         """
         # Update the cache before saving.
         if update:
@@ -1107,9 +1113,8 @@ class Model(object):
         f.close()
 
     def export(self, path, format=ORANGE, **kwargs):
-        """ Exports the model as a file for other machine learning applications,
-            e.g., Orange or Weka.
-        """
+        """Exports the model as a file for other machine learning applications,
+        e.g., Orange or Weka."""
         # The Document.vector space is exported without cache or LSA concept
         # space.
         keys = sorted(self.vector.keys())
@@ -1178,9 +1183,11 @@ class Model(object):
         self._update()
 
     def append(self, document):
-        """ Appends the given Document to the model.
-            If Model.weight != TF, the cache of vectors and cosine similarity is cleared
-            (feature weights will be different now that there is a new document).
+        """Appends the given Document to the model.
+
+        If Model.weight != TF, the cache of vectors and cosine similarity is cleared
+        (feature weights will be different now that there is a new document).
+
         """
         if not isinstance(document, Document):
             document = Document(document)
@@ -1192,8 +1199,7 @@ class Model(object):
             self._update()
 
     def extend(self, documents):
-        """ Extends the model with the given list of documents.
-        """
+        """Extends the model with the given list of documents."""
         documents = list(documents)
         for i, document in enumerate(documents):
             if not isinstance(document, Document):
@@ -1211,8 +1217,8 @@ class Model(object):
         self.__delitem__(self.documents.index(document))
 
     def document(self, name):
-        """ Returns the Document with the given name (assuming document names are unique).
-        """
+        """Returns the Document with the given name (assuming document names
+        are unique)."""
         if name in self._index:
             return self._index[name]
 
@@ -1229,10 +1235,12 @@ class Model(object):
         return v
 
     def document_frequency(self, word):
-        """ Returns the document frequency for the given word or feature.
-            Returns 0 if there are no documents in the model (e.g. no word frequency).
-            df = number of documents containing the word / number of documents.
-            The more occurences of the word across the model, the higher its df weight.
+        """Returns the document frequency for the given word or feature.
+
+        Returns 0 if there are no documents in the model (e.g. no word frequency).
+        df = number of documents containing the word / number of documents.
+        The more occurences of the word across the model, the higher its df weight.
+
         """
         if len(self.documents) == 0:
             return 0.0
@@ -1251,11 +1259,14 @@ class Model(object):
     df = document_frequency
 
     def inverse_document_frequency(self, word, base=2.71828):
-        """ Returns the inverse document frequency for the given word or feature.
-            Returns None if the word is not in the model, or if there are no documents in the model.
-            Using the natural logarithm:
-            idf = log(1/df)
-            The more occurences of the word, the lower its idf weight (log() makes it grow slowly).
+        """Returns the inverse document frequency for the given word or
+        feature.
+
+        Returns None if the word is not in the model, or if there are no documents in the model.
+        Using the natural logarithm:
+        idf = log(1/df)
+        The more occurences of the word, the lower its idf weight (log() makes it grow slowly).
+
         """
         df = self.df(word)
         if df == 0.0:
@@ -1302,8 +1313,7 @@ class Model(object):
 
     @property
     def vectors(self):
-        """ Yields a list of all document vectors.
-        """
+        """Yields a list of all document vectors."""
         return [d.vector for d in self.documents]
 
     @property
@@ -1317,9 +1327,8 @@ class Model(object):
     # information gain, latent semantic analysis.
 
     def frequent_concept_sets(self, threshold=0.5):
-        """ Returns a dictionary of (set(feature), frequency) 
-            of feature combinations with a frequency above the given threshold.
-        """
+        """Returns a dictionary of (set(feature), frequency) of feature
+        combinations with a frequency above the given threshold."""
         return apriori([d.terms for d in self.documents], support=threshold)
 
     sets = frequent = frequent_concept_sets
@@ -1396,10 +1405,13 @@ class Model(object):
 #   def cluster(self, method=KMEANS, k=10, iterations=10)
 #   def cluster(self, method=HIERARCHICAL, k=1, iterations=1000)
     def cluster(self, method=KMEANS, **kwargs):
-        """ Clustering is an unsupervised machine learning method for grouping similar documents.
-            - k-means clustering returns a list of k clusters (each is a list of documents).
-            - hierarchical clustering returns a list of documents and Cluster objects,
-              where a Cluster is a list of documents and other clusters (see Cluster.flatten()).
+        """Clustering is an unsupervised machine learning method for grouping
+        similar documents.
+
+        - k-means clustering returns a list of k clusters (each is a list of documents).
+        - hierarchical clustering returns a list of documents and Cluster objects,
+          where a Cluster is a list of documents and other clusters (see Cluster.flatten()).
+
         """
         # The optional documents parameter can be a selective list
         # of documents in the model to cluster.
@@ -1434,11 +1446,14 @@ class Model(object):
         return clusters
 
     def latent_semantic_analysis(self, dimensions=NORM):
-        """ Creates LSA concept vectors by reducing the vector space's dimensionality.
-            Each concept vector has the given number of features (concepts).
-            The concept vectors are consequently used in Model.cosine_similarity(), Model.cluster()
-            and classification. This can be faster for high-dimensional vectors (i.e., many features).
-            The reduction can be undone by setting Model.lsa=False.
+        """Creates LSA concept vectors by reducing the vector space's
+        dimensionality.
+
+        Each concept vector has the given number of features (concepts).
+        The concept vectors are consequently used in Model.cosine_similarity(), Model.cluster()
+        and classification. This can be faster for high-dimensional vectors (i.e., many features).
+        The reduction can be undone by setting Model.lsa=False.
+
         """
         self._lsa = LSA(self, k=dimensions)
         self._cos = {}
@@ -1447,10 +1462,14 @@ class Model(object):
     reduce = latent_semantic_analysis
 
     def condensed_nearest_neighbor(self, k=1, distance=COSINE):
-        """ Returns a filtered list of documents, without impairing classification accuracy.
-            Iteratively constructs a set of "prototype" documents.
-            Documents that are correctly classified by the set are discarded.
-            Documents that are incorrectly classified by the set are added to the set.
+        """Returns a filtered list of documents, without impairing
+        classification accuracy.
+
+        Iteratively constructs a set of "prototype" documents. Documents
+        that are correctly classified by the set are discarded.
+        Documents that are incorrectly classified by the set are added
+        to the set.
+
         """
         d = DistanceMap(method=distance)
         u = []
@@ -1471,8 +1490,8 @@ class Model(object):
     cnn = condensed_nearest_neighbor
 
     def posterior_probability(self, word, type):
-        """ Returns the probability that a document with the given word is of the given type.
-        """
+        """Returns the probability that a document with the given word is of
+        the given type."""
         if not self._pp:
             # p1: {class: count}
             # p2: {feature: {class: count}}
@@ -1604,11 +1623,14 @@ class Model(object):
     GR = gr = gainratio = gain_ratio
 
     def feature_selection(self, top=100, method=CHISQUARED, threshold=0.0, weighted=False):
-        """ Returns a list with the most informative features (terms), using information gain.
-            This is a subset of Model.features that can be used to build a Classifier
-            that is faster (less features = less matrix columns) but still efficient.
-            The given document frequency threshold excludes features that occur in 
-            less than the given percentage of documents (i.e., outliers).
+        """Returns a list with the most informative features (terms), using
+        information gain.
+
+        This is a subset of Model.features that can be used to build a Classifier
+        that is faster (less features = less matrix columns) but still efficient.
+        The given document frequency threshold excludes features that occur in
+        less than the given percentage of documents (i.e., outliers).
+
         """
         if method is None:
             f = lambda w: 1.0
@@ -1630,9 +1652,9 @@ class Model(object):
         return subset
 
     def filter(self, features=[], documents=[]):
-        """ Returns a new Model with documents only containing the given list of features,
-            for example a subset returned from Model.feature_selection().
-        """
+        """Returns a new Model with documents only containing the given list of
+        features, for example a subset returned from
+        Model.feature_selection()."""
         documents = documents or self.documents
         features = set(features)
         model = Model(weight=self.weight)
@@ -1645,9 +1667,12 @@ class Model(object):
         return model
 
     def train(self, *args, **kwargs):
-        """ Trains Model.classifier with the document vectors.
-            Each document is expected to have a Document.type.
-            Model.predict() can then be used to predict the type of other (unknown) documents.
+        """Trains Model.classifier with the document vectors.
+
+        Each document is expected to have a Document.type.
+        Model.predict() can then be used to predict the type of other
+        (unknown) documents.
+
         """
         if len(args) == 0:
             # Model.train(classifier=KNN)
@@ -1661,9 +1686,8 @@ class Model(object):
         self._classifier.finalize()
 
     def predict(self, *args, **kwargs):
-        """ Returns the type for a given document,
-            based on the similarity of documents in the trained Model.classifier.
-        """
+        """Returns the type for a given document, based on the similarity of
+        documents in the trained Model.classifier."""
         return self._classifier.classify(*args, **kwargs)
 
 # Backwards compatibility.
@@ -1681,8 +1705,8 @@ class Apriori(object):
         self._support = {}
 
     def C1(self, sets):
-        """ Returns the unique features from all sets as a list of (hashable) frozensets.
-        """
+        """Returns the unique features from all sets as a list of (hashable)
+        frozensets."""
         return [frozenset([v]) for v in set(chain(*sets))]
 
     def Ck(self, sets):
@@ -1697,8 +1721,10 @@ class Apriori(object):
         return Ck
 
     def Lk(self, sets, candidates, support=0.0):
-        """ Prunes candidate sets whose frequency < support threshold.
-            Returns a dictionary of (candidate set, frequency)-items.
+        """Prunes candidate sets whose frequency < support threshold.
+
+        Returns a dictionary of (candidate set, frequency)-items.
+
         """
         Lk, x = {}, 1.0 / (len(sets) or 1)  # relative count
         for s1 in candidates:
@@ -1739,11 +1765,16 @@ apriori = Apriori()
 class LSA(object):
 
     def __init__(self, model, k=NORM):
-        """ Latent Semantic Analysis is a statistical machine learning method based on 
-            singular value decomposition (SVD), and related to principal component analysis (PCA).
-            Closely related features (words) in the model are combined into "concepts".
-            Documents then get a concept vector that is an approximation of the original vector,
-            but with reduced dimensionality so that cosine similarity and clustering run faster.
+        """Latent Semantic Analysis is a statistical machine learning method
+        based on singular value decomposition (SVD), and related to principal
+        component analysis (PCA).
+
+        Closely related features (words) in the model are combined into
+        "concepts". Documents then get a concept vector that is an
+        approximation of the original vector, but with reduced
+        dimensionality so that cosine similarity and clustering run
+        faster.
+
         """
         import numpy
         # Calling Model.vector() in a loop is quite slow, we should refactor
@@ -1792,8 +1823,7 @@ class LSA(object):
 
     @property
     def terms(self):
-        """ Yields a list of all terms, identical to LSA.model.vector.keys().
-        """
+        """Yields a list of all terms, identical to LSA.model.vector.keys()."""
         return self._terms.values()
 
     features = words = terms
@@ -1834,9 +1864,12 @@ class LSA(object):
         return len(self.u)
 
     def transform(self, document):
-        """ Given a document not in the model, returns a vector in LSA concept space.
-            This happes automatically in Model.cosine_similarity(),
-            but it must be done explicitly for Classifier.classify() input.
+        """Given a document not in the model, returns a vector in LSA concept
+        space.
+
+        This happes automatically in Model.cosine_similarity(), but it
+        must be done explicitly for Classifier.classify() input.
+
         """
         if document.id in self.u:
             return self.u[document.id]
@@ -1878,8 +1911,8 @@ _lsa_transform_cache = {}
 
 
 def mean(iterable, length=None):
-    """ Returns the arithmetic mean of the values in the given iterable or iterator.
-    """
+    """Returns the arithmetic mean of the values in the given iterable or
+    iterator."""
     if length is None:
         if not hasattr(iterable, "__len__"):
             iterable = list(iterable)
@@ -1888,11 +1921,13 @@ def mean(iterable, length=None):
 
 
 def centroid(vectors=[], features=[]):
-    """ Returns the center of the given list of vectors.
-        For example: if each vector has two features, (x, y)-coordinates in 2D space,
-        the centroid is the geometric center of the coordinates forming a polygon.
-        Since vectors are sparse (i.e., features with weight 0 are omitted), 
-        the list of all features (= Model.vector) must be given.
+    """Returns the center of the given list of vectors.
+
+    For example: if each vector has two features, (x, y)-coordinates in 2D space,
+    the centroid is the geometric center of the coordinates forming a polygon.
+    Since vectors are sparse (i.e., features with weight 0 are omitted),
+    the list of all features (= Model.vector) must be given.
+
     """
     c = []
     for v in vectors:
@@ -1912,8 +1947,7 @@ def centroid(vectors=[], features=[]):
 class DistanceMap(object):
 
     def __init__(self, method=COSINE):
-        """ A lazy map of cached distances between Vector objects.
-        """
+        """A lazy map of cached distances between Vector objects."""
         self.method = method
         self._cache = {}
 
@@ -1921,8 +1955,7 @@ class DistanceMap(object):
         return self.distance(v1, v2)
 
     def distance(self, v1, v2):
-        """ Returns the cached distance between two vectors.
-        """
+        """Returns the cached distance between two vectors."""
         try:
             # Two Vector objects for which the distance was already calculated.
             d = self._cache[(v1.id, v2.id)]
@@ -1954,11 +1987,14 @@ RANDOM, KMPP = "random", "kmeans++"
 
 
 def k_means(vectors, k=None, iterations=10, distance=COSINE, seed=RANDOM, **kwargs):
-    """ Returns a list of k clusters, where each cluster is a list of vectors (Lloyd's algorithm).
-        Vectors are assigned to k random centers using a distance metric (EUCLIDEAN, COSINE, ...).
-        Since the initial centers are chosen randomly (by default, seed=RANDOM),
-        there is no guarantee of convergence or of finding an optimal solution.
-        A more efficient way is to use seed=KMPP (k-means++ initialization algorithm).
+    """Returns a list of k clusters, where each cluster is a list of vectors
+    (Lloyd's algorithm).
+
+    Vectors are assigned to k random centers using a distance metric (EUCLIDEAN, COSINE, ...).
+    Since the initial centers are chosen randomly (by default, seed=RANDOM),
+    there is no guarantee of convergence or of finding an optimal solution.
+    A more efficient way is to use seed=KMPP (k-means++ initialization algorithm).
+
     """
     features = kwargs.get("features") or _features(vectors)
     if k is None:
@@ -2068,21 +2104,24 @@ def kmpp(vectors, k, distance=COSINE):
 class Cluster(list):
 
     def __init__(self, *args, **kwargs):
-        """ A nested list of Cluster and Vector objects, 
-            returned from hierarchical() clustering.
-        """
+        """A nested list of Cluster and Vector objects, returned from
+        hierarchical() clustering."""
         list.__init__(self, *args, **kwargs)
 
     @property
     def depth(self):
-        """ Yields the maximum depth of nested clusters.
-            Cluster((1, Cluster((2, Cluster((3, 4)))))).depth => 2.
+        """Yields the maximum depth of nested clusters.
+
+        Cluster((1, Cluster((2, Cluster((3, 4)))))).depth => 2.
+
         """
         return max([0] + [1 + n.depth for n in self if isinstance(n, Cluster)])
 
     def flatten(self, depth=1000):
-        """ Flattens nested clusters to a list, down to the given depth.
-            Cluster((1, Cluster((2, Cluster((3, 4)))))).flatten(1) => [1, 2, Cluster(3, 4)].
+        """Flattens nested clusters to a list, down to the given depth.
+
+        Cluster((1, Cluster((2, Cluster((3, 4)))))).flatten(1) => [1, 2, Cluster(3, 4)].
+
         """
         a = []
         for item in self:
@@ -2119,8 +2158,11 @@ def sequence(i=0, f=lambda i: i + 1):
 
 
 def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
-    """ Returns a Cluster containing k items (vectors or clusters with nested items).
-        With k=1, the top-level cluster contains a single cluster.
+    """Returns a Cluster containing k items (vectors or clusters with nested
+    items).
+
+    With k=1, the top-level cluster contains a single cluster.
+
     """
     id = sequence()
     features = kwargs.get("features", _features(vectors))
@@ -2202,22 +2244,20 @@ class Classifier(object):
 
     @property
     def features(self):
-        """ Yields a list of trained features.
-        """
+        """Yields a list of trained features."""
         return list(features(v for type, v in self._vectors))
 
     @property
     def classes(self):
-        """ Yields a list of trained classes.
-        """
+        """Yields a list of trained classes."""
         return self._classes.keys()
 
     terms, types = features, classes
 
     @property
     def binary(self):
-        """ Yields True if the classifier predicts either True (0) or False (1).
-        """
+        """Yields True if the classifier predicts either True (0) or False
+        (1)."""
         return sorted(self.classes) in ([False, True], [0, 1])
 
     @property
@@ -2273,17 +2313,23 @@ class Classifier(object):
         return moment(a, m, 3) / (moment(a, m, 2) ** 1.5 or 1)
 
     def train(self, document, type=None):
-        """ Trains the classifier with the given document of the given type (i.e., class).
-            A document can be a Document, Vector, dict, list or string.
-            If no type is given, Document.type will be used instead.
+        """Trains the classifier with the given document of the given type
+        (i.e., class).
+
+        A document can be a Document, Vector, dict, list or string. If
+        no type is given, Document.type will be used instead.
+
         """
         type, vector = self._vector(document, type)
         self._vectors.append((type, vector))
         self._classes[type] = self._classes.get(type, 0) + 1
 
     def classify(self, document, discrete=True):
-        """ Returns the type with the highest probability for the given document.
-            Returns a dict of (class, probability)-items if discrete=False.
+        """Returns the type with the highest probability for the given
+        document.
+
+        Returns a dict of (class, probability)-items if discrete=False.
+
         """
         # This method must be implemented in subclass.
         if not discrete:
@@ -2358,8 +2404,7 @@ class Classifier(object):
         return ConfusionMatrix(self.classify, documents)
 
     def save(self, path, final=False):
-        """ Saves the classifier as a gzipped pickle file.
-        """
+        """Saves the classifier as a gzipped pickle file."""
         if final:
             self.finalize()
         self.test = None  # Can't pickle instancemethods.
@@ -2369,8 +2414,7 @@ class Classifier(object):
 
     @classmethod
     def load(cls, path):
-        """ Loads the classifier from a gzipped pickle file.
-        """
+        """Loads the classifier from a gzipped pickle file."""
         f = gzip.GzipFile(path, "rb")
         self = cPickle.loads(f.read())
         self._on_load(path)  # Initialize subclass (e.g., SVM).
@@ -2382,9 +2426,8 @@ class Classifier(object):
         pass
 
     def finalize(self):
-        """ Removes training data from memory, keeping only the trained model,
-            reducing file size with Classifier.save().
-        """
+        """Removes training data from memory, keeping only the trained model,
+        reducing file size with Classifier.save()."""
         pass
 
 #--- CLASSIFIER EVALUATION -----------------------------------------------
@@ -2393,8 +2436,8 @@ class Classifier(object):
 class ConfusionMatrix(defaultdict):
 
     def __init__(self, classify=lambda document: True, documents=[]):
-        """ Returns the matrix of classes x predicted classes as a dictionary.
-        """
+        """Returns the matrix of classes x predicted classes as a
+        dictionary."""
         defaultdict.__init__(self, lambda: defaultdict(int))
         for document, type1 in documents:
             type2 = classify(document)
@@ -2459,8 +2502,7 @@ class ConfusionMatrix(defaultdict):
 
     @property
     def table(self, padding=1):
-        """ Returns the matrix as a string with rows and columns.
-        """
+        """Returns the matrix as a string with rows and columns."""
         k = sorted(self)
         n = max(map(lambda x: len(decode_utf8(x)), k))
         n = max(n, *(len(str(self[k1][k2])) for k1 in k for k2 in k)) + padding
@@ -2597,9 +2639,12 @@ BERNOUILLI = "bernouilli"  # Feature occurs in class (1) or not (0).
 class NB(Classifier):
 
     def __init__(self, train=[], baseline=MAJORITY, method=MULTINOMIAL, alpha=0.0001, **kwargs):
-        """ Naive Bayes is a simple supervised learning method for text classification.
-            Documents are classified based on the probability that a feature occurs in a class,
-            (independent of other features).
+        """Naive Bayes is a simple supervised learning method for text
+        classification.
+
+        Documents are classified based on the probability that a feature
+        occurs in a class, (independent of other features).
+
         """
         self._classes = {}     # {class: frequency}
         self._features = {}     # {feature: frequency}
@@ -2618,9 +2663,12 @@ class NB(Classifier):
         return self._features.keys()
 
     def train(self, document, type=None):
-        """ Trains the classifier with the given document of the given type (i.e., class).
-            A document can be a Document, Vector, dict, list or string.
-            If no type is given, Document.type will be used instead.
+        """Trains the classifier with the given document of the given type
+        (i.e., class).
+
+        A document can be a Document, Vector, dict, list or string. If
+        no type is given, Document.type will be used instead.
+
         """
         # Calculate the probability of a class.
         # Calculate the probability of a feature.
@@ -2637,9 +2685,12 @@ class NB(Classifier):
             self._likelihood[type][f] = self._likelihood[type].get(f, 0) + w
 
     def classify(self, document, discrete=True):
-        """ Returns the type with the highest probability for the given document.
-            If the classifier has been trained on LSA concept vectors
-            you need to supply LSA.transform(document).
+        """Returns the type with the highest probability for the given
+        document.
+
+        If the classifier has been trained on LSA concept vectors you
+        need to supply LSA.transform(document).
+
         """
         # Given red & round, what is the likelihood that it is an apple?
         # p = p(red|apple) * p(round|apple) * p(apple) / (p(red) * p(round))
@@ -2698,16 +2749,22 @@ class KNN(Classifier):
         Classifier.__init__(self, train, baseline)
 
     def train(self, document, type=None):
-        """ Trains the classifier with the given document of the given type (i.e., class).
-            A document can be a Document, Vector, dict, list or string.
-            If no type is given, Document.type will be used instead.
+        """Trains the classifier with the given document of the given type
+        (i.e., class).
+
+        A document can be a Document, Vector, dict, list or string. If
+        no type is given, Document.type will be used instead.
+
         """
         Classifier.train(self, document, type)
 
     def classify(self, document, discrete=True):
-        """ Returns the type with the highest probability for the given document.
-            If the classifier has been trained on LSA concept vectors
-            you need to supply LSA.transform(document).
+        """Returns the type with the highest probability for the given
+        document.
+
+        If the classifier has been trained on LSA concept vectors you
+        need to supply LSA.transform(document).
+
         """
         # Distance is calculated between the document vector and all training instances.
         # This will make KNN slow in higher dimensions.
@@ -2775,9 +2832,12 @@ class IGTreeNode(list):
 class IGTree(Classifier):
 
     def __init__(self, train=[], baseline=MAJORITY, method=GAINRATIO, **kwargs):
-        """ IGTREE is a supervised learning method
-            where training data is represented as a tree ordered by information gain.
-            A feature is taken to occur in a vector (1) or not (0), i.e. BINARY weight.
+        """IGTREE is a supervised learning method where training data is
+        represented as a tree ordered by information gain.
+
+        A feature is taken to occur in a vector (1) or not (0), i.e.
+        BINARY weight.
+
         """
         self._root = None
         self._method = method
@@ -2831,8 +2891,7 @@ class IGTree(Classifier):
         return n
 
     def _search(self, node, vector):
-        """ Returns the predicted class for the given Vector.
-        """
+        """Returns the predicted class for the given Vector."""
         while True:
             #x = round(vector.get(node.feature, 0.0), 1)
             x = node.feature in vector
@@ -2846,8 +2905,11 @@ class IGTree(Classifier):
             node = n
 
     def _train(self):
-        """ Calculates information gain ratio for the features in the training data.
-            Constructs the search tree.
+        """Calculates information gain ratio for the features in the training
+        data.
+
+        Constructs the search tree.
+
         """
         m = Model((Document(set(v), type=type)
                    for type, v in self._vectors), weight=BINARY)
@@ -2857,18 +2919,20 @@ class IGTree(Classifier):
                                  for type, v in self._vectors], features=f)
 
     def classify(self, document, discrete=True):
-        """ Returns the type with the highest probability for the given document.
-            If the classifier has been trained on LSA concept vectors
-            you need to supply LSA.transform(document).
+        """Returns the type with the highest probability for the given
+        document.
+
+        If the classifier has been trained on LSA concept vectors you
+        need to supply LSA.transform(document).
+
         """
         if self._root is None:
             self._train()
         return self._search(self._root, self._vector(document)[1])
 
     def finalize(self):
-        """ Removes training data from memory, keeping only the IG tree,
-            reducing file size with Classifier.save().
-        """
+        """Removes training data from memory, keeping only the IG tree,
+        reducing file size with Classifier.save()."""
         if self._root is None:
             self._train()
         self._vectors = []
@@ -2910,9 +2974,12 @@ class SLP(Classifier):
         return list(set(chain(*(f.keys() for f in self._weight.values()))))
 
     def train(self, document, type=None):
-        """ Trains the classifier with the given document of the given type (i.e., class).
-            A document can be a Document, Vector, dict, list or string.
-            If no type is given, Document.type will be used instead.
+        """Trains the classifier with the given document of the given type
+        (i.e., class).
+
+        A document can be a Document, Vector, dict, list or string. If
+        no type is given, Document.type will be used instead.
+
         """
         def _accumulate(type, feature, weight, i):
             # Collins M. (2002). Discriminative Training Methods for Hidden Markov Models. EMNLP 2002.
@@ -2936,9 +3003,12 @@ class SLP(Classifier):
                 _accumulate(t2, f, -1, self._iteration)
 
     def classify(self, document, discrete=True):
-        """ Returns the type with the highest probability for the given document.
-            If the classifier has been trained on LSA concept vectors
-            you need to supply LSA.transform(document).
+        """Returns the type with the highest probability for the given
+        document.
+
+        If the classifier has been trained on LSA concept vectors you
+        need to supply LSA.transform(document).
+
         """
         v = self._vector(document)[1]
         i = self._iteration or 1
@@ -2972,9 +3042,8 @@ class SLP(Classifier):
             return self.baseline
 
     def finalize(self):
-        """ Removes training data from memory, keeping only the node weights,
-            reducing file size with Classifier.save().
-        """
+        """Removes training data from memory, keeping only the node weights,
+        reducing file size with Classifier.save()."""
         self._vectors = []
 
 AP = AveragedPerceptron = Perceptron = SLP
@@ -3009,15 +3078,13 @@ def matrix(m, n, a=0.0, b=0.0):
 
 
 def sigmoid(x):
-    """ Forward propagation activation function.
-    """
+    """Forward propagation activation function."""
     # return 1.0 / (1.0 + math.exp(-x))
     return tanh(x)
 
 
 def dsigmoid(y):
-    """ Backward propagation activation function derivative.
-    """
+    """Backward propagation activation function derivative."""
     # return y * (1.0 - y)
     return 1.0 - y * y
 
@@ -3025,10 +3092,9 @@ def dsigmoid(y):
 class BPNN(Classifier):
 
     def __init__(self, train=[], baseline=MAJORITY, layers=2, iterations=1000, **kwargs):
-        """ Backpropagation neural network (BPNN) is a supervised learning method 
-            bases on a network of interconnected neurons
-            inspired by an animal's nervous system (i.e., the brain).
-        """
+        """Backpropagation neural network (BPNN) is a supervised learning
+        method bases on a network of interconnected neurons inspired by an
+        animal's nervous system (i.e., the brain)."""
         # Based on:
         # http://www.cs.pomona.edu/classes/cs30/notes/cs030neural.py
         # http://arctrix.com/nas/python/bpnn.py
@@ -3058,8 +3124,11 @@ class BPNN(Classifier):
     learningrate = learning_rate = rate
 
     def _weight_initialization(self, i=1, o=1, hidden=1, method=RANDOM, a=0.0, b=1.0):
-        """ Initializes the network with the given number of input, hidden, output nodes.
-            Initializes the node weights uniformly random between a and b.
+        """Initializes the network with the given number of input, hidden,
+        output nodes.
+
+        Initializes the node weights uniformly random between a and b.
+
         """
         i += 1  # bias
         # Node activation.
@@ -3073,8 +3142,8 @@ class BPNN(Classifier):
         self._co = matrix(hidden, o)
 
     def _propagate_forward(self, input=[]):
-        """ Propagates the input through the network and returns the output activiation.
-        """
+        """Propagates the input through the network and returns the output
+        activiation."""
         ai, ao, ah, wi, wo = self._ai,  self._ao, self._ah, self._wi, self._wo
         assert len(input) == len(ai) - 1
         # Activate input nodes.
@@ -3089,9 +3158,12 @@ class BPNN(Classifier):
         return list(ao)
 
     def _propagate_backward(self, output=[], rate=0.5, momentum=0.1):
-        """ Propagates the output through the network and
-            generates delta for hidden and output nodes.
-            The learning rate determines speed vs. accuracy of the algorithm.
+        """Propagates the output through the network and generates delta for
+        hidden and output nodes.
+
+        The learning rate determines speed vs. accuracy of the
+        algorithm.
+
         """
         ai, ao, ah, wi, wo, ci, co = self._ai,  self._ao, self._ah, self._wi, self._wo, self._ci, self._co
         # Compute delta for output nodes.
@@ -3148,17 +3220,23 @@ class BPNN(Classifier):
         return self._propagate_forward(input)
 
     def train(self, document, type=None):
-        """ Trains the classifier with the given document of the given type (i.e., class).
-            A document can be a Document, Vector, dict, list or string.
-            If no type is given, Document.type will be used instead.
+        """Trains the classifier with the given document of the given type
+        (i.e., class).
+
+        A document can be a Document, Vector, dict, list or string. If
+        no type is given, Document.type will be used instead.
+
         """
         Classifier.train(self, document, type)
         self._trained = False
 
     def classify(self, document, discrete=True):
-        """ Returns the type with the highest probability for the given document.
-            If the classifier has been trained on LSA concept vectors
-            you need to supply LSA.transform(document).
+        """Returns the type with the highest probability for the given
+        document.
+
+        If the classifier has been trained on LSA concept vectors you
+        need to supply LSA.transform(document).
+
         """
         if not self._trained:
             # Batch learning (we need to know the number of features in
@@ -3185,9 +3263,8 @@ class BPNN(Classifier):
         return c
 
     def finalize(self):
-        """ Removes training data from memory, keeping only the node weights,
-            reducing file size with Classifier.save().
-        """
+        """Removes training data from memory, keeping only the node weights,
+        reducing file size with Classifier.save()."""
         self._vectors = []
 
 ANN = NN = NeuralNetwork = BPNN
@@ -3302,8 +3379,7 @@ class SVM(Classifier):
 
     @property
     def extension(self):
-        """ Yields the extension module used (LIBSVM or LIBLINEAR).
-        """
+        """Yields the extension module used (LIBSVM or LIBLINEAR)."""
         if LIBLINEAR in self._extensions and \
                 self._svm.LIBLINEAR and \
                 self._type == CLASSIFICATION and \
@@ -3366,8 +3442,7 @@ class SVM(Classifier):
 
     @property
     def support_vectors(self):
-        """ Yields the support vectors.
-        """
+        """Yields the support vectors."""
         if self._model is None:
             self._train()
         if self.extension == LIBLINEAR:
@@ -3377,8 +3452,10 @@ class SVM(Classifier):
     sv = support_vectors
 
     def _train(self):
-        """ Calls libsvm.svm_train() to create a model.
-            Vector classes and features are mapped to integers.
+        """Calls libsvm.svm_train() to create a model.
+
+        Vector classes and features are mapped to integers.
+
         """
         # Note: LIBLINEAR feature indices start from 1 (not 0).
         # List of vectors.
@@ -3422,10 +3499,12 @@ class SVM(Classifier):
         self._model = (f(y, x, o), H1, H2, H3)
 
     def _classify(self, document, probability=False):
-        """ Calls libsvm.svm_predict() with the cached model.
-            For CLASSIFICATION, returns the predicted class.
-            For CLASSIFICATION with probability=True, returns a list of (weight, class)-tuples.
-            For REGRESSION, returns a float.
+        """Calls libsvm.svm_predict() with the cached model.
+
+        For CLASSIFICATION, returns the predicted class.
+        For CLASSIFICATION with probability=True, returns a list of (weight, class)-tuples.
+        For REGRESSION, returns a float.
+
         """
         if self._model is None:
             return None
@@ -3461,17 +3540,23 @@ class SVM(Classifier):
         return p[0][0]
 
     def train(self, document, type=None):
-        """ Trains the classifier with the given document of the given type (i.e., class).
-            A document can be a Document, Vector, dict, list or string.
-            If no type is given, Document.type will be used instead.
+        """Trains the classifier with the given document of the given type
+        (i.e., class).
+
+        A document can be a Document, Vector, dict, list or string. If
+        no type is given, Document.type will be used instead.
+
         """
         Classifier.train(self, document, type)
         self._model = None
 
     def classify(self, document, discrete=True):
-        """ Returns the type with the highest probability for the given document.
-            If the classifier has been trained on LSA concept vectors
-            you need to supply LSA.transform(document).
+        """Returns the type with the highest probability for the given
+        document.
+
+        If the classifier has been trained on LSA concept vectors you
+        need to supply LSA.transform(document).
+
         """
         if self._model is None:
             self._train()
@@ -3578,9 +3663,13 @@ class SVM(Classifier):
 class GeneticAlgorithm(object):
 
     def __init__(self, candidates=[], **kwargs):
-        """ A genetic algorithm is a stochastic search method  based on natural selection.
-            Each generation, the fittest candidates are selected and recombined into a new generation. 
-            With each new generation the system converges towards an optimal fitness.
+        """A genetic algorithm is a stochastic search method  based on natural
+        selection.
+
+        Each generation, the fittest candidates are selected and
+        recombined into a new generation. With each new generation the
+        system converges towards an optimal fitness.
+
         """
         self.population = candidates
         self.generation = 0
@@ -3595,19 +3684,16 @@ class GeneticAlgorithm(object):
         return 1.0
 
     def combine(self, candidate1, candidate2):
-        """ Must be implemented in a subclass, returns a new candidate.
-        """
+        """Must be implemented in a subclass, returns a new candidate."""
         return None
 
     def mutate(self, candidate):
-        """ Must be implemented in a subclass, returns a new candidate.
-        """
+        """Must be implemented in a subclass, returns a new candidate."""
         return None or candidate
 
     def update(self, top=0.5, mutation=0.5):
-        """ Updates the population by selecting the top fittest candidates,
-            and recombining them into a new generation.
-        """
+        """Updates the population by selecting the top fittest candidates, and
+        recombining them into a new generation."""
         # 1) Selection.
         # Choose the top fittest candidates.
         # Including weaker candidates can be beneficial (diversity).

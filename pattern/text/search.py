@@ -32,8 +32,8 @@ RE_PUNCTUATION = re.compile("(%s)" % RE_PUNCTUATION)
 class Text(list):
 
     def __init__(self, string="", token=["word"]):
-        """ A list of sentences, where each sentence is separated by a period.
-        """
+        """A list of sentences, where each sentence is separated by a
+        period."""
         list.__init__(self, (Sentence(s + ".", token)
                              for s in string.split(".")))
 
@@ -49,8 +49,7 @@ class Text(list):
 class Sentence(list):
 
     def __init__(self, string="", token=["word"]):
-        """ A list of words, where punctuation marks are split from words.
-        """
+        """A list of words, where punctuation marks are split from words."""
         s = RE_PUNCTUATION.sub(" \\1 ", string)  # Naive tokenization.
         s = re.sub(r"\s+", " ", s)
         s = re.sub(r" ' (d|m|s|ll|re|ve)", " '\\1", s)
@@ -74,8 +73,7 @@ class Sentence(list):
 class Word(object):
 
     def __init__(self, sentence, string, tag=None, index=0):
-        """ A word with a position in a sentence.
-        """
+        """A word with a position in a sentence."""
         self.sentence, self.string, self.tag, self.index = sentence, string, tag, index
 
     def __repr__(self):
@@ -104,9 +102,11 @@ regexp = type(re.compile(r"."))
 
 
 def _match(string, pattern):
-    """ Returns True if the pattern matches the given word string.
-        The pattern can include a wildcard (*front, back*, *both*, in*side),
-        or it can be a compiled regular expression.
+    """Returns True if the pattern matches the given word string.
+
+    The pattern can include a wildcard (*front, back*, *both*, in*side),
+    or it can be a compiled regular expression.
+
     """
     p = pattern
     try:
@@ -139,8 +139,8 @@ def unique(iterable):
 
 
 def find(function, iterable):
-    """ Returns the first item in the list for which function(item) is True, None otherwise.
-    """
+    """Returns the first item in the list for which function(item) is True,
+    None otherwise."""
     for x in iterable:
         if function(x) is True:
             return x
@@ -177,8 +177,7 @@ except:
 
 
 def variations(iterable, optional=lambda x: False):
-    """ Returns all possible variations of a sequence with optional items.
-    """
+    """Returns all possible variations of a sequence with optional items."""
     # For example: variations(["A?", "B?", "C"], optional=lambda s: s.endswith("?"))
     # defines a sequence where constraint A and B are optional:
     # [("A?", "B?", "C"), ("B?", "C"), ("A?", "C"), ("C")]
@@ -331,9 +330,12 @@ class Taxonomy(dict):
         return False
 
     def append(self, term, type=None, value=None):
-        """ Appends the given term to the taxonomy and tags it as the given type.
-            Optionally, a disambiguation value can be supplied.
-            For example: taxonomy.append("many", "quantity", "50-200")
+        """Appends the given term to the taxonomy and tags it as the given
+        type.
+
+        Optionally, a disambiguation value can be supplied.
+        For example: taxonomy.append("many", "quantity", "50-200")
+
         """
         term = self._normalize(term)
         type = self._normalize(type)
@@ -358,8 +360,10 @@ class Taxonomy(dict):
                 return v[0]
 
     def parents(self, term, recursive=False, **kwargs):
-        """ Returns a list of all semantic types for the given term.
-            If recursive=True, traverses parents up to the root.
+        """Returns a list of all semantic types for the given term.
+
+        If recursive=True, traverses parents up to the root.
+
         """
         def dfs(term, recursive=False, visited={}, **kwargs):
             if term in visited:  # Break on cyclic relations.
@@ -497,12 +501,15 @@ has_alpha = lambda string: ALPHA.match(string) is not None
 class Constraint(object):
 
     def __init__(self, words=[], tags=[], chunks=[], roles=[], taxa=[], optional=False, multiple=False, first=False, taxonomy=TAXONOMY, exclude=None, custom=None):
-        """ A range of words, tags and taxonomy terms that matches certain words in a sentence.        
-            For example: 
-            Constraint.fromstring("with|of") matches either "with" or "of".
-            Constraint.fromstring("(JJ)") optionally matches an adjective.
-            Constraint.fromstring("NP|SBJ") matches subject noun phrases.
-            Constraint.fromstring("QUANTITY|QUALITY") matches quantity-type and quality-type taxa.
+        """A range of words, tags and taxonomy terms that matches certain words
+        in a sentence.
+
+        For example:
+        Constraint.fromstring("with|of") matches either "with" or "of".
+        Constraint.fromstring("(JJ)") optionally matches an adjective.
+        Constraint.fromstring("NP|SBJ") matches subject noun phrases.
+        Constraint.fromstring("QUANTITY|QUALITY") matches quantity-type and quality-type taxa.
+
         """
         self.index = 0
         self.words = list(words)  # Allowed words/lemmata (of, with, ...)
@@ -736,8 +743,12 @@ GREEDY = "greedy"
 class Pattern(object):
 
     def __init__(self, sequence=[], *args, **kwargs):
-        """ A sequence of constraints that matches certain phrases in a sentence.
-            The given list of Constraint objects can contain nested lists (groups).
+        """A sequence of constraints that matches certain phrases in a
+        sentence.
+
+        The given list of Constraint objects can contain nested lists
+        (groups).
+
         """
         # Parse nested lists and tuples from the sequence into groups.
         # [DT [JJ NN]] => Match.group(1) will yield the JJ NN sequences.
@@ -777,9 +788,11 @@ class Pattern(object):
 
     @classmethod
     def fromstring(cls, s, *args, **kwargs):
-        """ Returns a new Pattern from the given string.
-            Constraints are separated by a space.
-            If a constraint contains a space, it must be wrapped in [].
+        """Returns a new Pattern from the given string.
+
+        Constraints are separated by a space. If a constraint contains a
+        space, it must be wrapped in [].
+
         """
         s = s.replace("\(", "&lparen;")
         s = s.replace("\)", "&rparen;")
@@ -833,8 +846,11 @@ class Pattern(object):
         return P
 
     def scan(self, string):
-        """ Returns True if search(Sentence(string)) may yield matches.
-            If is often faster to scan prior to creating a Sentence and searching it.
+        """Returns True if search(Sentence(string)) may yield matches.
+
+        If is often faster to scan prior to creating a Sentence and
+        searching it.
+
         """
         # In the following example, first scan the string for "good" and "bad":
         # p = Pattern.fromstring("good|bad NN")
@@ -853,8 +869,7 @@ class Pattern(object):
         return True
 
     def search(self, sentence):
-        """ Returns a list of all matches found in the given sentence.
-        """
+        """Returns a list of all matches found in the given sentence."""
         if sentence.__class__.__name__ == "Sentence":
             pass
         elif isinstance(sentence, list) or sentence.__class__.__name__ == "Text":
@@ -876,8 +891,7 @@ class Pattern(object):
         return a
 
     def match(self, sentence, start=0, _v=None, _u=None):
-        """ Returns the first match found in the given sentence, or None.
-        """
+        """Returns the first match found in the given sentence, or None."""
         if sentence.__class__.__name__ == "Sentence":
             pass
         elif isinstance(sentence, list) or sentence.__class__.__name__ == "Text":
@@ -1007,9 +1021,11 @@ _CACHE_SIZE = 100  # Number of dynamic Pattern objects to keep in cache.
 
 
 def compile(pattern, *args, **kwargs):
-    """ Returns a Pattern from the given string or regular expression.
-        Recently compiled patterns are kept in cache
-        (if they do not use taxonomies, which are mutable dicts).
+    """Returns a Pattern from the given string or regular expression.
+
+    Recently compiled patterns are kept in cache (if they do not use
+    taxonomies, which are mutable dicts).
+
     """
     id, p = repr(pattern) + repr(args), pattern
     if id in _cache and not kwargs:
@@ -1031,27 +1047,30 @@ def compile(pattern, *args, **kwargs):
 
 
 def scan(pattern, string, *args, **kwargs):
-    """ Returns True if pattern.search(Sentence(string)) may yield matches.
-        If is often faster to scan prior to creating a Sentence and searching it.
+    """Returns True if pattern.search(Sentence(string)) may yield matches.
+
+    If is often faster to scan prior to creating a Sentence and
+    searching it.
+
     """
     return compile(pattern, *args, **kwargs).scan(string)
 
 
 def match(pattern, sentence, *args, **kwargs):
-    """ Returns the first match found in the given sentence, or None.
-    """
+    """Returns the first match found in the given sentence, or None."""
     return compile(pattern, *args, **kwargs).match(sentence)
 
 
 def search(pattern, sentence, *args, **kwargs):
-    """ Returns a list of all matches found in the given sentence.
-    """
+    """Returns a list of all matches found in the given sentence."""
     return compile(pattern, *args, **kwargs).search(sentence)
 
 
 def escape(string):
-    """ Returns the string with control characters for Pattern syntax escaped.
-        For example: "hello!" => "hello\!".
+    """Returns the string with control characters for Pattern syntax escaped.
+
+    For example: "hello!" => "hello\!".
+
     """
     for ch in ("{", "}", "[", "]", "(", ")", "_", "|", "!", "*", "+", "^"):
         string = string.replace(ch, "\\" + ch)
@@ -1063,9 +1082,8 @@ def escape(string):
 class Match(object):
 
     def __init__(self, pattern, words=[], map={}):
-        """ Search result returned from Pattern.match(sentence),
-            containing a sequence of Word objects.
-        """
+        """Search result returned from Pattern.match(sentence), containing a
+        sequence of Word objects."""
         self.pattern = pattern
         self.words = words
         self._map1 = dict()  # Word index to Constraint.
@@ -1095,23 +1113,24 @@ class Match(object):
         return self.words and self.words[-1].index + 1 or None
 
     def constraint(self, word):
-        """ Returns the constraint that matches the given Word, or None.
-        """
+        """Returns the constraint that matches the given Word, or None."""
         if word.index in self._map1:
             return self._map1[word.index]
 
     def constraints(self, chunk):
-        """ Returns a list of constraints that match the given Chunk.
-        """
+        """Returns a list of constraints that match the given Chunk."""
         a = [self._map1[w.index] for w in chunk.words if w.index in self._map1]
         b = []
         [b.append(constraint) for constraint in a if constraint not in b]
         return b
 
     def constituents(self, constraint=None):
-        """ Returns a list of Word and Chunk objects, 
-            where words have been grouped into their chunks whenever possible.
-            Optionally, returns only chunks/words that match given constraint(s), or constraint index.
+        """Returns a list of Word and Chunk objects, where words have been
+        grouped into their chunks whenever possible.
+
+        Optionally, returns only chunks/words that match given
+        constraint(s), or constraint index.
+
         """
         # Select only words that match the given constraint.
         # Note: this will only work with constraints from
@@ -1145,10 +1164,12 @@ class Match(object):
         return a
 
     def group(self, index, chunked=False):
-        """ Returns a list of Word objects that match the given group.
-            With chunked=True, returns a list of Word + Chunk objects - see Match.constituents().
-            A group consists of consecutive constraints wrapped in { }, e.g.,
-            search("{JJ JJ} NN", Sentence(parse("big black cat"))).group(1) => big black.
+        """Returns a list of Word objects that match the given group.
+
+        With chunked=True, returns a list of Word + Chunk objects - see Match.constituents().
+        A group consists of consecutive constraints wrapped in { }, e.g.,
+        search("{JJ JJ} NN", Sentence(parse("big black cat"))).group(1) => big black.
+
         """
         if index < 0 or index > len(self.pattern.groups):
             raise IndexError("no such group")

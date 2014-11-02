@@ -37,8 +37,7 @@ except:
 
 
 def decode_utf8(string):
-    """ Returns the given string as a unicode string (if possible).
-    """
+    """Returns the given string as a unicode string (if possible)."""
     if isinstance(string, str):
         for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
             try:
@@ -50,8 +49,7 @@ def decode_utf8(string):
 
 
 def encode_utf8(string):
-    """ Returns the given string as a Python byte string (if possible).
-    """
+    """Returns the given string as a Python byte string (if possible)."""
     if isinstance(string, unicode):
         try:
             return string.encode("utf-8")
@@ -120,9 +118,12 @@ class MailNotLoggedIn(MailError):
 class Mail(object):
 
     def __init__(self, username, password, service=GMAIL, port=993, secure=True):
-        """ IMAP4 connection to a mailbox. With secure=True, SSL is used. 
-            The standard port for SSL is 993.
-            The standard port without SSL is 143.
+        """IMAP4 connection to a mailbox.
+
+        With secure=True, SSL is used.
+        The standard port for SSL is 993.
+        The standard port without SSL is 143.
+
         """
         self._username = username
         self._password = password
@@ -144,9 +145,8 @@ class Mail(object):
         return self._imap4
 
     def login(self, username, password, **kwargs):
-        """ Signs in to the mail account with the given username and password,
-            raises a MailLoginError otherwise.
-        """
+        """Signs in to the mail account with the given username and password,
+        raises a MailLoginError otherwise."""
         self.logout()
         self._secure = kwargs.get("secure", self._secure)
         self._imap4 = (self._secure and IMAP4_SSL or IMAP4)(
@@ -159,8 +159,7 @@ class Mail(object):
             raise MailLoginError(response)
 
     def logout(self):
-        """ Signs out of the mail account.
-        """
+        """Signs out of the mail account."""
         if self._imap4 is not None:
             self._imap4.logout()
             self._imap4 = None
@@ -186,8 +185,7 @@ class Mail(object):
         return self._folders
 
     def __getattr__(self, k):
-        """ Each folder is accessible as Mail.[name].
-        """
+        """Each folder is accessible as Mail.[name]."""
         if k in self.__dict__:
             return self.__dict__[k]
         if k in self.folders:
@@ -218,8 +216,10 @@ def _decode(s, message):
 class MailFolder(object):
 
     def __init__(self, parent, name):
-        """ A folder (inbox, spam, trash, ...) in a mailbox.
-            E-mail messages can be searched and retrieved (including attachments) from a folder.
+        """A folder (inbox, spam, trash, ...) in a mailbox.
+
+        E-mail messages can be searched and retrieved (including attachments) from a folder.
+
         """
         self._parent = parent
         self._name = name
@@ -254,9 +254,11 @@ class MailFolder(object):
         return self.__getitem__(i, attachments, cached)
 
     def __getitem__(self, i, attachments=False, cached=True):
-        """ Returns the mail message with the given index.
-            Each message is a dictionary with date, from, subject, body, attachments entries.
-            The attachments entry is a list of (MIME-type, str)-tuples.
+        """Returns the mail message with the given index.
+
+        Each message is a dictionary with date, from, subject, body, attachments entries.
+        The attachments entry is a list of (MIME-type, str)-tuples.
+
         """
         i += 1
         id = "mail-%s-%s-%s-%s" % (self.parent._id, self.name, i, attachments)

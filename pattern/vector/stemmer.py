@@ -60,8 +60,8 @@ def is_short_syllable(w, before=None):
 
 
 def is_short(w):
-    """ A word is called short if it consists of a short syllable preceded by zero or more consonants. 
-    """
+    """A word is called short if it consists of a short syllable preceded by
+    zero or more consonants."""
     return is_short_syllable(w[-3:]) and len([ch for ch in w[:-3] if ch in VOWELS]) == 0
 
 # A point made at least twice in the literature is that words beginning with gener-
@@ -94,8 +94,10 @@ def R2(w):
 
 
 def find_vowel(w):
-    """ Returns the index of the first vowel in the word.
-        When no vowel is found, returns len(word).
+    """Returns the index of the first vowel in the word.
+
+    When no vowel is found, returns len(word).
+
     """
     for i, ch in enumerate(w):
         if ch in VOWELS:
@@ -104,8 +106,7 @@ def find_vowel(w):
 
 
 def has_vowel(w):
-    """ Returns True if there is a vowel in the given string.
-    """
+    """Returns True if there is a vowel in the given string."""
     for ch in w:
         if ch in VOWELS:
             return True
@@ -326,8 +327,10 @@ def case_sensitive(stem, word):
 
 
 def upper_consonant_y(w):
-    """ Sets the initial y, or y after a vowel, to Y.
-        Of course, y is interpreted as a vowel and Y as a consonant.
+    """Sets the initial y, or y after a vowel, to Y.
+
+    Of course, y is interpreted as a vowel and Y as a consonant.
+
     """
     a = []
     p = None

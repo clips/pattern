@@ -34,6 +34,7 @@ clearly(adv.)
 (hypernym -> {noun: canine, canid}, member meronym -> {noun: Canis, genus Canis}, member meronym -> {noun: pack}, hyponym -> {noun: pooch, doggie, doggy, barker, bow-wow}, hyponym -> {noun: cur, mongrel, mutt})
 >>> dog.getPointerTargets(MEMBER_MERONYM)
 [{noun: Canis, genus Canis}, {noun: pack}]
+
 """
 from __future__ import print_function
 from __future__ import absolute_import
@@ -222,6 +223,7 @@ class Word:
     'dog'
     >>> N['dog'].taggedSenseCount
     1
+
     """
 
     def __init__(self, line):
@@ -238,12 +240,18 @@ class Word:
 
     def getPointers(self, pointerType=None):
         """Pointers connect senses and synsets, not words.
-        Try word[0].getPointers() instead."""
+
+        Try word[0].getPointers() instead.
+
+        """
         raise self.getPointers.__doc__
 
     def getPointerTargets(self, pointerType=None):
         """Pointers connect senses and synsets, not words.
-        Try word[0].getPointerTargets() instead."""
+
+        Try word[0].getPointerTargets() instead.
+
+        """
         raise self.getPointers.__doc__
 
     def getSenses(self):
@@ -251,6 +259,7 @@ class Word:
 
         >>> N['dog'].getSenses()
         ('dog' in {noun: dog, domestic dog, Canis familiaris}, 'dog' in {noun: frump, dog}, 'dog' in {noun: dog}, 'dog' in {noun: cad, bounder, blackguard, dog, hound, heel}, 'dog' in {noun: frank, frankfurter, hotdog, hot dog, dog, wiener, wienerwurst, weenie}, 'dog' in {noun: pawl, detent, click, dog}, 'dog' in {noun: andiron, firedog, dog, dog-iron})
+
         """
         if not hasattr(self, '_senses'):
             def getSense(offset, pos=self.pos, form=self.form):
@@ -273,15 +282,17 @@ class Word:
 
         >>> N['dog'].isTagged()
         1
+
         """
         return self.taggedSenseCount > 0
 
     def getAdjectivePositions(self):
-        """Return a sequence of adjective positions that this word can
-        appear in.  These are elements of ADJECTIVE_POSITIONS.
+        """Return a sequence of adjective positions that this word can appear
+        in.  These are elements of ADJECTIVE_POSITIONS.
 
         >>> ADJ['clear'].getAdjectivePositions()
         [None, 'predicative']
+
         """
         positions = {}
         for sense in self.getSenses():
@@ -367,10 +378,11 @@ class Synset:
 
           >>> V['think'][0].synset.verbFrames
           (5, 9)
+
     """
 
     def __init__(self, pos, offset, line):
-        "Initialize the synset from a line off a WN synset file."
+        """Initialize the synset from a line off a WN synset file."""
         self.pos = pos
         "part of speech -- one of NOUN, VERB, ADJECTIVE, ADVERB."
         self.offset = offset
@@ -406,6 +418,7 @@ class Synset:
 
         >>> N['dog'][0].getSenses()
         ('dog' in {noun: dog, domestic dog, Canis familiaris},)
+
         """
         if not hasattr(self, '_senses'):
             def loadSense(senseTuple, verbFrames=None, synset=self):
@@ -432,6 +445,7 @@ class Synset:
         (hypernym -> {noun: canine, canid}, member meronym -> {noun: Canis, genus Canis}, member meronym -> {noun: pack}, hyponym -> {noun: pooch, doggie, doggy, barker, bow-wow}, hyponym -> {noun: cur, mongrel, mutt})
         >>> N['dog'][0].getPointers(HYPERNYM)
         (hypernym -> {noun: canine, canid},)
+
         """
         if not hasattr(self, '_pointers'):
             def loadPointer(tuple, synset=self):
@@ -457,6 +471,7 @@ class Synset:
         [{noun: canine, canid}, {noun: Canis, genus Canis}, {noun: pack}, {noun: pooch, doggie, doggy, barker, bow-wow}, {noun: cur, mongrel, mutt}]
         >>> N['dog'][0].getPointerTargets(HYPERNYM)
         [{noun: canine, canid}]
+
         """
         return map(Pointer.target, self.getPointers(pointerType))
 
@@ -469,6 +484,7 @@ class Synset:
         1
         >>> N['dog'][1].isTagged()
         0
+
         """
         return len(filter(Sense.isTagged, self.getSenses())) > 0
 
@@ -560,7 +576,7 @@ class Sense:
     """
 
     def __init__(sense, synset, senseTuple, verbFrames=None):
-        "Initialize a sense from a synset's senseTuple."
+        """Initialize a sense from a synset's senseTuple."""
         # synset is stored by key (pos, synset) rather than object
         # reference, to avoid creating a circular reference between
         # Senses and Synsets that will prevent the vm from
@@ -630,6 +646,7 @@ class Sense:
         (hypernym -> {noun: canine, canid}, member meronym -> {noun: Canis, genus Canis}, member meronym -> {noun: pack}, hyponym -> {noun: pooch, doggie, doggy, barker, bow-wow}, hyponym -> {noun: cur, mongrel, mutt})
         >>> N['dog'][0].getPointers(HYPERNYM)
         (hypernym -> {noun: canine, canid},)
+
         """
         senseIndex = _index(self, self.synset.getSenses())
 
@@ -650,6 +667,7 @@ class Sense:
         [{noun: canine, canid}, {noun: Canis, genus Canis}, {noun: pack}, {noun: pooch, doggie, doggy, barker, bow-wow}, {noun: cur, mongrel, mutt}]
         >>> N['dog'][0].getPointerTargets(HYPERNYM)
         [{noun: canine, canid}]
+
         """
         return map(Pointer.target, self.getPointers(pointerType))
 
@@ -667,6 +685,7 @@ class Sense:
         1
         >>> N['dog'][1].isTagged()
         0
+
         """
         word = self.word()
         return _index(self, word.getSenses()) < word.taggedSenseCount
@@ -684,7 +703,7 @@ class Sense:
 
 class Pointer:
 
-    """ A typed directional relationship between Senses or Synsets.
+    """A typed directional relationship between Senses or Synsets.
 
     Fields
     ------
@@ -692,6 +711,7 @@ class Pointer:
           One of POINTER_TYPES.
       pos : string
           The part of speech -- one of NOUN, VERB, ADJECTIVE, ADVERB.
+
     """
 
     _POINTER_TYPE_TABLE = {
@@ -804,8 +824,8 @@ setupLexnames()
 #
 class Dictionary:
 
-    """A Dictionary contains all the Words in a given part of speech.
-    This module defines four dictionaries, bound to N, V, ADJ, and ADV.
+    """A Dictionary contains all the Words in a given part of speech. This
+    module defines four dictionaries, bound to N, V, ADJ, and ADV.
 
     Indexing a dictionary by a string retrieves the word named by that
     string, e.g. dict['dog'].  Indexing by an integer n retrieves the
@@ -824,6 +844,7 @@ class Dictionary:
     ------
       pos : string
           The part of speech -- one of NOUN, VERB, ADJECTIVE, ADVERB.
+
     """
 
     def __init__(self, pos, filenameroot):
@@ -867,11 +888,12 @@ class Dictionary:
     # Sequence protocol (a Dictionary's items are its Words)
     #
     def __nonzero__(self):
-        """Return false.  (This is to avoid scanning the whole index file
-        to compute len when a Dictionary is used in test position.)
+        """Return false.  (This is to avoid scanning the whole index file to
+        compute len when a Dictionary is used in test position.)
 
         >>> N and 'true'
         'true'
+
         """
         return 1
 
@@ -880,6 +902,7 @@ class Dictionary:
 
         >>> len(ADJ)
         21435
+
         """
         if not hasattr(self, 'length'):
             self.length = len(self.indexFile)
@@ -897,14 +920,15 @@ class Dictionary:
         return results
 
     def __getitem__(self, index):
-        """If index is a String, return the Word whose form is
-        index.  If index is an integer n, return the Word
-        indexed by the n'th Word in the Index file.
+        """If index is a String, return the Word whose form is index.  If index
+        is an integer n, return the Word indexed by the n'th Word in the Index
+        file.
 
         >>> N['dog']
         dog(n.)
         >>> N[0]
         'hood(n.)
+
         """
         if isinstance(index, StringType):
             return self.getWord(index)
@@ -926,6 +950,7 @@ class Dictionary:
         >>> N.get('dog')
         dog(n.)
         >>> N.get('inu')
+
         """
         try:
             return self[key]
@@ -944,6 +969,7 @@ class Dictionary:
         1
         >>> N.has_key('inu')
         0
+
         """
         return form in self.indexFile
 
@@ -978,8 +1004,8 @@ class Dictionary:
 
 class _IndexFile:
 
-    """An _IndexFile is an implementation class that presents a
-    Sequence and Dictionary interface to a sorted index file."""
+    """An _IndexFile is an implementation class that presents a Sequence and
+    Dictionary interface to a sorted index file."""
 
     def __init__(self, pos, filenameroot):
         self.pos = pos
@@ -1120,17 +1146,25 @@ class _IndexFile:
 #
 
 def getWord(form, pos='noun'):
-    "Return a word with the given lexical form and pos."
+    """Return a word with the given lexical form and pos."""
     return _dictionaryFor(pos).getWord(form)
 
 
 def getSense(form, pos='noun', senseno=0):
-    "Lookup a sense by its sense number.  Used by repr(sense)."
+    """Lookup a sense by its sense number.
+
+    Used by repr(sense).
+
+    """
     return getWord(form, pos)[senseno]
 
 
 def getSynset(pos, offset):
-    "Lookup a synset by its offset.  Used by repr(synset)."
+    """Lookup a synset by its offset.
+
+    Used by repr(synset).
+
+    """
     return _dictionaryFor(pos).getSynset(offset)
 
 getword, getsense, getsynset = getWord, getSense, getSynset
@@ -1167,6 +1201,7 @@ def _equalsIgnoreCase(a, b):
     1
     >>> _equalsIgnoreCase('dOg', 'DOG')
     1
+
     """
     return a == b or string.lower(a) == string.lower(b)
 
@@ -1253,14 +1288,15 @@ def _lineAt(files, offset):  # Tom De Smedt, 2011
 #
 
 def _index(key, sequence, testfn=None, keyfn=None):
-    """Return the index of key within sequence, using testfn for
-    comparison and transforming items of sequence by keyfn first.
+    """Return the index of key within sequence, using testfn for comparison and
+    transforming items of sequence by keyfn first.
 
     >>> _index('e', 'hello')
     1
     >>> _index('E', 'hello', testfn=_equalsIgnoreCase)
     1
     >>> _index('x', 'hello')
+
     """
     index = 0
     for element in sequence:
@@ -1274,12 +1310,14 @@ def _index(key, sequence, testfn=None, keyfn=None):
 
 
 def _partition(sequence, size, count):
-    """Partition sequence into count subsequences of size
-    length, and a remainder.
+    """Partition sequence into count subsequences of size length, and a
+    remainder.
 
     Return (partitions, remainder), where partitions is a sequence of
     count subsequences of cardinality count, and
-    apply(append, partitions) + remainder == sequence."""
+    apply(append, partitions) + remainder == sequence.
+
+    """
 
     partitions = []
     for index in range(0, size * count, size):
@@ -1304,8 +1342,8 @@ def _partition(sequence, size, count):
 
 class _LRUCache:
 
-    """ A cache of values such that least recently used element is
-    flushed when the cache fills.
+    """A cache of values such that least recently used element is flushed when
+    the cache fills.
 
     Private fields
     --------------
@@ -1326,7 +1364,9 @@ class _LRUCache:
 
       I haven't tried changing history to a List.  An earlier
       implementation of history as a List was slower than what's here,
-      but the two implementations aren't directly comparable."""
+      but the two implementations aren't directly comparable.
+
+    """
 
     def __init__(this, capacity):
         this.capacity = capacity
@@ -1376,8 +1416,8 @@ class _LRUCache:
 
 class _NullCache:
 
-    """A NullCache implements the Cache interface (the interface that
-    LRUCache implements), but doesn't store any values."""
+    """A NullCache implements the Cache interface (the interface that LRUCache
+    implements), but doesn't store any values."""
 
     def clear():
         pass

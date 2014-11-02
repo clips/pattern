@@ -158,8 +158,10 @@ LANGUAGE_REGION = {
 
 
 def encode_language(name):
-    """ Returns the language code for the given language name.
-        For example: encode_language("dutch") => "nl".
+    """Returns the language code for the given language name.
+
+    For example: encode_language("dutch") => "nl".
+
     """
     for tag, (language, region, iso639, iso3166) in LANGUAGE_REGION.items():
         if language == name.capitalize():
@@ -167,8 +169,10 @@ def encode_language(name):
 
 
 def decode_language(code):
-    """ Returns the language name for the given language code.
-        For example: decode_language("nl") => "Dutch".
+    """Returns the language name for the given language code.
+
+    For example: decode_language("nl") => "Dutch".
+
     """
     for tag, (language, region, iso639, iso3166) in LANGUAGE_REGION.items():
         if iso639 == code.lower():
@@ -176,8 +180,10 @@ def decode_language(code):
 
 
 def encode_region(name):
-    """ Returns the region code for the given region name.
-        For example: encode_region("belgium") => "BE".
+    """Returns the region code for the given region name.
+
+    For example: encode_region("belgium") => "BE".
+
     """
     for tag, (language, region, iso639, iso3166) in LANGUAGE_REGION.items():
         if region == name.capitalize():
@@ -185,8 +191,10 @@ def encode_region(name):
 
 
 def decode_region(code):
-    """ Returns the region name for the given region code.
-        For example: decode_region("be") => "Belgium".
+    """Returns the region name for the given region code.
+
+    For example: decode_region("be") => "Belgium".
+
     """
     for tag, (language, region, iso639, iso3166) in LANGUAGE_REGION.items():
         if iso3166 == code.upper():
@@ -194,8 +202,10 @@ def decode_region(code):
 
 
 def languages(region):
-    """ Returns a list of language codes for the given region code.
-        For example: languages(encode_region("belgium")) => ["fr", "nl"]
+    """Returns a list of language codes for the given region code.
+
+    For example: languages(encode_region("belgium")) => ["fr", "nl"]
+
     """
     v, a = region.upper(), []
     for tag, (language, region, iso639, iso3166) in LANGUAGE_REGION.items():
@@ -205,8 +215,10 @@ def languages(region):
 
 
 def regions(language):
-    """ Returns a list of region codes for the given language code.
-        For example: regions(encode_language("dutch")) => ["NL", "BE"]
+    """Returns a list of region codes for the given language code.
+
+    For example: regions(encode_language("dutch")) => ["NL", "BE"]
+
     """
     x, a = language.lower(), []
     for tag, (language, region, iso639, iso3166) in LANGUAGE_REGION.items():
@@ -232,8 +244,7 @@ def regionalize(language):
 
 
 def market(language):
-    """ Returns the first item from regionalize(language).
-    """
+    """Returns the first item from regionalize(language)."""
     a = regionalize(language)
     a = len(a) > 0 and a[0] or None
     return a

@@ -82,9 +82,8 @@ DIACRITICS = {
 
 
 def normalize(word):
-    """ Normalizes the word for synsets() or Sentiwordnet[] by removing diacritics
-        (PyWordNet does not take unicode).
-    """
+    """Normalizes the word for synsets() or Sentiwordnet[] by removing
+    diacritics (PyWordNet does not take unicode)."""
     if not isinstance(word, basestring):
         word = str(word)
     if not isinstance(word, str):
@@ -108,9 +107,11 @@ NOUN, VERB, ADJECTIVE, ADVERB = \
 
 
 def synsets(word, pos=NOUN):
-    """ Returns a list of Synset objects, one for each word sense.
-        Each word can be understood in different "senses", 
-        each of which is part of a set of synonyms (= Synset).
+    """Returns a list of Synset objects, one for each word sense.
+
+    Each word can be understood in different "senses",
+    each of which is part of a set of synonyms (= Synset).
+
     """
     word, pos = normalize(word), pos.lower()
     try:
@@ -134,8 +135,7 @@ def synsets(word, pos=NOUN):
 class Synset(object):
 
     def __init__(self, synset=None, pos=NOUN):
-        """ A set of synonyms that share a common meaning.
-        """
+        """A set of synonyms that share a common meaning."""
         if isinstance(synset, int):
             synset = wn.getSynset(
                 {NN: "n", VB: "v", JJ: "adj", RB: "adv"}[pos], synset)
@@ -201,8 +201,7 @@ class Synset(object):
 
     @property
     def lexname(self):
-        """ Yields a category, e.g., noun.animal.
-        """
+        """Yields a category, e.g., noun.animal."""
         return self._synset.lexname and unicode(self._synset.lexname) or None
 
     @property
@@ -259,8 +258,7 @@ class Synset(object):
         return p
 
     def hypernyms(self, recursive=False, depth=None):
-        """ Yields a list of semantically broader synsets.
-        """
+        """Yields a list of semantically broader synsets."""
         p = [Synset(p.getTarget())
              for p in self._synset.getPointers(wn.HYPERNYM)]
         if depth is None and recursive is False:
@@ -321,14 +319,15 @@ class Synset(object):
 
 
 def similarity(synset1, synset2):
-    """ Returns the semantic similarity of the given synsets.
-    """
+    """Returns the semantic similarity of the given synsets."""
     return synset1.similarity(synset2)
 
 
 def ancestor(synset1, synset2):
-    """ Returns the common ancestor of both synsets.
-        For example synsets("cat")[0].ancestor(synsets("dog")[0]) => Synset("carnivore")
+    """Returns the common ancestor of both synsets.
+
+    For example synsets("cat")[0].ancestor(synsets("dog")[0]) => Synset("carnivore")
+
     """
     h1, h2 = synset1.hypernyms(
         recursive=True), synset2.hypernyms(recursive=True)
@@ -353,8 +352,8 @@ IC_MAX = 0
 
 
 def information_content(synset):
-    """ Returns the IC value for the given Synset (trained on the Brown corpus).
-    """
+    """Returns the IC value for the given Synset (trained on the Brown
+    corpus)."""
     global IC_MAX
     if not IC:
         IC[NOUN] = {}
@@ -416,9 +415,11 @@ sys.path.pop(0)
 class SentiWordNet(Sentiment):
 
     def __init__(self, path="SentiWordNet*.txt", language="en"):
-        """ A sentiment lexicon with scores from SentiWordNet.
-            The value for each word is a tuple with values for 
-            polarity (-1.0-1.0), subjectivity (0.0-1.0) and intensity (0.5-2.0).
+        """A sentiment lexicon with scores from SentiWordNet.
+
+        The value for each word is a tuple with values for
+        polarity (-1.0-1.0), subjectivity (0.0-1.0) and intensity (0.5-2.0).
+
         """
         Sentiment.__init__(self, path=path, language=language)
 

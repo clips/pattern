@@ -43,8 +43,7 @@ DEFAULT = "default"
 
 
 def decode_string(v, encoding="utf-8"):
-    """ Returns the given value as a Unicode string (if possible).
-    """
+    """Returns the given value as a Unicode string (if possible)."""
     if isinstance(encoding, basestring):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, str):
@@ -58,8 +57,7 @@ def decode_string(v, encoding="utf-8"):
 
 
 def encode_string(v, encoding="utf-8"):
-    """ Returns the given value as a Python byte string (if possible).
-    """
+    """Returns the given value as a Python byte string (if possible)."""
     if isinstance(encoding, basestring):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, unicode):
@@ -152,8 +150,10 @@ class lazydict(dict):
         pass
 
     def _lazy(self, method, *args):
-        """ If the dictionary is empty, calls lazydict.load().
-            Replaces lazydict.method() with dict.method() and calls it.
+        """If the dictionary is empty, calls lazydict.load().
+
+        Replaces lazydict.method() with dict.method() and calls it.
+
         """
         if dict.__len__(self) == 0:
             self.load()
@@ -218,8 +218,10 @@ class lazylist(list):
         pass
 
     def _lazy(self, method, *args):
-        """ If the list is empty, calls lazylist.load().
-            Replaces lazylist.method() with list.method() and calls it.
+        """If the list is empty, calls lazylist.load().
+
+        Replaces lazylist.method() with list.method() and calls it.
+
         """
         if list.__len__(self) == 0:
             self.load()
@@ -281,8 +283,10 @@ class lazyset(set):
         pass
 
     def _lazy(self, method, *args):
-        """ If the list is empty, calls lazylist.load().
-            Replaces lazylist.method() with list.method() and calls it.
+        """If the list is empty, calls lazylist.load().
+
+        Replaces lazylist.method() with list.method() and calls it.
+
         """
         print("!")
         if set.__len__(self) == 0:
@@ -382,9 +386,8 @@ class lazyset(set):
 
 
 def _read(path, encoding="utf-8", comment=";;;"):
-    """ Returns an iterator over the lines in the file at the given path,
-        strippping comments and decoding each line to Unicode.
-    """
+    """Returns an iterator over the lines in the file at the given path,
+    strippping comments and decoding each line to Unicode."""
     if path:
         if isinstance(path, basestring) and os.path.exists(path):
             # From file path.
@@ -427,8 +430,7 @@ class Lexicon(lazydict):
 class Frequency(lazydict):
 
     def __init__(self, path=""):
-        """ A dictionary of words and their relative document frequency.
-        """
+        """A dictionary of words and their relative document frequency."""
         self._path = path
 
     @property
@@ -457,8 +459,8 @@ class Frequency(lazydict):
 class Model(object):
 
     def __init__(self, path="", classifier=None, known=set(), unknown=set()):
-        """ A language model using a classifier (e.g., SLP, SVM) trained on morphology and context.
-        """
+        """A language model using a classifier (e.g., SLP, SVM) trained on
+        morphology and context."""
         try:
             from pattern.vector import Classifier
             from pattern.vector import Perceptron
@@ -549,8 +551,7 @@ class Model(object):
 class Morphology(lazylist):
 
     def __init__(self, path="", known={}):
-        """ A list of rules based on word morphology (prefix, suffix).
-        """
+        """A list of rules based on word morphology (prefix, suffix)."""
         self.known = known
         self._path = path
         self._cmd = set((
@@ -576,8 +577,8 @@ class Morphology(lazylist):
         list.extend(self, (x.split() for x in _read(self._path)))
 
     def apply(self, token, previous=(None, None), next=(None, None)):
-        """ Applies lexical rules to the given token, which is a [word, tag] list.
-        """
+        """Applies lexical rules to the given token, which is a [word, tag]
+        list."""
         w = token[0]
         for r in self:
             if r[1] in self._cmd:  # Rule = ly hassuf 2 RB x
@@ -631,8 +632,7 @@ class Morphology(lazylist):
 class Context(lazylist):
 
     def __init__(self, path=""):
-        """ A list of rules based on context (preceding and following words).
-        """
+        """A list of rules based on context (preceding and following words)."""
         self._path = path
         self._cmd = set((
             "prevtag",  # Preceding word is tagged x.
@@ -676,9 +676,8 @@ class Context(lazylist):
         list.extend(self, (x.split() for x in _read(self._path)))
 
     def apply(self, tokens):
-        """ Applies contextual rules to the given list of tokens,
-            where each token is a [word, tag] list.
-        """
+        """Applies contextual rules to the given list of tokens, where each
+        token is a [word, tag] list."""
         o = [("STAART", "STAART")] * 3  # Empty delimiters for look ahead/back.
         t = o + tokens + o
         for i, token in enumerate(t):
@@ -718,9 +717,8 @@ class Context(lazylist):
         return t[len(o):-len(o)]
 
     def insert(self, i, tag1, tag2, cmd="prevtag", x=None, y=None):
-        """ Inserts a new rule that updates words with tag1 to tag2,
-            given constraints x and y, e.g., Context.append("TO < NN", "VB")
-        """
+        """Inserts a new rule that updates words with tag1 to tag2, given
+        constraints x and y, e.g., Context.append("TO < NN", "VB")"""
         if " < " in tag1 and not x and not y:
             tag1, x = tag1.split(" < ")
             cmd = "prevtag"
@@ -749,8 +747,10 @@ RE_ENTITY3 = re.compile(
 class Entities(lazydict):
 
     def __init__(self, path="", tag="NNP"):
-        """ A dictionary of named entities and their labels.
-            For domain names and e-mail adresses, regular expressions are used.
+        """A dictionary of named entities and their labels.
+
+        For domain names and e-mail adresses, regular expressions are used.
+
         """
         self.tag = tag
         self._path = path
@@ -772,9 +772,8 @@ class Entities(lazydict):
             dict.setdefault(self, x[0], []).append(x)
 
     def apply(self, tokens):
-        """ Applies the named entity recognizer to the given list of tokens,
-            where each token is a [word, tag] list.
-        """
+        """Applies the named entity recognizer to the given list of tokens,
+        where each token is a [word, tag] list."""
         # Note: we could also scan for patterns, e.g.,
         # "my|his|her name is|was *" => NNP-PERS.
         i = 0
@@ -806,9 +805,8 @@ class Entities(lazydict):
         return tokens
 
     def append(self, entity, name="pers"):
-        """ Appends a named entity to the lexicon,
-            e.g., Entities.append("Hooloovoo", "PERS")
-        """
+        """Appends a named entity to the lexicon, e.g.,
+        Entities.append("Hooloovoo", "PERS")"""
         e = map(lambda s: s.lower(), entity.split(" ") + [name])
         self.setdefault(e[0], []).append(e)
 
@@ -899,8 +897,7 @@ class Parser(object):
                 pass
 
     def find_keywords(self, string, **kwargs):
-        """ Returns a sorted list of keywords in the given string.
-        """
+        """Returns a sorted list of keywords in the given string."""
         return find_keywords(string,
                              parser=self,
                              top=kwargs.pop("top", 10),
@@ -908,8 +905,10 @@ class Parser(object):
                              )
 
     def find_tokens(self, string, **kwargs):
-        """ Returns a list of sentences from the given string.
-            Punctuation marks are separated from each word by a space.
+        """Returns a list of sentences from the given string.
+
+        Punctuation marks are separated from each word by a space.
+
         """
         # "The cat purs." => ["The cat purs ."]
         return find_tokens(string,
@@ -935,8 +934,10 @@ class Parser(object):
                          map=kwargs.get("map", None))
 
     def find_chunks(self, tokens, **kwargs):
-        """ Annotates the given list of tokens with chunk tags.
-            Several tags can be added, for example chunk + preposition tags.
+        """Annotates the given list of tokens with chunk tags.
+
+        Several tags can be added, for example chunk + preposition tags.
+
         """
         # [["The", "DT"], ["cat", "NN"], ["purs", "VB"]] =>
         # [["The", "DT", "B-NP"], ["cat", "NN", "I-NP"], ["purs", "VB", "B-VP"]]
@@ -945,30 +946,31 @@ class Parser(object):
                         language=kwargs.get("language", self.language)))
 
     def find_prepositions(self, tokens, **kwargs):
-        """ Annotates the given list of tokens with prepositional noun phrase tags.
-        """
+        """Annotates the given list of tokens with prepositional noun phrase
+        tags."""
         return find_prepositions(tokens)  # See also Parser.find_chunks().
 
     def find_labels(self, tokens, **kwargs):
-        """ Annotates the given list of tokens with verb/predicate tags.
-        """
+        """Annotates the given list of tokens with verb/predicate tags."""
         return find_relations(tokens)
 
     def find_lemmata(self, tokens, **kwargs):
-        """ Annotates the given list of tokens with word lemmata.
-        """
+        """Annotates the given list of tokens with word lemmata."""
         return [token + [token[0].lower()] for token in tokens]
 
     def parse(self, s, tokenize=True, tags=True, chunks=True, relations=False, lemmata=False, encoding="utf-8", **kwargs):
-        """ Takes a string (sentences) and returns a tagged Unicode string (TaggedString).
-            Sentences in the output are separated by newlines.
-            With tokenize=True, punctuation is split from words and sentences are separated by \n.
-            With tags=True, part-of-speech tags are parsed (NN, VB, IN, ...).
-            With chunks=True, phrase chunk tags are parsed (NP, VP, PP, PNP, ...).
-            With relations=True, semantic role labels are parsed (SBJ, OBJ).
-            With lemmata=True, word lemmata are parsed.
-            Optional parameters are passed to
-            the tokenizer, tagger, chunker, labeler and lemmatizer.
+        """Takes a string (sentences) and returns a tagged Unicode string
+        (TaggedString).
+
+        Sentences in the output are separated by newlines.
+        With tokenize=True, punctuation is split from words and sentences are separated by \n.
+        With tags=True, part-of-speech tags are parsed (NN, VB, IN, ...).
+        With chunks=True, phrase chunk tags are parsed (NP, VP, PP, PNP, ...).
+        With relations=True, semantic role labels are parsed (SBJ, OBJ).
+        With lemmata=True, word lemmata are parsed.
+        Optional parameters are passed to
+        the tokenizer, tagger, chunker, labeler and lemmatizer.
+
         """
         # Tokenizer.
         if tokenize is True:
@@ -1038,8 +1040,10 @@ TOKENS = "tokens"
 class TaggedString(unicode):
 
     def __new__(self, string, tags=["word"], language=None):
-        """ Unicode string with tags and language attributes.
-            For example: TaggedString("cat/NN/NP", tags=["word", "pos", "chunk"]).
+        """Unicode string with tags and language attributes.
+
+        For example: TaggedString("cat/NN/NP", tags=["word", "pos", "chunk"]).
+
         """
         # From a TaggedString:
         if isinstance(string, unicode) and hasattr(string, "tags"):
@@ -1056,9 +1060,8 @@ class TaggedString(unicode):
         return s
 
     def split(self, sep=TOKENS):
-        """ Returns a list of sentences, where each sentence is a list of tokens,
-            where each token is a list of word + tags.
-        """
+        """Returns a list of sentences, where each sentence is a list of
+        tokens, where each token is a list of word + tags."""
         if sep != TOKENS:
             return unicode.split(self, sep)
         if len(self) == 0:
@@ -1203,10 +1206,13 @@ EOS = "END-OF-SENTENCE"
 
 
 def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, replace=replacements, linebreak=r"\n{2,}"):
-    """ Returns a list of sentences. Each sentence is a space-separated string of tokens (words).
-        Handles common cases of abbreviations (e.g., etc., ...).
-        Punctuation marks are split from other words. Periods (or ?!) mark the end of a sentence.
-        Headings without an ending period are inferred by line breaks.
+    """Returns a list of sentences.
+
+    Each sentence is a space-separated string of tokens (words).
+    Handles common cases of abbreviations (e.g., etc., ...).
+    Punctuation marks are split from other words. Periods (or ?!) mark the end of a sentence.
+    Headings without an ending period are inferred by line breaks.
+
     """
     # Handle punctuation.
     punctuation = tuple(punctuation)
@@ -1295,8 +1301,8 @@ CD = re.compile(r"^[0-9\-\,\.\:\/\%\$]+$")
 
 
 def _suffix_rules(token, tag="NN"):
-    """ Default morphological tagging rules for English, based on word suffixes.
-    """
+    """Default morphological tagging rules for English, based on word
+    suffixes."""
     if isinstance(token, (list, tuple)):
         token, tag = token
     if token.endswith("ing"):
@@ -1558,11 +1564,13 @@ def find_relations(chunked):
 
 
 def find_keywords(string, parser, top=10, frequency={}, ignore=("rt",), pos=("NN",), **kwargs):
-    """ Returns a sorted list of keywords in the given string.
-        The given parser (e.g., pattern.en.parser) is used to identify noun phrases.
-        The given frequency dictionary can be a reference corpus,
-        with relative document frequency (df, 0.0-1.0) for each lemma, 
-        e.g., {"the": 0.8, "cat": 0.1, ...}
+    """Returns a sorted list of keywords in the given string.
+
+    The given parser (e.g., pattern.en.parser) is used to identify noun phrases.
+    The given frequency dictionary can be a reference corpus,
+    with relative document frequency (df, 0.0-1.0) for each lemma,
+    e.g., {"the": 0.8, "cat": 0.1, ...}
+
     """
     lemmata = kwargs.pop("lemmata", kwargs.pop("stem", True))
     t = []
@@ -1944,8 +1952,11 @@ for tag, tense in (
 # tense(tense=(PRESENT, 3, SINGULAR))
 # tense(tense=PRESENT, person=3, number=SINGULAR, mood=INDICATIVE, aspect=IMPERFECTIVE, negated=False)
 def tense_id(*args, **kwargs):
-    """ Returns the tense id for a given (tense, person, number, mood, aspect, negated).
-        Aliases and compound forms (e.g., IMPERFECT) are disambiguated.
+    """Returns the tense id for a given (tense, person, number, mood, aspect,
+    negated).
+
+    Aliases and compound forms (e.g., IMPERFECT) are disambiguated.
+
     """
     # Unpack tense given as a tuple, e.g., tense((PRESENT, 1, SG)):
     if len(args) == 1 and isinstance(args[0], (list, tuple)):
@@ -2005,10 +2016,14 @@ tense = tense_id
 class Verbs(lazydict):
 
     def __init__(self, path="", format=[], default={}, language=None):
-        """ A dictionary of verb infinitives, each linked to a list of conjugated forms.
-            Each line in the file at the given path is one verb, with the tenses separated by a comma.
-            The format defines the order of tenses (see TENSES).
-            The default dictionary defines default tenses for omitted tenses.
+        """A dictionary of verb infinitives, each linked to a list of
+        conjugated forms.
+
+        Each line in the file at the given path is one verb, with the
+        tenses separated by a comma. The format defines the order of
+        tenses (see TENSES). The default dictionary defines default
+        tenses for omitted tenses.
+
         """
         self._path = path
         self._language = language
@@ -2051,8 +2066,10 @@ class Verbs(lazydict):
 
     @property
     def TENSES(self):
-        """ Yields a list of tenses for this language, excluding negations.
-            Each tense is a (tense, person, number, mood, aspect)-tuple.
+        """Yields a list of tenses for this language, excluding negations.
+
+        Each tense is a (tense, person, number, mood, aspect)-tuple.
+
         """
         a = set(TENSES[id] for id in self._format)
         a = a.union(set(TENSES[id] for id in self._default.keys()))
@@ -2061,8 +2078,7 @@ class Verbs(lazydict):
         return a
 
     def lemma(self, verb, parse=True):
-        """ Returns the infinitive form of the given verb, or None.
-        """
+        """Returns the infinitive form of the given verb, or None."""
         if dict.__len__(self) == 0:
             self.load()
         if verb.lower() in self._inverse:
@@ -2073,8 +2089,7 @@ class Verbs(lazydict):
             return self.find_lemma(verb)
 
     def lexeme(self, verb, parse=True):
-        """ Returns a list of all possible inflections of the given verb.
-        """
+        """Returns a list of all possible inflections of the given verb."""
         a = []
         b = self.lemma(verb, parse=parse)
         if b in self:
@@ -2115,8 +2130,7 @@ class Verbs(lazydict):
                     return v[i]
 
     def tenses(self, verb, parse=True):
-        """ Returns a list of possible tenses for the given inflected verb.
-        """
+        """Returns a list of possible tenses for the given inflected verb."""
         verb = verb.lower()
         a = set()
         b = self.lemma(verb, parse=parse)
@@ -2207,10 +2221,13 @@ class Score(tuple):
 class Sentiment(lazydict):
 
     def __init__(self, path="", language=None, synset=None, confidence=None, **kwargs):
-        """ A dictionary of words (adjectives) and polarity scores (positive/negative).
-            The value for each word is a dictionary of part-of-speech tags.
-            The value for each word POS-tag is a tuple with values for
-            polarity (-1.0-1.0), subjectivity (0.0-1.0) and intensity (0.5-2.0).
+        """A dictionary of words (adjectives) and polarity scores
+        (positive/negative).
+
+        The value for each word is a dictionary of part-of-speech tags.
+        The value for each word POS-tag is a tuple with values for
+        polarity (-1.0-1.0), subjectivity (0.0-1.0) and intensity (0.5-2.0).
+
         """
         self._path = path   # XML file path.
         self._language = None   # XML language attribute ("en", "fr", ...)
@@ -2474,9 +2491,9 @@ class Sentiment(lazydict):
         return a
 
     def annotate(self, word, pos=None, polarity=0.0, subjectivity=0.0, intensity=1.0, label=None):
-        """ Annotates the given word with polarity, subjectivity and intensity scores,
-            and optionally a semantic label (e.g., MOOD for emoticons, IRONY for "(!)").
-        """
+        """Annotates the given word with polarity, subjectivity and intensity
+        scores, and optionally a semantic label (e.g., MOOD for emoticons,
+        IRONY for "(!)")."""
         w = self.setdefault(word, {})
         w[pos] = w[None] = (polarity, subjectivity, intensity)
         if label:
@@ -2534,8 +2551,12 @@ class Spelling(lazydict):
 
     @classmethod
     def train(self, s, path="spelling.txt"):
-        """ Counts the words in the given string and saves the probabilities at the given path.
-            This can be used to generate a new model for the Spelling() constructor.
+        """Counts the words in the given string and saves the probabilities at
+        the given path.
+
+        This can be used to generate a new model for the Spelling()
+        constructor.
+
         """
         model = {}
         for w in re.findall("[a-z]+", s.lower()):
@@ -2547,8 +2568,7 @@ class Spelling(lazydict):
         f.close()
 
     def _edit1(self, w):
-        """ Returns a set of words with edit distance 1 from the given word.
-        """
+        """Returns a set of words with edit distance 1 from the given word."""
         # Of all spelling errors, 80% is covered by edit distance 1.
         # Edit distance 1 = one character deleted, swapped, replaced or
         # inserted.
@@ -2562,15 +2582,13 @@ class Spelling(lazydict):
         return set(delete + transpose + replace + insert)
 
     def _edit2(self, w):
-        """ Returns a set of words with edit distance 2 from the given word
-        """
+        """Returns a set of words with edit distance 2 from the given word."""
         # Of all spelling errors, 99% is covered by edit distance 2.
         # Only keep candidates that are actually known words (20% speedup).
         return set(e2 for e1 in self._edit1(w) for e2 in self._edit1(e1) if e2 in self)
 
     def _known(self, words=[]):
-        """ Returns the given list of words filtered by known words.
-        """
+        """Returns the given list of words filtered by known words."""
         return set(w for w in words if w in self)
 
     def suggest(self, w):
@@ -2614,8 +2632,11 @@ def _module(language):
 
 
 def _multilingual(function, *args, **kwargs):
-    """ Returns the value from the function with the given name in the given language module.
-        By default, language="en".
+    """Returns the value from the function with the given name in the given
+    language module.
+
+    By default, language="en".
+
     """
     return getattr(_module(kwargs.pop("language", "en")), function)(*args, **kwargs)
 

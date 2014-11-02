@@ -34,8 +34,7 @@ except:
 class Concept(Node):
 
     def __init__(self, *args, **kwargs):
-        """ A concept in the sematic network.
-        """
+        """A concept in the sematic network."""
         Node.__init__(self, *args, **kwargs)
         self._properties = None
 
@@ -49,8 +48,12 @@ class Concept(Node):
 
     @property
     def properties(self):
-        """ Returns the top properties in the concept halo, sorted by betweenness centrality.
-            The return value is a list of concept id's instead of Concepts (for performance).
+        """Returns the top properties in the concept halo, sorted by
+        betweenness centrality.
+
+        The return value is a list of concept id's instead of Concepts
+        (for performance).
+
         """
         if self._properties is None:
             g = self.graph.copy(nodes=self.halo)
@@ -77,8 +80,10 @@ def properties(concept, depth=2, centrality=BETWEENNESS):
 class Relation(Edge):
 
     def __init__(self, *args, **kwargs):
-        """ A relation between two concepts, with an optional context.
-            For example, "Felix is-a cat" is in the "media" context, "tiger is-a cat" in "nature".
+        """A relation between two concepts, with an optional context.
+
+        For example, "Felix is-a cat" is in the "media" context, "tiger is-a cat" in "nature".
+
         """
         self.context = kwargs.pop("context", None)
         Edge.__init__(self, *args, **kwargs)
@@ -138,8 +143,10 @@ class Commonsense(Graph):
 
     @property
     def properties(self):
-        """ Yields all concepts that are properties (i.e., adjectives).
-            For example: "cold is-property-of winter" => "cold".
+        """Yields all concepts that are properties (i.e., adjectives).
+
+        For example: "cold is-property-of winter" => "cold".
+
         """
         if self._properties is None:
             #self._properties = set(e.node1.id for e in self.edges if e.type == "is-property-of")
@@ -150,15 +157,13 @@ class Commonsense(Graph):
         return self._properties
 
     def add_node(self, id, *args, **kwargs):
-        """ Returns a Concept (Node subclass).
-        """
+        """Returns a Concept (Node subclass)."""
         self._properties = None
         kwargs.setdefault("base", Concept)
         return Graph.add_node(self, id, *args, **kwargs)
 
     def add_edge(self, id1, id2, *args, **kwargs):
-        """ Returns a Relation between two concepts (Edge subclass).
-        """
+        """Returns a Relation between two concepts (Edge subclass)."""
         self._properties = None
         kwargs.setdefault("base", Relation)
         return Graph.add_edge(self, id1, id2, *args, **kwargs)
@@ -196,8 +201,7 @@ class Commonsense(Graph):
         return w / k
 
     def nearest_neighbors(self, concept, concepts=[], k=3):
-        """ Returns the k most similar concepts from the given list.
-        """
+        """Returns the k most similar concepts from the given list."""
         return sorted(concepts, key=lambda candidate: self.similarity(concept, candidate, k), reverse=True)
 
     similar = neighbors = nn = nearest_neighbors

@@ -150,15 +150,19 @@ stts = tagset = {
 
 
 def stts2penntreebank(token, tag):
-    """ Converts an STTS tag to a Penn Treebank II tag.
-        For example: ohne/APPR => ohne/IN
+    """Converts an STTS tag to a Penn Treebank II tag.
+
+    For example: ohne/APPR => ohne/IN
+
     """
     return (token, stts.get(tag, tag))
 
 
 def stts2universal(token, tag):
-    """ Converts an STTS tag to a universal tag.
-        For example: ohne/APPR => ohne/PREP
+    """Converts an STTS tag to a universal tag.
+
+    For example: ohne/APPR => ohne/PREP
+
     """
     if tag in ("KON", "KOUI", "KOUS", "KOKOM"):
         return (token, CONJ)
@@ -241,26 +245,23 @@ spelling = Spelling(
 
 
 def tokenize(s, *args, **kwargs):
-    """ Returns a list of sentences, where punctuation marks have been split from words.
-    """
+    """Returns a list of sentences, where punctuation marks have been split
+    from words."""
     return parser.find_tokens(s, *args, **kwargs)
 
 
 def parse(s, *args, **kwargs):
-    """ Returns a tagged Unicode string.
-    """
+    """Returns a tagged Unicode string."""
     return parser.parse(s, *args, **kwargs)
 
 
 def parsetree(s, *args, **kwargs):
-    """ Returns a parsed Text from the given string.
-    """
+    """Returns a parsed Text from the given string."""
     return Text(parse(s, *args, **kwargs))
 
 
 def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
-    """ Returns a parsed Text from the given parsed string.
-    """
+    """Returns a parsed Text from the given parsed string."""
     return Text(s, token)
 
 
@@ -275,8 +276,7 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
 
 
 def keywords(s, top=10, **kwargs):
-    """ Returns a sorted list of keywords in the given string.
-    """
+    """Returns a sorted list of keywords in the given string."""
     return parser.find_keywords(s, **dict({
         "frequency": parser.frequency,
         "top": top,

@@ -118,8 +118,7 @@ _TEMPORARY_FILES = []
 
 
 def openable(string, **kwargs):
-    """ Returns the path to a temporary file that contains the given string.
-    """
+    """Returns the path to a temporary file that contains the given string."""
     f = tempfile.NamedTemporaryFile(**kwargs)
     f.write(string)
     f.seek(0)
@@ -132,10 +131,12 @@ def openable(string, **kwargs):
 
 
 def define(f):
-    """ Returns (name, type, tuple, dict) for the given function,
-        with a tuple of argument names and a dict of keyword arguments.
-        If the given function has *args, returns True instead of tuple.
-        If the given function has **kwargs, returns True instead of dict.
+    """Returns (name, type, tuple, dict) for the given function, with a tuple
+    of argument names and a dict of keyword arguments.
+
+    If the given function has *args, returns True instead of tuple.
+    If the given function has **kwargs, returns True instead of dict.
+
     """
     def undecorate(f):  # "__closure__" in Py3.
         while getattr(f, "func_closure", None):
@@ -167,8 +168,7 @@ LOCALHOST = "127.0.0.1"
 class Row(dict):
 
     def __init__(self, cursor, row):
-        """ Row as dictionary.
-        """
+        """Row as dictionary."""
         d = cursor.description
         dict.__init__(self, ((d[i][0], v) for i, v in enumerate(row)))
 
@@ -183,8 +183,7 @@ class DatabaseError(Exception):
 class Database(object):
 
     def __init__(self, name, **kwargs):
-        """ Creates and opens the SQLite database with the given name.
-        """
+        """Creates and opens the SQLite database with the given name."""
         k = kwargs.get
         self._name = name
         self._type = k("type", SQLITE)
@@ -205,26 +204,22 @@ class Database(object):
 
     @property
     def name(self):
-        """ Yields the database name (for SQLITE, file path).
-        """
+        """Yields the database name (for SQLITE, file path)."""
         return self._name
 
     @property
     def type(self):
-        """ Yields the database type (SQLITE or MYSQL).
-        """
+        """Yields the database type (SQLITE or MYSQL)."""
         return self._type
 
     @property
     def host(self):
-        """ Yields the database server host (MYSQL).
-        """
+        """Yields the database server host (MYSQL)."""
         return self._host
 
     @property
     def port(self):
-        """ Yields the database server port (MYSQL).
-        """
+        """Yields the database server port (MYSQL)."""
         return self._port
 
     @property
@@ -261,8 +256,10 @@ class Database(object):
             self._connection = None
 
     def execute(self, sql, values=(), first=False, commit=True):
-        """ Executes the given SQL query string and returns an iterator of rows.
-            With first=True, returns the first row.
+        """Executes the given SQL query string and returns an iterator of rows.
+
+        With first=True, returns the first row.
+
         """
         try:
             r = self._connection.cursor().execute(sql, values)
@@ -280,13 +277,11 @@ class Database(object):
         return r.fetchone() if first else r
 
     def commit(self):
-        """ Commits changes (pending insert/update/delete queries).
-        """
+        """Commits changes (pending insert/update/delete queries)."""
         self._connection.commit()
 
     def rollback(self):
-        """ Discard changes since the last commit.
-        """
+        """Discard changes since the last commit."""
         self._connection.rollback()
 
     def __call__(self, *args, **kwargs):
@@ -313,10 +308,13 @@ class Database(object):
 class DatabaseTransaction(Database):
 
     def __init__(self, name, **kwargs):
-        """ Database.batch.execute() stores given the SQL query in RAM memory, across threads.
-            Database.batch.commit() commits all buffered queries.
-            This can be combined with @app.task() to periodically write batches to the database
-            (instead of writing on each request).
+        """Database.batch.execute() stores given the SQL query in RAM memory,
+        across threads.
+
+        Database.batch.commit() commits all buffered queries.
+        This can be combined with @app.task() to periodically write batches to the database
+        (instead of writing on each request).
+
         """
         Database.__init__(self, name, **dict(kwargs, connect=False))
         self._queue = []
@@ -390,12 +388,15 @@ class RateLimitForbidden(RateLimitError):
 class RateLimit(Database):
 
     def __init__(self, name="rate.db", **kwargs):
-        """ A database for rate limiting API requests.
-            It manages a table with (key, path, limit, time) entries.
-            It grants each key a rate (number of requests / time) for a URL path.
-            It keeps track of the number of requests in local memory (i.e., RAM).
-            If RateLimit()() is called with the optional limit and time arguments,
-            unknown keys are temporarily granted this rate.
+        """A database for rate limiting API requests.
+
+        It manages a table with (key, path, limit, time) entries. It
+        grants each key a rate (number of requests / time) for a URL
+        path. It keeps track of the number of requests in local memory
+        (i.e., RAM). If RateLimit()() is called with the optional limit
+        and time arguments, unknown keys are temporarily granted this
+        rate.
+
         """
         Database.__init__(self, name, **dict(kwargs, factory=None, schema=(
             "create table if not exists `rate` ("
@@ -419,8 +420,7 @@ class RateLimit(Database):
 
     @property
     def key(self, pairs=("rA", "aZ", "gQ", "hH", "hG", "aR", "DD")):
-        """ Yields a new random key ("ZjNmYTc4ZDk0MTkyYk...").
-        """
+        """Yields a new random key ("ZjNmYTc4ZDk0MTkyYk...")."""
         k = str(random.getrandbits(256))
         k = hashlib.sha256(k).hexdigest()
         k = base64.b64encode(k, random.choice(pairs)).rstrip('==')
@@ -431,8 +431,10 @@ class RateLimit(Database):
         self.load()
 
     def load(self):
-        """ For performance, rate limiting is handled in memory (i.e., RAM).
-            Loads the stored rate limits in memory (100,000 records ~= 5MB RAM).
+        """For performance, rate limiting is handled in memory (i.e., RAM).
+
+        Loads the stored rate limits in memory (100,000 records ~= 5MB RAM).
+
         """
         with self.lock:
             if not self.cache:
@@ -442,9 +444,8 @@ class RateLimit(Database):
                 self._rowcount = len(self.cache)
 
     def set(self, key, path="/", limit=100, time=HOUR):
-        """ Sets the rate for the given key and path,
-            where limit is the maximum number of requests in the given time (e.g., 100/hour).
-        """
+        """Sets the rate for the given key and path, where limit is the maximum
+        number of requests in the given time (e.g., 100/hour)."""
         # Update database.
         p = "/" + path.strip("/")
         q1 = "delete from `rate` where key=? and path=?;"
@@ -458,8 +459,7 @@ class RateLimit(Database):
         return (key, path, limit, time)
 
     def get(self, key, path="/"):
-        """ Returns the rate for the given key and path (or None).
-        """
+        """Returns the rate for the given key and path (or None)."""
         p = "/" + path.strip("/")
         q = "select * from `rate` where key=? and path=?;"
         return self.execute(q, (key, p), first=True, commit=False)
@@ -471,8 +471,7 @@ class RateLimit(Database):
         return self.get(*k)
 
     def __contains__(self, key, path="%"):
-        """ Returns True if the given key exists (for the given path).
-        """
+        """Returns True if the given key exists (for the given path)."""
         q = "select * from `rate` where key=? and path like ?;"
         return self.execute(q, (key, path), first=True, commit=False) is not None
 
@@ -521,15 +520,16 @@ class RouteError(Exception):
 class Router(dict):
 
     def __init__(self):
-        """ A router resolves URL paths to handler functions.
-        """
+        """A router resolves URL paths to handler functions."""
         pass
 
     def __setitem__(self, path, handler):
-        """ Defines the handler function for the given URL path.
-            The path is a slash-formatted string (e.g., "/api/1/en/parser").
-            The handler is a function that takes 
-            arguments (path) and keyword arguments (query data).
+        """Defines the handler function for the given URL path.
+
+        The path is a slash-formatted string (e.g., "/api/1/en/parser").
+        The handler is a function that takes
+        arguments (path) and keyword arguments (query data).
+
         """
         p = "/" + path.strip("/")
         p = p.lower()
@@ -543,10 +543,12 @@ class Router(dict):
             dict.__setitem__(self, p, (handler, ((), {})))
 
     def __call__(self, path, **data):
-        """ Calls the handler function for the given URL path.
-            If no handler is found, raises a RouteError.
-            If a base handler is found (e.g., "/api" for "/api/1/en"),
-            calls the handler with arguments (e.g., handler("1", "en")).
+        """Calls the handler function for the given URL path.
+
+        If no handler is found, raises a RouteError. If a base handler
+        is found (e.g., "/api" for "/api/1/en"), calls the handler with
+        arguments (e.g., handler("1", "en")).
+
         """
         if not isinstance(path, tuple):
             path = path.strip("/").split("/")  # ["api", "1", "en"]
@@ -590,8 +592,7 @@ class Router(dict):
 class HTTPRequest(object):
 
     def __init__(self, app, ip, path="/", method="get", data={}, headers={}):
-        """ A HTTP request object with metadata returned from app.request.
-        """
+        """A HTTP request object with metadata returned from app.request."""
         self.app = app
         self.ip = ip
         self.path = "/" + path.strip("/")
@@ -813,27 +814,23 @@ class Application(object):
 
     @property
     def path(self):
-        """ Yields the absolute path to the folder containing the app.
-        """
+        """Yields the absolute path to the folder containing the app."""
         return self._path
 
     @property
     def static(self):
-        """ Yields the absolute path to the folder with static content.
-        """
+        """Yields the absolute path to the folder with static content."""
         return os.path.join(self._path, self._static)
 
     @property
     def session(self):
-        """ Yields the dictionary of session data.
-        """
+        """Yields the dictionary of session data."""
         return cp.session
 
     @property
     def request(self):
-        """ Yields a request object with metadata
-            (IP address, request path, query data and headers).
-        """
+        """Yields a request object with metadata (IP address, request path,
+        query data and headers)."""
         r = cp.request  # Deep copy (ensures garbage colletion).
         return HTTPRequest(
             app=self,
@@ -845,22 +842,22 @@ class Application(object):
 
     @property
     def response(self):
-        """ Yields a response object with metadata
-            (status, headers).
-        """
+        """Yields a response object with metadata (status, headers)."""
         return cp.response
 
     @property
     def elapsed(self):
-        """ Yields the elapsed time since the start of the request.
-        """
+        """Yields the elapsed time since the start of the request."""
         return time.time() - cp.request.time  # See also _request_time().
 
     def _cast(self, v):
-        """ Returns the given value as a string (used to cast handler functions).
-            If the value is a dictionary, returns a JSON-string.
-            If the value is a generator, starts a stream.
-            If the value is an iterable, joins the values with a space.
+        """Returns the given value as a string (used to cast handler
+        functions).
+
+        If the value is a dictionary, returns a JSON-string.
+        If the value is a generator, starts a stream.
+        If the value is an iterable, joins the values with a space.
+
         """
         if isinstance(v, basestring):
             return v
@@ -887,8 +884,8 @@ class Application(object):
 
     @cp.expose
     def default(self, *path, **data):
-        """ Resolves URL paths to handler functions and casts the return value.
-        """
+        """Resolves URL paths to handler functions and casts the return
+        value."""
         # If there is an app.thread.db connection,
         # pass it as a keyword argument named "db".
         # If there is a query parameter named "db",
@@ -1106,19 +1103,20 @@ class Application(object):
         return decorator
 
     def redirect(path, code=303):
-        """ Redirects the server to another route handler path 
-            (or to another server for absolute URL's).
-        """
+        """Redirects the server to another route handler path (or to another
+        server for absolute URL's)."""
         raise HTTPRedirect(path, int(code))
 
     def run(self, host=LOCALHOST, port=8080, threads=30, queue=20, timeout=10, sessions=False, embedded=False, ssl=None, debug=True):
-        """ Starts the server.
-            Static content (e.g., "g/img.jpg") is served from the App.static subfolder (e.g., "static/g").
-            With threads=10, the server can handle up to 10 concurrent requests.
-            With queue=10, the server will queue up to 10 waiting requests.
-            With embedded=True, runs under Apache mod_wsgi.
-            With ssl=(key, certificate), runs under https:// (see certificate() function).
-            With debug=False, starts a production server.
+        """Starts the server.
+
+        Static content (e.g., "g/img.jpg") is served from the App.static subfolder (e.g., "static/g").
+        With threads=10, the server can handle up to 10 concurrent requests.
+        With queue=10, the server will queue up to 10 waiting requests.
+        With embedded=True, runs under Apache mod_wsgi.
+        With ssl=(key, certificate), runs under https:// (see certificate() function).
+        With debug=False, starts a production server.
+
         """
         # Do nothing if the app is running.
         if self._up:
@@ -1175,8 +1173,7 @@ class Application(object):
             cp.engine.block()
 
     def stop(self):
-        """ Stops the server (registered with atexit).
-        """
+        """Stops the server (registered with atexit)."""
         try:
             atexit._exithandlers.remove((self.stop, (), {}))
         except:
@@ -1283,17 +1280,18 @@ def certificate(host=LOCALHOST, country=None, state=None, city=None, company=Non
 
 
 def redirect(path, code=303):
-    """ Redirects the server to another route handler path 
-        (or to another server for absolute URL's).
-    """
+    """Redirects the server to another route handler path (or to another server
+    for absolute URL's)."""
     raise HTTPRedirect(path, int(code))
 
 #-------------------------------------------------------------------------
 
 
 def static(path, root=None, mimetype=None):
-    """ Returns the contents of the file at the given absolute path.
-        To serve relative paths from the app folder, use root=app.path.
+    """Returns the contents of the file at the given absolute path.
+
+    To serve relative paths from the app folder, use root=app.path.
+
     """
     p = os.path.join(root or "", path)
     p = os.path.realpath(p)
@@ -1304,8 +1302,7 @@ def static(path, root=None, mimetype=None):
 
 
 def _register(event, handler):
-    """ Registers the given event handler (e.g., "on_end_request").
-    """
+    """Registers the given event handler (e.g., "on_end_request")."""
     k = handler.__name__
     setattr(cp.tools, k, cp.Tool(event, handler))
     cp.config.update({"tools.%s.on" % k: True})
@@ -1358,10 +1355,13 @@ class Template(object):
     _cache = {}
 
     def __init__(self, path, root=None, cached=True):
-        """ A template with placeholders and/or source code loaded from the given string or path.
-            Placeholders that start with $ are replaced with keyword arguments in Template.render().
-            Source code enclosed in <?= var + 100 ?> is executed with eval().
-            Source code enclosed in <? write(var) ?> is executed with exec().
+        """A template with placeholders and/or source code loaded from the
+        given string or path.
+
+        Placeholders that start with $ are replaced with keyword arguments in Template.render().
+        Source code enclosed in <?= var + 100 ?> is executed with eval().
+        Source code enclosed in <? write(var) ?> is executed with exec().
+
         """
         p = os.path.join(root or "", path)
         k = hash(p)
@@ -1380,24 +1380,25 @@ class Template(object):
         self._compiled = a
 
     def _escape(self, s):
-        """ Returns a string with no leading indentation and escaped newlines.
-        """
+        """Returns a string with no leading indentation and escaped
+        newlines."""
         # Used in Template._compile() with eval() and exec().
         s = s.replace("\n", "\\n")
         s = textwrap.dedent(s)
         return s
 
     def _encode(self, v, indent=""):
-        """ Returns the given value as a string (empty string for None).
-        """
+        """Returns the given value as a string (empty string for None)."""
         # Used in Template._render().
         v = "%s" % (v if v is not None else "")
         v = v.replace("\n", "\n" + indent) if indent else v
         return v
 
     def _dict(self, k="", v=[]):
-        """ Returns a dictionary of keys k and values v, where k is a string.
-            Used in Template._render() with <for> blocks.
+        """Returns a dictionary of keys k and values v, where k is a string.
+
+        Used in Template._render() with <for> blocks.
+
         """
         # For example: "<% for $i, $x in enumerate([1, 2, 3]): %>",
         # "$i, $x" is mapped to {"i": 0, "x": 1}, {"i": 1, "x": 2}, ...
@@ -1406,10 +1407,12 @@ class Template(object):
         return dict(zip(k, v if len(k) > 1 else [v]))
 
     def _compile(self, string):
-        """ Returns the template string as a (type, value, indent) list,
-            where type is either <str>, <arg>, <if>, <for>, <eval> or <exec>.
-            With <eval> and <exec>, value is a compiled code object
-            that can be executed with eval() or exec() respectively.
+        """Returns the template string as a (type, value, indent) list, where
+        type is either <str>, <arg>, <if>, <for>, <eval> or <exec>.
+
+        With <eval> and <exec>, value is a compiled code object that can
+        be executed with eval() or exec() respectively.
+
         """
         a = []
         i = 0
@@ -1455,9 +1458,11 @@ class Template(object):
         return a
 
     def _render(self, compiled, *args, **kwargs):
-        """ Returns the rendered string as an iterator.
-            Replaces template placeholders with keyword arguments (if any).
-            Replaces source code with the return value of eval() or exec().
+        """Returns the rendered string as an iterator.
+
+        Replaces template placeholders with keyword arguments (if any).
+        Replaces source code with the return value of eval() or exec().
+
         """
         k = {}
         for d in args:
@@ -1489,21 +1494,22 @@ class Template(object):
                 o.close()
 
     def render(self, *args, **kwargs):
-        """ Returns the rendered template as a string.
-            Replaces template placeholders with keyword arguments (if any).
-            Replaces source code with the return value of eval() or exec().
-            The keyword arguments are used as namespace for eval() and exec().
-            For example, source code in Template.render(re=re) has access to the regex library.
-            Multiple dictionaries can be given, e.g.,
-            Template.render(globals(), locals(), foo="bar").
-            Code blocks in <? ?> can use write() and template().
+        """Returns the rendered template as a string.
+
+        Replaces template placeholders with keyword arguments (if any).
+        Replaces source code with the return value of eval() or exec().
+        The keyword arguments are used as namespace for eval() and exec().
+        For example, source code in Template.render(re=re) has access to the regex library.
+        Multiple dictionaries can be given, e.g.,
+        Template.render(globals(), locals(), foo="bar").
+        Code blocks in <? ?> can use write() and template().
+
         """
         return "".join(self._render(self._compiled, *args, **kwargs))
 
 
 def template(string, *args, **kwargs):
-    """ Returns the rendered template as a string.
-    """
+    """Returns the rendered template as a string."""
     if hasattr(string, "render"):
         return string.render(*args, **kwargs)
     root, cached = (
@@ -1536,8 +1542,11 @@ def template(string, *args, **kwargs):
 class HTML:
 
     def _attrs(self, **kwargs):
-        """ Returns a string of HTML element attributes.
-            Use "css" for the CSS classname (since "class" is a reserved word).
+        """Returns a string of HTML element attributes.
+
+        Use "css" for the CSS classname (since "class" is a reserved
+        word).
+
         """
         a = []
         if "id" in kwargs:
@@ -1551,20 +1560,20 @@ class HTML:
         return (" " + " ".join(a)).rstrip()
 
     def div(self, content, **attributes):
-        """ Returns a string with a HTML <div> with the given content.
-        """
+        """Returns a string with a HTML <div> with the given content."""
         return "<div%s>\n\t%s\n</div>\n" % (self._attrs(**attributes), content)
 
     def span(self, content, **attributes):
-        """ Returns a string with a HTML <span> with the given content.
-        """
+        """Returns a string with a HTML <span> with the given content."""
         return "<span%s>\n\t%s\n</span>\n" % (self._attrs(**attributes), content)
 
     def table(self, rows=[], headers=[], striped=True, **attributes):
-        """ Returns a string with a HTML <table> for the given list,
-            where each item is a list of values.
-            With striped=True, generates <tr class="even|odd">.
-            With striped=True and headers, generates <td class="header[i]">.
+        """Returns a string with a HTML <table> for the given list, where each
+        item is a list of values.
+
+        With striped=True, generates <tr class="even|odd">.
+        With striped=True and headers, generates <td class="header[i]">.
+
         """
         h = list(headers)
         r = list(rows) if not h else [h] + list(rows)

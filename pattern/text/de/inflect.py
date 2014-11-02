@@ -82,14 +82,12 @@ article_indefinite = {
 
 
 def definite_article(word, gender=MALE, role=SUBJECT):
-    """ Returns the definite article (der/die/das/die) for a given word.
-    """
+    """Returns the definite article (der/die/das/die) for a given word."""
     return article_definite.get((gender[:1].lower(), role[:3].lower()))
 
 
 def indefinite_article(word, gender=MALE, role=SUBJECT):
-    """ Returns the indefinite article (ein) for a given word.
-    """
+    """Returns the indefinite article (ein) for a given word."""
     return article_indefinite.get((gender[:1].lower(), role[:3].lower()))
 
 DEFINITE = "definite"
@@ -97,8 +95,8 @@ INDEFINITE = "indefinite"
 
 
 def article(word, function=INDEFINITE, gender=MALE, role=SUBJECT):
-    """ Returns the indefinite (ein) or definite (der/die/das/die) article for the given word.
-    """
+    """Returns the indefinite (ein) or definite (der/die/das/die) article for
+    the given word."""
     return function == DEFINITE \
         and definite_article(word, gender, role) \
         or indefinite_article(word, gender, role)
@@ -106,8 +104,7 @@ _article = article
 
 
 def referenced(word, article=INDEFINITE, gender=MALE, role=SUBJECT):
-    """ Returns a string with the article + the word.
-    """
+    """Returns a string with the article + the word."""
     return "%s %s" % (_article(word, article, gender, role), word)
 
 #### GENDER ##############################################################
@@ -146,8 +143,10 @@ gender_majority_vote = {
 
 
 def gender(word, pos=NOUN):
-    """ Returns the gender (MALE, FEMALE or NEUTRAL) for nouns (majority vote).
-        Returns None for words that are not nouns.
+    """Returns the gender (MALE, FEMALE or NEUTRAL) for nouns (majority vote).
+
+    Returns None for words that are not nouns.
+
     """
     w = word.lower()
     if pos == NOUN:
@@ -253,8 +252,10 @@ plural_inflections = [
 
 
 def pluralize(word, pos=NOUN, gender=MALE, role=SUBJECT, custom={}):
-    """ Returns the plural of a given word.
-        The inflection is based on probability rather than gender and role.
+    """Returns the plural of a given word.
+
+    The inflection is based on probability rather than gender and role.
+
     """
     w = word.lower().capitalize()
     if word in custom:
@@ -402,8 +403,10 @@ singular = {
 
 
 def singularize(word, pos=NOUN, gender=MALE, role=SUBJECT, custom={}):
-    """ Returns the singular of a given word.
-        The inflection is based on probability rather than gender and role.
+    """Returns the singular of a given word.
+
+    The inflection is based on probability rather than gender and role.
+
     """
     w = word.lower().capitalize()
     if word in custom:
@@ -573,8 +576,7 @@ class Verbs(_Verbs):
         return [a[i] or lexeme[i] for i in range(len(a))]
 
     def tenses(self, verb, parse=True):
-        """ Returns a list of possible tenses for the given inflected verb.
-        """
+        """Returns a list of possible tenses for the given inflected verb."""
         tenses = _Verbs.tenses(self, verb, parse)
         if len(tenses) == 0:
             # auswirkte => wirkte aus
@@ -627,10 +629,12 @@ adjective_attributive = {
 
 
 def attributive(adjective, gender=MALE, role=SUBJECT, article=None):
-    """ For a predicative adjective, returns the attributive form (lowercase).
-        In German, the attributive is formed with -e, -em, -en, -er or -es,
-        depending on gender (masculine, feminine, neuter or plural) and role
-        (nominative, accusative, dative, genitive).
+    """For a predicative adjective, returns the attributive form (lowercase).
+
+    In German, the attributive is formed with -e, -em, -en, -er or -es,
+    depending on gender (masculine, feminine, neuter or plural) and role
+    (nominative, accusative, dative, genitive).
+
     """
     w, g, c, a = \
         adjective.lower(), gender[:1].lower(), role[
@@ -655,12 +659,14 @@ def attributive(adjective, gender=MALE, role=SUBJECT, article=None):
 
 
 def predicative(adjective):
-    """ Returns the predicative adjective (lowercase).
-        In German, the attributive form preceding a noun is always used:
-        "ein kleiner Junge" => strong, masculine, nominative,
-        "eine schöne Frau" => mixed, feminine, nominative,
-        "der kleine Prinz" => weak, masculine, nominative, etc.
-        The predicative is useful for lemmatization.
+    """Returns the predicative adjective (lowercase).
+
+    In German, the attributive form preceding a noun is always used:
+    "ein kleiner Junge" => strong, masculine, nominative,
+    "eine schöne Frau" => mixed, feminine, nominative,
+    "der kleine Prinz" => weak, masculine, nominative, etc.
+    The predicative is useful for lemmatization.
+
     """
     w = adjective.lower()
     if len(w) > 3:
@@ -681,8 +687,8 @@ SUPERLATIVE = "st"
 
 
 def grade(adjective, suffix=COMPARATIVE):
-    """ Returns the comparative or superlative form of the given (inflected) adjective.
-    """
+    """Returns the comparative or superlative form of the given (inflected)
+    adjective."""
     b = predicative(adjective)
     # groß => großt, schön => schönst
     if suffix == SUPERLATIVE and b.endswith(("s", u"ß")):

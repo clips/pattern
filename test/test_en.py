@@ -305,9 +305,12 @@ class TestParser(unittest.TestCase):
         print("pattern.en.tokenize()")
 
     def _test_morphological_rules(self, function=en.parser.morphology.apply):
-        """ For each word in WordNet that is not in Brill's lexicon,
-            test if the given tagger((word, "NN")) yields an improved (word, tag).
-            Returns the relative scores for nouns, verbs, adjectives and adverbs.
+        """For each word in WordNet that is not in Brill's lexicon, test if the
+        given tagger((word, "NN")) yields an improved (word, tag).
+
+        Returns the relative scores for nouns, verbs, adjectives and
+        adverbs.
+
         """
         scores = []
         for tag, lexicon in (

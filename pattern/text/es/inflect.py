@@ -61,16 +61,14 @@ MASCULINE, FEMININE, NEUTER, PLURAL = \
 
 
 def definite_article(word, gender=MALE):
-    """ Returns the definite article (el/la/los/las) for a given word.
-    """
+    """Returns the definite article (el/la/los/las) for a given word."""
     if MASCULINE in gender:
         return PLURAL in gender and "los" or "el"
     return PLURAL in gender and "las" or "la"
 
 
 def indefinite_article(word, gender=MALE):
-    """ Returns the indefinite article (un/una/unos/unas) for a given word.
-    """
+    """Returns the indefinite article (un/una/unos/unas) for a given word."""
     if MASCULINE in gender:
         return PLURAL in gender and "unos" or "un"
     return PLURAL in gender and "unas" or "una"
@@ -80,8 +78,8 @@ INDEFINITE = "indefinite"
 
 
 def article(word, function=INDEFINITE, gender=MALE):
-    """ Returns the indefinite (un) or definite (el) article for the given word.
-    """
+    """Returns the indefinite (un) or definite (el) article for the given
+    word."""
     return function == DEFINITE \
         and definite_article(word, gender) \
         or indefinite_article(word, gender)
@@ -89,8 +87,7 @@ _article = article
 
 
 def referenced(word, article=INDEFINITE, gender=MALE):
-    """ Returns a string with the article + the word.
-    """
+    """Returns a string with the article + the word."""
     return "%s %s" % (_article(word, article, gender), word)
 
 #### PLURALIZE ###########################################################
@@ -104,9 +101,11 @@ plural_irregular = {
 
 
 def pluralize(word, pos=NOUN, custom={}):
-    """ Returns the plural of a given word.
-        For example: gato => gatos.
-        The custom dictionary is for user-defined replacements.
+    """Returns the plural of a given word.
+
+    For example: gato => gatos.
+    The custom dictionary is for user-defined replacements.
+
     """
     if word in custom:
         return custom[word]
@@ -442,11 +441,13 @@ def attributive(adjective, gender=MALE):
 
 
 def predicative(adjective):
-    """ Returns the predicative adjective (lowercase).
-        In Spanish, the attributive form is always used for descriptive adjectives:
-        "el chico alto" => masculine,
-        "la chica alta" => feminine.
-        The predicative is useful for lemmatization.
+    """Returns the predicative adjective (lowercase).
+
+    In Spanish, the attributive form is always used for descriptive adjectives:
+    "el chico alto" => masculine,
+    "la chica alta" => feminine.
+    The predicative is useful for lemmatization.
+
     """
     w = adjective.lower()
     # histéricos => histérico

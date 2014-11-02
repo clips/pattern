@@ -75,8 +75,10 @@ def definite_article(word):
 
 
 def indefinite_article(word):
-    """ Returns the indefinite article for a given word.
-        For example: indefinite_article("university") => "a" university.
+    """Returns the indefinite article for a given word.
+
+    For example: indefinite_article("university") => "a" university.
+
     """
     word = word.split(" ")[0]
     for rule, article in RE_ARTICLE:
@@ -88,16 +90,15 @@ DEFINITE, INDEFINITE = \
 
 
 def article(word, function=INDEFINITE):
-    """ Returns the indefinite (a or an) or definite (the) article for the given word.
-    """
+    """Returns the indefinite (a or an) or definite (the) article for the given
+    word."""
     return function == DEFINITE and definite_article(word) or indefinite_article(word)
 
 _article = article
 
 
 def referenced(word, article=INDEFINITE):
-    """ Returns a string with the article + the word.
-    """
+    """Returns a string with the article + the word."""
     return "%s %s" % (_article(word, article), word)
 
 # print referenced("hour")
@@ -602,8 +603,7 @@ singular_irregular = {
 
 
 def singularize(word, pos=NOUN, custom={}):
-    """ Returns the singular of a given word.
-    """
+    """Returns the singular of a given word."""
     if word in custom:
         return custom[word]
     # Recurse compound words (e.g. mothers-in-law).
@@ -789,8 +789,7 @@ def _count_syllables(word):
 
 
 def grade(adjective, suffix=COMPARATIVE):
-    """ Returns the comparative or superlative form of the given adjective.
-    """
+    """Returns the comparative or superlative form of the given adjective."""
     n = _count_syllables(adjective)
     if adjective in grade_irregular:
         # A number of adjectives inflect irregularly.

@@ -9,8 +9,8 @@
 ### LIST FUNCTIONS #######################################################
 
 def find(function, list):
-    """ Returns the first item in the list for which function(item) is True, None otherwise.
-    """
+    """Returns the first item in the list for which function(item) is True,
+    None otherwise."""
     for item in list:
         if function(item) == True:
             return item
@@ -47,10 +47,12 @@ def verbs(sentence, i=0, j=None):
 
 
 def imperative(sentence, **kwargs):
-    """ The imperative mood is used to give orders, commands, warnings, instructions, 
-        or to make requests (if used with "please").
-        It is marked by the infinitive form of the verb, without "to":
-        "For goodness sake, just stop it!"
+    """The imperative mood is used to give orders, commands, warnings,
+    instructions, or to make requests (if used with "please").
+
+    It is marked by the infinitive form of the verb, without "to":
+    "For goodness sake, just stop it!"
+
     """
     S = sentence
     if not (hasattr(S, "words") and hasattr(S, "parse_token")):
@@ -177,10 +179,13 @@ for w in list(subjunctive1):  # Inflect.
 
 
 def subjunctive(sentence, classical=True, **kwargs):
-    """ The subjunctive mood is a classical mood used to express a wish, judgment or opinion.
-        It is marked by the verb wish/were, or infinitive form of a verb
-        preceded by an "it is"-statement:
-        "It is recommended that he bring his own computer."
+    """The subjunctive mood is a classical mood used to express a wish,
+    judgment or opinion.
+
+    It is marked by the verb wish/were, or infinitive form of a verb
+    preceded by an "it is"-statement:
+    "It is recommended that he bring his own computer."
+
     """
     S = sentence
     if not (hasattr(S, "words") and hasattr(S, "parse_token")):
@@ -247,8 +252,8 @@ def negated(sentence, negative=("not", "n't", "never")):
 
 
 def mood(sentence, **kwargs):
-    """ Returns IMPERATIVE (command), CONDITIONAL (possibility), SUBJUNCTIVE (wish) or INDICATIVE (fact).
-    """
+    """Returns IMPERATIVE (command), CONDITIONAL (possibility), SUBJUNCTIVE
+    (wish) or INDICATIVE (fact)."""
     if isinstance(sentence, basestring):
         try:
             # A Sentence is expected but a string given.

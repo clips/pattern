@@ -52,14 +52,12 @@ MASCULINE, FEMININE, NEUTER, PLURAL = \
 
 
 def definite_article(word):
-    """ Returns the definite article for a given word.
-    """
+    """Returns the definite article for a given word."""
     return "the"
 
 
 def indefinite_article(word):
-    """ Returns the indefinite article for a given word.
-    """
+    """Returns the indefinite article for a given word."""
     return "a"
 
 DEFINITE, INDEFINITE = \
@@ -67,8 +65,7 @@ DEFINITE, INDEFINITE = \
 
 
 def article(word, function=INDEFINITE):
-    """ Returns the indefinite or definite article for the given word.
-    """
+    """Returns the indefinite or definite article for the given word."""
     return function == DEFINITE \
         and definite_article(word) \
         or indefinite_article(word)
@@ -77,24 +74,21 @@ _article = article
 
 
 def referenced(word, article=INDEFINITE):
-    """ Returns a string with the article + the word.
-    """
+    """Returns a string with the article + the word."""
     return "%s %s" % (_article(word, article), word)
 
 #### PLURALIZE ###########################################################
 
 
 def pluralize(word, pos=NOUN, custom={}):
-    """ Returns the plural of a given word.
-    """
+    """Returns the plural of a given word."""
     return word + "s"
 
 #### SINGULARIZE #########################################################
 
 
 def singularize(word, pos=NOUN, custom={}):
-    """ Returns the singular of a given word.
-    """
+    """Returns the singular of a given word."""
     return word.rstrip("s")
 
 #### VERB CONJUGATION ####################################################
@@ -133,12 +127,10 @@ conjugate, lemma, lexeme, tenses = \
 
 
 def attributive(adjective):
-    """ For a predicative adjective, returns the attributive form.
-    """
+    """For a predicative adjective, returns the attributive form."""
     return adjective
 
 
 def predicative(adjective):
-    """ Returns the predicative adjective.
-    """
+    """Returns the predicative adjective."""
     return adjective
