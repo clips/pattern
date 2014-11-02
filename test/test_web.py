@@ -1150,22 +1150,5 @@ class TestCrawler(unittest.TestCase):
 
 #-------------------------------------------------------------------------
 
-
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCache))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestURL))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPlaintext))
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestSearchEngine))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDOM))
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestDocumentParser))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLocale))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMail))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCrawler))
-    return suite
-
 if __name__ == "__main__":
-    unittest.TextTestRunner(verbosity=1).run(suite())
+    unittest.main()

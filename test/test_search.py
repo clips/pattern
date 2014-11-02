@@ -592,16 +592,5 @@ class TestMatch(unittest.TestCase):
 
 #-------------------------------------------------------------------------
 
-
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestUtilityFunctions))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestTaxonomy))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestConstraint))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPattern))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMatch))
-    return suite
-
 if __name__ == "__main__":
-    unittest.TextTestRunner(verbosity=1).run(suite())
+    unittest.main()

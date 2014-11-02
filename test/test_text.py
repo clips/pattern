@@ -295,20 +295,5 @@ class TestMultilingual(unittest.TestCase):
 
 #-------------------------------------------------------------------------
 
-
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLexicon))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestFrequency))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestModel))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMorphology))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestContext))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestEntities))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParser))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSentiment))
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestMultilingual))
-    return suite
-
 if __name__ == "__main__":
-    unittest.TextTestRunner(verbosity=1).run(suite())
+    unittest.main()

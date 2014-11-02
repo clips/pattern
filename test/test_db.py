@@ -1181,49 +1181,5 @@ class TestDatasheet(unittest.TestCase):
 
 #-------------------------------------------------------------------------
 
-
-def suite(**kwargs):
-    global HOST, PORT, USERNAME, PASSWORD
-    HOST = kwargs.get("host", HOST)
-    PORT = kwargs.get("port", PORT)
-    USERNAME = kwargs.get("username", USERNAME)
-    PASSWORD = kwargs.get("password", PASSWORD)
-    create_db_mysql()
-    create_db_sqlite()
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestEntities))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDate))
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestUtilityFunctions))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSchema))
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestCreateMySQLDatabase))
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestCreateSQLiteDatabase))
-    if DB_MYSQL:
-        suite.addTest(
-            unittest.TestLoader().loadTestsFromTestCase(TestMySQLDatabase))
-        suite.addTest(
-            unittest.TestLoader().loadTestsFromTestCase(TestMySQLTable))
-        suite.addTest(
-            unittest.TestLoader().loadTestsFromTestCase(TestMySQLQuery))
-        suite.addTest(
-            unittest.TestLoader().loadTestsFromTestCase(TestMySQLView))
-    if DB_SQLITE:
-        suite.addTest(
-            unittest.TestLoader().loadTestsFromTestCase(TestSQLiteDatabase))
-        suite.addTest(
-            unittest.TestLoader().loadTestsFromTestCase(TestSQLiteTable))
-        suite.addTest(
-            unittest.TestLoader().loadTestsFromTestCase(TestSQLiteQuery))
-        suite.addTest(
-            unittest.TestLoader().loadTestsFromTestCase(TestSQLiteView))
-        suite.addTest(
-            unittest.TestLoader().loadTestsFromTestCase(TestDeleteSQLiteDatabase))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCSV))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDatasheet))
-    return suite
-
 if __name__ == "__main__":
-    unittest.TextTestRunner(verbosity=1).run(suite())
+    unittest.main()

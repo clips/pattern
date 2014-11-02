@@ -441,19 +441,5 @@ class TestSpecialFunctions(unittest.TestCase):
 
 #-------------------------------------------------------------------------
 
-
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestProfiling))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestTextMetrics))
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestInterpolation))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestStatistics))
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestStatisticalTests))
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestSpecialFunctions))
-    return suite
-
 if __name__ == "__main__":
-    unittest.TextTestRunner(verbosity=1).run(suite())
+    unittest.main()

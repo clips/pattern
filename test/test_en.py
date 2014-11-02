@@ -1179,20 +1179,5 @@ class TestWordlists(unittest.TestCase):
 
 #-------------------------------------------------------------------------
 
-
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestInflection))
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestQuantification))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSpelling))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParser))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParseTree))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestModality))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSentiment))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestWordNet))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestWordlists))
-    return suite
-
 if __name__ == "__main__":
-    unittest.TextTestRunner(verbosity=1).run(suite())
+    unittest.main()

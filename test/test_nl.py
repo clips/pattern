@@ -270,13 +270,5 @@ class TestSentiment(unittest.TestCase):
 
 #-------------------------------------------------------------------------
 
-
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestInflection))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParser))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSentiment))
-    return suite
-
 if __name__ == "__main__":
-    unittest.TextTestRunner(verbosity=1).run(suite())
+    unittest.main()

@@ -997,9 +997,9 @@ class TestClassifier(unittest.TestCase):
         # Assert the accuracy of the classifier.
         A, P, R, F, o = vector.SLP.test(self.model, folds=10, iterations=3)
         #print(A, P, R, F, o)
-        self.assertTrue(P >= 0.92)
-        self.assertTrue(R >= 0.92)
-        self.assertTrue(F >= 0.92)
+        self.assertTrue(P >= 0.90)
+        self.assertTrue(R >= 0.90)
+        self.assertTrue(F >= 0.90)
 
     def test_svm(self):
         try:
@@ -1047,20 +1047,5 @@ class TestClassifier(unittest.TestCase):
 
 #-------------------------------------------------------------------------
 
-
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestUtilityFunctions))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestStemmer))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDocument))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestModel))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestApriori))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestLSA))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestClustering))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestClassifier))
-    return suite
-
 if __name__ == "__main__":
-    unittest.TextTestRunner(verbosity=1).run(suite())
+    unittest.main()

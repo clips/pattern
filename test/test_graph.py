@@ -728,26 +728,5 @@ class TestGraphCommonsense(unittest.TestCase):
 
 #-------------------------------------------------------------------------
 
-
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestUtilityFunctions))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestNode))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestEdge))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestGraph))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestGraphLayout))
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestGraphSpringLayout))
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestGraphTraversal))
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestGraphPartitioning))
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestGraphMaintenance))
-    suite.addTest(
-        unittest.TestLoader().loadTestsFromTestCase(TestGraphCommonsense))
-    return suite
-
 if __name__ == "__main__":
-    unittest.TextTestRunner(verbosity=1).run(suite())
+    unittest.main()
