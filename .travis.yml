@@ -17,6 +17,7 @@ matrix:
 
 install:
     - if [ "$TRAVIS_PYTHON_VERSION" == "2.6" ]; then pip install unittest2; fi
+    - pip install future
     - python setup.py install --quiet
     - pip install --quiet pytest-cov
 

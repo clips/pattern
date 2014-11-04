@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import Google, plaintext
@@ -13,10 +14,10 @@ from pattern.web import Google, plaintext
 g = Google(license=None) # Enter your license key.
 q = "Your mother was a hamster and your father smelled of elderberries!"    # en
 #   "Ihre Mutter war ein Hamster und euer Vater roch nach Holunderbeeren!"  # de
-print q
-print plaintext(g.translate(q, input="en", output="de")) # fr, de, nl, es, cs, ja, ...
-print
+print(q)
+print(plaintext(g.translate(q, input="en", output="de"))) # fr, de, nl, es, cs, ja, ...
+print()
 
 q = "C'est un lapin, lapin de bois, un cadeau."
-print q
-print g.identify(q) # (language, confidence)
+print(q)
+print(g.identify(q)) # (language, confidence)

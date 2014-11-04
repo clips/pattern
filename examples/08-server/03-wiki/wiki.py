@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.server import App, template, threadsafe
@@ -89,7 +90,7 @@ def displayname(page):
 # We load the $name using the name() function above.
 
 def view(page):
-    print displayname(page)
+    print(displayname(page))
     return template(wiki, name=name(page), content=open(page).read())
 
 # The edit() function is called when a URL ends in "?edit",

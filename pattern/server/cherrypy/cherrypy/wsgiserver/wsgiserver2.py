@@ -78,6 +78,7 @@ __all__ = ['HTTPRequest', 'HTTPConnection', 'HTTPServer',
            'WSGIPathInfoDispatcher', 'get_ssl_adapter_class']
 
 import os
+from functools import reduce
 try:
     import queue
 except:
@@ -305,7 +306,7 @@ class SizeCheckWrapper(object):
         return data
 
     def next(self):
-        data = self.rfile.next()
+        data = next(self.rfile)
         self.bytes_read += len(data)
         self._check_length()
         return data

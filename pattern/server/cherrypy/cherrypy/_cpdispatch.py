@@ -13,7 +13,7 @@ import string
 import sys
 import types
 try:
-    classtype = (type, types.ClassType)
+    classtype = (type, type)
 except AttributeError:
     classtype = type
 

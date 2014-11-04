@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
 from pattern.vector import Document, Model, NB
@@ -20,10 +21,10 @@ for score, message in data:
     documents.append(document)
 m = Model(documents)
 
-print "number of documents:", len(m)
-print "number of words:", len(m.vector)
-print "number of words (average):", sum(len(d.features) for d in m.documents) / float(len(m))
-print
+print("number of documents:", len(m))
+print("number of words:", len(m.vector))
+print("number of words (average):", sum(len(d.features) for d in m.documents) / float(len(m)))
+print()
 
 # Train Naive Bayes on all documents.
 # Each document has a type: True for actual e-mail, False for spam.
@@ -35,20 +36,20 @@ for document in m:
 
 # We can now ask it questions about unknown e-mails:
 
-print classifier.classify("win money") # False: most likely spam.
-print classifier.classify("fix bug")   # True: most likely a real message.
-print
+print(classifier.classify("win money")) # False: most likely spam.
+print(classifier.classify("fix bug"))   # True: most likely a real message.
+print()
 
-print classifier.classify("customer")  # False: people don't talk like this on developer lists...
-print classifier.classify("guys")      # True: because most likely everyone knows everyone.
-print
+print(classifier.classify("customer"))  # False: people don't talk like this on developer lists...
+print(classifier.classify("guys"))      # True: because most likely everyone knows everyone.
+print()
 
 # To test the accuracy of a classifier,
 # we typically use 10-fold cross validation.
 # This means that 10 individual tests are performed, 
 # each with 90% of the corpus as training data and 10% as testing data.
 from pattern.vector import k_fold_cv
-print k_fold_cv(NB, documents=m, folds=10)
+print(k_fold_cv(NB, documents=m, folds=10))
 
 # This yields 5 scores: (Accuracy, Precision, Recall, F-score, standard deviation).
 # Accuracy in itself is not very useful, 

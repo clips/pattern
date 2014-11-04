@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.en import sentiment, polarity, subjectivity, positive
@@ -12,12 +13,12 @@ from pattern.en import sentiment, polarity, subjectivity, positive
 # The subjectivity() function measures objective vs. subjective, as a number between 0.0 and 1.0.
 # The sentiment() function returns an averaged (polarity, subjectivity)-tuple for a given string.
 for word in ("amazing", "horrible", "public"):
-    print word, sentiment(word)
+    print(word, sentiment(word))
 
-print
-print sentiment(
+print()
+print(sentiment(
     "The movie attempts to be surreal by incorporating time travel and various time paradoxes,"
-    "but it's presented in such a ridiculous way it's seriously boring.") 
+    "but it's presented in such a ridiculous way it's seriously boring.")) 
 
 # The input string can be:
 # - a string, 
@@ -28,10 +29,10 @@ print sentiment(
 # The positive() function returns True if the string's polarity >= threshold.
 # The threshold can be lowered or raised, 
 # but overall for strings with multiple words +0.1 yields the best results.
-print
-print "good:", positive("good", threshold=0.1)
-print " bad:", positive("bad")
-print
+print()
+print("good:", positive("good", threshold=0.1))
+print(" bad:", positive("bad"))
+print()
 
 # You can also do sentiment analysis in Dutch or French, 
 # it works exactly the same:
@@ -58,9 +59,9 @@ print
 # For example, its value is MOOD for emoticons:
 
 s = "amazing... :/"
-print sentiment(s)
+print(sentiment(s))
 for chunk, polarity, subjectivity, label in sentiment(s).assessments:
-    print chunk, polarity, subjectivity, label
+    print(chunk, polarity, subjectivity, label)
     
 # Observe the output.
 # The average sentiment is positive because the expression contains "amazing".
@@ -77,4 +78,4 @@ score1 = avg([p for chunk, p, s, label in a if label is None]) # average polarit
 score2 = avg([p for chunk, p, s, label in a if label is MOOD]) # average polarity for emoticons
 
 if score1 > 0 and score2 < 0:
-    print "...sarcasm?"
+    print("...sarcasm?")

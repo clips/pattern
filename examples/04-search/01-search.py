@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.search import search
@@ -11,27 +12,27 @@ from pattern.en     import parsetree
 
 # In the simplest case, the search() function 
 # takes a word (or a sequence of words) that you want to retrieve:
-print search("rabbit", "big white rabbit")
-print
+print(search("rabbit", "big white rabbit"))
+print()
 
 # Search words can contain wildcard characters:
-print search("rabbit*", "big white rabbit")
-print search("rabbit*", "big white rabbits")
-print
+print(search("rabbit*", "big white rabbit"))
+print(search("rabbit*", "big white rabbits"))
+print()
 
 # Search words can contain different options:
-print search("rabbit|cony|bunny", "big black bunny")
-print
+print(search("rabbit|cony|bunny", "big black bunny"))
+print()
 
 # Things become more interesting if we involve the pattern.en.parser module.
 # The parser takes a string, identifies words, and assigns a part-of-speech tag
 # to each word, for example NN (noun) or JJ (adjective).
 # A parsed sentence can be scanned for part-of-speech tags:
 s = parsetree("big white rabbit")
-print search("JJ", s) # all adjectives
-print search("NN", s) # all nouns
-print search("NP", s) # all noun phrases
-print
+print(search("JJ", s)) # all adjectives
+print(search("NN", s)) # all nouns
+print(search("NP", s)) # all noun phrases
+print()
 
 # Since the search() is case-insensitive, uppercase search words
 # are always considered to be tags (or taxonomy terms - see further examples).
@@ -40,4 +41,4 @@ print
 # where Match.words is a list of Word objects that matched:
 m = search("NP", s)
 for word in m[0].words:
-    print word.string, word.tag
+    print(word.string, word.tag)

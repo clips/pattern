@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+from __future__ import print_function
 import sys
 try:
     from cStringIO import StringIO
@@ -83,8 +84,8 @@ class LZWDecoder(object):
             x = self.feed(code)
             yield x
             if self.debug:
-                print >>sys.stderr, ('nbits=%d, code=%d, output=%r, table=%r' %
-                                     (self.nbits, code, x, self.table[258:]))
+                print(('nbits=%d, code=%d, output=%r, table=%r' %
+                                     (self.nbits, code, x, self.table[258:])), file=sys.stderr)
         return
 
 # lzwdecode

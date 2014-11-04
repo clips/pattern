@@ -28,11 +28,13 @@ Usage
     >>> filter(lambda p:p[0] in p[1].pointerTargets(ANTONYM), product(V['raise'].getSenses(), V['lower'].getSenses()))
     [('raise' in {verb: raise, lift, elevate, get up, bring up}, 'lower' in {verb: lower, take down, let down, get down, bring down})]
 """
+from __future__ import absolute_import
+from functools import reduce
 
 __author__  = "Oliver Steele <steele@osteele.com>"
 __version__ = "2.0"
 
-from wordnet import *
+from .wordnet import *
 
 #
 # Domain utilities
@@ -41,9 +43,9 @@ from wordnet import *
 def _requireSource(entity):
     if not hasattr(entity, 'pointers'):
         if isinstance(entity, Word):
-            raise TypeError(`entity` + " is not a Sense or Synset.  Try " + `entity` + "[0] instead.")
+            raise TypeError(repr(entity) + " is not a Sense or Synset.  Try " + repr(entity) + "[0] instead.")
         else:
-            raise TypeError(`entity` + " is not a Sense or Synset")
+            raise TypeError(repr(entity) + " is not a Sense or Synset")
 
 def tree(source, pointerType):
     """
@@ -242,12 +244,12 @@ def getIndex(form, pos='noun'):
     transformed string until a match is found or all the different
     strings have been tried. It returns a Word or None."""
     def trySubstitutions(trySubstitutions, form, substitutions, lookup=1, dictionary=dictionaryFor(pos)):
-        if lookup and dictionary.has_key(form):
+        if lookup and form in dictionary:
             return dictionary[form]
         elif substitutions:
             (old, new) = substitutions[0]
             substitute = string.replace(form, old, new) and substitute != form
-            if substitute and dictionary.has_key(substitute):
+            if substitute and substitute in dictionary:
                 return dictionary[substitute]
             return              trySubstitutions(trySubstitutions, form, substitutions[1:], lookup=0) or \
                 (substitute and trySubstitutions(trySubstitutions, substitute, substitutions[1:]))
@@ -296,7 +298,7 @@ def morphy(form, pos='noun', collect=0):
     'abacus'
     >>> morphy('hardrock', 'adv')
     """
-    from wordnet import _normalizePOS, _dictionaryFor
+    from .wordnet import _normalizePOS, _dictionaryFor
     pos = _normalizePOS(pos)
     fname = os.path.join(WNSEARCHDIR, {NOUN: 'noun', VERB: 'verb', ADJECTIVE: 'adj', ADVERB: 'adv'}[pos] + '.exc')
     excfile = open(fname)
@@ -313,7 +315,7 @@ def morphy(form, pos='noun', collect=0):
         exceptions = binarySearchFile(excfile, form)
         if exceptions:
             form = exceptions[string.find(exceptions, ' ')+1:-1]
-        if lookup and dictionary.has_key(form):
+        if lookup and form in dictionary:
             if collect:
                 collection.append(form)
             else:

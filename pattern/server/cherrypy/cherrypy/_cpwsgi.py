@@ -258,7 +258,7 @@ class AppResponse(object):
             return next(self.iter_response)
     else:
         def next(self):
-            return self.iter_response.next()
+            return next(self.iter_response)
 
     def close(self):
         """Close and de-reference the current request and response. (Core)"""

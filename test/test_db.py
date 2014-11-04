@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+from __future__ import print_function
+
 from util import *
 
 from pattern import db
@@ -138,7 +141,7 @@ class TestDate(unittest.TestCase):
         # Assert integer input.
         v1 = db.date(2010, 9, 21, format=db.DEFAULT_DATE_FORMAT)
         v2 = db.date(2010, 9, 21, 9, 27, 1, 0, db.DEFAULT_DATE_FORMAT)
-        v3 = db.date(2010, 9, 21, hour=9, minute=27, second=01, format=db.DEFAULT_DATE_FORMAT)
+        v3 = db.date(2010, 9, 21, hour=9, minute=27, second=0o1, format=db.DEFAULT_DATE_FORMAT)
         self.assertEqual(str(v1), "2010-09-21 00:00:00")
         self.assertEqual(str(v2), "2010-09-21 09:27:01")
         self.assertEqual(str(v3), "2010-09-21 09:27:01")
@@ -287,7 +290,7 @@ class AbstractTestDatabase(object):
           (  "a", "'a'"),
           ( u"a", "'a'"),
           (    1, "1"),
-          (   1L, "1"),
+          (   1, "1"),
           (  1.0, "1.0"),
           ( True, "1"),
           (False, "0"),

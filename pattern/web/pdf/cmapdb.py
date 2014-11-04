@@ -10,6 +10,8 @@ More information is available on the Adobe website:
   http://opensource.adobe.com/wiki/display/cmap/CMap+Resources
 
 """
+from __future__ import print_function
+from __future__ import absolute_import
 
 import sys
 import re
@@ -17,14 +19,14 @@ import os
 import os.path
 import gzip
 import cPickle as pickle
-import cmap
+from . import cmap
 import struct
-from psparser import PSStackParser
-from psparser import PSException, PSSyntaxError, PSTypeError, PSEOF
-from psparser import PSLiteral, PSKeyword
-from psparser import literal_name, keyword_name
-from encodingdb import name2unicode
-from utils import choplist, nunpack
+from .psparser import PSStackParser
+from .psparser import PSException, PSSyntaxError, PSTypeError, PSEOF
+from .psparser import PSLiteral, PSKeyword
+from .psparser import literal_name, keyword_name
+from .encodingdb import name2unicode
+from .utils import choplist, nunpack
 
 
 class CMapError(Exception): pass
@@ -58,7 +60,7 @@ class CMap(object):
 
     def decode(self, code):
         if self.debug:
-            print >>sys.stderr, 'decode: %r, %r' % (self, code)
+            print('decode: %r, %r' % (self, code), file=sys.stderr)
         d = self.code2cid
         for c in code:
             c = ord(c)
@@ -116,7 +118,7 @@ class UnicodeMap(object):
 
     def get_unichr(self, cid):
         if self.debug:
-            print >>sys.stderr, 'get_unichr: %r, %r' % (self, cid)
+            print('get_unichr: %r, %r' % (self, cid), file=sys.stderr)
         return self.cid2unichr[cid]
 
     def dump(self, out=sys.stdout):
@@ -239,7 +241,7 @@ class CMapDB(object):
     def _load_data(klass, name):
         filename = '%s.pickle.gz' % name
         if klass.debug:
-            print >>sys.stderr, 'loading:', name
+            print('loading:', name, file=sys.stderr)
         default_path = os.environ.get('CMAP_PATH', '/usr/share/pdfminer/')
         for directory in (os.path.dirname(cmap.__file__), default_path):
             path = os.path.join(directory, filename)

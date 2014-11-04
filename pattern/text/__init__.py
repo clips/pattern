@@ -7,6 +7,8 @@
 
 ####################################################################################################
 
+from __future__ import print_function
+
 import os
 import sys
 import re
@@ -230,7 +232,7 @@ class lazyset(set):
         """ If the list is empty, calls lazylist.load().
             Replaces lazylist.method() with list.method() and calls it.
         """
-        print "!"
+        print("!")
         if set.__len__(self) == 0:
             self.load()
             setattr(self, method, types.MethodType(getattr(set, method), self))

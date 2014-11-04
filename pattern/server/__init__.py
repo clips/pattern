@@ -8,6 +8,7 @@
 ####################################################################################################
 
 from __future__ import with_statement
+from __future__ import absolute_import
 
 import __main__
 import sys
@@ -63,7 +64,7 @@ except:
 
 try:
     # Import from python2.x/site-packages/cherrypy
-    import cherrypy; cp=cherrypy
+    from . import cherrypy; cp=cherrypy
 except:
     # Import from pattern/server/cherrypy/cherrypy
     # Bundled package is "hidden" in a non-package folder,

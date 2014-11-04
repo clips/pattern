@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import URL, DOM, plaintext
@@ -23,9 +24,9 @@ dom = DOM(url.download(cached=True))
 #print dom.body.content
 for e in dom.by_tag("div.entry")[:5]: # Top 5 reddit entries.
     for a in e.by_tag("a.title")[:1]: # First <a class="title"> in entry.
-        print plaintext(a.content)
-        print a.attrs["href"]
-        print
+        print(plaintext(a.content))
+        print(a.attrs["href"])
+        print()
         
 # The links in the HTML source code may be relative,
 # e.g., "../img.jpg" instead of "www.domain.com/img.jpg".
@@ -74,13 +75,13 @@ dom = DOM(URL("http://www.clips.ua.ac.be").download())
 kw = dom.head.by_attr(name="keywords")[0]
 kw = kw.attrs["content"]
 kw = [x.strip() for x in kw.split(",")]
-print kw
-print
+print(kw)
+print()
 
 # If you know CSS, you can also use short and handy CSS selectors:
 # http://www.w3.org/TR/CSS2/selector.html
 # Element(selector) will return a list of nested elements that match the given string.
 dom = DOM(URL("http://www.clips.ua.ac.be").download())
 for e in dom("div#sidebar-left li div:first-child span"):
-    print plaintext(e.content)
-    print
+    print(plaintext(e.content))
+    print()

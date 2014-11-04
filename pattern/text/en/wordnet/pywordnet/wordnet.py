@@ -35,6 +35,8 @@ clearly(adv.)
 >>> dog.getPointerTargets(MEMBER_MERONYM)
 [{noun: Canis, genus Canis}, {noun: pack}]
 """
+from __future__ import print_function
+from __future__ import absolute_import
 
 __author__  = "Oliver Steele <steele@osteele.com>"
 __version__ = "2.0.1"
@@ -245,7 +247,7 @@ class Word:
 
     # Deprecated.  Present for backwards compatability.
     def senses(self):
-        import wordnet
+        from . import wordnet
         #warningKey = 'SENSE_DEPRECATION_WARNING'
         #if not wordnet.has_key(warningKey):
         #    print('Word.senses() has been deprecated.  Use Word.sense() instead.')
@@ -301,7 +303,7 @@ class Word:
 	"""
 	if ReadableRepresentations:
 	    return str(self)
-	return "getWord" + `(self.form, self.pos)`
+	return "getWord" + repr((self.form, self.pos))
 	
     #
     # Sequence protocol (a Word's elements are its Senses)
@@ -466,7 +468,7 @@ class Synset:
 	"""
 	if ReadableRepresentations:
 	    return str(self)
-	return "getSynset" + `(self.pos, self.offset)`
+	return "getSynset" + repr((self.pos, self.offset))
     
     def __cmp__(self, other):
 	return _compareInstances(self, other, ('pos', 'offset'))
@@ -581,7 +583,7 @@ class Sense:
 	>>> str(N['dog'])
 	'dog(n.)'
 	"""
-	return `self.form` + " in " + str(self.synset)
+	return repr(self.form) + " in " + str(self.synset)
     
     def __repr__(self):
 	"""If ReadableRepresentations is true, return a human-readable
@@ -592,7 +594,7 @@ class Sense:
 	"""
 	if ReadableRepresentations:
 	    return str(self)
-	return "%s[%s]" % (`self.synset`, `self.form`)
+	return "%s[%s]" % (repr(self.synset), repr(self.form))
     
     def getPointers(self, pointerType=None):
 	"""Return a sequence of Pointers.
@@ -818,7 +820,7 @@ class Dictionary:
 	if word:
 	    return word
 	else:
-	    raise KeyError("%s is not in the %s database" % (`form`, `pos`))
+	    raise KeyError("%s is not in the %s database" % (repr(form), repr(pos)))
     
     def getSynset(self, offset):
 	pos = self.pos
@@ -878,7 +880,7 @@ class Dictionary:
 	    line = self.indexFile[index]
 	    return self.getWord(string.replace(line[:string.find(line, ' ')], '_', ' '), line)
 	else:
-	    raise TypeError("%s is not a String or Int" % `index`)
+	    raise TypeError("%s is not a String or Int" % repr(index))
     
     #
     # Dictionary protocol
@@ -911,10 +913,10 @@ class Dictionary:
 	>>> N.has_key('inu')
 	0
 	"""
-	return self.indexFile.has_key(form)
+	return form in self.indexFile
 	
     def __contains__(self, form):
-        return self.indexFile.has_key(form.encode("utf-8", "ignore")) # Tom De Smedt, 2013
+        return form.encode("utf-8", "ignore") in self.indexFile # Tom De Smedt, 2013
     
     #
     # Testing
@@ -1006,7 +1008,7 @@ class _IndexFile:
 		self.nextOffset = self.file.tell()
 	    return line
 	else:
-	    raise TypeError("%s is not a String or Int" % `index`)
+	    raise TypeError("%s is not a String or Int" % repr(index))
 	
     #
     # Dictionary protocol
@@ -1038,7 +1040,7 @@ class _IndexFile:
     def has_key(self, key):
 	key = key.replace(' ', '_') # test case: V['haze over']
 	if hasattr(self, 'indexCache'):
-	    return self.indexCache.has_key(key)
+	    return key in self.indexCache
 	return self.get(key) != None
     
     #
@@ -1097,7 +1099,7 @@ getword, getsense, getsynset = getWord, getSense, getSynset
 
 def _requirePointerType(pointerType):
     if pointerType not in POINTER_TYPES:
-	raise TypeError(`pointerType` + " is not a pointer type")
+	raise TypeError(repr(pointerType) + " is not a pointer type")
     return pointerType
 
 def _compareInstances(a, b, fields):
@@ -1396,13 +1398,13 @@ def _normalizePOS(pos):
     norm = _POSNormalizationTable.get(pos)
     if norm:
 	return norm
-    raise TypeError(`pos` + " is not a part of speech type")
+    raise TypeError(repr(pos) + " is not a part of speech type")
 
 def _dictionaryFor(pos):
     pos = _normalizePOS(pos)
     dict = _POStoDictionaryTable.get(pos)
     if dict == None:
-	raise RuntimeError("The " + `pos` + " dictionary has not been created")
+	raise RuntimeError("The " + repr(pos) + " dictionary has not been created")
     return dict
 
 def buildIndexFiles():

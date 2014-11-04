@@ -1,21 +1,23 @@
 #!/usr/bin/env python2
+from __future__ import print_function
+from __future__ import absolute_import
 import sys
 import struct
 try:
     from cStringIO import StringIO
 except ImportError:
     from StringIO import StringIO
-from cmapdb import CMapDB, CMapParser, FileUnicodeMap, CMap
-from encodingdb import EncodingDB, name2unicode
-from psparser import PSStackParser
-from psparser import PSSyntaxError, PSEOF
-from psparser import LIT, KWD, STRICT
-from psparser import PSLiteral, literal_name
-from pdftypes import PDFException, resolve1
-from pdftypes import int_value, float_value, num_value
-from pdftypes import str_value, list_value, dict_value, stream_value
-from fontmetrics import FONT_METRICS
-from utils import apply_matrix_norm, nunpack, choplist
+from .cmapdb import CMapDB, CMapParser, FileUnicodeMap, CMap
+from .encodingdb import EncodingDB, name2unicode
+from .psparser import PSStackParser
+from .psparser import PSSyntaxError, PSEOF
+from .psparser import LIT, KWD, STRICT
+from .psparser import PSLiteral, literal_name
+from .pdftypes import PDFException, resolve1
+from .pdftypes import int_value, float_value, num_value
+from .pdftypes import str_value, list_value, dict_value, stream_value
+from .fontmetrics import FONT_METRICS
+from .utils import apply_matrix_norm, nunpack, choplist
 
 
 def get_widths(seq):
@@ -695,7 +697,7 @@ def main(argv):
         fp = file(fname, 'rb')
         #font = TrueTypeFont(fname, fp)
         font = CFFFont(fname, fp)
-        print font
+        print(font)
         fp.close()
     return
 

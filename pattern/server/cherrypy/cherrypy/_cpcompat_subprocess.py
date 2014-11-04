@@ -387,6 +387,7 @@ except that:
 * popen2 closes all filedescriptors by default, but you have to specify
   close_fds=True with subprocess.Popen.
 """
+from __future__ import print_function
 
 import sys
 mswindows = (sys.platform == "win32")
@@ -464,7 +465,7 @@ _active = []
 
 def _cleanup():
     for inst in _active[:]:
-        res = inst._internal_poll(_deadstate=sys.maxint)
+        res = inst._internal_poll(_deadstate=sys.maxsize)
         if res is not None:
             try:
                 _active.remove(inst)
@@ -711,7 +712,7 @@ class Popen(object):
         return data
 
 
-    def __del__(self, _maxint=sys.maxint, _active=_active):
+    def __del__(self, _maxint=sys.maxsize, _active=_active):
         # If __init__ hasn't had a chance to execute (e.g. if it
         # was passed an undeclared keyword argument), we don't
         # have a _child_created attribute at all.
@@ -743,7 +744,7 @@ class Popen(object):
                 if input:
                     try:
                         self.stdin.write(input)
-                    except IOError, e:
+                    except IOError as e:
                         if e.errno != errno.EPIPE and e.errno != errno.EINVAL:
                             raise
                 self.stdin.close()
@@ -856,7 +857,7 @@ class Popen(object):
                            errread, errwrite):
             """Execute program (MS Windows version)"""
 
-            if not isinstance(args, types.StringTypes):
+            if not isinstance(args, str):
                 args = list2cmdline(args)
 
             # Process startup details
@@ -1122,7 +1123,7 @@ class Popen(object):
                            errread, errwrite):
             """Execute program (POSIX version)"""
 
-            if isinstance(args, types.StringTypes):
+            if isinstance(args, str):
                 args = [args]
             else:
                 args = list(args)
@@ -1478,8 +1479,8 @@ def _demo_posix():
     # Example 1: Simple redirection: Get process list
     #
     plist = Popen(["ps"], stdout=PIPE).communicate()[0]
-    print "Process list:"
-    print plist
+    print("Process list:")
+    print(plist)
 
     #
     # Example 2: Change uid before executing child
@@ -1491,42 +1492,42 @@ def _demo_posix():
     #
     # Example 3: Connecting several subprocesses
     #
-    print "Looking for 'hda'..."
+    print("Looking for 'hda'...")
     p1 = Popen(["dmesg"], stdout=PIPE)
     p2 = Popen(["grep", "hda"], stdin=p1.stdout, stdout=PIPE)
-    print repr(p2.communicate()[0])
+    print(repr(p2.communicate()[0]))
 
     #
     # Example 4: Catch execution error
     #
-    print
-    print "Trying a weird file..."
+    print()
+    print("Trying a weird file...")
     try:
-        print Popen(["/this/path/does/not/exist"]).communicate()
-    except OSError, e:
+        print(Popen(["/this/path/does/not/exist"]).communicate())
+    except OSError as e:
         if e.errno == errno.ENOENT:
-            print "The file didn't exist.  I thought so..."
-            print "Child traceback:"
-            print e.child_traceback
+            print("The file didn't exist.  I thought so...")
+            print("Child traceback:")
+            print(e.child_traceback)
         else:
-            print "Error", e.errno
+            print("Error", e.errno)
     else:
-        print >>sys.stderr, "Gosh.  No error."
+        print("Gosh.  No error.", file=sys.stderr)
 
 
 def _demo_windows():
     #
     # Example 1: Connecting several subprocesses
     #
-    print "Looking for 'PROMPT' in set output..."
+    print("Looking for 'PROMPT' in set output...")
     p1 = Popen("set", stdout=PIPE, shell=True)
     p2 = Popen('find "PROMPT"', stdin=p1.stdout, stdout=PIPE)
-    print repr(p2.communicate()[0])
+    print(repr(p2.communicate()[0]))
 
     #
     # Example 2: Simple execution of program
     #
-    print "Executing calc..."
+    print("Executing calc...")
     p = Popen("calc")
     p.wait()
 

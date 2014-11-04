@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 import glob
 import codecs
@@ -36,11 +37,11 @@ m = Model(documents, weight=TFIDF)
 # We can retrieve documents by name:
 d = m.document(name="lion")
 
-print d.keywords(top=10)
-print
-print d.tf("food")
-print d.tfidf("food") # TF-IDF is less: "food" is also mentioned with the other animals.
-print
+print(d.keywords(top=10))
+print()
+print(d.tf("food"))
+print(d.tfidf("food")) # TF-IDF is less: "food" is also mentioned with the other animals.
+print()
 
 # We can compare how similar two documents are.
 # This is done by calculating the distance between the document vectors
@@ -60,18 +61,18 @@ d2 = m.document(name="tiger")
 d3 = m.document(name="dolphin")
 d4 = m.document(name="shark")
 d5 = m.document(name="parakeet")
-print "lion-tiger:", m.similarity(d1, d2)
-print "lion-dolphin:", m.similarity(d1, d3)
-print "dolphin-shark:", m.similarity(d3, d4)
-print "dolphin-parakeet:", m.similarity(d3, d5)
-print
+print("lion-tiger:", m.similarity(d1, d2))
+print("lion-dolphin:", m.similarity(d1, d3))
+print("dolphin-shark:", m.similarity(d3, d4))
+print("dolphin-parakeet:", m.similarity(d3, d5))
+print()
 
-print "Related to tiger:"
-print m.neighbors(d2, top=3) # Top three most similar.
-print
+print("Related to tiger:")
+print(m.neighbors(d2, top=3)) # Top three most similar.
+print()
 
-print "Related to a search query ('water'):"
-print m.search("water", top=10)
+print("Related to a search query ('water'):")
+print(m.search("water", top=10))
 
 # In summary:
 

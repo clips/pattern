@@ -1,5 +1,6 @@
 """Implementation of JSONEncoder
 """
+from __future__ import absolute_import
 import re
 from decimal import Decimal
 
@@ -11,7 +12,7 @@ def _import_speedups():
         return None, None
 c_encode_basestring_ascii, c_make_encoder = _import_speedups()
 
-from decoder import PosInf
+from .decoder import PosInf
 
 ESCAPE = re.compile(ur'[\x00-\x1f\\"\b\f\n\r\t\u2028\u2029]')
 ESCAPE_ASCII = re.compile(r'([\\"]|[^\ -~])')

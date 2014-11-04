@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 #### PATTERN | TEXT | PATTERN MATCHING #############################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
@@ -414,7 +415,7 @@ class WordNetClassifier(Classifier):
         if wordnet is None:
             try: from pattern.en import wordnet
             except:
-                try: from en import wordnet
+                try: from .en import wordnet
                 except:
                     pass
         Classifier.__init__(self, self._parents, self._children)

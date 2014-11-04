@@ -40,7 +40,7 @@ class ReferrerTree(object):
         try:
             ascendcode = self.ascend.__code__
         except AttributeError:
-            ascendcode = self.ascend.im_func.func_code
+            ascendcode = self.ascend.__func__.__code__
         for parent in refs:
             if inspect.isframe(parent) and parent.f_code is ascendcode:
                 continue

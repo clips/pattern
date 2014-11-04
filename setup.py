@@ -1,3 +1,4 @@
+from __future__ import print_function
 #### PATTERN #######################################################################################
 
 import sys
@@ -37,8 +38,8 @@ if sys.argv[-1] == "zip":
                 x.write(d.join(s))
                 x.close()
     z.close()
-    print n
-    print hashlib.sha256(open(z.filename).read()).hexdigest()
+    print(n)
+    print(hashlib.sha256(open(z.filename).read()).hexdigest())
     sys.exit(0)
 
 #---------------------------------------------------------------------------------------------------
@@ -134,5 +135,6 @@ setup(
         "Topic :: Text Processing :: Linguistic",
         "Topic :: Text Processing :: Markup :: HTML"
     ],
-    zip_safe = False
+    zip_safe = False,
+    install_requires = ["future"]
 )

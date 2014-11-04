@@ -1,11 +1,12 @@
 #!/usr/bin/env python2
+from __future__ import absolute_import
 import sys
 import zlib
-from lzw import lzwdecode
-from ascii85 import ascii85decode, asciihexdecode
-from runlength import rldecode
-from psparser import PSException, PSObject
-from psparser import LIT, KWD, STRICT
+from .lzw import lzwdecode
+from .ascii85 import ascii85decode, asciihexdecode
+from .runlength import rldecode
+from .psparser import PSException, PSObject
+from .psparser import LIT, KWD, STRICT
 
 LITERAL_CRYPT = LIT('Crypt')
 

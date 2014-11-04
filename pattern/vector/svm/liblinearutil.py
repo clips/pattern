@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+from __future__ import absolute_import
 import os, sys
 sys.path = [os.path.dirname(os.path.abspath(__file__))] + sys.path 
-from liblinear import *
+from .liblinear import *
 
 def svm_read_problem(data_file_name):
 	"""

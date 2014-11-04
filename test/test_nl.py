@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+from __future__ import print_function
+
 from util import *
 
 from pattern import nl

@@ -646,7 +646,7 @@ class _FeedParserMixin:
             # element declared itself as escaped markup, but it isn't really
             self.contentparams['type'] = u'application/xhtml+xml'
         if self.incontent and self.contentparams.get('type') == u'application/xhtml+xml':
-            if tag.find(':') <> -1:
+            if tag.find(':') != -1:
                 prefix, tag = tag.split(':', 1)
                 namespace = self.namespacesInUse.get(prefix, '')
                 if tag=='math' and namespace=='http://www.w3.org/1998/Math/MathML':
@@ -658,7 +658,7 @@ class _FeedParserMixin:
             return self.handle_data('<%s%s>' % (tag, self.strattrs(attrs)), escape=0)
 
         # match namespaces
-        if tag.find(':') <> -1:
+        if tag.find(':') != -1:
             prefix, suffix = tag.split(':', 1)
         else:
             prefix, suffix = '', tag
@@ -690,7 +690,7 @@ class _FeedParserMixin:
 
     def unknown_endtag(self, tag):
         # match namespaces
-        if tag.find(':') <> -1:
+        if tag.find(':') != -1:
             prefix, suffix = tag.split(':', 1)
         else:
             prefix, suffix = '', tag
@@ -823,7 +823,7 @@ class _FeedParserMixin:
                 self.version = u'rss10'
             elif loweruri == 'http://www.w3.org/2005/atom':
                 self.version = u'atom10'
-        if loweruri.find(u'backend.userland.com/rss') <> -1:
+        if loweruri.find(u'backend.userland.com/rss') != -1:
             # match any backend.userland.com namespace
             uri = u'http://backend.userland.com/rss'
             loweruri = uri
@@ -1054,7 +1054,7 @@ class _FeedParserMixin:
 
     def _mapToStandardPrefix(self, name):
         colonpos = name.find(':')
-        if colonpos <> -1:
+        if colonpos != -1:
             prefix = name[:colonpos]
             suffix = name[colonpos+1:]
             prefix = self.namespacemap.get(prefix, prefix)
@@ -1796,7 +1796,7 @@ if _XML_AVAILABLE:
         def startElementNS(self, name, qname, attrs):
             namespace, localname = name
             lowernamespace = str(namespace or '').lower()
-            if lowernamespace.find(u'backend.userland.com/rss') <> -1:
+            if lowernamespace.find(u'backend.userland.com/rss') != -1:
                 # match any backend.userland.com namespace
                 namespace = u'http://backend.userland.com/rss'
                 lowernamespace = namespace
@@ -1904,11 +1904,11 @@ class _BaseHTMLProcessor(sgmllib.SGMLParser):
     # they're declared above, not as they're declared in sgmllib.
     def goahead(self, i):
         pass
-    goahead.func_code = sgmllib.SGMLParser.goahead.func_code
+    goahead.__code__ = sgmllib.SGMLParser.goahead.__code__
 
     def __parse_starttag(self, i):
         pass
-    __parse_starttag.func_code = sgmllib.SGMLParser.parse_starttag.func_code
+    __parse_starttag.__code__ = sgmllib.SGMLParser.parse_starttag.__code__
 
     def parse_starttag(self,i):
         j = self.__parse_starttag(i)
