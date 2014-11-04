@@ -1,8 +1,4 @@
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-import unittest
-import time
-import re
-import random
+from util import *
 
 from pattern    import search
 from pattern.en import Sentence, parse

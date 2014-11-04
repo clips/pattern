@@ -18,7 +18,8 @@ except:
     MODULE = ""
 
 # Import the Cache class from pattern.web so e-mails can be cached locally (faster):
-try: from ..cache import cache
+try:
+    from ..cache import cache
 except:
     try: 
         import os, sys; sys.path.append(os.path.join(MODULE, ".."))

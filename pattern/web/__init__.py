@@ -43,9 +43,9 @@ try:
     # Import persistent Cache.
     # If this module is used separately,
     # a dict is used (i.e. this Python session only).
-    from cache import Cache, cache, TMP
+    from cache import Cache, cache as CACHE, TMP
 except:
-    cache = {}
+    CACHE = {}
 
 try:
     from imap import Mail, MailFolder, Message, GMAIL
@@ -490,13 +490,13 @@ class URL(object):
         # Keep a separate cache of unicode and raw download for same URL.
         if unicode is True:
             id = "u" + id
-        if cached and id in cache:
-            if isinstance(cache, dict): # Not a Cache object.
-                return cache[id]
+        if cached and id in CACHE:
+            if isinstance(CACHE, dict): # Not a Cache object.
+                return CACHE[id]
             if unicode is True:
-                return cache[id]
+                return CACHE[id]
             if unicode is False:
-                return cache.get(id, unicode=False)
+                return CACHE.get(id, unicode=False)
         t = time.time()
         # Open a connection with the given settings, read it and (by default) cache the data.
         try:
@@ -506,7 +506,7 @@ class URL(object):
         if unicode is True:
             data = u(data)
         if cached:
-            cache[id] = data
+            CACHE[id] = data
         if throttle:
             time.sleep(max(throttle-(time.time()-t), 0))
         return data
@@ -2239,7 +2239,7 @@ class WikipediaArticle(MediaWikiArticle):
             open(filename+extension(media),"w").write(data)
         """
         url = "http://%s.wikipedia.org/wiki/File:%s" % (self.__dict__.get("language", "en"), media)
-        if url not in cache:
+        if url not in CACHE:
             time.sleep(1)
         data = URL(url).download(**kwargs)
         data = re.search(r"upload.wikimedia.org/.*?/%s" % media, data)
@@ -2782,7 +2782,7 @@ class ProductWiki(SearchEngine):
         data = json.loads(data)
         results = Results(PRODUCTWIKI, query, type)
         results.total = None
-        for x in data.get("products", [])[:count]:
+        for x in (data.get("products") or [])[:count]:
             r = Result(url=None)
             r.__dict__["title"]   = u(x.get("title"))
             r.__dict__["text"]    = u(x.get("text"))

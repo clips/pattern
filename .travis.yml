@@ -1,0 +1,28 @@
+language: python
+
+python:
+    - "2.6"
+    - "2.7"
+    - "pypy"
+    - "3.2"
+    - "3.3"
+    - "3.4"
+
+matrix:
+    allow_failures:
+        - python: "3.2"
+        - python: "3.3"
+        - python: "3.4"
+        - python: "pypy"
+
+install:
+    - if [ "$TRAVIS_PYTHON_VERSION" == "2.6" ]; then pip install unittest2; fi
+    - python setup.py install --quiet
+    - pip install --quiet pytest-cov
+
+script:
+    - nosetests --with-coverage --cover-package=pattern
+
+after_success:
+    - pip install --quiet coveralls
+    - coveralls
