@@ -33,7 +33,8 @@ g.prune(0)
 
 # This node's label is different from its id.
 # We'll make it a hyperlink, see the href attribute at the bottom.
-g["1"].text.string = "home"
+# FIXME this fails if the 1 has been pruned
+# g[1].text.string = "home"
 
 # The export() command generates a folder with an index.html,
 # that displays the graph using an interactive, force-based spring layout.
