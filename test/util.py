@@ -20,6 +20,12 @@ try:
 except ImportError:
     import unittest
 
+try:
+    unicode
+except NameError:
+    unicode = str
+    basestring = str
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 try:

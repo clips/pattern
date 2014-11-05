@@ -281,7 +281,7 @@ class AbstractTestDatabase(object):
         raise unittest.SkipTest("abstract method, must be defined on subclass")
     
     def tearDown(self):
-        for table in self.db:
+        for table in list(self.db):
             self.db.drop(table)
         
     def test_escape(self):
@@ -496,7 +496,7 @@ class AbstractTestTable(object):
         
     def tearDown(self):
         # Drop test tables.
-        for table in self.db:
+        for table in list(self.db):
             self.db.drop(table)
             
     def test_table(self):
@@ -641,7 +641,7 @@ class AbstractTestQuery(object):
         
     def tearDown(self):
         # Drop test tables.
-        for table in self.db:
+        for table in list(self.db):
             self.db.drop(table)
         
     def _query(self, *args, **kwargs):
@@ -825,7 +825,7 @@ class AbstactTestView(object):
 
     def tearDown(self):
         # Drop test tables.
-        for table in self.db:
+        for table in list(self.db):
             self.db.drop(table)
             
     def test_view(self):

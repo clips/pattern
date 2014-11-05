@@ -18,29 +18,65 @@ import os
 import sys
 import threading
 import time
-import socket, urlparse, urllib, urllib2, ssl
+import socket
+
+try:
+    from urllib.parse import urlsplit, urlparse, urljoin, quote_plus, unquote_plus, urlencode
+except ImportError:
+    from urlparse import urlsplit, urlparse, urljoin
+    from urllib import quote_plus, unquote_plus, urlencode
+
+#import urllib
+
+try:
+    import urllib.request as urllib2
+except ImportError:
+    import urllib2
+
+import ssl
 import base64
-import htmlentitydefs
-import httplib
-import sgmllib
-import cookielib
+
+try:
+    from html.entities import name2codepoint
+except ImportError:
+    from htmlentitydefs import name2codepoint
+
+try:
+    from http.client import BadStatusLine
+except ImportError:
+    from httplib import BadStatusLine
+
+try:
+    from sgmllib import SGMLParser, SGMLParseError
+except ImportError:
+    from html.parser import HTMLParser as SGMLParser, HTMLParseError as SGMLParseError
+
+try:
+    from http.cookiejar import CookieJar
+except ImportError:
+    from cookielib import CookieJar
+
 import re
 import xml.dom.minidom
 import unicodedata
 import string
-import StringIO
+
+try:
+    # Note it's import this is before the io attempt
+    from StringIO import StringIO
+except:
+    from io import StringIO
+
 import bisect
 import itertools
-import new
+
+import feedparser
+import simplejson as json
+import bs4
 
 from . import api
-from . import feed
 from . import oauth
-from . import json
 from . import locale
-
-from .feed import feedparser
-from .soup import BeautifulSoup
 
 try:
     # Import persistent Cache.
@@ -64,6 +100,9 @@ except:
     
 if sys.version > "3":
     long = int
+    unicode = str
+    basestring = str
+    unichr = chr
 
 #### UNICODE #######################################################################################
 # Latin-1 (ISO-8859-1) encoding is identical to Windows-1252 except for the code points 128-159:
@@ -265,8 +304,8 @@ def urldecode(query):
     if query:
         query = query.lstrip("?").split("&")
         query = ((kv.split("=") + [None])[:2] for kv in query)
-        query = ((u(urllib.unquote_plus(bytestring(k))),
-          _format(u(urllib.unquote_plus(bytestring(v))))) for k, v in query if k != "")
+        query = ((u(unquote_plus(bytestring(k))),
+          _format(u(unquote_plus(bytestring(v))))) for k, v in query if k != "")
         return dict(query)
     return {}
 
@@ -355,7 +394,7 @@ class URL(object):
             For example: http://user:pass@example.com:992/animal/bird?species=seagull&q#wings
             This is a cached method that is only invoked when necessary, and only once.
         """
-        p = urlparse.urlsplit(self._string)
+        p = urlsplit(self._string)
         P = {PROTOCOL: p[0],            # http
              USERNAME: u"",             # user
              PASSWORD: u"",             # pass
@@ -408,7 +447,7 @@ class URL(object):
         """
         s = self.parts[QUERY].items()
         s = dict((bytestring(k), bytestring(v if v is not None else "")) for k, v in s)
-        s = urllib.urlencode(s)
+        s = urlencode(s)
         return s
 
     def __getattr__(self, k):
@@ -431,7 +470,7 @@ class URL(object):
         url = self.string
         # Handle local files with urllib.urlopen() instead of urllib2.urlopen().
         if os.path.exists(url):
-            return urllib.urlopen(url)
+            return urlopen(url)
         # Handle method=POST with query string as a separate parameter.
         post = self.method == POST and self.querystring or None
         socket.setdefaulttimeout(timeout)
@@ -439,7 +478,7 @@ class URL(object):
         handlers = []
         if proxy:
             handlers.append(urllib2.ProxyHandler({proxy[1]: proxy[0]}))
-        handlers.append(urllib2.HTTPCookieProcessor(cookielib.CookieJar()))
+        handlers.append(urllib2.HTTPCookieProcessor(CookieJar()))
         handlers.append(urllib2.HTTPHandler)
         urllib2.install_opener(urllib2.build_opener(*handlers))
         # Send request.
@@ -464,7 +503,7 @@ class URL(object):
             if e.code == 500: raise HTTP500InternalServerError(src=e, url=url)
             if e.code == 503: raise HTTP503ServiceUnavailable(src=e, url=url)
             raise HTTPError(str(e), src=e, url=url)
-        except httplib.BadStatusLine as e:
+        except BadStatusLine as e:
             raise HTTPError(str(e), src=e, url=url)
         except socket.timeout as e:
             raise URLTimeout(src=e, url=url)
@@ -619,10 +658,15 @@ def download(url=u"", method=GET, query={}, timeout=10, cached=True, throttle=0,
 
 #--- STREAMING URL BUFFER --------------------------------------------------------------------------
 
-def bind(object, method, function):
+def bind(obj, method, function):
     """ Attaches the function as a method with the given name to the given object.
     """
-    setattr(object, method, new.instancemethod(function, object))
+    try:
+        import types
+        setattr(obj, method, types.MethodType(function, obj))
+    except ImportError:
+        import new
+        setattr(obj, method, new.instancemethod(function, obj))
 
 class Stream(list):
 
@@ -745,10 +789,10 @@ blocks.update({
     "td": ("", "\t"),
 })
 
-class HTMLParser(sgmllib.SGMLParser):
+class HTMLParser(SGMLParser):
 
     def __init__(self):
-        sgmllib.SGMLParser.__init__(self)
+        SGMLParser.__init__(self)
 
     def handle_starttag(self, tag, attrs):
         pass
@@ -775,8 +819,8 @@ class HTMLParser(sgmllib.SGMLParser):
     def parse_declaration(self, i):
         # We can live without sgmllib's parse_declaration().
         try:
-            return sgmllib.SGMLParser.parse_declaration(self, i)
-        except sgmllib.SGMLParseError:
+            return SGMLParser.parse_declaration(self, i)
+        except SGMLParseError:
             return i + 1
 
     def convert_charref(self, name):
@@ -923,16 +967,16 @@ def decode_entities(string):
             if hex.lower() == "x":
                 return unichr(int("0x" + name, 16))      # "&#x0026;" = > "&"
         else:
-            cp = htmlentitydefs.name2codepoint.get(name) # "&amp;" => "&"
+            cp = name2codepoint.get(name) # "&amp;" => "&"
             return unichr(cp) if cp else match.group()   # "&foo;" => "&foo;"
     if isinstance(string, basestring):
         return RE_UNICODE.subn(replace_entity, string)[0]
     return string
 
 def encode_url(string):
-    return urllib.quote_plus(bytestring(string)) # "black/white" => "black%2Fwhite".
+    return quote_plus(bytestring(string)) # "black/white" => "black%2Fwhite".
 def decode_url(string):
-    return urllib.unquote_plus(string)
+    return unquote_plus(string)
 
 RE_SPACES = re.compile("( |\xa0)+", re.M) # Matches one or more spaces.
 RE_TABS   = re.compile(r"\t+", re.M)      # Matches one or more tabs.
@@ -2958,10 +3002,10 @@ def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, prefix
 # L. Richardson (2004), http://www.crummy.com/software/BeautifulSoup/
 
 SOUP = (
-    BeautifulSoup.BeautifulSoup,
-    BeautifulSoup.Tag,
-    BeautifulSoup.NavigableString,
-    BeautifulSoup.Comment
+    bs4.BeautifulSoup,
+    bs4.Tag,
+    bs4.NavigableString,
+    bs4.Comment
 )
 
 NODE, TEXT, COMMENT, ELEMENT, DOCUMENT = \
@@ -2976,7 +3020,7 @@ class Node(object):
             All DOM nodes can be navigated in the same way (e.g. Node.parent, Node.children, ...)
         """
         self.type = type
-        self._p = not isinstance(html, SOUP) and BeautifulSoup.BeautifulSoup(u(html), **kwargs) or html
+        self._p = not isinstance(html, SOUP) and bs4.BeautifulSoup(u(html), **kwargs) or html
 
     @property
     def _beautifulSoup(self):
@@ -2989,13 +3033,13 @@ class Node(object):
 
     def _wrap(self, x):
         # Navigating to other nodes yields either Text, Element or None.
-        if isinstance(x, BeautifulSoup.Comment):
+        if isinstance(x, bs4.Comment):
             return Comment(x)
-        if isinstance(x, BeautifulSoup.Declaration):
+        if isinstance(x, bs4.Declaration):
             return Text(x)
-        if isinstance(x, BeautifulSoup.NavigableString):
+        if isinstance(x, bs4.NavigableString):
             return Text(x)
-        if isinstance(x, BeautifulSoup.Tag):
+        if isinstance(x, bs4.Tag):
             return Element(x)
 
     @property
@@ -3088,7 +3132,7 @@ class Element(Node):
     @property
     def attributes(self):
         if "_attributes" not in self.__dict__:
-            self._attributes = self._p._getAttrMap()
+            self._attributes = self._p.attrs
         return self._attributes
 
     attr = attrs = attributes
@@ -3188,7 +3232,7 @@ class Document(Element):
         """ Yields the <!doctype> declaration, as a TEXT Node or None.
         """
         for child in self.children:
-            if isinstance(child._p, BeautifulSoup.Declaration):
+            if isinstance(child._p, bs4.Doctype):  # previously Declaration
                 return child
 
     @property
@@ -3329,14 +3373,15 @@ class Selector(object):
             return False
         if self.id not in ((e.id or "").lower(), "", None):
             return False
-        if self.classes.issubset(set(map(lambda s: s.lower(), e.attr.get("class", "").split()))) is False:
+        if self.classes.issubset(set(map(lambda s: s.lower(), e.attr.get("class", [])))) is False:
             return False
         if "first-child" in self.pseudo and self._first_child(e.parent) != e:
             return False
         if any(x.startswith("contains") and not self._contains(e, x) for x in self.pseudo):
             return False # jQuery :contains("...") selector.
         for k, v in self.attributes.items():
-            if k not in e.attrs or not (v is True or re.search(v, e.attrs[k]) is not None):
+            # TODO is ' '.join(e.attrs[k])) correct?
+            if k not in e.attrs or not (v is True or re.search(v, ' '.join(e.attrs[k])) is not None):
                 return False
         return True
 
@@ -3357,7 +3402,8 @@ class Selector(object):
         if len(self.classes) == 1:
             e = map(Element, e._p.findAll(tag, **dict(a, **{"class": i(list(self.classes)[0])})))
         if len(self.classes) >= 2:
-            e = filter(lambda e: self.classes.issubset(set(e.attr.get("class", "").lower().split())), e)
+            # e = filter(lambda e: self.classes.issubset(set(e.attr.get("class", "").lower().split())), e)
+            e = filter(lambda e: self.classes.issubset(set([c.lower() for c in e.attr.get("class", "")])), e)
         if "first-child" in self.pseudo:
             e = filter(lambda e: e == self._first_child(e.parent), e)
         if any(x.startswith("contains") for x in self.pseudo):
@@ -3500,7 +3546,7 @@ def base(url):
     """ Returns the URL domain name:
         http://en.wikipedia.org/wiki/Web_crawler => en.wikipedia.org
     """
-    return urlparse.urlparse(url).netloc
+    return urlparse(url).netloc
 
 def abs(url, base=None):
     """ Returns the absolute URL:
@@ -3509,7 +3555,7 @@ def abs(url, base=None):
     if url.startswith("#") and not base is None and not base.endswith("/"):
         if not re.search("[^/]/[^/]", base):
             base += "/"
-    return urlparse.urljoin(base, url)
+    return urljoin(base, url)
 
 DEPTH   = "depth"
 BREADTH = "breadth"
@@ -3752,7 +3798,7 @@ class DocumentParser(object):
             return open(path, "rb")
         if hasattr(path, "read"):
             return path
-        return StringIO.StringIO(path)
+        return StringIO(path)
 
     def _parse(self, path, *args, **kwargs):
         """ Returns a plaintext Unicode string parsed from the given document.
@@ -3772,6 +3818,29 @@ class DocumentParser(object):
 class PDFError(DocumentParserError):
     pass
 
+from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+try:
+    from pdfminer.pdfpage import PDFPage
+except:  # pdfminer3k, yes it uses the same package name, which is fantastic
+    from pdfminer.pdfinterp import process_pdf
+
+from pdfminer.converter import TextConverter, HTMLConverter
+from pdfminer.layout    import LAParams
+
+try:
+    process_pdf  # removed in pdfminer (for python 2)
+except NameError:
+    def process_pdf(rsrcmgr, device, fp, pagenos=None, maxpages=0,
+                    password='', caching=True, check_extractable=True):
+        """This function is depreciated in pdfminer."""
+
+        interpreter = PDFPageInterpreter(rsrcmgr, device)
+        for page in PDFPage.get_pages(fp, pagenos, maxpages=maxpages,
+                                      password=password, caching=caching,
+                                      check_extractable=check_extractable):
+            interpreter.process_page(page)
+        return
+
 class PDF(DocumentParser):
 
     def __init__(self, path, output="txt"):
@@ -3780,17 +3849,16 @@ class PDF(DocumentParser):
     def _parse(self, path, *args, **kwargs):
         # The output is useful for mining but not for display.
         # Alternatively, PDF(format="html") preserves some layout.
-        from .pdf.pdfinterp import PDFResourceManager, process_pdf
-        from .pdf.converter import TextConverter, HTMLConverter
-        from .pdf.layout    import LAParams
         try:
             m = PDFResourceManager()
-            s = StringIO.StringIO()
+            s = StringIO()
             p = kwargs.get("format", "txt").endswith("html") and HTMLConverter or TextConverter
             p = p(m, s, codec="utf-8", laparams=LAParams())
-            process_pdf(m, p, self._open(path), set(), maxpages=0, password="")
+            process_pdf(rsrcmgr=m, device=p, fp=self._open(path), pagenos=set(), maxpages=0, password="")
+
         except Exception as e:
             raise PDFError(str(e))
+
         s = s.getvalue()
         s = decode_utf8(s)
         s = s.strip()
@@ -3810,8 +3878,8 @@ class DOCXError(DocumentParserError):
 class DOCX(DocumentParser):
     
     def _parse(self, path, *args, **kwargs):
-        from .docx.docx import opendocx
-        from .docx.docx import getdocumenttext
+        from docx import opendocx
+        from docx import getdocumenttext
         try:
             s = opendocx(self._open(path))
             s = getdocumenttext(s)

@@ -169,7 +169,7 @@ class TestTextMetrics(unittest.TestCase):
     def test_isplit(self):
         # Assert string.split() iterator.
         v = metrics.isplit("test\nisplit")
-        self.assertTrue(hasattr(v, "next"))
+        self.assertTrue(not isinstance(v, list))  # TODO is this needed?
         self.assertEqual(list(v), ["test", "isplit"])
         print("pattern.metrics.isplit()")
     

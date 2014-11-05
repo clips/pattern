@@ -24,6 +24,8 @@ except:
     
 if sys.version > "3":
     long = int
+    unicode = str
+    basestring = str
 
 # float("inf") doesn't work on windows.
 INFINITE = 1e20

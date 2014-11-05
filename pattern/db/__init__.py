@@ -48,6 +48,10 @@ except:
     
 if sys.version > "3":
     long = int
+    basestring = str
+    unicode = str
+    xrange = range
+    unichr = chr
 
 MYSQL  = "mysql"
 SQLITE = "sqlite"
