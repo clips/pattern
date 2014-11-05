@@ -20,9 +20,9 @@ install:
     - pip install --quiet pytest-cov
 
 script:
-    - # test_05vector_07slp takes too long (so travis errors the build), it also fails on py2!
-    - # TODO make test_05vector_07slp run faster (or do slightly less).
-    - # TODO perhaps split build into tests and examples?
+    # test_05vector_07slp takes too long (so travis errors the build), it also fails on py2!
+    # TODO make test_05vector_07slp run faster (or do slightly less).
+    # TODO perhaps split build into tests and examples?
     - nosetests --exclude=test_05vector_07slp --with-coverage --cover-package=pattern
 
 after_success:
