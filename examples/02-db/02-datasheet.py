@@ -1,5 +1,7 @@
 from __future__ import print_function
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.db import Datasheet, INTEGER, STRING
 from pattern.db import uid, pprint
@@ -23,19 +25,20 @@ ds = Datasheet(rows=[
     [uid(), "asparagus", "vegetable"],
     [uid(), "banana",    "fruit"],
 ], fields=[
-      ("id", INTEGER), # Define the column headers.
+    ("id", INTEGER),  # Define the column headers.
     ("name", STRING),
     ("type", STRING)
 ])
 
 print(ds.rows[0])    # A list of rows.
-print(ds.columns[1]) # A list of columns, where each column is a list of values.
+# A list of columns, where each column is a list of values.
+print(ds.columns[1])
 print(ds.name)
 print()
 
 # Columns can be manipulated directly like any other Python list.
 # This can be slow for large tables. If you need a fast way to do matrix math,
-# use numpy (http://numpy.scipy.org/) instead. 
+# use numpy (http://numpy.scipy.org/) instead.
 # The purpose of Table is data storage.
 ds.columns.append([
     "green",

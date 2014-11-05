@@ -1,5 +1,7 @@
 from __future__ import print_function
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 import codecs
 
 from pattern.vector import Document, PORTER, LEMMA
@@ -9,12 +11,13 @@ from pattern.vector import Document, PORTER, LEMMA
 
 # Words (or more generally "features") and their word count ("feature weights")
 # can be used to compare documents. The word count in a document is normalized
-# between 0.0-1.0 so that shorted documents can be compared to longer documents.
+# between 0.0-1.0 so that shorted documents can be compared to longer
+# documents.
 
 # Words can be stemmed or lemmatized before counting them.
 # The purpose of stemming is to bring variant forms a word together.
 # For example, "conspiracy" and "conspired" are both stemmed to "conspir".
-# Nowadays, lemmatization is usually preferred over stemming, 
+# Nowadays, lemmatization is usually preferred over stemming,
 # e.g., "conspiracies" => "conspiracy", "conspired" => "conspire".
 
 s = """
@@ -41,8 +44,8 @@ print()
 #from pattern.web import Wikipedia
 #
 #w = Wikipedia()
-#for q in (
-#  "badger", "bear", "dog", "dolphin", "lion", "parakeet", 
+# for q in (
+#  "badger", "bear", "dog", "dolphin", "lion", "parakeet",
 #  "rabbit", "shark", "sparrow", "tiger", "wolf"):
 #    s = w.search(q, cached=True)
 #    s = s.plaintext()
@@ -56,7 +59,7 @@ f = os.path.join(os.path.dirname(__file__), "corpus", "wolf.txt")
 s = codecs.open(f, encoding="utf-8").read()
 document = Document(s, name="wolf", stemmer=PORTER)
 print(document)
-print(document.keywords(top=10)) # (weight, feature)-items.
+print(document.keywords(top=10))  # (weight, feature)-items.
 print()
 
 # Same document, using lemmatization instead of stemming (slower):

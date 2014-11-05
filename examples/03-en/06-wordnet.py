@@ -1,11 +1,13 @@
 from __future__ import print_function
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.en import wordnet
 from pattern.en import NOUN, VERB
 
-# WordNet is a lexical database for the English language. 
-# It groups English words into sets of synonyms called synsets, provides short, general definitions, 
+# WordNet is a lexical database for the English language.
+# It groups English words into sets of synonyms called synsets, provides short, general definitions,
 # and records the various semantic relations between these synonym sets.
 
 # For a given word, WordNet yields a list of synsets that
@@ -13,11 +15,15 @@ from pattern.en import NOUN, VERB
 for synset in wordnet.synsets("train", pos=NOUN):
     print("Description:", synset.gloss)      # Definition string.
     print("   Synonyms:", synset.senses)     # List of synonyms in this sense.
-    print("   Hypernym:", synset.hypernym)   # Synset one step higher in the semantic network.
-    print("   Hyponyms:", synset.hyponyms()) # List of synsets that are more specific.
-    print("   Holonyms:", synset.holonyms()) # List of synsets of which this synset is part/member.
-    print("   Meronyms:", synset.meronyms()) # List of synsets that are part/member of this synset.
-    print() 
+    # Synset one step higher in the semantic network.
+    print("   Hypernym:", synset.hypernym)
+    # List of synsets that are more specific.
+    print("   Hyponyms:", synset.hyponyms())
+    # List of synsets of which this synset is part/member.
+    print("   Holonyms:", synset.holonyms())
+    # List of synsets that are part/member of this synset.
+    print("   Meronyms:", synset.meronyms())
+    print()
 
 # What is the common ancestor (hypernym) of "cat" and "dog"?
 a = wordnet.synsets("cat")[0]
@@ -38,10 +44,10 @@ for s in synset.hyponyms(recursive=True, depth=2):
 # Synset.similarity() returns an estimate of the semantic similarity to another synset,
 # based on Lin's semantic distance measure and Resnik Information Content.
 # Lower values indicate higher similarity.
-a = wordnet.synsets("cat")[0] # river, bicycle
+a = wordnet.synsets("cat")[0]  # river, bicycle
 s = []
-for word in ["poodle", "cat", "boat", "carrot", "rocket", 
-             "spaghetti", "idea", "grass", "education", 
+for word in ["poodle", "cat", "boat", "carrot", "rocket",
+             "spaghetti", "idea", "grass", "education",
              "lake", "school", "balloon", "lion"]:
     b = wordnet.synsets(word)[0]
     s.append((a.similarity(b), word))

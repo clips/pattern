@@ -1,8 +1,10 @@
 from __future__ import print_function
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.search import search, Pattern, Constraint
-from pattern.en     import parsetree, Sentence, parse
+from pattern.en import parsetree, Sentence, parse
 
 # What we call a "search word" in example 01-search.py
 # is actually called a constraint, because it can contain different options.
@@ -30,7 +32,7 @@ m = search("rabbit stare at feet", s)
 print(s)
 print(m)
 print()
-# Why does this work? 
+# Why does this work?
 # The word "will" is included in the result, even if the pattern does not define it.
 # The pattern should break when it does not encounter "stare" after "rabbit."
 # It works because "will stare" is one verb chunk.
@@ -40,7 +42,8 @@ print()
 # which matches the overspecified chunk "the big white rabbit".
 
 p = Pattern.fromstring("rabbit stare at feet", s)
-p.strict = True # Now it matches only what the pattern explicitly defines (=no match).
+# Now it matches only what the pattern explicitly defines (=no match).
+p.strict = True
 m = p.search(s)
 print(m)
 print()
@@ -61,9 +64,10 @@ if m:
 print()
 print("-------------------------------------------------------------")
 # Finally, constraints can also include regular expressions.
-# To include them we need to use the full syntax instead of the search() function:
+# To include them we need to use the full syntax instead of the search()
+# function:
 import re
-r = re.compile(r"[0-9|\.]+") # all numbers
+r = re.compile(r"[0-9|\.]+")  # all numbers
 p = Pattern()
 p.sequence.append(Constraint(words=[r]))
 p.sequence.append(Constraint(tags=["NN*"]))

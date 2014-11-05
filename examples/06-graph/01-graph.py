@@ -1,5 +1,7 @@
 from __future__ import print_function
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.graph import Graph, CENTRALITY
 
@@ -9,13 +11,13 @@ from pattern.graph import Graph, CENTRALITY
 g = Graph()
 for n in ("tree", "nest", "bird", "fly", "insect", "ant"):
     g.add_node(n)
-    
+
 g.add_edge("tree", "nest")  # Trees have bird nests.
 g.add_edge("nest", "bird")  # Birds live in nests.
 g.add_edge("bird", "fly")   # Birds eat flies.
 g.add_edge("ant", "bird")   # Birds eat ants.
-g.add_edge("fly", "insect") # Flies are insects.
-g.add_edge("insect", "ant") # Ants are insects.
+g.add_edge("fly", "insect")  # Flies are insects.
+g.add_edge("insect", "ant")  # Ants are insects.
 g.add_edge("ant", "tree")   # Ants crawl on trees.
 
 # From tree => fly: tree => ant => bird => fly

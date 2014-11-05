@@ -1,24 +1,28 @@
 from __future__ import print_function
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 import random
 
-from codecs         import open
-from collections    import defaultdict
-from pattern.text   import Model
+from codecs import open
+from collections import defaultdict
+from pattern.text import Model
 from pattern.vector import shuffled, SLP
-from pattern.en     import lexicon, parsetree
-from random         import seed
+from pattern.en import lexicon, parsetree
+from random import seed
 
-# This example demonstrates how a Perceptron classifier 
-# can be used to construct an English language model 
+# This example demonstrates how a Perceptron classifier
+# can be used to construct an English language model
 # (i.e., a classifier that predicts part-of-speech tags),
 # by learning from a training set of tagged sentences.
 
 # First we need training data: a corpus of manually annotated (= tagged) sentences.
 # Typically, Penn Treebank is used, which contains texts from the Wall Street Journal (WSJ).
-# In this example we will use the freely available Open American National Corpus (OANC).
+# In this example we will use the freely available Open American National
+# Corpus (OANC).
 
 print("load training data...")
+
 
 def corpus(path, encoding="utf-8"):
     """ Yields sentences of (word, tag)-tuples from the given corpus,
@@ -31,7 +35,8 @@ def corpus(path, encoding="utf-8"):
         yield s
 
 # The corpus is included in the Pattern download zip, in pattern/test/corpora:
-path = os.path.join(os.path.dirname(__file__), "..", "..", "test", "corpora", "tagged-en-oanc.txt")
+path = os.path.join(
+    os.path.dirname(__file__), "..", "..", "test", "corpora", "tagged-en-oanc.txt")
 data = list(corpus(path))
 
 # A parser is typically based on a lexicon of known words (aka a tag dictionary),
@@ -48,23 +53,25 @@ data = list(corpus(path))
 # even though it can also be used as RB (adverb) in about 25% of the cases.
 
 # We will add "about" to the set of words in the lexicon to ignore
-# when using a language model. 
+# when using a language model.
 
 print("load training lexicon...")
 
-f = defaultdict(lambda: defaultdict(int)) # {word1: {tag1: count, tag2: count, ...}}
+# {word1: {tag1: count, tag2: count, ...}}
+f = defaultdict(lambda: defaultdict(int))
 for s in data:
     for w, tag in s:
         f[w][tag] += 1
 
 known, unknown = set(), set()
 for w, tags in f.items():
-    n = sum(tags.values()) # total count
-    m = sorted(tags, key=tags.__getitem__, reverse=True)[0] # most frequent tag
+    n = sum(tags.values())  # total count
+    m = sorted(tags, key=tags.__getitem__, reverse=True)[
+        0]  # most frequent tag
     if float(tags[m]) / n >= 0.97 and n > 1:
         # Words that are always handled by the lexicon.
         known.add(w)
-    if float(tags[m]) / n <  0.92 and w in lexicon:
+    if float(tags[m]) / n < 0.92 and w in lexicon:
         # Words in the lexicon that should be ignored and handled by the model.
         unknown.add(w)
 
@@ -75,12 +82,12 @@ for w, tags in f.items():
 # Take a look at the Model class in pattern/text/__init__.py.
 # You'll see an internal Model._v() method
 # that creates a training vector from a given word and its context,
-# using information such as word suffix, first letter (i.e., for proper nouns), 
+# using information such as word suffix, first letter (i.e., for proper nouns),
 # the part-of-speech tags of preceding words, surrounding tags, etc.
 
 # Perceptron (SLP, single-layer averaged perceptron) works well for language models.
 # Perceptron is an error-driven classifier.
-# When given a training example (e.g., tagged word + surrounding words), 
+# When given a training example (e.g., tagged word + surrounding words),
 # it will check if it could correctly predict this example.
 # If not, it will adjust its weights.
 # So the accuracy of the perceptron can be improved significantly
@@ -92,7 +99,7 @@ for w, tags in f.items():
 
 print("training model...")
 
-seed(0) # Lock random list shuffling so we can compare.
+seed(0)  # Lock random list shuffling so we can compare.
 
 m = Model(known=known, unknown=unknown, classifier=SLP())
 for iteration in range(5):
@@ -101,7 +108,7 @@ for iteration in range(5):
         next = None
         for i, (w, tag) in enumerate(s):
             if i < len(s) - 1:
-                next = s[i+1]
+                next = s[i + 1]
             m.train(w, tag, prev, next)
             prev = (w, tag)
             next = None
@@ -140,8 +147,8 @@ for s1 in data[-5000:]:
     s2 = parsetree(s2, tokenize=False)
     s2 = ((w.string, w.tag or "") for w in s2[0])
     for (w1, tag1), (w2, tag2) in zip(s1, s2):
-        if tag1 == tag2.split("-")[0]: # NNP-PERS => NNP
+        if tag1 == tag2.split("-")[0]:  # NNP-PERS => NNP
             i += 1
         n += 1
 
-print(float(i) / n) # accuracy
+print(float(i) / n)  # accuracy

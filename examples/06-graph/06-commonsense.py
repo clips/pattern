@@ -1,5 +1,7 @@
 from __future__ import print_function
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.graph.commonsense import Commonsense
 
@@ -9,10 +11,10 @@ from pattern.graph.commonsense import Commonsense
 
 # Module pattern.graph.commonsense implements a semantic network of commonsense.
 # It contains a Concept class (Node subclass), Relation class (Edge subclass),
-# and a Commonsense class (Graph subclass). 
+# and a Commonsense class (Graph subclass).
 # It contains about 10,000 manually annotated relations between mundane concepts,
 # for example gondola is-related-to romance, or spoon is-related-to soup.
-# This is the PERCEPTION dataset. See the visualizer at: 
+# This is the PERCEPTION dataset. See the visualizer at:
 # http://nodebox.net/perception/
 
 # Relation.type can be:
@@ -31,23 +33,23 @@ g.add_edge("spork", "spoon", type="is-a")
 # Concept.halo a list of concepts surrounding the given concept,
 # and as such reinforce its meaning:
 print()
-print(g["spoon"].halo) # fork, etiquette, slurp, hot, soup, mouth, etc.
+print(g["spoon"].halo)  # fork, etiquette, slurp, hot, soup, mouth, etc.
 
 # Concept.properties is a list of properties (= adjectives) in the halo,
 # sorted by betweenness centrality:
 print()
-print(g["spoon"].properties) # hot
+print(g["spoon"].properties)  # hot
 
 
-# Commonsense.field() returns a list of concepts 
+# Commonsense.field() returns a list of concepts
 # that belong to the given class (or "semantic field"):
 print()
-print(g.field("color", depth=3, fringe=2)) # brown, orange, blue, ...
-#print g.field("person") # Leonard Nimoy, Al Capone, ...
-#print g.field("building") # opera house, supermarket, ...
+print(g.field("color", depth=3, fringe=2))  # brown, orange, blue, ...
+# print g.field("person") # Leonard Nimoy, Al Capone, ...
+# print g.field("building") # opera house, supermarket, ...
 
 # Commonsense.similarity() calculates the similarity between two concepts,
-# based on common properties between both 
+# based on common properties between both
 # (e.g., tigers and zebras are both striped).
 print()
 print(g.similarity("tiger", "zebra"))

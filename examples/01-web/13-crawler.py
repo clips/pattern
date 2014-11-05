@@ -1,5 +1,7 @@
 from __future__ import print_function
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import Crawler, DEPTH, BREADTH, FIFO, LIFO
 
@@ -11,11 +13,12 @@ from pattern.web import Crawler, DEPTH, BREADTH, FIFO, LIFO
 # We could parse the HTML DOM to extract information we need, for example.
 # Anything that is not HTML (e.g., a JPEG file) is passed to Crawler.fail().
 
+
 class SimpleCrawler1(Crawler):
-    
+
     def visit(self, link, source=None):
         print("visiting:", link.url, "from:", link.referrer)
-        
+
     def fail(self, link):
         print("failed:", link.url)
 
@@ -27,10 +30,12 @@ class SimpleCrawler1(Crawler):
 # 3) The delay parameter specifies a number of seconds to wait before revisiting the same domain.
 #    In the meantime, other queued links will be crawled if possible.
 
-crawler1 = SimpleCrawler1(links=["http://www.clips.ua.ac.be/pages/pattern/"], domains=["ua.ac.be"], delay=0.0)
+crawler1 = SimpleCrawler1(
+    links=["http://www.clips.ua.ac.be/pages/pattern/"], domains=["ua.ac.be"], delay=0.0)
 
 print("CRAWLER 1 " + "-" * 50)
-while len(crawler1.visited) < 5: # Crawler.visited is a dictionary of all URL's visited so far.
+# Crawler.visited is a dictionary of all URL's visited so far.
+while len(crawler1.visited) < 5:
     # The Crawler.crawl() method has the same optional parameters as URL.download(),
     # for example: cached=True, proxy=("proxy.com", "https"), ...
     crawler1.crawl(cached=False)
@@ -41,7 +46,8 @@ while len(crawler1.visited) < 5: # Crawler.visited is a dictionary of all URL's 
 # because you will keep hammering servers with automated requests.
 # A higher delay (in a real-world scenario, say 30 seconds) is better:
 
-crawler2 = SimpleCrawler1(links=["http://www.clips.ua.ac.be/pages/pattern/"], domains=["ua.ac.be"], delay=0.1)
+crawler2 = SimpleCrawler1(
+    links=["http://www.clips.ua.ac.be/pages/pattern/"], domains=["ua.ac.be"], delay=0.1)
 
 print()
 print("CRAWLER 2 " + "-" * 50)
@@ -61,14 +67,16 @@ while True:
 # Observe the difference between crawler3 and crawler4,
 # which use DEPTH and BREADTH respectively.
 
-crawler3 = SimpleCrawler1(links=["http://www.clips.ua.ac.be/pages/pattern/"], delay=0.0)
+crawler3 = SimpleCrawler1(
+    links=["http://www.clips.ua.ac.be/pages/pattern/"], delay=0.0)
 
 print()
 print("CRAWLER 3 " + "-" * 50)
 while len(crawler3.visited) < 3:
     crawler3.crawl(method=DEPTH)
-    
-crawler4 = SimpleCrawler1(links=["http://www.clips.ua.ac.be/pages/pattern/"], delay=0.0)
+
+crawler4 = SimpleCrawler1(
+    links=["http://www.clips.ua.ac.be/pages/pattern/"], delay=0.0)
 
 print()
 print("CRAWLER 4 " + "-" * 50)
@@ -81,7 +89,8 @@ while len(crawler4.visited) < 3:
 # In the meantime, it will visit other links.
 # Usually this means that it will alternate between a couple of domains:
 
-crawler5 = SimpleCrawler1(links=["http://www.clips.ua.ac.be/pages/pattern/"], delay=0.1)
+crawler5 = SimpleCrawler1(
+    links=["http://www.clips.ua.ac.be/pages/pattern/"], delay=0.1)
 
 print()
 print("CRAWLER 5 " + "-" * 50)
@@ -98,13 +107,15 @@ while len(crawler5.visited) < 4:
 #    Links with a higher priority are more relevant and will be visited sooner.
 # 2) Links with an equal priority are queued either FIFO or LIFO.
 #    FIFO means first-in-first-out: the earliest queued links will be visited sooner.
-#    LIFO means last-in-first-out: more recently queued links will be visited sooner.
+# LIFO means last-in-first-out: more recently queued links will be visited
+# sooner.
+
 
 class SimpleCrawler2(Crawler):
-    
+
     def visit(self, link, source=None):
         print("visiting:", link.url, "from:", link.referrer)
-    
+
     def priority(self, link, method=DEPTH):
         if "?" in link.url:
             # This ignores links with a querystring.
@@ -114,11 +125,13 @@ class SimpleCrawler2(Crawler):
             # i.e. the priority depends on DEPTH or BREADTH crawl mode.
             return Crawler.priority(self, link, method)
 
-# Note the LIFO sort order. 
+# Note the LIFO sort order.
 # This will make more recently queued links more relevant.
 # If you observe the given URL in a browser,
-# you'll notice that the last external link at the bottom of the page is now visited first.
-crawler6 = SimpleCrawler2(links=["http://www.clips.ua.ac.be/pages/pattern/"], delay=0.1, sort=LIFO)
+# you'll notice that the last external link at the bottom of the page is
+# now visited first.
+crawler6 = SimpleCrawler2(
+    links=["http://www.clips.ua.ac.be/pages/pattern/"], delay=0.1, sort=LIFO)
 
 print()
 print("CRAWLER 6 " + "-" * 50)

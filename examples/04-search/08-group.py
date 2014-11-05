@@ -1,8 +1,10 @@
 from __future__ import print_function
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.search import match
-from pattern.en     import parsetree
+from pattern.en import parsetree
 
 # This example demonstrates how to create match groups.
 # A match group is a number of consecutive constraints,
@@ -38,7 +40,7 @@ for w in m:
         print("This is the PP:", w)
     if m.constraint(w).index == 3:
         print("This is the NP:", w)
-        
+
 # In other words, iterate over each word in the match,
 # checking which constraint it matched and filtering out what we need.
 

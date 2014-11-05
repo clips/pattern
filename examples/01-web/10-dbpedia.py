@@ -1,6 +1,8 @@
 from __future__ import print_function
 # -*- coding: utf-8 *-*
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import DBPedia
 
@@ -10,9 +12,9 @@ dbp = DBPedia()
 # DBPedia data is stored as RDF triples: (subject, predicate, object),
 # e.g., X is-a Actor, Y is-a Country, Z has-birthplace Country, ...
 # If you know about pattern.graph (or graphs in general),
-# this triple format should look familiar. 
+# this triple format should look familiar.
 
-# DBPedia can be queried using SPARQL: 
+# DBPedia can be queried using SPARQL:
 # http://dbpedia.org/sparql
 # http://www.w3.org/TR/rdf-sparql-query/
 # A SPARQL query yields rows that match all triples in the WHERE clause.
@@ -35,8 +37,8 @@ select ?actor where {
 for result in dbp.search(q, start=1, count=10):
     print(result.actor)
 print()
-    
-# You may notice that each Result.actor is of the form: 
+
+# You may notice that each Result.actor is of the form:
 # "http://dbpedia.org/resource/[NAME]"
 # This kind of string is a subclass of unicode: DBPediaResource.
 # DBPediaResource has a DBPediaResource.name property (see below).
@@ -110,13 +112,13 @@ print()
 
 # For example, say one of the matched resources was:
 # "<http://dbpedia.org/page/Erwin_Schrödinger>"
-# If you open this URL in a browser, 
+# If you open this URL in a browser,
 # you will see all the available semantic properties and their values.
 # One of the properties is "rdfs:label": a human-readable & multilingual label.
 
 # 5) Find triples involving cats.
 
-# <http://purl.org/dc/terms/subject> 
+# <http://purl.org/dc/terms/subject>
 # means: "is in the category of".
 q = """
 prefix dbo: <http://dbpedia.org/ontology/>
@@ -130,7 +132,8 @@ select ?cat ?relation ?concept where {
 } order by ?cat
 """
 for r in dbp.search(q, start=1, count=10):
-    print("%s ---%s--> %s" % (r.cat.name, r.relation.ljust(10, "-"), r.concept))
+    print("%s ---%s--> %s" %
+          (r.cat.name, r.relation.ljust(10, "-"), r.concept))
 print()
 
 # 6) People whose first name includes "Édouard"

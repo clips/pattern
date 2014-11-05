@@ -1,7 +1,9 @@
 from __future__ import print_function
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from pattern.db  import date, time, NOW
+from pattern.db import date, time, NOW
 from pattern.web import Bing, NEWS
 
 # It is often useful to keep a date stamp for each row in the table.
@@ -21,10 +23,11 @@ print()
 
 for r in Bing(license=None, language="en").search("today", type=NEWS):
     print(r.title.encode('utf-8'))
-    print(repr(r.date)) # Result.date is a string (e.g. we can't > <= += with the date).
-    print(date(r.date)) # date() can parse any Result.date in the web module.
+    # Result.date is a string (e.g. we can't > <= += with the date).
+    print(repr(r.date))
+    print(date(r.date))  # date() can parse any Result.date in the web module.
     print()
 
-d  = date("4 november 2011")
+d = date("4 november 2011")
 d += time(days=2, hours=5)
 print(d)

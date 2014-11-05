@@ -21,6 +21,7 @@ PYTHON = sys.executable
 
 examples = os.path.join(PACKAGE_DIR, "examples", "*", "*.py")
 
+
 class TestExamples(unittest.TestCase):
     pass
 
@@ -32,7 +33,8 @@ for example_py in glob.glob(examples):
     test_name = ("test_%s_%s" % (section, name)).replace("-", "")[:-3]
 
     def _test(self, example_py=example_py, test_name=test_name):
-        p = Popen([PYTHON, example_py], stderr=PIPE, stdout=PIPE) # todo capture output
+        # todo capture output
+        p = Popen([PYTHON, example_py], stderr=PIPE, stdout=PIPE)
         out, err = p.communicate()
 
         # TODO remove this, currently a couple of examples give HTTPErrors:
@@ -41,10 +43,14 @@ for example_py in glob.glob(examples):
         if p.returncode != 0 and "raise HTTP" in err:
             raise unittest.SkipTest("Test skipped due to an HTTPError")
 
-        if p.returncode != 0 and "raise NotImplementedError" in err and "2.6" in err:
-            raise unittest.SkipTest("Example is not python 2.6 compatible.")
+        if p.returncode != 0 and "translate API is a paid service" in err:
+            raise unittest.SkipTest("Test skipped as translate API costs")
 
-        assert (p.returncode == 0), "%s exited with bad status %s\n\n%s" % (example_py, p.returncode, err)
+        if p.returncode != 0 and "raise NotImplementedError" in err and "2.6" in err:
+            raise unittest.SkipTest("Example is not python 2.6 compatible")
+
+        assert (p.returncode == 0), "%s exited with bad status %s\n\n%s" % (
+            example_py, p.returncode, err)
     _test.__name__ = test_name
 
     setattr(TestExamples, test_name, _test)

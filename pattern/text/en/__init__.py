@@ -1,11 +1,11 @@
-#### PATTERN | EN ##################################################################################
+#### PATTERN | EN ########################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-####################################################################################################
+##########################################################################
 # English linguistical tools using fast regular expressions.
 
 import os
@@ -75,7 +75,8 @@ from pattern.text.en import wordlist
 
 sys.path.pop(0)
 
-#--- ENGLISH PARSER --------------------------------------------------------------------------------
+#--- ENGLISH PARSER ------------------------------------------------------
+
 
 def find_lemmata(tokens):
     """ Annotates the tokens with lemmata for plural nouns and conjugated verbs,
@@ -92,6 +93,7 @@ def find_lemmata(tokens):
         token.append(lemma.lower())
     return tokens
 
+
 class Parser(_Parser):
 
     def find_lemmata(self, tokens, **kwargs):
@@ -101,8 +103,10 @@ class Parser(_Parser):
         if kwargs.get("tagset") in (PENN, None):
             kwargs.setdefault("map", lambda token, tag: (token, tag))
         if kwargs.get("tagset") == UNIVERSAL:
-            kwargs.setdefault("map", lambda token, tag: penntreebank2universal(token, tag))
+            kwargs.setdefault(
+                "map", lambda token, tag: penntreebank2universal(token, tag))
         return _Parser.find_tags(self, tokens, **kwargs)
+
 
 class Sentiment(_Sentiment):
 
@@ -120,51 +124,59 @@ class Sentiment(_Sentiment):
                     self.annotate(w + "ly", "RB", p, s, i)
 
 parser = Parser(
-     lexicon = os.path.join(MODULE, "en-lexicon.txt"),    # A dict of known words => most frequent tag.
-   frequency = os.path.join(MODULE, "en-frequency.txt"),  # A dict of word frequency.
-       model = os.path.join(MODULE, "en-model.slp"),      # A SLP classifier trained on WSJ (01-07).
-  morphology = os.path.join(MODULE, "en-morphology.txt"), # A set of suffix rules (e.g., -ly = adverb).
-     context = os.path.join(MODULE, "en-context.txt"),    # A set of contextual rules.
-    entities = os.path.join(MODULE, "en-entities.txt"),   # A dict of named entities: John = NNP-PERS.
-     default = ("NN", "NNP", "CD"),
+    # A dict of known words => most frequent tag.
+    lexicon=os.path.join(MODULE, "en-lexicon.txt"),
+    # A dict of word frequency.
+    frequency=os.path.join(MODULE, "en-frequency.txt"),
+    # A SLP classifier trained on WSJ (01-07).
+    model=os.path.join(MODULE, "en-model.slp"),
+    # A set of suffix rules (e.g., -ly = adverb).
+    morphology=os.path.join(MODULE, "en-morphology.txt"),
+    # A set of contextual rules.
+    context=os.path.join(MODULE, "en-context.txt"),
+    # A dict of named entities: John = NNP-PERS.
+    entities=os.path.join(MODULE, "en-entities.txt"),
+    default=("NN", "NNP", "CD"),
     language = "en"
 )
 
-lexicon = parser.lexicon # Expose lexicon.
+lexicon = parser.lexicon  # Expose lexicon.
 
 sentiment = Sentiment(
-        path = os.path.join(MODULE, "en-sentiment.xml"),
-      synset = "wordnet_id",
-   negations = ("no", "not", "n't", "never"),
-   modifiers = ("RB",),
-   modifier  = lambda w: w.endswith("ly"),
-   tokenizer = parser.find_tokens,
+    path=os.path.join(MODULE, "en-sentiment.xml"),
+    synset="wordnet_id",
+    negations=("no", "not", "n't", "never"),
+    modifiers = ("RB",),
+    modifier = lambda w: w.endswith("ly"),
+    tokenizer = parser.find_tokens,
     language = "en"
 )
 
 spelling = Spelling(
-        path = os.path.join(MODULE, "en-spelling.txt")
+    path=os.path.join(MODULE, "en-spelling.txt")
 )
 
+
 def tokenize(s, *args, **kwargs):
-    """ Returns a list of sentences, where punctuation marks have been split from words.
-    """
+    """Returns a list of sentences, where punctuation marks have been split
+    from words."""
     return parser.find_tokens(s, *args, **kwargs)
 
+
 def parse(s, *args, **kwargs):
-    """ Returns a tagged Unicode string.
-    """
+    """Returns a tagged Unicode string."""
     return parser.parse(s, *args, **kwargs)
 
+
 def parsetree(s, *args, **kwargs):
-    """ Returns a parsed Text from the given string.
-    """
+    """Returns a parsed Text from the given string."""
     return Text(parse(s, *args, **kwargs))
 
+
 def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
-    """ Returns a parsed Text from the given parsed string.
-    """
+    """Returns a parsed Text from the given parsed string."""
     return Text(s, token)
+
 
 def tag(s, tokenize=True, encoding="utf-8", **kwargs):
     """ Returns a list of (token, tag)-tuples from the given string.
@@ -175,38 +187,42 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
             tags.append((token[0], token[1]))
     return tags
 
+
 def keywords(s, top=10, **kwargs):
-    """ Returns a sorted list of keywords in the given string.
-    """
+    """Returns a sorted list of keywords in the given string."""
     return parser.find_keywords(s, **dict({
         "frequency": parser.frequency,
-              "top": top,
-              "pos": ("NN",),
-           "ignore": ("rt",)}, **kwargs))
+        "top": top,
+        "pos": ("NN",),
+        "ignore": ("rt",)}, **kwargs))
+
 
 def suggest(w):
     """ Returns a list of (word, confidence)-tuples of spelling corrections.
     """
     return spelling.suggest(w)
 
+
 def polarity(s, **kwargs):
     """ Returns the sentence polarity (positive/negative) between -1.0 and 1.0.
     """
     return sentiment(s, **kwargs)[0]
+
 
 def subjectivity(s, **kwargs):
     """ Returns the sentence subjectivity (objective/subjective) between 0.0 and 1.0.
     """
     return sentiment(s, **kwargs)[1]
 
+
 def positive(s, threshold=0.1, **kwargs):
     """ Returns True if the given sentence has a positive sentiment (polarity >= threshold).
     """
     return polarity(s, **kwargs) >= threshold
 
-split = tree # Backwards compatibility.
+split = tree  # Backwards compatibility.
 
-#---------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------
 # python -m pattern.en xml -s "The cat sat on the mat." -OTCL
 
 if __name__ == "__main__":

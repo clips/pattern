@@ -1,5 +1,7 @@
 from __future__ import print_function
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 import glob
 import codecs
 
@@ -20,7 +22,7 @@ from pattern.vector import Document, Model, TF, TFIDF
 # to represent this.
 
 # A Model is a collection of documents vectors.
-# A Model is a matrix (or vector space) 
+# A Model is a matrix (or vector space)
 # with features as columns and feature weights as rows.
 # We can then do calculations on the matrix,
 # for example to compute TF-IDF or similarity between documents.
@@ -31,7 +33,7 @@ for f in glob.glob(os.path.join(os.path.dirname(__file__), "corpus", "*.txt")):
     text = codecs.open(f, encoding="utf-8").read()
     name = os.path.basename(f)[:-4]
     documents.append(Document(text, name=name))
-    
+
 m = Model(documents, weight=TFIDF)
 
 # We can retrieve documents by name:
@@ -40,7 +42,8 @@ d = m.document(name="lion")
 print(d.keywords(top=10))
 print()
 print(d.tf("food"))
-print(d.tfidf("food")) # TF-IDF is less: "food" is also mentioned with the other animals.
+# TF-IDF is less: "food" is also mentioned with the other animals.
+print(d.tfidf("food"))
 print()
 
 # We can compare how similar two documents are.
@@ -68,7 +71,7 @@ print("dolphin-parakeet:", m.similarity(d3, d5))
 print()
 
 print("Related to tiger:")
-print(m.neighbors(d2, top=3)) # Top three most similar.
+print(m.neighbors(d2, top=3))  # Top three most similar.
 print()
 
 print("Related to a search query ('water'):")

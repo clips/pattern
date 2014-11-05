@@ -1,5 +1,5 @@
 from __future__ import print_function
-#### PATTERN #######################################################################################
+#### PATTERN #############################################################
 
 import sys
 import os
@@ -8,7 +8,7 @@ from setuptools import setup
 
 from pattern import __version__
 
-#---------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------
 # "python setup.py zip" will create the zipped distribution and checksum.
 
 if sys.argv[-1] == "zip":
@@ -32,7 +32,8 @@ if sys.argv[-1] == "zip":
             # Exclude revision history (.git).
             # Exclude development files (.dev).
             if not re.search(r"\.DS|\.git[^i]|\.pyc|\.dev|tmp", f):
-                z.write(f, os.path.join("pattern-" + __version__, os.path.relpath(f, p)))
+                z.write(
+                    f, os.path.join("pattern-" + __version__, os.path.relpath(f, p)))
             if f.endswith(os.path.join("web", "api.py")):
                 x = codecs.open(f, "w", encoding="utf-8")
                 x.write(d.join(s))
@@ -50,64 +51,64 @@ install_requires = ["beautifulsoup4",
                     "simplejson"]
 
 
-#---------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------
 # "python setup.py install" will install /pattern in /site-packages.
 
 setup(
-            name = "Pattern",
-         version = "2.6",
-     description = "Web mining module for Python.",
-         license = "BSD",
-          author = "Tom De Smedt",
-    author_email = "tom@organisms.be",
-             url = "http://www.clips.ua.ac.be/pages/pattern",
-        packages = [
+    name="Pattern",
+    version="2.6",
+    description="Web mining module for Python.",
+    license="BSD",
+    author="Tom De Smedt",
+    author_email="tom@organisms.be",
+    url="http://www.clips.ua.ac.be/pages/pattern",
+    packages=[
         "pattern",
-        "pattern.web",
-        "pattern.web.cache",
-        "pattern.web.imap",
-        "pattern.web.locale",
-        "pattern.web.oauth",
-        "pattern.db",
-        "pattern.text",
-        "pattern.text.de",
-        "pattern.text.en",
-        "pattern.text.en.wordlist",
-        "pattern.text.en.wordnet",
-        "pattern.text.en.wordnet.pywordnet",
-        "pattern.text.es",
-        "pattern.text.fr",
-        "pattern.text.it",
-        "pattern.text.nl",
-        "pattern.vector",
-        "pattern.vector.svm",
-        "pattern.graph",
-        "pattern.server"
+            "pattern.web",
+            "pattern.web.cache",
+            "pattern.web.imap",
+            "pattern.web.locale",
+            "pattern.web.oauth",
+            "pattern.db",
+            "pattern.text",
+            "pattern.text.de",
+            "pattern.text.en",
+            "pattern.text.en.wordlist",
+            "pattern.text.en.wordnet",
+            "pattern.text.en.wordnet.pywordnet",
+            "pattern.text.es",
+            "pattern.text.fr",
+            "pattern.text.it",
+            "pattern.text.nl",
+            "pattern.vector",
+            "pattern.vector.svm",
+            "pattern.graph",
+            "pattern.server"
     ],
-    package_data = {
-        "pattern"                 : ["*.js"],
-        "pattern.web.cache"       : ["tmp/*"],
-        "pattern.web.locale"      : ["__init__.py"],
-        "pattern.text.de"         : ["*.txt", "*.xml"],
-        "pattern.text.en"         : ["*.txt", "*.xml", "*.slp"],
+    package_data={
+        "pattern": ["*.js"],
+        "pattern.web.cache": ["tmp/*"],
+        "pattern.web.locale": ["__init__.py"],
+        "pattern.text.de": ["*.txt", "*.xml"],
+        "pattern.text.en": ["*.txt", "*.xml", "*.slp"],
         "pattern.text.en.wordlist": ["*.txt"],
-        "pattern.text.en.wordnet" : ["*.txt", "dict/*"],
+        "pattern.text.en.wordnet": ["*.txt", "dict/*"],
         "pattern.text.en.wordnet.pywordnet": ["*.py"],
-        "pattern.text.es"         : ["*.txt", "*.xml"],
-        "pattern.text.fr"         : ["*.txt", "*.xml"],
-        "pattern.text.it"         : ["*.txt", "*.xml"],
-        "pattern.text.nl"         : ["*.txt", "*.xml"],
-        "pattern.vector"          : ["*.txt"],
-        "pattern.vector.svm"      : ["*.txt", "libsvm-3.11/*", "libsvm-3.17/*", "liblinear-1.93/*"],
-        "pattern.graph"           : ["*.js", "*.csv"],
-        "pattern.server"          : ["static/*"],
+        "pattern.text.es": ["*.txt", "*.xml"],
+        "pattern.text.fr": ["*.txt", "*.xml"],
+        "pattern.text.it": ["*.txt", "*.xml"],
+        "pattern.text.nl": ["*.txt", "*.xml"],
+        "pattern.vector": ["*.txt"],
+        "pattern.vector.svm": ["*.txt", "libsvm-3.11/*", "libsvm-3.17/*", "liblinear-1.93/*"],
+        "pattern.graph": ["*.js", "*.csv"],
+        "pattern.server": ["static/*"],
     },
-    py_modules = [
+    py_modules=[
         "pattern.metrics",
         "pattern.text.search",
         "pattern.text.tree"
     ],
-    classifiers = [
+    classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
@@ -131,6 +132,6 @@ setup(
         "Topic :: Text Processing :: Linguistic",
         "Topic :: Text Processing :: Markup :: HTML"
     ],
-    zip_safe = False,
-    install_requires = install_requires
+    zip_safe=False,
+    install_requires=install_requires
 )
