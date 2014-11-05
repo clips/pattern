@@ -30,7 +30,7 @@ for i in range(2):
     print(i)
     for tweet in engine.search("is cooler than", start=prev, count=25, cached=False):
         print()
-        print(tweet.text)
+        print(tweet.text.encode("utf-8"))
         print(tweet.author)
         print(tweet.date)
         print(hashtags(tweet.text)) # Keywords in tweets start with a "#".

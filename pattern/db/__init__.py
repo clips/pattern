@@ -2631,4 +2631,4 @@ def pprint(datasheet, truncate=40, padding=" ", fill="."):
                 s += ((k==0 or len(lines[k]) > 0) and fill or " ") * (w[j] - len(lines[k])) 
                 s += padding
                 columns.append(s)
-            print(" ".join(columns))
+            print(" ".join(columns).encode("utf-8"))

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import codecs
+from contextlib import contextmanager
 import datetime
 import math
 import os
@@ -15,9 +16,9 @@ try:
     from StringIO import StringIO
 except ImportError:
     from io import StringIO
-try:
+if sys.version_info[0:2] < (2, 7):
     import unittest2 as unittest
-except ImportError:
+else:
     import unittest
 
 try:

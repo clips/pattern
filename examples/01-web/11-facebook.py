@@ -37,7 +37,7 @@ fb = Facebook()
 for status in fb.search("horrible", count=25, cached=False):
     print("=" * 100)
     print(status.id)
-    print(status.text)
+    print(status.text.encode("utf-8"))
     print(status.author) # Yields an (id, name)-tuple.
     print(status.date)
     print(status.likes)

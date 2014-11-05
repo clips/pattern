@@ -2,7 +2,7 @@ from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.search import search, Pattern, Constraint
-from pattern.en     import parsetree
+from pattern.en     import parsetree, Sentence, parse
 
 # What we call a "search word" in example 01-search.py
 # is actually called a constraint, because it can contain different options.

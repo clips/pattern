@@ -1552,7 +1552,13 @@ class GraphMLRenderer(GraphRenderer):
         """
         import xml.etree.ElementTree as etree
         ns = "{http://graphml.graphdrawing.org/xmlns}"
-        etree.register_namespace("", ns.strip("{}"))
+
+        try:
+            etree.register_namespace("", ns.strip("{}"))
+        except AttributeError:
+            # FIXME support python 2.6 here
+            raise NotImplementedError("This is not supported in python 2.6")
+
         # Define type for node labels (string).
         # Define type for node edges (float).
         root = etree.Element(ns + "graphml")

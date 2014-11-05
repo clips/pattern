@@ -31,6 +31,6 @@ print()
 for s in article.sections:
     print(s.title.upper())
     print() 
-    print(s.content) # = ArticleSection.string, minus the title.
+    print(s.content.encode("utf-8")) # = ArticleSection.string, minus the title.
     print()
     

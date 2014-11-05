@@ -31,7 +31,7 @@ print(w.search("Three Headed Monkey"))
 i = 0
 for article in w.articles(count=2, cached=True):
     print()
-    print(article.title)
+    print(article.title.encode("utf-8"))
     #print article.plaintext()
     i += 1
     if i >= 3:

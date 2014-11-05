@@ -52,7 +52,7 @@ select ?actor ?place where {
 order by ?actor
 """
 for r in dbp.search(q, start=1, count=10):
-    print("%s (%s)" % (r.actor.name, r.place.name))
+    print(("%s (%s)" % (r.actor.name, r.place.name)).encode("utf-8"))
 print()
 
 # You will notice that the results now include duplicates,
@@ -98,7 +98,7 @@ select ?actor ?place where {
 order by ?actor
 """
 for r in dbp.search(q, start=1, count=10):
-    print("%s (%s)" % (r.actor, r.place))
+    print(("%s (%s)" % (r.actor, r.place)).encode("utf-8"))
 print()
 
 # This extracts a German label for each matched DBPedia resource.
@@ -145,5 +145,5 @@ select ?person ?name where {
 }
 """
 for result in dbp.search(q, start=1, count=10, cached=False):
-    print("%s (%s)" % (result.person.name, result.name))
+    print(("%s (%s)" % (result.person.name, result.name)).encode("utf-8"))
 print()
