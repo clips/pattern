@@ -4,13 +4,11 @@ python:
     - "2.6"
     - "2.7"
     - "pypy"
-    - "3.2"
     - "3.3"
     - "3.4"
 
 matrix:
     allow_failures:
-        - python: "3.2"
         - python: "3.3"
         - python: "3.4"
         - python: "pypy"
@@ -22,10 +20,10 @@ install:
     - pip install --quiet pytest-cov
 
 script:
-    - nosetests --ignore-files=test_examples --with-coverage --cover-package=pattern
     - # test_05vector_07slp takes too long (so travis errors the build), it also fails on py2!
     - # TODO make test_05vector_07slp run faster (or do slightly less).
-    - nosetests test/test_examples.py --exclude=test_05vector_07slp --with-coverage --cover-package=pattern
+    - # TODO perhaps split build into tests and examples?
+    - nosetests --exclude=test_05vector_07slp --with-coverage --cover-package=pattern
 
 after_success:
     - pip install --quiet coveralls
