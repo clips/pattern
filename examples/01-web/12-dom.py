@@ -26,7 +26,7 @@ dom = DOM(url.download(cached=True))
 # print dom.body.content
 for e in dom.by_tag("div.entry")[:5]:  # Top 5 reddit entries.
     for a in e.by_tag("a.title")[:1]:  # First <a class="title"> in entry.
-        print(plaintext(a.content))
+        print(plaintext(a.content).encode("utf-8"))
         print(a.attrs["href"])
         print()
 
@@ -86,5 +86,5 @@ print()
 # given string.
 dom = DOM(URL("http://www.clips.ua.ac.be").download())
 for e in dom("div#sidebar-left li div:first-child span"):
-    print(plaintext(e.content))
+    print(plaintext(e.content).encode("utf-8"))
     print()

@@ -964,9 +964,9 @@ class TestClassifier(unittest.TestCase):
         A, P, R, F, o = vector.NB.test(
             self.model, folds=10, method=vector.BERNOUILLI)
         #print(A, P, R, F, o)
-        self.assertTrue(P >= 0.89)
-        self.assertTrue(R >= 0.89)
-        self.assertTrue(F >= 0.89)
+        self.assertTrue(P >= 0.87)
+        self.assertTrue(R >= 0.87)
+        self.assertTrue(F >= 0.87)
 
     def test_igtree(self):
         # Assert information gain tree classification.
