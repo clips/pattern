@@ -8,8 +8,9 @@
 
 from __future__ import absolute_import
 
-from codecs import BOM_UTF8
 from itertools import chain
+import os
+import sys
 
 try:
     from urllib.request import urlopen
@@ -19,7 +20,11 @@ except ImportError:
 from .__init__ import Graph, Node, Edge, bfs
 from .__init__ import WEIGHT, CENTRALITY, EIGENVECTOR, BETWEENNESS
 
-import os
+from codecs import BOM_UTF8
+if sys.version > "3":
+    BOM_UTF8 = BOM_UTF8.decode("utf-8")
+
+    basestring = str
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
@@ -125,7 +130,10 @@ class Commonsense(Graph):
         if data is not None:
             s = open(data).read()
             s = s.strip(BOM_UTF8)
-            s = s.decode("utf-8")
+            try:
+                s = s.decode("utf-8")
+            except AttributeError: # python 3
+                pass
             s = ((v.strip("\"") for v in r.split(",")) for r in s.splitlines())
             for concept1, relation, concept2, context, weight in s:
                 self.add_edge(concept1, concept2,

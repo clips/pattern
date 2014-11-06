@@ -288,7 +288,8 @@ class TestGraph(unittest.TestCase):
         # Assert leaf fetching.
         g = self.g.copy()
         self.assertEqual(g.fringe(0), [g["a"], g["c"]])
-        self.assertEqual(g.fringe(1), [g["a"], g["b"], g["c"]])
+        # FIXME the ordering is variable in python3
+        self.assertEqual(set(g.fringe(1)), set([g["a"], g["b"], g["c"]]))
         print("pattern.graph.Graph.fringe()")
 
     def test_split(self):

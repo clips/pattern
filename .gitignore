@@ -11,5 +11,6 @@ pattern/web/cache/tmp/
 web/cache/tmp/
 test/pattern_unittest_db
 pattern_unittest_db
+examples/06-graph/test/
 
 .DS_Store
