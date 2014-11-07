@@ -187,7 +187,7 @@ class TestDate(unittest.TestCase):
             raise unittest.SkipTest("FIXME see GH issue 94.")
 
         v = db.date(2010, 9, 21, format=db.DEFAULT_DATE_FORMAT)
-        self.assertEqual(v.timestamp, 1285020000)
+        self.assertEqual(v.timestamp, 1285041600)
         print("pattern.db.Date.timestamp")
 
     def test_time(self):
