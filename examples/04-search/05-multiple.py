@@ -1,30 +1,33 @@
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+from __future__ import print_function
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.search import search
-from pattern.en     import parsetree
+from pattern.en import parsetree
 
 # Constraints ending in "+" match one or more words.
-# Pattern.search() uses a "greedy" approach: 
+# Pattern.search() uses a "greedy" approach:
 # it will attempt to match as many words as possible.
 
 # The following pattern means:
-# one or more words starting with "t", 
+# one or more words starting with "t",
 # followed by one or more words starting with "f".
 t = parsetree("one two three four five six")
 m = search("t*+ f*+", t)
-print t
-print m
-print
+print(t)
+print(m)
+print()
 
 for w in m[0].words:
-    print w, "matches", m[0].constraint(w)
+    print(w, "matches", m[0].constraint(w))
 
 # "*" matches each word in the sentence.
 # This yields a list with a Match object for each word.
-print
-print "* =>",  search("*", t)
+print()
+print("* =>",  search("*", t))
 
 # "*+" matches all words.
 # This yields a list with one Match object containing all words.
-print
-print "*+ =>", search("*+", t)
+print()
+print("*+ =>", search("*+", t))
