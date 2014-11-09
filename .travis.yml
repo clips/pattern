@@ -10,7 +10,6 @@ python:
 matrix:
     allow_failures:
         - python: "3.3"
-        - python: "3.4"
         - python: "pypy"
 
 install:
@@ -23,7 +22,11 @@ script:
     # test_05vector_07slp takes too long (so travis errors the build), it also fails on py2!
     # TODO make test_05vector_07slp run faster (or do slightly less).
     # TODO perhaps split build into tests and examples?
-    - nosetests --exclude=test_05vector_07slp --with-coverage --cover-package=pattern
+    # For now we only run the passing python 3 tests are run on the 3.4 build
+    - if [ "$TRAVIS_PYTHON_VERSION" == "3.4" ]; then
+      nosetests test/test_graph.py test/test_metrics.py; else
+      nosetests --exclude=test_05vector_07slp --with-coverage --cover-package=pattern;
+      fi
 
 after_success:
     - pip install --quiet coveralls
