@@ -1611,7 +1611,7 @@ class Sentiment(lazydict):
             a = self.assessments(((w.lower(), None) for w in " ".join(self.tokenizer(s)).split()), negation)
         # A pattern.en.Text.
         elif hasattr(s, "sentences"):
-            a = self.assessments(((w.lemma or w.string.lower(), w.pos[:2]) for w in chain(*s)), negation)
+            a = self.assessments(((w.lemma or w.string.lower(), w.tag) for w in chain(*s)), negation)
         # A pattern.en.Sentence or pattern.en.Chunk.
         elif hasattr(s, "lemmata"):
             a = self.assessments(((w.lemma or w.string.lower(), w.pos[:2]) for w in s.words), negation)
