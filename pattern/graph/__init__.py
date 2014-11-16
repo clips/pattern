@@ -133,11 +133,18 @@ class Node(object):
         self.fill = kwargs.pop("fill", None)
         self.stroke = kwargs.pop("stroke", (0, 0, 0, 1))
         self.strokewidth = kwargs.pop("strokewidth", 1)
+
+        if not isinstance(id, unicode):
+            id = str(id).decode("utf-8", "ignore")
+
+        # FIXME this is a mess.
         self.text        = kwargs.get("text", True) and \
-            Text(isinstance(id, unicode) and id or str(id).decode("utf-8", "ignore"),
+            Text(id,
                  width=85,
                  fill=kwargs.pop("text", (0, 0, 0, 1)),
-                 fontsize=kwargs.pop("fontsize", 11), **kwargs) or None
+                 fontsize=kwargs.pop("fontsize", 11),
+                 **kwargs) or None
+
         self._weight = None  # Calculated by Graph.eigenvector_centrality().
         # Calculated by Graph.betweenness_centrality().
         self._centrality = None
@@ -260,11 +267,19 @@ class Node(object):
     def __repr__(self):
         return "%s(id=%s)" % (self.__class__.__name__, repr(self.id))
 
-    def __eq__(self, node):
-        return isinstance(node, Node) and self.id == node.id
+    def __eq__(self, other):
+        return isinstance(other, Node) and self.id == other.id
 
-    def __ne__(self, node):
-        return not self.__eq__(node)
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __lt__(self, other):
+        return isinstance(other, Node) and self.id < other.id
+
+    def __hash__(self):
+        # an alternative might be to use hash(self.id) in some way
+        # since this is supposed to be unique.
+        return id(self)
 
 #--- NODE LINKS ----------------------------------------------------------
 
@@ -1181,7 +1196,7 @@ def partition(graph):
                 g[i] = union(g[i], g[j])
                 g[j] = []
     g = [graph.copy(nodes=[graph[id] for id in n]) for n in g if n]
-    g.sort(lambda a, b: len(b) - len(a))
+    g.sort(key=len, reverse=True)
     return g
 
 
