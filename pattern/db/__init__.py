@@ -1552,7 +1552,7 @@ class FilterChain(list):
             >>>     FilterChain(
             >>>         filter("tail", True),
             >>>         filter("wing", True), operator=OR))
-            Yields: 
+            Yields:
             "type='pet' and weight between 4 and 6 and (tail=1 or wing=1)"
         """
         # Remember to pass the right escape() function as optional parameter.
@@ -1836,7 +1836,7 @@ class View(object):
         """ This method should be overwritten to return formatted table output (XML, HTML, RSS, ...)
             For web apps, the given path should list all parts in the relative URL path,
             and query is a dictionary of all POST and GET variables sent from the client.
-            For example: http://books.com/science/new 
+            For example: http://books.com/science/new
             => ["science", "new"]
             => render() data from db.books.filter(ALL, category="science", new=True).
         """
@@ -2226,7 +2226,8 @@ class CSV(list):
         data = data if not password else StringIO(
             data.replace("\r\n", "\n").replace("\r", "\n"))
         data = data if not preprocess else StringIO(preprocess(data.read()))
-        data.seek(data.readline().startswith(BOM_UTF8) and len(BOM_UTF8) or 0)
+        bom_utf8 = BOM_UTF8 if sys.version < "3" else BOM_UTF8.decode("utf-8")
+        data.seek(data.readline().startswith(bom_utf8) and len(BOM_UTF8) or 0)
         data = csvlib.reader(data, delimiter=separator)
         i, n = kwargs.get("start"), kwargs.get("count")
         if i is not None and n is not None:

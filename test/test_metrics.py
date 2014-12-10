@@ -164,14 +164,18 @@ class TestTextMetrics(unittest.TestCase):
         # Assert base => inflected and reversed inflected => base suffixes.
         s = [("beau", "beaux"), ("jeune", "jeunes"), ("hautain", "hautaines")]
         v = metrics.suffixes(s, n=3)
-        self.assertEqual(v, [
-            (2, "nes", [("ne", 0.5), ("n", 0.5)]),
-            (1, "aux", [("au", 1.0)])])
+        v[0][2].sort() # order is not well-defined in python 3
+        expected = [
+            (2, "nes", [("n", 0.5), ("ne", 0.5)]),
+            (1, "aux", [("au", 1.0)])]
+        self.assertEqual(v, expected)
+
         v = metrics.suffixes(s, n=2, reverse=False)
-        self.assertEqual(v, [
+        expected = [
             (1, "ne", [("nes", 1.0)]),
             (1, "in", [("ines", 1.0)]),
-            (1, "au", [("aux", 1.0)])])
+            (1, "au", [("aux", 1.0)])]
+        self.assertEqual(v, expected)
         print("pattern.metrics.suffixes()")
 
     def test_isplit(self):

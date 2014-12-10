@@ -2,6 +2,7 @@
 *.dev*
 *.nja
 *.egg-info
+*.db
 
 .tox
 build
