@@ -213,7 +213,7 @@ class TestParser(unittest.TestCase):
         # 3) Assert the accuracy of the German tagger.
         i, n = 0, 0
         for sentence in open(os.path.join(PATH, "corpora", "tagged-de-tiger.txt")).readlines():
-            sentence = sentence.decode("utf-8").strip()
+            sentence = sentence.strip()
             s1 = [w.split("/") for w in sentence.split(" ")]
             s1 = [de.stts2penntreebank(w, pos) for w, pos in s1]
             s2 = [[w for w, pos in s1]]
@@ -239,13 +239,14 @@ class TestParser(unittest.TestCase):
 
         # Assert parsed output from the command-line (example from the
         # documentation).
-        p = ["python", "-m", "pattern.de", "-s", "Der grosse Hund.", "-OTCRL"]
-        p = subprocess.Popen(p, stdout=subprocess.PIPE)
+        command = ["python", "-m", "pattern.de", "-s", "Der grosse Hund.", "-OTCRL"]
+        p = subprocess.Popen(command, stdout=subprocess.PIPE)
         p.wait()
         v = p.stdout.read()
         v = v.strip()
         self.assertEqual(
-            v, "Der/DT/B-NP/O/O/der grosse/JJ/I-NP/O/O/gross Hund/NN/I-NP/O/O/hund ././O/O/O/.")
+            v,
+            b"Der/DT/B-NP/O/O/der grosse/JJ/I-NP/O/O/gross Hund/NN/I-NP/O/O/hund ././O/O/O/.")
         print("python -m pattern.de")
 
 #-------------------------------------------------------------------------

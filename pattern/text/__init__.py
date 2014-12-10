@@ -399,10 +399,11 @@ def _read(path, encoding="utf-8", comment=";;;"):
             # From file or buffer.
             f = path
         for i, line in enumerate(f):
-            line = line.strip(codecs.BOM_UTF8) if i == 0 and isinstance(
-                line, str) else line
+            line = (line.strip(codecs.BOM_UTF8)
+                    if i == 0 and isinstance(line, bytes)
+                    else line)
             line = line.strip()
-            line = decode_utf8(line, encoding)
+            line = line.decode(encoding)
             if not line or (comment and line.startswith(comment)):
                 continue
             yield line
@@ -423,6 +424,7 @@ class Lexicon(lazydict):
     def load(self):
         # Arnold NNP x
         dict.update(self, (x.split(" ")[:2] for x in _read(self._path)))
+
 
 #--- FREQUENCY -----------------------------------------------------------
 
@@ -859,7 +861,7 @@ class Parser(object):
             The given default tags are used for unknown words.
             Unknown words that start with a capital letter are tagged NNP (except for German).
             Unknown words that contain only digits and punctuation are tagged CD.
-            Optionally, morphological and contextual rules (or a language model) can be used 
+            Optionally, morphological and contextual rules (or a language model) can be used
             to improve the tags of unknown words.
             The given language can be used to discern between
             Germanic and Romance languages for phrase chunking.
@@ -1727,7 +1729,7 @@ def commandline(parse=Parser().parse):
         # The output can be either slash-formatted string or XML.
         if "xml" in arguments:
             s = Tree(s, s.tags).xml
-        print(encode_utf8(s))
+        print(s)
 
 #### VERBS ###############################################################
 

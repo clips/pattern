@@ -88,7 +88,7 @@ _zip = zip
 
 
 def zip(*args, **kwargs):
-    """ Returns a list of tuples, where the i-th tuple contains the i-th element 
+    """ Returns a list of tuples, where the i-th tuple contains the i-th element
         from each of the argument sequences or iterables (or default if too short).
     """
     args = [list(iterable) for iterable in args]
@@ -810,13 +810,13 @@ class Sentence(object):
     def parse_token(self, token, tags=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
         """ Returns the arguments for Sentence.append() from a tagged token representation.
             The order in which token tags appear can be specified.
-            The default order is (separated by slashes): 
-            - word, 
-            - part-of-speech, 
-            - (IOB-)chunk, 
-            - (IOB-)preposition, 
-            - chunk(-relation)(-role), 
-            - anchor, 
+            The default order is (separated by slashes):
+            - word,
+            - part-of-speech,
+            - (IOB-)chunk,
+            - (IOB-)preposition,
+            - chunk(-relation)(-role),
+            - anchor,
             - lemma.
             Examples:
             The/DT/B-NP/O/NP-SBJ-1/O/the
@@ -1079,7 +1079,7 @@ class Sentence(object):
 
     def loop(self, *tags):
         """ Iterates over the tags in the entire Sentence,
-            For example, Sentence.loop(POS, LEMMA) yields tuples of the part-of-speech tags and lemmata. 
+            For example, Sentence.loop(POS, LEMMA) yields tuples of the part-of-speech tags and lemmata.
             Possible tags: WORD, LEMMA, POS, CHUNK, PNP, RELATION, ROLE, ANCHOR or a custom word tag.
             Any order or combination of tags can be supplied.
         """
@@ -1339,7 +1339,12 @@ class Text(list):
         xml.append("<%s>" % XML_TEXT)
         xml.extend([sentence.xml for sentence in self])
         xml.append("</%s>" % XML_TEXT)
-        return "\n".join(xml)
+        xml_ = "\n".join(xml)
+        try:
+            xml_.encode("utf-8")
+        except AttributeError: # TODO remove this hack
+            pass
+        return xml_
 
     @classmethod
     def from_xml(cls, xml):
