@@ -28,7 +28,7 @@
 #                "the cat eats its snackerel with vigor" => eat with vigor?
 #                                                     OR => vigorous snackerel?
 
-# The Text and Sentece classes are containers:
+# The Text and Sentence classes are containers:
 # no parsing functionality should be added to it.
 
 from itertools import chain
@@ -39,8 +39,9 @@ except:
 
 try:
     unicode
-except NameError:
+except NameError: # Python 3
     unicode = str
+    basestring = str
 
 try:
     from config import SLASH
@@ -1187,7 +1188,7 @@ class Sentence(object):
         return self.string
 
     def __repr__(self):
-        return "Sentence(%s)" % repr(" ".join(["/".join(word.tags) for word in self.words]).encode("utf-8"))
+        return "Sentence(\"%s\")" % " ".join(["/".join(word.tags) for word in self.words])
 
     def __eq__(self, other):
         if not isinstance(other, Sentence):
@@ -1198,7 +1199,8 @@ class Sentence(object):
     def xml(self):
         """ Yields the sentence as an XML-formatted string (plain bytestring, UTF-8 encoded).
         """
-        return parse_xml(self, tab="\t", id=self.id or "")
+        xml = parse_xml(self, tab="\t", id=self.id or "")
+        return xml.decode("utf-8") if isinstance(xml, bytes) else xml
 
     @classmethod
     def from_xml(cls, xml):

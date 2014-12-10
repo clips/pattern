@@ -31,6 +31,7 @@ from __future__ import absolute_import
 # Note that pywordnet has been included in nltk upstream
 # TODO ensure these are fixed upstream (so we can use that?
 
+import codecs  # TODO use this exclusively for opening?
 import os
 import sys
 import glob
@@ -53,9 +54,9 @@ from .pywordnet import wntools
 
 try:
     basestring
-except NameError:
+except NameError: # python 3
     basestring = str
-
+    unicode = str
 
 VERSION = ""
 s = open(os.path.join(MODULE, CORPUS, "dict", "index.noun")).read(2048)
@@ -215,22 +216,25 @@ class Synset(object):
     def meronyms(self):
         """ Yields a list of synsets that are semantic members/parts of this synset, for example:
             synsets("house")[0].meronyms() =>
-            [Synset("library"), 
-             Synset("loft"), 
+            [Synset("library"),
+             Synset("loft"),
              Synset("porch")
             ]
         """
-        p = self._synset.getPointers(wn.MEMBER_HOLONYM)
-        p += self._synset.getPointers(wn.PART_HOLONYM)
-        return [Synset(p.getTarget()) for p in p]
+        p1 = self._synset.getPointers(wn.MEMBER_HOLONYM)
+        p2 = self._synset.getPointers(wn.PART_HOLONYM)
+        return ([Synset(p.getTarget()) for p in p1] +
+                [Synset(p.getTarget()) for p in p2])
+
 
     def holonyms(self):
         """ Yields a list of synsets of which this synset is a member/part, for example:
             synsets("tree")[0].holonyms() => Synset("forest").
         """
-        p = self._synset.getPointers(wn.MEMBER_MERONYM)
-        p += self._synset.getPointers(wn.PART_MERONYM)
-        return [Synset(p.getTarget()) for p in p]
+        p1 = self._synset.getPointers(wn.MEMBER_MERONYM)
+        p2 = self._synset.getPointers(wn.PART_MERONYM)
+        return ([Synset(p.getTarget()) for p in p1] +
+                [Synset(p.getTarget()) for p in p2])
 
     def hyponyms(self, recursive=False, depth=None):
         """ Yields a list of semantically more specific synsets, for example:
@@ -277,7 +281,11 @@ class Synset(object):
             synsets("train")[0].hypernym => Synset("public transport").
         """
         p = self._synset.getPointers(wn.HYPERNYM)
-        return len(p) > 0 and Synset(p[0].getTarget()) or None
+        try:
+            first = next(p)
+            return Synset(first.getTarget())
+        except StopIteration:
+            return None
 
     def similar(self):
         """ Returns a list of similar synsets for adjectives and adverbs, for example:
@@ -386,14 +394,18 @@ def map32(id, pos=NOUN):
     """
     global _map32_cache
     if not _map32_cache:
-        _map32_cache = open(
-            os.path.join(MODULE, "dict", "index.32")).readlines()
+        _map32_cache = codecs.open(os.path.join(MODULE, "dict", "index.32"))\
+                             .readlines()
         _map32_cache = (x for x in _map32_cache if x[0] != ";")  # comments
-        _map32_cache = dict(x.strip().split(" ") for x in _map32_cache)
+        _map32_cache = (x.strip().split(b" ", 1) for x in _map32_cache)
+        _map32_cache = dict(x for x in _map32_cache if len(x) == 2)
+
     k = pos in _map32_pos2 and pos or _map32_pos1.get(pos, "x")
     k += str(id).lstrip("0")
-    k = _map32_cache.get(k, None)
+    k = _map32_cache.get(k.encode("utf-8"), None)
+
     if k is not None:
+        k = k.decode("utf-8")
         return int(k[1:]), _map32_pos2[k[0]]
     return None
 

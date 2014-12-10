@@ -204,7 +204,7 @@ class TestParser(unittest.TestCase):
         # Assert the accuracy of the Dutch tagger.
         i, n = 0, 0
         for sentence in open(os.path.join(PATH, "corpora", "tagged-nl-twnc.txt")).readlines():
-            sentence = sentence.decode("utf-8").strip()
+            sentence = sentence.strip()
             s1 = [w.split("/") for w in sentence.split(" ")]
             s1 = [nl.wotan2penntreebank(w, tag) for w, tag in s1]
             s2 = [[w for w, pos in s1]]
@@ -236,7 +236,7 @@ class TestParser(unittest.TestCase):
         v = p.stdout.read()
         v = v.strip()
         self.assertEqual(
-            v, "Leuke/JJ/B-NP/O/O/leuk kat/NN/I-NP/O/O/kat ././O/O/O/.")
+            v, b"Leuke/JJ/B-NP/O/O/leuk kat/NN/I-NP/O/O/kat ././O/O/O/.")
         print("python -m pattern.nl")
 
 #-------------------------------------------------------------------------

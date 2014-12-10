@@ -247,8 +247,11 @@ class TestSentiment(unittest.TestCase):
         v = {":-(": 4, ":-)": 1}
         self.assertEqual(s(v)[0], -0.5)
         self.assertEqual(s(v)[1], +1.0)
-        self.assertEqual(s(v).assessments[0], ([":-("], -0.75, 1.0, "mood"))
-        self.assertEqual(s(v).assessments[1], ([":-)"], +0.50, 1.0, "mood"))
+
+        self.assertEqual(sorted(s(v).assessments),
+                         sorted([([":-("], -0.75, 1.0, "mood"),
+                                 ([":-)"], +0.50, 1.0, "mood")]))
+
         print("pattern.text.Sentiment.assessments")
 
     def test_bag_of_words(self):
@@ -260,8 +263,10 @@ class TestSentiment(unittest.TestCase):
         v = BagOfWords({":-(": 4, ":-)": 1})
         self.assertEqual(s(v)[0], -0.5)
         self.assertEqual(s(v)[1], +1.0)
-        self.assertEqual(s(v).assessments[0], ([":-("], -0.75, 1.0, "mood"))
-        self.assertEqual(s(v).assessments[1], ([":-)"], +0.50, 1.0, "mood"))
+
+        self.assertEqual(sorted(s(v).assessments),
+                         sorted([([":-("], -0.75, 1.0, "mood"),
+                                 ([":-)"], +0.50, 1.0, "mood")]))
 
     def test_annotate(self):
         # Assert custom annotations.

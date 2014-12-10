@@ -224,14 +224,14 @@ class TestParser(unittest.TestCase):
         # "el gato negro" is a noun phrase, "en la alfombra" is a prepositional noun phrase.
         v = es.parser.parse(u"El gato negro se sentó en la alfombra.")
         self.assertEqual(v,  # XXX - shouldn't "se" be part of the verb phrase?
-                         u"El/DT/B-NP/O gato/NN/I-NP/O negro/JJ/I-NP/O " +
+                         (u"El/DT/B-NP/O gato/NN/I-NP/O negro/JJ/I-NP/O " +
                          u"se/PRP/B-NP/O sentó/VB/B-VP/O " +
                          u"en/IN/B-PP/B-PNP la/DT/B-NP/I-PNP alfombra/NN/I-NP/I-PNP ././O/O"
-                         )
+                         ))
         # Assert the accuracy of the Spanish tagger.
         i, n = 0, 0
         for sentence in open(os.path.join(PATH, "corpora", "tagged-es-wikicorpus.txt")).readlines():
-            sentence = sentence.decode("utf-8").strip()
+            sentence = sentence.strip()
             s1 = [w.split("/") for w in sentence.split(" ")]
             s2 = [[w for w, pos in s1]]
             s2 = es.parse(s2, tokenize=False, tagset=es.PAROLE)
@@ -263,7 +263,7 @@ class TestParser(unittest.TestCase):
         v = p.stdout.read()
         v = v.strip()
         self.assertEqual(
-            v, "El/DT/B-NP/O/O/el gato/NN/I-NP/O/O/gato negro/JJ/I-NP/O/O/negro ././O/O/O/.")
+            v, b"El/DT/B-NP/O/O/el gato/NN/I-NP/O/O/gato negro/JJ/I-NP/O/O/negro ././O/O/O/.")
         print("python -m pattern.es")
 
 #-------------------------------------------------------------------------
