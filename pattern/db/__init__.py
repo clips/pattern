@@ -2226,8 +2226,8 @@ class CSV(list):
         data = data if not password else StringIO(
             data.replace("\r\n", "\n").replace("\r", "\n"))
         data = data if not preprocess else StringIO(preprocess(data.read()))
-        bom_utf8 = BOM_UTF8.decode("utf-8")
-        data.seek(data.readline().startswith(bom_utf8) and len(bom_utf8) or 0)
+        bom_utf8 = BOM_UTF8 if sys.version < "3" else BOM_UTF8.decode("utf-8")
+        data.seek(data.readline().startswith(bom_utf8) and len(BOM_UTF8) or 0)
         data = csvlib.reader(data, delimiter=separator)
         i, n = kwargs.get("start"), kwargs.get("count")
         if i is not None and n is not None:
