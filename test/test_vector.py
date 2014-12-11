@@ -464,7 +464,8 @@ class TestModel(unittest.TestCase):
         # Assert Apriori algorithm.
         v = self.model.frequent(threshold=0.5)
         self.assertEqual(
-            sorted(v.keys()), [frozenset(["cats"]), frozenset(["dogs"])])
+                sorted(v.keys(), key=lambda x: str(x)),
+                [frozenset(["cats"]), frozenset(["dogs"])])
         print("pattern.vector.Model.frequent()")
 
     def test_cosine_similarity(self):

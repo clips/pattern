@@ -780,7 +780,7 @@ class Document(object):
                     self.type and ", type=%s" % repr(self.type) or "")
 
     def __repr__(self):
-        return "Document(id=%s%s%s)" % self._repr()
+        return "Document(id=%s)" % self._repr()
 
     def __hash__(self):
         return hash(self._repr())
