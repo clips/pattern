@@ -394,7 +394,7 @@ class Synset:
         self.lexname = Lexname.lexnames and Lexname.lexnames[
             int(tokens[1])] or []
         (self._senseTuples, remainder) = _partition(
-            tokens[4:], 2, string.atoi(tokens[3], 16))
+            tokens[4:], 2, int(tokens[3], 16))
         (self._pointerTuples, remainder) = _partition(
             remainder[1:], 4, int(remainder[0]))
         if pos == VERB:
@@ -402,7 +402,7 @@ class Synset:
                 remainder[1:], 3, int(remainder[0]))
 
             def extractVerbFrames(index, vfTuples):
-                return tuple(map(lambda t: string.atoi(t[1]), filter(lambda t, i=index: string.atoi(t[2], 16) in (0, i), vfTuples)))
+                return tuple(map(lambda t: int(t[1]), filter(lambda t, i=index: int(t[2], 16) in (0, i), vfTuples)))
             senseVerbFrames = []
             for index in range(1, len(self._senseTuples) + 1):
                 senseVerbFrames.append(extractVerbFrames(index, vfTuples))
@@ -752,7 +752,7 @@ class Pointer:
         self.targetOffset = int(offset)
         self.pos = _normalizePOS(pos)
         """part of speech -- one of NOUN, VERB, ADJECTIVE, ADVERB"""
-        indices = string.atoi(indices, 16)
+        indices = int(indices, 16)
         self.sourceIndex = indices >> 8
         self.targetIndex = indices & 255
 

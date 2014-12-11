@@ -153,15 +153,15 @@ def combinations(iterable, n):
 
 def product(*args, **kwargs):
     """ Yields all permutations with replacement:
-        list(product("cat", repeat=2)) => 
-        [("c", "c"), 
-         ("c", "a"), 
-         ("c", "t"), 
-         ("a", "c"), 
-         ("a", "a"), 
-         ("a", "t"), 
-         ("t", "c"), 
-         ("t", "a"), 
+        list(product("cat", repeat=2)) =>
+        [("c", "c"),
+         ("c", "a"),
+         ("c", "t"),
+         ("a", "c"),
+         ("a", "a"),
+         ("a", "t"),
+         ("t", "c"),
+         ("t", "a"),
          ("t", "t")]
     """
     p = [[]]
@@ -196,7 +196,7 @@ def variations(iterable, optional=lambda x: False):
         v = tuple(iterable[i] for i in range(len(v)) if not v[i])
         a.add(v)
     # Longest-first.
-    return sorted(a, cmp=lambda x, y: len(y) - len(x))
+    return sorted(a, key=len, reverse=True)
 
 #### TAXONOMY ############################################################
 
@@ -626,7 +626,7 @@ class Constraint(object):
             Some part-of-speech-tags can also contain wildcards: NN*, VB*, JJ*, RB*, PR*.
             If the given word contains spaces (e.g., proper noun),
             the entire chunk will also be compared.
-            For example: Constraint(words=["Mac OS X*"]) 
+            For example: Constraint(words=["Mac OS X*"])
             matches the word "Mac" if the word occurs in a Chunk("Mac OS X 10.5").
         """
         # If the constraint has a custom function it must return True.
@@ -918,7 +918,7 @@ class Pattern(object):
                 _u[id(sequence)] = False
         # Return the leftmost-longest.
         if len(a) > 0:
-            return sorted(a)[0][-1]
+            return sorted(a, key=lambda x: x[:2])[0][-1]
 
     def _variations(self):
         v = variations(

@@ -2134,7 +2134,7 @@ def csv_header_encode(field, type=STRING):
     # csv_header_encode("age", INTEGER) => "age (INTEGER)".
     t = re.sub(r"^varchar\(.*?\)", "string", (type or ""))
     t = t and " (%s)" % t or ""
-    s = "%s%s" % (encode_utf8(field or ""), t.upper())
+    s = "%s%s" % (field or "", t.upper())
     return s
 
 

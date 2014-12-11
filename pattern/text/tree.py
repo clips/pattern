@@ -28,7 +28,7 @@
 #                "the cat eats its snackerel with vigor" => eat with vigor?
 #                                                     OR => vigorous snackerel?
 
-# The Text and Sentece classes are containers:
+# The Text and Sentence classes are containers:
 # no parsing functionality should be added to it.
 
 from itertools import chain
@@ -39,8 +39,9 @@ except:
 
 try:
     unicode
-except NameError:
+except NameError: # Python 3
     unicode = str
+    basestring = str
 
 try:
     from config import SLASH
@@ -88,7 +89,7 @@ _zip = zip
 
 
 def zip(*args, **kwargs):
-    """ Returns a list of tuples, where the i-th tuple contains the i-th element 
+    """ Returns a list of tuples, where the i-th tuple contains the i-th element
         from each of the argument sequences or iterables (or default if too short).
     """
     args = [list(iterable) for iterable in args]
@@ -273,16 +274,22 @@ class Word(object):
     def __unicode__(self):
         return self.string
 
-    def __repr__(self):
-        return "Word(%s)" % repr("%s/%s" % (
+    def _repr(self):
+        return repr("%s/%s" % (
             encode_entities(self.string),
             self.type is not None and self.type or OUTSIDE))
+
+    def __repr__(self):
+        return "Word(%s)" % self._repr()
 
     def __eq__(self, word):
         return id(self) == id(word)
 
     def __ne__(self, word):
         return id(self) != id(word)
+
+    def __hash__(self):
+        return hash(self._repr())
 
 
 class Tags(dict):
@@ -810,13 +817,13 @@ class Sentence(object):
     def parse_token(self, token, tags=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
         """ Returns the arguments for Sentence.append() from a tagged token representation.
             The order in which token tags appear can be specified.
-            The default order is (separated by slashes): 
-            - word, 
-            - part-of-speech, 
-            - (IOB-)chunk, 
-            - (IOB-)preposition, 
-            - chunk(-relation)(-role), 
-            - anchor, 
+            The default order is (separated by slashes):
+            - word,
+            - part-of-speech,
+            - (IOB-)chunk,
+            - (IOB-)preposition,
+            - chunk(-relation)(-role),
+            - anchor,
             - lemma.
             Examples:
             The/DT/B-NP/O/NP-SBJ-1/O/the
@@ -1079,7 +1086,7 @@ class Sentence(object):
 
     def loop(self, *tags):
         """ Iterates over the tags in the entire Sentence,
-            For example, Sentence.loop(POS, LEMMA) yields tuples of the part-of-speech tags and lemmata. 
+            For example, Sentence.loop(POS, LEMMA) yields tuples of the part-of-speech tags and lemmata.
             Possible tags: WORD, LEMMA, POS, CHUNK, PNP, RELATION, ROLE, ANCHOR or a custom word tag.
             Any order or combination of tags can be supplied.
         """
@@ -1187,7 +1194,7 @@ class Sentence(object):
         return self.string
 
     def __repr__(self):
-        return "Sentence(%s)" % repr(" ".join(["/".join(word.tags) for word in self.words]).encode("utf-8"))
+        return "Sentence(\"%s\")" % " ".join(["/".join(word.tags) for word in self.words])
 
     def __eq__(self, other):
         if not isinstance(other, Sentence):
@@ -1198,7 +1205,8 @@ class Sentence(object):
     def xml(self):
         """ Yields the sentence as an XML-formatted string (plain bytestring, UTF-8 encoded).
         """
-        return parse_xml(self, tab="\t", id=self.id or "")
+        xml = parse_xml(self, tab="\t", id=self.id or "")
+        return xml.decode("utf-8") if isinstance(xml, bytes) else xml
 
     @classmethod
     def from_xml(cls, xml):
@@ -1339,7 +1347,12 @@ class Text(list):
         xml.append("<%s>" % XML_TEXT)
         xml.extend([sentence.xml for sentence in self])
         xml.append("</%s>" % XML_TEXT)
-        return "\n".join(xml)
+        xml_ = "\n".join(xml)
+        try:
+            xml_.encode("utf-8")
+        except AttributeError: # TODO remove this hack
+            pass
+        return xml_
 
     @classmethod
     def from_xml(cls, xml):

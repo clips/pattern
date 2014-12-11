@@ -172,7 +172,7 @@ class Sentiment(_Sentiment):
         _Sentiment.load(self, path)
         # Map "précaire" to "precaire" (without diacritics, +1% accuracy).
         if not path:
-            for w, pos in dict.items(self):
+            for w, pos in list(dict.items(self)):
                 w0 = w
                 if not w.endswith((u"à", u"è", u"é", u"ê", u"ï")):
                     w = w.replace(u"à", "a")

@@ -399,10 +399,13 @@ def _read(path, encoding="utf-8", comment=";;;"):
             # From file or buffer.
             f = path
         for i, line in enumerate(f):
-            line = line.strip(codecs.BOM_UTF8) if i == 0 and isinstance(
-                line, str) else line
+            line = (line.strip(codecs.BOM_UTF8)
+                    if i == 0 and isinstance(line, bytes)
+                    else line)
+
             line = line.strip()
-            line = decode_utf8(line, encoding)
+            line = line.decode(encoding) if isinstance(line, bytes) else line
+
             if not line or (comment and line.startswith(comment)):
                 continue
             yield line
@@ -423,6 +426,7 @@ class Lexicon(lazydict):
     def load(self):
         # Arnold NNP x
         dict.update(self, (x.split(" ")[:2] for x in _read(self._path)))
+
 
 #--- FREQUENCY -----------------------------------------------------------
 
@@ -859,7 +863,7 @@ class Parser(object):
             The given default tags are used for unknown words.
             Unknown words that start with a capital letter are tagged NNP (except for German).
             Unknown words that contain only digits and punctuation are tagged CD.
-            Optionally, morphological and contextual rules (or a language model) can be used 
+            Optionally, morphological and contextual rules (or a language model) can be used
             to improve the tags of unknown words.
             The given language can be used to discern between
             Germanic and Romance languages for phrase chunking.
@@ -1727,7 +1731,7 @@ def commandline(parse=Parser().parse):
         # The output can be either slash-formatted string or XML.
         if "xml" in arguments:
             s = Tree(s, s.tags).xml
-        print(encode_utf8(s))
+        print(s)
 
 #### VERBS ###############################################################
 
@@ -2153,9 +2157,11 @@ class Verbs(lazydict):
                 for id1, id2 in self._default.items():
                     if id2 in a:
                         a.add(id1)
-        a = (TENSES[id][:-2] for id in a)
-        a = Tenses(sorted(a))
-        return a
+        t = (TENSES[id][:-2] for id in a)
+        # TODO fix this hack
+        t = Tenses(sorted(t, key=lambda x: (x[0] or '', x[1] or 0, x[2] or '',
+                                            x[3] or '', x[4] or '')))
+        return t
 
     def find_lemma(self, verb):
         # Must be overridden in a subclass.
@@ -2289,14 +2295,14 @@ class Sentiment(lazydict):
         self._language = xml.attrib.get("language", self._language)
         # Average scores of all word senses per part-of-speech tag.
         for w in words:
-            words[w] = dict((pos, map(avg, zip(*psi)))
+            words[w] = dict((pos, [avg(x) for x in zip(*psi)])
                             for pos, psi in words[w].items())
         # Average scores of all part-of-speech tags.
         for w, pos in words.items():
-            words[w][None] = map(avg, zip(*pos.values()))
+            words[w][None] = [avg(x) for x in zip(*pos.values())]
         # Average scores of all synonyms per synset.
         for id, psi in synsets.items():
-            synsets[id] = map(avg, zip(*psi))
+            synsets[id] = [avg(x) for x in zip(*psi)]
         dict.update(self, words)
         dict.update(self.labeler, labels)
         dict.update(self._synsets, synsets)
@@ -2628,7 +2634,7 @@ _modules = {}
 def _module(language):
     """ Returns the given language module (e.g., "en" => pattern.en).
     """
-    return _modules.setdefault(language, __import__(language, globals(), {}, [], -1))
+    return _modules.setdefault(language, __import__(language, globals(), {}, [], 1))
 
 
 def _multilingual(function, *args, **kwargs):

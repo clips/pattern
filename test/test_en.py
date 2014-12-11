@@ -566,7 +566,7 @@ class TestParser(unittest.TestCase):
         i, n = 0, 0
         for corpus, a in (("tagged-en-wsj.txt", (0.968, 0.945)), ("tagged-en-oanc.txt", (0.929, 0.932))):
             for sentence in open(os.path.join(PATH, "corpora", corpus)).readlines():
-                sentence = sentence.decode("utf-8").strip()
+                sentence = sentence.strip()
                 s1 = [w.split("/") for w in sentence.split(" ")]
                 s2 = [[w for w, pos in s1]]
                 s2 = en.parse(s2, tokenize=False)
@@ -635,13 +635,13 @@ class TestParser(unittest.TestCase):
 
         # Assert parsed output from the command-line (example from the
         # documentation).
-        p = ["python", "-m", "pattern.en", "-s", "Nice cat.", "-OTCRL"]
-        p = subprocess.Popen(p, stdout=subprocess.PIPE)
+        command = ["python", "-m", "pattern.en", "-s", "Nice cat.", "-OTCRL"]
+        p = subprocess.Popen(command, stdout=subprocess.PIPE)
         p.wait()
         v = p.stdout.read()
         v = v.strip()
         self.assertEqual(
-            v, "Nice/JJ/B-NP/O/O/nice cat/NN/I-NP/O/O/cat ././O/O/O/.")
+            v, b"Nice/JJ/B-NP/O/O/nice cat/NN/I-NP/O/O/cat ././O/O/O/.")
         print("python -m pattern.en")
 
 #-------------------------------------------------------------------------
@@ -678,18 +678,19 @@ class TestParseTree(unittest.TestCase):
     def test_sentence(self):
         # Assert Sentence.
         v = self.text[0]
-        self.assertTrue(v.start == 0)
-        self.assertTrue(v.stop == 8)
-        self.assertTrue(v.string == "I 'm eating pizza with a fork .")
-        self.assertTrue(v.subjects == [self.text[0].chunks[0]])
-        self.assertTrue(v.verbs == [self.text[0].chunks[1]])
-        self.assertTrue(v.objects == [self.text[0].chunks[2]])
-        self.assertTrue(
-            v.nouns == [self.text[0].words[3], self.text[0].words[6]])
+        self.assertEqual(v.start, 0)
+        self.assertEqual(v.stop, 8)
+        self.assertEqual(v.string, "I 'm eating pizza with a fork .")
+        # TODO may be possible to not list each of these?
+        self.assertEqual(list(v.subjects), [self.text[0].chunks[0]])
+        self.assertEqual(list(v.verbs), [self.text[0].chunks[1]])
+        self.assertEqual(list(v.objects), [self.text[0].chunks[2]])
+        self.assertEqual(
+            v.nouns, [self.text[0].words[3], self.text[0].words[6]])
         # Sentence.string must be unicode.
-        self.assertTrue(isinstance(v.string, unicode) == True)
-        self.assertTrue(isinstance(unicode(v), unicode) == True)
-        self.assertTrue(isinstance(str(v), str) == True)
+        self.assertEqual(isinstance(v.string, unicode), True)
+        self.assertEqual(isinstance(unicode(v), unicode), True)
+        self.assertEqual(isinstance(str(v), str), True)
         print("pattern.en.Sentence")
 
     def test_sentence_constituents(self):
@@ -739,7 +740,7 @@ class TestParseTree(unittest.TestCase):
         # Assert chunk traversal.
         self.assertEqual(v.nearest("VP"), self.text[0].chunks[1])
         self.assertEqual(v.previous(), self.text[0].chunks[1])
-        self.assertEqual(next(v), self.text[0].chunks[3])
+        self.assertEqual(v.next(), self.text[0].chunks[3])
         print("pattern.en.Chunk")
 
     def test_chunk_conjunctions(self):
@@ -804,12 +805,6 @@ class TestParseTree(unittest.TestCase):
         v = text.tree.find(lambda x: x > 10, [1, 2, 3, 11, 12])
         self.assertEqual(v, 11)
         print("pattern.text.tree.find()")
-
-    def test_zip(self):
-        # Assert list of zipped tuples, using default to balance uneven lists.
-        v = text.tree.zip([1, 2, 3], [4, 5, 6, 7], default=0)
-        self.assertEqual(v, [(1, 4), (2, 5), (3, 6), (0, 7)])
-        print("pattern.text.tree.zip()")
 
     def test_unzip(self):
         v = text.tree.unzip(1, [(1, 4), (2, 5), (3, 6)])

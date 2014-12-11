@@ -5,6 +5,11 @@
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
+try:
+    basestring
+except NameError:  # Python 3
+    basestring = str
+
 
 ### LIST FUNCTIONS #######################################################
 
