@@ -12,6 +12,11 @@ from pattern.db import Datasheet
 from random import seed
 seed(0)
 
+try:
+    xrange
+except NameError:  # python 3
+    xrange = range
+
 
 def model(top=None):
     """ Returns a Model of e-mail messages.
@@ -50,7 +55,7 @@ class TestUnicode(unittest.TestCase):
     def test_encode_utf8(self):
         # Assert Python bytestring.
         for s in self.strings:
-            self.assertTrue(isinstance(vector.encode_utf8(s), str))
+            self.assertTrue(isinstance(vector.encode_utf8(s), bytes))
         print("pattern.vector.encode_utf8()")
 
 #-------------------------------------------------------------------------
@@ -459,7 +464,7 @@ class TestModel(unittest.TestCase):
         # Assert Apriori algorithm.
         v = self.model.frequent(threshold=0.5)
         self.assertEqual(
-            sorted(v.keys()), [frozenset(["dogs"]), frozenset(["cats"])])
+            sorted(v.keys()), [frozenset(["cats"]), frozenset(["dogs"])])
         print("pattern.vector.Model.frequent()")
 
     def test_cosine_similarity(self):

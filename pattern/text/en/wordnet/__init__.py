@@ -282,7 +282,7 @@ class Synset(object):
         """
         p = self._synset.getPointers(wn.HYPERNYM)
         try:
-            first = next(p)
+            first = p[0] if isinstance(p, tuple) else next(p)
             return Synset(first.getTarget())
         except StopIteration:
             return None

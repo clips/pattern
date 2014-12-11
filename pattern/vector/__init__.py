@@ -364,7 +364,7 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
             if stemmer is not None:
                 w2 = stem(w2, stemmer, **kwargs).lower()
             dict.__setitem__(count, w2, (w2 in count) and count[w2] + 1 or 1)
-    for k in count.keys():
+    for k in list(count.keys()):
         if count[k] <= threshold:
             dict.__delitem__(count, k)
     if top is not None:
@@ -439,11 +439,11 @@ class Document(object):
             Lists can contain tuples (of), strings or numbers.
             Dicts can contain tuples (of), strings or numbers as keys, and floats as values.
             Document.words stores a dict of (word, count)-items.
-            Document.vector stores a dict of (word, weight)-items, 
+            Document.vector stores a dict of (word, weight)-items,
             where weight is the term frequency normalized (0.0-1.0) to remove document length bias.
             Punctuation marks are stripped from the words.
             Stop words in the exclude list are excluded from the document.
-            Only top words whose count exceeds the threshold are included in the document.        
+            Only top words whose count exceeds the threshold are included in the document.
         """
         kwargs.setdefault("filter", lambda w: w.lstrip("'").isalnum())
         kwargs.setdefault("threshold", 0)
@@ -524,7 +524,11 @@ class Document(object):
         # Open unicode file.
         s = open(path, "rb").read()
         s = s.lstrip(codecs.BOM_UTF8)
-        s = decode_utf8(s)
+        try:
+            s = s.decode("utf-8")
+        except AttributeError:
+            foo
+
         a = {}
         v = {}
         # Parse document name and type.
@@ -705,7 +709,7 @@ class Document(object):
     @property
     def vector(self):
         """ Yields the document vector, a dictionary of (word, relevance)-items from the document.
-            The relevance is tf, tf * idf, infogain or binary if the document is part of a Model, 
+            The relevance is tf, tf * idf, infogain or binary if the document is part of a Model,
             based on the value of Model.weight (TF, TFIDF, IG, GR, BINARY, None).
             The document vector is used to calculate similarity between two documents,
             for example in a clustering or classification algorithm.
@@ -770,11 +774,16 @@ class Document(object):
     def __ne__(self, document):
         return not self.__eq__(document)
 
+    def _repr(self):
+        return repr(self._id +
+                    self.name and ", name=%s" % repr(self.name) or "" +
+                    self.type and ", type=%s" % repr(self.type) or "")
+
     def __repr__(self):
-        return "Document(id=%s%s%s)" % (
-            repr(self._id),
-            self.name and ", name=%s" % repr(self.name) or "",
-            self.type and ", type=%s" % repr(self.type) or "")
+        return "Document(id=%s%s%s)" % self._repr()
+
+    def __hash__(self):
+        return hash(self._repr())
 
 Bag = BagOfWords = BOW = Document
 
@@ -1000,7 +1009,7 @@ KMEANS, HIERARCHICAL = "k-means", "hierarchical"
 class Model(object):
 
     def __init__(self, documents=[], weight=TFIDF):
-        """ A model is a bag-of-word representation of a corpus of documents, 
+        """ A model is a bag-of-word representation of a corpus of documents,
             where each document vector is a bag of (word, relevance)-items.
             Vectors can then be compared for similarity using a distance metric.
             The weighting scheme can be: relative TF, TFIDF (default), IG, BINARY, None,
@@ -1279,7 +1288,7 @@ class Model(object):
 
     @property
     def inverted_index(self):
-        """ Yields a dictionary of (word, set([document1, document2, ...]))-items. 
+        """ Yields a dictionary of (word, set([document1, document2, ...]))-items.
         """
         if not self._inverted:
             m = {}
@@ -1367,7 +1376,7 @@ class Model(object):
     similarity = cos = cosine_similarity
 
     def nearest_neighbors(self, document, top=10):
-        """ Returns a list of (similarity, document)-tuples in the model, 
+        """ Returns a list of (similarity, document)-tuples in the model,
             sorted by cosine similarity to the given document.
         """
         v = ((self.cosine_similarity(document, d), d) for d in self.documents)
@@ -1779,7 +1788,9 @@ class LSA(object):
         import numpy
         # Calling Model.vector() in a loop is quite slow, we should refactor
         # this:
-        matrix = [model.vector(d).values() for d in model.documents]
+        # TODO remove list
+        matrix = [list(model.vector(d).values())
+                  for d in model.documents]
         matrix = numpy.array(matrix)
         # Singular value decomposition, where u * sigma * vt = svd(matrix).
         # Sigma is the diagonal matrix of singular values,
@@ -2049,7 +2060,7 @@ kmeans = k_means
 
 
 def kmpp(vectors, k, distance=COSINE):
-    """ The k-means++ initialization algorithm returns a set of initial clusers, 
+    """ The k-means++ initialization algorithm returns a set of initial clusers,
         with the advantage that:
         - it generates better clusters than k-means(seed=RANDOM) on most data sets,
         - it runs faster than standard k-means,
@@ -2390,7 +2401,7 @@ class Classifier(object):
 
     def auc(self, documents=[], k=10):
         """ Returns the area under the ROC-curve.
-            Returns the probability (0.0-1.0) that a classifier will rank 
+            Returns the probability (0.0-1.0) that a classifier will rank
             a random positive document (True) higher than a random negative one (False).
         """
         return self.confusion_matrix(documents).auc(k)
@@ -2660,7 +2671,8 @@ class NB(Classifier):
 
     @property
     def features(self):
-        return self._features.keys()
+        # TODO don't require list
+        return list(self._features.keys())
 
     def train(self, document, type=None):
         """Trains the classifier with the given document of the given type
@@ -3195,7 +3207,7 @@ class BPNN(Classifier):
 
     def _train(self, data=[], iterations=1000, rate=0.5, momentum=0.1):
         """ Trains the network with the given data using backpropagation.
-            The given data is a list of (input, output)-tuples, 
+            The given data is a list of (input, output)-tuples,
             where each input and output a list of values.
             For example, to learn the XOR-function:
             nn = BPNN()
@@ -3316,18 +3328,18 @@ RADIAL = RBF = 2  # Curved path: exp(-gamma * |u-v| ** 2)
 class SVM(Classifier):
 
     def __init__(self, *args, **kwargs):
-        """ Support Vector Machine (SVM) is a supervised learning method 
+        """ Support Vector Machine (SVM) is a supervised learning method
             where training documents are represented as points in n-dimensional space.
             The SVM constructs a number of hyperplanes that subdivide the space.
             Optional parameters:
-            -      type = CLASSIFICATION, 
-            -    kernel = LINEAR, 
-            -    degree = 3, 
-            -     gamma = 1 / len(SVM.features), 
+            -      type = CLASSIFICATION,
+            -    kernel = LINEAR,
+            -    degree = 3,
+            -     gamma = 1 / len(SVM.features),
             -    coeff0 = 0,
-            -      cost = 1, 
-            -   epsilon = 0.01, 
-            -     cache = 100, 
+            -      cost = 1,
+            -   epsilon = 0.01,
+            -     cache = 100,
             - shrinking = True,
             - extension = (LIBSVM, LIBLINEAR),
             -     train = []

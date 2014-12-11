@@ -274,16 +274,22 @@ class Word(object):
     def __unicode__(self):
         return self.string
 
-    def __repr__(self):
-        return "Word(%s)" % repr("%s/%s" % (
+    def _repr(self):
+        return repr("%s/%s" % (
             encode_entities(self.string),
             self.type is not None and self.type or OUTSIDE))
+
+    def __repr__(self):
+        return "Word(%s)" % self._repr()
 
     def __eq__(self, word):
         return id(self) == id(word)
 
     def __ne__(self, word):
         return id(self) != id(word)
+
+    def __hash__(self):
+        return hash(self._repr())
 
 
 class Tags(dict):
