@@ -24,7 +24,7 @@ script:
     # TODO perhaps split build into tests and examples?
     # For now we only run the passing python 3 tests are run on the 3.4 build
     - if [ "$TRAVIS_PYTHON_VERSION" == "3.4" ]; then
-      nosetests test/test_graph.py test/test_metrics.py test/test_de.py test/test_en.py test/test_es.py test/test_fr.py test/test_it.py test/test_nl.py test/test_text.py test/test_search.py; else
+      nosetests --ignore-files=test_examples\|test_db\|test_vector\|test_web; else
       nosetests --exclude=test_05vector_07slp --with-coverage --cover-package=pattern;
       fi
 
