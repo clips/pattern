@@ -1255,7 +1255,7 @@ class Yahoo(SearchEngine):
             "oauth_signature_method": "HMAC-SHA1"
         })
         url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query,
-            method = GET,
+            method = url.method,
             secret = self.license[1]
         )
         return url
@@ -1549,7 +1549,7 @@ class Twitter(SearchEngine):
             "oauth_signature_method": "HMAC-SHA1"
         })
         url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query,
-            method = GET,
+            method = url.method,
             secret = self.license[1],
              token = self.license[2][1]
         )
@@ -3014,7 +3014,8 @@ class Node(object):
     def previous_sibling(self):
         return self._wrap(self._p.previousSibling)
 
-    next, previous = next_sibling, previous_sibling
+    next, prev, previous = \
+        next_sibling, previous_sibling, previous_sibling
 
     def traverse(self, visit=lambda node: None):
         """ Executes the visit function on this node and each of its child nodes.
@@ -3108,7 +3109,7 @@ class Element(Node):
         """
         return u(self._p)
 
-    html = source
+    html = src = source
 
     def get_elements_by_tagname(self, v):
         """ Returns a list of nested Elements with the given tag name.
@@ -3217,22 +3218,24 @@ DOM = Document
 # CSS selectors may range from simple element tag names to rich contextual patterns.
 # http://www.w3.org/TR/CSS2/selector.html
 
-# "*"                =  <div>, <p>, ...                (all elements)
-# "*#x"              =  <div id="x">, <p id="x">, ...  (all elements with id="x")
-# "div#x"            =  <div id="x">                   (<div> elements with id="x")
-# "div.x"            =  <div class="x">                (<div> elements with class="x")
-# "div[class='x']"   =  <div class="x">                (<div> elements with attribute "class"="x")
-# "div:first-child"  =  <div><a>1st<a><a></a></div>    (first child inside a <div>)
-# "div a"            =  <div><p><a></a></p></div>      (all <a>'s inside a <div>)
-# "div, a"           =  <div>, <a>                     (all <a>'s and <div> elements)
-# "div + a"          =  <div></div><a></a>             (all <a>'s directly preceded by <div>)
-# "div > a"          =  <div><a></a></div>             (all <a>'s directly inside a <div>)
+# "*"                 =  <div>, <p>, ...                (all elements)
+# "*#x"               =  <div id="x">, <p id="x">, ...  (all elements with id="x")
+# "div#x"             =  <div id="x">                   (<div> elements with id="x")
+# "div.x"             =  <div class="x">                (<div> elements with class="x")
+# "div[class='x']"    =  <div class="x">                (<div> elements with attribute "class"="x")
+# "div:contains('x')" =  <div>xyz</div>                 (<div> elements that contain "x")
+# "div:first-child"   =  <div><a>1st<a><a></a></div>    (first child inside a <div>)
+# "div a"             =  <div><p><a></a></p></div>      (all <a>'s inside a <div>)
+# "div, a"            =  <div>, <a>                     (all <a>'s and <div> elements)
+# "div + a"           =  <div></div><a></a>             (all <a>'s directly preceded by <div>)
+# "div > a"           =  <div><a></a></div>             (all <a>'s directly inside a <div>)
 # "div < a"                                            (all <div>'s directly containing an <a>)
 
 # Selectors are case-insensitive.
 
 def _encode_space(s):
     return s.replace(" ", "<!space!>")
+    
 def _decode_space(s):
     return s.replace("<!space!>", " ")
 
@@ -3250,6 +3253,8 @@ class Selector(object):
         s = s.replace(".", " .")        # .class
         s = s.replace(":", " :")        # :pseudo-element
         s = s.replace("[", " [")        # [attribute="value"]
+        s = re.sub(r"\[.*?\]", 
+            lambda m: re.sub(r" (\#|\.|\:)", "\\1", m.group(0)), s)    
         s = re.sub(r"\[.*?\]", 
             lambda m: _encode_space(m.group(0)), s)
         s = re.sub(r":contains\(.*?\)", 
@@ -3350,9 +3355,9 @@ class Selector(object):
         if not isinstance(e, Element):
             return []
         if len(self.classes) == 0 or len(self.classes) >= 2:
-            e = map(Element, e._p.findAll(tag, **a))
+            e = map(Element, e._p.findAll(tag, attrs=a))
         if len(self.classes) == 1:
-            e = map(Element, e._p.findAll(tag, **dict(a, **{"class": i(list(self.classes)[0])})))
+            e = map(Element, e._p.findAll(tag, attrs=dict(a, **{"class": i(list(self.classes)[0])})))
         if len(self.classes) >= 2:
             e = filter(lambda e: self.classes.issubset(set(e.attr.get("class", "").lower().split())), e)
         if "first-child" in self.pseudo:
