@@ -405,6 +405,10 @@ Math.round = function(x, decimals) {
     }
 };
 
+Math.mod = function(a, b) {
+    return ((a % b) + b) % b;
+};
+
 Math.sign = function(x) {
     if (x < 0) return -1;
     if (x > 0) return +1;
@@ -860,11 +864,25 @@ var Color = Class.extend({
         hsb[0] += options.hue || 0;
         hsb[1] *= options.saturation || 1;
         hsb[2] *= options.brightness || 1;
-        return new Color(hsb[0]%1, hsb[1], hsb[2], this.a, {"colorspace": HSB});
+        return new Color(Math.mod(hsb[0], 1), hsb[1], hsb[2], this.a, {"colorspace": HSB});
     }
 });
 
+function rgb(r, g, b) {
+	/* Returns a new Color from R, G, B values (0-255).
+	 */ 
+    return new Color(r, g, b, 1 * 255, {"base": 255, "colorspace": RGB});
+}
+
+function rgba(r, g, b, a) {
+	/* Returns a new Color from R, G, B values (0-255) and alpha (0.0-1.0).
+	 */ 
+    return new Color(r, g, b, a * 255, {"base": 255, "colorspace": RGB});
+}
+
 function color(r, g, b, a, options) {
+	/* Returns a new Color from R, G, B, A values (0.0-1.0).
+	 */ 
     return new Color(r, g, b, a, options);
 }
 
@@ -1006,7 +1024,7 @@ function _rgb2hsb(r, g, b) {
         else if (g == v) { h = 2 + (b-r) / d; } 
         else             { h = 4 + (r-g) / d; }
     }
-    h = h / 6.0 % 1;
+    h = Math.mod(h / 6.0, 1);
     return [h, s, v];
 }
 
@@ -1016,7 +1034,7 @@ function _hsb2rgb(h, s, v) {
     if (s == 0) {
         return [v, v, v];
     }
-    h = h % 1 * 6.0;
+    h = Math.mod(h, 1) * 6.0;
     var i = Math.floor(h);
     var f = h - i;
     var x = v * (1-s);
@@ -1210,7 +1228,7 @@ function _rotateRYB(h, s, b, angle) {
      * but focuses on aesthetically pleasing complementary colors.
      */
     if (angle === undefined) angle = 180;
-    h = h * 360 % 360;
+    h = Math.mod(h * 360, 360);
     // Find the location (angle) of the hue on the RYB color wheel.
     var x0, y0, x1, y1, a;
     var wheel = _COLORWHEEL;
@@ -1223,7 +1241,7 @@ function _rotateRYB(h, s, b, angle) {
         }
     }
     // Rotate the angle and retrieve the hue.
-    a = (a+angle) % 360;
+    a = Math.mod(a + angle, 360);
     for (var i=0; i < wheel.length-1; i++) {
         x0 = wheel[i][0]; x1 = wheel[i+1][0];
         y0 = wheel[i][1]; y1 = wheel[i+1][1];
@@ -1262,7 +1280,7 @@ function analog(clr, angle, d) {
 function _colorMixin(options) {
     var s = _ctx.state;
     var o = options;
-    if (options === undefined) {
+    if (o === undefined) {
         return [s.fill, s.stroke, s.strokewidth, s.strokestyle, s.linecap];
     } else {
         return [
@@ -1343,7 +1361,7 @@ var Gradient = Class.extend({
         this.x = o.x || 0;
         this.y = o.y || 0;
         this.a = 1.0; // Shapes will only be drawn if color or gradient has alpha > 1.0.
-        this.spread = (o.spread !== undefined)? o.spread : 100;
+        this.spread = Math.max((o.spread !== undefined)? o.spread : 100, 0);
         this.angle = o.angle || 0;
     },
     
@@ -1480,7 +1498,7 @@ var AffineTransform = Transform = Class.extend({
     },
     
     rotation: function() {
-        return (Math.degrees(Math.atan2(this.matrix[1], this.matrix[0])) + 360) % 360;
+        return Math.mod(Math.degrees(Math.atan2(this.matrix[1], this.matrix[0])) + 360, 360);
     },
 
     
@@ -2364,7 +2382,6 @@ function line(x0, y0, x1, y1, options) {
     /* Draws a straight line from x0, y0 to x1, y1. 
      * The current stroke, strokewidth and strokestyle are applied.
      */
-    // It is faster to do it directly without creating a Path:
     var a = _colorMixin(options);
     if (a[1] && a[1].a > 0) {
         _ctx.beginPath();
@@ -2378,7 +2395,6 @@ function arc(x, y, radius, angle1, angle2, options) {
     /* Draws an arc with the center at x, y, clockwise from angle1 to angle2.
      * The current stroke, strokewidth and strokestyle are applied.
      */
-    // It is faster to do it directly without creating a Path:
     var a = _colorMixin(options);
     if (a[0] && a[0].a > 0 || a[1] && a[1].a > 0) {
         var a1 = Math.radians(angle1);
@@ -2393,7 +2409,6 @@ function rect(x, y, width, height, options) {
     /* Draws a rectangle with the top left corner at x, y.
      * The current stroke, strokewidth, strokestyle and fill color are applied.
      */
-    // It is faster to do it directly without creating a Path:
     var a = _colorMixin(options);
     if (a[0] && a[0].a > 0 || a[1] && a[1].a > 0) {
         if (!options || options.roundness === undefined) {
@@ -2463,13 +2478,37 @@ function star(x, y, points, outer, inner, options) {
     if (inner === undefined) inner = 50;
     var p = new Path();
     p.moveto(x, y+outer);
-    for (var i=0; i < 2*points+1; i++) {
-        var r = (i%2 == 0)? outer : inner;
-        var a = Math.PI * i/points;
-        p.lineto(x + r*Math.sin(a), y + r*Math.cos(a));
+    for (var i=0; i < 2 * points + 1; i++) {
+        var r = (i % 2 == 0)? outer : inner;
+        var a = Math.PI * i / points;
+        p.lineto(
+            x + r * Math.sin(a), 
+            y + r * Math.cos(a)
+        );
     };
     p.closepath();
     p.draw(options);
+}
+
+// To draw crisp lines, you can use translate(0, 0.5) + line0().
+// We call it "0" because floats are rounded to nearest int.
+
+function line0(x1, y1, x2, y2, options) {
+    line(
+        Math.round(x1), 
+        Math.round(y1), 
+        Math.round(x2), 
+        Math.round(y2), options
+    );
+}
+
+function rect0(x, y, width, height, options) {
+    rect(
+        Math.round(x), 
+        Math.round(y), 
+        Math.round(width), 
+        Math.round(height), options
+    );
 }
 
 /*##################################################################################################*/
@@ -3585,7 +3624,7 @@ function adjust(img, options) {
     var adjust_hue = function(pixels, m) {
         pixels.map(function(p) {
             var hsb = _rgb2hsb(p[0]/255, p[1]/255, p[2]/255);
-            var rgb = _hsb2rgb(Math.clamp((hsb[0] + m) % 1, 0, 1), hsb[1], hsb[2]);
+            var rgb = _hsb2rgb(Math.clamp(Math.mod(hsb[0] + m, 1), 0, 1), hsb[1], hsb[2]);
             return [rgb[0]*255, rgb[1]*255, rgb[2]*255, p[3]]; 
         });
     }
@@ -4058,26 +4097,27 @@ function widget(canvas, variable, type, options) {
 /*--- <SCRIPT TYPE="TEXT/CANVAS"> ------------------------------------------------------------------*/
 
 attachEvent(window, "load", function() {
-    /* Initializes <script type="text/canvas"> elements during window.onload().
-     * Optional arguments include: canvas="id" (<canvas> to use), and loop="false" (single frame).
+    /* Initializes <script class="canvas"> elements during window.onload().
+     * Optional arguments: width, height, target="id" (<canvas> to use), loop="false" (static).
      */
     this.e = document.getElementsByTagName("script");
     for (this.i=0; this.i < this.e.length; this.i++) {
         var i = this.i; // e and i may not be set by globals in eval().
         var e = this.e;
-        if (e[i].type == "text/canvas") {
-            var canvas = e[i].getAttribute("canvas");
+        if (e[i].className == "canvas" || e[i].type == "text/canvas") {
+            var canvas = e[i].getAttribute("target") || 
+                         e[i].getAttribute("canvas");
             if (canvas) {
-                // <script type="text/canvas" canvas="id">
+                // <script type="canvas" target="id">
                 // Render in the <canvas> with the given id.
                 canvas = document.getElementById(canvas);
             } else {
-                // <script type="text/canvas">
+                // <script class="canvas">
                 // Create a new <canvas class="canvas"> element.
                 canvas = document.createElement("canvas");
                 canvas.className = "canvas";
-                canvas.width = 500;
-                canvas.height = 500;
+                canvas.width  = parseInt(e[i].getAttribute("width")  || 500);
+                canvas.height = parseInt(e[i].getAttribute("height") || 500);
                 // Add the new <canvas> to the DOM before the <script> element.
                 // If the <script> is in the <head>, add it to the end of the document.
                 if (e[i].parentNode == document.getElementsByTagName("head")[0]) {
@@ -4088,8 +4128,8 @@ attachEvent(window, "load", function() {
             }
             // Evaluate the script and bind setup() and draw() to the canvas.
             var setup = function(){};
-            var draw = function(){};
-            var stop = function(){};
+            var draw  = function(){};
+            var stop  = function(){};
             eval(e[i].innerHTML);
             canvas = new Canvas(canvas);
             canvas.draw  = draw;
@@ -4097,7 +4137,7 @@ attachEvent(window, "load", function() {
             canvas.stop  = function() { 
                 stop(this); this._stop();
             }
-            // <script type="text/canvas" loop="false"> renders a single frame.
+            // <script class="canvas" loop="false"> renders a single frame.
             if (e[i].getAttribute("loop") == "false") {
                 canvas.step();
             } else {
