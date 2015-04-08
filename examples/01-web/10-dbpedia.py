@@ -1,5 +1,5 @@
-from __future__ import print_function
 # -*- coding: utf-8 *-*
+from __future__ import print_function
 import os
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -30,7 +30,7 @@ dbp = DBPedia()
 # http://dbpedia.org/ontology/
 q = """
 prefix dbo: <http://dbpedia.org/ontology/>
-select ?actor where { 
+select ?actor where {
     ?actor a dbo:Actor.
 }
 """
@@ -47,7 +47,7 @@ print()
 
 q = """
 prefix dbo: <http://dbpedia.org/ontology/>
-select ?actor ?place where { 
+select ?actor ?place where {
     ?actor a dbo:Actor.
     ?actor dbo:birthPlace ?place.
 }
@@ -70,9 +70,9 @@ print()
 # so we use a regular expression instead with filter():
 q = """
 prefix dbo: <http://dbpedia.org/ontology/>
-select ?actor ?date where { 
+select ?actor ?date where {
     ?actor a dbo:Actor.
-    ?actor dbo:birthDate ?date. 
+    ?actor dbo:birthDate ?date.
     filter(regex(str(?date), "1970-..-.."))
 }
 order by ?date
@@ -90,7 +90,7 @@ print()
 q = """
 prefix dbo: <http://dbpedia.org/ontology/>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-select ?actor ?place where { 
+select ?actor ?place where {
     ?_actor a dbo:Actor.
     ?_actor dbo:birthPlace ?_place.
     ?_actor rdfs:label ?actor.
@@ -141,7 +141,7 @@ print()
 q = u"""
 prefix dbo: <http://dbpedia.org/ontology/>
 prefix foaf: <http://xmlns.com/foaf/0.1/>
-select ?person ?name where { 
+select ?person ?name where {
     ?person a dbo:Person.
     ?person foaf:givenName ?name.
     filter(regex(?name, "Édouard"))
