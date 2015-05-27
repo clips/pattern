@@ -6,9 +6,10 @@
 
 ####################################################################################################
 
+import sys
 import os
-import imaplib
 import re
+import imaplib
 import email
 import time
 
@@ -57,20 +58,30 @@ def encode_utf8(string):
 # Fixes an issue in Python 2.5- with memory allocation.
 # See: http://bugs.python.org/issue1389051
 
-class IMAP4(imaplib.IMAP4):
-    pass
+if sys.version_info[:2] > (2, 5):
+    
+    class IMAP4(imaplib.IMAP4):
+        pass
+        
+    class IMAP4_SSL(imaplib.IMAP4_SSL):
+        pass
+        
+else:
 
-class IMAP4_SSL(imaplib.IMAP4_SSL):
-    def read(self, size):
-        """Read 'size' bytes from remote."""
-        # sslobj.read() sometimes returns < size bytes
-        chunks = []
-        read = 0
-        while read < size:
-            data = self.sslobj.read(min(size-read, 16384)) # use min() instead of max().
-            read += len(data)
-            chunks.append(data)
-        return ''.join(chunks)
+    class IMAP4(imaplib.IMAP4):
+        pass
+
+    class IMAP4_SSL(imaplib.IMAP4_SSL):
+        def read(self, size):
+            """Read 'size' bytes from remote."""
+            # sslobj.read() sometimes returns < size bytes
+            chunks = []
+            read = 0
+            while read < size:
+                data = self.sslobj.read(min(size-read, 16384))
+                read += len(data)
+                chunks.append(data)
+            return ''.join(chunks)
 
 #### MAIL ##########################################################################################
 
@@ -176,6 +187,11 @@ class Mail(object):
 #--- MAIL FOLDER -----------------------------------------------------------------------------------
 
 def _decode(s, message):
+    try:
+        # Decode MIME header (e.g., "=?utf-8?q?").
+        s = email.Header.decode_header(s)[0][0]
+    except:
+        pass
     try:
         # Decode message Content-Type charset to Unicode.
         # If all fails, try Latin-1 (common case).
