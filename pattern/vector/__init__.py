@@ -896,6 +896,9 @@ IG, GR, X2, DF = "ig", "gr", "x2", "df"
 # Clustering methods:
 KMEANS, HIERARCHICAL = "k-means", "hierarchical"
 
+# Resampling methods:
+MINORITY, MAJORITY = "minority", "majority"
+
 class Model(object):
     
     def __init__(self, documents=[], weight=TFIDF):
@@ -943,6 +946,13 @@ class Model(object):
     @property
     def classifier(self):
         return self._classifier
+
+    @property
+    def distribution(self):
+        p = defaultdict(int)
+        for d in self.documents: 
+            p[d.type] += 1
+        return p
 
     def _get_lsa(self):
         return self._lsa
@@ -1327,6 +1337,61 @@ class Model(object):
         return self._lsa
         
     reduce = latent_semantic_analysis
+
+    def resample(self, n=MINORITY):
+        """ Modifies the model so that it contains n documents of each type.
+            With MINORITY, n = the number of documents in the minority class.
+            With MAJORITY, n = the number of documents in the majority class
+            (generates artificial documents for minority classes).
+        """
+        # Based on: 
+        # Liu, Ghosh & Martin (2007). Generative oversampling for mining imbalanced datasets.
+        # http://wwwmath.uni-muenster.de/u/lammers/EDU/ws07/Softcomputing/Literatur/4-DMI5467.pdf
+        #
+        # p1: {class: count}
+        # p2: {class: max(len(vector))}
+        # p3: {class: {feature: [weights]}}
+        p1 = defaultdict(int)
+        p2 = defaultdict(int)
+        p3 = defaultdict(lambda: defaultdict(list))
+        for d in self.documents:
+            p1[d.type] += 1
+        for d in self.documents:
+            p2[d.type] = max(p2[d.type], len(d.terms))
+        for d in self.documents:
+            for f, w in d.terms.items():
+                p3[d.type][f].append(w) 
+        # List features with weight 0.0.
+        for t in p3:
+            for f in p3[t]:
+                p3[t][f].extend([0] * (p1[t] - len(p3[t][f])))
+        if n == MINORITY:
+            n = min(p1.values() or [0])
+        if n == MAJORITY:
+            n = max(p1.values() or [0])
+        a = []
+        x = defaultdict(int)
+        # 1) Undersampling.
+        for d in self.documents:
+            if x[d.type] < n:
+                x[d.type] += 1
+                a.append(d)
+        # 2) Oversampling.
+        # Generate new documents in minority classes,
+        # taking into account the number of features
+        # and feature weights in existing documents.
+        for t, i in p1.items():
+            for j in range(i, n):
+                v = {}
+                for f in shuffled(p3[t].keys()[:p2[t]]):
+                    w = choice(p3[t][f]) 
+                    w = w if v else p3[t][f][0]
+                    if w:
+                        v[f] = w
+                a.append(Document(v))
+        self.clear()
+        self.extend(a)
+        return self
 
     def condensed_nearest_neighbor(self, k=1, distance=COSINE):
         """ Returns a filtered list of documents, without impairing classification accuracy.
@@ -2396,7 +2461,7 @@ def feature_selection(documents=[], top=None, method=CHISQUARED, threshold=0.0):
         sorted by the given feature selection method (IG, GR, X2) and document frequency threshold.
     """
     a = []
-    for i, d in enumerate(documents):
+    for d in documents:
         if not isinstance(d, Document):
             d = Document(d[0], type=d[1], stopwords=True)
         a.append(d)
