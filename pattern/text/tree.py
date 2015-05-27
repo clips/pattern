@@ -1325,7 +1325,7 @@ def parse_xml(sentence, tab="\t", id=""):
         pnp   = word.chunk and word.chunk.pnp or None
         # Start the PNP element if the chunk is the first chunk in PNP:
         # <chunk type="PNP" of="A1">
-        if pnp and pnp.start == chunk.start:
+        if pnp and pnp.start == chunk.start and pnp.start == word.index:
             a = pnp.anchor and ' %s="%s"' % (XML_OF, uid("A", anchors.get(pnp.anchor.start, ""))) or ""
             xml.append(indent + '<%s %s="PNP"%s>' % (XML_CHUNK, XML_TYPE, a))
             indent = push(indent)
@@ -1396,7 +1396,9 @@ class XML(object):
         from xml.etree import cElementTree
         self.root = cElementTree.fromstring(string)
     def __call__(self, tag):
-        return [XMLNode(e) for e in self.root.findall(tag)]
+        return self.root.tag == tag \
+           and [XMLNode(self.root)] \
+            or [XMLNode(e) for e in self.root.findall(tag)]
 
 class XMLNode(object):
     def __init__(self, element):
