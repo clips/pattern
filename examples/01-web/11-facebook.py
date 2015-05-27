@@ -15,7 +15,7 @@ from pattern.db  import Datasheet, pprint, pd
 # 1) Searching for public status updates.
 #    Search for all status updates that contain the word "horrible".
 
-try: 
+try:
     # We'll store the status updates in a Datasheet.
     # A Datasheet is a table of rows and columns that can be exported as a CSV-file.
     # In the first column, we'll store a unique id for each status update.
@@ -34,14 +34,14 @@ fb = Facebook()
 # Keeping a local cache can also be useful (e.g., while testing)
 # because a query is instant when it is executed the second time.
 for status in fb.search("horrible", count=25, cached=False):
-    print "=" * 100
-    print status.id
-    print status.text
-    print status.author # Yields an (id, name)-tuple.
-    print status.date
-    print status.likes
-    print status.comments
-    print
+    print("=" * 100)
+    print(status.id)
+    print(status.text)
+    print(status.author)  # Yields an (id, name)-tuple.
+    print(status.date)
+    print(status.likes)
+    print(status.comments)
+    print("")
     # Only add the tweet to the table if it doesn't already exists.
     if len(table) == 0 or status.id not in index:
         table.append([status.id, status.text])
@@ -59,22 +59,23 @@ license = ""
 if license != "":
     fb = Facebook(license)
     # Facebook.profile() returns a dictionary with author info.
-    # By default, this is your own profile. 
-    # You can also supply the id of another profile, 
+    # By default, this is your own profile.
+    # You can also supply the id of another profile,
     # or the name of a product page.
     me = fb.profile()["id"]
     for status in fb.search(me, type=NEWS, count=30, cached=False):
-        print "-" * 100
-        print status.id    # Status update unique id.
-        print status.title # Status title (i.e., the id of the page or event given as URL).
-        print status.text  # Status update text.
-        print status.url   # Status update image, external link, ...
+        print("-" * 100)
+        print(status.id)     # Status update unique id.
+        print(status.title)  # Status title (i.e., the id of the page or event given as URL).
+        print(status.text)   # Status update text.
+        print(status.url)    # Status update image, external link, ...
         if status.comments > 0:
             # Retrieve comments on the status update.
-            print "%s comments:" % status.comments
-            print [(x.author, x.text, x.likes) for x in fb.search(status.id, type=COMMENTS)]
+            print("%s comments:" % status.comments)
+            print([(x.author, x.text, x.likes) 
+                for x in fb.search(status.id, type=COMMENTS)])
         if status.likes > 0:
             # Retrieve likes on the status update.
-            print "%s likes:" % status.likes
-            print [x.author for x in fb.search(status.id, type=LIKES)]
-        print
+            print("%s likes:" % status.likes)
+            print([x.author for x in fb.search(status.id, type=LIKES)])
+        print("")

@@ -12,7 +12,7 @@ import time
 # The pattern.web module uses a test account by default,
 # with 5000 free queries per month shared by all Pattern users.
 # If this limit is exceeded, SearchEngineLimitError is raised.
-# You should obtain your own license key at: 
+# You should obtain your own license key at:
 # https://datamarket.azure.com/account/
 engine = Bing(license=None, language="en")
 
@@ -22,7 +22,7 @@ q = "\"is more important than\""
 # When you execute a query,
 # the script will halt until all results are downloaded.
 # In apps with an infinite main loop (e.g., GUI, game),
-# it is often more useful if the app keeps on running 
+# it is often more useful if the app keeps on running
 # while the search is executed in the background.
 # This can be achieved with the asynchronous() function.
 # It takes any function and that function's arguments and keyword arguments:
@@ -32,11 +32,11 @@ request = asynchronous(engine.search, q, start=1, count=100, type=SEARCH, timeou
 # In real-life you would have an app.update() or similar
 # in which you can check request.done every now and then.
 while not request.done:
-    time.sleep(0.01)
-    print ".",
+    time.sleep(0.1)
+    print(".")
 
-print
-print
+print("")
+print("")
 
 # An error occured in engine.search(), raise it.
 if request.error:
@@ -44,7 +44,7 @@ if request.error:
 
 # Retrieve the list of search results.
 for result in request.value:
-    print result.text
-    print result.url
-    print
+    print(result.text)
+    print(result.url)
+    print("")
     

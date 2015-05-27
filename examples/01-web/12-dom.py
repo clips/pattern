@@ -13,20 +13,20 @@ from pattern.web import NODE, TEXT, COMMENT, ELEMENT, DOCUMENT
 # For example, top news entries on Reddit are coded as:
 # <div class="entry">
 #     <p class="title">
-#         <a class="title " href="http://i.imgur.com/yDyPu8P.jpg">Bagel the bengal, destroyer of boxes</a> 
+#         <a class="title " href="http://i.imgur.com/yDyPu8P.jpg">Bagel the bengal, destroyer of boxes</a>
 #     ...
 # </div>
 #
 # ... which - naturally - is a picture of a cat.
 url = URL("http://www.reddit.com/top/")
 dom = DOM(url.download(cached=True))
-#print dom.body.content
+#print(dom.body.content)
 for e in dom.by_tag("div.entry")[:5]: # Top 5 reddit entries.
     for a in e.by_tag("a.title")[:1]: # First <a class="title"> in entry.
-        print plaintext(a.content)
-        print a.attrs["href"]
-        print
-        
+        print(plaintext(a.content))
+        print(a.attrs["href"])
+        print(""))
+
 # The links in the HTML source code may be relative,
 # e.g., "../img.jpg" instead of "www.domain.com/img.jpg".
 # We can get the absolute URL by prepending the base URL.
@@ -35,9 +35,9 @@ for e in dom.by_tag("div.entry")[:5]: # Top 5 reddit entries.
 from pattern.web import abs
 url = URL("http://nodebox.net")
 for link in DOM(url.download()).by_tag("a"):
-    link = link.attrs.get("href","")
+    link = link.attrs.get("href", "")
     link = abs(link, base=url.redirect or url.string)
-    #print link
+    #print(link)
 
 # The DOM object is a tree of nested Element and Text objects.
 # All objects inherit from Node (check the source code).
@@ -61,11 +61,11 @@ for link in DOM(url.download()).by_tag("a"):
 # Element.get_elements_by_classname(value)
 # Element.get_elements_by_attribute(name=value)
 
-# You can also use shorter aliases (we prefer them): 
+# You can also use shorter aliases (we prefer them):
 # Element.by_id(), by_tag(), by_class(), by_attr().
 
-# The tag name passed to Element.by_tag() can include 
-# a class (e.g., "div.message") or an id (e.g., "div#header"). 
+# The tag name passed to Element.by_tag() can include
+# a class (e.g., "div.message") or an id (e.g., "div#header").
 
 # For example:
 # In the <head> tag, retrieve the <meta name="keywords"> element.
@@ -74,13 +74,13 @@ dom = DOM(URL("http://www.clips.ua.ac.be").download())
 kw = dom.head.by_attr(name="keywords")[0]
 kw = kw.attrs["content"]
 kw = [x.strip() for x in kw.split(",")]
-print kw
-print
+print(kw)
+print("")
 
 # If you know CSS, you can also use short and handy CSS selectors:
 # http://www.w3.org/TR/CSS2/selector.html
 # Element(selector) will return a list of nested elements that match the given string.
 dom = DOM(URL("http://www.clips.ua.ac.be").download())
 for e in dom("div#sidebar-left li div:first-child span"):
-    print plaintext(e.content)
-    print
+    print(plaintext(e.content))
+    print("")

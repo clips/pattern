@@ -14,19 +14,19 @@ p = "NP be ADJP|ADVP than NP"
 for s in (
   "the turtle was faster than the hare",
   "Arnold Schwarzenegger is more dangerous than Dolph Lundgren"):
-    t = parsetree(s, lemmata=True) # parse lemmas
+    t = parsetree(s, lemmata=True)  # parse lemmas
     m = search(p, t)
     if m:
         # Constituents for the given constraint indices:
         # 0 = NP, 2 = ADJP|ADVP, 4 = NP
-        print m[0].constituents(constraint=[0,2,4])
-        print
-        
-        
+        print(m[0].constituents(constraint=[0, 2, 4]))
+        print("")
+
+
 p = "NP be ADJP|ADVP than NP"
 t = parsetree("the turtle was faster than the hare", lemmata=True)
 m = match(p, t)
-print t
-print
+print(t)
+print("")
 for w in m.words:
-    print w, " \t=>", m.constraint(w)
+    print("%s\t=> %s" % (w, m.constraint(w)))

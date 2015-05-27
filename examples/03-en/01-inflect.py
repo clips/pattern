@@ -14,27 +14,26 @@ from pattern.en import NOUN, VERB, ADJECTIVE
 # ------------------
 # The article() function returns the indefinite article (a/an) for a given noun.
 # The definitive article is always "the". The plural indefinite is "some".
-print article("bear"), "bear"
-print
+print(article("bear") + " bear")
+print("")
 
 # The referenced() function returns a string with article() prepended to the given word.
 # The referenced() funtion is non-trivial, as demonstrated with the exception words below:
 for word in ["hour", "one-liner", "European", "university", "owl", "yclept", "year"]:
-    print referenced(word)
-print
-print
+    print(referenced(word))
+print("")
 
 # PLURALIZATION
 # -------------
 # The pluralize() function returns the plural form of a singular noun (or adjective).
 # The algorithm is robust and handles about 98% of exceptions correctly:
 for word in ["part-of-speech", "child", "dog's", "wolf", "bear", "kitchen knife"]:
-    print pluralize(word)
-print pluralize("octopus", classical=True)
-print pluralize("matrix", classical=True)
-print pluralize("matrix", classical=False)
-print pluralize("my", pos=ADJECTIVE)
-print
+    print(pluralize(word))
+print(pluralize("octopus", classical=True))
+print(pluralize("matrix", classical=True))
+print(pluralize("matrix", classical=False))
+print(pluralize("my", pos=ADJECTIVE))
+print("")
 
 # SINGULARIZATION
 # ---------------
@@ -42,27 +41,25 @@ print
 # It is slightly less robust than the pluralize() function.
 for word in ["parts-of-speech", "children", "dogs'", "wolves", "bears", "kitchen knives", 
              "octopodes", "matrices", "matrixes"]:
-    print singularize(word)
-print singularize("our", pos=ADJECTIVE)
-print
-print
+    print(singularize(word))
+print(singularize("our", pos=ADJECTIVE))
+print("")
 
 # COMPARATIVE & SUPERLATIVE ADJECTIVES
 # ------------------------------------
 # The comparative() and superlative() functions give the comparative/superlative form of an adjective.
 # Words with three or more syllables are simply preceded by "more" or "most".
 for word in ["gentle", "big", "pretty", "hurt", "important", "bad"]:
-    print word, "=>", comparative(word), "=>", superlative(word)
-print
-print
+    print("%s => %s => %s" % (word, comparative(word), superlative(word)))
+print("")
 
 # VERB CONJUGATION
 # ----------------
 # The lexeme() function returns a list of all possible verb inflections.
 # The lemma() function returns the base form (infinitive) of a verb.
-print "lexeme:", lexeme("be")
-print "lemma:", lemma("was")
-print
+print("lexeme: %s" % lexeme("be"))
+print("lemma: %s" % lemma("was"))
+print("")
 
 # The conjugate() function inflects a verb to another tense.
 # You can supply: 
@@ -74,9 +71,9 @@ print
 # The tense can also be given as an abbreviated alias, e.g., 
 # inf, 1sg, 2sg, 3sg, pl, part, 1sgp, 2sgp, 3sgp, ppl, ppart.
 from pattern.en import PRESENT, SINGULAR
-print conjugate("being", tense=PRESENT, person=1, number=SINGULAR, negated=False)
-print conjugate("being", tense="1sg", negated=False)
-print
+print(conjugate("being", tense=PRESENT, person=1, number=SINGULAR, negated=False))
+print(conjugate("being", tense="1sg", negated=False))
+print("")
 
 # Prefer the full constants for code that will be reused/shared.
 
@@ -86,6 +83,6 @@ print
 # You can then check if a tense constant is in the list.
 # This will also work with aliases, even though they are not explicitly in the list.
 from pattern.en import PRESENT, PLURAL
-print tenses("are")
-print (PRESENT, 1, PLURAL) in tenses("are")
-print "pl" in tenses("are")
+print(tenses("are"))
+print((PRESENT, 1, PLURAL) in tenses("are"))
+print("pl" in tenses("are"))

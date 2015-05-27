@@ -22,19 +22,19 @@ ds = Datasheet(rows=[
     [uid(), "asparagus", "vegetable"],
     [uid(), "banana",    "fruit"],
 ], fields=[
-      ("id", INTEGER), # Define the column headers.
+      ("id", INTEGER),  # Define the column headers.
     ("name", STRING),
     ("type", STRING)
 ])
 
-print ds.rows[0]    # A list of rows.
-print ds.columns[1] # A list of columns, where each column is a list of values.
-print ds.name
-print
+print(ds.rows[0])     # A list of rows.
+print(ds.columns[1])  # A list of columns, where each column is a list of values.
+print(ds.name)
+print("")
 
 # Columns can be manipulated directly like any other Python list.
 # This can be slow for large tables. If you need a fast way to do matrix math,
-# use numpy (http://numpy.scipy.org/) instead. 
+# use numpy (http://numpy.scipy.org/) instead.
 # The purpose of Table is data storage.
 ds.columns.append([
     "green",
@@ -50,5 +50,5 @@ ds.save("food.txt", headers=True)
 ds = Datasheet.load("food.txt", headers=True)
 
 pprint(ds, truncate=50, padding=" ", fill=".")
-print
-print ds.fields
+print("")
+print(ds.fields)

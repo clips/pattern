@@ -8,7 +8,7 @@ from pattern.db import csv, pd
 # The classifier is small (80KB) and fast.
 
 w = Wiktionary(language="en")
-f = csv() # csv() is a short alias for Datasheet().
+f = csv()  # csv() is a short alias for Datasheet().
 
 # Collect male and female given names from Wiktionary.
 # Store the data as (name, gender)-rows in a CSV-file.
@@ -22,7 +22,7 @@ for gender in ("male", "female"):
             if not name.startswith("Appendix:"):
                 f.append((name, gender[0]))
         f.save(pd("given-names.csv"))
-        print ch, gender
+        print(ch, gender)
 
 # Create a classifier that predicts gender based on name.
 
@@ -42,7 +42,7 @@ class GenderByName(SVM):
         """
         v = chngrams(name, n=2)
         v = count(v)
-        v[name[-2:]+"$"] = 1
+        v[name[-2:] + "$"] = 1
         v[len(name)] = 1
         return v
 
@@ -50,7 +50,7 @@ data = csv(pd("given-names.csv"))
 
 # Test average (accuracy, precision, recall, F-score, standard deviation).
 
-print kfoldcv(GenderByName, data, folds=3) # (0.81, 0.79, 0.77, 0.78, 0.00)
+print(kfoldcv(GenderByName, data, folds=3))  # (0.81, 0.79, 0.77, 0.78, 0.00)
 
 # Train and save the classifier in the current folder.
 # With final=True, discards the original training data (= smaller file).
@@ -76,7 +76,7 @@ for name in (
   "Leia",
   "Flash",
   "Barbarella"):
-    print name, g.classify(name)
+    print(name, g.classify(name))
 
 # In the example above, Arwen and Jabba are misclassified.
 # We can of course improve the classifier by hand:
@@ -84,5 +84,5 @@ for name in (
 #g.train("Arwen", gender="f")
 #g.train("Jabba", gender="m")
 #g.save(pd("gender-by-name.svm"), final=True)
-#print g.classify("Arwen")
-#print g.classify("Jabba")
+#print(g.classify("Arwen"))
+#print(g.classify("Jabba"))

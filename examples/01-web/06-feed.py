@@ -14,11 +14,11 @@ CNN     = "http://rss.cnn.com/rss/edition.rss"
 engine = Newsfeed()
 
 for result in engine.search(CNN, cached=True):
-    print result.title.upper()
-    print plaintext(result.text) # Remove HTML formatting.
-    print result.url
-    print result.date
-    print
+    print(result.title.upper())
+    print(plaintext(result.text))  # Remove HTML formatting.
+    print(result.url)
+    print(result.date)
+    print("")
 
 # News item URL's lead to the page with the full article.
 # This page can have any kind of formatting.
@@ -26,7 +26,7 @@ for result in engine.search(CNN, cached=True):
 # But we could just download the source HTML and convert it to plain text:
 
 #html = URL(result.url).download()
-#print plaintext(html)
+#print(plaintext(html))
 
 # The resulting text may contain a lot of garbage.
 # A better way is to use a DOM parser to select the HTML elements we want.
