@@ -13,8 +13,8 @@
 /*##################################################################################################*/
 
 try { $; } catch(e) {
-    function $(id) {
-        return document.getElementById(id);
+    function $(x, y) {
+        return Array.copy(((y !== undefined)? y : document).querySelectorAll(x));
     }
 }
 
@@ -195,6 +195,16 @@ Array.unique = function (array) {
     return a;
 };
 
+Array.copy = function(array) {
+    /* Returns a shallow copy of the given array.
+     */
+    var a = [];
+    for (var i=0; i < array.length; i++) {
+        a.push(array[i]);
+    }
+    return a;
+};
+
 Array.choice = function(array) {
     /* Returns a random value from the given array (undefined if empty).
      */
@@ -236,6 +246,8 @@ Array.range = function(i, j) {
 };
 
 Array.len = function(array) {
+	/* Returns the length of the given array.
+	 */
     return array.length;
 };
 
@@ -3326,7 +3338,7 @@ var Canvas = Class.extend({
             e.parentNode.removeChild(e);
             delete this[w.name];
         }
-        var p = $(this.id + "_widgets");
+        var p = document.getElementById(this.id + "_widgets");
         if (p) p.parentNode.removeChild(p);
         this._widgets = [];
         this.variables = [];
@@ -4011,7 +4023,7 @@ function widget(canvas, variable, type, options) {
     var v = variable;
     var o = options || {};
     if (canvas.variables[v] === undefined) {
-        var parent = (o && o.parent)? o.parent : $(canvas.id + "_widgets");
+        var parent = (o && o.parent)? o.parent : document.getElementById(canvas.id + "_widgets");
         if (!parent) {
             // No widget container is given, or exists.
             // Insert a <div id="[canvas.id]_widgets" class="widgets"> after the <canvas> element.
@@ -4126,23 +4138,26 @@ attachEvent(window, "load", function() {
                     e[i].parentNode.insertBefore(canvas, e[i]);
                 }
             }
-            // Evaluate the script and bind setup() and draw() to the canvas.
-            var setup = function(){};
-            var draw  = function(){};
-            var stop  = function(){};
-            eval(e[i].innerHTML);
-            canvas = new Canvas(canvas);
-            canvas.draw  = draw;
-            canvas.setup = setup;
-            canvas.stop  = function() { 
-                stop(this); this._stop();
-            }
-            // <script class="canvas" loop="false"> renders a single frame.
-            if (e[i].getAttribute("loop") == "false") {
-                canvas.step();
-            } else {
-                canvas.run();
-            }
+            var async = function(canvas, e, i) { setTimeout(function() {
+                // Evaluate the script and bind setup() and draw() to the canvas.
+                var setup = function(){};
+                var draw  = function(){};
+                var stop  = function(){};
+                eval(e[i].innerHTML);
+                canvas = new Canvas(canvas);
+                canvas.draw  = draw;
+                canvas.setup = setup;
+                canvas.stop  = function() { 
+                    stop(this); this._stop();
+                }
+                // <script class="canvas" loop="false"> renders a single frame.
+                if (e[i].getAttribute("loop") == "false") {
+                    canvas.step();
+                } else {
+                    canvas.run();
+                }
+            }, 0); };
+            async(canvas, e, i);
         }
     }
 });
