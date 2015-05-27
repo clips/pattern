@@ -20,18 +20,23 @@ from random      import gauss
 if sys.version > "3":
     xrange = range
 
+#### COUNT #########################################################################################
+
+
 ####################################################################################################
 # Simple implementation of Counter for Python 2.5 and 2.6.
 # See also: http://code.activestate.com/recipes/576611/
+
+#--- COUNTER ---------------------------------------------------------------------------------------
 
 class Counter(dict):
     
     def __init__(self, iterable=None, **kwargs):
         self.update(iterable, **kwargs)
-                        
+        
     def __missing__(self, k):
         return 0
-
+        
     def update(self, iterable=None, **kwargs):
         """ Updates counter with the tallies from the given iterable, dictionary or Counter.
         """
@@ -44,29 +49,65 @@ class Counter(dict):
           or hasattr(iterable, "__iter__"):
             for k in iterable: 
                 self[k] = self.get(k, 0) + 1
-
+                
     def most_common(self, n=None):
         """ Returns a list of the n most common (element, count)-tuples.
         """
         if n is None:
             return sorted(self.items(), key=itemgetter(1), reverse=True)
         return nlargest(n, self.items(), key=itemgetter(1))
-
+        
     def copy(self):
         return Counter(self)
-    
+        
     def __delitem__(self, k):
         if k in self: 
             dict.__delitem__(self, k)
-    
+            
     def __repr__(self):
-        return "Counter({%s})" % ", ".join("%r: %r" % e for e in self.most_common())
+        return self.__class__.__name__ + "({%s})" % ", ".join("%r: %r" % e for e in self.most_common())
 
 try: 
     # Import Counter from Python 2.7+ if possible.
     from collections import Counter
 except:
     pass
+
+#--- FREQUENCY DICT --------------------------------------------------------------------------------
+
+class freq(Counter):
+    
+    def __init__(self, *args, **kwargs):
+        """ A dictionary with sorted float values (by default, 0.0).
+        """
+        Counter.__init__(self, dict(*args, **kwargs))
+        
+    def __missing__(self):
+        return 0.0
+        
+    def __iter__(self):
+        return iter(self.keys())
+        
+    def items(self, relative=False):
+        """ Returns a list of (key, value)-tuples sorted by value, highest-first.
+            With relative=True, the sum of values is 1.0.
+        """
+        a = Counter.most_common(self)
+        if relative:
+            n = sum(v for k, v in a) or 1.
+            a = [(k, v / n) for v, k in a]
+        return a
+        
+    def keys(self):
+        return [k for k, v in self.items()]
+        
+    def values(self, relative=False):
+        return [v for k, v in self.items(relative)]
+        
+    def copy(self):
+        return freq(self)
+
+#--- CUMULATIVE SUM --------------------------------------------------------------------------------
 
 def cumsum(iterable):
     """ Returns an iterator over the cumulative sum of values in the given list.
@@ -441,7 +482,7 @@ def type_token_ratio(string, n=100, punctuation=PUNCTUATION):
     s = string.lower().split()
     s = [w.strip(punctuation) for w in s]
     # Covington & McFall moving average TTR algorithm.
-    return mean(1.0 * len(set(x)) / len(x) for x in window(s, n))
+    return mean(1.0 * len(set(x)) / max(len(x), 1) for x in window(s, n))
 
 ttr = type_token_ratio
 
