@@ -75,7 +75,7 @@ for p in ("-", "-web", "-db", "-search", "-vector", "-graph", "-canvas", "-metri
     if p == "mbsp-tags":
         title = "Penn Treebank II tag set"
     # Download the online documentation pages.
-    print "Retrieving", url + p
+    print("Retrieving", url + p)
     html = URL(url + p).download(cached=False)
     # Parse the actual documentation, we don't need the website header, footer, navigation, search.
     html = Document(html)
