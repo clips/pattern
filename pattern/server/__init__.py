@@ -10,9 +10,11 @@
 from __future__ import with_statement
 
 import __main__
-import sys
-import os
 import re
+import os
+import sys
+import pwd
+import grp
 import time; _time=time
 import atexit
 import urllib
@@ -76,6 +78,32 @@ except:
     try: from pattern.web import json # simplejson
     except:
         json = None
+        
+json.encoder.FLOAT_REPR = lambda f: ("%.2f" % f)
+
+def chown(path, owner=None):
+    """ Changes the ownership of the given file to the given (user, group).
+        Returns True if successful.
+    """
+    if owner:
+        try:
+            x, y = owner, -1 # x = user, y = group
+            x, y = x if isinstance(x, tuple) else (x, y)
+            x, y = (pwd.getpwnam(x).pw_uid if not isinstance(x, int) else x,
+                    grp.getgrnam(y).gr_gid if not isinstance(y, int) else y)
+            os.chown(path, x, y)
+            return True
+        except:
+            return False
+
+# On Linux + Apache mod_wsgi, the user that executes the Python script is "www-data".
+# If the app folder was created by "root", "www-data" will not have write permission,
+# and consequently cannot write to an SQLite database (e.g., App.rate) in the folder,
+# or create SQLite -journal files. 
+
+# The solution is for "www-data" to chown() the folder, and any database files in it.
+# This can also be done from Python with App(owner=("www-data", "www-data"))
+# and Database(owner=("www-data", "www-data")), which will call chown().
 
 #### STRING FUNCTIONS ##############################################################################
 
@@ -193,14 +221,18 @@ class Database(object):
         self._factory = k("factory", Row)
         self._timeout = k("timeout", 10)
         self._connection = None
-        if kwargs.get("connect", True):
+        if k("connect", True):
             self.connect()
-        if kwargs.get("schema"):
+        if k("schema"):
             # Database(schema="create table if not exists" `...`)
             # initializes the database table and index structure.
             for q in kwargs["schema"].split(";"):
                 self.execute(q+";", commit=False)
             self.commit()
+        if k("owner"):
+            # Database(owner="www-data")
+            # grants write permission to user.
+            chown(name, k("owner"))
     
     @property
     def name(self):
@@ -436,6 +468,8 @@ class RateLimit(Database):
         """ Sets the rate for the given key and path,
             where limit is the maximum number of requests in the given time (e.g., 100/hour).
         """
+        # Map time as str to float.
+        time = {"second": SECOND, "minute": MINUTE, "hour": HOUR, "day": DAY}.get(time, time)
         # Update database.
         p  = "/" + path.strip("/")
         q1 = "delete from `rate` where key=? and path=?;"
@@ -456,7 +490,7 @@ class RateLimit(Database):
         return self.execute(q, (key, p), first=True, commit=False)
         
     def __setitem__(self, k, v): # (key, path), (limit, time)
-        return self.set(key, path, limit, time)
+        return self.set(*(k+v))
         
     def __getitem__(self, k):    # (key, path)
         return self.get(*k)
@@ -584,7 +618,7 @@ class HTTPRequest(object):
         self.headers = dict(headers)
         
     def __repr__(self):
-        return "HTTPRequest(ip=%s, path=%s)" % repr(self.ip, self.path)
+        return "HTTPRequest(ip=%s, path=%s)" % (repr(self.ip), repr(self.path))
 
 class HTTPRedirect(Exception):
     
@@ -615,12 +649,13 @@ def _HTTPErrorSubclass(status):
         lambda self, message="", traceback="": HTTPError.__init__(self, status, message, traceback)})
 
 HTTP200OK                  = _HTTPErrorSubclass("200 OK")
+HTTP400BadRequest          = _HTTPErrorSubclass("400 Bad Request")
 HTTP401Authentication      = _HTTPErrorSubclass("401 Authentication")
 HTTP403Forbidden           = _HTTPErrorSubclass("403 Forbidden")
 HTTP404NotFound            = _HTTPErrorSubclass("404 Not Found")
 HTTP429TooManyRequests     = _HTTPErrorSubclass("429 Too Many Requests")
-HTTP500InternalServerError = _HTTPErrorSubclass("500 InternalServerError")
-HTTP503ServiceUnavailable  = _HTTPErrorSubclass("503 ServiceUnavailable")
+HTTP500InternalServerError = _HTTPErrorSubclass("500 Internal Server Error")
+HTTP503ServiceUnavailable  = _HTTPErrorSubclass("503 Service Unavailable")
 
 #--- APPLICATION THREAD-SAFE DATA ------------------------------------------------------------------
 # With a multi-threaded server, each thread requires its own local data (i.e., database connection).
@@ -726,7 +761,7 @@ class ApplicationError(Exception):
 
 class Application(object):
     
-    def __init__(self, name=None, path=SCRIPT, static="./static", rate="rate.db"):
+    def __init__(self, name=None, path=SCRIPT, static="./static", rate="rate.db", owner=None):
         """ A web app served by a WSGI-server that starts with App.run().
             By default, the app is served from the folder of the script that imports pattern.server.
             By default, static content is served from the given subfolder.
@@ -735,6 +770,7 @@ class Application(object):
         """
         # RateLimit db resides in app folder:
         rate = os.path.join(path, rate)
+        self._owner  = owner        # App owner (e.g., "www-data" with mod_wsgi).
         self._name   = name         # App name.
         self._path   = path         # App path.
         self._host   = None         # Server host, see App.run().
@@ -747,7 +783,15 @@ class Application(object):
         self._rate   = rate         # RateLimit db name, see also App.route(limit=True).
         self.router  = Router()     # Router object, maps URL paths to handlers.
         self.thread  = App.Thread() # Thread-safe dictionary.
+        # Change path:
         os.chdir(path)
+        # Change owner:
+        # (= grant SQLite write permission)
+        chown(path, owner)
+        
+    @property
+    def owner(self):
+        return self._owner
         
     @property
     def name(self):
@@ -824,7 +868,7 @@ class Application(object):
             return v
         if isinstance(v, dict):
             cp.response.headers["Content-Type"] = "application/json; charset=utf-8"
-            cp.response.headers["Access-Control-Allow-Origin"] = "*" # CORS
+            cp.response.headers.setdefault("Access-Control-Allow-Origin", "*") # CORS
             return json.dumps(v)
         if isinstance(v, types.GeneratorType):
             cp.response.stream = True
@@ -873,10 +917,6 @@ class Application(object):
         #print(self.elapsed)
         return v
         
-    def unlimited(self, v=None):
-        self._ratelimited = False # See App.route() below.
-        return v
-        
     def route(self, path, limit=False, time=None, key=lambda data: data.get("key"), reset=100000):
         """ The @app.route(path) decorator defines the handler function for the given path.
             The function can take arguments (path) and keyword arguments (query data), e.g.,
@@ -902,17 +942,14 @@ class Application(object):
                     g.rate = RateLimit(name=self._rate)
                 def wrapper(*args, **kwargs):
                     self = cp.request.app.root
-                    self._ratelimited = True
-                    v = handler(*args, **kwargs)
-                    if self._ratelimited: # App.unlimited() in handler() sets it to False.
-                        self.rate(
-                              key = _a[0](cp.request.params),
-                             path = "/" + cp.request.path_info.strip("/"),
-                            limit = _a[1], # Default limit for unknown keys.
-                             time = _a[2], # Default time for unknown keys.
-                            reset = _a[3]  # Threshold for clearing cache.
-                        )
-                    return v
+                    self.rate(
+                          key = _a[0](cp.request.params),
+                         path = "/" + path.strip("/"),
+                        limit = _a[1], # Default limit for unknown keys.
+                         time = _a[2], # Default time for unknown keys.
+                        reset = _a[3]  # Threshold for clearing cache.
+                    )
+                    return handler(*args, **kwargs)
                 return wrapper
             if limit is True or (limit is not False and limit is not None and time is not None):
                 handler = ratelimited(handler)
@@ -984,7 +1021,7 @@ class Application(object):
     def rate(self, name="rate"):
         """ Yields a thread-safe connection to the app's RateLimit db.
         """
-        if not hasattr(g, name): setattr(g, name, RateLimit(name=self._rate))
+        if not hasattr(g, name): setattr(g, name, RateLimit(name=self._rate, owner=self._owner))
         return getattr(g, name)
 
     def bind(self, name="db"):
@@ -1003,8 +1040,20 @@ class Application(object):
         # >>> def products(id, db=None):
         # >>>     return db.execute("select * from products where id=?", (id,))
         def decorator(handler):
-            return self.thread(START)(lambda: setattr(g, name, handler()))
+            f = lambda: setattr(g, name, handler())
+            f()
+            self.thread(START)(f)
+            return handler
         return decorator
+        
+    def __getattr__(self, k):
+        """ Yields the value of the bound function with the given name (e.g., app.db).
+        """
+        if k in self.__dict__:
+            return self.__dict__[k]
+        if k in g:
+            return g[k]
+        raise AttributeError("'%s' object has no attribute '%s'" % (self.__class__.__name__, k))
     
     @property
     def cached(self):
@@ -1012,14 +1061,18 @@ class Application(object):
             This is useful if the handler is computationally expensive,
             and often called with the same arguments (e.g., recursion).
         """
+        # Note: to cache path handlers, first do @app.cached, then @app.route(),
+        # i.e., route the cached handler, don't cache the router (= no effect):
+        # @app.route("/search")
+        # @app.cached
+        # def heavy_search(q):
+        #     ...
         def decorator(handler):
             def wrapper(*args, **kwargs):
                 # Cache return value for given arguments
-                # (except db & rate Connection objects).
-                kw = dict(kwargs)
-                kw.pop("db", None)
-                kw.pop("rate", None)
-                k = (handler, pickle.dumps(args), pickle.dumps(kw))
+                # (excepting Database objects).
+                k = sorted((k, v) for k, v in kwargs.items() if not isinstance(v, Database))
+                k = (handler, pickle.dumps(args), pickle.dumps(k))
                 if len(self._cache) >= self._cached:
                     self._cache.clear()
                 if k not in self._cache:
@@ -1144,17 +1197,18 @@ App = Application
 # A certificate can be used to secure a web app (i.e., a https:// connection).
 # A certificate confirms the owner's identity, as verified by a signer.
 # This signer can be trusted third-party (e.g., Comodo) or self-signed.
-# The certificate() function yields a free, self-signed certificate.
+# The certificate() function yields a free, self-signed certificate (valid for 365 days).
 # Visitors will get a browser warning that the certificate is not signed by a trusted third party.
 
-def certificate(host=LOCALHOST, country=None, state=None, city=None, company=None, contact=None, **kwargs):
+def certificate(domain=LOCALHOST, country=None, state=None, city=None, company=None, contact=None, signed=True, **kwargs):
     """ Returns a (private key, certificate)-tuple for a secure SSL-encrypted https server.
+        With signed=False, returns a (private key, certificate request)-tuple.
         Only works on Unix with OpenSSL.
     """
     # Generate private key.
     # > openssl genrsa 2048 -out ssl.key
     s = subprocess.PIPE
-    p = ("openssl", "genrsa", "2048")
+    p = ("openssl", "genrsa", "%s" % kwargs.get("encryption", 2048))
     p = subprocess.Popen(p, stdin=s, stdout=s, stderr=s)
     k = kwargs.get("key") or p.communicate()[0]
     f = tempfile.NamedTemporaryFile(delete=False)
@@ -1162,14 +1216,15 @@ def certificate(host=LOCALHOST, country=None, state=None, city=None, company=Non
     f.close()
     # Generate certificate.
     # > openssl req -new -x509 -days 365 -key ssl.key -out ssl.crt
-    p = ("openssl", "req", "-new", "-x509", "-days", "365", "-key", f.name)
+    p = ("openssl", "req", "-new", "-key", f.name)
+    p = p + ("-x509", "-days", "365") if signed else p
     p = subprocess.Popen(p, stdin=s, stdout=s, stderr=s)
-    x = p.communicate("%s\n%s\n%s\n%s\n.\n%s\n%s\n" % (
-          country or ".",      # BE
+    x = p.communicate("%s\n%s\n%s\n%s\n.\n%s\n%s\n\n\n" % (
+          country or ".",       # BE
             state or ".",       # Antwerp
              city or ".",       # Antwerp
           company or ".",       # CLiPS
-             host or LOCALHOST, # Tom De Smedt
+           domain or LOCALHOST, # Tom De Smedt
           contact or "."        # tom@organisms.be
     ))[0]
     os.unlink(f.name)
@@ -1537,6 +1592,7 @@ html = HTML()
 #@app.bind("db")
 #def db():
 #    return Database("log.db", schema="create table if not exists `log` (q text);")
+#
 #
 ## http://localhost:8080/whatever
 #@app.route("/")
