@@ -560,7 +560,7 @@ class URL(object):
         """
         if self.__dict__["_redirect"] is None:
             try:
-                r = self.open(timeout).geturl()
+                r = u(self.open(timeout).geturl())
             except URLError:
                 r = None
             self.__dict__["_redirect"] = r != self.string and r or ""
@@ -929,7 +929,7 @@ def decode_entities(string):
 def encode_url(string):
     return urllib.quote_plus(bytestring(string)) # "black/white" => "black%2Fwhite".
 def decode_url(string):
-    return urllib.unquote_plus(string)
+    return u(urllib.unquote_plus(bytestring(string)))
 
 RE_SPACES = re.compile("( |\xa0)+", re.M) # Matches one or more spaces.
 RE_TABS   = re.compile(r"\t+", re.M)      # Matches one or more tabs.
