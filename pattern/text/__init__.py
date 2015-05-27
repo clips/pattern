@@ -106,7 +106,10 @@ def decamel(s, separator="_"):
         decamel("TomDeSmedt", "-") => "tom-de-smedt"
         decamel("getHTTPResponse2) => "get_http_response2"
     """
-    return re.sub(r"((?<=[a-z0-9])[A-Z]|(?!^)[A-Z](?=[a-z]))", separator + "\\1", s).lower()
+    s = re.sub(r"([a-z0-9])([A-Z])", "\\1%s\\2" % separator, s)
+    s = re.sub(r"([A-Z])([A-Z][a-z])", "\\1%s\\2" % separator, s)
+    s = s.lower()
+    return s
     
 def pprint(string, token=[WORD, POS, CHUNK, PNP], column=4):
     """ Pretty-prints the output of Parser.parse() as a table with outlined columns.
