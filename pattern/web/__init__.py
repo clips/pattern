@@ -3594,8 +3594,8 @@ class Document(Element):
             It contains nested Element, Text and Comment nodes.
         """
         # Aliases for BeautifulSoup optional parameters:
-        kwargs["selfClosingTags"] = kwargs.pop(
-            "self_closing", kwargs.get("selfClosingTags"))
+        # TODO kwargs["selfClosingTags"] is deprecated, do we just ignore it?
+        kwargs.pop("self_closing", kwargs.get("selfClosingTags"))
         Node.__init__(self, u(html).strip(), type=DOCUMENT, **kwargs)
 
     @property
