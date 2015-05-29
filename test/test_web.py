@@ -564,7 +564,7 @@ class TestSearchEngine(unittest.TestCase):
             self._test_search_engine(
                 "Newsfeed", url, None, web.Newsfeed, query=url, type=web.NEWS)
 
-    def _test_results(self, api, source, license, Engine, type=web.SEARCH, query="today", baseline=[6, 6, 6, 0]):
+    def _test_results(self, api, source, license, Engine, type=web.SEARCH, query="today", baseline=[6, 3, 6, 0]):
         # Assert SearchEngine result content.
         # We expect to find http:// URL's and descriptions containing the
         # search query.
@@ -806,8 +806,8 @@ class TestDOM(unittest.TestCase):
             <body id="front" class="comments">
                 <script type="text/javascript">alert(0);</script>
                 <div id="navigation">
-                    <a href="nav1.html">nav1</a> | 
-                    <a href="nav2.html">nav2</a> | 
+                    <a href="nav1.html">nav1</a> |
+                    <a href="nav2.html">nav2</a> |
                     <a href="nav3.html">nav3</a>
                 </div>
                 <div id="content">
