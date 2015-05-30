@@ -1295,6 +1295,7 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
         lambda m: m.group(1).replace(" ", "") + m.group(2), s) for s in sentences]
     sentences = [RE_EMOJI.sub(
         lambda m: (m.group(1) or " ") + m.group(2) + (m.group(3) or " "), s) for s in sentences]
+    sentences = [s.replace("  ", " ").strip() for s in sentences]
     return sentences
 
 #--- PART-OF-SPEECH TAGGER -----------------------------------------------
