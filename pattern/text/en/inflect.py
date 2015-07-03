@@ -506,7 +506,7 @@ singular_rules = [
     # -a
     (r'(?i)([ti])a$'          , '\\1um'   ),
     (r'(?i)(n)ews$'           , '\\1ews'  ),
-    (r'(?i)s$'                , ''        ),
+    (r'(?i)([^s])s$'          , '\\1'     ),
 ]
 
 # For performance, compile the regular expressions only once:
