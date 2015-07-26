@@ -117,10 +117,7 @@ plural_prepositions = set((
     "among"  , "beside" , "in"    , "out"  , "unto" ,
     "around" , "besides", "into"  , "over" , "upon" ,
     "at"     , "between", "near"  , "since", "with" ,
-    "athwart", "betwixt", 
-               "beyond", 
-               "but", 
-               "by"))
+    "athwart", "betwixt", "beyond", "but"  , "by"))
 
 # Inflection rules that are either:
 # - general,
@@ -280,20 +277,19 @@ plural_categories = {
         "bream"      , "diabetes"   , "herpes"       , "pincers"    , "trout"        ,
         "breeches"   , "djinn"      , "high-jinks"   , "pliers"     , "tuna"         ,
         "britches"   , "eland"      , "homework"     , "proceedings", "whiting"      ,
-        "carp"       , "elk"        , "innings"      , "rabies"     , "wildebeest"
-        "chassis"    , "flounder"   , "jackanapes"   , "salmon"     ,
-        "clippers"   , "gallows"    , "mackerel"     , "scissors"   , 
-        "cod"        , "graffiti"   , "measles"      , "series"     , 
-        "contretemps",                "mews"         , "shears"     , 
-        "corps"      ,                "mumps"        , "species"
+        "carp"       , "elk"        , "innings"      , "rabies"     , "wildebeest"	 ,
+        "chassis"    , "flounder"   , "jackanapes"   , "salmon"     , "clippers"     , 
+        "gallows"    , "mackerel"   , "scissors"     ,  "cod"       , "graffiti"     ,
+        "measles"    , "series"     , "contretemps"  ,  "mews"      , "shears"       , 
+        "corps"      , "mumps"      , "species"
         ],
     "uncountable": [
         "advice"     , "fruit"      , "ketchup"      , "meat"       , "sand"         ,
         "bread"      , "furniture"  , "knowledge"    , "mustard"    , "software"     ,
         "butter"     , "garbage"    , "love"         , "news"       , "understanding",
-        "cheese"     , "gravel"     , "luggage"      , "progress"   , "water"
-        "electricity", "happiness"  , "mathematics"  , "research"   , 
-        "equipment"  , "information", "mayonnaise"   , "rice"
+        "cheese"     , "gravel"     , "luggage"      , "progress"   , "water"        ,
+        "electricity", "happiness"  , "mathematics"  , "research"   , "equipment"    ,
+        "information", "mayonnaise"   , "rice"
         ],
     "s-singular": [
         "acropolis"  , "caddis"     , "dais"         , "glottis"    , "pathos"       ,
@@ -301,14 +297,14 @@ plural_categories = {
         "alias"      , "canvas"     , "epidermis"    , "lens"       , "polis"        ,
         "asbestos"   , "chaos"      , "ethos"        , "mantis"     , "rhinoceros"   ,
         "bathos"     , "cosmos"     , "gas"          , "marquis"    , "sassafras"    ,
-        "bias"       ,                "glottis"      , "metropolis" , "trellis"
+        "bias"       , "glottis"    , "metropolis"   , "trellis"
         ],
     "ex-ices": [
         "codex"      , "murex"      , "silex"
         ],
     "ex-ices*": [
-        "apex"       , "index"      , "pontifex"     , "vertex"     , 
-        "cortex"     , "latex"      , "simplex"      , "vortex"
+        "apex"       , "index"      , "pontifex"     , "vertex"     , "cortex"       , 
+        "latex"      , "simplex"    , "vortex"
         ],
     "um-a": [
         "agendum"    , "candelabrum", "desideratum"  , "extremum"   , "stratum"      ,
@@ -355,7 +351,7 @@ plural_categories = {
         "incubus"    , "stylus"     , "uterus"
         ],
     "us-us*": [
-        "apparatus"  , "hiatus"     , "plexus"       , "status"
+        "apparatus"  , "hiatus"     , "plexus"       , "status"     .
         "cantus"     , "impetus"    , "prospectus"   ,
         "coitus"     , "nexus"      , "sinus"        , 
         ],
@@ -516,7 +512,7 @@ singular_uninflected = set((
     "bison"      , "debris"   , "headquarters", "pincers"    , "trout"     ,
     "bream"      , "diabetes" , "herpes"      , "pliers"     , "tuna"      ,
     "breeches"   , "djinn"    , "high-jinks"  , "proceedings", "whiting"   ,
-    "britches"   , "eland"    , "homework"    , "rabies"     , "wildebeest"
+    "britches"   , "eland"    , "homework"    , "rabies"     , "wildebeest",
     "carp"       , "elk"      , "innings"     , "salmon"     , 
     "chassis"    , "flounder" , "jackanapes"  , "scissors"   , 
     "christmas"  , "gallows"  , "mackerel"    , "series"     , 
@@ -528,7 +524,7 @@ singular_uninflected = set((
 singular_uncountable = set((
     "advice"     , "equipment", "happiness"   , "luggage"    , "news"      , "software"     ,
     "bread"      , "fruit"    , "information" , "mathematics", "progress"  , "understanding",
-    "butter"     , "furniture", "ketchup"     , "mayonnaise" , "research"  , "water"
+    "butter"     , "furniture", "ketchup"     , "mayonnaise" , "research"  , "water"		,
     "cheese"     , "garbage"  , "knowledge"   , "meat"       , "rice"      , 
     "electricity", "gravel"   , "love"        , "mustard"    , "sand"      , 
 ))
@@ -536,7 +532,7 @@ singular_ie = set((
     "alergie"    , "cutie"    , "hoagie"      , "newbie"     , "softie"    , "veggie"       , 
     "auntie"     , "doggie"   , "hottie"      , "nightie"    , "sortie"    , "weenie"       , 
     "beanie"     , "eyrie"    , "indie"       , "oldie"      , "stoolie"   , "yuppie"       , 
-    "birdie"     , "freebie"  , "junkie"      , "^pie"       , "sweetie"   , "zombie"
+    "birdie"     , "freebie"  , "junkie"      , "^pie"       , "sweetie"   , "zombie"		,
     "bogie"      , "goonie"   , "laddie"      , "pixie"      , "techie"    , 
     "bombie"     , "groupie"  , "laramie"     , "quickie"    , "^tie"      , 
     "collie"     , "hankie"   , "lingerie"    , "reverie"    , "toughie"   , 
