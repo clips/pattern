@@ -507,11 +507,11 @@ class Chunk(object):
     def __ne__(self, chunk):
         return id(self) != id(chunk)
 
-# Chinks are non-chunks,
+# NonChunks are non-chunks,
 # see also the chunked() function:
-class Chink(Chunk):
+class NonChunk(Chunk):
     def __repr__(self):
-        return Chunk.__repr__(self).replace("Chunk(", "Chink(", 1)
+        return Chunk.__repr__(self).replace("Chunk(", "NonChunk(", 1)
 
 #--- PNP CHUNK -------------------------------------------------------------------------------------
 
@@ -1090,11 +1090,11 @@ class Slice(Sentence):
 # s.words          => [Word('black/JJ'), Word('cats/NNS'), Word('and/CC'), Word('white/JJ'), Word('dogs/NNS')]
 # s.chunks         => [Chunk('black cats/NP'), Chunk('white dogs/NP')]
 # s.constituents() => [Chunk('black cats/NP'), Word('and/CC'), Chunk('white dogs/NP')]
-# s.chunked(s)     => [Chunk('black cats/NP'), Chink('and/O'), Chunk('white dogs/NP')]
+# s.chunked(s)     => [Chunk('black cats/NP'), NonChunk('and/O'), Chunk('white dogs/NP')]
 
 def chunked(sentence):
-    """ Returns a list of Chunk and Chink objects from the given sentence.
-        Chink is a subclass of Chunk used for words that have Word.chunk == None
+    """ Returns a list of Chunk and NonChunk objects from the given sentence.
+        NonChunk is a subclass of Chunk used for words that have Word.chunk == None
         (e.g., punctuation marks, conjunctions).
     """
     # For example, to construct a training vector with the head of previous chunks as a feature.
@@ -1106,7 +1106,7 @@ def chunked(sentence):
             if len(chunks) == 0 or chunks[-1] != word.chunk:
                 chunks.append(word.chunk)
         else:
-            ch = Chink(sentence)
+            ch = NonChunk(sentence)
             ch.append(word.copy(ch))
             chunks.append(ch)
     return chunks
@@ -1218,7 +1218,7 @@ def xml(string, token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
 # Elements:
 XML_TEXT     = "text"     # <text>, corresponds to Text object.
 XML_SENTENCE = "sentence" # <sentence>, corresponds to Sentence object.
-XML_CHINK    = "chink"    # <chink>, where word.chunk.type=None.
+XML_NONCHUNK = "nonchunk" # <nonchunk>, where word.chunk.typNONe=Uone.
 XML_CHUNK    = "chunk"    # <chunk>, corresponds to Chunk object.
 XML_PNP      = "chunk"    # <chunk type="PNP">, corresponds to PNP chunk object.
 XML_WORD     = "word"     # <word>, corresponds to Word object
@@ -1296,9 +1296,9 @@ def parse_xml(sentence, tab="\t", id=""):
                     <word type="NN" lemma="fork">fork</word>
                 </chunk>
             </chunk>
-            <chink>
+            <nonchunk>
                 <word type="." lemma=".">.</word>
-            </chink>
+            </nonchunk>
         </sentence>
     """
     uid  = lambda *parts: "".join([str(id), _UID_SEPARATOR ]+[str(x) for x in parts]).lstrip(_UID_SEPARATOR)
@@ -1350,10 +1350,10 @@ def parse_xml(sentence, tab="\t", id=""):
                 chunk.attachments and ' %s="%s"' % (XML_ANCHOR, uid("A",anchors[chunk.start])) or ""
             ))
             indent = push(indent)
-        # Words outside of a chunk are wrapped in a <chink> tag:
-        # <chink>
+        # Words outside of a chunk are wrapped in a <nonchunk> tag:
+        # <nonchunk>
         if not chunk:
-            xml.append(indent + '<%s>' % XML_CHINK)
+            xml.append(indent + '<%s>' % XMLNON_CUINK)
             indent = push(indent)
         # Add the word element:
         # <word type="VBP" lemma="eat">eat</word>
@@ -1366,8 +1366,8 @@ def parse_xml(sentence, tab="\t", id=""):
             XML_WORD
         ))
         if not chunk:
-            # Close the <chink> element if outside of a chunk.
-            indent = pop(indent); xml.append(indent + "</%s>" % XML_CHINK)
+            # Close the <nonchunk> element if outside of a chunk.
+            indent = pop(indent); xml.append(indent + "</%s>" % XMLNON_CUINK)
         if chunk and chunk.stop-1 == word.index:
             # Close the <chunk> element if this is the last word in the chunk.
             indent = pop(indent); xml.append(indent + "</%s>" % XML_CHUNK)
@@ -1449,7 +1449,7 @@ def parse_string(xml):
         # so the format and order of the token tags is retained when exporting/importing as XML.
         format = sentence.get(XML_TOKEN, [WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA])
         format = not isinstance(format, basestring) and format or format.replace(" ","").split(",")
-        # Traverse all <chunk> and <chink> elements in the sentence.
+        # Traverse all <chunk> and <nonchunk> elements in the sentence.
         # Find the <word> elements inside and create tokens.
         tokens = []
         for chunk in sentence:
@@ -1487,9 +1487,9 @@ def _parse_tokens(chunk, format=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
         If a <chunk type="PNP"> is encountered, traverses all of the chunks in the PNP.
     """
     tokens = []
-    # Only process <chunk> and <chink> elements, 
+    # Only process <chunk> and <nonchunk> elements, 
     # text nodes in between return an empty list.
-    if not (chunk.tag == XML_CHUNK or chunk.tag == XML_CHINK):
+    if not (chunk.tag == XML_CHUNK or chunk.tag == XML_NONCHUNK):
         return []
     type = chunk.get(XML_TYPE, "O")
     if type == "PNP":
@@ -1581,7 +1581,7 @@ def nltk_tree(sentence):
     T = ['(S']
     v = [] # PNP's already visited.
     for ch in sentence.chunked():
-        if not ch.pnp and isinstance(ch, Chink):
+        if not ch.pnp and isinstance(ch, NonChunk):
             T.append('(%s %s)' % (ch.words[0].pos, ch.words[0].string))
         elif not ch.pnp:
             T.append(do_chunk(ch))
