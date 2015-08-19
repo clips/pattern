@@ -1,4 +1,4 @@
-#--- API LICENSE CONFIGURATION -----------------------------------------------------------------------
+#--- API LICENSE CONFIGURATION -------------------------------------------
 # Default license keys used by pattern.web.SearchEngine to contact different API's.
 # Google and Yahoo are paid services for which you need a personal license + payment method.
 # The default Google license is for testing purposes (= 100 daily queries).
@@ -13,7 +13,7 @@ license["Bing"] = \
     "VnJEK4HTlntE3SyF58QLkUCLp/78tkYjV1Fl3J7lHa0="
 
 license["Yahoo"] = \
-    ("", "") # OAuth (key, secret)
+    ("", "")  # OAuth (key, secret)
 
 license["DuckDuckGo"] = \
     None
@@ -22,10 +22,10 @@ license["Wikipedia"] = \
     None
 
 license["Twitter"] = (
-    "p7HUdPLlkKaqlPn6TzKkA", # OAuth (key, secret, token)
+    "p7HUdPLlkKaqlPn6TzKkA",  # OAuth (key, secret, token)
     "R7I1LRuLY27EKjzulutov74lKB0FjqcI2DYRUmsu7DQ", (
-    "14898655-TE9dXQLrzrNd0Zwf4zhK7koR5Ahqt40Ftt35Y2qY",
-    "q1lSRDOguxQrfgeWWSJgnMHsO67bqTd5dTElBsyTM"))
+        "14898655-TE9dXQLrzrNd0Zwf4zhK7koR5Ahqt40Ftt35Y2qY",
+        "q1lSRDOguxQrfgeWWSJgnMHsO67bqTd5dTElBsyTM"))
 
 license["Facebook"] = \
     "332061826907464|jdHvL3lslFvN-s_sphK1ypCwNaY"

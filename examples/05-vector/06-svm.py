@@ -1,8 +1,11 @@
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+from __future__ import print_function
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 import random
 
-from pattern.db     import Datasheet
-from pattern.nl     import tag, predicative
+from pattern.db import Datasheet
+from pattern.nl import tag, predicative
 from pattern.vector import SVM, KNN, NB, count, shuffled
 
 # This example demonstrates a Support Vector Machine (SVM).
@@ -38,8 +41,9 @@ classifier = SVM()
 # The pattern.vector module has a shuffled() function
 # which we use to randomly arrange the reviews in the list:
 
-print "loading data..."
-data = os.path.join(os.path.dirname(__file__), "..", "..", "test", "corpora", "polarity-nl-bol.com.csv")
+print("loading data...")
+data = os.path.join(os.path.dirname(__file__), "..", "..",
+                    "test", "corpora", "polarity-nl-bol.com.csv")
 data = Datasheet.load(data)
 data = shuffled(data)
 
@@ -52,29 +56,31 @@ data = shuffled(data)
 # 3) lemmatize the Dutch adjectives, e.g., "goede" => "goed" (good).
 # 4) count the distinct words in the list, map it to a dictionary.
 
+
 def instance(review):                     # "Great book!"
-    v = tag(review)                       # [("Great", "JJ"), ("book", "NN"), ("!", "!")]
+    # [("Great", "JJ"), ("book", "NN"), ("!", "!")]
+    v = tag(review)
     v = [word for (word, pos) in v if pos in ("JJ", "RB") or word in ("!")]
-    v = [predicative(word) for word in v] # ["great", "!", "!"]
+    v = [predicative(word) for word in v]  # ["great", "!", "!"]
     v = count(v)                          # {"great": 1, "!": 1}
     return v
 
 # We can add any kind of features to a custom instance dict.
 # For example, in a deception detection experiment
-# we may want to populate the dict with PRP (pronouns), punctuation marks, 
+# we may want to populate the dict with PRP (pronouns), punctuation marks,
 # average sentence length, a score for word diversity, etc.
 
 # Use 1,000 random instances as training material.
 
-print "training..."
+print("training...")
 for score, review in data[:1000]:
     classifier.train(instance(review), type=int(score) > 0)
-#classifier.save("sentiment-nl-svm.p")
+# classifier.save("sentiment-nl-svm.p")
 #classifier = SVM.load("sentiment-nl-svm.p")
 
 # Use 500 random instances as test.
 
-print "testing..."
+print("testing...")
 i = n = 0
 for score, review in data[1000:1500]:
     if classifier.classify(instance(review)) == (int(score) > 0):
@@ -88,7 +94,7 @@ for score, review in data[1000:1500]:
 # study the documentation at:
 # http://www.clips.ua.ac.be/pages/pattern-metrics#accuracy
 
-print float(i) / n
+print(float(i) / n)
 
 # The work is not done here.
 # Low accuracy is disappointing, but high accuracy is often suspicious.

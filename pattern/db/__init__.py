@@ -1,11 +1,13 @@
-#### PATTERN | DB ##################################################################################
+#### PATTERN | DB ########################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
 # Author: Tom De Smedt <tom@organisms.be>
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-####################################################################################################
+##########################################################################
+
+from __future__ import print_function
 
 import os
 import sys
@@ -16,44 +18,51 @@ import urllib
 import base64
 import csv as csvlib
 
-from codecs    import BOM_UTF8
+from codecs import BOM_UTF8
 from itertools import islice
-from datetime  import datetime, timedelta
-from calendar  import monthrange
-from time      import mktime, strftime
-from math      import sqrt
-from types     import GeneratorType
+from datetime import datetime, timedelta
+from calendar import monthrange
+from time import mktime, strftime
+from math import sqrt
+from types import GeneratorType
 
-try: # Python 2.x vs 3.x
+try:  # Python 2.x vs 3.x
     from cStringIO import StringIO
 except:
     from io import BytesIO as StringIO
 
-try: # Python 2.x vs 3.x
+try:  # Python 2.x vs 3.x
     import htmlentitydefs
 except:
     from html import entities as htmlentitydefs
 
-try: # Python 2.4 vs 2.5+
+try:  # Python 2.4 vs 2.5+
     from email.Utils import parsedate_tz, mktime_tz
 except:
     from email.utils import parsedate_tz, mktime_tz
-    
-try: 
+
+try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
-    
+
 if sys.version > "3":
     long = int
+    basestring = str
+    unicode = str
+    xrange = range
+    unichr = chr
 
-MYSQL  = "mysql"
+MYSQL = "mysql"
 SQLITE = "sqlite"
 
+
 def _import_db(engine=SQLITE):
-    """ Lazy import called from Database() or Database.new().
-        Depending on the type of database we either import MySQLdb or SQLite.
-        Note: 64-bit Python needs 64-bit MySQL, 32-bit the 32-bit version.
+    """Lazy import called from Database() or Database.new().
+
+    Depending on the type of database we either import MySQLdb or SQLite.
+    Note: 64-bit Python needs 64-bit MySQL, 32-bit the 32-bit version.
+
     """
     global MySQLdb
     global sqlite
@@ -64,22 +73,26 @@ def _import_db(engine=SQLITE):
         try:
             # Python 2.5+
             import sqlite3.dbapi2 as sqlite
-        except: 
+        except:
             # Python 2.4 with pysqlite2
             import pysqlite2.dbapi2 as sqlite
 
+
 def pd(*args):
-    """ Returns the path to the parent directory of the script that calls pd() + given relative path.
-        For example, in this script: pd("..") => /usr/local/lib/python2.x/site-packages/pattern/db/..
+    """Returns the path to the parent directory of the script that calls pd() +
+    given relative path.
+
+    For example, in this script: pd("..") => /usr/local/lib/python2.x/site-packages/pattern/db/..
+
     """
     f = inspect.currentframe()
     f = inspect.getouterframes(f)[1][1]
     f = f != "<stdin>" and f or os.getcwd()
     return os.path.join(os.path.dirname(os.path.realpath(f)), *args)
 
-_sum = sum # pattern.db.sum() is also a column aggregate function.
+_sum = sum  # pattern.db.sum() is also a column aggregate function.
 
-#### DATE FUNCTIONS ################################################################################
+#### DATE FUNCTIONS ######################################################
 
 NOW, YEAR = "now", datetime.now().year
 
@@ -89,7 +102,7 @@ DEFAULT_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 date_formats = [
     DEFAULT_DATE_FORMAT,           # 2010-09-21 09:27:01  => SQLite + MySQL
     "%Y-%m-%dT%H:%M:%SZ",          # 2010-09-20T09:27:01Z => Bing
-    "%a, %d %b %Y %H:%M:%S +0000", # Fri, 21 Sep 2010 09:27:01 +000 => Twitter
+    "%a, %d %b %Y %H:%M:%S +0000",  # Fri, 21 Sep 2010 09:27:01 +000 => Twitter
     "%a %b %d %H:%M:%S +0000 %Y",  # Fri Sep 21 09:21:01 +0000 2010 => Twitter
     "%Y-%m-%dT%H:%M:%S+0000",      # 2010-09-20T09:27:01+0000 => Facebook
     "%Y-%m-%d %H:%M",              # 2010-09-21 09:27
@@ -100,84 +113,104 @@ date_formats = [
     "%B %d, %Y",                   # September 21, 2010
 ]
 
+
 def _yyyywwd2yyyymmdd(year, week, weekday):
-    """ Returns (year, month, day) for given (year, week, weekday).
-    """
-    d = datetime(year, month=1, day=4) # 1st week contains January 4th.
-    d = d - timedelta(d.isoweekday()-1) + timedelta(days=weekday-1, weeks=week-1)
+    """Returns (year, month, day) for given (year, week, weekday)."""
+    d = datetime(year, month=1, day=4)  # 1st week contains January 4th.
+    d = d - timedelta(d.isoweekday() - 1) + \
+        timedelta(days=weekday - 1, weeks=week - 1)
     return (d.year, d.month, d.day)
-    
+
+
 def _strftime1900(d, format):
-    """ Returns the given date formatted as a string.
-    """
-    if d.year < 1900: # Python's strftime() doesn't handle year < 1900.
+    """Returns the given date formatted as a string."""
+    if d.year < 1900:  # Python's strftime() doesn't handle year < 1900.
         return strftime(format, (1900,) + d.timetuple()[1:]).replace("1900", str(d.year), 1)
     return datetime.strftime(d, format)
-    
+
+
 class DateError(Exception):
     pass
 
+
 class Date(datetime):
-    """ A convenience wrapper for datetime.datetime with a default string format.
-    """
+
+    """A convenience wrapper for datetime.datetime with a default string
+    format."""
     format = DEFAULT_DATE_FORMAT
     # Date.year
     # Date.month
     # Date.day
     # Date.minute
     # Date.second
+
     @property
     def minutes(self):
         return self.minute
+
     @property
     def seconds(self):
         return self.second
+
     @property
     def microseconds(self):
         return self.microsecond
+
     @property
     def week(self):
         return self.isocalendar()[1]
+
     @property
     def weekday(self):
         return self.isocalendar()[2]
+
     @property
     def timestamp(self):
-        return int(mktime(self.timetuple())) # Seconds elapsed since 1/1/1970.
+        return int(mktime(self.timetuple()))  # Seconds elapsed since 1/1/1970.
+
     def strftime(self, format):
         return _strftime1900(self, format)
+
     def copy(self):
         return date(self.timestamp)
+
     def __str__(self):
         return self.strftime(self.format)
+
     def __repr__(self):
         return "Date(%s)" % repr(self.__str__())
+
     def __iadd__(self, t):
         return self.__add__(t)
+
     def __isub__(self, t):
         return self.__sub__(t)
+
     def __add__(self, t):
         d = self
         if getattr(t, "years" , 0) \
-        or getattr(t, "months", 0):
+                or getattr(t, "months", 0):
             # January 31 + 1 month = February 28.
             y = (d.month + t.months - 1) // 12 + d.year + t.years
-            m = (d.month + t.months + 0)  % 12 or 12
+            m = (d.month + t.months + 0) % 12 or 12
             r = monthrange(y, m)
-            d = date(y, m, min(d.day, r[1]), d.hour, d.minute, d.second, d.microsecond)
+            d = date(
+                y, m, min(d.day, r[1]), d.hour, d.minute, d.second, d.microsecond)
         d = datetime.__add__(d, t)
         return date(d.year, d.month, d.day, d.hour, d.minute, d.second, d.microsecond, self.format)
+
     def __sub__(self, t):
         if isinstance(t, (Date, datetime)):
             # Subtracting two dates returns a Time.
             t = datetime.__sub__(self, t)
-            return Time(+t.days, +t.seconds, 
-                microseconds = +t.microseconds)
+            return Time(+t.days, +t.seconds,
+                        microseconds=+t.microseconds)
         if isinstance(t, (Time, timedelta)):
-            return self + Time(-t.days, -t.seconds, 
-                microseconds = -t.microseconds,
-                      months = -getattr(t, "months", 0),
-                       years = -getattr(t, "years", 0))
+            return self + Time(-t.days, -t.seconds,
+                               microseconds=-t.microseconds,
+                               months=-getattr(t, "months", 0),
+                               years=-getattr(t, "years", 0))
+
 
 def date(*args, **kwargs):
     """ Returns a Date from the given parameters:
@@ -193,9 +226,9 @@ def date(*args, **kwargs):
     d = None
     f = None
     if len(args) == 0 \
-    and kwargs.get("year") is not None \
-    and kwargs.get("month") \
-    and kwargs.get("day"):
+            and kwargs.get("year") is not None \
+            and kwargs.get("month") \
+            and kwargs.get("day"):
         # Year, month, day.
         d = Date(**kwargs)
     elif kwargs.get("week"):
@@ -209,28 +242,32 @@ def date(*args, **kwargs):
         # No parameters or one parameter NOW.
         d = Date.now()
     elif len(args) == 1 \
-     and isinstance(args[0], (Date, datetime)):
+            and isinstance(args[0], (Date, datetime)):
         # One parameter, a Date or datetime object.
-        d = Date.fromtimestamp(int(mktime(args[0].timetuple()))) 
-        d+= time(microseconds=args[0].microsecond)
+        d = Date.fromtimestamp(int(mktime(args[0].timetuple())))
+        d += time(microseconds=args[0].microsecond)
     elif len(args) == 1 \
-     and (isinstance(args[0], int) \
-      or  isinstance(args[0], basestring) and args[0].isdigit()):
+        and (isinstance(args[0], int)
+             or isinstance(args[0], basestring) and args[0].isdigit()):
         # One parameter, an int or string timestamp.
         d = Date.fromtimestamp(int(args[0]))
     elif len(args) == 1 \
-     and isinstance(args[0], basestring):
-        # One parameter, a date string for which we guess the input format (RFC2822 or known formats).
-        try: d = Date.fromtimestamp(mktime_tz(parsedate_tz(args[0])))
+            and isinstance(args[0], basestring):
+        # One parameter, a date string for which we guess the input format
+        # (RFC2822 or known formats).
+        try:
+            d = Date.fromtimestamp(mktime_tz(parsedate_tz(args[0])))
         except:
             for format in ("format" in kwargs and [kwargs["format"]] or []) + date_formats:
-                try: d = Date.strptime(args[0], format); break
+                try:
+                    d = Date.strptime(args[0], format)
+                    break
                 except:
                     pass
         if d is None:
             raise DateError("unknown date format for %s" % repr(args[0]))
     elif len(args) == 2 \
-     and isinstance(args[0], basestring):
+            and isinstance(args[0], basestring):
         # Two parameters, a date string and an explicit input format.
         d = Date.strptime(args[0], args[1])
     elif len(args) >= 3:
@@ -239,14 +276,16 @@ def date(*args, **kwargs):
         d = Date(*args[:7], **kwargs)
     else:
         raise DateError("unknown date format")
-    d.format = kwargs.get("format") or len(args) > 7 and args[7] or f or Date.format
+    d.format = kwargs.get("format") or len(
+        args) > 7 and args[7] or f or Date.format
     return d
 
+
 class Time(timedelta):
-    
+
     def __new__(cls, *args, **kwargs):
-        """ A convenience wrapper for datetime.timedelta that handles months and years.
-        """
+        """A convenience wrapper for datetime.timedelta that handles months and
+        years."""
         # Time.years
         # Time.months
         # Time.days
@@ -259,38 +298,43 @@ class Time(timedelta):
         setattr(t, "months", m)
         return t
 
+
 def time(days=0, seconds=0, minutes=0, hours=0, **kwargs):
-    """ Returns a Time that can be added to a Date object.
-        Other parameters: microseconds, milliseconds, weeks, months, years.
+    """Returns a Time that can be added to a Date object.
+
+    Other parameters: microseconds, milliseconds, weeks, months, years.
+
     """
     return Time(days=days, seconds=seconds, minutes=minutes, hours=hours, **kwargs)
 
-#### STRING FUNCTIONS ##############################################################################
+#### STRING FUNCTIONS ####################################################
 # Latin-1 (ISO-8859-1) encoding is identical to Windows-1252 except for the code points 128-159:
 # Latin-1 assigns control codes in this range, Windows-1252 has characters, punctuation, symbols
 # assigned to these code points.
 
+
 def decode_string(v, encoding="utf-8"):
-    """ Returns the given value as a Unicode string (if possible).
-    """
+    """Returns the given value as a Unicode string (if possible)."""
     if isinstance(encoding, basestring):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, str):
         for e in encoding:
-            try: return v.decode(*e)
+            try:
+                return v.decode(*e)
             except:
                 pass
         return v
     return unicode(v)
 
+
 def encode_string(v, encoding="utf-8"):
-    """ Returns the given value as a Python byte string (if possible).
-    """
+    """Returns the given value as a Python byte string (if possible)."""
     if isinstance(encoding, basestring):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, unicode):
         for e in encoding:
-            try: return v.encode(*e)
+            try:
+                return v.encode(*e)
             except:
                 pass
         return v
@@ -299,42 +343,47 @@ def encode_string(v, encoding="utf-8"):
 decode_utf8 = decode_string
 encode_utf8 = encode_string
 
+
 def string(value, default=""):
-    """ Returns the value cast to unicode, or default if it is None/empty.
-    """
+    """Returns the value cast to unicode, or default if it is None/empty."""
     # Useful for HTML interfaces.
-    if value is None or value == "": # Don't do value != None because this includes 0.
+    # Don't do value != None because this includes 0.
+    if value is None or value == "":
         return default
     return decode_utf8(value)
+
 
 class EncryptionError(Exception):
     pass
 
+
 class DecryptionError(Exception):
     pass
 
+
 def encrypt_string(s, key=""):
-    """ Returns the given string as an encrypted bytestring.
-    """
+    """Returns the given string as an encrypted bytestring."""
     key += " "
     s = encode_utf8(s)
     a = []
     for i in xrange(len(s)):
-        try: a.append(chr(ord(s[i]) + ord(key[i % len(key)]) % 256))
+        try:
+            a.append(chr(ord(s[i]) + ord(key[i % len(key)]) % 256))
         except:
             raise EncryptionError()
     s = "".join(a)
     s = base64.urlsafe_b64encode(s)
     return s
-    
+
+
 def decrypt_string(s, key=""):
-    """ Returns the given string as a decrypted Unicode string.
-    """
+    """Returns the given string as a decrypted Unicode string."""
     key += " "
     s = base64.urlsafe_b64decode(s)
     a = []
     for i in xrange(len(s)):
-        try: a.append(chr(ord(s[i]) - ord(key[i % len(key)]) % 256))
+        try:
+            a.append(chr(ord(s[i]) - ord(key[i % len(key)]) % 256))
         except:
             raise DecryptionError()
     s = "".join(a)
@@ -342,7 +391,8 @@ def decrypt_string(s, key=""):
     return s
 
 RE_AMPERSAND = re.compile("\&(?!\#)")           # & not followed by #
-RE_UNICODE   = re.compile(r'&(#?)(x|X?)(\w+);') # &#201;
+RE_UNICODE = re.compile(r'&(#?)(x|X?)(\w+);')  # &#201;
+
 
 def encode_entities(string):
     """ Encodes HTML entities in the given string ("<" => "&lt;").
@@ -357,6 +407,7 @@ def encode_entities(string):
         string = string.replace("'", "&#39;")
     return string
 
+
 def decode_entities(string):
     """ Decodes HTML entities in the given string ("&lt;" => "<").
     """
@@ -364,46 +415,57 @@ def decode_entities(string):
     def replace_entity(match):
         hash, hex, name = match.group(1), match.group(2), match.group(3)
         if hash == "#" or name.isdigit():
-            if hex == '' : 
+            if hex == '':
                 return unichr(int(name))                 # "&#38;" => "&"
-            if hex in ("x","X"):
-                return unichr(int('0x'+name, 16))        # "&#x0026;" = > "&"
+            if hex in ("x", "X"):
+                return unichr(int('0x' + name, 16))        # "&#x0026;" = > "&"
         else:
-            cp = htmlentitydefs.name2codepoint.get(name) # "&amp;" => "&"
+            cp = htmlentitydefs.name2codepoint.get(name)  # "&amp;" => "&"
             return cp and unichr(cp) or match.group()    # "&foo;" => "&foo;"
     if isinstance(string, (str, unicode)):
         return RE_UNICODE.subn(replace_entity, string)[0]
     return string
 
+
 class _Binary:
+
     """ A wrapper for BLOB data with engine-specific encoding.
         See also: Database.binary().
     """
+
     def __init__(self, data, type=SQLITE):
-        self.data, self.type = str(hasattr(data, "read") and data.read() or data), type
+        self.data, self.type = str(
+            hasattr(data, "read") and data.read() or data), type
+
     def escape(self):
         if self.type == SQLITE:
-            return str(self.data.encode("string-escape")).replace("'","''")
+            return str(self.data.encode("string-escape")).replace("'", "''")
         if self.type == MYSQL:
             return MySQLdb.escape_string(self.data)
 
+
 def _escape(value, quote=lambda string: "'%s'" % string.replace("'", "\\'")):
-    """ Returns the quoted, escaped string (e.g., "'a bird\'s feathers'") for database entry.
-        Anything that is not a string (e.g., an integer) is converted to string.
-        Booleans are converted to "0" and "1", None is converted to "null".
-        See also: Database.escape()
+    """Returns the quoted, escaped string (e.g., "'a bird\'s feathers'") for
+    database entry.
+
+    Anything that is not a string (e.g., an integer) is converted to string.
+    Booleans are converted to "0" and "1", None is converted to "null".
+    See also: Database.escape()
+
     """
     # Note: use Database.escape() for MySQL/SQLITE-specific escape.
     if isinstance(value, str):
         # Strings are encoded as UTF-8.
-        try: value = value.encode("utf-8")
+        try:
+            value = value.encode("utf-8")
         except:
             pass
     if value in ("current_timestamp",):
         # Don't quote constants such as current_timestamp.
         return value
     if isinstance(value, basestring):
-        # Strings are quoted, single quotes are escaped according to the database engine.
+        # Strings are quoted, single quotes are escaped according to the
+        # database engine.
         return quote(value)
     if isinstance(value, bool):
         # Booleans are converted to "0" or "1".
@@ -425,9 +487,9 @@ def _escape(value, quote=lambda string: "'%s'" % string.replace("'", "\\'")):
         return "'%s'" % value.escape()
     return value
 
+
 def cast(x, f, default=None):
-    """ Returns f(x) or default.
-    """
+    """Returns f(x) or default."""
     if f is str and isinstance(x, unicode):
         return decode_utf8(x)
     if f is bool and x in ("1", "True", "true"):
@@ -441,19 +503,22 @@ def cast(x, f, default=None):
     except:
         return default
 
-#### LIST FUNCTIONS ################################################################################
+#### LIST FUNCTIONS ######################################################
+
 
 def find(match=lambda item: False, list=[]):
-    """ Returns the first item in the list for which match(item) is True.
-    """
+    """Returns the first item in the list for which match(item) is True."""
     for item in list:
-        if match(item) is True: 
+        if match(item) is True:
             return item
 
+
 def order(list, cmp=None, key=None, reverse=False):
-    """ Returns a list of indices in the order as when the given list is sorted.
-        For example: ["c","a","b"] => [1, 2, 0]
-        This means that in the sorted list, "a" (index 1) comes first and "c" (index 0) last.
+    """Returns a list of indices in the order as when the given list is sorted.
+
+    For example: ["c","a","b"] => [1, 2, 0]
+    This means that in the sorted list, "a" (index 1) comes first and "c" (index 0) last.
+
     """
     if cmp and key:
         f = lambda i, j: cmp(key(list[i]), key(list[j]))
@@ -467,80 +532,121 @@ def order(list, cmp=None, key=None, reverse=False):
 
 _order = order
 
+
 def avg(list):
-    """ Returns the arithmetic mean of the given list of values.
-        For example: mean([1,2,3,4]) = 10/4 = 2.5.
+    """Returns the arithmetic mean of the given list of values.
+
+    For example: mean([1,2,3,4]) = 10/4 = 2.5.
+
     """
     return float(_sum(list)) / (len(list) or 1)
-    
+
+
 def variance(list):
-    """ Returns the variance of the given list of values.
-        The variance is the average of squared deviations from the mean.
+    """Returns the variance of the given list of values.
+
+    The variance is the average of squared deviations from the mean.
+
     """
     a = avg(list)
-    return _sum([(x-a)**2 for x in list]) / (len(list)-1 or 1)
-    
+    return _sum([(x - a) ** 2 for x in list]) / (len(list) - 1 or 1)
+
+
 def stdev(list):
-    """ Returns the standard deviation of the given list of values.
-        Low standard deviation => values are close to the mean.
-        High standard deviation => values are spread out over a large range.
+    """Returns the standard deviation of the given list of values.
+
+    Low standard deviation => values are close to the mean.
+    High standard deviation => values are spread out over a large range.
+
     """
     return sqrt(variance(list))
 
-#### SQLITE FUNCTIONS ##############################################################################
-# Convenient MySQL functions not in in pysqlite2. These are created at each Database.connect().
-        
+#### SQLITE FUNCTIONS ####################################################
+# Convenient MySQL functions not in in pysqlite2. These are created at
+# each Database.connect().
+
+
 class sqlite_first(list):
-    def step(self, value): self.append(value)
+
+    def step(self, value):
+        self.append(value)
+
     def finalize(self):
         return self[0]
-        
+
+
 class sqlite_last(list):
-    def step(self, value): self.append(value)
+
+    def step(self, value):
+        self.append(value)
+
     def finalize(self):
         return self[-1]
 
+
 class sqlite_group_concat(list):
-    def step(self, value): self.append(value)
+
+    def step(self, value):
+        self.append(value)
+
     def finalize(self):
         return ",".join(string(v) for v in self if v is not None)
 
-# SQLite (and MySQL) date string format: 
+
+# SQLite (and MySQL) date string format:
 # yyyy-mm-dd hh:mm:ss
 def sqlite_year(datestring):
     return int(datestring.split(" ")[0].split("-")[0])
+
+
 def sqlite_month(datestring):
     return int(datestring.split(" ")[0].split("-")[1])
+
+
 def sqlite_day(datestring):
     return int(datestring.split(" ")[0].split("-")[2])
+
+
 def sqlite_hour(datestring):
     return int(datestring.split(" ")[1].split(":")[0])
+
+
 def sqlite_minute(datestring):
     return int(datestring.split(" ")[1].split(":")[1])
+
+
 def sqlite_second(datestring):
     return int(datestring.split(" ")[1].split(":")[2])
-        
-#### DATABASE ######################################################################################
 
-class DatabaseConnectionError(Exception): 
+#### DATABASE ############################################################
+
+
+class DatabaseConnectionError(Exception):
     pass
 
+
 class Database(object):
-    
+
     class Tables(dict):
         # Table objects are lazily constructed when retrieved.
-        # This saves time because each table executes a metadata query when constructed.
+        # This saves time because each table executes a metadata query when
+        # constructed.
+
         def __init__(self, db, *args, **kwargs):
-            dict.__init__(self, *args, **kwargs); self.db=db
+            dict.__init__(self, *args, **kwargs)
+            self.db = db
+
         def __getitem__(self, k):
             if dict.__getitem__(self, k) is None:
                 dict.__setitem__(self, k, Table(name=k, database=self.db))
             return dict.__getitem__(self, k)
 
     def __init__(self, name, host="localhost", port=3306, username="root", password="", type=SQLITE, unicode=True, **kwargs):
-        """ A collection of tables stored in an SQLite or MySQL database.
-            If the database does not exist, creates it.
-            If the host, user or password is wrong, raises DatabaseConnectionError.
+        """A collection of tables stored in an SQLite or MySQL database.
+
+        If the database does not exist, creates it. If the host, user or
+        password is wrong, raises DatabaseConnectionError.
+
         """
         _import_db(type)
         self.type = type
@@ -553,48 +659,56 @@ class Database(object):
         self.connect(unicode)
         # Table names are available in the Database.tables dictionary,
         # table objects as attributes (e.g. Database.table_name).
-        q = self.type==SQLITE and "select name from sqlite_master where type='table';" or "show tables;"
+        q = self.type == SQLITE and "select name from sqlite_master where type='table';" or "show tables;"
         self.tables = Database.Tables(self)
         for name, in self.execute(q):
             if not name.startswith(("sqlite_",)):
                 self.tables[name] = None
         # The SQL syntax of the last query is kept in cache.
         self._query = None
-        # Persistent relations between tables, stored as (table1, table2, key1, key2, join) tuples.
+        # Persistent relations between tables, stored as (table1, table2, key1,
+        # key2, join) tuples.
         self.relations = []
-        
+
     def connect(self, unicode=True):
         # Connections for threaded applications work differently,
-        # see http://tools.cherrypy.org/wiki/Databases 
+        # see http://tools.cherrypy.org/wiki/Databases
         # (have one Database object for each thread).
-        if self._connection is not None: 
+        if self._connection is not None:
             return
         # MySQL
         if self.type == MYSQL:
-            try: 
-                self._connection = MySQLdb.connect(self.host, self.username, self.password, self.name, port=self.port, use_unicode=unicode)
+            try:
+                self._connection = MySQLdb.connect(
+                    self.host, self.username, self.password, self.name, port=self.port, use_unicode=unicode)
                 self._connection.autocommit(False)
             except Exception as e:
                 # Create the database if it doesn't exist yet.
                 if "unknown database" not in str(e).lower():
-                    raise DatabaseConnectionError(e[1]) # Wrong host, username and/or password.
-                connection = MySQLdb.connect(self.host, self.username, self.password)
+                    # Wrong host, username and/or password.
+                    raise DatabaseConnectionError(e[1])
+                connection = MySQLdb.connect(
+                    self.host, self.username, self.password)
                 cursor = connection.cursor()
-                cursor.execute("create database if not exists `%s`;" % self.name)
+                cursor.execute(
+                    "create database if not exists `%s`;" % self.name)
                 cursor.close()
                 connection.close()
-                self._connection = MySQLdb.connect(self.host, self.username, self.password, self.name, port=self.port, use_unicode=unicode)
+                self._connection = MySQLdb.connect(
+                    self.host, self.username, self.password, self.name, port=self.port, use_unicode=unicode)
                 self._connection.autocommit(False)
-            if unicode: 
+            if unicode:
                 self._connection.set_character_set("utf8")
         # SQLite
         if self.type == SQLITE:
-            self._connection = sqlite.connect(self.name, detect_types=sqlite.PARSE_DECLTYPES)
+            self._connection = sqlite.connect(
+                self.name, detect_types=sqlite.PARSE_DECLTYPES)
             # Create functions that are not natively supported by the engine.
             # Aggregate functions (for grouping rows) + date functions.
             self._connection.create_aggregate("first", 1, sqlite_first)
             self._connection.create_aggregate("last", 1, sqlite_last)
-            self._connection.create_aggregate("group_concat", 1, sqlite_group_concat)
+            self._connection.create_aggregate(
+                "group_concat", 1, sqlite_group_concat)
             self._connection.create_function("year", 1, sqlite_year)
             self._connection.create_function("month", 1, sqlite_month)
             self._connection.create_function("day", 1, sqlite_day)
@@ -606,133 +720,149 @@ class Database(object):
         # Map field type DATE to str, yyyy-mm-dd hh:mm:ss.
         if self.type == MYSQL:
             type = MySQLdb.constants.FIELD_TYPE
-            self._connection.converter[type.LONG]       = int
-            self._connection.converter[type.LONGLONG]   = int
-            self._connection.converter[type.DECIMAL]    = float
+            self._connection.converter[type.LONG] = int
+            self._connection.converter[type.LONGLONG] = int
+            self._connection.converter[type.DECIMAL] = float
             self._connection.converter[type.NEWDECIMAL] = float
-            self._connection.converter[type.TINY]       = bool
-            self._connection.converter[type.TIMESTAMP]  = date
+            self._connection.converter[type.TINY] = bool
+            self._connection.converter[type.TIMESTAMP] = date
         if self.type == SQLITE:
             sqlite.converters["TINYINT(1)"] = lambda v: bool(int(v))
-            sqlite.converters["BLOB"]       = lambda v: str(v).decode("string-escape")
-            sqlite.converters["TIMESTAMP"]  = date
-            
+            sqlite.converters["BLOB"] = lambda v: str(
+                v).decode("string-escape")
+            sqlite.converters["TIMESTAMP"] = date
+
     def disconnect(self):
         if self._connection is not None:
             self._connection.commit()
             self._connection.close()
             self._connection = None
-    
+
     @property
     def connection(self):
         return self._connection
-        
+
     @property
     def connected(self):
         return self._connection is not None
-    
+
     def __getattr__(self, k):
-        """ Tables are available as attributes by name, e.g., Database.persons.
-        """
-        if k in self.__dict__["tables"]: 
+        """Tables are available as attributes by name, e.g.,
+        Database.persons."""
+        if k in self.__dict__["tables"]:
             return self.__dict__["tables"][k]
-        if k in self.__dict__: 
+        if k in self.__dict__:
             return self.__dict__[k]
         raise AttributeError("'Database' object has no attribute '%s'" % k)
 
     def __len__(self):
         return len(self.tables)
+
     def __iter__(self):
         return iter(self.tables.keys())
+
     def __getitem__(self, table):
         return self.tables[table]
+
     def __setitem__(self, table, fields):
         self.create(table, fields)
+
     def __delitem__(self, table):
         self.drop(table)
+
     def __nonzero__(self):
         return True
-    
+
     # Backwards compatibility.
     def _get_user(self):
         return self.username
+
     def _set_user(self, v):
         self.username = v
     user = property(_get_user, _set_user)
-    
+
     @property
     def query(self):
-        """ Yields the last executed SQL query as a string.
-        """
+        """Yields the last executed SQL query as a string."""
         return self._query
-    
+
     def execute(self, SQL, commit=False):
-        """ Executes the given SQL query and return an iterator over the rows.
-            With commit=True, automatically commits insert/update/delete changes.
+        """Executes the given SQL query and return an iterator over the rows.
+
+        With commit=True, automatically commits insert/update/delete changes.
+
         """
         self._query = SQL
         if not SQL:
-            return # MySQL doesn't like empty queries.
-        #print(SQL)
+            return  # MySQL doesn't like empty queries.
+        # print(SQL)
         cursor = self._connection.cursor()
         cursor.execute(SQL)
         if commit is not False:
             self._connection.commit()
         return self.RowsIterator(cursor)
-        
+
     class RowsIterator:
-        """ Iterator over the rows returned from Database.execute().
-        """
+
+        """Iterator over the rows returned from Database.execute()."""
+
         def __init__(self, cursor):
             self._cursor = cursor
+
         def next(self):
             return next(self.__iter__())
+
         def __iter__(self):
             for row in (hasattr(self._cursor, "__iter__") and self._cursor or self._cursor.fetchall()):
                 yield row
             self._cursor.close()
+
         def __del__(self):
             self._cursor.close()
-        
+
     def commit(self):
-        """ Commit all pending insert/update/delete changes.
-        """
+        """Commit all pending insert/update/delete changes."""
         self._connection.commit()
-        
+
     def rollback(self):
-        """ Discard changes since the last commit.
-        """
+        """Discard changes since the last commit."""
         self._connection.rollback()
-        
+
     def escape(self, value):
-        """ Returns the quoted, escaped string (e.g., "'a bird\'s feathers'") for database entry.
-            Anything that is not a string (e.g., an integer) is converted to string.
-            Booleans are converted to "0" and "1", None is converted to "null".
+        """Returns the quoted, escaped string (e.g., "'a bird\'s feathers'")
+        for database entry.
+
+        Anything that is not a string (e.g., an integer) is converted to
+        string. Booleans are converted to "0" and "1", None is converted
+        to "null".
+
         """
         def quote(string):
             # How to escape strings differs between database engines.
             if self.type == MYSQL:
-                #return "'%s'" % self._connection.escape_string(string) # Doesn't like Unicode.
+                # return "'%s'" % self._connection.escape_string(string) #
+                # Doesn't like Unicode.
                 return "'%s'" % string.replace("'", "\\'")
             if self.type == SQLITE:
                 return "'%s'" % string.replace("'", "''")
         return _escape(value, quote)
-    
+
     def binary(self, data):
-        """ Returns the string of binary data as a value that can be inserted in a BLOB field.
-        """
+        """Returns the string of binary data as a value that can be inserted in
+        a BLOB field."""
         return _Binary(data, self.type)
-        
+
     blob = binary
-    
+
     def _field_SQL(self, table, field):
         # Returns a (field, index)-tuple with SQL strings for the given field().
         # The field string can be used in a CREATE TABLE or ALTER TABLE statement.
         # The index string is an optional CREATE INDEX statement (or None).
-        auto  = " auto%sincrement" % (self.type == MYSQL and "_" or "")
+        auto = " auto%sincrement" % (self.type == MYSQL and "_" or "")
         field = isinstance(field, basestring) and [field, STRING(255)] or field
-        field = list(field) + [STRING, None, False, True][len(field)-1:]
-        field = list(_field(field[0], field[1], default=field[2], index=field[3], optional=field[4]))
+        field = list(field) + [STRING, None, False, True][len(field) - 1:]
+        field = list(
+            _field(field[0], field[1], default=field[2], index=field[3], optional=field[4]))
         if field[1] == "timestamp" and field[2] == "now":
             field[2] = "current_timestamp"
         a = b = None
@@ -741,36 +871,42 @@ class Database(object):
             field[0],
             field[1] == STRING and field[1]() or field[1],
             field[4] is False and " not null" or " null",
-            field[2] is not None and " default %s" % self.escape(field[2]) or "",
-            field[3] == PRIMARY and " primary key%s" % ("", auto)[field[1]==INTEGER] or "")
+            field[2] is not None and " default %s" % self.escape(
+                field[2]) or "",
+            field[3] == PRIMARY and " primary key%s" % ("", auto)[field[1] == INTEGER] or "")
         if field[3] in (UNIQUE, True):
             b = "create %sindex `%s_%s` on `%s` (`%s`);" % (
                 field[3] == UNIQUE and "unique " or "", table, field[0], table, field[0])
         return a, b
-    
+
     def create(self, table, fields=[], encoding="utf-8", **kwargs):
-        """ Creates a new table with the given fields.
-            The given list of fields must contain values returned from the field() function.
+        """Creates a new table with the given fields.
+
+        The given list of fields must contain values returned from the
+        field() function.
+
         """
         if table in self.tables:
-            raise TableError("table '%s' already exists" % (self.name + "." + table))
+            raise TableError("table '%s' already exists" %
+                             (self.name + "." + table))
         if table.startswith(XML_HEADER):
             # From an XML-string generated with Table.xml.
-            return parse_xml(self, table, 
-                    table = kwargs.get("name"), 
-                    field = kwargs.get("field", lambda s: s.replace(".", "_")))
-        encoding  = self.type == MYSQL and " default charset=" + encoding.replace("utf-8", "utf8") or ""
+            return parse_xml(self, table,
+                             table=kwargs.get("name"),
+                             field=kwargs.get("field", lambda s: s.replace(".", "_")))
+        encoding = self.type == MYSQL and " default charset=" + \
+            encoding.replace("utf-8", "utf8") or ""
         fields, indices = zip(*[self._field_SQL(table, f) for f in fields])
-        self.execute("create table `%s` (%s)%s;" % (table, ", ".join(fields), encoding))
+        self.execute("create table `%s` (%s)%s;" %
+                     (table, ", ".join(fields), encoding))
         for index in indices:
             if index is not None:
                 self.execute(index, commit=True)
-        self.tables[table] = None # lazy loading
+        self.tables[table] = None  # lazy loading
         return self.tables[table]
-        
+
     def drop(self, table):
-        """ Removes the table with the given name.
-        """
+        """Removes the table with the given name."""
         if isinstance(table, Table) and table.db == self:
             table = table.name
         if table in self.tables:
@@ -778,33 +914,36 @@ class Database(object):
             self.tables.pop(table)
             self.execute("drop table `%s`;" % table, commit=True)
             # The SQLite version in Python 2.5 has a drop/recreate table bug.
-            # Reconnect. This means that any reference to Database.connection 
-            # is no longer valid after Database.drop(). 
+            # Reconnect. This means that any reference to Database.connection
+            # is no longer valid after Database.drop().
             if self.type == SQLITE and sys.version < "2.6":
                 self.disconnect()
                 self.connect()
-                
+
     remove = drop
-        
+
     def link(self, table1, field1, table2, field2, join="left"):
-        """ Defines a relation between two tables in the database.
-            When executing a table query, fields from the linked table will also be available
-            (to disambiguate between field names, use table.field_name).
+        """Defines a relation between two tables in the database.
+
+        When executing a table query, fields from the linked table will
+        also be available (to disambiguate between field names, use
+        table.field_name).
+
         """
-        if isinstance(table1, Table): 
+        if isinstance(table1, Table):
             table1 = table1.name
-        if isinstance(table2, Table): 
+        if isinstance(table2, Table):
             table2 = table2.name
         self.relations.append((table1, field1, table2, field2, join))
 
     def __repr__(self):
         return "Database(name=%s, host=%s, tables=%s)" % (
-            repr(self.name), 
-            repr(self.host), 
+            repr(self.name),
+            repr(self.host),
             repr(self.tables.keys()))
-    
+
     def _delete(self):
-        # No warning is issued, seems a bad idea to document the method. 
+        # No warning is issued, seems a bad idea to document the method.
         # Anyone wanting to delete an entire database should use an editor.
         if self.type == MYSQL:
             self.execute("drop database `%s`" % self.name, commit=True)
@@ -812,22 +951,25 @@ class Database(object):
         if self.type == SQLITE:
             self.disconnect()
             os.unlink(self.name)
-    
+
     def __delete__(self):
-        try: 
+        try:
             self.disconnect()
         except:
             pass
 
-#### FIELD #########################################################################################
+#### FIELD ###############################################################
+
 
 class _String(str):
     # The STRING constant can be called with a length when passed to field(),
     # for example field("language", type=STRING(2), default="en", index=True).
+
     def __new__(self):
         return str.__new__(self, "string")
+
     def __call__(self, length=100):
-        return "varchar(%s)" % (length>255 and 255 or (length<1 and 1 or length))
+        return "varchar(%s)" % (length > 255 and 255 or (length < 1 and 1 or length))
 
 # Field type.
 # Note: SQLite string fields do not impose a string limit.
@@ -840,18 +982,22 @@ STR, INT, BOOL = STRING, INTEGER, BOOLEAN
 
 # Field index.
 PRIMARY = "primary"
-UNIQUE  = "unique"
+UNIQUE = "unique"
 
 # DATE default.
 NOW = "now"
 
-#--- FIELD- ----------------------------------------------------------------------------------------
+#--- FIELD- --------------------------------------------------------------
 
-#def field(name, type=STRING, default=None, index=False, optional=True)
+
+# def field(name, type=STRING, default=None, index=False, optional=True)
 def field(name, type=STRING, **kwargs):
-    """ Returns a table field definition that can be passed to Database.create().
-        The column can be indexed by setting index to True, PRIMARY or UNIQUE.
-        Primary key number columns are always auto-incremented.
+    """Returns a table field definition that can be passed to
+    Database.create().
+
+    The column can be indexed by setting index to True, PRIMARY or UNIQUE.
+    Primary key number columns are always auto-incremented.
+
     """
     default, index, optional = (
         kwargs.get("default", type == DATE and NOW or None),
@@ -874,17 +1020,19 @@ def field(name, type=STRING, **kwargs):
 
 _field = field
 
+
 def primary_key(name="id"):
     """ Returns an auto-incremented integer primary key field named "id".
     """
     return field(name, INTEGER, index=PRIMARY, optional=False)
-    
+
 pk = primary_key
 
-#--- FIELD SCHEMA ----------------------------------------------------------------------------------
+#--- FIELD SCHEMA --------------------------------------------------------
+
 
 class Schema(object):
-    
+
     def __init__(self, name, type, default=None, index=False, optional=True, extra=None):
         """ Field info returned from a "show columns from table"-query.
             Each table object has a Table.schema{} dictionary describing the fields' structure.
@@ -895,23 +1043,23 @@ class Schema(object):
             length = type.split("(")[-1].strip(")")
             length = int(length)
             type = STRING
-        if type.startswith("int"): 
+        if type.startswith("int"):
             type = INTEGER
-        if type.startswith(("real", "double")): 
+        if type.startswith(("real", "double")):
             type = FLOAT
-        if type.startswith("time"): 
+        if type.startswith("time"):
             type = DATE
-        if type.startswith("text"): 
+        if type.startswith("text"):
             type = TEXT
-        if type.startswith("blob"): 
+        if type.startswith("blob"):
             type = BLOB
         if type.startswith("tinyint(1)"):
             type = BOOLEAN
         # Determine index type (PRIMARY, UNIQUE, True or False).
         if isinstance(index, basestring):
-            if index.lower().startswith("pri"): 
+            if index.lower().startswith("pri"):
                 index = PRIMARY
-            if index.lower().startswith("uni"): 
+            if index.lower().startswith("uni"):
                 index = UNIQUE
             if index.lower() in ("0", "1", "", "yes", "mul"):
                 index = index.lower() in ("1", "yes", "mul")
@@ -926,60 +1074,69 @@ class Schema(object):
             default = float(default)
         if not default and default != 0:
             default = None
-        self.name     = name                   # Field name.
-        self.type     = type                   # Field type: INTEGER | FLOAT | STRING | TEXT | BLOB | DATE.
-        self.length   = length                 # Field length for STRING.
-        self.default  = default                # Default value.
-        self.index    = index                  # PRIMARY | UNIQUE | True | False.
+        self.name = name                   # Field name.
+        # Field type: INTEGER | FLOAT | STRING | TEXT | BLOB | DATE.
+        self.type = type
+        self.length = length                 # Field length for STRING.
+        self.default = default                # Default value.
+        self.index = index                  # PRIMARY | UNIQUE | True | False.
         self.optional = str(optional) in ("0", "True", "YES")
-        self.extra    = extra or None
-    
+        self.extra = extra or None
+
     def __repr__(self):
         return "Schema(name=%s, type=%s, default=%s, index=%s, optional=%s)" % (
-            repr(self.name), 
+            repr(self.name),
             repr(self.type),
             repr(self.default),
             repr(self.index),
             repr(self.optional))
 
-#### TABLE #########################################################################################
+#### TABLE ###############################################################
 
 ALL = "*"
+
 
 class TableError(Exception):
     pass
 
+
 class Table(object):
-    
+
     class Fields(list):
         # Table.fields.append() alters the table.
         # New field() with optional=False must have a default value (can not be NOW).
-        # New field() can have index=True, but not PRIMARY or UNIQUE. 
+        # New field() can have index=True, but not PRIMARY or UNIQUE.
+
         def __init__(self, table, *args, **kwargs):
-            list.__init__(self, *args, **kwargs); self.table=table
+            list.__init__(self, *args, **kwargs)
+            self.table = table
+
         def append(self, field):
-            name, (field, index) = field[0], self.table.db._field_SQL(self.table.name, field)
-            self.table.db.execute("alter table `%s` add column %s;" % (self.table.name, field))
+            name, (field, index) = field[0], self.table.db._field_SQL(
+                self.table.name, field)
+            self.table.db.execute(
+                "alter table `%s` add column %s;" % (self.table.name, field))
             self.table.db.execute(index, commit=True)
             self.table._update()
+
         def extend(self, fields):
             [self.append(f) for f in fields]
+
         def __setitem__(self, *args, **kwargs):
             raise NotImplementedError("Table.fields only supports append()")
         insert = remove = pop = __setitem__
-    
+
     def __init__(self, name, database):
-        """ A collection of rows consisting of one or more fields (i.e., table columns) 
-            of a certain type (i.e., strings, numbers).
-        """
-        self.database    = database
-        self._name       = name
-        self.fields      = [] # List of field names (i.e., column names).
-        self.schema      = {} # Dictionary of (field, Schema)-items.
-        self.default     = {} # Default values for Table.insert().
+        """A collection of rows consisting of one or more fields (i.e., table
+        columns) of a certain type (i.e., strings, numbers)."""
+        self.database = database
+        self._name = name
+        self.fields = []  # List of field names (i.e., column names).
+        self.schema = {}  # Dictionary of (field, Schema)-items.
+        self.default = {}  # Default values for Table.insert().
         self.primary_key = None
         self._update()
-    
+
     def _update(self):
         # Retrieve table column names.
         # Table column names are available in the Table.fields list.
@@ -988,20 +1145,23 @@ class Table(object):
         # The primary key column is stored in Table.primary_key.
         self.fields = Table.Fields(self)
         if self.name not in self.database.tables:
-            raise TableError("table '%s' does not exist" % (self.database.name + "." + self.name))
+            raise TableError("table '%s' does not exist" %
+                             (self.database.name + "." + self.name))
         if self.db.type == MYSQL:
             q = "show columns from `%s`;" % self.name
         if self.db.type == SQLITE:
             q = "pragma table_info(`%s`);" % self.name
-            i = self.db.execute("pragma index_list(`%s`)" % self.name) # look up indices
-            i = dict(((v[1].replace(self.name+"_", "", 1), v[2]) for v in i))
+            i = self.db.execute("pragma index_list(`%s`)" %
+                                self.name)  # look up indices
+            i = dict(((v[1].replace(self.name + "_", "", 1), v[2]) for v in i))
         for f in self.db.execute(q):
             # [name, type, default, index, optional, extra]
             if self.db.type == MYSQL:
-                f = [f[0], f[1], f[4], f[3], f[2], f[5]] 
+                f = [f[0], f[1], f[4], f[3], f[2], f[5]]
             if self.db.type == SQLITE:
                 f = [f[1], f[2], f[4], f[5], f[3], ""]
-                f[3] = f[3] == 1 and "pri" or (f[0] in i and ("1","uni")[int(i[f[0]])] or "")
+                f[3] = f[3] == 1 and "pri" or (
+                    f[0] in i and ("1", "uni")[int(i[f[0]])] or "")
             list.append(self.fields, f[0])
             self.schema[f[0]] = Schema(*f)
             if self.schema[f[0]].index == PRIMARY:
@@ -1009,10 +1169,12 @@ class Table(object):
 
     def _get_name(self):
         return self._name
+
     def _set_name(self, name):
         # Rename the table in the database and in any Database.relations.
         # SQLite and MySQL will automatically copy indices on the new table.
-        self.db.execute("alter table `%s` rename to `%s`;" % (self._name, name))
+        self.db.execute("alter table `%s` rename to `%s`;" %
+                        (self._name, name))
         self.db.tables.pop(self._name)
         self.db.tables[name] = self
         for i, r in enumerate(self.db.relations):
@@ -1021,7 +1183,7 @@ class Table(object):
             if r[2] == self.name:
                 self.db.relations = (r[0], r[1], name, r[3])
         self._name = name
-        
+
     name = property(_get_name, _set_name)
 
     @property
@@ -1031,21 +1193,24 @@ class Table(object):
     @property
     def pk(self):
         return self.primary_key
-    
+
     def count(self):
-        """ Yields the number of rows in the table.
-        """
+        """Yields the number of rows in the table."""
         return int(list(self.db.execute("select count(*) from `%s`;" % self.name))[0][0])
-        
+
     def __len__(self):
         return self.count()
+
     def __iter__(self):
         return self.iterrows()
+
     def __getitem__(self, id):
         return self.filter(ALL, id=id)
+
     def __setitem__(self, id, row):
         self.delete(id)
         self.update(self.insert(row), {"id": id})
+
     def __delitem__(self, id):
         self.delete(id)
 
@@ -1055,28 +1220,32 @@ class Table(object):
         return abs(self.name, field)
 
     def iterrows(self):
-        """ Returns an iterator over the rows in the table.
-        """
+        """Returns an iterator over the rows in the table."""
         return self.db.execute("select * from `%s`;" % self.name)
 
     def rows(self):
-        """ Returns a list of all the rows in the table.
-        """
+        """Returns a list of all the rows in the table."""
         return list(self.iterrows())
-        
+
     def record(self, row):
         """ Returns the given row as a dictionary of (field or alias, value)-items.
         """
         return dict(zip(self.fields, row))
 
     class Rows(list):
-        """ A list of results from Table.filter() with a Rows.table property.
-            (i.e., like Query.table returned from Table.search()).
+
+        """A list of results from Table.filter() with a Rows.table property.
+
+        (i.e., like Query.table returned from Table.search()).
+
         """
+
         def __init__(self, table, data):
-            list.__init__(self, data); self.table=table
+            list.__init__(self, data)
+            self.table = table
+
         def record(self, row):
-            return self.table.record(row) # See assoc().
+            return self.table.record(row)  # See assoc().
 
     def filter(self, *args, **kwargs):
         """ Returns the rows that match the given constraints (using equals + AND):
@@ -1097,20 +1266,22 @@ class Table(object):
         elif len(args) >= 2:
             # Two parameters: field(s) and dict of filters.
             fields, kwargs = args[0], args[1]
-        fields = isinstance(fields, (list, tuple)) and ", ".join(fields) or fields or ALL
-        q = " and ".join(cmp(k, v, "=", self.db.escape) for k, v in kwargs.items())
+        fields = isinstance(fields, (list, tuple)) and ", ".join(
+            fields) or fields or ALL
+        q = " and ".join(cmp(k, v, "=", self.db.escape)
+                         for k, v in kwargs.items())
         q = q and " where %s" % q or ""
         q = "select %s from `%s`%s;" % (fields, self.name, q)
         return self.Rows(self, self.db.execute(q))
-        
+
     def find(self, *args, **kwargs):
         return self.filter(*args, **kwargs)
 
     def search(self, *args, **kwargs):
-        """ Returns a Query object that can be used to construct complex table queries.
-        """
+        """Returns a Query object that can be used to construct complex table
+        queries."""
         return Query(self, *args, **kwargs)
-        
+
     query = search
 
     def _insert_id(self):
@@ -1121,17 +1292,18 @@ class Table(object):
             return list(self.db.execute("select last_insert_rowid();"))[0][0] or None
 
     def insert(self, *args, **kwargs):
-        """ Inserts a new row from the given field parameters, returns id.
-        """
+        """Inserts a new row from the given field parameters, returns id."""
         # Table.insert(name="Taxi", age=2, type="cat")
         # Table.insert({"name":"Fricassée", "age":2, "type":"cat"})
-        commit = kwargs.pop("commit", True) # As fieldname, use abs(Table.name, "commit").
+        # As fieldname, use abs(Table.name, "commit").
+        commit = kwargs.pop("commit", True)
         if len(args) == 0 and len(kwargs) == 1 and isinstance(kwargs.get("values"), dict):
-            kwargs = kwargs["values"]        
+            kwargs = kwargs["values"]
         elif len(args) == 1 and isinstance(args[0], dict):
             kwargs = dict(args[0], **kwargs)
         elif len(args) == 1 and isinstance(args[0], (list, tuple)):
-            kwargs = dict(zip((f for f in self.fields if f != self.pk), args[0]))
+            kwargs = dict(
+                zip((f for f in self.fields if f != self.pk), args[0]))
         if len(self.default) > 0:
             kwargs.update(self.default)
         k = ", ".join("`%s`" % k for k in kwargs.keys())
@@ -1139,41 +1311,45 @@ class Table(object):
         q = "insert into `%s` (%s) values (%s);" % (self.name, k, v)
         self.db.execute(q, commit)
         return self._insert_id()
-        
+
     def update(self, id, *args, **kwargs):
-        """ Updates the row with the given id.
-        """
+        """Updates the row with the given id."""
         # Table.update(1, age=3)
         # Table.update(1, {"age":3})
         # Table.update(all(filter(field="name", value="Taxi")), age=3)
-        commit = kwargs.pop("commit", True) # As fieldname, use abs(Table.name, "commit").
+        # As fieldname, use abs(Table.name, "commit").
+        commit = kwargs.pop("commit", True)
         if isinstance(id, (list, tuple)):
             id = FilterChain(*id)
         if len(args) == 0 and len(kwargs) == 1 and isinstance(kwargs.get("values"), dict):
-            kwargs = kwargs["values"]  
+            kwargs = kwargs["values"]
         if len(args) == 1 and isinstance(args[0], dict):
-            a=args[0]; a.update(kwargs); kwargs=a
-        kv = ", ".join("`%s`=%s" % (k, self.db.escape(v)) for k, v in kwargs.items())
-        q  = "update `%s` set %s where %s;" % (self.name, kv, 
-            not isinstance(id, (Filter, FilterChain)) and cmp(self.primary_key, id, "=", self.db.escape) \
-             or id.SQL(escape=self.db.escape))
+            a = args[0]
+            a.update(kwargs)
+            kwargs = a
+        kv = ", ".join("`%s`=%s" % (k, self.db.escape(v))
+                       for k, v in kwargs.items())
+        q = "update `%s` set %s where %s;" % (self.name, kv,
+                                              not isinstance(id, (Filter, FilterChain)) and cmp(
+                                                  self.primary_key, id, "=", self.db.escape)
+                                              or id.SQL(escape=self.db.escape))
         self.db.execute(q, commit)
 
     def delete(self, id, commit=True):
-        """ Removes the row which primary key equals the given id.
-        """
+        """Removes the row which primary key equals the given id."""
         # Table.delete(1)
         # Table.delete(ALL)
         # Table.delete(all(("type","cat"), ("age",15,">")))
         if isinstance(id, (list, tuple)):
             id = FilterChain(*id)
-        q = "delete from `%s` where %s" % (self.name, 
-            not isinstance(id, (Filter, FilterChain)) and cmp(self.primary_key, id, "=", self.db.escape) \
-             or id.SQL(escape=self.db.escape))
+        q = "delete from `%s` where %s" % (self.name,
+                                           not isinstance(id, (Filter, FilterChain)) and cmp(
+                                               self.primary_key, id, "=", self.db.escape)
+                                           or id.SQL(escape=self.db.escape))
         self.db.execute(q, commit)
-    
+
     append, edit, remove = insert, update, delete
-        
+
     @property
     def xml(self):
         return xml(self)
@@ -1183,13 +1359,13 @@ class Table(object):
 
     def __repr__(self):
         return "Table(name=%s, count=%s, database=%s)" % (
-            repr(self.name), 
+            repr(self.name),
             repr(self.count()),
             repr(self.db.name))
-            
-#### QUERY #########################################################################################
 
-#--- QUERY SYNTAX ----------------------------------------------------------------------------------
+#### QUERY ###############################################################
+
+#--- QUERY SYNTAX --------------------------------------------------------
 
 BETWEEN, LIKE, IN = \
     "between", "like", "in"
@@ -1200,14 +1376,20 @@ sql_functions = \
     "length|lower|upper|substr|substring|replace|trim|round|random|rand|" \
     "strftime|date_format"
 
+
 def abs(table, field):
-    """ For a given <fieldname>, returns the absolute <tablename>.<fieldname>.
-        This is useful when constructing queries with relations to other tables.
+    """For a given <fieldname>, returns the absolute <tablename>.<fieldname>.
+
+    This is useful when constructing queries with relations to other
+    tables.
+
     """
     def _format(s):
         if not "." in s:
-            # Field could be wrapped in a function: year(date) => year(table.date).
-            p = s.endswith(")") and re.match(r"^("+sql_functions+r")\(", s, re.I) or None
+            # Field could be wrapped in a function: year(date) =>
+            # year(table.date).
+            p = s.endswith(")") and re.match(
+                r"^(" + sql_functions + r")\(", s, re.I) or None
             i = p and len(p.group(0)) or 0
             return "%s%s.%s" % (s[:i], table, s[i:])
         return s
@@ -1215,20 +1397,21 @@ def abs(table, field):
         return [_format(f) for f in field]
     return _format(field)
 
+
 def cmp(field, value, comparison="=", escape=lambda v: _escape(v), table=""):
     """ Returns an SQL WHERE comparison string using =, i=, !=, >, <, >=, <= or BETWEEN.
         Strings may contain wildcards (*) at the start or at the end.
         A list or tuple of values can be given when using =, != or BETWEEN.
     """
     # Use absolute field names if table name is given:
-    if table: 
+    if table:
         field = abs(table, field)
     # cmp("name", "Mar*") => "name like 'Mar%'".
-    if isinstance(value, basestring) and (value.startswith(("*","%")) or value.endswith(("*","%"))):
+    if isinstance(value, basestring) and (value.startswith(("*", "%")) or value.endswith(("*", "%"))):
         if comparison in ("=", "i=", "==", LIKE):
-            return "%s like %s" % (field, escape(value.replace("*","%")))
+            return "%s like %s" % (field, escape(value.replace("*", "%")))
         if comparison in ("!=", "<>"):
-            return "%s not like %s" % (field, escape(value.replace("*","%")))
+            return "%s not like %s" % (field, escape(value.replace("*", "%")))
     # cmp("name", "markov") => "name" like 'markov'" (case-insensitive).
     if isinstance(value, basestring):
         if comparison == "i=":
@@ -1258,80 +1441,108 @@ def cmp(field, value, comparison="=", escape=lambda v: _escape(v), table=""):
             return "%s not in %s" % (field, escape(value))
     return "%s%s%s" % (field, comparison, escape(value))
 
+
 # Functions for date fields: cmp(year("date"), 1999, ">").
 def year(date):
     return "year(%s)" % date
+
+
 def month(date):
     return "month(%s)" % date
+
+
 def day(date):
     return "day(%s)" % date
+
+
 def hour(date):
     return "hour(%s)" % date
+
+
 def minute(date):
     return "minute(%s)" % date
+
+
 def second(date):
     return "second(%s)" % date
+
 
 # Aggregate functions.
 def count(value):
     return "count(%s)" % value
+
+
 def sum(value):
     return "sum(%s)" % value
 
-#--- QUERY FILTER ----------------------------------------------------------------------------------
+#--- QUERY FILTER --------------------------------------------------------
 
 AND, OR = "and", "or"
 
+
 class Filter(tuple):
+
     def __new__(cls, field, value, comparison):
         return tuple.__new__(cls, (field, value, comparison))
+
     def SQL(self, **kwargs):
         return cmp(*self, **kwargs)
 
+
 def filter(field, value, comparison="="):
     return Filter(field, value, comparison)
-  
+
+
 def eq(field, value):
     return Filter(field, value, "=")
-    
+
+
 def eqi(field, value):
     return Filter(field, value, "i=")
-    
+
+
 def ne(field, value):
     return Filter(field, value, "!=")
-    
+
+
 def gt(field, value):
     return Filter(field, value, ">")
+
 
 def lt(field, value):
     return Filter(field, value, "<")
 
+
 def gte(field, value):
     return Filter(field, value, ">=")
 
+
 def lte(field, value):
     return Filter(field, value, "<=")
-    
+
+
 def rng(field, value):
     return Filter(field, value, ":")
 
+
 class FilterChain(list):
-    
+
     def __init__(self, *args, **kwargs):
-        """ A list of SQL WHERE filters combined with AND/OR logical operator.
-        """
+        """A list of SQL WHERE filters combined with AND/OR logical
+        operator."""
         # FilterChain(filter("type", "cat", "="), filter("age", 5, "="), operator=AND)
         # FilterChain(type="cat", age=5, operator=AND)
         # FilterChain({"type": "cat", "age": 5}, operator=AND)
         if len(args) == 1 and isinstance(args[0], dict):
-            args[0].pop("operator", None); kwargs=dict(args[0], **kwargs)
+            args[0].pop("operator", None)
+            kwargs = dict(args[0], **kwargs)
             args = []
         else:
             args = list(args)
         self.operator = kwargs.pop("operator", AND)
         args.extend(filter(k, v, "=") for k, v in kwargs.items())
         list.__init__(self, args)
-    
+
     def SQL(self, **kwargs):
         """ For example, filter for small pets with tails or wings
             (which is not the same as small pets with tails or pets with wings):
@@ -1341,7 +1552,7 @@ class FilterChain(list):
             >>>     FilterChain(
             >>>         filter("tail", True),
             >>>         filter("wing", True), operator=OR))
-            Yields: 
+            Yields:
             "type='pet' and weight between 4 and 6 and (tail=1 or wing=1)"
         """
         # Remember to pass the right escape() function as optional parameter.
@@ -1355,110 +1566,140 @@ class FilterChain(list):
             if isinstance(filter, (Filter, list, tuple)):
                 a.append(cmp(*filter, **kwargs))
                 continue
-            raise TypeError("FilterChain can contain other FilterChain or filter(), not %s" % type(filter))
+            raise TypeError(
+                "FilterChain can contain other FilterChain or filter(), not %s" % type(filter))
         return (" %s " % self.operator).join(a)
-        
+
     sql = SQL
 
+
 def all(*args, **kwargs):
-    """ Returns a group of filters combined with AND.
-    """
+    """Returns a group of filters combined with AND."""
     kwargs["operator"] = AND
     return FilterChain(*args, **kwargs)
-    
+
+
 def any(*args, **kwargs):
-    """ Returns a group of filters combined with OR.
-    """
+    """Returns a group of filters combined with OR."""
     kwargs["operator"] = OR
     return FilterChain(*args, **kwargs)
-    
+
 # From a GET-query dict:
 # all(*dict.items())
 
 # filter() value can also be a Query with comparison=IN.
 
-#--- QUERY -----------------------------------------------------------------------------------------
+#--- QUERY ---------------------------------------------------------------
 
 # Relations:
-INNER = "inner" # The rows for which there is a match in both tables (same as join=None).
-LEFT  = "left"  # All rows from this table, with field values from the related table when possible.
-RIGHT = "right" # All rows from the related table, with field values from this table when possible.
-FULL  = "full"  # All rows form both tables.
+# The rows for which there is a match in both tables (same as join=None).
+INNER = "inner"
+# All rows from this table, with field values from the related table when
+# possible.
+LEFT = "left"
+# All rows from the related table, with field values from this table when
+# possible.
+RIGHT = "right"
+FULL = "full"  # All rows form both tables.
+
 
 class Relation(tuple):
+
     def __new__(cls, field1, field2, table, join):
         return tuple.__new__(cls, (field1, field2, table, join))
+
 
 def relation(field1, field2, table, join=LEFT):
     return Relation(field1, field2, table, join)
 
 rel = relation
-    
+
 # Sorting:
-ASCENDING  = "asc"
+ASCENDING = "asc"
 DESCENDING = "desc"
 
 # Grouping:
 FIRST, LAST, COUNT, MAX, MIN, SUM, AVG, STDEV, CONCATENATE = \
     "first", "last", "count", "max", "min", "sum", "avg", "stdev", "group_concat"
 
+
 class Query(object):
-    
+
     id, cache = 0, {}
-    
+
     def __init__(self, table, fields=ALL, filters=[], relations=[], sort=None, order=ASCENDING, group=None, function=FIRST, range=None):
-        """ A selection of rows from the given table, filtered by any() and all() constraints.
-        """
+        """A selection of rows from the given table, filtered by any() and
+        all() constraints."""
         # Table.search(ALL, filters=any(("type","cat"), ("type","dog")) => cats and dogs.
         # Table.search(("type", "name")), group="type", function=COUNT) => all types + amount per type.
-        # Table.search(("name", "types.has_tail"), relations=[("types","type","id")]) => links type to types.id.
+        # Table.search(("name", "types.has_tail"),
+        # relations=[("types","type","id")]) => links type to types.id.
         if isinstance(filters, Filter):
             filters = [filters]
         if isinstance(relations, Relation):
             relations = [relations]
         Query.id += 1
-        filters = FilterChain(*filters, **dict(operator=getattr(filters, "operator", AND)))
-        self._id       = Query.id
-        self._table    = table
-        self.fields    = fields    # A field name, list of field names or ALL.
-        self.aliases   = {}        # A dictionary of field name aliases, used with Query.xml or Query-in-Query.
-        self.filters   = filters   # A group of filter() objects.
-        self.relations = relations # A list of rel() objects. 
-        self.sort      = sort      # A field name, list of field names or field index for sorting.
-        self.order     = order     # ASCENDING or DESCENDING.
-        self.group     = group     # A field name, list of field names or field index for folding.
-        self.function  = function  # FIRST, LAST, COUNT, MAX, MIN, SUM, AVG, STDEV or CONCATENATE (or list).
-        self.range     = range     # A (index1, index2)-tuple. The first row in the table is 0.
-        
+        filters = FilterChain(
+            *filters, **dict(operator=getattr(filters, "operator", AND)))
+        self._id = Query.id
+        self._table = table
+        self.fields = fields    # A field name, list of field names or ALL.
+        # A dictionary of field name aliases, used with Query.xml or
+        # Query-in-Query.
+        self.aliases = {}
+        self.filters = filters   # A group of filter() objects.
+        self.relations = relations  # A list of rel() objects.
+        # A field name, list of field names or field index for sorting.
+        self.sort = sort
+        self.order = order     # ASCENDING or DESCENDING.
+        # A field name, list of field names or field index for folding.
+        self.group = group
+        # FIRST, LAST, COUNT, MAX, MIN, SUM, AVG, STDEV or CONCATENATE (or
+        # list).
+        self.function = function
+        # A (index1, index2)-tuple. The first row in the table is 0.
+        self.range = range
+
     @property
     def table(self):
         return self._table
 
     def __len__(self):
         return len(list(self.rows()))
+
     def __iter__(self):
         return self.execute()
+
     def __getitem__(self, i):
-        return self.rows()[i] # poor performance
+        return self.rows()[i]  # poor performance
 
     def SQL(self):
-        """ Yields the SQL syntax of the query, which can be passed to Database.execute().
-            The SQL string will be cached for faster reuse.
+        """Yields the SQL syntax of the query, which can be passed to
+        Database.execute().
+
+        The SQL string will be cached for faster reuse.
+
         """
-        #if self._id in Query.cache: 
+        # if self._id in Query.cache:
         #    return Query.cache[self._id]
         # Construct the SELECT clause from Query.fields.
-        g = not isinstance(self.group, (list, tuple)) and [self.group] or self.group
+        g = not isinstance(self.group, (list, tuple)) and [
+            self.group] or self.group
         g = [abs(self._table.name, f) for f in g if f is not None]
-        fields = not isinstance(self.fields, (list, tuple)) and [self.fields] or self.fields
-        fields = [f in self.aliases and "%s as %s" % (f, self.aliases[f]) or f for f in fields]
+        fields = not isinstance(self.fields, (list, tuple)) and [
+            self.fields] or self.fields
+        fields = [f in self.aliases and "%s as %s" %
+                  (f, self.aliases[f]) or f for f in fields]
         fields = abs(self._table.name, fields)
         # With a GROUPY BY clause, fields not used for grouping are wrapped in the given function.
-        # The function can also be a list of functions for each field (FIRST by default).
+        # The function can also be a list of functions for each field (FIRST by
+        # default).
         if g and isinstance(self.function, basestring):
-            fields = [f in g and f or "%s(%s)" % (self.function, f) for f in fields]
+            fields = [f in g and f or "%s(%s)" %
+                      (self.function, f) for f in fields]
         if g and isinstance(self.function, (list, tuple)):
-            fields = [f in g and f or "%s(%s)" % (F,f) for F,f in zip(self.function+[FIRST]*len(fields), fields)]
+            fields = [f in g and f or "%s(%s)" % (F, f) for F, f in zip(
+                self.function + [FIRST] * len(fields), fields)]
         q = []
         q.append("select %s" % ", ".join(fields))
         # Construct the FROM clause from Query.relations.
@@ -1473,70 +1714,78 @@ class Query(object):
             if table1 == self._table.name:
                 relations.setdefault(table2, (key1, key2, join))
             if table2 == self._table.name:
-                relations.setdefault(table1, (key1, key2, join==LEFT and RIGHT or (join==RIGHT and LEFT or join)))
+                relations.setdefault(
+                    table1, (key1, key2, join == LEFT and RIGHT or (join == RIGHT and LEFT or join)))
         # Define relations only for tables whose fields are actually selected.
         for (table, (key1, key2, join)) in relations.items():
             for f in fields:
                 if table + "." in f:
-                    q.append("%sjoin `%s`" % (join and join+" " or "", table))
-                    q.append("on %s=%s" % (abs(self._table.name, key1), abs(self._table.db[table].name, key2)))
+                    q.append("%sjoin `%s`" %
+                             (join and join + " " or "", table))
+                    q.append("on %s=%s" % (
+                        abs(self._table.name, key1), abs(self._table.db[table].name, key2)))
                     break
         # Construct the WHERE clause from Query.filters.SQL().
         # Use the database's escape function and absolute field names.
         if len(self.filters) > 0:
-            q.append("where %s" % self.filters.SQL(escape=self._table.db.escape, table=self._table.name))
+            q.append("where %s" % self.filters.SQL(
+                escape=self._table.db.escape, table=self._table.name))
         # Construct the ORDER BY clause from Query.sort and Query.order.
         # Construct the GROUP BY clause from Query.group.
         for clause, value in (("order", self.sort), ("group", self.group)):
-            if isinstance(value, basestring) and value != "": 
+            if isinstance(value, basestring) and value != "":
                 q.append("%s by %s" % (clause, abs(self._table.name, value)))
             elif isinstance(value, (list, tuple)) and len(value) > 0:
-                q.append("%s by %s" % (clause, ", ".join(abs(self._table.name, value))))
+                q.append("%s by %s" %
+                         (clause, ", ".join(abs(self._table.name, value))))
             elif isinstance(value, int):
-                q.append("%s by %s" % (clause, abs(self._table.name, self._table.fields[value])))
+                q.append(
+                    "%s by %s" % (clause, abs(self._table.name, self._table.fields[value])))
             if self.sort and clause == "order":
                 if self.order in (ASCENDING, DESCENDING):
                     q.append("%s" % self.order)
                 elif isinstance(self.order, (list, tuple)):
-                    q[-1] = ",".join(" ".join(v) for v in zip(q[-1].split(","), self.order))
+                    q[-1] = ",".join(" ".join(v)
+                                     for v in zip(q[-1].split(","), self.order))
         # Construct the LIMIT clause from Query.range.
         if self.range:
             q.append("limit %s, %s" % (str(self.range[0]), str(self.range[1])))
         q = " ".join(q) + ";"
         # Cache the SQL-string for faster retrieval.
-        #if len(Query.cache) > 100: 
+        # if len(Query.cache) > 100:
         #    Query.cache.clear()
-        #Query.cache[self._id] = q # XXX cache is not updated when properties change.
+        # Query.cache[self._id] = q # XXX cache is not updated when properties
+        # change.
         return q
-        
+
     sql = SQL
-    
+
     def execute(self):
-        """ Executes the query and returns an iterator over the matching rows in the table.
-        """
+        """Executes the query and returns an iterator over the matching rows in
+        the table."""
         return self._table.db.execute(self.SQL())
 
     def iterrows(self):
-        """ Executes the query and returns an iterator over the matching rows in the table.
-        """
+        """Executes the query and returns an iterator over the matching rows in
+        the table."""
         return self.execute()
 
     def rows(self):
-        """ Executes the query and returns the matching rows from the table.
-        """
+        """Executes the query and returns the matching rows from the table."""
         return list(self.execute())
-        
+
     def record(self, row):
         """ Returns the given row as a dictionary of (field or alias, value)-items.
         """
-        return dict(zip((self.aliases.get(f,f) for f in self.fields), row))
-        
+        return dict(zip((self.aliases.get(f, f) for f in self.fields), row))
+
     @property
     def xml(self):
         return xml(self)
 
     def __repr__(self):
         return "Query(sql=%s)" % repr(self.SQL())
+
 
 def associative(query):
     """ Yields query rows as dictionaries of (field, value)-items.
@@ -1546,57 +1795,62 @@ def associative(query):
 
 assoc = associative
 
-#### VIEW ##########################################################################################
+#### VIEW ################################################################
 # A representation of data based on a table in the database.
-# The render() method can be overridden to output data in a certain format (e.g., HTML for a web app).
+# The render() method can be overridden to output data in a certain format
+# (e.g., HTML for a web app).
+
 
 class View(object):
-    
+
     def __init__(self, database, table, schema=[]):
-        """ A representation of data.
-            View.render() should be overridden in a subclass.
+        """A representation of data.
+
+        View.render() should be overridden in a subclass.
+
         """
         self.database = database
-        self._table   = isinstance(table, Table) and table.name or table
-        self.schema   = schema # A list of table fields - see field().
-    
+        self._table = isinstance(table, Table) and table.name or table
+        self.schema = schema  # A list of table fields - see field().
+
     @property
     def db(self):
         return self.database
-    
+
     @property
     def table(self):
         # If it doesn't exist, create the table from View.schema.
         if not self._table in self.db:
-            self.setup() 
+            self.setup()
         return self.db[self._table]
 
     def setup(self, overwrite=False):
-        """ Creates the database table from View.schema, optionally overwriting the old table.
-        """
+        """Creates the database table from View.schema, optionally overwriting
+        the old table."""
         if overwrite:
             self.db.drop(self._table)
         if not self._table in self.db:
             self.db.create(self._table, self.schema)
-        
+
     def render(self, *path, **query):
         """ This method should be overwritten to return formatted table output (XML, HTML, RSS, ...)
             For web apps, the given path should list all parts in the relative URL path,
             and query is a dictionary of all POST and GET variables sent from the client.
-            For example: http://books.com/science/new 
+            For example: http://books.com/science/new
             => ["science", "new"]
             => render() data from db.books.filter(ALL, category="science", new=True).
         """
         pass
-    
+
     # CherryPy-specific.
     def default(self, *path, **query):
         return self.render(*path, **query)
     default.exposed = True
 
-#### XML PARSER ####################################################################################
+#### XML PARSER ##########################################################
 
 XML_HEADER = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+
 
 def _unpack_fields(table, fields=[]):
     """ Replaces "*" with the actual field names.
@@ -1607,9 +1861,9 @@ def _unpack_fields(table, fields=[]):
         a, b = "." in f and f.split(".", 1) or (table.name, f)
         if a == table.name and b == ALL:
             # <table>.*
-            u.extend(f for f in table.db.tables[a].fields) 
+            u.extend(f for f in table.db.tables[a].fields)
         elif a != table.name and b == ALL:
-            # <related-table>.* 
+            # <related-table>.*
             u.extend("%s.%s" % (a, f) for f in table.db.tables[a].fields)
         elif a != table.name:
             # <related-table>.<field>
@@ -1619,13 +1873,14 @@ def _unpack_fields(table, fields=[]):
             u.append(b)
     return u
 
+
 def xml_format(a):
-    """ Returns the given attribute (string, int, float, bool, None) as a quoted unicode string.
-    """
+    """Returns the given attribute (string, int, float, bool, None) as a quoted
+    unicode string."""
     if isinstance(a, basestring):
         return "\"%s\"" % encode_entities(a)
     if isinstance(a, bool):
-        return "\"%s\"" % ("no","yes")[int(a)]
+        return "\"%s\"" % ("no", "yes")[int(a)]
     if isinstance(a, (int, long)):
         return "\"%s\"" % a
     if isinstance(a, float):
@@ -1636,6 +1891,7 @@ def xml_format(a):
         return "\"%s\"" % str(a)
     if isinstance(a, datetime.datetime):
         return "\"%s\"" % str(date(mktime(a.timetuple())))
+
 
 def xml(rows):
     """ Returns the rows in the given Table or Query as an XML-string, for example:
@@ -1652,20 +1908,22 @@ def xml(rows):
             </rows>
         </table>
     """
-    if isinstance(rows, Table): 
-        root, table, rows, fields, aliases = "table", rows, rows.rows(), rows.fields, {}
-    if isinstance(rows, Query): 
-        root, table, rows, fields, aliases, = "query", rows.table, rows.rows(), rows.fields, rows.aliases
+    if isinstance(rows, Table):
+        root, table, rows, fields, aliases = "table", rows, rows.rows(
+        ), rows.fields, {}
+    if isinstance(rows, Query):
+        root, table, rows, fields, aliases, = "query", rows.table, rows.rows(
+        ), rows.fields, rows.aliases
     fields = _unpack_fields(table, fields)
     # <table name="" fields="" count="">
     # <query table="" fields="" count="">
     xml = []
     xml.append(XML_HEADER)
     xml.append("<%s %s=%s fields=\"%s\" count=\"%s\">" % (
-        root, 
-        root != "table" and "table" or "name", 
-        xml_format(table.name), # Use Query.aliases as field names.
-        ", ".join(encode_entities(aliases.get(f,f)) for f in fields),
+        root,
+        root != "table" and "table" or "name",
+        xml_format(table.name),  # Use Query.aliases as field names.
+        ", ".join(encode_entities(aliases.get(f, f)) for f in fields),
         len(rows)))
     # <schema>
     # Field information is retrieved from the (related) table schema.
@@ -1679,24 +1937,28 @@ def xml(rows):
             s = table.schema[f]
         # <field name="" type="" length="" default="" index="" optional="" extra="" />
         xml.append("\t\t<field name=%s type=%s%s%s%s%s%s />" % (
-            xml_format(aliases.get(f,f)),
+            xml_format(aliases.get(f, f)),
             xml_format(s.type),
             s.length is not None and " length=%s" % xml_format(s.length) or "",
-            s.default is not None and " default=%s" % xml_format(s.default) or "",
+            s.default is not None and " default=%s" % xml_format(
+                s.default) or "",
             s.index is not False and " index=%s" % xml_format(s.index) or "",
-            s.optional is not True and " optional=%s" % xml_format(s.optional) or "",
+            s.optional is not True and " optional=%s" % xml_format(
+                s.optional) or "",
             s.extra is not None and " extra=%s" % xml_format(s.extra) or ""))
     xml.append("\t</schema>")
     xml.append("\t<rows>")
     # <rows>
     for r in rows:
         # <row field="value" />
-        xml.append("\t\t<row %s />" % " ".join("%s=%s" % (aliases.get(k,k), xml_format(v)) for k, v in zip(fields, r)))
+        xml.append("\t\t<row %s />" % " ".join("%s=%s" %
+                                               (aliases.get(k, k), xml_format(v)) for k, v in zip(fields, r)))
     xml.append("\t</rows>")
     xml.append("</%s>" % root)
     xml = "\n".join(xml)
     xml = encode_utf8(xml)
     return xml
+
 
 def parse_xml(database, xml, table=None, field=lambda s: s.replace(".", "-")):
     """ Creates a new table in the given database from the given XML-string.
@@ -1721,11 +1983,12 @@ def parse_xml(database, xml, table=None, field=lambda s: s.replace(".", "-")):
     for f in dom.getElementsByTagName("field"):
         fields.append(_attr(f, "name"))
         schema.append(_field(
-            name = field(_attr(f, "name")),
-            type = _attr(f, "type") == STRING and STRING(int(_attr(f, "length", 255))) or _attr(f, "type"),
-         default = _attr(f, "default", None),
-           index = _attr(f, "index", False),
-        optional = _attr(f, "optional", True) != "no"
+            name=field(_attr(f, "name")),
+            type=_attr(f, "type") == STRING and STRING(
+                int(_attr(f, "length", 255))) or _attr(f, "type"),
+            default=_attr(f, "default", None),
+            index=_attr(f, "index", False),
+            optional=_attr(f, "optional", True) != "no"
         ))
         # Integer primary key is always auto-increment.
         # The id's in the new table will differ from those in the XML.
@@ -1737,7 +2000,7 @@ def parse_xml(database, xml, table=None, field=lambda s: s.replace(".", "-")):
         for i, f in enumerate(fields):
             v = _attr(r, f, None)
             if schema[i][1] == BOOLEAN:
-                rows[-1][f] = (0,1)[v!="no"]
+                rows[-1][f] = (0, 1)[v != "no"]
             else:
                 rows[-1][f] = v
     # Create table if not exists and insert rows.
@@ -1751,52 +2014,57 @@ def parse_xml(database, xml, table=None, field=lambda s: s.replace(".", "-")):
     database.commit()
     return database[table]
 
-#### JSON PARSER ###################################################################################
+#### JSON PARSER #########################################################
 # JSON is useful to store nested data in a Database or Datasheet.
 # 1) Try to import Python 2.6+ json module.
 # 2) Try to import pattern.web simplejson module.
 # 3) Otherwise, use trivial algorithm below.
 
+
 class json(object):
-    
+
     def __init__(self):
         self.float = lambda f: re.sub(r"0+$", "0", "%.3f" % f)
         self.escape = [
-            ("\\", "\\\\"), 
-            ( '"', '\\"' ), 
-            ("\n", "\\n" ), 
-            ("\r", "\\r "), 
-            ("\t", "\\t" )
+            ("\\", "\\\\"),
+            ('"', '\\"'),
+            ("\n", "\\n"),
+            ("\r", "\\r "),
+            ("\t", "\\t")
         ]
-        
-    def _split(self, s, sep=",", parens=[["[","{",'"'], ["]","}",'"']]):
-        """ Splits the string on the given separator (unless the separator is inside parentheses).
-        """
+
+    def _split(self, s, sep=",", parens=[["[", "{", '"'], ["]", "}", '"']]):
+        """Splits the string on the given separator (unless the separator is
+        inside parentheses)."""
         (p1, p2), p, i = parens, [], 0
         for j, ch in enumerate(s):
             if ch == sep and not p:
-                yield s[i:j]; i=j+1
+                yield s[i:j]
+                i = j + 1
             elif ch in p2 and p and p[-1] == p1[p2.index(ch)]:
                 p.pop()
             elif ch in p1:
                 p.append(ch)
         yield s[i:]
-        
+
     def encode(self, s):
         if not isinstance(s, basestring):
             s = str(s)
         for a, b in self.escape:
             s = s.replace(a, b)
         return '"%s"' % s
-        
+
     def decode(self, s):
         for a, b in self.escape:
             s = s.replace(b, a)
         return s.strip('"')
 
     def loads(self, string, *args, **kwargs):
-        """ Returns the data parsed from the given JSON string.
-            The data can be a nested structure of dict, list, str, unicode, bool, int, float and None.
+        """Returns the data parsed from the given JSON string.
+
+        The data can be a nested structure of dict, list, str, unicode,
+        bool, int, float and None.
+
         """
         s = string.strip()
         if s.startswith('"'):
@@ -1816,12 +2084,16 @@ class json(object):
         raise TypeError("can't process %s." % repr(string))
 
     def dumps(self, obj, *args, **kwargs):
-        """ Returns a JSON string from the given data.
-            The data can be a nested structure of dict, list, str, unicode, bool, int, float and None.
+        """Returns a JSON string from the given data.
+
+        The data can be a nested structure of dict, list, str, unicode,
+        bool, int, float and None.
+
         """
         if isinstance(obj, (str, unicode)):
             return self.encode(obj)
-        if isinstance(obj, (int, long)): # Also validates bools, so those are handled first.
+        # Also validates bools, so those are handled first.
+        if isinstance(obj, (int, long)):
             return str(obj)
         if isinstance(obj, float):
             return str(self.float(obj))
@@ -1835,9 +2107,11 @@ class json(object):
             return "[%s]" % ", ".join(self.dumps(v) for v in obj)
         raise TypeError("can't process %s." % type(obj))
 
-try: import json # Python 2.6+
+try:
+    import json  # Python 2.6+
 except:
-    try: from pattern.web import json # simplejson
+    try:
+        from pattern.web import json  # simplejson
     except:
         json = json()
 
@@ -1845,29 +2119,32 @@ except:
 #db.create("persons", (pk(), field("data", TEXT)))
 #db.persons.append((json.dumps({"name": u"Schrödinger", "type": "cat"}),))
 #
-#for id, data in db.persons:
+# for id, data in db.persons:
 #    print(id, json.loads(data))
 
-#### DATASHEET #####################################################################################
+#### DATASHEET ###########################################################
 
-#--- CSV -------------------------------------------------------------------------------------------
+#--- CSV -----------------------------------------------------------------
 
 # Raise the default field size limit:
 csvlib.field_size_limit(sys.maxsize)
+
 
 def csv_header_encode(field, type=STRING):
     # csv_header_encode("age", INTEGER) => "age (INTEGER)".
     t = re.sub(r"^varchar\(.*?\)", "string", (type or ""))
     t = t and " (%s)" % t or ""
-    s = "%s%s" % (encode_utf8(field or ""), t.upper())
+    s = "%s%s" % (field or "", t.upper())
     return s
-    
+
+
 def csv_header_decode(s):
     # csv_header_decode("age (INTEGER)") => ("age", INTEGER).
     p = r"STRING|INTEGER|FLOAT|TEXT|BLOB|BOOLEAN|DATE|"
-    p = re.match(r"(.*?) \(("+p+")\)", s)
+    p = re.match(r"(.*?) \((" + p + ")\)", s)
     s = s.endswith(" ()") and s[:-3] or s
     return p and (string(p.group(1), default=None), p.group(2).lower()) or (string(s) or None, None)
+
 
 class CSV(list):
 
@@ -1883,7 +2160,8 @@ class CSV(list):
     def __init__(self, rows=[], fields=None, **kwargs):
         # List of (name, type)-tuples (STRING, INTEGER, FLOAT, DATE, BOOLEAN).
         fields = fields or kwargs.pop("headers", None)
-        fields = fields and [tuple(f) if isinstance(f, (tuple, list)) else (f, None) for f in fields] or None
+        fields = fields and [tuple(f) if isinstance(
+            f, (tuple, list)) else (f, None) for f in fields] or None
         self.__dict__["fields"] = fields
         if hasattr(rows, "__iter__"):
             self.extend(rows, **kwargs)
@@ -1893,16 +2171,20 @@ class CSV(list):
 
     def _set_headers(self, v):
         self.__dict__["fields"] = v
+
     def _get_headers(self):
         return self.__dict__["fields"]
-        
+
     headers = property(_get_headers, _set_headers)
 
     def save(self, path, separator=",", encoder=lambda v: v, headers=False, password=None, **kwargs):
-        """ Exports the table to a unicode text file at the given path.
-            Rows in the file are separated with a newline.
-            Columns in a row are separated with the given separator (by default, comma).
-            For data types other than string, int, float, bool or None, a custom string encoder can be given.
+        """Exports the table to a unicode text file at the given path.
+
+        Rows in the file are separated with a newline. Columns in a row
+        are separated with the given separator (by default, comma). For
+        data types other than string, int, float, bool or None, a custom
+        string encoder can be given.
+
         """
         # Optional parameters include all arguments for csv.writer(), see:
         # http://docs.python.org/library/csv.html#csv.writer
@@ -1912,7 +2194,8 @@ class CSV(list):
         s = StringIO()
         w = csvlib.writer(s, **kwargs)
         if headers and self.fields is not None:
-            w.writerows([[csv_header_encode(name, type) for name, type in self.fields]])
+            w.writerows([[csv_header_encode(name, type)
+                          for name, type in self.fields]])
         w.writerows([[encode_utf8(encoder(v)) for v in row] for row in self])
         s = s.getvalue()
         s = s.strip()
@@ -1925,25 +2208,30 @@ class CSV(list):
 
     @classmethod
     def load(cls, path, separator=",", decoder=lambda v: v, headers=False, preprocess=None, password=None, **kwargs):
-        """ Returns a table from the data in the given text file.
-            Rows are expected to be separated by a newline. 
-            Columns are expected to be separated by the given separator (by default, comma).
-            Strings will be converted to int, float, bool, date or None if headers are parsed.
-            For other data types, a custom string decoder can be given.
-            A preprocess(str) function can be given to change the file content before parsing.
+        """Returns a table from the data in the given text file.
+
+        Rows are expected to be separated by a newline. Columns are
+        expected to be separated by the given separator (by default,
+        comma). Strings will be converted to int, float, bool, date or
+        None if headers are parsed. For other data types, a custom
+        string decoder can be given. A preprocess(str) function can be
+        given to change the file content before parsing.
+
         """
         # Date objects are saved and loaded as strings, but it is easy to convert these back to dates:
         # - set a DATE field type for the column,
         # - or do Table.columns[x].map(lambda s: date(s))
         data = open(path, "rU")
         data = data if not password else decrypt_string(data.read(), password)
-        data = data if not password else StringIO(data.replace("\r\n", "\n").replace("\r", "\n"))
+        data = data if not password else StringIO(
+            data.replace("\r\n", "\n").replace("\r", "\n"))
         data = data if not preprocess else StringIO(preprocess(data.read()))
-        data.seek(data.readline().startswith(BOM_UTF8) and len(BOM_UTF8) or 0)
+        bom_utf8 = BOM_UTF8 if sys.version < "3" else BOM_UTF8.decode("utf-8")
+        data.seek(data.readline().startswith(bom_utf8) and len(BOM_UTF8) or 0)
         data = csvlib.reader(data, delimiter=separator)
         i, n = kwargs.get("start"), kwargs.get("count")
         if i is not None and n is not None:
-            data = list(islice(data, i, i+n))
+            data = list(islice(data, i, i + n))
         elif i is not None:
             data = list(islice(data, i, None))
         elif n is not None:
@@ -1951,13 +2239,16 @@ class CSV(list):
         else:
             data = list(data)
         if headers:
-            fields  = [csv_header_decode(field) for field in data.pop(0)]
-            fields += [(None, None)] * (max([0]+[len(row) for row in data]) - len(fields))
+            fields = [csv_header_decode(field) for field in data.pop(0)]
+            fields += [(None, None)] * \
+                (max([0] + [len(row) for row in data]) - len(fields))
         else:
             fields = []
         if not fields:
-            # Cast fields using the given decoder (by default, all strings + None).
-            data = [[decoder(decode_utf8(v) if v != "None" else None) for v in row] for row in data]
+            # Cast fields using the given decoder (by default, all strings +
+            # None).
+            data = [[decoder(decode_utf8(v) if v != "None" else None)
+                     for v in row] for row in data]
         else:
             # Cast fields to their defined field type (STRING, INTEGER, ...)
             for i, row in enumerate(data):
@@ -1983,52 +2274,62 @@ class CSV(list):
                         row[j] = decoder(decode_utf8(v))
         return cls(rows=data, fields=fields, **kwargs)
 
-#--- DATASHEET -------------------------------------------------------------------------------------
+#--- DATASHEET -----------------------------------------------------------
+
 
 class Datasheet(CSV):
-    
+
     def __init__(self, rows=[], fields=None, **kwargs):
-        """ A matrix of rows and columns, where each row and column can be retrieved as a list.
-            Values can be any kind of Python object.
+        """A matrix of rows and columns, where each row and column can be
+        retrieved as a list.
+
+        Values can be any kind of Python object.
+
         """
         # NumPy array, convert to list of int/float/str/bool.
         if rows.__class__.__name__ == "ndarray":
             rows = rows.tolist()
         self.__dict__["_rows"] = DatasheetRows(self)
         self.__dict__["_columns"] = DatasheetColumns(self)
-        self.__dict__["_m"] = 0 # Number of columns per row, see Datasheet.insert().
+        # Number of columns per row, see Datasheet.insert().
+        self.__dict__["_m"] = 0
         list.__init__(self)
         CSV.__init__(self, rows, fields, **kwargs)
-    
+
     def _get_rows(self):
         return self._rows
+
     def _set_rows(self, rows):
-        # Datasheet.rows property can't be set, except in special case Datasheet.rows += row.
+        # Datasheet.rows property can't be set, except in special case
+        # Datasheet.rows += row.
         if isinstance(rows, DatasheetRows) and rows._datasheet == self:
-            self._rows = rows; return
+            self._rows = rows
+            return
         raise AttributeError("can't set attribute")
     rows = property(_get_rows, _set_rows)
-    
+
     def _get_columns(self):
         return self._columns
+
     def _set_columns(self, columns):
-        # Datasheet.columns property can't be set, except in special case Datasheet.columns += column.
+        # Datasheet.columns property can't be set, except in special case
+        # Datasheet.columns += column.
         if isinstance(columns, DatasheetColumns) and columns._datasheet == self:
-            self._columns = columns; return
+            self._columns = columns
+            return
         raise AttributeError("can't set attribute")
     columns = cols = property(_get_columns, _set_columns)
-    
+
     def __getattr__(self, k):
-        """ Columns can be retrieved by field name, e.g., Datasheet.date.
-        """
+        """Columns can be retrieved by field name, e.g., Datasheet.date."""
         #print("Datasheet.__getattr__", k)
         if k in self.__dict__:
             return self.__dict__[k]
         for i, f in enumerate(f[0] for f in self.__dict__["fields"] or []):
-            if f == k: 
+            if f == k:
                 return self.__dict__["_columns"][i]
         raise AttributeError("'Datasheet' object has no attribute '%s'" % k)
-        
+
     def __setattr__(self, k, v):
         """ Columns can be set by field name, e.g., Datasheet.date = [...].
         """
@@ -2046,14 +2347,17 @@ class Datasheet(CSV):
             self._set_headers(v)
             return
         for i, f in enumerate(f[0] for f in self.__dict__["fields"] or []):
-            if f == k: 
-                self.__dict__["_columns"].__setitem__(i, v); return
+            if f == k:
+                self.__dict__["_columns"].__setitem__(i, v)
+                return
         raise AttributeError("'Datasheet' object has no attribute '%s'" % k)
-    
+
     def __setitem__(self, index, value):
-        """ Sets an item or row in the matrix.
-            For Datasheet[i] = v, sets the row at index i to v.
-            For Datasheet[i,j] = v, sets the value in row i and column j to v.
+        """Sets an item or row in the matrix.
+
+        For Datasheet[i] = v, sets the row at index i to v.
+        For Datasheet[i,j] = v, sets the value in row i and column j to v.
+
         """
         if isinstance(index, tuple):
             list.__getitem__(self, index[0])[index[1]] = value
@@ -2062,11 +2366,13 @@ class Datasheet(CSV):
             self.insert(index, value)
         else:
             raise TypeError("Datasheet indices must be int or tuple")
-    
+
     def __getitem__(self, index):
-        """ Returns an item, row or slice from the matrix.
-            For Datasheet[i], returns the row at the given index.
-            For Datasheet[i,j], returns the value in row i and column j.
+        """Returns an item, row or slice from the matrix.
+
+        For Datasheet[i], returns the row at the given index. For
+        Datasheet[i,j], returns the value in row i and column j.
+
         """
         if isinstance(index, (int, slice)):
             # Datasheet[i] => row i.
@@ -2080,18 +2386,19 @@ class Datasheet(CSV):
             # Datasheet[i1:i2,j] => column j from rows i1-i2.
             if not isinstance(j, slice):
                 return [row[j] for row in list.__getitem__(self, i)]
-            # Datasheet[i1:i2,j1:j2] => Datasheet with columns j1-j2 from rows i1-i2.
+            # Datasheet[i1:i2,j1:j2] => Datasheet with columns j1-j2 from rows
+            # i1-i2.
             return Datasheet(
-                  rows = (row[j] for row in list.__getitem__(self, i)),
+                rows=(row[j] for row in list.__getitem__(self, i)),
                 fields = self.fields and self.fields[j] or self.fields)
         raise TypeError("Datasheet indices must be int, tuple or slice")
 
     def __getslice__(self, i, j):
         # Datasheet[i1:i2] => Datasheet with rows i1-i2.
         return Datasheet(
-              rows = list.__getslice__(self, i, j),
-            fields = self.fields)
-            
+            rows=list.__getslice__(self, i, j),
+            fields=self.fields)
+
     def __delitem__(self, index):
         self.pop(index)
 
@@ -2099,15 +2406,25 @@ class Datasheet(CSV):
     # datasheet1 = [[...],[...]] + datasheet2
     # datasheet1 += datasheet2
     def __add__(self, datasheet):
-        m = self.copy(); m.extend(datasheet); return m
+        m = self.copy()
+        m.extend(datasheet)
+        return m
+
     def __radd__(self, datasheet):
-        m = Datasheet(datasheet); m.extend(self); return m
+        m = Datasheet(datasheet)
+        m.extend(self)
+        return m
+
     def __iadd__(self, datasheet):
-        self.extend(datasheet); return self
+        self.extend(datasheet)
+        return self
 
     def insert(self, i, row, default=None, **kwargs):
-        """ Inserts the given row into the matrix.
-            Missing columns at the end (right) will be filled with the default value.
+        """Inserts the given row into the matrix.
+
+        Missing columns at the end (right) will be filled with the
+        default value.
+
         """
         try:
             # Copy the row (fast + safe for generators and DatasheetColumns).
@@ -2117,39 +2434,42 @@ class Datasheet(CSV):
         list.insert(self, i, row)
         m = max((len(self) > 1 and self._m or 0, len(row)))
         if len(row) < m:
-            row.extend([default] * (m-len(row)))
+            row.extend([default] * (m - len(row)))
         if self._m < m:
             # The given row might have more columns than the rows in the matrix.
             # Performance takes a hit when these rows have to be expanded:
             for row in self:
                 if len(row) < m:
-                    row.extend([default] * (m-len(row)))
+                    row.extend([default] * (m - len(row)))
         self.__dict__["_m"] = m
-        
+
     def append(self, row, default=None, _m=None, **kwargs):
         self.insert(len(self), row, default)
-        
+
     def extend(self, rows, default=None, **kwargs):
         for row in rows:
             self.insert(len(self), row, default)
-            
+
     def group(self, j, function=FIRST, key=lambda v: v):
-        """ Returns a datasheet with unique values in column j by grouping rows with the given function.
-            The function takes a list of column values as input and returns a single value,
-            e.g. FIRST, LAST, COUNT, MAX, MIN, SUM, AVG, STDEV, CONCATENATE.
-            The function can also be a list of functions (one for each column).
-            TypeError will be raised when the function cannot handle the data in a column.
-            The key argument can be used to map the values in column j, for example: 
-            key=lambda date: date.year to group Date objects by year.
+        """Returns a datasheet with unique values in column j by grouping rows
+        with the given function.
+
+        The function takes a list of column values as input and returns a single value,
+        e.g. FIRST, LAST, COUNT, MAX, MIN, SUM, AVG, STDEV, CONCATENATE.
+        The function can also be a list of functions (one for each column).
+        TypeError will be raised when the function cannot handle the data in a column.
+        The key argument can be used to map the values in column j, for example:
+        key=lambda date: date.year to group Date objects by year.
+
         """
         if isinstance(function, tuple):
             function = list(function)
         if not isinstance(function, list):
             function = [function] * self._m
         if len(function) < self._m:
-            function+= [FIRST] * (self._m - len(function))
+            function += [FIRST] * (self._m - len(function))
         for i, f in enumerate(function):
-            if i == j: # Group column j is always FIRST.
+            if i == j:  # Group column j is always FIRST.
                 f = FIRST
             if f == FIRST:
                 function[i] = lambda a: a[+0]
@@ -2163,49 +2483,55 @@ class Datasheet(CSV):
                 function[i] = lambda a: min(a)
             if f == SUM:
                 function[i] = lambda a: _sum([x for x in a if x is not None])
-            if f == AVG: 
+            if f == AVG:
                 function[i] = lambda a: avg([x for x in a if x is not None])
             if f == STDEV:
                 function[i] = lambda a: stdev([x for x in a if x is not None])
             if f == CONCATENATE:
-                function[i] = lambda a: ",".join(decode_utf8(x) for x in a if x is not None)
+                function[i] = lambda a: ",".join(
+                    decode_utf8(x) for x in a if x is not None)
         J = j
-        # Map unique values in column j to a list of rows that contain this value.
-        g = {}; [g.setdefault(key(v), []).append(i) for i, v in enumerate(self.columns[j])]
-        # Map unique values in column j to a sort index in the new, grouped list.
+        # Map unique values in column j to a list of rows that contain this
+        # value.
+        g = {}
+        [g.setdefault(key(v), []).append(i)
+         for i, v in enumerate(self.columns[j])]
+        # Map unique values in column j to a sort index in the new, grouped
+        # list.
         o = [(g[v][0], v) for v in g]
-        o = dict([(v, i)  for i, (ii,v) in enumerate(sorted(o))])
+        o = dict([(v, i) for i, (ii, v) in enumerate(sorted(o))])
         # Create a list of rows with unique values in column j,
         # applying the group function to the other columns.
         u = [None] * len(o)
         for v in g:
             # List the column values for each group row.
-            u[o[v]] = [[list.__getitem__(self, i)[j] for i in g[v]] for j in xrange(self._m)]
-            # Apply the group function to each row, except the unique value in column j.
+            u[o[v]] = [[list.__getitem__(self, i)[j]
+                        for i in g[v]] for j in xrange(self._m)]
+            # Apply the group function to each row, except the unique value in
+            # column j.
             u[o[v]] = [function[j](column) for j, column in enumerate(u[o[v]])]
-            u[o[v]][J] = v # list.__getitem__(self, i)[J]
+            u[o[v]][J] = v  # list.__getitem__(self, i)[J]
         return Datasheet(rows=u)
-        
+
     def record(self, row):
         """ Returns the given row as a dictionary of (field or alias, value)-items.
         """
         return dict(zip((f for f, type in self.fields), row))
-                
+
     def map(self, function=lambda item: item):
-        """ Applies the given function to each item in the matrix.
-        """
+        """Applies the given function to each item in the matrix."""
         for i, row in enumerate(self):
             for j, item in enumerate(row):
                 row[j] = function(item)
 
     def slice(self, i, j, n, m):
-        """ Returns a new Datasheet starting at row i and column j and spanning n rows and m columns.
-        """
-        return Datasheet(rows=[list.__getitem__(self, i)[j:j+m] for i in xrange(i, i+n)])
+        """Returns a new Datasheet starting at row i and column j and spanning
+        n rows and m columns."""
+        return Datasheet(rows=[list.__getitem__(self, i)[j:j + m] for i in xrange(i, i + n)])
 
     def copy(self, rows=ALL, columns=ALL):
-        """ Returns a new Datasheet from a selective list of row and/or column indices.
-        """
+        """Returns a new Datasheet from a selective list of row and/or column
+        indices."""
         if rows == ALL and columns == ALL:
             return Datasheet(rows=self)
         if rows == ALL:
@@ -2214,27 +2540,32 @@ class Datasheet(CSV):
             return Datasheet(rows=(self.rows[i] for i in rows))
         z = zip(*(self.columns[j] for j in columns))
         return Datasheet(rows=(z[i] for i in rows))
-            
+
     @property
     def array(self):
-        """ Returns a NumPy array. 
-            Arrays must have elements of the same type, and rows of equal size.
+        """Returns a NumPy array.
+
+        Arrays must have elements of the same type, and rows of equal
+        size.
+
         """
         import numpy
         return numpy.array(self)
-        
+
     @property
     def json(self, **kwargs):
         """ Returns a JSON-string, as a list of dictionaries (if fields are defined) or as a list of lists.
             This is useful for sending a Datasheet to JavaScript, for example.
         """
-        kwargs.setdefault("ensure_ascii", False) # Disable simplejson's Unicode encoder.
+        kwargs.setdefault(
+            "ensure_ascii", False)  # Disable simplejson's Unicode encoder.
         if self.fields is not None:
-            s = json.dumps([dict((f[0], row[i]) for i, f in enumerate(self.fields)) for row in self], **kwargs)
+            s = json.dumps(
+                [dict((f[0], row[i]) for i, f in enumerate(self.fields)) for row in self], **kwargs)
         else:
             s = json.dumps(self, **kwargs)
         return decode_utf8(s)
-        
+
     @property
     def html(self):
         """ Returns a HTML-string with a <table>.
@@ -2251,8 +2582,10 @@ class Datasheet(CSV):
         a = []
         a.append("<meta charset=\"utf8\">\n")
         a.append("<style>")
-        a.append("table.datasheet { border-collapse: collapse; font: 11px sans-serif; } ")
-        a.append("table.datasheet * { border: 1px solid #ddd; padding: 4px; } ")
+        a.append(
+            "table.datasheet { border-collapse: collapse; font: 11px sans-serif; } ")
+        a.append(
+            "table.datasheet * { border: 1px solid #ddd; padding: 4px; } ")
         a.append("</style>\n")
         a.append("<table class=\"datasheet\">\n")
         if self.fields is not None:
@@ -2262,87 +2595,111 @@ class Datasheet(CSV):
             a.append("</tr>\n")
         for i, row in enumerate(self):
             a.append("<tr>\n")
-            a.append("\t<td>%s</td>\n" % (i+1))
+            a.append("\t<td>%s</td>\n" % (i + 1))
             a.extend("\t<td>%s</td>\n" % encode(v) for v in row)
             a.append("</tr>\n")
         a.append("</table>")
         return encode_utf8("".join(a))
-        
+
+
 def flip(datasheet):
-    """ Returns a new datasheet with rows for columns and columns for rows.
-    """
+    """Returns a new datasheet with rows for columns and columns for rows."""
     return Datasheet(rows=datasheet.columns)
 
+
 def csv(*args, **kwargs):
-    """ Returns a Datasheet from the given CSV file path.
-    """
+    """Returns a Datasheet from the given CSV file path."""
     if len(args) == 0:
         return Datasheet(**kwargs)
     return Datasheet.load(*args, **kwargs)
 
-#--- DATASHEET ROWS --------------------------------------------------------------------------------
+#--- DATASHEET ROWS ------------------------------------------------------
 # Datasheet.rows mimics the operations on Datasheet:
 
+
 class DatasheetRows(list):
-    
+
     def __init__(self, datasheet):
         self._datasheet = datasheet
 
     def __setitem__(self, i, row):
         self._datasheet.pop(i)
         self._datasheet.insert(i, row)
+
     def __getitem__(self, i):
         return list.__getitem__(self._datasheet, i)
+
     def __getslice__(self, i, j):
         return self._datasheet[i:j]
+
     def __delitem__(self, i):
         self.pop(i)
+
     def __len__(self):
         return len(self._datasheet)
+
     def __iter__(self):
-        for i in xrange(len(self)): yield list.__getitem__(self._datasheet, i)
+        for i in xrange(len(self)):
+            yield list.__getitem__(self._datasheet, i)
+
     def __repr__(self):
         return repr(self._datasheet)
+
     def __add__(self, row):
-        raise TypeError("unsupported operand type(s) for +: 'Datasheet.rows' and '%s'" % row.__class__.__name__)
+        raise TypeError(
+            "unsupported operand type(s) for +: 'Datasheet.rows' and '%s'" % row.__class__.__name__)
+
     def __iadd__(self, row):
-        self.append(row); return self
+        self.append(row)
+        return self
+
     def __eq__(self, rows):
         return self._datasheet.__eq__(rows)
+
     def __ne__(self, rows):
         return self._datasheet.__ne__(rows)
 
     def insert(self, i, row, default=None):
         self._datasheet.insert(i, row, default)
+
     def append(self, row, default=None):
-        self._datasheet.append(row, default)    
+        self._datasheet.append(row, default)
+
     def extend(self, rows, default=None):
         self._datasheet.extend(rows, default)
+
     def remove(self, row):
         self._datasheet.remove(row)
+
     def pop(self, i):
         return self._datasheet.pop(i)
-        
+
     def count(self, row):
         return self._datasheet.count(row)
+
     def index(self, row):
         return self._datasheet.index(row)
+
     def sort(self, cmp=None, key=None, reverse=False):
         self._datasheet.sort(cmp, key, reverse)
+
     def reverse(self):
         self._datasheet.reverse()
-        
+
     def swap(self, i1, i2):
         self[i1], self[i2] = self[i2], self[i1]
 
-#--- DATASHEET COLUMNS -----------------------------------------------------------------------------
+#--- DATASHEET COLUMNS ---------------------------------------------------
+
 
 class DatasheetColumns(list):
-    
+
     def __init__(self, datasheet):
         self._datasheet = datasheet
-        self._cache  = {} # Keep a reference to DatasheetColumn objects generated with Datasheet.columns[j].
-                          # This way we can unlink them when they are deleted.
+        # Keep a reference to DatasheetColumn objects generated with
+        # Datasheet.columns[j].
+        self._cache = {}
+        # This way we can unlink them when they are deleted.
 
     def __setitem__(self, j, column):
         if self._datasheet.fields is not None and j < len(self._datasheet.fields):
@@ -2352,74 +2709,98 @@ class DatasheetColumns(list):
             f = None
         self.pop(j)
         self.insert(j, column, field=f)
+
     def __getitem__(self, j):
-        if j < 0: j = j % len(self) # DatasheetColumns[-1]
-        if j >= len(self): 
+        if j < 0:
+            j = j % len(self)  # DatasheetColumns[-1]
+        if j >= len(self):
             raise IndexError("list index out of range")
         return self._cache.setdefault(j, DatasheetColumn(self._datasheet, j))
+
     def __getslice__(self, i, j):
-        return self._datasheet[:,i:j]
+        return self._datasheet[:, i:j]
+
     def __delitem__(self, j):
         self.pop(j)
+
     def __len__(self):
         return len(self._datasheet) > 0 and len(self._datasheet[0]) or 0
+
     def __iter__(self):
-        for i in xrange(len(self)): yield self.__getitem__(i)
+        for i in xrange(len(self)):
+            yield self.__getitem__(i)
+
     def __repr__(self):
-        return repr(list(iter(self)))    
+        return repr(list(iter(self)))
+
     def __add__(self, column):
-        raise TypeError("unsupported operand type(s) for +: 'Datasheet.columns' and '%s'" % column.__class__.__name__)
+        raise TypeError(
+            "unsupported operand type(s) for +: 'Datasheet.columns' and '%s'" % column.__class__.__name__)
+
     def __iadd__(self, column):
-        self.append(column); return self
+        self.append(column)
+        return self
+
     def __eq__(self, columns):
         return list(self) == columns
+
     def __ne__(self, columns):
         return not self.__eq__(self, columns)
 
     def insert(self, j, column, default=None, field=None):
-        """ Inserts the given column into the matrix.
-            Missing rows at the end (bottom) will be filled with the default value.
+        """Inserts the given column into the matrix.
+
+        Missing rows at the end (bottom) will be filled with the default
+        value.
+
         """
-        try: column = [v for v in column]
+        try:
+            column = [v for v in column]
         except:
             raise TypeError("Datasheet.columns.insert(x): x must be list")
         column = column + [default] * (len(self._datasheet) - len(column))
         if len(column) > len(self._datasheet):
-            self._datasheet.extend([[None]] * (len(column)-len(self._datasheet)))
+            self._datasheet.extend(
+                [[None]] * (len(column) - len(self._datasheet)))
         for i, row in enumerate(self._datasheet):
             row.insert(j, column[i])
-        self._datasheet.__dict__["_m"] += 1 # Increase column count.
+        self._datasheet.__dict__["_m"] += 1  # Increase column count.
         # Add a new header.
         if self._datasheet.fields is not None:
-            self._datasheet.fields += [(None, None)] * (len(self) - len(self._datasheet.fields) - 1)
+            self._datasheet.fields += [(None, None)] * \
+                (len(self) - len(self._datasheet.fields) - 1)
             self._datasheet.fields.insert(j, field or (None, None))
 
     def append(self, column, default=None, field=None):
         self.insert(len(self), column, default, field)
+
     def extend(self, columns, default=None, fields=[]):
-        for j, column in enumerate(columns): 
-            self.insert(len(self), column, default, j<len(fields) and fields[j] or None)
-    
+        for j, column in enumerate(columns):
+            self.insert(
+                len(self), column, default, j < len(fields) and fields[j] or None)
+
     def remove(self, column):
         if isinstance(column, DatasheetColumn) and column._datasheet == self._datasheet:
-            self.pop(column._j); return
+            self.pop(column._j)
+            return
         raise ValueError("list.remove(x): x not in list")
-    
+
     def pop(self, j):
-        column = list(self[j]) # Return a list copy.
-        for row in self._datasheet: 
+        column = list(self[j])  # Return a list copy.
+        for row in self._datasheet:
             row.pop(j)
         # At one point a DatasheetColumn object was created with Datasheet.columns[j].
-        # It might still be in use somewhere, so we unlink it from the datasheet:
+        # It might still be in use somewhere, so we unlink it from the
+        # datasheet:
         self._cache[j]._datasheet = Datasheet(rows=[[v] for v in column])
         self._cache[j]._j = 0
         self._cache.pop(j)
-        for k in xrange(j+1, len(self)+1):
+        for k in xrange(j + 1, len(self) + 1):
             if k in self._cache:
                 # Shift the DatasheetColumn objects on the right to the left.
-                self._cache[k-1] = self._cache.pop(k)
-                self._cache[k-1]._j = k-1
-        self._datasheet.__dict__["_m"] -= 1 # Decrease column count.
+                self._cache[k - 1] = self._cache.pop(k)
+                self._cache[k - 1]._j = k - 1
+        self._datasheet.__dict__["_m"] -= 1  # Decrease column count.
         # Remove the header.
         if self._datasheet.fields is not None:
             self._datasheet.fields.pop(j)
@@ -2427,14 +2808,15 @@ class DatasheetColumns(list):
 
     def count(self, column):
         return len([True for c in self if c == column])
-    
+
     def index(self, column):
         if isinstance(column, DatasheetColumn) and column._datasheet == self._datasheet:
             return column._j
         return list(self).index(column)
-    
+
     def sort(self, cmp=None, key=None, reverse=False, order=None):
-        # This makes most sense if the order in which columns should appear is supplied.
+        # This makes most sense if the order in which columns should appear is
+        # supplied.
         if order and reverse is True:
             o = list(reversed(order))
         if order and reverse is False:
@@ -2444,131 +2826,166 @@ class DatasheetColumns(list):
         for i, row in enumerate(self._datasheet):
             # The main difficulty is modifying each row in-place,
             # since other variables might be referring to it.
-            r=list(row); [row.__setitem__(i2, r[i1]) for i2, i1 in enumerate(o)]
+            r = list(row)
+            [row.__setitem__(i2, r[i1]) for i2, i1 in enumerate(o)]
         # Reorder the datasheet headers.
         if self._datasheet.fields is not None:
             self._datasheet.fields = [self._datasheet.fields[i] for i in o]
-    
+
     def swap(self, j1, j2):
         self[j1], self[j2] = self[j2], self[j1]
         # Reorder the datasheet headers.
         if self._datasheet.fields is not None:
             self._datasheet.fields[j1], self._datasheet.fields[j2] = (
-                self._datasheet.fields[j2], 
+                self._datasheet.fields[j2],
                 self._datasheet.fields[j1])
 
-#--- DATASHEET COLUMN ------------------------------------------------------------------------------
+#--- DATASHEET COLUMN ----------------------------------------------------
+
 
 class DatasheetColumn(list):
-    
+
     def __init__(self, datasheet, j):
-        """ A dynamic column in a Datasheet.
-            If the actual column is deleted with Datasheet.columns.remove() or Datasheet.columms.pop(),
-            the DatasheetColumn object will be orphaned (i.e., it is no longer part of the table).
+        """A dynamic column in a Datasheet.
+
+        If the actual column is deleted with Datasheet.columns.remove()
+        or Datasheet.columms.pop(), the DatasheetColumn object will be
+        orphaned (i.e., it is no longer part of the table).
+
         """
         self._datasheet = datasheet
         self._j = j
 
     def __getslice__(self, i, j):
         return list(list.__getitem__(self._datasheet, i)[self._j] for i in xrange(i, min(j, len(self._datasheet))))
+
     def __getitem__(self, i):
         return list.__getitem__(self._datasheet, i)[self._j]
+
     def __setitem__(self, i, value):
         list.__getitem__(self._datasheet, i)[self._j] = value
+
     def __len__(self):
         return len(self._datasheet)
-    def __iter__(self): # Can be put more simply but optimized for performance:
-        for i in xrange(len(self)): yield list.__getitem__(self._datasheet, i)[self._j]
+
+    # Can be put more simply but optimized for performance:
+    def __iter__(self):
+        for i in xrange(len(self)):
+            yield list.__getitem__(self._datasheet, i)[self._j]
+
     def __reversed__(self):
         return reversed(list(iter(self)))
+
     def __repr__(self):
         return repr(list(iter(self)))
+
     def __gt__(self, column):
         return list(self) > list(column)
+
     def __lt__(self, column):
         return list(self) < list(column)
+
     def __ge__(self, column):
         return list(self) >= list(column)
+
     def __le__(self, column):
         return list(self) <= list(column)
+
     def __eq__(self, column):
         return list(self) == column
+
     def __ne__(self, column):
         return not self.__eq__(column)
+
     def __add__(self, column):
         return list(self) + list(column)
+
     def __iadd__(self, column):
         self.extend(column)
+
     def __contains__(self, value):
         for v in self:
-            if v == value: return True
+            if v == value:
+                return True
         return False
-    
+
     def count(self, value):
         return len([True for v in self if v == value])
-        
+
     def index(self, value):
         for i, v in enumerate(self):
-            if v == value: 
+            if v == value:
                 return i
         raise ValueError("list.index(x): x not in list")
 
     def remove(self, value):
-        """ Removes the matrix row that has the given value in this column.
-        """
+        """Removes the matrix row that has the given value in this column."""
         for i, v in enumerate(self):
             if v == value:
-                self._datasheet.pop(i); return
+                self._datasheet.pop(i)
+                return
         raise ValueError("list.remove(x): x not in list")
-        
+
     def pop(self, i):
-        """ Removes the entire row from the matrix and returns the value at the given index.
-        """
-        row = self._datasheet.pop(i); return row[self._j]
+        """Removes the entire row from the matrix and returns the value at the
+        given index."""
+        row = self._datasheet.pop(i)
+        return row[self._j]
 
     def sort(self, cmp=None, key=None, reverse=False):
-        """ Sorts the rows in the matrix according to the values in this column,
-            e.g. clicking ascending / descending on a column header in a datasheet viewer.
-        """
+        """Sorts the rows in the matrix according to the values in this column,
+        e.g. clicking ascending / descending on a column header in a datasheet
+        viewer."""
         o = order(list(self), cmp, key, reverse)
-        # Modify the table in place, more than one variable may be referencing it:
-        r=list(self._datasheet); [self._datasheet.__setitem__(i2, r[i1]) for i2, i1 in enumerate(o)]
-        
+        # Modify the table in place, more than one variable may be referencing
+        # it:
+        r = list(self._datasheet)
+        [self._datasheet.__setitem__(i2, r[i1]) for i2, i1 in enumerate(o)]
+
     def insert(self, i, value, default=None):
-        """ Inserts the given value in the column.
-            This will create a new row in the matrix, where other columns are set to the default.
+        """Inserts the given value in the column.
+
+        This will create a new row in the matrix, where other columns
+        are set to the default.
+
         """
-        self._datasheet.insert(i, [default]*self._j + [value] + [default]*(len(self._datasheet)-self._j-1))
-        
+        self._datasheet.insert(
+            i, [default] * self._j + [value] + [default] * (len(self._datasheet) - self._j - 1))
+
     def append(self, value, default=None):
         self.insert(len(self), value, default)
+
     def extend(self, values, default=None):
-        for value in values: 
+        for value in values:
             self.insert(len(self), value, default)
-            
+
     def map(self, function=lambda value: value):
-        """ Applies the given function to each value in the column.
-        """
+        """Applies the given function to each value in the column."""
         for j, value in enumerate(self):
             self[j] = function(value)
-            
+
     def filter(self, function=lambda value: True):
-        """ Removes the matrix rows for which function(value) in the column is not True.
-        """
+        """Removes the matrix rows for which function(value) in the column is
+        not True."""
         i = len(self)
         for v in reversed(self):
             i -= 1
             if not function(v):
                 self._datasheet.pop(i)
-            
+
     def swap(self, i1, i2):
         self._datasheet.swap(i1, i2)
 
-#---------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------
 
 _UID = 0
+
+
 def uid():
-    global _UID; _UID+=1; return _UID
+    global _UID
+    _UID += 1
+    return _UID
+
 
 def truncate(string, length=100):
     """ Returns a (head, tail)-tuple, where the head string length is less than the given length.
@@ -2582,18 +2999,20 @@ def truncate(string, length=100):
             break
         n += len(w) + 1
     if i == 0 and len(w) > length:
-        return ( w[:length-1] + "-", 
-                (w[length-1:] + " " + " ".join(words[1:])).strip())
+        return (w[:length - 1] + "-",
+                (w[length - 1:] + " " + " ".join(words[1:])).strip())
     return (" ".join(words[:i]),
             " ".join(words[i:]))
-            
+
 _truncate = truncate
 
+
 def pprint(datasheet, truncate=40, padding=" ", fill="."):
-    """ Prints a string where the rows in the datasheet are organized in outlined columns.
-    """
+    """Prints a string where the rows in the datasheet are organized in
+    outlined columns."""
     # Calculate the width of each column, based on the longest field in each column.
-    # Long fields can be split across different lines, so we need to check each line.
+    # Long fields can be split across different lines, so we need to check
+    # each line.
     w = [0 for column in datasheet.columns]
     R = []
     for i, row in enumerate(datasheet.rows):
@@ -2616,13 +3035,14 @@ def pprint(datasheet, truncate=40, padding=" ", fill="."):
     for i, fields in enumerate(R):
         # Add empty lines to each field so they are of equal height.
         n = max([len(lines) for lines in fields])
-        fields = [lines+[""] * (n-len(lines)) for lines in fields]
+        fields = [lines + [""] * (n - len(lines)) for lines in fields]
         # Print the row line per line, justifying the fields with spaces.
         columns = []
         for k in xrange(n):
             for j, lines in enumerate(fields):
-                s  = lines[k]
-                s += ((k==0 or len(lines[k]) > 0) and fill or " ") * (w[j] - len(lines[k])) 
+                s = lines[k]
+                s += ((k == 0 or len(lines[k]) > 0)
+                      and fill or " ") * (w[j] - len(lines[k]))
                 s += padding
                 columns.append(s)
-            print(" ".join(columns))
+            print(" ".join(columns).encode("utf-8"))

@@ -1,11 +1,11 @@
-#### PATTERN | IT ##################################################################################
+#### PATTERN | IT ########################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2013 University of Antwerp, Belgium
 # Copyright (c) 2013 St. Lucas University College of Art & Design, Antwerp.
 # Author: Tom De Smedt <tom@organisms.be>, Fabio Marfia <marfia@elet.polimi.it>
 # License: BSD (see LICENSE.txt for details).
 
-####################################################################################################
+##########################################################################
 # Italian linguistical tools using fast regular expressions.
 
 import os
@@ -65,33 +65,36 @@ from pattern.text.it import inflect
 
 sys.path.pop(0)
 
-#--- PARSER ----------------------------------------------------------------------------------------
+#--- PARSER --------------------------------------------------------------
 
 _subordinating_conjunctions = set((
-    "che"   , u"perché", "sebbene", 
-    "come"  , u"poiché", "senza", 
-    "se"    , u"perciò", "salvo", 
+    "che", u"perché", "sebbene",
+    "come", u"poiché", "senza",
+    "se", u"perciò", "salvo",
     "mentre", u"finché", "dopo",
     "quando", u"benché"
 ))
 
+
 def penntreebank2universal(token, tag):
-    """ Converts a Penn Treebank II tag to a universal tag.
-        For example: che/IN => che/CONJ
+    """Converts a Penn Treebank II tag to a universal tag.
+
+    For example: che/IN => che/CONJ
+
     """
     if tag == "IN" and token.lower() in _subordinating_conjunctions:
         return CONJ
     return _penntreebank2universal(token, tag)
 
 ABBREVIATIONS = [
-    "a.C.", "all.", "apr.", "art.", "artt.", "b.c.", "c.a.", "cfr.", "c.d.", 
-    "c.m.", "C.V.", "d.C.", "Dott.", "ecc.", "egr.", "e.v.", "fam.", "giu.", 
-    "Ing.", "L.", "n.", "op.", "orch.", "p.es.", "Prof.", "prof.", "ql.co.", 
+    "a.C.", "all.", "apr.", "art.", "artt.", "b.c.", "c.a.", "cfr.", "c.d.",
+    "c.m.", "C.V.", "d.C.", "Dott.", "ecc.", "egr.", "e.v.", "fam.", "giu.",
+    "Ing.", "L.", "n.", "op.", "orch.", "p.es.", "Prof.", "prof.", "ql.co.",
     "secc.", "sig.", "s.l.m.", "s.r.l.", "Spett.", "S.P.Q.C.", "v.c."
 ]
 
 replacements = (
-    "a", "co", "all", "anch", "nient", "cinquant", 
+    "a", "co", "all", "anch", "nient", "cinquant",
     "b", "de", "dev", "bell", "quell", "diciott",
     "c", "gl", "don", "cent", "quest", "occupo",
     "d", "po", "dov", "dall", "trent", "sessant",
@@ -106,7 +109,8 @@ replacements = (
                       "vent")
 
 replacements += tuple(k.capitalize() for k in replacements)
-replacements  = dict((k+"'", k+"' ") for k in replacements)
+replacements = dict((k + "'", k + "' ") for k in replacements)
+
 
 def find_lemmata(tokens):
     """ Annotates the tokens with lemmata for plural nouns and conjugated verbs,
@@ -117,7 +121,7 @@ def find_lemmata(tokens):
         if pos.startswith(("DT",)):
             lemma = singularize(word, pos="DT")
         if pos.startswith("JJ"):
-            lemma = predicative(word)  
+            lemma = predicative(word)
         if pos == "NNS":
             lemma = singularize(word)
         if pos.startswith(("VB", "MD")):
@@ -125,15 +129,17 @@ def find_lemmata(tokens):
         token.append(lemma.lower())
     return tokens
 
+
 class Parser(_Parser):
-    
+
     def find_tokens(self, tokens, **kwargs):
         kwargs.setdefault("abbreviations", ABBREVIATIONS)
         kwargs.setdefault("replace", replacements)
-        #return _Parser.find_tokens(self, tokens, **kwargs)
-        
+        # return _Parser.find_tokens(self, tokens, **kwargs)
+
         s = _Parser.find_tokens(self, tokens, **kwargs)
-        s = [s.replace(" &contraction ;", u"'").replace("XXX -", "-") for s in s]
+        s = [s.replace(" &contraction ;", u"'").replace("XXX -", "-")
+             for s in s]
         return s
 
     def find_lemmata(self, tokens, **kwargs):
@@ -143,44 +149,47 @@ class Parser(_Parser):
         if kwargs.get("tagset") in (PENN, None):
             kwargs.setdefault("map", lambda token, tag: (token, tag))
         if kwargs.get("tagset") == UNIVERSAL:
-            kwargs.setdefault("map", lambda token, tag: penntreebank2universal(token, tag))
+            kwargs.setdefault(
+                "map", lambda token, tag: penntreebank2universal(token, tag))
         return _Parser.find_tags(self, tokens, **kwargs)
 
 parser = Parser(
-     lexicon = os.path.join(MODULE, "it-lexicon.txt"),
-   frequency = os.path.join(MODULE, "it-frequency.txt"),
-  morphology = os.path.join(MODULE, "it-morphology.txt"),
-     context = os.path.join(MODULE, "it-context.txt"),
-     default = ("NN", "NNP", "CD"),
+    lexicon=os.path.join(MODULE, "it-lexicon.txt"),
+    frequency=os.path.join(MODULE, "it-frequency.txt"),
+    morphology=os.path.join(MODULE, "it-morphology.txt"),
+    context=os.path.join(MODULE, "it-context.txt"),
+    default=("NN", "NNP", "CD"),
     language = "it"
 )
 
-lexicon = parser.lexicon # Expose lexicon.
+lexicon = parser.lexicon  # Expose lexicon.
 
 spelling = Spelling(
-        path = os.path.join(MODULE, "it-spelling.txt")
+    path=os.path.join(MODULE, "it-spelling.txt")
 )
 
+
 def tokenize(s, *args, **kwargs):
-    """ Returns a list of sentences, where punctuation marks have been split from words.
-    """
+    """Returns a list of sentences, where punctuation marks have been split
+    from words."""
     return parser.find_tokens(s, *args, **kwargs)
 
+
 def parse(s, *args, **kwargs):
-    """ Returns a tagged Unicode string.
-    """
+    """Returns a tagged Unicode string."""
     return parser.parse(s, *args, **kwargs)
 
+
 def parsetree(s, *args, **kwargs):
-    """ Returns a parsed Text from the given string.
-    """
+    """Returns a parsed Text from the given string."""
     return Text(parse(s, *args, **kwargs))
 
+
 def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
-    """ Returns a parsed Text from the given parsed string.
-    """
+    """Returns a parsed Text from the given parsed string."""
     return Text(s, token)
-    
+
+
 def tag(s, tokenize=True, encoding="utf-8", **kwargs):
     """ Returns a list of (token, tag)-tuples from the given string.
     """
@@ -190,23 +199,24 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
             tags.append((token[0], token[1]))
     return tags
 
+
 def keywords(s, top=10, **kwargs):
-    """ Returns a sorted list of keywords in the given string.
-    """
+    """Returns a sorted list of keywords in the given string."""
     return parser.find_keywords(s, **dict({
         "frequency": parser.frequency,
-              "top": top,
-              "pos": ("NN",),
-           "ignore": ("rt",)}, **kwargs))
+        "top": top,
+        "pos": ("NN",),
+        "ignore": ("rt",)}, **kwargs))
+
 
 def suggest(w):
     """ Returns a list of (word, confidence)-tuples of spelling corrections.
     """
     return spelling.suggest(w)
 
-split = tree # Backwards compatibility.
+split = tree  # Backwards compatibility.
 
-#---------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------
 # python -m pattern.it xml -s "Il gatto nero faceva le fusa." -OTCL
 
 if __name__ == "__main__":

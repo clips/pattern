@@ -1,4 +1,7 @@
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+from __future__ import print_function
+import os
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import Twitter
 from pattern.en import Sentence, parse
@@ -14,7 +17,8 @@ from pattern.vector import Document, Model, KNN
 # (mail/spam, positive/negative, language, author's age, ...),
 # you can predict the type of other "unknown" texts.
 # The k-Nearest Neighbor algorithm classifies texts according
-# to the k documents that are most similar (cosine similarity) to the given input document.
+# to the k documents that are most similar (cosine similarity) to the
+# given input document.
 
 m = Model()
 t = Twitter()
@@ -25,10 +29,11 @@ for page in range(1, 10):
     for tweet in t.search('#win OR #fail', start=page, count=100, cached=True):
         # If the tweet contains #win hashtag, we'll set its type to 'WIN':
         s = tweet.text.lower()               # tweet in lowercase
-        p = '#win' in s and 'WIN' or 'FAIL'  # document labels      
-        s = Sentence(parse(s))               # parse tree with part-of-speech tags
+        p = '#win' in s and 'WIN' or 'FAIL'  # document labels
+        # parse tree with part-of-speech tags
+        s = Sentence(parse(s))
         s = search('JJ', s)                  # adjectives in the tweet
-        s = [match[0].string for match in s] # adjectives as a list of strings
+        s = [match[0].string for match in s]  # adjectives as a list of strings
         s = " ".join(s)                      # adjectives as string
         if len(s) > 0:
             m.append(Document(s, type=p, stemmer=None))
@@ -39,13 +44,14 @@ for page in range(1, 10):
 # The more training data, the more statistically reliable the classifier becomes.
 # The only way to really know if you're classifier is working correctly
 # is to test it with testing data, see the documentation for Classifier.test().
-classifier = KNN(baseline=None) # By default, baseline=MAJORITY
-for document in m:              # (classify unknown documents with the most frequent type).
+classifier = KNN(baseline=None)  # By default, baseline=MAJORITY
+# (classify unknown documents with the most frequent type).
+for document in m:
     classifier.train(document)
 
 # These are the adjectives the classifier has learned:
-print sorted(classifier.features)
-print
+print(sorted(classifier.features))
+print()
 
 # We can now ask it to classify documents containing these words.
 # Note that you may get different results than the ones below,
@@ -53,8 +59,8 @@ print
 # Again, a robust classifier needs lots and lots of training data.
 # If None is returned, the word was not recognized,
 # and the classifier returned the default value (see above).
-print classifier.classify('sweet potato burger') # yields 'WIN'
-print classifier.classify('stupid autocorrect')  # yields 'FAIL'
+print(classifier.classify('sweet potato burger'))  # yields 'WIN'
+print(classifier.classify('stupid autocorrect'))  # yields 'FAIL'
 
 # "What can I do with it?"
 # In the scientific community, classifiers have been used to predict:

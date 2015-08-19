@@ -1,19 +1,19 @@
-#### PATTERN #######################################################################################
+#### PATTERN #############################################################
 
 # Authors: Tom De Smedt <tom@organisms.be>, Walter Daelemans <walter.daelemans@ua.ac.be>
 # License: BSD License, see LICENSE.txt
 
-#### BSD LICENSE ###################################################################################
+#### BSD LICENSE #########################################################
 
 # Copyright (c) 2010 University of Antwerp, Belgium
 # All rights reserved.
 #
 #   Redistribution and use in source and binary forms, with or without
 #   modification, are permitted provided that the following conditions are met:
-# 
+#
 #     * Redistributions of source code must retain the above copyright
 #       notice, this list of conditions and the following disclaimer.
-#     * Redistributions in binary form must reproduce the above copyright 
+#     * Redistributions in binary form must reproduce the above copyright
 #       notice, this list of conditions and the following disclaimer in
 #       the documentation and/or other materials provided with the
 #       distribution.
@@ -38,20 +38,21 @@
 # CLiPS Computational Linguistics Group, University of Antwerp, Belgium
 # http://www.clips.ua.ac.be/pages/pattern
 
-### CREDITS ########################################################################################
+### CREDITS ##############################################################
 
-__author__    = "Tom De Smedt"
-__credits__   = "Tom De Smedt, Walter Daelemans"
-__version__   = "2.6"
+__author__ = "Tom De Smedt"
+__credits__ = "Tom De Smedt, Walter Daelemans"
+__version__ = "2.6"
 __copyright__ = "Copyright (c) 2010 University of Antwerp (BE)"
-__license__   = "BSD"
+__license__ = "BSD"
 
-####################################################################################################
+##########################################################################
 
 import os
 
-# Shortcuts to pattern.en, pattern.es, ... 
+# Shortcuts to pattern.en, pattern.es, ...
 # (instead of pattern.text.en, pattern.text.es, ...)
-try: __path__.append(os.path.join(__path__[0], "text"))
+try:
+    __path__.append(os.path.join(__path__[0], "text"))
 except:
     pass

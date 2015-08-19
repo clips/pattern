@@ -1,0 +1,11 @@
+include README.rst
+include LICENSE.txt
+
+recursive-include pattern *.txt *.py *.js *.slp *.xml
+
+include pattern/text/wordnet/dict/*
+include pattern/web/cache/tmp/*
+
+recursive-include pattern/vector/svm *.py *.txt COPYRIGHT *.so *.dll
+
+recursive-include test *.py *.js *.md *.txt *.csv *.docx *.pdf
