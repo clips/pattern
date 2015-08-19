@@ -101,7 +101,7 @@ _article = article
 
 def referenced(word, article=INDEFINITE):
     """Returns a string with the article + the word."""
-    return "%s %s" % (_article(word, article), word)
+    return "{0} {1}".format(_article(word, article), word)
 
 # print referenced("hour")
 # print referenced("FBI")
@@ -798,7 +798,7 @@ def grade(adjective, suffix=COMPARATIVE):
         return grade_irregular[adjective][suffix != COMPARATIVE]
     elif adjective in grade_uninflected:
         # A number of adjectives don't inflect at all.
-        return "%s %s" % (suffix == COMPARATIVE and "more" or "most", adjective)
+        return "{0} {1}".format(suffix == COMPARATIVE and "more" or "most", adjective)
     elif n <= 2 and adjective.endswith("e"):
         # With one syllable and ending with an e: larger, wiser.
         suffix = suffix.lstrip("e")
@@ -819,7 +819,7 @@ def grade(adjective, suffix=COMPARATIVE):
         pass
     else:
         # With three or more syllables: more generous, more important.
-        return "%s %s" % (suffix == COMPARATIVE and "more" or "most", adjective)
+        return "{0} {1}".format(suffix == COMPARATIVE and "more" or "most", adjective)
     return adjective + suffix
 
 
