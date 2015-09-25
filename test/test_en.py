@@ -571,11 +571,6 @@ class TestParser(unittest.TestCase):
             self.assertEquals(found_num.type, 'CD')
             self.assertEquals(found_num.string, test_num)
 
-        v = en.parsetree("I am 4 years old")
-        four = v.words[2]
-        self.assertEquals(four.type, 'CD')
-        self.assertEquals(four.string, u'4')
-
     def test_split(self):
         # Assert split(parse(s)) == Text.
         v = en.split(en.parse("The cat purs."))
