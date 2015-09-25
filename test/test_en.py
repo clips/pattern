@@ -559,6 +559,23 @@ class TestParser(unittest.TestCase):
         self.assertTrue(isinstance(v, en.Text))
         print("pattern.en.parsetree()")
 
+    def test_parsetree_cardinal_number(self):
+        """ Test that it correctly identified numbers as Cardinal Numbres
+        """
+        for test_num in xrange(0, 10):
+            test_num = str(test_num)
+            v = en.parsetree("I am %s years old" % test_num)
+            found_num = v.words[2]
+            if found_num.type != 'CD':
+                import bpdb; bpdb.set_trace()
+            self.assertEquals(found_num.type, 'CD')
+            self.assertEquals(found_num.string, test_num)
+
+        v = en.parsetree("I am 4 years old")
+        four = v.words[2]
+        self.assertEquals(four.type, 'CD')
+        self.assertEquals(four.string, u'4')
+
     def test_split(self):
         # Assert split(parse(s)) == Text.
         v = en.split(en.parse("The cat purs."))
