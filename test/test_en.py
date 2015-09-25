@@ -560,7 +560,7 @@ class TestParser(unittest.TestCase):
         print("pattern.en.parsetree()")
 
     def test_parsetree_cardinal_number(self):
-        """ Test that it correctly identified numbers as Cardinal Numbres
+        """ Test that it correctly identified numbers as Cardinal Numbers
         """
         for test_num in xrange(0, 10):
             test_num = str(test_num)
