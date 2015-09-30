@@ -59,6 +59,17 @@ def encode_string(v, encoding="utf-8"):
         return v
     return str(v)
 
+def split_span(s):
+    """
+    split a string on whitespace and yield a
+    (token string, (start index, stop index)) tuple for each token.
+
+    source: http://stackoverflow.com/a/9518903
+    """
+    for match in re.finditer(r"\S+", s):
+        span = match.span()
+        yield match.group(0), (span[0], span[1] - 1)
+
 decode_utf8 = decode_string
 encode_utf8 = encode_string
 
@@ -912,6 +923,95 @@ class Parser(object):
                 s[i][j] = "/".join(s[i][j])
             s[i] = " ".join(s[i])
         s = "\n".join(s)
+        s = TaggedString(s, format, language=kwargs.get("language", self.language))
+        return s
+
+    def add_offsets(self, tokens, offsets):
+        """
+        adds offsets to tokens.
+
+        Parameters
+        ----------
+        tokens : list of list of str
+            each list represents a token and its annotations,
+            e.g. [u'Schlusspunkt', 'NN']
+        offsets: list of (int, int) tuples
+            each tuple represents the (start, end) position of the
+            corresponding token in the original, unparsed string.
+
+        Returns
+        -------
+        tokens : list of list of str
+            each list represents a token and its annotations (incl. their
+            offsets as strings), e.g. [u'Schlusspunkt', 'NN', '10', '22']
+        """
+        assert len(tokens) == len(offsets)
+        for i, token in enumerate(tokens):
+            token.extend(str(val) for val in offsets[i])
+        return tokens
+
+    def parse_sentence(self, s, tokenize=False, tags=True, chunks=True, relations=False, lemmata=False, offsets=True, encoding="utf-8", **kwargs):
+        """ Takes a string (sentence) and returns a tagged Unicode string (TaggedString).
+            With tags=True, part-of-speech tags are parsed (NN, VB, IN, ...).
+            With chunks=True, phrase chunk tags are parsed (NP, VP, PP, PNP, ...).
+            With relations=True, semantic role labels are parsed (SBJ, OBJ).
+            With lemmata=True, word lemmata are parsed.
+            Optional parameters are passed to
+            the tokenizer, tagger, chunker, labeler and lemmatizer.
+        """
+        assert isinstance(s, basestring), \
+            "This method only works on a sentence given as a single string."
+        # Tokenizer.
+        tokens, offsets = zip(*split_span(s))
+        for token in tokens:
+            # Unicode
+            if isinstance(token, str):
+                token = decode_string(token, encoding)
+
+        # Tagger (required by chunker, labeler & lemmatizer).
+        if tags or chunks or relations or lemmata:
+            tokens = self.find_tags(tokens, **kwargs)
+        else:
+            tokens = [[w] for w in tokens]
+        # Chunker.
+        if chunks or relations:
+            tokens = self.find_chunks(tokens, **kwargs)
+        # Labeler.
+        if relations:
+            tokens = self.find_labels(tokens, **kwargs)
+        # Lemmatizer.
+        if lemmata:
+            tokens = self.find_lemmata(tokens, **kwargs)
+        if offsets:
+            tokens = self.add_offsets(tokens, offsets)
+
+        # Slash-formatted tagged string.
+        # With collapse=False (or split=True), returns raw list
+        # (this output is not usable by tree.Text).
+        if not kwargs.get("collapse", True) \
+            or kwargs.get("split", False):
+            return s
+        # Construct TaggedString.format.
+        # (this output is usable by tree.Text).
+        format = ["word"]
+        if tags:
+            format.append("part-of-speech")
+        if chunks:
+            format.extend(("chunk", "preposition"))
+        if relations:
+            format.append("relation")
+        if lemmata:
+            format.append("lemma")
+        if offsets:
+            format.extend(("start-pos", "end-pos"))
+        # Collapse raw list.
+        # Sentences are separated by newlines, tokens by spaces, tags by slashes.
+        # Slashes in words are encoded with &slash;
+        for i, token in enumerate(tokens):
+            tokens[i][0] = token[0].replace("/", "&slash;")
+            tokens[i] = "/".join(tokens[i])
+        s = " ".join(tokens)
+        #~ s = "\n".join(s)
         s = TaggedString(s, format, language=kwargs.get("language", self.language))
         return s
 
