@@ -77,10 +77,16 @@ def pluralize(word, pos=NOUN, custom={}):
 
 #### SINGULARIZE ###################################################################################
 
+singular_irregular = {
+       "yeux": u"œil",
+}
+
 def singularize(word, pos=NOUN, custom={}):
     if word in custom:
         return custom[word]
     w = word.lower()
+    if w in singular_irregular:
+        return singular_irregular[w]
     # Common articles, determiners, pronouns:
     if pos in ("DT", "PRP", "PRP$", "WP", "RB", "IN"):
         if w == "du" : return "de"
