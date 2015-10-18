@@ -168,7 +168,6 @@ plural_rules = [
     ), # 4) Words that do not inflect.
     ((          r"$", ""  , "uninflected", False),
      (          r"$", ""  , "uncountable", False),
-     (         r"s$", "s" , "s-singular" , False),
      (      r"fish$", "fish"       , None, False),
      (r"([- ])bass$", "\\1bass"    , None, False),
      (       r"ois$", "ois"        , None, False),
@@ -240,11 +239,12 @@ plural_rules = [
      (         r"o$", "i"    ,     "o-i*", True),
      (          r"$", "i"    ,      "-i*", True),
      (          r"$", "im"   ,     "-im*", True)
-    ), # 9) -ch, -sh and -ss take -es in the plural 
+    ), # 9) -ch, -sh and -ss and the s-singular group take -es in the plural
        #    (e.g., churches, classes).
-    ((   r"([cs])h$", "\\1hes"     , None, False),
-     (        r"ss$", "sses"       , None, False),
-     (         r"x$", "xes"        , None, False)
+    ((   r"([cs])h$", "\\1hes"     , None,         False),
+     (        r"ss$", "sses"       , None,         False),
+     (         r"x$", "xes"        , None,         False),
+     (         r"s$", "ses"        , "s-singular", False)
     ), # 10) -f or -fe sometimes take -ves in the plural 
        #     (e.g, lives, wolves).
     (( r"([aeo]l)f$", "\\1ves"     , None, False),

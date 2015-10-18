@@ -205,6 +205,9 @@ class WhiteboxInflectionTestCase(unittest.TestCase):
     def test_s_singular(self):
         self.assertEquals(en.inflect.pluralize('lens'), 'lenses')
 
+    def test_diagnosis(self):
+        self.assertEquals(en.inflect.pluralize('diagnosis'), 'diagnoses')
+
 
 #---------------------------------------------------------------------------------------------------
 
