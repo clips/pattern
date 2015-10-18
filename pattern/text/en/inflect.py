@@ -291,17 +291,19 @@ plural_categories = {
         "advice"     , "fruit"      , "ketchup"      , "meat"       , "sand"         ,
         "bread"      , "furniture"  , "knowledge"    , "mustard"    , "software"     ,
         "butter"     , "garbage"    , "love"         , "news"       , "understanding",
-        "cheese"     , "gravel"     , "luggage"      , "progress"   , "water"
-        "electricity", "happiness"  , "mathematics"  , "research"   , 
-        "equipment"  , "information", "mayonnaise"   , "rice"
+        "cannabis"   , "gravel"     , "luggage"      , "progress"   , "water"
+        "cheese"     , "happiness"  , "mathematics"  , "research"   ,
+        "electricity", "information", "mayonnaise"   , "rice",
+        "equipment"
         ],
     "s-singular": [
         "acropolis"  , "caddis"     , "dais"         , "glottis"    , "pathos"       ,
-        "aegis"      , "cannabis"   , "digitalis"    , "ibis"       , "pelvis"       ,
-        "alias"      , "canvas"     , "epidermis"    , "lens"       , "polis"        ,
-        "asbestos"   , "chaos"      , "ethos"        , "mantis"     , "rhinoceros"   ,
-        "bathos"     , "cosmos"     , "gas"          , "marquis"    , "sassafras"    ,
-        "bias"       ,                "glottis"      , "metropolis" , "trellis"
+        "aegis"      , "canvas"     , "digitalis"    , "ibis"       , "pelvis"       ,
+        "alias"      , "chaos"      , "epidermis"    , "lens"       , "polis"        ,
+        "asbestos"   , "cosmos"     , "ethos"        , "mantis"     , "rhinoceros"   ,
+        "bathos"     ,                "gas"          , "marquis"    , "sassafras"    ,
+        "bias"       ,                "glottis"      , "metropolis" , "trellis",
+        "bus"
         ],
     "ex-ices": [
         "codex"      , "murex"      , "silex"
