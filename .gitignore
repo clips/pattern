@@ -10,3 +10,5 @@ web/cache/tmp/
 test/pattern_unittest_db
 
 .DS_Store
+
+Pattern.egg-info
