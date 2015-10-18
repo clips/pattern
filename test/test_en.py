@@ -211,6 +211,9 @@ class WhiteboxInflectionTestCase(unittest.TestCase):
     def test_s_singular_singularize(self):
         self.assertEquals(en.inflect.singularize('lenses'), 'lens')
 
+    def test_ie_singular_singularize(self):
+        self.assertEquals(en.inflect.singularize('cuties'), 'cutie')
+
 #---------------------------------------------------------------------------------------------------
 
 class TestQuantification(unittest.TestCase):
