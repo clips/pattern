@@ -200,6 +200,14 @@ class TestInflection(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+class WhiteboxInflectionTestCase(unittest.TestCase):
+
+    def test_s_singular(self):
+        self.assertEquals(en.inflect.pluralize('lens'), 'lenses')
+
+
+#---------------------------------------------------------------------------------------------------
+
 class TestQuantification(unittest.TestCase):
 
     def setUp(self):
