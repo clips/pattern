@@ -542,6 +542,7 @@ singular_ie = set((
     "collie"     , "hankie"   , "lingerie"    , "reverie"    , "toughie"   , 
     "cookie"     , "hippie"   , "meanie"      , "rookie"     , "valkyrie"  , 
 ))
+singular_s = set(plural_categories['s-singular'])
 singular_irregular = {
        "atlantes": "atlas", 
         "atlases": "atlas", 
@@ -609,7 +610,10 @@ def singularize(word, pos=NOUN, custom={}):
             return word
     for x in singular_ie:
         if w.endswith(x+"s"):
-            return w
+            return x
+    for x in singular_s:
+        if w.endswith(x+"es"):
+            return x
     for x in singular_irregular:
         if w.endswith(x):
             return re.sub('(?i)'+x+'$', singular_irregular[x], word)
