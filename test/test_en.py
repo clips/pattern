@@ -566,8 +566,6 @@ class TestParser(unittest.TestCase):
             test_num = str(test_num)
             v = en.parsetree("I am %s years old" % test_num)
             found_num = v.words[2]
-            if found_num.type != 'CD':
-                import bpdb; bpdb.set_trace()
             self.assertEquals(found_num.type, 'CD')
             self.assertEquals(found_num.string, test_num)
 
