@@ -1,7 +1,8 @@
 #### PATTERN #######################################################################################
-
+#asdfasdfasdfasf
 import sys
 import os
+import numpy
 
 from setuptools import setup
 
@@ -101,8 +102,8 @@ setup(
         "pattern.vector"          : ["*.txt"],
         "pattern.vector.svm"      : ["*.txt", "libsvm-3.11/*", "libsvm-3.17/*", "liblinear-1.93/*"],
         "pattern.graph"           : ["*.js", "*.csv"],
-        "pattern.server"          : ["static/*", "cherrypy/cherrypy/*.*", 
-                                                 "cherrypy/cherrypy/*/*", 
+        "pattern.server"          : ["static/*", "cherrypy/cherrypy/*.*",
+                                                 "cherrypy/cherrypy/*/*",
                                                  "cherrypy/cherrypy/cherryd"],
     },
     py_modules = [
