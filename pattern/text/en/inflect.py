@@ -488,6 +488,7 @@ singular_rules = [
     (r"([^d]ea)ves$"          , "\\1f"    ),
     (r"arves$"                , "arf"     ),
     (r"erves$"                , "erve"    ),
+    (r"([\w])lives"           , "\\1live" ),
     (r"([nlw]i)ves$"          , "\\1fe"   ),
     (r'(?i)([lr])ves$'        , '\\1f'    ),
     (r"([aeo])ves$"           , "\\1ve"   ),
@@ -572,8 +573,7 @@ singular_irregular = {
        "occipita": "occiput", 
       "octopodes": "octopus", 
           "opera": "opus", 
-         "opuses": "opus", 
-            "our": "my",
+         "opuses": "opus",
            "oxen": "ox", 
           "penes": "penis", 
         "penises": "penis", 
@@ -585,6 +585,10 @@ singular_irregular = {
         "trilbys": "trilby", 
          "turves": "turf", 
             "zoa": "zoon",
+}
+
+singular_pronouns = {
+    "our": "my",
 }
 
 def singularize(word, pos=NOUN, custom={}):
@@ -613,6 +617,9 @@ def singularize(word, pos=NOUN, custom={}):
     for x in singular_irregular:
         if w.endswith(x):
             return re.sub('(?i)'+x+'$', singular_irregular[x], word)
+    for x in singular_pronouns:
+        if w == x:
+            return singular_pronouns[x]
     for suffix, inflection in singular_rules:
         m = suffix.search(word)
         g = m and m.groups() or [] 
