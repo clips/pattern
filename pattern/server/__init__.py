@@ -19,7 +19,9 @@ import time; _time=time
 import atexit
 import urllib
 import hashlib
+import hmac
 import base64
+import struct
 import random
 import string
 import textwrap
@@ -142,8 +144,8 @@ def decode_entities(string):
     return string
 
 def encode_url(string):
-    return urllib.quote_plus(bytestring(string)) # "black/white" => "black%2Fwhite".
-    
+    return urllib.quote_plus(string.encode("utf-8")) # "black/white" => "black%2Fwhite".
+
 def decode_url(string):
     return urllib.unquote_plus(string)
 
@@ -369,13 +371,73 @@ class DatabaseTransaction(Database):
         
     def __len__(self):
         return len(self._queue)
-        
+
+    def __call__(self, *args, **kwargs):
+        return self.execute(*args, **kwargs)
+
     def __repr__(self):
         return "DatabaseTransaction(name=%s)" % repr(self._name)
 
     @property
     def batch(self):
         raise AttributeError
+
+#--- DATABASE SECURITY -----------------------------------------------------------------------------
+
+def pbkdf2(s, salt, iterations=10000, n=32, f="sha256"):
+    """ Returns a hashed string of length n using the PBKDF2 algorithm.
+        Password-Based Key Derivation Function 2 uses a cryptographic salt
+        and multiple iterations of a pseudorandom function ("key stretching").
+    """
+    h = hmac.new(s, digestmod=getattr(hashlib, f))
+    def prf(h, s):
+        h = h.copy()
+        h.update(s)
+        return bytearray(h.digest())
+    k = bytearray()
+    i = 1
+    while len(k) < n:
+        a = b = prf(h, salt + struct.pack('>i', i))
+        for _ in range(iterations - 1):
+            a = prf(h, a)
+            b = bytearray(x ^ y for x, y in zip(b, a))
+        k += b
+        i += 1
+    return str(k)[:n].encode("hex")
+
+def streql(s1, s2):
+    """ Returns True if the given strings are identical.
+    """
+    if len(s1) != len(s2):
+        return False
+    b = True
+    for ch1, ch2 in zip(s1, s2):
+        if ch1 != ch2:
+            b = False # contstant-time comparison
+    return b
+
+def encode_password(s):
+    """ Returns a PBKDF2-hashed string.
+    """
+    if isinstance(s, unicode):
+        s = s.encode("utf-8")
+    x = base64.b64encode(os.urandom(32))
+    return "pbkdf2:sha256:10000:%s:%s" % (x, pbkdf2(s[:1024], x))
+
+def verify_password(s1, s2):
+    """ Returns True if the given strings are identical, after hashing the first.
+    """
+    if isinstance(s1, unicode):
+        s1 = s1.encode("utf-8")
+    if isinstance(s2, unicode):
+        s2 = s2.encode("utf-8")
+    m, f, n, x, s2 = s2.split(":")
+    return streql(pbkdf2(s1[:1024], x, int(n), len(s2) / 2, f), s2)
+
+# k1 = "1234"
+# k2 = encode_password(k1)
+# print(k2)
+# print(verify_password(k1, k2))
 
 #---------------------------------------------------------------------------------------------------
 # MySQL on Mac OS X installation notes:
@@ -418,7 +480,7 @@ class RateLimit(Database):
             It grants each key a rate (number of requests / time) for a URL path.
             It keeps track of the number of requests in local memory (i.e., RAM).
             If RateLimit()() is called with the optional limit and time arguments,
-            unknown keys are temporarily granted this rate.
+            each IP address is granted this rate (even without a key).
         """
         Database.__init__(self, name, **dict(kwargs, factory=None, schema=(
             "create table if not exists `rate` ("
@@ -435,35 +497,35 @@ class RateLimit(Database):
     @property
     def cache(self):
         return _RATELIMIT_CACHE
-        
+
     @property
     def lock(self):
         return _RATELIMIT_LOCK
 
     @property
-    def key(self, pairs=("rA","aZ","gQ","hH","hG","aR","DD")):
+    def key(self, pairs=("rA","aZ","gQ","hH","hG","aR","DD"), n=32):
         """ Yields a new random key ("ZjNmYTc4ZDk0MTkyYk...").
         """
         k = str(random.getrandbits(256))
         k = hashlib.sha256(k).hexdigest()
         k = base64.b64encode(k, random.choice(pairs)).rstrip('==')
-        return k
-        
+        return k[:n]
+
     def reset(self):
         self.cache.clear()
         self.load()
             
     def load(self):
         """ For performance, rate limiting is handled in memory (i.e., RAM).
-            Loads the stored rate limits in memory (100,000 records ~= 5MB RAM).
+            Loads the stored rate limits in memory (5,000 records ~= 1MB RAM).
         """
-        with self.lock: 
+        with self.lock:
             if not self.cache:
                 # Lock concurrent threads when modifying cache.
                 for r in self.execute("select * from `rate`;"):
                     self.cache[(r[0], r[1])] = (0, r[2], r[3], _time.time())
-                self._rowcount = len(self.cache)
-    
+            self._n = len(self.cache)
+
     def set(self, key, path="/", limit=100, time=HOUR):
         """ Sets the rate for the given key and path,
             where limit is the maximum number of requests in the given time (e.g., 100/hour).
@@ -479,21 +541,34 @@ class RateLimit(Database):
         # Update cache.
         with self.lock: 
             self.cache[(key, p)] = (0, limit, time, _time.time())
-            self._rowcount += 1
+            self._n += 1
         return (key, path, limit, time)
-        
+
     def get(self, key, path="/"):
         """ Returns the rate for the given key and path (or None).
         """
         p = "/" + path.strip("/")
         q = "select * from `rate` where key=? and path=?;"
         return self.execute(q, (key, p), first=True, commit=False)
-        
+
+    def delete(self, key, path="/"):
+        """ Revokes the rate for the given key and path.
+        """
+        p = "/" + path.strip("/")
+        q = "delete from `rate` where key=? and path=?;"
+        self.execute(q, (key, p))
+        with self.lock:
+            if self.cache.pop((key, p), False):
+                self._n -= 1
+
     def __setitem__(self, k, v): # (key, path), (limit, time)
         return self.set(*(k+v))
-        
+
     def __getitem__(self, k):    # (key, path)
         return self.get(*k)
+
+    def __delitem__(self, k):    # (key, path)
+        return self.delete(*k)
 
     def __contains__(self, key, path="%"):
         """ Returns True if the given key exists (for the given path).
@@ -501,26 +576,26 @@ class RateLimit(Database):
         q = "select * from `rate` where key=? and path like ?;"
         return self.execute(q, (key, path), first=True, commit=False) is not None
 
-    def __call__(self, key, path="/", limit=None, time=None, reset=100000):
+    def __call__(self, key, path="/", limit=None, time=None, ip=None, reset=100000):
         """ Increases the (cached) request count by 1 for the given key and path.
             If the request count exceeds its limit, raises RateLimitExceeded.
-            If the optional limit and time are given, unknown keys (!= None) 
-            are given this rate limit - as long as the cache exists in memory.
-            Otherwise a RateLimitForbidden is raised.
+            If the given key does not exist, each IP address (if given) gets 
+            limit / time requests. Otherwise, a RateLimitForbidden is raised.
         """
         with self.lock:
             t = _time.time()
             p = "/" + path.strip("/")
             r = self.cache.get((key, p))   
             # Reset the cache if too large (e.g., 1M+ IP addresses).
-            if reset and reset < len(self.cache) and reset > self._rowcount:
+            if reset and reset < len(self.cache) and reset > self._n:
                 self.reset()
-            # Unknown key (apply default limit / time rate).
-            if r is None and key is not None and limit is not None and time is not None:
-                self.cache[(key, p)] = r = (0, limit, time, t)
-            # Unknown key (apply root key, if any).
+            # Unknown key: apply root key (if any).
             if r is None and p != "/":
-                self.cache.get((key, "/"))
+                r = self.cache.get((key, "/"))
+            # Unknown key: apply default limit (if IP).
+            if r is None and ip is not None and limit is not None and time is not None:
+                r = self.cache.setdefault((ip, p), (0, limit, time, t)); key=ip
+            # Unknown key.
             if r is None:
                 raise RateLimitForbidden
             # Limit reached within time frame (raise error).
@@ -533,6 +608,14 @@ class RateLimit(Database):
             elif r[0] <  r[1]:
                 self.cache[(key, p)] = (r[0] + 1, r[1], r[2], r[3])
         #print(self.cache.get((key, path)))
+
+    def count(self, key, path="/"):
+        """ Returns the current count for the given key and path.
+        """
+        with self.lock:
+            p = "/" + path.strip("/")
+            r = self.cache.get((key, p), [0])[0]
+            return r
 
 #### ROUTER ########################################################################################
 # The @app.route(path) decorator registers each URL path handler in Application.router.
@@ -934,8 +1017,8 @@ class Application(object):
                 # If the key is known, apply rate limiting (429 Too Many Requests).
                 # If the key is unknown or None, deny access (403 Forbidden).
                 # If the key is unknown and a default limit and time are given,
-                # add the key and grant the given credentials, e.g.:
-                # @app.route(path, limit=100, time=HOUR, key=lambda data: app.request.ip).
+                # grant this IP address these default credentials, e.g.:
+                # @app.route(path, limit=100, time=HOUR).
                 # This grants each IP-address a 100 requests per hour.
                 @self.thread(START)
                 def connect():
@@ -943,10 +1026,11 @@ class Application(object):
                 def wrapper(*args, **kwargs):
                     self = cp.request.app.root
                     self.rate(
+                           ip = cp.request.remote.ip,
                           key = _a[0](cp.request.params),
                          path = "/" + path.strip("/"),
-                        limit = _a[1], # Default limit for unknown keys.
-                         time = _a[2], # Default time for unknown keys.
+                        limit = _a[1], # Default limit for each IP.
+                         time = _a[2], # Default time for each IP.
                         reset = _a[3]  # Threshold for clearing cache.
                     )
                     return handler(*args, **kwargs)
@@ -1264,7 +1348,7 @@ def certificate(domain=LOCALHOST, country=None, state=None, city=None, company=N
 #    >
 #    > app = application = App() # mod_wsgi app must be available as "application"!
 #    >
-#    > @app.route("/api/1/sentiment", limit=100, time=HOUR, key=lambda data: app.request.ip)
+#    > @app.route("/api/1/sentiment", limit=100, time=HOUR)
 #    > def api_sentiment(q=None, lang="en"):
 #    >     return {"polarity": sentiment(q, language=lang)[0]}
 #    >
@@ -1601,7 +1685,7 @@ html = HTML()
 #
 ## http://localhost:8080/api/en/sentiment?q=awesome
 ##@app.route("/api/en/sentiment", limit=True)
-#@app.route("/api/en/sentiment", limit=10, time=MINUTE, key=lambda data: app.request.ip)
+#@app.route("/api/en/sentiment", limit=10, time=MINUTE)
 #def nl_sentiment(q="", db=None):
 #    polarity, subjectivity = sentiment(q)
 #    db.batch.execute("insert into `log` (q) values (?);", (q,))
