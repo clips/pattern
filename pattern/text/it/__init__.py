@@ -36,7 +36,9 @@ from pattern.text.tree import (
 )
 # Import sentiment analysis base classes.
 from pattern.text import (
-    Sentiment, NOUN, VERB, ADJECTIVE, ADVERB
+    Sentiment as _Sentiment,
+    NOUN, VERB, ADJECTIVE, ADVERB,
+    MOOD, IRONY
 )
 # Import spelling base class.
 from pattern.text import (
@@ -146,6 +148,11 @@ class Parser(_Parser):
             kwargs.setdefault("map", lambda token, tag: penntreebank2universal(token, tag))
         return _Parser.find_tags(self, tokens, **kwargs)
 
+class Sentiment(_Sentiment):
+    
+    def load(self, path=None):
+        _Sentiment.load(self, path)
+
 parser = Parser(
      lexicon = os.path.join(MODULE, "it-lexicon.txt"),
    frequency = os.path.join(MODULE, "it-frequency.txt"),
@@ -156,6 +163,16 @@ parser = Parser(
 )
 
 lexicon = parser.lexicon # Expose lexicon.
+
+sentiment = Sentiment(
+        path = os.path.join(MODULE, "it-sentiment.xml"), 
+      synset = None,
+   negations = ("mai", "no", "non"),
+   modifiers = ("RB",),
+   modifier  = lambda w: w.endswith(("mente")),
+   tokenizer = parser.find_tokens,
+    language = "it"
+)
 
 spelling = Spelling(
         path = os.path.join(MODULE, "it-spelling.txt")
@@ -203,6 +220,22 @@ def suggest(w):
     """ Returns a list of (word, confidence)-tuples of spelling corrections.
     """
     return spelling.suggest(w)
+
+
+def polarity(s, **kwargs):
+    """ Returns the sentence polarity (positive/negative) between -1.0 and 1.0.
+    """
+    return sentiment(s, **kwargs)[0]
+
+def subjectivity(s, **kwargs):
+    """ Returns the sentence subjectivity (objective/subjective) between 0.0 and 1.0.
+    """
+    return sentiment(s, **kwargs)[1]
+    
+def positive(s, threshold=0.1, **kwargs):
+    """ Returns True if the given sentence has a positive sentiment (polarity >= threshold).
+    """
+    return polarity(s, **kwargs) >= threshold
 
 split = tree # Backwards compatibility.
 
