@@ -3138,6 +3138,10 @@ var Mouse = Class.extend({
             // Create parent onmousedown event (set Mouse.pressed).
             // Fire Mouse.onpress().
             var m = this._mouse;
+            if (e.touches !== undefined) {
+                // TouchStart (iPad).
+                e.preventDefault();
+            }
             m.pressed = true;
             m._x0 = m.x;
             m._y0 = m.y;
@@ -3163,7 +3167,6 @@ var Mouse = Class.extend({
             var o2 = absOffset(this);
             if (e.touches !== undefined) {
                 // TouchEvent (iPad).
-                e.preventDefault();
                 m.x = e.touches[0].pageX;
                 m.y = e.touches[0].pageY;
             } else {
