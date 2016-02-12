@@ -424,17 +424,16 @@ class Model(object):
         return [token[0], self._classifier.classify(self._v(token[0], previous, next))]
 
     def _v(self, token, previous=None, next=None):
-        """ Returns a training vector for the given (word, tag)-tuple and its context.
+        """ Returns a training vector for the given token and its context.
         """
-        def f(v, s1, s2):
-            if s2: 
-                v[s1 + " " + s2] = 1
+        def f(v, *s):
+            v[" ".join(s)] = 1
         p, n = previous, next
         p = ("", "") if not p else (p[0] or "", p[1] or "")
         n = ("", "") if not n else (n[0] or "", n[1] or "")
         v = {}
-        f(v,  "b", "b")         # Bias.
-        f(v,  "h", token[0])    # Capitalization.
+        f(v,  "b", " ")         # Bias.
+        f(v,  "h", token[:1])   # Capitalization.
         f(v,  "w", token[-6:] if token not in self.known or token in self.unknown else "")
         f(v,  "x", token[-3:])  # Word suffix.
         f(v, "-x", p[0][-3:])   # Word suffix left.
@@ -986,19 +985,19 @@ def penntreebank2universal(token, tag):
         return (token, ADJ)
     if tag in ("RB", "RBR", "RBS", "WRB"):
         return (token, ADV)
-    if tag in ("PRP", "PRP$", "WP", "WP$"):
+    if tag in ("PR", "PRP", "PRP$", "WP", "WP$"):
         return (token, PRON)
     if tag in ("DT", "PDT", "WDT", "EX"):
         return (token, DET)
-    if tag in ("IN",):
+    if tag in ("IN", "PP"):
         return (token, PREP)
-    if tag in ("CD",):
+    if tag in ("CD", "NO"):
         return (token, NUM)
-    if tag in ("CC",):
+    if tag in ("CC", "CJ"):
         return (token, CONJ)
     if tag in ("UH",):
         return (token, INTJ)
-    if tag in ("POS", "RP", "TO"):
+    if tag in ("POS", "PT", "RP", "TO"):
         return (token, PRT)
     if tag in ("SYM", "LS", ".", "!", "?", ",", ":", "(", ")", "\"", "#", "$"):
         return (token, PUNC)
@@ -1258,9 +1257,9 @@ CC = r"CC|CJ"
 
 # Chunking rules.
 # CHUNKS[0] = Germanic: RB + JJ precedes NN ("the round table").
-# CHUNKS[1] = Romance: RB + JJ precedes or follows NN ("la table ronde", "une jolie fille").
+# CHUNKS[1] = Romance : RB + JJ precedes or follows NN ("la table ronde", "une jolie fille").
 CHUNKS = [[
-    # Germanic languages: en, de, nl, ...
+    # Germanic languages: da, de, en, is, nl, no, sv (also applies to cs, pl, ru, ...)
     (  "NP", r"((NN)/)* ((DT|CD|CC)/)* ((RB|JJ)/)* (((JJ)/(CC|,)/)*(JJ)/)* ((NN)/)+"),
     (  "VP", r"(((MD|TO|RB)/)* ((VB)/)+ ((RP)/)*)+"),
     (  "VP", r"((MD)/)"),
@@ -1268,7 +1267,7 @@ CHUNKS = [[
     ("ADJP", r"((RB|JJ)/)* ((JJ)/,/)* ((JJ)/(CC)/)* ((JJ)/)+"),
     ("ADVP", r"((RB)/)+"),
 ], [
-    # Romance languages: es, fr, it, ...
+    # Romance languages: ca, es, fr, it, pt, ro
     (  "NP", r"((NN)/)* ((DT|CD|CC)/)* ((RB|JJ|,)/)* (((JJ)/(CC|,)/)*(JJ)/)* ((NN)/)+ ((RB|JJ)/)*"),
     (  "VP", r"(((MD|TO|RB)/)* ((VB)/)+ ((RP)/)* ((RB)/)*)+"),
     (  "VP", r"((MD)/)"),
@@ -1301,7 +1300,7 @@ def find_chunks(tagged, language="en"):
     chunked = [x for x in tagged]
     tags = "".join("%s%s" % (tag, SEPARATOR) for token, tag in tagged)
     # Use Germanic or Romance chunking rules according to given language.
-    for tag, rule in CHUNKS[int(language in ("ca", "es", "pt", "fr", "it", "pt", "ro"))]:
+    for tag, rule in CHUNKS[int(language in ("ca", "es", "fr", "it", "pt", "ro"))]:
         for m in rule.finditer(tags):
             # Find the start of chunks inside the tags-string.
             # Number of preceding separators = number of preceding tokens.
@@ -2192,7 +2191,7 @@ class Sentiment(lazydict):
                 # Known word preceded by a negation ("not really good").
                 if n is not None:
                     a[-1]["w"].insert(0, n)
-                    a[-1]["i"] = 1.0 / a[-1]["i"]
+                    a[-1]["i"] = 1.0 / (a[-1]["i"] or 1)
                     a[-1]["n"] = -1
                 # Known word may be a negation.
                 # Known word may be modifying the next word (i.e., it is a known adverb).
