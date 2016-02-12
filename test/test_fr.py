@@ -161,6 +161,21 @@ class TestParser(unittest.TestCase):
             u"s'/PRP/B-NP/O était/VB/B-VP/O assis/VBN/I-VP/O " + \
             u"sur/IN/B-PP/B-PNP le/DT/B-NP/I-PNP tapis/NN/I-NP/I-PNP ././O/O"
         )
+        # Assert the accuracy of the French tagger.
+        f = fr.penntreebank2universal
+        i, n = 0, 0
+        for sentence in open(os.path.join(PATH, "corpora", "tagged-fr-wikinews.txt")).readlines():
+            sentence = sentence.decode("utf-8").strip()
+            s1 = [w.split("/") for w in sentence.split(" ")]
+            s2 = [[w for w, pos in s1]]
+            s2 = fr.parse(s2, tokenize=False)
+            s2 = [w.split("/") for w in s2.split(" ")]
+            for j in range(len(s1)):
+                if f(*s1[j][:2])[1] == f(*s2[j][:2])[1]:
+                    i += 1
+                n += 1
+        #print(float(i) / n)
+        self.assertTrue(float(i) / n > 0.85)
         print("pattern.fr.parser.parse()")
 
     def test_tag(self):
@@ -219,9 +234,9 @@ class TestSentiment(unittest.TestCase):
 
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestInflection))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestInflection))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestParser))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSentiment))
+    #suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSentiment))
     return suite
 
 if __name__ == "__main__":
