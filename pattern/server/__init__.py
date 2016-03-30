@@ -951,7 +951,6 @@ class Application(object):
             return v
         if isinstance(v, dict):
             cp.response.headers["Content-Type"] = "application/json; charset=utf-8"
-            cp.response.headers.setdefault("Access-Control-Allow-Origin", "*") # CORS
             return json.dumps(v)
         if isinstance(v, types.GeneratorType):
             cp.response.stream = True
@@ -971,6 +970,8 @@ class Application(object):
     def default(self, *path, **data):
         """ Resolves URL paths to handler functions and casts the return value.
         """
+        # Enable cross-origin resource sharing (CORS, by default: "*")
+        cp.response.headers["Access-Control-Allow-Origin"] = self._xhr
         # If there is an app.thread.db connection,
         # pass it as a keyword argument named "db".
         # If there is a query parameter named "db",
@@ -1192,12 +1193,14 @@ class Application(object):
         """
         raise HTTPRedirect(path, int(code))
 
-    def run(self, host=LOCALHOST, port=8080, threads=30, queue=20, timeout=10, sessions=False, embedded=False, ssl=None, debug=True):
+    def run(self, host=LOCALHOST, port=8080, threads=30, queue=20, timeout=10, sessions=False, embedded=False, xhr="*", ssl=None, debug=True):
         """ Starts the server.
             Static content (e.g., "g/img.jpg") is served from the App.static subfolder (e.g., "static/g").
             With threads=10, the server can handle up to 10 concurrent requests.
             With queue=10, the server will queue up to 10 waiting requests.
+            With sessions=True, stores session id in cookie.
             With embedded=True, runs under Apache mod_wsgi.
+            With xhr="*", the server will respond to cross-origin XMLHttpRequests.
             With ssl=(key, certificate), runs under https:// (see certificate() function).
             With debug=False, starts a production server.
         """
@@ -1207,6 +1210,7 @@ class Application(object):
         self._host = str(host)
         self._port = int(port)
         self._up   = True
+        self._xhr  = xhr
         # Production environment disables errors.
         if debug is False: 
             cp.config.update({"environment": "production"})
