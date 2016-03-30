@@ -123,7 +123,7 @@
 			dragged = null;
 			size(500, 500);
 			var n = 60;
-			for (var i in Array.range(n)) {
+			for (var i=0; i < n; i++) {
 				// Create a group of n cells.
 				// Smoothstep yields more numbers near 1.0 than near 0.0,
 				// so we'll got mostly empty blue cells.

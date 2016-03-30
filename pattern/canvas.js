@@ -2541,7 +2541,7 @@ var Cache = Class.extend({
     preload: function(id, object, callback) {
         /* Attaches an onload() event to the object and caches it under id.
          */
-        object._preload = [id, cache, callback];
+        object._preload = [id, _cache, callback];
         object.onreadystatechange = function() { if (this.readyState == "complete") { // IE
             if (this._preload) {
                 this._preload[1].busy--;
@@ -3067,8 +3067,8 @@ function grid(cols, rows, colWidth, rowHeight, shuffled) {
         Array.shuffle(cols);
     }
     var a = [];
-    for (var y in rows) {
-        for (var x in cols) {
+    for (var y=0; y < rows.length; y++) {
+        for (var x=0; x < cols.length; x++) {
             a.push(new Point(x*colWidth, y*rowHeight));
         }
     }
@@ -3839,7 +3839,7 @@ function darken(img1, img2, dx, dy, alpha) {
 function multiply(img1, img2, dx, dy, alpha) {
     return blend(MULTIPLY, img1, img2, dx, dy, alpha);
 }
-function screen(img1, img2, dx, dy, alpha) {
+function screen_(img1, img2, dx, dy, alpha) {
     return blend(SCREEN, img1, img2, dx, dy, alpha);
 }
 function overlay(img1, img2, dx, dy, alpha) {
@@ -3850,6 +3850,19 @@ function hardlight(img1, img2, dx, dy, alpha) {
 }
 function hue(img1, img2, dx, dy, alpha) {
     return blend(HUE, img1, img2, dx, dy, alpha);
+}
+
+try {
+    var s = screen;
+    var p = [s.width, s.height, s.availWidth, s.availHeight, s.colorDepth, s.pixelDepth];
+    screen = screen_;
+    screen.width       = p[0];
+    screen.height      = p[1];
+    screen.availWidth  = p[2];
+    screen.availHeight = p[3];
+    screen.colorDepth  = p[4];
+    screen.pixelDepth  = p[5];
+} catch(e) {
 }
 
 /*--- IMAGE FILTERS | LIGHT ------------------------------------------------------------------------*/
@@ -4042,14 +4055,21 @@ function widget(canvas, variable, type, options) {
         // Fix callback event and event.target on IE8 and Safari2.
         // Function does nothing when propagate=false.
         var cb = function(e, propagate) {
-            if (!e)
+            if (!e) {
                 e = window.event;
-            if (!e.target)
+            }
+            if (!e && canvas.element.dispatchEvent) {
+                e = new Event(); canvas.element.dispatchEvent(e)
+            }
+            if (e && !e.target) {
                 e.target = e.srcElement || document;
-            if (e.target.nodeType === 3)
+            }
+            if (e && e.target && e.target.nodeType === 3) {
                 e.target = e.target.parentNode;
-            if (o.callback && propagate != false)
+            }
+            if (e && e.target && o.callback && propagate != false) {
                 o.callback(e);
+            }
         }
         // <input type="text" id="id" value="" />
         if (type == STRING || type == TEXT) {
