@@ -102,7 +102,7 @@ LANGUAGE_REGION = {
     u'lt-LT': (u'Lithuanian', u'Lithuania', u'lt', u'LT'),
     u'lv-LV': (u'Latvian', u'Latvia', u'lv', u'LV'),
     u'mk-ML': (u'Macedonian', u'Macedonia', u'mk', u'MK'),
-    u'ms-MY': (u'Malaysian', u'Malaysia', u'ms', u'MY'),
+    u'ms-MY': (u'Malay', u'Malaysia', u'ms', u'MY'),
     u'mt-MT': (u'Maltese', u'Malta', u'mt', u'MT'),
     u'nd-ZW': (u'Ndebele', u'Zimbabwe', u'nd', u'ZW'),
     u'nl-NL': (u'Dutch', u'Netherlands', u'nl', u'NL'),

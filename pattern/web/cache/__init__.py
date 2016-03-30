@@ -85,7 +85,7 @@ class Cache(object):
     
     def __len__(self):
         return len(glob.glob(os.path.join(self.path, "*")))
-    
+
     def __contains__(self, k):
         return os.path.exists(self._hash(k))
     

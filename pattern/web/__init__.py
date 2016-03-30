@@ -306,6 +306,8 @@ class HTTP403Forbidden(HTTPError):
     pass # URL is not accessible (user-agent?)
 class HTTP404NotFound(HTTPError):
     pass # URL doesn't exist on the internet.
+class HTTP414RequestURITooLong(HTTPError):
+    pass # URL is too long.
 class HTTP420Error(HTTPError):
     pass # Used by Twitter for rate limiting.
 class HTTP429TooMayRequests(HTTPError):
@@ -456,6 +458,7 @@ class URL(object):
             if e.code == 401: raise HTTP401Authentication(src=e, url=url)
             if e.code == 403: raise HTTP403Forbidden(src=e, url=url)
             if e.code == 404: raise HTTP404NotFound(src=e, url=url)
+            if e.code == 414: raise HTTP414RequestURITooLong(src=e, url=url)
             if e.code == 420: raise HTTP420Error(src=e, url=url)
             if e.code == 429: raise HTTP429TooMayRequests(src=e, url=url)
             if e.code == 500: raise HTTP500InternalServerError(src=e, url=url)
