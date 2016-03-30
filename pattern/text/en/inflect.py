@@ -49,13 +49,13 @@ is_vowel = lambda ch: ch in VOWELS
 # http://www.deveiate.org/projects/Linguistics/wiki/English
 
 RE_ARTICLE = map(lambda x: (re.compile(x[0]), x[1]), (
-    ("euler|hour(?!i)|heir|honest|hono", "an"),       # exceptions: an hour, an honor
+    (r"euler|hour(?!i)|heir|honest|hono", "an"), # exceptions: an hour, an honor
     # Abbreviations:
     # strings of capitals starting with a vowel-sound consonant followed by another consonant,
     # which are not likely to be real words.
     (r"(?!FJO|[HLMNS]Y.|RY[EO]|SQU|(F[LR]?|[HL]|MN?|N|RH?|S[CHKLMNPTVW]?|X(YL)?)[AEIOU])[FHLMNRSX][A-Z]", "an"),
-    (r"^[aefhilmnorsx][.-]"  , "an"),
-    (r"^[a-z][.-]"           , "a" ),
+    (r"^[aefhilmnorsx][.-]"  , "an"), # hyphenated: an f-16, an e-mail
+    (r"^[a-z][.-]"           , "a" ), # hyphenated: a b-52
     (r"^[^aeiouy]"           , "a" ), # consonants: a bear
     (r"^e[uw]"               , "a" ), # -eu like "you": a european
     (r"^onc?e"               , "a" ), #  -o like "wa" : a one-liner
