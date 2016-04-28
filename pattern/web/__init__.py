@@ -58,7 +58,7 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
-    
+
 if sys.version > "3":
     long = int
 
@@ -68,8 +68,8 @@ if sys.version > "3":
 # assigned to these code points.
 
 GREMLINS = set([
-    0x0152, 0x0153, 0x0160, 0x0161, 0x0178, 0x017E, 0x017D, 0x0192, 0x02C6, 
-    0x02DC, 0x2013, 0x2014, 0x201A, 0x201C, 0x201D, 0x201E, 0x2018, 0x2019, 
+    0x0152, 0x0153, 0x0160, 0x0161, 0x0178, 0x017E, 0x017D, 0x0192, 0x02C6,
+    0x02DC, 0x2013, 0x2014, 0x201A, 0x201C, 0x201D, 0x201E, 0x2018, 0x2019,
     0x2020, 0x2021, 0x2022, 0x2026, 0x2030, 0x2039, 0x203A, 0x20AC, 0x2122
 ])
 
@@ -81,7 +81,7 @@ def fix(s, ignore=""):
     if not isinstance(s, unicode):
         s = s.decode("utf-8")
         # If this doesn't work,
-        # copy & paste string in a Unicode .txt, 
+        # copy & paste string in a Unicode .txt,
         # and then pass open(f).read() to fix().
     u = []
     i = 0
@@ -1048,7 +1048,7 @@ class Result(dict):
     @property
     def likes(self):
         return self.votes
-        
+
     @property
     def retweets(self):
         return self.shares
@@ -1077,7 +1077,7 @@ class Result(dict):
 
     def setdefault(self, k, v=None):
         return dict.setdefault(self, u(k), self._format(v))
-        
+
     def update(self, *args, **kwargs):
         dict.update(self, [(u(k), self._format(v)) for k, v in dict(*args, **kwargs).items()])
 
@@ -1233,89 +1233,6 @@ class Google(SearchEngine):
         data = u(data.get("language")), float(data.get("confidence"))
         return data
 
-#--- YAHOO -----------------------------------------------------------------------------------------
-# Yahoo! Search is a web search engine owned by Yahoo! Inc.
-# Yahoo! BOSS ("Build Your Own Search Service") is a paid service.
-# http://developer.yahoo.com/search/
-
-YAHOO = "http://yboss.yahooapis.com/ysearch/"
-YAHOO_LICENSE = api.license["Yahoo"]
-
-class Yahoo(SearchEngine):
-
-    def __init__(self, license=None, throttle=0.5, language=None):
-        SearchEngine.__init__(self, license or YAHOO_LICENSE, throttle, language)
-
-    def _authenticate(self, url):
-        url.query.update({
-            "oauth_version": "1.0",
-            "oauth_nonce": oauth.nonce(),
-            "oauth_timestamp": oauth.timestamp(),
-            "oauth_consumer_key": self.license[0],
-            "oauth_signature_method": "HMAC-SHA1"
-        })
-        url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query,
-            method = url.method,
-            secret = self.license[1]
-        )
-        return url
-
-    def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
-        """ Returns a list of results from Yahoo for the given query.
-            - type : SEARCH, IMAGE or NEWS,
-            - start: maximum 1000 results => start 1-100 with count=10, 1000/count,
-            - count: maximum 50, or 35 for images.
-            There is no daily limit, however Yahoo BOSS is a paid service.
-        """
-        if type not in (SEARCH, IMAGE, NEWS):
-            raise SearchEngineTypeError
-        if type == SEARCH:
-            url = YAHOO + "web"
-        if type == IMAGE:
-            url = YAHOO + "images"
-        if type == NEWS:
-            url = YAHOO + "news"
-        if not query or count < 1 or start < 1 or start > 1000 / count:
-            return Results(YAHOO, query, type)
-        # 1) Create request URL.
-        url = URL(url, method=GET, query={
-                 "q": query.replace(" ", "+"),
-             "start": 1 + (start-1) * count,
-             "count": min(count, type==IMAGE and 35 or 50),
-            "format": "json"
-        })
-        # 2) Restrict language.
-        if self.language is not None:
-            market = locale.market(self.language)
-            if market:
-                url.query["market"] = market.lower()
-        # 3) Authenticate.
-        url = self._authenticate(url)
-        # 4) Parse JSON response.
-        kwargs.setdefault("unicode", True)
-        kwargs.setdefault("throttle", self.throttle)
-        try:
-            data = url.download(cached=cached, **kwargs)
-        except HTTP401Authentication:
-            raise HTTP401Authentication("Yahoo %s API is a paid service" % type)
-        except HTTP403Forbidden:
-            raise SearchEngineLimitError
-        data = json.loads(data)
-        data = data.get("bossresponse") or {}
-        data = data.get({SEARCH:"web", IMAGE:"images", NEWS:"news"}[type], {})
-        results = Results(YAHOO, query, type)
-        results.total = int(data.get("totalresults") or 0)
-        for x in data.get("results", []):
-            r = Result(url=None)
-            r.url      = self.format(x.get("url", x.get("clickurl")))
-            r.title    = self.format(x.get("title"))
-            r.text     = self.format(x.get("abstract"))
-            r.date     = self.format(x.get("date"))
-            r.author   = self.format(x.get("source"))
-            r.language = self.format(x.get("language") and \
-                                     x.get("language").split(" ")[0] or self.language or "")
-            results.append(r)
-        return results
 
 #--- BING ------------------------------------------------------------------------------------------
 # Bing is a web search engine owned by Microsoft.
@@ -1638,12 +1555,12 @@ class Twitter(SearchEngine):
         # If search() is called again with start+1, start from this id.
         if isinstance(start, (int, long, float)):
             k = (query, kwargs.get("geo"), kwargs.get("date"), int(start), count)
-            if results:  
-                self._pagination[k] = str(int(results[-1].id) - 1) 
+            if results:
+                self._pagination[k] = str(int(results[-1].id) - 1)
             else:
                 self._pagination[k] = id
         return results
-        
+
     def profile(self, query, start=1, count=10, **kwargs):
         """ Returns a list of results for the given author id, alias or search query.
         """
@@ -1869,13 +1786,13 @@ class MediaWiki(SearchEngine):
             start = data.get("query-continue", {}).get("allpages", {})
             start = start.get("apcontinue", start.get("apfrom", -1))
         raise StopIteration
-    
+
     # Backwards compatibility.
     list = index
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """ With type=SEARCH, returns a MediaWikiArticle for the given query (case-sensitive).
-            With type=ALL, returns a list of results. 
+            With type=ALL, returns a list of results.
             Each result.title is the title of an article that contains the given query.
         """
         if type not in (SEARCH, ALL, "*"):
@@ -2063,7 +1980,7 @@ class MediaWikiArticle(object):
     @property
     def html(self):
         return self.source
-        
+
     @property
     def src(self):
         return self.source
@@ -2100,7 +2017,7 @@ class MediaWikiSection(object):
     @property
     def html(self):
         return self.source
-        
+
     @property
     def src(self):
         return self.source
@@ -2142,7 +2059,7 @@ class MediaWikiSection(object):
                 p = self.article._plaintext
                 f = find_between
                 for s in f(b[0], b[1], self.source):
-                    t = self.article.parser.MediaWikiTable(self, 
+                    t = self.article.parser.MediaWikiTable(self,
                          title = p((f(r"<caption.*?>", "</caption>", s) + [""])[0]),
                         source = b[0] + s + b[1])
                     # 1) Parse <td> and <th> content and format it as plain text.
@@ -2186,7 +2103,7 @@ class MediaWikiTable(object):
     @property
     def html(self):
         return self.source
-        
+
     @property
     def src(self):
         return self.source
@@ -2493,7 +2410,7 @@ class DBPedia(SearchEngine):
 # Flickr is a popular image hosting and video hosting website.
 # http://www.flickr.com/services/api/
 
-FLICKR = "http://api.flickr.com/services/rest/"
+FLICKR = "https://api.flickr.com/services/rest/"
 FLICKR_LICENSE = api.license["Flickr"]
 
 INTERESTING = "interesting"
@@ -2624,23 +2541,22 @@ class Facebook(SearchEngine):
             "client_secret": "81ff4204e73ecafcd87635a3a3683fbe"
         }).download().split("=")[1]
 
-    def search(self, query, type=SEARCH, start=1, count=10, cached=False, **kwargs):
+    def search(self, query, type=NEWS, start=1, count=10, cached=False, **kwargs):
         """ Returns a list of results from Facebook public status updates for the given query.
             - query: string, or Result.id for NEWS and COMMENTS,
-            - type : SEARCH,
+            - type : NEWS,
             - start: 1,
-            - count: maximum 100 for SEARCH and NEWS, 1000 for COMMENTS and LIKES.
+            - count: maximum 100 for NEWS, 1000 for COMMENTS and LIKES.
             There is an hourly limit of +-600 queries (actual amount undisclosed).
         """
-        # Facebook.search(type=SEARCH) returns public posts + author.
         # Facebook.search(type=NEWS) returns posts for the given author (id | alias | "me").
         # Facebook.search(type=COMMENTS) returns comments for the given post id.
         # Facebook.search(type=LIKES) returns authors for the given author, post or comments.
         # Facebook.search(type=FRIENDS) returns authors for the given author.
         # An author is a Facebook user or other entity (e.g., a product page).
-        if type not in (SEARCH, NEWS, COMMENTS, LIKES, FRIENDS):
+        if type not in (NEWS, COMMENTS, LIKES, FRIENDS):
             raise SearchEngineTypeError
-        if type in (SEARCH, NEWS):
+        if type in (NEWS):
             max = 100
         if type in (COMMENTS, LIKES):
             max = 1000
@@ -2651,15 +2567,6 @@ class Facebook(SearchEngine):
         if isinstance(query, FacebookResult):
             query = query.id
         # 1) Construct request URL.
-        if type == SEARCH:
-            url = FACEBOOK + type
-            url = URL(url, method=GET, query={
-                         "q": query,
-                      "type": "post",
-              "access_token": self.license,
-                    "offset": (start-1) * min(count, max),
-                     "limit": (start-0) * min(count, max)
-            })
         if type in (NEWS, FEED, COMMENTS, LIKES, FRIENDS):
             url = FACEBOOK + (u(query) or "me").replace(FACEBOOK, "") + "/" + type.replace("news", "feed")
             url = URL(url, method=GET, query={
@@ -2667,10 +2574,10 @@ class Facebook(SearchEngine):
                     "offset": (start-1) * min(count, max),
                      "limit": (start-0) * min(count, max),
             })
-        if type in (SEARCH, NEWS, FEED):
+        if type in (NEWS, FEED):
             url.query["fields"] = ",".join((
-                "id", "from", "name", "story", "message", "link", "picture", "created_time", "shares", 
-                "comments.limit(1).summary(true)", 
+                "id", "from", "name", "story", "message", "link", "picture", "created_time", "shares",
+                "comments.limit(1).summary(true)",
                    "likes.limit(1).summary(true)"
             ))
         # 2) Parse JSON response.
@@ -2737,7 +2644,7 @@ class Facebook(SearchEngine):
             locale = data.get("hometown", {}).get("name", ""),
              votes = int(data.get("likes", 0)) # (for product pages)
         )
-        
+
     page = profile
 
 #--- PRODUCT REVIEWS -------------------------------------------------------------------------------
@@ -2876,8 +2783,6 @@ def query(string, service=GOOGLE, **kwargs):
     service = service.lower()
     if service in (GOOGLE, "google", "g"):
         engine = Google
-    if service in (YAHOO, "yahoo", "y!"):
-        engine = Yahoo
     if service in (BING, "bing"):
         engine = Bing
     if service in (DUCKDUCKGO, "duckduckgo", "ddg"):
@@ -2907,7 +2812,6 @@ def query(string, service=GOOGLE, **kwargs):
 
 SERVICES = {
     GOOGLE    : Google,
-    YAHOO     : Yahoo,
     BING      : Bing,
     TWITTER   : Twitter,
     WIKIPEDIA : Wikipedia,
@@ -2924,7 +2828,7 @@ def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, prefix
         yields "black" as the best candidate, because "black Darth Vader" is more common in search results.
         - terms   : list of search terms,
         - context : term used for sorting,
-        - service : web service name (GOOGLE, YAHOO, BING),
+        - service : web service name (GOOGLE, BING),
         - license : web service license id,
         - strict  : when True the query constructed from term + context is wrapped in quotes.
     """
@@ -3021,7 +2925,7 @@ class Node(object):
         """ Executes the visit function on this node and each of its child nodes.
         """
         visit(self); [node.traverse(visit) for node in self.children]
-        
+
     def remove(self, child):
         """ Removes the given child node (and all nested nodes).
         """
@@ -3043,7 +2947,7 @@ class Node(object):
         return bytestring(self.__unicode__())
     def __unicode__(self):
         return u(self._p)
-        
+
     def __call__(self, *args, **kwargs):
         pass
 
@@ -3235,7 +3139,7 @@ DOM = Document
 
 def _encode_space(s):
     return s.replace(" ", "<!space!>")
-    
+
 def _decode_space(s):
     return s.replace("<!space!>", " ")
 
@@ -3253,11 +3157,11 @@ class Selector(object):
         s = s.replace(".", " .")        # .class
         s = s.replace(":", " :")        # :pseudo-element
         s = s.replace("[", " [")        # [attribute="value"]
-        s = re.sub(r"\[.*?\]", 
-            lambda m: re.sub(r" (\#|\.|\:)", "\\1", m.group(0)), s)    
-        s = re.sub(r"\[.*?\]", 
+        s = re.sub(r"\[.*?\]",
+            lambda m: re.sub(r" (\#|\.|\:)", "\\1", m.group(0)), s)
+        s = re.sub(r"\[.*?\]",
             lambda m: _encode_space(m.group(0)), s)
-        s = re.sub(r":contains\(.*?\)", 
+        s = re.sub(r":contains\(.*?\)",
             lambda m: _encode_space(m.group(0)), s)
         s = s.split(" ")
         self.tag, self.id, self.classes, self.pseudo, self.attributes = (
@@ -3297,7 +3201,7 @@ class Selector(object):
             for e in e.children:
                 if isinstance(e, Element):
                     return e
-                
+
     def _next_sibling(self, e):
         """ Returns the first next sibling Element of the given element.
         """
@@ -3305,7 +3209,7 @@ class Selector(object):
             e = e.next
             if isinstance(e, Element):
                 return e
-                
+
     def _previous_sibling(self, e):
         """ Returns the last previous sibling Element of the given element.
         """
@@ -3313,7 +3217,7 @@ class Selector(object):
             e = e.previous
             if isinstance(e, Element):
                 return e
-                
+
     def _contains(self, e, s):
         """ Returns True if string s occurs in the given element (case-insensitive).
         """
@@ -3383,9 +3287,9 @@ class SelectorChain(list):
             s = re.sub(r" *\> *", " >", s)
             s = re.sub(r" *\< *", " <", s)
             s = re.sub(r" *\+ *", " +", s)
-            s = re.sub(r"\[.*?\]", 
+            s = re.sub(r"\[.*?\]",
                 lambda m: _encode_space(m.group(0)), s)
-            s = re.sub(r":contains\(.*?\)", 
+            s = re.sub(r":contains\(.*?\)",
                 lambda m: _encode_space(m.group(0)), s)
             self.append([])
             for s in s.split(" "):
@@ -3739,7 +3643,7 @@ class DocumentParserError(Exception):
     pass
 
 class DocumentParser(object):
-    
+
     def __init__(self, path, *args, **kwargs):
         """ Parses a text document (e.g., .pdf or .docx),
             given as a file path or a string.
@@ -3760,7 +3664,7 @@ class DocumentParser(object):
         """ Returns a plaintext Unicode string parsed from the given document.
         """
         return plaintext(decode_utf8(self.open(path).read()))
-        
+
     @property
     def string(self):
         return self.content
@@ -3810,7 +3714,7 @@ class DOCXError(DocumentParserError):
     pass
 
 class DOCX(DocumentParser):
-    
+
     def _parse(self, path, *args, **kwargs):
         from docx.docx import opendocx
         from docx.docx import getdocumenttext
@@ -3830,7 +3734,7 @@ def parsepdf(path, *args, **kwargs):
     """ Returns the content as a Unicode string from the given .pdf file.
     """
     return PDF(path, *args, **kwargs).content
-    
+
 def parsedocx(path, *args, **kwargs):
     """ Returns the content as a Unicode string from the given .docx file.
     """
@@ -3853,7 +3757,7 @@ def parsedoc(path, format=None):
             return parsehtml(path)
     # Brute-force approach if the format is unknown.
     for f in (parsepdf, parsedocx, parsehtml):
-        try: 
+        try:
             return f(path)
         except:
             pass

@@ -18,8 +18,8 @@ import test_graph
 #---------------------------------------------------------------------------------------------------
 # Run all tests.
 # pattern.db tests require a valid username and password for MySQL.
-# pattern.web tests require a working internet connection 
-# and API license keys (see pattern.web.api.py) for Google and Yahoo API's.
+# pattern.web tests require a working internet connection
+# and API license keys (see pattern.web.api.py) for Google API's.
 
 def suite():
     suite = unittest.TestSuite()

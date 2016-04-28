@@ -15,7 +15,7 @@ from pattern.db  import Datasheet, pprint, pd
 # 1) Searching for public status updates.
 #    Search for all status updates that contain the word "horrible".
 
-try: 
+try:
     # We'll store the status updates in a Datasheet.
     # A Datasheet is a table of rows and columns that can be exported as a CSV-file.
     # In the first column, we'll store a unique id for each status update.
@@ -33,7 +33,7 @@ fb = Facebook()
 # we get the most recent results instead of those in the local cache.
 # Keeping a local cache can also be useful (e.g., while testing)
 # because a query is instant when it is executed the second time.
-for status in fb.search("horrible", count=25, cached=False):
+for status in fb.search(262588213843476, count=25, cached=False):
     print "=" * 100
     print status.id
     print status.text
@@ -59,8 +59,8 @@ license = ""
 if license != "":
     fb = Facebook(license)
     # Facebook.profile() returns a dictionary with author info.
-    # By default, this is your own profile. 
-    # You can also supply the id of another profile, 
+    # By default, this is your own profile.
+    # You can also supply the id of another profile,
     # or the name of a product page.
     me = fb.profile()["id"]
     for status in fb.search(me, type=NEWS, count=30, cached=False):

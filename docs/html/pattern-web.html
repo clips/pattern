@@ -83,7 +83,7 @@ url.copy() </pre><ul>
 <p>The example below downloads an image. <br />The <span class="inline_code">extension()</span> helper function parses the file extension from a file name:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import URL, extension
-&gt;&gt;&gt;  
+&gt;&gt;&gt;
 &gt;&gt;&gt; url = URL('http://www.clips.ua.ac.be/media/pattern_schema.gif')
 &gt;&gt;&gt; f = open('test' + extension(url.page), 'wb') # save as test.gif
 &gt;&gt;&gt; f.write(url.download())
@@ -97,7 +97,7 @@ url.copy() </pre><ul>
 <p>The <span class="inline_code">URL.mimetype</span> can be used to check the type of document at the given URL. This is more reliable than sniffing the filename extension (which may be omitted).</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern import URL, MIMETYPE_IMAGE
-&gt;&gt;&gt;  
+&gt;&gt;&gt;
 &gt;&gt;&gt; url = URL('http://www.clips.ua.ac.be/media/pattern_schema.gif')
 &gt;&gt;&gt; print url.mimetype in MIMETYPE_IMAGE
 
@@ -222,7 +222,7 @@ request.error               # Function Exception (or None).
 </pre><p>The example below executes a Google query without halting the main program. Instead, it displays a "busy" message (e.g., a progress bar updated in the application's event loop) until <span class="inline_code">request.done</span>.</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import asynchronous, time, Google
-&gt;&gt;&gt;  
+&gt;&gt;&gt;
 &gt;&gt;&gt; request = asynchronous(Google().search, 'holy grail', timeout=4)
 &gt;&gt;&gt; while not request.done:
 &gt;&gt;&gt;    time.sleep(0.1)
@@ -236,14 +236,14 @@ request.error               # Function Exception (or None).
 <p>The <span class="inline_code">SearchEngine</span> object has a number of subclasses that can be used to query different web services (e.g., Google, Wikipedia). <span class="inline_code">SearchEngine.search()</span>&nbsp;returns a list of <span class="inline_code">Result</span> objects for a given query string – similar to a search field and a results page in a browser.</p>
 <pre class="brush:python; gutter:false; light:true;">engine = SearchEngine(license=None, throttle=1.0, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine.license              # Service license key.
 engine.throttle             # Time between requests (being nice to server).
-engine.language             # Restriction for Result.language (e.g., 'en').</pre><pre class="brush:python; gutter:false; light:true;">engine.search(query, 
+engine.language             # Restriction for Result.language (e.g., 'en').</pre><pre class="brush:python; gutter:false; light:true;">engine.search(query,
     type = SEARCH,          # SEARCH | IMAGE | NEWS
    start = 1,               # Starting page.
    count = 10,              # Results per page.
     size = None             # Image size: TINY | SMALL | MEDIUM | LARGE
   cached = True)            # Cache locally?</pre><p><span class="small"><span style="text-decoration: underline;">Note</span>: <span class="inline_code">SearchEngine.search()</span> takes the same optional parameters as <span class="inline_code">URL.download()</span>.</span></p>
 <h3>Google, Bing, Twitter, Facebook, Wikipedia, Flickr</h3>
-<p><span class="inline_code">SearchEngine</span> is subclassed by <span class="inline_code">Google</span>, <span class="inline_code">Yahoo</span>, <span class="inline_code">Bing</span>, <span class="inline_code">DuckDuckGo</span>, <span class="inline_code">Twitter</span>, <span class="inline_code">Facebook</span>, <span class="inline_code">Wikipedia</span>, <span class="inline_code">Wiktionary</span>, <span class="inline_code">Wikia</span>, <span class="inline_code">DBPedia</span>, <span class="inline_code">Flickr</span> and <span class="inline_code">Newsfeed</span>. The constructors take the same parameters:</p>
+<p><span class="inline_code">SearchEngine</span> is subclassed by <span class="inline_code">Google</span>, <span class="inline_code">Bing</span>, <span class="inline_code">DuckDuckGo</span>, <span class="inline_code">Twitter</span>, <span class="inline_code">Facebook</span>, <span class="inline_code">Wikipedia</span>, <span class="inline_code">Wiktionary</span>, <span class="inline_code">Wikia</span>, <span class="inline_code">DBPedia</span>, <span class="inline_code">Flickr</span> and <span class="inline_code">Newsfeed</span>. The constructors take the same parameters:</p>
 <pre class="brush:python; gutter:false; light:true;">engine = Google(license=None, throttle=0.5, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Bing(license=None, throttle=0.5, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Twitter(license=None, throttle=0.5, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Facebook(license=None, throttle=1.0, language='en')</pre><pre class="brush:python; gutter:false; light:true;">engine = Wikipedia(license=None, throttle=5.0, language=None)</pre><pre class="brush:python; gutter:false; light:true;">engine = Flickr(license=None, throttle=5.0, language=None)</pre><p>Each search engine has different settings for the <span class="inline_code">search()</span> method. For example, <span class="inline_code">Twitter.search()</span> returns up to 3000 results for a given query (30 queries with 100 results each, or 300 queries with 10 results each). It has a limit of 150 queries per 15 minutes. Each call to <span class="inline_code">search()</span> counts as one query.</p>
 <table class="border">
 <tbody>
@@ -266,14 +266,6 @@ engine.language             # Restriction for Result.language (e.g., 'en').</pre
 <tr>
 <td><span class="inline_code">Bing</span></td>
 <td><span class="inline_code">SEARCH</span> <span class="inline_code">|</span> <span class="inline_code">NEWS</span> <span class="inline_code">|</span> <span class="inline_code">IMAGE</span><sup>12</sup></td>
-<td>1-1000/<span class="inline_code">count</span></td>
-<td>1-50</td>
-<td class="smallcaps">paid</td>
-<td>0.5</td>
-</tr>
-<tr>
-<td><span class="inline_code">Yahoo</span></td>
-<td><span class="inline_code">SEARCH</span> <span class="inline_code">|</span> <span class="inline_code">NEWS</span> <span class="inline_code">|</span> <span class="inline_code">IMAGE</span><sup>13</sup></td>
 <td>1-1000/<span class="inline_code">count</span></td>
 <td>1-50</td>
 <td class="smallcaps">paid</td>
@@ -353,14 +345,13 @@ engine.language             # Restriction for Result.language (e.g., 'en').</pre
 </tr>
 </tbody>
 </table>
-<p><span class="small"><sup>1 </sup><span class="inline_code">Google</span>, <span class="inline_code">Bing</span> and <span class="inline_code">Yahoo</span> are paid services – see further how to obtain a license key.<br /></span> <span class="small"><sup>2 </sup><span class="inline_code">Bing.search(type=NEWS)</span> has a <span class="inline_code">count</span> of 1-15.<br /></span> <span class="small"><sup>3 </sup><span class="inline_code">Yahoo.search(type=IMAGES)</span> has a <span class="inline_code">count</span> of 1-35.</span><br /> <span class="smallcaps"><br /><a name="license"></a>Web service license key</span></p>
+<p><span class="small"><sup>1 </sup><span class="inline_code">Google</span> and <span class="inline_code">Bing</span> are paid services – see further how to obtain a license key.<br /></span> <span class="small"><sup>2 </sup><span class="inline_code">Bing.search(type=NEWS)</span> has a <span class="inline_code">count</span> of 1-15.<br /></span> <span class="smallcaps"><br /><a name="license"></a>Web service license key</span></p>
 <p>Some services require a license key. They may work without one, but this implies that you share a public license key (and query limit) with other users of the pattern.web module. If the query limit is exceeded, <span class="inline_code">SearchEngine.search()</span>&nbsp;raises a&nbsp;<span class="inline_code">SearchEngineLimitError</span>.</p>
 <ul>
 <li><span class="inline_code">Google</span> is a paid service ($1 for 200 queries), with a 100 free queries per day. When you obtain a license key (follow the link below), activate "Custom Search API" and "Translate API" under "Services" and look up the key under "API Access".</li>
 <li><span class="inline_code">Bing</span> is a paid service ($1 for 500 queries), with a 5,000 free queries per month.</li>
-<li><span class="inline_code">Yahoo</span> is a paid service ($1 for 1250 queries) that requires an OAuth key + secret, which can be passed as a tuple: <span class="inline_code">Yahoo(license=(key,</span> <span class="inline_code">secret))</span>.</li>
 </ul>
-<p>Obtain a license key: <a href="https://code.google.com/apis/console/" target="_blank">Google</a>, <a href="https://datamarket.azure.com/dataset/5BA839F1-12CE-4CCE-BF57-A49D98D29A44" target="_blank">Bing</a>, <a href="http://developer.yahoo.com/search/boss/" target="_blank">Yahoo</a>, <a href="https://apps.twitter.com/app/new" target="_blank">Twitter</a>, <a href="/pattern-facebook" target="_blank">Facebook</a>, <a href="http://www.flickr.com/services/api/keys/" target="_blank">Flickr</a>.<br /><span class="smallcaps"><br />Web service request throttle</span></p>
+<p>Obtain a license key: <a href="https://code.google.com/apis/console/" target="_blank">Google</a>, <a href="https://datamarket.azure.com/dataset/5BA839F1-12CE-4CCE-BF57-A49D98D29A44" target="_blank">Bing</a>, <a href="https://apps.twitter.com/app/new" target="_blank">Twitter</a>, <a href="/pattern-facebook" target="_blank">Facebook</a>, <a href="http://www.flickr.com/services/api/keys/" target="_blank">Flickr</a>.<br /><span class="smallcaps"><br />Web service request throttle</span></p>
 <p>A <span class="inline_code">SearchEngine.search()</span> request takes a minimum amount of time to complete, as outlined in the table above. This is intended as etiquette towards the server providing the service. Raise the <span class="inline_code">throttle</span> value if you plan to run multiple queries in batch.&nbsp;Wikipedia requests are especially intensive. If you plan to mine a lot of data from Wikipedia, download the <a href="http://en.wikipedia.org/wiki/Wikipedia:Database_download">Wikipedia database</a> instead.</p>
 <p>&nbsp;</p>
 <hr />
@@ -379,7 +370,7 @@ result.date                 # For news items.</pre><pre class="brush:python; gut
 <p><a name="google"></a>For example:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import Bing, SEARCH, plaintext
-&gt;&gt;&gt;  
+&gt;&gt;&gt;
 &gt;&gt;&gt; engine = Bing(license=None) # Enter your license key.
 &gt;&gt;&gt; for i in range(1,5):
 &gt;&gt;&gt;    for result in engine.search('holy handgrenade', type=SEARCH, start=i):
@@ -392,13 +383,13 @@ u'Once the number three, being the third number, be reached, then ...'
 <p>Since <span class="inline_code">SearchEngine.search()</span> takes the same optional parameters as <span class="inline_code">URL.download()</span>&nbsp;it is easy to disable local caching, set a proxy server, a throttle (minimum time) or a timeout (maximum time).</p>
 <div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.web import Google
-&gt;&gt;&gt;  
+&gt;&gt;&gt;
 &gt;&gt;&gt; engine = Google(license=None) # Enter your license key.
 &gt;&gt;&gt; for result in engine.search('tim', cached=False, proxy=('proxy.com', 'https'))
 &gt;&gt;&gt;     print result.url
 &gt;&gt;&gt;     print result.text</pre></div>
 <p><span class="smallcaps"><br />Image search</span></p>
-<p>For <span class="inline_code">Flickr</span>, <span class="inline_code">Bing</span>&nbsp;and&nbsp;<span class="inline_code">Yahoo</span>, image URLs retrieved with <span class="inline_code">search(type=IMAGE)</span> can be filtered by setting the&nbsp;<span class="inline_code">size</span> to <span class="inline_code">TINY</span>, <span class="inline_code">SMALL</span>, <span class="inline_code">MEDIUM</span>, <span class="inline_code">LARGE</span> or <span class="inline_code">None</span> (any size). Images may be subject to copyright.</p>
+<p>For <span class="inline_code">Flickr</span> and <span class="inline_code">Bing</span> image URLs retrieved with <span class="inline_code">search(type=IMAGE)</span> can be filtered by setting the&nbsp;<span class="inline_code">size</span> to <span class="inline_code">TINY</span>, <span class="inline_code">SMALL</span>, <span class="inline_code">MEDIUM</span>, <span class="inline_code">LARGE</span> or <span class="inline_code">None</span> (any size). Images may be subject to copyright.</p>
 <p>For <span class="inline_code">Flickr</span>, use <span class="inline_code">search(copyright=False)</span> to retrieve results with no copyright restrictions (either public domain or Creative Commons <a href="http://creativecommons.org/licenses/by-sa/2.0/">by-sa</a>).</p>
 <p>For <span class="inline_code">Twitter</span>, each result has a <span class="inline_code">Result.profile</span> property with the URL to the user's profile picture.</p>
 <p>&nbsp;</p>
@@ -407,7 +398,7 @@ u'Once the number three, being the third number, be reached, then ...'
 <p><span class="inline_code">Google.translate()</span>&nbsp;returns the translated string in the given language.<br /><span class="inline_code">Google.identify()</span>&nbsp;returns a <span class="inline_code">(language</span> <span class="inline_code">code,</span> <span class="inline_code">confidence)</span>-tuple for a given string.</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import Google
-&gt;&gt;&gt; 
+&gt;&gt;&gt;
 &gt;&gt;&gt; s = "C'est un lapin, lapin de bois. Quoi? Un cadeau."
 &gt;&gt;&gt; g = Google()
 &gt;&gt;&gt; print g.translate(s, input='fr', output='en', cached=False)
@@ -424,7 +415,7 @@ u"It's a rabbit, wood. What? A gift."
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.web import Twitter
 &gt;&gt;&gt;
 &gt;&gt;&gt; t = Twitter()
-&gt;&gt;&gt; i = None 
+&gt;&gt;&gt; i = None
 &gt;&gt;&gt; for j in range(3):
 &gt;&gt;&gt;     for tweet in t.search('win', start=i, count=10):
 &gt;&gt;&gt;         print tweet.text
@@ -436,10 +427,10 @@ u"It's a rabbit, wood. What? A gift."
 <p><span class="inline_code">Twitter.stream()</span>&nbsp;returns an endless, live stream of <span class="inline_code">Result</span> objects. A <span class="inline_code">Stream</span> is a Python list that accumulates each time <span class="inline_code">Stream.update()</span> is called:</p>
 <div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.web import Twitter
-&gt;&gt;&gt; 
+&gt;&gt;&gt;
 &gt;&gt;&gt; s = Twitter().stream('#fail')
 &gt;&gt;&gt; for i in range(10):
-&gt;&gt;&gt;     time.sleep(1) 
+&gt;&gt;&gt;     time.sleep(1)
 &gt;&gt;&gt;     s.update(bytes=1024)
 &gt;&gt;&gt;     print s[-1].text if s else ''</pre></div>
 <p>To clear the accumulated list, call <span class="inline_code">Stream.clear()</span>.</p>
@@ -477,11 +468,11 @@ section.source              # Section HTML source.
 section.string              # Section plaintext unicode string.
 section.content             # Section string minus title.
 section.level               # Section nested depth (from 0).
-section.links               # List of titles of linked articles. 
+section.links               # List of titles of linked articles.
 section.tables              # List of WikipediaTable objects.</pre><p>The following example downloads a Wikipedia article and prints the title of each section, indented according to the section level:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import Wikipedia
-&gt;&gt;&gt; 
+&gt;&gt;&gt;
 &gt;&gt;&gt; article = Wikipedia().search('cat')
 &gt;&gt;&gt; for section in article.sections:
 &gt;&gt;&gt;    print repr(' ' * section.level + section.title)
@@ -525,7 +516,7 @@ u'And Now for Something Completely Different'</pre></div>
 <p><a href="http://dbpedia.org/About" target="_blank">DBPedia</a> is a database of structured information mined from Wikipedia and stored as (subject, predicate, object)-triples (e.g., <em>cat</em> <span class="postag">is-a</span> <em>animal</em>). DBPedia can be queried with <a href="http://www.w3.org/TR/rdf-sparql-query/" target="_blank">SPARQL</a>, where subject, predicate and/or object can be given as&nbsp;<span class="inline_code">?variables</span>. The&nbsp;<span class="inline_code">Result</span> objects in the list returned from <span class="inline_code">DBPedia.search()</span> have the variables as additional properties:</p>
 <div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.web import DBPedia
-&gt;&gt;&gt; 
+&gt;&gt;&gt;
 &gt;&gt;&gt; sparql = '\n'.join((
 &gt;&gt;&gt;     'prefix dbo: &lt;http://dbpedia.org/ontology/&gt;',
 &gt;&gt;&gt;     'select ?person ?place where {',
@@ -547,25 +538,25 @@ u'And Now for Something Completely Different'</pre></div>
 <p><span class="inline_code">Facebook.search(id,</span> <span class="inline_code">type=COMMENTS)</span> retrieves comments for a given post's&nbsp;<span class="inline_code">Result.id</span>. You can also pass the id of a post or a comment to <span class="inline_code">Facebook.search(id, type=LIKES)</span> to retrieve users that liked it.</p>
 <div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.web import Facebook, NEWS, COMMENTS, LIKES
-&gt;&gt;&gt; 
+&gt;&gt;&gt;
 &gt;&gt;&gt; fb = Facebook(license='your key')
 &gt;&gt;&gt; me = fb.profile(id=None) # (id, name, date, gender, locale, likes)-tuple
-&gt;&gt;&gt; 
+&gt;&gt;&gt;
 &gt;&gt;&gt; for post in fb.search(me[0], type=NEWS, count=100):
 &gt;&gt;&gt;     print repr(post.id)
 &gt;&gt;&gt;     print repr(post.text)
 &gt;&gt;&gt;     print repr(post.url)
 &gt;&gt;&gt;     if post.comments &gt; 0:
-&gt;&gt;&gt;         print '%i comments' % post.comments 
+&gt;&gt;&gt;         print '%i comments' % post.comments
 &gt;&gt;&gt;         print [(r.text, r.author) for r in fb.search(post.id, type=COMMENTS)]
 &gt;&gt;&gt;     if post.likes &gt; 0:
-&gt;&gt;&gt;         print '%i likes' % post.likes 
+&gt;&gt;&gt;         print '%i likes' % post.likes
 &gt;&gt;&gt;         print [r.author for r in fb.search(post.id, type=LIKES)]
 
 u'530415277_10151455896030278'
 u'Tom De Smedt likes CLiPS Research Center'
 u'http://www.facebook.com/CLiPS.UA'
-1 likes 
+1 likes
 [(u'485942414773810', u'CLiPS Research Center')]
 .... </pre></div>
 <p>The maximum <span class="inline_code">count</span> for <span class="inline_code">COMMENTS</span> and <span class="inline_code">LIKES</span> is 1000 (by default, 10).&nbsp;</p>
@@ -575,7 +566,7 @@ u'http://www.facebook.com/CLiPS.UA'
 <p>The <span class="inline_code">Newsfeed</span> object is a wrapper for Mark Pilgrim's <a href="http://www.feedparser.org/" target="_blank">Universal Feed Parser</a>. <span class="inline_code">Newsfeed.search()</span> takes the URL of an RSS or Atom news feed and returns a list of <span class="inline_code">Result</span> objects.</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import Newsfeed
-&gt;&gt;&gt; 
+&gt;&gt;&gt;
 &gt;&gt;&gt; NATURE = 'http://www.nature.com/nature/current_issue/rss/index.html'
 &gt;&gt;&gt; for result in Newsfeed().search(NATURE)[:5]:
 &gt;&gt;&gt;     print repr(result.title)
@@ -597,7 +588,7 @@ u'Cell biology: Lung lipid hurts breathing'
 <pre class="brush:python; gutter:false; light:true;">sort(
     terms = [],             # List of search terms.
   context = '',             # Term used for sorting.
-  service = GOOGLE,         # GOOGLE | BING | YAHOO | FLICKR
+  service = GOOGLE,         # GOOGLE | BING | FLICKR
   license = None,           # Service license key.
    strict = True,           # Wrap query in quotes?
    prefix = False,          # context + term or term + context?
@@ -605,13 +596,13 @@ u'Cell biology: Lung lipid hurts breathing'
 <p>Now let's see who is more dangerous:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import sort
-&gt;&gt;&gt; 
+&gt;&gt;&gt;
 &gt;&gt;&gt; results = sort(terms=[
-&gt;&gt;&gt;   'arnold schwarzenegger', 
-&gt;&gt;&gt;   'chuck norris', 
-&gt;&gt;&gt;   'dolph lundgren', 
+&gt;&gt;&gt;   'arnold schwarzenegger',
+&gt;&gt;&gt;   'chuck norris',
+&gt;&gt;&gt;   'dolph lundgren',
 &gt;&gt;&gt;   'steven seagal',
-&gt;&gt;&gt;   'sylvester stallone', 
+&gt;&gt;&gt;   'sylvester stallone',
 &gt;&gt;&gt;   'mickey mouse'], context='dangerous', prefix=True)
 &gt;&gt;&gt;
 &gt;&gt;&gt; for weight, term in results:
@@ -649,7 +640,7 @@ u'Cell biology: Lung lipid hurts breathing'
 <p>The following example downloads a HTML document and keeps a minimal amount of formatting (headings, bold, links).</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import URL, plaintext
-&gt;&gt;&gt; 
+&gt;&gt;&gt;
 &gt;&gt;&gt; s = URL('http://www.clips.ua.ac.be').download()
 &gt;&gt;&gt; s = plaintext(s, keep={'h1':[], 'h2':[], 'strong':[], 'a':['href']})
 &gt;&gt;&gt; print s
@@ -742,12 +733,12 @@ element(selector)           # List of nested Elements matching a CSS selector.
 </div>
 <div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.web import Element
-&gt;&gt;&gt; 
+&gt;&gt;&gt;
 &gt;&gt;&gt; div = Element('&lt;div&gt; &lt;a&gt;1st&lt;/a&gt; &lt;a&gt;2nd&lt;a&gt; &lt;/div&gt;')
 &gt;&gt;&gt; print div('a:first-child')
 &gt;&gt;&gt; print div('a:first-child')[0].source
 
-[Element(tag='a')] 
+[Element(tag='a')]
 &lt;a&gt;1st&lt;/a&gt; </pre></div>
 <h3>DOM</h3>
 <p>The top-level element in the Document Object Model.</p>
@@ -756,7 +747,7 @@ dom.head                    # &lt;head&gt; Element.
 dom.body                    # &lt;body&gt; Element.</pre><p>The following example retrieves the most recent&nbsp;<a href="http://www.reddit.com/" target="_blank">reddit</a>&nbsp;entries. The pattern.web module does not include a reddit search engine, but we can parse entries directly from the HTML source. This is called <em>screen scraping</em>, and many websites will strongly dislike it.</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import URL, DOM, plaintext
-&gt;&gt;&gt; 
+&gt;&gt;&gt;
 &gt;&gt;&gt; url = URL('http://www.reddit.com/top/')
 &gt;&gt;&gt; dom = DOM(url.download(cached=True))
 &gt;&gt;&gt; for e in dom('div.entry')[:3]: # Top 3 reddit entries.
@@ -765,13 +756,13 @@ dom.body                    # &lt;body&gt; Element.</pre><p>The following exampl
 
 u'Invisible Kitty'
 u'Naturally, he said yes.'
-u"I'd just like to remind everyone that /r/minecraft exists and not everyone wants" 
+u"I'd just like to remind everyone that /r/minecraft exists and not everyone wants"
  "to have 10 Minecraft posts a day on their front page."</pre></div>
 <p><span class="smallcaps"><br />Absolute URLs</span></p>
 <p>Links parsed from the <span class="inline_code">DOM</span> can be relative (e.g., starting with <span class="inline_code">"../"</span> instead of <span class="inline_code">"http://"</span>).<br />To get the absolute URL, you can use the <span class="inline_code">abs()</span> function in combination with <span class="inline_code">URL.redirect</span>:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import URL, DOM, abs
-&gt;&gt;&gt; 
+&gt;&gt;&gt;
 &gt;&gt;&gt; url = URL('http://www.clips.ua.ac.be')
 &gt;&gt;&gt; dom = DOM(url.download())
 &gt;&gt;&gt; for link in dom('a'):
@@ -783,13 +774,13 @@ u"I'd just like to remind everyone that /r/minecraft exists and not everyone wan
 <p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;">The <span class="inline_code">PDF</span> object (based on <a href="http://www.unixuser.org/~euske/python/pdfminer/" target="_self">PDFMiner</a>) parses the source text from a PDF file.</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import URL, PDF
-&gt;&gt;&gt; 
+&gt;&gt;&gt;
 &gt;&gt;&gt; url = URL('http://www.clips.ua.ac.be/sites/default/files/ctrs-002_0.pdf')
 &gt;&gt;&gt; pdf = PDF(url.download())
 &gt;&gt;&gt; print pdf.string
 
 CLiPS Technical Report series 002 September 7, 2010
-Tom De Smedt, Vincent Van Asch, Walter Daelemans 
+Tom De Smedt, Vincent Van Asch, Walter Daelemans
 Computational Linguistics &amp; Psycholinguistics Research Center
 ... </pre></div>
 <p style="margin-top: 0.2em; margin-right: 0px; margin-bottom: 0.5em; margin-left: 0px;">URLs linking to a PDF document can be identified with: <span class="inline_code">URL.mimetype</span> <span class="inline_code">in</span> <span class="inline_code">MIMETYPE_PDF</span>.</p>
@@ -803,7 +794,7 @@ crawler.delay                # Delay between visits to the same (sub)domain.
 crawler.history              # Dictionary of (domain, time last visited)-items.
 crawler.visited              # Dictionary of URLs visited.
 crawler.sort                 # FIFO | LIFO (how new links are queued).
-crawler.done                 # True when all links have been visited.</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">crawler.push(link, priority=1.0, sort=LIFO)            
+crawler.done                 # True when all links have been visited.</pre><pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">crawler.push(link, priority=1.0, sort=LIFO)
 crawler.pop(remove=True)
 crawler.next                 # Yields the next scheduled link = Crawler.pop(False)</pre><pre class="brush:python; gutter:false; light:true;">crawler.crawl(method=DEPTH)  # DEPTH | BREADTH | None.</pre><pre class="brush:python; gutter:false; light:true;">crawler.priority(link, method=DEPTH)
 crawler.follow(link)
@@ -832,7 +823,7 @@ link.referrer               # Parent web page URL.</pre><p>The following example
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import Crawler
 &gt;&gt;&gt;
-&gt;&gt;&gt; class Polly(Crawler): 
+&gt;&gt;&gt; class Polly(Crawler):
 &gt;&gt;&gt;     def visit(self, link, source=None):
 &gt;&gt;&gt;         print 'visited:', repr(link.url), 'from:', link.referrer
 &gt;&gt;&gt;     def fail(self, link):
@@ -852,19 +843,19 @@ visited: u'http://www.clips.ua.ac.be/contact'
 <h3>Crawl function</h3>
 <p>The <span class="inline_code">crawl()</span> function returns an iterator&nbsp;that yields <span class="inline_code">(Link,</span> <span class="inline_code">source)</span>-tuples. When it is <em>idle</em> (e.g., waiting for the <span class="inline_code">delay</span> on a domain) it yields (<span class="inline_code">None</span>, <span class="inline_code">None</span>).</p>
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">crawl(
-    links = [], 
-  domains = [], 
-    delay = 20.0, 
-     sort = FIFO, 
+    links = [],
+  domains = [],
+    delay = 20.0,
+     sort = FIFO,
    method = DEPTH, **kwargs)</pre><div class="example">
 <pre class="brush: python;gutter: false; light: true; fontsize: 100; first-line: 1; ">&gt;&gt;&gt; from pattern.web import crawl
-&gt;&gt;&gt; 
+&gt;&gt;&gt;
 &gt;&gt;&gt; for link, source in crawl('http://www.clips.ua.ac.be/', delay=3, throttle=3):
 &gt;&gt;&gt;     print link
 
 Link(url=u'http://www.clips.ua.ac.be/')
 Link(url=u'http://www.clips.ua.ac.be/#navigation')
-Link(url=u'http://www.clips.ua.ac.be/computational-linguistics') 
+Link(url=u'http://www.clips.ua.ac.be/computational-linguistics')
 ...</pre></div>
 <p>&nbsp;</p>
 <hr />
@@ -889,7 +880,7 @@ message.attachments         # List of (MIME-type, str)-tuples.
 </pre><p>The following example retrieves spam e-mails containing the word "wish":</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import Mail, GMAIL, SUBJECT
-&gt;&gt;&gt; 
+&gt;&gt;&gt;
 &gt;&gt;&gt; gmail = Mail(username='...', password='...', service=GMAIL)
 &gt;&gt;&gt; print gmail.folders.keys()
 
@@ -914,8 +905,8 @@ Message: u'No one has claimed our jackpot! This is your chance to try!'
 <pre class="brush:python; gutter:false; light:true;">geocode(location)           # 'Brussels' =&gt; (50.83, 4.33, u'nl', u'Belgium')</pre><p>This is useful in combination with the <span class="inline_code">geo</span> parameter for <span class="inline_code">Twitter.search()</span> to obtain regional tweets:</p>
 <div class="example">
 <pre class="brush:python; gutter:false; light:true;">&gt;&gt;&gt; from pattern.web import Twitter
-&gt;&gt;&gt; from pattern.web.locale import geocode 
-&gt;&gt;&gt; 
+&gt;&gt;&gt; from pattern.web.locale import geocode
+&gt;&gt;&gt;
 &gt;&gt;&gt; twitter = Twitter(language='en')
 &gt;&gt;&gt; for tweet in twitter.search('restaurant', geo=geocode('Brussels')[:2]):
 &gt;&gt;&gt;      print tweet.text
