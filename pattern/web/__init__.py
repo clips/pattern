@@ -2624,23 +2624,22 @@ class Facebook(SearchEngine):
             "client_secret": "81ff4204e73ecafcd87635a3a3683fbe"
         }).download().split("=")[1]
 
-    def search(self, query, type=SEARCH, start=1, count=10, cached=False, **kwargs):
+    def search(self, query, type=NEWS, start=1, count=10, cached=False, **kwargs):
         """ Returns a list of results from Facebook public status updates for the given query.
             - query: string, or Result.id for NEWS and COMMENTS,
-            - type : SEARCH,
+            - type : NEWS,
             - start: 1,
-            - count: maximum 100 for SEARCH and NEWS, 1000 for COMMENTS and LIKES.
+            - count: maximum 100 for NEWS, 1000 for COMMENTS and LIKES.
             There is an hourly limit of +-600 queries (actual amount undisclosed).
         """
-        # Facebook.search(type=SEARCH) returns public posts + author.
         # Facebook.search(type=NEWS) returns posts for the given author (id | alias | "me").
         # Facebook.search(type=COMMENTS) returns comments for the given post id.
         # Facebook.search(type=LIKES) returns authors for the given author, post or comments.
         # Facebook.search(type=FRIENDS) returns authors for the given author.
         # An author is a Facebook user or other entity (e.g., a product page).
-        if type not in (SEARCH, NEWS, COMMENTS, LIKES, FRIENDS):
+        if type not in (NEWS, COMMENTS, LIKES, FRIENDS):
             raise SearchEngineTypeError
-        if type in (SEARCH, NEWS):
+        if type in (NEWS):
             max = 100
         if type in (COMMENTS, LIKES):
             max = 1000
@@ -2651,15 +2650,6 @@ class Facebook(SearchEngine):
         if isinstance(query, FacebookResult):
             query = query.id
         # 1) Construct request URL.
-        if type == SEARCH:
-            url = FACEBOOK + type
-            url = URL(url, method=GET, query={
-                         "q": query,
-                      "type": "post",
-              "access_token": self.license,
-                    "offset": (start-1) * min(count, max),
-                     "limit": (start-0) * min(count, max)
-            })
         if type in (NEWS, FEED, COMMENTS, LIKES, FRIENDS):
             url = FACEBOOK + (u(query) or "me").replace(FACEBOOK, "") + "/" + type.replace("news", "feed")
             url = URL(url, method=GET, query={
@@ -2667,7 +2657,7 @@ class Facebook(SearchEngine):
                     "offset": (start-1) * min(count, max),
                      "limit": (start-0) * min(count, max),
             })
-        if type in (SEARCH, NEWS, FEED):
+        if type in (NEWS, FEED):
             url.query["fields"] = ",".join((
                 "id", "from", "name", "story", "message", "link", "picture", "created_time", "shares",
                 "comments.limit(1).summary(true)",
