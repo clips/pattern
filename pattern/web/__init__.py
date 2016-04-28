@@ -1233,89 +1233,6 @@ class Google(SearchEngine):
         data = u(data.get("language")), float(data.get("confidence"))
         return data
 
-#--- YAHOO -----------------------------------------------------------------------------------------
-# Yahoo! Search is a web search engine owned by Yahoo! Inc.
-# Yahoo! BOSS ("Build Your Own Search Service") is a paid service.
-# http://developer.yahoo.com/search/
-
-YAHOO = "http://yboss.yahooapis.com/ysearch/"
-YAHOO_LICENSE = api.license["Yahoo"]
-
-class Yahoo(SearchEngine):
-
-    def __init__(self, license=None, throttle=0.5, language=None):
-        SearchEngine.__init__(self, license or YAHOO_LICENSE, throttle, language)
-
-    def _authenticate(self, url):
-        url.query.update({
-            "oauth_version": "1.0",
-            "oauth_nonce": oauth.nonce(),
-            "oauth_timestamp": oauth.timestamp(),
-            "oauth_consumer_key": self.license[0],
-            "oauth_signature_method": "HMAC-SHA1"
-        })
-        url.query["oauth_signature"] = oauth.sign(url.string.split("?")[0], url.query,
-            method = url.method,
-            secret = self.license[1]
-        )
-        return url
-
-    def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
-        """ Returns a list of results from Yahoo for the given query.
-            - type : SEARCH, IMAGE or NEWS,
-            - start: maximum 1000 results => start 1-100 with count=10, 1000/count,
-            - count: maximum 50, or 35 for images.
-            There is no daily limit, however Yahoo BOSS is a paid service.
-        """
-        if type not in (SEARCH, IMAGE, NEWS):
-            raise SearchEngineTypeError
-        if type == SEARCH:
-            url = YAHOO + "web"
-        if type == IMAGE:
-            url = YAHOO + "images"
-        if type == NEWS:
-            url = YAHOO + "news"
-        if not query or count < 1 or start < 1 or start > 1000 / count:
-            return Results(YAHOO, query, type)
-        # 1) Create request URL.
-        url = URL(url, method=GET, query={
-                 "q": query.replace(" ", "+"),
-             "start": 1 + (start-1) * count,
-             "count": min(count, type==IMAGE and 35 or 50),
-            "format": "json"
-        })
-        # 2) Restrict language.
-        if self.language is not None:
-            market = locale.market(self.language)
-            if market:
-                url.query["market"] = market.lower()
-        # 3) Authenticate.
-        url = self._authenticate(url)
-        # 4) Parse JSON response.
-        kwargs.setdefault("unicode", True)
-        kwargs.setdefault("throttle", self.throttle)
-        try:
-            data = url.download(cached=cached, **kwargs)
-        except HTTP401Authentication:
-            raise HTTP401Authentication("Yahoo %s API is a paid service" % type)
-        except HTTP403Forbidden:
-            raise SearchEngineLimitError
-        data = json.loads(data)
-        data = data.get("bossresponse") or {}
-        data = data.get({SEARCH:"web", IMAGE:"images", NEWS:"news"}[type], {})
-        results = Results(YAHOO, query, type)
-        results.total = int(data.get("totalresults") or 0)
-        for x in data.get("results", []):
-            r = Result(url=None)
-            r.url      = self.format(x.get("url", x.get("clickurl")))
-            r.title    = self.format(x.get("title"))
-            r.text     = self.format(x.get("abstract"))
-            r.date     = self.format(x.get("date"))
-            r.author   = self.format(x.get("source"))
-            r.language = self.format(x.get("language") and \
-                                     x.get("language").split(" ")[0] or self.language or "")
-            results.append(r)
-        return results
 
 #--- BING ------------------------------------------------------------------------------------------
 # Bing is a web search engine owned by Microsoft.
@@ -2866,8 +2783,6 @@ def query(string, service=GOOGLE, **kwargs):
     service = service.lower()
     if service in (GOOGLE, "google", "g"):
         engine = Google
-    if service in (YAHOO, "yahoo", "y!"):
-        engine = Yahoo
     if service in (BING, "bing"):
         engine = Bing
     if service in (DUCKDUCKGO, "duckduckgo", "ddg"):
@@ -2897,7 +2812,6 @@ def query(string, service=GOOGLE, **kwargs):
 
 SERVICES = {
     GOOGLE    : Google,
-    YAHOO     : Yahoo,
     BING      : Bing,
     TWITTER   : Twitter,
     WIKIPEDIA : Wikipedia,
@@ -2914,7 +2828,7 @@ def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, prefix
         yields "black" as the best candidate, because "black Darth Vader" is more common in search results.
         - terms   : list of search terms,
         - context : term used for sorting,
-        - service : web service name (GOOGLE, YAHOO, BING),
+        - service : web service name (GOOGLE, BING),
         - license : web service license id,
         - strict  : when True the query constructed from term + context is wrapped in quotes.
     """
