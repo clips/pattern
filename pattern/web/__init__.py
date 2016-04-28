@@ -58,7 +58,7 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
-    
+
 if sys.version > "3":
     long = int
 
@@ -68,8 +68,8 @@ if sys.version > "3":
 # assigned to these code points.
 
 GREMLINS = set([
-    0x0152, 0x0153, 0x0160, 0x0161, 0x0178, 0x017E, 0x017D, 0x0192, 0x02C6, 
-    0x02DC, 0x2013, 0x2014, 0x201A, 0x201C, 0x201D, 0x201E, 0x2018, 0x2019, 
+    0x0152, 0x0153, 0x0160, 0x0161, 0x0178, 0x017E, 0x017D, 0x0192, 0x02C6,
+    0x02DC, 0x2013, 0x2014, 0x201A, 0x201C, 0x201D, 0x201E, 0x2018, 0x2019,
     0x2020, 0x2021, 0x2022, 0x2026, 0x2030, 0x2039, 0x203A, 0x20AC, 0x2122
 ])
 
@@ -81,7 +81,7 @@ def fix(s, ignore=""):
     if not isinstance(s, unicode):
         s = s.decode("utf-8")
         # If this doesn't work,
-        # copy & paste string in a Unicode .txt, 
+        # copy & paste string in a Unicode .txt,
         # and then pass open(f).read() to fix().
     u = []
     i = 0
@@ -1048,7 +1048,7 @@ class Result(dict):
     @property
     def likes(self):
         return self.votes
-        
+
     @property
     def retweets(self):
         return self.shares
@@ -1077,7 +1077,7 @@ class Result(dict):
 
     def setdefault(self, k, v=None):
         return dict.setdefault(self, u(k), self._format(v))
-        
+
     def update(self, *args, **kwargs):
         dict.update(self, [(u(k), self._format(v)) for k, v in dict(*args, **kwargs).items()])
 
@@ -1638,12 +1638,12 @@ class Twitter(SearchEngine):
         # If search() is called again with start+1, start from this id.
         if isinstance(start, (int, long, float)):
             k = (query, kwargs.get("geo"), kwargs.get("date"), int(start), count)
-            if results:  
-                self._pagination[k] = str(int(results[-1].id) - 1) 
+            if results:
+                self._pagination[k] = str(int(results[-1].id) - 1)
             else:
                 self._pagination[k] = id
         return results
-        
+
     def profile(self, query, start=1, count=10, **kwargs):
         """ Returns a list of results for the given author id, alias or search query.
         """
@@ -1869,13 +1869,13 @@ class MediaWiki(SearchEngine):
             start = data.get("query-continue", {}).get("allpages", {})
             start = start.get("apcontinue", start.get("apfrom", -1))
         raise StopIteration
-    
+
     # Backwards compatibility.
     list = index
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         """ With type=SEARCH, returns a MediaWikiArticle for the given query (case-sensitive).
-            With type=ALL, returns a list of results. 
+            With type=ALL, returns a list of results.
             Each result.title is the title of an article that contains the given query.
         """
         if type not in (SEARCH, ALL, "*"):
@@ -2063,7 +2063,7 @@ class MediaWikiArticle(object):
     @property
     def html(self):
         return self.source
-        
+
     @property
     def src(self):
         return self.source
@@ -2100,7 +2100,7 @@ class MediaWikiSection(object):
     @property
     def html(self):
         return self.source
-        
+
     @property
     def src(self):
         return self.source
@@ -2142,7 +2142,7 @@ class MediaWikiSection(object):
                 p = self.article._plaintext
                 f = find_between
                 for s in f(b[0], b[1], self.source):
-                    t = self.article.parser.MediaWikiTable(self, 
+                    t = self.article.parser.MediaWikiTable(self,
                          title = p((f(r"<caption.*?>", "</caption>", s) + [""])[0]),
                         source = b[0] + s + b[1])
                     # 1) Parse <td> and <th> content and format it as plain text.
@@ -2186,7 +2186,7 @@ class MediaWikiTable(object):
     @property
     def html(self):
         return self.source
-        
+
     @property
     def src(self):
         return self.source
@@ -2493,7 +2493,7 @@ class DBPedia(SearchEngine):
 # Flickr is a popular image hosting and video hosting website.
 # http://www.flickr.com/services/api/
 
-FLICKR = "http://api.flickr.com/services/rest/"
+FLICKR = "https://api.flickr.com/services/rest/"
 FLICKR_LICENSE = api.license["Flickr"]
 
 INTERESTING = "interesting"
@@ -2669,8 +2669,8 @@ class Facebook(SearchEngine):
             })
         if type in (SEARCH, NEWS, FEED):
             url.query["fields"] = ",".join((
-                "id", "from", "name", "story", "message", "link", "picture", "created_time", "shares", 
-                "comments.limit(1).summary(true)", 
+                "id", "from", "name", "story", "message", "link", "picture", "created_time", "shares",
+                "comments.limit(1).summary(true)",
                    "likes.limit(1).summary(true)"
             ))
         # 2) Parse JSON response.
@@ -2737,7 +2737,7 @@ class Facebook(SearchEngine):
             locale = data.get("hometown", {}).get("name", ""),
              votes = int(data.get("likes", 0)) # (for product pages)
         )
-        
+
     page = profile
 
 #--- PRODUCT REVIEWS -------------------------------------------------------------------------------
@@ -3021,7 +3021,7 @@ class Node(object):
         """ Executes the visit function on this node and each of its child nodes.
         """
         visit(self); [node.traverse(visit) for node in self.children]
-        
+
     def remove(self, child):
         """ Removes the given child node (and all nested nodes).
         """
@@ -3043,7 +3043,7 @@ class Node(object):
         return bytestring(self.__unicode__())
     def __unicode__(self):
         return u(self._p)
-        
+
     def __call__(self, *args, **kwargs):
         pass
 
@@ -3235,7 +3235,7 @@ DOM = Document
 
 def _encode_space(s):
     return s.replace(" ", "<!space!>")
-    
+
 def _decode_space(s):
     return s.replace("<!space!>", " ")
 
@@ -3253,11 +3253,11 @@ class Selector(object):
         s = s.replace(".", " .")        # .class
         s = s.replace(":", " :")        # :pseudo-element
         s = s.replace("[", " [")        # [attribute="value"]
-        s = re.sub(r"\[.*?\]", 
-            lambda m: re.sub(r" (\#|\.|\:)", "\\1", m.group(0)), s)    
-        s = re.sub(r"\[.*?\]", 
+        s = re.sub(r"\[.*?\]",
+            lambda m: re.sub(r" (\#|\.|\:)", "\\1", m.group(0)), s)
+        s = re.sub(r"\[.*?\]",
             lambda m: _encode_space(m.group(0)), s)
-        s = re.sub(r":contains\(.*?\)", 
+        s = re.sub(r":contains\(.*?\)",
             lambda m: _encode_space(m.group(0)), s)
         s = s.split(" ")
         self.tag, self.id, self.classes, self.pseudo, self.attributes = (
@@ -3297,7 +3297,7 @@ class Selector(object):
             for e in e.children:
                 if isinstance(e, Element):
                     return e
-                
+
     def _next_sibling(self, e):
         """ Returns the first next sibling Element of the given element.
         """
@@ -3305,7 +3305,7 @@ class Selector(object):
             e = e.next
             if isinstance(e, Element):
                 return e
-                
+
     def _previous_sibling(self, e):
         """ Returns the last previous sibling Element of the given element.
         """
@@ -3313,7 +3313,7 @@ class Selector(object):
             e = e.previous
             if isinstance(e, Element):
                 return e
-                
+
     def _contains(self, e, s):
         """ Returns True if string s occurs in the given element (case-insensitive).
         """
@@ -3383,9 +3383,9 @@ class SelectorChain(list):
             s = re.sub(r" *\> *", " >", s)
             s = re.sub(r" *\< *", " <", s)
             s = re.sub(r" *\+ *", " +", s)
-            s = re.sub(r"\[.*?\]", 
+            s = re.sub(r"\[.*?\]",
                 lambda m: _encode_space(m.group(0)), s)
-            s = re.sub(r":contains\(.*?\)", 
+            s = re.sub(r":contains\(.*?\)",
                 lambda m: _encode_space(m.group(0)), s)
             self.append([])
             for s in s.split(" "):
@@ -3739,7 +3739,7 @@ class DocumentParserError(Exception):
     pass
 
 class DocumentParser(object):
-    
+
     def __init__(self, path, *args, **kwargs):
         """ Parses a text document (e.g., .pdf or .docx),
             given as a file path or a string.
@@ -3760,7 +3760,7 @@ class DocumentParser(object):
         """ Returns a plaintext Unicode string parsed from the given document.
         """
         return plaintext(decode_utf8(self.open(path).read()))
-        
+
     @property
     def string(self):
         return self.content
@@ -3810,7 +3810,7 @@ class DOCXError(DocumentParserError):
     pass
 
 class DOCX(DocumentParser):
-    
+
     def _parse(self, path, *args, **kwargs):
         from docx.docx import opendocx
         from docx.docx import getdocumenttext
@@ -3830,7 +3830,7 @@ def parsepdf(path, *args, **kwargs):
     """ Returns the content as a Unicode string from the given .pdf file.
     """
     return PDF(path, *args, **kwargs).content
-    
+
 def parsedocx(path, *args, **kwargs):
     """ Returns the content as a Unicode string from the given .docx file.
     """
@@ -3853,7 +3853,7 @@ def parsedoc(path, format=None):
             return parsehtml(path)
     # Brute-force approach if the format is unknown.
     for f in (parsepdf, parsedocx, parsehtml):
-        try: 
+        try:
             return f(path)
         except:
             pass
