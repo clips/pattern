@@ -1700,6 +1700,8 @@ class Twitter(SearchEngine):
         """
         url = URL(TWITTER_STREAM)
         url.query["track"] = query
+        # Restrict language.
+        url.query["language"] = self.language or ""
         url = self._authenticate(url)
         return TwitterStream(url, delimiter="\n", format=self.format, **kwargs)
 
