@@ -1,6 +1,10 @@
 #### PATTERN #######################################################################################
 
 import sys
+
+if sys.version_info[0] != 2:
+    raise Exception("Wrong version of Python, pattern only supports Python 2")
+
 import os
 
 from setuptools import setup
@@ -37,8 +41,8 @@ if sys.argv[-1] == "zip":
                 x.write(d.join(s))
                 x.close()
     z.close()
-    print n
-    print hashlib.sha256(open(z.filename).read()).hexdigest()
+    print (n)
+    print (hashlib.sha256(open(z.filename).read()).hexdigest())
     sys.exit(0)
 
 #---------------------------------------------------------------------------------------------------
@@ -125,7 +129,7 @@ setup(
         "Natural Language :: Spanish",
         "Operating System :: OS Independent",
         "Programming Language :: JavaScript",
-        "Programming Language :: Python",
+        "Programming Language :: Python :: 2 :: Only",
         "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
         "Topic :: Multimedia :: Graphics",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
