@@ -2,8 +2,11 @@
 
 import sys
 
+if sys.version_info[:2] < (2, 5):
+    raise RuntimeError("Python 2.5+ required to use pattern")
+
 if sys.version_info[0] != 2:
-    raise Exception("Wrong version of Python, pattern only supports Python 2")
+    raise RuntimeError("pattern only supports Python 2")
 
 import os
 
