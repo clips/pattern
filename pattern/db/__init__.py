@@ -7,6 +7,8 @@
 
 ####################################################################################################
 
+from __future__ import print_function
+
 import os
 import sys
 import inspect
@@ -46,6 +48,10 @@ except:
     
 if sys.version > "3":
     long = int
+    basestring = str
+    unicode = str
+    xrange = range
+    unichr = chr
 
 MYSQL  = "mysql"
 SQLITE = "sqlite"
@@ -2625,4 +2631,4 @@ def pprint(datasheet, truncate=40, padding=" ", fill="."):
                 s += ((k==0 or len(lines[k]) > 0) and fill or " ") * (w[j] - len(lines[k])) 
                 s += padding
                 columns.append(s)
-            print(" ".join(columns))
+            print(" ".join(columns).encode("utf-8"))

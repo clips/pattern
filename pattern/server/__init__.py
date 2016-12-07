@@ -8,6 +8,7 @@
 ####################################################################################################
 
 from __future__ import with_statement
+from __future__ import absolute_import
 
 import __main__
 import sys
@@ -45,6 +46,9 @@ try: # Python 2.x vs 3.x
 except:
     import pickle
 
+import cherrypy as cp
+import simplejson
+
 try:
     # Folder that contains pattern.server.
     MODULE = os.path.dirname(os.path.realpath(__file__))
@@ -61,21 +65,6 @@ try:
 except:
     SCRIPT = os.getcwd()
 
-try:
-    # Import from python2.x/site-packages/cherrypy
-    import cherrypy; cp=cherrypy
-except:
-    # Import from pattern/server/cherrypy/cherrypy
-    # Bundled package is "hidden" in a non-package folder,
-    # otherwise it conflicts with site-packages/cherrypy.
-    sys.path.insert(0, os.path.join(MODULE, "cherrypy"))
-    import cherrypy; cp=cherrypy
-
-try: import json # Python 2.6+
-except:
-    try: from pattern.web import json # simplejson
-    except:
-        json = None
 
 #### STRING FUNCTIONS ##############################################################################
 

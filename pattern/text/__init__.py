@@ -7,6 +7,8 @@
 
 ####################################################################################################
 
+from __future__ import print_function
+
 import os
 import sys
 import re
@@ -25,6 +27,12 @@ except:
 
 from pattern.text.tree import Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table
 from pattern.text.tree import SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
+
+try:
+    unicode
+except NameError:
+    unicode = str
+    basestring = str
 
 DEFAULT = "default"
 
@@ -230,7 +238,7 @@ class lazyset(set):
         """ If the list is empty, calls lazylist.load().
             Replaces lazylist.method() with list.method() and calls it.
         """
-        print "!"
+        print("!")
         if set.__len__(self) == 0:
             self.load()
             setattr(self, method, types.MethodType(getattr(set, method), self))
@@ -431,7 +439,7 @@ class Model(object):
         n = ("", "") if not n else (n[0] or "", n[1] or "")
         v = {}
         f(v,  "b", "b")         # Bias.
-        f(v,  "h", token[0])    # Capitalization.
+        f(v,  "h", token[:1])    # Capitalization.
         f(v,  "w", token[-6:] if token not in self.known or token in self.unknown else "")
         f(v,  "x", token[-3:])  # Word suffix.
         f(v, "-x", p[0][-3:])   # Word suffix left.

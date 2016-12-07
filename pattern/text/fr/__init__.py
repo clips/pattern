@@ -64,6 +64,11 @@ from pattern.text.fr.inflect import (
 # Import all submodules.
 from pattern.text.fr import inflect
 
+try:
+    unicode
+except NameError:
+    unicode = str
+
 sys.path.pop(0)
 
 #--- FRENCH PARSER ---------------------------------------------------------------------------------
@@ -110,9 +115,10 @@ replacements = {
   "lorsqu'": "lorsqu' ",
   "puisqu'": "puisqu' ",
     # Same rule for Unicode apostrophe, see also Parser.find_tokens():
-    ur"(l|c|d|j|m|n|qu|s|t|jusqu|lorsqu|puisqu)’": u"\\1&rsquo; "
+    r"(l|c|d|j|m|n|qu|s|t|jusqu|lorsqu|puisqu)’": u"\\1&rsquo; "
 }
-replacements.update(((k.upper(), v.upper()) for k, v in replacements.items()))
+# As a generator expression this is a RuntimeError in python 3!
+replacements.update([(k.upper(), v.upper()) for k, v in replacements.items()])
 
 def find_lemmata(tokens):
     """ Annotates the tokens with lemmata for plural nouns and conjugated verbs,

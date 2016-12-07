@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import Twitter
@@ -32,7 +33,7 @@ g = Graph()
 for A, B in comparisons:
     e = g.add_edge(B, A) # "A is the new B": A <= B
     e.weight += 0.1
-    print B, "=>", A
+    print(("%s => %s" % (B, A)).encode('utf-8'))
 
 # Not all nodes will be connected, there will be multiple subgraphs.
 # Simply take the largest subgraph for our visualization.

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import Wikipedia
@@ -14,12 +15,12 @@ engine = Wikipedia(language="en")
 # instead of a list of results.
 article = engine.search("alice in wonderland", cached=True, timeout=30)
 
-print article.title               # Article title (may differ from the search query).
-print
-print article.languages["fr"]     # Article in French, can be retrieved with Wikipedia(language="fr").
-print article.links[:10], "..."   # List of linked Wikipedia articles.
-print article.external[:5], "..." # List of external URL's.
-print
+print(article.title)               # Article title (may differ from the search query).
+print()
+print(article.languages["fr"])     # Article in French, can be retrieved with Wikipedia(language="fr").
+print(article.links[:10], "...")   # List of linked Wikipedia articles.
+print(article.external[:5], "...") # List of external URL's.
+print()
 
 #print article.source # The full article content as HTML.
 #print article.string # The full article content, plain text with HTML tags stripped.
@@ -28,8 +29,8 @@ print
 # WikipediaArticle.sections is a list of WikipediaSection objects.
 # Each section has a title + content and can have a linked parent section or child sections.
 for s in article.sections:
-    print s.title.upper()
-    print 
-    print s.content # = ArticleSection.string, minus the title.
-    print
+    print(s.title.upper())
+    print() 
+    print(s.content.encode("utf-8")) # = ArticleSection.string, minus the title.
+    print()
     

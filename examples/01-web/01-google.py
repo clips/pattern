@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import Google, plaintext
@@ -36,7 +37,7 @@ q = "as * as a *"
 # Google is very fast but you can only get up to 100 (10x10) results per query.
 for i in range(1, 2):
     for result in engine.search(q, start=i, count=10, type=SEARCH, cached=True):
-        print plaintext(result.text) # plaintext() removes all HTML formatting.
-        print result.url
-        print result.date
-        print
+        print(plaintext(result.text.encode("utf-8"))) # plaintext() removes all HTML formatting.
+        print(result.url)
+        print(result.date)
+        print()

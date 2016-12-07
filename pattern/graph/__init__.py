@@ -24,6 +24,8 @@ except:
     
 if sys.version > "3":
     long = int
+    unicode = str
+    basestring = str
 
 # float("inf") doesn't work on windows.
 INFINITE = 1e20
@@ -821,7 +823,7 @@ def adjacency(graph, directed=False, reversed=False, stochastic=False, heuristic
     # Bound method objects are transient, 
     # i.e., id(object.method) returns a new value each time.
     if graph._adjacency is not None and \
-       graph._adjacency[1:] == (directed, reversed, stochastic, heuristic and heuristic.func_code):
+       graph._adjacency[1:] == (directed, reversed, stochastic, heuristic and heuristic.__code__):
         return graph._adjacency[0]
     map = {}
     for n in graph.nodes:
@@ -839,7 +841,7 @@ def adjacency(graph, directed=False, reversed=False, stochastic=False, heuristic
             for id2 in map[id1]: 
                 map[id1][id2] /= n
     # Cache the adjacency map: this makes dijkstra_shortest_path() 2x faster in repeated use.
-    graph._adjacency = (map, directed, reversed, stochastic, heuristic and heuristic.func_code)
+    graph._adjacency = (map, directed, reversed, stochastic, heuristic and heuristic.__code__)
     return map
 
 def dijkstra_shortest_path(graph, id1, id2, heuristic=None, directed=False):

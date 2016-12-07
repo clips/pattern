@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.search import match
@@ -15,8 +16,8 @@ from pattern.en     import parsetree
 
 s = "The big black cat"
 t = parsetree(s)
-print match("{JJ?+} NN", t).group(1)
-print
+print(match("{JJ?+} NN", t).group(1))
+print()
 
 # Note the { } wrapper, indicating a group.
 # The group can be retrieved from the match as a list of words.
@@ -34,9 +35,9 @@ t = parsetree(s)
 m = match("NP VP PP NP", t)
 for w in m:
     if m.constraint(w).index == 2:
-        print "This is the PP:", w
+        print("This is the PP:", w)
     if m.constraint(w).index == 3:
-        print "This is the NP:", w
+        print("This is the NP:", w)
         
 # In other words, iterate over each word in the match,
 # checking which constraint it matched and filtering out what we need.
@@ -44,10 +45,10 @@ for w in m:
 # It is easier with a group:
 
 m = match("NP VP {PP} {NP}", t)
-print
-print "This is the PP:", m.group(1)
-print "This is the NP:", m.group(2)
-print
+print()
+print("This is the PP:", m.group(1))
+print("This is the NP:", m.group(2))
+print()
 
 # Match.group(0) refers to the full search pattern:
-print m.group(0)
+print(m.group(0))

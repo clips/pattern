@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.graph import Graph, CSS, CANVAS
@@ -45,4 +46,4 @@ g.add_edge("cat", "dog")
 #import cgitb; cgitb.enable() # Debug mode.
 #print "Content-type: text/html"
 
-print webpage(g, width=500, height=500)
+print(webpage(g, width=500, height=500))

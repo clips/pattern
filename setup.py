@@ -1,3 +1,4 @@
+from __future__ import print_function
 #### PATTERN #######################################################################################
 
 import sys
@@ -37,9 +38,17 @@ if sys.argv[-1] == "zip":
                 x.write(d.join(s))
                 x.close()
     z.close()
-    print n
-    print hashlib.sha256(open(z.filename).read()).hexdigest()
+    print(n)
+    print(hashlib.sha256(open(z.filename).read()).hexdigest())
     sys.exit(0)
+
+install_requires = ["beautifulsoup4",
+                    "cherrypy",
+                    "docx",
+                    "feedparser",
+                    "pdfminer" if sys.version_info[0] == 2 else "pdfminer3k",
+                    "simplejson"]
+
 
 #---------------------------------------------------------------------------------------------------
 # "python setup.py install" will install /pattern in /site-packages.
@@ -56,14 +65,9 @@ setup(
         "pattern",
         "pattern.web",
         "pattern.web.cache",
-        "pattern.web.docx",
-        "pattern.web.feed",
         "pattern.web.imap",
-        "pattern.web.json",
         "pattern.web.locale",
         "pattern.web.oauth",
-        "pattern.web.pdf",
-        "pattern.web.soup",
         "pattern.db",
         "pattern.text",
         "pattern.text.de",
@@ -83,17 +87,12 @@ setup(
     package_data = {
         "pattern"                 : ["*.js"],
         "pattern.web.cache"       : ["tmp/*"],
-        "pattern.web.docx"        : ["*"],
-        "pattern.web.feed"        : ["*"],
-        "pattern.web.json"        : ["*"],
-        "pattern.web.locale"      : ["*"],
-        "pattern.web.pdf"         : ["*.txt", "cmap/*"],
-        "pattern.web.soup"        : ["*"],
+        "pattern.web.locale"      : ["__init__.py"],
         "pattern.text.de"         : ["*.txt", "*.xml"],
         "pattern.text.en"         : ["*.txt", "*.xml", "*.slp"],
         "pattern.text.en.wordlist": ["*.txt"],
         "pattern.text.en.wordnet" : ["*.txt", "dict/*"],
-        "pattern.text.en.wordnet.pywordnet": ["*"],
+        "pattern.text.en.wordnet.pywordnet": ["*.py"],
         "pattern.text.es"         : ["*.txt", "*.xml"],
         "pattern.text.fr"         : ["*.txt", "*.xml"],
         "pattern.text.it"         : ["*.txt", "*.xml"],
@@ -101,9 +100,7 @@ setup(
         "pattern.vector"          : ["*.txt"],
         "pattern.vector.svm"      : ["*.txt", "libsvm-3.11/*", "libsvm-3.17/*", "liblinear-1.93/*"],
         "pattern.graph"           : ["*.js", "*.csv"],
-        "pattern.server"          : ["static/*", "cherrypy/cherrypy/*.*", 
-                                                 "cherrypy/cherrypy/*/*", 
-                                                 "cherrypy/cherrypy/cherryd"],
+        "pattern.server"          : ["static/*"],
     },
     py_modules = [
         "pattern.metrics",
@@ -134,5 +131,6 @@ setup(
         "Topic :: Text Processing :: Linguistic",
         "Topic :: Text Processing :: Markup :: HTML"
     ],
-    zip_safe = False
+    zip_safe = False,
+    install_requires = install_requires
 )

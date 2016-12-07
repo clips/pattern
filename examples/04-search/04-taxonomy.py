@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.search import search, taxonomy, Classifier
@@ -13,27 +14,27 @@ from pattern.en     import parsetree
 for flower in ("rose", "lily", "daisy", "daffodil", "begonia"):
     taxonomy.append(flower, type="flower")
     
-print taxonomy.children("flower")
-print taxonomy.parents("rose")
-print taxonomy.classify("rose") # Yields the most recently added parent.
-print
+print(taxonomy.children("flower"))
+print(taxonomy.parents("rose"))
+print(taxonomy.classify("rose")) # Yields the most recently added parent.
+print()
     
 # Taxonomy terms can be included in a pattern by using uppercase:
 t = parsetree("A field of white daffodils.", lemmata=True)
 m = search("FLOWER", t)
-print t
-print m
-print
+print(t)
+print(m)
+print()
 
 # Another example:
 taxonomy.append("chicken", type="food")
 taxonomy.append("chicken", type="bird")
 taxonomy.append("penguin", type="bird")
 taxonomy.append("bird", type="animal")
-print taxonomy.parents("chicken")
-print taxonomy.children("animal", recursive=True)
-print search("FOOD", "I'm eating chicken.")
-print
+print(taxonomy.parents("chicken"))
+print(taxonomy.children("animal", recursive=True))
+print(search("FOOD", "I'm eating chicken."))
+print()
 
 # The advantage is that the taxonomy can hold an entire hierarchy.
 # For example, "flower" could be classified as "organism".
@@ -48,10 +49,10 @@ taxonomy.append("ubuntu", type="operating system")
 
 t = parsetree("Which do you like more, Windows Vista, or Ubuntu?")
 m = search("OPERATING_SYSTEM", t)
-print t
-print m
-print m[0].constituents()
-print
+print(t)
+print(m)
+print(m[0].constituents())
+print()
 
 # Taxonomy entries cannot have wildcards (*),
 # but you can use a classifier to simulate this.
@@ -67,8 +68,8 @@ taxonomy.classifiers.append(c)
 
 t = parsetree("I like Mac OS X 10.5 better than Windows XP or Ubuntu.")
 m = search("OPERATING_SYSTEM", t)
-print t
-print m
-print m[0].constituents()
-print m[1].constituents()
-print
+print(t)
+print(m)
+print(m[0].constituents())
+print(m[1].constituents())
+print()

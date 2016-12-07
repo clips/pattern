@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.search import search, match
@@ -19,14 +20,14 @@ for s in (
     if m:
         # Constituents for the given constraint indices:
         # 0 = NP, 2 = ADJP|ADVP, 4 = NP
-        print m[0].constituents(constraint=[0,2,4])
-        print
+        print(m[0].constituents(constraint=[0,2,4]))
+        print()
         
         
 p = "NP be ADJP|ADVP than NP"
 t = parsetree("the turtle was faster than the hare", lemmata=True)
 m = match(p, t)
-print t
-print
+print(t)
+print()
 for w in m.words:
-    print w, " \t=>", m.constraint(w)
+    print(w, " \t=>", m.constraint(w))

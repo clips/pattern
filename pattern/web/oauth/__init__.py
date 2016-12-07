@@ -9,6 +9,7 @@
 # Naive OAuth implementation for pattern.web.Yahoo and Yahoo! BOSS v2.
 
 import urllib
+
 import hmac
 import time
 import random
@@ -33,6 +34,11 @@ _diacritics = {
     "n": ("ñ",),
     "z": ("ž",)
 }
+
+try:
+    unicode
+except NameError:
+    unicode = str
 
 ####################################################################################################
 

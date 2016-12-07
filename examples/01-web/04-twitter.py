@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import Twitter, hashtags
@@ -26,14 +27,14 @@ engine = Twitter(language="en")
 # because a query is instant when it is executed the second time.
 prev = None
 for i in range(2):
-    print i
+    print(i)
     for tweet in engine.search("is cooler than", start=prev, count=25, cached=False):
-        print
-        print tweet.text
-        print tweet.author
-        print tweet.date
-        print hashtags(tweet.text) # Keywords in tweets start with a "#".
-        print
+        print()
+        print(tweet.text.encode("utf-8"))
+        print(tweet.author)
+        print(tweet.date)
+        print(hashtags(tweet.text)) # Keywords in tweets start with a "#".
+        print()
         # Only add the tweet to the table if it doesn't already exists.
         if len(table) == 0 or tweet.id not in index:
             table.append([tweet.id, tweet.text])
@@ -44,8 +45,8 @@ for i in range(2):
 # Create a .csv in pattern/examples/01-web/
 table.save(pd("cool.csv"))
 
-print "Total results:", len(table)
-print
+print("Total results:", len(table))
+print()
 
 # Print all the rows in the table.
 # Since it is stored as a CSV-file it grows comfortably each time the script runs.

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.graph import Graph, CENTRALITY
@@ -18,10 +19,10 @@ g.add_edge("insect", "ant") # Ants are insects.
 g.add_edge("ant", "tree")   # Ants crawl on trees.
 
 # From tree => fly: tree => ant => bird => fly
-print g.shortest_path(g.node("tree"), g.node("fly"))
-print g.shortest_path(g.node("nest"), g.node("ant"))
-print
+print(g.shortest_path(g.node("tree"), g.node("fly")))
+print(g.shortest_path(g.node("nest"), g.node("ant")))
+print()
 
 # Which nodes get the most traffic?
 for n in sorted(g.nodes, key=lambda n: n.centrality, reverse=True):
-    print '%.2f' % n.centrality, n
+    print('%.2f' % n.centrality, n)

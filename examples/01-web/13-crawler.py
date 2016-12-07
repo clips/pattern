@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import Crawler, DEPTH, BREADTH, FIFO, LIFO
@@ -13,10 +14,10 @@ from pattern.web import Crawler, DEPTH, BREADTH, FIFO, LIFO
 class SimpleCrawler1(Crawler):
     
     def visit(self, link, source=None):
-        print "visiting:", link.url, "from:", link.referrer
+        print("visiting:", link.url, "from:", link.referrer)
         
     def fail(self, link):
-        print "failed:", link.url
+        print("failed:", link.url)
 
 # Create a new crawler.
 # 1) The links parameter is a list of URL's to visit.
@@ -28,7 +29,7 @@ class SimpleCrawler1(Crawler):
 
 crawler1 = SimpleCrawler1(links=["http://www.clips.ua.ac.be/pages/pattern/"], domains=["ua.ac.be"], delay=0.0)
 
-print "CRAWLER 1 " + "-" * 50
+print("CRAWLER 1 " + "-" * 50)
 while len(crawler1.visited) < 5: # Crawler.visited is a dictionary of all URL's visited so far.
     # The Crawler.crawl() method has the same optional parameters as URL.download(),
     # for example: cached=True, proxy=("proxy.com", "https"), ...
@@ -42,11 +43,11 @@ while len(crawler1.visited) < 5: # Crawler.visited is a dictionary of all URL's 
 
 crawler2 = SimpleCrawler1(links=["http://www.clips.ua.ac.be/pages/pattern/"], domains=["ua.ac.be"], delay=0.1)
 
-print
-print "CRAWLER 2 " + "-" * 50
+print()
+print("CRAWLER 2 " + "-" * 50)
 while True:
     crawler2.crawl(cached=False)
-    print "wait..."
+    print("wait...")
     # Of course we don't want this example to run forever,
     # so we still add a stop condition:
     if len(crawler2.visited) > 2:
@@ -62,15 +63,15 @@ while True:
 
 crawler3 = SimpleCrawler1(links=["http://www.clips.ua.ac.be/pages/pattern/"], delay=0.0)
 
-print
-print "CRAWLER 3 " + "-" * 50
+print()
+print("CRAWLER 3 " + "-" * 50)
 while len(crawler3.visited) < 3:
     crawler3.crawl(method=DEPTH)
     
 crawler4 = SimpleCrawler1(links=["http://www.clips.ua.ac.be/pages/pattern/"], delay=0.0)
 
-print
-print "CRAWLER 4 " + "-" * 50
+print()
+print("CRAWLER 4 " + "-" * 50)
 while len(crawler4.visited) < 3:
     crawler4.crawl(method=BREADTH)
 
@@ -82,8 +83,8 @@ while len(crawler4.visited) < 3:
 
 crawler5 = SimpleCrawler1(links=["http://www.clips.ua.ac.be/pages/pattern/"], delay=0.1)
 
-print
-print "CRAWLER 5 " + "-" * 50
+print()
+print("CRAWLER 5 " + "-" * 50)
 while len(crawler5.visited) < 4:
     crawler5.crawl(method=DEPTH)
 
@@ -102,7 +103,7 @@ while len(crawler5.visited) < 4:
 class SimpleCrawler2(Crawler):
     
     def visit(self, link, source=None):
-        print "visiting:", link.url, "from:", link.referrer
+        print("visiting:", link.url, "from:", link.referrer)
     
     def priority(self, link, method=DEPTH):
         if "?" in link.url:
@@ -119,8 +120,8 @@ class SimpleCrawler2(Crawler):
 # you'll notice that the last external link at the bottom of the page is now visited first.
 crawler6 = SimpleCrawler2(links=["http://www.clips.ua.ac.be/pages/pattern/"], delay=0.1, sort=LIFO)
 
-print
-print "CRAWLER 6 " + "-" * 50
+print()
+print("CRAWLER 6 " + "-" * 50)
 while len(crawler6.visited) < 4:
     crawler6.crawl(method=BREADTH)
 

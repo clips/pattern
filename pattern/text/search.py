@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 #### PATTERN | TEXT | PATTERN MATCHING #############################################################
 # -*- coding: utf-8 -*-
 # Copyright (c) 2010 University of Antwerp, Belgium
@@ -9,6 +10,11 @@
 
 import re
 import itertools
+
+try:
+    basestring
+except NameError:
+    basestring = str
 
 #--- TEXT, SENTENCE AND WORD -----------------------------------------------------------------------
 # The search() and match() functions work on Text, Sentence and Word objects (see pattern.text.tree),
@@ -245,7 +251,11 @@ class odict(dict):
     def iterkeys(self):
         return reversed(self._o)
     def itervalues(self):
-        return itertools.imap(self.__getitem__, reversed(self._o))
+        try:
+            from itertools import imap
+        except ImportError:
+            imap = map
+        return imap(self.__getitem__, reversed(self._o))
     def iteritems(self):
         return iter(zip(self.iterkeys(), self.itervalues()))
 
@@ -414,7 +424,7 @@ class WordNetClassifier(Classifier):
         if wordnet is None:
             try: from pattern.en import wordnet
             except:
-                try: from en import wordnet
+                try: from .en import wordnet
                 except:
                     pass
         Classifier.__init__(self, self._parents, self._children)

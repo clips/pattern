@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-import unittest
+
+from __future__ import print_function
+
+from util import *
 
 from pattern import graph
 from pattern.graph import commonsense
@@ -23,7 +25,7 @@ class TestUtilityFunctions(unittest.TestCase):
         for o1 in (
           None, True, False, 
           "a", u"a", 
-          1, 1.0, 1L, complex(1), 
+          1, 1.0, 1, complex(1), 
           list([1]), tuple([1]), set([1]), frozenset([1]),
           dict(a=1), {frozenset(["a"]):1}, {MyObject(1):1}, 
           MyObject(1)):

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.db import Datasheet, INTEGER, STRING
@@ -27,10 +28,10 @@ ds = Datasheet(rows=[
     ("type", STRING)
 ])
 
-print ds.rows[0]    # A list of rows.
-print ds.columns[1] # A list of columns, where each column is a list of values.
-print ds.name
-print
+print(ds.rows[0])    # A list of rows.
+print(ds.columns[1]) # A list of columns, where each column is a list of values.
+print(ds.name)
+print()
 
 # Columns can be manipulated directly like any other Python list.
 # This can be slow for large tables. If you need a fast way to do matrix math,
@@ -50,5 +51,5 @@ ds.save("food.txt", headers=True)
 ds = Datasheet.load("food.txt", headers=True)
 
 pprint(ds, truncate=50, padding=" ", fill=".")
-print
-print ds.fields
+print()
+print(ds.fields)
