@@ -58515,7 +58515,7 @@ mamuts NCP
 mamá NCS
 mamífero NCS
 mamíferos NCP
-man VMI
+#man VMI
 mana VMI
 manaba VMI
 manada NCS
