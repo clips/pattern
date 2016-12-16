@@ -171,8 +171,8 @@ def singularize(word, pos=NOUN, custom={}):
         return w
     # hombres => hombre
     # chismes => chisme
-    # padres => padre
-    if w.endswith("es") and w[:-2].endswith(("br", "i", "j", "t", "zn", "dr", "sm")):
+    # padres => padre, noche, golpe, vientre
+    if w.endswith("es") and w[:-2].endswith(("br", "i", "j", "t", "zn", "dr", "sm", "lp", "ch", "tr")):
         return w[:-1]
     # gestiones => gestión
     for a, b in (
