@@ -19,6 +19,7 @@
 
 import os
 import sys
+import pdb
 import re
 
 try:
@@ -158,6 +159,8 @@ def pluralize(word, pos=NOUN, custom={}):
 
 #### SINGULARIZE ###################################################################################
 
+words_that_end_in_s = [u'país', 'dios', 'gracias', u'interés', u'adiós', u'francés', 'mes', 'antes', 'martes', 'viernes', 'tos', u'feligrés']
+
 def singularize(word, pos=NOUN, custom={}):
     if word in custom:
         return custom[word]
@@ -169,13 +172,17 @@ def singularize(word, pos=NOUN, custom={}):
         if w in ("una", "unas", "unos"):
             return "un"
         return w
+
     # hombres => hombre
     # chismes => chisme
-    # padres => padre, noche, golpe, vientre
-    if w.endswith("es") and w[:-2].endswith(("br", "i", "j", "t", "zn", "dr", "sm", "lp", "ch", "tr")):
+    # padres => padre, noche, golpe, vientre, terrible/confiabl/ mes, llave, chicles, alcalde
+    if w.endswith("s") and word in words_that_end_in_s:
+        return w
+    elif w.endswith("es") and w[:-2] in words_that_end_in_s:
+        return w[:-2]
+    elif w.endswith("es") and w[:-2].endswith(("br", "i", "j", "v", "es", "t", "zn", "dr", "sm", "lp", "ch", "tr", "bl", "cl", "ld", "s", "gl", "fr", "ll")):
         return w[:-1]
-    elif w.endswith("es") and w[:-1].endswith(("s")):
-        return w[:-1]
+
     # gestiones => gestión
     for a, b in (
       ("anes", u"án"),
@@ -201,7 +208,7 @@ def singularize(word, pos=NOUN, custom={}):
     return w
 
 #### VERB CONJUGATION ##############################################################################
-
+# What if we add in all of tener?
 verb_irregular_inflections = [
     (u"yéramos", "ir"   ), ( "cisteis", "cer"   ), ( "tuviera", "tener"), ( "ndieron", "nder" ),
     ( "ndiendo", "nder" ), (u"tándose", "tarse" ), ( "ndieran", "nder" ), ( "ndieras", "nder" ),
@@ -235,6 +242,7 @@ verb_irregular_inflections = [
     (   u"tían", "tir"  ), (    "pare", "parar" ), (    "gres", "grar" ), (    "gren", "grar" ),
     (    "tuvo", "tener"), (   u"uían", "uir"   ), (   u"uías", "uir"  ), (    "quen", "car"  ),
     (    "ques", "car"  ), (   u"téis", "tar"   ), (    "iero", "erir" ), (    "iere", "erir" ),
+    (    "ieres", "erir" ),(    "ieren", "erir" ),
     (    "uche", "uchar"), (    "tuve", "tener" ), (    "inen", "inar" ), (    "pire", "pirar"),
     (   u"reía", "reir" ), (    "uste", "ustar" ), (   u"ibió", "ibir" ), (    "duce", "ducir"),
     (    "icen", "izar" ), (    "ices", "izar"  ), (    "ines", "inar" ), (    "ires", "irar" ),
