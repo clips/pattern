@@ -13,6 +13,7 @@ import re
 import string
 import types
 import codecs
+import pdb
 
 from xml.etree import cElementTree
 from itertools import chain

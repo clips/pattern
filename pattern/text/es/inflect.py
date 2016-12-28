@@ -180,7 +180,9 @@ def singularize(word, pos=NOUN, custom={}):
         return w
     elif w.endswith("es") and w[:-2] in words_that_end_in_s:
         return w[:-2]
-    elif w.endswith("es") and w[:-2].endswith(("br", "i", "j", "v", "es", "t", "zn", "dr", "sm", "lp", "ch", "tr", "bl", "cl", "ld", "s", "gl", "fr", "ll")):
+    elif w.endswith("es") and w[:-2].endswith(("i", "j", "v", "es", "t", "s", "p")):
+        return w[:-1]
+    elif re.search(u"[^áéóúíüaeiou]{2,}es$", w, re.UNICODE):
         return w[:-1]
 
     # gestiones => gestión
@@ -274,9 +276,20 @@ class Verbs(_Verbs):
                 67, 68, 69, 70, 71, 72      # subjuntivo imperfecto
             ])
     
+# imperfecto
+# hubiera o hubiese
+# hubieras o hubieses
+# hubiera o hubiese
+# hubiéramos o hubiésemos
+# hubierais o hubieseis
+# hubieran o hubiesen
+# hubieras o hubieses
+
+# voseo?
     def find_lemma(self, verb):
         """ Returns the base form of the given inflected verb, using a rule-based approach.
         """
+        #tener, meter, traer // des, pre, com, con, re
         # Spanish has 12,000+ verbs, ending in -ar (85%), -er (8%), -ir (7%).
         # Over 65% of -ar verbs (6500+) have a regular inflection.
         v = verb.lower()
@@ -285,6 +298,15 @@ class Verbs(_Verbs):
         # Probably infinitive if ends in -ar, -er or -ir.
         if v.endswith(("ar", "er", "ir")):
             return v
+
+        #Try to fall back to a root verb
+        if v.startswith(("com", "des", "pre", "con")):
+            if v[3:] in self._inverse:
+                return v[:3] + self._inverse[v[3:]]
+        if v.startswith(("re")):
+            if v[2:] in self._inverse:
+                return v[:2] + self._inverse[v[2:]]
+
         # Ruleset for irregular inflections adds 10% accuracy.
         for a, b in verb_irregular_inflections:
             if v.endswith(a):
