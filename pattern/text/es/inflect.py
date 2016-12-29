@@ -266,6 +266,8 @@ verbs_ending_in_erar = ("aerar","liberar","deliberar","reverberar","lacerar","ma
     "atemperar","imperar","operar","reoperar","cooperar","exasperar","esperar","desesperar","prosperar","recuperar",
     "superar","vituperar","reiterar","transliterar","alterar","adulterar","encuerar","entreverar","aseverar")
 
+imperfect_subjunctive_endings = (('ese', 'era'), ('eses', 'eras'), (u'ésemos', u'éramos'), ('eseis', 'erais'), ('esen', 'eran'))
+
 class Verbs(_Verbs):
     
     def __init__(self):
@@ -282,15 +284,6 @@ class Verbs(_Verbs):
                 55, 56, 57, 58, 59, 60,     # subjuntivo presente
                 67, 68, 69, 70, 71, 72      # subjuntivo imperfecto
             ])
-    
-# imperfecto
-# hubiera o hubiese
-# hubieras o hubieses
-# hubiera o hubiese
-# hubiéramos o hubiésemos
-# hubierais o hubieseis
-# hubieran o hubiesen
-# hubieras o hubieses
 
 # voseo?
     def find_lemma(self, verb):
@@ -312,10 +305,9 @@ class Verbs(_Verbs):
         if v.startswith(("com", "des", "pre", "con")):
             if v[3:] in self._inverse:
                 return v[:3] + self._inverse[v[3:]]
-        if v.startswith(("re", "de")):
+        if v.startswith(("re", "de", "ex")):
             if v[2:] in self._inverse:
                 return v[:2] + self._inverse[v[2:]]
-
 
         #Ignore checking for "era*" if this is in the list above
         test_infinitive = re.match('(.*era)[sn]?', v)
@@ -326,6 +318,15 @@ class Verbs(_Verbs):
         for a, b in verb_irregular_inflections:
             if v.endswith(a):
                 return v[:-len(a)] + b
+
+        # Replace old imperfect subjective endings.
+        # Hubiese => Hubiera
+        for a, b in imperfect_subjunctive_endings:
+            if v.endswith(a):
+                v = v[:-len(a)] + b
+                if v in self._inverse:
+                    return self._inverse[v]
+                break
 
         # reconozco => reconocer
         v = v.replace(u"zco", "ce")
