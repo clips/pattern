@@ -210,7 +210,6 @@ def singularize(word, pos=NOUN, custom={}):
     return w
 
 #### VERB CONJUGATION ##############################################################################
-# What if we add in all of tener?
 verb_irregular_inflections = [
     (u"yéramos", "ir"   ), ( "cisteis", "cer"   ), ( "tuviera", "tener"), ( "ndieron", "nder" ),
     ( "ndiendo", "nder" ), (u"tándose", "tarse" ), ( "ndieran", "nder" ), ( "ndieras", "nder" ),
@@ -259,6 +258,14 @@ verb_irregular_inflections = [
     (      "id", "ir"   ), (     u"ué", "ar"    ),
 ]
 
+verbs_ending_in_erar = ("aerar","liberar","deliberar","reverberar","lacerar","macerar","ulcerar","encerar",
+    "eviscerar","federar","confederar","liderar","considerar","reconsiderar","abanderar","ponderar","preponderar",
+    "moderar","apoderar","empoderar","vociferar","proliferar","exagerar","aligerar","refrigerar","atrincherar",
+    "acelerar","desacelerar","decelerar","tolerar","aglomerar","conglomerar","numerar","enumerar","renumerar",
+    "generar","degenerar","regenerar","venerar","incinerar","adinerar","vulnerar","exonerar","remunerar","temperar",
+    "atemperar","imperar","operar","reoperar","cooperar","exasperar","esperar","desesperar","prosperar","recuperar",
+    "superar","vituperar","reiterar","transliterar","alterar","adulterar","encuerar","entreverar","aseverar")
+
 class Verbs(_Verbs):
     
     def __init__(self):
@@ -289,7 +296,9 @@ class Verbs(_Verbs):
     def find_lemma(self, verb):
         """ Returns the base form of the given inflected verb, using a rule-based approach.
         """
-        #tener, meter, traer // des, pre, com, con, re
+
+        #abstener is the only tener verb missing
+        #sembrar
         # Spanish has 12,000+ verbs, ending in -ar (85%), -er (8%), -ir (7%).
         # Over 65% of -ar verbs (6500+) have a regular inflection.
         v = verb.lower()
@@ -303,14 +312,21 @@ class Verbs(_Verbs):
         if v.startswith(("com", "des", "pre", "con")):
             if v[3:] in self._inverse:
                 return v[:3] + self._inverse[v[3:]]
-        if v.startswith(("re")):
+        if v.startswith(("re", "de")):
             if v[2:] in self._inverse:
                 return v[:2] + self._inverse[v[2:]]
+
+
+        #Ignore checking for "era*" if this is in the list above
+        test_infinitive = re.match('(.*era)[sn]?', v)
+        if test_infinitive and (test_infinitive.groups()[0] + 'r' in verbs_ending_in_erar):
+            return v.rstrip("sn")[:-1] + "ar"
 
         # Ruleset for irregular inflections adds 10% accuracy.
         for a, b in verb_irregular_inflections:
             if v.endswith(a):
                 return v[:-len(a)] + b
+
         # reconozco => reconocer
         v = v.replace(u"zco", "ce")
         # reconozcamos => reconocer
