@@ -43,6 +43,12 @@ from StringIO    import StringIO
 from codecs      import open
 from collections import defaultdict
 
+try:
+    import numpy
+    import scipy
+except:
+    pass
+
 if sys.version > "3":
     long = int
     xrange = range
@@ -2184,7 +2190,7 @@ class Classifier(object):
         """
         # This method must be implemented in subclass.
         if not discrete:
-            return defaultdict(float)
+            return Probabilities(self, {})
         return self.baseline
 
     def _vector(self, document, type=None, **kwargs):
@@ -2280,6 +2286,32 @@ class Classifier(object):
             reducing file size with Classifier.save().
         """
         pass
+
+#--- CLASSIFIER PROBABILITIES ----------------------------------------------------------------------
+# Returned from Classifier.classify(v, discrete=False)
+
+class Probabilities(defaultdict):
+    
+    def __init__(self, classifier, *args, **kwargs):
+        defaultdict.__init__(self, float)
+        self.classifier = classifier
+        self.update(*args, **kwargs)
+    
+    @property
+    def max(self):
+        """ Returns the (type, probability) with the highest probability.
+        """
+        try:
+            # Ties are broken in favor of the majority class
+            # (random winner for majority ties).
+            b = self.classifier.baseline
+            m = self.values()
+            m = max(m)
+            if self[b] < m:
+                return choice([x for x in self if self[x] == m > 0]), m
+            return b, m
+        except:
+            return b, 0.0
 
 #--- CLASSIFIER EVALUATION -------------------------------------------------------------------------
 
@@ -2484,7 +2516,7 @@ class NB(Classifier):
     
     def __init__(self, train=[], baseline=MAJORITY, method=MULTINOMIAL, alpha=0.0001, **kwargs):
         """ Naive Bayes is a simple supervised learning method for text classification.
-            Documents are classified based on the probability that a feature occurs in a class,
+            Documents are classified based on the probability that a feature occurs in a class 
             (independent of other features).
         """
         self._classes    = {}     # {class: frequency}
@@ -2553,7 +2585,7 @@ class NB(Classifier):
         for type in p:
             p[type] /= s
         if not discrete:
-            return p
+            return Probabilities(self, p)
         try:
             # Ties are broken in favor of the majority class
             # (random winner for majority ties).
@@ -2604,7 +2636,7 @@ class KNN(Classifier):
         for d, type in D:
             p[type] += (1 - d) / s
         if not discrete:
-            return p
+            return Probabilities(self, p)
         try:
             # Ties are broken in favor of the majority class
             # (random winner for majority ties).
@@ -2757,6 +2789,22 @@ IGTREE = IGTree
 
 #--- SINGLE-LAYER PERCEPTRON ------------------------------------------------------------------------
 
+def softmax(p):
+    """ Returns a dict with float values that sum to 1.0
+        (using generalized logistic regression).
+    """
+    if p:
+        v = p.values()
+        m = max(v)
+        e = map(lambda x: exp(x - m), v) # prevent overflow
+        s = sum(e)
+        v = map(lambda x: x / s, e)
+        p = defaultdict(float, zip(p.keys(), v))
+    return p
+
+#print(softmax({"cat": +1, "dog": -1})) # {"cat": 0.88, "dog": 0.12}
+#print(softmax({"cat": +2, "dog": -2})) # {"cat": 0.98, "dog": 0.02}
+
 class SLP(Classifier):
     
     def __init__(self, train=[], baseline=MAJORITY, iterations=1, **kwargs):
@@ -2780,20 +2828,20 @@ class SLP(Classifier):
     @property
     def features(self):
         return list(set(chain(*(f.keys() for f in self._weight.values()))))
-        
+
     def train(self, document, type=None):
         """ Trains the classifier with the given document of the given type (i.e., class).
             A document can be a Document, Vector, dict, list or string.
             If no type is given, Document.type will be used instead.
         """
-        def _accumulate(type, feature, weight, i):
+        def _update(type, feature, weight, i):
             # Collins M. (2002). Discriminative Training Methods for Hidden Markov Models. EMNLP 2002.
             # Based on: http://honnibal.wordpress.com/2013/09/11/
             # Accumulate average weights (prevents overfitting).
             # Instead of keeping all intermediate results and averaging them at the end,
             # we keep a running sum and the iteration in which the sum was last modified.
             w = self._weight[type]
-            w0, w1, j = w[feature] if feature in w else (0, 0, 0)
+            w0, w1, j = w[feature] if feature in w else (random() * 2 - 1, 0, 0)
             w0 += weight
             w[feature] = (w0, (i-j) * w0 + w1, i)
         type, vector = self._vector(document, type=type)
@@ -2803,8 +2851,8 @@ class SLP(Classifier):
         if t1 != t2: # Error correction.
             self._iteration += 1
             for f in vector:
-                _accumulate(t1, f, +1, self._iteration)
-                _accumulate(t2, f, -1, self._iteration)
+                _update(t1, f, +1, self._iteration)
+                _update(t2, f, -1, self._iteration)
 
     def classify(self, document, discrete=True):
         """ Returns the type with the highest probability for the given document.
@@ -2817,20 +2865,21 @@ class SLP(Classifier):
         p = defaultdict(float)
         for type, w in self._weight.items():
             #p[type] = sum(w[f][0] for f in v if f in w) # Without averaging.
-            s = 0
+            s = 0.
             for f in v:
                 if f in w:
                     w0, w1, j = w[f]
                     s += ((i-j) * w0 + w1) / i
             p[type] = s
         # Normalize probability estimates.
-        m = min(chain(p.values(), (0,)))
-        s = sum(x-m for x in p.values()) or 1
-        for type in p:
-            p[type] -= m
-            p[type] /= s
+        p = softmax(p)
+        #m = min(chain(p.values(), (0,)))
+        #s = sum(x-m for x in p.values()) or 1
+        #for type in p:
+        #    p[type] -= m
+        #    p[type] /= s
         if not discrete:
-            return p
+            return Probabilities(self, p)
         try:
             # Ties are broken in favor of the majority class
             # (random winner for majority ties).
@@ -2840,7 +2889,7 @@ class SLP(Classifier):
             return choice(p)
         except:
             return self.baseline
-            
+
     def finalize(self):
         """ Removes training data from memory, keeping only the node weights,
             reducing file size with Classifier.save().
@@ -2859,6 +2908,14 @@ AP = AveragedPerceptron = Perceptron = SLP
 #for i in range(5):
 #    for v in shuffled(data):
 #        p.train(v)
+
+#p = Perceptron()
+#p.train({"woof":1, "howl":1}, "dog")
+#p.train({"woof":1, "bark":1}, "dog")
+#p.train({"woof":1, "bark":1}, "dog")
+#p.train({"meow":1, "purr":1}, "cat")
+#print p.features
+#print p.classify({"woof":1, "bark":1}, discrete=False).max
 
 #--- BACKPROPAGATION NEURAL NETWORK -----------------------------------------------------------------
 # "Deep learning" refers to deep neural networks and deep belief systems.
@@ -2882,7 +2939,7 @@ def sigmoid(x):
     #return 1.0 / (1.0 + math.exp(-x))
     return tanh(x)
         
-def dsigmoid(y):
+def sigmoid_derivative(y):
     """ Backward propagation activation function derivative.
     """
     #return y * (1.0 - y)
@@ -2961,12 +3018,12 @@ class BPNN(Classifier):
         do = [0.0] * len(ao)
         for k, v in enumerate(ao):
             error = output[k] - v
-            do[k] = error * dsigmoid(v)
+            do[k] = error * sigmoid_derivative(v)
         # Compute delta for hidden nodes.
         dh = [0.0] * len(ah)
         for j, v in enumerate(ah):
             error = sum(do[k] * wo[j][k] for k in range(len(ao)))
-            dh[j] = error * dsigmoid(v)
+            dh[j] = error * sigmoid_derivative(v)
         # Update output weights.
         for j, v1 in enumerate(ah):
             for k, v2 in enumerate(ao):
@@ -3048,7 +3105,7 @@ class BPNN(Classifier):
         """
         self._vectors = []
 
-ANN = NN = NeuralNetwork = BPNN
+MLP = ANN = NN = NeuralNetwork = BPNN
 
 #nn = BPNN()
 #nn._weight_initialization(2, 1, hidden=2)
@@ -3089,6 +3146,9 @@ LINEAR       = 0 # Straight line: u' * v
 POLYNOMIAL   = 1 # Curved line: (gamma * u' * v + coef0) ** degree
 RADIAL = RBF = 2 # Curved path: exp(-gamma * |u-v| ** 2)
 
+# SVM solvers:
+LOGIT = L2LR = 0 # LIBLINEAR L2 logistic regression
+
 # The simplest way to divide two clusters is a straight line.
 # If the clusters are separated by a curved line,
 # separation may be easier in higher dimensions (using a kernel).
@@ -3102,14 +3162,15 @@ class SVM(Classifier):
             Optional parameters:
             -      type = CLASSIFICATION, 
             -    kernel = LINEAR, 
+            -    solver = 1, 
             -    degree = 3, 
             -     gamma = 1 / len(SVM.features), 
-            -    coeff0 = 0,
+            -    coeff0 = 0, 
             -      cost = 1, 
             -   epsilon = 0.01, 
             -     cache = 100, 
-            - shrinking = True,
-            - extension = (LIBSVM, LIBLINEAR),
+            - shrinking = True, 
+            - extension = (LIBSVM, LIBLINEAR), 
             -     train = []
         """
         import svm
@@ -3134,6 +3195,7 @@ class SVM(Classifier):
         for k1, k2, v in (
             (       "type", "s", CLASSIFICATION),
             (     "kernel", "t", LINEAR),
+            (     "solver", "f", 1),   # For LIBLINEAR.
             (     "degree", "d", 3),   # For POLYNOMIAL.
             (      "gamma", "g", 0),   # For POLYNOMIAL + RADIAL.
             (     "coeff0", "r", 0),   # For POLYNOMIAL.
@@ -3144,16 +3206,19 @@ class SVM(Classifier):
             (  "shrinking", "h", True)):
                 v = kwargs.get(k2, kwargs.get(k1, v))
                 setattr(self, "_"+k1, v)
-        # SVC/SVR/SVO alias.
+        # Type aliases.
         if self._type == "svc":
             self._type = SVC
         if self._type == "svr":
             self._type = SVR
         if self._type == "svo":
             self._type = SVO
-        # RBF alias.
+        # Kernel aliases.
         if self._kernel == "rbf":
             self._kernel = RBF
+        # Solver aliases.
+        if self._solver == "logit":
+            self._solver = LOGIT
         Classifier.__init__(self, train=kwargs.get("train", []), baseline=MAJORITY)
     
     @property
@@ -3182,6 +3247,9 @@ class SVM(Classifier):
     @property
     def kernel(self):
         return self._kernel
+    @property
+    def solver(self):
+        return self._solver
     @property
     def degree(self):
         return self._degree
@@ -3238,7 +3306,8 @@ class SVM(Classifier):
         # For kernel SVC, use LIBSVM.
         if self.extension == LIBLINEAR:
             f = self._svm.liblinearutil.train
-            o = "-s 1 -c %s -p %s -q" % (
+            o = "-s %s -c %s -p %s -q" % (
+                self._solver,     # -f
                 self._cost,       # -c
                 self._epsilon     # -p
             )
@@ -3264,7 +3333,7 @@ class SVM(Classifier):
     def _classify(self, document, probability=False):
         """ Calls libsvm.svm_predict() with the cached model.
             For CLASSIFICATION, returns the predicted class.
-            For CLASSIFICATION with probability=True, returns a list of (weight, class)-tuples.
+            For CLASSIFICATION with probability=True, returns a {class: weight} dict.
             For REGRESSION, returns a float.
         """
         if self._model is None:
@@ -3276,20 +3345,23 @@ class SVM(Classifier):
         n  = len(H1)
         v  = self._vector(document)[1]
         v  = dict(map(lambda k: (H1.get(k[1], k[0] + n + 1), v[k[1]]), enumerate(v)))
+        s  = getattr(self, "_solver", None)
         # For linear SVC, use LIBLINEAR which is 10x faster.
         # For kernel SVC, use LIBSVM.
         if self.extension == LIBLINEAR:
             f = self._svm.liblinearutil.predict
-            o = "-b 0 -q"
+            o = "-b %s -q" % (int(probability) if s == 0 else 0)
         else:
             f = self._svm.libsvmutil.svm_predict
-            o = "-b %s -q" % int(probability)
+            o = "-b %s -q" % (int(probability))
         p = f([0], [v], M, o)
-        # Note: LIBLINEAR does not currently support probabilities for classification.
-        if self._type == CLASSIFICATION and probability is True and self.extension == LIBLINEAR:
-            return {}
-        if self._type == CLASSIFICATION and probability is True:
-            return defaultdict(float, ((H3[i], w) for i, w in enumerate(p[2][0])))
+        # Note: LIBLINEAR only supports probabilities for logistic regression (solver=0).
+        if self._type == CLASSIFICATION and probability and self.extension == LIBLINEAR and s != 0:
+            return Probabilities(self, defaultdict(float, ((H3[p[0][0]], 1.0),)))
+        if self._type == CLASSIFICATION and probability and self.extension == LIBLINEAR:
+            return Probabilities(self, defaultdict(float, ((H3[i+1], w) for i, w in enumerate(p[2][0]))))
+        if self._type == CLASSIFICATION and probability:
+            return Probabilities(self, defaultdict(float, ((H3[i+0], w) for i, w in enumerate(p[2][0]))))
         if self._type == CLASSIFICATION:
             return H3.get(int(p[0][0]))
         if self._type == REGRESSION:
@@ -3407,6 +3479,169 @@ class SVM(Classifier):
 # Of course, it's optimizing for the same cross-validation 
 # that it's testing on, so this is easy to overfit.
 # In scikit-learn it will run faster (4 seconds <=> 20 seconds), see: http://goo.gl/YqlRa
+
+#--- LOGISTIC REGRESSION ---------------------------------------------------------------------------
+# Multinomial logistic regression (or Maximum Entropy) is competitive to SVM and gives probabilities.
+
+class LR(Classifier):
+
+    def __init__(self, train=[], baseline=MAJORITY, iterations=100, **kwargs):
+        """ Logistic Regression is a supervised machine learning method,
+            Documents are assigned a probability for each possible class,
+            based on the probability that a feature occurs in a class 
+            (independent of other features).
+        """
+        import scipy
+        import scipy.sparse
+        import scipy.special
+        import scipy.optimize
+        self._iterations = iterations
+        self._model = None
+        Classifier.__init__(self, train, baseline)
+
+    @property
+    def iterations(self):
+        return self._iterations
+
+    def _train(self):
+        H1 = dict((w, i) for i, w in enumerate(self.classes))  #   class => index
+        H2 = dict((i, w) for i, w in enumerate(self.classes))  #   index => class
+        H3 = dict((w, i) for i, w in enumerate(self.features)) # feature => index
+        H4 = [w for w in sorted(H3, key=H3.get)]               # feature by index
+        # Sparse matrix.
+        # A full matrix of 10,000 vectors, 100,000 features
+        # would take 1,000,000,000 x 8 = 7.5GB.
+        m = len(self._vectors)
+        n = len(H4)
+        try:
+            x = scipy.sparse.lil_matrix((m, n))
+            for i, (type, v) in enumerate(self._vectors):
+                for w in v:
+                    x[i, H3[w]] = v[w]
+            x = scipy.sparse.csr_matrix(x) # faster dot
+            y = scipy.array([H1[type] for type, v in self._vectors])
+            t = self._gradient_descent(x, y, l=0.1, iterations=self._iterations)
+        except:
+            t = None
+        self._model = (t, H1, H2, H3, H4)
+        
+    def _classify(self, document):
+        if self._model is None:
+            return None
+        t, H1, H2, H3, H4 = self._model
+        if t is not None:
+            v = self._vector(document)[1]
+            v = scipy.array([v.get(w, 0.0) for w in H4])
+            v = scipy.hstack([[1], v])
+            p = scipy.special.expit(scipy.dot(t, v)) # sigmoid
+            p = dict((H2[i], p) for i, p in enumerate(p))
+            return p
+        return {}
+        
+    def _gradient_descent(self, x, y, l=0.1, iterations=100):
+        # The cost function computes the mean squared error J.
+        # The cost function represents the average amount of incorrect predictions.
+        # The gradient function is the derivative of the cost function.
+        # The gradient function determines the direction in which to optimize.
+        # Gradient descent then iteratively minimizes the cost (in max iterations).
+        # L2 regularization prevents overfitting by excluding unlikely feature values.
+        def log(z):
+            return scipy.log(z.clip(min=1e-10))
+        def cost(t, x, y, l=0.1):
+            # Cost function.
+            m  = float(len(y))
+            h  = scipy.special.expit(x.dot(t)) # sigmoid
+            J  = 1 / m * (scipy.dot(-y, log(h)) - scipy.dot(1-y, log(1-h)))
+            L2 = l / m / 2 * sum(t[1:] ** 2)
+            return J + L2
+        def gradient(t, x, y, l=0.1):
+            # Cost function derivative.
+            m  = float(len(y))
+            h  = scipy.special.expit(x.dot(t)) # sigmoid
+            g  = 1 / m * x.T.dot((h-y).T).T # dot(h-y, x)
+            L2 = l / m * scipy.insert(t[1:], 0, 0)
+            return scipy.transpose(g + L2)
+        # Gradient descent:
+        if x.shape[0] > 0:
+            m = x.shape[0]
+            n = x.shape[1]
+            t = scipy.zeros((max(y) + 1, n+1))
+            x = scipy.sparse.hstack([scipy.ones((m, 1)), x])
+            y = scipy.array(y)
+            for i in xrange(max(y) + 1):
+                t0 = scipy.zeros((n+1, 1))
+                t0 = scipy.transpose(t0)
+                t[i,:] = scipy.optimize.fmin_cg(
+                    lambda t:     cost(t, x, 0 + (y == i), l), t0,
+                    lambda t: gradient(t, x, 0 + (y == i), l), 
+                        maxiter = iterations,
+                           disp = 0)
+            return t # theta
+        return None
+
+    def train(self, document, type=None):
+        """ Trains the classifier with the given document of the given type (i.e., class).
+            A document can be a Document, Vector, dict, list or string.
+            If no type is given, Document.type will be used instead.
+        """
+        Classifier.train(self, document, type)
+        self._model = None
+
+    def classify(self, document, discrete=True):
+        """ Returns the type with the highest probability for the given document.
+            If the classifier has been trained on LSA concept vectors
+            you need to supply LSA.transform(document).
+        """
+        if self._model is None:
+            self._train()
+        p = self._classify(document)
+        if not discrete:
+            return Probabilities(self, p)
+        try:
+            # Ties are broken in favor of the majority class
+            # (random winner for majority ties).
+            m = max(p.values())
+            p = sorted((self._classes[type], type) for type, w in p.items() if w == m > 0)
+            p = [type for frequency, type in p if frequency == p[0][0]]
+            return choice(p)
+        except:
+            return self.baseline
+
+    def save(self, path, final=False):
+        if self._model is None:
+            self._train()
+        # Save array as string.
+        f = StringIO()
+        scipy.save(f, self._model[0])
+        f.seek(0)
+        self._model = (f.read(),) + self._model[1:]
+        Classifier.save(self, path, final)
+
+    @classmethod
+    def load(cls, path):
+        return Classifier.load(path)
+
+    def _on_load(self, path):
+        # Called from Classifier.load().
+        import scipy
+        import scipy.sparse
+        import scipy.special
+        import scipy.optimize
+        if self._model is not None:
+            f = StringIO()
+            f.write(self._model[0])
+            f.seek(0)
+            self._model = (scipy.load(f),) + self._model[1:]
+
+    def finalize(self):
+        """ Removes training data from memory, keeping only the trained model (theta),
+            reducing file size with Classifier.save() (e.g., 15MB => 3MB).
+        """
+        if self._model is None:
+            self._train()
+        self._vectors = []
+
+LogisticRegression = SoftMaxRegression = MaximumEntropy = MaxEnt = ME = LR
 
 #### GENETIC ALGORITHM #############################################################################
 
