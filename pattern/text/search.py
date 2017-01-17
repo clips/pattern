@@ -445,7 +445,7 @@ class WordNetClassifier(Classifier):
 CHUNKS = dict.fromkeys(["NP", "PP", "VP", "ADVP", "ADJP", "SBAR", "PRT", "INTJ"], True)
 ROLES  = dict.fromkeys(["SBJ", "OBJ", "PRD", "TMP", "CLR", "LOC", "DIR", "EXT", "PRP"], True)
 TAGS   = dict.fromkeys(["CC", "CD", "CJ", "DT", "EX", "FW", "IN", "JJ", "JJR", "JJS", "JJ*", 
-                        "LS", "MD", "NN", "NNS", "NNP", "NNPS", "NN*", "NO", "PDT", "PR", 
+                        "LS", "MD", "NN", "NNS", "NNP", "NNP*", "NNPS", "NN*", "NO", "PDT", "PR", 
                         "PRP", "PRP$", "PR*", "PRP*", "PT", "RB", "RBR", "RBS", "RB*", "RP", 
                         "SYM", "TO", "UH", "VB", "VBZ", "VBP", "VBD", "VBN", "VBG", "VB*", 
                         "WDT", "WP*", "WRB", "X", ".", ",", ":", "(", ")"], True)

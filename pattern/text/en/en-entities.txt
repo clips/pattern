@@ -11,7 +11,10 @@ Afghanistan LOC
 Africa LOC
 Al Capone PERS
 Al Pacino PERS
+Al-Raqqah LOC
+Al-Sham LOC
 Alaska LOC
+Aleppo LOC
 Albert Einstein PERS
 Albert Hofmann PERS
 Albert Schweitzer PERS
@@ -54,12 +57,14 @@ BMW ORG
 Babe Ruth PERS
 Bacardi ORG
 Backstreet Boys
+Baghdad LOC
 Bangladesh LOC
 Barack Obama PERS
 Barbra Streisand PERS
 Barcelona LOC
 Batman PERS
 Beethoven PERS
+Beijing LOC
 Belarus LOC
 Belgium LOC
 Ben Affleck PERS
@@ -89,12 +94,14 @@ Britney Spears PERS
 Bruce Lee PERS
 Bruce Willis PERS
 Bruno Mars PERS
+Brussels LOC 
 Buddhism
 Bulgaria LOC
 Burger King
 Burma LOC
 C.S. Lewis PERS
 Cadillac ORG
+Calais LOC
 California LOC
 Cameron Diaz PERS
 Cameron Newton PERS
@@ -131,13 +138,16 @@ Cuba LOC
 DNA
 Daft Punk
 Dalai Lama PERS
+Damascus LOC
 Daniel Radcliffe PERS
+Daraa LOC
 Darren Aronofsky PERS
 Darren Criss PERS
 Darth Vader PERS
 David Beckham PERS
 David Bowie PERS
 David Cook PERS
+Deir ez-Zor LOC
 Demi Lovato PERS
 Demi Moore PERS
 Denmark LOC
@@ -240,6 +250,7 @@ Henry V PERS
 Henry VIII PERS
 Hilary Duff PERS
 Hillary Clinton PERS
+Homs LOC
 Honda ORG
 Hong Kong LOC
 Hotmail
@@ -255,6 +266,7 @@ Indira Gandhi PERS
 Indonesia LOC
 Internet Explorer
 Iran LOC
+Iraq LOC
 Ireland LOC
 Iron Man PERS
 Isaac Newton PERS
@@ -413,6 +425,8 @@ Mohammed Ali PERS
 Mona Lisa PERS
 Montreal LOC
 Morocco LOC
+Moscow LOC
+Mosul LOC
 Mother Teresa PERS
 Mother's Day
 Mozart PERS
@@ -438,6 +452,7 @@ Nicole Scherzinger PERS
 Nigeria LOC
 Nike ORG
 Nivea ORG
+Nineveh LOC
 North America LOC
 North Korea LOC
 Norway LOC
@@ -449,6 +464,7 @@ Owen Wilson PERS
 Ozzfest
 Pablo Picasso PERS
 Pakistan LOC
+Palmyra LOC
 Panasonic ORG
 Paris LOC
 Paul McCartney PERS
@@ -476,6 +492,7 @@ Queen Victoria PERS
 Rachmaninoff PERS
 Raiders of the Lost Ark
 Raisa Gorbachev PERS
+Raqqa LOC
 Real Madrid ORG
 Red Hot Chili Peppers PERS
 Reese Witherspoon PERS
@@ -559,6 +576,7 @@ Superman PERS
 Sweden LOC
 Switzerland LOC
 Sylvester Stallone PERS
+Syria LOC
 Taiwan LOC
 Taj Mahal LOC
 Take That
@@ -581,6 +599,7 @@ Theodore Roosevelt PERS
 Thomas Jefferson PERS
 Thor PERS
 Tiger Woods PERS
+Tigris LOC
 Titanic
 Tom Brady PERS
 Tom Cruise PERS

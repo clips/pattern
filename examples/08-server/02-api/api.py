@@ -29,7 +29,7 @@ app = App("api")
 # You should see some JSON-output:
 # {"language": "en", "confidence": 0.83}
 
-@app.route("/language", limit=100, time=HOUR, key=lambda data: app.request.ip)
+@app.route("/language", limit=100, time=HOUR)
 def predict_language(q=""):
     #print q
     iso, confidence = language(q) # (takes some time to load the first time)
@@ -52,10 +52,6 @@ def predict_language(q=""):
 # Rate limiting caps the number of allowed requests for a user.
 # In this example, limit=100 and time=HOUR means up to a 100 requests/hour.
 # After that, the user will get a HTTP 429 Too Many Requests error.
-
-# The "key" function takes a dictionary of all query parameters
-# and returns a unique ID for each user.
-# In this example we simply used the user's IP-address.
 
 # The example below demonstrates how rates can be set up per user.
 # In this case, only the user with key=1234 is allowed access.

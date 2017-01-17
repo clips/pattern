@@ -1243,7 +1243,8 @@ class Application(object):
             config={"/": {
                 "tools.staticdir.on"       : self.static is not None,
                 "tools.staticdir.dir"      : self.static,
-                "tools.sessions.on"        : sessions
+                "tools.sessions.on"        : bool(sessions),
+                "tools.sessions.timeout"   : 60 if sessions is True else int(sessions)
         }})
         # Static content can include favicon.ico
         self.favicon_ico = cp.tools.staticfile.handler(
@@ -1251,7 +1252,7 @@ class Application(object):
         )
         # Relative root = project path.
         os.chdir(self._path)
-        # With mod_wsgi, stdout is restriced.
+        # With mod_wsgi, stdout is restricted.
         if embedded:
             sys.stdout = sys.stderr
         else:

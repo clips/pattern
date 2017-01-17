@@ -516,7 +516,7 @@ singular_uninflected = set((
     "bison"      , "debris"   , "headquarters", "pincers"    , "trout"     ,
     "bream"      , "diabetes" , "herpes"      , "pliers"     , "tuna"      ,
     "breeches"   , "djinn"    , "high-jinks"  , "proceedings", "whiting"   ,
-    "britches"   , "eland"    , "homework"    , "rabies"     , "wildebeest"
+    "britches"   , "eland"    , "homework"    , "rabies"     , "wildebeest",
     "carp"       , "elk"      , "innings"     , "salmon"     , 
     "chassis"    , "flounder" , "jackanapes"  , "scissors"   , 
     "christmas"  , "gallows"  , "mackerel"    , "series"     , 
@@ -528,7 +528,7 @@ singular_uninflected = set((
 singular_uncountable = set((
     "advice"     , "equipment", "happiness"   , "luggage"    , "news"      , "software"     ,
     "bread"      , "fruit"    , "information" , "mathematics", "progress"  , "understanding",
-    "butter"     , "furniture", "ketchup"     , "mayonnaise" , "research"  , "water"
+    "butter"     , "furniture", "ketchup"     , "mayonnaise" , "research"  , "water"        ,
     "cheese"     , "garbage"  , "knowledge"   , "meat"       , "rice"      , 
     "electricity", "gravel"   , "love"        , "mustard"    , "sand"      , 
 ))
@@ -536,7 +536,7 @@ singular_ie = set((
     "alergie"    , "cutie"    , "hoagie"      , "newbie"     , "softie"    , "veggie"       , 
     "auntie"     , "doggie"   , "hottie"      , "nightie"    , "sortie"    , "weenie"       , 
     "beanie"     , "eyrie"    , "indie"       , "oldie"      , "stoolie"   , "yuppie"       , 
-    "birdie"     , "freebie"  , "junkie"      , "^pie"       , "sweetie"   , "zombie"
+    "birdie"     , "freebie"  , "junkie"      , "^pie"       , "sweetie"   , "zombie"       ,
     "bogie"      , "goonie"   , "laddie"      , "pixie"      , "techie"    , 
     "bombie"     , "groupie"  , "laramie"     , "quickie"    , "^tie"      , 
     "collie"     , "hankie"   , "lingerie"    , "reverie"    , "toughie"   , 
@@ -549,7 +549,6 @@ singular_irregular = {
          "beeves": "beef", 
        "brethren": "brother", 
        "children": "child",
-       "children": "child", 
         "corpora": "corpus", 
        "corpuses": "corpus", 
     "ephemerides": "ephemeris", 

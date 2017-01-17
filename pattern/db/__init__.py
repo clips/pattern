@@ -96,6 +96,7 @@ date_formats = [
     "%Y-%m-%d",                    # 2010-09-21
     "%d/%m/%Y",                    # 21/09/2010
     "%d %B %Y",                    # 21 September 2010
+    "%d %b %Y",                    # 21 Sep 2010
     "%B %d %Y",                    # September 21 2010
     "%B %d, %Y",                   # September 21, 2010
 ]

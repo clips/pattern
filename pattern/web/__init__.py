@@ -1370,10 +1370,10 @@ class Bing(SearchEngine):
         # 3) Restrict language.
         if type in (SEARCH, IMAGE) and self.language is not None:
             url.query["Query"] = url.query["Query"][:-1] + " language: %s'" % self.language
-        #if self.language is not None:
-        #    market = locale.market(self.language)
-        #    if market:
-        #        url.query["market"] = market
+        if type in (NEWS,) and self.language is not None:
+            market = locale.market(self.language)
+            if market:
+                url.query["Market"] = "'" + market + "'"
         # 4) Parse JSON response.
         kwargs["authentication"] = ("", self.license)
         kwargs.setdefault("unicode", True)
