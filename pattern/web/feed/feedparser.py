@@ -152,7 +152,12 @@ import time
 import types
 import urllib
 import urllib2
-import urlparse
+try:
+    # Python 2
+    import urlparse
+except ImportError:
+    # Python 3
+    from urllib import parse as urlparse
 import warnings
 
 from htmlentitydefs import name2codepoint, codepoint2name, entitydefs
