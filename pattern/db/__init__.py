@@ -26,17 +26,17 @@ from types     import GeneratorType
 
 try: # Python 2.x vs 3.x
     from cStringIO import StringIO
-except:
+except ImportError:
     from io import BytesIO as StringIO
 
 try: # Python 2.x vs 3.x
     import htmlentitydefs
-except:
+except ImportError:
     from html import entities as htmlentitydefs
 
 try: # Python 2.4 vs 2.5+
     from email.Utils import parsedate_tz, mktime_tz
-except:
+except ImportError:
     from email.utils import parsedate_tz, mktime_tz
     
 try: 

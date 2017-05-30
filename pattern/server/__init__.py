@@ -36,17 +36,17 @@ import sqlite3 as sqlite
 
 try: # Python 2.x vs 3.x
     import htmlentitydefs
-except:
+except ImportError:
     from html import entities as htmlentitydefs
 
 try: # Python 2.x vs 3.x
     from cStringIO import StringIO
-except:
+except ImportError:
     from io import BytesIO as StringIO
 
 try: # Python 2.x vs 3.x
     import cPickle as pickle
-except:
+except ImportError:
     import pickle
 
 try:
