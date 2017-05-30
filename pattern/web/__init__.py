@@ -35,7 +35,12 @@ try:
 except ImportError:
     # Python 3
     import html.entities as htmlentitydefs
-import httplib
+try:
+    # Python 2
+    import httplib
+except ImportError:
+    # Python 3
+    import http.client as httplib
 import sgmllib
 import cookielib
 import re
