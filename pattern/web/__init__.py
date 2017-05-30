@@ -42,7 +42,12 @@ except ImportError:
     # Python 3
     import http.client as httplib
 import sgmllib
-import cookielib
+try:
+    # Python 3
+    import cookielib
+except ImportError:
+    # Python 2
+    import http.cookiejar as cookielib
 import re
 import xml.dom.minidom
 import unicodedata
