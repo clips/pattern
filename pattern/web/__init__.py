@@ -60,7 +60,12 @@ except ImportError:
     from io import StringIO
 import bisect
 import itertools
-import new
+try:
+    # Python 2
+    import new
+except ImportError:
+    # Python 3: We don't actually need it (in this case)
+    new = None
 
 import api
 import feed
@@ -654,7 +659,12 @@ def download(url=u"", method=GET, query={}, timeout=10, cached=True, throttle=0,
 def bind(object, method, function):
     """ Attaches the function as a method with the given name to the given object.
     """
-    setattr(object, method, new.instancemethod(function, object))
+    if new:
+        # Python 2
+        setattr(object, method, new.instancemethod(function, object))
+    else:
+        # Python 3: There is no good reason to use this function in Python 3.
+        setattr(object, method, function)
 
 class Stream(list):
 
