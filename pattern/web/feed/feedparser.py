@@ -165,7 +165,12 @@ except ImportError:
     from urllib import parse as urlparse
 import warnings
 
-from htmlentitydefs import name2codepoint, codepoint2name, entitydefs
+try:
+    # Python 2
+    from htmlentitydefs import name2codepoint, codepoint2name, entitydefs
+except ImportError:
+    # Python 3
+    from html.entities import name2codepoint, codepoint2name, entitydefs
 
 try:
     from io import BytesIO as _StringIO

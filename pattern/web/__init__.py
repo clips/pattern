@@ -29,7 +29,12 @@ except ImportError:
     # Python 3
     from urllib import parse as urlparse
 import base64
-import htmlentitydefs
+try:
+    # Python 2
+    import htmlentitydefs
+except ImportError:
+    # Python 3
+    import html.entities as htmlentitydefs
 import httplib
 import sgmllib
 import cookielib
