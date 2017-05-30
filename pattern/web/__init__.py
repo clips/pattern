@@ -15,7 +15,13 @@ import os
 import sys
 import threading
 import time
-import socket, urllib, urllib2, ssl
+import socket, urllib,  ssl
+try:
+    # Python 2
+    import urllib2
+except ImportError:
+    # Python 3
+    from urllib import request as urllib2
 try:
     # Python 2
     import urlparse
