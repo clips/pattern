@@ -54,7 +54,7 @@ import unicodedata
 import string
 try:
     # Python 2
-    from StringIO import StringIO
+    from cStringIO import StringIO
 except ImportError:
     # Python 3
     from io import StringIO
