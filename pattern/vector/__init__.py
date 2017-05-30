@@ -39,9 +39,15 @@ from random      import random, randint, uniform, choice, sample, seed
 from itertools   import chain
 from bisect      import insort
 from operator    import itemgetter
-from StringIO    import StringIO
 from codecs      import open
 from collections import defaultdict
+
+try:
+    # Python 2
+    from StringIO import StringIO
+except ImportError:
+    # Python 3
+    from io import StringIO
 
 try:
     import numpy

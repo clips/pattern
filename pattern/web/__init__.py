@@ -52,7 +52,12 @@ import re
 import xml.dom.minidom
 import unicodedata
 import string
-import StringIO
+try:
+    # Python 2
+    from StringIO import StringIO
+except ImportError:
+    # Python 3
+    from io import StringIO
 import bisect
 import itertools
 import new
@@ -3784,7 +3789,7 @@ class DocumentParser(object):
             return open(path, "rb")
         if hasattr(path, "read"):
             return path
-        return StringIO.StringIO(path)
+        return StringIO(path)
 
     def _parse(self, path, *args, **kwargs):
         """ Returns a plaintext Unicode string parsed from the given document.
@@ -3817,7 +3822,7 @@ class PDF(DocumentParser):
         from pdf.layout    import LAParams
         try:
             m = PDFResourceManager()
-            s = StringIO.StringIO()
+            s = StringIO()
             p = kwargs.get("format", "txt").endswith("html") and HTMLConverter or TextConverter
             p = p(m, s, codec="utf-8", laparams=LAParams())
             process_pdf(m, p, self._open(path), set(), maxpages=0, password="")
