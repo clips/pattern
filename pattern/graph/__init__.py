@@ -17,7 +17,7 @@ from warnings import warn
 from codecs   import open
 from shutil   import rmtree
 
-from builtins import range
+from builtins import str, range
 from past.builtins import basestring
 
 try:
@@ -122,7 +122,7 @@ class Node(object):
         self.stroke      = kwargs.pop("stroke", (0,0,0,1))
         self.strokewidth = kwargs.pop("strokewidth", 1)
         self.text        = kwargs.get("text", True) and \
-            Text(isinstance(id, unicode) and id or str(id).decode("utf-8", "ignore"), 
+            Text(isinstance(id, str) and id or str(id),
                    width = 85,
                     fill = kwargs.pop("text", (0,0,0,1)), 
                 fontsize = kwargs.pop("fontsize", 11), **kwargs) or None
