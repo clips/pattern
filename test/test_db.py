@@ -25,9 +25,9 @@ def create_db_mysql():
                 port = PORT,
             username = USERNAME,
             password = PASSWORD)
-    except ImportError, e:
+    except ImportError as e:
         DB_MYSQL_EXCEPTION = None # "No module named MySQLdb"
-    except Exception, e:
+    except Exception as e:
         DB_MYSQL_EXCEPTION = e
 
 def create_db_sqlite():
@@ -41,7 +41,7 @@ def create_db_sqlite():
                 port = PORT,
             username = USERNAME,
             password = PASSWORD)
-    except Exception, e:
+    except Exception as e:
         DB_SQLITE_EXCEPTION = e
 
 #---------------------------------------------------------------------------------------------------
