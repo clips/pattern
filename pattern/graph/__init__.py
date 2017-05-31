@@ -17,6 +17,7 @@ from warnings import warn
 from codecs   import open
 from shutil   import rmtree
 
+from builtins import range
 from past.builtins import basestring
 
 try:
@@ -1052,8 +1053,8 @@ def partition(graph):
     g = []
     for n in graph.nodes:
         g.append(dict.fromkeys((n.id for n in n.flatten()), True))
-    for i in reversed(range(len(g))):
-        for j in reversed(range(i+1, len(g))):
+    for i in reversed(list(range(len(g)))):
+        for j in reversed(list(range(i+1, len(g)))):
             if g[i] and g[j] and len(intersection(g[i], g[j])) > 0:
                 g[i] = union(g[i], g[j])
                 g[j] = []

@@ -22,6 +22,8 @@
 
 import re
 
+from builtins import range
+
 #---------------------------------------------------------------------------------------------------
 # Note: this module is optimized for performance.
 # There is little gain in using more regular expressions.

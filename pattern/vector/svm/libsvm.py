@@ -5,6 +5,8 @@ from ctypes.util import find_library
 from os import path
 import sys
 
+from builtins import range
+
 # For unix the prefix 'lib' is not considered.
 if find_library('svm'):
 	libsvm = CDLL(find_library('svm'))
@@ -69,7 +71,7 @@ def gen_svm_nodearray(xi, feature_max=None, isKernel=None):
 	elif isinstance(xi, (list, tuple)):
 		if not isKernel:
 			xi = [0] + xi  # idx should start from 1
-		index_range = range(len(xi))
+		index_range = list(range(len(xi)))
 	else:
 		raise TypeError('xi should be a dictionary, list or tuple')
 
@@ -278,8 +280,8 @@ class svm_model(Structure):
 		return (libsvm.svm_check_probability_model(self) == 1)
 
 	def get_sv_coef(self):
-		return [tuple(self.sv_coef[j][i] for j in xrange(self.nr_class - 1))
-				for i in xrange(self.l)]
+		return [tuple(self.sv_coef[j][i] for j in range(self.nr_class - 1))
+				for i in range(self.l)]
 
 	def get_SV(self):
 		result = []
