@@ -82,6 +82,8 @@ SANITIZE_HTML = 1
 PARSE_MICROFORMATS = 1
 
 # ---------- Python 3 modules (make it work if possible) ----------
+from past.builtins import basestring
+
 try:
     import rfc822
 except ImportError:

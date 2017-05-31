@@ -33,6 +33,8 @@ import cPickle
 import gzip
 import types
 
+from past.builtins import basestring
+
 from math        import log, exp, sqrt, tanh
 from time        import time
 from random      import random, randint, uniform, choice, sample, seed

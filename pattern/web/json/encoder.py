@@ -3,6 +3,8 @@
 import re
 from decimal import Decimal
 
+from past.builtins import basestring
+
 def _import_speedups():
     try:
         import _speedups

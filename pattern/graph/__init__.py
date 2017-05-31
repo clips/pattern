@@ -17,6 +17,8 @@ from warnings import warn
 from codecs   import open
 from shutil   import rmtree
 
+from past.builtins import basestring
+
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:

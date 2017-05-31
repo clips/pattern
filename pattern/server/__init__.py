@@ -34,6 +34,8 @@ import itertools
 import collections
 import sqlite3 as sqlite
 
+from past.builtins import basestring
+
 try: # Python 2.x vs 3.x
     import htmlentitydefs
 except ImportError:

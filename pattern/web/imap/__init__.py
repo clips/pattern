@@ -13,6 +13,8 @@ import imaplib
 import email
 import time
 
+from past.builtins import basestring
+
 try: 
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:

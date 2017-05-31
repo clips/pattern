@@ -21,6 +21,8 @@ import os
 import sys
 import glob
 
+from past.builtins import basestring
+
 from math import log
 
 try: 

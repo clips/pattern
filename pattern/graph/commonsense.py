@@ -15,6 +15,8 @@ from __init__ import WEIGHT, CENTRALITY, EIGENVECTOR, BETWEENNESS
 
 import os
 
+from past.builtins import basestring
+
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:

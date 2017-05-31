@@ -83,6 +83,8 @@ __version__ = "3.2.1"
 __copyright__ = "Copyright (c) 2004-2012 Leonard Richardson"
 __license__ = "New-style BSD"
 
+from past.builtins import basestring
+
 from sgmllib import SGMLParser, SGMLParseError
 import codecs
 import markupbase

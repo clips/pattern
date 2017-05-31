@@ -16,6 +16,9 @@ import sys
 import threading
 import time
 import socket, urllib,  ssl
+
+from past.builtins import basestring
+
 try:
     # Python 2
     import urllib2

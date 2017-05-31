@@ -31,6 +31,8 @@
 # The Text and Sentece classes are containers: 
 # no parsing functionality should be added to it.
 
+from past.builtins import basestring
+
 try:
     from itertools import chain
     from itertools import izip
@@ -1712,4 +1714,3 @@ def table(sentence, fill=1, placeholder="-"):
         del columns[6] 
     # Create a string with one row (i.e., one token) per line.
     return "\n".join(["".join([x[i] for x in columns]) for i in range(len(columns[0]))])
-    
