@@ -6,6 +6,8 @@
 
 ####################################################################################################
 
+from __future__ import absolute_import
+
 from codecs    import BOM_UTF8
 from itertools import chain
 
@@ -16,8 +18,8 @@ except ImportError:
     # Python 3
     from urllib.request import urlopen
 
-from __init__ import Graph, Node, Edge, bfs
-from __init__ import WEIGHT, CENTRALITY, EIGENVECTOR, BETWEENNESS
+from .__init__ import Graph, Node, Edge, bfs
+from .__init__ import WEIGHT, CENTRALITY, EIGENVECTOR, BETWEENNESS
 
 import os
 
