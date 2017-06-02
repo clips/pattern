@@ -3784,15 +3784,20 @@ class PDF(DocumentParser):
     def _parse(self, path, *args, **kwargs):
         # The output is useful for mining but not for display.
         # Alternatively, PDF(format="html") preserves some layout.
-        from pdf.pdfinterp import PDFResourceManager, process_pdf
-        from pdf.converter import TextConverter, HTMLConverter
-        from pdf.layout    import LAParams
+        from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+        from pdfminer.pdfpage   import PDFPage
+        from pdfminer.converter import TextConverter, HTMLConverter
+        from pdfminer.layout    import LAParams
         try:
             m = PDFResourceManager()
             s = StringIO.StringIO()
             p = kwargs.get("format", "txt").endswith("html") and HTMLConverter or TextConverter
             p = p(m, s, codec="utf-8", laparams=LAParams())
-            process_pdf(m, p, self._open(path), set(), maxpages=0, password="")
+            interpreter = PDFPageInterpreter(m, p)
+            f = self._open(path)
+            for page in PDFPage.get_pages(f, maxpages=0, password=""):
+                interpreter.process_page(page)
+            f.close()
         except Exception as e:
             raise PDFError(str(e))
         s = s.getvalue()
