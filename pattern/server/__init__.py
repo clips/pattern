@@ -34,6 +34,12 @@ import itertools
 import collections
 import sqlite3 as sqlite
 
+try:
+    import json
+    json.encoder.FLOAT_REPR = lambda f: ("%.2f" % f)
+except AttributeError:
+    pass
+
 try: # Python 2.x vs 3.x
     import htmlentitydefs
 except:
@@ -74,14 +80,6 @@ except:
     # otherwise it conflicts with site-packages/cherrypy.
     sys.path.insert(0, os.path.join(MODULE, "cherrypy"))
     import cherrypy; cp=cherrypy
-
-try: import json # Python 2.6+
-except:
-    try: from pattern.web import json # simplejson
-    except:
-        json = None
-        
-json.encoder.FLOAT_REPR = lambda f: ("%.2f" % f)
 
 def chown(path, owner=None):
     """ Changes the ownership of the given file to the given (user, group).
