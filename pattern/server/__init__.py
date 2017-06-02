@@ -33,6 +33,7 @@ import tempfile
 import itertools
 import collections
 import sqlite3 as sqlite
+import cherrypy as cp
 
 try:
     import json
@@ -70,16 +71,6 @@ try:
     SCRIPT = os.path.dirname(os.path.abspath(f))
 except:
     SCRIPT = os.getcwd()
-
-try:
-    # Import from python2.x/site-packages/cherrypy
-    import cherrypy; cp=cherrypy
-except:
-    # Import from pattern/server/cherrypy/cherrypy
-    # Bundled package is "hidden" in a non-package folder,
-    # otherwise it conflicts with site-packages/cherrypy.
-    sys.path.insert(0, os.path.join(MODULE, "cherrypy"))
-    import cherrypy; cp=cherrypy
 
 def chown(path, owner=None):
     """ Changes the ownership of the given file to the given (user, group).
