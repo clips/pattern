@@ -3806,7 +3806,7 @@ class PDF(DocumentParser):
         return s
 
 #--- OOXML PARSER ----------------------------------------------------------------------------------
-#  Mike Maccana, Python docx, https://github.com/mikemaccana/python-docx
+# python-docx, https://github.com/python-openxml/python-docx
 
 class DOCXError(DocumentParserError):
     pass
@@ -3814,11 +3814,10 @@ class DOCXError(DocumentParserError):
 class DOCX(DocumentParser):
     
     def _parse(self, path, *args, **kwargs):
-        from docx.docx import opendocx
-        from docx.docx import getdocumenttext
+        from docx import Document
+        document = Document(path)
         try:
-            s = opendocx(self._open(path))
-            s = getdocumenttext(s)
+            s = [paragraph.text for paragraph in document.paragraphs]
         except Exception as e:
             raise DOCXError(str(e))
         s = "\n\n".join(p for p in s)
