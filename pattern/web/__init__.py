@@ -29,14 +29,13 @@ import StringIO
 import bisect
 import itertools
 import new
+import feedparser
 
 import api
-import feed
 import oauth
 import json
 import locale
 
-from feed import feedparser
 from soup import BeautifulSoup
 
 try:
