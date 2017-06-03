@@ -2495,7 +2495,7 @@ class DBPedia(SearchEngine):
 # Flickr is a popular image hosting and video hosting website.
 # http://www.flickr.com/services/api/
 
-FLICKR = "http://api.flickr.com/services/rest/"
+FLICKR = "https://api.flickr.com/services/rest/"
 FLICKR_LICENSE = api.license["Flickr"]
 
 INTERESTING = "interesting"
