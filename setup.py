@@ -56,14 +56,9 @@ setup(
         "pattern",
         "pattern.web",
         "pattern.web.cache",
-        "pattern.web.docx",
-        "pattern.web.feed",
         "pattern.web.imap",
-        "pattern.web.json",
         "pattern.web.locale",
         "pattern.web.oauth",
-        "pattern.web.pdf",
-        "pattern.web.soup",
         "pattern.db",
         "pattern.text",
         "pattern.text.de",
@@ -83,12 +78,7 @@ setup(
     package_data = {
         "pattern"                 : ["*.js"],
         "pattern.web.cache"       : ["tmp/*"],
-        "pattern.web.docx"        : ["*"],
-        "pattern.web.feed"        : ["*"],
-        "pattern.web.json"        : ["*"],
         "pattern.web.locale"      : ["*"],
-        "pattern.web.pdf"         : ["*.txt", "cmap/*"],
-        "pattern.web.soup"        : ["*"],
         "pattern.text.de"         : ["*.txt", "*.xml"],
         "pattern.text.en"         : ["*.txt", "*.xml", "*.slp"],
         "pattern.text.en.wordlist": ["*.txt"],
@@ -101,9 +91,7 @@ setup(
         "pattern.vector"          : ["*.txt"],
         "pattern.vector.svm"      : ["*.txt", "libsvm-3.11/*", "libsvm-3.17/*", "liblinear-1.93/*"],
         "pattern.graph"           : ["*.js", "*.csv"],
-        "pattern.server"          : ["static/*", "cherrypy/cherrypy/*.*", 
-                                                 "cherrypy/cherrypy/*/*", 
-                                                 "cherrypy/cherrypy/cherryd"],
+        "pattern.server"          : ["static/*"],
     },
     py_modules = [
         "pattern.metrics",
@@ -133,6 +121,13 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Text Processing :: Linguistic",
         "Topic :: Text Processing :: Markup :: HTML"
+    ],
+    install_requires = [
+        'beautifulsoup4',
+        'feedparser',
+        'pdfminer',
+        'python-docx',
+        'cherrypy'
     ],
     zip_safe = False
 )
