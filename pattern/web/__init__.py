@@ -29,15 +29,14 @@ import StringIO
 import bisect
 import itertools
 import new
+import feedparser
+import json
 
 import api
-import feed
 import oauth
-import json
 import locale
 
-from feed import feedparser
-from soup import BeautifulSoup
+import bs4 as BeautifulSoup
 
 try:
     # Import persistent Cache.
@@ -3785,15 +3784,20 @@ class PDF(DocumentParser):
     def _parse(self, path, *args, **kwargs):
         # The output is useful for mining but not for display.
         # Alternatively, PDF(format="html") preserves some layout.
-        from pdf.pdfinterp import PDFResourceManager, process_pdf
-        from pdf.converter import TextConverter, HTMLConverter
-        from pdf.layout    import LAParams
+        from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+        from pdfminer.pdfpage   import PDFPage
+        from pdfminer.converter import TextConverter, HTMLConverter
+        from pdfminer.layout    import LAParams
         try:
             m = PDFResourceManager()
             s = StringIO.StringIO()
             p = kwargs.get("format", "txt").endswith("html") and HTMLConverter or TextConverter
             p = p(m, s, codec="utf-8", laparams=LAParams())
-            process_pdf(m, p, self._open(path), set(), maxpages=0, password="")
+            interpreter = PDFPageInterpreter(m, p)
+            f = self._open(path)
+            for page in PDFPage.get_pages(f, maxpages=0, password=""):
+                interpreter.process_page(page)
+            f.close()
         except Exception as e:
             raise PDFError(str(e))
         s = s.getvalue()
@@ -3807,7 +3811,7 @@ class PDF(DocumentParser):
         return s
 
 #--- OOXML PARSER ----------------------------------------------------------------------------------
-#  Mike Maccana, Python docx, https://github.com/mikemaccana/python-docx
+# python-docx, https://github.com/python-openxml/python-docx
 
 class DOCXError(DocumentParserError):
     pass
@@ -3815,11 +3819,10 @@ class DOCXError(DocumentParserError):
 class DOCX(DocumentParser):
     
     def _parse(self, path, *args, **kwargs):
-        from docx.docx import opendocx
-        from docx.docx import getdocumenttext
+        from docx import Document
+        document = Document(path)
         try:
-            s = opendocx(self._open(path))
-            s = getdocumenttext(s)
+            s = [paragraph.text for paragraph in document.paragraphs]
         except Exception as e:
             raise DOCXError(str(e))
         s = "\n\n".join(p for p in s)

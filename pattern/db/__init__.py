@@ -14,6 +14,7 @@ import warnings
 import re
 import urllib
 import base64
+import json
 import csv as csvlib
 
 from codecs    import BOM_UTF8
@@ -1836,10 +1837,10 @@ class json(object):
             return "[%s]" % ", ".join(self.dumps(v) for v in obj)
         raise TypeError("can't process %s." % type(obj))
 
-try: import json # Python 2.6+
+# Try to install JSON library, otherwise use fallback routine
+try:
+    import json
 except:
-    try: from pattern.web import json # simplejson
-    except:
         json = json()
 
 #db = Database("test")
