@@ -123,7 +123,7 @@ setup(
         "Topic :: Text Processing :: Markup :: HTML"
     ],
     install_requires = [
-        'beautifulsoup4',
+        'Beautifulsoup',
         'feedparser',
         'pdfminer',
         'python-docx',
