@@ -190,8 +190,8 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
     return tags
 
 def keywords(s, top=10, **kwargs):
-     """ Returns a sorted list of keywords in the given string.
-     """
+    """ Returns a sorted list of keywords in the given string.
+    """
     return parser.find_keywords(s, **dict({
         "frequency": parser.frequency,
               "top": top,
