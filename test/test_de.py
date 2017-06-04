@@ -236,4 +236,6 @@ def suite():
     return suite
 
 if __name__ == "__main__":
-    unittest.TextTestRunner(verbosity=1).run(suite())
+
+    result = unittest.TextTestRunner(verbosity=1).run(suite())
+    sys.exit(not result.wasSuccessful())
