@@ -1,0 +1,23 @@
+language: python
+
+python:
+  - "2.6"
+  - "2.7"
+  - "3.5"
+  - "3.6"
+
+before_install:
+  - pip install --upgrade setuptools
+
+install:
+  - python setup.py install --quiet
+
+script: python test/test.py
+
+branches:
+  only:
+  - development
+
+# You can connect to MySQL/MariaDB using the username "travis" or "root" and a blank password.
+services:
+  - mysql
