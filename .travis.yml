@@ -6,6 +6,11 @@ python:
   - "3.5"
   - "3.6"
 
+matrix:
+  allow_failures:
+    - python: "3.5"
+    - python: "3.6"
+
 before_install:
   - pip install --upgrade setuptools
 
