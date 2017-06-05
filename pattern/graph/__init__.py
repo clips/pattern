@@ -17,6 +17,9 @@ from warnings import warn
 from codecs   import open
 from shutil   import rmtree
 
+from builtins import str, range
+from past.builtins import basestring
+
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
@@ -119,7 +122,7 @@ class Node(object):
         self.stroke      = kwargs.pop("stroke", (0,0,0,1))
         self.strokewidth = kwargs.pop("strokewidth", 1)
         self.text        = kwargs.get("text", True) and \
-            Text(isinstance(id, unicode) and id or str(id).decode("utf-8", "ignore"), 
+            Text(isinstance(id, str) and id or str(id),
                    width = 85,
                     fill = kwargs.pop("text", (0,0,0,1)), 
                 fontsize = kwargs.pop("fontsize", 11), **kwargs) or None
@@ -1050,8 +1053,8 @@ def partition(graph):
     g = []
     for n in graph.nodes:
         g.append(dict.fromkeys((n.id for n in n.flatten()), True))
-    for i in reversed(range(len(g))):
-        for j in reversed(range(i+1, len(g))):
+    for i in reversed(list(range(len(g)))):
+        for j in reversed(list(range(i+1, len(g)))):
             if g[i] and g[j] and len(intersection(g[i], g[j])) > 0:
                 g[i] = union(g[i], g[j])
                 g[j] = []

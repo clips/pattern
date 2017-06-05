@@ -5,6 +5,8 @@
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
+from past.builtins import basestring
+
 #### LANGUAGE & REGION #############################################################################
 # IETF BCP 47 language-region code => (language, region, ISO-639 language code, ISO-3166 region code).
 # Note: the list is incomplete (especially for African languages).
