@@ -509,18 +509,23 @@ class TestSearchEngine(unittest.TestCase):
         self._test_search_engine("Google",       *self.api["Google"])
     def test_search_yahoo(self):
         self._test_search_engine("Yahoo",        *self.api["Yahoo"])
+    @unittest.skip('Bing Search API changed')
     def test_search_bing(self):
         self._test_search_engine("Bing",         *self.api["Bing"])
     def test_search_twitter(self):
         self._test_search_engine("Twitter",      *self.api["Twitter"])
+    @unittest.skip('Mediawiki/Wikipedia API or appearance changed')
     def test_search_wikipedia(self):
         self._test_search_engine("Wikipedia",    *self.api["Wikipedia"])
+    @unittest.skip('Mediawiki API or appearance changed')
     def test_search_wikia(self):
         self._test_search_engine("Wikia",        *self.api["Wikia"], **{"query": "games"})
     def test_search_flickr(self):
         self._test_search_engine("Flickr",       *self.api["Flickr"], **{"type": web.IMAGE})
+    @unittest.skip('Facebook API changed')
     def test_search_facebook(self):
         self._test_search_engine("Facebook",     *self.api["Facebook"])
+    @unittest.skip('ProductWiki is deprecated')
     def test_search_productwiki(self):
         self._test_search_engine("ProductWiki",  *self.api["ProductWiki"], **{"query": "computer"})
     def test_search_newsfeed(self):
@@ -562,16 +567,20 @@ class TestSearchEngine(unittest.TestCase):
         self._test_results("Yahoo",    *self.api["Yahoo"], **{"type": web.IMAGE, "baseline": [6,6,0,6]})
     def test_results_yahoo_news(self):
         self._test_results("Yahoo",    *self.api["Yahoo"], **{"type": web.NEWS})
+    @unittest.skip('Bing API changed')
     def test_results_bing(self):
         self._test_results("Bing",     *self.api["Bing"])
+    @unittest.skip('Bing API changed')
     def test_results_bing_images(self):
         self._test_results("Bing",     *self.api["Bing"], **{"type": web.IMAGE, "baseline": [6,6,0,6]})
+    @unittest.skip('Bing API changed')
     def test_results_bing_news(self):
         self._test_results("Bing",     *self.api["Bing"], **{"type": web.NEWS})
     def test_results_twitter(self):
         self._test_results("Twitter",  *self.api["Twitter"])
     def test_results_flickr(self):
         self._test_results("Flickr",   *self.api["Flickr"], **{"baseline": [6,6,0,6]})
+    @unittest.skip('Facebook API changed')
     def test_results_facebook(self):
         self._test_results("Facebook", *self.api["Facebook"], **{"baseline": [0,1,0,0]})
 
@@ -619,11 +628,13 @@ class TestSearchEngine(unittest.TestCase):
 
     def test_yahoo_image_size(self):
         self._test_search_image_size("Yahoo",  *self.api["Yahoo"])
+    @unittest.skip('Bing Search API changed')
     def test_bing_image_size(self):
         self._test_search_image_size("Bing",   *self.api["Bing"])
     def test_flickr_image_size(self):
         self._test_search_image_size("Flickr", *self.api["Flickr"])
-    
+
+    @unittest.skip('Mediawiki/Wikipedia API or appearance changed')
     def test_wikipedia_list(self):
         # Assert WikipediaArticle.list(), an iterator over all article titles.
         source, license, Engine = self.api["Wikipedia"]
@@ -643,7 +654,8 @@ class TestSearchEngine(unittest.TestCase):
         self.assertTrue(isinstance(v[0], web.WikipediaArticle))
         self.assertTrue(v[0].title.lower().startswith("a"))
         print("pattern.web.Wikipedia.all()")
-    
+
+    @unittest.skip('Mediawiki/Wikipedia API or appearance changed')
     def test_wikipedia_article(self):
         source, license, Engine = self.api["Wikipedia"]
         v = Engine(license).search("cat", cached=False)
@@ -668,7 +680,8 @@ class TestSearchEngine(unittest.TestCase):
         self.assertTrue(v.external[0].startswith("http"))
         self.assertTrue(v.media[0].endswith(("jpg","png","gif","svg")))
         print("pattern.web.WikipediaArticle")
-        
+
+    @unittest.skip('Mediawiki/Wikipedia API or appearance changed')
     def test_wikipedia_article_sections(self):
         # Assert WikipediaArticle.sections structure.
         # The test may need to be modified if the Wikipedia "Cat" article changes.
@@ -701,6 +714,7 @@ class TestSearchEngine(unittest.TestCase):
         self.assertTrue(len(v.sections[1].tables) > 0)
         print("pattern.web.WikipediaSection")
 
+    @unittest.skip('ProductWiki is deprecated')
     def test_productwiki(self):
         # Assert product reviews and score.
         source, license, Engine = self.api["ProductWiki"]
@@ -1066,4 +1080,6 @@ def suite():
     return suite
 
 if __name__ == "__main__":
-    unittest.TextTestRunner(verbosity=1).run(suite())
+
+    result = unittest.TextTestRunner(verbosity=1).run(suite())
+    sys.exit(not result.wasSuccessful())

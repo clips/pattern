@@ -36,7 +36,7 @@ import api
 import oauth
 import locale
 
-import bs4 as BeautifulSoup
+import BeautifulSoup
 
 try:
     # Import persistent Cache.
@@ -2495,7 +2495,7 @@ class DBPedia(SearchEngine):
 # Flickr is a popular image hosting and video hosting website.
 # http://www.flickr.com/services/api/
 
-FLICKR = "http://api.flickr.com/services/rest/"
+FLICKR = "https://api.flickr.com/services/rest/"
 FLICKR_LICENSE = api.license["Flickr"]
 
 INTERESTING = "interesting"
