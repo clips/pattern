@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import unittest
-import StringIO
+try:
+    # Python 2
+    from StringIO import StringIO
+except ImportError:
+    # Python 3
+    from io import StringIO
 
 from pattern import text
 
@@ -39,7 +44,7 @@ class TestLexicon(unittest.TestCase):
     def test_lexicon(self):
         # Assert lexicon from file (or file-like string).
         f1 = u";;; Comments. \n schrödinger NNP \n cat NN"
-        f2 = StringIO.StringIO(u";;; Comments. \n schrödinger NNP \n cat NN")
+        f2 = StringIO(u";;; Comments. \n schrödinger NNP \n cat NN")
         v1 = text.Lexicon(path=f1)
         v2 = text.Lexicon(path=f2)
         self.assertEqual(v1[u"schrödinger"], "NNP")
@@ -56,7 +61,7 @@ class TestFrequency(unittest.TestCase):
     def test_frequency(self):
         # Assert word frequency from file (or file-like string).
         f1 = u";;; Comments. \n the 1.0000 \n of 0.5040"
-        f2 = StringIO.StringIO(u";;; Comments. \n the 1.0000 \n of 0.5040")
+        f2 = StringIO(u";;; Comments. \n the 1.0000 \n of 0.5040")
         v1 = text.Frequency(path=f1)
         v2 = text.Frequency(path=f2)
         self.assertEqual(v1[u"of"], 0.504)
@@ -92,7 +97,7 @@ class TestMorphology(unittest.TestCase):
         
     def test_morphology(self):
         # Assert morphological tagging rules.
-        f = StringIO.StringIO(u"NN s fhassuf 1 NNS x")
+        f = StringIO(u"NN s fhassuf 1 NNS x")
         v = text.Morphology(f)
         self.assertEqual(v.apply(
             ["cats", "NN"]), 
@@ -108,7 +113,7 @@ class TestContext(unittest.TestCase):
         
     def test_context(self):
         # Assert contextual tagging rules.
-        f = StringIO.StringIO(u"VBD VB PREVTAG TO")
+        f = StringIO(u"VBD VB PREVTAG TO")
         v = text.Context(path=f)
         self.assertEqual(v.apply(
             [["to", "TO"], ["be", "VBD"]]), 
@@ -124,7 +129,7 @@ class TestEntities(unittest.TestCase):
         
     def test_entities(self):
         # Assert named entity recognizer.
-        f = StringIO.StringIO(u"Schrödinger's cat PERS")
+        f = StringIO(u"Schrödinger's cat PERS")
         v = text.Entities(path=f)
         self.assertEqual(v.apply(
             [[u"Schrödinger's", "NNP"], ["cat", "NN"]]),
@@ -142,8 +147,8 @@ class TestParser(unittest.TestCase):
         # Assert loading data from file-like strings.
         p = text.Parser(
                lexicon = {"to": "TO", "saw": "VBD"},
-            morphology = StringIO.StringIO(u"NN s fhassuf 1 NNS x"),
-               context = StringIO.StringIO(u"VBD VB PREVTAG TO"))
+            morphology = StringIO(u"NN s fhassuf 1 NNS x"),
+               context = StringIO(u"VBD VB PREVTAG TO"))
         self.assertEqual(p.parse("cats"), "cats/NNS/B-NP/O")
         self.assertEqual(p.parse("to saw"), "to/TO/B-VP/O saw/VB/I-VP/O")
         

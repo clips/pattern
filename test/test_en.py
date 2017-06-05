@@ -989,7 +989,7 @@ class TestSentiment(unittest.TestCase):
             from pattern.text.en.wordnet import SentiWordNet
             lexicon = SentiWordNet()
             lexicon.load()
-        except ImportError, e:
+        except ImportError as e:
             # SentiWordNet data file is not installed in default location, stop test.
             print(e)
             return

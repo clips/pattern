@@ -5,6 +5,8 @@ from ctypes.util import find_library
 from os import path
 import sys
 
+from builtins import range
+
 # For unix the prefix 'lib' is not considered.
 if find_library('linear'):
 	liblinear = CDLL(find_library('linear'))
@@ -70,7 +72,7 @@ def gen_feature_nodearray(xi, feature_max=None, issparse=True):
 		index_range = xi.keys()
 	elif isinstance(xi, (list, tuple)):
 		xi = [0] + xi  # idx should start from 1
-		index_range = range(1, len(xi))
+		index_range = list(range(1, len(xi)))
 	else:
 		raise TypeError('xi should be a dictionary, list or tuple')
 

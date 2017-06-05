@@ -5,6 +5,8 @@ import unittest
 from pattern import graph
 from pattern.graph import commonsense
 
+from builtins import int
+
 #---------------------------------------------------------------------------------------------------
 
 class TestUtilityFunctions(unittest.TestCase):
@@ -23,7 +25,7 @@ class TestUtilityFunctions(unittest.TestCase):
         for o1 in (
           None, True, False, 
           "a", u"a", 
-          1, 1.0, 1L, complex(1), 
+          1, 1.0, int(1), complex(1),
           list([1]), tuple([1]), set([1]), frozenset([1]),
           dict(a=1), {frozenset(["a"]):1}, {MyObject(1):1}, 
           MyObject(1)):

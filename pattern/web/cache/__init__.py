@@ -4,6 +4,8 @@
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
+from past.builtins import basestring
+
 try:
     import hashlib; md5=hashlib.md5
 except:
