@@ -10,7 +10,7 @@ Pattern is a web mining module for Python. It has tools for:
 
 It is well documented and bundled with 50+ examples and 350+ unit tests. The source code is licensed under BSD and available from <http://www.clips.ua.ac.be/pages/pattern>.
 
-![Pattern example workflow](http://www.clips.ua.ac.be/media/pattern_schema.gif)
+![Pattern example workflow](http://raw.githubusercontent.com/clips/pattern/master/docs/g/pattern_schema.gif)
 
 Version
 -------
@@ -25,7 +25,7 @@ License
 Installation
 ------------
 
-Pattern is written for Python 2.5+ (no support for Python 3 yet). The module has no external dependencies except when using LSA in the pattern.vector module, which requires NumPy (installed by default on Mac OS X). To install Pattern so that it is available in all your scripts, unzip the download and from the command line do:
+Pattern is written for Python 2.7. There is no support for Python 3, yet. To install Pattern so that it is available in all your scripts, unzip the download and from the command line do:
 ```bash
 cd pattern-2.6
 python setup.py install
@@ -79,7 +79,7 @@ print knn.classify('stupid autocorrect')
 Documentation
 -------------
 
-<http://www.clips.ua.ac.be/pages/pattern>
+For documentation and examples see the [user documentation](http://www.clips.ua.ac.be/pages/pattern). If you are a developer, go check out the [developer documentation](http://www.clips.ua.ac.be/pages/pattern-dev).
 
 Reference
 ---------
@@ -89,14 +89,13 @@ De Smedt, T., Daelemans, W. (2012). Pattern for Python. *Journal of Machine Lear
 Contribute
 ----------
 
-The source code is hosted on GitHub and contributions or donations are welcomed, see the [developer documentation](http://www.clips.ua.ac.be/pages/pattern#contribute). If you use Pattern in your work, please cite our reference paper.
+The source code is hosted on GitHub and contributions or donations are welcomed. Please have look at the [developer documentation](http://www.clips.ua.ac.be/pages/pattern-dev). If you use Pattern in your work, please cite our reference paper.
 
 Bundled dependencies
 --------------------
 
 Pattern is bundled with the following data sets, algorithms and Python packages:
 
-- **Beautiful Soup**, Leonard Richardson
 - **Brill tagger**, Eric Brill
 - **Brill tagger for Dutch**, Jeroen Geertzen
 - **Brill tagger for German**, Gerold Schneider & Martin Volk
@@ -110,12 +109,8 @@ Pattern is bundled with the following data sets, algorithms and Python packages:
 - **LIBSVM**, Chih-Chung Chang & Chih-Jen Lin
 - **LIBLINEAR**, Rong-En Fan et al.
 - **NetworkX centrality**, Aric Hagberg, Dan Schult & Pieter Swart
-- **PDFMiner**, Yusuke Shinyama
-- **Python docx**, Mike Maccana
 - **PyWordNet**, Oliver Steele
-- **simplejson**, Bob Ippolito
 - **spelling corrector**, Peter Norvig
-- **Universal Feed Parser**, Mark Pilgrim
 - **WordNet**, Christiane Fellbaum et al.
 
 Acknowledgements
