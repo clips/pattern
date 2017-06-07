@@ -17,6 +17,8 @@ from heapq       import nlargest
 from bisect      import bisect_right
 from random      import gauss
 
+from past.builtins import basestring
+
 if sys.version > "3":
     xrange = range
 
