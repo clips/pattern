@@ -579,7 +579,7 @@ def cooccurrence(iterable, window=(-1,-1), term1=lambda x: True, term2=lambda x:
                 x1 = normalize(x1)
                 if term1(x1):
                     # Iterate the window and filter co-occurent terms.
-                    for j, x2 in enumerate(list(q).__getslice__(i+window[0], i+window[1]+1)):
+                    for j, x2 in enumerate(list(q)[i+window[0]:i+window[1]+1]):
                         if not isinstance(x2, Sentinel):
                             x2 = normalize(x2)
                             if term2(x2):
