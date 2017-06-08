@@ -26,7 +26,7 @@ from math      import sqrt
 from types     import GeneratorType
 
 from builtins import range
-from past.builtins import basestring
+from past.builtins import basestring, unicode
 
 try: # Python 2.x vs 3.x
     from cStringIO import StringIO
@@ -1944,7 +1944,7 @@ class CSV(list):
         data = data if not password else decrypt_string(data.read(), password)
         data = data if not password else StringIO(data.replace("\r\n", "\n").replace("\r", "\n"))
         data = data if not preprocess else StringIO(preprocess(data.read()))
-        data.seek(data.readline().startswith(BOM_UTF8) and len(BOM_UTF8) or 0)
+        data.seek(data.readline().startswith(str(BOM_UTF8.decode('utf-8-sig'))) and len(BOM_UTF8) or 0)
         data = csvlib.reader(data, delimiter=separator)
         i, n = kwargs.get("start"), kwargs.get("count")
         if i is not None and n is not None:
