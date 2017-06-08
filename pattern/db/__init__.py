@@ -25,6 +25,8 @@ from time      import mktime, strftime
 from math      import sqrt
 from types     import GeneratorType
 
+from past.builtins import basestring
+
 try: # Python 2.x vs 3.x
     from cStringIO import StringIO
 except:
