@@ -33,15 +33,24 @@ import cPickle
 import gzip
 import types
 
+from builtins import range
+from past.builtins import basestring
+
 from math        import log, exp, sqrt, tanh
 from time        import time
 from random      import random, randint, uniform, choice, sample, seed
 from itertools   import chain
 from bisect      import insort
 from operator    import itemgetter
-from StringIO    import StringIO
 from codecs      import open
 from collections import defaultdict
+
+try:
+    # Python 2
+    from cStringIO import StringIO
+except ImportError:
+    # Python 3
+    from io import StringIO
 
 try:
     import numpy
@@ -130,7 +139,7 @@ def chunk(iterable, n):
     n = int(n)
     i = 0
     j = 0
-    for m in xrange(n):
+    for m in range(n):
         j = i + len(a[m::n]) 
         yield a[i:j]
         i = j
@@ -140,7 +149,7 @@ def mix(iterables=[], n=10):
     """
     # list(mix([[1, 2, 3, 4], ["a", "b"]], n=2)) => [1, 2, "a", 3, 4, "b"]
     a = [list(chunk(x, n)) for x in iterables]
-    for i in xrange(int(n)):
+    for i in range(int(n)):
         for x in a:
             for item in x[i]:
                 yield item
@@ -330,7 +339,7 @@ def character_ngrams(string="", n=3, top=None, threshold=0, exclude=[], **kwargs
     # e.g., count(words, dict=readonlydict) as used in Document.
     count = defaultdict(int)
     if n > 0:
-        for i in xrange(len(string)-n+1):
+        for i in range(len(string)-n+1):
             w = string[i:i+n]
             if w not in exclude:
                 count[w] += 1
@@ -1309,7 +1318,7 @@ class Model(object):
             vectors, features = [d.vector for d in documents], self.vector.keys()
         else:
             # Using LSA concept space:
-            vectors, features = [self.lsa[d.id] for d in documents], range(len(self.lsa))
+            vectors, features = [self.lsa[d.id] for d in documents], list(range(len(self.lsa)))
         # Create a dictionary of vector.id => Document.
         # We need it to map the clustered vectors back to the actual documents.
         map = dict((v.id, documents[i]) for i, v in enumerate(vectors))
@@ -1714,7 +1723,7 @@ class LSA(object):
         # The maximum length of a concept vector = the number of documents.
         assert k < len(model.documents), \
             "can't create more dimensions than there are documents"
-        tail = lambda list, i: range(len(list)-i, len(list))
+        tail = lambda list, i: list(range(len(list)-i, len(list)))
         u, sigma, vt = (
             numpy.delete(u, tail(u[0], k), axis=1),
             numpy.delete(sigma, tail(sigma, k), axis=0),
@@ -1893,7 +1902,7 @@ def k_means(vectors, k=None, iterations=10, distance=COSINE, seed=RANDOM, **kwar
     if seed == KMPP:
         clusters = kmpp(vectors, k, distance)
     else:
-        clusters = [[] for i in xrange(int(k))]
+        clusters = [[] for i in range(int(k))]
         for i, v in enumerate(sorted(vectors, key=lambda x: random())):
             # Randomly partition the vectors across k clusters.
             clusters[i % int(k)].append(v)
@@ -1914,10 +1923,10 @@ def k_means(vectors, k=None, iterations=10, distance=COSINE, seed=RANDOM, **kwar
         # check if it is nearer to the center of another cluster.
         # If so, assign it. When visualized, this produces a Voronoi diagram.
         converged = True
-        for i in xrange(len(clusters)):
+        for i in range(len(clusters)):
             for v in clusters[i]:
                 nearest, d1 = i, distance(v, centroids[i])
-                for j in xrange(len(clusters)):
+                for j in range(len(clusters)):
                     if D[(i,j)] < d1: # Triangle inequality (Elkan, 2003).
                         d2 = distance(v, centroids[j])
                         if d2 < d1:
@@ -1968,7 +1977,7 @@ def kmpp(vectors, k, distance=COSINE):
         d = [min(d[i], distance(v, centroids[-1])) for i, v in enumerate(vectors)]
         s = sum(d)
     # Assign points to the nearest center.
-    clusters = [[] for i in xrange(int(k))]
+    clusters = [[] for i in range(int(k))]
     for v1 in vectors:
         d = [distance(v1, v2) for v2 in centroids]
         clusters[d.index(min(d))].append(v1)
@@ -2449,13 +2458,13 @@ def folds(documents=[], K=10, **kwargs):
         a = list(iterable)
         i = 0
         j = 0
-        for m in xrange(n):
+        for m in range(n):
             j = i + len(a[m::n])
             yield a[i:j]
             i = j
     k = kwargs.get("k", K)
     d = list(chunks(documents, max(k, 2)))
-    for holdout in xrange(k):
+    for holdout in range(k):
         yield list(chain(*(d[:holdout] + d[holdout+1:]))), d[holdout]
 
 _folds = folds
@@ -2930,8 +2939,8 @@ def matrix(m, n, a=0.0, b=0.0):
         If a and b are given, values are uniformly random between a and b.
     """
     if a == b == 0:
-        return [[0.0] * n for i in xrange(m)]
-    return [[uniform(a, b) for j in xrange(n)] for i in xrange(m)]
+        return [[0.0] * n for i in range(m)]
+    return [[uniform(a, b) for j in range(n)] for i in range(m)]
 
 def sigmoid(x):
     """ Forward propagation activation function.
@@ -3568,7 +3577,7 @@ class LR(Classifier):
             t = scipy.zeros((max(y) + 1, n+1))
             x = scipy.sparse.hstack([scipy.ones((m, 1)), x])
             y = scipy.array(y)
-            for i in xrange(max(y) + 1):
+            for i in range(max(y) + 1):
                 t0 = scipy.zeros((n+1, 1))
                 t0 = scipy.transpose(t0)
                 t[i,:] = scipy.optimize.fmin_cg(
@@ -3690,7 +3699,7 @@ class GeneticAlgorithm(object):
         n = len(p)
         for candidate in self.population:
             i = randint(0, n-1)
-            j = choice([x for x in xrange(n) if x != i]) if n > 1 else 0
+            j = choice([x for x in range(n) if x != i]) if n > 1 else 0
             g.append(self.combine(p[i], p[j]))
             if random() <= mutation:
                 g[-1] = self.mutate(g[-1])

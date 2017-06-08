@@ -25,21 +25,22 @@ from time      import mktime, strftime
 from math      import sqrt
 from types     import GeneratorType
 
+from builtins import range
 from past.builtins import basestring
 
 try: # Python 2.x vs 3.x
     from cStringIO import StringIO
-except:
+except ImportError:
     from io import BytesIO as StringIO
 
 try: # Python 2.x vs 3.x
     import htmlentitydefs
-except:
+except ImportError:
     from html import entities as htmlentitydefs
 
 try: # Python 2.4 vs 2.5+
     from email.Utils import parsedate_tz, mktime_tz
-except:
+except ImportError:
     from email.utils import parsedate_tz, mktime_tz
     
 try: 
@@ -323,7 +324,7 @@ def encrypt_string(s, key=""):
     key += " "
     s = encode_utf8(s)
     a = []
-    for i in xrange(len(s)):
+    for i in range(len(s)):
         try: a.append(chr(ord(s[i]) + ord(key[i % len(key)]) % 256))
         except:
             raise EncryptionError()
@@ -337,7 +338,7 @@ def decrypt_string(s, key=""):
     key += " "
     s = base64.urlsafe_b64decode(s)
     a = []
-    for i in xrange(len(s)):
+    for i in range(len(s)):
         try: a.append(chr(ord(s[i]) - ord(key[i % len(key)]) % 256))
         except:
             raise DecryptionError()
@@ -2184,7 +2185,7 @@ class Datasheet(CSV):
         u = [None] * len(o)
         for v in g:
             # List the column values for each group row.
-            u[o[v]] = [[list.__getitem__(self, i)[j] for i in g[v]] for j in xrange(self._m)]
+            u[o[v]] = [[list.__getitem__(self, i)[j] for i in g[v]] for j in range(self._m)]
             # Apply the group function to each row, except the unique value in column j.
             u[o[v]] = [function[j](column) for j, column in enumerate(u[o[v]])]
             u[o[v]][J] = v # list.__getitem__(self, i)[J]
@@ -2205,7 +2206,7 @@ class Datasheet(CSV):
     def slice(self, i, j, n, m):
         """ Returns a new Datasheet starting at row i and column j and spanning n rows and m columns.
         """
-        return Datasheet(rows=[list.__getitem__(self, i)[j:j+m] for i in xrange(i, i+n)])
+        return Datasheet(rows=[list.__getitem__(self, i)[j:j+m] for i in range(i, i+n)])
 
     def copy(self, rows=ALL, columns=ALL):
         """ Returns a new Datasheet from a selective list of row and/or column indices.
@@ -2304,7 +2305,7 @@ class DatasheetRows(list):
     def __len__(self):
         return len(self._datasheet)
     def __iter__(self):
-        for i in xrange(len(self)): yield list.__getitem__(self._datasheet, i)
+        for i in range(len(self)): yield list.__getitem__(self._datasheet, i)
     def __repr__(self):
         return repr(self._datasheet)
     def __add__(self, row):
@@ -2368,7 +2369,7 @@ class DatasheetColumns(list):
     def __len__(self):
         return len(self._datasheet) > 0 and len(self._datasheet[0]) or 0
     def __iter__(self):
-        for i in xrange(len(self)): yield self.__getitem__(i)
+        for i in range(len(self)): yield self.__getitem__(i)
     def __repr__(self):
         return repr(list(iter(self)))    
     def __add__(self, column):
@@ -2418,7 +2419,7 @@ class DatasheetColumns(list):
         self._cache[j]._datasheet = Datasheet(rows=[[v] for v in column])
         self._cache[j]._j = 0
         self._cache.pop(j)
-        for k in xrange(j+1, len(self)+1):
+        for k in range(j+1, len(self)+1):
             if k in self._cache:
                 # Shift the DatasheetColumn objects on the right to the left.
                 self._cache[k-1] = self._cache.pop(k)
@@ -2474,7 +2475,7 @@ class DatasheetColumn(list):
         self._j = j
 
     def __getslice__(self, i, j):
-        return list(list.__getitem__(self._datasheet, i)[self._j] for i in xrange(i, min(j, len(self._datasheet))))
+        return list(list.__getitem__(self._datasheet, i)[self._j] for i in range(i, min(j, len(self._datasheet))))
     def __getitem__(self, i):
         return list.__getitem__(self._datasheet, i)[self._j]
     def __setitem__(self, i, value):
@@ -2482,7 +2483,7 @@ class DatasheetColumn(list):
     def __len__(self):
         return len(self._datasheet)
     def __iter__(self): # Can be put more simply but optimized for performance:
-        for i in xrange(len(self)): yield list.__getitem__(self._datasheet, i)[self._j]
+        for i in range(len(self)): yield list.__getitem__(self._datasheet, i)[self._j]
     def __reversed__(self):
         return reversed(list(iter(self)))
     def __repr__(self):
@@ -2623,7 +2624,7 @@ def pprint(datasheet, truncate=40, padding=" ", fill="."):
         fields = [lines+[""] * (n-len(lines)) for lines in fields]
         # Print the row line per line, justifying the fields with spaces.
         columns = []
-        for k in xrange(n):
+        for k in range(n):
             for j, lines in enumerate(fields):
                 s  = lines[k]
                 s += ((k==0 or len(lines[k]) > 0) and fill or " ") * (w[j] - len(lines[k])) 

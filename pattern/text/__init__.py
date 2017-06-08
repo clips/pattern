@@ -14,6 +14,8 @@ import string
 import types
 import codecs
 
+from past.builtins import basestring
+
 from xml.etree import cElementTree
 from itertools import chain
 from math      import log

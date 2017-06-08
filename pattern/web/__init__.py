@@ -15,25 +15,67 @@ import os
 import sys
 import threading
 import time
-import socket, urlparse, urllib, urllib2, ssl
+import socket, urllib, ssl
+
+from past.builtins import basestring
+
+try:
+    # Python 2
+    import urllib2
+except ImportError:
+    # Python 3
+    from urllib import request as urllib2
+try:
+    # Python 2
+    import urlparse
+except ImportError:
+    # Python 3
+    from urllib import parse as urlparse
 import base64
-import htmlentitydefs
-import httplib
+try:
+    # Python 2
+    import htmlentitydefs
+except ImportError:
+    # Python 3
+    import html.entities as htmlentitydefs
+try:
+    # Python 2
+    import httplib
+except ImportError:
+    # Python 3
+    import http.client as httplib
 import sgmllib
-import cookielib
+try:
+    # Python 3
+    import cookielib
+except ImportError:
+    # Python 2
+    import http.cookiejar as cookielib
 import re
 import xml.dom.minidom
 import unicodedata
 import string
-import StringIO
+try:
+    # Python 2
+    from cStringIO import StringIO
+except ImportError:
+    # Python 3
+    from io import StringIO
 import bisect
 import itertools
-import new
+try:
+    # Python 2
+    import new
+except ImportError:
+    # Python 3: We don't actually need it (in this case)
+    new = None
 import feedparser
 import json
 
 import api
+import feed
 import oauth
+import json
 import locale
 
 import BeautifulSoup
@@ -621,7 +663,12 @@ def download(url=u"", method=GET, query={}, timeout=10, cached=True, throttle=0,
 def bind(object, method, function):
     """ Attaches the function as a method with the given name to the given object.
     """
-    setattr(object, method, new.instancemethod(function, object))
+    if new:
+        # Python 2
+        setattr(object, method, new.instancemethod(function, object))
+    else:
+        # Python 3: There is no good reason to use this function in Python 3.
+        setattr(object, method, function)
 
 class Stream(list):
 
@@ -3756,7 +3803,7 @@ class DocumentParser(object):
             return open(path, "rb")
         if hasattr(path, "read"):
             return path
-        return StringIO.StringIO(path)
+        return StringIO(path)
 
     def _parse(self, path, *args, **kwargs):
         """ Returns a plaintext Unicode string parsed from the given document.
@@ -3790,7 +3837,7 @@ class PDF(DocumentParser):
         from pdfminer.layout    import LAParams
         try:
             m = PDFResourceManager()
-            s = StringIO.StringIO()
+            s = StringIO()
             p = kwargs.get("format", "txt").endswith("html") and HTMLConverter or TextConverter
             p = p(m, s, codec="utf-8", laparams=LAParams())
             interpreter = PDFPageInterpreter(m, p)

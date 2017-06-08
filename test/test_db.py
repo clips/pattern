@@ -7,6 +7,8 @@ import unittest
 
 from pattern import db
 
+from builtins import int
+
 # To test MySQL, you need MySQLdb and a username + password with rights to create a database.
 HOST, PORT, USERNAME, PASSWORD = \
     "localhost", 3306, "root", ""
@@ -141,7 +143,7 @@ class TestDate(unittest.TestCase):
         # Assert integer input.
         v1 = db.date(2010, 9, 21, format=db.DEFAULT_DATE_FORMAT)
         v2 = db.date(2010, 9, 21, 9, 27, 1, 0, db.DEFAULT_DATE_FORMAT)
-        v3 = db.date(2010, 9, 21, hour=9, minute=27, second=01, format=db.DEFAULT_DATE_FORMAT)
+        v3 = db.date(2010, 9, 21, hour=9, minute=27, second=1, format=db.DEFAULT_DATE_FORMAT)
         self.assertEqual(str(v1), "2010-09-21 00:00:00")
         self.assertEqual(str(v2), "2010-09-21 09:27:01")
         self.assertEqual(str(v3), "2010-09-21 09:27:01")
@@ -287,7 +289,7 @@ class TestDatabase(unittest.TestCase):
           (  "a", "'a'"),
           ( u"a", "'a'"),
           (    1, "1"),
-          (   1L, "1"),
+          (   int(1), "1"),
           (  1.0, "1.0"),
           ( True, "1"),
           (False, "0"),

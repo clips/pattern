@@ -11,6 +11,8 @@ import os
 import sys
 import re
 
+from past.builtins import basestring
+
 from math import log, ceil
 
 try:
