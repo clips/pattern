@@ -3,6 +3,8 @@ import unittest
 import time
 import math
 
+from types import GeneratorType
+
 from pattern import metrics
 
 try:
@@ -175,7 +177,7 @@ class TestTextMetrics(unittest.TestCase):
     def test_isplit(self):
         # Assert string.split() iterator.
         v = metrics.isplit("test\nisplit")
-        self.assertTrue(hasattr(v, "next"))
+        self.assertTrue(isinstance(v, GeneratorType))
         self.assertEqual(list(v), ["test", "isplit"])
         print("pattern.metrics.isplit()")
     
