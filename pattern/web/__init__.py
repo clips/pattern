@@ -73,9 +73,7 @@ import feedparser
 import json
 
 import api
-import feed
 import oauth
-import json
 import locale
 
 import BeautifulSoup
