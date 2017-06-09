@@ -123,6 +123,7 @@ setup(
         "Topic :: Text Processing :: Markup :: HTML"
     ],
     install_requires = [
+        'future',
         'BeautifulSoup',
         'feedparser',
         'pdfminer',
