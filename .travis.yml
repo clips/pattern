@@ -21,6 +21,10 @@ install:
 
 script: python test/test.py
 
+after_script:
+  - pip install --quiet coveralls
+  - coveralls
+
 branches:
   only:
   - development
