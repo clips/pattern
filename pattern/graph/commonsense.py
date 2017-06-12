@@ -10,6 +10,7 @@ from __future__ import absolute_import
 
 from codecs    import BOM_UTF8
 from itertools import chain
+from functools import cmp_to_key
 
 try:
     # Python 2
@@ -238,7 +239,7 @@ def download(path=os.path.join(MODULE, "commonsense.csv"), threshold=50):
     # Iterate authors sorted by number of contributions.
     # 1) Authors with 50+ contributions can define new relations and context.
     # 2) Authors with 50- contributions (or robots) can only reinforce existing relations.
-    a = sorted(a.items(), cmp=lambda v1, v2: len(v2[1]) - len(v1[1]))
+    a = sorted(a.items(), key=cmp_to_key(lambda v1, v2: len(v2[1]) - len(v1[1])))
     r = {}
     for author, relations in a:
         if author == "" or author.startswith("robots@"):
@@ -246,7 +247,7 @@ def download(path=os.path.join(MODULE, "commonsense.csv"), threshold=50):
         if len(relations) < threshold:
             break
         # Sort latest-first (we prefer more recent relation types).
-        relations = sorted(relations, cmp=lambda r1, r2: r1[-1] > r2[-1])
+        relations = sorted(relations, key=cmp_to_key(lambda r1, r2: r1[-1] > r2[-1]))
         # 1) Define new relations.
         for concept1, relation, concept2, context, weight, author, date in relations:
             id = (concept1, relation, concept2)

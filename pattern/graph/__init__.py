@@ -20,6 +20,8 @@ from shutil   import rmtree
 from builtins import str, range
 from past.builtins import basestring
 
+from functools import cmp_to_key
+
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
@@ -1059,7 +1061,7 @@ def partition(graph):
                 g[i] = union(g[i], g[j])
                 g[j] = []
     g = [graph.copy(nodes=[graph[id] for id in n]) for n in g if n]
-    g.sort(lambda a, b: len(b) - len(a))
+    g.sort(key = cmp_to_key(lambda a, b: len(b) - len(a)))
     return g
 
 def is_clique(graph):
