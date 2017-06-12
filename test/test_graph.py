@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+from __future__ import print_function
+
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import unittest
 
