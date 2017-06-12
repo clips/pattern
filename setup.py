@@ -1,5 +1,7 @@
 #### PATTERN #######################################################################################
 
+from __future__ import print_function
+
 import sys
 import os
 
@@ -37,8 +39,8 @@ if sys.argv[-1] == "zip":
                 x.write(d.join(s))
                 x.close()
     z.close()
-    print n
-    print hashlib.sha256(open(z.filename).read()).hexdigest()
+    print(n)
+    print(hashlib.sha256(open(z.filename).read()).hexdigest())
     sys.exit(0)
 
 #---------------------------------------------------------------------------------------------------
