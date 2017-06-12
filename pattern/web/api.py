@@ -18,6 +18,9 @@ license["Yahoo"] = \
 license["DuckDuckGo"] = \
     None
 
+license["Faroo"] = \
+    ""
+
 license["Wikipedia"] = \
     None
 
