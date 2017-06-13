@@ -8,7 +8,7 @@ import unittest
 from pattern import graph
 from pattern.graph import commonsense
 
-from builtins import int
+from builtins import int, range
 
 #---------------------------------------------------------------------------------------------------
 
