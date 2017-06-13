@@ -534,9 +534,8 @@ class Graph(dict):
             Nodes with a lot of traffic will be at the start of the list.
         """
         o = lambda node: getattr(node, order)
-        nodes = ((o(n), n) for n in self.nodes if o(n) >= threshold)
-        nodes = reversed(sorted(nodes))
-        return [n for w, n in nodes]
+        nodes = sorted(self.nodes, key = o, reverse = True)
+        return list([node for node in nodes if o(node) >= threshold])
         
     def prune(self, depth=0):
         """ Removes all nodes with less or equal links than depth.
