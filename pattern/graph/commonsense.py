@@ -12,6 +12,8 @@ from codecs    import BOM_UTF8
 from itertools import chain
 from functools import cmp_to_key
 
+from io import open
+
 try:
     # Python 2
     from urllib import urlopen
@@ -122,9 +124,8 @@ class Commonsense(Graph):
         # Load data from the given path,
         # a CSV-file of (concept1, relation, concept2, context, weight)-items.
         if data is not None:
-            s = open(data).read()
+            s = open(data, encoding = 'utf-8').read()
             s = s.strip(BOM_UTF8)
-            s = s.decode("utf-8")
             s = ((v.strip("\"") for v in r.split(",")) for r in s.splitlines())
             for concept1, relation, concept2, context, weight in s:
                 self.add_edge(concept1, concept2, 
@@ -272,9 +273,9 @@ def download(path=os.path.join(MODULE, "commonsense.csv"), threshold=50):
     for (concept1, relation, concept2), (context, weight) in r.items():
         s.append("\"%s\",\"%s\",\"%s\",\"%s\",%s" % (
             concept1, relation, concept2, context, weight))
-    f = open(path, "w")
+    f = open(path, "w", encoding = 'utf-8')
     f.write(BOM_UTF8)
-    f.write("\n".join(s).encode("utf-8"))
+    f.write("\n".join(s))
     f.close()
     
 def json():
@@ -295,4 +296,4 @@ def json():
     return "commonsense = [%s];" % ", ".join(s)
 
 #download("commonsense.csv", threshold=50)
-#open("commonsense.js", "w").write(json())
+#open("commonsense.js", "w", encoding = 'utf-8').write(json())
