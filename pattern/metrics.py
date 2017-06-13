@@ -22,9 +22,6 @@ from random      import gauss
 from builtins import range
 from past.builtins import basestring
 
-if sys.version > "3":
-    xrange = range
-
 #### COUNT #########################################################################################
 
 
