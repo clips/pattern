@@ -5,6 +5,8 @@
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
+from __future__ import print_function
+
 import sys
 
 from time import time
