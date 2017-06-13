@@ -23,6 +23,7 @@ from .__init__ import Graph, Node, Edge, bfs
 from .__init__ import WEIGHT, CENTRALITY, EIGENVECTOR, BETWEENNESS
 
 import os
+import sys
 
 from past.builtins import basestring
 
@@ -30,6 +31,11 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
+
+if sys.version > "3":
+    BOM_UTF8 = str(BOM_UTF8.decode("utf-8"))
+else:
+    BOM_UTF8 = BOM_UTF8.decode("utf-8")
 
 #### COMMONSENSE SEMANTIC NETWORK ##################################################################
 
