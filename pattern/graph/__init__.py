@@ -246,6 +246,11 @@ class Node(object):
     def __ne__(self, node):
         return not self.__eq__(node)
 
+    # This is required because we overwrite the parent's __eq__() method.
+    # Otherwise objects will be unhashable in Python 3.
+    # More information: http://docs.python.org/3.6/reference/datamodel.html#object.__hash__
+    __hash__ = object.__hash__
+
 #--- NODE LINKS ------------------------------------------------------------------------------------
 
 class Links(list):
