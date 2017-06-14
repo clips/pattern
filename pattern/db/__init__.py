@@ -152,6 +152,11 @@ class Date(datetime):
         return self.isocalendar()[2]
     @property
     def timestamp(self):
+
+        # In Python 3, years before 1900 are accepted whilee mktime() raises ValueError in Python 2. Let's stick to this.
+        if self.timetuple().tm_year < 1900:
+            raise ValueError("year out of range")
+
         return int(mktime(self.timetuple())) # Seconds elapsed since 1/1/1970.
     def strftime(self, format):
         return _strftime1900(self, format)
