@@ -27,7 +27,7 @@ from time      import mktime, strftime
 from math      import sqrt
 from types     import GeneratorType
 
-from builtins import range
+from builtins import range, map, zip, filter
 from past.builtins import basestring, unicode
 
 from functools import cmp_to_key
@@ -769,7 +769,7 @@ class Database(object):
                     table = kwargs.get("name"), 
                     field = kwargs.get("field", lambda s: s.replace(".", "_")))
         encoding  = self.type == MYSQL and " default charset=" + encoding.replace("utf-8", "utf8") or ""
-        fields, indices = zip(*[self._field_SQL(table, f) for f in fields])
+        fields, indices = list(zip(*[self._field_SQL(table, f) for f in fields]))
         self.execute("create table `%s` (%s)%s;" % (table, ", ".join(fields), encoding))
         for index in indices:
             if index is not None:
@@ -1338,7 +1338,7 @@ class FilterChain(list):
         else:
             args = list(args)
         self.operator = kwargs.pop("operator", AND)
-        args.extend(filter(k, v, "=") for k, v in kwargs.items())
+        args.extend(list(filter(k, v, "=")) for k, v in kwargs.items())
         list.__init__(self, args)
     
     def SQL(self, **kwargs):
@@ -1538,7 +1538,7 @@ class Query(object):
     def record(self, row):
         """ Returns the given row as a dictionary of (field or alias, value)-items.
         """
-        return dict(zip((self.aliases.get(f,f) for f in self.fields), row))
+        return dict(list(zip((self.aliases.get(f,f) for f in self.fields), row)))
         
     @property
     def xml(self):
@@ -1819,7 +1819,7 @@ class json(object):
         if s == "null":
             return None
         if s.startswith("{"):
-            return dict(map(self.loads, self._split(kv, ":")) for kv in self._split(s.strip("{}")))
+            return dict(list(map(self.loads, self._split(kv, ":"))) for kv in self._split(s.strip("{}")))
         if s.startswith("["):
             return list(self.loads(v) for v in self._split(s.strip("[]")))
         raise TypeError("can't process %s." % repr(string))
@@ -2218,10 +2218,10 @@ class Datasheet(CSV):
         if rows == ALL and columns == ALL:
             return Datasheet(rows=self)
         if rows == ALL:
-            return Datasheet(rows=zip(*(self.columns[j] for j in columns)))
+            return Datasheet(rows=list(zip(*(self.columns[j] for j in columns))))
         if columns == ALL:
             return Datasheet(rows=(self.rows[i] for i in rows))
-        z = zip(*(self.columns[j] for j in columns))
+        z = list(zip(*(self.columns[j] for j in columns)))
         return Datasheet(rows=(z[i] for i in rows))
             
     @property
