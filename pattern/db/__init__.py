@@ -389,7 +389,7 @@ def decode_entities(string):
         return RE_UNICODE.subn(replace_entity, string)[0]
     return string
 
-class _Binary:
+class _Binary(object):
     """ A wrapper for BLOB data with engine-specific encoding.
         See also: Database.binary().
     """
