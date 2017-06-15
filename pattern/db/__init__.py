@@ -18,7 +18,11 @@ import re
 import urllib
 import base64
 import json
-import csv as csvlib
+
+if sys.version > "3":
+    import csv as csvlib
+else:
+    from backports import csv as csvlib
 
 from codecs    import BOM_UTF8
 from itertools import islice
@@ -1867,7 +1871,7 @@ def csv_header_encode(field, type=STRING):
     # csv_header_encode("age", INTEGER) => "age (INTEGER)".
     t = re.sub(r"^varchar\(.*?\)", "string", (type or ""))
     t = t and " (%s)" % t or ""
-    s = "%s%s" % (encode_utf8(field or ""), t.upper())
+    s = "%s%s" % (field or "", t.upper())
     return s
     
 def csv_header_decode(s):
@@ -1921,7 +1925,7 @@ class CSV(list):
         w = csvlib.writer(s, **kwargs)
         if headers and self.fields is not None:
             w.writerows([[csv_header_encode(name, type) for name, type in self.fields]])
-        w.writerows([[encode_utf8(encoder(v)) for v in row] for row in self])
+        w.writerows([[encoder(v) for v in row] for row in self])
         s = s.getvalue()
         s = s.strip()
         s = re.sub("([^\"]|^)\"None\"", "\\1None", s)
