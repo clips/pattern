@@ -30,12 +30,7 @@ from types     import GeneratorType
 
 from builtins import str, range, map, zip, filter
 
-from functools import cmp_to_key
-
-try: # Python 2.x vs 3.x
-    from cStringIO import StringIO
-except ImportError:
-    from io import BytesIO as StringIO
+from io import StringIO, BytesIO
 
 try: # Python 2.x vs 3.x
     import htmlentitydefs
@@ -1946,9 +1941,9 @@ class CSV(list):
         # - or do Table.columns[x].map(lambda s: date(s))
         data = open(path, "rU")
         data = data if not password else decrypt_string(data.read(), password)
-        data = data if not password else StringIO(data.replace("\r\n", "\n").replace("\r", "\n"))
-        data = data if not preprocess else StringIO(preprocess(data.read()))
         data.seek(data.readline().startswith(str(BOM_UTF8.decode('utf-8-sig'))) and len(BOM_UTF8) or 0)
+        data = data if not password else BytesIO(data.replace("\r\n", "\n").replace("\r", "\n"))
+        data = data if not preprocess else BytesIO(preprocess(data.read()))
         data = csvlib.reader(data, delimiter=separator)
         i, n = kwargs.get("start"), kwargs.get("count")
         if i is not None and n is not None:
