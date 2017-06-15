@@ -28,8 +28,7 @@ from time      import mktime, strftime
 from math      import sqrt
 from types     import GeneratorType
 
-from builtins import range, map, zip, filter
-from past.builtins import basestring, unicode
+from builtins import str, range, map, zip, filter
 
 from functools import cmp_to_key
 
@@ -230,11 +229,11 @@ def date(*args, **kwargs):
         d+= time(microseconds=args[0].microsecond)
     elif len(args) == 1 \
      and (isinstance(args[0], int) \
-      or  isinstance(args[0], basestring) and args[0].isdigit()):
+      or  isinstance(args[0], str) and args[0].isdigit()):
         # One parameter, an int or string timestamp.
         d = Date.fromtimestamp(int(args[0]))
     elif len(args) == 1 \
-     and isinstance(args[0], basestring):
+     and isinstance(args[0], str):
         # One parameter, a date string for which we guess the input format (RFC2822 or known formats).
         try: d = Date.fromtimestamp(mktime_tz(parsedate_tz(args[0])))
         except:
@@ -245,7 +244,7 @@ def date(*args, **kwargs):
         if d is None:
             raise DateError("unknown date format for %s" % repr(args[0]))
     elif len(args) == 2 \
-     and isinstance(args[0], basestring):
+     and isinstance(args[0], str):
         # Two parameters, a date string and an explicit input format.
         d = Date.strptime(args[0], args[1])
     elif len(args) >= 3:
@@ -288,7 +287,7 @@ def time(days=0, seconds=0, minutes=0, hours=0, **kwargs):
 def decode_string(v, encoding="utf-8"):
     """ Returns the given value as a Unicode string (if possible).
     """
-    if isinstance(encoding, basestring):
+    if isinstance(encoding, str):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, str):
         for e in encoding:
@@ -296,14 +295,14 @@ def decode_string(v, encoding="utf-8"):
             except:
                 pass
         return v
-    return unicode(v)
+    return str(v)
 
 def encode_string(v, encoding="utf-8"):
     """ Returns the given value as a Python byte string (if possible).
     """
-    if isinstance(encoding, basestring):
+    if isinstance(encoding, str):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
-    if isinstance(v, unicode):
+    if isinstance(v, str):
         for e in encoding:
             try: return v.encode(*e)
             except:
@@ -364,7 +363,7 @@ def encode_entities(string):
         For example, to display "<em>hello</em>" in a browser,
         we need to pass "&lt;em&gt;hello&lt;/em&gt;" (otherwise "hello" in italic is displayed).
     """
-    if isinstance(string, (str, unicode)):
+    if isinstance(string, str):
         string = RE_AMPERSAND.sub("&amp;", string)
         string = string.replace("<", "&lt;")
         string = string.replace(">", "&gt;")
@@ -380,13 +379,13 @@ def decode_entities(string):
         hash, hex, name = match.group(1), match.group(2), match.group(3)
         if hash == "#" or name.isdigit():
             if hex == '' : 
-                return unichr(int(name))                 # "&#38;" => "&"
+                return chr(int(name))                 # "&#38;" => "&"
             if hex in ("x","X"):
-                return unichr(int('0x'+name, 16))        # "&#x0026;" = > "&"
+                return chr(int('0x'+name, 16))        # "&#x0026;" = > "&"
         else:
             cp = htmlentitydefs.name2codepoint.get(name) # "&amp;" => "&"
             return cp and unichr(cp) or match.group()    # "&foo;" => "&foo;"
-    if isinstance(string, (str, unicode)):
+    if isinstance(string, str):
         return RE_UNICODE.subn(replace_entity, string)[0]
     return string
 
@@ -409,15 +408,10 @@ def _escape(value, quote=lambda string: "'%s'" % string.replace("'", "\\'")):
         See also: Database.escape()
     """
     # Note: use Database.escape() for MySQL/SQLITE-specific escape.
-    if isinstance(value, str):
-        # Strings are encoded as UTF-8.
-        try: value = value.encode("utf-8")
-        except:
-            pass
     if value in ("current_timestamp",):
         # Don't quote constants such as current_timestamp.
         return value
-    if isinstance(value, basestring):
+    if isinstance(value, str):
         # Strings are quoted, single quotes are escaped according to the database engine.
         return quote(value)
     if isinstance(value, bool):
@@ -443,7 +437,7 @@ def _escape(value, quote=lambda string: "'%s'" % string.replace("'", "\\'")):
 def cast(x, f, default=None):
     """ Returns f(x) or default.
     """
-    if f is str and isinstance(x, unicode):
+    if f is str and isinstance(x, str):
         return decode_utf8(x)
     if f is bool and x in ("1", "True", "true"):
         return True
@@ -745,7 +739,7 @@ class Database(object):
         # The field string can be used in a CREATE TABLE or ALTER TABLE statement.
         # The index string is an optional CREATE INDEX statement (or None).
         auto  = " auto%sincrement" % (self.type == MYSQL and "_" or "")
-        field = isinstance(field, basestring) and [field, STRING(255)] or field
+        field = isinstance(field, str) and [field, STRING(255)] or field
         field = list(field) + [STRING, None, False, True][len(field)-1:]
         field = list(_field(field[0], field[1], default=field[2], index=field[3], optional=field[4]))
         if field[1] == "timestamp" and field[2] == "now":
@@ -923,7 +917,7 @@ class Schema(object):
         if type.startswith("tinyint(1)"):
             type = BOOLEAN
         # Determine index type (PRIMARY, UNIQUE, True or False).
-        if isinstance(index, basestring):
+        if isinstance(index, str):
             if index.lower().startswith("pri"): 
                 index = PRIMARY
             if index.lower().startswith("uni"): 
@@ -931,7 +925,7 @@ class Schema(object):
             if index.lower() in ("0", "1", "", "yes", "mul"):
                 index = index.lower() in ("1", "yes", "mul")
         # SQLite dumps the date string with quotes around it:
-        if isinstance(default, basestring) and type == DATE:
+        if isinstance(default, str) and type == DATE:
             default = default.strip("'")
             default = default.replace("current_timestamp", NOW)
             default = default.replace("CURRENT_TIMESTAMP", NOW)
@@ -1239,19 +1233,19 @@ def cmp(field, value, comparison="=", escape=lambda v: _escape(v), table=""):
     if table: 
         field = abs(table, field)
     # cmp("name", "Mar*") => "name like 'Mar%'".
-    if isinstance(value, basestring) and (value.startswith(("*","%")) or value.endswith(("*","%"))):
+    if isinstance(value, str) and (value.startswith(("*","%")) or value.endswith(("*","%"))):
         if comparison in ("=", "i=", "==", LIKE):
             return "%s like %s" % (field, escape(value.replace("*","%")))
         if comparison in ("!=", "<>"):
             return "%s not like %s" % (field, escape(value.replace("*","%")))
     # cmp("name", "markov") => "name" like 'markov'" (case-insensitive).
-    if isinstance(value, basestring):
+    if isinstance(value, str):
         if comparison == "i=":
             return "%s like %s" % (field, escape(value))
     # cmp("type", ("cat", "dog"), "!=") => "type not in ('cat','dog')".
     # cmp("amount", (10, 100), ":") => "amount between 10 and 100".
     if isinstance(value, (list, tuple)):
-        if find(lambda v: isinstance(v, basestring) and (v.startswith("*") or v.endswith("*")), value):
+        if find(lambda v: isinstance(v, str) and (v.startswith("*") or v.endswith("*")), value):
             return "(%s)" % any(*[(field, v) for v in value]).sql(escape=escape)
         if comparison in ("=", "==", IN):
             return "%s in (%s)" % (field, ",".join(escape(v) for v in value))
@@ -1470,7 +1464,7 @@ class Query(object):
         fields = abs(self._table.name, fields)
         # With a GROUPY BY clause, fields not used for grouping are wrapped in the given function.
         # The function can also be a list of functions for each field (FIRST by default).
-        if g and isinstance(self.function, basestring):
+        if g and isinstance(self.function, str):
             fields = [f in g and f or "%s(%s)" % (self.function, f) for f in fields]
         if g and isinstance(self.function, (list, tuple)):
             fields = [f in g and f or "%s(%s)" % (F,f) for F,f in zip(self.function+[FIRST]*len(fields), fields)]
@@ -1503,7 +1497,7 @@ class Query(object):
         # Construct the ORDER BY clause from Query.sort and Query.order.
         # Construct the GROUP BY clause from Query.group.
         for clause, value in (("order", self.sort), ("group", self.group)):
-            if isinstance(value, basestring) and value != "": 
+            if isinstance(value, str) and value != "":
                 q.append("%s by %s" % (clause, abs(self._table.name, value)))
             elif isinstance(value, (list, tuple)) and len(value) > 0:
                 q.append("%s by %s" % (clause, ", ".join(abs(self._table.name, value))))
@@ -1637,7 +1631,7 @@ def _unpack_fields(table, fields=[]):
 def xml_format(a):
     """ Returns the given attribute (string, int, float, bool, None) as a quoted unicode string.
     """
-    if isinstance(a, basestring):
+    if isinstance(a, str):
         return "\"%s\"" % encode_entities(a)
     if isinstance(a, bool):
         return "\"%s\"" % ("no","yes")[int(a)]
@@ -1798,7 +1792,7 @@ class json(object):
         yield s[i:]
         
     def encode(self, s):
-        if not isinstance(s, basestring):
+        if not isinstance(s, str):
             s = str(s)
         for a, b in self.escape:
             s = s.replace(a, b)
@@ -1834,7 +1828,7 @@ class json(object):
         """ Returns a JSON string from the given data.
             The data can be a nested structure of dict, list, str, unicode, bool, int, float and None.
         """
-        if isinstance(obj, (str, unicode)):
+        if isinstance(obj, str):
             return self.encode(obj)
         if isinstance(obj, (int, long)): # Also validates bools, so those are handled first.
             return str(obj)
@@ -1889,7 +1883,7 @@ class CSV(list):
     def __new__(cls, rows=[], fields=None, **kwargs):
         """ A list of lists that can be imported and exported as a comma-separated text file (CSV).
         """
-        if isinstance(rows, basestring) and os.path.exists(rows):
+        if isinstance(rows, str) and os.path.exists(rows):
             csv = cls.load(rows, **kwargs)
         else:
             csv = list.__new__(cls)
@@ -2618,7 +2612,7 @@ def pprint(datasheet, truncate=40, padding=" ", fill="."):
             # Strings that span beyond the maximum column width are wrapped.
             # Thus, each "field" in the row is a list of lines.
             lines = []
-            if not isinstance(v, basestring):
+            if not isinstance(v, str):
                 v = str(v)
             for v in v.splitlines():
                 v = decode_utf8(v.strip())
