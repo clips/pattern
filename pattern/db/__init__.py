@@ -334,13 +334,12 @@ def encrypt_string(s, key=""):
     """ Returns the given string as an encrypted bytestring.
     """
     key += " "
-    s = encode_utf8(s)
     a = []
     for i in range(len(s)):
-        try: a.append(chr(ord(s[i]) + ord(key[i % len(key)]) % 256))
+        try: a.append(chr(ord(s[i]) + ord(key[i % len(key)]) % 256).encode("latin-1"))
         except:
             raise EncryptionError()
-    s = "".join(a)
+    s = b"".join(a)
     s = base64.urlsafe_b64encode(s)
     return s
     
@@ -349,6 +348,7 @@ def decrypt_string(s, key=""):
     """
     key += " "
     s = base64.urlsafe_b64decode(s)
+    s = s.decode("latin-1")
     a = []
     for i in range(len(s)):
         try: a.append(chr(ord(s[i]) - ord(key[i % len(key)]) % 256))
