@@ -28,6 +28,8 @@ from time      import mktime, strftime
 from math      import sqrt
 from types     import GeneratorType
 
+from functools import cmp_to_key
+
 from builtins import str, range, map, zip, filter
 
 from io import open, StringIO, BytesIO
