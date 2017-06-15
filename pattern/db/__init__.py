@@ -30,7 +30,7 @@ from types     import GeneratorType
 
 from functools import cmp_to_key
 
-from builtins import str, bytes, range, map, zip, filter
+from builtins import str, bytes, chr, range, map, zip, filter
 
 from io import open, StringIO, BytesIO
 
@@ -383,7 +383,7 @@ def decode_entities(string):
                 return chr(int('0x'+name, 16))        # "&#x0026;" = > "&"
         else:
             cp = htmlentitydefs.name2codepoint.get(name) # "&amp;" => "&"
-            return cp and unichr(cp) or match.group()    # "&foo;" => "&foo;"
+            return cp and chr(cp) or match.group()    # "&foo;" => "&foo;"
     if isinstance(string, str):
         return RE_UNICODE.subn(replace_entity, string)[0]
     return string
