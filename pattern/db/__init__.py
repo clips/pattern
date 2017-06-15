@@ -30,7 +30,7 @@ from types     import GeneratorType
 
 from builtins import str, range, map, zip, filter
 
-from io import StringIO, BytesIO
+from io import open, StringIO, BytesIO
 
 try: # Python 2.x vs 3.x
     import htmlentitydefs
@@ -1922,7 +1922,7 @@ class CSV(list):
         s = s.strip()
         s = re.sub("([^\"]|^)\"None\"", "\\1None", s)
         s = s if not password else encrypt_string(s, password)
-        f = open(path, "wb")
+        f = open(path, "w", encoding="utf-8")
         f.write(BOM_UTF8)
         f.write(s)
         f.close()
@@ -1939,7 +1939,7 @@ class CSV(list):
         # Date objects are saved and loaded as strings, but it is easy to convert these back to dates:
         # - set a DATE field type for the column,
         # - or do Table.columns[x].map(lambda s: date(s))
-        data = open(path, "rU")
+        data = open(path, "rU", encoding="utf-8")
         data = data if not password else decrypt_string(data.read(), password)
         data.seek(data.readline().startswith(str(BOM_UTF8.decode('utf-8-sig'))) and len(BOM_UTF8) or 0)
         data = data if not password else BytesIO(data.replace("\r\n", "\n").replace("\r", "\n"))
