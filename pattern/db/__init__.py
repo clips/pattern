@@ -30,7 +30,7 @@ from types     import GeneratorType
 
 from functools import cmp_to_key
 
-from builtins import str, range, map, zip, filter
+from builtins import str, bytes, range, map, zip, filter
 
 from io import open, StringIO, BytesIO
 
@@ -288,7 +288,7 @@ def decode_string(v, encoding="utf-8"):
     """
     if isinstance(encoding, str):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
-    if isinstance(v, str):
+    if isinstance(v, bytes):
         for e in encoding:
             try: return v.decode(*e)
             except:
@@ -307,7 +307,7 @@ def encode_string(v, encoding="utf-8"):
             except:
                 pass
         return v
-    return str(v)
+    return bytes(v)
 
 decode_utf8 = decode_string
 encode_utf8 = encode_string
