@@ -1060,7 +1060,9 @@ class TestDatasheet(unittest.TestCase):
         v = db.Datasheet(rows=[[u"Schrödinger", 3], [u"Hofstadter",  5]], 
                        fields=[("name", db.STRING), ("age", db.INT)])
         random.seed(0)
-        self.assertEqual(v.json, u'[{"age": 3, "name": "Schrödinger"}, {"age": 5, "name": "Hofstadter"}]')
+        w = db.json.loads(v.json)
+        self.assertTrue({"age": 3, "name": "Schrödinger"} in w)
+        self.assertTrue({"age": 5, "name": "Hofstadter"} in w)
         print("pattern.db.Datasheet.json")
         
     def test_flip(self):
