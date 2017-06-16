@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
+from __future__ import unicode_literals
 
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import datetime
@@ -56,12 +57,12 @@ class TestUnicode(unittest.TestCase):
     def setUp(self):
         # Test data with different (or wrong) encodings.
         self.strings = (
-            u"ünîcøde",
-            u"ünîcøde".encode("utf-16"),
-            u"ünîcøde".encode("latin-1"),
-            u"ünîcøde".encode("windows-1252"),
-             "ünîcøde",
-            u"אוניקאָד"
+            "ünîcøde",
+            "ünîcøde".encode("utf-16"),
+            "ünîcøde".encode("latin-1"),
+            "ünîcøde".encode("windows-1252"),
+            "ünîcøde",
+            "אוניקאָד"
         )
         
     def test_decode_utf8(self):
