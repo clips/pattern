@@ -11,7 +11,7 @@ import unittest
 
 from pattern import db
 
-from builtins import int
+from builtins import str, bytes, int
 
 # To test MySQL, you need MySQLdb and a username + password with rights to create a database.
 HOST, PORT, USERNAME, PASSWORD = \
@@ -68,13 +68,13 @@ class TestUnicode(unittest.TestCase):
     def test_decode_utf8(self):
         # Assert unicode.
         for s in self.strings:
-            self.assertTrue(isinstance(db.decode_utf8(s), unicode))
+            self.assertTrue(isinstance(db.decode_utf8(s), str))
         print("pattern.db.decode_utf8()")
 
     def test_encode_utf8(self):
         # Assert Python bytestring.
         for s in self.strings:
-            self.assertTrue(isinstance(db.encode_utf8(s), str))
+            self.assertTrue(isinstance(db.encode_utf8(s), bytes))
         print("pattern.db.encode_utf8()")
         
     def test_string(self):
