@@ -2080,10 +2080,12 @@ class Datasheet(CSV):
             For Datasheet[i], returns the row at the given index.
             For Datasheet[i,j], returns the value in row i and column j.
         """
-        if isinstance(index, (int, slice)):
+        if isinstance(index, int):
             # Datasheet[i] => row i.
             return list.__getitem__(self, index)
-        if isinstance(index, tuple):
+        elif isinstance(index, slice):
+            return Datasheet(rows = list.__getitem__(self, index), fields = self.fields)
+        elif isinstance(index, tuple):
             i, j = index
             # Datasheet[i,j] => item from column j in row i.
             # Datasheet[i,j1:j2] => columns j1-j2 from row i.
@@ -2098,11 +2100,8 @@ class Datasheet(CSV):
                 fields = self.fields and self.fields[j] or self.fields)
         raise TypeError("Datasheet indices must be int, tuple or slice")
 
-    def __getslice__(self, i, j):
-        # Datasheet[i1:i2] => Datasheet with rows i1-i2.
-        return Datasheet(
-              rows = list.__getslice__(self, i, j),
-            fields = self.fields)
+    # Python 2 (backward compatibility)
+    __getslice__ = lambda self, i, j: self.__getitem__(slice(i, j))
             
     def __delitem__(self, index):
         self.pop(index)
