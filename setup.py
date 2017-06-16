@@ -127,6 +127,7 @@ setup(
     install_requires = [
         'future',
         'backports.csv',
+        'mysqlclient',
         'BeautifulSoup',
         'feedparser',
         'pdfminer',
