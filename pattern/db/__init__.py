@@ -34,7 +34,7 @@ from types     import GeneratorType
 
 from functools import cmp_to_key
 
-from builtins import str, bytes, chr, range, map, zip, filter
+from builtins import str, bytes, int, chr, range, map, zip, filter
 
 from io import open, StringIO, BytesIO
 
@@ -54,9 +54,6 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
-    
-if sys.version > "3":
-    long = int
 
 MYSQL  = "mysql"
 SQLITE = "sqlite"
@@ -420,7 +417,7 @@ def _escape(value, quote=lambda string: "'%s'" % string.replace("'", "\\'")):
     if isinstance(value, bool):
         # Booleans are converted to "0" or "1".
         return str(int(value))
-    if isinstance(value, (int, long, float)):
+    if isinstance(value, (int, float)):
         # Numbers are converted to string.
         return str(value)
     if isinstance(value, datetime):
@@ -1638,7 +1635,7 @@ def xml_format(a):
         return "\"%s\"" % encode_entities(a)
     if isinstance(a, bool):
         return "\"%s\"" % ("no","yes")[int(a)]
-    if isinstance(a, (int, long)):
+    if isinstance(a, int):
         return "\"%s\"" % a
     if isinstance(a, float):
         return "\"%s\"" % round(a, 5)
@@ -1832,7 +1829,7 @@ class json(object):
         """
         if isinstance(obj, str):
             return self.encode(obj)
-        if isinstance(obj, (int, long)): # Also validates bools, so those are handled first.
+        if isinstance(obj, int): # Also validates bools, so those are handled first.
             return str(obj)
         if isinstance(obj, float):
             return str(self.float(obj))
