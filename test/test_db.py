@@ -17,38 +17,47 @@ from builtins import str, bytes, int
 HOST, PORT, USERNAME, PASSWORD = \
     "localhost", 3306, "root", ""
 
-DB_MYSQL  = DB_MYSQL_EXCEPTION  = None
-DB_SQLITE = DB_SQLITE_EXCEPTION = None
+DB_MYSQL = DB_SQLITE = None
 
 def create_db_mysql():
+
     global DB_MYSQL
-    global DB_MYSQL_EXCEPTION
-    try:
+
+    # Make sure the database handle is setup and connected
+    if not DB_MYSQL or not DB_MYSQL._connection:
         DB_MYSQL = db.Database(
-                type = db.MYSQL,
-                name = "pattern_unittest_db", 
-                host = HOST,
-                port = PORT,
-            username = USERNAME,
-            password = PASSWORD)
-    except ImportError as e:
-        DB_MYSQL_EXCEPTION = None # "No module named MySQLdb"
-    except Exception as e:
-        DB_MYSQL_EXCEPTION = e
+            type = db.MYSQL,
+            name = "pattern_unittest_db",
+            host = HOST,
+            port = PORT,
+        username = USERNAME,
+        password = PASSWORD)
+
+    # Drop all tables first
+    for table in list(DB_MYSQL.tables):
+        DB_MYSQL.drop(table)
+
+    return DB_MYSQL
 
 def create_db_sqlite():
+
     global DB_SQLITE
-    global DB_SQLITE_EXCEPTION
-    try:
+
+    # Make sure the database handle is setup and connected
+    if not DB_SQLITE or not DB_SQLITE._connection:
         DB_SQLITE = db.Database(
-                type = db.SQLITE,
-                name = "pattern_unittest_db",
-                host = HOST,
-                port = PORT,
-            username = USERNAME,
-            password = PASSWORD)
-    except Exception as e:
-        DB_SQLITE_EXCEPTION = e
+            type = db.SQLITE,
+            name = "pattern_unittest_db",
+            host = HOST,
+            port = PORT,
+        username = USERNAME,
+        password = PASSWORD)
+
+    # Drop all tables first
+    for table in list(DB_MYSQL.tables):
+        DB_SQLITE.drop(table)
+
+    return DB_SQLITE
 
 #---------------------------------------------------------------------------------------------------
 
@@ -277,14 +286,16 @@ class TestUtilityFunctions(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
-class TestDatabase(unittest.TestCase):
+class _TestDatabase(object):
 
     def setUp(self):
-        # Define self.db and self.type in a subclass.
-        pass
+
+        # Delete all tables first
+        for table in list(self.db):
+            self.db.drop(table)
     
     def tearDown(self):
-        for table in self.db:
+        for table in list(self.db):
             self.db.drop(table)
         
     def test_escape(self):
@@ -375,33 +386,23 @@ class TestDatabase(unittest.TestCase):
         self.assertTrue(len(self.db) == 0)
         print("pattern.db.Database.create()")
 
-class TestCreateMySQLDatabase(unittest.TestCase):
-    def runTest(self):
-        if DB_MYSQL_EXCEPTION: 
-            raise DB_MYSQL_EXCEPTION
-            
-class TestCreateSQLiteDatabase(unittest.TestCase):
-    def runTest(self):
-        if DB_SQLITE_EXCEPTION: 
-            raise DB_SQLITE_EXCEPTION
-
 class TestDeleteMySQLDatabase(unittest.TestCase):
     def runTest(self):
-        DB_MYSQL._delete()
+        create_db_mysql()._delete()
         
 class TestDeleteSQLiteDatabase(unittest.TestCase):
     def runTest(self):
-        DB_SQLITE._delete()
+        create_db_sqlite()._delete()
 
-class TestMySQLDatabase(TestDatabase):
+class TestMySQLDatabase(unittest.TestCase, _TestDatabase):
     def setUp(self):
-        self.db, self.type = DB_MYSQL, db.MYSQL
-        TestDatabase.setUp(self)
+        self.db, self.type = create_db_mysql(), db.MYSQL
+        _TestDatabase.setUp(self)
     
-class TestSQLiteDatabase(TestDatabase):
+class TestSQLiteDatabase(unittest.TestCase, _TestDatabase):
     def setUp(self):
-        self.db, self.type = DB_SQLITE, db.SQLITE
-        TestDatabase.setUp(self)
+        self.db, self.type = create_db_sqlite(), db.SQLITE
+        _TestDatabase.setUp(self)
 
 #---------------------------------------------------------------------------------------------------
 
@@ -481,10 +482,14 @@ class TestSchema(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
-class TestTable(unittest.TestCase):
+class _TestTable(object):
 
     def setUp(self):
-        # Define self.db in a subclass.
+
+        # Delete all tables first
+        for table in list(self.db):
+            self.db.drop(table)
+
         # Create test tables.
         self.db.create("persons", fields=[
             db.primary_key("id"),
@@ -502,8 +507,9 @@ class TestTable(unittest.TestCase):
         ])
         
     def tearDown(self):
+
         # Drop test tables.
-        for table in self.db:
+        for table in list(self.db):
             self.db.drop(table)
             
     def test_table(self):
@@ -609,22 +615,26 @@ class TestTable(unittest.TestCase):
         self.assertTrue(v.fields[0] == ("id", db.INTEGER))
         print("pattern.db.Table.datasheet()")
         
-class TestMySQLTable(TestTable):
+class TestMySQLTable(unittest.TestCase, _TestTable):
     def setUp(self):
-        self.db = DB_MYSQL
-        TestTable.setUp(self)
+        self.db = create_db_mysql()
+        _TestTable.setUp(self)
     
-class TestSQLiteTable(TestTable):
+class TestSQLiteTable(unittest.TestCase, _TestTable):
     def setUp(self):
         self.db = DB_SQLITE
-        TestTable.setUp(self)
+        _TestTable.setUp(self)
 
 #---------------------------------------------------------------------------------------------------
 
-class TestQuery(unittest.TestCase):
+class _TestQuery(object):
 
     def setUp(self):
-        # Define self.db in a subclass.
+
+        # Delete all tables first
+        for table in list(self.db):
+            self.db.drop(table)
+
         # Create test tables.
         self.db.create("persons", fields=[
             db.primary_key("id"),
@@ -645,7 +655,7 @@ class TestQuery(unittest.TestCase):
         
     def tearDown(self):
         # Drop test tables.
-        for table in self.db:
+        for table in list(self.db):
             self.db.drop(table)
         
     def _query(self, *args, **kwargs):
@@ -808,27 +818,26 @@ class TestQuery(unittest.TestCase):
         print("pattern.db.Query.xml")
 
 
-class TestMySQLQuery(TestQuery):
+class TestMySQLQuery(unittest.TestCase, _TestQuery):
     def setUp(self):
-        self.db = DB_MYSQL
-        TestQuery.setUp(self)
+        self.db = create_db_mysql()
+        _TestQuery.setUp(self)
     
-class TestSQLiteQuery(TestQuery):
+class TestSQLiteQuery(unittest.TestCase, _TestQuery):
     def setUp(self):
-        self.db = DB_SQLITE
-        TestQuery.setUp(self)
+        self.db = create_db_sqlite()
+        _TestQuery.setUp(self)
 
 #---------------------------------------------------------------------------------------------------
 
-class TestView(unittest.TestCase):
+class _TestView(object):
 
     def setUp(self):
-        # Define self.db in a subclass.
         pass
 
     def tearDown(self):
         # Drop test tables.
-        for table in self.db:
+        for table in list(self.db):
             self.db.drop(table)
             
     def test_view(self):
@@ -862,15 +871,15 @@ class TestView(unittest.TestCase):
         )
         print("pattern.db.View")
 
-class TestMySQLView(TestView):
+class TestMySQLView(unittest.TestCase, _TestView):
     def setUp(self):
-        self.db = DB_MYSQL
-        TestView.setUp(self)
+        self.db = create_db_mysql()
+        _TestView.setUp(self)
     
-class TestSQLiteView(TestView):
+class TestSQLiteView(unittest.TestCase, _TestView):
     def setUp(self):
-        self.db = DB_SQLITE
-        TestView.setUp(self)
+        self.db = create_db_sqlite()
+        _TestView.setUp(self)
 
 #---------------------------------------------------------------------------------------------------
 
@@ -1087,32 +1096,28 @@ class TestDatasheet(unittest.TestCase):
 #---------------------------------------------------------------------------------------------------
 
 def suite(**kwargs):
-    global HOST, PORT, USERNAME, PASSWORD
-    HOST     = kwargs.get("host", HOST)
-    PORT     = kwargs.get("port", PORT)
-    USERNAME = kwargs.get("username", USERNAME)
-    PASSWORD = kwargs.get("password", PASSWORD)
-    create_db_mysql()
-    create_db_sqlite()
+
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUnicode))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestEntities))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDate))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestUtilityFunctions))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSchema))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCreateMySQLDatabase))
-    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCreateSQLiteDatabase))
-    if DB_MYSQL:
-        suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMySQLDatabase))
-        suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMySQLTable))
-        suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMySQLQuery))
-        suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMySQLView))
-    if DB_SQLITE:
-        suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSQLiteDatabase))
-        suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSQLiteTable))
-        suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSQLiteQuery))
-        suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSQLiteView))
-        suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDeleteSQLiteDatabase))
+
+    # MySQL
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMySQLDatabase))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMySQLTable))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMySQLQuery))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestMySQLView))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDeleteMySQLDatabase))
+
+    # SQLite
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSQLiteDatabase))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSQLiteTable))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSQLiteQuery))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestSQLiteView))
+    suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDeleteSQLiteDatabase))
+
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestCSV))
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestDatasheet))
     return suite
