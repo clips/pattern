@@ -38,7 +38,7 @@ from builtins import str, bytes, int, chr, range, map, zip, filter
 
 from io import open, StringIO, BytesIO
 
-BOM_UTF8 = BOM_UTF8.decode("utf-8-sig")
+BOM_UTF8 = BOM_UTF8.decode("utf-8")
 
 try: # Python 2.x vs 3.x
     import htmlentitydefs
@@ -1945,7 +1945,8 @@ class CSV(list):
         # - or do Table.columns[x].map(lambda s: date(s))
         data = open(path, "rU", encoding="utf-8")
         data = data if not password else decrypt_string(data.read(), password)
-        data.seek(data.readline().startswith(BOM_UTF8) and len(BOM_UTF8) or 0)
+        if data.readline().startswith(BOM_UTF8):
+            data.seek(3)
         data = data if not password else BytesIO(data.replace("\r\n", "\n").replace("\r", "\n"))
         data = data if not preprocess else BytesIO(preprocess(data.read()))
         data = csvlib.reader(data, delimiter=separator)
