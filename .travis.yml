@@ -15,11 +15,13 @@ matrix:
 before_install:
   - export TZ=Europe/Brussels
   - pip install --upgrade setuptools
+  - pip install --quiet pytest pytest-cov pytest-xdist
 
 install:
   - python setup.py install --quiet
 
-script: python test/test.py
+script:
+  - pytest --cov
 
 after_script:
   - pip install --quiet coveralls
