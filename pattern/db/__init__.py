@@ -1707,7 +1707,6 @@ def xml(rows):
     xml.append("\t</rows>")
     xml.append("</%s>" % root)
     xml = "\n".join(xml)
-    xml = encode_utf8(xml)
     return xml
 
 def parse_xml(database, xml, table=None, field=lambda s: s.replace(".", "-")):
