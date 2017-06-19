@@ -2132,8 +2132,8 @@ class Datasheet(CSV):
         """ Returns a NumPy array. 
             Arrays must have elements of the same type, and rows of equal size.
         """
-        import numpy
-        return numpy.array(self)
+        import numpy as np
+        return np.array(self)
         
     @property
     def json(self, **kwargs):

@@ -43,7 +43,7 @@ from StringIO    import StringIO
 from codecs      import open
 from collections import defaultdict
 
-import numpy
+import numpy as np
 import scipy
 
 if sys.version > "3":
@@ -1687,34 +1687,34 @@ class LSA(object):
         """
         # Calling Model.vector() in a loop is quite slow, we should refactor this:
         matrix = [model.vector(d).values() for d in model.documents]
-        matrix = numpy.array(matrix)
+        matrix = np.array(matrix)
         # Singular value decomposition, where u * sigma * vt = svd(matrix).
         # Sigma is the diagonal matrix of singular values,
         # u has document rows and concept columns, vt has concept rows and term columns.
-        u, sigma, vt = numpy.linalg.svd(matrix, full_matrices=False)
+        u, sigma, vt = np.linalg.svd(matrix, full_matrices=False)
         # Delete the smallest coefficients in the diagonal matrix (i.e., at the end of the list).
         # The difficulty and weakness of LSA is knowing how many dimensions to reduce
         # (generally L2-norm is used).
         if k == L1:
-            k = int(round(numpy.linalg.norm(sigma, 1)))
+            k = int(round(np.linalg.norm(sigma, 1)))
         if k == L2 or k == NORM:
-            k = int(round(numpy.linalg.norm(sigma, 2)))
+            k = int(round(np.linalg.norm(sigma, 2)))
         if k == TOP300:
             k = max(0, len(sigma) - 300)
         if isinstance(k, int):
             k = max(0, len(sigma) - k)
         if type(k).__name__ == "function":
             k = max(0, int(k(sigma)))
-        #print(numpy.dot(u, numpy.dot(numpy.diag(sigma), vt)))
+        #print(np.dot(u, np.dot(np.diag(sigma), vt)))
         # Apply dimension reduction.
         # The maximum length of a concept vector = the number of documents.
         assert k < len(model.documents), \
             "can't create more dimensions than there are documents"
         tail = lambda list, i: range(len(list)-i, len(list))
         u, sigma, vt = (
-            numpy.delete(u, tail(u[0], k), axis=1),
-            numpy.delete(sigma, tail(sigma, k), axis=0),
-            numpy.delete(vt, tail(vt, k), axis=0)
+            np.delete(u, tail(u[0], k), axis=1),
+            np.delete(sigma, tail(sigma, k), axis=0),
+            np.delete(vt, tail(vt, k), axis=0)
         )
         # Store as Python dict and lists so we can pickle it.
         self.model = model
@@ -1775,7 +1775,7 @@ class LSA(object):
             return _lsa_transform_cache[document.id]
         v = self.model.vector(document)
         v = [v[self._terms[i]] for i in range(len(v))]
-        v = numpy.dot(numpy.dot(numpy.linalg.inv(numpy.diag(self.sigma)), self.vt), v)
+        v = np.dot(np.dot(np.linalg.inv(np.diag(self.sigma)), self.vt), v)
         v = _lsa_transform_cache[document.id] = Vector(enumerate(v))
         return v
 
@@ -1784,7 +1784,7 @@ class LSA(object):
 _lsa_transform_cache = {}
 
 #def iter2array(iterator, typecode):
-#    a = numpy.array([next(iterator)], typecode)
+#    a = np.array([next(iterator)], typecode)
 #    shape0 = a.shape[1:]
 #    for (i, item) in enumerate(iterator):
 #        a.resize((i+2,) + shape0)
@@ -1792,9 +1792,9 @@ _lsa_transform_cache = {}
 #    return a
 
 #def filter(matrix, min=0):
-#    columns = numpy.max(matrix, axis=0)
+#    columns = np.max(matrix, axis=0)
 #    columns = [i for i, v in enumerate(columns) if v <= min] # Indices of removed columns.
-#    matrix = numpy.delete(matrix, columns, axis=1)
+#    matrix = np.delete(matrix, columns, axis=1)
 #    return matrix, columns
 
 #### CLUSTERING ####################################################################################
