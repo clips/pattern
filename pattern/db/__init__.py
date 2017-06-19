@@ -1945,8 +1945,7 @@ class CSV(list):
         # - or do Table.columns[x].map(lambda s: date(s))
         data = open(path, "rU", encoding="utf-8")
         data = data if not password else decrypt_string(data.read(), password)
-        if data.readline().startswith(BOM_UTF8):
-            data.seek(3)
+        data.seek(data.readline().startswith(BOM_UTF8) and 3 or 0)
         data = data if not password else BytesIO(data.replace("\r\n", "\n").replace("\r", "\n"))
         data = data if not preprocess else BytesIO(preprocess(data.read()))
         data = csvlib.reader(data, delimiter=separator)
