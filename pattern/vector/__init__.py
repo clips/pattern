@@ -43,11 +43,8 @@ from StringIO    import StringIO
 from codecs      import open
 from collections import defaultdict
 
-try:
-    import numpy
-    import scipy
-except:
-    pass
+import numpy
+import scipy
 
 if sys.version > "3":
     long = int
@@ -1688,7 +1685,6 @@ class LSA(object):
             Documents then get a concept vector that is an approximation of the original vector,
             but with reduced dimensionality so that cosine similarity and clustering run faster.
         """
-        import numpy
         # Calling Model.vector() in a loop is quite slow, we should refactor this:
         matrix = [model.vector(d).values() for d in model.documents]
         matrix = numpy.array(matrix)
@@ -1777,7 +1773,6 @@ class LSA(object):
             return self.u[document.id]
         if document.id in _lsa_transform_cache:
             return _lsa_transform_cache[document.id]
-        import numpy
         v = self.model.vector(document)
         v = [v[self._terms[i]] for i in range(len(v))]
         v = numpy.dot(numpy.dot(numpy.linalg.inv(numpy.diag(self.sigma)), self.vt), v)
@@ -3491,7 +3486,6 @@ class LR(Classifier):
             based on the probability that a feature occurs in a class 
             (independent of other features).
         """
-        import scipy
         import scipy.sparse
         import scipy.special
         import scipy.optimize
@@ -3623,7 +3617,6 @@ class LR(Classifier):
 
     def _on_load(self, path):
         # Called from Classifier.load().
-        import scipy
         import scipy.sparse
         import scipy.special
         import scipy.optimize
