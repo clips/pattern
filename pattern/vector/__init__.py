@@ -20,7 +20,10 @@
 # Unsupervised machine learning or clustering can be used to group unlabeled documents
 # into subsets based on their similarity.
 
-import stemmer; _stemmer=stemmer
+from __future__ import absolute_import
+
+from . import stemmer
+_stemmer=stemmer
 
 import sys
 import os
@@ -3182,7 +3185,7 @@ class SVM(Classifier):
             - extension = (LIBSVM, LIBLINEAR), 
             -     train = []
         """
-        import svm
+        from . import svm
         self._svm = svm
         # Cached LIBSVM or LIBLINEAR model:
         self._model = None
@@ -3423,7 +3426,7 @@ class SVM(Classifier):
         # 2) Extract the model string and save it as a temporary file.
         # 3) Use pattern.vector.svm's LIBSVM or LIBLINEAR to load the file.
         # 4) Delete the temporary file.
-        import svm                               # 1
+        from . import svm                               # 1
         self._svm = svm
         if self._model is not None:
             f = tempfile.NamedTemporaryFile("r+b")
