@@ -61,10 +61,6 @@ try:
 except:
     pass
 
-if sys.version > "3":
-    long = int
-    xrange = range
-
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
