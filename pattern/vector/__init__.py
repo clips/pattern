@@ -43,7 +43,7 @@ except ImportError:
 import gzip
 import types
 
-from builtins import range
+from builtins import int, range
 from past.builtins import basestring
 
 from math        import log, exp, sqrt, tanh
@@ -2431,7 +2431,7 @@ def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
     f = []
     # Create shuffled folds to avoid a list sorted by type 
     # (we take successive folds and the source data could be sorted).
-    if isinstance(K, (int, float, long)):
+    if isinstance(K, (int, float)):
         folds = list(_folds(shuffled(documents) if s else documents, K))
     # K tests with different train (d1) and test (d2) sets.
     for d1, d2 in folds:
