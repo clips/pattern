@@ -8,6 +8,8 @@
 ####################################################################################################
 # German linguistical tools using fast regular expressions.
 
+from __future__ import unicode_literals
+
 import os
 import sys
 
