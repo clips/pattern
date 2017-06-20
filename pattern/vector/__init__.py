@@ -32,7 +32,14 @@ import glob
 import heapq
 import codecs
 import tempfile
-import cPickle
+
+try:
+    # Python 2
+    import cPickle as pickle
+except ImportError:
+    # Python 3
+    import pickle
+
 import gzip
 import types
 
@@ -988,7 +995,7 @@ class Model(object):
     def load(cls, path):
         """ Loads the model from a gzipped pickle file created with Model.save().
         """
-        model = cPickle.loads(gzip.GzipFile(path, "rb").read())
+        model = pickle.loads(gzip.GzipFile(path, "rb").read())
         # Deserialize Model.classifier.
         if model.classifier:
             p = path + ".tmp"
@@ -1021,7 +1028,7 @@ class Model(object):
             self._classifier.save(p, final)
             self._classifier = open(p, "rb").read(); os.remove(p)
         f = gzip.GzipFile(path, "wb")
-        f.write(cPickle.dumps(self, 1))  # 1 = binary
+        f.write(pickle.dumps(self, 1))  # 1 = binary
         f.close()
         
     def export(self, path, format=ORANGE, **kwargs):
@@ -2272,7 +2279,7 @@ class Classifier(object):
             self.finalize()
         self.test = None # Can't pickle instancemethods.
         f = gzip.GzipFile(path, "wb")
-        f.write(cPickle.dumps(self, 1)) # 1 = binary
+        f.write(pickle.dumps(self, 1)) # 1 = binary
         f.close()
 
     @classmethod
@@ -2280,7 +2287,7 @@ class Classifier(object):
         """ Loads the classifier from a gzipped pickle file.
         """
         f = gzip.GzipFile(path, "rb")
-        self = cPickle.loads(f.read())
+        self = pickle.loads(f.read())
         self._on_load(path) # Initialize subclass (e.g., SVM).
         self.test = self._test
         f.close()
