@@ -17,6 +17,8 @@
 # 86% for Verbs.find_lexeme() (mixed regular/irregular)
 # 95% predicative() (measured on Lexique French morphology word forms)
 
+from __future__ import unicode_literals
+
 import os
 import sys
 import re

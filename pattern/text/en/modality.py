@@ -5,6 +5,8 @@
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
+from __future__ import unicode_literals
+
 from past.builtins import basestring
 
 ### LIST FUNCTIONS #################################################################################

@@ -17,6 +17,8 @@
 # 87% for Verbs.find_lexeme() (0.55 regular 99% + 0.45 irregular 72%)
 # 93% for predicative()
 
+from __future__ import unicode_literals
+
 import os
 import sys
 import re

@@ -18,6 +18,8 @@
 # 99% for predicative()
 # 99% for attributive()
 
+from __future__ import unicode_literals
+
 import os
 import sys
 import re

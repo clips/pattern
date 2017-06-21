@@ -16,6 +16,8 @@
 # 95% for Verbs.find_lemma() (for regular verbs)
 # 96% for Verbs.find_lexeme() (for regular verbs)
 
+from __future__ import unicode_literals
+
 import os
 import sys
 import re

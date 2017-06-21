@@ -7,6 +7,8 @@
 # Transforms numeral strings to numbers, and numbers (int, float) to numeral strings.
 # Approximates quantities of objects ("dozens of chickens" etc.)
 
+from __future__ import unicode_literals
+
 import os
 import sys
 import re
