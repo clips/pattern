@@ -17,6 +17,8 @@ import string
 import types
 import codecs
 
+from codecs import BOM_UTF8
+BOM_UTF8 = BOM_UTF8.decode('utf-8')
 
 from builtins import str, bytes
 
@@ -324,7 +326,7 @@ def _read(path, encoding="utf-8", comment=";;;"):
             # From file or buffer.
             f = path
         for i, line in enumerate(f):
-            line = line.strip(codecs.BOM_UTF8) if i == 0 and isinstance(line, str) else line
+            line = line.strip(BOM_UTF8) if i == 0 and isinstance(line, str) else line
             line = line.strip()
             line = decode_utf8(line, encoding)
             if not line or (comment and line.startswith(comment)):
@@ -2278,7 +2280,7 @@ class Sentiment(lazydict):
                     ))
         a.append("</sentiment>")
         f = open(path, "w")
-        f.write(codecs.BOM_UTF8 + encode_utf8("\n".join(a)))
+        f.write(BOM_UTF8 + encode_utf8("\n".join(a)))
         f.close()
 
 #### SPELLING CORRECTION ###########################################################################
