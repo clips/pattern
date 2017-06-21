@@ -112,7 +112,7 @@ replacements = {
   "lorsqu'": "lorsqu' ",
   "puisqu'": "puisqu' ",
     # Same rule for Unicode apostrophe, see also Parser.find_tokens():
-    ur"(l|c|d|j|m|n|qu|s|t|jusqu|lorsqu|puisqu)’": u"\\1&rsquo; "
+    r"(l|c|d|j|m|n|qu|s|t|jusqu|lorsqu|puisqu)’": u"\\1&rsquo; "
 }
 replacements.update(((k.upper(), v.upper()) for k, v in replacements.items()))
 
