@@ -33,13 +33,9 @@
 
 from __future__ import unicode_literals
 
-from builtins import str
+from builtins import str, zip
 
-try:
-    from itertools import chain
-    from itertools import izip
-except:
-    izip = zip  # Python 3
+from itertools import chain
 
 try:
     from config import SLASH
@@ -760,7 +756,7 @@ class Sentence(object):
         # Decode &slash; characters (usually in words and lemmata).
         # Assume None for missing tags (except the word itself, which defaults to an empty string).
         custom = {}
-        for k, v in izip(tags, token.split("/")):
+        for k, v in zip(tags, token.split("/")):
             if SLASH0 in v:
                 v = v.replace(SLASH, "/")
             if k == "pos":
