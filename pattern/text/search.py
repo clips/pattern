@@ -13,7 +13,7 @@ from __future__ import absolute_import
 import re
 import itertools
 
-from past.builtins import basestring
+from builtins import str
 
 #--- TEXT, SENTENCE AND WORD -----------------------------------------------------------------------
 # The search() and match() functions work on Text, Sentence and Word objects (see pattern.text.tree),
@@ -791,7 +791,7 @@ class Pattern(object):
             pass
         elif isinstance(sentence, list) or sentence.__class__.__name__ == "Text":
             a=[]; [a.extend(self.search(s)) for s in sentence]; return a
-        elif isinstance(sentence, basestring):
+        elif isinstance(sentence, str):
             sentence = Sentence(sentence)
         elif isinstance(sentence, Match) and len(sentence) > 0:
             sentence = sentence[0].sentence.slice(sentence[0].index, sentence[-1].index + 1)
@@ -811,7 +811,7 @@ class Pattern(object):
             pass
         elif isinstance(sentence, list) or sentence.__class__.__name__ == "Text":
             return find(lambda m: m is not None, (self.match(s, start, _v) for s in sentence))
-        elif isinstance(sentence, basestring):
+        elif isinstance(sentence, str):
             sentence = Sentence(sentence)
         elif isinstance(sentence, Match) and len(sentence) > 0:
             sentence = sentence[0].sentence.slice(sentence[0].index, sentence[-1].index + 1)
@@ -931,7 +931,7 @@ def compile(pattern, *args, **kwargs):
     id, p = repr(pattern) + repr(args), pattern
     if id in _cache and not kwargs:
         return _cache[id]
-    if isinstance(pattern, basestring):
+    if isinstance(pattern, str):
         p = Pattern.fromstring(pattern, *args, **kwargs)
     if isinstance(pattern, regexp):
         p = Pattern([Constraint(words=[pattern], taxonomy=kwargs.get("taxonomy", TAXONOMY))], *args, **kwargs)
