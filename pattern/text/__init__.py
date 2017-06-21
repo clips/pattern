@@ -17,6 +17,8 @@ import string
 import types
 import codecs
 
+from io import open
+
 from codecs import BOM_UTF8
 BOM_UTF8 = BOM_UTF8.decode('utf-8')
 
@@ -318,7 +320,7 @@ def _read(path, encoding="utf-8", comment=";;;"):
     if path:
         if isinstance(path, str) and os.path.exists(path):
             # From file path.
-            f = open(path, "rb")
+            f = open(path, "r", encoding="utf-8")
         elif isinstance(path, str):
             # From string.
             f = path.splitlines()
@@ -2279,7 +2281,7 @@ class Sentiment(lazydict):
                              "label=\"%s\""   % self.labeler.get(w, "")
                     ))
         a.append("</sentiment>")
-        f = open(path, "w")
+        f = open(path, "w", encoding="utf-8")
         f.write(BOM_UTF8 + encode_utf8("\n".join(a)))
         f.close()
 
@@ -2316,7 +2318,7 @@ class Spelling(lazydict):
             model[w] = w in model and model[w] + 1 or 1
         model = ("%s %s" % (k, v) for k, v in sorted(model.items()))
         model = "\n".join(model)
-        f = open(path, "w")
+        f = open(path, "w", encoding="utf-8")
         f.write(model)
         f.close()
 
