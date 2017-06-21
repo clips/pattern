@@ -233,7 +233,7 @@ class lazyset(set):
         """ If the list is empty, calls lazylist.load().
             Replaces lazylist.method() with list.method() and calls it.
         """
-        print "!"
+        print("!")
         if set.__len__(self) == 0:
             self.load()
             setattr(self, method, types.MethodType(getattr(set, method), self))
@@ -1500,7 +1500,7 @@ def find_keywords(string, parser, top=10, frequency={}, ignore=("rt",), pos=("NN
                 df = 1.0 / max(frequency.get(w[0].lower(), frequency.get(k, 0)), 0.0001)
                 df = log(df)
             m[k][0] *= df
-            #print k, m[k]
+            #print(k, m[k])
     # Sort candidates alphabetically by total score.
     # The harmonic mean will emphasize tf-idf score.
     hmean = lambda a: len(a) / sum(1.0 / (x or 0.0001) for x in a)
