@@ -7,6 +7,8 @@
 
 ####################################################################################################
 
+from __future__ import absolute_import
+
 import re
 import itertools
 
@@ -416,7 +418,7 @@ class WordNetClassifier(Classifier):
         if wordnet is None:
             try: from pattern.en import wordnet
             except:
-                try: from en import wordnet
+                try: from .en import wordnet
                 except:
                     pass
         Classifier.__init__(self, self._parents, self._children)
