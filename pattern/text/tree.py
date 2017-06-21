@@ -32,6 +32,7 @@
 # no parsing functionality should be added to it.
 
 from past.builtins import basestring
+from __future__ import unicode_literals
 
 try:
     from itertools import chain
