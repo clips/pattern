@@ -1729,7 +1729,7 @@ class LSA(object):
         # The maximum length of a concept vector = the number of documents.
         assert k < len(model.documents), \
             "can't create more dimensions than there are documents"
-        tail = lambda list, i: list(range(len(list)-i, len(list)))
+        tail = lambda x, i: list(range(len(x)-i, len(x)))
         u, sigma, vt = (
             numpy.delete(u, tail(u[0], k), axis=1),
             numpy.delete(sigma, tail(sigma, k), axis=0),
