@@ -7,6 +7,7 @@
 
 ####################################################################################################
 
+from __future__ import print_function
 from __future__ import unicode_literals
 
 import os
@@ -238,7 +239,7 @@ class lazyset(set):
         """ If the list is empty, calls lazylist.load().
             Replaces lazylist.method() with list.method() and calls it.
         """
-        print "!"
+        print("!")
         if set.__len__(self) == 0:
             self.load()
             setattr(self, method, types.MethodType(getattr(set, method), self))
@@ -2394,6 +2395,7 @@ def language(s):
     p = {}
     for xx in LANGUAGES:
         lexicon = _module(xx).__dict__["lexicon"]
+        print(type(lexicon))
         p[xx] = sum(1 for w in s if w in lexicon) / n
     return max(p.items(), key=lambda kv: (kv[1], int(kv[0] == "en")))
     
