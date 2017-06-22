@@ -29,27 +29,25 @@ except:
     MODULE = ""
 
 # Path to WordNet /dict folder.
-CORPUS = ""
-os.environ["WNHOME"] = os.path.join(MODULE, CORPUS)
-os.environ["WNSEARCHDIR"] = os.path.join(MODULE, CORPUS, "dict")
+#CORPUS = ""
+#os.environ["WNHOME"] = os.path.join(MODULE, CORPUS)
+#os.environ["WNSEARCHDIR"] = os.path.join(MODULE, CORPUS, "dict")
 
-from pywordnet import wordnet as wn
-from pywordnet import wntools
+import nltk
+from nltk.corpus import wordnet as wn
+from nltk.corpus import wordnet_ic as wn_ic
+from nltk.corpus.reader.wordnet import Synset as WordNetSynset
 
-# The bundled version of PyWordNet has custom fixes.
-# - line  365: check if lexnames exist.
-# - line  765: check if lexnames exist + use os.path.join().
-# - line  674: add HYPONYM and HYPERNYM to the pointer table.
-# - line  916: implement "x in Dictionary" instead of Dictionary.has_key(x)
-# - line  804: Dictionary.dataFile now stores a list of (file, size)-tuples.
-# - line 1134: _dataFilePath() returns a list (i.e., data.noun can be split into data.noun1 + data.noun2).
-# - line 1186: _lineAt() seeks in second datafile if offset > EOF first datafile.
+# Make sure the necessary corpora are downloaded to the local drive
+nltk.download('wordnet', quiet = True, raise_on_error = True)
+nltk.download('wordnet_ic', quiet = True, raise_on_error = True)
 
-VERSION = ""
-s = open(os.path.join(MODULE, CORPUS, "dict", "index.noun")).read(2048)
-if "WordNet 2.1" in s: VERSION = "2.1"
-if "WordNet 3.0" in s: VERSION = "3.0"
-del s
+# Use the Brown corpus for calculating information content (IC)
+brown_ic = wn_ic.ic('ic-brown.dat')
+IC_CORPUS = brown_ic
+
+# This will hold the WordNet version
+VERSION = wn.get_version() or "3.0"
 
 #---------------------------------------------------------------------------------------------------
 
@@ -83,12 +81,12 @@ def normalize(word):
 
 ### SYNSET #########################################################################################
 
-NOUNS, VERBS, ADJECTIVES, ADVERBS = \
-    wn.N, wn.V, wn.ADJ, wn.ADV
-
 NOUN, VERB, ADJECTIVE, ADVERB = \
     NN, VB, JJ, RB = \
         "NN", "VB", "JJ", "RB"
+
+_pattern2wordnet = {NN : wn.NOUN, VB : wn.VERB, JJ : wn.ADJ, RB: wn.ADV}
+_wordnet2pattern = {v : k for k, v in _pattern2wordnet.items()}
 
 def synsets(word, pos=NOUN):
     """ Returns a list of Synset objects, one for each word sense.
@@ -97,63 +95,69 @@ def synsets(word, pos=NOUN):
     """
     word, pos = normalize(word), pos.lower()
     try:
-        if pos.startswith(NOUN.lower()): # "NNS" or "nn" will also pass. 
-            w = wn.N[word]
+        if pos.startswith(NOUN.lower()): # "NNS" or "nn" will also pass.
+            w = wn.synsets(word, pos = wn.NOUN)
         elif pos.startswith(VERB.lower()):
-            w = wn.V[word]
+            w = wn.synsets(word, pos = wn.VERB)
         elif pos.startswith(ADJECTIVE.lower()):
-            w = wn.ADJ[word]
+            w = wn.synsets(word, pos = wn.ADJ)
         elif pos.startswith(ADVERB.lower()):
-            w = wn.ADV[word]
+            w = wn.synsets(word, pos = wn.ADV)
         else:
             raise TypeError("part of speech must be NOUN, VERB, ADJECTIVE or ADVERB, not %s" % repr(pos))
-        return [Synset(s.synset) for i, s in enumerate(w)]
+        return [Synset(synset) for synset in w]
     except KeyError:
         return []
     return []
 
 class Synset(object):
     
-    def __init__(self, synset=None, pos=NOUN):
+    def __init__(self, synset):
         """ A set of synonyms that share a common meaning.
         """
-        if isinstance(synset, int):
-            synset = wn.getSynset({NN: "n", VB: "v", JJ: "adj", RB: "adv"}[pos], synset)
-        if isinstance(synset, basestring):
-            synset = synsets(synset, pos)[0]._synset
-        self._synset = synset
+        if isinstance(synset, WordNetSynset):
+            self._wnsynset = synset
+        elif isinstance(synset, Synset):
+            self = self
+        elif isinstance(synset, (tuple, int)):
+            if isinstance(synset, int):
+                synset = (synset, "NN")
+            offset, pos = synset
+            self._wnsynset = wn._synset_from_pos_and_offset(_pattern2wordnet[pos] if pos in _pattern2wordnet else pos, offset)
+        else:
+            raise NotImplementedError
 
     def __iter__(self):
-        for s in self._synset.getSenses(): yield unicode(s.form)
+        for s in self.synonyms:
+            yield s
     def __len__(self):
-        return len(self._synset.getSenses())
+        return len(self.synonyms)
     def __getitem__(self, i):
-        return unicode(self._synset.getSenses()[i].form)
+        return self.synonyms[i]
     def __eq__(self, synset):
         return isinstance(synset, Synset) and self.id == synset.id
     def __ne__(self, synset):
         return not self.__eq__(synset)
-    def __repr__(self):
-        return "Synset(%s)" % repr(self[0])
+    __repr__ = lambda self: self._wnsynset.__repr__()
 
     @property
     def id(self):
-        return self._synset.offset
+        return self._wnsynset.offset()
 
     @property
     def pos(self):
         """ Yields the part-of-speech tag (NOUN, VERB, ADJECTIVE or ADVERB).
         """
-        pos = self._synset.pos
-        if pos == "noun":
+        pos = self._wnsynset.pos()
+        if pos == wn.NOUN:
             return NOUN
-        if pos == "verb":
+        if pos == wn.VERB:
             return VERB
-        if pos == "adjective":
+        if pos == wn.ADV:
             return ADJECTIVE
-        if pos == "adverb":
+        if pos == wn.ADV:
             return ADVERB
-            
+
     part_of_speech = tag = pos
 
     @property
@@ -161,50 +165,49 @@ class Synset(object):
         """ Yields a list of word forms (i.e. synonyms), for example:
             synsets("TV")[0].synonyms => ["television", "telecasting", "TV", "video"]
         """
-        return [unicode(s.form) for s in self._synset.getSenses()]
+        return [s for s in self._wnsynset.lemma_names()]
         
     senses = synonyms # Backwards compatibility; senses = list of Synsets for a word.
         
     @property
     def gloss(self):
-        """ Yields a descriptive string, for example:
-            synsets("glass")[0].gloss => "a brittle transparent solid with irregular atomic structure".
+        """ Yields a descriptive string.
         """
-        return unicode(self._synset.gloss)
+        return self._wnsynset.definition()
         
     @property
     def lexname(self):
         """ Yields a category, e.g., noun.animal.
         """
-        return self._synset.lexname and unicode(self._synset.lexname) or None
+        return self._wnsynset.lexname()
 
     @property
     def antonym(self):
         """ Yields the semantically opposite synset, for example:
             synsets("death")[0].antonym => Synset("birth").
         """
-        p = self._synset.getPointers(wn.ANTONYM)
-        return len(p) > 0 and Synset(p[0].getTarget()) or None        
+        p = [Synset(a.synset()) for l in self._wnsynset.lemmas() for a in l.antonyms()]
+        return len(p) > 0 and p or None
 
     def meronyms(self):
         """ Yields a list of synsets that are semantic members/parts of this synset, for example:
             synsets("house")[0].meronyms() =>
-            [Synset("library"), 
-             Synset("loft"), 
+            [Synset("library"),
+             Synset("loft"),
              Synset("porch")
             ]
         """
-        p = self._synset.getPointers(wn.MEMBER_HOLONYM)
-        p+= self._synset.getPointers(wn.PART_HOLONYM)
-        return [Synset(p.getTarget()) for p in p]
+        p = self._wnsynset.member_meronyms()
+        p += self._wnsynset.part_meronyms()
+        return [Synset(p) for p in p]
 
     def holonyms(self):
         """ Yields a list of synsets of which this synset is a member/part, for example:
             synsets("tree")[0].holonyms() => Synset("forest").
         """
-        p = self._synset.getPointers(wn.MEMBER_MERONYM)
-        p+= self._synset.getPointers(wn.PART_MERONYM)
-        return [Synset(p.getTarget()) for p in p]
+        p = self._wnsynset.member_holonyms()
+        p += self._wnsynset.part_holonyms()
+        return [Synset(p) for p in p]
 
     def hyponyms(self, recursive=False, depth=None):
         """ Yields a list of semantically more specific synsets, for example:
@@ -219,7 +222,7 @@ class Synset(object):
              Synset("subway train")
             ]
         """
-        p = [Synset(p.getTarget()) for p in self._synset.getPointers(wn.HYPONYM)]
+        p = [Synset(p) for p in self._wnsynset.hyponyms()]
         if depth is None and recursive is False:
             return p
         if depth == 0:
@@ -233,7 +236,7 @@ class Synset(object):
     def hypernyms(self, recursive=False, depth=None):
         """ Yields a list of semantically broader synsets.
         """
-        p = [Synset(p.getTarget()) for p in self._synset.getPointers(wn.HYPERNYM)]
+        p = [Synset(p) for p in self._wnsynset.hypernyms()]
         if depth is None and recursive is False:
             return p
         if depth == 0:
@@ -249,17 +252,17 @@ class Synset(object):
         """ Yields the synset that is the semantic parent, for example:
             synsets("train")[0].hypernym => Synset("public transport").
         """
-        p = self._synset.getPointers(wn.HYPERNYM)
-        return len(p) > 0 and Synset(p[0].getTarget()) or None
+        p = self.hypernyms()
+        return len(p) > 0 and p[0] or None
 
     def similar(self):
         """ Returns a list of similar synsets for adjectives and adverbs, for example:
             synsets("almigthy",JJ)[0].similar() => Synset("powerful").
         """
         # ALSO_SEE returns wn.Sense instead of wn.Synset in some cases:
-        s = lambda x: isinstance(x, wn.Sense) and x.synset or x
-        p = [Synset(s(p.getTarget())) for p in self._synset.getPointers(wn.SIMILAR)]
-        p+= [Synset(s(p.getTarget())) for p in self._synset.getPointers(wn.ALSO_SEE)]
+        #s = lambda x: isinstance(x, wn.Sense) and x.synset or x
+        p = [Synset(p) for p in self._wnsynset.similar_tos()]
+        p += [Synset(p) for p in self._wnsynset.also_sees()]
         return p
         
     def similarity(self, synset):
@@ -267,25 +270,23 @@ class Synset(object):
             synsets("cat")[0].similarity(synsets("dog")[0]) => 0.86.
             synsets("cat")[0].similarity(synsets("box")[0]) => 0.17.
         """
-        if self == synset:
-            return 1.0
-        try: # Lin semantic distance measure.
-            lin = 2.0 * log(lcs(self, synset).ic) / (log(self.ic * synset.ic) or 1)
-        except OverflowError:
-            lin = 0.0
-        except ValueError: # / log(0)
-            lin = 0.0
-        return abs(lin)
+
+        return self._wnsynset.lin_similarity(synset, IC_CORPUS)
         
     @property
     def ic(self):
-        return information_content(self)
+        offset, pos = self.id, self.pos
+        if pos in _pattern2wordnet:
+            pos = _pattern2wordnet[pos]
+        if pos in IC_CORPUS and offset in IC_CORPUS[pos]:
+            return IC_CORPUS[pos][offset]
+        return None
         
-    @property
-    def weight(self):
-        return sentiwordnet is not None \
-           and sentiwordnet.synset(self.id, self.pos)[:2] \
-            or None
+    # @property
+    # def weight(self):
+    #     return sentiwordnet is not None \
+    #        and sentiwordnet.synset(self.id, self.pos)[:2] \
+    #         or None
 
 def similarity(synset1, synset2):
     """ Returns the semantic similarity of the given synsets.
@@ -312,30 +313,30 @@ least_common_subsumer = lcs = ancestor
 # http://www.d.umn.edu/~tpederse/Pubs/AAAI04PedersenT.pdf
 # http://afflatus.ucd.ie/papers/ecai2004b.pdf
 
-IC = {} # Switch data file according to WordNet version:
-IC_CORPUS = os.path.join(MODULE, "resnik-ic" + VERSION[0] + ".txt")
-IC_MAX = 0
+#IC = {} # Switch data file according to WordNet version:
+#IC_CORPUS = os.path.join(MODULE, "resnik-ic" + VERSION[0] + ".txt")
+#IC_MAX = 0
 
-def information_content(synset):
-    """ Returns the IC value for the given Synset (trained on the Brown corpus).
-    """
-    global IC_MAX
-    if not IC:
-        IC[NOUN] = {}
-        IC[VERB] = {}
-        for s in open(IC_CORPUS).readlines()[1:]: # Skip the header.
-            s = s.split()
-            id, w, pos = (
-                int(s[0][:-1]), 
-                float(s[1]), 
-                s[0][-1] == "n" and NOUN or VERB)
-            if len(s) == 3 and s[2] == "ROOT":
-                IC[pos][0] = IC[pos].get(0,0) + w
-            if w != 0:
-                IC[pos][id] = w
-            if w > IC_MAX:
-                IC_MAX = w
-    return IC.get(synset.pos, {}).get(synset.id, 0.0) / IC_MAX
+# def information_content(synset):
+#     """ Returns the IC value for the given Synset (trained on the Brown corpus).
+#     """
+#     global IC_MAX
+#     if not IC:
+#         IC[NOUN] = {}
+#         IC[VERB] = {}
+#         for s in open(IC_CORPUS).readlines()[1:]: # Skip the header.
+#             s = s.split()
+#             id, w, pos = (
+#                 int(s[0][:-1]),
+#                 float(s[1]),
+#                 s[0][-1] == "n" and NOUN or VERB)
+#             if len(s) == 3 and s[2] == "ROOT":
+#                 IC[pos][0] = IC[pos].get(0,0) + w
+#             if w != 0:
+#                 IC[pos][id] = w
+#             if w > IC_MAX:
+#                 IC_MAX = w
+#     return IC.get(synset.pos, {}).get(synset.id, 0.0) / IC_MAX
 
 ### WORDNET3 TO WORDNET2 ###########################################################################
 # Map WordNet3 synset id's to WordNet2 synset id's.
