@@ -128,6 +128,7 @@ setup(
         'pdfminer',
         'numpy',
         'scipy',
+        'nltk',
         'python-docx',
         'cherrypy'
     ],
