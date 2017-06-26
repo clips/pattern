@@ -23,6 +23,8 @@ import glob
 
 from math import log
 
+from pattern.text import lazydict
+
 try: 
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
@@ -35,12 +37,13 @@ except:
 
 import nltk
 from nltk.corpus import wordnet as wn
+from nltk.corpus import sentiwordnet as swn
 from nltk.corpus import wordnet_ic as wn_ic
 from nltk.corpus.reader.wordnet import Synset as WordNetSynset
 
 # Make sure the necessary corpora are downloaded to the local drive
-nltk.download('wordnet', quiet = True, raise_on_error = True)
-nltk.download('wordnet_ic', quiet = True, raise_on_error = True)
+for token in ("wordnet", "wordnet_ic", "sentiwordnet"):
+    nltk.download(token, quiet = True, raise_on_error = True)
 
 # Use the Brown corpus for calculating information content (IC)
 brown_ic = wn_ic.ic('ic-brown.dat')
@@ -110,6 +113,18 @@ def synsets(word, pos=NOUN):
         return []
     return []
 
+class _synset(lazydict):
+
+    def __getitem__(self, k):
+        for pos in ("n", "v", "a", "r"):
+            try:
+                synset = wn._synset_from_pos_and_offset(pos, k)
+            except:
+                pass
+            if synset:
+                return synset
+        return None
+
 class Synset(object):
     
     def __init__(self, synset):
@@ -126,6 +141,8 @@ class Synset(object):
             self._wnsynset = wn._synset_from_pos_and_offset(_pattern2wordnet[pos] if pos in _pattern2wordnet else pos, offset)
         else:
             raise NotImplementedError
+
+        self._synset = _synset
 
     def __iter__(self):
         for s in self.synonyms:
@@ -282,11 +299,11 @@ class Synset(object):
             return IC_CORPUS[pos][offset]
         return None
         
-    # @property
-    # def weight(self):
-    #     return sentiwordnet is not None \
-    #        and sentiwordnet.synset(self.id, self.pos)[:2] \
-    #         or None
+    @property
+    def weight(self):
+        return sentiwordnet is not None \
+           and sentiwordnet.synset(self.id, self.pos)[:2] \
+            or None
 
 def similarity(synset1, synset2):
     """ Returns the semantic similarity of the given synsets.
@@ -376,54 +393,40 @@ except:
 sys.path.pop(0)
 
 class SentiWordNet(Sentiment):
-    
-    def __init__(self, path="SentiWordNet*.txt", language="en"):
+
+    def __init__(self, path=None, language="en"):
         """ A sentiment lexicon with scores from SentiWordNet.
-            The value for each word is a tuple with values for 
+            The value for each word is a tuple with values for
             polarity (-1.0-1.0), subjectivity (0.0-1.0) and intensity (0.5-2.0).
         """
         Sentiment.__init__(self, path=path, language=language)
-    
-    def load(self):
-        # Backwards compatibility: look for SentiWordNet*.txt in:
-        # given path, pattern/text/en/ or pattern/text/en/wordnet/
-        try: f = (
-            glob.glob(os.path.join(self.path)) + \
-            glob.glob(os.path.join(MODULE, self.path)) + \
-            glob.glob(os.path.join(MODULE, "..", self.path)))[0]
-        except IndexError:
-            raise ImportError("can't find SentiWordnet data file")
-        # Map synset id: a-00193480" => (193480, JJ).
-        # Map synset id's to WordNet2 if VERSION == 2:
-        if int(float(VERSION)) == 3:
-            m = lambda id, pos: (int(id.lstrip("0")), _map32_pos2[pos])
-        if int(float(VERSION)) == 2:
-            m = map32
-        for s in open(f):
-            if not s.startswith(("#", "\t")):
-                pos, id, p, n, senses, gloss = s.split("\t")
-                w = senses.split()
-                k = m(id, pos)
-                v = (float(p) - float(n), 
-                     float(p) + float(n)
-                     )
-                # Apply the score to the first synonym in the synset.
-                # Several WordNet3 entries may point to the same WordNet2 entry.
-                if k is not None:
-                    k = "%s-%s" % (pos, str(k[0]).zfill(8)) # "a-00193480"
-                    if k not in self._synsets or w[0].endswith("#1"):
-                        self._synsets[k] = v
-                for w in w:
-                    if w.endswith("#1"):
-                        dict.__setitem__(self, w[:-2].replace("_", " "), v)
 
-    # Words are stored without diacritics, 
+    def load(self):
+        pass
+
+    def synset(self, id, pos=ADJECTIVE):
+        if pos in _pattern2wordnet:
+            pos = _pattern2wordnet[pos]
+        try:
+            s = wn._synset_from_pos_and_offset(pos, id)
+            lemma = s.lemma_names()[0]
+            return self[lemma]
+        except:
+            pass
+
+        return None
+
+    # Words are stored without diacritics,
     # use wordnet.normalize(word).
     def __getitem__(self, k):
-        return Sentiment.__getitem__(self, normalize(k))
-    def get(self, k, *args, **kwargs):
-        return Sentiment.get(self, normalize(k), *args, **kwargs)
-        
+        synsets = swn.senti_synsets(k)
+        if synsets:
+            p, n = synsets[0].pos_score(), synsets[0].neg_score()
+            v = (float(p) - float(n), float(p) + float(n))
+            return v
+        else:
+            return None
+
     def assessments(self, words=[], negation=True):
         raise NotImplementedError
     def __call__(self, s, negation=True):
