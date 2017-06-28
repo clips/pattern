@@ -356,7 +356,7 @@ readable_types = (
     ("long"            , "long integer"),
     ("float"           , "float"),
     ("str"             , "string"),
-    ("unicode"         , "unicode string"),
+    ("unicode"         , "string"),
     ("dict"            , "dictionary"),
     ("NoneType"        , "None type"),
     ("instancemethod"  , "instance method"),
