@@ -232,7 +232,7 @@ class TestParser(unittest.TestCase):
         p = ["python", "-m", "pattern.nl", "-s", "Leuke kat.", "-OTCRL"]
         p = subprocess.Popen(p, stdout=subprocess.PIPE)
         p.wait()
-        v = p.stdout.read()
+        v = p.stdout.read().decode('utf-8')
         v = v.strip()
         self.assertEqual(v, "Leuke/JJ/B-NP/O/O/leuk kat/NN/I-NP/O/O/kat ././O/O/O/.")
         print("python -m pattern.nl")

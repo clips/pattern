@@ -259,7 +259,7 @@ class TestParser(unittest.TestCase):
         p = ["python", "-m", "pattern.it", "-s", "Il gatto nero.", "-OTCRL"]
         p = subprocess.Popen(p, stdout=subprocess.PIPE)
         p.wait()
-        v = p.stdout.read()
+        v = p.stdout.read().decode('utf-8')
         v = v.strip()
         self.assertEqual(v, "Il/DT/B-NP/O/O/il gatto/NN/I-NP/O/O/gatto nero/JJ/I-NP/O/O/nero ././O/O/O/.")
         print("python -m pattern.it")
