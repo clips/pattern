@@ -1362,7 +1362,7 @@ def parse_xml(sentence, tab="\t", id=""):
             word.type and ' %s="%s"' % (XML_TYPE, xml_encode(word.type)) or '',
             word.lemma and ' %s="%s"' % (XML_LEMMA, xml_encode(word.lemma)) or '',
             (" "+" ".join(['%s="%s"' % (k,v) for k,v in word.custom_tags.items() if v != None])).rstrip(),
-            xml_encode(word),
+            xml_encode(word.string),
             XML_WORD
         ))
         if not chunk:
