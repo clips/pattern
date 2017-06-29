@@ -114,7 +114,7 @@ replacements = {
     # Same rule for Unicode apostrophe, see also Parser.find_tokens():
     r"(l|c|d|j|m|n|qu|s|t|jusqu|lorsqu|puisqu)’": u"\\1&rsquo; "
 }
-replacements.update(((k.upper(), v.upper()) for k, v in replacements.items()))
+replacements.update(((k.upper(), v.upper()) for k, v in list(replacements.items())))
 
 def find_lemmata(tokens):
     """ Annotates the tokens with lemmata for plural nouns and conjugated verbs,
