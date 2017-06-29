@@ -25,6 +25,8 @@ import os
 import sys
 import re
 
+from builtins import range
+
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
