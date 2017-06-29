@@ -86,7 +86,7 @@ def zip(*args, **kwargs):
     args = [list(iterable) for iterable in args]
     n = max(map(len, args))
     v = kwargs.get("default", None)
-    return _zip(*[i + [v] * (n - len(i)) for i in args])
+    return list(_zip(*[i + [v] * (n - len(i)) for i in args]))
 
 def unzip(i, iterable):
     """ Returns the item at the given index from inside each tuple in the list.
