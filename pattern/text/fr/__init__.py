@@ -14,6 +14,8 @@ from __future__ import unicode_literals
 import os
 import sys
 
+from builtins import str
+
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
@@ -141,7 +143,7 @@ class Parser(_Parser):
         kwargs.setdefault("abbreviations", ABBREVIATIONS)
         kwargs.setdefault("replace", replacements)
         s = _Parser.find_tokens(self, tokens, **kwargs)
-        s = [s.replace("&rsquo ;", u"’") if isinstance(s, unicode) else s for s in s]
+        s = [s.replace("&rsquo ;", u"’") if isinstance(s, str) else s for s in s]
         return s
 
     def find_lemmata(self, tokens, **kwargs):
