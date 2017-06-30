@@ -22,7 +22,7 @@ from io import open
 from codecs import BOM_UTF8
 BOM_UTF8 = BOM_UTF8.decode('utf-8')
 
-from builtins import str, bytes
+from builtins import str, bytes, map
 
 from xml.etree import cElementTree
 from itertools import chain
@@ -713,7 +713,7 @@ class Entities(lazydict):
         """ Appends a named entity to the lexicon,
             e.g., Entities.append("Hooloovoo", "PERS")
         """
-        e = map(lambda s: s.lower(), entity.split(" ") + [name])
+        e = list(map(lambda s: s.lower(), entity.split(" ") + [name]))
         self.setdefault(e[0], []).append(e)
 
     def extend(self, entities):
@@ -2067,13 +2067,13 @@ class Sentiment(lazydict):
         self._language = xml.attrib.get("language", self._language)
         # Average scores of all word senses per part-of-speech tag.
         for w in words:
-            words[w] = dict((pos, map(avg, zip(*psi))) for pos, psi in words[w].items())
+            words[w] = dict((pos, list(map(avg, zip(*psi)))) for pos, psi in words[w].items())
         # Average scores of all part-of-speech tags.
         for w, pos in words.items():
-            words[w][None] = map(avg, zip(*pos.values()))
+            words[w][None] = list(map(avg, zip(*pos.values())))
         # Average scores of all synonyms per synset.
         for id, psi in synsets.items():
-            synsets[id] = map(avg, zip(*psi))
+            synsets[id] = list(map(avg, zip(*psi)))
         dict.update(self, words)
         dict.update(self.labeler, labels)
         dict.update(self._synsets, synsets)
