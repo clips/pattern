@@ -2382,7 +2382,11 @@ _modules = {}
 def _module(language):
     """ Returns the given language module (e.g., "en" => pattern.en).
     """
-    return _modules.setdefault(language, __import__(language, globals(), {}, [], -1))
+
+    if sys.version > '3':
+        return _modules.setdefault(language, __import__(language, globals(), {}, [], 1))
+    else:
+        return _modules.setdefault(language, __import__(language, globals(), {}, [], -1))
 
 def _multilingual(function, *args, **kwargs):
     """ Returns the value from the function with the given name in the given language module.
