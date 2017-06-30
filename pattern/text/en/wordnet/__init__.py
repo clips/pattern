@@ -17,6 +17,8 @@
 # -  meronym = a word that is a part of the whole,  (tree => trunk)
 # -  antonym = a word that is opposite in meaning.
 
+from __future__ import absolute_import
+
 import os
 import sys
 import glob
@@ -35,8 +37,8 @@ CORPUS = ""
 os.environ["WNHOME"] = os.path.join(MODULE, CORPUS)
 os.environ["WNSEARCHDIR"] = os.path.join(MODULE, CORPUS, "dict")
 
-from pywordnet import wordnet as wn
-from pywordnet import wntools
+from .pywordnet import wordnet as wn
+from .pywordnet import wntools
 
 # The bundled version of PyWordNet has custom fixes.
 # - line  365: check if lexnames exist.
