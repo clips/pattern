@@ -228,8 +228,8 @@ class TestSentiment(unittest.TestCase):
         self.assertEqual(s(v)[1], +1.0)
         self.assertEqual(s(v).assessments[0], ([":-("], -0.75, 1.0, "mood"))
         self.assertEqual(s(v).assessments[1], ([":-)"], +0.50, 1.0, "mood"))
-        print "pattern.text.Sentiment.assessments"
-        
+        print("pattern.text.Sentiment.assessments")
+
     def test_bag_of_words(self):
         # Assert weighted average polarity and subjectivity for bag-of-words with weighted features.
         from pattern.vector import BagOfWords # Alias for pattern.vector.Document.
