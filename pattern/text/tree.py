@@ -127,28 +127,28 @@ decode_entities = lambda string: string.replace(SLASH, "/")
 
 #--- WORD ------------------------------------------------------------------------------------------
 
+
 class Word(object):
 
-    def __init__(self, sentence, string, lemma=None, index=0, **kwargs):
+    # `type` is used as a reference name, so we need the original type builtin
+    type_builtin = type
+
+    def __init__(self, sentence, string, lemma=None, type=None, index=0):
         """ A word in the sentence.
             - lemma: base form of the word; "was" => "be".
             -  type: the part-of-speech tag; "NN" => a noun.
             - chunk: the chunk (or phrase) this word belongs to.
             - index: the index in the sentence.
         """
-        # The keyword 'type' overrides the builtin function, so we need to
-        # sidestep it this way
-        type_ = kwargs.get("type", None)
 
-        if not isinstance(string, type(u"")):
+        if not isinstance(string, self.type_builtin(u"")):
             try: string = string.decode("utf-8") # ensure Unicode
-            except: 
-                pass
+            except: pass
         self.sentence = sentence
         self.index    = index
         self.string   = string   # "was"
         self.lemma    = lemma    # "be"
-        self.type     = type_    # VB
+        self.type     = type     # VB
         self.chunk    = None     # Chunk object this word belongs to (i.e., a VP).
         self.pnp      = None     # PNP chunk object this word belongs to.
                                  # word.chunk and word.pnp are set in chunk.append().
