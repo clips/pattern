@@ -127,7 +127,11 @@ decode_entities = lambda string: string.replace(SLASH, "/")
 
 #--- WORD ------------------------------------------------------------------------------------------
 
+
 class Word(object):
+
+    # `type` is used as a reference name, so we need the original type builtin
+    type_builtin = type
 
     def __init__(self, sentence, string, lemma=None, type=None, index=0):
         """ A word in the sentence.
@@ -136,10 +140,10 @@ class Word(object):
             - chunk: the chunk (or phrase) this word belongs to.
             - index: the index in the sentence.
         """
-        if not isinstance(string, unicode):
+
+        if not isinstance(string, self.type_builtin(u"")):
             try: string = string.decode("utf-8") # ensure Unicode
-            except: 
-                pass
+            except: pass
         self.sentence = sentence
         self.index    = index
         self.string   = string   # "was"
@@ -155,8 +159,8 @@ class Word(object):
             self.sentence,
             self.string,
             self.lemma,
-            self.type,
-            self.index
+            type=self.type,
+            index=self.index
         )
         w.chunk = chunk
         w.pnp = pnp
@@ -584,7 +588,7 @@ def _is_tokenstring(string):
     # The class mbsp.TokenString stores the format of tags for each token.
     # Since it comes directly from MBSP.parse(), this format is always correct,
     # regardless of the given token format parameter for Sentence() or Text().
-    return isinstance(string, unicode) and hasattr(string, "tags")
+    return isinstance(string, type(u"")) and hasattr(string, "tags")
 
 class Sentence(object):
 
@@ -597,7 +601,7 @@ class Sentence(object):
         if _is_tokenstring(string):
             token, language = string.tags, getattr(string, "language", language)
         # Convert to Unicode.
-        if not isinstance(string, unicode):
+        if not isinstance(string, type(u"")):
             for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
                 try: string = string.decode(*encoding)
                 except:
@@ -837,7 +841,7 @@ class Sentence(object):
         # Improve 3rd person singular "'s" lemma to "be", e.g., as in "he's fine".
         if lemma == "'s" and type in ("VB", "VBZ"):
             lemma = "be"
-        self.words.append(Word(self, word, lemma, type, index=len(self.words)))     
+        self.words.append(Word(self, word, lemma, type=type, index=len(self.words)))     
 
     def _do_chunk(self, type, role=None, relation=None, iob=None):
         """ Adds a new Chunk to the sentence, or adds the last word to the previous chunk.
@@ -976,7 +980,7 @@ class Sentence(object):
         match = lambda a, b: a.endswith("*") and b.startswith(a[:-1]) or a==b
         indices = []
         for i in range(len(self.words)):
-            if match(value, unicode(self.get(i, tag))):
+            if match(value, u"%s" % (self.get(i, tag))):
                 indices.append(i)
         return indices
 
@@ -1364,7 +1368,7 @@ def parse_xml(sentence, tab="\t", id=""):
             word.type and ' %s="%s"' % (XML_TYPE, xml_encode(word.type)) or '',
             word.lemma and ' %s="%s"' % (XML_LEMMA, xml_encode(word.lemma)) or '',
             (" "+" ".join(['%s="%s"' % (k,v) for k,v in word.custom_tags.items() if v != None])).rstrip(),
-            xml_encode(unicode(word)),
+            xml_encode(u"%s" % (word)),
             XML_WORD
         ))
         if not chunk:
@@ -1427,11 +1431,11 @@ _attachments = {} # {u'A1': [[[u'with', u'IN', u'B-PP', 'B-PNP', u'PP', 'O', u'w
 
 # This is a fallback if for some reason we fail to import MBSP.TokenString,
 # e.g., when tree.py is part of another project.
-class TaggedString(unicode):
+class TaggedString(str):
     def __new__(cls, string, tags=["word"], language="en"):
-        if isinstance(string, unicode) and hasattr(string, "tags"): 
+        if isinstance(string, type(u"")) and hasattr(string, "tags"): 
             tags, language = string.tags, getattr(string, "language", language)
-        s = unicode.__new__(cls, string)
+        s = str.__new__(cls, string)
         s.tags = list(tags)
         s.language = language
         return s

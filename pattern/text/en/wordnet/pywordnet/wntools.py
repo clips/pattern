@@ -32,7 +32,7 @@ Usage
 __author__  = "Oliver Steele <steele@osteele.com>"
 __version__ = "2.0"
 
-from wordnet import *
+from .wordnet import *
 
 #
 # Domain utilities
@@ -41,9 +41,9 @@ from wordnet import *
 def _requireSource(entity):
     if not hasattr(entity, 'pointers'):
         if isinstance(entity, Word):
-            raise TypeError(`entity` + " is not a Sense or Synset.  Try " + `entity` + "[0] instead.")
+            raise TypeError(repr(entity) + " is not a Sense or Synset.  Try " + repr(entity) + "[0] instead.")
         else:
-            raise TypeError(`entity` + " is not a Sense or Synset")
+            raise TypeError(repr(entity) + " is not a Sense or Synset")
 
 def tree(source, pointerType):
     """
@@ -337,7 +337,8 @@ def morphy(form, pos='noun', collect=0):
 # Testing
 #
 def _test(reset=0):
-    import doctest, wntools
+    import doctest
+    from . import wordnet
     if reset:
         doctest.master = None # This keeps doctest from complaining after a reload.
     return doctest.testmod(wntools)

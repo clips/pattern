@@ -128,9 +128,9 @@ setup(
         'future',
         'backports.csv',
         'mysqlclient',
-        'BeautifulSoup',
+        'beautifulsoup4',
         'feedparser',
-        'pdfminer',
+        'pdfminer.six',
         'python-docx',
         'cherrypy'
     ],

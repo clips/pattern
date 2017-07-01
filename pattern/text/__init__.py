@@ -919,7 +919,7 @@ class Parser(object):
                 s[i][j][0] = s[i][j][0].replace("/", "&slash;")
                 s[i][j] = "/".join(s[i][j])
             s[i] = " ".join(s[i])
-        s = "\n".join(s)
+        s = u"\n".join(s)
         s = TaggedString(s, format, language=kwargs.get("language", self.language))
         return s
 

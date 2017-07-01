@@ -2,39 +2,24 @@ language: python
 
 python:
   - "2.6"
-  - "2.7.13"
+  - "2.7"
   - "3.5"
   - "3.6"
-
-matrix:
-  allow_failures:
-    - python: "2.6"
-    - python: "3.5"
-    - python: "3.6"
 
 before_install:
   - export TZ=Europe/Brussels
   - pip install --upgrade setuptools
-  - pip install --quiet pytest pytest-cov pytest-xdist
+  - pip install --upgrade pytest pytest-cov pytest-xdist
 
 install:
-  - python setup.py install --quiet
+  - python setup.py install
 
 script:
   - pytest --cov
 
-after_script:
-  - pip install --quiet coveralls
-  - coveralls
-
-branches:
-  only:
-  - development
-  - python3
+# after_script:
+#   - pip install coveralls
+#   - coveralls
 
 notifications:
-  email: false
-
-# You can connect to MySQL/MariaDB using the username "travis" or "root" and a blank password.
-services:
-  - mysql
+  - email: false

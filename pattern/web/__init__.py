@@ -76,7 +76,7 @@ import api
 import oauth
 import locale
 
-import BeautifulSoup
+import bs4
 
 try:
     # Import persistent Cache.
@@ -3002,10 +3002,10 @@ def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, prefix
 # L. Richardson (2004), http://www.crummy.com/software/BeautifulSoup/
 
 SOUP = (
-    BeautifulSoup.BeautifulSoup,
-    BeautifulSoup.Tag,
-    BeautifulSoup.NavigableString,
-    BeautifulSoup.Comment
+    bs4.BeautifulSoup,
+    bs4.Tag,
+    bs4.NavigableString,
+    bs4.Comment
 )
 
 NODE, TEXT, COMMENT, ELEMENT, DOCUMENT = \
@@ -3020,7 +3020,7 @@ class Node(object):
             All DOM nodes can be navigated in the same way (e.g. Node.parent, Node.children, ...)
         """
         self.type = type
-        self._p = not isinstance(html, SOUP) and BeautifulSoup.BeautifulSoup(u(html), **kwargs) or html
+        self._p = not isinstance(html, SOUP) and bs4.BeautifulSoup(u(html), **kwargs) or html
 
     @property
     def _beautifulSoup(self):
@@ -3033,13 +3033,13 @@ class Node(object):
 
     def _wrap(self, x):
         # Navigating to other nodes yields either Text, Element or None.
-        if isinstance(x, BeautifulSoup.Comment):
+        if isinstance(x, bs4.Comment):
             return Comment(x)
-        if isinstance(x, BeautifulSoup.Declaration):
+        if isinstance(x, bs4.Declaration):
             return Text(x)
-        if isinstance(x, BeautifulSoup.NavigableString):
+        if isinstance(x, bs4.NavigableString):
             return Text(x)
-        if isinstance(x, BeautifulSoup.Tag):
+        if isinstance(x, bs4.Tag):
             return Element(x)
 
     @property
@@ -3233,7 +3233,7 @@ class Document(Element):
         """ Yields the <!doctype> declaration, as a TEXT Node or None.
         """
         for child in self.children:
-            if isinstance(child._p, BeautifulSoup.Declaration):
+            if isinstance(child._p, bs4.Declaration):
                 return child
 
     @property
