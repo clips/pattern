@@ -1427,7 +1427,7 @@ _attachments = {} # {u'A1': [[[u'with', u'IN', u'B-PP', 'B-PNP', u'PP', 'O', u'w
 
 # This is a fallback if for some reason we fail to import MBSP.TokenString,
 # e.g., when tree.py is part of another project.
-class TaggedString(unicode):
+class TaggedString(str):
     def __new__(cls, string, tags=["word"], language="en"):
         if isinstance(string, unicode) and hasattr(string, "tags"): 
             tags, language = string.tags, getattr(string, "language", language)
