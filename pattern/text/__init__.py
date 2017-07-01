@@ -22,7 +22,7 @@ from io import open
 from codecs import BOM_UTF8
 BOM_UTF8 = BOM_UTF8.decode('utf-8')
 
-from builtins import str, bytes, map
+from builtins import str, bytes, map, zip, filter
 
 from xml.etree import cElementTree
 from itertools import chain
@@ -2403,7 +2403,6 @@ def language(s):
     p = {}
     for xx in LANGUAGES:
         lexicon = _module(xx).__dict__["lexicon"]
-        print(type(lexicon))
         p[xx] = sum(1 for w in s if w in lexicon) / n
     return max(p.items(), key=lambda kv: (kv[1], int(kv[0] == "en")))
     
