@@ -7,6 +7,7 @@ python:
   - "3.6"
 
 before_install:
+  - export TZ=Europe/Brussels
   - pip install --upgrade setuptools
   - pip install --upgrade pytest pytest-cov pytest-xdist
 
@@ -16,3 +17,9 @@ install:
 script:
   - pytest --cov
 
+# after_script:
+#   - pip install coveralls
+#   - coveralls
+
+notifications:
+  - email: false
