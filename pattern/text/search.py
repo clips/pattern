@@ -10,6 +10,12 @@
 import re
 import itertools
 
+try:
+    # Python 3 style map function
+    import itertools.imap as map
+except ImportError:
+    pass
+
 from past.builtins import basestring
 
 #--- TEXT, SENTENCE AND WORD -----------------------------------------------------------------------
@@ -179,7 +185,7 @@ def variations(iterable, optional=lambda x: False):
         v = tuple(iterable[i] for i in range(len(v)) if not v[i])
         a.add(v)
     # Longest-first.
-    return sorted(a, cmp=lambda x, y: len(y) - len(x))
+    return sorted(a, key=len, reverse=True)
 
 #### TAXONOMY ######################################################################################
 
@@ -247,7 +253,7 @@ class odict(dict):
     def iterkeys(self):
         return reversed(self._o)
     def itervalues(self):
-        return itertools.imap(self.__getitem__, reversed(self._o))
+        return map(self.__getitem__, reversed(self._o))
     def iteritems(self):
         return iter(zip(self.iterkeys(), self.itervalues()))
 
