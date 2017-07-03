@@ -1567,6 +1567,59 @@ DDG = DuckDuckGo
 #print(DDG().definition("cat"))
 #print(DDG().spelling("catnpa"))
 
+#--- FAROO
+#-----------------------------------------------------------------------------------------
+# Faroo is web search engine with 1 million free queries per month.
+# http://www.faroo.com/hp/api/api.html
+
+FAROO = "http://www.faroo.com/api"
+FAROO_LICENSE = api.license["Faroo"]
+
+class Faroo(SearchEngine):
+
+    def __init__(self, license = None, throttle = 0.5, language = None):
+        SearchEngine.__init__(self, license or FAROO_LICENSE, throttle, language)
+
+    def search(self, query, type = SEARCH, start = 1, count = 10, sort = RELEVANCY, size = None, cached = True, **kwargs):
+        if type != SEARCH:
+            raise SearchEngineTypeError
+
+        # 1) Create request URL.
+        url = URL(FAROO, method=GET, query={
+                 "q" : query.replace(" ", "+"),
+             "start" : 1 + (start-1) * count,
+            "length" : count,
+               "key" : self.license or FAROO_LICENSE,
+                 "f" : "json"
+        })
+        # 2) Restrict language
+        if self.language in ('en', 'de', 'zh'):
+            url.query["language"] = self.language
+        else:
+            raise SearchEngineError("Language not supported")
+        # 3) Parse JSON response.
+        kwargs.setdefault("unicode", True)
+        kwargs.setdefault("throttle", self.throttle)
+        try:
+            data = url.download(cached = cached, user_agent = "*", **kwargs)
+        except HTTP401Authentication:
+            raise HTTP401Authentication("Faroo %s API requires an API key" % type)
+        except HTTP403Forbidden:
+            raise SearchEngineLimitError
+        data = json.loads(data)
+        results = Results(FAROO, query, type)
+        results.total = int(data.get("count") or 0)
+        for x in data.get("results", []):
+            r = Result(url=None)
+            r.url      = self.format(x.get("url"))
+            r.title    = self.format(x.get("title"))
+            r.text     = self.format(x.get("kwic"))
+            r.date     = self.format(x.get("date"))
+            r.author   = self.format(x.get("author"))
+            r.language = self.format(self.language or "")
+            results.append(r)
+        return results
+
 #--- TWITTER ---------------------------------------------------------------------------------------
 # Twitter is an online social networking service and microblogging service,
 # that enables users to post and read text-based messages of up to 140 characters ("tweets").
@@ -2955,6 +3008,7 @@ def query(string, service=GOOGLE, **kwargs):
 SERVICES = {
     GOOGLE    : Google,
     YAHOO     : Yahoo,
+    FAROO     : Faroo,
     BING      : Bing,
     TWITTER   : Twitter,
     WIKIPEDIA : Wikipedia,

@@ -54,6 +54,9 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
+    
+if sys.version > "3":
+    long = int
 
 MYSQL  = "mysql"
 SQLITE = "sqlite"
@@ -331,6 +334,7 @@ def encrypt_string(s, key=""):
     """ Returns the given string as an encrypted bytestring.
     """
     key += " "
+    s = encode_utf8(s)
     a = []
     for i in range(len(s)):
         try: a.append(chr(ord(s[i]) + ord(key[i % len(key)]) % 256).encode("latin-1"))
@@ -408,6 +412,11 @@ def _escape(value, quote=lambda string: "'%s'" % string.replace("'", "\\'")):
         See also: Database.escape()
     """
     # Note: use Database.escape() for MySQL/SQLITE-specific escape.
+    if isinstance(value, str):
+        # Strings are encoded as UTF-8.
+        try: value = value.encode("utf-8")
+        except:
+            pass
     if value in ("current_timestamp",):
         # Don't quote constants such as current_timestamp.
         return value
@@ -1704,6 +1713,7 @@ def xml(rows):
     xml.append("\t</rows>")
     xml.append("</%s>" % root)
     xml = "\n".join(xml)
+    xml = encode_utf8(xml)
     return xml
 
 def parse_xml(database, xml, table=None, field=lambda s: s.replace(".", "-")):
@@ -1791,7 +1801,7 @@ class json(object):
         yield s[i:]
         
     def encode(self, s):
-        if not isinstance(s, str):
+        if not isinstance(s, basestring):
             s = str(s)
         for a, b in self.escape:
             s = s.replace(a, b)
@@ -1818,7 +1828,7 @@ class json(object):
         if s == "null":
             return None
         if s.startswith("{"):
-            return dict(list(map(self.loads, self._split(kv, ":"))) for kv in self._split(s.strip("{}")))
+            return dict(map(self.loads, self._split(kv, ":")) for kv in self._split(s.strip("{}")))
         if s.startswith("["):
             return list(self.loads(v) for v in self._split(s.strip("[]")))
         raise TypeError("can't process %s." % repr(string))
@@ -1827,9 +1837,9 @@ class json(object):
         """ Returns a JSON string from the given data.
             The data can be a nested structure of dict, list, str, unicode, bool, int, float and None.
         """
-        if isinstance(obj, str):
+        if isinstance(obj, (str, unicode)):
             return self.encode(obj)
-        if isinstance(obj, int): # Also validates bools, so those are handled first.
+        if isinstance(obj, (int, long)): # Also validates bools, so those are handled first.
             return str(obj)
         if isinstance(obj, float):
             return str(self.float(obj))

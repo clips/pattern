@@ -131,6 +131,9 @@ setup(
         'BeautifulSoup',
         'feedparser',
         'pdfminer',
+        'numpy',
+        'scipy',
+        'nltk',
         'python-docx',
         'cherrypy'
     ],

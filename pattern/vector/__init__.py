@@ -56,13 +56,6 @@ from codecs      import open
 from collections import defaultdict
 
 try:
-    # Python 2
-    from cStringIO import StringIO
-except ImportError:
-    # Python 3
-    from io import StringIO
-
-try:
     import numpy
     import scipy
 except:
