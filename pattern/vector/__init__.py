@@ -20,6 +20,7 @@
 # Unsupervised machine learning or clustering can be used to group unlabeled documents
 # into subsets based on their similarity.
 
+from __future__ import unicode_literals
 from __future__ import absolute_import
 
 from . import stemmer
