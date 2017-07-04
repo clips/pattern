@@ -1,4 +1,9 @@
-The pattern.vector module comes bundled with precompiled binaries for LIBSVM and LIBLINEAR. These should work on 32-bit and 64-bit Windows, Mac OS X and Ubuntu architectures. If not, you need to compile a binary from source.
+In order to be able to use LIBSVM and LIBLINEAR you have to download, compile and install both libraries.
+
+- If you are on ArchLinux: pacman -S libsvm liblinear (or you can install liblinear-multicore instead of liblinear)
+- If you are on Ubutun/Debian: e.g. apt-cache search libsvm (to find the right packages)
+- If you are on Windows or Mac OS follow the guidelines on the website listed below.
+- You can also manually download, compile and install both libraries. Read on for further information.
 
 To install from source, download the latest versions of LIBSVM and LIBLINEAR:
 http://www.csie.ntu.edu.tw/~cjlin/libsvm/
