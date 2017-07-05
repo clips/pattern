@@ -319,7 +319,7 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
             if stemmer is not None:
                 w2 = stem(w2, stemmer, **kwargs).lower()
             dict.__setitem__(count, w2, (w2 in count) and count[w2]+1 or 1)
-    for k in count.keys():
+    for k in list(count.keys()):
         if count[k] <= threshold:
             dict.__delitem__(count, k)
     if top is not None:
@@ -566,7 +566,7 @@ class Document(object):
     
     @property
     def features(self):
-        return self._terms.keys()
+        return list(self._terms.keys())
     
     @property
     def count(self):
@@ -733,7 +733,7 @@ class Vector(readonlydict):
                 w = args[0].weight
             # From a dict.
             if isinstance(args[0], dict):
-                f = args[0].items()
+                f = list(args[0].items())
             # From an iterator.
             elif hasattr(args[0], "__iter__"):
                 f = iter(args[0])
@@ -742,7 +742,7 @@ class Vector(readonlydict):
         self.weight = kwargs.pop("weight", w) # TF, TFIDF, IG, BINARY or None.
         self._norm  = None                    # Cached L2-norm.
         # Exclude zero weights (sparse=True).
-        f = chain(f, kwargs.items())
+        f = chain(f, list(kwargs.items()))
         f = ((k, v) for k, v in f if not s or v != 0)
         readonlydict.__init__(self, f)
 
@@ -752,7 +752,7 @@ class Vector(readonlydict):
 
     @property
     def features(self):
-        return self.keys()
+        return list(self.keys())
     
     @property
     def l2_norm(self):
@@ -945,7 +945,7 @@ class Model(object):
 
     @property
     def terms(self):
-        return self.vector.keys()
+        return list(self.vector.keys())
         
     features = words = terms
     
@@ -1312,7 +1312,7 @@ class Model(object):
         documents = kwargs.get("documents", self.documents)
         if not getattr(self, "lsa", None):
             # Using document vectors:
-            vectors, features = [d.vector for d in documents], self.vector.keys()
+            vectors, features = [d.vector for d in documents], list(self.vector.keys())
         else:
             # Using LSA concept space:
             vectors, features = [self.lsa[d.id] for d in documents], list(range(len(self.lsa)))
@@ -1505,7 +1505,7 @@ class Model(object):
             C = dict.fromkeys(self.classes, 0)
             for d in self.documents:
                 C[d.type] += 1
-            HC = H(C.values())
+            HC = H(list(C.values()))
             # V => {feature: {value: {class: count}}}
             F = set(self.features)
             V = dict((f, defaultdict(lambda: defaultdict(lambda: 0))) for f in F)
@@ -1538,7 +1538,7 @@ class Model(object):
                 ig = HC
                 si = 0 # split info
                 for Cv in Vf.values():
-                    Cv = Cv.values()
+                    Cv = list(Cv.values())
                     pv = sum(Cv) / n
                     ig = ig - pv * H(Cv)
                     si = si + H([pv])
@@ -1665,7 +1665,7 @@ class Apriori(object):
         sets = [set(iterable) for iterable in sets]
         C1 = self.C1(sets)
         L1 = self.Lk(sets, C1, support)
-        self._candidates = [L1.keys()]
+        self._candidates = [list(L1.keys())]
         self._support = L1
         while True:
             # Terminate when no further extensions are found.
@@ -1674,7 +1674,7 @@ class Apriori(object):
             # Extend frequent subsets one item at a time.
             Ck = self.Ck(self._candidates[-1])
             Lk = self.Lk(sets, Ck, support)
-            self._candidates.append(Lk.keys())
+            self._candidates.append(list(Lk.keys()))
             self._support.update(Lk)
         return self._support
         
@@ -1695,7 +1695,7 @@ class LSA(object):
             but with reduced dimensionality so that cosine similarity and clustering run faster.
         """
         # Calling Model.vector() in a loop is quite slow, we should refactor this:
-        matrix = [model.vector(d).values() for d in model.documents]
+        matrix = [list(model.vector(d).values()) for d in model.documents]
         matrix = np.array(matrix)
         # Singular value decomposition, where u * sigma * vt = svd(matrix).
         # Sigma is the diagonal matrix of singular values,
@@ -1738,7 +1738,7 @@ class LSA(object):
     def terms(self):
         """ Yields a list of all terms, identical to LSA.model.vector.keys().
         """
-        return self._terms.values()
+        return list(self._terms.values())
         
     features = words = terms
 
@@ -2119,7 +2119,7 @@ class Classifier(object):
     def classes(self):
         """ Yields a list of trained classes.
         """
-        return self._classes.keys()
+        return list(self._classes.keys())
     
     terms, types = features, classes
 
@@ -2310,7 +2310,7 @@ class Probabilities(defaultdict):
             # Ties are broken in favor of the majority class
             # (random winner for majority ties).
             b = self.classifier.baseline
-            m = self.values()
+            m = list(self.values())
             m = max(m)
             if self[b] < m:
                 return choice([x for x in self if self[x] == m > 0]), m
@@ -2538,7 +2538,7 @@ class NB(Classifier):
 
     @property
     def features(self):
-        return self._features.keys()
+        return list(self._features.keys())
 
     def train(self, document, type=None):
         """ Trains the classifier with the given document of the given type (i.e., class).
@@ -2799,7 +2799,7 @@ def softmax(p):
         (using generalized logistic regression).
     """
     if p:
-        v = p.values()
+        v = list(p.values())
         m = max(v)
         e = list(map(lambda x: exp(x - m), v)) # prevent overflow
         s = sum(e)
