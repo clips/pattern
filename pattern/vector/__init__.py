@@ -44,7 +44,7 @@ except ImportError:
 import gzip
 import types
 
-from builtins import str, bytes, int, range
+from builtins import str, bytes, int, range, map
 from past.builtins import basestring
 
 from math        import log, exp, sqrt, tanh
@@ -2801,9 +2801,9 @@ def softmax(p):
     if p:
         v = p.values()
         m = max(v)
-        e = map(lambda x: exp(x - m), v) # prevent overflow
+        e = list(map(lambda x: exp(x - m), v)) # prevent overflow
         s = sum(e)
-        v = map(lambda x: x / s, e)
+        v = list(map(lambda x: x / s, e))
         p = defaultdict(float, zip(p.keys(), v))
     return p
 
@@ -3305,8 +3305,8 @@ class SVM(Classifier):
         H1 = dict((w, i+1) for i, w in enumerate(self.features))     # Feature => integer hash.
         H2 = dict((w, i+1) for i, w in enumerate(self.classes))      # Class => integer hash.
         H3 = dict((i+1, w) for i, w in enumerate(self.classes))      # Class reversed hash.
-        x  = map(lambda v: dict(map(lambda k: (H1[k], v[k]), v)), M) # Hashed vectors.
-        y  = map(lambda v: H2[v[0]], self._vectors)                  # Hashed classes.
+        x  = list(map(lambda v: dict(map(lambda k: (H1[k], v[k]), v)), M)) # Hashed vectors.
+        y  = list(map(lambda v: H2[v[0]], self._vectors))                  # Hashed classes.
         # For linear SVC, use LIBLINEAR which is faster.
         # For kernel SVC, use LIBSVM.
         if self.extension == LIBLINEAR:
