@@ -9,7 +9,7 @@ import random
 import codecs
 import unittest
 
-from builtins import str, bytes
+from builtins import str, bytes, range
 
 from random import seed; seed(0)
 
@@ -778,7 +778,7 @@ class TestClustering(unittest.TestCase):
         # Assert iterator mean.
         self.assertEqual(vector.mean([], 0), 0)
         self.assertEqual(vector.mean([1,1.5,2], 3), 1.5)
-        self.assertEqual(vector.mean(xrange(4), 4), 1.5)
+        self.assertEqual(vector.mean(range(4), 4), 1.5)
         print("pattern.vector.mean()")
         
     def test_centroid(self):
