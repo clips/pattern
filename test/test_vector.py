@@ -9,6 +9,8 @@ import random
 import codecs
 import unittest
 
+from builtins import str, bytes
+
 from random import seed; seed(0)
 
 from pattern import vector
@@ -50,13 +52,13 @@ class TestUnicode(unittest.TestCase):
     def test_decode_utf8(self):
         # Assert unicode.
         for s in self.strings:
-            self.assertTrue(isinstance(vector.decode_utf8(s), unicode))
+            self.assertTrue(isinstance(vector.decode_utf8(s), str))
         print("pattern.vector.decode_utf8()")
 
     def test_encode_utf8(self):
         # Assert Python bytestring.
         for s in self.strings:
-            self.assertTrue(isinstance(vector.encode_utf8(s), str))
+            self.assertTrue(isinstance(vector.encode_utf8(s), bytes))
         print("pattern.vector.encode_utf8()")
 
 #---------------------------------------------------------------------------------------------------
@@ -219,12 +221,12 @@ class TestDocument(unittest.TestCase):
         self.assertEqual(v5, "wolf*")
         self.assertEqual(v6, "wolf")
         # Assert unicode output.
-        self.assertTrue(isinstance(v1, unicode))
-        self.assertTrue(isinstance(v2, unicode))
-        self.assertTrue(isinstance(v3, unicode))
-        self.assertTrue(isinstance(v4, unicode))
-        self.assertTrue(isinstance(v5, unicode))
-        self.assertTrue(isinstance(v6, unicode))
+        self.assertTrue(isinstance(v1, str))
+        self.assertTrue(isinstance(v2, str))
+        self.assertTrue(isinstance(v3, str))
+        self.assertTrue(isinstance(v4, str))
+        self.assertTrue(isinstance(v5, str))
+        self.assertTrue(isinstance(v6, str))
         print("pattern.vector.stem()")
         
     def test_count(self):
