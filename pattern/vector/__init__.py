@@ -702,6 +702,11 @@ class Document(object):
                  self.name and ", name=%s" % repr(self.name) or "",
                  self.type and ", type=%s" % repr(self.type) or "")
 
+    # This is required because we overwrite the parent's __eq__() method.
+    # Otherwise objects will be unhashable in Python 3.
+    # More information: http://docs.python.org/3.6/reference/datamodel.html#object.__hash__
+    __hash__ = object.__hash__
+
 Bag = BagOfWords = BOW = Document
 
 #--- VECTOR ----------------------------------------------------------------------------------------
