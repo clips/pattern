@@ -3338,7 +3338,7 @@ class SVM(Classifier):
             )
         # Cache the model and the feature hash.
         # SVM.train() will remove the cached model (since it needs to be retrained).
-        self._model = (f(y, x, o.encode("utf-8")), H1, H2, H3)
+        self._model = (f(y, x, o.split()), H1, H2, H3)
   
     def _classify(self, document, probability=False):
         """ Calls libsvm.svm_predict() with the cached model.
