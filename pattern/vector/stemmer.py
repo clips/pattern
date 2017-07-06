@@ -20,6 +20,8 @@
 # Comments throughout the source code were taken from:
 # http://snowball.tartarus.org/algorithms/english/stemmer.html
 
+from __future__ import unicode_literals
+
 import re
 
 from builtins import range
