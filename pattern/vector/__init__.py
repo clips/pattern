@@ -46,7 +46,7 @@ except ImportError:
 import gzip
 import types
 
-from builtins import str, bytes, int, range, map
+from builtins import str, bytes, int, range, map, zip, filter
 from past.builtins import basestring
 
 from math        import log, exp, sqrt, tanh
@@ -75,9 +75,9 @@ except:
         singularize = lambda w, **k: w
         predicative = lambda w, **k: w
         conjugate   = lambda w, t, **k: w
-        tokenize    = lambda s: filter(len, 
+        tokenize    = lambda s: list(filter(len,
                                     re.split(r"(.*?[\.|\?|\!])", 
-                                        re.sub(r"(\.|\?|\!|,|;|:)", " \\1", s)))
+                                        re.sub(r"(\.|\?|\!|,|;|:)", " \\1", s))))
 
 #--- STRING FUNCTIONS ------------------------------------------------------------------------------
 # Latin-1 (ISO-8859-1) encoding is identical to Windows-1252 except for the code points 128-159:
@@ -2811,7 +2811,7 @@ def softmax(p):
         e = list(map(lambda x: exp(x - m), v)) # prevent overflow
         s = sum(e)
         v = list(map(lambda x: x / s, e))
-        p = defaultdict(float, zip(p.keys(), v))
+        p = defaultdict(float, list(zip(list(p.keys()), v)))
     return p
 
 #print(softmax({"cat": +1, "dog": -1})) # {"cat": 0.88, "dog": 0.12}
