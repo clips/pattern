@@ -2399,7 +2399,7 @@ class ConfusionMatrix(defaultdict):
         """ Returns the matrix as a string with rows and columns.
         """
         k = sorted(self)
-        n = max(map(lambda x: len(decode_utf8(x)), k))
+        n = max([len(decode_utf8(x)) for x in k])
         n = max(n, *(len(str(self[k1][k2])) for k1 in k for k2 in k)) + padding
         s = "".ljust(n)
         for t1 in k:
@@ -2809,9 +2809,9 @@ def softmax(p):
     if p:
         v = list(p.values())
         m = max(v)
-        e = list(map(lambda x: exp(x - m), v)) # prevent overflow
+        e = list([exp(x - m) for x in v]) # prevent overflow
         s = sum(e)
-        v = list(map(lambda x: x / s, e))
+        v = list([x / s for x in e])
         p = defaultdict(float, list(zip(list(p.keys()), v)))
     return p
 
