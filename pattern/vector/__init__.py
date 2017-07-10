@@ -47,6 +47,7 @@ import gzip
 import types
 
 from builtins import str, bytes, int, range, map, zip, filter
+from builtins import object
 from past.builtins import basestring
 
 from math        import log, exp, sqrt, tanh
