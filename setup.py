@@ -123,17 +123,17 @@ setup(
         "Topic :: Text Processing :: Markup :: HTML"
     ],
     install_requires = [
-        'future',
-        'backports.csv',
-        'mysqlclient',
-        'BeautifulSoup',
-        'feedparser',
-        'pdfminer',
-        'numpy',
-        'scipy',
-        'nltk',
-        'python-docx',
-        'cherrypy'
+        "future",
+        "backports.csv",
+        "mysqlclient",
+        "BeautifulSoup",
+        "feedparser",
+        "pdfminer" if sys.version < "3" else "pdfminer3k",
+        "numpy",
+        "scipy",
+        "nltk",
+        "python-docx",
+        "cherrypy"
     ],
     zip_safe = False
 )
