@@ -16,6 +16,8 @@ import itertools
 from builtins import str
 from builtins import object
 
+from functools import cmp_to_key
+
 #--- TEXT, SENTENCE AND WORD -----------------------------------------------------------------------
 # The search() and match() functions work on Text, Sentence and Word objects (see pattern.text.tree),
 # i.e., the parse tree including part-of-speech tags and phrase chunk tags.
@@ -183,7 +185,8 @@ def variations(iterable, optional=lambda x: False):
         v = tuple(iterable[i] for i in range(len(v)) if not v[i])
         a.add(v)
     # Longest-first.
-    return sorted(a, cmp=lambda x, y: len(y) - len(x))
+    f = lambda x, y: len(y) - len(x)
+    return sorted(a, key=cmp_to_key(f))
 
 #### TAXONOMY ######################################################################################
 
