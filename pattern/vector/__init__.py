@@ -326,7 +326,7 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
         if count[k] <= threshold:
             dict.__delitem__(count, k)
     if top is not None:
-        count = count.__class__(heapq.nsmallest(top, count.items(), key=lambda kv: (-kv[1], kv[0])))
+        count = count.__class__(heapq.nsmallest(top, list(count.items()), key=lambda kv: (-kv[1], kv[0])))
     return count
 
 def character_ngrams(string="", n=3, top=None, threshold=0, exclude=[], **kwargs):
@@ -346,7 +346,7 @@ def character_ngrams(string="", n=3, top=None, threshold=0, exclude=[], **kwargs
     if threshold > 0:
         count = dict((k, v) for k, v in count.items() if v > threshold)
     if top is not None:
-        count = dict(heapq.nsmallest(top, count.items(), key=lambda kv: (-kv[1], kv[0])))
+        count = dict(heapq.nsmallest(top, list(count.items()), key=lambda kv: (-kv[1], kv[0])))
     return kwargs.get("dict", dict)(count)
     
 chngrams = character_ngrams
@@ -2840,7 +2840,7 @@ class SLP(Classifier):
 
     @property
     def features(self):
-        return list(set(chain(*(f.keys() for f in self._weight.values()))))
+        return list(set(chain(*(list(f.keys()) for f in self._weight.values()))))
 
     def train(self, document, type=None):
         """ Trains the classifier with the given document of the given type (i.e., class).
