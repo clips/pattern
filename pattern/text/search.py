@@ -14,6 +14,7 @@ import re
 import itertools
 
 from builtins import str
+from builtins import object
 
 #--- TEXT, SENTENCE AND WORD -----------------------------------------------------------------------
 # The search() and match() functions work on Text, Sentence and Word objects (see pattern.text.tree),
