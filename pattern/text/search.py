@@ -254,7 +254,7 @@ class odict(dict):
     def iterkeys(self):
         return reversed(self._o)
     def itervalues(self):
-        return itertools.imap(self.__getitem__, reversed(self._o))
+        return map(self.__getitem__, reversed(self._o))
     def iteritems(self):
         return iter(zip(self.iterkeys(), self.itervalues()))
 
