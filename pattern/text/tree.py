@@ -512,6 +512,11 @@ class Chunk(object):
     def __ne__(self, chunk):
         return id(self) != id(chunk)
 
+    # This is required because we overwrite the parent's __eq__() method.
+    # Otherwise objects will be unhashable in Python 3.
+    # More information: http://docs.python.org/3.6/reference/datamodel.html#object.__hash__
+    __hash__ = object.__hash__
+
 # Chinks are non-chunks,
 # see also the chunked() function:
 class Chink(Chunk):
@@ -1053,6 +1058,11 @@ class Sentence(object):
         if not isinstance(other, Sentence): 
             return False
         return len(self) == len(other) and repr(self) == repr(other)
+
+    # This is required because we overwrite the parent's __eq__() method.
+    # Otherwise objects will be unhashable in Python 3.
+    # More information: http://docs.python.org/3.6/reference/datamodel.html#object.__hash__
+    __hash__ = object.__hash__
 
     @property
     def xml(self):
