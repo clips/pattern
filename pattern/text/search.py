@@ -202,7 +202,7 @@ class odict(dict):
         dict.__init__(self)
         self._o = [] # List of ordered keys.
         if isinstance(items, dict):
-            items = reversed(items.items())
+            items = reversed(list(items.items()))
         for k, v in items:
             self.__setitem__(k, v)
         
@@ -232,7 +232,7 @@ class odict(dict):
         dict.__delitem__(self, k)
 
     def update(self, d):
-        for k, v in reversed(d.items()): 
+        for k, v in reversed(list(d.items())):
             self.__setitem__(k, v)
         
     def setdefault(self, k, v=None):
@@ -266,7 +266,7 @@ class odict(dict):
         return list(self.iteritems())
     
     def copy(self):
-        return self.__class__(reversed(self.items()))
+        return self.__class__(reversed(list(self.items())))
     
     def __repr__(self):
         return "{%s}" % ", ".join("%s: %s" % (repr(k), repr(v)) for k, v in self.items())
@@ -324,7 +324,7 @@ class Taxonomy(dict):
         """
         term = self._normalize(term)
         if dict.__contains__(self, term):
-            return self[term][0].keys()[-1]
+            return list(self[term][0].keys())[-1]
         # If the term is not in the dictionary, check the classifiers.
         # Returns the first term in the list returned by a classifier.
         for classifier in self.classifiers:
@@ -343,7 +343,7 @@ class Taxonomy(dict):
                 return []
             visited[term], a = True, []
             if dict.__contains__(self, term):
-                a = self[term][0].keys()
+                a = list(self[term][0].keys())
             for classifier in self.classifiers:
                 a.extend(classifier.parents(term, **kwargs) or [])
             if recursive:
@@ -360,7 +360,7 @@ class Taxonomy(dict):
                 return []
             visited[term], a = True, []
             if dict.__contains__(self, term):
-                a = self[term][1].keys()
+                a = list(self[term][1].keys())
             for classifier in self.classifiers:
                 a.extend(classifier.children(term, **kwargs) or [])
             if recursive:
