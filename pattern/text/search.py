@@ -835,7 +835,7 @@ class Pattern(object):
                 _u[id(sequence)] = False
         # Return the leftmost-longest.
         if len(a) > 0:
-            return sorted(a)[0][-1]
+            return sorted(a, key = lambda x: (x[0], -x[1]))[0][-1]
 
     def _variations(self):
         v = variations(self.sequence, optional=lambda constraint: constraint.optional)
