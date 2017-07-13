@@ -13,7 +13,7 @@ from __future__ import absolute_import
 import re
 import itertools
 
-from builtins import str, map, zip
+from builtins import str, range, map, zip
 from builtins import object
 
 from functools import cmp_to_key
