@@ -253,6 +253,11 @@ class Word(object):
     def __ne__(self, word):
         return id(self) != id(word)
 
+    # This is required because we overwrite the parent's __eq__() method.
+    # Otherwise objects will be unhashable in Python 3.
+    # More information: http://docs.python.org/3.6/reference/datamodel.html#object.__hash__
+    __hash__ = object.__hash__
+
 class Tags(dict):
     
     def __init__(self, word, items=[]):
