@@ -8,6 +8,8 @@
 ####################################################################################################
 # Python API interface for various web services (Google, Twitter, Wikipedia, ...)
 
+from __future__ import absolute_import
+
 # smgllib.py is removed from Python 3, a warning is issued in Python 2.6+. Ignore for now.
 import warnings; warnings.filterwarnings(action='ignore', category=DeprecationWarning, module="sgmllib")
 
@@ -72,9 +74,9 @@ except ImportError:
 import feedparser
 import json
 
-import api
-import oauth
-import locale
+from . import api
+from . import oauth
+from . import locale
 
 import bs4 as BeautifulSoup
 
@@ -82,14 +84,14 @@ try:
     # Import persistent Cache.
     # If this module is used separately,
     # a dict is used (i.e. this Python session only).
-    from cache import Cache, cache, TMP
+    from .cache import Cache, cache, TMP
 except:
     cache = {}
 
 try:
-    from imap import Mail, MailFolder, Message, GMAIL
-    from imap import MailError, MailServiceError, MailLoginError, MailNotLoggedIn
-    from imap import FROM, SUBJECT, DATE, BODY, ATTACHMENTS
+    from .imap import Mail, MailFolder, Message, GMAIL
+    from .imap import MailError, MailServiceError, MailLoginError, MailNotLoggedIn
+    from .imap import FROM, SUBJECT, DATE, BODY, ATTACHMENTS
 except:
     pass
 
