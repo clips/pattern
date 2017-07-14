@@ -88,6 +88,9 @@ def normalize(word):
 
 ### SYNSET #########################################################################################
 
+NOUNS, VERBS, ADJECTIVES, ADVERBS = \
+    wn.NOUN, wn.VERB, wn.ADJ, wn.ADV
+
 NOUN, VERB, ADJECTIVE, ADVERB = \
     NN, VB, JJ, RB = \
         "NN", "VB", "JJ", "RB"
