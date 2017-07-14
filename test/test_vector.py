@@ -461,16 +461,12 @@ class TestModel(unittest.TestCase):
         self.assertAlmostEqual(v2, 0.00, places=2)
         self.assertAlmostEqual(v3, 0.45, places=2)
         # Assert that Model.similarity() is aware of LSA reduction.
-        try:
-            import numpy
-            self.model.reduce(2)
-            v1 = self.model.similarity(self.model[0], self.model[1])
-            v2 = self.model.similarity(self.model[0], self.model[2])
-            self.assertAlmostEqual(v1, 1.00, places=2)
-            self.assertAlmostEqual(v2, 0.00, places=2)
-            self.model.lsa = None
-        except ImportError as e:
-            pass
+        self.model.reduce(2)
+        v1 = self.model.similarity(self.model[0], self.model[1])
+        v2 = self.model.similarity(self.model[0], self.model[2])
+        self.assertAlmostEqual(v1, 1.00, places=2)
+        self.assertAlmostEqual(v2, 0.00, places=2)
+        self.model.lsa = None
         print("pattern.vector.Model.similarity()")
         
     def test_nearest_neighbors(self):
@@ -537,10 +533,6 @@ class TestModel(unittest.TestCase):
     
     def test_lsa(self):
         # Assert Model.reduce() LSA reduction.
-        try:
-            import numpy
-        except ImportError as e:
-            return
         self.model.reduce(2)
         self.assertTrue(isinstance(self.model.lsa, vector.LSA))
         self.model.lsa = None
@@ -663,11 +655,6 @@ class TestLSA(unittest.TestCase):
         random.seed()
     
     def test_lsa(self):
-        try:
-            import numpy
-        except ImportError as e:
-            print(e)
-            return
         # Assert LSA properties.
         k = 100
         lsa = vector.LSA(self.model, k)
@@ -685,12 +672,8 @@ class TestLSA(unittest.TestCase):
             self.assertTrue(isinstance(v, vector.Vector))
             self.assertTrue(len(v) <= k)
         print("pattern.vector.LSA")
-        
+
     def test_lsa_concepts(self):
-        try:
-            import numpy
-        except ImportError:
-            return
         # Assert LSA concept space.
         model = vector.Model((
             vector.Document("cats purr"),
@@ -733,10 +716,6 @@ class TestLSA(unittest.TestCase):
         print("pattern.vector.LSA.transform()")
     
     def test_model_reduce(self):
-        try:
-            import numpy
-        except ImportError:
-            return
         # Test time and accuracy of model with sparse vectors of maximum 250 features.
         t1 = time.time()
         A1, P1, R1, F1, stdev = vector.KNN.test(self.model, folds=10)
