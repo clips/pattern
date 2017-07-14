@@ -76,7 +76,7 @@ import api
 import oauth
 import locale
 
-import BeautifulSoup
+import bs4 as BeautifulSoup
 
 try:
     # Import persistent Cache.

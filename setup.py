@@ -126,7 +126,7 @@ setup(
         "future",
         "backports.csv",
         "mysqlclient",
-        "BeautifulSoup",
+        "beautifulsoup4",
         "feedparser",
         "pdfminer" if sys.version < "3" else "pdfminer3k",
         "numpy",
