@@ -10,9 +10,6 @@
 
 from __future__ import absolute_import
 
-# smgllib.py is removed from Python 3, a warning is issued in Python 2.6+. Ignore for now.
-import warnings; warnings.filterwarnings(action='ignore', category=DeprecationWarning, module="sgmllib")
-
 import os
 import sys
 import threading
@@ -46,7 +43,9 @@ try:
 except ImportError:
     # Python 3
     import http.client as httplib
-import sgmllib
+
+from html.parser import HTMLParser as _HTMLParser
+
 try:
     # Python 3
     import cookielib
@@ -791,22 +790,7 @@ blocks.update({
     "td": ("", "\t"),
 })
 
-class HTMLParser(sgmllib.SGMLParser):
-
-    def __init__(self):
-        sgmllib.SGMLParser.__init__(self)
-
-    def handle_starttag(self, tag, attrs):
-        pass
-
-    def handle_endtag(self, tag):
-        pass
-
-    def unknown_starttag(self, tag, attrs):
-        self.handle_starttag(tag, attrs)
-
-    def unknown_endtag(self, tag):
-        self.handle_endtag(tag)
+class HTMLParser(_HTMLParser):
 
     def clean(self, html):
         html = decode_utf8(html)
@@ -817,24 +801,6 @@ class HTMLParser(sgmllib.SGMLParser):
         html = html.replace("&lt;!doctype", "<!doctype")
         html = html.replace("&lt;!--", "<!--")
         return html
-
-    def parse_declaration(self, i):
-        # We can live without sgmllib's parse_declaration().
-        try:
-            return sgmllib.SGMLParser.parse_declaration(self, i)
-        except sgmllib.SGMLParseError:
-            return i + 1
-
-    def convert_charref(self, name):
-        # This fixes a bug in older versions of sgmllib when working with Unicode.
-        # Fix: ASCII ends at 127, not 255
-        try:
-            n = int(name)
-        except ValueError:
-            return
-        if not 0 <= n <= 127:
-            return
-        return chr(n)
 
 class HTMLTagstripper(HTMLParser):
 
