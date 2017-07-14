@@ -134,7 +134,7 @@ class TestTaxonomy(unittest.TestCase):
         t.classifiers.append(c)
         self.assertEqual(t.classify("cat"), "feline")
         self.assertEqual(t.classify("dog"), "canine")
-        self.assertTrue("domestic cat" in t.children("cat"))
+        self.assertTrue("domestic_cat" in t.children("cat"))
         self.assertTrue("puppy" in t.children("dog"))
         print("pattern.search.WordNetClassifier")
 
