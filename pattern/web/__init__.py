@@ -3042,7 +3042,7 @@ class Node(object):
             All DOM nodes can be navigated in the same way (e.g. Node.parent, Node.children, ...)
         """
         self.type = type
-        self._p = not isinstance(html, SOUP) and BeautifulSoup.BeautifulSoup(u(html), **kwargs) or html
+        self._p = not isinstance(html, SOUP) and BeautifulSoup.BeautifulSoup(u(html), "lxml", **kwargs) or html
 
     @property
     def _beautifulSoup(self):
