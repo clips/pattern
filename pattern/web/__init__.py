@@ -824,10 +824,6 @@ class HTMLTagstripper(HTMLParser):
         self.reset()
         return "".join(self._data)
 
-    def clean(self, html):
-        # Escape all entities (just strip tags).
-        return HTMLParser.clean(self, html).replace("&", "&amp;")
-
     def handle_starttag(self, tag, attributes):
         if tag in BLOCK and self._data and self._data[-1][-1:] != "\n":
             # Block-level elements always break to a new line.
