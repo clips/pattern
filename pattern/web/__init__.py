@@ -1003,8 +1003,8 @@ def plaintext(html, keep=[], replace=blocks, linebreaks=2, indentation=False):
        not keep.__contains__("!--"):
         html = strip_comments(html)
     html = html.replace("\r", "\n")
-    html = strip_tags(html, exclude=keep, replace=replace)
     html = decode_entities(html)
+    html = strip_tags(html, exclude=keep, replace=replace)
     html = collapse_spaces(html, indentation)
     html = collapse_tabs(html, indentation)
     html = collapse_linebreaks(html, linebreaks)
@@ -3078,10 +3078,10 @@ class Node(object):
         return self.__unicode__()
     @property
     def next_sibling(self):
-        return self._wrap(self._p.nextSibling)
+        return self._wrap(self._p.next_sibling)
     @property
     def previous_sibling(self):
-        return self._wrap(self._p.previousSibling)
+        return self._wrap(self._p.previous_sibling)
 
     next, prev, previous = \
         next_sibling, previous_sibling, previous_sibling
@@ -3154,9 +3154,7 @@ class Element(Node):
 
     @property
     def attributes(self):
-        if "_attributes" not in self.__dict__:
-            self._attributes = self._p._getAttrMap()
-        return self._attributes
+        return self._p.attrs
 
     attr = attrs = attributes
 
@@ -3187,33 +3185,33 @@ class Element(Node):
         if isinstance(v, basestring) and "#" in v:
             v1, v2 = v.split("#")
             v1 = v1 in ("*","") or v1.lower()
-            return [Element(x) for x in self._p.findAll(v1, id=v2)]
+            return [Element(x) for x in self._p.find_all(v1, id=v2)]
         if isinstance(v, basestring) and "." in v:
             v1, v2 = v.split(".")
             v1 = v1 in ("*","") or v1.lower()
-            return [Element(x) for x in self._p.findAll(v1, v2)]
-        return [Element(x) for x in self._p.findAll(v in ("*","") or v.lower())]
+            return [Element(x) for x in self._p.find_all(v1, v2)]
+        return [Element(x) for x in self._p.find_all(v in ("*","") or v.lower())]
 
     by_tag = getElementsByTagname = get_elements_by_tagname
 
     def get_element_by_id(self, v):
         """ Returns the first nested Element with the given id attribute value.
         """
-        return ([Element(x) for x in self._p.findAll(id=v, limit=1) or []]+[None])[0]
+        return ([Element(x) for x in self._p.find_all(id=v, limit=1) or []]+[None])[0]
 
     by_id = getElementById = get_element_by_id
 
     def get_elements_by_classname(self, v):
         """ Returns a list of nested Elements with the given class attribute value.
         """
-        return [Element(x) for x in (self._p.findAll(True, v))]
+        return [Element(x) for x in (self._p.find_all(True, v))]
 
     by_class = getElementsByClassname = get_elements_by_classname
 
     def get_elements_by_attribute(self, **kwargs):
         """ Returns a list of nested Elements with the given attribute value.
         """
-        return [Element(x) for x in (self._p.findAll(True, attrs=kwargs))]
+        return [Element(x) for x in (self._p.find_all(True, attrs=kwargs))]
 
     by_attribute = by_attr = getElementsByAttribute = get_elements_by_attribute
 
@@ -3255,7 +3253,7 @@ class Document(Element):
         """ Yields the <!doctype> declaration, as a TEXT Node or None.
         """
         for child in self.children:
-            if isinstance(child._p, BeautifulSoup.Declaration):
+            if isinstance(child._p, (BeautifulSoup.Declaration, BeautifulSoup.Doctype)):
                 return child
 
     @property
@@ -3371,7 +3369,7 @@ class Selector(object):
         """ Returns the first next sibling Element of the given element.
         """
         while isinstance(e, Node):
-            e = e.next
+            e = e.next_element
             if isinstance(e, Element):
                 return e
                 
@@ -3379,7 +3377,7 @@ class Selector(object):
         """ Returns the last previous sibling Element of the given element.
         """
         while isinstance(e, Node):
-            e = e.previous
+            e = e.previous_element
             if isinstance(e, Element):
                 return e
                 
@@ -3400,14 +3398,14 @@ class Selector(object):
             return False
         if self.id not in ((e.id or "").lower(), "", None):
             return False
-        if self.classes.issubset(set(map(lambda s: s.lower(), e.attr.get("class", "").split()))) is False:
+        if self.classes.issubset(set(map(lambda s: s.lower(), e.attr.get("class", "")))) is False:
             return False
         if "first-child" in self.pseudo and self._first_child(e.parent) != e:
             return False
         if any(x.startswith("contains") and not self._contains(e, x) for x in self.pseudo):
             return False # jQuery :contains("...") selector.
         for k, v in self.attributes.items():
-            if k not in e.attrs or not (v is True or re.search(v, e.attrs[k]) is not None):
+            if k not in e.attrs or not (v is True or re.search(v, " ".join(e.attrs[k])) is not None):
                 return False
         return True
 
@@ -3424,11 +3422,11 @@ class Selector(object):
         if not isinstance(e, Element):
             return []
         if len(self.classes) == 0 or len(self.classes) >= 2:
-            e = map(Element, e._p.findAll(tag, attrs=a))
+            e = map(Element, e._p.find_all(tag, attrs=a))
         if len(self.classes) == 1:
-            e = map(Element, e._p.findAll(tag, attrs=dict(a, **{"class": i(list(self.classes)[0])})))
+            e = map(Element, e._p.find_all(tag, attrs=dict(a, **{"class": i(list(self.classes)[0])})))
         if len(self.classes) >= 2:
-            e = filter(lambda e: self.classes.issubset(set(e.attr.get("class", "").lower().split())), e)
+            e = filter(lambda e: self.classes.issubset(set(e.attr.get("class", ""))), e)
         if "first-child" in self.pseudo:
             e = filter(lambda e: e == self._first_child(e.parent), e)
         if any(x.startswith("contains") for x in self.pseudo):
