@@ -18,6 +18,7 @@ import threading
 import time
 import socket, urllib, ssl
 
+from builtins import str, bytes
 from builtins import object
 
 
@@ -123,7 +124,7 @@ def fix(s, ignore=""):
         For example: fix("clichÃ©") => u"cliché".
     """
     # http://blog.luminoso.com/2012/08/20/fix-unicode-mistakes-with-python/
-    if not isinstance(s, unicode):
+    if not isinstance(s, str):
         s = s.decode("utf-8")
         # If this doesn't work,
         # copy & paste string in a Unicode .txt, 
@@ -163,7 +164,7 @@ def latin(s):
     """ Returns True if the string contains only Latin-1 characters
         (no Chinese, Japanese, Arabic, Cyrillic, Hebrew, Greek, ...).
     """
-    if not isinstance(s, unicode):
+    if not isinstance(s, str):
         s = s.decode("utf-8")
     return all(unicodedata.name(ch).startswith("LATIN") for ch in s if ch.isalpha())
 
@@ -172,26 +173,26 @@ def decode_string(v, encoding="utf-8"):
     """
     if isinstance(encoding, str):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
-    if isinstance(v, str):
+    if isinstance(v, bytes):
         for e in encoding:
             try: return v.decode(*e)
             except:
                 pass
         return v
-    return unicode(v)
+    return str(v)
 
 def encode_string(v, encoding="utf-8"):
     """ Returns the given value as a Python byte string (if possible).
     """
     if isinstance(encoding, str):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
-    if isinstance(v, unicode):
+    if isinstance(v, str):
         for e in encoding:
             try: return v.encode(*e)
             except:
                 pass
         return v
-    return str(v)
+    return bytes(v)
 
 u = decode_utf8 = decode_string
 s = encode_utf8 = encode_string
@@ -435,7 +436,7 @@ class URL(object):
 
     # URL.string yields unicode(URL) by joining the different parts,
     # if the URL parts have been modified.
-    def _get_string(self): return unicode(self)
+    def _get_string(self): return str(self)
     def _set_string(self, v):
         self.__dict__["_string"] = u(v)
         self.__dict__["_parts"]  = None
@@ -618,7 +619,6 @@ class URL(object):
         return self.__dict__["_redirect"] or None
 
     def __str__(self):
-        return bytestring(self.string)
 
     def __unicode__(self):
         # The string representation includes the query attributes with HTTP GET.
@@ -941,7 +941,7 @@ def decode_entities(string):
         else:
             cp = htmlentitydefs.name2codepoint.get(name) # "&amp;" => "&"
             return unichr(cp) if cp else match.group()   # "&foo;" => "&foo;"
-    if isinstance(string, basestring):
+    if isinstance(string, str):
         return RE_UNICODE.subn(replace_entity, string)[0]
     return string
 
@@ -1079,7 +1079,7 @@ class Result(dict):
         return URL(self.url).download(*args, **kwargs)
 
     def _format(self, v):
-        if isinstance(v, str): # Store strings as unicode.
+        if isinstance(v, bytes): # Store strings as unicode.
             return u(v)
         if v is None:
             return u""
@@ -2497,7 +2497,7 @@ SPARQL = "sparql"
 class DBPediaQueryError(HTTP400BadRequest):
     pass
 
-class DBPediaResource(unicode):
+class DBPediaResource(str):
     @property
     def name(self):
         # http://dbpedia.org/resource/Australia => Australia
@@ -3076,10 +3076,10 @@ class Node(object):
         return hasattr(self._p, "contents") and [self._wrap(x) for x in self._p.contents] or []
     @property
     def html(self):
-        return self.__unicode__()
+        return self.__str__()
     @property
     def source(self):
-        return self.__unicode__()
+        return self.__str__()
     @property
     def next_sibling(self):
         return self._wrap(self._p.next_sibling)
@@ -3821,7 +3821,7 @@ class DocumentParser(object):
         """ Returns a file-like object with a read() method,
             from the given file path or string.
         """
-        if isinstance(path, basestring) and os.path.exists(path):
+        if isinstance(path, str) and os.path.exists(path):
             return open(path, "rb")
         if hasattr(path, "read"):
             return path
@@ -3919,7 +3919,7 @@ def parsehtml(path, *args, **kwargs):
 def parsedoc(path, format=None):
     """ Returns the content as a Unicode string from the given document (.html., .pdf, .docx).
     """
-    if isinstance(path, basestring):
+    if isinstance(path, str):
         if format == "pdf"  or path.endswith(".pdf"):
             return parsepdf(path)
         if format == "docx" or path.endswith(".docx"):

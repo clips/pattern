@@ -49,7 +49,7 @@ def escape(string):
     return urllib.quote(string, safe="~")
 
 def utf8(string):
-    return isinstance(string, unicode) and string.encode("utf-8") or str(string)
+    return isinstance(string, str) and string.encode("utf-8") or str(string)
 
 def normalize(string):
     # Normalize accents (é => e) for services that have problems with utf-8

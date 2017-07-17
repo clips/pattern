@@ -15,6 +15,7 @@ import imaplib
 import email
 import time
 
+from builtins import str, bytes
 
 try: 
     MODULE = os.path.dirname(os.path.realpath(__file__))
@@ -35,27 +36,31 @@ except:
 
 #### STRING FUNCTIONS ##############################################################################
 
-def decode_utf8(string):
-    """ Returns the given string as a unicode string (if possible).
+def decode_string(v, encoding="utf-8"):
+    """ Returns the given value as a Unicode string (if possible).
     """
-    if isinstance(string, str):
-        for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
-            try: 
-                return string.decode(*encoding)
+    if isinstance(encoding, str):
+        encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
+    if isinstance(v, bytes):
+        for e in encoding:
+            try: return v.decode(*e)
             except:
                 pass
-        return string
-    return unicode(string)
-    
-def encode_utf8(string):
-    """ Returns the given string as a Python byte string (if possible).
+        return v
+    return str(v)
+
+def encode_string(v, encoding="utf-8"):
+    """ Returns the given value as a Python byte string (if possible).
     """
-    if isinstance(string, unicode):
-        try: 
-            return string.encode("utf-8")
-        except:
-            return string
-    return str(string)
+    if isinstance(encoding, str):
+        encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
+    if isinstance(v, str):
+        for e in encoding:
+            try: return v.encode(*e)
+            except:
+                pass
+        return v
+    return bytes(v)
 
 #### IMAP4 SSL #####################################################################################
 # Fixes an issue in Python 2.5- with memory allocation.
