@@ -5,7 +5,6 @@
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-from past.builtins import basestring
 
 #### LANGUAGE & REGION #############################################################################
 # IETF BCP 47 language-region code => (language, region, ISO-639 language code, ISO-3166 region code).
@@ -209,7 +208,7 @@ def regionalize(language):
     """ Returns a list of RFC-5646 language-region codes for the given language code.
         For example: regionalize("nl") => ["nl-nl", "nl-be"]
     """
-    if not isinstance(language, basestring):
+    if not isinstance(language, str):
         return []
     if "-" in language:
         language, region = language.split("-")

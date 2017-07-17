@@ -4,7 +4,6 @@
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
-from past.builtins import basestring
 
 try:
     import hashlib; md5=hashlib.md5
@@ -16,7 +15,7 @@ except:
 def decode_string(v, encoding="utf-8"):
     """ Returns the given value as a Unicode string (if possible).
     """
-    if isinstance(encoding, basestring):
+    if isinstance(encoding, str):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, str):
         for e in encoding:
@@ -29,7 +28,7 @@ def decode_string(v, encoding="utf-8"):
 def encode_string(v, encoding="utf-8"):
     """ Returns the given value as a Python byte string (if possible).
     """
-    if isinstance(encoding, basestring):
+    if isinstance(encoding, str):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, unicode):
         for e in encoding:

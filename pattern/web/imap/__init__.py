@@ -15,7 +15,6 @@ import imaplib
 import email
 import time
 
-from past.builtins import basestring
 
 try: 
     MODULE = os.path.dirname(os.path.realpath(__file__))
@@ -284,7 +283,7 @@ class MailFolder(object):
             elif attachments:
                 d[ATTACHMENTS].append((p.get_content_type(), p.get_payload()))
         for k in d:
-            if isinstance(d[k], basestring):
+            if isinstance(d[k], str):
                 d[k] = d[k].strip()
                 d[k] = d[k].replace("\r\n", "\n")
         return d

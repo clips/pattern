@@ -20,7 +20,6 @@ import socket, urllib, ssl
 
 from builtins import object
 
-from past.builtins import basestring
 
 try:
     # Python 2
@@ -169,7 +168,7 @@ def latin(s):
 def decode_string(v, encoding="utf-8"):
     """ Returns the given value as a Unicode string (if possible).
     """
-    if isinstance(encoding, basestring):
+    if isinstance(encoding, str):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, str):
         for e in encoding:
@@ -182,7 +181,7 @@ def decode_string(v, encoding="utf-8"):
 def encode_string(v, encoding="utf-8"):
     """ Returns the given value as a Python byte string (if possible).
     """
-    if isinstance(encoding, basestring):
+    if isinstance(encoding, str):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, unicode):
         for e in encoding:
@@ -915,7 +914,7 @@ def encode_entities(string):
         For example, to display "<em>hello</em>" in a browser,
         we need to pass "&lt;em&gt;hello&lt;/em&gt;" (otherwise "hello" in italic is displayed).
     """
-    if isinstance(string, basestring):
+    if isinstance(string, str):
         string = RE_AMPERSAND.sub("&amp;", string)
         string = string.replace("<", "&lt;")
         string = string.replace(">", "&gt;")
@@ -3182,11 +3181,11 @@ class Element(Node):
         """ Returns a list of nested Elements with the given tag name.
             The tag name can include a class (e.g. div.header) or an id (e.g. div#content).
         """
-        if isinstance(v, basestring) and "#" in v:
+        if isinstance(v, str) and "#" in v:
             v1, v2 = v.split("#")
             v1 = v1 in ("*","") or v1.lower()
             return [Element(x) for x in self._p.find_all(v1, id=v2)]
-        if isinstance(v, basestring) and "." in v:
+        if isinstance(v, str) and "." in v:
             v1, v2 = v.split(".")
             v1 = v1 in ("*","") or v1.lower()
             return [Element(x) for x in self._p.find_all(v1, v2)]
