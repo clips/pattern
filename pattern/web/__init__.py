@@ -21,6 +21,7 @@ import socket, urllib, ssl
 from builtins import str, bytes, map, filter, zip
 from builtins import object
 
+from io import open
 
 try:
     # Python 3
