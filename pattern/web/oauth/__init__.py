@@ -8,7 +8,15 @@
 ####################################################################################################
 # Naive OAuth implementation for pattern.web.Yahoo and Yahoo! BOSS v2.
 
-import urllib
+
+try:
+    # Python 3
+    from urllib.parse import urlencode
+    from urllib.parse import quote as urlquote
+except ImportError:
+    from urllib import urlencode
+    from urllib import quote as urlquote
+
 import hmac
 import time
 import random
@@ -46,7 +54,7 @@ def timestamp():
     return int(time.time())
 
 def escape(string):
-    return urllib.quote(string, safe="~")
+    return urlquote(string, safe=b"~")
 
 def utf8(string):
     return isinstance(string, str) and string.encode("utf-8") or str(string)
@@ -95,4 +103,4 @@ def sign(url, data={}, method="GET", secret="", token="", hash=HMAC_SHA1):
 #data["oauth_signature"] = sign(url, data, secret=CONSUMER_SECRET)
 #data = dict((k, utf8(v)) for k, v in data.items())
 #
-#print(url + "?" + urllib.urlencode(data))
+#print(url + "?" + urlencode(data))
