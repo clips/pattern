@@ -9,6 +9,7 @@
 # Python API interface for various web services (Google, Twitter, Wikipedia, ...)
 
 from __future__ import absolute_import
+from __future__ import print_function
 
 import os
 import sys
