@@ -274,7 +274,7 @@ class MailFolder(object):
             if cached:
                 cache[id] = m
         # Parse the raw message.
-        m = email.message_from_string(encode_utf8(m))
+        m = email.message_from_string(m)
         d = Message([
                  (DATE, _decode(m.get(DATE), m)),
                  (FROM, _decode(m.get(FROM), m)),

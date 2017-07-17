@@ -47,8 +47,10 @@ encode_utf8 = encode_string
 import os
 import glob
 import tempfile
-import codecs
 import datetime
+
+from codecs import BOM_UTF8
+BOM_UTF8 = BOM_UTF8.decode('utf-8')
 
 try: 
     MODULE = os.path.dirname(os.path.realpath(__file__))
@@ -95,8 +97,8 @@ class Cache(object):
 
     def __setitem__(self, k, v):
         f = open(self._hash(k), "wb")
-        f.write(codecs.BOM_UTF8)
-        f.write(encode_utf8(v))
+        f.write(BOM_UTF8)
+        f.write(v)
         f.close()
 
     def __delitem__(self, k):
@@ -109,7 +111,7 @@ class Cache(object):
             With unicode=True, returns a Unicode string.
         """
         if k in self:
-            f = open(self._hash(k), "rb"); v=f.read().lstrip(codecs.BOM_UTF8)
+            f = open(self._hash(k), "r"); v=f.read().lstrip(BOM_UTF8)
             f.close()
             if unicode is True:
                 return decode_utf8(v)

@@ -37,10 +37,10 @@ _diacritics = {
 ####################################################################################################
 
 def HMAC_SHA1(key, text):
-    return hmac.new(key, text, sha1).digest()
+    return hmac.new(key.encode("utf-8"), text.encode("utf-8"), sha1).digest()
 
 def nonce():
-    return md5(str(time.time()) + str(random.random())).hexdigest()
+    return md5(str(time.time()).encode("utf-8") + str(random.random()).encode("utf-8")).hexdigest()
 
 def timestamp():
     return int(time.time())
@@ -74,7 +74,7 @@ def sign(url, data={}, method="GET", secret="", token="", hash=HMAC_SHA1):
     signature = escape(utf8(secret)) + "&" + escape(utf8(token))
     signature = hash(signature, base(url, data, method))
     signature = base64.b64encode(signature)
-    return signature
+    return signature.decode("utf-8")
 
 #CONSUMER_KEY = ""
 #CONSUMER_SECRET = ""

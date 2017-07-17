@@ -18,7 +18,7 @@ import threading
 import time
 import socket, urllib, ssl
 
-from builtins import str, bytes, map, filter, zip
+from builtins import str, bytes, chr, map, filter, zip
 from builtins import object
 
 from io import open
@@ -148,7 +148,7 @@ def fix(s, ignore=""):
         u.append(ch)
         i = j + 1
     u.append(s[i:].encode("utf-8"))
-    u = "".join(u)
+    u = b"".join(u)
     u = u.decode("utf-8", "replace")
     u = u.replace("\n", "\n ")
     u = u.split(" ")
@@ -620,8 +620,6 @@ class URL(object):
         return self.__dict__["_redirect"] or None
 
     def __str__(self):
-
-    def __unicode__(self):
         # The string representation includes the query attributes with HTTP GET.
         P = self.parts
         u = []
@@ -936,12 +934,12 @@ def decode_entities(string):
         hash, hex, name = match.group(1), match.group(2), match.group(3)
         if hash == "#" or name.isdigit():
             if hex == "":
-                return unichr(int(name))                 # "&#38;" => "&"
+                return chr(int(name))                 # "&#38;" => "&"
             if hex.lower() == "x":
-                return unichr(int("0x" + name, 16))      # "&#x0026;" = > "&"
+                return chr(int("0x" + name, 16))      # "&#x0026;" = > "&"
         else:
             cp = htmlentitydefs.name2codepoint.get(name) # "&amp;" => "&"
-            return unichr(cp) if cp else match.group()   # "&foo;" => "&foo;"
+            return chr(cp) if cp else match.group()   # "&foo;" => "&foo;"
     if isinstance(string, str):
         return RE_UNICODE.subn(replace_entity, string)[0]
     return string
@@ -1215,7 +1213,7 @@ class Google(SearchEngine):
         """
         url = URL("https://www.googleapis.com/language/translate/v2?", method=GET, query={
                "key": self.license or GOOGLE_LICENSE,
-                 "q": string, # 1000 characters maximum
+                 "q": string.encode("utf-8"), # 1000 characters maximum
             "source": input,
             "target": output
         })
@@ -1239,7 +1237,7 @@ class Google(SearchEngine):
         """
         url = URL("https://www.googleapis.com/language/translate/v2/detect?", method=GET, query={
                "key": self.license or GOOGLE_LICENSE,
-                 "q": string[:1000]
+                 "q": string[:1000].encode("utf-8")
         })
         kwargs.setdefault("cached", False)
         kwargs.setdefault("unicode", True)
@@ -1501,7 +1499,7 @@ class DuckDuckGo(SearchEngine):
         """ Returns a DuckDuckGo answer for the given string (e.g., math, spelling, ...)
         """
         url = URL(DUCKDUCKGO, method=GET, query={
-            "q": string,
+            "q": string.encode("utf-8"),
             "o": "json"
         })
         kwargs.setdefault("cached", False)
@@ -3114,8 +3112,6 @@ class Node(object):
     def __repr__(self):
         return "Node(type=%s)" % repr(self.type)
     def __str__(self):
-        return bytestring(self.__unicode__())
-    def __unicode__(self):
         return u(self._p)
         
     def __call__(self, *args, **kwargs):
@@ -3611,7 +3607,7 @@ class Crawler(object):
         self.QUEUE    = 10000   # Increase or decrease according to available memory.
         self.sort     = sort
         # Queue given links in given order:
-        for link in (isinstance(links, basestring) and [links] or links):
+        for link in (isinstance(links, str) and [links] or links):
             self.push(link, priority=1.0, sort=FIFO)
 
     @property
@@ -3837,7 +3833,7 @@ class DocumentParser(object):
     def string(self):
         return self.content
 
-    def __unicode__(self):
+    def __str__(self):
         return self.content
 
 #--- PDF PARSER ------------------------------------------------------------------------------------
