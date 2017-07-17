@@ -22,17 +22,19 @@ from builtins import object
 
 
 try:
-    # Python 2
-    import urllib2
-except ImportError:
     # Python 3
-    from urllib import request as urllib2
-try:
-    # Python 2
-    import urlparse
+    from urllib.parse import urlparse, urljoin, urlsplit, urlencode, quote_plus, unquote_plus
+    from urllib.request import urlopen, Request, HTTPHandler, HTTPRedirectHandler, ProxyHandler, HTTPCookieProcessor, install_opener, build_opener
+    from urllib.error import HTTPError as UrllibHTTPError
+    from urllib.error import URLError as UrllibURLError
 except ImportError:
-    # Python 3
-    from urllib import parse as urlparse
+    # Python 2
+    from urlparse import urlparse, urljoin, urlsplit
+    from urllib import urlencode, quote_plus, unquote_plus
+    from urllib2 import urlopen, Request, HTTPHandler, HTTPRedirectHandler, ProxyHandler, HTTPCookieProcessor, install_opener, build_opener
+    from urllib2 import HTTPError as UrllibHTTPError
+    from urllib2 import URLError as UrllibURLError
+
 import base64
 try:
     # Python 2
@@ -305,8 +307,10 @@ def urldecode(query):
     if query:
         query = query.lstrip("?").split("&")
         query = ((kv.split("=") + [None])[:2] for kv in query)
-        query = ((u(urllib.unquote_plus(bytestring(k))),
-          _format(u(urllib.unquote_plus(bytestring(v))))) for k, v in query if k != "")
+        if sys.version > "3":
+            query = ((u(unquote_plus(k)), _format(u(unquote_plus(v)))) for k, v in query if k != "")
+        else:
+            query = ((u(unquote_plus(bytestring(k))), _format(u(unquote_plus(bytestring(v))))) for k, v in query if k != "")
         return dict(query)
     return {}
 
@@ -397,7 +401,7 @@ class URL(object):
             For example: http://user:pass@example.com:992/animal/bird?species=seagull&q#wings
             This is a cached method that is only invoked when necessary, and only once.
         """
-        p = urlparse.urlsplit(self._string)
+        p = urlsplit(self._string)
         P = {PROTOCOL: p[0],            # http
              USERNAME: u"",             # user
              PASSWORD: u"",             # pass
@@ -408,6 +412,7 @@ class URL(object):
                 QUERY: urldecode(p[3]), # {"species": "seagull", "q": None}
                ANCHOR: p[4]             # wings
         }
+
         # Split the username and password from the domain.
         if "@" in P[DOMAIN]:
             P[USERNAME], \
@@ -449,8 +454,8 @@ class URL(object):
         """ Yields the URL querystring: "www.example.com?page=1" => "page=1"
         """
         s = self.parts[QUERY].items()
-        s = dict((bytestring(k), bytestring(v if v is not None else "")) for k, v in s)
-        s = urllib.urlencode(s)
+        s = dict((bytestring(k), v if v is not None else "") for k, v in s)
+        s = urlencode(s)
         return s
 
     def __getattr__(self, k):
@@ -473,20 +478,20 @@ class URL(object):
         url = self.string
         # Handle local files with urllib.urlopen() instead of urllib2.urlopen().
         if os.path.exists(url):
-            return urllib.urlopen(url)
+            return urlopen(url)
         # Handle method=POST with query string as a separate parameter.
         post = self.method == POST and self.querystring or None
         socket.setdefaulttimeout(timeout)
         # Handle proxies and cookies.
         handlers = []
         if proxy:
-            handlers.append(urllib2.ProxyHandler({proxy[1]: proxy[0]}))
-        handlers.append(urllib2.HTTPCookieProcessor(cookielib.CookieJar()))
-        handlers.append(urllib2.HTTPHandler)
-        urllib2.install_opener(urllib2.build_opener(*handlers))
+            handlers.append(ProxyHandler({proxy[1]: proxy[0]}))
+        handlers.append(HTTPCookieProcessor(cookielib.CookieJar()))
+        handlers.append(HTTPHandler)
+        install_opener(build_opener(*handlers))
         # Send request.
         try:
-            request = urllib2.Request(bytestring(url), post, {
+            request = Request(url, post, {
                         "User-Agent": user_agent,
                            "Referer": referrer
                          })
@@ -494,8 +499,8 @@ class URL(object):
             if authentication is not None:
                 request.add_header("Authorization", "Basic %s" %
                     base64.encodestring('%s:%s' % authentication))
-            return urllib2.urlopen(request)
-        except urllib2.HTTPError as e:
+            return urlopen(request)
+        except UrllibHTTPError as e:
             if e.code == 301: raise HTTP301Redirect(src=e, url=url)
             if e.code == 400: raise HTTP400BadRequest(src=e, url=url)
             if e.code == 401: raise HTTP401Authentication(src=e, url=url)
@@ -516,7 +521,7 @@ class URL(object):
             or "timed out" in str((e.args + ("", ""))[1]):
                 raise URLTimeout(src=e, url=url)
             raise URLError(str(e), src=e, url=url)
-        except urllib2.URLError as e:
+        except UrllibURLError as e:
             if "timed out" in str(e.reason):
                 raise URLTimeout(src=e, url=url)
             raise URLError(str(e), src=e, url=url)
@@ -941,9 +946,9 @@ def decode_entities(string):
     return string
 
 def encode_url(string):
-    return urllib.quote_plus(bytestring(string)) # "black/white" => "black%2Fwhite".
+    return quote_plus(bytestring(string)) # "black/white" => "black%2Fwhite".
 def decode_url(string):
-    return u(urllib.unquote_plus(bytestring(string)))
+    return u(unquote_plus(bytestring(string)))
 
 RE_SPACES = re.compile("( |\xa0)+", re.M) # Matches one or more spaces.
 RE_TABS   = re.compile(r"\t+", re.M)      # Matches one or more tabs.
@@ -3568,7 +3573,7 @@ def base(url):
     """ Returns the URL domain name:
         http://en.wikipedia.org/wiki/Web_crawler => en.wikipedia.org
     """
-    return urlparse.urlparse(url).netloc
+    return urlparse(url).netloc
 
 def abs(url, base=None):
     """ Returns the absolute URL:
@@ -3577,7 +3582,7 @@ def abs(url, base=None):
     if url.startswith("#") and not base is None and not base.endswith("/"):
         if not re.search("[^/]/[^/]", base):
             base += "/"
-    return urlparse.urljoin(base, url)
+    return urljoin(base, url)
 
 DEPTH   = "depth"
 BREADTH = "breadth"
