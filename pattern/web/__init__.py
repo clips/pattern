@@ -17,6 +17,8 @@ import threading
 import time
 import socket, urllib, ssl
 
+from builtins import object
+
 from past.builtins import basestring
 
 try:
