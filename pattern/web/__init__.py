@@ -18,7 +18,7 @@ import threading
 import time
 import socket, urllib, ssl
 
-from builtins import str, bytes
+from builtins import str, bytes, map, filter, zip
 from builtins import object
 
 
@@ -428,7 +428,7 @@ class URL(object):
         if "/" in P[PATH]:
             P[PAGE] = p[2].split("/")[-1]
             P[PATH] = p[2][:len(p[2]) - len(P[PAGE])].strip("/").split("/")
-            P[PATH] = filter(lambda v: v != "", P[PATH])
+            P[PATH] = list(filter(lambda v: v != "", P[PATH]))
         else:
             P[PAGE] = p[2].strip("/")
             P[PATH] = []
@@ -3421,20 +3421,20 @@ class Selector(object):
         # Map id into a case-insensitive **kwargs dict.
         i = lambda s: re.compile(r"\b%s(?=$|\s)" % s, re.I)
         a = {"id": i(self.id)} if self.id else {}
-        a.update(map(lambda kv: (kv[0], kv[1]), self.attributes.items()))
+        a.update(list(map(lambda kv: (kv[0], kv[1]), self.attributes.items())))
         # Match tag + id + all classes + relevant pseudo-elements.
         if not isinstance(e, Element):
             return []
         if len(self.classes) == 0 or len(self.classes) >= 2:
-            e = map(Element, e._p.find_all(tag, attrs=a))
+            e = list(map(Element, e._p.find_all(tag, attrs=a)))
         if len(self.classes) == 1:
-            e = map(Element, e._p.find_all(tag, attrs=dict(a, **{"class": i(list(self.classes)[0])})))
+            e = list(map(Element, e._p.find_all(tag, attrs=dict(a, **{"class": i(list(self.classes)[0])}))))
         if len(self.classes) >= 2:
-            e = filter(lambda e: self.classes.issubset(set(e.attr.get("class", ""))), e)
+            e = list(filter(lambda e: self.classes.issubset(set(e.attr.get("class", ""))), e))
         if "first-child" in self.pseudo:
-            e = filter(lambda e: e == self._first_child(e.parent), e)
+            e = list(filter(lambda e: e == self._first_child(e.parent), e))
         if any(x.startswith("contains") for x in self.pseudo):
-            e = filter(lambda e: all(not x.startswith("contains") or self._contains(e, x) for x in self.pseudo), e)
+            e = list(filter(lambda e: all(not x.startswith("contains") or self._contains(e, x) for x in self.pseudo), e))
         return e
 
     def __repr__(self):
@@ -3479,20 +3479,20 @@ class SelectorChain(list):
                 # Search Y, where:
                 if combinator == " ":
                     # X Y => X is ancestor of Y
-                    e = map(s.search, e)
+                    e = list(map(s.search, e))
                     e = list(itertools.chain(*e))
                 if combinator == ">":
                     # X > Y => X is parent of Y
-                    e = map(lambda e: filter(s.match, e.children), e)
+                    e = list(map(lambda e: list(filter(s.match, e.children)), e))
                     e = list(itertools.chain(*e))
                 if combinator == "<":
                     # X < Y => X is child of Y
-                    e = map(lambda e: e.parent, e)
-                    e = filter(s.match, e)
+                    e = list(map(lambda e: e.parent, e))
+                    e = list(filter(s.match, e))
                 if combinator == "+":
                     # X + Y => X directly precedes Y
-                    e = map(s._next_sibling, e)
-                    e = filter(s.match, e)
+                    e = list(map(s._next_sibling, e))
+                    e = list(filter(s.match, e))
             m.extend(e)
         return m
 
