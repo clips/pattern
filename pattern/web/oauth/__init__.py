@@ -10,6 +10,8 @@
 
 from __future__ import unicode_literals
 
+from builtins import str, bytes
+
 try:
     # Python 3
     from urllib.parse import urlencode
