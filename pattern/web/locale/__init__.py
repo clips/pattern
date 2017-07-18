@@ -5,6 +5,7 @@
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
+from __future__ import unicode_literals
 
 #### LANGUAGE & REGION #############################################################################
 # IETF BCP 47 language-region code => (language, region, ISO-639 language code, ISO-3166 region code).

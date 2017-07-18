@@ -8,6 +8,7 @@
 ####################################################################################################
 # Naive OAuth implementation for pattern.web.Yahoo and Yahoo! BOSS v2.
 
+from __future__ import unicode_literals
 
 try:
     # Python 3

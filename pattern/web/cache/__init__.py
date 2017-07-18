@@ -4,6 +4,7 @@
 # License: BSD (see LICENSE.txt for details).
 # http://www.clips.ua.ac.be/pages/pattern
 
+from __future__ import unicode_literals
 
 try:
     import hashlib; md5=hashlib.md5
