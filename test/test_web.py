@@ -1066,9 +1066,9 @@ class TestCrawler(unittest.TestCase):
         v = web.Crawler(links=["http://www.clips.ua.ac.be/"], delay=10)
         while len(v.visited) < 4:
             v.crawl(throttle=0.1, cached=False, method=web.BREADTH)
-        self.assertTrue(v.history.keys()[0] != v.history.keys()[1])
-        self.assertTrue(v.history.keys()[0] != v.history.keys()[2])
-        self.assertTrue(v.history.keys()[1] != v.history.keys()[2])
+        self.assertTrue(list(v.history.keys())[0] != list(v.history.keys())[1])
+        self.assertTrue(list(v.history.keys())[0] != list(v.history.keys())[2])
+        self.assertTrue(list(v.history.keys())[1] != list(v.history.keys())[2])
         print("pattern.web.Crawler.crawl(method=BREADTH)")
 
 #---------------------------------------------------------------------------------------------------
