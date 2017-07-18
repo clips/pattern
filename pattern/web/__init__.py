@@ -295,7 +295,7 @@ def extension(filename):
     return os.path.splitext(filename)[1]
 
 def urldecode(query):
-    """ Inverse operation of urllib.urlencode.
+    """ Inverse operation of urlencode.
         Returns a dictionary of (name, value)-items from a URL query string.
     """
     def _format(s):
@@ -478,7 +478,7 @@ class URL(object):
             When an error occurs, raises a URLError (e.g. HTTP404NotFound).
         """
         url = self.string
-        # Handle local files with urllib.urlopen() instead of urllib2.urlopen().
+        # Handle local files directly
         if os.path.exists(url):
             return urlopen(url)
         # Handle method=POST with query string as a separate parameter.
