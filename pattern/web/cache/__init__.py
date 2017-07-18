@@ -6,6 +6,9 @@
 
 from __future__ import unicode_literals
 
+from builtins import str, bytes
+from builtins import object
+
 try:
     import hashlib; md5=hashlib.md5
 except:
@@ -49,6 +52,8 @@ import os
 import glob
 import tempfile
 import datetime
+
+from io import open
 
 from codecs import BOM_UTF8
 BOM_UTF8 = BOM_UTF8.decode('utf-8')
@@ -97,7 +102,7 @@ class Cache(object):
         return self.get(k)
 
     def __setitem__(self, k, v):
-        f = open(self._hash(k), "wb")
+        f = open(self._hash(k), "w")
         f.write(BOM_UTF8)
         f.write(v)
         f.close()
