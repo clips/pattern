@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # These tests require a working internet connection.
 
+from __future__ import unicode_literals
 from __future__ import print_function
 
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
@@ -245,7 +246,7 @@ class TestURL(unittest.TestCase):
     def test_oauth(self):
         # Assert OAuth algorithm.
         data = {
-            "q": u'"cåts, døgs & chîckéns = fün+"',
+            "q": '"cåts, døgs & chîckéns = fün+"',
             "oauth_version": "1.0",
             "oauth_nonce": "0",
             "oauth_timestamp": 0,
@@ -594,7 +595,7 @@ class TestSearchEngine(unittest.TestCase):
             # Assert Google Translate API.
             # Requires license with billing enabled.
             source, license, Engine = self.api["Google"]
-            v = Engine(license, throttle=0.25).translate(u"thé", input="fr", output="en", cached=False)
+            v = Engine(license, throttle=0.25).translate("thé", input="fr", output="en", cached=False)
             self.assertEqual(v, "tea")
             print("pattern.web.Google.translate()")
         except web.HTTP401Authentication:
@@ -605,7 +606,7 @@ class TestSearchEngine(unittest.TestCase):
             # Assert Google Translate API (language detection).
             # Requires license with billing enabled.
             source, license, Engine = self.api["Google"]
-            v = Engine(license, throttle=0.25).identify(u"L'essence des mathématiques, c'est la liberté!", cached=False)
+            v = Engine(license, throttle=0.25).identify("L'essence des mathématiques, c'est la liberté!", cached=False)
             self.assertEqual(v[0], "fr")
             print("pattern.web.Google.identify()")
         except web.HTTP401Authentication:
