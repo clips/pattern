@@ -9,6 +9,8 @@ import unittest
 import time
 import warnings
 
+from builtins import str, bytes
+
 from pattern import web
 
 try:
@@ -27,7 +29,7 @@ class TestCache(unittest.TestCase):
         # Assert cache unicode.
         k, v = "test", u"ünîcødé"
         web.cache[k] = v
-        self.assertTrue(isinstance(web.cache[k], unicode))
+        self.assertTrue(isinstance(web.cache[k], str))
         self.assertEqual(web.cache[k], v)
         self.assertEqual(web.cache.age(k), 0)
         del web.cache[k]
@@ -51,13 +53,13 @@ class TestUnicode(unittest.TestCase):
     def test_decode_utf8(self):
         # Assert unicode.
         for s in self.strings:
-            self.assertTrue(isinstance(web.decode_utf8(s), unicode))
+            self.assertTrue(isinstance(web.decode_utf8(s), str))
         print("pattern.web.decode_utf8()")
 
     def test_encode_utf8(self):
         # Assert Python bytestring.
         for s in self.strings:
-            self.assertTrue(isinstance(web.encode_utf8(s), str))
+            self.assertTrue(isinstance(web.encode_utf8(s), bytes))
         print("pattern.web.encode_utf8()")
         
     def test_fix(self):
@@ -200,7 +202,7 @@ class TestURL(unittest.TestCase):
         v = web.URL(self.live).download(cached=False, throttle=0.25, unicode=True)
         t = time.time() - t
         # Assert unicode content.
-        self.assertTrue(isinstance(v, unicode))
+        self.assertTrue(isinstance(v, str))
         # Assert download rate limiting.
         self.assertTrue(t >= 0.25)
         print("pattern.web.URL.download()")
@@ -490,12 +492,12 @@ class TestSearchEngine(unittest.TestCase):
             self.assertEqual(v.type, type)
             self.assertEqual(len(v), 1)
             self.assertTrue(isinstance(v[0], web.Result))
-            self.assertTrue(isinstance(v[0].url, unicode))
-            self.assertTrue(isinstance(v[0].title, unicode))
-            self.assertTrue(isinstance(v[0].description, unicode))
-            self.assertTrue(isinstance(v[0].language, unicode))
-            self.assertTrue(isinstance(v[0].author, (unicode, tuple)))
-            self.assertTrue(isinstance(v[0].date, unicode))
+            self.assertTrue(isinstance(v[0].url, str))
+            self.assertTrue(isinstance(v[0].title, str))
+            self.assertTrue(isinstance(v[0].description, str))
+            self.assertTrue(isinstance(v[0].language, str))
+            self.assertTrue(isinstance(v[0].author, (str, tuple)))
+            self.assertTrue(isinstance(v[0].date, str))
         else:
             self.assertTrue(isinstance(v, web.MediaWikiArticle))
         # Assert zero results for start < 1 and count < 1.
@@ -666,8 +668,8 @@ class TestSearchEngine(unittest.TestCase):
         source, license, Engine = self.api["Wikipedia"]
         v = Engine(license).search("cat", cached=False)
         # Assert WikipediaArticle properties.
-        self.assertTrue(isinstance(v.title,      unicode))
-        self.assertTrue(isinstance(v.string,     unicode))
+        self.assertTrue(isinstance(v.title,      str))
+        self.assertTrue(isinstance(v.string,     str))
         self.assertTrue(isinstance(v.links,      list))
         self.assertTrue(isinstance(v.categories, list))
         self.assertTrue(isinstance(v.external,   list))
@@ -866,14 +868,14 @@ class TestDocumentParser(unittest.TestCase):
         # Assert PDF to string parser.
         s = web.parsedoc(os.path.join(PATH, "corpora", "carroll-wonderland.pdf"))
         self.assertTrue("Curiouser and curiouser!" in s)
-        self.assertTrue(isinstance(s, unicode))
+        self.assertTrue(isinstance(s, str))
         print("pattern.web.parsepdf()")
 
     def test_docx(self):
         # Assert PDF to string parser.
         s = web.parsedoc(os.path.join(PATH, "corpora", "carroll-lookingglass.docx"))
         self.assertTrue("'Twas brillig, and the slithy toves" in s)
-        self.assertTrue(isinstance(s, unicode))
+        self.assertTrue(isinstance(s, str))
         print("pattern.web.parsedocx()")
 
 #---------------------------------------------------------------------------------------------------
@@ -979,11 +981,11 @@ class TestMail(unittest.TestCase):
         e = m.inbox.read(a[0], attachments=False, cached=False)
         # Assert web.imap.Message.
         self.assertTrue(isinstance(e, web.imap.Message))
-        self.assertTrue(isinstance(e.author,        unicode))
-        self.assertTrue(isinstance(e.email_address, unicode))
-        self.assertTrue(isinstance(e.date,          unicode))
-        self.assertTrue(isinstance(e.subject,       unicode))
-        self.assertTrue(isinstance(e.body,          unicode))
+        self.assertTrue(isinstance(e.author,        str))
+        self.assertTrue(isinstance(e.email_address, str))
+        self.assertTrue(isinstance(e.date,          str))
+        self.assertTrue(isinstance(e.subject,       str))
+        self.assertTrue(isinstance(e.body,          str))
         self.assertTrue(self.query1 in e.author.lower())
         self.assertTrue("@" in e.email_address)
         print("pattern.web.Mail.search(field=FROM)")
@@ -999,7 +1001,7 @@ class TestMail(unittest.TestCase):
             for id in m.spam.search(self.query2, field=web.SUBJECT):
                 e = m.spam.read(id, attachments=True, cached=False)
                 if len(e.attachments) > 0:
-                    self.assertTrue(isinstance(e.attachments[0][1], str))
+                    self.assertTrue(isinstance(e.attachments[0][1], bytes))
                     self.assertTrue(len(e.attachments[0][1]) > 0)
                     print("pattern.web.Message.attachments (MIME-type: %s)" % e.attachments[0][0])
         print("pattern.web.Mail.search(field=SUBJECT)")
