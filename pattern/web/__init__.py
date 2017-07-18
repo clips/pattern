@@ -333,7 +333,7 @@ class Error(Exception):
         self.url = kwargs.pop("url", None)
     @property
     def headers(self):
-        return dict(self.src.headers.items())
+        return dict(list(self.src.headers.items()))
 
 class URLError(Error):
     pass # URL contains errors (e.g. a missing t in htp://).
@@ -3423,7 +3423,7 @@ class Selector(object):
         # Map id into a case-insensitive **kwargs dict.
         i = lambda s: re.compile(r"\b%s(?=$|\s)" % s, re.I)
         a = {"id": i(self.id)} if self.id else {}
-        a.update(list(map(lambda kv: (kv[0], kv[1]), self.attributes.items())))
+        a.update(list(map(lambda kv: (kv[0], kv[1]), list(self.attributes.items()))))
         # Match tag + id + all classes + relevant pseudo-elements.
         if not isinstance(e, Element):
             return []
