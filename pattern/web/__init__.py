@@ -605,6 +605,11 @@ class URL(object):
             except URLError:
                 h = {}
             self.__dict__["_headers"] = h
+
+        # Backward compatibility (Python 2)
+        if "Content-Type" in self.__dict__["_headers"]:
+            self.__dict__["_headers"]["content-type"] = self.__dict__["_headers"]["Content-Type"]
+
         return self.__dict__["_headers"]
 
     @property
