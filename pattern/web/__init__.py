@@ -19,7 +19,7 @@ import time
 import socket, urllib, ssl
 
 from builtins import str, bytes, chr, map, filter, zip
-from builtins import object
+from builtins import object, range, next
 
 from io import open
 
