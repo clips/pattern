@@ -10,6 +10,7 @@ import time
 import warnings
 
 from builtins import str, bytes
+from builtins import range, next
 
 from pattern import web
 
