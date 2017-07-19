@@ -3104,7 +3104,7 @@ class Node(object):
         """
         child._p.extract()
 
-    def __nonzero__(self):
+    def __bool__(self):
         return True
 
     def __len__(self):
