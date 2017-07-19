@@ -16,7 +16,7 @@ import email
 import time
 
 from builtins import str, bytes
-from builtins import range
+from builtins import object, range
 
 try: 
     MODULE = os.path.dirname(os.path.realpath(__file__))
