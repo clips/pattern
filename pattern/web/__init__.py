@@ -16,7 +16,7 @@ import os
 import sys
 import threading
 import time
-import socket, urllib, ssl
+import socket, ssl
 
 from builtins import str, bytes, chr, map, filter, zip
 from builtins import object, range, next
