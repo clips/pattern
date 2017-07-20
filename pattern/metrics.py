@@ -21,6 +21,7 @@ from bisect      import bisect_right
 from random      import gauss
 
 from builtins import str, range
+from builtins import object
 
 #### COUNT #########################################################################################
 
