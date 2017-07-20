@@ -30,6 +30,7 @@ import os
 import sys
 
 from builtins import str
+from builtins import object
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))

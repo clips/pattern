@@ -20,6 +20,7 @@ from codecs   import open
 from shutil   import rmtree
 
 from builtins import str, int, range
+from builtins import object
 
 from functools import cmp_to_key
 
