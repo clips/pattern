@@ -155,7 +155,7 @@ def fix(s, ignore=""):
     # Revert words that have the replacement character,
     # i.e., fix("cliché") should not return u"clich�".
     for i, (w1, w2) in enumerate(zip(s.split(" "), u)):
-        if u"\ufffd" in w2: # �
+        if "\ufffd" in w2: # �
             u[i] = w1
     u = " ".join(u)
     u = u.replace("\n ", "\n")
@@ -368,7 +368,7 @@ class HTTP503ServiceUnavailable(HTTPError):
 
 class URL(object):
 
-    def __init__(self, string=u"", method=GET, query={}, **kwargs):
+    def __init__(self, string="", method=GET, query={}, **kwargs):
         """ URL object with the individual parts available as attributes:
             For protocol://username:password@domain:port/path/page?query_string#anchor:
             - URL.protocol: http, https, ftp, ...
@@ -405,12 +405,12 @@ class URL(object):
         """
         p = urlsplit(self._string)
         P = {PROTOCOL: p[0],            # http
-             USERNAME: u"",             # user
-             PASSWORD: u"",             # pass
+             USERNAME: "",             # user
+             PASSWORD: "",             # pass
                DOMAIN: p[1],            # example.com
-                 PORT: u"",             # 992
+                 PORT: "",             # 992
                  PATH: p[2],            # [animal]
-                 PAGE: u"",             # bird
+                 PAGE: "",             # bird
                 QUERY: urldecode(p[3]), # {"species": "seagull", "q": None}
                ANCHOR: p[4]             # wings
         }
@@ -418,7 +418,7 @@ class URL(object):
         # Split the username and password from the domain.
         if "@" in P[DOMAIN]:
             P[USERNAME], \
-            P[PASSWORD] = (p[1].split("@")[0].split(":")+[u""])[:2]
+            P[PASSWORD] = (p[1].split("@")[0].split(":")+[""])[:2]
             P[DOMAIN]   =  p[1].split("@")[1]
         # Split the port number from the domain.
         if ":" in P[DOMAIN]:
@@ -648,7 +648,7 @@ class URL(object):
             u.append("?%s" % self.querystring)
         if P[ANCHOR]:
             u.append("#%s" % P[ANCHOR])
-        u = u"".join(u)
+        u = "".join(u)
         u = u.lstrip("/")
         return u
 
@@ -658,7 +658,7 @@ class URL(object):
     def copy(self):
         return URL(self.string, self.method, self.query)
 
-def download(url=u"", method=GET, query={}, timeout=10, cached=True, throttle=0, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None, unicode=False):
+def download(url="", method=GET, query={}, timeout=10, cached=True, throttle=0, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None, unicode=False):
     """ Downloads the content at the given URL (by default it will be cached locally).
         Unless unicode=False, the content is returned as a unicode string.
     """
@@ -745,7 +745,7 @@ def find_urls(string, unique=True):
         and followed by trailing punctuation (period, comma, close parens).
     """
     string = u(string)
-    string = string.replace(u"\u2024", ".")
+    string = string.replace("\u2024", ".")
     string = string.replace(" ", "  ")
     matches = []
     for p in (RE_URL1, RE_URL2, RE_URL3):
@@ -763,7 +763,7 @@ RE_EMAIL = re.compile(r"[\w\-\.\+]+@(\w[\w\-]+\.)+[\w\-]+") # tom.de+smedt@clips
 def find_email(string, unique=True):
     """ Returns a list of e-mail addresses parsed from the string.
     """
-    string = u(string).replace(u"\u2024", ".")
+    string = u(string).replace("\u2024", ".")
     matches = []
     for m in RE_EMAIL.finditer(string):
         s = m.group(0)
@@ -1048,12 +1048,12 @@ class Result(dict):
         """
         dict.__init__(self)
         self.url      = url
-        self.id       = kwargs.pop("id"       , u"")
-        self.title    = kwargs.pop("title"    , u"")
-        self.text     = kwargs.pop("text"     , u"")
-        self.language = kwargs.pop("language" , u"")
-        self.author   = kwargs.pop("author"   , u"")
-        self.date     = kwargs.pop("date"     , u"")
+        self.id       = kwargs.pop("id"       , "")
+        self.title    = kwargs.pop("title"    , "")
+        self.text     = kwargs.pop("text"     , "")
+        self.language = kwargs.pop("language" , "")
+        self.author   = kwargs.pop("author"   , "")
+        self.date     = kwargs.pop("date"     , "")
         self.votes    = kwargs.pop("votes"    , 0) # (e.g., Facebook likes)
         self.shares   = kwargs.pop("shares"   , 0) # (e.g., Twitter retweets)
         self.comments = kwargs.pop("comments" , 0)
@@ -1086,13 +1086,13 @@ class Result(dict):
         if isinstance(v, bytes): # Store strings as unicode.
             return u(v)
         if v is None:
-            return u""
+            return ""
         return v
 
     def __getattr__(self, k):
-        return self.get(k, u"")
+        return self.get(k, "")
     def __getitem__(self, k):
-        return self.get(k, u"")
+        return self.get(k, "")
     def __setattr__(self, k, v):
         self.__setitem__(k, v)
     def __setitem__(self, k, v):
@@ -2064,7 +2064,7 @@ class MediaWiki(SearchEngine):
 
 class MediaWikiArticle(object):
 
-    def __init__(self, title=u"", source=u"", links=[], categories=[], languages={}, disambiguation=False, **kwargs):
+    def __init__(self, title="", source="", links=[], categories=[], languages={}, disambiguation=False, **kwargs):
         """ A MediaWiki article returned from MediaWiki.search().
             MediaWikiArticle.string contains the HTML content.
         """
@@ -2121,7 +2121,7 @@ class MediaWikiArticle(object):
         s = re.sub(r"\[edit\]\s*", "", s)
         s = re.sub(r"\[%s\]\s*" % {
             "en":  "edit",
-            "es": u"editar código",
+            "es": "editar código",
             "de":  "Bearbeiten",
             "fr":  "modifier le code",
             "it":  "modifica sorgente",
@@ -2153,7 +2153,7 @@ class MediaWikiArticle(object):
 
 class MediaWikiSection(object):
 
-    def __init__(self, article, title=u"", start=0, stop=0, level=1):
+    def __init__(self, article, title="", start=0, stop=0, level=1):
         """ A (nested) section in the content of a MediaWikiArticle.
         """
         self.article  = article # MediaWikiArticle the section is part of.
@@ -2247,7 +2247,7 @@ class MediaWikiSection(object):
 
 class MediaWikiTable(object):
 
-    def __init__(self, section, title=u"", headers=[], rows=[], source=u""):
+    def __init__(self, section, title="", headers=[], rows=[], source=""):
         """ A <table class="wikitable> in a MediaWikiSection.
         """
         self.section = section # MediaWikiSection the table is part of.
@@ -3172,7 +3172,7 @@ class Element(Node):
     def content(self):
         """ Yields the element content as a unicode string.
         """
-        return u"".join([u(x) for x in self._p.contents])
+        return "".join([u(x) for x in self._p.contents])
 
     string = content
 
