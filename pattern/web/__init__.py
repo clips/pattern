@@ -18,7 +18,7 @@ import threading
 import time
 import socket, ssl
 
-from builtins import str, bytes, chr, map, filter, zip
+from builtins import str, bytes, int, chr, map, filter, zip
 from builtins import object, range, next
 
 from io import open
@@ -105,9 +105,6 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
-    
-if sys.version > "3":
-    long = int
 
 #### UNICODE #######################################################################################
 # Latin-1 (ISO-8859-1) encoding is identical to Windows-1252 except for the code points 128-159:
@@ -1640,9 +1637,9 @@ class Twitter(SearchEngine):
         """
         if type != SEARCH:
             raise SearchEngineTypeError
-        if not query or count < 1 or (isinstance(start, (int, long, float)) and start < 1):
+        if not query or count < 1 or (isinstance(start, (int, float)) and start < 1):
             return Results(TWITTER, query, type)
-        if not isinstance(start, (int, long, float)):
+        if not isinstance(start, (int, float)):
             id = int(start) - 1 if start and start.isdigit() else ""
         else:
             if start == 1:
@@ -1712,7 +1709,7 @@ class Twitter(SearchEngine):
         #
         # Store the last id retrieved.
         # If search() is called again with start+1, start from this id.
-        if isinstance(start, (int, long, float)):
+        if isinstance(start, (int, float)):
             k = (query, kwargs.get("geo"), kwargs.get("date"), int(start), count)
             if results:  
                 self._pagination[k] = str(int(results[-1].id) - 1) 
