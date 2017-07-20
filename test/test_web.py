@@ -28,7 +28,7 @@ class TestCache(unittest.TestCase):
     
     def test_cache(self):
         # Assert cache unicode.
-        k, v = "test", u"ünîcødé"
+        k, v = "test", "ünîcødé"
         web.cache[k] = v
         self.assertTrue(isinstance(web.cache[k], str))
         self.assertEqual(web.cache[k], v)
@@ -43,12 +43,12 @@ class TestUnicode(unittest.TestCase):
     def setUp(self):
         # Test data with different (or wrong) encodings.
         self.strings = (
-            u"ünîcøde",
-            u"ünîcøde".encode("utf-16"),
-            u"ünîcøde".encode("latin-1"),
-            u"ünîcøde".encode("windows-1252"),
+            "ünîcøde",
+            "ünîcøde".encode("utf-16"),
+            "ünîcøde".encode("latin-1"),
+            "ünîcøde".encode("windows-1252"),
              "ünîcøde",
-            u"אוניקאָד"
+            "אוניקאָד"
         )
         
     def test_decode_utf8(self):
@@ -65,10 +65,10 @@ class TestUnicode(unittest.TestCase):
         
     def test_fix(self):
         # Assert fix for common Unicode mistakes.
-        self.assertEqual(web.fix(u"clichÃ©"), u"cliché")
-        self.assertEqual(web.fix("clichÃ©"), u"cliché")
-        self.assertEqual(web.fix("cliché"), u"cliché")
-        self.assertEqual(web.fix("â€“"), u"–")
+        self.assertEqual(web.fix("clichÃ©"), "cliché")
+        self.assertEqual(web.fix("clichÃ©"), "cliché")
+        self.assertEqual(web.fix("cliché"), "cliché")
+        self.assertEqual(web.fix("â€“"), "–")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -141,7 +141,7 @@ class TestURL(unittest.TestCase):
         self.assertEqual(v.query, {"q": 1, "page": 10, "user": None})
         self.assertEqual(v.querystring, "q=1&page=10&user=")
         # Assert URL.querystring encodes unicode arguments.
-        q = ({u"ünîcødé": 1.5}, "%C3%BCn%C3%AEc%C3%B8d%C3%A9=1.5")
+        q = ({"ünîcødé": 1.5}, "%C3%BCn%C3%AEc%C3%B8d%C3%A9=1.5")
         v.query = q[0]
         self.assertEqual(v.querystring, q[1])
         # Assert URL.query decodes unicode arguments.
@@ -310,7 +310,7 @@ class TestPlaintext(unittest.TestCase):
     def test_strip_tags(self):
         # Assert HTML parser and tag stripper.
         for html, plain in (
-          (u"<b>ünîcøde</b>", u"ünîcøde"),
+          ("<b>ünîcøde</b>", "ünîcøde"),
           ( "<img src=""/>",   ""),
           ( "<p>text</p>",     "text\n\n"),
           ( "<li>text</li>",   "* text\n"),
@@ -378,7 +378,7 @@ class TestPlaintext(unittest.TestCase):
           ("&#38;", "&"),
           ("&amp;", "&"),
           ("&#x0026;", "&"),
-          ("&#160;", u"\xa0"),
+          ("&#160;", "\xa0"),
           ("&foo;", "&foo;")):
             self.assertEqual(web.decode_entities(a), b)
         print("pattern.web.decode_entities()")
@@ -449,8 +449,8 @@ class TestPlaintext(unittest.TestCase):
             </html>
         """
         self.assertEqual(web.plaintext(html, keep={"a": "href"}),
-            u"tags & things\n\ntitle1\n\ntitle2\n\nparagraph1\n\nparagraph2 " + \
-            u"<a href=\"http://www.domain.com\">link</a>\n\n* item1 xxx\n* item2")
+            "tags & things\n\ntitle1\n\ntitle2\n\nparagraph1\n\nparagraph2 " + \
+            "<a href=\"http://www.domain.com\">link</a>\n\n* item1 xxx\n* item2")
         print("pattern.web.plaintext()")
 
 #---------------------------------------------------------------------------------------------------
