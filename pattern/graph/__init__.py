@@ -18,7 +18,6 @@ from codecs   import open
 from shutil   import rmtree
 
 from builtins import str, int, range
-from past.builtins import basestring
 
 from functools import cmp_to_key
 
@@ -90,7 +89,7 @@ def deepcopy(o):
         return o
     if hasattr(o, "copy"):
         return o.copy()
-    if isinstance(o, (basestring, bool, int, float, complex)):
+    if isinstance(o, (str, bool, int, float, complex)):
         return o
     if isinstance(o, (list, tuple, set)):
         return o.__class__(deepcopy(v) for v in o)
@@ -1275,7 +1274,7 @@ class HTMLCanvasRenderer(GraphRenderer):
             setattr(self, k, v)
     
     def _escape(self, s):
-        if isinstance(s, basestring):
+        if isinstance(s, str):
             return "\"%s\"" % s.replace("\"", "\\\"")
         return s
     
