@@ -48,7 +48,6 @@ import types
 
 from builtins import str, bytes, int, range, map, zip, filter
 from builtins import object
-from past.builtins import basestring
 
 from math        import log, exp, sqrt, tanh
 from time        import time
@@ -276,7 +275,7 @@ def stem(word, stemmer=PORTER, **kwargs):
     """
     if hasattr(word, "string") and stemmer in (PORTER, None):
         word = word.string
-    if isinstance(word, basestring):
+    if isinstance(word, str):
         word = decode_utf8(word.lower())
     if stemmer is None:
         return word.lower()
@@ -315,7 +314,7 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
         w2 = w
         if hasattr(w, "string"): # pattern.en.Word
             w1 = w.string.lower()
-        if isinstance(w, basestring):
+        if isinstance(w, str):
             w1 = w.lower()
             w2 = w.lower()
         if (stopwords or not w1 in _stopwords.get(language or "en", ())) and not w1 in exclude:
@@ -400,7 +399,7 @@ class Document(object):
         if string is None:
             w = kwargs["dict"]()
             v = None
-        elif isinstance(string, basestring):
+        elif isinstance(string, str):
             w = words(string, **kwargs)
             w = count(w, **kwargs)
             v = None
@@ -2223,7 +2222,7 @@ class Classifier(object):
             return type, Vector(document, **kwargs)
         if isinstance(document, (list, tuple)):
             return type, Document(document, filter=None, stopwords=True).vector
-        if isinstance(document, basestring):
+        if isinstance(document, str):
             return type, Document(document, filter=None, stopwords=True).vector
 
     @classmethod
