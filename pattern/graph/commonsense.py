@@ -28,7 +28,7 @@ from .__init__ import WEIGHT, CENTRALITY, EIGENVECTOR, BETWEENNESS
 import os
 import sys
 
-from past.builtins import basestring
+from builtins import str
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
@@ -179,9 +179,9 @@ class Commonsense(Graph):
             1) function(concept) returns a list of salient properties,
             2) function(edge) returns the cost for traversing this edge (0.0-1.0).
         """
-        if isinstance(concept1, basestring):
+        if isinstance(concept1, str):
             concept1 = self[concept1]
-        if isinstance(concept2, basestring):
+        if isinstance(concept2, str):
             concept2 = self[concept2]
         if isinstance(concept1, Node):
             concept1 = heuristic[0](concept1)
