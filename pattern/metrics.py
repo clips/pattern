@@ -19,8 +19,7 @@ from heapq       import nlargest
 from bisect      import bisect_right
 from random      import gauss
 
-from builtins import range
-from past.builtins import basestring
+from builtins import str, range
 
 #### COUNT #########################################################################################
 
@@ -381,7 +380,7 @@ def flesch_reading_ease(string):
             n += int(v and not p)
             p = v
         return n
-    if not isinstance(string, basestring):
+    if not isinstance(string, str):
         raise TypeError("%s is not a string" % repr(string))
     if len(string) <  3:
         return 1.0
@@ -550,7 +549,7 @@ def cooccurrence(iterable, window=(-1,-1), term1=lambda x: True, term2=lambda x:
     if not isinstance(matrix, dict):
         matrix = {}
     # Memory-efficient iteration:
-    if isinstance(iterable, basestring):
+    if isinstance(iterable, str):
         iterable = isplit(iterable)
     if isinstance(iterable, (list, tuple)) and all(hasattr(f, "read") for f in iterable):
         iterable = chain(*(isplit(chain(*x)) for x in iterable))
