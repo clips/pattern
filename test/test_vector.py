@@ -10,7 +10,7 @@ import random
 import codecs
 import unittest
 
-from builtins import str, bytes, range
+from builtins import str, bytes, int, range
 
 from random import seed; seed(0)
 
