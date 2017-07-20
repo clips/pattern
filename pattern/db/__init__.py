@@ -54,9 +54,6 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
-    
-if sys.version > "3":
-    long = int
 
 MYSQL  = "mysql"
 SQLITE = "sqlite"
