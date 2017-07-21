@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from __future__ import unicode_literals
+
 import os, sys
 sys.path = [os.path.dirname(os.path.abspath(__file__))] + sys.path
 from liblinear import *

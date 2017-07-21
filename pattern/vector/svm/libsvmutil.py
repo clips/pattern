@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import os
 import sys
 from .libsvm import *
 from .libsvm import __all__ as svm_all
-
 
 __all__ = ['evaluations', 'svm_load_model', 'svm_predict', 'svm_read_problem',
            'svm_save_model', 'svm_train'] + svm_all
