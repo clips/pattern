@@ -612,12 +612,10 @@ def singularize(word, pos=NOUN, custom={}):
             return word
     for x in singular_ie:
         if w.endswith(x+"s"):
-            prefix = w[:w.find(x)]
-            return prefix+x
+            return word[:-1]
     for x in singular_s:
         if w.endswith(x+"es"):
-            prefix = w[:w.find(x)]
-            return prefix+x
+            return word[:-2]
     for x in singular_irregular:
         if w.endswith(x):
             return re.sub('(?i)'+x+'$', singular_irregular[x], word)
