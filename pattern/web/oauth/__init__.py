@@ -10,7 +10,9 @@
 
 from __future__ import unicode_literals
 
-from builtins import str, bytes
+from builtins import str, bytes, int
+from builtins import map, zip, filter
+from builtins import object, range
 
 try:
     # Python 3

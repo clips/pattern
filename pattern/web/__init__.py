@@ -12,14 +12,15 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from __future__ import print_function
 
+from builtins import str, bytes, int, chr
+from builtins import map, filter, zip
+from builtins import object, range, next
+
 import os
 import sys
 import threading
 import time
 import socket, ssl
-
-from builtins import str, bytes, int, chr, map, filter, zip
-from builtins import object, range, next
 
 from io import open
 

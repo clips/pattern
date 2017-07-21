@@ -7,7 +7,9 @@
 
 from __future__ import unicode_literals
 
-from builtins import str, bytes
+from builtins import str, bytes, int
+from builtins import map, zip, filter
+from builtins import object, range
 
 #### LANGUAGE & REGION #############################################################################
 # IETF BCP 47 language-region code => (language, region, ISO-639 language code, ISO-3166 region code).
