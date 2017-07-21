@@ -40,10 +40,7 @@ from io import open, StringIO, BytesIO
 
 BOM_UTF8 = BOM_UTF8.decode("utf-8")
 
-try: # Python 2.x vs 3.x
-    import htmlentitydefs
-except ImportError:
-    from html import entities as htmlentitydefs
+from html.entities import name2codepoint
 
 try: # Python 2.4 vs 2.5+
     from email.Utils import parsedate_tz, mktime_tz
@@ -383,7 +380,7 @@ def decode_entities(string):
             if hex in ("x","X"):
                 return chr(int('0x'+name, 16))        # "&#x0026;" = > "&"
         else:
-            cp = htmlentitydefs.name2codepoint.get(name) # "&amp;" => "&"
+            cp = name2codepoint.get(name) # "&amp;" => "&"
             return cp and chr(cp) or match.group()    # "&foo;" => "&foo;"
     if isinstance(string, str):
         return RE_UNICODE.subn(replace_entity, string)[0]

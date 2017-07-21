@@ -38,12 +38,9 @@ except ImportError:
     from urllib2 import URLError as UrllibURLError
 
 import base64
-try:
-    # Python 2
-    import htmlentitydefs
-except ImportError:
-    # Python 3
-    import html.entities as htmlentitydefs
+
+from html.entities import name2codepoint
+
 try:
     # Python 2
     import httplib
@@ -940,7 +937,7 @@ def decode_entities(string):
             if hex.lower() == "x":
                 return chr(int("0x" + name, 16))      # "&#x0026;" = > "&"
         else:
-            cp = htmlentitydefs.name2codepoint.get(name) # "&amp;" => "&"
+            cp = name2codepoint.get(name) # "&amp;" => "&"
             return chr(cp) if cp else match.group()   # "&foo;" => "&foo;"
     if isinstance(string, str):
         return RE_UNICODE.subn(replace_entity, string)[0]
