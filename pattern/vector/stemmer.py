@@ -26,6 +26,7 @@ from __future__ import division
 import re
 
 from builtins import str, bytes, int
+from builtins import object, range
 
 #---------------------------------------------------------------------------------------------------
 # Note: this module is optimized for performance.
