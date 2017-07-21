@@ -1,12 +1,17 @@
 #!/usr/bin/env python
 
+from __future__ import unicode_literals
+from __future__ import absolute_import
+from __future__ import division
+
+from builtins import str, bytes, int
+from builtins import object, range
+from builtins import map, zip, filter
+
 from ctypes import *
 from ctypes.util import find_library
 from os import path
 import sys
-
-if sys.version_info[0] >= 3:
-	xrange = range
 
 __all__ = ['libsvm', 'svm_problem', 'svm_parameter',
            'toPyModel', 'gen_svm_nodearray', 'print_null', 'svm_node', 'C_SVC',
@@ -72,9 +77,9 @@ def gen_svm_nodearray(xi, feature_max=None, isKernel=None):
 
 	if feature_max:
 		assert(isinstance(feature_max, int))
-		index_range = filter(lambda j: j <= feature_max, index_range)
+		index_range = list(filter(lambda j: j <= feature_max, index_range))
 	if not isKernel:
-		index_range = filter(lambda j:xi[j] != 0, index_range)
+		index_range = list(filter(lambda j:xi[j] != 0, index_range))
 
 	index_range = sorted(index_range)
 	ret = (svm_node * (len(index_range)+1))()
@@ -128,7 +133,7 @@ class svm_parameter(Structure):
 	def __str__(self):
 		s = ''
 		attrs = svm_parameter._names + list(self.__dict__.keys())
-		values = map(lambda attr: getattr(self, attr), attrs)
+		values = list(map(lambda attr: getattr(self, attr), attrs))
 		for attr, val in zip(attrs, values):
 			s += (' %s: %s\n' % (attr, val))
 		s = s.strip()

@@ -4,16 +4,14 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from __future__ import division
 
+from builtins import map, zip, filter
+
 import os, sys
 sys.path = [os.path.dirname(os.path.abspath(__file__))] + sys.path
 from liblinear import *
 from liblinear import __all__ as liblinear_all
 from liblinear import scipy, sparse
 from ctypes import c_double
-
-if sys.version_info[0] < 3:
-	range = xrange
-	from itertools import izip as zip
 
 __all__ = ['svm_read_problem', 'load_model', 'save_model', 'evaluations',
            'train', 'predict'] + liblinear_all

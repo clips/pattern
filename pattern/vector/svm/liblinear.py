@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 from __future__ import absolute_import
 from __future__ import division
 
+from builtins import map, zip, filter
+
 from ctypes import *
 from ctypes.util import find_library
 from os import path
@@ -15,10 +17,6 @@ try:
 except:
 	scipy = None
 	sparse = None
-
-if sys.version_info[0] < 3:
-	range = xrange
-	from itertools import izip as zip
 
 __all__ = ['liblinear', 'feature_node', 'gen_feature_nodearray', 'problem',
            'parameter', 'model', 'toPyModel', 'L2R_LR', 'L2R_L2LOSS_SVC_DUAL',
@@ -93,10 +91,10 @@ def gen_feature_nodearray(xi, feature_max=None):
 		elif isinstance(xi, (list, tuple)):
 			xi_shift = 1
 			index_range = range(1, len(xi) + 1)
-		index_range = filter(lambda j: xi[j-xi_shift] != 0, index_range)
+		index_range = list(filter(lambda j: xi[j-xi_shift] != 0, index_range))
 
 		if feature_max:
-			index_range = filter(lambda j: j <= feature_max, index_range)
+			index_range = list(filter(lambda j: j <= feature_max, index_range))
 		index_range = sorted(index_range)
 	else:
 		raise TypeError('xi should be a dictionary, list, tuple, 1-d numpy array, or tuple of (index, data)')
@@ -242,7 +240,7 @@ class parameter(Structure):
 	def __str__(self):
 		s = ''
 		attrs = parameter._names + list(self.__dict__.keys())
-		values = map(lambda attr: getattr(self, attr), attrs)
+		values = list(map(lambda attr: getattr(self, attr), attrs))
 		for attr, val in zip(attrs, values):
 			s += (' %s: %s\n' % (attr, val))
 		s = s.strip()
