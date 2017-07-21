@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from __future__ import unicode_literals
+from __future__ import division
 
 import os, sys
 sys.path = [os.path.dirname(os.path.abspath(__file__))] + sys.path

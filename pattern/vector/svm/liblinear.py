@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from __future__ import unicode_literals
+from __future__ import division
 
 from ctypes import *
 from ctypes.util import find_library
