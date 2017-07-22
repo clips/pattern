@@ -4,13 +4,14 @@
 from __future__ import unicode_literals
 from __future__ import print_function
 
+from builtins import str, bytes, int
+from builtins import map, zip, filter
+from builtins import object, range, next
+
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import unittest
 import time
 import warnings
-
-from builtins import str, bytes
-from builtins import range, next
 
 from pattern import web
 

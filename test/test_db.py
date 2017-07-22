@@ -3,6 +3,10 @@
 from __future__ import print_function
 from __future__ import unicode_literals
 
+from builtins import str, bytes, int
+from builtins import map, zip, filter
+from builtins import object, range
+
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import datetime
 import codecs
@@ -10,8 +14,6 @@ import random
 import unittest
 
 from pattern import db
-
-from builtins import str, bytes, int
 
 # To test MySQL, you need MySQLdb and a username + password with rights to create a database.
 HOST, PORT, USERNAME, PASSWORD = \
