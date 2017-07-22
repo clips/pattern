@@ -11,6 +11,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from builtins import str, bytes, int, chr
+from builtins import map, zip, filter
 from builtins import object, range
 
 import os
@@ -1074,7 +1075,7 @@ class Table(object):
     def record(self, row):
         """ Returns the given row as a dictionary of (field or alias, value)-items.
         """
-        return dict(zip(self.fields, row))
+        return dict(list(zip(self.fields, row)))
 
     class Rows(list):
         """ A list of results from Table.filter() with a Rows.table property.
@@ -1138,7 +1139,7 @@ class Table(object):
         elif len(args) == 1 and isinstance(args[0], dict):
             kwargs = dict(args[0], **kwargs)
         elif len(args) == 1 and isinstance(args[0], (list, tuple)):
-            kwargs = dict(zip((f for f in self.fields if f != self.pk), args[0]))
+            kwargs = dict(list(zip((f for f in self.fields if f != self.pk), args[0])))
         if len(self.default) > 0:
             kwargs.update(self.default)
         k = ", ".join("`%s`" % k for k in kwargs.keys())
@@ -2104,7 +2105,7 @@ class Datasheet(CSV):
     def record(self, row):
         """ Returns the given row as a dictionary of (field or alias, value)-items.
         """
-        return dict(zip((f for f, type in self.fields), row))
+        return dict(list(zip((f for f, type in self.fields), row)))
                 
     def map(self, function=lambda item: item):
         """ Applies the given function to each item in the matrix.
