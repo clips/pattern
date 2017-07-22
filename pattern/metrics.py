@@ -9,6 +9,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from builtins import str, bytes, int
+from builtins import map, zip, filter
 from builtins import object, range
 
 import sys
@@ -277,7 +278,7 @@ def auc(curve=[]):
     """
     curve = sorted(curve)
     # Trapzoidal rule: area = (a + b) * h / 2, where a=y0, b=y1 and h=x1-x0.
-    return sum(0.5 * (x1 - x0) * (y1 + y0) for (x0, y0), (x1, y1) in sorted(zip(curve, curve[1:])))
+    return sum(0.5 * (x1 - x0) * (y1 + y0) for (x0, y0), (x1, y1) in sorted(list(zip(curve, curve[1:]))))
 
 #### AGREEMENT #####################################################################################
 # +1.0 = total agreement between voters
