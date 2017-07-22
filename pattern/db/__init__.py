@@ -10,6 +10,9 @@
 from __future__ import print_function
 from __future__ import unicode_literals
 
+from builtins import str, bytes, int, chr
+from builtins import object, range
+
 import os
 import sys
 import inspect
@@ -33,8 +36,6 @@ from math      import sqrt
 from types     import GeneratorType
 
 from functools import cmp_to_key
-
-from builtins import str, bytes, int, chr, range, map, zip, filter
 
 from io import open, StringIO, BytesIO
 
