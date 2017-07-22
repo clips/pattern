@@ -8,6 +8,9 @@
 from __future__ import print_function
 from __future__ import unicode_literals
 
+from builtins import str, bytes, int
+from builtins import object, range
+
 import sys
 
 from time import time
@@ -19,9 +22,6 @@ from operator    import itemgetter, lt, le
 from heapq       import nlargest
 from bisect      import bisect_right
 from random      import gauss
-
-from builtins import str, range
-from builtins import object
 
 #### COUNT #########################################################################################
 
