@@ -10,6 +10,10 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+from builtins import str, bytes, int
+from builtins import map, zip, filter
+from builtins import object, range
+
 from codecs    import BOM_UTF8
 from itertools import chain
 from functools import cmp_to_key
@@ -28,9 +32,6 @@ from .__init__ import WEIGHT, CENTRALITY, EIGENVECTOR, BETWEENNESS
 
 import os
 import sys
-
-from builtins import str
-from builtins import object
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))

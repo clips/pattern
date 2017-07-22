@@ -8,6 +8,10 @@
 
 from __future__ import unicode_literals
 
+from builtins import str, bytes, int
+from builtins import map, zip, filter
+from builtins import object, range
+
 import os
 import sys
 
@@ -18,9 +22,6 @@ from heapq    import heappush, heappop
 from warnings import warn
 from codecs   import open
 from shutil   import rmtree
-
-from builtins import str, int, range
-from builtins import object
 
 from functools import cmp_to_key
 
