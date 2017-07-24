@@ -10,6 +10,7 @@
 from __future__ import print_function
 from __future__ import unicode_literals
 
+from builtins import str, bytes, int
 from builtins import map, zip, filter
 
 import os
@@ -23,8 +24,6 @@ from io import open
 
 from codecs import BOM_UTF8
 BOM_UTF8 = BOM_UTF8.decode('utf-8')
-
-from builtins import str, bytes, map, zip, filter
 
 from xml.etree import cElementTree
 from itertools import chain

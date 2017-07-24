@@ -11,12 +11,11 @@
 
 from __future__ import unicode_literals
 
+from builtins import str, bytes, int
 from builtins import map, zip, filter
 
 import os
 import sys
-
-from builtins import str
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))

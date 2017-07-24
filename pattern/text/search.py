@@ -10,13 +10,11 @@
 from __future__ import unicode_literals
 from __future__ import absolute_import
 
+from builtins import str, bytes, int
 from builtins import map, zip, filter
 
 import re
 import itertools
-
-from builtins import str, range, map, zip
-from builtins import object
 
 from functools import cmp_to_key
 
