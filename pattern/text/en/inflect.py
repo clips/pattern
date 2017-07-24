@@ -17,6 +17,7 @@
 # 96% for Verbs.find_lexeme() (for regular verbs)
 
 from __future__ import unicode_literals
+from __future__ import division
 
 from builtins import str, bytes, int
 from builtins import map, zip, filter

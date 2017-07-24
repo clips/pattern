@@ -18,6 +18,7 @@
 # 95% predicative() (measured on Lexique French morphology word forms)
 
 from __future__ import unicode_literals
+from __future__ import division
 
 import os
 import sys

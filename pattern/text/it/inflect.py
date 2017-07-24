@@ -20,6 +20,7 @@
 # 88% for predicative()
 
 from __future__ import unicode_literals
+from __future__ import division
 
 import os
 import sys
