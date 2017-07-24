@@ -7,7 +7,7 @@
 
 from __future__ import unicode_literals
 
-from past.builtins import basestring
+from builtins import str, bytes, int
 
 ### LIST FUNCTIONS #################################################################################
 
@@ -233,7 +233,7 @@ def negated(sentence, negative=("not", "n't", "never")):
 def mood(sentence, **kwargs):
     """ Returns IMPERATIVE (command), CONDITIONAL (possibility), SUBJUNCTIVE (wish) or INDICATIVE (fact).
     """
-    if isinstance(sentence, basestring):
+    if isinstance(sentence, str):
         try:
             # A Sentence is expected but a string given.
             # Attempt to parse the string on-the-fly.
@@ -395,7 +395,7 @@ def modality(sentence, type=EPISTEMIC):
         Currently, the only type implemented is EPISTEMIC.
         Epistemic modality is used to express possibility (i.e. how truthful is what is being said).
     """
-    if isinstance(sentence, basestring):
+    if isinstance(sentence, str):
         try:
             # A Sentence is expected but a string given.
             # Attempt to parse the string on-the-fly.

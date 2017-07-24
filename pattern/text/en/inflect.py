@@ -18,6 +18,8 @@
 
 from __future__ import unicode_literals
 
+from builtins import str, bytes, int
+
 import os
 import sys
 import re
