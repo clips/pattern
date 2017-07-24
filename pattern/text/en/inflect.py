@@ -19,6 +19,7 @@
 from __future__ import unicode_literals
 
 from builtins import str, bytes, int
+from builtins import map, zip, filter
 
 import os
 import sys
@@ -52,7 +53,7 @@ is_vowel = lambda ch: ch in VOWELS
 # Based on the Ruby Linguistics module by Michael Granger:
 # http://www.deveiate.org/projects/Linguistics/wiki/English
 
-RE_ARTICLE = map(lambda x: (re.compile(x[0]), x[1]), (
+RE_ARTICLE = list(map(lambda x: (re.compile(x[0]), x[1]), (
     (r"euler|hour(?!i)|heir|honest|hono", "an"), # exceptions: an hour, an honor
     # Abbreviations:
     # strings of capitals starting with a vowel-sound consonant followed by another consonant,
@@ -68,7 +69,7 @@ RE_ARTICLE = map(lambda x: (re.compile(x[0]), x[1]), (
     (r"^[aeiou]"             , "an"), # vowels: an owl
     (r"y(b[lor]|cl[ea]|fere|gg|p[ios]|rou|tt)", "an"), # y like "i": an yclept, a year
     (r""                     , "a" )  # guess "a"
-))
+)))
 
 def definite_article(word):
     return "the"

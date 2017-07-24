@@ -8,6 +8,7 @@
 from __future__ import unicode_literals
 
 from builtins import str, bytes, int
+from builtins import map, zip, filter
 
 ### LIST FUNCTIONS #################################################################################
 
