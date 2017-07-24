@@ -20,6 +20,10 @@
 from __future__ import unicode_literals
 from __future__ import division
 
+from builtins import str, bytes, int
+from builtins import map, zip, filter
+from builtins import object, range
+
 import os
 import sys
 import re
