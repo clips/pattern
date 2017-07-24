@@ -13,6 +13,7 @@
 # To construct a lemmatizer for pattern.xx.parser.find_lemmata(),
 # we need functions for noun singularization, verb infinitives, predicate adjectives, etc.
 
+from __future__ import unicode_literals
 from __future__ import division
 
 from builtins import str, bytes, int
