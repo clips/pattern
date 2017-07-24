@@ -12,6 +12,7 @@ from __future__ import absolute_import
 
 from builtins import str, bytes, int
 from builtins import map, zip, filter
+from builtins import object, range
 
 import re
 import itertools
