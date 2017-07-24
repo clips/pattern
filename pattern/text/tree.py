@@ -33,7 +33,7 @@
 
 from __future__ import unicode_literals
 
-from builtins import str, zip
+from builtins import map, zip, filter
 
 from itertools import chain
 
@@ -299,11 +299,11 @@ class Chunk(object):
         if not b1 and not b2:
             r = [(relation, role)]
         elif b1 and b2:
-            r = zip(relation, role)
+            r = list(zip(relation, role))
         elif b1:
-            r = zip(relation, [role] * len(relation))
+            r = list(zip(relation, [role] * len(relation)))
         elif b2:
-            r = zip([relation] * len(role), role)
+            r = list(zip([relation] * len(role), role))
         r = [(a, b) for a, b in r if a is not None or b is not None]
         self.sentence      = sentence
         self.words         = []
@@ -430,7 +430,7 @@ class Chunk(object):
             as in: "clawed/A1 at/P1 mice/P1-A2 in/P2 the/P2 wall/P2"
         """
         id = ""
-        f = lambda ch: filter(lambda k: self.sentence._anchors[k] == ch, self.sentence._anchors)
+        f = lambda ch: list(filter(lambda k: self.sentence._anchors[k] == ch, self.sentence._anchors))
         if self.pnp and self.pnp.anchor:
             id += "-" + "-".join(f(self.pnp))
         if self.anchor:

@@ -10,6 +10,8 @@
 
 from __future__ import unicode_literals
 
+from builtins import map, zip, filter
+
 import os
 import sys
 
