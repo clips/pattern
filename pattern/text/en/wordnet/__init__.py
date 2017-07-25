@@ -19,11 +19,12 @@
 
 from __future__ import absolute_import
 
+from builtins import str, bytes, int
+
 import os
 import sys
 import glob
 
-from past.builtins import basestring
 
 from math import log
 
@@ -78,7 +79,7 @@ def normalize(word):
     """ Normalizes the word for synsets() or Sentiwordnet[] by removing diacritics
         (PyWordNet does not take unicode).
     """
-    if not isinstance(word, basestring):
+    if not isinstance(word, str):
         word = str(word)
     if not isinstance(word, str):
         try: word = word.encode("utf-8", "ignore")
