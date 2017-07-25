@@ -9,6 +9,7 @@
 from __future__ import unicode_literals
 
 import os
+from io import open
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
