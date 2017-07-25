@@ -16,6 +16,8 @@ import subprocess
 from pattern import text
 from pattern import en
 
+from io import open
+
 try:
     PATH = os.path.dirname(os.path.realpath(__file__))
 except:
@@ -539,7 +541,7 @@ class TestParser(unittest.TestCase):
         i, n = 0, 0
         for corpus, a in (("tagged-en-wsj.txt", (0.968, 0.945)), ("tagged-en-oanc.txt", (0.929, 0.932))):
             for sentence in open(os.path.join(PATH, "corpora", corpus)).readlines():
-                sentence = sentence.decode("utf-8").strip()
+                sentence = sentence.strip()
                 s1 = [w.split("/") for w in sentence.split(" ")]
                 s2 = [[w for w, pos in s1]]
                 s2 = en.parse(s2, tokenize=False)

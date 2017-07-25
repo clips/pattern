@@ -14,6 +14,8 @@ import subprocess
 
 from pattern import de
 
+from io import open
+
 try:
     PATH = os.path.dirname(os.path.realpath(__file__))
 except:
@@ -207,7 +209,7 @@ class TestParser(unittest.TestCase):
         # 3) Assert the accuracy of the German tagger.
         i, n = 0, 0
         for sentence in open(os.path.join(PATH, "corpora", "tagged-de-tiger.txt")).readlines():
-            sentence = sentence.decode("utf-8").strip()
+            sentence = sentence.strip()
             s1 = [w.split("/") for w in sentence.split(" ")]
             s1 = [de.stts2penntreebank(w, pos) for w, pos in s1]
             s2 = [[w for w, pos in s1]]

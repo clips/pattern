@@ -14,6 +14,8 @@ import subprocess
 
 from pattern import fr
 
+from io import open
+
 try:
     PATH = os.path.dirname(os.path.realpath(__file__))
 except:
@@ -174,7 +176,7 @@ class TestParser(unittest.TestCase):
         f = fr.penntreebank2universal
         i, n = 0, 0
         for sentence in open(os.path.join(PATH, "corpora", "tagged-fr-wikinews.txt")).readlines():
-            sentence = sentence.decode("utf-8").strip()
+            sentence = sentence.strip()
             s1 = [w.split("/") for w in sentence.split(" ")]
             s2 = [[w for w, pos in s1]]
             s2 = fr.parse(s2, tokenize=False)
