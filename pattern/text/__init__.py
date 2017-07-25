@@ -1943,8 +1943,13 @@ class Verbs(lazydict):
                 for id1, id2 in self._default.items():
                     if id2 in a:
                         a.add(id1)
-        a = (TENSES[id][:-2] for id in a)
-        a = Tenses(sorted(a))
+
+        a = list(TENSES[id][:-2] for id in a)
+
+        # In Python 2, None is always smaller than anything else while in Python 3, comparison with incompatible types yield TypeError.
+        # This is why we need to use a custom key function.
+        a = Tenses(sorted(a, key = lambda x: 0 if x[1] is None else x[1]))
+
         return a
 
     def find_lemma(self, verb):
