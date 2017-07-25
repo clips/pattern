@@ -47,7 +47,10 @@ from nltk.corpus.reader.wordnet import Synset as WordNetSynset
 
 # Make sure the necessary corpora are downloaded to the local drive
 for token in ("wordnet", "wordnet_ic", "sentiwordnet"):
-    nltk.download(token, quiet = True, raise_on_error = True)
+    try:
+        nltk.data.find("corpora/" + token)
+    except LookupError:
+        nltk.download(token, quiet = True, raise_on_error = True)
 
 # Use the Brown corpus for calculating information content (IC)
 brown_ic = wn_ic.ic('ic-brown.dat')
