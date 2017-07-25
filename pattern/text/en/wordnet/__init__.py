@@ -20,6 +20,7 @@
 from __future__ import absolute_import
 
 from builtins import str, bytes, int
+from builtins import map, zip, filter
 
 import os
 import sys
@@ -430,7 +431,7 @@ class SentiWordNet(Sentiment):
     # Words are stored without diacritics,
     # use wordnet.normalize(word).
     def __getitem__(self, k):
-        synsets = swn.senti_synsets(k)
+        synsets = list(swn.senti_synsets(k))
         if synsets:
             p, n = synsets[0].pos_score(), synsets[0].neg_score()
             v = (float(p) - float(n), float(p) + float(n))
