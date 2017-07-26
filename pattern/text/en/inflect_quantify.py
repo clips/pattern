@@ -211,7 +211,7 @@ def numerals(n, round=2):
         while o > len(ORDER)-1:
             s += " "+ORDER[-1] # This occurs for consecutive thousands: million vigintillion.
             o -= len(ORDER)-1
-        s = "%s %s%s" % (numerals(i//(base/1000)), (o>1 and ORDER[o-1] or ""), s)
+        s = "%s %s%s" % (numerals(i//int(base/1000)), (o>1 and ORDER[o-1] or ""), s)
         r = i % (base/1000)
     if f != 0: 
         # Map the fractional part: "two point twenty-five" => 2.25.
