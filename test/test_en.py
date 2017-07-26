@@ -323,8 +323,8 @@ class TestParser(unittest.TestCase):
           ("JJ", en.wordnet.ADJECTIVES),
           ("RB", en.wordnet.ADVERBS)):
             i, n = 0, 0
-            for word in lexicon:
-                word = word.form
+            for word in lexicon():
+                word = word.replace("_", " ")
                 if word not in en.lexicon:
                     if function([word, "NN"])[1].startswith(tag):
                         i += 1

@@ -97,8 +97,10 @@ def normalize(word):
 
 ### SYNSET #########################################################################################
 
-NOUNS, VERBS, ADJECTIVES, ADVERBS = \
-    wn.NOUN, wn.VERB, wn.ADJ, wn.ADV
+NOUNS = lambda: wn.all_lemma_names(wn.NOUN)
+VERBS = lambda: wn.all_lemma_names(wn.VERB)
+ADJECTIVES = lambda: wn.all_lemma_names(wn.ADJ)
+ADVERBS = lambda: wn.all_lemma_names(wn.ADV)
 
 NOUN, VERB, ADJECTIVE, ADVERB = \
     NN, VB, JJ, RB = \
