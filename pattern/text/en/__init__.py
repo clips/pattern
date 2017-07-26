@@ -117,7 +117,7 @@ class Sentiment(_Sentiment):
         _Sentiment.load(self, path)
         # Map "terrible" to adverb "terribly" (+1% accuracy)
         if not path:
-            for w, pos in dict.items(self):
+            for w, pos in list(dict.items(self)):
                 if "JJ" in pos:
                     if w.endswith("y"):
                         w = w[:-1] + "i"
