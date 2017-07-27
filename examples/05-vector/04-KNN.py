@@ -34,10 +34,10 @@ for page in range(1, 10):
             m.append(Document(s, type=p, stemmer=None))
 
 # Train k-Nearest Neighbor on the model.
-# Note that this is a only simple example: to build a robust classifier
+# Note that this is only a simple example: to build a robust classifier
 # you would need a lot more training data (e.g., tens of thousands of tweets).
 # The more training data, the more statistically reliable the classifier becomes.
-# The only way to really know if you're classifier is working correctly
+# The only way to really know if your classifier is working correctly
 # is to test it with testing data, see the documentation for Classifier.test().
 classifier = KNN(baseline=None) # By default, baseline=MAJORITY
 for document in m:              # (classify unknown documents with the most frequent type).
