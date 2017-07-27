@@ -90,7 +90,7 @@ DIACRITICS = {
 
 def normalize(word):
     """ Normalizes the word for synsets() or Sentiwordnet[] by removing diacritics
-        (PyWordNet does not take unicode).
+        (PyWordNet does not take unicode) and replacing spaces with underscores.
     """
     if not isinstance(word, str):
         word = str(word)
@@ -101,6 +101,10 @@ def normalize(word):
     for k, v in DIACRITICS.items(): 
         for v in v: 
             word = word.replace(v, k)
+
+    # Replace spaces with underscores
+    word = word.replace(" ", "_")
+
     return word
 
 ### SYNSET #########################################################################################
