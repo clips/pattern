@@ -261,7 +261,7 @@ def urldecode(query):
              return s
     if query:
         query = query.lstrip("?").split("&")
-        query = ((kv.split("=") + [None])[:2] for kv in query)
+        query = ((kv.split("=", 1) + [None])[:2] for kv in query)
         query = ((u(urllib.unquote_plus(bytestring(k))),
           _format(u(urllib.unquote_plus(bytestring(v))))) for k, v in query if k != "")
         return dict(query)
