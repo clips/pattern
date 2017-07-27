@@ -120,6 +120,7 @@ NOUN, VERB, ADJECTIVE, ADVERB = \
 
 _pattern2wordnet = {NN : wn.NOUN, VB : wn.VERB, JJ : wn.ADJ, RB: wn.ADV}
 _wordnet2pattern = {v : k for k, v in _pattern2wordnet.items()}
+_wordnet2pattern[wn.ADJ_SAT] = JJ
 
 def synsets(word, pos=NOUN):
     """ Returns a list of Synset objects, one for each word sense.
@@ -200,7 +201,7 @@ class Synset(object):
             return NOUN
         if pos == wn.VERB:
             return VERB
-        if pos == wn.ADV:
+        if pos == wn.ADJ or pos == wn.ADJ_SAT:
             return ADJECTIVE
         if pos == wn.ADV:
             return ADVERB
@@ -389,7 +390,7 @@ least_common_subsumer = lcs = ancestor
 # Map WordNet3 synset id's to WordNet2 synset id's.
 
 _map32_pos1  = {NN: "n", VB: "v", JJ: "a", RB: "r"}
-_map32_pos2  = {"n": NN, "v": VB, "a": JJ, "r": RB}
+_map32_pos2  = {"n": NN, "v": VB, "a": JJ, "s" : JJ, "r": RB}
 _map32_cache = None
 
 def map32(id, pos=NOUN):
