@@ -640,8 +640,8 @@ class Context(lazylist):
 
 #--- NAMED ENTITY RECOGNIZER -----------------------------------------------------------------------
 
-RE_ENTITY1 = re.compile(r"^http://")                            # http://www.domain.com/path
-RE_ENTITY2 = re.compile(r"^www\..*?\.[com|org|net|edu|de|uk]$") # www.domain.com
+RE_ENTITY1 = re.compile(r"^http://")                         # http://www.domain.com/path
+RE_ENTITY2 = re.compile(r"^www\..*?\.(com|org|net|edu|de|uk)$") # www.domain.com
 RE_ENTITY3 = re.compile(r"^[\w\-\.\+]+@(\w[\w\-]+\.)+[\w\-]+$") # name@domain.com
 
 class Entities(lazydict):
