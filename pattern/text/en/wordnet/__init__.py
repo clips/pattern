@@ -66,7 +66,9 @@ for token in ("wordnet", "wordnet_ic", "sentiwordnet"):
 
 # Use the Brown corpus for calculating information content (IC)
 brown_ic = wn_ic.ic('ic-brown.dat')
-IC_CORPUS = brown_ic
+IC_CORPUS, IC_MAX = brown_ic, {}
+for key in IC_CORPUS:
+    IC_MAX[key] = max(IC_CORPUS[key].values())
 
 # This will hold the WordNet version
 VERSION = wn.get_version() or "3.0"
@@ -320,7 +322,7 @@ class Synset(object):
         if pos in _pattern2wordnet:
             pos = _pattern2wordnet[pos]
         if pos in IC_CORPUS and offset in IC_CORPUS[pos]:
-            return IC_CORPUS[pos][offset]
+            return IC_CORPUS[pos][offset] / IC_MAX[pos]
         return None
         
     @property
