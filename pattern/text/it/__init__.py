@@ -31,7 +31,7 @@ from pattern.text import (
 )
 # Import parse tree base classes.
 from pattern.text.tree import (
-    Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chink, Word, table,
+    Tree, Text, Sentence, Slice, Chunk, PNPChunk, Chonk, Word, table,
     SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, AND, OR
 )
 # Import sentiment analysis base classes.
