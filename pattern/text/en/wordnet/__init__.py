@@ -318,7 +318,7 @@ class Synset(object):
             synsets("cat")[0].similarity(synsets("box")[0]) => 0.17.
         """
 
-        return self._wnsynset.lin_similarity(synset, IC_CORPUS)
+        return self._wnsynset.lin_similarity(synset._wnsynset, IC_CORPUS)
         
     @property
     def ic(self):
