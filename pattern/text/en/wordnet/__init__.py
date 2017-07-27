@@ -56,7 +56,13 @@ for token in ("wordnet", "wordnet_ic", "sentiwordnet"):
     try:
         nltk.data.find("corpora/" + token)
     except LookupError:
-        nltk.download(token, quiet = True, raise_on_error = True)
+        try:
+            nltk.download(token, quiet = True, raise_on_error = True)
+        except ValueError:
+            # Sometimes there are problems with the default index.xml URL. Then we will try this...
+            from nltk.downloader import Downloader as NLTKDownloader
+            d = NLTKDownloader("http://nltk.github.com/nltk_data/")
+            d.download(token, quiet = True, raise_on_error = True)
 
 # Use the Brown corpus for calculating information content (IC)
 brown_ic = wn_ic.ic('ic-brown.dat')
