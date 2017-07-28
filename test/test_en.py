@@ -647,8 +647,7 @@ class TestParseTree(unittest.TestCase):
         self.assertTrue(v.objects  == [self.text[0].chunks[2]])
         self.assertTrue(v.nouns    == [self.text[0].words[3], self.text[0].words[6]])
         # Sentence.string must be unicode.
-        self.assertTrue(isinstance(v.string, unicode) == True)
-        self.assertTrue(isinstance(unicode(v), unicode) == True)
+        self.assertTrue(isinstance(v.string, str) == True)
         self.assertTrue(isinstance(str(v), str) == True)
         print("pattern.en.Sentence")
 
