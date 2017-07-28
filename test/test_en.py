@@ -926,10 +926,10 @@ class TestSentiment(unittest.TestCase):
         t = time()
         A, P, R, F = test(lambda review: en.positive(review), reviews)
         #print(A, P, R, F)
-        self.assertTrue(A > 0.754)
-        self.assertTrue(P > 0.773)
-        self.assertTrue(R > 0.719)
-        self.assertTrue(F > 0.745)
+        self.assertTrue(A > 0.752)
+        self.assertTrue(P > 0.772)
+        self.assertTrue(R > 0.715)
+        self.assertTrue(F > 0.743)
         # Assert the accuracy of the sentiment analysis on short text (for the positive class).
         # Given are the scores for Pang & Lee's sentence polarity dataset v1.0:
         # http://www.cs.cornell.edu/people/pabo/movie-review-data/
