@@ -527,13 +527,13 @@ class TestParser(unittest.TestCase):
             "is/VBZ/B-VP/O/be chasing/VBG/I-VP/O/chase " + \
             "mice/NNS/B-NP/O/mouse ././O/O/."
         )
-        # 4) Assert unicode.
-        self.assertTrue(isinstance(v, unicode))
-        # 5) Assert unicode for faulty input (bytestring with unicode characters).
-        self.assertTrue(isinstance(en.parse("ø ü"), unicode))
-        self.assertTrue(isinstance(en.parse("ø ü", tokenize=True,  tags=False, chunks=False), unicode))
-        self.assertTrue(isinstance(en.parse("ø ü", tokenize=False, tags=False, chunks=False), unicode))
-        self.assertTrue(isinstance(en.parse("o u", encoding="ascii"), unicode))
+        # 4) Assert str.
+        self.assertTrue(isinstance(v, str))
+        # 5) Assert str for faulty input (bytestring with unicode characters).
+        self.assertTrue(isinstance(en.parse("ø ü"), str))
+        self.assertTrue(isinstance(en.parse("ø ü", tokenize=True,  tags=False, chunks=False), str))
+        self.assertTrue(isinstance(en.parse("ø ü", tokenize=False, tags=False, chunks=False), str))
+        self.assertTrue(isinstance(en.parse("o u", encoding="ascii"), str))
         # 6) Assert optional parameters (i.e., setting all to False).
         self.assertEqual(en.parse("ø ü.", tokenize=True,  tags=False, chunks=False), u"ø ü .")
         self.assertEqual(en.parse("ø ü.", tokenize=False, tags=False, chunks=False), u"ø ü.")
