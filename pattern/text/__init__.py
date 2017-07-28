@@ -445,7 +445,7 @@ class Model(object):
         p = ("", "") if not p else (p[0] or "", p[1] or "")
         n = ("", "") if not n else (n[0] or "", n[1] or "")
         v = {}
-        f(v,  "b", " ")         # Bias.
+        f(v,  "b", "b")         # Bias.
         f(v,  "h", token[:1])   # Capitalization.
         f(v,  "w", token[-6:] if token not in self.known or token in self.unknown else "")
         f(v,  "x", token[-3:])  # Word suffix.
