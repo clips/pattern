@@ -1055,7 +1055,7 @@ class Sentence(object):
     def __unicode__(self):
         return self.string
     def __repr__(self):
-        return "Sentence(%s)" % repr(" ".join(["/".join(word.tags) for word in self.words]).encode("utf-8"))
+        return "Sentence(%s)" % repr(" ".join(["/".join(word.tags) for word in self.words]))
         
     def __eq__(self, other):
         if not isinstance(other, Sentence): 
@@ -1394,7 +1394,7 @@ def parse_xml(sentence, tab="\t", id=""):
             indent = pop(indent); xml.append(indent + "</%s>" % XML_CHUNK)
     xml.append("</%s>" % XML_SENTENCE)
     # Return as a plain str.
-    return "\n".join(xml).encode("utf-8")
+    return "\n".join(xml)
 
 #--- XML TO SENTENCE(S) ----------------------------------------------------------------------------
 
