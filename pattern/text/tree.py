@@ -685,13 +685,13 @@ class Sentence(object):
 
     @property
     def subjects(self):
-        return self.relations["SBJ"].values()
+        return list(self.relations["SBJ"].values())
     @property
     def objects(self):
-        return self.relations["OBJ"].values()
+        return list(self.relations["OBJ"].values())
     @property
     def verbs(self):
-        return self.relations["VP"].values()
+        return list(self.relations["VP"].values())
         
     @property
     def anchors(self):
