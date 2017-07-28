@@ -886,7 +886,7 @@ class TestModality(unittest.TestCase):
         #print(A, P, R, F)
         self.assertTrue(A > 0.69)
         self.assertTrue(P > 0.72)
-        self.assertTrue(R > 0.64)
+        self.assertTrue(R > 0.63)
         self.assertTrue(F > 0.68)
         print("pattern.en.modality()")
 
