@@ -1,3 +1,11 @@
+from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+
+from builtins import str, bytes, int
+from builtins import map, zip, filter
+from builtins import object, range
+
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.db import Datasheet, INTEGER, STRING
