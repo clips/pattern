@@ -1,6 +1,7 @@
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 import glob
-import codecs
+
+from io import open
 
 from pattern.vector import Document, Model, TF, TFIDF
 
@@ -27,7 +28,7 @@ from pattern.vector import Document, Model, TF, TFIDF
 # Load a model from a folder of text documents:
 documents = []
 for f in glob.glob(os.path.join(os.path.dirname(__file__), "corpus", "*.txt")):
-    text = codecs.open(f, encoding="utf-8").read()
+    text = open(f, encoding="utf-8").read()
     name = os.path.basename(f)[:-4]
     documents.append(Document(text, name=name))
     

@@ -1,5 +1,6 @@
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
-import codecs
+
+from io import open
 
 from pattern.vector import Document, PORTER, LEMMA
 
@@ -46,13 +47,13 @@ print
 #    s = w.search(q, cached=True)
 #    s = s.plaintext()
 #    print os.path.join("corpus2", q+".txt")
-#    f = codecs.open(os.path.join("corpus2", q+".txt"), "w", encoding="utf-8")
+#    f = open(os.path.join("corpus2", q+".txt"), "w", encoding="utf-8")
 #    f.write(s)
 #    f.close()
 
 # Loading a document from a text file:
 f = os.path.join(os.path.dirname(__file__), "corpus", "wolf.txt")
-s = codecs.open(f, encoding="utf-8").read()
+s = open(f, encoding="utf-8").read()
 document = Document(s, name="wolf", stemmer=PORTER)
 print document
 print document.keywords(top=10) # (weight, feature)-items.
