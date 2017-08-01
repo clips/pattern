@@ -229,12 +229,16 @@ def date(*args, **kwargs):
         d+= time(microseconds=args[0].microsecond)
     elif len(args) == 1 \
      and (isinstance(args[0], int) \
-      or  isinstance(args[0], str) and args[0].isdigit()):
+      or  isinstance(args[0], (str, bytes)) and args[0].isdigit()):
         # One parameter, an int or string timestamp.
+        if isinstance(args[0], bytes):
+            args = (args[0].decode("utf-8"),)
         d = Date.fromtimestamp(int(args[0]))
     elif len(args) == 1 \
-     and isinstance(args[0], str):
+     and isinstance(args[0], (str, bytes)):
         # One parameter, a date string for which we guess the input format (RFC2822 or known formats).
+        if isinstance(args[0], bytes):
+            args = (args[0].decode("utf-8"),)
         try: d = Date.fromtimestamp(mktime_tz(parsedate_tz(args[0])))
         except:
             for format in ("format" in kwargs and [kwargs["format"]] or []) + date_formats:
@@ -244,8 +248,10 @@ def date(*args, **kwargs):
         if d is None:
             raise DateError("unknown date format for %s" % repr(args[0]))
     elif len(args) == 2 \
-     and isinstance(args[0], str):
+     and isinstance(args[0], (str, bytes)):
         # Two parameters, a date string and an explicit input format.
+        if isinstance(args[0], bytes):
+            args = (args[0].decode("utf-8"), args[1].decode("utf-8"))
         d = Date.strptime(args[0], args[1])
     elif len(args) >= 3:
         # 3-6 parameters: year, month, day, hours, minutes, seconds.
@@ -1643,7 +1649,7 @@ def xml_format(a):
         return "\"\""
     if isinstance(a, Date):
         return "\"%s\"" % str(a)
-    if isinstance(a, datetime.datetime):
+    if isinstance(a, datetime):
         return "\"%s\"" % str(date(mktime(a.timetuple())))
 
 def xml(rows):
