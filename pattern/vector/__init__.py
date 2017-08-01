@@ -56,8 +56,9 @@ from random      import random, randint, uniform, choice, sample, seed
 from itertools   import chain
 from bisect      import insort
 from operator    import itemgetter
-from codecs      import open
 from collections import defaultdict
+
+from io import open
 
 import numpy as np
 import scipy
@@ -1059,7 +1060,7 @@ class Model(object):
                 v = "%s,%s" % (v, document.type or "")
                 s.append(v)
         s = "\n".join(s)
-        f = open(path, "wb", encoding="utf-8")
+        f = open(path, "w", encoding="utf-8")
         f.write(decode_utf8(s))
         f.close()
     

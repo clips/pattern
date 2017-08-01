@@ -21,8 +21,9 @@ from math     import sin, cos, atan2, degrees, radians, pi
 from random   import random
 from heapq    import heappush, heappop
 from warnings import warn
-from codecs   import open
 from shutil   import rmtree
+
+from io import open
 
 from functools import cmp_to_key
 
