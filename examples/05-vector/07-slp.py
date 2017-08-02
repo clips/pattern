@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from builtins import str, bytes, int
+from builtins import map, zip
 from builtins import range
 
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -32,8 +33,8 @@ def corpus(path, encoding="utf-8"):
         with slash-encoded tokens (e.g., the/DT cat/NN).
     """
     for s in open(path, encoding=encoding):
-        s = map(lambda w:  w.split("/"), s.strip().split(" "))
-        s = map(lambda w: (w[0].replace("&slash;", "/"), w[1]), s)
+        s = list(map(lambda w:  w.split("/"), s.strip().split(" ")))
+        s = list(map(lambda w: (w[0].replace("&slash;", "/"), w[1]), s))
         yield s
 
 # The corpus is included in the Pattern download zip, in pattern/test/corpora:
