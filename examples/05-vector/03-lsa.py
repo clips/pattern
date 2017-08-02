@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 import time
 
@@ -31,10 +33,10 @@ for score, review in data:
 
 m = Model(documents)
 
-print "number of documents:", len(m)
-print "number of features:", len(m.vector)
-print "number of features (average):", sum(len(d.features) for d in m.documents) / float(len(m))
-print
+print("number of documents:", len(m))
+print("number of features:", len(m.vector))
+print("number of features (average):", sum(len(d.features) for d in m.documents) / float(len(m)))
+print()
 
 # 6,337 different features may be too slow for some algorithms (e.g., hierarchical clustering).
 # We'll reduce the document vectors to 10 concepts.
@@ -52,32 +54,32 @@ print
 # and hopefully decrease the time needed to run.
 
 t = time.time()
-print "accuracy:", KNN.test(m, folds=10)[-1]
-print "time:", time.time() - t
-print
+print("accuracy:", KNN.test(m, folds=10)[-1])
+print("time:", time.time() - t)
+print()
 
 # Reduce the documents to vectors of 10 concepts (= 1/4 of 40 features).
-print "LSA reduction..."
-print
+print("LSA reduction...")
+print()
 m.reduce(10)
 
 t = time.time()
-print "accuracy:", KNN.test(m, folds=10)[-1]
-print "time:", time.time() - t
-print
+print("accuracy:", KNN.test(m, folds=10)[-1])
+print("time:", time.time() - t)
+print()
 
 # Accuracy is about the same, but the performance is better: 2x-3x faster,
 # because each document is now a "10-word summary" of the original review.
 
 # Let's take a closer look at the concepts.
 # The concept vector for the first document:
-print m.lsa.vectors[m[0].id]
-print
+print(m.lsa.vectors[m[0].id])
+print()
 
 # It is a dictionary of concept id's (instead of features).
 # This is is not very helpful.
 # But we can look up the features "bundled" in each concept:
-print len(m.lsa.concepts[0])
+print(len(m.lsa.concepts[0]))
 
 # That's a lot of words.
 # In fact, all features in the model have a score for one of the ten concepts.
@@ -90,7 +92,7 @@ m.reduce(100)
 
 for feature, weight in m.lsa.concepts[15].items(): # concept id=2
     if abs(weight) > 0.1:
-        print feature
+        print(feature)
         
 # Concept  2 = "truman", "ventura", "ace", "carrey", ... Obviously about Jim Carrey movies.
 # Concept 15 = "sixth", "sense", "child", "dead", "willis" ...

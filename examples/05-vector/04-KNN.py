@@ -1,3 +1,8 @@
+from __future__ import print_function
+from __future__ import unicode_literals
+
+from builtins import str, bytes, int
+
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import Twitter
@@ -44,8 +49,8 @@ for document in m:              # (classify unknown documents with the most freq
     classifier.train(document)
 
 # These are the adjectives the classifier has learned:
-print sorted(classifier.features)
-print
+print(sorted(classifier.features))
+print()
 
 # We can now ask it to classify documents containing these words.
 # Note that you may get different results than the ones below,
@@ -53,8 +58,8 @@ print
 # Again, a robust classifier needs lots and lots of training data.
 # If None is returned, the word was not recognized,
 # and the classifier returned the default value (see above).
-print classifier.classify('sweet potato burger') # yields 'WIN'
-print classifier.classify('stupid autocorrect')  # yields 'FAIL'
+print(classifier.classify('sweet potato burger')) # yields 'WIN'
+print(classifier.classify('stupid autocorrect'))  # yields 'FAIL'
 
 # "What can I do with it?"
 # In the scientific community, classifiers have been used to predict:
