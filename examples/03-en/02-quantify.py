@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.en import number, numerals, quantify, reflect
@@ -11,8 +13,8 @@ print(number("two point eighty-five"))
 print("")
 
 # The numerals() command returns a written representation from an int or float.
-print numerals(1.249, round=2)
-print numerals(1.249, round=3)
+print(numerals(1.249, round=2))
+print(numerals(1.249, round=3))
 print("")
 
 # The quantify() commands uses pluralization + approximation to enumerate words.
