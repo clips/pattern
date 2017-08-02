@@ -33,7 +33,7 @@ print("")
 synset = wordnet.synsets("animal")[0]
 for s in synset.hyponyms(recursive=True, depth=2):
     for word in s.senses:
-        if word in wordnet.VERBS:
+        if word in wordnet.VERBS():
             print("%s => %s" % (word, wordnet.synsets(word, pos=VERB)))
 
 # Synset.similarity() returns an estimate of the semantic similarity to another synset,
