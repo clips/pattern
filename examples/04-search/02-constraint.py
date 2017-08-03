@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.search import search, Pattern, Constraint
@@ -41,7 +43,7 @@ print("")
 p = Pattern.fromstring("rabbit stare at feet", s)
 p.strict = True  # Now it matches only what the pattern explicitly defines (=no match).
 m = p.search(s)
-print m
+print(m)
 print("")
 
 # Sentence chunks can be matched by tag (e.g. NP, VP, ADJP).
