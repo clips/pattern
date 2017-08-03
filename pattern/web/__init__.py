@@ -2901,7 +2901,7 @@ class Newsfeed(SearchEngine):
         kwargs.setdefault("throttle", self.throttle)
         tags = kwargs.pop("tags", [])
         data = URL(query).download(cached=cached, **kwargs)
-        data = feedparser.parse(bytestring(data))
+        data = feedparser.parse(data)
         results = Results(query, query, NEWS)
         results.total = None
         for x in data["entries"][:count]:
