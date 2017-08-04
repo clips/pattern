@@ -12,6 +12,8 @@ from __future__ import unicode_literals
 from __future__ import division
 from __future__ import with_statement
 
+from builtins import str
+
 import __main__
 import re
 import os
@@ -43,8 +45,6 @@ try:
     json.encoder.FLOAT_REPR = lambda f: ("%.2f" % f)
 except AttributeError:
     pass
-
-from past.builtins import basestring
 
 try: # Python 2.x vs 3.x
     import htmlentitydefs
@@ -111,7 +111,7 @@ def encode_entities(string):
         For example, to display "<em>hello</em>" in a browser,
         we need to pass "&lt;em&gt;hello&lt;/em&gt;" (otherwise "hello" in italic is displayed).
     """
-    if isinstance(string, basestring):
+    if isinstance(string, str):
         string = RE_AMPERSAND.sub("&amp;", string)
         string = string.replace("<", "&lt;")
         string = string.replace(">", "&gt;")
@@ -133,7 +133,7 @@ def decode_entities(string):
         else:
             cp = htmlentitydefs.name2codepoint.get(name) # "&amp;" => "&"
             return unichr(cp) if cp else match.group()   # "&foo;" => "&foo;"
-    if isinstance(string, basestring):
+    if isinstance(string, str):
         return RE_UNICODE.subn(replace_entity, string)[0]
     return string
 
@@ -413,7 +413,7 @@ def streql(s1, s2):
 def encode_password(s):
     """ Returns a PBKDF2-hashed string.
     """
-    if isinstance(s, unicode):
+    if isinstance(s, str):
         s = s.encode("utf-8")
     x = base64.b64encode(os.urandom(32))
     return "pbkdf2:sha256:10000:%s:%s" % (x, pbkdf2(s[:1024], x))
@@ -421,9 +421,9 @@ def encode_password(s):
 def verify_password(s1, s2):
     """ Returns True if the given strings are identical, after hashing the first.
     """
-    if isinstance(s1, unicode):
+    if isinstance(s1, str):
         s1 = s1.encode("utf-8")
-    if isinstance(s2, unicode):
+    if isinstance(s2, str):
         s2 = s2.encode("utf-8")
     m, f, n, x, s2 = s2.split(":")
     return streql(pbkdf2(s1[:1024], x, int(n), len(s2) / 2, f), s2)
@@ -632,7 +632,7 @@ class Router(dict):
         """
         p = "/" + path.strip("/")
         p = p.lower()
-        p = p.encode("utf8") if isinstance(p, unicode) else p
+        p = p.encode("utf8") if isinstance(p, str) else p
         # Store the handler + its argument names (tuple(args), dict(kwargs)),
         # so that we can call this function without (all) keyword arguments,
         # if it does not take (all) query data.
@@ -939,7 +939,7 @@ class Application(object):
             If the value is a generator, starts a stream.
             If the value is an iterable, joins the values with a space.
         """
-        if isinstance(v, basestring):
+        if isinstance(v, str):
             return v
         if isinstance(v, cp.lib.file_generator): # serve_file()
             return v
@@ -956,7 +956,7 @@ class Application(object):
         if v is None:
             return ""
         try: # (bool, int, float, object.__unicode__)
-            return unicode(v)
+            return str(v)
         except:
             return encode_entities(repr(v))
 
@@ -1052,7 +1052,7 @@ class Application(object):
             if code in ("*", None):
                 cp.config.update({"error_page.default": wrapper})
             # app.error(404) catches 404 error codes.
-            elif isinstance(code, (int, basestring)):
+            elif isinstance(code, (int, str)):
                 cp.config.update({"error_page.%s" % code: wrapper})
             # app.error((404, 500)) catches 404 + 500 error codes.
             elif isinstance(code, (tuple, list)):
@@ -1574,7 +1574,7 @@ def template(string, *args, **kwargs):
     root, cached = (
         kwargs.pop("root", None),
         kwargs.pop("cached", None))
-    if root is None and len(args) > 0 and isinstance(args[0], basestring):
+    if root is None and len(args) > 0 and isinstance(args[0], str):
         root = args[0]
         args = args[1:]
     return Template(string, root, cached).render(*args, **kwargs)
