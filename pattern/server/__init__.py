@@ -12,7 +12,7 @@ from __future__ import unicode_literals
 from __future__ import division
 from __future__ import with_statement
 
-from builtins import str
+from builtins import str, bytes, int
 
 import __main__
 import re
