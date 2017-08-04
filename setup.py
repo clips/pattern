@@ -89,7 +89,7 @@ setup(
         "pattern.text.it"         : ["*.txt", "*.xml"],
         "pattern.text.nl"         : ["*.txt", "*.xml"],
         "pattern.vector"          : ["*.txt"],
-        "pattern.vector.svm"      : ["*.txt", "libsvm-3.11/*", "libsvm-3.17/*", "liblinear-1.93/*"],
+        "pattern.vector.svm"      : ["*.txt"],
         "pattern.graph"           : ["*.js", "*.csv"],
         "pattern.server"          : ["static/*"],
     },
