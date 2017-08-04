@@ -7,7 +7,7 @@ import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..",
 
 from pattern.server import App, template, threadsafe
 
-from codecs import open
+from io import open
 
 # This example demonstrates a simple wiki served by pattern.server.
 # A wiki is a web app where each page can be edited (e.g, Wikipedia).
