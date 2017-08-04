@@ -119,7 +119,8 @@ class Cache(object):
             With unicode=True, returns a Unicode string.
         """
         if k in self:
-            f = open(self._hash(k), "r"); v=f.read().lstrip(BOM_UTF8)
+            f = open(self._hash(k), "rb")
+            v = f.read().lstrip(BOM_UTF8.encode("utf-8"))
             f.close()
             if unicode is True:
                 return decode_utf8(v)
