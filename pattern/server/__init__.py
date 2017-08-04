@@ -14,6 +14,7 @@ from __future__ import with_statement
 
 from builtins import str, bytes, int
 from builtins import map, zip, filter
+from builtins import object, range
 
 import __main__
 import re
@@ -651,7 +652,7 @@ class Router(dict):
         if not isinstance(path, tuple):
             path = path.strip("/").split("/") # ["api", "1", "en"]
         n = len(path)
-        for i in xrange(n + 1):
+        for i in range(n + 1):
             p0 = "/" + "/".join(path[:n-i])
             p0 = p0.lower()                   # "/api/1/en", "/api/1", "/api", ...
             p1 = path[n-i:]                   # [], ["en"], ["1", "en"], ...
