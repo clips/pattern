@@ -16,6 +16,8 @@ from builtins import str, bytes, int
 from builtins import map, zip, filter
 from builtins import object, range
 
+from io import open
+
 import __main__
 import re
 import os
