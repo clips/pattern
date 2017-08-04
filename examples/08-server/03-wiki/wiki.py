@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.server import App, template, threadsafe
@@ -18,8 +20,8 @@ app = App(name="wiki")
 
 @app.route("/")
 def index(*path, **data):
-    #print "path:", path
-    #print "data:", data
+    #print("path:", path)
+    #print("data:", data)
     # Construct a file name in /data from the URL path.
     # For example, path=("pages", "bio.html")
     # is mapped to "/data/pages/bio.html.txt".
@@ -28,7 +30,7 @@ def index(*path, **data):
     page = page.replace(" ", "-")
     page = page + ".txt"
     page = os.path.join(app.path, "data", page) # Absolute paths are safer.
-    #print "page:", page
+    #print("page:", page)
     
     # If the URL ends in "?save", update the page content.
     if "save" in data and "content" in data:
@@ -89,7 +91,7 @@ def displayname(page):
 # We load the $name using the name() function above.
 
 def view(page):
-    print displayname(page)
+    print(displayname(page))
     return template(wiki, name=name(page), content=open(page).read())
 
 # The edit() function is called when a URL ends in "?edit",

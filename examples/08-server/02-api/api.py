@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.server import App
@@ -31,7 +33,7 @@ app = App("api")
 
 @app.route("/language", limit=100, time=HOUR)
 def predict_language(q=""):
-    #print q
+    #print(q)
     iso, confidence = language(q) # (takes some time to load the first time)
     return {
           "language": iso, 
