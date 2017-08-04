@@ -13,6 +13,7 @@ from __future__ import division
 from __future__ import with_statement
 
 from builtins import str, bytes, int
+from builtins import map, zip, filter
 
 import __main__
 import re
