@@ -495,8 +495,9 @@ class URL(object):
                          })
             # Basic authentication is established with authentication=(username, password).
             if authentication is not None:
+                authentication = tuple(encode_utf8(x) for x in authentication)
                 request.add_header("Authorization", "Basic %s" %
-                    base64.encodestring('%s:%s' % authentication))
+                    decode_utf8(base64.b64encode(b'%s:%s' % authentication)))
             return urlopen(request)
         except UrllibHTTPError as e:
             if e.code == 301: raise HTTP301Redirect(src=e, url=url)
