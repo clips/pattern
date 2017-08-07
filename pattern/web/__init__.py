@@ -453,7 +453,13 @@ class URL(object):
         """
         s = self.parts[QUERY].items()
         s = dict((bytestring(k), v if v is not None else "") for k, v in s)
-        s = urlencode(s)
+        if sys.version > "3":
+            # Python 3
+            s = urlencode(s)
+        else:
+            # Python 2: urlencode() expects byte strings
+            t = {key : value.encode("utf-8") if isinstance(value, str) else value for key, value in s.items()}
+            s = urlencode(t).decode("utf-8")
         return s
 
     def __getattr__(self, k):
@@ -692,7 +698,7 @@ class Stream(list):
             If a delimiter is encountered, calls Stream.parse() on the packet.
         """
         packets = []
-        self.buffer += self.socket.read(bytes)
+        self.buffer += self.socket.read(bytes).decode("utf-8")
         self.buffer  = self.buffer.split(self.delimiter, 1)
         while len(self.buffer) > 1:
             data = self.buffer[0]
