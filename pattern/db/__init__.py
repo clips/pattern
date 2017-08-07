@@ -13,7 +13,7 @@ from __future__ import division
 
 from builtins import str, bytes, int, chr
 from builtins import map, zip, filter
-from builtins import object, range
+from builtins import object, range, next
 
 import os
 import sys
@@ -694,18 +694,17 @@ class Database(object):
         if commit is not False:
             self._connection.commit()
         return self.RowsIterator(cursor)
-        
-    class RowsIterator:
+
+    class RowsIterator(object):
         """ Iterator over the rows returned from Database.execute().
         """
         def __init__(self, cursor):
             self._cursor = cursor
-        def next(self):
-            return next(self.__iter__())
+            self._iter = iter(self._cursor.fetchall())
+        def __next__(self):
+            return next(self._iter)
         def __iter__(self):
-            for row in (hasattr(self._cursor, "__iter__") and self._cursor or self._cursor.fetchall()):
-                yield row
-            self._cursor.close()
+            return self
         def __del__(self):
             self._cursor.close()
         
