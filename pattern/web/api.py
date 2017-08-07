@@ -6,6 +6,7 @@
 # Bing, Flickr and ProductsWiki use licenses shared among all Pattern users.
 
 from __future__ import unicode_literals
+from builtins import dict
 
 license = {}
 license["Google"] = \
