@@ -12,6 +12,7 @@ from pattern.graph import commonsense
 
 from builtins import str, bytes, int, dict
 from builtins import map, zip, filter
+from builtins import object, range
 
 #---------------------------------------------------------------------------------------------------
 
