@@ -244,7 +244,7 @@ class Word(object):
 
     # Word.string and unicode(Word) are Unicode strings.
     # repr(Word) is a Python string (with Unicode characters encoded).
-    def __unicode__(self):
+    def __str__(self):
         return self.string
     def __repr__(self):
         return "Word(%s)" % repr("%s/%s" % (
@@ -501,7 +501,7 @@ class Chunk(object):
     @property
     def string(self):
         return u" ".join(word.string for word in self.words)
-    def __unicode__(self):
+    def __str__(self):
         return self.string
     def __repr__(self):
         return "Chunk(%s)" %  repr("%s/%s%s%s") % (
@@ -1052,7 +1052,7 @@ class Sentence(object):
     @property
     def string(self):
         return u" ".join(word.string for word in self)
-    def __unicode__(self):
+    def __str__(self):
         return self.string
     def __repr__(self):
         return "Sentence(%s)" % repr(" ".join(["/".join(word.tags) for word in self.words]))
@@ -1189,7 +1189,7 @@ class Text(list):
     def string(self):
         return u"\n".join(sentence.string for sentence in self)
         
-    def __unicode__(self):
+    def __str__(self):
         return self.string
         
     #def __repr__(self):
