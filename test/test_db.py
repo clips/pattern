@@ -6,7 +6,7 @@ from __future__ import division
 
 from builtins import str, bytes, int
 from builtins import map, zip, filter
-from builtins import object, range
+from builtins import object, range, next
 
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import datetime
