@@ -15,6 +15,7 @@ from __future__ import with_statement
 from builtins import str, bytes, int
 from builtins import map, zip, filter
 from builtins import object, range
+from builtins import chr
 
 from io import open
 
@@ -131,12 +132,12 @@ def decode_entities(string):
         hash, hex, name = match.group(1), match.group(2), match.group(3)
         if hash == "#" or name.isdigit():
             if hex == "":
-                return unichr(int(name))                 # "&#38;" => "&"
+                return chr(int(name))                 # "&#38;" => "&"
             if hex.lower() == "x":
-                return unichr(int("0x" + name, 16))      # "&#x0026;" = > "&"
+                return chr(int("0x" + name, 16))      # "&#x0026;" = > "&"
         else:
             cp = htmlentitydefs.name2codepoint.get(name) # "&amp;" => "&"
-            return unichr(cp) if cp else match.group()   # "&foo;" => "&foo;"
+            return chr(cp) if cp else match.group()   # "&foo;" => "&foo;"
     if isinstance(string, str):
         return RE_UNICODE.subn(replace_entity, string)[0]
     return string
@@ -726,8 +727,12 @@ class HTTPError(Exception):
         return "HTTPError(status=%s)" % repr(self.status)
 
 def _HTTPErrorSubclass(status):
-    return type("HTTP%sError" % status.split(" ")[0], (HTTPError,), {'__init__': \
-        lambda self, message="", traceback="": HTTPError.__init__(self, status, message, traceback)})
+    if sys.version > "3":
+        return type("HTTP%sError" % status.split(" ")[0], (HTTPError,), {'__init__': \
+            lambda self, message="", traceback="": HTTPError.__init__(self, status, message, traceback)})
+    else:
+        return type(b"HTTP%sError" % status.split(" ")[0].encode("utf-8"), (HTTPError,), {'__init__': \
+            lambda self, message="", traceback="": HTTPError.__init__(self, status, message, traceback)})
 
 HTTP200OK                  = _HTTPErrorSubclass("200 OK")
 HTTP400BadRequest          = _HTTPErrorSubclass("400 Bad Request")
