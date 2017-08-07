@@ -10,7 +10,7 @@ import unittest
 from pattern import graph
 from pattern.graph import commonsense
 
-from builtins import str, int, range
+from builtins import str, bytes, int, dict
 
 #---------------------------------------------------------------------------------------------------
 
