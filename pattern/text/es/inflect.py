@@ -22,6 +22,7 @@ from __future__ import division
 
 from builtins import str, bytes, dict, int
 from builtins import map, zip, filter
+from builtins import object, range
 
 import os
 import sys
