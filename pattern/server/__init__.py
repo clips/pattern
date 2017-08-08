@@ -12,10 +12,9 @@ from __future__ import unicode_literals
 from __future__ import division
 from __future__ import with_statement
 
-from builtins import str, bytes, int
+from builtins import str, bytes, dict, int, chr
 from builtins import map, zip, filter
 from builtins import object, range
-from builtins import chr
 
 from io import open
 
