@@ -11,6 +11,8 @@ from builtins import str, bytes, dict, int
 from builtins import map, zip, filter
 from builtins import object, range
 
+from io import open
+
 try:
     import hashlib; md5=hashlib.md5
 except:
@@ -104,8 +106,10 @@ class Cache(object):
         return self.get(k)
 
     def __setitem__(self, k, v):
-        f = open(self._hash(k), "w")
+        f = open(self._hash(k), "w", encoding = "utf-8")
         f.write(BOM_UTF8)
+        if isinstance(v, bytes):
+            v = v.decode("utf-8")
         f.write(v)
         f.close()
 
