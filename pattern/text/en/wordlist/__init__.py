@@ -10,6 +10,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 from __future__ import division
 
+from builtins import str, bytes, dict, int
 from builtins import map, zip, filter
 
 import os
