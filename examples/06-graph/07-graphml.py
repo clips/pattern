@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from builtins import str, bytes, dict, int
+from builtins import range
 
 import os, sys; sys.path.insert(0, os.path.join("..", ".."))
 
