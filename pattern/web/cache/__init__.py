@@ -108,8 +108,7 @@ class Cache(object):
     def __setitem__(self, k, v):
         f = open(self._hash(k), "w", encoding = "utf-8")
         f.write(BOM_UTF8)
-        if isinstance(v, bytes):
-            v = v.decode("utf-8")
+        v = decode_utf8(v)
         f.write(v)
         f.close()
 
