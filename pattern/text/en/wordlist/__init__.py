@@ -12,6 +12,7 @@ from __future__ import division
 
 from builtins import str, bytes, dict, int
 from builtins import map, zip, filter
+from builtins import object, range
 
 import os
 from io import open
@@ -21,7 +22,7 @@ try:
 except:
     MODULE = ""
 
-class Wordlist:
+class Wordlist(object):
     
     def __init__(self, name, data=[]):
         """ Lazy read-only list of words.
