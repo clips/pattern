@@ -411,8 +411,8 @@ class Model(object):
         return self._path
 
     @classmethod
-    def load(self, lexicon={}, path=""):
-        return Model(lexicon, path)
+    def load(self, path="", lexicon={}):
+        return Model(path, lexicon)
 
     def save(self, path, final=True):
         self._classifier._data["model_unknown"] = self.unknown

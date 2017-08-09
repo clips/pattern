@@ -129,7 +129,7 @@ m.save(f, final=True)
 print("loading model...")
 
 f = os.path.join(os.path.dirname(__file__), "en-model.slp")
-lexicon.model = Model.load(lexicon, f)
+lexicon.model = Model.load(f, lexicon)
 
 # To test the accuracy of the language model,
 # we can compare a tagged corpus to the predicted tags.
