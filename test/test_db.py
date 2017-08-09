@@ -664,9 +664,9 @@ class _TestQuery(object):
     def _query(self, *args, **kwargs):
         """ Returns a pattern.db.Query object on a mock Table and Database.
         """
-        class Database:
+        class Database(object):
             escape, relations = lambda self, v: db._escape(v), []
-        class Table:
+        class Table(object):
             name, fields, db = "persons", ["id", "name", "age", "sex"], Database()
         return db.Query(Table(), *args, **kwargs)
         

@@ -23,7 +23,7 @@ class TestUtilityFunctions(unittest.TestCase):
 
     def test_deepcopy(self):
         # Object with a copy() method are responsible for deep-copying themselves.
-        class MyObject:
+        class MyObject(object):
             def __init__(self, i):
                 self.i = i
             def copy(self):
