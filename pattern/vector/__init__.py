@@ -2285,7 +2285,7 @@ class Classifier(object):
     def load(cls, path):
         """ Loads the classifier from a gzipped pickle file.
         """
-        f = gzip.GzipFile(path, "rb")
+        f = gzip.GzipFile(path, "r")
         self = pickle.loads(f.read())
         self._on_load(path) # Initialize subclass (e.g., SVM).
         self.test = self._test
