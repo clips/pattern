@@ -261,9 +261,9 @@ def words(string, filter=lambda w: w.strip("'").isalnum(), punctuation=PUNCTUATI
         Common punctuation marks are stripped from words.
     """
     string = decode_utf8(string)
-    string = re.sub(r"([a-z|A-Z])'(m|s|ve|re|ll|d)", u"\\1 <QUOTE/>\\2", string)
-    string = re.sub(r"(c|d|gl|j|l|m|n|s|t|un)'([a-z|A-Z])", u"\\1<QUOTE/> \\2", string)
-    words = (w.strip(punctuation).replace(u"<QUOTE/>", "'", 1) for w in string.split())
+    string = re.sub(r"([a-z|A-Z])'(m|s|ve|re|ll|d)", "\\1 <QUOTE/>\\2", string)
+    string = re.sub(r"(c|d|gl|j|l|m|n|s|t|un)'([a-z|A-Z])", "\\1<QUOTE/> \\2", string)
+    words = (w.strip(punctuation).replace("<QUOTE/>", "'", 1) for w in string.split())
     words = (w for w in words if filter is None or filter(w) is not False)
     words = [w for w in words if w]
     return words
