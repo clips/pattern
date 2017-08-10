@@ -25,13 +25,13 @@ License
 Installation
 ------------
 
-Pattern is written for Python 2.7. There is no support for Python 3, yet. To install Pattern so that it is available in all your scripts, unzip the download and from the command line do:
+Pattern supports Python 2.7 and Python 3.6+. To install Pattern so that it is available in all your scripts, unzip the download and from the command line do:
 ```bash
 cd pattern-2.6
 python setup.py install
 ```
 
-If you have pip, you can automatically download and install from the PyPi repository:
+If you have pip, you can automatically download and install from the [PyPI repository](https://pypi.python.org/pypi/Pattern):
 ```bash
 pip install pattern
 ```
@@ -53,7 +53,7 @@ from pattern.en import parsetree
 Example
 -------
 
-This example trains a classifier on adjectives mined from Twitter. First, tweets that contain hashtag #win or #fail are collected. For example: "$20 tip off a sweet little old lady today #win". The word part-of-speech tags are then parsed, keeping only adjectives. Each tweet is transformed to a vector, a dictionary of adjective → count items, labeled `WIN` or `FAIL`. The classifier uses the vectors to learn which other tweets look more like  `WIN` or more like `FAIL`.
+This example trains a classifier on adjectives mined from Twitter using Python 3. First, tweets that contain hashtag #win or #fail are collected. For example: "$20 tip off a sweet little old lady today #win". The word part-of-speech tags are then parsed, keeping only adjectives. Each tweet is transformed to a vector, a dictionary of adjective → count items, labeled `WIN` or `FAIL`. The classifier uses the vectors to learn which other tweets look more like  `WIN` or more like `FAIL`.
 
 ```python
 from pattern.web    import Twitter
@@ -72,8 +72,8 @@ for i in range(1, 3):
         if v:
             knn.train(v, type=p)
 
-print knn.classify('sweet potato burger')
-print knn.classify('stupid autocorrect')
+print(knn.classify('sweet potato burger'))
+print(knn.classify('stupid autocorrect'))
 ```
 
 Documentation
@@ -109,9 +109,7 @@ Pattern is bundled with the following data sets, algorithms and Python packages:
 - **LIBSVM**, Chih-Chung Chang & Chih-Jen Lin
 - **LIBLINEAR**, Rong-En Fan et al.
 - **NetworkX centrality**, Aric Hagberg, Dan Schult & Pieter Swart
-- **PyWordNet**, Oliver Steele
 - **spelling corrector**, Peter Norvig
-- **WordNet**, Christiane Fellbaum et al.
 
 Acknowledgements
 ----------------
