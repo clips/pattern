@@ -118,7 +118,7 @@ GREMLINS = set([
 
 def fix(s, ignore=""):
     """ Returns a Unicode string that fixes common encoding problems (Latin-1, Windows-1252).
-        For example: fix("clichÃ©") => u"cliché".
+        For example: fix("clichÃ©") => "cliché".
     """
     # http://blog.luminoso.com/2012/08/20/fix-unicode-mistakes-with-python/
     if not isinstance(s, str):
@@ -149,7 +149,7 @@ def fix(s, ignore=""):
     u = u.replace("\n", "\n ")
     u = u.split(" ")
     # Revert words that have the replacement character,
-    # i.e., fix("cliché") should not return u"clich�".
+    # i.e., fix("cliché") should not return "clich�".
     for i, (w1, w2) in enumerate(zip(s.split(" "), u)):
         if "\ufffd" in w2: # �
             u[i] = w1
