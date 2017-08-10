@@ -520,7 +520,7 @@ class TestSearchEngine(unittest.TestCase):
         self._test_search_engine("Google",       *self.api["Google"])
     def test_search_yahoo(self):
         self._test_search_engine("Yahoo",        *self.api["Yahoo"])
-    @unittest.skip('Bing Search API changed')
+    @unittest.skip('Bing Search API has no free quota')
     def test_search_bing(self):
         self._test_search_engine("Bing",         *self.api["Bing"])
     def test_search_twitter(self):
@@ -639,7 +639,7 @@ class TestSearchEngine(unittest.TestCase):
 
     def test_yahoo_image_size(self):
         self._test_search_image_size("Yahoo",  *self.api["Yahoo"])
-    @unittest.skip('Bing Search API changed')
+    @unittest.skip('Bing Search API has no free quota')
     def test_bing_image_size(self):
         self._test_search_image_size("Bing",   *self.api["Bing"])
     def test_flickr_image_size(self):
