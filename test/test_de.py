@@ -63,20 +63,20 @@ class TestInflection(unittest.TestCase):
     def test_attributive(self):
         # Assert "groß" => "großer" (masculine, nominative), and others.
         for lemma, inflected, gender, role, article in (
-          (u"groß", u"großer", de.MALE,    de.SUBJECT,  None),
-          (u"groß", u"großen", de.MALE,    de.OBJECT,   None),
-          (u"groß", u"großem", de.MALE,    de.INDIRECT, None),
-          (u"groß", u"großen", de.MALE,    de.PROPERTY, None),
-          (u"groß", u"große",  de.FEMALE,  de.SUBJECT,  None),
-          (u"groß", u"große",  de.FEMALE,  de.OBJECT,   None),
-          (u"groß", u"großer", de.FEMALE,  de.INDIRECT, None),
-          (u"groß", u"großes", de.NEUTRAL, de.SUBJECT,  None),
-          (u"groß", u"großes", de.NEUTRAL, de.OBJECT,   None),
-          (u"groß", u"großen", de.MALE,    de.PROPERTY, "mein"),
-          (u"groß", u"großen", de.FEMALE,  de.PROPERTY, "jeder"),
-          (u"groß", u"großen", de.FEMALE,  de.PROPERTY, "mein"),
-          (u"groß", u"großen", de.PLURAL,  de.INDIRECT, "jede"),
-          (u"groß", u"großen", de.PLURAL,  de.PROPERTY, "jeder")):
+          ("groß", "großer", de.MALE,    de.SUBJECT,  None),
+          ("groß", "großen", de.MALE,    de.OBJECT,   None),
+          ("groß", "großem", de.MALE,    de.INDIRECT, None),
+          ("groß", "großen", de.MALE,    de.PROPERTY, None),
+          ("groß", "große",  de.FEMALE,  de.SUBJECT,  None),
+          ("groß", "große",  de.FEMALE,  de.OBJECT,   None),
+          ("groß", "großer", de.FEMALE,  de.INDIRECT, None),
+          ("groß", "großes", de.NEUTRAL, de.SUBJECT,  None),
+          ("groß", "großes", de.NEUTRAL, de.OBJECT,   None),
+          ("groß", "großen", de.MALE,    de.PROPERTY, "mein"),
+          ("groß", "großen", de.FEMALE,  de.PROPERTY, "jeder"),
+          ("groß", "großen", de.FEMALE,  de.PROPERTY, "mein"),
+          ("groß", "großen", de.PLURAL,  de.INDIRECT, "jede"),
+          ("groß", "großen", de.PLURAL,  de.PROPERTY, "jeder")):
             v = de.attributive(lemma, gender, role, article)
             self.assertEqual(v, inflected)
         print("pattern.de.attributive()")
@@ -140,18 +140,18 @@ class TestInflection(unittest.TestCase):
           ("sein",  "sei",     (de.PRESENT, 2, de.SINGULAR, de.IMPERATIVE)),
           ("sein",  "seien",   (de.PRESENT, 1, de.PLURAL, de.IMPERATIVE)),
           ("sein",  "seid",    (de.PRESENT, 2, de.PLURAL, de.IMPERATIVE)),
-          ("sein", u"sei",     (de.PRESENT, 1, de.SINGULAR, de.SUBJUNCTIVE)),
-          ("sein", u"seiest",  (de.PRESENT, 2, de.SINGULAR, de.SUBJUNCTIVE)),
-          ("sein", u"sei",     (de.PRESENT, 3, de.SINGULAR, de.SUBJUNCTIVE)),
-          ("sein", u"seien",   (de.PRESENT, 1, de.PLURAL, de.SUBJUNCTIVE)),
-          ("sein", u"seiet",   (de.PRESENT, 2, de.PLURAL, de.SUBJUNCTIVE)),
-          ("sein", u"seien",   (de.PRESENT, 3, de.PLURAL, de.SUBJUNCTIVE)),
-          ("sein", u"wäre",    (de.PAST, 1, de.SINGULAR, de.SUBJUNCTIVE)),
-          ("sein", u"wärest",  (de.PAST, 2, de.SINGULAR, de.SUBJUNCTIVE)),
-          ("sein", u"wäre",    (de.PAST, 3, de.SINGULAR, de.SUBJUNCTIVE)),
-          ("sein", u"wären",   (de.PAST, 1, de.PLURAL, de.SUBJUNCTIVE)),
-          ("sein", u"wäret",   (de.PAST, 2, de.PLURAL, de.SUBJUNCTIVE)),
-          ("sein", u"wären",   (de.PAST, 3, de.PLURAL, de.SUBJUNCTIVE))):
+          ("sein", "sei",     (de.PRESENT, 1, de.SINGULAR, de.SUBJUNCTIVE)),
+          ("sein", "seiest",  (de.PRESENT, 2, de.SINGULAR, de.SUBJUNCTIVE)),
+          ("sein", "sei",     (de.PRESENT, 3, de.SINGULAR, de.SUBJUNCTIVE)),
+          ("sein", "seien",   (de.PRESENT, 1, de.PLURAL, de.SUBJUNCTIVE)),
+          ("sein", "seiet",   (de.PRESENT, 2, de.PLURAL, de.SUBJUNCTIVE)),
+          ("sein", "seien",   (de.PRESENT, 3, de.PLURAL, de.SUBJUNCTIVE)),
+          ("sein", "wäre",    (de.PAST, 1, de.SINGULAR, de.SUBJUNCTIVE)),
+          ("sein", "wärest",  (de.PAST, 2, de.SINGULAR, de.SUBJUNCTIVE)),
+          ("sein", "wäre",    (de.PAST, 3, de.SINGULAR, de.SUBJUNCTIVE)),
+          ("sein", "wären",   (de.PAST, 1, de.PLURAL, de.SUBJUNCTIVE)),
+          ("sein", "wäret",   (de.PAST, 2, de.PLURAL, de.SUBJUNCTIVE)),
+          ("sein", "wären",   (de.PAST, 3, de.PLURAL, de.SUBJUNCTIVE))):
             self.assertEqual(de.conjugate(v1, tense), v2)
         print("pattern.de.conjugate()")
 
@@ -162,7 +162,7 @@ class TestInflection(unittest.TestCase):
             "sein", "bin", "bist", "ist", "sind", "seid", "seiend", 
             "war", "warst", "waren", "wart", "gewesen", 
             "sei", "seien", "seiest", "seiet", 
-            u"wäre", u"wärest", u"wären", u"wäret"
+            "wäre", "wärest", "wären", "wäret"
         ])
         print("pattern.de.inflect.lexeme()")
 
@@ -181,30 +181,30 @@ class TestParser(unittest.TestCase):
         
     def test_find_lemmata(self):
         # Assert lemmata for nouns, adjectives and verbs.
-        v = de.parser.find_lemmata([["Ich", "PRP"], ["sage", "VB"], [u"schöne", "JJ"], [u"Dinge", "NNS"]])
+        v = de.parser.find_lemmata([["Ich", "PRP"], ["sage", "VB"], ["schöne", "JJ"], ["Dinge", "NNS"]])
         self.assertEqual(v, [
             ["Ich", "PRP", "ich"], 
             ["sage", "VB", "sagen"], 
-            [u"schöne", "JJ", u"schön"], 
+            ["schöne", "JJ", "schön"],
             ["Dinge", "NNS", "ding"]])
         print("pattern.de.parser.find_lemmata()")
     
     def test_parse(self):
         # Assert parsed output with Penn Treebank II tags (slash-formatted).
         # 1) "der große Hund" is a noun phrase, "auf der Matte" is a prepositional noun phrase.
-        v = de.parser.parse(u"Der große Hund sitzt auf der Matte.")
+        v = de.parser.parse("Der große Hund sitzt auf der Matte.")
         self.assertEqual(v,
-            u"Der/DT/B-NP/O große/JJ/I-NP/O Hund/NN/I-NP/O " + \
-            u"sitzt/VB/B-VP/O " + \
-            u"auf/IN/B-PP/B-PNP der/DT/B-NP/I-PNP Matte/NN/I-NP/I-PNP ././O/O"
+            "Der/DT/B-NP/O große/JJ/I-NP/O Hund/NN/I-NP/O " + \
+            "sitzt/VB/B-VP/O " + \
+            "auf/IN/B-PP/B-PNP der/DT/B-NP/I-PNP Matte/NN/I-NP/I-PNP ././O/O"
         )
         # 2) "große" and "sitzt" lemmata are "groß" and "sitzen".
         # Note how articles are problematic ("der" can be male subject but also plural possessive).
-        v = de.parser.parse(u"Der große Hund sitzt auf der Matte.", lemmata=True)
+        v = de.parser.parse("Der große Hund sitzt auf der Matte.", lemmata=True)
         self.assertEqual(v,
-            u"Der/DT/B-NP/O/der große/JJ/I-NP/O/groß Hund/NN/I-NP/O/hund " + \
-            u"sitzt/VB/B-VP/O/sitzen " + \
-            u"auf/IN/B-PP/B-PNP/auf der/DT/B-NP/I-PNP/der Matte/NN/I-NP/I-PNP/matte ././O/O/."
+            "Der/DT/B-NP/O/der große/JJ/I-NP/O/groß Hund/NN/I-NP/O/hund " + \
+            "sitzt/VB/B-VP/O/sitzen " + \
+            "auf/IN/B-PP/B-PNP/auf der/DT/B-NP/I-PNP/der Matte/NN/I-NP/I-PNP/matte ././O/O/."
         )
         # 3) Assert the accuracy of the German tagger.
         i, n = 0, 0

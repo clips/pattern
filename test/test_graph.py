@@ -31,7 +31,7 @@ class TestUtilityFunctions(unittest.TestCase):
         # Assert deep copy for different types.
         for o1 in (
           None, True, False, 
-          "a", u"a", 
+          "a",
           1, 1.0, int(1), complex(1),
           list([1]), tuple([1]), set([1]), frozenset([1]),
           dict(a=1), {frozenset(["a"]):1}, {MyObject(1):1}, 
@@ -85,7 +85,7 @@ class TestNode(unittest.TestCase):
         self.assertTrue(n.fill          == None)
         self.assertTrue(n.stroke        == (0,0,0,1))
         self.assertTrue(n.strokewidth   == 1)
-        self.assertTrue(n.text.string   == u"a")
+        self.assertTrue(n.text.string   == "a")
         self.assertTrue(n.text.width    == 85)
         self.assertTrue(n.text.fill     == (0,0,0,1))
         self.assertTrue(n.text.fontsize == 11)

@@ -535,8 +535,8 @@ class TestParser(unittest.TestCase):
         self.assertTrue(isinstance(en.parse("ø ü", tokenize=False, tags=False, chunks=False), str))
         self.assertTrue(isinstance(en.parse("o u", encoding="ascii"), str))
         # 6) Assert optional parameters (i.e., setting all to False).
-        self.assertEqual(en.parse("ø ü.", tokenize=True,  tags=False, chunks=False), u"ø ü .")
-        self.assertEqual(en.parse("ø ü.", tokenize=False, tags=False, chunks=False), u"ø ü.")
+        self.assertEqual(en.parse("ø ü.", tokenize=True,  tags=False, chunks=False), "ø ü .")
+        self.assertEqual(en.parse("ø ü.", tokenize=False, tags=False, chunks=False), "ø ü.")
         # 7) Assert the accuracy of the English tagger.
         i, n = 0, 0
         for corpus, a in (("tagged-en-wsj.txt", (0.968, 0.945)), ("tagged-en-oanc.txt", (0.929, 0.932))):
@@ -1016,8 +1016,8 @@ class TestWordNet(unittest.TestCase):
 
     def test_normalize(self):
         # Assert normalization of simple diacritics (WordNet does not store diacritics).
-        self.assertEqual(en.wordnet.normalize(u"cliché"), "cliche")
-        self.assertEqual(en.wordnet.normalize(u"façade"), "facade")
+        self.assertEqual(en.wordnet.normalize("cliché"), "cliche")
+        self.assertEqual(en.wordnet.normalize("façade"), "facade")
         print("pattern.en.wordnet.normalize()")
 
     def test_version(self):

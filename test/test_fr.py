@@ -29,7 +29,7 @@ class TestInflection(unittest.TestCase):
         pass
         
     def test_predicative(self):
-        # Assert the accuracy of the predicative algorithm ("belles" => "beau").
+        # Assert the accuracy of the predicative algorithm ("belles" => "bea").
         from pattern.db import Datasheet
         i, n = 0, 0
         for pred, attr, tag in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-fr-lexique.csv")):
@@ -65,68 +65,68 @@ class TestInflection(unittest.TestCase):
     def test_conjugate(self):
         # Assert different tenses with different conjugations.
         for (v1, v2, tense) in (
-          (u"être", u"être",      fr.INFINITIVE),
-          (u"être", u"suis",     (fr.PRESENT, 1, fr.SINGULAR)),
-          (u"être", u"es",       (fr.PRESENT, 2, fr.SINGULAR)),
-          (u"être", u"est",      (fr.PRESENT, 3, fr.SINGULAR)),
-          (u"être", u"sommes",   (fr.PRESENT, 1, fr.PLURAL)),
-          (u"être", u"êtes",     (fr.PRESENT, 2, fr.PLURAL)),
-          (u"être", u"sont",     (fr.PRESENT, 3, fr.PLURAL)),
-          (u"être", u"étant",    (fr.PRESENT + fr.PARTICIPLE)),
-          (u"être", u"été",      (fr.PAST + fr.PARTICIPLE)),
-          (u"être", u"étais",    (fr.IMPERFECT, 1, fr.SINGULAR)),
-          (u"être", u"étais",    (fr.IMPERFECT, 2, fr.SINGULAR)),
-          (u"être", u"était",    (fr.IMPERFECT, 3, fr.SINGULAR)),
-          (u"être", u"étions",   (fr.IMPERFECT, 1, fr.PLURAL)),
-          (u"être", u"étiez",    (fr.IMPERFECT, 2, fr.PLURAL)),
-          (u"être", u"étaient",  (fr.IMPERFECT, 3, fr.PLURAL)),
-          (u"être", u"fus",      (fr.PRETERITE, 1, fr.SINGULAR)),
-          (u"être", u"fus",      (fr.PRETERITE, 2, fr.SINGULAR)),
-          (u"être", u"fut",      (fr.PRETERITE, 3, fr.SINGULAR)),
-          (u"être", u"fûmes",    (fr.PRETERITE, 1, fr.PLURAL)),
-          (u"être", u"fûtes",    (fr.PRETERITE, 2, fr.PLURAL)),
-          (u"être", u"furent",   (fr.PRETERITE, 3, fr.PLURAL)),
-          (u"être", u"serais",   (fr.CONDITIONAL, 1, fr.SINGULAR)),
-          (u"être", u"serais",   (fr.CONDITIONAL, 2, fr.SINGULAR)),
-          (u"être", u"serait",   (fr.CONDITIONAL, 3, fr.SINGULAR)),
-          (u"être", u"serions",  (fr.CONDITIONAL, 1, fr.PLURAL)),
-          (u"être", u"seriez",   (fr.CONDITIONAL, 2, fr.PLURAL)),
-          (u"être", u"seraient", (fr.CONDITIONAL, 3, fr.PLURAL)),
-          (u"être", u"serai",    (fr.FUTURE, 1, fr.SINGULAR)),
-          (u"être", u"seras",    (fr.FUTURE, 2, fr.SINGULAR)),
-          (u"être", u"sera",     (fr.FUTURE, 3, fr.SINGULAR)),
-          (u"être", u"serons",   (fr.FUTURE, 1, fr.PLURAL)),
-          (u"être", u"serez",    (fr.FUTURE, 2, fr.PLURAL)),
-          (u"être", u"seront",   (fr.FUTURE, 3, fr.PLURAL)),
-          (u"être", u"sois",     (fr.PRESENT, 2, fr.SINGULAR, fr.IMPERATIVE)),
-          (u"être", u"soyons",   (fr.PRESENT, 1, fr.PLURAL, fr.IMPERATIVE)),
-          (u"être", u"soyez",    (fr.PRESENT, 2, fr.PLURAL, fr.IMPERATIVE)),
-          (u"être", u"sois",     (fr.PRESENT, 1, fr.SINGULAR, fr.SUBJUNCTIVE)),
-          (u"être", u"sois",     (fr.PRESENT, 2, fr.SINGULAR, fr.SUBJUNCTIVE)),
-          (u"être", u"soit",     (fr.PRESENT, 3, fr.SINGULAR, fr.SUBJUNCTIVE)),
-          (u"être", u"soyons",   (fr.PRESENT, 1, fr.PLURAL, fr.SUBJUNCTIVE)),
-          (u"être", u"soyez",    (fr.PRESENT, 2, fr.PLURAL, fr.SUBJUNCTIVE)),
-          (u"être", u"soient",   (fr.PRESENT, 3, fr.PLURAL, fr.SUBJUNCTIVE)),
-          (u"être", u"fusse",    (fr.PAST, 1, fr.SINGULAR, fr.SUBJUNCTIVE)),
-          (u"être", u"fusses",   (fr.PAST, 2, fr.SINGULAR, fr.SUBJUNCTIVE)),
-          (u"être", u"fût",      (fr.PAST, 3, fr.SINGULAR, fr.SUBJUNCTIVE)),
-          (u"être", u"fussions", (fr.PAST, 1, fr.PLURAL, fr.SUBJUNCTIVE)),
-          (u"être", u"fussiez",  (fr.PAST, 2, fr.PLURAL, fr.SUBJUNCTIVE)),
-          (u"être", u"fussent",  (fr.PAST, 3, fr.PLURAL, fr.SUBJUNCTIVE))):
+          ("être", "être",      fr.INFINITIVE),
+          ("être", "suis",     (fr.PRESENT, 1, fr.SINGULAR)),
+          ("être", "es",       (fr.PRESENT, 2, fr.SINGULAR)),
+          ("être", "est",      (fr.PRESENT, 3, fr.SINGULAR)),
+          ("être", "sommes",   (fr.PRESENT, 1, fr.PLURAL)),
+          ("être", "êtes",     (fr.PRESENT, 2, fr.PLURAL)),
+          ("être", "sont",     (fr.PRESENT, 3, fr.PLURAL)),
+          ("être", "étant",    (fr.PRESENT + fr.PARTICIPLE)),
+          ("être", "été",      (fr.PAST + fr.PARTICIPLE)),
+          ("être", "étais",    (fr.IMPERFECT, 1, fr.SINGULAR)),
+          ("être", "étais",    (fr.IMPERFECT, 2, fr.SINGULAR)),
+          ("être", "était",    (fr.IMPERFECT, 3, fr.SINGULAR)),
+          ("être", "étions",   (fr.IMPERFECT, 1, fr.PLURAL)),
+          ("être", "étiez",    (fr.IMPERFECT, 2, fr.PLURAL)),
+          ("être", "étaient",  (fr.IMPERFECT, 3, fr.PLURAL)),
+          ("être", "fus",      (fr.PRETERITE, 1, fr.SINGULAR)),
+          ("être", "fus",      (fr.PRETERITE, 2, fr.SINGULAR)),
+          ("être", "fut",      (fr.PRETERITE, 3, fr.SINGULAR)),
+          ("être", "fûmes",    (fr.PRETERITE, 1, fr.PLURAL)),
+          ("être", "fûtes",    (fr.PRETERITE, 2, fr.PLURAL)),
+          ("être", "furent",   (fr.PRETERITE, 3, fr.PLURAL)),
+          ("être", "serais",   (fr.CONDITIONAL, 1, fr.SINGULAR)),
+          ("être", "serais",   (fr.CONDITIONAL, 2, fr.SINGULAR)),
+          ("être", "serait",   (fr.CONDITIONAL, 3, fr.SINGULAR)),
+          ("être", "serions",  (fr.CONDITIONAL, 1, fr.PLURAL)),
+          ("être", "seriez",   (fr.CONDITIONAL, 2, fr.PLURAL)),
+          ("être", "seraient", (fr.CONDITIONAL, 3, fr.PLURAL)),
+          ("être", "serai",    (fr.FUTURE, 1, fr.SINGULAR)),
+          ("être", "seras",    (fr.FUTURE, 2, fr.SINGULAR)),
+          ("être", "sera",     (fr.FUTURE, 3, fr.SINGULAR)),
+          ("être", "serons",   (fr.FUTURE, 1, fr.PLURAL)),
+          ("être", "serez",    (fr.FUTURE, 2, fr.PLURAL)),
+          ("être", "seront",   (fr.FUTURE, 3, fr.PLURAL)),
+          ("être", "sois",     (fr.PRESENT, 2, fr.SINGULAR, fr.IMPERATIVE)),
+          ("être", "soyons",   (fr.PRESENT, 1, fr.PLURAL, fr.IMPERATIVE)),
+          ("être", "soyez",    (fr.PRESENT, 2, fr.PLURAL, fr.IMPERATIVE)),
+          ("être", "sois",     (fr.PRESENT, 1, fr.SINGULAR, fr.SUBJUNCTIVE)),
+          ("être", "sois",     (fr.PRESENT, 2, fr.SINGULAR, fr.SUBJUNCTIVE)),
+          ("être", "soit",     (fr.PRESENT, 3, fr.SINGULAR, fr.SUBJUNCTIVE)),
+          ("être", "soyons",   (fr.PRESENT, 1, fr.PLURAL, fr.SUBJUNCTIVE)),
+          ("être", "soyez",    (fr.PRESENT, 2, fr.PLURAL, fr.SUBJUNCTIVE)),
+          ("être", "soient",   (fr.PRESENT, 3, fr.PLURAL, fr.SUBJUNCTIVE)),
+          ("être", "fusse",    (fr.PAST, 1, fr.SINGULAR, fr.SUBJUNCTIVE)),
+          ("être", "fusses",   (fr.PAST, 2, fr.SINGULAR, fr.SUBJUNCTIVE)),
+          ("être", "fût",      (fr.PAST, 3, fr.SINGULAR, fr.SUBJUNCTIVE)),
+          ("être", "fussions", (fr.PAST, 1, fr.PLURAL, fr.SUBJUNCTIVE)),
+          ("être", "fussiez",  (fr.PAST, 2, fr.PLURAL, fr.SUBJUNCTIVE)),
+          ("être", "fussent",  (fr.PAST, 3, fr.PLURAL, fr.SUBJUNCTIVE))):
             self.assertEqual(fr.conjugate(v1, tense), v2)
         print("pattern.fr.conjugate()")
 
     def test_lexeme(self):
         # Assert all inflections of "être".
-        v = fr.lexeme(u"être")
+        v = fr.lexeme("être")
         self.assertEqual(v, [
-            u"être", u"suis", u"es", u"est", u"sommes", u"êtes", u"sont", u"étant", u"été", 
-            u"fus", u"fut", u"fûmes", u"fûtes", u"furent", 
-            u"étais", u"était", u"étions", u"étiez", u"étaient", 
-            u"serai", u"seras", u"sera", u"serons", u"serez", u"seront", 
-            u"serais", u"serait", u"serions", u"seriez", u"seraient", 
-            u"sois", u"soyons", u"soyez", u"soit", u"soient", 
-            u"fusse", u"fusses", u"fût", u"fussions", u"fussiez", u"fussent"
+            "être", "suis", "es", "est", "sommes", "êtes", "sont", "étant", "été",
+            "fus", "fut", "fûmes", "fûtes", "furent",
+            "étais", "était", "étions", "étiez", "étaient",
+            "serai", "seras", "sera", "serons", "serez", "seront",
+            "serais", "serait", "serions", "seriez", "seraient",
+            "sois", "soyons", "soyez", "soit", "soient",
+            "fusse", "fusses", "fût", "fussions", "fussiez", "fussent"
         ])
         print("pattern.fr.inflect.lexeme()")
 
@@ -149,14 +149,14 @@ class TestParser(unittest.TestCase):
     def test_find_lemmata(self):
         # Assert lemmata for nouns, adjectives, verbs and determiners.
         v = fr.parser.find_lemmata([
-            ["Les", "DT"], ["chats", "NNS"], ["noirs", "JJ"], ["s'", "PRP"], [u"étaient", "VB"], ["assis", "VB"],
+            ["Les", "DT"], ["chats", "NNS"], ["noirs", "JJ"], ["s'", "PRP"], ["étaient", "VB"], ["assis", "VB"],
             ["sur", "IN"], ["le", "DT"], ["tapis", "NN"]])
         self.assertEqual(v, [
             ["Les", "DT", "le"], 
             ["chats", "NNS", "chat"], 
             ["noirs", "JJ", "noir"], 
             ["s'", "PRP", "se"], 
-            [u"étaient", "VB", u"être"],
+            ["étaient", "VB", "être"],
             ["assis", "VB", "asseoir"],
             ["sur", "IN", "sur"], 
             ["le", "DT", "le"], 
@@ -166,11 +166,11 @@ class TestParser(unittest.TestCase):
     def test_parse(self):
         # Assert parsed output with Penn Treebank II tags (slash-formatted).
         # "le chat noir" is a noun phrase, "sur le tapis" is a prepositional noun phrase.
-        v = fr.parser.parse(u"Le chat noir s'était assis sur le tapis.")
+        v = fr.parser.parse("Le chat noir s'était assis sur le tapis.")
         self.assertEqual(v,
-            u"Le/DT/B-NP/O chat/NN/I-NP/O noir/JJ/I-NP/O " + \
-            u"s'/PRP/B-NP/O était/VB/B-VP/O assis/VBN/I-VP/O " + \
-            u"sur/IN/B-PP/B-PNP le/DT/B-NP/I-PNP tapis/NN/I-NP/I-PNP ././O/O"
+            "Le/DT/B-NP/O chat/NN/I-NP/O noir/JJ/I-NP/O " + \
+            "s'/PRP/B-NP/O était/VB/B-VP/O assis/VBN/I-VP/O " + \
+            "sur/IN/B-PP/B-PNP le/DT/B-NP/I-PNP tapis/NN/I-NP/I-PNP ././O/O"
         )
         # Assert the accuracy of the French tagger.
         f = fr.penntreebank2universal
@@ -197,7 +197,7 @@ class TestParser(unittest.TestCase):
 
     def test_command_line(self):
         # Assert parsed output from the command-line (example from the documentation).
-        p = ["python", "-m", "pattern.fr", "-s", u"Le chat noir.", "-OTCRL"]
+        p = ["python", "-m", "pattern.fr", "-s", "Le chat noir.", "-OTCRL"]
         p = subprocess.Popen(p, stdout=subprocess.PIPE)
         p.wait()
         v = p.stdout.read().decode('utf-8')

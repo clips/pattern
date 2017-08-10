@@ -91,7 +91,7 @@ class TestUnicode(unittest.TestCase):
         
     def test_string(self):
         # Assert string() with default for "" and None.
-        for v, s in ((True, u"True"), (1, u"1"), (1.0, u"1.0"), ("", u"????"), (None, u"????")):
+        for v, s in ((True, "True"), (1, "1"), (1.0, "1.0"), ("", "????"), (None, "????")):
             self.assertEqual(db.string(v, default="????"), s)
         print("pattern.db.string()")
 
@@ -120,7 +120,7 @@ class TestEntities(unittest.TestCase):
           ("&#38;", "&"),
           ("&amp;", "&"),
           ("&#x0026;", "&"),
-          ("&#160;", u"\xa0"),
+          ("&#160;", "\xa0"),
           ("&foo;", "&foo;")):
             self.assertEqual(db.decode_entities(a), b)
         print("pattern.db.decode_entities()")
@@ -305,7 +305,6 @@ class _TestDatabase(object):
         # Assert str, unicode, int, long, float, bool and None field values.
         for v, s in (
           (  "a", "'a'"),
-          ( u"a", "'a'"),
           (    1, "1"),
           (   int(1), "1"),
           (  1.0, "1.0"),
@@ -545,7 +544,7 @@ class _TestTable(object):
         
     def test_insert_update_delete(self):
         # Assert Table.insert().
-        v1 = self.db.persons.insert(name=u"Kurt Gödel")
+        v1 = self.db.persons.insert(name="Kurt Gödel")
         v2 = self.db.products.insert(name="pizza", price=10.0)
         v3 = self.db.products.insert({"name":"garlic bread", "price":3.0})
         v4 = self.db.orders.insert(person=v1, product=v3)
@@ -553,8 +552,8 @@ class _TestTable(object):
         self.assertEqual(v2, 1)
         self.assertEqual(v3, 2)
         self.assertEqual(v4, 1)
-        self.assertEqual(self.db.persons.rows(),  [(1, u"Kurt Gödel")])
-        self.assertEqual(self.db.products.rows(), [(1, u"pizza", 10.0), (2, u"garlic bread", 3.0)])
+        self.assertEqual(self.db.persons.rows(),  [(1, "Kurt Gödel")])
+        self.assertEqual(self.db.products.rows(), [(1, "pizza", 10.0), (2, "garlic bread", 3.0)])
         self.assertEqual(self.db.orders.rows(),   [(1, 1, 2)])
         self.assertEqual(self.db.orders.count(),  1)
         self.assertEqual(self.db.products.xml.replace(' extra="auto_increment"', ""),
@@ -581,7 +580,7 @@ class _TestTable(object):
         self.db.products.update(2, price=4.0)
         self.db.products.update(2, {"price":4.5})
         self.db.products.update(db.all(db.filter("name", "pi*")), name="deeppan pizza")
-        self.assertEqual(self.db.products.rows(), [(1, u"deeppan pizza", 10.0), (2, u"garlic bread", 4.5)])
+        self.assertEqual(self.db.products.rows(), [(1, "deeppan pizza", 10.0), (2, "garlic bread", 4.5)])
         # Assert Table.delete().
         self.db.products.delete(db.all(db.filter("name", "deeppan*")))
         self.db.products.delete(db.ALL)
@@ -594,13 +593,13 @@ class _TestTable(object):
     
     def test_filter(self):
         # Assert Table.filter().
-        self.db.persons.insert(name=u"Kurt Gödel")
-        self.db.persons.insert(name=u"M. C. Escher")
-        self.db.persons.insert(name=u"Johann Sebastian Bach")
+        self.db.persons.insert(name="Kurt Gödel")
+        self.db.persons.insert(name="M. C. Escher")
+        self.db.persons.insert(name="Johann Sebastian Bach")
         f = self.db.persons.filter
-        self.assertEqual(f(("name",), id=1),        [(u"Kurt Gödel",)])
-        self.assertEqual(f(db.ALL, id=(1,2)),       [(1, u"Kurt Gödel"), (2, u"M. C. Escher")])
-        self.assertEqual(f({"id":(1,2)}),           [(1, u"Kurt Gödel"), (2, u"M. C. Escher")])
+        self.assertEqual(f(("name",), id=1),        [("Kurt Gödel",)])
+        self.assertEqual(f(db.ALL, id=(1,2)),       [(1, "Kurt Gödel"), (2, "M. C. Escher")])
+        self.assertEqual(f({"id":(1,2)}),           [(1, "Kurt Gödel"), (2, "M. C. Escher")])
         self.assertEqual(f("id", name="Johan*"),    [(3,)])
         self.assertEqual(f("id", name=("J*","K*")), [(1,), (3,)])
         print("pattern.db.Table.filter()")
@@ -684,30 +683,30 @@ class _TestQuery(object):
         q = self.db.persons.search(fields=["name"])
         self.assertTrue(isinstance(q, db.Query))
         for args, sql in (
-          (("name", u"Kurt%",    db.LIKE),    u"name like 'Kurt%'"),
-          (("name", u"Kurt*",    "="),        u"name like 'Kurt%'"),
-          (("name", u"*Gödel",   "=="),       u"name like '%Gödel'"),
-          (("name", u"Kurt*",    "!="),       u"name not like 'Kurt%'"),
-          (("name", u"Kurt*",    "<>"),       u"name not like 'Kurt%'"),
-          (("name", u"Gödel",    "i="),       u"name like 'Gödel'"),     # case-insensitive search
-          (("id",   (1, 2),      db.IN),      u"id in (1,2)"),
-          (("id",   (1, 2),      "="),        u"id in (1,2)"),
-          (("id",   (1, 2),      "=="),       u"id in (1,2)"),
-          (("id",   (1, 2),      "!="),       u"id not in (1,2)"),
-          (("id",   (1, 2),      "<>"),       u"id not in (1,2)"),
-          (("id",   (1, 3),      db.BETWEEN), u"id between 1 and 3"),
-          (("id",   (1, 3),      ":"),        u"id between 1 and 3"),
-          (("name", ("G","K*"),  "="),        u"(name='G' or name like 'K%')"),
-          (("name", None,        "="),        u"name is null"),
-          (("name", None,        "=="),       u"name is null"),
-          (("name", None,        "!="),       u"name is not null"),
-          (("name", None,        "<>"),       u"name is not null"),
-          (("name", q,           "="),        u"name in (select persons.name from `persons`)"),
-          (("name", q,           "=="),       u"name in (select persons.name from `persons`)"),
-          (("name", q,           "!="),       u"name not in (select persons.name from `persons`)"),
-          (("name", q,           "<>"),       u"name not in (select persons.name from `persons`)"),
-          (("name", u"Gödel",    "="),        u"name='Gödel'"),
-          (("id",   1,           ">"),        u"id>1")):
+          (("name", "Kurt%",    db.LIKE),    "name like 'Kurt%'"),
+          (("name", "Kurt*",    "="),        "name like 'Kurt%'"),
+          (("name", "*Gödel",   "=="),       "name like '%Gödel'"),
+          (("name", "Kurt*",    "!="),       "name not like 'Kurt%'"),
+          (("name", "Kurt*",    "<>"),       "name not like 'Kurt%'"),
+          (("name", "Gödel",    "i="),       "name like 'Gödel'"),     # case-insensitive search
+          (("id",   (1, 2),      db.IN),      "id in (1,2)"),
+          (("id",   (1, 2),      "="),        "id in (1,2)"),
+          (("id",   (1, 2),      "=="),       "id in (1,2)"),
+          (("id",   (1, 2),      "!="),       "id not in (1,2)"),
+          (("id",   (1, 2),      "<>"),       "id not in (1,2)"),
+          (("id",   (1, 3),      db.BETWEEN), "id between 1 and 3"),
+          (("id",   (1, 3),      ":"),        "id between 1 and 3"),
+          (("name", ("G","K*"),  "="),        "(name='G' or name like 'K%')"),
+          (("name", None,        "="),        "name is null"),
+          (("name", None,        "=="),       "name is null"),
+          (("name", None,        "!="),       "name is not null"),
+          (("name", None,        "<>"),       "name is not null"),
+          (("name", q,           "="),        "name in (select persons.name from `persons`)"),
+          (("name", q,           "=="),       "name in (select persons.name from `persons`)"),
+          (("name", q,           "!="),       "name not in (select persons.name from `persons`)"),
+          (("name", q,           "<>"),       "name not in (select persons.name from `persons`)"),
+          (("name", "Gödel",    "="),        "name='Gödel'"),
+          (("id",   1,           ">"),        "id>1")):
             self.assertEqual(db.cmp(*args), sql)
         print("pattern.db.cmp()")
         
@@ -725,8 +724,8 @@ class _TestQuery(object):
         self.assertEqual(f4.SQL(), "((name='garlic bread') or (name='pizza' and price<10)) and date>'%s'" % yesterday)
         # Assert subquery in filter chain.
         q = self._query(fields=["name"])
-        f = db.any(("name", u"Gödel"), ("name", q))
-        self.assertEqual(f.SQL(), u"name='Gödel' or name in (select persons.name from `persons`)")
+        f = db.any(("name", "Gödel"), ("name", q))
+        self.assertEqual(f.SQL(), "name='Gödel' or name in (select persons.name from `persons`)")
         print("pattern.db.FilterChain")
         
     def test_query(self):
@@ -734,48 +733,48 @@ class _TestQuery(object):
         for kwargs, sql, rows in (
           (dict(fields=db.ALL),
             "select persons.* from `persons`;",
-            [(1, u"john", 30, 2), 
-             (2, u"jack", 20, 2), 
-             (3, u"jane", 30, 1)]),
+            [(1, "john", 30, 2),
+             (2, "jack", 20, 2),
+             (3, "jane", 30, 1)]),
           (dict(fields=db.ALL, range=(0, 2)),
             "select persons.* from `persons` limit 0, 2;",
-            [(1, u"john", 30, 2), 
-             (2, u"jack", 20, 2)]),
+            [(1, "john", 30, 2),
+             (2, "jack", 20, 2)]),
           (dict(fields=db.ALL, filters=[("age", 30, "<")]),
             "select persons.* from `persons` where persons.age<30;",
-            [(2, u"jack", 20, 2)]),
+            [(2, "jack", 20, 2)]),
           (dict(fields=db.ALL, filters=db.any(("age", 30, "<"), ("name", "john"))),
             "select persons.* from `persons` where persons.age<30 or persons.name='john';",
-            [(1, u"john", 30, 2), 
-             (2, u"jack", 20, 2)]),
+            [(1, "john", 30, 2),
+             (2, "jack", 20, 2)]),
           (dict(fields=["name", "gender.name"], relations=[db.relation("gender", "id", "gender")]),
             "select persons.name, gender.name from `persons` left join `gender` on persons.gender=gender.id;",
-            [(u"john", u"male"), 
-             (u"jack", u"male"), 
-             (u"jane", u"female")]),
+            [("john", "male"),
+             ("jack", "male"),
+             ("jane", "female")]),
           (dict(fields=["name","age"], sort="name"),
             "select persons.name, persons.age from `persons` order by persons.name asc;",
-            [(u"jack", 20), 
-             (u"jane", 30),
-             (u"john", 30)]),
+            [("jack", 20),
+             ("jane", 30),
+             ("john", 30)]),
           (dict(fields=["name","age"], sort=1, order=db.DESCENDING),
             "select persons.name, persons.age from `persons` order by persons.name desc;",
-            [(u"john", 30),
-             (u"jane", 30),
-             (u"jack", 20)]),
+            [("john", 30),
+             ("jane", 30),
+             ("jack", 20)]),
           (dict(fields=["age","name"], sort=["age","name"], order=[db.ASCENDING, db.DESCENDING]),
             "select persons.age, persons.name from `persons` order by persons.age asc, persons.name desc;",
-            [(20, u"jack"),
-             (30, u"john"),
-             (30, u"jane")]),
+            [(20, "jack"),
+             (30, "john"),
+             (30, "jane")]),
           (dict(fields=["age","name"], group="age", function=db.CONCATENATE),
             "select persons.age, group_concat(persons.name) from `persons` group by persons.age;",
-            [(20, u"jack"), 
-             (30, u"john,jane")]),
+            [(20, "jack"),
+             (30, "john,jane")]),
           (dict(fields=["id", "name","age"], group="age", function=[db.COUNT, db.CONCATENATE]),
             "select count(persons.id), group_concat(persons.name), persons.age from `persons` group by persons.age;",
-            [(1, u"jack", 20), 
-             (2, u"john,jane", 30)])):
+            [(1, "jack", 20),
+             (2, "john,jane", 30)])):
             v = self.db.persons.search(**kwargs)
             v.xml
             self.assertEqual(v.SQL(), sql)
@@ -787,9 +786,9 @@ class _TestQuery(object):
         self.assertEqual(v.SQL(), 
             "select persons.name, gender.name as gender from `persons` left join `gender` on persons.gender=gender.id;")
         self.assertEqual(v.rows(),
-            [(u'john', u'male'), 
-             (u'jack', u'male'), 
-             (u'jane', u'female')])
+            [('john', 'male'),
+             ('jack', 'male'),
+             ('jane', 'female')])
         print("pattern.db.Table.search()")
         print("pattern.db.Table.Query")
              
@@ -892,8 +891,8 @@ class TestCSV(unittest.TestCase):
         # Create test table.
         self.csv = db.CSV(
             rows=[
-                [u"Schrödinger", "cat", True, 3, db.date(2009, 11, 3)],
-                [u"Hofstadter", "labrador", True, 5, db.date(2007, 8, 4)]
+                ["Schrödinger", "cat", True, 3, db.date(2009, 11, 3)],
+                ["Hofstadter", "labrador", True, 5, db.date(2007, 8, 4)]
             ],
             fields=[
                 ["name", db.STRING],
@@ -918,8 +917,8 @@ class TestCSV(unittest.TestCase):
         v.save("test.csv", headers=True)
         v = db.CSV.load("test.csv", headers=True)
         self.assertTrue(isinstance(v, list))
-        self.assertTrue(v.headers[0] == (u"name", db.STRING))
-        self.assertTrue(v[0] == [u"Schrödinger", "cat", True, 3, db.date(2009, 11, 3)])
+        self.assertTrue(v.headers[0] == ("name", db.STRING))
+        self.assertTrue(v[0] == ["Schrödinger", "cat", True, 3, db.date(2009, 11, 3)])
         os.unlink("test.csv")
         print("pattern.db.CSV")
         print("pattern.db.CSV.save()")
@@ -933,9 +932,9 @@ class TestCSV(unittest.TestCase):
         v = db.decode_utf8(v.lstrip(codecs.BOM_UTF8))
         v = v.replace("\r\n", "\n")
         self.assertEqual(v, 
-            u'"name (STRING)","type (STRING)","tail (BOOLEAN)","age (INTEGER)","date (DATE)"\n'
-            u'"Schrödinger","cat","True","3","2009-11-03 00:00:00"\n'
-            u'"Hofstadter","labrador","True","5","2007-08-04 00:00:00"'
+            '"name (STRING)","type (STRING)","tail (BOOLEAN)","age (INTEGER)","date (DATE)"\n'
+            '"Schrödinger","cat","True","3","2009-11-03 00:00:00"\n'
+            '"Hofstadter","labrador","True","5","2007-08-04 00:00:00"'
         )
         os.unlink("test.csv")
 
@@ -1001,7 +1000,7 @@ class TestDatasheet(unittest.TestCase):
     
     def test_fields(self):
         # Assert Datasheet with incomplete headers.
-        v = db.Datasheet(rows=[[u"Schrödinger", "cat"]], fields=[("name", db.STRING)])
+        v = db.Datasheet(rows=[["Schrödinger", "cat"]], fields=[("name", db.STRING)])
         self.assertEqual(v.fields, [("name", db.STRING)])
         # Assert (None, None) for missing headers.
         v.columns.swap(0,1)
@@ -1016,7 +1015,7 @@ class TestDatasheet(unittest.TestCase):
         v.columns.append([3], field=("age", db.INTEGER))
         self.assertEqual(v.fields, [("name", db.STRING), (None, None), ("age", db.INTEGER)])
         # Assert column by name.
-        self.assertEqual(v.name, [u"Schrödinger"])
+        self.assertEqual(v.name, ["Schrödinger"])
         print("pattern.db.Datasheet.fields")
     
     def test_group(self):
@@ -1028,8 +1027,8 @@ class TestDatasheet(unittest.TestCase):
         v5 = v1.group(0, function=db.CONCATENATE, key=lambda j: j>0)
         self.assertEqual(v2, [[1,2,"a"], [0,0,"d"]])
         self.assertEqual(v3, [[1,4,"c"], [0,0,"d"]])
-        self.assertEqual(v4, [[1,3,u"a,b,c"], [0,1,u"d"]])
-        self.assertEqual(v5, [[True,u"2,3,4",u"a,b,c"], [False,u"0",u"d"]])
+        self.assertEqual(v4, [[1,3,"a,b,c"], [0,1,"d"]])
+        self.assertEqual(v5, [[True,"2,3,4","a,b,c"], [False,"0","d"]])
         print("pattern.db.Datasheet.group()")
         
     def test_slice(self):
@@ -1066,10 +1065,10 @@ class TestDatasheet(unittest.TestCase):
         
     def test_json(self):
         # Assert JSON output.
-        v = db.Datasheet(rows=[[u"Schrödinger", 3], [u"Hofstadter", 5]])
-        self.assertEqual(v.json, u'[["Schrödinger", 3], ["Hofstadter", 5]]')
+        v = db.Datasheet(rows=[["Schrödinger", 3], ["Hofstadter", 5]])
+        self.assertEqual(v.json, '[["Schrödinger", 3], ["Hofstadter", 5]]')
         # Assert JSON output with headers.
-        v = db.Datasheet(rows=[[u"Schrödinger", 3], [u"Hofstadter",  5]], 
+        v = db.Datasheet(rows=[["Schrödinger", 3], ["Hofstadter",  5]],
                        fields=[("name", db.STRING), ("age", db.INT)])
         random.seed(0)
         w = db.json.loads(v.json)

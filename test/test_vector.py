@@ -44,12 +44,12 @@ class TestUnicode(unittest.TestCase):
     def setUp(self):
         # Test data with different (or wrong) encodings.
         self.strings = (
-            u"ünîcøde",
-            u"ünîcøde".encode("utf-16"),
-            u"ünîcøde".encode("latin-1"),
-            u"ünîcøde".encode("windows-1252"),
+            "ünîcøde",
+            "ünîcøde".encode("utf-16"),
+            "ünîcøde".encode("latin-1"),
+            "ünîcøde".encode("windows-1252"),
              "ünîcøde",
-            u"אוניקאָד"
+            "אוניקאָד"
         )
         
     def test_decode_utf8(self):
@@ -215,7 +215,7 @@ class TestDocument(unittest.TestCase):
         v2 = vector.stem(s, stemmer=vector.PORTER)
         v3 = vector.stem(s, stemmer=vector.LEMMA)
         v4 = vector.stem(s, stemmer=lambda w: "wolf*")
-        v5 = vector.stem(Word(None, s, lemma=u"wolf*"), stemmer=vector.LEMMA)
+        v5 = vector.stem(Word(None, s, lemma="wolf*"), stemmer=vector.LEMMA)
         v6 = vector.stem(Word(None, s, type="NNS"), stemmer=vector.LEMMA)
         self.assertEqual(v1, "wolves")
         self.assertEqual(v2, "wolv")
@@ -357,10 +357,10 @@ class TestModel(unittest.TestCase):
     def setUp(self):
         # Test model.
         self.model = vector.Model(documents=(
-            vector.Document("cats purr", name="cat1", type=u"cåt"),
-            vector.Document("cats meow", name="cat2", type=u"cåt"),
-            vector.Document("dogs howl", name="dog1", type=u"døg"),
-            vector.Document("dogs bark", name="dog2", type=u"døg")
+            vector.Document("cats purr", name="cat1", type="cåt"),
+            vector.Document("cats meow", name="cat2", type="cåt"),
+            vector.Document("dogs howl", name="dog1", type="døg"),
+            vector.Document("dogs bark", name="dog2", type="døg")
         ))
         
     def test_model(self):
@@ -402,24 +402,24 @@ class TestModel(unittest.TestCase):
         # Assert Orange and Weka ARFF export formats.
         for format, src in (
             (vector.ORANGE, 
-                u"bark\tcats\tdogs\thowl\tmeow\tpurr\tm#name\tc#type\n"
-                u"0\t0.3466\t0\t0\t0\t0.6931\tcat1\tcåt\n"
-                u"0\t0.3466\t0\t0\t0.6931\t0\tcat2\tcåt\n"
-                u"0\t0\t0.3466\t0.6931\t0\t0\tdog1\tdøg\n"
-                u"0.6931\t0\t0.3466\t0\t0\t0\tdog2\tdøg"),
+                "bark\tcats\tdogs\thowl\tmeow\tpurr\tm#name\tc#type\n"
+                "0\t0.3466\t0\t0\t0\t0.6931\tcat1\tcåt\n"
+                "0\t0.3466\t0\t0\t0.6931\t0\tcat2\tcåt\n"
+                "0\t0\t0.3466\t0.6931\t0\t0\tdog1\tdøg\n"
+                "0.6931\t0\t0.3466\t0\t0\t0\tdog2\tdøg"),
             (vector.WEKA,
-                u"@RELATION 5885744\n"
-                u"@ATTRIBUTE bark NUMERIC\n"
-                u"@ATTRIBUTE cats NUMERIC\n"
-                u"@ATTRIBUTE dogs NUMERIC\n"
-                u"@ATTRIBUTE howl NUMERIC\n"
-                u"@ATTRIBUTE meow NUMERIC\n"
-                u"@ATTRIBUTE purr NUMERIC\n"
-                u"@ATTRIBUTE class {døg,cåt}\n"
-                u"@DATA\n0,0.3466,0,0,0,0.6931,cåt\n"
-                u"0,0.3466,0,0,0.6931,0,cåt\n"
-                u"0,0,0.3466,0.6931,0,0,døg\n"
-                u"0.6931,0,0.3466,0,0,0,døg")):
+                "@RELATION 5885744\n"
+                "@ATTRIBUTE bark NUMERIC\n"
+                "@ATTRIBUTE cats NUMERIC\n"
+                "@ATTRIBUTE dogs NUMERIC\n"
+                "@ATTRIBUTE howl NUMERIC\n"
+                "@ATTRIBUTE meow NUMERIC\n"
+                "@ATTRIBUTE purr NUMERIC\n"
+                "@ATTRIBUTE class {døg,cåt}\n"
+                "@DATA\n0,0.3466,0,0,0,0.6931,cåt\n"
+                "0,0.3466,0,0,0.6931,0,cåt\n"
+                "0,0,0.3466,0.6931,0,0,døg\n"
+                "0.6931,0,0.3466,0,0,0,døg")):
             self.model.export("test_%s.txt" % format, format=format)
             v = codecs.open("test_%s.txt" % format, encoding="utf-8").read()
             v = v.replace("\r\n", "\n")
