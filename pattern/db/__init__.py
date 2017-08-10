@@ -783,12 +783,6 @@ class Database(object):
             self.tables[table].database = None
             self.tables.pop(table)
             self.execute("drop table `%s`;" % table, commit=True)
-            # The SQLite version in Python 2.5 has a drop/recreate table bug.
-            # Reconnect. This means that any reference to Database.connection 
-            # is no longer valid after Database.drop(). 
-            if self.type == SQLITE and sys.version < "2.6":
-                self.disconnect()
-                self.connect()
                 
     remove = drop
         
