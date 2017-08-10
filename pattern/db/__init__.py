@@ -45,10 +45,7 @@ BOM_UTF8 = BOM_UTF8.decode("utf-8")
 
 from html.entities import name2codepoint
 
-try: # Python 2.4 vs 2.5+
-    from email.Utils import parsedate_tz, mktime_tz
-except ImportError:
-    from email.utils import parsedate_tz, mktime_tz
+from email.utils import parsedate_tz, mktime_tz
     
 try: 
     MODULE = os.path.dirname(os.path.realpath(__file__))
