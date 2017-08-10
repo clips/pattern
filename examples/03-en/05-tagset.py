@@ -108,6 +108,6 @@ for sentence in parsetree("i gatti neri che sono la mia", language="it", tagset=
 from pattern.text import language
 
 print("")
-print(language(u"the cat sat on the mat"))              # ("en", 1.00)
-print(language(u"de kat zat op de mat"))                # ("nl", 0.80)
-print(language(u"le chat s'était assis sur le tapis"))  # ("fr", 0.86)
+print(language("the cat sat on the mat"))              # ("en", 1.00)
+print(language("de kat zat op de mat"))                # ("nl", 0.80)
+print(language("le chat s'était assis sur le tapis"))  # ("fr", 0.86)

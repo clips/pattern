@@ -52,8 +52,8 @@ if not "customers" in db:
         field("address", STRING(200))
     )
     db.create("customers", schema)
-    db.customers.append(name=u"Schrödinger")  # Unicode is supported.
-    db.customers.append(name=u"Hofstadter")
+    db.customers.append(name="Schrödinger")  # Unicode is supported.
+    db.customers.append(name="Hofstadter")
 
 # ORDERS
 # Create the orders table if it doesn't exist yet and add data.

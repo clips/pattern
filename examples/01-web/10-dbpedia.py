@@ -140,7 +140,7 @@ print("")
 
 # 6) People whose first name includes "Édouard"
 
-q = u"""
+q = """
 prefix dbo: <http://dbpedia.org/ontology/>
 prefix foaf: <http://xmlns.com/foaf/0.1/>
 select ?person ?name where { 
