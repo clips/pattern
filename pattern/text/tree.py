@@ -500,7 +500,7 @@ class Chunk(object):
     # repr(Chunk) is a Python string (with Unicode characters encoded).
     @property
     def string(self):
-        return u" ".join(word.string for word in self.words)
+        return " ".join(word.string for word in self.words)
     def __str__(self):
         return self.string
     def __repr__(self):
@@ -1051,7 +1051,7 @@ class Sentence(object):
     # repr(Sentence) is a Python strings (with Unicode characters encoded).
     @property
     def string(self):
-        return u" ".join(word.string for word in self)
+        return " ".join(word.string for word in self)
     def __str__(self):
         return self.string
     def __repr__(self):
@@ -1187,7 +1187,7 @@ class Text(list):
     # Text.string and unicode(Text) are Unicode strings.
     @property
     def string(self):
-        return u"\n".join(sentence.string for sentence in self)
+        return "\n".join(sentence.string for sentence in self)
         
     def __str__(self):
         return self.string
@@ -1436,10 +1436,10 @@ class XMLNode(object):
 
 # The structure of linked anchor chunks and PNP attachments
 # is collected from _parse_token() calls.
-_anchors     = {} # {u'A1': [[u'eat', u'VBP', u'B-VP', 'O', u'VP-1', 'O', u'eat', 'O']]}
-_attachments = {} # {u'A1': [[[u'with', u'IN', u'B-PP', 'B-PNP', u'PP', 'O', u'with', 'O'], 
-                  #           [u'a', u'DT', u'B-NP', 'I-PNP', u'NP', 'O', u'a', 'O'], 
-                  #           [u'fork', u'NN', u'I-NP', 'I-PNP', u'NP', 'O', u'fork', 'O']]]}
+_anchors     = {} # {'A1': [['eat', 'VBP', 'B-VP', 'O', 'VP-1', 'O', 'eat', 'O']]}
+_attachments = {} # {'A1': [[['with', 'IN', 'B-PP', 'B-PNP', 'PP', 'O', 'with', 'O'],
+                  #           ['a', 'DT', 'B-NP', 'I-PNP', 'NP', 'O', 'a', 'O'],
+                  #           ['fork', 'NN', 'I-NP', 'I-PNP', 'NP', 'O', 'fork', 'O']]]}
 
 # This is a fallback if for some reason we fail to import MBSP.TokenString,
 # e.g., when tree.py is part of another project.

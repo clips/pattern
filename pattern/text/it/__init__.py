@@ -77,11 +77,11 @@ sys.path.pop(0)
 #--- PARSER ----------------------------------------------------------------------------------------
 
 _subordinating_conjunctions = set((
-    "che"   , u"perché", "sebbene", 
-    "come"  , u"poiché", "senza", 
-    "se"    , u"perciò", "salvo", 
-    "mentre", u"finché", "dopo",
-    "quando", u"benché"
+    "che"   , "perché", "sebbene",
+    "come"  , "poiché", "senza",
+    "se"    , "perciò", "salvo",
+    "mentre", "finché", "dopo",
+    "quando", "benché"
 ))
 
 def penntreebank2universal(token, tag):
@@ -142,7 +142,7 @@ class Parser(_Parser):
         #return _Parser.find_tokens(self, tokens, **kwargs)
         
         s = _Parser.find_tokens(self, tokens, **kwargs)
-        s = [s.replace(" &contraction ;", u"'").replace("XXX -", "-") for s in s]
+        s = [s.replace(" &contraction ;", "'").replace("XXX -", "-") for s in s]
         return s
 
     def find_lemmata(self, tokens, **kwargs):

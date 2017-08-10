@@ -96,9 +96,9 @@ def penntreebank2universal(token, tag):
     return _penntreebank2universal(token, tag)
 
 ABBREVIATIONS = set((
-    u"av.", u"boul.", u"C.-B.", u"c.-à-d.", u"ex.", u"éd.", u"fig.", u"I.-P.-E.", u"J.-C.", 
-    u"Ltee.", u"Ltée.", u"M.", u"Me.","Mlle.", u"Mlles.", u"MM.", u"N.-B.", u"N.-É.", u"p.", 
-    u"S.B.E.", u"Ste.", u"T.-N.", u"t.a.b."
+    "av.", "boul.", "C.-B.", "c.-à-d.", "ex.", "éd.", "fig.", "I.-P.-E.", "J.-C.",
+    "Ltee.", "Ltée.", "M.", "Me.","Mlle.", "Mlles.", "MM.", "N.-B.", "N.-É.", "p.",
+    "S.B.E.", "Ste.", "T.-N.", "t.a.b."
 ))
 
 # While contractions in English are optional, 
@@ -117,7 +117,7 @@ replacements = {
   "lorsqu'": "lorsqu' ",
   "puisqu'": "puisqu' ",
     # Same rule for Unicode apostrophe, see also Parser.find_tokens():
-    r"(l|c|d|j|m|n|qu|s|t|jusqu|lorsqu|puisqu)’": u"\\1&rsquo; "
+    r"(l|c|d|j|m|n|qu|s|t|jusqu|lorsqu|puisqu)’": "\\1&rsquo; "
 }
 replacements.update(((k.upper(), v.upper()) for k, v in list(replacements.items())))
 
@@ -129,7 +129,7 @@ def find_lemmata(tokens):
         word, pos, lemma = token[0], token[1], token[0]
         if pos.startswith(("DT", "PR", "WP")):
             lemma = singularize(word, pos=pos)
-        if pos.startswith(("RB", "IN")) and (word.endswith(("'", u"’")) or word == "du"):
+        if pos.startswith(("RB", "IN")) and (word.endswith(("'", "’")) or word == "du"):
             lemma = singularize(word, pos=pos)
         if pos.startswith(("JJ",)):
             lemma = predicative(word)
@@ -146,7 +146,7 @@ class Parser(_Parser):
         kwargs.setdefault("abbreviations", ABBREVIATIONS)
         kwargs.setdefault("replace", replacements)
         s = _Parser.find_tokens(self, tokens, **kwargs)
-        s = [s.replace("&rsquo ;", u"’") if isinstance(s, str) else s for s in s]
+        s = [s.replace("&rsquo ;", "’") if isinstance(s, str) else s for s in s]
         return s
 
     def find_lemmata(self, tokens, **kwargs):
@@ -167,12 +167,12 @@ class Sentiment(_Sentiment):
         if not path:
             for w, pos in list(dict.items(self)):
                 w0 = w
-                if not w.endswith((u"à", u"è", u"é", u"ê", u"ï")):
-                    w = w.replace(u"à", "a")
-                    w = w.replace(u"é", "e")
-                    w = w.replace(u"è", "e")
-                    w = w.replace(u"ê", "e")
-                    w = w.replace(u"ï", "i")
+                if not w.endswith(("à", "è", "é", "ê", "ï")):
+                    w = w.replace("à", "a")
+                    w = w.replace("é", "e")
+                    w = w.replace("è", "e")
+                    w = w.replace("ê", "e")
+                    w = w.replace("ï", "i")
                 if w != w0:
                     for pos, (p, s, i) in pos.items():
                         self.annotate(w, pos, p, s, i)

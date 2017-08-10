@@ -99,7 +99,7 @@ def singularize(word, pos=NOUN, custom={}):
         if w == "tes": return "ton"
         if w == "nos": return "notre"
         if w == "vos": return "votre"
-        if w.endswith(("'", u"’")):
+        if w.endswith(("'", "’")):
             return w[:-1] + "e"
     if w.endswith("nnes"):  # parisiennes => parisien
         return w[:-3]
@@ -122,28 +122,28 @@ def singularize(word, pos=NOUN, custom={}):
 #### VERB CONJUGATION ##############################################################################
 
 verb_inflections = [
-    ("issaient", "ir"   ), ("eassions",  "er"   ), ("dissions", "dre" ), (u"çassions", "cer"  ),
+    ("issaient", "ir"   ), ("eassions",  "er"   ), ("dissions", "dre" ), ("çassions", "cer"  ),
     ( "eraient", "er"   ), ( "assions",  "er"   ), ( "issions", "ir"  ), (  "iraient", "ir"   ),
     ( "isaient", "ire"  ), ( "geaient",  "ger"  ), ( "eassent", "er"  ), (  "geasses", "ger"  ),
     ( "eassiez", "er"   ), ( "dissiez",  "dre"  ), ( "dissent", "dre" ), (  "endrons", "endre"),
     ( "endriez", "endre"), ( "endrais",  "endre"), (  "erions", "er"  ), (   "assent", "er"   ),
     (  "assiez", "er"   ), (  "raient",  "re"   ), (  "issent", "ir"  ), (   "issiez", "ir"   ),
     (  "irions", "ir"   ), (  "issons",  "ir"   ), (  "issant", "ir"  ), (   "issait", "ir"   ),
-    (  "issais", "ir"   ), (   "aient",  "er"   ), (  u"èrent", "er"  ), (    "erait", "er"   ),
+    (  "issais", "ir"   ), (   "aient",  "er"   ), (  "èrent", "er"  ), (    "erait", "er"   ),
     (   "eront", "er"   ), (   "erons",  "er"   ), (   "eriez", "er"  ), (    "erais", "er"   ),
     (   "asses", "er"   ), (   "rions",  "re"   ), (   "isses", "ir"  ), (    "irent", "ir"   ),
     (   "irait", "ir"   ), (   "irons",  "ir"   ), (   "iriez", "ir"  ), (    "irais", "ir"   ),
     (   "iront", "ir"   ), (   "issez",  "ir"   ), (    "ions", "er"  ), (     "erez", "er"   ),
-    (    "eras", "er"   ), (    "erai",  "er"   ), (    "asse", "er"  ), (    u"âtes", "er"   ),
-    (   u"âmes", "er"   ), (    "isse",  "ir"   ), (   u"îtes", "ir"  ), (    u"îmes", "ir"   ),
+    (    "eras", "er"   ), (    "erai",  "er"   ), (    "asse", "er"  ), (     "âtes", "er"   ),
+    (    "âmes", "er"   ), (    "isse",  "ir"   ), (    "îtes", "ir"  ), (     "îmes", "ir"   ),
     (    "irez", "ir"   ), (    "iras",  "ir"   ), (    "irai", "ir"  ), (     "ront", "re"   ),
     (     "iez", "er"   ), (     "ent",  "er"   ), (     "ais", "er"  ), (      "ons", "er"   ),
     (     "ait", "er"   ), (     "ant",  "er"   ), (     "era", "er"  ), (      "ira", "ir"   ),
     (      "es", "er"   ), (      "ez",  "er"   ), (      "as", "er"  ), (       "ai", "er"   ),
-    (     u"ât", "er"   ), (      "ds",  "dre"  ), (      "is", "ir"  ), (       "it", "ir"   ),
-    (     u"ît", "ir"   ), (     u"ïr", u"ïr"   ), (      "nd", "ndre"), (       "nu", "nir"  ),
-    (       "e", "er"   ), (      u"é",  "er"   ), (       "a", "er"  ), (        "t", "re"   ),
-    (       "s", "re"   ), (       "i",  "ir"   ), (      u"û", "ir"  ), (        "u", "re"   ),          
+    (      "ât", "er"   ), (      "ds",  "dre"  ), (      "is", "ir"  ), (       "it", "ir"   ),
+    (      "ît", "ir"   ), (      "ïr",  "ïr"   ), (      "nd", "ndre"), (       "nu", "nir"  ),
+    (       "e", "er"   ), (       "é",  "er"   ), (       "a", "er"  ), (        "t", "re"   ),
+    (       "s", "re"   ), (       "i",  "ir"   ), (       "û", "ir"  ), (        "u", "re"   ),
     (       "d", "dre"  )
 ]
 
@@ -182,7 +182,7 @@ class Verbs(_Verbs):
         v = verb.lower()
         b = v[:-2]
         if v.endswith("ir") and not \
-           v.endswith(("couvrir", "cueillir", u"découvrir", "offrir", "ouvrir", "souffrir")):
+           v.endswith(("couvrir", "cueillir", "découvrir", "offrir", "ouvrir", "souffrir")):
             # Regular inflection for verbs ending in -ir.
             # Some -ir verbs drop the last letter of the stem: dormir => je dors (not: je dormis).
             if v.endswith(("dormir", "mentir", "partir", "sentir", "servir", "sortir")):
@@ -191,13 +191,13 @@ class Verbs(_Verbs):
                 b0 = b + "i"
             return [v, 
                 b0+"s", b0+"s", b0+"t", b+"issons", b+"issez", b+"issent", b+"issant", b+"i",
-                b+"is", b+"is", b+"it", b+u"îmes", b+u"îtes", b+"irent",
+                b+"is", b+"is", b+"it", b+"îmes", b+"îtes", b+"irent",
                 b+"issais", b+"issais", b+"issait", b+"issions", b+"issiez", b+"issaient",
-                v+"ai", v+"as", v+"a", v+"ons", v+"ez", v+u"ont",            
+                v+"ai", v+"as", v+"a", v+"ons", v+"ez", v+"ont",
                 v+"ais", v+"ais", v+"ait", v+"ions", v+"iez", v+"aient",
                 b+"is", b+"issons", b+"issez",
                 b+"isse", b+"isses", b+"isse", b+"issions", b+"issiez", b+"issent",
-                b+"isse", b+"isses", b+u"ît", b+"issions", b+"issiez", b+"issent"
+                b+"isse", b+"isses", b+"ît", b+"issions", b+"issiez", b+"issent"
             ]
         elif v.endswith("re"):
             # Regular inflection for verbs ending in -re.
@@ -214,29 +214,29 @@ class Verbs(_Verbs):
                 b0, b1 = b, b[:-1]
             return [v, 
                 b0+"s", b0+"s", b0+"", b1+"ons", b1+"ez", b1+"ent", b1+"ant", b+"u",
-                b+"is", b+"is", b+"it", b1+u"îmes", b1+u"îtes", b1+"irent",
+                b+"is", b+"is", b+"it", b1+"îmes", b1+"îtes", b1+"irent",
                 b+"ais", b+"ais", b+"ait", b1+"ions", b1+"iez", b1+"aient",
                 b+"rai", b+"ras", b+"ra", b+"rons", b+"rez", b+"ront",            
                 b+"ais", b+"ais", b+"ait", b1+"ions", b1+"iez", b1+"aient",
                 b0+"s", b1+"ons", b1+"ez",
-                b+"e", b+"es", b+u"e", b1+"ions", b1+"iez", b1+"ent",
-                b+"isse", b+"isses", b+u"ît", b1+"issions", b1+"issiez", b1+"issent"
+                b+"e", b+"es", b+"e", b1+"ions", b1+"iez", b1+"ent",
+                b+"isse", b+"isses", b+"ît", b1+"issions", b1+"issiez", b1+"issent"
             ]
         else:
             # Regular inflection for verbs ending in -er.
             # If the stem ends in -g, use -ge before hard vowels -a and -o: manger => mangeons.
             # If the stem ends in -c, use -ç before hard vowels -a and -o: lancer => lançons.
-            e = v.endswith("ger") and u"e" or ""
-            c = v.endswith("cer") and b[:-1]+u"ç" or b
+            e = v.endswith("ger") and "e" or ""
+            c = v.endswith("cer") and b[:-1]+"ç" or b
             return [v, 
-                b+"e", b+"es", b+"e", c+e+"ons", b+"ez", b+"ent", c+e+"ant", b+u"é",
-                c+e+"ai", c+e+"as", c+e+"a", c+e+u"âmes", c+e+u"âtes", b+u"èrent",
+                b+"e", b+"es", b+"e", c+e+"ons", b+"ez", b+"ent", c+e+"ant", b+"é",
+                c+e+"ai", c+e+"as", c+e+"a", c+e+"âmes", c+e+"âtes", b+"èrent",
                 c+e+"ais", c+e+"ais", c+e+"ait", b+"ions", b+"iez", c+e+"aient",
-                v+"ai", v+u"as", v+"a", v+"ons", v+"ez", v+"ont",            
-                v+"ais", v+u"ais", v+"ait", v+"ions", v+"iez", v+"aient",
-                b+"e", c+e+u"ons", b+"ez",
-                b+"e", b+u"es", b+"e", b+"ions", b+"iez", b+"ent",
-                c+e+"asse", c+e+"asses", c+e+u"ât", c+e+"assions", c+e+"assiez", c+e+"assent"
+                v+"ai", v+"as", v+"a", v+"ons", v+"ez", v+"ont",
+                v+"ais", v+"ais", v+"ait", v+"ions", v+"iez", v+"aient",
+                b+"e", c+e+"ons", b+"ez",
+                b+"e", b+"es", b+"e", b+"ions", b+"iez", b+"ent",
+                c+e+"asse", c+e+"asses", c+e+"ât", c+e+"assions", c+e+"assiez", c+e+"assent"
             ]
 
 verbs = Verbs()
@@ -258,7 +258,7 @@ def predicative(adjective):
     w = adjective.lower()
     if w.endswith(("ais", "ois")):
         return w
-    if w.endswith((u"és", u"ée", u"ées")):
+    if w.endswith(("és", "ée", "ées")):
         return w.rstrip("es")
     if w.endswith(("que", "ques")):
         return w.rstrip("s")
@@ -284,7 +284,7 @@ def predicative(adjective):
         return w.rstrip("nes") + "n"
     if w.endswith(("igne", "ignes", "ingue", "ingues")):
         return w.rstrip("s")
-    if w.endswith((u"ène", u"ènes")):
+    if w.endswith(("ène", "ènes")):
         return w.rstrip("s")
     if w.endswith(("ns", "ne", "nes")):
         return w.rstrip("es")
@@ -294,7 +294,7 @@ def predicative(adjective):
         return w.rstrip("es") + "s"
     if w.endswith(("rice", "rices")):
         return w.rstrip("rices") + "eur"
-    if w.endswith(("iers", u"ière", u"ières")):
+    if w.endswith(("iers", "ière", "ières")):
         return w.rstrip("es")[:-3] + "ier"
     if w.endswith(("ette", "ettes")):
         return w.rstrip("tes") + "et"
