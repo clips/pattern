@@ -18,65 +18,12 @@ import sys
 from time import time
 from math import sqrt, floor, ceil, modf, exp, pi, log
 
-from collections import defaultdict, deque
+from collections import Counter, defaultdict, deque
 from itertools   import chain
 from operator    import itemgetter, lt, le
 from heapq       import nlargest
 from bisect      import bisect_right
 from random      import gauss
-
-#### COUNT #########################################################################################
-
-
-####################################################################################################
-# Simple implementation of Counter for Python 2.5 and 2.6.
-# See also: http://code.activestate.com/recipes/576611/
-
-#--- COUNTER ---------------------------------------------------------------------------------------
-
-class Counter(dict):
-    
-    def __init__(self, iterable=None, **kwargs):
-        self.update(iterable, **kwargs)
-        
-    def __missing__(self, k):
-        return 0
-        
-    def update(self, iterable=None, **kwargs):
-        """ Updates counter with the tallies from the given iterable, dictionary or Counter.
-        """
-        if kwargs:
-            self.update(kwargs)
-        if hasattr(iterable, "items"):
-            for k, v in iterable.items(): 
-                self[k] = self.get(k, 0) + v
-        elif hasattr(iterable, "__getitem__") \
-          or hasattr(iterable, "__iter__"):
-            for k in iterable: 
-                self[k] = self.get(k, 0) + 1
-                
-    def most_common(self, n=None):
-        """ Returns a list of the n most common (element, count)-tuples.
-        """
-        if n is None:
-            return sorted(self.items(), key=itemgetter(1), reverse=True)
-        return nlargest(n, self.items(), key=itemgetter(1))
-        
-    def copy(self):
-        return Counter(self)
-        
-    def __delitem__(self, k):
-        if k in self: 
-            dict.__delitem__(self, k)
-            
-    def __repr__(self):
-        return self.__class__.__name__ + "({%s})" % ", ".join("%r: %r" % e for e in self.most_common())
-
-try: 
-    # Import Counter from Python 2.7+ if possible.
-    from collections import Counter
-except:
-    pass
 
 #--- FREQUENCY DICT --------------------------------------------------------------------------------
 
