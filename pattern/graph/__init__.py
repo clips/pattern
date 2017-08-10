@@ -911,7 +911,7 @@ def floyd_warshall_all_pairs_distance(graph, heuristic=None, directed=False):
         Returns a dictionary of node id's, 
         each linking to a dictionary of node id's linking to path length.
     """
-    from collections import defaultdict # Requires Python 2.5+.
+    from collections import defaultdict
     g = graph.keys()
     d = defaultdict(lambda: defaultdict(lambda: 1e30)) # float('inf')
     p = defaultdict(dict) # Predecessors.
