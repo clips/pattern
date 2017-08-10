@@ -65,34 +65,11 @@ def encode_string(v, encoding="utf-8"):
         return v
     return bytes(v)
 
-#### IMAP4 SSL #####################################################################################
-# Fixes an issue in Python 2.5- with memory allocation.
-# See: http://bugs.python.org/issue1389051
+class IMAP4(imaplib.IMAP4):
+    pass
 
-if sys.version_info[:2] > (2, 5):
-    
-    class IMAP4(imaplib.IMAP4):
-        pass
-        
-    class IMAP4_SSL(imaplib.IMAP4_SSL):
-        pass
-        
-else:
-
-    class IMAP4(imaplib.IMAP4):
-        pass
-
-    class IMAP4_SSL(imaplib.IMAP4_SSL):
-        def read(self, size):
-            """Read 'size' bytes from remote."""
-            # sslobj.read() sometimes returns < size bytes
-            chunks = []
-            read = 0
-            while read < size:
-                data = self.sslobj.read(min(size-read, 16384))
-                read += len(data)
-                chunks.append(data)
-            return ''.join(chunks)
+class IMAP4_SSL(imaplib.IMAP4_SSL):
+    pass
 
 #### MAIL ##########################################################################################
 
