@@ -66,12 +66,7 @@ def _import_db(engine=SQLITE):
         import MySQLdb
         warnings.simplefilter("ignore", MySQLdb.Warning)
     if engine == SQLITE:
-        try:
-            # Python 2.5+
-            import sqlite3.dbapi2 as sqlite
-        except: 
-            # Python 2.4 with pysqlite2
-            import pysqlite2.dbapi2 as sqlite
+        import sqlite3.dbapi2 as sqlite
 
 def pd(*args):
     """ Returns the path to the parent directory of the script that calls pd() + given relative path.
