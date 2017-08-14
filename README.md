@@ -8,19 +8,35 @@ Pattern is a web mining module for Python. It has tools for:
  * Machine Learning: vector space model, clustering, classification (KNN, SVM, Perceptron)
  * Network Analysis: graph centrality and visualization.
 
-It is well documented and bundled with 50+ examples and 350+ unit tests. The source code is licensed under BSD and available from <http://www.clips.ua.ac.be/pages/pattern>.
+It is well documented, thoroughly tested with 350+ unit tests and comes bundled with 50+ examples. The source code is licensed under BSD and available from <http://www.clips.ua.ac.be/pages/pattern>.
 
-![Pattern example workflow](http://raw.githubusercontent.com/clips/pattern/master/docs/g/pattern_schema.gif)
+![Example workflow](http://raw.githubusercontent.com/clips/pattern/master/docs/g/pattern_schema.gif)
 
-Version
+Example
 -------
 
-2.6
+This example trains a classifier on adjectives mined from Twitter using Python 3. First, tweets that contain hashtag #win or #fail are collected. For example: *"$20 tip off a sweet little old lady today #win"*. The word part-of-speech tags are then parsed, keeping only adjectives. Each tweet is transformed to a vector, a dictionary of adjective → count items, labeled `WIN` or `FAIL`. The classifier uses the vectors to learn which other tweets look more like `WIN` or more like `FAIL`.
 
-License
--------
+```python
+from pattern.web    import Twitter
+from pattern.en     import tag
+from pattern.vector import KNN, count
 
-**BSD**, see `LICENSE.txt` for further details.
+twitter, knn = Twitter(), KNN()
+
+for i in range(1, 3):
+    for tweet in twitter.search('#win OR #fail', start=i, count=100):
+        s = tweet.text.lower()
+        p = '#win' in s and 'WIN' or 'FAIL'
+        v = tag(s)
+        v = [word for word, pos in v if pos == 'JJ'] # JJ = adjective
+        v = count(v) # {'sweet': 1}
+        if v:
+            knn.train(v, type=p)
+
+print(knn.classify('sweet potato burger'))
+print(knn.classify('stupid autocorrect'))
+```
 
 Installation
 ------------
@@ -50,36 +66,20 @@ import sys; if MODULE not in sys.path: sys.path.append(MODULE)
 from pattern.en import parsetree
 ```
 
-Example
--------
-
-This example trains a classifier on adjectives mined from Twitter using Python 3. First, tweets that contain hashtag #win or #fail are collected. For example: "$20 tip off a sweet little old lady today #win". The word part-of-speech tags are then parsed, keeping only adjectives. Each tweet is transformed to a vector, a dictionary of adjective → count items, labeled `WIN` or `FAIL`. The classifier uses the vectors to learn which other tweets look more like  `WIN` or more like `FAIL`.
-
-```python
-from pattern.web    import Twitter
-from pattern.en     import tag
-from pattern.vector import KNN, count
-
-twitter, knn = Twitter(), KNN()
-
-for i in range(1, 3):
-    for tweet in twitter.search('#win OR #fail', start=i, count=100):
-        s = tweet.text.lower()
-        p = '#win' in s and 'WIN' or 'FAIL'
-        v = tag(s)
-        v = [word for word, pos in v if pos == 'JJ'] # JJ = adjective
-        v = count(v) # {'sweet': 1}
-        if v:
-            knn.train(v, type=p)
-
-print(knn.classify('sweet potato burger'))
-print(knn.classify('stupid autocorrect'))
-```
-
 Documentation
 -------------
 
 For documentation and examples see the [user documentation](http://www.clips.ua.ac.be/pages/pattern). If you are a developer, go check out the [developer documentation](http://www.clips.ua.ac.be/pages/pattern-dev).
+
+Version
+-------
+
+2.6
+
+License
+-------
+
+**BSD**, see `LICENSE.txt` for further details.
 
 Reference
 ---------
