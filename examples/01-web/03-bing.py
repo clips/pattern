@@ -52,4 +52,3 @@ for result in request.value:
     print(result.text)
     print(result.url)
     print("")
-    

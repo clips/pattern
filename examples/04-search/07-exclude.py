@@ -49,4 +49,3 @@ for s in (
     print(s)
     print(imperative(s))
     print("")
-
