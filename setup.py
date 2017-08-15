@@ -98,6 +98,7 @@ setup(
     },
     py_modules = [
         "pattern.metrics",
+        "pattern.helpers",
         "pattern.text.search",
         "pattern.text.tree"
     ],
