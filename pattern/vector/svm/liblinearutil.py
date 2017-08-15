@@ -8,7 +8,8 @@ from builtins import str, bytes, int
 from builtins import object, range
 from builtins import map, zip, filter
 
-import os, sys
+import os
+import sys
 sys.path = [os.path.dirname(os.path.abspath(__file__))] + sys.path
 from liblinear import *
 from liblinear import __all__ as liblinear_all

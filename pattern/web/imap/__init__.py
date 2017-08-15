@@ -29,7 +29,8 @@ except:
 try: from ..cache import cache
 except:
     try:
-        import os, sys; sys.path.append(os.path.join(MODULE, ".."))
+        import os
+        import sys; sys.path.append(os.path.join(MODULE, ".."))
         from cache import cache
     except:
         try:

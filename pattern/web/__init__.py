@@ -21,7 +21,8 @@ import os
 import sys
 import threading
 import time
-import socket, ssl
+import socket
+import ssl
 
 from io import open
 

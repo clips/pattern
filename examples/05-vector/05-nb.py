@@ -4,7 +4,8 @@ from __future__ import division
 
 from builtins import str, bytes, dict, int
 
-import os, sys; sys.path.insert(0, os.path.join("..", ".."))
+import os
+import sys; sys.path.insert(0, os.path.join("..", ".."))
 
 from pattern.vector import Document, Model, NB
 from pattern.db import Datasheet

@@ -10,7 +10,8 @@ from builtins import object, range
 
 from io import open
 
-import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+import os
+import sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import time
 import random
 import unittest
