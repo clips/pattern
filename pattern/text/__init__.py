@@ -41,36 +41,7 @@ from pattern.text.tree import SLASH, WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA, 
 
 DEFAULT = "default"
 
-#--- STRING FUNCTIONS ------------------------------------------------------------------------------
-# Latin-1 (ISO-8859-1) encoding is identical to Windows-1252 except for the code points 128-159:
-# Latin-1 assigns control codes in this range, Windows-1252 has characters, punctuation, symbols
-# assigned to these code points.
-
-def decode_string(v, encoding="utf-8"):
-    """ Returns the given value as a Unicode string (if possible).
-    """
-    if isinstance(encoding, str):
-        encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
-    if isinstance(v, bytes):
-        for e in encoding:
-            try: return v.decode(*e)
-            except:
-                pass
-        return v
-    return str(v)
-
-def encode_string(v, encoding="utf-8"):
-    """ Returns the given value as a Python byte string (if possible).
-    """
-    if isinstance(encoding, str):
-        encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
-    if isinstance(v, str):
-        for e in encoding:
-            try: return v.encode(*e)
-            except:
-                pass
-        return v
-    return bytes(v)
+from pattern.helpers import encode_string, decode_string
 
 decode_utf8 = decode_string
 encode_utf8 = encode_string

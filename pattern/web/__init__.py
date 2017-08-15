@@ -110,6 +110,11 @@ except:
 # Latin-1 assigns control codes in this range, Windows-1252 has characters, punctuation, symbols
 # assigned to these code points.
 
+from pattern.helpers import encode_string, decode_string
+
+u = decode_utf8 = decode_string
+s = encode_utf8 = encode_string
+
 GREMLINS = set([
     0x0152, 0x0153, 0x0160, 0x0161, 0x0178, 0x017E, 0x017D, 0x0192, 0x02C6, 
     0x02DC, 0x2013, 0x2014, 0x201A, 0x201C, 0x201D, 0x201E, 0x2018, 0x2019, 
@@ -164,35 +169,6 @@ def latin(s):
     if not isinstance(s, str):
         s = s.decode("utf-8")
     return all(unicodedata.name(ch).startswith("LATIN") for ch in s if ch.isalpha())
-
-def decode_string(v, encoding="utf-8"):
-    """ Returns the given value as a Unicode string (if possible).
-    """
-    if isinstance(encoding, str):
-        encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
-    if isinstance(v, bytes):
-        for e in encoding:
-            try: return v.decode(*e)
-            except:
-                pass
-        return v
-    return str(v)
-
-def encode_string(v, encoding="utf-8"):
-    """ Returns the given value as a Python byte string (if possible).
-    """
-    if isinstance(encoding, str):
-        encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
-    if isinstance(v, str):
-        for e in encoding:
-            try: return v.encode(*e)
-            except:
-                pass
-        return v
-    return bytes(v)
-
-u = decode_utf8 = decode_string
-s = encode_utf8 = encode_string
 
 # For clearer source code:
 bytestring = b = s
