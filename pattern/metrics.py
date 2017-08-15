@@ -13,6 +13,8 @@ from builtins import str, bytes, dict, int
 from builtins import map, zip, filter
 from builtins import object, range
 
+from io import open
+
 import sys
 
 from time import time

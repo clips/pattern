@@ -8,10 +8,11 @@ from builtins import str, bytes, dict, int
 from builtins import map, zip, filter
 from builtins import object, range
 
+from io import open
+
 import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import time
 import random
-import codecs
 import unittest
 
 from random import seed; seed(0)
@@ -421,7 +422,7 @@ class TestModel(unittest.TestCase):
                 "0,0,0.3466,0.6931,0,0,døg\n"
                 "0.6931,0,0.3466,0,0,0,døg")):
             self.model.export("test_%s.txt" % format, format=format)
-            v = codecs.open("test_%s.txt" % format, encoding="utf-8").read()
+            v = open("test_%s.txt" % format, encoding="utf-8").read()
             v = v.replace("\r\n", "\n")
             for line in src.split("\n"):
                 self.assertTrue(line in src)

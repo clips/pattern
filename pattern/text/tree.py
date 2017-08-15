@@ -38,6 +38,8 @@ from builtins import str, bytes, dict, int
 from builtins import map, zip, filter
 from builtins import object, range
 
+from io import open
+
 from itertools import chain
 
 try:
