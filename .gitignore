@@ -63,9 +63,13 @@ env/
 venv/
 ENV/
 
+# Flymake
+*_flymake.py
+
 # Pattern specific ignore pattern
 pattern/web/cache/tmp/
 web/cache/tmp/
+pattern_unittest_db
 test/pattern_unittest_db
 
 .DS_Store
