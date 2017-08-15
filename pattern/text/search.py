@@ -40,17 +40,17 @@ class Text(list):
         """ A list of sentences, where each sentence is separated by a period.
         """
         list.__init__(self, (Sentence(s + ".", token) for s in string.split(".")))
-    
+
     @property
     def sentences(self):
         return self
-        
+
     @property
     def words(self):
         return list(chain(*self))
 
 class Sentence(list):
-    
+
     def __init__(self, string="", token=["word"]):
         """ A list of words, where punctuation marks are split from words.
         """
@@ -60,7 +60,7 @@ class Sentence(list):
         s = s.replace("n ' t", " n't")
         s = s.split(" ")
         list.__init__(self, (Word(self, w, index=i) for i, w in enumerate(s)))
-        
+
     @property
     def string(self):
         return " ".join(w.string for w in self)
@@ -68,32 +68,32 @@ class Sentence(list):
     @property
     def words(self):
         return self
-    
+
     @property
     def chunks(self):
         return []
 
 class Word(object):
-    
+
     def __init__(self, sentence, string, tag=None, index=0):
         """ A word with a position in a sentence.
         """
         self.sentence, self.string, self.tag, self.index = sentence, string, tag, index
-    
+
     def __repr__(self):
         return "Word(%s)" % repr(self.string)
-    
+
     def _get_type(self):
         return self.tag
     def _set_type(self, v):
         self.tag = v
-        
+
     type = property(_get_type, _set_type)
-    
+
     @property
     def chunk(self):
         return None
-    
+
     @property
     def lemma(self):
         return None
@@ -209,11 +209,11 @@ class odict(dict):
             items = reversed(list(items.items()))
         for k, v in items:
             self.__setitem__(k, v)
-        
+
     @classmethod
     def fromkeys(cls, keys=[], v=None):
         return cls((k, v) for k in keys)
-    
+
     def push(self, kv):
         """ Adds a new item from the given (key, value)-tuple.
             If the key exists, pushes the updated item to the head of the dict.
@@ -230,7 +230,7 @@ class odict(dict):
         if k not in self:
             self._o.append(k)
         dict.__setitem__(self, k, v)
-        
+
     def __delitem__(self, k):
         self._o.remove(k)
         dict.__delitem__(self, k)
@@ -238,7 +238,7 @@ class odict(dict):
     def update(self, d):
         for k, v in reversed(list(d.items())):
             self.__setitem__(k, v)
-        
+
     def setdefault(self, k, v=None):
         if not k in self:
             self.__setitem__(k, v)
@@ -248,10 +248,10 @@ class odict(dict):
         if k in self:
             self._o.remove(k)
         return dict.pop(self, k, *args, **kwargs)
-        
+
     def popitem(self):
         k=self._o[-1] if self._o else None; return (k, self.pop(k))
-        
+
     def clear(self):
         self._o=[]; dict.clear(self)
 
@@ -268,17 +268,17 @@ class odict(dict):
         return list(self.itervalues())
     def items(self):
         return list(self.iteritems())
-    
+
     def copy(self):
         return self.__class__(reversed(list(self.items())))
-    
+
     def __repr__(self):
         return "{%s}" % ", ".join("%s: %s" % (repr(k), repr(v)) for k, v in self.items())
 
 #--- TAXONOMY --------------------------------------------------------------------------------------
 
 class Taxonomy(dict):
-    
+
     def __init__(self):
         """ Hierarchical tree of words classified by semantic type.
             For example: "rose" and "daffodil" can be classified as "flower":
@@ -292,7 +292,7 @@ class Taxonomy(dict):
         self.case_sensitive = False
         self._values = {}
         self.classifiers = []
-        
+
     def _normalize(self, term):
         try:
             return not self.case_sensitive and term.lower() or term
@@ -321,7 +321,7 @@ class Taxonomy(dict):
         self.setdefault(term, (odict(), odict()))[0].push((type, True))
         self.setdefault(type, (odict(), odict()))[1].push((term, True))
         self._values[term] = value
-    
+
     def classify(self, term, **kwargs):
         """ Returns the (most recently added) semantic type for the given term ("many" => "quantity").
             If the term is not in the dictionary, try Taxonomy.classifiers.
@@ -337,7 +337,7 @@ class Taxonomy(dict):
             v = classifier.parents(term, **kwargs)
             if v:
                 return v[0]
-            
+
     def parents(self, term, recursive=False, **kwargs):
         """ Returns a list of all semantic types for the given term.
             If recursive=True, traverses parents up to the root.
@@ -354,7 +354,7 @@ class Taxonomy(dict):
                 for w in a: a += dfs(w, recursive, visited, **kwargs)
             return a
         return unique(dfs(self._normalize(term), recursive, {}, **kwargs))
-    
+
     def children(self, term, recursive=False, **kwargs):
         """ Returns all terms of the given semantic type: "quantity" => ["many", "lot", "few", ...]
             If recursive=True, traverses children down to the leaves.
@@ -371,7 +371,7 @@ class Taxonomy(dict):
                 for w in a: a += dfs(w, recursive, visited, **kwargs)
             return a
         return unique(dfs(self._normalize(term), recursive, {}, **kwargs))
-    
+
     def value(self, term, **kwargs):
         """ Returns the value of the given term ("many" => "50-200")
         """
@@ -382,7 +382,7 @@ class Taxonomy(dict):
             v = classifier.value(term, **kwargs)
             if v is not None:
                 return v
-        
+
     def remove(self, term):
         if dict.__contains__(self, term):
             for w in self.parents(term):
@@ -405,7 +405,7 @@ TAXONOMY = taxonomy = Taxonomy()
 #--- TAXONOMY CLASSIFIER ---------------------------------------------------------------------------
 
 class Classifier(object):
-    
+
     def __init__(self, parents=lambda term: [], children=lambda term: [], value=lambda term: None):
         """ A classifier uses a rule-based approach to enrich the taxonomy, for example:
             c = Classifier(parents=lambda term: term.endswith("ness") and ["quality"] or [])
@@ -422,7 +422,7 @@ class Classifier(object):
 # Classifier(parents=lambda word, chunk=None: chunk=="VP" and [ACTION] or [])
 
 class WordNetClassifier(Classifier):
-    
+
     def __init__(self, wordnet=None):
         if wordnet is None:
             try: from pattern.en import wordnet
@@ -438,7 +438,7 @@ class WordNetClassifier(Classifier):
             return [w.synonyms[0] for w in self.wordnet.synsets(word, pos[:2])[0].hyponyms()]
         except:
             pass
-        
+
     def _parents(self, word, pos="NN"):
         try:
             return [w.synonyms[0] for w in self.wordnet.synsets(word, pos[:2])[0].hypernyms()]
@@ -467,7 +467,7 @@ ALPHA = re.compile("[a-zA-Z]")
 has_alpha = lambda string: ALPHA.match(string) is not None
 
 class Constraint(object):
-    
+
     def __init__(self, words=[], tags=[], chunks=[], roles=[], taxa=[], optional=False, multiple=False, first=False, taxonomy=TAXONOMY, exclude=None, custom=None):
         """ A range of words, tags and taxonomy terms that matches certain words in a sentence.        
             For example: 
@@ -488,7 +488,7 @@ class Constraint(object):
         self.first    = first
         self.exclude  = exclude      # Constraint of words that are *not* allowed, or None.
         self.custom   = custom       # Custom function(Word) returns True if word matches constraint.
-        
+
     @classmethod
     def fromstring(cls, s, **kwargs):
         """ Returns a new Constraint from the given string.
@@ -550,7 +550,7 @@ class Constraint(object):
         for v in s:
             C._append(v)
         return C
-        
+
     def _append(self, v):
         if v.startswith("!") and self.exclude is None:
             self.exclude = Constraint()
@@ -573,7 +573,7 @@ class Constraint(object):
             # However, this also matches "*" or "?" or "0.25".
             # Unless such punctuation is defined in the taxonomy, it is added to Range.words.
             self.words.append(v.lower())
-    
+
     def match(self, word):
         """ Return True if the given Word is part of the constraint:
             - the word (or lemma) occurs in Constraint.words, OR
@@ -633,7 +633,7 @@ class Constraint(object):
                 # if "was" is not in the constraint, perhaps "be" is, which is a good match.
                 if s2 and _match(s2, w):
                     b=True; break
-                    
+
         # If the constraint defines allowed taxonomy terms,
         # and the given word did not match an allowed word, traverse the taxonomy.
         # The search goes up from the given word to its parents in the taxonomy.
@@ -655,7 +655,7 @@ class Constraint(object):
                         if find(lambda s: p==s, self.taxa): # No wildcards.
                             return True
         return b
-    
+
     def __repr__(self):
         s = []
         for k,v in (
@@ -666,7 +666,7 @@ class Constraint(object):
           (  "taxa", self.taxa)):
             if v: s.append("%s=%s" % (k, repr(v)))
         return "Constraint(%s)" % ", ".join(s)
-            
+
     @property
     def string(self):
         a = self.words + self.tags + self.chunks + self.roles + [w.upper() for w in self.taxa]
@@ -684,7 +684,7 @@ STRICT = "strict"
 GREEDY = "greedy"
 
 class Pattern(object):
-    
+
     def __init__(self, sequence=[], *args, **kwargs):
         """ A sequence of constraints that matches certain phrases in a sentence.
             The given list of Constraint objects can contain nested lists (groups).
@@ -720,7 +720,7 @@ class Pattern(object):
         return len(self.sequence)
     def __getitem__(self, i):
         return self.sequence[i]
-        
+
     @classmethod
     def fromstring(cls, s, *args, **kwargs):
         """ Returns a new Pattern from the given string.
@@ -772,7 +772,7 @@ class Pattern(object):
                 if G: O[G[-1][0]] = G[-1][1]; G.pop()
         P.groups = [g for g in O if g]
         return P
-        
+
     def scan(self, string):
         """ Returns True if search(Sentence(string)) may yield matches.
             If is often faster to scan prior to creating a Sentence and searching it.
@@ -811,7 +811,7 @@ class Pattern(object):
             a.append(m)
             m = self.match(sentence, start=m.words[-1].index+1, _v=v, _u=u)
         return a
-    
+
     def match(self, sentence, start=0, _v=None, _u=None):
         """ Returns the first match found in the given sentence, or None.
         """
@@ -845,7 +845,7 @@ class Pattern(object):
         v = variations(self.sequence, optional=lambda constraint: constraint.optional)
         v = sorted(v, key=len, reverse=True)
         return v
-                
+
     def _match(self, sequence, sentence, start=0, i=0, w0=None, map=None, d=0):
         # Backtracking tree search.
         # Finds the first match in the sentence of the given sequence of constraints.
@@ -854,14 +854,14 @@ class Pattern(object):
         #    w0 : the first word that matches a constraint.
         #   map : a dictionary of (Word index, Constraint) items.
         #     d : recursion depth.
-        
+
         # XXX - We can probably rewrite all of this using (faster) regular expressions.
-        
+
         if map is None:
             map = {}
-        
+
         n = len(sequence)
-        
+
         # --- MATCH ----------
         if i == n:
             if w0 is not None:
@@ -924,7 +924,7 @@ class Pattern(object):
                 break
             if w0 and constraint.exclude and constraint.exclude.tags:
                 break
-                
+
     @property
     def string(self):
         return " ".join(constraint.string for constraint in self.sequence)
@@ -979,7 +979,7 @@ def escape(string):
 #--- PATTERN MATCH ---------------------------------------------------------------------------------
 
 class Match(object):
-    
+
     def __init__(self, pattern, words=[], map={}):
         """ Search result returned from Pattern.match(sentence),
             containing a sequence of Word objects.
@@ -1014,7 +1014,7 @@ class Match(object):
         """
         if word.index in self._map1:
             return self._map1[word.index]
-    
+
     def constraints(self, chunk):
         """ Returns a list of constraints that match the given Chunk.
         """
@@ -1054,7 +1054,7 @@ class Match(object):
                 a.append(w)
             i += 1
         return a
-        
+
     def group(self, index, chunked=False):
         """ Returns a list of Word objects that match the given group.
             With chunked=True, returns a list of Word + Chunk objects - see Match.constituents().
@@ -1070,11 +1070,11 @@ class Match(object):
         if chunked is True:
             return Group(self, self.constituents(constraint=[self.pattern.sequence.index(x) for x in g]))
         return Group(self, [w for w in self.words if self.constraint(w) in g])
-    
+
     @property
     def string(self):
         return " ".join(w.string for w in self.words)
-    
+
     def __repr__(self):
         return "Match(words=%s)" % repr(self.words)
 
@@ -1096,7 +1096,7 @@ class Group(list):
     @property
     def stop(self):
         return self and self[-1].index+1 or None
-    
+
     @property
     def string(self):
         return " ".join(w.string for w in self)

@@ -98,7 +98,7 @@ m.reduce(100)
 for feature, weight in m.lsa.concepts[15].items(): # concept id=2
     if abs(weight) > 0.1:
         print(feature)
-        
+
 # Concept  2 = "truman", "ventura", "ace", "carrey", ... Obviously about Jim Carrey movies.
 # Concept 15 = "sixth", "sense", "child", "dead", "willis" ...
 

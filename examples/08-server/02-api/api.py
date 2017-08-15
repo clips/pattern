@@ -43,7 +43,7 @@ def predict_language(q=""):
           "language": iso,
         "confidence": round(confidence, 2)
     }
-    
+
 # When you set up a web service, expect high traffic peaks.
 # For example, a user may have 10,000 sentences
 # and send them all at once in a for-loop to our web service:
@@ -69,12 +69,12 @@ def predict_language(q=""):
 @app.route("/language/paid", limit=True, key=lambda data: data.get("key"))
 def predict_language_paid(q="", key=None):
     return {"language": language(q)[0]}
-    
+
 # Create an account for user with key=1234 (do once).
 # You can generate fairly safe keys with app.rate.key().
 if not app.rate.get(key="1234", path="/language/paid"):
     app.rate.set(key="1234", path="/language/paid", limit=10000, time=DAY)
-    
+
 # Try it out with the key and without the key:
 # http://127.0.0.1:8080/language/paid?q=hello&key=1234
 # http://127.0.0.1:8080/language/paid?q=hello           (403 error)

@@ -34,7 +34,7 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
-    
+
 sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))
 
 from pattern.text import Verbs as _Verbs
@@ -363,14 +363,14 @@ def decode_sz(s):
     return s.replace("ss", "ß")
 
 class Verbs(_Verbs):
-    
+
     def __init__(self):
         _Verbs.__init__(self, os.path.join(MODULE, "de-verbs.txt"),
             language = "de",
               format = [0, 1, 2, 3, 4, 5, 8, 17, 18, 19, 20, 21, 24, 52, 54, 53, 55, 56, 58, 59, 67, 68, 70, 71],
              default = {6: 4, 22: 20, 57: 55, 60: 58, 69: 67, 72: 70}
             )
-    
+
     def find_lemma(self, verb):
         """ Returns the base form of the given inflected verb, using a rule-based approach.
         """

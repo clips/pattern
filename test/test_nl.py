@@ -28,7 +28,7 @@ class TestInflection(unittest.TestCase):
 
     def setUp(self):
         pass
-        
+
     def test_pluralize(self):
         # Assert "auto's" as plural of "auto".
         self.assertEqual("auto's", nl.inflect.pluralize("auto"))
@@ -41,7 +41,7 @@ class TestInflection(unittest.TestCase):
             n += 1
         self.assertTrue(float(i) / n > 0.74)
         print("pattern.nl.pluralize()")
-        
+
     def test_singularize(self):
         # Assert the accuracy of the singularization algorithm.
         from pattern.db import Datasheet
@@ -63,7 +63,7 @@ class TestInflection(unittest.TestCase):
             n += 1
         self.assertTrue(float(i) / n > 0.96)
         print("pattern.nl.attributive()")
-        
+
     def test_predicative(self):
         # Assert the accuracy of the predicative algorithm ("felle" => "fel").
         from pattern.db import Datasheet
@@ -86,7 +86,7 @@ class TestInflection(unittest.TestCase):
             n += 1
         self.assertTrue(float(i) / n > 0.83)
         print("pattern.nl.inflect.verbs.find_lemma()")
-        
+
     def test_find_lexeme(self):
         # Assert the accuracy of the verb conjugation algorithm.
         i, n = 0, 0
@@ -149,10 +149,10 @@ class TestInflection(unittest.TestCase):
 #---------------------------------------------------------------------------------------------------
 
 class TestParser(unittest.TestCase):
-    
+
     def setUp(self):
         pass
-   
+
     def test_wotan2penntreebank(self):
         # Assert tag translation.
         for penntreebank, wotan in (
@@ -187,7 +187,7 @@ class TestParser(unittest.TestCase):
           ("SYM",  "Misc(symbool)")):
             self.assertEqual(nl.wotan2penntreebank("", wotan)[1], penntreebank)
         print("pattern.nl.wotan2penntreebank()")
-        
+
     def test_find_lemmata(self):
         # Assert lemmata for nouns and verbs.
         v = nl.parser.find_lemmata([["katten", "NNS"], ["droegen", "VBD"], ["hoeden", "NNS"]])
@@ -196,7 +196,7 @@ class TestParser(unittest.TestCase):
             ["droegen", "VBD", "dragen"],
             ["hoeden", "NNS", "hoed"]])
         print("pattern.nl.parser.find_lemmata()")
-    
+
     def test_parse(self):
         # Assert parsed output with Penn Treebank II tags (slash-formatted).
         # 1) "de zwarte kat" is a noun phrase, "op de mat" is a prepositional noun phrase.
@@ -234,7 +234,7 @@ class TestParser(unittest.TestCase):
         v = nl.tag("zwarte panters")
         self.assertEqual(v, [("zwarte", "JJ"), ("panters", "NNS")])
         print("pattern.nl.tag()")
-    
+
     def test_command_line(self):
         # Assert parsed output from the command-line (example from the documentation).
         p = ["python", "-m", "pattern.nl", "-s", "Leuke kat.", "-OTCRL"]
@@ -248,7 +248,7 @@ class TestParser(unittest.TestCase):
 #---------------------------------------------------------------------------------------------------
 
 class TestSentiment(unittest.TestCase):
-    
+
     def setUp(self):
         pass
 

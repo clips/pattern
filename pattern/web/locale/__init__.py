@@ -188,7 +188,7 @@ def decode_region(code):
     for tag, (language, region, iso639, iso3166) in LANGUAGE_REGION.items():
         if iso3166 == code.upper():
             return region
-        
+
 def languages(region):
     """ Returns a list of language codes for the given region code.
         For example: languages(encode_region("belgium")) => ["fr", "nl"]

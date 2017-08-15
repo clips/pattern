@@ -160,7 +160,7 @@ def stts2penntreebank(token, tag):
         For example: ohne/APPR => ohne/IN
     """
     return (token, stts.get(tag, tag))
-    
+
 def stts2universal(token, tag):
     """ Converts an STTS tag to a universal tag.
         For example: ohne/APPR => ohne/PREP
@@ -201,17 +201,17 @@ def find_lemmata(tokens):
             lemma = conjugate(word, INFINITIVE) or word
         token.append(lemma.lower())
     return tokens
-    
+
 class Parser(_Parser):
-    
+
     def find_tokens(self, tokens, **kwargs):
         kwargs.setdefault("abbreviations", ABBREVIATIONS)
         kwargs.setdefault("replace", {})
         return _Parser.find_tokens(self, tokens, **kwargs)
-        
+
     def find_lemmata(self, tokens, **kwargs):
         return find_lemmata(tokens)
-        
+
     def find_tags(self, tokens, **kwargs):
         if kwargs.get("tagset") in (PENN, None):
             kwargs.setdefault("map", lambda token, tag: stts2penntreebank(token, tag))
@@ -259,7 +259,7 @@ def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
     """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
-    
+
 def tag(s, tokenize=True, encoding="utf-8", **kwargs):
     """ Returns a list of (token, tag)-tuples from the given string.
     """
@@ -268,7 +268,7 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
         for token in sentence:
             tags.append((token[0], token[1]))
     return tags
-    
+
 def keywords(s, top=10, **kwargs):
     """ Returns a sorted list of keywords in the given string.
     """
@@ -277,7 +277,7 @@ def keywords(s, top=10, **kwargs):
               "top": top,
               "pos": ("NN",),
            "ignore": ("rt",)}, **kwargs))
-    
+
 def suggest(w):
     """ Returns a list of (word, confidence)-tuples of spelling corrections.
     """

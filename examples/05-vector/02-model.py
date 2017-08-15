@@ -37,7 +37,7 @@ for f in glob.glob(os.path.join(os.path.dirname(__file__), "corpus", "*.txt")):
     text = open(f, encoding="utf-8").read()
     name = os.path.basename(f)[:-4]
     documents.append(Document(text, name=name))
-    
+
 m = Model(documents, weight=TFIDF)
 
 # We can retrieve documents by name:

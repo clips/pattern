@@ -28,7 +28,7 @@ class TestInflection(unittest.TestCase):
 
     def setUp(self):
         pass
-    
+
     def test_pluralize(self):
         # Assert the accuracy of the pluralization algorithm.
         from pattern.db import Datasheet
@@ -43,7 +43,7 @@ class TestInflection(unittest.TestCase):
             n += 1
         self.assertTrue(float(i) / n > 0.77)
         print("pattern.es.pluralize()")
-        
+
     def test_singularize(self):
         # Assert the accuracy of the singularization algorithm.
         from pattern.db import Datasheet
@@ -71,7 +71,7 @@ class TestInflection(unittest.TestCase):
             v = es.attributive(lemma, gender)
             self.assertEqual(v, inflected)
         print("pattern.es.attributive()")
-        
+
     def test_predicative(self):
         # Assert the accuracy of the predicative algorithm ("horribles" => "horrible").
         from pattern.db import Datasheet
@@ -96,7 +96,7 @@ class TestInflection(unittest.TestCase):
             n += 1
         self.assertTrue(float(i) / n > 0.80)
         print("pattern.es.inflect.verbs.find_lemma()")
-        
+
     def test_find_lexeme(self):
         # Assert the accuracy of the verb conjugation algorithm.
         i, n = 0, 0
@@ -195,10 +195,10 @@ class TestInflection(unittest.TestCase):
 #---------------------------------------------------------------------------------------------------
 
 class TestParser(unittest.TestCase):
-    
+
     def setUp(self):
         pass
-        
+
     def test_find_lemmata(self):
         # Assert lemmata for nouns, adjectives, verbs and determiners.
         v = es.parser.find_lemmata([
@@ -245,7 +245,7 @@ class TestParser(unittest.TestCase):
         v = es.tag("el gato negro")
         self.assertEqual(v, [("el", "DT"), ("gato", "NN"), ("negro", "JJ")])
         print("pattern.es.tag()")
-    
+
     def test_command_line(self):
         # Assert parsed output from the command-line (example from the documentation).
         p = ["python", "-m", "pattern.es", "-s", "El gato negro.", "-OTCRL"]

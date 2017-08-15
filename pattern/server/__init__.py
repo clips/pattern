@@ -70,7 +70,7 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
-    
+
 try:
     # Folder that contains the script that (indirectly) imports pattern.server.
     # This is used as the default App.path.
@@ -156,7 +156,7 @@ def openable(string, **kwargs):
     f.seek(0)
     _TEMPORARY_FILES.append(f) # Delete when program terminates.
     return f.name
-    
+
 #### INTROSPECTION #################################################################################
 # URL paths are routed to handler functions, whose arguments represent URL path & query parameters.
 # So we need to know what the arguments and keywords arguments are at runtime.
@@ -194,21 +194,21 @@ SQLITE, MYSQL = "sqlite", "mysql"
 LOCALHOST = "127.0.0.1"
 
 class Row(dict):
-    
+
     def __init__(self, cursor, row):
         """ Row as dictionary.
         """
         d = cursor.description
         dict.__init__(self, ((d[i][0], v) for i, v in enumerate(row)))
-        
+
     def __getattr__(self, k):
         return self[k] # Row.[field]
-        
+
 class DatabaseError(Exception):
     pass
-        
+
 class Database(object):
-    
+
     def __init__(self, name, **kwargs):
         """ Creates and opens the SQLite database with the given name.
         """
@@ -233,7 +233,7 @@ class Database(object):
             # Database(owner="www-data")
             # grants write permission to user.
             chown(name, k("owner"))
-    
+
     @property
     def name(self):
         """ Yields the database name (for SQLITE, file path).
@@ -245,25 +245,25 @@ class Database(object):
         """ Yields the database type (SQLITE or MYSQL).
         """
         return self._type
-        
+
     @property
     def host(self):
         """ Yields the database server host (MYSQL).
         """
         return self._host
-                
+
     @property
     def port(self):
         """ Yields the database server port (MYSQL).
         """
         return self._port
-    
+
     @property
     def connection(self):
         """ Yields the sqlite3.Connection object.
         """
         return self._connection
-        
+
     def connect(self):
         if self._type == SQLITE:
             self._connection = sqlite.connect(self._name, timeout=self._timeout)
@@ -282,13 +282,13 @@ class Database(object):
             self._connection.row_factory = self._factory
             self._connection.cursor().execute("create database if not exists `%s`" % self._name)
             self._connection.cursor().execute("use `%s`" % self._name)
-            
+
     def disconnect(self):
         if self._connection is not None:
             self._connection.commit()
             self._connection.close()
             self._connection = None
-    
+
     def execute(self, sql, values=(), first=False, commit=True):
         """ Executes the given SQL query string and returns an iterator of rows.
             With first=True, returns the first row.
@@ -307,17 +307,17 @@ class Database(object):
             self._connection.rollback()
             raise DatabaseError(str(e))
         return r.fetchone() if first else r
-        
+
     def commit(self):
         """ Commits changes (pending insert/update/delete queries).
         """
         self._connection.commit()
-        
+
     def rollback(self):
         """ Discard changes since the last commit.
         """
         self._connection.rollback()
-        
+
     def __call__(self, *args, **kwargs):
         return self.execute(*args, **kwargs)
 
@@ -329,7 +329,7 @@ class Database(object):
             self.disconnect()
         except:
             pass
-    
+
     @property
     def batch(self):
         return Database._batch.setdefault(self._name, DatabaseTransaction(self._name, **self.__dict__))
@@ -339,7 +339,7 @@ class Database(object):
 #--- DATABASE TRANSACTION BUFFER -------------------------------------------------------------------
 
 class DatabaseTransaction(Database):
-    
+
     def __init__(self, name, **kwargs):
         """ Database.batch.execute() stores given the SQL query in RAM memory, across threads.
             Database.batch.commit() commits all buffered queries.
@@ -348,10 +348,10 @@ class DatabaseTransaction(Database):
         """
         Database.__init__(self, name, **dict(kwargs, connect=False))
         self._queue = []
-    
+
     def execute(self, sql, values=()):
         self._queue.append((sql, values))
-        
+
     def commit(self):
         q, self._queue = self._queue, []
         if q:
@@ -366,7 +366,7 @@ class DatabaseTransaction(Database):
 
     def rollback(self):
         self._queue = []
-        
+
     def __len__(self):
         return len(self._queue)
 
@@ -471,7 +471,7 @@ class RateLimitForbidden(RateLimitError):
     pass
 
 class RateLimit(Database):
-    
+
     def __init__(self, name="rate.db", **kwargs):
         """ A database for rate limiting API requests.
             It manages a table with (key, path, limit, time) entries.
@@ -512,7 +512,7 @@ class RateLimit(Database):
     def reset(self):
         self.cache.clear()
         self.load()
-            
+
     def load(self):
         """ For performance, rate limiting is handled in memory (i.e., RAM).
             Loads the stored rate limits in memory (5,000 records ~= 1MB RAM).
@@ -622,12 +622,12 @@ class RouteError(Exception):
     pass
 
 class Router(dict):
-    
+
     def __init__(self):
         """ A router resolves URL paths to handler functions.
         """
         pass
-    
+
     def __setitem__(self, path, handler):
         """ Defines the handler function for the given URL path.
             The path is a slash-formatted string (e.g., "/api/1/en/parser").
@@ -644,7 +644,7 @@ class Router(dict):
             dict.__setitem__(self, p, (handler, define(handler)[2:]))
         else:
             dict.__setitem__(self, p, (handler, ((), {})))
-        
+
     def __call__(self, path, **data):
         """ Calls the handler function for the given URL path.
             If no handler is found, raises a RouteError.
@@ -687,7 +687,7 @@ class Router(dict):
 #--- APPLICATION ERRORS & REQUESTS -----------------------------------------------------------------
 
 class HTTPRequest(object):
-    
+
     def __init__(self, app, ip, path="/", method="get", data={}, headers={}):
         """ A HTTP request object with metadata returned from app.request.
         """
@@ -697,23 +697,23 @@ class HTTPRequest(object):
         self.method  = method.lower()
         self.data    = dict(data)
         self.headers = dict(headers)
-        
+
     def __repr__(self):
         return "HTTPRequest(ip=%s, path=%s)" % (repr(self.ip), repr(self.path))
 
 class HTTPRedirect(Exception):
-    
+
     def __init__(self, url, code=303):
         """ A HTTP redirect raised in an @app.route() handler.
         """
         self.url  = url
         self.code = code
-    
+
     def __repr__(self):
         return "HTTPRedirect(url=%s)" % repr(self.url)
 
 class HTTPError(Exception):
-    
+
     def __init__(self, status="", message="", traceback=""):
         """ A HTTP error raised in an @app.route() handler + passed to @app.error().
         """
@@ -721,7 +721,7 @@ class HTTPError(Exception):
         self.status    = status
         self.message   = message
         self.traceback = traceback or ""
-        
+
     def __repr__(self):
         return "HTTPError(status=%s)" % repr(self.status)
 
@@ -758,13 +758,13 @@ HTTP503ServiceUnavailable  = _HTTPErrorSubclass("503 Service Unavailable")
 # app.thread.db, g.db, or as a keyword argument of a URL handler.
 
 class localdict(dict):
-    
+
     def __init__(self, data=None, **kwargs):
         """ Thread-safe dictionary.
         """
         self.__dict__["_data"] = data if data != None else threading.local()
         self.__dict__.update(kwargs) # Attributes are global in every thread.
-        
+
     def items(self):
         return self._data.__dict__.items()
     def keys(self):
@@ -845,7 +845,7 @@ class ApplicationError(Exception):
     pass
 
 class Application(object):
-    
+
     def __init__(self, name=None, path=SCRIPT, static="./static", rate="rate.db", owner=None):
         """ A web app served by a WSGI-server that starts with App.run().
             By default, the app is served from the folder of the script that imports pattern.server.
@@ -873,35 +873,35 @@ class Application(object):
         # Change owner:
         # (= grant SQLite write permission)
         chown(path, owner)
-        
+
     @property
     def owner(self):
         return self._owner
-        
+
     @property
     def name(self):
         return self._name
-        
+
     @property
     def host(self):
         return self._host
-    
+
     @property
     def port(self):
         return self._port
-        
+
     @property
     def up(self):
         return self._up
-        
+
     running = up
-    
+
     @property
     def path(self):
         """ Yields the absolute path to the folder containing the app.
         """
         return self._path
-        
+
     @property
     def static(self):
         """ Yields the absolute path to the folder with static content.
@@ -913,7 +913,7 @@ class Application(object):
         """ Yields the dictionary of session data.
         """
         return cp.session
-        
+
     @property
     def request(self):
         """ Yields a request object with metadata
@@ -927,14 +927,14 @@ class Application(object):
              method = r.method,
                data = r.params,
             headers = r.headers)
-        
+
     @property
     def response(self):
         """ Yields a response object with metadata
             (status, headers).
         """
         return cp.response
-        
+
     @property
     def elapsed(self):
         """ Yields the elapsed time since the start of the request.
@@ -1002,7 +1002,7 @@ class Application(object):
         v = self._cast(v)
         #print(self.elapsed)
         return v
-        
+
     def route(self, path, limit=False, time=None, key=lambda data: data.get("key"), reset=100000):
         """ The @app.route(path) decorator defines the handler function for the given path.
             The function can take arguments (path) and keyword arguments (query data), e.g.,
@@ -1043,7 +1043,7 @@ class Application(object):
             self.router[path] = handler # Register the handler.
             return handler
         return decorator
-        
+
     def error(self, code="*"):
         """ The @app.error(code) decorator defines the handler function for the given HTTP error.
             The function takes a HTTPError object and returns a string.
@@ -1068,7 +1068,7 @@ class Application(object):
                     cp.config.update({"error_page.%s" % x: wrapper})
             return handler
         return decorator
-        
+
     def view(self, template, cached=True):
         """ The @app.view(template) decorator defines a template to format the handler function.
             The function returns a dict of keyword arguments for Template.render().
@@ -1132,7 +1132,7 @@ class Application(object):
             self.thread(START)(f)
             return handler
         return decorator
-        
+
     def __getattr__(self, k):
         """ Yields the value of the bound function with the given name (e.g., app.db).
         """
@@ -1141,7 +1141,7 @@ class Application(object):
         if k in g:
             return g[k]
         raise AttributeError("'%s' object has no attribute '%s'" % (self.__class__.__name__, k))
-    
+
     @property
     def cached(self):
         """ The @app.cached decorator caches the return value of the given handler.
@@ -1167,9 +1167,9 @@ class Application(object):
                 return self._cache[k]
             return wrapper
         return decorator
-        
+
     memoize = cached
-    
+
     def task(self, interval=MINUTE):
         """ The @app.task(interval) decorator will call the given function repeatedly (in a thread).
             For example, this can be used to commit a Database.batch periodically,
@@ -1261,7 +1261,7 @@ class Application(object):
             atexit.register(self.stop)
             cp.engine.start()
             cp.engine.block()
-        
+
     def stop(self):
         """ Stops the server (registered with atexit).
         """
@@ -1275,13 +1275,13 @@ class Application(object):
         self._port = None
         self._app  = None
         self._up   = False
-    
+
     def __call__(self, *args, **kwargs):
         # Called when deployed with mod_wsgi.
         if self._app is not None:
             return self._app(*args, **kwargs)
         raise ApplicationError("application not running")
-        
+
 App = Application
 
 #### CERTIFICATE ###################################################################################
@@ -1320,7 +1320,7 @@ def certificate(domain=LOCALHOST, country=None, state=None, city=None, company=N
     ))[0]
     os.unlink(f.name)
     return (k, x)
-    
+
 #k, x = certificate(country="BE", state="Antwerp", company="CLiPS", contact="tom@organisms.be")
 #open("ssl.key", "w").write(k)
 #open("ssl.crt", "w").write(x)
@@ -1398,11 +1398,11 @@ def _register(event, handler):
 def _request_start():
     # Register request start time.
     cp.request.time = time.time()
-    
+
 def _request_end():
     #print(time.time() - cp.request.time)
     pass
-    
+
 _register("on_start_resource", _request_start)
 _register("on_end_request", _request_end)
 
@@ -1434,9 +1434,9 @@ _MARKUP = "(%s)" % "|".join(_MARKUP)
 _MARKUP = re.compile(_MARKUP, re.I | re.S | re.M)
 
 class Template(object):
-    
+
     _cache = {}
-    
+
     def __init__(self, path, root=None, cached=True):
         """ A template with placeholders and/or source code loaded from the given string or path.
             Placeholders that start with $ are replaced with keyword arguments in Template.render().
@@ -1465,7 +1465,7 @@ class Template(object):
         s = s.replace("\n", "\\n")
         s = textwrap.dedent(s)
         return s
-        
+
     def _encode(self, v, indent=""):
         """ Returns the given value as a string (empty string for None).
         """
@@ -1527,7 +1527,7 @@ class Template(object):
             i = m.end(1)
         a.append(("<str>", string[i:], ""))
         return a
-        
+
     def _render(self, compiled, *args, **kwargs):
         """ Returns the rendered string as an iterator.
             Replaces template placeholders with keyword arguments (if any).
@@ -1561,7 +1561,7 @@ class Template(object):
                 yield self._encode(o.getvalue(), w)
                 del k["write"]
                 o.close()
-                
+
     def render(self, *args, **kwargs):
         """ Returns the rendered template as a string.
             Replaces template placeholders with keyword arguments (if any).
@@ -1606,7 +1606,7 @@ def template(string, *args, **kwargs):
 # Useful HTML generators.
 
 class HTML:
-    
+
     def _attrs(self, **kwargs):
         """ Returns a string of HTML element attributes.
             Use "css" for the CSS classname (since "class" is a reserved word).
@@ -1621,17 +1621,17 @@ class HTML:
         for k, v in kwargs.items():
             a.append("%s=\"%s\"" % (k, v))
         return (" " + " ".join(a)).rstrip()
-    
+
     def div(self, content, **attributes):
         """ Returns a string with a HTML <div> with the given content.
         """
         return "<div%s>\n\t%s\n</div>\n" % (self._attrs(**attributes), content)
-        
+
     def span(self, content, **attributes):
         """ Returns a string with a HTML <span> with the given content.
         """
         return "<span%s>\n\t%s\n</span>\n" % (self._attrs(**attributes), content)
-    
+
     def table(self, rows=[], headers=[], striped=True, **attributes):
         """ Returns a string with a HTML <table> for the given list,
             where each item is a list of values.
@@ -1655,7 +1655,7 @@ class HTML:
             a.append("\t</tr>\n")
         a.append("</table>\n")
         return "".join(a)
-        
+
     def select(self, options={}, selected=None, **attributes):
         """ Returns a string with a HTML <select> for the given dictionary,
             where each dict item is an <option value="key">value</option>.
@@ -1668,7 +1668,7 @@ class HTML:
                 a.append("\t<option value=\"%s\">%s</option>\n" % (k, v))
         a.append("</select>\n")
         return "".join(a)
-        
+
     dropdown = select
 
 html = HTML()

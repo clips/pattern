@@ -57,7 +57,7 @@ def is_short_syllable(w, before=None):
     if len(w) == 2 and is_vowel(w[0]) and is_consonant(w[1]):
         return True
     return False
-        
+
 def is_short(w):
     """ A word is called short if it consists of a short syllable preceded by zero or more consonants. 
     """
@@ -79,7 +79,7 @@ def R1(w):
     if m:
         return w[m.end():]
     return ""
-    
+
 def R2(w):
     """ R2 is the region after the first non-vowel following a vowel in R1, 
         or the end of the word if there is no such non-vowel.
@@ -235,7 +235,7 @@ def step_4(w):
         # Delete -ion if preceded by s or t.
         return w[:-3]
     return w
-    
+
 def step_5a(w):
     """ Step 5a strips suffix -e if preceded by multiple vowel-consonant pairs,
         or one vowel-consonant pair that is not a short syllable.
@@ -244,7 +244,7 @@ def step_5a(w):
         if R2(w).endswith("e") or R1(w).endswith("e") and not is_short_syllable(w, before=-1):
             return w[:-1]
     return w
-    
+
 def step_5b(w):
     """ Step 5b strips suffix -l if preceded by l and multiple vowel-consonant pairs,
         bell => bell, rebell => rebel.

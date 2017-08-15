@@ -34,7 +34,7 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
-    
+
 sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))
 
 # Import Verbs base class and verb tenses.
@@ -281,7 +281,7 @@ verb_majority_vote = [
 ]
 
 class Verbs(_Verbs):
-    
+
     def __init__(self):
         _Verbs.__init__(self, os.path.join(MODULE, "it-verbs.txt"),
             language = "it",
@@ -296,7 +296,7 @@ class Verbs(_Verbs):
                 55, 56, 57, 58, 59, 60,     # congiuntivo presente
                 67, 68, 69, 70, 71, 72      # congiontive imperfetto
             ])
-    
+
     def find_lemma(self, verb):
         """ Returns the base form of the given inflected verb, using a rule-based approach.
         """

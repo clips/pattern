@@ -28,7 +28,7 @@ class TestInflection(unittest.TestCase):
 
     def setUp(self):
         pass
-        
+
     def test_predicative(self):
         # Assert the accuracy of the predicative algorithm ("belles" => "bea").
         from pattern.db import Datasheet
@@ -50,7 +50,7 @@ class TestInflection(unittest.TestCase):
             n += 1
         self.assertTrue(float(i) / n > 0.80)
         print("pattern.fr.inflect.verbs.find_lemma()")
-        
+
     def test_find_lexeme(self):
         # Assert the accuracy of the verb conjugation algorithm.
         i, n = 0, 0
@@ -140,7 +140,7 @@ class TestInflection(unittest.TestCase):
 #---------------------------------------------------------------------------------------------------
 
 class TestParser(unittest.TestCase):
-    
+
     def setUp(self):
         pass
 
@@ -209,7 +209,7 @@ class TestParser(unittest.TestCase):
 #---------------------------------------------------------------------------------------------------
 
 class TestSentiment(unittest.TestCase):
-    
+
     def setUp(self):
         pass
 
@@ -232,7 +232,7 @@ class TestSentiment(unittest.TestCase):
         self.assertTrue(R > 0.725)
         self.assertTrue(F > 0.744)
         print("pattern.fr.sentiment()")
-        
+
     def test_tokenizer(self):
         # Assert that french sentiment() uses French tokenizer. ("t'aime" => "t' aime").
         v1 = fr.sentiment("je t'aime")

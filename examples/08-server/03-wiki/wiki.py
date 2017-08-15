@@ -35,7 +35,7 @@ def index(*path, **data):
     page = page + ".txt"
     page = os.path.join(app.path, "data", page) # Absolute paths are safer.
     #print("page:", page)
-    
+
     # If the URL ends in "?save", update the page content.
     if "save" in data and "content" in data:
         return save(page, src=data["content"])
@@ -82,7 +82,7 @@ def name(page):
     name = os.path.basename(page)     # "/data/index.html.txt" => "index.html.txt"
     name = os.path.splitext(name)[0]  # ("index.html", ".txt") => "index.html"
     return name
-    
+
 # We could also have a function for a *display* name (e.g., "Index").
 # Something like:
 
@@ -107,7 +107,7 @@ def view(page):
 # posting the data inside the <textarea> to the server.
 # We can catch it as the optional "content" parameter of the index() function
 # (since the name of the <textarea> is "content").
-    
+
 def edit(page):
     s = open(page).read() if os.path.exists(page) else ""
     s = '<form method="post" action="?save">' \
@@ -125,12 +125,12 @@ def save(page, src):
     f.write(src.encode("utf-8"))
     f.close()
     return view(page)
-    
+
 # Writing HTML by hand in the <textarea> becomes tedious after a while,
 # so we could for example extend save() with a parser for Markdown syntax:
 # http://en.wikipedia.org/wiki/Markdown,
 # http://pythonhosted.org/Markdown/,
 # or replace the <textarea> with a visual TinyMCE editor:
 # http://www.tinymce.com.
-    
+
 app.run("127.0.0.1", port=8080)

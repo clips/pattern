@@ -55,7 +55,7 @@ GMAIL = "imap.gmail.com"
 
 DATE, FROM, SUBJECT, BODY, ATTACHMENTS = \
     "date", "from", "subject", "body", "attachments"
-    
+
 def _basename(folder):
     # [Gmail]/INBOX => inbox
     f = folder.replace("[Gmail]/","")
@@ -76,7 +76,7 @@ class MailNotLoggedIn(MailError):
     pass
 
 class Mail(object):
-    
+
     def __init__(self, username, password, service=GMAIL, port=993, secure=True):
         """ IMAP4 connection to a mailbox. With secure=True, SSL is used. 
             The standard port for SSL is 993.
@@ -100,7 +100,7 @@ class Mail(object):
         if self._imap4 is None:
             raise MailNotLoggedIn
         return self._imap4
- 
+
     def login(self, username, password, **kwargs):
         """ Signs in to the mail account with the given username and password,
             raises a MailLoginError otherwise.
@@ -114,20 +114,20 @@ class Mail(object):
             raise MailLoginError
         if status != "OK":
             raise MailLoginError(response)
- 
+
     def logout(self):
         """ Signs out of the mail account.
         """
         if self._imap4 is not None:
             self._imap4.logout()
             self._imap4 = None
-        
+
     def __del__(self):
         if "_imap4" in self.__dict__:
             if self._imap4 is not None:
                 self._imap4.logout()
                 self._imap4 = None
-    
+
     @property
     def folders(self):
         """ A dictionary of (name, MailFolder)-tuples.
@@ -140,7 +140,7 @@ class Mail(object):
             self._folders = [(f, o) for f, o in self._folders if f != ""]
             self._folders = dict(self._folders)
         return self._folders
-    
+
     def __getattr__(self, k):
         """ Each folder is accessible as Mail.[name].
         """
@@ -173,22 +173,22 @@ def _decode(s, message):
     return s
 
 class MailFolder(object):
-    
+
     def __init__(self, parent, name):
         """ A folder (inbox, spam, trash, ...) in a mailbox.
             E-mail messages can be searched and retrieved (including attachments) from a folder.
         """
         self._parent = parent
         self._name   = name
-    
+
     @property
     def parent(self):
         return self._parent
-    
+
     @property
     def name(self):
         return _basename(self._name)
-    
+
     @property
     def count(self):
         return len(self)
@@ -209,7 +209,7 @@ class MailFolder(object):
 
     def read(self, i, attachments=False, cached=True):
         return self.__getitem__(i, attachments, cached)
-    
+
     def __getitem__(self, i, attachments=False, cached=True):
         """ Returns the mail message with the given index.
             Each message is a dictionary with date, from, subject, body, attachments entries.
@@ -250,7 +250,7 @@ class MailFolder(object):
                 d[k] = d[k].strip()
                 d[k] = d[k].replace("\r\n", "\n")
         return d
-        
+
     def __iter__(self):
         """ Returns an iterator over all the messages in the folder, latest-first.
         """
@@ -267,7 +267,7 @@ class MailFolder(object):
 #--- MAIL MESSAGE ----------------------------------------------------------------------------------
 
 class Message(dict):
-    
+
     @property
     def author(self):
         return self.get(FROM, None)

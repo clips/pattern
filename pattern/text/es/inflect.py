@@ -32,7 +32,7 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
-    
+
 sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))
 
 from pattern.text import Verbs as _Verbs
@@ -71,7 +71,7 @@ def definite_article(word, gender=MALE):
     if MASCULINE in gender:
         return PLURAL in gender and "los" or "el"
     return PLURAL in gender and "las" or "la"
-        
+
 
 def indefinite_article(word, gender=MALE):
     """ Returns the indefinite article (un/una/unos/unas) for a given word.
@@ -253,7 +253,7 @@ verb_irregular_inflections = [
 ]
 
 class Verbs(_Verbs):
-    
+
     def __init__(self):
         _Verbs.__init__(self, os.path.join(MODULE, "es-verbs.txt"),
             language = "es",
@@ -268,7 +268,7 @@ class Verbs(_Verbs):
                 55, 56, 57, 58, 59, 60,     # subjuntivo presente
                 67, 68, 69, 70, 71, 72      # subjuntivo imperfecto
             ])
-    
+
     def find_lemma(self, verb):
         """ Returns the base form of the given inflected verb, using a rule-based approach.
         """
@@ -398,7 +398,7 @@ def attributive(adjective, gender=MALE):
         if PLURAL in gender:
             return w + "s"
     return w
-        
+
 #print(attributive("intelligente", gender=PLURAL)) # intelligentes
 #print(attributive("alto", gender=MALE+PLURAL))    # altos
 #print(attributive("alto", gender=FEMALE+PLURAL))  # altas

@@ -151,7 +151,7 @@ class Parser(_Parser):
 
     def find_lemmata(self, tokens, **kwargs):
         return find_lemmata(tokens)
-        
+
     def find_tags(self, tokens, **kwargs):
         if kwargs.get("tagset") in (PENN, None):
             kwargs.setdefault("map", lambda token, tag: (token, tag))
@@ -160,7 +160,7 @@ class Parser(_Parser):
         return _Parser.find_tags(self, tokens, **kwargs)
 
 class Sentiment(_Sentiment):
-    
+
     def load(self, path=None):
         _Sentiment.load(self, path)
         # Map "précaire" to "precaire" (without diacritics, +1% accuracy).
@@ -221,7 +221,7 @@ def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
     """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
-    
+
 def tag(s, tokenize=True, encoding="utf-8", **kwargs):
     """ Returns a list of (token, tag)-tuples from the given string.
     """
@@ -230,7 +230,7 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
         for token in sentence:
             tags.append((token[0], token[1]))
     return tags
-    
+
 def keywords(s, top=10, **kwargs):
     """ Returns a sorted list of keywords in the given string.
     """

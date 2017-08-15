@@ -184,7 +184,7 @@ def find_lemmata(tokens):
             lemma = conjugate(word, INFINITIVE) or word
         token.append(lemma.lower())
     return tokens
-    
+
 class Parser(_Parser):
 
     def find_tokens(self, tokens, **kwargs):
@@ -238,7 +238,7 @@ def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
     """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
-    
+
 def tag(s, tokenize=True, encoding="utf-8", **kwargs):
     """ Returns a list of (token, tag)-tuples from the given string.
     """

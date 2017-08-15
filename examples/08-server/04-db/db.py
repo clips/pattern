@@ -65,14 +65,14 @@ if not os.path.exists(STORE):
 @app.bind("db")
 def db():
     return Database(STORE)
-    
+
 # Note how the path handler for http://127.0.0.1:8080/products
 # takes the optional parameter "db".
 # For http://127.0.0.1:8080/products, it displays an overview of all products.
 # For http://127.0.0.1:8080/products/rubber-chicken, it displays the product with the given name.
 
 # The html.table() helper function returns a HTML-string with a <table> element.
-    
+
 @app.route("/products")
 def products(name, db=None):
     if name is None:
@@ -82,5 +82,5 @@ def products(name, db=None):
     rows = db.execute(sql, values=v)
     rows = [(row.id, row.name, row.price) for row in rows]
     return html.table(rows, headers=("id", "name", "price"))
-    
+
 app.run("127.0.0.1", 8080, threads=30, queue=20)

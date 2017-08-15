@@ -139,7 +139,7 @@ def conditional(sentence, predictive=True, **kwargs):
                     if cc+" " in r:
                         return True
     return False
-    
+
 #from __init__ import parse, Sentence
 #
 #for str in (
@@ -161,7 +161,7 @@ subjunctive1 = [
 subjunctive2 = [
     "best", "crucial", "desirable", "essential", "imperative",
     "important", "recommended", "urgent", "vital"]
-    
+
 for w in list(subjunctive1): # Inflect.
     subjunctive1.append(w+"s")
     subjunctive1.append(w.rstrip("e")+"ed")
@@ -232,7 +232,7 @@ def negated(sentence, negative=("not", "n't", "never")):
         if " %s " % w in S:
             return True
     return False
-        
+
 def mood(sentence, **kwargs):
     """ Returns IMPERATIVE (command), CONDITIONAL (possibility), SUBJUNCTIVE (wish) or INDICATIVE (fact).
     """

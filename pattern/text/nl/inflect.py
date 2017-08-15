@@ -223,7 +223,7 @@ def singularize(word, pos=NOUN, custom={}):
 #### VERB CONJUGATION ##############################################################################
 
 class Verbs(_Verbs):
-    
+
     def __init__(self):
         _Verbs.__init__(self, os.path.join(MODULE, "nl-verbs.txt"),
             language = "nl",
@@ -238,7 +238,7 @@ class Verbs(_Verbs):
                 26: 33, 27: 33, 28: 33,         # past singular negated
                 29: 32, 30: 32, 31: 32, 32: 33  # past plural negated
             })
-    
+
     def load(self):
         _Verbs.load(self)
         self._inverse["was"]   = "zijn" # Instead of "wassen".
@@ -246,7 +246,7 @@ class Verbs(_Verbs):
         self._inverse["zagen"] = "zien"
         self._inverse["wist"]  = "weten"
         self._inverse["zou"]   = "zullen"
-    
+
     def find_lemma(self, verb):
         """ Returns the base form of the given inflected verb, using a rule-based approach.
             This is problematic if a verb ending in -e is given in the past tense or gerund.
@@ -301,7 +301,7 @@ class Verbs(_Verbs):
         b = b.replace("zzen", "zen") # genezzen => genezen
         b = b.replace("aen", "aan")  # doorgaen => doorgaan
         return b
-        
+
     def find_lexeme(self, verb):
         """ For a regular verb (base form), returns the forms using a rule-based approach.
         """

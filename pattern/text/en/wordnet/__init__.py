@@ -157,7 +157,7 @@ class _synset(lazydict):
         return None
 
 class Synset(object):
-    
+
     def __init__(self, synset):
         """ A set of synonyms that share a common meaning.
         """
@@ -214,15 +214,15 @@ class Synset(object):
             synsets("TV")[0].synonyms => ["television", "telecasting", "TV", "video"]
         """
         return [s for s in self._wnsynset.lemma_names()]
-        
+
     senses = synonyms # Backwards compatibility; senses = list of Synsets for a word.
-        
+
     @property
     def gloss(self):
         """ Yields a descriptive string.
         """
         return self._wnsynset.definition()
-        
+
     @property
     def lexname(self):
         """ Yields a category, e.g., noun.animal.
@@ -312,7 +312,7 @@ class Synset(object):
         p = [Synset(p) for p in self._wnsynset.similar_tos()]
         p += [Synset(p) for p in self._wnsynset.also_sees()]
         return p
-        
+
     def similarity(self, synset):
         """ Returns the semantic similarity of the given synsets (0.0-1.0).
             synsets("cat")[0].similarity(synsets("dog")[0]) => 0.86.
@@ -320,7 +320,7 @@ class Synset(object):
         """
 
         return self._wnsynset.lin_similarity(synset._wnsynset, IC_CORPUS)
-        
+
     @property
     def ic(self):
         offset, pos = self.id, self.pos
@@ -329,7 +329,7 @@ class Synset(object):
         if pos in IC_CORPUS and offset in IC_CORPUS[pos]:
             return IC_CORPUS[pos][offset] / IC_MAX[pos]
         return None
-        
+
     @property
     def weight(self):
         return sentiwordnet is not None \
@@ -349,7 +349,7 @@ def ancestor(synset1, synset2):
     for s in h1:
         if s in h2:
             return s
-            
+
 least_common_subsumer = lcs = ancestor
 
 ### INFORMATION CONTENT ############################################################################

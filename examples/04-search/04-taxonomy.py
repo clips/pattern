@@ -18,12 +18,12 @@ from pattern.en     import parsetree
 # A better approach is to use the taxonomy:
 for flower in ("rose", "lily", "daisy", "daffodil", "begonia"):
     taxonomy.append(flower, type="flower")
-    
+
 print(taxonomy.children("flower"))
 print(taxonomy.parents("rose"))
 print(taxonomy.classify("rose"))  # Yields the most recently added parent.
 print("")
-    
+
 # Taxonomy terms can be included in a pattern by using uppercase:
 t = parsetree("A field of white daffodils.", lemmata=True)
 m = search("FLOWER", t)

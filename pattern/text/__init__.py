@@ -94,7 +94,7 @@ def decamel(s, separator="_"):
     s = re.sub(r"([A-Z])([A-Z][a-z])", "\\1%s\\2" % separator, s)
     s = s.lower()
     return s
-    
+
 def pprint(string, token=[WORD, POS, CHUNK, PNP], column=4):
     """ Pretty-prints the output of Parser.parse() as a table with outlined columns.
         Alternatively, you can supply a tree.Text or tree.Sentence object.
@@ -328,7 +328,7 @@ class Lexicon(lazydict):
 #--- FREQUENCY -------------------------------------------------------------------------------------
 
 class Frequency(lazydict):
-    
+
     def __init__(self, path=""):
         """ A dictionary of words and their relative document frequency.
         """
@@ -356,7 +356,7 @@ class Frequency(lazydict):
 # unless (put simply) a majority of other patterns learned by the classifier disagrees.
 
 class Model(object):
-    
+
     def __init__(self, path="", classifier=None, known=set(), unknown=set()):
         """ A language model using a classifier (e.g., SLP, SVM) trained on morphology and context.
         """
@@ -426,12 +426,12 @@ class Model(object):
         f(v, "-+", p[1] + n[1]) # Tag left + right.
         f(v, "+t", n[1])        # Tag right.
         return v
-        
+
     def _get_description(self):
         return self._classifier.description
     def _set_description(self, s):
         self._classifier.description = s
-    
+
     description = property(_get_description, _set_description)
 
 #--- MORPHOLOGICAL RULES ---------------------------------------------------------------------------
@@ -467,7 +467,7 @@ class Morphology(lazylist):
     def load(self):
         # ["NN", "s", "fhassuf", "1", "NNS", "x"]
         list.extend(self, (x.split() for x in _read(self._path)))
-        
+
     def apply(self, token, previous=(None, None), next=(None, None)):
         """ Applies lexical rules to the given token, which is a [word, tag] list.
         """
@@ -774,7 +774,7 @@ class Parser(object):
                 self.model = Model(path=model)
             except ImportError: # pattern.vector
                 pass
-    
+
     def find_keywords(self, string, **kwargs):
         """ Returns a sorted list of keywords in the given string.
         """
@@ -783,7 +783,7 @@ class Parser(object):
                         top = kwargs.pop("top", 10),
                   frequency = kwargs.pop("frequency", {}), **kwargs
         )
-    
+
     def find_tokens(self, string, **kwargs):
         """ Returns a list of sentences from the given string.
             Punctuation marks are separated from each word by a space.
@@ -2238,7 +2238,7 @@ class Sentiment(lazydict):
         w[pos] = w[None] = (polarity, subjectivity, intensity)
         if label:
             self.labeler[word] = label
-            
+
     def save(self, path):
         """ Saves the lexicon as an XML-file.
         """
@@ -2384,7 +2384,7 @@ def language(s):
         lexicon = _module(xx).__dict__["lexicon"]
         p[xx] = sum(1 for w in s if w in lexicon) / n
     return max(p.items(), key=lambda kv: (kv[1], int(kv[0] == "en")))
-    
+
 lang = language
 
 def tokenize(*args, **kwargs):

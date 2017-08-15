@@ -51,35 +51,35 @@ def line(x1, y1, x2, y2, stroke=(0,0,0,1), strokewidth=1):
     """ Draws a line from (x1, y1) to (x2, y2) using the given stroke color and stroke width.
     """
     pass
-    
+
 def ellipse(x, y, width, height, fill=(0,0,0,1), stroke=None, strokewidth=1):
     """ Draws an ellipse at (x, y) with given fill and stroke color and stroke width.
     """
     pass
 
 class Text(object):
-    
+
     def __init__(self, string, **kwargs):
         """ Draws the node label.
             Optional properties include width, fill, font, fontsize, fontweight.
         """
         self.string = string
         self.__dict__.update(kwargs)
-        
+
     def copy(self):
         k = self.__dict__.copy()
         k.pop("string")
         return Text(self.string, **k)
-        
+
     def draw(self):
         pass
-        
+
 class Vector(object):
-    
+
     def __init__(self, x=0, y=0):
         self.x = x
         self.y = y
-        
+
 def coordinates(x, y, distance, angle):
     return (
         (x + distance * cos(radians(angle))),
@@ -108,7 +108,7 @@ def deepcopy(o):
 #--- NODE ------------------------------------------------------------------------------------------
 
 class Node(object):
-    
+
     def __init__(self, id="", radius=5, **kwargs):
         """ A node with a unique id in the graph.
             Node.id is drawn as a text label, unless optional parameter text=False.
@@ -132,12 +132,12 @@ class Node(object):
                 fontsize = kwargs.pop("fontsize", 11), **kwargs) or None
         self._weight     = None # Calculated by Graph.eigenvector_centrality().
         self._centrality = None # Calculated by Graph.betweenness_centrality().
-    
+
     @property
     def _distance(self):
         # Graph.distance controls the (x,y) spacing between nodes.
         return self.graph and float(self.graph.distance) or 1.0
-    
+
     def _get_x(self):
         return self._x * self._distance
     def _get_y(self):
@@ -157,7 +157,7 @@ class Node(object):
         return self.graph is not None \
            and [e for e in self.graph.edges if self.id in (e.node1.id, e.node2.id)] \
             or []
-            
+
     @property
     def edge(self, node, reverse=False):
         """ Yields the Edge from this node to the given node, or None.
@@ -167,7 +167,7 @@ class Node(object):
         if reverse:
             return node.links.edge(self)
         return self.links.edge(node)
-    
+
     @property
     def weight(self):
         """ Yields eigenvector centrality as a number between 0.0-1.0.
@@ -175,7 +175,7 @@ class Node(object):
         if self.graph and self._weight is None:
             self.graph.eigenvector_centrality()
         return self._weight
-        
+
     @property
     def centrality(self):
         """ Yields betweenness centrality as a number between 0.0-1.0.
@@ -183,16 +183,16 @@ class Node(object):
         if self.graph and self._centrality is None:
             self.graph.betweenness_centrality()
         return self._centrality
-    
+
     eigenvector = eigenvector_centrality = weight
     betweenness = betweenness_centrality = centrality
-    
+
     @property
     def degree(self):
         """ Yields degree centrality as a number between 0.0-1.0.
         """
         return self.graph and (1.0 * len(self.links) / len(self.graph)) or 0.0
-        
+
     def flatten(self, depth=1, traversable=lambda node, edge: True, _visited=None):
         """ Recursively lists the node and nodes linked to it.
             Depth 0 returns a list with the node.
@@ -207,7 +207,7 @@ class Node(object):
                     if traversable(self, self.links.edges[n.id]):
                         n.flatten(depth-1, traversable, _visited)
         return [n for n,d in _visited.values()] # Fast, but not order-preserving.
-    
+
     def draw(self, weighted=False):
         """ Draws the node as a circle with the given radius, fill, stroke and strokewidth.
             Draws the node centrality as a shadow effect when weighted=True.
@@ -233,13 +233,13 @@ class Node(object):
             self.text.draw(
                 self.x + self.radius,
                 self.y + self.radius)
-        
+
     def contains(self, x, y):
         """ Returns True if the given coordinates (x, y) are inside the node radius.
         """
         return abs(self.x - x) < self.radius*2 and \
                abs(self.y - y) < self.radius*2
-               
+
     def __repr__(self):
         return "%s(id=%s)" % (self.__class__.__name__, repr(self.id))
 
@@ -256,13 +256,13 @@ class Node(object):
 #--- NODE LINKS ------------------------------------------------------------------------------------
 
 class Links(list):
-    
+
     def __init__(self):
         """ A list in which each node has an associated edge.
             The Links.edge() method returns the edge for a given node id.
         """
         self.edges = dict()
-    
+
     def append(self, node, edge=None):
         if node.id not in self.edges:
             list.append(self, node)
@@ -291,7 +291,7 @@ class Edge(object):
         self.type        = type
         self.stroke      = stroke
         self.strokewidth = strokewidth
-    
+
     def _get_weight(self):
         return self._weight
     def _set_weight(self, v):
@@ -301,9 +301,9 @@ class Edge(object):
             self.node1.graph._adjacency = None
         if self.node2.graph is not None:
             self.node2.graph._adjacency = None
-    
+
     weight = property(_get_weight, _set_weight)
-        
+
     def draw(self, weighted=False, directed=False):
         """ Draws the edge as a line with the given stroke and strokewidth (increased with Edge.weight).
             Override this method in a subclass for custom drawing.
@@ -316,7 +316,7 @@ class Edge(object):
             self.node2.y, stroke=self.stroke, strokewidth=self.strokewidth+w)
         if directed:
             self.draw_arrow(stroke=self.stroke, strokewidth=self.strokewidth+w)
-            
+
     def draw_arrow(self, **kwargs):
         """ Draws the direction of the edge as an arrow on the rim of the receiving node.
         """
@@ -335,7 +335,7 @@ class Edge(object):
         line(x01, y01, dx1, dy1, **kwargs)
         line(x01, y01, dx2, dy2, **kwargs)
         line(dx1, dy1, dx2, dy2, **kwargs)
-    
+
     def __repr__(self):
         return "%s(id1=%s, id2=%s)" % (self.__class__.__name__, repr(self.node1.id), repr(self.node2.id))
 
@@ -344,20 +344,20 @@ class Edge(object):
 #--- GRAPH NODE DICTIONARY -------------------------------------------------------------------------
 
 class nodedict(dict):
-    
+
     def __init__(self, graph, *args, **kwargs):
         """ Graph.shortest_paths() and Graph.eigenvector_centrality() return a nodedict,
             where dictionary values can be accessed by Node as well as by node id.
         """
         dict.__init__(self, *args, **kwargs)
         self.graph = graph
-        
+
     def __contains__(self, node):
         return dict.__contains__(self, self.graph.get(node, node))
-        
+
     def __getitem__(self, node):
         return dict.__getitem__(self, isinstance(node, Node) and node or self.graph[node])
-        
+
     def get(self, node, default=None):
         return dict.get(self, self.graph.get(node, node), default)
 
@@ -377,7 +377,7 @@ WEIGHT, CENTRALITY = "weight", "centrality"
 ALL = "all"
 
 class Graph(dict):
-    
+
     def __init__(self, layout=SPRING, distance=10.0):
         """ A network of nodes connected by edges that can be drawn with a given layout.
         """
@@ -387,13 +387,13 @@ class Graph(dict):
         self._adjacency = None # Cached adjacency() dict.
         self.layout     = layout == SPRING and GraphSpringLayout(self) or GraphLayout(self)
         self.distance   = distance
-    
+
     def __getitem__(self, id):
         try:
             return dict.__getitem__(self, id)
         except KeyError:
             raise KeyError("no node with id '%s' in graph" % id)
-    
+
     def append(self, base, *args, **kwargs):
         """ Appends a Node or Edge to the graph: Graph.append(Node, id="rabbit").
         """
@@ -402,7 +402,7 @@ class Graph(dict):
             return self.add_node(*args, **kwargs)
         if issubclass(base, Edge):
             return self.add_edge(*args, **kwargs)
-    
+
     def add_node(self, id, *args, **kwargs):
         """ Appends a new Node to the graph.
             An optional base parameter can be used to pass a subclass of Node.
@@ -416,7 +416,7 @@ class Graph(dict):
             # Clear adjacency cache.
             self._adjacency = None
         return n
-    
+
     def add_edge(self, id1, id2, *args, **kwargs):
         """ Appends a new Edge to the graph.
             An optional base parameter can be used to pass a subclass of Edge:
@@ -441,7 +441,7 @@ class Graph(dict):
         # Clear adjacency cache.
         self._adjacency = None
         return e2
-            
+
     def remove(self, x):
         """ Removes the given Node (and all its edges) or Edge from the graph.
             Note: removing Edge a->b does not remove Edge b->a.
@@ -459,14 +459,14 @@ class Graph(dict):
             self.edges.remove(x)
         # Clear adjacency cache.
         self._adjacency = None
-    
+
     def node(self, id):
         """ Returns the node in the graph with the given id.
         """
         if isinstance(id, Node) and id.graph == self:
             return id
         return self.get(id, None)
-    
+
     def edge(self, id1, id2):
         """ Returns the edge between the nodes with given id1 and id2.
         """
@@ -475,7 +475,7 @@ class Graph(dict):
         if isinstance(id2, Node) and id2.graph == self:
             id2 = id2.id
         return id1 in self and id2 in self and self[id1].links.edge(id2) or None
-    
+
     def paths(self, node1, node2, length=4, path=[]):
         """ Returns a list of paths (shorter than or equal to given length) connecting the two nodes.
         """
@@ -484,7 +484,7 @@ class Graph(dict):
         if not isinstance(node2, Node):
             node2 = self[node2]
         return [[self[id] for id in p] for p in paths(self, node1.id, node2.id, length, path)]
-    
+
     def shortest_path(self, node1, node2, heuristic=None, directed=False):
         """ Returns a list of nodes connecting the two nodes.
         """
@@ -498,7 +498,7 @@ class Graph(dict):
             return p
         except IndexError:
             return None
-            
+
     def shortest_paths(self, node, heuristic=None, directed=False):
         """ Returns a dictionary of nodes, each linked to a list of nodes (shortest path).
         """
@@ -508,7 +508,7 @@ class Graph(dict):
         for id, path in dijkstra_shortest_paths(self, node.id, heuristic, directed).items():
             p[self[id]] = path and [self[id] for id in path] or None
         return p
-            
+
     def eigenvector_centrality(self, normalized=True, reversed=True, rating={}, iterations=100, tolerance=0.0001):
         """ Calculates eigenvector centrality and returns a node => weight dictionary.
             Node.weight is updated in the process.
@@ -519,7 +519,7 @@ class Graph(dict):
         for n, w in ec.items():
             n._weight = w
         return ec
-            
+
     def betweenness_centrality(self, normalized=True, directed=False):
         """ Calculates betweenness centrality and returns a node => weight dictionary.
             Node.centrality is updated in the process.
@@ -530,7 +530,7 @@ class Graph(dict):
         for n, w in bc.items():
             n._centrality = w
         return bc
-        
+
     def sorted(self, order=WEIGHT, threshold=0.0):
         """ Returns a list of nodes sorted by WEIGHT or CENTRALITY.
             Nodes with a lot of traffic will be at the start of the list.
@@ -538,27 +538,27 @@ class Graph(dict):
         o = lambda node: getattr(node, order)
         nodes = sorted(self.nodes, key = o, reverse = True)
         return list([node for node in nodes if o(node) >= threshold])
-        
+
     def prune(self, depth=0):
         """ Removes all nodes with less or equal links than depth.
         """
         for n in (n for n in self.nodes if len(n.links) <= depth):
             self.remove(n)
-            
+
     def fringe(self, depth=0, traversable=lambda node, edge: True):
         """ For depth=0, returns the list of leaf nodes (nodes with only one connection).
             For depth=1, returns the list of leaf nodes and their connected nodes, and so on.
         """
         u = []; [u.extend(n.flatten(depth, traversable)) for n in self.nodes if len(n.links) == 1]
         return unique(u)
-        
+
     @property
     def density(self):
         """ Yields the number of edges vs. the maximum number of possible edges.
             For example, <0.35 => sparse, >0.65 => dense, 1.0 => complete.
         """
         return 2.0*len(self.edges) / (len(self.nodes) * (len(self.nodes)-1))
-        
+
     @property
     def is_complete(self):
         return self.density == 1.0
@@ -568,18 +568,18 @@ class Graph(dict):
     @property
     def is_sparse(self):
         return self.density < 0.35
-        
+
     def split(self):
         """ Returns the list of unconnected subgraphs.
         """
         return partition(self)
-    
+
     def update(self, iterations=10, **kwargs):
         """ Graph.layout.update() is called the given number of iterations.
         """
         for i in range(iterations):
             self.layout.update(**kwargs)
-        
+
     def draw(self, weighted=False, directed=False):
         """ Draws all nodes and edges.
         """
@@ -587,13 +587,13 @@ class Graph(dict):
             e.draw(weighted, directed)
         for n in reversed(self.nodes): # New nodes (with Node._weight=None) first.
             n.draw(weighted)
-            
+
     def node_at(self, x, y):
         """ Returns the node at (x,y) or None.
         """
         for n in self.nodes:
             if n.contains(x, y): return n
-    
+
     def _add_node_copy(self, n, **kwargs):
         # Magical fairy dust to copy subclasses of Node.
         # We assume that the subclass constructor takes an optional "text" parameter
@@ -605,7 +605,7 @@ class Graph(dict):
         new.__class__ = n.__class__
         new.__dict__.update((k, deepcopy(v)) for k,v in n.__dict__.items()
             if k not in ("graph", "links", "_x", "_y", "force", "_weight", "_centrality"))
-    
+
     def _add_edge_copy(self, e, **kwargs):
         if kwargs.get("node1", e.node1).id not in self \
         or kwargs.get("node2", e.node2).id not in self:
@@ -616,7 +616,7 @@ class Graph(dict):
         new.__class__ = e.__class__
         new.__dict__.update((k, deepcopy(v)) for k,v in e.__dict__.items()
             if k not in ("node1", "node2"))
-    
+
     def copy(self, nodes=ALL):
         """ Returns a copy of the graph with the given list of nodes (and connecting edges).
             The layout will be reset.
@@ -628,13 +628,13 @@ class Graph(dict):
         for e in self.edges:
             g._add_edge_copy(e)
         return g
-        
+
     def export(self, *args, **kwargs):
         export(self, *args, **kwargs)
-    
+
     def write(self, *args, **kwargs):
         write(self, *args, **kwargs)
-    
+
     def serialize(self, *args, **kwargs):
         return render(self, *args, **kwargs)
 
@@ -643,13 +643,13 @@ class Graph(dict):
 # applies topology and geometry to derive two-dimensional representations of graphs.
 
 class GraphLayout(object):
-    
+
     def __init__(self, graph):
         """ Calculates node positions iteratively when GraphLayout.update() is called.
         """
         self.graph = graph
         self.iterations = 0
-    
+
     def update(self):
         self.iterations += 1
 
@@ -659,7 +659,7 @@ class GraphLayout(object):
             n._x = 0.0
             n._y = 0.0
             n.force = Vector(0.0, 0.0)
-            
+
     @property
     def bounds(self):
         """ Returns a (x, y, width, height)-tuple of the approximate layout dimensions.
@@ -679,7 +679,7 @@ class GraphLayout(object):
 #--- GRAPH LAYOUT: FORCE-BASED ---------------------------------------------------------------------
 
 class GraphSpringLayout(GraphLayout):
-    
+
     def __init__(self, graph):
         """ A force-based layout in which edges are regarded as springs.
             The forces are applied to the nodes, pulling them closer or pushing them apart.
@@ -711,7 +711,7 @@ class GraphSpringLayout(GraphLayout):
             node2.force.y += f * dy
             node1.force.x -= f * dx
             node1.force.y -= f * dy
-            
+
     def _attract(self, node1, node2, weight=0, length=1.0):
         # Updates Node.force with the attractive edge force.
         dx, dy, d, d2 = self._distance(node1, node2)
@@ -723,7 +723,7 @@ class GraphSpringLayout(GraphLayout):
         node2.force.y -= f * dy
         node1.force.x += f * dx
         node1.force.y += f * dy
-        
+
     def update(self, weight=10.0, limit=0.5):
         """ Updates the position of nodes in the graph.
             The weight parameter determines the impact of edge weight.
@@ -744,7 +744,7 @@ class GraphSpringLayout(GraphLayout):
                 n._y += max(-limit, min(self.force * n.force.y, limit))
             n.force.x = 0
             n.force.y = 0
-            
+
     def copy(self, graph):
         g = GraphSpringLayout(graph)
         g.k, g.force, g.repulsion = self.k, self.force, self.repulsion
@@ -772,7 +772,7 @@ def depth_first_search(node, visit=lambda node: False, traversable=lambda node, 
         if not n.id in _visited:
             stop = depth_first_search(n, visit, traversable, _visited)
     return stop
-    
+
 dfs = depth_first_search;
 
 def breadth_first_search(node, visit=lambda node: False, traversable=lambda node, edge: True):
@@ -788,7 +788,7 @@ def breadth_first_search(node, visit=lambda node: False, traversable=lambda node
             q.extend((n for n in node.links if traversable(node, node.links.edge(n)) is not False))
             _visited[node.id] = True
     return False
-        
+
 bfs = breadth_first_search;
 
 def paths(graph, id1, id2, length=4, path=[], _root=True):
@@ -1078,7 +1078,7 @@ def is_clique(graph):
     #        if n1 != n2 and graph.edge(n1.id, n2.id) is None:
     #            return False
     return graph.density == 1.0
-    
+
 def clique(graph, id):
     """ Returns the largest possible clique for the node with given id.
     """
@@ -1092,7 +1092,7 @@ def clique(graph, id):
         except StopIteration:
             a.append(n.id)
     return a
-    
+
 def cliques(graph, threshold=3):
     """ Returns all cliques in the graph with at least the given number of nodes.
     """
@@ -1178,7 +1178,7 @@ def insert(graph, node, a, b):
 #### GRAPH EXPORT ##################################################################################
 
 class GraphRenderer(object):
-    
+
     def __init__(self, graph):
         self.graph = graph
 
@@ -1216,7 +1216,7 @@ HTML, CANVAS, STYLE, CSS, SCRIPT, DATA = \
     "html", "canvas", "style", "css", "script", "data"
 
 class HTMLCanvasRenderer(GraphRenderer):
-    
+
     def __init__(self, graph, **kwargs):
         self.graph    = graph
         self._source  = \
@@ -1278,12 +1278,12 @@ class HTMLCanvasRenderer(GraphRenderer):
         self.default.update(kwargs.pop("default", {}))
         for k, v in kwargs.items():
             setattr(self, k, v)
-    
+
     def _escape(self, s):
         if isinstance(s, str):
             return "\"%s\"" % s.replace("\"", "\\\"")
         return s
-    
+
     def _rgba(self, clr):
         # Color or tuple to a CSS "rgba(255,255,255,1.0)" string.
         return "\"rgba(%s,%s,%s,%.2f)\"" % (int(clr[0]*255), int(clr[1]*255), int(clr[2]*255), clr[3])
@@ -1295,7 +1295,7 @@ class HTMLCanvasRenderer(GraphRenderer):
             This can be the response of an XMLHttpRequest, after wich you move g into your own variable.
         """
         return "".join(self._data())
-    
+
     def _data(self):
         s = []
         s.append("g = new Graph(%s, %s);\n" % (self.ctx, self.distance))
@@ -1441,7 +1441,7 @@ class HTMLCanvasRenderer(GraphRenderer):
             str(self.weighted).lower(),
             str(self.directed).lower()))
         return s
-    
+
     @property
     def canvas(self):
         """ Yields a string of HTML with a <div id="graph"> containing a <script type="text/canvas">.
@@ -1455,7 +1455,7 @@ class HTMLCanvasRenderer(GraphRenderer):
             "</div>"
         ]
         return "".join(s)
-    
+
     @property
     def style(self):
         """ Yields a string of CSS for <div id="graph">.
@@ -1471,7 +1471,7 @@ class HTMLCanvasRenderer(GraphRenderer):
                 "\toverflow: hidden;\n" \
                 "\tborder: 1px solid #ccc;\n" \
             "}" % (self.id, self.id, self.id)
-    
+
     @property
     def html(self):
         """ Yields a string of HTML to visualize the graph using a force-based spring layout.
@@ -1513,7 +1513,7 @@ class HTMLCanvasRenderer(GraphRenderer):
             return self.script
         if type == DATA:
             return self.data
-    
+
     # Backwards compatibility.
     render = serialize
 
@@ -1632,6 +1632,6 @@ def serialize(graph, type=HTML, **kwargs):
         kwargs.setdefault("stylesheet", INLINE)
         r = HTMLCanvasRenderer(graph, **kwargs)
         return r.serialize(type)
-    
+
 # Backwards compatibility.
 write, render = export, serialize

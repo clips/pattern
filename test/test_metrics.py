@@ -24,7 +24,7 @@ except:
 #---------------------------------------------------------------------------------------------------
 
 class TestProfiling(unittest.TestCase):
-    
+
     def setUp(self):
         # Test set for accuracy, precision and recall:
         self.documents = (
@@ -32,7 +32,7 @@ class TestProfiling(unittest.TestCase):
             (None, True),
             (None, False)
         )
-    
+
     def test_duration(self):
         # Assert 0.1 or slightly higher.
         v = metrics.duration(time.sleep, 0.1)
@@ -47,7 +47,7 @@ class TestProfiling(unittest.TestCase):
         v = metrics.confusion_matrix(lambda document: False, self.documents)
         self.assertEqual(v, (0,1,0,2))
         print("pattern.metrics.confusion_matrix()"      )
-    
+
     def test_accuracy(self):
         # Assert 2.0/3.0 (two out of three correct predictions).
         v = metrics.accuracy(lambda document: True, self.documents)
@@ -71,14 +71,14 @@ class TestProfiling(unittest.TestCase):
         v = metrics.recall(lambda document: False, self.documents)
         self.assertEqual(v, 0.0)
         print("pattern.metrics.recall()")
-        
+
     def test_F1(self):
         # Assert 0.8 (F1 for precision=2/3 and recall=1).
         v = metrics.F1(lambda document: True, self.documents)
         self.assertEqual(v, 0.8)
         self.assertEqual(v, metrics.F(lambda document: True, self.documents, beta=1))
         print("pattern.metrics.F1()")
-        
+
     def test_agreement(self):
         # Assert 0.210 (example from http://en.wikipedia.org/wiki/Fleiss'_kappa).
         m = [[0, 0, 0, 0, 14],
@@ -96,7 +96,7 @@ class TestProfiling(unittest.TestCase):
         print("pattern.metrics.agreement()")
 
 class TestTextMetrics(unittest.TestCase):
-    
+
     def setUp(self):
         pass
 
@@ -117,7 +117,7 @@ class TestTextMetrics(unittest.TestCase):
         v = metrics.levenshtein_similarity("gallahad", "g_ll_had")
         self.assertEqual(v, 0.75)
         print("pattern.metrics.levenshtein_similarity()")
-        
+
     def test_dice_coefficient(self):
         # Assert 1.0 (identical strings).
         v = metrics.dice_coefficient("gallahad", "gallahad")
@@ -126,7 +126,7 @@ class TestTextMetrics(unittest.TestCase):
         v = metrics.dice_coefficient("night", "nacht")
         self.assertEqual(v, 0.25)
         print("pattern.metrics.dice_coefficient()")
-        
+
     def test_similarity(self):
         self.assertEqual(
             metrics.levenshtein_similarity("night", "nacht"),
@@ -135,7 +135,7 @@ class TestTextMetrics(unittest.TestCase):
             metrics.dice_coefficient("night", "nacht"),
             metrics.similarity("night", "nacht", metrics.DICE))
         print("pattern.metrics.similarity()")
-            
+
     def test_readability(self):
         # Assert that technical jargon is in the "difficult" range (< 0.30).
         s = "The Australian platypus is seemingly a hybrid of a mammal and reptilian creature."
@@ -149,7 +149,7 @@ class TestTextMetrics(unittest.TestCase):
         v = metrics.readability(s)
         self.assertTrue(v > 0.70)
         print("pattern.metrics.readability()")
-        
+
     def test_intertextuality(self):
         # Evaluate accuracy for plagiarism detection.
         from pattern.db import Datasheet
@@ -161,14 +161,14 @@ class TestTextMetrics(unittest.TestCase):
         self.assertTrue(P > 0.96)
         self.assertTrue(R > 0.94)
         print("pattern.metrics.intertextuality()")
-    
+
     def test_ttr(self):
         # Assert type-token ratio: words = 7, unique words = 6.
         s = "The black cat \n sat on the mat."
         v = metrics.ttr(s)
         self.assertAlmostEqual(v, 0.86, places=2)
         print("pattern.metrics.ttr()")
-    
+
     def test_suffixes(self):
         # Assert base => inflected and reversed inflected => base suffixes.
         s = [("beau", "beaux"), ("jeune", "jeunes"), ("hautain", "hautaines")]
@@ -182,14 +182,14 @@ class TestTextMetrics(unittest.TestCase):
             (1, "in", [("ines", 1.0)]),
             (1, "au", [("aux", 1.0)])])
         print("pattern.metrics.suffixes()")
-        
+
     def test_isplit(self):
         # Assert string.split() iterator.
         v = metrics.isplit("test\nisplit")
         self.assertTrue(isinstance(v, GeneratorType))
         self.assertEqual(list(v), ["test", "isplit"])
         print("pattern.metrics.isplit()")
-    
+
     def test_cooccurrence(self):
         s = "The black cat sat on the mat."
         v = metrics.cooccurrence(s, window=(-1, 1),
@@ -206,7 +206,7 @@ class TestTextMetrics(unittest.TestCase):
         print("pattern.metrics.cooccurrence()")
 
 class TestInterpolation(unittest.TestCase):
-    
+
     def setUp(self):
         pass
 
@@ -215,7 +215,7 @@ class TestInterpolation(unittest.TestCase):
         v = metrics.lerp(100, 200, 0.5)
         self.assertEqual(v, 150.0)
         print("pattern.metrics.lerp()")
-        
+
     def test_smoothstep(self):
         # Assert cubic interpolation.
         v1 = metrics.smoothstep(0.0, 1.0, 0.5)
@@ -225,7 +225,7 @@ class TestInterpolation(unittest.TestCase):
         self.assertTrue(v2 > 0.9)
         self.assertTrue(v3 < 0.1)
         print("pattern.metrics.smoothstep()")
-        
+
     def test_smoothrange(self):
         # Assert nice ranges for line charts.
         v = list(metrics.smoothrange(0.0, 1.0))
@@ -240,7 +240,7 @@ class TestInterpolation(unittest.TestCase):
         print("pattern.metrics.smoothrange()")
 
 class TestStatistics(unittest.TestCase):
-    
+
     def setUp(self):
         pass
 
@@ -249,7 +249,7 @@ class TestStatistics(unittest.TestCase):
         v = metrics.mean([1,2,3,4])
         self.assertEqual(v, 2.5)
         print("pattern.metrics.mean()")
-        
+
     def test_median(self):
         # Assert 2.5 (between 2 and 3).
         v = metrics.median([1,2,3,4])
@@ -260,7 +260,7 @@ class TestStatistics(unittest.TestCase):
         # Assert that empty list raises ValueError.
         self.assertRaises(ValueError, metrics.median, [])
         print("pattern.metrics.median()")
-        
+
     def test_variance(self):
         # Assert 2.5.
         v = metrics.variance([1,2,3,4,5], sample=True)
@@ -269,7 +269,7 @@ class TestStatistics(unittest.TestCase):
         v = metrics.variance([1,2,3,4,5], sample=False)
         self.assertEqual(v, 2.0)
         print("pattern.metrics.variance()")
-        
+
     def test_standard_deviation(self):
         # Assert 2.429 (sample).
         v = metrics.standard_deviation([1,5,6,7,6,8], sample=True)
@@ -278,7 +278,7 @@ class TestStatistics(unittest.TestCase):
         v = metrics.standard_deviation([1,5,6,7,6,8], sample=False)
         self.assertAlmostEqual(v, 2.217, places=3)
         print("pattern.metrics.standard_deviation()")
-    
+
     def test_histogram(self):
         # Assert 1 bin.
         v = metrics.histogram([1,2,3,4], k=0)
@@ -294,7 +294,7 @@ class TestStatistics(unittest.TestCase):
         self.assertTrue(v[0] == [100])
         self.assertTrue(v[1] == [1,2,3,4])
         print("pattern.metrics.histogram()")
-    
+
     def test_moment(self):
         # Assert 0.0 (1st central moment = 0.0).
         v = metrics.moment([1,2,3,4,5], n=1)
@@ -303,7 +303,7 @@ class TestStatistics(unittest.TestCase):
         v = metrics.moment([1,2,3,4,5], n=2)
         self.assertEqual(v, 2.0)
         print("pattern.metrics.moment()")
-    
+
     def test_skewness(self):
         # Assert < 0.0 (few low values).
         v = metrics.skewness([1,100,101,102,103])
@@ -315,7 +315,7 @@ class TestStatistics(unittest.TestCase):
         v = metrics.skewness([1,2,3,4])
         self.assertTrue(v == 0.0)
         print("pattern.metrics.skewness()")
-        
+
     def test_kurtosis(self):
         # Assert -1.2 for the uniform distribution.
         a = 1
@@ -323,7 +323,7 @@ class TestStatistics(unittest.TestCase):
         v = metrics.kurtosis([float(i-a)/(b-a) for i in range(a,b)])
         self.assertAlmostEqual(v, -1.2, places=3)
         print("pattern.metrics.kurtosis()")
-        
+
     def test_quantile(self):
         # Assert 2.5 (quantile with p=0.5 == median).
         v = metrics.quantile([1,2,3,4], p=0.5, a=1, b=-1, c=0, d=1)
@@ -332,7 +332,7 @@ class TestStatistics(unittest.TestCase):
         v = metrics.quantile([1,2,3,4], p=0.5, a=0.5, b=0, c=1, d=0)
         self.assertEqual(v, 3.0)
         return "pattern.metrics.quantile()"
-    
+
     def test_boxplot(self):
         # Different a,b,c,d quantile parameters produce different results.
         # By approximation, assert (53, 79.5, 84.5, 92, 98).
@@ -346,7 +346,7 @@ class TestStatistics(unittest.TestCase):
         print("pattern.metrics.boxplot()")
 
 class TestStatisticalTests(unittest.TestCase):
-    
+
     def setUp(self):
         pass
 
@@ -357,7 +357,7 @@ class TestStatisticalTests(unittest.TestCase):
         v = metrics.fisher_exact_test(a=45, b=15, c=75, d=45)
         self.assertAlmostEqual(v, 0.1307, places=4)
         print("pattern.metrics.fisher_test()")
-    
+
     def test_chi_squared(self):
         # Assert chi-squared test (upper tail).
         o1, e1 = [[44, 56]], [[50, 50]]
@@ -378,7 +378,7 @@ class TestStatisticalTests(unittest.TestCase):
         self.assertAlmostEqual(v4[0],  3.4177, places=4)
         self.assertAlmostEqual(v5[0],  1.8755, places=4)
         print("pattern.metrics.chi2()")
-    
+
     def test_chi_squared_p(self):
         # Assert chi-squared P-value (upper tail).
         for df, X2 in [
@@ -391,7 +391,7 @@ class TestStatisticalTests(unittest.TestCase):
                 v = metrics.chi2p(x2, df, tail=metrics.UPPER)
                 self.assertTrue(v < (0.05, 0.025, 0.01, 0.005)[i])
         print("pattern.metrics.chi2p()")
-        
+
     def test_kolmogorov_smirnov(self):
         v = metrics.ks2([1, 2, 3], [1, 2, 4])
         self.assertAlmostEqual(v[0],  0.3333, places=4)
@@ -399,22 +399,22 @@ class TestStatisticalTests(unittest.TestCase):
         print("pattern.metrics.ks2()")
 
 class TestSpecialFunctions(unittest.TestCase):
-    
+
     def setUp(self):
         pass
-    
+
     def test_gamma(self):
         # Assert complete gamma function.
         v = metrics.gamma(0.5)
         self.assertAlmostEqual(v, math.sqrt(math.pi), places=4)
         print("pattern.metrics.gamma()")
-    
+
     def test_gammai(self):
         # Assert incomplete gamma function.
         v = metrics.gammai(a=1, x=2)
         self.assertAlmostEqual(v, 0.1353, places=4)
         print("pattern.metrics.gammai()")
-    
+
     def test_erfc(self):
         # Assert complementary error function.
         for x, y in [
@@ -431,7 +431,7 @@ class TestSpecialFunctions(unittest.TestCase):
           ( 3.00, 0.000)]:
             self.assertAlmostEqual(metrics.erfc(x), y, places=3)
         print("pattern.metrics.erfc()")
-        
+
     def test_kolmogorov(self):
         # Assert Kolmogorov limit distribution.
         self.assertAlmostEqual(metrics.kolmogorov(0.0), 1.0000, places=4)

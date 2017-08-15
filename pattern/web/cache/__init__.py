@@ -49,7 +49,7 @@ def date_modified(path):
     return datetime.datetime.fromtimestamp(os.stat(path)[8])
 
 class Cache(object):
-    
+
     def __init__(self, path=os.path.join(MODULE, "tmp")):
         """ Cache with data stored as files with hashed filenames.
             Content retrieved from URLs and search engines are stored in cache for performance.
@@ -57,7 +57,7 @@ class Cache(object):
             sets of downloaded data. If path=TMP, cached items are stored in a temporary folder.
         """
         self.path = path
-        
+
     def _get_path(self):
         return self._path
     def _set_path(self, path):
@@ -65,17 +65,17 @@ class Cache(object):
             os.makedirs(path)
         self._path = path
     path = property(_get_path, _set_path)
-    
+
     def _hash(self, k):
         k = encode_utf8(k) # MD5 works on Python byte strings.
         return os.path.join(self.path, md5(k).hexdigest())
-    
+
     def __len__(self):
         return len(glob.glob(os.path.join(self.path, "*")))
 
     def __contains__(self, k):
         return os.path.exists(self._hash(k))
-    
+
     def __getitem__(self, k):
         return self.get(k)
 
@@ -110,7 +110,7 @@ class Cache(object):
         """
         p = self._hash(k)
         return os.path.exists(p) and (date_now() - date_modified(p)).days or 0
-            
+
     def clear(self, age=None):
         """ Clears all items from the cache (whose age is the given amount of days or older).
         """
@@ -118,5 +118,5 @@ class Cache(object):
         for p in glob.glob(os.path.join(self.path, "*")):
             if age is None or (n - date_modified(p)).days >= age:
                 os.unlink(p)
-        
+
 cache = Cache()

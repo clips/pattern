@@ -135,12 +135,12 @@ def find_lemmata(tokens):
     return tokens
 
 class Parser(_Parser):
-    
+
     def find_tokens(self, tokens, **kwargs):
         kwargs.setdefault("abbreviations", ABBREVIATIONS)
         kwargs.setdefault("replace", replacements)
         #return _Parser.find_tokens(self, tokens, **kwargs)
-        
+
         s = _Parser.find_tokens(self, tokens, **kwargs)
         s = [s.replace(" &contraction ;", "'").replace("XXX -", "-") for s in s]
         return s
@@ -156,7 +156,7 @@ class Parser(_Parser):
         return _Parser.find_tags(self, tokens, **kwargs)
 
 class Sentiment(_Sentiment):
-    
+
     def load(self, path=None):
         _Sentiment.load(self, path)
 
@@ -204,7 +204,7 @@ def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
     """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
-    
+
 def tag(s, tokenize=True, encoding="utf-8", **kwargs):
     """ Returns a list of (token, tag)-tuples from the given string.
     """
@@ -238,7 +238,7 @@ def subjectivity(s, **kwargs):
     """ Returns the sentence subjectivity (objective/subjective) between 0.0 and 1.0.
     """
     return sentiment(s, **kwargs)[1]
-    
+
 def positive(s, threshold=0.1, **kwargs):
     """ Returns True if the given sentence has a positive sentiment (polarity >= threshold).
     """

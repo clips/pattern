@@ -101,7 +101,7 @@ for sentence in parsetree("i gatti neri che sono la mia", language="it", tagset=
     for word in sentence.words:
         if word.tag == PRON:
             print(word)
-            
+
 # The language() function in pattern.text can be used to guess the language of a text.
 # It returns a (language code, confidence)-tuple.
 # It can guess en, es, de, fr, it, nl.

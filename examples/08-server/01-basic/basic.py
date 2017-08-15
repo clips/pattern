@@ -61,7 +61,7 @@ def error_404(error):
         error.message,
         error.traceback
     )
-    
+
 # URL handler functions can take positional arguments and keyword arguments.
 # Positional arguments correspond to the URL path.
 # Keyword arguments correspond to query parameters.
@@ -80,7 +80,7 @@ def products(name):
         "<body>View product: " + (name or "") + "</body>",
         "</html>"
     )
-    
+
 # To catch any kind of subpath, use Python's *path notation.
 # For http://127.0.0.1:8080/products2/, path=().
 # For http://127.0.0.1:8080/products2/iphone, path=("iphone",).
@@ -97,7 +97,7 @@ def products2(*path):
         return "product reviews for %s" % path[0]
     # Uncaught subpaths raise a 404 error.
     raise HTTPError(404)
-    
+
 # You can also use keyword arguments.
 # These correspond to query parameters (i.e., the "?x=y" part of a URL).
 # Query parameters from HTML forms can be sent to the server by GET or POST.
@@ -121,7 +121,7 @@ def review(text=""):
         "<br><input type='submit'>",
         "</form>"
     )
-    
+
 # To accept any number of query parameters, use Python's **data notation.
 # The keyword argument "data" will be a dictionary with all query parameters.
 

@@ -103,7 +103,7 @@ def wotan2penntreebank(token, tag):
                 if a in tag:
                     return (token, b)
     return (token, tag)
-    
+
 def wotan2universal(token, tag):
     """ Converts a WOTAN tag to a universal tag.
         For example: bokkenrijders/N(soort,mv,neut) => bokkenrijders/NOUN
@@ -147,7 +147,7 @@ class Parser(_Parser):
 
     def find_lemmata(self, tokens, **kwargs):
         return find_lemmata(tokens)
-        
+
     def find_tags(self, tokens, **kwargs):
         if kwargs.get("tagset") in (PENN, None):
             kwargs.setdefault("map", lambda token, tag: wotan2penntreebank(token, tag))
@@ -158,7 +158,7 @@ class Parser(_Parser):
         return _Parser.find_tags(self, tokens, **kwargs)
 
 class Sentiment(_Sentiment):
-    
+
     def load(self, path=None):
         _Sentiment.load(self, path)
         # Map "verschrikkelijk" to adverbial "verschrikkelijke" (+1%)
@@ -212,7 +212,7 @@ def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
     """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
-    
+
 def tag(s, tokenize=True, encoding="utf-8", **kwargs):
     """ Returns a list of (token, tag)-tuples from the given string.
     """
@@ -245,7 +245,7 @@ def subjectivity(s, **kwargs):
     """ Returns the sentence subjectivity (objective/subjective) between 0.0 and 1.0.
     """
     return sentiment(s, **kwargs)[1]
-    
+
 def positive(s, threshold=0.1, **kwargs):
     """ Returns True if the given sentence has a positive sentiment (polarity >= threshold).
     """

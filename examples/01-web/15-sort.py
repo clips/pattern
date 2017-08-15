@@ -30,6 +30,6 @@ results = sort(
      strict = True,        # Wraps the query in quotes, i.e. 'mac sweet'.
     reverse = True,        # Reverses term and context: 'sweet mac' instead of 'mac sweet'.
      cached = True)
-    
+
 for weight, term in results:
     print("%5.2f" % (weight * 100) + "%", term)

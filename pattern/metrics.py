@@ -30,18 +30,18 @@ from random      import gauss
 #--- FREQUENCY DICT --------------------------------------------------------------------------------
 
 class freq(Counter):
-    
+
     def __init__(self, *args, **kwargs):
         """ A dictionary with sorted float values (by default, 0.0).
         """
         Counter.__init__(self, dict(*args, **kwargs))
-        
+
     def __missing__(self):
         return 0.0
-        
+
     def __iter__(self):
         return iter(self.keys())
-        
+
     def items(self, relative=False):
         """ Returns a list of (key, value)-tuples sorted by value, highest-first.
             With relative=True, the sum of values is 1.0.
@@ -51,13 +51,13 @@ class freq(Counter):
             n = sum(v for k, v in a) or 1.
             a = [(k, v / n) for v, k in a]
         return a
-        
+
     def keys(self):
         return [k for k, v in self.items()]
-        
+
     def values(self, relative=False):
         return [v for k, v in self.items(relative)]
-        
+
     def copy(self):
         return freq(self)
 
@@ -108,12 +108,12 @@ def sizeof(object):
     """ Returns the memory size of the given object (in bytes).
     """
     return sys.getsizeof(object)
-    
+
 def kb(object):
     """ Returns the memory size of the given object (in kilobytes).
     """
     return sys.getsizeof(object) * 0.01
-    
+
 #### PRECISION & RECALL ############################################################################
 
 ACCURACY, PRECISION, RECALL, F1_SCORE = "accuracy", "precision", "recall", "F1-score"
@@ -177,12 +177,12 @@ def recall(classify=lambda document:False, documents=[], average=None):
     """ Returns the percentage of positive cases correctly classified as positive.
     """
     return test(classify, documents, average)[2]
-    
+
 def F1(classify=lambda document:False, documents=[], average=None):
     """ Returns the harmonic mean of precision and recall.
     """
     return test(classify, documents, average)[3]
-    
+
 def F(classify=lambda document:False, documents=[], beta=1, average=None):
     """ Returns the weighted harmonic mean of precision and recall,
         where recall is beta times more important than precision.
@@ -196,7 +196,7 @@ def sensitivity(classify=lambda document:False, documents=[]):
     """ Returns the percentage of positive cases correctly classified as positive (= recall).
     """
     return recall(classify, document, average=None)
-    
+
 def specificity(classify=lambda document:False, documents=[]):
     """ Returns the percentage of negative cases correctly classified as negative.
     """
@@ -261,7 +261,7 @@ def fleiss_kappa(m):
     Pm = sum(P) / N
     K = (Pm - Pe) / ((1 - Pe) or 1) # kappa
     return K
-    
+
 agreement = fleiss_kappa
 
 #### TEXT METRICS ##################################################################################
@@ -287,14 +287,14 @@ def levenshtein(string1, string2):
                 replace += 1
             current[j] = min(insert, delete, replace)
     return current[n]
-    
+
 edit_distance = levenshtein
 
 def levenshtein_similarity(string1, string2):
     """ Returns the similarity of string1 and string2 as a number between 0.0 and 1.0.
     """
     return 1 - levenshtein(string1, string2) / float(max(len(string1),  len(string2), 1.0))
-    
+
 def dice_coefficient(string1, string2):
     """ Returns the similarity between string1 and string1 as a number between 0.0 and 1.0,
         based on the number of shared bigrams, e.g., "night" and "nacht" have one common bigram "ht".
@@ -548,7 +548,7 @@ def cooccurrence(iterable, window=(-1,-1), term1=lambda x: True, term2=lambda x:
             # Slide window.
             q.popleft()
     return m
-    
+
 co_occurrence = cooccurrence
 
 ## Words occuring before and after the word "cat":
@@ -579,7 +579,7 @@ def lerp(a, b, t):
     if t > 1.0:
         return b
     return a + (b - a) * t
-    
+
 def smoothstep(a, b, x):
     """ Returns the Hermite interpolation (cubic spline) for x between a and b.
         The return value between 0.0-1.0 eases (slows down) as x nears a or b.
@@ -673,7 +673,7 @@ def standard_deviation(iterable, *args, **kwargs):
         High standard deviation => values are spread out over a large range.
     """
     return sqrt(variance(iterable, *args, **kwargs))
-    
+
 stdev = standard_deviation
 
 def simple_moving_average(iterable, k=10):
@@ -685,7 +685,7 @@ def simple_moving_average(iterable, k=10):
         j = m + k + 1
         w = a[max(0,i):j]
         yield float(sum(w)) / (len(w) or 1)
-      
+
 sma = simple_moving_average
 
 def histogram(iterable, k=10, interval=None, *args, **kwargs):
@@ -836,7 +836,7 @@ def fisher_exact_test(a, b, c, d, **kwargs):
         [p(a+i, b-i, c-i, d+i) for i in range(1, min(int(b), int(c)) + 1)] + \
         [p(a-i, b+i, c+i, d-i) for i in range(1, min(int(a), int(d)) + 1)]
     return sum(v for v in s if v <= cutoff) or 0.0
-    
+
 fisher = fisher_test = fisher_exact_test
 
 #--- PEARSON'S CHI-SQUARED TEST --------------------------------------------------------------------
@@ -889,7 +889,7 @@ def pearson_chi_squared_test(observed=[], expected=[], df=None, tail=UPPER):
                 x2 += (o[i][j] - e[i][j]) ** 2.0 / e[i][j]
     p = gammai(df * 0.5, x2 * 0.5, tail)
     return (x2, p)
-    
+
 X2 = x2 = chi2 = chi_square = chi_squared = pearson_chi_squared_test
 
 def chi2p(x2, df=1, tail=UPPER):
@@ -924,7 +924,7 @@ def pearson_log_likelihood_ratio(observed=[], expected=[], df=None, tail=UPPER):
     g = g * 2
     p = gammai(df * 0.5, g * 0.5, tail)
     return (g, p)
-    
+
 llr = likelihood = pearson_log_likelihood_ratio
 
 #--- KOLMOGOROV-SMIRNOV TWO SAMPLE TEST ------------------------------------------------------------
@@ -996,7 +996,7 @@ lgamma = gammaln
 def gammai(a, x, tail=UPPER):
     """ Returns the incomplete gamma function for LOWER or UPPER tail.
     """
-    
+
     # Series approximation.
     def _gs(a, x, epsilon=3.e-7, iterations=700):
         ln = gammaln(a)
@@ -1008,7 +1008,7 @@ def gammai(a, x, tail=UPPER):
             if abs(d) < abs(s) * epsilon:
                 return (s * exp(-x + a * log(x) - ln), ln)
         raise StopIteration(abs(d), abs(s) * epsilon)
-    
+
     # Continued fraction approximation.
     def _gf(a, x, epsilon=3.e-7, iterations=200):
         ln = gammaln(a)
@@ -1088,7 +1088,7 @@ def pdf(x, mean=0.0, stdev=1.0):
     """
     u = float(x - mean) / abs(stdev)
     return (1 / (sqrt(2*pi) * abs(stdev))) * exp(-u*u / 2)
-    
+
 normpdf = pdf
 
 def norm(n, mean=0.0, stdev=1.0):

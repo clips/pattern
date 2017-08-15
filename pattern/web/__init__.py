@@ -1051,7 +1051,7 @@ class Result(dict):
     @property
     def likes(self):
         return self.votes
-        
+
     @property
     def retweets(self):
         return self.shares
@@ -1080,7 +1080,7 @@ class Result(dict):
 
     def setdefault(self, k, v=None):
         return dict.setdefault(self, u(k), self._format(v))
-        
+
     def update(self, *args, **kwargs):
         dict.update(self, [(u(k), self._format(v)) for k, v in dict(*args, **kwargs).items()])
 
@@ -1699,7 +1699,7 @@ class Twitter(SearchEngine):
             else:
                 self._pagination[k] = id
         return results
-        
+
     def profile(self, query, start=1, count=10, **kwargs):
         """ Returns a list of results for the given author id, alias or search query.
         """
@@ -1925,7 +1925,7 @@ class MediaWiki(SearchEngine):
             start = data.get("query-continue", {}).get("allpages", {})
             start = start.get("apcontinue", start.get("apfrom", -1))
         raise StopIteration
-    
+
     # Backwards compatibility.
     list = index
 
@@ -2119,7 +2119,7 @@ class MediaWikiArticle(object):
     @property
     def html(self):
         return self.source
-        
+
     @property
     def src(self):
         return self.source
@@ -2156,7 +2156,7 @@ class MediaWikiSection(object):
     @property
     def html(self):
         return self.source
-        
+
     @property
     def src(self):
         return self.source
@@ -2242,7 +2242,7 @@ class MediaWikiTable(object):
     @property
     def html(self):
         return self.source
-        
+
     @property
     def src(self):
         return self.source
@@ -2793,7 +2793,7 @@ class Facebook(SearchEngine):
             locale = data.get("hometown", {}).get("name", ""),
              votes = int(data.get("likes", 0)) # (for product pages)
         )
-        
+
     page = profile
 
 #--- PRODUCT REVIEWS -------------------------------------------------------------------------------
@@ -3078,7 +3078,7 @@ class Node(object):
         """ Executes the visit function on this node and each of its child nodes.
         """
         visit(self); [node.traverse(visit) for node in self.children]
-        
+
     def remove(self, child):
         """ Removes the given child node (and all nested nodes).
         """
@@ -3098,7 +3098,7 @@ class Node(object):
         return "Node(type=%s)" % repr(self.type)
     def __str__(self):
         return u(self._p)
-        
+
     def __call__(self, *args, **kwargs):
         pass
 
@@ -3288,7 +3288,7 @@ DOM = Document
 
 def _encode_space(s):
     return s.replace(" ", "<!space!>")
-    
+
 def _decode_space(s):
     return s.replace("<!space!>", " ")
 
@@ -3350,7 +3350,7 @@ class Selector(object):
             for e in e.children:
                 if isinstance(e, Element):
                     return e
-                
+
     def _next_sibling(self, e):
         """ Returns the first next sibling Element of the given element.
         """
@@ -3358,7 +3358,7 @@ class Selector(object):
             e = e.next_element
             if isinstance(e, Element):
                 return e
-                
+
     def _previous_sibling(self, e):
         """ Returns the last previous sibling Element of the given element.
         """
@@ -3366,7 +3366,7 @@ class Selector(object):
             e = e.previous_element
             if isinstance(e, Element):
                 return e
-                
+
     def _contains(self, e, s):
         """ Returns True if string s occurs in the given element (case-insensitive).
         """
@@ -3792,7 +3792,7 @@ class DocumentParserError(Exception):
     pass
 
 class DocumentParser(object):
-    
+
     def __init__(self, path, *args, **kwargs):
         """ Parses a text document (e.g., .pdf or .docx),
             given as a file path or a string.
@@ -3813,7 +3813,7 @@ class DocumentParser(object):
         """ Returns a plaintext Unicode string parsed from the given document.
         """
         return plaintext(decode_utf8(self.open(path).read()))
-        
+
     @property
     def string(self):
         return self.content
@@ -3868,7 +3868,7 @@ class DOCXError(DocumentParserError):
     pass
 
 class DOCX(DocumentParser):
-    
+
     def _parse(self, path, *args, **kwargs):
         from docx import Document
         document = Document(path)
@@ -3887,7 +3887,7 @@ def parsepdf(path, *args, **kwargs):
     """ Returns the content as a Unicode string from the given .pdf file.
     """
     return PDF(path, *args, **kwargs).content
-    
+
 def parsedocx(path, *args, **kwargs):
     """ Returns the content as a Unicode string from the given .docx file.
     """

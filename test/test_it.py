@@ -28,7 +28,7 @@ class TestInflection(unittest.TestCase):
 
     def setUp(self):
         pass
-        
+
     def test_article(self):
         # Assert definite and indefinite article inflection.
         for a, n, g in (
@@ -54,7 +54,7 @@ class TestInflection(unittest.TestCase):
         self.assertEqual(v, "un'amica")
         print("pattern.it.article()")
         print("pattern.it.referenced()")
-    
+
     def test_gender(self):
         # Assert the accuracy of the gender disambiguation algorithm.
         from pattern.db import Datasheet
@@ -69,7 +69,7 @@ class TestInflection(unittest.TestCase):
             n += 2
         self.assertTrue(float(i) / n > 0.92)
         print("pattern.it.gender()")
-    
+
     def test_pluralize(self):
         # Assert the accuracy of the pluralization algorithm.
         from pattern.db import Datasheet
@@ -80,7 +80,7 @@ class TestInflection(unittest.TestCase):
             n += 1
         self.assertTrue(float(i) / n > 0.93)
         print("pattern.it.pluralize()")
-        
+
     def test_singularize(self):
         # Assert the accuracy of the singularization algorithm.
         from pattern.db import Datasheet
@@ -91,10 +91,10 @@ class TestInflection(unittest.TestCase):
             n += 1
         self.assertTrue(float(i) / n > 0.84)
         print("pattern.it.singularize()")
-        
+
     def test_predicative(self):
         # Assert the accuracy of the predicative algorithm ("cruciali" => "cruciale").
-        
+
         from pattern.db import Datasheet
         i, n = 0, 0
         for pos, sg, pl, mf in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-it-wiktionary.csv")):
@@ -116,7 +116,7 @@ class TestInflection(unittest.TestCase):
             n += 1
         self.assertTrue(float(i) / n > 0.81)
         print("pattern.it.inflect.verbs.find_lemma()")
-        
+
     def test_find_lexeme(self):
         # Assert the accuracy of the verb conjugation algorithm.
         i, n = 0, 0
@@ -204,14 +204,14 @@ class TestInflection(unittest.TestCase):
         self.assertTrue((it.PRESENT, 3, it.SG) in it.tenses("è"))
         self.assertTrue("2sg" in it.tenses("sei"))
         print("pattern.it.tenses()")
-        
+
 #---------------------------------------------------------------------------------------------------
 
 class TestParser(unittest.TestCase):
-    
+
     def setUp(self):
         pass
-        
+
     def test_find_lemmata(self):
         # Assert lemmata for nouns, adjectives, verbs and determiners.
         v = it.parser.find_lemmata([
@@ -261,7 +261,7 @@ class TestParser(unittest.TestCase):
         v = it.tag("il gatto nero")
         self.assertEqual(v, [("il", "DT"), ("gatto", "NN"), ("nero", "JJ")])
         print("pattern.it.tag()")
-    
+
     def test_command_line(self):
         # Assert parsed output from the command-line (example from the documentation).
         p = ["python", "-m", "pattern.it", "-s", "Il gatto nero.", "-OTCRL"]

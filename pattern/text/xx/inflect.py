@@ -28,7 +28,7 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
-    
+
 sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))
 
 # Import Verbs base class and verb tenses.
@@ -101,7 +101,7 @@ def singularize(word, pos=NOUN, custom={}):
 # The verb table was trained on CELEX and contains the top 2000 most frequent verbs.
 
 class Verbs(_Verbs):
-    
+
     def __init__(self):
         _Verbs.__init__(self, os.path.join(MODULE, "xx-verbs.txt"),
             language = "xx",
@@ -109,7 +109,7 @@ class Verbs(_Verbs):
               format = [0, 1, 2, 3, 7, 8, 17, 18, 19, 23, 25, 24, 16, 9, 10, 11, 15, 33, 26, 27, 28, 32],
              default = {}
             )
-    
+
     def find_lemma(self, verb):
         """ Returns the base form of the given inflected verb, using a rule-based approach.
         """

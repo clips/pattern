@@ -285,7 +285,7 @@ def approximate(word, amount=1, plural={}):
     h = hundreds==2 and "hundreds of " or (hundreds==1 and "tens of " or "")
     t = thousands>0 and pluralize(ORDER[thousands])+" of " or ""
     return "%s%s%s" % (h, t, p)
-        
+
 #print approximate("chicken", 0)
 #print approximate("chicken", 1)
 #print approximate("chicken", 2)
@@ -336,7 +336,7 @@ def count(*args, **kwargs):
     return "".join(phrase[:-1])
 
 quantify = count
-    
+
 #print count(["goose", "goose", "duck", "chicken", "chicken", "chicken"])
 #print count(["penguin", "polar bear"])
 #print count(["whale"])

@@ -49,13 +49,13 @@ else:
 #--- CONCEPT ---------------------------------------------------------------------------------------
 
 class Concept(Node):
-    
+
     def __init__(self, *args, **kwargs):
         """ A concept in the sematic network.
         """
         Node.__init__(self, *args, **kwargs)
         self._properties = None
-    
+
     @property
     def halo(self, depth=2):
         """ Returns the concept halo: a list with this concept + surrounding concepts.
@@ -63,7 +63,7 @@ class Concept(Node):
             since the halo will include latent properties linked to nearby concepts.
         """
         return self.flatten(depth=depth)
-        
+
     @property
     def properties(self):
         """ Returns the top properties in the concept halo, sorted by betweenness centrality.
@@ -88,7 +88,7 @@ def properties(concept, depth=2, centrality=BETWEENNESS):
 #--- RELATION --------------------------------------------------------------------------------------
 
 class Relation(Edge):
-    
+
     def __init__(self, *args, **kwargs):
         """ A relation between two concepts, with an optional context.
             For example, "Felix is-a cat" is in the "media" context, "tiger is-a cat" in "nature".
@@ -113,7 +113,7 @@ COMMONALITY = (
 #--- COMMONSENSE -----------------------------------------------------------------------------------
 
 class Commonsense(Graph):
-    
+
     def __init__(self, data=os.path.join(MODULE, "commonsense.csv"), **kwargs):
         """ A semantic network of commonsense, using different relation types:
             - is-a,
@@ -141,11 +141,11 @@ class Commonsense(Graph):
     @property
     def concepts(self):
         return self.nodes
-        
+
     @property
     def relations(self):
         return self.edges
-        
+
     @property
     def properties(self):
         """ Yields all concepts that are properties (i.e., adjectives).
@@ -156,21 +156,21 @@ class Commonsense(Graph):
             self._properties = (e for e in self.edges if e.context == "properties")
             self._properties = set(chain(*((e.node1.id, e.node2.id) for e in self._properties)))
         return self._properties
-    
+
     def add_node(self, id, *args, **kwargs):
         """ Returns a Concept (Node subclass).
         """
         self._properties = None
         kwargs.setdefault("base", Concept)
         return Graph.add_node(self, id, *args, **kwargs)
-        
+
     def add_edge(self, id1, id2, *args, **kwargs):
         """ Returns a Relation between two concepts (Edge subclass).
         """
         self._properties = None
         kwargs.setdefault("base", Relation)
         return Graph.add_edge(self, id1, id2, *args, **kwargs)
-        
+
     def remove(self, x):
         self._properties = None
         Graph.remove(self, x)
@@ -202,12 +202,12 @@ class Commonsense(Graph):
                 p = self.shortest_path(p1, p2, heuristic=h)
                 w += 1.0 / (p is None and 1e10 or len(p))
         return w / k
-        
+
     def nearest_neighbors(self, concept, concepts=[], k=3):
         """ Returns the k most similar concepts from the given list.
         """
         return sorted(concepts, key=lambda candidate: self.similarity(concept, candidate, k), reverse=True)
-        
+
     similar = neighbors = nn = nearest_neighbors
 
     def taxonomy(self, concept, depth=3, fringe=2):
@@ -224,7 +224,7 @@ class Commonsense(Graph):
         g = g.fringe(depth=fringe)
         g = [self[n.id] for n in g if n != concept]
         return g
-        
+
     field = semantic_field = taxonomy
 
 #g = Commonsense()
@@ -282,7 +282,7 @@ def download(path=os.path.join(MODULE, "commonsense.csv"), threshold=50):
     f.write(BOM_UTF8)
     f.write("\n".join(s))
     f.close()
-    
+
 def json():
     """ Returns a JSON-string with the data from commonsense.csv.
         Each relation is encoded as a [concept1, relation, concept2, context, weight] list.

@@ -31,7 +31,7 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
-    
+
 sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))
 
 from pattern.text import Verbs as _Verbs
@@ -632,7 +632,7 @@ def singularize(word, pos=NOUN, custom={}):
 #### VERB CONJUGATION ##############################################################################
 
 class Verbs(_Verbs):
-    
+
     def __init__(self):
         _Verbs.__init__(self, os.path.join(MODULE, "en-verbs.txt"),
             language = "en",
@@ -647,7 +647,7 @@ class Verbs(_Verbs):
                 26: 33, 27: 33, 28: 33,         # past singular negated
                 29: 32, 30: 32, 31: 32, 32: 33  # past plural negated
             })
-    
+
     def find_lemma(self, verb):
         """ Returns the base form of the given inflected verb, using a rule-based approach.
             This is problematic if a verb ending in -e is given in the past tense or gerund.

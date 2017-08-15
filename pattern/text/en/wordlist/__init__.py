@@ -23,17 +23,17 @@ except:
     MODULE = ""
 
 class Wordlist(object):
-    
+
     def __init__(self, name, data=[]):
         """ Lazy read-only list of words.
         """
         self._name = name
         self._data = data
-    
+
     def _load(self):
         if not self._data:
             self._data = open(os.path.join(MODULE, self._name+".txt")).read().split(", ")
-        
+
     def __repr__(self):
         self._load(); return repr(self._data)
     def __iter__(self):

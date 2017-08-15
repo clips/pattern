@@ -14,7 +14,7 @@ from pattern.graph import Graph, CENTRALITY
 g = Graph()
 for n in ("tree", "nest", "bird", "fly", "insect", "ant"):
     g.add_node(n)
-    
+
 g.add_edge("tree", "nest")  # Trees have bird nests.
 g.add_edge("nest", "bird")  # Birds live in nests.
 g.add_edge("bird", "fly")   # Birds eat flies.
