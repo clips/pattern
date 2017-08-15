@@ -256,7 +256,7 @@ class TestURL(unittest.TestCase):
             "oauth_nonce": "0",
             "oauth_timestamp": 0,
             "oauth_consumer_key": "key",
-            "oauth_signature_method": "HMAC-SHA1" 
+            "oauth_signature_method": "HMAC-SHA1"
         }
         v = web.oauth.sign("http://yboss.yahooapis.com/ysearch/web", data, secret="secret")
         self.assertEqual(v, "RtTu8dxSp3uBzSbsuLAXIWOKfyI=")
@@ -365,10 +365,10 @@ class TestPlaintext(unittest.TestCase):
     def test_encode_entities(self):
         # Assert HTML entity encoder (e.g., "&" => "&&amp;")
         for a, b in (
-          ("&#201;", "&#201;"), 
-          ("&", "&amp;"), 
-          ("<", "&lt;"), 
-          (">", "&gt;"), 
+          ("&#201;", "&#201;"),
+          ("&", "&amp;"),
+          ("<", "&lt;"),
+          (">", "&gt;"),
           ('"', "&quot;"),
           ("'", "&#39;")):
             self.assertEqual(web.encode_entities(a), b)
@@ -422,7 +422,7 @@ class TestPlaintext(unittest.TestCase):
         print("pattern.web.collapse_linebreaks()")
     
     def test_plaintext(self):
-        # Assert plaintext: 
+        # Assert plaintext:
         # - strip <script>, <style>, <form>, <!-- --> elements,
         # - strip tags,
         # - decode entities,
@@ -460,7 +460,7 @@ class TestPlaintext(unittest.TestCase):
 class TestSearchEngine(unittest.TestCase):
     
     def setUp(self):
-        # Test data for all search engines: 
+        # Test data for all search engines:
         # {api: (source, license, Engine)}.
         self.api = {
             "Google": (web.GOOGLE,      web.GOOGLE_LICENSE,      web.Google),
@@ -477,9 +477,9 @@ class TestSearchEngine(unittest.TestCase):
     def _test_search_engine(self, api, source, license, Engine, query="today", type=web.SEARCH):
         # Assert SearchEngine standard interface for any api:
         # Google, Yahoo, Bing, Twitter, Wikipedia, Flickr, Facebook, ProductWiki, Newsfeed.
-        # SearchEngine.search() returns a list of Result objects with unicode fields, 
+        # SearchEngine.search() returns a list of Result objects with unicode fields,
         # except Wikipedia which returns a WikipediaArticle (MediaWikiArticle subclass).
-        if api == "Yahoo" and license == ("",""): 
+        if api == "Yahoo" and license == ("",""):
             return
         t = time.time()
         e = Engine(license=license, throttle=0.25, language="en")
@@ -546,7 +546,7 @@ class TestSearchEngine(unittest.TestCase):
     def _test_results(self, api, source, license, Engine, type=web.SEARCH, query="today", baseline=[6,6,6,0]):
         # Assert SearchEngine result content.
         # We expect to find http:// URL's and descriptions containing the search query.
-        if api == "Yahoo" and license == ("",""): 
+        if api == "Yahoo" and license == ("",""):
             return
         i1 = 0
         i2 = 0
@@ -629,7 +629,7 @@ class TestSearchEngine(unittest.TestCase):
         
     def _test_search_image_size(self, api, source, license, Engine):
         # Assert image URL's for different sizes actually exist.
-        if api == "Yahoo" and license == ("",""): 
+        if api == "Yahoo" and license == ("",""):
             return
         e = Engine(license, throttle=0.25)
         for size in (web.TINY, web.SMALL, web.MEDIUM, web.LARGE):

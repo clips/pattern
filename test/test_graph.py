@@ -30,11 +30,11 @@ class TestUtilityFunctions(unittest.TestCase):
                 return MyObject(graph.deepcopy(self.i))
         # Assert deep copy for different types.
         for o1 in (
-          None, True, False, 
+          None, True, False,
           "a",
           1, 1.0, int(1), complex(1),
           list([1]), tuple([1]), set([1]), frozenset([1]),
-          dict(a=1), {frozenset(["a"]):1}, {MyObject(1):1}, 
+          dict(a=1), {frozenset(["a"]):1}, {MyObject(1):1},
           MyObject(1)):
             o2 = graph.deepcopy(o1)
             if isinstance(o2, (list, tuple, set, dict, MyObject)):
@@ -466,39 +466,39 @@ class TestGraphTraversal(unittest.TestCase):
         for i in range(len(a)):
             a[i] = sorted((id1, sorted((id2, round(w,2)) for id2, w in p.items())) for id1, p in a[i].items())
         self.assertEqual(a[0], [
-            ("a", [("b", 0.75), ("c", 1.0)]), 
-            ("b", [("a", 0.75), ("d", 1.0)]), 
-            ("c", [("a", 1.0)]), 
-            ("d", [("b", 1.0), ("e", 1.0)]), 
-            ("e", [("d", 1.0)]), 
+            ("a", [("b", 0.75), ("c", 1.0)]),
+            ("b", [("a", 0.75), ("d", 1.0)]),
+            ("c", [("a", 1.0)]),
+            ("d", [("b", 1.0), ("e", 1.0)]),
+            ("e", [("d", 1.0)]),
             ("x", [])])
         self.assertEqual(a[1], [
-            ("a", [("b", 0.75), ("c", 1.0)]), 
-            ("b", [("d", 1.0)]), 
-            ("c", []), 
-            ("d", [("e", 1.0)]), 
-            ("e", []), 
+            ("a", [("b", 0.75), ("c", 1.0)]),
+            ("b", [("d", 1.0)]),
+            ("c", []),
+            ("d", [("e", 1.0)]),
+            ("e", []),
             ("x", [])])
         self.assertEqual(a[2], [
-            ("a", []), 
-            ("b", [("a", 0.75)]), 
-            ("c", [("a", 1.0)]), 
-            ("d", [("b", 1.0)]), 
-            ("e", [("d", 1.0)]), 
+            ("a", []),
+            ("b", [("a", 0.75)]),
+            ("c", [("a", 1.0)]),
+            ("d", [("b", 1.0)]),
+            ("e", [("d", 1.0)]),
             ("x", [])])
         self.assertEqual(a[3], [
-            ("a", [("b", 0.43), ("c", 0.57)]), 
-            ("b", [("a", 0.43), ("d", 0.57)]), 
-            ("c", [("a", 1.0)]), 
-            ("d", [("b", 0.5), ("e", 0.5)]), 
-            ("e", [("d", 1.0)]), 
+            ("a", [("b", 0.43), ("c", 0.57)]),
+            ("b", [("a", 0.43), ("d", 0.57)]),
+            ("c", [("a", 1.0)]),
+            ("d", [("b", 0.5), ("e", 0.5)]),
+            ("e", [("d", 1.0)]),
             ("x", [])])
         self.assertEqual(a[4], [
-            ("a", [("b", 0.85), ("c", 1.1)]), 
-            ("b", [("a", 0.85), ("d", 1.1)]), 
-            ("c", [("a", 1.1)]), 
-            ("d", [("b", 1.1), ("e", 1.1)]), 
-            ("e", [("d", 1.1)]), 
+            ("a", [("b", 0.85), ("c", 1.1)]),
+            ("b", [("a", 0.85), ("d", 1.1)]),
+            ("c", [("a", 1.1)]),
+            ("d", [("b", 1.1), ("e", 1.1)]),
+            ("e", [("d", 1.1)]),
             ("x", [])])
         print("pattern.graph.adjacency()")
     
@@ -526,25 +526,25 @@ class TestGraphTraversal(unittest.TestCase):
         for i in range(len(a)):
             a[i] = sorted(a[i].items())
         self.assertEqual(a[0], [
-            ("a", ["a"]), 
-            ("b", ["a", "b"]), 
-            ("c", ["a", "c"]), 
-            ("d", ["a", "d"]), 
-            ("e", ["a", "d", "e"]), 
+            ("a", ["a"]),
+            ("b", ["a", "b"]),
+            ("c", ["a", "c"]),
+            ("d", ["a", "d"]),
+            ("e", ["a", "d", "e"]),
             ("x", None)])
         self.assertEqual(a[1], [
-            ("a", ["a"]), 
-            ("b", ["a", "b"]), 
-            ("c", ["a", "c"]), 
-            ("d", ["a", "b", "d"]), 
-            ("e", ["a", "b", "d", "e"]), 
+            ("a", ["a"]),
+            ("b", ["a", "b"]),
+            ("c", ["a", "c"]),
+            ("d", ["a", "b", "d"]),
+            ("e", ["a", "b", "d", "e"]),
             ("x", None)])
         self.assertEqual(a[2], [
-            ("a", ["a"]), 
-            ("b", ["a", "b"]), 
-            ("c", ["a", "c"]), 
-            ("d", ["a", "b", "d"]), 
-            ("e", ["a", "b", "d", "e"]), 
+            ("a", ["a"]),
+            ("b", ["a", "b"]),
+            ("c", ["a", "c"]),
+            ("d", ["a", "b", "d"]),
+            ("e", ["a", "b", "d", "e"]),
             ("x", None)])
         print("pattern.graph.dijkstra_shortest_paths()")
         
@@ -553,11 +553,11 @@ class TestGraphTraversal(unittest.TestCase):
         p1 = graph.floyd_warshall_all_pairs_distance(self.g)
         p2 = sorted((id1, sorted((id2, round(w,2)) for id2, w in p.items())) for id1, p in p1.items())
         self.assertEqual(p2, [
-            ("a", [("a", 0.00), ("b", 0.75), ("c", 1.00), ("d", 1.75), ("e", 2.75)]), 
-            ("b", [("a", 0.75), ("b", 0.00), ("c", 1.75), ("d", 1.00), ("e", 2.00)]), 
-            ("c", [("a", 1.00), ("b", 1.75), ("c", 2.00), ("d", 2.75), ("e", 3.75)]), 
-            ("d", [("a", 1.75), ("b", 1.00), ("c", 2.75), ("d", 0.00), ("e", 1.00)]), 
-            ("e", [("a", 2.75), ("b", 2.00), ("c", 3.75), ("d", 1.00), ("e", 2.00)]), 
+            ("a", [("a", 0.00), ("b", 0.75), ("c", 1.00), ("d", 1.75), ("e", 2.75)]),
+            ("b", [("a", 0.75), ("b", 0.00), ("c", 1.75), ("d", 1.00), ("e", 2.00)]),
+            ("c", [("a", 1.00), ("b", 1.75), ("c", 2.00), ("d", 2.75), ("e", 3.75)]),
+            ("d", [("a", 1.75), ("b", 1.00), ("c", 2.75), ("d", 0.00), ("e", 1.00)]),
+            ("e", [("a", 2.75), ("b", 2.00), ("c", 3.75), ("d", 1.00), ("e", 2.00)]),
             ("x", [])])
         # Assert predecessor tree.
         self.assertEqual(graph.predecessor_path(p1.predecessors, "a", "d"), ["a", "b", "d"])

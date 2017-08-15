@@ -20,7 +20,7 @@ import imaplib
 import email
 import time
 
-try: 
+try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
@@ -28,7 +28,7 @@ except:
 # Import the Cache class from pattern.web so e-mails can be cached locally (faster):
 try: from ..cache import cache
 except:
-    try: 
+    try:
         import os, sys; sys.path.append(os.path.join(MODULE, ".."))
         from cache import cache
     except:
@@ -96,7 +96,7 @@ class Mail(object):
 
     @property
     def imap4(self):
-        if self._imap4 is None: 
+        if self._imap4 is None:
             raise MailNotLoggedIn
         return self._imap4
  
@@ -167,8 +167,8 @@ def _decode(s, message):
         try: s = s.decode("utf-8")
         except:
             try: s = s.decode("latin-1")
-            except: 
-                pass 
+            except:
+                pass
     return s
 
 class MailFolder(object):

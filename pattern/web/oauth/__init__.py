@@ -70,7 +70,7 @@ def normalize(string):
     # (used to be the case with Yahoo BOSS but this appears to be fixed now).
     string = utf8(string)
     for k, v in _diacritics.items():
-        for v in v: 
+        for v in v:
             string = string.replace(v, k)
     return string
 
@@ -79,7 +79,7 @@ def base(url, data={}, method="GET"):
     base  = escape(utf8(method.upper())) + "&"
     base += escape(utf8(url.rstrip("?"))) + "&"
     base += escape(utf8("&".join(["%s=%s" % (
-            escape(utf8(k)), 
+            escape(utf8(k)),
             escape(utf8(v))) for k, v in sorted(data.items())])))
     return base
 
@@ -104,7 +104,7 @@ def sign(url, data={}, method="GET", secret="", token="", hash=HMAC_SHA1):
 #    "oauth_nonce": nonce(),
 #    "oauth_timestamp": timestamp(),
 #    "oauth_consumer_key": CONSUMER_KEY,
-#    "oauth_signature_method": "HMAC-SHA1" 
+#    "oauth_signature_method": "HMAC-SHA1"
 #}
 #data["oauth_signature"] = sign(url, data, secret=CONSUMER_SECRET)
 #data = dict((k, utf8(v)) for k, v in data.items())

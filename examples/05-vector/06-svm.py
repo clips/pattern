@@ -67,7 +67,7 @@ def instance(review):                     # "Great book!"
 
 # We can add any kind of features to a custom instance dict.
 # For example, in a deception detection experiment
-# we may want to populate the dict with PRP (pronouns), punctuation marks, 
+# we may want to populate the dict with PRP (pronouns), punctuation marks,
 # average sentence length, a score for word diversity, etc.
 
 # Use 1,000 random instances as training material.

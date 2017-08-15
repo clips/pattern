@@ -118,30 +118,30 @@ gender_masculine = (
     "ant", "ast", "ich", "ig", "ismus", "ling", "or", "us"
 )
 gender_feminine = (
-    "a", "anz", "ei", "enz", "heit", "ie", "ik", "in", "keit", "schaf", "sion", "sis", 
+    "a", "anz", "ei", "enz", "heit", "ie", "ik", "in", "keit", "schaf", "sion", "sis",
     "tät", "tion", "ung", "ur"
 )
 gender_neuter = (
-    "chen", "icht", "il", "it", "lein", "ma", "ment", "tel", "tum", "um","al", "an", "ar", 
+    "chen", "icht", "il", "it", "lein", "ma", "ment", "tel", "tum", "um","al", "an", "ar",
     "ät", "ent", "ett", "ier", "iv", "o", "on", "nis", "sal"
 )
 gender_majority_vote = {
     MASCULINE: (
-        "ab", "af", "ag", "ak", "am", "an", "ar", "at", "au", "ch", "ck", "eb", "ef", "eg", 
-        "el", "er", "es", "ex", "ff", "go", "hn", "hs", "ib", "if", "ig", "ir", "kt", "lf", 
-        "li", "ll", "lm", "ls", "lt", "mi", "nd", "nk", "nn", "nt", "od", "of", "og", "or", 
-        "pf", "ph", "pp", "ps", "rb", "rd", "rf", "rg", "ri", "rl", "rm", "rr", "rs", "rt", 
+        "ab", "af", "ag", "ak", "am", "an", "ar", "at", "au", "ch", "ck", "eb", "ef", "eg",
+        "el", "er", "es", "ex", "ff", "go", "hn", "hs", "ib", "if", "ig", "ir", "kt", "lf",
+        "li", "ll", "lm", "ls", "lt", "mi", "nd", "nk", "nn", "nt", "od", "of", "og", "or",
+        "pf", "ph", "pp", "ps", "rb", "rd", "rf", "rg", "ri", "rl", "rm", "rr", "rs", "rt",
         "rz", "ss", "st", "tz", "ub", "uf", "ug", "uh", "un", "us", "ut", "xt", "zt"
-    ), 
+    ),
     FEMININE: (
-        "be", "ce", "da", "de", "dt", "ee", "ei", "et", "eu", "fe", "ft", "ge", "he", "hr", 
-        "ht", "ia", "ie", "ik", "in", "it", "iz", "ka", "ke", "la", "le", "me", "na", "ne", 
+        "be", "ce", "da", "de", "dt", "ee", "ei", "et", "eu", "fe", "ft", "ge", "he", "hr",
+        "ht", "ia", "ie", "ik", "in", "it", "iz", "ka", "ke", "la", "le", "me", "na", "ne",
         "ng", "nz", "on", "pe", "ra", "re", "se", "ta", "te", "ue", "ur", "ve", "ze"
-    ), 
+    ),
 
     NEUTER: (
-        "ad", "al", "as", "do", "ed", "eh", "em", "en", "hl", "id", "il", "im", "io", "is", 
-        "iv", "ix", "ld", "lk", "lo", "lz", "ma", "md", "mm", "mt", "no", "ns", "ol", "om", 
+        "ad", "al", "as", "do", "ed", "eh", "em", "en", "hl", "id", "il", "im", "io", "is",
+        "iv", "ix", "ld", "lk", "lo", "lz", "ma", "md", "mm", "mt", "no", "ns", "ol", "om",
         "op", "os", "ot", "pt", "rk", "rn", "ro", "to", "tt", "ul", "um", "uz"
     )
 }
@@ -347,10 +347,10 @@ prefix_inseparable = (
     "be", "emp", "ent", "er", "ge", "miss", "über", "unter", "ver", "voll", "wider", "zer"
 )
 prefix_separable = (
-    "ab", "an", "auf", "aus", "bei", "durch", "ein", "fort", "mit", "nach", "vor", "weg", 
+    "ab", "an", "auf", "aus", "bei", "durch", "ein", "fort", "mit", "nach", "vor", "weg",
     "zurück", "zusammen", "zu", "dabei", "daran", "da", "empor", "entgegen", "entlang",
     "fehl", "fest", "gegenüber", "gleich", "herab", "heran", "herauf", "heraus", "herum",
-    "her", "hinweg", "hinzu", "hin", "los", "nieder", "statt", "umher", "um", "weg", 
+    "her", "hinweg", "hinzu", "hin", "los", "nieder", "statt", "umher", "um", "weg",
     "weiter", "wieder", "zwischen"
 ) + ( # There are many more...
      "dort", "fertig", "frei", "gut", "heim", "hoch", "klein", "klar", "nahe", "offen", "richtig"
@@ -390,7 +390,7 @@ class Verbs(_Verbs):
             if b.endswith(x): b = b[:-len(x)]; break
         # Subjunctive: hielte => halten, schnitte => schneiden.
         for x, y in (
-          ("ieb",  "eib"), ( "ied", "eid"), ( "ief",  "auf" ), ( "ieg", "eig" ), ("iel", "alt"), 
+          ("ieb",  "eib"), ( "ied", "eid"), ( "ief",  "auf" ), ( "ieg", "eig" ), ("iel", "alt"),
           ("ien",  "ein"), ("iess", "ass"), ( "ieß", "aß"  ), ( "iff", "eif" ), ("iss", "eiss"),
           ( "iß",  "eiß"), (  "it", "eid"), ( "oss",  "iess"), ( "öss", "iess")):
             if b.endswith(x): b = b[:-len(x)] + y; break
@@ -449,7 +449,7 @@ class Verbs(_Verbs):
         s2 = encode_sz(pt)
         # Construct the lexeme:
         lexeme = a = [
-            v, 
+            v,
             pl+"e"+x1, p2+x1, pr+"t"+x1, pw+x1, pr+"t"+x1, pp,             # present
             pt+"e"+x1, pt+"est"+x1, pt+"e"+x1, pt+"en"+x1, pt+"et"+x1, ge, # past
             b+"e"+x1, pr+"t"+x1, x+pw,                                     # imperative
@@ -536,7 +536,7 @@ def attributive(adjective, gender=MALE, role=SUBJECT, article=None):
         return w + adjectives_mixed.get((g, c), "")
     if a in ("arm", "alt", "all", "der", "die", "das", "den", "dem", "des") \
     or a.startswith((
-      "derselb", "derjenig", "jed", "jeglich", "jen", "manch", 
+      "derselb", "derjenig", "jed", "jeglich", "jen", "manch",
       "dies", "solch", "welch")):
         return w + adjectives_weak.get((g, c), "")
     # Default to strong inflection.

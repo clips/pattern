@@ -20,7 +20,7 @@ for s in (
   "tasty cat food",       # JJ NN NN
   "the funny black cat",  # JJ NN
   "very funny",           # RB JJ => no match, since there is no noun.
-  "my cat is black and your cat is white"):  # NN + NN  
+  "my cat is black and your cat is white"):  # NN + NN
     t = parsetree(s)
     m = search("DT? RB? JJ? NN+", t)
     print("")

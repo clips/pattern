@@ -99,7 +99,7 @@ class TestInflection(unittest.TestCase):
         # (presumably because de.inflect.verbs has high percentage irregular verbs).
         i, n = 0, 0
         for v1, v2 in de.inflect.verbs.inflections.items():
-            if de.inflect.verbs.find_lemma(v1) == v2: 
+            if de.inflect.verbs.find_lemma(v1) == v2:
                 i += 1
             n += 1
         self.assertTrue(float(i) / n > 0.86)
@@ -159,9 +159,9 @@ class TestInflection(unittest.TestCase):
         # Assert all inflections of "sein".
         v = de.lexeme("sein")
         self.assertEqual(v, [
-            "sein", "bin", "bist", "ist", "sind", "seid", "seiend", 
-            "war", "warst", "waren", "wart", "gewesen", 
-            "sei", "seien", "seiest", "seiet", 
+            "sein", "bin", "bist", "ist", "sind", "seid", "seiend",
+            "war", "warst", "waren", "wart", "gewesen",
+            "sei", "seien", "seiest", "seiet",
             "wäre", "wärest", "wären", "wäret"
         ])
         print("pattern.de.inflect.lexeme()")
@@ -183,8 +183,8 @@ class TestParser(unittest.TestCase):
         # Assert lemmata for nouns, adjectives and verbs.
         v = de.parser.find_lemmata([["Ich", "PRP"], ["sage", "VB"], ["schöne", "JJ"], ["Dinge", "NNS"]])
         self.assertEqual(v, [
-            ["Ich", "PRP", "ich"], 
-            ["sage", "VB", "sagen"], 
+            ["Ich", "PRP", "ich"],
+            ["sage", "VB", "sagen"],
             ["schöne", "JJ", "schön"],
             ["Dinge", "NNS", "ding"]])
         print("pattern.de.parser.find_lemmata()")

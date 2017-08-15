@@ -41,10 +41,10 @@ class TestProfiling(unittest.TestCase):
     def test_confustion_matrix(self):
         # Assert 2 true positives (TP) and 1 false positive (FP).
         v = metrics.confusion_matrix(lambda document: True, self.documents)
-        self.assertEqual(v, (2,0,1,0))  
+        self.assertEqual(v, (2,0,1,0))
         # Assert 1 true negative (TN) and 2 false negatives (FN).
         v = metrics.confusion_matrix(lambda document: False, self.documents)
-        self.assertEqual(v, (0,1,0,2))  
+        self.assertEqual(v, (0,1,0,2))
         print("pattern.metrics.confusion_matrix()"      )
     
     def test_accuracy(self):
@@ -128,10 +128,10 @@ class TestTextMetrics(unittest.TestCase):
         
     def test_similarity(self):
         self.assertEqual(
-            metrics.levenshtein_similarity("night", "nacht"), 
+            metrics.levenshtein_similarity("night", "nacht"),
             metrics.similarity("night", "nacht", metrics.LEVENSHTEIN))
         self.assertEqual(
-            metrics.dice_coefficient("night", "nacht"), 
+            metrics.dice_coefficient("night", "nacht"),
             metrics.similarity("night", "nacht", metrics.DICE))
         print("pattern.metrics.similarity()")
             
@@ -139,7 +139,7 @@ class TestTextMetrics(unittest.TestCase):
         # Assert that technical jargon is in the "difficult" range (< 0.30).
         s = "The Australian platypus is seemingly a hybrid of a mammal and reptilian creature."
         v = metrics.readability(s)
-        self.assertTrue(v < 0.30)        
+        self.assertTrue(v < 0.30)
         # Assert that Dr. Seuss is in the "easy" range (> 0.70).
         s = "'I know some good games we could play,' said the cat. " + \
             "'I know some new tricks,' said the cat in the hat. " + \
@@ -173,12 +173,12 @@ class TestTextMetrics(unittest.TestCase):
         s = [("beau", "beaux"), ("jeune", "jeunes"), ("hautain", "hautaines")]
         v = metrics.suffixes(s, n=3)
         self.assertEqual(v, [
-            (2, "nes", [("ne", 0.5), ("n", 0.5)]), 
+            (2, "nes", [("ne", 0.5), ("n", 0.5)]),
             (1, "aux", [("au", 1.0)])])
         v = metrics.suffixes(s, n=2, reverse=False)
         self.assertEqual(v, [
-            (1, "ne", [("nes", 1.0)]), 
-            (1, "in", [("ines", 1.0)]), 
+            (1, "ne", [("nes", 1.0)]),
+            (1, "in", [("ines", 1.0)]),
             (1, "au", [("aux", 1.0)])])
         print("pattern.metrics.suffixes()")
         
@@ -191,14 +191,14 @@ class TestTextMetrics(unittest.TestCase):
     
     def test_cooccurrence(self):
         s = "The black cat sat on the mat."
-        v = metrics.cooccurrence(s, window=(-1, 1), 
+        v = metrics.cooccurrence(s, window=(-1, 1),
                 term1 = lambda w: w in ("cat",),
             normalize = lambda w: w.lower().strip(".:;,!?()[]'\""))
         self.assertEqual(sorted(v.keys()), ["cat"])
         self.assertEqual(sorted(v["cat"].keys()), ["black", "cat", "sat"])
         self.assertEqual(sorted(v["cat"].values()), [1, 1, 1])
         s = [("The","DT"), ("black","JJ"), ("cat","NN"), ("sat","VB"), ("on","IN"), ("the","DT"), ("mat","NN")]
-        v = metrics.co_occurrence(s, window=(-2, -1), 
+        v = metrics.co_occurrence(s, window=(-2, -1),
              term1 = lambda token: token[1].startswith("NN"),
              term2 = lambda token: token[1].startswith("JJ"))
         self.assertEqual(v, {("cat", "NN"): {("black", "JJ"): 1}})
@@ -228,13 +228,13 @@ class TestInterpolation(unittest.TestCase):
     def test_smoothrange(self):
         # Assert nice ranges for line charts.
         v = list(metrics.smoothrange(0.0, 1.0))
-        [self.assertAlmostEqual(x, y, places=1) for x, y in zip(v, 
+        [self.assertAlmostEqual(x, y, places=1) for x, y in zip(v,
             [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])]
         v = list(metrics.smoothrange(-2, 2))
-        [self.assertAlmostEqual(x, y, places=1) for x, y in zip(v, 
+        [self.assertAlmostEqual(x, y, places=1) for x, y in zip(v,
             [-2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0])]
         v = list(metrics.smoothrange(1, 13))
-        [self.assertAlmostEqual(x, y, places=1) for x, y in zip(v, 
+        [self.assertAlmostEqual(x, y, places=1) for x, y in zip(v,
             [0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0])]
         print("pattern.metrics.smoothrange()")
 
@@ -381,7 +381,7 @@ class TestStatisticalTests(unittest.TestCase):
     def test_chi_squared_p(self):
         # Assert chi-squared P-value (upper tail).
         for df, X2 in [
-          (1, ( 3.85,  5.05,  6.65,  7.90)), 
+          (1, ( 3.85,  5.05,  6.65,  7.90)),
           (2, ( 6.00,  7.40,  9.25, 10.65)),
           (3, ( 7.85,  9.40, 11.35, 12.85)),
           (4, ( 9.50, 11.15, 13.30, 14.90)),

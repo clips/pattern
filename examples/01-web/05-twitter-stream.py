@@ -11,7 +11,7 @@ import time
 from pattern.web import Twitter
 
 # Another way to mine Twitter is to set up a stream.
-# A Twitter stream maintains an open connection to Twitter, 
+# A Twitter stream maintains an open connection to Twitter,
 # and waits for data to pour in.
 # Twitter.search() allows us to look at older tweets,
 # Twitter.stream() gives us the most recent tweets.

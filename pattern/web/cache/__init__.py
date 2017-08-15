@@ -36,7 +36,7 @@ from io import open
 from codecs import BOM_UTF8
 BOM_UTF8 = BOM_UTF8.decode('utf-8')
 
-try: 
+try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
@@ -61,7 +61,7 @@ class Cache(object):
     def _get_path(self):
         return self._path
     def _set_path(self, path):
-        if not os.path.isdir(path): 
+        if not os.path.isdir(path):
             os.makedirs(path)
         self._path = path
     path = property(_get_path, _set_path)

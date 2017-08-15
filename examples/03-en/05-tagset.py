@@ -49,7 +49,7 @@ print("")
 # which was originally developed for English.
 
 # This becomes more problematic as more languages are added to Pattern.
-# It is sometimes difficult to fit determiners, pronouns, prepositions 
+# It is sometimes difficult to fit determiners, pronouns, prepositions
 # in a particular language to Penn Treebank tags (e.g., Italian "che").
 # With parse(tagset=UNIVERSAL), a simplified universal tagset is used,
 # loosely corresponding to the recommendations of Petrov (2012):
@@ -89,7 +89,7 @@ print("")
 
 # This comes at the expense of (in this example) losing information about plural nouns (NNS => NN).
 # But it may be more comfortable for you to build multilingual apps
-# using the universal constants (e.g., PRON, PREP, CONJ), 
+# using the universal constants (e.g., PRON, PREP, CONJ),
 # instead of learning the Penn Treebank tagset by heart,
 # or wonder why the Italian "che" is tagged "PRP", "IN" or "CC"
 # (in the universal tagset it is a PRON or a CONJ).

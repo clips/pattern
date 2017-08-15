@@ -128,7 +128,7 @@ class Node(object):
         self.text        = kwargs.get("text", True) and \
             Text(isinstance(id, str) and id or str(id),
                    width = 85,
-                    fill = kwargs.pop("text", (0,0,0,1)), 
+                    fill = kwargs.pop("text", (0,0,0,1)),
                 fontsize = kwargs.pop("fontsize", 11), **kwargs) or None
         self._weight     = None # Calculated by Graph.eigenvector_centrality().
         self._centrality = None # Calculated by Graph.betweenness_centrality().
@@ -202,7 +202,7 @@ class Node(object):
         _visited = _visited or {}
         _visited[self.id] = (self, depth)
         if depth >= 1:
-            for n in self.links: 
+            for n in self.links:
                 if n.id not in _visited or _visited[n.id][1] < depth-1:
                     if traversable(self, self.links.edges[n.id]):
                         n.flatten(depth-1, traversable, _visited)
@@ -218,20 +218,20 @@ class Node(object):
         if weighted is not False and self.centrality > (weighted==True and -1 or weighted):
             w = self.centrality * 35
             ellipse(
-                self.x, 
-                self.y, 
-                self.radius*2 + w, 
+                self.x,
+                self.y,
+                self.radius*2 + w,
                 self.radius*2 + w, fill=(0,0,0,0.2), stroke=None)
         # Draw the node.
         ellipse(
-            self.x, 
-            self.y, 
-            self.radius*2, 
+            self.x,
+            self.y,
+            self.radius*2,
             self.radius*2, fill=self.fill, stroke=self.stroke, strokewidth=self.strokewidth)
         # Draw the node text label.
         if self.text:
             self.text.draw(
-                self.x + self.radius, 
+                self.x + self.radius,
                 self.y + self.radius)
         
     def contains(self, x, y):
@@ -257,7 +257,7 @@ class Node(object):
 
 class Links(list):
     
-    def __init__(self): 
+    def __init__(self):
         """ A list in which each node has an associated edge.
             The Links.edge() method returns the edge for a given node id.
         """
@@ -272,7 +272,7 @@ class Links(list):
         list.remove(self, node)
         self.edges.pop(node.id, None)
 
-    def edge(self, node): 
+    def edge(self, node):
         return self.edges.get(isinstance(node, Node) and node.id or node)
 
 #### EDGE ##########################################################################################
@@ -292,14 +292,14 @@ class Edge(object):
         self.stroke      = stroke
         self.strokewidth = strokewidth
     
-    def _get_weight(self): 
+    def _get_weight(self):
         return self._weight
     def _set_weight(self, v):
         self._weight = v
         # Clear cached adjacency map in the graph, since edge weights have changed.
-        if self.node1.graph is not None: 
+        if self.node1.graph is not None:
             self.node1.graph._adjacency = None
-        if self.node2.graph is not None: 
+        if self.node2.graph is not None:
             self.node2.graph._adjacency = None
     
     weight = property(_get_weight, _set_weight)
@@ -310,9 +310,9 @@ class Edge(object):
         """
         w = weighted and self.weight or 0
         line(
-            self.node1.x, 
-            self.node1.y, 
-            self.node2.x, 
+            self.node1.x,
+            self.node1.y,
+            self.node2.x,
             self.node2.y, stroke=self.stroke, strokewidth=self.strokewidth+w)
         if directed:
             self.draw_arrow(stroke=self.stroke, strokewidth=self.strokewidth+w)
@@ -389,7 +389,7 @@ class Graph(dict):
         self.distance   = distance
     
     def __getitem__(self, id):
-        try: 
+        try:
             return dict.__getitem__(self, id)
         except KeyError:
             raise KeyError("no node with id '%s' in graph" % id)
@@ -440,7 +440,7 @@ class Graph(dict):
         n2.links.append(n1, edge=e1 or e2)
         # Clear adjacency cache.
         self._adjacency = None
-        return e2        
+        return e2
             
     def remove(self, x):
         """ Removes the given Node (and all its edges) or Edge from the graph.
@@ -454,7 +454,7 @@ class Graph(dict):
                 if x in (e.node1, e.node2):
                     if x in e.node1.links: e.node1.links.remove(x)
                     if x in e.node2.links: e.node2.links.remove(x)
-                    self.edges.remove(e) 
+                    self.edges.remove(e)
         if isinstance(x, Edge):
             self.edges.remove(x)
         # Clear adjacency cache.
@@ -470,29 +470,29 @@ class Graph(dict):
     def edge(self, id1, id2):
         """ Returns the edge between the nodes with given id1 and id2.
         """
-        if isinstance(id1, Node) and id1.graph == self: 
+        if isinstance(id1, Node) and id1.graph == self:
             id1 = id1.id
-        if isinstance(id2, Node) and id2.graph == self: 
+        if isinstance(id2, Node) and id2.graph == self:
             id2 = id2.id
         return id1 in self and id2 in self and self[id1].links.edge(id2) or None
     
     def paths(self, node1, node2, length=4, path=[]):
         """ Returns a list of paths (shorter than or equal to given length) connecting the two nodes.
         """
-        if not isinstance(node1, Node): 
+        if not isinstance(node1, Node):
             node1 = self[node1]
-        if not isinstance(node2, Node): 
+        if not isinstance(node2, Node):
             node2 = self[node2]
         return [[self[id] for id in p] for p in paths(self, node1.id, node2.id, length, path)]
     
     def shortest_path(self, node1, node2, heuristic=None, directed=False):
         """ Returns a list of nodes connecting the two nodes.
         """
-        if not isinstance(node1, Node): 
+        if not isinstance(node1, Node):
             node1 = self[node1]
-        if not isinstance(node2, Node): 
+        if not isinstance(node2, Node):
             node2 = self[node2]
-        try: 
+        try:
             p = dijkstra_shortest_path(self, node1.id, node2.id, heuristic, directed)
             p = [self[id] for id in p]
             return p
@@ -502,12 +502,12 @@ class Graph(dict):
     def shortest_paths(self, node, heuristic=None, directed=False):
         """ Returns a dictionary of nodes, each linked to a list of nodes (shortest path).
         """
-        if not isinstance(node, Node): 
+        if not isinstance(node, Node):
             node = self[node]
         p = nodedict(self)
         for id, path in dijkstra_shortest_paths(self, node.id, heuristic, directed).items():
             p[self[id]] = path and [self[id] for id in path] or None
-        return p 
+        return p
             
     def eigenvector_centrality(self, normalized=True, reversed=True, rating={}, iterations=100, tolerance=0.0001):
         """ Calculates eigenvector centrality and returns a node => weight dictionary.
@@ -516,7 +516,7 @@ class Graph(dict):
         """
         ec = eigenvector_centrality(self, normalized, reversed, rating, iterations, tolerance)
         ec = nodedict(self, ((self[id], w) for id, w in ec.items()))
-        for n, w in ec.items(): 
+        for n, w in ec.items():
             n._weight = w
         return ec
             
@@ -527,7 +527,7 @@ class Graph(dict):
         """
         bc = brandes_betweenness_centrality(self, normalized, directed)
         bc = nodedict(self, ((self[id], w) for id, w in bc.items()))
-        for n, w in bc.items(): 
+        for n, w in bc.items():
             n._centrality = w
         return bc
         
@@ -583,9 +583,9 @@ class Graph(dict):
     def draw(self, weighted=False, directed=False):
         """ Draws all nodes and edges.
         """
-        for e in self.edges: 
+        for e in self.edges:
             e.draw(weighted, directed)
-        for n in reversed(self.nodes): # New nodes (with Node._weight=None) first. 
+        for n in reversed(self.nodes): # New nodes (with Node._weight=None) first.
             n.draw(weighted)
             
     def node_at(self, x, y):
@@ -603,15 +603,15 @@ class Graph(dict):
         except TypeError:
             new = self.add_node(n.id, root=kwargs.get("root",False))
         new.__class__ = n.__class__
-        new.__dict__.update((k, deepcopy(v)) for k,v in n.__dict__.items() 
+        new.__dict__.update((k, deepcopy(v)) for k,v in n.__dict__.items()
             if k not in ("graph", "links", "_x", "_y", "force", "_weight", "_centrality"))
     
     def _add_edge_copy(self, e, **kwargs):
         if kwargs.get("node1", e.node1).id not in self \
-        or kwargs.get("node2", e.node2).id not in self: 
+        or kwargs.get("node2", e.node2).id not in self:
             return
         new = self.add_edge(
-            kwargs.get("node1", self[e.node1.id]), 
+            kwargs.get("node1", self[e.node1.id]),
             kwargs.get("node2", self[e.node2.id]))
         new.__class__ = e.__class__
         new.__dict__.update((k, deepcopy(v)) for k,v in e.__dict__.items()
@@ -625,7 +625,7 @@ class Graph(dict):
         g.layout = self.layout.copy(graph=g)
         for n in (nodes==ALL and self.nodes or (isinstance(n, Node) and n or self[n] for n in nodes)):
             g._add_node_copy(n, root=self.root==n)
-        for e in self.edges: 
+        for e in self.edges:
             g._add_edge_copy(e)
         return g
         
@@ -639,7 +639,7 @@ class Graph(dict):
         return render(self, *args, **kwargs)
 
 #--- GRAPH LAYOUT ----------------------------------------------------------------------------------
-# Graph drawing or graph layout, as a branch of graph theory, 
+# Graph drawing or graph layout, as a branch of graph theory,
 # applies topology and geometry to derive two-dimensional representations of graphs.
 
 class GraphLayout(object):
@@ -732,7 +732,7 @@ class GraphSpringLayout(GraphLayout):
         GraphLayout.update(self)
         # Forces on all nodes due to node-node repulsions.
         for i, n1 in enumerate(self.graph.nodes):
-            for j, n2 in enumerate(self.graph.nodes[i+1:]):          
+            for j, n2 in enumerate(self.graph.nodes[i+1:]):
                 self._repulse(n1, n2)
         # Forces on nodes due to edge attractions.
         for e in self.graph.edges:
@@ -806,7 +806,7 @@ def paths(graph, id1, id2, length=4, path=[], _root=True):
     p = []
     s = set(path) # 5% speedup.
     for node in graph[id1].links:
-        if node.id not in s: 
+        if node.id not in s:
             p.extend(paths(graph, node.id, id2, length, path, False))
     return _root and sorted(p, key=len) or p
 
@@ -829,7 +829,7 @@ def adjacency(graph, directed=False, reversed=False, stochastic=False, heuristic
         an additional cost for movement between the two nodes.
     """
     # Caching a heuristic from a method won't work.
-    # Bound method objects are transient, 
+    # Bound method objects are transient,
     # i.e., id(object.method) returns a new value each time.
     if graph._adjacency is not None and \
        graph._adjacency[1:] == (directed, reversed, stochastic, heuristic and heuristic.__code__):
@@ -842,12 +842,12 @@ def adjacency(graph, directed=False, reversed=False, stochastic=False, heuristic
         map[id1][id2] = 1.0 - 0.5 * e.weight
         if heuristic:
             map[id1][id2] += heuristic(id1, id2)
-        if not directed: 
+        if not directed:
             map[id2][id1] = map[id1][id2]
     if stochastic:
         for id1 in map:
             n = sum(map[id1].values())
-            for id2 in map[id1]: 
+            for id2 in map[id1]:
                 map[id1][id2] /= n
     # Cache the adjacency map: this makes dijkstra_shortest_path() 2x faster in repeated use.
     graph._adjacency = (map, directed, reversed, stochastic, heuristic and heuristic.__code__)
@@ -889,8 +889,8 @@ def dijkstra_shortest_paths(graph, id, heuristic=None, directed=False):
     Q = [] # Use Q as a heap with (distance, node id)-tuples.
     D = {} # Dictionary of final distances.
     P = {} # Dictionary of paths.
-    P[id] = [id] 
-    seen = {id: 0} 
+    P[id] = [id]
+    seen = {id: 0}
     heappush(Q, (0, id))
     while Q:
         (dist, v) = heappop(Q)
@@ -973,33 +973,33 @@ def brandes_betweenness_centrality(graph, normalized=True, directed=False):
         D = {} # Dictionary of final distances.
         P = {} # Dictionary of paths.
         for n in graph: P[n]=[]
-        seen = {id: 0} 
+        seen = {id: 0}
         heappush(Q, (0, id, id))
         S = []
         E = dict.fromkeys(graph, 0) # sigma
         E[id] = 1.0
-        while Q:    
-            (dist, pred, v) = heappop(Q) 
-            if v in D: 
+        while Q:
+            (dist, pred, v) = heappop(Q)
+            if v in D:
                 continue
             D[v] = dist
             S.append(v)
             E[v] += E[pred]
             for w in W[v]:
                 vw_dist = D[v] + W[v][w]
-                if w not in D and (w not in seen or vw_dist < seen[w]): 
-                    seen[w] = vw_dist 
+                if w not in D and (w not in seen or vw_dist < seen[w]):
+                    seen[w] = vw_dist
                     heappush(Q, (vw_dist, v, w))
                     P[w] = [v]
                     E[w] = 0.0
                 elif vw_dist == seen[w]: # Handle equal paths.
                     P[w].append(v)
-                    E[w] += E[v] 
-        d = dict.fromkeys(graph, 0.0)  
+                    E[w] += E[v]
+        d = dict.fromkeys(graph, 0.0)
         for w in reversed(S):
             for v in P[w]:
                 d[v] += (1.0 + d[w]) * E[v] / E[w]
-            if w != id: 
+            if w != id:
                 b[w] += d[w]
     # Normalize between 0.0 and 1.0.
     m = normalized and max(b.values()) or 1
@@ -1018,7 +1018,7 @@ def eigenvector_centrality(graph, normalized=True, reversed=True, rating={}, ite
     # Note: much faster than betweenness centrality (which grows exponentially).
     def normalize(vector):
         w = 1.0 / (sum(vector.values()) or 1)
-        for node in vector: 
+        for node in vector:
             vector[node] *= w
         return vector
     G = adjacency(graph, directed=True, reversed=reversed)
@@ -1043,7 +1043,7 @@ def eigenvector_centrality(graph, normalized=True, reversed=True, rating={}, ite
 
 #--- GRAPH PARTITIONING ----------------------------------------------------------------------------
 
-# a | b => all elements from a and all the elements from b. 
+# a | b => all elements from a and all the elements from b.
 # a & b => elements that appear in a as well as in b.
 # a - b => elements that appear in a but not in b.
 def union(a, b):
@@ -1099,7 +1099,7 @@ def cliques(graph, threshold=3):
     a = []
     for n in graph.nodes:
         c = clique(graph, n.id)
-        if len(c) >= threshold: 
+        if len(c) >= threshold:
             c.sort()
             if c not in a: a.append(c)
     return a
@@ -1136,9 +1136,9 @@ def redirect(graph, node1, node2):
     for e in graph.edges:
         if node1 in (e.node1, e.node2):
             if e.node1 == node1 and e.node2 != node2:
-                graph._add_edge_copy(e, node1=node2, node2=e.node2) 
-            if e.node2 == node1 and e.node1 != node2: 
-                graph._add_edge_copy(e, node1=e.node1, node2=node2) 
+                graph._add_edge_copy(e, node1=node2, node2=e.node2)
+            if e.node2 == node1 and e.node1 != node2:
+                graph._add_edge_copy(e, node1=e.node1, node2=node2)
     unlink(graph, node1)
 
 def cut(graph, node):
@@ -1150,10 +1150,10 @@ def cut(graph, node):
     for e in graph.edges:
         if node in (e.node1, e.node2):
             for n in node.links:
-                if e.node1 == node and e.node2 != n: 
-                    graph._add_edge_copy(e, node1=n, node2=e.node2) 
-                if e.node2 == node and e.node1 != n: 
-                    graph._add_edge_copy(e, node1=e.node1, node2=n) 
+                if e.node1 == node and e.node2 != n:
+                    graph._add_edge_copy(e, node1=n, node2=e.node2)
+                if e.node2 == node and e.node1 != n:
+                    graph._add_edge_copy(e, node1=e.node1, node2=n)
     unlink(graph, node)
 
 def insert(graph, node, a, b):
@@ -1162,17 +1162,17 @@ def insert(graph, node, a, b):
     """
     if not isinstance(node, Node):
         node = graph[node]
-    if not isinstance(a, Node): 
+    if not isinstance(a, Node):
         a = graph[a]
-    if not isinstance(b, Node): 
+    if not isinstance(b, Node):
         b = graph[b]
     for e in graph.edges:
-        if e.node1 == a and e.node2 == b: 
-            graph._add_edge_copy(e, node1=a, node2=node) 
-            graph._add_edge_copy(e, node1=node, node2=b) 
-        if e.node1 == b and e.node2 == a: 
-            graph._add_edge_copy(e, node1=b, node2=node) 
-            graph._add_edge_copy(e, node1=node, node2=a) 
+        if e.node1 == a and e.node2 == b:
+            graph._add_edge_copy(e, node1=a, node2=node)
+            graph._add_edge_copy(e, node1=node, node2=b)
+        if e.node1 == b and e.node2 == a:
+            graph._add_edge_copy(e, node1=b, node2=node)
+            graph._add_edge_copy(e, node1=node, node2=a)
     unlink(graph, a, b)
 
 #### GRAPH EXPORT ##################################################################################
@@ -1389,8 +1389,8 @@ class HTMLCanvasRenderer(GraphRenderer):
         s.append(   "\tg.layout.k = %s; // Force constant (= edge length).\n"
                     "\tg.layout.force = %s; // Repulsive strength.\n"
                     "\tg.layout.repulsion = %s; // Repulsive radius.\n" % (
-                        self.k, 
-                        self.force, 
+                        self.k,
+                        self.force,
                         self.repulsion))
         # Apply eigenvector, betweenness and degree centrality.
         if self.weight is True: s.append(
@@ -1437,7 +1437,7 @@ class HTMLCanvasRenderer(GraphRenderer):
                     "\tg.drag(canvas.mouse);\n"
                  "}" % (
             int(self.frames),
-            int(self.ipf), 
+            int(self.ipf),
             str(self.weighted).lower(),
             str(self.directed).lower()))
         return s
@@ -1492,13 +1492,13 @@ class HTMLCanvasRenderer(GraphRenderer):
         s = "\t" + s.replace("\n", "\n\t\t\t")
         s = s.rstrip()
         s = self._source % (
-            self.title, 
-            css, 
-            js, 
-            js, 
-            self.id, 
-            self.width, 
-            self.height, 
+            self.title,
+            css,
+            js,
+            js,
+            self.id,
+            self.width,
+            self.height,
             s)
         return s
 
@@ -1572,7 +1572,7 @@ class GraphMLRenderer(GraphRenderer):
             "id": "edge_weight", "for": "edge", "attr.name": "weight", "attr.type": "double"
         }))
         # Map Node.id => GraphML node id.
-        m = {}        
+        m = {}
         g = etree.SubElement(root, ns + "graph", id="g", edgedefault=directed and "directed" or "undirected")
         # Export nodes.
         for i, n in enumerate(self.graph.nodes):

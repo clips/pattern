@@ -109,7 +109,7 @@ class TestMorphology(unittest.TestCase):
         f = StringIO("NN s fhassuf 1 NNS x")
         v = text.Morphology(f)
         self.assertEqual(v.apply(
-            ["cats", "NN"]), 
+            ["cats", "NN"]),
             ["cats", "NNS"])
         print("pattern.text.Morphology")
 
@@ -125,7 +125,7 @@ class TestContext(unittest.TestCase):
         f = StringIO("VBD VB PREVTAG TO")
         v = text.Context(path=f)
         self.assertEqual(v.apply(
-            [["to", "TO"], ["be", "VBD"]]), 
+            [["to", "TO"], ["be", "VBD"]]),
             [["to", "TO"], ["be", "VB"]])
         print("pattern.text.Context")
 

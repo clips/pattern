@@ -11,22 +11,22 @@ from pattern.web import GOOGLE, YAHOO, BING, sort
 # Ir classifies search terms according to a search engine's total results count.
 # When a context is defined, it sorts according to relevancy to the context:
 # sort(terms=["black", "green", "red"], context="Darth Vader") =>
-# yields "black" as the best candidate, 
+# yields "black" as the best candidate,
 # because "black Darth Vader" yields more search results.
 
 results = sort(
       terms = [
-        "arnold schwarzenegger", 
-        "chuck norris", 
-        "dolph lundgren", 
+        "arnold schwarzenegger",
+        "chuck norris",
+        "dolph lundgren",
         "steven seagal",
-        "sylvester stallone", 
+        "sylvester stallone",
         "mickey mouse",
         ],
     context = "dangerous", # Term used for sorting.
     service = BING,        # GOOGLE, YAHOO, BING, ...
     license = None,        # You should supply your own API license key for the given service.
-     strict = True,        # Wraps the query in quotes, i.e. 'mac sweet'. 
+     strict = True,        # Wraps the query in quotes, i.e. 'mac sweet'.
     reverse = True,        # Reverses term and context: 'sweet mac' instead of 'mac sweet'.
      cached = True)
     

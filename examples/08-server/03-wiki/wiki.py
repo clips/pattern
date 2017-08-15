@@ -50,11 +50,11 @@ def index(*path, **data):
 
 # The pattern.server module has a simple template() function
 # that takes a file path or a string and optional parameters.
-# Placeholders in the template source (e.g., "$name") 
+# Placeholders in the template source (e.g., "$name")
 # are replaced with the parameter values.
 
 # Below is a template with placeholders for page name and content.
-# The page content is loaded from a file stored in /data. 
+# The page content is loaded from a file stored in /data.
 # The page name is parsed from the filename,
 # e.g., "/data/index.html.txt" => "index.html".
 
@@ -99,7 +99,7 @@ def view(page):
 
 # The edit() function is called when a URL ends in "?edit",
 # e.g., http://127.0.0.1:8080/index.html?edit.
-# In this case, we don't show the contents of "/data/index.html.txt" directly, 
+# In this case, we don't show the contents of "/data/index.html.txt" directly,
 # but wrapped inside a <textarea> for editing instead.
 # Once the user is done editing and clicks "Submit",
 # the browser redirects to http://127.0.0.1:8080/index.html?save,

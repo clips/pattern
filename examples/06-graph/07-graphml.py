@@ -20,7 +20,7 @@ for i in range(50):
 for i in range(75):
     node1 = choice(g.nodes)
     node2 = choice(g.nodes)
-    g.add_edge(node1, node2, 
+    g.add_edge(node1, node2,
                weight = random())
 
 g.prune(0)

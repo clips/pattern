@@ -25,7 +25,7 @@ from pattern.vector import Document, Model, TF, TFIDF
 # to represent this.
 
 # A Model is a collection of documents vectors.
-# A Model is a matrix (or vector space) 
+# A Model is a matrix (or vector space)
 # with features as columns and feature weights as rows.
 # We can then do calculations on the matrix,
 # for example to compute TF-IDF or similarity between documents.

@@ -74,9 +74,9 @@ class TestUtilityFunctions(unittest.TestCase):
     def test_shi(self):
         # Assert integer hashing algorithm.
         for a, b in (
-          (   100, "1c"), 
-          (  1000, "G8"), 
-          ( 10000, "2bI"), 
+          (   100, "1c"),
+          (  1000, "G8"),
+          ( 10000, "2bI"),
           (100000, "Q0u")):
             self.assertEqual(vector.shi(a), b)
         print("pattern.vector.shi()")
@@ -134,29 +134,29 @@ class TestStemmer(unittest.TestCase):
     def setUp(self):
         # Test data from http://snowball.tartarus.org/algorithms/english/stemmer.html
         self.input = [
-            'consign', 'consigned', 'consigning', 'consignment', 'consist', 'consisted', 'consistency', 
-            'consistent', 'consistently', 'consisting', 'consists', 'consolation', 'consolations', 
-            'consolatory', 'console', 'consoled', 'consoles', 'consolidate', 'consolidated', 'consolidating', 
-            'consoling', 'consolingly', 'consols', 'consonant', 'consort', 'consorted', 'consorting', 
-            'conspicuous', 'conspicuously', 'conspiracy', 'conspirator', 'conspirators', 'conspire', 
+            'consign', 'consigned', 'consigning', 'consignment', 'consist', 'consisted', 'consistency',
+            'consistent', 'consistently', 'consisting', 'consists', 'consolation', 'consolations',
+            'consolatory', 'console', 'consoled', 'consoles', 'consolidate', 'consolidated', 'consolidating',
+            'consoling', 'consolingly', 'consols', 'consonant', 'consort', 'consorted', 'consorting',
+            'conspicuous', 'conspicuously', 'conspiracy', 'conspirator', 'conspirators', 'conspire',
             'conspired', 'conspiring', 'constable', 'constables', 'constance', 'constancy', 'constant',
-            'generate', 'generates', 'generated', 'generating', 'general', 'generally', 'generic', 
-            'generically', 'generous', 'generously', 'knack', 'knackeries', 'knacks', 'knag', 'knave', 
-            'knaves', 'knavish', 'kneaded', 'kneading', 'knee', 'kneel', 'kneeled', 'kneeling', 'kneels', 
-            'knees', 'knell', 'knelt', 'knew', 'knick', 'knif', 'knife', 'knight', 'knightly', 'knights', 
-            'knit', 'knits', 'knitted', 'knitting', 'knives', 'knob', 'knobs', 'knock', 'knocked', 'knocker', 
+            'generate', 'generates', 'generated', 'generating', 'general', 'generally', 'generic',
+            'generically', 'generous', 'generously', 'knack', 'knackeries', 'knacks', 'knag', 'knave',
+            'knaves', 'knavish', 'kneaded', 'kneading', 'knee', 'kneel', 'kneeled', 'kneeling', 'kneels',
+            'knees', 'knell', 'knelt', 'knew', 'knick', 'knif', 'knife', 'knight', 'knightly', 'knights',
+            'knit', 'knits', 'knitted', 'knitting', 'knives', 'knob', 'knobs', 'knock', 'knocked', 'knocker',
             'knockers', 'knocking', 'knocks', 'knopp', 'knot', 'knots', 'skies', 'spy'
         ]
         self.output = [
-            'consign', 'consign', 'consign', 'consign', 'consist', 'consist', 'consist', 'consist', 'consist', 
-            'consist', 'consist', 'consol', 'consol', 'consolatori', 'consol', 'consol', 'consol', 'consolid', 
-            'consolid', 'consolid', 'consol', 'consol', 'consol', 'conson', 'consort', 'consort', 'consort', 
-            'conspicu', 'conspicu', 'conspiraci', 'conspir', 'conspir', 'conspir', 'conspir', 'conspir', 
-            'constabl', 'constabl', 'constanc', 'constanc', 'constant', 'generat', 'generat', 'generat', 
-            'generat', 'general', 'general', 'generic', 'generic', 'generous', 'generous', 'knack', 'knackeri', 
-            'knack', 'knag', 'knave', 'knave', 'knavish', 'knead', 'knead', 'knee', 'kneel', 'kneel', 'kneel', 
-            'kneel', 'knee', 'knell', 'knelt', 'knew', 'knick', 'knif', 'knife', 'knight', 'knight', 'knight', 
-            'knit', 'knit', 'knit', 'knit', 'knive', 'knob', 'knob', 'knock', 'knock', 'knocker', 'knocker', 
+            'consign', 'consign', 'consign', 'consign', 'consist', 'consist', 'consist', 'consist', 'consist',
+            'consist', 'consist', 'consol', 'consol', 'consolatori', 'consol', 'consol', 'consol', 'consolid',
+            'consolid', 'consolid', 'consol', 'consol', 'consol', 'conson', 'consort', 'consort', 'consort',
+            'conspicu', 'conspicu', 'conspiraci', 'conspir', 'conspir', 'conspir', 'conspir', 'conspir',
+            'constabl', 'constabl', 'constanc', 'constanc', 'constant', 'generat', 'generat', 'generat',
+            'generat', 'general', 'general', 'generic', 'generic', 'generous', 'generous', 'knack', 'knackeri',
+            'knack', 'knag', 'knave', 'knave', 'knavish', 'knead', 'knead', 'knee', 'kneel', 'kneel', 'kneel',
+            'kneel', 'knee', 'knell', 'knelt', 'knew', 'knick', 'knif', 'knife', 'knight', 'knight', 'knight',
+            'knit', 'knit', 'knit', 'knit', 'knive', 'knob', 'knob', 'knock', 'knock', 'knocker', 'knocker',
             'knock', 'knock', 'knopp', 'knot', 'knot', 'sky', 'spi'
         ]
         
@@ -401,7 +401,7 @@ class TestModel(unittest.TestCase):
     def test_model_export(self):
         # Assert Orange and Weka ARFF export formats.
         for format, src in (
-            (vector.ORANGE, 
+            (vector.ORANGE,
                 "bark\tcats\tdogs\thowl\tmeow\tpurr\tm#name\tc#type\n"
                 "0\t0.3466\t0\t0\t0\t0.6931\tcat1\tcåt\n"
                 "0\t0.3466\t0\t0\t0.6931\t0\tcat2\tcåt\n"
@@ -964,7 +964,7 @@ class TestClassifier(unittest.TestCase):
         self.assertTrue(F >= 0.93)
         
     def test_liblinear(self):
-        # If LIBLINEAR can be loaded, 
+        # If LIBLINEAR can be loaded,
         # assert that it is used for linear SVC (= 10x faster).
         try:
             from pattern.vector import svm
@@ -973,15 +973,15 @@ class TestClassifier(unittest.TestCase):
             return
         if svm.LIBLINEAR:
             classifier1 = vector.SVM(
-                      type =  vector.CLASSIFICATION, 
+                      type =  vector.CLASSIFICATION,
                     kernel =  vector.LINEAR,
                 extensions = (vector.LIBSVM, vector.LIBLINEAR))
             classifier2 = vector.SVM(
-                      type =  vector.CLASSIFICATION, 
+                      type =  vector.CLASSIFICATION,
                     kernel =  vector.RBF,
                 extensions = (vector.LIBSVM, vector.LIBLINEAR))
             classifier3 = vector.SVM(
-                      type =  vector.CLASSIFICATION, 
+                      type =  vector.CLASSIFICATION,
                     kernel =  vector.LINEAR,
                 extensions = (vector.LIBSVM,))
             self.assertEqual(classifier1.extension, vector.LIBLINEAR)

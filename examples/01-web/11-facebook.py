@@ -77,7 +77,7 @@ if license != "":
         if status.comments > 0:
             # Retrieve comments on the status update.
             print("%s comments:" % status.comments)
-            print([(x.author, x.text, x.likes) 
+            print([(x.author, x.text, x.likes)
                 for x in fb.search(status.id, type=COMMENTS)])
         if status.likes > 0:
             # Retrieve likes on the status update.

@@ -12,7 +12,7 @@ from pattern.text import language
 
 app = App("api")
 
-# The language() function in pattern.text guesses the language of a given string. 
+# The language() function in pattern.text guesses the language of a given string.
 # For example: language("In French, goodbye is au revoir.") returns ("en", 0.83).
 # It can handle "en", "es", "de", "fr", "nl", "it" with reasonable accuracy.
 
@@ -39,7 +39,7 @@ def predict_language(q=""):
     #print(q)
     iso, confidence = language(q) # (takes some time to load the first time)
     return {
-          "language": iso, 
+          "language": iso,
         "confidence": round(confidence, 2)
     }
     
@@ -80,7 +80,7 @@ if not app.rate.get(key="1234", path="/language/paid"):
 
 # A rate.db SQLite database was created in the current folder.
 # If you want to give it another name, use App(rate="xxx.db").
-# To view the contents of the database,we use the free 
+# To view the contents of the database,we use the free
 # SQLite Database Browser (http://sqlitebrowser.sourceforge.net).
 
 # If the web service is heavily used,

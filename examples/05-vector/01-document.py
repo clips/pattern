@@ -19,7 +19,7 @@ from pattern.vector import Document, PORTER, LEMMA
 # Words can be stemmed or lemmatized before counting them.
 # The purpose of stemming is to bring variant forms a word together.
 # For example, "conspiracy" and "conspired" are both stemmed to "conspir".
-# Nowadays, lemmatization is usually preferred over stemming, 
+# Nowadays, lemmatization is usually preferred over stemming,
 # e.g., "conspiracies" => "conspiracy", "conspired" => "conspire".
 
 s = """
@@ -47,7 +47,7 @@ print()
 #
 #w = Wikipedia()
 #for q in (
-#  "badger", "bear", "dog", "dolphin", "lion", "parakeet", 
+#  "badger", "bear", "dog", "dolphin", "lion", "parakeet",
 #  "rabbit", "shark", "sparrow", "tiger", "wolf"):
 #    s = w.search(q, cached=True)
 #    s = s.plaintext()

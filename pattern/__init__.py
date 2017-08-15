@@ -10,10 +10,10 @@
 #
 #   Redistribution and use in source and binary forms, with or without
 #   modification, are permitted provided that the following conditions are met:
-# 
+#
 #     * Redistributions of source code must retain the above copyright
 #       notice, this list of conditions and the following disclaimer.
-#     * Redistributions in binary form must reproduce the above copyright 
+#     * Redistributions in binary form must reproduce the above copyright
 #       notice, this list of conditions and the following disclaimer in
 #       the documentation and/or other materials provided with the
 #       distribution.
@@ -50,7 +50,7 @@ __license__   = "BSD"
 
 import os
 
-# Shortcuts to pattern.en, pattern.es, ... 
+# Shortcuts to pattern.en, pattern.es, ...
 # (instead of pattern.text.en, pattern.text.es, ...)
 try: __path__.append(os.path.join(__path__[0], "text"))
 except:

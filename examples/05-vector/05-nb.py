@@ -51,13 +51,13 @@ print()
 
 # To test the accuracy of a classifier,
 # we typically use 10-fold cross validation.
-# This means that 10 individual tests are performed, 
+# This means that 10 individual tests are performed,
 # each with 90% of the corpus as training data and 10% as testing data.
 from pattern.vector import k_fold_cv
 print(k_fold_cv(NB, documents=m, folds=10))
 
 # This yields 5 scores: (Accuracy, Precision, Recall, F-score, standard deviation).
-# Accuracy in itself is not very useful, 
+# Accuracy in itself is not very useful,
 # since some spam may have been regarded as real messages (false positives),
 # and some real messages may have been regarded as spam (false negatives).
 # Precision = how accurately false positives are discarded,

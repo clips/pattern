@@ -80,7 +80,7 @@ class TestInflection(unittest.TestCase):
         # (presumably because nl.inflect.verbs has high percentage irregular verbs).
         i, n = 0, 0
         for v1, v2 in nl.inflect.verbs.inflections.items():
-            if nl.inflect.verbs.find_lemma(v1) == v2: 
+            if nl.inflect.verbs.find_lemma(v1) == v2:
                 i += 1
             n += 1
         self.assertTrue(float(i) / n > 0.83)
@@ -191,8 +191,8 @@ class TestParser(unittest.TestCase):
         # Assert lemmata for nouns and verbs.
         v = nl.parser.find_lemmata([["katten", "NNS"], ["droegen", "VBD"], ["hoeden", "NNS"]])
         self.assertEqual(v, [
-            ["katten", "NNS", "kat"], 
-            ["droegen", "VBD", "dragen"], 
+            ["katten", "NNS", "kat"],
+            ["droegen", "VBD", "dragen"],
             ["hoeden", "NNS", "hoed"]])
         print("pattern.nl.parser.find_lemmata()")
     

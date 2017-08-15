@@ -44,7 +44,7 @@ class TestUtilityFunctions(unittest.TestCase):
         # Assert combinations of list items.
         self.assertEqual(list(search.product([ ], repeat=2)), [])   # No possibilities.
         self.assertEqual(list(search.product([1], repeat=0)), [()]) # One possibility: the empty set.
-        self.assertEqual(list(search.product([1,2,3], repeat=2)), 
+        self.assertEqual(list(search.product([1,2,3], repeat=2)),
             [(1,1), (1,2), (1,3), (2,1), (2,2), (2,3), (3,1), (3,2), (3,3)])
         for n, m in ((1,9), (2,81), (3,729), (4,6561)):
             v = search.product([1,2,3,4,5,6,7,8,9], repeat=n)
@@ -103,20 +103,20 @@ class TestTaxonomy(unittest.TestCase):
         self.assertEqual(t.value("King Arthur"), 1)
         self.assertEqual(t.parents("John Cleese"), ["basil fawlty", "sir lancelot"])
         self.assertEqual(t.parents("John Cleese", recursive=True), [
-            "basil fawlty", 
-            "sir lancelot", 
+            "basil fawlty",
+            "sir lancelot",
             "knight"])
         self.assertEqual(t.children("knight"), [
-            "sir robin", 
-            "sir gallahad", 
-            "sir lancelot", 
-            "sir bedevere", 
+            "sir robin",
+            "sir gallahad",
+            "sir lancelot",
+            "sir bedevere",
             "king arthur"])
         self.assertEqual(t.children("knight", recursive=True), [
-            "sir robin", 
-            "sir gallahad", 
-            "sir lancelot", 
-            "sir bedevere", 
+            "sir robin",
+            "sir gallahad",
+            "sir lancelot",
+            "sir bedevere",
             "king arthur",
             "john cleese"])
         print("pattern.search.Taxonomy")

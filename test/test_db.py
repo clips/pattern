@@ -105,10 +105,10 @@ class TestEntities(unittest.TestCase):
     def test_encode_entities(self):
         # Assert HTML entity encoder (e.g., "&" => "&&amp;")
         for a, b in (
-          ("&#201;", "&#201;"), 
-          ("&", "&amp;"), 
-          ("<", "&lt;"), 
-          (">", "&gt;"), 
+          ("&#201;", "&#201;"),
+          ("&", "&amp;"),
+          ("<", "&lt;"),
+          (">", "&gt;"),
           ('"', "&quot;"),
           ("'", "&#39;")):
             self.assertEqual(db.encode_entities(a), b)
@@ -312,7 +312,7 @@ class _TestDatabase(object):
           (False, "0"),
           ( None, "null")):
             self.assertEqual(db._escape(v), s)
-        # Assert date.   
+        # Assert date.
         v = db.date("1707-04-15")
         self.assertEqual(db._escape(v), "'1707-04-15 00:00:00'")
         # Assert current date.
@@ -368,10 +368,10 @@ class _TestDatabase(object):
         self.assertTrue(getattr(self.db, v.name) == v)
         # Assert Database._field_SQL subroutine for Database.create().
         for field, sql1, sql2 in (
-          (db.primary_key("pid"), 
+          (db.primary_key("pid"),
            ("`pid` integer not null primary key auto_increment", None),
            ("`pid` integer not null primary key autoincrement", None)),
-          (db.field("name", db.STRING, index=True, optional=False), 
+          (db.field("name", db.STRING, index=True, optional=False),
            ("`name` varchar(100) not null", "create index `products_name` on `products` (`name`);"),
            ("`name` varchar(100) not null", "create index `products_name` on `products` (`name`);")),
           (db.field("price", db.INTEGER),
@@ -444,8 +444,8 @@ class TestSchema(unittest.TestCase):
           (dict(name="show",  type=db.BOOL,   default=True),     ("show",  "tinyint(1)",   True,   False,     True)),
           (dict(name="show",  type=db.BOOL,   default=False),    ("show",  "tinyint(1)",   False,  False,     True)),
           (dict(name="date",  type=db.DATE),                     ("date",  "timestamp",    "now",  False,     True)),
-          (dict(name="date",  type=db.DATE,   default=db.NOW),   ("date",  "timestamp",    "now",  False,     True)), 
-          (dict(name="date",  type=db.DATE,   default="1999-12-31 23:59:59"), 
+          (dict(name="date",  type=db.DATE,   default=db.NOW),   ("date",  "timestamp",    "now",  False,     True)),
+          (dict(name="date",  type=db.DATE,   default="1999-12-31 23:59:59"),
                                                                  ("date", "timestamp", "1999-12-31 23:59:59", False, True))):
             self.assertEqual(db.field(**kwargs), f)
         # Assert primary_key() return value.
@@ -783,7 +783,7 @@ class _TestQuery(object):
         v = self.db.persons.search(fields=["name", "gender.name"])
         v.aliases["gender.name"] = "gender"
         self.db.link("persons", "gender", "gender", "id", join=db.LEFT)
-        self.assertEqual(v.SQL(), 
+        self.assertEqual(v.SQL(),
             "select persons.name, gender.name as gender from `persons` left join `gender` on persons.gender=gender.id;")
         self.assertEqual(v.rows(),
             [('john', 'male'),
@@ -931,7 +931,7 @@ class TestCSV(unittest.TestCase):
         v = open("test.csv", "rb").read()
         v = db.decode_utf8(v.lstrip(codecs.BOM_UTF8))
         v = v.replace("\r\n", "\n")
-        self.assertEqual(v, 
+        self.assertEqual(v,
             '"name (STRING)","type (STRING)","tail (BOOLEAN)","age (INTEGER)","date (DATE)"\n'
             '"Schrödinger","cat","True","3","2009-11-03 00:00:00"\n'
             '"Hofstadter","labrador","True","5","2007-08-04 00:00:00"'

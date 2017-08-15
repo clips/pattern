@@ -93,14 +93,14 @@ def penntreebank2universal(token, tag):
     return _penntreebank2universal(token, tag)
 
 ABBREVIATIONS = [
-    "a.C.", "all.", "apr.", "art.", "artt.", "b.c.", "c.a.", "cfr.", "c.d.", 
-    "c.m.", "C.V.", "d.C.", "Dott.", "ecc.", "egr.", "e.v.", "fam.", "giu.", 
-    "Ing.", "L.", "n.", "op.", "orch.", "p.es.", "Prof.", "prof.", "ql.co.", 
+    "a.C.", "all.", "apr.", "art.", "artt.", "b.c.", "c.a.", "cfr.", "c.d.",
+    "c.m.", "C.V.", "d.C.", "Dott.", "ecc.", "egr.", "e.v.", "fam.", "giu.",
+    "Ing.", "L.", "n.", "op.", "orch.", "p.es.", "Prof.", "prof.", "ql.co.",
     "secc.", "sig.", "s.l.m.", "s.r.l.", "Spett.", "S.P.Q.C.", "v.c."
 ]
 
 replacements = (
-    "a", "co", "all", "anch", "nient", "cinquant", 
+    "a", "co", "all", "anch", "nient", "cinquant",
     "b", "de", "dev", "bell", "quell", "diciott",
     "c", "gl", "don", "cent", "quest", "occupo",
     "d", "po", "dov", "dall", "trent", "sessant",
@@ -126,7 +126,7 @@ def find_lemmata(tokens):
         if pos.startswith(("DT",)):
             lemma = singularize(word, pos="DT")
         if pos.startswith("JJ"):
-            lemma = predicative(word)  
+            lemma = predicative(word)
         if pos == "NNS":
             lemma = singularize(word)
         if pos.startswith(("VB", "MD")):
@@ -172,7 +172,7 @@ parser = Parser(
 lexicon = parser.lexicon # Expose lexicon.
 
 sentiment = Sentiment(
-        path = os.path.join(MODULE, "it-sentiment.xml"), 
+        path = os.path.join(MODULE, "it-sentiment.xml"),
       synset = None,
    negations = ("mai", "no", "non"),
    modifiers = ("RB",),

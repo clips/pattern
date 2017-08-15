@@ -16,17 +16,17 @@ from random        import choice, random
 g = Graph()
 # Random nodes.
 for i in range(50):
-    g.add_node(id=str(i+1), 
+    g.add_node(id=str(i+1),
         radius = 5,
-        stroke = (0,0,0,1), 
+        stroke = (0,0,0,1),
           text = (0,0,0,1))
 # Random edges.
 for i in range(75):
     node1 = choice(g.nodes)
     node2 = choice(g.nodes)
-    g.add_edge(node1, node2, 
-        length = 1.0, 
-        weight = random(), 
+    g.add_edge(node1, node2,
+        length = 1.0,
+        weight = random(),
         stroke = (0,0,0,1))
 
 for node in g.sorted()[:20]:
@@ -44,7 +44,7 @@ g["1"].text.string = "home"
 # You can drag the nodes around - open index.html in a browser and try it out!
 # The layout can be tweaked in many ways:
 
-g.export(os.path.join(os.path.dirname(__file__), "test"), 
+g.export(os.path.join(os.path.dirname(__file__), "test"),
         width = 700,     # <canvas> width.
        height = 500,     # <canvas> height.
        frames = 500,     # Number of frames of animation.

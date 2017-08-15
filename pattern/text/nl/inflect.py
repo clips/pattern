@@ -271,7 +271,7 @@ class Verbs(_Verbs):
             b = v[:-3]
         # Past participle ge- and -d or -t: gehengeld, geknipt.
         elif v.endswith(("d","t")) and v.startswith("ge"):
-            b = v[2:-1]    
+            b = v[2:-1]
         # Present 2nd or 3rd singular: wordt, denkt, snakt, wacht.
         elif v.endswith(("cht"),):
             b = v
@@ -291,7 +291,7 @@ class Verbs(_Verbs):
           or b.endswith(("ijf", "erf"),):
             if b.endswith("f"): b = b[:-1] + "v"
             if b.endswith("s"): b = b[:-1] + "z"
-            if b[-2] == b[-3]: 
+            if b[-2] == b[-3]:
                 b = b[:-2] + b[-1]
         # Short vowel followed by consonant: snak => snakken.
         elif len(b) > 1 and not is_vowel(b[-1]) and is_vowel(b[-2]) and not b.endswith(("er","ig")):

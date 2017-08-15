@@ -116,8 +116,8 @@ u = decode_utf8 = decode_string
 s = encode_utf8 = encode_string
 
 GREMLINS = set([
-    0x0152, 0x0153, 0x0160, 0x0161, 0x0178, 0x017E, 0x017D, 0x0192, 0x02C6, 
-    0x02DC, 0x2013, 0x2014, 0x201A, 0x201C, 0x201D, 0x201E, 0x2018, 0x2019, 
+    0x0152, 0x0153, 0x0160, 0x0161, 0x0178, 0x017E, 0x017D, 0x0192, 0x02C6,
+    0x02DC, 0x2013, 0x2014, 0x201A, 0x201C, 0x201D, 0x201E, 0x2018, 0x2019,
     0x2020, 0x2021, 0x2022, 0x2026, 0x2030, 0x2039, 0x203A, 0x20AC, 0x2122
 ])
 
@@ -129,7 +129,7 @@ def fix(s, ignore=""):
     if not isinstance(s, str):
         s = s.decode("utf-8")
         # If this doesn't work,
-        # copy & paste string in a Unicode .txt, 
+        # copy & paste string in a Unicode .txt,
         # and then pass open(f).read() to fix().
     u = []
     i = 0
@@ -1693,8 +1693,8 @@ class Twitter(SearchEngine):
         # If search() is called again with start+1, start from this id.
         if isinstance(start, (int, float)):
             k = (query, kwargs.get("geo"), kwargs.get("date"), int(start), count)
-            if results:  
-                self._pagination[k] = str(int(results[-1].id) - 1) 
+            if results:
+                self._pagination[k] = str(int(results[-1].id) - 1)
             else:
                 self._pagination[k] = id
         return results
@@ -2197,7 +2197,7 @@ class MediaWikiSection(object):
                 p = self.article._plaintext
                 f = find_between
                 for s in f(b[0], b[1], self.source):
-                    t = self.article.parser.MediaWikiTable(self, 
+                    t = self.article.parser.MediaWikiTable(self,
                          title = p((f(r"<caption.*?>", "</caption>", s) + [""])[0]),
                         source = b[0] + s + b[1])
                     # 1) Parse <td> and <th> content and format it as plain text.
@@ -2724,8 +2724,8 @@ class Facebook(SearchEngine):
             })
         if type in (SEARCH, NEWS, FEED):
             url.query["fields"] = ",".join((
-                "id", "from", "name", "story", "message", "link", "picture", "created_time", "shares", 
-                "comments.limit(1).summary(true)", 
+                "id", "from", "name", "story", "message", "link", "picture", "created_time", "shares",
+                "comments.limit(1).summary(true)",
                    "likes.limit(1).summary(true)"
             ))
         # 2) Parse JSON response.
@@ -3305,11 +3305,11 @@ class Selector(object):
         s = s.replace(".", " .")        # .class
         s = s.replace(":", " :")        # :pseudo-element
         s = s.replace("[", " [")        # [attribute="value"]
-        s = re.sub(r"\[.*?\]", 
-            lambda m: re.sub(r" (\#|\.|\:)", "\\1", m.group(0)), s)    
-        s = re.sub(r"\[.*?\]", 
+        s = re.sub(r"\[.*?\]",
+            lambda m: re.sub(r" (\#|\.|\:)", "\\1", m.group(0)), s)
+        s = re.sub(r"\[.*?\]",
             lambda m: _encode_space(m.group(0)), s)
-        s = re.sub(r":contains\(.*?\)", 
+        s = re.sub(r":contains\(.*?\)",
             lambda m: _encode_space(m.group(0)), s)
         s = s.split(" ")
         self.tag, self.id, self.classes, self.pseudo, self.attributes = (
@@ -3435,9 +3435,9 @@ class SelectorChain(list):
             s = re.sub(r" *\> *", " >", s)
             s = re.sub(r" *\< *", " <", s)
             s = re.sub(r" *\+ *", " +", s)
-            s = re.sub(r"\[.*?\]", 
+            s = re.sub(r"\[.*?\]",
                 lambda m: _encode_space(m.group(0)), s)
-            s = re.sub(r":contains\(.*?\)", 
+            s = re.sub(r":contains\(.*?\)",
                 lambda m: _encode_space(m.group(0)), s)
             self.append([])
             for s in s.split(" "):
@@ -3909,7 +3909,7 @@ def parsedoc(path, format=None):
             return parsehtml(path)
     # Brute-force approach if the format is unknown.
     for f in (parsepdf, parsedocx, parsehtml):
-        try: 
+        try:
             return f(path)
         except:
             pass

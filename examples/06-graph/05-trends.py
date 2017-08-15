@@ -10,7 +10,7 @@ from pattern.web import Twitter
 from pattern.graph import Graph
 
 # This example demonstrates a simple Twitter miner + visualizer.
-# We collect tweets containing "A is the new B", 
+# We collect tweets containing "A is the new B",
 # mine A and B and use them as connected nodes in a graph.
 # Then we export the graph as a browser visualization.
 

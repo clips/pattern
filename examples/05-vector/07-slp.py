@@ -17,8 +17,8 @@ from random         import seed
 
 from io import open
 
-# This example demonstrates how a Perceptron classifier 
-# can be used to construct an English language model 
+# This example demonstrates how a Perceptron classifier
+# can be used to construct an English language model
 # (i.e., a classifier that predicts part-of-speech tags),
 # by learning from a training set of tagged sentences.
 
@@ -56,7 +56,7 @@ data = list(corpus(path))
 # even though it can also be used as RB (adverb) in about 25% of the cases.
 
 # We will add "about" to the set of words in the lexicon to ignore
-# when using a language model. 
+# when using a language model.
 
 print("load training lexicon...")
 
@@ -83,12 +83,12 @@ for w, tags in f.items():
 # Take a look at the Model class in pattern/text/__init__.py.
 # You'll see an internal Model._v() method
 # that creates a training vector from a given word and its context,
-# using information such as word suffix, first letter (i.e., for proper nouns), 
+# using information such as word suffix, first letter (i.e., for proper nouns),
 # the part-of-speech tags of preceding words, surrounding tags, etc.
 
 # Perceptron (SLP, single-layer averaged perceptron) works well for language models.
 # Perceptron is an error-driven classifier.
-# When given a training example (e.g., tagged word + surrounding words), 
+# When given a training example (e.g., tagged word + surrounding words),
 # it will check if it could correctly predict this example.
 # If not, it will adjust its weights.
 # So the accuracy of the perceptron can be improved significantly

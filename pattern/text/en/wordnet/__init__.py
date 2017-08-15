@@ -8,7 +8,7 @@
 ####################################################################################################
 # WordNet is a lexical database for English.
 # It disambiguates word senses, e.g., "tree" in the sense of a plant or in the sense of a graph.
-# It groups similar word senses into sets of synonyms called synsets, 
+# It groups similar word senses into sets of synonyms called synsets,
 # with a short description and semantic relations to other synsets:
 # -  synonym = a word that is similar in meaning,
 # - hypernym = a word with a broader meaning,       (tree => plant)
@@ -35,7 +35,7 @@ from math import log
 
 from pattern.text import lazydict
 
-try: 
+try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
@@ -98,8 +98,8 @@ def normalize(word):
         try: word = word.encode("utf-8", "ignore")
         except:
             pass
-    for k, v in DIACRITICS.items(): 
-        for v in v: 
+    for k, v in DIACRITICS.items():
+        for v in v:
             word = word.replace(v, k)
 
     # Replace spaces with underscores
@@ -350,11 +350,11 @@ def ancestor(synset1, synset2):
         if s in h2:
             return s
             
-least_common_subsumer = lcs = ancestor 
+least_common_subsumer = lcs = ancestor
 
 ### INFORMATION CONTENT ############################################################################
 # Information Content (IC) is used to calculate semantic similarity in Synset.similarity().
-# Information Content values for each synset are derived from word frequency in a given corpus. 
+# Information Content values for each synset are derived from word frequency in a given corpus.
 # The idea is that less frequent words convey more information.
 # Semantic similarity depends on the amount of information two concepts (synsets) have in common,
 # given by the Most Speciﬁc Common Abstraction (MSCA), i.e. the shared ancestor in the taxonomy.

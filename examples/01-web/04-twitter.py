@@ -11,7 +11,7 @@ from pattern.db  import Datasheet, pprint, pd
 
 # This example retrieves tweets containing given keywords from Twitter.
 
-try: 
+try:
     # We'll store tweets in a Datasheet.
     # A Datasheet is a table of rows and columns that can be exported as a CSV-file.
     # In the first column, we'll store a unique id for each tweet.

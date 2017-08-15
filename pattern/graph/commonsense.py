@@ -133,9 +133,9 @@ class Commonsense(Graph):
             s = s.strip(BOM_UTF8)
             s = ((v.strip("\"") for v in r.split(",")) for r in s.splitlines())
             for concept1, relation, concept2, context, weight in s:
-                self.add_edge(concept1, concept2, 
-                    type = relation, 
-                 context = context, 
+                self.add_edge(concept1, concept2,
+                    type = relation,
+                 context = context,
                   weight = min(int(weight)*0.1, 1.0))
 
     @property

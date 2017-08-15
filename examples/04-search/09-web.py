@@ -35,7 +35,7 @@ for i in range(1):  # max=10
             a = m.constituents(constraint=0)[-1]  # Left NP.
             b = m.constituents(constraint=5)[ 0]  # Right NP.
             d.append((
-                a.string.lower(), 
+                a.string.lower(),
                 b.string.lower()))
 
 pprint(d)

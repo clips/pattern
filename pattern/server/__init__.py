@@ -99,7 +99,7 @@ def chown(path, owner=None):
 # On Linux + Apache mod_wsgi, the user that executes the Python script is "www-data".
 # If the app folder was created by "root", "www-data" will not have write permission,
 # and consequently cannot write to an SQLite database (e.g., App.rate) in the folder,
-# or create SQLite -journal files. 
+# or create SQLite -journal files.
 
 # The solution is for "www-data" to chown() the folder, and any database files in it.
 # This can also be done from Python with App(owner=("www-data", "www-data"))
@@ -271,12 +271,12 @@ class Database(object):
         if self._type == MYSQL:
             import MySQLdb
             self._connection = MySQLdb.connect(
-                  host = self._host, 
-                  port = self._port, 
-                  user = self._user[0], 
-                passwd = self._user[1], 
-       connect_timeout = self._timeout, 
-           use_unicode = True, 
+                  host = self._host,
+                  port = self._port,
+                  user = self._user[0],
+                passwd = self._user[1],
+       connect_timeout = self._timeout,
+           use_unicode = True,
                charset = "utf8"
             )
             self._connection.row_factory = self._factory
@@ -295,10 +295,10 @@ class Database(object):
         """
         try:
             r = self._connection.cursor().execute(sql, values)
-            if commit: 
+            if commit:
                 self._connection.commit()
         except Exception as e:
-            # "OperationalError: database is locked" means that 
+            # "OperationalError: database is locked" means that
             # SQLite is receiving too many concurrent write ops.
             # A write operation locks the entire database;
             # other threaded connections may time out waiting.
@@ -325,7 +325,7 @@ class Database(object):
         return "Database(name=%s)" % repr(self._name)
 
     def __del__(self):
-        try: 
+        try:
             self.disconnect()
         except:
             pass
@@ -447,7 +447,7 @@ def verify_password(s1, s2):
 # 5) Command line: open -a "TextEdit" .bash_profile =>
 # 6) export PATH=~/bin:/usr/local/bin:/usr/local/mysql/bin:$PATH
 # 7) Command line: sudo pip install MySQL-python
-# 8) Command line: sudo ln -s /usr/local/mysql/lib/libmysqlclient.xx.dylib 
+# 8) Command line: sudo ln -s /usr/local/mysql/lib/libmysqlclient.xx.dylib
 #                             /usr/lib/libmysqlclient.xx.dylib
 # 9) import MySQLdb
 
@@ -537,7 +537,7 @@ class RateLimit(Database):
         self.execute(q1, (key, p), commit=False)
         self.execute(q2, (key, p, limit, time))
         # Update cache.
-        with self.lock: 
+        with self.lock:
             self.cache[(key, p)] = (0, limit, time, _time.time())
             self._n += 1
         return (key, path, limit, time)
@@ -583,7 +583,7 @@ class RateLimit(Database):
         with self.lock:
             t = _time.time()
             p = "/" + path.strip("/")
-            r = self.cache.get((key, p))   
+            r = self.cache.get((key, p))
             # Reset the cache if too large (e.g., 1M+ IP addresses).
             if reset and reset < len(self.cache) and reset > self._n:
                 self.reset()
@@ -754,7 +754,7 @@ HTTP503ServiceUnavailable  = _HTTPErrorSubclass("503 Service Unavailable")
 # >>> def index(*path, db=None):
 # >>>    print(db) # = Database object.
 #
-# The thread-safe database connection can then be retrieved from 
+# The thread-safe database connection can then be retrieved from
 # app.thread.db, g.db, or as a keyword argument of a URL handler.
 
 class localdict(dict):
@@ -921,11 +921,11 @@ class Application(object):
         """
         r = cp.request # Deep copy (ensures garbage colletion).
         return HTTPRequest(
-                app = self, 
-                 ip = r.remote.ip, 
-               path = r.path_info, 
-             method = r.method, 
-               data = r.params, 
+                app = self,
+                 ip = r.remote.ip,
+               path = r.path_info,
+             method = r.method,
+               data = r.params,
             headers = r.headers)
         
     @property
@@ -1096,7 +1096,7 @@ class Application(object):
             def decorator(handler):
                 def wrapper(id):
                     return handler()
-                # If @app.thread() is called twice for 
+                # If @app.thread() is called twice for
                 # the same handler, register it only once.
                 if not (event, handler) in self.handlers:
                     self.handlers.add((event, handler))
@@ -1214,10 +1214,10 @@ class Application(object):
         self._up   = True
         self._xhr  = xhr
         # Production environment disables errors.
-        if debug is False: 
+        if debug is False:
             cp.config.update({"environment": "production"})
         # Embedded environment (mod_wsgi) disables errors & signal handlers.
-        if embedded is True: 
+        if embedded is True:
             cp.config.update({"environment": "embedded"})
         # Global configuration.
         # If more concurrent requests are made than can be queued / handled,
@@ -1239,9 +1239,9 @@ class Application(object):
                 "server.ssl_private_key"   : ssl[0] if os.path.exists(ssl[0]) else openable(ssl[0]),
                 "server.ssl_certificate"   : ssl[1] if os.path.exists(ssl[1]) else openable(ssl[1])
             })
-        # Static content is served from the /static subfolder, 
+        # Static content is served from the /static subfolder,
         # e.g., <img src="g/cat.jpg" /> refers to "/static/g/cat.jpg".
-        self._app = cp.tree.mount(self, "/", 
+        self._app = cp.tree.mount(self, "/",
             config={"/": {
                 "tools.staticdir.on"       : self.static is not None,
                 "tools.staticdir.dir"      : self.static,
@@ -1329,7 +1329,7 @@ def certificate(domain=LOCALHOST, country=None, state=None, city=None, company=N
 #---------------------------------------------------------------------------------------------------
 # Apache + mod_wsgi installation notes (thanks to Frederik De Bleser).
 # The APP placeholder is the URL of your app, e.g., pattern.emrg.be.
-# 
+#
 # 1) Create a DNS-record for APP, which maps the url to your server's IP-address.
 #
 # 2) sudo apt-get install apache2
@@ -1395,7 +1395,7 @@ def _register(event, handler):
     setattr(cp.tools, k, cp.Tool(event, handler))
     cp.config.update({"tools.%s.on" % k: True})
 
-def _request_start(): 
+def _request_start():
     # Register request start time.
     cp.request.time = time.time()
     
@@ -1497,7 +1497,7 @@ class Template(object):
             j = m.start(1)
             n = string[:j].count("\n")      # line number
             w = re.compile(r"(^|\n)(.*?)$") # line indent
-            w = re.search(w, string[:j]) 
+            w = re.search(w, string[:j])
             w = re.sub(r"[^\t]", " ", string[w.start(2):j])
             if i != j:
                 a.append(("<str>", string[i:j], ""))
@@ -1669,7 +1669,7 @@ class HTML:
         a.append("</select>\n")
         return "".join(a)
         
-    dropdown = select        
+    dropdown = select
 
 html = HTML()
 
@@ -1697,7 +1697,7 @@ html = HTML()
 #    polarity, subjectivity = sentiment(q)
 #    db.batch.execute("insert into `log` (q) values (?);", (q,))
 #    return {"polarity": polarity}
-#    
+#
 #@app.task(interval=MINUTE)
 #def log(db=None):
 #    print("committing log...")

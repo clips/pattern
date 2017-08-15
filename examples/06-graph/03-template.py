@@ -10,7 +10,7 @@ from pattern.graph import Graph, CSS, CANVAS
 # This example demonstrates how to roll dynamic HTML graphs.
 # We have a HTML template in which content is inserted on-the-fly.
 
-# This is useful if the graph data changes dynamically, 
+# This is useful if the graph data changes dynamically,
 # e.g., the user clicks on a node and is taken to a webpage with a new subgraph.
 
 template = '''

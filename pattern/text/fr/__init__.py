@@ -101,7 +101,7 @@ ABBREVIATIONS = set((
     "S.B.E.", "Ste.", "T.-N.", "t.a.b."
 ))
 
-# While contractions in English are optional, 
+# While contractions in English are optional,
 # they are required in French:
 replacements = {
        "l'": "l' ",  # le/la
@@ -180,7 +180,7 @@ class Sentiment(_Sentiment):
 parser = Parser(
      lexicon = os.path.join(MODULE, "fr-lexicon.txt"),
    frequency = os.path.join(MODULE, "fr-frequency.txt"),
-  morphology = os.path.join(MODULE, "fr-morphology.txt"), 
+  morphology = os.path.join(MODULE, "fr-morphology.txt"),
      context = os.path.join(MODULE, "fr-context.txt"),
      default = ("NN", "NNP", "CD"),
     language = "fr"
@@ -189,7 +189,7 @@ parser = Parser(
 lexicon = parser.lexicon # Expose lexicon.
 
 sentiment = Sentiment(
-        path = os.path.join(MODULE, "fr-sentiment.xml"), 
+        path = os.path.join(MODULE, "fr-sentiment.xml"),
       synset = None,
    negations = ("n'", "ne", "ni", "non", "pas", "rien", "sans", "aucun", "jamais"),
    modifiers = ("RB",),

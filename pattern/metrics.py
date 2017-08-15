@@ -273,7 +273,7 @@ def levenshtein(string1, string2):
     """
     # http://hetland.org/coding/python/levenshtein.py
     n, m = len(string1), len(string2)
-    if n > m: 
+    if n > m:
         # Make sure n <= m to use O(min(n,m)) space.
         string1, string2, n, m = string2, string1, m, n
     current = list(range(n+1))
@@ -349,7 +349,7 @@ def flesch_reading_ease(string):
     s = max(1, len([s for s in string.split(".") if len(s) > 2]))
     #R = 206.835 - 1.015 * w/s - 84.6 * sum(y)/w
     # Use the Farr, Jenkins & Patterson algorithm,
-    # which uses simpler syllable counting (count_syllables() is the weak point here). 
+    # which uses simpler syllable counting (count_syllables() is the weak point here).
     R = 1.599 * sum(1 for v in y if v == 1) * 100 / w - 1.015 * w / s - 31.517
     R = max(0.0, min(R * 0.01, 1.0))
     return R
@@ -481,7 +481,7 @@ def isplit(string, sep="\t\n\x0b\x0c\r "):
     """
     a = []
     for ch in string:
-        if ch not in sep: 
+        if ch not in sep:
             a.append(ch)
             continue
         if a: yield "".join(a); a=[]
@@ -552,14 +552,14 @@ co_occurrence = cooccurrence
 ## Words occuring before and after the word "cat":
 ## {"cat": {"sat": 1, "black": 1, "cat": 1}}
 #s = "The black cat sat on the mat."
-#print(cooccurrence(s, window=(-1,1), 
+#print(cooccurrence(s, window=(-1,1),
 #       search = lambda w: w in ("cat",),
 #    normalize = lambda w: w.lower().strip(".:;,!?()[]'\"")))
 
 ## Adjectives preceding nouns:
 ## {("cat", "NN"): {("black", "JJ"): 1}}
 #s = [("The","DT"), ("black","JJ"), ("cat","NN"), ("sat","VB"), ("on","IN"), ("the","DT"), ("mat","NN")]
-#print(cooccurrence(s, window=(-2,-1), 
+#print(cooccurrence(s, window=(-2,-1),
 #       search = lambda token: token[1].startswith("NN"),
 #       filter = lambda token: token[1].startswith("JJ")))
 
@@ -582,9 +582,9 @@ def smoothstep(a, b, x):
     """ Returns the Hermite interpolation (cubic spline) for x between a and b.
         The return value between 0.0-1.0 eases (slows down) as x nears a or b.
     """
-    if x < a: 
+    if x < a:
         return 0.0
-    if x >= b: 
+    if x >= b:
         return 1.0
     x = float(x - a) / (b - a)
     return x * x * (3 - 2 * x)
@@ -706,7 +706,7 @@ def histogram(iterable, k=10, interval=None, *args, **kwargs):
     h = [[] for i in range(k)]
     for x in a:
         i = int(floor((x - r[0]) / w))
-        if 0 <= i < len(h): 
+        if 0 <= i < len(h):
             #print(x, i, "(%.2f, %.2f)" % (r[0] + w * i, r[0] + w + w * i))
             h[i].append(x)
     return dict(((r[0] + w * i, r[0] + w + w * i), v) for i, v in enumerate(h))
@@ -729,7 +729,7 @@ def skewness(iterable, sample=False):
         < 0.0 => relatively few values are lower than mean(list),
         = 0.0 => evenly distributed on both sides of the mean (= normal distribution).
     """
-    # Distributions with skew and kurtosis between -1 and +1 
+    # Distributions with skew and kurtosis between -1 and +1
     # can be considered normal by approximation.
     a = iterable if isinstance(iterable, list) else list(iterable)
     return moment(a, 3, sample) / (moment(a, 2, sample) ** 1.5 or 1)
@@ -766,11 +766,11 @@ def quantile(iterable, p=0.5, sort=True, a=1, b=-1, c=0, d=1):
     f, i = modf(a + (b+n) * p - 1)
     if n == 0:
         raise ValueError("quantile() arg is an empty sequence")
-    if f == 0: 
+    if f == 0:
         return float(s[int(i)])
-    if i < 0: 
+    if i < 0:
         return float(s[int(i)])
-    if i >= n: 
+    if i >= n:
         return float(s[-1])
     i = int(floor(i))
     return s[i] + (s[i+1] - s[i]) * (c + d * f)
@@ -840,7 +840,7 @@ fisher = fisher_test = fisher_exact_test
 #--- PEARSON'S CHI-SQUARED TEST --------------------------------------------------------------------
 
 LOWER = "lower"
-UPPER = "upper" 
+UPPER = "upper"
 
 def _expected(observed):
     """ Returns the table of (absolute) expected frequencies
@@ -884,7 +884,7 @@ def pearson_chi_squared_test(observed=[], expected=[], df=None, tail=UPPER):
     for i in range(n):
         for j in range(m):
             if o[i][j] != 0 and e[i][j] != 0:
-                x2 += (o[i][j] - e[i][j]) ** 2.0 / e[i][j]  
+                x2 += (o[i][j] - e[i][j]) ** 2.0 / e[i][j]
     p = gammai(df * 0.5, x2 * 0.5, tail)
     return (x2, p)
     
@@ -943,7 +943,7 @@ def kolmogorov_smirnov_two_sample_test(a1, a2=NORMAL, n=1000):
     a1 = sorted(a1) # [1, 2, 5]
     a2 = sorted(a2) # [3, 4, 6]
     a3 = a1 + a2    # [1, 2, 5, 3, 4, 6]
-    # Find the indices in a1 so that, 
+    # Find the indices in a1 so that,
     # if the values in a3 were inserted before these indices,
     # the order of a1 would be preserved:
     cdf1 = [bisect_right(a1, v) for v in a3] # [1, 2, 3, 2, 2, 3]
@@ -981,11 +981,11 @@ def gammaln(x):
     for i in range(6):
         x += 1
         n += (
-          76.18009173, 
-         -86.50532033, 
-          24.01409822, 
-          -1.231739516e0, 
-           0.120858003e-2, 
+          76.18009173,
+         -86.50532033,
+          24.01409822,
+          -1.231739516e0,
+           0.120858003e-2,
           -0.536382e-5)[i] / x
     return y + log(2.50662827465 * n)
 
@@ -1057,15 +1057,15 @@ def erfc(x):
     t = 1.0 / (1 + 0.5 * z)
     r = 0.0
     for y in (
-      0.17087277, 
-     -0.82215223, 
-      1.48851587, 
-     -1.13520398, 
-      0.27886807, 
-     -0.18628806, 
-      0.09678418, 
-      0.37409196, 
-      1.00002368, 
+      0.17087277,
+     -0.82215223,
+      1.48851587,
+     -1.13520398,
+      0.27886807,
+     -0.18628806,
+      0.09678418,
+      0.37409196,
+      1.00002368,
      -1.26551223):
         r = y + t * r
     r = t * exp(-z ** 2 + r)

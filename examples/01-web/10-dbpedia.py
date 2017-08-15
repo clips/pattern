@@ -41,7 +41,7 @@ for result in dbp.search(q, start=1, count=10):
     print(result.actor)
 print("")
 
-# You may notice that each Result.actor is of the form: 
+# You may notice that each Result.actor is of the form:
 # "http://dbpedia.org/resource/[NAME]"
 # This kind of string is a subclass of unicode: DBPediaResource.
 # DBPediaResource has a DBPediaResource.name property (see below).

@@ -107,7 +107,7 @@ class Verbs(_Verbs):
             language = "xx",
               # The order of tenses in the given file; see pattern.text.__init__.py => Verbs.
               format = [0, 1, 2, 3, 7, 8, 17, 18, 19, 23, 25, 24, 16, 9, 10, 11, 15, 33, 26, 27, 28, 32],
-             default = {}  
+             default = {}
             )
     
     def find_lemma(self, verb):

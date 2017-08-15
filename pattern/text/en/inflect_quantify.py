@@ -53,32 +53,32 @@ NUMERALS_VERBOSE = {
     "score" : (20, 0.0)
 }
 
-ORDER  = ["hundred", "thousand"] + [m+"illion" for m in ("m", "b", "tr", 
-    "quadr", 
-    "quint", 
-    "sext", 
-    "sept", 
-    "oct", 
-    "non", 
-    "dec", 
-    "undec", 
-    "duodec", 
-    "tredec", 
-    "quattuordec", 
-    "quindec", 
-    "sexdec", 
-    "septemdec", 
-    "octodec", 
-    "novemdec", 
+ORDER  = ["hundred", "thousand"] + [m+"illion" for m in ("m", "b", "tr",
+    "quadr",
+    "quint",
+    "sext",
+    "sept",
+    "oct",
+    "non",
+    "dec",
+    "undec",
+    "duodec",
+    "tredec",
+    "quattuordec",
+    "quindec",
+    "sexdec",
+    "septemdec",
+    "octodec",
+    "novemdec",
     "vigint"
 )]
 
 # {"hundred": 100, "thousand": 1000, ...}
 O = {
-    ORDER[0]: 100, 
+    ORDER[0]: 100,
     ORDER[1]: 1000
 }
-for i, k in enumerate(ORDER[2:]): 
+for i, k in enumerate(ORDER[2:]):
     O[k] = 1000000 * 1000 ** i
 
 ZERO, MINUS, RADIX, THOUSANDS, CONJUNCTION = \
@@ -136,15 +136,15 @@ def number(s):
         elif x in NUMERALS_VERBOSE:
             # Map words from alternate numerals: "two dozen" => 2 * 12
             i = i * NUMERALS_VERBOSE[x][0] + NUMERALS_VERBOSE[x][1]
-        elif x in O: 
+        elif x in O:
             # Map thousands from the dictionary of orders.
             # When a thousand is encountered, the subtotal is shifted to the total
             # and we start a new subtotal. An exception to this is when we
             # encouter two following thousands (e.g. two million vigintillion is one subtotal).
             i *= O[x]
-            if j < len(s)-1 and s[j+1] in O: 
+            if j < len(s)-1 and s[j+1] in O:
                 continue
-            if O[x] > 100: 
+            if O[x] > 100:
                 n += i
                 i = 0
         elif x == CONJUNCTION:
@@ -213,7 +213,7 @@ def numerals(n, round=2):
             o -= len(ORDER)-1
         s = "%s %s%s" % (numerals(i//int(base/1000)), (o>1 and ORDER[o-1] or ""), s)
         r = i % (base/1000)
-    if f != 0: 
+    if f != 0:
         # Map the fractional part: "two point twenty-five" => 2.25.
         # We cast it to a string first to find all the leading zeros.
         # This actually seems more accurate than calculating the leading zeros,
@@ -227,10 +227,10 @@ def numerals(n, round=2):
         f = ""
     if r == 0:
         return s+f
-    elif r >= 1000: 
+    elif r >= 1000:
         # Separate hundreds and thousands with a comma: two million, three hundred thousand.
         return "%s%s %s" % (s, THOUSANDS, numerals(r)+f)
-    elif r <= 100:  
+    elif r <= 100:
         # Separate hundreds and tens with "and": two thousand three hundred and five.
         return "%s %s %s" % (s, CONJUNCTION, numerals(r)+f)
     else:
@@ -263,19 +263,19 @@ def approximate(word, amount=1, plural={}):
     except:
         raise TypeError("can't pluralize %s (not a string)" % word.__class__.__name__)
     # Anything up to 200.
-    if amount == 0: 
+    if amount == 0:
         return "%s %s" % (NONE, p)
-    if amount == 1: 
+    if amount == 1:
         return referenced(word) # "a" chicken, "an" elephant
-    if amount == 2: 
+    if amount == 2:
         return "%s %s" % (PAIR, p)
-    if 3 <= amount < 8: 
+    if 3 <= amount < 8:
         return "%s %s" % (SEVERAL, p)
-    if 8 <= amount < 18: 
+    if 8 <= amount < 18:
         return "%s %s" % (NUMBER, p)
-    if 18 <= amount < 23: 
+    if 18 <= amount < 23:
         return "%s %s" % (SCORE, p)
-    if 23 <= amount < 200: 
+    if 23 <= amount < 200:
         return "%s %s" % (DOZENS, p)
     if amount > 10000000:
         return "%s %s" % (COUNTLESS, p)
@@ -363,7 +363,7 @@ readable_types = (
     ("builtin_function_or_method" , "built-in function"),
     ("classobj"        , "class object"),
     ("\."              , " "),
-    ("_"               , " ")        
+    ("_"               , " ")
 )
 
 def reflect(object, quantify=True, replace=readable_types):
@@ -374,7 +374,7 @@ def reflect(object, quantify=True, replace=readable_types):
     """
     _type = lambda object: type(object).__name__
     types = []
-    # Classes and modules with a __dict__ attribute listing methods, functions etc.  
+    # Classes and modules with a __dict__ attribute listing methods, functions etc.
     if hasattr(object, "__dict__"):
         # Function and method objects.
         if _type(object) in ("function", "instancemethod"):
@@ -403,8 +403,8 @@ def reflect(object, quantify=True, replace=readable_types):
         # next time we'll have the conversion cached.
         if k not in m:
             for a,b in replace:
-                types[i] = re.sub(a, b, types[i])      
-            m[k] = types[i]      
+                types[i] = re.sub(a, b, types[i])
+            m[k] = types[i]
         types[i] = m[k]
     if not quantify:
         if not isinstance(object, (list, tuple, set, dict)) and not hasattr(object, "__dict__"):

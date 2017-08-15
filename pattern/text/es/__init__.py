@@ -71,10 +71,10 @@ sys.path.pop(0)
 #--- SPANISH PARSER --------------------------------------------------------------------------------
 # The Spanish parser (accuracy 92%) is based on the Spanish portion Wikicorpus v.1.0 (FDL license),
 # using 1.5M words from the tagged sections 10000-15000.
-# Samuel Reese, Gemma Boleda, Montse Cuadros, Lluís Padró, German Rigau. 
-# Wikicorpus: A Word-Sense Disambiguated Multilingual Wikipedia Corpus. 
-# Proceedings of 7th Language Resources and Evaluation Conference (LREC'10), 
-# La Valleta, Malta. May, 2010. 
+# Samuel Reese, Gemma Boleda, Montse Cuadros, Lluís Padró, German Rigau.
+# Wikicorpus: A Word-Sense Disambiguated Multilingual Wikipedia Corpus.
+# Proceedings of 7th Language Resources and Evaluation Conference (LREC'10),
+# La Valleta, Malta. May, 2010.
 # http://www.lsi.upc.edu/~nlp/wikicorpus/
 
 # The lexicon uses the Parole tagset:
@@ -104,7 +104,7 @@ parole = {
    "Fpa": "(",    # (
    "Fpt": ")",    # )
     "Fx": ".",    # ;
-    "Fz": ".",    # 
+    "Fz": ".",    #
      "I": "UH",   # ehm
     "NC": "NN",   # islam
    "NCS": "NN",   # guitarra

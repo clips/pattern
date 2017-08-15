@@ -170,7 +170,7 @@ def decode_language(code):
         For example: decode_language("nl") => "Dutch".
     """
     for tag, (language, region, iso639, iso3166) in LANGUAGE_REGION.items():
-        if iso639 == code.lower(): 
+        if iso639 == code.lower():
             return language
 
 def encode_region(name):
@@ -205,7 +205,7 @@ def regions(language):
     """
     x, a = language.lower(), []
     for tag, (language, region, iso639, iso3166) in LANGUAGE_REGION.items():
-        if iso639 == x: 
+        if iso639 == x:
             a.append(iso3166)
     return sorted(a, key=lambda tag: tag.lower() != x and tag or "")
 

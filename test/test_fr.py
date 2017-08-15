@@ -44,7 +44,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the verb lemmatization algorithm.
         i, n = 0, 0
         for v1, v2 in fr.inflect.verbs.inflections.items():
-            if fr.inflect.verbs.find_lemma(v1) == v2: 
+            if fr.inflect.verbs.find_lemma(v1) == v2:
                 i += 1
             n += 1
         self.assertTrue(float(i) / n > 0.80)
@@ -152,14 +152,14 @@ class TestParser(unittest.TestCase):
             ["Les", "DT"], ["chats", "NNS"], ["noirs", "JJ"], ["s'", "PRP"], ["étaient", "VB"], ["assis", "VB"],
             ["sur", "IN"], ["le", "DT"], ["tapis", "NN"]])
         self.assertEqual(v, [
-            ["Les", "DT", "le"], 
-            ["chats", "NNS", "chat"], 
-            ["noirs", "JJ", "noir"], 
-            ["s'", "PRP", "se"], 
+            ["Les", "DT", "le"],
+            ["chats", "NNS", "chat"],
+            ["noirs", "JJ", "noir"],
+            ["s'", "PRP", "se"],
             ["étaient", "VB", "être"],
             ["assis", "VB", "asseoir"],
-            ["sur", "IN", "sur"], 
-            ["le", "DT", "le"], 
+            ["sur", "IN", "sur"],
+            ["le", "DT", "le"],
             ["tapis", "NN", "tapis"]])
         print("pattern.fr.parser.find_lemmata()")
 

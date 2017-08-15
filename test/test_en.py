@@ -412,10 +412,10 @@ class TestParser(unittest.TestCase):
             ["", "DT"], ["", "JJ"], ["", ","], ["", "JJ"], ["", "NN"]
         ])
         self.assertEqual(v, [
-            ["", "DT", "B-NP", "O"], 
-            ["", "JJ", "I-NP", "O"], 
-            ["",  ",", "I-NP", "O"], 
-            ["", "JJ", "I-NP", "O"], 
+            ["", "DT", "B-NP", "O"],
+            ["", "JJ", "I-NP", "O"],
+            ["",  ",", "I-NP", "O"],
+            ["", "JJ", "I-NP", "O"],
             ["", "NN", "I-NP", "O"]
         ])
         # - "big, black and furry"
@@ -423,10 +423,10 @@ class TestParser(unittest.TestCase):
             ["", "JJ"], ["", ","], ["", "JJ"], ["", "CC"], ["", "JJ"]
         ])
         self.assertEqual(v, [
-            ["", "JJ", "B-ADJP", "O"], 
-            ["",  ",", "I-ADJP", "O"], 
+            ["", "JJ", "B-ADJP", "O"],
+            ["",  ",", "I-ADJP", "O"],
             ["", "JJ", "I-ADJP", "O"],
-            ["", "CC", "I-ADJP", "O"], 
+            ["", "CC", "I-ADJP", "O"],
             ["", "JJ", "I-ADJP", "O"]
         ])
         # - big, and very black (= two chunks "big" and "very black")
@@ -434,10 +434,10 @@ class TestParser(unittest.TestCase):
             ["", "JJ"], ["", ","], ["", "CC"], ["", "RB"], ["", "JJ"]
         ])
         self.assertEqual(v, [
-            ["", "JJ", "B-ADJP", "O"], 
-            ["",  ",", "O", "O"], 
-            ["", "CC", "O", "O"], 
-            ["", "RB", "B-ADJP", "O"], 
+            ["", "JJ", "B-ADJP", "O"],
+            ["",  ",", "O", "O"],
+            ["", "CC", "O", "O"],
+            ["", "RB", "B-ADJP", "O"],
             ["", "JJ", "I-ADJP", "O"]
         ])
         # Assert cases for which we have written special rules.

@@ -78,9 +78,9 @@ for row in assoc(db.products):
 # To get the related data, we can create a query with relations between the tables.
 q = db.orders.search(
     fields = (
-       "products.description", 
-       "products.price", 
-       "customers.name", 
+       "products.description",
+       "products.price",
+       "customers.name",
        "date"
     ),
     relations = (

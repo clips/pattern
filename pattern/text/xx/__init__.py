@@ -104,7 +104,7 @@ def find_lemmata(tokens):
     for token in tokens:
         word, pos, lemma = token[0], token[1], token[0]
         if pos.startswith("JJ"):
-            lemma = predicative(word)  
+            lemma = predicative(word)
         if pos == "NNS":
             lemma = singularize(word)
         if pos.startswith(("VB", "MD")):
@@ -154,11 +154,11 @@ lexicon = parser.lexicon # Expose lexicon.
 # Create the sentiment lexicon,
 # see pattern/text/xx/xx-sentiment.xml for further details.
 # We also need to define the tag for modifiers,
-# words that modify the score of the following word 
+# words that modify the score of the following word
 # (e.g., *very* good, *not good, ...)
 
 sentiment = Sentiment(
-        path = os.path.join(MODULE, "xx-sentiment.xml"), 
+        path = os.path.join(MODULE, "xx-sentiment.xml"),
       synset = None,
    negations = ("no", "not", "never"),
    modifiers = ("RB",),

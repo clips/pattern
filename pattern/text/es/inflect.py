@@ -291,10 +291,10 @@ class Verbs(_Verbs):
         # reconozcáis => reconocer
         v = v.replace("zcá", "ce")
         # saldrár => saler
-        if "ldr" in v: 
+        if "ldr" in v:
             return v[:v.index("ldr")+1] + "er"
         # compondrán => componer
-        if "ndr" in v: 
+        if "ndr" in v:
             return v[:v.index("ndr")+1] + "er"
         # Many verbs end in -ar and have a regular inflection:
         for x in ((
@@ -345,14 +345,14 @@ class Verbs(_Verbs):
         """ For a regular verb (base form), returns the forms using a rule-based approach.
         """
         v = verb.lower()
-        if v.endswith(("arse", "erse", "irse")): 
+        if v.endswith(("arse", "erse", "irse")):
             # Reflexive verbs: calmarse (calmar) => me calmo.
             b = v[:-4]
         else:
             b = v[:-2]
         if v.endswith("ar") or not v.endswith(("er", "ir")):
             # Regular inflection for verbs ending in -ar.
-            return [v, 
+            return [v,
                 b+"o", b+"as", b+"a", b+"amos", b+"áis", b+"an", b+"ando",
                 b+"é", b+"aste", b+"ó", b+"amos", b+"asteis", b+"aron", b+"ado",
                 b+"aba", b+"abas", b+"aba", b+"ábamos", b+"abais", b+"aban",
@@ -364,7 +364,7 @@ class Verbs(_Verbs):
         else:
             # Regular inflection for verbs ending in -er and -ir.
             p1, p2 = v.endswith("er") and ("e", "é") or ("i","e")
-            return [v, 
+            return [v,
                 b+"o", b+"es", b+"e", b+p1+"mos", b+p2+"is", b+"en", b+"iendo",
                 b+"í", b+"iste", b+"ió", b+"imos", b+"isteis", b+"ieron", b+"ido",
                 b+"ía", b+"ías", b+"ía", b+"íamos", b+"íais", b+"ían",
@@ -385,7 +385,7 @@ def attributive(adjective, gender=MALE):
     w = adjective.lower()
     # normal => normales
     if PLURAL in gender and not is_vowel(w[-1:]):
-        return w + "es" 
+        return w + "es"
     # el chico inteligente => los chicos inteligentes
     if PLURAL in gender and w.endswith(("a", "e")):
         return w + "s"

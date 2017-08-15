@@ -32,8 +32,8 @@ class SimpleCrawler1(Crawler):
 #    In the meantime, other queued links will be crawled if possible.
 
 crawler1 = SimpleCrawler1(
-      links=["http://www.clips.ua.ac.be/pages/pattern/"], 
-    domains=["ua.ac.be"], 
+      links=["http://www.clips.ua.ac.be/pages/pattern/"],
+    domains=["ua.ac.be"],
       delay=0.0
 )
 
@@ -50,8 +50,8 @@ while len(crawler1.visited) < 5:  # Crawler.visited is a dictionary of all URL's
 # A higher delay (in a real-world scenario, say 30 seconds) is better:
 
 crawler2 = SimpleCrawler1(
-      links=["http://www.clips.ua.ac.be/pages/pattern/"], 
-    domains=["ua.ac.be"], 
+      links=["http://www.clips.ua.ac.be/pages/pattern/"],
+    domains=["ua.ac.be"],
       delay=0.1
 )
 
@@ -74,7 +74,7 @@ while True:
 # which use DEPTH and BREADTH respectively.
 
 crawler3 = SimpleCrawler1(
-    links=["http://www.clips.ua.ac.be/pages/pattern/"], 
+    links=["http://www.clips.ua.ac.be/pages/pattern/"],
     delay=0.0
 )
 
@@ -84,7 +84,7 @@ while len(crawler3.visited) < 3:
     crawler3.crawl(method=DEPTH)
     
 crawler4 = SimpleCrawler1(
-    links=["http://www.clips.ua.ac.be/pages/pattern/"], 
+    links=["http://www.clips.ua.ac.be/pages/pattern/"],
     delay=0.0
 )
 
@@ -100,7 +100,7 @@ while len(crawler4.visited) < 3:
 # Usually this means that it will alternate between a couple of domains:
 
 crawler5 = SimpleCrawler1(
-    links=["http://www.clips.ua.ac.be/pages/pattern/"], 
+    links=["http://www.clips.ua.ac.be/pages/pattern/"],
     delay=0.1
 )
 
@@ -140,8 +140,8 @@ class SimpleCrawler2(Crawler):
 # If you observe the given URL in a browser,
 # you'll notice that the last external link at the bottom of the page is now visited first.
 crawler6 = SimpleCrawler2(
-    links=["http://www.clips.ua.ac.be/pages/pattern/"], 
-    delay=0.1, 
+    links=["http://www.clips.ua.ac.be/pages/pattern/"],
+    delay=0.1,
      sort=LIFO
 )
 

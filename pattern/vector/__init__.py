@@ -12,7 +12,7 @@
 # The dictionary of word => frequency items is called the document vector.
 # The frequency weight is either TF or TF-IDF (term frequency-inverse document frequency, i.e.,
 # the relevance of a word in a document offset by the frequency of the word in all documents).
-# Documents can be grouped in a Model to calculate TF-IDF and cosine similarity, 
+# Documents can be grouped in a Model to calculate TF-IDF and cosine similarity,
 # which measures similarity (0.0-1.0) between documents based on the cosine distance metric.
 # A document cay have a type (or label). A model of labeled documents can be used to train
 # a classifier. A classifier can be used to predict the label of unlabeled documents.
@@ -70,7 +70,7 @@ except:
 
 try: from pattern.text import singularize, predicative, conjugate, tokenize
 except:
-    try: 
+    try:
         import sys; sys.path.insert(0, os.path.join(MODULE, ".."))
         from text import singularize, predicative, conjugate, tokenize
     except:
@@ -78,7 +78,7 @@ except:
         predicative = lambda w, **k: w
         conjugate   = lambda w, t, **k: w
         tokenize    = lambda s: list(filter(len,
-                                    re.split(r"(.*?[\.|\?|\!])", 
+                                    re.split(r"(.*?[\.|\?|\!])",
                                         re.sub(r"(\.|\?|\!|,|;|:)", " \\1", s))))
 
 from pattern.helpers import encode_string, decode_string
@@ -112,7 +112,7 @@ def chunk(iterable, n):
     i = 0
     j = 0
     for m in range(n):
-        j = i + len(a[m::n]) 
+        j = i + len(a[m::n])
         yield a[i:j]
         i = j
         
@@ -129,8 +129,8 @@ def mix(iterables=[], n=10):
 def bin(iterable, key=lambda x: x, value=lambda x: x):
     """ Returns a dictionary with items in the given list grouped by the given key.
     """
-    # bin([["a", 1], ["a", 2], ["b", 3]], key=lambda x: x[0]) => 
-    # {"a": [["a", 1], ["a", 2]], 
+    # bin([["a", 1], ["a", 2], ["b", 3]], key=lambda x: x[0]) =>
+    # {"a": [["a", 1], ["a", 2]],
     #  "b": [["b", 3]]
     # }
     m = defaultdict(list)
@@ -176,7 +176,7 @@ class readonlydict(dict):
     def update(self, kv):
         raise ReadOnlyError
     def setdefault(self, k, default=None):
-        if k in self: 
+        if k in self:
             return self[k]
         raise ReadOnlyError
 
@@ -279,7 +279,7 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
         Words whose count falls below (or equals) the given threshold are excluded.
         Words that are not in the given top most counted are excluded.
     """
-    # An optional dict-parameter can be used to specify a subclass of dict, 
+    # An optional dict-parameter can be used to specify a subclass of dict,
     # e.g., count(words, dict=readonlydict) as used in Document.
     count = kwargs.get("dict", dict)()
     for w in words:
@@ -307,7 +307,7 @@ def character_ngrams(string="", n=3, top=None, threshold=0, exclude=[], **kwargs
         N-grams whose count falls below (or equals) the given threshold are excluded.
         N-grams that are not in the given top most counted are excluded.
     """
-    # An optional dict-parameter can be used to specify a subclass of dict, 
+    # An optional dict-parameter can be used to specify a subclass of dict,
     # e.g., count(words, dict=readonlydict) as used in Document.
     count = defaultdict(int)
     if n > 0:
@@ -341,15 +341,15 @@ TF, TFIDF, TF_IDF, BINARY = \
     "tf", "tf-idf", "tf-idf", "binary"
 
 class Document(object):
-    # Document(string = "", 
+    # Document(string = "",
     #          filter = lambda w: w.lstrip("'").isalnum(),
     #     punctuation = PUNCTUATION,
     #             top = None,
-    #       threshold = 0, 
-    #         stemmer = None, 
-    #         exclude = [], 
-    #       stopwords = False, 
-    #            name = None, 
+    #       threshold = 0,
+    #         stemmer = None,
+    #         exclude = [],
+    #       stopwords = False,
+    #            name = None,
     #            type = None,
     #        language = None,
     #     description = None
@@ -458,8 +458,8 @@ class Document(object):
                     v[w] = int(f)
                 else:
                     v[w] = float(f)
-        return cls(v, name = a.get("name"), 
-                      type = a.get("type"), 
+        return cls(v, name = a.get("name"),
+                      type = a.get("type"),
                   language = a.get("lang"),
                description = a.get("description").rstrip("\n"))
     
@@ -653,7 +653,7 @@ class Document(object):
         """ Returns the similarity between the two documents as a number between 0.0-1.0.
             If both documents are part of the same model the calculations are cached for reuse.
         """
-        if self.model is not None: 
+        if self.model is not None:
             return self.model.cosine_similarity(self, document)
         if document.model is not None:
             return document.model.cosine_similarity(self, document)
@@ -673,7 +673,7 @@ class Document(object):
     
     def __repr__(self):
         return "Document(id=%s%s%s)" % (
-            repr(self._id), 
+            repr(self._id),
                  self.name and ", name=%s" % repr(self.name) or "",
                  self.type and ", type=%s" % repr(self.type) or "")
 
@@ -691,7 +691,7 @@ Bag = BagOfWords = BOW = Document
 # Document vectors can be used to calculate similarity between documents,
 # for example in a clustering or classification algorithm.
 
-# To find the average feature length in a model: 
+# To find the average feature length in a model:
 # sum(len(d.vector) for d in model.documents) / float(len(model))
 
 class Vector(readonlydict):
@@ -740,7 +740,7 @@ class Vector(readonlydict):
             n = the square root of the sum of the absolute squares of the values.
             The matrix norm is used to normalize (0.0-1.0) cosine similarity between documents.
         """
-        if self._norm is None: 
+        if self._norm is None:
             self._norm = sum(w * w for w in self.values()) ** 0.5
         return self._norm
         
@@ -767,7 +767,7 @@ class Vector(readonlydict):
 # For vectors that represent text, cosine similarity is a good metric.
 # For more information, see Domain Similarity Measures (Vincent Van Asch, 2012).
 
-# The following functions can be used if you work with Vectors or plain dictionaries, 
+# The following functions can be used if you work with Vectors or plain dictionaries,
 # instead of Documents and Models (which use caching for cosine similarity).
 
 def features(vectors=[]):
@@ -824,7 +824,7 @@ def tf_idf(vectors=[], base=2.71828): # Euler's number
                 df[f] = df[f] + 1 if f in df else 1.0
     n = len(vectors)
     s = dict.__setitem__
-    for v in vectors: 
+    for v in vectors:
         for f in v: # Modified in-place.
             s(v, f, v[f] * (log(n / df[f], base)))
     return vectors
@@ -846,7 +846,7 @@ def distance(v1, v2, method=COSINE):
     if method == CHEBYSHEV:
         return max(abs(v1.get(w, 0) - v2.get(w, 0)) for w in set(chain(v1, v2)))
     if method == HAMMING:
-        d = sum(not (w in v1 and w in v2 and v1[w] == v2[w]) for w in set(chain(v1, v2))) 
+        d = sum(not (w in v1 and w in v2 and v1[w] == v2[w]) for w in set(chain(v1, v2)))
         d = d / float(max(len(v1), len(v2)) or 1)
         return d
     if isinstance(method, type(distance)):
@@ -942,7 +942,7 @@ class Model(object):
     @property
     def distribution(self):
         p = defaultdict(int)
-        for d in self.documents: 
+        for d in self.documents:
             p[d.type] += 1
         return p
 
@@ -1124,7 +1124,7 @@ class Model(object):
             The more occurences of the word across the model, the higher its df weight.
         """
         if len(self.documents) == 0:
-            return 0.0     
+            return 0.0
         if len(self._df) == 0:
             # Caching document frequency for each word gives a 300x performance boost
             # (i.e., calculated all at once). Drawback is if you need it for just one word.
@@ -1147,9 +1147,9 @@ class Model(object):
             The more occurences of the word, the lower its idf weight (log() makes it grow slowly).
         """
         df = self.df(word)
-        if df == 0.0: 
+        if df == 0.0:
             return None
-        if df == 1.0: 
+        if df == 1.0:
             return 0.0
         return log(1.0 / df, base)
         
@@ -1177,7 +1177,7 @@ class Model(object):
             It includes all words from all documents (i.e. it is the dimension of the vector space).
             Model.vector(document) yields a vector with the feature weights of the given document.
         """
-        # Notes: 
+        # Notes:
         # 1) Model.vector is the dictionary of all (word, 0.0)-items.
         # 2) Model.vector(document) returns a copy with the document's word frequencies.
         #    This is the full vector, as opposed to the sparse Document.vector.
@@ -1201,7 +1201,7 @@ class Model(object):
         return float(sum(len(d.vector) for d in self.documents)) / len(self.vector) ** 2
 
     # Following methods rely on Document.vector:
-    # frequent sets, cosine similarity, nearest neighbors, search, clustering, 
+    # frequent sets, cosine similarity, nearest neighbors, search, clustering,
     # information gain, latent semantic analysis.
     
     def frequent_concept_sets(self, threshold=0.5):
@@ -1221,9 +1221,9 @@ class Model(object):
         # it is available in cache for reuse.
         id1 = document1.id
         id2 = document2.id
-        if (id1, id2) in self._cos: 
+        if (id1, id2) in self._cos:
             return self._cos[(id1, id2)]
-        if (id2, id1) in self._cos: 
+        if (id2, id1) in self._cos:
             return self._cos[(id2, id1)]
         # Calculate the matrix multiplication of the document vectors.
         if not getattr(self, "lsa", None):
@@ -1287,7 +1287,7 @@ class Model(object):
             - hierarchical clustering returns a list of documents and Cluster objects,
               where a Cluster is a list of documents and other clusters (see Cluster.flatten()).
         """
-        # The optional documents parameter can be a selective list 
+        # The optional documents parameter can be a selective list
         # of documents in the model to cluster.
         documents = kwargs.get("documents", self.documents)
         if not getattr(self, "lsa", None):
@@ -1300,12 +1300,12 @@ class Model(object):
         # We need it to map the clustered vectors back to the actual documents.
         map = dict((v.id, documents[i]) for i, v in enumerate(vectors))
         if method in (KMEANS, "kmeans"):
-            clusters = k_means(vectors, 
+            clusters = k_means(vectors,
                              k = kwargs.pop("k", 10),
                     iterations = kwargs.pop("iterations", 10),
                       features = features, **kwargs)
         if method == HIERARCHICAL:
-            clusters = hierarchical(vectors, 
+            clusters = hierarchical(vectors,
                              k = kwargs.pop("k", 1),
                     iterations = kwargs.pop("iterations", 1000),
                       features = features, **kwargs)
@@ -1313,7 +1313,7 @@ class Model(object):
             clusters = [[map[v.id] for v in cluster] for cluster in clusters]
         if method == HIERARCHICAL:
             clusters.traverse(visit=lambda cluster: \
-                [cluster.__setitem__(i, map[v.id]) 
+                [cluster.__setitem__(i, map[v.id])
                     for i, v in enumerate(cluster) if not isinstance(v, Cluster)])
         return clusters
 
@@ -1336,7 +1336,7 @@ class Model(object):
             With MAJORITY, n = the number of documents in the majority class
             (generates artificial documents for minority classes).
         """
-        # Based on: 
+        # Based on:
         # Liu, Ghosh & Martin (2007). Generative oversampling for mining imbalanced datasets.
         # http://wwwmath.uni-muenster.de/u/lammers/EDU/ws07/Softcomputing/Literatur/4-DMI5467.pdf
         #
@@ -1352,7 +1352,7 @@ class Model(object):
             p2[d.type] = max(p2[d.type], len(d.terms))
         for d in self.documents:
             for f, w in d.terms.items():
-                p3[d.type][f].append(w) 
+                p3[d.type][f].append(w)
         # List features with weight 0.0.
         for t in p3:
             for f in p3[t]:
@@ -1376,7 +1376,7 @@ class Model(object):
             for j in range(i, n):
                 v = {}
                 for f in shuffled(p3[t].keys()[:p2[t]]):
-                    w = choice(p3[t][f]) 
+                    w = choice(p3[t][f])
                     w = w if v else p3[t][f][0]
                     if w:
                         v[f] = w
@@ -1596,7 +1596,7 @@ class Model(object):
         """ Returns the type for a given document,
             based on the similarity of documents in the trained Model.classifier.
         """
-        return self._classifier.classify(*args, **kwargs)            
+        return self._classifier.classify(*args, **kwargs)
 
 # Backwards compatibility.
 Corpus = Model
@@ -1873,7 +1873,7 @@ def k_means(vectors, k=None, iterations=10, distance=COSINE, seed=RANDOM, **kwar
     features = kwargs.get("features") or _features(vectors)
     if k is None:
         k = sqrt(len(vectors) / 2)
-    if k < 2: 
+    if k < 2:
         return [[v for v in vectors]]
     if seed == KMPP:
         clusters = kmpp(vectors, k, distance)
@@ -1941,7 +1941,7 @@ def kmpp(vectors, k, distance=COSINE):
         for _ in range(int(2 + log(k))):
             y = random() * s
             for i1, v1 in enumerate(vectors):
-                if y <= d[i1]: 
+                if y <= d[i1]:
                     break
                 y -= d[i1]
             s1 = sum(min(d[j], distance(v1, v2)) for j, v2 in enumerate(vectors))
@@ -1994,7 +1994,7 @@ class Cluster(list):
         """
         visit(self)
         for item in self:
-            if isinstance(item, Cluster): 
+            if isinstance(item, Cluster):
                 item.traverse(visit)
 
     def __repr__(self):
@@ -2008,7 +2008,7 @@ def sequence(i=0, f=lambda i: i+1):
     # Used to generate unique vector id's in hierarchical().
     # We cannot use Vector.id, since the given vectors might be plain dicts.
     # We cannot use id(vector), since id() is only unique for the lifespan of the object.
-    while True: 
+    while True:
         yield i; i=f(i)
 
 def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
@@ -2021,7 +2021,7 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
     centroids = [(next(id), v) for v in clusters]
     map = {}
     for _ in range(iterations):
-        if len(clusters) <= max(k, 1): 
+        if len(clusters) <= max(k, 1):
             break
         nearest, d0 = None, None
         for i, (id1, v1) in enumerate(centroids):
@@ -2060,7 +2060,7 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
 # Classification can be used to predict the label of an unlabeled document.
 # Classification is a supervised machine learning method that uses labeled documents
 # (i.e., Document objects with a type) as training examples to statistically predict
-# the label (type, class) of new documents, based on their similarity to the training examples 
+# the label (type, class) of new documents, based on their similarity to the training examples
 # using a distance metric (e.g., cosine similarity).
 
 #--- CLASSIFIER BASE CLASS -------------------------------------------------------------------------
@@ -2324,13 +2324,13 @@ class ConfusionMatrix(defaultdict):
         FN = 0 # False negatives (type II error).
         for t1 in self:
             for t2, n in self[t1].items():
-                if target == t1 == t2: 
+                if target == t1 == t2:
                     TP += n
-                if target != t1 == t2: 
+                if target != t1 == t2:
                     TN += n
-                if target == t1 != t2: 
+                if target == t1 != t2:
                     FN += n
-                if target == t2 != t1: 
+                if target == t2 != t1:
                     FP += n
         return (TP, TN, FP, FN)
         
@@ -2379,7 +2379,7 @@ class ConfusionMatrix(defaultdict):
         for t1 in k:
             s += "\n"
             s += decode_utf8(t1).ljust(n)
-            for t2 in k: 
+            for t2 in k:
                 s += str(self[t1][t2]).ljust(n)
         return s
     
@@ -2397,9 +2397,9 @@ def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
     K = kwargs.pop("K", folds)
     s = kwargs.pop("shuffled", True)
     # Macro-average accuracy, precision, recall & F1-score.
-    m = [0.0, 0.0, 0.0, 0.0] 
+    m = [0.0, 0.0, 0.0, 0.0]
     f = []
-    # Create shuffled folds to avoid a list sorted by type 
+    # Create shuffled folds to avoid a list sorted by type
     # (we take successive folds and the source data could be sorted).
     if isinstance(K, (int, float)):
         folds = list(_folds(shuffled(documents) if s else documents, K))
@@ -2464,7 +2464,7 @@ def gridsearch(Classifier, documents=[], folds=10, **kwargs):
         for p in p:
             yield tuple(p)
     s = [] # [((A, P, R, F, o), parameters), ...]
-    p = [] # [[("c", 0.1), ("c", 10), ...], 
+    p = [] # [[("c", 0.1), ("c", 10), ...],
            #  [("gamma", 0.1), ("gamma", 0.2), ...], ...]
     for k, v in kwargs.items():
         p.append([(k, v) for v in v])
@@ -2634,7 +2634,7 @@ class KNN(Classifier):
 
 NearestNeighbor = kNN = KNN
 
-#from pattern.vector import Document, KNN 
+#from pattern.vector import Document, KNN
 #
 #d1 = Document("cats have stripes, purr and drink milk", type="cat")
 #d2 = Document("cows are black and white, they moo and give milk", type="cow")
@@ -2731,7 +2731,7 @@ class IGTree(Classifier):
             x = node.feature in vector
             b = False
             for n in node.children:
-                if n.value == x: 
+                if n.value == x:
                     b = True
                     break
             if b is False:
@@ -3166,16 +3166,16 @@ class SVM(Classifier):
         # By default, LIBLINEAR will be used for linear SVC (it is faster).
         # If you do not want to use LIBLINEAR, use SVM(extension=LIBSVM).
         self._extensions = \
-            kwargs.get("extensions", 
+            kwargs.get("extensions",
             kwargs.get("extension", (LIBSVM, LIBLINEAR)))
         # Optional parameters are read-only:
         # -  cost: higher cost = less margin for error (and risk of overfitting).
         # - gamma: influence ("radius") of each training example for RBF.
-        if len(args) > 0: 
+        if len(args) > 0:
             kwargs.setdefault( "train", args[0])
-        if len(args) > 1: 
+        if len(args) > 1:
             kwargs.setdefault(  "type", args[1])
-        if len(args) > 2: 
+        if len(args) > 2:
             kwargs.setdefault("kernel", args[2])
         for k1, k2, v in (
             (       "type", "s", CLASSIFICATION),
@@ -3452,7 +3452,7 @@ class SVM(Classifier):
 #
 #def v(s):
 #    return count(words(s) + ngrams(s, n=2))
-#    
+#
 #data = CSV.load(os.path.join("..", "..", "test", "corpora", "polarity-nl-bol.com.csv"))
 #data = map(lambda p, review: Document(v(review), type=int(p) > 0), data)
 #data = Model(data, weight="tf-idf")
@@ -3461,7 +3461,7 @@ class SVM(Classifier):
 #    print(p)
 
 # This reports 92% accuracy for the best run (c=10).
-# Of course, it's optimizing for the same cross-validation 
+# Of course, it's optimizing for the same cross-validation
 # that it's testing on, so this is easy to overfit.
 # In scikit-learn it will run faster (4 seconds <=> 20 seconds), see: http://goo.gl/YqlRa
 
@@ -3558,7 +3558,7 @@ class LR(Classifier):
                 t0 = scipy.transpose(t0)
                 t[i,:] = scipy.optimize.fmin_cg(
                     lambda t:     cost(t, x, 0 + (y == i), l), t0,
-                    lambda t: gradient(t, x, 0 + (y == i), l), 
+                    lambda t: gradient(t, x, 0 + (y == i), l),
                         maxiter = iterations,
                            disp = 0)
             return t # theta

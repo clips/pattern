@@ -20,7 +20,7 @@ from pattern.db import Datasheet
 # It groups related words into "concepts" .
 # It then creates a concept vector for each document.
 # This reduces the amount of data to work with (for example when clustering),
-# and filters out noise, so that semantically related words come out stronger. 
+# and filters out noise, so that semantically related words come out stronger.
 
 # We'll use the Pang & Lee corpus of movie reviews, included in the testing suite.
 # Take 250 positive reviews and 250 negative reviews:

@@ -110,7 +110,7 @@ class TestInflection(unittest.TestCase):
         i, n = 0, 0
         r = 0
         for v1, v2 in it.inflect.verbs.inflections.items():
-            if it.inflect.verbs.find_lemma(v1) == v2: 
+            if it.inflect.verbs.find_lemma(v1) == v2:
                 i += 1
             n += 1
         self.assertTrue(float(i) / n > 0.81)
@@ -214,14 +214,14 @@ class TestParser(unittest.TestCase):
     def test_find_lemmata(self):
         # Assert lemmata for nouns, adjectives, verbs and determiners.
         v = it.parser.find_lemmata([
-            ["I", "DT"], ["gatti", "NNS"], ["neri", "JJ"], 
+            ["I", "DT"], ["gatti", "NNS"], ["neri", "JJ"],
             ["seduti", "VB"], ["sul", "IN"], ["tatami", "NN"]])
         self.assertEqual(v, [
-            ["I", "DT", "il"], 
-            ["gatti", "NNS", "gatto"], 
-            ["neri", "JJ", "nero"], 
+            ["I", "DT", "il"],
+            ["gatti", "NNS", "gatto"],
+            ["neri", "JJ", "nero"],
             ["seduti", "VB", "sedutare"],
-            ["sul", "IN", "sul"], 
+            ["sul", "IN", "sul"],
             ["tatami", "NN", "tatami"]])
         print("pattern.it.parser.find_lemmata()")
 
@@ -246,7 +246,7 @@ class TestParser(unittest.TestCase):
                 t1 = s1[j][1]
                 t2 = s2[j][1]
                 # WaCKy test set tags plural nouns as "NN", pattern.it as "NNS".
-                # Some punctuation marks are also tagged differently, 
+                # Some punctuation marks are also tagged differently,
                 # but these are not necessarily errors.
                 if t1 == t2 or (t1 == "NN" and t2.startswith("NN")) or s1[j][0] in "\":;)-":
                     i += 1

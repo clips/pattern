@@ -89,7 +89,7 @@ wotan = {
    "Prep(": (("inf", "TO"), ("", "IN")),
    "Pron(": (("bez", "PRP$"), ("","PRP")),
    "Punc(": (("komma", ","), ("open", "("), ("sluit", ")"), ("schuin", "CC"), ("", ".")),
-      "V(": (("hulp", "MD"), ("ott,3", "VBZ"), ("ott", "VBP"), ("ovt", "VBD"), 
+      "V(": (("hulp", "MD"), ("ott,3", "VBZ"), ("ott", "VBP"), ("ovt", "VBD"),
              ("verl", "VBN"), ("teg", "VBG"), ("", "VB"))
 }
 
@@ -100,7 +100,7 @@ def wotan2penntreebank(token, tag):
     for k, v in wotan.items():
         if tag.startswith(k):
             for a, b in v:
-                if a in tag: 
+                if a in tag:
                     return (token, b)
     return (token, tag)
     
@@ -127,7 +127,7 @@ def find_lemmata(tokens):
     for token in tokens:
         word, pos, lemma = token[0], token[1], token[0]
         if pos.startswith("JJ") and word.endswith("e"):
-            lemma = predicative(word)  
+            lemma = predicative(word)
         if pos == "NNS":
             lemma = singularize(word)
         if pos.startswith(("VB", "MD")):
@@ -180,7 +180,7 @@ parser = Parser(
 lexicon = parser.lexicon # Expose lexicon.
 
 sentiment = Sentiment(
-        path = os.path.join(MODULE, "nl-sentiment.xml"), 
+        path = os.path.join(MODULE, "nl-sentiment.xml"),
       synset = "cornetto_id",
    negations = ("geen", "gene", "ni", "niet", "nooit"),
    modifiers = ("JJ", "RB",),

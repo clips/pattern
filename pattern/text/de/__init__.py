@@ -75,7 +75,7 @@ sys.path.pop(0)
 
 #--- GERMAN PARSER ---------------------------------------------------------------------------------
 # The German parser (accuracy 96% for known words) is based on Schneider & Volk's language model:
-# Schneider, G. & Volk, M. (1998). 
+# Schneider, G. & Volk, M. (1998).
 # Adding Manual Constraints and Lexical Look-up to a Brill-Tagger for German.
 # Proceedings of the ESSLLI workshop on recent advances in corpus annotation. Saarbrucken, Germany.
 # http://www.zora.uzh.ch/28579/
@@ -124,7 +124,7 @@ stts = tagset = {
    "PTKNEG": "RB",   # nicht
     "PTKVZ": "RP",   # pass [auf]!
    "PTKANT": "UH",   # ja, nein, danke, bitte
-     "PTKA": "RB",   # am schönsten, zu schnell 
+     "PTKA": "RB",   # am schönsten, zu schnell
     "VVFIN": "VB",   # du [gehst], wir [kommen] an
     "VAFIN": "VB",   # du [bist], wir [werden]
     "VVINF": "VB",   # gehen, ankommen
@@ -145,7 +145,7 @@ stts = tagset = {
     "LINUM": "LS",   # 1.
         "C": ",",    # ,
        "Co": ":",    # :
-       "Ex": ".",    # ! 
+       "Ex": ".",    # !
        "Pc": ")",    # )
        "Po": "(",    # (
         "Q": ".",    # ?
@@ -169,20 +169,20 @@ def stts2universal(token, tag):
         return (token, CONJ)
     if tag in ("PTKZU", "PTKNEG", "PTKVZ", "PTKANT"):
         return (token, PRT)
-    if tag in ("PDF", "PDAT", "PIS", "PIAT", "PIDAT", "PPER", "PPOS", "PPOSAT"): 
+    if tag in ("PDF", "PDAT", "PIS", "PIAT", "PIDAT", "PPER", "PPOS", "PPOSAT"):
         return (token, PRON)
     if tag in ("PRELS", "PRELAT", "PRF", "PWS", "PWAT", "PWAV", "PAV"):
         return (token, PRON)
     return penntreebank2universal(*stts2penntreebank(token, tag))
 
 ABBREVIATIONS = set((
-    "Abs.", "Abt.", "Ass.", "Br.", "Ch.", "Chr.", "Cie.", "Co.", "Dept.", "Diff.", 
-    "Dr.", "Eidg.", "Exp.", "Fam.", "Fr.", "Hrsg.", "Inc.", "Inv.", "Jh.", "Jt.", "Kt.", 
-    "Mio.", "Mrd.", "Mt.", "Mte.", "Nr.", "Nrn.", "Ord.", "Ph.", "Phil.", "Pkt.", 
-    "Prof.", "Pt.", " S.", "St.", "Stv.", "Tit.", "VII.", "al.", "begr.","bzw.", 
-    "chem.", "dent.", "dipl.", "e.g.", "ehem.", "etc.", "excl.", "exkl.", "hum.", 
-    "i.e.", "incl.", "ing.", "inkl.", "int.", "iur.", "lic.", "med.", "no.", "oec.", 
-    "phil.", "phys.", "pp.", "psych.", "publ.", "rer.", "sc.", "soz.", "spez.", "stud.", 
+    "Abs.", "Abt.", "Ass.", "Br.", "Ch.", "Chr.", "Cie.", "Co.", "Dept.", "Diff.",
+    "Dr.", "Eidg.", "Exp.", "Fam.", "Fr.", "Hrsg.", "Inc.", "Inv.", "Jh.", "Jt.", "Kt.",
+    "Mio.", "Mrd.", "Mt.", "Mte.", "Nr.", "Nrn.", "Ord.", "Ph.", "Phil.", "Pkt.",
+    "Prof.", "Pt.", " S.", "St.", "Stv.", "Tit.", "VII.", "al.", "begr.","bzw.",
+    "chem.", "dent.", "dipl.", "e.g.", "ehem.", "etc.", "excl.", "exkl.", "hum.",
+    "i.e.", "incl.", "ing.", "inkl.", "int.", "iur.", "lic.", "med.", "no.", "oec.",
+    "phil.", "phys.", "pp.", "psych.", "publ.", "rer.", "sc.", "soz.", "spez.", "stud.",
     "theol.", "usw.", "vet.", "vgl.", "vol.", "wiss.",
     "d.h.", "h.c.", "o.ä.", "u.a.", "z.B.", "z.T.", "z.Zt."
 ))
@@ -194,7 +194,7 @@ def find_lemmata(tokens):
     for token in tokens:
         word, pos, lemma = token[0], token[1], token[0]
         if pos.startswith(("DT", "JJ")):
-            lemma = predicative(word)  
+            lemma = predicative(word)
         if pos == "NNS":
             lemma = singularize(word)
         if pos.startswith(("VB", "MD")):

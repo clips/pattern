@@ -47,7 +47,7 @@ def index():
 # The @app.error() decorator can be used to catch errors.
 # In this case it prints out the error status and a traceback.
 
-# The traceback will always be an empty string 
+# The traceback will always be an empty string
 # when you are running a production server, i.e., app.run(debug=False).
 # You want to see errors during development, i.e., app.run(debug=True).
 # You don't want to confront users with them when the app is live
@@ -56,8 +56,8 @@ def index():
 @app.error("404")
 def error_404(error):
     return "<h1>%s</h1>\n%s\n<pre>%s</pre>" % (
-        error.status, 
-        error.message, 
+        error.status,
+        error.message,
         error.traceback
     )
     
@@ -114,7 +114,7 @@ def review(text=""):
     else:
         s = ""
     return (
-        s, 
+        s,
         "<form method='get'>",
         "<textarea name='text'></textarea>",
         "<br><input type='submit'>",

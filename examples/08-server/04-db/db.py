@@ -8,7 +8,7 @@ import os, sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..",
 from pattern.server import App, Database, html
 
 # This example demonstrates a web app with a simple database back-end.
-# The pattern.server module has a Database object 
+# The pattern.server module has a Database object
 # that can be used with SQLite and MySQL databases.
 # SQLite is part of Python 2.5+.
 # MySQL requires the mysql-python bindings (http://sourceforge.net/projects/mysql-python/).
@@ -23,7 +23,7 @@ app = App("store")
 
 # The disadvantage is that SQLite is not multi-threaded.
 # This will lead to problems ("database is locked") in larger projects.
-# The app server uses multiple threads to handle concurrent requests. 
+# The app server uses multiple threads to handle concurrent requests.
 # If two request want to write to the database at the same time,
 # one of them will have to wait while the other finishes writing.
 # If enough requests are waiting in line, the database may crash.

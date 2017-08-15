@@ -127,7 +127,7 @@ def gender(word):
         return (MALE, FEMALE)
     # Most nouns ending in -a (-e) are feminine, -o (-i) masculine:
     if w.endswith(("ore", "ista", "mma")):
-        return MALE            
+        return MALE
     if w.endswith(("a", "tà", "tù", "ione", "rice")):
         return FEMALE
     if w.endswith(("e", "oni")):

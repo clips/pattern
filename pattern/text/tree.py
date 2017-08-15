@@ -28,7 +28,7 @@
 #                "the cat eats its snackerel with vigor" => eat with vigor?
 #                                                     OR => vigorous snackerel?
 
-# The Text and Sentece classes are containers: 
+# The Text and Sentece classes are containers:
 # no parsing functionality should be added to it.
 
 from __future__ import unicode_literals
@@ -139,7 +139,7 @@ class Word(object):
         """
         if not isinstance(string, str):
             try: string = string.decode("utf-8") # ensure Unicode
-            except: 
+            except:
                 pass
         self.sentence = sentence
         self.index    = index
@@ -166,7 +166,7 @@ class Word(object):
         return w
 
     def _get_tag(self):
-        return self.type    
+        return self.type
     def _set_tag(self, v):
         self.type = v
         
@@ -278,11 +278,11 @@ class Tags(dict):
         # Ensure that the custom tag is also in Word.sentence.token,
         # so that it is not forgotten when exporting or importing XML.
         dict.__setitem__(self, k, v)
-        if k not in reversed(self.word.sentence.token): 
+        if k not in reversed(self.word.sentence.token):
             self.word.sentence.token.append(k)
             
     def setdefault(self, k, v):
-        if k not in self: 
+        if k not in self:
             self.__setitem__(k, v); return self[k]
 
 #--- CHUNK -----------------------------------------------------------------------------------------
@@ -320,7 +320,7 @@ class Chunk(object):
         self.extend(words)
 
     def extend(self, words):
-        for w in words: 
+        for w in words:
             self.append(w)
     
     def append(self, word):
@@ -399,23 +399,23 @@ class Chunk(object):
     @property
     def subject(self):
         ch = self.sentence.relations["SBJ"].get(self.relation, None)
-        if ch != self: 
+        if ch != self:
             return ch
     @property
     def object(self):
         ch = self.sentence.relations["OBJ"].get(self.relation, None)
-        if ch != self: 
+        if ch != self:
             return ch
     @property
     def verb(self):
         ch = self.sentence.relations["VP"].get(self.relation, None)
-        if ch != self: 
+        if ch != self:
             return ch
     @property
     def related(self):
         """ Yields a list of all chunks in the sentence with the same relation id.
         """
-        return [ch for ch in self.sentence.chunks 
+        return [ch for ch in self.sentence.chunks
                     if ch != self and intersects(unzip(0, ch.relations), unzip(0, self.relations))]
 
     @property
@@ -506,7 +506,7 @@ class Chunk(object):
     def __repr__(self):
         return "Chunk(%s)" %  repr("%s/%s%s%s") % (
                 self.string,
-                self.type is not None and self.type or OUTSIDE, 
+                self.type is not None and self.type or OUTSIDE,
                 self.role is not None and ("-" + self.role) or "",
             self.relation is not None and ("-" + str(self.relation)) or "")
     
@@ -627,7 +627,7 @@ class Sentence(object):
         self._previous   = None # Helper variable: the last token parsed in parse_token().
         self.relations   = {"SBJ":{}, "OBJ":{}, "VP":{}}
         # Split the slash-formatted token into the separate tags in the given order.
-        # Append Word and Chunk objects according to the token's tags.        
+        # Append Word and Chunk objects according to the token's tags.
         for chars in string.split(" "):
             if chars:
                 self.append(*self.parse_token(chars, token))
@@ -756,8 +756,8 @@ class Sentence(object):
             which can be passed to Sentence.append(): Sentence.append(*Sentence.parse_token("cats/NNS/NP"))
             The custom value is a dictionary of (tag, value)-items of unrecognized tags in the token.
         """
-        p = { WORD: "", 
-               POS: None, 
+        p = { WORD: "",
+               POS: None,
                IOB: None,
              CHUNK: None,
                PNP: None,
@@ -779,13 +779,13 @@ class Sentence(object):
             if v != OUTSIDE or k == WORD or k == LEMMA: # "type O negative" => "O" != OUTSIDE.
                 (p if k not in custom else custom)[k] = v
         # Split IOB-prefix from the chunk tag:
-        # B- marks the start of a new chunk, 
+        # B- marks the start of a new chunk,
         # I- marks inside of a chunk.
         ch = p[CHUNK]
         if ch is not None and ch.startswith(("B-", "I-")):
             p[IOB], p[CHUNK] = ch[:1], ch[2:] # B-NP
         # Split the role from the relation:
-        # NP-SBJ-1 => relation id is 1 and role is SBJ, 
+        # NP-SBJ-1 => relation id is 1 and role is SBJ,
         # VP-1 => relation id is 1 with no role.
         # Tokens may be tagged with multiple relations (e.g., NP-OBJ-1*NP-OBJ-3).
         if p[REL] is not None:
@@ -795,7 +795,7 @@ class Sentence(object):
             if ch == "PP" \
              and self._previous \
              and self._previous[REL] == p[REL] \
-             and self._previous[ROLE] == p[ROLE]: 
+             and self._previous[ROLE] == p[ROLE]:
                 ch = "NP"
             if p[CHUNK] is None and ch != OUTSIDE:
                 p[CHUNK] = ch
@@ -825,11 +825,11 @@ class Sentence(object):
         for s in tag:
             s = s.split("-")
             n = len(s)
-            if n == 1: 
+            if n == 1:
                 chunk = s[0]
-            if n == 2: 
+            if n == 2:
                 chunk = s[0]; relation.append(s[1]); role.append(None)
-            if n >= 3: 
+            if n >= 3:
                 chunk = s[0]; relation.append(s[2]); role.append(s[1])
             if n > 1:
                 id = relation[-1]
@@ -848,7 +848,7 @@ class Sentence(object):
         # Improve 3rd person singular "'s" lemma to "be", e.g., as in "he's fine".
         if lemma == "'s" and type in ("VB", "VBZ"):
             lemma = "be"
-        self.words.append(Word(self, word, lemma, type, index=len(self.words)))     
+        self.words.append(Word(self, word, lemma, type, index=len(self.words)))
 
     def _do_chunk(self, type, role=None, relation=None, iob=None):
         """ Adds a new Chunk to the sentence, or adds the last word to the previous chunk.
@@ -902,7 +902,7 @@ class Sentence(object):
                 self.pnp[-1].append(self.words[-1])
             else:
                 ch = PNPChunk(self, [self.words[-1]], type="PNP")
-                self.pnp.append(ch)                
+                self.pnp.append(ch)
             self._attachment = m
     
     def _do_anchor(self, anchor):
@@ -975,7 +975,7 @@ class Sentence(object):
             Any order or combination of tags can be supplied.
         """
         for i in range(len(self.words)):
-            yield tuple([self.get(i, tag=tag) for tag in tags])  
+            yield tuple([self.get(i, tag=tag) for tag in tags])
 
     def indexof(self, value, tag=WORD):
         """ Returns the indices of tokens in the sentence where the given token tag equals the string.
@@ -1004,7 +1004,7 @@ class Sentence(object):
             p2 = word.type                                                         # POS
             p3 = word.chunk is not None and word.chunk.type or None                # CHUNK
             p4 = word.pnp is not None and "PNP" or None                            # PNP
-            p5 = word.chunk is not None and unzip(0, word.chunk.relations) or None # REL            
+            p5 = word.chunk is not None and unzip(0, word.chunk.relations) or None # REL
             p6 = word.chunk is not None and unzip(1, word.chunk.relations) or None # ROLE
             p7 = word.chunk and word.chunk.anchor_id or None                       # ANCHOR
             p8 = word.chunk and word.chunk.start == start+i and BEGIN or None      # IOB
@@ -1016,7 +1016,7 @@ class Sentence(object):
             if word.pnp is not None and word.pnp.start == start+i:
                 p4 = BEGIN+"-"+"PNP"
             # If the given range does not contain the entire PNP, remove the PNP tags.
-            # The range must contain the entire PNP, 
+            # The range must contain the entire PNP,
             # since it starts with the PP and ends with the chunk head (and is meaningless without these).
             if word.pnp is not None and (word.pnp.start < start or word.chunk.stop > stop):
                 p4, p7 = None, None
@@ -1058,7 +1058,7 @@ class Sentence(object):
         return "Sentence(%s)" % repr(" ".join(["/".join(word.tags) for word in self.words]))
         
     def __eq__(self, other):
-        if not isinstance(other, Sentence): 
+        if not isinstance(other, Sentence):
             return False
         return len(self) == len(other) and repr(self) == repr(other)
 
@@ -1252,14 +1252,14 @@ XML_ANCHOR   = "anchor"   # <chunk anchor=""> corresponds to id-attribute.
 XML_LEMMA    = "lemma"    # <word lemma="">
 
 XML_ENCODING = {
-            'utf8' : 'UTF-8', 
-           'utf-8' : 'UTF-8', 
-           'utf16' : 'UTF-16', 
+            'utf8' : 'UTF-8',
+           'utf-8' : 'UTF-8',
+           'utf16' : 'UTF-16',
           'utf-16' : 'UTF-16',
-           'latin' : 'ISO-8859-1', 
-          'latin1' : 'ISO-8859-1', 
-         'latin-1' : 'ISO-8859-1', 
-          'cp1252' : 'windows-1252', 
+           'latin' : 'ISO-8859-1',
+          'latin1' : 'ISO-8859-1',
+         'latin-1' : 'ISO-8859-1',
+          'cp1252' : 'windows-1252',
     'windows-1252' : 'windows-1252'
 }
 
@@ -1351,7 +1351,7 @@ def parse_xml(sentence, tab="\t", id=""):
         # <chunk type="VP" relation="VP" id="1" anchor="A1">
         if chunk and chunk.start == word.index:
             if chunk.relations:
-                # Create the shortest possible attribute values for multiple relations, 
+                # Create the shortest possible attribute values for multiple relations,
                 # e.g., [(1,"OBJ"),(2,"OBJ")]) => relation="OBJ" id="1|2"
                 r1 = unzip(0, chunk.relations) # Relation id's.
                 r2 = unzip(1, chunk.relations) # Relation roles.
@@ -1484,7 +1484,7 @@ def parse_string(xml):
                     token[i] += "-"+"-".join(["A"+str(a+p) for p in range(len(P[id]))])
                     token[i]  = token[i].strip("O-")
                 for p, pnp in enumerate(P[id]):
-                    for token in pnp: 
+                    for token in pnp:
                         token[i] += "-"+"P"+str(a+p)
                         token[i]  = token[i].strip("O-")
                 a += len(P[id])
@@ -1507,7 +1507,7 @@ def _parse_tokens(chunk, format=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
         If a <chunk type="PNP"> is encountered, traverses all of the chunks in the PNP.
     """
     tokens = []
-    # Only process <chunk> and <chink> elements, 
+    # Only process <chunk> and <chink> elements,
     # text nodes in between return an empty list.
     if not (chunk.tag == XML_CHUNK or chunk.tag == XML_CHINK):
         return []
@@ -1544,7 +1544,7 @@ def _parse_tokens(chunk, format=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
     # The chunk can be the anchor of one or more PNP chunks.
     # Store anchors so we can construct anchor id's in parse_string().
     a = chunk.get(XML_ANCHOR, "").split(_UID_SEPARATOR)[-1]
-    if a: 
+    if a:
         _anchors[a] = tokens
     return tokens
 
@@ -1559,9 +1559,9 @@ def _parse_relation(chunk, type="O"):
     r2 = [x is not None and x.split(_UID_SEPARATOR )[-1] or x for x in r2]
     if len(r1) < len(r2): r1 = r1 + r1 * (len(r2)-len(r1)) # [1] ["SBJ", "OBJ"] => "SBJ-1;OBJ-1"
     if len(r2) < len(r1): r2 = r2 + r2 * (len(r1)-len(r2)) # [2,4] ["OBJ"] => "OBJ-2;OBJ-4"
-    return ";".join(["-".join([x for x in (type, r1, r2) if x]) for r1, r2 in zip(r1, r2)])    
+    return ";".join(["-".join([x for x in (type, r1, r2) if x]) for r1, r2 in zip(r1, r2)])
 
-def _parse_token(word, chunk="O", pnp="O", relation="O", anchor="O", 
+def _parse_token(word, chunk="O", pnp="O", relation="O", anchor="O",
                  format=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
     """ Returns a list of token tags parsed from the given <word> element.
         Tags that are not attributes in a <word> (e.g., relation) can be given as parameters.
@@ -1649,7 +1649,7 @@ def graphviz_dot(sentence, font="Arial", colors=BLUE):
         # Invisible edges forces the words into the right order:
         s += '\t\tword%s -> word%s [color=none];\n' % (w.index, w.index+1)
     s += '\t}\n'
-    s += '\t{ rank=same;\n'        
+    s += '\t{ rank=same;\n'
     for i, ch in enumerate(sentence.chunks):
         s += '\t\tchunk%s [label="<f0>%s"%s];\n' % (i+1, "-".join([x for x in (
             ch.type, ch.role, str(ch.relation or '')) if x]) or '-', _colorize(ch, colors))
@@ -1727,6 +1727,6 @@ def table(sentence, fill=1, placeholder="-"):
         columns[i] = outline(column, fill+10*(i==0), align=("left","right")[i==0])
     # Anchor column is useful in MBSP but not in pattern.en.
     if not MBSP:
-        del columns[6] 
+        del columns[6]
     # Create a string with one row (i.e., one token) per line.
     return "\n".join(["".join([x[i] for x in columns]) for i in range(len(columns[0]))])

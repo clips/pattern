@@ -25,7 +25,7 @@ print(sentiment(
     "but it's presented in such a ridiculous way it's seriously boring."))
 
 # The input string can be:
-# - a string, 
+# - a string,
 # - a Synset (see pattern.en.wordnet),
 # - a parsed Sentence, Text, Chunk or Word (see pattern.en),
 # - a Document (see pattern.vector).

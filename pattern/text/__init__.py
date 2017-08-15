@@ -347,9 +347,9 @@ class Frequency(lazydict):
 #--- LANGUAGE MODEL --------------------------------------------------------------------------------
 # A language model determines the statistically most probable tag for an unknown word.
 # A pattern.vector Classifier such as SLP can be used to produce a language model,
-# by generalizing patterns from a treebank (i.e., a corpus of hand-tagged texts). 
+# by generalizing patterns from a treebank (i.e., a corpus of hand-tagged texts).
 # For example:
-# "generalizing/VBG from/IN patterns/NNS" and 
+# "generalizing/VBG from/IN patterns/NNS" and
 # "dancing/VBG with/IN squirrels/NNS"
 # both have a pattern -ing/VBG + [?] + NNS => IN.
 # Unknown words preceded by -ing and followed by a plural noun will be tagged IN (preposition),
@@ -732,7 +732,7 @@ PTB = PENN = "penn"
 
 class Parser(object):
 
-    def __init__(self, lexicon={}, frequency={}, model=None, morphology=None, context=None, entities=None, default=("NN", "NNP", "CD"), language=None):        
+    def __init__(self, lexicon={}, frequency={}, model=None, morphology=None, context=None, entities=None, default=("NN", "NNP", "CD"), language=None):
         """ A simple shallow parser using a Brill-based part-of-speech tagger.
             The given lexicon is a dictionary of known words and their part-of-speech tag.
             The given default tags are used for unknown words.
@@ -770,7 +770,7 @@ class Parser(object):
             self.entities = Entities(path=entities, tag=default[1])
         if f(model):
             # Word part-of-speech classifier.
-            try: 
+            try:
                 self.model = Model(path=model)
             except ImportError: # pattern.vector
                 pass
@@ -1002,9 +1002,9 @@ punctuation = ".,;:!?()[]{}`''\"@#$^&*+-|=~_"
 # Common abbreviations.
 ABBREVIATIONS = \
 abbreviations = set((
-    "a.", "adj.", "adv.", "al.", "a.m.", "art.", "c.", "capt.", "cert.", "cf.", "col.", "Col.", 
-    "comp.", "conf.", "def.", "Dep.", "Dept.", "Dr.", "dr.", "ed.", "e.g.", "esp.", "etc.", "ex.", 
-    "f.", "fig.", "gen.", "id.", "i.e.", "int.", "l.", "m.", "Med.", "Mil.", "Mr.", "n.", "n.q.", 
+    "a.", "adj.", "adv.", "al.", "a.m.", "art.", "c.", "capt.", "cert.", "cf.", "col.", "Col.",
+    "comp.", "conf.", "def.", "Dep.", "Dept.", "Dr.", "dr.", "ed.", "e.g.", "esp.", "etc.", "ex.",
+    "f.", "fig.", "gen.", "id.", "i.e.", "int.", "l.", "m.", "Med.", "Mil.", "Mr.", "n.", "n.q.",
     "orig.", "pl.", "pred.", "pres.", "p.m.", "ref.", "v.", "vs.", "w/"
 ))
 
@@ -1066,7 +1066,7 @@ RE_MENTION = re.compile(r"\@([0-9a-zA-z_]+)(\s|\,|\:|\.|\!|\?|$)")
 # Sarcasm marker: "(!)".
 RE_SARCASM = re.compile(r"\( ?\! ?\)")
 
-# Paragraph line breaks 
+# Paragraph line breaks
 # (\n\n marks end of sentence).
 EOS = "END-OF-SENTENCE"
 
@@ -1127,7 +1127,7 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
     if isinstance(string, str):
         quotes = ("'", "\"", "”", "’")
     else:
-        quotes = ("'", "\"")    
+        quotes = ("'", "\"")
     # Handle sentence breaks (periods, quotes, parenthesis).
     sentences, i, j = [[]], 0, 0
     while j < len(tokens):
@@ -1270,7 +1270,7 @@ for i in (0, 1):
         s = re.compile(s)
         CHUNKS[i][j] = (tag, s)
 
-# Handle ADJP before VP, 
+# Handle ADJP before VP,
 # so that RB prefers next ADJP over previous VP.
 CHUNKS[0].insert(1, CHUNKS[0].pop(3))
 CHUNKS[1].insert(1, CHUNKS[1].pop(3))
@@ -2242,7 +2242,7 @@ class Sentiment(lazydict):
     def save(self, path):
         """ Saves the lexicon as an XML-file.
         """
-        # WordNet id's, word sense descriptions and confidence scores 
+        # WordNet id's, word sense descriptions and confidence scores
         # from a bundled XML (e.g., en/lexicon-en.xml) are not saved.
         a = []
         a.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
@@ -2252,10 +2252,10 @@ class Sentiment(lazydict):
                 pos = pos or ""
                 if pos or len(self[w]) == 1:
                     a.append("\t<word %s %s %s %s %s %s />" % (
-                              "form=\"%s\""   % w, 
-                               "pos=\"%s\""   % pos, 
-                          "polarity=\"%.2f\"" % p, 
-                      "subjectivity=\"%.2f\"" % s, 
+                              "form=\"%s\""   % w,
+                               "pos=\"%s\""   % pos,
+                          "polarity=\"%.2f\"" % p,
+                      "subjectivity=\"%.2f\"" % s,
                          "intensity=\"%.2f\"" % i,
                              "label=\"%s\""   % self.labeler.get(w, "")
                     ))

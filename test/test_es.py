@@ -90,7 +90,7 @@ class TestInflection(unittest.TestCase):
         # Assert the accuracy of the verb lemmatization algorithm.
         i, n = 0, 0
         for v1, v2 in es.inflect.verbs.inflections.items():
-            if es.inflect.verbs.find_lemma(v1) == v2: 
+            if es.inflect.verbs.find_lemma(v1) == v2:
                 i += 1
             n += 1
         self.assertTrue(float(i) / n > 0.80)
@@ -180,7 +180,7 @@ class TestInflection(unittest.TestCase):
         # Assert tense recognition.
         self.assertTrue((es.PRESENT, 3, es.SG) in es.tenses("es"))
         self.assertTrue("2sg" in es.tenses("eres"))
-        # The CONDITIONAL is sometimes described as a mood, 
+        # The CONDITIONAL is sometimes described as a mood,
         # and sometimes as a tense of the indicative mood (e.g., in Spanish):
         t1 = (es.CONDITIONAL, 1, es.SG)
         t2 = (es.PRESENT, 1, es.SG, es.CONDITIONAL)
@@ -204,13 +204,13 @@ class TestParser(unittest.TestCase):
             ["Los", "DT"], ["gatos", "NNS"], ["negros", "JJ"], ["se", "PRP"], ["sentó", "VB"],
             ["en", "IN"], ["la", "DT"], ["alfombra", "NN"]])
         self.assertEqual(v, [
-            ["Los", "DT", "el"], 
-            ["gatos", "NNS", "gato"], 
-            ["negros", "JJ", "negro"], 
-            ["se", "PRP", "se"], 
+            ["Los", "DT", "el"],
+            ["gatos", "NNS", "gato"],
+            ["negros", "JJ", "negro"],
+            ["se", "PRP", "se"],
             ["sentó", "VB", "sentar"],
-            ["en", "IN", "en"], 
-            ["la", "DT", "el"], 
+            ["en", "IN", "en"],
+            ["la", "DT", "el"],
             ["alfombra", "NN", "alfombra"]])
         print("pattern.es.parser.find_lemmata()")
 
