@@ -38,6 +38,8 @@
 # CLiPS Computational Linguistics Group, University of Antwerp, Belgium
 # http://www.clips.ua.ac.be/pages/pattern
 
+from __future__ import unicode_literals
+
 ### CREDITS ########################################################################################
 
 __author__    = "Tom De Smedt"
