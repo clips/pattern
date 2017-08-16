@@ -40,6 +40,8 @@
 
 from __future__ import unicode_literals
 
+from builtins import str, bytes, dict, int
+
 ### CREDITS ########################################################################################
 
 __author__    = "Tom De Smedt"
