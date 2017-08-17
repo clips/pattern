@@ -1712,6 +1712,10 @@ class LSA(object):
         # Sigma is the diagonal matrix of singular values,
         # u has document rows and concept columns, vt has concept rows and term columns.
         u, sigma, vt = np.linalg.svd(matrix, full_matrices=False)
+
+        # Note: now np.dot(np.dot(u, np.diag(sigma)), vt) !≈ matrix
+        # assert np.allclose(np.dot(np.dot(u, np.diag(sigma)), vt), matrix)
+
         # Delete the smallest coefficients in the diagonal matrix (i.e., at the end of the list).
         # The difficulty and weakness of LSA is knowing how many dimensions to reduce
         # (generally L2-norm is used).
@@ -1736,6 +1740,10 @@ class LSA(object):
             np.delete(sigma, tail(sigma, k), axis=0),
             np.delete(vt, tail(vt, k), axis=0)
         )
+
+        # In some numpy versions, np.linalg.svd seems to yield negative components. SVD decomposition is not unique.
+        u, sigma, vt = list(map(np.abs, (u, sigma, vt)))
+
         # Store as Python dict and lists so we can pickle it.
         self.model = model
         self._terms = dict(enumerate(model.vector().keys())) # Vt-index => word.
