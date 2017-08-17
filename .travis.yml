@@ -21,6 +21,8 @@ before_install:
 
 install:
   - python setup.py install --quiet
+  # Print all installed packages including versions
+  - pip freeze
   # Install and compile libsvm and liblinear  
   - sudo apt-get install -y build-essential
   - git clone https://github.com/cjlin1/libsvm
@@ -38,7 +40,6 @@ after_script:
 branches:
   only:
   - development
-  - python3
 
 notifications:
   email: false
