@@ -29,6 +29,8 @@ from builtins import str, bytes, dict, int
 from builtins import map, zip, filter
 from builtins import object, range, next
 
+from collections import OrderedDict
+
 from . import stemmer
 _stemmer=stemmer
 
@@ -152,6 +154,35 @@ def pimap(iterable, function, *args, **kwargs):
 
 class ReadOnlyError(Exception):
     pass
+
+class readonlyodict(OrderedDict):
+    def __init__(self, *args, **kwargs):
+        self._f = False
+        super(readonlyodict, self).__init__(*args, **kwargs)
+        self._f = True
+    @classmethod
+    def fromkeys(cls, k, default=None):
+        return readonlyodict((k, default) for k in k)
+    def __setitem__(self, *args, **kwargs):
+        if self._f:
+            raise ReadOnlyError
+        return super(readonlyodict, self).__setitem__(*args, **kwargs)
+    def __delitem__(self, *args, **kwargs):
+        if self._f:
+            raise ReadOnlyError
+        return super(readonlyodict, self).__delitem__(*args, **kwargs)
+    def pop(self, *args, **kwargs):
+        if self._f:
+            raise ReadOnlyError
+        return super(readonlyodict, self).pop(*args, **kwargs)
+    def popitem(self, *args, **kwargs):
+        if self._f:
+            raise ReadOnlyError
+        return super(readonlyodict, self).popitem(*args, **kwargs)
+    def update(self, *args, **kwargs):
+        if self._f:
+            raise ReadOnlyError
+        return super(readonlyodict, self).update(*args, **kwargs)
 
 # Read-only dictionary, used for Document.terms and Document.vector
 # (updating these directly invalidates the Document and Model cache).
