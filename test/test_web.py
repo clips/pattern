@@ -1056,7 +1056,7 @@ class TestCrawler(unittest.TestCase):
 
     def test_crawler_delay(self):
         # Assert delay for several crawls to a single domain.
-        v = web.Crawler(links=["http://www.clips.ua.ac.be/"], domains=["clips.ua.ac.be"], delay=1.0)
+        v = web.Crawler(links=["http://www.clips.ua.ac.be/"], domains=["clips.ua.ac.be"], delay=1.2)
         v.crawl()
         t = time.time()
         while not v.crawl(throttle=0.1, cached=False):

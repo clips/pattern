@@ -926,7 +926,7 @@ class TestClassifier(unittest.TestCase):
         A, P, R, F, o = vector.IGTREE.test(self.model, folds=10, method=vector.GAINRATIO)
         #print(A, P, R, F, o)
         self.assertTrue(P >= 0.87)
-        self.assertTrue(R >= 0.89)
+        self.assertTrue(R >= 0.88)
         self.assertTrue(F >= 0.89)
 
     def test_knn(self):
