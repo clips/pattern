@@ -190,14 +190,14 @@ class Verbs(_Verbs):
             else:
                 b0 = b + "i"
             return [v,
-                b0+"s", b0+"s", b0+"t", b+"issons", b+"issez", b+"issent", b+"issant", b+"i",
-                b+"is", b+"is", b+"it", b+"îmes", b+"îtes", b+"irent",
-                b+"issais", b+"issais", b+"issait", b+"issions", b+"issiez", b+"issaient",
-                v+"ai", v+"as", v+"a", v+"ons", v+"ez", v+"ont",
-                v+"ais", v+"ais", v+"ait", v+"ions", v+"iez", v+"aient",
-                b+"is", b+"issons", b+"issez",
-                b+"isse", b+"isses", b+"isse", b+"issions", b+"issiez", b+"issent",
-                b+"isse", b+"isses", b+"ît", b+"issions", b+"issiez", b+"issent"
+                b0 + "s", b0 + "s", b0 + "t", b + "issons", b + "issez", b + "issent", b + "issant", b + "i",
+                b + "is", b + "is", b + "it", b + "îmes", b + "îtes", b + "irent",
+                b + "issais", b + "issais", b + "issait", b + "issions", b + "issiez", b + "issaient",
+                v + "ai", v + "as", v + "a", v + "ons", v + "ez", v + "ont",
+                v + "ais", v + "ais", v + "ait", v + "ions", v + "iez", v + "aient",
+                b + "is", b + "issons", b + "issez",
+                b + "isse", b + "isses", b + "isse", b + "issions", b + "issiez", b + "issent",
+                b + "isse", b + "isses", b + "ît", b + "issions", b + "issiez", b + "issent"
             ]
         elif v.endswith("re"):
             # Regular inflection for verbs ending in -re.
@@ -213,30 +213,30 @@ class Verbs(_Verbs):
             if v.endswith("prendre"):
                 b0, b1 = b, b[:-1]
             return [v,
-                b0+"s", b0+"s", b0+"", b1+"ons", b1+"ez", b1+"ent", b1+"ant", b+"u",
-                b+"is", b+"is", b+"it", b1+"îmes", b1+"îtes", b1+"irent",
-                b+"ais", b+"ais", b+"ait", b1+"ions", b1+"iez", b1+"aient",
-                b+"rai", b+"ras", b+"ra", b+"rons", b+"rez", b+"ront",
-                b+"ais", b+"ais", b+"ait", b1+"ions", b1+"iez", b1+"aient",
-                b0+"s", b1+"ons", b1+"ez",
-                b+"e", b+"es", b+"e", b1+"ions", b1+"iez", b1+"ent",
-                b+"isse", b+"isses", b+"ît", b1+"issions", b1+"issiez", b1+"issent"
+                b0 + "s", b0 + "s", b0 + "", b1 + "ons", b1 + "ez", b1 + "ent", b1 + "ant", b + "u",
+                b + "is", b + "is", b + "it", b1 + "îmes", b1 + "îtes", b1 + "irent",
+                b + "ais", b + "ais", b + "ait", b1 + "ions", b1 + "iez", b1 + "aient",
+                b + "rai", b + "ras", b + "ra", b + "rons", b + "rez", b + "ront",
+                b + "ais", b + "ais", b + "ait", b1 + "ions", b1 + "iez", b1 + "aient",
+                b0 + "s", b1 + "ons", b1 + "ez",
+                b + "e", b + "es", b + "e", b1 + "ions", b1 + "iez", b1 + "ent",
+                b + "isse", b + "isses", b + "ît", b1 + "issions", b1 + "issiez", b1 + "issent"
             ]
         else:
             # Regular inflection for verbs ending in -er.
             # If the stem ends in -g, use -ge before hard vowels -a and -o: manger => mangeons.
             # If the stem ends in -c, use -ç before hard vowels -a and -o: lancer => lançons.
             e = v.endswith("ger") and "e" or ""
-            c = v.endswith("cer") and b[:-1]+"ç" or b
+            c = v.endswith("cer") and b[:-1] + "ç" or b
             return [v,
-                b+"e", b+"es", b+"e", c+e+"ons", b+"ez", b+"ent", c+e+"ant", b+"é",
-                c+e+"ai", c+e+"as", c+e+"a", c+e+"âmes", c+e+"âtes", b+"èrent",
-                c+e+"ais", c+e+"ais", c+e+"ait", b+"ions", b+"iez", c+e+"aient",
-                v+"ai", v+"as", v+"a", v+"ons", v+"ez", v+"ont",
-                v+"ais", v+"ais", v+"ait", v+"ions", v+"iez", v+"aient",
-                b+"e", c+e+"ons", b+"ez",
-                b+"e", b+"es", b+"e", b+"ions", b+"iez", b+"ent",
-                c+e+"asse", c+e+"asses", c+e+"ât", c+e+"assions", c+e+"assiez", c+e+"assent"
+                b + "e", b + "es", b + "e", c + e + "ons", b + "ez", b + "ent", c + e + "ant", b + "é",
+                c + e + "ai", c + e + "as", c + e + "a", c + e + "âmes", c + e + "âtes", b + "èrent",
+                c + e + "ais", c + e + "ais", c + e + "ait", b + "ions", b + "iez", c + e + "aient",
+                v + "ai", v + "as", v + "a", v + "ons", v + "ez", v + "ont",
+                v + "ais", v + "ais", v + "ait", v + "ions", v + "iez", v + "aient",
+                b + "e", c + e + "ons", b + "ez",
+                b + "e", b + "es", b + "e", b + "ions", b + "iez", b + "ent",
+                c + e + "asse", c + e + "asses", c + e + "ât", c + e + "assions", c + e + "assiez", c + e + "assent"
             ]
 
 verbs = Verbs()

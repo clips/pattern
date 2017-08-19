@@ -57,7 +57,7 @@ def imperative(sentence, **kwargs):
     r = s(S).rstrip(" .!")
     for cc in ("if", "assuming", "provided that", "given that"):
         # A conjunction can also indicate conditional mood.
-        if cc+" " in r:
+        if cc + " " in r:
             return False
     for i, w in enumerate(S):
         if verb(w):
@@ -70,10 +70,10 @@ def imperative(sentence, **kwargs):
             if s(w) in ("would", "should", "'d", "could", "can", "may", "might"):
                 # "You should leave." => conditional.
                 return False
-            if s(w) in ("will", "shall") and i > 0 and s(S[i-1]) == "you" and not verbs(S,0,i):
+            if s(w) in ("will", "shall") and i > 0 and s(S[i - 1]) == "you" and not verbs(S,0,i):
                 # "You will eat your dinner."
                 continue
-            if w.type == "VB" and (i == 0 or s(S[i-1]) != "to"):
+            if w.type == "VB" and (i == 0 or s(S[i - 1]) != "to"):
                 # "Come here!"
                 return True
             # Break on any other verb form.
@@ -115,18 +115,18 @@ def conditional(sentence, predictive=True, **kwargs):
         return False
     i = find(lambda w: s(w) == "were", S)
     i = i and i.index or 0
-    if i > 0 and (s(S[i-1]) in ("i", "it", "he", "she") or S[i-1].type == "NN"):
+    if i > 0 and (s(S[i - 1]) in ("i", "it", "he", "she") or S[i - 1].type == "NN"):
         # "As if it were summer already." => subjunctive (wish).
         return False
     for i, w in enumerate(S):
         if w.type == "MD":
-            if s(w) == "ought" and i < len(S) and s(S[i+1]) == "to":
+            if s(w) == "ought" and i < len(S) and s(S[i + 1]) == "to":
                 # "I ought to help you."
                 return True
             if s(w) in ("would", "should", "'d", "could", "might"):
                 # "I could help you."
                 return True
-            if s(w) in ("will", "shall", "'ll") and i > 0 and s(S[i-1]) == "you" and not verbs(S,0,i):
+            if s(w) in ("will", "shall", "'ll") and i > 0 and s(S[i - 1]) == "you" and not verbs(S,0,i):
                 # "You will help me." => imperative.
                 return False
             if s(w) in ("will", "shall", "'ll") and predictive:
@@ -136,7 +136,7 @@ def conditional(sentence, predictive=True, **kwargs):
                 # "I will help you when I get back." => speculative.
                 r = s(S).rstrip(" .!")
                 for cc in ("if", "when", "once", "as soon as", "assuming", "provided that", "given that"):
-                    if cc+" " in r:
+                    if cc + " " in r:
                         return True
     return False
 
@@ -163,8 +163,8 @@ subjunctive2 = [
     "important", "recommended", "urgent", "vital"]
 
 for w in list(subjunctive1): # Inflect.
-    subjunctive1.append(w+"s")
-    subjunctive1.append(w.rstrip("e")+"ed")
+    subjunctive1.append(w + "s")
+    subjunctive1.append(w.rstrip("e") + "ed")
 
 def subjunctive(sentence, classical=True, **kwargs):
     """ The subjunctive mood is a classical mood used to express a wish, judgment or opinion.
@@ -183,27 +183,27 @@ def subjunctive(sentence, classical=True, **kwargs):
             if s(w).startswith("wish"):
                 # "I wish I knew."
                 return True
-            if s(w) == "hope" and i > 0 and s(S[i-1]) in ("i", "we"):
+            if s(w) == "hope" and i > 0 and s(S[i - 1]) in ("i", "we"):
                 # "I hope ..."
                 return True
-            if s(w) == "were" and i > 0 and (s(S[i-1]) in ("i", "it", "he", "she") or S[i-1].type == "NN"):
+            if s(w) == "were" and i > 0 and (s(S[i - 1]) in ("i", "it", "he", "she") or S[i - 1].type == "NN"):
                 # "It is as though she were here." => counterfactual.
                 return True
             if s(w) in subjunctive1:
                 # "I propose that you be on time."
                 b = True
-            elif s(w) == "is" and 0 < i < len(S)-1 and s(S[i-1]) == "it" \
-             and s(S[i+1]) in subjunctive2:
+            elif s(w) == "is" and 0 < i < len(S) - 1 and s(S[i - 1]) == "it" \
+             and s(S[i + 1]) in subjunctive2:
                 # "It is important that you be there." => but you aren't (yet).
                 b = True
-            elif s(w) == "is" and 0 < i < len(S)-3 and s(S[i-1]) == "it" \
-             and s(S[i+2]) in ("good", "bad") and s(S[i+3]) == "idea":
+            elif s(w) == "is" and 0 < i < len(S) - 3 and s(S[i - 1]) == "it" \
+             and s(S[i + 2]) in ("good", "bad") and s(S[i + 3]) == "idea":
                 # "It is a good idea that you be there."
                 b = True
         if b:
             # With classical=False, "It is important that you are there." passes.
             # This is actually an informal error: it states a fact, not a wish.
-            v = find(lambda w: w.type.startswith("VB"), S[i+1:])
+            v = find(lambda w: w.type.startswith("VB"), S[i + 1:])
             if v and classical is True and v and v.type == "VB":
                 return True
             if v and classical is False:
@@ -430,7 +430,7 @@ def modality(sentence, type=EPISTEMIC):
               ("PRP$", epistemic_PRP, 1),
               ( "WP" , epistemic_PRP, 1)):
                 # "likely" => weight 1, "very likely" => weight 2
-                if i > 0 and s(S[i-1]) in MODIFIERS:
+                if i > 0 and s(S[i - 1]) in MODIFIERS:
                     weight += 1
                 # likely" => score 0.25 (neutral inclining towards positive).
                 if w.type and w.type.startswith(type):
@@ -438,7 +438,7 @@ def modality(sentence, type=EPISTEMIC):
                         # Prefer lemmata.
                         if (w.lemma or s(w)) in v:
                             # Reverse score for negated terms.
-                            if i > 0 and s(S[i-1]) in ("not", "n't", "never", "without"):
+                            if i > 0 and s(S[i - 1]) in ("not", "n't", "never", "without"):
                                 k = -k * 0.5
                             n += weight * k
                             m += weight

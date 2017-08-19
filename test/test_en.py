@@ -59,7 +59,7 @@ class TestInflection(unittest.TestCase):
         i, n = 0, 0
         for sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-en-celex.csv")):
             if en.inflect.pluralize(sg) == pl:
-                i +=1
+                i += 1
             n += 1
         self.assertTrue(float(i) / n > 0.95)
         print("pattern.en.inflect.pluralize()")
@@ -70,7 +70,7 @@ class TestInflection(unittest.TestCase):
         i, n = 0, 0
         for sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-en-celex.csv")):
             if en.inflect.singularize(pl) == sg:
-                i +=1
+                i += 1
             n += 1
         self.assertTrue(float(i) / n > 0.95)
         print("pattern.en.inflect.singularize()")
@@ -95,7 +95,7 @@ class TestInflection(unittest.TestCase):
             for j in range(len(lexeme2)):
                 if lexeme1[j] == lexeme2[j] or \
                    lexeme1[j] == "" and \
-                   lexeme1[j>5 and 10 or 0] == lexeme2[j]:
+                   lexeme1[j > 5 and 10 or 0] == lexeme2[j]:
                     i += 1
                 n += 1
         self.assertTrue(float(i) / n > 0.90)
@@ -295,7 +295,7 @@ class TestSpelling(unittest.TestCase):
                     i += 1
                 else:
                     j += 1
-        self.assertTrue(i / (i+j) > 0.70)
+        self.assertTrue(i / (i + j) > 0.70)
         print("pattern.en.suggest()")
 
 #---------------------------------------------------------------------------------------------------
@@ -755,7 +755,7 @@ class TestParseTree(unittest.TestCase):
 
     def test_find(self):
         # Assert first item for which given function is True.
-        v = text.tree.find(lambda x: x>10, [1,2,3,11,12])
+        v = text.tree.find(lambda x: x > 10, [1,2,3,11,12])
         self.assertEqual(v, 11)
         print("pattern.text.tree.find()")
 
@@ -779,7 +779,7 @@ class TestParseTree(unittest.TestCase):
 
     def test_map(self):
         # Assert dynamic Map().
-        v = text.tree.Map(lambda x: x+1, [1,2,3])
+        v = text.tree.Map(lambda x: x + 1, [1,2,3])
         self.assertEqual(list(v), [2,3,4])
         self.assertEqual(v.items[0], 1)
         print("pattern.text.tree.Map()")

@@ -241,7 +241,7 @@ class TestURL(unittest.TestCase):
           (     "#anchor", "http://domain.com/", ""),
           (     "#anchor", "http://domain.com/page", "")):
             v = web.abs(a, base=b)
-            self.assertEqual(v, b+c+a) # http://domain.com/#anchor
+            self.assertEqual(v, b + c + a) # http://domain.com/#anchor
         print("pattern.web.abs()")
 
     def test_base(self):
@@ -279,7 +279,7 @@ class TestPlaintext(unittest.TestCase):
           "domain.com",
           "domain.org",
           "domain.net"):
-            self.assertEqual(web.find_urls("("+url+".")[0], url)
+            self.assertEqual(web.find_urls("(" + url + ".")[0], url)
         # Assert case-insensitive, punctuation and <a href="">.
         # Assert several matches in string.
         self.assertEqual(web.find_urls("HTTP://domain.net")[0], "HTTP://domain.net")
@@ -291,11 +291,11 @@ class TestPlaintext(unittest.TestCase):
     def test_find_email(self):
         # Assert e-mail finder with common e-mail notations.
         s = "firstname.last+name@domain.ac.co.uk"
-        v = web.find_email("("+s+".")
+        v = web.find_email("(" + s + ".")
         self.assertEqual(v[0], s)
         # Assert several matches in string.
         s = ["me@site1.com", "me@site2.com"]
-        v = web.find_email("("+",".join(s)+")")
+        v = web.find_email("(" + ",".join(s) + ")")
         self.assertEqual(v, s)
         print("pattern.web.find_email()")
 

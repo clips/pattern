@@ -28,7 +28,7 @@ d = Datasheet()
 
 engine = Bing(license=None)
 for i in range(1):  # max=10
-    for result in engine.search(q, start=i+1, count=100, cached=True):
+    for result in engine.search(q, start=i + 1, count=100, cached=True):
         s = result.description
         s = plaintext(s)
         t = parsetree(s)

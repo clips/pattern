@@ -205,7 +205,7 @@ class MailFolder(object):
             status, response = self.parent.imap4.search(None, field.upper(), q)
             if cached:
                 cache[id] = response[0]
-        return sorted([int(i)-1 for i in response[0].split()], reverse=True)
+        return sorted([int(i) - 1 for i in response[0].split()], reverse=True)
 
     def read(self, i, attachments=False, cached=True):
         return self.__getitem__(i, attachments, cached)

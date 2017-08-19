@@ -71,7 +71,7 @@ def ngrams(string, n=3, punctuation=PUNCTUATION, continuous=False):
     g = []
     for s in s:
         #s = [None] + s + [None]
-        g.extend([tuple(s[i:i+n]) for i in range(len(s)-n+1)])
+        g.extend([tuple(s[i:i + n]) for i in range(len(s) - n + 1)])
     return g
 
 FLOODING = re.compile(r"((.)\2{2,})", re.I) # ooo, xxx, !!!, ...
@@ -83,7 +83,7 @@ def deflood(s, n=3):
     """
     if n == 0:
         return s[0:0]
-    return re.sub(r"((.)\2{%s,})" % (n-1), lambda m: m.group(1)[0] * n, s)
+    return re.sub(r"((.)\2{%s,})" % (n - 1), lambda m: m.group(1)[0] * n, s)
 
 def decamel(s, separator="_"):
     """ Returns the string with CamelCase converted to underscores, e.g.,
@@ -503,13 +503,13 @@ class Morphology(lazylist):
         if affix.endswith("-"):
             affix, cmd = affix[+0:-1], "haspref"
         if tagged:
-            r = [tagged, affix, "f"+cmd.lstrip("f"), tag, "x"]
+            r = [tagged, affix, "f" + cmd.lstrip("f"), tag, "x"]
         else:
             r = [affix, cmd.lstrip("f"), tag, "x"]
         lazylist.insert(self, i, r)
 
     def append(self, *args, **kwargs):
-        self.insert(len(self)-1, *args, **kwargs)
+        self.insert(len(self) - 1, *args, **kwargs)
 
     def extend(self, rules=[]):
         for r in rules:
@@ -577,31 +577,31 @@ class Context(lazylist):
                     continue
                 cmd, x, y = r[2], r[3], r[4] if len(r) > 4 else ""
                 cmd = cmd.lower()
-                if (cmd == "prevtag"        and x ==  t[i-1][1]) \
-                or (cmd == "nexttag"        and x ==  t[i+1][1]) \
-                or (cmd == "prev2tag"       and x ==  t[i-2][1]) \
-                or (cmd == "next2tag"       and x ==  t[i+2][1]) \
-                or (cmd == "prev1or2tag"    and x in (t[i-1][1], t[i-2][1])) \
-                or (cmd == "next1or2tag"    and x in (t[i+1][1], t[i+2][1])) \
-                or (cmd == "prev1or2or3tag" and x in (t[i-1][1], t[i-2][1], t[i-3][1])) \
-                or (cmd == "next1or2or3tag" and x in (t[i+1][1], t[i+2][1], t[i+3][1])) \
-                or (cmd == "surroundtag"    and x ==  t[i-1][1] and y == t[i+1][1]) \
-                or (cmd == "curwd"          and x ==  t[i+0][0]) \
-                or (cmd == "prevwd"         and x ==  t[i-1][0]) \
-                or (cmd == "nextwd"         and x ==  t[i+1][0]) \
-                or (cmd == "prev1or2wd"     and x in (t[i-1][0], t[i-2][0])) \
-                or (cmd == "next1or2wd"     and x in (t[i+1][0], t[i+2][0])) \
-                or (cmd == "prevwdtag"      and x ==  t[i-1][0] and y == t[i-1][1]) \
-                or (cmd == "nextwdtag"      and x ==  t[i+1][0] and y == t[i+1][1]) \
-                or (cmd == "wdprevtag"      and x ==  t[i-1][1] and y == t[i+0][0]) \
-                or (cmd == "wdnexttag"      and x ==  t[i+0][0] and y == t[i+1][1]) \
-                or (cmd == "wdand2aft"      and x ==  t[i+0][0] and y == t[i+2][0]) \
-                or (cmd == "wdand2tagbfr"   and x ==  t[i-2][1] and y == t[i+0][0]) \
-                or (cmd == "wdand2tagaft"   and x ==  t[i+0][0] and y == t[i+2][1]) \
-                or (cmd == "lbigram"        and x ==  t[i-1][0] and y == t[i+0][0]) \
-                or (cmd == "rbigram"        and x ==  t[i+0][0] and y == t[i+1][0]) \
-                or (cmd == "prevbigram"     and x ==  t[i-2][1] and y == t[i-1][1]) \
-                or (cmd == "nextbigram"     and x ==  t[i+1][1] and y == t[i+2][1]):
+                if (cmd == "prevtag"        and x ==  t[i - 1][1]) \
+                or (cmd == "nexttag"        and x ==  t[i + 1][1]) \
+                or (cmd == "prev2tag"       and x ==  t[i - 2][1]) \
+                or (cmd == "next2tag"       and x ==  t[i + 2][1]) \
+                or (cmd == "prev1or2tag"    and x in (t[i - 1][1], t[i - 2][1])) \
+                or (cmd == "next1or2tag"    and x in (t[i + 1][1], t[i + 2][1])) \
+                or (cmd == "prev1or2or3tag" and x in (t[i - 1][1], t[i - 2][1], t[i - 3][1])) \
+                or (cmd == "next1or2or3tag" and x in (t[i + 1][1], t[i + 2][1], t[i + 3][1])) \
+                or (cmd == "surroundtag"    and x ==  t[i - 1][1] and y == t[i + 1][1]) \
+                or (cmd == "curwd"          and x ==  t[i + 0][0]) \
+                or (cmd == "prevwd"         and x ==  t[i - 1][0]) \
+                or (cmd == "nextwd"         and x ==  t[i + 1][0]) \
+                or (cmd == "prev1or2wd"     and x in (t[i - 1][0], t[i - 2][0])) \
+                or (cmd == "next1or2wd"     and x in (t[i + 1][0], t[i + 2][0])) \
+                or (cmd == "prevwdtag"      and x ==  t[i - 1][0] and y == t[i - 1][1]) \
+                or (cmd == "nextwdtag"      and x ==  t[i + 1][0] and y == t[i + 1][1]) \
+                or (cmd == "wdprevtag"      and x ==  t[i - 1][1] and y == t[i + 0][0]) \
+                or (cmd == "wdnexttag"      and x ==  t[i + 0][0] and y == t[i + 1][1]) \
+                or (cmd == "wdand2aft"      and x ==  t[i + 0][0] and y == t[i + 2][0]) \
+                or (cmd == "wdand2tagbfr"   and x ==  t[i - 2][1] and y == t[i + 0][0]) \
+                or (cmd == "wdand2tagaft"   and x ==  t[i + 0][0] and y == t[i + 2][1]) \
+                or (cmd == "lbigram"        and x ==  t[i - 1][0] and y == t[i + 0][0]) \
+                or (cmd == "rbigram"        and x ==  t[i + 0][0] and y == t[i + 1][0]) \
+                or (cmd == "prevbigram"     and x ==  t[i - 2][1] and y == t[i - 1][1]) \
+                or (cmd == "nextbigram"     and x ==  t[i + 1][1] and y == t[i + 2][1]):
                     t[i] = [t[i][0], r[1]]
         return t[len(o):-len(o)]
 
@@ -610,13 +610,13 @@ class Context(lazylist):
             given constraints x and y, e.g., Context.append("TO < NN", "VB")
         """
         if " < " in tag1 and not x and not y:
-            tag1, x = tag1.split(" < "); cmd="prevtag"
+            tag1, x = tag1.split(" < "); cmd = "prevtag"
         if " > " in tag1 and not x and not y:
-            x, tag1 = tag1.split(" > "); cmd="nexttag"
+            x, tag1 = tag1.split(" > "); cmd = "nexttag"
         lazylist.insert(self, i, [tag1, tag2, cmd, x or "", y or ""])
 
     def append(self, *args, **kwargs):
-        self.insert(len(self)-1, *args, **kwargs)
+        self.insert(len(self) - 1, *args, **kwargs)
 
     def extend(self, rules=[]):
         for r in rules:
@@ -669,13 +669,13 @@ class Entities(lazydict):
             if w in self:
                 for e in self[w]:
                     # Look ahead to see if successive words match the named entity.
-                    e, tag = (e[:-1], "-"+e[-1].upper()) if e[-1] in self._cmd else (e, "")
+                    e, tag = (e[:-1], "-" + e[-1].upper()) if e[-1] in self._cmd else (e, "")
                     b = True
                     for j, e in enumerate(e):
-                        if i + j >= len(tokens) or tokens[i+j][0].lower() != e:
+                        if i + j >= len(tokens) or tokens[i + j][0].lower() != e:
                             b = False; break
                     if b:
-                        for token in tokens[i:i+j+1]:
+                        for token in tokens[i:i + j + 1]:
                             token[1] = token[1] if token[1].startswith(self.tag) else self.tag
                             token[1] += tag
                         i += j
@@ -758,7 +758,7 @@ class Parser(object):
             self.lexicon = Lexicon(path=lexicon)
         if f(frequency):
             # Word frequency.
-            self.frequency= Frequency(path=frequency)
+            self.frequency = Frequency(path=frequency)
         if f(morphology):
             # Unknown word rules based on word suffix.
             self.morphology = Morphology(path=morphology, known=self.lexicon)
@@ -1093,7 +1093,7 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
     string = re.sub(r"\s+", " ", string)
     tokens = []
     # Handle punctuation marks.
-    for t in TOKEN.findall(string+" "):
+    for t in TOKEN.findall(string + " "):
         if len(t) > 0:
             tail = []
             if not RE_MENTION.match(t):
@@ -1101,16 +1101,16 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
                   not t in replace:
                     # Split leading punctuation.
                     if t.startswith(punctuation):
-                        tokens.append(t[0]); t=t[1:]
+                        tokens.append(t[0]); t = t[1:]
             if not False:
                 while t.endswith(punctuation) and \
                   not t in replace:
                     # Split trailing punctuation.
                     if t.endswith(punctuation) and not t.endswith("."):
-                        tail.append(t[-1]); t=t[:-1]
+                        tail.append(t[-1]); t = t[:-1]
                     # Split ellipsis (...) before splitting period.
                     if t.endswith("..."):
-                        tail.append("..."); t=t[:-3].rstrip(".")
+                        tail.append("..."); t = t[:-3].rstrip(".")
                     # Split period (if not an abbreviation).
                     if t.endswith("."):
                         if t in abbreviations or \
@@ -1119,7 +1119,7 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
                           RE_ABBR3.match(t) is not None:
                             break
                         else:
-                            tail.append(t[-1]); t=t[:-1]
+                            tail.append(t[-1]); t = t[:-1]
             if t != "":
                 tokens.append(t)
             tokens.extend(reversed(tail))
@@ -1196,9 +1196,9 @@ def find_tags(tokens, lexicon={}, model=None, morphology=None, context=None, ent
     for i, (token, tag) in enumerate(tagged):
         prev, next = (None, None), (None, None)
         if i > 0:
-            prev = tagged[i-1]
+            prev = tagged[i - 1]
         if i < len(tagged) - 1:
-            next = tagged[i+1]
+            next = tagged[i + 1]
         if tag is None or token in (model is not None and model.unknown or ()):
             # Use language model (i.e., SLP).
             if model is not None:
@@ -1291,7 +1291,7 @@ def find_chunks(tagged, language="en"):
             i = m.start()
             j = tags[:i].count(SEPARATOR)
             n = m.group(0).count(SEPARATOR)
-            for k in range(j, j+n):
+            for k in range(j, j + n):
                 if len(chunked[k]) == 3:
                     continue
                 if len(chunked[k]) < 3:
@@ -1313,13 +1313,13 @@ def find_chunks(tagged, language="en"):
             # "Perhaps you" => ADVP + NP
             # "Really nice work" => NP
             # "Really, nice work" => ADVP + O + NP
-            if i < len(chunked)-1 and not chunked[i+1][1].startswith("JJ"):
-                chunked[i+0][2] = "B-ADVP"
-                chunked[i+1][2] = "B-NP"
-            if i < len(chunked)-1 and chunked[i+1][1] in ("CC", "CJ", ","):
-                chunked[i+1][2] = "O"
-            if i < len(chunked)-2 and chunked[i+1][2] == "O":
-                chunked[i+2][2] = "B-NP"
+            if i < len(chunked) - 1 and not chunked[i + 1][1].startswith("JJ"):
+                chunked[i + 0][2] = "B-ADVP"
+                chunked[i + 1][2] = "B-NP"
+            if i < len(chunked) - 1 and chunked[i + 1][1] in ("CC", "CJ", ","):
+                chunked[i + 1][2] = "O"
+            if i < len(chunked) - 2 and chunked[i + 1][2] == "O":
+                chunked[i + 2][2] = "B-NP"
     return chunked
 
 def find_prepositions(chunked):
@@ -1333,12 +1333,12 @@ def find_prepositions(chunked):
     for i, chunk in enumerate(chunked):
         if chunk[2].endswith("PP") and chunk[-1] == "O":
             # Find PP followed by other PP, NP with nouns and pronouns, VP with a gerund.
-            if i < len(chunked)-1 and \
-             (chunked[i+1][2].endswith(("NP", "PP")) or \
-              chunked[i+1][1] in ("VBG", "VBN")):
+            if i < len(chunked) - 1 and \
+             (chunked[i + 1][2].endswith(("NP", "PP")) or \
+              chunked[i + 1][1] in ("VBG", "VBN")):
                 chunk[-1] = "B-PNP"
                 pp = True
-                for ch in chunked[i+1:]:
+                for ch in chunked[i + 1:]:
                     if not (ch[2].endswith(("NP", "PP")) or ch[1] in ("VBG", "VBN")):
                         break
                     if ch[2].endswith("PP") and pp:
@@ -1368,34 +1368,34 @@ def find_relations(chunked):
         or token[2].startswith("B-") \
         or tag(token) != tag(chunks[-1][-1]):
             chunks.append([])
-        chunks[-1].append(token+["O"])
+        chunks[-1].append(token + ["O"])
     # If a VP is preceded by a NP, the NP is tagged as NP-SBJ-(id).
     # If a VP is followed by a NP, the NP is tagged as NP-OBJ-(id).
     # Chunks that are not part of a relation get an O-tag.
     id = 0
     for i, chunk in enumerate(chunks):
-        if tag(chunk[-1]) == "VP" and i > 0 and tag(chunks[i-1][-1]) == "NP":
+        if tag(chunk[-1]) == "VP" and i > 0 and tag(chunks[i - 1][-1]) == "NP":
             if chunk[-1][-1] == "O":
                 id += 1
             for token in chunk:
                 token[-1] = "VP-" + str(id)
-            for token in chunks[i-1]:
+            for token in chunks[i - 1]:
                 token[-1] += "*NP-SBJ-" + str(id)
                 token[-1] = token[-1].lstrip("O-*")
-        if tag(chunk[-1]) == "VP" and i < len(chunks)-1 and tag(chunks[i+1][-1]) == "NP":
+        if tag(chunk[-1]) == "VP" and i < len(chunks) - 1 and tag(chunks[i + 1][-1]) == "NP":
             if chunk[-1][-1] == "O":
                 id += 1
             for token in chunk:
                 token[-1] = "VP-" + str(id)
-            for token in chunks[i+1]:
+            for token in chunks[i + 1]:
                 token[-1] = "*NP-OBJ-" + str(id)
                 token[-1] = token[-1].lstrip("O-*")
     # This is more a proof-of-concept than useful in practice:
     # PP-LOC = be + in|at + the|my
     # PP-DIR = go + to|towards + the|my
     for i, chunk in enumerate(chunks):
-        if 0 < i < len(chunks)-1 and len(chunk) == 1 and chunk[-1][-1] == "O":
-            t0, t1, t2 = chunks[i-1][-1], chunks[i][0], chunks[i+1][0] # previous / current / next
+        if 0 < i < len(chunks) - 1 and len(chunk) == 1 and chunk[-1][-1] == "O":
+            t0, t1, t2 = chunks[i - 1][-1], chunks[i][0], chunks[i + 1][0] # previous / current / next
             if tag(t1) == "PP" and t2[1] in ("DT", "PR", "PRP$"):
                 if t0[0] in BE and t1[0] in ("in", "at")      : t1[-1] = "PP-LOC"
                 if t0[0] in GO and t1[0] in ("to", "towards") : t1[-1] = "PP-DIR"
@@ -1421,7 +1421,7 @@ def find_keywords(string, parser, top=10, frequency={}, ignore=("rt",), pos=("NN
     for sentence in parser.parse(s, chunks=True, lemmata=lemmata).split():
         for w in sentence: # [token, tag, chunk, preposition, lemma]
             if w[2].startswith(("B", "O")):
-                t.append([]); p=None
+                t.append([]); p = None
             if w[1].startswith(("NNP", "DT")) and p and \
                p[1].startswith("NNP") and \
                p[0][0] != "@" and \
@@ -1535,7 +1535,7 @@ def commandline(parse=Parser().parse):
     if s:
         explicit = False
         for option in [o.tokenize, o.tags, o.chunks, o.relations, o.lemmata]:
-            if option is not None: explicit=True; break
+            if option is not None: explicit = True; break
         if not explicit:
             a = {"encoding": o.encoding }
         else:
@@ -1748,10 +1748,10 @@ def tense_id(*args, **kwargs):
     # Disambiguate PARTICIPLE, IMPERFECT, PRETERITE.
     # These are often considered to be tenses but are in fact tense + aspect.
     if tense == INFINITIVE:
-        person = number = mood = aspect = None; negated=False
-    if tense in ((PRESENT, PARTICIPLE), PRESENT+PARTICIPLE, PARTICIPLE, GERUND):
+        person = number = mood = aspect = None; negated = False
+    if tense in ((PRESENT, PARTICIPLE), PRESENT + PARTICIPLE, PARTICIPLE, GERUND):
         tense, aspect = PRESENT, PROGRESSIVE
-    if tense in ((PAST, PARTICIPLE), PAST+PARTICIPLE):
+    if tense in ((PAST, PARTICIPLE), PAST + PARTICIPLE):
         tense, aspect = PAST, PROGRESSIVE
     if tense == IMPERFECT:
         tense, aspect = PAST, IMPERFECTIVE
@@ -2159,7 +2159,7 @@ class Sentiment(lazydict):
             for i in reversed(range(1, max(1, ngrams))):
                 # Known idioms ("hit the spot").
                 if index < len(words) - i:
-                    idiom = words[index:index+i+1]
+                    idiom = words[index:index + i + 1]
                     idiom = " ".join(w_pos[0] or "END-OF-NGRAM" for w_pos in idiom)
                     if idiom in self:
                         w, pos = idiom, None

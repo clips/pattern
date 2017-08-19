@@ -219,7 +219,7 @@ def regionalize(language):
         language, region = language.split("-")
         return [language.lower() + "-" + region.upper()]  # nl-nl => nl-NL
     main = lambda tag: tag in ("ar-AE", "en-US", "zh-CN") or tag[:2] == tag[3:].lower() # nl-NL
-    a = [language+"-"+r for r in regions(language.lower())]
+    a = [language + "-" + r for r in regions(language.lower())]
     a = sorted(a, key=main, reverse=True)
     return a
 

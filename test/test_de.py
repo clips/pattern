@@ -44,7 +44,7 @@ class TestInflection(unittest.TestCase):
         for tag, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-de-celex.csv")):
             if tag == "n":
                 if de.pluralize(sg) == pl:
-                    i +=1
+                    i += 1
                 n += 1
         self.assertTrue(float(i) / n > 0.69)
         print("pattern.de.pluralize()")
@@ -56,7 +56,7 @@ class TestInflection(unittest.TestCase):
         for tag, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-de-celex.csv")):
             if tag == "n":
                 if de.singularize(pl) == sg:
-                    i +=1
+                    i += 1
                 n += 1
         self.assertTrue(float(i) / n > 0.82)
         print("pattern.de.singularize()")
@@ -89,7 +89,7 @@ class TestInflection(unittest.TestCase):
         for tag, pred, attr in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-de-celex.csv")):
             if tag == "a":
                 if de.predicative(attr) == pred:
-                    i +=1
+                    i += 1
                 n += 1
         self.assertTrue(float(i) / n > 0.98)
         print("pattern.de.predicative()")

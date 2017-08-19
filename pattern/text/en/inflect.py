@@ -602,7 +602,7 @@ def singularize(word, pos=NOUN, custom={}):
     if "-" in word:
         w = word.split("-")
         if len(w) > 1 and w[1] in plural_prepositions:
-            return singularize(w[0], pos, custom)+"-"+"-".join(w[1:])
+            return singularize(w[0], pos, custom) + "-" + "-".join(w[1:])
     # dogs' => dog's
     if word.endswith("'"):
         return singularize(word[:-1]) + "'s"
@@ -614,11 +614,11 @@ def singularize(word, pos=NOUN, custom={}):
         if x.endswith(w):
             return word
     for x in singular_ie:
-        if w.endswith(x+"s"):
+        if w.endswith(x + "s"):
             return w
     for x in singular_irregular:
         if w.endswith(x):
-            return re.sub('(?i)'+x+'$', singular_irregular[x], word)
+            return re.sub('(?i)' + x + '$', singular_irregular[x], word)
     for suffix, inflection in singular_rules:
         m = suffix.search(word)
         g = m and m.groups() or []
@@ -662,16 +662,16 @@ class Verbs(_Verbs):
             return "have"
         if v.endswith("s"):
             if v.endswith("ies") and len(v) > 3 and v[-4] not in VOWELS:
-                return v[:-3]+"y" # complies => comply
+                return v[:-3] + "y" # complies => comply
             if v.endswith(("sses", "shes", "ches", "xes")):
                 return v[:-2]     # kisses => kiss
             return v[:-1]
         if v.endswith("ied") and re_vowel.search(v[:-3]) is not None:
-            return v[:-3]+"y"     # envied => envy
+            return v[:-3] + "y"     # envied => envy
         if v.endswith("ing") and re_vowel.search(v[:-3]) is not None:
-            v = v[:-3]; b=True;   # chopping => chopp
+            v = v[:-3]; b = True;   # chopping => chopp
         if v.endswith("ed") and re_vowel.search(v[:-2]) is not None:
-            v = v[:-2]; b=True;   # danced => danc
+            v = v[:-2]; b = True;   # danced => danc
         if b:
             # Doubled consonant after short vowel: chopp => chop.
             if len(v) > 3 and v[-1] == v[-2] and v[-3] in VOWELS and v[-4] not in VOWELS and not v.endswith("ss"):
@@ -680,23 +680,23 @@ class Verbs(_Verbs):
                 return v[:-1]     # panick => panic
             # Guess common cases where the base form ends in -e:
             if v.endswith(("v", "z", "c", "i")):
-                return v+"e"      # danc => dance
+                return v + "e"      # danc => dance
             if v.endswith("g") and v.endswith(("dg", "lg", "ng", "rg")):
-                return v+"e"      # indulg => indulge
+                return v + "e"      # indulg => indulge
             if v.endswith(("b", "d", "g", "k", "l", "m", "r", "s", "t")) \
               and len(v) > 2 and v[-2] in VOWELS and not v[-3] in VOWELS \
               and not v.endswith("er"):
-                return v+"e"      # generat => generate
+                return v + "e"      # generat => generate
             if v.endswith("n") and v.endswith(("an", "in")) and not v.endswith(("ain", "oin", "oan")):
-                return v+"e"      # imagin => imagine
+                return v + "e"      # imagin => imagine
             if v.endswith("l") and len(v) > 1 and v[-2] not in VOWELS:
-                return v+"e"      # squabbl => squabble
+                return v + "e"      # squabbl => squabble
             if v.endswith("f") and len(v) > 2 and v[-2] in VOWELS and v[-3] not in VOWELS:
-                return v+"e"      # chaf => chafed
+                return v + "e"      # chaf => chafed
             if v.endswith("e"):
-                return v+"e"      # decre => decree
+                return v + "e"      # decre => decree
             if v.endswith(("th", "ang", "un", "cr", "vr", "rs", "ps", "tr")):
-                return v+"e"
+                return v + "e"
         return v
 
     def find_lexeme(self, verb):
@@ -705,28 +705,28 @@ class Verbs(_Verbs):
         v = verb.lower()
         if len(v) > 1 and v.endswith("e") and v[-2] not in VOWELS:
             # Verbs ending in a consonant followed by "e": dance, save, devote, evolve.
-            return [v, v, v, v+"s", v, v[:-1]+"ing"] + [v+"d"]*6
+            return [v, v, v, v + "s", v, v[:-1] + "ing"] + [v + "d"] * 6
         if len(v) > 1 and v.endswith("y") and v[-2] not in VOWELS:
             # Verbs ending in a consonant followed by "y": comply, copy, magnify.
-            return [v, v, v, v[:-1]+"ies", v, v+"ing"] + [v[:-1]+"ied"]*6
+            return [v, v, v, v[:-1] + "ies", v, v + "ing"] + [v[:-1] + "ied"] * 6
         if v.endswith(("ss", "sh", "ch", "x")):
             # Verbs ending in sibilants: kiss, bless, box, polish, preach.
-            return [v, v, v, v+"es", v, v+"ing"] + [v+"ed"]*6
+            return [v, v, v, v + "es", v, v + "ing"] + [v + "ed"] * 6
         if v.endswith("ic"):
             # Verbs ending in -ic: panic, mimic.
-            return [v, v, v, v+"es", v, v+"king"] + [v+"ked"]*6
+            return [v, v, v, v + "es", v, v + "king"] + [v + "ked"] * 6
         if len(v) > 1 and v[-1] not in VOWELS and v[-2] not in VOWELS:
             # Verbs ending in a consonant cluster: delight, clamp.
-            return [v, v, v, v+"s", v, v+"ing"] + [v+"ed"]*6
+            return [v, v, v, v + "s", v, v + "ing"] + [v + "ed"] * 6
         if (len(v) > 1 and v.endswith(("y", "w")) and v[-2] in VOWELS) \
         or (len(v) > 2 and v[-1] not in VOWELS and v[-2] in VOWELS and v[-3] in VOWELS) \
         or (len(v) > 3 and v[-1] not in VOWELS and v[-3] in VOWELS and v[-4] in VOWELS):
             # Verbs ending in a long vowel or diphthong followed by a consonant: paint, devour, play.
-            return [v, v, v, v+"s", v, v+"ing"] + [v+"ed"]*6
+            return [v, v, v, v + "s", v, v + "ing"] + [v + "ed"] * 6
         if len(v) > 2 and v[-1] not in VOWELS and v[-2] in VOWELS and v[-3] not in VOWELS:
             # Verbs ending in a short vowel followed by a consonant: chat, chop, or compel.
-            return [v, v, v, v+"s", v, v+v[-1]+"ing"] + [v+v[-1]+"ed"]*6
-        return [v, v, v, v+"s", v, v+"ing"] + [v+"ed"]*6
+            return [v, v, v, v + "s", v, v + v[-1] + "ing"] + [v + v[-1] + "ed"] * 6
+        return [v, v, v, v + "s", v, v + "ing"] + [v + "ed"] * 6
 
 verbs = Verbs()
 
@@ -798,7 +798,7 @@ def grade(adjective, suffix=COMPARATIVE):
         pass
     else:
         # With three or more syllables: more generous, more important.
-        return "%s %s" % (suffix==COMPARATIVE and "more" or "most", adjective)
+        return "%s %s" % (suffix == COMPARATIVE and "more" or "most", adjective)
     return adjective + suffix
 
 def comparative(adjective):

@@ -14,9 +14,9 @@ from builtins import object, range
 from io import open
 
 try:
-    import hashlib; md5=hashlib.md5
+    import hashlib; md5 = hashlib.md5
 except:
-    import md5; md5=md5.new
+    import md5; md5 = md5.new
 
 from pattern.helpers import encode_string, decode_string
 

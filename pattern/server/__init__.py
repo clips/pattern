@@ -24,7 +24,7 @@ import os
 import sys
 import pwd
 import grp
-import time; _time=time
+import time; _time = time
 import atexit
 import urllib
 import hashlib
@@ -227,7 +227,7 @@ class Database(object):
             # Database(schema="create table if not exists" `...`)
             # initializes the database table and index structure.
             for q in kwargs["schema"].split(";"):
-                self.execute(q+";", commit=False)
+                self.execute(q + ";", commit=False)
             self.commit()
         if k("owner"):
             # Database(owner="www-data")
@@ -459,7 +459,7 @@ def verify_password(s1, s2):
 _RATELIMIT_CACHE = {} # RAM cache of request counts.
 _RATELIMIT_LOCK  = threading.RLock()
 
-SECOND, MINUTE, HOUR, DAY = 1., 60., 60*60., 60*60*24.
+SECOND, MINUTE, HOUR, DAY = 1., 60., 60 * 60., 60 * 60 * 24.
 
 class RateLimitError(Exception):
     pass
@@ -560,7 +560,7 @@ class RateLimit(Database):
                 self._n -= 1
 
     def __setitem__(self, k, v): # (key, path), (limit, time)
-        return self.set(*(k+v))
+        return self.set(*(k + v))
 
     def __getitem__(self, k):    # (key, path)
         return self.get(*k)
@@ -592,7 +592,7 @@ class RateLimit(Database):
                 r = self.cache.get((key, "/"))
             # Unknown key: apply default limit (if IP).
             if r is None and ip is not None and limit is not None and time is not None:
-                r = self.cache.setdefault((ip, p), (0, limit, time, t)); key=ip
+                r = self.cache.setdefault((ip, p), (0, limit, time, t)); key = ip
             # Unknown key.
             if r is None:
                 raise RateLimitForbidden
@@ -655,16 +655,16 @@ class Router(dict):
             path = path.strip("/").split("/") # ["api", "1", "en"]
         n = len(path)
         for i in range(n + 1):
-            p0 = "/" + "/".join(path[:n-i])
+            p0 = "/" + "/".join(path[:n - i])
             p0 = p0.lower()                   # "/api/1/en", "/api/1", "/api", ...
-            p1 = path[n-i:]                   # [], ["en"], ["1", "en"], ...
+            p1 = path[n - i:]                   # [], ["en"], ["1", "en"], ...
             if p0 in self:
                 (handler, (args, kwargs)) = self[p0]
                 i = len(p1)
                 j = len(args) if args is not True else i
                 # Handler takes 1 argument, 0 given (pass None for convenience).
                 if i == 0 and j == 1:
-                    p1 = (None,); i=j
+                    p1 = (None,); i = j
                 # Handler does not take path.
                 if i != j:
                     continue
@@ -1502,7 +1502,7 @@ class Template(object):
             if i != j:
                 a.append(("<str>", string[i:j], ""))
             # $$escaped
-            if s.startswith("$") and j > 0 and string[j-1] == "$":
+            if s.startswith("$") and j > 0 and string[j - 1] == "$":
                 a.append(("<str>", s, ""))
             # ${var}iable
             elif s.startswith("${") and s.endswith("}"):
@@ -1518,12 +1518,12 @@ class Template(object):
                 a.append(("<for>", (m.group(4), m.group(5), self._compile(m.group(6).lstrip("\n"))), w))
             # <%= var + 1 %>
             elif s.startswith("<%=") and s.endswith("%>"):
-                a.append(("<eval>", compile("\n"*n + self._escape(s[3:-2]), "<string>", "eval"), w))
+                a.append(("<eval>", compile("\n" * n + self._escape(s[3:-2]), "<string>", "eval"), w))
             # <% print(var) %>
             elif s.startswith("<%") and s.endswith("%>"):
-                a.append(("<exec>", compile("\n"*n + self._escape(s[2:-2]), "<string>", "exec"), w))
+                a.append(("<exec>", compile("\n" * n + self._escape(s[2:-2]), "<string>", "exec"), w))
             else:
-                raise SyntaxError("template has no end tag for '%s' (line %s)" % (s, n+1))
+                raise SyntaxError("template has no end tag for '%s' (line %s)" % (s, n + 1))
             i = m.end(1)
         a.append(("<str>", string[i:], ""))
         return a

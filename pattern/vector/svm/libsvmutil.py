@@ -76,17 +76,17 @@ def evaluations(ty, pv):
 	for v, y in zip(pv, ty):
 		if y == v:
 			total_correct += 1
-		total_error += (v-y)*(v-y)
+		total_error += (v - y) * (v - y)
 		sumv += v
 		sumy += y
-		sumvv += v*v
-		sumyy += y*y
-		sumvy += v*y
+		sumvv += v * v
+		sumyy += y * y
+		sumvy += v * y
 	l = len(ty)
-	ACC = 100.0*total_correct/l
-	MSE = total_error/l
+	ACC = 100.0 * total_correct / l
+	MSE = total_error / l
 	try:
-		SCC = ((l*sumvy-sumv*sumy)*(l*sumvy-sumv*sumy))/((l*sumvv-sumv*sumv)*(l*sumyy-sumy*sumy))
+		SCC = ((l * sumvy - sumv * sumy) * (l * sumvy - sumv * sumy)) / ((l * sumvv - sumv * sumv) * (l * sumyy - sumy * sumy))
 	except:
 		SCC = float('nan')
 	return (ACC, MSE, SCC)
@@ -215,7 +215,7 @@ def svm_predict(y, x, m, options=""):
 			info = print_null
 		else:
 			raise ValueError("Wrong options")
-		i+=1
+		i += 1
 
 	svm_type = m.get_svm_type()
 	is_prob_model = m.is_probability_model()
@@ -245,7 +245,7 @@ def svm_predict(y, x, m, options=""):
 		if svm_type in (ONE_CLASS, EPSILON_SVR, NU_SVC):
 			nr_classifier = 1
 		else:
-			nr_classifier = nr_class*(nr_class-1)//2
+			nr_classifier = nr_class * (nr_class - 1) // 2
 		dec_values = (c_double * nr_classifier)()
 		for xi in x:
 			xi, idx = gen_svm_nodearray(xi, isKernel=(m.param.kernel_type == PRECOMPUTED))
@@ -263,6 +263,6 @@ def svm_predict(y, x, m, options=""):
 		info("Mean squared error = %g (regression)" % MSE)
 		info("Squared correlation coefficient = %g (regression)" % SCC)
 	else:
-		info("Accuracy = %g%% (%d/%d) (classification)" % (ACC, int(l*ACC/100), l))
+		info("Accuracy = %g%% (%d/%d) (classification)" % (ACC, int(l * ACC / 100), l))
 
 	return pred_labels, (ACC, MSE, SCC), pred_values

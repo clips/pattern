@@ -45,10 +45,10 @@ def svm_read_problem(data_file_name, return_scipy=False):
 				ind, val = e.split(":")
 				val = float(val)
 				if val != 0:
-					col_idx += [int(ind)-1]
+					col_idx += [int(ind) - 1]
 					prob_x += [val]
 					nz += 1
-			row_ptr += [row_ptr[-1]+nz]
+			row_ptr += [row_ptr[-1] + nz]
 		else:
 			xi = {}
 			for e in features.split():
@@ -97,17 +97,17 @@ def evaluations_scipy(ty, pv):
 		raise TypeError("type of ty and pv must be ndarray")
 	if len(ty) != len(pv):
 		raise ValueError("len(ty) must be equal to len(pv)")
-	ACC = 100.0*(ty == pv).mean()
+	ACC = 100.0 * (ty == pv).mean()
 	MSE = ((ty - pv)**2).mean()
 	l = len(ty)
 	sumv = pv.sum()
 	sumy = ty.sum()
-	sumvy = (pv*ty).sum()
-	sumvv = (pv*pv).sum()
-	sumyy = (ty*ty).sum()
+	sumvy = (pv * ty).sum()
+	sumvv = (pv * pv).sum()
+	sumyy = (ty * ty).sum()
 	with scipy.errstate(all = 'raise'):
 		try:
-			SCC = ((l*sumvy-sumv*sumy)*(l*sumvy-sumv*sumy))/((l*sumvv-sumv*sumv)*(l*sumyy-sumy*sumy))
+			SCC = ((l * sumvy - sumv * sumy) * (l * sumvy - sumv * sumy)) / ((l * sumvv - sumv * sumv) * (l * sumyy - sumy * sumy))
 		except:
 			SCC = float('nan')
 	return (float(ACC), float(MSE), float(SCC))
@@ -130,17 +130,17 @@ def evaluations(ty, pv, useScipy = True):
 	for v, y in zip(pv, ty):
 		if y == v:
 			total_correct += 1
-		total_error += (v-y)*(v-y)
+		total_error += (v - y) * (v - y)
 		sumv += v
 		sumy += y
-		sumvv += v*v
-		sumyy += y*y
-		sumvy += v*y
+		sumvv += v * v
+		sumyy += y * y
+		sumvy += v * y
 	l = len(ty)
-	ACC = 100.0*total_correct/l
-	MSE = total_error/l
+	ACC = 100.0 * total_correct / l
+	MSE = total_error / l
 	try:
-		SCC = ((l*sumvy-sumv*sumy)*(l*sumvy-sumv*sumy))/((l*sumvv-sumv*sumv)*(l*sumyy-sumy*sumy))
+		SCC = ((l * sumvy - sumv * sumy) * (l * sumvy - sumv * sumy)) / ((l * sumvv - sumv * sumv) * (l * sumyy - sumy * sumy))
 	except:
 		SCC = float('nan')
 	return (float(ACC), float(MSE), float(SCC))
@@ -232,7 +232,7 @@ def train(arg1, arg2=None, arg3=None):
 		else:
 			start_C = -1.0
 		liblinear.find_parameter_C(prob, param, nr_fold, start_C, max_C, best_C, best_rate)
-		print("Best C = %lf  CV accuracy = %g%%\n"% (best_C.value, 100.0*best_rate.value))
+		print("Best C = %lf  CV accuracy = %g%%\n" % (best_C.value, 100.0 * best_rate.value))
 		return best_C.value,best_rate.value
 
 
@@ -310,7 +310,7 @@ def predict(y, x, m, options=""):
 			info = print_null
 		else:
 			raise ValueError("Wrong options")
-		i+=1
+		i += 1
 
 	solver_type = m.param.solver_type
 	nr_class = m.get_nr_class()
@@ -318,7 +318,7 @@ def predict(y, x, m, options=""):
 	is_prob_model = m.is_probability_model()
 	bias = m.bias
 	if bias >= 0:
-		biasterm = feature_node(nr_feature+1, bias)
+		biasterm = feature_node(nr_feature + 1, bias)
 	else:
 		biasterm = feature_node(-1, bias)
 	pred_labels = []
@@ -335,7 +335,7 @@ def predict(y, x, m, options=""):
 		prob_estimates = (c_double * nr_class)()
 		for i in range(nr_instance):
 			if scipy and isinstance(x, sparse.spmatrix):
-				indslice = slice(x.indptr[i], x.indptr[i+1])
+				indslice = slice(x.indptr[i], x.indptr[i + 1])
 				xi, idx = gen_feature_nodearray((x.indices[indslice], x.data[indslice]), feature_max=nr_feature)
 			else:
 				xi, idx = gen_feature_nodearray(x[i], feature_max=nr_feature)
@@ -352,7 +352,7 @@ def predict(y, x, m, options=""):
 		dec_values = (c_double * nr_classifier)()
 		for i in range(nr_instance):
 			if scipy and isinstance(x, sparse.spmatrix):
-				indslice = slice(x.indptr[i], x.indptr[i+1])
+				indslice = slice(x.indptr[i], x.indptr[i + 1])
 				xi, idx = gen_feature_nodearray((x.indices[indslice], x.data[indslice]), feature_max=nr_feature)
 			else:
 				xi, idx = gen_feature_nodearray(x[i], feature_max=nr_feature)
@@ -370,6 +370,6 @@ def predict(y, x, m, options=""):
 		info("Mean squared error = %g (regression)" % MSE)
 		info("Squared correlation coefficient = %g (regression)" % SCC)
 	else:
-		info("Accuracy = %g%% (%d/%d) (classification)" % (ACC, int(round(nr_instance*ACC/100)), nr_instance))
+		info("Accuracy = %g%% (%d/%d) (classification)" % (ACC, int(round(nr_instance * ACC / 100)), nr_instance))
 
 	return pred_labels, (ACC, MSE, SCC), pred_values

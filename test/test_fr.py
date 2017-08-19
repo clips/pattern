@@ -36,7 +36,7 @@ class TestInflection(unittest.TestCase):
         for pred, attr, tag in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-fr-lexique.csv")):
             if tag == "a":
                 if fr.predicative(attr) == pred:
-                    i +=1
+                    i += 1
                 n += 1
         self.assertTrue(float(i) / n > 0.95)
         print("pattern.fr.predicative()")

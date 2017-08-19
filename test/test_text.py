@@ -196,7 +196,7 @@ class TestParser(unittest.TestCase):
         p = text.Parser()
         v1 = p.find_tags(["Schrödinger", "cat", "1.0"], lexicon={}, default=("NN?", "NNP?", "CD?"))
         v2 = p.find_tags(["Schrödinger", "cat", "1.0"], lexicon={"1.0": "CD?"})
-        v3 = p.find_tags(["Schrödinger", "cat", "1.0"], map=lambda token, tag: (token, tag+"!"))
+        v3 = p.find_tags(["Schrödinger", "cat", "1.0"], map=lambda token, tag: (token, tag + "!"))
         v4 = p.find_tags(["observer", "observable"], language="fr")
         v5 = p.find_tags(["observer", "observable"], language="en")
         self.assertEqual(v1, [["Schr\xf6dinger", "NNP?"], ["cat", "NN?"], ["1.0", "CD?"]])

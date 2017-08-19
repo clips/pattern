@@ -39,7 +39,7 @@ class TestUtilityFunctions(unittest.TestCase):
         self.assertEqual(search.unique([1,1,2,2]), [1,2])
 
     def test_find(self):
-        self.assertEqual(search.find(lambda v: v>2, [1,2,3,4,5]), 3)
+        self.assertEqual(search.find(lambda v: v > 2, [1,2,3,4,5]), 3)
 
     def test_product(self):
         # Assert combinations of list items.
@@ -125,7 +125,7 @@ class TestTaxonomy(unittest.TestCase):
     def test_classifier(self):
         # Assert taxonomy classifier + keyword arguments.
         c1 = search.Classifier(parents=lambda word, chunk=None: word.endswith("ness") and ["quality"] or [])
-        c2 = search.Classifier(parents=lambda word, chunk=None: chunk=="VP" and ["action"] or [])
+        c2 = search.Classifier(parents=lambda word, chunk=None: chunk == "VP" and ["action"] or [])
         t = search.Taxonomy()
         t.classifiers.append(c1)
         t.classifiers.append(c2)

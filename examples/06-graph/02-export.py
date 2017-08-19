@@ -17,7 +17,7 @@ from random        import choice, random
 g = Graph()
 # Random nodes.
 for i in range(50):
-    g.add_node(id=str(i+1),
+    g.add_node(id=str(i + 1),
         radius = 5,
         stroke = (0,0,0,1),
           text = (0,0,0,1))

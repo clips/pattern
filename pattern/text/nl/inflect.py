@@ -329,9 +329,9 @@ class Verbs(_Verbs):
                 p = p[:-len(suffix)] + irregular; break
         # Past participle: ge-:
         pp = re.sub("tt$", "t", "ge" + b + dt)
-        pp = pp.startswith(("geop", "gein", "geaf")) and pp[2:4]+"ge"+pp[4:] or pp # geopstart => opgestart
+        pp = pp.startswith(("geop", "gein", "geaf")) and pp[2:4] + "ge" + pp[4:] or pp # geopstart => opgestart
         pp = pp.startswith(("gever", "gebe", "gege")) and pp[2:] or pp
-        return [v, b, sg, sg, v, b0+"end", p, p, p, b+dt+"en", p, pp]
+        return [v, b, sg, sg, v, b0 + "end", p, p, p, b + dt + "en", p, pp]
 
 verbs = Verbs()
 

@@ -191,7 +191,7 @@ class AsynchronousRequest(object):
         self._error    = None # The exception (if any) raised by the function.
         self._time     = time.time()
         self._function = function
-        self._thread   = threading.Thread(target=self._fetch, args=(function,)+args, kwargs=kwargs)
+        self._thread   = threading.Thread(target=self._fetch, args=(function,) + args, kwargs=kwargs)
         self._thread.start()
 
     def _fetch(self, function, *args, **kwargs):
@@ -391,7 +391,7 @@ class URL(object):
         # Split the username and password from the domain.
         if "@" in P[DOMAIN]:
             P[USERNAME], \
-            P[PASSWORD] = (p[1].split("@")[0].split(":")+[""])[:2]
+            P[PASSWORD] = (p[1].split("@")[0].split(":") + [""])[:2]
             P[DOMAIN]   =  p[1].split("@")[1]
         # Split the port number from the domain.
         if ":" in P[DOMAIN]:
@@ -541,7 +541,7 @@ class URL(object):
         if cached:
             cache[id] = data
         if throttle:
-            time.sleep(max(throttle-(time.time()-t), 0))
+            time.sleep(max(throttle - (time.time() - t), 0))
         return data
 
     def read(self, *args, **kwargs):
@@ -772,7 +772,7 @@ SELF_CLOSING = ["br", "hr", "img"]
 # Block-level elements are followed by linebreaks,
 # list items are preceded by an asterisk ("*").
 LIST_ITEM = "*"
-blocks = dict.fromkeys(BLOCK+["br", "tr", "td"], ("", "\n\n"))
+blocks = dict.fromkeys(BLOCK + ["br", "tr", "td"], ("", "\n\n"))
 blocks.update({
     "li": ("%s " % LIST_ITEM, "\n"),
    "img": ("", ""),
@@ -825,7 +825,7 @@ class HTMLTagstripper(HTMLParser):
             # including attributes defined in the HTMLTagStripper._exclude dict.
             a = len(self._exclude[tag]) > 0 and attributes or []
             a = ["%s=\"%s\"" % (k,v) for k, v in a if k in self._exclude[tag]]
-            a = (" "+" ".join(a)).rstrip()
+            a = (" " + " ".join(a)).rstrip()
             self._data.append("<%s%s>" % (tag, a))
         if tag in self._replace:
             self._data.append(self._replace[tag][0])
@@ -833,7 +833,7 @@ class HTMLTagstripper(HTMLParser):
             self._data.append(self._replace[tag][1])
 
     def handle_endtag(self, tag):
-        if tag in self._exclude and self._data and self._data[-1].startswith("<"+tag):
+        if tag in self._exclude and self._data and self._data[-1].startswith("<" + tag):
             # Never keep empty elements (e.g. <a></a>).
             self._data.pop(-1); return
         if tag in self._exclude:
@@ -867,16 +867,16 @@ def strip_element(string, tag, attributes=""):
         #i = s.find("<%s%s" % (t, a), i)
         m = re.search(r"<%s[^\>]*?%s" % (t, a), s[i:])
         i = i + m.start() if m else -1
-        j = s.find("</%s>" % t, i+1)
+        j = s.find("</%s>" % t, i + 1)
         opened, closed = s[i:j].count("<%s" % t), 1
         while opened > closed and j >= 0:
-            k = s.find("</%s>" % t, j+1)
+            k = s.find("</%s>" % t, j + 1)
             opened += s[j:k].count("<%s" % t)
             closed += 1
             j = k
         if i < 0: return string
         if j < 0: return string[:i]
-        string = string[:i] + string[j+len(t)+3:]; s=string.lower()
+        string = string[:i] + string[j + len(t) + 3:]; s = string.lower()
     return string
 
 def strip_between(a, b, string):
@@ -966,7 +966,7 @@ def collapse_linebreaks(string, threshold=1):
     n = "\n" * threshold
     p = [s.rstrip() for s in string.splitlines()]
     string = "\n".join(p)
-    string = re.sub(n+r"+", n, string)
+    string = re.sub(n + r"+", n, string)
     return string
 
 def plaintext(html, keep=[], replace=blocks, linebreaks=2, indentation=False):
@@ -1160,7 +1160,7 @@ class Google(SearchEngine):
               "key": self.license or GOOGLE_LICENSE,
                "cx": GOOGLE_CUSTOM_SEARCH_ENGINE,
                 "q": query,
-            "start": 1 + (start-1) * count,
+            "start": 1 + (start - 1) * count,
               "num": min(count, 10),
               "alt": "json"
         })
@@ -1283,8 +1283,8 @@ class Yahoo(SearchEngine):
         # 1) Create request URL.
         url = URL(url, method=GET, query={
                  "q": query.replace(" ", "+"),
-             "start": 1 + (start-1) * count,
-             "count": min(count, type==IMAGE and 35 or 50),
+             "start": 1 + (start - 1) * count,
+             "count": min(count, type == IMAGE and 35 or 50),
             "format": "json"
         })
         # 2) Restrict language.
@@ -1356,8 +1356,8 @@ class Bing(SearchEngine):
         url = URL(BING + "Composite", method=GET, query={
                "Sources": "'" + src.lower() + "'",
                  "Query": "'" + query + "'",
-                 "$skip": 1 + (start-1) * count,
-                  "$top": min(count, type==NEWS and 15 or 50),
+                 "$skip": 1 + (start - 1) * count,
+                  "$top": min(count, type == NEWS and 15 or 50),
                "$format": "json",
         })
         # 2) Restrict image size.
@@ -1388,7 +1388,7 @@ class Bing(SearchEngine):
         data = data.get("d", {})
         data = data.get("results", [{}])[0]
         results = Results(BING, query, type)
-        results.total = int(data.get(src+"Total") or 0)
+        results.total = int(data.get(src + "Total") or 0)
         for x in data.get(src, []):
             r = Result(url=None)
             r.url      = self.format(x.get("MediaUrl", x.get("Url")))
@@ -1543,7 +1543,7 @@ class Faroo(SearchEngine):
         # 1) Create request URL.
         url = URL(FAROO, method=GET, query={
                  "q" : query.replace(" ", "+"),
-             "start" : 1 + (start-1) * count,
+             "start" : 1 + (start - 1) * count,
             "length" : count,
                "key" : self.license or FAROO_LICENSE,
                  "f" : "json"
@@ -1628,7 +1628,7 @@ class Twitter(SearchEngine):
             if start == 1:
                 self._pagination = {}
             if start <= 10000:
-                id = (query, kwargs.get("geo"), kwargs.get("date"), int(start)-1, count)
+                id = (query, kwargs.get("geo"), kwargs.get("date"), int(start) - 1, count)
                 id = self._pagination.get(id, "")
             else:
                 id = int(start) - 1
@@ -1851,9 +1851,9 @@ MEDIAWIKI = "http://{SUBDOMAIN}.{DOMAIN}{API}"
 # Pattern for meta links (e.g. Special:RecentChanges).
 # http://en.wikipedia.org/wiki/Main_namespace
 MEDIAWIKI_NAMESPACE  = ["Main", "User", "Wikipedia", "File", "MediaWiki", "Template", "Help", "Category", "Portal", "Book"]
-MEDIAWIKI_NAMESPACE += [s+" talk" for s in MEDIAWIKI_NAMESPACE] + ["Talk", "Special", "Media"]
+MEDIAWIKI_NAMESPACE += [s + " talk" for s in MEDIAWIKI_NAMESPACE] + ["Talk", "Special", "Media"]
 MEDIAWIKI_NAMESPACE += ["WP", "WT", "MOS", "C", "CAT", "Cat", "P", "T", "H", "MP", "MoS", "Mos"]
-_mediawiki_namespace = re.compile(r"^("+"|".join(MEDIAWIKI_NAMESPACE)+"):", re.I)
+_mediawiki_namespace = re.compile(r"^(" + "|".join(MEDIAWIKI_NAMESPACE) + "):", re.I)
 
 # Pattern to identify disambiguation pages.
 MEDIAWIKI_DISAMBIGUATION = "<a href=\"/wiki/Help:Disambiguation\" title=\"Help:Disambiguation\">disambiguation</a> page"
@@ -2206,7 +2206,7 @@ class MediaWikiSection(object):
                     # 3) For <th> in the first row, update MediaWikiTable.headers.
                     for i, row in enumerate(f(r"<tr", "</tr>", s)):
                         r1 = f(r"<t[d|h]", r"</t[d|h]>", row)
-                        r1 = (((f(r'colspan="', r'"', v)+[1])[0], v[v.find(">")+1:]) for v in r1)
+                        r1 = (((f(r'colspan="', r'"', v) + [1])[0], v[v.find(">") + 1:]) for v in r1)
                         r1 = ((int(n), v) for n, v in r1)
                         r2 = []; [[r2.append(p(v)) for j in range(n)] for n, v in r1]
                         if i == 0 and "</th>" in row:
@@ -2514,8 +2514,8 @@ class DBPedia(SearchEngine):
         url.query = {
             "format": "json",
              "query": "%s OFFSET %s LIMIT %s" % (query,
-                        (start-1) * min(count, 1000),
-                        (start-0) * min(count, 1000)
+                        (start - 1) * min(count, 1000),
+                        (start - 0) * min(count, 1000)
             )
         }
         # 2) Parse JSON response.
@@ -2570,10 +2570,10 @@ class Flickr(SearchEngine):
         """
         if type not in (SEARCH, IMAGE):
             raise SearchEngineTypeError
-        if not query or count < 1 or start < 1 or start > 500/count:
+        if not query or count < 1 or start < 1 or start > 500 / count:
             return Results(FLICKR, query, IMAGE)
         # 1) Construct request URL.
-        url = FLICKR+"?"
+        url = FLICKR + "?"
         url = URL(url, method=GET, query={
            "api_key": self.license or "",
             "method": "flickr.photos.search",
@@ -2627,7 +2627,7 @@ class FlickrResult(Result):
                 return x.getAttribute("source")
             if size == "Original":
                 url = x.getAttribute("source")
-                url = url[:-len(extension(url))-2] + "_o" + extension(url)
+                url = url[:-len(extension(url)) - 2] + "_o" + extension(url)
                 return u(url)
 
 #images = Flickr().search("kitten", count=10, size=SMALL)
@@ -2713,15 +2713,15 @@ class Facebook(SearchEngine):
                          "q": query,
                       "type": "post",
               "access_token": self.license,
-                    "offset": (start-1) * min(count, max),
-                     "limit": (start-0) * min(count, max)
+                    "offset": (start - 1) * min(count, max),
+                     "limit": (start - 0) * min(count, max)
             })
         if type in (NEWS, FEED, COMMENTS, LIKES, FRIENDS):
             url = FACEBOOK + (u(query) or "me").replace(FACEBOOK, "") + "/" + type.replace("news", "feed")
             url = URL(url, method=GET, query={
               "access_token": self.license,
-                    "offset": (start-1) * min(count, max),
-                     "limit": (start-0) * min(count, max),
+                    "offset": (start - 1) * min(count, max),
+                     "limit": (start - 0) * min(count, max),
             })
         if type in (SEARCH, NEWS, FEED):
             url.query["fields"] = ",".join((
@@ -2822,7 +2822,7 @@ class ProductWiki(SearchEngine):
         if not query or start < 1 or count < 1:
             return Results(PRODUCTWIKI, query, type)
         # 1) Construct request URL.
-        url = PRODUCTWIKI+"?"
+        url = PRODUCTWIKI + "?"
         url = URL(url, method=GET, query={
                "key": self.license or "",
                  "q": query,
@@ -2995,7 +2995,7 @@ def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, prefix
         r = service.search(q, type=t, count=1, **kwargs)
         R.append(r)
     s = float(sum([r.total or 1 for r in R])) or 1.0
-    R = [((r.total or 1)/s, r.query) for r in R]
+    R = [((r.total or 1) / s, r.query) for r in R]
     R = sorted(R, reverse=kwargs.pop("reverse", True))
     return R
 
@@ -3183,7 +3183,7 @@ class Element(Node):
     def get_element_by_id(self, v):
         """ Returns the first nested Element with the given id attribute value.
         """
-        return ([Element(x) for x in self._p.find_all(id=v, limit=1) or []]+[None])[0]
+        return ([Element(x) for x in self._p.find_all(id=v, limit=1) or []] + [None])[0]
 
     by_id = getElementById = get_element_by_id
 

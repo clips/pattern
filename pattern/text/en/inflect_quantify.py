@@ -53,7 +53,7 @@ NUMERALS_VERBOSE = {
     "score" : (20, 0.0)
 }
 
-ORDER  = ["hundred", "thousand"] + [m+"illion" for m in ("m", "b", "tr",
+ORDER  = ["hundred", "thousand"] + [m + "illion" for m in ("m", "b", "tr",
     "quadr",
     "quint",
     "sext",
@@ -124,7 +124,7 @@ def number(s):
         f = " ".join(s[1:])      # zero point zero twelve => zero twelve
         f, z = zshift(f)              # zero twelve => (1, "twelve")
         f = float(number(f))          # "twelve" => 12.0
-        f /= 10**(len(str(int(f)))+z) # 10**(len("12")+1) = 1000; 12.0 / 1000 => 0.012
+        f /= 10**(len(str(int(f))) + z) # 10**(len("12")+1) = 1000; 12.0 / 1000 => 0.012
     else:
         f = 0
     i = n = 0
@@ -142,7 +142,7 @@ def number(s):
             # and we start a new subtotal. An exception to this is when we
             # encouter two following thousands (e.g. two million vigintillion is one subtotal).
             i *= O[x]
-            if j < len(s)-1 and s[j+1] in O:
+            if j < len(s) - 1 and s[j + 1] in O:
                 continue
             if O[x] > 100:
                 n += i
@@ -186,8 +186,8 @@ def numerals(n, round=2):
         return "%s %s" % (MINUS, numerals(abs(n)))
     # Split the number into integral and fractional part.
     # Converting the integral part to a long ensures a better accuracy during the recursion.
-    i = int(n//1)
-    f = n-i
+    i = int(n // 1)
+    f = n - i
     # The remainder, which we will stringify in recursion.
     r = 0
     if i in NUMERALS_INVERSE: # 11 => eleven
@@ -195,11 +195,11 @@ def numerals(n, round=2):
         s = NUMERALS_INVERSE[i]
     elif i < 100:
         # Map tens + digits: 75 => 70+5 => "seventy-five".
-        s = numerals((i//10)*10) + "-" + numerals(i%10)
+        s = numerals((i // 10) * 10) + "-" + numerals(i % 10)
     elif i < 1000:
         # Map hundreds: 500 => 5*100 => "five hundred".
         # Store the remainders (tens + digits).
-        s = numerals(i//100) + " " + ORDER[0]
+        s = numerals(i // 100) + " " + ORDER[0]
         r = i % 100
     else:
         # Map thousands by extracting the order (thousand/million/billion/...).
@@ -207,12 +207,12 @@ def numerals(n, round=2):
         s = ""
         o, base = 1, 1000
         while i > base:
-            o+=1; base*=1000
-        while o > len(ORDER)-1:
-            s += " "+ORDER[-1] # This occurs for consecutive thousands: million vigintillion.
-            o -= len(ORDER)-1
-        s = "%s %s%s" % (numerals(i//int(base/1000)), (o>1 and ORDER[o-1] or ""), s)
-        r = i % (base/1000)
+            o += 1; base *= 1000
+        while o > len(ORDER) - 1:
+            s += " " + ORDER[-1] # This occurs for consecutive thousands: million vigintillion.
+            o -= len(ORDER) - 1
+        s = "%s %s%s" % (numerals(i // int(base / 1000)), (o > 1 and ORDER[o - 1] or ""), s)
+        r = i % (base / 1000)
     if f != 0:
         # Map the fractional part: "two point twenty-five" => 2.25.
         # We cast it to a string first to find all the leading zeros.
@@ -222,19 +222,19 @@ def numerals(n, round=2):
         f = ("%." + str(round is None and 2 or round) + "f") % f
         f = f.replace("0.","",1).rstrip("0")
         f, z = zshift(f)
-        f = f and " %s%s %s" % (RADIX, " %s"%ZERO*z, numerals(int(f))) or ""
+        f = f and " %s%s %s" % (RADIX, " %s" % ZERO * z, numerals(int(f))) or ""
     else:
         f = ""
     if r == 0:
-        return s+f
+        return s + f
     elif r >= 1000:
         # Separate hundreds and thousands with a comma: two million, three hundred thousand.
-        return "%s%s %s" % (s, THOUSANDS, numerals(r)+f)
+        return "%s%s %s" % (s, THOUSANDS, numerals(r) + f)
     elif r <= 100:
         # Separate hundreds and tens with "and": two thousand three hundred and five.
-        return "%s %s %s" % (s, CONJUNCTION, numerals(r)+f)
+        return "%s %s %s" % (s, CONJUNCTION, numerals(r) + f)
     else:
-        return "%s %s" % (s, numerals(r)+f)
+        return "%s %s" % (s, numerals(r) + f)
 
 #--- APPROXIMATE -----------------------------------------------------------------------------------
 # Based on the Ruby Linguistics module by Michael Granger:
@@ -282,8 +282,8 @@ def approximate(word, amount=1, plural={}):
     # Hundreds and thousands.
     thousands = int(log(amount, 10) / 3)
     hundreds  = ceil(log(amount, 10) % 3) - 1
-    h = hundreds==2 and "hundreds of " or (hundreds==1 and "tens of " or "")
-    t = thousands>0 and pluralize(ORDER[thousands])+" of " or ""
+    h = hundreds == 2 and "hundreds of " or (hundreds == 1 and "tens of " or "")
+    t = thousands > 0 and pluralize(ORDER[thousands]) + " of " or ""
     return "%s%s%s" % (h, t, p)
 
 #print approximate("chicken", 0)
@@ -332,7 +332,7 @@ def count(*args, **kwargs):
     phrase = []
     for i, (n, word) in enumerate(s):
         phrase.append(approximate(word, n, kwargs.get("plural", {})))
-        phrase.append(i==len(count)-2 and " and " or ", ")
+        phrase.append(i == len(count) - 2 and " and " or ", ")
     return "".join(phrase[:-1])
 
 quantify = count

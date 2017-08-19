@@ -110,7 +110,7 @@ for iteration in range(5):
         next = None
         for i, (w, tag) in enumerate(s):
             if i < len(s) - 1:
-                next = s[i+1]
+                next = s[i + 1]
             m.train(w, tag, prev, next)
             prev = (w, tag)
             next = None

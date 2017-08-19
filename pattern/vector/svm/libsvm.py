@@ -82,7 +82,7 @@ def gen_svm_nodearray(xi, feature_max=None, isKernel=None):
 		index_range = list(filter(lambda j:xi[j] != 0, index_range))
 
 	index_range = sorted(index_range)
-	ret = (svm_node * (len(index_range)+1))()
+	ret = (svm_node * (len(index_range) + 1))()
 	ret[-1].index = -1
 	for idx, j in enumerate(index_range):
 		ret[idx].index = j
@@ -221,15 +221,15 @@ class svm_parameter(Structure):
 			elif argv[i].startswith("-w"):
 				i = i + 1
 				self.nr_weight += 1
-				weight_label += [int(argv[i-1][2:])]
+				weight_label += [int(argv[i - 1][2:])]
 				weight += [float(argv[i])]
 			else:
 				raise ValueError("Wrong options")
 			i += 1
 
 		libsvm.svm_set_print_string_function(self.print_func)
-		self.weight_label = (c_int*self.nr_weight)()
-		self.weight = (c_double*self.nr_weight)()
+		self.weight_label = (c_int * self.nr_weight)()
+		self.weight = (c_double * self.nr_weight)()
 		for i in range(self.nr_weight):
 			self.weight[i] = weight[i]
 			self.weight_label[i] = weight_label[i]

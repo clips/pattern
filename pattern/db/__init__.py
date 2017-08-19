@@ -110,7 +110,7 @@ def _yyyywwd2yyyymmdd(year, week, weekday):
     """ Returns (year, month, day) for given (year, week, weekday).
     """
     d = datetime(year, month=1, day=4) # 1st week contains January 4th.
-    d = d - timedelta(d.isoweekday()-1) + timedelta(days=weekday-1, weeks=week-1)
+    d = d - timedelta(d.isoweekday() - 1) + timedelta(days=weekday - 1, weeks=week - 1)
     return (d.year, d.month, d.day)
 
 def _strftime1900(d, format):
@@ -223,7 +223,7 @@ def date(*args, **kwargs):
      and isinstance(args[0], (Date, datetime)):
         # One parameter, a Date or datetime object.
         d = Date.fromtimestamp(int(mktime(args[0].timetuple())))
-        d+= time(microseconds=args[0].microsecond)
+        d += time(microseconds=args[0].microsecond)
     elif len(args) == 1 \
      and (isinstance(args[0], int) \
       or  isinstance(args[0], (str, bytes)) and args[0].isdigit()):
@@ -351,7 +351,7 @@ def decode_entities(string):
             if hex == '' :
                 return chr(int(name))                 # "&#38;" => "&"
             if hex in ("x","X"):
-                return chr(int('0x'+name, 16))        # "&#x0026;" = > "&"
+                return chr(int('0x' + name, 16))        # "&#x0026;" = > "&"
         else:
             cp = name2codepoint.get(name) # "&amp;" => "&"
             return cp and chr(cp) or match.group()    # "&foo;" => "&foo;"
@@ -457,7 +457,7 @@ def variance(list):
         The variance is the average of squared deviations from the mean.
     """
     a = avg(list)
-    return _sum([(x-a)**2 for x in list]) / (len(list)-1 or 1)
+    return _sum([(x - a)**2 for x in list]) / (len(list) - 1 or 1)
 
 def stdev(list):
     """ Returns the standard deviation of the given list of values.
@@ -510,7 +510,7 @@ class Database(object):
         # Table objects are lazily constructed when retrieved.
         # This saves time because each table executes a metadata query when constructed.
         def __init__(self, db, *args, **kwargs):
-            dict.__init__(self, *args, **kwargs); self.db=db
+            dict.__init__(self, *args, **kwargs); self.db = db
         def __getitem__(self, k):
             if dict.__getitem__(self, k) is None:
                 dict.__setitem__(self, k, Table(name=k, database=self.db))
@@ -532,7 +532,7 @@ class Database(object):
         self.connect(unicode)
         # Table names are available in the Database.tables dictionary,
         # table objects as attributes (e.g. Database.table_name).
-        q = self.type==SQLITE and "select name from sqlite_master where type='table';" or "show tables;"
+        q = self.type == SQLITE and "select name from sqlite_master where type='table';" or "show tables;"
         self.tables = Database.Tables(self)
         for name, in self.execute(q):
             if not name.startswith(("sqlite_",)):
@@ -709,7 +709,7 @@ class Database(object):
         # The index string is an optional CREATE INDEX statement (or None).
         auto  = " auto%sincrement" % (self.type == MYSQL and "_" or "")
         field = isinstance(field, str) and [field, STRING(255)] or field
-        field = list(field) + [STRING, None, False, True][len(field)-1:]
+        field = list(field) + [STRING, None, False, True][len(field) - 1:]
         field = list(_field(field[0], field[1], default=field[2], index=field[3], optional=field[4]))
         if field[1] == "timestamp" and field[2] == "now":
             field[2] = "current_timestamp"
@@ -720,7 +720,7 @@ class Database(object):
             field[1] == STRING and field[1]() or field[1],
             field[4] is False and " not null" or " null",
             field[2] is not None and " default %s" % self.escape(field[2]) or "",
-            field[3] == PRIMARY and " primary key%s" % ("", auto)[field[1]==INTEGER] or "")
+            field[3] == PRIMARY and " primary key%s" % ("", auto)[field[1] == INTEGER] or "")
         if field[3] in (UNIQUE, True):
             b = "create %sindex `%s_%s` on `%s` (`%s`);" % (
                 field[3] == UNIQUE and "unique " or "", table, field[0], table, field[0])
@@ -799,7 +799,7 @@ class _String(str):
     def __new__(self):
         return str.__new__(self, "string")
     def __call__(self, length=100):
-        return "varchar(%s)" % (length>255 and 255 or (length<1 and 1 or length))
+        return "varchar(%s)" % (length > 255 and 255 or (length < 1 and 1 or length))
 
 # Field type.
 # Note: SQLite string fields do not impose a string limit.
@@ -928,7 +928,7 @@ class Table(object):
         # New field() with optional=False must have a default value (can not be NOW).
         # New field() can have index=True, but not PRIMARY or UNIQUE.
         def __init__(self, table, *args, **kwargs):
-            list.__init__(self, *args, **kwargs); self.table=table
+            list.__init__(self, *args, **kwargs); self.table = table
         def append(self, field):
             name, (field, index) = field[0], self.table.db._field_SQL(self.table.name, field)
             self.table.db.execute("alter table `%s` add column %s;" % (self.table.name, field))
@@ -966,7 +966,7 @@ class Table(object):
         if self.db.type == SQLITE:
             q = "pragma table_info(`%s`);" % self.name
             i = self.db.execute("pragma index_list(`%s`)" % self.name) # look up indices
-            i = dict(((v[1].replace(self.name+"_", "", 1), v[2]) for v in i))
+            i = dict(((v[1].replace(self.name + "_", "", 1), v[2]) for v in i))
         for f in self.db.execute(q):
             # [name, type, default, index, optional, extra]
             if self.db.type == MYSQL:
@@ -1046,7 +1046,7 @@ class Table(object):
             (i.e., like Query.table returned from Table.search()).
         """
         def __init__(self, table, data):
-            list.__init__(self, data); self.table=table
+            list.__init__(self, data); self.table = table
         def record(self, row):
             return self.table.record(row) # See assoc().
 
@@ -1124,7 +1124,7 @@ class Table(object):
         if len(args) == 0 and len(kwargs) == 1 and isinstance(kwargs.get("values"), dict):
             kwargs = kwargs["values"]
         if len(args) == 1 and isinstance(args[0], dict):
-            a=args[0]; a.update(kwargs); kwargs=a
+            a = args[0]; a.update(kwargs); kwargs = a
         kv = ", ".join("`%s`=%s" % (k, self.db.escape(v)) for k, v in kwargs.items())
         q  = "update `%s` set %s where %s;" % (self.name, kv,
             not isinstance(id, (Filter, FilterChain)) and cmp(self.primary_key, id, "=", self.db.escape) \
@@ -1179,7 +1179,7 @@ def abs(table, field):
     def _format(s):
         if not "." in s:
             # Field could be wrapped in a function: year(date) => year(table.date).
-            p = s.endswith(")") and re.match(r"^("+sql_functions+r")\(", s, re.I) or None
+            p = s.endswith(")") and re.match(r"^(" + sql_functions + r")\(", s, re.I) or None
             i = p and len(p.group(0)) or 0
             return "%s%s.%s" % (s[:i], table, s[i:])
         return s
@@ -1296,7 +1296,7 @@ class FilterChain(list):
         # FilterChain(type="cat", age=5, operator=AND)
         # FilterChain({"type": "cat", "age": 5}, operator=AND)
         if len(args) == 1 and isinstance(args[0], dict):
-            args[0].pop("operator", None); kwargs=dict(args[0], **kwargs)
+            args[0].pop("operator", None); kwargs = dict(args[0], **kwargs)
             args = []
         else:
             args = list(args)
@@ -1430,7 +1430,7 @@ class Query(object):
         if g and isinstance(self.function, str):
             fields = [f in g and f or "%s(%s)" % (self.function, f) for f in fields]
         if g and isinstance(self.function, (list, tuple)):
-            fields = [f in g and f or "%s(%s)" % (F,f) for F,f in zip(self.function+[FIRST]*len(fields), fields)]
+            fields = [f in g and f or "%s(%s)" % (F,f) for F,f in zip(self.function + [FIRST] * len(fields), fields)]
         q = []
         q.append("select %s" % ", ".join(fields))
         # Construct the FROM clause from Query.relations.
@@ -1445,12 +1445,12 @@ class Query(object):
             if table1 == self._table.name:
                 relations.setdefault(table2, (key1, key2, join))
             if table2 == self._table.name:
-                relations.setdefault(table1, (key1, key2, join==LEFT and RIGHT or (join==RIGHT and LEFT or join)))
+                relations.setdefault(table1, (key1, key2, join == LEFT and RIGHT or (join == RIGHT and LEFT or join)))
         # Define relations only for tables whose fields are actually selected.
         for (table, (key1, key2, join)) in relations.items():
             for f in fields:
                 if table + "." in f:
-                    q.append("%sjoin `%s`" % (join and join+" " or "", table))
+                    q.append("%sjoin `%s`" % (join and join + " " or "", table))
                     q.append("on %s=%s" % (abs(self._table.name, key1), abs(self._table.db[table].name, key2)))
                     break
         # Construct the WHERE clause from Query.filters.SQL().
@@ -1708,7 +1708,7 @@ def parse_xml(database, xml, table=None, field=lambda s: s.replace(".", "-")):
         for i, f in enumerate(fields):
             v = _attr(r, f, None)
             if schema[i][1] == BOOLEAN:
-                rows[-1][f] = (0,1)[v!="no"]
+                rows[-1][f] = (0,1)[v != "no"]
             else:
                 rows[-1][f] = v
     # Create table if not exists and insert rows.
@@ -1746,7 +1746,7 @@ def csv_header_encode(field, type=STRING):
 def csv_header_decode(s):
     # csv_header_decode("age (INTEGER)") => ("age", INTEGER).
     p = r"STRING|INTEGER|FLOAT|TEXT|BLOB|BOOLEAN|DATE|"
-    p = re.match(r"(.*?) \(("+p+")\)", s)
+    p = re.match(r"(.*?) \((" + p + ")\)", s)
     s = s.endswith(" ()") and s[:-3] or s
     return p and (string(p.group(1), default=None), p.group(2).lower()) or (string(s) or None, None)
 
@@ -1824,7 +1824,7 @@ class CSV(list):
         data = csvlib.reader(data, delimiter=separator)
         i, n = kwargs.get("start"), kwargs.get("count")
         if i is not None and n is not None:
-            data = list(islice(data, i, i+n))
+            data = list(islice(data, i, i + n))
         elif i is not None:
             data = list(islice(data, i, None))
         elif n is not None:
@@ -1833,7 +1833,7 @@ class CSV(list):
             data = list(data)
         if headers:
             fields  = [csv_header_decode(field) for field in data.pop(0)]
-            fields += [(None, None)] * (max([0]+[len(row) for row in data]) - len(fields))
+            fields += [(None, None)] * (max([0] + [len(row) for row in data]) - len(fields))
         else:
             fields = []
         if not fields:
@@ -1997,13 +1997,13 @@ class Datasheet(CSV):
         list.insert(self, i, row)
         m = max((len(self) > 1 and self._m or 0, len(row)))
         if len(row) < m:
-            row.extend([default] * (m-len(row)))
+            row.extend([default] * (m - len(row)))
         if self._m < m:
             # The given row might have more columns than the rows in the matrix.
             # Performance takes a hit when these rows have to be expanded:
             for row in self:
                 if len(row) < m:
-                    row.extend([default] * (m-len(row)))
+                    row.extend([default] * (m - len(row)))
         self.__dict__["_m"] = m
 
     def append(self, row, default=None, _m=None, **kwargs):
@@ -2027,7 +2027,7 @@ class Datasheet(CSV):
         if not isinstance(function, list):
             function = [function] * self._m
         if len(function) < self._m:
-            function+= [FIRST] * (self._m - len(function))
+            function += [FIRST] * (self._m - len(function))
         for i, f in enumerate(function):
             if i == j: # Group column j is always FIRST.
                 f = FIRST
@@ -2081,7 +2081,7 @@ class Datasheet(CSV):
     def slice(self, i, j, n, m):
         """ Returns a new Datasheet starting at row i and column j and spanning n rows and m columns.
         """
-        return Datasheet(rows=[list.__getitem__(self, i)[j:j+m] for i in range(i, i+n)])
+        return Datasheet(rows=[list.__getitem__(self, i)[j:j + m] for i in range(i, i + n)])
 
     def copy(self, rows=ALL, columns=ALL):
         """ Returns a new Datasheet from a selective list of row and/or column indices.
@@ -2142,7 +2142,7 @@ class Datasheet(CSV):
             a.append("</tr>\n")
         for i, row in enumerate(self):
             a.append("<tr>\n")
-            a.append("\t<td>%s</td>\n" % (i+1))
+            a.append("\t<td>%s</td>\n" % (i + 1))
             a.extend("\t<td>%s</td>\n" % encode(v) for v in row)
             a.append("</tr>\n")
         a.append("</table>")
@@ -2265,7 +2265,7 @@ class DatasheetColumns(list):
             raise TypeError("Datasheet.columns.insert(x): x must be list")
         column = column + [default] * (len(self._datasheet) - len(column))
         if len(column) > len(self._datasheet):
-            self._datasheet.extend([[None]] * (len(column)-len(self._datasheet)))
+            self._datasheet.extend([[None]] * (len(column) - len(self._datasheet)))
         for i, row in enumerate(self._datasheet):
             row.insert(j, column[i])
         self._datasheet.__dict__["_m"] += 1 # Increase column count.
@@ -2278,7 +2278,7 @@ class DatasheetColumns(list):
         self.insert(len(self), column, default, field)
     def extend(self, columns, default=None, fields=[]):
         for j, column in enumerate(columns):
-            self.insert(len(self), column, default, j<len(fields) and fields[j] or None)
+            self.insert(len(self), column, default, j < len(fields) and fields[j] or None)
 
     def remove(self, column):
         if isinstance(column, DatasheetColumn) and column._datasheet == self._datasheet:
@@ -2294,11 +2294,11 @@ class DatasheetColumns(list):
         self._cache[j]._datasheet = Datasheet(rows=[[v] for v in column])
         self._cache[j]._j = 0
         self._cache.pop(j)
-        for k in range(j+1, len(self)+1):
+        for k in range(j + 1, len(self) + 1):
             if k in self._cache:
                 # Shift the DatasheetColumn objects on the right to the left.
-                self._cache[k-1] = self._cache.pop(k)
-                self._cache[k-1]._j = k-1
+                self._cache[k - 1] = self._cache.pop(k)
+                self._cache[k - 1]._j = k - 1
         self._datasheet.__dict__["_m"] -= 1 # Decrease column count.
         # Remove the header.
         if self._datasheet.fields is not None:
@@ -2324,7 +2324,7 @@ class DatasheetColumns(list):
         for i, row in enumerate(self._datasheet):
             # The main difficulty is modifying each row in-place,
             # since other variables might be referring to it.
-            r=list(row); [row.__setitem__(i2, r[i1]) for i2, i1 in enumerate(o)]
+            r = list(row); [row.__setitem__(i2, r[i1]) for i2, i1 in enumerate(o)]
         # Reorder the datasheet headers.
         if self._datasheet.fields is not None:
             self._datasheet.fields = [self._datasheet.fields[i] for i in o]
@@ -2412,13 +2412,13 @@ class DatasheetColumn(list):
         """
         o = order(list(self), cmp, key, reverse)
         # Modify the table in place, more than one variable may be referencing it:
-        r=list(self._datasheet); [self._datasheet.__setitem__(i2, r[i1]) for i2, i1 in enumerate(o)]
+        r = list(self._datasheet); [self._datasheet.__setitem__(i2, r[i1]) for i2, i1 in enumerate(o)]
 
     def insert(self, i, value, default=None):
         """ Inserts the given value in the column.
             This will create a new row in the matrix, where other columns are set to the default.
         """
-        self._datasheet.insert(i, [default]*self._j + [value] + [default]*(len(self._datasheet)-self._j-1))
+        self._datasheet.insert(i, [default] * self._j + [value] + [default] * (len(self._datasheet) - self._j - 1))
 
     def append(self, value, default=None):
         self.insert(len(self), value, default)
@@ -2448,7 +2448,7 @@ class DatasheetColumn(list):
 
 _UID = 0
 def uid():
-    global _UID; _UID+=1; return _UID
+    global _UID; _UID += 1; return _UID
 
 def truncate(string, length=100):
     """ Returns a (head, tail)-tuple, where the head string length is less than the given length.
@@ -2462,8 +2462,8 @@ def truncate(string, length=100):
             break
         n += len(w) + 1
     if i == 0 and len(w) > length:
-        return ( w[:length-1] + "-",
-                (w[length-1:] + " " + " ".join(words[1:])).strip())
+        return ( w[:length - 1] + "-",
+                (w[length - 1:] + " " + " ".join(words[1:])).strip())
     return (" ".join(words[:i]),
             " ".join(words[i:]))
 
@@ -2496,13 +2496,13 @@ def pprint(datasheet, truncate=40, padding=" ", fill="."):
     for i, fields in enumerate(R):
         # Add empty lines to each field so they are of equal height.
         n = max([len(lines) for lines in fields])
-        fields = [lines+[""] * (n-len(lines)) for lines in fields]
+        fields = [lines + [""] * (n - len(lines)) for lines in fields]
         # Print the row line per line, justifying the fields with spaces.
         columns = []
         for k in range(n):
             for j, lines in enumerate(fields):
                 s  = lines[k]
-                s += ((k==0 or len(lines[k]) > 0) and fill or " ") * (w[j] - len(lines[k]))
+                s += ((k == 0 or len(lines[k]) > 0) and fill or " ") * (w[j] - len(lines[k]))
                 s += padding
                 columns.append(s)
             print(" ".join(columns))

@@ -50,8 +50,8 @@ def is_short_syllable(w, before=None):
         Checks the three characters before the given index in the word (or entire word if None).
     """
     if before != None:
-        i = before<0 and len(w)+before or before
-        return is_short_syllable(w[max(0,i-3):i])
+        i = before < 0 and len(w) + before or before
+        return is_short_syllable(w[max(0,i - 3):i])
     if len(w) == 3 and is_consonant(w[0]) and is_vowel(w[1]) and is_consonant(w[2]) and w[2] not in "wxY":
         return True
     if len(w) == 2 and is_vowel(w[0]) and is_consonant(w[1]):
@@ -107,7 +107,7 @@ def vowel_consonant_pairs(w, max=None):
     """
     m = 0
     for i, ch in enumerate(w):
-        if is_vowel(ch) and i<len(w)-1 and is_consonant(w[i+1]):
+        if is_vowel(ch) and i < len(w) - 1 and is_consonant(w[i + 1]):
             m += 1
             # An optimisation to stop searching once we reach the amount of <vc> pairs we need.
             if m == max: break
@@ -124,10 +124,10 @@ def step_1a(w):
         if w.endswith("ies"):
             # Replace by -ie if preceded by just one letter,
             # otherwise by -i (so ties => tie, cries => cri).
-            return len(w)==4 and w[:-1] or w[:-2]
+            return len(w) == 4 and w[:-1] or w[:-2]
         if w.endswith(("us", "ss")):
             return w
-        if find_vowel(w) < len(w)-2:
+        if find_vowel(w) < len(w) - 2:
             # Delete -s if the preceding part contains a vowel not immediately before the -s
             # (so gas and this retain the -s, gaps and kiwis lose it).
             return w[:-1]
@@ -142,7 +142,7 @@ def step_1b(w):
     if w.endswith(("ed", "ing")):
         if w.endswith("ied"):
             # See -ies in step 1a.
-            return len(w)==4 and w[:-1] or w[:-2]
+            return len(w) == 4 and w[:-1] or w[:-2]
         if w.endswith("eed"):
             # Replace by -ee if preceded by at least one vowel-consonant pair.
             return R1(w).endswith("eed") and w[:-1] or w
@@ -154,11 +154,11 @@ def step_1b(w):
             if w.endswith(suffix) and has_vowel(w[:-len(suffix)]):
                 w = w[:-len(suffix)]
                 if w.endswith(("at", "bl", "iz")):
-                    return w+"e"
+                    return w + "e"
                 if is_double_consonant(w[-2:]):
                     return w[:-1]
                 if is_short(w):
-                    return w+"e"
+                    return w + "e"
     return w
 
 def step_1c(w):

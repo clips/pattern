@@ -673,8 +673,8 @@ class TestLSA(unittest.TestCase):
         self.assertTrue(isinstance(lsa.sigma, list))
         self.assertTrue(isinstance(lsa.vt,    list))
         self.assertTrue(len(lsa.u),     len(self.model))
-        self.assertTrue(len(lsa.sigma), len(self.model)-k)
-        self.assertTrue(len(lsa.vt),    len(self.model)-k)
+        self.assertTrue(len(lsa.sigma), len(self.model) - k)
+        self.assertTrue(len(lsa.vt),    len(self.model) - k)
         for document in self.model:
             v = lsa.vectors[document.id]
             self.assertTrue(isinstance(v, vector.Vector))
@@ -735,7 +735,7 @@ class TestLSA(unittest.TestCase):
         t2 = time.time() - t2
         self.assertTrue(len(self.model.lsa[self.model.documents[0].id]) == 20)
         self.assertTrue(t2 * 2 < t1)       # KNN over 2x faster.
-        self.assertTrue(abs(F1-F2) < 0.06) # Difference in F-score = 1-6%.
+        self.assertTrue(abs(F1 - F2) < 0.06) # Difference in F-score = 1-6%.
         self.model.lsa = None
         print("pattern.vector.Model.reduce()")
 

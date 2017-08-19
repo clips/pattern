@@ -190,7 +190,7 @@ class Word(object):
             For example: ["was", "VBD", "B-VP", "O", "VP-1", "A1", "be"]
         """
         # See also. Sentence.__repr__().
-        ch, I,O,B = self.chunk, INSIDE+"-", OUTSIDE, BEGIN+"-"
+        ch, I,O,B = self.chunk, INSIDE + "-", OUTSIDE, BEGIN + "-"
         tags = [OUTSIDE for i in range(len(self.sentence.token))]
         for i, tag in enumerate(self.sentence.token): # Default: [WORD, POS, CHUNK, PNP, RELATION, ANCHOR, LEMMA]
             if tag == WORD:
@@ -202,7 +202,7 @@ class Word(object):
             elif tag == PNP and self.pnp:
                 tags[i] = (self == self.pnp[0] and B or I) + "PNP"
             elif tag == REL and ch and len(ch.relations) > 0:
-                tags[i] = ["-".join([str(x) for x in [ch.type]+list(reversed(r)) if x]) for r in ch.relations]
+                tags[i] = ["-".join([str(x) for x in [ch.type] + list(reversed(r)) if x]) for r in ch.relations]
                 tags[i] = "*".join(tags[i])
             elif tag == ANCHOR and ch:
                 tags[i] = ch.anchor_id or OUTSIDE
@@ -474,8 +474,8 @@ class Chunk(object):
         else:
             i = self.sentence.chunks.index(self)
         for j, chunk in enumerate(self.sentence.chunks):
-            if chunk.type.startswith(type) and abs(i-j) < d:
-                candidate, d = chunk, abs(i-j)
+            if chunk.type.startswith(type) and abs(i - j) < d:
+                candidate, d = chunk, abs(i - j)
         return candidate
 
     def next(self, type=None):
@@ -591,7 +591,7 @@ class Conjunctions(list):
 
 _UID = 0
 def _uid():
-    global _UID; _UID+=1; return _UID
+    global _UID; _UID += 1; return _UID
 
 def _is_tokenstring(string):
     # The class mbsp.TokenString stores the format of tags for each token.
@@ -986,7 +986,7 @@ class Sentence(object):
             For example: Sentence.indexof("VP", tag=CHUNK) 
             returns the indices of all the words that are part of a VP chunk.
         """
-        match = lambda a, b: a.endswith("*") and b.startswith(a[:-1]) or a==b
+        match = lambda a, b: a.endswith("*") and b.startswith(a[:-1]) or a == b
         indices = []
         for i in range(len(self.words)):
             if match(value, self.get(i, tag)):
@@ -1009,14 +1009,14 @@ class Sentence(object):
             p5 = word.chunk is not None and unzip(0, word.chunk.relations) or None # REL
             p6 = word.chunk is not None and unzip(1, word.chunk.relations) or None # ROLE
             p7 = word.chunk and word.chunk.anchor_id or None                       # ANCHOR
-            p8 = word.chunk and word.chunk.start == start+i and BEGIN or None      # IOB
+            p8 = word.chunk and word.chunk.start == start + i and BEGIN or None      # IOB
             p9 = word.custom_tags                                                  # User-defined tags.
             # If the given range does not contain the chunk head, remove the chunk tags.
             if word.chunk is not None and (word.chunk.stop > stop):
                 p3, p4, p5, p6, p7, p8 = None, None, None, None, None, None
             # If the word starts the preposition, add the IOB B-prefix (i.e., B-PNP).
-            if word.pnp is not None and word.pnp.start == start+i:
-                p4 = BEGIN+"-"+"PNP"
+            if word.pnp is not None and word.pnp.start == start + i:
+                p4 = BEGIN + "-" + "PNP"
             # If the given range does not contain the entire PNP, remove the PNP tags.
             # The range must contain the entire PNP,
             # since it starts with the PP and ends with the chunk head (and is meaningless without these).
@@ -1321,8 +1321,8 @@ def parse_xml(sentence, tab="\t", id=""):
             </chink>
         </sentence>
     """
-    uid  = lambda *parts: "".join([str(id), _UID_SEPARATOR ]+[str(x) for x in parts]).lstrip(_UID_SEPARATOR)
-    push = lambda indent: indent+tab         # push() increases the indentation.
+    uid  = lambda *parts: "".join([str(id), _UID_SEPARATOR ] + [str(x) for x in parts]).lstrip(_UID_SEPARATOR)
+    push = lambda indent: indent + tab         # push() increases the indentation.
     pop  = lambda indent: indent[:-len(tab)] # pop() decreases the indentation.
     indent = tab
     xml = []
@@ -1359,8 +1359,8 @@ def parse_xml(sentence, tab="\t", id=""):
                 r2 = unzip(1, chunk.relations) # Relation roles.
                 r1 = [x is None and "-" or uid(x) for x in r1]
                 r2 = [x is None and "-" or x for x in r2]
-                r1 = not len(unique(r1)) == 1 and "|".join(r1) or (r1+[None])[0]
-                r2 = not len(unique(r2)) == 1 and "|".join(r2) or (r2+[None])[0]
+                r1 = not len(unique(r1)) == 1 and "|".join(r1) or (r1 + [None])[0]
+                r2 = not len(unique(r2)) == 1 and "|".join(r2) or (r2 + [None])[0]
             xml.append(indent + '<%s%s%s%s%s%s>' % (
                 XML_CHUNK,
                 chunk.type and ' %s="%s"' % (XML_TYPE, chunk.type) or "",
@@ -1381,17 +1381,17 @@ def parse_xml(sentence, tab="\t", id=""):
             XML_WORD,
             word.type and ' %s="%s"' % (XML_TYPE, xml_encode(word.type)) or '',
             word.lemma and ' %s="%s"' % (XML_LEMMA, xml_encode(word.lemma)) or '',
-            (" "+" ".join(['%s="%s"' % (k,v) for k,v in word.custom_tags.items() if v != None])).rstrip(),
+            (" " + " ".join(['%s="%s"' % (k,v) for k,v in word.custom_tags.items() if v != None])).rstrip(),
             xml_encode(word.string),
             XML_WORD
         ))
         if not chunk:
             # Close the <chink> element if outside of a chunk.
             indent = pop(indent); xml.append(indent + "</%s>" % XML_CHINK)
-        if chunk and chunk.stop-1 == word.index:
+        if chunk and chunk.stop - 1 == word.index:
             # Close the <chunk> element if this is the last word in the chunk.
             indent = pop(indent); xml.append(indent + "</%s>" % XML_CHUNK)
-        if pnp and pnp.stop-1 == word.index:
+        if pnp and pnp.stop - 1 == word.index:
             # Close the PNP element if this is the last word in the PNP.
             indent = pop(indent); xml.append(indent + "</%s>" % XML_CHUNK)
     xml.append("</%s>" % XML_SENTENCE)
@@ -1483,11 +1483,11 @@ def parse_string(xml):
             A, P, a, i = _anchors, _attachments, 1, format.index(ANCHOR)
             for id in sorted(A.keys()):
                 for token in A[id]:
-                    token[i] += "-"+"-".join(["A"+str(a+p) for p in range(len(P[id]))])
+                    token[i] += "-" + "-".join(["A" + str(a + p) for p in range(len(P[id]))])
                     token[i]  = token[i].strip("O-")
                 for p, pnp in enumerate(P[id]):
                     for token in pnp:
-                        token[i] += "-"+"P"+str(a+p)
+                        token[i] += "-" + "P" + str(a + p)
                         token[i]  = token[i].strip("O-")
                 a += len(P[id])
         # Collapse the tokens to string.
@@ -1522,7 +1522,7 @@ def _parse_tokens(chunk, format=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
         if PNP in format:
             i = format.index(PNP)
             for j, token in enumerate(tokens):
-                token[i] = (j==0 and "B-" or "I-") + "PNP"
+                token[i] = (j == 0 and "B-" or "I-") + "PNP"
         # Store attachments so we can construct anchor id's in parse_string().
         # This has to be done at the end, when all the chunks have been found.
         a = chunk.get(XML_OF).split(_UID_SEPARATOR)[-1]
@@ -1542,7 +1542,7 @@ def _parse_tokens(chunk, format=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
     if CHUNK in format:
         i = format.index(CHUNK)
         for j, token in enumerate(tokens):
-            token[i] = token[i] != "O" and ((j==0 and "B-" or "I-") + token[i]) or "O"
+            token[i] = token[i] != "O" and ((j == 0 and "B-" or "I-") + token[i]) or "O"
     # The chunk can be the anchor of one or more PNP chunks.
     # Store anchors so we can construct anchor id's in parse_string().
     a = chunk.get(XML_ANCHOR, "").split(_UID_SEPARATOR)[-1]
@@ -1559,8 +1559,8 @@ def _parse_relation(chunk, type="O"):
     r1 = [x != "-" and x or None for x in r1.split("|")] or [None]
     r2 = [x != "-" and x or None for x in r2.split("|")] or [None]
     r2 = [x is not None and x.split(_UID_SEPARATOR )[-1] or x for x in r2]
-    if len(r1) < len(r2): r1 = r1 + r1 * (len(r2)-len(r1)) # [1] ["SBJ", "OBJ"] => "SBJ-1;OBJ-1"
-    if len(r2) < len(r1): r2 = r2 + r2 * (len(r1)-len(r2)) # [2,4] ["OBJ"] => "OBJ-2;OBJ-4"
+    if len(r1) < len(r2): r1 = r1 + r1 * (len(r2) - len(r1)) # [1] ["SBJ", "OBJ"] => "SBJ-1;OBJ-1"
+    if len(r2) < len(r1): r2 = r2 + r2 * (len(r1) - len(r2)) # [2,4] ["OBJ"] => "OBJ-2;OBJ-4"
     return ";".join(["-".join([x for x in (type, r1, r2) if x]) for r1, r2 in zip(r1, r2)])
 
 def _parse_token(word, chunk="O", pnp="O", relation="O", anchor="O",
@@ -1597,7 +1597,7 @@ def nltk_tree(sentence):
     def do_chunk(ch):
         # Returns the Chunk in NLTK bracket format. Recurse attached PNP's.
         s = ' '.join(['(%s %s)' % (w.pos, w.string) for w in ch.words])
-        s+= ' '.join([do_pnp(pnp) for pnp in ch.attachments])
+        s += ' '.join([do_pnp(pnp) for pnp in ch.attachments])
         return '(%s %s)' % (ch.type, s)
 
     T = ['(S']
@@ -1649,42 +1649,42 @@ def graphviz_dot(sentence, font="Arial", colors=BLUE):
         s += '\t\tword%s [label="<f0>%s|<f1>%s"%s];\n' % (w.index, w.string, w.type, _colorize(w, colors))
     for w in sentence.words[:-1]:
         # Invisible edges forces the words into the right order:
-        s += '\t\tword%s -> word%s [color=none];\n' % (w.index, w.index+1)
+        s += '\t\tword%s -> word%s [color=none];\n' % (w.index, w.index + 1)
     s += '\t}\n'
     s += '\t{ rank=same;\n'
     for i, ch in enumerate(sentence.chunks):
-        s += '\t\tchunk%s [label="<f0>%s"%s];\n' % (i+1, "-".join([x for x in (
+        s += '\t\tchunk%s [label="<f0>%s"%s];\n' % (i + 1, "-".join([x for x in (
             ch.type, ch.role, str(ch.relation or '')) if x]) or '-', _colorize(ch, colors))
     for i, ch in enumerate(sentence.chunks[:-1]):
         # Invisible edges forces the chunks into the right order:
-        s += '\t\tchunk%s -> chunk%s [color=none];\n' % (i+1, i+2)
+        s += '\t\tchunk%s -> chunk%s [color=none];\n' % (i + 1, i + 2)
     s += '}\n'
     s += '\t{ rank=same;\n'
     for i, ch in enumerate(sentence.pnp):
-        s += '\t\tpnp%s [label="<f0>PNP"%s];\n' % (i+1, _colorize(ch, colors))
+        s += '\t\tpnp%s [label="<f0>PNP"%s];\n' % (i + 1, _colorize(ch, colors))
     s += '\t}\n'
     s += '\t{ rank=same;\n S [shape=circle, margin=0.25, penwidth=2]; }\n'
     # Connect words to chunks.
     # Connect chunks to PNP or S.
     for i, ch in enumerate(sentence.chunks):
         for w in ch:
-            s += '\tword%s -> chunk%s;\n' % (w.index, i+1)
+            s += '\tword%s -> chunk%s;\n' % (w.index, i + 1)
         if ch.pnp:
-            s += '\tchunk%s -> pnp%s;\n' % (i+1, sentence.pnp.index(ch.pnp)+1)
+            s += '\tchunk%s -> pnp%s;\n' % (i + 1, sentence.pnp.index(ch.pnp) + 1)
         else:
-            s += '\tchunk%s -> S;\n' % (i+1)
+            s += '\tchunk%s -> S;\n' % (i + 1)
         if ch.type == 'VP':
             # Indicate related chunks with a dotted
             for r in ch.related:
                 s += '\tchunk%s -> chunk%s [style=dotted, arrowhead=none];\n' % (
-                    i+1, sentence.chunks.index(r)+1)
+                    i + 1, sentence.chunks.index(r) + 1)
     # Connect PNP to anchor chunk or S.
     for i, ch in enumerate(sentence.pnp):
         if ch.anchor:
-            s += '\tpnp%s -> chunk%s;\n' % (i+1, sentence.chunks.index(ch.anchor)+1)
-            s += '\tpnp%s -> S [color=none];\n' % (i+1)
+            s += '\tpnp%s -> chunk%s;\n' % (i + 1, sentence.chunks.index(ch.anchor) + 1)
+            s += '\tpnp%s -> S [color=none];\n' % (i + 1)
         else:
-            s += '\tpnp%s -> S;\n' % (i+1)
+            s += '\tpnp%s -> S;\n' % (i + 1)
     s += "}"
     return s
 
@@ -1710,23 +1710,23 @@ def table(sentence, fill=1, placeholder="-"):
         return s or placeholder
     def outline(column, fill=1, padding=3, align="left"):
         # Add spaces to each string in the column so they line out to the highest width.
-        n = max([len(x) for x in column]+[fill])
-        if align == "left"  : return [x+" "*(n-len(x))+" "*padding for x in column]
-        if align == "right" : return [" "*(n-len(x))+x+" "*padding for x in column]
+        n = max([len(x) for x in column] + [fill])
+        if align == "left"  : return [x + " " * (n - len(x)) + " " * padding for x in column]
+        if align == "right" : return [" " * (n - len(x)) + x + " " * padding for x in column]
 
     # Gather the tags of the tokens in the sentece per column.
     # If the IOB-tag is I-, mark the chunk tag with "^".
     # Add the tag names as headers in each column.
     columns = [[format(token, tag) for token in sentence] for tag in tags]
-    columns[3] = [columns[3][i]+(iob == "I" and " ^" or "") for i, iob in enumerate(columns[2])]
+    columns[3] = [columns[3][i] + (iob == "I" and " ^" or "") for i, iob in enumerate(columns[2])]
     del columns[2]
-    for i, header in enumerate(['word', 'tag', 'chunk', 'role', 'id', 'pnp', 'anchor', 'lemma']+tags[9:]):
+    for i, header in enumerate(['word', 'tag', 'chunk', 'role', 'id', 'pnp', 'anchor', 'lemma'] + tags[9:]):
         columns[i].insert(0, "")
         columns[i].insert(0, header.upper())
     # The left column (the word itself) is outlined to the right,
     # and has extra spacing so that words across sentences line out nicely below each other.
     for i, column in enumerate(columns):
-        columns[i] = outline(column, fill+10*(i==0), align=("left","right")[i==0])
+        columns[i] = outline(column, fill + 10 * (i == 0), align=("left","right")[i == 0])
     # Anchor column is useful in MBSP but not in pattern.en.
     if not MBSP:
         del columns[6]

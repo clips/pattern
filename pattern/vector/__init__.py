@@ -32,7 +32,7 @@ from builtins import object, range, next
 from collections import OrderedDict
 
 from . import stemmer
-_stemmer=stemmer
+_stemmer = stemmer
 
 import sys
 import os
@@ -324,7 +324,7 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
         if (stopwords or not w1 in _stopwords.get(language or "en", ())) and not w1 in exclude:
             if stemmer is not None:
                 w2 = stem(w2, stemmer, **kwargs).lower()
-            dict.__setitem__(count, w2, (w2 in count) and count[w2]+1 or 1)
+            dict.__setitem__(count, w2, (w2 in count) and count[w2] + 1 or 1)
     for k in list(count.keys()):
         if count[k] <= threshold:
             dict.__delitem__(count, k)
@@ -342,8 +342,8 @@ def character_ngrams(string="", n=3, top=None, threshold=0, exclude=[], **kwargs
     # e.g., count(words, dict=readonlydict) as used in Document.
     count = defaultdict(int)
     if n > 0:
-        for i in range(len(string)-n+1):
-            w = string[i:i+n]
+        for i in range(len(string) - n + 1):
+            w = string[i:i + n]
             if w not in exclude:
                 count[w] += 1
     if threshold > 0:
@@ -365,7 +365,7 @@ def _uid():
     """ Returns a string id, for example: "NPIJYaS-1", "NPIJYaS-2", ...
         The string part is based on the current time, the number suffix is auto-incremental.
     """
-    global _UID; _UID+=1; return _SESSION+"-"+str(_UID)
+    global _UID; _UID += 1; return _SESSION + "-" + str(_UID)
 
 # Term relevance weight:
 TF, TFIDF, TF_IDF, BINARY = \
@@ -477,11 +477,11 @@ class Document(object):
             if s.startswith("#"): # comment
                 a["description"] = a.get("description", "") + s.lstrip("#").strip() + "\n"
             elif s.startswith("@name:"):
-                a["name"] = s[len("@name:")+1:].replace("\\n", "\n")
+                a["name"] = s[len("@name:") + 1:].replace("\\n", "\n")
             elif s.startswith("@type:"):
-                a["type"] = s[len("@type:")+1:].replace("\\n", "\n")
+                a["type"] = s[len("@type:") + 1:].replace("\\n", "\n")
             elif s.startswith("@language:"):
-                a["lang"] = s[len("@lang:")+1:].replace("\\n", "\n")
+                a["lang"] = s[len("@lang:") + 1:].replace("\\n", "\n")
             else:
                 s = s.split(" ")
                 w, f = " ".join(s[:-1]), s[-1]
@@ -676,7 +676,7 @@ class Document(object):
             With normalized=True, weights are normalized between 0.0 and 1.0 (their sum will be 1.0).
         """
         n = normalized and sum(self.vector.values()) or 1.0
-        v = ((f/n, w) for w, f in self.vector.items())
+        v = ((f / n, w) for w, f in self.vector.items())
         v = heapq.nsmallest(top, v, key=lambda v: (-v[0], v[1]))
         return v
 
@@ -1046,7 +1046,7 @@ class Model(object):
             for document in self.documents:
                 v = document.vector
                 v = [v.get(k, 0) for k in keys]
-                v = "\t".join(x==0 and "0" or "%.4f" % x for x in v)
+                v = "\t".join(x == 0 and "0" or "%.4f" % x for x in v)
                 v = "%s\t%s\t%s" % (v, document.name or "", document.type or "")
                 s.append(v)
         # Weka ARFF format:
@@ -1058,7 +1058,7 @@ class Model(object):
             for document in self.documents:
                 v = document.vector
                 v = [v.get(k, 0) for k in keys]
-                v = ",".join(x==0 and "0" or "%.4f" % x for x in v)
+                v = ",".join(x == 0 and "0" or "%.4f" % x for x in v)
                 v = "%s,%s" % (v, document.type or "")
                 s.append(v)
         s = "\n".join(s)
@@ -1144,7 +1144,7 @@ class Model(object):
         """
         self.df(None) # Populate document frequency cache.
         n = normalized and sum(self._df.values()) or 1.0
-        v = ((f/n, w) for w, f in self._df.items())
+        v = ((f / n, w) for w, f in self._df.items())
         v = heapq.nsmallest(top, v, key=lambda v: (-v[0], v[1]))
         return v
 
@@ -1618,7 +1618,7 @@ class Model(object):
             Classifier = kwargs.pop("Classifier", NB)
         if len(args) >= 1:
             # Model.train(KNN, k=1)
-            Classifier = args[0]; args=args[1:]
+            Classifier = args[0]; args = args[1:]
         kwargs["train"] = self
         self._classifier = Classifier(*args, **kwargs)
         self._classifier.finalize()
@@ -1652,7 +1652,7 @@ class Apriori(object):
         """
         Ck = []
         for i, s1 in enumerate(sets):
-            for j, s2 in enumerate(sets[i+1:]):
+            for j, s2 in enumerate(sets[i + 1:]):
                 if set(list(s1)[:-1]) == set(list(s2)[:-1]):
                     Ck.append(s1 | s2)
         return Ck
@@ -1734,7 +1734,7 @@ class LSA(object):
         # The maximum length of a concept vector = the number of documents.
         assert k < len(model.documents), \
             "can't create more dimensions than there are documents"
-        tail = lambda x, i: list(range(len(x)-i, len(x)))
+        tail = lambda x, i: list(range(len(x) - i, len(x)))
         u, sigma, vt = (
             np.delete(u, tail(u[0], k), axis=1),
             np.delete(sigma, tail(sigma, k), axis=0),
@@ -2023,7 +2023,7 @@ class Cluster(list):
         a = []
         for item in self:
             if isinstance(item, Cluster) and depth > 0:
-                a.extend(item.flatten(depth-1))
+                a.extend(item.flatten(depth - 1))
             else:
                 a.append(item)
         return a
@@ -2039,7 +2039,7 @@ class Cluster(list):
     def __repr__(self):
         return "Cluster(%s)" % list.__repr__(self)
 
-def sequence(i=0, f=lambda i: i+1):
+def sequence(i=0, f=lambda i: i + 1):
     """ Yields an infinite sequence, for example:
         sequence() => 0, 1, 2, 3, ...
         sequence(1.0, lambda i: i/2) => 1, 0.5, 0.25, 0.125, ...
@@ -2048,7 +2048,7 @@ def sequence(i=0, f=lambda i: i+1):
     # We cannot use Vector.id, since the given vectors might be plain dicts.
     # We cannot use id(vector), since id() is only unique for the lifespan of the object.
     while True:
-        yield i; i=f(i)
+        yield i; i = f(i)
 
 def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
     """ Returns a Cluster containing k items (vectors or clusters with nested items).
@@ -2064,7 +2064,7 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
             break
         nearest, d0 = None, None
         for i, (id1, v1) in enumerate(centroids):
-            for j, (id2, v2) in enumerate(centroids[i+1:]):
+            for j, (id2, v2) in enumerate(centroids[i + 1:]):
                 # Cache the distance calculations between vectors.
                 # This is identical to DistanceMap.distance(),
                 # but it is faster in the inner loop to use it directly.
@@ -2073,7 +2073,7 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
                 except KeyError:
                     d = map[(id1, id2)] = _distance(v1, v2, method=distance)
                 if d0 is None or d < d0:
-                    nearest, d0 = (i, j+i+1), d
+                    nearest, d0 = (i, j + i + 1), d
         # Pairs of nearest clusters are merged as we move up the hierarchy:
         i, j = nearest
         merged = Cluster((clusters[i], clusters[j]))
@@ -2193,7 +2193,7 @@ class Classifier(object):
             Yields > +1.0 or < -1.0 if the training data is highly skewed.
         """
         def moment(a, m, k=1):
-            return sum([(x-m)**k for x in a]) / (len(a) or 1)
+            return sum([(x - m)**k for x in a]) / (len(a) or 1)
         # List each training instance by an int that represents its class:
         a = list(chain(*([i] * v for i, (k, v) in enumerate(self._classes.items()))))
         m = float(sum(a)) / len(a) # mean
@@ -2456,7 +2456,7 @@ def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
     # F-score mean & variance.
     K = len(folds)
     u = float(sum(f)) / (K or 1.0)
-    o = float(sum((x - u) ** 2 for x in f)) / (K-1 or 1.0)
+    o = float(sum((x - u) ** 2 for x in f)) / (K - 1 or 1.0)
     o = sqrt(o)
     return tuple([v / (K or 1.0) for v in m] + [o])
 
@@ -2480,7 +2480,7 @@ def folds(documents=[], K=10, **kwargs):
     k = kwargs.get("k", K)
     d = list(chunks(documents, max(k, 2)))
     for holdout in range(k):
-        yield list(chain(*(d[:holdout] + d[holdout+1:]))), d[holdout]
+        yield list(chain(*(d[:holdout] + d[holdout + 1:]))), d[holdout]
 
 _folds = folds
 
@@ -2867,7 +2867,7 @@ class SLP(Classifier):
             w = self._weight[type]
             w0, w1, j = w[feature] if feature in w else (random() * 2 - 1, 0, 0)
             w0 += weight
-            w[feature] = (w0, (i-j) * w0 + w1, i)
+            w[feature] = (w0, (i - j) * w0 + w1, i)
         type, vector = self._vector(document, type=type)
         self._classes[type] = self._classes.get(type, 0) + 1
         t1 = type
@@ -2893,7 +2893,7 @@ class SLP(Classifier):
             for f in v:
                 if f in w:
                     w0, w1, j = w[f]
-                    s += ((i-j) * w0 + w1) / i
+                    s += ((i - j) * w0 + w1) / i
             p[type] = s
         # Normalize probability estimates.
         p = softmax(p)
@@ -3108,8 +3108,8 @@ class BPNN(Classifier):
             # Batch learning (we need to know the number of features in advance).
             n  = float(len(self.classes)) - 1
             H1 = list(sorted(self.features))
-            H2 = dict((x, i/n) for i, x in enumerate(self.classes))  # Class => float hash (0.0-1.0).
-            H3 = dict((i/n, x) for i, x in enumerate(self.classes))  # Class reversed hash.
+            H2 = dict((x, i / n) for i, x in enumerate(self.classes))  # Class => float hash (0.0-1.0).
+            H3 = dict((i / n, x) for i, x in enumerate(self.classes))  # Class reversed hash.
             v  = [([v.get(f, 0.0) for f in H1], [H2[type]]) for type, v in self._vectors]
             self._h = (H1, H2, H3)
             self._weight_initialization(i=len(H1), o=1, hidden=self._layers, a=0.0, b=1.0)
@@ -3229,7 +3229,7 @@ class SVM(Classifier):
             (      "cache", "m", 100), # MB
             (  "shrinking", "h", True)):
                 v = kwargs.get(k2, kwargs.get(k1, v))
-                setattr(self, "_"+k1, v)
+                setattr(self, "_" + k1, v)
         # Type aliases.
         if self._type == "svc":
             self._type = SVC
@@ -3321,9 +3321,9 @@ class SVM(Classifier):
         """
         # Note: LIBLINEAR feature indices start from 1 (not 0).
         M  = [v for type, v in self._vectors]                        # List of vectors.
-        H1 = dict((w, i+1) for i, w in enumerate(self.features))     # Feature => integer hash.
-        H2 = dict((w, i+1) for i, w in enumerate(self.classes))      # Class => integer hash.
-        H3 = dict((i+1, w) for i, w in enumerate(self.classes))      # Class reversed hash.
+        H1 = dict((w, i + 1) for i, w in enumerate(self.features))     # Feature => integer hash.
+        H2 = dict((w, i + 1) for i, w in enumerate(self.classes))      # Class => integer hash.
+        H3 = dict((i + 1, w) for i, w in enumerate(self.classes))      # Class reversed hash.
         x  = list(map(lambda v: dict(map(lambda k: (H1[k], v[k]), v)), M)) # Hashed vectors.
         y  = list(map(lambda v: H2[v[0]], self._vectors))                  # Hashed classes.
         # For linear SVC, use LIBLINEAR which is faster.
@@ -3383,9 +3383,9 @@ class SVM(Classifier):
         if self._type == CLASSIFICATION and probability and self.extension == LIBLINEAR and s != 0:
             return Probabilities(self, defaultdict(float, ((H3[p[0][0]], 1.0),)))
         if self._type == CLASSIFICATION and probability and self.extension == LIBLINEAR:
-            return Probabilities(self, defaultdict(float, ((H3[i+1], w) for i, w in enumerate(p[2][0]))))
+            return Probabilities(self, defaultdict(float, ((H3[i + 1], w) for i, w in enumerate(p[2][0]))))
         if self._type == CLASSIFICATION and probability:
-            return Probabilities(self, defaultdict(float, ((H3[i+0], w) for i, w in enumerate(p[2][0]))))
+            return Probabilities(self, defaultdict(float, ((H3[i + 0], w) for i, w in enumerate(p[2][0]))))
         if self._type == CLASSIFICATION:
             return H3.get(int(p[0][0]))
         if self._type == REGRESSION:
@@ -3575,25 +3575,25 @@ class LR(Classifier):
             # Cost function.
             m  = float(len(y))
             h  = scipy.special.expit(x.dot(t)) # sigmoid
-            J  = 1 / m * (scipy.dot(-y, log(h)) - scipy.dot(1-y, log(1-h)))
+            J  = 1 / m * (scipy.dot(-y, log(h)) - scipy.dot(1 - y, log(1 - h)))
             L2 = l / m / 2 * sum(t[1:] ** 2)
             return J + L2
         def gradient(t, x, y, l=0.1):
             # Cost function derivative.
             m  = float(len(y))
             h  = scipy.special.expit(x.dot(t)) # sigmoid
-            g  = 1 / m * x.T.dot((h-y).T).T # dot(h-y, x)
+            g  = 1 / m * x.T.dot((h - y).T).T # dot(h-y, x)
             L2 = l / m * scipy.insert(t[1:], 0, 0)
             return scipy.transpose(g + L2)
         # Gradient descent:
         if x.shape[0] > 0:
             m = x.shape[0]
             n = x.shape[1]
-            t = scipy.zeros((max(y) + 1, n+1))
+            t = scipy.zeros((max(y) + 1, n + 1))
             x = scipy.sparse.hstack([scipy.ones((m, 1)), x])
             y = scipy.array(y)
             for i in range(max(y) + 1):
-                t0 = scipy.zeros((n+1, 1))
+                t0 = scipy.zeros((n + 1, 1))
                 t0 = scipy.transpose(t0)
                 t[i,:] = scipy.optimize.fmin_cg(
                     lambda t:     cost(t, x, 0 + (y == i), l), t0,
@@ -3713,7 +3713,7 @@ class GeneticAlgorithm(object):
         g = []
         n = len(p)
         for candidate in self.population:
-            i = randint(0, n-1)
+            i = randint(0, n - 1)
             j = choice([x for x in range(n) if x != i]) if n > 1 else 0
             g.append(self.combine(p[i], p[j]))
             if random() <= mutation:

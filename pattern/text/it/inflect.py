@@ -384,14 +384,14 @@ class Verbs(_Verbs):
         else:
             isc = ""
         v = [verb.lower(),
-            b+isc+"o", b+isc+"i", b+isc+a7, b+"iamo", b+a1+"te", b+isc+a2+"no", b+a1+"ndo",
-            b+a1+"i", b+a1+"sti", b+a3, b+a1+"mmo", b+a1+"ste", b+a1+"rono", b+a1+"to",
-            b+a1+"vo", b+a1+"vi", b+a1+"va", b+a1+"vamo", b+a1+"vate", b+a1+"vano",
-            b+a6+"rò", b+a6+"rai", b+a6+"rà", b+a6+"remo", b+a6+"rete", b+a6+"ranno",
-            b+a6+"rei", b+a6+"resti", b+a6+"rebbe", b+a6+"remmo", b+a6+"reste", b+a6+"rebbero",
-            b+isc+a4, b+isc+a5, b+"iamo", b+a1+"te", b+isc+a5+"no",
-            b+isc+a5, b+isc+a5, b+isc+a5, b+"iamo", b+"iate", b+isc+a5+"no",
-            b+a1+"ssi", b+a1+"ssi", b+a1+"sse", b+a1+"ssimo", b+a1+"ste", b+a1+"ssero"
+            b + isc + "o", b + isc + "i", b + isc + a7, b + "iamo", b + a1 + "te", b + isc + a2 + "no", b + a1 + "ndo",
+            b + a1 + "i", b + a1 + "sti", b + a3, b + a1 + "mmo", b + a1 + "ste", b + a1 + "rono", b + a1 + "to",
+            b + a1 + "vo", b + a1 + "vi", b + a1 + "va", b + a1 + "vamo", b + a1 + "vate", b + a1 + "vano",
+            b + a6 + "rò", b + a6 + "rai", b + a6 + "rà", b + a6 + "remo", b + a6 + "rete", b + a6 + "ranno",
+            b + a6 + "rei", b + a6 + "resti", b + a6 + "rebbe", b + a6 + "remmo", b + a6 + "reste", b + a6 + "rebbero",
+            b + isc + a4, b + isc + a5, b + "iamo", b + a1 + "te", b + isc + a5 + "no",
+            b + isc + a5, b + isc + a5, b + isc + a5, b + "iamo", b + "iate", b + isc + a5 + "no",
+            b + a1 + "ssi", b + a1 + "ssi", b + a1 + "sse", b + a1 + "ssimo", b + a1 + "ste", b + a1 + "ssero"
         ]
         for i, x in enumerate(v):
             x = x.replace(  "ii",  "i")

@@ -115,7 +115,7 @@ replacements = (
                       "vent")
 
 replacements += tuple(k.capitalize() for k in replacements)
-replacements  = dict((k+"'", k+"' ") for k in replacements)
+replacements  = dict((k + "'", k + "' ") for k in replacements)
 
 def find_lemmata(tokens):
     """ Annotates the tokens with lemmata for plural nouns and conjugated verbs,

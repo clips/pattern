@@ -253,9 +253,9 @@ def fleiss_kappa(m):
         return 1.0
     assert all(sum(row) == n for row in m[1:]), "numer of votes for each task differs"
     # p[j] = the proportion of all assignments which were to the j-th category.
-    p = [sum(m[i][j] for i in range(N)) / float(N*n) for j in range(k)]
+    p = [sum(m[i][j] for i in range(N)) / float(N * n) for j in range(k)]
     # P[i] = the extent to which voters agree for the i-th subject.
-    P = [(sum(m[i][j]**2 for j in range(k)) - n) / float(n * (n-1)) for i in range(N)]
+    P = [(sum(m[i][j]**2 for j in range(k)) - n) / float(n * (n - 1)) for i in range(N)]
     # Pm = the mean of P[i] and Pe.
     Pe = sum(pj**2 for pj in p)
     Pm = sum(P) / N
@@ -278,12 +278,12 @@ def levenshtein(string1, string2):
     if n > m:
         # Make sure n <= m to use O(min(n,m)) space.
         string1, string2, n, m = string2, string1, m, n
-    current = list(range(n+1))
-    for i in range(1, m+1):
-        previous, current = current, [i]+[0]*n
-        for j in range(1, n+1):
-            insert, delete, replace = previous[j]+1, current[j-1]+1, previous[j-1]
-            if string1[j-1] != string2[i-1]:
+    current = list(range(n + 1))
+    for i in range(1, m + 1):
+        previous, current = current, [i] + [0] * n
+        for j in range(1, n + 1):
+            insert, delete, replace = previous[j] + 1, current[j - 1] + 1, previous[j - 1]
+            if string1[j - 1] != string2[i - 1]:
                 replace += 1
             current[j] = min(insert, delete, replace)
     return current[n]
@@ -300,7 +300,7 @@ def dice_coefficient(string1, string2):
         based on the number of shared bigrams, e.g., "night" and "nacht" have one common bigram "ht".
     """
     def bigrams(s):
-        return set(s[i:i+2] for i in range(len(s)-1))
+        return set(s[i:i + 2] for i in range(len(s) - 1))
     nx = bigrams(string1)
     ny = bigrams(string2)
     nt = nx.intersection(ny)
@@ -375,7 +375,7 @@ def ngrams(string, n=3, punctuation=PUNCTUATION, **kwargs):
     s = s.replace("!", " !")
     s = [w.strip(punctuation) for w in s.split()]
     s = [w.strip() for w in s if w.strip()]
-    return [tuple(s[i:i+n]) for i in range(len(s) - n + 1)]
+    return [tuple(s[i:i + n]) for i in range(len(s) - n + 1)]
 
 class Weight(float):
     """ A float with a magic "assessments" property,
@@ -432,7 +432,7 @@ def type_token_ratio(string, n=100, punctuation=PUNCTUATION):
     def window(a, n=100):
         if n > 0:
             for i in range(max(len(a) - n + 1, 1)):
-                yield a[i:i+n]
+                yield a[i:i + n]
     s = string.lower().split()
     s = [w.strip(punctuation) for w in s]
     # Covington & McFall moving average TTR algorithm.
@@ -486,7 +486,7 @@ def isplit(string, sep="\t\n\x0b\x0c\r "):
         if ch not in sep:
             a.append(ch)
             continue
-        if a: yield "".join(a); a=[]
+        if a: yield "".join(a); a = []
     if a: yield "".join(a)
 
 def cooccurrence(iterable, window=(-1,-1), term1=lambda x: True, term2=lambda x: True, normalize=lambda x: x, matrix=None, update=None):
@@ -534,7 +534,7 @@ def cooccurrence(iterable, window=(-1,-1), term1=lambda x: True, term2=lambda x:
                 x1 = normalize(x1)
                 if term1(x1):
                     # Iterate the window and filter co-occurent terms.
-                    for j, x2 in enumerate(list(q)[i+window[0]:i+window[1]+1]):
+                    for j, x2 in enumerate(list(q)[i + window[0]:i + window[1] + 1]):
                         if not isinstance(x2, Sentinel):
                             x2 = normalize(x2)
                             if term2(x2):
@@ -765,7 +765,7 @@ def quantile(iterable, p=0.5, sort=True, a=1, b=-1, c=0, d=1):
     # http://stat.ethz.ch/R-manual/R-patched/library/stats/html/quantile.html
     s = sorted(iterable) if sort is True else list(iterable)
     n = len(s)
-    f, i = modf(a + (b+n) * p - 1)
+    f, i = modf(a + (b + n) * p - 1)
     if n == 0:
         raise ValueError("quantile() arg is an empty sequence")
     if f == 0:
@@ -775,7 +775,7 @@ def quantile(iterable, p=0.5, sort=True, a=1, b=-1, c=0, d=1):
     if i >= n:
         return float(s[-1])
     i = int(floor(i))
-    return s[i] + (s[i+1] - s[i]) * (c + d * f)
+    return s[i] + (s[i + 1] - s[i]) * (c + d * f)
 
 #print(quantile(range(10), p=0.5) == median(range(10)))
 
@@ -833,8 +833,8 @@ def fisher_exact_test(a, b, c, d, **kwargs):
     # Probabilities of "more extreme" data, in both directions (two-tailed).
     # Based on: http://www.koders.com/java/fid868948AD5196B75C4C39FEA15A0D6EAF34920B55.aspx?s=252
     s = [cutoff] + \
-        [p(a+i, b-i, c-i, d+i) for i in range(1, min(int(b), int(c)) + 1)] + \
-        [p(a-i, b+i, c+i, d-i) for i in range(1, min(int(a), int(d)) + 1)]
+        [p(a + i, b - i, c - i, d + i) for i in range(1, min(int(b), int(c)) + 1)] + \
+        [p(a - i, b + i, c + i, d - i) for i in range(1, min(int(a), int(d)) + 1)]
     return sum(v for v in s if v <= cutoff) or 0.0
 
 fisher = fisher_test = fisher_exact_test
@@ -880,8 +880,8 @@ def pearson_chi_squared_test(observed=[], expected=[], df=None, tail=UPPER):
     e  = list(expected) or _expected(o)
     n  = len(o)
     m  = len(o[0]) if o else 0
-    df = df or (n-1) * (m-1)
-    df = df or (m == 1 and n-1 or m-1)
+    df = df or (n - 1) * (m - 1)
+    df = df or (m == 1 and n - 1 or m - 1)
     x2 = 0.0
     for i in range(n):
         for j in range(m):
@@ -914,8 +914,8 @@ def pearson_log_likelihood_ratio(observed=[], expected=[], df=None, tail=UPPER):
     e  = list(expected) or _expected(o)
     n  = len(o)
     m  = len(o[0]) if o else 0
-    df = df or (n-1) * (m-1)
-    df = df or (m == 1 and n-1 or m-1)
+    df = df or (n - 1) * (m - 1)
+    df = df or (m == 1 and n - 1 or m - 1)
     g  = 0.0
     for i in range(n):
         for j in range(m):
@@ -1029,7 +1029,7 @@ def gammai(a, x, tail=UPPER):
                 if abs((g - g0) / g) < epsilon:
                     return (g * exp(-x + a * log(x) - ln), ln)
                 g0 = g
-        raise StopIteration(abs((g-g0) / g))
+        raise StopIteration(abs((g - g0) / g))
 
     if a <= 0.0:
         return 1.0
@@ -1087,7 +1087,7 @@ def pdf(x, mean=0.0, stdev=1.0):
         the likelihood of x in a distribution with given mean and standard deviation.
     """
     u = float(x - mean) / abs(stdev)
-    return (1 / (sqrt(2*pi) * abs(stdev))) * exp(-u*u / 2)
+    return (1 / (sqrt(2 * pi) * abs(stdev))) * exp(-u * u / 2)
 
 normpdf = pdf
 
@@ -1110,6 +1110,6 @@ def kolmogorov(x):
         return 0.0
     x = -2.0 * x * x
     k = 0
-    for i in reversed(range(1, 27+1, 2)): # 27 25 23 ... 1
+    for i in reversed(range(1, 27 + 1, 2)): # 27 25 23 ... 1
         k = (1 - k) * exp(x * i)
     return 2.0 * k

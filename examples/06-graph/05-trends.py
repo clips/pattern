@@ -27,8 +27,8 @@ for i in range(1,10):
         s = s.split(" ")
         try:
             i = s.index("NEW")
-            A = s[i-1].strip("?!.:;,#@\"'")
-            B = s[i+1].strip("?!.:;,#@\"'")
+            A = s[i - 1].strip("?!.:;,#@\"'")
+            B = s[i + 1].strip("?!.:;,#@\"'")
             # Exclude common phrases such as "this is the new thing".
             if A and B and A not in ("it", "this", "here", "what", "why", "where"):
                 comparisons.append((A,B))

@@ -276,7 +276,7 @@ class Verbs(_Verbs):
         # Over 65% of -ar verbs (6500+) have a regular inflection.
         v = verb.lower()
         # Probably ends in -ir if preceding vowel in stem is -i.
-        er_ir = lambda b: (len(b) > 2 and b[-2] == "i") and b+"ir" or b+"er"
+        er_ir = lambda b: (len(b) > 2 and b[-2] == "i") and b + "ir" or b + "er"
         # Probably infinitive if ends in -ar, -er or -ir.
         if v.endswith(("ar", "er", "ir")):
             return v
@@ -292,10 +292,10 @@ class Verbs(_Verbs):
         v = v.replace("zcá", "ce")
         # saldrár => saler
         if "ldr" in v:
-            return v[:v.index("ldr")+1] + "er"
+            return v[:v.index("ldr") + 1] + "er"
         # compondrán => componer
         if "ndr" in v:
-            return v[:v.index("ndr")+1] + "er"
+            return v[:v.index("ndr") + 1] + "er"
         # Many verbs end in -ar and have a regular inflection:
         for x in ((
           "ando", "ado", "ad",                                # participle
@@ -353,26 +353,26 @@ class Verbs(_Verbs):
         if v.endswith("ar") or not v.endswith(("er", "ir")):
             # Regular inflection for verbs ending in -ar.
             return [v,
-                b+"o", b+"as", b+"a", b+"amos", b+"áis", b+"an", b+"ando",
-                b+"é", b+"aste", b+"ó", b+"amos", b+"asteis", b+"aron", b+"ado",
-                b+"aba", b+"abas", b+"aba", b+"ábamos", b+"abais", b+"aban",
-                v+"é", v+"ás", v+"á", v+"emos", v+"éis", v+"án",
-                v+"ía", v+"ías", v+"ía", v+"íamos", v+"íais", v+"ían",
-                b+"a", v[:-1]+"d",
-                b+"e", b+"es", b+"e", b+"emos", b+"éis", b+"en",
-                v+"a", v+"as", v+"a", b+"áramos", v+"ais", v+"an"]
+                b + "o", b + "as", b + "a", b + "amos", b + "áis", b + "an", b + "ando",
+                b + "é", b + "aste", b + "ó", b + "amos", b + "asteis", b + "aron", b + "ado",
+                b + "aba", b + "abas", b + "aba", b + "ábamos", b + "abais", b + "aban",
+                v + "é", v + "ás", v + "á", v + "emos", v + "éis", v + "án",
+                v + "ía", v + "ías", v + "ía", v + "íamos", v + "íais", v + "ían",
+                b + "a", v[:-1] + "d",
+                b + "e", b + "es", b + "e", b + "emos", b + "éis", b + "en",
+                v + "a", v + "as", v + "a", b + "áramos", v + "ais", v + "an"]
         else:
             # Regular inflection for verbs ending in -er and -ir.
             p1, p2 = v.endswith("er") and ("e", "é") or ("i","e")
             return [v,
-                b+"o", b+"es", b+"e", b+p1+"mos", b+p2+"is", b+"en", b+"iendo",
-                b+"í", b+"iste", b+"ió", b+"imos", b+"isteis", b+"ieron", b+"ido",
-                b+"ía", b+"ías", b+"ía", b+"íamos", b+"íais", b+"ían",
-                v+"é", v+"ás", v+"á", v+"emos", v+"éis", v+"án",
-                v+"ía", v+"ías", v+"ía", v+"íamos", v+"íais", v+"ían",
-                b+"a", v[:-1]+"d",
-                b+"a", b+"as", b+"a", b+"amos", b+"áis", b+"an",
-                b+"iera", b+"ieras", b+"iera", b+"iéramos", b+"ierais", b+"ieran"]
+                b + "o", b + "es", b + "e", b + p1 + "mos", b + p2 + "is", b + "en", b + "iendo",
+                b + "í", b + "iste", b + "ió", b + "imos", b + "isteis", b + "ieron", b + "ido",
+                b + "ía", b + "ías", b + "ía", b + "íamos", b + "íais", b + "ían",
+                v + "é", v + "ás", v + "á", v + "emos", v + "éis", v + "án",
+                v + "ía", v + "ías", v + "ía", v + "íamos", v + "íais", v + "ían",
+                b + "a", v[:-1] + "d",
+                b + "a", b + "as", b + "a", b + "amos", b + "áis", b + "an",
+                b + "iera", b + "ieras", b + "iera", b + "iéramos", b + "ierais", b + "ieran"]
 
 verbs = Verbs()
 

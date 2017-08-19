@@ -93,7 +93,7 @@ def gen_feature_nodearray(xi, feature_max=None):
 		elif isinstance(xi, (list, tuple)):
 			xi_shift = 1
 			index_range = range(1, len(xi) + 1)
-		index_range = list(filter(lambda j: xi[j-xi_shift] != 0, index_range))
+		index_range = list(filter(lambda j: xi[j - xi_shift] != 0, index_range))
 
 		if feature_max:
 			index_range = list(filter(lambda j: j <= feature_max, index_range))
@@ -101,7 +101,7 @@ def gen_feature_nodearray(xi, feature_max=None):
 	else:
 		raise TypeError('xi should be a dictionary, list, tuple, 1-d numpy array, or tuple of (index, data)')
 
-	ret = (feature_node*(len(index_range)+2))()
+	ret = (feature_node * (len(index_range) + 2))()
 	ret[-1].index = -1 # for bias term
 	ret[-2].index = -1
 
@@ -130,23 +130,23 @@ except:
 @jit
 def csr_to_problem_jit(l, x_val, x_ind, x_rowptr, prob_val, prob_ind, prob_rowptr):
 	for i in range(l):
-		b1,e1 = x_rowptr[i], x_rowptr[i+1]
-		b2,e2 = prob_rowptr[i], prob_rowptr[i+1]-2
+		b1,e1 = x_rowptr[i], x_rowptr[i + 1]
+		b2,e2 = prob_rowptr[i], prob_rowptr[i + 1] - 2
 		for j in range(b1,e1):
-			prob_ind[j-b1+b2] = x_ind[j]+1
-			prob_val[j-b1+b2] = x_val[j]
+			prob_ind[j - b1 + b2] = x_ind[j] + 1
+			prob_val[j - b1 + b2] = x_val[j]
 def csr_to_problem_nojit(l, x_val, x_ind, x_rowptr, prob_val, prob_ind, prob_rowptr):
 	for i in range(l):
-		x_slice = slice(x_rowptr[i], x_rowptr[i+1])
-		prob_slice = slice(prob_rowptr[i], prob_rowptr[i+1]-2)
-		prob_ind[prob_slice] = x_ind[x_slice]+1
+		x_slice = slice(x_rowptr[i], x_rowptr[i + 1])
+		prob_slice = slice(prob_rowptr[i], prob_rowptr[i + 1] - 2)
+		prob_ind[prob_slice] = x_ind[x_slice] + 1
 		prob_val[prob_slice] = x_val[x_slice]
 
 def csr_to_problem(x, prob):
 	# Extra space for termination node and (possibly) bias term
-	x_space = prob.x_space = scipy.empty((x.nnz+x.shape[0]*2), dtype=feature_node)
+	x_space = prob.x_space = scipy.empty((x.nnz + x.shape[0] * 2), dtype=feature_node)
 	prob.rowptr = x.indptr.copy()
-	prob.rowptr[1:] += 2*scipy.arange(1,x.shape[0]+1)
+	prob.rowptr[1:] += 2 * scipy.arange(1,x.shape[0] + 1)
 	prob_ind = x_space["index"]
 	prob_val = x_space["value"]
 	prob_ind[:] = -1
@@ -203,7 +203,7 @@ class problem(Structure):
 			base = addressof(self.x_space.ctypes.data_as(POINTER(feature_node))[0])
 			x_ptr = cast(self.x, POINTER(c_uint64))
 			x_ptr = scipy.ctypeslib.as_array(x_ptr,(self.l,))
-			x_ptr[:] = self.rowptr[:-1]*sizeof(feature_node)+base
+			x_ptr[:] = self.rowptr[:-1] * sizeof(feature_node) + base
 		else:
 			for i, xi in enumerate(self.x_space): self.x[i] = xi
 
@@ -223,8 +223,8 @@ class problem(Structure):
 			for xi in self.x_space:
 				xi[-2] = node
 		else:
-			self.x_space["index"][self.rowptr[1:]-2] = node.index
-			self.x_space["value"][self.rowptr[1:]-2] = node.value
+			self.x_space["index"][self.rowptr[1:] - 2] = node.index
+			self.x_space["value"][self.rowptr[1:] - 2] = node.value
 
 		self.bias = bias
 
@@ -306,7 +306,7 @@ class parameter(Structure):
 			elif argv[i].startswith("-w"):
 				i = i + 1
 				self.nr_weight += 1
-				weight_label += [int(argv[i-1][2:])]
+				weight_label += [int(argv[i - 1][2:])]
 				weight += [float(argv[i])]
 			elif argv[i] == "-q":
 				self.print_func = PRINT_STRING_FUN(print_null)
@@ -318,8 +318,8 @@ class parameter(Structure):
 			i += 1
 
 		liblinear.set_print_string_function(self.print_func)
-		self.weight_label = (c_int*self.nr_weight)()
-		self.weight = (c_double*self.nr_weight)()
+		self.weight_label = (c_int * self.nr_weight)()
+		self.weight = (c_double * self.nr_weight)()
 		for i in range(self.nr_weight):
 			self.weight[i] = weight[i]
 			self.weight_label[i] = weight_label[i]
@@ -378,7 +378,7 @@ class model(Structure):
 		return liblinear.get_decfun_bias(self, label_idx)
 
 	def get_decfun(self, label_idx=0):
-		w = [liblinear.get_decfun_coef(self, feat_idx, label_idx) for feat_idx in range(1, self.nr_feature+1)]
+		w = [liblinear.get_decfun_coef(self, feat_idx, label_idx) for feat_idx in range(1, self.nr_feature + 1)]
 		b = liblinear.get_decfun_bias(self, label_idx)
 		return (w, b)
 

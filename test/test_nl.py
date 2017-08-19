@@ -37,7 +37,7 @@ class TestInflection(unittest.TestCase):
         i, n = 0, 0
         for pred, attr, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-nl-celex.csv")):
             if nl.pluralize(sg) == pl:
-                i +=1
+                i += 1
             n += 1
         self.assertTrue(float(i) / n > 0.74)
         print("pattern.nl.pluralize()")
@@ -48,7 +48,7 @@ class TestInflection(unittest.TestCase):
         i, n = 0, 0
         for pred, attr, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-nl-celex.csv")):
             if nl.singularize(pl) == sg:
-                i +=1
+                i += 1
             n += 1
         self.assertTrue(float(i) / n > 0.88)
         print("pattern.nl.singularize()")
@@ -59,7 +59,7 @@ class TestInflection(unittest.TestCase):
         i, n = 0, 0
         for pred, attr, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-nl-celex.csv")):
             if nl.attributive(pred) == attr:
-                i +=1
+                i += 1
             n += 1
         self.assertTrue(float(i) / n > 0.96)
         print("pattern.nl.attributive()")
@@ -70,7 +70,7 @@ class TestInflection(unittest.TestCase):
         i, n = 0, 0
         for pred, attr, sg, pl in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-nl-celex.csv")):
             if nl.predicative(attr) == pred:
-                i +=1
+                i += 1
             n += 1
         self.assertTrue(float(i) / n > 0.96)
         print("pattern.nl.predicative()")

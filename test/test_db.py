@@ -243,7 +243,7 @@ class TestUtilityFunctions(unittest.TestCase):
         v = [3,1,2]
         self.assertEqual(db.order(v), [1,2,0])
         self.assertEqual(db.order(v, reverse=True), [0,2,1])
-        self.assertEqual(db.order(v, cmp=lambda a,b: a-b), [1,2,0])
+        self.assertEqual(db.order(v, cmp=lambda a,b: a - b), [1,2,0])
         self.assertEqual(db.order(v, key=lambda i:i), [1,2,0])
         print("pattern.db.order()")
 
@@ -1027,7 +1027,7 @@ class TestDatasheet(unittest.TestCase):
         v2 = v1.group(0)
         v3 = v1.group(0, function=db.LAST)
         v4 = v1.group(0, function=(db.FIRST, db.COUNT, db.CONCATENATE))
-        v5 = v1.group(0, function=db.CONCATENATE, key=lambda j: j>0)
+        v5 = v1.group(0, function=db.CONCATENATE, key=lambda j: j > 0)
         self.assertEqual(v2, [[1,2,"a"], [0,0,"d"]])
         self.assertEqual(v3, [[1,4,"c"], [0,0,"d"]])
         self.assertEqual(v4, [[1,3,"a,b,c"], [0,1,"d"]])
@@ -1062,7 +1062,7 @@ class TestDatasheet(unittest.TestCase):
     def test_map(self):
         # Assert Datasheet.map() (in-place).
         v = db.Datasheet(rows=[[1,2],[3,4]])
-        v.map(lambda x: x+1)
+        v.map(lambda x: x + 1)
         self.assertEqual(v, [[2,3],[4,5]])
         print("pattern.db.Datasheet.map()")
 
@@ -1091,8 +1091,8 @@ class TestDatasheet(unittest.TestCase):
         v2 = "a" * 150
         v3 = "aaa " * 50
         self.assertEqual(db.truncate(v1), (v1, ""))
-        self.assertEqual(db.truncate(v2), ("a"*99+"-", "a"*51))
-        self.assertEqual(db.truncate(v3), (("aaa "*25).strip(), "aaa "*25))
+        self.assertEqual(db.truncate(v2), ("a" * 99 + "-", "a" * 51))
+        self.assertEqual(db.truncate(v3), (("aaa " * 25).strip(), "aaa " * 25))
         print("pattern.db.truncate()")
 
     def test_pprint(self):

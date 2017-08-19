@@ -403,7 +403,7 @@ def map32(id, pos=NOUN):
         _map32_cache = (x for x in _map32_cache if x[0] != ";") # comments
         _map32_cache = dict(x.strip().split(" ") for x in _map32_cache)
     k = pos in _map32_pos2 and pos or _map32_pos1.get(pos, "x")
-    k+= str(id).lstrip("0")
+    k += str(id).lstrip("0")
     k = _map32_cache.get(k, None)
     if k is not None:
         return int(k[1:]), _map32_pos2[k[0]]
@@ -478,7 +478,7 @@ class sentiment(object):
 
     def __getitem__(self, w):
         p, s = sentiwordnet.get(w, (0.0, 0.0))
-        return p < 0 and (0.0, -p, 1.0-s) or (p, 0.0, 1.0-s)
+        return p < 0 and (0.0, -p, 1.0 - s) or (p, 0.0, 1.0 - s)
 
     def __contains__(self, w):
         return w in sentiwordnet

@@ -250,10 +250,10 @@ class odict(dict):
         return dict.pop(self, k, *args, **kwargs)
 
     def popitem(self):
-        k=self._o[-1] if self._o else None; return (k, self.pop(k))
+        k = self._o[-1] if self._o else None; return (k, self.pop(k))
 
     def clear(self):
-        self._o=[]; dict.clear(self)
+        self._o = []; dict.clear(self)
 
     def iterkeys(self):
         return reversed(self._o)
@@ -628,11 +628,11 @@ class Constraint(object):
                     s2 = None
                 # Compare the word to the allowed words (which can contain wildcards).
                 if _match(s1, w):
-                    b=True; break
+                    b = True; break
                 # Compare the word lemma to the allowed words, e.g.,
                 # if "was" is not in the constraint, perhaps "be" is, which is a good match.
                 if s2 and _match(s2, w):
-                    b=True; break
+                    b = True; break
 
         # If the constraint defines allowed taxonomy terms,
         # and the given word did not match an allowed word, traverse the taxonomy.
@@ -652,7 +652,7 @@ class Constraint(object):
                         s = s.lower()
                     # Compare ancestors of the word to each term in Constraint.taxa.
                     for p in self.taxonomy.parents(s, recursive=True):
-                        if find(lambda s: p==s, self.taxa): # No wildcards.
+                        if find(lambda s: p == s, self.taxa): # No wildcards.
                             return True
         return b
 
@@ -674,7 +674,7 @@ class Constraint(object):
         a = (s.replace("\\*", "*") for s in a)
         a = [s.replace(" ", "_") for s in a]
         if self.exclude:
-            a.extend("!"+s for s in self.exclude.string[1:-1].split("|"))
+            a.extend("!" + s for s in self.exclude.string[1:-1].split("|"))
         return (self.optional and "%s(%s)%s" or "%s[%s]%s") % (
             self.first and "^" or "", "|".join(a), self.multiple and "+" or "")
 
@@ -705,7 +705,7 @@ class Pattern(object):
         # Assign Constraint.index:
         i = 0
         for constraint in self.sequence:
-            constraint.index = i; i+=1
+            constraint.index = i; i += 1
         # There are two search modes: STRICT and GREEDY.
         # - In STRICT, "rabbit" matches only the string "rabbit".
         # - In GREEDY, "rabbit|NN" matches the string "rabbit" tagged "NN".
@@ -739,7 +739,7 @@ class Pattern(object):
             # Spaces in a range encapsulated in square brackets are encoded.
             # "[Windows Vista]" is one range, don't split on space.
             p.append(s[i:m.start()])
-            p.append(s[m.start():m.end()].replace(" ", "&space;")); i=m.end()
+            p.append(s[m.start():m.end()].replace(" ", "&space;")); i = m.end()
         p.append(s[i:])
         s = "".join(p)
         s = s.replace("][", "] [")
@@ -763,7 +763,7 @@ class Pattern(object):
             # Insert groups in opened-first order (i).
             while s.startswith("{"):
                 s = s[1:]
-                G.append((i, [])); i+=1
+                G.append((i, [])); i += 1
                 O.append([])
             for g in G:
                 g[1].append(constraint)
@@ -798,7 +798,7 @@ class Pattern(object):
         if sentence.__class__.__name__ == "Sentence":
             pass
         elif isinstance(sentence, list) or sentence.__class__.__name__ == "Text":
-            a=[]; [a.extend(self.search(s)) for s in sentence]; return a
+            a = []; [a.extend(self.search(s)) for s in sentence]; return a
         elif isinstance(sentence, str):
             sentence = Sentence(sentence)
         elif isinstance(sentence, Match) and len(sentence) > 0:
@@ -809,7 +809,7 @@ class Pattern(object):
         m = self.match(sentence, _v=v)
         while m:
             a.append(m)
-            m = self.match(sentence, start=m.words[-1].index+1, _v=v, _u=u)
+            m = self.match(sentence, start=m.words[-1].index + 1, _v=v, _u=u)
         return a
 
     def match(self, sentence, start=0, _v=None, _u=None):
@@ -865,7 +865,7 @@ class Pattern(object):
         # --- MATCH ----------
         if i == n:
             if w0 is not None:
-                w1 = sentence.words[start-1]
+                w1 = sentence.words[start - 1]
                 # Greedy algorithm:
                 # - "cat" matches "the big cat" if "cat" is head of the chunk.
                 # - "Tom" matches "Tom the cat" if "Tom" is head of the chunk.
@@ -886,7 +886,7 @@ class Pattern(object):
                                     return None
                 w0, w1 = w01
                 # Update map for optional chunk words (see below).
-                words = sentence.words[w0.index:w1.index+1]
+                words = sentence.words[w0.index:w1.index + 1]
                 for w in words:
                     if w.index not in map and w.chunk:
                         wx = find(lambda w: w.index in map, reversed(w.chunk.words))
@@ -905,11 +905,11 @@ class Pattern(object):
                 map[w.index] = constraint
                 if constraint.multiple:
                     # Next word vs. same constraint if Constraint.multiple=True.
-                    m = self._match(sequence, sentence, w.index+1, i, w0 or w, map, d+1)
+                    m = self._match(sequence, sentence, w.index + 1, i, w0 or w, map, d + 1)
                     if m:
                         return m
                 # Next word vs. next constraint.
-                m = self._match(sequence, sentence, w.index+1, i+1, w0 or w, map, d+1)
+                m = self._match(sequence, sentence, w.index + 1, i + 1, w0 or w, map, d + 1)
                 if m:
                     return m
             # Chunk words other than the head are optional:
@@ -973,7 +973,7 @@ def escape(string):
         For example: "hello!" => "hello\!".
     """
     for ch in ("{","}","[","]","(",")","_","|","!","*","+","^"):
-        string = string.replace(ch, "\\"+ch)
+        string = string.replace(ch, "\\" + ch)
     return string
 
 #--- PATTERN MATCH ---------------------------------------------------------------------------------
@@ -1007,7 +1007,7 @@ class Match(object):
         return self.words and self.words[0].index or None
     @property
     def stop(self):
-        return self.words and self.words[-1].index+1 or None
+        return self.words and self.words[-1].index + 1 or None
 
     def constraint(self, word):
         """ Returns the constraint that matches the given Word, or None.
@@ -1034,20 +1034,20 @@ class Match(object):
         if isinstance(constraint, (int, Constraint)):
             if isinstance(constraint, int):
                 i = constraint
-                i = i<0 and i%n or i
+                i = i < 0 and i % n or i
             else:
                 i = self.pattern.sequence.index(constraint)
             W = self._map2.get(i,[])
-            W = [self.words[i-self.words[0].index] for i in W]
+            W = [self.words[i - self.words[0].index] for i in W]
         if isinstance(constraint, (list, tuple)):
-            W = []; [W.extend(self._map2.get(j<0 and j%n or j,[])) for j in constraint]
-            W = [self.words[i-self.words[0].index] for i in W]
+            W = []; [W.extend(self._map2.get(j < 0 and j % n or j,[])) for j in constraint]
+            W = [self.words[i - self.words[0].index] for i in W]
             W = unique(W)
         a = []
         i = 0
         while i < len(W):
             w = W[i]
-            if w.chunk and W[i:i+len(w.chunk)] == w.chunk.words:
+            if w.chunk and W[i:i + len(w.chunk)] == w.chunk.words:
                 i += len(w.chunk) - 1
                 a.append(w.chunk)
             else:
@@ -1064,7 +1064,7 @@ class Match(object):
         if index < 0 or index > len(self.pattern.groups):
             raise IndexError("no such group")
         if index > 0 and index <= len(self.pattern.groups):
-            g = self.pattern.groups[index-1]
+            g = self.pattern.groups[index - 1]
         if index == 0:
             g = self.pattern.sequence
         if chunked is True:
@@ -1095,7 +1095,7 @@ class Group(list):
         return self and self[0].index or None
     @property
     def stop(self):
-        return self and self[-1].index+1 or None
+        return self and self[-1].index + 1 or None
 
     @property
     def string(self):

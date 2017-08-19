@@ -510,7 +510,7 @@ class TestGraphTraversal(unittest.TestCase):
         for id1, id2, heuristic, directed, path in (
           ("a", "d", None, False, ["a", "d"]),
           ("a", "d", None, True,  ["a", "b", "d"]),
-          ("a", "d", lambda id1, id2: id1=="d" and id2=="a" and 1 or 0, False,  ["a", "b", "d"])):
+          ("a", "d", lambda id1, id2: id1 == "d" and id2 == "a" and 1 or 0, False,  ["a", "b", "d"])):
             p = graph.dijkstra_shortest_path(g, id1, id2, heuristic, directed)
             self.assertEqual(p, path)
         print("pattern.graph.dijkstra_shortest_path()")
@@ -522,7 +522,7 @@ class TestGraphTraversal(unittest.TestCase):
         a = [
             graph.dijkstra_shortest_paths(g, "a"),
             graph.dijkstra_shortest_paths(g, "a", directed=True),
-            graph.dijkstra_shortest_paths(g, "a", heuristic=lambda id1, id2: id1=="d" and id2=="a" and 1 or 0)
+            graph.dijkstra_shortest_paths(g, "a", heuristic=lambda id1, id2: id1 == "d" and id2 == "a" and 1 or 0)
         ]
         for i in range(len(a)):
             a[i] = sorted(a[i].items())

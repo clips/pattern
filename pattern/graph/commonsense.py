@@ -136,7 +136,7 @@ class Commonsense(Graph):
                 self.add_edge(concept1, concept2,
                     type = relation,
                  context = context,
-                  weight = min(int(weight)*0.1, 1.0))
+                  weight = min(int(weight) * 0.1, 1.0))
 
     @property
     def concepts(self):
