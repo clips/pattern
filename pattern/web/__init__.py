@@ -438,28 +438,28 @@ class URL(object):
             s = urlencode(s)
         else:
             # Python 2: urlencode() expects byte strings
-            t = {key : value.encode("utf-8") if isinstance(value, str) else value for key, value in s.items()}
+            t = {key: value.encode("utf-8") if isinstance(value, str) else value for key, value in s.items()}
             s = urlencode(t).decode("utf-8")
         return s
 
     def __getattr__(self, k):
-        if k in self.__dict__ :
+        if k in self.__dict__:
             return self.__dict__[k]
-        if k in self.parts    :
+        if k in self.parts:
             return self.__dict__["_parts"][k]
         raise AttributeError("'URL' object has no attribute '%s'" % k)
 
     def __setattr__(self, k, v):
-        if k in self.__dict__ :
+        if k in self.__dict__:
             self.__dict__[k] = u(v)
             return
-        if k == "string"      :
+        if k == "string":
             self._set_string(v)
             return
-        if k == "query"       :
+        if k == "query":
             self.parts[k] = v
             return
-        if k in self.parts    :
+        if k in self.parts:
             self.__dict__["_parts"][k] = u(v)
             return
         raise AttributeError("'URL' object has no attribute '%s'" % k)
@@ -1393,7 +1393,7 @@ class Bing(SearchEngine):
                     TINY: "'Size:Small'",
                    SMALL: "'Size:Small'",
                   MEDIUM: "'Size:Medium'",
-                   LARGE: "'Size:Large'" }[size]
+                   LARGE: "'Size:Large'"}[size]
         # 3) Restrict language.
         if type in (SEARCH, IMAGE) and self.language is not None:
             url.query["Query"] = url.query["Query"][:-1] + " language: %s'" % self.language

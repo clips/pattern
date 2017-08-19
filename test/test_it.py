@@ -171,18 +171,18 @@ class TestInflection(unittest.TestCase):
           ("essere", "siamo",     (it.PRESENT, 1, it.PLURAL, it.IMPERATIVE)),
           ("essere", "siate",     (it.PRESENT, 2, it.PLURAL, it.IMPERATIVE)),
           ("essere", "siano",     (it.PRESENT, 3, it.PLURAL, it.IMPERATIVE)),
-          ("essere", "sia",      (it.PRESENT, 1, it.SINGULAR, it.SUBJUNCTIVE)),
-          ("essere", "sia",      (it.PRESENT, 2, it.SINGULAR, it.SUBJUNCTIVE)),
-          ("essere", "sia",      (it.PRESENT, 3, it.SINGULAR, it.SUBJUNCTIVE)),
-          ("essere", "siamo",    (it.PRESENT, 1, it.PLURAL, it.SUBJUNCTIVE)),
-          ("essere", "siate",    (it.PRESENT, 2, it.PLURAL, it.SUBJUNCTIVE)),
-          ("essere", "siano",    (it.PRESENT, 3, it.PLURAL, it.SUBJUNCTIVE)),
-          ("essere", "fossi",    (it.PAST, 1, it.SINGULAR, it.SUBJUNCTIVE)),
-          ("essere", "fossi",    (it.PAST, 2, it.SINGULAR, it.SUBJUNCTIVE)),
-          ("essere", "fosse",    (it.PAST, 3, it.SINGULAR, it.SUBJUNCTIVE)),
-          ("essere", "fossimo",  (it.PAST, 1, it.PLURAL, it.SUBJUNCTIVE)),
-          ("essere", "foste",    (it.PAST, 2, it.PLURAL, it.SUBJUNCTIVE)),
-          ("essere", "fossero",  (it.PAST, 3, it.PLURAL, it.SUBJUNCTIVE))):
+          ("essere", "sia",       (it.PRESENT, 1, it.SINGULAR, it.SUBJUNCTIVE)),
+          ("essere", "sia",       (it.PRESENT, 2, it.SINGULAR, it.SUBJUNCTIVE)),
+          ("essere", "sia",       (it.PRESENT, 3, it.SINGULAR, it.SUBJUNCTIVE)),
+          ("essere", "siamo",     (it.PRESENT, 1, it.PLURAL, it.SUBJUNCTIVE)),
+          ("essere", "siate",     (it.PRESENT, 2, it.PLURAL, it.SUBJUNCTIVE)),
+          ("essere", "siano",     (it.PRESENT, 3, it.PLURAL, it.SUBJUNCTIVE)),
+          ("essere", "fossi",     (it.PAST, 1, it.SINGULAR, it.SUBJUNCTIVE)),
+          ("essere", "fossi",     (it.PAST, 2, it.SINGULAR, it.SUBJUNCTIVE)),
+          ("essere", "fosse",     (it.PAST, 3, it.SINGULAR, it.SUBJUNCTIVE)),
+          ("essere", "fossimo",   (it.PAST, 1, it.PLURAL, it.SUBJUNCTIVE)),
+          ("essere", "foste",     (it.PAST, 2, it.PLURAL, it.SUBJUNCTIVE)),
+          ("essere", "fossero",   (it.PAST, 3, it.PLURAL, it.SUBJUNCTIVE))):
             self.assertEqual(it.conjugate(v1, tense), v2)
         print("pattern.it.conjugate()")
 

@@ -774,7 +774,7 @@ class Sentence(object):
                REL: None,
               ROLE: None,
             ANCHOR: None,
-             LEMMA: None }
+             LEMMA: None}
         # Split the slash-formatted token into separate tags in the given order.
         # Decode &slash; characters (usually in words and lemmata).
         # Assume None for missing tags (except the word itself, which defaults to an empty string).
@@ -1336,7 +1336,7 @@ def parse_xml(sentence, tab="\t", id=""):
             </chink>
         </sentence>
     """
-    uid  = lambda *parts: "".join([str(id), _UID_SEPARATOR ] + [str(x) for x in parts]).lstrip(_UID_SEPARATOR)
+    uid  = lambda *parts: "".join([str(id), _UID_SEPARATOR] + [str(x) for x in parts]).lstrip(_UID_SEPARATOR)
     push = lambda indent: indent + tab         # push() increases the indentation.
     pop  = lambda indent: indent[:-len(tab)] # pop() decreases the indentation.
     indent = tab
@@ -1577,7 +1577,7 @@ def _parse_relation(chunk, type="O"):
     r2 = chunk.get(XML_ID, chunk.get(XML_OF))
     r1 = [x != "-" and x or None for x in r1.split("|")] or [None]
     r2 = [x != "-" and x or None for x in r2.split("|")] or [None]
-    r2 = [x is not None and x.split(_UID_SEPARATOR )[-1] or x for x in r2]
+    r2 = [x is not None and x.split(_UID_SEPARATOR)[-1] or x for x in r2]
     if len(r1) < len(r2):
         r1 = r1 + r1 * (len(r2) - len(r1)) # [1] ["SBJ", "OBJ"] => "SBJ-1;OBJ-1"
     if len(r2) < len(r1):
@@ -1591,19 +1591,19 @@ def _parse_token(word, chunk="O", pnp="O", relation="O", anchor="O",
     """
     tags = []
     for tag in format:
-        if   tag == WORD   :
+        if   tag == WORD:
             tags.append(xml_decode(word.value))
-        elif tag == POS    :
+        elif tag == POS:
             tags.append(xml_decode(word.get(XML_TYPE, "O")))
-        elif tag == CHUNK  :
+        elif tag == CHUNK:
             tags.append(chunk)
-        elif tag == PNP    :
+        elif tag == PNP:
             tags.append(pnp)
-        elif tag == REL    :
+        elif tag == REL:
             tags.append(relation)
-        elif tag == ANCHOR :
+        elif tag == ANCHOR:
             tags.append(anchor)
-        elif tag == LEMMA  :
+        elif tag == LEMMA:
             tags.append(xml_decode(word.get(XML_LEMMA, "")))
         else:
             # Custom tags when the parser has been extended, see also Word.custom_tags{}.
@@ -1725,33 +1725,33 @@ def table(sentence, fill=1, placeholder="-"):
     tags += [tag for tag in sentence.token if tag not in tags]
     def format(token, tag):
         # Returns the token tag as a string.
-        if   tag == WORD   :
+        if   tag == WORD:
             s = token.string
-        elif tag == POS    :
+        elif tag == POS:
             s = token.type
-        elif tag == IOB    :
+        elif tag == IOB:
             s = token.chunk and (token.index == token.chunk.start and "B" or "I")
-        elif tag == CHUNK  :
+        elif tag == CHUNK:
             s = token.chunk and token.chunk.type
-        elif tag == ROLE   :
+        elif tag == ROLE:
             s = token.chunk and token.chunk.role
-        elif tag == REL    :
+        elif tag == REL:
             s = token.chunk and token.chunk.relation and str(token.chunk.relation)
-        elif tag == PNP    :
+        elif tag == PNP:
             s = token.chunk and token.chunk.pnp and token.chunk.pnp.type
-        elif tag == ANCHOR :
+        elif tag == ANCHOR:
             s = token.chunk and token.chunk.anchor_id
-        elif tag == LEMMA  :
+        elif tag == LEMMA:
             s = token.lemma
-        else               :
+        else:
             s = token.custom_tags.get(tag)
         return s or placeholder
     def outline(column, fill=1, padding=3, align="left"):
         # Add spaces to each string in the column so they line out to the highest width.
         n = max([len(x) for x in column] + [fill])
-        if align == "left"  :
+        if align == "left":
             return [x + " " * (n - len(x)) + " " * padding for x in column]
-        if align == "right" :
+        if align == "right":
             return [" " * (n - len(x)) + x + " " * padding for x in column]
 
     # Gather the tags of the tokens in the sentece per column.

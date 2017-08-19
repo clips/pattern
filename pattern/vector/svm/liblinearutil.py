@@ -214,13 +214,13 @@ def train(arg1, arg2=None, arg3=None):
 			param = arg2
 		else:
 			param = parameter(arg2)
-	if prob == None or param == None :
+	if prob == None or param == None:
 		raise TypeError("Wrong types for the arguments")
 
 	prob.set_bias(param.bias)
 	liblinear.set_print_string_function(param.print_func)
 	err_msg = liblinear.check_parameter(prob, param)
-	if err_msg :
+	if err_msg:
 		raise ValueError('Error: %s' % err_msg)
 
 	if param.flag_find_C:

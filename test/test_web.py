@@ -315,13 +315,13 @@ class TestPlaintext(unittest.TestCase):
         # Assert HTML parser and tag stripper.
         for html, plain in (
           ("<b>ünîcøde</b>", "ünîcøde"),
-          ( "<img src=""/>", ""),
-          ( "<p>text</p>", "text\n\n"),
-          ( "<li>text</li>", "* text\n"),
-          ( "<td>text</td>", "text\t"),
-          ( "<br>", "\n"),
-          ( "<br/>", "\n\n"),
-          ( "<br /><br/><br>", "\n\n\n\n\n")):
+          ("<img src=""/>", ""),
+          ("<p>text</p>", "text\n\n"),
+          ("<li>text</li>", "* text\n"),
+          ("<td>text</td>", "text\t"),
+          ("<br>", "\n"),
+          ("<br/>", "\n\n"),
+          ("<br /><br/><br>", "\n\n\n\n\n")):
             self.assertEqual(web.strip_tags(html), plain)
         # Assert exclude tags and attributes
         v = web.strip_tags("<a href=\"\" onclick=\"\">text</a>", exclude={"a": ["href"]})

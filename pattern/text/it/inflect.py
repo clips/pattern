@@ -152,16 +152,16 @@ plural_irregular = {
     "braccio": "braccia", # bracci (arms of a lamp or cross)
     "budello": "budelli", # budella (intestines)
     "camicia": "camicie",
-        "bue": "buoi"   ,
-        "dio": "dei"    ,
-       "dito": "dita"   ,
-     "doccia": "docce"  ,
-     "inizio": "inizi"  ,
-     "labbro": "labbra" , # labbri (borders)
-       "mano": "mani"   ,
-    "negozio": "negozi" ,
-       "osso": "ossa"   , # ossi (dog bones)
-       "uomo": "uomini" ,
+        "bue": "buoi",
+        "dio": "dei",
+       "dito": "dita",
+     "doccia": "docce",
+     "inizio": "inizi",
+     "labbro": "labbra", # labbri (borders)
+       "mano": "mani",
+    "negozio": "negozi",
+       "osso": "ossa", # ossi (dog bones)
+       "uomo": "uomini",
        "uovo": "uova"
 }
 

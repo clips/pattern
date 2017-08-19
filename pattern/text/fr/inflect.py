@@ -90,7 +90,7 @@ def singularize(word, pos=NOUN, custom={}):
     w = word.lower()
     # Common articles, determiners, pronouns:
     if pos in ("DT", "PRP", "PRP$", "WP", "RB", "IN"):
-        if w == "du" :
+        if w == "du":
             return "de"
         if w == "ces":
             return "ce"

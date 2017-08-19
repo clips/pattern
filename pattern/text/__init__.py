@@ -1400,9 +1400,9 @@ def find_relations(chunked):
         if 0 < i < len(chunks) - 1 and len(chunk) == 1 and chunk[-1][-1] == "O":
             t0, t1, t2 = chunks[i - 1][-1], chunks[i][0], chunks[i + 1][0] # previous / current / next
             if tag(t1) == "PP" and t2[1] in ("DT", "PR", "PRP$"):
-                if t0[0] in BE and t1[0] in ("in", "at")      :
+                if t0[0] in BE and t1[0] in ("in", "at"):
                     t1[-1] = "PP-LOC"
-                if t0[0] in GO and t1[0] in ("to", "towards") :
+                if t0[0] in GO and t1[0] in ("to", "towards"):
                     t1[-1] = "PP-DIR"
     related = []
     [related.extend(chunk) for chunk in chunks]
@@ -1546,14 +1546,14 @@ def commandline(parse=Parser().parse):
                 explicit = True
                 break
         if not explicit:
-            a = {"encoding": o.encoding }
+            a = {"encoding": o.encoding}
         else:
             a = {"tokenize": o.tokenize  or False,
                      "tags": o.tags      or False,
                    "chunks": o.chunks    or False,
                 "relations": o.relations or False,
                   "lemmata": o.lemmata   or False,
-                 "encoding": o.encoding }
+                 "encoding": o.encoding}
         s = parse(s, **a)
         # The output can be either slash-formatted string or XML.
         if "xml" in arguments:

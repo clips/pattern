@@ -281,7 +281,7 @@ class parameter(Structure):
 		weight = []
 
 		i = 0
-		while i < len(argv) :
+		while i < len(argv):
 			if argv[i] == "-s":
 				i = i + 1
 				self.solver_type = int(argv[i])
@@ -303,7 +303,7 @@ class parameter(Structure):
 				i = i + 1
 				self.flag_cross_validation = 1
 				self.nr_fold = int(argv[i])
-				if self.nr_fold < 2 :
+				if self.nr_fold < 2:
 					raise ValueError("n-fold cross validation: n must >= 2")
 			elif argv[i].startswith("-w"):
 				i = i + 1

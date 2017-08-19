@@ -52,7 +52,7 @@ class TestUnicode(unittest.TestCase):
             "ünîcøde".encode("utf-16"),
             "ünîcøde".encode("latin-1"),
             "ünîcøde".encode("windows-1252"),
-             "ünîcøde",
+            "ünîcøde",
             "אוניקאָד"
         )
 
@@ -179,7 +179,7 @@ class TestStemmer(unittest.TestCase):
         for a, b in (
           ("Ponies", "Poni"),
           ("pONIES", "pONI"),
-          ( "SKiES", "SKy"),
+          ("SKiES", "SKy"),
           ("cosmos", "cosmos")):
             self.assertEqual(vector.stemmer.stem(a), b)
         print("pattern.vector.stemmer.case_sensitive()")
@@ -443,7 +443,7 @@ class TestModel(unittest.TestCase):
         # Assert inverse document frequency: log(1/df).
         self.assertAlmostEqual(self.model.idf("cats"), 0.69, places=2)
         self.assertAlmostEqual(self.model.idf("purr"), 1.39, places=2)
-        self.assertEqual(      self.model.idf("????"), None)
+        self.assertEqual(self.model.idf("????"), None)
         print("pattern.vector.Model.idf()")
 
     def test_tfidf(self):
@@ -861,7 +861,7 @@ class TestClustering(unittest.TestCase):
         self.assertTrue(v[0] in h[0][0] and v[1] in h[0][0] or v[0] in h[0][1] and v[1] in h[0][1])
         self.assertTrue(v[2] in h[0][0] and v[3] in h[0][0] or v[2] in h[0][1] and v[3] in h[0][1])
         print("pattern.vector.Cluster()")
-        print("pattern.vector.hierarchical()"        )
+        print("pattern.vector.hierarchical()")
 
 #---------------------------------------------------------------------------------------------------
 
@@ -882,7 +882,7 @@ class TestClassifier(unittest.TestCase):
             v.train(document)
         for type, message in (
           (False, "win money"),
-          ( True, "fix bug")):
+          (True, "fix bug")):
             self.assertEqual(v.classify(message), type)
         # Assert classifier properties.
         self.assertEqual(v.binary, True)

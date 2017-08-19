@@ -34,8 +34,8 @@ for i in range(1):  # max=10
         s = plaintext(s)
         t = parsetree(s)
         for m in p.search(t):
-            a = m.constituents(constraint=0)[-1]  # Left NP.
-            b = m.constituents(constraint=5)[ 0]  # Right NP.
+            a = m.constituents(constraint=0)[-1] # Left NP.
+            b = m.constituents(constraint=5)[0]  # Right NP.
             d.append((
                 a.string.lower(),
                 b.string.lower()))

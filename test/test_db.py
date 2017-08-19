@@ -308,13 +308,13 @@ class _TestDatabase(object):
     def test_escape(self):
         # Assert str, unicode, int, long, float, bool and None field values.
         for v, s in (
-          (  "a", "'a'"),
-          (    1, "1"),
-          (   int(1), "1"),
-          (  1.0, "1.0"),
-          ( True, "1"),
-          (False, "0"),
-          ( None, "null")):
+          (   "a", "'a'"),
+          (     1, "1"),
+          (int(1), "1"),
+          (   1.0, "1.0"),
+          (  True, "1"),
+          ( False, "0"),
+          (  None, "null")):
             self.assertEqual(db._escape(v), s)
         # Assert date.
         v = db.date("1707-04-15")
@@ -687,12 +687,12 @@ class _TestQuery(object):
         q = self.db.persons.search(fields=["name"])
         self.assertTrue(isinstance(q, db.Query))
         for args, sql in (
-          (("name", "Kurt%",    db.LIKE),    "name like 'Kurt%'"),
-          (("name", "Kurt*",    "="),        "name like 'Kurt%'"),
-          (("name", "*Gödel",   "=="),       "name like '%Gödel'"),
-          (("name", "Kurt*",    "!="),       "name not like 'Kurt%'"),
-          (("name", "Kurt*",    "<>"),       "name not like 'Kurt%'"),
-          (("name", "Gödel",    "i="),       "name like 'Gödel'"),     # case-insensitive search
+          (("name", "Kurt%",     db.LIKE),    "name like 'Kurt%'"),
+          (("name", "Kurt*",     "="),        "name like 'Kurt%'"),
+          (("name", "*Gödel",    "=="),       "name like '%Gödel'"),
+          (("name", "Kurt*",     "!="),       "name not like 'Kurt%'"),
+          (("name", "Kurt*",     "<>"),       "name not like 'Kurt%'"),
+          (("name", "Gödel",     "i="),       "name like 'Gödel'"),     # case-insensitive search
           (("id",   (1, 2),      db.IN),      "id in (1,2)"),
           (("id",   (1, 2),      "="),        "id in (1,2)"),
           (("id",   (1, 2),      "=="),       "id in (1,2)"),
@@ -700,7 +700,7 @@ class _TestQuery(object):
           (("id",   (1, 2),      "<>"),       "id not in (1,2)"),
           (("id",   (1, 3),      db.BETWEEN), "id between 1 and 3"),
           (("id",   (1, 3),      ":"),        "id between 1 and 3"),
-          (("name", ("G", "K*"),  "="),        "(name='G' or name like 'K%')"),
+          (("name", ("G", "K*"), "="),        "(name='G' or name like 'K%')"),
           (("name", None,        "="),        "name is null"),
           (("name", None,        "=="),       "name is null"),
           (("name", None,        "!="),       "name is not null"),
@@ -709,7 +709,7 @@ class _TestQuery(object):
           (("name", q,           "=="),       "name in (select persons.name from `persons`)"),
           (("name", q,           "!="),       "name not in (select persons.name from `persons`)"),
           (("name", q,           "<>"),       "name not in (select persons.name from `persons`)"),
-          (("name", "Gödel",    "="),        "name='Gödel'"),
+          (("name", "Gödel",     "="),        "name='Gödel'"),
           (("id",   1,           ">"),        "id>1")):
             self.assertEqual(db.cmp(*args), sql)
         print("pattern.db.cmp()")
@@ -902,7 +902,7 @@ class TestCSV(unittest.TestCase):
                 ["name", db.STRING],
                 ["type", db.STRING],
                 ["tail", db.BOOLEAN],
-                [ "age", db.INTEGER],
+                ["age", db.INTEGER],
                 ["date", db.DATE],
             ])
 

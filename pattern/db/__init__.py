@@ -169,7 +169,7 @@ class Date(datetime):
         return self.__sub__(t)
     def __add__(self, t):
         d = self
-        if getattr(t, "years" , 0) \
+        if getattr(t, "years", 0) \
         or getattr(t, "months", 0):
             # January 31 + 1 month = February 28.
             y = (d.month + t.months - 1) // 12 + d.year + t.years
@@ -353,13 +353,13 @@ def decode_entities(string):
     def replace_entity(match):
         hash, hex, name = match.group(1), match.group(2), match.group(3)
         if hash == "#" or name.isdigit():
-            if hex == '' :
-                return chr(int(name))                 # "&#38;" => "&"
+            if hex == '':
+                return chr(int(name))              # "&#38;" => "&"
             if hex in ("x", "X"):
-                return chr(int('0x' + name, 16))        # "&#x0026;" = > "&"
+                return chr(int('0x' + name, 16))   # "&#x0026;" = > "&"
         else:
-            cp = name2codepoint.get(name) # "&amp;" => "&"
-            return cp and chr(cp) or match.group()    # "&foo;" => "&foo;"
+            cp = name2codepoint.get(name)          # "&amp;" => "&"
+            return cp and chr(cp) or match.group() # "&foo;" => "&foo;"
     if isinstance(string, str):
         return RE_UNICODE.subn(replace_entity, string)[0]
     return string
@@ -948,7 +948,7 @@ class Table(object):
         insert = remove = pop = __setitem__
 
     def __init__(self, name, database):
-        """ A collection of rows consisting of one or more fields (i.e., table columns) 
+        """ A collection of rows consisting of one or more fields (i.e., table columns)
             of a certain type (i.e., strings, numbers).
         """
         self.database    = database
@@ -1324,7 +1324,7 @@ class FilterChain(list):
             >>>     FilterChain(
             >>>         filter("tail", True),
             >>>         filter("wing", True), operator=OR))
-            Yields: 
+            Yields:
             "type='pet' and weight between 4 and 6 and (tail=1 or wing=1)"
         """
         # Remember to pass the right escape() function as optional parameter.
@@ -1566,7 +1566,7 @@ class View(object):
         """ This method should be overwritten to return formatted table output (XML, HTML, RSS, ...)
             For web apps, the given path should list all parts in the relative URL path,
             and query is a dictionary of all POST and GET variables sent from the client.
-            For example: http://books.com/science/new 
+            For example: http://books.com/science/new
             => ["science", "new"]
             => render() data from db.books.filter(ALL, category="science", new=True).
         """
@@ -1818,7 +1818,7 @@ class CSV(list):
     @classmethod
     def load(cls, path, separator=",", decoder=lambda v: v, headers=False, preprocess=None, password=None, **kwargs):
         """ Returns a table from the data in the given text file.
-            Rows are expected to be separated by a newline. 
+            Rows are expected to be separated by a newline.
             Columns are expected to be separated by the given separator (by default, comma).
             Strings will be converted to int, float, bool, date or None if headers are parsed.
             For other data types, a custom string decoder can be given.
@@ -2038,7 +2038,7 @@ class Datasheet(CSV):
             e.g. FIRST, LAST, COUNT, MAX, MIN, SUM, AVG, STDEV, CONCATENATE.
             The function can also be a list of functions (one for each column).
             TypeError will be raised when the function cannot handle the data in a column.
-            The key argument can be used to map the values in column j, for example: 
+            The key argument can be used to map the values in column j, for example:
             key=lambda date: date.year to group Date objects by year.
         """
         if isinstance(function, tuple):
@@ -2117,7 +2117,7 @@ class Datasheet(CSV):
 
     @property
     def array(self):
-        """ Returns a NumPy array. 
+        """ Returns a NumPy array.
             Arrays must have elements of the same type, and rows of equal size.
         """
         import numpy
@@ -2497,7 +2497,7 @@ def truncate(string, length=100):
             break
         n += len(w) + 1
     if i == 0 and len(w) > length:
-        return ( w[:length - 1] + "-",
+        return (w[:length - 1] + "-",
                 (w[length - 1:] + " " + " ".join(words[1:])).strip())
     return (" ".join(words[:i]),
             " ".join(words[i:]))

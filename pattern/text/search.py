@@ -521,7 +521,7 @@ class Constraint(object):
             # Wrapping order of control characters is ignored:
             # (NN+) == (NN)+ == NN?+ == NN+? == [NN+?] == [NN]+?
             if s.startswith("^"):
-                s = s[1: ]; C.first = True
+                s = s[1:]; C.first = True
             if s.endswith("+") and not s.endswith("\+"):
                 s = s[0:-1]; C.multiple = True
             if s.endswith("?") and not s.endswith("\?"):

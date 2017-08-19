@@ -223,7 +223,7 @@ suffixes4 = [
     ("ic", ("ic",)),
     ("le", ("able", "ible")),
     ("nt", ("ant", "ement", "ment", "ent")),
-    ( "e", ("ate", "ive", "ize")),
+    ("e",  ("ate", "ive", "ize")),
     (("m", "i", "s"), ("ism", "iti", "ous"))
 ]
 def step_4(w):

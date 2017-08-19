@@ -27,7 +27,7 @@ class TestUtilityFunctions(unittest.TestCase):
     def test_match(self):
         # Assert search._match() wildcard matching.
         for s, p, b in (
-          ("rabbit", "rabbit", True),
+          ("rabbit" , "rabbit", True),
           ("rabbits", "rabbit*", True),
           ("rabbits", "*abbits", True),
           ("rabbits", "*abbit*", True),
@@ -44,7 +44,7 @@ class TestUtilityFunctions(unittest.TestCase):
 
     def test_product(self):
         # Assert combinations of list items.
-        self.assertEqual(list(search.product([ ], repeat=2)), [])   # No possibilities.
+        self.assertEqual(list(search.product([], repeat=2)), [])   # No possibilities.
         self.assertEqual(list(search.product([1], repeat=0)), [()]) # One possibility: the empty set.
         self.assertEqual(list(search.product([1, 2, 3], repeat=2)),
             [(1, 1), (1, 2), (1, 3), (2, 1), (2, 2), (2, 3), (3, 1), (3, 2), (3, 3)])
@@ -468,7 +468,7 @@ class TestMatch(unittest.TestCase):
         self.assertEqual(m[0].words, [s.words[0]])
         self.assertEqual(m[1].words, [s.words[-3], s.words[-2]])
         # Assert contraint "NN*" links to "Death" and "teeth", and "JJ" to "pointy".
-        self.assertEqual(m[0].constraint(s.words[ 0]), p[1])
+        self.assertEqual(m[0].constraint(s.words[0]), p[1])
         self.assertEqual(m[1].constraint(s.words[-3]), p[0])
         self.assertEqual(m[1].constraint(s.words[-2]), p[1])
         # Assert constraints "JJ NN*" links to chunk "pointy teeth".

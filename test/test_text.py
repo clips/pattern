@@ -201,7 +201,7 @@ class TestParser(unittest.TestCase):
         v4 = p.find_tags(["observer", "observable"], language="fr")
         v5 = p.find_tags(["observer", "observable"], language="en")
         self.assertEqual(v1, [["Schr\xf6dinger", "NNP?"], ["cat", "NN?"], ["1.0", "CD?"]])
-        self.assertEqual(v2, [["Schr\xf6dinger", "NNP" ], ["cat", "NN" ], ["1.0", "CD?"]])
+        self.assertEqual(v2, [["Schr\xf6dinger", "NNP"], ["cat", "NN"], ["1.0", "CD?"]])
         self.assertEqual(v3, [["Schr\xf6dinger", "NNP!"], ["cat", "NN!"], ["1.0", "CD!"]])
         self.assertEqual(v4, [["observer", "NN"], ["observable", "NN"]])
         self.assertEqual(v5, [["observer", "NN"], ["observable", "JJ"]])
@@ -218,7 +218,7 @@ class TestParser(unittest.TestCase):
         self.assertEqual(v2, [["", "DT", "B-NP", "O"], ["", "JJ", "I-NP", "O"], ["", "NN", "I-NP", "O"]])
         self.assertEqual(v3, [["", "DT", "B-NP", "O"], ["", "NN", "I-NP", "O"], ["", "JJ", "B-ADJP", "O"]])
         self.assertEqual(v4, [["", "DT", "B-NP", "O"], ["", "NN", "I-NP", "O"], ["", "JJ", "I-NP", "O"]])
-        print("pattern.text.Parser.find_chunks()"  )
+        print("pattern.text.Parser.find_chunks()")
 
 #---------------------------------------------------------------------------------------------------
 

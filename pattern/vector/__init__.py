@@ -3223,9 +3223,9 @@ class SVM(Classifier):
         # -  cost: higher cost = less margin for error (and risk of overfitting).
         # - gamma: influence ("radius") of each training example for RBF.
         if len(args) > 0:
-            kwargs.setdefault( "train", args[0])
+            kwargs.setdefault("train", args[0])
         if len(args) > 1:
-            kwargs.setdefault(  "type", args[1])
+            kwargs.setdefault("type", args[1])
         if len(args) > 2:
             kwargs.setdefault("kernel", args[2])
         for k1, k2, v in (
