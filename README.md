@@ -10,7 +10,7 @@ Pattern is a web mining module for Python. It has tools for:
 
 It is well documented, thoroughly tested with 350+ unit tests and comes bundled with 50+ examples. The source code is licensed under BSD and available from <http://www.clips.ua.ac.be/pages/pattern>.
 
-![Example workflow](http://raw.githubusercontent.com/clips/pattern/master/docs/g/pattern_schema.gif)
+![Example workflow](https://raw.githubusercontent.com/clips/pattern/master/docs/g/pattern_schema.gif)
 
 Example
 -------
@@ -18,8 +18,8 @@ Example
 This example trains a classifier on adjectives mined from Twitter using Python 3. First, tweets that contain hashtag #win or #fail are collected. For example: *"$20 tip off a sweet little old lady today #win"*. The word part-of-speech tags are then parsed, keeping only adjectives. Each tweet is transformed to a vector, a dictionary of adjective → count items, labeled `WIN` or `FAIL`. The classifier uses the vectors to learn which other tweets look more like `WIN` or more like `FAIL`.
 
 ```python
-from pattern.web    import Twitter
-from pattern.en     import tag
+from pattern.web import Twitter
+from pattern.en import tag
 from pattern.vector import KNN, count
 
 twitter, knn = Twitter(), KNN()
