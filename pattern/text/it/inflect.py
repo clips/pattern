@@ -204,14 +204,14 @@ def pluralize(word, pos=NOUN, custom={}):
 #### SINGULARIZE ###################################################################################
 
 singular_majority_vote = [
-    ("tenti",  "tente"), ("anti", "ante"), ( "oni", "one" ), ( "nti", "nto" ),
-    (  "ali",  "ale"  ), ( "ici", "ico" ), ( "nze", "nza" ), ( "ori", "ore" ),
-    (  "che",  "ca"   ), ( "ati", "ato" ), ( "ari", "ario"), ( "tti", "tto" ),
-    (  "eri",  "ero"  ), ( "chi", "co"  ), ( "ani", "ano" ), ( "ure", "ura" ),
-    (  "ità",  "ità"  ), ( "ivi", "ivo" ), ( "ini", "ino" ), ( "iti", "ito" ),
-    (  "emi",  "ema"  ), ( "ili", "ile" ), ( "oli", "olo" ), ( "esi", "ese" ),
-    (  "ate",  "ata"  ), ( "ssi", "sso" ), ( "rie", "ria" ), ( "ine", "ina" ),
-    (  "lli",  "llo"  ), ( "ggi", "ggio"), ( "tri", "tro" ), ( "imi", "imo" )
+    ("tenti", "tente"), ("anti", "ante"), ( "oni", "one" ), ( "nti", "nto" ),
+    (  "ali", "ale"  ), ( "ici", "ico" ), ( "nze", "nza" ), ( "ori", "ore" ),
+    (  "che", "ca"   ), ( "ati", "ato" ), ( "ari", "ario"), ( "tti", "tto" ),
+    (  "eri", "ero"  ), ( "chi", "co"  ), ( "ani", "ano" ), ( "ure", "ura" ),
+    (  "ità", "ità"  ), ( "ivi", "ivo" ), ( "ini", "ino" ), ( "iti", "ito" ),
+    (  "emi", "ema"  ), ( "ili", "ile" ), ( "oli", "olo" ), ( "esi", "ese" ),
+    (  "ate", "ata"  ), ( "ssi", "sso" ), ( "rie", "ria" ), ( "ine", "ina" ),
+    (  "lli", "llo"  ), ( "ggi", "ggio"), ( "tri", "tro" ), ( "imi", "imo" )
 ]
 
 singular_irregular = dict((v, k) for k, v in plural_irregular.items())
@@ -316,7 +316,7 @@ class Verbs(_Verbs):
         v = v.replace("gge", "ggie")
         # Many verbs end in -ire and have a regular inflection:
         for x in ((
-          "irò", "irai", "irà", "iremo", "irete", "iranno",         # future
+          "irò", "irai", "irà", "iremo", "irete", "iranno",           # future
           "irei", "iresti", "irebbe", "iremmo", "ireste", "irebbero", # conditional
           "ascano",                                                   # subjunctive I
           "issi", "isse", "issimo", "iste", "issero",                 # subjunctive II
@@ -327,12 +327,12 @@ class Verbs(_Verbs):
                 return v[:-len(x)] + "ire"
         # Many verbs end in -are and have a regular inflection:
         for x in ((
-          "erò", "erai", "erà", "eremo", "erete", "eranno",         # future
+          "erò", "erai", "erà", "eremo", "erete", "eranno",           # future
           "erei", "eresti", "erebbe", "eremmo", "ereste", "erebbero", # conditional
           "iamo", "iate", "ino",                                      # subjunctive I
           "assi", "asse", "assimo", "aste", "assero",                 # subjunctive II
           "avo", "avi", "ava", "avamo", "avate", "avano",             # past imperfective
-          "ai", "asti", "ò", "ammo", "aste", "arono", "ato",         # past perfective
+          "ai", "asti", "ò", "ammo", "aste", "arono", "ato",          # past perfective
           "iamo", "ate", "ano", "ando")):                             # present
             if v.endswith(x):
                 return v[:-len(x)] + "are"
@@ -340,7 +340,7 @@ class Verbs(_Verbs):
         for x in ((
           "essi", "esse", "essimo", "este", "essero",                 # subjunctive II
           "evo", "evi", "eva", "evamo", "evate", "evano",             # past imperfective
-          "ei", "esti", "è", "emmo", "este", "erono", "eto",         # past perfective
+          "ei", "esti", "è", "emmo", "este", "erono", "eto",          # past perfective
           "ete", "ono", "endo")):                                     # present
             if v.endswith(x):
                 return v[:-len(x)] + "ere"

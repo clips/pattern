@@ -3031,7 +3031,7 @@ class BPNN(Classifier):
     def _propagate_forward(self, input=[]):
         """ Propagates the input through the network and returns the output activiation.
         """
-        ai, ao, ah, wi, wo = self._ai,  self._ao, self._ah, self._wi, self._wo
+        ai, ao, ah, wi, wo = self._ai, self._ao, self._ah, self._wi, self._wo
         assert len(input) == len(ai) - 1
         # Activate input nodes.
         for i, v in enumerate(input):
@@ -3049,7 +3049,7 @@ class BPNN(Classifier):
             generates delta for hidden and output nodes.
             The learning rate determines speed vs. accuracy of the algorithm.
         """
-        ai, ao, ah, wi, wo, ci, co = self._ai,  self._ao, self._ah, self._wi, self._wo, self._ci, self._co
+        ai, ao, ah, wi, wo, ci, co = self._ai, self._ao, self._ah, self._wi, self._wo, self._ci, self._co
         # Compute delta for output nodes.
         do = [0.0] * len(ao)
         for k, v in enumerate(ao):
@@ -3608,7 +3608,7 @@ class LR(Classifier):
                 t0 = scipy.zeros((n + 1, 1))
                 t0 = scipy.transpose(t0)
                 t[i, :] = scipy.optimize.fmin_cg(
-                    lambda t:     cost(t, x, 0 + (y == i), l), t0,
+                    lambda t: cost(t, x, 0 + (y == i), l), t0,
                     lambda t: gradient(t, x, 0 + (y == i), l),
                         maxiter = iterations,
                            disp = 0)

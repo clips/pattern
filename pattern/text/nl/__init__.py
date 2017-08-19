@@ -79,7 +79,7 @@ sys.path.pop(0)
 WOTAN = "wotan"
 wotan = {
     "Adj(": (("vergr", "JJR"), ("overtr", "JJS"), ("", "JJ")),
-    "Adv(": (("deel", "RP"),  ("", "RB")),
+    "Adv(": (("deel", "RP"), ("", "RB")),
     "Art(": (("", "DT"),),
    "Conj(": (("", "CC"),),
      "Int": (("", "UH"),),

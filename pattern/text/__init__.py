@@ -416,10 +416,10 @@ class Model(object):
         p = ("", "") if not p else (p[0] or "", p[1] or "")
         n = ("", "") if not n else (n[0] or "", n[1] or "")
         v = {}
-        f(v,  "b", "b")         # Bias.
-        f(v,  "h", token[:1])   # Capitalization.
-        f(v,  "w", token[-6:] if token not in self.known or token in self.unknown else "")
-        f(v,  "x", token[-3:])  # Word suffix.
+        f(v, "b", "b")         # Bias.
+        f(v, "h", token[:1])   # Capitalization.
+        f(v, "w", token[-6:] if token not in self.known or token in self.unknown else "")
+        f(v, "x", token[-3:])  # Word suffix.
         f(v, "-x", p[0][-3:])   # Word suffix left.
         f(v, "+x", n[0][-3:])   # Word suffix right.
         f(v, "-t", p[1])        # Tag left.
@@ -1030,14 +1030,14 @@ replacements = {
 # Common emoticons.
 EMOTICONS = \
 emoticons = { # (facial expression, sentiment)-keys
-    ("love" , +1.00): set(("<3",  "♥", "❤")),
+    ("love" , +1.00): set(("<3", "♥", "❤")),
     ("grin" , +1.00): set((">:D", ":-D", ":D", "=-D", "=D", "X-D", "x-D", "XD", "xD", "8-D")),
     ("taunt", +0.75): set((">:P", ":-P", ":P", ":-p", ":p", ":-b", ":b", ":c)", ":o)", ":^)")),
     ("smile", +0.50): set((">:)", ":-)", ":)", "=)", "=]", ":]", ":}", ":>", ":3", "8)", "8-)")),
     ("wink" , +0.25): set((">;]", ";-)", ";)", ";-]", ";]", ";D", ";^)", "*-)", "*)")),
     ("blank", +0.00): set((":-|", ":|")),
     ("gasp" , -0.05): set((">:o", ":-O", ":O", ":o", ":-o", "o_O", "o.O", "°O°", "°o°")),
-    ("worry", -0.25): set((">:/",  ":-/", ":/", ":\\", ">:\\", ":-.", ":-s", ":s", ":S", ":-S", ">.>")),
+    ("worry", -0.25): set((">:/", ":-/", ":/", ":\\", ">:\\", ":-.", ":-s", ":s", ":S", ":-S", ">.>")),
     ("frown", -0.75): set((">:[", ":-(", ":(", "=(", ":-[", ":[", ":{", ":-<", ":c", ":-c", "=/")),
     ("cry"  , -1.00): set((":'(", ":'''(", ";'("))
 }
@@ -1719,7 +1719,7 @@ for i, (tense, person, number, mood, aspect, negated, aliases) in TENSES.items()
 
 # Map Penn Treebank tags to unique index.
 for tag, tense in (
-  ("VB",  0 ),  # infinitive
+  ("VB", 0 ),   # infinitive
   ("VBP", 1 ),  # present 1 singular
   ("VBZ", 3 ),  # present 3 singular
   ("VBG", 8 ),  # present participle

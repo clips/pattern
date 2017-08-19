@@ -159,8 +159,8 @@ class TestURL(unittest.TestCase):
         v = web.URL("")
         v.string = "https://domain.com"
         self.assertEqual(v.parts[web.PROTOCOL], "https")
-        self.assertEqual(v.parts[web.DOMAIN],   "domain.com")
-        self.assertEqual(v.parts[web.PATH],     [])
+        self.assertEqual(v.parts[web.DOMAIN], "domain.com")
+        self.assertEqual(v.parts[web.PATH], [])
         print("pattern.web.URL.string")
 
     def test_url(self):
@@ -171,16 +171,16 @@ class TestURL(unittest.TestCase):
         v.username = "new-username"
         v.password = "new-password"
         # Assert URL.__getattr__().
-        self.assertEqual(v.method,   web.GET)
+        self.assertEqual(v.method, web.GET)
         self.assertEqual(v.protocol, self.parts["protocol"])
         self.assertEqual(v.username, "new-username")
         self.assertEqual(v.password, "new-password")
-        self.assertEqual(v.domain,   self.parts["domain"])
-        self.assertEqual(v.port,     self.parts["port"])
-        self.assertEqual(v.path,     self.parts["path"])
-        self.assertEqual(v.page,     self.parts["page"])
-        self.assertEqual(v.query,    self.parts["query"])
-        self.assertEqual(v.anchor,   self.parts["anchor"])
+        self.assertEqual(v.domain, self.parts["domain"])
+        self.assertEqual(v.port, self.parts["port"])
+        self.assertEqual(v.path, self.parts["path"])
+        self.assertEqual(v.page, self.parts["page"])
+        self.assertEqual(v.query, self.parts["query"])
+        self.assertEqual(v.anchor, self.parts["anchor"])
         print("pattern.web.URL")
 
     def test_url_open(self):
@@ -315,10 +315,10 @@ class TestPlaintext(unittest.TestCase):
         # Assert HTML parser and tag stripper.
         for html, plain in (
           ("<b>ünîcøde</b>", "ünîcøde"),
-          ( "<img src=""/>",   ""),
-          ( "<p>text</p>",     "text\n\n"),
-          ( "<li>text</li>",   "* text\n"),
-          ( "<td>text</td>",   "text\t"),
+          ( "<img src=""/>", ""),
+          ( "<p>text</p>", "text\n\n"),
+          ( "<li>text</li>", "* text\n"),
+          ( "<td>text</td>", "text\t"),
           ( "<br>", "\n"),
           ( "<br/>", "\n\n"),
           ( "<br /><br/><br>", "\n\n\n\n\n")):
@@ -519,28 +519,28 @@ class TestSearchEngine(unittest.TestCase):
         print("pattern.web.%s.search()" % api)
 
     def test_search_google(self):
-        self._test_search_engine("Google",       *self.api["Google"])
+        self._test_search_engine("Google", *self.api["Google"])
     def test_search_yahoo(self):
-        self._test_search_engine("Yahoo",        *self.api["Yahoo"])
+        self._test_search_engine("Yahoo", *self.api["Yahoo"])
     @unittest.skip('Bing Search API has no free quota')
     def test_search_bing(self):
-        self._test_search_engine("Bing",         *self.api["Bing"])
+        self._test_search_engine("Bing", *self.api["Bing"])
     def test_search_twitter(self):
-        self._test_search_engine("Twitter",      *self.api["Twitter"])
+        self._test_search_engine("Twitter", *self.api["Twitter"])
     @unittest.skip('Mediawiki/Wikipedia API or appearance changed')
     def test_search_wikipedia(self):
-        self._test_search_engine("Wikipedia",    *self.api["Wikipedia"])
+        self._test_search_engine("Wikipedia", *self.api["Wikipedia"])
     @unittest.skip('Mediawiki API or appearance changed')
     def test_search_wikia(self):
-        self._test_search_engine("Wikia",        *self.api["Wikia"], **{"query": "games"})
+        self._test_search_engine("Wikia", *self.api["Wikia"], **{"query": "games"})
     def test_search_flickr(self):
-        self._test_search_engine("Flickr",       *self.api["Flickr"], **{"type": web.IMAGE})
+        self._test_search_engine("Flickr", *self.api["Flickr"], **{"type": web.IMAGE})
     @unittest.skip('Facebook API changed')
     def test_search_facebook(self):
-        self._test_search_engine("Facebook",     *self.api["Facebook"])
+        self._test_search_engine("Facebook", *self.api["Facebook"])
     @unittest.skip('ProductWiki is deprecated')
     def test_search_productwiki(self):
-        self._test_search_engine("ProductWiki",  *self.api["ProductWiki"], **{"query": "computer"})
+        self._test_search_engine("ProductWiki", *self.api["ProductWiki"], **{"query": "computer"})
     def test_search_newsfeed(self):
         for feed, url in web.feeds.items():
             self._test_search_engine("Newsfeed", url, None, web.Newsfeed, query=url, type=web.NEWS)
@@ -573,26 +573,26 @@ class TestSearchEngine(unittest.TestCase):
         print("pattern.web.%s.Result(type=%s)" % (api, type.upper()))
 
     def test_results_google(self):
-        self._test_results("Google",   *self.api["Google"])
+        self._test_results("Google", *self.api["Google"])
     def test_results_yahoo(self):
-        self._test_results("Yahoo",    *self.api["Yahoo"])
+        self._test_results("Yahoo", *self.api["Yahoo"])
     def test_results_yahoo_images(self):
-        self._test_results("Yahoo",    *self.api["Yahoo"], **{"type": web.IMAGE, "baseline": [6, 6, 0, 6]})
+        self._test_results("Yahoo", *self.api["Yahoo"], **{"type": web.IMAGE, "baseline": [6, 6, 0, 6]})
     def test_results_yahoo_news(self):
-        self._test_results("Yahoo",    *self.api["Yahoo"], **{"type": web.NEWS})
+        self._test_results("Yahoo", *self.api["Yahoo"], **{"type": web.NEWS})
     @unittest.skip('Bing API changed')
     def test_results_bing(self):
-        self._test_results("Bing",     *self.api["Bing"])
+        self._test_results("Bing", *self.api["Bing"])
     @unittest.skip('Bing API changed')
     def test_results_bing_images(self):
-        self._test_results("Bing",     *self.api["Bing"], **{"type": web.IMAGE, "baseline": [6, 6, 0, 6]})
+        self._test_results("Bing", *self.api["Bing"], **{"type": web.IMAGE, "baseline": [6, 6, 0, 6]})
     @unittest.skip('Bing API changed')
     def test_results_bing_news(self):
-        self._test_results("Bing",     *self.api["Bing"], **{"type": web.NEWS})
+        self._test_results("Bing", *self.api["Bing"], **{"type": web.NEWS})
     def test_results_twitter(self):
-        self._test_results("Twitter",  *self.api["Twitter"])
+        self._test_results("Twitter", *self.api["Twitter"])
     def test_results_flickr(self):
-        self._test_results("Flickr",   *self.api["Flickr"], **{"baseline": [6, 6, 0, 6]})
+        self._test_results("Flickr", *self.api["Flickr"], **{"baseline": [6, 6, 0, 6]})
     @unittest.skip('Facebook API changed')
     def test_results_facebook(self):
         self._test_results("Facebook", *self.api["Facebook"], **{"baseline": [0, 1, 0, 0]})
@@ -640,10 +640,10 @@ class TestSearchEngine(unittest.TestCase):
             print("pattern.web.%s.search(type=IMAGE, size=%s)" % (api, size.upper()))
 
     def test_yahoo_image_size(self):
-        self._test_search_image_size("Yahoo",  *self.api["Yahoo"])
+        self._test_search_image_size("Yahoo", *self.api["Yahoo"])
     @unittest.skip('Bing Search API has no free quota')
     def test_bing_image_size(self):
-        self._test_search_image_size("Bing",   *self.api["Bing"])
+        self._test_search_image_size("Bing", *self.api["Bing"])
     def test_flickr_image_size(self):
         self._test_search_image_size("Flickr", *self.api["Flickr"])
 
@@ -673,13 +673,13 @@ class TestSearchEngine(unittest.TestCase):
         source, license, Engine = self.api["Wikipedia"]
         v = Engine(license).search("cat", cached=False)
         # Assert WikipediaArticle properties.
-        self.assertTrue(isinstance(v.title,      str))
-        self.assertTrue(isinstance(v.string,     str))
-        self.assertTrue(isinstance(v.links,      list))
+        self.assertTrue(isinstance(v.title, str))
+        self.assertTrue(isinstance(v.string, str))
+        self.assertTrue(isinstance(v.links, list))
         self.assertTrue(isinstance(v.categories, list))
-        self.assertTrue(isinstance(v.external,   list))
-        self.assertTrue(isinstance(v.media,      list))
-        self.assertTrue(isinstance(v.languages,  dict))
+        self.assertTrue(isinstance(v.external, list))
+        self.assertTrue(isinstance(v.media, list))
+        self.assertTrue(isinstance(v.languages, dict))
         # Assert WikipediaArticle properties content.
         self.assertTrue(v.string  == v.plaintext())
         self.assertTrue(v.html    == v.source)
@@ -935,7 +935,7 @@ class TestLocale(unittest.TestCase):
         # Assert region geocode.
         v = web.locale.geocode("brussels")
         self.assertAlmostEqual(v[0], 50.83, places=2)
-        self.assertAlmostEqual(v[1],  4.33, places=2)
+        self.assertAlmostEqual(v[1], 4.33, places=2)
         self.assertEqual(v[2], "nl")
         self.assertEqual(v[3], "Belgium")
         print("pattern.web.locale.geocode()")
@@ -986,11 +986,11 @@ class TestMail(unittest.TestCase):
         e = m.inbox.read(a[0], attachments=False, cached=False)
         # Assert web.imap.Message.
         self.assertTrue(isinstance(e, web.imap.Message))
-        self.assertTrue(isinstance(e.author,        str))
+        self.assertTrue(isinstance(e.author, str))
         self.assertTrue(isinstance(e.email_address, str))
-        self.assertTrue(isinstance(e.date,          str))
-        self.assertTrue(isinstance(e.subject,       str))
-        self.assertTrue(isinstance(e.body,          str))
+        self.assertTrue(isinstance(e.date, str))
+        self.assertTrue(isinstance(e.subject, str))
+        self.assertTrue(isinstance(e.body, str))
         self.assertTrue(self.query1 in e.author.lower())
         self.assertTrue("@" in e.email_address)
         print("pattern.web.Mail.search(field=FROM)")

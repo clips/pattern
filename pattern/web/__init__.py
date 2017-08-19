@@ -2127,12 +2127,12 @@ class MediaWikiArticle(object):
         # Strip [edit] link (language dependent.)
         s = re.sub(r"\[edit\]\s*", "", s)
         s = re.sub(r"\[%s\]\s*" % {
-            "en":  "edit",
+            "en": "edit",
             "es": "editar código",
-            "de":  "Bearbeiten",
-            "fr":  "modifier le code",
-            "it":  "modifica sorgente",
-            "nl":  "bewerken",
+            "de": "Bearbeiten",
+            "fr": "modifier le code",
+            "it": "modifica sorgente",
+            "nl": "bewerken",
         }.get(self.language, "edit"), "", s)
         # Insert space before inline references.
         s = s.replace("[", " [").replace("  [", " [")

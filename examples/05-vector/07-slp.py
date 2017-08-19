@@ -36,7 +36,7 @@ def corpus(path, encoding="utf-8"):
         with slash-encoded tokens (e.g., the/DT cat/NN).
     """
     for s in open(path, encoding=encoding):
-        s = list(map(lambda w:  w.split("/"), s.strip().split(" ")))
+        s = list(map(lambda w: w.split("/"), s.strip().split(" ")))
         s = list(map(lambda w: (w[0].replace("&slash;", "/"), w[1]), s))
         yield s
 

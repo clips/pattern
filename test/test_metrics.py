@@ -371,21 +371,21 @@ class TestStatisticalTests(unittest.TestCase):
         v3 = metrics.chi2(o3, e3)
         v4 = metrics.chi2(o4, e4)
         v5 = metrics.chi2(o5, e5)
-        self.assertAlmostEqual(v1[0],  1.4400, places=4)
-        self.assertAlmostEqual(v1[1],  0.2301, places=4)
-        self.assertAlmostEqual(v2[0],  6.7200, places=4)
-        self.assertAlmostEqual(v2[1],  0.2423, places=4)
+        self.assertAlmostEqual(v1[0], 1.4400, places=4)
+        self.assertAlmostEqual(v1[1], 0.2301, places=4)
+        self.assertAlmostEqual(v2[0], 6.7200, places=4)
+        self.assertAlmostEqual(v2[1], 0.2423, places=4)
         self.assertAlmostEqual(v3[0], 23.3742, places=4)
-        self.assertAlmostEqual(v4[0],  3.4177, places=4)
-        self.assertAlmostEqual(v5[0],  1.8755, places=4)
+        self.assertAlmostEqual(v4[0], 3.4177, places=4)
+        self.assertAlmostEqual(v5[0], 1.8755, places=4)
         print("pattern.metrics.chi2()")
 
     def test_chi_squared_p(self):
         # Assert chi-squared P-value (upper tail).
         for df, X2 in [
-          (1, ( 3.85,  5.05,  6.65,  7.90)),
-          (2, ( 6.00,  7.40,  9.25, 10.65)),
-          (3, ( 7.85,  9.40, 11.35, 12.85)),
+          (1, ( 3.85, 5.05, 6.65, 7.90)),
+          (2, ( 6.00, 7.40, 9.25, 10.65)),
+          (3, ( 7.85, 9.40, 11.35, 12.85)),
           (4, ( 9.50, 11.15, 13.30, 14.90)),
           (5, (11.10, 12.85, 15.10, 16.80))]:
             for i, x2 in enumerate(X2):
@@ -395,8 +395,8 @@ class TestStatisticalTests(unittest.TestCase):
 
     def test_kolmogorov_smirnov(self):
         v = metrics.ks2([1, 2, 3], [1, 2, 4])
-        self.assertAlmostEqual(v[0],  0.3333, places=4)
-        self.assertAlmostEqual(v[1],  0.9762, places=4)
+        self.assertAlmostEqual(v[0], 0.3333, places=4)
+        self.assertAlmostEqual(v[1], 0.9762, places=4)
         print("pattern.metrics.ks2()")
 
 class TestSpecialFunctions(unittest.TestCase):

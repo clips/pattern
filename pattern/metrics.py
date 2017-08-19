@@ -294,7 +294,7 @@ edit_distance = levenshtein
 def levenshtein_similarity(string1, string2):
     """ Returns the similarity of string1 and string2 as a number between 0.0 and 1.0.
     """
-    return 1 - levenshtein(string1, string2) / float(max(len(string1),  len(string2), 1.0))
+    return 1 - levenshtein(string1, string2) / float(max(len(string1), len(string2), 1.0))
 
 def dice_coefficient(string1, string2):
     """ Returns the similarity between string1 and string1 as a number between 0.0 and 1.0,

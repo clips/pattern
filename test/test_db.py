@@ -151,14 +151,14 @@ class TestDate(unittest.TestCase):
           1285054021):
             v = db.date(s)
             self.assertEqual(v.format, "%Y-%m-%d %H:%M:%S")
-            self.assertEqual(v.year,   2010)
-            self.assertEqual(v.month,  9)
-            self.assertEqual(v.day,    21)
+            self.assertEqual(v.year, 2010)
+            self.assertEqual(v.month, 9)
+            self.assertEqual(v.day, 21)
         # Assert NOW.
         for v in (db.date(), db.date(db.NOW)):
-            self.assertEqual(v.year,  datetime.datetime.now().year)
+            self.assertEqual(v.year, datetime.datetime.now().year)
             self.assertEqual(v.month, datetime.datetime.now().month)
-            self.assertEqual(v.day,   datetime.datetime.now().day)
+            self.assertEqual(v.day, datetime.datetime.now().day)
         self.assertEqual(db.date().year, db.YEAR)
         # Assert integer input.
         v1 = db.date(2010, 9, 21, format=db.DEFAULT_DATE_FORMAT)
@@ -266,16 +266,16 @@ class TestUtilityFunctions(unittest.TestCase):
     def test_sqlite_functions(self):
         # Assert year(), month(), day(), ..., first(), last() and group_concat() for SQLite.
         v = "1707-04-15 01:02:03"
-        self.assertEqual(db.sqlite_year(v),   1707)
-        self.assertEqual(db.sqlite_month(v),  4)
-        self.assertEqual(db.sqlite_day(v),    15)
-        self.assertEqual(db.sqlite_hour(v),   1)
+        self.assertEqual(db.sqlite_year(v), 1707)
+        self.assertEqual(db.sqlite_month(v), 4)
+        self.assertEqual(db.sqlite_day(v), 15)
+        self.assertEqual(db.sqlite_hour(v), 1)
         self.assertEqual(db.sqlite_minute(v), 2)
         self.assertEqual(db.sqlite_second(v), 3)
         # Aggregate functions.
         for f, a, b in (
           (db.sqlite_first, [1, 2, 3], 1),
-          (db.sqlite_last,  [1, 2, 3], 3),
+          (db.sqlite_last, [1, 2, 3], 3),
           (db.sqlite_group_concat, [1, 2, 3], "1,2,3")):
             f = f()
             for x in a:
@@ -462,28 +462,28 @@ class TestSchema(unittest.TestCase):
         # Assert Schema (= table schema in a uniform way across database engines).
         #   NAME    TYPE            DEFAULT INDEX  OPTIONAL
         for args, v in (
-          (("id",   "integer",      None,   "pri", False), ("id",   db.INT,    None,   db.PRIMARY, False, None)),
-          (("id",   "integer",      None,   "uni", False), ("id",   db.INT,    None,   db.UNIQUE,  False, None)),
-          (("id",   "int",          None,   "yes", True),  ("id",   db.INT,    None,   True,       True,  None)),
-          (("id",   "real",         None,   "mul", True),  ("id",   db.FLOAT,  None,   True,       True,  None)),
-          (("id",   "real",         None,   "1",   True),  ("id",   db.FLOAT,  None,   True,       True,  None)),
-          (("id",   "double",       None,   "0",   True),  ("id",   db.FLOAT,  None,   False,      True,  None)),
-          (("id",   "double",       0,      False, False), ("id",   db.FLOAT,  0,      False,      False, None)),
-          (("text", "varchar(10)",  "?",    False, True),  ("text", db.STRING, "?",    False,      True,  10)),
-          (("text", "char(20)",     "",     False, True),  ("text", db.STRING, None,   False,      True,  20)),
-          (("text", "text",         None,   False, True),  ("text", db.TEXT,   None,   False,      True,  None)),
-          (("text", "blob",         None,   False, True),  ("text", db.BLOB,   None,   False,      True,  None)),
-          (("show", "tinyint(1)",   None,   False, True),  ("show", db.BOOL,   None,   False,      True,  None)),
-          (("date", "timestamp",    None,   False, True),  ("date", db.DATE,   None,   False,      True,  None)),
-          (("date", "timestamp",    now1,   False, True),  ("date", db.DATE,   db.NOW, False,      True,  None)),
-          (("date", "time",         now2,   False, "YES"), ("date", db.DATE,   db.NOW, False,      True,  None))):
+          (("id", "integer", None, "pri", False), ("id", db.INT, None, db.PRIMARY, False, None)),
+          (("id", "integer", None, "uni", False), ("id", db.INT, None, db.UNIQUE, False, None)),
+          (("id", "int", None, "yes", True), ("id", db.INT, None, True, True, None)),
+          (("id", "real", None, "mul", True), ("id", db.FLOAT, None, True, True, None)),
+          (("id", "real", None, "1", True), ("id", db.FLOAT, None, True, True, None)),
+          (("id", "double", None, "0", True), ("id", db.FLOAT, None, False, True, None)),
+          (("id", "double", 0, False, False), ("id", db.FLOAT, 0, False, False, None)),
+          (("text", "varchar(10)", "?", False, True), ("text", db.STRING, "?", False, True, 10)),
+          (("text", "char(20)", "", False, True), ("text", db.STRING, None, False, True, 20)),
+          (("text", "text", None, False, True), ("text", db.TEXT, None, False, True, None)),
+          (("text", "blob", None, False, True), ("text", db.BLOB, None, False, True, None)),
+          (("show", "tinyint(1)", None, False, True), ("show", db.BOOL, None, False, True, None)),
+          (("date", "timestamp", None, False, True), ("date", db.DATE, None, False, True, None)),
+          (("date", "timestamp", now1, False, True), ("date", db.DATE, db.NOW, False, True, None)),
+          (("date", "time", now2, False, "YES"), ("date", db.DATE, db.NOW, False, True, None))):
             s = db.Schema(*args)
-            self.assertEqual(s.name,     v[0])
-            self.assertEqual(s.type,     v[1])
-            self.assertEqual(s.default,  v[2])
-            self.assertEqual(s.index,    v[3])
+            self.assertEqual(s.name, v[0])
+            self.assertEqual(s.type, v[1])
+            self.assertEqual(s.default, v[2])
+            self.assertEqual(s.index, v[3])
             self.assertEqual(s.optional, v[4])
-            self.assertEqual(s.length,   v[5])
+            self.assertEqual(s.length, v[5])
         print("pattern.db.Schema()")
 
 #---------------------------------------------------------------------------------------------------
@@ -556,10 +556,10 @@ class _TestTable(object):
         self.assertEqual(v2, 1)
         self.assertEqual(v3, 2)
         self.assertEqual(v4, 1)
-        self.assertEqual(self.db.persons.rows(),  [(1, "Kurt Gödel")])
+        self.assertEqual(self.db.persons.rows(), [(1, "Kurt Gödel")])
         self.assertEqual(self.db.products.rows(), [(1, "pizza", 10.0), (2, "garlic bread", 3.0)])
-        self.assertEqual(self.db.orders.rows(),   [(1, 1, 2)])
-        self.assertEqual(self.db.orders.count(),  1)
+        self.assertEqual(self.db.orders.rows(), [(1, 1, 2)])
+        self.assertEqual(self.db.orders.count(), 1)
         self.assertEqual(self.db.products.xml.replace(' extra="auto_increment"', ""),
             '<?xml version="1.0" encoding="utf-8"?>\n'
             '<table name="products" fields="id, name, price" count="2">\n'
@@ -601,10 +601,10 @@ class _TestTable(object):
         self.db.persons.insert(name="M. C. Escher")
         self.db.persons.insert(name="Johann Sebastian Bach")
         f = self.db.persons.filter
-        self.assertEqual(f(("name",), id=1),        [("Kurt Gödel",)])
-        self.assertEqual(f(db.ALL, id=(1, 2)),       [(1, "Kurt Gödel"), (2, "M. C. Escher")])
-        self.assertEqual(f({"id": (1, 2)}),           [(1, "Kurt Gödel"), (2, "M. C. Escher")])
-        self.assertEqual(f("id", name="Johan*"),    [(3,)])
+        self.assertEqual(f(("name",), id=1), [("Kurt Gödel",)])
+        self.assertEqual(f(db.ALL, id=(1, 2)), [(1, "Kurt Gödel"), (2, "M. C. Escher")])
+        self.assertEqual(f({"id": (1, 2)}), [(1, "Kurt Gödel"), (2, "M. C. Escher")])
+        self.assertEqual(f("id", name="Johan*"), [(3,)])
         self.assertEqual(f("id", name=("J*", "K*")), [(1,), (3,)])
         print("pattern.db.Table.filter()")
 
@@ -1040,14 +1040,14 @@ class TestDatasheet(unittest.TestCase):
         v = db.Datasheet([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
         v = v.copy()
         self.assertEqual(v.slice(0, 1, 3, 2), [[2, 3], [5, 6], [8, 9]])
-        self.assertEqual(v[2],       [7, 8, 9])
-        self.assertEqual(v[2, 2],     9)
-        self.assertEqual(v[2, 1:],    [8, 9])
-        self.assertEqual(v[0:2],     [[1, 2, 3], [4, 5, 6]])
-        self.assertEqual(v[0:2, 1],   [2, 5])
+        self.assertEqual(v[2], [7, 8, 9])
+        self.assertEqual(v[2, 2], 9)
+        self.assertEqual(v[2, 1:], [8, 9])
+        self.assertEqual(v[0:2], [[1, 2, 3], [4, 5, 6]])
+        self.assertEqual(v[0:2, 1], [2, 5])
         self.assertEqual(v[0:2, 0:2], [[1, 2], [4, 5]])
         # Assert new Datasheet for i:j slices.
-        self.assertTrue(isinstance(v[0:2],     db.Datasheet))
+        self.assertTrue(isinstance(v[0:2], db.Datasheet))
         self.assertTrue(isinstance(v[0:2, 0:2], db.Datasheet))
         print("pattern.db.Datasheet.slice()")
 
@@ -1072,7 +1072,7 @@ class TestDatasheet(unittest.TestCase):
         v = db.Datasheet(rows=[["Schrödinger", 3], ["Hofstadter", 5]])
         self.assertEqual(v.json, '[["Schrödinger", 3], ["Hofstadter", 5]]')
         # Assert JSON output with headers.
-        v = db.Datasheet(rows=[["Schrödinger", 3], ["Hofstadter",  5]],
+        v = db.Datasheet(rows=[["Schrödinger", 3], ["Hofstadter", 5]],
                        fields=[("name", db.STRING), ("age", db.INT)])
         random.seed(0)
         w = db.json.loads(v.json)

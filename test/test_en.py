@@ -416,7 +416,7 @@ class TestParser(unittest.TestCase):
         self.assertEqual(v, [
             ["", "DT", "B-NP", "O"],
             ["", "JJ", "I-NP", "O"],
-            ["",  ",", "I-NP", "O"],
+            ["", ",", "I-NP", "O"],
             ["", "JJ", "I-NP", "O"],
             ["", "NN", "I-NP", "O"]
         ])
@@ -426,7 +426,7 @@ class TestParser(unittest.TestCase):
         ])
         self.assertEqual(v, [
             ["", "JJ", "B-ADJP", "O"],
-            ["",  ",", "I-ADJP", "O"],
+            ["", ",", "I-ADJP", "O"],
             ["", "JJ", "I-ADJP", "O"],
             ["", "CC", "I-ADJP", "O"],
             ["", "JJ", "I-ADJP", "O"]
@@ -437,7 +437,7 @@ class TestParser(unittest.TestCase):
         ])
         self.assertEqual(v, [
             ["", "JJ", "B-ADJP", "O"],
-            ["",  ",", "O", "O"],
+            ["", ",", "O", "O"],
             ["", "CC", "O", "O"],
             ["", "RB", "B-ADJP", "O"],
             ["", "JJ", "I-ADJP", "O"]
@@ -533,11 +533,11 @@ class TestParser(unittest.TestCase):
         self.assertTrue(isinstance(v, str))
         # 5) Assert str for faulty input (bytestring with unicode characters).
         self.assertTrue(isinstance(en.parse("ø ü"), str))
-        self.assertTrue(isinstance(en.parse("ø ü", tokenize=True,  tags=False, chunks=False), str))
+        self.assertTrue(isinstance(en.parse("ø ü", tokenize=True, tags=False, chunks=False), str))
         self.assertTrue(isinstance(en.parse("ø ü", tokenize=False, tags=False, chunks=False), str))
         self.assertTrue(isinstance(en.parse("o u", encoding="ascii"), str))
         # 6) Assert optional parameters (i.e., setting all to False).
-        self.assertEqual(en.parse("ø ü.", tokenize=True,  tags=False, chunks=False), "ø ü .")
+        self.assertEqual(en.parse("ø ü.", tokenize=True, tags=False, chunks=False), "ø ü .")
         self.assertEqual(en.parse("ø ü.", tokenize=False, tags=False, chunks=False), "ø ü.")
         # 7) Assert the accuracy of the English tagger.
         i, n = 0, 0
@@ -796,12 +796,12 @@ class TestModality(unittest.TestCase):
         # Assert True for sentences that are orders, commands, warnings.
         from pattern.text.en.modality import imperative
         for b, s in (
-          (True,  "Do your homework!"),
-          (True,  "Do not listen to me."),
-          (True,  "Turn that off, will you."),
-          (True,  "Let's help him."),
-          (True,  "Help me!"),
-          (True,  "You will help me."),
+          (True, "Do your homework!"),
+          (True, "Do not listen to me."),
+          (True, "Turn that off, will you."),
+          (True, "Let's help him."),
+          (True, "Help me!"),
+          (True, "You will help me."),
           (False, "Do it if you think it is necessary."),
           (False, "I hope you will help me."),
           (False, "I can help you."),
@@ -813,11 +813,11 @@ class TestModality(unittest.TestCase):
         # Assert True for sentences that contain possible or imaginary situations.
         from pattern.text.en.modality import conditional
         for b, s in (
-          (True,  "We ought to help him."),
-          (True,  "We could help him."),
-          (True,  "I will help you."),
-          (True,  "I hope you will help me."),
-          (True,  "I can help you if you let me."),
+          (True, "We ought to help him."),
+          (True, "We could help him."),
+          (True, "I will help you."),
+          (True, "I hope you will help me."),
+          (True, "I can help you if you let me."),
           (False, "You will help me."),
           (False, "I can help you.")):
             self.assertEqual(conditional(en.Sentence(en.parse(s))), b)
@@ -835,10 +835,10 @@ class TestModality(unittest.TestCase):
         # Assert True for sentences that contain wishes, judgments or opinions.
         from pattern.text.en.modality import subjunctive
         for b, s in (
-          (True,  "I wouldn't do that if I were you."),
-          (True,  "I wish I knew."),
-          (True,  "I propose that you be on time."),
-          (True,  "It is a bad idea to be late."),
+          (True, "I wouldn't do that if I were you."),
+          (True, "I wish I knew."),
+          (True, "I propose that you be on time."),
+          (True, "It is a bad idea to be late."),
           (False, "I will be late.")):
             self.assertEqual(subjunctive(en.Sentence(en.parse(s))), b)
         print("pattern.en.modality.subjunctive()")
@@ -846,9 +846,9 @@ class TestModality(unittest.TestCase):
     def test_negated(self):
         # Assert True for sentences that contain "not", "n't" or "never".
         for b, s in (
-          (True,  "Not true?"),
-          (True,  "Never true."),
-          (True,  "Isn't true."),):
+          (True, "Not true?"),
+          (True, "Never true."),
+          (True, "Isn't true."),):
             self.assertEqual(en.negated(en.Sentence(en.parse(s))), b)
         print("pattern.en.negated()")
 

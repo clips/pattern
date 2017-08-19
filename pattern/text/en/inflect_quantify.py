@@ -34,16 +34,16 @@ sys.path.pop(0)
 ####################################################################################################
 
 NUMERALS = {
-    "zero"  :  0,    "ten"       : 10,    "twenty"  : 20,
-    "one"   :  1,    "eleven"    : 11,    "thirty"  : 30,
-    "two"   :  2,    "twelve"    : 12,    "forty"   : 40,
-    "three" :  3,    "thirteen"  : 13,    "fifty"   : 50,
-    "four"  :  4,    "fourteen"  : 14,    "sixty"   : 60,
-    "five"  :  5,    "fifteen"   : 15,    "seventy" : 70,
-    "six"   :  6,    "sixteen"   : 16,    "eighty"  : 80,
-    "seven" :  7,    "seventeen" : 17,    "ninety"  : 90,
-    "eight" :  8,    "eighteen"  : 18,
-    "nine"  :  9,    "nineteen"  : 19
+    "zero"  : 0, "ten"       : 10, "twenty"  : 20,
+    "one"   : 1, "eleven"    : 11, "thirty"  : 30,
+    "two"   : 2, "twelve"    : 12, "forty"   : 40,
+    "three" : 3, "thirteen"  : 13, "fifty"   : 50,
+    "four"  : 4, "fourteen"  : 14, "sixty"   : 60,
+    "five"  : 5, "fifteen"   : 15, "seventy" : 70,
+    "six"   : 6, "sixteen"   : 16, "eighty"  : 80,
+    "seven" : 7, "seventeen" : 17, "ninety"  : 90,
+    "eight" : 8, "eighteen"  : 18,
+    "nine"  : 9, "nineteen"  : 19
 }
 
 NUMERALS_INVERSE = dict((i, w) for w, i in NUMERALS.items()) # 0 => "zero"

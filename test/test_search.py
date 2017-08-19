@@ -27,7 +27,7 @@ class TestUtilityFunctions(unittest.TestCase):
     def test_match(self):
         # Assert search._match() wildcard matching.
         for s, p, b in (
-          ("rabbit",  "rabbit",  True),
+          ("rabbit", "rabbit", True),
           ("rabbits", "rabbit*", True),
           ("rabbits", "*abbits", True),
           ("rabbits", "*abbit*", True),
@@ -91,13 +91,13 @@ class TestTaxonomy(unittest.TestCase):
     def test_taxonomy(self):
         # Assert Taxonomy search.
         t = search.Taxonomy()
-        t.append("King Arthur",  type="knight", value=1)
+        t.append("King Arthur", type="knight", value=1)
         t.append("Sir Bedevere", type="knight", value=2)
         t.append("Sir Lancelot", type="knight", value=3)
         t.append("Sir Gallahad", type="knight", value=4)
-        t.append("Sir Robin",    type="knight", value=5)
-        t.append("John Cleese",  type="Sir Lancelot")
-        t.append("John Cleese",  type="Basil Fawlty")
+        t.append("Sir Robin", type="knight", value=5)
+        t.append("John Cleese", type="Sir Lancelot")
+        t.append("John Cleese", type="Basil Fawlty")
         # Matching is case-insensitive, results are lowercase.
         self.assertTrue("John Cleese" in t)
         self.assertTrue("john cleese" in t)
@@ -414,10 +414,10 @@ class TestPattern(unittest.TestCase):
         # Assert creating and caching Pattern with compile().
         t = search.Taxonomy()
         p = search.compile("JJ?+ NN*", search.STRICT, taxonomy=t)
-        self.assertEqual(p.strict,      True)
+        self.assertEqual(p.strict, True)
         self.assertEqual(p[0].optional, True)
-        self.assertEqual(p[0].tags,     ["JJ"])
-        self.assertEqual(p[1].tags,     ["NN*"])
+        self.assertEqual(p[0].tags, ["JJ"])
+        self.assertEqual(p[1].tags, ["NN*"])
         self.assertEqual(p[1].taxonomy, t)
         # Assert regular expression input.
         p = search.compile(re.compile(r"[0-9|\.]+"))

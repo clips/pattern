@@ -287,8 +287,8 @@ class TestDocument(unittest.TestCase):
         v1 = vector.Document(v1, stemmer=vector.PORTER, stopwords=True, name="Cat", type="CAT")
         v1.save(self.path)
         v2 = vector.Document.load(self.path)
-        self.assertEqual(v1.name,   v2.name)
-        self.assertEqual(v1.type,   v2.type)
+        self.assertEqual(v1.name, v2.name)
+        self.assertEqual(v1.type, v2.type)
         self.assertEqual(v1.vector, v2.vector)
         print("pattern.vector.Document.save()")
         print("pattern.vector.Document.load()")
@@ -304,7 +304,7 @@ class TestDocument(unittest.TestCase):
         self.assertTrue(isinstance(v.id, int))
         self.assertEqual(sorted(v.features), ["cat", "mat", "sat"])
         self.assertEqual(v.weight, vector.TF)
-        self.assertAlmostEqual(v.norm,   0.58, places=2)
+        self.assertAlmostEqual(v.norm, 0.58, places=2)
         self.assertAlmostEqual(v["cat"], 0.33, places=2)
         self.assertAlmostEqual(v["sat"], 0.33, places=2)
         self.assertAlmostEqual(v["mat"], 0.33, places=2)
@@ -671,12 +671,12 @@ class TestLSA(unittest.TestCase):
         self.assertEqual(lsa.model, self.model)
         self.assertEqual(lsa.vectors, lsa.u)
         self.assertEqual(set(lsa.terms), set(self.model.vector.keys()))
-        self.assertTrue(isinstance(lsa.u,     dict))
+        self.assertTrue(isinstance(lsa.u, dict))
         self.assertTrue(isinstance(lsa.sigma, list))
-        self.assertTrue(isinstance(lsa.vt,    list))
-        self.assertTrue(len(lsa.u),     len(self.model))
+        self.assertTrue(isinstance(lsa.vt, list))
+        self.assertTrue(len(lsa.u), len(self.model))
         self.assertTrue(len(lsa.sigma), len(self.model) - k)
-        self.assertTrue(len(lsa.vt),    len(self.model) - k)
+        self.assertTrue(len(lsa.vt), len(self.model) - k)
         for document in self.model:
             v = lsa.vectors[document.id]
             self.assertTrue(isinstance(v, vector.Vector))
@@ -850,10 +850,10 @@ class TestClustering(unittest.TestCase):
         # Assert the accuracy of hierarchical clustering (shallow test).
         # Assert that cats are separated from dogs.
         v = (
-            vector.Vector({"feline": 1, " lion": 1,   "mane": 1}),
+            vector.Vector({"feline": 1, " lion": 1, "mane": 1}),
             vector.Vector({"feline": 1, "tiger": 1, "stripe": 1}),
-            vector.Vector({"canine": 1,  "wolf": 1,   "howl": 1}),
-            vector.Vector({"canine": 1,   "dog": 1,   "bark": 1})
+            vector.Vector({"canine": 1, "wolf": 1, "howl": 1}),
+            vector.Vector({"canine": 1, "dog": 1, "bark": 1})
         )
         h = vector.hierarchical(v)
         self.assertTrue(len(h[0][0]) == 2)
@@ -893,7 +893,7 @@ class TestClassifier(unittest.TestCase):
         v.save(Classifier.__name__)
         v = Classifier.load(Classifier.__name__)
         self.assertEqual(v.classify("win money"), False)
-        self.assertEqual(v.classify("fix bug"),   True)
+        self.assertEqual(v.classify("fix bug"), True)
         os.remove(Classifier.__name__)
         # Assert untrained classifier returns None.
         v = Classifier(**kwargs)

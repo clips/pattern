@@ -24,10 +24,10 @@ from pattern.db import uid, pprint
 # For other data types, custom encoder and decoder functions can be used.
 
 ds = Datasheet(rows=[
-    [uid(), "broccoli",  "vegetable"],
-    [uid(), "turnip",    "vegetable"],
+    [uid(), "broccoli", "vegetable"],
+    [uid(), "turnip", "vegetable"],
     [uid(), "asparagus", "vegetable"],
-    [uid(), "banana",    "fruit"],
+    [uid(), "banana", "fruit"],
 ], fields=[
       ("id", INTEGER),  # Define the column headers.
     ("name", STRING),

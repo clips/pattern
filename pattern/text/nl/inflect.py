@@ -229,8 +229,8 @@ class Verbs(_Verbs):
             language = "nl",
               format = [0, 1, 2, 3, 7, 8, 17, 18, 19, 23, 25, 24, 16, 9, 10, 11, 15, 33, 26, 27, 28, 32],
              default = {
-                 1: 0,   2: 0,   3: 0,   7: 0,  # present singular
-                 4: 7,   5: 7,   6: 7,          # present plural
+                 1: 0, 2: 0, 3: 0, 7: 0,  # present singular
+                 4: 7, 5: 7, 6: 7,          # present plural
                 17: 25, 18: 25, 19: 25, 23: 25, # past singular
                 20: 23, 21: 23, 22: 23,         # past plural
                  9: 16, 10: 16, 11: 16, 15: 16, # present singular negated
