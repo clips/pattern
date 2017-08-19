@@ -236,7 +236,6 @@ def train(arg1, arg2=None, arg3=None):
 		print("Best C = %lf  CV accuracy = %g%%\n" % (best_C.value, 100.0 * best_rate.value))
 		return best_C.value,best_rate.value
 
-
 	elif param.flag_cross_validation:
 		l, nr_fold = prob.l, param.nr_fold
 		target = (c_double * l)()
