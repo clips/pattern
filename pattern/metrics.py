@@ -93,7 +93,8 @@ def profile(function, *args, **kwargs):
         import profile
     import pstats
     import os
-    import sys; sys.modules["__main__"].__profile_run__ = run
+    import sys
+    sys.modules["__main__"].__profile_run__ = run
     id = function.__name__ + "()"
     profile.run("__profile_run__()", id)
     p = pstats.Stats(id)
@@ -486,8 +487,11 @@ def isplit(string, sep="\t\n\x0b\x0c\r "):
         if ch not in sep:
             a.append(ch)
             continue
-        if a: yield "".join(a); a = []
-    if a: yield "".join(a)
+        if a:
+            yield "".join(a)
+            a = []
+    if a:
+        yield "".join(a)
 
 def cooccurrence(iterable, window=(-1,-1), term1=lambda x: True, term2=lambda x: True, normalize=lambda x: x, matrix=None, update=None):
     """ Returns the co-occurence matrix of terms in the given iterable, string, file or file list,
@@ -539,7 +543,8 @@ def cooccurrence(iterable, window=(-1,-1), term1=lambda x: True, term2=lambda x:
                             x2 = normalize(x2)
                             if term2(x2):
                                 if update:
-                                    update(matrix, x1, x2, j); continue
+                                    update(matrix, x1, x2, j)
+                                    continue
                                 if x1 not in m:
                                     m[x1] = {}
                                 if x2 not in m[x1]:
@@ -619,7 +624,8 @@ def smoothrange(a=None, b=None, n=10):
     if b is None:
         a, b = 0, a
     if a == b:
-        yield float(a); raise StopIteration
+        yield float(a)
+        raise StopIteration
     r = _multiple(b - a)
     t = _multiple(r / (n - 1), round=True)
     a = floor(a / t) * t

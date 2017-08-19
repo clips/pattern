@@ -151,7 +151,8 @@ def number(s):
             pass
         else:
             # Words that are not in any dicionary may be numbers (e.g. "2.5" => 2.5).
-            try: i += "." in x and float(x) or int(x)
+            try:
+                i += "." in x and float(x) or int(x)
             except:
                 pass
     return n + i + f
@@ -207,7 +208,8 @@ def numerals(n, round=2):
         s = ""
         o, base = 1, 1000
         while i > base:
-            o += 1; base *= 1000
+            o += 1
+            base *= 1000
         while o > len(ORDER) - 1:
             s += " " + ORDER[-1] # This occurs for consecutive thousands: million vigintillion.
             o -= len(ORDER) - 1
@@ -259,7 +261,8 @@ def approximate(word, amount=1, plural={}):
         anything bigger is described as being tens or hundreds of thousands or millions.
         For example: approximate("chicken", 100) => "dozens of chickens".
     """
-    try: p = pluralize(word, custom=plural)
+    try:
+        p = pluralize(word, custom=plural)
     except:
         raise TypeError("can't pluralize %s (not a string)" % word.__class__.__name__)
     # Anything up to 200.
@@ -382,7 +385,8 @@ def reflect(object, quantify=True, replace=readable_types):
         # Classes and modules.
         else:
             for v in object.__dict__.values():
-                try: types.append(str(v.__classname__))
+                try:
+                    types.append(str(v.__classname__))
                 except:
                     # Not a class after all (some stuff like ufunc in Numeric).
                     types.append(_type(v))

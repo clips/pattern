@@ -11,7 +11,8 @@ from builtins import object, range, next
 from io import open
 
 import os
-import sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import datetime
 import codecs
 import random

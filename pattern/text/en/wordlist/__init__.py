@@ -35,25 +35,35 @@ class Wordlist(object):
             self._data = open(os.path.join(MODULE, self._name + ".txt")).read().split(", ")
 
     def __repr__(self):
-        self._load(); return repr(self._data)
+        self._load()
+        return repr(self._data)
     def __iter__(self):
-        self._load(); return iter(self._data)
+        self._load()
+        return iter(self._data)
     def __len__(self):
-        self._load(); return len(self._data)
+        self._load()
+        return len(self._data)
     def __contains__(self, w):
-        self._load(); return w in self._data
+        self._load()
+        return w in self._data
     def __add__(self, iterable):
-        self._load(); return Wordlist(None, data=sorted(self._data + list(iterable)))
+        self._load()
+        return Wordlist(None, data=sorted(self._data + list(iterable)))
     def __getitem__(self, i):
-        self._load(); return self._data[i]
+        self._load()
+        return self._data[i]
     def __setitem__(self, i, v):
-        self._load(); self._data[i] = v
+        self._load()
+        self._data[i] = v
     def insert(self, i, v):
-        self._load(); self._data.insert(i, v)
+        self._load()
+        self._data.insert(i, v)
     def append(self, v):
-        self._load(); self._data.append(v)
+        self._load()
+        self._data.append(v)
     def extend(self, v):
-        self._load(); self._data.extend(v)
+        self._load()
+        self._data.extend(v)
 
 ACADEMIC  = Wordlist("academic")  # English academic words.
 BASIC     = Wordlist("basic")     # English basic words (850) that express 90% of concepts.

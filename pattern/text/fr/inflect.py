@@ -90,15 +90,24 @@ def singularize(word, pos=NOUN, custom={}):
     w = word.lower()
     # Common articles, determiners, pronouns:
     if pos in ("DT", "PRP", "PRP$", "WP", "RB", "IN"):
-        if w == "du" : return "de"
-        if w == "ces": return "ce"
-        if w == "les": return "le"
-        if w == "des": return "un"
-        if w == "mes": return "mon"
-        if w == "ses": return "son"
-        if w == "tes": return "ton"
-        if w == "nos": return "notre"
-        if w == "vos": return "votre"
+        if w == "du" :
+            return "de"
+        if w == "ces":
+            return "ce"
+        if w == "les":
+            return "le"
+        if w == "des":
+            return "un"
+        if w == "mes":
+            return "mon"
+        if w == "ses":
+            return "son"
+        if w == "tes":
+            return "ton"
+        if w == "nos":
+            return "notre"
+        if w == "vos":
+            return "votre"
         if w.endswith(("'", "’")):
             return w[:-1] + "e"
     if w.endswith("nnes"):  # parisiennes => parisien

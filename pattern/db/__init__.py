@@ -236,10 +236,13 @@ def date(*args, **kwargs):
         # One parameter, a date string for which we guess the input format (RFC2822 or known formats).
         if isinstance(args[0], bytes):
             args = (args[0].decode("utf-8"),)
-        try: d = Date.fromtimestamp(mktime_tz(parsedate_tz(args[0])))
+        try:
+            d = Date.fromtimestamp(mktime_tz(parsedate_tz(args[0])))
         except:
             for format in ("format" in kwargs and [kwargs["format"]] or []) + date_formats:
-                try: d = Date.strptime(args[0], format); break
+                try:
+                    d = Date.strptime(args[0], format)
+                    break
                 except:
                     pass
         if d is None:
@@ -303,7 +306,8 @@ def encrypt_string(s, key=""):
     key += " "
     a = []
     for i in range(len(s)):
-        try: a.append(chr(ord(s[i]) + ord(key[i % len(key)]) % 256).encode("latin-1"))
+        try:
+            a.append(chr(ord(s[i]) + ord(key[i % len(key)]) % 256).encode("latin-1"))
         except:
             raise EncryptionError()
     s = b"".join(a)
@@ -318,7 +322,8 @@ def decrypt_string(s, key=""):
     s = s.decode("latin-1")
     a = []
     for i in range(len(s)):
-        try: a.append(chr(ord(s[i]) - ord(key[i % len(key)]) % 256))
+        try:
+            a.append(chr(ord(s[i]) - ord(key[i % len(key)]) % 256))
         except:
             raise DecryptionError()
     s = "".join(a)
@@ -510,7 +515,8 @@ class Database(object):
         # Table objects are lazily constructed when retrieved.
         # This saves time because each table executes a metadata query when constructed.
         def __init__(self, db, *args, **kwargs):
-            dict.__init__(self, *args, **kwargs); self.db = db
+            dict.__init__(self, *args, **kwargs)
+            self.db = db
         def __getitem__(self, k):
             if dict.__getitem__(self, k) is None:
                 dict.__setitem__(self, k, Table(name=k, database=self.db))
@@ -928,7 +934,8 @@ class Table(object):
         # New field() with optional=False must have a default value (can not be NOW).
         # New field() can have index=True, but not PRIMARY or UNIQUE.
         def __init__(self, table, *args, **kwargs):
-            list.__init__(self, *args, **kwargs); self.table = table
+            list.__init__(self, *args, **kwargs)
+            self.table = table
         def append(self, field):
             name, (field, index) = field[0], self.table.db._field_SQL(self.table.name, field)
             self.table.db.execute("alter table `%s` add column %s;" % (self.table.name, field))
@@ -1046,7 +1053,8 @@ class Table(object):
             (i.e., like Query.table returned from Table.search()).
         """
         def __init__(self, table, data):
-            list.__init__(self, data); self.table = table
+            list.__init__(self, data)
+            self.table = table
         def record(self, row):
             return self.table.record(row) # See assoc().
 
@@ -1124,7 +1132,9 @@ class Table(object):
         if len(args) == 0 and len(kwargs) == 1 and isinstance(kwargs.get("values"), dict):
             kwargs = kwargs["values"]
         if len(args) == 1 and isinstance(args[0], dict):
-            a = args[0]; a.update(kwargs); kwargs = a
+            a = args[0]
+            a.update(kwargs)
+            kwargs = a
         kv = ", ".join("`%s`=%s" % (k, self.db.escape(v)) for k, v in kwargs.items())
         q  = "update `%s` set %s where %s;" % (self.name, kv,
             not isinstance(id, (Filter, FilterChain)) and cmp(self.primary_key, id, "=", self.db.escape) \
@@ -1296,7 +1306,8 @@ class FilterChain(list):
         # FilterChain(type="cat", age=5, operator=AND)
         # FilterChain({"type": "cat", "age": 5}, operator=AND)
         if len(args) == 1 and isinstance(args[0], dict):
-            args[0].pop("operator", None); kwargs = dict(args[0], **kwargs)
+            args[0].pop("operator", None)
+            kwargs = dict(args[0], **kwargs)
             args = []
         else:
             args = list(args)
@@ -1886,7 +1897,8 @@ class Datasheet(CSV):
     def _set_rows(self, rows):
         # Datasheet.rows property can't be set, except in special case Datasheet.rows += row.
         if isinstance(rows, DatasheetRows) and rows._datasheet == self:
-            self._rows = rows; return
+            self._rows = rows
+            return
         raise AttributeError("can't set attribute")
     rows = property(_get_rows, _set_rows)
 
@@ -1895,7 +1907,8 @@ class Datasheet(CSV):
     def _set_columns(self, columns):
         # Datasheet.columns property can't be set, except in special case Datasheet.columns += column.
         if isinstance(columns, DatasheetColumns) and columns._datasheet == self:
-            self._columns = columns; return
+            self._columns = columns
+            return
         raise AttributeError("can't set attribute")
     columns = cols = property(_get_columns, _set_columns)
 
@@ -1928,7 +1941,8 @@ class Datasheet(CSV):
             return
         for i, f in enumerate(f[0] for f in self.__dict__["fields"] or []):
             if f == k:
-                self.__dict__["_columns"].__setitem__(i, v); return
+                self.__dict__["_columns"].__setitem__(i, v)
+                return
         raise AttributeError("'Datasheet' object has no attribute '%s'" % k)
 
     def __setitem__(self, index, value):
@@ -1979,11 +1993,16 @@ class Datasheet(CSV):
     # datasheet1 = [[...],[...]] + datasheet2
     # datasheet1 += datasheet2
     def __add__(self, datasheet):
-        m = self.copy(); m.extend(datasheet); return m
+        m = self.copy()
+        m.extend(datasheet)
+        return m
     def __radd__(self, datasheet):
-        m = Datasheet(datasheet); m.extend(self); return m
+        m = Datasheet(datasheet)
+        m.extend(self)
+        return m
     def __iadd__(self, datasheet):
-        self.extend(datasheet); return self
+        self.extend(datasheet)
+        return self
 
     def insert(self, i, row, default=None, **kwargs):
         """ Inserts the given row into the matrix.
@@ -2051,7 +2070,8 @@ class Datasheet(CSV):
                 function[i] = lambda a: ",".join(decode_utf8(x) for x in a if x is not None)
         J = j
         # Map unique values in column j to a list of rows that contain this value.
-        g = {}; [g.setdefault(key(v), []).append(i) for i, v in enumerate(self.columns[j])]
+        g = {}
+        [g.setdefault(key(v), []).append(i) for i, v in enumerate(self.columns[j])]
         # Map unique values in column j to a sort index in the new, grouped list.
         o = [(g[v][0], v) for v in g]
         o = dict([(v, i)  for i, (ii,v) in enumerate(sorted(o))])
@@ -2180,13 +2200,15 @@ class DatasheetRows(list):
     def __len__(self):
         return len(self._datasheet)
     def __iter__(self):
-        for i in range(len(self)): yield list.__getitem__(self._datasheet, i)
+        for i in range(len(self)):
+            yield list.__getitem__(self._datasheet, i)
     def __repr__(self):
         return repr(self._datasheet)
     def __add__(self, row):
         raise TypeError("unsupported operand type(s) for +: 'Datasheet.rows' and '%s'" % row.__class__.__name__)
     def __iadd__(self, row):
-        self.append(row); return self
+        self.append(row)
+        return self
     def __eq__(self, rows):
         return self._datasheet.__eq__(rows)
     def __ne__(self, rows):
@@ -2233,7 +2255,8 @@ class DatasheetColumns(list):
         self.pop(j)
         self.insert(j, column, field=f)
     def __getitem__(self, j):
-        if j < 0: j = j % len(self) # DatasheetColumns[-1]
+        if j < 0:
+            j = j % len(self) # DatasheetColumns[-1]
         if j >= len(self):
             raise IndexError("list index out of range")
         return self._cache.setdefault(j, DatasheetColumn(self._datasheet, j))
@@ -2244,13 +2267,15 @@ class DatasheetColumns(list):
     def __len__(self):
         return len(self._datasheet) > 0 and len(self._datasheet[0]) or 0
     def __iter__(self):
-        for i in range(len(self)): yield self.__getitem__(i)
+        for i in range(len(self)):
+            yield self.__getitem__(i)
     def __repr__(self):
         return repr(list(iter(self)))
     def __add__(self, column):
         raise TypeError("unsupported operand type(s) for +: 'Datasheet.columns' and '%s'" % column.__class__.__name__)
     def __iadd__(self, column):
-        self.append(column); return self
+        self.append(column)
+        return self
     def __eq__(self, columns):
         return list(self) == columns
     def __ne__(self, columns):
@@ -2260,7 +2285,8 @@ class DatasheetColumns(list):
         """ Inserts the given column into the matrix.
             Missing rows at the end (bottom) will be filled with the default value.
         """
-        try: column = [v for v in column]
+        try:
+            column = [v for v in column]
         except:
             raise TypeError("Datasheet.columns.insert(x): x must be list")
         column = column + [default] * (len(self._datasheet) - len(column))
@@ -2282,7 +2308,8 @@ class DatasheetColumns(list):
 
     def remove(self, column):
         if isinstance(column, DatasheetColumn) and column._datasheet == self._datasheet:
-            self.pop(column._j); return
+            self.pop(column._j)
+            return
         raise ValueError("list.remove(x): x not in list")
 
     def pop(self, j):
@@ -2324,7 +2351,8 @@ class DatasheetColumns(list):
         for i, row in enumerate(self._datasheet):
             # The main difficulty is modifying each row in-place,
             # since other variables might be referring to it.
-            r = list(row); [row.__setitem__(i2, r[i1]) for i2, i1 in enumerate(o)]
+            r = list(row)
+            [row.__setitem__(i2, r[i1]) for i2, i1 in enumerate(o)]
         # Reorder the datasheet headers.
         if self._datasheet.fields is not None:
             self._datasheet.fields = [self._datasheet.fields[i] for i in o]
@@ -2358,7 +2386,8 @@ class DatasheetColumn(list):
     def __len__(self):
         return len(self._datasheet)
     def __iter__(self): # Can be put more simply but optimized for performance:
-        for i in range(len(self)): yield list.__getitem__(self._datasheet, i)[self._j]
+        for i in range(len(self)):
+            yield list.__getitem__(self._datasheet, i)[self._j]
     def __reversed__(self):
         return reversed(list(iter(self)))
     def __repr__(self):
@@ -2381,7 +2410,8 @@ class DatasheetColumn(list):
         self.extend(column)
     def __contains__(self, value):
         for v in self:
-            if v == value: return True
+            if v == value:
+                return True
         return False
 
     def count(self, value):
@@ -2398,13 +2428,15 @@ class DatasheetColumn(list):
         """
         for i, v in enumerate(self):
             if v == value:
-                self._datasheet.pop(i); return
+                self._datasheet.pop(i)
+                return
         raise ValueError("list.remove(x): x not in list")
 
     def pop(self, i):
         """ Removes the entire row from the matrix and returns the value at the given index.
         """
-        row = self._datasheet.pop(i); return row[self._j]
+        row = self._datasheet.pop(i)
+        return row[self._j]
 
     def sort(self, cmp=None, key=None, reverse=False):
         """ Sorts the rows in the matrix according to the values in this column,
@@ -2412,7 +2444,8 @@ class DatasheetColumn(list):
         """
         o = order(list(self), cmp, key, reverse)
         # Modify the table in place, more than one variable may be referencing it:
-        r = list(self._datasheet); [self._datasheet.__setitem__(i2, r[i1]) for i2, i1 in enumerate(o)]
+        r = list(self._datasheet)
+        [self._datasheet.__setitem__(i2, r[i1]) for i2, i1 in enumerate(o)]
 
     def insert(self, i, value, default=None):
         """ Inserts the given value in the column.
@@ -2448,7 +2481,9 @@ class DatasheetColumn(list):
 
 _UID = 0
 def uid():
-    global _UID; _UID += 1; return _UID
+    global _UID
+    _UID += 1
+    return _UID
 
 def truncate(string, length=100):
     """ Returns a (head, tail)-tuple, where the head string length is less than the given length.

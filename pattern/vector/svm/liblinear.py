@@ -196,7 +196,8 @@ class problem(Structure):
 		if scipy != None and isinstance(y, scipy.ndarray):
 			scipy.ctypeslib.as_array(self.y, (self.l,))[:] = y
 		else:
-			for i, yi in enumerate(y): self.y[i] = yi
+			for i, yi in enumerate(y):
+				self.y[i] = yi
 
 		self.x = (POINTER(feature_node) * l)()
 		if scipy != None and isinstance(x, sparse.csr_matrix):
@@ -205,7 +206,8 @@ class problem(Structure):
 			x_ptr = scipy.ctypeslib.as_array(x_ptr,(self.l,))
 			x_ptr[:] = self.rowptr[:-1] * sizeof(feature_node) + base
 		else:
-			for i, xi in enumerate(self.x_space): self.x[i] = xi
+			for i, xi in enumerate(self.x_space):
+				self.x[i] = xi
 
 		self.set_bias(bias)
 

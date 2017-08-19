@@ -70,10 +70,12 @@ try:
 except:
     MODULE = ""
 
-try: from pattern.text import singularize, predicative, conjugate, tokenize
+try:
+    from pattern.text import singularize, predicative, conjugate, tokenize
 except:
     try:
-        import sys; sys.path.insert(0, os.path.join(MODULE, ".."))
+        import sys
+        sys.path.insert(0, os.path.join(MODULE, ".."))
         from text import singularize, predicative, conjugate, tokenize
     except:
         singularize = lambda w, **k: w
@@ -365,7 +367,9 @@ def _uid():
     """ Returns a string id, for example: "NPIJYaS-1", "NPIJYaS-2", ...
         The string part is based on the current time, the number suffix is auto-incremental.
     """
-    global _UID; _UID += 1; return _SESSION + "-" + str(_UID)
+    global _UID
+    _UID += 1
+    return _SESSION + "-" + str(_UID)
 
 # Term relevance weight:
 TF, TFIDF, TF_IDF, BINARY = \
@@ -435,7 +439,8 @@ class Document(object):
             v = None
         # pattern.en.Text with Sentence objects, can use stemmer=LEMMA.
         elif string.__class__.__name__ == "Text":
-            w = []; [w.extend(sentence.words) for sentence in string]
+            w = []
+            [w.extend(sentence.words) for sentence in string]
             w = [w for w in w if kwargs["filter"](w.string)]
             w = count(w, **kwargs)
             v = None
@@ -578,7 +583,8 @@ class Document(object):
     def count(self):
         # Yields the number of words in the document representation.
         # Cache the word count so we can reuse it when calculating tf.
-        if not self._count: self._count = sum(self.terms.values())
+        if not self._count:
+            self._count = sum(self.terms.values())
         return self._count
 
     @property
@@ -1028,7 +1034,8 @@ class Model(object):
         if self._classifier:
             p = path + ".tmp"
             self._classifier.save(p, final)
-            self._classifier = open(p, "rb").read(); os.remove(p)
+            self._classifier = open(p, "rb").read()
+            os.remove(p)
         f = gzip.GzipFile(path, "wb")
         f.write(pickle.dumps(self, 1))  # 1 = binary
         f.close()
@@ -1562,7 +1569,8 @@ class Model(object):
     def gain_ratio(self, word):
         """ Returns the information gain ratio (GR, 0.0-1.0) for the given feature.
         """
-        if not self._gr: self.ig(word)
+        if not self._gr:
+            self.ig(word)
         return self._gr[word]
 
     GR = gr = gainratio = gain_ratio
@@ -1922,7 +1930,8 @@ def k_means(vectors, k=None, iterations=10, distance=COSINE, seed=RANDOM, **kwar
             # Randomly partition the vectors across k clusters.
             clusters[i % int(k)].append(v)
     # Cache the distance calculations between vectors (up to 4x faster).
-    map = DistanceMap(method=distance); distance = map.distance
+    map = DistanceMap(method=distance)
+    distance = map.distance
     converged = False
     while not converged and iterations > 0 and k > 0:
         # Calculate the center of each cluster.
@@ -1949,7 +1958,8 @@ def k_means(vectors, k=None, iterations=10, distance=COSINE, seed=RANDOM, **kwar
                 if nearest != i: # Other cluster is nearer.
                     clusters[nearest].append(clusters[i].pop(clusters[i].index(v)))
                     converged = False
-        iterations -= 1; #print(iterations)
+        iterations -= 1
+        #print(iterations)
     return clusters
 
 kmeans = k_means
@@ -1962,7 +1972,8 @@ def kmpp(vectors, k, distance=COSINE):
         - it has a theoretical approximation guarantee.
     """
     # Cache the distance calculations between vectors (up to 4x faster).
-    map = DistanceMap(method=distance); distance = map.distance
+    map = DistanceMap(method=distance)
+    distance = map.distance
     # David Arthur, 2006, http://theory.stanford.edu/~sergei/slides/BATS-Means.pdf
     # Based on:
     # http://www.stanford.edu/~darthur/kmpp.zip
@@ -2048,7 +2059,8 @@ def sequence(i=0, f=lambda i: i + 1):
     # We cannot use Vector.id, since the given vectors might be plain dicts.
     # We cannot use id(vector), since id() is only unique for the lifespan of the object.
     while True:
-        yield i; i = f(i)
+        yield i
+        i = f(i)
 
 def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
     """ Returns a Cluster containing k items (vectors or clusters with nested items).

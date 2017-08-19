@@ -165,7 +165,8 @@ def product(*args, **kwargs):
     for p in p:
         yield tuple(p)
 
-try: from itertools import product
+try:
+    from itertools import product
 except:
     pass
 
@@ -250,10 +251,12 @@ class odict(dict):
         return dict.pop(self, k, *args, **kwargs)
 
     def popitem(self):
-        k = self._o[-1] if self._o else None; return (k, self.pop(k))
+        k = self._o[-1] if self._o else None
+        return (k, self.pop(k))
 
     def clear(self):
-        self._o = []; dict.clear(self)
+        self._o = []
+        dict.clear(self)
 
     def iterkeys(self):
         return reversed(self._o)
@@ -351,7 +354,8 @@ class Taxonomy(dict):
             for classifier in self.classifiers:
                 a.extend(classifier.parents(term, **kwargs) or [])
             if recursive:
-                for w in a: a += dfs(w, recursive, visited, **kwargs)
+                for w in a:
+                    a += dfs(w, recursive, visited, **kwargs)
             return a
         return unique(dfs(self._normalize(term), recursive, {}, **kwargs))
 
@@ -368,7 +372,8 @@ class Taxonomy(dict):
             for classifier in self.classifiers:
                 a.extend(classifier.children(term, **kwargs) or [])
             if recursive:
-                for w in a: a += dfs(w, recursive, visited, **kwargs)
+                for w in a:
+                    a += dfs(w, recursive, visited, **kwargs)
             return a
         return unique(dfs(self._normalize(term), recursive, {}, **kwargs))
 
@@ -425,9 +430,11 @@ class WordNetClassifier(Classifier):
 
     def __init__(self, wordnet=None):
         if wordnet is None:
-            try: from pattern.en import wordnet
+            try:
+                from pattern.en import wordnet
             except:
-                try: from .en import wordnet
+                try:
+                    from .en import wordnet
                 except:
                     pass
         Classifier.__init__(self, self._parents, self._children)
@@ -628,11 +635,13 @@ class Constraint(object):
                     s2 = None
                 # Compare the word to the allowed words (which can contain wildcards).
                 if _match(s1, w):
-                    b = True; break
+                    b = True
+                    break
                 # Compare the word lemma to the allowed words, e.g.,
                 # if "was" is not in the constraint, perhaps "be" is, which is a good match.
                 if s2 and _match(s2, w):
-                    b = True; break
+                    b = True
+                    break
 
         # If the constraint defines allowed taxonomy terms,
         # and the given word did not match an allowed word, traverse the taxonomy.
@@ -664,7 +673,8 @@ class Constraint(object):
           ("chunks", self.chunks),
           ( "roles", self.roles),
           (  "taxa", self.taxa)):
-            if v: s.append("%s=%s" % (k, repr(v)))
+            if v:
+                s.append("%s=%s" % (k, repr(v)))
         return "Constraint(%s)" % ", ".join(s)
 
     @property
@@ -705,7 +715,8 @@ class Pattern(object):
         # Assign Constraint.index:
         i = 0
         for constraint in self.sequence:
-            constraint.index = i; i += 1
+            constraint.index = i
+            i += 1
         # There are two search modes: STRICT and GREEDY.
         # - In STRICT, "rabbit" matches only the string "rabbit".
         # - In GREEDY, "rabbit|NN" matches the string "rabbit" tagged "NN".
@@ -763,13 +774,16 @@ class Pattern(object):
             # Insert groups in opened-first order (i).
             while s.startswith("{"):
                 s = s[1:]
-                G.append((i, [])); i += 1
+                G.append((i, []))
+                i += 1
                 O.append([])
             for g in G:
                 g[1].append(constraint)
             while s.endswith("}"):
                 s = s[:-1]
-                if G: O[G[-1][0]] = G[-1][1]; G.pop()
+                if G:
+                    O[G[-1][0]] = G[-1][1]
+                    G.pop()
         P.groups = [g for g in O if g]
         return P
 
@@ -798,7 +812,9 @@ class Pattern(object):
         if sentence.__class__.__name__ == "Sentence":
             pass
         elif isinstance(sentence, list) or sentence.__class__.__name__ == "Text":
-            a = []; [a.extend(self.search(s)) for s in sentence]; return a
+            a = []
+            [a.extend(self.search(s)) for s in sentence]
+            return a
         elif isinstance(sentence, str):
             sentence = Sentence(sentence)
         elif isinstance(sentence, Match) and len(sentence) > 0:
@@ -1019,7 +1035,8 @@ class Match(object):
         """ Returns a list of constraints that match the given Chunk.
         """
         a = [self._map1[w.index] for w in chunk.words if w.index in self._map1]
-        b = []; [b.append(constraint) for constraint in a if constraint not in b]
+        b = []
+        [b.append(constraint) for constraint in a if constraint not in b]
         return b
 
     def constituents(self, constraint=None):
@@ -1040,7 +1057,8 @@ class Match(object):
             W = self._map2.get(i,[])
             W = [self.words[i - self.words[0].index] for i in W]
         if isinstance(constraint, (list, tuple)):
-            W = []; [W.extend(self._map2.get(j < 0 and j % n or j,[])) for j in constraint]
+            W = []
+            [W.extend(self._map2.get(j < 0 and j % n or j,[])) for j in constraint]
             W = [self.words[i - self.words[0].index] for i in W]
             W = unique(W)
         a = []

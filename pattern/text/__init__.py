@@ -610,9 +610,11 @@ class Context(lazylist):
             given constraints x and y, e.g., Context.append("TO < NN", "VB")
         """
         if " < " in tag1 and not x and not y:
-            tag1, x = tag1.split(" < "); cmd = "prevtag"
+            tag1, x = tag1.split(" < ")
+            cmd = "prevtag"
         if " > " in tag1 and not x and not y:
-            x, tag1 = tag1.split(" > "); cmd = "nexttag"
+            x, tag1 = tag1.split(" > ")
+            cmd = "nexttag"
         lazylist.insert(self, i, [tag1, tag2, cmd, x or "", y or ""])
 
     def append(self, *args, **kwargs):
@@ -673,7 +675,8 @@ class Entities(lazydict):
                     b = True
                     for j, e in enumerate(e):
                         if i + j >= len(tokens) or tokens[i + j][0].lower() != e:
-                            b = False; break
+                            b = False
+                            break
                     if b:
                         for token in tokens[i:i + j + 1]:
                             token[1] = token[1] if token[1].startswith(self.tag) else self.tag
@@ -1397,9 +1400,12 @@ def find_relations(chunked):
         if 0 < i < len(chunks) - 1 and len(chunk) == 1 and chunk[-1][-1] == "O":
             t0, t1, t2 = chunks[i - 1][-1], chunks[i][0], chunks[i + 1][0] # previous / current / next
             if tag(t1) == "PP" and t2[1] in ("DT", "PR", "PRP$"):
-                if t0[0] in BE and t1[0] in ("in", "at")      : t1[-1] = "PP-LOC"
-                if t0[0] in GO and t1[0] in ("to", "towards") : t1[-1] = "PP-DIR"
-    related = []; [related.extend(chunk) for chunk in chunks]
+                if t0[0] in BE and t1[0] in ("in", "at")      :
+                    t1[-1] = "PP-LOC"
+                if t0[0] in GO and t1[0] in ("to", "towards") :
+                    t1[-1] = "PP-DIR"
+    related = []
+    [related.extend(chunk) for chunk in chunks]
     return related
 
 #--- KEYWORDS EXTRACTION ---------------------------------------------------------------------------
@@ -1421,7 +1427,8 @@ def find_keywords(string, parser, top=10, frequency={}, ignore=("rt",), pos=("NN
     for sentence in parser.parse(s, chunks=True, lemmata=lemmata).split():
         for w in sentence: # [token, tag, chunk, preposition, lemma]
             if w[2].startswith(("B", "O")):
-                t.append([]); p = None
+                t.append([])
+                p = None
             if w[1].startswith(("NNP", "DT")) and p and \
                p[1].startswith("NNP") and \
                p[0][0] != "@" and \
@@ -1535,7 +1542,9 @@ def commandline(parse=Parser().parse):
     if s:
         explicit = False
         for option in [o.tokenize, o.tags, o.chunks, o.relations, o.lemmata]:
-            if option is not None: explicit = True; break
+            if option is not None:
+                explicit = True
+                break
         if not explicit:
             a = {"encoding": o.encoding }
         else:
@@ -1748,7 +1757,8 @@ def tense_id(*args, **kwargs):
     # Disambiguate PARTICIPLE, IMPERFECT, PRETERITE.
     # These are often considered to be tenses but are in fact tense + aspect.
     if tense == INFINITIVE:
-        person = number = mood = aspect = None; negated = False
+        person = number = mood = aspect = None
+        negated = False
     if tense in ((PRESENT, PARTICIPLE), PRESENT + PARTICIPLE, PARTICIPLE, GERUND):
         tense, aspect = PRESENT, PROGRESSIVE
     if tense in ((PAST, PARTICIPLE), PAST + PARTICIPLE):
@@ -1857,7 +1867,8 @@ class Verbs(lazydict):
             a = [x for x in self[b] if x != ""]
         elif parse is True: # rule-based
             a = self.find_lexeme(b)
-        u = []; [u.append(x) for x in a if x not in u]
+        u = []
+        [u.append(x) for x in a if x not in u]
         return u
 
     def conjugate(self, verb, *args, **kwargs):

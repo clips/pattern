@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 from builtins import str, bytes, dict, int
 
 import os
-import sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.en import parse, Text
 

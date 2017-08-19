@@ -36,7 +36,8 @@ def svm_read_problem(data_file_name, return_scipy=False):
 	for i, line in enumerate(open(data_file_name)):
 		line = line.split(None, 1)
 		# In case an instance with all zero features
-		if len(line) == 1: line += ['']
+		if len(line) == 1:
+			line += ['']
 		label, features = line
 		prob_y += [float(label)]
 		if scipy != None and return_scipy:

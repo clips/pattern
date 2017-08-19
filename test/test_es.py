@@ -9,7 +9,8 @@ from builtins import map, zip, filter
 from builtins import object, range
 
 import os
-import sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import unittest
 import subprocess
 
@@ -34,7 +35,8 @@ class TestInflection(unittest.TestCase):
         from pattern.db import Datasheet
         test = {}
         for w, lemma, tag, f in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-es-davies.csv")):
-            if tag == "n": test.setdefault(lemma, []).append(w)
+            if tag == "n":
+                test.setdefault(lemma, []).append(w)
         i, n = 0, 0
         for sg, pl in test.items():
             pl = sorted(pl, key=len, reverse=True)[0]
@@ -49,7 +51,8 @@ class TestInflection(unittest.TestCase):
         from pattern.db import Datasheet
         test = {}
         for w, lemma, tag, f in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-es-davies.csv")):
-            if tag == "n": test.setdefault(lemma, []).append(w)
+            if tag == "n":
+                test.setdefault(lemma, []).append(w)
         i, n = 0, 0
         for sg, pl in test.items():
             pl = sorted(pl, key=len, reverse=True)[0]
@@ -77,7 +80,8 @@ class TestInflection(unittest.TestCase):
         from pattern.db import Datasheet
         test = {}
         for w, lemma, tag, f in Datasheet.load(os.path.join(PATH, "corpora", "wordforms-es-davies.csv")):
-            if tag == "j": test.setdefault(lemma, []).append(w)
+            if tag == "j":
+                test.setdefault(lemma, []).append(w)
         i, n = 0, 0
         for pred, attr in test.items():
             attr = sorted(attr, key=len, reverse=True)[0]

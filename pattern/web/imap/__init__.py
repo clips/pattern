@@ -26,11 +26,13 @@ except:
     MODULE = ""
 
 # Import the Cache class from pattern.web so e-mails can be cached locally (faster):
-try: from ..cache import cache
+try:
+    from ..cache import cache
 except:
     try:
         import os
-        import sys; sys.path.append(os.path.join(MODULE, ".."))
+        import sys
+        sys.path.append(os.path.join(MODULE, ".."))
         from cache import cache
     except:
         try:
@@ -165,9 +167,11 @@ def _decode(s, message):
         e = e.split("charset=")[-1].split(";")[0].strip("\"'").lower()
         s = s.decode(e)
     except:
-        try: s = s.decode("utf-8")
+        try:
+            s = s.decode("utf-8")
         except:
-            try: s = s.decode("latin-1")
+            try:
+                s = s.decode("latin-1")
             except:
                 pass
     return s

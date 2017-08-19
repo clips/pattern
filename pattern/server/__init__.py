@@ -24,7 +24,8 @@ import os
 import sys
 import pwd
 import grp
-import time; _time = time
+import time
+_time = time
 import atexit
 import urllib
 import hashlib
@@ -592,7 +593,8 @@ class RateLimit(Database):
                 r = self.cache.get((key, "/"))
             # Unknown key: apply default limit (if IP).
             if r is None and ip is not None and limit is not None and time is not None:
-                r = self.cache.setdefault((ip, p), (0, limit, time, t)); key = ip
+                r = self.cache.setdefault((ip, p), (0, limit, time, t))
+                key = ip
             # Unknown key.
             if r is None:
                 raise RateLimitForbidden
@@ -664,7 +666,8 @@ class Router(dict):
                 j = len(args) if args is not True else i
                 # Handler takes 1 argument, 0 given (pass None for convenience).
                 if i == 0 and j == 1:
-                    p1 = (None,); i = j
+                    p1 = (None,)
+                    i = j
                 # Handler does not take path.
                 if i != j:
                     continue
@@ -1108,7 +1111,8 @@ class Application(object):
     def rate(self, name="rate"):
         """ Yields a thread-safe connection to the app's RateLimit db.
         """
-        if not hasattr(g, name): setattr(g, name, RateLimit(name=self._rate, owner=self._owner))
+        if not hasattr(g, name):
+            setattr(g, name, RateLimit(name=self._rate, owner=self._owner))
         return getattr(g, name)
 
     def bind(self, name="db"):

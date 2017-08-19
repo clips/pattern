@@ -140,7 +140,8 @@ class Word(object):
             - index: the index in the sentence.
         """
         if not isinstance(string, str):
-            try: string = string.decode("utf-8") # ensure Unicode
+            try:
+                string = string.decode("utf-8") # ensure Unicode
             except:
                 pass
         self.sentence = sentence
@@ -214,7 +215,8 @@ class Word(object):
 
     @property
     def custom_tags(self):
-        if not self._custom_tags: self._custom_tags = Tags(self)
+        if not self._custom_tags:
+            self._custom_tags = Tags(self)
         return self._custom_tags
 
     def next(self, type=None):
@@ -285,7 +287,8 @@ class Tags(dict):
 
     def setdefault(self, k, v):
         if k not in self:
-            self.__setitem__(k, v); return self[k]
+            self.__setitem__(k, v)
+            return self[k]
 
 #--- CHUNK -----------------------------------------------------------------------------------------
 
@@ -446,7 +449,8 @@ class Chunk(object):
 
     @property
     def conjunctions(self):
-        if not self._conjunctions: self._conjunctions = Conjunctions(self)
+        if not self._conjunctions:
+            self._conjunctions = Conjunctions(self)
         return self._conjunctions
 
     @property
@@ -460,7 +464,8 @@ class Chunk(object):
                 chunk._modifiers = []
             for chunk in filter(is_modifier, self.sentence.chunks):
                 anchor = chunk.nearest("VP")
-                if anchor: anchor._modifiers.append(chunk)
+                if anchor:
+                    anchor._modifiers.append(chunk)
         return self._modifiers
 
     def nearest(self, type="VP"):
@@ -591,7 +596,9 @@ class Conjunctions(list):
 
 _UID = 0
 def _uid():
-    global _UID; _UID += 1; return _UID
+    global _UID
+    _UID += 1
+    return _UID
 
 def _is_tokenstring(string):
     # The class mbsp.TokenString stores the format of tags for each token.
@@ -612,7 +619,8 @@ class Sentence(object):
         # Convert to Unicode.
         if not isinstance(string, str):
             for encoding in (("utf-8",), ("windows-1252",), ("utf-8", "ignore")):
-                try: string = string.decode(*encoding)
+                try:
+                    string = string.decode(*encoding)
                 except:
                     pass
         self.parent      = None # A Slice refers to the Sentence it is part of.
@@ -830,9 +838,13 @@ class Sentence(object):
             if n == 1:
                 chunk = s[0]
             if n == 2:
-                chunk = s[0]; relation.append(s[1]); role.append(None)
+                chunk = s[0]
+                relation.append(s[1])
+                role.append(None)
             if n >= 3:
-                chunk = s[0]; relation.append(s[2]); role.append(s[1])
+                chunk = s[0]
+                relation.append(s[2])
+                role.append(s[1])
             if n > 1:
                 id = relation[-1]
                 if id.isdigit():
@@ -961,11 +973,14 @@ class Sentence(object):
         if tag == PNP:
             return self.words[index].pnp
         if tag == REL:
-            ch = self.words[index].chunk; return ch and ch.relation
+            ch = self.words[index].chunk
+            return ch and ch.relation
         if tag == ROLE:
-            ch = self.words[index].chunk; return ch and ch.role
+            ch = self.words[index].chunk
+            return ch and ch.role
         if tag == ANCHOR:
-            ch = self.words[index].pnp; return ch and ch.anchor
+            ch = self.words[index].pnp
+            return ch and ch.anchor
         if tag in self.words[index].custom_tags:
             return self.words[index].custom_tags[tag]
         return None
@@ -1387,13 +1402,16 @@ def parse_xml(sentence, tab="\t", id=""):
         ))
         if not chunk:
             # Close the <chink> element if outside of a chunk.
-            indent = pop(indent); xml.append(indent + "</%s>" % XML_CHINK)
+            indent = pop(indent)
+            xml.append(indent + "</%s>" % XML_CHINK)
         if chunk and chunk.stop - 1 == word.index:
             # Close the <chunk> element if this is the last word in the chunk.
-            indent = pop(indent); xml.append(indent + "</%s>" % XML_CHUNK)
+            indent = pop(indent)
+            xml.append(indent + "</%s>" % XML_CHUNK)
         if pnp and pnp.stop - 1 == word.index:
             # Close the PNP element if this is the last word in the PNP.
-            indent = pop(indent); xml.append(indent + "</%s>" % XML_CHUNK)
+            indent = pop(indent)
+            xml.append(indent + "</%s>" % XML_CHUNK)
     xml.append("</%s>" % XML_SENTENCE)
     # Return as a plain str.
     return "\n".join(xml)
@@ -1498,7 +1516,8 @@ def parse_string(xml):
     # Return a TokenString, which is a unicode string that transforms easily
     # into a plain str, a list of tokens, or a Sentence.
     try:
-        if MBSP: from mbsp import TokenString
+        if MBSP:
+            from mbsp import TokenString
         return TokenString(string.strip(), tags=format, language=language)
     except:
         return TaggedString(string.strip(), tags=format, language=language)
@@ -1559,8 +1578,10 @@ def _parse_relation(chunk, type="O"):
     r1 = [x != "-" and x or None for x in r1.split("|")] or [None]
     r2 = [x != "-" and x or None for x in r2.split("|")] or [None]
     r2 = [x is not None and x.split(_UID_SEPARATOR )[-1] or x for x in r2]
-    if len(r1) < len(r2): r1 = r1 + r1 * (len(r2) - len(r1)) # [1] ["SBJ", "OBJ"] => "SBJ-1;OBJ-1"
-    if len(r2) < len(r1): r2 = r2 + r2 * (len(r1) - len(r2)) # [2,4] ["OBJ"] => "OBJ-2;OBJ-4"
+    if len(r1) < len(r2):
+        r1 = r1 + r1 * (len(r2) - len(r1)) # [1] ["SBJ", "OBJ"] => "SBJ-1;OBJ-1"
+    if len(r2) < len(r1):
+        r2 = r2 + r2 * (len(r1) - len(r2)) # [2,4] ["OBJ"] => "OBJ-2;OBJ-4"
     return ";".join(["-".join([x for x in (type, r1, r2) if x]) for r1, r2 in zip(r1, r2)])
 
 def _parse_token(word, chunk="O", pnp="O", relation="O", anchor="O",
@@ -1570,13 +1591,20 @@ def _parse_token(word, chunk="O", pnp="O", relation="O", anchor="O",
     """
     tags = []
     for tag in format:
-        if   tag == WORD   : tags.append(xml_decode(word.value))
-        elif tag == POS    : tags.append(xml_decode(word.get(XML_TYPE, "O")))
-        elif tag == CHUNK  : tags.append(chunk)
-        elif tag == PNP    : tags.append(pnp)
-        elif tag == REL    : tags.append(relation)
-        elif tag == ANCHOR : tags.append(anchor)
-        elif tag == LEMMA  : tags.append(xml_decode(word.get(XML_LEMMA, "")))
+        if   tag == WORD   :
+            tags.append(xml_decode(word.value))
+        elif tag == POS    :
+            tags.append(xml_decode(word.get(XML_TYPE, "O")))
+        elif tag == CHUNK  :
+            tags.append(chunk)
+        elif tag == PNP    :
+            tags.append(pnp)
+        elif tag == REL    :
+            tags.append(relation)
+        elif tag == ANCHOR :
+            tags.append(anchor)
+        elif tag == LEMMA  :
+            tags.append(xml_decode(word.get(XML_LEMMA, "")))
         else:
             # Custom tags when the parser has been extended, see also Word.custom_tags{}.
             tags.append(xml_decode(word.get(tag, "O")))
@@ -1697,22 +1725,34 @@ def table(sentence, fill=1, placeholder="-"):
     tags += [tag for tag in sentence.token if tag not in tags]
     def format(token, tag):
         # Returns the token tag as a string.
-        if   tag == WORD   : s = token.string
-        elif tag == POS    : s = token.type
-        elif tag == IOB    : s = token.chunk and (token.index == token.chunk.start and "B" or "I")
-        elif tag == CHUNK  : s = token.chunk and token.chunk.type
-        elif tag == ROLE   : s = token.chunk and token.chunk.role
-        elif tag == REL    : s = token.chunk and token.chunk.relation and str(token.chunk.relation)
-        elif tag == PNP    : s = token.chunk and token.chunk.pnp and token.chunk.pnp.type
-        elif tag == ANCHOR : s = token.chunk and token.chunk.anchor_id
-        elif tag == LEMMA  : s = token.lemma
-        else               : s = token.custom_tags.get(tag)
+        if   tag == WORD   :
+            s = token.string
+        elif tag == POS    :
+            s = token.type
+        elif tag == IOB    :
+            s = token.chunk and (token.index == token.chunk.start and "B" or "I")
+        elif tag == CHUNK  :
+            s = token.chunk and token.chunk.type
+        elif tag == ROLE   :
+            s = token.chunk and token.chunk.role
+        elif tag == REL    :
+            s = token.chunk and token.chunk.relation and str(token.chunk.relation)
+        elif tag == PNP    :
+            s = token.chunk and token.chunk.pnp and token.chunk.pnp.type
+        elif tag == ANCHOR :
+            s = token.chunk and token.chunk.anchor_id
+        elif tag == LEMMA  :
+            s = token.lemma
+        else               :
+            s = token.custom_tags.get(tag)
         return s or placeholder
     def outline(column, fill=1, padding=3, align="left"):
         # Add spaces to each string in the column so they line out to the highest width.
         n = max([len(x) for x in column] + [fill])
-        if align == "left"  : return [x + " " * (n - len(x)) + " " * padding for x in column]
-        if align == "right" : return [" " * (n - len(x)) + x + " " * padding for x in column]
+        if align == "left"  :
+            return [x + " " * (n - len(x)) + " " * padding for x in column]
+        if align == "right" :
+            return [" " * (n - len(x)) + x + " " * padding for x in column]
 
     # Gather the tags of the tokens in the sentece per column.
     # If the IOB-tag is I-, mark the chunk tag with "^".

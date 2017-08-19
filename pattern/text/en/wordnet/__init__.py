@@ -95,7 +95,8 @@ def normalize(word):
     if not isinstance(word, str):
         word = str(word)
     if not isinstance(word, str):
-        try: word = word.encode("utf-8", "ignore")
+        try:
+            word = word.encode("utf-8", "ignore")
         except:
             pass
     for k, v in DIACRITICS.items():

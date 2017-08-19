@@ -111,10 +111,12 @@ class svm_problem(Structure):
 		self.n = max_idx
 
 		self.y = (c_double * l)()
-		for i, yi in enumerate(y): self.y[i] = yi
+		for i, yi in enumerate(y):
+			self.y[i] = yi
 
 		self.x = (POINTER(svm_node) * l)()
-		for i, xi in enumerate(self.x_space): self.x[i] = xi
+		for i, xi in enumerate(self.x_space):
+			self.x[i] = xi
 
 class svm_parameter(Structure):
 	_names = ["svm_type", "kernel_type", "degree", "gamma", "coef0",
@@ -141,7 +143,7 @@ class svm_parameter(Structure):
 		return s
 
 	def set_to_default_values(self):
-		self.svm_type = C_SVC;
+		self.svm_type = C_SVC
 		self.kernel_type = RBF
 		self.degree = 3
 		self.gamma = 0

@@ -411,7 +411,8 @@ class Graph(dict):
         n = isinstance(id, Node) and id or self.get(id) or n(id, *args, **kwargs)
         if n.id not in self:
             self.nodes.append(n)
-            self[n.id] = n; n.graph = self
+            self[n.id] = n
+            n.graph = self
             self.root = kwargs.get("root", False) and n or self.root
             # Clear adjacency cache.
             self._adjacency = None
@@ -448,12 +449,15 @@ class Graph(dict):
         """
         if isinstance(x, Node) and x.id in self:
             self.pop(x.id)
-            self.nodes.remove(x); x.graph = None
+            self.nodes.remove(x)
+            x.graph = None
             # Remove all edges involving the given node.
             for e in list(self.edges):
                 if x in (e.node1, e.node2):
-                    if x in e.node1.links: e.node1.links.remove(x)
-                    if x in e.node2.links: e.node2.links.remove(x)
+                    if x in e.node1.links:
+                        e.node1.links.remove(x)
+                    if x in e.node2.links:
+                        e.node2.links.remove(x)
                     self.edges.remove(e)
         if isinstance(x, Edge):
             self.edges.remove(x)
@@ -549,7 +553,8 @@ class Graph(dict):
         """ For depth=0, returns the list of leaf nodes (nodes with only one connection).
             For depth=1, returns the list of leaf nodes and their connected nodes, and so on.
         """
-        u = []; [u.extend(n.flatten(depth, traversable)) for n in self.nodes if len(n.links) == 1]
+        u = []
+        [u.extend(n.flatten(depth, traversable)) for n in self.nodes if len(n.links) == 1]
         return unique(u)
 
     @property
@@ -592,7 +597,8 @@ class Graph(dict):
         """ Returns the node at (x,y) or None.
         """
         for n in self.nodes:
-            if n.contains(x, y): return n
+            if n.contains(x, y):
+                return n
 
     def _add_node_copy(self, n, **kwargs):
         # Magical fairy dust to copy subclasses of Node.
@@ -667,10 +673,14 @@ class GraphLayout(object):
         x0, y0 = +INFINITE, +INFINITE
         x1, y1 = -INFINITE, -INFINITE
         for n in self.graph.nodes:
-            if (n.x < x0): x0 = n.x
-            if (n.y < y0): y0 = n.y
-            if (n.x > x1): x1 = n.x
-            if (n.y > y1): y1 = n.y
+            if (n.x < x0):
+                x0 = n.x
+            if (n.y < y0):
+                y0 = n.y
+            if (n.x > x1):
+                x1 = n.x
+            if (n.y > y1):
+                y1 = n.y
         return (x0, y0, x1 - x0, y1 - y0)
 
     def copy(self, graph):
@@ -767,13 +777,15 @@ def depth_first_search(node, visit=lambda node: False, traversable=lambda node, 
     _visited = _visited or {}
     _visited[node.id] = True
     for n in node.links:
-        if stop: return True
-        if traversable(node, node.links.edge(n)) is False: continue
+        if stop:
+            return True
+        if traversable(node, node.links.edge(n)) is False:
+            continue
         if not n.id in _visited:
             stop = depth_first_search(n, visit, traversable, _visited)
     return stop
 
-dfs = depth_first_search;
+dfs = depth_first_search
 
 def breadth_first_search(node, visit=lambda node: False, traversable=lambda node, edge: True):
     """ Visits all the nodes connected to the given root node, breadth-first.
@@ -789,7 +801,7 @@ def breadth_first_search(node, visit=lambda node: False, traversable=lambda node
             _visited[node.id] = True
     return False
 
-bfs = breadth_first_search;
+bfs = breadth_first_search
 
 def paths(graph, id1, id2, length=4, path=[], _root=True):
     """ Returns a list of paths from node with id1 to node with id2.
@@ -862,7 +874,8 @@ def dijkstra_shortest_path(graph, id1, id2, heuristic=None, directed=False):
     def flatten(list):
         # Flattens a linked list of the form [0,[1,[2,[]]]]
         while len(list) > 0:
-            yield list[0]; list = list[1]
+            yield list[0]
+            list = list[1]
     G = adjacency(graph, directed=directed, heuristic=heuristic)
     q = [(0, id1, ())] # Heap of (cost, path_head, path_rest).
     visited = set()    # Visited nodes.
@@ -894,7 +907,8 @@ def dijkstra_shortest_paths(graph, id, heuristic=None, directed=False):
     heappush(Q, (0, id))
     while Q:
         (dist, v) = heappop(Q)
-        if v in D: continue
+        if v in D:
+            continue
         D[v] = dist
         for w in W[v].keys():
             vw_dist = D[v] + W[v][w]
@@ -903,7 +917,8 @@ def dijkstra_shortest_paths(graph, id, heuristic=None, directed=False):
                 heappush(Q, (vw_dist, w))
                 P[w] = P[v] + [w]
     for n in graph:
-        if n not in P: P[n] = None
+        if n not in P:
+            P[n] = None
     return P
 
 def floyd_warshall_all_pairs_distance(graph, heuristic=None, directed=False):
@@ -972,7 +987,8 @@ def brandes_betweenness_centrality(graph, normalized=True, directed=False):
         Q = [] # Use Q as a heap with (distance, node id)-tuples.
         D = {} # Dictionary of final distances.
         P = {} # Dictionary of paths.
-        for n in graph: P[n] = []
+        for n in graph:
+            P[n] = []
         seen = {id: 0}
         heappush(Q, (0, id, id))
         S = []
@@ -1101,7 +1117,8 @@ def cliques(graph, threshold=3):
         c = clique(graph, n.id)
         if len(c) >= threshold:
             c.sort()
-            if c not in a: a.append(c)
+            if c not in a:
+                a.append(c)
     return a
 
 #### GRAPH UTILITY FUNCTIONS #######################################################################
@@ -1379,7 +1396,7 @@ class HTMLCanvasRenderer(GraphRenderer):
         return "".join(self._script())
 
     def _script(self):
-        s = [];
+        s = []
         s.append("function setup(canvas) {\n")
         s.append(   "\tcanvas.size(%s, %s);\n" % (self.width, self.height))
         s.append(   "\tcanvas.fps = %s;\n" % (self.fps))
@@ -1393,26 +1410,32 @@ class HTMLCanvasRenderer(GraphRenderer):
                         self.force,
                         self.repulsion))
         # Apply eigenvector, betweenness and degree centrality.
-        if self.weight is True: s.append(
+        if self.weight is True:
+            s.append(
                     "\tg.eigenvectorCentrality();\n"
                     "\tg.betweennessCentrality();\n"
                     "\tg.degreeCentrality();\n")
         if isinstance(self.weight, (list, tuple)):
-            if WEIGHT in self.weight: s.append(
+            if WEIGHT in self.weight:
+                s.append(
                     "\tg.eigenvectorCentrality();\n")
-            if CENTRALITY in self.weight: s.append(
+            if CENTRALITY in self.weight:
+                s.append(
                     "\tg.betweennessCentrality();\n")
-            if DEGREE in self.weight: s.append(
+            if DEGREE in self.weight:
+                s.append(
                     "\tg.degreeCentrality();\n")
         # Apply node weight to node radius.
-        if self.pack: s.append(
+        if self.pack:
+            s.append(
                     "\t// Apply Node.weight to Node.radius.\n"
                     "\tfor (var i=0; i < g.nodes.length; i++) {\n"
                         "\t\tvar n = g.nodes[i];\n"
                         "\t\tn.radius = n.radius + n.radius * n.weight;\n"
                     "\t}\n")
         # Apply edge length (leaves get shorter edges).
-        if self.pack: s.append(
+        if self.pack:
+            s.append(
                     "\t// Apply Edge.length (leaves get shorter edges).\n"
                     "\tfor (var i=0; i < g.nodes.length; i++) {\n"
                         "\t\tvar e = g.nodes[i].edges();\n"
@@ -1421,7 +1444,8 @@ class HTMLCanvasRenderer(GraphRenderer):
                         "\t\t}\n"
                     "\t}\n")
         # Apply pruning.
-        if self.prune is not None: s.append(
+        if self.prune is not None:
+            s.append(
                     "\tg.prune(%s);\n" % self.prune)
         # Implement <canvas> draw().
         s.append("}\n")

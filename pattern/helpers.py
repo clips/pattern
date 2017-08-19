@@ -18,7 +18,8 @@ def decode_string(v, encoding="utf-8"):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, bytes):
         for e in encoding:
-            try: return v.decode(*e)
+            try:
+                return v.decode(*e)
             except:
                 pass
         return v
@@ -31,7 +32,8 @@ def encode_string(v, encoding="utf-8"):
         encoding = ((encoding,),) + (("windows-1252",), ("utf-8", "ignore"))
     if isinstance(v, str):
         for e in encoding:
-            try: return v.encode(*e)
+            try:
+                return v.encode(*e)
             except:
                 pass
         return v

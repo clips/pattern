@@ -205,7 +205,8 @@ class AsynchronousRequest(object):
     def now(self):
         """ Waits for the function to finish and yields its return value.
         """
-        self._thread.join(); return self._response
+        self._thread.join()
+        return self._response
 
     @property
     def elapsed(self):
@@ -276,7 +277,8 @@ def urldecode(query):
              return None
         if s.lstrip("-").isdigit():
              return int(s)
-        try: return float(s)
+        try:
+            return float(s)
         except:
              return s
     if query:
@@ -421,7 +423,8 @@ class URL(object):
     def parts(self):
         """ Yields a dictionary with the URL parts.
         """
-        if not self._parts: self._parse()
+        if not self._parts:
+            self._parse()
         return self._parts
 
     @property
@@ -440,15 +443,25 @@ class URL(object):
         return s
 
     def __getattr__(self, k):
-        if k in self.__dict__ : return self.__dict__[k]
-        if k in self.parts    : return self.__dict__["_parts"][k]
+        if k in self.__dict__ :
+            return self.__dict__[k]
+        if k in self.parts    :
+            return self.__dict__["_parts"][k]
         raise AttributeError("'URL' object has no attribute '%s'" % k)
 
     def __setattr__(self, k, v):
-        if k in self.__dict__ : self.__dict__[k] = u(v); return
-        if k == "string"      : self._set_string(v); return
-        if k == "query"       : self.parts[k] = v; return
-        if k in self.parts    : self.__dict__["_parts"][k] = u(v); return
+        if k in self.__dict__ :
+            self.__dict__[k] = u(v)
+            return
+        if k == "string"      :
+            self._set_string(v)
+            return
+        if k == "query"       :
+            self.parts[k] = v
+            return
+        if k in self.parts    :
+            self.__dict__["_parts"][k] = u(v)
+            return
         raise AttributeError("'URL' object has no attribute '%s'" % k)
 
     def open(self, timeout=10, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None):
@@ -483,16 +496,26 @@ class URL(object):
                     decode_utf8(base64.b64encode(b'%s:%s' % authentication)))
             return urlopen(request)
         except UrllibHTTPError as e:
-            if e.code == 301: raise HTTP301Redirect(src=e, url=url)
-            if e.code == 400: raise HTTP400BadRequest(src=e, url=url)
-            if e.code == 401: raise HTTP401Authentication(src=e, url=url)
-            if e.code == 403: raise HTTP403Forbidden(src=e, url=url)
-            if e.code == 404: raise HTTP404NotFound(src=e, url=url)
-            if e.code == 414: raise HTTP414RequestURITooLong(src=e, url=url)
-            if e.code == 420: raise HTTP420Error(src=e, url=url)
-            if e.code == 429: raise HTTP429TooMayRequests(src=e, url=url)
-            if e.code == 500: raise HTTP500InternalServerError(src=e, url=url)
-            if e.code == 503: raise HTTP503ServiceUnavailable(src=e, url=url)
+            if e.code == 301:
+                raise HTTP301Redirect(src=e, url=url)
+            if e.code == 400:
+                raise HTTP400BadRequest(src=e, url=url)
+            if e.code == 401:
+                raise HTTP401Authentication(src=e, url=url)
+            if e.code == 403:
+                raise HTTP403Forbidden(src=e, url=url)
+            if e.code == 404:
+                raise HTTP404NotFound(src=e, url=url)
+            if e.code == 414:
+                raise HTTP414RequestURITooLong(src=e, url=url)
+            if e.code == 420:
+                raise HTTP420Error(src=e, url=url)
+            if e.code == 429:
+                raise HTTP429TooMayRequests(src=e, url=url)
+            if e.code == 500:
+                raise HTTP500InternalServerError(src=e, url=url)
+            if e.code == 503:
+                raise HTTP503ServiceUnavailable(src=e, url=url)
             raise HTTPError(str(e), src=e, url=url)
         except httplib.BadStatusLine as e:
             raise HTTPError(str(e), src=e, url=url)
@@ -551,7 +574,8 @@ class URL(object):
     def exists(self, timeout=10):
         """ Yields False if the URL generates a HTTP404NotFound error.
         """
-        try: self.open(timeout)
+        try:
+            self.open(timeout)
         except HTTP404NotFound:
             return False
         except HTTPError:
@@ -835,7 +859,8 @@ class HTMLTagstripper(HTMLParser):
     def handle_endtag(self, tag):
         if tag in self._exclude and self._data and self._data[-1].startswith("<" + tag):
             # Never keep empty elements (e.g. <a></a>).
-            self._data.pop(-1); return
+            self._data.pop(-1)
+            return
         if tag in self._exclude:
             self._data.append("</%s>" % tag)
         if tag in self._replace:
@@ -874,8 +899,10 @@ def strip_element(string, tag, attributes=""):
             opened += s[j:k].count("<%s" % t)
             closed += 1
             j = k
-        if i < 0: return string
-        if j < 0: return string[:i]
+        if i < 0:
+            return string
+        if j < 0:
+            return string[:i]
         string = string[:i] + string[j + len(t) + 3:]; s = string.lower()
     return string
 
@@ -2208,7 +2235,8 @@ class MediaWikiSection(object):
                         r1 = f(r"<t[d|h]", r"</t[d|h]>", row)
                         r1 = (((f(r'colspan="', r'"', v) + [1])[0], v[v.find(">") + 1:]) for v in r1)
                         r1 = ((int(n), v) for n, v in r1)
-                        r2 = []; [[r2.append(p(v)) for j in range(n)] for n, v in r1]
+                        r2 = []
+                        [[r2.append(p(v)) for j in range(n)] for n, v in r1]
                         if i == 0 and "</th>" in row:
                             t.headers = r2
                         else:
@@ -2413,7 +2441,8 @@ class Wikia(MediaWiki):
             while True:
                 batch, done = [], False
                 try:
-                    for i in range(10): batch.append(next(iterator))
+                    for i in range(10):
+                        batch.append(next(iterator))
                 except StopIteration:
                     done = True # No more articles, finish batch and raise StopIteration.
                 url = URL(self._url.replace("api.php", "wikia.php"), method=GET, query={
@@ -3077,7 +3106,8 @@ class Node(object):
     def traverse(self, visit=lambda node: None):
         """ Executes the visit function on this node and each of its child nodes.
         """
-        visit(self); [node.traverse(visit) for node in self.children]
+        visit(self)
+        [node.traverse(visit) for node in self.children]
 
     def remove(self, child):
         """ Removes the given child node (and all nested nodes).
@@ -3335,11 +3365,16 @@ class Selector(object):
             r = r"^%s$"
             if s[1].startswith(("~", "|", "^", "$", "*")):
                 p, s[1] = s[1][0], s[1][1:]
-                if p == "~": r = r"(^|\s)%s(\s|$)"
-                if p == "|": r = r"^%s(-|$)" # XXX doesn't work with spaces.
-                if p == "^": r = r"^%s"
-                if p == "$": r = r"%s$"
-                if p == "*": r = r"%s"
+                if p == "~":
+                    r = r"(^|\s)%s(\s|$)"
+                if p == "|":
+                    r = r"^%s(-|$)" # XXX doesn't work with spaces.
+                if p == "^":
+                    r = r"^%s"
+                if p == "$":
+                    r = r"%s$"
+                if p == "*":
+                    r = r"%s"
             s[1] = re.compile(r % s[1], re.I)
         return s[:2]
 

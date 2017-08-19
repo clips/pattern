@@ -33,7 +33,8 @@ try:
     from hashlib import md5
 except:
     import sha as sha1
-    import md5; md5 = md5.new
+    import md5
+    md5 = md5.new
 
 _diacritics = {
     "a": ("á","ä","â","à","å"),

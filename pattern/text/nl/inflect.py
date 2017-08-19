@@ -289,8 +289,10 @@ class Verbs(_Verbs):
         # Long vowel followed by -f or -s: geef => geven.
         elif len(b) > 2 and not is_vowel(b[-1]) and is_vowel(b[-2]) and is_vowel(b[-3])\
           or b.endswith(("ijf", "erf"),):
-            if b.endswith("f"): b = b[:-1] + "v"
-            if b.endswith("s"): b = b[:-1] + "z"
+            if b.endswith("f"):
+                b = b[:-1] + "v"
+            if b.endswith("s"):
+                b = b[:-1] + "z"
             if b[-2] == b[-3]:
                 b = b[:-2] + b[-1]
         # Short vowel followed by consonant: snak => snakken.
@@ -309,8 +311,10 @@ class Verbs(_Verbs):
         # Stem = infinitive minus -en.
         b = b0 = re.sub("en$", "", v)
         # zweven => zweef, graven => graaf
-        if b.endswith("v"): b = b[:-1] + "f"
-        if b.endswith("z"): b = b[:-1] + "s"
+        if b.endswith("v"):
+            b = b[:-1] + "f"
+        if b.endswith("z"):
+            b = b[:-1] + "s"
         # Vowels with a long sound are doubled, we need to guess how it sounds:
         if len(b) > 2 and not is_vowel(b[-1]) and is_vowel(b[-2]) and not is_vowel(b[-3]):
             if not v.endswith(("elen", "deren", "keren", "nderen", "tteren")):
@@ -375,8 +379,10 @@ def attributive(adjective):
     if w.endswith("ig"):
         return w + "e"
     if len(w) > 2 and (not is_vowel(w[-1]) and is_vowel(w[-2]) and is_vowel(w[-3]) or w[:-1].endswith("ij")):
-        if w.endswith("f"): w = w[:-1] + "v"
-        if w.endswith("s"): w = w[:-1] + "z"
+        if w.endswith("f"):
+            w = w[:-1] + "v"
+        if w.endswith("s"):
+            w = w[:-1] + "z"
         if w[-2] == w[-3]:
             w = w[:-2] + w[-1]
     elif len(w) > 1 and is_vowel(w[-2]) and w.endswith(tuple("bdfgklmnprst")):

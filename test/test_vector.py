@@ -11,12 +11,14 @@ from builtins import object, range
 from io import open
 
 import os
-import sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import time
 import random
 import unittest
 
-from random import seed; seed(0)
+from random import seed
+seed(0)
 
 from pattern import vector
 

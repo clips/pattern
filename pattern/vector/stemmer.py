@@ -84,7 +84,8 @@ def R2(w):
     """ R2 is the region after the first non-vowel following a vowel in R1, 
         or the end of the word if there is no such non-vowel.
     """
-    if w.startswith(tuple(overstemmed)): return R1(R1(R1(w)))
+    if w.startswith(tuple(overstemmed)):
+        return R1(R1(R1(w)))
     return R1(R1(w))
 
 def find_vowel(w):
@@ -92,14 +93,16 @@ def find_vowel(w):
         When no vowel is found, returns len(word).
     """
     for i, ch in enumerate(w):
-        if ch in VOWELS: return i
+        if ch in VOWELS:
+            return i
     return len(w)
 
 def has_vowel(w):
     """ Returns True if there is a vowel in the given string.
     """
     for ch in w:
-        if ch in VOWELS: return True
+        if ch in VOWELS:
+            return True
     return False
 
 def vowel_consonant_pairs(w, max=None):
@@ -110,7 +113,8 @@ def vowel_consonant_pairs(w, max=None):
         if is_vowel(ch) and i < len(w) - 1 and is_consonant(w[i + 1]):
             m += 1
             # An optimisation to stop searching once we reach the amount of <vc> pairs we need.
-            if m == max: break
+            if m == max:
+                break
     return m
 
 #--- REPLACEMENT RULES -----------------------------------------------------------------------------

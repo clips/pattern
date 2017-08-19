@@ -7,7 +7,8 @@ from builtins import map, zip
 from builtins import range
 
 import os
-import sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 import random
 
 from collections    import defaultdict

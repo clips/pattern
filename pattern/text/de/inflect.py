@@ -387,13 +387,15 @@ class Verbs(_Verbs):
             return b
         # Lemmatize regular inflections.
         for x in ("test", "est", "end", "ten", "tet", "en", "et", "te", "st", "e", "t"):
-            if b.endswith(x): b = b[:-len(x)]; break
+            if b.endswith(x):
+                b = b[:-len(x)]; break
         # Subjunctive: hielte => halten, schnitte => schneiden.
         for x, y in (
           ("ieb",  "eib"), ( "ied", "eid"), ( "ief",  "auf" ), ( "ieg", "eig" ), ("iel", "alt"),
           ("ien",  "ein"), ("iess", "ass"), ( "ieß", "aß"  ), ( "iff", "eif" ), ("iss", "eiss"),
           ( "iß",  "eiß"), (  "it", "eid"), ( "oss",  "iess"), ( "öss", "iess")):
-            if b.endswith(x): b = b[:-len(x)] + y; break
+            if b.endswith(x):
+                b = b[:-len(x)] + y; break
         b = b.replace("eeiss", "eiss")
         b = b.replace("eeid", "eit")
         # Subjunctive: wechselte => wechseln

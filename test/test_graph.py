@@ -5,7 +5,8 @@ from __future__ import unicode_literals
 from __future__ import division
 
 import os
-import sys; sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+import sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import unittest
 
 from pattern import graph
@@ -422,7 +423,8 @@ class TestGraphTraversal(unittest.TestCase):
         def visit(node):
             a.append(node)
         def traversable(node, edge):
-            if edge.node2.id == "e": return False
+            if edge.node2.id == "e":
+                return False
         g = self.g
         a = []
         graph.depth_first_search(g["a"], visit, traversable)
