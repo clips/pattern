@@ -222,7 +222,7 @@ def numerals(n, round=2):
         # see also: http://python.org/doc/2.5.1/tut/node16.html.
         # Some rounding occurs.
         f = ("%." + str(round is None and 2 or round) + "f") % f
-        f = f.replace("0.","",1).rstrip("0")
+        f = f.replace("0.", "", 1).rstrip("0")
         f, z = zshift(f)
         f = f and " %s%s %s" % (RADIX, " %s" % ZERO * z, numerals(int(f))) or ""
     else:
@@ -329,7 +329,7 @@ def count(*args, **kwargs):
                 raise TypeError("can't count %s (not a string)" % word.__class__.__name__)
     # Create an iterator of (count, item) tuples, sorted highest-first.
     s = [(count[word], word) for word in count]
-    s = max([n for (n,w) in s]) > 1 and reversed(sorted(s)) or s
+    s = max([n for (n, w) in s]) > 1 and reversed(sorted(s)) or s
     # Concatenate approximate quantities of each item,
     # starting with the one that has the highest occurence.
     phrase = []
@@ -406,7 +406,7 @@ def reflect(object, quantify=True, replace=readable_types):
         # Execute the regular expressions once only,
         # next time we'll have the conversion cached.
         if k not in m:
-            for a,b in replace:
+            for a, b in replace:
                 types[i] = re.sub(a, b, types[i])
             m[k] = types[i]
         types[i] = m[k]

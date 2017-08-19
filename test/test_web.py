@@ -303,7 +303,7 @@ class TestPlaintext(unittest.TestCase):
     def test_find_between(self):
         # Assert search between open tag and close tag.
         s = "<script type='text/javascript'>alert(0);</script>"
-        v = web.find_between("<script","</script>", s)
+        v = web.find_between("<script", "</script>", s)
         self.assertEqual(v[0], " type='text/javascript'>alert(0);")
         # Assert several matches in string.
         s = "a0ba1b"
@@ -481,7 +481,7 @@ class TestSearchEngine(unittest.TestCase):
         # Google, Yahoo, Bing, Twitter, Wikipedia, Flickr, Facebook, ProductWiki, Newsfeed.
         # SearchEngine.search() returns a list of Result objects with unicode fields,
         # except Wikipedia which returns a WikipediaArticle (MediaWikiArticle subclass).
-        if api == "Yahoo" and license == ("",""):
+        if api == "Yahoo" and license == ("", ""):
             return
         t = time.time()
         e = Engine(license=license, throttle=0.25, language="en")
@@ -545,10 +545,10 @@ class TestSearchEngine(unittest.TestCase):
         for feed, url in web.feeds.items():
             self._test_search_engine("Newsfeed", url, None, web.Newsfeed, query=url, type=web.NEWS)
 
-    def _test_results(self, api, source, license, Engine, type=web.SEARCH, query="today", baseline=[6,6,6,0]):
+    def _test_results(self, api, source, license, Engine, type=web.SEARCH, query="today", baseline=[6, 6, 6, 0]):
         # Assert SearchEngine result content.
         # We expect to find http:// URL's and descriptions containing the search query.
-        if api == "Yahoo" and license == ("",""):
+        if api == "Yahoo" and license == ("", ""):
             return
         i1 = 0
         i2 = 0
@@ -561,7 +561,7 @@ class TestSearchEngine(unittest.TestCase):
             i2 += int(query in result.title.lower())
             i2 += int(query in result.description.lower())
             i3 += int(result.language == "en")
-            i4 += int(result.url.endswith(("jpg","png","gif")))
+            i4 += int(result.url.endswith(("jpg", "png", "gif")))
             #print(result.url)
             #print(result.title)
             #print(result.description)
@@ -577,7 +577,7 @@ class TestSearchEngine(unittest.TestCase):
     def test_results_yahoo(self):
         self._test_results("Yahoo",    *self.api["Yahoo"])
     def test_results_yahoo_images(self):
-        self._test_results("Yahoo",    *self.api["Yahoo"], **{"type": web.IMAGE, "baseline": [6,6,0,6]})
+        self._test_results("Yahoo",    *self.api["Yahoo"], **{"type": web.IMAGE, "baseline": [6, 6, 0, 6]})
     def test_results_yahoo_news(self):
         self._test_results("Yahoo",    *self.api["Yahoo"], **{"type": web.NEWS})
     @unittest.skip('Bing API changed')
@@ -585,17 +585,17 @@ class TestSearchEngine(unittest.TestCase):
         self._test_results("Bing",     *self.api["Bing"])
     @unittest.skip('Bing API changed')
     def test_results_bing_images(self):
-        self._test_results("Bing",     *self.api["Bing"], **{"type": web.IMAGE, "baseline": [6,6,0,6]})
+        self._test_results("Bing",     *self.api["Bing"], **{"type": web.IMAGE, "baseline": [6, 6, 0, 6]})
     @unittest.skip('Bing API changed')
     def test_results_bing_news(self):
         self._test_results("Bing",     *self.api["Bing"], **{"type": web.NEWS})
     def test_results_twitter(self):
         self._test_results("Twitter",  *self.api["Twitter"])
     def test_results_flickr(self):
-        self._test_results("Flickr",   *self.api["Flickr"], **{"baseline": [6,6,0,6]})
+        self._test_results("Flickr",   *self.api["Flickr"], **{"baseline": [6, 6, 0, 6]})
     @unittest.skip('Facebook API changed')
     def test_results_facebook(self):
-        self._test_results("Facebook", *self.api["Facebook"], **{"baseline": [0,1,0,0]})
+        self._test_results("Facebook", *self.api["Facebook"], **{"baseline": [0, 1, 0, 0]})
 
     def test_google_translate(self):
         try:
@@ -631,7 +631,7 @@ class TestSearchEngine(unittest.TestCase):
 
     def _test_search_image_size(self, api, source, license, Engine):
         # Assert image URL's for different sizes actually exist.
-        if api == "Yahoo" and license == ("",""):
+        if api == "Yahoo" and license == ("", ""):
             return
         e = Engine(license, throttle=0.25)
         for size in (web.TINY, web.SMALL, web.MEDIUM, web.LARGE):
@@ -691,7 +691,7 @@ class TestSearchEngine(unittest.TestCase):
         self.assertTrue("fr"      in v.languages)
         self.assertTrue("chat"    in v.languages["fr"].lower())
         self.assertTrue(v.external[0].startswith("http"))
-        self.assertTrue(v.media[0].endswith(("jpg","png","gif","svg")))
+        self.assertTrue(v.media[0].endswith(("jpg", "png", "gif", "svg")))
         print("pattern.web.WikipediaArticle")
 
     @unittest.skip('Mediawiki/Wikipedia API or appearance changed')

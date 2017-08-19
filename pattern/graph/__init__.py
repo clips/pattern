@@ -47,12 +47,12 @@ def unique(iterable):
 # This module is standalone (i.e., it is not a graph rendering package).
 # If you want to call Graph.draw() then line(), ellipse() and Text.draw() must be implemented.
 
-def line(x1, y1, x2, y2, stroke=(0,0,0,1), strokewidth=1):
+def line(x1, y1, x2, y2, stroke=(0, 0, 0, 1), strokewidth=1):
     """ Draws a line from (x1, y1) to (x2, y2) using the given stroke color and stroke width.
     """
     pass
 
-def ellipse(x, y, width, height, fill=(0,0,0,1), stroke=None, strokewidth=1):
+def ellipse(x, y, width, height, fill=(0, 0, 0, 1), stroke=None, strokewidth=1):
     """ Draws an ellipse at (x, y) with given fill and stroke color and stroke width.
     """
     pass
@@ -100,7 +100,7 @@ def deepcopy(o):
     if isinstance(o, (list, tuple, set)):
         return o.__class__(deepcopy(v) for v in o)
     if isinstance(o, dict):
-        return dict((deepcopy(k), deepcopy(v)) for k,v in o.items())
+        return dict((deepcopy(k), deepcopy(v)) for k, v in o.items())
     raise Exception("don't know how to copy %s" % o.__class__.__name__)
 
 #### NODE ##########################################################################################
@@ -123,12 +123,12 @@ class Node(object):
         self.radius      = radius
         self.fixed       = kwargs.pop("fixed", False)
         self.fill        = kwargs.pop("fill", None)
-        self.stroke      = kwargs.pop("stroke", (0,0,0,1))
+        self.stroke      = kwargs.pop("stroke", (0, 0, 0, 1))
         self.strokewidth = kwargs.pop("strokewidth", 1)
         self.text        = kwargs.get("text", True) and \
             Text(isinstance(id, str) and id or str(id),
                    width = 85,
-                    fill = kwargs.pop("text", (0,0,0,1)),
+                    fill = kwargs.pop("text", (0, 0, 0, 1)),
                 fontsize = kwargs.pop("fontsize", 11), **kwargs) or None
         self._weight     = None # Calculated by Graph.eigenvector_centrality().
         self._centrality = None # Calculated by Graph.betweenness_centrality().
@@ -206,7 +206,7 @@ class Node(object):
                 if n.id not in _visited or _visited[n.id][1] < depth - 1:
                     if traversable(self, self.links.edges[n.id]):
                         n.flatten(depth - 1, traversable, _visited)
-        return [n for n,d in _visited.values()] # Fast, but not order-preserving.
+        return [n for n, d in _visited.values()] # Fast, but not order-preserving.
 
     def draw(self, weighted=False):
         """ Draws the node as a circle with the given radius, fill, stroke and strokewidth.
@@ -221,7 +221,7 @@ class Node(object):
                 self.x,
                 self.y,
                 self.radius * 2 + w,
-                self.radius * 2 + w, fill=(0,0,0,0.2), stroke=None)
+                self.radius * 2 + w, fill=(0, 0, 0, 0.2), stroke=None)
         # Draw the node.
         ellipse(
             self.x,
@@ -279,7 +279,7 @@ class Links(list):
 
 class Edge(object):
 
-    def __init__(self, node1, node2, weight=0.0, length=1.0, type=None, stroke=(0,0,0,1), strokewidth=1):
+    def __init__(self, node1, node2, weight=0.0, length=1.0, type=None, stroke=(0, 0, 0, 1), strokewidth=1):
         """ A connection between two nodes.
             Its weight indicates the importance (not the cost) of the connection.
             Its type is useful in a semantic network (e.g. "is-a", "is-part-of", ...)
@@ -605,11 +605,11 @@ class Graph(dict):
         # We assume that the subclass constructor takes an optional "text" parameter
         # (Text objects in NodeBox for OpenGL's implementation are expensive).
         try:
-            new = self.add_node(n.id, root=kwargs.get("root",False), text=False)
+            new = self.add_node(n.id, root=kwargs.get("root", False), text=False)
         except TypeError:
-            new = self.add_node(n.id, root=kwargs.get("root",False))
+            new = self.add_node(n.id, root=kwargs.get("root", False))
         new.__class__ = n.__class__
-        new.__dict__.update((k, deepcopy(v)) for k,v in n.__dict__.items()
+        new.__dict__.update((k, deepcopy(v)) for k, v in n.__dict__.items()
             if k not in ("graph", "links", "_x", "_y", "force", "_weight", "_centrality"))
 
     def _add_edge_copy(self, e, **kwargs):
@@ -620,7 +620,7 @@ class Graph(dict):
             kwargs.get("node1", self[e.node1.id]),
             kwargs.get("node2", self[e.node2.id]))
         new.__class__ = e.__class__
-        new.__dict__.update((k, deepcopy(v)) for k,v in e.__dict__.items()
+        new.__dict__.update((k, deepcopy(v)) for k, v in e.__dict__.items()
             if k not in ("node1", "node2"))
 
     def copy(self, nodes=ALL):
@@ -828,7 +828,7 @@ def edges(path):
     """
     # For example, the distance (i.e., edge weight sum) of a path:
     # sum(e.weight for e in edges(path))
-    return len(path) > 1 and (n.links.edge(path[i + 1]) for i,n in enumerate(path[:-1])) or iter(())
+    return len(path) > 1 and (n.links.edge(path[i + 1]) for i, n in enumerate(path[:-1])) or iter(())
 
 #--- GRAPH ADJACENCY -------------------------------------------------------------------------------
 
@@ -955,7 +955,7 @@ def floyd_warshall_all_pairs_distance(graph, heuristic=None, directed=False):
         def __init__(self, predecessors, *args, **kwargs):
             dict.__init__(self, *args, **kwargs)
             self.predecessors = predecessors
-    return pdict(p, ((u, dict((v, w) for v,w in d[u].items() if w < 1e30)) for u in d))
+    return pdict(p, ((u, dict((v, w) for v, w in d[u].items() if w < 1e30)) for u in d))
 
 def predecessor_path(tree, u, v):
     """ Returns the path between node u and node v as a list of node id's.
@@ -965,8 +965,8 @@ def predecessor_path(tree, u, v):
         w = tree[u][v]
         if w == u:
             return []
-        return _traverse(u,w) + [w] + _traverse(w,v)
-    return [u] + _traverse(u,v) + [v]
+        return _traverse(u, w) + [w] + _traverse(w, v)
+    return [u] + _traverse(u, v) + [v]
 
 #--- GRAPH CENTRALITY ------------------------------------------------------------------------------
 
@@ -1286,9 +1286,9 @@ class HTMLCanvasRenderer(GraphRenderer):
                 "radius": 5,
                  "fixed": False,
                   "fill": None,
-                "stroke": (0,0,0,1),
+                "stroke": (0, 0, 0, 1),
            "strokewidth": 1,
-                  "text": (0,0,0,1),
+                  "text": (0, 0, 0, 1),
               "fontsize": 11,
         }
         # Override settings from keyword arguments.
@@ -1503,7 +1503,7 @@ class HTMLCanvasRenderer(GraphRenderer):
         """
         js  = self.javascript or ""
         if self.stylesheet == INLINE:
-            css = self.style.replace("\n","\n\t\t").rstrip("\t")
+            css = self.style.replace("\n", "\n\t\t").rstrip("\t")
             css = "<style type=\"text/css\">\n\t\t%s\n\t</style>" % css
         elif self.stylesheet == DEFAULT:
             css = "<link rel=\"stylesheet\" href=\"style.css\" type=\"text/css\" media=\"screen\" />"

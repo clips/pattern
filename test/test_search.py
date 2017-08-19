@@ -37,19 +37,19 @@ class TestUtilityFunctions(unittest.TestCase):
         print("pattern.search._match()")
 
     def test_unique(self):
-        self.assertEqual(search.unique([1,1,2,2]), [1,2])
+        self.assertEqual(search.unique([1, 1, 2, 2]), [1, 2])
 
     def test_find(self):
-        self.assertEqual(search.find(lambda v: v > 2, [1,2,3,4,5]), 3)
+        self.assertEqual(search.find(lambda v: v > 2, [1, 2, 3, 4, 5]), 3)
 
     def test_product(self):
         # Assert combinations of list items.
         self.assertEqual(list(search.product([ ], repeat=2)), [])   # No possibilities.
         self.assertEqual(list(search.product([1], repeat=0)), [()]) # One possibility: the empty set.
-        self.assertEqual(list(search.product([1,2,3], repeat=2)),
-            [(1,1), (1,2), (1,3), (2,1), (2,2), (2,3), (3,1), (3,2), (3,3)])
-        for n, m in ((1,9), (2,81), (3,729), (4,6561)):
-            v = search.product([1,2,3,4,5,6,7,8,9], repeat=n)
+        self.assertEqual(list(search.product([1, 2, 3], repeat=2)),
+            [(1, 1), (1, 2), (1, 3), (2, 1), (2, 2), (2, 3), (3, 1), (3, 2), (3, 3)])
+        for n, m in ((1, 9), (2, 81), (3, 729), (4, 6561)):
+            v = search.product([1, 2, 3, 4, 5, 6, 7, 8, 9], repeat=n)
             self.assertEqual(len(list(v)), m)
         print("pattern.search.product()")
 
@@ -61,11 +61,11 @@ class TestUtilityFunctions(unittest.TestCase):
         v = search.variations([1], optional=lambda item: item == 1)
         self.assertEqual(v, [(1,), ()])
         # Assert variations = the original input, (2,), (1,) and ().
-        v = search.variations([1,2], optional=lambda item: item in (1,2))
-        self.assertEqual(v, [(1,2), (2,), (1,), ()])
+        v = search.variations([1, 2], optional=lambda item: item in (1, 2))
+        self.assertEqual(v, [(1, 2), (2,), (1,), ()])
         # Assert variations are sorted longest-first.
-        v = search.variations([1,2,3,4], optional=lambda item: item in (1,2))
-        self.assertEqual(v, [(1,2,3,4), (2,3,4), (1,3,4), (3,4)])
+        v = search.variations([1, 2, 3, 4], optional=lambda item: item in (1, 2))
+        self.assertEqual(v, [(1, 2, 3, 4), (2, 3, 4), (1, 3, 4), (3, 4)])
         self.assertTrue(len(v[0]) >= len(v[1]) >= len(v[2]), len(v[3]))
         print("pattern.search.variations()")
 
@@ -78,7 +78,7 @@ class TestUtilityFunctions(unittest.TestCase):
         v.push(("a", 0))
         v = v.copy()
         self.assertTrue(isinstance(v, dict))
-        self.assertEqual(v.keys(), ["a", "c","b"])
+        self.assertEqual(v.keys(), ["a", "c", "b"])
         print("pattern.search.odict()")
 
 #---------------------------------------------------------------------------------------------------
@@ -234,7 +234,7 @@ class TestConstraint(unittest.TestCase):
           (R("*cat"),     [(W("tomcat"), 1)]),
           (R("c*t|d*g"),  [(W("cat"), 1), (W("cut"), 1), (W("dog"), 1), (W("dig"), 1)]),
           (R("cats|NN*"), [(W("cats", "NNS"), 1), (W("cats"), 0)]),
-          (R("^cat"),     [(W("cat", "NN", index=0), 1),(W("cat", "NN", index=1), 0)]),
+          (R("^cat"),     [(W("cat", "NN", index=0), 1), (W("cat", "NN", index=1), 0)]),
           (R("*|!cat"),   [(W("cat"), 0), (W("dog"), 1), (W("fish"), 1)]),
           (R("my cat"),   [(W("cat"), 0)]),
           (R("my cat"),   [(S("my cat").words[1], 1)]),  # "my cat" is an overspecification of "cat"
@@ -477,7 +477,7 @@ class TestMatch(unittest.TestCase):
         self.assertEqual(m[1].constituents(), [s.words[-3], s.words[-2]])
         self.assertEqual(m[1].constituents(constraint=p[0]), [s.words[-3]])
         self.assertEqual(m[1].constituents(constraint=1), [s.words[-2]])
-        self.assertEqual(m[1].constituents(constraint=(0,1)), [s.words[-3], s.words[-2]])
+        self.assertEqual(m[1].constituents(constraint=(0, 1)), [s.words[-3], s.words[-2]])
         # Assert Match.string.
         self.assertEqual(m[1].string, "pointy teeth")
         print("pattern.search.Match")

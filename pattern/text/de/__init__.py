@@ -179,7 +179,7 @@ ABBREVIATIONS = set((
     "Abs.", "Abt.", "Ass.", "Br.", "Ch.", "Chr.", "Cie.", "Co.", "Dept.", "Diff.",
     "Dr.", "Eidg.", "Exp.", "Fam.", "Fr.", "Hrsg.", "Inc.", "Inv.", "Jh.", "Jt.", "Kt.",
     "Mio.", "Mrd.", "Mt.", "Mte.", "Nr.", "Nrn.", "Ord.", "Ph.", "Phil.", "Pkt.",
-    "Prof.", "Pt.", " S.", "St.", "Stv.", "Tit.", "VII.", "al.", "begr.","bzw.",
+    "Prof.", "Pt.", " S.", "St.", "Stv.", "Tit.", "VII.", "al.", "begr.", "bzw.",
     "chem.", "dent.", "dipl.", "e.g.", "ehem.", "etc.", "excl.", "exkl.", "hum.",
     "i.e.", "incl.", "ing.", "inkl.", "int.", "iur.", "lic.", "med.", "no.", "oec.",
     "phil.", "phys.", "pp.", "psych.", "publ.", "rer.", "sc.", "soz.", "spez.", "stud.",
@@ -218,7 +218,7 @@ class Parser(_Parser):
         if kwargs.get("tagset") == UNIVERSAL:
             kwargs.setdefault("map", lambda token, tag: stts2universal(token, tag))
         if kwargs.get("tagset") is STTS:
-            kwargs.setdefault("map", lambda token,tag: (token, tag))
+            kwargs.setdefault("map", lambda token, tag: (token, tag))
         # The lexicon uses Swiss spelling: "ss" instead of "ß".
         # We restore the "ß" after parsing.
         tokens_ss = [t.replace("ß", "ss") for t in tokens]

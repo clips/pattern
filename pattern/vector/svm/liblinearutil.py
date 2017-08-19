@@ -234,7 +234,7 @@ def train(arg1, arg2=None, arg3=None):
 			start_C = -1.0
 		liblinear.find_parameter_C(prob, param, nr_fold, start_C, max_C, best_C, best_rate)
 		print("Best C = %lf  CV accuracy = %g%%\n" % (best_C.value, 100.0 * best_rate.value))
-		return best_C.value,best_rate.value
+		return best_C.value, best_rate.value
 
 	elif param.flag_cross_validation:
 		l, nr_fold = prob.l, param.nr_fold

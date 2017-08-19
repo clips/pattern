@@ -97,7 +97,7 @@ def penntreebank2universal(token, tag):
 
 ABBREVIATIONS = set((
     "av.", "boul.", "C.-B.", "c.-à-d.", "ex.", "éd.", "fig.", "I.-P.-E.", "J.-C.",
-    "Ltee.", "Ltée.", "M.", "Me.","Mlle.", "Mlles.", "MM.", "N.-B.", "N.-É.", "p.",
+    "Ltee.", "Ltée.", "M.", "Me.", "Mlle.", "Mlles.", "MM.", "N.-B.", "N.-É.", "p.",
     "S.B.E.", "Ste.", "T.-N.", "t.a.b."
 ))
 

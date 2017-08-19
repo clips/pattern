@@ -292,7 +292,7 @@ class Verbs(_Verbs):
                 17, 18, 19, 20, 21, 22,     # indicativo imperfetto
                 40, 41, 42, 43, 44, 45,     # indicativo futuro semplice
                 46, 47, 48, 49, 50, 51,     # condizionale presente
-                    52, 521,53, 54, 541,    # imperativo
+                    52, 521, 53, 54, 541,    # imperativo
                 55, 56, 57, 58, 59, 60,     # congiuntivo presente
                 67, 68, 69, 70, 71, 72      # congiontive imperfetto
             ])

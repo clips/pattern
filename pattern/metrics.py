@@ -121,7 +121,7 @@ ACCURACY, PRECISION, RECALL, F1_SCORE = "accuracy", "precision", "recall", "F1-s
 
 MACRO = "macro"
 
-def confusion_matrix(classify=lambda document: False, documents=[(None,False)]):
+def confusion_matrix(classify=lambda document: False, documents=[(None, False)]):
     """ Returns the performance of a binary classification task (i.e., predicts True or False)
         as a tuple of (TP, TN, FP, FN):
         - TP: true positives  = correct hits, 
@@ -145,7 +145,7 @@ def confusion_matrix(classify=lambda document: False, documents=[(None,False)]):
             FN += 1 # false negative (type II error)
     return TP, TN, FP, FN
 
-def test(classify=lambda document:False, documents=[], average=None):
+def test(classify=lambda document: False, documents=[], average=None):
     """ Returns an (accuracy, precision, recall, F1-score)-tuple.
         With average=None, precision & recall are computed for the positive class (True).
         With average=MACRO, precision & recall for positive and negative class are macro-averaged.
@@ -164,27 +164,27 @@ def test(classify=lambda document:False, documents=[], average=None):
     F1 = 2 * P * R / ((P + R) or 1)
     return (A, P, R, F1)
 
-def accuracy(classify=lambda document:False, documents=[], average=None):
+def accuracy(classify=lambda document: False, documents=[], average=None):
     """ Returns the percentage of correct classifications (true positives + true negatives).
     """
     return test(classify, documents, average)[0]
 
-def precision(classify=lambda document:False, documents=[], average=None):
+def precision(classify=lambda document: False, documents=[], average=None):
     """ Returns the percentage of correct positive classifications.
     """
     return test(classify, documents, average)[1]
 
-def recall(classify=lambda document:False, documents=[], average=None):
+def recall(classify=lambda document: False, documents=[], average=None):
     """ Returns the percentage of positive cases correctly classified as positive.
     """
     return test(classify, documents, average)[2]
 
-def F1(classify=lambda document:False, documents=[], average=None):
+def F1(classify=lambda document: False, documents=[], average=None):
     """ Returns the harmonic mean of precision and recall.
     """
     return test(classify, documents, average)[3]
 
-def F(classify=lambda document:False, documents=[], beta=1, average=None):
+def F(classify=lambda document: False, documents=[], beta=1, average=None):
     """ Returns the weighted harmonic mean of precision and recall,
         where recall is beta times more important than precision.
     """
@@ -193,12 +193,12 @@ def F(classify=lambda document:False, documents=[], beta=1, average=None):
 
 #### SENSITIVITY & SPECIFICITY #####################################################################
 
-def sensitivity(classify=lambda document:False, documents=[]):
+def sensitivity(classify=lambda document: False, documents=[]):
     """ Returns the percentage of positive cases correctly classified as positive (= recall).
     """
     return recall(classify, document, average=None)
 
-def specificity(classify=lambda document:False, documents=[]):
+def specificity(classify=lambda document: False, documents=[]):
     """ Returns the percentage of negative cases correctly classified as negative.
     """
     TP, TN, FP, FN = confusion_matrix(classify, documents)
@@ -415,13 +415,13 @@ def intertextuality(texts=[], n=5, weight=lambda ngram: 1.0, **kwargs):
         for i in map[ngram]:
             for j in map[ngram]:
                 if i != j:
-                    if (i,j) not in w:
-                        w[i,j] = Weight(0.0)
-                    w[i,j] += weight(ngram)
-                    w[i,j].assessments.add(ngram)
+                    if (i, j) not in w:
+                        w[i, j] = Weight(0.0)
+                    w[i, j] += weight(ngram)
+                    w[i, j].assessments.add(ngram)
     for i, j in w:
-        w[i,j] /= float(sum[i])
-        w[i,j]  = min(w[i,j], Weight(1.0))
+        w[i, j] /= float(sum[i])
+        w[i, j]  = min(w[i, j], Weight(1.0))
     return w
 
 #--- WORD TYPE-TOKEN RATIO -------------------------------------------------------------------------
@@ -493,7 +493,7 @@ def isplit(string, sep="\t\n\x0b\x0c\r "):
     if a:
         yield "".join(a)
 
-def cooccurrence(iterable, window=(-1,-1), term1=lambda x: True, term2=lambda x: True, normalize=lambda x: x, matrix=None, update=None):
+def cooccurrence(iterable, window=(-1, -1), term1=lambda x: True, term2=lambda x: True, normalize=lambda x: x, matrix=None, update=None):
     """ Returns the co-occurence matrix of terms in the given iterable, string, file or file list,
         as a dictionary: {term1: {term2: count, term3: count, ...}}.
         The window specifies the size of the co-occurence window.
@@ -689,7 +689,7 @@ def simple_moving_average(iterable, k=10):
     for m in range(len(a)):
         i = m - k
         j = m + k + 1
-        w = a[max(0,i):j]
+        w = a[max(0, i):j]
         yield float(sum(w)) / (len(w) or 1)
 
 sma = simple_moving_average

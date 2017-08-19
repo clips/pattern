@@ -122,7 +122,7 @@ gender_feminine = (
     "tät", "tion", "ung", "ur"
 )
 gender_neuter = (
-    "chen", "icht", "il", "it", "lein", "ma", "ment", "tel", "tum", "um","al", "an", "ar",
+    "chen", "icht", "il", "it", "lein", "ma", "ment", "tel", "tum", "um", "al", "an", "ar",
     "ät", "ent", "ett", "ier", "iv", "o", "on", "nis", "sal"
 )
 gender_majority_vote = {
@@ -437,13 +437,13 @@ class Verbs(_Verbs):
         # Present tense ending in -d or -t gets -e:
         pr = b.endswith(("d", "t")) and b + "e" or b
         # Present tense 2sg gets -st, unless stem ends with -s or -z.
-        p2 = pr.endswith(("s","z")) and pr + "t" or pr + "st"
+        p2 = pr.endswith(("s", "z")) and pr + "t" or pr + "st"
         # Present participle: spiel + -end, arbeiten + -d:
         pp = v.endswith(("en", "ln", "rn")) and v + "d" or v + "end"
         # Past tense regular:
         pt = encode_sz(pr) + "t"
         # Past participle: haushalten => hausgehalten
-        ge = (v.startswith(prefix_inseparable) or b.endswith(("r","t"))) and pt or "ge" + pt
+        ge = (v.startswith(prefix_inseparable) or b.endswith(("r", "t"))) and pt or "ge" + pt
         ge = x and x + "ge" + pt or ge
         # Present subjunctive: stem + -e, -est, -en, -et:
         s1 = encode_sz(pl)

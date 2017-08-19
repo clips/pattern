@@ -19,7 +19,7 @@ from pattern.db import Datasheet
 # We'll test it with a corpus of spam e-mail messages,
 # included in the test suite, stored as a CSV-file.
 # The corpus contains mostly technical e-mail from developer mailing lists.
-data = os.path.join(os.path.dirname(__file__), "..","..","test","corpora","spam-apache.csv")
+data = os.path.join(os.path.dirname(__file__), "..", "..", "test", "corpora", "spam-apache.csv")
 data = Datasheet.load(data)
 
 documents = []

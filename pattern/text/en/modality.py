@@ -36,7 +36,7 @@ def join(words):
 def question(sentence):
     return len(sentence) > 0 and sentence[-1].string == "?"
 def verb(word):
-    return word.type.startswith(("VB","MD")) and (word.chunk is None or word.chunk.type.endswith("VP"))
+    return word.type.startswith(("VB", "MD")) and (word.chunk is None or word.chunk.type.endswith("VP"))
 def verbs(sentence, i=0, j=None):
     return [w for w in sentence[i:j or len(sentence)] if verb(w)]
 
@@ -70,7 +70,7 @@ def imperative(sentence, **kwargs):
             if s(w) in ("would", "should", "'d", "could", "can", "may", "might"):
                 # "You should leave." => conditional.
                 return False
-            if s(w) in ("will", "shall") and i > 0 and s(S[i - 1]) == "you" and not verbs(S,0,i):
+            if s(w) in ("will", "shall") and i > 0 and s(S[i - 1]) == "you" and not verbs(S, 0, i):
                 # "You will eat your dinner."
                 continue
             if w.type == "VB" and (i == 0 or s(S[i - 1]) != "to"):
@@ -126,7 +126,7 @@ def conditional(sentence, predictive=True, **kwargs):
             if s(w) in ("would", "should", "'d", "could", "might"):
                 # "I could help you."
                 return True
-            if s(w) in ("will", "shall", "'ll") and i > 0 and s(S[i - 1]) == "you" and not verbs(S,0,i):
+            if s(w) in ("will", "shall", "'ll") and i > 0 and s(S[i - 1]) == "you" and not verbs(S, 0, i):
                 # "You will help me." => imperative.
                 return False
             if s(w) in ("will", "shall", "'ll") and predictive:

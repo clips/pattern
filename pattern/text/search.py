@@ -533,7 +533,7 @@ class Constraint(object):
         s = re.sub(r"^\\\^", "^", s)
         s = re.sub(r"\\\+$", "+", s)
         s = s.replace("\_", "&uscore;")
-        s = s.replace("_"," ")
+        s = s.replace("_", " ")
         s = s.replace("&uscore;", "_")
         s = s.replace("&lparen;", "(")
         s = s.replace("&rparen;", ")")
@@ -667,7 +667,7 @@ class Constraint(object):
 
     def __repr__(self):
         s = []
-        for k,v in (
+        for k, v in (
           ( "words", self.words),
           (  "tags", self.tags),
           ("chunks", self.chunks),
@@ -761,7 +761,7 @@ class Pattern(object):
         s = re.sub(r"\{\s+", "{", s)
         s = re.sub(r"\s+\}", "}", s)
         s = s.split(" ")
-        s = [v.replace("&space;"," ") for v in s]
+        s = [v.replace("&space;", " ") for v in s]
         P = cls([], *args, **kwargs)
         G, O, i = [], [], 0
         for s in s:
@@ -988,7 +988,7 @@ def escape(string):
     """ Returns the string with control characters for Pattern syntax escaped.
         For example: "hello!" => "hello\!".
     """
-    for ch in ("{","}","[","]","(",")","_","|","!","*","+","^"):
+    for ch in ("{", "}", "[", "]", "(", ")", "_", "|", "!", "*", "+", "^"):
         string = string.replace(ch, "\\" + ch)
     return string
 
@@ -1006,9 +1006,9 @@ class Match(object):
         self._map2 = dict() # Constraint index to list of Word indices.
         for w in self.words:
             self._map1[w.index] = map[w.index]
-        for k,v in self._map1.items():
-            self._map2.setdefault(self.pattern.sequence.index(v),[]).append(k)
-        for k,v in self._map2.items():
+        for k, v in self._map1.items():
+            self._map2.setdefault(self.pattern.sequence.index(v), []).append(k)
+        for k, v in self._map2.items():
             v.sort()
 
     def __len__(self):
@@ -1054,11 +1054,11 @@ class Match(object):
                 i = i < 0 and i % n or i
             else:
                 i = self.pattern.sequence.index(constraint)
-            W = self._map2.get(i,[])
+            W = self._map2.get(i, [])
             W = [self.words[i - self.words[0].index] for i in W]
         if isinstance(constraint, (list, tuple)):
             W = []
-            [W.extend(self._map2.get(j < 0 and j % n or j,[])) for j in constraint]
+            [W.extend(self._map2.get(j < 0 and j % n or j, [])) for j in constraint]
             W = [self.words[i - self.words[0].index] for i in W]
             W = unique(W)
         a = []

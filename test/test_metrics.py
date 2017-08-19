@@ -43,10 +43,10 @@ class TestProfiling(unittest.TestCase):
     def test_confustion_matrix(self):
         # Assert 2 true positives (TP) and 1 false positive (FP).
         v = metrics.confusion_matrix(lambda document: True, self.documents)
-        self.assertEqual(v, (2,0,1,0))
+        self.assertEqual(v, (2, 0, 1, 0))
         # Assert 1 true negative (TN) and 2 false negatives (FN).
         v = metrics.confusion_matrix(lambda document: False, self.documents)
-        self.assertEqual(v, (0,1,0,2))
+        self.assertEqual(v, (0, 1, 0, 2))
         print("pattern.metrics.confusion_matrix()"      )
 
     def test_accuracy(self):
@@ -157,7 +157,7 @@ class TestTextMetrics(unittest.TestCase):
         data = Datasheet.load(os.path.join(PATH, "corpora", "plagiarism-clough&stevenson.csv"))
         data = [((txt, src), int(plagiarism) > 0) for txt, src, plagiarism in data]
         def plagiarism(txt, src):
-            return metrics.intertextuality([txt, src], n=3)[0,1] > 0.05
+            return metrics.intertextuality([txt, src], n=3)[0, 1] > 0.05
         A, P, R, F = metrics.test(lambda x: plagiarism(*x), data)
         self.assertTrue(P > 0.96)
         self.assertTrue(R > 0.94)
@@ -199,7 +199,7 @@ class TestTextMetrics(unittest.TestCase):
         self.assertEqual(sorted(v.keys()), ["cat"])
         self.assertEqual(sorted(v["cat"].keys()), ["black", "cat", "sat"])
         self.assertEqual(sorted(v["cat"].values()), [1, 1, 1])
-        s = [("The","DT"), ("black","JJ"), ("cat","NN"), ("sat","VB"), ("on","IN"), ("the","DT"), ("mat","NN")]
+        s = [("The", "DT"), ("black", "JJ"), ("cat", "NN"), ("sat", "VB"), ("on", "IN"), ("the", "DT"), ("mat", "NN")]
         v = metrics.co_occurrence(s, window=(-2, -1),
              term1 = lambda token: token[1].startswith("NN"),
              term2 = lambda token: token[1].startswith("JJ"))
@@ -247,16 +247,16 @@ class TestStatistics(unittest.TestCase):
 
     def test_mean(self):
         # Assert (1+2+3+4) / 4 = 2.5.
-        v = metrics.mean([1,2,3,4])
+        v = metrics.mean([1, 2, 3, 4])
         self.assertEqual(v, 2.5)
         print("pattern.metrics.mean()")
 
     def test_median(self):
         # Assert 2.5 (between 2 and 3).
-        v = metrics.median([1,2,3,4])
+        v = metrics.median([1, 2, 3, 4])
         self.assertEqual(v, 2.5)
         # Assert 3 (middle of list).
-        v = metrics.median([1,2,3,4,5])
+        v = metrics.median([1, 2, 3, 4, 5])
         self.assertEqual(v, 3)
         # Assert that empty list raises ValueError.
         self.assertRaises(ValueError, metrics.median, [])
@@ -264,56 +264,56 @@ class TestStatistics(unittest.TestCase):
 
     def test_variance(self):
         # Assert 2.5.
-        v = metrics.variance([1,2,3,4,5], sample=True)
+        v = metrics.variance([1, 2, 3, 4, 5], sample=True)
         self.assertEqual(v, 2.5)
         # Assert 2.0 (population variance).
-        v = metrics.variance([1,2,3,4,5], sample=False)
+        v = metrics.variance([1, 2, 3, 4, 5], sample=False)
         self.assertEqual(v, 2.0)
         print("pattern.metrics.variance()")
 
     def test_standard_deviation(self):
         # Assert 2.429 (sample).
-        v = metrics.standard_deviation([1,5,6,7,6,8], sample=True)
+        v = metrics.standard_deviation([1, 5, 6, 7, 6, 8], sample=True)
         self.assertAlmostEqual(v, 2.429, places=3)
         # Assert 2.217 (population).
-        v = metrics.standard_deviation([1,5,6,7,6,8], sample=False)
+        v = metrics.standard_deviation([1, 5, 6, 7, 6, 8], sample=False)
         self.assertAlmostEqual(v, 2.217, places=3)
         print("pattern.metrics.standard_deviation()")
 
     def test_histogram(self):
         # Assert 1 bin.
-        v = metrics.histogram([1,2,3,4], k=0)
+        v = metrics.histogram([1, 2, 3, 4], k=0)
         self.assertTrue(len(v) == 1)
         # Assert 4 bins, each with one value, each with midpoint == value.
-        v = metrics.histogram([1,2,3,4], k=4, range=(0.5,4.5))
+        v = metrics.histogram([1, 2, 3, 4], k=4, range=(0.5, 4.5))
         for i, ((start, stop), v) in enumerate(sorted(v.items())):
             self.assertTrue(i + 1 == v[0])
             self.assertAlmostEqual(start + (stop - start) / 2, i + 1, places=3)
         # Assert 2 bins, one with all the low numbers, one with the high number.
-        v = metrics.histogram([1,2,3,4,100], k=2)
+        v = metrics.histogram([1, 2, 3, 4, 100], k=2)
         v = sorted(v.values(), key=lambda item: len(item))
         self.assertTrue(v[0] == [100])
-        self.assertTrue(v[1] == [1,2,3,4])
+        self.assertTrue(v[1] == [1, 2, 3, 4])
         print("pattern.metrics.histogram()")
 
     def test_moment(self):
         # Assert 0.0 (1st central moment = 0.0).
-        v = metrics.moment([1,2,3,4,5], n=1)
+        v = metrics.moment([1, 2, 3, 4, 5], n=1)
         self.assertEqual(v, 0.0)
         # Assert 2.0 (2nd central moment = population variance).
-        v = metrics.moment([1,2,3,4,5], n=2)
+        v = metrics.moment([1, 2, 3, 4, 5], n=2)
         self.assertEqual(v, 2.0)
         print("pattern.metrics.moment()")
 
     def test_skewness(self):
         # Assert < 0.0 (few low values).
-        v = metrics.skewness([1,100,101,102,103])
+        v = metrics.skewness([1, 100, 101, 102, 103])
         self.assertTrue(v < 0.0)
         # Assert > 0.0 (few high values).
-        v = metrics.skewness([1,2,3,4,100])
+        v = metrics.skewness([1, 2, 3, 4, 100])
         self.assertTrue(v > 0.0)
         # Assert 0.0 (evenly distributed).
-        v = metrics.skewness([1,2,3,4])
+        v = metrics.skewness([1, 2, 3, 4])
         self.assertTrue(v == 0.0)
         print("pattern.metrics.skewness()")
 
@@ -321,23 +321,23 @@ class TestStatistics(unittest.TestCase):
         # Assert -1.2 for the uniform distribution.
         a = 1
         b = 1000
-        v = metrics.kurtosis([float(i - a) / (b - a) for i in range(a,b)])
+        v = metrics.kurtosis([float(i - a) / (b - a) for i in range(a, b)])
         self.assertAlmostEqual(v, -1.2, places=3)
         print("pattern.metrics.kurtosis()")
 
     def test_quantile(self):
         # Assert 2.5 (quantile with p=0.5 == median).
-        v = metrics.quantile([1,2,3,4], p=0.5, a=1, b=-1, c=0, d=1)
+        v = metrics.quantile([1, 2, 3, 4], p=0.5, a=1, b=-1, c=0, d=1)
         self.assertEqual(v, 2.5)
         # Assert 3.0 (discontinuous sample).
-        v = metrics.quantile([1,2,3,4], p=0.5, a=0.5, b=0, c=1, d=0)
+        v = metrics.quantile([1, 2, 3, 4], p=0.5, a=0.5, b=0, c=1, d=0)
         self.assertEqual(v, 3.0)
         return "pattern.metrics.quantile()"
 
     def test_boxplot(self):
         # Different a,b,c,d quantile parameters produce different results.
         # By approximation, assert (53, 79.5, 84.5, 92, 98).
-        a = [79,53,82,91,87,98,80,93]
+        a = [79, 53, 82, 91, 87, 98, 80, 93]
         v = metrics.boxplot(a)
         self.assertEqual(v[0], min(a))
         self.assertTrue(abs(v[1] - 79.5) <= 0.5)

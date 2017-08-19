@@ -55,7 +55,7 @@ re_vowel = re.compile(r"a|e|i|o|u", re.I)
 is_vowel = lambda ch: ch in VOWELS
 
 def normalize(vowel):
-    return {"á":"a", "é":"e", "í":"i", "ó":"o", "ú":"u"}.get(vowel, vowel)
+    return {"á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u"}.get(vowel, vowel)
 
 #### ARTICLE #######################################################################################
 # Spanish inflection of depends on gender and number.
@@ -363,7 +363,7 @@ class Verbs(_Verbs):
                 v + "a", v + "as", v + "a", b + "áramos", v + "ais", v + "an"]
         else:
             # Regular inflection for verbs ending in -er and -ir.
-            p1, p2 = v.endswith("er") and ("e", "é") or ("i","e")
+            p1, p2 = v.endswith("er") and ("e", "é") or ("i", "e")
             return [v,
                 b + "o", b + "es", b + "e", b + p1 + "mos", b + p2 + "is", b + "en", b + "iendo",
                 b + "í", b + "iste", b + "ió", b + "imos", b + "isteis", b + "ieron", b + "ido",

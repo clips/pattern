@@ -20,8 +20,8 @@ g = Graph()
 for i in range(50):
     g.add_node(id=str(i + 1),
         radius = 5,
-        stroke = (0,0,0,1),
-          text = (0,0,0,1))
+        stroke = (0, 0, 0, 1),
+          text = (0, 0, 0, 1))
 # Random edges.
 for i in range(75):
     node1 = choice(g.nodes)
@@ -29,7 +29,7 @@ for i in range(75):
     g.add_edge(node1, node2,
         length = 1.0,
         weight = random(),
-        stroke = (0,0,0,1))
+        stroke = (0, 0, 0, 1))
 
 for node in g.sorted()[:20]:
     # More blue = more important.

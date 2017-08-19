@@ -51,7 +51,7 @@ def is_short_syllable(w, before=None):
     """
     if before != None:
         i = before < 0 and len(w) + before or before
-        return is_short_syllable(w[max(0,i - 3):i])
+        return is_short_syllable(w[max(0, i - 3):i])
     if len(w) == 3 and is_consonant(w[0]) and is_vowel(w[1]) and is_consonant(w[2]) and w[2] not in "wxY":
         return True
     if len(w) == 2 and is_vowel(w[0]) and is_consonant(w[1]):
@@ -169,7 +169,7 @@ def step_1c(w):
     """ Step 1c replaces suffix -y or -Y by -i if preceded by a non-vowel 
         which is not the first letter of the word (cry => cri, by => by, say => say).
     """
-    if len(w) > 2 and w.endswith(("y","Y")) and is_consonant(w[-2]):
+    if len(w) > 2 and w.endswith(("y", "Y")) and is_consonant(w[-2]):
         return w[:-1] + "i"
     return w
 
@@ -191,7 +191,7 @@ def step_2(w):
     """
     for suffix, rules in suffixes2:
         if w.endswith(suffix):
-            for A,B in rules:
+            for A, B in rules:
                 if w.endswith(A):
                     return R1(w).endswith(A) and w[:-len(A)] + B or w
     if w.endswith("li") and R1(w)[-3:-2] in VALID_LI:
@@ -211,7 +211,7 @@ def step_3(w):
     """
     for suffix, rules in suffixes3:
         if w.endswith(suffix):
-            for A,B in rules:
+            for A, B in rules:
                 if w.endswith(A):
                     return R1(w).endswith(A) and w[:-len(A)] + B or w
     return w
@@ -224,7 +224,7 @@ suffixes4 = [
     ("le", ("able", "ible")),
     ("nt", ("ant", "ement", "ment", "ent")),
     ( "e", ("ate", "ive", "ize")),
-    (("m","i","s"), ("ism", "iti", "ous"))
+    (("m", "i", "s"), ("ism", "iti", "ous"))
 ]
 def step_4(w):
     """ Step 4 strips -ant, -ent etc. suffixes.

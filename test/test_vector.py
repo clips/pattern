@@ -87,7 +87,7 @@ class TestUtilityFunctions(unittest.TestCase):
 
     def test_shuffled(self):
         # Assert shuffled() <=> sorted().
-        v1 = [1,2,3,4,5,6,7,8,9,10]
+        v1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         v2 = vector.shuffled(v1)
         self.assertTrue(v1 != v2 and v1 == sorted(v2))
         print("pattern.vector.shuffled()")
@@ -95,19 +95,19 @@ class TestUtilityFunctions(unittest.TestCase):
     def test_chunk(self):
         # Assert list chunk (near-)equal size.
         for a, n, b in (
-          ([1,2,3,4,5], 0, []),
-          ([1,2,3,4,5], 1, [[1,2,3,4,5]]),
-          ([1,2,3,4,5], 2, [[1,2,3], [4,5]]),
-          ([1,2,3,4,5], 3, [[1,2], [3,4], [5]]),
-          ([1,2,3,4,5], 4, [[1,2], [3], [4], [5]]),
-          ([1,2,3,4,5], 5, [[1], [2], [3], [4], [5]]),
-          ([1,2,3,4,5], 6, [[1], [2], [3], [4], [5], []])):
+          ([1, 2, 3, 4, 5], 0, []),
+          ([1, 2, 3, 4, 5], 1, [[1, 2, 3, 4, 5]]),
+          ([1, 2, 3, 4, 5], 2, [[1, 2, 3], [4, 5]]),
+          ([1, 2, 3, 4, 5], 3, [[1, 2], [3, 4], [5]]),
+          ([1, 2, 3, 4, 5], 4, [[1, 2], [3], [4], [5]]),
+          ([1, 2, 3, 4, 5], 5, [[1], [2], [3], [4], [5]]),
+          ([1, 2, 3, 4, 5], 6, [[1], [2], [3], [4], [5], []])):
             self.assertEqual(list(vector.chunk(a, n)), b)
         print("pattern.vector.chunk()")
 
     def test_readonlydict(self):
         # Assert read-only dict.
-        v = vector.readonlydict({"a":1})
+        v = vector.readonlydict({"a": 1})
         self.assertTrue(isinstance(v, dict))
         self.assertRaises(vector.ReadOnlyError, v.__setitem__, "a", 2)
         self.assertRaises(vector.ReadOnlyError, v.__delitem__, "a")
@@ -120,7 +120,7 @@ class TestUtilityFunctions(unittest.TestCase):
 
     def test_readonlylist(self):
         # Assert read-only list.
-        v = vector.readonlylist([1,2])
+        v = vector.readonlylist([1, 2])
         self.assertTrue(isinstance(v, list))
         self.assertRaises(vector.ReadOnlyError, v.__setitem__, 0, 0)
         self.assertRaises(vector.ReadOnlyError, v.__delitem__, 0)
@@ -246,12 +246,12 @@ class TestDocument(unittest.TestCase):
         v5 = vector.count(w, stopwords=True, top=3)
         v6 = vector.count(w, stopwords=True, top=3, threshold=1)
         v7 = vector.count(w, dict=vector.readonlydict, cached=False)
-        self.assertEqual(v1, {"cats":1, "sat":1, "mat":1, ".":1})
-        self.assertEqual(v2, {"cat":1, "sat":1, "mat":1, ".":1})
-        self.assertEqual(v3, {"cats":1, "sat":1, "mat":1})
-        self.assertEqual(v4, {"the":2, "cats":1, "sat":1, "on":1, "mat":1, ".":1})
-        self.assertEqual(v5, {"the":2, "cats":1, ".":1})
-        self.assertEqual(v6, {"the":2})
+        self.assertEqual(v1, {"cats": 1, "sat": 1, "mat": 1, ".": 1})
+        self.assertEqual(v2, {"cat": 1, "sat": 1, "mat": 1, ".": 1})
+        self.assertEqual(v3, {"cats": 1, "sat": 1, "mat": 1})
+        self.assertEqual(v4, {"the": 2, "cats": 1, "sat": 1, "on": 1, "mat": 1, ".": 1})
+        self.assertEqual(v5, {"the": 2, "cats": 1, ".": 1})
+        self.assertEqual(v6, {"the": 2})
         # Assert custom dict class.
         self.assertTrue(isinstance(v7, vector.readonlydict))
         print("pattern.vector.count()")
@@ -262,7 +262,7 @@ class TestDocument(unittest.TestCase):
         for constructor, w in (
           (vector.Document, "The cats sit on the mat."),
           (vector.Document, ["The", "cats", "sit", "on", "the", "mat"]),
-          (vector.Document, {"cat":1, "mat":1, "sit":1}),
+          (vector.Document, {"cat": 1, "mat": 1, "sit": 1}),
           (vector.Document, Text(parse("The cats sat on the mat."))),
           (vector.Document, Sentence(parse("The cats sat on the mat.")))):
             # Test copy.
@@ -272,7 +272,7 @@ class TestDocument(unittest.TestCase):
             self.assertEqual(v.name, "Cat")
             self.assertEqual(v.type, "CAT")
             self.assertEqual(v.count, 3)
-            self.assertEqual(v.terms, {"cat":1, "mat":1, "sit":1})
+            self.assertEqual(v.terms, {"cat": 1, "mat": 1, "sit": 1})
             # Test iterator decoration.
             self.assertEqual(sorted(v.features), ["cat", "mat", "sit"])
             self.assertEqual(sorted(v), ["cat", "mat", "sit"])
@@ -309,7 +309,7 @@ class TestDocument(unittest.TestCase):
         self.assertAlmostEqual(v["sat"], 0.33, places=2)
         self.assertAlmostEqual(v["mat"], 0.33, places=2)
         # Test copy + update.
-        v = v({"cat":1, "sat":1, "mat":1})
+        v = v({"cat": 1, "sat": 1, "mat": 1})
         self.assertEqual(sorted(v.features), ["cat", "mat", "sat"])
         self.assertAlmostEqual(v["cat"], 1.00, places=2)
         self.assertAlmostEqual(v["sat"], 1.00, places=2)
@@ -570,27 +570,27 @@ class TestModel(unittest.TestCase):
         # Assert information gain weights.
         # Example from http://www.comp.lancs.ac.uk/~kc/Lecturing/csc355/DecisionTrees_given.pdf
         m = vector.Model([
-            vector.Document({"wind":1}, type=False),
-            vector.Document({"wind":0}, type=True),
-            vector.Document({"wind":0}, type=True),
-            vector.Document({"wind":0}, type=True),
-            vector.Document({"wind":1}, type=True),
-            vector.Document({"wind":1}, type=False),
-            vector.Document({"wind":1}, type=False)], weight=None
+            vector.Document({"wind": 1}, type=False),
+            vector.Document({"wind": 0}, type=True),
+            vector.Document({"wind": 0}, type=True),
+            vector.Document({"wind": 0}, type=True),
+            vector.Document({"wind": 1}, type=True),
+            vector.Document({"wind": 1}, type=False),
+            vector.Document({"wind": 1}, type=False)], weight=None
         )
         self.assertAlmostEqual(m.information_gain("wind"), 0.52, places=2)
         # Example from http://rutcor.rutgers.edu/~amai/aimath02/PAPERS/14.pdf
         m = vector.Model([
-            vector.Document({"3":1}, type=True),
-            vector.Document({"3":5}, type=True),
-            vector.Document({"3":1}, type=False),
-            vector.Document({"3":7}, type=True),
-            vector.Document({"3":2}, type=False),
-            vector.Document({"3":2}, type=True),
-            vector.Document({"3":6}, type=False),
-            vector.Document({"3":4}, type=True),
-            vector.Document({"3":0}, type=False),
-            vector.Document({"3":9}, type=True)], weight=None
+            vector.Document({"3": 1}, type=True),
+            vector.Document({"3": 5}, type=True),
+            vector.Document({"3": 1}, type=False),
+            vector.Document({"3": 7}, type=True),
+            vector.Document({"3": 2}, type=False),
+            vector.Document({"3": 2}, type=True),
+            vector.Document({"3": 6}, type=False),
+            vector.Document({"3": 4}, type=True),
+            vector.Document({"3": 0}, type=False),
+            vector.Document({"3": 9}, type=True)], weight=None
         )
         self.assertAlmostEqual(m.ig("3"), 0.571, places=3)
         self.assertAlmostEqual(m.gr("3"), 0.195, places=3)
@@ -644,7 +644,7 @@ class TestApriori(unittest.TestCase):
         ), support=0.5)
         self.assertTrue(len(v), 3)
         self.assertEqual(v[frozenset((1, ))], 1.0)
-        self.assertEqual(v[frozenset((1,2))], 0.5)
+        self.assertEqual(v[frozenset((1, 2))], 0.5)
         self.assertEqual(v[frozenset((2, ))], 0.5)
         self.assertEqual(v[frozenset((3, ))], 0.5)
 
@@ -759,27 +759,27 @@ class TestClustering(unittest.TestCase):
 
     def test_features(self):
         # Assert unique list of vector keys.
-        v = vector.features(vectors=[{"cat":1}, {"dog":1}])
+        v = vector.features(vectors=[{"cat": 1}, {"dog": 1}])
         self.assertEqual(sorted(v), ["cat", "dog"])
         print("pattern.vector.features()")
 
     def test_mean(self):
         # Assert iterator mean.
         self.assertEqual(vector.mean([], 0), 0)
-        self.assertEqual(vector.mean([1,1.5,2], 3), 1.5)
+        self.assertEqual(vector.mean([1, 1.5, 2], 3), 1.5)
         self.assertEqual(vector.mean(range(4), 4), 1.5)
         print("pattern.vector.mean()")
 
     def test_centroid(self):
         # Assert center of list of vectors.
-        v = vector.centroid([{"cat":1}, {"cat":0.5, "dog":1}], features=["cat", "dog"])
-        self.assertEqual(v, {"cat":0.75, "dog":0.5})
+        v = vector.centroid([{"cat": 1}, {"cat": 0.5, "dog": 1}], features=["cat", "dog"])
+        self.assertEqual(v, {"cat": 0.75, "dog": 0.5})
         print("pattern.vector.centroid()")
 
     def test_distance(self):
         # Assert distance metrics.
-        v1 = vector.Vector({"cat":1})
-        v2 = vector.Vector({"cat":0.5, "dog":1})
+        v1 = vector.Vector({"cat": 1})
+        v2 = vector.Vector({"cat": 0.5, "dog": 1})
         for d, method in (
           (0.55, vector.COSINE),    # 1 - ((1*0.5 + 0*1) / (sqrt(1**2 + 0**2) * sqrt(0.5**2 + 1**2)))
           (1.25, vector.EUCLIDEAN), # (1-0.5)**2 + (0-1)**2
@@ -791,8 +791,8 @@ class TestClustering(unittest.TestCase):
 
     def test_distancemap(self):
         # Assert distance caching mechanism.
-        v1 = vector.Vector({"cat":1})
-        v2 = vector.Vector({"cat":0.5, "dog":1})
+        v1 = vector.Vector({"cat": 1})
+        v2 = vector.Vector({"cat": 0.5, "dog": 1})
         m  = vector.DistanceMap(method=vector.COSINE)
         for i in range(100):
             self.assertAlmostEqual(m.distance(v1, v2), 0.55, places=2)
@@ -811,7 +811,7 @@ class TestClustering(unittest.TestCase):
             # Ideally, we have a cluster without spam and one with only spam.
             i = len([1 for v in k[0] if m[v.id] == False])
             j = len([1 for v in k[1] if m[v.id] == False])
-            A.append(max(i,j) * 2.0 / n)
+            A.append(max(i, j) * 2.0 / n)
         # Return average accuracy after 10 tests.
         return sum(A) / 30.0
 
@@ -850,10 +850,10 @@ class TestClustering(unittest.TestCase):
         # Assert the accuracy of hierarchical clustering (shallow test).
         # Assert that cats are separated from dogs.
         v = (
-            vector.Vector({"feline":1, " lion":1,   "mane":1}),
-            vector.Vector({"feline":1, "tiger":1, "stripe":1}),
-            vector.Vector({"canine":1,  "wolf":1,   "howl":1}),
-            vector.Vector({"canine":1,   "dog":1,   "bark":1})
+            vector.Vector({"feline": 1, " lion": 1,   "mane": 1}),
+            vector.Vector({"feline": 1, "tiger": 1, "stripe": 1}),
+            vector.Vector({"canine": 1,  "wolf": 1,   "howl": 1}),
+            vector.Vector({"canine": 1,   "dog": 1,   "bark": 1})
         )
         h = vector.hierarchical(v)
         self.assertTrue(len(h[0][0]) == 2)
@@ -905,10 +905,10 @@ class TestClassifier(unittest.TestCase):
     def test_classifier_vector(self):
         # Assert Classifier._vector() (translates input from train() and classify() to a Vector).
         v = vector.Classifier()._vector
-        self.assertEqual(("cat", {"cat":0.5, "purs":0.5}), v(vector.Document("the cat purs", type="cat")))
-        self.assertEqual(("cat", {"cat":0.5, "purs":0.5}), v({"cat":0.5, "purs":0.5}, type="cat"))
-        self.assertEqual(("cat", {"cat":0.5, "purs":0.5}), v(["cat", "purs"], type="cat"))
-        self.assertEqual(("cat", {"cat":0.5, "purs":0.5}), v("cat purs", type="cat"))
+        self.assertEqual(("cat", {"cat": 0.5, "purs": 0.5}), v(vector.Document("the cat purs", type="cat")))
+        self.assertEqual(("cat", {"cat": 0.5, "purs": 0.5}), v({"cat": 0.5, "purs": 0.5}, type="cat"))
+        self.assertEqual(("cat", {"cat": 0.5, "purs": 0.5}), v(["cat", "purs"], type="cat"))
+        self.assertEqual(("cat", {"cat": 0.5, "purs": 0.5}), v("cat purs", type="cat"))
         print("pattern.vector.Classifier._vector()")
 
     def test_nb(self):

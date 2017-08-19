@@ -191,7 +191,7 @@ class Word(object):
             For example: ["was", "VBD", "B-VP", "O", "VP-1", "A1", "be"]
         """
         # See also. Sentence.__repr__().
-        ch, I,O,B = self.chunk, INSIDE + "-", OUTSIDE, BEGIN + "-"
+        ch, I, O, B = self.chunk, INSIDE + "-", OUTSIDE, BEGIN + "-"
         tags = [OUTSIDE for i in range(len(self.sentence.token))]
         for i, tag in enumerate(self.sentence.token): # Default: [WORD, POS, CHUNK, PNP, RELATION, ANCHOR, LEMMA]
             if tag == WORD:
@@ -635,7 +635,7 @@ class Sentence(object):
         self._relation   = None # Helper variable: the last chunk's relation and role.
         self._attachment = None # Helper variable: the last attachment tag (e.g., "P1") parsed in _do_pnp().
         self._previous   = None # Helper variable: the last token parsed in parse_token().
-        self.relations   = {"SBJ":{}, "OBJ":{}, "VP":{}}
+        self.relations   = {"SBJ": {}, "OBJ": {}, "VP": {}}
         # Split the slash-formatted token into the separate tags in the given order.
         # Append Word and Chunk objects according to the token's tags.
         for chars in string.split(" "):
@@ -927,10 +927,10 @@ class Sentence(object):
             for x in anchor.split("-"):
                 A, P = None, None
                 if x.startswith("A") and len(self.chunks) > 0: # anchor
-                    A, P = x, x.replace("A","P")
+                    A, P = x, x.replace("A", "P")
                     self._anchors[A] = self.chunks[-1]
                 if x.startswith("P") and len(self.pnp) > 0:    # attachment (PNP)
-                    A, P = x.replace("P","A"), x
+                    A, P = x.replace("P", "A"), x
                     self._anchors[P] = self.pnp[-1]
                 if A in self._anchors and P in self._anchors and not self._anchors[P].anchor:
                     pnp = self._anchors[P]
@@ -1286,7 +1286,7 @@ def xml_encode(string):
     string = string.replace("&", "&amp;")
     string = string.replace("<", "&lt;")
     string = string.replace(">", "&gt;")
-    string = string.replace("\"","&quot;")
+    string = string.replace("\"", "&quot;")
     string = string.replace(SLASH, "/")
     return string
 
@@ -1296,7 +1296,7 @@ def xml_decode(string):
     string = string.replace("&amp;", "&")
     string = string.replace("&lt;",  "<")
     string = string.replace("&gt;",  ">")
-    string = string.replace("&quot;","\"")
+    string = string.replace("&quot;", "\"")
     string = string.replace("/", SLASH)
     return string
 
@@ -1382,7 +1382,7 @@ def parse_xml(sentence, tab="\t", id=""):
                 chunk.relations and chunk.role != None and ' %s="%s"' % (XML_RELATION, r2) or "",
                 chunk.relation  and chunk.type == "VP" and ' %s="%s"' % (XML_ID, uid(chunk.relation)) or "",
                 chunk.relation  and chunk.type != "VP" and ' %s="%s"' % (XML_OF, r1) or "",
-                chunk.attachments and ' %s="%s"' % (XML_ANCHOR, uid("A",anchors[chunk.start])) or ""
+                chunk.attachments and ' %s="%s"' % (XML_ANCHOR, uid("A", anchors[chunk.start])) or ""
             ))
             indent = push(indent)
         # Words outside of a chunk are wrapped in a <chink> tag:
@@ -1396,7 +1396,7 @@ def parse_xml(sentence, tab="\t", id=""):
             XML_WORD,
             word.type and ' %s="%s"' % (XML_TYPE, xml_encode(word.type)) or '',
             word.lemma and ' %s="%s"' % (XML_LEMMA, xml_encode(word.lemma)) or '',
-            (" " + " ".join(['%s="%s"' % (k,v) for k,v in word.custom_tags.items() if v != None])).rstrip(),
+            (" " + " ".join(['%s="%s"' % (k, v) for k, v in word.custom_tags.items() if v != None])).rstrip(),
             xml_encode(word.string),
             XML_WORD
         ))
@@ -1488,7 +1488,7 @@ def parse_string(xml):
         # This information is returned in TokenString.tags,
         # so the format and order of the token tags is retained when exporting/importing as XML.
         format = sentence.get(XML_TOKEN, [WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA])
-        format = not isinstance(format, str) and format or format.replace(" ","").split(",")
+        format = not isinstance(format, str) and format or format.replace(" ", "").split(",")
         # Traverse all <chunk> and <chink> elements in the sentence.
         # Find the <word> elements inside and create tokens.
         tokens = []
@@ -1766,7 +1766,7 @@ def table(sentence, fill=1, placeholder="-"):
     # The left column (the word itself) is outlined to the right,
     # and has extra spacing so that words across sentences line out nicely below each other.
     for i, column in enumerate(columns):
-        columns[i] = outline(column, fill + 10 * (i == 0), align=("left","right")[i == 0])
+        columns[i] = outline(column, fill + 10 * (i == 0), align=("left", "right")[i == 0])
     # Anchor column is useful in MBSP but not in pattern.en.
     if not MBSP:
         del columns[6]

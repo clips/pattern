@@ -355,7 +355,7 @@ def decode_entities(string):
         if hash == "#" or name.isdigit():
             if hex == '' :
                 return chr(int(name))                 # "&#38;" => "&"
-            if hex in ("x","X"):
+            if hex in ("x", "X"):
                 return chr(int('0x' + name, 16))        # "&#x0026;" = > "&"
         else:
             cp = name2codepoint.get(name) # "&amp;" => "&"
@@ -372,7 +372,7 @@ class _Binary(object):
         self.data, self.type = str(hasattr(data, "read") and data.read() or data), type
     def escape(self):
         if self.type == SQLITE:
-            return str(self.data.encode("string-escape")).replace("'","''")
+            return str(self.data.encode("string-escape")).replace("'", "''")
         if self.type == MYSQL:
             return MySQLdb.escape_string(self.data)
 
@@ -980,7 +980,7 @@ class Table(object):
                 f = [f[0], f[1], f[4], f[3], f[2], f[5]]
             if self.db.type == SQLITE:
                 f = [f[1], f[2], f[4], f[5], f[3], ""]
-                f[3] = f[3] == 1 and "pri" or (f[0] in i and ("1","uni")[int(i[f[0]])] or "")
+                f[3] = f[3] == 1 and "pri" or (f[0] in i and ("1", "uni")[int(i[f[0]])] or "")
             list.append(self.fields, f[0])
             self.schema[f[0]] = Schema(*f)
             if self.schema[f[0]].index == PRIMARY:
@@ -1206,11 +1206,11 @@ def cmp(field, value, comparison="=", escape=lambda v: _escape(v), table=""):
     if table:
         field = abs(table, field)
     # cmp("name", "Mar*") => "name like 'Mar%'".
-    if isinstance(value, str) and (value.startswith(("*","%")) or value.endswith(("*","%"))):
+    if isinstance(value, str) and (value.startswith(("*", "%")) or value.endswith(("*", "%"))):
         if comparison in ("=", "i=", "==", LIKE):
-            return "%s like %s" % (field, escape(value.replace("*","%")))
+            return "%s like %s" % (field, escape(value.replace("*", "%")))
         if comparison in ("!=", "<>"):
-            return "%s not like %s" % (field, escape(value.replace("*","%")))
+            return "%s not like %s" % (field, escape(value.replace("*", "%")))
     # cmp("name", "markov") => "name" like 'markov'" (case-insensitive).
     if isinstance(value, str):
         if comparison == "i=":
@@ -1441,7 +1441,7 @@ class Query(object):
         if g and isinstance(self.function, str):
             fields = [f in g and f or "%s(%s)" % (self.function, f) for f in fields]
         if g and isinstance(self.function, (list, tuple)):
-            fields = [f in g and f or "%s(%s)" % (F,f) for F,f in zip(self.function + [FIRST] * len(fields), fields)]
+            fields = [f in g and f or "%s(%s)" % (F, f) for F, f in zip(self.function + [FIRST] * len(fields), fields)]
         q = []
         q.append("select %s" % ", ".join(fields))
         # Construct the FROM clause from Query.relations.
@@ -1512,7 +1512,7 @@ class Query(object):
     def record(self, row):
         """ Returns the given row as a dictionary of (field or alias, value)-items.
         """
-        return dict(list(zip((self.aliases.get(f,f) for f in self.fields), row)))
+        return dict(list(zip((self.aliases.get(f, f) for f in self.fields), row)))
 
     @property
     def xml(self):
@@ -1608,7 +1608,7 @@ def xml_format(a):
     if isinstance(a, str):
         return "\"%s\"" % encode_entities(a)
     if isinstance(a, bool):
-        return "\"%s\"" % ("no","yes")[int(a)]
+        return "\"%s\"" % ("no", "yes")[int(a)]
     if isinstance(a, int):
         return "\"%s\"" % a
     if isinstance(a, float):
@@ -1648,7 +1648,7 @@ def xml(rows):
         root,
         root != "table" and "table" or "name",
         xml_format(table.name), # Use Query.aliases as field names.
-        ", ".join(encode_entities(aliases.get(f,f)) for f in fields),
+        ", ".join(encode_entities(aliases.get(f, f)) for f in fields),
         len(rows)))
     # <schema>
     # Field information is retrieved from the (related) table schema.
@@ -1662,7 +1662,7 @@ def xml(rows):
             s = table.schema[f]
         # <field name="" type="" length="" default="" index="" optional="" extra="" />
         xml.append("\t\t<field name=%s type=%s%s%s%s%s%s />" % (
-            xml_format(aliases.get(f,f)),
+            xml_format(aliases.get(f, f)),
             xml_format(s.type),
             s.length is not None and " length=%s" % xml_format(s.length) or "",
             s.default is not None and " default=%s" % xml_format(s.default) or "",
@@ -1674,7 +1674,7 @@ def xml(rows):
     # <rows>
     for r in rows:
         # <row field="value" />
-        xml.append("\t\t<row %s />" % " ".join("%s=%s" % (aliases.get(k,k), xml_format(v)) for k, v in zip(fields, r)))
+        xml.append("\t\t<row %s />" % " ".join("%s=%s" % (aliases.get(k, k), xml_format(v)) for k, v in zip(fields, r)))
     xml.append("\t</rows>")
     xml.append("</%s>" % root)
     xml = "\n".join(xml)
@@ -1719,7 +1719,7 @@ def parse_xml(database, xml, table=None, field=lambda s: s.replace(".", "-")):
         for i, f in enumerate(fields):
             v = _attr(r, f, None)
             if schema[i][1] == BOOLEAN:
-                rows[-1][f] = (0,1)[v != "no"]
+                rows[-1][f] = (0, 1)[v != "no"]
             else:
                 rows[-1][f] = v
     # Create table if not exists and insert rows.
@@ -2074,7 +2074,7 @@ class Datasheet(CSV):
         [g.setdefault(key(v), []).append(i) for i, v in enumerate(self.columns[j])]
         # Map unique values in column j to a sort index in the new, grouped list.
         o = [(g[v][0], v) for v in g]
-        o = dict([(v, i)  for i, (ii,v) in enumerate(sorted(o))])
+        o = dict([(v, i)  for i, (ii, v) in enumerate(sorted(o))])
         # Create a list of rows with unique values in column j,
         # applying the group function to the other columns.
         u = [None] * len(o)
@@ -2261,7 +2261,7 @@ class DatasheetColumns(list):
             raise IndexError("list index out of range")
         return self._cache.setdefault(j, DatasheetColumn(self._datasheet, j))
     def __getslice__(self, i, j):
-        return self._datasheet[:,i:j]
+        return self._datasheet[:, i:j]
     def __delitem__(self, j):
         self.pop(j)
     def __len__(self):

@@ -241,26 +241,26 @@ class TestUtilityFunctions(unittest.TestCase):
 
     def test_order(self):
         # Assert a list of indices in the order as when the given list is sorted.
-        v = [3,1,2]
-        self.assertEqual(db.order(v), [1,2,0])
-        self.assertEqual(db.order(v, reverse=True), [0,2,1])
-        self.assertEqual(db.order(v, cmp=lambda a,b: a - b), [1,2,0])
-        self.assertEqual(db.order(v, key=lambda i:i), [1,2,0])
+        v = [3, 1, 2]
+        self.assertEqual(db.order(v), [1, 2, 0])
+        self.assertEqual(db.order(v, reverse=True), [0, 2, 1])
+        self.assertEqual(db.order(v, cmp=lambda a, b: a - b), [1, 2, 0])
+        self.assertEqual(db.order(v, key=lambda i: i), [1, 2, 0])
         print("pattern.db.order()")
 
     def test_avg(self):
         # Assert (1+2+3+4) / 4 = 2.5.
-        self.assertEqual(db.avg([1,2,3,4]), 2.5)
+        self.assertEqual(db.avg([1, 2, 3, 4]), 2.5)
         print("pattern.db.avg()")
 
     def test_variance(self):
         # Assert 2.5.
-        self.assertEqual(db.variance([1,2,3,4,5]), 2.5)
+        self.assertEqual(db.variance([1, 2, 3, 4, 5]), 2.5)
         print("pattern.db.variance()")
 
     def test_stdev(self):
         # Assert 2.429.
-        self.assertAlmostEqual(db.stdev([1,5,6,7,6,8]), 2.429, places=3)
+        self.assertAlmostEqual(db.stdev([1, 5, 6, 7, 6, 8]), 2.429, places=3)
         print("pattern.db.stdev()")
 
     def test_sqlite_functions(self):
@@ -274,9 +274,9 @@ class TestUtilityFunctions(unittest.TestCase):
         self.assertEqual(db.sqlite_second(v), 3)
         # Aggregate functions.
         for f, a, b in (
-          (db.sqlite_first, [1,2,3], 1),
-          (db.sqlite_last,  [1,2,3], 3),
-          (db.sqlite_group_concat, [1,2,3], "1,2,3")):
+          (db.sqlite_first, [1, 2, 3], 1),
+          (db.sqlite_last,  [1, 2, 3], 3),
+          (db.sqlite_group_concat, [1, 2, 3], "1,2,3")):
             f = f()
             for x in a:
                 f.step(x)
@@ -550,7 +550,7 @@ class _TestTable(object):
         # Assert Table.insert().
         v1 = self.db.persons.insert(name="Kurt Gödel")
         v2 = self.db.products.insert(name="pizza", price=10.0)
-        v3 = self.db.products.insert({"name":"garlic bread", "price":3.0})
+        v3 = self.db.products.insert({"name": "garlic bread", "price": 3.0})
         v4 = self.db.orders.insert(person=v1, product=v3)
         self.assertEqual(v1, 1)
         self.assertEqual(v2, 1)
@@ -582,7 +582,7 @@ class _TestTable(object):
         self.db.orders.insert(person=v1, product=v2, commit=False)
         # Assert Table.update().
         self.db.products.update(2, price=4.0)
-        self.db.products.update(2, {"price":4.5})
+        self.db.products.update(2, {"price": 4.5})
         self.db.products.update(db.all(db.filter("name", "pi*")), name="deeppan pizza")
         self.assertEqual(self.db.products.rows(), [(1, "deeppan pizza", 10.0), (2, "garlic bread", 4.5)])
         # Assert Table.delete().
@@ -602,10 +602,10 @@ class _TestTable(object):
         self.db.persons.insert(name="Johann Sebastian Bach")
         f = self.db.persons.filter
         self.assertEqual(f(("name",), id=1),        [("Kurt Gödel",)])
-        self.assertEqual(f(db.ALL, id=(1,2)),       [(1, "Kurt Gödel"), (2, "M. C. Escher")])
-        self.assertEqual(f({"id":(1,2)}),           [(1, "Kurt Gödel"), (2, "M. C. Escher")])
+        self.assertEqual(f(db.ALL, id=(1, 2)),       [(1, "Kurt Gödel"), (2, "M. C. Escher")])
+        self.assertEqual(f({"id": (1, 2)}),           [(1, "Kurt Gödel"), (2, "M. C. Escher")])
         self.assertEqual(f("id", name="Johan*"),    [(3,)])
-        self.assertEqual(f("id", name=("J*","K*")), [(1,), (3,)])
+        self.assertEqual(f("id", name=("J*", "K*")), [(1,), (3,)])
         print("pattern.db.Table.filter()")
 
     def test_search(self):
@@ -700,7 +700,7 @@ class _TestQuery(object):
           (("id",   (1, 2),      "<>"),       "id not in (1,2)"),
           (("id",   (1, 3),      db.BETWEEN), "id between 1 and 3"),
           (("id",   (1, 3),      ":"),        "id between 1 and 3"),
-          (("name", ("G","K*"),  "="),        "(name='G' or name like 'K%')"),
+          (("name", ("G", "K*"),  "="),        "(name='G' or name like 'K%')"),
           (("name", None,        "="),        "name is null"),
           (("name", None,        "=="),       "name is null"),
           (("name", None,        "!="),       "name is not null"),
@@ -756,26 +756,26 @@ class _TestQuery(object):
             [("john", "male"),
              ("jack", "male"),
              ("jane", "female")]),
-          (dict(fields=["name","age"], sort="name"),
+          (dict(fields=["name", "age"], sort="name"),
             "select persons.name, persons.age from `persons` order by persons.name asc;",
             [("jack", 20),
              ("jane", 30),
              ("john", 30)]),
-          (dict(fields=["name","age"], sort=1, order=db.DESCENDING),
+          (dict(fields=["name", "age"], sort=1, order=db.DESCENDING),
             "select persons.name, persons.age from `persons` order by persons.name desc;",
             [("john", 30),
              ("jane", 30),
              ("jack", 20)]),
-          (dict(fields=["age","name"], sort=["age","name"], order=[db.ASCENDING, db.DESCENDING]),
+          (dict(fields=["age", "name"], sort=["age", "name"], order=[db.ASCENDING, db.DESCENDING]),
             "select persons.age, persons.name from `persons` order by persons.age asc, persons.name desc;",
             [(20, "jack"),
              (30, "john"),
              (30, "jane")]),
-          (dict(fields=["age","name"], group="age", function=db.CONCATENATE),
+          (dict(fields=["age", "name"], group="age", function=db.CONCATENATE),
             "select persons.age, group_concat(persons.name) from `persons` group by persons.age;",
             [(20, "jack"),
              (30, "john,jane")]),
-          (dict(fields=["id", "name","age"], group="age", function=[db.COUNT, db.CONCATENATE]),
+          (dict(fields=["id", "name", "age"], group="age", function=[db.COUNT, db.CONCATENATE]),
             "select count(persons.id), group_concat(persons.name), persons.age from `persons` group by persons.age;",
             [(1, "jack", 20),
              (2, "john,jane", 30)])):
@@ -951,53 +951,53 @@ class TestDatasheet(unittest.TestCase):
 
     def test_rows(self):
         # Assert Datasheet.rows DatasheetRows object.
-        v = db.Datasheet(rows=[[1,2],[3,4]])
-        v.rows += [5,6]
-        v.rows[0] = [0,0]
-        v.rows.swap(0,1)
-        v.rows.insert(1, [1,1])
+        v = db.Datasheet(rows=[[1, 2], [3, 4]])
+        v.rows += [5, 6]
+        v.rows[0] = [0, 0]
+        v.rows.swap(0, 1)
+        v.rows.insert(1, [1, 1])
         v.rows.pop(1)
         self.assertTrue(isinstance(v.rows, db.DatasheetRows))
-        self.assertEqual(v.rows, [[3,4],[0,0],[5,6]])
-        self.assertEqual(v.rows[0], [3,4])
-        self.assertEqual(v.rows[-1], [5,6])
-        self.assertEqual(v.rows.count([3,4]), 1)
-        self.assertEqual(v.rows.index([3,4]), 0)
-        self.assertEqual(sorted(v.rows, reverse=True), [[5,6],[3,4],[0,0]])
+        self.assertEqual(v.rows, [[3, 4], [0, 0], [5, 6]])
+        self.assertEqual(v.rows[0], [3, 4])
+        self.assertEqual(v.rows[-1], [5, 6])
+        self.assertEqual(v.rows.count([3, 4]), 1)
+        self.assertEqual(v.rows.index([3, 4]), 0)
+        self.assertEqual(sorted(v.rows, reverse=True), [[5, 6], [3, 4], [0, 0]])
         self.assertRaises(AttributeError, v._set_rows, [])
         # Assert default for new rows with missing columns.
-        v.rows.extend([[7],[9]], default=0)
-        self.assertEqual(v.rows, [[3,4],[0,0],[5,6],[7,0],[9,0]])
+        v.rows.extend([[7], [9]], default=0)
+        self.assertEqual(v.rows, [[3, 4], [0, 0], [5, 6], [7, 0], [9, 0]])
         print("pattern.db.Datasheet.rows")
 
     def test_columns(self):
         # Assert Datasheet.columns DatasheetColumns object.
-        v = db.Datasheet(rows=[[1,3],[2,4]])
-        v.columns += [5,6]
-        v.columns[0] = [0,0]
-        v.columns.swap(0,1)
-        v.columns.insert(1, [1,1])
+        v = db.Datasheet(rows=[[1, 3], [2, 4]])
+        v.columns += [5, 6]
+        v.columns[0] = [0, 0]
+        v.columns.swap(0, 1)
+        v.columns.insert(1, [1, 1])
         v.columns.pop(1)
         self.assertTrue(isinstance(v.columns, db.DatasheetColumns))
-        self.assertEqual(v.columns, [[3,4],[0,0],[5,6]])
-        self.assertEqual(v.columns[0], [3,4])
-        self.assertEqual(v.columns[-1], [5,6])
-        self.assertEqual(v.columns.count([3,4]), 1)
-        self.assertEqual(v.columns.index([3,4]), 0)
-        self.assertEqual(sorted(v.columns, reverse=True), [[5,6],[3,4],[0,0]])
+        self.assertEqual(v.columns, [[3, 4], [0, 0], [5, 6]])
+        self.assertEqual(v.columns[0], [3, 4])
+        self.assertEqual(v.columns[-1], [5, 6])
+        self.assertEqual(v.columns.count([3, 4]), 1)
+        self.assertEqual(v.columns.index([3, 4]), 0)
+        self.assertEqual(sorted(v.columns, reverse=True), [[5, 6], [3, 4], [0, 0]])
         self.assertRaises(AttributeError, v._set_columns, [])
         # Assert default for new columns with missing rows.
-        v.columns.extend([[7],[9]], default=0)
-        self.assertEqual(v.columns, [[3,4],[0,0],[5,6],[7,0],[9,0]])
+        v.columns.extend([[7], [9]], default=0)
+        self.assertEqual(v.columns, [[3, 4], [0, 0], [5, 6], [7, 0], [9, 0]])
         print("pattern.db.Datasheet.columns")
 
     def test_column(self):
         # Assert DatasheetColumn object.
         # It has a reference to the parent Datasheet, as long as it is not deleted from the datasheet.
-        v = db.Datasheet(rows=[[1,3],[2,4]])
+        v = db.Datasheet(rows=[[1, 3], [2, 4]])
         column = v.columns[0]
         column.insert(1, 0, default=None)
-        self.assertEqual(v, [[1,3], [0,None], [2,4]])
+        self.assertEqual(v, [[1, 3], [0, None], [2, 4]])
         del v.columns[0]
         self.assertTrue(column._datasheet, None)
         print("pattern.db.DatasheetColumn")
@@ -1007,13 +1007,13 @@ class TestDatasheet(unittest.TestCase):
         v = db.Datasheet(rows=[["Schrödinger", "cat"]], fields=[("name", db.STRING)])
         self.assertEqual(v.fields, [("name", db.STRING)])
         # Assert (None, None) for missing headers.
-        v.columns.swap(0,1)
+        v.columns.swap(0, 1)
         self.assertEqual(v.fields, [(None, None), ("name", db.STRING)])
         v.columns[0] = ["dog"]
         self.assertEqual(v.fields, [(None, None), ("name", db.STRING)])
         # Assert removing a column removes the header.
         v.columns.pop(0)
-        self.assertEqual(v.fields, [("name",db.STRING)])
+        self.assertEqual(v.fields, [("name", db.STRING)])
         # Assert new columns with header description.
         v.columns.append(["cat"])
         v.columns.append([3], field=("age", db.INTEGER))
@@ -1024,47 +1024,47 @@ class TestDatasheet(unittest.TestCase):
 
     def test_group(self):
         # Assert Datasheet.group().
-        v1 = db.Datasheet(rows=[[1,2,"a"],[1,3,"b"],[1,4,"c"],[0,0,"d"]])
+        v1 = db.Datasheet(rows=[[1, 2, "a"], [1, 3, "b"], [1, 4, "c"], [0, 0, "d"]])
         v2 = v1.group(0)
         v3 = v1.group(0, function=db.LAST)
         v4 = v1.group(0, function=(db.FIRST, db.COUNT, db.CONCATENATE))
         v5 = v1.group(0, function=db.CONCATENATE, key=lambda j: j > 0)
-        self.assertEqual(v2, [[1,2,"a"], [0,0,"d"]])
-        self.assertEqual(v3, [[1,4,"c"], [0,0,"d"]])
-        self.assertEqual(v4, [[1,3,"a,b,c"], [0,1,"d"]])
-        self.assertEqual(v5, [[True,"2,3,4","a,b,c"], [False,"0","d"]])
+        self.assertEqual(v2, [[1, 2, "a"], [0, 0, "d"]])
+        self.assertEqual(v3, [[1, 4, "c"], [0, 0, "d"]])
+        self.assertEqual(v4, [[1, 3, "a,b,c"], [0, 1, "d"]])
+        self.assertEqual(v5, [[True, "2,3,4", "a,b,c"], [False, "0", "d"]])
         print("pattern.db.Datasheet.group()")
 
     def test_slice(self):
         # Assert Datasheet slices.
-        v = db.Datasheet([[1,2,3], [4,5,6], [7,8,9]])
+        v = db.Datasheet([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
         v = v.copy()
-        self.assertEqual(v.slice(0,1,3,2), [[2,3], [5,6], [8,9]])
-        self.assertEqual(v[2],       [7,8,9])
-        self.assertEqual(v[2,2],     9)
-        self.assertEqual(v[2,1:],    [8,9])
-        self.assertEqual(v[0:2],     [[1,2,3], [4,5,6]])
-        self.assertEqual(v[0:2,1],   [2,5])
-        self.assertEqual(v[0:2,0:2], [[1,2], [4,5]])
+        self.assertEqual(v.slice(0, 1, 3, 2), [[2, 3], [5, 6], [8, 9]])
+        self.assertEqual(v[2],       [7, 8, 9])
+        self.assertEqual(v[2, 2],     9)
+        self.assertEqual(v[2, 1:],    [8, 9])
+        self.assertEqual(v[0:2],     [[1, 2, 3], [4, 5, 6]])
+        self.assertEqual(v[0:2, 1],   [2, 5])
+        self.assertEqual(v[0:2, 0:2], [[1, 2], [4, 5]])
         # Assert new Datasheet for i:j slices.
         self.assertTrue(isinstance(v[0:2],     db.Datasheet))
-        self.assertTrue(isinstance(v[0:2,0:2], db.Datasheet))
+        self.assertTrue(isinstance(v[0:2, 0:2], db.Datasheet))
         print("pattern.db.Datasheet.slice()")
 
     def test_copy(self):
         # Assert Datasheet.copy().
-        v = db.Datasheet([[1,2,3], [4,5,6], [7,8,9]])
-        self.assertTrue(v.copy(), [[1,2,3], [4,5,6], [7,8,9]])
-        self.assertTrue(v.copy(rows=[0]), [[1,2,3]])
+        v = db.Datasheet([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        self.assertTrue(v.copy(), [[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        self.assertTrue(v.copy(rows=[0]), [[1, 2, 3]])
         self.assertTrue(v.copy(rows=[0], columns=[0]), [[1]])
         self.assertTrue(v.copy(columns=[0]), [[1], [4], [7]])
         print("pattern.db.Datasheet.copy()")
 
     def test_map(self):
         # Assert Datasheet.map() (in-place).
-        v = db.Datasheet(rows=[[1,2],[3,4]])
+        v = db.Datasheet(rows=[[1, 2], [3, 4]])
         v.map(lambda x: x + 1)
-        self.assertEqual(v, [[2,3],[4,5]])
+        self.assertEqual(v, [[2, 3], [4, 5]])
         print("pattern.db.Datasheet.map()")
 
     def test_json(self):
@@ -1082,8 +1082,8 @@ class TestDatasheet(unittest.TestCase):
 
     def test_flip(self):
         # Assert flip matrix.
-        v = db.flip(db.Datasheet([[1,2], [3,4]]))
-        self.assertEqual(v, [[1,3], [2,4]])
+        v = db.flip(db.Datasheet([[1, 2], [3, 4]]))
+        self.assertEqual(v, [[1, 3], [2, 4]])
         print("pattern.db.flip()")
 
     def test_truncate(self):

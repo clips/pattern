@@ -1942,7 +1942,7 @@ def k_means(vectors, k=None, iterations=10, distance=COSINE, seed=RANDOM, **kwar
         D = {}
         for i in range(len(centroids)):
             for j in range(i, len(centroids)): # center1–center2 < center1–vector + vector–center2 ?
-                D[(i,j)] = D[(j,i)] = p * distance(centroids[i], centroids[j])
+                D[(i, j)] = D[(j, i)] = p * distance(centroids[i], centroids[j])
         # For every vector in every cluster,
         # check if it is nearer to the center of another cluster.
         # If so, assign it. When visualized, this produces a Voronoi diagram.
@@ -1951,7 +1951,7 @@ def k_means(vectors, k=None, iterations=10, distance=COSINE, seed=RANDOM, **kwar
             for v in clusters[i]:
                 nearest, d1 = i, distance(v, centroids[i])
                 for j in range(len(clusters)):
-                    if D[(i,j)] < d1: # Triangle inequality (Elkan, 2003).
+                    if D[(i, j)] < d1: # Triangle inequality (Elkan, 2003).
                         d2 = distance(v, centroids[j])
                         if d2 < d1:
                             nearest = j
@@ -3607,7 +3607,7 @@ class LR(Classifier):
             for i in range(max(y) + 1):
                 t0 = scipy.zeros((n + 1, 1))
                 t0 = scipy.transpose(t0)
-                t[i,:] = scipy.optimize.fmin_cg(
+                t[i, :] = scipy.optimize.fmin_cg(
                     lambda t:     cost(t, x, 0 + (y == i), l), t0,
                     lambda t: gradient(t, x, 0 + (y == i), l),
                         maxiter = iterations,

@@ -848,7 +848,7 @@ class HTMLTagstripper(HTMLParser):
             # Create the tag attribute string,
             # including attributes defined in the HTMLTagStripper._exclude dict.
             a = len(self._exclude[tag]) > 0 and attributes or []
-            a = ["%s=\"%s\"" % (k,v) for k, v in a if k in self._exclude[tag]]
+            a = ["%s=\"%s\"" % (k, v) for k, v in a if k in self._exclude[tag]]
             a = (" " + " ".join(a)).rstrip()
             self._data.append("<%s%s>" % (tag, a))
         if tag in self._replace:
@@ -1207,7 +1207,7 @@ class Google(SearchEngine):
             r = Result(url=None)
             r.url      = self.format(x.get("link"))
             r.title    = self.format(x.get("title"))
-            r.text     = self.format(x.get("htmlSnippet").replace("<br>  ","").replace("<b>...</b>", "..."))
+            r.text     = self.format(x.get("htmlSnippet").replace("<br>  ", "").replace("<b>...</b>", "..."))
             r.language = self.language or ""
             r.date     = ""
             if not r.date:
@@ -1332,7 +1332,7 @@ class Yahoo(SearchEngine):
             raise SearchEngineLimitError
         data = json.loads(data)
         data = data.get("bossresponse") or {}
-        data = data.get({SEARCH:"web", IMAGE:"images", NEWS:"news"}[type], {})
+        data = data.get({SEARCH: "web", IMAGE: "images", NEWS: "news"}[type], {})
         results = Results(YAHOO, query, type)
         results.total = int(data.get("totalresults") or 0)
         for x in data.get("results", []):
@@ -3200,13 +3200,13 @@ class Element(Node):
         """
         if isinstance(v, str) and "#" in v:
             v1, v2 = v.split("#")
-            v1 = v1 in ("*","") or v1.lower()
+            v1 = v1 in ("*", "") or v1.lower()
             return [Element(x) for x in self._p.find_all(v1, id=v2)]
         if isinstance(v, str) and "." in v:
             v1, v2 = v.split(".")
-            v1 = v1 in ("*","") or v1.lower()
+            v1 = v1 in ("*", "") or v1.lower()
             return [Element(x) for x in self._p.find_all(v1, v2)]
-        return [Element(x) for x in self._p.find_all(v in ("*","") or v.lower())]
+        return [Element(x) for x in self._p.find_all(v in ("*", "") or v.lower())]
 
     by_tag = getElementsByTagname = get_elements_by_tagname
 

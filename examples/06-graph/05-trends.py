@@ -18,7 +18,7 @@ from pattern.graph import Graph
 
 comparisons = []
 
-for i in range(1,10):
+for i in range(1, 10):
     # Set cached=False for live results:
     for result in Twitter(language="en").search("\"is the new\"", start=i, count=100, cached=True):
         s = result.text
@@ -32,7 +32,7 @@ for i in range(1,10):
             B = s[i + 1].strip("?!.:;,#@\"'")
             # Exclude common phrases such as "this is the new thing".
             if A and B and A not in ("it", "this", "here", "what", "why", "where"):
-                comparisons.append((A,B))
+                comparisons.append((A, B))
         except:
             pass
 

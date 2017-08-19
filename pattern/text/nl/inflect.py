@@ -112,7 +112,7 @@ def pluralize(word, pos=NOUN, custom={}):
         # Words ending in unstressed -ee or -ie get -ën: bacterie => bacteriën
         if w.endswith("ie"):
             return w + "s"
-        if w.endswith(("ee","ie")):
+        if w.endswith(("ee", "ie")):
             return w[:-1] + "ën"
         # Words ending in -heid get -heden: mogelijkheid => mogelijkheden
         if w.endswith("heid"):
@@ -143,7 +143,7 @@ def pluralize(word, pos=NOUN, custom={}):
 
 #### SINGULARIZE ###################################################################################
 
-singular_irregular = dict((v,k) for k,v in plural_irregular.items())
+singular_irregular = dict((v, k) for k, v in plural_irregular.items())
 
 def singularize(word, pos=NOUN, custom={}):
     if word in custom.keys():
@@ -182,7 +182,7 @@ def singularize(word, pos=NOUN, custom={}):
         if w.endswith("en"):
             w = w[:-2]
             # ogen => oog
-            if w in ("og","om","ur"):
+            if w in ("og", "om", "ur"):
                 return w[:-1] + w[-2] + w[-1]
             # hoenderen => hoen
             if w.endswith("der") and w[:-3] in plural_irregular_deren:
@@ -270,7 +270,7 @@ class Verbs(_Verbs):
         elif v.endswith(("den", "ten")):
             b = v[:-3]
         # Past participle ge- and -d or -t: gehengeld, geknipt.
-        elif v.endswith(("d","t")) and v.startswith("ge"):
+        elif v.endswith(("d", "t")) and v.startswith("ge"):
             b = v[2:-1]
         # Present 2nd or 3rd singular: wordt, denkt, snakt, wacht.
         elif v.endswith(("cht"),):
@@ -296,7 +296,7 @@ class Verbs(_Verbs):
             if b[-2] == b[-3]:
                 b = b[:-2] + b[-1]
         # Short vowel followed by consonant: snak => snakken.
-        elif len(b) > 1 and not is_vowel(b[-1]) and is_vowel(b[-2]) and not b.endswith(("er","ig")):
+        elif len(b) > 1 and not is_vowel(b[-1]) and is_vowel(b[-2]) and not b.endswith(("er", "ig")):
             b = b + b[-1]
         b = b + "en"
         b = b.replace("vven", "ven") # omgevven => omgeven
@@ -370,7 +370,7 @@ def attributive(adjective):
         return adjective_attributive[w]
     if w.endswith("e"):
         return w
-    if w.endswith(("er","st")) and len(w) > 4:
+    if w.endswith(("er", "st")) and len(w) > 4:
         return w + "e"
     if w.endswith("ees"):
         return w[:-2] + w[-1] + "e"
@@ -389,7 +389,7 @@ def attributive(adjective):
         w = w + w[-1]
     return w + "e"
 
-adjective_predicative = dict((v,k) for k,v in adjective_attributive.items())
+adjective_predicative = dict((v, k) for k, v in adjective_attributive.items())
 adjective_predicative.update({
           "moe": "moe",
         "taboe": "taboe",

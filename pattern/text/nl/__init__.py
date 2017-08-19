@@ -83,11 +83,11 @@ wotan = {
     "Art(": (("", "DT"),),
    "Conj(": (("", "CC"),),
      "Int": (("", "UH"),),
-    "Misc": (("symb", "SYM"), ("vreemd","FW")),
+    "Misc": (("symb", "SYM"), ("vreemd", "FW")),
       "N(": (("eigen,ev", "NNP"), ("eigen,mv", "NNPS"), ("ev", "NN"), ("mv", "NNS")),
     "Num(": (("", "CD"),),
    "Prep(": (("inf", "TO"), ("", "IN")),
-   "Pron(": (("bez", "PRP$"), ("","PRP")),
+   "Pron(": (("bez", "PRP$"), ("", "PRP")),
    "Punc(": (("komma", ","), ("open", "("), ("sluit", ")"), ("schuin", "CC"), ("", ".")),
       "V(": (("hulp", "MD"), ("ott,3", "VBZ"), ("ott", "VBP"), ("ovt", "VBD"),
              ("verl", "VBN"), ("teg", "VBG"), ("", "VB"))

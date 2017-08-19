@@ -35,7 +35,7 @@ from pattern.en     import Sentence, parse
 def imperative(sentence):
     for p in ("!could|!would|!should|!to+ VB", "^VB", "^do|VB*"):
         m = match(p, sentence)
-        if match(p, sentence) and sentence.string.endswith((".","!")):  # Exclude questions.
+        if match(p, sentence) and sentence.string.endswith((".", "!")):  # Exclude questions.
             return True
     return False
 

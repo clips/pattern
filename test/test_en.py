@@ -265,7 +265,7 @@ class TestQuantification(unittest.TestCase):
 
     def test_reflect(self):
         self.assertEqual(en.reflect(""), "a string")
-        self.assertEqual(en.reflect(["","",""]), "several strings")
+        self.assertEqual(en.reflect(["", "", ""]), "several strings")
         self.assertEqual(en.reflect(en.reflect), "a function")
         print("pattern.en.reflect()")
 
@@ -396,11 +396,11 @@ class TestParser(unittest.TestCase):
         # - "in" (PP)
         # - "the yard" (NP)
         v = en.parser.find_chunks([
-            ["","DT"], ["","RB"], ["","JJ"], ["","NN"],
-            ["","MD"], ["","RB"], ["","VBZ"], ["","VBG"],
-            ["","RB"], ["","JJ"],
-            ["","IN"],
-            ["","CD"], ["","NNS"]
+            ["", "DT"], ["", "RB"], ["", "JJ"], ["", "NN"],
+            ["", "MD"], ["", "RB"], ["", "VBZ"], ["", "VBG"],
+            ["", "RB"], ["", "JJ"],
+            ["", "IN"],
+            ["", "CD"], ["", "NNS"]
         ])
         self.assertEqual(v, [
             ["", "DT", "B-NP", "O"], ["", "RB", "I-NP", "O"], ["", "JJ", "I-NP", "O"], ["", "NN", "I-NP", "O"],
@@ -444,11 +444,11 @@ class TestParser(unittest.TestCase):
         ])
         # Assert cases for which we have written special rules.
         # - "perhaps you" (ADVP + NP)
-        v = en.parser.find_chunks([["","RB"], ["","PRP"]])
-        self.assertEqual(v, [["","RB","B-ADVP", "O"], ["","PRP","B-NP", "O"]])
+        v = en.parser.find_chunks([["", "RB"], ["", "PRP"]])
+        self.assertEqual(v, [["", "RB", "B-ADVP", "O"], ["", "PRP", "B-NP", "O"]])
         # - "very nice cats" (NP)
-        v = en.parser.find_chunks([["","RB"], ["","JJ"], ["","PRP"]])
-        self.assertEqual(v, [["","RB","B-NP", "O"], ["","JJ","I-NP", "O"], ["","PRP","I-NP", "O"]])
+        v = en.parser.find_chunks([["", "RB"], ["", "JJ"], ["", "PRP"]])
+        self.assertEqual(v, [["", "RB", "B-NP", "O"], ["", "JJ", "I-NP", "O"], ["", "PRP", "I-NP", "O"]])
         print("pattern.en.parser.find_chunks()")
 
     def test_find_labels(self):
@@ -470,7 +470,7 @@ class TestParser(unittest.TestCase):
             ["", "", "VP"],
             ["", "", "PP"],
             ["", "", "NP"],
-            ["", "", "NP"],])
+            ["", "", "NP"], ])
         self.assertEqual(v, [
             ["", "", "NP", "O"],
             ["", "", "VP", "O"],
@@ -756,32 +756,32 @@ class TestParseTree(unittest.TestCase):
 
     def test_find(self):
         # Assert first item for which given function is True.
-        v = text.tree.find(lambda x: x > 10, [1,2,3,11,12])
+        v = text.tree.find(lambda x: x > 10, [1, 2, 3, 11, 12])
         self.assertEqual(v, 11)
         print("pattern.text.tree.find()")
 
     def test_zip(self):
         # Assert list of zipped tuples, using default to balance uneven lists.
-        v = text.tree.zip([1,2,3], [4,5,6,7], default=0)
-        self.assertEqual(v, [(1,4), (2,5), (3,6), (0,7)])
+        v = text.tree.zip([1, 2, 3], [4, 5, 6, 7], default=0)
+        self.assertEqual(v, [(1, 4), (2, 5), (3, 6), (0, 7)])
         print("pattern.text.tree.zip()")
 
     def test_unzip(self):
-        v = text.tree.unzip(1, [(1,4), (2,5), (3,6)])
-        self.assertEqual(v, [4,5,6])
+        v = text.tree.unzip(1, [(1, 4), (2, 5), (3, 6)])
+        self.assertEqual(v, [4, 5, 6])
         print("pattern.text.tree.unzip()")
 
     def test_unique(self):
         # Assert list copy with unique items.
-        v = text.tree.unique([1,1,1])
+        v = text.tree.unique([1, 1, 1])
         self.assertEqual(len(v), 1)
         self.assertEqual(v[0], 1)
         print("pattern.text.tree.unique()")
 
     def test_map(self):
         # Assert dynamic Map().
-        v = text.tree.Map(lambda x: x + 1, [1,2,3])
-        self.assertEqual(list(v), [2,3,4])
+        v = text.tree.Map(lambda x: x + 1, [1, 2, 3])
+        self.assertEqual(list(v), [2, 3, 4])
         self.assertEqual(v.items[0], 1)
         print("pattern.text.tree.Map()")
 
@@ -902,7 +902,7 @@ class TestSentiment(unittest.TestCase):
     def test_sentiment_avg(self):
         # Assert 2.5.
         from pattern.text import avg
-        v = avg([1,2,3,4])
+        v = avg([1, 2, 3, 4])
         self.assertEqual(v, 2.5)
         print("pattern.text.avg")
 
@@ -1067,7 +1067,7 @@ class TestWordNet(unittest.TestCase):
         # Assert least-common-subsumer algorithm.
         v1 = en.wordnet.synsets("cat")[0]
         v2 = en.wordnet.synsets("dog")[0]
-        self.assertTrue(en.wordnet.ancestor(v1,v2) == en.wordnet.synsets("carnivore")[0])
+        self.assertTrue(en.wordnet.ancestor(v1, v2) == en.wordnet.synsets("carnivore")[0])
         print("pattern.en.wordnet.ancestor()")
 
     def test_map32(self):

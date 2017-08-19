@@ -502,7 +502,7 @@ class RateLimit(Database):
         return _RATELIMIT_LOCK
 
     @property
-    def key(self, pairs=("rA","aZ","gQ","hH","hG","aR","DD"), n=32):
+    def key(self, pairs=("rA", "aZ", "gQ", "hH", "hG", "aR", "DD"), n=32):
         """ Yields a new random key ("ZjNmYTc4ZDk0MTkyYk...").
         """
         k = str(random.getrandbits(256))

@@ -60,8 +60,8 @@ DATE, FROM, SUBJECT, BODY, ATTACHMENTS = \
 
 def _basename(folder):
     # [Gmail]/INBOX => inbox
-    f = folder.replace("[Gmail]/","")
-    f = f.replace("[Gmail]","")
+    f = folder.replace("[Gmail]/", "")
+    f = f.replace("[Gmail]", "")
     f = f.replace("Mail", "")   # "Sent Mail" alias = "sent".
     f = f.replace("INBOX.", "") # "inbox.sent" alias = "sent".
     f = f.lower()
