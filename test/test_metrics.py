@@ -389,10 +389,10 @@ class TestStatisticalTests(unittest.TestCase):
     def test_chi_squared_p(self):
         # Assert chi-squared P-value (upper tail).
         for df, X2 in [
-          (1, ( 3.85, 5.05, 6.65, 7.90)),
-          (2, ( 6.00, 7.40, 9.25, 10.65)),
-          (3, ( 7.85, 9.40, 11.35, 12.85)),
-          (4, ( 9.50, 11.15, 13.30, 14.90)),
+          (1, (3.85, 5.05, 6.65, 7.90)),
+          (2, (6.00, 7.40, 9.25, 10.65)),
+          (3, (7.85, 9.40, 11.35, 12.85)),
+          (4, (9.50, 11.15, 13.30, 14.90)),
           (5, (11.10, 12.85, 15.10, 16.80))]:
             for i, x2 in enumerate(X2):
                 v = metrics.chi2p(x2, df, tail=metrics.UPPER)

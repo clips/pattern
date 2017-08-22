@@ -1448,12 +1448,12 @@ class HTMLCanvasRenderer(GraphRenderer):
     def _script(self):
         s = []
         s.append("function setup(canvas) {\n")
-        s.append(   "\tcanvas.size(%s, %s);\n" % (self.width, self.height))
-        s.append(   "\tcanvas.fps = %s;\n" % (self.fps))
-        s.append(   "\t" + "".join(self._data()).replace("\n", "\n\t"))
-        s.append(   "\n")
+        s.append("\tcanvas.size(%s, %s);\n" % (self.width, self.height))
+        s.append("\tcanvas.fps = %s;\n" % (self.fps))
+        s.append("\t" + "".join(self._data()).replace("\n", "\n\t"))
+        s.append("\n")
         # Apply the layout settings.
-        s.append(   "\tg.layout.k = %s; // Force constant (= edge length).\n"
+        s.append("\tg.layout.k = %s; // Force constant (= edge length).\n"
                     "\tg.layout.force = %s; // Repulsive strength.\n"
                     "\tg.layout.repulsion = %s; // Repulsive radius.\n" % (
                         self.k,

@@ -812,7 +812,7 @@ class Sentence(object):
             which can be passed to Sentence.append(): Sentence.append(*Sentence.parse_token("cats/NNS/NP"))
             The custom value is a dictionary of (tag, value)-items of unrecognized tags in the token.
         """
-        p = { WORD: "",
+        p = {WORD: "",
                POS: None,
                IOB: None,
              CHUNK: None,

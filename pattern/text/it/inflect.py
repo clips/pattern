@@ -402,12 +402,12 @@ class Verbs(_Verbs):
             b + a1 + "ssi", b + a1 + "ssi", b + a1 + "sse", b + a1 + "ssimo", b + a1 + "ste", b + a1 + "ssero"
         ]
         for i, x in enumerate(v):
-            x = x.replace(  "ii",  "i")
-            x = x.replace( "cha",  "ca")
-            x = x.replace( "gha",  "ga")
-            x = x.replace( "gga",  "ggia")
-            x = x.replace( "cho",  "co")
-            x = x.replace( "chò",  "cò")
+            x = x.replace("ii" , "i")
+            x = x.replace("cha", "ca")
+            x = x.replace("gha", "ga")
+            x = x.replace("gga", "ggia")
+            x = x.replace("cho", "co")
+            x = x.replace("chò", "cò")
             v[i] = x
         return v
 

@@ -88,7 +88,7 @@ LANGUAGE_REGION = {
     'fr-CA': ('French', 'Canada', 'fr', 'CA'),
     'fr-CH': ('French', 'Switzerland', 'fr', 'CH'),
     'fr-LU': ('French', 'Luxembourg', 'fr', 'LU'),
-    'ga-IE': ('Irish' , 'Ireland', 'ga', 'IE'),
+    'ga-IE': ('Irish', 'Ireland', 'ga', 'IE'),
     'gd-UK': ('Gaelic', 'Scotland', 'gd', 'UK'),
     'he-IL': ('Hebrew', 'Israel', 'he', 'IL'),
     'hi-IN': ('Hindi', 'India', 'hi', 'IN'),

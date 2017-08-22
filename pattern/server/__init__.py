@@ -1285,28 +1285,28 @@ class Application(object):
         # Note: SQLite cannot handle many concurrent writes (e.g., UPDATE).
         else:
             cp.config.update({
-                "server.socket_host"       : self._host,
-                "server.socket_port"       : self._port,
-                "server.socket_timeout"    : max(1, timeout),
-                "server.socket_queue_size" : max(1, queue),
-                "server.thread_pool"       : max(1, threads),
-                "server.thread_pool_max"   : -1
+                "server.socket_host": self._host,
+                "server.socket_port": self._port,
+                "server.socket_timeout": max(1, timeout),
+                "server.socket_queue_size": max(1, queue),
+                "server.thread_pool": max(1, threads),
+                "server.thread_pool_max": -1
             })
         # Secure SSL (https://).
         if ssl:
             cp.config.update({
-                "server.ssl_module"        : "builtin",
-                "server.ssl_private_key"   : ssl[0] if os.path.exists(ssl[0]) else openable(ssl[0]),
-                "server.ssl_certificate"   : ssl[1] if os.path.exists(ssl[1]) else openable(ssl[1])
+                "server.ssl_module": "builtin",
+                "server.ssl_private_key": ssl[0] if os.path.exists(ssl[0]) else openable(ssl[0]),
+                "server.ssl_certificate": ssl[1] if os.path.exists(ssl[1]) else openable(ssl[1])
             })
         # Static content is served from the /static subfolder,
         # e.g., <img src="g/cat.jpg" /> refers to "/static/g/cat.jpg".
         self._app = cp.tree.mount(self, "/",
             config={"/": {
-                "tools.staticdir.on"       : self.static is not None,
-                "tools.staticdir.dir"      : self.static,
-                "tools.sessions.on"        : bool(sessions),
-                "tools.sessions.timeout"   : 60 if sessions is True else int(sessions)
+                "tools.staticdir.on": self.static is not None,
+                "tools.staticdir.dir": self.static,
+                "tools.sessions.on": bool(sessions),
+                "tools.sessions.timeout": 60 if sessions is True else int(sessions)
         }})
         # Static content can include favicon.ico
         self.favicon_ico = cp.tools.staticfile.handler(

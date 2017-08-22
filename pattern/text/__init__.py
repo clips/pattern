@@ -861,9 +861,9 @@ class Parser(object):
         """
         # "The cat purs." => ["The cat purs ."]
         return find_tokens(string,
-                punctuation = kwargs.get(  "punctuation", PUNCTUATION),
+                punctuation = kwargs.get("punctuation", PUNCTUATION),
               abbreviations = kwargs.get("abbreviations", ABBREVIATIONS),
-                    replace = kwargs.get(      "replace", replacements),
+                    replace = kwargs.get("replace", replacements),
                   linebreak = r"\n{2,}")
 
     def find_tags(self, tokens, **kwargs):
@@ -872,14 +872,14 @@ class Parser(object):
         """
         # ["The", "cat", "purs"] => [["The", "DT"], ["cat", "NN"], ["purs", "VB"]]
         return find_tags(tokens,
-                    lexicon = kwargs.get(   "lexicon", self.lexicon or {}),
-                      model = kwargs.get(     "model", self.model),
+                    lexicon = kwargs.get("lexicon", self.lexicon or {}),
+                      model = kwargs.get("model", self.model),
                  morphology = kwargs.get("morphology", self.morphology),
-                    context = kwargs.get(   "context", self.context),
-                   entities = kwargs.get(  "entities", self.entities),
-                   language = kwargs.get(  "language", self.language),
-                    default = kwargs.get(   "default", self.default),
-                        map = kwargs.get(       "map", None))
+                    context = kwargs.get("context", self.context),
+                   entities = kwargs.get("entities", self.entities),
+                   language = kwargs.get("language", self.language),
+                    default = kwargs.get("default", self.default),
+                        map = kwargs.get("map", None))
 
     def find_chunks(self, tokens, **kwargs):
         """ Annotates the given list of tokens with chunk tags.
@@ -1797,10 +1797,10 @@ for i, (tense, person, number, mood, aspect, negated, aliases) in TENSES.items()
 
 # Map Penn Treebank tags to unique index.
 for tag, tense in (
-  ("VB", 0 ),   # infinitive
-  ("VBP", 1 ),  # present 1 singular
-  ("VBZ", 3 ),  # present 3 singular
-  ("VBG", 8 ),  # present participle
+  ("VB", 0),    # infinitive
+  ("VBP", 1),   # present 1 singular
+  ("VBZ", 3),   # present 3 singular
+  ("VBG", 8),   # present participle
   ("VBN", 24),  # past participle
   ("VBD", 25)): # past
     TENSES_ID[tag.lower()] = tense
@@ -2092,8 +2092,8 @@ class Sentiment(lazydict):
         self.tokenizer   = kwargs.get("tokenizer", find_tokens)
         self.negations   = kwargs.get("negations", ("no", "not", "n't", "never"))
         self.modifiers   = kwargs.get("modifiers", ("RB",))
-        self.modifier    = kwargs.get("modifier" , lambda w: w.endswith("ly"))
-        self.ngrams      = kwargs.get("ngrams"   , 3)
+        self.modifier    = kwargs.get("modifier", lambda w: w.endswith("ly"))
+        self.ngrams      = kwargs.get("ngrams", 3)
 
     @property
     def path(self):

@@ -1123,15 +1123,15 @@ class Result(dict):
         """
         dict.__init__(self)
         self.url      = url
-        self.id       = kwargs.pop("id"       , "")
-        self.title    = kwargs.pop("title"    , "")
-        self.text     = kwargs.pop("text"     , "")
-        self.language = kwargs.pop("language" , "")
-        self.author   = kwargs.pop("author"   , "")
-        self.date     = kwargs.pop("date"     , "")
-        self.votes    = kwargs.pop("votes"    , 0) # (e.g., Facebook likes)
-        self.shares   = kwargs.pop("shares"   , 0) # (e.g., Twitter retweets)
-        self.comments = kwargs.pop("comments" , 0)
+        self.id       = kwargs.pop("id", "")
+        self.title    = kwargs.pop("title", "")
+        self.text     = kwargs.pop("text", "")
+        self.language = kwargs.pop("language", "")
+        self.author   = kwargs.pop("author", "")
+        self.date     = kwargs.pop("date", "")
+        self.votes    = kwargs.pop("votes", 0) # (e.g., Facebook likes)
+        self.shares   = kwargs.pop("shares", 0) # (e.g., Twitter retweets)
+        self.comments = kwargs.pop("comments", 0)
         for k, v in kwargs.items():
             self[k] = v
 
@@ -2725,9 +2725,9 @@ class Flickr(SearchEngine):
               "text": query.replace(" ", "_"),
               "page": start,
           "per_page": min(count, 500),
-              "sort": { RELEVANCY: "relevance",
+              "sort": {RELEVANCY: "relevance",
                            LATEST: "date-posted-desc",
-                      INTERESTING: "interestingness-desc" }.get(sort)
+                      INTERESTING: "interestingness-desc"}.get(sort)
         })
         if kwargs.get("copyright", True) is False:
             # With copyright=False, only returns Public Domain and Creative Commons images.
@@ -2764,10 +2764,10 @@ class FlickrResult(Result):
         url = FLICKR + "?method=flickr.photos.getSizes&photo_id=%s&api_key=%s" % (self._id, self._license)
         data = URL(url).download(throttle=self._throttle, unicode=True)
         data = xml.dom.minidom.parseString(bytestring(data))
-        size = { TINY: "Thumbnail",
+        size = {TINY: "Thumbnail",
                 SMALL: "Small",
                MEDIUM: "Medium",
-                LARGE: "Original" }.get(self._size, "Medium")
+                LARGE: "Original"}.get(self._size, "Medium")
         for x in data.getElementsByTagName("size"):
             if size == x.getAttribute("label"):
                 return x.getAttribute("source")
