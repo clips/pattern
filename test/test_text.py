@@ -23,6 +23,7 @@ from pattern import text
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestLexicon(unittest.TestCase):
 
     def setUp(self):
@@ -64,6 +65,7 @@ class TestLexicon(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestFrequency(unittest.TestCase):
 
     def setUp(self):
@@ -80,6 +82,7 @@ class TestFrequency(unittest.TestCase):
         print("pattern.text.Frequency")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestModel(unittest.TestCase):
 
@@ -101,6 +104,7 @@ class TestModel(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestMorphology(unittest.TestCase):
 
     def setUp(self):
@@ -116,6 +120,7 @@ class TestMorphology(unittest.TestCase):
         print("pattern.text.Morphology")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestContext(unittest.TestCase):
 
@@ -133,6 +138,7 @@ class TestContext(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestEntities(unittest.TestCase):
 
     def setUp(self):
@@ -148,6 +154,7 @@ class TestEntities(unittest.TestCase):
         print("pattern.text.Entities")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestParser(unittest.TestCase):
 
@@ -222,6 +229,7 @@ class TestParser(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestSentiment(unittest.TestCase):
 
     def setUp(self):
@@ -257,6 +265,7 @@ class TestSentiment(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestMultilingual(unittest.TestCase):
 
     def setUp(self):
@@ -276,6 +285,7 @@ class TestMultilingual(unittest.TestCase):
         print("pattern.text.deflood()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 def suite():
     suite = unittest.TestSuite()

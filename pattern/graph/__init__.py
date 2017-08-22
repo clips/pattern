@@ -37,6 +37,7 @@ INFINITE = 1e20
 
 #--- LIST FUNCTIONS --------------------------------------------------------------------------------
 
+
 def unique(iterable):
     """ Returns a list copy in which each item occurs only once (in-order).
     """
@@ -47,15 +48,18 @@ def unique(iterable):
 # This module is standalone (i.e., it is not a graph rendering package).
 # If you want to call Graph.draw() then line(), ellipse() and Text.draw() must be implemented.
 
+
 def line(x1, y1, x2, y2, stroke=(0, 0, 0, 1), strokewidth=1):
     """ Draws a line from (x1, y1) to (x2, y2) using the given stroke color and stroke width.
     """
     pass
 
+
 def ellipse(x, y, width, height, fill=(0, 0, 0, 1), stroke=None, strokewidth=1):
     """ Draws an ellipse at (x, y) with given fill and stroke color and stroke width.
     """
     pass
+
 
 class Text(object):
 
@@ -74,11 +78,13 @@ class Text(object):
     def draw(self):
         pass
 
+
 class Vector(object):
 
     def __init__(self, x=0, y=0):
         self.x = x
         self.y = y
+
 
 def coordinates(x, y, distance, angle):
     return (
@@ -87,6 +93,7 @@ def coordinates(x, y, distance, angle):
     )
 
 #--- DEEPCOPY --------------------------------------------------------------------------------------
+
 
 def deepcopy(o):
     """ Returns a deep (recursive) copy of the given object.
@@ -106,6 +113,7 @@ def deepcopy(o):
 #### NODE ##########################################################################################
 
 #--- NODE ------------------------------------------------------------------------------------------
+
 
 class Node(object):
 
@@ -140,10 +148,13 @@ class Node(object):
 
     def _get_x(self):
         return self._x * self._distance
+
     def _get_y(self):
         return self._y * self._distance
+
     def _set_x(self, v):
         self._x = v / self._distance
+
     def _set_y(self, v):
         self._y = v / self._distance
 
@@ -245,6 +256,7 @@ class Node(object):
 
     def __eq__(self, node):
         return isinstance(node, Node) and self.id == node.id
+
     def __ne__(self, node):
         return not self.__eq__(node)
 
@@ -254,6 +266,7 @@ class Node(object):
     __hash__ = object.__hash__
 
 #--- NODE LINKS ------------------------------------------------------------------------------------
+
 
 class Links(list):
 
@@ -277,6 +290,7 @@ class Links(list):
 
 #### EDGE ##########################################################################################
 
+
 class Edge(object):
 
     def __init__(self, node1, node2, weight=0.0, length=1.0, type=None, stroke=(0, 0, 0, 1), strokewidth=1):
@@ -294,6 +308,7 @@ class Edge(object):
 
     def _get_weight(self):
         return self._weight
+
     def _set_weight(self, v):
         self._weight = v
         # Clear cached adjacency map in the graph, since edge weights have changed.
@@ -343,6 +358,7 @@ class Edge(object):
 
 #--- GRAPH NODE DICTIONARY -------------------------------------------------------------------------
 
+
 class nodedict(dict):
 
     def __init__(self, graph, *args, **kwargs):
@@ -375,6 +391,7 @@ DEGREE      = "degree"
 WEIGHT, CENTRALITY = "weight", "centrality"
 
 ALL = "all"
+
 
 class Graph(dict):
 
@@ -567,9 +584,11 @@ class Graph(dict):
     @property
     def is_complete(self):
         return self.density == 1.0
+
     @property
     def is_dense(self):
         return self.density > 0.65
+
     @property
     def is_sparse(self):
         return self.density < 0.35
@@ -648,6 +667,7 @@ class Graph(dict):
 # Graph drawing or graph layout, as a branch of graph theory,
 # applies topology and geometry to derive two-dimensional representations of graphs.
 
+
 class GraphLayout(object):
 
     def __init__(self, graph):
@@ -687,6 +707,7 @@ class GraphLayout(object):
         return GraphLayout(self, graph)
 
 #--- GRAPH LAYOUT: FORCE-BASED ---------------------------------------------------------------------
+
 
 class GraphSpringLayout(GraphLayout):
 
@@ -764,6 +785,7 @@ class GraphSpringLayout(GraphLayout):
 
 #--- GRAPH SEARCH ----------------------------------------------------------------------------------
 
+
 def depth_first_search(node, visit=lambda node: False, traversable=lambda node, edge: True, _visited=None):
     """ Visits all the nodes connected to the given root node, depth-first.
         The visit function is called on each node.
@@ -787,6 +809,7 @@ def depth_first_search(node, visit=lambda node: False, traversable=lambda node, 
 
 dfs = depth_first_search
 
+
 def breadth_first_search(node, visit=lambda node: False, traversable=lambda node, edge: True):
     """ Visits all the nodes connected to the given root node, breadth-first.
     """
@@ -802,6 +825,7 @@ def breadth_first_search(node, visit=lambda node: False, traversable=lambda node
     return False
 
 bfs = breadth_first_search
+
 
 def paths(graph, id1, id2, length=4, path=[], _root=True):
     """ Returns a list of paths from node with id1 to node with id2.
@@ -822,6 +846,7 @@ def paths(graph, id1, id2, length=4, path=[], _root=True):
             p.extend(paths(graph, node.id, id2, length, path, False))
     return _root and sorted(p, key=len) or p
 
+
 def edges(path):
     """ Returns an iterator of Edge objects for the given list of nodes.
         It yields None where two successive nodes are not connected.
@@ -831,6 +856,7 @@ def edges(path):
     return len(path) > 1 and (n.links.edge(path[i + 1]) for i, n in enumerate(path[:-1])) or iter(())
 
 #--- GRAPH ADJACENCY -------------------------------------------------------------------------------
+
 
 def adjacency(graph, directed=False, reversed=False, stochastic=False, heuristic=None):
     """ Returns a dictionary indexed by node id1's,
@@ -865,6 +891,7 @@ def adjacency(graph, directed=False, reversed=False, stochastic=False, heuristic
     graph._adjacency = (map, directed, reversed, stochastic, heuristic and heuristic.__code__)
     return map
 
+
 def dijkstra_shortest_path(graph, id1, id2, heuristic=None, directed=False):
     """ Dijkstra algorithm for finding the shortest path between two nodes.
         Returns a list of node id's, starting with id1 and ending with id2.
@@ -889,6 +916,7 @@ def dijkstra_shortest_path(graph, id1, id2, heuristic=None, directed=False):
         for (n2, cost2) in G[n1].items():
             if n2 not in visited:
                 heappush(q, (cost1 + cost2, n2, path))
+
 
 def dijkstra_shortest_paths(graph, id, heuristic=None, directed=False):
     """ Dijkstra algorithm for finding the shortest paths from the given node to all other nodes.
@@ -921,6 +949,7 @@ def dijkstra_shortest_paths(graph, id, heuristic=None, directed=False):
             P[n] = None
     return P
 
+
 def floyd_warshall_all_pairs_distance(graph, heuristic=None, directed=False):
     """ Floyd-Warshall's algorithm for finding the path length for all pairs for nodes.
         Returns a dictionary of node id's, 
@@ -951,11 +980,13 @@ def floyd_warshall_all_pairs_distance(graph, heuristic=None, directed=False):
                 if du[v] > duw and du[v] > duw + dw[v]:
                     d[u][v] = duw + dw[v]
                     p[u][v] = p[w][v]
+
     class pdict(dict):
         def __init__(self, predecessors, *args, **kwargs):
             dict.__init__(self, *args, **kwargs)
             self.predecessors = predecessors
     return pdict(p, ((u, dict((v, w) for v, w in d[u].items() if w < 1e30)) for u in d))
+
 
 def predecessor_path(tree, u, v):
     """ Returns the path between node u and node v as a list of node id's.
@@ -969,6 +1000,7 @@ def predecessor_path(tree, u, v):
     return [u] + _traverse(u, v) + [v]
 
 #--- GRAPH CENTRALITY ------------------------------------------------------------------------------
+
 
 def brandes_betweenness_centrality(graph, normalized=True, directed=False):
     """ Betweenness centrality for nodes in the graph.
@@ -1022,6 +1054,7 @@ def brandes_betweenness_centrality(graph, normalized=True, directed=False):
     b = dict((id, w / m) for id, w in b.items())
     return b
 
+
 def eigenvector_centrality(graph, normalized=True, reversed=True, rating={}, iterations=100, tolerance=0.0001):
     """ Eigenvector centrality for nodes in the graph (cfr. Google's PageRank).
         Eigenvector centrality is a measure of the importance of a node in a directed network. 
@@ -1062,12 +1095,19 @@ def eigenvector_centrality(graph, normalized=True, reversed=True, rating={}, ite
 # a | b => all elements from a and all the elements from b.
 # a & b => elements that appear in a as well as in b.
 # a - b => elements that appear in a but not in b.
+
+
 def union(a, b):
     return list(set(a) | set(b))
+
+
 def intersection(a, b):
     return list(set(a) & set(b))
+
+
 def difference(a, b):
     return list(set(a) - set(b))
+
 
 def partition(graph):
     """ Returns a list of unconnected subgraphs.
@@ -1086,6 +1126,7 @@ def partition(graph):
     g.sort(key = cmp_to_key(lambda a, b: len(b) - len(a)))
     return g
 
+
 def is_clique(graph):
     """ A clique is a set of nodes in which each node is connected to all other nodes.
     """
@@ -1094,6 +1135,7 @@ def is_clique(graph):
     #        if n1 != n2 and graph.edge(n1.id, n2.id) is None:
     #            return False
     return graph.density == 1.0
+
 
 def clique(graph, id):
     """ Returns the largest possible clique for the node with given id.
@@ -1108,6 +1150,7 @@ def clique(graph, id):
         except StopIteration:
             a.append(n.id)
     return a
+
 
 def cliques(graph, threshold=3):
     """ Returns all cliques in the graph with at least the given number of nodes.
@@ -1124,6 +1167,7 @@ def cliques(graph, threshold=3):
 #### GRAPH UTILITY FUNCTIONS #######################################################################
 # Utility functions for safely linking and unlinking of nodes,
 # with respect for the surrounding nodes.
+
 
 def unlink(graph, node1, node2=None):
     """ Removes the edges between node1 and node2.
@@ -1143,6 +1187,7 @@ def unlink(graph, node1, node2=None):
             except: # 'NoneType' object has no attribute 'links'
                 pass
 
+
 def redirect(graph, node1, node2):
     """ Connects all of node1's edges to node2 and unlinks node1.
     """
@@ -1158,6 +1203,7 @@ def redirect(graph, node1, node2):
                 graph._add_edge_copy(e, node1=e.node1, node2=node2)
     unlink(graph, node1)
 
+
 def cut(graph, node):
     """ Unlinks the given node, but keeps edges intact by connecting the surrounding nodes.
         If A, B, C, D are nodes and A->B, B->C, B->D, if we then cut B: A->C, A->D.
@@ -1172,6 +1218,7 @@ def cut(graph, node):
                 if e.node2 == node and e.node1 != n:
                     graph._add_edge_copy(e, node1=e.node1, node2=n)
     unlink(graph, node)
+
 
 def insert(graph, node, a, b):
     """ Inserts the given node between node a and node b.
@@ -1194,6 +1241,7 @@ def insert(graph, node, a, b):
 
 #### GRAPH EXPORT ##################################################################################
 
+
 class GraphRenderer(object):
 
     def __init__(self, graph):
@@ -1207,6 +1255,7 @@ class GraphRenderer(object):
 
 #--- GRAPH EXPORT: HTML5 <CANVAS> ELEMENT ---------------------------------------------------------
 # Exports graphs to interactive web pages using graph.js.
+
 
 def minify(js):
     """ Returns a compressed Javascript string with comments and whitespace removed.
@@ -1231,6 +1280,7 @@ def minify(js):
 DEFAULT, INLINE = "default", "inline"
 HTML, CANVAS, STYLE, CSS, SCRIPT, DATA = \
     "html", "canvas", "style", "css", "script", "data"
+
 
 class HTMLCanvasRenderer(GraphRenderer):
 
@@ -1571,6 +1621,7 @@ class HTMLCanvasRenderer(GraphRenderer):
 
 GRAPHML = "graphml"
 
+
 class GraphMLRenderer(GraphRenderer):
 
     def serialize(self, directed=False):
@@ -1612,6 +1663,7 @@ class GraphMLRenderer(GraphRenderer):
             x.text = "%.3f" % e.weight
         # Export graph with pretty indented XML.
         # http://effbot.org/zone/element-lib.htm#prettyprint
+
         def indent(e, level=0):
             w = "\n" + level * "  "
             if len(e):
@@ -1634,6 +1686,7 @@ class GraphMLRenderer(GraphRenderer):
 # The export() and serialize() function are called from Graph.export() and Graph.serialize(),
 # and are expected to handle any GraphRenderer by specifying an optional type=HTML|GRAPHML.
 
+
 def export(graph, path, encoding="utf-8", **kwargs):
     type = kwargs.pop("type", HTML)
     # Export to GraphML.
@@ -1645,6 +1698,7 @@ def export(graph, path, encoding="utf-8", **kwargs):
         kwargs.setdefault("stylesheet", DEFAULT)
         r = HTMLCanvasRenderer(graph, **kwargs)
         return r.export(path, encoding)
+
 
 def serialize(graph, type=HTML, **kwargs):
     # Return GraphML string.

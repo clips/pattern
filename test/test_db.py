@@ -26,6 +26,7 @@ HOST, PORT, USERNAME, PASSWORD = \
 
 DB_MYSQL = DB_SQLITE = None
 
+
 def create_db_mysql():
 
     global DB_MYSQL
@@ -45,6 +46,7 @@ def create_db_mysql():
         DB_MYSQL.drop(table)
 
     return DB_MYSQL
+
 
 def create_db_sqlite():
 
@@ -67,6 +69,7 @@ def create_db_sqlite():
     return DB_SQLITE
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestUnicode(unittest.TestCase):
 
@@ -101,6 +104,7 @@ class TestUnicode(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestEntities(unittest.TestCase):
 
     def setUp(self):
@@ -130,6 +134,7 @@ class TestEntities(unittest.TestCase):
         print("pattern.db.decode_entities()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestDate(unittest.TestCase):
 
@@ -215,6 +220,7 @@ class TestDate(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestUtilityFunctions(unittest.TestCase):
 
     def setUp(self):
@@ -292,6 +298,7 @@ class TestUtilityFunctions(unittest.TestCase):
         print("pattern.db.sqlite_group_concat()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class _TestDatabase(object):
 
@@ -392,18 +399,22 @@ class _TestDatabase(object):
         self.assertTrue(len(self.db) == 0)
         print("pattern.db.Database.create()")
 
+
 class TestDeleteMySQLDatabase(unittest.TestCase):
     def runTest(self):
         create_db_mysql()._delete()
+
 
 class TestDeleteSQLiteDatabase(unittest.TestCase):
     def runTest(self):
         create_db_sqlite()._delete()
 
+
 class TestMySQLDatabase(unittest.TestCase, _TestDatabase):
     def setUp(self):
         self.db, self.type = create_db_mysql(), db.MYSQL
         _TestDatabase.setUp(self)
+
 
 class TestSQLiteDatabase(unittest.TestCase, _TestDatabase):
     def setUp(self):
@@ -411,6 +422,7 @@ class TestSQLiteDatabase(unittest.TestCase, _TestDatabase):
         _TestDatabase.setUp(self)
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestSchema(unittest.TestCase):
 
@@ -487,6 +499,7 @@ class TestSchema(unittest.TestCase):
         print("pattern.db.Schema()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class _TestTable(object):
 
@@ -621,10 +634,12 @@ class _TestTable(object):
         self.assertTrue(v.fields[0] == ("id", db.INTEGER))
         print("pattern.db.Table.datasheet()")
 
+
 class TestMySQLTable(unittest.TestCase, _TestTable):
     def setUp(self):
         self.db = create_db_mysql()
         _TestTable.setUp(self)
+
 
 class TestSQLiteTable(unittest.TestCase, _TestTable):
     def setUp(self):
@@ -632,6 +647,7 @@ class TestSQLiteTable(unittest.TestCase, _TestTable):
         _TestTable.setUp(self)
 
 #---------------------------------------------------------------------------------------------------
+
 
 class _TestQuery(object):
 
@@ -669,6 +685,7 @@ class _TestQuery(object):
         """
         class Database(object):
             escape, relations = lambda self, v: db._escape(v), []
+
         class Table(object):
             name, fields, db = "persons", ["id", "name", "age", "sex"], Database()
         return db.Query(Table(), *args, **kwargs)
@@ -829,12 +846,14 @@ class TestMySQLQuery(unittest.TestCase, _TestQuery):
         self.db = create_db_mysql()
         _TestQuery.setUp(self)
 
+
 class TestSQLiteQuery(unittest.TestCase, _TestQuery):
     def setUp(self):
         self.db = create_db_sqlite()
         _TestQuery.setUp(self)
 
 #---------------------------------------------------------------------------------------------------
+
 
 class _TestView(object):
 
@@ -857,6 +876,7 @@ class _TestView(object):
                 ])
                 self.setup()
                 self.table.insert(name="pizza", price=15.0)
+
             def render(self, query, **kwargs):
                 q = self.table.search(fields=["name", "price"], filters=[("name", "*%s*" % query)])
                 s = []
@@ -877,10 +897,12 @@ class _TestView(object):
         )
         print("pattern.db.View")
 
+
 class TestMySQLView(unittest.TestCase, _TestView):
     def setUp(self):
         self.db = create_db_mysql()
         _TestView.setUp(self)
+
 
 class TestSQLiteView(unittest.TestCase, _TestView):
     def setUp(self):
@@ -888,6 +910,7 @@ class TestSQLiteView(unittest.TestCase, _TestView):
         _TestView.setUp(self)
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestCSV(unittest.TestCase):
 
@@ -943,6 +966,7 @@ class TestCSV(unittest.TestCase):
         os.unlink("test.csv")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestDatasheet(unittest.TestCase):
 
@@ -1100,6 +1124,7 @@ class TestDatasheet(unittest.TestCase):
         pass
 
 #---------------------------------------------------------------------------------------------------
+
 
 def suite(**kwargs):
 

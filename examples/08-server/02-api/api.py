@@ -36,6 +36,7 @@ app = App("api")
 # You should see some JSON-output:
 # {"language": "en", "confidence": 0.83}
 
+
 @app.route("/language", limit=100, time=HOUR)
 def predict_language(q=""):
     #print(q)
@@ -67,6 +68,8 @@ def predict_language(q=""):
 # http://127.0.0.1:8080/language/paid?q=hello&key=1234
 
 # Check personal keys instead of IP-address:
+
+
 @app.route("/language/paid", limit=True, key=lambda data: data.get("key"))
 def predict_language_paid(q="", key=None):
     return {"language": language(q)[0]}

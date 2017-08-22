@@ -35,6 +35,7 @@ for gender in ("male", "female"):
 
 from pattern.vector import SVM, chngrams, count, kfoldcv
 
+
 class GenderByName(SVM):
 
     def train(self, name, gender=None):

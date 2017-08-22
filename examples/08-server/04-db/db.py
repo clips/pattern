@@ -63,6 +63,7 @@ if not os.path.exists(STORE):
 # It creates an optional parameter "db" that is available in every URL handler,
 # and which contains a connection to the database for the active thread.
 
+
 @app.bind("db")
 def db():
     return Database(STORE)
@@ -73,6 +74,7 @@ def db():
 # For http://127.0.0.1:8080/products/rubber-chicken, it displays the product with the given name.
 
 # The html.table() helper function returns a HTML-string with a <table> element.
+
 
 @app.route("/products")
 def products(name, db=None):

@@ -64,6 +64,7 @@ SLASH0 = SLASH[0]
 
 ### LIST FUNCTIONS #################################################################################
 
+
 def find(function, iterable):
     """ Returns the first item in the list for which function(item) is True, None otherwise.
     """
@@ -71,10 +72,12 @@ def find(function, iterable):
         if function(x) == True:
             return x
 
+
 def intersects(iterable1, iterable2):
     """ Returns True if the given lists have at least one item in common.
     """
     return find(lambda x: x in iterable1, iterable2) is not None
+
 
 def unique(iterable):
     """ Returns a list copy in which each item occurs only once (in-order).
@@ -83,6 +86,7 @@ def unique(iterable):
     return [x for x in iterable if x not in seen and not seen.add(x)]
 
 _zip = zip
+
 
 def zip(*args, **kwargs):
     """ Returns a list of tuples, where the i-th tuple contains the i-th element 
@@ -93,27 +97,35 @@ def zip(*args, **kwargs):
     v = kwargs.get("default", None)
     return list(_zip(*[i + [v] * (n - len(i)) for i in args]))
 
+
 def unzip(i, iterable):
     """ Returns the item at the given index from inside each tuple in the list.
     """
     return [x[i] for x in iterable]
 
+
 class Map(list):
     """ A stored imap() on a list.
         The list is referenced instead of copied, and the items are mapped on-the-fly.
     """
+
     def __init__(self, function=lambda x: x, items=[]):
         self._f = function
         self._a = items
+
     @property
     def items(self):
         return self._a
+
     def __repr__(self):
         return repr(list(iter(self)))
+
     def __getitem__(self, i):
         return self._f(self._a[i])
+
     def __len__(self):
         return len(self._a)
+
     def __iter__(self):
         i = 0
         while i < len(self._a):
@@ -129,6 +141,7 @@ encode_entities = lambda string: string.replace("/", SLASH)
 decode_entities = lambda string: string.replace(SLASH, "/")
 
 #--- WORD ------------------------------------------------------------------------------------------
+
 
 class Word(object):
 
@@ -170,6 +183,7 @@ class Word(object):
 
     def _get_tag(self):
         return self.type
+
     def _set_tag(self, v):
         self.type = v
 
@@ -250,6 +264,7 @@ class Word(object):
     # repr(Word) is a Python string (with Unicode characters encoded).
     def __str__(self):
         return self.string
+
     def __repr__(self):
         return "Word(%s)" % repr("%s/%s" % (
             encode_entities(self.string),
@@ -257,6 +272,7 @@ class Word(object):
 
     def __eq__(self, word):
         return id(self) == id(word)
+
     def __ne__(self, word):
         return id(self) != id(word)
 
@@ -264,6 +280,7 @@ class Word(object):
     # Otherwise objects will be unhashable in Python 3.
     # More information: http://docs.python.org/3.6/reference/datamodel.html#object.__hash__
     __hash__ = object.__hash__
+
 
 class Tags(dict):
 
@@ -291,6 +308,7 @@ class Tags(dict):
             return self[k]
 
 #--- CHUNK -----------------------------------------------------------------------------------------
+
 
 class Chunk(object):
 
@@ -334,13 +352,16 @@ class Chunk(object):
 
     def __getitem__(self, index):
         return self.words[index]
+
     def __len__(self):
         return len(self.words)
+
     def __iter__(self):
         return self.words.__iter__()
 
     def _get_tag(self):
         return self.type
+
     def _set_tag(self, v):
         self.type = v
 
@@ -349,12 +370,15 @@ class Chunk(object):
     @property
     def start(self):
         return self.words[0].index
+
     @property
     def stop(self):
         return self.words[-1].index + 1
+
     @property
     def range(self):
         return range(self.start, self.stop)
+
     @property
     def span(self):
         return (self.start, self.stop)
@@ -406,16 +430,19 @@ class Chunk(object):
         ch = self.sentence.relations["SBJ"].get(self.relation, None)
         if ch != self:
             return ch
+
     @property
     def object(self):
         ch = self.sentence.relations["OBJ"].get(self.relation, None)
         if ch != self:
             return ch
+
     @property
     def verb(self):
         ch = self.sentence.relations["VP"].get(self.relation, None)
         if ch != self:
             return ch
+
     @property
     def related(self):
         """ Yields a list of all chunks in the sentence with the same relation id.
@@ -508,8 +535,10 @@ class Chunk(object):
     @property
     def string(self):
         return " ".join(word.string for word in self.words)
+
     def __str__(self):
         return self.string
+
     def __repr__(self):
         return "Chunk(%s)" %  repr("%s/%s%s%s") % (
                 self.string,
@@ -519,6 +548,7 @@ class Chunk(object):
 
     def __eq__(self, chunk):
         return id(self) == id(chunk)
+
     def __ne__(self, chunk):
         return id(self) != id(chunk)
 
@@ -529,11 +559,14 @@ class Chunk(object):
 
 # Chinks are non-chunks,
 # see also the chunked() function:
+
+
 class Chink(Chunk):
     def __repr__(self):
         return Chunk.__repr__(self).replace("Chunk(", "Chink(", 1)
 
 #--- PNP CHUNK -------------------------------------------------------------------------------------
+
 
 class PNPChunk(Chunk):
 
@@ -581,6 +614,7 @@ class PNPChunk(Chunk):
 CONJUNCT = AND = "AND"
 DISJUNCT = OR  = "OR"
 
+
 class Conjunctions(list):
 
     def __init__(self, chunk):
@@ -595,16 +629,20 @@ class Conjunctions(list):
 #--- SENTENCE --------------------------------------------------------------------------------------
 
 _UID = 0
+
+
 def _uid():
     global _UID
     _UID += 1
     return _UID
+
 
 def _is_tokenstring(string):
     # The class mbsp.TokenString stores the format of tags for each token.
     # Since it comes directly from MBSP.parse(), this format is always correct,
     # regardless of the given token format parameter for Sentence() or Text().
     return isinstance(string, str) and hasattr(string, "tags")
+
 
 class Sentence(object):
 
@@ -679,6 +717,7 @@ class Sentence(object):
     @property
     def start(self):
         return 0
+
     @property
     def stop(self):
         return self.start + len(self.words)
@@ -686,9 +725,11 @@ class Sentence(object):
     @property
     def nouns(self):
         return [word for word in self if word.type.startswith("NN")]
+
     @property
     def verbs(self):
         return [word for word in self if word.type.startswith("VB")]
+
     @property
     def adjectives(self):
         return [word for word in self if word.type.startswith("JJ")]
@@ -696,9 +737,11 @@ class Sentence(object):
     @property
     def subjects(self):
         return list(self.relations["SBJ"].values())
+
     @property
     def objects(self):
         return list(self.relations["OBJ"].values())
+
     @property
     def verbs(self):
         return list(self.relations["VP"].values())
@@ -710,14 +753,17 @@ class Sentence(object):
     @property
     def is_question(self):
         return len(self) > 0 and str(self[-1]) == "?"
+
     @property
     def is_exclamation(self):
         return len(self) > 0 and str(self[-1]) == "!"
 
     def __getitem__(self, index):
         return self.words[index]
+
     def __len__(self):
         return len(self.words)
+
     def __iter__(self):
         return self.words.__iter__()
 
@@ -1069,8 +1115,10 @@ class Sentence(object):
     @property
     def string(self):
         return " ".join(word.string for word in self)
+
     def __str__(self):
         return self.string
+
     def __repr__(self):
         return "Sentence(%s)" % repr(" ".join(["/".join(word.tags) for word in self.words]))
 
@@ -1104,6 +1152,7 @@ class Sentence(object):
         """
         return nltk_tree(self)
 
+
 class Slice(Sentence):
 
     def __init__(self, *args, **kwargs):
@@ -1127,6 +1176,7 @@ class Slice(Sentence):
 # s.constituents() => [Chunk('black cats/NP'), Word('and/CC'), Chunk('white dogs/NP')]
 # s.chunked(s)     => [Chunk('black cats/NP'), Chink('and/O'), Chunk('white dogs/NP')]
 
+
 def chunked(sentence):
     """ Returns a list of Chunk and Chink objects from the given sentence.
         Chink is a subclass of Chunk used for words that have Word.chunk == None
@@ -1147,6 +1197,7 @@ def chunked(sentence):
     return chunks
 
 #--- TEXT ------------------------------------------------------------------------------------------
+
 
 class Text(list):
 
@@ -1234,6 +1285,7 @@ class Text(list):
 
 Tree = Text
 
+
 def tree(string, token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
     """ Transforms the output of parse() into a Text object.
         The token parameter lists the order of tags in each token in the input string.
@@ -1241,6 +1293,7 @@ def tree(string, token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
     return Text(string, token)
 
 split = tree # Backwards compatibility.
+
 
 def xml(string, token=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
     """ Transforms the output of parse() into XML.
@@ -1280,6 +1333,7 @@ XML_ENCODING = {
     'windows-1252' : 'windows-1252'
 }
 
+
 def xml_encode(string):
     """ Returns the string with XML-safe special characters.
     """
@@ -1289,6 +1343,7 @@ def xml_encode(string):
     string = string.replace("\"", "&quot;")
     string = string.replace(SLASH, "/")
     return string
+
 
 def xml_decode(string):
     """ Returns the string with special characters decoded.
@@ -1305,6 +1360,7 @@ def xml_decode(string):
 # Relation id's in the XML output are relative to the sentence id,
 # so relation 1 in sentence 2 = "2.1".
 _UID_SEPARATOR = "."
+
 
 def parse_xml(sentence, tab="\t", id=""):
     """ Returns the given Sentence object as an XML-string (plain bytestring, UTF-8 encoded).
@@ -1429,28 +1485,36 @@ def parse_xml(sentence, tab="\t", id=""):
 # s = open("parsed.txt", encoding="utf-8")
 # s = Text(s, token=[WORD, POS, CHUNK, PNP, LEMMA]) # (1)
 
+
 class XML(object):
     def __init__(self, string):
         from xml.etree import cElementTree
         self.root = cElementTree.fromstring(string)
+
     def __call__(self, tag):
         return self.root.tag == tag \
            and [XMLNode(self.root)] \
             or [XMLNode(e) for e in self.root.findall(tag)]
 
+
 class XMLNode(object):
     def __init__(self, element):
         self.element = element
+
     @property
     def tag(self):
         return self.element.tag
+
     @property
     def value(self):
         return self.element.text
+
     def __iter__(self):
         return iter(XMLNode(e) for e in self.element)
+
     def __getitem__(self, k):
         return self.element.attrib[k]
+
     def get(self, k, default=""):
         return self.element.attrib.get(k, default)
 
@@ -1463,6 +1527,8 @@ _attachments = {} # {'A1': [[['with', 'IN', 'B-PP', 'B-PNP', 'PP', 'O', 'with', 
 
 # This is a fallback if for some reason we fail to import MBSP.TokenString,
 # e.g., when tree.py is part of another project.
+
+
 class TaggedString(str):
     def __new__(cls, string, tags=["word"], language="en"):
         if isinstance(string, str) and hasattr(string, "tags"):
@@ -1471,6 +1537,7 @@ class TaggedString(str):
         s.tags = list(tags)
         s.language = language
         return s
+
 
 def parse_string(xml):
     """ Returns a slash-formatted string from the given XML representation.
@@ -1522,6 +1589,7 @@ def parse_string(xml):
     except:
         return TaggedString(string.strip(), tags=format, language=language)
 
+
 def _parse_tokens(chunk, format=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
     """ Parses tokens from <word> elements in the given XML <chunk> element.
         Returns a flat list of tokens, in which each token is [WORD, POS, CHUNK, PNP, RELATION, ANCHOR, LEMMA].
@@ -1569,6 +1637,7 @@ def _parse_tokens(chunk, format=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
         _anchors[a] = tokens
     return tokens
 
+
 def _parse_relation(chunk, type="O"):
     """ Returns a string of the roles and relations parsed from the given <chunk> element.
         The chunk type (which is part of the relation string) can be given as parameter.
@@ -1583,6 +1652,7 @@ def _parse_relation(chunk, type="O"):
     if len(r2) < len(r1):
         r2 = r2 + r2 * (len(r1) - len(r2)) # [2,4] ["OBJ"] => "OBJ-2;OBJ-4"
     return ";".join(["-".join([x for x in (type, r1, r2) if x]) for r1, r2 in zip(r1, r2)])
+
 
 def _parse_token(word, chunk="O", pnp="O", relation="O", anchor="O",
                  format=[WORD, POS, CHUNK, PNP, REL, ANCHOR, LEMMA]):
@@ -1612,11 +1682,13 @@ def _parse_token(word, chunk="O", pnp="O", relation="O", anchor="O",
 
 ### NLTK TREE ######################################################################################
 
+
 def nltk_tree(sentence):
     """ Returns an NLTK nltk.tree.Tree object from the given Sentence.
         The NLTK module should be on the search path somewhere.
     """
     from nltk import tree
+
     def do_pnp(pnp):
         # Returns the PNPChunk (and the contained Chunk objects) in NLTK bracket format.
         s = ' '.join([do_chunk(ch) for ch in pnp.chunks])
@@ -1652,6 +1724,7 @@ BLUE = {
     'OBJ' : ("#64788c", "#ffffff"),
 }
 
+
 def _colorize(x, colors):
     s = ''
     if isinstance(x, Word):
@@ -1662,6 +1735,7 @@ def _colorize(x, colors):
             colors.get(x.type) or \
             colors.get('') or ("none", "black"))
     return s
+
 
 def graphviz_dot(sentence, font="Arial", colors=BLUE):
     """ Returns a dot-formatted string that can be visualized as a graph in GraphViz.
@@ -1718,11 +1792,13 @@ def graphviz_dot(sentence, font="Arial", colors=BLUE):
 
 ### STDOUT TABLE ###################################################################################
 
+
 def table(sentence, fill=1, placeholder="-"):
     """ Returns a string where the tags of tokens in the sentence are organized in outlined columns.
     """
     tags  = [WORD, POS, IOB, CHUNK, ROLE, REL, PNP, ANCHOR, LEMMA]
     tags += [tag for tag in sentence.token if tag not in tags]
+
     def format(token, tag):
         # Returns the token tag as a string.
         if   tag == WORD:
@@ -1746,6 +1822,7 @@ def table(sentence, fill=1, placeholder="-"):
         else:
             s = token.custom_tags.get(tag)
         return s or placeholder
+
     def outline(column, fill=1, padding=3, align="left"):
         # Add spaces to each string in the column so they line out to the highest width.
         n = max([len(x) for x in column] + [fill])

@@ -54,15 +54,20 @@ L2R_L2LOSS_SVR_DUAL = 12
 L2R_L1LOSS_SVR_DUAL = 13
 
 PRINT_STRING_FUN = CFUNCTYPE(None, c_char_p)
+
+
 def print_null(s):
 	return
+
 
 def genFields(names, types):
 	return list(zip(names, types))
 
+
 def fillprototype(f, restype, argtypes):
 	f.restype = restype
 	f.argtypes = argtypes
+
 
 class feature_node(Structure):
 	_names = ["index", "value"]
@@ -71,6 +76,7 @@ class feature_node(Structure):
 
 	def __str__(self):
 		return '%d:%g' % (self.index, self.value)
+
 
 def gen_feature_nodearray(xi, feature_max=None):
 	if feature_max:
@@ -127,6 +133,7 @@ except:
 	jit = lambda x: x
 	jit_enabled = False
 
+
 @jit
 def csr_to_problem_jit(l, x_val, x_ind, x_rowptr, prob_val, prob_ind, prob_rowptr):
 	for i in range(l):
@@ -135,12 +142,15 @@ def csr_to_problem_jit(l, x_val, x_ind, x_rowptr, prob_val, prob_ind, prob_rowpt
 		for j in range(b1,e1):
 			prob_ind[j - b1 + b2] = x_ind[j] + 1
 			prob_val[j - b1 + b2] = x_val[j]
+
+
 def csr_to_problem_nojit(l, x_val, x_ind, x_rowptr, prob_val, prob_ind, prob_rowptr):
 	for i in range(l):
 		x_slice = slice(x_rowptr[i], x_rowptr[i + 1])
 		prob_slice = slice(prob_rowptr[i], prob_rowptr[i + 1] - 2)
 		prob_ind[prob_slice] = x_ind[x_slice] + 1
 		prob_val[prob_slice] = x_val[x_slice]
+
 
 def csr_to_problem(x, prob):
 	# Extra space for termination node and (possibly) bias term
@@ -154,6 +164,7 @@ def csr_to_problem(x, prob):
 		csr_to_problem_jit(x.shape[0], x.data, x.indices, x.indptr, prob_val, prob_ind, prob.rowptr)
 	else:
 		csr_to_problem_nojit(x.shape[0], x.data, x.indices, x.indptr, prob_val, prob_ind, prob.rowptr)
+
 
 class problem(Structure):
 	_names = ["l", "n", "y", "x", "bias"]
@@ -348,6 +359,7 @@ class parameter(Structure):
 			elif self.solver_type in [L2R_L2LOSS_SVR_DUAL, L2R_L1LOSS_SVR_DUAL]:
 				self.eps = 0.1
 
+
 class model(Structure):
 	_names = ["param", "nr_class", "nr_feature", "w", "label", "bias"]
 	_types = [parameter, c_int, c_int, POINTER(c_double), POINTER(c_int), c_double]
@@ -389,6 +401,7 @@ class model(Structure):
 
 	def is_regression_model(self):
 		return (liblinear.check_regression_model(self) == 1)
+
 
 def toPyModel(model_ptr):
 	"""

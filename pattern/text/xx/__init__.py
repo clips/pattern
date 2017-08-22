@@ -84,6 +84,7 @@ sys.path.pop(0)
 
 TAGSET = {"??": "NN"} # pattern.xx tagset => Penn Treebank II.
 
+
 def tagset2penntreebank(tag):
     return TAGSET.get(tag, tag)
 
@@ -96,6 +97,7 @@ ABBREVIATIONS = set(("e.g.", "etc.", "i.e."))
 
 # A lemmatizer can be constructed if we have a pattern.xx.inflect,
 # with functions for noun singularization and verb conjugation (i.e., infinitives).
+
 
 def find_lemmata(tokens):
     """ Annotates the tokens with lemmata for plural nouns and conjugated verbs,
@@ -113,6 +115,7 @@ def find_lemmata(tokens):
     return tokens
 
 # Subclass the base parser with the language-specific functionality:
+
 
 class Parser(_Parser):
 
@@ -168,25 +171,30 @@ sentiment = Sentiment(
 
 # Nothing should be changed below.
 
+
 def tokenize(s, *args, **kwargs):
     """ Returns a list of sentences, where punctuation marks have been split from words.
     """
     return parser.find_tokens(s, *args, **kwargs)
+
 
 def parse(s, *args, **kwargs):
     """ Returns a tagged Unicode string.
     """
     return parser.parse(s, *args, **kwargs)
 
+
 def parsetree(s, *args, **kwargs):
     """ Returns a parsed Text from the given string.
     """
     return Text(parse(s, *args, **kwargs))
 
+
 def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
     """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
+
 
 def tag(s, tokenize=True, encoding="utf-8", **kwargs):
     """ Returns a list of (token, tag)-tuples from the given string.
@@ -197,6 +205,7 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
             tags.append((token[0], token[1]))
     return tags
 
+
 def keywords(s, top=10, **kwargs):
     """ Returns a sorted list of keywords in the given string.
     """
@@ -206,15 +215,18 @@ def keywords(s, top=10, **kwargs):
               "pos": ("NN",),
            "ignore": ("rt",)}, **kwargs))
 
+
 def polarity(s, **kwargs):
     """ Returns the sentence polarity (positive/negative) between -1.0 and 1.0.
     """
     return sentiment(s, **kwargs)[0]
 
+
 def subjectivity(s, **kwargs):
     """ Returns the sentence subjectivity (objective/subjective) between 0.0 and 1.0.
     """
     return sentiment(s, **kwargs)[1]
+
 
 def positive(s, threshold=0.1, **kwargs):
     """ Returns True if the given sentence has a positive sentiment.

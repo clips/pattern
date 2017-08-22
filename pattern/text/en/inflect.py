@@ -73,8 +73,10 @@ RE_ARTICLE = list(map(lambda x: (re.compile(x[0]), x[1]), (
     (r""                     , "a" )  # guess "a"
 )))
 
+
 def definite_article(word):
     return "the"
+
 
 def indefinite_article(word):
     """ Returns the indefinite article for a given word.
@@ -88,12 +90,14 @@ def indefinite_article(word):
 DEFINITE, INDEFINITE = \
     "definite", "indefinite"
 
+
 def article(word, function=INDEFINITE):
     """ Returns the indefinite (a or an) or definite (the) article for the given word.
     """
     return function == DEFINITE and definite_article(word) or indefinite_article(word)
 
 _article = article
+
 
 def referenced(word, article=INDEFINITE):
     """ Returns a string with the article + the word.
@@ -389,6 +393,7 @@ plural_categories = {
         ]
 }
 
+
 def pluralize(word, pos=NOUN, custom={}, classical=True):
     """ Returns the plural of a given word, e.g., child => children.
         Handles nouns and adjectives, using classical inflection by default
@@ -593,6 +598,7 @@ singular_irregular = {
             "zoa": "zoon",
 }
 
+
 def singularize(word, pos=NOUN, custom={}):
     """ Returns the singular of a given word.
     """
@@ -630,6 +636,7 @@ def singularize(word, pos=NOUN, custom={}):
     return word
 
 #### VERB CONJUGATION ##############################################################################
+
 
 class Verbs(_Verbs):
 
@@ -758,6 +765,7 @@ grade_uninflected = ["giant", "glib", "hurt", "known", "madly"]
 COMPARATIVE = "er"
 SUPERLATIVE = "est"
 
+
 def _count_syllables(word):
     """ Returns the estimated number of syllables in the word by counting vowel-groups.
     """
@@ -768,6 +776,7 @@ def _count_syllables(word):
         n += int(v and not p)
         p = v
     return n
+
 
 def grade(adjective, suffix=COMPARATIVE):
     """ Returns the comparative or superlative form of the given adjective.
@@ -801,16 +810,20 @@ def grade(adjective, suffix=COMPARATIVE):
         return "%s %s" % (suffix == COMPARATIVE and "more" or "most", adjective)
     return adjective + suffix
 
+
 def comparative(adjective):
     return grade(adjective, COMPARATIVE)
+
 
 def superlative(adjective):
     return grade(adjective, SUPERLATIVE)
 
 #### ATTRIBUTIVE & PREDICATIVE #####################################################################
 
+
 def attributive(adjective):
     return adjective
+
 
 def predicative(adjective):
     return adjective

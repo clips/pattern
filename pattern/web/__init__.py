@@ -122,6 +122,7 @@ GREMLINS = set([
     0x2020, 0x2021, 0x2022, 0x2026, 0x2030, 0x2039, 0x203A, 0x20AC, 0x2122
 ])
 
+
 def fix(s, ignore=""):
     """ Returns a Unicode string that fixes common encoding problems (Latin-1, Windows-1252).
         For example: fix("clichÃ©") => "cliché".
@@ -163,6 +164,7 @@ def fix(s, ignore=""):
     u = u.replace("\n ", "\n")
     return u
 
+
 def latin(s):
     """ Returns True if the string contains only Latin-1 characters
         (no Chinese, Japanese, Arabic, Cyrillic, Hebrew, Greek, ...).
@@ -175,6 +177,7 @@ def latin(s):
 bytestring = b = s
 
 #### ASYNCHRONOUS REQUEST ##########################################################################
+
 
 class AsynchronousRequest(object):
 
@@ -211,18 +214,22 @@ class AsynchronousRequest(object):
     @property
     def elapsed(self):
         return time.time() - self._time
+
     @property
     def done(self):
         return not self._thread.isAlive()
+
     @property
     def value(self):
         return self._response
+
     @property
     def error(self):
         return self._error
 
     def __repr__(self):
         return "AsynchronousRequest(function='%s')" % self._function.__name__
+
 
 def asynchronous(function, *args, **kwargs):
     """ Returns an AsynchronousRequest object for the given function.
@@ -263,10 +270,12 @@ MIMETYPE_VIDEO      = ["video/mpeg", "video/mp4", "video/avi", "video/quicktime"
 MIMETYPE_ARCHIVE    = ["application/x-stuffit", "application/x-tar", "application/zip"]
 MIMETYPE_SCRIPT     = ["application/javascript", "application/ecmascript"]
 
+
 def extension(filename):
     """ Returns the extension in the given filename: "cat.jpg" => ".jpg".
     """
     return os.path.splitext(filename)[1]
+
 
 def urldecode(query):
     """ Inverse operation of urlencode.
@@ -293,53 +302,83 @@ def urldecode(query):
 
 url_decode = urldecode
 
+
 def proxy(host, protocol="https"):
     """ Returns the value for the URL.open() proxy parameter.
         - host: host address of the proxy server.
     """
     return (host, protocol)
 
+
 class Error(Exception):
     """ Base class for pattern.web errors.
     """
+
     def __init__(self, *args, **kwargs):
         Exception.__init__(self, *args)
         self.src = kwargs.pop("src", None)
         self.url = kwargs.pop("url", None)
+
     @property
     def headers(self):
         return dict(list(self.src.headers.items()))
 
+
 class URLError(Error):
     pass # URL contains errors (e.g. a missing t in htp://).
+
+
 class URLTimeout(URLError):
     pass # URL takes to long to load.
+
+
 class HTTPError(URLError):
     pass # URL causes an error on the contacted server.
+
+
 class HTTP301Redirect(HTTPError):
     pass # Too many redirects.
          # The site may be trying to set a cookie and waiting for you to return it,
          # or taking other measures to discern a browser from a script.
          # For specific purposes you should build your own urllib2.HTTPRedirectHandler
          # and pass it to urllib2.build_opener() in URL.open()
+
+
 class HTTP400BadRequest(HTTPError):
     pass # URL contains an invalid request.
+
+
 class HTTP401Authentication(HTTPError):
     pass # URL requires a login and password.
+
+
 class HTTP403Forbidden(HTTPError):
     pass # URL is not accessible (user-agent?)
+
+
 class HTTP404NotFound(HTTPError):
     pass # URL doesn't exist on the internet.
+
+
 class HTTP414RequestURITooLong(HTTPError):
     pass # URL is too long.
+
+
 class HTTP420Error(HTTPError):
     pass # Used by Twitter for rate limiting.
+
+
 class HTTP429TooMayRequests(HTTPError):
     pass # Used by Twitter for rate limiting.
+
+
 class HTTP500InternalServerError(HTTPError):
     pass # Generic server error.
+
+
 class HTTP503ServiceUnavailable(HTTPError):
     pass # Used by Bing for rate limiting.
+
 
 class URL(object):
 
@@ -413,6 +452,7 @@ class URL(object):
     # URL.string yields unicode(URL) by joining the different parts,
     # if the URL parts have been modified.
     def _get_string(self): return str(self)
+
     def _set_string(self, v):
         self.__dict__["_string"] = u(v)
         self.__dict__["_parts"]  = None
@@ -662,6 +702,7 @@ class URL(object):
     def copy(self):
         return URL(self.string, self.method, self.query)
 
+
 def download(url="", method=GET, query={}, timeout=10, cached=True, throttle=0, proxy=None, user_agent=USER_AGENT, referrer=REFERRER, authentication=None, unicode=False):
     """ Downloads the content at the given URL (by default it will be cached locally).
         Unless unicode=False, the content is returned as a unicode string.
@@ -675,6 +716,7 @@ def download(url="", method=GET, query={}, timeout=10, cached=True, throttle=0, 
 
 #--- STREAMING URL BUFFER --------------------------------------------------------------------------
 
+
 def bind(object, method, function):
     """ Attaches the function as a method with the given name to the given object.
     """
@@ -684,6 +726,7 @@ def bind(object, method, function):
     else:
         # Python 3: There is no good reason to use this function in Python 3.
         setattr(object, method, function)
+
 
 class Stream(list):
 
@@ -720,6 +763,7 @@ class Stream(list):
     def clear(self):
         list.__init__(self, [])
 
+
 def stream(url, delimiter="\n", parse=lambda data: data, **kwargs):
     """ Returns a new Stream with the given parse method.
     """
@@ -741,6 +785,7 @@ RE_URL1, RE_URL2, RE_URL3 = (
     re.compile(RE_URL1, re.I),
     re.compile(RE_URL2, re.I),
     re.compile(RE_URL3, re.I))
+
 
 def find_urls(string, unique=True):
     """ Returns a list of URLs parsed from the string.
@@ -764,6 +809,7 @@ links = find_urls
 
 RE_EMAIL = re.compile(r"[\w\-\.\+]+@(\w[\w\-]+\.)+[\w\-]+") # tom.de+smedt@clips.ua.ac.be
 
+
 def find_email(string, unique=True):
     """ Returns a list of e-mail addresses parsed from the string.
     """
@@ -774,6 +820,7 @@ def find_email(string, unique=True):
         if not unique or s not in matches:
             matches.append(s)
     return matches
+
 
 def find_between(a, b, string):
     """ Returns a list of substrings between a and b in the given string.
@@ -806,6 +853,7 @@ blocks.update({
     "td": ("", "\t"),
 })
 
+
 class HTMLParser(_HTMLParser):
 
     def clean(self, html):
@@ -817,6 +865,7 @@ class HTMLParser(_HTMLParser):
         html = html.replace("&lt;!doctype", "<!doctype")
         html = html.replace("&lt;!--", "<!--")
         return html
+
 
 class HTMLTagstripper(HTMLParser):
 
@@ -877,6 +926,7 @@ class HTMLTagstripper(HTMLParser):
 # As a function:
 strip_tags = HTMLTagstripper().strip
 
+
 def strip_element(string, tag, attributes=""):
     """ Removes all elements with the given tagname and attributes from the string.
         Open and close tags are kept in balance.
@@ -906,6 +956,7 @@ def strip_element(string, tag, attributes=""):
         string = string[:i] + string[j + len(t) + 3:]; s = string.lower()
     return string
 
+
 def strip_between(a, b, string):
     """ Removes anything between (and including) string a and b inside the given string.
     """
@@ -913,17 +964,25 @@ def strip_between(a, b, string):
     p = re.compile(p, re.DOTALL | re.I)
     return re.sub(p, "", string)
 
+
 def strip_javascript(html):
     return strip_between("<script.*?>", "</script>", html)
+
+
 def strip_inline_css(html):
     return strip_between("<style.*?>", "</style>", html)
+
+
 def strip_comments(html):
     return strip_between("<!--", "-->", html)
+
+
 def strip_forms(html):
     return strip_between("<form.*?>", "</form>", html)
 
 RE_AMPERSAND = re.compile("\&(?!\#)")           # & not followed by #
 RE_UNICODE   = re.compile(r'&(#?)(x|X?)(\w+);') # &#201;
+
 
 def encode_entities(string):
     """ Encodes HTML entities in the given string ("<" => "&lt;").
@@ -937,6 +996,7 @@ def encode_entities(string):
         string = string.replace('"', "&quot;")
         string = string.replace("'", "&#39;")
     return string
+
 
 def decode_entities(string):
     """ Decodes HTML entities in the given string ("&lt;" => "<").
@@ -956,13 +1016,17 @@ def decode_entities(string):
         return RE_UNICODE.subn(replace_entity, string)[0]
     return string
 
+
 def encode_url(string):
     return quote_plus(bytestring(string)) # "black/white" => "black%2Fwhite".
+
+
 def decode_url(string):
     return u(unquote_plus(bytestring(string)))
 
 RE_SPACES = re.compile("( |\xa0)+", re.M) # Matches one or more spaces.
 RE_TABS   = re.compile(r"\t+", re.M)      # Matches one or more tabs.
+
 
 def collapse_spaces(string, indentation=False, replace=" "):
     """ Returns a string with consecutive spaces collapsed to a single space.
@@ -975,6 +1039,7 @@ def collapse_spaces(string, indentation=False, replace=" "):
         p.append(x[:n] + RE_SPACES.sub(replace, x[n:]).strip())
     return "\n".join(p)
 
+
 def collapse_tabs(string, indentation=False, replace=" "):
     """ Returns a string with (consecutive) tabs replaced by a single space.
         Whitespace on empty lines and at the end of each line is removed.
@@ -986,6 +1051,7 @@ def collapse_tabs(string, indentation=False, replace=" "):
         p.append(x[:n] + RE_TABS.sub(replace, x[n:]).strip())
     return "\n".join(p)
 
+
 def collapse_linebreaks(string, threshold=1):
     """ Returns a string with consecutive linebreaks collapsed to at most the given threshold.
         Whitespace on empty lines and at the end of each line is removed.
@@ -995,6 +1061,7 @@ def collapse_linebreaks(string, threshold=1):
     string = "\n".join(p)
     string = re.sub(n + r"+", n, string)
     return string
+
 
 def plaintext(html, keep=[], replace=blocks, linebreaks=2, indentation=False):
     """ Returns a string with all HTML tags removed.
@@ -1039,6 +1106,7 @@ LARGE     = "large"     # Image size around 1000x1000.
 
 RELEVANCY = "relevancy" # Sort results by most relevant.
 LATEST    = "latest"    # Sort results by most recent.
+
 
 class Result(dict):
 
@@ -1098,10 +1166,13 @@ class Result(dict):
 
     def __getattr__(self, k):
         return self.get(k, "")
+
     def __getitem__(self, k):
         return self.get(k, "")
+
     def __setattr__(self, k, v):
         self.__setitem__(k, v)
+
     def __setitem__(self, k, v):
         dict.__setitem__(self, u(k), self._format(v))
 
@@ -1113,6 +1184,7 @@ class Result(dict):
 
     def __repr__(self):
         return "Result(%s)" % repr(dict((k, v) for k, v in self.items() if v))
+
 
 class Results(list):
 
@@ -1128,6 +1200,7 @@ class Results(list):
         self.query  = query
         self.type   = type
         self.total  = total
+
 
 class SearchEngine(object):
 
@@ -1145,10 +1218,15 @@ class SearchEngine(object):
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         return Results(source=None, query=query, type=type)
 
+
 class SearchEngineError(HTTPError):
     pass
+
+
 class SearchEngineTypeError(SearchEngineError):
     pass # Raised when an unknown type is passed to SearchEngine.search().
+
+
 class SearchEngineLimitError(SearchEngineError):
     pass # Raised when the query limit for a license is reached.
 
@@ -1165,6 +1243,7 @@ GOOGLE_CUSTOM_SEARCH_ENGINE = "000579440470800426354:_4qo2s0ijsi"
 # Search results can start with: "Jul 29, 2007 ...",
 # which is the date of the page parsed by Google from the content.
 RE_GOOGLE_DATE = re.compile("^([A-Z][a-z]{2} [0-9]{1,2}, [0-9]{4}) {0,1}...")
+
 
 class Google(SearchEngine):
 
@@ -1271,6 +1350,7 @@ class Google(SearchEngine):
 YAHOO = "http://yboss.yahooapis.com/ysearch/"
 YAHOO_LICENSE = api.license["Yahoo"]
 
+
 class Yahoo(SearchEngine):
 
     def __init__(self, license=None, throttle=0.5, language=None):
@@ -1356,6 +1436,7 @@ class Yahoo(SearchEngine):
 BING = "https://api.datamarket.azure.com/Bing/Search/"
 BING_LICENSE = api.license["Bing"]
 
+
 class Bing(SearchEngine):
 
     def __init__(self, license=None, throttle=0.5, language=None):
@@ -1440,6 +1521,7 @@ DUCKDUCKGO_LICENSE = api.license["DuckDuckGo"]
 # e.g., "apple" => "plant and plant parts". Known types:
 REFERENCE, CATEGORY, DEFINITION = \
     "reference", "category", "definition"
+
 
 class DuckDuckGo(SearchEngine):
 
@@ -1558,6 +1640,7 @@ DDG = DuckDuckGo
 FAROO = "http://www.faroo.com/api"
 FAROO_LICENSE = api.license["Faroo"]
 
+
 class Faroo(SearchEngine):
 
     def __init__(self, license = None, throttle = 0.5, language = None):
@@ -1615,6 +1698,7 @@ TWITTER_LICENSE = api.license["Twitter"]
 TWITTER_HASHTAG = re.compile(r"(\s|^)(#[a-z0-9_\-]+)", re.I)    # Word starts with "#".
 TWITTER_MENTION = re.compile(r"(\s|^)(@[a-z0-9_\-]+)", re.I)    # Word starts with "@".
 TWITTER_RETWEET = re.compile(r"(\s|^RT )(@[a-z0-9_\-]+)", re.I) # Word starts with "RT @".
+
 
 class Twitter(SearchEngine):
 
@@ -1786,6 +1870,7 @@ class Twitter(SearchEngine):
         url = self._authenticate(url)
         return TwitterStream(url, delimiter="\n", format=self.format, **kwargs)
 
+
 class TwitterStream(Stream):
 
     def __init__(self, socket, delimiter="\n", format=lambda s: s, **kwargs):
@@ -1816,21 +1901,25 @@ class TwitterStream(Stream):
                 r.text = self.format("RT @%s: %s" % (rt["user"]["screen_name"], rt["text"]))
             return r
 
+
 def author(name):
     """ Returns a Twitter query-by-author-name that can be passed to Twitter.search().
         For example: Twitter().search(author("tom_de_smedt"))
     """
     return "from:%s" % name
 
+
 def hashtags(string):
     """ Returns a list of hashtags (words starting with a #hash) from a tweet.
     """
     return [b for a, b in TWITTER_HASHTAG.findall(string)]
 
+
 def mentions(string):
     """ Returns a list of mentions (words starting with a @author) from a tweet.
     """
     return [b for a, b in TWITTER_MENTION.findall(string)]
+
 
 def retweets(string):
     """ Returns a list of retweets (words starting with a RT @author) from a tweet.
@@ -1891,6 +1980,7 @@ MEDIAWIKI_REFERENCE = r"\s*\[[0-9]{1,3}\]"
 # Mediawiki.search(type=ALL).
 ALL = "all"
 
+
 class MediaWiki(SearchEngine):
 
     def __init__(self, license=None, throttle=5.0, language="en"):
@@ -1904,9 +1994,11 @@ class MediaWiki(SearchEngine):
     @property
     def MediaWikiArticle(self):
         return MediaWikiArticle
+
     @property
     def MediaWikiSection(self):
         return MediaWikiSection
+
     @property
     def MediaWikiTable(self):
         return MediaWikiTable
@@ -2069,6 +2161,7 @@ class MediaWiki(SearchEngine):
                     break
         return article
 
+
 class MediaWikiArticle(object):
 
     def __init__(self, title="", source="", links=[], categories=[], languages={}, disambiguation=False, **kwargs):
@@ -2157,6 +2250,7 @@ class MediaWikiArticle(object):
 
     def __repr__(self):
         return "MediaWikiArticle(title=%s)" % repr(self.title)
+
 
 class MediaWikiSection(object):
 
@@ -2253,6 +2347,7 @@ class MediaWikiSection(object):
     def __repr__(self):
         return "MediaWikiSection(title=%s)" % repr(self.title)
 
+
 class MediaWikiTable(object):
 
     def __init__(self, section, title="", headers=[], rows=[], source=""):
@@ -2286,6 +2381,7 @@ class MediaWikiTable(object):
 # Wikipedia is a collaboratively edited, multilingual, free Internet encyclopedia.
 # Wikipedia depends on MediaWiki.
 
+
 class Wikipedia(MediaWiki):
 
     def __init__(self, license=None, throttle=5.0, language="en"):
@@ -2305,12 +2401,15 @@ class Wikipedia(MediaWiki):
     @property
     def MediaWikiArticle(self):
         return WikipediaArticle
+
     @property
     def MediaWikiSection(self):
         return WikipediaSection
+
     @property
     def MediaWikiTable(self):
         return WikipediaTable
+
 
 class WikipediaArticle(MediaWikiArticle):
 
@@ -2333,9 +2432,11 @@ class WikipediaArticle(MediaWikiArticle):
     def __repr__(self):
         return "WikipediaArticle(title=%s)" % repr(self.title)
 
+
 class WikipediaSection(MediaWikiSection):
     def __repr__(self):
         return "WikipediaSection(title=%s)" % repr(self.title)
+
 
 class WikipediaTable(MediaWikiTable):
     def __repr__(self):
@@ -2361,6 +2462,7 @@ class WikipediaTable(MediaWikiTable):
 #--- MEDIAWIKI: WIKTIONARY -------------------------------------------------------------------------
 # Wiktionary is a collaborative project to produce a free-content multilingual dictionary.
 
+
 class Wiktionary(MediaWiki):
 
     def __init__(self, license=None, throttle=5.0, language="en"):
@@ -2380,20 +2482,25 @@ class Wiktionary(MediaWiki):
     @property
     def MediaWikiArticle(self):
         return WiktionaryArticle
+
     @property
     def MediaWikiSection(self):
         return WiktionarySection
+
     @property
     def MediaWikiTable(self):
         return WiktionaryTable
+
 
 class WiktionaryArticle(MediaWikiArticle):
     def __repr__(self):
         return "WiktionaryArticle(title=%s)" % repr(self.title)
 
+
 class WiktionarySection(MediaWikiSection):
     def __repr__(self):
         return "WiktionarySection(title=%s)" % repr(self.title)
+
 
 class WiktionaryTable(MediaWikiTable):
     def __repr__(self):
@@ -2425,9 +2532,11 @@ class Wikia(MediaWiki):
     @property
     def MediaWikiArticle(self):
         return WikiaArticle
+
     @property
     def MediaWikiSection(self):
         return WikiaSection
+
     @property
     def MediaWikiTable(self):
         return WikiaTable
@@ -2463,13 +2572,16 @@ class Wikia(MediaWiki):
         for title in self.index(**kwargs):
             yield self.search(title, **kwargs)
 
+
 class WikiaArticle(MediaWikiArticle):
     def __repr__(self):
         return "WikiaArticle(title=%s)" % repr(self.title)
 
+
 class WikiaSection(MediaWikiSection):
     def __repr__(self):
         return "WikiaSection(title=%s)" % repr(self.title)
+
 
 class WikiaTable(MediaWikiTable):
     def __repr__(self):
@@ -2507,8 +2619,10 @@ DBPEDIA = "http://dbpedia.org/sparql?"
 
 SPARQL = "sparql"
 
+
 class DBPediaQueryError(HTTP400BadRequest):
     pass
+
 
 class DBPediaResource(str):
     @property
@@ -2520,6 +2634,7 @@ class DBPediaResource(str):
         s = decode_url(s)
         s = decode_utf8(s)
         return s
+
 
 class DBPedia(SearchEngine):
 
@@ -2583,6 +2698,7 @@ FLICKR_LICENSE = api.license["Flickr"]
 
 INTERESTING = "interesting"
 
+
 class Flickr(SearchEngine):
 
     def __init__(self, license=None, throttle=5.0, language=None):
@@ -2637,6 +2753,7 @@ class Flickr(SearchEngine):
             results.append(r)
         return results
 
+
 class FlickrResult(Result):
 
     @property
@@ -2681,9 +2798,11 @@ COMMENTS = "comments"  # Facebook comments (for a given news feed post).
 LIKES    = "likes"     # Facebook likes (for a given post or comment).
 FRIENDS  = "friends"   # Facebook friends (for a given profile id).
 
+
 class FacebookResult(Result):
     def __repr__(self):
         return "Result(id=%s)" % repr(self.id)
+
 
 class Facebook(SearchEngine):
 
@@ -2832,6 +2951,7 @@ class Facebook(SearchEngine):
 PRODUCTWIKI = "http://api.productwiki.com/connect/api.aspx"
 PRODUCTWIKI_LICENSE = api.license["ProductWiki"]
 
+
 class ProductWiki(SearchEngine):
 
     def __init__(self, license=None, throttle=5.0, language=None):
@@ -2896,6 +3016,7 @@ Products = ProductWiki
 # Based on the Universal Feed Parser by Mark Pilgrim:
 # http://www.feedparser.org/
 
+
 class Newsfeed(SearchEngine):
 
     def __init__(self, license=None, throttle=1.0, language=None):
@@ -2954,6 +3075,7 @@ feeds = {
 
 #--- QUERY -----------------------------------------------------------------------------------------
 
+
 def query(string, service=GOOGLE, **kwargs):
     """ Returns the list of search query results from the given service.
         For service=WIKIPEDIA, this is a single WikipediaArticle or None.
@@ -3001,6 +3123,7 @@ SERVICES = {
     FLICKR    : Flickr,
     FACEBOOK  : Facebook
 }
+
 
 def sort(terms=[], context="", service=GOOGLE, license=None, strict=True, prefix=False, **kwargs):
     """ Returns a list of (percentage, term)-tuples for the given list of terms.
@@ -3052,6 +3175,7 @@ NODE, TEXT, COMMENT, ELEMENT, DOCUMENT = \
 
 #--- NODE ------------------------------------------------------------------------------------------
 
+
 class Node(object):
 
     def __init__(self, html, type=NODE, **kwargs):
@@ -3084,18 +3208,23 @@ class Node(object):
     @property
     def parent(self):
         return self._wrap(self._p.parent)
+
     @property
     def children(self):
         return hasattr(self._p, "contents") and [self._wrap(x) for x in self._p.contents] or []
+
     @property
     def html(self):
         return self.__str__()
+
     @property
     def source(self):
         return self.__str__()
+
     @property
     def next_sibling(self):
         return self._wrap(self._p.next_sibling)
+
     @property
     def previous_sibling(self):
         return self._wrap(self._p.previous_sibling)
@@ -3119,13 +3248,16 @@ class Node(object):
 
     def __len__(self):
         return len(self.children)
+
     def __iter__(self):
         return iter(self.children)
+
     def __getitem__(self, index):
         return self.children[index]
 
     def __repr__(self):
         return "Node(type=%s)" % repr(self.type)
+
     def __str__(self):
         return u(self._p)
 
@@ -3134,25 +3266,32 @@ class Node(object):
 
 #--- TEXT ------------------------------------------------------------------------------------------
 
+
 class Text(Node):
     """ Text represents a chunk of text without formatting in a HTML document.
         For example: "the <b>cat</b>" is parsed to [Text("the"), Element("cat")].
     """
+
     def __init__(self, string):
         Node.__init__(self, string, type=TEXT)
+
     def __repr__(self):
         return "Text(%s)" % repr(self._p)
+
 
 class Comment(Text):
     """ Comment represents a comment in the HTML source code.
         For example: "<!-- comment -->".
     """
+
     def __init__(self, string):
         Node.__init__(self, string, type=COMMENT)
+
     def __repr__(self):
         return "Comment(%s)" % repr(self._p)
 
 #--- ELEMENT ---------------------------------------------------------------------------------------
+
 
 class Element(Node):
 
@@ -3254,6 +3393,7 @@ class Element(Node):
 
 #--- DOCUMENT --------------------------------------------------------------------------------------
 
+
 class Document(Element):
 
     def __init__(self, html, **kwargs):
@@ -3275,9 +3415,11 @@ class Document(Element):
     @property
     def head(self):
         return self._wrap(self._p.head)
+
     @property
     def body(self):
         return self._wrap(self._p.body)
+
     @property
     def tagname(self):
         return None
@@ -3316,11 +3458,14 @@ DOM = Document
 
 # Selectors are case-insensitive.
 
+
 def _encode_space(s):
     return s.replace(" ", "<!space!>")
 
+
 def _decode_space(s):
     return s.replace("<!space!>", " ")
+
 
 class Selector(object):
 
@@ -3457,6 +3602,7 @@ class Selector(object):
     def __repr__(self):
         return "Selector(%s)" % repr(self.string)
 
+
 class SelectorChain(list):
 
     def __init__(self, s):
@@ -3533,6 +3679,7 @@ class SelectorChain(list):
 #### WEB CRAWLER ###################################################################################
 # Tested with a crawl across 1,000 domains so far.
 
+
 class Link(object):
 
     def __init__(self, url, text="", relation="", referrer=""):
@@ -3552,12 +3699,16 @@ class Link(object):
     # Used for sorting in Crawler.links:
     def __eq__(self, link):
         return self.url == link.url
+
     def __ne__(self, link):
         return self.url != link.url
+
     def __lt__(self, link):
         return self.url < link.url
+
     def __gt__(self, link):
         return self.url > link.url
+
 
 class HTMLLinkParser(HTMLParser):
 
@@ -3586,11 +3737,13 @@ class HTMLLinkParser(HTMLParser):
                        referrer = self._url)
                 self._data.append(link)
 
+
 def base(url):
     """ Returns the URL domain name:
         http://en.wikipedia.org/wiki/Web_crawler => en.wikipedia.org
     """
     return urlparse(url).netloc
+
 
 def abs(url, base=None):
     """ Returns the absolute URL:
@@ -3607,6 +3760,7 @@ BREADTH = "breadth"
 FIFO = "fifo" # First In, First Out.
 FILO = "filo" # First In, Last Out.
 LIFO = "lifo" # Last In, First Out (= FILO).
+
 
 class Crawler(object):
 
@@ -3782,6 +3936,7 @@ Spider = Crawler
 #--- CRAWL FUNCTION --------------------------------------------------------------------------------
 # Functional approach to crawling.
 
+
 def crawl(links=[], domains=[], delay=20.0, parse=HTMLLinkParser().parse, sort=FIFO, method=DEPTH, **kwargs):
     """ Returns a generator that yields (Link, source)-tuples of visited pages.
         When the crawler is idle, it yields (None, None).
@@ -3826,6 +3981,7 @@ def crawl(links=[], domains=[], delay=20.0, parse=HTMLLinkParser().parse, sort=F
 class DocumentParserError(Exception):
     pass
 
+
 class DocumentParser(object):
 
     def __init__(self, path, *args, **kwargs):
@@ -3859,8 +4015,10 @@ class DocumentParser(object):
 #--- PDF PARSER ------------------------------------------------------------------------------------
 #  Yusuke Shinyama, PDFMiner, http://www.unixuser.org/~euske/python/pdfminer/
 
+
 class PDFError(DocumentParserError):
     pass
+
 
 class PDF(DocumentParser):
 
@@ -3899,8 +4057,10 @@ class PDF(DocumentParser):
 #--- OOXML PARSER ----------------------------------------------------------------------------------
 # python-docx, https://github.com/python-openxml/python-docx
 
+
 class DOCXError(DocumentParserError):
     pass
+
 
 class DOCX(DocumentParser):
 
@@ -3918,20 +4078,24 @@ class DOCX(DocumentParser):
 
 #---------------------------------------------------------------------------------------------------
 
+
 def parsepdf(path, *args, **kwargs):
     """ Returns the content as a Unicode string from the given .pdf file.
     """
     return PDF(path, *args, **kwargs).content
+
 
 def parsedocx(path, *args, **kwargs):
     """ Returns the content as a Unicode string from the given .docx file.
     """
     return DOCX(path, *args, **kwargs).content
 
+
 def parsehtml(path, *args, **kwargs):
     """ Returns the content as a Unicode string from the given .html file.
     """
     return plaintext(DOM(path, *args, **kwargs).body)
+
 
 def parsedoc(path, format=None):
     """ Returns the content as a Unicode string from the given document (.html., .pdf, .docx).

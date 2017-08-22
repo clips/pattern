@@ -23,6 +23,7 @@ app = App(name="wiki")
 # For example, http://127.0.0.1:8080/pages/bio.html?edit calls index()
 # with path=("pages", "bio.html") and data={"edit": ""}.
 
+
 @app.route("/")
 def index(*path, **data):
     #print("path:", path)
@@ -79,6 +80,7 @@ wiki = """
 # The name() function takes a file path (e.g., "/data/index.html.txt")
 # and returns the page name ("index.html").
 
+
 def name(page):
     name = os.path.basename(page)     # "/data/index.html.txt" => "index.html.txt"
     name = os.path.splitext(name)[0]  # ("index.html", ".txt") => "index.html"
@@ -87,6 +89,7 @@ def name(page):
 # We could also have a function for a *display* name (e.g., "Index").
 # Something like:
 
+
 def displayname(page):
     return name(name(page)).replace("-", " ").title()
 
@@ -94,6 +97,7 @@ def displayname(page):
 # Our template has two placeholders: the page $name and $content.
 # We load the $content from the contents of the given file path.
 # We load the $name using the name() function above.
+
 
 def view(page):
     print(displayname(page))
@@ -109,6 +113,7 @@ def view(page):
 # We can catch it as the optional "content" parameter of the index() function
 # (since the name of the <textarea> is "content").
 
+
 def edit(page):
     s = open(page).read() if os.path.exists(page) else ""
     s = '<form method="post" action="?save">' \
@@ -119,6 +124,7 @@ def edit(page):
 
 # The save() function is called when edited content is posted to the server.
 # It creates a file in /data and stores the content.
+
 
 @threadsafe
 def save(page, src):

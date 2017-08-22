@@ -32,6 +32,7 @@ template = '''
 </html>
 '''.strip()
 
+
 def webpage(graph, **kwargs):
     s1 = graph.serialize(CSS, **kwargs)
     s2 = graph.serialize(CANVAS, **kwargs)

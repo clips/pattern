@@ -142,11 +142,13 @@ parole = {
     "Zp": "CD",   # 1,7%
 }
 
+
 def parole2penntreebank(token, tag):
     """ Converts a Parole tag to a Penn Treebank II tag.
         For example: importantísimo/AQ => importantísimo/ADJ
     """
     return (token, parole.get(tag, tag))
+
 
 def parole2universal(token, tag):
     """ Converts a Parole tag to a universal tag.
@@ -168,6 +170,7 @@ ABBREVIATIONS = set((
     "v.", "vol.", "W.C."
 ))
 
+
 def find_lemmata(tokens):
     """ Annotates the tokens with lemmata for plural nouns and conjugated verbs,
         where each token is a [word, part-of-speech] list.
@@ -184,6 +187,7 @@ def find_lemmata(tokens):
             lemma = conjugate(word, INFINITIVE) or word
         token.append(lemma.lower())
     return tokens
+
 
 class Parser(_Parser):
 
@@ -219,25 +223,30 @@ spelling = Spelling(
         path = os.path.join(MODULE, "es-spelling.txt")
 )
 
+
 def tokenize(s, *args, **kwargs):
     """ Returns a list of sentences, where punctuation marks have been split from words.
     """
     return parser.find_tokens(s, *args, **kwargs)
+
 
 def parse(s, *args, **kwargs):
     """ Returns a tagged Unicode string.
     """
     return parser.parse(s, *args, **kwargs)
 
+
 def parsetree(s, *args, **kwargs):
     """ Returns a parsed Text from the given string.
     """
     return Text(parse(s, *args, **kwargs))
 
+
 def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
     """ Returns a parsed Text from the given parsed string.
     """
     return Text(s, token)
+
 
 def tag(s, tokenize=True, encoding="utf-8", **kwargs):
     """ Returns a list of (token, tag)-tuples from the given string.
@@ -248,6 +257,7 @@ def tag(s, tokenize=True, encoding="utf-8", **kwargs):
             tags.append((token[0], token[1]))
     return tags
 
+
 def keywords(s, top=10, **kwargs):
     """ Returns a sorted list of keywords in the given string.
     """
@@ -256,6 +266,7 @@ def keywords(s, top=10, **kwargs):
               "top": top,
               "pos": ("NN",),
            "ignore": ("rt",)}, **kwargs))
+
 
 def suggest(w):
     """ Returns a list of (word, confidence)-tuples of spelling corrections.

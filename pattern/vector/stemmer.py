@@ -36,12 +36,18 @@ VOWELS = ["a", "e", "i", "o", "u", "y"]
 DOUBLE = ["bb", "dd", "ff", "gg", "mm", "nn", "pp", "rr", "tt"]
 VALID_LI = ["b", "c", "d", "e", "g", "h", "k", "m", "n", "r", "t"]
 
+
 def is_vowel(s):
     return s in VOWELS
+
+
 def is_consonant(s):
     return s not in VOWELS
+
+
 def is_double_consonant(s):
     return s in DOUBLE
+
 
 def is_short_syllable(w, before=None):
     """ A short syllable in a word is either:
@@ -58,6 +64,7 @@ def is_short_syllable(w, before=None):
         return True
     return False
 
+
 def is_short(w):
     """ A word is called short if it consists of a short syllable preceded by zero or more consonants. 
     """
@@ -71,6 +78,8 @@ def is_short(w):
 overstemmed = ("gener", "commun", "arsen")
 
 RE_R1 = re.compile(r"[aeiouy][^aeiouy]")
+
+
 def R1(w):
     """ R1 is the region after the first non-vowel following a vowel, 
         or the end of the word if there is no such non-vowel. 
@@ -80,6 +89,7 @@ def R1(w):
         return w[m.end():]
     return ""
 
+
 def R2(w):
     """ R2 is the region after the first non-vowel following a vowel in R1, 
         or the end of the word if there is no such non-vowel.
@@ -87,6 +97,7 @@ def R2(w):
     if w.startswith(tuple(overstemmed)):
         return R1(R1(R1(w)))
     return R1(R1(w))
+
 
 def find_vowel(w):
     """ Returns the index of the first vowel in the word.
@@ -97,6 +108,7 @@ def find_vowel(w):
             return i
     return len(w)
 
+
 def has_vowel(w):
     """ Returns True if there is a vowel in the given string.
     """
@@ -104,6 +116,7 @@ def has_vowel(w):
         if ch in VOWELS:
             return True
     return False
+
 
 def vowel_consonant_pairs(w, max=None):
     """ Returns the number of consecutive vowel-consonant pairs in the word.
@@ -118,6 +131,7 @@ def vowel_consonant_pairs(w, max=None):
     return m
 
 #--- REPLACEMENT RULES -----------------------------------------------------------------------------
+
 
 def step_1a(w):
     """ Step 1a handles -s suffixes.
@@ -136,6 +150,7 @@ def step_1a(w):
             # (so gas and this retain the -s, gaps and kiwis lose it).
             return w[:-1]
     return w
+
 
 def step_1b(w):
     """ Step 1b handles -ed and -ing suffixes (or -edly and -ingly).
@@ -165,6 +180,7 @@ def step_1b(w):
                     return w + "e"
     return w
 
+
 def step_1c(w):
     """ Step 1c replaces suffix -y or -Y by -i if preceded by a non-vowel 
         which is not the first letter of the word (cry => cri, by => by, say => say).
@@ -185,6 +201,8 @@ suffixes2 = [
     ("ti", (("aliti", "al"), ("iviti", "ive"), ("biliti", "ble"))),
     ("gi", (("logi", "log"),))
 ]
+
+
 def step_2(w):
     """ Step 2 replaces double suffixes (singularization => singularize).
         This only happens if there is at least one vowel-consonant pair before the suffix.
@@ -205,6 +223,8 @@ suffixes3 = [
     ("l", (("ical", "ic"), ("ful", ""))),
     ("s", (("ness", ""),))
 ]
+
+
 def step_3(w):
     """ Step 3 replaces -ic, -ful, -ness etc. suffixes.
         This only happens if there is at least one vowel-consonant pair before the suffix.
@@ -226,6 +246,8 @@ suffixes4 = [
     ("e",  ("ate", "ive", "ize")),
     (("m", "i", "s"), ("ism", "iti", "ous"))
 ]
+
+
 def step_4(w):
     """ Step 4 strips -ant, -ent etc. suffixes.
         This only happens if there is more than one vowel-consonant pair before the suffix.
@@ -240,6 +262,7 @@ def step_4(w):
         return w[:-3]
     return w
 
+
 def step_5a(w):
     """ Step 5a strips suffix -e if preceded by multiple vowel-consonant pairs,
         or one vowel-consonant pair that is not a short syllable.
@@ -248,6 +271,7 @@ def step_5a(w):
         if R2(w).endswith("e") or R1(w).endswith("e") and not is_short_syllable(w, before=-1):
             return w[:-1]
     return w
+
 
 def step_5b(w):
     """ Step 5b strips suffix -l if preceded by l and multiple vowel-consonant pairs,
@@ -291,6 +315,7 @@ uninflected = dict.fromkeys([
 
 #--- STEMMER ---------------------------------------------------------------------------------------
 
+
 def case_sensitive(stem, word):
     """ Applies the letter case of the word to the stem:
         Ponies => Poni
@@ -302,6 +327,7 @@ def case_sensitive(stem, word):
         else:
             ch.append(stem[i])
     return "".join(ch)
+
 
 def upper_consonant_y(w):
     """ Sets the initial y, or y after a vowel, to Y.
@@ -320,6 +346,7 @@ def upper_consonant_y(w):
 # If we stemmed a word once, we can cache the result and reuse it.
 # By default, keep a history of a 10000 entries (<500KB).
 cache = {}
+
 
 def stem(word, cached=True, history=10000, **kwargs):
     """ Returns the stem of the given word: ponies => poni.

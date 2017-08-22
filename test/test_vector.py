@@ -30,6 +30,7 @@ try:
 except:
     PATH = ""
 
+
 def model(top=None):
     """ Returns a Model of e-mail messages.
         Document type=True => HAM, False => SPAM.
@@ -42,6 +43,7 @@ def model(top=None):
     return vector.Model(documents)
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestUnicode(unittest.TestCase):
 
@@ -69,6 +71,7 @@ class TestUnicode(unittest.TestCase):
         print("pattern.vector.encode_utf8()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestUtilityFunctions(unittest.TestCase):
 
@@ -133,6 +136,7 @@ class TestUtilityFunctions(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestStemmer(unittest.TestCase):
 
     def setUp(self):
@@ -185,6 +189,7 @@ class TestStemmer(unittest.TestCase):
         print("pattern.vector.stemmer.case_sensitive()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestDocument(unittest.TestCase):
 
@@ -356,6 +361,7 @@ class TestDocument(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestModel(unittest.TestCase):
 
     def setUp(self):
@@ -525,6 +531,7 @@ class TestModel(unittest.TestCase):
         v2 = self.model.cluster(method=vector.HIERARCHICAL, k=1)
         self.assertTrue(isinstance(v1, list) and len(v1) == 10)
         self.assertTrue(isinstance(v2, vector.Cluster))
+
         def _test_clustered_documents(cluster):
             if self.model[0] in cluster:
                 self.assertTrue(self.model[1] in cluster \
@@ -629,6 +636,7 @@ class TestModel(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestApriori(unittest.TestCase):
 
     def setUp(self):
@@ -649,6 +657,7 @@ class TestApriori(unittest.TestCase):
         self.assertEqual(v[frozenset((3, ))], 0.5)
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestLSA(unittest.TestCase):
 
@@ -742,6 +751,7 @@ class TestLSA(unittest.TestCase):
         print("pattern.vector.Model.reduce()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestClustering(unittest.TestCase):
 
@@ -864,6 +874,7 @@ class TestClustering(unittest.TestCase):
         print("pattern.vector.hierarchical()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestClassifier(unittest.TestCase):
 
@@ -995,6 +1006,7 @@ class TestClassifier(unittest.TestCase):
         print("pattern.vector.svm.LIBLINEAR")
 
 #---------------------------------------------------------------------------------------------------
+
 
 def suite():
     suite = unittest.TestSuite()

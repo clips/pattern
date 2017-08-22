@@ -88,6 +88,7 @@ DIACRITICS = {
     "z": ("ž",)
 }
 
+
 def normalize(word):
     """ Normalizes the word for synsets() or Sentiwordnet[] by removing diacritics
         (PyWordNet does not take unicode) and replacing spaces with underscores.
@@ -123,6 +124,7 @@ _pattern2wordnet = {NN : wn.NOUN, VB : wn.VERB, JJ : wn.ADJ, RB: wn.ADV}
 _wordnet2pattern = {v : k for k, v in _pattern2wordnet.items()}
 _wordnet2pattern[wn.ADJ_SAT] = JJ
 
+
 def synsets(word, pos=NOUN):
     """ Returns a list of Synset objects, one for each word sense.
         Each word can be understood in different "senses", 
@@ -145,6 +147,7 @@ def synsets(word, pos=NOUN):
         return []
     return []
 
+
 class _synset(lazydict):
 
     def __getitem__(self, k):
@@ -156,6 +159,7 @@ class _synset(lazydict):
             if synset:
                 return synset
         return None
+
 
 class Synset(object):
 
@@ -179,12 +183,16 @@ class Synset(object):
     def __iter__(self):
         for s in self.synonyms:
             yield s
+
     def __len__(self):
         return len(self.synonyms)
+
     def __getitem__(self, i):
         return self.synonyms[i]
+
     def __eq__(self, synset):
         return isinstance(synset, Synset) and self.id == synset.id
+
     def __ne__(self, synset):
         return not self.__eq__(synset)
     __repr__ = lambda self: self._wnsynset.__repr__()
@@ -337,10 +345,12 @@ class Synset(object):
            and sentiwordnet.synset(self.id, self.pos)[:2] \
             or None
 
+
 def similarity(synset1, synset2):
     """ Returns the semantic similarity of the given synsets.
     """
     return synset1.similarity(synset2)
+
 
 def ancestor(synset1, synset2):
     """ Returns the common ancestor of both synsets.
@@ -394,6 +404,7 @@ _map32_pos1  = {NN: "n", VB: "v", JJ: "a", RB: "r"}
 _map32_pos2  = {"n": NN, "v": VB, "a": JJ, "s" : JJ, "r": RB}
 _map32_cache = None
 
+
 def map32(id, pos=NOUN):
     """ Returns an (id, pos)-tuple with the WordNet2 synset id for the given WordNet3 synset id.
         Returns None if no id was found.
@@ -423,6 +434,7 @@ except:
         PLACEHOLDER = True
 
 sys.path.pop(0)
+
 
 class SentiWordNet(Sentiment):
 
@@ -461,6 +473,7 @@ class SentiWordNet(Sentiment):
 
     def assessments(self, words=[], negation=True):
         raise NotImplementedError
+
     def __call__(self, s, negation=True):
         raise NotImplementedError
 
@@ -472,6 +485,8 @@ else:
 # Backwards compatibility.
 # Older code may be using pattern.en.wordnet.sentiment[w],
 # which yields a (positive, negative, neutral)-tuple.
+
+
 class sentiment(object):
 
     def load(self, **kwargs):

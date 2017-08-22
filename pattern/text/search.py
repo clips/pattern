@@ -34,6 +34,7 @@ PUNCTUATION = ".,;:!?()[]{}`'\"@#$^&*+-|=~_"
 RE_PUNCTUATION = "|".join(map(re.escape, PUNCTUATION))
 RE_PUNCTUATION = re.compile("(%s)" % RE_PUNCTUATION)
 
+
 class Text(list):
 
     def __init__(self, string="", token=["word"]):
@@ -48,6 +49,7 @@ class Text(list):
     @property
     def words(self):
         return list(chain(*self))
+
 
 class Sentence(list):
 
@@ -73,6 +75,7 @@ class Sentence(list):
     def chunks(self):
         return []
 
+
 class Word(object):
 
     def __init__(self, sentence, string, tag=None, index=0):
@@ -85,6 +88,7 @@ class Word(object):
 
     def _get_type(self):
         return self.tag
+
     def _set_type(self, v):
         self.tag = v
 
@@ -102,6 +106,7 @@ class Word(object):
 
 WILDCARD = "*"
 regexp = type(re.compile(r"."))
+
 
 def _match(string, pattern):
     """ Returns True if the pattern matches the given word string.
@@ -129,11 +134,13 @@ def _match(string, pattern):
 # Search patterns can contain optional constraints,
 # so we need to find all possible variations of a pattern.
 
+
 def unique(iterable):
     """ Returns a list copy in which each item occurs only once (in-order).
     """
     seen = set()
     return [x for x in iterable if x not in seen and not seen.add(x)]
+
 
 def find(function, iterable):
     """ Returns the first item in the list for which function(item) is True, None otherwise.
@@ -142,9 +149,11 @@ def find(function, iterable):
         if function(x) is True:
             return x
 
+
 def combinations(iterable, n):
     # Backwards compatibility.
     return product(iterable, repeat=n)
+
 
 def product(*args, **kwargs):
     """ Yields all permutations with replacement:
@@ -169,6 +178,7 @@ try:
     from itertools import product
 except:
     pass
+
 
 def variations(iterable, optional=lambda x: False):
     """ Returns all possible variations of a sequence with optional items.
@@ -198,6 +208,7 @@ def variations(iterable, optional=lambda x: False):
 #--- ORDERED DICTIONARY ----------------------------------------------------------------------------
 # A taxonomy is based on an ordered dictionary
 # (i.e., if a taxonomy term has multiple parents, the most recent parent is the default).
+
 
 class odict(dict):
 
@@ -260,15 +271,19 @@ class odict(dict):
 
     def iterkeys(self):
         return reversed(self._o)
+
     def itervalues(self):
         return map(self.__getitem__, reversed(self._o))
+
     def iteritems(self):
         return iter(zip(self.iterkeys(), self.itervalues()))
 
     def keys(self):
         return list(self.iterkeys())
+
     def values(self):
         return list(self.itervalues())
+
     def items(self):
         return list(self.iteritems())
 
@@ -279,6 +294,7 @@ class odict(dict):
         return "{%s}" % ", ".join("%s: %s" % (repr(k), repr(v)) for k, v in self.items())
 
 #--- TAXONOMY --------------------------------------------------------------------------------------
+
 
 class Taxonomy(dict):
 
@@ -409,6 +425,7 @@ TAXONOMY = taxonomy = Taxonomy()
 
 #--- TAXONOMY CLASSIFIER ---------------------------------------------------------------------------
 
+
 class Classifier(object):
 
     def __init__(self, parents=lambda term: [], children=lambda term: [], value=lambda term: None):
@@ -425,6 +442,7 @@ class Classifier(object):
 
 # Classifier(parents=lambda word: word.endswith("ness") and ["quality"] or [])
 # Classifier(parents=lambda word, chunk=None: chunk=="VP" and [ACTION] or [])
+
 
 class WordNetClassifier(Classifier):
 
@@ -472,6 +490,7 @@ TAGS   = dict.fromkeys(["CC", "CD", "CJ", "DT", "EX", "FW", "IN", "JJ", "JJR", "
 
 ALPHA = re.compile("[a-zA-Z]")
 has_alpha = lambda string: ALPHA.match(string) is not None
+
 
 class Constraint(object):
 
@@ -693,6 +712,7 @@ class Constraint(object):
 STRICT = "strict"
 GREEDY = "greedy"
 
+
 class Pattern(object):
 
     def __init__(self, sequence=[], *args, **kwargs):
@@ -727,8 +747,10 @@ class Pattern(object):
 
     def __iter__(self):
         return iter(self.sequence)
+
     def __len__(self):
         return len(self.sequence)
+
     def __getitem__(self, i):
         return self.sequence[i]
 
@@ -947,6 +969,8 @@ class Pattern(object):
 
 _cache = {}
 _CACHE_SIZE = 100 # Number of dynamic Pattern objects to keep in cache.
+
+
 def compile(pattern, *args, **kwargs):
     """ Returns a Pattern from the given string or regular expression.
         Recently compiled patterns are kept in cache
@@ -968,21 +992,25 @@ def compile(pattern, *args, **kwargs):
     else:
         raise TypeError("can't compile '%s' object" % pattern.__class__.__name__)
 
+
 def scan(pattern, string, *args, **kwargs):
     """ Returns True if pattern.search(Sentence(string)) may yield matches.
         If is often faster to scan prior to creating a Sentence and searching it.
     """
     return compile(pattern, *args, **kwargs).scan(string)
 
+
 def match(pattern, sentence, *args, **kwargs):
     """ Returns the first match found in the given sentence, or None.
     """
     return compile(pattern, *args, **kwargs).match(sentence)
 
+
 def search(pattern, sentence, *args, **kwargs):
     """ Returns a list of all matches found in the given sentence.
     """
     return compile(pattern, *args, **kwargs).search(sentence)
+
 
 def escape(string):
     """ Returns the string with control characters for Pattern syntax escaped.
@@ -993,6 +1021,7 @@ def escape(string):
     return string
 
 #--- PATTERN MATCH ---------------------------------------------------------------------------------
+
 
 class Match(object):
 
@@ -1013,14 +1042,17 @@ class Match(object):
 
     def __len__(self):
         return len(self.words)
+
     def __iter__(self):
         return iter(self.words)
+
     def __getitem__(self, i):
         return self.words.__getitem__(i)
 
     @property
     def start(self):
         return self.words and self.words[0].index or None
+
     @property
     def stop(self):
         return self.words and self.words[-1].index + 1 or None
@@ -1098,6 +1130,7 @@ class Match(object):
 
 #--- PATTERN MATCH GROUP ---------------------------------------------------------------------------
 
+
 class Group(list):
 
     def __init__(self, match, words):
@@ -1111,6 +1144,7 @@ class Group(list):
     @property
     def start(self):
         return self and self[0].index or None
+
     @property
     def stop(self):
         return self and self[-1].index + 1 or None

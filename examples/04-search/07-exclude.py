@@ -32,6 +32,7 @@ from pattern.en     import Sentence, parse
 # This catches all sentences that start with a "do" verb regardless if it is infinitive,
 # because the parses sometimes tags infinitive "do" incorrectly.
 
+
 def imperative(sentence):
     for p in ("!could|!would|!should|!to+ VB", "^VB", "^do|VB*"):
         m = match(p, sentence)

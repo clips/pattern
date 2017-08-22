@@ -56,10 +56,12 @@ MASCULINE, FEMININE, NEUTER, PLURAL = \
     MALE, FEMALE, NEUTRAL, PLURAL = \
         M, F, N, PL = "m", "f", "n", "p"
 
+
 def definite_article(word):
     """ Returns the definite article for a given word.
     """
     return "the"
+
 
 def indefinite_article(word):
     """ Returns the indefinite article for a given word.
@@ -68,6 +70,7 @@ def indefinite_article(word):
 
 DEFINITE, INDEFINITE = \
     "definite", "indefinite"
+
 
 def article(word, function=INDEFINITE):
     """ Returns the indefinite or definite article for the given word.
@@ -78,12 +81,14 @@ def article(word, function=INDEFINITE):
 
 _article = article
 
+
 def referenced(word, article=INDEFINITE):
     """ Returns a string with the article + the word.
     """
     return "%s %s" % (_article(word, article), word)
 
 #### PLURALIZE ######################################################################################
+
 
 def pluralize(word, pos=NOUN, custom={}):
     """ Returns the plural of a given word.
@@ -92,6 +97,7 @@ def pluralize(word, pos=NOUN, custom={}):
 
 #### SINGULARIZE ###################################################################################
 
+
 def singularize(word, pos=NOUN, custom={}):
     """ Returns the singular of a given word.
     """
@@ -99,6 +105,7 @@ def singularize(word, pos=NOUN, custom={}):
 
 #### VERB CONJUGATION ##############################################################################
 # The verb table was trained on CELEX and contains the top 2000 most frequent verbs.
+
 
 class Verbs(_Verbs):
 
@@ -127,10 +134,12 @@ conjugate, lemma, lexeme, tenses = \
 
 #### ATTRIBUTIVE & PREDICATIVE #####################################################################
 
+
 def attributive(adjective):
     """ For a predicative adjective, returns the attributive form.
     """
     return adjective
+
 
 def predicative(adjective):
     """ Returns the predicative adjective.

@@ -27,6 +27,7 @@ except:
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestInflection(unittest.TestCase):
 
     def setUp(self):
@@ -213,6 +214,7 @@ class TestInflection(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestQuantification(unittest.TestCase):
 
     def setUp(self):
@@ -271,6 +273,7 @@ class TestQuantification(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestSpelling(unittest.TestCase):
 
     def test_spelling(self):
@@ -300,6 +303,7 @@ class TestSpelling(unittest.TestCase):
         print("pattern.en.suggest()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestParser(unittest.TestCase):
 
@@ -612,6 +616,7 @@ class TestParser(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestParseTree(unittest.TestCase):
 
     def setUp(self):
@@ -787,6 +792,7 @@ class TestParseTree(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestModality(unittest.TestCase):
 
     def setUp(self):
@@ -893,6 +899,7 @@ class TestModality(unittest.TestCase):
         print("pattern.en.modality()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestSentiment(unittest.TestCase):
 
@@ -1011,6 +1018,7 @@ class TestSentiment(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestWordNet(unittest.TestCase):
 
     def setUp(self):
@@ -1092,6 +1100,7 @@ class TestWordNet(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestWordlists(unittest.TestCase):
 
     def setUp(self):
@@ -1111,6 +1120,7 @@ class TestWordlists(unittest.TestCase):
         print("pattern.en.wordlist.Wordlist")
 
 #---------------------------------------------------------------------------------------------------
+
 
 def suite():
     suite = unittest.TestSuite()

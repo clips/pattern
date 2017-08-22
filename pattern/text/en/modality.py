@@ -14,6 +14,7 @@ from builtins import object, range
 
 ### LIST FUNCTIONS #################################################################################
 
+
 def find(function, list):
     """ Returns the first item in the list for which function(item) is True, None otherwise.
     """
@@ -29,16 +30,26 @@ IMPERATIVE  = "imperative"  # Let's go for a walk!
 CONDITIONAL = "conditional" # It might be nice to go for a walk when it stops raining.
 SUBJUNCTIVE = "subjunctive" # It would be nice to go for a walk sometime.
 
+
 def s(word):
     return word.string.lower()
+
+
 def join(words):
     return " ".join([w.string.lower() for w in words])
+
+
 def question(sentence):
     return len(sentence) > 0 and sentence[-1].string == "?"
+
+
 def verb(word):
     return word.type.startswith(("VB", "MD")) and (word.chunk is None or word.chunk.type.endswith("VP"))
+
+
 def verbs(sentence, i=0, j=None):
     return [w for w in sentence[i:j or len(sentence)] if verb(w)]
+
 
 def imperative(sentence, **kwargs):
     """ The imperative mood is used to give orders, commands, warnings, instructions, 
@@ -98,6 +109,7 @@ def imperative(sentence, **kwargs):
 #    print parse(str)
 #    print imperative(Sentence(parse(str)))
 #    print
+
 
 def conditional(sentence, predictive=True, **kwargs):
     """ The conditional mood is used to talk about possible or imaginary situations.
@@ -166,6 +178,7 @@ for w in list(subjunctive1): # Inflect.
     subjunctive1.append(w + "s")
     subjunctive1.append(w.rstrip("e") + "ed")
 
+
 def subjunctive(sentence, classical=True, **kwargs):
     """ The subjunctive mood is a classical mood used to express a wish, judgment or opinion.
         It is marked by the verb wish/were, or infinitive form of a verb
@@ -223,6 +236,7 @@ def subjunctive(sentence, classical=True, **kwargs):
 #    print subjunctive(Sentence(parse(str)))
 #    print
 
+
 def negated(sentence, negative=("not", "n't", "never")):
     if hasattr(sentence, "string"):
         # Sentence object => string.
@@ -232,6 +246,7 @@ def negated(sentence, negative=("not", "n't", "never")):
         if " %s " % w in S:
             return True
     return False
+
 
 def mood(sentence, **kwargs):
     """ Returns IMPERATIVE (command), CONDITIONAL (possibility), SUBJUNCTIVE (wish) or INDICATIVE (fact).
@@ -255,6 +270,7 @@ def mood(sentence, **kwargs):
 
 ### MODALITY #######################################################################################
 # Functions take Sentence objects, see pattern.text.tree.Sentence and pattern.text.parsetree().
+
 
 def d(*args):
     return dict.fromkeys(args, True)
@@ -393,6 +409,7 @@ epistemic_weaseling = {
     +1.00: d("i.e.", "'s most", "of course", "There are", "without doubt"),
 }
 
+
 def modality(sentence, type=EPISTEMIC):
     """ Returns the sentence's modality as a weight between -1.0 and +1.0.
         Currently, the only type implemented is EPISTEMIC.
@@ -450,6 +467,7 @@ def modality(sentence, type=EPISTEMIC):
     if m == 0:
         return 1.0 # No modal verbs/adverbs used, so statement must be true.
     return max(-1.0, min(n / (m or 1), +1.0))
+
 
 def uncertain(sentence, threshold=0.5):
     return modality(sentence) <= threshold

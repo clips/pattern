@@ -51,20 +51,26 @@ _diacritics = {
 
 ####################################################################################################
 
+
 def HMAC_SHA1(key, text):
     return hmac.new(key.encode("utf-8"), text.encode("utf-8"), sha1).digest()
+
 
 def nonce():
     return md5(str(time.time()).encode("utf-8") + str(random.random()).encode("utf-8")).hexdigest()
 
+
 def timestamp():
     return int(time.time())
+
 
 def escape(string):
     return urlquote(string, safe=b"~")
 
+
 def utf8(string):
     return isinstance(string, str) and string.encode("utf-8") or str(string)
+
 
 def normalize(string):
     # Normalize accents (é => e) for services that have problems with utf-8
@@ -75,6 +81,7 @@ def normalize(string):
             string = string.replace(v, k)
     return string
 
+
 def base(url, data={}, method="GET"):
     # Signature base string: http://tools.ietf.org/html/rfc5849#section-3.4.1
     base  = escape(utf8(method.upper())) + "&"
@@ -83,6 +90,7 @@ def base(url, data={}, method="GET"):
             escape(utf8(k)),
             escape(utf8(v))) for k, v in sorted(data.items())])))
     return base
+
 
 def sign(url, data={}, method="GET", secret="", token="", hash=HMAC_SHA1):
     # HMAC-SHA1 signature algorithm: http://tools.ietf.org/html/rfc5849#section-3.4.2

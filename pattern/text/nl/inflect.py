@@ -75,6 +75,7 @@ plural_irregular = {
          "vlo": "vlooien"
 }
 
+
 def pluralize(word, pos=NOUN, custom={}):
     """ Returns the plural of a given word.
         For example: stad => steden.
@@ -144,6 +145,7 @@ def pluralize(word, pos=NOUN, custom={}):
 #### SINGULARIZE ###################################################################################
 
 singular_irregular = dict((v, k) for k, v in plural_irregular.items())
+
 
 def singularize(word, pos=NOUN, custom={}):
     if word in custom.keys():
@@ -221,6 +223,7 @@ def singularize(word, pos=NOUN, custom={}):
     return w
 
 #### VERB CONJUGATION ##############################################################################
+
 
 class Verbs(_Verbs):
 
@@ -361,6 +364,7 @@ adjective_attributive = {
        "teer": "tere"
 }
 
+
 def attributive(adjective):
     """ For a predicative adjective, returns the attributive form (lowercase).
         In Dutch, the attributive is formed with -e: "fel" => "felle kritiek".
@@ -395,6 +399,7 @@ adjective_predicative.update({
         "taboe": "taboe",
     "voldoende": "voldoende"
 })
+
 
 def predicative(adjective):
     """ Returns the predicative adjective (lowercase).

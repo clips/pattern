@@ -90,6 +90,7 @@ from pattern.helpers import encode_string, decode_string
 decode_utf8 = decode_string
 encode_utf8 = encode_string
 
+
 def shi(i, base="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"):
     """ Returns a short string hash for a given int.
     """
@@ -101,11 +102,13 @@ def shi(i, base="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
 #--- LIST FUNCTIONS --------------------------------------------------------------------------------
 
+
 def shuffled(iterable, **kwargs):
     """ Returns a copy of the given list with the items in random order.
     """
     seed(kwargs.get("seed"))
     return sorted(list(iterable), key=lambda x: random())
+
 
 def chunk(iterable, n):
     """ Returns an iterator of n successive equal-sized chunks from the given list.
@@ -120,6 +123,7 @@ def chunk(iterable, n):
         yield a[i:j]
         i = j
 
+
 def mix(iterables=[], n=10):
     """ Returns an iterator that alternates the given lists, in n chunks.
     """
@@ -129,6 +133,7 @@ def mix(iterables=[], n=10):
         for x in a:
             for item in x[i]:
                 yield item
+
 
 def bin(iterable, key=lambda x: x, value=lambda x: x):
     """ Returns a dictionary with items in the given list grouped by the given key.
@@ -142,45 +147,55 @@ def bin(iterable, key=lambda x: x, value=lambda x: x):
         m[key(x)].append(value(x))
     return m
 
+
 def pimap(iterable, function, *args, **kwargs):
     """ Returns an iterator of function(x, *args, **kwargs) for the iterable (x1, x2, x3, ...).
         The function is applied in parallel over available CPU cores.
     """
     from multiprocessing import Pool
     global worker
+
     def worker(x):
         return function(x, *args, **kwargs)
     return Pool(processes=None).imap(worker, iterable)
 
 #--- READ-ONLY DICTIONARY --------------------------------------------------------------------------
 
+
 class ReadOnlyError(Exception):
     pass
+
 
 class readonlyodict(OrderedDict):
     def __init__(self, *args, **kwargs):
         self._f = False
         super(readonlyodict, self).__init__(*args, **kwargs)
         self._f = True
+
     @classmethod
     def fromkeys(cls, k, default=None):
         return readonlyodict((k, default) for k in k)
+
     def __setitem__(self, *args, **kwargs):
         if self._f:
             raise ReadOnlyError
         return super(readonlyodict, self).__setitem__(*args, **kwargs)
+
     def __delitem__(self, *args, **kwargs):
         if self._f:
             raise ReadOnlyError
         return super(readonlyodict, self).__delitem__(*args, **kwargs)
+
     def pop(self, *args, **kwargs):
         if self._f:
             raise ReadOnlyError
         return super(readonlyodict, self).pop(*args, **kwargs)
+
     def popitem(self, *args, **kwargs):
         if self._f:
             raise ReadOnlyError
         return super(readonlyodict, self).popitem(*args, **kwargs)
+
     def update(self, *args, **kwargs):
         if self._f:
             raise ReadOnlyError
@@ -188,47 +203,67 @@ class readonlyodict(OrderedDict):
 
 # Read-only dictionary, used for Document.terms and Document.vector
 # (updating these directly invalidates the Document and Model cache).
+
+
 class readonlydict(dict):
     def __init__(self, *args, **kwargs):
         dict.__init__(self, *args, **kwargs)
+
     @classmethod
     def fromkeys(cls, k, default=None):
         return readonlydict((k, default) for k in k)
+
     def copy(self):
         return readonlydict(self)
+
     def __setitem__(self, k, v):
         raise ReadOnlyError
+
     def __delitem__(self, k):
         raise ReadOnlyError
+
     def pop(self, k, default=None):
         raise ReadOnlyError
+
     def popitem(self, kv):
         raise ReadOnlyError
+
     def clear(self):
         raise ReadOnlyError
+
     def update(self, kv):
         raise ReadOnlyError
+
     def setdefault(self, k, default=None):
         if k in self:
             return self[k]
         raise ReadOnlyError
 
 # Read-only list, used for Model.documents.
+
+
 class readonlylist(list):
     def __init__(self, *args, **kwargs):
         list.__init__(self, *args, **kwargs)
+
     def __setitem__(self, i, v):
         raise ReadOnlyError
+
     def __delitem__(self, i):
         raise ReadOnlyError
+
     def append(self, v):
         raise ReadOnlyError
+
     def extend(self, v):
         raise ReadOnlyError
+
     def insert(self, i, v):
         raise ReadOnlyError
+
     def remove(self, v):
         raise ReadOnlyError
+
     def pop(self, i):
         raise ReadOnlyError
 
@@ -260,6 +295,7 @@ for f in glob.glob(os.path.join(MODULE, "stopwords-*.txt")):
 
 PUNCTUATION = ".,;:!?()[]{}`'\"@#$^&*+-|=~_"
 
+
 def words(string, filter=lambda w: w.strip("'").isalnum(), punctuation=PUNCTUATION, **kwargs):
     """ Returns a list of words (alphanumeric character sequences) from the given string.
         Common punctuation marks are stripped from words.
@@ -273,6 +309,8 @@ def words(string, filter=lambda w: w.strip("'").isalnum(), punctuation=PUNCTUATI
     return words
 
 PORTER, LEMMA = "porter", "lemma"
+
+
 def stem(word, stemmer=PORTER, **kwargs):
     """ Returns the base form of the word when counting words in count().
         With stemmer=PORTER, the Porter2 stemming algorithm is used.
@@ -306,6 +344,7 @@ def stem(word, stemmer=PORTER, **kwargs):
         return decode_utf8(stemmer(word))
     return word.lower()
 
+
 def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=False, language=None, **kwargs):
     """ Returns a dictionary of (word, count)-items, in lowercase.
         Words in the exclude list and stop words (by default, English) are not counted.
@@ -333,6 +372,7 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
     if top is not None:
         count = count.__class__(heapq.nsmallest(top, list(count.items()), key=lambda kv: (-kv[1], kv[0])))
     return count
+
 
 def character_ngrams(string="", n=3, top=None, threshold=0, exclude=[], **kwargs):
     """ Returns a dictionary of (character n-gram, count)-items.
@@ -363,6 +403,8 @@ chngrams = character_ngrams
 
 _UID = 0
 _SESSION = shi(int(time() * 1000)) # Avoid collision with pickled documents.
+
+
 def _uid():
     """ Returns a string id, for example: "NPIJYaS-1", "NPIJYaS-2", ...
         The string part is based on the current time, the number suffix is auto-incremental.
@@ -374,6 +416,7 @@ def _uid():
 # Term relevance weight:
 TF, TFIDF, TF_IDF, BINARY = \
     "tf", "tf-idf", "tf-idf", "binary"
+
 
 class Document(object):
     # Document(string = "",
@@ -535,6 +578,7 @@ class Document(object):
 
     def _get_model(self):
         return self._model
+
     def _set_model(self, model):
         self._vector = None
         self._model and self._model._update()
@@ -593,12 +637,16 @@ class Document(object):
 
     def __len__(self):
         return len(self.terms)
+
     def __iter__(self):
         return iter(self.terms)
+
     def __contains__(self, word):
         return word in self.terms
+
     def __getitem__(self, word):
         return self.terms.__getitem__(word)
+
     def get(self, word, default=None):
         return self.terms.get(word, default)
 
@@ -705,6 +753,7 @@ class Document(object):
 
     def __eq__(self, document):
         return isinstance(document, Document) and self.id == document.id
+
     def __ne__(self, document):
         return not self.__eq__(document)
 
@@ -730,6 +779,7 @@ Bag = BagOfWords = BOW = Document
 
 # To find the average feature length in a model:
 # sum(len(d.vector) for d in model.documents) / float(len(model))
+
 
 class Vector(readonlydict):
 
@@ -807,12 +857,14 @@ class Vector(readonlydict):
 # The following functions can be used if you work with Vectors or plain dictionaries,
 # instead of Documents and Models (which use caching for cosine similarity).
 
+
 def features(vectors=[]):
     """ Returns the set of unique features for all given vectors.
     """
     return set(chain(*vectors))
 
 _features = features
+
 
 def sparse(v):
     """ Returns the vector with features that have weight 0 removed.
@@ -821,6 +873,7 @@ def sparse(v):
         if w == 0:
             del v[f]
     return v
+
 
 def relative(v):
     """ Returns the vector with feature weights normalized so that their sum is 1.0 (in-place).
@@ -833,6 +886,7 @@ def relative(v):
 
 normalize = rel = relative
 
+
 def l2_norm(v):
     """ Returns the L2-norm of the given vector.
     """
@@ -842,6 +896,7 @@ def l2_norm(v):
 
 norm = l2 = L2 = L2norm = l2norm = L2_norm = l2_norm
 
+
 def cosine_similarity(v1, v2):
     """ Returns the cosine similarity of the given vectors.
     """
@@ -850,6 +905,7 @@ def cosine_similarity(v1, v2):
     return s
 
 cos = cosine_similarity
+
 
 def tf_idf(vectors=[], base=2.71828): # Euler's number
     """ Calculates tf * idf on the vector feature weights (in-place).
@@ -871,6 +927,7 @@ tfidf = tf_idf
 COSINE, EUCLIDEAN, MANHATTAN, CHEBYSHEV, HAMMING = \
     "cosine", "euclidean", "manhattan", "chebyshev", "hamming"
 
+
 def distance(v1, v2, method=COSINE):
     """ Returns the distance between two vectors.
     """
@@ -891,6 +948,7 @@ def distance(v1, v2, method=COSINE):
         return method(v1, v2)
 
 _distance  = distance
+
 
 def entropy(p=[], base=None):
     """ Returns the Shannon entropy for the given list of probabilities
@@ -927,6 +985,7 @@ KMEANS, HIERARCHICAL = "k-means", "hierarchical"
 
 # Resampling methods:
 MINORITY, MAJORITY = "minority", "majority"
+
 
 class Model(object):
 
@@ -985,6 +1044,7 @@ class Model(object):
 
     def _get_lsa(self):
         return self._lsa
+
     def _set_lsa(self, v=None):
         self._update() # Clear the cache.
         self._lsa = v
@@ -993,6 +1053,7 @@ class Model(object):
 
     def _get_weight(self):
         return self._weight
+
     def _set_weight(self, w):
         self._update() # Clear the cache.
         self._weight = w
@@ -1091,15 +1152,19 @@ class Model(object):
 
     def __len__(self):
         return len(self.documents)
+
     def __iter__(self):
         return iter(self.documents)
+
     def __getitem__(self, i):
         return self.documents.__getitem__(i)
+
     def __delitem__(self, i):
         d = list.pop(self.documents, i)
         d._model = None
         self._index.pop(d.name, None)
         self._update()
+
     def clear(self):
         self._documents = readonlylist()
         self._update()
@@ -1644,6 +1709,7 @@ Corpus = Model
 # Agrawal R. & Srikant R. (1994), Fast algorithms for mining association rules in large databases.
 # Based on: https://gist.github.com/1423287
 
+
 class Apriori(object):
 
     def __init__(self):
@@ -1703,6 +1769,7 @@ apriori = Apriori()
 # Based on:
 # http://en.wikipedia.org/wiki/Latent_semantic_analysis
 # http://blog.josephwilk.net/projects/latent-semantic-analysis-in-python.html
+
 
 class LSA(object):
 
@@ -1793,10 +1860,13 @@ class LSA(object):
 
     def __getitem__(self, id):
         return self.u[id]
+
     def __contains__(self, id):
         return id in self.u
+
     def __iter__(self):
         return iter(self.u)
+
     def __len__(self):
         return len(self.u)
 
@@ -1841,6 +1911,7 @@ _lsa_transform_cache = {}
 # For example, for (x, y)-points in 2D space we can use Euclidean distance ("as the crow flies").
 # The k_means() and hierarchical() functions work with Vector objects or dictionaries.
 
+
 def mean(iterable, length=None):
     """ Returns the arithmetic mean of the values in the given iterable or iterator.
     """
@@ -1849,6 +1920,7 @@ def mean(iterable, length=None):
             iterable = list(iterable)
         length = len(iterable)
     return sum(iterable) / float(length or 1)
+
 
 def centroid(vectors=[], features=[]):
     """ Returns the center of the given list of vectors.
@@ -1870,6 +1942,7 @@ def centroid(vectors=[], features=[]):
     c = [(f, mean((v.get(f, 0) for v in c), len(c))) for f in features]
     c = Vector((f, w) for f, w in c if w != 0)
     return c
+
 
 class DistanceMap(object):
 
@@ -1896,6 +1969,7 @@ class DistanceMap(object):
             d = distance(v1, v2, method=self.method)
         return d
 
+
 def cluster(method=KMEANS, vectors=[], **kwargs):
     """ Clusters the given list of vectors using the k-means or hierarchical algorithm.
     """
@@ -1909,6 +1983,7 @@ def cluster(method=KMEANS, vectors=[], **kwargs):
 
 # Initialization methods:
 RANDOM, KMPP = "random", "kmeans++"
+
 
 def k_means(vectors, k=None, iterations=10, distance=COSINE, seed=RANDOM, **kwargs):
     """ Returns a list of k clusters, where each cluster is a list of vectors (Lloyd's algorithm).
@@ -1964,6 +2039,7 @@ def k_means(vectors, k=None, iterations=10, distance=COSINE, seed=RANDOM, **kwar
 
 kmeans = k_means
 
+
 def kmpp(vectors, k, distance=COSINE):
     """ The k-means++ initialization algorithm returns a set of initial clusers, 
         with the advantage that:
@@ -2012,6 +2088,7 @@ def kmpp(vectors, k, distance=COSINE):
 #--- HIERARCHICAL ----------------------------------------------------------------------------------
 # Hierarchical clustering is slow but the optimal solution guaranteed in O(len(vectors) ** 3).
 
+
 class Cluster(list):
 
     def __init__(self, *args, **kwargs):
@@ -2050,6 +2127,7 @@ class Cluster(list):
     def __repr__(self):
         return "Cluster(%s)" % list.__repr__(self)
 
+
 def sequence(i=0, f=lambda i: i + 1):
     """ Yields an infinite sequence, for example:
         sequence() => 0, 1, 2, 3, ...
@@ -2061,6 +2139,7 @@ def sequence(i=0, f=lambda i: i + 1):
     while True:
         yield i
         i = f(i)
+
 
 def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
     """ Returns a Cluster containing k items (vectors or clusters with nested items).
@@ -2118,6 +2197,7 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
 
 # The default baseline (i.e., the default predicted class) is the most frequent class:
 MAJORITY, FREQUENCY = "majority", "frequency"
+
 
 class Classifier(object):
 
@@ -2326,6 +2406,7 @@ class Classifier(object):
 #--- CLASSIFIER PROBABILITIES ----------------------------------------------------------------------
 # Returned from Classifier.classify(v, discrete=False)
 
+
 class Probabilities(defaultdict):
 
     def __init__(self, classifier, *args, **kwargs):
@@ -2350,6 +2431,7 @@ class Probabilities(defaultdict):
             return b, 0.0
 
 #--- CLASSIFIER EVALUATION -------------------------------------------------------------------------
+
 
 class ConfusionMatrix(defaultdict):
 
@@ -2437,6 +2519,7 @@ class ConfusionMatrix(defaultdict):
     def __repr__(self):
         return repr(dict((k, dict(v)) for k, v in self.items()))
 
+
 def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
     """ Returns an (accuracy, precisiom, recall, F1-score, standard deviation)-tuple.
         For 10-fold cross-validation, performs 10 separate tests of the classifier,
@@ -2474,6 +2557,7 @@ def K_fold_cross_validation(Classifier, documents=[], folds=10, **kwargs):
 
 kfoldcv = K_fold_cv = k_fold_cv = k_fold_cross_validation = K_fold_cross_validation
 
+
 def folds(documents=[], K=10, **kwargs):
     """ Returns an iterator of K folds, where each fold is a (train, test)-tuple.
         For example, for 10-fold cross-validation, it yields 10 tuples,
@@ -2495,6 +2579,7 @@ def folds(documents=[], K=10, **kwargs):
         yield list(chain(*(d[:holdout] + d[holdout + 1:]))), d[holdout]
 
 _folds = folds
+
 
 def gridsearch(Classifier, documents=[], folds=10, **kwargs):
     """ Returns the test results for every combination of optional parameters,
@@ -2524,6 +2609,7 @@ def gridsearch(Classifier, documents=[], folds=10, **kwargs):
         s.append((K_fold_cross_validation(Classifier, documents, folds, **p), p))
     return sorted(s, reverse=True)
 
+
 def feature_selection(documents=[], top=None, method=CHISQUARED, threshold=0.0):
     """ Returns an iterator of (feature, weight, (probability, class))-tuples,
         sorted by the given feature selection method (IG, GR, X2) and document frequency threshold.
@@ -2547,6 +2633,7 @@ fsel = feature_selection
 MULTINOMIAL = "multinomial" # Feature weighting.
 BINOMIAL    = "binomial"    # Feature occurs in class (1) or not (0).
 BERNOUILLI  = "bernouilli"  # Feature occurs in class (1) or not (0).
+
 
 class NB(Classifier):
 
@@ -2636,6 +2723,7 @@ Bayes = NaiveBayes = NB
 
 #--- K-NEAREST NEIGHBOR CLASSIFIER -----------------------------------------------------------------
 
+
 class KNN(Classifier):
 
     def __init__(self, train=[], baseline=MAJORITY, k=10, distance=COSINE, **kwargs):
@@ -2702,6 +2790,7 @@ NearestNeighbor = kNN = KNN
 
 #--- INFORMATION GAIN TREE --------------------------------------------------------------------------
 
+
 class IGTreeNode(list):
 
     def __init__(self, feature=None, value=None, type=None):
@@ -2716,6 +2805,7 @@ class IGTreeNode(list):
     @property
     def leaf(self):
         return len(self) == 0
+
 
 class IGTree(Classifier):
 
@@ -2825,6 +2915,7 @@ IGTREE = IGTree
 
 #--- SINGLE-LAYER PERCEPTRON ------------------------------------------------------------------------
 
+
 def softmax(p):
     """ Returns a dict with float values that sum to 1.0
         (using generalized logistic regression).
@@ -2840,6 +2931,7 @@ def softmax(p):
 
 #print(softmax({"cat": +1, "dog": -1})) # {"cat": 0.88, "dog": 0.12}
 #print(softmax({"cat": +2, "dog": -2})) # {"cat": 0.98, "dog": 0.02}
+
 
 class SLP(Classifier):
 
@@ -2961,6 +3053,7 @@ AP = AveragedPerceptron = Perceptron = SLP
 # Weight initialization:
 RANDOM = "random"
 
+
 def matrix(m, n, a=0.0, b=0.0):
     """ Returns an n x m matrix with values 0.0.
         If a and b are given, values are uniformly random between a and b.
@@ -2969,17 +3062,20 @@ def matrix(m, n, a=0.0, b=0.0):
         return [[0.0] * n for i in range(m)]
     return [[uniform(a, b) for j in range(n)] for i in range(m)]
 
+
 def sigmoid(x):
     """ Forward propagation activation function.
     """
     #return 1.0 / (1.0 + math.exp(-x))
     return tanh(x)
 
+
 def sigmoid_derivative(y):
     """ Backward propagation activation function derivative.
     """
     #return y * (1.0 - y)
     return 1.0 - y * y
+
 
 class BPNN(Classifier):
 
@@ -3001,12 +3097,15 @@ class BPNN(Classifier):
     @property
     def layers(self):
         return self._layers
+
     @property
     def iterations(self):
         return self._iterations
+
     @property
     def rate(self):
         return self._rate
+
     @property
     def momentum(self):
         return self._momentum
@@ -3189,6 +3288,7 @@ LOGIT = L2LR = 0 # LIBLINEAR L2 logistic regression
 # If the clusters are separated by a curved line,
 # separation may be easier in higher dimensions (using a kernel).
 
+
 class SVM(Classifier):
 
     def __init__(self, *args, **kwargs):
@@ -3280,33 +3380,43 @@ class SVM(Classifier):
     @property
     def type(self):
         return self._type
+
     @property
     def kernel(self):
         return self._kernel
+
     @property
     def solver(self):
         return self._solver
+
     @property
     def degree(self):
         return self._degree
+
     @property
     def gamma(self):
         return self._gamma
+
     @property
     def coeff0(self):
         return self._coeff0
+
     @property
     def cost(self):
         return self._cost
+
     @property
     def epsilon(self):
         return self._epsilon
+
     @property
     def nu(self):
         return self._nu
+
     @property
     def cache(self):
         return self._cache
+
     @property
     def shrinking(self):
         return self._shrinking
@@ -3519,6 +3629,7 @@ class SVM(Classifier):
 #--- LOGISTIC REGRESSION ---------------------------------------------------------------------------
 # Multinomial logistic regression (or Maximum Entropy) is competitive to SVM and gives probabilities.
 
+
 class LR(Classifier):
 
     def __init__(self, train=[], baseline=MAJORITY, iterations=100, **kwargs):
@@ -3583,6 +3694,7 @@ class LR(Classifier):
         # L2 regularization prevents overfitting by excluding unlikely feature values.
         def log(z):
             return scipy.log(z.clip(min=1e-10))
+
         def cost(t, x, y, l=0.1):
             # Cost function.
             m  = float(len(y))
@@ -3590,6 +3702,7 @@ class LR(Classifier):
             J  = 1 / m * (scipy.dot(-y, log(h)) - scipy.dot(1 - y, log(1 - h)))
             L2 = l / m / 2 * sum(t[1:] ** 2)
             return J + L2
+
         def gradient(t, x, y, l=0.1):
             # Cost function derivative.
             m  = float(len(y))
@@ -3680,6 +3793,7 @@ class LR(Classifier):
 LogisticRegression = SoftMaxRegression = MaximumEntropy = MaxEnt = ME = LR
 
 #### GENETIC ALGORITHM #############################################################################
+
 
 class GeneticAlgorithm(object):
 

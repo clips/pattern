@@ -63,6 +63,7 @@ plural_irregular = {
     "vitrail": "vitraux"
 }
 
+
 def pluralize(word, pos=NOUN, custom={}):
     """ Returns the plural of a given word.
         The custom dictionary is for user-defined replacements.
@@ -83,6 +84,7 @@ def pluralize(word, pos=NOUN, custom={}):
     return w + "s"
 
 #### SINGULARIZE ###################################################################################
+
 
 def singularize(word, pos=NOUN, custom={}):
     if word in custom:
@@ -155,6 +157,7 @@ verb_inflections = [
     (       "s", "re"   ), (       "i", "ir"   ), (       "û", "ir"  ), (        "u", "re"   ),
     (       "d", "dre"  )
 ]
+
 
 class Verbs(_Verbs):
 
@@ -255,11 +258,13 @@ conjugate, lemma, lexeme, tenses = \
 
 #### ATTRIBUTIVE & PREDICATIVE #####################################################################
 
+
 def attributive(adjective):
     """ For a predicative adjective, returns the attributive form.
     """
     # Must deal with feminine and plural.
     raise NotImplementedError
+
 
 def predicative(adjective):
     """ Returns the predicative adjective (lowercase): belles => beau.

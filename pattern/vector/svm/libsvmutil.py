@@ -19,6 +19,7 @@ __all__ = ['evaluations', 'svm_load_model', 'svm_predict', 'svm_read_problem',
 
 sys.path = [os.path.dirname(os.path.abspath(__file__))] + sys.path
 
+
 def svm_read_problem(data_file_name):
 	"""
 	svm_read_problem(data_file_name) -> [y, x]
@@ -42,6 +43,7 @@ def svm_read_problem(data_file_name):
 		prob_x += [xi]
 	return (prob_y, prob_x)
 
+
 def svm_load_model(model_file_name):
 	"""
 	svm_load_model(model_file_name) -> model
@@ -55,6 +57,7 @@ def svm_load_model(model_file_name):
 	model = toPyModel(model)
 	return model
 
+
 def svm_save_model(model_file_name, model):
 	"""
 	svm_save_model(model_file_name, model) -> None
@@ -62,6 +65,7 @@ def svm_save_model(model_file_name, model):
 	Save a LIBSVM model to the file model_file_name.
 	"""
 	libsvm.svm_save_model(model_file_name.encode(), model)
+
 
 def evaluations(ty, pv):
 	"""
@@ -91,6 +95,7 @@ def evaluations(ty, pv):
 	except:
 		SCC = float('nan')
 	return (ACC, MSE, SCC)
+
 
 def svm_train(arg1, arg2=None, arg3=None):
 	"""
@@ -178,6 +183,7 @@ def svm_train(arg1, arg2=None, arg3=None):
 		# If prob is destroyed, data including SVs pointed by m can remain.
 		m.x_space = prob.x_space
 		return m
+
 
 def svm_predict(y, x, m, options=""):
 	"""

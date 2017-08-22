@@ -11,6 +11,7 @@ from builtins import object, range
 # Latin-1 assigns control codes in this range, Windows-1252 has characters, punctuation, symbols
 # assigned to these code points.
 
+
 def decode_string(v, encoding="utf-8"):
     """ Returns the given value as a Unicode string (if possible).
     """
@@ -24,6 +25,7 @@ def decode_string(v, encoding="utf-8"):
                 pass
         return v
     return str(v)
+
 
 def encode_string(v, encoding="utf-8"):
     """ Returns the given value as a Python byte string (if possible).

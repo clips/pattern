@@ -17,6 +17,7 @@ from pattern.web import Crawler, DEPTH, BREADTH, FIFO, LIFO
 # We could parse the HTML DOM to extract information we need, for example.
 # Anything that is not HTML (e.g., a JPEG file) is passed to Crawler.fail().
 
+
 class SimpleCrawler1(Crawler):
 
     def visit(self, link, source=None):
@@ -122,6 +123,7 @@ while len(crawler5.visited) < 4:
 # 2) Links with an equal priority are queued either FIFO or LIFO.
 #    FIFO means first-in-first-out: the earliest queued links will be visited sooner.
 #    LIFO means last-in-first-out: more recently queued links will be visited sooner.
+
 
 class SimpleCrawler2(Crawler):
 

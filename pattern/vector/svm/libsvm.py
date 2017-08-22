@@ -47,15 +47,20 @@ SIGMOID = 3
 PRECOMPUTED = 4
 
 PRINT_STRING_FUN = CFUNCTYPE(None, c_char_p)
+
+
 def print_null(s):
 	return
+
 
 def genFields(names, types):
 	return list(zip(names, types))
 
+
 def fillprototype(f, restype, argtypes):
 	f.restype = restype
 	f.argtypes = argtypes
+
 
 class svm_node(Structure):
 	_names = ["index", "value"]
@@ -64,6 +69,7 @@ class svm_node(Structure):
 
 	def __str__(self):
 		return '%d:%g' % (self.index, self.value)
+
 
 def gen_svm_nodearray(xi, feature_max=None, isKernel=None):
 	if isinstance(xi, dict):
@@ -92,6 +98,7 @@ def gen_svm_nodearray(xi, feature_max=None, isKernel=None):
 		max_idx = index_range[-1]
 	return ret, max_idx
 
+
 class svm_problem(Structure):
 	_names = ["l", "y", "x"]
 	_types = [c_int, POINTER(c_double), POINTER(POINTER(svm_node))]
@@ -117,6 +124,7 @@ class svm_problem(Structure):
 		self.x = (POINTER(svm_node) * l)()
 		for i, xi in enumerate(self.x_space):
 			self.x[i] = xi
+
 
 class svm_parameter(Structure):
 	_names = ["svm_type", "kernel_type", "degree", "gamma", "coef0",
@@ -236,6 +244,7 @@ class svm_parameter(Structure):
 			self.weight[i] = weight[i]
 			self.weight_label[i] = weight_label[i]
 
+
 class svm_model(Structure):
 	_names = ['param', 'nr_class', 'l', 'SV', 'sv_coef', 'rho',
 			'probA', 'probB', 'sv_indices', 'label', 'nSV', 'free_sv']
@@ -298,6 +307,7 @@ class svm_model(Structure):
 
 			result.append(row)
 		return result
+
 
 def toPyModel(model_ptr):
 	"""

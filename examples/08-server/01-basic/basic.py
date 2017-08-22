@@ -38,6 +38,7 @@ print(app.static)
 # which will be displayed in the browser.
 # For example, visit http://127.0.0.1:8080/:
 
+
 @app.route("/")
 def index():
     return "Hello world!"
@@ -54,6 +55,7 @@ def index():
 # You want to see errors during development, i.e., app.run(debug=True).
 # You don't want to confront users with them when the app is live
 # (or let hackers learn from them).
+
 
 @app.error("404")
 def error_404(error):
@@ -73,6 +75,7 @@ def error_404(error):
 # When you browse http://127.0.0.1:8080/products/iphone, name="iphone".
 # When you browse http://127.0.0.1:8080/products/iphone/reviews, a 404 error is raised.
 
+
 @app.route("/products")
 def products(name):
     return (
@@ -86,6 +89,7 @@ def products(name):
 # For http://127.0.0.1:8080/products2/, path=().
 # For http://127.0.0.1:8080/products2/iphone, path=("iphone",).
 # For http://127.0.0.1:8080/products2/iphone/reviews, path=("iphone", "reviews")
+
 
 @app.route("/products2")
 def products2(*path):
@@ -108,6 +112,7 @@ def products2(*path):
 # Observe the URL when you click "submit".
 # Observe how the data in <textarea name='text'> is passed to
 # the function's optional "text" parameter:
+
 
 @app.route("/review")
 def review(text=""):
@@ -133,11 +138,15 @@ def review(text=""):
 
 # So, you can refer to them in HTML code:
 # http://127.0.0.1:8080/cat
+
+
 @app.route("/cat")
 def cat():
     return "<p>A cat.</p><img src='cat.jpg'>"
 
 # http://127.0.0.1:8080/cat-alias.jpg
+
+
 @app.route("/cat-alias.jpg")
 def cat_alias():
     return static("cat.jpg", root=app.static)

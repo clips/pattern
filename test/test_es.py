@@ -25,6 +25,7 @@ except:
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestInflection(unittest.TestCase):
 
     def setUp(self):
@@ -198,6 +199,7 @@ class TestInflection(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestParser(unittest.TestCase):
 
     def setUp(self):
@@ -261,6 +263,7 @@ class TestParser(unittest.TestCase):
         print("python -m pattern.es")
 
 #---------------------------------------------------------------------------------------------------
+
 
 def suite():
     suite = unittest.TestSuite()

@@ -19,6 +19,7 @@ from pattern.en import Sentence, parse
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestUtilityFunctions(unittest.TestCase):
 
     def setUp(self):
@@ -83,6 +84,7 @@ class TestUtilityFunctions(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestTaxonomy(unittest.TestCase):
 
     def setUp(self):
@@ -146,6 +148,7 @@ class TestTaxonomy(unittest.TestCase):
         print("pattern.search.WordNetClassifier")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestConstraint(unittest.TestCase):
 
@@ -270,6 +273,7 @@ class TestConstraint(unittest.TestCase):
         print("pattern.search.Constraint.string")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestPattern(unittest.TestCase):
 
@@ -450,6 +454,7 @@ class TestPattern(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestMatch(unittest.TestCase):
 
     def setUp(self):
@@ -525,6 +530,7 @@ class TestMatch(unittest.TestCase):
         self.assertEqual(p.groups[1][0].words[0], "3")
 
 #---------------------------------------------------------------------------------------------------
+
 
 def suite():
     suite = unittest.TestSuite()

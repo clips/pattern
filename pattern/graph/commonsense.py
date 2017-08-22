@@ -48,6 +48,7 @@ else:
 
 #--- CONCEPT ---------------------------------------------------------------------------------------
 
+
 class Concept(Node):
 
     def __init__(self, *args, **kwargs):
@@ -76,8 +77,10 @@ class Concept(Node):
             self._properties = p
         return self._properties
 
+
 def halo(concept, depth=2):
     return concept.flatten(depth=depth)
+
 
 def properties(concept, depth=2, centrality=BETWEENNESS):
     g = concept.graph.copy(nodes=halo(concept, depth))
@@ -86,6 +89,7 @@ def properties(concept, depth=2, centrality=BETWEENNESS):
     return p
 
 #--- RELATION --------------------------------------------------------------------------------------
+
 
 class Relation(Edge):
 
@@ -111,6 +115,7 @@ COMMONALITY = (
                          edge.type != "is-opposite-of"))
 
 #--- COMMONSENSE -----------------------------------------------------------------------------------
+
 
 class Commonsense(Graph):
 
@@ -235,6 +240,7 @@ class Commonsense(Graph):
 
 #--- NODEBOX.NET/PERCEPTION ------------------------------------------------------------------------
 
+
 def download(path=os.path.join(MODULE, "commonsense.csv"), threshold=50):
     """ Downloads commonsense data from http://nodebox.net/perception.
         Saves the data as commonsense.csv which can be the input for Commonsense.load().
@@ -282,6 +288,7 @@ def download(path=os.path.join(MODULE, "commonsense.csv"), threshold=50):
     f.write(BOM_UTF8)
     f.write("\n".join(s))
     f.close()
+
 
 def json():
     """ Returns a JSON-string with the data from commonsense.csv.

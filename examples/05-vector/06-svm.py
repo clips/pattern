@@ -60,6 +60,7 @@ data = shuffled(data)
 # 3) lemmatize the Dutch adjectives, e.g., "goede" => "goed" (good).
 # 4) count the distinct words in the list, map it to a dictionary.
 
+
 def instance(review):                     # "Great book!"
     v = tag(review)                       # [("Great", "JJ"), ("book", "NN"), ("!", "!")]
     v = [word for (word, pos) in v if pos in ("JJ", "RB") or word in ("!")]

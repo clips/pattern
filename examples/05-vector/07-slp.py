@@ -30,6 +30,7 @@ from io import open
 
 print("load training data...")
 
+
 def corpus(path, encoding="utf-8"):
     """ Yields sentences of (word, tag)-tuples from the given corpus,
         which is a .txt file with a sentence on each line, 

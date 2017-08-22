@@ -25,6 +25,7 @@ except:
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestInflection(unittest.TestCase):
 
     def setUp(self):
@@ -149,6 +150,7 @@ class TestInflection(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestParser(unittest.TestCase):
 
     def setUp(self):
@@ -248,6 +250,7 @@ class TestParser(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestSentiment(unittest.TestCase):
 
     def setUp(self):
@@ -274,6 +277,7 @@ class TestSentiment(unittest.TestCase):
         print("pattern.nl.sentiment()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 def suite():
     suite = unittest.TestSuite()

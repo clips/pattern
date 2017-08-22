@@ -45,8 +45,10 @@ from pattern.helpers import encode_string, decode_string
 decode_utf8 = decode_string
 encode_utf8 = encode_string
 
+
 class IMAP4(imaplib.IMAP4):
     pass
+
 
 class IMAP4_SSL(imaplib.IMAP4_SSL):
     pass
@@ -58,6 +60,7 @@ GMAIL = "imap.gmail.com"
 DATE, FROM, SUBJECT, BODY, ATTACHMENTS = \
     "date", "from", "subject", "body", "attachments"
 
+
 def _basename(folder):
     # [Gmail]/INBOX => inbox
     f = folder.replace("[Gmail]/", "")
@@ -68,14 +71,22 @@ def _basename(folder):
     f = f.strip()
     return f
 
+
 class MailError(Exception):
     pass
+
+
 class MailServiceError(MailError):
     pass
+
+
 class MailLoginError(MailError):
     pass
+
+
 class MailNotLoggedIn(MailError):
     pass
+
 
 class Mail(object):
 
@@ -154,6 +165,7 @@ class Mail(object):
 
 #--- MAIL FOLDER -----------------------------------------------------------------------------------
 
+
 def _decode(s, message):
     try:
         # Decode MIME header (e.g., "=?utf-8?q?").
@@ -175,6 +187,7 @@ def _decode(s, message):
             except:
                 pass
     return s
+
 
 class MailFolder(object):
 
@@ -270,20 +283,25 @@ class MailFolder(object):
 
 #--- MAIL MESSAGE ----------------------------------------------------------------------------------
 
+
 class Message(dict):
 
     @property
     def author(self):
         return self.get(FROM, None)
+
     @property
     def date(self):
         return self.get(DATE, None)
+
     @property
     def subject(self):
         return self.get(SUBJECT, "")
+
     @property
     def body(self):
         return self.get(BODY, "")
+
     @property
     def attachments(self):
         return self.get(ATTACHMENTS, [])

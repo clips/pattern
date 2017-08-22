@@ -25,6 +25,7 @@ except:
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestInflection(unittest.TestCase):
 
     def setUp(self):
@@ -140,6 +141,7 @@ class TestInflection(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestParser(unittest.TestCase):
 
     def setUp(self):
@@ -209,6 +211,7 @@ class TestParser(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestSentiment(unittest.TestCase):
 
     def setUp(self):
@@ -244,6 +247,7 @@ class TestSentiment(unittest.TestCase):
         self.assertTrue(v2.assessments[0][0] == ["ne", "aime"])
 
 #---------------------------------------------------------------------------------------------------
+
 
 def suite():
     suite = unittest.TestSuite()

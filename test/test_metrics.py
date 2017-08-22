@@ -24,6 +24,7 @@ except:
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestProfiling(unittest.TestCase):
 
     def setUp(self):
@@ -96,6 +97,7 @@ class TestProfiling(unittest.TestCase):
         self.assertAlmostEqual(v, 0.210, places=3)
         print("pattern.metrics.agreement()")
 
+
 class TestTextMetrics(unittest.TestCase):
 
     def setUp(self):
@@ -156,6 +158,7 @@ class TestTextMetrics(unittest.TestCase):
         from pattern.db import Datasheet
         data = Datasheet.load(os.path.join(PATH, "corpora", "plagiarism-clough&stevenson.csv"))
         data = [((txt, src), int(plagiarism) > 0) for txt, src, plagiarism in data]
+
         def plagiarism(txt, src):
             return metrics.intertextuality([txt, src], n=3)[0, 1] > 0.05
         A, P, R, F = metrics.test(lambda x: plagiarism(*x), data)
@@ -206,6 +209,7 @@ class TestTextMetrics(unittest.TestCase):
         self.assertEqual(v, {("cat", "NN"): {("black", "JJ"): 1}})
         print("pattern.metrics.cooccurrence()")
 
+
 class TestInterpolation(unittest.TestCase):
 
     def setUp(self):
@@ -239,6 +243,7 @@ class TestInterpolation(unittest.TestCase):
         [self.assertAlmostEqual(x, y, places=1) for x, y in zip(v,
             [0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0])]
         print("pattern.metrics.smoothrange()")
+
 
 class TestStatistics(unittest.TestCase):
 
@@ -346,6 +351,7 @@ class TestStatistics(unittest.TestCase):
         self.assertEqual(v[4], max(a))
         print("pattern.metrics.boxplot()")
 
+
 class TestStatisticalTests(unittest.TestCase):
 
     def setUp(self):
@@ -399,6 +405,7 @@ class TestStatisticalTests(unittest.TestCase):
         self.assertAlmostEqual(v[1], 0.9762, places=4)
         print("pattern.metrics.ks2()")
 
+
 class TestSpecialFunctions(unittest.TestCase):
 
     def setUp(self):
@@ -443,6 +450,7 @@ class TestSpecialFunctions(unittest.TestCase):
         print("pattern.metrics.kolmogorov()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 def suite():
     suite = unittest.TestSuite()

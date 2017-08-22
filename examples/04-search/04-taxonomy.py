@@ -66,6 +66,7 @@ print("")
 # For example, a classifier could be written to dynamically
 # retrieve word categories from WordNet.
 
+
 def find_parents(word):
     if word.startswith(("mac os", "windows", "ubuntu")):
         return ["operating system"]

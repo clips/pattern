@@ -84,6 +84,7 @@ for i, k in enumerate(ORDER[2:]):
 ZERO, MINUS, RADIX, THOUSANDS, CONJUNCTION = \
     "zero", "minus", "point", ",", "and"
 
+
 def zshift(s):
     """ Returns a (string, count)-tuple, with leading zeros strippped from the string and counted.
     """
@@ -98,6 +99,7 @@ def zshift(s):
 #print zshift("0 0 seven") # ("seven", 2)
 
 #--- STRING TO NUMBER ------------------------------------------------------------------------------
+
 
 def number(s):
     """ Returns the given numeric string as a float or an int.
@@ -164,6 +166,7 @@ def number(s):
 #print number("nothing")
 
 #--- NUMBER TO STRING ------------------------------------------------------------------------------
+
 
 def numerals(n, round=2):
     """ Returns the given int or float as a string of numerals.
@@ -252,6 +255,7 @@ COUNTLESS = "countless"
 
 quantify_custom_plurals = {}
 
+
 def approximate(word, amount=1, plural={}):
     """ Returns an approximation of the number of given objects.
         Two objects are described as being "a pair",
@@ -308,6 +312,8 @@ def approximate(word, amount=1, plural={}):
 # count(word, amount, plural={})
 # count([word1, word2, ...], plural={})
 # counr({word1:0, word2:0, ...}, plural={})
+
+
 def count(*args, **kwargs):
     """ Returns an approximation of the entire set.
         Identical words are grouped and counted and then quantified with an approximation.
@@ -368,6 +374,7 @@ readable_types = (
     ("\."              , " "),
     ("_"               , " ")
 )
+
 
 def reflect(object, quantify=True, replace=readable_types):
     """ Returns the type of each object in the given object.

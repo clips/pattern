@@ -48,6 +48,7 @@ encode_utf8 = encode_string
 
 PUNCTUATION = ".,;:!?()[]{}`'\"@#$^&*+-|=~_"
 
+
 def ngrams(string, n=3, punctuation=PUNCTUATION, continuous=False):
     """ Returns a list of n-grams (tuples of n successive words) from the given string.
         Alternatively, you can supply a Text or Sentence object.
@@ -76,6 +77,7 @@ def ngrams(string, n=3, punctuation=PUNCTUATION, continuous=False):
 
 FLOODING = re.compile(r"((.)\2{2,})", re.I) # ooo, xxx, !!!, ...
 
+
 def deflood(s, n=3):
     """ Returns the string with no more than n repeated characters, e.g.,
         deflood("NIIIICE!!", n=1) => "Nice!"
@@ -84,6 +86,7 @@ def deflood(s, n=3):
     if n == 0:
         return s[0:0]
     return re.sub(r"((.)\2{%s,})" % (n - 1), lambda m: m.group(1)[0] * n, s)
+
 
 def decamel(s, separator="_"):
     """ Returns the string with CamelCase converted to underscores, e.g.,
@@ -94,6 +97,7 @@ def decamel(s, separator="_"):
     s = re.sub(r"([A-Z])([A-Z][a-z])", "\\1%s\\2" % separator, s)
     s = s.lower()
     return s
+
 
 def pprint(string, token=[WORD, POS, CHUNK, PNP], column=4):
     """ Pretty-prints the output of Parser.parse() as a table with outlined columns.
@@ -109,6 +113,7 @@ def pprint(string, token=[WORD, POS, CHUNK, PNP], column=4):
 #--- LAZY DICTIONARY -------------------------------------------------------------------------------
 # A lazy dictionary is empty until one of its methods is called.
 # This way many instances (e.g., lexicons) can be created without using memory until used.
+
 
 class lazydict(dict):
 
@@ -128,36 +133,51 @@ class lazydict(dict):
 
     def __repr__(self):
         return self._lazy("__repr__")
+
     def __len__(self):
         return self._lazy("__len__")
+
     def __iter__(self):
         return self._lazy("__iter__")
+
     def __contains__(self, *args):
         return self._lazy("__contains__", *args)
+
     def __getitem__(self, *args):
         return self._lazy("__getitem__", *args)
+
     def __setitem__(self, *args):
         return self._lazy("__setitem__", *args)
+
     def __delitem__(self, *args):
         return self._lazy("__delitem__", *args)
+
     def setdefault(self, *args):
         return self._lazy("setdefault", *args)
+
     def get(self, *args, **kwargs):
         return self._lazy("get", *args)
+
     def items(self):
         return self._lazy("items")
+
     def keys(self):
         return self._lazy("keys")
+
     def values(self):
         return self._lazy("values")
+
     def update(self, *args):
         return self._lazy("update", *args)
+
     def pop(self, *args):
         return self._lazy("pop", *args)
+
     def popitem(self, *args):
         return self._lazy("popitem", *args)
 
 #--- LAZY LIST -------------------------------------------------------------------------------------
+
 
 class lazylist(list):
 
@@ -177,34 +197,48 @@ class lazylist(list):
 
     def __repr__(self):
         return self._lazy("__repr__")
+
     def __len__(self):
         return self._lazy("__len__")
+
     def __iter__(self):
         return self._lazy("__iter__")
+
     def __contains__(self, *args):
         return self._lazy("__contains__", *args)
+
     def __getitem__(self, *args):
         return self._lazy("__getitem__", *args)
+
     def __setitem__(self, *args):
         return self._lazy("__setitem__", *args)
+
     def __delitem__(self, *args):
         return self._lazy("__delitem__", *args)
+
     def insert(self, *args):
         return self._lazy("insert", *args)
+
     def append(self, *args):
         return self._lazy("append", *args)
+
     def extend(self, *args):
         return self._lazy("extend", *args)
+
     def remove(self, *args):
         return self._lazy("remove", *args)
+
     def pop(self, *args):
         return self._lazy("pop", *args)
+
     def index(self, *args):
         return self._lazy("index", *args)
+
     def count(self, *args):
         return self._lazy("count", *args)
 
 #--- LAZY SET --------------------------------------------------------------------------------------
+
 
 class lazyset(set):
 
@@ -225,54 +259,79 @@ class lazyset(set):
 
     def __repr__(self):
         return self._lazy("__repr__")
+
     def __len__(self):
         return self._lazy("__len__")
+
     def __iter__(self):
         return self._lazy("__iter__")
+
     def __contains__(self, *args):
         return self._lazy("__contains__", *args)
+
     def __sub__(self, *args):
         return self._lazy("__sub__", *args)
+
     def __and__(self, *args):
         return self._lazy("__and__", *args)
+
     def __or__(self, *args):
         return self._lazy("__or__", *args)
+
     def __xor__(self, *args):
         return self._lazy("__xor__", *args)
+
     def __isub__(self, *args):
         return self._lazy("__isub__", *args)
+
     def __iand__(self, *args):
         return self._lazy("__iand__", *args)
+
     def __ior__(self, *args):
         return self._lazy("__ior__", *args)
+
     def __ixor__(self, *args):
         return self._lazy("__ixor__", *args)
+
     def __gt__(self, *args):
         return self._lazy("__gt__", *args)
+
     def __lt__(self, *args):
         return self._lazy("__lt__", *args)
+
     def __gte__(self, *args):
         return self._lazy("__gte__", *args)
+
     def __lte__(self, *args):
         return self._lazy("__lte__", *args)
+
     def add(self, *args):
         return self._lazy("add", *args)
+
     def pop(self, *args):
         return self._lazy("pop", *args)
+
     def remove(self, *args):
         return self._lazy("remove", *args)
+
     def discard(self, *args):
         return self._lazy("discard", *args)
+
     def isdisjoint(self, *args):
         return self._lazy("isdisjoint", *args)
+
     def issubset(self, *args):
         return self._lazy("issubset", *args)
+
     def issuperset(self, *args):
         return self._lazy("issuperset", *args)
+
     def union(self, *args):
         return self._lazy("union", *args)
+
     def intersection(self, *args):
         return self._lazy("intersection", *args)
+
     def difference(self, *args):
         return self._lazy("difference", *args)
 
@@ -286,6 +345,7 @@ class lazyset(set):
 # When available, the parser will use a faster and more accurate language model (SLP, SVM, NB, ...).
 
 #--- LEXICON ---------------------------------------------------------------------------------------
+
 
 def _read(path, encoding="utf-8", comment=";;;"):
     """ Returns an iterator over the lines in the file at the given path,
@@ -310,6 +370,7 @@ def _read(path, encoding="utf-8", comment=";;;"):
             yield line
     raise StopIteration
 
+
 class Lexicon(lazydict):
 
     def __init__(self, path=""):
@@ -326,6 +387,7 @@ class Lexicon(lazydict):
         dict.update(self, (x.split(" ")[:2] for x in _read(self._path)))
 
 #--- FREQUENCY -------------------------------------------------------------------------------------
+
 
 class Frequency(lazydict):
 
@@ -354,6 +416,7 @@ class Frequency(lazydict):
 # both have a pattern -ing/VBG + [?] + NNS => IN.
 # Unknown words preceded by -ing and followed by a plural noun will be tagged IN (preposition),
 # unless (put simply) a majority of other patterns learned by the classifier disagrees.
+
 
 class Model(object):
 
@@ -429,6 +492,7 @@ class Model(object):
 
     def _get_description(self):
         return self._classifier.description
+
     def _set_description(self, s):
         self._classifier.description = s
 
@@ -438,6 +502,7 @@ class Model(object):
 # Brill's algorithm generates lexical (i.e., morphological) rules in the following format:
 # NN s fhassuf 1 NNS x => unknown words ending in -s and tagged NN change to NNS.
 #     ly hassuf 2 RB x => unknown words ending in -ly change to RB.
+
 
 class Morphology(lazylist):
 
@@ -518,6 +583,7 @@ class Morphology(lazylist):
 #--- CONTEXT RULES ---------------------------------------------------------------------------------
 # Brill's algorithm generates contextual rules in the following format:
 # VBD VB PREVTAG TO => unknown word tagged VBD changes to VB if preceded by a word tagged TO.
+
 
 class Context(lazylist):
 
@@ -630,6 +696,7 @@ RE_ENTITY1 = re.compile(r"^http://")                            # http://www.dom
 RE_ENTITY2 = re.compile(r"^www\..*?\.(com|org|net|edu|de|uk)$") # www.domain.com
 RE_ENTITY3 = re.compile(r"^[\w\-\.\+]+@(\w[\w\-]+\.)+[\w\-]+$") # name@domain.com
 
+
 class Entities(lazydict):
 
     def __init__(self, path="", tag="NNP"):
@@ -732,6 +799,7 @@ class Entities(lazydict):
 # By default, the English parser uses the Penn Treebank II tagset:
 # http://www.clips.ua.ac.be/pages/penn-treebank-tagset
 PTB = PENN = "penn"
+
 
 class Parser(object):
 
@@ -911,6 +979,7 @@ class Parser(object):
 
 TOKENS = "tokens"
 
+
 class TaggedString(str):
 
     def __new__(self, string, tags=["word"], language=None):
@@ -958,6 +1027,7 @@ UNIVERSAL = "universal"
 
 NOUN, VERB, ADJ, ADV, PRON, DET, PREP, ADP, NUM, CONJ, INTJ, PRT, PUNC, X = \
     "NN", "VB", "JJ", "RB", "PR", "DT", "PP", "PP", "NO", "CJ", "UH", "PT", ".", "X"
+
 
 def penntreebank2universal(token, tag):
     """ Returns a (token, tag)-tuple with a simplified universal part-of-speech tag.
@@ -1073,6 +1143,7 @@ RE_SARCASM = re.compile(r"\( ?\! ?\)")
 # (\n\n marks end of sentence).
 EOS = "END-OF-SENTENCE"
 
+
 def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, replace=replacements, linebreak=r"\n{2,}"):
     """ Returns a list of sentences. Each sentence is a space-separated string of tokens (words).
         Handles common cases of abbreviations (e.g., etc., ...).
@@ -1160,6 +1231,7 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
 # Unknown words are recognized as numbers if they contain only digits and -,.:/%$
 CD = re.compile(r"^[0-9\-\,\.\:\/\%\$]+$")
 
+
 def _suffix_rules(token, tag="NN"):
     """ Default morphological tagging rules for English, based on word suffixes.
     """
@@ -1178,6 +1250,7 @@ def _suffix_rules(token, tag="NN"):
     if token.endswith(("ate", "ify", "ise", "ize")):
         tag = "VBP"
     return [token, tag]
+
 
 def find_tags(tokens, lexicon={}, model=None, morphology=None, context=None, entities=None, default=("NN", "NNP", "CD"), language="en", map=None, **kwargs):
     """ Returns a list of [token, tag]-items for the given list of tokens:
@@ -1278,6 +1351,7 @@ for i in (0, 1):
 CHUNKS[0].insert(1, CHUNKS[0].pop(3))
 CHUNKS[1].insert(1, CHUNKS[1].pop(3))
 
+
 def find_chunks(tagged, language="en"):
     """ The input is a list of [token, tag]-items.
         The output is a list of [token, tag, chunk]-items:
@@ -1325,6 +1399,7 @@ def find_chunks(tagged, language="en"):
                 chunked[i + 2][2] = "B-NP"
     return chunked
 
+
 def find_prepositions(chunked):
     """ The input is a list of [token, tag, chunk]-items.
         The output is a list of [token, tag, chunk, preposition]-items.
@@ -1356,6 +1431,7 @@ def find_prepositions(chunked):
 
 BE = dict.fromkeys(("be", "am", "are", "is", "being", "was", "were", "been"), True)
 GO = dict.fromkeys(("go", "goes", "going", "went"), True)
+
 
 def find_relations(chunked):
     """ The input is a list of [token, tag, chunk]-items.
@@ -1409,6 +1485,7 @@ def find_relations(chunked):
     return related
 
 #--- KEYWORDS EXTRACTION ---------------------------------------------------------------------------
+
 
 def find_keywords(string, parser, top=10, frequency={}, ignore=("rt",), pos=("NN",), **kwargs):
     """ Returns a sorted list of keywords in the given string.
@@ -1513,6 +1590,7 @@ def find_keywords(string, parser, top=10, frequency={}, ignore=("rt",), pos=("NN
 #
 # The parser is then accessible from the command line:
 # python -m pattern.en.parser xml -s "Hello, my name is Dr. Sbaitso. Nice to meet you." -OTCLI
+
 
 def commandline(parse=Parser().parse):
     import optparse
@@ -1730,6 +1808,8 @@ for tag, tense in (
 # tense(tense=INFINITIVE)
 # tense(tense=(PRESENT, 3, SINGULAR))
 # tense(tense=PRESENT, person=3, number=SINGULAR, mood=INDICATIVE, aspect=IMPERFECTIVE, negated=False)
+
+
 def tense_id(*args, **kwargs):
     """ Returns the tense id for a given (tense, person, number, mood, aspect, negated).
         Aliases and compound forms (e.g., IMPERFECT) are disambiguated.
@@ -1787,6 +1867,7 @@ tense = tense_id
 # Verb conjugations are useful to find the verb infinitive in the parser's lemmatizer.
 # For unknown verbs, Verbs.find_lemma() and Verbs.find_lexeme() are called.
 # These must be implemented in a subclass with rules for unknown verbs.
+
 
 class Verbs(lazydict):
 
@@ -1944,6 +2025,7 @@ class Verbs(lazydict):
         # Must return the list of conjugations for the given (unknown) verb.
         return []
 
+
 class Tenses(list):
 
     def __contains__(self, tense):
@@ -1977,8 +2059,10 @@ NOUN, VERB, ADJECTIVE, ADVERB = \
 
 RE_SYNSET = re.compile(r"^[acdnrv][-_][0-9]+$")
 
+
 def avg(list):
     return sum(list) / float(len(list) or 1)
+
 
 class Score(tuple):
 
@@ -1989,6 +2073,7 @@ class Score(tuple):
 
     def __init__(self, polarity, subjectivity, assessments=[]):
         self.assessments = assessments
+
 
 class Sentiment(lazydict):
 
@@ -2278,6 +2363,7 @@ class Sentiment(lazydict):
 #### SPELLING CORRECTION ###########################################################################
 # Based on: Peter Norvig, "How to Write a Spelling Corrector", http://norvig.com/spell-correct.html
 
+
 class Spelling(lazydict):
 
     ALPHA = "abcdefghijklmnopqrstuvwxyz"
@@ -2369,6 +2455,8 @@ class Spelling(lazydict):
 LANGUAGES = ["en", "es", "de", "fr", "it", "nl"]
 
 _modules = {}
+
+
 def _module(language):
     """ Returns the given language module (e.g., "en" => pattern.en).
     """
@@ -2378,11 +2466,13 @@ def _module(language):
     else:
         return _modules.setdefault(language, __import__(language, globals(), {}, [], -1))
 
+
 def _multilingual(function, *args, **kwargs):
     """ Returns the value from the function with the given name in the given language module.
         By default, language="en".
     """
     return getattr(_module(kwargs.pop("language", "en")), function)(*args, **kwargs)
+
 
 def language(s):
     """ Returns a (language, confidence)-tuple for the given string.
@@ -2398,41 +2488,54 @@ def language(s):
 
 lang = language
 
+
 def tokenize(*args, **kwargs):
     return _multilingual("tokenize", *args, **kwargs)
+
 
 def parse(*args, **kwargs):
     return _multilingual("parse", *args, **kwargs)
 
+
 def parsetree(*args, **kwargs):
     return _multilingual("parsetree", *args, **kwargs)
+
 
 def split(*args, **kwargs):
     return _multilingual("split", *args, **kwargs)
 
+
 def tag(*args, **kwargs):
     return _multilingual("tag", *args, **kwargs)
+
 
 def keywords(*args, **kwargs):
     return _multilingual("keywords", *args, **kwargs)
 
+
 def suggest(*args, **kwargs):
     return _multilingual("suggest", *args, **kwargs)
+
 
 def sentiment(*args, **kwargs):
     return _multilingual("sentiment", *args, **kwargs)
 
+
 def singularize(*args, **kwargs):
     return _multilingual("singularize", *args, **kwargs)
+
 
 def pluralize(*args, **kwargs):
     return _multilingual("pluralize", *args, **kwargs)
 
+
 def conjugate(*args, **kwargs):
     return _multilingual("conjugate", *args, **kwargs)
 
+
 def predicative(*args, **kwargs):
     return _multilingual("predicative", *args, **kwargs)
+
 
 def suggest(*args, **kwargs):
     return _multilingual("suggest", *args, **kwargs)

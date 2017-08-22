@@ -82,6 +82,7 @@ try:
 except:
     SCRIPT = os.getcwd()
 
+
 def chown(path, owner=None):
     """ Changes the ownership of the given file to the given (user, group).
         Returns True if successful.
@@ -111,6 +112,7 @@ def chown(path, owner=None):
 RE_AMPERSAND = re.compile("\&(?!\#)")           # & not followed by #
 RE_UNICODE   = re.compile(r'&(#?)(x|X?)(\w+);') # &#201;
 
+
 def encode_entities(string):
     """ Encodes HTML entities in the given string ("<" => "&lt;").
         For example, to display "<em>hello</em>" in a browser,
@@ -123,6 +125,7 @@ def encode_entities(string):
         string = string.replace('"', "&quot;")
         string = string.replace("'", "&#39;")
     return string
+
 
 def decode_entities(string):
     """ Decodes HTML entities in the given string ("&lt;" => "<").
@@ -142,13 +145,17 @@ def decode_entities(string):
         return RE_UNICODE.subn(replace_entity, string)[0]
     return string
 
+
 def encode_url(string):
     return urllib.quote_plus(string.encode("utf-8")) # "black/white" => "black%2Fwhite".
+
 
 def decode_url(string):
     return urllib.unquote_plus(string)
 
 _TEMPORARY_FILES = []
+
+
 def openable(string, **kwargs):
     """ Returns the path to a temporary file that contains the given string.
     """
@@ -161,6 +168,7 @@ def openable(string, **kwargs):
 #### INTROSPECTION #################################################################################
 # URL paths are routed to handler functions, whose arguments represent URL path & query parameters.
 # So we need to know what the arguments and keywords arguments are at runtime.
+
 
 def define(f):
     """ Returns (name, type, tuple, dict) for the given function,
@@ -194,6 +202,7 @@ SQLITE, MYSQL = "sqlite", "mysql"
 # Database host:
 LOCALHOST = "127.0.0.1"
 
+
 class Row(dict):
 
     def __init__(self, cursor, row):
@@ -205,8 +214,10 @@ class Row(dict):
     def __getattr__(self, k):
         return self[k] # Row.[field]
 
+
 class DatabaseError(Exception):
     pass
+
 
 class Database(object):
 
@@ -339,6 +350,7 @@ class Database(object):
 
 #--- DATABASE TRANSACTION BUFFER -------------------------------------------------------------------
 
+
 class DatabaseTransaction(Database):
 
     def __init__(self, name, **kwargs):
@@ -383,12 +395,14 @@ class DatabaseTransaction(Database):
 
 #--- DATABASE SECURITY -----------------------------------------------------------------------------
 
+
 def pbkdf2(s, salt, iterations=10000, n=32, f="sha256"):
     """ Returns a hashed string of length n using the PBKDF2 algorithm.
         Password-Based Key Derivation Function 2 uses a cryptographic salt
         and multiple iterations of a pseudorandom function ("key stretching").
     """
     h = hmac.new(s, digestmod=getattr(hashlib, f))
+
     def prf(h, s):
         h = h.copy()
         h.update(s)
@@ -404,6 +418,7 @@ def pbkdf2(s, salt, iterations=10000, n=32, f="sha256"):
         i += 1
     return str(k)[:n].encode("hex")
 
+
 def streql(s1, s2):
     """ Returns True if the given strings are identical.
     """
@@ -415,6 +430,7 @@ def streql(s1, s2):
             b = False # contstant-time comparison
     return b
 
+
 def encode_password(s):
     """ Returns a PBKDF2-hashed string.
     """
@@ -422,6 +438,7 @@ def encode_password(s):
         s = s.encode("utf-8")
     x = base64.b64encode(os.urandom(32))
     return "pbkdf2:sha256:10000:%s:%s" % (x, pbkdf2(s[:1024], x))
+
 
 def verify_password(s1, s2):
     """ Returns True if the given strings are identical, after hashing the first.
@@ -462,14 +479,18 @@ _RATELIMIT_LOCK  = threading.RLock()
 
 SECOND, MINUTE, HOUR, DAY = 1., 60., 60 * 60., 60 * 60 * 24.
 
+
 class RateLimitError(Exception):
     pass
+
 
 class RateLimitExceeded(RateLimitError):
     pass
 
+
 class RateLimitForbidden(RateLimitError):
     pass
+
 
 class RateLimit(Database):
 
@@ -620,8 +641,10 @@ class RateLimit(Database):
 #### ROUTER ########################################################################################
 # The @app.route(path) decorator registers each URL path handler in Application.router.
 
+
 class RouteError(Exception):
     pass
+
 
 class Router(dict):
 
@@ -689,6 +712,7 @@ class Router(dict):
 
 #--- APPLICATION ERRORS & REQUESTS -----------------------------------------------------------------
 
+
 class HTTPRequest(object):
 
     def __init__(self, app, ip, path="/", method="get", data={}, headers={}):
@@ -704,6 +728,7 @@ class HTTPRequest(object):
     def __repr__(self):
         return "HTTPRequest(ip=%s, path=%s)" % (repr(self.ip), repr(self.path))
 
+
 class HTTPRedirect(Exception):
 
     def __init__(self, url, code=303):
@@ -714,6 +739,7 @@ class HTTPRedirect(Exception):
 
     def __repr__(self):
         return "HTTPRedirect(url=%s)" % repr(self.url)
+
 
 class HTTPError(Exception):
 
@@ -727,6 +753,7 @@ class HTTPError(Exception):
 
     def __repr__(self):
         return "HTTPError(status=%s)" % repr(self.status)
+
 
 def _HTTPErrorSubclass(status):
     if sys.version > "3":
@@ -760,6 +787,7 @@ HTTP503ServiceUnavailable  = _HTTPErrorSubclass("503 Service Unavailable")
 # The thread-safe database connection can then be retrieved from
 # app.thread.db, g.db, or as a keyword argument of a URL handler.
 
+
 class localdict(dict):
 
     def __init__(self, data=None, **kwargs):
@@ -770,48 +798,68 @@ class localdict(dict):
 
     def items(self):
         return self._data.__dict__.items()
+
     def keys(self):
         return self._data.__dict__.keys()
+
     def values(self):
         return self._data.__dict__.values()
+
     def update(self, d):
         return self._data.__dict__.update(d)
+
     def clear(self):
         return self._data.__dict__.clear()
+
     def pop(self, *kv):
         return self._data.__dict__.pop(*kv)
+
     def setdefault(self, k, v=None):
         return self._data.__dict__.setdefault(k, v)
+
     def set(self, k, v):
         return setattr(self._data, k, v)
+
     def get(self, k, default=None):
         return getattr(self._data, k, default)
+
     def __delitem__(self, k):
         return delattr(self._data, k)
+
     def __getitem__(self, k):
         return getattr(self._data, k)
+
     def __setitem__(self, k, v):
         return setattr(self._data, k, v)
+
     def __delattr__(self, k):
         return delattr(self._data, k)
+
     def __getattr__(self, k):
         return getattr(self._data, k)
+
     def __setattr__(self, k, v):
         return setattr(self._data, k, v)
+
     def __len__(self):
         return  len(self._data.__dict__)
+
     def __iter__(self):
         return iter(self._data.__dict__)
+
     def __contains__(self, k):
         return k in self._data.__dict__
+
     def __str__(self):
         return repr(self)
+
     def __repr__(self):
         return "localdict({%s})" % ", ".join(
             ("%s: %s" % (repr(k), repr(v)) for k, v in self.items()))
 
 # Global alias for app.thread (Flask-style):
 g = localdict(data=cp.thread_data)
+
 
 def threadsafe(function):
     """ The @threadsafe decorator ensures that no two threads execute the function simultaneously.
@@ -827,6 +875,7 @@ def threadsafe(function):
     # >>>     count[k] += 1
     #
     lock = threading.RLock()
+
     def decorator(*args, **kwargs):
         with lock:
             v = function(*args, **kwargs)
@@ -844,8 +893,10 @@ INTRANET = "0.0.0.0"
 START = "start"
 STOP = "stop"
 
+
 class ApplicationError(Exception):
     pass
+
 
 class Application(object):
 
@@ -1014,6 +1065,7 @@ class Application(object):
             It returns a string, a generator or a dictionary (which is parsed to a JSON-string).
         """
         _a = (key, limit, time, reset) # Avoid ambiguity with key=lambda inside define().
+
         def decorator(handler):
             def ratelimited(handler):
                 # With @app.route(path, limit=True), rate limiting is applied.
@@ -1029,6 +1081,7 @@ class Application(object):
                 @self.thread(START)
                 def connect():
                     g.rate = RateLimit(name=self._rate)
+
                 def wrapper(*args, **kwargs):
                     self = cp.request.app.root
                     self.rate(
@@ -1093,8 +1146,10 @@ class Application(object):
         """ The @app.thread(event) decorator can be used to initialize thread-safe data.
             Get data (e.g., a database connection) with app.thread.[name] or g.[name].
         """
+
         def __init__(self):
             localdict.__init__(self, data=cp.thread_data, handlers=set())
+
         def __call__(self, event=START): # START / STOP
             def decorator(handler):
                 def wrapper(id):
@@ -1181,6 +1236,7 @@ class Application(object):
         """
         def decorator(handler):
             _, _, args, kwargs = define(handler)
+
             def wrapper():
                 # Bind data from @app.thread(START) or @app.set().
                 m = cp.process.plugins.ThreadManager(cp.engine)
@@ -1295,6 +1351,7 @@ App = Application
 # The certificate() function yields a free, self-signed certificate (valid for 365 days).
 # Visitors will get a browser warning that the certificate is not signed by a trusted third party.
 
+
 def certificate(domain=LOCALHOST, country=None, state=None, city=None, company=None, contact=None, signed=True, **kwargs):
     """ Returns a (private key, certificate)-tuple for a secure SSL-encrypted https server.
         With signed=False, returns a (private key, certificate request)-tuple.
@@ -1373,6 +1430,7 @@ def certificate(domain=LOCALHOST, country=None, state=None, city=None, company=N
 
 #---------------------------------------------------------------------------------------------------
 
+
 def redirect(path, code=303):
     """ Redirects the server to another route handler path 
         (or to another server for absolute URL's).
@@ -1380,6 +1438,7 @@ def redirect(path, code=303):
     raise HTTPRedirect(path, int(code))
 
 #---------------------------------------------------------------------------------------------------
+
 
 def static(path, root=None, mimetype=None):
     """ Returns the contents of the file at the given absolute path.
@@ -1392,6 +1451,7 @@ def static(path, root=None, mimetype=None):
 #---------------------------------------------------------------------------------------------------
 # http://cherrypy.readthedocs.org/en/latest/progguide/extending/customtools.html
 
+
 def _register(event, handler):
     """ Registers the given event handler (e.g., "on_end_request").
     """
@@ -1399,9 +1459,11 @@ def _register(event, handler):
     setattr(cp.tools, k, cp.Tool(event, handler))
     cp.config.update({"tools.%s.on" % k: True})
 
+
 def _request_start():
     # Register request start time.
     cp.request.time = time.time()
+
 
 def _request_end():
     #print(time.time() - cp.request.time)
@@ -1436,6 +1498,7 @@ _MARKUP.insert(1, r"\<\% for (.*?) in (.*?) : \%\>(.*)\<\% end for \%\>")
 _MARKUP = (p.replace(" ", r"\s*") for p in _MARKUP)
 _MARKUP = "(%s)" % "|".join(_MARKUP)
 _MARKUP = re.compile(_MARKUP, re.I | re.S | re.M)
+
 
 class Template(object):
 
@@ -1578,6 +1641,7 @@ class Template(object):
         """
         return "".join(self._render(self._compiled, *args, **kwargs))
 
+
 def template(string, *args, **kwargs):
     """ Returns the rendered template as a string.
     """
@@ -1608,6 +1672,7 @@ def template(string, *args, **kwargs):
 
 #### HTML ##########################################################################################
 # Useful HTML generators.
+
 
 class HTML:
 

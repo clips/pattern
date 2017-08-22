@@ -86,10 +86,12 @@ article_indefinite = {
     ("m", "gen"): "eines", ("f", "gen"): "einer", ("n", "gen"): "eines", ("p", "gen"): "einer",
 }
 
+
 def definite_article(word, gender=MALE, role=SUBJECT):
     """ Returns the definite article (der/die/das/die) for a given word.
     """
     return article_definite.get((gender[:1].lower(), role[:3].lower()))
+
 
 def indefinite_article(word, gender=MALE, role=SUBJECT):
     """ Returns the indefinite article (ein) for a given word.
@@ -99,6 +101,7 @@ def indefinite_article(word, gender=MALE, role=SUBJECT):
 DEFINITE   = "definite"
 INDEFINITE = "indefinite"
 
+
 def article(word, function=INDEFINITE, gender=MALE, role=SUBJECT):
     """ Returns the indefinite (ein) or definite (der/die/das/die) article for the given word.
     """
@@ -106,6 +109,7 @@ def article(word, function=INDEFINITE, gender=MALE, role=SUBJECT):
        and definite_article(word, gender, role) \
         or indefinite_article(word, gender, role)
 _article = article
+
 
 def referenced(word, article=INDEFINITE, gender=MALE, role=SUBJECT):
     """ Returns a string with the article + the word.
@@ -145,6 +149,7 @@ gender_majority_vote = {
         "op", "os", "ot", "pt", "rk", "rn", "ro", "to", "tt", "ul", "um", "uz"
     )
 }
+
 
 def gender(word, pos=NOUN):
     """ Returns the gender (MALE, FEMALE or NEUTRAL) for nouns (majority vote).
@@ -210,6 +215,7 @@ plural_inflections = [
     ("uss", "üsse"  ), ("ute", "uten" ), ("utz", "utz"  ), ("ver", "ver"  ), ("weg", "wege"  ),
     ("zer", "zer"   ), ("zug", "züge" ), ("ück", "ücke" )
 ]
+
 
 def pluralize(word, pos=NOUN, gender=MALE, role=SUBJECT, custom={}):
     """ Returns the plural of a given word.
@@ -316,6 +322,7 @@ singular = {
     "Löwen": "Löwe",
 }
 
+
 def singularize(word, pos=NOUN, gender=MALE, role=SUBJECT, custom={}):
     """ Returns the singular of a given word.
         The inflection is based on probability rather than gender and role.
@@ -357,10 +364,14 @@ prefix_separable = (
 )
 prefixes = prefix_inseparable + prefix_separable
 
+
 def encode_sz(s):
     return s.replace("ß", "ss")
+
+
 def decode_sz(s):
     return s.replace("ss", "ß")
+
 
 class Verbs(_Verbs):
 
@@ -518,6 +529,7 @@ adjective_attributive = {
     "wenig" : "wenig"
 }
 
+
 def attributive(adjective, gender=MALE, role=SUBJECT, article=None):
     """ For a predicative adjective, returns the attributive form (lowercase).
         In German, the attributive is formed with -e, -em, -en, -er or -es,
@@ -544,6 +556,7 @@ def attributive(adjective, gender=MALE, role=SUBJECT, article=None):
     # Default to strong inflection.
     return w + adjectives_strong.get((g, c), "")
 
+
 def predicative(adjective):
     """ Returns the predicative adjective (lowercase).
         In German, the attributive form preceding a noun is always used:
@@ -569,6 +582,7 @@ def predicative(adjective):
 COMPARATIVE = "er"
 SUPERLATIVE = "st"
 
+
 def grade(adjective, suffix=COMPARATIVE):
     """ Returns the comparative or superlative form of the given (inflected) adjective.
     """
@@ -579,8 +593,10 @@ def grade(adjective, suffix=COMPARATIVE):
     # große => großere, schönes => schöneres
     return adjective[:len(b)] + suffix + adjective[len(b):]
 
+
 def comparative(adjective):
     return grade(adjective, COMPARATIVE)
+
 
 def superlative(adjective):
     return grade(adjective, SUPERLATIVE)

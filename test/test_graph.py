@@ -18,6 +18,7 @@ from builtins import object, range
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestUtilityFunctions(unittest.TestCase):
 
     def setUp(self):
@@ -28,6 +29,7 @@ class TestUtilityFunctions(unittest.TestCase):
         class MyObject(object):
             def __init__(self, i):
                 self.i = i
+
             def copy(self):
                 return MyObject(graph.deepcopy(self.i))
         # Assert deep copy for different types.
@@ -58,6 +60,7 @@ class TestUtilityFunctions(unittest.TestCase):
         print("pattern.graph.coordinates()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestNode(unittest.TestCase):
 
@@ -124,6 +127,7 @@ class TestNode(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestEdge(unittest.TestCase):
 
     def setUp(self):
@@ -147,6 +151,7 @@ class TestEdge(unittest.TestCase):
         print("pattern.graph.Edge")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestGraph(unittest.TestCase):
 
@@ -319,8 +324,10 @@ class TestGraph(unittest.TestCase):
         self.assertTrue(len(g3.nodes), 2)
         self.assertTrue(len(g3.edges), 1)
         # Assert copy with subclasses of Node and Edge.
+
         class MyNode(graph.Node):
             pass
+
         class MyEdge(graph.Edge):
             pass
         g4 = graph.Graph()
@@ -333,6 +340,7 @@ class TestGraph(unittest.TestCase):
         print("pattern.graph.Graph.copy()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestGraphLayout(unittest.TestCase):
 
@@ -354,6 +362,7 @@ class TestGraphLayout(unittest.TestCase):
         gl.update()
         self.assertTrue(gl.iterations == 1)
         print("pattern.graph.GraphLayout")
+
 
 class TestGraphSpringLayout(TestGraphLayout):
 
@@ -407,6 +416,7 @@ class TestGraphSpringLayout(TestGraphLayout):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestGraphTraversal(unittest.TestCase):
 
     def setUp(self):
@@ -422,6 +432,7 @@ class TestGraphTraversal(unittest.TestCase):
         # Assert depth-first vs. breadth-first search.
         def visit(node):
             a.append(node)
+
         def traversable(node, edge):
             if edge.node2.id == "e":
                 return False
@@ -568,6 +579,7 @@ class TestGraphTraversal(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestGraphPartitioning(unittest.TestCase):
 
     def setUp(self):
@@ -582,8 +594,10 @@ class TestGraphPartitioning(unittest.TestCase):
 
     def test_union(self):
         self.assertEqual(graph.union([1, 2], [2, 3]), [1, 2, 3])
+
     def test_intersection(self):
         self.assertEqual(graph.intersection([1, 2], [2, 3]), [2])
+
     def test_difference(self):
         self.assertEqual(graph.difference([1, 2], [2, 3]), [1])
 
@@ -610,6 +624,7 @@ class TestGraphPartitioning(unittest.TestCase):
         print("pattern.graph.cliques()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestGraphMaintenance(unittest.TestCase):
 
@@ -667,6 +682,7 @@ class TestGraphMaintenance(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestGraphCommonsense(unittest.TestCase):
 
     def setUp(self):
@@ -704,6 +720,7 @@ class TestGraphCommonsense(unittest.TestCase):
         print("pattern.graph.commonsense.Commonsense.similarity()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 def suite():
     suite = unittest.TestSuite()

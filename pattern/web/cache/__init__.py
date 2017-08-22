@@ -45,10 +45,14 @@ except:
 
 TMP = os.path.join(tempfile.gettempdir(), "pattern_web")
 
+
 def date_now():
     return datetime.datetime.today()
+
+
 def date_modified(path):
     return datetime.datetime.fromtimestamp(os.stat(path)[8])
+
 
 class Cache(object):
 
@@ -62,6 +66,7 @@ class Cache(object):
 
     def _get_path(self):
         return self._path
+
     def _set_path(self, path):
         if not os.path.isdir(path):
             os.makedirs(path)

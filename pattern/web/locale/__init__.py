@@ -157,6 +157,7 @@ LANGUAGE_REGION = {
     'zu-ZW': ('Zulu', 'Zimbabwe', 'zu', 'ZW')
 }
 
+
 def encode_language(name):
     """ Returns the language code for the given language name.
         For example: encode_language("dutch") => "nl".
@@ -164,6 +165,7 @@ def encode_language(name):
     for tag, (language, region, iso639, iso3166) in LANGUAGE_REGION.items():
         if language == name.capitalize():
             return iso639
+
 
 def decode_language(code):
     """ Returns the language name for the given language code.
@@ -173,6 +175,7 @@ def decode_language(code):
         if iso639 == code.lower():
             return language
 
+
 def encode_region(name):
     """ Returns the region code for the given region name.
         For example: encode_region("belgium") => "BE".
@@ -181,6 +184,7 @@ def encode_region(name):
         if region == name.capitalize():
             return iso3166
 
+
 def decode_region(code):
     """ Returns the region name for the given region code.
         For example: decode_region("be") => "Belgium".
@@ -188,6 +192,7 @@ def decode_region(code):
     for tag, (language, region, iso639, iso3166) in LANGUAGE_REGION.items():
         if iso3166 == code.upper():
             return region
+
 
 def languages(region):
     """ Returns a list of language codes for the given region code.
@@ -199,6 +204,7 @@ def languages(region):
             a.append(iso639)
     return sorted(a)
 
+
 def regions(language):
     """ Returns a list of region codes for the given language code.
         For example: regions(encode_language("dutch")) => ["NL", "BE"]
@@ -208,6 +214,7 @@ def regions(language):
         if iso639 == x:
             a.append(iso3166)
     return sorted(a, key=lambda tag: tag.lower() != x and tag or "")
+
 
 def regionalize(language):
     """ Returns a list of RFC-5646 language-region codes for the given language code.
@@ -222,6 +229,7 @@ def regionalize(language):
     a = [language + "-" + r for r in regions(language.lower())]
     a = sorted(a, key=main, reverse=True)
     return a
+
 
 def market(language):
     """ Returns the first item from regionalize(language).
@@ -386,6 +394,7 @@ GEOCODE = {
            'Yaounde': (  3.867,  11.517, "en", "Cameroon"),
             'Zagreb': ( 45.800,  16.000, "hr", "Croatia")
 }
+
 
 def geocode(location):
     """ Returns a (latitude, longitude, language code, region)-tuple 

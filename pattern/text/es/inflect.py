@@ -54,6 +54,7 @@ VOWELS = ("a", "e", "i", "o", "u")
 re_vowel = re.compile(r"a|e|i|o|u", re.I)
 is_vowel = lambda ch: ch in VOWELS
 
+
 def normalize(vowel):
     return {"á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u"}.get(vowel, vowel)
 
@@ -64,6 +65,7 @@ def normalize(vowel):
 MASCULINE, FEMININE, NEUTER, PLURAL = \
     MALE, FEMALE, NEUTRAL, PLURAL = \
         M, F, N, PL = "m", "f", "n", "p"
+
 
 def definite_article(word, gender=MALE):
     """ Returns the definite article (el/la/los/las) for a given word.
@@ -83,6 +85,7 @@ def indefinite_article(word, gender=MALE):
 DEFINITE   = "definite"
 INDEFINITE = "indefinite"
 
+
 def article(word, function=INDEFINITE, gender=MALE):
     """ Returns the indefinite (un) or definite (el) article for the given word.
     """
@@ -90,6 +93,7 @@ def article(word, function=INDEFINITE, gender=MALE):
        and definite_article(word, gender) \
         or indefinite_article(word, gender)
 _article = article
+
 
 def referenced(word, article=INDEFINITE, gender=MALE):
     """ Returns a string with the article + the word.
@@ -104,6 +108,7 @@ plural_irregular = {
      "sofá": "sofás",
    "dominó": "dominós",
 }
+
 
 def pluralize(word, pos=NOUN, custom={}):
     """ Returns the plural of a given word.
@@ -164,6 +169,7 @@ def pluralize(word, pos=NOUN, custom={}):
 #print(pluralize("papá"))   # papás
 
 #### SINGULARIZE ###################################################################################
+
 
 def singularize(word, pos=NOUN, custom={}):
     if word in custom:
@@ -251,6 +257,7 @@ verb_irregular_inflections = [
     (      "ye", "ir"   ), (     "tí", "tir"    ), (     "cé", "zar"   ), (      "ie", "iar"  ),
     (      "id", "ir"   ), (     "ué", "ar"     ),
 ]
+
 
 class Verbs(_Verbs):
 
@@ -381,6 +388,7 @@ conjugate, lemma, lexeme, tenses = \
 
 #### ATTRIBUTIVE & PREDICATIVE #####################################################################
 
+
 def attributive(adjective, gender=MALE):
     w = adjective.lower()
     # normal => normales
@@ -405,6 +413,7 @@ def attributive(adjective, gender=MALE):
 #print(attributive("normal", gender=MALE))         # normal
 #print(attributive("normal", gender=FEMALE))       # normal
 #print(attributive("normal", gender=PLURAL))       # normales
+
 
 def predicative(adjective):
     """ Returns the predicative adjective (lowercase).

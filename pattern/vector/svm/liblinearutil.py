@@ -65,6 +65,7 @@ def svm_read_problem(data_file_name, return_scipy=False):
 		prob_x = sparse.csr_matrix((prob_x, col_idx, row_ptr))
 	return (prob_y, prob_x)
 
+
 def load_model(model_file_name):
 	"""
 	load_model(model_file_name) -> model
@@ -78,6 +79,7 @@ def load_model(model_file_name):
 	model = toPyModel(model)
 	return model
 
+
 def save_model(model_file_name, model):
 	"""
 	save_model(model_file_name, model) -> None
@@ -85,6 +87,7 @@ def save_model(model_file_name, model):
 	Save a LIBLINEAR model to the file model_file_name.
 	"""
 	liblinear.save_model(model_file_name.encode(), model)
+
 
 def evaluations_scipy(ty, pv):
 	"""
@@ -112,6 +115,7 @@ def evaluations_scipy(ty, pv):
 		except:
 			SCC = float('nan')
 	return (float(ACC), float(MSE), float(SCC))
+
 
 def evaluations(ty, pv, useScipy = True):
 	"""
@@ -145,6 +149,7 @@ def evaluations(ty, pv, useScipy = True):
 	except:
 		SCC = float('nan')
 	return (float(ACC), float(MSE), float(SCC))
+
 
 def train(arg1, arg2=None, arg3=None):
 	"""
@@ -253,6 +258,7 @@ def train(arg1, arg2=None, arg3=None):
 		m = toPyModel(m)
 
 		return m
+
 
 def predict(y, x, m, options=""):
 	"""

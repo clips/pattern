@@ -25,6 +25,7 @@ except:
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestCache(unittest.TestCase):
 
     def setUp(self):
@@ -41,6 +42,7 @@ class TestCache(unittest.TestCase):
         print("pattern.web.Cache")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestUnicode(unittest.TestCase):
 
@@ -75,6 +77,7 @@ class TestUnicode(unittest.TestCase):
         self.assertEqual(web.fix("â€“"), "–")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestURL(unittest.TestCase):
 
@@ -265,6 +268,7 @@ class TestURL(unittest.TestCase):
         print("pattern.web.oauth.sign()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestPlaintext(unittest.TestCase):
 
@@ -459,6 +463,7 @@ class TestPlaintext(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestSearchEngine(unittest.TestCase):
 
     def setUp(self):
@@ -520,27 +525,36 @@ class TestSearchEngine(unittest.TestCase):
 
     def test_search_google(self):
         self._test_search_engine("Google", *self.api["Google"])
+
     def test_search_yahoo(self):
         self._test_search_engine("Yahoo", *self.api["Yahoo"])
+
     @unittest.skip('Bing Search API has no free quota')
     def test_search_bing(self):
         self._test_search_engine("Bing", *self.api["Bing"])
+
     def test_search_twitter(self):
         self._test_search_engine("Twitter", *self.api["Twitter"])
+
     @unittest.skip('Mediawiki/Wikipedia API or appearance changed')
     def test_search_wikipedia(self):
         self._test_search_engine("Wikipedia", *self.api["Wikipedia"])
+
     @unittest.skip('Mediawiki API or appearance changed')
     def test_search_wikia(self):
         self._test_search_engine("Wikia", *self.api["Wikia"], **{"query": "games"})
+
     def test_search_flickr(self):
         self._test_search_engine("Flickr", *self.api["Flickr"], **{"type": web.IMAGE})
+
     @unittest.skip('Facebook API changed')
     def test_search_facebook(self):
         self._test_search_engine("Facebook", *self.api["Facebook"])
+
     @unittest.skip('ProductWiki is deprecated')
     def test_search_productwiki(self):
         self._test_search_engine("ProductWiki", *self.api["ProductWiki"], **{"query": "computer"})
+
     def test_search_newsfeed(self):
         for feed, url in web.feeds.items():
             self._test_search_engine("Newsfeed", url, None, web.Newsfeed, query=url, type=web.NEWS)
@@ -574,25 +588,34 @@ class TestSearchEngine(unittest.TestCase):
 
     def test_results_google(self):
         self._test_results("Google", *self.api["Google"])
+
     def test_results_yahoo(self):
         self._test_results("Yahoo", *self.api["Yahoo"])
+
     def test_results_yahoo_images(self):
         self._test_results("Yahoo", *self.api["Yahoo"], **{"type": web.IMAGE, "baseline": [6, 6, 0, 6]})
+
     def test_results_yahoo_news(self):
         self._test_results("Yahoo", *self.api["Yahoo"], **{"type": web.NEWS})
+
     @unittest.skip('Bing API changed')
     def test_results_bing(self):
         self._test_results("Bing", *self.api["Bing"])
+
     @unittest.skip('Bing API changed')
     def test_results_bing_images(self):
         self._test_results("Bing", *self.api["Bing"], **{"type": web.IMAGE, "baseline": [6, 6, 0, 6]})
+
     @unittest.skip('Bing API changed')
     def test_results_bing_news(self):
         self._test_results("Bing", *self.api["Bing"], **{"type": web.NEWS})
+
     def test_results_twitter(self):
         self._test_results("Twitter", *self.api["Twitter"])
+
     def test_results_flickr(self):
         self._test_results("Flickr", *self.api["Flickr"], **{"baseline": [6, 6, 0, 6]})
+
     @unittest.skip('Facebook API changed')
     def test_results_facebook(self):
         self._test_results("Facebook", *self.api["Facebook"], **{"baseline": [0, 1, 0, 0]})
@@ -622,9 +645,11 @@ class TestSearchEngine(unittest.TestCase):
     def test_twitter_author(self):
         self.assertEqual(web.author("me"), "from:me")
         print("pattern.web.author()")
+
     def test_twitter_hashtags(self):
         self.assertEqual(web.hashtags("#cat #dog"), ["#cat", "#dog"])
         print("pattern.web.hashtags()")
+
     def test_twitter_retweets(self):
         self.assertEqual(web.retweets("RT @me: blah"), ["@me"])
         print("pattern.web.retweets()")
@@ -641,9 +666,11 @@ class TestSearchEngine(unittest.TestCase):
 
     def test_yahoo_image_size(self):
         self._test_search_image_size("Yahoo", *self.api["Yahoo"])
+
     @unittest.skip('Bing Search API has no free quota')
     def test_bing_image_size(self):
         self._test_search_image_size("Bing", *self.api["Bing"])
+
     def test_flickr_image_size(self):
         self._test_search_image_size("Flickr", *self.api["Flickr"])
 
@@ -739,6 +766,7 @@ class TestSearchEngine(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestDOM(unittest.TestCase):
 
     def setUp(self):
@@ -797,6 +825,7 @@ class TestDOM(unittest.TestCase):
     def test_node_traverse(self):
         # Assert Node.traverse() (must visit all child nodes recursively).
         self.b = False
+
         def visit(node):
             if node.type == web.ELEMENT and node.tag == "span":
                 self.b = True
@@ -864,6 +893,7 @@ class TestDOM(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+
 class TestDocumentParser(unittest.TestCase):
 
     def setUp(self):
@@ -884,6 +914,7 @@ class TestDocumentParser(unittest.TestCase):
         print("pattern.web.parsedocx()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestLocale(unittest.TestCase):
 
@@ -953,6 +984,7 @@ class TestLocale(unittest.TestCase):
 #---------------------------------------------------------------------------------------------------
 # You need to define a username, password and mailbox to test on.
 
+
 class TestMail(unittest.TestCase):
 
     def setUp(self):
@@ -1013,6 +1045,7 @@ class TestMail(unittest.TestCase):
         print("pattern.web.Mail.read()")
 
 #---------------------------------------------------------------------------------------------------
+
 
 class TestCrawler(unittest.TestCase):
 
@@ -1077,6 +1110,7 @@ class TestCrawler(unittest.TestCase):
         print("pattern.web.Crawler.crawl(method=BREADTH)")
 
 #---------------------------------------------------------------------------------------------------
+
 
 def suite():
     suite = unittest.TestSuite()
