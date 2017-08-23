@@ -226,7 +226,7 @@ class Node(object):
             Override this method in a subclass for custom drawing.
         """
         # Draw the node weight as a shadow (based on node betweenness centrality).
-        if weighted is not False and self.centrality > (weighted == True and -1 or weighted):
+        if weighted is not False and self.centrality > (weighted and -1 or weighted):
             w = self.centrality * 35
             ellipse(
                 self.x,

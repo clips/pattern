@@ -19,7 +19,7 @@ def find(function, list):
     """ Returns the first item in the list for which function(item) is True, None otherwise.
     """
     for item in list:
-        if function(item) == True:
+        if function(item):
             return item
 
 ### MOOD ###########################################################################################

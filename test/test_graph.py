@@ -173,7 +173,7 @@ class TestGraph(unittest.TestCase):
         self.assertTrue(g.density     == 2 / 3.0)
         self.assertTrue(g.is_complete == False)
         self.assertTrue(g.is_sparse   == False)
-        self.assertTrue(g.is_dense    == True)
+        self.assertTrue(g.is_dense)
         self.assertTrue(g._adjacency is None)
         self.assertTrue(isinstance(g.layout, graph.GraphLayout))
         self.assertTrue(isinstance(g.layout, graph.GraphSpringLayout))

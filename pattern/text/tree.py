@@ -69,7 +69,7 @@ def find(function, iterable):
     """ Returns the first item in the list for which function(item) is True, None otherwise.
     """
     for x in iterable:
-        if function(x) == True:
+        if function(x):
             return x
 
 

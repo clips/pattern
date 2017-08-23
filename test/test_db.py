@@ -350,7 +350,7 @@ class _TestDatabase(object):
         self.assertTrue(self.db.password   == PASSWORD)
         self.assertTrue(self.db.tables     == {})
         self.assertTrue(self.db.relations  == [])
-        self.assertTrue(self.db.connected  == True)
+        self.assertTrue(self.db.connected)
         self.db.disconnect()
         self.assertTrue(self.db.connected  == False)
         self.assertTrue(self.db.connection is None)
