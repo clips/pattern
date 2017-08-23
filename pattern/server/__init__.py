@@ -793,7 +793,7 @@ class localdict(dict):
     def __init__(self, data=None, **kwargs):
         """ Thread-safe dictionary.
         """
-        self.__dict__["_data"] = data if data != None else threading.local()
+        self.__dict__["_data"] = data if data is not None else threading.local()
         self.__dict__.update(kwargs) # Attributes are global in every thread.
 
     def items(self):

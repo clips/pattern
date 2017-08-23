@@ -353,7 +353,7 @@ class _TestDatabase(object):
         self.assertTrue(self.db.connected  == True)
         self.db.disconnect()
         self.assertTrue(self.db.connected  == False)
-        self.assertTrue(self.db.connection == None)
+        self.assertTrue(self.db.connection is None)
         self.db.connect()
         print("pattern.db.Database(type=%s)" % self.type.upper())
 

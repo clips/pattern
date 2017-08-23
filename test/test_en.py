@@ -677,7 +677,7 @@ class TestParseTree(unittest.TestCase):
         self.assertTrue(v.string == "with a")
         # Assert sentence slice tag integrity.
         self.assertTrue(v.words[0].type  == "IN")
-        self.assertTrue(v.words[1].chunk == None)
+        self.assertTrue(v.words[1].chunk is None)
         print("pattern.en.Slice")
 
     def test_chunk(self):
@@ -690,8 +690,8 @@ class TestParseTree(unittest.TestCase):
         self.assertTrue(v.words   == [self.text[0].words[5], self.text[0].words[6]])
         self.assertTrue(v.head    ==  self.text[0].words[6])
         self.assertTrue(v.type    == "NP")
-        self.assertTrue(v.role    == None)
-        self.assertTrue(v.pnp     != None)
+        self.assertTrue(v.role is None)
+        self.assertTrue(v.pnp is not None)
         # Assert chunk that is subject/object of the sentence ("pizza").
         v = self.text[0].chunks[2]
         self.assertTrue(v.role     == "OBJ")
@@ -699,7 +699,7 @@ class TestParseTree(unittest.TestCase):
         self.assertTrue(v.related  == [self.text[0].chunks[0], self.text[0].chunks[1]])
         self.assertTrue(v.subject  ==  self.text[0].chunks[0])
         self.assertTrue(v.verb     ==  self.text[0].chunks[1])
-        self.assertTrue(v.object   == None)
+        self.assertTrue(v.object is None)
         # Assert chunk traversal.
         self.assertEqual(v.nearest("VP"), self.text[0].chunks[1])
         self.assertEqual(v.previous(), self.text[0].chunks[1])
@@ -734,7 +734,7 @@ class TestParseTree(unittest.TestCase):
         self.assertTrue(v.lemma  == "fork")
         self.assertTrue(v.type   == "NN")
         self.assertTrue(v.chunk  == self.text[0].chunks[4])
-        self.assertTrue(v.pnp    != None)
+        self.assertTrue(v.pnp is not None)
         for i, tags in enumerate([
           ["I", "PRP", "B-NP", "O", "NP-SBJ-1", "i"],
           ["'m", "VBP", "B-VP", "O", "VP-1", "be"],

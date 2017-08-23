@@ -87,7 +87,7 @@ class TestNode(unittest.TestCase):
         self.assertTrue(n.force.x       == graph.Vector(0.0, 0.0).x)
         self.assertTrue(n.force.y       == graph.Vector(0.0, 0.0).y)
         self.assertTrue(n.radius        == 5)
-        self.assertTrue(n.fill          == None)
+        self.assertTrue(n.fill is None)
         self.assertTrue(n.stroke        == (0, 0, 0, 1))
         self.assertTrue(n.strokewidth   == 1)
         self.assertTrue(n.text.string   == "a")
@@ -122,7 +122,7 @@ class TestNode(unittest.TestCase):
 
     def test_text(self):
         n = self.g.add_node("d", text=None)
-        self.assertTrue(n.text == None)
+        self.assertTrue(n.text is None)
         print("pattern.graph.Node.text")
 
 #---------------------------------------------------------------------------------------------------
@@ -174,7 +174,7 @@ class TestGraph(unittest.TestCase):
         self.assertTrue(g.is_complete == False)
         self.assertTrue(g.is_sparse   == False)
         self.assertTrue(g.is_dense    == True)
-        self.assertTrue(g._adjacency  == None)
+        self.assertTrue(g._adjacency is None)
         self.assertTrue(isinstance(g.layout, graph.GraphLayout))
         self.assertTrue(isinstance(g.layout, graph.GraphSpringLayout))
         print("pattern.graph.Graph")

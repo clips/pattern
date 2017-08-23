@@ -55,7 +55,7 @@ def is_short_syllable(w, before=None):
         - a vowel at the beginning of the word followed by a non-vowel. 
         Checks the three characters before the given index in the word (or entire word if None).
     """
-    if before != None:
+    if before is not None:
         i = before < 0 and len(w) + before or before
         return is_short_syllable(w[max(0, i - 3):i])
     if len(w) == 3 and is_consonant(w[0]) and is_vowel(w[1]) and is_consonant(w[2]) and w[2] not in "wxY":

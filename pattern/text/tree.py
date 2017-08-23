@@ -1435,7 +1435,7 @@ def parse_xml(sentence, tab="\t", id=""):
             xml.append(indent + '<%s%s%s%s%s%s>' % (
                 XML_CHUNK,
                 chunk.type and ' %s="%s"' % (XML_TYPE, chunk.type) or "",
-                chunk.relations and chunk.role != None and ' %s="%s"' % (XML_RELATION, r2) or "",
+                chunk.relations and chunk.role is not None and ' %s="%s"' % (XML_RELATION, r2) or "",
                 chunk.relation  and chunk.type == "VP" and ' %s="%s"' % (XML_ID, uid(chunk.relation)) or "",
                 chunk.relation  and chunk.type != "VP" and ' %s="%s"' % (XML_OF, r1) or "",
                 chunk.attachments and ' %s="%s"' % (XML_ANCHOR, uid("A", anchors[chunk.start])) or ""
@@ -1452,7 +1452,7 @@ def parse_xml(sentence, tab="\t", id=""):
             XML_WORD,
             word.type and ' %s="%s"' % (XML_TYPE, xml_encode(word.type)) or '',
             word.lemma and ' %s="%s"' % (XML_LEMMA, xml_encode(word.lemma)) or '',
-            (" " + " ".join(['%s="%s"' % (k, v) for k, v in word.custom_tags.items() if v != None])).rstrip(),
+            (" " + " ".join(['%s="%s"' % (k, v) for k, v in word.custom_tags.items() if v is not None])).rstrip(),
             xml_encode(word.string),
             XML_WORD
         ))

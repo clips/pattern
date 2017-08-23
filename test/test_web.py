@@ -198,10 +198,10 @@ class TestURL(unittest.TestCase):
         self.assertEqual(v.exists, False)
         # Assert socket connection.
         v = web.URL(self.live)
-        self.assertTrue(v.open() != None)
+        self.assertTrue(v.open() is not None)
         self.assertEqual(v.exists, True)
         # Assert user-agent and referer.
-        self.assertTrue(v.open(user_agent=web.MOZILLA, referrer=web.REFERRER) != None)
+        self.assertTrue(v.open(user_agent=web.MOZILLA, referrer=web.REFERRER) is not None)
         print("pattern.web.URL.exists")
         print("pattern.web.URL.open()")
 

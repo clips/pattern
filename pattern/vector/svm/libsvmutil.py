@@ -146,7 +146,7 @@ def svm_train(arg1, arg2=None, arg3=None):
 			param = arg2
 		else:
 			param = svm_parameter(arg2)
-	if prob == None or param == None:
+	if prob is None or param is None:
 		raise TypeError("Wrong types for the arguments")
 
 	if param.kernel_type == PRECOMPUTED:

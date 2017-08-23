@@ -40,7 +40,7 @@ def svm_read_problem(data_file_name, return_scipy=False):
 			line += ['']
 		label, features = line
 		prob_y += [float(label)]
-		if scipy != None and return_scipy:
+		if scipy is not None and return_scipy:
 			nz = 0
 			for e in features.split():
 				ind, val = e.split(":")
@@ -57,7 +57,7 @@ def svm_read_problem(data_file_name, return_scipy=False):
 				if val != 0:
 					xi[int(ind)] = float(val)
 			prob_x += [xi]
-	if scipy != None and return_scipy:
+	if scipy is not None and return_scipy:
 		prob_y = scipy.array(prob_y)
 		prob_x = scipy.array(prob_x)
 		col_idx = scipy.array(col_idx)
@@ -97,7 +97,7 @@ def evaluations_scipy(ty, pv):
 	Calculate accuracy, mean squared error and squared correlation coefficient
 	using the true values (ty) and predicted values (pv).
 	"""
-	if not (scipy != None and isinstance(ty, scipy.ndarray) and isinstance(pv, scipy.ndarray)):
+	if not (scipy is not None and isinstance(ty, scipy.ndarray) and isinstance(pv, scipy.ndarray)):
 		raise TypeError("type of ty and pv must be ndarray")
 	if len(ty) != len(pv):
 		raise ValueError("len(ty) must be equal to len(pv)")
@@ -126,7 +126,7 @@ def evaluations(ty, pv, useScipy = True):
 	Calculate accuracy, mean squared error and squared correlation coefficient
 	using the true values (ty) and predicted values (pv).
 	"""
-	if scipy != None and useScipy:
+	if scipy is not None and useScipy:
 		return evaluations_scipy(scipy.asarray(ty), scipy.asarray(pv))
 	if len(ty) != len(pv):
 		raise ValueError("len(ty) must be equal to len(pv)")
@@ -219,7 +219,7 @@ def train(arg1, arg2=None, arg3=None):
 			param = arg2
 		else:
 			param = parameter(arg2)
-	if prob == None or param == None:
+	if prob is None or param is None:
 		raise TypeError("Wrong types for the arguments")
 
 	prob.set_bias(param.bias)
