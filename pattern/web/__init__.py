@@ -3749,7 +3749,7 @@ def abs(url, base=None):
     """ Returns the absolute URL:
         ../media + http://en.wikipedia.org/wiki/ => http://en.wikipedia.org/media
     """
-    if url.startswith("#") and not base is None and not base.endswith("/"):
+    if url.startswith("#") and base is not None and not base.endswith("/"):
         if not re.search("[^/]/[^/]", base):
             base += "/"
     return urljoin(base, url)
