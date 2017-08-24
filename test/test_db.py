@@ -342,17 +342,17 @@ class _TestDatabase(object):
 
     def test_database(self):
         # Assert Database properties.
-        self.assertTrue(self.db.type       == self.type)
-        self.assertTrue(self.db.name       == "pattern_unittest_db")
-        self.assertTrue(self.db.host       == HOST)
-        self.assertTrue(self.db.port       == PORT)
-        self.assertTrue(self.db.username   == USERNAME)
-        self.assertTrue(self.db.password   == PASSWORD)
-        self.assertTrue(self.db.tables     == {})
-        self.assertTrue(self.db.relations  == [])
+        self.assertTrue(self.db.type == self.type)
+        self.assertTrue(self.db.name == "pattern_unittest_db")
+        self.assertTrue(self.db.host == HOST)
+        self.assertTrue(self.db.port == PORT)
+        self.assertTrue(self.db.username == USERNAME)
+        self.assertTrue(self.db.password == PASSWORD)
+        self.assertTrue(self.db.tables == {})
+        self.assertTrue(self.db.relations == [])
         self.assertTrue(self.db.connected)
         self.db.disconnect()
-        self.assertTrue(self.db.connected  == False)
+        self.assertTrue(self.db.connected == False)
         self.assertTrue(self.db.connection is None)
         self.db.connect()
         print("pattern.db.Database(type=%s)" % self.type.upper())
@@ -371,11 +371,11 @@ class _TestDatabase(object):
             self.assertEqual(self.db.query, "show columns from `products`;")
         # Assert new Table exists in Database.tables.
         self.assertTrue(isinstance(v, db.Table))
-        self.assertTrue(len(self.db)             == 1)
-        self.assertTrue(v.pk                     == "pid")
-        self.assertTrue(v.fields                 == ["pid", "name", "price"])
-        self.assertTrue(self.db[v.name]          == v)
-        self.assertTrue(self.db.tables[v.name]   == v)
+        self.assertTrue(len(self.db) == 1)
+        self.assertTrue(v.pk == "pid")
+        self.assertTrue(v.fields == ["pid", "name", "price"])
+        self.assertTrue(self.db[v.name] == v)
+        self.assertTrue(self.db.tables[v.name] == v)
         self.assertTrue(getattr(self.db, v.name) == v)
         # Assert Database._field_SQL subroutine for Database.create().
         for field, sql1, sql2 in (
@@ -469,7 +469,7 @@ class TestSchema(unittest.TestCase):
         print("pattern.db.field()")
 
     def test_schema(self):
-        now1 =  "current_timestamp"
+        now1 = "current_timestamp"
         now2 = "'CURRENT_TIMESTAMP'"
         # Assert Schema (= table schema in a uniform way across database engines).
         #   NAME    TYPE            DEFAULT INDEX  OPTIONAL
@@ -534,13 +534,13 @@ class _TestTable(object):
     def test_table(self):
         # Assert Table properties.
         v = self.db.persons
-        self.assertTrue(v.db          == self.db)
-        self.assertTrue(v.pk          == "id")
-        self.assertTrue(v.fields      == ["id", "name"])
-        self.assertTrue(v.name        == "persons")
+        self.assertTrue(v.db == self.db)
+        self.assertTrue(v.pk == "id")
+        self.assertTrue(v.fields == ["id", "name"])
+        self.assertTrue(v.name == "persons")
         self.assertTrue(v.abs("name") == "persons.name")
-        self.assertTrue(v.rows()      == [])
-        self.assertTrue(v.schema["id"].type  == db.INTEGER)
+        self.assertTrue(v.rows() == [])
+        self.assertTrue(v.schema["id"].type == db.INTEGER)
         self.assertTrue(v.schema["id"].index == db.PRIMARY)
         print("pattern.db.Table")
 
@@ -733,7 +733,7 @@ class _TestQuery(object):
 
     def test_filterchain(self):
         # Assert WHERE with AND/OR combinations from FilterChain object().
-        yesterday  = db.date()
+        yesterday = db.date()
         yesterday -= db.time(days=1)
         f1 = db.FilterChain(("name", "garlic bread"))
         f2 = db.FilterChain(("name", "pizza"), ("price", 10, "<"), operator=db.AND)
@@ -837,7 +837,7 @@ class _TestQuery(object):
         self.db.create(v.xml, name="persons2")
         self.assertTrue("persons2" in self.db)
         self.assertTrue(self.db.persons2.fields == ["name", "gender"])
-        self.assertTrue(len(self.db.persons2)   == 3)
+        self.assertTrue(len(self.db.persons2) == 3)
         print("pattern.db.Query.xml")
 
 

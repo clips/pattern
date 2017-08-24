@@ -66,11 +66,11 @@ class TestInflection(unittest.TestCase):
     def test_attributive(self):
         # Assert "alto" => "altos" (masculine, plural), and others.
         for lemma, inflected, gender in (
-          ("alto",  "alto",   es.MALE   + es.SINGULAR),
-          ("alto",  "altos",  es.MALE   + es.PLURAL),
+          ("alto",  "alto",   es.MALE + es.SINGULAR),
+          ("alto",  "altos",  es.MALE + es.PLURAL),
           ("alto",  "alta",   es.FEMALE + es.SINGULAR),
           ("alto",  "altas",  es.FEMALE + es.PLURAL),
-          ("verde", "verdes", es.MALE   + es.PLURAL),
+          ("verde", "verdes", es.MALE + es.PLURAL),
           ("verde", "verdes", es.FEMALE + es.PLURAL)):
             v = es.attributive(lemma, gender)
             self.assertEqual(v, inflected)

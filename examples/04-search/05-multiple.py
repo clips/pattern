@@ -29,7 +29,7 @@ for w in m[0].words:
 # "*" matches each word in the sentence.
 # This yields a list with a Match object for each word.
 print("")
-print("* => %s" %  search("*", t))
+print("* => %s" % search("*", t))
 
 # "*+" matches all words.
 # This yields a list with one Match object containing all words.

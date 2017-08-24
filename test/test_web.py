@@ -708,13 +708,13 @@ class TestSearchEngine(unittest.TestCase):
         self.assertTrue(isinstance(v.media, list))
         self.assertTrue(isinstance(v.languages, dict))
         # Assert WikipediaArticle properties content.
-        self.assertTrue(v.string  == v.plaintext())
-        self.assertTrue(v.html    == v.source)
+        self.assertTrue(v.string == v.plaintext())
+        self.assertTrue(v.html == v.source)
         self.assertTrue("</div>"  in v.source)
         self.assertTrue("cat"     in v.title.lower())
         self.assertTrue("Felis"   in v.links)
         self.assertTrue("Felines" in v.categories)
-        self.assertTrue("en"      == v.language)
+        self.assertTrue("en" == v.language)
         self.assertTrue("fr"      in v.languages)
         self.assertTrue("chat"    in v.languages["fr"].lower())
         self.assertTrue(v.external[0].startswith("http"))
@@ -990,11 +990,11 @@ class TestMail(unittest.TestCase):
     def setUp(self):
         self.username = ""
         self.password = ""
-        self.service  = web.GMAIL
-        self.port     = 993
-        self.SSL      = True
-        self.query1   = "google" # FROM-field query in Inbox.
-        self.query2   = "viagra" # SUBJECT-field query in Spam.
+        self.service = web.GMAIL
+        self.port = 993
+        self.SSL = True
+        self.query1 = "google" # FROM-field query in Inbox.
+        self.query2 = "viagra" # SUBJECT-field query in Spam.
 
     def test_mail(self):
         if not self.username or not self.password:

@@ -400,8 +400,8 @@ least_common_subsumer = lcs = ancestor
 ### WORDNET3 TO WORDNET2 ###########################################################################
 # Map WordNet3 synset id's to WordNet2 synset id's.
 
-_map32_pos1  = {NN: "n", VB: "v", JJ: "a", RB: "r"}
-_map32_pos2  = {"n": NN, "v": VB, "a": JJ, "s" : JJ, "r": RB}
+_map32_pos1 = {NN: "n", VB: "v", JJ: "a", RB: "r"}
+_map32_pos2 = {"n": NN, "v": VB, "a": JJ, "s" : JJ, "r": RB}
 _map32_cache = None
 
 

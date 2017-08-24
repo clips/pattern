@@ -947,7 +947,7 @@ def distance(v1, v2, method=COSINE):
         # Given method is a function of the form: distance(v1, v2) => float.
         return method(v1, v2)
 
-_distance  = distance
+_distance = distance
 
 
 def entropy(p=[], base=None):
@@ -1137,12 +1137,12 @@ class Model(object):
     def _update(self):
         # Ensures that all document vectors are recalculated
         # when a document is added or deleted (= new features).
-        self._df  = {}
+        self._df = {}
         self._cos = {}
-        self._pp  = {}
-        self._x2  = {}
-        self._ig  = {}
-        self._gr  = {}
+        self._pp = {}
+        self._x2 = {}
+        self._ig = {}
+        self._gr = {}
         self._inverted = {}
         self._vector = None
         self._classifier = None
@@ -1616,8 +1616,8 @@ class Model(object):
             # IG
             for f in F:
                 Vf = V[f]
-                n  = sum(sum(Vf[v].values()) for v in Vf) # total value count
-                n  = float(n) or 1
+                n = sum(sum(Vf[v].values()) for v in Vf) # total value count
+                n = float(n) or 1
                 ig = HC
                 si = 0 # split info
                 for Cv in Vf.values():
@@ -2146,8 +2146,8 @@ def hierarchical(vectors, k=1, iterations=1000, distance=COSINE, **kwargs):
         With k=1, the top-level cluster contains a single cluster.
     """
     id = sequence()
-    features  = kwargs.get("features", _features(vectors))
-    clusters  = Cluster((v for v in shuffled(vectors)))
+    features = kwargs.get("features", _features(vectors))
+    clusters = Cluster((v for v in shuffled(vectors)))
     centroids = [(next(id), v) for v in clusters]
     map = {}
     for _ in range(iterations):
@@ -2631,8 +2631,8 @@ fsel = feature_selection
 #--- NAIVE BAYES CLASSIFIER ------------------------------------------------------------------------
 
 MULTINOMIAL = "multinomial" # Feature weighting.
-BINOMIAL    = "binomial"    # Feature occurs in class (1) or not (0).
-BERNOUILLI  = "bernouilli"  # Feature occurs in class (1) or not (0).
+BINOMIAL = "binomial"    # Feature occurs in class (1) or not (0).
+BERNOUILLI = "bernouilli"  # Feature occurs in class (1) or not (0).
 
 
 class NB(Classifier):
@@ -2814,7 +2814,7 @@ class IGTree(Classifier):
             where training data is represented as a tree ordered by information gain.
             A feature is taken to occur in a vector (1) or not (0), i.e. BINARY weight.
         """
-        self._root   = None
+        self._root = None
         self._method = method
         Classifier.__init__(self, train, baseline)
 
@@ -2942,9 +2942,9 @@ class SLP(Classifier):
             for the given inputs (i.e., document vector features).
             A feature is taken to occur in a vector (1) or not (0), i.e. BINARY weight.
         """
-        self._weight     = defaultdict(dict) # {class: {feature: (weight, weight sum, timestamp)}}
+        self._weight = defaultdict(dict) # {class: {feature: (weight, weight sum, timestamp)}}
         self._iterations = iterations
-        self._iteration  = 0
+        self._iteration = 0
         train = list(train)
         train = chain(*(shuffled(train) for i in range(iterations)))
         Classifier.__init__(self, train, baseline)
@@ -3087,11 +3087,11 @@ class BPNN(Classifier):
         # Based on:
         # http://www.cs.pomona.edu/classes/cs30/notes/cs030neural.py
         # http://arctrix.com/nas/python/bpnn.py
-        self._layers     = layers
+        self._layers = layers
         self._iterations = iterations
-        self._rate       = kwargs.get("rate", 0.5)
-        self._momentum   = kwargs.get("momentum", 0.1)
-        self._trained    = False
+        self._rate = kwargs.get("rate", 0.5)
+        self._momentum = kwargs.get("momentum", 0.1)
+        self._trained = False
         Classifier.__init__(self, train, baseline)
 
     @property
@@ -3217,11 +3217,11 @@ class BPNN(Classifier):
         """
         if not self._trained:
             # Batch learning (we need to know the number of features in advance).
-            n  = float(len(self.classes)) - 1
+            n = float(len(self.classes)) - 1
             H1 = list(sorted(self.features))
             H2 = dict((x, i / n) for i, x in enumerate(self.classes))  # Class => float hash (0.0-1.0).
             H3 = dict((i / n, x) for i, x in enumerate(self.classes))  # Class reversed hash.
-            v  = [([v.get(f, 0.0) for f in H1], [H2[type]]) for type, v in self._vectors]
+            v = [([v.get(f, 0.0) for f in H1], [H2[type]]) for type, v in self._vectors]
             self._h = (H1, H2, H3)
             self._weight_initialization(i=len(H1), o=1, hidden=self._layers, a=0.0, b=1.0)
             self._train(v, self._iterations, self._rate, self._momentum)
@@ -3273,12 +3273,12 @@ LIBSVM, LIBLINEAR = \
 
 # SVM type:
 SVC = CLASSIFICATION = 0
-SVR = REGRESSION     = 3
-SVO = DETECTION      = 2 # One-class SVM: X belongs to the class or not?
+SVR = REGRESSION = 3
+SVO = DETECTION = 2 # One-class SVM: X belongs to the class or not?
 
 # SVM kernels:
-LINEAR       = 0 # Straight line: u' * v
-POLYNOMIAL   = 1 # Curved line: (gamma * u' * v + coef0) ** degree
+LINEAR = 0 # Straight line: u' * v
+POLYNOMIAL = 1 # Curved line: (gamma * u' * v + coef0) ** degree
 RADIAL = RBF = 2 # Curved path: exp(-gamma * |u-v| ** 2)
 
 # SVM solvers:
@@ -3484,14 +3484,14 @@ class SVM(Classifier):
         """
         if self._model is None:
             return None
-        M  = self._model[0]
+        M = self._model[0]
         H1 = self._model[1]
         H2 = self._model[2]
         H3 = self._model[3]
-        n  = len(H1)
-        v  = self._vector(document)[1]
-        v  = dict(map(lambda k: (H1.get(k[1], k[0] + n + 1), v[k[1]]), enumerate(v)))
-        s  = getattr(self, "_solver", None)
+        n = len(H1)
+        v = self._vector(document)[1]
+        v = dict(map(lambda k: (H1.get(k[1], k[0] + n + 1), v[k[1]]), enumerate(v)))
+        s = getattr(self, "_solver", None)
         # For linear SVC, use LIBLINEAR which is 10x faster.
         # For kernel SVC, use LIBSVM.
         if self.extension == LIBLINEAR:
@@ -3542,11 +3542,11 @@ class SVM(Classifier):
             self._svm.liblinearutil.save_model(path, self._model[0])
         # Save LIBSVM/LIBLINEAR model as a string.
         # Unlink LIBSVM/LIBLINEAR binaries for cPickle.
-        svm, model  = self._svm, self._model
-        self._svm   = None
+        svm, model = self._svm, self._model
+        self._svm = None
         self._model = (open(path, "rb").read(),) + model[1:]
         Classifier.save(self, path, final)
-        self._svm   = svm
+        self._svm = svm
         self._model = model
 
     @classmethod
@@ -3697,17 +3697,17 @@ class LR(Classifier):
 
         def cost(t, x, y, l=0.1):
             # Cost function.
-            m  = float(len(y))
-            h  = scipy.special.expit(x.dot(t)) # sigmoid
-            J  = 1 / m * (scipy.dot(-y, log(h)) - scipy.dot(1 - y, log(1 - h)))
+            m = float(len(y))
+            h = scipy.special.expit(x.dot(t)) # sigmoid
+            J = 1 / m * (scipy.dot(-y, log(h)) - scipy.dot(1 - y, log(1 - h)))
             L2 = l / m / 2 * sum(t[1:] ** 2)
             return J + L2
 
         def gradient(t, x, y, l=0.1):
             # Cost function derivative.
-            m  = float(len(y))
-            h  = scipy.special.expit(x.dot(t)) # sigmoid
-            g  = 1 / m * x.T.dot((h - y).T).T # dot(h-y, x)
+            m = float(len(y))
+            h = scipy.special.expit(x.dot(t)) # sigmoid
+            g = 1 / m * x.T.dot((h - y).T).T # dot(h-y, x)
             L2 = l / m * scipy.insert(t[1:], 0, 0)
             return scipy.transpose(g + L2)
         # Gradient descent:

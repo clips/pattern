@@ -92,7 +92,7 @@ def tagset2penntreebank(tag):
 # and abbreviations. The following functions define contractions and abbreviations
 # for pattern.xx, see also Parser.find_tokens().
 
-REPLACEMENTS  = {"'s": " 's", "'ve": " 've"}
+REPLACEMENTS = {"'s": " 's", "'ve": " 've"}
 ABBREVIATIONS = set(("e.g.", "etc.", "i.e."))
 
 # A lemmatizer can be constructed if we have a pattern.xx.inflect,
@@ -165,7 +165,7 @@ sentiment = Sentiment(
       synset = None,
    negations = ("no", "not", "never"),
    modifiers = ("RB",),
-   modifier  = lambda w: w.endswith("ly"), # brilliantly, hardly, partially, ...
+   modifier = lambda w: w.endswith("ly"), # brilliantly, hardly, partially, ...
     language = "xx"
 )
 

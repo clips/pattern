@@ -436,9 +436,9 @@ class Classifier(object):
             This is much shorter than manually adding "roughness", "sharpness", ...
             Other examples of useful classifiers: calling en.wordnet.Synset.hyponyms() or en.number().
         """
-        self.parents  = parents
+        self.parents = parents
         self.children = children
-        self.value    = value
+        self.value = value
 
 # Classifier(parents=lambda word: word.endswith("ness") and ["quality"] or [])
 # Classifier(parents=lambda word, chunk=None: chunk=="VP" and [ACTION] or [])
@@ -481,8 +481,8 @@ class WordNetClassifier(Classifier):
 
 # Allowed chunk, role and part-of-speech tags (Penn Treebank II):
 CHUNKS = dict.fromkeys(["NP", "PP", "VP", "ADVP", "ADJP", "SBAR", "PRT", "INTJ"], True)
-ROLES  = dict.fromkeys(["SBJ", "OBJ", "PRD", "TMP", "CLR", "LOC", "DIR", "EXT", "PRP"], True)
-TAGS   = dict.fromkeys(["CC", "CD", "CJ", "DT", "EX", "FW", "IN", "JJ", "JJR", "JJS", "JJ*",
+ROLES = dict.fromkeys(["SBJ", "OBJ", "PRD", "TMP", "CLR", "LOC", "DIR", "EXT", "PRP"], True)
+TAGS = dict.fromkeys(["CC", "CD", "CJ", "DT", "EX", "FW", "IN", "JJ", "JJR", "JJS", "JJ*",
                         "LS", "MD", "NN", "NNS", "NNP", "NNP*", "NNPS", "NN*", "NO", "PDT", "PR",
                         "PRP", "PRP$", "PR*", "PRP*", "PT", "RB", "RBR", "RBS", "RB*", "RP",
                         "SYM", "TO", "UH", "VB", "VBZ", "VBP", "VBD", "VBN", "VBG", "VB*",

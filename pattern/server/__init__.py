@@ -110,7 +110,7 @@ def chown(path, owner=None):
 #### STRING FUNCTIONS ##############################################################################
 
 RE_AMPERSAND = re.compile("\&(?!\#)")           # & not followed by #
-RE_UNICODE   = re.compile(r'&(#?)(x|X?)(\w+);') # &#201;
+RE_UNICODE = re.compile(r'&(#?)(x|X?)(\w+);') # &#201;
 
 
 def encode_entities(string):
@@ -475,7 +475,7 @@ def verify_password(s1, s2):
 # This will not work with multi-processing, since each process gets its own RAM.
 
 _RATELIMIT_CACHE = {} # RAM cache of request counts.
-_RATELIMIT_LOCK  = threading.RLock()
+_RATELIMIT_LOCK = threading.RLock()
 
 SECOND, MINUTE, HOUR, DAY = 1., 60., 60 * 60., 60 * 60 * 24.
 
@@ -553,7 +553,7 @@ class RateLimit(Database):
         # Map time as str to float.
         time = {"second": SECOND, "minute": MINUTE, "hour": HOUR, "day": DAY}.get(time, time)
         # Update database.
-        p  = "/" + path.strip("/")
+        p = "/" + path.strip("/")
         q1 = "delete from `rate` where key=? and path=?;"
         q2 = "insert into `rate` values (?, ?, ?, ?);"
         self.execute(q1, (key, p), commit=False)
@@ -626,7 +626,7 @@ class RateLimit(Database):
             elif r[0] >= r[1]:
                 self.cache[(key, p)] = (1, r[1], r[2], t)
             # Limit not reached (increment count).
-            elif r[0] <  r[1]:
+            elif r[0] < r[1]:
                 self.cache[(key, p)] = (r[0] + 1, r[1], r[2], r[3])
         #print(self.cache.get((key, path)))
 
@@ -718,11 +718,11 @@ class HTTPRequest(object):
     def __init__(self, app, ip, path="/", method="get", data={}, headers={}):
         """ A HTTP request object with metadata returned from app.request.
         """
-        self.app     = app
-        self.ip      = ip
-        self.path    = "/" + path.strip("/")
-        self.method  = method.lower()
-        self.data    = dict(data)
+        self.app = app
+        self.ip = ip
+        self.path = "/" + path.strip("/")
+        self.method = method.lower()
+        self.data = dict(data)
         self.headers = dict(headers)
 
     def __repr__(self):
@@ -734,7 +734,7 @@ class HTTPRedirect(Exception):
     def __init__(self, url, code=303):
         """ A HTTP redirect raised in an @app.route() handler.
         """
-        self.url  = url
+        self.url = url
         self.code = code
 
     def __repr__(self):
@@ -746,9 +746,9 @@ class HTTPError(Exception):
     def __init__(self, status="", message="", traceback=""):
         """ A HTTP error raised in an @app.route() handler + passed to @app.error().
         """
-        self.code      = int(status.split(" ")[0])
-        self.status    = status
-        self.message   = message
+        self.code = int(status.split(" ")[0])
+        self.status = status
+        self.message = message
         self.traceback = traceback or ""
 
     def __repr__(self):
@@ -1271,8 +1271,8 @@ class Application(object):
             return
         self._host = str(host)
         self._port = int(port)
-        self._up   = True
-        self._xhr  = xhr
+        self._up = True
+        self._xhr = xhr
         # Production environment disables errors.
         if debug is False:
             cp.config.update({"environment": "production"})
@@ -1333,8 +1333,8 @@ class Application(object):
         sys.stdout = sys.__stdout__
         self._host = None
         self._port = None
-        self._app  = None
-        self._up   = False
+        self._app = None
+        self._up = False
 
     def __call__(self, *args, **kwargs):
         # Called when deployed with mod_wsgi.

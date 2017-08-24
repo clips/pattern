@@ -298,12 +298,12 @@ class Edge(object):
             Its weight indicates the importance (not the cost) of the connection.
             Its type is useful in a semantic network (e.g. "is-a", "is-part-of", ...)
         """
-        self.node1       = node1
-        self.node2       = node2
-        self._weight     = weight
-        self.length      = length
-        self.type        = type
-        self.stroke      = stroke
+        self.node1 = node1
+        self.node2 = node2
+        self._weight = weight
+        self.length = length
+        self.type = type
+        self.stroke = stroke
         self.strokewidth = strokewidth
 
     def _get_weight(self):
@@ -385,7 +385,7 @@ SPRING = "spring"
 # Graph node centrality:
 EIGENVECTOR = "eigenvector"
 BETWEENNESS = "betweenness"
-DEGREE      = "degree"
+DEGREE = "degree"
 
 # Graph node sort order:
 WEIGHT, CENTRALITY = "weight", "centrality"
@@ -398,12 +398,12 @@ class Graph(dict):
     def __init__(self, layout=SPRING, distance=10.0):
         """ A network of nodes connected by edges that can be drawn with a given layout.
         """
-        self.nodes      = []   # List of Node objects.
-        self.edges      = []   # List of Edge objects.
-        self.root       = None
+        self.nodes = []   # List of Node objects.
+        self.edges = []   # List of Edge objects.
+        self.root = None
         self._adjacency = None # Cached adjacency() dict.
-        self.layout     = layout == SPRING and GraphSpringLayout(self) or GraphLayout(self)
-        self.distance   = distance
+        self.layout = layout == SPRING and GraphSpringLayout(self) or GraphLayout(self)
+        self.distance = distance
 
     def __getitem__(self, id):
         try:
@@ -717,8 +717,8 @@ class GraphSpringLayout(GraphLayout):
         """
         # Based on: http://snipplr.com/view/1950/graph-javascript-framework-version-001/
         GraphLayout.__init__(self, graph)
-        self.k         = 4.0  # Force constant.
-        self.force     = 0.01 # Force multiplier.
+        self.k = 4.0  # Force constant.
+        self.force = 0.01 # Force multiplier.
         self.repulsion = 50   # Maximum repulsive force radius.
 
     def _distance(self, node1, node2):
@@ -1076,7 +1076,7 @@ def eigenvector_centrality(graph, normalized=True, reversed=True, rating={}, ite
     # It has no guarantee of convergence.
     for i in range(iterations):
         v0 = v
-        v  = dict.fromkeys(v0.keys(), 0)
+        v = dict.fromkeys(v0.keys(), 0)
         for n1 in v:
             for n2 in G[n1]:
                 v[n1] += 0.01 + v0[n2] * G[n1][n2] * rating.get(n1, 1)
@@ -1285,8 +1285,8 @@ HTML, CANVAS, STYLE, CSS, SCRIPT, DATA = \
 class HTMLCanvasRenderer(GraphRenderer):
 
     def __init__(self, graph, **kwargs):
-        self.graph    = graph
-        self._source  = \
+        self.graph = graph
+        self._source = \
             "<!doctype html>\n" \
             "<html>\n" \
             "<head>\n" \
@@ -1551,7 +1551,7 @@ class HTMLCanvasRenderer(GraphRenderer):
         """ Yields a string of HTML to visualize the graph using a force-based spring layout.
             The js parameter sets the path to graph.js and canvas.js.
         """
-        js  = self.javascript or ""
+        js = self.javascript or ""
         if self.stylesheet == INLINE:
             css = self.style.replace("\n", "\n\t\t").rstrip("\t")
             css = "<style type=\"text/css\">\n\t\t%s\n\t</style>" % css

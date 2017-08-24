@@ -646,13 +646,13 @@ class TestParseTree(unittest.TestCase):
     def test_sentence(self):
         # Assert Sentence.
         v = self.text[0]
-        self.assertTrue(v.start    == 0)
-        self.assertTrue(v.stop     == 8)
-        self.assertTrue(v.string   == "I 'm eating pizza with a fork .")
+        self.assertTrue(v.start == 0)
+        self.assertTrue(v.stop == 8)
+        self.assertTrue(v.string == "I 'm eating pizza with a fork .")
         self.assertTrue(v.subjects == [self.text[0].chunks[0]])
-        self.assertTrue(v.verbs    == [self.text[0].chunks[1]])
-        self.assertTrue(v.objects  == [self.text[0].chunks[2]])
-        self.assertTrue(v.nouns    == [self.text[0].words[3], self.text[0].words[6]])
+        self.assertTrue(v.verbs == [self.text[0].chunks[1]])
+        self.assertTrue(v.objects == [self.text[0].chunks[2]])
+        self.assertTrue(v.nouns == [self.text[0].words[3], self.text[0].words[6]])
         # Sentence.string must be unicode.
         self.assertTrue(isinstance(v.string, str))
         self.assertTrue(isinstance(str(v), str))
@@ -676,29 +676,29 @@ class TestParseTree(unittest.TestCase):
         self.assertTrue(v.parent == self.text[0])
         self.assertTrue(v.string == "with a")
         # Assert sentence slice tag integrity.
-        self.assertTrue(v.words[0].type  == "IN")
+        self.assertTrue(v.words[0].type == "IN")
         self.assertTrue(v.words[1].chunk is None)
         print("pattern.en.Slice")
 
     def test_chunk(self):
         # Assert chunk with multiple words ("a fork").
         v = self.text[0].chunks[4]
-        self.assertTrue(v.start   == 5)
-        self.assertTrue(v.stop    == 7)
-        self.assertTrue(v.string  == "a fork")
+        self.assertTrue(v.start == 5)
+        self.assertTrue(v.stop == 7)
+        self.assertTrue(v.string == "a fork")
         self.assertTrue(v.lemmata == ["a", "fork"])
-        self.assertTrue(v.words   == [self.text[0].words[5], self.text[0].words[6]])
-        self.assertTrue(v.head    ==  self.text[0].words[6])
-        self.assertTrue(v.type    == "NP")
+        self.assertTrue(v.words == [self.text[0].words[5], self.text[0].words[6]])
+        self.assertTrue(v.head == self.text[0].words[6])
+        self.assertTrue(v.type == "NP")
         self.assertTrue(v.role is None)
         self.assertTrue(v.pnp is not None)
         # Assert chunk that is subject/object of the sentence ("pizza").
         v = self.text[0].chunks[2]
-        self.assertTrue(v.role     == "OBJ")
+        self.assertTrue(v.role == "OBJ")
         self.assertTrue(v.relation == 1)
-        self.assertTrue(v.related  == [self.text[0].chunks[0], self.text[0].chunks[1]])
-        self.assertTrue(v.subject  ==  self.text[0].chunks[0])
-        self.assertTrue(v.verb     ==  self.text[0].chunks[1])
+        self.assertTrue(v.related == [self.text[0].chunks[0], self.text[0].chunks[1]])
+        self.assertTrue(v.subject == self.text[0].chunks[0])
+        self.assertTrue(v.verb == self.text[0].chunks[1])
         self.assertTrue(v.object is None)
         # Assert chunk traversal.
         self.assertEqual(v.nearest("VP"), self.text[0].chunks[1])
@@ -723,17 +723,17 @@ class TestParseTree(unittest.TestCase):
         v = self.text[0].pnp[0]
         self.assertTrue(v.string == "with a fork")
         self.assertTrue(v.chunks == [self.text[0].chunks[3], self.text[0].chunks[4]])
-        self.assertTrue(v.pp     ==  self.text[0].chunks[3])
+        self.assertTrue(v.pp == self.text[0].chunks[3])
         print("pattern.en.PNP")
 
     def test_word(self):
         # Assert word tags ("fork" => NN).
         v = self.text[0].words[6]
-        self.assertTrue(v.index  == 6)
+        self.assertTrue(v.index == 6)
         self.assertTrue(v.string == "fork")
-        self.assertTrue(v.lemma  == "fork")
-        self.assertTrue(v.type   == "NN")
-        self.assertTrue(v.chunk  == self.text[0].chunks[4])
+        self.assertTrue(v.lemma == "fork")
+        self.assertTrue(v.type == "NN")
+        self.assertTrue(v.chunk == self.text[0].chunks[4])
         self.assertTrue(v.pnp is not None)
         for i, tags in enumerate([
           ["I", "PRP", "B-NP", "O", "NP-SBJ-1", "i"],

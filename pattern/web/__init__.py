@@ -191,10 +191,10 @@ class AsynchronousRequest(object):
             You are responsible for ensuring that the given function doesn't hang.
         """
         self._response = None # The return value of the given function.
-        self._error    = None # The exception (if any) raised by the function.
-        self._time     = time.time()
+        self._error = None # The exception (if any) raised by the function.
+        self._time = time.time()
         self._function = function
-        self._thread   = threading.Thread(target=self._fetch, args=(function,) + args, kwargs=kwargs)
+        self._thread = threading.Thread(target=self._fetch, args=(function,) + args, kwargs=kwargs)
         self._thread.start()
 
     def _fetch(self, function, *args, **kwargs):
@@ -243,14 +243,14 @@ send = asynchronous
 # User agent and referrer.
 # Used to identify the application accessing the web.
 USER_AGENT = "Pattern/2.6 +http://www.clips.ua.ac.be/pattern"
-REFERRER   = "http://www.clips.ua.ac.be/pattern"
+REFERRER = "http://www.clips.ua.ac.be/pattern"
 
 # Mozilla user agent.
 # Websites can include code to block out any application except browsers.
 MOZILLA = "Mozilla/5.0"
 
 # HTTP request method.
-GET  = "get"  # Data is encoded in the URL.
+GET = "get"  # Data is encoded in the URL.
 POST = "post" # Data is encoded in the message body.
 
 # URL parts.
@@ -396,10 +396,10 @@ class URL(object):
             - URL.anchor  : the page anchor.
             If method is POST, the query string is sent with HTTP POST.
         """
-        self.__dict__["method"]    = method # Use __dict__ directly since __setattr__ is overridden.
-        self.__dict__["_string"]   = u(string)
-        self.__dict__["_parts"]    = None
-        self.__dict__["_headers"]  = None
+        self.__dict__["method"] = method # Use __dict__ directly since __setattr__ is overridden.
+        self.__dict__["_string"] = u(string)
+        self.__dict__["_parts"] = None
+        self.__dict__["_headers"] = None
         self.__dict__["_redirect"] = None
         if isinstance(string, URL):
             self.__dict__["method"] = string.method
@@ -433,7 +433,7 @@ class URL(object):
         if "@" in P[DOMAIN]:
             P[USERNAME], \
             P[PASSWORD] = (p[1].split("@")[0].split(":") + [""])[:2]
-            P[DOMAIN]   =  p[1].split("@")[1]
+            P[DOMAIN] = p[1].split("@")[1]
         # Split the port number from the domain.
         if ":" in P[DOMAIN]:
             P[DOMAIN], \
@@ -455,7 +455,7 @@ class URL(object):
 
     def _set_string(self, v):
         self.__dict__["_string"] = u(v)
-        self.__dict__["_parts"]  = None
+        self.__dict__["_parts"] = None
 
     string = property(_get_string, _set_string)
 
@@ -743,7 +743,7 @@ class Stream(list):
         """
         packets = []
         self.buffer += self.socket.read(bytes).decode("utf-8")
-        self.buffer  = self.buffer.split(self.delimiter, 1)
+        self.buffer = self.buffer.split(self.delimiter, 1)
         while len(self.buffer) > 1:
             data = self.buffer[0]
             data = self.parse(data)
@@ -883,7 +883,7 @@ class HTMLTagstripper(HTMLParser):
             return None
         self._exclude = isinstance(exclude, dict) and exclude or dict.fromkeys(exclude, [])
         self._replace = replace
-        self._data    = []
+        self._data = []
         self.feed(self.clean(html))
         self.close()
         self.reset()
@@ -981,7 +981,7 @@ def strip_forms(html):
     return strip_between("<form.*?>", "</form>", html)
 
 RE_AMPERSAND = re.compile("\&(?!\#)")           # & not followed by #
-RE_UNICODE   = re.compile(r'&(#?)(x|X?)(\w+);') # &#201;
+RE_UNICODE = re.compile(r'&(#?)(x|X?)(\w+);') # &#201;
 
 
 def encode_entities(string):
@@ -1025,7 +1025,7 @@ def decode_url(string):
     return u(unquote_plus(bytestring(string)))
 
 RE_SPACES = re.compile("( |\xa0)+", re.M) # Matches one or more spaces.
-RE_TABS   = re.compile(r"\t+", re.M)      # Matches one or more tabs.
+RE_TABS = re.compile(r"\t+", re.M)      # Matches one or more tabs.
 
 
 def collapse_spaces(string, indentation=False, replace=" "):
@@ -1122,15 +1122,15 @@ class Result(dict):
             - date     : for news items and posts, the publication date.
         """
         dict.__init__(self)
-        self.url      = url
-        self.id       = kwargs.pop("id", "")
-        self.title    = kwargs.pop("title", "")
-        self.text     = kwargs.pop("text", "")
+        self.url = url
+        self.id = kwargs.pop("id", "")
+        self.title = kwargs.pop("title", "")
+        self.text = kwargs.pop("text", "")
         self.language = kwargs.pop("language", "")
-        self.author   = kwargs.pop("author", "")
-        self.date     = kwargs.pop("date", "")
-        self.votes    = kwargs.pop("votes", 0) # (e.g., Facebook likes)
-        self.shares   = kwargs.pop("shares", 0) # (e.g., Twitter retweets)
+        self.author = kwargs.pop("author", "")
+        self.date = kwargs.pop("date", "")
+        self.votes = kwargs.pop("votes", 0) # (e.g., Facebook likes)
+        self.shares = kwargs.pop("shares", 0) # (e.g., Twitter retweets)
         self.comments = kwargs.pop("comments", 0)
         for k, v in kwargs.items():
             self[k] = v
@@ -1197,9 +1197,9 @@ class Results(list):
                       This is not the length of the list, but the total number of matches for the given query.
         """
         self.source = source
-        self.query  = query
-        self.type   = type
-        self.total  = total
+        self.query = query
+        self.type = type
+        self.total = total
 
 
 class SearchEngine(object):
@@ -1210,10 +1210,10 @@ class SearchEngine(object):
             - throttle : delay between requests (avoid hammering the server).
             Inherited by: Google, Bing, Wikipedia, Twitter, Facebook, Flickr, ...
         """
-        self.license  = license
+        self.license = license
         self.throttle = throttle    # Amount of sleep time after executing a query.
         self.language = language    # Result.language restriction (e.g., "en").
-        self.format   = lambda x: x # Formatter applied to each attribute of each Result.
+        self.format = lambda x: x # Formatter applied to each attribute of each Result.
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         return Results(source=None, query=query, type=type)
@@ -1417,11 +1417,11 @@ class Yahoo(SearchEngine):
         results.total = int(data.get("totalresults") or 0)
         for x in data.get("results", []):
             r = Result(url=None)
-            r.url      = self.format(x.get("url", x.get("clickurl")))
-            r.title    = self.format(x.get("title"))
-            r.text     = self.format(x.get("abstract"))
-            r.date     = self.format(x.get("date"))
-            r.author   = self.format(x.get("source"))
+            r.url = self.format(x.get("url", x.get("clickurl")))
+            r.title = self.format(x.get("title"))
+            r.text = self.format(x.get("abstract"))
+            r.date = self.format(x.get("date"))
+            r.author = self.format(x.get("source"))
             r.language = self.format(x.get("language") and \
                                      x.get("language").split(" ")[0] or self.language or "")
             results.append(r)
@@ -1499,12 +1499,12 @@ class Bing(SearchEngine):
         results.total = int(data.get(src + "Total") or 0)
         for x in data.get(src, []):
             r = Result(url=None)
-            r.url      = self.format(x.get("MediaUrl", x.get("Url")))
-            r.title    = self.format(x.get("Title"))
-            r.text     = self.format(x.get("Description", x.get("Snippet")))
+            r.url = self.format(x.get("MediaUrl", x.get("Url")))
+            r.title = self.format(x.get("Title"))
+            r.text = self.format(x.get("Description", x.get("Snippet")))
             r.language = self.language or ""
-            r.date     = self.format(x.get("DateTime", x.get("Date")))
-            r.author   = self.format(x.get("Source"))
+            r.date = self.format(x.get("DateTime", x.get("Date")))
+            r.author = self.format(x.get("Source"))
             results.append(r)
         return results
 
@@ -1552,11 +1552,11 @@ class DuckDuckGo(SearchEngine):
             if x.get("FirstURL"):
                 r = Result(url=None)
                 # Parse official website link.
-                r.url    = self.format(x.get("FirstURL"))
-                r.title  = self.format(data.get("Heading"))
-                r.text   = self.format(data.get("Abstract"))
+                r.url = self.format(x.get("FirstURL"))
+                r.title = self.format(data.get("Heading"))
+                r.text = self.format(data.get("Abstract"))
                 r.author = self.format(data.get("AbstractSource"))
-                r.type   = self.format(REFERENCE)
+                r.type = self.format(REFERENCE)
                 results.append(r)
         for topic in data.get("RelatedTopics", []):
             for x in topic.get("Topics", [topic]):
@@ -1582,10 +1582,10 @@ class DuckDuckGo(SearchEngine):
                 s3 = topic.get("Name", "").lower() or s3
                 s3 = re.sub("^in ", "", s3)
                 # Format result.
-                r.url   = self.format(r.url)
+                r.url = self.format(r.url)
                 r.title = self.format(s1)
-                r.text  = self.format(s2)
-                r.type  = self.format(s3)
+                r.text = self.format(s2)
+                r.type = self.format(s3)
                 results.append(r)
         return results
 
@@ -1677,11 +1677,11 @@ class Faroo(SearchEngine):
         results.total = int(data.get("count") or 0)
         for x in data.get("results", []):
             r = Result(url=None)
-            r.url      = self.format(x.get("url"))
-            r.title    = self.format(x.get("title"))
-            r.text     = self.format(x.get("kwic"))
-            r.date     = self.format(x.get("date"))
-            r.author   = self.format(x.get("author"))
+            r.url = self.format(x.get("url"))
+            r.title = self.format(x.get("title"))
+            r.text = self.format(x.get("kwic"))
+            r.date = self.format(x.get("date"))
+            r.author = self.format(x.get("author"))
             r.language = self.format(self.language or "")
             results.append(r)
         return results
@@ -1776,14 +1776,14 @@ class Twitter(SearchEngine):
         results.total = None
         for x in data.get("statuses", []):
             r = Result(url=None)
-            r.id       = self.format(x.get("id_str"))
-            r.url      = self.format(TWITTER_STATUS % (x.get("user", {}).get("screen_name"), x.get("id_str")))
-            r.text     = self.format(x.get("text"))
-            r.date     = self.format(x.get("created_at"))
-            r.author   = self.format(x.get("user", {}).get("screen_name"))
+            r.id = self.format(x.get("id_str"))
+            r.url = self.format(TWITTER_STATUS % (x.get("user", {}).get("screen_name"), x.get("id_str")))
+            r.text = self.format(x.get("text"))
+            r.date = self.format(x.get("created_at"))
+            r.author = self.format(x.get("user", {}).get("screen_name"))
             r.language = self.format(x.get("metadata", {}).get("iso_language_code"))
-            r.shares   = self.format(x.get("retweet_count", 0))
-            r.profile  = self.format(x.get("user", {}).get("profile_image_url")) # Profile picture URL.
+            r.shares = self.format(x.get("retweet_count", 0))
+            r.profile = self.format(x.get("user", {}).get("profile_image_url")) # Profile picture URL.
             # Fetch original status if retweet is truncated (i.e., ends with "...").
             rt = x.get("retweeted_status", None)
             if rt:
@@ -1885,14 +1885,14 @@ class TwitterStream(Stream):
         if data.strip():
             x = json.loads(data)
             r = Result(url=None)
-            r.id       = self.format(x.get("id_str"))
-            r.url      = self.format(TWITTER_STATUS % (x.get("user", {}).get("screen_name"), x.get("id_str")))
-            r.text     = self.format(x.get("text"))
-            r.date     = self.format(x.get("created_at"))
-            r.author   = self.format(x.get("user", {}).get("screen_name"))
+            r.id = self.format(x.get("id_str"))
+            r.url = self.format(TWITTER_STATUS % (x.get("user", {}).get("screen_name"), x.get("id_str")))
+            r.text = self.format(x.get("text"))
+            r.date = self.format(x.get("created_at"))
+            r.author = self.format(x.get("user", {}).get("screen_name"))
             r.language = self.format(x.get("metadata", {}).get("iso_language_code"))
-            r.shares   = self.format(x.get("retweet_count", 0))
-            r.profile  = self.format(x.get("user", {}).get("profile_image_url")) # Profile picture URL.
+            r.shares = self.format(x.get("retweet_count", 0))
+            r.profile = self.format(x.get("user", {}).get("profile_image_url")) # Profile picture URL.
             # Fetch original status if retweet is truncated (i.e., ends with "...").
             rt = x.get("retweeted_status", None)
             if rt:
@@ -1966,7 +1966,7 @@ MEDIAWIKI = "http://{SUBDOMAIN}.{DOMAIN}{API}"
 
 # Pattern for meta links (e.g. Special:RecentChanges).
 # http://en.wikipedia.org/wiki/Main_namespace
-MEDIAWIKI_NAMESPACE  = ["Main", "User", "Wikipedia", "File", "MediaWiki", "Template", "Help", "Category", "Portal", "Book"]
+MEDIAWIKI_NAMESPACE = ["Main", "User", "Wikipedia", "File", "MediaWiki", "Template", "Help", "Category", "Portal", "Book"]
 MEDIAWIKI_NAMESPACE += [s + " talk" for s in MEDIAWIKI_NAMESPACE] + ["Talk", "Special", "Media"]
 MEDIAWIKI_NAMESPACE += ["WP", "WT", "MOS", "C", "CAT", "Cat", "P", "T", "H", "MP", "MoS", "Mos"]
 _mediawiki_namespace = re.compile(r"^(" + "|".join(MEDIAWIKI_NAMESPACE) + "):", re.I)
@@ -2080,9 +2080,9 @@ class MediaWiki(SearchEngine):
         for x in data.get("search", []):
             u = "http://%s/wiki/%s" % (URL(self._url).domain, x.get("title").replace(" ", "_"))
             r = Result(url=u)
-            r.id    = self.format(x.get("title"))
+            r.id = self.format(x.get("title"))
             r.title = self.format(x.get("title"))
-            r.text  = self.format(plaintext(x.get("snippet")))
+            r.text = self.format(plaintext(x.get("snippet")))
             results.append(r)
         return results
 
@@ -2122,7 +2122,7 @@ class MediaWiki(SearchEngine):
                   media = [x for x in data.get("images", [])],
               redirects = [x for x in data.get("redirects", [])],
               languages = dict([(x["lang"], x["*"]) for x in data.get("langlinks", [])]),
-              language  = self.language,
+              language = self.language,
                  parser = self, **kwargs)
 
     def _parse_article_sections(self, article, data):
@@ -2744,11 +2744,11 @@ class Flickr(SearchEngine):
         results.total = int(data.getElementsByTagName("photos")[0].getAttribute("total"))
         for x in data.getElementsByTagName("photo"):
             r = FlickrResult(url=None)
-            r.__dict__["_id"]       = x.getAttribute("id")
-            r.__dict__["_size"]     = size
-            r.__dict__["_license"]  = self.license
+            r.__dict__["_id"] = x.getAttribute("id")
+            r.__dict__["_size"] = size
+            r.__dict__["_license"] = self.license
             r.__dict__["_throttle"] = self.throttle
-            r.text   = self.format(x.getAttribute("title"))
+            r.text = self.format(x.getAttribute("title"))
             r.author = self.format(x.getAttribute("owner"))
             results.append(r)
         return results
@@ -2989,8 +2989,8 @@ class ProductWiki(SearchEngine):
         results.total = None
         for x in data.get("products", [])[:count]:
             r = Result(url=None)
-            r.__dict__["title"]   = u(x.get("title"))
-            r.__dict__["text"]    = u(x.get("text"))
+            r.__dict__["title"] = u(x.get("title"))
+            r.__dict__["text"] = u(x.get("text"))
             r.__dict__["reviews"] = []
             reviews = x.get("community_review") or {}
             for p in reviews.get("pros", []):
@@ -3720,7 +3720,7 @@ class HTMLLinkParser(HTMLParser):
         """
         if html is None:
             return None
-        self._url  = url
+        self._url = url
         self._data = []
         self.feed(self.clean(html))
         self.close()
@@ -3754,7 +3754,7 @@ def abs(url, base=None):
             base += "/"
     return urljoin(base, url)
 
-DEPTH   = "depth"
+DEPTH = "depth"
 BREADTH = "breadth"
 
 FIFO = "fifo" # First In, First Out.

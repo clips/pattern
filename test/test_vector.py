@@ -708,14 +708,14 @@ class TestLSA(unittest.TestCase):
         for i, concept in enumerate(model.lsa.concepts):
             self.assertTrue(isinstance(concept, dict))
             if concept["cats"] > 0.5:
-                self.assertTrue(concept["purr"] >  0.5)
-                self.assertTrue(concept["meow"] >  0.5)
+                self.assertTrue(concept["purr"] > 0.5)
+                self.assertTrue(concept["meow"] > 0.5)
                 self.assertTrue(concept["howl"] == 0.0)
                 self.assertTrue(concept["bark"] == 0.0)
                 i1 = i
             if concept["dogs"] > 0.5:
-                self.assertTrue(concept["howl"] >  0.5)
-                self.assertTrue(concept["bark"] >  0.5)
+                self.assertTrue(concept["howl"] > 0.5)
+                self.assertTrue(concept["bark"] > 0.5)
                 self.assertTrue(concept["purr"] == 0.0)
                 self.assertTrue(concept["meow"] == 0.0)
                 i2 = i
@@ -723,10 +723,10 @@ class TestLSA(unittest.TestCase):
         # We'd expect the "dog" documents to score high on the "dog" concept vector.
         v1 = model.lsa[model.documents[0].id]
         v2 = model.lsa[model.documents[2].id]
-        self.assertTrue(v1.get(i1, 0)  > 0.7)
+        self.assertTrue(v1.get(i1, 0) > 0.7)
         self.assertTrue(v1.get(i2, 0) == 0.0)
         self.assertTrue(v2.get(i1, 0) == 0.0)
-        self.assertTrue(v2.get(i2, 0)  > 0.7)
+        self.assertTrue(v2.get(i2, 0) > 0.7)
         # Assert LSA.transform() for unknown documents.
         v = model.lsa.transform(vector.Document("cats dogs"))
         self.assertAlmostEqual(v[0], 0.34, places=2)
@@ -803,7 +803,7 @@ class TestClustering(unittest.TestCase):
         # Assert distance caching mechanism.
         v1 = vector.Vector({"cat": 1})
         v2 = vector.Vector({"cat": 0.5, "dog": 1})
-        m  = vector.DistanceMap(method=vector.COSINE)
+        m = vector.DistanceMap(method=vector.COSINE)
         for i in range(100):
             self.assertAlmostEqual(m.distance(v1, v2), 0.55, places=2)
             self.assertAlmostEqual(m._cache[(v1.id, v2.id)], 0.55, places=2)
@@ -909,9 +909,9 @@ class TestClassifier(unittest.TestCase):
         # Assert untrained classifier returns None.
         v = Classifier(**kwargs)
         self.assertEqual(v.classify("herring"), None)
-        print("pattern.vector.%s.train()"    % Classifier.__name__)
+        print("pattern.vector.%s.train()" % Classifier.__name__)
         print("pattern.vector.%s.classify()" % Classifier.__name__)
-        print("pattern.vector.%s.save()"     % Classifier.__name__)
+        print("pattern.vector.%s.save()" % Classifier.__name__)
 
     def test_classifier_vector(self):
         # Assert Classifier._vector() (translates input from train() and classify() to a Vector).

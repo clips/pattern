@@ -84,7 +84,7 @@ def normalize(string):
 
 def base(url, data={}, method="GET"):
     # Signature base string: http://tools.ietf.org/html/rfc5849#section-3.4.1
-    base  = escape(utf8(method.upper())) + "&"
+    base = escape(utf8(method.upper())) + "&"
     base += escape(utf8(url.rstrip("?"))) + "&"
     base += escape(utf8("&".join(["%s=%s" % (
             escape(utf8(k)),

@@ -12,11 +12,11 @@ from pattern.db import date
 
 # This example reads a given RSS or Atom newsfeed channel.
 # Some example feeds to try out:
-NATURE  = "http://feeds.nature.com/nature/rss/current"
+NATURE = "http://feeds.nature.com/nature/rss/current"
 SCIENCE = "http://www.sciencemag.org/rss/podcast.xml"
-NYT     = "http://rss.nytimes.com/services/xml/rss/nyt/GlobalHome.xml"
-TIME    = "http://feeds.feedburner.com/time/topstories"
-CNN     = "http://rss.cnn.com/rss/edition.rss"
+NYT = "http://rss.nytimes.com/services/xml/rss/nyt/GlobalHome.xml"
+TIME = "http://feeds.feedburner.com/time/topstories"
+CNN = "http://rss.cnn.com/rss/edition.rss"
 
 engine = Newsfeed()
 

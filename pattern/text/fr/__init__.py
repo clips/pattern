@@ -197,7 +197,7 @@ sentiment = Sentiment(
       synset = None,
    negations = ("n'", "ne", "ni", "non", "pas", "rien", "sans", "aucun", "jamais"),
    modifiers = ("RB",),
-   modifier  = lambda w: w.endswith("ment"),
+   modifier = lambda w: w.endswith("ment"),
    tokenizer = parser.find_tokens,
     language = "fr"
 )

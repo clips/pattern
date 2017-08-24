@@ -159,7 +159,7 @@ def test(classify=lambda document: False, documents=[], average=None):
         With average=MACRO, precision & recall for positive and negative class are macro-averaged.
     """
     TP, TN, FP, FN = confusion_matrix(classify, documents)
-    A  = float(TP + TN) / ((TP + TN + FP + FN) or 1)
+    A = float(TP + TN) / ((TP + TN + FP + FN) or 1)
     P1 = float(TP) / ((TP + FP) or 1) # positive class precision
     R1 = float(TP) / ((TP + FN) or 1) # positive class recall
     P0 = float(TN) / ((TN + FN) or 1) # negative class precision
@@ -360,7 +360,7 @@ def flesch_reading_ease(string):
         return n
     if not isinstance(string, str):
         raise TypeError("%s is not a string" % repr(string))
-    if len(string) <  3:
+    if len(string) < 3:
         return 1.0
     if len(string.split(" ")) < 2:
         return 1.0
@@ -454,7 +454,7 @@ def intertextuality(texts=[], n=5, weight=lambda ngram: 1.0, **kwargs):
                     w[i, j].assessments.add(ngram)
     for i, j in w:
         w[i, j] /= float(sum[i])
-        w[i, j]  = min(w[i, j], Weight(1.0))
+        w[i, j] = min(w[i, j], Weight(1.0))
     return w
 
 #--- WORD TYPE-TOKEN RATIO -------------------------------------------------------------------------
@@ -670,7 +670,7 @@ def smoothrange(a=None, b=None, n=10):
     r = _multiple(b - a)
     t = _multiple(r / (n - 1), round=True)
     a = floor(a / t) * t
-    b =  ceil(b / t) * t
+    b = ceil(b / t) * t
     for i in range(int((b - a) / t) + 1):
         yield a + i * t
 
@@ -940,10 +940,10 @@ def pearson_chi_squared_test(observed=[], expected=[], df=None, tail=UPPER):
     # The p-value (upper tail area) is obtained from the incomplete gamma integral:
     # p(x2 | v) = gammai(v/2, x/2) with v degrees of freedom.
     # See: Cephes, https://github.com/scipy/scipy/blob/master/scipy/special/cephes/chdtr.c
-    o  = list(observed)
-    e  = list(expected) or _expected(o)
-    n  = len(o)
-    m  = len(o[0]) if o else 0
+    o = list(observed)
+    e = list(expected) or _expected(o)
+    n = len(o)
+    m = len(o[0]) if o else 0
     df = df or (n - 1) * (m - 1)
     df = df or (m == 1 and n - 1 or m - 1)
     x2 = 0.0
@@ -976,13 +976,13 @@ def pearson_log_likelihood_ratio(observed=[], expected=[], df=None, tail=UPPER):
         p < 0.05: significant
         p < 0.01: very significant
     """
-    o  = list(observed)
-    e  = list(expected) or _expected(o)
-    n  = len(o)
-    m  = len(o[0]) if o else 0
+    o = list(observed)
+    e = list(expected) or _expected(o)
+    n = len(o)
+    m = len(o[0]) if o else 0
     df = df or (n - 1) * (m - 1)
     df = df or (m == 1 and n - 1 or m - 1)
-    g  = 0.0
+    g = 0.0
     for i in range(n):
         for j in range(m):
             if o[i][j] != 0 and e[i][j] != 0:
@@ -1087,7 +1087,7 @@ def gammai(a, x, tail=UPPER):
         b0 = 0.0
         a1 = x
         b1 = 1.0
-        f  = 1.0
+        f = 1.0
         for i in range(1, iterations):
             a0 = (a1 + a0 * (i - a)) * f
             b0 = (b1 + b0 * (i - a)) * f

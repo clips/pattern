@@ -82,7 +82,7 @@ def indefinite_article(word, gender=MALE):
         return PLURAL in gender and "unos" or "un"
     return PLURAL in gender and "unas" or "una"
 
-DEFINITE   = "definite"
+DEFINITE = "definite"
 INDEFINITE = "indefinite"
 
 

@@ -53,7 +53,7 @@ NUMERALS_VERBOSE = {
     "score" : (20, 0.0)
 }
 
-ORDER  = ["hundred", "thousand"] + [m + "illion" for m in ("m", "b", "tr",
+ORDER = ["hundred", "thousand"] + [m + "illion" for m in ("m", "b", "tr",
     "quadr",
     "quint",
     "sext",
@@ -288,7 +288,7 @@ def approximate(word, amount=1, plural={}):
         return "%s %s" % (COUNTLESS, p)
     # Hundreds and thousands.
     thousands = int(log(amount, 10) / 3)
-    hundreds  = ceil(log(amount, 10) % 3) - 1
+    hundreds = ceil(log(amount, 10) % 3) - 1
     h = hundreds == 2 and "hundreds of " or (hundreds == 1 and "tens of " or "")
     t = thousands > 0 and pluralize(ORDER[thousands]) + " of " or ""
     return "%s%s%s" % (h, t, p)

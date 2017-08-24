@@ -262,13 +262,13 @@ class TestConstraint(unittest.TestCase):
     def test_string(self):
         # Assert Constraint.string.
         v = search.Constraint()
-        v.words    = ["Steven\\*"]
-        v.tags     = ["NN*"]
-        v.roles    = ["SBJ"]
-        v.taxa     = ["(associate) professor"]
-        v.exclude  = search.Constraint(["bird"])
+        v.words = ["Steven\\*"]
+        v.tags = ["NN*"]
+        v.roles = ["SBJ"]
+        v.taxa = ["(associate) professor"]
+        v.exclude = search.Constraint(["bird"])
         v.multiple = True
-        v.first    = True
+        v.first = True
         self.assertEqual(v.string, "^[Steven\\*|NN*|SBJ|\(ASSOCIATE\)_PROFESSOR|!bird]+")
         print("pattern.search.Constraint.string")
 

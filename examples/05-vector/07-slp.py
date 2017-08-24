@@ -75,7 +75,7 @@ for w, tags in f.items():
     if float(tags[m]) / n >= 0.97 and n > 1:
         # Words that are always handled by the lexicon.
         known.add(w)
-    if float(tags[m]) / n <  0.92 and w in lexicon:
+    if float(tags[m]) / n < 0.92 and w in lexicon:
         # Words in the lexicon that should be ignored and handled by the model.
         unknown.add(w)
 

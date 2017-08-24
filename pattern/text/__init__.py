@@ -430,7 +430,7 @@ class Model(object):
             sys.path.insert(0, os.path.join(MODULE, ".."))
             from vector import Classifier
             from vector import Perceptron
-        self._path  = path
+        self._path = path
         # Use a property instead of a subclass, so users can choose their own classifier.
         self._classifier = Classifier.load(path) if path else classifier or Perceptron()
         # Parser.lexicon entries can be ambiguous (e.g., about/IN  is RB 25% of the time).
@@ -511,7 +511,7 @@ class Morphology(lazylist):
         """
         self.known = known
         self._path = path
-        self._cmd  = set((
+        self._cmd = set((
                 "word", # Word is x.
                 "char", # Word contains x.
              "haspref", # Word starts with x.
@@ -703,9 +703,9 @@ class Entities(lazydict):
         """ A dictionary of named entities and their labels.
             For domain names and e-mail adresses, regular expressions are used.
         """
-        self.tag   = tag
+        self.tag = tag
         self._path = path
-        self._cmd  = ((
+        self._cmd = ((
             "pers", # Persons: George/NNP-PERS
              "loc", # Locations: Washington/NNP-LOC
              "org", # Organizations: Google/NNP-ORG
@@ -814,14 +814,14 @@ class Parser(object):
             The given language can be used to discern between
             Germanic and Romance languages for phrase chunking.
         """
-        self.lexicon    = lexicon or {}
-        self.frequency  = frequency or {}
-        self.model      = model
+        self.lexicon = lexicon or {}
+        self.frequency = frequency or {}
+        self.model = model
         self.morphology = morphology
-        self.context    = context
-        self.entities   = entities
-        self.default    = default
-        self.language   = language
+        self.context = context
+        self.entities = entities
+        self.default = default
+        self.language = language
         # Load data.
         f = lambda s: isinstance(s, str) or hasattr(s, "read")
         if f(lexicon):
@@ -1877,11 +1877,11 @@ class Verbs(lazydict):
             The format defines the order of tenses (see TENSES).
             The default dictionary defines default tenses for omitted tenses.
         """
-        self._path     = path
+        self._path = path
         self._language = language
-        self._format   = dict((TENSES_ID[id], i) for i, id in enumerate(format))
-        self._default  = default
-        self._inverse  = {}
+        self._format = dict((TENSES_ID[id], i) for i, id in enumerate(format))
+        self._default = default
+        self._inverse = {}
 
     def load(self):
         # have,,,has,,having,,,,,had,had,haven't,,,hasn't,,,,,,,hadn't,hadn't
@@ -2051,7 +2051,7 @@ class Tenses(list):
 # negative words + positive emoticons could indicate cynicism.
 
 # Semantic labels:
-MOOD  = "mood"  # emoticons, emojis
+MOOD = "mood"  # emoticons, emojis
 IRONY = "irony" # sarcasm mark (!)
 
 NOUN, VERB, ADJECTIVE, ADVERB = \

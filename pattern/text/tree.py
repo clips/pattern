@@ -54,7 +54,7 @@ except:
 # B- marks the start of a chunk: the/DT/B-NP cat/NN/I-NP
 # I- words are inside a chunk.
 # O- words are outside a chunk (punctuation etc.).
-IOB, BEGIN, INSIDE, OUTSIDE  = "IOB", "B", "I", "O"
+IOB, BEGIN, INSIDE, OUTSIDE = "IOB", "B", "I", "O"
 
 # -SBJ marks subjects: the/DT/B-NP-SBJ cat/NN/I-NP-SBJ
 # -OBJ marks objects.
@@ -540,7 +540,7 @@ class Chunk(object):
         return self.string
 
     def __repr__(self):
-        return "Chunk(%s)" %  repr("%s/%s%s%s") % (
+        return "Chunk(%s)" % repr("%s/%s%s%s") % (
                 self.string,
                 self.type is not None and self.type or OUTSIDE,
                 self.role is not None and ("-" + self.role) or "",
@@ -612,7 +612,7 @@ class PNPChunk(Chunk):
 #--- CONJUNCTION -----------------------------------------------------------------------------------
 
 CONJUNCT = AND = "AND"
-DISJUNCT = OR  = "OR"
+DISJUNCT = OR = "OR"
 
 
 class Conjunctions(list):
@@ -996,7 +996,7 @@ class Sentence(object):
         """
         w = self.words
         if len(w) > 2 and w[-2].type == "CC" and w[-2].chunk is None:
-            cc  = w[-2].string.lower() in _and and AND or OR
+            cc = w[-2].string.lower() in _and and AND or OR
             ch1 = w[-3].chunk
             ch2 = w[-1].chunk
             if ch1 is not None and \
@@ -1392,9 +1392,9 @@ def parse_xml(sentence, tab="\t", id=""):
             </chink>
         </sentence>
     """
-    uid  = lambda *parts: "".join([str(id), _UID_SEPARATOR] + [str(x) for x in parts]).lstrip(_UID_SEPARATOR)
+    uid = lambda *parts: "".join([str(id), _UID_SEPARATOR] + [str(x) for x in parts]).lstrip(_UID_SEPARATOR)
     push = lambda indent: indent + tab         # push() increases the indentation.
-    pop  = lambda indent: indent[:-len(tab)] # pop() decreases the indentation.
+    pop = lambda indent: indent[:-len(tab)] # pop() decreases the indentation.
     indent = tab
     xml = []
     # Start the sentence element:
@@ -1413,7 +1413,7 @@ def parse_xml(sentence, tab="\t", id=""):
     # Traverse all words in the sentence.
     for word in sentence.words:
         chunk = word.chunk
-        pnp   = word.chunk and word.chunk.pnp or None
+        pnp = word.chunk and word.chunk.pnp or None
         # Start the PNP element if the chunk is the first chunk in PNP:
         # <chunk type="PNP" of="A1">
         if pnp and pnp.start == chunk.start and pnp.start == word.index:
@@ -1520,7 +1520,7 @@ class XMLNode(object):
 
 # The structure of linked anchor chunks and PNP attachments
 # is collected from _parse_token() calls.
-_anchors     = {} # {'A1': [['eat', 'VBP', 'B-VP', 'O', 'VP-1', 'O', 'eat', 'O']]}
+_anchors = {} # {'A1': [['eat', 'VBP', 'B-VP', 'O', 'VP-1', 'O', 'eat', 'O']]}
 _attachments = {} # {'A1': [[['with', 'IN', 'B-PP', 'B-PNP', 'PP', 'O', 'with', 'O'],
                   #           ['a', 'DT', 'B-NP', 'I-PNP', 'NP', 'O', 'a', 'O'],
                   #           ['fork', 'NN', 'I-NP', 'I-PNP', 'NP', 'O', 'fork', 'O']]]}
@@ -1569,11 +1569,11 @@ def parse_string(xml):
             for id in sorted(A.keys()):
                 for token in A[id]:
                     token[i] += "-" + "-".join(["A" + str(a + p) for p in range(len(P[id]))])
-                    token[i]  = token[i].strip("O-")
+                    token[i] = token[i].strip("O-")
                 for p, pnp in enumerate(P[id]):
                     for token in pnp:
                         token[i] += "-" + "P" + str(a + p)
-                        token[i]  = token[i].strip("O-")
+                        token[i] = token[i].strip("O-")
                 a += len(P[id])
         # Collapse the tokens to string.
         # Separate multiple sentences with a new line.
@@ -1740,7 +1740,7 @@ def _colorize(x, colors):
 def graphviz_dot(sentence, font="Arial", colors=BLUE):
     """ Returns a dot-formatted string that can be visualized as a graph in GraphViz.
     """
-    s  = 'digraph sentence {\n'
+    s = 'digraph sentence {\n'
     s += '\tranksep=0.75;\n'
     s += '\tnodesep=0.15;\n'
     s += '\tnode [penwidth=1, fontname="%s", shape=record, margin=0.1, height=0.35];\n' % font
@@ -1796,7 +1796,7 @@ def graphviz_dot(sentence, font="Arial", colors=BLUE):
 def table(sentence, fill=1, placeholder="-"):
     """ Returns a string where the tags of tokens in the sentence are organized in outlined columns.
     """
-    tags  = [WORD, POS, IOB, CHUNK, ROLE, REL, PNP, ANCHOR, LEMMA]
+    tags = [WORD, POS, IOB, CHUNK, ROLE, REL, PNP, ANCHOR, LEMMA]
     tags += [tag for tag in sentence.token if tag not in tags]
 
     def format(token, tag):

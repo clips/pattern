@@ -31,6 +31,6 @@ for r in Bing(license=None, language="en").search("today", type=NEWS):
     print(date(r.date))  # date() can parse any Result.date in the web module.
     print("")
 
-d  = date("4 november 2011")
+d = date("4 november 2011")
 d += time(days=2, hours=5)
 print(d)

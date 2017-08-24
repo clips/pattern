@@ -97,11 +97,11 @@ class Mail(object):
         """
         self._username = username
         self._password = password
-        self._host     = service
-        self._port     = port
-        self._secure   = secure
-        self._imap4    = None
-        self._folders  = None
+        self._host = service
+        self._port = port
+        self._secure = secure
+        self._imap4 = None
+        self._folders = None
         self.login(username, password)
 
     @property
@@ -196,7 +196,7 @@ class MailFolder(object):
             E-mail messages can be searched and retrieved (including attachments) from a folder.
         """
         self._parent = parent
-        self._name   = name
+        self._name = name
 
     @property
     def parent(self):
@@ -240,7 +240,7 @@ class MailFolder(object):
             # Select the current mail folder.
             # Get the e-mail header.
             # Get the e-mail body, with or without file attachments.
-            status, response  = self.parent.imap4.select(self._name, readonly=1)
+            status, response = self.parent.imap4.select(self._name, readonly=1)
             status, response1 = self.parent.imap4.fetch(str(i), '(BODY.PEEK[HEADER])')
             status, response2 = self.parent.imap4.fetch(str(i), '(BODY.PEEK[%s])' % (not attachments and "TEXT" or ""))
             time.sleep(0.1)

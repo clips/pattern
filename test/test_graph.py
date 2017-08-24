@@ -105,10 +105,10 @@ class TestNode(unittest.TestCase):
         n2 = self.g["b"]
         self.assertTrue(n1.edges[0].node1.id == "a")
         self.assertTrue(n1.edges[0].node2.id == "b")
-        self.assertTrue(n1.links[0].id       == "b")
-        self.assertTrue(n1.links[0]          == self.g.edges[0].node2)
-        self.assertTrue(n1.links.edge("b")   == self.g.edges[0])
-        self.assertTrue(n1.links.edge(n2)    == self.g.edges[0])
+        self.assertTrue(n1.links[0].id == "b")
+        self.assertTrue(n1.links[0] == self.g.edges[0].node2)
+        self.assertTrue(n1.links.edge("b") == self.g.edges[0])
+        self.assertTrue(n1.links.edge(n2) == self.g.edges[0])
         print("pattern.graph.Node.links")
         print("pattern.graph.Node.edges")
 
@@ -141,12 +141,12 @@ class TestEdge(unittest.TestCase):
         # Assert edge properties.
         e = self.g.edges[0]
         self.assertTrue(isinstance(e, graph.Edge))
-        self.assertTrue(e.node1       == self.g["a"])
-        self.assertTrue(e.node2       == self.g["b"])
-        self.assertTrue(e.weight      == 0.0)
-        self.assertTrue(e.length      == 1.0)
-        self.assertTrue(e.type        == "is-a")
-        self.assertTrue(e.stroke      == (0, 0, 0, 1))
+        self.assertTrue(e.node1 == self.g["a"])
+        self.assertTrue(e.node2 == self.g["b"])
+        self.assertTrue(e.weight == 0.0)
+        self.assertTrue(e.length == 1.0)
+        self.assertTrue(e.type == "is-a")
+        self.assertTrue(e.stroke == (0, 0, 0, 1))
         self.assertTrue(e.strokewidth == 1)
         print("pattern.graph.Edge")
 
@@ -167,12 +167,12 @@ class TestGraph(unittest.TestCase):
     def test_graph(self):
         # Assert graph properties.
         g = self.g.copy()
-        self.assertTrue(len(g.nodes)  == 3)
-        self.assertTrue(len(g.edges)  == 2)
-        self.assertTrue(g.distance    == 10.0)
-        self.assertTrue(g.density     == 2 / 3.0)
+        self.assertTrue(len(g.nodes) == 3)
+        self.assertTrue(len(g.edges) == 2)
+        self.assertTrue(g.distance == 10.0)
+        self.assertTrue(g.density == 2 / 3.0)
         self.assertTrue(g.is_complete == False)
-        self.assertTrue(g.is_sparse   == False)
+        self.assertTrue(g.is_sparse == False)
         self.assertTrue(g.is_dense)
         self.assertTrue(g._adjacency is None)
         self.assertTrue(isinstance(g.layout, graph.GraphLayout))
@@ -356,8 +356,8 @@ class TestGraphLayout(unittest.TestCase):
     def test_layout(self):
         # Assert GraphLayout properties.
         gl = graph.GraphLayout(graph=self.g)
-        self.assertTrue(gl.graph      == self.g)
-        self.assertTrue(gl.bounds     == (0, 0, 0, 0))
+        self.assertTrue(gl.graph == self.g)
+        self.assertTrue(gl.bounds == (0, 0, 0, 0))
         self.assertTrue(gl.iterations == 0)
         gl.update()
         self.assertTrue(gl.iterations == 1)
@@ -369,18 +369,18 @@ class TestGraphSpringLayout(TestGraphLayout):
     def test_layout(self):
         # Assert GraphSpringLayout properties.
         gl = self.g.layout
-        self.assertTrue(gl.graph      == self.g)
-        self.assertTrue(gl.k          == 4.0)
-        self.assertTrue(gl.force      == 0.01)
-        self.assertTrue(gl.repulsion  == 50)
-        self.assertTrue(gl.bounds     == (0, 0, 0, 0))
+        self.assertTrue(gl.graph == self.g)
+        self.assertTrue(gl.k == 4.0)
+        self.assertTrue(gl.force == 0.01)
+        self.assertTrue(gl.repulsion == 50)
+        self.assertTrue(gl.bounds == (0, 0, 0, 0))
         self.assertTrue(gl.iterations == 0)
         gl.update()
         self.assertTrue(gl.iterations == 1)
-        self.assertTrue(gl.bounds[0]  < 0)
-        self.assertTrue(gl.bounds[1]  < 0)
-        self.assertTrue(gl.bounds[2]  > 0)
-        self.assertTrue(gl.bounds[3]  > 0)
+        self.assertTrue(gl.bounds[0] < 0)
+        self.assertTrue(gl.bounds[1] < 0)
+        self.assertTrue(gl.bounds[2] > 0)
+        self.assertTrue(gl.bounds[3] > 0)
         print("pattern.graph.GraphSpringLayout")
 
     def test_distance(self):

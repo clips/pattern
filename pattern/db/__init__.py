@@ -57,7 +57,7 @@ from pattern.helpers import encode_string, decode_string
 decode_utf8 = decode_string
 encode_utf8 = encode_string
 
-MYSQL  = "mysql"
+MYSQL = "mysql"
 SQLITE = "sqlite"
 
 
@@ -192,7 +192,7 @@ class Date(datetime):
         or getattr(t, "months", 0):
             # January 31 + 1 month = February 28.
             y = (d.month + t.months - 1) // 12 + d.year + t.years
-            m = (d.month + t.months + 0)  % 12 or 12
+            m = (d.month + t.months + 0) % 12 or 12
             r = monthrange(y, m)
             d = date(y, m, min(d.day, r[1]), d.hour, d.minute, d.second, d.microsecond)
         d = datetime.__add__(d, t)
@@ -358,7 +358,7 @@ def decrypt_string(s, key=""):
     return s
 
 RE_AMPERSAND = re.compile("\&(?!\#)")           # & not followed by #
-RE_UNICODE   = re.compile(r'&(#?)(x|X?)(\w+);') # &#201;
+RE_UNICODE = re.compile(r'&(#?)(x|X?)(\w+);') # &#201;
 
 
 def encode_entities(string):
@@ -783,7 +783,7 @@ class Database(object):
         # Returns a (field, index)-tuple with SQL strings for the given field().
         # The field string can be used in a CREATE TABLE or ALTER TABLE statement.
         # The index string is an optional CREATE INDEX statement (or None).
-        auto  = " auto%sincrement" % (self.type == MYSQL and "_" or "")
+        auto = " auto%sincrement" % (self.type == MYSQL and "_" or "")
         field = isinstance(field, str) and [field, STRING(255)] or field
         field = list(field) + [STRING, None, False, True][len(field) - 1:]
         field = list(_field(field[0], field[1], default=field[2], index=field[3], optional=field[4]))
@@ -813,7 +813,7 @@ class Database(object):
             return parse_xml(self, table,
                     table = kwargs.get("name"),
                     field = kwargs.get("field", lambda s: s.replace(".", "_")))
-        encoding  = self.type == MYSQL and " default charset=" + encoding.replace("utf-8", "utf8") or ""
+        encoding = self.type == MYSQL and " default charset=" + encoding.replace("utf-8", "utf8") or ""
         fields, indices = list(zip(*[self._field_SQL(table, f) for f in fields]))
         self.execute("create table `%s` (%s)%s;" % (table, ", ".join(fields), encoding))
         for index in indices:
@@ -883,14 +883,14 @@ class _String(str):
 # Note: SQLite string fields do not impose a string limit.
 # Unicode strings have more characters than actually displayed (e.g. "&#9829;").
 # Boolean fields are stored as tinyint(1), int 0 or 1.
-STRING, INTEGER, FLOAT, TEXT, BLOB, BOOLEAN, DATE  = \
+STRING, INTEGER, FLOAT, TEXT, BLOB, BOOLEAN, DATE = \
     _String(), "integer", "float", "text", "blob", "boolean", "date"
 
 STR, INT, BOOL = STRING, INTEGER, BOOLEAN
 
 # Field index.
 PRIMARY = "primary"
-UNIQUE  = "unique"
+UNIQUE = "unique"
 
 # DATE default.
 NOW = "now"
@@ -1032,11 +1032,11 @@ class Table(object):
         """ A collection of rows consisting of one or more fields (i.e., table columns)
             of a certain type (i.e., strings, numbers).
         """
-        self.database    = database
-        self._name       = name
-        self.fields      = [] # List of field names (i.e., column names).
-        self.schema      = {} # Dictionary of (field, Schema)-items.
-        self.default     = {} # Default values for Table.insert().
+        self.database = database
+        self._name = name
+        self.fields = [] # List of field names (i.e., column names).
+        self.schema = {} # Dictionary of (field, Schema)-items.
+        self.default = {} # Default values for Table.insert().
         self.primary_key = None
         self._update()
 
@@ -1224,7 +1224,7 @@ class Table(object):
             a.update(kwargs)
             kwargs = a
         kv = ", ".join("`%s`=%s" % (k, self.db.escape(v)) for k, v in kwargs.items())
-        q  = "update `%s` set %s where %s;" % (self.name, kv,
+        q = "update `%s` set %s where %s;" % (self.name, kv,
             not isinstance(id, (Filter, FilterChain)) and cmp(self.primary_key, id, "=", self.db.escape) \
              or id.SQL(escape=self.db.escape))
         self.db.execute(q, commit)
@@ -1484,9 +1484,9 @@ def any(*args, **kwargs):
 
 # Relations:
 INNER = "inner" # The rows for which there is a match in both tables (same as join=None).
-LEFT  = "left"  # All rows from this table, with field values from the related table when possible.
+LEFT = "left"  # All rows from this table, with field values from the related table when possible.
 RIGHT = "right" # All rows from the related table, with field values from this table when possible.
-FULL  = "full"  # All rows form both tables.
+FULL = "full"  # All rows form both tables.
 
 
 class Relation(tuple):
@@ -1500,7 +1500,7 @@ def relation(field1, field2, table, join=LEFT):
 rel = relation
 
 # Sorting:
-ASCENDING  = "asc"
+ASCENDING = "asc"
 DESCENDING = "desc"
 
 # Grouping:
@@ -1667,8 +1667,8 @@ class View(object):
             View.render() should be overridden in a subclass.
         """
         self.database = database
-        self._table   = isinstance(table, Table) and table.name or table
-        self.schema   = schema # A list of table fields - see field().
+        self._table = isinstance(table, Table) and table.name or table
+        self.schema = schema # A list of table fields - see field().
 
     @property
     def db(self):
@@ -1978,7 +1978,7 @@ class CSV(list):
         else:
             data = list(data)
         if headers:
-            fields  = [csv_header_decode(field) for field in data.pop(0)]
+            fields = [csv_header_decode(field) for field in data.pop(0)]
             fields += [(None, None)] * (max([0] + [len(row) for row in data]) - len(fields))
         else:
             fields = []
@@ -2404,7 +2404,7 @@ class DatasheetColumns(list):
 
     def __init__(self, datasheet):
         self._datasheet = datasheet
-        self._cache  = {} # Keep a reference to DatasheetColumn objects generated with Datasheet.columns[j].
+        self._cache = {} # Keep a reference to DatasheetColumn objects generated with Datasheet.columns[j].
                           # This way we can unlink them when they are deleted.
 
     def __setitem__(self, j, column):
@@ -2729,7 +2729,7 @@ def pprint(datasheet, truncate=40, padding=" ", fill="."):
         columns = []
         for k in range(n):
             for j, lines in enumerate(fields):
-                s  = lines[k]
+                s = lines[k]
                 s += ((k == 0 or len(lines[k]) > 0) and fill or " ") * (w[j] - len(lines[k]))
                 s += padding
                 columns.append(s)

@@ -25,8 +25,8 @@ def find(function, list):
 ### MOOD ###########################################################################################
 # Functions take Sentence objects, see pattern.text.tree.Sentence and pattern.text.parsetree().
 
-INDICATIVE  = "indicative"  # They went for a walk.
-IMPERATIVE  = "imperative"  # Let's go for a walk!
+INDICATIVE = "indicative"  # They went for a walk.
+IMPERATIVE = "imperative"  # Let's go for a walk!
 CONDITIONAL = "conditional" # It might be nice to go for a walk when it stops raining.
 SUBJUNCTIVE = "subjunctive" # It would be nice to go for a walk sometime.
 

@@ -189,7 +189,7 @@ sentiment = Sentiment(
       synset = "cornetto_id",
    negations = ("geen", "gene", "ni", "niet", "nooit"),
    modifiers = ("JJ", "RB",),
-   modifier  = lambda w: w.endswith(("ig", "isch", "lijk")),
+   modifier = lambda w: w.endswith(("ig", "isch", "lijk")),
    tokenizer = parser.find_tokens,
     language = "nl"
 )

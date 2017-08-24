@@ -116,7 +116,7 @@ replacements = (
                       "vent")
 
 replacements += tuple(k.capitalize() for k in replacements)
-replacements  = dict((k + "'", k + "' ") for k in replacements)
+replacements = dict((k + "'", k + "' ") for k in replacements)
 
 
 def find_lemmata(tokens):
@@ -180,7 +180,7 @@ sentiment = Sentiment(
       synset = None,
    negations = ("mai", "no", "non"),
    modifiers = ("RB",),
-   modifier  = lambda w: w.endswith(("mente")),
+   modifier = lambda w: w.endswith(("mente")),
    tokenizer = parser.find_tokens,
     language = "it"
 )
