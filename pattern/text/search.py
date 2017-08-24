@@ -252,7 +252,7 @@ class odict(dict):
             self.__setitem__(k, v)
 
     def setdefault(self, k, v=None):
-        if not k in self:
+        if k not in self:
             self.__setitem__(k, v)
         return self[k]
 
@@ -742,7 +742,7 @@ class Pattern(object):
         # - In GREEDY, "rabbit|NN" matches the string "rabbit" tagged "NN".
         # - In GREEDY, "rabbit" matches "the big white rabbit" (the entire chunk is a match).
         # - Pattern.greedy(chunk, constraint) determines (True/False) if a chunk is a match.
-        self.strict = kwargs.get("strict", STRICT in args and not GREEDY in args)
+        self.strict = kwargs.get("strict", STRICT in args and GREEDY not in args)
         self.greedy = kwargs.get("greedy", lambda chunk, constraint: True)
 
     def __iter__(self):

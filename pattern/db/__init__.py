@@ -1276,7 +1276,7 @@ def abs(table, field):
         This is useful when constructing queries with relations to other tables.
     """
     def _format(s):
-        if not "." in s:
+        if "." not in s:
             # Field could be wrapped in a function: year(date) => year(table.date).
             p = s.endswith(")") and re.match(r"^(" + sql_functions + r")\(", s, re.I) or None
             i = p and len(p.group(0)) or 0
@@ -1677,7 +1677,7 @@ class View(object):
     @property
     def table(self):
         # If it doesn't exist, create the table from View.schema.
-        if not self._table in self.db:
+        if self._table not in self.db:
             self.setup()
         return self.db[self._table]
 
@@ -1686,7 +1686,7 @@ class View(object):
         """
         if overwrite:
             self.db.drop(self._table)
-        if not self._table in self.db:
+        if self._table not in self.db:
             self.db.create(self._table, self.schema)
 
     def render(self, *path, **query):

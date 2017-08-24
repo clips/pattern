@@ -362,7 +362,7 @@ def count(words=[], top=None, threshold=0, stemmer=None, exclude=[], stopwords=F
         if isinstance(w, str):
             w1 = w.lower()
             w2 = w.lower()
-        if (stopwords or not w1 in _stopwords.get(language or "en", ())) and not w1 in exclude:
+        if (stopwords or w1 not in _stopwords.get(language or "en", ())) and w1 not in exclude:
             if stemmer is not None:
                 w2 = stem(w2, stemmer, **kwargs).lower()
             dict.__setitem__(count, w2, (w2 in count) and count[w2] + 1 or 1)
@@ -2693,7 +2693,7 @@ class NB(Classifier):
         p = defaultdict(float)
         for type in self._classes:
             if m == MULTINOMIAL:
-                if not type in self._cache: # 10x faster
+                if type not in self._cache: # 10x faster
                     self._cache[type] = float(sum(self._likelihood[type].values()))
                 d = self._cache[type]
             if m == BINOMIAL \

@@ -803,7 +803,7 @@ def depth_first_search(node, visit=lambda node: False, traversable=lambda node, 
             return True
         if traversable(node, node.links.edge(n)) is False:
             continue
-        if not n.id in _visited:
+        if n.id not in _visited:
             stop = depth_first_search(n, visit, traversable, _visited)
     return stop
 
@@ -817,7 +817,7 @@ def breadth_first_search(node, visit=lambda node: False, traversable=lambda node
     _visited = {}
     while q:
         node = q.pop(0)
-        if not node.id in _visited:
+        if node.id not in _visited:
             if visit(node):
                 return True
             q.extend((n for n in node.links if traversable(node, node.links.edge(n)) is not False))

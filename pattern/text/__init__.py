@@ -1172,13 +1172,13 @@ def find_tokens(string, punctuation=PUNCTUATION, abbreviations=ABBREVIATIONS, re
             tail = []
             if not RE_MENTION.match(t):
                 while t.startswith(punctuation) and \
-                  not t in replace:
+                  t not in replace:
                     # Split leading punctuation.
                     if t.startswith(punctuation):
                         tokens.append(t[0]); t = t[1:]
             if not False:
                 while t.endswith(punctuation) and \
-                  not t in replace:
+                  t not in replace:
                     # Split trailing punctuation.
                     if t.endswith(punctuation) and not t.endswith("."):
                         tail.append(t[-1]); t = t[:-1]

@@ -32,7 +32,7 @@ db = Database(pd("store.db"), type=SQLITE)
 # Create the products table if it doesn't exist yet.
 # An error will be raised if the table already exists.
 # Add sample data.
-if not "products" in db:
+if "products" not in db:
     # Note: in SQLite, the STRING type is mapped to TEXT (unlimited length).
     # In MySQL, the length matters. Smaller fields have faster lookup.
     schema = (
@@ -47,7 +47,7 @@ if not "products" in db:
 
 # CUSTOMERS
 # Create the customers table and add data.
-if not "customers" in db:
+if "customers" not in db:
     schema = (
         pk(),
         field("name", STRING(50)),
@@ -59,7 +59,7 @@ if not "customers" in db:
 
 # ORDERS
 # Create the orders table if it doesn't exist yet and add data.
-if not "orders" in db:
+if "orders" not in db:
     schema = (
         pk(),
         field("product_id", INTEGER),
