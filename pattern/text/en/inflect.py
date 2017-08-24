@@ -494,8 +494,8 @@ singular_rules = [
     (r'(?i)(.)ombies$'        , '\\1ombie'),
     (r'(?i)(s)eries$'         , '\\1eries'),
     (r'(?i)([^aeiouy]|qu)ies$', '\\1y'    ),
-	# -f, -fe sometimes take -ves in the plural
-	# (e.g., lives, wolves).
+        # -f, -fe sometimes take -ves in the plural
+        # (e.g., lives, wolves).
     (r"([aeo]l)ves$"          , "\\1f"    ),
     (r"([^d]ea)ves$"          , "\\1f"    ),
     (r"arves$"                , "arf"     ),

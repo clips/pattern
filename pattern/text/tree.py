@@ -1367,7 +1367,7 @@ def parse_xml(sentence, tab="\t", id=""):
         The tab delimiter is used as indendation for nested elements.
         The id can be used as a unique identifier per sentence for chunk id's and anchors.
         For example: "I eat pizza with a fork." =>
-        
+
         <sentence token="word, part-of-speech, chunk, preposition, relation, anchor, lemma" language="en">
             <chunk type="NP" relation="SBJ" of="1">
                 <word type="PRP" lemma="i">I</word>

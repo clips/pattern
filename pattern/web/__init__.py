@@ -283,13 +283,13 @@ def urldecode(query):
     """
     def _format(s):
         if s == "" or s == "None":
-             return None
+            return None
         if s.lstrip("-").isdigit():
-             return int(s)
+            return int(s)
         try:
             return float(s)
         except:
-             return s
+            return s
     if query:
         query = query.lstrip("?").split("&")
         query = ((kv.split("=") + [None])[:2] for kv in query)

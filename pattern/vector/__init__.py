@@ -3340,8 +3340,8 @@ class SVM(Classifier):
             (         "nu", "n", 0.5),
             (      "cache", "m", 100), # MB
             (  "shrinking", "h", True)):
-                v = kwargs.get(k2, kwargs.get(k1, v))
-                setattr(self, "_" + k1, v)
+            v = kwargs.get(k2, kwargs.get(k1, v))
+            setattr(self, "_" + k1, v)
         # Type aliases.
         if self._type == "svc":
             self._type = SVC

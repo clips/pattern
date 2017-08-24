@@ -1816,8 +1816,8 @@ def tense_id(*args, **kwargs):
     """
     # Unpack tense given as a tuple, e.g., tense((PRESENT, 1, SG)):
     if len(args) == 1 and isinstance(args[0], (list, tuple)):
-         if args[0] not in ((PRESENT, PARTICIPLE), (PAST, PARTICIPLE)):
-             args = args[0]
+        if args[0] not in ((PRESENT, PARTICIPLE), (PAST, PARTICIPLE)):
+            args = args[0]
     # No parameters defaults to tense=INFINITIVE, tense=PRESENT otherwise.
     if len(args) == 0 and len(kwargs) == 0:
         t = INFINITIVE
