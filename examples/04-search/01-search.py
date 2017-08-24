@@ -8,7 +8,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.search import search
-from pattern.en     import parsetree
+from pattern.en import parsetree
 
 # The pattern.search module contains a number of pattern matching tools
 # to search a string syntactically (word function) or semantically (word meaning).

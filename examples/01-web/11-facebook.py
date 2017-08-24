@@ -8,7 +8,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import Facebook, NEWS, COMMENTS, LIKES
-from pattern.db  import Datasheet, pprint, pd
+from pattern.db import Datasheet, pprint, pd
 
 # The Facebook API can be used to search public status updates (no license needed).
 

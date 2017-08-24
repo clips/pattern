@@ -29,13 +29,13 @@ if sys.version > "3":
 else:
     from backports import csv as csvlib
 
-from codecs    import BOM_UTF8
+from codecs import BOM_UTF8
 from itertools import islice
-from datetime  import datetime, timedelta
-from calendar  import monthrange
-from time      import mktime, strftime
-from math      import sqrt
-from types     import GeneratorType
+from datetime import datetime, timedelta
+from calendar import monthrange
+from time import mktime, strftime
+from math import sqrt
+from types import GeneratorType
 
 from functools import cmp_to_key
 
@@ -247,7 +247,7 @@ def date(*args, **kwargs):
         d += time(microseconds=args[0].microsecond)
     elif len(args) == 1 \
      and (isinstance(args[0], int) \
-      or  isinstance(args[0], (str, bytes)) and args[0].isdigit()):
+      or isinstance(args[0], (str, bytes)) and args[0].isdigit()):
         # One parameter, an int or string timestamp.
         if isinstance(args[0], bytes):
             args = (args[0].decode("utf-8"),)
@@ -2214,7 +2214,7 @@ class Datasheet(CSV):
         [g.setdefault(key(v), []).append(i) for i, v in enumerate(self.columns[j])]
         # Map unique values in column j to a sort index in the new, grouped list.
         o = [(g[v][0], v) for v in g]
-        o = dict([(v, i)  for i, (ii, v) in enumerate(sorted(o))])
+        o = dict([(v, i) for i, (ii, v) in enumerate(sorted(o))])
         # Create a list of rows with unique values in column j,
         # applying the group function to the other columns.
         u = [None] * len(o)

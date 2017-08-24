@@ -15,7 +15,7 @@ from builtins import str, bytes, dict, int
 from builtins import map, zip, filter
 from builtins import object, range
 
-from codecs    import BOM_UTF8
+from codecs import BOM_UTF8
 from itertools import chain
 from functools import cmp_to_key
 

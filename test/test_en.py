@@ -194,8 +194,8 @@ class TestInflection(unittest.TestCase):
     def test_tenses(self):
         # Assert tense recognition.
         self.assertTrue((en.inflect.PRESENT, 1, en.inflect.SINGULAR) in en.inflect.tenses("am"))
-        self.assertTrue("1sg"  in en.inflect.tenses("am"))
-        self.assertTrue("1sg"  in en.inflect.tenses("will"))
+        self.assertTrue("1sg" in en.inflect.tenses("am"))
+        self.assertTrue("1sg" in en.inflect.tenses("will"))
         self.assertTrue("2sg-" in en.inflect.tenses("won't"))
         self.assertTrue("part" in en.inflect.tenses("imaginarifying"))
         print("pattern.en.inflect.tenses()")

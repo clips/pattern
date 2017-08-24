@@ -14,7 +14,7 @@ import time
 import re
 import random
 
-from pattern    import search
+from pattern import search
 from pattern.en import Sentence, parse
 
 #---------------------------------------------------------------------------------------------------

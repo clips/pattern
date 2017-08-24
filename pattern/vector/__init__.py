@@ -52,12 +52,12 @@ except ImportError:
 import gzip
 import types
 
-from math        import log, exp, sqrt, tanh
-from time        import time
-from random      import random, randint, uniform, choice, sample, seed
-from itertools   import chain
-from bisect      import insort
-from operator    import itemgetter
+from math import log, exp, sqrt, tanh
+from time import time
+from random import random, randint, uniform, choice, sample, seed
+from itertools import chain
+from bisect import insort
+from operator import itemgetter
 from collections import defaultdict
 
 from io import open

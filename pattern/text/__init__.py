@@ -29,7 +29,7 @@ BOM_UTF8 = BOM_UTF8.decode('utf-8')
 
 from xml.etree import cElementTree
 from itertools import chain
-from math      import log
+from math import log
 
 try:
     MODULE = os.path.dirname(os.path.realpath(__file__))

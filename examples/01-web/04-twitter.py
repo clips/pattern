@@ -9,7 +9,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import Twitter, hashtags
-from pattern.db  import Datasheet, pprint, pd
+from pattern.db import Datasheet, pprint, pd
 
 # This example retrieves tweets containing given keywords from Twitter.
 

@@ -9,7 +9,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.graph import Graph, WEIGHT, CENTRALITY, DEGREE, DEFAULT
-from random        import choice, random
+from random import choice, random
 
 # This example demonstrates how a graph visualization can be exported to HTML,
 # using the HTML5 <canvas> tag and Javascript.

@@ -16,12 +16,12 @@ from builtins import object, range, next
 import os
 import sys
 
-from math     import sqrt, pow
-from math     import sin, cos, atan2, degrees, radians, pi
-from random   import random
-from heapq    import heappush, heappop
+from math import sqrt, pow
+from math import sin, cos, atan2, degrees, radians, pi
+from random import random
+from heapq import heappush, heappop
 from warnings import warn
-from shutil   import rmtree
+from shutil import rmtree
 
 from io import open
 

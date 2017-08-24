@@ -8,7 +8,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.search import search, taxonomy, Classifier
-from pattern.en     import parsetree
+from pattern.en import parsetree
 
 # The search module includes a Taxonomy class
 # that can be used to define semantic word types.

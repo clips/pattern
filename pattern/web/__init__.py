@@ -4029,9 +4029,9 @@ class PDF(DocumentParser):
         # The output is useful for mining but not for display.
         # Alternatively, PDF(format="html") preserves some layout.
         from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
-        from pdfminer.pdfpage   import PDFPage
+        from pdfminer.pdfpage import PDFPage
         from pdfminer.converter import TextConverter, HTMLConverter
-        from pdfminer.layout    import LAParams
+        from pdfminer.layout import LAParams
         try:
             m = PDFResourceManager()
             s = StringIO()
@@ -4101,7 +4101,7 @@ def parsedoc(path, format=None):
     """ Returns the content as a Unicode string from the given document (.html., .pdf, .docx).
     """
     if isinstance(path, str):
-        if format == "pdf"  or path.endswith(".pdf"):
+        if format == "pdf" or path.endswith(".pdf"):
             return parsepdf(path)
         if format == "docx" or path.endswith(".docx"):
             return parsedocx(path)

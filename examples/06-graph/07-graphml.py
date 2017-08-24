@@ -9,7 +9,7 @@ import sys
 sys.path.insert(0, os.path.join("..", ".."))
 
 from pattern.graph import Graph, WEIGHT, CENTRALITY, DEGREE, DEFAULT
-from random        import choice, random
+from random import choice, random
 
 # This example demonstrates how a graph visualization can be exported to GraphML,
 # a file format that can be opened in Gephi (https://gephi.org).

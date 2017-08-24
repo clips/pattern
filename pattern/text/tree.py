@@ -1436,8 +1436,8 @@ def parse_xml(sentence, tab="\t", id=""):
                 XML_CHUNK,
                 chunk.type and ' %s="%s"' % (XML_TYPE, chunk.type) or "",
                 chunk.relations and chunk.role is not None and ' %s="%s"' % (XML_RELATION, r2) or "",
-                chunk.relation  and chunk.type == "VP" and ' %s="%s"' % (XML_ID, uid(chunk.relation)) or "",
-                chunk.relation  and chunk.type != "VP" and ' %s="%s"' % (XML_OF, r1) or "",
+                chunk.relation and chunk.type == "VP" and ' %s="%s"' % (XML_ID, uid(chunk.relation)) or "",
+                chunk.relation and chunk.type != "VP" and ' %s="%s"' % (XML_OF, r1) or "",
                 chunk.attachments and ' %s="%s"' % (XML_ANCHOR, uid("A", anchors[chunk.start])) or ""
             ))
             indent = push(indent)
@@ -1661,7 +1661,7 @@ def _parse_token(word, chunk="O", pnp="O", relation="O", anchor="O",
     """
     tags = []
     for tag in format:
-        if   tag == WORD:
+        if tag == WORD:
             tags.append(xml_decode(word.value))
         elif tag == POS:
             tags.append(xml_decode(word.get(XML_TYPE, "O")))
@@ -1801,7 +1801,7 @@ def table(sentence, fill=1, placeholder="-"):
 
     def format(token, tag):
         # Returns the token tag as a string.
-        if   tag == WORD:
+        if tag == WORD:
             s = token.string
         elif tag == POS:
             s = token.type

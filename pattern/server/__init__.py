@@ -842,7 +842,7 @@ class localdict(dict):
         return setattr(self._data, k, v)
 
     def __len__(self):
-        return  len(self._data.__dict__)
+        return len(self._data.__dict__)
 
     def __iter__(self):
         return iter(self._data.__dict__)

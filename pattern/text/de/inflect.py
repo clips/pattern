@@ -392,7 +392,7 @@ class Verbs(_Verbs):
                 if v.startswith(prefix) and v[len(prefix):] in self.inflections:
                     return prefix + self.inflections[v[len(prefix):]]
         # Common sufixes: setze nieder => niedersetzen.
-        b, suffix = " " in v and v.split()[:2] or  (v, "")
+        b, suffix = " " in v and v.split()[:2] or (v, "")
         # Infinitive -ln: trommeln.
         if b.endswith(("ln", "rn")):
             return b

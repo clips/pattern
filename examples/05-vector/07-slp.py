@@ -11,11 +11,11 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 import random
 
-from collections    import defaultdict
-from pattern.text   import Model
+from collections import defaultdict
+from pattern.text import Model
 from pattern.vector import shuffled, SLP
-from pattern.en     import lexicon, parsetree
-from random         import seed
+from pattern.en import lexicon, parsetree
+from random import seed
 
 from io import open
 

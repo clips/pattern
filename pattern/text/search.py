@@ -648,7 +648,7 @@ class Constraint(object):
                 try:
                     if " " in w and (s1 in w or s2 and s2 in w or "*" in w):
                         s1 = word.chunk and word.chunk.string.lower() or s1
-                        s2 = word.chunk and " ".join(x or ""  for x in word.chunk.lemmata) or s2
+                        s2 = word.chunk and " ".join(x or "" for x in word.chunk.lemmata) or s2
                 except Exception as e:
                     s1 = s1
                     s2 = None

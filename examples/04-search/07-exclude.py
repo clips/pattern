@@ -8,7 +8,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.search import match
-from pattern.en     import Sentence, parse
+from pattern.en import Sentence, parse
 
 # This example demonstrates how to exclude certain words or tags from a constraint.
 # It also demonstrates the use of "^",

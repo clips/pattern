@@ -8,7 +8,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.web import Newsfeed, plaintext, URL
-from pattern.db  import date
+from pattern.db import date
 
 # This example reads a given RSS or Atom newsfeed channel.
 # Some example feeds to try out:

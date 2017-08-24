@@ -8,7 +8,7 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from pattern.search import search
-from pattern.en     import parsetree
+from pattern.en import parsetree
 
 # Constraints ending in "?" are optional, matching one or no word.
 # Pattern.search() uses a "greedy" approach:

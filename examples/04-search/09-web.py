@@ -8,10 +8,10 @@ import os
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from pattern.web    import Bing, plaintext
-from pattern.en     import parsetree
+from pattern.web import Bing, plaintext
+from pattern.en import parsetree
 from pattern.search import Pattern
-from pattern.db     import Datasheet, pprint
+from pattern.db import Datasheet, pprint
 
 # "X IS MORE IMPORTANT THAN Y"
 # Here is a rough example of how to build a web miner.

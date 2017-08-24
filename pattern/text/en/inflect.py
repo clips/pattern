@@ -665,7 +665,7 @@ class Verbs(_Verbs):
             return "be"
         if v in ("'d", "'ll"):
             return "will"
-        if v in  ("'ve"):
+        if v in ("'ve"):
             return "have"
         if v.endswith("s"):
             if v.endswith("ies") and len(v) > 3 and v[-4] not in VOWELS:

@@ -565,7 +565,7 @@ class TestModel(unittest.TestCase):
         self.assertEqual(v, ["at", "cat", "dog"])
         # Assert Model.filter().
         v = m.filter(v)
-        self.assertTrue("at"  in v.terms)
+        self.assertTrue("at" in v.terms)
         self.assertTrue("cat" in v.terms)
         self.assertTrue("dog" in v.terms)
         self.assertTrue("the" not in v.terms)

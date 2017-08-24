@@ -21,11 +21,11 @@ from time import time
 from math import sqrt, floor, ceil, modf, exp, pi, log
 
 from collections import Counter, defaultdict, deque
-from itertools   import chain
-from operator    import itemgetter, lt, le
-from heapq       import nlargest
-from bisect      import bisect_right
-from random      import gauss
+from itertools import chain
+from operator import itemgetter, lt, le
+from heapq import nlargest
+from bisect import bisect_right
+from random import gauss
 
 #--- FREQUENCY DICT --------------------------------------------------------------------------------
 
