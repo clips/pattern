@@ -49,7 +49,7 @@ class TestInflection(unittest.TestCase):
             if en.inflect.pluralize(sg) == pl:
                 i +=1
             n += 1
-        self.assertTrue(float(i) / n > 0.95)
+        self.assertGreater(float(i) / n, 0.95)
         print("pattern.en.inflect.pluralize()")
 
     def test_singularize(self):
@@ -60,7 +60,7 @@ class TestInflection(unittest.TestCase):
             if en.inflect.singularize(pl) == sg:
                 i +=1
             n += 1
-        self.assertTrue(float(i) / n > 0.95)
+        self.assertGreater(float(i) / n, 0.95)
         print("pattern.en.inflect.singularize()")
 
     def test_find_lemma(self):
@@ -72,7 +72,7 @@ class TestInflection(unittest.TestCase):
             if en.inflect.verbs.find_lemma(v1) == v2:
                 i += 1
             n += 1
-        self.assertTrue(float(i) / n > 0.90)
+        self.assertGreater(float(i) / n, 0.90)
         print("pattern.en.inflect.verbs.find_lemma()")
 
     def test_find_lexeme(self):
@@ -86,7 +86,7 @@ class TestInflection(unittest.TestCase):
                    lexeme1[j>5 and 10 or 0] == lexeme2[j]:
                     i += 1
                 n += 1
-        self.assertTrue(float(i) / n > 0.90)
+        self.assertGreater(float(i) / n, 0.90)
         print("pattern.en.inflect.verbs.find_lexeme()")
 
     def test_conjugate(self):
@@ -283,7 +283,7 @@ class TestSpelling(unittest.TestCase):
                     i += 1
                 else:
                     j += 1
-        self.assertTrue(i / (i+j) > 0.70)
+        self.assertGreater(i / (i+j), 0.70)
         print("pattern.en.suggest()")
 
 #---------------------------------------------------------------------------------------------------
@@ -333,19 +333,19 @@ class TestParser(unittest.TestCase):
         # Given are the scores for detection of nouns, verbs, adjectives and adverbs.
         # The baseline should increase (not decrease) when the algorithm is modified.
         v = self._test_morphological_rules(function=text._suffix_rules)
-        self.assertTrue(v[0] > 0.91) # NN
-        self.assertTrue(v[1] > 0.23) # VB
-        self.assertTrue(v[2] > 0.38) # JJ
-        self.assertTrue(v[3] > 0.60) # RB
+        self.assertGreater(v[0], 0.91) # NN
+        self.assertGreater(v[1], 0.23) # VB
+        self.assertGreater(v[2], 0.38) # JJ
+        self.assertGreater(v[3], 0.60) # RB
         print("pattern.text._suffix_rules()")
 
     def test_apply_morphological_rules(self):
         # Assert part-of-speech tag for unknown tokens (Brill's lexical rules).
         v = self._test_morphological_rules(function=en.parser.morphology.apply)
-        self.assertTrue(v[0] > 0.85) # NN
-        self.assertTrue(v[1] > 0.19) # VB
-        self.assertTrue(v[2] > 0.65) # JJ
-        self.assertTrue(v[3] > 0.59) # RB
+        self.assertGreater(v[0], 0.85) # NN
+        self.assertGreater(v[1], 0.19) # VB
+        self.assertGreater(v[2], 0.65) # JJ
+        self.assertGreater(v[3], 0.59) # RB
         print("pattern.en.parser.morphology.apply()")
 
     def test_apply_context_rules(self):
@@ -540,7 +540,7 @@ class TestParser(unittest.TestCase):
                         i += 1
                     n += 1
             #print(corpus, float(i) / n)
-            self.assertTrue(float(i) / n > (en.parser.model and a[0] or a[1]))
+            self.assertGreater(float(i) / n, (en.parser.model and a[0] or a[1]))
         print("pattern.en.parse()")
 
     def test_tagged_string(self):
@@ -874,10 +874,10 @@ class TestModality(unittest.TestCase):
             sentences.append((sentence, int(certain) > 0))
         A, P, R, F = test(lambda sentence: en.modality(sentence) > 0.5, sentences)
         #print(A, P, R, F)
-        self.assertTrue(A > 0.69)
-        self.assertTrue(P > 0.72)
-        self.assertTrue(R > 0.64)
-        self.assertTrue(F > 0.68)
+        self.assertGreater(A, 0.69)
+        self.assertGreater(P, 0.72)
+        self.assertGreater(R, 0.64)
+        self.assertGreater(F, 0.68)
         print("pattern.en.modality()")
 
 #---------------------------------------------------------------------------------------------------
@@ -916,10 +916,10 @@ class TestSentiment(unittest.TestCase):
         t = time()
         A, P, R, F = test(lambda review: en.positive(review), reviews)
         #print(A, P, R, F)
-        self.assertTrue(A > 0.754)
-        self.assertTrue(P > 0.773)
-        self.assertTrue(R > 0.719)
-        self.assertTrue(F > 0.745)
+        self.assertGreater(A, 0.754)
+        self.assertGreater(P, 0.773)
+        self.assertGreater(R, 0.719)
+        self.assertGreater(F > 0.745)
         # Assert the accuracy of the sentiment analysis on short text (for the positive class).
         # Given are the scores for Pang & Lee's sentence polarity dataset v1.0:
         # http://www.cs.cornell.edu/people/pabo/movie-review-data/
@@ -928,10 +928,10 @@ class TestSentiment(unittest.TestCase):
             reviews.append((review, int(score) > 0))
         A, P, R, F = test(lambda review: en.positive(review), reviews)
         #print(A, P, R, F)
-        self.assertTrue(A > 0.654)
-        self.assertTrue(P > 0.660)
-        self.assertTrue(R > 0.636)
-        self.assertTrue(F > 0.648)
+        self.assertGreater(A > 0.654)
+        self.assertGreater(P, 0.660)
+        self.assertGreater(R, 0.636)
+        self.assertGreater(F, 0.648)
         print("pattern.en.sentiment()")
 
     def test_sentiment_twitter(self):
@@ -953,10 +953,10 @@ class TestSentiment(unittest.TestCase):
                     reviews.append((tweet, polarity in ("positive", "neutral")))
             A, P, R, F = test(lambda review: en.positive(review, threshold=0.0), reviews)
             #print(A, P, R, F)
-            self.assertTrue(A > 0.824)
-            self.assertTrue(P > 0.879)
-            self.assertTrue(R > 0.911)
-            self.assertTrue(F > 0.895)
+            self.assertGreater(A, 0.824)
+            self.assertGreater(P, 0.879)
+            self.assertGreater(R, 0.911)
+            self.assertGreater(F, 0.895)
 
     def test_sentiment_assessment(self):
         # Assert that en.sentiment() has a fine-grained "assessments" property.
