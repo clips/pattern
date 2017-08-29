@@ -248,6 +248,11 @@ def parsetree(s, *args, **kwargs):
     """
     return Text(parse(s, *args, **kwargs))
 
+def parsetree_with_offsets(s, *args, **kwargs):
+    """ Returns a parsed Text (with offsets) from the given string.
+    """
+    return Text(parser.parse_sentence(s, *args, **kwargs))
+
 def tree(s, token=[WORD, POS, CHUNK, PNP, REL, LEMMA]):
     """ Returns a parsed Text from the given parsed string.
     """
