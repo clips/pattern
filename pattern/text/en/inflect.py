@@ -601,17 +601,25 @@ def singularize(word, pos=NOUN, custom={}):
         return singularize(word[:-1]) + "'s"
     w = word.lower()
     for x in singular_uninflected:
-        if x.endswith(w):
-            return word
+		if x==w:
+			return word
+        # Changed from endswith to ==
+        #if x.endswith(w):
     for x in singular_uncountable:
-        if x.endswith(w):
+        if x==w:
             return word
+        # Changed from endswith to ==
+        #if x.endswith(w):
     for x in singular_ie:
         if w.endswith(x+"s"):
-            return w
+            return x
+        # Changed. We need to return the singular word
+        #return w
     for x in singular_irregular:
-        if w.endswith(x):
-            return re.sub('(?i)'+x+'$', singular_irregular[x], word)
+        if x==w:
+            return word
+        #if w.endswith(x):
+        #    return re.sub('(?i)'+x+'$', singular_irregular[x], word)
     for suffix, inflection in singular_rules:
         m = suffix.search(word)
         g = m and m.groups() or [] 
