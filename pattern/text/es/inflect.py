@@ -19,6 +19,7 @@
 
 import os
 import sys
+import pdb
 import re
 
 try:
@@ -158,6 +159,8 @@ def pluralize(word, pos=NOUN, custom={}):
 
 #### SINGULARIZE ###################################################################################
 
+words_that_end_in_s = [u'país', 'dios', 'gracias', u'interés', u'adiós', u'francés', 'mes', 'antes', 'martes', 'viernes', 'tos', u'feligrés']
+
 def singularize(word, pos=NOUN, custom={}):
     if word in custom:
         return custom[word]
@@ -169,9 +172,19 @@ def singularize(word, pos=NOUN, custom={}):
         if w in ("una", "unas", "unos"):
             return "un"
         return w
+
     # hombres => hombre
-    if w.endswith("es") and w[:-2].endswith(("br", "i", "j", "t", "zn")):
+    # chismes => chisme
+    # padres => padre, noche, golpe, vientre, terrible/confiabl/ mes, llave, chicles, alcalde
+    if w.endswith("s") and word in words_that_end_in_s:
+        return w
+    elif w.endswith("es") and w[:-2] in words_that_end_in_s:
+        return w[:-2]
+    elif w.endswith("es") and w[:-2].endswith(("i", "j", "v", "es", "t", "s", "p")):
         return w[:-1]
+    elif re.search(u"[^áéóúíüaeiou]{2,}es$", w, re.UNICODE):
+        return w[:-1]
+
     # gestiones => gestión
     for a, b in (
       ("anes", u"án"),
@@ -197,7 +210,6 @@ def singularize(word, pos=NOUN, custom={}):
     return w
 
 #### VERB CONJUGATION ##############################################################################
-
 verb_irregular_inflections = [
     (u"yéramos", "ir"   ), ( "cisteis", "cer"   ), ( "tuviera", "tener"), ( "ndieron", "nder" ),
     ( "ndiendo", "nder" ), (u"tándose", "tarse" ), ( "ndieran", "nder" ), ( "ndieras", "nder" ),
@@ -231,6 +243,7 @@ verb_irregular_inflections = [
     (   u"tían", "tir"  ), (    "pare", "parar" ), (    "gres", "grar" ), (    "gren", "grar" ),
     (    "tuvo", "tener"), (   u"uían", "uir"   ), (   u"uías", "uir"  ), (    "quen", "car"  ),
     (    "ques", "car"  ), (   u"téis", "tar"   ), (    "iero", "erir" ), (    "iere", "erir" ),
+    (    "ieres", "erir" ),(    "ieren", "erir" ),
     (    "uche", "uchar"), (    "tuve", "tener" ), (    "inen", "inar" ), (    "pire", "pirar"),
     (   u"reía", "reir" ), (    "uste", "ustar" ), (   u"ibió", "ibir" ), (    "duce", "ducir"),
     (    "icen", "izar" ), (    "ices", "izar"  ), (    "ines", "inar" ), (    "ires", "irar" ),
@@ -244,6 +257,16 @@ verb_irregular_inflections = [
     (      "ye", "ir"   ), (     u"tí", "tir"   ), (     u"cé", "zar"  ), (      "ie", "iar"  ),
     (      "id", "ir"   ), (     u"ué", "ar"    ),
 ]
+
+verbs_ending_in_erar = ("aerar","liberar","deliberar","reverberar","lacerar","macerar","ulcerar","encerar",
+    "eviscerar","federar","confederar","liderar","considerar","reconsiderar","abanderar","ponderar","preponderar",
+    "moderar","apoderar","empoderar","vociferar","proliferar","exagerar","aligerar","refrigerar","atrincherar",
+    "acelerar","desacelerar","decelerar","tolerar","aglomerar","conglomerar","numerar","enumerar","renumerar",
+    "generar","degenerar","regenerar","venerar","incinerar","adinerar","vulnerar","exonerar","remunerar","temperar",
+    "atemperar","imperar","operar","reoperar","cooperar","exasperar","esperar","desesperar","prosperar","recuperar",
+    "superar","vituperar","reiterar","transliterar","alterar","adulterar","encuerar","entreverar","aseverar")
+
+imperfect_subjunctive_endings = (('ese', 'era'), ('eses', 'eras'), (u'ésemos', u'éramos'), ('eseis', 'erais'), ('esen', 'eran'))
 
 class Verbs(_Verbs):
     
@@ -261,10 +284,14 @@ class Verbs(_Verbs):
                 55, 56, 57, 58, 59, 60,     # subjuntivo presente
                 67, 68, 69, 70, 71, 72      # subjuntivo imperfecto
             ])
-    
+
+# voseo?
     def find_lemma(self, verb):
         """ Returns the base form of the given inflected verb, using a rule-based approach.
         """
+
+        #abstener is the only tener verb missing
+        #sembrar
         # Spanish has 12,000+ verbs, ending in -ar (85%), -er (8%), -ir (7%).
         # Over 65% of -ar verbs (6500+) have a regular inflection.
         v = verb.lower()
@@ -273,10 +300,34 @@ class Verbs(_Verbs):
         # Probably infinitive if ends in -ar, -er or -ir.
         if v.endswith(("ar", "er", "ir")):
             return v
+
+        #Try to fall back to a root verb
+        if v.startswith(("com", "des", "pre", "con")):
+            if v[3:] in self._inverse:
+                return v[:3] + self._inverse[v[3:]]
+        if v.startswith(("re", "de", "ex")):
+            if v[2:] in self._inverse:
+                return v[:2] + self._inverse[v[2:]]
+
+        #Ignore checking for "era*" if this is in the list above
+        test_infinitive = re.match('(.*era)[sn]?', v)
+        if test_infinitive and (test_infinitive.groups()[0] + 'r' in verbs_ending_in_erar):
+            return v.rstrip("sn")[:-1] + "ar"
+
         # Ruleset for irregular inflections adds 10% accuracy.
         for a, b in verb_irregular_inflections:
             if v.endswith(a):
                 return v[:-len(a)] + b
+
+        # Replace old imperfect subjective endings.
+        # Hubiese => Hubiera
+        for a, b in imperfect_subjunctive_endings:
+            if v.endswith(a):
+                v = v[:-len(a)] + b
+                if v in self._inverse:
+                    return self._inverse[v]
+                break
+
         # reconozco => reconocer
         v = v.replace(u"zco", "ce")
         # reconozcamos => reconocer
