@@ -200,6 +200,39 @@ class TestInflection(unittest.TestCase):
 
 #---------------------------------------------------------------------------------------------------
 
+class WhiteboxInflectionTestCase(unittest.TestCase):
+
+    def test_s_singular_pluralize(self):
+        self.assertEquals(en.inflect.pluralize('lens'), 'lenses')
+
+    def test_diagnosis_pluralize(self):
+        self.assertEquals(en.inflect.pluralize('diagnosis'), 'diagnoses')
+
+    def test_s_singular_singularize(self):
+        self.assertEquals(en.inflect.singularize('lenses'), 'lens')
+
+    def test_ie_singular_singularize(self):
+        self.assertEquals(en.inflect.singularize('cuties'), 'cutie')
+
+    def test_all_s_singular(self):
+        l = en.inflect.plural_categories['s-singular']
+        singularize = en.inflect.singularize
+        pluralize = en.inflect.pluralize
+        for word in l:
+            self.assertEquals(pluralize(word), word+'es')
+            self.assertEquals(singularize(pluralize(word)), word)
+
+    def test_all_ie_singular(self):
+        l = en.inflect.singular_ie
+        singularize = en.inflect.singularize
+        pluralize = en.inflect.pluralize
+        for word in l:
+            self.assertEquals(pluralize(word), word+'s')
+            self.assertEquals(singularize(pluralize(word)), word)
+
+
+#---------------------------------------------------------------------------------------------------
+
 class TestQuantification(unittest.TestCase):
 
     def setUp(self):
