@@ -686,7 +686,7 @@ class Sentence(object):
 
     @property
     def is_question(self):
-        return len(self) > 0 and str(self[-1]) == "?"
+        return len(self) > 0 and str(self.string[-1]) == "?"
     @property
     def is_exclamation(self):
         return len(self) > 0 and str(self[-1]) == "!"
