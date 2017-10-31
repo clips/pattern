@@ -292,6 +292,8 @@ def fleiss_kappa(m):
                [3,2], # cat
                [5,0]] # dog
     """
+    if not m:
+        return 0.0
     N = len(m)    # Total number of tasks.
     n = sum(m[0]) # The number of votes per task.
     k = len(m[0]) # The number of categories.
@@ -398,7 +400,7 @@ def flesch_reading_ease(string):
     #R = 206.835 - 1.015 * w/s - 84.6 * sum(y)/w
     # Use the Farr, Jenkins & Patterson algorithm,
     # which uses simpler syllable counting (count_syllables() is the weak point here). 
-    R = 1.599 * sum(1 for v in y if v == 1) * 100 / w - 1.015 * w / s - 31.517
+    R = 1.599 * sum(v==1 for v in y) * 100 / w - 1.015 * w / s - 31.517
     R = max(0.0, min(R * 0.01, 1.0))
     return R
 
