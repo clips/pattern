@@ -43,7 +43,7 @@ if sys.argv[-1] == "zip":
                 x.close()
     z.close()
     print(n)
-    print(hashlib.sha256(open(z.filename).read()).hexdigest())
+    print(hashlib.sha256(open(z.filename, 'rb').read()).hexdigest())
     sys.exit(0)
 
 #---------------------------------------------------------------------------------------------------
