@@ -319,7 +319,7 @@ Chunk('mobile apps/NP') =&gt; Chunk('The mobile web/NP-SBJ-1')
 &gt;&gt;&gt; g = Graph()
 &gt;&gt;&gt; for i in range(10):
 &gt;&gt;&gt;     for result in Bing().search('"more important than"', start=i+1, count=50):
-&gt;&gt;&gt;         s = r.text.lower() 
+&gt;&gt;&gt;         s = result.text.lower() 
 &gt;&gt;&gt;         s = plaintext(s)
 &gt;&gt;&gt;         s = parsetree(s)
 &gt;&gt;&gt;         p = '{NP} (VP) more important than {NP}' 
