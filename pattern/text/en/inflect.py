@@ -12,7 +12,7 @@
 
 # Accuracy (measured on CELEX English morphology word forms):
 # 95% for pluralize()
-# 96% for singularize()
+# 99% for singularize()
 # 95% for Verbs.find_lemma() (for regular verbs)
 # 96% for Verbs.find_lexeme() (for regular verbs)
 
@@ -24,7 +24,7 @@ try:
     MODULE = os.path.dirname(os.path.realpath(__file__))
 except:
     MODULE = ""
-    
+
 sys.path.insert(0, os.path.join(MODULE, "..", "..", "..", ".."))
 
 from pattern.text import Verbs as _Verbs
@@ -93,7 +93,7 @@ def referenced(word, article=INDEFINITE):
     """
     return "%s %s" % (_article(word, article), word)
 
-#print referenced("hour")        
+#print referenced("hour")
 #print referenced("FBI")
 #print referenced("bear")
 #print referenced("one-liner")
@@ -117,9 +117,9 @@ plural_prepositions = set((
     "among"  , "beside" , "in"    , "out"  , "unto" ,
     "around" , "besides", "into"  , "over" , "upon" ,
     "at"     , "between", "near"  , "since", "with" ,
-    "athwart", "betwixt", 
-               "beyond", 
-               "but", 
+    "athwart", "betwixt",
+               "beyond",
+               "but",
                "by"))
 
 # Inflection rules that are either:
@@ -155,7 +155,7 @@ plural_rules = [
      (      r"^you$", "you"        , None, False),
      (r"^thou$|^thee$", "ye"       , None, False),
      ( r"^yourself$", "yourself"   , None, False),
-     (  r"^thyself$", "yourself"   , None, False),     
+     (  r"^thyself$", "yourself"   , None, False),
      ( r"^she$|^he$", "they"       , None, False),
      (r"^it$|^they$", "they"       , None, False),
      (r"^her$|^him$", "them"       , None, False),
@@ -177,7 +177,20 @@ plural_rules = [
      (       r"pox$", "pox"        , None, False),
      (r"([A-Z].*)ese$", "\\1ese"   , None, False),
      (      r"itis$", "itis"       , None, False),
-     (r"(fruct|gluc|galact|lact|ket|malt|rib|sacchar|cellul)ose$", "\\1ose", None, False)
+     (r"(fruct|gluc|galact|lact|ket|malt|rib|sacchar|cellul)ose$", "\\1ose", None, False),
+        # nouns - uncountable
+     (r"(accommoda|corrupt|determina|educa|imagina|informa|motiva|nutri|relaxa|pollu|produc|pronuncia|punctua|transporta)tion$","\\1tion", None, False),
+     (r"(.)ness$"                                     , "\\1ness"   , None, False ),
+     (r"(hospital|obes|public|electric)ity$"          , "\\1ity"    , None, False ),
+     (r"(safe|modes|pover|hones)ty$"                  , "\\1ty"     , None, False ),
+     (r"(unemploy|employ|entertain|manage)ment$"      , "\\1ment"   , None, False ),
+     (r"(child|mother|adult)hood$"                    , "\\1hood"   , None, False ),
+     (r"(evid|innoc|intellig|pati|viol|sil)ence$"     , "\\1ence"   , None, False ),
+     (r"(assist|import|toler)ance$"                   , "\\1ance"   , None, False ),
+     (r"(heal|warm|weal|wid|you)th$"                  , "\\1th"     , None, False ),
+     (r"(advertis|cloth|lightn|shopp|spell)ing$"      , "\\1ing"    , None, False ),
+     (r"(.)ics$"                                      , "\\1ics"    , None, False ),
+     (r"(log|mag|mus|traff)ic$"                       , "\\1ic"     , None, False ),
     ), # 5) Irregular plural forms (e.g., mongoose, oxen).
     ((     r"atlas$", "atlantes"   , None, True ),
      (     r"atlas$", "atlases"    , None, False),
@@ -197,6 +210,7 @@ plural_rules = [
      (  r"mongoose$", "mongooses"  , None, False),
      (    r"mythos$", "mythoi"     , None, False),
      (   r"octopus$", "octopodes"  , None, True ),
+     (   r"octopus$", "octopuses"  , None, False),
      (      r"opus$", "opera"      , None, True ),
      (      r"opus$", "opuses"     , None, False),
      (       r"^ox$", "oxen"       , None, False),
@@ -217,7 +231,7 @@ plural_rules = [
      (      r"foot$", "feet"       , None, False),
      (      r"zoon$", "zoa"        , None, False),
      ( r"([csx])is$", "\\1es"      , None, False)
-    ), # 7) Fully assimilated classical inflections 
+    ), # 7) Fully assimilated classical inflections
        #    (e.g., vertebrae, codices).
     ((        r"ex$", "ices" , "ex-ices" , False),
      (        r"ex$", "ices" , "ex-ices*", True ), # * = classical mode
@@ -226,7 +240,7 @@ plural_rules = [
      (        r"on$", "a"    ,    "on-a" , False),
      (         r"a$", "ae"   ,    "a-ae" , False),
      (         r"a$", "ae"   ,    "a-ae*", True )
-    ), # 8) Classical variants of modern inflections 
+    ), # 8) Classical variants of modern inflections
        #    (e.g., stigmata, soprani).
     ((      r"trix$", "trices"     , None, True),
      (       r"eau$", "eaux"       , None, True),
@@ -240,32 +254,32 @@ plural_rules = [
      (         r"o$", "i"    ,     "o-i*", True),
      (          r"$", "i"    ,      "-i*", True),
      (          r"$", "im"   ,     "-im*", True)
-    ), # 9) -ch, -sh and -ss take -es in the plural 
+    ), # 9) -ch, -sh and -ss take -es in the plural
        #    (e.g., churches, classes).
     ((   r"([cs])h$", "\\1hes"     , None, False),
      (        r"ss$", "sses"       , None, False),
      (         r"x$", "xes"        , None, False)
-    ), # 10) -f or -fe sometimes take -ves in the plural 
+    ), # 10) -f or -fe sometimes take -ves in the plural
        #     (e.g, lives, wolves).
     (( r"([aeo]l)f$", "\\1ves"     , None, False),
      ( r"([^d]ea)f$", "\\1ves"     , None, False),
      (       r"arf$", "arves"      , None, False),
      (r"([nlw]i)fe$", "\\1ves"     , None, False),
-    ), # 11) -y takes -ys if preceded by a vowel, -ies otherwise 
+    ), # 11) -y takes -ys if preceded by a vowel, -ies otherwise
        #     (e.g., storeys, Marys, stories).
     ((r"([aeiou])y$", "\\1ys"      , None, False),
      (r"([A-Z].*)y$", "\\1ys"      , None, False),
      (         r"y$", "ies"        , None, False)
     ), # 12) -o sometimes takes -os, -oes otherwise.
-       #     -o is preceded by a vowel takes -os 
+       #     -o is preceded by a vowel takes -os
        #     (e.g., lassos, potatoes, bamboos).
     ((         r"o$", "os",        "o-os", False),
      (r"([aeiou])o$", "\\1os"      , None, False),
      (         r"o$", "oes"        , None, False)
-    ), # 13) Miltary stuff 
+    ), # 13) Miltary stuff
        #     (e.g., Major Generals).
     ((         r"l$", "ls", "general-generals", False),
-    ), # 14) Assume that the plural takes -s 
+    ), # 14) Assume that the plural takes -s
        #     (cats, programmes, ...).
     ((          r"$", "s"          , None, False),)
 ]
@@ -275,39 +289,66 @@ plural_rules = [[(re.compile(r[0]), r[1], r[2], r[3]) for r in grp] for grp in p
 
 # Suffix categories.
 plural_categories = {
-    "uninflected": [ 
-        "bison"      , "debris"     , "headquarters" , "news"       , "swine"        ,
-        "bream"      , "diabetes"   , "herpes"       , "pincers"    , "trout"        ,
-        "breeches"   , "djinn"      , "high-jinks"   , "pliers"     , "tuna"         ,
-        "britches"   , "eland"      , "homework"     , "proceedings", "whiting"      ,
-        "carp"       , "elk"        , "innings"      , "rabies"     , "wildebeest"
-        "chassis"    , "flounder"   , "jackanapes"   , "salmon"     ,
-        "clippers"   , "gallows"    , "mackerel"     , "scissors"   , 
-        "cod"        , "graffiti"   , "measles"      , "series"     , 
-        "contretemps",                "mews"         , "shears"     , 
-        "corps"      ,                "mumps"        , "species"
+    "uninflected": [
+        "alias"      , "chassis"     , "eaves"       , "innings"     , "proceedings", "status"     ,
+        "alms"       , "chess"       , "eland"       , "jackanapes"  , "rabies"     , "swine"      ,
+        "axis"       , "christmas"   , "elk"         , "mackerel"    , "riches"     , "swiss"      ,
+        "billiards"  , "clippers"    , "flounder"    , "measles"     , "rickets"    , "testis"     ,
+        "bison"      , "contretemps" , "gallows"     , "mews"        , "salmon"     , "trout"      ,
+        "bream"      , "corps"       , "georgia"     , "mumps"       , "scissors"   , "tuna"       ,
+        "breeches"   , "cod"         , "graffiti"    , "news"        , "series"     , "user"       ,
+        "britches"   , "crisis"      , "headquarters", "high-jinks"  , "shears"     , "virus"      ,
+        "bus"        , "debris"      , "herpes"      ,                 "slice"      , "whiting"    ,
+        "carp"       , "diabetes"    , "homework"    , "pincers"     , "species"    , "wildebeest" ,
+        "christmas"  , "djinn"       , "hummus"      , "pliers"      , "spectacles" , "your"       ,
         ],
     "uncountable": [
-        "advice"     , "fruit"      , "ketchup"      , "meat"       , "sand"         ,
-        "bread"      , "furniture"  , "knowledge"    , "mustard"    , "software"     ,
-        "butter"     , "garbage"    , "love"         , "news"       , "understanding",
-        "cheese"     , "gravel"     , "luggage"      , "progress"   , "water"
-        "electricity", "happiness"  , "mathematics"  , "research"   , 
-        "equipment"  , "information", "mayonnaise"   , "rice"
+        # abstract nouns, ideas and experiences
+        "advice"     , "failure"    , "jealousy"     , "pride"        , "vision"       ,
+        "anger"      , "fame"       , "justice"      , "progress"     , "weight"       ,
+        "business"   , "freedom"    , "knowledge"    , "racism"       , "welfare"      ,
+        "calm"       , "friendship" , "lack"         , "respect"      , "wisdom"       ,
+        "chaos"      , "fun"        , "laughter"     , "speed"        , "work"         ,
+        "courage"    , "guilt"      , "leisure"      , "stress"       ,
+        "damage"     , "harm"       , "love"         , "trust"        ,
+        "danger"     , "heat"       , "luck"         , "understand"   ,
+        "energy"     , "help"       , "permission"   , "understanding",
+        "enthusiasm" , "humour"     , "power"        , "usage"        ,
+
+        # natural phenomena
+        "air"        , "oxygen"     , "sand"         , "sunshine"     , "weather"      ,
+        "fire"       ,                "smoke"        , "water"        ,
+        "nature"     , "rain"       , "snow"         , "wildlife"     ,
+
+        # food, material, substances
+        "bread"      , "fruit"      , "gravel"       , "meat"         , "oil"          , "soup"         ,
+        "butter"     , "food"       , "juice"        , "metal"        , "rice"         , "sugar"        ,
+        "cheese"     , "fuel"       , "ketchup"      , "milk"         , "salt"         , "tea"          ,
+        "coffee"     , "gold"       , "mayonnaise"   , "mustard"      , "seafood"      , "wheat"        ,
+        "flour"      ,
+
+        # general
+        "aid"        , "equipment"  , "housework"    , "money"        , "rubbish"      , "travel"       ,
+        "art"        , "furniture"  , "labour"       , "news"         , "software"     , "trousers"     ,
+        "cash"       , "garbage"    , "literature"   , "old age"      , "spectacles"   , "yoga"         ,
+        "content"    , "grammar"    , "litter"       , "paper"        , "tennis"       ,
+        "currency"   , "hair"       , "luggage"      , "research"     , "time"         ,
+        "data"       , "homework"   , "mathematical" , "room"         , "trade"        ,
         ],
+
     "s-singular": [
-        "acropolis"  , "caddis"     , "dais"         , "glottis"    , "pathos"       ,
+        "acropolis"  , "caddis"     , "dais"         , "hummus"     , "pathos"       , "trellis"
         "aegis"      , "cannabis"   , "digitalis"    , "ibis"       , "pelvis"       ,
         "alias"      , "canvas"     , "epidermis"    , "lens"       , "polis"        ,
         "asbestos"   , "chaos"      , "ethos"        , "mantis"     , "rhinoceros"   ,
-        "bathos"     , "cosmos"     , "gas"          , "marquis"    , "sassafras"    ,
-        "bias"       ,                "glottis"      , "metropolis" , "trellis"
+        "bathos"     , "cosmos"     , "gas"          , "marquis"    , "riches"       ,
+        "bias"       ,                "glottis"      , "metropolis" , "sassafras"    ,
         ],
     "ex-ices": [
         "codex"      , "murex"      , "silex"
         ],
     "ex-ices*": [
-        "apex"       , "index"      , "pontifex"     , "vertex"     , 
+        "apex"       , "index"      , "pontifex"     , "vertex"     ,
         "cortex"     , "latex"      , "simplex"      , "vortex"
         ],
     "um-a": [
@@ -324,14 +365,14 @@ plural_categories = {
         ],
     "on-a": [
         "aphelion"   , "hyperbaton" , "perihelion"   ,
-        "asyndeton"  , "noumenon"   , "phenomenon"   , 
+        "asyndeton"  , "noumenon"   , "phenomenon"   ,
         "criterion"  , "organon"    , "prolegomenon"
         ],
     "a-ae": [
         "alga"       , "alumna"     , "vertebra"
         ],
     "a-ae*": [
-        "abscissa"   , "aurora"     , "hyperbola"    , "nebula"     , 
+        "abscissa"   , "aurora"     , "hyperbola"    , "nebula"     ,
         "amoeba"     , "formula"    , "lacuna"       , "nova"       ,
         "antenna"    , "hydra"      , "medusa"       , "parabola"
         ],
@@ -350,14 +391,14 @@ plural_categories = {
         ],
     "us-i*": [
         "focus"      , "nimbus"     , "succubus"     ,
-        "fungus"     , "nucleolus"  , "torus"        , 
-        "genius"     , "radius"     , "umbilicus"    , 
+        "fungus"     , "nucleolus"  , "torus"        ,
+        "genius"     , "radius"     , "umbilicus"    ,
         "incubus"    , "stylus"     , "uterus"
         ],
     "us-us*": [
         "apparatus"  , "hiatus"     , "plexus"       , "status"
         "cantus"     , "impetus"    , "prospectus"   ,
-        "coitus"     , "nexus"      , "sinus"        , 
+        "coitus"     , "nexus"      , "sinus"        ,
         ],
     "o-i*": [
         "alto"       , "canto"      , "crescendo"    , "soprano"    ,
@@ -377,7 +418,7 @@ plural_categories = {
         "ditto"      , "ghetto"     , "lingo"        , "octavo"     , "stylo"
         ],
     "general-generals": [
-        "Adjutant"   , "Brigadier"  , "Lieutenant"   , "Major"      , "Quartermaster", 
+        "Adjutant"   , "Brigadier"  , "Lieutenant"   , "Major"      , "Quartermaster",
         "adjutant"   , "brigadier"  , "lieutenant"   , "major"      , "quartermaster"
         ]
 }
@@ -391,7 +432,7 @@ def pluralize(word, pos=NOUN, custom={}, classical=True):
     if word in custom:
         return custom[word]
     # Recurse genitives.
-    # Remove the apostrophe and any trailing -s, 
+    # Remove the apostrophe and any trailing -s,
     # form the plural of the resultant noun, and then append an apostrophe (dog's => dogs').
     if word.endswith(("'", "'s")):
         w = word.rstrip("'s")
@@ -401,7 +442,7 @@ def pluralize(word, pos=NOUN, custom={}, classical=True):
         else:
             return w + "'s"
     # Recurse compound words
-    # (e.g., Postmasters General, mothers-in-law, Roman deities).    
+    # (e.g., Postmasters General, mothers-in-law, Roman deities).
     w = word.replace("-", " ").split(" ")
     if len(w) > 1:
         if w[1] == "general" or \
@@ -463,126 +504,183 @@ def pluralize(word, pos=NOUN, custom={}, classical=True):
 # THIS SOFTWARE.
 
 singular_rules = [
-    (r'(?i)(.)ae$'            , '\\1a'    ),
-    (r'(?i)(.)itis$'          , '\\1itis' ),
-    (r'(?i)(.)eaux$'          , '\\1eau'  ),
-    (r'(?i)(quiz)zes$'        , '\\1'     ),
-    (r'(?i)(matr)ices$'       , '\\1ix'   ),
-    (r'(?i)(ap|vert|ind)ices$', '\\1ex'   ),
-    (r'(?i)^(ox)en'           , '\\1'     ),
-    (r'(?i)(alias|status)es$' , '\\1'     ),
-    (r'(?i)([octop|vir])i$'   ,  '\\1us'  ),
-    (r'(?i)(cris|ax|test)es$' , '\\1is'   ),
-    (r'(?i)(shoe)s$'          , '\\1'     ),
-    (r'(?i)(o)es$'            , '\\1'     ),
-    (r'(?i)(bus)es$'          , '\\1'     ),
-    (r'(?i)([m|l])ice$'       , '\\1ouse' ),
-    (r'(?i)(x|ch|ss|sh)es$'   , '\\1'     ),
-    (r'(?i)(m)ovies$'         , '\\1ovie' ),
-    (r'(?i)(.)ombies$'        , '\\1ombie'),
-    (r'(?i)(s)eries$'         , '\\1eries'),
-    (r'(?i)([^aeiouy]|qu)ies$', '\\1y'    ),
-	# -f, -fe sometimes take -ves in the plural 
+    (r'(?i)(.)ae$'                     , '\\1a'       ),
+    (r'(?i)(.)itis$'                   , '\\1itis'    ),
+    (r'(?i)(.)eaux$'                   , '\\1eau'     ),
+    (r'(?i)(quiz)zes$'                 , '\\1'        ),
+    (r'(?i)(matr)ices$'                , '\\1ix'      ),
+    (r'(?i)(ap|vert|ind)ices$'         , '\\1ex'      ),
+    (r'(?i)^(ox)en'                    , '\\1'        ),
+    (r'(?i)(\w+)(o[ou])(s|ch)es$'      , '\\1\\2\\3e' ),
+    (r'(?i)(\w+)(our)$'                , '\\1\\2'     ),
+    (r'(?i)\A(re)(\w+)(e)s$'           , '\\1\\2\\3'  ),
+    (r'(?i)\A(re)(\w+)xes$'            , '\\1\\2x'    ),
+    (r'(?i)(\w+)(case|chase)s$'        , '\\1\\2'     ),
+    (r'(?i)(\w+)?(valve)s$'            , '\\1\\2'     ),
+    (r'(?i)(\w+)?([gklpt])(ie)s'       , '\\1\\2\\3'  ),
+    (r'(?i)(\w+)?(tax)es$'             , '\\1\\2'     ),
+    (r'(?i)(alias|status|bus)es$'      , '\\1'        ),
+    (r'(?i)(\w+)([^o][aiou])ses$'      , '\\1\\2s'    ),
+    (r'(?i)([octop|vir])i$'            , '\\1us'      ),
+    (r'(?i)(anticlim|clim|w)(ax)es$'   , '\\1\\2'     ),
+    (r'(?i)(cris|ax|test)es$'          , '\\1is'      ),
+    (r'(?i)(\w+)?(ax)es'               , '\\1\\2e'    ),
+    (r'(?i)(shoe)s$'                   , '\\1'        ),
+    (r'(?i)\A(f|fl|ob|r|t|w)(oe)s$'         , '\\1\\2'     ),
+    (r'(?i)(o)es$'                     , '\\1'        ),
+    (r'(?i)([ml])ice$'                 , '\\1ouse'    ),
+    (r'(?i)(.ache)s$'                  , '\\1'        ),
+    (r'(?i)(x|ch|ss|sh)es$'            , '\\1'        ),
+    (r'(?i)(m)ovies$'                  , '\\1ovie'    ),
+    (r'(?i)(.)ombies$'                 , '\\1ombie'   ),
+    (r'(?i)(s)eries$'                  , '\\1eries'   ),
+    (r'(?i)([^aeiouy]|qu)ies$'         , '\\1y'       ),
+	# -f, -fe sometimes take -ves in the plural
 	# (e.g., lives, wolves).
-    (r"([aeo]l)ves$"          , "\\1f"    ),
-    (r"([^d]ea)ves$"          , "\\1f"    ),
-    (r"arves$"                , "arf"     ),
-    (r"erves$"                , "erve"    ),
-    (r"([nlw]i)ves$"          , "\\1fe"   ),
-    (r'(?i)([lr])ves$'        , '\\1f'    ),
-    (r"([aeo])ves$"           , "\\1ve"   ),
-    (r'(?i)(sive)s$'          , '\\1'     ),
-    (r'(?i)(tive)s$'          , '\\1'     ),
-    (r'(?i)(hive)s$'          , '\\1'     ),
-    (r'(?i)([^f])ves$'        , '\\1fe'   ),
+    (r"([aeo]l)ves$"                   , "\\1f"       ),
+    (r"([^d]ea)ves$"                   , "\\1f"       ),
+    (r"arves$"                         , "arf"        ),
+    (r"erves$"                         , "erve"       ),
+    (r"([nlw]i)ves$"                   , "\\1fe"      ),
+    (r'(?i)([lr])ves$'                 , '\\1f'       ),
+    (r"([aeo])ves$"                    , "\\1ve"      ),
+    (r'(?i)(sive)s$'                   , '\\1'        ),
+    (r'(?i)(tive)s$'                   , '\\1'        ),
+    (r'(?i)(hive)s$'                   , '\\1'        ),
+    (r'(?i)([^f])ves$'                 , '\\1fe'      ),
     # -ses suffixes.
-    (r'(?i)(^analy)ses$'      , '\\1sis'  ),
+    (r'(?i)(^analy)ses$'               , '\\1sis'     ),
     (r'(?i)((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$', '\\1\\2sis'),
-    (r'(?i)(.)opses$'         , '\\1opsis'),
-    (r'(?i)(.)yses$'          , '\\1ysis' ),
-    (r'(?i)(h|d|r|o|n|b|cl|p)oses$', '\\1ose'),
+    (r'(?i)(.)opses$'                  , '\\1opsis'   ),
+    (r'(?i)(.)yses$'                   , '\\1ysis'    ),
+    (r'(?i)(h|d|r|o|n|b|cl|p)oses$'    , '\\1ose'     ),
     (r'(?i)(fruct|gluc|galact|lact|ket|malt|rib|sacchar|cellul)ose$', '\\1ose'),
-    (r'(?i)(.)oses$'          , '\\1osis' ),
+    (r'(?i)(.)oses$'                   , '\\1osis'    ),
+    (r'(.)ness$'                       , '\\1ness'    ),
+    (r'(?i)(econom|phys|electron|mathemat|linguist|gymnas|genet)ics$'                                    , '\\1ics'   ), # subjects
     # -a
-    (r'(?i)([ti])a$'          , '\\1um'   ),
-    (r'(?i)(n)ews$'           , '\\1ews'  ),
-    (r'(?i)s$'                , ''        ),
+    (r'(?i)([ti])a$'                   , '\\1um'      ),
+    (r'(?i)(n)ews$'                    , '\\1ews'     ),
+    (r'(?i)s$'                         , ''           ),
+    # nouns - uncountable
 ]
 
 # For performance, compile the regular expressions only once:
 singular_rules = [(re.compile(r[0]), r[1]) for r in singular_rules]
 
 singular_uninflected = set((
-    "bison"      , "debris"   , "headquarters", "pincers"    , "trout"     ,
-    "bream"      , "diabetes" , "herpes"      , "pliers"     , "tuna"      ,
-    "breeches"   , "djinn"    , "high-jinks"  , "proceedings", "whiting"   ,
-    "britches"   , "eland"    , "homework"    , "rabies"     , "wildebeest",
-    "carp"       , "elk"      , "innings"     , "salmon"     , 
-    "chassis"    , "flounder" , "jackanapes"  , "scissors"   , 
-    "christmas"  , "gallows"  , "mackerel"    , "series"     , 
-    "clippers"   , "georgia"  , "measles"     , "shears"     , 
-    "cod"        , "graffiti" , "mews"        , "species"    , 
-    "contretemps",              "mumps"       , "swine"      , 
-    "corps"      ,              "news"        , "swiss"      , 
+    "alias"      ,
+    "alms"       , "chassis"     , "eaves"       , "innings"     , "proceedings", "status"     ,
+    "axis"       , "chess"       , "eland"       , "jackanapes"  , "rabies"     , "swine"      ,
+    "billiards"  , "christmas"   , "elk"         , "mackerel"    , "riches"     , "swiss"      ,
+    "bison"      , "clippers"    , "flounder"    , "measles"     , "rickets"    , "testis"     ,
+    "bream"      , "contretemps" , "gallows"     , "mews"        , "salmon"     , "trout"      ,
+    "breeches"   , "corps"       , "georgia"     , "mumps"       , "scissors"   , "tuna"       ,
+    "britches"   , "cod"         , "graffiti"    , "news"        , "series"     , "user"       ,
+    "bus"        , "crisis"      , "headquarters", "high-jinks"  , "shears"     , "virus"      ,
+    "carp"       , "debris"      , "herpes"      , "octopus"     , "slice"      , "whiting"    ,
+    "christmas"  , "diabetes"    , "homework"    , "pincers"     , "species"    , "wildebeest" ,
+    "carp"       , "djinn"       , "hummus"      , "pliers"      , "spectacles" , "your"       ,
 ))
 singular_uncountable = set((
-    "advice"     , "equipment", "happiness"   , "luggage"    , "news"      , "software"     ,
-    "bread"      , "fruit"    , "information" , "mathematics", "progress"  , "understanding",
-    "butter"     , "furniture", "ketchup"     , "mayonnaise" , "research"  , "water"        ,
-    "cheese"     , "garbage"  , "knowledge"   , "meat"       , "rice"      , 
-    "electricity", "gravel"   , "love"        , "mustard"    , "sand"      , 
+    # abstract nouns, ideas and experiences
+    "advice"     , "failure"    , "jealousy"     , "pride"        , "vision"       ,
+    "anger"      , "fame"       , "justice"      , "progress"     , "weight"       ,
+    "business"   , "freedom"    , "knowledge"    , "racism"       , "welfare"      ,
+    "calm"       , "friendship" , "lack"         , "respect"      , "wisdom"       ,
+    "chaos"      , "fun"        , "laughter"     , "speed"        , "work"         ,
+    "courage"    , "guilt"      , "leisure"      , "stress"       ,
+    "damage"     , "harm"       , "love"         , "trust"        ,
+    "danger"     , "heat"       , "luck"         , "understand"   ,
+    "energy"     , "help"       , "permission"   , "understanding",
+    "enthusiasm" , "humour"     , "power"        , "usage"        ,
+
+    # natural phenomena
+    "air"        , "oxygen"     , "sand"         , "sunshine"     , "weather"      ,
+    "fire"       ,                "smoke"        , "water"        ,
+    "nature"     , "rain"       , "snow"         , "wildlife"     ,
+
+    # food, material, substances
+    "bread"      , "fruit"      , "gravel"       , "meat"         , "oil"          , "soup"         ,
+    "butter"     , "food"       , "juice"        , "metal"        , "rice"         , "sugar"        ,
+    "cheese"     , "fuel"       , "ketchup"      , "milk"         , "salt"         , "tea"          ,
+    "coffee"     , "gold"       , "mayonnaise"   , "mustard"      , "seafood"      , "wheat"        ,
+    "flour"      ,
+
+    # general
+    "aid"        , "equipment"  , "housework"    , "money"        , "rubbish"      , "travel"       ,
+    "art"        , "furniture"  , "labour"       , "news"         , "software"     , "trousers"     ,
+    "cash"       , "garbage"    , "literature"   , "old age"      , "spectacles"   , "yoga"         ,
+    "content"    , "grammar"    , "litter"       , "paper"        , "tennis"       ,
+    "currency"   , "hair"       , "luggage"      , "research"     , "time"         ,
+    "data"       , "homework"   , "mathematical" , "room"         , "trade"        ,
 ))
 singular_ie = set((
-    "alergie"    , "cutie"    , "hoagie"      , "newbie"     , "softie"    , "veggie"       , 
-    "auntie"     , "doggie"   , "hottie"      , "nightie"    , "sortie"    , "weenie"       , 
-    "beanie"     , "eyrie"    , "indie"       , "oldie"      , "stoolie"   , "yuppie"       , 
-    "birdie"     , "freebie"  , "junkie"      , "^pie"       , "sweetie"   , "zombie"       ,
-    "bogie"      , "goonie"   , "laddie"      , "pixie"      , "techie"    , 
-    "bombie"     , "groupie"  , "laramie"     , "quickie"    , "^tie"      , 
-    "collie"     , "hankie"   , "lingerie"    , "reverie"    , "toughie"   , 
-    "cookie"     , "hippie"   , "meanie"      , "rookie"     , "valkyrie"  , 
+    "aussie"     , "caddie"     , "indie"        , "oldie"        , "techie"       ,
+    "beanie"     , "eyrie"      , "laddie"       , "patisserie"   , "toughie"      ,
+    "birdie"     , "freebie"    , "laramie"      , "pixie"        , "valkyrie"     ,
+    "bombie"     , "gendarmerie", "lingerie"     , "prairie"      , "weenie"       ,
+    "brasserie"  , "goonie"     , "meanie"       , "reverie"      , "zombie"       ,
+                                  "newbie"       ,
+))
+singular_e = set ((
+    "anise"      , "expose"     , "move"         , "poseuse"      , "showcase"     ,
+    "chaise"     , "finesse"    , "nape"         , "praise"       , "slice"        ,
+    "cloche"     , "five"       , "niche"        , "promise"      , "solve"        ,
+    "close"      , "heave"      , "noblesse"     , "prose"        , "tease"        ,
+    "copse"      , "helve"      , "olive"        , "purchase"     , "valise"       ,
+    "drive"      , "jive"       , "pause"        , "salve"        , "weave"        ,
+    "excuse"     , "mauve"      , "phase"        , "schottische"  ,
 ))
 singular_irregular = {
-       "atlantes": "atlas", 
-        "atlases": "atlas", 
-           "axes": "axe",
-         "beeves": "beef", 
-       "brethren": "brother", 
+       "atlantes": "atlas",
+        "atlases": "atlas",
+#           "axes": "axe",     #axes is plural to three singular words ax, axe, axis. Also, reduces accuracy on uncommenting because of words like pickaxes
+         "beeves": "beef",
+       "brethren": "brother",
+       "brooches": "brooch",
+      "buffaloes": "buffalo",
        "children": "child",
-        "corpora": "corpus", 
-       "corpuses": "corpus", 
-    "ephemerides": "ephemeris", 
+        "colours": "colour",
+        "corpora": "corpus",
+       "corpuses": "corpus",
+    "ephemerides": "ephemeris",
            "feet": "foot",
-        "ganglia": "ganglion", 
+        "ganglia": "ganglion",
           "geese": "goose",
-         "genera": "genus", 
-          "genii": "genie", 
-       "graffiti": "graffito", 
-         "helves": "helve",
-           "kine": "cow", 
+         "genera": "genus",
+          "genii": "genie",
+       "graffiti": "graffito",
+           "kine": "cow",
          "leaves": "leaf",
-         "loaves": "loaf", 
+         "lenses": "lens",
+         "lieder": "lied",
+         "loaves": "loaf",
             "men": "man",
-      "mongooses": "mongoose", 
-         "monies": "money", 
-          "moves": "move",
-         "mythoi": "mythos", 
-         "numena": "numen", 
-       "occipita": "occiput", 
-      "octopodes": "octopus", 
-          "opera": "opus", 
-         "opuses": "opus", 
+      "mongooses": "mongoose",
+         "monies": "money",
+         "mythoi": "mythos",
+         "numena": "numen",
+       "occipita": "occiput",
+      "octopodes": "octopus",
+          "opera": "opus",
             "our": "my",
-           "oxen": "ox", 
-          "penes": "penis", 
-        "penises": "penis", 
+           "oxen": "ox",
+   "peccadilloes": "peccadillo",
+          "penes": "penis",
+        "penises": "penis",
          "people": "person",
+         "phizes": "phiz",
+        "reaches": "reach",
+   "rhinoceroses": "rhinoceros",
           "sexes": "sex",
-    "soliloquies": "soliloquy", 
+         "sinews": "sinew",
+    "soliloquies": "soliloquy",
           "teeth": "tooth",
-         "testes": "testis", 
-        "trilbys": "trilby", 
-         "turves": "turf", 
+        "touches": "touch",
+      "tricepses": "triceps",
+        "trilbys": "trilby",
+         "turves": "turf",
             "zoa": "zoon",
 }
 
@@ -591,7 +689,7 @@ def singularize(word, pos=NOUN, custom={}):
     """
     if word in custom:
         return custom[word]
-    # Recurse compound words (e.g. mothers-in-law). 
+    # Recurse compound words (e.g. mothers-in-law).
     if "-" in word:
         w = word.split("-")
         if len(w) > 1 and w[1] in plural_prepositions:
@@ -601,20 +699,23 @@ def singularize(word, pos=NOUN, custom={}):
         return singularize(word[:-1]) + "'s"
     w = word.lower()
     for x in singular_uninflected:
-        if x.endswith(w):
-            return word
+        if x == w or w == x+"s":
+            return x
     for x in singular_uncountable:
         if x.endswith(w):
             return word
     for x in singular_ie:
         if w.endswith(x+"s"):
-            return w
+            return x
+    for x in singular_e:
+        if w.endswith(x+"s"):
+            return x
     for x in singular_irregular:
-        if w.endswith(x):
+        if x == w:
             return re.sub('(?i)'+x+'$', singular_irregular[x], word)
     for suffix, inflection in singular_rules:
         m = suffix.search(word)
-        g = m and m.groups() or [] 
+        g = m and m.groups() or []
         if m:
             for k in range(len(g)):
                 if g[k] is None:
@@ -625,7 +726,7 @@ def singularize(word, pos=NOUN, custom={}):
 #### VERB CONJUGATION ##############################################################################
 
 class Verbs(_Verbs):
-    
+
     def __init__(self):
         _Verbs.__init__(self, os.path.join(MODULE, "en-verbs.txt"),
             language = "en",
@@ -640,7 +741,7 @@ class Verbs(_Verbs):
                 26: 33, 27: 33, 28: 33,         # past singular negated
                 29: 32, 30: 32, 31: 32, 32: 33  # past plural negated
             })
-    
+
     def find_lemma(self, verb):
         """ Returns the base form of the given inflected verb, using a rule-based approach.
             This is problematic if a verb ending in -e is given in the past tense or gerund.
@@ -678,7 +779,7 @@ class Verbs(_Verbs):
                 return v+"e"      # indulg => indulge
             if v.endswith(("b", "d", "g", "k", "l", "m", "r", "s", "t")) \
               and len(v) > 2 and v[-2] in VOWELS and not v[-3] in VOWELS \
-              and not v.endswith("er"): 
+              and not v.endswith("er"):
                 return v+"e"      # generat => generate
             if v.endswith("n") and v.endswith(("an", "in")) and not v.endswith(("ain", "oin", "oan")):
                 return v+"e"      # imagin => imagine
@@ -736,7 +837,7 @@ VOWELS = "aeiouy"
 grade_irregular = {
        "bad": (  "worse", "worst"),
        "far": ("further", "farthest"),
-      "good": ( "better", "best"), 
+      "good": ( "better", "best"),
       "hind": ( "hinder", "hindmost"),
        "ill": (  "worse", "worst"),
       "less": ( "lesser", "least"),
@@ -765,7 +866,7 @@ def _count_syllables(word):
 def grade(adjective, suffix=COMPARATIVE):
     """ Returns the comparative or superlative form of the given adjective.
     """
-    n = _count_syllables(adjective)	
+    n = _count_syllables(adjective)
     if adjective in grade_irregular:
         # A number of adjectives inflect irregularly.
         return grade_irregular[adjective][suffix != COMPARATIVE]
