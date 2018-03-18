@@ -2,14 +2,15 @@
 
 from __future__ import print_function
 
-import sys
 import os
-
+import sys
 from io import open
 
 from setuptools import setup
 
 from pattern import __version__
+
+IS_PYTHON2 = sys.version_info[0] < 3
 
 #---------------------------------------------------------------------------------------------------
 # "python setup.py zip" will create the zipped distribution and checksum.
@@ -130,19 +131,27 @@ setup(
         "Topic :: Text Processing :: Linguistic",
         "Topic :: Text Processing :: Markup :: HTML"
     ],
-    install_requires = [
+    extra_requires={
+        "wordnet": ["nltk"],
+        "server": [
+            "mysqlclient",
+            "cherrypy"
+        ],
+        "web": [
+           "beautifulsoup4",
+           "feedparser",
+           "lxml",
+           "python-docx"
+        ] + [
+           "pdfminer"
+        ] if IS_PYTHON2 else [ "pdfminer.six"]
+    },
+    install_requires=[
+        "numpy",
+        "scipy"
+    ] + [
         "future",
         "backports.csv",
-        "mysqlclient",
-        "beautifulsoup4",
-        "lxml",
-        "feedparser",
-        "pdfminer" if sys.version < "3" else "pdfminer.six",
-        "numpy",
-        "scipy",
-        "nltk",
-        "python-docx",
-        "cherrypy"
-    ],
+    ] if IS_PYTHON2 else [],
     zip_safe = False
 )
