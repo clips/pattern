@@ -608,7 +608,7 @@ def singularize(word, pos=NOUN, custom={}):
             return word
     for x in singular_ie:
         if w.endswith(x+"s"):
-            return w
+            return x
     for x in singular_irregular:
         if w.endswith(x):
             return re.sub('(?i)'+x+'$', singular_irregular[x], word)
