@@ -1729,6 +1729,12 @@ class Twitter(SearchEngine):
             - count: maximum 100.
             There is a limit of 150+ queries per 15 minutes.
         """
+
+        def f(v):
+            v = v.get('extended_tweet', {}).get('full_text', v.get('full_text', v.get('text', '')))
+            return v
+
+
         if type != SEARCH:
             raise SearchEngineTypeError
         if not query or count < 1 or (isinstance(start, (int, float)) and start < 1):
@@ -1748,6 +1754,7 @@ class Twitter(SearchEngine):
         url.query = {
                "q": query,
           "max_id": id,
+          'tweet_mode': 'extended',
            "count": min(count, 100)
         }
         # 2) Restrict location with geo=(latitude, longitude, radius).
@@ -1778,7 +1785,7 @@ class Twitter(SearchEngine):
             r = Result(url=None)
             r.id = self.format(x.get("id_str"))
             r.url = self.format(TWITTER_STATUS % (x.get("user", {}).get("screen_name"), x.get("id_str")))
-            r.text = self.format(x.get("text"))
+            r.text = self.format(f(x))
             r.date = self.format(x.get("created_at"))
             r.author = self.format(x.get("user", {}).get("screen_name"))
             r.language = self.format(x.get("metadata", {}).get("iso_language_code"))
@@ -1789,7 +1796,7 @@ class Twitter(SearchEngine):
             if rt:
                 comment = re.search(r"^(.*? )RT", r.text)
                 comment = comment.group(1) if comment else ""
-                r.text = self.format("RT @%s: %s" % (rt["user"]["screen_name"], rt["text"]))
+                r.text = self.format("RT @%s: %s" % (rt["user"]["screen_name"], f(rt)))
             results.append(r)
         # Twitter.search(start=id, count=10) takes a tweet.id,
         # and returns 10 results that are older than this id.
@@ -1879,15 +1886,20 @@ class TwitterStream(Stream):
         self.format = format
 
     def parse(self, data):
+
         """ TwitterStream.queue will populate with Result objects as
             TwitterStream.update() is called iteratively.
         """
+        def f(v):
+            v = v.get('extended_tweet', {}).get('full_text', v.get('full_text', v.get('text', '')))
+            return v
+
         if data.strip():
             x = json.loads(data)
             r = Result(url=None)
             r.id = self.format(x.get("id_str"))
             r.url = self.format(TWITTER_STATUS % (x.get("user", {}).get("screen_name"), x.get("id_str")))
-            r.text = self.format(x.get("text"))
+            r.text = self.format(f(x))
             r.date = self.format(x.get("created_at"))
             r.author = self.format(x.get("user", {}).get("screen_name"))
             r.language = self.format(x.get("metadata", {}).get("iso_language_code"))
@@ -1898,7 +1910,7 @@ class TwitterStream(Stream):
             if rt:
                 comment = re.search(r"^(.*? )RT", r.text)
                 comment = comment.group(1) if comment else ""
-                r.text = self.format("RT @%s: %s" % (rt["user"]["screen_name"], rt["text"]))
+                r.text = self.format("RT @%s: %s" % (rt["user"]["screen_name"], f(rt)))
             return r
 
 
