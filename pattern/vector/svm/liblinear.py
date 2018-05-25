@@ -31,7 +31,7 @@ try:
 	if sys.platform == 'win32':
 		liblinear = CDLL(path.join(dirname, r'..\windows\liblinear.dll'))
 	else:
-		liblinear = CDLL(path.join(dirname, '../liblinear.so.3'))
+		liblinear = CDLL(path.join(dirname, 'macos/liblinear-2.20/liblinear.so.3'))
 except:
 # For unix the prefix 'lib' is not considered.
 	if find_library('linear'):
