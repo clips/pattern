@@ -1876,7 +1876,10 @@ def parse_xml(database, xml, table=None, field=lambda s: s.replace(".", "-")):
 #--- CSV -------------------------------------------------------------------------------------------
 
 # Raise the default field size limit:
-csvlib.field_size_limit(sys.maxsize)
+if sys.platform == 'win32':
+    csvlib.field_size_limit(min(sys.maxsize, 2147483647))
+else:
+    csvlib.field_size_limit(sys.maxsize)
 
 
 def csv_header_encode(field, type=STRING):
