@@ -24,7 +24,8 @@ try:
 	if sys.platform == 'win32':
 		libsvm = CDLL(path.join(dirname, r'..\windows\libsvm.dll'))
 	else:
-		libsvm = CDLL(path.join(dirname, '../libsvm.so.2'))
+		libsvm = CDLL(path.join(dirname, 'macos/libsvm-3.22/libsvm.so.2'))
+
 except:
 # For unix the prefix 'lib' is not considered.
 	if find_library('svm'):
@@ -32,7 +33,8 @@ except:
 	elif find_library('libsvm'):
 		libsvm = CDLL(find_library('libsvm'))
 	else:
-		raise Exception('LIBSVM library not found.')
+		libsvm = CDLL(path.join(path.dirname(__file__), 'ubuntu/libsvm-3.22/libsvm.so.2'))
+
 
 C_SVC = 0
 NU_SVC = 1
