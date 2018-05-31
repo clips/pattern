@@ -1080,17 +1080,17 @@ class TestCrawler(unittest.TestCase):
 
     def test_crawler_crawl(self):
         # Assert domain filter.
-        v = web.Crawler(links=["http://www.clips.ua.ac.be/"], domains=["clips.ua.ac.be"], delay=0.5)
+        v = web.Crawler(links=["http://nodebox.net/"], domains=["nodebox.net"], delay=0.5)
         while len(v.visited) < 4:
             v.crawl(throttle=0.1, cached=False)
         for url in v.visited:
-            self.assertTrue("clips.ua.ac.be" in url)
-        self.assertTrue(len(v.history) == 1)
+            self.assertTrue("nodebox.net" in url)
+        self.assertTrue(len(v.history) == 2)
         print("pattern.web.Crawler.crawl()")
 
     def test_crawler_delay(self):
         # Assert delay for several crawls to a single domain.
-        v = web.Crawler(links=["http://www.clips.ua.ac.be/"], domains=["clips.ua.ac.be"], delay=1.2)
+        v = web.Crawler(links=["http://nodebox.net/"], domains=["nodebox.net"], delay=1.2)
         v.crawl()
         t = time.time()
         while not v.crawl(throttle=0.1, cached=False):
@@ -1101,7 +1101,7 @@ class TestCrawler(unittest.TestCase):
 
     def test_crawler_breadth(self):
         # Assert BREADTH cross-domain preference.
-        v = web.Crawler(links=["http://www.clips.ua.ac.be/"], delay=10)
+        v = web.Crawler(links=["http://nodebox.net/"], delay=10)
         while len(v.visited) < 4:
             v.crawl(throttle=0.1, cached=False, method=web.BREADTH)
         self.assertTrue(list(v.history.keys())[0] != list(v.history.keys())[1])
