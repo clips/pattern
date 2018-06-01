@@ -1688,7 +1688,7 @@ class Faroo(SearchEngine):
 
 #--- TWITTER ---------------------------------------------------------------------------------------
 # Twitter is an online social networking service and microblogging service,
-# that enables users to post and read text-based messages of up to 140 characters ("tweets").
+# that enables users to post and read text-based messages of up to 280 characters ("tweets").
 # https://dev.twitter.com/docs/api/1.1
 
 TWITTER         = "https://api.twitter.com/1.1/"
@@ -2642,9 +2642,10 @@ class DBPediaResource(str):
         # http://dbpedia.org/resource/Australia => Australia
         s = re.sub("^http://dbpedia.org/resource/", "", self)
         s = s.replace("_", " ")
-        s = encode_utf8(s)
-        s = decode_url(s)
-        s = decode_utf8(s)
+        if sys.version_info[0] < 3:
+            s = encode_utf8(s)
+            s = decode_url(s)
+            s = decode_utf8(s)
         return s
 
 
