@@ -841,10 +841,10 @@ class _TestQuery(object):
         print("pattern.db.Query.xml")
 
 
-class TestMySQLQuery(unittest.TestCase, _TestQuery):
-    def setUp(self):
-        self.db = create_db_mysql()
-        _TestQuery.setUp(self)
+# class TestMySQLQuery(unittest.TestCase, _TestQuery):
+#     def setUp(self):
+#         self.db = create_db_mysql()
+#         _TestQuery.setUp(self)
 
 
 class TestSQLiteQuery(unittest.TestCase, _TestQuery):
@@ -898,10 +898,10 @@ class _TestView(object):
         print("pattern.db.View")
 
 
-class TestMySQLView(unittest.TestCase, _TestView):
-    def setUp(self):
-        self.db = create_db_mysql()
-        _TestView.setUp(self)
+# class TestMySQLView(unittest.TestCase, _TestView):
+#     def setUp(self):
+#         self.db = create_db_mysql()
+#         _TestView.setUp(self)
 
 
 class TestSQLiteView(unittest.TestCase, _TestView):
