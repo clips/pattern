@@ -9,6 +9,15 @@ from io import open
 
 from setuptools import setup
 
+from subprocess import call
+
+cmd      = "pip3 install"
+packages = [
+    "feedparser", "backports.csv", "cherrypy", 
+    "mysqlclient", "pdfminer.six", "python-docx"]
+
+call(cmd.split() + packages)
+
 from pattern import __version__
 
 #---------------------------------------------------------------------------------------------------
