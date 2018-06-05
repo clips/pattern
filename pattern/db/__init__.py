@@ -15,12 +15,6 @@ from builtins import str, bytes, dict, int, chr
 from builtins import map, zip, filter
 from builtins import object, range, next
 
-try:
-    import pymysql
-    pymysql.install_as_MySQLdb()
-except ImportError:
-    pass
-
 import os
 import sys
 import inspect
