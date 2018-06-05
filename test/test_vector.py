@@ -934,8 +934,7 @@ class TestClassifier(unittest.TestCase):
 
     def test_igtree(self):
         # Assert information gain tree classification.
-
-        #self._test_classifier(vector.IGTREE, method=vector.GAINRATIO)
+        self._test_classifier(vector.IGTREE, method=vector.GAINRATIO)
         # Assert the accuracy of the classifier.
         A, P, R, F, o = vector.IGTREE.test(self.model, folds=10, method=vector.GAINRATIO)
         #print(A, P, R, F, o)
