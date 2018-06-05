@@ -2,8 +2,14 @@ language: python
 dist: precise
 
 python:
+  - "2.7.13"
+  - "3.5"
   - "3.6"
 
+matrix:
+  allow_failures:
+    - python: "3.5"
+    - python: "3.6"
 
 before_install:
   - export TZ=Europe/Brussels
@@ -12,9 +18,9 @@ before_install:
   - export PATH="$HOME/miniconda/bin:$PATH"
   - conda update --yes conda
   - conda install --yes numpy scipy
-  - pip install --quiet pytest pytest-cov pytest-xdist chardet
+  - pip install --quiet pytest pytest-cov pytest-xdist
 
-nstall:
+install:
   - python setup.py install --quiet
   # Print all installed packages including versions
   - pip freeze
@@ -34,7 +40,7 @@ after_script:
 
 branches:
   only:
-  - devmodified
+  - development
 
 notifications:
   email: false
