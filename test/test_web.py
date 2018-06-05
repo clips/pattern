@@ -586,8 +586,8 @@ class TestSearchEngine(unittest.TestCase):
         self.assertTrue(i4 >= baseline[3]) # url's ending with "jpg", "png" or "gif"
         print("pattern.web.%s.Result(type=%s)" % (api, type.upper()))
 
-    # def test_results_google(self):
-    #     self._test_results("Google", *self.api["Google"])
+    def test_results_google(self):
+        self._test_results("Google", *self.api["Google"])
 
     def test_results_yahoo(self):
         self._test_results("Yahoo", *self.api["Yahoo"])
@@ -620,27 +620,27 @@ class TestSearchEngine(unittest.TestCase):
     def test_results_facebook(self):
         self._test_results("Facebook", *self.api["Facebook"], **{"baseline": [0, 1, 0, 0]})
 
-    # def test_google_translate(self):
-    #     try:
-    #         # Assert Google Translate API.
-    #         # Requires license with billing enabled.
-    #         source, license, Engine = self.api["Google"]
-    #         v = Engine(license, throttle=0.25).translate("thé", input="fr", output="en", cached=False)
-    #         self.assertEqual(v, "tea")
-    #         print("pattern.web.Google.translate()")
-    #     except web.HTTP401Authentication:
-    #         pass
+    def test_google_translate(self):
+        try:
+            # Assert Google Translate API.
+            # Requires license with billing enabled.
+            source, license, Engine = self.api["Google"]
+            v = Engine(license, throttle=0.25).translate("thé", input="fr", output="en", cached=False)
+            self.assertEqual(v, "tea")
+            print("pattern.web.Google.translate()")
+        except web.HTTP401Authentication:
+            pass
 
-    # def test_google_identify(self):
-    #     try:
-    #         # Assert Google Translate API (language detection).
-    #         # Requires license with billing enabled.
-    #         source, license, Engine = self.api["Google"]
-    #         v = Engine(license, throttle=0.25).identify("L'essence des mathématiques, c'est la liberté!", cached=False)
-    #         self.assertEqual(v[0], "fr")
-    #         print("pattern.web.Google.identify()")
-    #     except web.HTTP401Authentication:
-    #         pass
+    def test_google_identify(self):
+        try:
+            # Assert Google Translate API (language detection).
+            # Requires license with billing enabled.
+            source, license, Engine = self.api["Google"]
+            v = Engine(license, throttle=0.25).identify("L'essence des mathématiques, c'est la liberté!", cached=False)
+            self.assertEqual(v[0], "fr")
+            print("pattern.web.Google.identify()")
+        except web.HTTP401Authentication:
+            pass
 
     def test_twitter_author(self):
         self.assertEqual(web.author("me"), "from:me")
