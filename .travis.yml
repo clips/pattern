@@ -12,7 +12,7 @@ before_install:
   - export PATH="$HOME/miniconda/bin:$PATH"
   - conda update --yes conda
   - conda install --yes numpy scipy
-  - pip install --quiet pytest pytest-cov pytest-xdist chardet feedparser nltk
+  - pip install --quiet pytest pytest-cov pytest-xdist chardet
 
 nstall:
   - python setup.py install --quiet
