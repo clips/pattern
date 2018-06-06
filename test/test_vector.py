@@ -889,21 +889,27 @@ class TestClassifier(unittest.TestCase):
     def _test_classifier(self, Classifier, **kwargs):
         # Assert classifier training + prediction for trivial cases.
         v = Classifier(**kwargs)
+        test_doc1 = None
+        test_doc2 = None
+
         for document in self.model:
             if isinstance(v, vector.IGTree):
-                #print(v.train)
-                v.train(document)
-            else:
-                v.train(document)
+                if test_doc1 is None and document.type is True:
+                    test_doc1 = document
+                if test_doc2 is None and document.type is False:
+                    test_doc2 = document
+            v.train(document)
 
         for type, message in (
           (False, "win money"),
           (True, "fix bug")):
-            #print(Classifier)
-            #print(v.classify(message))
             if not isinstance(v, vector.IGTree):
-             # probably there is a bug in IGTree Classifier
                 self.assertEqual(v.classify(message), type)
+
+        if isinstance(v, vector.IGTree):
+            self.assertEqual(v.classify(test_doc1), True)
+            self.assertEqual(v.classify(test_doc2), False)
+
         # Assert classifier properties.
         self.assertEqual(v.binary, True)
         self.assertEqual(sorted(v.classes), [False, True])

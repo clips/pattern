@@ -2840,11 +2840,9 @@ class IGTree(Classifier):
         for v, type in vectors:
             classes[type] += 1
 
-        # print(classes)
-        # print("\n")
-
         # Find the most frequent class for the set of vectors.
         c = max(classes, key=classes.__getitem__)
+
         # Find the most informative feature f.
         f = features[0]
         n = IGTreeNode(feature=f, type=c)
@@ -2867,6 +2865,8 @@ class IGTree(Classifier):
             if any((type != c) for v, type in p[x]):
                 n.append(self._tree(p[x], features[1:]))
                 n[-1].value = x
+        # print(n.type)
+        # print(n[-1].type)
         return n
 
     def _search(self, node, vector):
@@ -2895,6 +2895,9 @@ class IGTree(Classifier):
 
         f = sorted(m.features, key=getattr(m, self._method), reverse=True)
 
+        # print(f)
+        # print(self._vectors)
+
         sys.setrecursionlimit(max(len(f) * 2, 1000))
         self._root = self._tree([(v, type) for type, v in self._vectors], features=f)
 
@@ -2918,6 +2921,80 @@ class IGTree(Classifier):
         self._vectors = []
 
 IGTREE = IGTree
+
+doc1 = (''' "Dynamic Programming is a very powerful mathematical technique, often utilised in programming, for solving optimization problems. Normally, minimizing or maximizing.
+Greedy algorithms focus on making the best local choice at each decision making stage. Without a proof of correctness, such an algorithm is likely to fail. With Dynamic Programming, we can design our own algorithm which searches for all possibilities (which ensures correctness) whilst storing the results to avoid having to recomputed (leading to computational efficiency).
+Dynamic Programming solves problems by combining the solutions of subproblems. These subproblems are not, however, independent. Subproblems can share subsubproblems, but the solution to one subproblem doesnt necessarily affect the solutions to other subproblems stemming from the same problem.
+Dynamic Programming reduces computation time by solving subproblems in a bottom-up way. It stores the solution to a subproblem the first time it is solved, meaning that it can look up the solution when that subproblem is encountered subsequently.
+The key to Dynamic Programming is to find the structure of optimal solutions. The steps required are as follows:
+1.	Generalise the structure of an optimal solution
+2.	Recursively define the value of an optimal solution
+3.	Compute the optimal solution values either top-down (with caching), or bottom-up using a table
+4.	Generate the optimal solution of these computed values
+","In mathematics and computer science, dynamic programming is a method of solving problems that exhibit the properties of overlapping subproblems and optimal substructure (described below). The method takes much less time than naive methods.
+The term was originally used in the 1940s by Richard Bellman to describe the process of solving problems where one needs to find the best decisions one after another. By 1953, he had refined this to the modern meaning. The field was founded as a systems analysis and engineering topic that is recognized by the IEEE. Bellman's contribution is remembered in the name of the Bellman equation, a central result of dynamic programming which restates an optimization problem in recursive form.
+The word ""programming"" in ""dynamic programming"" has no particular connection to computer programming at all, and instead comes from the term ""mathematical programming"", a synonym for optimization. Thus, the ""program"" is the optimal plan for action that is produced. For instance, a finalized schedule of events at an exhibition is sometimes called a program. Programming, in this sense, means finding an acceptable plan of action, an algorithm.
+Optimal substructure means that optimal solutions of subproblems can be used to find the optimal solutions of the overall problem. For example, the shortest path to a goal from a vertex in a graph can be found by first computing the shortest path to the goal from all adjacent vertices, and then using this to pick the best overall path, as shown in Figure 1. In general, we can solve a problem with optimal substructure using a three-step process:
+   1. Break the problem into smaller subproblems.
+   2. Solve these problems optimally using this three-step process recursively.
+   3. Use these optimal solutions to construct an optimal solution for the original problem.
+The subproblems are, themselves, solved by dividing them into sub-subproblems, and so on, until we reach some simple case that is solvable in constant time.
+Figure 2. The subproblem graph for the Fibonacci sequence. That it is not a tree but a DAG indicates overlapping subproblems.
+To say that a problem has overlapping subproblems is to say that the same subproblems are used to solve many different larger problems. For example, in the Fibonacci sequence, F3 = F1 + F2 and F4 = F2 + F3 — computing each number involves computing F2. Because both F3 and F4 are needed to compute F5, a naive approach to computing F5 may end up computing F2 twice or more. This applies whenever overlapping subproblems are present: a naive approach may waste time recomputing optimal solutions to subproblems it has already solved.
+In order to avoid this, we instead save the solutions to problems we have already solved. Then, if we need to solve the same problem later, we can retrieve and reuse our already-computed solution. This approach is called memoization (not memorization, although this term also fits). If we are sure we won't need a particular solution anymore, we can throw it away to save space. In some cases, we can even compute the solutions to subproblems we know that we'll need in advance.
+''', True)
+
+doc2 = ('''" In probability theory, Bayes' theorem (often called Bayes' law after Rev Thomas Bayes) relates the conditional and marginal probabilities of two random events. It is often used to compute posterior probabilities given observations. For example, a patient may be observed to have certain symptoms. Bayes' theorem can be used to compute the probability that a proposed diagnosis is correct, given that observation.
+As a formal theorem, Bayes' theorem is valid in all common interpretations of probability. However, it plays a central role in the debate around the foundations of statistics: frequentist and Bayesian interpretations disagree about the ways in which probabilities should be assigned in applications.
+Suppose there is a co-ed school having 60% boys and 40% girls as students. The girl students wear trousers or skirts in equal numbers; the boys all wear trousers. An observer sees a (random) student from a distance; all they can see is that this student is wearing trousers. What is the probability this student is a girl? The correct answer can be computed using Bayes' theorem.
+The event A is that the student observed is a girl, and the event B is that the student observed is wearing trousers. To compute P(A|B), we first need to know:
+P(B|A'), or the probability of the student wearing trousers given that the student is a boy. This is given as 1.
+P(A), or the probability that the student is a girl regardless of any other information. Since the observers sees a random student, meaning that all students have the same probability of being observed, and the fraction of girls among the students is 40%, this probability equals 0.4.
+P(A'), or the probability that the student is a boy regardless of any other information (A' is the complementary event to A). This is 60%, or 0.6.
+P(B|A), or the probability of the student wearing trousers given that the student is a girl. As they are as likely to wear skirts as trousers, this is 0.5","In probability theory, Bayes' theorem (often called Bayes' law after Rev Thomas Bayes) relates the conditional and marginal probabilities of two random events. It is often used to compute posterior probabilities given observations. For example, a patient may be observed to have certain symptoms. Bayes' theorem can be used to compute the probability that a proposed diagnosis is correct, given that observation. (See example 2)
+As a formal theorem, Bayes' theorem is valid in all common interpretations of probability. However, it plays a central role in the debate around the foundations of statistics: frequentist and Bayesian interpretations disagree about the ways in which probabilities should be assigned in applications. Frequentists assign probabilities to random events according to their frequencies of occurrence or to subsets of populations as proportions of the whole, while Bayesians describe probabilities in terms of beliefs and degrees of uncertainty. The articles on Bayesian probability and frequentist probability discuss these debates in greater detail.
+Bayes' theorem relates the conditional and marginal probabilities of events A and B, where B has a non-vanishing probability:
+    P(A|B) = \frac{P(B | A)\, P(A)}{P(B)}.
+Each term in Bayes' theorem has a conventional name:
+    * P(A) is the prior probability or marginal probability of A. It is ""prior"" in the sense that it does not take into account any information about B.
+    * P(A|B) is the conditional probability of A, given B. It is also called the posterior probability because it is derived from or depends upon the specified value of B.
+    * P(B|A) is the conditional probability of B given A.
+    * P(B) is the prior or marginal probability of B, and acts as a normalizing constant.
+Intuitively, Bayes' theorem in this form describes the way in which one's beliefs about observing 'A' are updated by having observed 'B'.
+","3"''', False)
+
+
+doc3 = ('''"A Vector space model (or term vector model) is an algebraic way of representing text documents (and any objects, in general) as vectors of identifiers, such as index terms. It is used in information filtering, information retrieval, indexing and relevancy rankings. Its first application was in the SMART Information Retrieval System.
+A document can be represented as a vector. Every dimension relates to a different term. If a term appears in the document, the terms value in the vector is non-zero. Many different methods of calculating these values, sometimes known as (term) weights, have been developed. tf-idf weighting is one of the most well known schemes. (see below example).
+The definition of a term depends on the application. Normally a term is a single word, keyword, or a longer phrase. If the words are chosen to be the terms, the dimensionality of the vector is the number of words in the vocabulary (the number of distinct words occurring in the corpus).
+The vector space model has some limitations:
+1.	Longer documents are represented poorly because the documents have poor similarity values (namely a small scalar product and a large dimensionality)
+2.	Search keywords have to precisely match document terms; word substrings could potentially result in a ""false positive match""
+3.	Semantic sensitivity; documents with a similar context, but different term vocabulary won't be associated, resulting in a ""false negative match"".
+4.	The order in which terms appear in the document is lost in a vector space representation.
+","Vector space model (or term vector model) is an algebraic model for representing text documents (and any objects, in general) as vectors of identifiers, such as, for example, index terms. It is used in information filtering, information retrieval, indexing and relevancy rankings. Its first use was in the SMART Information Retrieval System.
+A document is represented as a vector. Each dimension corresponds to a separate term. If a term occurs in the document, its value in the vector is non-zero. Several different ways of computing these values, also known as (term) weights, have been developed. One of the best known schemes is tf-idf weighting (see the example below).
+The definition of term depends on the application. Typically terms are single words, keywords, or longer phrases. If the words are chosen to be the terms, the dimensionality of the vector is the number of words in the vocabulary (the number of distinct words occurring in the corpus).
+The vector space model has the following limitations:
+   1. Long documents are poorly represented because they have poor similarity values (a small scalar product and a large dimensionality)
+   2. Search keywords must precisely match document terms; word substrings might result in a ""false positive match""
+   3. Semantic sensitivity; documents with similar context but different term vocabulary won't be associated, resulting in a ""false negative match"".
+   4. The order in which the terms appear in the document is lost in the vector space representation.''', True)
+
+#The algorythm is very sensitive to words which contain in new text.
+
+# docs = [doc1, doc2, doc3]
+# v = IGTree(method=GAINRATIO)
+# for document, t in docs:
+#     v.train(document, type=t)
+#
+# for type, message in (
+#         (True, doc1[0][:int(len(doc1[0])*0.5)]),
+#         (False, doc2[0][:int(len(doc2[0])*0.5)]),
+#         (True, doc3[0][:int(len(doc3[0])*0.5)])):
+#     print(v.classify(message))
+
+
 
 #from pattern.db import csv, pd
 #data = csv(pd("..", "..", "test", "corpora", "polarity-nl-bol.com.csv"))
