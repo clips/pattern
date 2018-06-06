@@ -2832,12 +2832,17 @@ class IGTree(Classifier):
         # Artificial Intelligence Review 11, 407-423.
         vectors = list(vectors)
         features = list(features)
+
         if len(vectors) == 0 or len(features) == 0:
             return IGTreeNode()
         # {class: count}
         classes = defaultdict(int)
         for v, type in vectors:
             classes[type] += 1
+
+        # print(classes)
+        # print("\n")
+
         # Find the most frequent class for the set of vectors.
         c = max(classes, key=classes.__getitem__)
         # Find the most informative feature f.
@@ -2879,12 +2884,17 @@ class IGTree(Classifier):
                 return node.type
             node = n
 
+    def train(self, document, type=None):
+        Classifier.train(self, document, type)
+
     def _train(self):
         """ Calculates information gain ratio for the features in the training data.
             Constructs the search tree.
         """
         m = Model((Document(set(v), type=type) for type, v in self._vectors), weight=BINARY)
+
         f = sorted(m.features, key=getattr(m, self._method), reverse=True)
+
         sys.setrecursionlimit(max(len(f) * 2, 1000))
         self._root = self._tree([(v, type) for type, v in self._vectors], features=f)
 
@@ -2895,7 +2905,9 @@ class IGTree(Classifier):
         """
         if self._root is None:
             self._train()
-        return self._search(self._root, self._vector(document)[1])
+
+        res = self._search(self._root, self._vector(document)[1])
+        return res
 
     def finalize(self):
         """ Removes training data from memory, keeping only the IG tree,
