@@ -17,11 +17,14 @@ from builtins import str, bytes, dict, int, chr
 from builtins import map, filter, zip
 from builtins import object, range, next
 
+from .utils import get_url_query, get_form_action, stringify_values, json_iter_parse
+
 import os
 import sys
 import threading
 import time
 import socket
+import requests
 import ssl
 
 from io import open
@@ -1685,6 +1688,211 @@ class Faroo(SearchEngine):
             r.language = self.format(self.language or "")
             results.append(r)
         return results
+
+
+
+
+
+#--- VKontakte -------------------------------------------------------------------------------------
+# VKontakte is a Russian online social media and social networking service. It is available in several
+# languages but it is especially popular among Russian-speaking users. VK had at least 477 million accounts
+# and ss of May 2018 the site is available in 86 languages
+
+
+# API Error Codes
+AUTHORIZATION_FAILED = 5    # Invalid access token
+PERMISSION_IS_DENIED = 7
+CAPTCHA_IS_NEEDED = 14
+ACCESS_DENIED = 15          # No access to call this method
+INVALID_USER_ID = 113       # User deactivated
+
+LOGIN_URL = 'https://m.vk.com'
+AUTHORIZE_URL = 'https://oauth.vk.com/authorize'
+API_URL = 'https://api.vk.com/method/'
+CAPTCHA_URI = 'https://m.vk.com/captcha.php'
+
+VKAPI_VERSION = '5.3'
+
+
+class VKAPI(object):
+    def __init__(self, *args, **kwargs):
+        session_class = kwargs.pop('session_class', Session)
+        self.session = session_class(*args, **kwargs)
+
+    def __getattr__(self, method_name):
+        return VKRequest(self, method_name)
+
+    def __call__(self, method_name, **method_kwargs):
+        return getattr(self, method_name)(**method_kwargs)
+
+
+class VKRequest(object):
+    __slots__ = ('_api', '_method_name', '_method_args')
+
+    def __init__(self, api, method_name):
+        self._api = api
+        self._method_name = method_name
+        self._method_args = {}
+
+    def __getattr__(self, method_name):
+        return VKRequest(self._api, self._method_name + '.' + method_name)
+
+    def __call__(self, **method_args):
+        self._method_args = method_args
+        return self._api.session.make_request(self)
+
+
+class VK(SearchEngine):
+
+    def __init__(self, lisense, throttle=0.5, language=None):
+        SearchEngine.__init__(self, lisense, throttle, language)
+        print("init VK object")
+
+        self.access_token = lisense
+        self.session = Session(access_token=lisense)
+        self.api = VKAPI(self.session)
+
+    def get_users(self, user_ids):
+        return self.api.users.get(user_ids=user_ids, v=VKAPI_VERSION, access_token=self.access_token)
+
+
+class VkException(Exception):
+    pass
+
+
+class VkAuthError(VkException):
+    pass
+
+
+class VkAPIError(VkException):
+    __slots__ = ['error', 'code', 'message', 'request_params', 'redirect_uri']
+
+    CAPTCHA_NEEDED = 14
+    ACCESS_DENIED = 15
+
+    def __init__(self, error_data):
+        super(VkAPIError, self).__init__()
+        self.error_data = error_data
+        self.code = error_data.get('error_code')
+        self.message = error_data.get('error_msg')
+        self.request_params = self.get_pretty_request_params(error_data)
+        self.redirect_uri = error_data.get('redirect_uri')
+
+    @staticmethod
+    def get_pretty_request_params(error_data):
+        request_params = error_data.get('request_params', ())
+        request_params = {param['key']: param['value'] for param in request_params}
+        return request_params
+
+    def is_access_token_incorrect(self):
+        return self.code == self.ACCESS_DENIED and 'access_token' in self.message
+
+    def is_captcha_needed(self):
+        return self.code == self.CAPTCHA_NEEDED
+
+    @property
+    def captcha_sid(self):
+        return self.error_data.get('captcha_sid')
+
+    @property
+    def captcha_img(self):
+        return self.error_data.get('captcha_img')
+
+    def __str__(self):
+        error_message = '{self.code}. {self.message}. request_params = {self.request_params}'.format(self=self)
+        if self.redirect_uri:
+            error_message += ',\nredirect_uri = "{self.redirect_uri}"'.format(self=self)
+        return error_message
+
+
+class Session(object):
+
+    def __init__(self, scope='offline', access_token='', timeout=10, **method_default_args):
+
+        self.scope = scope
+        self.access_token = access_token
+        self.timeout = timeout
+        self.method_default_args = method_default_args
+
+        self.auth_session = requests.Session()
+        self.requests_session = requests.Session()
+        self.requests_session.headers['Accept'] = 'application/json'
+        self.requests_session.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+
+    def make_request(self, request):
+
+        response = self.send_api_request(request)
+        response.raise_for_status()
+
+        # there are may be 2 dicts in one JSON
+        # for example: "{'error': ...}{'response': ...}"
+        for response_or_error in json_iter_parse(response.text):
+            if 'response' in response_or_error:
+                return response_or_error['response']
+
+            elif 'error' in response_or_error:
+                print("error")
+
+    def send_api_request(self, request):
+        assert 'v' in self.method_default_args or 'v' in request._method_args, 'vk.com API version is required'
+
+        url = API_URL + request._method_name
+        method_args = self.method_default_args.copy()
+        method_args.update(stringify_values(request._method_args))
+        if self.access_token:
+            method_args['access_token'] = self.access_token
+
+        response = self.requests_session.post(url, method_args, timeout=self.timeout)
+        return response
+
+    def get_captcha_key(self, captcha_image_url):
+        """
+        Default behavior on CAPTCHA is to raise exception
+        Reload this in child
+        """
+        return None
+
+    def auth_code_is_needed(self, content, session):
+        """
+        Default behavior on 2-AUTH CODE is to raise exception
+        Reload this in child
+        """
+        raise VkAuthError('Authorization error (2-factor code is needed)')
+
+    def auth_check_is_needed(self, html):
+        auth_check_form_action = get_form_action(html)
+        auth_check_code = self.get_auth_check_code()
+        auth_check_data = {'code': auth_check_code, '_ajax': '1', 'remember': '1'}
+        self.auth_session.post(auth_check_form_action, data=auth_check_data)
+
+    def auth_captcha_is_needed(self, response, login_form_data):
+
+        response_url_dict = get_url_query(response.url)
+
+        # form_url = re.findall(r'<form method="post" action="(.+)" novalidate>', response.text)
+        captcha_form_action = get_form_action(response.text)
+        if not captcha_form_action:
+            raise VkAuthError('Cannot find form url')
+
+        captcha_url = '%s?s=%s&sid=%s' % (CAPTCHA_URI, response_url_dict['s'], response_url_dict['sid'])
+        # logger.debug('Captcha url %s', captcha_url)
+
+        login_form_data['captcha_sid'] = response_url_dict['sid']
+        login_form_data['captcha_key'] = self.get_captcha_key(captcha_url)
+
+        response = self.auth_session.post(captcha_form_action, login_form_data)
+
+    def phone_number_is_needed(self, content, session):
+        """
+        Default behavior on PHONE NUMBER is to raise exception
+        Reload this in child
+        """
+        raise VkAuthError('Authorization error (phone number is needed)')
+
+    def get_auth_check_code(self):
+        raise VkAuthError('Auth check code is needed')
+
+
 
 #--- TWITTER ---------------------------------------------------------------------------------------
 # Twitter is an online social networking service and microblogging service,
