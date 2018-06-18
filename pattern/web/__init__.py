@@ -1216,7 +1216,7 @@ class SearchEngine(object):
         self.license = license
         self.throttle = throttle    # Amount of sleep time after executing a query.
         self.language = language    # Result.language restriction (e.g., "en").
-        self.format = lambda x: x # Formatter applied to each attribute of each Result.
+        self.format = lambda x: x   # Formatter applied to each attribute of each Result.
 
     def search(self, query, type=SEARCH, start=1, count=10, sort=RELEVANCY, size=None, cached=True, **kwargs):
         return Results(source=None, query=query, type=type)
@@ -1709,10 +1709,8 @@ INVALID_USER_ID = 113       # User deactivated
 LOGIN_URL = 'https://m.vk.com'
 AUTHORIZE_URL = 'https://oauth.vk.com/authorize'
 API_URL = 'https://api.vk.com/method/'
-CAPTCHA_URI = 'https://m.vk.com/captcha.php'
 
-VKAPI_VERSION = '5.3'
-
+VKAPI_VERSION = '5.8'
 
 class VKAPI(object):
     def __init__(self, *args, **kwargs):
@@ -1744,16 +1742,105 @@ class VKRequest(object):
 
 class VK(SearchEngine):
 
-    def __init__(self, lisense, throttle=0.5, language=None):
+    '''
+    Limits:
+    The VKontakte API methods with the user access key can be accessed no more often than 3 times per second
+    '''
+
+    NUM_REQUESTS_PER_SECOND = 3
+    MAX_REQUEST_POSTS = 100
+
+    def __init__(self, lisense, throttle=1.0, language=None):
         SearchEngine.__init__(self, lisense, throttle, language)
-        print("init VK object")
 
         self.access_token = lisense
         self.session = Session(access_token=lisense)
         self.api = VKAPI(self.session)
 
-    def get_users(self, user_ids):
-        return self.api.users.get(user_ids=user_ids, v=VKAPI_VERSION, access_token=self.access_token)
+    def _get_city_name_by_id(self, city_id):
+        return self.api.database.getCitiesById(city_ids=[city_id], version=VKAPI_VERSION,
+                                               access_token=self.access_token, lang=self.language)[0]['name']
+
+    def _get_country_name_by_id(self, country_id):
+        return self.api.database.getCountriesById(country_ids=[country_id], version=VKAPI_VERSION,
+                                                  access_token=self.access_token, lang=self.language)[0]['name']
+
+    def _get_sex_by_id(self, sex_id):
+        return 'f' if sex_id == 1 else 'm'
+
+    def get_users_info(self, user_ids):
+        """
+        :param user_ids:  the list of user ids or their short names
+        :return: the list of dicts, each dict contains the information about user:
+
+        - sex
+        - bdate
+        - city
+        - country
+        - nickname
+        - status
+        - followers_count
+        - photo_max_orig
+        - screen_name
+
+        Limits: the number of user_ids elements should be no more than 1000
+
+        """
+
+        fields = "sex, bdate, city, country, nickname, status, followers_count, photo_max_orig, screen_name"
+
+        users_info = self.api.users.get(user_ids=user_ids, fields=fields, v=VKAPI_VERSION, access_token=self.access_token)
+
+        for i, user in enumerate(users_info):
+            users_info[i]['city'] = self._get_city_name_by_id(int(user['city']['id']))
+            users_info[i]['country'] = self._get_country_name_by_id(int(user['country']['id']))
+            users_info[i]['sex'] = self._get_sex_by_id(user['sex'])
+
+        return users_info
+
+    def get_user_posts(self, user_id, count=100, posts_type="all"):
+
+        """
+        :param user_id: user_id or user short name
+        :return: posts from users' wall. You can set the post_type parameter to filter user posts:
+
+        - suggests
+        - postponed
+        - owner — wall owner posts
+        - others — other users posts
+        - all — all posts on the wall (owner + others).
+
+        """
+
+        if not isinstance(user_id, int):
+            user_info = self.api.users.get(user_ids=[user_id], v=VKAPI_VERSION, access_token=self.access_token)
+            user_id = user_info[0]['id']
+
+        offset = 0
+        user_posts = []
+        num_requests = 0
+
+        while count > 0:
+            amount = min(self.MAX_REQUEST_POSTS, count)
+            posts = self.api.wall.get(owner_id=user_id, version=VKAPI_VERSION, offset=offset, filter=posts_type,
+                                      count=amount, access_token=self.access_token)
+            # if there are no posts on the wall
+            if posts[0] == 0:
+                break
+
+            count -= len(posts) - 1
+            offset += len(posts) - 1
+            user_posts.extend(posts[1:])
+            num_requests += 1
+
+            # if there are no other posts on the wall
+            if offset == posts[0]:
+                break
+
+            if num_requests % self.NUM_REQUESTS_PER_SECOND == 0:
+                time.sleep(self.throttle)
+
+        return user_posts
 
 
 class VkException(Exception):
@@ -1783,20 +1870,6 @@ class VkAPIError(VkException):
         request_params = error_data.get('request_params', ())
         request_params = {param['key']: param['value'] for param in request_params}
         return request_params
-
-    def is_access_token_incorrect(self):
-        return self.code == self.ACCESS_DENIED and 'access_token' in self.message
-
-    def is_captcha_needed(self):
-        return self.code == self.CAPTCHA_NEEDED
-
-    @property
-    def captcha_sid(self):
-        return self.error_data.get('captcha_sid')
-
-    @property
-    def captcha_img(self):
-        return self.error_data.get('captcha_img')
 
     def __str__(self):
         error_message = '{self.code}. {self.message}. request_params = {self.request_params}'.format(self=self)
@@ -1834,7 +1907,6 @@ class Session(object):
                 print("error")
 
     def send_api_request(self, request):
-        assert 'v' in self.method_default_args or 'v' in request._method_args, 'vk.com API version is required'
 
         url = API_URL + request._method_name
         method_args = self.method_default_args.copy()
@@ -1845,58 +1917,11 @@ class Session(object):
         response = self.requests_session.post(url, method_args, timeout=self.timeout)
         return response
 
-    def get_captcha_key(self, captcha_image_url):
-        """
-        Default behavior on CAPTCHA is to raise exception
-        Reload this in child
-        """
-        return None
-
-    def auth_code_is_needed(self, content, session):
-        """
-        Default behavior on 2-AUTH CODE is to raise exception
-        Reload this in child
-        """
-        raise VkAuthError('Authorization error (2-factor code is needed)')
-
-    def auth_check_is_needed(self, html):
-        auth_check_form_action = get_form_action(html)
-        auth_check_code = self.get_auth_check_code()
-        auth_check_data = {'code': auth_check_code, '_ajax': '1', 'remember': '1'}
-        self.auth_session.post(auth_check_form_action, data=auth_check_data)
-
-    def auth_captcha_is_needed(self, response, login_form_data):
-
-        response_url_dict = get_url_query(response.url)
-
-        # form_url = re.findall(r'<form method="post" action="(.+)" novalidate>', response.text)
-        captcha_form_action = get_form_action(response.text)
-        if not captcha_form_action:
-            raise VkAuthError('Cannot find form url')
-
-        captcha_url = '%s?s=%s&sid=%s' % (CAPTCHA_URI, response_url_dict['s'], response_url_dict['sid'])
-        # logger.debug('Captcha url %s', captcha_url)
-
-        login_form_data['captcha_sid'] = response_url_dict['sid']
-        login_form_data['captcha_key'] = self.get_captcha_key(captcha_url)
-
-        response = self.auth_session.post(captcha_form_action, login_form_data)
-
-    def phone_number_is_needed(self, content, session):
-        """
-        Default behavior on PHONE NUMBER is to raise exception
-        Reload this in child
-        """
-        raise VkAuthError('Authorization error (phone number is needed)')
-
-    def get_auth_check_code(self):
-        raise VkAuthError('Auth check code is needed')
-
 
 
 #--- TWITTER ---------------------------------------------------------------------------------------
 # Twitter is an online social networking service and microblogging service,
-# that enables users to post and read text-based messages of up to 140 characters ("tweets").
+# that enables users to post and read text-based messages of up to 280 characters ("tweets").
 # https://dev.twitter.com/docs/api/1.1
 
 TWITTER         = "https://api.twitter.com/1.1/"
@@ -1941,7 +1966,6 @@ class Twitter(SearchEngine):
         def f(v):
             v = v.get('extended_tweet', {}).get('full_text', v.get('full_text', v.get('text', '')))
             return v
-
 
         if type != SEARCH:
             raise SearchEngineTypeError
