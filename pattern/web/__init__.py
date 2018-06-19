@@ -25,6 +25,7 @@ import threading
 import time
 import socket
 import requests
+import datetime
 import ssl
 
 from io import open
@@ -1702,15 +1703,13 @@ class Faroo(SearchEngine):
 # API Error Codes
 AUTHORIZATION_FAILED = 5    # Invalid access token
 PERMISSION_IS_DENIED = 7
-CAPTCHA_IS_NEEDED = 14
 ACCESS_DENIED = 15          # No access to call this method
-INVALID_USER_ID = 113       # User deactivated
 
 LOGIN_URL = 'https://m.vk.com'
 AUTHORIZE_URL = 'https://oauth.vk.com/authorize'
 API_URL = 'https://api.vk.com/method/'
 
-VKAPI_VERSION = '5.8'
+VKAPI_VERSION = '5.80'
 
 class VKAPI(object):
     def __init__(self, *args, **kwargs):
@@ -1745,10 +1744,18 @@ class VK(SearchEngine):
     '''
     Limits:
     The VKontakte API methods with the user access key can be accessed no more often than 3 times per second
+
+    Number of requests limits:
+
+    newsfeed.search — 1000 per day;
+    wall.search — 1000 per day;
+    wall.get — 5000 per day.
     '''
 
     NUM_REQUESTS_PER_SECOND = 3
     MAX_REQUEST_POSTS = 100
+    MAX_NEWSFEED_POSTS = 200
+    NEWSFEED_TIME_DELTA = 1000
 
     def __init__(self, lisense, throttle=1.0, language=None):
         SearchEngine.__init__(self, lisense, throttle, language)
@@ -1773,6 +1780,11 @@ class VK(SearchEngine):
         :param user_ids:  the list of user ids or their short names
         :return: the list of dicts, each dict contains the information about user:
 
+        - uid
+        - first_name
+        - last_name
+        -
+        Additional fields:
         - sex
         - bdate
         - city
@@ -1782,12 +1794,24 @@ class VK(SearchEngine):
         - followers_count
         - photo_max_orig
         - screen_name
+        - counters (number of different items):
+               'albums',
+               'videos',
+               'audios',
+               'notes',
+               'photos',
+               'friends',
+               'online_friends',
+               'mutual_friends',
+               'followers',
+               'subscriptions',
+               'pages'
 
         Limits: the number of user_ids elements should be no more than 1000
 
         """
 
-        fields = "sex, bdate, city, country, nickname, status, followers_count, photo_max_orig, screen_name"
+        fields = "sex, bdate, city, country, nickname, status, followers_count, counters, photo_max_orig, screen_name"
 
         users_info = self.api.users.get(user_ids=user_ids, fields=fields, v=VKAPI_VERSION, access_token=self.access_token)
 
@@ -1841,6 +1865,50 @@ class VK(SearchEngine):
                 time.sleep(self.throttle)
 
         return user_posts
+
+    def get_newsfeed_posts(self, query, count=100, end_time=None):
+        """
+        :param query: search request
+        :param count: number of posts to be downloaded from newsfeed
+        :param end_time: time in "yyyy.mm.dd" format, to which you want to receive news.
+                        If the parameter is not specified, then it is considered equal to the current time.
+        :return: posts from the newsfeed that match the given query
+        """
+
+        loaded = 0
+        newsfeed_posts = []
+        num_requests = 0
+
+        if end_time is None:
+            end_time = int(time.time())
+        else:
+            year, month, day = list(map(int, end_time.split(".")))
+            end_time = time.mktime(datetime.date(year, month, day).timetuple())
+
+        # we consider the last month as the max time period
+        min_time = end_time - 2678401
+
+        while count > 0 and end_time > min_time:
+            amount = min(self.MAX_NEWSFEED_POSTS, count)
+            posts = self.api.newsfeed.search(extended=1, q=query, v=VKAPI_VERSION, count=amount, end_time=end_time,
+                                                 start_time=end_time - self.NEWSFEED_TIME_DELTA, access_token=self.access_token)
+
+            batch_len = len(posts['items'])
+
+            loaded += batch_len
+            count -= batch_len
+            newsfeed_posts.extend(posts['items'])
+
+            if len(posts['items']) > 0:
+                end_time = posts['items'][-1]['date']
+            else:
+                end_time -= self.NEWSFEED_TIME_DELTA
+
+            num_requests += 1
+            if num_requests % self.NUM_REQUESTS_PER_SECOND == 0:
+                time.sleep(self.throttle)
+
+        return newsfeed_posts
 
 
 class VkException(Exception):
@@ -1904,7 +1972,7 @@ class Session(object):
                 return response_or_error['response']
 
             elif 'error' in response_or_error:
-                print("error")
+                print("Request error occured")
 
     def send_api_request(self, request):
 
