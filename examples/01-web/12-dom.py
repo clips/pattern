@@ -92,3 +92,41 @@ dom = DOM(URL("http://www.clips.ua.ac.be").download())
 for e in dom("div#ContentPlaceHolder1_ctl00_ctl01_Omkadering span div:contents p"):
     print(plaintext(e.content))
     print("")
+
+
+
+####################### Test Techcrunch - https://techcrunch.com/startups/ ####################################
+
+print("#"*40, "Test Techcrunch", "#"*40)
+url = URL("https://techcrunch.com/startups/")
+dom = DOM(url.download(cached=True))
+for e in dom.by_tag("header.post-block__header")[:5]:
+    for a in e.by_tag("h2.post-block__title")[:1]:
+        print(plaintext(a.content))
+        for h in a.by_tag("a.post-block__title__link")[:1]:
+            print(h.attrs["href"])
+        print("")
+print("\n")
+
+header = dom.by_class("river__title")[0]
+print(header.content)
+print("\n")
+
+
+title_image = dom.by_attr(name="msapplication-TileImage")[0]
+print(title_image.attrs['content'])
+print("\n")
+
+
+url = URL("https://techcrunch.com")
+dom = DOM(url.download(cached=True))
+for k in dom.by_class("post-block__title__link"):
+    print(k.content.strip())
+    print("")
+
+print("\n")
+
+for e in dom("header:post-block__header h2:post-block__title a:post-block__title__link"):
+    print(e.content.strip())
+    print(e.attrs["href"])
+    print("")
