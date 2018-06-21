@@ -18,9 +18,11 @@ from pattern.web import NODE, TEXT, COMMENT, ELEMENT, DOCUMENT
 # The DOM elements can then be searched by tag name, CSS id, CSS class, ...
 
 # For example, top news entries on Reddit are coded as:
-# <div class="entry">
-#     <p class="title">
-#         <a class="title " href="http://i.imgur.com/yDyPu8P.jpg">Bagel the bengal, destroyer of boxes</a>
+# <div class="_1poyrkZ7g36PawDueRza-J s1r3zmnv-7 bmeGah">
+#     ...
+#     <span class="y8HYJ-y_lTUHkQIc1mdCq yj3st6-1 kYJFRo">
+#     ...
+#         <a class="SQnoC3ObvgnGjWt90zD9Z " href="http://i.imgur.com/yDyPu8P.jpg">Bagel the bengal, destroyer of boxes</a>
 #     ...
 # </div>
 #
@@ -28,8 +30,8 @@ from pattern.web import NODE, TEXT, COMMENT, ELEMENT, DOCUMENT
 url = URL("http://www.reddit.com/top/")
 dom = DOM(url.download(cached=True))
 #print(dom.body.content)
-for e in dom.by_tag("div.entry")[:5]: # Top 5 reddit entries.
-    for a in e.by_tag("a.title")[:1]: # First <a class="title"> in entry.
+for e in dom.by_tag("div._1poyrkZ7g36PawDueRza-J s1r3zmnv-7 bmeGah")[:5]: # Top 5 reddit entries.
+    for a in e.by_tag("a.SQnoC3ObvgnGjWt90zD9Z")[:1]: # First <a class="title"> in entry.
         print(plaintext(a.content))
         print(a.attrs["href"])
         print("")
@@ -44,7 +46,7 @@ url = URL("http://nodebox.net")
 for link in DOM(url.download()).by_tag("a"):
     link = link.attrs.get("href", "")
     link = abs(link, base=url.redirect or url.string)
-    #print(link)
+    print(link)
 
 # The DOM object is a tree of nested Element and Text objects.
 # All objects inherit from Node (check the source code).
@@ -77,10 +79,9 @@ for link in DOM(url.download()).by_tag("a"):
 # For example:
 # In the <head> tag, retrieve the <meta name="keywords"> element.
 # Get the string value of its "content" attribute and split into a list:
-dom = DOM(URL("http://www.clips.ua.ac.be").download())
-kw = dom.head.by_attr(name="keywords")[0]
+dom = DOM(URL("https://www.apple.com/uk/").download(cached=True))
+kw = dom.head.by_attr(name="Description")[0]
 kw = kw.attrs["content"]
-kw = [x.strip() for x in kw.split(",")]
 print(kw)
 print("")
 
@@ -88,6 +89,6 @@ print("")
 # http://www.w3.org/TR/CSS2/selector.html
 # Element(selector) will return a list of nested elements that match the given string.
 dom = DOM(URL("http://www.clips.ua.ac.be").download())
-for e in dom("div#sidebar-left li div:first-child span"):
+for e in dom("div#ContentPlaceHolder1_ctl00_ctl01_Omkadering span div:contents p"):
     print(plaintext(e.content))
     print("")
