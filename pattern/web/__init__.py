@@ -1700,6 +1700,8 @@ class Faroo(SearchEngine):
 # and ss of May 2018 the site is available in 86 languages
 
 
+
+
 # API Error Codes
 AUTHORIZATION_FAILED = 5    # Invalid access token
 PERMISSION_IS_DENIED = 7
@@ -1742,6 +1744,34 @@ class VKRequest(object):
 class VK(SearchEngine):
 
     '''
+    The instruction to get access_token:
+
+    We will consider the authorization method in the social network VKontakte by a direct link through the VKontakte API (based on the OAuth protocol), called Implicit flow. Authorization by this method is performed through the VKontakte application specified in the form of an ID. This is the most secure method of authorization.
+
+    The method of obtaining a token is to go through a special link containing the ID of created VKontakte application:
+    https://oauth.vk.com/authorize?
+    client_id=APP_ID&scope=notify,photos,friends,audio,video,notes,pages,docs,status,questions,offers,wall,groups,messages,notifications,stats,ads,offline&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token
+
+    So, where to get the APP_ID?
+
+    Receiving a token through its own application:
+
+    1)register in VK - https://vk.com
+    2)go to the application manage: https://vk.com/apps?act=manage
+    3)create new application (chose standalone application)
+    4)next, you need to approve the application by getting a confirmation code on your phone and typing it in a special field. Also, during the application approval process, you can link your mobile device to the VKontakte account. To do this, click the «Link Device» button. Otherwise, just click on the «Confirm via SMS» link without attaching the device to the page.
+    5)After confirmation, you will see a page with information about the created application. In the left menu, click on the "Settings" item. There you can find the client_id, that is, the ID of your VKontakte application.
+    6)This ID needs to be copied and pasted into our link instead of APP_ID. It should look something like this:
+
+    https://oauth.vk.com/authorize?
+    client_id=123456&scope=notify,photos,friends,audio,video,notes,pages,docs,status,questions,offers,wall,groups,messages,notifications,stats,ads,offline&redirect_uri=http://api.vk.com/blank.html&display=page&response_type=token
+
+    7)Next, if you need to get the access key, you just need to go to this link.
+    The link with access token will look like:
+
+    http://api.vk.com/blank.html#access_token=*****&expires_in=0&user_id=*****
+
+
     Limits:
     The VKontakte API methods with the user access key can be accessed no more often than 3 times per second
 
@@ -1894,7 +1924,6 @@ class VK(SearchEngine):
                                                  start_time=end_time - self.NEWSFEED_TIME_DELTA, access_token=self.access_token)
 
             batch_len = len(posts['items'])
-
             loaded += batch_len
             count -= batch_len
             newsfeed_posts.extend(posts['items'])
