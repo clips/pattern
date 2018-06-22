@@ -31,7 +31,7 @@ url = URL("http://www.reddit.com/top/")
 dom = DOM(url.download(cached=True))
 #print(dom.body.content)
 for e in dom.by_tag("div._1poyrkZ7g36PawDueRza-J s1r3zmnv-7 bmeGah")[:5]: # Top 5 reddit entries.
-    for a in e.by_tag("a.SQnoC3ObvgnGjWt90zD9Z")[:1]: # First <a class="title"> in entry.
+    for a in e.by_tag("a.SQnoC3ObvgnGjWt90zD9Z")[:1]:
         print(plaintext(a.content))
         print(a.attrs["href"])
         print("")
@@ -95,11 +95,12 @@ for e in dom("div#ContentPlaceHolder1_ctl00_ctl01_Omkadering span div:contents p
 
 
 
-####################### Test Techcrunch - https://techcrunch.com/startups/ ####################################
+######################################## Test Techcrunch - https://techcrunch.com/ ####################################
 
 print("#"*40, "Test Techcrunch", "#"*40)
 url = URL("https://techcrunch.com/startups/")
 dom = DOM(url.download(cached=True))
+
 for e in dom.by_tag("header.post-block__header")[:5]:
     for a in e.by_tag("h2.post-block__title")[:1]:
         print(plaintext(a.content))
@@ -130,3 +131,33 @@ for e in dom("header:post-block__header h2:post-block__title a:post-block__title
     print(e.content.strip())
     print(e.attrs["href"])
     print("")
+
+
+################################ Test Habr - https://habr.com ####################################
+
+print("#"*40, "Test Habr", "#"*40)
+url = URL("https://habr.com")
+dom = DOM(url.download(cached=True))
+
+for e in dom.by_tag("h2.post__title")[:5]:
+    for a in e.by_tag("a.post__title_link")[:1]:
+        print(plaintext(a.content))
+        print("")
+print("\n")
+
+for k in dom.by_class("post__hubs inline-list"):
+    for p in k.by_tag("li.inline-list__item inline-list__item_hub"):
+        for t in p.by_tag("a.inline-list__item-link hub-link "):
+            print(t.content)
+print("\n")
+
+
+descr = dom.by_attr(name="description")[0]
+print(descr.attrs['content'])
+print("\n")
+
+for p in dom("div#broadcast_tabs_posts"):
+    for e in p.by_class("content-list content-list_most-read"):
+        for k in e.by_tag("a.post-info__title post-info__title_large"):
+            print(plaintext(k.content))
+        print("")
